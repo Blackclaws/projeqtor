@@ -84,7 +84,6 @@ class PlannedWork extends Work {
 //echo "<br/>******************************";
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
-debugLog ("plan for projet=" . $projectId . " at date=" . $startDate);
     $withProjectRepartition=true;
     $result="";
     $startTime=time();

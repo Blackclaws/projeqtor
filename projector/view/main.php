@@ -679,6 +679,7 @@
         <form id='dialogFilterForm' name='dialogFilterForm' onSubmit="return false;">
          <input type="hidden" id="filterObjectClass" name="filterObjectClass" />
          <input type="hidden" id="filterClauseId" name="filterClauseId" />
+         <input type="hidden" id="filterDataType" name="filterDataType" />
          <table>
            <tr style="vertical-align: top;">
              <td class="white" style="width: 210px;" >
@@ -715,7 +716,7 @@
                  style="width:200px" /> 
              </td>
              <td style="width:25px; text-align: center;" align="center">
-               <img src="css/images/smallButtonAdd.png" onClick="addfilter();" title="<?php i18n('addFilterClause');?>" class="smallButton"/> 
+               <img src="css/images/smallButtonAdd.png" onClick="addfilter();" title="<?php echo i18n('addFilterClause');?>" class="smallButton"/> 
              </td>
            </tr>
            <tr><td>&nbsp;</td></tr>
@@ -725,7 +726,7 @@
     </tr>
     <tr>
       <td align="center">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('listFilterFilter').attr('checked','');dijit.byId('dialogFilter').hide();">
+        <button dojoType="dijit.form.Button" onclick="cancelFilter();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogFilterSubmit" onclick="selectFilter();return false;">

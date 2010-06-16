@@ -148,13 +148,26 @@
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
     
+    // Chek for an advanced filter (stored in User
+    
+    $arrayFilter=array();
+    if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
+      $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+    }
+    foreach ($arrayFilter as $crit) {
+      $queryWhere.=($queryWhere=='')?'':' and ';
+      $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
+                 . $crit['sql']['operator'] . ' '
+                 . $crit['sql']['value'];
+    }
+//echo $queryWhere . '<br/>';   
+    
     // constitute query and execute
     $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-//debugLog ($query);
     $result=Sql::query($query);
     $nbRows=0;
     // return result in json format

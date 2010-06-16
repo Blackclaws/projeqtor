@@ -64,20 +64,22 @@ $obj=new $objectClass;
                 </select>
               <?php }?>
               &nbsp;&nbsp;&nbsp;
-              <?php echo i18n("colFilter");?> 
-              <div title="<?php echo i18n('advancedFilter')?>" style="width:10px" class="filterField" dojoType="dijit.form.ToggleButton" 
+              <?php echo i18n("colFilter");?>
+              <?php $activeFilter=false;
+                 if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
+                   if (count($_SESSION['user']->_arrayFilters[$objectClass])>0) {
+                     $activeFilter=true;
+                   }
+                 }
+                 ?>
+              <button title="<?php echo i18n('advancedFilter')?>" style="width:10px" class="filterField" 
+               dojoType="dijit.form.Button" 
                id="listFilterFilter" name="listFilterFilter"
-               iconClass="iconFilter16" showLabel="false">
-                <script type="dojo/method" event="onClick" >
-                  if (this.checked) {
-                    //this.attr('iconClass',"iconActiveFilter16");
-                    showFilter();
-                  } else {
-                    this.attr('iconClass',"iconFilter16");
-                    filterJsonList() ;
-                  }
+               iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter16" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  showFilter();
                 </script>
-              </div>
+              </button>
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
             <td style="width: 200px;text-align: right; align: right;">

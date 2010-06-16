@@ -424,10 +424,12 @@ function showFilter () {
 	dijit.byId('idFilterAttribute').attr("value","");
 	dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
 	filterType="";
+	dojo.xhrPost({url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value});
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 	dijit.byId('idFilterAttribute').store = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
 	dijit.byId("dialogFilter").show();
 }
+
 function filterSelectItem(value) {
 	if (value) {
 		//showWait();
@@ -451,7 +453,7 @@ function filterSelectItem(value) {
 	  	  // 
 	  	  //
 	  	  dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'visible'});
-	  		//alert(dataType);
+	  		dojo.byId('filterDataType').value=dataType;
 	  		if (dataType=="bool") {
 	  			filterType="bool";
 	  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
@@ -478,6 +480,7 @@ function filterSelectItem(value) {
 	  			mySelect.size=(nbVal>0)?10:nbVal;
 	  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'block'});
+	  			dijit.byId('filterValueList').attr('value','');
 	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		} else if (dataType=="date") {
@@ -486,9 +489,11 @@ function filterSelectItem(value) {
 	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'block'});
-	  	  } else {
+	  			dijit.byId('filterValueDate').attr('value','');
+	  		} else {
 	  	  	filterType="text";
 	  			dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
+	  			dijit.byId('filterValue').attr('value','');
 	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
@@ -502,7 +507,11 @@ function filterSelectItem(value) {
   			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		//hideWait();
 	    }
-    }) ; 
+    }) ;
+	  dijit.byId('filterValue').attr('value','');
+		dijit.byId('filterValueList').attr('value','');
+		dijit.byId('filterValueCheckbox').attr('value','');
+		dijit.byId('filterValueDate').attr('value','');
 	} else {
 		dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
 		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
@@ -516,7 +525,19 @@ function addfilter() {
 	if (filterType=="") { 
 		showAlert(i18n('attributeNotSelected')); 
 		exit;
-	}	
+	}
+	if (filterType=="list" && dijit.byId('filterValueList').attr('value')=='') {
+		showAlert(i18n('valueNotSelected')); 
+		exit;
+	}
+	if (filterType=="date" && ! dijit.byId('filterValueDate').attr('value')) {
+		showAlert(i18n('valueNotSelected')); 
+		exit;
+	}		
+	if (filterType=="text" && ! dijit.byId('filterValue').attr('value')) {
+		showAlert(i18n('valueNotSelected')); 
+		exit;
+	}		
 	// Add controls on operator and value
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 }
@@ -527,11 +548,20 @@ function removefilter(id) {
 }
 
 function selectFilter() {
-	var clause="";
-	alert ("Clause=" + clause);
-	dojo.byId(listFilterClause).value=clause;
+	dojo.xhrPost({url: "../tool/backupFilter.php?clean=true&filterObjectClass=" + dojo.byId('filterObjectClass').value});
+	if (dojo.byId("nbFilterCirteria").value>0) {
+		dijit.byId("listFilterFilter").attr("iconClass","iconActiveFilter16");
+	} else {
+		dijit.byId("listFilterFilter").attr("iconClass","iconFilter16");
+	}
+	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+	dijit.byId("dialogFilter").hide();
 }
 
+function cancelFilter() {
+	dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true&filterObjectClass=" + dojo.byId('filterObjectClass').value});
+	dijit.byId('dialogFilter').hide();
+}
 
 /**
  * run planning

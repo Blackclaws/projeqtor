@@ -130,7 +130,6 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   }
   echo '</tr>';
   foreach($lineList as $lineId => $lineName) {
-debugLog($lineName);
     echo '<tr><td class="crossTableLine"><label>' . $lineName . '</label></td>';
     foreach ($columnList as $colId => $colName) {
       $crit=array();
@@ -347,4 +346,32 @@ function htmlExtractArgument($tag, $arg) {
   }
   return $fld;
 }
+
+function htmlDisplayFilterCriteria($filterArray) {
+  // Display Result
+  echo "<table>";
+  echo "<tr>";
+  echo "<td class='filterHeader' style='width:525px;'>" . i18n("criteria") . "</td>";
+  echo "<td class='filterHeader' style='width:25px;'>";
+  echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilter(\'all\');" title="' . i18n('removeAllFilters') . '" class="smallButton"/> ';
+  echo "</td>";
+  echo "</tr>";
+  foreach ($filterArray as $id=>$filter) {
+    echo "<tr>";
+    echo "<td class='filterData'>" . 
+         $filter['disp']['attribute'] . " " .
+         $filter['disp']['operator'] . " " .
+         $filter['disp']['value'] .
+         "</td>";
+    echo "<td class='filterData' style='text-align: center;'>";
+    echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilter(' . $id . ');" title="' . i18n('removeFilter') . '" class="smallButton"/> ';
+    echo "</td>";
+    echo "</tr>";
+  }
+  echo "<tr><td>&nbsp;</td></tr>";
+  echo "</table>";
+  echo '<input id="nbFilterCirteria" name="nbFilterCirteria" type="hidden" value="' . count($filterArray) . '" />';
+}
+
+
 ?>

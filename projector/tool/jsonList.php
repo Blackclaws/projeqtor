@@ -5,7 +5,6 @@
     require_once "../tool/projector.php"; 
     
     $type=$_REQUEST['listType'];
-debugLog("***** Type=" . $type);
 
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
@@ -26,6 +25,8 @@ debugLog("***** Type=" . $type);
           $dataLength = $obj->getDataLength($col);
           if ($dataType=='int' and $dataLength==1) { 
             $dataType='bool'; 
+          } else if ($dataType=='datetime') { 
+            $dataType='date'; 
           } else if ((substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 
                       and substr($col,2,1)==strtoupper(substr($col,2,1)))) { 
             $dataType='list'; 
@@ -52,9 +53,7 @@ debugLog("***** Type=" . $type);
       
     } else if ($type=='list') {    
       $dataType=$_REQUEST['dataType'];
-debugLog("***** dataType=" . $dataType);
       $class=substr($dataType,2);
-debugLog("***** class=" . $class);
       $list=SqlList::getList($class);
       $nbRows=0;
       // return result in json format

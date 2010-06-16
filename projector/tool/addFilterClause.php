@@ -21,13 +21,20 @@ if (! array_key_exists('idFilterOperator',$_REQUEST)) {
   throwError('idFilterOperator parameter not found in REQUEST');
 }
 $idFilterOperator=$_REQUEST['idFilterOperator'];
+if (! array_key_exists('filterDataType',$_REQUEST)) {
+  throwError('filterDataType parameter not found in REQUEST');
+}
+$filterDataType=$_REQUEST['filterDataType'];
 if (! array_key_exists('filterValue',$_REQUEST)) {
   throwError('filterValue parameter not found in REQUEST');
 }
 $filterValue=$_REQUEST['filterValue'];
 if (array_key_exists('filterValueList',$_REQUEST)) {
   $filterValueList=$_REQUEST['filterValueList'];
+} else {
+  $filterValueList=array();
 }
+
 if (! array_key_exists('filterValueDate',$_REQUEST)) {
   throwError('filterValueDate parameter not found in REQUEST');
 }
@@ -61,26 +68,21 @@ if ($idFilterAttribute and $idFilterOperator) {
   if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<=") {
     $arrayDisp["operator"]=$idFilterOperator;
     $arraySql["operator"]=$idFilterOperator;
-    if ($dataType=='date') {
+    if ($filterDataType=='date') {
       $arrayDisp["value"]="'" . htmlFormatDate($filterValueDate) . "'";
       $arraySql["value"]="'" . $filterValueDate . "'";
-    } else if ($dataType=='int') {
-      if ($dataLength==1) {
+    } else if ($filterDataType=='bool') {
         $arrayDisp["value"]=($filterValueCheckbox)?i18n("displayYes"):i18n("displayNo");
         $arraySql["value"]=($filterValueCheckbox)?1:0;
-      } else {
-        $arrayDisp["value"]="'" . htmlFormatDate($filterValueDate) . "'";
-        $arraySql["value"]="'" . $filterValueDate . "'";
-      }
     } else {
-      $arrayDisp["value"]="'" . $filterValue . "'";
-      $arraySql["value"]="'" . $filterValue . "'";
+      $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
+      $arraySql["value"]="'" . htmlEncode($filterValue) . "'";
     }
   } else if ($idFilterOperator=="LIKE") {
     $arrayDisp["operator"]=i18n("contains");
     $arraySql["operator"]=$idFilterOperator;
-    $arrayDisp["value"]="'" . $filterValue . "'";
-    $arraySql["value"]="'%" . $filterValue . "%'";
+    $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
+    $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
   } else if ($idFilterOperator=="IN") {
     $arrayDisp["operator"]=i18n("amongst");
     $arraySql["operator"]=$idFilterOperator;
@@ -93,36 +95,17 @@ if ($idFilterAttribute and $idFilterOperator) {
       $arraySql["value"].= $val ;
     }
     //$arrayDisp["value"].=")";
-    $arraySql["value"]=")";
+    $arraySql["value"].=")";
     
   } else {
      htmlGetErrorMessage(i18n('incorrectOperator'));
      exit;
-  }  
+  } 
   $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
   $user->_arrayFilters[$filterObjectClass]=$filterArray;
 }
 
-// Display Result
-echo "<table>";
-echo "<tr>";
-echo "<td class='filterHeader' style='width:525px;'>" . i18n("criteria") . "</td>";
-echo "<td class='filterHeader' style='width:25px;'>&nbsp;</td>";
-echo "</tr>";
-foreach ($filterArray as $id=>$filter) {
-  echo "<tr>";
-  echo "<td class='filterData'>" . 
-       $filter['disp']['attribute'] . " " .
-       $filter['disp']['operator'] . " " .
-       $filter['disp']['value'] .
-       "</td>";
-  echo "<td class='filterData' style='text-align: center;'>";
-  echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilter(' . $id . ');" title="' . i18n('removefilter') . '" class="smallButton"/> ';
-  echo "</td>";
-  echo "</tr>";
-}
-echo "<tr><td>&nbsp;</td></tr>";
-echo "</table>";
+htmlDisplayFilterCriteria($filterArray);
 
 
 // save user (for filter saving)

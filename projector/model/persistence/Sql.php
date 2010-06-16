@@ -68,8 +68,6 @@ class Sql {
     self::$lastQueryType= (is_resource($result)) ? "SELECT" : "UPDATE";
     self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? mysql_num_rows($result) : mysql_affected_rows($cnx);
     self::$lastQueryNewid = (mysql_insert_id($cnx)) ? mysql_insert_id($cnx) : NULL ;
-//debugLog ("Query executed. Lines returned = " . self::$lastQueryNbRows );
-//debugLog ($sqlRequest);
     // return result
     return $result;
   }

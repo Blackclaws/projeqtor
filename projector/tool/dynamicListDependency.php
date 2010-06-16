@@ -25,7 +25,7 @@ if (class_exists ($refTypeDep) ) {
 }
 
 ?>
-<select id="dependencyRefIdDep" multiple="false" name="dependencyRefIdDep"
+<select id="dependencyRefIdDep" name="dependencyRefIdDep"
 onchange="enableWidget('dialogDependencySubmit');"  
 class="selectList" >
  <?php
