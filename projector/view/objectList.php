@@ -66,9 +66,11 @@ $obj=new $objectClass;
               &nbsp;&nbsp;&nbsp;
               <?php echo i18n("colFilter");?>
               <?php $activeFilter=false;
-                 if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-                   if (count($_SESSION['user']->_arrayFilters[$objectClass])>0) {
-                     $activeFilter=true;
+                 if (is_array($_SESSION['user']->_arrayFilters)) {
+                   if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
+                     if (count($_SESSION['user']->_arrayFilters[$objectClass])>0) {
+                       $activeFilter=true;
+                     }
                    }
                  }
                  ?>
@@ -80,6 +82,9 @@ $obj=new $objectClass;
                   showFilter();
                 </script>
               </button>
+              <span id="gridRowCountShadow1" class="gridRowCountShadow1"></span>
+              <span id="gridRowCountShadow2" class="gridRowCountShadow2"></span>              
+              <span id="gridRowCount" class="gridRowCount"></span>             
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
             <td style="width: 200px;text-align: right; align: right;">

@@ -48,6 +48,7 @@ function refreshJsonList(className) {
 		store = grid.store;
 		store.fetch({onComplete: function(){filterJsonList();}});
   }
+
 }
 
 /** ============================================================================
@@ -82,6 +83,13 @@ function filterJsonList() {
 		grid.query=filter;
 		grid._refresh();
   }
+	refreshGridCount();
+}
+function refreshGridCount() {
+	var grid = dijit.byId("objectGrid");
+	dojo.byId('gridRowCount').innerHTML=grid.rowCount;
+	dojo.byId('gridRowCountShadow1').innerHTML=grid.rowCount;
+	dojo.byId('gridRowCountShadow2').innerHTML=grid.rowCount;
 }
 
 /** ============================================================================
@@ -291,6 +299,10 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       		drawGantt();
       		hideWait();
       	} else {
+      		var grid = dijit.byId("objectGrid");  
+    	  	if (grid) {
+    	  		refreshGridCount();
+    	  	}
 	        hideWait();
       	}
       },
@@ -334,9 +346,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   	        		checkLogin();
    		      	} else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
    		      			    || page.indexOf("jsonPlanning.php")>=0) {
+   		      		
    		      		drawGantt();
    		      		hideWait();
   	        	} else {
+  	        		var grid = dijit.byId("objectGrid");  
+  	      	  	if (grid) {
+  	      	  		refreshGridCount();
+  	      	  	}
       	        hideWait();
   	        	}
   		    	}

@@ -407,6 +407,25 @@ label, .label {
   text-align: center;
   cursor: pointer;
 }
+
+.gridRowCount, .gridRowCountShadow1, .gridRowCountShadow2 {
+  font-weight: bold; 
+  font-size: 15pt;
+  position:absolute; 
+}
+.gridRowCount {
+  color: #CECECE; 
+  left: 5px; top: 1px;
+}
+
+.gridRowCountShadow1 {
+  color: #FFFFFF; 
+  left: 4px; top: 0px;
+}
+.gridRowCountShadow2 {
+  color: #000000; 
+  left: 6px; top: 2px;
+}
           
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */

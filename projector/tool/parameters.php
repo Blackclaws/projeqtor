@@ -53,10 +53,10 @@ $paramIconSize='22';                            // Icon size on menu tree {'16' 
 // === attachement
 $paramAttachementDirectory='/home/projector/files'; // Directory to store Attachements. Set to empty string to disable attachement
 $paramAttachementMaxSize=1024*1024*2;           // Max file size for attachement = 1024 * 1024 * Mo
-$paramPathSeparator='/';                        // Path separatior, depending on system
+$paramPathSeparator='/';                        // Path separator, depending on system
 
 // === log management
 $logFile='/home/projector/logs/projector_${date}.log'; // Log file name. May contain ${date} to get 1 file a day
-$logLevel=1;                                    // Log level {'3' for debug, '2' for general trace, '1' for error trace, '0' for none}
+$logLevel=2;                                    // Log level {'3' for debug, '2' for general trace, '1' for error trace, '0' for none}
 
 ?>

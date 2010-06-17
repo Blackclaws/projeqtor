@@ -151,14 +151,16 @@
     // Chek for an advanced filter (stored in User
     
     $arrayFilter=array();
-    if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-      $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
-    }
-    foreach ($arrayFilter as $crit) {
-      $queryWhere.=($queryWhere=='')?'':' and ';
-      $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
-                 . $crit['sql']['operator'] . ' '
-                 . $crit['sql']['value'];
+    if (is_array( $_SESSION['user']->_arrayFilters)) {
+      if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
+        $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+      }
+      foreach ($arrayFilter as $crit) {
+        $queryWhere.=($queryWhere=='')?'':' and ';
+        $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
+                   . $crit['sql']['operator'] . ' '
+                   . $crit['sql']['value'];
+      }
     }
 //echo $queryWhere . '<br/>';   
     
@@ -182,10 +184,11 @@
           echo (++$nbFields>1)?',':'';
           $numericLength=($id=='id')?6:0;
           echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
-          //echo '"' . htmlEncode($id) . '":"' . htmlEncode($val) . '"';
         }
         echo '}';       
       }
     }
-    echo ' ] }';
+     echo '],';
+    //echo ' "numberOfRow":"' . $nbRows . '"' ;
+    echo ' }';
 ?>

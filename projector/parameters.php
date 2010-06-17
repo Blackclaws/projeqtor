@@ -54,7 +54,7 @@ $paramIconSize='22';                            // Icon size on menu tree {'16' 
 // === attachement
 $paramAttachementDirectory='D:\TEMP';          // Directory to store Attachements. Set to empty string to disable attachement
 $paramAttachementMaxSize=1024*1024*2;           // Max file size for attachement = 1024 * 1024 * Mo
-$paramPathSeparator='\\';                        // Path separatior, depending on system
+$paramPathSeparator='\\';                        // Path separator, depending on system
 
 // === log management
 $logFile='D:\TEMP\projector_${date}.log';      // Log file name. May contain ${date} to get 1 file a day
