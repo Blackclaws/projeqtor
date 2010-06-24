@@ -10,7 +10,7 @@
 var filterType="";
 
 //=============================================================================
-//= Functions
+//= Wait spinner
 //=============================================================================
 
 /** ============================================================================
@@ -26,13 +26,17 @@ function showWait() {
 }
 
 /** ============================================================================
- * Shows a wait spinner
+ * Hides a wait spinner
  * @return void
  */
 function hideWait() {
 	hideField("wait");
 	hideField("waitLogin");
 }
+
+//=============================================================================
+//= Generic field visibility properties
+//=============================================================================
 
 /** ============================================================================
  * Setup the style properties of a field to set it visible (show it)
@@ -59,6 +63,10 @@ function hideField(field) {
   	dest.style.display = 'none';
   }
 }
+
+//=============================================================================
+//= Message boxes
+//=============================================================================
 
 /** ============================================================================
  * Display a Dialog Error Message Box
@@ -119,6 +127,19 @@ function showConfirm (msg, actionOK) {
 }
 
 /** ============================================================================
+ * Display a About Box
+ * @param msg the message of the about box (must be passed here because built in php)
+ * @return void 
+ */
+function showAbout (msg) {
+	showInfo(msg);
+}
+
+//=============================================================================
+//= Print
+//=============================================================================
+
+/** ============================================================================
  * Display a Dialog Print Preview Box
  * @param page the page to display
  * @param forms the form containing the data to send to the page
@@ -134,14 +155,9 @@ function showPrint (page) {
 	//document.getElementsByTagName('printFrame')[0].contentWindow.print();
 }
 
-/** ============================================================================
- * Display a About Box
- * @param msg the message of the about box (must be passed here because built in php)
- * @return void 
- */
-function showAbout (msg) {
-	showInfo(msg);
-}
+//=============================================================================
+//= Notes
+//=============================================================================
 
 /**
  * Display a add note Box
@@ -212,6 +228,10 @@ function removeNote (noteId) {
 	showConfirm (msg, actionOK);
 }
 
+//=============================================================================
+//= Attachements
+//=============================================================================
+
 /**
  * Display an add attachement Box
  * 
@@ -261,6 +281,10 @@ function removeAttachement (attachementId) {
 	msg=i18n('confirmDelete',new Array(i18n('Attachement'), attachementId));
 	showConfirm (msg, actionOK);
 }
+
+//=============================================================================
+//= Links
+//=============================================================================
 
 /**
  * Display a add link Box
@@ -336,6 +360,10 @@ function removeLink (linkId, refType, refId) {
 	showConfirm (msg, actionOK);
 }
 
+//=============================================================================
+//= Assignments
+//=============================================================================
+
 /**
  * Display a add Assignment Box
  * 
@@ -390,10 +418,160 @@ function editAssignment (assignmentId, idResource, rate, assignedWork, realWork,
 	}
 }
 
+/**
+ * Update the left work on assignment update
+ * @param prefix
+ * @return
+ */
+function assignmentUpdateLeftWork(prefix) {
+	var initAssigned = dojo.byId(prefix + "AssignedWorkInit"); 
+  var initLeft =  dojo.byId(prefix + "LeftWorkInit");
+  var assigned =  dojo.byId(prefix + "AssignedWork"); 
+  var left = dojo.byId(prefix + "LeftWork");
+  var real = dojo.byId(prefix + "RealWork"); 
+  var planned = dojo.byId(prefix + "PlannedWork");
+	diff=dojo.number.parse(assigned.value)-initAssigned.value;
+	newLeft=parseFloat(initLeft.value) + diff;
+	if (newLeft<0) { newLeft=0;}
+	left.value=dojo.number.format(newLeft);
+	assignmentUpdatePlannedWork(prefix);
+}
+
+/**
+ * Update the planned work on assignment update
+ * @param prefix
+ * @return
+ */
+function assignmentUpdatePlannedWork(prefix) {
+  var left = dojo.byId(prefix + "LeftWork");
+  var real = dojo.byId(prefix + "RealWork"); 
+  var planned = dojo.byId(prefix + "PlannedWork");
+	newPlanned=dojo.number.parse(real.value)+dojo.number.parse(left.value);
+	planned.value=dojo.number.format(newPlanned);
+}
+
+/**
+ * save an Assignment (after addAssignment or editAssignment)
+ * 
+ */
+function saveAssignment() {
+	dijit.byId("assignmentPlannedWork").focus();
+	dijit.byId("assignmentLeftWork").focus();
+	loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');
+	dijit.byId('dialogAssignment').hide();
+}
+
+/**
+ * Display a delete Assignment Box
+ * 
+ */
+function removeAssignment (assignmentId, realWork, resource) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	if (parseFloat(realWork)) {
+		msg=i18n('msgUnableToDeleteRealWork');
+		showAlert (msg);
+		return;
+	}
+	dojo.byId("assignmentId").value=assignmentId;
+	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+	actionOK=function() {loadContent("../tool/removeAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');};
+	msg=i18n('confirmDeleteAssignment',new Array(resource));
+	showConfirm (msg, actionOK);
+}
+
+//=============================================================================
+//= Dependency
+//=============================================================================
+
+/**
+* Display a add Dependency Box
+* 
+*/
+function addDependency (depType) {
+if (formChangeInProgress) {
+	showAlert(i18n('alertOngoingChange'));
+	return;
+}
+var objectClass=dojo.byId("objectClass").value;
+var objectId=dojo.byId("objectId").value;
+var message=i18n("dialogDependency");
+if (depType) {
+	dojo.byId("dependencyType").value=depType;
+	message = i18n("dialogDependencyRestricted", new Array(i18n(objectClass), objectId, i18n(depType)));
+} else {
+	dojo.byId("dependencyType").value="";
+	message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
+}
+var url="../tool/dynamicListDependency.php" 
+	+ "?dependencyType="+depType
+  + "&dependencyRefType="+objectClass
+	+ "&dependencyRefId="+objectId
+	+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
+loadContent(url, "dialogDependencyList", null, false);
+dojo.byId("dependencyId").value="";
+dojo.byId("dependencyRefType").value=objectClass;
+dojo.byId("dependencyRefId").value=objectId;
+dijit.byId("dialogDependency").attr('title', message);
+dijit.byId("dialogDependency").show();
+disableWidget('dialogDependencySubmit');
+}
+
+/**
+* Refresh the Dependency list (after update)
+*/
+function refreshDependencyList() {
+disableWidget('dialogDependencySubmit'); 
+loadContent('../tool/dynamicListDependency.php', 'dialogDependencyList', 'dependencyForm', false);
+}
+
+/**
+* save a Dependency (after addLink)
+* 
+*/
+function saveDependency() {
+if (dojo.byId("dependencyRefIdDep").value=="") return;
+loadContent("../tool/saveDependency.php", "resultDiv", "dependencyForm", true,'dependency');
+dijit.byId('dialogDependency').hide();
+}
+
+/**
+* Display a delete Dependency Box
+* 
+*/
+function removeDependency (dependencyId, refType, refId) {
+//alert("Not implemented");
+//return;
+if (formChangeInProgress) {
+	showAlert(i18n('alertOngoingChange'));
+	return;
+}	
+dojo.byId("dependencyId").value=dependencyId;
+actionOK=function() {loadContent("../tool/removeDependency.php", "resultDiv", "dependencyForm", true,'dependency');};
+msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
+showConfirm (msg, actionOK);
+}
+
+//=============================================================================
+//= Import
+//=============================================================================
+
+/**
+ * Display an import Data Box
+ * (Not used, for an eventual improvement)
+ * 
+ */
 function importData() {
 	showWait();
 	return true;
 }
+
+//=============================================================================
+//= Plan
+//=============================================================================
 
 /**
  * Display a planning Box
@@ -408,10 +586,23 @@ function showPlanParam (selectedProject) {
 }
 
 /**
+ * Run planning
+ * 
+ */
+function plan() {
+	loadContent("../tool/plan.php", "planResultDiv", "dialogPlanForm", true,null);
+	dijit.byId("dialogPlan").hide();
+}
+
+//=============================================================================
+//= Filter
+//=============================================================================
+
+/**
  * Display a Filter Box
  * 
  */
-function showFilter () {
+function showFilterDialog () {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -426,13 +617,17 @@ function showFilter () {
 	filterType="";
 	dojo.xhrPost({url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value});
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	loadContent("../tool/displayFilterList.php", "listStoredFilters", "dialogFilterForm", false);
 	dijit.byId('idFilterAttribute').store = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
 	dijit.byId("dialogFilter").show();
 }
 
-function filterSelectItem(value) {
+/**
+ * Select attribute : refresh depedant lists box
+ * 
+ */
+function filterSelectAtribute(value) {
 	if (value) {
-		//showWait();
 	  dijit.byId('idFilterAttribute').store.fetchItemByIdentity({
 	    identity : value, 
 	    onItem : function(item) { 
@@ -448,10 +643,6 @@ function filterSelectItem(value) {
             console.info(err.message) ;  
           }
 	  	  });	      
-	  	  //dijit.byId('idFilterOperator').attr("value","");
-	  	  //dojo.byId('filterValue').value="";
-	  	  // 
-	  	  //
 	  	  dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'visible'});
 	  		dojo.byId('filterDataType').value=dataType;
 	  		if (dataType=="bool") {
@@ -521,7 +712,14 @@ function filterSelectItem(value) {
 	}
 }
 
-function addfilter() {
+/**
+ * Save filter clause
+ * 
+ */
+function addfilterClause() {
+	if (dijit.byId('filterNameDisplay')) {
+		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').attr('value');
+	}
 	if (filterType=="") { 
 		showAlert(i18n('attributeNotSelected')); 
 		exit;
@@ -541,14 +739,31 @@ function addfilter() {
 	// Add controls on operator and value
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 }
-function removefilter(id) {
+
+/**
+ * Remove a filter clause
+ * 
+ */
+function removefilterClause(id) {
+	if (dijit.byId('filterNameDisplay')) {
+		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').attr('value');
+	}
 	// Add controls on operator and value
 	dojo.byId("filterClauseId").value=id;
 	loadContent("../tool/removeFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 }
 
+/**
+ * Action on OK for filter
+ * 
+ */
 function selectFilter() {
-	dojo.xhrPost({url: "../tool/backupFilter.php?clean=true&filterObjectClass=" + dojo.byId('filterObjectClass').value});
+	if (dijit.byId('filterNameDisplay')) {
+		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').attr('value');
+	}
+	dojo.xhrPost({url: "../tool/backupFilter.php?valid=true",
+		form: dojo.byId('dialogFilterForm')
+	});
 	if (dojo.byId("nbFilterCirteria").value>0) {
 		dijit.byId("listFilterFilter").attr("iconClass","iconActiveFilter16");
 	} else {
@@ -558,150 +773,61 @@ function selectFilter() {
 	dijit.byId("dialogFilter").hide();
 }
 
+/**
+ * Action on Cancel for filter
+ * 
+ */
 function cancelFilter() {
-	dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true&filterObjectClass=" + dojo.byId('filterObjectClass').value});
-	dijit.byId('dialogFilter').hide();
+	dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true",
+		form: dojo.byId('dialogFilterForm')
+	});
+		dijit.byId('dialogFilter').hide();
 }
 
 /**
- * run planning
+ * Action on Clear for filter
  * 
  */
-function plan() {
-	loadContent("../tool/plan.php", "planResultDiv", "dialogPlanForm", true,null);
-	dijit.byId("dialogPlan").hide();
-}
-
-/**
- * Update the left work on assignment update
- * @param prefix
- * @return
- */
-function assignmentUpdateLeftWork(prefix) {
-	var initAssigned = dojo.byId(prefix + "AssignedWorkInit"); 
-  var initLeft =  dojo.byId(prefix + "LeftWorkInit");
-  var assigned =  dojo.byId(prefix + "AssignedWork"); 
-  var left = dojo.byId(prefix + "LeftWork");
-  var real = dojo.byId(prefix + "RealWork"); 
-  var planned = dojo.byId(prefix + "PlannedWork");
-	diff=dojo.number.parse(assigned.value)-initAssigned.value;
-	newLeft=parseFloat(initLeft.value) + diff;
-	if (newLeft<0) { newLeft=0;}
-	left.value=dojo.number.format(newLeft);
-	assignmentUpdatePlannedWork(prefix);
-}
-
-/**
- * Update the planned work on assignment update
- * @param prefix
- * @return
- */
-function assignmentUpdatePlannedWork(prefix) {
-  var left = dojo.byId(prefix + "LeftWork");
-  var real = dojo.byId(prefix + "RealWork"); 
-  var planned = dojo.byId(prefix + "PlannedWork");
-	newPlanned=dojo.number.parse(real.value)+dojo.number.parse(left.value);
-	planned.value=dojo.number.format(newPlanned);
-}
-
-/**
- * save an Assignment (after addAssignment or editAssignment)
- * 
- */
-function saveAssignment() {
-	dijit.byId("assignmentPlannedWork").focus();
-	dijit.byId("assignmentLeftWork").focus();
-	loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');
-	dijit.byId('dialogAssignment').hide();
-}
-
-/**
- * Display a delete Assignment Box
- * 
- */
-function removeAssignment (assignmentId, realWork, resource) {
-	if (formChangeInProgress) {
-		showAlert(i18n('alertOngoingChange'));
-		return;
+function clearFilter() {
+	if (dijit.byId('filterNameDisplay')) {
+		dijit.byId('filterNameDisplay').attr('value',"");
 	}
-	if (parseFloat(realWork)) {
-		msg=i18n('msgUnableToDeleteRealWork');
-		showAlert (msg);
-		return;
+	dojo.byId('filterName').value="";
+	removefilterClause('all');	
+	//setTimeout("selectFilter();dijit.byId('listFilterFilter').attr('iconClass','iconFilter16');",100);
+	dijit.byId('listFilterFilter').attr('iconClass','iconFilter16');
+}
+
+/**
+ * Save a filter as a stored filter
+ * 
+ */
+function saveFilter() {
+	if (dijit.byId('filterNameDisplay')) {
+		if (dijit.byId('filterNameDisplay').attr('value')=="") {
+			showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
+			exit;
+		}
+		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').attr('value');
 	}
-	dojo.byId("assignmentId").value=assignmentId;
-	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
-	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
-	actionOK=function() {loadContent("../tool/removeAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');};
-	msg=i18n('confirmDeleteAssignment',new Array(resource));
-	showConfirm (msg, actionOK);
+	loadContent("../tool/saveFilter.php", "listStoredFilters", "dialogFilterForm", false);
 }
 
-
 /**
- * Display a add Dependency Box
+ * Select a stored filter in the list and fetch criteria
  * 
  */
-function addDependency (depType) {
-	if (formChangeInProgress) {
-		showAlert(i18n('alertOngoingChange'));
-		return;
-	}
-	var objectClass=dojo.byId("objectClass").value;
-	var objectId=dojo.byId("objectId").value;
-  var message=i18n("dialogDependency");
-	if (depType) {
-		dojo.byId("dependencyType").value=depType;
-  	message = i18n("dialogDependencyRestricted", new Array(i18n(objectClass), objectId, i18n(depType)));
-  } else {
-  	dojo.byId("dependencyType").value="";
-  	message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
-  }
-	var url="../tool/dynamicListDependency.php" 
-		+ "?dependencyType="+depType
-	  + "&dependencyRefType="+objectClass
-		+ "&dependencyRefId="+objectId
-		+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
-	loadContent(url, "dialogDependencyList", null, false);
-	dojo.byId("dependencyId").value="";
-	dojo.byId("dependencyRefType").value=objectClass;
-	dojo.byId("dependencyRefId").value=objectId;
-	dijit.byId("dialogDependency").attr('title', message);
-	dijit.byId("dialogDependency").show();
-	disableWidget('dialogDependencySubmit');
+function selectStoredFilter(idFilter) {
+	loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter, "listFilterClauses", "dialogFilterForm", false);
 }
 
 /**
- * Refresh the Dependency list (after update)
- */
-function refreshDependencyList() {
-	disableWidget('dialogDependencySubmit'); 
-	loadContent('../tool/dynamicListDependency.php', 'dialogDependencyList', 'dependencyForm', false);
-}
-
-/**
- * save a Dependency (after addLink)
+ * Removes a stored filter from the list
  * 
  */
-function saveDependency() {
-	if (dojo.byId("dependencyRefIdDep").value=="") return;
-  loadContent("../tool/saveDependency.php", "resultDiv", "dependencyForm", true,'dependency');
-	dijit.byId('dialogDependency').hide();
-}
-
-/**
- * Display a delete Dependency Box
- * 
- */
-function removeDependency (dependencyId, refType, refId) {
-	//alert("Not implemented");
-	//return;
-	if (formChangeInProgress) {
-		showAlert(i18n('alertOngoingChange'));
-		return;
-	}	
-	dojo.byId("dependencyId").value=dependencyId;
-	actionOK=function() {loadContent("../tool/removeDependency.php", "resultDiv", "dependencyForm", true,'dependency');};
-	msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
-	showConfirm (msg, actionOK);
+function removeStoredFilter(idFilter, nameFilter) {
+  var action=function() {
+  	loadContent("../tool/removeFilter.php?idFilter="+idFilter, "listStoredFilters", "dialogFilterForm", false);;
+  };
+  showConfirm(i18n("confirmRemoveFilter",new Array(nameFilter)),action);
 }

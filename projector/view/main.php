@@ -88,8 +88,7 @@
   <div class="container" dojoType="dijit.layout.BorderContainer">    
     <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top" >
      <!-- Menu -->
-    </div>
-    
+    </div>    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
       <div class="container" dojoType="dijit.layout.BorderContainer" >
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
@@ -102,9 +101,9 @@
             if (array_key_exists('screenWidth',$_SESSION)) {
               $width = $_SESSION['screenWidth'] * 0.2;
             }
-            $zoom=round($width/300,2);  
+            $zoom=round($width/300*100, 0);  
           ?>
-          <div style="zoom:<?php echo $zoom;?>;" id="logoTitleDiv" onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
+          <div id="logoTitleDiv" onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center">
@@ -671,16 +670,21 @@
 
 
 <div id="dialogFilter" dojoType="dijit.Dialog" title="<?php echo i18n("dialogFilter");?>" style="top: 100px;">
-  <table>
+  <table style="border: 1px solid grey;">
     <tr>
-      <td> 
-        <div id='listFilterClauses' dojoType="dijit.layout.ContentPane" region="center"></div>
+     <td class="section"><?php echo i18n("sectionActiveFilter");?></td>
+    </tr>
+    <tr>
+      <td style="margin: 2px;"> 
+        <div id='listFilterClauses' dojoType="dijit.layout.ContentPane" region="center" style="overflow: hidden"></div>
          
         <form id='dialogFilterForm' name='dialogFilterForm' onSubmit="return false;">
          <input type="hidden" id="filterObjectClass" name="filterObjectClass" />
          <input type="hidden" id="filterClauseId" name="filterClauseId" />
          <input type="hidden" id="filterDataType" name="filterDataType" />
-         <table>
+         <input type="hidden" id="filterName" name="filterName" />
+         <table width="100%" style="border: 1px solid grey;">
+           <tr><td colspan="4" class="filterHeader"><?php echo i18n("addFilterClauseTitle");?></td></tr>
            <tr style="vertical-align: top;">
              <td class="white" style="width: 210px;" >
                <div dojoType="dojo.data.ItemFileReadStore" jsId="attributeStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
@@ -689,7 +693,7 @@
                 id="idFilterAttribute" name="idFilterAttribute" 
                 class="input" value="" style="width: 200px;" store="attributeStore">
                   <script type="dojo/method" event="onChange" >
-                    filterSelectItem(this.value);
+                    filterSelectAtribute(this.value);
                   </script>              
                </select>
              </td>
@@ -716,22 +720,35 @@
                  style="width:200px" /> 
              </td>
              <td style="width:25px; text-align: center;" align="center">
-               <img src="css/images/smallButtonAdd.png" onClick="addfilter();" title="<?php echo i18n('addFilterClause');?>" class="smallButton"/> 
+               <img src="css/images/smallButtonAdd.png" onClick="addfilterClause();" title="<?php echo i18n('addFilterClause');?>" class="smallButton"/> 
              </td>
            </tr>
-           <tr><td>&nbsp;</td></tr>
          </table>
         </form>
       </td>
     </tr>
     <tr>
       <td align="center">
+        <button dojoType="dijit.form.Button" onclick="clearFilter();">
+          <?php echo i18n("buttonClear");?>
+        </button>
         <button dojoType="dijit.form.Button" onclick="cancelFilter();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogFilterSubmit" onclick="selectFilter();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr><td>&nbsp;</td></tr>
+    <tr>
+     <td class="section"><?php echo i18n("sectionStoredFilters");?></td>
+    </tr>
+    <tr>
+      <td>
+        <div id='listStoredFilters' dojoType="dijit.layout.ContentPane" region="center"></div>
       </td>
     </tr>
   </table>

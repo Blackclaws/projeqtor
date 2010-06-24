@@ -12,7 +12,7 @@ scriptLog('   ->/view/planningList.php');
 
   
 <div dojoType="dijit.layout.BorderContainer">
-<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
+<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
 <table width="100%" height="27px" class="dojoxGridRowSelected" >
   <tr height="27px">
     <td width="50px" align="center">
@@ -64,7 +64,7 @@ scriptLog('   ->/view/planningList.php');
     </td>
   </tr>
 </table>
-<div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" >
+<div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" style="display: none">
 <?php include '../tool/jsonPlanning.php';?>
 </div>
 </div>

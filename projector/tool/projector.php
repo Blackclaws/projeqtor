@@ -480,11 +480,14 @@ function logTracing($message, $level=9) {
       default:
         break;
     }
-    //$handle = fopen($file, 'a');
-    //fwrite($handle, $msg);
-    //fwrite($handle, "\n");
-    //fclose($handle);
-    error_log ( $msg,3, $file);     
+    $dir=dirname($file);
+    if ( ! file_exists($dir) ) {
+      echo '<br/><span class="messageERROR">' . i18n("invalidLogDir",array($dir)) . '</span>';   
+    } else if ( ! is_writable($dir)) {
+      echo '<br/><span class="messageERROR">' . i18n("lockedLogDir",array($dir)) . '</span>';   
+    } else {
+      error_log ( $msg,3, $file);
+    }     
   }
 }
 

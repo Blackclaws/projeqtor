@@ -14,57 +14,68 @@ if (array_key_exists('objectType',$_REQUEST)) {
 $obj=new $objectClass;
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
+  onFetch="alert('OK');"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?>" >
 </div>
   
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
-<table width="100%" height="27px" class="dojoxGridRowSelected" >
-  <tr height="27px">
+<table width="100%" class="dojoxGridRowSelected" >
+  <tr >
     <td width="50px" align="center">
-      <span style="position:absolute; left:+5px; top: 0px"><img src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" /></span>
-      <span style="position:absolute; left:+10px; top: 5px"><img src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" /></span>
+      <img src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
     </td>
     <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
     <td>   
       <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
-        <table style="width: 100%;">
+        <table style="width: 100%; height: 27px;">
           <tr>
-            <td>
+            <td style="text-align:right;">
               <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
               <input type="hidden" id="objectId" name="objectId" value="" />
               &nbsp;&nbsp;
-              <?php echo i18n("colId");?> 
+              <?php echo i18n("colId");?>
+              &nbsp; 
+            </td>
+              <td>
               <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
                   filterJsonList() ;
                 </script>
               </div>
+            </td>
               <?php if ( property_exists($obj,'name')) { ?>
+              <td style="text-align:right;">
                 &nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colName");?>
+                &nbsp;
+              </td>
+              <td>
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
                 id="listNameFilter" name="listNameFilter">
                   <script type="dojo/method" event="onKeyUp" >
                   filterJsonList() ;
                 </script>
                 </div>
-              <?php }?>
-              &nbsp;&nbsp;&nbsp;
-              <?php if ( property_exists($obj,'id' . $objectClass . 'Type') ) { 
-                echo i18n("colType");
-              ?>
+              </td>
+              <?php }?>              
+              <?php if ( property_exists($obj,'id' . $objectClass . 'Type') ) { ?>
+              <td style="vertical-align: middle; text-align:right;">
+                 &nbsp;&nbsp;&nbsp;
+                <?php echo i18n("colType");?>
+                &nbsp;
+              </td>
+              <td>
                 <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField" dojoType="dijit.form.FilteringSelect" 
-                id="listTypeFilter" name="listTypeFilter">
+                id="listTypeFilter" name="listTypeFilter" style="height: 14px;">
                   <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshJsonList('<?php echo $objectClass;?>');
                   </script>
                 </select>
-              <?php }?>
-              &nbsp;&nbsp;&nbsp;
-              <?php echo i18n("colFilter");?>
+              </td>
+              <?php }?>              
               <?php $activeFilter=false;
                  if (is_array($_SESSION['user']->_arrayFilters)) {
                    if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
@@ -74,12 +85,14 @@ $obj=new $objectClass;
                    }
                  }
                  ?>
-              <button title="<?php echo i18n('advancedFilter')?>" style="width:10px" class="filterField" 
+              <td>
+              <button title="<?php echo i18n('advancedFilter')?>"  
+              class="filterField" 
                dojoType="dijit.form.Button" 
                id="listFilterFilter" name="listFilterFilter"
                iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter16" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
-                  showFilter();
+                  showFilterDialog();
                 </script>
               </button>
               <span id="gridRowCountShadow1" class="gridRowCountShadow1"></span>
@@ -87,8 +100,11 @@ $obj=new $objectClass;
               <span id="gridRowCount" class="gridRowCount"></span>             
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
-            <td style="width: 200px;text-align: right; align: right;">
-              <?php echo i18n("labelShowIdle");?>
+            <td ></td>
+            <td style="width: 200px;text-align: right; vertical-align: center;">
+              <?php echo i18n("labelShowIdle");?>&nbsp;
+            </td>
+              <td>
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">
                 <script type="dojo/method" event="onChange" >
                   refreshJsonList('<?php echo $objectClass;?>');
@@ -130,6 +146,9 @@ $obj=new $objectClass;
     if (checkFormChangeInProgress(actionYes, actionNo)) {
       return true;
     }
+  </script>
+  <script type="dojo/connect" event="_onFetchComplete" args="items, req">
+     refreshGridCount();
   </script>
 </table>
 </div>

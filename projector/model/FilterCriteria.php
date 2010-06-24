@@ -8,12 +8,12 @@ class FilterCriteria extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $idFilter;
-  public $refType;
-  public $attribute;
-  public $operator;
-  public $minValue;
-  public $maxValue;
-  public $sqlCriteria;
+  public $dispAttribute;
+  public $dispOperator;
+  public $dispValue;
+  public $sqlAttribute;
+  public $sqlOperator;
+  public $sqlValue;
   
    /** ==========================================================================
    * Constructor

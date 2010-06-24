@@ -7,6 +7,7 @@
  */
 
 require_once "../tool/projector.php";
+traceLog("backupFilter.php");
 
 $user=$_SESSION['user'];
 
@@ -23,10 +24,18 @@ $clean=false;
 if (array_key_exists('clean',$_REQUEST)) {
   $clean=true;
 }
+$valid=false;
+if (array_key_exists('valid',$_REQUEST)) {
+  $valid=true;
+}
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+$name="";
+if (array_key_exists('filterName',$_REQUEST)) {
+  $name=$_REQUEST['filterName'];
+}
 
 $filterName='stockFilter' . $filterObjectClass;
 if ($cancel) {
@@ -40,12 +49,12 @@ if ($cancel) {
     }
   }
 } 
-if ($clean or $cancel) {
+if ($clean or $cancel or $valid) {
    if (array_key_exists($filterName,$_SESSION)) {
      unset($_SESSION[$filterName]);
    }
 }
-if ( ! $clean and ! $cancel) {
+if ( ! $clean and ! $cancel and !$valid) {
   if (array_key_exists($filterObjectClass,$user->_arrayFilters)) {
     $_SESSION[$filterName]= $user->_arrayFilters[$filterObjectClass];
   } else {
@@ -53,4 +62,8 @@ if ( ! $clean and ! $cancel) {
   }
 }
 
+if ($valid or $cancel) {
+  $user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
+  $_SESSION['user']=$user;
+}
 ?>

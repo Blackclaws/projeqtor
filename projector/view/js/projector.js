@@ -6,6 +6,7 @@
 //=============================================================================
 //= Variables (global)
 //=============================================================================
+
 var i18nMessages=null;                 // array containing i18n messages
 var currentLocale=null;                // the locale, from browser or user set
 var browserLocale=null;                // the locale, from browser
@@ -85,11 +86,16 @@ function filterJsonList() {
   }
 	refreshGridCount();
 }
-function refreshGridCount() {
+function refreshGridCount(repeat) {
 	var grid = dijit.byId("objectGrid");
+	if (grid.rowCount==0 && ! repeat) {
+	  //dojo.byId('gridRowCount').innerHTML="?";
+		setTimeout("refreshGridCount(1);",100);
+	} else {
 	dojo.byId('gridRowCount').innerHTML=grid.rowCount;
 	dojo.byId('gridRowCountShadow1').innerHTML=grid.rowCount;
 	dojo.byId('gridRowCountShadow2').innerHTML=grid.rowCount;
+	}
 }
 
 /** ============================================================================
@@ -295,14 +301,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     			checkLogin();
 	      } else if (destination=="passwordResultDiv") {
       		checkLogin();
-      	} else if (page.indexOf("planningList.php")>=0 || page.indexOf("jsonPlanning.php")>=0) {
-      		drawGantt();
+	      } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
+   			    || page.indexOf("jsonPlanning.php")>=0) {  		      		
+	      	drawGantt();
       		hideWait();
       	} else {
-      		var grid = dijit.byId("objectGrid");  
-    	  	if (grid) {
-    	  		refreshGridCount();
-    	  	}
 	        hideWait();
       	}
       },
@@ -345,15 +348,10 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
    		    		} else if (destination=="passwordResultDiv") {
   	        		checkLogin();
    		      	} else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
-   		      			    || page.indexOf("jsonPlanning.php")>=0) {
-   		      		
+   		      			    || page.indexOf("jsonPlanning.php")>=0) {  		      		
    		      		drawGantt();
    		      		hideWait();
   	        	} else {
-  	        		var grid = dijit.byId("objectGrid");  
-  	      	  	if (grid) {
-  	      	  		refreshGridCount();
-  	      	  	}
       	        hideWait();
   	        	}
   		    	}
@@ -868,6 +866,10 @@ function disconnect() {
 	}
 }
 
+/**
+ * Disconnect (kill current session)
+ * @return
+ */
 function quit() {
     dojo.xhrPost({
   	  url: "../tool/saveDataToSession.php?id=disconnect",
@@ -875,6 +877,10 @@ function quit() {
     });
 }
 
+/**
+ * Before quitting, check for updates
+ * @return
+ */
 function beforequit() {
 	if (formChangeInProgress) {
     return (i18n("alertQuitOngoingChange"));
@@ -1016,8 +1022,7 @@ function dayDiffDates(paramStartDate, paramEndDate) {
   return duration;
 }
 
-/*
-/*
+/**
  * Return the day of the week like php function : date("N",$valDate)
  * Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6, Sunday=7 (not 0 !)
  */
@@ -1026,6 +1031,7 @@ function getDay(valDate) {
 	day=(day==0)?7:day;
 	return day;
 }
+
 /** ============================================================================
  * Calculate new date after adding some days
  * @param $ate start date 
@@ -1067,6 +1073,10 @@ function addWorkDaysToDate(paramDate, paramDays) {
 	return endDate;
 }
 
+/**
+ * Check "all" checkboxes on workflow definition
+ * @return
+ */
 function workflowSelectAll(line, column, profileList) {
 	workflowChange();
 	var reg=new RegExp("[ ]+", "g");
@@ -1091,6 +1101,10 @@ function workflowSelectAll(line, column, profileList) {
 	}
 }
 
+/**
+ * Flag a change on workflow definition
+ * @return
+ */
 function workflowChange() {
 	var change=dojo.byId('workflowUpdate');
 	change.value=new Date();

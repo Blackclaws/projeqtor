@@ -48,6 +48,11 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+$name="";
+if (array_key_exists('filterName',$_REQUEST)) {
+  $name=$_REQUEST['filterName'];
+}
+trim($name);
 
 // Get existing filter info
 if (array_key_exists($filterObjectClass,$user->_arrayFilters)) {
@@ -105,8 +110,9 @@ if ($idFilterAttribute and $idFilterOperator) {
   $user->_arrayFilters[$filterObjectClass]=$filterArray;
 }
 
-htmlDisplayFilterCriteria($filterArray);
+$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
 
+htmlDisplayFilterCriteria($filterArray,$name); 
 
 // save user (for filter saving)
 $_SESSION['user']=$user;

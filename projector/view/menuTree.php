@@ -123,7 +123,10 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
 
 <div class="container" dojoType="dijit.layout.BorderContainer" >
   <div dojoType="dijit.layout.ContentPane" region="top" style="height: 30px; overflow: hidden;">
-    <div style="height: 30px; " dojoType="dijit.form.DropDownButton" 
+    <table><tr>
+    <td class="titleProject"><?php echo (i18n("projectSelector"));?></td>
+    <td>
+    <span style="height: 30px; " dojoType="dijit.form.DropDownButton" 
      id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true">
       <span width="200px"><?php
         $proj='*'; 
@@ -138,7 +141,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
         };
         ?>
       </span>
-      <div dojoType="dijit.TooltipDialog" class="white">
+      <span dojoType="dijit.TooltipDialog" class="white">
         <table><tr><td>
          <?php 
            $prj=new Project();
@@ -146,8 +149,9 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
            echo $prj->drawSubProjects('selectedProject', false, true, true); 
          ?>
         </td></tr></table>
-      </div>
-    </div>
+      </span>
+    </span>
+    </td></tr></table>
   </div>
   <div dojoType="dijit.layout.ContentPane" region="center" >
     <div dojoType="dijit.Tree" id="menuTree" jsId="menuTree" model="menuModel"

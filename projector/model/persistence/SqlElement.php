@@ -40,6 +40,7 @@ abstract class SqlElement {
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Risk"=>"control", 
                                   "Ticket"=>"control"),
+    "Filter" =>             array("FilterCriteria"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),

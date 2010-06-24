@@ -34,6 +34,8 @@
     var fadeLoading=<?php echo $paramFadeLoadingMode;?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
+      saveResolutionToSession();
+      saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
       dojo.byId('login').focus();
       <?php 
@@ -41,8 +43,6 @@
         echo "dojo.byId('body').className='" . $_SESSION['theme'] . "';";
       }
       ?>
-      //saveResolutionToSession();
-      //saveBrowserLocaleToSession();
       var changePassword=false;
       hideWait();
     }); 

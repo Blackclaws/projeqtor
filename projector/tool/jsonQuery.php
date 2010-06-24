@@ -188,7 +188,7 @@
         echo '}';       
       }
     }
-     echo '],';
-    //echo ' "numberOfRow":"' . $nbRows . '"' ;
+     echo ']';
+    //echo ', "numberOfRow":"' . $nbRows . '"' ;
     echo ' }';
 ?>

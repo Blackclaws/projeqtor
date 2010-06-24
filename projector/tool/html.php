@@ -3,6 +3,7 @@
  * Html specific functions
  */
 require_once "../tool/projector.php";
+
 /** ===========================================================================
  * Draw the options list for a select  
  * @param $col the name of the field, as idXxx. The table ref is then xxx.
@@ -235,7 +236,6 @@ function htmlFormatDate($val) {
   }
 }
 
-
 /** ============================================================================
  * Transform string to be displays in html, pedending on context 
  * @param $context Printing context : 
@@ -254,6 +254,11 @@ function htmlEncode($val,$context="default") {
   //return nl2br(htmlentities($val,ENT_QUOTES,'UTF-8'));
 }
 
+/**
+ * Remove all caracters that may lead to error on Json file rendering
+ * @param $val
+ * @return unknown_type
+ */
 function htmlEncodeJson($val, $numericLength=0) {
   $val = str_replace('"',"",$val);
   $val = str_replace("'","",$val);
@@ -336,6 +341,12 @@ function htmlGetFileSize($fileSize) {
   }
 }
 
+/**
+ * Extract argument from condition
+ * @param $tag String to extract from
+ * @param $arg 
+ * @return String
+ */
 function htmlExtractArgument($tag, $arg) {
   $sp=explode($arg . '=', $tag);
   $fld=null;
@@ -347,31 +358,86 @@ function htmlExtractArgument($tag, $arg) {
   return $fld;
 }
 
-function htmlDisplayFilterCriteria($filterArray) {
+/**
+ * Display a, Array of filter criteria
+ * @param $filterArray Array
+ * @return Void
+ */
+function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   // Display Result
-  echo "<table>";
+  echo "<table width='100%'>";
+  echo "<tr><td class='white'>";
+  echo '<label for="filterNameDisplay" >' . i18n("filterName") . '&nbsp;:&nbsp;</label>';
+  echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
+  echo ' name="filterNameDisplay" id="filterNameDisplay"';
+  echo '  style="width: 374px;" ';
+  echo ' trim="true" maxlength="100" class="input" ';
+  echo ' value="' . htmlEncode($filterName) . '" ';
+  echo ' >';
+  echo '</td><td>';
+  echo '<button title="' . i18n('saveFilter') . '" ';  
+  echo ' dojoType="dijit.form.Button" '; 
+  echo ' id="dialogFilterSave" name="dialogFilterSave" ';
+  echo ' iconClass="dijitEditorIcon dijitEditorIconSave" showLabel="false"> ';
+  echo ' <script type="dojo/connect" event="onClick" args="evt">saveFilter();</script>';
+  echo '</button>';
+  echo "</td></tr>";
   echo "<tr>";
   echo "<td class='filterHeader' style='width:525px;'>" . i18n("criteria") . "</td>";
   echo "<td class='filterHeader' style='width:25px;'>";
-  echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilter(\'all\');" title="' . i18n('removeAllFilters') . '" class="smallButton"/> ';
+  echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilterClause(\'all\');" title="' . i18n('removeAllFilters') . '" class="smallButton"/> ';
   echo "</td>";
   echo "</tr>";
-  foreach ($filterArray as $id=>$filter) {
-    echo "<tr>";
-    echo "<td class='filterData'>" . 
-         $filter['disp']['attribute'] . " " .
-         $filter['disp']['operator'] . " " .
-         $filter['disp']['value'] .
-         "</td>";
-    echo "<td class='filterData' style='text-align: center;'>";
-    echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilter(' . $id . ');" title="' . i18n('removeFilter') . '" class="smallButton"/> ';
-    echo "</td>";
-    echo "</tr>";
+  if (count($filterArray)>0) { 
+    foreach ($filterArray as $id=>$filter) {
+      echo "<tr>";
+      echo "<td class='filterData'>" . 
+           $filter['disp']['attribute'] . " " .
+           $filter['disp']['operator'] . " " .
+           $filter['disp']['value'] .
+           "</td>";
+      echo "<td class='filterData' style='text-align: center;'>";
+      echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilterClause(' . $id . ');" title="' . i18n('removeFilter') . '" class="smallButton"/> ';
+      echo "</td>";
+      echo "</tr>";
+    }
+  } else {
+    echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noFilterClause") . "</i></td></tr>";
   }
-  echo "<tr><td>&nbsp;</td></tr>";
   echo "</table>";
   echo '<input id="nbFilterCirteria" name="nbFilterCirteria" type="hidden" value="' . count($filterArray) . '" />';
 }
 
+/**
+ * Display a, Array of filter criteria
+ * @param $filterArray Array
+ * @return Void
+ */
+function htmlDisplayStoredFilter($filterArray) {
+  // Display Result
+  echo "<table width='100%'>";
+  echo "<tr>";
+  echo "<td class='filterHeader' style='width:525px;'>" . i18n("storedFilters") . "</td>";
+  echo "<td class='filterHeader' style='width:25px;'>";
+  echo "</td>";
+  echo "</tr>";
+  if (count($filterArray)>0) { 
+    foreach ($filterArray as $filter) {
+      echo "<tr>";
+      echo '<td style="cursor: pointer;" class="filterData" onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" '
+           . ' title="' . i18n("selectStoredFilter") . '" >' . 
+           $filter->name .
+           "</td>";
+      echo "<td class='filterData' style='text-align: center;'>";
+      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncodeJson($filter->name) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
+      echo "</td>";
+      echo "</tr>";
+    }
+  } else {
+    echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noStoredFilter") . "</i></td></tr>";
+  }
+  echo "</table>";
+
+}
 
 ?>
