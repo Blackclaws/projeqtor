@@ -31,14 +31,21 @@ for ($i=1; $i<=$nbLines; $i++) {
     for ($j=1; $j<$nbDays; $j++) {
       $workId=$_REQUEST['workId_' . $i . '_' . $j];
       $workValue=$_REQUEST['workValue_' . $i . '_' . $j];
-      $arrayWork[$j]=new Work($workId);
+      $workDate=$_REQUEST['day_' . $j];
+      if ($workId) {
+        $work=new Work($workId);
+      } else {
+        $crit=array('idAssignment'=>$line->idAssignment,
+                    'workDate'=>$workDate);
+        $work=SqlElement::getSingleSqlElementFromCriteria('Work', $crit);
+      } 
+      $arrayWork[$j]=$work;
       $arrayWork[$j]->work=$workValue;
       $arrayWork[$j]->idResource=$userId;
       $arrayWork[$j]->idProject=$_REQUEST['idProject_' . $i];;
       $arrayWork[$j]->refType=$line->refType;
       $arrayWork[$j]->refId=$line->refId;
-      $arrayWork[$j]->idAssignment=$line->idAssignment;
-      $workDate=$_REQUEST['day_' . $j];
+      $arrayWork[$j]->idAssignment=$line->idAssignment;     
       $arrayWork[$j]->setDates($workDate);
     }
     $line->arrayWork=$arrayWork;

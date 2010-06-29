@@ -620,16 +620,8 @@ function drawHistoryFromObjects($refresh=false) {
       $oldValue=$hist->oldValue;
       $newValue=$hist->newValue;
       if ($dataType=='int' and $dataLength==1) { // boolean
-        $checkImg="checkedKO.png";
-        if ($oldValue!='0' and ! $oldValue==null) { 
-          $checkImg= 'checkedOK.png';
-        } 
-        $oldValue = '<img src="img/' . $checkImg . '" />';
-        $checkImg="checkedKO.png";
-        if ($newValue!='0' and ! $newValue==null) { 
-          $checkImg= 'checkedOK.png';
-        } 
-        $newValue = '<img src="img/' . $checkImg . '" />';
+        $oldValue=htmlDisplayCheckbox($oldValue);
+        $newValue=htmlDisplayCheckbox($newValue);
       } else if (substr($colName,0,2)=='id' and strlen($colName)>2
                  and strtoupper(substr($colName,2,1))==substr($colName,2,1)) {
         if ($oldValue!=null and $oldValue!='') {
@@ -638,6 +630,9 @@ function drawHistoryFromObjects($refresh=false) {
         if ($newValue!=null and $newValue!='') {
           $newValue=SqlList::getNameFromId(substr($colName,2),$newValue);
         }
+      } else if ($colName=="color") {
+        $oldValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$oldValue);
+        $newValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$newValue);
       } else {
         $oldValue=htmlEncode($oldValue,'print');
         $newValue=htmlEncode($newValue,'print');

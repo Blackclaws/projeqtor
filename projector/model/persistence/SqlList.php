@@ -68,11 +68,15 @@ class SqlList {
   }
  
   public static function getNameFromId($listType, $id) {
+    return self::getFieldFromId($listType, $id, 'name');
+  }
+  
+  public static function getFieldFromId($listType, $id, $field) {
     if ($id==null or $id=='') {
       return '';
     }
     $name=$id;
-    $list=self::getList($listType);
+    $list=self::getList($listType,$field);
     if (array_key_exists($id,$list)) {
       $name=$list[$id];
       $obj=new $listType();

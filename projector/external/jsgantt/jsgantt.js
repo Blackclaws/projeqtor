@@ -1206,6 +1206,8 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
 	var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) + onejan.getDay()+1)/7) + '';
   var vDateStr = "";	
   switch(pFormatStr) {
+    case 'default':
+      return dojo.date.locale.format(pDate, {formatLength: "short", fullYear: true, selector: "date"});
     case 'mm/dd/yyyy':
       return( vMonthStr + '/' + vDayStr + '/' + vYear4Str );
     case 'dd/mm/yyyy':

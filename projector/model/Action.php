@@ -37,7 +37,7 @@ class Action extends SqlElement {
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="name" width="40%" >${name}</th>
     <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
-    <th field="actualDueDate" width="10%" >${actualDueDate}</th>
+    <th field="actualDueDate" width="10%" formatter="dateFormatter">${actualDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="10%" >${responsible}</th>
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>

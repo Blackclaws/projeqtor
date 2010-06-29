@@ -7,6 +7,11 @@
 //= global formating functions)
 //=============================================================================
 
+/**
+ * Format a JS date as YYYY-MM-DD 
+ * @param value the value 
+ * @return the formatted value 
+ */
 function formatDate(date) {
 	var month=date.getMonth()+1;
 	var year=date.getFullYear();
@@ -113,4 +118,32 @@ function percentFormatter(value) {
  */
 function numericFormatter(value) {
   return value.replace(/^0+/g,'');
+}
+
+/** ============================================================================
+ * Format date value (depends on locale)
+ * @param value the value 
+ * @return the formatted value 
+ */
+function dateFormatter(value) {
+  if (value.length==10) {
+  	vDate=dojo.date.locale.parse(value, {selector: "date", datePattern: "yyyy-MM-dd"});
+    return dojo.date.locale.format(vDate, {formatLength: "short", fullYear: true, selector: "date"});
+  } else {
+  	return value;
+  }
+}
+
+/** ============================================================================
+ * Format date & time value (depends on locale)
+ * @param value the value 
+ * @return the formatted value 
+ */
+function dateTimeFormatter(value) {
+  if (value.length==19) {
+  	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss"});
+    return dojo.date.locale.format(vDate, {formatLength: "short", fullYear: true});
+  } else {
+  	return value;
+  }
 }

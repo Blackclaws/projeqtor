@@ -86,6 +86,11 @@ function filterJsonList() {
   }
 	refreshGridCount();
 }
+
+/**
+ * Refresh de display of number of items in the grid
+ * @param repeat internal use only
+ */
 function refreshGridCount(repeat) {
 	var grid = dijit.byId("objectGrid");
 	if (grid.rowCount==0 && ! repeat) {
@@ -907,7 +912,7 @@ function drawGantt() {
   g.setShowStartDate(1);       					// Show/Hide Start Date(0/1)
   g.setShowEndDate(1);         					// Show/Hide End Date(0/1)
   g.setDateInputFormat('yyyy-mm-dd');   // Set format of input dates ('mm/dd/yyyy', 'dd/mm/yyyy', 'yyyy-mm-dd')
-  g.setDateDisplayFormat('yyyy-mm-dd'); // Set format to display dates ('mm/dd/yyyy', 'dd/mm/yyyy', 'yyyy-mm-dd')
+  g.setDateDisplayFormat('default'); // Set format to display dates ('mm/dd/yyyy', 'dd/mm/yyyy', 'yyyy-mm-dd')
   g.setFormatArr("day","week","month"); // Set format options (up to 4 : "minute","hour","day","week","month","quarter")
   g.setStartDateView(startDateView);
   var contentNode = dojo.byId('gridContainerDiv');
@@ -1045,6 +1050,7 @@ function addDaysToDate(paramDate, paramDays) {
 	endDate.setDate(date.getDate()+days);
 	return endDate;
 }
+
 /** ============================================================================
  * Calculate new date after adding some work days, subtracting week-ends
  * @param $ate start date 
@@ -1109,4 +1115,11 @@ function workflowChange() {
 	var change=dojo.byId('workflowUpdate');
 	change.value=new Date();
 	formChanged();
+}
+
+/**
+ * refresh Projects List on Today screen
+ */
+function refreshTodayProjectsList() {
+	loadContent("../view/today.php?refreshProjects=true", "todayProjectDiv", "todayProjectsForm", false);	
 }

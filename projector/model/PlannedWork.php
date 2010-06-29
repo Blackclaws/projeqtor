@@ -219,10 +219,12 @@ class PlannedWork extends Work {
               $interval=0;
             }
           }
-          while (1) {
+          while (1) {            
             // Set limits to avoid eternal loop
             if ($currentDate==$globalMaxDate) { break; }         
             if ($currentDate==$globalMinDate) { break; }
+            if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
+            
             if (isOpenDay($currentDate)) {
               $planned=0;
               $week=weekFormat($currentDate);
@@ -239,19 +241,14 @@ class PlannedWork extends Work {
                     $projectKey='Project#' . $idProject;
                     $plannedProj=0;
                     $rateProj=1;
-                    if (! array_key_exists($projKey,$ress)) {
-                      $ress[$projKey]=array();
-                    }                                        
                     if (array_key_exists($week,$ress[$projectKey])) {
                       $plannedProj=$ress[$projectKey][$week];
                     }
-                    if (array_key_exists('rate',$ress[$projectKey])) {
-                      $rateProj=$ress[$projectKey]['rate'] / 100;
-                    }
+                    $rateProj=$ress[$projectKey]['rate'] / 100;
                     $leftProj=round(5*$capacity*$rateProj,2)-$plannedProj; // capacity for a week
                     if ($value>$leftProj) {
                       $value=$leftProj;
-                    } 
+                    }
                   }
                 }
                 $value=($value>$left)?$left:$value;
@@ -294,7 +291,7 @@ class PlannedWork extends Work {
                 }
               }            
             }
-            if ($left<0.001) {
+            if ($left<0.01) {
               break;
             }
             $currentDate=addDaysToDate($currentDate,$step);

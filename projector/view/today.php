@@ -8,6 +8,13 @@
   
   $user=$_SESSION['user'];
   
+  if (array_key_exists('refreshProjects',$_REQUEST)) {
+    $_SESSION['todayCountIdle']=(array_key_exists('countIdle',$_REQUEST))?true:false;
+    $_SESSION['todayCountDone']=(array_key_exists('countDone',$_REQUEST))?true:false;
+    showProjects();
+    exit;
+  } 
+  
   function showMessages() {
     $user=$_SESSION['user'];
     $msg=new Message();
@@ -20,7 +27,7 @@
     if (count($listMsg)>0) {
       echo '<table align="center" style="width:95%">';
       foreach($listMsg as $msg) {
-        echo'<br />';
+        //echo'<br />';
         $type=new MessageType($msg->idMessageType);
         echo '<tr><td class="messageHeader" style="color:' . $type->color . ';">' . $msg->name . '</td></tr>';
         echo '<tr><td class="messageData" style="color:' . $type->color . ';">' . htmlEncode($msg->description, 'print') . '</td></tr>';
@@ -32,8 +39,30 @@
   function showProjects() {
     $user=$_SESSION['user'];
     $prjLst=$user->getVisibleProjects();
+    $showIdle=false;
+    $showDone=false;
+    if (array_key_exists('todayCountIdle',$_SESSION)) {
+      $showIdle=$_SESSION['todayCountIdle'];
+    }
+    if (array_key_exists('todayCountDone',$_SESSION)) {
+      $showDone=$_SESSION['todayCountDone'];
+    }
     if (count($prjLst)>0) {
-      echo '<br/>';
+      echo '<form id="todayProjectsForm" name="todayProjectsForm">';
+      echo '<table align="center" style="width:95%">';
+      echo '<tr><td align="right">';
+      echo i18n('countDone');
+      echo '&nbsp;<div title="' . i18n('countDone') . '" dojoType="dijit.form.CheckBox" type="checkbox" '
+       . 'id="countDone" name="countDone" ' . ($showDone?'checked="checked"':'') . '>';
+      echo ' <script type="dojo/connect" event="onChange" > refreshTodayProjectsList();</script>';
+      echo '</div>&nbsp;&nbsp;&nbsp;';
+      echo i18n('countIdle');
+      echo '&nbsp;<div title="' . i18n('countIdle') . '" dojoType="dijit.form.CheckBox" type="checkbox" '
+        . 'id="countIdle" name="countIdle" ' . ($showIdle?'checked="checked"':'') . '>';
+      echo ' <script type="dojo/connect" event="onChange" > refreshTodayProjectsList();</script>';
+      echo '</div>&nbsp;';      
+      echo '</td></tr>';
+      echo '</table></form>';
       echo '<table align="center" style="width:95%">';
       echo '<tr>' . 
            '  <td class="messageHeader">' . i18n('menuProject') . '</td>' . 
@@ -48,7 +77,9 @@
            '  <td class="messageHeader" width="5%">' . i18n('menuIssue') . '</td>' . 
            '</tr>';   
       foreach($prjLst as $id=>$name) {
-        $crit=array('idProject'=>$id, 'done'=>'0', 'idle'=>'0');
+        $crit=array('idProject'=>$id);
+        if ( ! $showIdle) {$crit['idle']='0';}
+        if ( ! $showDone and ! $showIdle) {$crit['done']='0';}
         $obj=new Action();
         $nbActions=count($obj->getSqlElementsFromCriteria($crit, false));
         $nbActions=($nbActions==0)?'':$nbActions;
@@ -84,7 +115,7 @@
         echo '<tr >' .
              '  <td class="messageData">' . $name . '</td>' .
              '  <td class="messageDataValue">' . $progress . '</td>' .
-             '  <td class="messageDataValue" NOWRAP>' . $endDate . '</td>' .
+             '  <td class="messageDataValue" NOWRAP>' . htmlFormatDate($endDate) . '</td>' .
              '  <td class="messageDataValue">' . $late . '</td>' .
              '  <td class="messageDataValue">' . $nbTickets . '</td>' .
              '  <td class="messageDataValue">' . $nbActivities . '</td>' .
@@ -97,13 +128,76 @@
       echo'</table>';
     }
   }
+
+  function showWork() {
+    echo '<table align="center" style="width:95%">';
+    echo '<tr>' . 
+           ' <td class="messageHeader" width="6%">' . ucfirst(i18n('colId')) . '</td>' .  
+           ' <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdProject')) . '</td>' . 
+           '  <td class="messageHeader" width="12%">' .  ucfirst(i18n('colType')) . '</td>' . 
+           '  <td class="messageHeader" width="40%">' . ucfirst(i18n('colName')) . '</td>' . 
+           '  <td class="messageHeader" width="8%">' . ucfirst(i18n('colDueDate')) . '</td>' . 
+           '  <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdStatus')) . '</td>' . 
+           '  <td class="messageHeader" width="5%" title="'. i18n('isIssuerOf') . '">' . ucfirst(i18n('colIssuerShort')) . '</td>' . 
+           '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
+           '</tr>';
+    $user=$_SESSION['user'];
+    $where="(idUser='" . $user->id . "' or idResource='" . $user->id . "') and idle=0 and done=0";
+    $order="";
+    $list=array();
+    $ticket=new Ticket();
+    $listTicket=$ticket->getSqlElementsFromCriteria(null, null, $where, $order);
+    $list=array_merge($list, $listTicket);
+    $activity= new Activity();
+    $listActivity=$activity->getSqlElementsFromCriteria(null, null, $where, $order);
+    $list=array_merge($list, $listActivity);
+    
+    foreach($list as $elt) {
+      $idType='id' . get_class($elt) . 'Type';
+      $echeance="";
+      $class=get_class($elt);
+      if ($class=='Ticket') {
+        $echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;
+        $echeance=substr($echeance, 0,10);
+      }
+      if ($class=='Activity' or $class=='Milestone') {
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$class,'refId'=>$elt->id));
+        $echeance=($pe->realEndDate)?$pe->realEndDate
+            :($pe->plannedEndDate)?$pe->plannedEndDate
+            :($pe->validatedEndDate)?$pe->validatedEndDate
+            :$pe->initialEndDate;
+          
+      }
+      
+      $statusColor=SqlList::getFieldFromId('Status', $elt->idStatus, 'color');
+      $status=SqlList::getNameFromId('Status',$elt->idStatus);
+      echo '<tr>' .
+             '  <td class="messageData">' . 
+                   '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" />' .
+                   '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
+             '  <td class="messageData">' . SqlList::getNameFromId('Project', $elt->idProject) . '</td>' .
+             '  <td class="messageData">' . SqlList::getNameFromId($class .'Type', $elt->$idType) . '</td>' .
+             '  <td class="messageData">' . $elt->name . '</td>' .
+             '  <td class="messageDataValue" NOWRAP>' . htmlFormatDate($echeance) . '</td>' .
+             '  <td class="messageData">' . htmlDisplayColored($status,$statusColor) . '</td>' .
+             '  <td class="messageDataValue">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' .
+             '  <td class="messageDataValue">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' .
+            '</tr>';
+      }
+      echo "</table>";
+  }  
 ?>      
 
-<div class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center"> 
-    <?php 
-      showMessages();
-      showProjects();
-    ?>
+<div  class="container" dojoType="dijit.layout.BorderContainer">
+  <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center"> 
+    <div id="todayMessageDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuMessage');?>">
+    <?php showMessages();?>
+    </div><br/>
+    <div id="todayProjectDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuProject');?>">
+    <?php showProjects();?>
+    </div><br/>
+    <div id="todayWorkDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuWork');?>">
+    <?php showWork();?>
+  </div><br/>
   </div>
 </div>

@@ -38,8 +38,8 @@ class Milestone extends SqlElement {
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameMilestoneType" width="10%" >${idMilestoneType}</th>
     <th field="name" width="40%" >${name}</th>
-    <th field="validatedEndDate" from="MilestonePlanningElement" width="10%" >${validatedDueDate}</th>
-    <th field="plannedEndDate" from="MilestonePlanningElement" width="10%" >${plannedDueDate}</th>
+    <th field="validatedEndDate" from="MilestonePlanningElement" width="10%" formatter="dateFormatter">${validatedDueDate}</th>
+    <th field="plannedEndDate" from="MilestonePlanningElement" width="10%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';

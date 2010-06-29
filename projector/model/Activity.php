@@ -40,8 +40,8 @@ class Activity extends SqlElement {
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameActivityType" width="10%" >${idActivityType}</th>
     <th field="name" width="25%" >${name}</th>
-    <th field="validatedEndDate" from="ActivityPlanningElement" width="10%" >${validatedDueDate}</th>
-    <th field="plannedEndDate" from="ActivityPlanningElement" width="10%" >${plannedDueDate}</th>
+    <th field="validatedEndDate" from="ActivityPlanningElement" width="10%" formatter="dateFormatter">${validatedDueDate}</th>
+    <th field="plannedEndDate" from="ActivityPlanningElement" width="10%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="10%" >${responsible}</th>
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>

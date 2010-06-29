@@ -38,8 +38,8 @@ class Project extends SqlElement {
     <th field="name" width="30%" >${projectName}</th>
     <th field="projectCode" width="15%" >${projectCode}</th>
     <th field="nameClient" width="15%" >${clientName}</th>
-    <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" >${validatedEnd}</th>
-    <th field="plannedEndDate" from="ProjectPlanningElement" width="10%" >${plannedEnd}</th>  
+    <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${validatedEnd}</th>
+    <th field="plannedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${plannedEnd}</th>  
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';

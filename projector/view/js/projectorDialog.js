@@ -616,7 +616,7 @@ function showFilterDialog () {
 	dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
 	filterType="";
 	dojo.xhrPost({url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value});
-	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	loadContent("../tool/displayFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 	loadContent("../tool/displayFilterList.php", "listStoredFilters", "dialogFilterForm", false);
 	dijit.byId('idFilterAttribute').store = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
 	dijit.byId("dialogFilter").show();

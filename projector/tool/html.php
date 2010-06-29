@@ -440,4 +440,27 @@ function htmlDisplayStoredFilter($filterArray) {
 
 }
 
+function htmlDisplayCheckbox ($value) {
+  $checkImg="checkedKO.png";
+  if ($value!='0' and ! $value==null) { 
+    $checkImg= 'checkedOK.png';
+  } 
+  return '<img src="img/' . $checkImg . '" />';
+}
+
+function htmlDisplayColored($value,$color) {
+  $result= "";
+  $foreColor='#000000';
+  if (strlen($color)==7) {
+    $red=base_convert(substr($color,1,2),16,10);
+    $green=base_convert(substr($color,3,2),16,10);
+    $blue=base_convert(substr($color,5,2),16,10);
+    $light=(0.3)*$red + (0.6)*$green + (0.1)*$blue;
+    if ($light<128) { $foreColor='#FFFFFF'; }
+  }
+  $result.= '<table><tr><td style="background-color:' . $color . '; color:' . $foreColor . ';">';
+  $result.= $value;
+  $result.= "</td></tr></table>";
+  return $result;
+}
 ?>
