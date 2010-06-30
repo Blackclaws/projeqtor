@@ -52,12 +52,12 @@ $paramRowPerPage='50';                          // Number of row per page on mai
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
 
 // === attachement
-$paramAttachementDirectory='D:\TEMP';          // Directory to store Attachements. Set to empty string to disable attachement
+$paramAttachementDirectory='D:\\TEMP';          // Directory to store Attachements. Set to empty string to disable attachement
 $paramAttachementMaxSize=1024*1024*2;           // Max file size for attachement = 1024 * 1024 * Mo
-$paramPathSeparator='/';                        // Path separator, depending on system
+$paramPathSeparator='\\';                        // Path separator, depending on system
 
 // === log management
-$logFile='D:\TEMP\projector_${date}.log';      // Log file name. May contain ${date} to get 1 file a day
+$logFile='D:\\TEMP\\projector_${date}.log';      // Log file name. May contain ${date} to get 1 file a day
 $logLevel=3;                                   // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
 
 ?>

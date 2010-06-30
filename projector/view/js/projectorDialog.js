@@ -372,11 +372,14 @@ function addAssignment () {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
-	}
+	}	
+	var prj=dijit.byId('idProject').attr('value');
+	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj});
 	dojo.byId("assignmentId").value="";
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
-	dijit.byId("assignmentIdResource").value=null;
+	dijit.byId("assignmentIdResource").attr('value',null);
 	dojo.byId("assignmentRate").value='100';
 	dojo.byId("assignmentAssignedWork").value='0';
 	dojo.byId("assignmentAssignedWorkInit").value='0';
@@ -384,6 +387,7 @@ function addAssignment () {
 	dojo.byId("assignmentLeftWork").value='0';
 	dojo.byId("assignmentLeftWorkInit").value='0';
 	dojo.byId("assignmentPlannedWork").value='0';
+	dojo.byId("assignmentComment").value='';
 	dijit.byId("dialogAssignment").attr('title',i18n("dialogAssignment"));
 	dijit.byId("assignmentIdResource").attr('disabled',false);
 	dijit.byId("dialogAssignment").show();
@@ -393,11 +397,15 @@ function addAssignment () {
  * Display a edit Assignment Box
  * 
  */
-function editAssignment (assignmentId, idResource, rate, assignedWork, realWork, leftWork) {
+function editAssignment (assignmentId, idResource, rate, assignedWork, realWork, leftWork, comment) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	var prj=dijit.byId('idProject').attr('value');
+	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj
+		       +'&selected=' + idResource});
 	dojo.byId("assignmentId").value=assignmentId;
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
@@ -407,6 +415,7 @@ function editAssignment (assignmentId, idResource, rate, assignedWork, realWork,
 	dojo.byId("assignmentAssignedWorkInit").value=dojo.number.parse(assignedWork);
 	dojo.byId("assignmentRealWork").value=realWork;
 	dojo.byId("assignmentLeftWork").value=leftWork;
+	dojo.byId("assignmentComment").value=comment;
 	dojo.byId("assignmentLeftWorkInit").value=dojo.number.parse(leftWork);
 	assignmentUpdatePlannedWork('assignment');
 	dijit.byId("dialogAssignment").attr('title',i18n("dialogAssignment") + " #" + assignmentId);
@@ -455,10 +464,23 @@ function assignmentUpdatePlannedWork(prefix) {
  * 
  */
 function saveAssignment() {
-	dijit.byId("assignmentPlannedWork").focus();
-	dijit.byId("assignmentLeftWork").focus();
-	loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');
-	dijit.byId('dialogAssignment').hide();
+	/*if (! dijit.byId('assignmentIdResource').attr('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colIdResource'))));
+		return;
+	}
+	if (! dijit.byId('assignmentIdResource').attr('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colIdResource'))));
+		return;
+	}	*/
+	var formVar = dijit.byId('assignmentForm');
+  if(formVar.validate()){		
+	  dijit.byId("assignmentPlannedWork").focus();
+	  dijit.byId("assignmentLeftWork").focus();
+	  loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');
+	  dijit.byId('dialogAssignment').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
 }
 
 /**

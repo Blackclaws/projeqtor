@@ -10,6 +10,8 @@
 
 ALTER TABLE `${prefix}action` ADD idPriority int(12) unsigned DEFAULT NULL;
 
+ALTER TABLE `${prefix}assignment` ADD comment varchar(4000);
+
 CREATE TABLE `${prefix}filter` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),

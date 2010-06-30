@@ -159,6 +159,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
   this.setWidth = function (pWidth) {vGanttWidth=pWidth;};
   this.setStartDateView = function (pStartDateView) { vStartDateView=pStartDateView; };
+  this.resetStartDateView = function () {
+    // Specific for Project'OrRIA Project
+  	if (dijit.byId('startDatePlanView')) {
+  		vStartDateView=dijit.byId('startDatePlanView').attr('value');
+  	}
+  };
   this.getShowRes  = function(){ return vShowRes };
   this.getShowDur  = function(){ return vShowDur };
   this.getShowComp = function(){ return vShowComp };
@@ -169,6 +175,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.getCaptionType = function() { return vCaptionType };
   this.getWidth = function() { return vGanttWidth; };
   this.getStartDateView = function() { return vStartDateView; };
+  this.getInitialStartDateView = function() { return vInitialStartDateView; };
   this.getFormat = function(){ return vFormat; };
   this.CalcTaskXY = function () { 
     var vList = this.getList();
@@ -1056,6 +1063,7 @@ JSGantt.findObj = function (theObj, theDoc) {
 */
 JSGantt.changeFormat =      function(pFormat,ganttObj) {
   if(ganttObj) {
+  	ganttObj.resetStartDateView();
 		ganttObj.setFormat(pFormat);
 		ganttObj.DrawDependencies();
   } else {

@@ -248,6 +248,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo "..."; // nothing
         } else if ($dataType=='date' and $val!=null and $val != '') {
           echo htmlFormatDate($val);
+        } else if ($dataType=='datetime' and $val!=null and $val != '') {
+          echo htmlFormatDateTime($val,false);
         } else if ($col=='color' and $dataLength == 7 ) { // color
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" type="text" readonly ';
@@ -584,7 +586,7 @@ function drawHistoryFromObjects($refresh=false) {
     $oper=i18n('operation' . ucfirst($hist->operation) );
     $user=$hist->idUser;
     $user=SqlList::getNameFromId('User',$user);
-    $date=$hist->operationDate;
+    $date=htmlFormatDateTime($hist->operationDate);
     $class="NewOperation";
     if ($stockDate==$hist->operationDate 
     and $stockUser==$hist->idUser
@@ -696,7 +698,7 @@ function drawNotesFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     echo '<td class="noteData">#' . $note->id  . '</td>';
-    echo '<td class="noteData">' . $creationDate . '<br/><i>' . $updateDate . '</i></td>';
+    echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
     echo '<td class="noteData">' . $userName . '</td>';
     echo '<td class="noteData">';
     echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
@@ -758,14 +760,19 @@ function drawAttachementsFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     echo '<td class="attachementData">#' . $attachement->id  . '</td>';
-    echo '<td class="attachementData">' . $creationDate . '<br/></td>';
+    echo '<td class="attachementData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
     echo '<td class="attachementData">' . $userName . '</td>';
     echo '<td class="attachementData">' . htmlGetMimeType($attachement->mimeType) . '</td>';
     echo '<td class="attachementData">' . htmlGetFileSize($attachement->fileSize) . '</td>';
-    echo '<td class="attachementData" >';
-    echo ' <div title="' . $attachement->description . '">';
+    echo '<td class="attachementData" title="' . $attachement->description . '">';
+    echo '<table><tr >';
+    echo ' <td>';
     echo htmlEncode($attachement->fileName,'print'); 
-    echo ' </div>';
+    echo ' </td>';
+    if ($attachement->description) {
+      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+    }
+    echo '</tr></table>';
     echo '</td>';
     echo '</tr>';
   }
@@ -926,7 +933,8 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         . ",'" . $assignment->rate . "'"
         . ",'" . $fmt->format($assignment->assignedWork) . "'"
         . ",'" . $fmt->format($assignment->realWork) . "'"
-        . ",'" . $fmt->format($assignment->leftWork) . "'"    
+        . ",'" . $fmt->format($assignment->leftWork) . "'"
+        . ",'" . htmlEncodeJson($assignment->comment) . "'"    
         . ');" ' 
         . 'title="' . i18n('editAssignment') . '" class="smallButton"/> ';      
       }
@@ -939,7 +947,14 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="assignData">' . SqlList::getNameFromId('Resource', $assignment->idResource) . '</td>';
+    echo '<td class="assignData" title="' . htmlEncodeJson($assignment->comment) . '">'; 
+    echo '<table><tr>';
+    echo '<td>' . SqlList::getNameFromId('Resource', $assignment->idResource) . '</td>';
+    if ($assignment->comment) {
+     echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+    }
+    echo '</tr></table>';
+    echo '</td>';
     echo '<td class="assignData" align="center">' . $assignment->rate  . '</td>';
     echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
     echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';

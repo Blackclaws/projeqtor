@@ -67,13 +67,15 @@ function refreshImputationPeriod() {
 		showAlert(i18n('alertOngoingChange'));
 		return false;
 	}
-	var year=dijit.byId('yearSpinner').value;
-	var week=dijit.byId('weekSpinner').value + '';
+	var year=dijit.byId('yearSpinner').attr('value');
+	var week=dijit.byId('weekSpinner').attr('value') + '';
 	if (week.length==1) {
 		week='0' + week;
 	}
 	dojo.byId('rangeValue').value='' + year + week;
-	refreshImputationList();
+	if ((year+'').length==4) {
+		refreshImputationList();
+	}
 	return true;
 }
 

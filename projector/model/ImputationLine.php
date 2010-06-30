@@ -12,6 +12,7 @@ class ImputationLine {
   public $idProject;
   public $idAssignment;
   public $name;
+  public $comment;
   public $wbs;
   public $wbsSortable;
   public $topId;
@@ -83,6 +84,7 @@ class ImputationLine {
       $elt=new ImputationLine();
       $elt->refType=$ass->refType;
       $elt->refId=$ass->refId;
+      $elt->comment=$ass->comment;
       $elt->idProject=$ass->idProject;
       $elt->idAssignment=$ass->id;
       $elt->assignedWork=$ass->assignedWork;
@@ -280,21 +282,26 @@ class ImputationLine {
         . ' value="' . $line->idProject . '"/>';
       echo '<img src="css/images/icon' . $line->refType . '16.png" />';
       echo '</td>';
-      echo '<td class="ganttName" >';
+      echo '<td class="ganttName" title="' . htmlEncodeJson($line->comment) . '">';
       // tab the name depending on level
-      echo '<span>';
+      echo '<table><tr><td>';
       $max=(strlen($line->wbsSortable)+1)/4;
       for($j=1; $j < $max; $j++) {
-        echo '&nbsp&nbsp&nbsp&nbsp';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;';
       }
-      echo '</span>';
+      echo '</td>';
       if ($rowType=="group") {
-        echo '<SPAN id="group_' . $nbLine . '" class="ganttExpandOpened"';
+        echo '<td><span id="group_' . $nbLine . '" class="ganttExpandOpened"';
         echo 'onclick="workOpenCloseLine(' . $nbLine . ')">'; 
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</SPAN>' ;
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
       }
-      //echo $line->wbs . ' '. $line->name . '</td>'; // for testeing purpose, add wbs code
-      echo $line->name . '</td>'; 
+      //echo $line->wbs . ' '. $line->name . '</td>'; // for testing purpose, add wbs code
+      echo '<td>' . $line->name . '</td>';
+      if ($line->comment) {
+        echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+      }
+      echo '</tr></table>';
+      echo '</td>'; 
       echo '<td class="ganttDetail" align="center">' . $line->startDate . '</td>';
       echo '<td class="ganttDetail" align="center">' . $line->endDate . '</td>';
       echo '<td class="ganttDetail" align="center">';

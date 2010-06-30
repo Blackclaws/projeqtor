@@ -3,9 +3,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projector.php"; 
-    
     $type=$_REQUEST['listType'];
-
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
     echo ' "items":[';
@@ -58,6 +56,32 @@
       $nbRows=0;
       // return result in json format
       foreach ($list as $id=>$name) {
+        if ($nbRows>0) echo ', ';
+        echo '{id:"' . $id . '", name:"'. $name . '"}';
+        $nbRows+=1;
+      }
+    } else if ($type=='listResourceProject') {
+      $obj=$_SESSION['currentObject'];
+      $idPrj=$_REQUEST['idProject'];
+      $prj=new Project($obj->idProject);
+      $lstTopPrj=$prj->getTopProjectList(true);
+      $in=transformValueListIntoInClause($lstTopPrj);
+      $where="idProject in " . $in; 
+      $aff=new Affectation();
+      $list=$aff->getSqlElementsFromCriteria(null,null, $where);
+      $nbRows=0;
+      $lstRes=array();
+      if (array_key_exists('selected', $_REQUEST)) {
+        $lstRes[$_REQUEST['selected']]=SqlList::getNameFromId('Resource', $_REQUEST['selected']);
+      }
+      foreach ($list as $aff) {
+        if (! array_key_exists($aff->idResource, $lstRes)) {
+          $lstRes[$aff->idResource]=SqlList::getNameFromId('Resource', $aff->idResource);
+        }
+      }
+      asort($lstRes);
+      // return result in json format
+      foreach ($lstRes as $id=>$name) {
         if ($nbRows>0) echo ', ';
         echo '{id:"' . $id . '", name:"'. $name . '"}';
         $nbRows+=1;

@@ -29,7 +29,6 @@ if (is_file("../tool/parametersLocation.php")) {
 } else {
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
-//scriptLog('=>' . $_SERVER['REQUEST_URI']); // FOR TRACING PURPOSE
 
 date_default_timezone_set($paramDefaultTimezone);
 
@@ -626,7 +625,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
 /** ============================================================================
  * Transfor a list, as an array, into an 'IN' clause
  * @param $list an array, with the id to select as index
- * @return the IN clause, as ('xx', 'yy, ... )
+ * @return the IN clause, as ('xx', 'yy', ... )
  */
 function transformListIntoInClause($list) {
   if (count($list)==0) return '(0)';
@@ -634,6 +633,17 @@ function transformListIntoInClause($list) {
   foreach ($list as $id=>$name) {
     $result .= ($result=='(')?'':', ';
     $result .= $id;
+  }
+  $result .= ')'; 
+  return $result;
+}
+
+function transformValueListIntoInClause($list) {
+  if (count($list)==0) return '(0)';
+  $result='(' ;
+  foreach ($list as $id=>$name) {
+    $result .= ($result=='(')?'':', ';
+    $result .= "'" . $name . "'";
   }
   $result .= ')'; 
   return $result;

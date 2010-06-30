@@ -27,12 +27,10 @@ if (! array_key_exists('assignmentRefId',$_REQUEST)) {
 $refId=$_REQUEST['assignmentRefId'];
 
 $idResource=null;
-if (! $assignmentId) {
-  if (! array_key_exists('assignmentIdResource',$_REQUEST)) {
-    throwError('assignmentIdResource parameter not found in REQUEST');
-  }
+if (array_key_exists('assignmentIdResource',$_REQUEST)) {
   $idResource=$_REQUEST['assignmentIdResource'];
 }
+
 
 if (! array_key_exists('assignmentRate',$_REQUEST)) {
   throwError('assignmentRate parameter not found in REQUEST');
@@ -58,26 +56,30 @@ if (! array_key_exists('assignmentPlannedWork',$_REQUEST)) {
   throwError('assignmentPlannedWork parameter not found in REQUEST');
 }
 $plannedWork=$_REQUEST['assignmentPlannedWork'];
- 
+if (! array_key_exists('assignmentComment',$_REQUEST)) {
+  throwError('assignmentComment parameter not found in REQUEST');
+}
+$comment=$_REQUEST['assignmentComment'];
+
 // get the modifications (from request)
 $assignment=new assignment($assignmentId);
 
 $assignment->refId=$refId;
 $assignment->refType=$refType;
-if (! $assignmentId) {
+if (! $realWork && $idResource) {
   $assignment->idResource=$idResource;
 }
 $assignment->rate=$rate;
 $assignment->assignedWork=$assignedWork;
-$assignment->realWork=$realWork;
+//$assignment->realWork=$realWork;
 $assignment->leftWork=$leftWork;
 $assignment->plannedWork=$plannedWork;
+$assignment->comment=htmlEncodeJson($comment);
 
 if (! $assignment->idProject) {
   $refObj=new $refType($refId);
   $assignment->idProject=$refObj->idProject;
 }
-
 
 $result=$assignment->save();
 

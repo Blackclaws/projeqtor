@@ -415,6 +415,7 @@ abstract class SqlElement {
         $depObj->refId=$this->id;
         $depObj->refType=get_class($this);
         $ret=$depObj->save();
+debugLog("instanceof SqlElement :" . get_class($depObj));
         if (stripos($ret,'id="lastOperationStatus" value="ERROR"')) {
           $returnStatusDep="ERROR";
         } else if (stripos($ret,'id="lastOperationStatus" value="OK"')) {
@@ -531,15 +532,72 @@ abstract class SqlElement {
    * @return the new object
    */
   private function copySqlElement() {
-traceLog("copySqlElement()");
     $newObj=clone $this;
     $newObj->id=null;
+    if (property_exists($newObj,"wbs")) {
+      $newObj->wbs=null;
+    }
+    if (property_exists($newObj,"topId")) {
+      $newObj->topId=null;
+    }
+    if (property_exists($newObj,"idStatus")) {
+      $list=SqlList::getList('Status');
+      $revert=array_keys($list);
+      $newObj->idStatus=$revert[0];
+    }
+    if (property_exists($newObj,"idUser")) {
+      $newObj->idUser=$_SESSION['user']->id;
+    }
+    if (property_exists($newObj,"creationDate")) {
+      $newObj->creationDate=date('Y-m-d');
+    }
+    if (property_exists($newObj,"creationDateTime")) {
+      $newObj->creationDateTime=date('Y-m-d G:i');
+    }
+    if (property_exists($newObj,"done")) {
+      $newObj->done=0;
+    }
+    if (property_exists($newObj,"idle")) {
+      $newObj->idle=0;
+    }
+    if (property_exists($newObj,"idleDate")) {
+      $newObj->idleDate=0;
+    }
+      if (property_exists($newObj,"doneDate")) {
+      $newObj->doneDate=0;
+    }
+      if (property_exists($newObj,"idleDateTime")) {
+      $newObj->idleDateTime=0;
+    }
+      if (property_exists($newObj,"doneDateTime")) {
+      $newObj->doneDateTime=0;
+    }
     foreach($newObj as $col_name => $col_value) {
       if (ucfirst($col_name) == $col_name) {
         // if property is an object, delete it
         if ($newObj->$col_name instanceof SqlElement) {
           $newObj->$col_name->id=null;
-        }
+          if (property_exists($newObj->$col_name,"wbs")) {
+            $newObj->$col_name->wbs=null;
+          }
+          if (property_exists($newObj->$col_name,"topId")) {
+            $newObj->$col_name->topId=null;
+          }
+          if ($newObj->$col_name instanceof PlanningElement) {
+            $newObj->$col_name->plannedStartDate="";
+            $newObj->$col_name->realStartDate="";
+            $newObj->$col_name->plannedEndDate="";
+            $newObj->$col_name->realEndDate="";
+            $newObj->$col_name->plannedDuration="";
+            $newObj->$col_name->realDuration="";
+            $newObj->$col_name->assignedWork="";
+            $newObj->$col_name->plannedWork="";
+            $newObj->$col_name->leftWork="";
+            $newObj->$col_name->realWork="";
+            $newObj->$col_name->idle=0;
+            $newObj->$col_name->done=0;
+          }
+        }       
       } 
     }
     $result=$newObj->saveSqlElement();

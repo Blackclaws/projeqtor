@@ -238,6 +238,7 @@ class Project extends SqlElement {
     return $list;
   }
 
+  
   public function getTopProjectList($includeSelf=false) {
     if ($includeSelf) {
       return array_merge(array($this->id),$this->getTopProjectList(false));
@@ -378,7 +379,8 @@ class Project extends SqlElement {
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
-    }if ($result=="") {
+    }
+    if ($result=="") {
       $result='OK';
     }
     return $result;

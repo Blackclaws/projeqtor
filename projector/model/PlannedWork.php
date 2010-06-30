@@ -93,12 +93,7 @@ class PlannedWork extends Work {
     
     // build in list to get a where clause : "idProject in ( ... )" 
     $proj=new Project($projectId);
-    $inClause="idProject in ('" . $proj->id . "'";
-    $listProj=$proj->getRecursiveSubProjectsFlatList(true);
-    foreach ($listProj as $id=>$name) {
-      $inClause.=", '" . $id . "'"; 
-    }
-    $inClause.=")";
+    $inClause=transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true));
     
     // Purge existing planned work
     $plan=new PlannedWork();

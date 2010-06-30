@@ -13,7 +13,6 @@ require_once "../tool/projector.php";
  * @return void
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false) {
-//scriptLog('htmlDrawOptionForReference($col="' . $col . '", $selection="' . $selection . '", $obj="?", $required="' . $required . '")');  
   $listType=substr($col,2);
   $table=SqlList::getList($listType,'name',$selection);
   $restrictArray=array();
@@ -236,6 +235,26 @@ function htmlFormatDate($val) {
   }
 }
 
+/**
+ * Format a dateTime, depending on currentLocale
+ * @param $val
+ * @return unknown_type
+ */
+function htmlFormatDateTime($val, $withSecond=true) {
+  global $currentLocale;
+  if (strlen($val)!=19) {
+    return $val;
+  }
+  if (substr($currentLocale,0,2)=='fr') {
+    return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4) 
+      . " " . (($withSecond)?substr($val,11):substr($val,11,5));
+  } else if (substr($currentLocale,0,2)=='en') {
+    return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4) 
+      . " " . (($withSecond)?substr($val,11):substr($val,11,5));
+  } else {
+    return $val;
+  }
+}
 /** ============================================================================
  * Transform string to be displays in html, pedending on context 
  * @param $context Printing context : 

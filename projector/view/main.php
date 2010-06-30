@@ -458,7 +458,7 @@
   <table>
     <tr>
       <td>
-       <form id='assignmentForm' name='assignmentForm' onSubmit="return false;">
+       <form dojoType="dijit.form.Form" id='assignmentForm' jsid='assignmentForm' name='assignmentForm' onSubmit="return false;">
          <input id="assignmentId" name="assignmentId" type="hidden" value="" />
          <input id="assignmentRefType" name="assignmentRefType" type="hidden" value="" />
          <input id="assignmentRefId" name="assignmentRefId" type="hidden" value="" />
@@ -468,9 +468,11 @@
                <label for="assignmentIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
+               <div dojoType="dojo.data.ItemFileReadStore" jsId="resourceStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
+               </div>
               <select dojoType="dijit.form.FilteringSelect" 
                 id="assignmentIdResource" name="assignmentIdResource"
-                class="input" value="" >
+                class="input" value="" store="resourceStore">
                  <?php htmlDrawOptionForReference('idResource', null, null, true);?>
                </select>  
              </td>
@@ -535,6 +537,17 @@
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px" readonly /> 
+             </td>
+           </tr>
+           <tr>
+             <td class="white" >
+               <label for="assignmentComment" ><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="assignmentComment" name="assignmentComment" value=""  
+                 dojoType="dijit.form.Textarea"
+                 class="input" 
+                 /> 
              </td>
            </tr>
          </table>

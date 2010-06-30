@@ -10,6 +10,7 @@ class Assignment extends SqlElement {
   public $refType;
   public $refId;
   public $idResource;
+  public $comment;
   public $assignedWork;
   public $realWork;
   public $leftWork;
@@ -106,5 +107,25 @@ class Assignment extends SqlElement {
     $this->save();
   }
 
+/** =========================================================================
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message 
+   *  must be redefined in the inherited class
+   */
+  public function control(){
+    $result="";
+    if (! $this->idResource) {
+      $result.='<br/>' . i18n('messageMandatory', array(i18n('colIdResource')));
+    } 
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
 }
 ?>
