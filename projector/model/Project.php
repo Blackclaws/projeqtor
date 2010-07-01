@@ -219,9 +219,12 @@ class Project extends SqlElement {
    * @return an array containing the list of subprojects as id=>name
    * 
    */
-  public function getRecursiveSubProjectsFlatList($limitToActiveProjects=false) {
+  public function getRecursiveSubProjectsFlatList($limitToActiveProjects=false, $includeSelf=false) {
     $tab=$this->getRecursiveSubProjects($limitToActiveProjects);
     $list=array();
+    if ($includeSelf) {
+      $list[$this->id]=$this->name;
+    }
     if ($tab) {
       foreach($tab as $subTab) {
         $id=$subTab['id'];

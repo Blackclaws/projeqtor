@@ -302,8 +302,8 @@ class ImputationLine {
       }
       echo '</tr></table>';
       echo '</td>'; 
-      echo '<td class="ganttDetail" align="center">' . $line->startDate . '</td>';
-      echo '<td class="ganttDetail" align="center">' . $line->endDate . '</td>';
+      echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->startDate) . '</td>';
+      echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->endDate) . '</td>';
       echo '<td class="ganttDetail" align="center">';
       if ($line->imputable) {
         echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';

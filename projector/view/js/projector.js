@@ -251,7 +251,7 @@ function cleanContent(destination) {
  *        result of some treatment, calling finalizeMessageDisplay 
  * @return void
  */
-function loadContent(page, destination, formName, isResultMessage, validationType) {
+function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
 	// Test validity of destination : must be a node and a widget
 	var contentNode = dojo.byId(destination);
 	var contentWidget = dijit.byId(destination);
@@ -339,6 +339,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           var contentNode = dojo.byId(destination);
           if (destination=="detailDiv" || destination=="centerDiv" ) {
           	finaliseButtonDisplay();
+          }
+          if (directAccess) {
+          	if (dijit.byId('listIdFilter')) {
+          		dijit.byId('listIdFilter').attr('value',directAccess);
+          		setTimeout("filterJsonList();",100);
+          		dojo.byId('objectId').value=directAccess;
+          		loadContent("objectDetail.php", "detailDiv", 'listForm');
+          	}
           }
           // fade in the destination, to set is visible back
   		    dojo.fadeIn({
@@ -1122,4 +1130,10 @@ function workflowChange() {
  */
 function refreshTodayProjectsList() {
 	loadContent("../view/today.php?refreshProjects=true", "todayProjectDiv", "todayProjectsForm", false);	
+}
+
+function gotoElement(eltClass, eltId) {
+  cleanContent("detailDiv");
+  formChangeInProgress=false;
+  loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
 }

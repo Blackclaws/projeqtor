@@ -14,10 +14,4 @@ $value=$_REQUEST['value'];
 
 $_SESSION[$id]=$value;
 
-//if ($id=='project') {
-//  $prj=new Project($value);
-//  $subProjectList=$prj->getRecursiveSubProjectsFlatList(true);
-//  $_SESSION['subProjectsList']=$subProjectList;
-//}
-
 ?>

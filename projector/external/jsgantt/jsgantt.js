@@ -1237,7 +1237,11 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
     case 'week-short':
       return ( vYear2Str + ' #'  + vWeekNum  );
     case 'week-firstday':
-      return ( vMonthStr + '-'  + vDayStr );
+    	if (dojo.locale.substring(0,2)=="fr") {
+        return (  vDayStr + '/' + vMonthStr );
+    	} else {
+    		return ( vMonthStr + '/'  + vDayStr );
+    	}
     case 'year-long':
       return ( vYear4Str + '');
     case 'month-long':

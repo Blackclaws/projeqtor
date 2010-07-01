@@ -103,9 +103,6 @@
         if ($prj->name!=null and $prj->name!='') {
             $_SESSION['project']=$obj->parameterValue;
         }
-        //$prj=new Project($obj->parameterValue);
-        //$subProjectList=$prj->getRecursiveSubProjectsFlatList(true);
-        //$_SESSION['subProjectsList']=$subProjectList;
       } else {
         $_SESSION[$obj->parameterCode]=$obj->parameterValue;
       }

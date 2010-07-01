@@ -32,19 +32,31 @@ abstract class SqlElement {
     "AccessScopeUpdate" =>  array("AccessProfile"=>"control"),
     "AccessScopeDelete" =>  array("AccessProfile"=>"control"),
     "Assignment" =>         array("Work"=>"control"),
+    "Action" =>             array("Note"=>"cascade",
+                                  "Link"=>"cascade"),
     "ActionType" =>         array("Action"=>"control"),
     "Activity" =>           array("Milestone"=>"control", 
                                   "Activity"=>"control", 
-                                  "Ticket"=>"control"),
+                                  "Ticket"=>"control",
+                                  "Assignment"=>"control",
+                                  "Note"=>"cascade",
+                                  "Attachement"=>"cascade",
+                                  "Dependency"=>"cascade"),
     "ActivityType" =>       array("Activity"=>"control"),
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Risk"=>"control", 
                                   "Ticket"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
+    "Issue" =>              array("Attachement"=>"cascade",
+                                  "Note"=>"cascade",
+                                  "Link"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
+    "Milestone" =>          array("Attachement"=>"cascade",
+                                  "Note"=>"cascade",
+                                  "Dependency"=>"cascade"),
     "MilestoneType" =>      array("Milestone"=>"control"),
     "Priority" =>           array("Issue"=>"control", 
                                   "Ticket"=>"control"),
@@ -63,7 +75,8 @@ abstract class SqlElement {
                                   "Project"=>"control", 
                                   "Risk"=>"control", 
                                   "Ticket"=>"control",
-                                  "Work"=>"control"),
+                                  "Work"=>"control",
+                                  "Dependency"=>"cascade"),
     "Resource" =>           array("Action"=>"control", 
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
@@ -73,6 +86,9 @@ abstract class SqlElement {
                                   "Risk"=>"control", 
                                   "Ticket"=>"control",
                                   "Work"=>"control"),
+    "Risk" =>               array("Attachement"=>"cascade",
+                                  "Note"=>"cascade",
+                                  "Link"=>"cascade"),
     "RiskType" =>           array("Risk"=>"control"),
     "Severity" =>           array("Risk"=>"control"),
     "Status" =>             array("Action"=>"control", 
@@ -82,6 +98,8 @@ abstract class SqlElement {
                                   "Risk"=>"control", 
                                   "Ticket"=>"control"),
     "Team" =>               array("Resource"=>"control"),
+    "Ticket" =>             array("Attachement"=>"cascade",
+                                  "Note"=>"cascade"),
     "TicketType" =>         array("Ticket"=>"control"),
     "Urgency" =>            array("Ticket"=>"control"),
     "User" =>               array("Action"=>"control", 
@@ -415,7 +433,6 @@ abstract class SqlElement {
         $depObj->refId=$this->id;
         $depObj->refType=get_class($this);
         $ret=$depObj->save();
-debugLog("instanceof SqlElement :" . get_class($depObj));
         if (stripos($ret,'id="lastOperationStatus" value="ERROR"')) {
           $returnStatusDep="ERROR";
         } else if (stripos($ret,'id="lastOperationStatus" value="OK"')) {
@@ -459,16 +476,32 @@ debugLog("instanceof SqlElement :" . get_class($depObj));
         }
       } 
     }
-    // check relartionship : if "cascade, then auto delete
+    // check relartionship : if "cascade", then auto delete
     $relationShip=self::$_relationShip;
     if (array_key_exists(get_class($this),$relationShip)) {
       $relations=$relationShip[get_class($this)];
       foreach ($relations as $object=>$mode) {
-        $crit=array('id' . get_class($this) => $this->id);
-        $obj=new $object();
-        $list=$obj->getSqlElementsFromCriteria($crit,false);
-        foreach ($list as $subObj) {
-          $subObj->delete();
+        if ($mode=="cascade") {      
+                  $where=null;
+          $crit=array('id' . get_class($this) => $this->id);
+          if ($object=="Assignment" or $object=="Note" or $object=="Attachement") {
+            $crit=array("refType"=>get_class($this), "refId"=>$this->id);
+          }
+          if ($object=="Dependency") {
+            $crit=null;
+            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId='" . $this->id ."')"
+             . " or (successorRefType='" . get_class($this) . "' and successorRefId='" . $this->id ."')"; 
+          }
+          if ($object=="Link") {
+            $crit=null;
+            $where="(ref1Type='" . get_class($this) . "' and ref1Id='" . $this->id ."')"
+             . " or (ref2Type='" . get_class($this) . "' and ref2Id='" . $this->id ."')"; 
+          }
+          $obj=new $object();
+          $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
+          foreach ($list as $subObj) {
+            $subObj->delete();
+          }
         }
       }
     }
@@ -1218,9 +1251,23 @@ debugLog("instanceof SqlElement :" . get_class($depObj));
       $relations=$relationShip[get_class($this)];
       foreach ($relations as $object=>$mode) {
         if ($mode=="control") {
+          $where=null;
           $crit=array('id' . get_class($this) => $this->id);
+          if ($object=="Assignment" or $object=="Note" or $object=="Attachement") {
+            $crit=array("refType"=>get_class($this), "refId"=>$this->id);
+          }
+          if ($object=="Dependency") {
+            $crit=null;
+            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId='" . $this->id ."')"
+             . " or (successorRefType='" . get_class($this) . "' and successorRefId='" . $this->id ."')"; 
+          }
+          if ($object=="Link") {
+            $crit=null;
+            $where="(ref1Type='" . get_class($this) . "' and ref1Id='" . $this->id ."')"
+             . " or (ref2Type='" . get_class($this) . "' and ref2Id='" . $this->id ."')"; 
+          }
           $obj=new $object();
-          $list=$obj->getSqlElementsFromCriteria($crit,false);
+          $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           $nb=count($list);
           if ($nb>0) {
             $objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";

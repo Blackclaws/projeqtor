@@ -21,7 +21,8 @@
     $where="idle=0";
     $where.=" and (idUser is null or idUser='" . $user->id . "')";
     $where.=" and (idProfile is null or idProfile='" . $user->idProfile . "')";
-    //  transformListIntoInClause($user->getVisibleProjects());
+    $where.=" and (idProject in " . transformListIntoInClause($prjLst=$user->getVisibleProjects()) . ")";
+    
     $sort="id desc";
     $listMsg=$msg->getSqlElementsFromCriteria(null,false,$where,$sort);
     if (count($listMsg)>0) {
@@ -142,16 +143,35 @@
            '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
            '</tr>';
     $user=$_SESSION['user'];
-    $where="(idUser='" . $user->id . "' or idResource='" . $user->id . "') and idle=0 and done=0";
+    $where="(idUser='" . $user->id . "'" . 
+       " or idResource='" . $user->id . "'" .
+       ") and idle=0 and done=0";
+    $whereActivity="(idUser='" . $user->id . "'" . 
+       " or idResource='" . $user->id . "'" .
+       " or exists (select 'x' from assignment x " . 
+                   "where x.refType='Activity' and x.refId=activity.id and x.idResource='" . $user->id . "')" .
+       ") and idle=0 and done=0";
     $order="";
     $list=array();
     $ticket=new Ticket();
     $listTicket=$ticket->getSqlElementsFromCriteria(null, null, $where, $order);
     $list=array_merge($list, $listTicket);
     $activity= new Activity();
-    $listActivity=$activity->getSqlElementsFromCriteria(null, null, $where, $order);
+    $listActivity=$activity->getSqlElementsFromCriteria(null, null, $whereActivity, $order);
     $list=array_merge($list, $listActivity);
-    
+    $milestone= new Milestone();
+    $listMilestone=$milestone->getSqlElementsFromCriteria(null, null, $where, $order);
+    $list=array_merge($list, $listMilestone);
+    $risk= new Risk();
+    $listRisk=$risk->getSqlElementsFromCriteria(null, null, $where, $order);
+    $list=array_merge($list, $listRisk);
+    $action= new Action();
+    $listAction=$action->getSqlElementsFromCriteria(null, null, $where, $order);
+    $list=array_merge($list, $listAction);   
+    $issue= new Issue();
+    $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order);
+    $list=array_merge($list, $listIssue);   
+         
     foreach($list as $elt) {
       $idType='id' . get_class($elt) . 'Type';
       $echeance="";
@@ -159,21 +179,24 @@
       if ($class=='Ticket') {
         $echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;
         $echeance=substr($echeance, 0,10);
-      }
-      if ($class=='Activity' or $class=='Milestone') {
+      } else if ($class=='Activity' or $class=='Milestone') {
         $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$class,'refId'=>$elt->id));
         $echeance=($pe->realEndDate)?$pe->realEndDate
             :($pe->plannedEndDate)?$pe->plannedEndDate
             :($pe->validatedEndDate)?$pe->validatedEndDate
             :$pe->initialEndDate;
           
-      }
-      
+      } else if ($class=="Risk" or $class=="Issue") {
+        $echeance=($elt->actualEndDate)?$elt->actualEndDate:$elt->initialEndDate;
+      } else if ($class=="Action" ) {
+        $echeance=($elt->actualDueDate)?$elt->actualDueDate:$elt->initialDueDate;
+      } 
+
       $statusColor=SqlList::getFieldFromId('Status', $elt->idStatus, 'color');
       $status=SqlList::getNameFromId('Status',$elt->idStatus);
-      echo '<tr>' .
+      echo '<tr onClick="gotoElement(' . "'" . $class . "','" . $elt->id . "'" . ');" style="cursor: pointer;">' .
              '  <td class="messageData">' . 
-                   '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" />' .
+                   '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" title="' . i18n($class). '"/>' .
                    '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
              '  <td class="messageData">' . SqlList::getNameFromId('Project', $elt->idProject) . '</td>' .
              '  <td class="messageData">' . SqlList::getNameFromId($class .'Type', $elt->$idType) . '</td>' .

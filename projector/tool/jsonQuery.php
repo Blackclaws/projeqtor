@@ -37,8 +37,11 @@
     if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
         if ($_SESSION['project']!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
-          $queryWhere.=  '(' . $table . ".idProject in " . getVisibleProjectsList() ;
-          $queryWhere.= ' or ' . $table . '.id in ' . getVisibleProjectsList() . ')';
+          if ($objectClass=='Project') {
+            $queryWhere.=  $table . '.id in ' . getVisibleProjectsList() ;
+          } else {
+            $queryWhere.= $table . ".idProject in " . getVisibleProjectsList() ;
+          }
         }
     }
     if ($accessRightRead=='NO') {
@@ -162,7 +165,7 @@
                    . $crit['sql']['value'];
       }
     }
-//echo $queryWhere . '<br/>';   
+//debugLog( $queryWhere);   
     
     // constitute query and execute
     $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
