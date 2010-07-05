@@ -27,6 +27,10 @@ if (is_file("../tool/parametersLocation.php")) {
   }
   include_once $parametersLocation;
 } else {
+  if (is_file("../tool/config.php")) {
+    include_once "../tool/config.php";
+    exit;
+  } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
 
@@ -40,7 +44,7 @@ setupLocale();                // Set up the locale : must be called before any c
 setupIconSize();              // 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
 // === Application data : version, dependencies, about message, ...
-$applicationName="ProjectOr"; // Name of the application
+$applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
 $version="V1.0.0";            // Version of application : Major / Minor / Release
 $build="0016";                // Build number. To be increased on each release

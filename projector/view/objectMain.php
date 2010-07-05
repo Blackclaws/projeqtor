@@ -6,7 +6,7 @@
   scriptLog('   ->/view/objectMain.php');  
 ?>
 
-<div class="container" dojoType="dijit.layout.BorderContainer">
+<div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer">
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true">
    <?php include 'objectList.php'?>
   </div>

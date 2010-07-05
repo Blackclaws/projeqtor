@@ -463,25 +463,32 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	          +' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
 	      }
 				vLeftTable += 
-	        '  <TD class="ganttName"><img src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
-	        '  <TD class="ganttName" nowrap><NOBR><span>';
-	      // tab the name depending on level
-				for(j=1; j<vTaskList[i].getLevel(); j++) {
-	        vLeftTable += '&nbsp&nbsp&nbsp&nbsp';
-	      }
-	      vLeftTable += '</span>';
+	        '  <TD class="ganttName"><img style="width:16px" src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
+	        '  <TD class="ganttName" nowrap><NOBR>';
+				vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
+				// tab the name depending on level
+				var levl=vTaskList[i].getLevel();
+				var levlWidth = (levl-1) * 16;
+				vLeftTable += '<div style="float: left;width:' + levlWidth + 'px;">&nbsp;'
+				//for(j=1; j<levl; j++) {
+	      //  vLeftTable += '&nbsp&nbsp&nbsp&nbsp';
+	      //  vLeftTable += '_';
+	      //}
+	      vLeftTable += '</div>';
 	      if( vTaskList[i].getGroup()) {
 	        if( vTaskList[i].getOpen() == 1) {
 	          vLeftTable += '<SPAN id="group_' + vID + '" class="ganttExpandOpened"' 
+	          + 'style="width:' + levlWidth + ';"'
 	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
-	          +'&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</SPAN>' ;
+	          +'&nbsp;&nbsp;&nbsp;&nbsp;</span>' ;
 	        } else {
 	          vLeftTable += '<SPAN id="group_' + vID + '" class="ganttExpandClosed"' 
+	          + 'style="width:' + levlWidth + ';"'
 	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
-	          +'&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</SPAN>' ;
+	          +'&nbsp;&nbsp;&nbsp;&nbsp;</span>' ;
 	        } 
 	      } else {
-	        vLeftTable += '<span style="color: #000000;">&nbsp;</span>';
+	      	vLeftTable += '<div style="float: left;width:16px;">&nbsp;</div>';
 	      }
 	      vLeftTable += 
 	        '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
@@ -489,7 +496,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        // BABYNUS : change in taskLink parameters
 			  if(vShowRes ==1) {
 			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 
-	          +'<NOBR>' + vTaskList[i].getResource() + '</NOBR></TD>' ;
+	          +'<NOBR>' + vTaskList[i].getResource() + '</NOBR>';
+			  vLeftTable +='</div>';
+			  vLeftTable +='</TD>' ;
 			  }
 			  if(vShowDur ==1) { 
 			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR>' + vTaskList[i].getDuration(vFormat) + '</NOBR></TD>' ;

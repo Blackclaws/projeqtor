@@ -76,7 +76,7 @@ function filterJsonList() {
 		filter = {};
 		filter.id='*'; // delfault
 		if (filterId.value && filterId.value!='') {
-			filter.id = '*'+filterId.value+'*';
+			filter.id = '*' + filterId.value + '*';
 		}
 		if (filterName.value && filterName.value!='') {
 			filter.name = '*' + filterName.value + '*';
@@ -289,6 +289,17 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       	if (destination=="detailDiv" || destination=="centerDiv") {
       		finaliseButtonDisplay();
         }
+        if (directAccess) {
+        	if (dijit.byId('listIdFilter')) {
+        		//dijit.byId('listIdFilter').attr('value',directAccess);
+        		//setTimeout("filterJsonList();",100);
+        		dojo.byId('objectId').value=directAccess;
+        		//dijit.byId("listDiv").domNode.style.height="100px";
+        		dijit.byId("listDiv").resize({h: 0});
+        		dijit.byId("mainDivContainer").resize();
+        		loadContent("objectDetail.php", "detailDiv", 'listForm');
+        	}
+        }
     		if (isResultMessage) {
       		var contentNode = dojo.byId(destination);
       		// Set the Div visible, needed if destination is result message (invisible before needed)
@@ -342,9 +353,12 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           }
           if (directAccess) {
           	if (dijit.byId('listIdFilter')) {
-          		dijit.byId('listIdFilter').attr('value',directAccess);
-          		setTimeout("filterJsonList();",100);
+          		//dijit.byId('listIdFilter').attr('value',directAccess);
+          		//setTimeout("filterJsonList();",100);
           		dojo.byId('objectId').value=directAccess;
+          		//dijit.byId("listDiv").domNode.style.height="100px";
+          		dijit.byId("listDiv").resize({h: 0});
+          		dijit.byId("mainDivContainer").resize();
           		loadContent("objectDetail.php", "detailDiv", 'listForm');
           	}
           }
