@@ -1,2 +1,2 @@
 <?php 
-$parametersLocation = "C:\projectorria\parameters.php";?> 
+$parametersLocation = "..\parameters.php";?> 
