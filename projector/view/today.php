@@ -143,13 +143,15 @@
            '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
            '</tr>';
     $user=$_SESSION['user'];
+    $ass=new Assignment();
+    $act=new Activity();
     $where="(idUser='" . $user->id . "'" . 
        " or idResource='" . $user->id . "'" .
        ") and idle=0 and done=0";
     $whereActivity="(idUser='" . $user->id . "'" . 
        " or idResource='" . $user->id . "'" .
-       " or exists (select 'x' from assignment x " . 
-                   "where x.refType='Activity' and x.refId=activity.id and x.idResource='" . $user->id . "')" .
+       " or exists (select 'x' from " . $ass->getDatabaseTableName() . " x " . 
+                   "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . $user->id . "')" .
        ") and idle=0 and done=0";
     $order="";
     $list=array();

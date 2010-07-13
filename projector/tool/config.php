@@ -47,7 +47,7 @@ $ctrls['DbDisplayName'] = '';
 
 $param['DbPrefix'] = '';                              
 $label['DbPrefix'] = "Database prefix for table names";
-$value['DbPrefix'] = "prefix on table names, used to store several instances under same schema, may be left blank";
+$value['DbPrefix'] = "used to store several instances under same schema, leave blank or end it with '_'";
 $pname['DbPrefix'] = 'paramDbPrefix';
 $ctrls['DbPrefix'] = '';
 
