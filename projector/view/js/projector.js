@@ -1151,3 +1151,8 @@ function gotoElement(eltClass, eltId) {
   formChangeInProgress=false;
   loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
 }
+
+function runReport() {
+	var fileName=dojo.byId('reportFile').value;
+	loadContent("../report/"+ fileName , "detailReportDiv", "reportForm", false);	
+}

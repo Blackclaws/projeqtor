@@ -853,3 +853,29 @@ function removeStoredFilter(idFilter, nameFilter) {
   };
   showConfirm(i18n("confirmRemoveFilter",new Array(nameFilter)),action);
 }
+
+//=============================================================================
+//= Reports
+//=============================================================================
+
+function reportSelectCategory(idCateg) {
+	loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv", null, false);
+	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});
+	var mySelect=dojo.byId("reportsList");
+	mySelect.options.length=0;
+	var nbVal=0;
+	tmpStore.fetch({
+  	query : {id : "*"},
+  	onItem : function(item) {
+  		mySelect.options[mySelect.length] = new Option(tmpStore.getValue(item,"name",""),tmpStore.getValue(item,"id",""));
+  		nbVal++;
+  	},  
+    onError : function(err) { 
+      console.info(err.message) ;  
+    }
+  });
+}
+
+function reportSelectReport(idReport) {
+	loadContent("../view/reportsParameters.php?idReport="+idReport, "reportParametersDiv", null, false);
+}

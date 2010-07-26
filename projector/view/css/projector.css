@@ -351,6 +351,52 @@ label, .label {
 .workflowHeader {
   font-size: 90%;
 }
+.reportHeader {
+  border: 0px solid #AAAAAA;
+  text-align: center;
+  font-weight: bold;
+  background: #DDDDDD;
+}
+.reportTableHeader {
+  border: 1px solid #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 3px 5px 3px 5px;
+  background: #AAAAAA;
+  color: #FFFFFF;
+}
+.reportTableColumnHeader {
+  border: 1px solid #AAAAAA;
+  text-align: center;
+  padding: 1px 3px 1px 3px;
+  background: #DDDDDD;
+}
+.reportTableLineHeader {
+  border: 1px solid #AAAAAA;
+  padding: 0px 3px 0px 3px;
+  background: #DDDDDD;
+}
+.reportTableData {
+  border: 1px solid #AAAAAA;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: normal;
+  padding: 0px 1px 0px 1px;
+  background: #FFFFFF;
+}
+.reportTableDataFull {
+  border: 1px solid #AAAAAA;
+  text-align: left;
+  vertival-align: middle;
+  font-weight: normal;
+  padding: 0px 0px 0px 0px;
+  background: #FFFFFF;
+  width: 20px; height: 20px;
+}
+.reportTableDataCenter{
+  text-align: center;
+}
+
 
 .historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
 .dependencyData, .workflowData, .filterData {
@@ -436,7 +482,10 @@ label, .label {
   color: #000000; 
   left: 9px; top: 5px;
 }
-          
+
+.legend {
+ padding: 0px 0px 0px 5px; 
+}
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */

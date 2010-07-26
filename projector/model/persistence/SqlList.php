@@ -30,6 +30,9 @@ class SqlList {
     }
   }
 
+   public static function getListWithCrit($listType, $crit, $displayCol='name', $selectedValue=null) {
+     return self::fetchListWithCrit($listType, $crit, $displayCol, $selectedValue);
+   }
   /** ==========================================================================
    * Private method to get fetch the list from database and store it in a static array
    * for further needs
@@ -48,9 +51,11 @@ class SqlList {
     if ($selectedValue) {
       $query .= " or " . $obj->getDatabaseColumnName('id') . "='" . $selectedValue . "'";
     }
-    if (isset($obj->sortOrder)) {
+    if (property_exists($obj,'sortOrder')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';
-    } else {
+    } else if (property_exists($obj,'order')) {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
+    } else{
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $displayCol;
     }
     $result=Sql::query($query);
@@ -67,6 +72,39 @@ class SqlList {
     return $res;
   }
  
+  private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue) {
+    $res=array();
+    $obj=new $listType();
+    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (idle=0 ";
+    $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
+    foreach ($crit as $col => $val) {
+      $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+    }
+    $query .=')';
+    if ($selectedValue) {
+      $query .= " or " . $obj->getDatabaseColumnName('id') . "='" . $selectedValue . "'";
+    }
+    if (property_exists($obj,'sortOrder')) {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';
+    } else if (property_exists($obj,'order')) {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
+    } else{
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $displayCol;
+    }
+    $result=Sql::query($query);
+    if (Sql::$lastQueryNbRows > 0) {
+      while ($line = Sql::fetchLine($result)) {
+        $name=$line['name'];
+        if ($obj->isFieldTranslatable($displayCol)){
+          $name=i18n($name);
+        }
+        $res[($line['id'])]=$name;
+      }
+    }
+    self::$list[$listType . "_" . $displayCol]=$res;
+    return $res;
+  }
+  
   public static function getNameFromId($listType, $id) {
     return self::getFieldFromId($listType, $id, 'name');
   }

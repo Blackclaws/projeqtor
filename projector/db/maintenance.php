@@ -10,7 +10,8 @@ $versionHistory = array(
   "V0.7.0",
   "V0.8.0",
   "V0.9.0",
-  "V1.0.0");
+  "V1.0.0",
+  "V1.1.0");
 $SqlEndOfCommand=";";
 $SqlComment="--";
    

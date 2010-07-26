@@ -95,21 +95,24 @@ if ($periodType=='month') {
   $header=strftime("%B %Y", $time);
   $nbDays=date("t", $time);
 }
+$weekendBGColor='#cfcfcf';
+$weekendFrontColor='#555555';
+$weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
 
 echo "<table width='95%' align='center'><tr>";
-echo "<td class='reportTableDataFull' width='20px'>";
+echo "<td class='reportTableDataFull'>";
 echo "<div style='height:20px;width:20px;position:relative;background-color:#DDDDDD;'>&nbsp;";
 echo "<div style='position:absolute;top:3px;left:5px;color:#000000;'>R</div>";
 echo "<div style='position:absolute;top:2px;left:6px;color:#FFFFFF;'>R</div>";
 echo "</div>";
-echo "</td><td width='100px'>" . i18n('colRealWork') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
-echo "<td class='reportTableDataFull' width='20px'>";
+echo "<td class='reportTableDataFull'>";
 echo "<div style='height:20px;width:20px;position:relative;background-color:#DDDDDD;'>&nbsp;";
 //echo "<div style='position:absolute;top:3px;left:5px;color:#EEEEEE;'>P</div>";
 //echo "<div style='position:absolute;top:2px;left:6px;color:#000000;'>P</div>";
 echo "</div>";
-echo "</td><td width='100px'>" . i18n('colPlannedWork') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";
@@ -118,7 +121,7 @@ foreach($projects as $idP=>$nameP) {
   echo "<td width='20px'>";
   echo "<div style='border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:" . $projectsColor[$idP] . ";'>&nbsp;";
   echo "</div>";
-  echo "</td><td width='100px'>" . $nameP . "</td>";
+  echo "</td><td width='100px' class='legend'>" . $nameP . "</td>";
   echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 }
 echo "<td>&nbsp;</td></tr></table>";
@@ -127,9 +130,19 @@ echo "<br/>";
 echo '<table width="95%" align="center"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . $nbDays . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr><tr>';
+$days=array();
 for($i=1; $i<=$nbDays;$i++) {
   if ($periodType=='month') {
-    echo '<td class="reportTableColumnHeader">' . (($i<10)?'0':'') . $i . '</td>';
+    $day=(($i<10)?'0':'') . $i;
+    if (isOffDay(substr($periodValue,0,4) . "-" . substr($periodValue,4,2) . "-" . $day)) {
+      $days[$periodValue . $day]="off";
+      $style=$weekendStyle;
+    } else {
+      $days[$periodValue . $day]="open";
+      $style='';
+    }
+    
+    echo '<td class="reportTableColumnHeader" ' . $style . '>' . $day . '</td>';
   }  
 }
 
@@ -138,8 +151,13 @@ echo '</tr>';
 foreach ($resources as $idR=>$nameR) {
   echo '<tr height="20px"><td class="reportTableLineHeader">' . $nameR . '</td>';
   for ($i=1; $i<=$nbDays;$i++) {
-    echo '<td class="reportTableDataFull" valign="top">';
     $day=$startDate+$i-1;
+    $style="";
+    if ($days[$day]=="off") {
+      $style=$weekendStyle;
+    }
+    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
+    
     if (array_key_exists($day,$result[$idR])) {
       echo "<div style='position:relative;'>";
       $real=false;

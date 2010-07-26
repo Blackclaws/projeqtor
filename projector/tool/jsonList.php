@@ -52,7 +52,12 @@
     } else if ($type=='list') {    
       $dataType=$_REQUEST['dataType'];
       $class=substr($dataType,2);
-      $list=SqlList::getList($class);
+      if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
+        $crit=array( $_REQUEST['critField'] => $_REQUEST['critValue']);
+        $list=SqlList::getListWithCrit($class, $crit);
+      } else {
+        $list=SqlList::getList($class);
+      }
       $nbRows=0;
       // return result in json format
       foreach ($list as $id=>$name) {

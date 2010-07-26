@@ -176,6 +176,10 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
        cleanContent("detailDiv");
        loadContent("importData.php","centerDiv");
        formChangeInProgress=false;     
+    } else if (item.id=='Reports') {
+       cleanContent("detailDiv");
+       loadContent("reportsMain.php","centerDiv");
+       formChangeInProgress=false;  
     } else if (item.type=='object') {
       cleanContent("detailDiv");
 	  formChangeInProgress=false;

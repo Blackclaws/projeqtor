@@ -93,7 +93,7 @@
       <div class="container" dojoType="dijit.layout.BorderContainer" >
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
           <script> 
-            aboutMessage='<?php echo $aboutMessage;?>';
+            aboutMessage="<?php echo $aboutMessage;?>";
             aboutMessage+='Dojo '+dojo.version+'<br/><br/>';
           </script>
           <?php 
