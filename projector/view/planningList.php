@@ -49,7 +49,17 @@ scriptLog('   ->/view/planningList.php');
                 </script>                
                </div>
              </td>
-            <td><div id="planResultDiv" style=" width: 400px;height: 10px;" dojoType="dijit.layout.ContentPane" region="center" ></div></td>
+            <td width="32px">
+              <button title="<?php echo i18n('printPlanning')?>"  
+               dojoType="dijit.form.Button" 
+               id="listPrint" name="listPrint"
+               iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  showPrint("../tool/jsonPlanning.php", false, true);
+                </script>
+              </button>
+            </td>
+            <td><div id="planResultDiv" style=" width: 360px;height: 10px;" dojoType="dijit.layout.ContentPane" region="center" ></div></td>
             <td style="background-color: blue, width: 100px;text-align: right; align: right;">
               <?php echo i18n("labelShowIdle");?>
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">

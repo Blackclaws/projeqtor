@@ -82,7 +82,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 	    tmpPer =  Math.ceil((this.getEnd() - this.getStart()) /  ( 60 * 1000) );
 	    vDuration = tmpPer + ' ' + i18n('shortMinute');
 	  } else {
-	    tmpPer =  Math.ceil((this.getEnd() - this.getStart() ) /  (24 * 60 * 60 * 1000) + 1);
+	    tmpPer =  workDayDiffDates(this.getStart(), this.getEnd());
 	    vDuration = tmpPer + ' ' + i18n('shortDay');
 	  }
 	  return( vDuration )
@@ -1009,7 +1009,7 @@ JSGantt.getMaxDate = function (pList, pFormat)
  	   while(vDate.getDate() > 1) {
        vDate.setDate(vDate.getDate() + 1);
      }
-    //vDate.setDate(vDate.getDate() - 1);
+    vDate.setDate(vDate.getDate() - 1);
   } else if (pFormat=='quarter') {
  // Set to last day of current Quarter
     if ( vDate.getMonth()==0 || vDate.getMonth()==1 || vDate.getMonth()==2 ) {
@@ -1220,7 +1220,8 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
   var vDayStr   = pDate.getDate() + '';
   if (vDayStr.length==1) vDayStr="0"+vDayStr;
   var onejan = new Date(pDate.getFullYear(),0,1);
-	var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) + onejan.getDay()+1)/7) + '';
+	//var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) + onejan.getDay()+1)/7) + '';
+	var vWeekNum = dojo.date.locale.format(pDate, {datePattern: "w", selector: "date"});
   var vDateStr = "";	
   switch(pFormatStr) {
     case 'default':

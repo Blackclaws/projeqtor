@@ -47,7 +47,7 @@ $paramDefaultLocale='en';                       // default locale to be used on 
 $paramDefaultTimezone="Europe/Paris";           // default time zone. List can be found at http://us3.php.net/manual/en/timezones.php
 
 // === display
-$paramFadeLoadingMode='true';                   // Setup the way frames are refreshed : with fading or not {'true', 'false'}
+$paramFadeLoadingMode='false';                   // Setup the way frames are refreshed : with fading or not {'true', 'false'}
 $paramRowPerPage='50';                          // Number of row per page on main Grid view {any integer}
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
 

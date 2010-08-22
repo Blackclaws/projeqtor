@@ -256,7 +256,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	var contentNode = dojo.byId(destination);
 	var contentWidget = dijit.byId(destination);
 	if ( ! (contentNode && contentWidget) ) {
-		showError(i18n("errorLoadContent", new Array(page, destination, formName, isResultMessage,destination)));
+		console.warn(i18n("errorLoadContent", new Array(page, destination, formName, isResultMessage,destination)));
 		return;
 	}
 	if (contentNode) {
@@ -326,7 +326,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       	}
       },
       error: function(error,args){
-        showError(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
+        console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
         hideWait();}
 		});
 		return;
@@ -384,7 +384,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   		    	}
   		    }).play();
         },
-        error: function(error,args){showError(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));}
+        error: function(error,args){
+        	console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
+        }
       },true);
     }
   }).play(); 
@@ -570,7 +572,7 @@ function finalizeMessageDisplay(destination, validationType) {
 	if (lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID") {
 		dojo.fadeOut({node: contentNode, duration: 3000}).play();
 	} else {
-		if (lastOperationStatus.value=="ERROR") { 
+		if (lastOperationStatus.value=="ERROR") {
 		  showError(message);
 		} else {
 			showAlert(message);
@@ -973,8 +975,8 @@ function drawGantt() {
       runScript+="dojo.byId('objectId').value='" + item.refId + "';";
       runScript+="loadContent('objectDetail.php','detailDiv','listForm');";
       // display Name of the task 
-      //var pName=item.wbs + " " + item.refName; // for testeing purpose, add wbs code
-      var pName=item.refName;
+      var pName=item.wbs + " " + item.refName; // for testeing purpose, add wbs code
+      //var pName=item.refName;
       // display color of the task bar
       var pColor='50BB50';
       // show in red not respected constraints

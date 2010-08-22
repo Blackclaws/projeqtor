@@ -3,8 +3,8 @@
  * Print page of application.
  */
    require_once "../tool/projector.php";
-   scriptLog('   ->/view/print.php'); 
    header ('Content-Type: text/html; charset=UTF-8');
+   scriptLog('   ->/view/print.php'); 
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -13,6 +13,7 @@
   
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
+  <link rel="stylesheet" type="text/css" href="../external/jsgantt/jsgantt.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="../external/dojo/dojo.js"
@@ -26,7 +27,10 @@
     //dojo.require("dojo.date.locale");
     dojo.addOnLoad(function(){
       //fnc = function() {
-        //window.print();
+      <?php if (array_key_exists('directPrint', $_REQUEST)) {?>
+        window.print();
+        //window.close();
+        <?php }?>
         //alert('tmp');
         //top.dojo.byId('printPreview').hide();
         //alert('done');
@@ -36,11 +40,9 @@
   </script>
 </head>
 
-<body id="body" >
-  <div >
+<body id="bodyPrint" onload="top.hideWait();";>
   <?php 
     include '../view/' . $_REQUEST['page']; 
   ?>
-  </div>
 </body>
 </html>

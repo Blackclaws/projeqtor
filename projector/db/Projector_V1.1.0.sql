@@ -54,8 +54,8 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`
 (2, 'reportWorkMonthly', 1, 'work.php', 20),
 (3, 'reportWorkYearly', 1, 'work.php', 30),
 (4, 'reportPlanColoredMonthly', 2, 'colorPlan.php', 10),
-(5, 'reportPlanResourceMonthly', 2, 'resourcePlan.php', 10),
-(6, 'reportPlanProjectMonthly', 2, 'projectPlan.php', 10);
+(5, 'reportPlanResourceMonthly', 2, 'resourcePlan.php', 20),
+(6, 'reportPlanProjectMonthly', 2, 'projectPlan.php', 30);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`) VALUES 
 (1, 1, 'week', 'week', 10),

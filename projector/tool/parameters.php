@@ -58,5 +58,3 @@ $paramPathSeparator='/';                        // Path separator, depending on 
 // === log management
 $logFile='/home/projector/logs/projector_${date}.log'; // Log file name. May contain ${date} to get 1 file a day
 $logLevel=2;                                    // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
-
-?>

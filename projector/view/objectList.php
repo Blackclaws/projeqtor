@@ -30,14 +30,14 @@ $obj=new $objectClass;
       <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
         <table style="width: 100%; height: 27px;">
           <tr>
-            <td style="text-align:right;">
+            <td style="text-align:right;" width="5px">
               <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
               <input type="hidden" id="objectId" name="objectId" value="" />
-              &nbsp;&nbsp;
+              <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;
               <?php echo i18n("colId");?>
-              &nbsp; 
+              &nbsp;</NOBR> 
             </td>
-              <td>
+            <td width="5px">
               <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
@@ -46,12 +46,12 @@ $obj=new $objectClass;
               </div>
             </td>
               <?php if ( property_exists($obj,'name')) { ?>
-              <td style="text-align:right;">
-                &nbsp;&nbsp;&nbsp;
+              <td style="text-align:right;" width="5px">
+                <NOBR>&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colName");?>
-                &nbsp;
+                &nbsp;</NOBR> 
               </td>
-              <td>
+              <td width="5px">
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
                 id="listNameFilter" name="listNameFilter">
                   <script type="dojo/method" event="onKeyUp" >
@@ -61,12 +61,12 @@ $obj=new $objectClass;
               </td>
               <?php }?>              
               <?php if ( property_exists($obj,'id' . $objectClass . 'Type') ) { ?>
-              <td style="vertical-align: middle; text-align:right;">
-                 &nbsp;&nbsp;&nbsp;
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <NOBR>&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colType");?>
-                &nbsp;
+                &nbsp;</NOBR>
               </td>
-              <td>
+              <td width="5px">
                 <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField" dojoType="dijit.form.FilteringSelect" 
                 id="listTypeFilter" name="listTypeFilter" style="height: 14px;">
                   <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
@@ -85,7 +85,9 @@ $obj=new $objectClass;
                    }
                  }
                  ?>
-              <td>
+            <td >&nbsp;</td>
+            <td width="5px"><NOBR>&nbsp;</NOBR></td>
+            <td width="32px">
               <button title="<?php echo i18n('advancedFilter')?>"  
               class="filterField" 
                dojoType="dijit.form.Button" 
@@ -100,11 +102,23 @@ $obj=new $objectClass;
               <span id="gridRowCount" class="gridRowCount"></span>             
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
-            <td ></td>
-            <td style="width: 200px;text-align: right; vertical-align: center;">
-              <?php echo i18n("labelShowIdle");?>&nbsp;
+             <td width="32px">
+              <button title="<?php echo i18n('printList')?>"  
+               dojoType="dijit.form.Button" 
+               id="listPrint" name="listPrint"
+               iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  showPrint("../tool/jsonQuery.php", true);
+                </script>
+              </button>
             </td>
-              <td>
+            
+            <td style="text-align: right; vertical-align: center;" width="5px">
+              <NOBR>&nbsp;&nbsp;&nbsp;
+              <?php echo i18n("labelShowIdle");?>
+              </NOBR>
+            </td>
+              <td style="text-align: right; vertical-align: middle;" width="30px">
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">
                 <script type="dojo/method" event="onChange" >
                   refreshJsonList('<?php echo $objectClass;?>');
@@ -123,7 +137,7 @@ $obj=new $objectClass;
   query="{ id: '*' }" store="objectStore"
   queryOptions="{ignoreCase:true}" 
   rowPerPage="<?php echo $paramRowPerPage;?>"
-  columnReordering="true"
+  columnReordering="false"
   selectionMode="single" >
   <thead>
     <tr>

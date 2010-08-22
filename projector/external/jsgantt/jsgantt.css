@@ -26,7 +26,7 @@ div.scrollRight {
 .ganttLeftTitle, .ganttRightSubTitle,
 .ganttHeight, .ganttTaskrow, .ganttTaskgroup, .ganttTaskmile,
 .ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover,
-.ganttName, .ganttDetail, .ganttExpandOpened, .ganttExpandClosed {
+.ganttName, .ganttDetail, .ganttExpandOpened, .ganttExpandClosed, .ganttDetailNoborder {
   height: 20px;
 }
 
@@ -141,14 +141,24 @@ div.scrollRight {
 .ganttName { 
   border-top: #c0c0c0 1px solid;
   font-size: 90%;      
+  spacing: 0px; padding: 0px; margin: 0px;
 }
 
-.ganttDetail {
+.ganttDetail, .ganttDetailNoborder {
   border-top: #c0c0c0 1px solid;
-  border-left: #dddddd 1px solid;
-  font-size: 90%;     
+  font-size: 90%;  
+  spacing: 0px; padding: 0px; margin: 0px;   
 }
+.ganttDetail, .ganttDetailBoderleft {
+  border-left: #dddddd 1px solid;
+}
+.ganttDetailBoderleft, .ganttSubDetailNoborder  {
+  font-size: 5%;  
+  spacing: 0px; padding: 0px; margin: 0px;     
+}
+.ganttDetailNoborder {
 
+}
 .ganttExpandOpened {
   background-image: url(minus.gif);  background-repeat: no-repeat;
   cursor: pointer;
@@ -159,6 +169,12 @@ div.scrollRight {
   cursor: pointer;
 }
 
+.ganttSep {
+  width: 16px;
+  font-size: 90%;
+  font-weight: normal;
+  font-style: normal; 
+}
 ..ghead { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px;   HEIGHT: 20px }
 
 ..ghead A { FONT-SIZE: 10px; COLOR: #000000; TEXT-DECORATION: none }

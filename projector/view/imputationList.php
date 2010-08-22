@@ -12,8 +12,6 @@ $currentWeek=weekNumber(date('Y-m-d')) ;
 $currentYear=strftime("%Y") ;
 $rangeValue=$currentYear . $currentWeek;
 
-//$objectClass='Task';
-//$obj=new $objectClass;
 ?>
 
   

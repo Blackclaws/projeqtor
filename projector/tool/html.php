@@ -368,10 +368,15 @@ function htmlGetFileSize($fileSize) {
  */
 function htmlExtractArgument($tag, $arg) {
   $sp=explode($arg . '=', $tag);
-  $fld=null;
+  $fld="";
   if (isset($sp[1])) {
     $fld=$sp[1];
-    $fld=substr($fld,0,strpos($fld,' '));
+    if (strpos($fld,' ')>1) {
+      $fld=substr($fld,0,strpos($fld,' '));
+    }
+    if (strpos($fld,'>')>1) {
+      $fld=substr($fld,0,strpos($fld,'>'));
+    }
     $fld=trim($fld,'"');
   }
   return $fld;

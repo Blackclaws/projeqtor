@@ -8,7 +8,7 @@
 /* Main structure objects ===================================================== */
 
 html, body {
-  height: 100%; width: 100%; overflow: hidden;
+  height: 100%; width: 100%; 
   border: 0; margin: 0px; padding: 0px;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   text-decoration: none;
@@ -24,13 +24,25 @@ table {
 }
 
 tr {
-  /* border: 2px solid #0000FF; /* padding: 3px !important; margin: 3px !important; /* for debug purpose */
+   /*border: 2px solid #0000FF;  padding: 3px !important; margin: 3px !important; /* for debug purpose */
 }
 
 td {
-  margin: 0; padding: 0; cellspacing: 0; cellpadding: 0;
+  margin: px; padding: 4px; cellspacing: 0; cellpadding: 0px;
   border: collapse; border: 0px;
   /* border: 1px solid #00FF00; /* padding: 3px !important; margin: 3px !important; /* for debug purpose */
+}
+
+th {
+  border: 1px solid #555555;
+  background-color: #DDDDDD; 
+  margin: 2px; 
+}
+
+.tdListPrint {
+  border: 1px solid #555555;
+  background-color: #FFFFFF; 
+  margin: 0px; padding: 1px 3px 1px 3px; 
 }
 
 a {
@@ -41,9 +53,9 @@ label, .label {
   font-weight: normal;
   text-align: right; vertical-align: top;
   width: 135px;
-  padding: 0px 0px 0px 0px;
+  padding: 2px;
   float:left;
-  border: 2px solid white;
+  border: 0px solid white;
 }
 
 /* Specific classes =========================================================== */
@@ -133,20 +145,33 @@ label, .label {
   width: 100%;
 }
 
-.historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, .dependencyHeader  {
+.historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, 
+.dependencyHeader, .workflowHeader, .filterHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
   background: #DDDDDD;
 }
+.workflowHeader {
+  font-size: 90%; padding: 0; 
+}
 
-.historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, .dependencyData {
+.historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
+.dependencyData, .workflowData, .filterData {
   font-size: 90%;
   padding: 1px 5px 1px 5px;
   border: 1px solid #AAAAAA;
   vertical-align: top;
   background-color: #FFFFFF;
 }
+
+.workflowData {
+  font-size: 80%; padding: 0; margin 0;
+}
+.workflowDetail {
+  border-top: 1px solid #D0D0D0; 
+}
+
 .historyDataNewOperation {
   font-size: 90%;
   padding: 1px 5px 1px 5px;
@@ -187,7 +212,7 @@ label, .label {
 }
 
  label {
-  background-color: #FFFFFF; color: #777777;
+  background-color: #FFFFFF; color: #55555;
 }
  
  .tabLabel {

@@ -98,8 +98,13 @@ class Workflow extends SqlElement {
    */
   public function drawSpecificItem($item){
     global $_REQUEST;
-    $detailWidth=$_REQUEST['destinationWidth'];
-    $detailWidth-=30;
+    if (array_key_exists('destinationWidth', $_REQUEST)) {
+      $detailWidth=$_REQUEST['destinationWidth'];
+      $detailWidth-=30;
+      $detailWidth.='px';
+    } else {
+      $detailWidth="100%";
+    }
     $result="";
     if ($item=='workflowstatus') {
       $width="100px";
@@ -110,7 +115,7 @@ class Workflow extends SqlElement {
         $profileIdList.=$profileCode . " ";
       }     
       $nbProfiles=count($profileList);
-      $result .= '<div style="overflow: auto; width: ' . $detailWidth . 'px;">';
+      $result .= '<div style="overflow: auto; width: ' . $detailWidth . '">';
       $result .= '<table>';
       $result .= ' <tr>';
       $result .= '  <th class="workflowHeader">' . i18n('from') . '&nbsp;\\&nbsp;' . i18n('to') . '</th>';

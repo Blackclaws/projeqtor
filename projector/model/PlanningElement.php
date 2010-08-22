@@ -275,7 +275,7 @@ class PlanningElement extends SqlElement {
     
     // check if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId) {
-      $result="'" . $old->topId . "'<br/>" . $result;
+      //$result="'" . $old->topId . "'<br/>" . $result;
       $oldTopElt=new PlanningElement($old->topId);
       $oldTopElt->save();
     }
@@ -338,10 +338,10 @@ class PlanningElement extends SqlElement {
         if ( $pla->realEndDate and (!$this->realEndDate or $pla->realEndDate>!$this->realEndDate )) {
           //$this->realEndDate=$pla->realEndDate;
         }  
-        if ( $pla->plannedStartDate and (!$this->plannedStartDate or $pla->plannedStartDate<!$this->plannedStartDate )) {
+        if ( $pla->plannedStartDate and (!$this->plannedStartDate or $pla->plannedStartDate<$this->plannedStartDate )) {
             $this->plannedStartDate=$pla->plannedStartDate;
         }
-        if ( $pla->plannedEndDate and (!$this->plannedEndDate or $pla->plannedEndDate>!$this->plannedEndDate )) {
+        if ( $pla->plannedEndDate and (!$this->plannedEndDate or $pla->plannedEndDate>$this->plannedEndDate )) {
           $this->plannedEndDate=$pla->plannedEndDate;
         }                
       }

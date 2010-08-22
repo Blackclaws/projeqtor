@@ -1,5 +1,6 @@
 <?php 
 include_once "../tool/projector.php";
+header ('Content-Type: text/html; charset=UTF-8');
 /** ===========================================================================
  * Save an attachement (file) : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
@@ -7,7 +8,6 @@ include_once "../tool/projector.php";
 
 // ATTENTION, this PHP script returns its result into an iframe (the only way to submit a file)
 // then the iframe returns the result to resultDiv to reproduce expected behaviour
-header ('Content-Type: text/html; charset=UTF-8');
 ?>
 <html>
 <head>   

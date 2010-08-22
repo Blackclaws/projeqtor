@@ -1,2 +1,2 @@
 <?php 
-$parametersLocation = "..\parameters.php";?> 
+$parametersLocation = "..\parameters.php";

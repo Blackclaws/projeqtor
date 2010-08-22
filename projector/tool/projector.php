@@ -688,7 +688,7 @@ function workDayDiffDates($start, $end) {
   }
   //add 1 day to include first day, workDayDiffDates(X,X)=1, workDayDiffDates(X,X+1)=2
   $diffDay+=1;
-  return($diffDay);
+  return(round($diffDay,0));
 }
 
 /** ============================================================================
@@ -897,4 +897,7 @@ function getEaster ($iYear = null) {
     return $iEaster;
 }
 
+function numberOfDaysOfMonth($dateValue) {
+  return date('t', strtotime ($dateValue) );    
+}
 ?>

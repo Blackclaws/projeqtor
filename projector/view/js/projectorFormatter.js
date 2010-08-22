@@ -58,18 +58,18 @@ function colorFormatter(value) {
  */
 function colorNameFormatter(value) {
   if (value) {
-  	var reg=new RegExp("(#split#)", "g");
-  	var tab=value.split(reg);
+
+  	var tab=value.split("#split#");
   	if (tab.length>1) {
-  		if (tab.length==3) { // just found : val #split# color
+  		if (tab.length==2) { // just found : val #split# color
   			var val=tab[0];
-  			var color=tab[2];
+  			var color=tab[1];
   			var order='';
-  		} else if (tab.length==5) { // found : val #split# color #split# order
-  			var val=tab[2];
-  			var color=tab[4];
-  			var order=tab[0];
-  	  } else { // should not be found
+  		} else if (tab.length==3) { // val #split# color #split# order
+	  			var val=tab[1];
+	  			var color=tab[2];
+	  			var order=tab[0];
+  		} else { // should not be found
   	  	return value;
   	  }
   		var foreColor='#000000';
@@ -108,7 +108,11 @@ function translateFormatter(value, prefix) {
  * @return the formatted value as an image (html code)
  */
 function percentFormatter(value) {
-  return value + ' %';
+	if (value) { 
+	  return value + ' %';
+	} else { 
+  	return ''; 
+  }
 }
 
 /** ============================================================================

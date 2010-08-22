@@ -98,15 +98,18 @@ class PlannedWork extends Work {
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
-    
+//echo "apres purge - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause . " and idle=0";
     $order=" priority asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
+//echo "apres get - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     $listPlan=self::sortPlanningElements($list);
+//echo "apres sort - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     $resources=array();
     $a=new Assignment();
+    $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
       $changedPlan=false;
@@ -320,8 +323,17 @@ class PlannedWork extends Work {
       }
       if ($changedPlan) {
         $plan->save();
+        //$topKey=$plan->topRefType."#".$plan->topRefId;
+        //if ( ! array_key_exists($topKey, $topList)) {
+        //  $topList[$topKey]=array('type'=>$plan->topRefType, 'id'=>1);
+        //}
       }
+//echo "repeat boucle - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     }
+    //foreach ($topList as $id=>$top) {
+    //  echo $id . ' / ' . $top['type']. '/' . $top['id'] . '<br/>';
+    //  PlanningElement::updateSynthesis($top['type'], $top['id']);
+    //}
     $endTime=time();
     $endMicroTime=microtime(true);
 //echo "<br/>";

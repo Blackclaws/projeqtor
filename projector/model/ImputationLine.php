@@ -285,15 +285,23 @@ class ImputationLine {
       echo '<td class="ganttName" title="' . htmlEncodeJson($line->comment) . '">';
       // tab the name depending on level
       echo '<table><tr><td>';
-      $max=(strlen($line->wbsSortable)+1)/4;
+      
+      $level=(strlen($line->wbsSortable)+1)/4;
+      $levelWidth = ($level-1) * 16;
+      echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';     
+        
+      /*$max=(strlen($line->wbsSortable)+1)/4;
       for($j=1; $j < $max; $j++) {
         echo '&nbsp;&nbsp;&nbsp;&nbsp;';
-      }
+      }*/
+      
       echo '</td>';
       if ($rowType=="group") {
-        echo '<td><span id="group_' . $nbLine . '" class="ganttExpandOpened"';
+        echo '<td width="16"><span id="group_' . $nbLine . '" class="ganttExpandOpened"';
         echo 'onclick="workOpenCloseLine(' . $nbLine . ')">'; 
         echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
+      } else {
+        echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
       }
       //echo $line->wbs . ' '. $line->name . '</td>'; // for testing purpose, add wbs code
       echo '<td>' . $line->name . '</td>';

@@ -8,8 +8,8 @@
  *    - set isDebug:false in djConfig
  */
    require_once "../tool/projector.php";
-   scriptLog('   ->/view/main.php'); 
    header ('Content-Type: text/html; charset=UTF-8');
+   scriptLog('   ->/view/main.php'); 
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -65,8 +65,8 @@
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
     dojo.addOnLoad(function(){
-      currentLocale="<?php echo $currentLocale?>";
-      dijit.Tooltip.defaultPosition=["below","right"];
+      currentLocale="<?php echo $currentLocale;?>";
+      dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo i18n('welcomeMessage');?>");
       <?php 
       if (array_key_exists('theme',$_SESSION) ) {
@@ -286,10 +286,7 @@
             title="<?php echo i18n('sendToPrinter');?>" 
             iconClass="dijitEditorIcon dijitEditorIconPrint" >
             <script type="dojo/connect" event="onClick" args="evt">
-              dojo.byId("sendToPrinter").blur();
-              printFrame.focus();
-	          printFrame.print();
-		      dijit.byId('dialogPrint').hide();        
+              sendFrameToPrinter();
             </script>
           </button>
         </td>

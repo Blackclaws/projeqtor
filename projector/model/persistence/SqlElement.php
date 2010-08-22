@@ -294,6 +294,7 @@ abstract class SqlElement {
    * @return void
    */
   private function updateSqlElement() {
+//traceLog('updateSqlElement (for ' . get_class($this) . ' #' . $this->id . ')');
     $returnValue = i18n('messageNoChange') . ' ' . i18n(get_class($this)) . ' #' . $this->id;
     $returnStatus = 'NO_CHANGE';
     $depedantObjects=array();
@@ -400,7 +401,6 @@ abstract class SqlElement {
         $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultUpdated');
       }
     }
-    
     // Prepare return data
     $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
     $returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
@@ -1217,6 +1217,7 @@ abstract class SqlElement {
    *  must be redefined in the inherited class
    */
   public function control(){
+//traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
     $result="";
     foreach ($this as $col => $val) {
       if (substr($col,0,1)!='_') {

@@ -145,16 +145,60 @@ function showAbout (msg) {
  * @param forms the form containing the data to send to the page
  * @return void 
  */
-function showPrint (page) {
+function showPrint (page, listPrint, planningPrint) {
+	//dojo.byId('printFrame').style.width= 1000 + 'px';
+	showWait();
+	window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 	dijit.byId("dialogPrint").show();
 	cl=dojo.byId('objectClass').value;
 	id=dojo.byId('objectId').value;
-	//cl='Project';
-	//id='3';
-	frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id;
+	var params="";
+	if (listPrint) {
+		if (dijit.byId("listShowIdle").attr('checked')) {
+		  params+="&idle=true";
+		}
+		if (dijit.byId("listIdFilter").attr('value')) {
+		  params+="&listIdFilter="+encodeURIComponent(dijit.byId("listIdFilter").attr('value'));
+		}
+		if (dijit.byId("listNameFilter").attr('value')) {
+		  params+="&listNameFilter="+encodeURIComponent(dijit.byId("listNameFilter").attr('value'));
+		}
+		if (dijit.byId("listTypeFilter").attr('value')) {
+		  params+="&objectType="+encodeURIComponent(dijit.byId("listTypeFilter").attr('value'));
+		}
+	} else if (planningPrint){
+		if (dijit.byId("startDatePlanView").attr('value')) {
+		  params+="&startDate="+encodeURIComponent(formatDate(dijit.byId("startDatePlanView").value));
+		  params+="&format="+g.getFormat();
+		  if (dijit.byId('listShowIdle').attr('checked')) {
+		  	params+="&idle=true";
+		  }
+		}
+	}
+	var grid=dijit.byId('objectGrid');
+	if (grid) {
+		var sortWay=(grid.getSortAsc())?'asc':'desc';
+		var sortIndex=grid.getSortIndex();
+		if (sortIndex>=0) {
+			params+="&sortIndex="+sortIndex;
+			params+="&sortWay="+sortWay;
+		}
+		//alert("Sort on index "+sortIndex+" asc "+sortAsc);
+	}
+	frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
 	//document.getElementsByTagName('printFrame')[0].contentWindow.print();
 }
 
+
+function sendFrameToPrinter() {
+	dojo.byId("sendToPrinter").blur();
+  //printFrame.focus();
+  //printFrame.print();
+  window.frames['printFrame'].focus();
+  window.frames['printFrame'].print();
+  //var myRef = window.open(window.frames['printFrame'].location +"&directPrint=true",'mywin', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
+  dijit.byId('dialogPrint').hide();        
+}
 //=============================================================================
 //= Notes
 //=============================================================================

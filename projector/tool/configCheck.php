@@ -3,7 +3,7 @@
  * Chek login/password entered in connection screen
  */
   restore_error_handler();
-  
+  error_reporting(0);
   $param=$_REQUEST["param"];
   $pname=$_REQUEST["pname"];
   $label=$_REQUEST["label"];
@@ -102,19 +102,18 @@
   write($paramFile, '// =======================================================================================' . "\n");
   foreach ($param as $id=>$val) {
     write($paramFile, '$' . $pname[$id] . ' = \'' . addslashes($val) . '\';');
-    //write($paramFile, '   // ' . $label[$id] . ' : ' . $value[$id] );
     write($paramFile, "\n");
   }
-  write($paramFile, '?> ');
   if ($error) {exit;}
   
   $paramLocation="../tool/parametersLocation.php";
   kill($paramLocation);
-  if (! write($paramLocation, "<?php \n")) {
+  if (! write($paramLocation,  ' ')) {
     showError("impossible to write \'$paramLocation\' file, cannot write to such a file");
   }
-  write($paramLocation, '$parametersLocation = "' . $paramFile . '";');
-  write($paramLocation, '?> ');
+  kill($paramLocation);
+  write($paramLocation, '<?php ' . "\n");
+  write($paramLocation, '$parametersLocation = \'' . $paramFile . '\';');
   
   //rename ('../tool/config.php','../tool/config.php.old');
   showMsg("Parameters are saved.");
