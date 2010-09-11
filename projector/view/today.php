@@ -219,11 +219,10 @@
       echo "</table>";
   }  
 ?>      
-
 <div  class="container" dojoType="dijit.layout.BorderContainer">
   <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center"> 
-    <div id="todayMessageDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuMessage');?>">
-    <?php showMessages();?>
+    <div id="todayMessageDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuMessage');?>">  
+<?php showMessages();?>
     </div><br/>
     <div id="todayProjectDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuProject');?>">
     <?php showProjects();?>

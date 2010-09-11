@@ -3,13 +3,13 @@
 -- // PROJECTOR                                             //
 -- //-------------------------------------------------------//
 -- // Version : V1.2.0                           //
--- // Date : 2010-07-13                                     //
+-- // Date : 2010-09-01                                     //
 -- ///////////////////////////////////////////////////////////
 --
 --
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
-(7, 'reportPlanGantt', 2, 'ganttPlan.php', 5);
+(7, 'reportPlanGantt', 2, '../tool/jsonPlanning.php', 5);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`) VALUES 
 (7, 7, 'startDate', 'date', 20),
@@ -53,3 +53,6 @@ CREATE TABLE `${prefix}question` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(62, 'menuDecisions', 7, 'item', 230, NULL, 0);
