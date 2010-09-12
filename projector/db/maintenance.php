@@ -11,7 +11,8 @@ $versionHistory = array(
   "V0.8.0",
   "V0.9.0",
   "V1.0.0",
-  "V1.1.0");
+  "V1.1.0",
+  "V1.2.0");
 $SqlEndOfCommand=";";
 $SqlComment="--";
    
@@ -63,6 +64,7 @@ echo "<br/>____________________________________________";
 
 function runScript($vers) {
   global $paramDbName, $paramDbPrefix;
+  set_time_limit(60);
   traceLog("=====================================");
   traceLog("");
   traceLog("VERSION " . $vers);

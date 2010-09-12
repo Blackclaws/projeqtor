@@ -3,13 +3,13 @@
 /* ICONS                                                                           */
 /* =============================================================================== */
 
-.iconAction32 { background-image: url(images/iconAction32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconAction22 { background-image: url(images/iconAction22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconAction16 { background-image: url(images/iconAction16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconDecisionType32 { background-image: url(images/iconDecisionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDecisionType22 { background-image: url(images/iconDecisionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDecisionType16 { background-image: url(images/iconDecisionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconActionType32 { background-image: url(images/iconActionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconActionType22 { background-image: url(images/iconActionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconActionType16 { background-image: url(images/iconActionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconDecisionTypeType32 { background-image: url(images/iconDecisionTypeType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDecisionTypeType22 { background-image: url(images/iconDecisionTypeType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDecisionTypeType16 { background-image: url(images/iconDecisionTypeType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconAccessProfile32 { background-image: url(images/iconAccessProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconAccessProfile22 { background-image: url(images/iconAccessProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -42,6 +42,14 @@
 .iconCriticality32 { background-image: url(images/iconCriticality32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconCriticality22 { background-image: url(images/iconCriticality22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconCriticality16 { background-image: url(images/iconCriticality16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconDecision32 { background-image: url(images/iconDecision32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDecision22 { background-image: url(images/iconDecision22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDecision16 { background-image: url(images/iconDecision16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconDecisionType32 { background-image: url(images/iconDecisionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDecisionType22 { background-image: url(images/iconDecisionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDecisionType16 { background-image: url(images/iconDecisionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconEnvironmentalParameter32 { background-image: url(images/iconEnvironmentalParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconEnvironmentalParameter22 { background-image: url(images/iconEnvironmentalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -99,6 +107,10 @@
 .iconMeeting22 { background-image: url(images/iconMeeting22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMeeting16 { background-image: url(images/iconMeeting16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconMeetingType32 { background-image: url(images/iconMeetingType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMeetingType22 { background-image: url(images/iconMeetingType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMeetingType16 { background-image: url(images/iconMeetingType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconMessage32 { background-image: url(images/iconMessage32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconMessage22 { background-image: url(images/iconMessage22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMessage16 { background-image: url(images/iconMessage16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -139,6 +151,14 @@
 .iconProjectParameter22 { background-image: url(images/iconProjectParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProjectParameter16 { background-image: url(images/iconProjectParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconQuestion32 { background-image: url(images/iconQuestion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconQuestion22 { background-image: url(images/iconQuestion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconQuestion16 { background-image: url(images/iconQuestion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconQuestionType32 { background-image: url(images/iconQuestionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconQuestionType22 { background-image: url(images/iconQuestionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconQuestionType16 { background-image: url(images/iconQuestionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconReports32 { background-image: url(images/iconReports32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconReports22 { background-image: url(images/iconReports22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconReports16 { background-image: url(images/iconReports16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -150,6 +170,10 @@
 .iconResource32 { background-image: url(images/iconResource32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconResource22 { background-image: url(images/iconResource22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconResource16 { background-image: url(images/iconResource16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconReview32 { background-image: url(images/iconReview32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconReview22 { background-image: url(images/iconReview22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconReview16 { background-image: url(images/iconReview16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconRisk32 { background-image: url(images/iconRisk32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconRisk22 { background-image: url(images/iconRisk22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

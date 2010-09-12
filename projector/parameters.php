@@ -27,7 +27,7 @@ $paramDbUser='root';                            // Database user to connect
 $paramDbPassword='mysql';                       // Database password for user
 $paramDbName='projector';                       // Database schema name
 $paramDbDisplayName='ProjectOr Developement Database';                         // Name to be displayed    
-$paramDbPrefix='';                              // Database prefix for table names
+$paramDbPrefix='z_';                              // Database prefix for table names
 
 // === mail management
 $paramMailSender='support@toolware.fr';   // eMail From addressee {a valid email}
