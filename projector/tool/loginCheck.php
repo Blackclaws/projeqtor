@@ -102,6 +102,8 @@
         $prj=new Project($obj->parameterValue);
         if ($prj->name!=null and $prj->name!='') {
             $_SESSION['project']=$obj->parameterValue;
+        } else {
+          $_SESSION['project']='*';
         }
       } else {
         $_SESSION[$obj->parameterCode]=$obj->parameterValue;

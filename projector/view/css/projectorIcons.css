@@ -3,13 +3,13 @@
 /* ICONS                                                                           */
 /* =============================================================================== */
 
-.iconDecisionType32 { background-image: url(images/iconDecisionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconDecisionType22 { background-image: url(images/iconDecisionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconDecisionType16 { background-image: url(images/iconDecisionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconAction32 { background-image: url(images/iconAction32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAction22 { background-image: url(images/iconAction22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAction16 { background-image: url(images/iconAction16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconDecisionTypeType32 { background-image: url(images/iconDecisionTypeType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconDecisionTypeType22 { background-image: url(images/iconDecisionTypeType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconDecisionTypeType16 { background-image: url(images/iconDecisionTypeType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconActionType32 { background-image: url(images/iconActionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActionType22 { background-image: url(images/iconActionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActionType16 { background-image: url(images/iconActionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconAccessProfile32 { background-image: url(images/iconAccessProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconAccessProfile22 { background-image: url(images/iconAccessProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -103,6 +103,10 @@
 .iconListOfValues22 { background-image: url(images/iconListOfValues22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconListOfValues16 { background-image: url(images/iconListOfValues16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconMail32 { background-image: url(images/iconMail32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMail22 { background-image: url(images/iconMail22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMail16 { background-image: url(images/iconMail16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconMeeting32 { background-image: url(images/iconMeeting32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconMeeting22 { background-image: url(images/iconMeeting22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMeeting16 { background-image: url(images/iconMeeting16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -194,6 +198,10 @@
 .iconStatus32 { background-image: url(images/iconStatus32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconStatus22 { background-image: url(images/iconStatus22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconStatus16 { background-image: url(images/iconStatus16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconStatusMail32 { background-image: url(images/iconStatusMail32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconStatusMail22 { background-image: url(images/iconStatusMail22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconStatusMail16 { background-image: url(images/iconStatusMail16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconTeam32 { background-image: url(images/iconTeam32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTeam22 { background-image: url(images/iconTeam22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

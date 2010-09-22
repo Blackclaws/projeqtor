@@ -142,7 +142,7 @@ class User extends SqlElement {
       $result .=  '  if (email==null || email=="") { ';
       $result .=  '    showAlert("' . i18n('emailMandatory') . '");';
 	  $result .=  '  } else {';
-      $result .=  '    loadContent("../tool/sendMail.php","resultDiv","objectForm",false);';
+      $result .=  '    loadContent("../tool/sendMail.php","resultDiv","objectForm",true);';
 	  $result .=  '  }';	
       $result .= '</script>';
       $result .= '</button>';

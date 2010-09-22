@@ -46,7 +46,7 @@ class History extends SqlElement {
    * @return boolean true if save is OK, false either
    */
   public static function store ($refType, $refId, $operation, $colName=null, $oldValue=null, $newValue=null) {
-    $user=$_SESSION['user'];
+    $user=(array_key_exists('user',$_SESSION))?$_SESSION['user']:new User();
     $hist=new History();
     $hist->refType=$refType;
     $hist->refId=$refId;

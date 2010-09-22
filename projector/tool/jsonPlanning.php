@@ -2,8 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-  require_once "../tool/projector.php";
-  
+  require_once "../tool/projector.php";  
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
@@ -20,15 +19,21 @@
   $queryWhere='';
   $queryOrderBy='';
   $idTab=0;
-
   if (! array_key_exists('idle',$_REQUEST) ) {
     $queryWhere= $table . ".idle=0 ";
   }
-  if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
-      if ($_SESSION['project']!='*') {
+  if (array_key_exists('idProject',$_REQUEST) ) {
+    $queryWhere.= ($queryWhere=='')?'':' and ';
+    if ($_REQUEST['idProject']!=' ') {
+      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+    } else {
+      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
+    }
+  } else  if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
+      //if ($_SESSION['project']!='*') {
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
-      }
+      //}
   }
   
   if ($accessRightRead=='NO') {
@@ -59,7 +64,7 @@
        . ' from ' . $queryFrom
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
-
+//echo $query;
   $result=Sql::query($query);
   $nbRows=0;
   if ($print) {
@@ -102,6 +107,10 @@
     if (array_key_exists('startDate',$_REQUEST)) {
       $startDate=$_REQUEST['startDate'];
     }
+    $endDate='';
+    if (array_key_exists('endDate',$_REQUEST)) {
+      $endDate=$_REQUEST['endDate'];
+    }
     $format='day';
     if (array_key_exists('format',$_REQUEST)) {
       $format=$_REQUEST['format'];
@@ -124,7 +133,7 @@
     if (Sql::$lastQueryNbRows > 0) {
       $resultArray=array();
       while ($line = Sql::fetchLine($result)) {
-        $pstart="";
+        $pStart="";
         $pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
         $pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
         $pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
@@ -143,6 +152,9 @@
       }
       if ($minDate<$startDate) {
         $minDate=$startDate;
+      }
+      if ($endDate and $maxDate>$endDate) {
+        $maxDate=$endDate;
       }
       if ($format=='day' or $format=='week') {   
         $minDate=addDaysToDate($minDate,-1);

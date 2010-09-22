@@ -21,6 +21,9 @@ class RiskType extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
+  private static $_fieldsAttributes=array("name"=>"required", 
+                                          "idWorkflow"=>"required");
+  
   private static $_databaseTableName = 'type';
     
   private static $_databaseCriteria = array('scope'=>'Risk');
@@ -55,6 +58,14 @@ class RiskType extends SqlElement {
     return self::$_layout;
   }
 
+    /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
+  
     /** ========================================================================
    * Return the specific databaseTableName
    * @return the databaseTableName

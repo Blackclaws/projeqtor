@@ -102,7 +102,6 @@ INSERT INTO `${prefix}workflowstatus` (idWorkflow,idStatusFrom,idStatusTo,idProf
 (1,1,4,4,1),
 (1,1,4,1,1),
 (1,1,4,7,1),
-(2,9,3,6,1),
 (3,1,10,3,1),
 (3,1,10,4,1),
 (3,1,3,3,1),

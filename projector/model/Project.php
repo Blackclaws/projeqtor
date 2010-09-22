@@ -370,7 +370,7 @@ class Project extends SqlElement {
    */
   public function control(){
     $result="";
-    if ($this->id==$this->idProject) {
+    if ($this->id and $this->id==$this->idProject) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
     } else if ($this->ProjectPlanningElement and $this->ProjectPlanningElement->id){
       $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'Project','refId'=>$this->idProject));

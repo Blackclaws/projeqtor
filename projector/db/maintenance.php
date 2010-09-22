@@ -1,5 +1,4 @@
 <?php
-
 $maintenance=true;
 // Version History : starts at 0.3.0 with clean database (before scripts are empty)
 $versionHistory = array(
@@ -13,6 +12,13 @@ $versionHistory = array(
   "V1.0.0",
   "V1.1.0",
   "V1.2.0");
+$versionParameters =array(
+  'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
+                 'paramMailSmtpPort'=>'25',
+                 'paramMailSendmailPath'=>null,
+                 'paramMailTitle'=>'[Project\'Or RIA] ${item} #${id} moved to status "${status}"',
+                 'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to "${status}"',
+                 'paramMailShowDetail'=>'true' ) );
 $SqlEndOfCommand=";";
 $SqlComment="--";
    
@@ -43,6 +49,18 @@ foreach ($versionHistory as $vers) {
     $nbErrors+=runScript($vers);
   }
 }
+
+if ($currVersion=='0.0.0') {
+  debugLog ("create default project");
+  $proj=new Project();
+  $proj->color='#0000FF';
+  $proj->description='Default project' . "\n" .
+                     'For example use only.' . "\n" .
+                     'Remove or rename this project when initializing your own data.';
+  $proj->name='Default project';
+  $result=$proj->save();
+  debugLog($result);
+}
 Sql::saveDbVersion($version);
 traceLog('=====================================');
 traceLog("");
@@ -63,8 +81,8 @@ echo "<br/>____________________________________________";
 
 
 function runScript($vers) {
-  global $paramDbName, $paramDbPrefix;
-  set_time_limit(60);
+  global $paramDbName, $paramDbPrefix, $versionParameters, $parametersLocation;
+  set_time_limit(300);
   traceLog("=====================================");
   traceLog("");
   traceLog("VERSION " . $vers);
@@ -152,6 +170,18 @@ function runScript($vers) {
           $query="";
         }
     }
+    if (array_key_exists($vers,$versionParameters)) {
+      $nbParam=0;
+      write($parametersLocation,'// New parameters ' . $vers . "\n");
+      foreach($versionParameters[$vers] as $id=>$val) {
+        $nbParam++;
+        write($parametersLocation, '$' . $id . ' = \'' . addslashes($val) . '\';');
+        write($parametersLocation, "\n");
+        traceLog('Parameter $' . $id . ' added');
+      }
+      echo i18n('newParameters', array($nbParam, $vers));
+      echo '<br/>' . "\n";
+    }
     fclose($handle);
     traceLog("");
     traceLog("DATABASE UPDATED");
@@ -165,5 +195,8 @@ function runScript($vers) {
   return $nbError;
 }
 
+  function write($file,$msg) {
+    return error_log($msg,3,$file);
+  }
 
 ?>

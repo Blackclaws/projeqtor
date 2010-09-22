@@ -168,6 +168,9 @@ class Workflow extends SqlElement {
   
   public function save() {
     global $_REQUEST;
+    
+    set_time_limit(300);
+    
     if ($this->workflowUpdate and $this->workflowUpdate!="[     ]" and $this->workflowUpdate!="[      ]") {
       $old = new Workflow($this->id);
       if (! $old->workflowUpdate or $old->workflowUpdate=="[      ]") {

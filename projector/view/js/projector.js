@@ -174,7 +174,9 @@ function changeLocale(locale) {
 	  	url: "../tool/saveDataToSession.php?id=currentLocale&value=" + locale,
 	  	load: function(data,args) {
 	  	  action = function() { window.location=("../view/main.php"); };
-	  	  showConfirm (i18n('confirmLocaleChange'), action); },
+	  	  //showConfirm (i18n('confirmLocaleChange'), action); 
+	  	  showInfo(i18n('infoLocaleChange'));
+	      },
 	  	error: function(error,args){}
 	  });
 	}

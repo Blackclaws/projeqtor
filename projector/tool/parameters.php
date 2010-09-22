@@ -32,6 +32,19 @@ $paramDbPrefix='';                              // Database prefix for table nam
 $paramMailSender='default@toolware.fr';         // eMail From addressee {a valid email}
 $paramMailReplyTo='default@toolware.fr';        // eMail address to reply to {a valid email}
 $paramAdminMail='default@ltoolware.fr';         // eMail of administrator {a valid email}
+// NEW IN V1.2.0
+  $paramMailSmtpServer='localhost';             // SMTP Server (default is localhost)
+  $paramMailSmtpPort='25';                      // SMTP Port (default is 25)
+  $paramMailSendmailPath=null;                  // sendmail program path, to set only on issue to send mails
+  $paramMailTitle='[Project\'Or RIA] ${item} #${id} moved to status "${status}"'; // Title of the mail 
+  $paramMailMessage='The status of ${item} #${id} [${name}] has changed to "${status}"'; // body of the mail
+  // for $paramMailTitle and $paramMailMessage, subtituation variables can be used :
+  // ${id} : the id of the element
+  // ${item} : the class of the element
+  // ${status} : the new status of the element
+  // ${name} : the name of the element
+  $paramMailShowDetail=true; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
+// NEW IN V1.2.0
 
 // === user management
 $paramDefaultPassword='projector';              // default password {any string}

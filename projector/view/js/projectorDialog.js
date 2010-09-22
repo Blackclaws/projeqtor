@@ -154,17 +154,25 @@ function showPrint (page, listPrint, planningPrint) {
 	id=dojo.byId('objectId').value;
 	var params="";
 	if (listPrint) {
-		if (dijit.byId("listShowIdle").attr('checked')) {
-		  params+="&idle=true";
+		if (dijit.byId("listShowIdle")) {
+			if (dijit.byId("listShowIdle").attr('checked')) {
+			  params+="&idle=true";
+			}
 		}
-		if (dijit.byId("listIdFilter").attr('value')) {
-		  params+="&listIdFilter="+encodeURIComponent(dijit.byId("listIdFilter").attr('value'));
+		if (dijit.byId("listIdFilter")) {		
+			if (dijit.byId("listIdFilter").attr('value')) {
+			  params+="&listIdFilter="+encodeURIComponent(dijit.byId("listIdFilter").attr('value'));
+			}
 		}
-		if (dijit.byId("listNameFilter").attr('value')) {
-		  params+="&listNameFilter="+encodeURIComponent(dijit.byId("listNameFilter").attr('value'));
+		if (dijit.byId("listNameFilter")) {		
+			if (dijit.byId("listNameFilter").attr('value')) {
+			  params+="&listNameFilter="+encodeURIComponent(dijit.byId("listNameFilter").attr('value'));
+			}
 		}
-		if (dijit.byId("listTypeFilter").attr('value')) {
-		  params+="&objectType="+encodeURIComponent(dijit.byId("listTypeFilter").attr('value'));
+		if (dijit.byId("listTypeFilter")) {		
+			if (dijit.byId("listTypeFilter").attr('value')) {
+				params+="&objectType="+encodeURIComponent(dijit.byId("listTypeFilter").attr('value'));
+			}
 		}
 	} else if (planningPrint){
 		if (dijit.byId("startDatePlanView").attr('value')) {

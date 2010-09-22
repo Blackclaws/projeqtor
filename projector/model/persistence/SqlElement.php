@@ -188,11 +188,35 @@ abstract class SqlElement {
     // select operation to be executed
     $control=$this->control();
     if ($control=="OK") {
+      $statusChanged=false;
       if ($this->id != null) {
-        return $this->updateSqlElement();
+        if (property_exists($this, 'idStatus')) {
+          if ($this->idStatus) {
+            $class=get_class($this);
+            $old=new $class($this->id);
+            if ($old->idStatus!=$this->idStatus) {
+              $statusChanged=true;
+            }            
+          }
+        }
+        $returnValue=$this->updateSqlElement();
       } else {
-        return $this->insertSqlElement();
+        if (property_exists($this, 'idStatus')) {
+          $statusChanged=true;
+        }
+        $returnValue=$this->insertSqlElement();
       }
+      if ($statusChanged and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
+        $mailResult=$this->sendMailIfMailable();
+        if ($mailResult) {
+          $returnValue=str_replace('${mailMsg}',' - ' . i18n('mailSent'),$returnValue);
+        } else {
+          $returnValue=str_replace('${mailMsg}','',$returnValue);
+        }
+      } else {
+        $returnValue=str_replace('${mailMsg}','',$returnValue);
+      }
+      return $returnValue;
     } else {
       // errors on control => don't save, display error message
       $returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
@@ -282,6 +306,9 @@ abstract class SqlElement {
       $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultInserted');
     } else {
       $returnValue=Sql::$lastQueryErrorMessage;
+    }
+    if ($returnStatus=="OK") {
+      $returnValue .= '${mailMsg}';
     }
     $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
     $returnValue .= '<input type="hidden" id="lastOperation" value="insert" />';
@@ -400,6 +427,9 @@ abstract class SqlElement {
       if ($returnStatus=="OK") {
         $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultUpdated');
       }
+    }
+    if ($returnStatus=="OK") {
+      $returnValue .= '${mailMsg}';
     }
     // Prepare return data
     $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
@@ -1211,7 +1241,7 @@ abstract class SqlElement {
   }
 
   /** =========================================================================
-   * control data corresponding to Model constraints
+   * control data corresponding to Model constraints, before saving an object
    * @param void
    * @return "OK" if controls are good or an error message 
    *  must be redefined in the inherited class
@@ -1243,7 +1273,13 @@ abstract class SqlElement {
     }
     return $result;
   }
-  
+
+  /** =========================================================================
+   * control data corresponding to Model constraints, before deleting an object
+   * @param void
+   * @return "OK" if controls are good or an error message 
+   *  must be redefined in the inherited class
+   */
   public function deleteControl(){
     $result="";
     $objects="";
@@ -1285,8 +1321,143 @@ abstract class SqlElement {
     return $result;
   }
   
+  /** =========================================================================
+   * Return the menu string for the object (from its class)
+   * @param void
+   * @return a string  
+   */
   public function getMenuClass() {
     return "menu" . get_class($this);
+  }
+  
+  /** =========================================================================
+   * Send a mail on status change (if object is "mailable")
+   * @param void
+   * @return status of mail, if sent
+   */
+  public function sendMailIfMailable() {
+    if (get_class($this)=='History') {
+      return false; // exit : not for History
+    }
+    $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>get_class($this)));
+    if (! $mailable or ! $mailable->id) {
+      return false; // exit if not mailable object
+    }
+    if (! property_exists($this, 'idStatus')) {
+      return false; // exit if object has not idStatus 
+    }
+    if (! $this->idStatus) {
+      return false; // exit if status not set
+    }
+    $crit=array();
+    $crit['idMailable']=$mailable->id;
+    $crit['idStatus']=$this->idStatus;
+    $crit['idle']='0';
+    $statusMail=SqlElement::getSingleSqlElementFromCriteria('StatusMail', $crit);
+    if (! $statusMail or ! $statusMail->id) {
+      return false; // exit not a status for mail sending (on disabled) 
+    }
+    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0) {
+      return false; // exit not a status for mail sending (or disabled) 
+    }
+    $dest="";
+    if ($statusMail->mailToUser) {
+      if (property_exists($this,'idUser')) {
+        $user=new User($this->idUser);
+        $newDest = "###" . $user->email . "###";
+        if ($user->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
+    }
+    if ($statusMail->mailToResource) {
+      if (property_exists($this, 'idResource')) {
+        $resource=new Resource($this->idResource);
+        $newDest = "###" . $resource->email . "###";
+        if ($resource->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }    
+    }
+    if ($statusMail->mailToProject) {
+      $aff=new Affectation();
+      $crit=array('idProject'=>$this->idProject, 'idle'=>'0');
+      $affList=$aff->getSqlElementsFromCriteria($crit, false);
+      if ($affList and count($affList)>0) {
+        foreach ($affList as $aff) {
+          $resource=new Resource($aff->idResource);
+          $newDest = "###" . $resource->email . "###";
+          if ($resource->email and strpos($dest,$newDest)===false) {
+            $dest.=($dest)?', ':'';
+            $dest.= $newDest;
+          }
+        }
+      }
+    }
+    if ($dest=="") {
+      return false; // exit no addressees 
+    }
+    $dest=str_replace('###','',$dest);
+    global $paramMailTitle, $paramMailMessage, $paramMailShowDetail;
+    // substituable items
+    $item=i18n(get_class($this));
+    $id=$this->id;
+    $name=$this->name;
+    $status=SqlList::getNameFromId('Status', $this->idStatus);
+    $arrayFrom=array('${item}','${id}','${name}','${status}');
+    $arrayTo=array($item,$id,$name,$status);
+    $title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
+    $message=str_replace($arrayFrom, $arrayTo, $paramMailMessage);
+    $nx='<br/>' . "\n" . '<br/>' . "\n" . '<div style="font-weight: bold;">';
+    $xn='</div><br/>' . "\n";
+    $hx='<div style="text-decoration:underline;font-weight: bold;">';
+    $xh=' :</div>' . "\n";
+    $tx='';
+    $xt='<br/><br/>' . "\n";
+    if ($paramMailShowDetail) {
+      $message.= $nx . $item . " #" . $id . $xn;
+
+      $message.=$hx . $this->getColCaption('idProject') . $xh;
+      $message.=$tx . SqlList::getNameFromId('Project', $this->idProject) . $xt;
+
+      $message.=$hx . $this->getColCaption('id' . get_class($this) . 'Type') . $xh;
+      $message.=$tx . SqlList::getNameFromId(get_class($this) . 'Type', $this->{'id' . get_class($this) . 'Type'}) . $xt;
+
+      $message.=$hx . $this->getColCaption('name') . $xh;
+      $message.=$tx . htmlEncode($this->name,'withBR') . $xt;
+
+      if (property_exists($this,'description')) {
+        $message.=$hx . $this->getColCaption('description') . $xh;
+        $message.=$tx . htmlEncode($this->description,'withBR') . $xt;
+      }
+      $message.=$hx . $this->getColCaption('idUser') . $xh;
+      $message.=$tx . SqlList::getNameFromId('User', $this->idUser) . $xt;
+
+      $message.=$hx . $this->getColCaption('idStatus') . $xh;
+      $message.=$tx . $status . $xt;
+
+      $message.=$hx . $this->getColCaption('idResource') . $xh;
+      $message.=$tx . SqlList::getNameFromId('Resource', $this->idResource) . $xt;
+
+      if (property_exists($this,'result')) {
+        $message.=$hx . $this->getColCaption('result') . $xh;
+        $message.=$tx . htmlEncode($this->result,'withBR') . $xt;
+      }
+    }
+    $message='<html>' . "\n" .
+      '<head>'  . "\n" .
+      '<title>' . $title . '</title>' . "\n" .
+      '</head>' . "\n" .
+      '<body>' . "\n" .
+      $message . "\n" .
+      '<body>' . "\n" .
+      '</html>';
+    $message = wordwrap($message, 70); // wrapt text so that line do not exceed 70 cars per line
+    $resultMail=sendMail($dest, $title, $message, $this);
+ 
+    return $resultMail;
   }
   
 }

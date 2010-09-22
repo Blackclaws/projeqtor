@@ -60,7 +60,7 @@
             unselectAllRows('objectGrid');
 		    loadContent("../tool/copyObject.php", "resultDiv", 'objectForm', true);
           };
-		  showConfirm(i18n("confirmCopy", new Array("<?php echo $_REQUEST['objectClass'];?>",dojo.byId('id').value)) ,action);
+		  showConfirm(i18n("confirmCopy", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value)) ,action);
         </script>
       </button>    
 
@@ -86,7 +86,7 @@
             unselectAllRows('objectGrid');
 		    loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
           };
-		  showConfirm(i18n("confirmDelete", new Array("<?php echo $_REQUEST['objectClass'];?>",dojo.byId('id').value)) ,action);
+		  showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value)) ,action);
         </script>
       </button>    
       

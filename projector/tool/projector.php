@@ -46,7 +46,7 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.2.0";            // Version of application : Major / Minor / Release
+$version="V1.1.0";            // Version of application : Major / Minor / Release
 $build="0019";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
@@ -397,11 +397,15 @@ function securityCheckDisplayMenu($idMenu) {
  * selected Project is taken into account
  * @return the list of projects as a string of id
  */
-function getVisibleProjectsList($limitToActiveProjects=true) { 
+function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) { 
   if ( ! array_key_exists('project', $_SESSION)) {
     return '( 0 )';
   }
-  $project=$_SESSION['project'];
+  if ($idProject) {
+    $project=$idProject;
+  } else {
+    $project=$_SESSION['project'];
+  }
   $prj=new Project($project);
   $subProjectsList=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
   $result='(0';
@@ -422,16 +426,60 @@ function getVisibleProjectsList($limitToActiveProjects=true) {
  * @param $message the main body of the message
  * @return unknown_type
  */
-function sendMail($to, $title, $message)  {
-  global $paramMailSender, $paramMailReplyTo;
+function sendMail($to, $title, $message, $object=null)  {
+  global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath;
+  // Save data of the mail
+  $mail=new Mail();
+  $mail->idUser=$_SESSION['user']->id;
+  if ($object) {
+    $mail->idProject=$object->idProject;
+    $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
+    $mail->refId=$object->id;
+    $mail->idStatus=$object->idStatus;
+  }
+  $mail->mailDateTime=date('Y-m-d G:i');
+  $mail->mailTo=$to;
+  $mail->mailTitle=$title;
+  $mail->mailBody=$message;
+  $mail->mailStatus='WAIT';
+  $mail->idle='0';
+  $mail->save();  
+  // Send then mail
   $headers  = 'MIME-Version: 1.0' . "\r\n";
   $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
   $headers .= 'From: ' . $paramMailSender . "\r\n";
   $headers .= 'Reply-To: ' . $paramMailReplyTo . "\r\n";
   $headers .= 'X-Mailer: PHP/' . phpversion();
-  error_reporting(E_ERROR);
-  return mail($to,$title,$message,$headers);
+  if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
+    ini_set('SMTP',$paramMailSmtpServer);
+  }
+  if (isset($paramMailSmtpPort) and $paramMailSmtpPort) {
+    ini_set('smtp_port',$paramMailSmtpPort);
+  }
+  if (isset($paramMailSendmailPath) and $paramMailSendmailPath) {
+    ini_set('sendmail_path',$paramMailSendmailPath);
+  }
+  
+  error_reporting(E_ERROR);  
+  restore_error_handler();
+  $resultMail=mail($to,$title,$message,$headers);
+  $resultMail=true; // For testing purpose only
   error_reporting(E_ALL);
+  set_error_handler('errorHandler');
+  if (! $resultMail) {
+    errorLog("Error sending mail");
+    $smtp=ini_get('SMTP');
+    errorLog("   SMTP Server : " . $smtp);
+    $port=ini_get('smtp_port');
+    errorLog("   SMTP Port : " . $port);
+    $path=ini_get('sendmail_path');
+    errorLog("   Sendmail path : " . $path);
+    errorLog("   Mail stored in Database : #" . $mail->id);
+  }
+  // save the status of the sending
+  $mail->mailStatus=($resultMail)?'OK':'ERROR';
+  $mail->save(); 
+  return $resultMail;
 }
 
 /** ===========================================================================

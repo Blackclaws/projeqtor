@@ -82,7 +82,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '<td class="detail"><label></label></td>' . $cr; // Empty label, to have column header in front of columns
       for ($i=0 ; $i<$internalTableCols ; $i++) { // draw table headers
         echo '<td class="detail">';
-        echo '<input type="text" class="tabLabel" value="' . htmlEncode($obj->getColCaption($val[$i])) . '" tabindex="-1" />' . $cr;
+        echo '<input type="text" class="tabLabel" style="text-align:left;" value="' . htmlEncode($obj->getColCaption($val[$i])) . '" tabindex="-1" />' . $cr;
         if ( $i < $internalTableCols-1) { echo '</td>'; }
       }
       // echo '</tr>'; NOT TO DO HERE -  WILL BE DONE AFTER
@@ -242,6 +242,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($print) {   //================================================ Printing areas
         if ($hide) { // hidden field
           // nothing
+        } else  if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
+        // Display full HTML ================================================== Hidden field
+          //echo '<div class="displayHtml">';
+          echo $val;
+          //echo '</div>';
         } else if ($col=='id') { // id
           echo '#' . $val;
         } else if ($col=='password') {
@@ -288,6 +293,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
         echo $name;
         echo ' value="' . htmlEncode($val) . '" ></div>';
+      } else if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
+        // Display full HTML ================================================== Hidden field
+        echo '<div class="displayHtml">';
+        echo $val;
+        echo '</div>';
       } else if ($col=='id') {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
@@ -808,7 +818,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   }
   echo '<td class="linkHeader" width="5%">' . i18n('colId') . '</td>';
   echo '<td class="linkHeader" width="65%">' . i18n('colName') . '</td>';
-  echo '<td class="linkHeader" width="15%">' . i18n('colIdStatus'). '</td>';
+  if (property_exists($classLink, 'idStatus')) {
+    echo '<td class="linkHeader" width="15%">' . i18n('colIdStatus'). '</td>';
+  }
   echo '</tr>';
   foreach($list as $link) {
     $linkObj=null;
@@ -830,10 +842,12 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     }
     echo '<td class="linkData">#' . $linkObj->id  . '</td>';
     echo '<td class="linkData">' . $linkObj->name . '</td>';
-    $objStatus=new Status($linkObj->idStatus);
-    $color=$objStatus->color;
-    $foreColor=getForeColor($color);
-    echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
+    if (property_exists($linkObj, 'idStatus')) {
+      $objStatus=new Status($linkObj->idStatus);
+      $color=$objStatus->color;
+      $foreColor=getForeColor($color);
+      echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
+    }
     echo '</tr>';
   }
   /*echo '<tr>';
@@ -1123,6 +1137,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   $displayHistory='NO';
   if (! $print and array_key_exists('displayHistory',$_SESSION)) {
     $displayHistory=$_SESSION['displayHistory'];
+  }
+  if ($obj and property_exists($obj, '_noHistory')) {
+    $displayHistory='NO';
   }
   if (  ( ! $noselect) and $displayHistory != 'NO') { 
     echo '<br/>';

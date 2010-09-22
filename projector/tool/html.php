@@ -268,9 +268,10 @@ function htmlEncode($val,$context="default") {
     return $val;
   } else if ($context=='print') {
     return nl2br(htmlentities($val,ENT_COMPAT,'UTF-8'));
+  } else if ($context=='withBR') {
+    return nl2br(htmlspecialchars($val,ENT_QUOTES,'UTF-8'));
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
-  //return nl2br(htmlentities($val,ENT_QUOTES,'UTF-8'));
 }
 
 /**

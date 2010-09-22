@@ -72,6 +72,49 @@ $value['AdminMail'] = "a valid email of the administratror (will appear on error
 $pname['AdminMail'] = 'paramAdminMail';
 $ctrls['AdminMail'] = 'email';
 
+$param['MailSmtpServer'] = 'localhost';                              
+$label['MailSmtpServer'] = "SMTP Server";
+$value['MailSmtpServer'] = "address of SMTP (mail) server, may be left blank (default is 'localhost')";
+$pname['MailSmtpServer'] = 'paramMailSmtpServer';
+$ctrls['MailSmtpServer'] = '';
+
+$param['MailSmtpPort'] = '25';                              
+$label['MailSmtpPort'] = "SMTP Port";
+$value['MailSmtpPort'] = "port to talk to SMTP (mail) server (default is '25')";
+$pname['MailSmtpPort'] = 'paramMailSmtpPort';
+$ctrls['MailSmtpPort'] = '';
+
+$param['MailSendmailPath'] = '';                              
+$label['MailSendmailPath'] = "Sendmail program path";
+$value['MailSendmailPath'] = "to set only on issue to send mails, or not using default sendmail";
+$pname['MailSendmailPath'] = 'paramMailSendmailPath';
+$ctrls['MailSendmailPath'] = '';
+
+$param['crlf08']='';
+$label['crlf08']='crlf';
+
+$param['MailTitle'] = '[Project\'Or RIA] ${item} #${id} moved to status "${status}"';                              
+$label['MailTitle'] = "Automatic mail title";
+$value['MailTitle'] = 'title of automatic mails, may content ${item}, ${id}, ${status}, ${name}';
+$pname['MailTitle'] = 'paramMailTitle';
+$ctrls['MailTitle'] = '';
+
+$param['MailMessage'] = 'The status of ${item} #${id} [${name}] has changed to "${status}"';                              
+$label['MailMessage'] = "Automatic mail message";
+$value['MailMessage'] = 'message of automatic mails, may content ${item}, ${id}, ${status}, ${name}';
+// ${id} : the id of the element
+// ${item} : the class of the element
+// ${status} : the new status of the element
+// ${name} : the name of the element
+$pname['MailMessage'] = 'paramMailMessage';
+$ctrls['MailMessage'] = '';
+
+$param['MailShowDetail'] = 'true"';                              
+$label['MailShowDetail'] = "Automatic mail show detail";
+$value['MailShowDetail'] = "'true' or 'false', set to true to add detail of item in automatic mail message";
+$pname['MailShowDetail'] = 'paramMailShowDetail';
+$ctrls['MailShowDetail'] = '=false=true=';
+
 $param['crlf02']='';
 $label['crlf02']='crlf';
 
