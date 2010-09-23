@@ -46,7 +46,7 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.1.0";            // Version of application : Major / Minor / Release
+$version="V1.2.0";            // Version of application : Major / Minor / Release
 $build="0019";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
@@ -425,7 +425,7 @@ function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) {
  * @param $title title of the message
  * @param $message the main body of the message
  * @return unknown_type
- */
+ */ 
 function sendMail($to, $title, $message, $object=null)  {
   global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath;
   // Save data of the mail
@@ -463,7 +463,6 @@ function sendMail($to, $title, $message, $object=null)  {
   error_reporting(E_ERROR);  
   restore_error_handler();
   $resultMail=mail($to,$title,$message,$headers);
-  $resultMail=true; // For testing purpose only
   error_reporting(E_ALL);
   set_error_handler('errorHandler');
   if (! $resultMail) {
@@ -947,5 +946,21 @@ function getEaster ($iYear = null) {
 
 function numberOfDaysOfMonth($dateValue) {
   return date('t', strtotime ($dateValue) );    
+}
+
+function getBooleanValue($val) {
+  if ($val===true) {return true;}
+  if ($val===false) {return false;}
+  if ($val=='true') {return true;}
+  if ($val=='false') {return false;}
+  return false;
+}
+
+function getBooleanValueAsString($val) {
+  if (getBooleanValue($val)) {
+    return 'true';
+  } else {
+    return 'false';
+  }
 }
 ?>

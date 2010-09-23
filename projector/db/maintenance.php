@@ -16,8 +16,8 @@ $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
                  'paramMailSendmailPath'=>null,
-                 'paramMailTitle'=>'[Project\'Or RIA] ${item} #${id} moved to status "${status}"',
-                 'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to "${status}"',
+                 'paramMailTitle'=>'[Project\'Or RIA] ${item} #${id} moved to status ${status}',
+                 'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to ${status}',
                  'paramMailShowDetail'=>'true' ) );
 $SqlEndOfCommand=";";
 $SqlComment="--";
@@ -32,7 +32,11 @@ traceLog("");
 traceLog("DataBase actual Version = " . $currVersion );
 traceLog("ProjectOR actual Version = " . $version );
 traceLog("");
-if ($currVersion=="") {$currVersion='0.0.0';}
+if ($currVersion=="") {
+  $currVersion='0.0.0';
+  // if no current version, parameters are set through config.php
+  $versionParameters=array(); // Clear $versionParameter to avoid dupplication of parameters
+}
 $arrVers=explode('.',substr($currVersion,1));
 $currVer=$arrVers[0];
 $currMaj=$arrVers[1];

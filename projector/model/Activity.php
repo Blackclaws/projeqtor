@@ -230,10 +230,12 @@ class Activity extends SqlElement {
     
     $oldResource=null;
     $oldIdle=null;
+    $oldIdProject=null;
     if ($this->id) {
       $old=new Activity($this->id);
       $oldResource=$old->idResource;
       $oldIdle=$old->idle;
+      $oldIdProject=$old->idProject;
     }
     
     $this->ActivityPlanningElement->refName=$this->name;
@@ -251,6 +253,7 @@ class Activity extends SqlElement {
     } 
     $result = parent::save();
     
+    
     if ( $this->idResource and trim($this->idResource) != ''
       and ! $oldResource) {
       // Add assignment for responsible
@@ -267,17 +270,32 @@ class Activity extends SqlElement {
       $ass->save();   
     }
 
-    // Change idle value => update idle for assignments
-     if ( $this->idle !=  $oldIdle) {
+    // Change idle or idProject value => update idle and idProject for assignments
+    // TODO : check if Project work values are to be updated ?
+     if ( ($this->idle !=  $oldIdle ) 
+       or ($this->idProject != $oldIdProject ) ) {
       // Add assignment for responsible
       $ass=new Assignment();
       $crit=array("refType"=>"Activity", "refId"=>$this->id);
       $assList=$ass->getSqlElementsFromCriteria($crit,false);
       foreach($assList as $ass) {
         $ass->idle=$this->idle;
-        $ass->save();   
+        $ass->idProject=$this->idProject;
+        $ass->save();
+        // Change idProject value => update idProject for work
+        // update not done to PlannedWork : new planning must be calculated
+        if ($this->idProject != $oldIdProject ) {
+          $work=new Work();
+          $crit=array("refType"=>"Activity", "refId"=>$this->id);
+          $workList=$work->getSqlElementsFromCriteria($crit,false);
+          foreach($workList as $work) {
+            $work->idProject=$this->idProject;
+            $work->save();
+          } 
+        }   
       }      
     }
+    
     
     return $result;
   }

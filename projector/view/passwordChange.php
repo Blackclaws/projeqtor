@@ -20,7 +20,7 @@
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
-              isDebug: <?php echo $paramDebugMode;?>'></script>
+              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
@@ -32,7 +32,7 @@
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
     dojo.require("dojox.form.PasswordValidator");
-    var fadeLoading=<?php echo $paramFadeLoadingMode;?>;
+    var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       hideWait();

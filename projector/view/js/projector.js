@@ -236,8 +236,10 @@ function cleanContent(destination) {
 	var contentWidget = dijit.byId(destination);
 	if ( ! (contentNode && contentWidget) ) {
 		return;
-	}	
-	contentWidget.attr('content',null);
+	}
+	if (contentWidget) {
+		contentWidget.attr('content',null);
+	}
 	return;
 
 }
@@ -287,6 +289,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 			  // update the destination when ajax request is received
 			  //cleanContent(destination);
         var contentWidget = dijit.byId(destination);
+        if (! contentWidget) {return};
       	contentWidget.attr('content',data);
       	if (destination=="detailDiv" || destination=="centerDiv") {
       		finaliseButtonDisplay();
@@ -348,6 +351,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   		// update the destination when ajax request is received
   		    //cleanContent(destination);
           var contentWidget = dijit.byId(destination);
+          if (! contentWidget) {return};
         	contentWidget.attr('content',data);
           var contentNode = dojo.byId(destination);
           if (destination=="detailDiv" || destination=="centerDiv" ) {
@@ -463,6 +467,7 @@ function finalizeMessageDisplay(destination, validationType) {
   	hideWait();
   	return;    
   }
+  if (! contentWidget) {return};
   // fetch last message type
   var message=contentWidget.attr('content');
   posdeb=message.indexOf('class="')+7;
@@ -529,7 +534,7 @@ function finalizeMessageDisplay(destination, validationType) {
 	  		if (zone && msg) {
 	  			zone.attr('content',msg.value);
 	  		}
-	  		unselectAllRows("objectGrid");
+	  		//unselectAllRows("objectGrid");
 	  		finaliseButtonDisplay();
 	  	}
 	  	if ( (grid || dojo.byId("GanttChartDIV")) && dojo.byId("detailFormDiv") && refreshUpdates=="YES" && lastOperation.value!="delete") {
@@ -876,7 +881,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
 	    }
 	  });
 	}
-	if (idProject!="" && idProject!="*") {
+	if (idProject!="" && idProject!="*" && dijit.byId("idProjectPlan")) {
 		dijit.byId("idProjectPlan").attr("value",idProject);
   }
 }
@@ -925,7 +930,16 @@ function beforequit() {
  * @return
  */
 function drawGantt() {
-	var startDateView=dijit.byId('startDatePlanView').attr('value');
+	if (dijit.byId('startDatePlanView')) {
+		var startDateView=dijit.byId('startDatePlanView').attr('value');
+	} else {
+		var startDateView=new Date();
+	}
+	if (dijit.byId('showWBS')) {
+		var showWBS=dijit.byId('showWBS').attr('checked');
+	} else {
+		var showWBS=null;
+	}
 	var gFormat="day";
 	if (g) {
 		gFormat=g.getFormat();
@@ -952,6 +966,7 @@ function drawGantt() {
     var items=store.items;
   	for (var i=0; i< items.length; i++) {
       var item=items[i];
+      var topId=(i==0)?'':item.topId;
       // pStart : start date of task 
       var pStart="";
       pStart=(item.initialStartDate!=" ")?item.initialStartDate:pStart;
@@ -976,8 +991,8 @@ function drawGantt() {
       var runScript="dojo.byId('objectClass').value='" + item.refType + "';";
       runScript+="dojo.byId('objectId').value='" + item.refId + "';";
       runScript+="loadContent('objectDetail.php','detailDiv','listForm');";
-      // display Name of the task 
-      var pName=item.wbs + " " + item.refName; // for testeing purpose, add wbs code
+      // display Name of the task      
+      var pName=( (showWBS)?item.wbs:'') + " " + item.refName; // for testeing purpose, add wbs code
       //var pName=item.refName;
       // display color of the task bar
       var pColor='50BB50';
@@ -989,14 +1004,15 @@ function drawGantt() {
       var pMile=(item.refType=='Milestone')?1:0;
       pClass=item.refType;
       //                        TaskItem(pID,     pName, pStart, pEnd, pColor, pLink,     pMile, pRes,    pComp,     pGroup, pParent,    pOpen, pDepend, Caption)
-  		g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress,     pGroup, item.topId, 1,     item.depend  ,    '' ,    pClass));
+  		g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress,     pGroup, topId, 1,     item.depend  ,    '' ,    pClass));
   	}
     g.Draw();	
     g.DrawDependencies();
   }
   else
   {
-    showAlert("Gantt chart not defined");
+    //showAlert("Gantt chart not defined");
+  	return;
   }
   // Refresh class and id
   var listId=dojo.byId('objectId');

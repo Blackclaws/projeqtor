@@ -193,6 +193,8 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 UPDATE `${prefix}habilitation` SET allowAccess=1
 WHERE idMenu=6;
+UPDATE `${prefix}habilitation` SET allowAccess=1
+WHERE idMenu=11 and idProfile in (1,3,4);
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
 ('Meeting', 'Steering Comitee', 10, 0, NULL, 7),

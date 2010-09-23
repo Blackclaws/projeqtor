@@ -43,13 +43,13 @@ $paramAdminMail='default@ltoolware.fr';         // eMail of administrator {a val
   // ${item} : the class of the element
   // ${status} : the new status of the element
   // ${name} : the name of the element
-  $paramMailShowDetail=true; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
+  $paramMailShowDetail='true'; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
 // NEW IN V1.2.0
 
 // === user management
 $paramDefaultPassword='projector';              // default password {any string}
 $paramPasswordMinLength=5;                      // min length for password {any integer}
-$lockPassword=false;                            // disable password change functionality (if set to true, only admin can reset password)
+$lockPassword='false';                            // disable password change functionality (if set to true, only admin can reset password)
 
 // === debugging
 $paramDebugMode='false';                        // Setup Dojo debugging mode {'true', 'false'}

@@ -26,8 +26,8 @@ $paramDbHost='localhost';                       // Database host (server name)
 $paramDbUser='root';                            // Database user to connect
 $paramDbPassword='mysql';                       // Database password for user
 $paramDbName='test';                       // Database schema name
-$paramDbDisplayName='ProjectOr test';                         // Name to be displayed    
-$paramDbPrefix='test_';                              // Database prefix for table names
+$paramDbDisplayName='ProjectOr Dev';                         // Name to be displayed    
+$paramDbPrefix='';                              // Database prefix for table names
 
 // === mail management
 $paramMailSender='support@toolware.fr';   // eMail From addressee {a valid email}
@@ -44,13 +44,13 @@ $paramAdminMail='support@toolware.fr';    // eMail of administrator {a valid ema
   // ${item} : the class of the element
   // ${status} : the new status of the element
   // ${name} : the name of the element
-  $paramMailShowDetail=true; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
+  $paramMailShowDetail='true'; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
 // NEW IN V1.2.0
  
 // === user management
 $paramDefaultPassword='projector';              // default password {any string}
 $paramPasswordMinLength=5;                      // min length for password {any integer}
-$lockPassword=false;                          // disable password change functionality (if set to true, only admin can reset password)
+$lockPassword='false';                          // disable password change functionality (if set to true, only admin can reset password)
 
 // === debugging
 $paramDebugMode='false';                        // Setup Dojo debugging mode {'true', 'false'}
@@ -72,5 +72,3 @@ $paramPathSeparator='\\';                        // Path separator, depending on
 // === log management
 $logFile='..\\..\\TEMP\\projector_${date}.log';      // Log file name. May contain ${date} to get 1 file a day
 $logLevel=3;                                   // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
-
-?>

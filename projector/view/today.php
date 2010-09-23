@@ -39,7 +39,8 @@
   
   function showProjects() {
     $user=$_SESSION['user'];
-    $prjLst=$user->getVisibleProjects();
+    $prjVisLst=$user->getVisibleProjects();
+    $prjLst=$user->getHierarchicalViewOfVisibleProjects();
     $showIdle=false;
     $showDone=false;
     if (array_key_exists('todayCountIdle',$_SESSION)) {
@@ -77,7 +78,8 @@
            '  <td class="messageHeader" width="5%">' . i18n('menuRisk') . '</td>' . 
            '  <td class="messageHeader" width="5%">' . i18n('menuIssue') . '</td>' . 
            '</tr>';   
-      foreach($prjLst as $id=>$name) {
+      foreach($prjLst as $sharpid=>$name) {
+        $id=substr($sharpid,1);
         $crit=array('idProject'=>$id);
         if ( ! $showIdle) {$crit['idle']='0';}
         if ( ! $showDone and ! $showIdle) {$crit['done']='0';}
@@ -116,21 +118,25 @@
         $wbs=$prj->ProjectPlanningElement->wbsSortable;
         $level=(strlen($wbs)+1)/4;
         $tab="";
-        //$tab=$wbs. "-" . $level . "-";
         for ($i=1;$i<$level;$i++) {
           $tab.='&nbsp;&nbsp;&nbsp;';
+          //$tab.='...';
+        }
+        $show=false;
+        if (array_key_exists($prj->id, $prjVisLst)) {
+          $show=true;
         }
         echo '<tr >' .
-             '  <td class="messageData">' . $tab . $name . '</td>' .
-             '  <td class="messageDataValue">' . $progress . '</td>' .
-             '  <td class="messageDataValue" NOWRAP>' . htmlFormatDate($endDate) . '</td>' .
-             '  <td class="messageDataValue">' . $late . '</td>' .
-             '  <td class="messageDataValue">' . $nbTickets . '</td>' .
-             '  <td class="messageDataValue">' . $nbActivities . '</td>' .
-             '  <td class="messageDataValue">' . $nbMilestones . '</td>' .
-             '  <td class="messageDataValue">' . $nbActions . '</td>' .
-             '  <td class="messageDataValue">' . $nbRisks . '</td>' .
-             '  <td class="messageDataValue">' . $nbIssues . '</td>' .
+             '  <td class="messageData" '.($show?'':'style="color:#AAAAAA;"') . '>' . $tab . $name . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$progress:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbTickets:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbActivities:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbMilestones:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbActions:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbRisks:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbIssues:'') . '</td>' .
              '</tr>';   
       }
       echo'</table>';

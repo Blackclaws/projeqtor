@@ -30,7 +30,7 @@
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
-              isDebug: <?php echo $paramDebugMode;?>'></script>
+              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.data.ItemFileWriteStore");
@@ -61,7 +61,7 @@
     dojo.require("dojox.form.FileInput");
     //dojo.require("dojo.dnd.Source");
     
-    var fadeLoading=<?php echo $paramFadeLoadingMode;?>;
+    var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
     dojo.addOnLoad(function(){

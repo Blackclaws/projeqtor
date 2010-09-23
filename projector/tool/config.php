@@ -55,7 +55,7 @@ $param['crlf01']='';
 $label['crlf01']='crlf';
  
 $param['MailSender'] = '';                              
-$label['MailSender'] = "eMail from addressee";
+$label['MailSender'] = "eMail address of sender";
 $value['MailSender'] = "a valid email as sender for mailing function";
 $pname['MailSender'] = 'paramMailSender';
 $ctrls['MailSender'] = 'email';
@@ -93,13 +93,13 @@ $ctrls['MailSendmailPath'] = '';
 $param['crlf08']='';
 $label['crlf08']='crlf';
 
-$param['MailTitle'] = '[Project\'Or RIA] ${item} #${id} moved to status "${status}"';                              
+$param['MailTitle'] = '[Project\'Or RIA] ${item} #${id} moved to status ${status}';                              
 $label['MailTitle'] = "Automatic mail title";
 $value['MailTitle'] = 'title of automatic mails, may content ${item}, ${id}, ${status}, ${name}';
 $pname['MailTitle'] = 'paramMailTitle';
 $ctrls['MailTitle'] = '';
 
-$param['MailMessage'] = 'The status of ${item} #${id} [${name}] has changed to "${status}"';                              
+$param['MailMessage'] = 'The status of ${item} #${id} [${name}] has changed to ${status}';                              
 $label['MailMessage'] = "Automatic mail message";
 $value['MailMessage'] = 'message of automatic mails, may content ${item}, ${id}, ${status}, ${name}';
 // ${id} : the id of the element
@@ -236,7 +236,7 @@ $ctrls['DebugMode'] = '=true=false=';
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
-              isDebug: <?php echo $paramDebugMode;?>'></script>
+              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
@@ -247,13 +247,13 @@ $ctrls['DebugMode'] = '=true=false=';
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
-    var fadeLoading=<?php echo $paramFadeLoadingMode;?>;
+    var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();
       saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
-      dojo.byId('login').focus();
+      //dojo.byId('login').focus();
       <?php 
       if (array_key_exists('theme',$_SESSION) ) {
         echo "dojo.byId('body').className='" . $_SESSION['theme'] . "';";
@@ -265,16 +265,16 @@ $ctrls['DebugMode'] = '=true=false=';
   </script>
 </head>
 
-<body class="blue" onLoad="hideWait();" style="overflow: auto; ">
+<body id="body" class="blue" onLoad="hideWait();" style="overflow: auto; ">
   <div id="waitLogin" >
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">
     <tr height="1px">
       <td rowspan="2" width="10px" valign="top">
-        <img src="img/logoFull.gif"></img>
+        <img src="img/logoFull.gif" />
       </td>
       <td width="10px" valign="top">
-        <img src="img/titleFull.gif"></img>
+        <img src="img/titleFull.gif" />
       </td>
       <td>
         <h1>Configuration</h1>
@@ -319,14 +319,16 @@ $ctrls['DebugMode'] = '=true=false=';
             <?php } 
               }?>
               <tr><td colspan="4">&nbsp;</td></tr>
-              <td><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
-              <td><input id="location" name="location" 
-                 style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
-                 value="C:\projectorria\parameters.php" />
-              </td>
-              <td></td>
-              <td>a php file name where to store parameters, use non web access directory for security</td>
-              <tr><td colspan="4">&nbsp;</td></tr>
+              <tr>
+                <td><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
+                <td><input id="location" name="location" 
+                   style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
+                   value="C:\projectorria\parameters.php" />
+                </td>
+                <td></td>
+                <td>a php file name where to store parameters, use non web access directory for security</td>
+                <tr><td colspan="4">&nbsp;</td>
+              </tr>
               <tr>
                 <td></td>
                 <td colspan="3">

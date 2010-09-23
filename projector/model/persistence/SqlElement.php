@@ -1416,7 +1416,7 @@ abstract class SqlElement {
     $xh=' :</div>' . "\n";
     $tx='';
     $xt='<br/><br/>' . "\n";
-    if ($paramMailShowDetail) {
+    if (getBooleanValue($paramMailShowDetail)) {
       $message.= $nx . $item . " #" . $id . $xn;
 
       $message.=$hx . $this->getColCaption('idProject') . $xh;

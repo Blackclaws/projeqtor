@@ -408,12 +408,16 @@ label, .label {
 
 
 .historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
-.dependencyData, .workflowData, .filterData {
+.dependencyData, .workflowData, .filterData, .messageDataValueGrey {
   font-size: 90%;
   padding: 1px 5px 1px 5px;
   border: 1px solid #AAAAAA;
   vertical-align: top;
   background-color: #FFFFFF;
+}
+.messageDataValueGrey {
+  background-color: #EEEEEE;
+  color: #505050;
 }
 
 .workflowData {

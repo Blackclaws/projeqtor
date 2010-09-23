@@ -40,6 +40,7 @@ class User extends SqlElement {
 
   private $_affectedProjects;  // Array listing all affected projects
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
+  private $_hierarchicalViewOfVisibleProjects;
   
   
    /** ==========================================================================
@@ -240,6 +241,44 @@ class User extends SqlElement {
     return $result;
   }
   
+  /** =========================================================================
+   * Get the list of all projects the user can have readable access to, 
+   * this means the projects the resource corresponding to the user is affected to
+   * and their sub projects
+   * @return a list of projects id
+   */
+  public function getHierarchicalViewOfVisibleProjects($projId='*') {
+//echo "getHierarchicalViewOfVisibleProjects($projId)<br/>";
+    $result=array();
+    $visibleProjectsList=$this->getVisibleProjects();
+    if ($projId=='*') {
+      $prj=new Project();
+      $prj->id='*';
+    } else {
+      $prj=new Project($projId);
+    }
+    $lst=$prj->getSubProjects();
+    foreach ($lst as $prj) {
+//echo $projId . "#" . $prj->id . '<br/>';
+      if (array_key_exists( $prj->id , $visibleProjectsList)) {
+        $subList=$prj->getRecursiveSubProjectsFlatList(false);
+//echo '  ->' . $prj->id . '<br/>';
+        $result['#' . $prj->id]=$prj->name;
+        foreach($subList as $id=>$name) {
+//echo '    ->' . $id . '<br/>';
+          $result['#' . $id]=$name;
+        }
+      } else {
+        $recursList=$this->getHierarchicalViewOfVisibleProjects($prj->id);
+        if (count($recursList)>0) {
+//echo '  =>' . $prj->id . '<br/>';
+          $result['#' . $prj->id]=$prj->name;
+          $result=array_merge($result,$recursList);
+        }  
+      }
+    }
+    return $result;
+  }
   /** =========================================================================
    * Reinitalise Visible Projects list to force recalculate
    * @return void

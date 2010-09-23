@@ -34,8 +34,9 @@ class Project extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
-    <th field="name" width="30%" >${projectName}</th>
+     <th field="wbsSortable" from="ProjectPlanningElement" width="5%" >${wbs}</th>
+    <th field="name" width="25%" >${projectName}</th>
+    <th field="color" width="5%" formatter="colorFormatter">${color}</th>
     <th field="projectCode" width="15%" >${projectCode}</th>
     <th field="nameClient" width="15%" >${clientName}</th>
     <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${validatedEnd}</th>
@@ -43,6 +44,8 @@ class Project extends SqlElement {
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
+// Removed in 1.2.0 
+//     <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
 
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "description"=>"required",
@@ -283,10 +286,12 @@ class Project extends SqlElement {
       $user=$_SESSION['user'];
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
-      }
-      $visibleProjectsList=$user->getVisibleProjects();
+      }      
+      $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
+      $reachableProjectsList=$user->getVisibleProjects();
     } else {  
       $visibleProjectsList=array();
+      $reachableProjectsList=array();
     }
     $result="";
     $subList=$this->getSubProjects($limitToActiveProjects);
@@ -303,17 +308,23 @@ class Project extends SqlElement {
     if (count($subList)>0) {
       foreach ($subList as $prj) {
         $showLine=true;
+        $reachLine=true;
         if ($limitToUserProjects) {
           if ($user->_accessControlVisibility != 'ALL') {
-            if (! array_key_exists($prj->id,$visibleProjectsList)) {
+            if (! array_key_exists('#' . $prj->id,$visibleProjectsList)) {
               $showLine=false;
+            }
+            if (! array_key_exists($prj->id,$reachableProjectsList)) {
+              $reachLine=false;
             }
           }
         }
         if ($showLine) {
-          $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+          $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
-            $result .= '<td class="display" style="width: 100%;" NOWRAP>' . $prj->name . '<br/>';
+            $result .= '<td class="display" style="width: 100%;" NOWRAP>' . $prj->name;
+          } else if (! $reachLine) {
+            $result .= '<td class="display" style="width: 100%; color: #AAAAAA;" NOWRAP>' . $prj->name;
           } else {
             $result .= '<td><div dojoType="dijit.form.TextBox" class="menuTree" readonly value="' . htmlEncode($prj->name) . '" >';
             $result .= ' <script type="dojo/connect" event="onClick" args="evt">';
@@ -321,11 +332,9 @@ class Project extends SqlElement {
             $result .= '  setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name) . '", "' . $selectField . '");'; 
             $result .= '  dijit.byId("' . $selectField . '").closeDropDown();';
             $result .= ' </script>';
-            $result .= '</div><br/>';
+            $result .= '</div>';
           }
-        }
-        $result .= $prj->drawSubProjects($selectField,true,$limitToUserProjects,$limitToActiveProjects);
-        if ($showLine) {
+          $result .= $prj->drawSubProjects($selectField,true,$limitToUserProjects,$limitToActiveProjects);
           $result .= '</td></tr>';
         }
       }
