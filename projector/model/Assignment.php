@@ -18,6 +18,8 @@ class Assignment extends SqlElement {
   public $rate;
   public $realStartDate;
   public $realEndDate;
+  public $plannedStartDate;
+  public $plannedEndDate;
   public $idle;
   
    /** ==========================================================================
@@ -59,6 +61,7 @@ class Assignment extends SqlElement {
       }
     }*/
     
+    // Dispatch value
     $result = parent::save();
     
     PlanningElement::updateSynthesis($this->refType, $this->refId);
@@ -90,6 +93,7 @@ class Assignment extends SqlElement {
     $workList=$work->getSqlElementsFromCriteria($crit,false);
     $realWork=0;
     $this->realStartDate=null;
+    $this->realEndDate=null;
     foreach ($workList as $work) {
       $realWork+=$work->work;
       if ( !$this->realStartDate or $work->workDate<$this->realStartDate ) {

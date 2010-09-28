@@ -142,12 +142,28 @@ div.scrollRight {
   border-top: #c0c0c0 1px solid;
   font-size: 90%;      
   spacing: 0px; padding: 0px; margin: 0px;
+  z-index: 0;
 }
+
+.hideLeftPartrow, .hideLeftPartmile {
+  z-index: 10;
+  background-color:#FFFFFF;
+  display: inline-block;
+  width: 100%;
+}
+.hideLeftPartgroup {
+  z-index: 10;
+  background-color: #E5E5E5;
+  display: inline-block;
+  width: 100%;
+}
+
 
 .ganttDetail, .ganttDetailNoborder {
   border-top: #c0c0c0 1px solid;
   font-size: 90%;  
-  spacing: 0px; padding: 0px; margin: 0px;   
+  spacing: 0px; padding: 0px; margin: 0px;
+  z-index: 10;   
 }
 .ganttDetail, .ganttDetailBoderleft {
   border-left: #dddddd 1px solid;

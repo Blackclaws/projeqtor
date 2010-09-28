@@ -285,13 +285,20 @@ class Activity extends SqlElement {
         // Change idProject value => update idProject for work
         // update not done to PlannedWork : new planning must be calculated
         if ($this->idProject != $oldIdProject ) {
-          $work=new Work();
-          $crit=array("refType"=>"Activity", "refId"=>$this->id);
-          $workList=$work->getSqlElementsFromCriteria($crit,false);
-          foreach($workList as $work) {
-            $work->idProject=$this->idProject;
-            $work->save();
-          } 
+            $work=new Work();
+            $crit=array("refType"=>"Activity", "refId"=>$this->id);
+            $workList=$work->getSqlElementsFromCriteria($crit,false);
+            foreach($workList as $work) {
+              $work->idProject=$this->idProject;
+              $work->save();
+            }
+            $work=new PlannedWork();
+            $crit=array("refType"=>"Activity", "refId"=>$this->id);
+            $workList=$work->getSqlElementsFromCriteria($crit,false);
+            foreach($workList as $work) {
+              $work->idProject=$this->idProject;
+              $work->save();
+            } 
         }   
       }      
     }

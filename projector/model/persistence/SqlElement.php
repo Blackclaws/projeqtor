@@ -153,6 +153,7 @@ abstract class SqlElement {
    * @return message including definition of html hiddenfields to be used 
    */
   public function save() {
+//debugLog('save('.get_class($this).'#'.$this->id . ')');
     return $this->saveSqlElement();
   }
 
@@ -293,7 +294,7 @@ abstract class SqlElement {
     // save history
     $newId= Sql::$lastQueryNewid;
     $this->id=$newId;
-    if ($returnStatus!="ERROR" and ! isset($this->_noHistory) ) {      
+    if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {      
       $result = History::store($objectClass,$newId,'insert');
       if (!$result) {$returnStatus="ERROR";}
     }
@@ -374,7 +375,7 @@ abstract class SqlElement {
           }
           $nbChanged+=1;
           // Save change history
-          if ($objectClass!='History' and ! isset($this->_noHistory) ) {      
+          if ($objectClass!='History' and ! property_exists($this,'_noHistory') ) {      
             $result = History::store($objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
             if (!$result) {
               $returnStatus="ERROR";
@@ -543,7 +544,7 @@ abstract class SqlElement {
       $returnStatus="ERROR";
     }    
     // save history
-    if ($returnStatus!="ERROR" and ! isset($this->_noHistory) ) {      
+    if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {      
       $result = History::store($objectClass,$this->id,'delete');
       if (!$result) {$returnStatus="ERROR";}
     }

@@ -52,6 +52,9 @@ abstract class SqlDirectElement {
     return $objects;
   }
   
+  static public function execute($query) {
+    $result = Sql::query($query); 
+  }
   
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS

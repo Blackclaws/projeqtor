@@ -231,7 +231,7 @@ class Resource extends SqlElement {
       if ($prj->idProject) {
         $result=$this->getAffectationRate($prj->idProject);
       } else {
-        $result="0";
+        $result='100';
       }
     }
     return $result;

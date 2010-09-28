@@ -973,6 +973,11 @@ function drawGantt() {
       pStart=(item.validatedStartDate!=" ")?item.validatedStartDate:pStart;
       pStart=(item.plannedStartDate!=" ")?item.plannedStartDate:pStart;
       pStart=(item.realStartDate!=" ")?item.realStartDate:pStart;
+      if (item.plannedStartDate!=" " 
+       && item.realStartDate!=" " 
+       && item.plannedStartDate<item.realStartDate) {
+      	pStart=item.plannedStartDate;
+      }
       // pEnd : end date of task
       var pEnd="";
       pEnd=(item.initialEndDate!=" ")?item.initialEndDate:pEnd;

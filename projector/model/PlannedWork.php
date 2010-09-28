@@ -6,7 +6,7 @@
 class PlannedWork extends Work {
 
   public $_noHistory;
-  
+    
   // List of fields that will be exposed in general user interface
   
   // Define the layout that will be used for lists
@@ -93,6 +93,10 @@ class PlannedWork extends Work {
     $globalMaxDate=date('Y')+3 . "-12-31"; // Don't try to plan after Dec-31 of current year + 3
     $globalMinDate=date('Y')-1 . "-01-01"; // Don't try to plan before Jan-01 of current year -1
     
+    $arrayPlannedWork=array();
+    $arrayAssignment=array();
+    $arrayPlanningElement=array();
+    
     // build in list to get a where clause : "idProject in ( ... )" 
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
@@ -100,21 +104,19 @@ class PlannedWork extends Work {
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
-//echo "apres purge - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause . " and idle=0";
     $order=" priority asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
-//echo "apres get - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     $listPlan=self::sortPlanningElements($list);
-//echo "apres sort - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
     $resources=array();
     $a=new Assignment();
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
-      $changedPlan=false;
+//debugLog ("PlanningElement#" . $plan->id);
+      //$changedPlan=false;
       // Determine planning profile
       $profile="ASAP";
       $startPlan=$startDate;
@@ -165,18 +167,21 @@ class PlannedWork extends Work {
           $startPlan=$prec->plannedEndDate;
         }
       }
-      if ($plan->leftWork>0) {
+      if ($plan->leftWork>0 or 1) {
         // get list of top project to chek limit on each project
         if ($withProjectRepartition) {
           $proj = new Project($plan->idProject);
           $listTopProjects=$proj->getTopProjectList(true);
         }
-        $minDate=$globalMaxDate;
-        $maxDate=addDaysToDate($startDate,-1);
+        //$minDate=$globalMaxDate;
+        //$maxDate=addDaysToDate($startDate,-1);
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
         $listAss=$a->getSqlElementsFromCriteria($crit,false);        
         foreach ($listAss as $ass) {
-          $changedAss=false;
+//debugLog ("Assignment#" . $ass->id);
+          $changedAss=true;
+          $ass->plannedStartDate=null;
+          $ass->plannedEndDate=null;
           $r=new Resource($ass->idResource);
           $capacity=($r->capacity)?$r->capacity:1;
           if (array_key_exists($ass->idResource,$resources)) {
@@ -220,6 +225,9 @@ class PlannedWork extends Work {
             }
           }
           while (1) {            
+            if ($left<0.01) {
+              break;
+            }
             // Set limits to avoid eternal loop
             if ($currentDate==$globalMaxDate) { break; }         
             if ($currentDate==$globalMinDate) { break; }
@@ -235,7 +243,7 @@ class PlannedWork extends Work {
                   $interval+=$step;
               }
               if ($planned < $capacityRate)  {
-                $value=$capacityRate-$planned;
+                $value=$capacityRate-$planned; 
                 if ($withProjectRepartition) {
                   foreach ($listTopProjects as $idProject) {
                     $projectKey='Project#' . $idProject;
@@ -251,7 +259,7 @@ class PlannedWork extends Work {
                     }
                   }
                 }
-                $value=($value>$left)?$left:$value;
+                $value=($value>$left)?$left:$value; 
                 if ($regul) {
                   $regulTarget=round( ($interval*$regul) ,1);
                   $toPlan=$regulTarget-$regulDone;
@@ -263,36 +271,40 @@ class PlannedWork extends Work {
                   }
                   $regulDone+=$value;
                 }
-                $plannedWork=new PlannedWork();
-                $plannedWork->idResource=$ass->idResource;
-                $plannedWork->idProject=$ass->idProject;
-                $plannedWork->refType=$ass->refType;
-                $plannedWork->refId=$ass->refId;
-                $plannedWork->idAssignment=$ass->id;
-                $plannedWork->work=$value;
-                $plannedWork->setDates($currentDate);
-                $plannedWork->save();
-                $ass->plannedWork+=$value;
-                $changedAss=true;
-                $left-=$value;
-                $minDate=($currentDate<$minDate)?$currentDate:$minDate;
-                $maxDate=($currentDate>$maxDate)?$currentDate:$maxDate;
-                $ress[$currentDate]=$value+$planned;
-                // Set value on each project (from current to top)
-                if ($withProjectRepartition and $value > 0) {
-                  foreach ($listTopProjects as $idProject) {
-                    $projectKey='Project#' . $idProject;
-                    $plannedProj=0;
-                    if (array_key_exists($week,$ress[$projectKey])) {
-                      $plannedProj=$ress[$projectKey][$week];
+                if ($value>=0.01) {
+//debugLog("Project#" . $idProject . ' / ' . $ass->refType . '#' . $ass->refId . ' / Assignment#' . $ass->id 
+//. ' day=' . $currentDate . ' / value=' . $value);               
+                  $plannedWork=new PlannedWork();
+                  $plannedWork->idResource=$ass->idResource;
+                  $plannedWork->idProject=$ass->idProject;
+                  $plannedWork->refType=$ass->refType;
+                  $plannedWork->refId=$ass->refId;
+                  $plannedWork->idAssignment=$ass->id;
+                  $plannedWork->work=$value;
+                  $plannedWork->setDates($currentDate);
+                  $arrayPlannedWork[]=$plannedWork;
+                  if (! $ass->plannedStartDate or $ass->plannedStartDate>$currentDate) {
+                    $ass->plannedStartDate=$currentDate;
+                  }
+                  if (! $ass->plannedEndDate or $ass->plannedEndDate<$currentDate) {
+                    $ass->plannedEndDate=$currentDate;
+                  }
+                  $changedAss=true;
+                  $left-=$value;
+                  $ress[$currentDate]=$value+$planned;
+                  // Set value on each project (from current to top)
+                  if ($withProjectRepartition and $value >= 0.01) {
+                    foreach ($listTopProjects as $idProject) {
+                      $projectKey='Project#' . $idProject;
+                      $plannedProj=0;
+                      if (array_key_exists($week,$ress[$projectKey])) {
+                        $plannedProj=$ress[$projectKey][$week];
+                      }
+                      $ress[$projectKey][$week]=$value+$plannedProj;               
                     }
-                    $ress[$projectKey][$week]=$value+$plannedProj;               
                   }
                 }
               }            
-            }
-            if ($left<0.01) {
-              break;
             }
             $currentDate=addDaysToDate($currentDate,$step);
             if ($currentDate<$startDate and $step=-1) {
@@ -301,40 +313,80 @@ class PlannedWork extends Work {
             }
           }
           if ($changedAss) {
-            $ass->save();
+            $ass->_noHistory=true;    
+            $arrayAssignment[]=$ass;
           }
           $resources[$ass->idResource]=$ress;
         }
-        if ($minDate!=$globalMaxDate and ! $plan->realStartDate) {
-          $changedPlan=true;
-          $plan->plannedStartDate=$minDate;
-        }
-        if ($maxDate>=$startDate) {
-          $changedPlan=true;
-          $plan->plannedEndDate=$maxDate;
-        }
-      } else {
-        if ( ! $plan->realStartDate) {
-          $changedPlan=true;
-          $plan->plannedStartDate=$startPlan;
-        }  
-        if ( ! $plan->realEndDate) {
-          $changedPlan=true;
-          $plan->plannedEndDate=$startPlan;
-        }  
-      }
-      if ($changedPlan) {
-        $plan->save();
-        //$topKey=$plan->topRefType."#".$plan->topRefId;
-        //if ( ! array_key_exists($topKey, $topList)) {
-        //  $topList[$topKey]=array('type'=>$plan->topRefType, 'id'=>1);
+        //if ($minDate!=$globalMaxDate and ! $plan->realStartDate) {
+        //  $changedPlan=true;
+        //  $plan->plannedStartDate=$minDate;
         //}
+        //if ($maxDate>=$startDate) {
+        //  $changedPlan=true;
+        //  $plan->plannedEndDate=$maxDate;
+        //}
+      //} else {
+      //  $changedPlan=true;
+      //  $plan->plannedStartDate=null;
+      //  $plan->plannedEndDate=null;
+      //  if ( ! $plan->realStartDate) {
+      //    $changedPlan=true;
+      //    $plan->plannedStartDate=$startPlan;
+      //  }  
+      //  if ( ! $plan->realEndDate) {
+      //    $changedPlan=true;
+      //    $plan->plannedEndDate=$startPlan;
+      //  }  
       }
-//echo "repeat boucle - " . round((microtime(true)-$startMicroTime)*1000)/1000 . '<br/>';    
+      //if ($changedPlan) {
+      //  $plan->_noHistory=true;
+      //  $plan->save();
+      //  //$arrayPlanningElement[]=$plan;
+      //}
     }
-    //foreach ($topList as $id=>$top) {
-    //  echo $id . ' / ' . $top['type']. '/' . $top['id'] . '<br/>';
-    //  PlanningElement::updateSynthesis($top['type'], $top['id']);
+    $cpt=0;
+    $query='';
+    foreach ($arrayPlannedWork as $pw) {
+      if ($cpt==0) {
+        $query='INSERT into ' . $pw->getDatabaseTableName() 
+          . ' (`idResource`,`idProject`,`refType`,`refId`,`idAssignment`,`work`,`workDate`,`day`,`week`,`month`,`year`)'
+          . ' VALUES ';
+      } else {
+        $query.=', ';
+      }
+      $query.='(' 
+        . "'" . $pw->idResource . "',"
+        . "'" . $pw->idProject . "',"
+        . "'" . $pw->refType . "',"
+        . "'" . $pw->refId . "',"
+        . "'" . $pw->idAssignment . "',"
+        . "'" . $pw->work . "',"
+        . "'" . $pw->workDate . "',"
+        . "'" . $pw->day . "',"
+        . "'" . $pw->week . "',"
+        . "'" . $pw->month . "',"
+        . "'" . $pw->year . "')";
+      $cpt++; 
+      if ($cpt>=100) {
+        $query.=';';
+        SqlDirectElement::execute($query);
+        $cpt=0;
+        $query='';
+      }
+    }
+    if ($query!='') {
+      $query.=';';
+      SqlDirectElement::execute($query);
+    }
+    
+    // save Assignment
+    foreach ($arrayAssignment as $ass) {
+      $ass->save();
+    }
+    // save PlanningElements
+    //foreach ($arrayPlanningElement as $pe) {
+    //  $pe->save();
     //}
     $endTime=time();
     $endMicroTime=microtime(true);

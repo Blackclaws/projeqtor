@@ -181,18 +181,12 @@ class PlanningElement extends SqlElement {
     // Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
 
-    // If newly set to done, set up end date
-    if ($this->done and ! $old->done) {
-      $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
-      $assignment=new Assignment();
-      $assList=$assignment->getSqlElementsFromCriteria($critAss, false);
-      foreach ($assList as $ass) {
-        if ( $ass->realEndDate and (!$this->realEndDate or $ass->realEndDate>!$this->realEndDate )) {
-          $this->realEndDate=$ass->realEndDate;
-        }
+    // If done and no work, set up end date
+    if ( $this->done and $this->leftWork==0 and $this->realWork==0 ) {
+      $refObj=new $this->refType($this->refId);
+      if (property_exists($refObj, 'doneDate')) {
+        $this->realEndDate=$refObj->doneDate;
       }
-    } else if (! $this->done) {
-       $this->realEndDate=null;
     }
     
     // update topId if needed
@@ -268,18 +262,21 @@ class PlanningElement extends SqlElement {
         // TODO : check result to return error message in case of error
       }
     }
+    
     // update topObject
     if ($topElt) {
         $topElt->save();    
     }
     
-    // check if parent has changed
+    // save old parent (for synthesis update) if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId) {
-      //$result="'" . $old->topId . "'<br/>" . $result;
-      $oldTopElt=new PlanningElement($old->topId);
-      $oldTopElt->save();
+      $this->updateSynthesis($old->topRefType, $old->topRefId);
     }
-        
+    // save new parent (for synthesis update) if parent has changed
+    if ($this->topId!='' and $old->topId!=$this->topId) {
+      $this->updateSynthesis($this->topRefType, $this->topRefId);
+    }       
+    
     return $result;
   }
 
@@ -302,24 +299,32 @@ class PlanningElement extends SqlElement {
     $leftWork=0;
     $plannedWork=0;
     $realWork=0;
+    $this->_noHistory=true;
     // Add data from assignments directly linked to this item
     $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
     $assignment=new Assignment();
     $assList=$assignment->getSqlElementsFromCriteria($critAss, false);
-    $this->realStartDate=null;
+    $realStartDate=null;
+    $realEndDate=null;
+    $plannedStartDate=null;
+    $plannedEndDate=null;
     foreach ($assList as $ass) {
       $assignedWork+=$ass->assignedWork;
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
       $realWork+=$ass->realWork;
-      if ( $ass->realStartDate and (!$this->realStartDate or $ass->realStartDate<!$this->realStartDate )) {
-        $this->realStartDate=$ass->realStartDate;
+      if ( $ass->realStartDate and (! $realStartDate or $ass->realStartDate<$realStartDate )) {
+        $realStartDate=$ass->realStartDate;
       }
-      if ($this->done) {
-        if ( $ass->realEndDate and (!$this->realEndDate or $ass->realEndDate>!$this->realEndDate )) {
-          $this->realEndDate=$ass->realEndDate;
-        }
-      }          
+      if ( $ass->realEndDate and (! $realEndDate or $ass->realEndDate>$realEndDate )) {
+        $realEndDate=$ass->realEndDate;
+      }
+      if ( $ass->plannedStartDate and (! $plannedStartDate or $ass->plannedStartDate<$plannedStartDate )) {
+        $plannedStartDate=$ass->plannedStartDate;
+      }
+      if ( $ass->plannedEndDate and (! $plannedEndDate or $ass->plannedEndDate>$plannedEndDate )) {
+        $plannedEndDate=$ass->plannedEndDate;
+      }      
     }
     // Add data from other planningElements dependant from this one
     if (! $this->elementary) {
@@ -333,19 +338,32 @@ class PlanningElement extends SqlElement {
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
         if ( $pla->realStartDate and (!$this->realStartDate or $pla->realStartDate<!$this->realStartDate )) {
-            $this->realStartDate=$pla->realStartDate;
+          $realStartDate=$pla->realStartDate;
         }
         if ( $pla->realEndDate and (!$this->realEndDate or $pla->realEndDate>!$this->realEndDate )) {
-          //$this->realEndDate=$pla->realEndDate;
+          $realEndDate=$pla->realEndDate;
         }  
         if ( $pla->plannedStartDate and (!$this->plannedStartDate or $pla->plannedStartDate<$this->plannedStartDate )) {
-            $this->plannedStartDate=$pla->plannedStartDate;
+          $plannedStartDate=$pla->plannedStartDate;
         }
         if ( $pla->plannedEndDate and (!$this->plannedEndDate or $pla->plannedEndDate>$this->plannedEndDate )) {
-          $this->plannedEndDate=$pla->plannedEndDate;
+          $plannedEndDate=$pla->plannedEndDate;
         }                
       }
     }
+    $this->realStartDate=$realStartDate;
+    if ($realWork>0 or $leftWork>0) {
+      if ($leftWork==0) {
+        $this->realEndDate=$realEndDate;
+      } else {
+        $this->realEndDate=null;
+      }
+    }
+    $this->plannedStartDate=$plannedStartDate;
+    if ($plannedStartDate and $realStartDate and $realStartDate<$plannedStartDate) {
+      $this->plannedStartDate=$realStartDate;
+    }
+    $this->plannedEndDate=$plannedEndDate;
     // save cumulated data
     $this->assignedWork=$assignedWork;
     $this->leftWork=$leftWork;

@@ -479,3 +479,6 @@ CREATE TABLE `${prefix}mail` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}assignment` ADD `plannedStartDate` date DEFAULT NULL,
+ADD `plannedEndDate` date DEFAULT NULL;

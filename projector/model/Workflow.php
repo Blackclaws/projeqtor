@@ -219,6 +219,20 @@ class Workflow extends SqlElement {
     return $result;
   }
    
-  
+  public function copy() {
+     $result=parent::copy();
+     $new=$result->id;
+     $ws=new WorkflowStatus();
+     $crit=array('idWorkflow'=>$this->id);
+     $lst=$ws->getSqlElementsFromCriteria($crit);
+     foreach ($lst as $ws) {
+       $ws->idWorkflow=$new;
+       $ws->id=null;
+       $ws->save();
+     }
+     
+     Sql::$lastQueryNewid=$new;
+     return $result;
+  }
 }
 ?>
