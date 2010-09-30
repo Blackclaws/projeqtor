@@ -100,7 +100,7 @@ class PlannedWork extends Work {
     // build in list to get a where clause : "idProject in ( ... )" 
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
-    
+//debugLog($inClause);    
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
@@ -115,7 +115,7 @@ class PlannedWork extends Work {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
-//debugLog ("PlanningElement#" . $plan->id);
+//debugLog ("PlanningElement#" . $plan->id . ' / ' . $plan->refType . '#' . $plan->refId);
       //$changedPlan=false;
       // Determine planning profile
       $profile="ASAP";
@@ -178,7 +178,7 @@ class PlannedWork extends Work {
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
         $listAss=$a->getSqlElementsFromCriteria($crit,false);        
         foreach ($listAss as $ass) {
-//debugLog ("Assignment#" . $ass->id);
+//debugLog ("Assignment#" . $ass->id . ' / ' . $ass->refType . '#' . $ass->refId);
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -271,9 +271,7 @@ class PlannedWork extends Work {
                   }
                   $regulDone+=$value;
                 }
-                if ($value>=0.01) {
-//debugLog("Project#" . $idProject . ' / ' . $ass->refType . '#' . $ass->refId . ' / Assignment#' . $ass->id 
-//. ' day=' . $currentDate . ' / value=' . $value);               
+                if ($value>=0.01) {             
                   $plannedWork=new PlannedWork();
                   $plannedWork->idResource=$ass->idResource;
                   $plannedWork->idProject=$ass->idProject;
@@ -283,6 +281,7 @@ class PlannedWork extends Work {
                   $plannedWork->work=$value;
                   $plannedWork->setDates($currentDate);
                   $arrayPlannedWork[]=$plannedWork;
+                  $ass->plannedWork+=$value;
                   if (! $ass->plannedStartDate or $ass->plannedStartDate>$currentDate) {
                     $ass->plannedStartDate=$currentDate;
                   }

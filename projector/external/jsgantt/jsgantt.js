@@ -492,26 +492,30 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      }
 	      vLeftTable += 
 	        '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
-	        +' class="hideLeftPart' + vRowType + '">&nbsp;' + vTaskList[i].getName() + '</span></NOBR></TD>' ; 
+	        +' class="namePart' + vRowType + '">&nbsp;' + vTaskList[i].getName() + '</span></NOBR></TD>' ; 
 	        // BABYNUS : change in taskLink parameters
 			  if(vShowRes ==1) {
 			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 
-	          +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getResource() + '</span></NOBR>';
+	          +'<NOBR><span class="namePart' + vRowType + '">' + vTaskList[i].getResource() + '</span></NOBR>';
 			  vLeftTable +='</div>';
 			  vLeftTable +='</TD>' ;
 			  }
 			  if(vShowDur ==1) { 
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getDuration(vFormat) + '</span></NOBR></TD>' ;
+			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
+			  		+' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getDuration(vFormat) + '</span></NOBR></TD>' ;
 			  }
 			  if(vShowComp==1) { 
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getCompStr()  + '</span></NOBR></TD>' ;
+			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
+			  	  +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getCompStr()  + '</span></NOBR></TD>' ;
 			  }
 			  if(vShowStartDate==1) {
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span class="hideLeftPart' + vRowType + '">' 
+			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
+			  	  +' class="hideLeftPart' + vRowType + '">' 
 			  		+ JSGantt.formatDateStr( vTaskList[i].getStart(), vDateDisplayFormat) + '</span></NOBR></TD>' ;
 			  }
 			  if(vShowEndDate==1) {
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span class="hideLeftPart' + vRowType + '">' 
+			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
+			  	  +' class="hideLeftPart' + vRowType + '">' 
 			  		+ JSGantt.formatDateStr( vTaskList[i].getEnd(), vDateDisplayFormat) + '</span></NOBR></TD>' ;
 			  }
 	      vLeftTable += '</TR>';

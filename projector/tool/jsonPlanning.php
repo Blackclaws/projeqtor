@@ -138,6 +138,11 @@
         $pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
         $pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
         $pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
+        if (trim($line['plannedStartDate'])!=""
+        and trim($line['realStartDate'])!=""
+        and $line['plannedStartDate']<$line['realStartDate'] ) {
+          $pStart=$line['plannedStartDate'];
+        }
         $pEnd="";
         $pEnd=(trim($line['initialEndDate'])!="")?$line['initialEndDate']:$pEnd;
         $pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
@@ -273,7 +278,7 @@
         for ($i=1;$i<$level;$i++) {
           $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
         }
-        $duration=($rowType=='mile')?'-':workDayDiffDates($pStart, $pEnd) . " " . i18n("shortDay");
+        $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . " " . i18n("shortDay");
         echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
         echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';

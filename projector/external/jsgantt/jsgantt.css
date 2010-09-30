@@ -146,18 +146,32 @@ div.scrollRight {
 }
 
 .hideLeftPartrow, .hideLeftPartmile {
-  z-index: 10;
+  z-index: 999;
   background-color:#FFFFFF;
   display: inline-block;
   width: 100%;
+  cursor: pointer;
+  
 }
 .hideLeftPartgroup {
-  z-index: 10;
+  z-index: 999;
   background-color: #E5E5E5;
   display: inline-block;
   width: 100%;
+  cursor: pointer;
 }
-
+.namePartrow, .namePartmile {
+  z-index: -999;
+  display: inline-block;
+  width: 99%;
+  cursor: pointer;
+}
+.namePartgroup {
+  z-index: -999;
+  display: inline-block;
+  width: 99%;
+  cursor: pointer;
+}
 
 .ganttDetail, .ganttDetailNoborder {
   border-top: #c0c0c0 1px solid;
