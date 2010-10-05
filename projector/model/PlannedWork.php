@@ -107,7 +107,7 @@ class PlannedWork extends Work {
     // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause . " and idle=0";
-    $order=" priority asc";
+    $order=" priority asc, wbsSortable asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
     $listPlan=self::sortPlanningElements($list);
     $resources=array();

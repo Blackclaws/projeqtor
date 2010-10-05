@@ -46,8 +46,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.2.0";            // Version of application : Major / Minor / Release
-$build="0019";                // Build number. To be increased on each release
+$version="V1.2.1";            // Version of application : Major / Minor / Release
+$build="0020";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -64,7 +64,10 @@ if (! $paramAttachementDirectory or ! $paramAttachementMaxSize) {
 
 // Check 'magic_quotes' : must be disabled ====================================
 if (get_magic_quotes_gpc ()) {
-  //throwError (i18n("errorMagicQuotesGpc"));  
+  debugLog (i18n("errorMagicQuotesGpc"));  
+}
+if (get_magic_quotes_runtime ()) {
+  @set_magic_quotes_runtime(0);
 }
 
 if ( ! (isset($maintenance) and $maintenance) ) {
@@ -179,7 +182,7 @@ function setupIconSize() {
 /** ============================================================================
  * Internationalization / same function exists in js exploiting same resources
  * @param $str the code of the message to search and translate
- * @return the translated message (or the înput message if not found)
+ * @return the translated message (or the ï¿½nput message if not found)
  */
 function i18n($str, $vars=null) {
   global $i18nMessages, $currentLocale;
@@ -449,6 +452,7 @@ function sendMail($to, $title, $message, $object=null)  {
   $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
   $headers .= 'From: ' . $paramMailSender . "\r\n";
   $headers .= 'Reply-To: ' . $paramMailReplyTo . "\r\n";
+  $headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n"; 
   $headers .= 'X-Mailer: PHP/' . phpversion();
   if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
     ini_set('SMTP',$paramMailSmtpServer);

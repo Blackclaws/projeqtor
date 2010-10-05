@@ -270,6 +270,14 @@ function htmlEncode($val,$context="default") {
     return nl2br(htmlentities($val,ENT_COMPAT,'UTF-8'));
   } else if ($context=='withBR') {
     return nl2br(htmlspecialchars($val,ENT_QUOTES,'UTF-8'));
+  } else if ($context=='mail') {
+    $str=$val;
+    if (get_magic_quotes_gpc()) {
+      $str=str_replace('\"','"',$str);
+      $str=str_replace("\'","'",$str);
+      $str=str_replace('\\\\','\\',$str);
+    }
+    return nl2br(htmlentities($str,ENT_QUOTES,'UTF-8'));
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }

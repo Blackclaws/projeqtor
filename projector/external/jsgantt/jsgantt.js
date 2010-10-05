@@ -56,10 +56,10 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 	var vVisible  = 1;
 	var x1, y1, x2, y2;
 	var vClass=pClass;
-	if (vGroup != 1){  
+	//if (vGroup != 1){  
 	   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
 	   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
-	} 
+	//} 
   this.getID       = function(){ return vID };
   this.getName     = function(){ return vName };
   this.getStart    = function(){ return vStart};
@@ -82,8 +82,12 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 	    tmpPer =  Math.ceil((this.getEnd() - this.getStart()) /  ( 60 * 1000) );
 	    vDuration = tmpPer + ' ' + i18n('shortMinute');
 	  } else {
-	    tmpPer =  workDayDiffDates(this.getStart(), this.getEnd());
-	    vDuration = tmpPer + ' ' + i18n('shortDay');
+	  	if (this.getStart()==null || this.getEnd()==null) {
+	  		vDuration = '-';
+	  	} else {
+	    	tmpPer =  workDayDiffDates(this.getStart(), this.getEnd());
+	    	vDuration = tmpPer + ' ' + i18n('shortDay');
+	    }
 	  }
 	  return( vDuration )
 	};
@@ -536,6 +540,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      '<TABLE style="width: ' + vChartWidth + 'px;">' +
 	      '<TBODY><TR class="ganttRightTitle">';
 	    vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
+	    
 	    vTmpDate.setHours(0);
 	    vTmpDate.setMinutes(0);
 	    // Major Date Header	    
@@ -911,8 +916,8 @@ JSGantt.processRows = function(pList, pID, pRow, pLevel, pOpen) {
     	  vMaxDate=vMinDate;
     	}
     }		
-    pList[pRow].setStart(vMinDate);
-    pList[pRow].setEnd(vMaxDate);
+    //pList[pRow].setStart(vMinDate);
+    //pList[pRow].setEnd(vMaxDate);
     pList[pRow].setNumKid(vNumKid);
     pList[pRow].setCompVal(Math.ceil(vCompSum/vNumKid));
   }
@@ -928,10 +933,10 @@ JSGantt.processRows = function(pList, pID, pRow, pLevel, pOpen) {
 */
 JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
   var vDate = new Date();
-  vDate.setFullYear(pList[0].getStart().getFullYear(), pList[0].getStart().getMonth(), pList[0].getStart().getDate());
+  //vDate.setFullYear(pList[0].getStart().getFullYear(), pList[0].getStart().getMonth(), pList[0].getStart().getDate());
   // Parse all Task End dates to find min
   for(i = 0; i < pList.length; i++) {
-    if(Date.parse(pList[i].getStart()) < Date.parse(vDate)) {
+    if(pList[i].getStart()!=null && Date.parse(pList[i].getStart()) < Date.parse(vDate)) {
       vDate.setFullYear(pList[i].getStart().getFullYear(), pList[i].getStart().getMonth(), pList[i].getStart().getDate());
     }
   }
@@ -984,10 +989,10 @@ JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
 JSGantt.getMaxDate = function (pList, pFormat)
 {
   var vDate = new Date();
-  vDate.setFullYear(pList[0].getEnd().getFullYear(), pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());         
+  //vDate.setFullYear(pList[0].getEnd().getFullYear(), pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());         
   // Parse all Task End dates to find max
   for(i = 0; i < pList.length; i++) {
-    if(Date.parse(pList[i].getEnd()) > Date.parse(vDate)) {
+    if(pList[i].getEnd()!=null && Date.parse(pList[i].getEnd()) > Date.parse(vDate)) {
       //vDate.setFullYear(pList[0].getEnd().getFullYear(), pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());
       vDate.setTime(Date.parse(pList[i].getEnd()));
 		}	
@@ -1183,7 +1188,8 @@ JSGantt.taskLink = function(pRef){
 * @return {Datetime}
 */
 JSGantt.parseDateStr = function(pDateStr,pFormatStr) {
-  var vDate =new Date();	
+  if (pDateStr==null || pDateStr=='' || pDateStr==' ') return null;
+	var vDate =new Date();	
   //vDate.setTime( Date.parse(pDateStr));
   switch(pFormatStr) {
 	  case 'mm/dd/yyyy':
@@ -1217,7 +1223,8 @@ JSGantt.parseDateStr = function(pDateStr,pFormatStr) {
 * @return {String}
 */
 JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
-  var vYear4Str = pDate.getFullYear() + '';
+	if (pDate==null || pDate=='') return '-';
+	var vYear4Str = pDate.getFullYear() + '';
  	var vYear2Str = vYear4Str.substring(2,4);
   var vMonthStr = (pDate.getMonth()+1) + '';
   if (vMonthStr.length==1) vMonthStr="0"+vMonthStr;

@@ -19,6 +19,7 @@ class Work extends SqlElement {
   public $month;
   public $year;
 
+  public $_noHistory;
   
   // Define the layout that will be used for lists
   private static $_layout='

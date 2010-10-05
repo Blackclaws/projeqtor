@@ -986,9 +986,13 @@ function drawGantt() {
       pEnd=(item.realEndDate!=" ")?item.realEndDate:pEnd;
       var realWork=parseFloat(item.realWork);
       var plannedWork=parseFloat(item.plannedWork);
-      var progress=100;
+      var progress=0;
       if (plannedWork>0) {
       	progress=Math.round(100*realWork/plannedWork);
+      } else {
+      	if (item.done==1) {
+      		progress=100;
+      	}
       }
       // pGroup : is the tack a group one ?
       var pGroup=(item.elementary=='0')?1:0;

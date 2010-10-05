@@ -182,11 +182,14 @@ class PlanningElement extends SqlElement {
     $old=new PlanningElement($this->id);
 
     // If done and no work, set up end date
-    if ( $this->done and $this->leftWork==0 and $this->realWork==0 ) {
+    if (  $this->leftWork==0 and $this->realWork==0 ) {
       $refObj=new $this->refType($this->refId);
-      if (property_exists($refObj, 'doneDate')) {
+      if ($this->done and property_exists($refObj, 'doneDate')) {
         $this->realEndDate=$refObj->doneDate;
+      } else {
+        $this->realEndDate=null;
       }
+      
     }
     
     // update topId if needed
@@ -295,6 +298,7 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   private function updateSynthesisObj () {
+debugLog("PlanningElement #".$this->id . " / " . $this->refType . " #" . $this->refId);
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
@@ -328,6 +332,7 @@ class PlanningElement extends SqlElement {
     }
     // Add data from other planningElements dependant from this one
     if (! $this->elementary) {
+debugLog ("   => Group");
       $critPla=array("topId"=>$this->id);
       $planningElement=new PlanningElement();
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
@@ -337,16 +342,16 @@ class PlanningElement extends SqlElement {
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
-        if ( $pla->realStartDate and (!$this->realStartDate or $pla->realStartDate<!$this->realStartDate )) {
+        if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
           $realStartDate=$pla->realStartDate;
         }
-        if ( $pla->realEndDate and (!$this->realEndDate or $pla->realEndDate>!$this->realEndDate )) {
+        if ( $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
           $realEndDate=$pla->realEndDate;
         }  
-        if ( $pla->plannedStartDate and (!$this->plannedStartDate or $pla->plannedStartDate<$this->plannedStartDate )) {
+        if ( $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
           $plannedStartDate=$pla->plannedStartDate;
         }
-        if ( $pla->plannedEndDate and (!$this->plannedEndDate or $pla->plannedEndDate>$this->plannedEndDate )) {
+        if ( $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
           $plannedEndDate=$pla->plannedEndDate;
         }                
       }
@@ -360,7 +365,7 @@ class PlanningElement extends SqlElement {
       }
     }
     $this->plannedStartDate=$plannedStartDate;
-    if ($plannedStartDate and $realStartDate and $realStartDate<$plannedStartDate) {
+    if ($this->elementary and $plannedStartDate and $realStartDate and $realStartDate<$plannedStartDate) {
       $this->plannedStartDate=$realStartDate;
     }
     $this->plannedEndDate=$plannedEndDate;

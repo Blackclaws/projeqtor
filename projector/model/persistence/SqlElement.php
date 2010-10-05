@@ -359,10 +359,10 @@ abstract class SqlElement {
         }
         $col_old_value=$oldObject->$col_name;
         // special null treatment (new value)
-        $col_new_value=trim($col_new_value);
+        $col_new_value=SQL::str(trim($col_new_value));
         if ($col_new_value=='') {$col_new_value=NULL;};
         // special null treatment (old value)
-        $col_old_value=trim($col_old_value);
+        $col_old_value=SQL::str(trim($col_old_value));
         if ($col_old_value=='') {$col_old_value=NULL;};
         // if changed
         if ($col_new_value != $col_old_value) {
@@ -371,7 +371,7 @@ abstract class SqlElement {
           if ($col_new_value==NULL or $col_new_value=='') {
             $query .= $this->getDatabaseColumnName($col_name) . " = NULL";
           } else {
-            $query .= $this->getDatabaseColumnName($col_name) . " = '" . Sql::str($col_new_value) ."' ";
+            $query .= $this->getDatabaseColumnName($col_name) . " = '" . $col_new_value ."' ";
           }
           $nbChanged+=1;
           // Save change history
@@ -1427,11 +1427,11 @@ abstract class SqlElement {
       $message.=$tx . SqlList::getNameFromId(get_class($this) . 'Type', $this->{'id' . get_class($this) . 'Type'}) . $xt;
 
       $message.=$hx . $this->getColCaption('name') . $xh;
-      $message.=$tx . htmlEncode($this->name,'withBR') . $xt;
+      $message.=$tx . htmlEncode($this->name,'mail') . $xt;
 
       if (property_exists($this,'description')) {
         $message.=$hx . $this->getColCaption('description') . $xh;
-        $message.=$tx . htmlEncode($this->description,'withBR') . $xt;
+        $message.=$tx . htmlEncode($this->description,'mail') . $xt;
       }
       $message.=$hx . $this->getColCaption('idUser') . $xh;
       $message.=$tx . SqlList::getNameFromId('User', $this->idUser) . $xt;
@@ -1444,7 +1444,7 @@ abstract class SqlElement {
 
       if (property_exists($this,'result')) {
         $message.=$hx . $this->getColCaption('result') . $xh;
-        $message.=$tx . htmlEncode($this->result,'withBR') . $xt;
+        $message.=$tx . htmlEncode($this->result,'mail') . $xt;
       }
     }
     $message='<html>' . "\n" .
