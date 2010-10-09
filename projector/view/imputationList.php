@@ -95,6 +95,14 @@ $rangeValue=$currentYear . $currentWeek;
               submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
             </script>
         </button>
+        <button title="<?php echo i18n('print')?>"  
+         dojoType="dijit.form.Button" 
+         id="printButton" name="printButton"
+         iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+          <script type="dojo/connect" event="onClick" args="evt">
+            showPrint('../report/imputation.php', 'imputation');
+          </script>
+        </button>
         <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('buttonUndoImputation');?>"
          "disabled"
@@ -122,12 +130,13 @@ $rangeValue=$currentYear . $currentWeek;
   </table>
   </div>
   <div style="position:relative;" dojoType="dijit.layout.ContentPane" region="center" id="workDiv" name="workDiv">
-     <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
+     <form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
        <input type="hidden" name="userId" id="userId" value="<?php echo $user->id;?>"/>
        <input type="hidden" name="rangeType" id="rangeType" value="<?php echo $rangeType;?>"/>
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
        <input type="checkbox" name="idle" id="idle" style="display: none;">     
-       <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">           
+       <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
+       <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
       <?php ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, true);?>
      </form>
   </div>

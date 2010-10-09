@@ -145,15 +145,19 @@ function showAbout (msg) {
  * @param forms the form containing the data to send to the page
  * @return void 
  */
-function showPrint (page, listPrint, planningPrint) {
+function showPrint (page, context) {
 	//dojo.byId('printFrame').style.width= 1000 + 'px';
 	showWait();
 	window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 	dijit.byId("dialogPrint").show();
-	cl=dojo.byId('objectClass').value;
-	id=dojo.byId('objectId').value;
+	if (dojo.byId('objectClass')) {
+		cl=dojo.byId('objectClass').value;
+	}
+	if (dojo.byId('objectId')) {
+		id=dojo.byId('objectId').value;
+	}
 	var params="";
-	if (listPrint) {
+	if (context=='list') {
 		if (dijit.byId("listShowIdle")) {
 			if (dijit.byId("listShowIdle").attr('checked')) {
 			  params+="&idle=true";
@@ -174,7 +178,7 @@ function showPrint (page, listPrint, planningPrint) {
 				params+="&objectType="+encodeURIComponent(dijit.byId("listTypeFilter").attr('value'));
 			}
 		}
-	} else if (planningPrint){
+	} else if (context=='planning'){
 		if (dijit.byId("startDatePlanView").attr('value')) {
 		  params+="&startDate="+encodeURIComponent(formatDate(dijit.byId("startDatePlanView").value));
 		  params+="&format="+g.getFormat();
@@ -182,6 +186,18 @@ function showPrint (page, listPrint, planningPrint) {
 		  	params+="&idle=true";
 		  }
 		}
+	} else if (context=='report'){
+		var frm=dojo.byId('reportForm');
+		frm.action="../view/print.php";
+		frm.target='printFrame';
+		frm.submit();
+		return;
+	} else if (context=='imputation'){
+		var frm=dojo.byId('listForm');
+		frm.action="../view/print.php";
+		frm.target='printFrame';
+		frm.submit();
+		return;
 	}
 	var grid=dijit.byId('objectGrid');
 	if (grid) {
@@ -914,6 +930,7 @@ function reportSelectCategory(idCateg) {
 	loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv", null, false);
 	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});
 	var mySelect=dojo.byId("reportsList");
+	//dijit.byId("reportsList").attr('value','');
 	mySelect.options.length=0;
 	var nbVal=0;
 	tmpStore.fetch({

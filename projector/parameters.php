@@ -25,7 +25,7 @@ $paramDbType='mysql';                           // Database type {'mysql'}
 $paramDbHost='localhost';                       // Database host (server name)
 $paramDbUser='root';                            // Database user to connect
 $paramDbPassword='mysql';                       // Database password for user
-$paramDbName='test';                       // Database schema name
+$paramDbName='projector';                       // Database schema name
 $paramDbDisplayName='ProjectOr Dev';                         // Name to be displayed    
 $paramDbPrefix='';                              // Database prefix for table names
 

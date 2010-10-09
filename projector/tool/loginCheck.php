@@ -89,6 +89,9 @@
   function loginOk ($user) {
     global $login;
     $_SESSION['user']=$user;
+    $page=$_SERVER['PHP_SELF'];
+    $appRoot=substr($page, 0, strpos($page, '/', 1));
+    $_SESSION['appRoot']=$appRoot;
     $crit=array();
     $crit['idUser']=$user->id;
     $crit['idProject']=null;

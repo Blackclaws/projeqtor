@@ -607,6 +607,7 @@ function finaliseButtonDisplay() {
   	// id does not exist => not selected, only new button possible
   	formLock();
   	enableWidget('newButton');
+  	enableWidget('printButton');
   }
   buttonRightLock();
 }

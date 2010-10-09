@@ -12,6 +12,24 @@
     include_once('../tool/formatter.php');
   }
   
+  // Header
+  if ( array_key_exists('report',$_REQUEST) ) {
+    $headerParameters="";
+    if (array_key_exists('startDate',$_REQUEST) and trim($_REQUEST['startDate'])!="") {
+      $headerParameters.= i18n("colStartDate") . ' : ' . dateFormatter($_REQUEST['startDate']) . '<br/>';
+    }
+    if (array_key_exists('endDate',$_REQUEST) and trim($_REQUEST['endDate'])!="") {
+      $headerParameters.= i18n("colEndDate") . ' : ' . dateFormatter($_REQUEST['endDate']) . '<br/>';
+    }
+    if (array_key_exists('format',$_REQUEST)) {
+      $headerParameters.= i18n("colFormat") . ' : ' . i18n($_REQUEST['format']) . '<br/>';
+    }
+    if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
+      $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+    }
+    include "../report/header.php";
+  }
+  
   $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
   $querySelect = '';
@@ -148,7 +166,7 @@
         $pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
         $pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
         $pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
-        if ($pEnd=="") {$pEnd=date('Y-m-d');}
+        //if ($pEnd=="") {$pEnd=date('Y-m-d');}
         $line['pStart']=$pStart;
         $line['pEnd']=$pEnd;
         $resultArray[]=$line;
@@ -284,8 +302,8 @@
         echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $duration  . '</NOBR></TD>' ;
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . dateFormatter($pStart) . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . dateFormatter($pEnd) . '</NOBR></TD>' ;
+        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . (($pStart)?dateFormatter($pStart):'-') . '</NOBR></TD>' ;
+        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . (($pEnd)?dateFormatter($pEnd):'-') . '</NOBR></TD>' ;
         if ($pGroup) {
           $pColor='#505050';
         } else {         

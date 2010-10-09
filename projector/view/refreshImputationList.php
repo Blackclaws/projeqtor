@@ -17,12 +17,13 @@ if (array_key_exists('showPlannedWork',$_REQUEST)) {
     $showPlannedWork=$_REQUEST['showPlannedWork'];
 }
 ?>
-<form dojoType="dijit.form.Form" id="listForm" action="" method="" >
+<form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
   <input type="hidden" name="userId" id="userId" value="<?php echo $userId;?>"/>
   <input type="hidden" name="rangeType" id="rangeType" value="<?php echo $rangeType;?>"/>
   <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
+  <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
 <?php 
 ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork);
 ?>

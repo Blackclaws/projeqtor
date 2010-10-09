@@ -46,8 +46,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.2.1";            // Version of application : Major / Minor / Release
-$build="0020";                // Build number. To be increased on each release
+$version="V1.3.0";            // Version of application : Major / Minor / Release
+$build="0021";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -69,7 +69,7 @@ if (get_magic_quotes_gpc ()) {
 if (get_magic_quotes_runtime ()) {
   @set_magic_quotes_runtime(0);
 }
-
+$page=$_SERVER['PHP_SELF'];
 if ( ! (isset($maintenance) and $maintenance) ) {
   // Get the user from session. If not exists, request connection ===============
   if (isset($_SESSION['user'])) {
@@ -77,15 +77,22 @@ if ( ! (isset($maintenance) and $maintenance) ) {
     // user must be a User object. Otherwise, it may be hacking attempt.
     if (get_class($user) != "User") {
       // Hacking detected
-      traceLog("'user' is not an instance of User class. May be a hacking attempt.") ;
+      traceLog("'user' is not an instance of User class. May be a hacking attempt from IP " . $_SERVER['REMOTE_ADDR']) ;
       envLog();
       $user=null;
       throw new Exception(i18n("invalidAccessAttempt"));
     }
+    $appRoot="#N/A#";
+    if (strpos($page, '/', 1)) {
+      $appRoot=substr($page, 0, strpos($page, '/', 1));
+    } 
+    if (!array_key_exists('appRoot',$_SESSION) or $_SESSION['appRoot']!=$appRoot) {
+      traceLog("Application root changed. New Login requested for user '" . $user->name . "' from IP " . $_SERVER['REMOTE_ADDR']);
+      $user = null;
+    }
   } else {
     $user = null;
   }  
-  $page=$_SERVER['PHP_SELF'];
   $pos=strrpos($page,"/");
   if ($pos) {
     $page=substr($page,$pos+1);
@@ -729,6 +736,7 @@ function workDayDiffDates($start, $end) {
   }
   $diff = $dEnd - $dStart;
   $diffDay=($diff / 86400);
+  $diffDay=round($diffDay,0);
   //remove week-ends 
   if ($diffDay>=7) {
     $diffDay-=(floor($diffDay/7)*2);
@@ -739,7 +747,7 @@ function workDayDiffDates($start, $end) {
   }
   //add 1 day to include first day, workDayDiffDates(X,X)=1, workDayDiffDates(X,X+1)=2
   $diffDay+=1;
-  return(round($diffDay,0));
+  return($diffDay);
 }
 
 /** ============================================================================

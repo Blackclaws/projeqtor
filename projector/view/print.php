@@ -12,8 +12,8 @@
 <head>   
   
   <title><?php echo i18n("applicationTitle");?></title>
+  <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
-  <link rel="stylesheet" type="text/css" href="../external/jsgantt/jsgantt.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="../external/dojo/dojo.js"
@@ -42,7 +42,14 @@
 
 <body id="bodyPrint" onload="top.hideWait();";>
   <?php 
-    include '../view/' . $_REQUEST['page']; 
+  $includeFile=$_REQUEST['page'];
+  if (! substr($_REQUEST['page'],0,3)=='../') {
+    $includeFile.='../view/';
+  }
+  if (strpos($includeFile,'?')>0) {
+    $includeFile=substr($includeFile,0,strpos($includeFile,'?'));
+  }
+  include $includeFile;
   ?>
 </body>
 </html>

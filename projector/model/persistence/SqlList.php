@@ -21,12 +21,13 @@ class SqlList {
    * *@param $displayCol the name of the value column (defaut is name)
    * @return an array containing the list of references
    */
-  public static function getList($listType, $displayCol='name', $selectedValue=null) {
+  public static function getList($listType, $displayCol='name', $selectedValue=null, $showIdle=false) {
     $listName=$listType . "_" . $displayCol;
+    if ($showIdle) { $listName .= '_all'; }
     if (array_key_exists($listName, self::$list)) {
       return self::$list[$listName];
     } else {
-      return self::fetchList($listType, $displayCol, $selectedValue);
+      return self::fetchList($listType, $displayCol, $selectedValue, $showIdle);
     }
   }
 
@@ -39,10 +40,15 @@ class SqlList {
    * @param $listType the name of the table containing the data
    * @return an array containing the list of references
    */
-  private static function fetchList($listType,$displayCol, $selectedValue) {
+  private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false) {
     $res=array();
     $obj=new $listType();
-    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (idle=0 ";
+    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() ;
+    if ($showIdle) {
+      $query.= " where (1=1 ";
+    } else {
+      $query.= " where (idle=0 ";
+    }
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
       $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
@@ -68,7 +74,7 @@ class SqlList {
         $res[($line['id'])]=$name;
       }
     }
-    self::$list[$listType . "_" . $displayCol]=$res;
+    self::$list[$listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
     return $res;
   }
  
@@ -114,7 +120,7 @@ class SqlList {
       return '';
     }
     $name=$id;
-    $list=self::getList($listType,$field);
+    $list=self::getList($listType,$field, null, true);
     if (array_key_exists($id,$list)) {
       $name=$list[$id];
       $obj=new $listType();

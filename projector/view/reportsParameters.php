@@ -203,6 +203,70 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php 
+  } else if ($param->paramType=='userList') {
+    $defaultValue='';
+    if ($param->defaultValue=='currentUser') {
+      if (array_key_exists('user',$_SESSION)) {
+        $user=$_SESSION['user'];
+        $defaultValue=$user->id;
+      }
+    } else if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+?>
+    <tr>
+    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <?php htmlDrawOptionForReference('idUser', $defaultValue, null, false); ?>
+     </select>    
+    </td>
+    </tr>
+<?php 
+  } else if ($param->paramType=='resourceList') {
+    $defaultValue='';
+    if ($param->defaultValue=='currentResource') {
+      if (array_key_exists('project',$_SESSION)) {
+        $user=$_SESSION['user'];
+        $defaultValue=$user->id;
+      }
+    } else if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+?>
+    <tr>
+    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <?php htmlDrawOptionForReference('idResource', $defaultValue, null, false); ?>
+     </select>    
+    </td>
+    </tr>
+<?php 
+  } else if ($param->paramType=='ticketType') {
+    $defaultValue='';
+    if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+?>
+    <tr>
+    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <?php htmlDrawOptionForReference('idTicketType', $defaultValue, null, false); ?>
+     </select>    
+    </td>
+    </tr>
+<?php 
   }
 }
 ?>
@@ -213,9 +277,24 @@ foreach ($listParam as $param) {
   <tr>
     <td></td>
     <td>
-      <button dojoType="dijit.form.Button" type="submit" id="reportSubmit" onclick="runReport();return false;">
-        <?php echo i18n("buttonOK");?>
+      <button title="<?php echo i18n('reportShow')?>"   
+         dojoType="dijit.form.Button" type="submit" 
+         id="reportSubmit" name="reportSubmit" 
+         iconClass="displayButton" showLabel="false"
+         onclick="runReport();return false;">
       </button>
+      <button title="<?php echo i18n('reportPrint')?>"  
+         dojoType="dijit.form.Button" 
+         id="reportPrint" name="reportPrint"
+         iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+          <script type="dojo/connect" event="onClick" args="evt">
+            var fileName=dojo.byId('reportFile').value;
+            showPrint("../report/"+ fileName, 'report');
+          </script>
+        </button>
+        <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
+        <input type="hidden" id="print" name="print" value=true />
+        <input type="hidden" id="report" name="report" value=true />
     </td>
   </tr>
 </table>

@@ -17,12 +17,12 @@
 <head>   
   
   <title><?php echo i18n("applicationTitle");?></title>
+  <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projector.css" media="screen" />
   <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" media="print" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="../external/jsgantt/jsgantt.css" />
-  <script language="javascript" src="../external/jsgantt/jsgantt.js"></script>
+  <script type="text/javascript" src="js/jsgantt.js"></script>
   <script type="text/javascript" src="js/projector.js" ></script>
   <script type="text/javascript" src="js/projectorWork.js" ></script>
   <script type="text/javascript" src="js/projectorDialog.js" ></script>
@@ -273,7 +273,10 @@
 <div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>">
   <?php 
     $printHeight=600;
-    $printWidth=900;
+    $printWidth=1000;
+    //if (array_key_exists('screenWidth',$_SESSION)) {
+    //   $printWidth = $_SESSION['screenWidth'] * 0.8;
+    //}
     if (array_key_exists('screenHeight',$_SESSION)) {
       $printHeight=round($_SESSION['screenHeight']*0.65);
     }

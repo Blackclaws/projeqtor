@@ -184,7 +184,7 @@ class ImputationLine {
     }
   }
   
-  static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true) {
+  static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
     $nameWidth=220;
     $dateWidth=80;
     $workWidth=60;
@@ -282,7 +282,11 @@ class ImputationLine {
         . ' value="' . $line->idProject . '"/>';
       echo '<img src="css/images/icon' . $line->refType . '16.png" />';
       echo '</td>';
-      echo '<td class="ganttName" title="' . htmlEncodeJson($line->comment) . '">';
+      if (! $print) {
+        echo '<td class="ganttName" title="' . htmlEncodeJson($line->comment) . '">';
+      } else {
+        echo '<td class="ganttName" >';
+      }
       // tab the name depending on level
       echo '<table><tr><td>';
       
@@ -296,16 +300,16 @@ class ImputationLine {
       }*/
       
       echo '</td>';
-      if ($rowType=="group") {
+      if ($rowType=="group" and ! $print) {
         echo '<td width="16"><span id="group_' . $nbLine . '" class="ganttExpandOpened"';
         echo 'onclick="workOpenCloseLine(' . $nbLine . ')">'; 
         echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
-      } else {
+      } else if (! $print) {
         echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
       }
       //echo $line->wbs . ' '. $line->name . '</td>'; // for testing purpose, add wbs code
       echo '<td>' . $line->name . '</td>';
-      if ($line->comment) {
+      if ($line->comment and !$print) {
         echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
       }
       echo '</tr></table>';
@@ -314,28 +318,36 @@ class ImputationLine {
       echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->endDate) . '</td>';
       echo '<td class="ganttDetail" align="center">';
       if ($line->imputable) {
-        echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-        echo ' constraints="{pattern:\'###0.0#\'}"'; 
-        echo '  style="width: 60px; text-align: center;" ';
-        echo ' trim="true" class="displayTransparent" readOnly="true" ';
-        echo ' id="assignedWork_' . $nbLine . '"';
-        echo ' name="assignedWork_' . $nbLine . '"';
-        echo ' value="' . $line->assignedWork . '" ';
-        echo ' >';
-        echo '</div>';
+        if (!$print) {
+          echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+          echo ' constraints="{pattern:\'###0.0#\'}"'; 
+          echo '  style="width: 60px; text-align: center;" ';
+          echo ' trim="true" class="displayTransparent" readOnly="true" ';
+          echo ' id="assignedWork_' . $nbLine . '"';
+          echo ' name="assignedWork_' . $nbLine . '"';
+          echo ' value="' . $line->assignedWork . '" ';
+          echo ' >';
+          echo '</div>';
+        } else {
+          echo $line->assignedWork;
+        }
       }
       echo '</td>';
       echo '<td class="ganttDetail" align="center">';
       if ($line->imputable) {
-        echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-        echo ' constraints="{pattern:\'###0.0#\'}"'; 
-        echo '  style="width: 60px; text-align: center;" ';
-        echo ' trim="true" class="displayTransparent" readOnly="true" ';
-        echo ' id="realWork_' . $nbLine . '"';
-        echo ' name="realWork_' . $nbLine . '"';
-        echo ' value="' . $line->realWork . '" ';
-        echo ' >';
-        echo '</div>';
+        if (!$print) {
+          echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+          echo ' constraints="{pattern:\'###0.0#\'}"'; 
+          echo '  style="width: 60px; text-align: center;" ';
+          echo ' trim="true" class="displayTransparent" readOnly="true" ';
+          echo ' id="realWork_' . $nbLine . '"';
+          echo ' name="realWork_' . $nbLine . '"';
+          echo ' value="' . $line->realWork . '" ';
+          echo ' >';
+          echo '</div>';
+        } else {
+          echo  $line->realWork;
+        }
       }
       echo '</td>';
       $curDate=$startDate;
@@ -350,33 +362,37 @@ class ImputationLine {
         if ($line->imputable) {
           $valWork=$line->arrayWork[$i]->work;
           $idWork=$line->arrayWork[$i]->id;
-          echo '<div style="position: relative">';
-          if ($showPlanned) {
-            echo '<div style="display: inline;';
-            echo ' position: absolute; right: 2px; top: 0px; text-align: right;';
-            echo ' color:#8080DD; font-size:80%;">';
-            echo $line->arrayPlannedWork[$i]->work;
-            echo '</div>';          
+          if (! $print) {
+            echo '<div style="position: relative">';
+            if ($showPlanned) {
+              echo '<div style="display: inline;';
+              echo ' position: absolute; right: 2px; top: 0px; text-align: right;';
+              echo ' color:#8080DD; font-size:80%;">';
+              echo $line->arrayPlannedWork[$i]->work;
+              echo '</div>';          
+            }
+            echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+            echo ' constraints="{min:0,max:9.00,pattern:\'0.0#\'}"'; 
+            echo '  style="width: 45px; text-align: center;" ';
+            echo ' trim="true" maxlength="4" class="input" ';
+            echo ' id="workValue_' . $nbLine . '_' . $i . '"';
+            echo ' name="workValue_' . $nbLine . '_' . $i . '"';
+            echo ' value="' . $valWork . '" ';
+            echo ' >';
+            echo '<script type="dojo/method" event="onChange" args="evt">';
+            echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
+            echo '</script>';
+            echo '</div>';
+            echo '</div>';
+            echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
+              . 'name="workId_' . $nbLine . '_' . $i . '"'
+              . ' value="' . $idWork . '"/>';
+            echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
+              . 'name="workOldValue_' . $nbLine . '_' . $i . '"'
+              . ' value="' . $valWork . '"/>';
+          } else {
+            echo $valWork;
           }
-          echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-          echo ' constraints="{min:0,max:9.00,pattern:\'0.0#\'}"'; 
-          echo '  style="width: 45px; text-align: center;" ';
-          echo ' trim="true" maxlength="4" class="input" ';
-          echo ' id="workValue_' . $nbLine . '_' . $i . '"';
-          echo ' name="workValue_' . $nbLine . '_' . $i . '"';
-          echo ' value="' . $valWork . '" ';
-          echo ' >';
-          echo '<script type="dojo/method" event="onChange" args="evt">';
-          echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
-          echo '</script>';
-          echo '</div>';
-          echo '</div>';
-          echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
-            . 'name="workId_' . $nbLine . '_' . $i . '"'
-            . ' value="' . $idWork . '"/>';
-          echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
-            . 'name="workOldValue_' . $nbLine . '_' . $i . '"'
-            . ' value="' . $valWork . '"/>';
           $colSum[$i]+=$valWork;             
         }
         echo '</td>';
@@ -384,37 +400,44 @@ class ImputationLine {
       }
       echo '<td class="ganttDetail" align="center">';
       if ($line->imputable) {
-        echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-        echo ' constraints="{pattern:\'###0.0#\'}"'; 
-        echo '  style="width: 60px; text-align: center;" ';
-        echo ' trim="true" class="input" ';
-        echo ' id="leftWork_' . $nbLine . '"';
-        echo ' name="leftWork_' . $nbLine . '"';
-        echo ' value="' . $line->leftWork . '" ';
-        echo ' >';
-        echo '<script type="dojo/method" event="onChange" args="evt">';
-        echo '  dispatchLeftWorkValueChange("' . $nbLine . '");';
-        echo '</script>';
-        echo '</div>';
+        if (!$print) {
+          echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+          echo ' constraints="{pattern:\'###0.0#\'}"'; 
+          echo '  style="width: 60px; text-align: center;" ';
+          echo ' trim="true" class="input" ';
+          echo ' id="leftWork_' . $nbLine . '"';
+          echo ' name="leftWork_' . $nbLine . '"';
+          echo ' value="' . $line->leftWork . '" ';
+          echo ' >';
+          echo '<script type="dojo/method" event="onChange" args="evt">';
+          echo '  dispatchLeftWorkValueChange("' . $nbLine . '");';
+          echo '</script>';
+          echo '</div>';
+        } else {
+          echo $line->leftWork;
+        }
       } 
       echo '</td>';
       echo '<td class="ganttDetail" align="center">';
       if ($line->imputable) {
-        echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-        echo ' constraints="{pattern:\'###0.0#\'}"'; 
-        echo '  style="width: 60px; text-align: center;" ';
-        echo ' trim="true" class="displayTransparent" readonly="true"';
-        echo ' id="plannedWork_' . $nbLine . '"';
-        echo ' name="plannedWork_' . $nbLine . '"';
-        echo ' value="' . $line->plannedWork . '" ';
-        echo ' >';
-        echo '</div>';
+        if (!$print) {
+          echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+          echo ' constraints="{pattern:\'###0.0#\'}"'; 
+          echo '  style="width: 60px; text-align: center;" ';
+          echo ' trim="true" class="displayTransparent" readonly="true"';
+          echo ' id="plannedWork_' . $nbLine . '"';
+          echo ' name="plannedWork_' . $nbLine . '"';
+          echo ' value="' . $line->plannedWork . '" ';
+          echo ' >';
+          echo '</div>';
+        } else {
+          echo $line->plannedWork;
+        }
       } 
       echo '</td>';
       echo '</tr>';
     }
-    echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '"/>';
-    echo '<TR class="ganttHeight">';
+    echo '<TR class="ganttDetail" >';
     echo '  <TD class="ganttLeftTopLine" style="width:15px;"></TD>';
     echo '  <TD class="ganttLeftTopLine" style="width: ' . $nameWidth . 'px;text-align: left; ' 
       . 'border-left:0px; " nowrap><NOBR></NOBR></TD>';
@@ -433,15 +456,19 @@ class ImputationLine {
         //echo ' background-color:#' . $currentdayColor . ';';
       }
       echo '"><NOBR>'; 
-      echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-      echo ' constraints="{pattern:\'###0.0#\'}"'; 
-      echo '  style="width: 45px; text-align: center;" ';
-      echo ' trim="true" class="displayTransparent" ';
-      echo ' id="colSumWork_' . $i . '"';
-      echo ' name="colSumWork_' . $i . '"';
-      echo ' value="' . $colSum[$i] . '" ';
-      echo ' >';
-      echo '</div>';
+      if (!$print) {
+        echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
+        echo ' constraints="{pattern:\'###0.0#\'}"'; 
+        echo '  style="width: 45px; text-align: center;" ';
+        echo ' trim="true" class="displayTransparent" ';
+        echo ' id="colSumWork_' . $i . '"';
+        echo ' name="colSumWork_' . $i . '"';
+        echo ' value="' . $colSum[$i] . '" ';
+        echo ' >';
+        echo '</div>';
+      } else {
+        echo $colSum[$i];
+      }
       echo '</NOBR></TD>';
       $curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
     }    
@@ -451,6 +478,7 @@ class ImputationLine {
       .  '</NOBR></TD>';
     echo '</TR>';      
     echo '</table>';  
+    echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '"/>';
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS

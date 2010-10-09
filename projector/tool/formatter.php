@@ -65,7 +65,7 @@ function translateFormatter($value) {
 }
 
 function percentFormatter($value) {
-  if ($value) { 
+  if ($value!==null) { 
     return $value . ' %';
   } else {
     return ''; 

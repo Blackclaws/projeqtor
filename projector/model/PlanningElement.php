@@ -402,18 +402,24 @@ debugLog ("   => Group");
    */
   public function delete() { 
     // Delete existing Assignment
-    $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
-    $assignment=new Assignment();
-    $assList=$assignment->getSqlElementsFromCriteria($critAss, false);
-    foreach ($assList as $ass) {
-      $ass->delete();
-    }
+    //$critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
+    //$assignment=new Assignment();
+    //$assList=$assignment->getSqlElementsFromCriteria($critAss, false);
+    //foreach ($assList as $ass) {
+    //  $ass->delete();
+    //}
     $refType=$this->topRefType;
     $refId=$this->topRefId;
     $result = parent::delete();
-    if ($refId) {
-        //self::updateSynthesis($this->topRefType, $this->topRefId);
-        self::updateSynthesis($refType, $refId);
+    
+    $topElt=null;
+    if ( $refId and trim($refId)!='') {
+      $crit=array("refType"=>$refType, "refId"=>$refId);
+      $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
+      if ($topElt) {
+        $topElt->save();
+        self::updateSynthesis($refType, $refId);          
+      }
     }
     
     // Dispatch value

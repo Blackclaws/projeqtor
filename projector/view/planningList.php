@@ -55,7 +55,7 @@ scriptLog('   ->/view/planningList.php');
                id="listPrint" name="listPrint"
                iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
-                  showPrint("../tool/jsonPlanning.php", false, true);
+                  showPrint("../tool/jsonPlanning.php", 'planning');
                 </script>
               </button>
             </td>
