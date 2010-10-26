@@ -20,6 +20,7 @@ class Severity extends SqlElement {
     <th field="name" width="60%">${name}</th>
     <th field="value" width="10%" >${value}</th>
     <th field="color" width="10%" formatter="colorFormatter">${color}</th>  
+    <th field="sortOrder" width="5%">${sortOrderShort}</th>    
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 

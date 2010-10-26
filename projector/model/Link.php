@@ -81,19 +81,21 @@ class Link extends SqlElement {
    * @return array of "type" and "id" sur array
    */
   static function getLinksAsListForObject($obj, $classLink=null) {
-    $list = getLinksForObject($obj, $classLink);
-    foreach($list as $lstObj) {
+    $list = self::getLinksForObject($obj, $classLink);
+    $class=get_class($obj);
+    $result=array();
+    foreach($list as $listObj) {
       $type="";
       $id="";
-      if ($lisObj->ref1Type=$class and $listObj->ref1Id=$obj->id ) {
-         $type=$lisObj->ref2Type;
-         $id=$lisObj->ref2Id;
+      if ($listObj->ref1Type==$class and $listObj->ref1Id==$obj->id ) {
+         $type=$listObj->ref2Type;
+         $id=$listObj->ref2Id;
       } else {
-         $type=$lisObj->ref1Type;
-         $id=$lisObj->ref1Id;
+         $type=$listObj->ref1Type;
+         $id=$listObj->ref1Id;
       }
       $res=array("type"=>$type, "id"=>$id);
-      $result[$lisObj->id]=$res;
+      $result[$listObj->id]=$res;
     }
     return $result;
   }

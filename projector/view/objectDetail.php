@@ -44,6 +44,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $internalTableCurrentRow=0;
   $internalTableRowsCaptions=array();
   $classObj=get_class($obj);
+  $type=$classObj . 'Type';
+  $idType='id' . $type;
+  $objType=null;
+  if (property_exists($obj, $idType)) {
+    $objType=new $type($obj->$idType);
+  }
   $section=''; $nbLineSection=0;
   // Loop on each propertie of the object
   if ( ! $included) {
@@ -136,6 +142,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '<tr><td colspan=2>';
       echo $obj->drawSpecificItem($item); // the method must be implemented in the corresponidng class
       echo '</td></tr>';
+    } else if (substr($col,0,5)=='_lib_') { // if field is just a caption 
+      $item=substr($col,5);
+      echo i18n ($item);
     } else if (substr($col,0,5)=='_Link') { // Display links to other objects
       $linkClass=null;
       if (strlen($col)>5) {
@@ -152,6 +161,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //    
     } else {
       $attributes=''; $isRequired=false; $readOnly=false;
+      if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType) {
+        $lock='lock' . ucfirst($col);
+        if ($objType->$lock) {
+          $attributes.=' readonly ';
+          $readOnly=true;
+        }
+      }
       if (strpos($obj->getFieldAttributes($col), 'required')!==false) {
         $attributes.=' required="true" missingMessage="' . i18n('messageMandatory',array($obj->getColCaption($col))). '" invalidMessage="' . i18n('messageMandatory',array($obj->getColCaption($col))) .'"';
         $isRequired=true;
@@ -224,6 +240,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       // prepare the javascript code to be executed
       $colScript = $obj->getValidationScript($col);
+      if ($dataType=='datetime') {
+        $colScriptBis = $obj->getValidationScript($col."Bis");
+      }
       if (is_object($val)) {
         // Draw an included object (recursive call) =========================== Type Object
         drawTableFromObject($val, true, $readOnly);
@@ -429,7 +448,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' style="width:' . round($dateWidth * 0.66) . 'px; text-align: center;" class="input" ';
         echo ' value="T' . $valTime . '" ';
         echo ' >';
-        echo $colScript;
+        echo $colScriptBis;
         echo '</div>';      
       } else if ($dataType=='time') {
         // Draw a date ======================================================== TIME

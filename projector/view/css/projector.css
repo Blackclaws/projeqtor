@@ -360,6 +360,31 @@ label, .label {
 .workflowHeader {
   font-size: 90%;
 }
+.largeReportHeader {
+  border: 1px solid #AAAAAA;
+  text-align: center;
+  font-weight: bold;
+  background: #DDDDDD;
+  font-size: 80%;
+  margin: 0; padding: 0; spacing: 0;
+}
+.largeReportData {
+  border: 1px solid #AAAAAA;
+  font-weight: normal;
+  background: #FFFFFF;
+  font-size: 80%;
+  margin: 0; padding: 0; spacing: 0;
+  vertical-align: top;
+}
+.largeReportDataDone {
+  border: 1px solid #AAAAAA;
+  font-weight: normal;
+  background: #E0E0E0;
+  color: #505050;
+  font-size: 80%;
+  margin: 0; padding: 0; spacing: 0;
+  vertical-align: top;
+}
 .reportHeader {
   border: 0px solid #AAAAAA;
   text-align: center;
@@ -598,25 +623,24 @@ label, .label {
 /* =============================================================================== */
 /* SPECIFIC GREEN THEME                                                            */
 /* =============================================================================== */
-
 .green html, .green body, .green #leftDiv, .green #logoDiv,
 .green #buttonDiv,
-.green .dijitSplitterH, .green .dijitGutterH , .green .dijitSplitterV, .green .dijitGutterV,
+.green .dijitSplitterH, .green .dijitGutterH, .green .dijitSplitterV, .green .dijitGutterV,
 .green .dijitMenuItemHover,
 .green .dijitMenuPassive .dijitMenuItemHover,
-.green .dijitMenuItemSelected      {
+.green .dijitMenuItemSelected   {
   background-color: #539B53;
 }
 
-.green #mapDiv, .green #messageDiv, .green #listDiv, .green #detailDiv, .green #formDiv, .green .display,
+.green #mapDiv, .green #messageDiv, .green #listDiv, .green #detailDiv, .green #formDiv, .green .display, .green .background,
 .green #printPreview, .green .dijitTitlePaneContentInner, 
-.green #mainDiv, .green #contentDiv, .green #centerDiv  {
+.green #mainDiv,  .green #contentDiv, .green #centerDiv {
   background-color: #C3EBC3;
 }
 
 .green #toolBarDiv, .green #statusBarDiv, .green .statusBar, .green .dojoxGridRowSelected, 
 .green .section, .green .dijitTitlePane .dijitTitlePaneTitle, .green .title {
-  background-color: #539B53;  color: #FFFFFF;  
+  background-color: #539B53;  color: #EEEEEE;  
 }
 
 .green .tabLabel, .green label, .green .dojoxGridRowOver .dojoxGridCell {
@@ -643,16 +667,16 @@ label, .label {
 
 .grey html, .grey body, .grey #leftDiv, .grey #logoDiv,
 .grey #buttonDiv,
-.grey .dijitSplitterH, .grey .dijitGutterH , .grey .dijitSplitterV, .grey .dijitGutterV,
-.grey .dijitMenuItemHover ,
+.grey .dijitSplitterH, .grey .dijitGutterH, .grey .dijitSplitterV, .grey .dijitGutterV,
+.grey .dijitMenuItemHover,
 .grey .dijitMenuPassive .dijitMenuItemHover,
-.grey .dijitMenuItemSelected     {
+.grey .dijitMenuItemSelected   {
   background-color: #9B9B9B;
 }
 
-.grey #mapDiv, .grey #messageDiv, .grey #listDiv, .grey #detailDiv, .grey #formDiv, .grey .display,
+.grey #mapDiv, .grey #messageDiv, .grey #listDiv, .grey #detailDiv, .grey #formDiv, .grey .display, .grey .background,
 .grey #printPreview, .grey .dijitTitlePaneContentInner, 
-.grey #mainDiv, .grey #contentDiv, .grey #centerDiv  {
+.grey #mainDiv,  .grey #contentDiv, .grey #centerDiv {
   background-color: #C3C3C3;
 }
 
@@ -685,16 +709,16 @@ label, .label {
 
 .orange html, .orange body, .orange #leftDiv, .orange #logoDiv,
 .orange #buttonDiv,
-.orange .dijitSplitterH, .orange .dijitGutterH , .orange .dijitSplitterV, .orange .dijitGutterV,
+.orange .dijitSplitterH, .orange .dijitGutterH, .orange .dijitSplitterV, .orange .dijitGutterV,
 .orange .dijitMenuItemHover,
 .orange .dijitMenuPassive .dijitMenuItemHover,
-.orange .dijitMenuItemSelected      {
+.orange .dijitMenuItemSelected   {
   background-color: #D98F0E;
 }
 
-.orange #mapDiv, .orange #messageDiv, .orange #listDiv, .orange #detailDiv, .orange #formDiv, .orange .display,
-.orange #printPreview, .orange .dijitTitlePaneContentInner,
-.orange #mainDiv, .orange #contentDiv, .orange #centerDiv  {
+.orange #mapDiv, .orange #messageDiv, .orange #listDiv, .orange #detailDiv, .orange #formDiv, .orange .display, .orange .background,
+.orange #printPreview, .orange .dijitTitlePaneContentInner, 
+.orange #mainDiv,  .orange #contentDiv, .orange #centerDiv {
   background-color: #F6C672;
 }
 

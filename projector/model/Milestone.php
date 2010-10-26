@@ -19,6 +19,8 @@ class Milestone extends SqlElement {
   public $idStatus;
   public $idResource;
   public $result;
+  public $handled;
+  public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
@@ -37,19 +39,21 @@ class Milestone extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameMilestoneType" width="10%" >${idMilestoneType}</th>
-    <th field="name" width="40%" >${name}</th>
+    <th field="name" width="30%" >${name}</th>
     <th field="validatedEndDate" from="MilestonePlanningElement" width="10%" formatter="dateFormatter">${validatedDueDate}</th>
     <th field="plannedEndDate" from="MilestonePlanningElement" width="10%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
+    <th field="done" width="5%" formatter="booleanFormatter" >${handled}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "idProject"=>"required",
                                   "idStatus"=>"required",
-                                  "description"=>"required",
                                   "idMilestoneType"=>"required",
                                   "creationDate"=>"required",
+                                  "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr"
   );  
@@ -126,41 +130,7 @@ class Milestone extends SqlElement {
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
 
-    if ($colName=="idle") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("idleDate").value==null) {';
-      $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("idleDate").attr("value", curDate); ';
-      $colScript .= '    }';
-      $colScript .= '    if (! dijit.byId("done").attr("checked")) {';
-      $colScript .= '      dijit.byId("done").attr("checked", true);';
-      $colScript .= '    }';  
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idleDate").attr("value", null); ';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="done") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("doneDate").value==null) {';
-      $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("doneDate").attr("value", curDate); ';
-      $colScript .= '    }';
-      $colScript .= '    if (dijit.byId("MilestonePlanningElement_realEndDate").value==null) {';
-      $colScript .= '      dijit.byId("MilestonePlanningElement_realEndDate").attr("value", new Date); ';
-      $colScript .= '    }';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("doneDate").attr("value", null); ';
-      $colScript .= '    dijit.byId("MilestonePlanningElement_realEndDate").attr("value", null); ';
-      $colScript .= '    if (dijit.byId("idle").attr("checked")) {';
-      $colScript .= '      dijit.byId("idle").attr("checked", false);';
-      $colScript .= '    }'; 
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="idProject") {   
+    if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").attr("value", null); ';
       $colScript .= '  formChanged();';
@@ -170,29 +140,7 @@ class Milestone extends SqlElement {
       $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").attr("value", null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    } else if ($colName=="idStatus") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= htmlGetJsTable('Status', 'setIdleStatus', 'tabStatusIdle');
-      $colScript .= htmlGetJsTable('Status', 'setDoneStatus', 'tabStatusDone');
-      $colScript .= '  var setIdle=0;';
-      $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
-      $colScript .= '  if (setIdle==1) {';
-      $colScript .= '    dijit.byId("idle").attr("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idle").attr("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  var setDone=0;';
-      $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
-      $colScript .= '  if (setDone==1) {';
-      $colScript .= '    dijit.byId("done").attr("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("done").attr("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';     
-    }
+    } 
     return $colScript;
   }
 

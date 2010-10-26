@@ -66,9 +66,13 @@
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
 
+  $test=array();
+  if (Sql::$lastQueryNbRows > 0) $test[]="OK";
+  if (checkNoData($test))  exit;
+  
   if (Sql::$lastQueryNbRows > 0) {
     // Header
-    echo '<table class="ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+    echo '<table class="ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;" align="center">';
     echo '<tr class="ganttHeight"><td colspan="6">&nbsp;</td>';
     echo '</tr>';
     echo '<TR class="ganttHeight">';

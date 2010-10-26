@@ -6,6 +6,7 @@
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 $browserLocale="";
+$reportCount=0;
 session_start();              // Setup session. Must be first command.
 include_once "../tool/html.php"; // include html functions
 /* ============================================================================
@@ -429,6 +430,26 @@ function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) {
   return $result;
 }
 
+/** ============================================================================
+ * Return the name of the theme : defaut of selected by user
+ */
+function getTheme() {
+  global $defaultTheme;
+  $theme='blue'; // default if never  set
+  if (isset($defaultTheme)) {
+    $theme=$defaultTheme;   
+  }
+  if (array_key_exists('theme',$_SESSION) ) {
+    $theme= $_SESSION['theme'] ; 
+  }
+  if ($theme=="random") {
+    $themes=array_keys(Parameter::getList('theme'));
+    $rnd=rand(0, count($themes)-2);
+    $theme=$themes[$rnd];
+    $_SESSION['theme']=$theme; // keep value in session to have same theme during all session...
+  }
+  return $theme;
+}
 /** ===========================================================================
  * Send a mail
  * @param $to the receiver of message
@@ -763,7 +784,7 @@ function dayDiffDates($start, $end) {
   $dEnd=mktime(0, 0, 0, $tEnd[1], $tEnd[2], $tEnd[0]);
   $diff = $dEnd - $dStart;
   $diffDay=($diff / 86400);
-  return $diffDay;
+  return round($diffDay,0);
 }  
   
 /** ============================================================================
@@ -936,7 +957,6 @@ function isOpenDay ($dateValue) {
   }
 }
 
-
 function getEaster ($iYear = null) {
     if (is_null ($iYear)) {
         $iYear = (int)date ('Y');
@@ -974,5 +994,24 @@ function getBooleanValueAsString($val) {
   } else {
     return 'false';
   }
+}
+
+function getArrayMonth($max,$addPoint=true) {
+  $monthArr=array(i18n("January"),i18n("February"),i18n("March"),
+      i18n("April"), i18n("May"),i18n("June"),
+      i18n("July"), i18n("August"), i18n("September"),
+      i18n("October"),i18n("November"),i18n("December"));
+  if ($max) {
+    foreach ($monthArr as $num=>$month) {
+      if (mb_strlen($month,'UTF-8')>$max) {
+        if ($addPoint) {
+          $monthArr[$num]=mb_substr($month,0,$max-1,'UTF-8'). '.';
+        } else {
+          $monthArr[$num]=mb_substr($month,0,$max,'UTF-8');
+        }
+      }
+    }
+  }
+  return $monthArr;  
 }
 ?>

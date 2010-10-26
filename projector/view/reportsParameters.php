@@ -267,6 +267,50 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php 
+  } else if ($param->paramType=='objectList') {
+    $defaultValue='';
+    if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+    $arr=array('Ticket','Activity','Milestone', 'Risk', 'Action', 'Issue', 'Meeting', 'Decision', 'Question', 'Project' );
+?>
+    <tr>
+    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+     <?php 
+       foreach ($arr as $val) {
+         echo '<option value="' . $val . '" ';
+         if ($val==$defaultValue) {
+           echo ' SELECTED '; 
+         }  
+         echo '>' . i18n($val) . '</option>';
+       }
+     ?>    
+     </select>    
+    </td>
+    </tr>
+<?php 
+  } else if ($param->paramType=='id') {
+    $defaultValue='';
+    if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+?>
+    <tr>
+    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>#
+    <div style="width:60px; text-align: left; color: #000000;" 
+      dojoType="dijit.form.TextBox" 
+      value="<?php echo $defaultValue;?>"
+      id="<?php echo $param->name;?>" name="<?php echo $param->name;?>" >
+    </div> 
+    </td>
+    </tr>
+<?php 
   }
 }
 ?>
@@ -295,7 +339,8 @@ foreach ($listParam as $param) {
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />
-    </td>
+        <input type="hidden" id="reportName" name="reportName" value="<?php echo i18n($report->name);?>" />
+      </td>
   </tr>
 </table>
 </form>

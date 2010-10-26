@@ -20,6 +20,8 @@ class Question extends SqlElement {
   public $actualDueDate;
   public $result;    
   public $replier;    
+  public $handled;
+  public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
@@ -47,8 +49,8 @@ class Question extends SqlElement {
                                   "idProject"=>"required",
                                   "idStatus"=>"required",
                                   "idQuestionType"=>"required",
-                                  "description"=>"required",
                                   "creationDate"=>"required",
+                                  "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr"
   );  

@@ -8,6 +8,7 @@ class Status extends SqlElement {
   public $_col_1_2;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $setHandledStatus;
   public $setDoneStatus;
   public $setIdleStatus;
   public $color;
@@ -18,10 +19,12 @@ class Status extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="55%">${name}</th>
+    <th field="name" width="50%">${name}</th>
+    <th field="setHandledStatus" width="10%" formatter="booleanFormatter">${setHandledStatus}</th>
     <th field="setDoneStatus" width="10%" formatter="booleanFormatter">${setDoneStatus}</th>
     <th field="setIdleStatus" width="10%" formatter="booleanFormatter">${setIdleStatus}</th>
-    <th field="color" width="10%" formatter="colorFormatter">${color}</th>  
+    <th field="color" width="10%" formatter="colorFormatter">${color}</th>
+    <th field="sortOrder" width="5%">${sortOrderShort}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 

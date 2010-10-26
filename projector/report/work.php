@@ -64,6 +64,9 @@ foreach ($lstWork as $work) {
   $result[$work->idResource][$work->idProject]+=$work->work;
 
 }
+
+if (checkNoData($result)) exit;
+
 // title
 echo '<table width="95%" align="center"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';

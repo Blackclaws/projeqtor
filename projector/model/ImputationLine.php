@@ -189,6 +189,7 @@ class ImputationLine {
     $dateWidth=80;
     $workWidth=60;
     $inputWidth=30;
+    $resource=new Resource($resourceId);
     $weekendColor="cfcfcf";
     $currentdayColor="ffffaa";
     $today=date('Y-m-d');
@@ -200,7 +201,7 @@ class ImputationLine {
     //DateTime::add($endDate, new DateInterval("P" . $nbDays . "D"));
     $plus=$nbDays-1;
     $endDate=date('Y-m-d',strtotime("+$plus days", strtotime($startDate)));
-    $rangeValueDisplay=$rangeValue;
+    $rangeValueDisplay=substr($rangeValue,0,4) . '-' . substr($rangeValue,4);
     $colSum=array();
     for ($i=1; $i<=$nbDays; $i++) {
       $colSum[$i]=0;
@@ -208,7 +209,7 @@ class ImputationLine {
     echo '<table class="ganttTable">';
     echo '<TR class="ganttHeight">';
     echo '  <TD class="ganttLeftTopLine" ></TD>';
-    echo '  <TD class="ganttLeftTopLine" ><NOBR>' . i18n("todayIs") . " " .  htmlFormatDate($today) . '</NOBR></TD>';
+    echo '  <TD class="ganttLeftTopLine" ><NOBR>' . $resource->name . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay . '</NOBR></TD>';
     echo '  <TD class="ganttLeftTopLine" ><NOBR></NOBR></TD>';
     echo '  <TD class="ganttLeftTopLine" ><NOBR></NOBR></TD>';
     echo '  <TD class="ganttLeftTopLine" ><NOBR></NOBR></TD>';
@@ -219,8 +220,7 @@ class ImputationLine {
       . ' - ' 
       . htmlFormatDate($endDate)
       . '</NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" ><NOBR></NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" ><NOBR></NOBR></TD>';
+    echo '  <TD class="ganttLeftTopLine" colspan="2" style="text-align:center;color: #707070"><NOBR>' .  htmlFormatDate($today) . '</NOBR></TD>';
     echo '</TR>';
     echo '<TR class="ganttHeight">';
     echo '  <TD class="ganttLeftTitle" style="width:15px;"></TD>';

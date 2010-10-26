@@ -20,6 +20,8 @@ class Action extends SqlElement {
   public $initialDueDate; // is an object
   public $actualDueDate;
   public $result;
+  public $handled;
+  public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
@@ -33,23 +35,24 @@ class Action extends SqlElement {
 
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="name" width="40%" >${name}</th>
     <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
     <th field="actualDueDate" width="10%" formatter="dateFormatter">${actualDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="10%" >${responsible}</th>
-    <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
+    <th field="nameResource" width="9%" >${responsible}</th>
+    <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
+    <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
+    <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "idProject"=>"required",
                                   "idStatus"=>"required",
                                   "idActionType"=>"required",
-                                  "description"=>"required",
                                   "creationDate"=>"required",
+                                  "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr"
   );  
@@ -125,29 +128,7 @@ class Action extends SqlElement {
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
 
-    if ($colName=="idStatus") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= htmlGetJsTable('Status', 'setIdleStatus', 'tabStatusIdle');
-      $colScript .= htmlGetJsTable('Status', 'setDoneStatus', 'tabStatusDone');
-      $colScript .= '  var setIdle=0;';
-      $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
-      $colScript .= '  if (setIdle==1) {';
-      $colScript .= '    dijit.byId("idle").attr("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idle").attr("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  var setDone=0;';
-      $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
-      $colScript .= '  if (setDone==1) {';
-      $colScript .= '    dijit.byId("done").attr("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("done").attr("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';     
-    } else if ($colName=="initialDueDate") {
+    if ($colName=="initialDueDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (dijit.byId("actualDueDate").value==null) { ';
       $colScript .= '    dijit.byId("actualDueDate").attr("value", this.value); ';
@@ -161,36 +142,6 @@ class Action extends SqlElement {
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';           
-    } else     if ($colName=="idle") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("idleDate").value==null) {';
-      $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("idleDate").attr("value", curDate); ';
-      $colScript .= '    }';
-      $colScript .= '    if (! dijit.byId("done").attr("checked")) {';
-      $colScript .= '      dijit.byId("done").attr("checked", true);';
-      $colScript .= '    }';  
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idleDate").attr("value", null); ';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="done") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("doneDate").value==null) {';
-      $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("doneDate").attr("value", curDate); ';
-      $colScript .= '    }';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("doneDate").attr("value", null); ';
-      $colScript .= '    if (dijit.byId("idle").attr("checked")) {';
-      $colScript .= '      dijit.byId("idle").attr("checked", false);';
-      $colScript .= '    }'; 
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
     }
     return $colScript;
   }

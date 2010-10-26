@@ -19,7 +19,8 @@ $versionParameters =array(
                  'paramMailSendmailPath'=>null,
                  'paramMailTitle'=>'[Project\'Or RIA] ${item} #${id} moved to status ${status}',
                  'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to ${status}',
-                 'paramMailShowDetail'=>'true' ) );
+                 'paramMailShowDetail'=>'true' ),
+  'V1.3.0'=>array('defaultTheme'=>'blue') );
 $SqlEndOfCommand=";";
 $SqlComment="--";
    

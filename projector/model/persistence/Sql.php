@@ -146,7 +146,10 @@ class Sql {
    * @param $string the string to be protected
    * @return the string, protected to ensure a correct sql query
    */
-  public static function str($string) {
+  public static function str($string, $objectClass=null) {
+    if ($objectClass and $objectClass=="History") {
+      return $string; // for history saving, value have just been escaped yet, don't do it twice !
+    }
     $str=$string;
     if (get_magic_quotes_gpc()) {
       $str=str_replace('\"','"',$str);

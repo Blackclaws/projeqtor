@@ -72,3 +72,16 @@ $paramPathSeparator='\\';                        // Path separator, depending on
 // === log management
 $logFile='..\\..\\TEMP\\projector_${date}.log';      // Log file name. May contain ${date} to get 1 file a day
 $logLevel=3;                                   // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
+
+$defaultTheme='blue';
+// New parameters V1.2.0
+$paramMailSmtpServer = 'localhost';
+$paramMailSmtpPort = '25';
+$paramMailSendmailPath = '';
+$paramMailTitle = '[Project\'Or RIA] ${item} #${id} moved to status ${status}';
+$paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${status}';
+$paramMailShowDetail = 'true';
+// New parameters V1.3.0
+$defaultTheme = 'blue';
+// New parameters V1.3.0
+$defaultTheme = 'blue';

@@ -15,7 +15,9 @@ html, body {
   text-align: left;
   vertical-align: top;
 }
-
+html,  body,  #mainDiv,  #contentDiv,  #centerDiv,  #detailDiv,  .display {
+  background-color: #FFFFFF; color: #000000;
+}
 /* Specific attributes on common nodes ======================================== */
 
 table {
@@ -56,6 +58,7 @@ label, .label {
   padding: 2px;
   float:left;
   border: 0px solid white;
+  background-color: #FFFFFF; color: #55555;
 }
 
 /* Specific classes =========================================================== */
@@ -77,6 +80,7 @@ label, .label {
   text-align: left;
   width: 400px;
   margin: 1px; padding: 0px; 
+  border: 1px solid #FFFFFF;
 }
 
 .detail {
@@ -84,11 +88,12 @@ label, .label {
 }
 
 .tabLabel {
-  font-weight: normal;
+  font-weight: bold;
   text-align: center;
   border: none; padding: 0px; spacing: 0px;
   width: 80px;
-  background-color: #555555;
+  background-color: #FFFFFF;
+  color: #505050;
 }
 
 .colorSelector {
@@ -143,6 +148,7 @@ label, .label {
   text-align: center;
   font-weight: bold;
   width: 100%;
+  background-color: #AAAAAA;  color: #000000;  
 }
 
 .historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, 
@@ -198,7 +204,31 @@ label, .label {
   border-left: 0px solid #FFFFFF;
   border-right: 0px solid #FFFFFF;
 }
-
+.largeReportHeader {
+  border: 1px solid #AAAAAA;
+  text-align: center;
+  font-weight: bold;
+  background: #DDDDDD;
+  font-size: 80%;
+  margin: 0; padding: 0; spacing: 0;
+}
+.largeReportData {
+  border: 1px solid #AAAAAA;
+  font-weight: normal;
+  background: #FFFFFF;
+  font-size: 80%;
+  margin: 0; padding: 0; spacing: 0;
+  vertical-align: top;
+}
+.largeReportDataDone {
+  border: 1px solid #AAAAAA;
+  font-weight: normal;
+  background: #F0F0F0;
+  color: #505050;
+  font-size: 80%;
+  margin: 0; padding: 0; spacing: 0;
+  vertical-align: top;
+}
 .reportHeader {
   border: 0px solid #AAAAAA;
   text-align: center;
@@ -243,29 +273,4 @@ label, .label {
 }
 .reportTableDataCenter{
   text-align: center;
-}
-
-
- /* =============================================================================== */
-/* SPECIFIC WHITE THEME                                                            */
-/* =============================================================================== */
-
- html,  body,  #mainDiv,  #contentDiv,  #centerDiv,  #detailDiv,  .display {
-  background-color: #FFFFFF; color: #000000;
-}
-
- .section {
-  background-color: #AAAAAA;  color: #000000;  
-}
-
- label {
-  background-color: #FFFFFF; color: #55555;
-}
- 
- .tabLabel {
-  background-color: #AAAAAA; 
- }
-
- .display {
-  border: 1px solid #FFFFFF;
 }

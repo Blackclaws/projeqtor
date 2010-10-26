@@ -104,6 +104,8 @@ $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
+if (checkNoData($result)) exit;
+
 echo "<table width='95%' align='center'><tr>";
 echo "<td class='reportTableDataFull' width='20px' style='text-align:center;'>";
 echo "1";

@@ -40,14 +40,20 @@
   </script>
 </head>
 
-<body id="bodyPrint" onload="top.hideWait();";>
+<body id="bodyPrint" class="white" onload="top.hideWait();";>
   <?php 
   $includeFile=$_REQUEST['page'];
   if (! substr($_REQUEST['page'],0,3)=='../') {
     $includeFile.='../view/';
   }
   if (strpos($includeFile,'?')>0) {
+    $params=substr($includeFile,strpos($includeFile,'?')+1);
     $includeFile=substr($includeFile,0,strpos($includeFile,'?'));
+    $paramArray=explode('&',$params);
+    foreach ($paramArray as $param) {
+      $par=explode('=',$param);
+      $_REQUEST[$par[0]]=$par[1];
+    }
   }
   include $includeFile;
   ?>

@@ -99,6 +99,8 @@ $weekendBGColor='#cfcfcf';
 $weekendFrontColor='#555555';
 $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
 
+if (checkNoData($result)) exit;
+
 echo "<table width='95%' align='center'><tr>";
 echo "<td class='reportTableDataFull'>";
 echo "<div style='height:20px;width:20px;position:relative;background-color:#DDDDDD;'>&nbsp;";

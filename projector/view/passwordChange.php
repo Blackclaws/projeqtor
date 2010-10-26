@@ -42,7 +42,7 @@
   </script>
 </head>
 
-<body class="blue" >
+<body class="<?php echo getTheme();?>" >
   <div id="wait" >
   </div> 
   <table width="100%" height="100%" class="background"><tr height="100%"><td width="100%">

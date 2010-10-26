@@ -86,6 +86,11 @@
   $result=Sql::query($query);
   $nbRows=0;
   if ($print) {
+    if ( array_key_exists('report',$_REQUEST) ) {
+      $test=array();
+      if (Sql::$lastQueryNbRows > 0) $test[]="OK";
+      if (checkNoData($test))  exit;
+    }
     displayGantt($result);
   } else {
     // return result in json format

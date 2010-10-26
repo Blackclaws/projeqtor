@@ -87,7 +87,8 @@ class Parameter extends SqlElement {
                     'green'=>'green',
                     'grey'=>'grey',
                     'orange'=>'orange',
-                    'white'=>'white');
+                    'white'=>'white',
+                    'random'=>'random'); // keep 'random' as last value to assure it is not selected via getTheme()
         break;
       case 'lang':
         $list=array('en'=>i18n('langEn'), 

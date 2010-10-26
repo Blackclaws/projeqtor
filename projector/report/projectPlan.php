@@ -35,8 +35,8 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$where="1=1 ";
+$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
@@ -105,6 +105,8 @@ $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $week
 $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
+
+if (checkNoData($result)) exit;
 
 echo "<table width='95%' align='center'><tr>";
 echo "<td class='reportTableDataFull' width='20px' style='text-align:center;'>";

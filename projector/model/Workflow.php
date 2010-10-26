@@ -9,12 +9,20 @@ class Workflow extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $description;
+  public $sortOrder;
   public $idle;
   public $workflowUpdate;
   public $_col_2_2;
   public $_col_1_1_WorkflowStatus;
   public $_spe_workflowstatus;
   public $_workflowStatus;
+  
+  private static $_layout='
+    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
+    <th field="name" width="75%">${name}</th>
+    <th field="sortOrder" width="10%">${sortOrderShort}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    ';
   
   private static $_fieldsAttributes=array(
     "workflowUpdate"=>"hidden");
@@ -37,6 +45,14 @@ class Workflow extends SqlElement {
     parent::__destruct();
   }
 
+   /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
+  }
+  
     /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes

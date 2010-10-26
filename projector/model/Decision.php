@@ -37,7 +37,6 @@ class Decision extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "idProject"=>"required",
                                   "idDecisionType"=>"required",
-                                  "description"=>"required",
                                   "idUser"=>"hidden",
                                   "idStatus"=>"required"
   );  

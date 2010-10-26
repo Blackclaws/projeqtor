@@ -18,8 +18,7 @@
   
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
-  <link rel="stylesheet" type="text/css" href="css/projector.css" media="screen" />
-  <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" media="print" />
+  <link rel="stylesheet" type="text/css" href="css/projector.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="js/jsgantt.js"></script>
@@ -68,11 +67,7 @@
       currentLocale="<?php echo $currentLocale;?>";
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo i18n('welcomeMessage');?>");
-      <?php 
-      if (array_key_exists('theme',$_SESSION) ) {
-        echo "dojo.byId('body').className='" . $_SESSION['theme'] . "';";
-      }
-      ?>
+      dojo.byId('body').className='<?php echo getTheme();?>';
       saveResolutionToSession();
       saveBrowserLocaleToSession();
       loadContent("today.php","centerDiv");
@@ -81,7 +76,7 @@
   </script>
 </head>
 
-<body id="body" class="blue" onbeforeunload="return beforequit();" onUnload="quit();">
+<body id="body" class="<?php echo getTheme();?>" onbeforeunload="return beforequit();" onUnload="quit();">
 <div id="mainDiv" >
   <div id="wait" >
   </div> 
@@ -299,7 +294,7 @@
       </tr>
       <tr>
         <td colspan="2">   
-          <iframe width="100%" height="<?php echo $printHeight;?>px" 
+          <iframe width="100%" height="<?php echo $printHeight;?>px"
             scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="preparePreview.php">
           </iframe>
         </td>
@@ -766,6 +761,5 @@
     </tr>
   </table>
 </div>
-
 </body>
 </html>

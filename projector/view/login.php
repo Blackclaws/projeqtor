@@ -39,9 +39,7 @@
       dijit.Tooltip.defaultPosition=["below","right"];
       dojo.byId('login').focus();
       <?php 
-      if (array_key_exists('theme',$_SESSION) ) {
-        echo "dojo.byId('body').className='" . $_SESSION['theme'] . "';";
-      }
+        echo "dojo.byId('body').className='" . getTheme() . "';";
       ?>
       var changePassword=false;
       hideWait();
@@ -49,17 +47,17 @@
   </script>
 </head>
 
-<body class="blue" onLoad="hideWait();" style="overflow: auto; ">
+<body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto; ">
   <div id="waitLogin" >
   </div> 
   <table align="center" width="100%" height="100%" class="background"><tr height="100%"><td width="100%">
   <table  align="center" >
     <tr >
       <td  rowspan="2" width="140px" valign="top">
-        <img src="img/logoFull.gif"></img>
+        <img src="img/logoFull.gif">
       </td>
       <td  width="550px">
-        <img src="img/titleFull.gif"></img>
+        <img src="img/titleFull.gif">
       </td>
     <tr  height="250px">
       <td align="left" valign="middle">

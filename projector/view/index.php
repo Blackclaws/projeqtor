@@ -10,7 +10,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="css/projector.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="css/projector.css" />
   <title>ProjectOr</title>
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='parseOnLoad: false, 

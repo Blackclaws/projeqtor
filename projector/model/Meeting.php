@@ -13,11 +13,16 @@ class Meeting extends SqlElement {
   public $name;
   public $attendees;
   public $idUser;
-  public $idResource;
   public $_col_2_2_treatment;
   public $idStatus;
+  public $idResource;
   public $result;
+  public $handled;
+  public $handledDate;
+  public $done;
+  public $doneDate;
   public $idle;
+  public $idleDate;
   public $_sec_linkDecision;
   public $_Link_Decision=array();
   public $_sec_linkQuestion;
@@ -30,9 +35,11 @@ class Meeting extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="20%" >${idProject}</th>
-    <th field="nameMeetingType" width="40%" >${idMeetingType}</th>
+    <th field="nameMeetingType" width="30%" >${idMeetingType}</th>
     <th field="meetingDate" formatter="dateFormatter" width="15%" >${meetingDate}</th>
     <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
+    <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -41,11 +48,14 @@ class Meeting extends SqlElement {
                                   "meetingDate"=>"required",
                                   "name"=>"hidden",
                                   "idUser"=>"hidden",
-                                  "idResource"=>"hidden",
-                                  "idStatus"=>"required"
+                                  "idResource"=>"idden",
+                                  "idStatus"=>"required",
+                                  "handled"=>"nobr",
+                                  "done"=>"nobr",
+                                  "idle"=>"nobr"
   );  
   
-  private static $_colCaptionTransposition = array('result'=>'minutes');
+  private static $_colCaptionTransposition = array('result'=>'minutes', 'idResource'=>'responsible');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
