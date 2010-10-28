@@ -77,31 +77,61 @@ $fileName=$uploadfile;
 
 $lines=file($fileName);
 $title=null;
+$idxId=-1;
 echo '<TABLE WIDTH="100%" style="border: 1px solid black">';
 foreach ($lines as $nbl=>$line) {
   if ($title) {
     echo '<TR>';
-    $obj=new $class();
-    $fields=explode(';',$line);
-    foreach ($fields as $idx=>$field) {      
+    $fields=explode(';',$line);     
+    $id=($idxId>=0)?$fields[$idxId]:null;
+    $obj=new $class($id);
+//echo $id . "/" . $obj->id . "<br/>";
+    foreach ($fields as $idx=>$field) { 
+      if ($field=='') {
+        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+        continue; 
+      }
+      if ( strtolower($field)=='null') {
+        $field=null;
+      }      
       if (property_exists($obj,$title[$idx])) {
         $obj->$title[$idx]=$field;
-        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field);
-      } else { 
-        $idTitle='id' . ucfirst($title[$idx]);
-        if (property_exists($obj,$idTitle)) {
-          echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field);   
-          $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);
-          //echo " => " . htmlEncode($idTitle);
-          //echo "=" . htmlEncode($val);
-          $obj->$idTitle=$val;
-        } else {
-          echo '<td class="messageData" style="color:#A0A0A0;">' . htmlEncode($field); 
+        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+        continue; 
+      } 
+      $idTitle='id' . ucfirst($title[$idx]);
+      if (property_exists($obj,$idTitle)) {
+        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';   
+        $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);
+        //echo " => " . htmlEncode($idTitle);
+        //echo "=" . htmlEncode($val);
+        $obj->$idTitle=$val;
+        continue; 
+      } 
+      if (property_exists($obj,get_class($obj).'PlanningElement')) {
+        $peClass=get_class($obj).'PlanningElement';
+        if (! is_object($obj->$peClass)) {
+          $obj->$peClass=new $peClass();
         }
+        $pe=$obj->$peClass;
+        if (property_exists($pe,$title[$idx])) {
+          $obj->$peClass->$title[$idx]=$field;
+          echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+          continue; 
+        }
+        $idTitle='id' . ucfirst($title[$idx]);
+        if (property_exists($pe,$idTitle)) {   
+          echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+          $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);   
+          $obj->$peClass->$idTitle=$val;
+          continue; 
+        } 
       }
+      echo '<td class="messageData" style="color:#A0A0A0;">' . htmlEncode($field) . '</td>';
+      continue; 
     }
-    echo '</TD><TD class="messageData" width="20%">';
-    $obj->id=null;
+    echo '<TD class="messageData" width="20%">';
+    //$obj->id=null;
     $result=$obj->save();
     if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
       echo '<span class="messageERROR" >' . $result . '</span>';
@@ -124,11 +154,27 @@ foreach ($lines as $nbl=>$line) {
       if (property_exists($obj,$title[$idx])) {
         $color="#000000";
         $colCaption=$obj->getColCaption($title[$idx]);
+        if ($title[$idx]=='id') {
+          $idxId=$idx;
+        }
       } else { 
         $idTitle='id' . ucfirst($title[$idx]);
         if (property_exists($obj,$idTitle)) {   
           $color="#000000";
           $colCaption=$obj->getColCaption($idTitle);
+        } else if (property_exists($obj,get_class($obj).'PlanningElement')) {
+          $peClass=get_class($obj).'PlanningElement';
+          $pe=$obj->$peClass;
+          if (property_exists($pe,$title[$idx])) {
+            $color="#000000";
+            $colCaption=$pe->getColCaption($title[$idx]);
+          } else {
+            $idTitle='id' . ucfirst($title[$idx]);
+            if (property_exists($pe,$idTitle)) {   
+              $color="#000000";
+              $colCaption=$pe->getColCaption($idTitle);
+            }
+          }
         }
       }
       echo '<TH class="messageHeader" style="color:' . $color . ';">' . $colCaption . "</TH>";

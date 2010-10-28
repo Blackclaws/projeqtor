@@ -183,13 +183,15 @@ class PlanningElement extends SqlElement {
 
     // If done and no work, set up end date
     if (  $this->leftWork==0 and $this->realWork==0 ) {
-      $refObj=new $this->refType($this->refId);
-      if ($this->done and property_exists($refObj, 'doneDate')) {
-        $this->realEndDate=$refObj->doneDate;
-      } else {
-        $this->realEndDate=null;
+      $refType=$this->refType;
+      if ($refType) {
+        $refObj=new $refType($this->refId);
+        if ($this->done and property_exists($refObj, 'doneDate')) {
+          $this->realEndDate=$refObj->doneDate;
+        } else {
+          $this->realEndDate=null;
+        }
       }
-      
     }
     
     // update topId if needed

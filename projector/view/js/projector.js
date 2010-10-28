@@ -1186,3 +1186,14 @@ function runReport() {
 	var fileName=dojo.byId('reportFile').value;
 	loadContent("../report/"+ fileName , "detailReportDiv", "reportForm", false);	
 }
+
+/**
+ * Global save function through [CTRL)+s
+ */
+function globalSave() {
+	var button=dijit.byId('saveButton');
+	if ( button && button.isFocusable() ) {
+		button.focus();
+		dojo.byId('saveButton').click();
+	}
+}

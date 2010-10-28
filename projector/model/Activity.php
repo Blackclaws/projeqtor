@@ -207,7 +207,8 @@ class Activity extends SqlElement {
     
     
     if ( $this->idResource and trim($this->idResource) != ''
-      and ! $oldResource) {
+      and ! $oldResource
+      and stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
       // Add assignment for responsible
       $ass=new Assignment();
       $ass->idProject=$this->idProject;
@@ -253,9 +254,7 @@ class Activity extends SqlElement {
             } 
         }   
       }      
-    }
-    
-    
+    }   
     return $result;
   }
 

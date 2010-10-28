@@ -70,6 +70,12 @@
       dojo.byId('body').className='<?php echo getTheme();?>';
       saveResolutionToSession();
       saveBrowserLocaleToSession();
+      var onKeyPressFunc = function(event) {
+        if(event.ctrlKey && event.keyCode == 83){
+        	globalSave();
+          event.preventDefault();};
+        }
+      dojo.connect(document, "onkeypress", this, onKeyPressFunc);
       loadContent("today.php","centerDiv");
       hideWait();
     }); 

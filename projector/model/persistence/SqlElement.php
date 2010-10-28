@@ -392,8 +392,14 @@ abstract class SqlElement {
       $result = Sql::query($query);
       if ($result) {
         if (Sql::$lastQueryNbRows==0) {
-          $returnValue = i18n('messageItemDelete', array(i18n(get_class($this)), $this->id));  
-          $returnStatus='ERROR';            
+          $test=new $objectClass($this->id);
+          if ($this->id!=$test->id) {
+            $returnValue = i18n('messageItemDelete', array(i18n(get_class($this)), $this->id));  
+            $returnStatus='ERROR';
+          } else {   
+            $returnValue = i18n('messageNoChange') . ' ' . i18n(get_class($this)) . ' #' . $this->id;
+            $returnStatus = 'NO_CHANGE';
+          }     
         } else {
             $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultUpdated');
             $returnStatus='OK';
@@ -1420,6 +1426,11 @@ abstract class SqlElement {
           if ($dataType=='datetime') {
             if (strlen($val)==9) {              
               $result.='<br/>' . i18n('messageDateMandatoryWithTime',array(i18n('col' . ucfirst($col))));
+            }
+          }
+          if ($dataType=='date' and $val!='') {
+            if (strlen($val)!=10 or substr($val,4,1)!='-' or substr($val,7,1)!='-') {
+              $result.='<br/>' . i18n('messageInvalidDate',array(i18n('col' . ucfirst($col))));
             }
           }
         }
