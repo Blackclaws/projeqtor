@@ -31,6 +31,48 @@ if ($type=='habilitation') {
   Habilitation::correctUpdates(); // Call correct updates 3 times, to assure all level updates
   Habilitation::correctUpdates();
   Habilitation::correctUpdates();
+} else if ($type=='habilitationReport') {
+  $crosTable=htmlGetCrossTable('report', 'profile', 'habilitationReport') ;
+  foreach($crosTable as $lineId => $line) {
+    foreach($line as $colId => $val) {
+      $crit['idReport']=$lineId;
+      $crit['idProfile']=$colId;
+      $obj=SqlElement::getSingleSqlElementFromCriteria('HabilitationReport', $crit);
+      $obj->allowAccess=($val)?1:0;
+      $result=$obj->save();
+      $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
+      $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
+      if ($isSaveNO_CHANGE===false) {
+        if ($isSaveOK===false) {
+          $status="ERROR";
+          $errors=$result;
+        } else if ($status=="NO_CHANGE") {
+          $status="OK";
+        }
+      }
+    }
+  }
+} else if ($type=='habilitationOther') {
+  $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess')), 'profile', 'habilitationOther') ;
+  foreach($crosTable as $lineId => $line) {
+    foreach($line as $colId => $val) {
+      $crit['scope']=$lineId;
+      $crit['idProfile']=$colId;
+      $obj=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+      $obj->rightAccess=($val)?$val:0;
+      $result=$obj->save();
+      $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
+      $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
+      if ($isSaveNO_CHANGE===false) {
+        if ($isSaveOK===false) {
+          $status="ERROR";
+          $errors=$result;
+        } else if ($status=="NO_CHANGE") {
+          $status="OK";
+        }
+      }
+    }
+  }
 } else if ($type=='accessRight') {
   $crosTable=htmlGetCrossTable('menuProject', 'profile', 'accessRight') ;
   foreach($crosTable as $lineId => $line) {

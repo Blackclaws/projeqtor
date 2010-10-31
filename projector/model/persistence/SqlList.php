@@ -87,6 +87,16 @@ class SqlList {
       $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
     }
     $query .=')';
+    if ($listType=='Report') {
+      $hr=new HabilitationReport();
+      $user=$_SESSION['user'];
+      $lstIn="";
+      $lst=$hr->getSqlElementsFromCriteria(array('idProfile'=>$user->idProfile, 'allowAccess'=>'1'), false);
+      foreach ($lst as $h) {
+        $lstIn.=(($lstIn=='')?'':', ') . $h->idReport;
+      }
+      $query .= ' and id in (' . $lstIn . ')' ;
+    } 
     if ($selectedValue) {
       $query .= " or " . $obj->getDatabaseColumnName('id') . "='" . $selectedValue . "'";
     }

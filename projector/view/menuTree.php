@@ -193,23 +193,31 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
 	} else if(item.id=='UserParameter') {
 	   cleanContent("detailDiv");
 	   loadContent("parameter.php?type=userParameter","centerDiv");
-       formChangeInProgress=false;
+     formChangeInProgress=false;
 	} else if(item.id=='ProjectParameter') {
 	   cleanContent("detailDiv");
 	   loadContent("parameter.php?type=projectParameter","centerDiv");
-       formChangeInProgress=false;
+     formChangeInProgress=false;
 	} else if(item.id=='GlobalParameter') {
 	   cleanContent("detailDiv");
 	   loadContent("parameter.php?type=globalParameter","centerDiv");
-       formChangeInProgress=false;
+     formChangeInProgress=false;
 	} else if(item.id=='Habilitation') {
 	   cleanContent("detailDiv");
 	   loadContent("parameter.php?type=habilitation","centerDiv");
+     formChangeInProgress=false;
+  } else if(item.id=='HabilitationReport') {
+     cleanContent("detailDiv");
+     loadContent("parameter.php?type=habilitationReport","centerDiv");
+     formChangeInProgress=false;
+  } else if(item.id=='HabilitationOther') {
+     cleanContent("detailDiv");
+     loadContent("parameter.php?type=habilitationOther","centerDiv");
        formChangeInProgress=false;
 	} else if(item.id=='AccessRight') {
 	   cleanContent("detailDiv");
 	   loadContent("parameter.php?type=accessRight","centerDiv");
-       formChangeInProgress=false;    
+     formChangeInProgress=false;    
     } else {
 	   showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
 	}

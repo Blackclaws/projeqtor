@@ -119,7 +119,12 @@ function htmlGetNoDataMessage($className) {
  * @return void
  */
 function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj, $pivotProp, $format='label', $formatList=null) {
-  $lineList=SqlList::getList($lineObj);
+  if (is_array($lineObj)) {
+    $lineList=$lineObj;
+  } else {
+    $lineList=SqlList::getList($lineObj);
+  }
+  
   $columnList=SqlList::getList($columnObj);
 
   echo '<table class="crossTable">';
@@ -181,7 +186,11 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
  * @return an array containing 
  */
 function htmlGetCrossTable($lineObj, $columnObj, $pivotObj) {
-  $lineList=SqlList::getList($lineObj);
+  if (is_array($lineObj)) {
+    $lineList=$lineObj;
+  } else {
+    $lineList=SqlList::getList($lineObj);
+  }
   $columnList=SqlList::getList($columnObj);
   $result=array();
   foreach($lineList as $lineId => $lineName) {

@@ -52,6 +52,7 @@ if (! $name) {
     $criteria->sqlAttribute=$filterCriteria["sql"]["attribute"];
     $criteria->sqlOperator=$filterCriteria["sql"]["operator"];
     $criteria->sqlValue=$filterCriteria["sql"]["value"];
+    if ($criteria->sqlValue==null) $criteria->sqlValue='0';
     $criteria->save();
   }
 }

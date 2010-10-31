@@ -179,7 +179,7 @@ foreach ($lines as $nbl=>$line) {
       }
       echo '<TH class="messageHeader" style="color:' . $color . ';">' . $colCaption . "</TH>";
     }
-    echo '<td class="messageHeader" style="color:#208020">' . i18n('colResultImport') . '</td></TR>';
+    echo '<th class="messageHeader" style="color:#208020">' . i18n('colResultImport') . '</th></TR>';
   }
 }
 echo "</TABLE>";

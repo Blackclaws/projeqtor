@@ -123,7 +123,7 @@ foreach ($lstTicket as $t) {
   }
 }
 
-if (checkNoData($lstTicket)) exit;
+if (checkNoData($lstTicket)) return;
 
 // title
 echo '<table width="95%" align="center">';

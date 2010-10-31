@@ -83,5 +83,4 @@ $paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${sta
 $paramMailShowDetail = 'true';
 // New parameters V1.3.0
 $defaultTheme = 'blue';
-// New parameters V1.3.0
-$defaultTheme = 'blue';
+

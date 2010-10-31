@@ -175,10 +175,16 @@ $value['IconSize'] = "'16' for small icons, '22' for medium icons, '32' for big 
 $pname['IconSize'] = 'paramIconSize';
 $ctrls['IconSize'] = '=16=22=32=';
 
+$param['DefaultTheme'] = 'blue';                              
+$label['DefaultTheme'] = "Defaut color theme, proposed while login";
+$value['DefaultTheme'] = "'blue', 'red', 'green', 'orange', 'grey', 'white' or 'random' for randomly selected";
+$pname['DefaultTheme'] = 'defaultTheme';
+$ctrls['DefaultTheme'] = '=blue=red=green=orange=grey=white=random=';
+
 $param['crlf06']='';
 $label['crlf06']='crlf';
 
-$param['PathSeparator'] = '\\';                              
+$param['PathSeparator'] = '/';                              
 $label['PathSeparator'] = "Path separator";
 $value['PathSeparator'] = "depending on system, '\\' for Windows, '/' for Unix";
 $pname['PathSeparator'] = 'paramPathSeparator';
@@ -187,7 +193,7 @@ $ctrls['PathSeparator'] = '=/=\\=';
 $param['crlf04']='';
 $label['crlf04']='crlf';
 
-$param['AttachementDirectory'] = 'C:\\projectorria\\files';                              
+$param['AttachementDirectory'] = '../files/attach/';                              
 $label['AttachementDirectory'] = "Directory to store Attachements";
 $value['AttachementDirectory'] = "any valid directory, set to empty string to disable attachement";
 $pname['AttachementDirectory'] = 'paramAttachementDirectory';
@@ -202,7 +208,7 @@ $ctrls['AttachementMaxSize'] = 'integer';
 $param['crlf07']='';
 $label['crlf07']='crlf';
 
-$param['logFile'] = 'C:\\projectorria\\logs\\projector_${date}.log';                              
+$param['logFile'] = '../files/logs/projector_${date}.log';                              
 $label['logFile'] = "Log file name";
 $value['logFile'] = 'any valid file name, may contain \'${date}\' to get 1 file a day';
 $pname['logFile'] = 'logFile';
@@ -323,7 +329,7 @@ $ctrls['DebugMode'] = '=true=false=';
                 <td><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
                 <td><input id="location" name="location" 
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
-                   value="C:\projectorria\parameters.php" />
+                   value="../files/config/parameters.php" />
                 </td>
                 <td></td>
                 <td>a php file name where to store parameters, use non web access directory for security</td>

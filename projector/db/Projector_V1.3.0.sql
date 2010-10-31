@@ -51,7 +51,7 @@ ADD INDEX questionStatus (idStatus);
 
 ALTER TABLE `${prefix}report` ADD INDEX reportCategory (idReportCategory);
 
-ALTER TABLE `${prefix}reportParameter` ADD INDEX reportparameterReport (idReport);
+ALTER TABLE `${prefix}reportparameter` ADD INDEX reportparameterReport (idReport);
 
 ALTER TABLE `${prefix}risk` ADD INDEX riskSeverity (idSeverity),
 ADD INDEX riskLikelihood (idLikelihood),
@@ -257,3 +257,124 @@ where done=1;
 UPDATE `${prefix}ticket` set handled=1, done=1
 where idle=1;
 
+
+CREATE TABLE `${prefix}habilitationreport` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProfile` int(12) unsigned DEFAULT NULL,
+  `idReport` int(12) unsigned DEFAULT NULL,
+  `allowAccess` int(1) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}habilitationreport` ADD INDEX habilitationReportProfile (idProfile),
+  ADD INDEX habilitationReportReport (idReport); 
+  
+CREATE TABLE `${prefix}habilitationother` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProfile` int(12) unsigned DEFAULT NULL,
+  `scope` varchar(10) DEFAULT NULL,
+  `rightAccess` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ; 
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(70, 'menuHabilitationReport', 37, 'item', 967, null, 0),
+(71, 'menuHabilitationOther', 37, 'item', 970, null, 0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 70, 1),
+(2, 70, 0),
+(3, 70, 0),
+(4, 70, 0),
+(6, 70, 0),
+(7, 70, 0),
+(1, 71, 1),
+(2, 71, 0),
+(3, 71, 0),
+(4, 71, 0),
+(6, 71, 0),
+(7, 71, 0);
+
+INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAccess`) VALUES
+(1, 1, 1),
+(2, 1, 1),
+(3, 1, 1),
+(4, 1, 1),
+(5, 1, 1),
+(6, 1, 1),
+(7, 1, 1),
+(8, 1, 1),
+(9, 1, 1),
+(10, 1, 1),
+(11, 1, 1),
+(12, 1, 1),
+(13, 1, 1),
+(14, 1, 1),
+(15, 1, 1),
+(16, 1, 1),
+(17, 1, 1),
+(18, 1, 1),
+(19, 1, 1),
+(20, 1, 1),
+(21, 1, 1),
+(22, 1, 1),
+(23, 1, 1),
+(24, 1, 1),
+(25, 1, 1),
+(1, 2, 1),
+(2, 2, 1),
+(3, 2, 1),
+(4, 2, 1),
+(5, 2, 1),
+(6, 2, 1),
+(7, 2, 1),
+(8, 2, 1),
+(9, 2, 1),
+(10, 2, 1),
+(11, 2, 1),
+(12, 2, 1),
+(13, 2, 1),
+(14, 2, 1),
+(15, 2, 1),
+(16, 2, 1),
+(17, 2, 1),
+(18, 2, 1),
+(19, 2, 1),
+(20, 2, 1),
+(21, 2, 1),
+(22, 2, 1),
+(23, 2, 1),
+(1, 3, 1),
+(2, 3, 1),
+(3, 3, 1),
+(4, 3, 1),
+(5, 3, 1),
+(6, 3, 1),
+(7, 3, 1),
+(8, 3, 1),
+(9, 3, 1),
+(10, 3, 1),
+(11, 3, 1),
+(12, 3, 1),
+(13, 3, 1),
+(14, 3, 1),
+(15, 3, 1),
+(16, 3, 1),
+(17, 3, 1),
+(18, 3, 1),
+(19, 3, 1),
+(20, 3, 1),
+(21, 3, 1),
+(22, 3, 1),
+(23, 3, 1);
+
+ALTER TABLE `${prefix}report` CHANGE `order` `sortOrder` INT(5);
+UPDATE `${prefix}report` set `sortOrder`= 100 * `idReportCategory` + `sortOrder`;
+
+INSERT INTO `${prefix}habilitationother` (id,idProfile,scope,rightAccess) VALUES (1,1,'imputation','4'),
+(2,2,'imputation','2'),
+(3,3,'imputation','3'),
+(4,4,'imputation','2'),
+(5,6,'imputation','1'),
+(6,7,'imputation','1'),
+(7,5,'imputation','1');

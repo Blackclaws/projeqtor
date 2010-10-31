@@ -102,6 +102,11 @@
           htmlDrawCrossTable('menu', 'idMenu', 'profile', 'idProfile', 'habilitation', 'allowAccess', 'check') ;
         } else if ($type=='accessRight') {
           htmlDrawCrossTable('menuProject', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'accessProfile') ;
+        } else if ($type=='habilitationReport') {
+          htmlDrawCrossTable('report', 'idReport', 'profile', 'idProfile', 'habilitationReport', 'allowAccess', 'check') ;
+        } else if ($type=='habilitationOther') {
+          echo '<table width="100%"><tr><td class="section">' . i18n('sectionImputation') . '</td></tr></table>',
+          htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
         } else {
           drawTableFromObjectList($parameterList);
         }
