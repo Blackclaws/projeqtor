@@ -62,7 +62,7 @@ $ctrls['MailSender'] = 'email';
 
 $param['MailReplyTo'] = '';                              
 $label['MailReplyTo'] = "eMail address to reply to";
-$value['MailReplyTo'] = "a valid email to defined the reply to for mailing function";
+$value['MailReplyTo'] = "a valid email to define the reply to for mailing function";
 $pname['MailReplyTo'] = 'paramMailReplyTo';
 $ctrls['MailReplyTo'] = 'email';
 
@@ -176,7 +176,7 @@ $pname['IconSize'] = 'paramIconSize';
 $ctrls['IconSize'] = '=16=22=32=';
 
 $param['DefaultTheme'] = 'blue';                              
-$label['DefaultTheme'] = "Defaut color theme, proposed while login";
+$label['DefaultTheme'] = "Default color theme, proposed while login";
 $value['DefaultTheme'] = "'blue', 'red', 'green', 'orange', 'grey', 'white' or 'random' for randomly selected";
 $pname['DefaultTheme'] = 'defaultTheme';
 $ctrls['DefaultTheme'] = '=blue=red=green=orange=grey=white=random=';
@@ -194,13 +194,13 @@ $param['crlf04']='';
 $label['crlf04']='crlf';
 
 $param['AttachementDirectory'] = '../files/attach/';                              
-$label['AttachementDirectory'] = "Directory to store Attachements";
-$value['AttachementDirectory'] = "any valid directory, set to empty string to disable attachement";
+$label['AttachementDirectory'] = "Directory to store Attachments";
+$value['AttachementDirectory'] = "any valid directory, set to empty string to disable attachment";
 $pname['AttachementDirectory'] = 'paramAttachementDirectory';
 $ctrls['AttachementDirectory'] = '';
 
 $param['AttachementMaxSize'] = 1024*1024*2;                              
-$label['AttachementMaxSize'] = "Max file size for attachement";
+$label['AttachementMaxSize'] = "Max file size for attachment";
 $value['AttachementMaxSize'] = "size in bytes (1024 * 1024 * MB)";
 $pname['AttachementMaxSize'] = 'paramAttachementMaxSize';
 $ctrls['AttachementMaxSize'] = 'integer';
