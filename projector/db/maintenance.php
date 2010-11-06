@@ -20,7 +20,7 @@ $versionParameters =array(
                  'paramMailTitle'=>'[Project\'Or RIA] ${item} #${id} moved to status ${status}',
                  'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to ${status}',
                  'paramMailShowDetail'=>'true' ),
-  'V1.3.0'=>array('defaultTheme'=>'blue') );
+  'V1.3.0'=>array('defaultTheme'=>'blue'));
 $SqlEndOfCommand=";";
 $SqlComment="--";
    
@@ -178,11 +178,11 @@ function runScript($vers) {
     }
     if (array_key_exists($vers,$versionParameters)) {
       $nbParam=0;
-      write($parametersLocation,'// New parameters ' . $vers . "\n");
+      writeFile('// New parameters ' . $vers . "\n", $parametersLocation);
       foreach($versionParameters[$vers] as $id=>$val) {
         $nbParam++;
-        write($parametersLocation, '$' . $id . ' = \'' . addslashes($val) . '\';');
-        write($parametersLocation, "\n");
+        writeFile('$' . $id . ' = \'' . addslashes($val) . '\';',$parametersLocation);
+        writeFile("\n",$parametersLocation);
         traceLog('Parameter $' . $id . ' added');
       }
       echo i18n('newParameters', array($nbParam, $vers));
@@ -200,9 +200,5 @@ function runScript($vers) {
   traceLog("");
   return $nbError;
 }
-
-  function write($file,$msg) {
-    return error_log($msg,3,$file);
-  }
 
 ?>

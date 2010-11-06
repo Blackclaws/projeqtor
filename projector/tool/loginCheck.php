@@ -89,9 +89,15 @@
   function loginOk ($user) {
     global $login;
     $_SESSION['user']=$user;
-    $page=$_SERVER['PHP_SELF'];
-    $appRoot=substr($page, 0, strpos($page, '/', 1));
-    $_SESSION['appRoot']=$appRoot;
+	$appRoot="#N/A#";
+	$page=$_SERVER['PHP_SELF'];
+    if (strpos($page, '/', 1)) {
+      $appRoot=substr($page, 0, strpos($page, '/', 1));
+    }
+	if ($appRoot=='/view' or $appRoot=='/tool' or appRoot=='/report') {
+	  $appRoot='/';
+	}
+	$_SESSION['appRoot']=$appRoot;
     $crit=array();
     $crit['idUser']=$user->id;
     $crit['idProject']=null;

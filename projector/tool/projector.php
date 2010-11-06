@@ -8,6 +8,7 @@ set_error_handler('errorHandler');
 $browserLocale="";
 $reportCount=0;
 session_start();              // Setup session. Must be first command.
+include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
 /* ============================================================================
  * global variables
@@ -47,8 +48,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.3.0";            // Version of application : Major / Minor / Release
-$build="0021";                // Build number. To be increased on each release
+$version="V1.3.1";            // Version of application : Major / Minor / Release
+$build="0022";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -86,9 +87,16 @@ if ( ! (isset($maintenance) and $maintenance) ) {
     $appRoot="#N/A#";
     if (strpos($page, '/', 1)) {
       $appRoot=substr($page, 0, strpos($page, '/', 1));
-    } 
-    if (!array_key_exists('appRoot',$_SESSION) or $_SESSION['appRoot']!=$appRoot) {
-      traceLog("Application root changed. New Login requested for user '" . $user->name . "' from IP " . $_SERVER['REMOTE_ADDR']);
+    }
+	  if ($appRoot=='/view' or $appRoot=='/tool' or $appRoot=='/report') {
+	    $appRoot='/';
+	  }
+    $oldRoot=$_SESSION['appRoot'];
+    if (array_key_exists('appRoot',$_SESSION)) {
+	    $oldRoot=$_SESSION['appRoot'];
+	  }
+    if ($oldRoot!=$_SESSION['appRoot'] and oldRoot!=$appRoot) {
+      traceLog("Application root changed (from $oldRoot to $appRoot). New Login requested for user '" . $user->name . "' from IP " . $_SERVER['REMOTE_ADDR']);
       $user = null;
     }
   } else {
@@ -568,7 +576,7 @@ function logTracing($message, $level=9) {
     } else if ( ! is_writable($dir)) {
       echo '<br/><span class="messageERROR">' . i18n("lockedLogDir",array($dir)) . '</span>';   
     } else {
-      error_log ( $msg,3, $file);
+      writeFile( $msg,$file);
     }     
   }
 }
@@ -621,6 +629,7 @@ function envLog() {
     }
   }
 }
+
 
 /** ===========================================================================
  * Get the IP of the Client
@@ -1014,4 +1023,5 @@ function getArrayMonth($max,$addPoint=true) {
   }
   return $monthArr;  
 }
+
 ?>
