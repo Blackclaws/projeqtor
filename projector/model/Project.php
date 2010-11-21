@@ -116,13 +116,13 @@ class Project extends SqlElement {
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    if (dijit.byId("idleDate").value==null) {';
       $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("idleDate").attr("value", curDate); ';
+      $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
       $colScript .= '    }';
-      $colScript .= '    if (! dijit.byId("done").attr("checked")) {';
-      $colScript .= '      dijit.byId("done").attr("checked", true);';
+      $colScript .= '    if (! dijit.byId("done").get("checked")) {';
+      $colScript .= '      dijit.byId("done").set("checked", true);';
       $colScript .= '    }';  
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idleDate").attr("value", null); ';
+      $colScript .= '    dijit.byId("idleDate").set("value", null); ';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -131,19 +131,19 @@ class Project extends SqlElement {
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    if (dijit.byId("doneDate").value==null) {';
       $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("doneDate").attr("value", curDate); ';
+      $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
       $colScript .= '    }';
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("doneDate").attr("value", null); ';
-      $colScript .= '    if (dijit.byId("idle").attr("checked")) {';
-      $colScript .= '      dijit.byId("idle").attr("checked", false);';
+      $colScript .= '    dijit.byId("doneDate").set("value", null); ';
+      $colScript .= '    if (dijit.byId("idle").get("checked")) {';
+      $colScript .= '      dijit.byId("idle").set("checked", false);';
       $colScript .= '    }'; 
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("ProjectPlanningElement_wbs").attr("value", null); ';
+      $colScript .= '  dijit.byId("ProjectPlanningElement_wbs").set("value", null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idStatus") {
@@ -154,17 +154,17 @@ class Project extends SqlElement {
       $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
       $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
       $colScript .= '  if (setIdle==1) {';
-      $colScript .= '    dijit.byId("idle").attr("checked", true);';
+      $colScript .= '    dijit.byId("idle").set("checked", true);';
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idle").attr("checked", false);';
+      $colScript .= '    dijit.byId("idle").set("checked", false);';
       $colScript .= '  }';
       $colScript .= '  var setDone=0;';
       $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
       $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
       $colScript .= '  if (setDone==1) {';
-      $colScript .= '    dijit.byId("done").attr("checked", true);';
+      $colScript .= '    dijit.byId("done").set("checked", true);';
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("done").attr("checked", false);';
+      $colScript .= '    dijit.byId("done").set("checked", false);';
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
@@ -268,7 +268,7 @@ class Project extends SqlElement {
   public function drawSpecificItem($item){
     $result="";
     if ($item=='subprojects') {
-      $result .="<table><tr><td valign='top'><label>" . i18n('subProjects') . "&nbsp;:&nbsp;</label>";
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('subProjects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       $result .= $this->drawSubProjects();
       $result .="</td></tr></table>";
@@ -298,7 +298,7 @@ class Project extends SqlElement {
     if ($selectField!=null and ! $recursiveCall) {
       $result .= '<table><tr><td colspan="20"><div dojoType="dijit.form.TextBox" class="menuTree" readonly value="' . i18n('allProjects') . '" >';
       $result .= ' <script type="dojo/connect" event="onClick" args="evt">';
-      $result .= '  dijit.byId("' . $selectField . '").attr("label","<i>' . i18n('allProjects') . '</i>");';
+      $result .= '  dijit.byId("' . $selectField . '").set("label","<i>' . i18n('allProjects') . '</i>");';
       $result .= '  setSelectedProject("*", "' . i18n('allProjects') . '", "' . $selectField . '");'; 
       $result .= '  dijit.byId("' . $selectField . '").closeDropDown();';
       $result .= ' </script>';
@@ -328,7 +328,7 @@ class Project extends SqlElement {
           } else {
             $result .= '<td><div dojoType="dijit.form.TextBox" class="menuTree" readonly value="' . htmlEncode($prj->name) . '" >';
             $result .= ' <script type="dojo/connect" event="onClick" args="evt">';
-            $result .= '  dijit.byId("' . $selectField . '").attr("label","' . htmlEncode($prj->name) . '");';
+            $result .= '  dijit.byId("' . $selectField . '").set("label","' . htmlEncode($prj->name) . '");';
             $result .= '  setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name) . '", "' . $selectField . '");'; 
             $result .= '  dijit.byId("' . $selectField . '").closeDropDown();';
             $result .= ' </script>';

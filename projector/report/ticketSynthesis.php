@@ -254,7 +254,7 @@ function drawsynthesisGraph($scope, $lst) {
   //$graph->clearShadow();
   $graph->SetShadowProperties(0,0,255,255,255); 
   $graph->drawPieLegend(110,10,$dataSet->GetData(),$dataSet->GetDataDescription(),240,240,240);  
-  $imgName=getGraphImgName("ticketYearlyReport");
+  $imgName=getGraphImgName("ticketYearlySynthesis");
   
   $graph->Render($imgName);
   echo '<table width="95%" align="center"><tr><td align="center">';

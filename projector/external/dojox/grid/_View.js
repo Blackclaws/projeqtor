@@ -213,6 +213,7 @@ dojo.require("dojo.dnd.Manager");
 			}
 			var cells = this.grid.layout.cells;
 			var getSibling = dojo.hitch(this, function(node, before){
+				!dojo._isBodyLtr() && (before = !before);
 				var inc = before?-1:1;
 				var idx = this.header.getCellNodeIndex(node) + inc;
 				var cell = cells[idx];
@@ -407,6 +408,7 @@ dojo.require("dojo.dnd.Manager");
 			}
 			var stn = this.source._targetNode;
 			var stb = this.source._beforeTarget;
+			!dojo._isBodyLtr() && (stb = !stb);
 			var layout = this.grid.layout;
 			var idx = this.index;
 			delete this.source._targetNode;
@@ -441,9 +443,10 @@ dojo.require("dojo.dnd.Manager");
 							inCell.grid.sortInfo > 0 ? 'dojoxGridSortUp' : 'dojoxGridSortDown',
 							'"><div class="dojoxGridArrowButtonChar">',
 							inCell.grid.sortInfo > 0 ? '&#9650;' : '&#9660;',
-							'</div><div class="dojoxGridArrowButtonNode" role="presentation"></div>']);
+							'</div><div class="dojoxGridArrowButtonNode" role="presentation"></div>',
+							'<div class="dojoxGridColCaption">']);
 			}
-			ret = ret.concat([n, '</div>']);
+			ret = ret.concat([n, '</div></div>']);
 			return ret.join('');
 		},
 

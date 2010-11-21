@@ -58,7 +58,17 @@
     dojo.require("dijit.TitlePane");
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.form.FileInput");
-    //dojo.require("dojo.dnd.Source");
+    dojo.require("dojo.dnd.Container");
+    dojo.require("dojo.dnd.Manager");
+    dojo.require("dojo.dnd.Source");
+    dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){
+       if (nodes.length>0 && nodes[0] && target) {
+         var idFrom = nodes[0].id;
+         var idTo = target.current.id; 
+         showWait();
+         setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100); 
+       }
+    });
     
     var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
@@ -67,31 +77,37 @@
       currentLocale="<?php echo $currentLocale;?>";
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo i18n('welcomeMessage');?>");
-      dojo.byId('body').className='<?php echo getTheme();?>';
+      //dojo.byId('body').className='<?php echo getTheme();?>';
       saveResolutionToSession();
       saveBrowserLocaleToSession();
       var onKeyPressFunc = function(event) {
-        if(event.ctrlKey && event.keyCode == 83){
+        if(event.ctrlKey && event.keyChar == 's'){
+          event.preventDefault();
         	globalSave();
-          event.preventDefault();};
-        }
+        } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
+        	event.preventDefault();
+        	showHelp();
+        }  
+      };
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+
       loadContent("today.php","centerDiv");
       hideWait();
+      //window.onbeforeunload = function() { return beforequit(); };
     }); 
   </script>
 </head>
 
-<body id="body" class="<?php echo getTheme();?>" onbeforeunload="return beforequit();" onUnload="quit();">
+<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
 <div id="mainDiv" >
   <div id="wait" >
   </div> 
-  <div class="container" dojoType="dijit.layout.BorderContainer">    
+  <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
     <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top" >
      <!-- Menu -->
     </div>    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
-      <div class="container" dojoType="dijit.layout.BorderContainer" >
+      <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
           <script> 
             aboutMessage="<?php echo $aboutMessage;?>";
@@ -106,6 +122,7 @@
           ?>
           <div id="logoTitleDiv" onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
+          <div style="position:absolute; right:0;" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center">
           <?php include "menuTree.php"; ?>
@@ -301,7 +318,7 @@
       <tr>
         <td colspan="2">   
           <iframe width="100%" height="<?php echo $printHeight;?>px"
-            scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="preparePreview.php">
+            scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="">
           </iframe>
         </td>
       </tr>
@@ -352,7 +369,7 @@
          <input id="linkRef1Id" name="linkRef1Id" type="hidden" value="" />
          <table>
            <tr>
-             <td class="white"  >
+             <td class="dialogLabel"  >
                <label for="linkRef2Type" ><?php echo i18n("linkType") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -366,7 +383,7 @@
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
-             <td class="white label" >
+             <td class="dialogLabel" >
                <label for="linkRef2Id" ><?php echo i18n("linkElement") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -405,7 +422,7 @@
     <input id="attachementRefId" name="attachementRefId" type="hidden" value="" />
     <table>
       <tr height="30px"> 
-        <td class="white" >
+        <td class="dialogLabel" >
          <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
         </td>
         <td>
@@ -420,7 +437,7 @@
       </tr>
       
       <tr> 
-        <td class="white" >
+        <td class="dialogLabel" >
          <label for="attachementDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
         </td>
         <td> 
@@ -465,7 +482,7 @@
          <input id="assignmentRefId" name="assignmentRefId" type="hidden" value="" />
          <table>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -479,7 +496,7 @@
              </td>
            </tr>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -491,7 +508,7 @@
              </td>
            </tr>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentAssignedWork" ><?php echo i18n("colAssignedWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -505,7 +522,7 @@
              </td>    
            </tr>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -516,7 +533,7 @@
              </td>
            </tr>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentLeftWork" ><?php echo i18n("colLeftWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -530,7 +547,7 @@
              </td>
            </tr>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentPlannedWork" ><?php echo i18n("colPlannedWork");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -541,7 +558,7 @@
              </td>
            </tr>
            <tr>
-             <td class="white" >
+             <td class="dialogLabel" >
                <label for="assignmentComment" ><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -576,7 +593,7 @@
        <form id='dialogPlanForm' name='dialogPlanForm' onSubmit="return false;">
          <table>
            <tr>
-             <td class="white"  >
+             <td class="dialogLabel"  >
                <label for="idProjectPlan" ><?php echo i18n("colIdProject") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -595,7 +612,7 @@
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
-             <td class="white"  >
+             <td class="dialogLabel"  >
                <label for="startDatePlan" ><?php echo i18n("colStartDate") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -639,7 +656,7 @@
          <input id="dependencyType" name="dependencyType" type="hidden" value="" />
          <table>
            <tr>
-             <td class="white"  >
+             <td class="dialogLabel"  >
                <label for="dependencyRefTypeDep" ><?php echo i18n("linkType") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -653,7 +670,7 @@
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
-             <td class="white label" >
+             <td class="dialogLabel" >
                <label for="dependencyRefIdDep" ><?php echo i18n("linkElement") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
@@ -700,7 +717,7 @@
          <table width="100%" style="border: 1px solid grey;">
            <tr><td colspan="4" class="filterHeader"><?php echo i18n("addFilterClauseTitle");?></td></tr>
            <tr style="vertical-align: top;">
-             <td class="white" style="width: 210px;" >
+             <td style="width: 210px;" >
                <div dojoType="dojo.data.ItemFileReadStore" jsId="attributeStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
                </div>
                <select dojoType="dijit.form.FilteringSelect" 
@@ -768,4 +785,8 @@
   </table>
 </div>
 </body>
+<script>
+  //var f=fonction(){alert("OK");};
+  //dojo.byId('leftDiv_splitter').connect('onDoubleClick',f); 
+</script>
 </html>

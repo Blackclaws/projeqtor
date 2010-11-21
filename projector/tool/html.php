@@ -12,9 +12,14 @@ require_once "../tool/projector.php";
  * @param $required optional - indicates wether the list may present an empty value or not
  * @return void
  */
-function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false) {
+function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null) {
   $listType=substr($col,2);
-  $table=SqlList::getList($listType,'name',$selection);
+  if ($critFld) {
+    $critArray=array($critFld=>$critVal);
+    $table=SqlList::getListWithCrit($listType,$critArray,'name',$selection);
+  } else {
+    $table=SqlList::getList($listType,'name',$selection);
+  }
   $restrictArray=array();
   $excludeArray=array();
   if ($obj) {
@@ -135,7 +140,7 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   }
   echo '</tr>';
   foreach($lineList as $lineId => $lineName) {
-    echo '<tr><td class="crossTableLine"><label>' . $lineName . '</label></td>';
+    echo '<tr><td class="crossTableLine"><label class="label">' . $lineName . '</label></td>';
     foreach ($columnList as $colId => $colName) {
       $crit=array();
       $crit[$lineProp]=$lineId;
@@ -231,16 +236,15 @@ function htmlGetJsTable($tableName, $colName, $jsTableName=null) {
  * @return unknown_type
  */
 function htmlFormatDate($val) {
-  global $currentLocale;
+  global $browserLocale;
+  $locale=substr($browserLocale, 0,2);
   if (strlen($val)!=10) {
     return $val;
   }
-  if ($currentLocale=='fr') {
-    return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4);
-  } else if ($currentLocale=='en') {
+  if ($locale=='en') {
     return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4);
   } else {
-    return $val;
+    return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4);
   }
 }
 
@@ -250,18 +254,17 @@ function htmlFormatDate($val) {
  * @return unknown_type
  */
 function htmlFormatDateTime($val, $withSecond=true) {
-  global $currentLocale;
+  global $browserLocale;
+  $locale=substr($browserLocale, 0,2);
   if (strlen($val)!=19) {
     return $val;
   }
-  if (substr($currentLocale,0,2)=='fr') {
-    return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4) 
-      . " " . (($withSecond)?substr($val,11):substr($val,11,5));
-  } else if (substr($currentLocale,0,2)=='en') {
+  if ($locale=='en') {
     return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4) 
       . " " . (($withSecond)?substr($val,11):substr($val,11,5));
   } else {
-    return $val;
+    return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4) 
+      . " " . (($withSecond)?substr($val,11):substr($val,11,5));
   }
 }
 /** ============================================================================
@@ -408,7 +411,7 @@ function htmlExtractArgument($tag, $arg) {
 function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   // Display Result
   echo "<table width='100%'>";
-  echo "<tr><td class='white'>";
+  echo "<tr><td class='dialogLabel'>";
   echo '<label for="filterNameDisplay" >' . i18n("filterName") . '&nbsp;:&nbsp;</label>';
   echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
   echo ' name="filterNameDisplay" id="filterNameDisplay"';

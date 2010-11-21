@@ -90,8 +90,8 @@ $value['MailSendmailPath'] = "to set only on issue to send mails, or not using d
 $pname['MailSendmailPath'] = 'paramMailSendmailPath';
 $ctrls['MailSendmailPath'] = '';
 
-$param['crlf08']='';
-$label['crlf08']='crlf';
+$param['crlf02']='';
+$label['crlf02']='crlf';
 
 $param['MailTitle'] = '[Project\'Or RIA] ${item} #${id} moved to status ${status}';                              
 $label['MailTitle'] = "Automatic mail title";
@@ -115,8 +115,8 @@ $value['MailShowDetail'] = "'true' or 'false', set to true to add detail of item
 $pname['MailShowDetail'] = 'paramMailShowDetail';
 $ctrls['MailShowDetail'] = '=false=true=';
 
-$param['crlf02']='';
-$label['crlf02']='crlf';
+$param['crlf03']='';
+$label['crlf03']='crlf';
 
 $param['DefaultPassword'] = 'projector';                              
 $label['DefaultPassword'] = "Default password for initialization";
@@ -136,8 +136,8 @@ $value['lockPassword'] = "'true' or 'false', if set to true, only admin can rese
 $pname['lockPassword'] = 'lockPassword';
 $ctrls['lockPassword'] = '=false=true=';
 
-$param['crlf03']='';
-$label['crlf03']='crlf';
+$param['crlf04']='';
+$label['crlf04']='crlf';
 
 // === i18n (internationalization)
 $param['DefaultLocale'] = 'en';                              
@@ -190,8 +190,8 @@ $value['PathSeparator'] = "depending on system, '\\' for Windows, '/' for Unix";
 $pname['PathSeparator'] = 'paramPathSeparator';
 $ctrls['PathSeparator'] = '=/=\\=';
 
-$param['crlf04']='';
-$label['crlf04']='crlf';
+$param['crlf07']='';
+$label['crlf07']='crlf';
 
 $param['AttachementDirectory'] = '../files/attach/';                              
 $label['AttachementDirectory'] = "Directory to store Attachments";
@@ -205,8 +205,17 @@ $value['AttachementMaxSize'] = "size in bytes (1024 * 1024 * MB)";
 $pname['AttachementMaxSize'] = 'paramAttachementMaxSize';
 $ctrls['AttachementMaxSize'] = 'integer';
 
-$param['crlf07']='';
-$label['crlf07']='crlf';
+$param['crlf08']='';
+$label['crlf08']='crlf';
+
+$param['ReportTempDirectory'] = '../files/report/';                              
+$label['ReportTempDirectory'] = "Temp directory for reports";
+$value['ReportTempDirectory'] = "any valid directory in the web structure";
+$pname['ReportTempDirectory'] = 'paramReportTempDirectory';
+$ctrls['ReportTempDirectory'] = '';
+
+$param['crlf09']='';
+$label['crlf09']='crlf';
 
 $param['logFile'] = '../files/logs/projector_${date}.log';                              
 $label['logFile'] = "Log file name";
@@ -302,7 +311,7 @@ $ctrls['DebugMode'] = '=true=false=';
               <tr><td colspan="4">&nbsp;</td></tr>
               <?php } else {?>
               <tr>     
-                <td><label style="width:300px"><?php echo $label[$par]?>&nbsp;:&nbsp;</label></td>
+                <td class="label"><label style="width:300px"><?php echo $label[$par]?>&nbsp;:&nbsp;</label></td>
                 <td><input id="param[<?php echo $par;?>]" name="param[<?php echo $par;?>]" 
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
                    value="<?php echo $val;?>" />
@@ -326,7 +335,7 @@ $ctrls['DebugMode'] = '=true=false=';
               }?>
               <tr><td colspan="4">&nbsp;</td></tr>
               <tr>
-                <td><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
+                <td class="label"><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
                 <td><input id="location" name="location" 
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
                    value="../files/config/parameters.php" />

@@ -33,6 +33,7 @@ Copyright (c) 2009, Shlomy Gantz BlueBrick Inc. All rights reserved.
 var JSGantt; if (!JSGantt) JSGantt = {};
 var vTimeout = 0;
 var vBenchTime = new Date().getTime();
+var arrayClosed=new Array();
 
 JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp, pGroup, 
 		                        pParent, pOpen, pDepend, pCaption, pClass) {
@@ -60,13 +61,13 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 	   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
 	   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
 	//} 
-  this.getID       = function(){ return vID };
-  this.getName     = function(){ return vName };
-  this.getStart    = function(){ return vStart};
-  this.getEnd      = function(){ return vEnd  };
-  this.getColor    = function(){ return vColor};
-  this.getLink     = function(){ return vLink };
-  this.getMile     = function(){ return vMile };
+  this.getID       = function(){ return vID; };
+  this.getName     = function(){ return vName; };
+  this.getStart    = function(){ return vStart;};
+  this.getEnd      = function(){ return vEnd;  };
+  this.getColor    = function(){ return vColor;};
+  this.getLink     = function(){ return vLink; };
+  this.getMile     = function(){ return vMile; };
   this.getDepend   = function(){ if(vDepend) return vDepend; else return null };
   this.getCaption  = function(){ if(vCaption) return vCaption; else return ''; };
   this.getResource = function(){ if(vRes) return vRes; else return '&nbsp';  };
@@ -166,7 +167,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.resetStartDateView = function () {
     // Specific for Project'OrRIA Project
   	if (dijit.byId('startDatePlanView')) {
-  		vStartDateView=dijit.byId('startDatePlanView').attr('value');
+  		vStartDateView=dijit.byId('startDatePlanView').get('value');
   	}
   };
   this.getShowRes  = function(){ return vShowRes };
@@ -425,7 +426,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		  if(vShowEndDate!=1) vNameWidth+=vDateWidth;  
 		  // DRAW the Left-side of the chart (names, resources, comp%)
       vLeftTable =
-        '<DIV class="scrollLeft" id="leftside" style="width:' + vLeftWidth + 'px;"><TABLE class="ganttTable"><TBODY>' +
+        '<DIV class="scrollLeft" id="leftside" style="width:' + vLeftWidth + 'px;">' +
+        '<TABLE dojoType="dojo.dnd.Source" withHandles="false" jsId="dndSourceTable" id="dndSourceTable" class="container" xclass="ganttTable"><TBODY>' +
         '<TR class="ganttHeight">' +
         '  <TD class="ganttLeftTopLine" style="width:15px;"></TD>' +
         '  <TD class="ganttLeftTopLine" style="width: ' + vNameWidth + 'px;"><NOBR>';
@@ -455,48 +457,48 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        vRowType  = "row";
 	      }
 	      vID = vTaskList[i].getID();
-	      if(vTaskList[i].getVisible() == 0) { 
-	        vLeftTable += '<TR id=child_' + vID + ' class="ganttTask' + vRowType + '" style="display:none"' 
-	          +' xonclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
-	          +' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
-	          + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
-	      } else {
-	        vLeftTable += '<TR id=child_' + vID + ' class="ganttTask' + vRowType + '"'
-	          +' xonclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
-	          +' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")' 
-	          +' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
-	      }
-				vLeftTable += 
+	      var invisibleDisplay=(vTaskList[i].getVisible() == 0)?'style="display:none"':'';
+	      vLeftTable += '<TR id=child_' + vID + ' class="dojoDndItem ganttTask' + vRowType + '" ' + invisibleDisplay
+	        + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
+	        + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
+	      vLeftTable += 
 	        '  <TD class="ganttName"><img style="width:16px" src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
 	        '  <TD class="ganttName" nowrap><NOBR>';
 				vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
 				// tab the name depending on level
 				var levl=vTaskList[i].getLevel();
 				var levlWidth = (levl-1) * 16;
-				vLeftTable += '<div style="float: left;width:' + levlWidth + 'px;">&nbsp;'
+				vLeftTable +='<table><tr><td>';
+				vLeftTable += '<span style="float: left;width:' + levlWidth + 'px;">&nbsp;'
 				//for(j=1; j<levl; j++) {
 	      //  vLeftTable += '&nbsp&nbsp&nbsp&nbsp';
 	      //  vLeftTable += '_';
 	      //}
-	      vLeftTable += '</div>';
+	      vLeftTable += '</span>';
+				vLeftTable +='</td><td nowrap>';
 	      if( vTaskList[i].getGroup()) {
 	        if( vTaskList[i].getOpen() == 1) {
-	          vLeftTable += '<SPAN id="group_' + vID + '" class="ganttExpandOpened"' 
-	          + 'style="width:' + levlWidth + ';"'
+	          vLeftTable += '<div id="group_' + vID + '" class="ganttExpandOpened"' 
+	          + 'style="float: left; width:16px; height:13px;"'
 	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
-	          +'&nbsp;&nbsp;&nbsp;&nbsp;</span>' ;
+	          +'</div>' ;
 	        } else {
-	          vLeftTable += '<SPAN id="group_' + vID + '" class="ganttExpandClosed"' 
-	          + 'style="width:' + levlWidth + ';"'
+	          vLeftTable += '<div id="group_' + vID + '" class="ganttExpandClosed"' 
+	          + 'style="float: left; width:16px; height:13px;"'
 	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
-	          +'&nbsp;&nbsp;&nbsp;&nbsp;</span>' ;
+	          +'&nbsp;&nbsp;&nbsp;&nbsp;</div>' ;
 	        } 
 	      } else {
-	      	vLeftTable += '<div style="float: left;width:16px;">&nbsp;</div>';
+	      	vLeftTable += '<div style="float: left; width:16px; height:13px;">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 	      }
+	      vLeftTable +='</td><td nowrap><NOBR>';
+	      var nameLeftWidth= vNameWidth - 16 - levlWidth - 18;
 	      vLeftTable += 
-	        '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
-	        +' class="namePart' + vRowType + '">&nbsp;' + vTaskList[i].getName() + '</span></NOBR></TD>' ; 
+	        '<div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; '
+	      	+'width:'+ nameLeftWidth +'px;" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
+	        +' class="namePart' + vRowType + '">' + vTaskList[i].getName() + '</div>' ;
+	      vLeftTable +='</NOBR></td></tr></table>';
+	      vLeftTable +='</NOBR></TD>';
 	        // BABYNUS : change in taskLink parameters
 			  if(vShowRes ==1) {
 			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 
@@ -787,7 +789,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	            + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>' 
 	            + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>' 
 	            + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' 
-	            + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>' 
+	            + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>'; 
 	          if( g.getCaptionType() ) {
 	            vCaptionStr = '';
 	            switch( g.getCaptionType() ) {           
@@ -834,6 +836,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	    }
 	    vMainTable += vRightTable + '</DIV></TD></TR></TBODY></TABLE>';
 			vDiv.innerHTML = vMainTable;
+			dojo.parser.parse('GanttChartDIV');
 	  }
   }; //this.draw
    
@@ -1555,17 +1558,21 @@ JSGantt.benchMark = function(pItem){
 };
 
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {
-  if( pPos == 'right' ) {
+  /*if( pPos == 'right' ) {
   	vID = 'child_' + pID;
   } else {
   	vID = 'childrow_' + pID;
   }
   var vRowObj = JSGantt.findObj(vID);
-  if (vRowObj) vRowObj.className = "ganttTask" + pType + " ganttRowHover";
+  if (vRowObj) vRowObj.className = "ganttTask" + pType + " ganttRowHover";*/
+	var vRowObj1 = JSGantt.findObj('child_' + pID);
+	if (vRowObj1) vRowObj1.className = "ganttTask" + pType + " ganttRowHover";
+	var vRowObj2 = JSGantt.findObj('childrow_' + pID);
+	if (vRowObj2) vRowObj2.className = "ganttTask" + pType + " ganttRowHover";
 };
 
 JSGantt.ganttMouseOut = function(pID, pPos, pType) {
-  if( pPos == 'right' ) {
+  /*if( pPos == 'right' ) {
   	vID = 'child_' + pID;
   } else {
   	vID = 'childrow_' + pID;
@@ -1573,7 +1580,11 @@ JSGantt.ganttMouseOut = function(pID, pPos, pType) {
   var vRowObj = JSGantt.findObj(vID);
   if (vRowObj) {
   	vRowObj.className = "ganttTask" + pType;
-  }
+  }*/
+	var vRowObj1 = JSGantt.findObj('child_' + pID);
+	if (vRowObj1) vRowObj1.className = "ganttTask" + pType;
+	var vRowObj2 = JSGantt.findObj('childrow_' + pID);
+	if (vRowObj2) vRowObj2.className = "ganttTask" + pType;
 };
 
 JSGantt.i18n = function (message) {

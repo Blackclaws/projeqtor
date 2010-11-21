@@ -279,7 +279,7 @@ $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);
 $graph->drawLegend($width-110,35,$dataSet->GetDataDescription(),240,240,240);  
 //$graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);  
 //$graph->drawTitle(60,22,"graph",50,50,50,585);
-$imgName=getGraphImgName("ticketYearlyReport");
+$imgName=getGraphImgName("ticketReport");
 
 $graph->Render($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';

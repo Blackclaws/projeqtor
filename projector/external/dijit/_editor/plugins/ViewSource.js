@@ -2,9 +2,11 @@ if(!dojo._hasResource["dijit._editor.plugins.ViewSource"]){ //_hasResource check
 dojo._hasResource["dijit._editor.plugins.ViewSource"] = true;
 dojo.provide("dijit._editor.plugins.ViewSource");
 
+dojo.require("dojo.window");
+dojo.require("dojo.i18n");
+
 dojo.require("dijit._editor._Plugin");
 dojo.require("dijit.form.Button");
-dojo.require("dojo.i18n");
 
 dojo.requireLocalization("dijit._editor", "commands", null, "");
 
@@ -50,16 +52,19 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 		// If we did it all the time, buttons like bold, italic, etc
 		// break.
 		if(dojo.isWebKit){this._vsFocused = true;}
-		this.button.attr("checked", !this.button.attr("checked"));
+		this.button.set("checked", !this.button.get("checked"));
 
 	},
 
 	_initButton: function(){
 		// summary:
 		//		Over-ride for creation of the resize button.
-		var strings = dojo.i18n.getLocalization("dijit._editor", "commands");
+		var strings = dojo.i18n.getLocalization("dijit._editor", "commands"),
+			editor = this.editor;
 		this.button = new dijit.form.ToggleButton({
 			label: strings["viewSource"],
+			dir: editor.dir,
+			lang: editor.lang,
 			showLabel: false,
 			iconClass: this.iconClassPrefix + " " + this.iconClassPrefix + "ViewSource",
 			tabIndex: "-1",
@@ -79,7 +84,7 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 			}, dojo.body());
 		}
 		// Make sure readonly mode doesn't make the wrong cursor appear over the button.
-		this.button.attr("readOnly", false);
+		this.button.set("readOnly", false);
 	},
 
 
@@ -137,19 +142,19 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 					}
 				};
 				this.editor.onDisplayChanged();
-				html = ed.attr("value");
+				html = ed.get("value");
 				html = this._filter(html);
-				ed.attr("value", html);
+				ed.set("value", html);
 				this._pluginList = [];
 				this._disabledPlugins = dojo.filter(edPlugins, function(p){
 					// Turn off any plugins not controlled by queryCommandenabled.
-					if(p && p.button && !p.button.attr("disabled") &&
+					if(p && p.button && !p.button.get("disabled") &&
 						!(p instanceof dijit._editor.plugins.ViewSource)){
 						p._vs_updateState = p.updateState;
 						p.updateState = function(){
 							return false;
 						};
-						p.button.attr("disabled", true);
+						p.button.set("disabled", true);
 						if(p.command){
 							// FF has a weird behavior when spellcheck is off,
 							// queryCommandValue() returns true on the doc, and as such
@@ -163,7 +168,7 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 								case "strikethrough":
 								case "superscript":
 								case "subscript":
-									p.button.attr("checked", false);
+									p.button.set("checked", false);
 									break;
 								default:
 									break;
@@ -183,6 +188,7 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 
 				this.sourceArea.value = html;
 				var is = dojo.marginBox(ed.iframe.parentNode);
+
 				dojo.marginBox(this.sourceArea, {
 					w: is.w,
 					h: is.h
@@ -197,7 +203,7 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 					// function to handle resize events.
 					// Will check current VP and only resize if
 					// different.
-					var vp = dijit.getViewport();
+					var vp = dojo.window.getBox();
 
 					if("_prevW" in this && "_prevH" in this){
 						// No actual size change, ignore.
@@ -244,12 +250,14 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 				if(!this._readOnly){
 					html = this.sourceArea.value;
 					html = this._filter(html);
-					ed.attr("value", html);
+					ed.beginEditing();
+					ed.set("value", html);
+					ed.endEditing();
 				}
 
 				dojo.forEach(this._disabledPlugins, function(p){
 					// Turn back on any plugins we turned off.
-					p.button.attr("disabled", false);
+					p.button.set("disabled", false);
 					if(p._vs_updateState){
 						p.updateState = p._vs_updateState;
 					}
@@ -259,10 +267,22 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 				dojo.style(this.sourceArea, "display", "none");
 				dojo.style(ed.iframe, "display", "block");
 				delete ed._sourceQueryCommandEnabled;
-
+                
 				//Trigger a check for command enablement/disablement.
 				this.editor.onDisplayChanged();
 			}
+			// Call a delayed resize to wait for some things to display in header/footer.
+			setTimeout(dojo.hitch(this, function(){
+				// Make resize calls.
+				var parent = ed.domNode.parentNode;
+				if(parent){
+					var container = dijit.getEnclosingWidget(parent);
+					if(container && container.resize){
+						container.resize();
+					}
+				}
+                ed.resize();
+			}), 300);
 		}catch(e){
 			console.log(e);
 		}
@@ -274,22 +294,29 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 		// tags:
 		//		private
 		var ed = this.editor;
-		var tb = dojo.position(ed.toolbar.domNode);
+		var tbH = ed.getHeaderHeight();
+		var fH = ed.getFooterHeight();
 		var eb = dojo.position(ed.domNode);
 
+		// Styles are now applied to the internal source container, so we have
+		// to subtract them off.
+		var containerPadding = dojo._getPadBorderExtents(ed.iframe.parentNode);
+		var containerMargin = dojo._getMarginExtents(ed.iframe.parentNode);
+
 		var extents = dojo._getPadBorderExtents(ed.domNode);
+		var mExtents = dojo._getMarginExtents(ed.domNode);
 		var edb = {
-			w: eb.w - extents.w,
-			h: eb.h - (tb.h + extents.h)
+			w: eb.w - (extents.w + mExtents.w),
+			h: eb.h - (tbH + extents.h + mExtents.h + fH)
 		};
 
 		// Fullscreen gets odd, so we need to check for the FS plugin and
 		// adapt.
 		if(this._fsPlugin && this._fsPlugin.isFullscreen){
 			//Okay, probably in FS, adjust.
-			var vp = dijit.getViewport();
+			var vp = dojo.window.getBox();
 			edb.w = (vp.w - extents.w);
-			edb.h = (vp.h - (tb.h + extents.h));
+			edb.h = (vp.h - (tbH + extents.h + fH));
 		}
 
 		if(dojo.isIE){
@@ -307,9 +334,13 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 			edb.h = Math.floor((edb.h + 0.9) / _ie7zoom);
 		}
 
-
 		dojo.marginBox(this.sourceArea, {
-			w: edb.w,
+			w: edb.w - (containerPadding.w + containerMargin.w),
+			h: edb.h - (containerPadding.h + containerMargin.h)
+		});
+
+		// Scale the parent container too in this case.
+		dojo.marginBox(ed.iframe.parentNode, {
 			h: edb.h
 		});
 	},
@@ -333,12 +364,6 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 			borderStyle: "none"
 		});
 		dojo.place(this.sourceArea, ed.iframe, "before");
-		dojo.style(this.sourceArea.parentNode, {
-			padding: "0px",
-			margin: "0px",
-			borderWidth: "0px",
-			borderStyle: "none"
-		});
 
 		if(dojo.isIE && ed.iframe.parentNode.lastChild !== ed.iframe){
 			// There's some weirdo div in IE used for focus control
@@ -404,7 +429,7 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 		this.connect(this.sourceArea, "onkeydown", dojo.hitch(this, function(e){
 			if(this._sourceShown && e.keyCode == dojo.keys.F12 && e.ctrlKey && e.shiftKey){
 				this.button.focus();
-				this.button.attr("checked", false);
+				this.button.set("checked", false);
 				setTimeout(dojo.hitch(this, function(){ed.focus();}), 100);
 				dojo.stopEvent(e);
 			}
@@ -421,7 +446,7 @@ dojo.declare("dijit._editor.plugins.ViewSource",dijit._editor._Plugin,{
 		if(html){
 			// Look for closed and unclosed (malformed) script attacks.
 			html = html.replace(/<\s*script[^>]*>((.|\s)*?)<\\?\/\s*script\s*>/ig, "");
-			html = html.replace(/<\s*script\b([^<>]|\s)*>?/ig, "")
+			html = html.replace(/<\s*script\b([^<>]|\s)*>?/ig, "");
 			html = html.replace(/<[^>]*=(\s|)*[("|')]javascript:[^$1][(\s|.)]*[$1][^>]*>/ig, "");
 		}
 		return html;

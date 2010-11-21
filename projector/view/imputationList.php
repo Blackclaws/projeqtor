@@ -14,7 +14,6 @@ $rangeValue=$currentYear . $currentWeek;
 
 ?>
 
-  
 <div dojoType="dijit.layout.BorderContainer">
   <div dojoType="dijit.layout.ContentPane" region="top" id="imputationButtonDiv" class="dojoxGridRowSelected" >
   <table width="100%" height="27px" class="dojoxGridRowSelected" >
@@ -85,7 +84,7 @@ $rangeValue=$currentYear . $currentWeek;
                 &nbsp;&nbsp;<?php echo i18n("week");?>
                 <div style="width:55px; text-align: center; color: #000000;" 
                   dojoType="dijit.form.NumberSpinner" 
-                  constraints="{min:1,max:55,places:0,pattern:'00'}"
+                  constraints="{min:0,max:55,places:0,pattern:'00'}"
                   intermediateChanges="true"
                   maxlength="2"
                   value="<?php echo $currentWeek;?>" smallDelta="1"

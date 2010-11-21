@@ -101,7 +101,7 @@ div.scrollRight {
   background-color: #f3f3f3;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   border-color: #F6F6F6 #ACACAC #ACACAC #F6F6F6;
-  background: url(xgradient.gif) #E8E8E8 top repeat-x;
+  background: #E8E8E8 ;
 }
 
 .ganttTaskgroupBar { 
@@ -144,7 +144,6 @@ div.scrollRight {
 
 .hideLeftPartrow, .hideLeftPartmile {
   z-index: 999;
-  background-color:#FFFFFF;
   display: inline-block;
   width: 100%;
   cursor: pointer;
@@ -152,7 +151,6 @@ div.scrollRight {
 }
 .hideLeftPartgroup {
   z-index: 999;
-  background-color: #E5E5E5;
   display: inline-block;
   width: 100%;
   cursor: pointer;

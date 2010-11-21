@@ -5,7 +5,7 @@
   require_once "../tool/projector.php";
   scriptLog('   ->/view/importFile.php');  
 ?>
-
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="Import" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="importDiv" class="dojoxGridRowSelected" dojoType="dijit.layout.ContentPane" region="top" splitter="false">
     <form dojoType="dijit.form.Form" id="importDataForm" 
@@ -32,10 +32,19 @@
             class="input" value="" style="width: 200px;">
               <option value="Ticket"><?php echo i18n('Ticket');?></option>
               <option value="Activity"><?php echo i18n('Activity');?></option>
-              <option value=""><?php echo i18n('Milestone');?></option>
-              <option value="Milestone"><?php echo i18n('Risk');?></option>
+              <option value="Milestone"><?php echo i18n('Milestone');?></option>
+              <option value="Risk"><?php echo i18n('Risk');?></option>
               <option value="Action"><?php echo i18n('Action');?></option>
               <option value="Issue"><?php echo i18n('Issue');?></option>
+              <option value="Meeting"><?php echo i18n('Meeting');?></option>
+              <option value="Decision"><?php echo i18n('Decision');?></option>
+              <option value="Question"><?php echo i18n('Question');?></option>
+              <option value="Client"><?php echo i18n('Client');?></option>
+              <option value="Project"><?php echo i18n('Project');?></option>
+              <option value="User"><?php echo i18n('User');?></option>
+              <option value="Team"><?php echo i18n('Team');?></option>
+              <option value="Resource"><?php echo i18n('Resource');?></option>
+              <option value="Affectation"><?php echo i18n('Affectation');?></option>
            </select> 
         </td>
         <td  align="right"> 

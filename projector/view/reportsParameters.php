@@ -41,7 +41,7 @@ foreach ($listParam as $param) {
     <input type="hidden" id='periodValue' name='periodValue' value='<?php echo $currentYear . $currentWeek;?>' />
     <input type="hidden" id='periodType' name='periodType' value='week'/>
     <tr>
-    <td><label><?php echo i18n("year");?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n("year");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:70px; text-align: center; color: #000000;" 
       dojoType="dijit.form.NumberSpinner" 
       constraints="{min:2000,max:2100,places:0,pattern:'###0'}"
@@ -50,15 +50,15 @@ foreach ($listParam as $param) {
       value="<?php echo $defaultYear;?>" smallDelta="1"
       id="yearSpinner" name="yearSpinner" >
       <script type="dojo/method" event="onChange">
-        var year=dijit.byId('yearSpinner').attr('value');
-        var week=dijit.byId('weekSpinner').attr('value') + '';
+        var year=dijit.byId('yearSpinner').get('value');
+        var week=dijit.byId('weekSpinner').get('value') + '';
         week=(week.length==1)?'0'+week:week;
         dojo.byId('periodValue').value='' + year + week;
       </script>
     </div></td>
     </tr>
     <tr>
-    <td><label><?php echo i18n("week");?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n("week");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:55px; text-align: center; color: #000000;" 
        dojoType="dijit.form.NumberSpinner" 
        constraints="{min:1,max:55,places:0,pattern:'00'}"
@@ -67,8 +67,8 @@ foreach ($listParam as $param) {
        value="<?php echo $defaultWeek;?>" smallDelta="1"
        id="weekSpinner" name="weekSpinner" >
        <script type="dojo/method" event="onChange" >
-         var year=dijit.byId('yearSpinner').attr('value');
-         var week=dijit.byId('weekSpinner').attr('value') + '';
+         var year=dijit.byId('yearSpinner').get('value');
+         var week=dijit.byId('weekSpinner').get('value') + '';
          week=(week.length==1)?'0'+week:week;
          dojo.byId('periodValue').value='' + year + week;
        </script>
@@ -86,7 +86,7 @@ foreach ($listParam as $param) {
     <input type="hidden" id='periodValue' name='periodValue' value='<?php echo $currentYear . $currentMonth;?>' />
     <input type="hidden" id='periodType' name='periodType' value='month'/>
     <tr>
-    <td><label><?php echo i18n("year");?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n("year");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:70px; text-align: center; color: #000000;" 
       dojoType="dijit.form.NumberSpinner" 
       constraints="{min:2000,max:2100,places:0,pattern:'###0'}"
@@ -95,15 +95,15 @@ foreach ($listParam as $param) {
       value="<?php echo $defaultYear;?>" smallDelta="1"
       id="yearSpinner" name="yearSpinner" >
       <script type="dojo/method" event="onChange">
-        var year=dijit.byId('yearSpinner').attr('value');
-        var month=dijit.byId('monthSpinner').attr('value') + '';
+        var year=dijit.byId('yearSpinner').get('value');
+        var month=dijit.byId('monthSpinner').get('value') + '';
         month=(month.length==1)?'0'+month:month;
         dojo.byId('periodValue').value='' + year + month;
       </script>
     </div></td>
     </tr>
     <tr>
-    <td><label><?php echo i18n("month");?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n("month");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:55px; text-align: center; color: #000000;" 
        dojoType="dijit.form.NumberSpinner" 
        constraints="{min:1,max:12,places:0,pattern:'00'}"
@@ -112,8 +112,8 @@ foreach ($listParam as $param) {
        value="<?php echo $defaultMonth;?>" smallDelta="1"
        id="monthSpinner" name="monthSpinner" >
        <script type="dojo/method" event="onChange" >
-        var year=dijit.byId('yearSpinner').attr('value');
-        var month=dijit.byId('monthSpinner').attr('value') + '';
+        var year=dijit.byId('yearSpinner').get('value');
+        var month=dijit.byId('monthSpinner').get('value') + '';
         month=(month.length==1)?'0'+month:month;
         dojo.byId('periodValue').value='' + year + month;
        </script>
@@ -129,7 +129,7 @@ foreach ($listParam as $param) {
     <input type="hidden" id='periodValue' name='periodValue' value='<?php echo $currentYear;?>' />
     <input type="hidden" id='periodType' name='periodType' value='year'/>
     <tr>
-    <td><label><?php echo i18n("year");?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n("year");?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:70px; text-align: center; color: #000000;" 
       dojoType="dijit.form.NumberSpinner" 
       constraints="{min:2000,max:2100,places:0,pattern:'###0'}"
@@ -138,7 +138,7 @@ foreach ($listParam as $param) {
       value="<?php echo $defaultYear;?>" smallDelta="1"
       id="yearSpinner" name="yearSpinner" >
       <script type="dojo/method" event="onChange">
-        var year=dijit.byId('yearSpinner').attr('value');
+        var year=dijit.byId('yearSpinner').get('value');
         dojo.byId('periodValue').value='' + year;
       </script>
     </div></td>
@@ -153,7 +153,7 @@ foreach ($listParam as $param) {
     }
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td><div style="width:90px; text-align: center; color: #000000;" 
       dojoType="dijit.form.DateTextBox" 
       invalidMessage="<?php echo i18n('messageInvalidDate');?>" 
@@ -166,7 +166,7 @@ foreach ($listParam as $param) {
     $defaultValue=$param->defaultValue;
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
@@ -192,7 +192,7 @@ foreach ($listParam as $param) {
     }
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
@@ -215,7 +215,7 @@ foreach ($listParam as $param) {
     }
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
@@ -238,7 +238,7 @@ foreach ($listParam as $param) {
     }
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
@@ -256,7 +256,7 @@ foreach ($listParam as $param) {
     }
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
@@ -275,7 +275,7 @@ foreach ($listParam as $param) {
     $arr=array('Ticket','Activity','Milestone', 'Risk', 'Action', 'Issue', 'Meeting', 'Decision', 'Question', 'Project' );
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
@@ -301,7 +301,7 @@ foreach ($listParam as $param) {
     }
 ?>
     <tr>
-    <td><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>#
     <div style="width:60px; text-align: left; color: #000000;" 
       dojoType="dijit.form.TextBox" 

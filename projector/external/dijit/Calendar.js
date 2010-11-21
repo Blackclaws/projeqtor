@@ -8,10 +8,11 @@ dojo.require("dojo.date.locale");
 
 dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
+dojo.require("dijit._CssStateMixin");
 
 dojo.declare(
 	"dijit.Calendar",
-	[dijit._Widget, dijit._Templated],
+	[dijit._Widget, dijit._Templated, dijit._CssStateMixin],
 	{
 		// summary:
 		//		A simple GUI for choosing a date in the context of a monthly calendar.
@@ -49,6 +50,16 @@ dojo.declare(
 		// tabIndex: Integer
 		//		Order fields are traversed when user hits the tab key
 		tabIndex: "0",
+		
+		baseClass:"dijitCalendar",
+
+		// Set node classes for various mouse events, see dijit._CssStateMixin for more details 
+		cssStateNodes: {
+			"decrementMonth": "dijitCalendarArrow",
+			"incrementMonth": "dijitCalendarArrow",
+			"previousYearLabelNode": "dijitCalendarPreviousYear",
+			"nextYearLabelNode": "dijitCalendarNextYear"			
+		},
 
 		attributeMap: dojo.delegate(dijit._Widget.prototype.attributeMap, {
 			tabIndex: "domNode"
@@ -59,8 +70,8 @@ dojo.declare(
 			//      Deprecated.   Used attr('value', ...) instead.
 			// tags:
 			//      deprecated
-			dojo.deprecated("dijit.Calendar:setValue() is deprecated.  Use attr('value', ...) instead.", "", "2.0");
-			this.attr('value', value);
+			dojo.deprecated("dijit.Calendar:setValue() is deprecated.  Use set('value', ...) instead.", "", "2.0");
+			this.set('value', value);
 		},
 
 		_getValueAttr: function(){
@@ -91,7 +102,7 @@ dojo.declare(
 				this.displayMonth = new this.dateClassObj(value);
 				if(!this.isDisabledDate(value, this.lang)){
 					this.value = value;
-					this.onChange(this.attr('value'));
+					this.onChange(this.get('value'));
 				}
 				dojo.attr(this.domNode, "aria-label",
 					this.dateLocaleModule.format(value,
@@ -175,8 +186,13 @@ dojo.declare(
 			}, this);
 
 			// Fill in localized month name
-			var monthNames = this.dateLocaleModule.getNames('months', 'wide', 'standAlone', this.lang);
+			var monthNames = this.dateLocaleModule.getNames('months', 'wide', 'standAlone', this.lang, month);
 			this._setText(this.monthLabelNode, monthNames[month.getMonth()]);
+			// Repopulate month list based on current year (Hebrew calendar)
+			dojo.query(".dijitCalendarMonthLabelTemplate", this.domNode).forEach(function(node, i){
+				dojo.toggleClass(node, "dijitHidden", !(i in monthNames)); // hide leap months (Hebrew)
+				this._setText(node, monthNames[i]);
+			}, this);
 
 			// Fill in localized prev/current/next years
 			var y = month.getFullYear() - 1;
@@ -206,7 +222,7 @@ dojo.declare(
 		goToToday: function(){
 			// summary:
 			//      Sets calendar's value to today's date
-			this.attr('value', new this.dateClassObj());
+			this.set('value', new this.dateClassObj());
 		},
 
 		constructor: function(/*Object*/args){
@@ -248,18 +264,18 @@ dojo.declare(
 				this._setText(label, dayNames[(i + dayOffset) % 7]);
 			}, this);
 
+			var dateObj = new this.dateClassObj(this.value);
 			// Fill in spacer/month dropdown element with all the month names (invisible) so that the maximum width will affect layout
-			var monthNames = this.dateLocaleModule.getNames('months', 'wide', 'standAlone', this.lang);
+			var monthNames = this.dateLocaleModule.getNames('months', 'wide', 'standAlone', this.lang, dateObj);
 			cloneClass(".dijitCalendarMonthLabelTemplate", monthNames.length-1);
 			dojo.query(".dijitCalendarMonthLabelTemplate", this.domNode).forEach(function(node, i){
 				dojo.attr(node, "month", i);
-				this._setText(node, monthNames[i]);
+				if(i in monthNames){ this._setText(node, monthNames[i]); }
 				dojo.place(node.cloneNode(true), this.monthLabelSpacer);
 			}, this);
 
-			var value = this.value;
 			this.value = null;
-			this.attr('value', new this.dateClassObj(value));
+			this.set('value', dateObj);
 		},
 
 		_onMenuHover: function(e){
@@ -328,17 +344,24 @@ dojo.declare(
 			dojo.stopEvent(evt);
 			for(var node = evt.target; node && !node.dijitDateValue; node = node.parentNode);
 			if(node && !dojo.hasClass(node, "dijitCalendarDisabledDate")){
-				this.attr('value', node.dijitDateValue);
-				this.onValueSelected(this.attr('value'));
+				this.set('value', node.dijitDateValue);
+				this.onValueSelected(this.get('value'));
 			}
 		},
 
 		_onDayMouseOver: function(/*Event*/ evt){
 			// summary:
-			//      Handler for mouse over events on days, sets up hovered style
+			//      Handler for mouse over events on days, sets hovered style
 			// tags:
 			//      protected
-			var node = evt.target;
+
+			// event can occur on <td> or the <span> inside the td,
+			// set node to the <td>.
+			var node =
+				dojo.hasClass(evt.target, "dijitCalendarDateLabel") ?
+				evt.target.parentNode :
+				evt.target;
+
 			if(node && (node.dijitDateValue || node == this.previousYearLabelNode || node == this.nextYearLabelNode) ){
 				dojo.addClass(node, "dijitCalendarHoveredDate");
 				this._currentNode = node;
@@ -350,17 +373,32 @@ dojo.declare(
 			//      Handler for mouse out events on days, clears hovered style
 			// tags:
 			//      protected
+	
 			if(!this._currentNode){ return; }
-			for(var node = evt.relatedTarget; node;){
-				if(node == this._currentNode){ return; }
-				try{
-					node = node.parentNode;
-				}catch(x){
-					node = null;
-				}
-			}
+			
+			// if mouse out occurs moving from <td> to <span> inside <td>, ignore it
+			if(evt.relatedTarget && evt.relatedTarget.parentNode == this._currentNode){ return; }
+
 			dojo.removeClass(this._currentNode, "dijitCalendarHoveredDate");
+			if(dojo.hasClass(this._currentNode, "dijitCalendarActiveDate")) {
+				dojo.removeClass(this._currentNode, "dijitCalendarActiveDate");
+			}
 			this._currentNode = null;
+		},
+		
+		_onDayMouseDown: function(/*Event*/ evt){
+			var node = evt.target.parentNode;
+			if(node && node.dijitDateValue){
+				dojo.addClass(node, "dijitCalendarActiveDate");
+				this._currentNode = node;
+			}
+		},
+		
+		_onDayMouseUp: function(/*Event*/ evt){
+			var node = evt.target.parentNode;
+			if(node && node.dijitDateValue){
+				dojo.removeClass(node, "dijitCalendarActiveDate");
+			}
 		},
 
 //TODO: use typematic
@@ -405,7 +443,7 @@ dojo.declare(
 					newValue = new Date(newValue).setDate(1);
 					break;
 				case dk.ENTER:
-					this.onValueSelected(this.attr('value'));
+					this.onValueSelected(this.get('value'));
 					break;
 				case dk.ESCAPE:
 					//TODO
@@ -418,7 +456,7 @@ dojo.declare(
 				newValue = this.dateFuncObj.add(newValue, interval, increment);
 			}
 
-			this.attr("value", newValue);
+			this.set("value", newValue);
 		},
 
 		onValueSelected: function(/*Date*/ date){

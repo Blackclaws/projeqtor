@@ -20,7 +20,9 @@ dojo.require("dojo._base.array");
 		for(; i < l; ++i){
 			base = bases[i];
 			if(!base){
-				err("mixin #" + i + " is null");
+				err("mixin #" + i + " is unknown. Did you use dojo.require to pull it in?");
+			}else if(opts.call(base) != "[object Function]"){
+				err("mixin #" + i + " is not a callable constructor.");
 			}
 			lin = base._meta ? base._meta.bases : [base];
 			top = 0;
@@ -167,7 +169,7 @@ dojo.require("dojo._base.array");
 						if(meta && meta.ctor === caller){
 							break;
 						}
-					};
+					}
 					pos = base ? pos : -1;
 				}
 			}
@@ -211,7 +213,24 @@ dojo.require("dojo._base.array");
 		return this instanceof cls;
 	}
 
-	// imlementation of safe mixin function
+	function mixOwn(target, source){
+		var name, i = 0, l = d._extraNames.length;
+		// add props adding metadata for incoming functions skipping a constructor
+		for(name in source){
+			if(name != cname && source.hasOwnProperty(name)){
+				target[name] = source[name];
+			}
+		}
+		// process unenumerable methods on IE
+		for(; i < l; ++i){
+			name = d._extraNames[i];
+			if(name != cname && source.hasOwnProperty(name)){
+				target[name] = source[name];
+			}
+		}
+	}
+
+	// implementation of safe mixin function
 	function safeMixin(target, source){
 		var name, t, i = 0, l = d._extraNames.length;
 		// add props adding metadata for incoming functions skipping a constructor
@@ -250,6 +269,12 @@ dojo.require("dojo._base.array");
 		return function(){
 			var a = arguments, args = a, a0 = a[0], f, i, m,
 				l = bases.length, preArgs;
+
+			if(!(this instanceof a.callee)){
+				// not called via new, so force it
+				return applyNew(a);
+			}
+
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) call two types of the preamble
@@ -273,7 +298,7 @@ dojo.require("dojo._base.array");
 					if(f){
 						a = f.apply(this, a) || a;
 					}
-					// one pecularity of the preamble:
+					// one peculiarity of the preamble:
 					// it is called if it is not needed,
 					// e.g., there is no constructor to call
 					// let's watch for the last constructor
@@ -306,6 +331,12 @@ dojo.require("dojo._base.array");
 	function singleConstructor(ctor, ctorSpecial){
 		return function(){
 			var a = arguments, t = a, a0 = a[0], f;
+
+			if(!(this instanceof a.callee)){
+				// not called via new, so force it
+				return applyNew(a);
+			}
+
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) call two types of the preamble
@@ -322,7 +353,7 @@ dojo.require("dojo._base.array");
 				if(f){
 					// process the preamble of this class
 					f.apply(this, t);
-					// one pecularity of the preamble:
+					// one peculiarity of the preamble:
 					// it is called even if it is not needed,
 					// e.g., there is no constructor to call
 					// let's watch for the last constructor
@@ -344,7 +375,13 @@ dojo.require("dojo._base.array");
 	// plain vanilla constructor (can use inherited() to call its base constructor)
 	function simpleConstructor(bases){
 		return function(){
-			var a = arguments, i = 0, f;
+			var a = arguments, i = 0, f, m;
+
+			if(!(this instanceof a.callee)){
+				// not called via new, so force it
+				return applyNew(a);
+			}
+
 			//this._inherited = {};
 			// perform the shaman's rituals of the original dojo.declare()
 			// 1) do not call the preamble
@@ -382,9 +419,31 @@ dojo.require("dojo._base.array");
 		};
 	}
 
-	d.declare = function(className, superclass, props){
-		var proto, i, t, ctor, name, bases, chains, mixins = 1, parents = superclass;
+	// forceNew(ctor)
+	// return a new object that inherits from ctor.prototype but
+	// without actually running ctor on the object.
+	function forceNew(ctor){
+		// create object with correct prototype using a do-nothing
+		// constructor
+		xtor.prototype = ctor.prototype;
+		var t = new xtor;
+		xtor.prototype = null;	// clean up
+		return t;
+	}
 
+	// applyNew(args)
+	// just like 'new ctor()' except that the constructor and its arguments come
+	// from args, which must be an array or an arguments object
+	function applyNew(args){
+		// create an object with ctor's prototype but without
+		// calling ctor on it.
+		var ctor = args.callee, t = forceNew(ctor);
+		// execute the real constructor on the new object
+		ctor.apply(t, args);
+		return t;
+	}
+
+	d.declare = function(className, superclass, props){
 		// crack parameters
 		if(typeof className != "string"){
 			props = superclass;
@@ -392,6 +451,8 @@ dojo.require("dojo._base.array");
 			className = "";
 		}
 		props = props || {};
+
+		var proto, i, t, ctor, name, bases, chains, mixins = 1, parents = superclass;
 
 		// build a prototype
 		if(opts.call(superclass) == "[object Array]"){
@@ -403,22 +464,26 @@ dojo.require("dojo._base.array");
 		}else{
 			bases = [0];
 			if(superclass){
-				t = superclass._meta;
-				bases = bases.concat(t ? t.bases : superclass);
+				if(opts.call(superclass) == "[object Function]"){
+					t = superclass._meta;
+					bases = bases.concat(t ? t.bases : superclass);
+				}else{
+					err("base class is not a callable constructor.");
+				}
+			}else if(superclass !== null){
+				err("unknown base class. Did you use dojo.require to pull it in?")
 			}
 		}
 		if(superclass){
 			for(i = mixins - 1;; --i){
-				// delegation
-				xtor.prototype = superclass.prototype;
-				proto = new xtor;
+				proto = forceNew(superclass);
 				if(!i){
 					// stop if nothing to add (the last base)
 					break;
 				}
 				// mix in properties
 				t = bases[i];
-				mix(proto, t._meta ? t._meta.hidden : t.prototype);
+				(t._meta ? mixOwn : mix)(proto, t.prototype);
 				// chain in new constructor
 				ctor = new Function;
 				ctor.superclass = superclass;
@@ -436,7 +501,6 @@ dojo.require("dojo._base.array");
 			t.nom = cname;
 			proto.constructor = t;
 		}
-		xtor.prototype = 0;	// cleanup
 
 		// collect chains and flags
 		for(i = mixins - 1; i; --i){ // intentional assignment
@@ -462,7 +526,7 @@ dojo.require("dojo._base.array");
 		ctor.prototype = proto;
 		proto.constructor = ctor;
 
-		// add "standard" methods to the ptototype
+		// add "standard" methods to the prototype
 		proto.getInherited = getInherited;
 		proto.inherited = inherited;
 		proto.isInstanceOf = isInstanceOf;
@@ -885,7 +949,7 @@ dojo.require("dojo._base.array");
 	/*=====
 	Object.isInstanceOf = function(cls){
 		//	summary:
-		//		Checks the inheritance cahin to see if it is inherited from this
+		//		Checks the inheritance chain to see if it is inherited from this
 		//		class.
 		//	cls: Function
 		//		Class constructor.

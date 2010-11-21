@@ -15,6 +15,7 @@ class User extends SqlElement {
   public $idProfile;
   public $isResource=0;
   public $resourceName;
+  public $isContact;
   public $locked;
   public $idle;
   public $_col_2_2;
@@ -22,8 +23,10 @@ class User extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="45%">${name}</th>
-    <th field="resourceName" width="45%">${resourceName}</th>  
+    <th field="name" width="40%">${name}</th>
+    <th field="resourceName" width="40%">${resourceName}</th>  
+    <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>
+    <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
@@ -111,10 +114,10 @@ class User extends SqlElement {
     if ($colName=="isResource") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    dijit.byId("resourceName").attr("required", "true");';
+      $colScript .= '    dijit.byId("resourceName").set("required", "true");';
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("resourceName").attr("required", null);';
-      $colScript .= '    dijit.byId("resourceName").attr("value", "");';
+      $colScript .= '    dijit.byId("resourceName").set("required", null);';
+      $colScript .= '    dijit.byId("resourceName").set("value", "");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -133,7 +136,7 @@ class User extends SqlElement {
   public function drawSpecificItem($item){
     $result="";
     if ($item=='buttonSendMail') { 
-      $result .= '<tr><td valign="top"><label></label></td><td>';
+      $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
       $result .= '<button id="sendInfoToUser" dojoType="dijit.form.Button" showlabel="true"'; 
       $result .= ' title="' . i18n('sendInfoToUser') . '" >';
       $result .= '<span>' . i18n('sendInfoToUser') . '</span>';

@@ -8,6 +8,8 @@ class MessageType extends SqlElement {
   public $_col_1_2;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $mandatoryDescription;
+  public $_lib_mandatoryField;
   public $color;
   public $sortOrder=0;
   public $idle;
@@ -22,6 +24,9 @@ class MessageType extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
+  private static $_fieldsAttributes=array("name"=>"required", 
+                                          "mandatoryDescription"=>"nobr");
+  
   private static $_databaseTableName = 'type';
     
   private static $_databaseCriteria = array('scope'=>'Message');
@@ -71,6 +76,14 @@ class MessageType extends SqlElement {
    */
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
+  }
+  
+      /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
   }
   
 }

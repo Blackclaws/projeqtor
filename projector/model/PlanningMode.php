@@ -12,6 +12,7 @@ class PlanningMode extends SqlElement {
   public $sortOrder=0;
   public $mandatoryStartDate;
   public $mandatoryEndDate;
+  public $mandatoryDuration;
   public $applyTo;
   public $idle ;
   public $_col_2_2;

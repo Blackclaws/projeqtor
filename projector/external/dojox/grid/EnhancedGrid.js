@@ -62,6 +62,26 @@ dojo.declare("dojox.grid.EnhancedGrid", dojox.grid.DataGrid, {
 	//doubleAffordance: Boolean
 	//		For special cell hover style
 	doubleAffordance: false,
+	
+	//minRowHeight: Integer
+	//		Minimal row height	
+	minRowHeight: 10,	
+
+	//keepSortSelection: Boolean
+	//		Whether keep selection after sort - only applicable when client-side data store is used.	
+	keepSortSelection: false,
+	
+	//rowSelectionChangedTopic: String
+	//		Topic fired when row selection is changed 
+	rowSelectionChangedTopic: 'ROW_SELECTION_CHANGED',
+	
+	//sortRowSelectionChangedTopic: String
+	//		Topic only fired when row selection is changed by sorting.
+	sortRowSelectionChangedTopic: 'SORT_ROW_SELECTION_CHANGED',
+	
+	//rowMovedTopic: String
+	//		Topic fired when selected rows are moved.
+	rowMovedTopic: 'ROW_MOVED',		
 
 	postMixInProperties: function(){
 		//load nls bundle
@@ -70,13 +90,11 @@ dojo.declare("dojox.grid.EnhancedGrid", dojox.grid.DataGrid, {
 	},
 
 	postCreate: function(){
-		if(this.plugins){
-			//create plugin manager
-			this.pluginMgr = new dojox.grid.enhanced._Plugin(this);
-			this.pluginMgr.preInit();
-		}
+		//create plugin manager
+		this.pluginMgr = new dojox.grid.enhanced._Plugin(this);
+		this.pluginMgr.preInit();
 		this.inherited(arguments);
-		this.pluginMgr && this.pluginMgr.postInit();
+		this.pluginMgr.postInit();
 	},
 	
 	_fillContent: function(){

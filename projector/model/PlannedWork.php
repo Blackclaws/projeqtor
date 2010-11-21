@@ -64,11 +64,11 @@ class PlannedWork extends Work {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    if (dijit.byId("PlanningElement_realEndDate").value==null) {';
-      $colScript .= '      dijit.byId("PlanningElement_realEndDate").attr("value", new Date); ';
+      $colScript .= '      dijit.byId("PlanningElement_realEndDate").set("value", new Date); ';
       $colScript .= '    }';
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("PlanningElement_realEndDate").attr("value", null); ';
-      //$colScript .= '    dijit.byId("PlanningElement_realDuration").attr("value", null); ';
+      $colScript .= '    dijit.byId("PlanningElement_realEndDate").set("value", null); ';
+      //$colScript .= '    dijit.byId("PlanningElement_realDuration").set("value", null); ';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -114,8 +114,8 @@ class PlannedWork extends Work {
     $a=new Assignment();
     $topList=array();
     // Treat each PlanningElement
-    foreach ($listPlan as $plan) {
-//debugLog ("PlanningElement#" . $plan->id . ' / ' . $plan->refType . '#' . $plan->refId);
+    foreach ($listPlan as $idPlan=>$plan) {
+//debugLog ("PlanningElement#" . $plan->id . ' / ' . $plan->refType . '#' . $plan->refId . ' / ' . $plan->refName);
       //$changedPlan=false;
       // Determine planning profile
       $profile="ASAP";
@@ -128,11 +128,8 @@ class PlannedWork extends Work {
         $pm=new PlanningMode($plan->idPlanningMode);
         $profile=$pm->code;  
       }
-      if ($profile=="REGUL") { // Regular planning between dates
-        $startPlan=$plan->validatedStartDate;
-        $endPlan=$plan->validatedEndDate;
-        $step=1;
-      } else if ($profile=="FULL") { // Regular planning trying to affect full days of work
+      if ($profile=="REGUL" or $profile=="FULL" 
+       or $profile=="HALF"  or $profile=="FDUR") { // Regular planning
         $startPlan=$plan->validatedStartDate;
         $endPlan=$plan->validatedEndDate;
         $step=1;
@@ -144,13 +141,16 @@ class PlannedWork extends Work {
           $startPlan=$plan->validatedEndDate;
           $endPlan=$startDate;
           $step=-1;
-      } else if ($profile=="FLOAT") { // Floating milestone
+      } else if ($profile=="FLOAT") { // milestone
         $startPlan=$startDate;
         $endPlan=null;
         $step=1;
       } else if ($profile=="FIXED") { // Fixed milestone
-        $startPlan=$startDate;
-        $endPlan=null;
+        $startPlan=$plan->validatedEndDate;
+        $endPlan=$plan->validatedEndDate;
+        $plan->plannedStartDate=null;
+        $plan->plannedEndDate=null;
+        $plan->save();
         $step=1;
       } else {
         $profile=="ASAP"; // Default is ASAP
@@ -162,12 +162,48 @@ class PlannedWork extends Work {
       $dep=new Dependency(); 
       $precList=$dep->getSqlElementsFromCriteria(array("successorId"=>$plan->id),false);
       foreach ($precList as $precDep) {
-        $prec=new PlanningElement($precDep->predecessorId);
+        $prec=null;
+        foreach ($listPlan as $tstPrec) {
+          if ($tstPrec->id==$precDep->predecessorId) {
+            $prec=$tstPrec;
+            break;
+          }
+        }
+        if ($prec==null) {
+          $prec=new PlanningElement($precDep->predecessorId);
+        }
         if ($prec->plannedEndDate > $startPlan) {
           $startPlan=$prec->plannedEndDate;
         }
       }
-      if ($plan->leftWork>0 or 1) {
+      if ($plan->refType=='Milestone') {
+        if (count($precList)>0 and $profile!="FIXED") {
+          $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
+          $plan->plannedEndDate=$plan->plannedStartDate;
+          $plan->plannedDuration=0;
+          $plan->save();
+        }
+      } else {        
+        if (! $plan->realStartDate) {
+          $plan->plannedStartDate=($plan->leftWork>0)?null:$startPlan;
+        }
+        if (! $plan->realEndDate) {
+          $plan->plannedEndDate=($plan->leftWork>0)?null:$startPlan;
+        }
+        if ($profile=="FDUR") {
+          if (! $plan->realStartDate) {
+            $plan->plannedStartDate=$startPlan;
+            $endPlan=addWorkDaysToDate($startPlan,$plan->validatedDuration);
+          } else {
+            $endPlan=addWorkDaysToDate($plan->realStartDate,$plan->validatedDuration);
+          }
+          if (! $plan->realEndDate) {
+            $plan->plannedEndDate=$endPlan;
+          }
+          if (! $plan->leftWork>0) {
+            $plan->save();
+          }
+        }
         // get list of top project to chek limit on each project
         if ($withProjectRepartition) {
           $proj = new Project($plan->idProject);
@@ -216,7 +252,7 @@ class PlannedWork extends Work {
           $capacityRate=round($assRate*$capacity,2);
           $left=$ass->leftWork;
           $regul=false;
-          if ($profile=="REGUL" or $profile=="FULL") {
+          if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile="FDUR") {
             $delai=workDayDiffDates($currentDate,$endPlan);
             if ($delai and $delai>0) { 
               $regul=$plan->leftWork/$delai;
@@ -269,6 +305,13 @@ class PlannedWork extends Work {
                   if ($profile=="FULL" and $toPlan<1 and $interval<$delai) {
                     $value=0;
                   }
+                  if ($profile=="HALF" and $interval<$delai) {
+                    if ($toPlan<0.5) {
+                      $value=0;
+                    } else {
+                      $value=0.5;
+                    }
+                  }
                   $regulDone+=$value;
                 }
                 if ($value>=0.01) {             
@@ -287,6 +330,12 @@ class PlannedWork extends Work {
                   }
                   if (! $ass->plannedEndDate or $ass->plannedEndDate<$currentDate) {
                     $ass->plannedEndDate=$currentDate;
+                  }
+                  if (! $plan->plannedStartDate or $plan->plannedStartDate>$currentDate) {
+                    $plan->plannedStartDate=$currentDate;
+                  }
+                  if (! $plan->plannedEndDate or $plan->plannedEndDate<$currentDate) {
+                    $plan->plannedEndDate=$currentDate;
                   }
                   $changedAss=true;
                   $left-=$value;
@@ -316,33 +365,9 @@ class PlannedWork extends Work {
             $arrayAssignment[]=$ass;
           }
           $resources[$ass->idResource]=$ress;
-        }
-        //if ($minDate!=$globalMaxDate and ! $plan->realStartDate) {
-        //  $changedPlan=true;
-        //  $plan->plannedStartDate=$minDate;
-        //}
-        //if ($maxDate>=$startDate) {
-        //  $changedPlan=true;
-        //  $plan->plannedEndDate=$maxDate;
-        //}
-      //} else {
-      //  $changedPlan=true;
-      //  $plan->plannedStartDate=null;
-      //  $plan->plannedEndDate=null;
-      //  if ( ! $plan->realStartDate) {
-      //    $changedPlan=true;
-      //    $plan->plannedStartDate=$startPlan;
-      //  }  
-      //  if ( ! $plan->realEndDate) {
-      //    $changedPlan=true;
-      //    $plan->plannedEndDate=$startPlan;
-      //  }  
+        } 
       }
-      //if ($changedPlan) {
-      //  $plan->_noHistory=true;
-      //  $plan->save();
-      //  //$arrayPlanningElement[]=$plan;
-      //}
+      $listPlan[$idPlan]=$plan;
     }
     $cpt=0;
     $query='';

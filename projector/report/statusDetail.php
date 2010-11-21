@@ -163,7 +163,7 @@ $graph->drawStackedBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),T
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
 $graph->drawLegend($width-150,35,$dataSet->GetDataDescription(),240,240,240);  
 
-$imgName=getGraphImgName("ticketYearlyReport");
+$imgName=getGraphImgName("statusDetail");
 $graph->Render($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />'; 

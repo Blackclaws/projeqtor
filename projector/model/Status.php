@@ -19,7 +19,7 @@ class Status extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="50%">${name}</th>
+    <th field="name" width="40%">${name}</th>
     <th field="setHandledStatus" width="10%" formatter="booleanFormatter">${setHandledStatus}</th>
     <th field="setDoneStatus" width="10%" formatter="booleanFormatter">${setDoneStatus}</th>
     <th field="setIdleStatus" width="10%" formatter="booleanFormatter">${setIdleStatus}</th>
@@ -68,8 +68,8 @@ class Status extends SqlElement {
     if ($colName=="setIdleStatus") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (! dijit.byId("setDoneStatus").attr("checked")) {';
-      $colScript .= '      dijit.byId("setDoneStatus").attr("checked", true);';
+      $colScript .= '    if (! dijit.byId("setDoneStatus").get("checked")) {';
+      $colScript .= '      dijit.byId("setDoneStatus").set("checked", true);';
       $colScript .= '    }';      
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
@@ -77,8 +77,8 @@ class Status extends SqlElement {
     } else if ($colName=="setDoneStatus") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (! this.checked) { ';
-      $colScript .= '    if ( dijit.byId("setIdleStatus").attr("checked")) {';
-      $colScript .= '      dijit.byId("setIdleStatus").attr("checked", false);';
+      $colScript .= '    if ( dijit.byId("setIdleStatus").get("checked")) {';
+      $colScript .= '      dijit.byId("setIdleStatus").set("checked", false);';
       $colScript .= '    }';      
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';

@@ -114,7 +114,7 @@
         $listPred="";
         $depList=$d->getSqlElementsFromCriteria($crit,false);
         foreach ($depList as $dep) {
-          $listPred.=($listPred!="")?'; ':'';
+          $listPred.=($listPred!="")?',':'';
           $listPred.=$dep->predecessorId;
         }
         echo ', "depend":"' . $listPred . '"';
@@ -211,7 +211,8 @@
       }
       //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;     
       // Header
-      echo '<table class="ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+      //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+      echo '<table id="wishlistNode" class="ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
       echo '<tr class="ganttHeight"><td colspan="6">&nbsp;</td>';
       $day=$minDate;
       for ($i=0;$i<$topUnits;$i++) {
@@ -297,11 +298,12 @@
         }
         $wbs=$line['wbsSortable'];
         $level=(strlen($wbs)+1)/4;
-        $tab="";
+        $tab=""; 
         for ($i=1;$i<$level;$i++) {
           $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
         }
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . " " . i18n("shortDay");
+        //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
         echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';

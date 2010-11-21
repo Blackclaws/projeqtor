@@ -5,7 +5,7 @@
   require_once "../tool/projector.php";
   scriptLog('   ->/view/imputationMain.php');  
 ?>
-
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="Imputation" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:100%;">
    <?php include 'imputationList.php'?>

@@ -62,7 +62,7 @@
       // return result in json format
       foreach ($list as $id=>$name) {
         if ($nbRows>0) echo ', ';
-        echo '{id:"' . $id . '", name:"'. $name . '"}';
+        echo '{id:"' . $id . '", name:"'. str_replace('"', "''",$name) . '"}';
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {

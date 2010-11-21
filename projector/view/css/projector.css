@@ -7,6 +7,7 @@
 
 @import "../../external/dojo/resources/dojo.css";
 @import "../../external/dijit/themes/dijit.css";
+@import "../../external/dijit/icons/commonIcons.css";
 @import "FileInput.css";
 @import "common.css";
 @import "projectorIcons.css";
@@ -26,7 +27,7 @@ html, body, #mainDiv,
 
 /* Specific style for debug purpose============================================ */
 html, body { 
-   overflow: auto; /* default is hidden, possibly set to auto for debug purpose */
+  /* overflow: auto; /* default is hidden, possibly set to auto for debug purpose */
 }
 
 /* DIV styles presented as included in pages ================================== */
@@ -187,6 +188,9 @@ label, .label {
   float:left;
   border: 2px;
 }
+.dialogLabel {
+  color: #707070; 
+}
 
 .shortlabel {
   width: 87px;
@@ -202,7 +206,6 @@ label, .label {
 .titleProject {
     font-size: 10pt; 
     font-weight: bold;
-    color: #FFFFFF;
     vertical-align: top;
     padding: 5px 2px 0px 0px;
 }
@@ -257,7 +260,7 @@ label, .label {
   cursor: pointer !important;
 }
 .menuTree:hover {
-  background-color: #EEEEEE !important ;
+  background-color: #DDDDDD !important ;
 
 }
 
@@ -560,12 +563,16 @@ label, .label {
   background-color: #53539B;  color: #EEEEEE;  
 }
 
-.blue .tabLabel, .blue label, .blue .dojoxGridRowOver .dojoxGridCell {
+.blue .tabLabel, .blue .label, .blue .dojoxGridRowOver .dojoxGridCell {
   background-color: #C3C3EB; color: #53539B;
 }
 
 .blue .display, .blue #printPreview {
   border: 1px solid #C3C3EB;
+}
+
+.blue .titleProject {
+ color: #53539B;  
 }
 
 .blue #mainDiv {
@@ -602,12 +609,16 @@ label, .label {
   background-color: #9B5353;  color: #FFFFFF;   
 }
 
-.red .tabLabel, .red label, .red .dojoxGridRowOver .dojoxGridCell {
+.red .tabLabel, .red .label, .red .dojoxGridRowOver .dojoxGridCell {
   background-color: #EBC3C3; color: #9B5353;
 }
 
 .red .display, .red #printPreview {
   border: 1px solid #EBC3C3;
+}
+
+.red .titleProject {
+ color: #9B5353;  
 }
 
 .red #mainDiv {
@@ -643,12 +654,16 @@ label, .label {
   background-color: #539B53;  color: #EEEEEE;  
 }
 
-.green .tabLabel, .green label, .green .dojoxGridRowOver .dojoxGridCell {
+.green .tabLabel, .green .label, .green .dojoxGridRowOver .dojoxGridCell {
   background-color: #C3EBC3; color: #539B53;
 }
 
 .green .display, .green #printPreview {
   border: 1px solid #C3EBC3;
+}
+
+.green .titleProject {
+ color: #539B53;  
 }
 
 .green #mainDiv {
@@ -685,12 +700,16 @@ label, .label {
   background-color: #9B9B9B;  color: #FFFFFF;  
 }
 
-.grey .tabLabel, .grey label, .grey .dojoxGridRowOver .dojoxGridCell {
+.grey .tabLabel, .grey .label, .grey .dojoxGridRowOver .dojoxGridCell {
   background-color: #C3C3C3; color: #535353;
 }
 
 .grey .display, .grey #printPreview {
   border: 1px solid #C3C3C3;
+}
+
+.grey .titleProject {
+ color: #535353;  
 }
 
 .grey #mainDiv {
@@ -727,12 +746,16 @@ label, .label {
   background-color: #D98F0E;  color: #FFFFFF;  
 }
 
-.orange .tabLabel, .orange label, .orange .dojoxGridRowOver .dojoxGridCell {
+.orange .tabLabel, .orange .label, .orange .dojoxGridRowOver .dojoxGridCell {
   background-color: #F6C672; color: #D98F0E;
 }
 
 .orange .display, .orange #printPreview {
   border: 1px solid #F6C672;
+}
+
+.orange .titleProject {
+ color: #D98F0E;  
 }
 
 .orange #mainDiv {
@@ -751,34 +774,36 @@ label, .label {
 
 .white html, .white body, .white #leftDiv,
 .white .dijitSplitterH, .white .dijitGutterH , .white .dijitSplitterV, .white .dijitGutterV,
-.white .dijitMenuItemHover,
+.white .dijitMenuItemHover, .white #buttonDiv, .white #logoDiv,
 .white .dijitMenuPassive .dijitMenuItemHover,
 .white .dijitMenuItemSelected  {
-  background-color: #999999;
+  background-color: #000000;
 }
 
-.white #mapDiv, .white #messageDiv, .white #listDiv, .white #detailDiv, .white #formDiv, .white .display, .white #logoDiv,
-.white #buttonDiv, .white #mainDiv, .white #contentDiv, .white #centerDiv {
+.white #mapDiv, .white #messageDiv, .white #listDiv, .white #detailDiv, .white #formDiv, .white .display, 
+.white #mainDiv, .white #contentDiv, .white #centerDiv {
   background-color: #FFFFFF;
 }
 
 .white #toolBarDiv, .white #statusBarDiv, .white .statusBar, .white .dojoxGridRowSelected, 
 .white .section, .white .dijitTitlePane .dijitTitlePaneTitle, .white .title {
-  background-color: #999999;  color: #FFFFFF;  
+  background-color: #000000;  color: #FFFFFF;  
 }
 
-.white .tabLabel, .white label,
+.white .tabLabel, .white .label,
 .white #printPreview, .white .dijitTitlePaneContentInner  {
-  background-color: #FFFFFF; color: #999999;
+  background-color: #FFFFFF; color: #000000;
 }
 
 .white .dojoxGridRowOver .dojoxGridCell {
-    background-color: #DDDDDD; color: #999999;
+    background-color: #DDDDDD; color: #000000;
 }
 .white .display, .white #printPreview {
   border: 1px solid #FFFFFF;
 }
-
+.white .titleProject {
+ color: #000000;  
+}
 .white #mainDiv {
     scrollbar-face-color: #FFFFFF;
     scrollbar-shadow-color: #FFFFFF;
@@ -786,5 +811,472 @@ label, .label {
     scrollbar-3dlight-color: #CCCCCC;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFFF;
-    scrollbar-arrow-color: #999999;
+    scrollbar-arrow-color: #000000;
+}
+
+/* =============================================================================== */
+/* SPECIFIC LIGHT BLUE THEME                                                             */
+/* =============================================================================== */
+
+.blueLight html, .blueLight body, .blueLight #leftDiv, .blueLight #logoDiv,
+.blueLight #buttonDiv,
+.blueLight .dijitSplitterH, .blueLight .dijitGutterH, .blueLight .dijitSplitterV, .blueLight .dijitGutterV,
+.blueLight .dijitMenuItemHover,
+.blueLight .dijitMenuPassive .dijitMenuItemHover,
+.blueLight .dijitMenuItemSelected   {
+  background-color: #C3C3EB;
+}
+
+.blueLight #mapDiv, .blueLight #messageDiv, .blueLight #listDiv, .blueLight #detailDiv, .blueLight #formDiv, .blueLight .display, .blueLight .background,
+.blueLight #printPreview, .blueLight .dijitTitlePaneContentInner, 
+.blueLight #mainDiv,  .blueLight #contentDiv, .blueLight #centerDiv {
+  background-color: #EEEEFF;
+}
+
+.blueLight #toolBarDiv, .blueLight #statusBarDiv, .blueLight .statusBar, .blueLight .dojoxGridRowSelected, 
+.blueLight .section, .blueLight .dijitTitlePane .dijitTitlePaneTitle, .blueLight .title  {
+  background-color: #C3C3EB;  color: #53539B;  
+}
+
+.blueLight .tabLabel, .blueLight .label, .blueLight .dojoxGridRowOver .dojoxGridCell {
+  background-color: #EEEEFF; color: #53539B;
+}
+
+.blueLight .display, .blueLight #printPreview {
+  border: 1px solid #EEEEFF;
+}
+
+.blueLight .titleProject {
+ color: #53539B;  
+}
+.blueLight #mainDiv {
+    scrollbar-face-color: #EEEEFF;
+    scrollbar-shadow-color: #EEEEFF;
+    scrollbar-highlight-color: #EEEEFF;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #EEEEFF;
+    scrollbar-arrow-color: #C3C3EB;
+}
+
+/* =============================================================================== */
+/* SPECIFIC CONTRASTED BLUE THEME                                                             */
+/* =============================================================================== */
+
+.blueContrast html, .blueContrast body, .blueContrast #leftDiv, .blueContrast #logoDiv,
+.blueContrast #buttonDiv,
+.blueContrast .dijitSplitterH, .blueContrast .dijitGutterH, .blueContrast .dijitSplitterV, .blueContrast .dijitGutterV,
+.blueContrast .dijitMenuItemHover,
+.blueContrast .dijitMenuPassive .dijitMenuItemHover,
+.blueContrast .dijitMenuItemSelected   {
+  background-color: #53539B;
+}
+
+.blueContrast #mapDiv, .blueContrast #messageDiv, .blueContrast #listDiv, .blueContrast #detailDiv, .blueContrast #formDiv, .blueContrast .display, .blueContrast .background,
+.blueContrast #printPreview, .blueContrast .dijitTitlePaneContentInner, 
+.blueContrast #mainDiv,  .blueContrast #contentDiv, .blueContrast #centerDiv {
+  background-color: #FFFFFF;
+}
+
+.blueContrast #toolBarDiv, .blueContrast #statusBarDiv, .blueContrast .statusBar, .blueContrast .dojoxGridRowSelected, 
+.blueContrast .section, .blueContrast .dijitTitlePane .dijitTitlePaneTitle, .blueContrast .title  {
+  background-color: #53539B;  color: #FFFFFF;  
+}
+
+.blueContrast .tabLabel, .blueContrast .label, .blueContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFFFFF; color: #53539B;
+}
+.blueContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #C3C3EB; color: #53539B;
+}
+
+.blueContrast .display, .blueContrast #printPreview {
+  border: 1px solid #FFFFFF;
+}
+
+.blueContrast .titleProject {
+ color: #53539B;  
+}
+.blueContrast #mainDiv {
+    scrollbar-face-color: #EEEEFF;
+    scrollbar-shadow-color: #EEEEFF;
+    scrollbar-highcontrasted-color: #EEEEFF;
+    scrollbar-3dcontrasted-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #EEEEFF;
+    scrollbar-arrow-color: #C3C3EB;
+}
+
+/* =============================================================================== */
+/* SPECIFIC LIGHT RED THEME                                                              */
+/* =============================================================================== */
+
+.redLight html, .redLight body, .redLight #leftDiv, .redLight #logoDiv,
+.redLight #buttonDiv,
+.redLight .dijitSplitterH, .redLight .dijitGutterH, .redLight .dijitSplitterV, .redLight .dijitGutterV,
+.redLight .dijitMenuItemHover,
+.redLight .dijitMenuPassive .dijitMenuItemHover,
+.redLight .dijitMenuItemSelected   {
+  background-color: #EBC3C3;
+}
+
+.redLight #mapDiv, .redLight #messageDiv, .redLight #listDiv, .redLight #detailDiv, .redLight #formDiv, .redLight .display, .redLight .background,
+.redLight #printPreview, .redLight .dijitTitlePaneContentInner,
+.redLight #mainDiv, .redLight #contentDiv, .redLight #centerDiv {
+  background-color: #FFEEEE;
+}
+
+.redLight #toolBarDiv, .redLight #statusBarDiv, .redLight .statusBar, .redLight .dojoxGridRowSelected, 
+.redLight .section, .redLight .dijitTitlePane .dijitTitlePaneTitle, .redLight .title {
+  background-color: #EBC3C3;  color: #9B5353;   
+}
+
+.redLight .tabLabel, .redLight .label, .redLight .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFEEEE; color: #9B5353;
+}
+
+.redLight .display, .redLight #printPreview {
+  border: 1px solid #FFEEEE;
+}
+
+.redLight .titleProject {
+ color: #FFEEEE;  
+}
+
+.redLight #mainDiv {
+    scrollbar-face-color: #FFEEEE;
+    scrollbar-shadow-color: #FFEEEE;
+    scrollbar-highlight-color: #FFEEEE;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #FFEEEE;
+    scrollbar-arrow-color: #EBC3C3;
+}
+
+/* =============================================================================== */
+/* SPECIFIC CONTRASTED RED THEME                                                              */
+/* =============================================================================== */
+
+.redContrast html, .redContrast body, .redContrast #leftDiv, .redContrast #logoDiv,
+.redContrast #buttonDiv,
+.redContrast .dijitSplitterH, .redContrast .dijitGutterH, .redContrast .dijitSplitterV, .redContrast .dijitGutterV,
+.redContrast .dijitMenuItemHover,
+.redContrast .dijitMenuPassive .dijitMenuItemHover,
+.redContrast .dijitMenuItemSelected   {
+  background-color: #9B5353;
+}
+
+.redContrast #mapDiv, .redContrast #messageDiv, .redContrast #listDiv, .redContrast #detailDiv, .redContrast #formDiv, .redContrast .display, .redContrast .background,
+.redContrast #printPreview, .redContrast .dijitTitlePaneContentInner, 
+.redContrast #mainDiv,  .redContrast #contentDiv, .redContrast #centerDiv {
+  background-color: #FFFFFF;
+}
+
+.redContrast #toolBarDiv, .redContrast #statusBarDiv, .redContrast .statusBar, .redContrast .dojoxGridRowSelected, 
+.redContrast .section, .redContrast .dijitTitlePane .dijitTitlePaneTitle, .redContrast .title  {
+  background-color: #9B5353;  color: #FFFFFF;  
+}
+
+.redContrast .tabLabel, .redContrast .label, .redContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFFFFF; color: #9B5353;
+}
+.redContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #EBC3C3; color: #9B5353;
+}
+
+.redContrast .display, .redContrast #printPreview {
+  border: 1px solid #FFFFFF;
+}
+
+.redContrast .titleProject {
+ color: #9B5353;  
+}
+.redContrast #mainDiv {
+    scrollbar-face-color: #FFEEEE;
+    scrollbar-shadow-color: #FFEEEE;
+    scrollbar-highcontrasted-color: #FFEEEE;
+    scrollbar-3dcontrasted-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #FFEEEE;
+    scrollbar-arrow-color: #EBC3C3;
+}
+
+/* =============================================================================== */
+/* SPECIFIC LIGHT green THEME                                                             */
+/* =============================================================================== */
+
+.greenLight html, .greenLight body, .greenLight #leftDiv, .greenLight #logoDiv,
+.greenLight #buttonDiv,
+.greenLight .dijitSplitterH, .greenLight .dijitGutterH, .greenLight .dijitSplitterV, .greenLight .dijitGutterV,
+.greenLight .dijitMenuItemHover,
+.greenLight .dijitMenuPassive .dijitMenuItemHover,
+.greenLight .dijitMenuItemSelected   {
+  background-color: #C3EBC3;
+}
+
+.greenLight #mapDiv, .greenLight #messageDiv, .greenLight #listDiv, .greenLight #detailDiv, .greenLight #formDiv, .greenLight .display, .greenLight .background,
+.greenLight #printPreview, .greenLight .dijitTitlePaneContentInner, 
+.greenLight #mainDiv,  .greenLight #contentDiv, .greenLight #centerDiv {
+  background-color: #EEFFEE;
+}
+
+.greenLight #toolBarDiv, .greenLight #statusBarDiv, .greenLight .statusBar, .greenLight .dojoxGridRowSelected, 
+.greenLight .section, .greenLight .dijitTitlePane .dijitTitlePaneTitle, .greenLight .title  {
+  background-color: #C3EBC3;  color: #539B53;  
+}
+
+.greenLight .tabLabel, .greenLight .label, .greenLight .dojoxGridRowOver .dojoxGridCell {
+  background-color: #EEFFEE; color: #539B53;
+}
+
+.greenLight .display, .greenLight #printPreview {
+  border: 1px solid #EEFFEE;
+}
+
+.greenLight .titleProject {
+ color: #539B53;  
+}
+.greenLight #mainDiv {
+    scrollbar-face-color: #EEFFEE;
+    scrollbar-shadow-color: #EEFFEE;
+    scrollbar-highlight-color: #EEFFEE;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #EEFFEE;
+    scrollbar-arrow-color: #C3EBC3;
+}
+
+/* =============================================================================== */
+/* SPECIFIC CONTRASTED green THEME                                                             */
+/* =============================================================================== */
+
+.greenContrast html, .greenContrast body, .greenContrast #leftDiv, .greenContrast #logoDiv,
+.greenContrast #buttonDiv,
+.greenContrast .dijitSplitterH, .greenContrast .dijitGutterH, .greenContrast .dijitSplitterV, .greenContrast .dijitGutterV,
+.greenContrast .dijitMenuItemHover,
+.greenContrast .dijitMenuPassive .dijitMenuItemHover,
+.greenContrast .dijitMenuItemSelected   {
+  background-color: #539B53;
+}
+
+.greenContrast #mapDiv, .greenContrast #messageDiv, .greenContrast #listDiv, .greenContrast #detailDiv, .greenContrast #formDiv, .greenContrast .display, .greenContrast .background,
+.greenContrast #printPreview, .greenContrast .dijitTitlePaneContentInner, 
+.greenContrast #mainDiv,  .greenContrast #contentDiv, .greenContrast #centerDiv {
+  background-color: #FFFFFF;
+}
+
+.greenContrast #toolBarDiv, .greenContrast #statusBarDiv, .greenContrast .statusBar, .greenContrast .dojoxGridRowSelected, 
+.greenContrast .section, .greenContrast .dijitTitlePane .dijitTitlePaneTitle, .greenContrast .title  {
+  background-color: #539B53;  color: #FFFFFF;  
+}
+
+.greenContrast .tabLabel, .greenContrast .label, .greenContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFFFFF; color: #539B53;
+}
+.greenContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #C3EBC3; color: #539B53;
+}
+
+.greenContrast .display, .greenContrast #printPreview {
+  border: 1px solid #FFFFFF;
+}
+
+.greenContrast .titleProject {
+ color: #539B53;  
+}
+.greenContrast #mainDiv {
+    scrollbar-face-color: #EEFFEE;
+    scrollbar-shadow-color: #EEFFEE;
+    scrollbar-highcontrasted-color: #EEFFEE;
+    scrollbar-3dcontrasted-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #EEFFEE;
+    scrollbar-arrow-color: #C3EBC3;
+}
+
+/* =============================================================================== */
+/* SPECIFIC LIGHT orange THEME                                                             */
+/* =============================================================================== */
+
+.orangeLight html, .orangeLight body, .orangeLight #leftDiv, .orangeLight #logoDiv,
+.orangeLight #buttonDiv,
+.orangeLight .dijitSplitterH, .orangeLight .dijitGutterH, .orangeLight .dijitSplitterV, .orangeLight .dijitGutterV,
+.orangeLight .dijitMenuItemHover,
+.orangeLight .dijitMenuPassive .dijitMenuItemHover,
+.orangeLight .dijitMenuItemSelected   {
+  background-color: #F6C672;
+}
+
+.orangeLight #mapDiv, .orangeLight #messageDiv, .orangeLight #listDiv, .orangeLight #detailDiv, .orangeLight #formDiv, .orangeLight .display, .orangeLight .background,
+.orangeLight #printPreview, .orangeLight .dijitTitlePaneContentInner, 
+.orangeLight #mainDiv,  .orangeLight #contentDiv, .orangeLight #centerDiv {
+  background-color: #FFFFDD;
+}
+
+.orangeLight #toolBarDiv, .orangeLight #statusBarDiv, .orangeLight .statusBar, .orangeLight .dojoxGridRowSelected, 
+.orangeLight .section, .orangeLight .dijitTitlePane .dijitTitlePaneTitle, .orangeLight .title  {
+  background-color: #F6C672;  color: #D98F0E;  
+}
+
+.orangeLight .tabLabel, .orangeLight .label, .orangeLight .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFFFDD; color: #D98F0E;
+}
+
+.orangeLight .display, .orangeLight #printPreview {
+  border: 1px solid #FFFFDD;
+}
+
+.orangeLight .titleProject {
+ color: #D98F0E;  
+}
+.orangeLight #mainDiv {
+    scrollbar-face-color: #FFFFDD;
+    scrollbar-shadow-color: #FFFFDD;
+    scrollbar-highlight-color: #FFFFDD;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #FFFFDD;
+    scrollbar-arrow-color: #F6C672;
+}
+
+/* =============================================================================== */
+/* SPECIFIC CONTRASTED orange THEME                                                             */
+/* =============================================================================== */
+
+.orangeContrast html, .orangeContrast body, .orangeContrast #leftDiv, .orangeContrast #logoDiv,
+.orangeContrast #buttonDiv,
+.orangeContrast .dijitSplitterH, .orangeContrast .dijitGutterH, .orangeContrast .dijitSplitterV, .orangeContrast .dijitGutterV,
+.orangeContrast .dijitMenuItemHover,
+.orangeContrast .dijitMenuPassive .dijitMenuItemHover,
+.orangeContrast .dijitMenuItemSelected   {
+  background-color: #D98F0E;
+}
+
+.orangeContrast #mapDiv, .orangeContrast #messageDiv, .orangeContrast #listDiv, .orangeContrast #detailDiv, .orangeContrast #formDiv, .orangeContrast .display, .orangeContrast .background,
+.orangeContrast #printPreview, .orangeContrast .dijitTitlePaneContentInner, 
+.orangeContrast #mainDiv,  .orangeContrast #contentDiv, .orangeContrast #centerDiv {
+  background-color: #FFFFFF;
+}
+
+.orangeContrast #toolBarDiv, .orangeContrast #statusBarDiv, .orangeContrast .statusBar, .orangeContrast .dojoxGridRowSelected, 
+.orangeContrast .section, .orangeContrast .dijitTitlePane .dijitTitlePaneTitle, .orangeContrast .title  {
+  background-color: #D98F0E;  color: #FFFFFF;  
+}
+
+.orangeContrast .tabLabel, .orangeContrast .label, .orangeContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFFFFF; color: #D98F0E;
+}
+.orangeContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #F6C672; color: #D98F0E;
+}
+
+.orangeContrast .display, .orangeContrast #printPreview {
+  border: 1px solid #FFFFFF;
+}
+
+.orangeContrast .titleProject {
+ color: #D98F0E;  
+}
+.orangeContrast #mainDiv {
+    scrollbar-face-color: #FFFFDD;
+    scrollbar-shadow-color: #FFFFDD;
+    scrollbar-highcontrasted-color: #FFFFDD;
+    scrollbar-3dcontrasted-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #FFFFDD;
+    scrollbar-arrow-color: #F6C672;
+}
+
+/* =============================================================================== */
+/* SPECIFIC LIGHT grey THEME                                                              */
+/* =============================================================================== */
+
+.greyLight html, .greyLight body, .greyLight #leftDiv, .greyLight #logoDiv,
+.greyLight #buttonDiv,
+.greyLight .dijitSplitterH, .greyLight .dijitGutterH, .greyLight .dijitSplitterV, .greyLight .dijitGutterV,
+.greyLight .dijitMenuItemHover,
+.greyLight .dijitMenuPassive .dijitMenuItemHover,
+.greyLight .dijitMenuItemSelected   {
+  background-color: #C3C3C3;
+}
+
+.greyLight #mapDiv, .greyLight #messageDiv, .greyLight #listDiv, .greyLight #detailDiv, .greyLight #formDiv, .greyLight .display, .greyLight .background,
+.greyLight #printPreview, .greyLight .dijitTitlePaneContentInner,
+.greyLight #mainDiv, .greyLight #contentDiv, .greyLight #centerDiv {
+  background-color: #F0F0F0;
+}
+
+.greyLight #toolBarDiv, .greyLight #statusBarDiv, .greyLight .statusBar, .greyLight .dojoxGridRowSelected, 
+.greyLight .section, .greyLight .dijitTitlePane .dijitTitlePaneTitle, .greyLight .title {
+  background-color: #C3C3C3;  color: #9B9B9B;   
+}
+
+.greyLight .tabLabel, .greyLight .label, .greyLight .dojoxGridRowOver .dojoxGridCell {
+  background-color: #F0F0F0; color: #9B9B9B;
+}
+
+.greyLight .display, .greyLight #printPreview {
+  border: 1px solid #F0F0F0;
+}
+
+.greyLight .titleProject {
+ color: #9B9B9B;  
+}
+
+.greyLight #mainDiv {
+    scrollbar-face-color: #F0F0F0;
+    scrollbar-shadow-color: #F0F0F0;
+    scrollbar-highlight-color: #F0F0F0;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #F0F0F0;
+    scrollbar-arrow-color: #C3C3C3;
+}
+
+/* =============================================================================== */
+/* SPECIFIC CONTRASTED grey THEME                                                             */
+/* =============================================================================== */
+
+.greyContrast html, .greyContrast body, .greyContrast #leftDiv, .greyContrast #logoDiv,
+.greyContrast #buttonDiv,
+.greyContrast .dijitSplitterH, .greyContrast .dijitGutterH, .greyContrast .dijitSplitterV, .greyContrast .dijitGutterV,
+.greyContrast .dijitMenuItemHover,
+.greyContrast .dijitMenuPassive .dijitMenuItemHover,
+.greyContrast .dijitMenuItemSelected   {
+  background-color: #9B9B9B;
+}
+
+.greyContrast #mapDiv, .greyContrast #messageDiv, .greyContrast #listDiv, .greyContrast #detailDiv, .greyContrast #formDiv, .greyContrast .display, .greyContrast .background,
+.greyContrast #printPreview, .greyContrast .dijitTitlePaneContentInner, 
+.greyContrast #mainDiv,  .greyContrast #contentDiv, .greyContrast #centerDiv {
+  background-color: #FFFFFF;
+}
+
+.greyContrast #toolBarDiv, .greyContrast #statusBarDiv, .greyContrast .statusBar, .greyContrast .dojoxGridRowSelected, 
+.greyContrast .section, .greyContrast .dijitTitlePane .dijitTitlePaneTitle, .greyContrast .title  {
+  background-color: #9B9B9B;  color: #FFFFFF;  
+}
+
+.greyContrast .tabLabel, .greyContrast .label, .greyContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #FFFFFF; color: #9B9B9B;
+}
+.greyContrast .dojoxGridRowOver .dojoxGridCell {
+  background-color: #C3C3C3; color: #9B9B9B;
+}
+
+.greyContrast .display, .greyContrast #printPreview {
+  border: 1px solid #FFFFFF;
+}
+
+.greyContrast .titleProject {
+ color: #9B9B9B;  
+}
+.greyContrast #mainDiv {
+    scrollbar-face-color: #F0F0F0;
+    scrollbar-shadow-color: #F0F0F0;
+    scrollbar-highcontrasted-color: #F0F0F0;
+    scrollbar-3dcontrasted-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #F0F0F0;
+    scrollbar-arrow-color: #C3C3C3;
 }

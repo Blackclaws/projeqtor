@@ -238,7 +238,7 @@ function cleanContent(destination) {
 		return;
 	}
 	if (contentWidget) {
-		contentWidget.attr('content',null);
+		contentWidget.set('content',null);
 	}
 	return;
 
@@ -290,13 +290,13 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 			  //cleanContent(destination);
         var contentWidget = dijit.byId(destination);
         if (! contentWidget) {return};
-      	contentWidget.attr('content',data);
+      	contentWidget.set('content',data);
       	if (destination=="detailDiv" || destination=="centerDiv") {
       		finaliseButtonDisplay();
         }
         if (directAccess) {
         	if (dijit.byId('listIdFilter')) {
-        		//dijit.byId('listIdFilter').attr('value',directAccess);
+        		//dijit.byId('listIdFilter').set('value',directAccess);
         		//setTimeout("filterJsonList();",100);
         		dojo.byId('objectId').value=directAccess;
         		//dijit.byId("listDiv").domNode.style.height="100px";
@@ -352,14 +352,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   		    //cleanContent(destination);
           var contentWidget = dijit.byId(destination);
           if (! contentWidget) {return};
-        	contentWidget.attr('content',data);
+        	contentWidget.set('content',data);
           var contentNode = dojo.byId(destination);
           if (destination=="detailDiv" || destination=="centerDiv" ) {
           	finaliseButtonDisplay();
           }
           if (directAccess) {
           	if (dijit.byId('listIdFilter')) {
-          		//dijit.byId('listIdFilter').attr('value',directAccess);
+          		//dijit.byId('listIdFilter').set('value',directAccess);
           		//setTimeout("filterJsonList();",100);
           		dojo.byId('objectId').value=directAccess;
           		//dijit.byId("listDiv").domNode.style.height="100px";
@@ -461,7 +461,7 @@ function finalizeMessageDisplay(destination, validationType) {
   if ( ! (contentWidget && contentNode && lastOperationStatus && lastOperation) ) {
   	returnMessage="";
   	if (contentWidget) {
-  		returnMessage=contentWidget.attr('content');
+  		returnMessage=contentWidget.get('content');
   	}
   	showError(i18n("errorFinalizeMessage", new Array(destination,returnMessage)));
   	hideWait();
@@ -469,7 +469,7 @@ function finalizeMessageDisplay(destination, validationType) {
   }
   if (! contentWidget) {return};
   // fetch last message type
-  var message=contentWidget.attr('content');
+  var message=contentWidget.get('content');
   posdeb=message.indexOf('class="')+7;
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
@@ -532,7 +532,7 @@ function finalizeMessageDisplay(destination, validationType) {
 	  		zone=dijit.byId("formDiv");
 	  		msg=dojo.byId("noDataMessage");
 	  		if (zone && msg) {
-	  			zone.attr('content',msg.value);
+	  			zone.set('content',msg.value);
 	  		}
 	  		//unselectAllRows("objectGrid");
 	  		finaliseButtonDisplay();
@@ -618,6 +618,10 @@ function finaliseButtonDisplay() {
  * @return void
  */
 function formChanged() {
+	var updateRight=dojo.byId('updateRight');
+	if (updateRight && updateRight.value=='NO') {
+		rerurn;
+	}
 	disableWidget('newButton');
 	enableWidget('saveButton');
 	disableWidget('printButton');
@@ -700,7 +704,7 @@ function buttonRightLock() {
  */
 function disableWidget(widgetName) {
 	if (dijit.byId(widgetName)) {
-	  dijit.byId(widgetName).attr('disabled',true);
+	  dijit.byId(widgetName).set('disabled',true);
 	}
 }
 
@@ -710,7 +714,7 @@ function disableWidget(widgetName) {
  */
 function enableWidget(widgetName) {
 	if (dijit.byId(widgetName)) {
-	  dijit.byId(widgetName).attr('disabled',false);
+	  dijit.byId(widgetName).set('disabled',false);
   }
 }
 
@@ -720,7 +724,7 @@ function enableWidget(widgetName) {
  */
 function lockWidget(widgetName) {
 	if (dijit.byId(widgetName)) {
-	  dijit.byId(widgetName).attr('readOnly',true);
+	  dijit.byId(widgetName).set('readOnly',true);
 	}
 }
 
@@ -730,7 +734,7 @@ function lockWidget(widgetName) {
  */
 function unlockWidget(widgetName) {
 	if (dijit.byId(widgetName)) {
-	  dijit.byId(widgetName).attr('readOnly',false);
+	  dijit.byId(widgetName).set('readOnly',false);
   }
 }
 
@@ -883,7 +887,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
 	  });
 	}
 	if (idProject!="" && idProject!="*" && dijit.byId("idProjectPlan")) {
-		dijit.byId("idProjectPlan").attr("value",idProject);
+		dijit.byId("idProjectPlan").set("value",idProject);
   }
 }
 
@@ -891,9 +895,11 @@ function setSelectedProject(idProject, nameProject, selectionField) {
  * Ends current user session
  * @return
  */
+var quitConfirmed=false;
 function disconnect() {
 	disconnectFunction = function() {
-    dojo.xhrPost({
+		quitConfirmed=true;
+		dojo.xhrPost({
   	  url: "../tool/saveDataToSession.php?id=disconnect",
   	  load: function(data,args) { window.location="../index.php"; }
     });
@@ -908,10 +914,10 @@ function disconnect() {
  * @return
  */
 function quit() {
-    dojo.xhrPost({
-  	  url: "../tool/saveDataToSession.php?id=disconnect",
-  	  load: function(data,args) { }
-    });
+  dojo.xhrPost({
+	  url: "../tool/saveDataToSession.php?id=disconnect",
+	  load: function(data,args) {}
+  });
 }
 
 /**
@@ -922,7 +928,9 @@ function beforequit() {
 	if (formChangeInProgress) {
     return (i18n("alertQuitOngoingChange"));
 	} else {
-		//return (i18n("alertQuit"));
+		if (! quitConfirmed) {
+			return(i18n('confirmDisconnection'));
+		}
 	}
 }
 
@@ -932,15 +940,16 @@ function beforequit() {
  */
 function drawGantt() {
 	if (dijit.byId('startDatePlanView')) {
-		var startDateView=dijit.byId('startDatePlanView').attr('value');
+		var startDateView=dijit.byId('startDatePlanView').get('value');
 	} else {
 		var startDateView=new Date();
 	}
 	if (dijit.byId('showWBS')) {
-		var showWBS=dijit.byId('showWBS').attr('checked');
+		var showWBS=dijit.byId('showWBS').get('checked');
 	} else {
 		var showWBS=null;
 	}
+	//showWBS=true;
 	var gFormat="day";
 	if (g) {
 		gFormat=g.getFormat();
@@ -1012,9 +1021,12 @@ function drawGantt() {
       }
       // pMile : is it a milestone ?
       var pMile=(item.refType=='Milestone')?1:0;
+      if (pMile) { pStart=pEnd; }
       pClass=item.refType;
-      //                        TaskItem(pID,     pName, pStart, pEnd, pColor, pLink,     pMile, pRes,    pComp,     pGroup, pParent,    pOpen, pDepend, Caption)
-  		g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress,     pGroup, topId, 1,     item.depend  ,    '' ,    pClass));
+      var pDepend=item.depend;
+      //console.log(item.id + " - " + pName + "=>" + pDepend);
+      //                        TaskItem(pID,     pName, pStart, pEnd, pColor, pLink,     pMile, pRes, pComp,    pGroup, pParent, pOpen, pDepend, Caption)
+  		g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress, pGroup, topId,   1,     pDepend  ,    '' ,    pClass));
   	}
     g.Draw();	
     g.DrawDependencies();
@@ -1141,11 +1153,11 @@ function workflowSelectAll(line, column, profileList) {
 	var profileArray=profileList.split(reg);
 	var check=dijit.byId('val_' + line + "_" + column);
 	if (check) {
-		var newValue=(check.attr("checked"))? 'checked': '';
+		var newValue=(check.get("checked"))? 'checked': '';
 		for (i=0; i < profileArray.length; i++) {
 			var checkBox=dijit.byId('val_' + line + "_" + column + "_" + profileArray[i]);
 			if (checkBox) {
-				checkBox.attr("checked",newValue);
+				checkBox.set("checked",newValue);
 			}
 		}
 	} else {
@@ -1194,6 +1206,56 @@ function globalSave() {
 	var button=dijit.byId('saveButton');
 	if ( button && button.isFocusable() ) {
 		button.focus();
-		dojo.byId('saveButton').click();
+		button.onClick();
 	}
+}
+
+function getFirstDayOfWeek(week, year) {
+   var testDate=new Date(year,0, 5+(week-1)*7);
+   var day=testDate.getDate();
+   var month=testDate.getMonth()+1;
+   var year=testDate.getFullYear();
+   var testWeek=getWeek(day, month, year);
+//   alert("testDate = " + testDate);
+//   alert("testWeek (" + day + "/" + month + "/" + year + ") = " + testWeek);
+   while (testWeek>=week) {
+  	 testDate.setDate(testDate.getDate()-1);  	 
+     day=testDate.getDate();
+     month=testDate.getMonth()+1;
+     year=testDate.getFullYear();
+     testWeek=getWeek(day, month, year);
+//     alert("testDate = " + testDate);
+//     alert("testWeek (" + day + "/" + month + "/" + year + ") = " + testWeek);
+     if (testWeek>10 && week==1) {testWeek=0};
+   }
+   testDate.setDate(testDate.getDate()+1)
+   return testDate;
+}
+
+function getWeek(day, month, year) {  
+  var origin = new Date(year,month-1,day);
+	var target = new Date(origin.valueOf());  
+  var dayNr   = (origin.getDay() + 6) % 7;  
+  target.setDate(target.getDate() - dayNr + 3);  
+  var jan4 = new Date(target.getFullYear(), 0, 4);  
+  var dayDiff = (target - jan4) / 86400000;    
+  var weekNr = 1 + Math.ceil(dayDiff / 7);    
+  return weekNr;    
+}  
+
+function moveTask(source,destination) {
+  var mode='';
+	var nodeList=dndSourceTable.getAllNodes();
+  for (i=0; i<nodeList.length; i++) {
+    //console.log(nodeList[i].id);
+    if (nodeList[i].id==source) {
+    	mode='before';
+    	break;
+    } else if (nodeList[i].id==destination) {
+    	mode='after';
+    	break;
+    }    	
+  }
+	var url='../tool/moveTask.php?from='+source+'&to='+destination+'&mode='+mode;
+	loadContent(url, "planResultDiv", null, true,null);
 }

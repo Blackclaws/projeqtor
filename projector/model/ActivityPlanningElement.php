@@ -139,10 +139,15 @@ class ActivityPlanningElement extends PlanningElement {
       if ($mode->mandatoryStartDate and ! $this->validatedStartDate) {
         $result.='<br/>' . i18n('errorMandatoryValidatedStartDate');
       }
-    if ($mode->mandatoryEndDate and ! $this->validatedEndDate) {
+      if ($mode->mandatoryEndDate and ! $this->validatedEndDate) {
         $result.='<br/>' . i18n('errorMandatoryValidatedEndDate');
       }
+      if ($mode->mandatoryDuration and ! $this->validatedDuration) {
+        $result.='<br/>' . i18n('errorMandatoryValidatedDuration');
+      }
+   
     }
+   
     
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

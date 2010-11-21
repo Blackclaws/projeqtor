@@ -148,20 +148,20 @@ class Risk extends SqlElement {
       $colScript .= '  dojo.forEach(filterLikelihood, function(item, i) {likelihoodValue=item.value;});';
       $colScript .= '  calculatedValue = Math.round(serverityValue*likelihoodValue/2);';
       $colScript .= '  var filterCriticality=dojo.filter(tabCriticality, function(item){return item.value==calculatedValue;});';
-      $colScript .= '  dojo.forEach(filterCriticality, function(item, i) {dijit.byId("idCriticality").attr("value",item.id);});';
+      $colScript .= '  dojo.forEach(filterCriticality, function(item, i) {dijit.byId("idCriticality").set("value",item.id);});';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="initialEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (dijit.byId("actualEndDate").value==null) { ';
-      $colScript .= '    dijit.byId("actualEndDate").attr("value", this.value); ';
+      $colScript .= '    dijit.byId("actualEndDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     } else if ($colName=="actualEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (dijit.byId("initialEndDate").value==null) { ';
-      $colScript .= '    dijit.byId("initialEndDate").attr("value", this.value); ';
+      $colScript .= '    dijit.byId("initialEndDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';           

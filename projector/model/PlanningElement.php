@@ -122,7 +122,7 @@ class PlanningElement extends SqlElement {
       $colScript .= '    var startDate=this.value;';
       $colScript .= '    var endDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").value;';
       $colScript .= '    var duration=workDayDiffDates(startDate, endDate);';
-      $colScript .= '    dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").attr("value",duration);';
+      $colScript .= '    dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").set("value",duration);';
       $colScript .= '    terminateChange();';
       $colScript .= '    formChanged();';
       $colScript .= '  }';
@@ -133,13 +133,13 @@ class PlanningElement extends SqlElement {
       $colScript .= '    var endDate=this.value;';
       $colScript .= '    var startDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").value;';
       $colScript .= '    var duration=workDayDiffDates(startDate, endDate);';
-      $colScript .= '    dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").attr("value",duration);';
+      $colScript .= '    dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").set("value",duration);';
       if ($rubr=="real") {
         $colScript .= '   if (dijit.byId("idle")) { ';
         $colScript .= '     if ( endDate!=null && endDate!="") {';
-        $colScript .= '       dijit.byId("idle").attr("checked", true);';
+        $colScript .= '       dijit.byId("idle").set("checked", true);';
         $colScript .= '     } else {';
-        $colScript .= '       dijit.byId("idle").attr("checked", false);';
+        $colScript .= '       dijit.byId("idle").set("checked", false);';
         $colScript .= '     }';
         $colScript .= '   }';
       }
@@ -151,17 +151,17 @@ class PlanningElement extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var value=dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration");';
       $colScript .= '  if (testAllowedChange(value)) {';
-      $colScript .= '    var duration=(value==null || value=="")?"":parseInt(value.attr("value"));';
-      $colScript .= '    var startDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").attr("value");';
+      $colScript .= '    var duration=(value==null || value=="")?"":parseInt(value.get("value"));';
+      $colScript .= '    var startDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").get("value");';
       //$colScript .= 'alert("test Duration:" + startDate);';
-      $colScript .= '    var endDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").attr("value");';
+      $colScript .= '    var endDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").get("value");';
       $colScript .= '    if (duration!=null && duration!="") {';
       $colScript .= '      if (startDate!=null && startDate!="") {';
       $colScript .= '        endDate = addWorkDaysToDate(startDate,duration);';
-      $colScript .= '        dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").attr("value",endDate);';
+      $colScript .= '        dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").set("value",endDate);';
       //$colScript .= '      } else if (endDate!=null){';
       //$colScript .= '        startDate= addworkDaysToDate(endDate,"day", duration * (-1));';
-      //$colScript .= '        dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").attr("value",startDate);';
+      //$colScript .= '        dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").set("value",startDate);';
       $colScript .= '      }';
       $colScript .= '    }';
       $colScript .= '    terminateChange();';
@@ -252,8 +252,12 @@ class PlanningElement extends SqlElement {
     
     $this->realDuration=workDayDiffDates($this->realStartDate, $this->realEndDate);
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
-    $this->validatedDuration=workDayDiffDates($this->validatedStartDate, $this->validatedEndDate);
-    $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
+    if ($this->validatedStartDate and $this->validatedEndDate) {
+      $this->validatedDuration=workDayDiffDates($this->validatedStartDate, $this->validatedEndDate);
+    }
+    if ($this->initialStartDate and $this->initialEndDate) {
+      $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
+    }
     
     $result=parent::save();
 
@@ -505,6 +509,53 @@ debugLog ("   => Group");
       }
     }
     return $result;
+  }
+
+  public function moveTo($destId,$mode) {
+    $status="ERROR";
+    $dest=new PlanningElement($destId);
+    if ($dest->topRefType!=$this->topRefType
+    or $dest->topRefId!=$this->topRefId) {
+      $returnValue=i18n('moveCancelled');
+    } else {
+      if ($this->topRefType) {
+        $where="topRefType='" . $this->topRefType . "' and topRefId='" . $this->topRefId . "'";
+      } else {
+        $where="topRefType is null and topRefId is null";
+      }
+      $order="wbsSortable asc";
+      $list=$this->getSqlElementsFromCriteria(null,false,$where,$order);
+      $idx=0;
+      $currentIdx=0;
+      foreach ($list as $pe) {
+        if ($pe->id==$this->id) {
+          // met the one we are moving => skip
+        } else {
+          if ($pe->id==$destId and $mode=="before") {
+            $idx++;
+            $currentIdx=$idx;
+          }
+          $idx++;
+          $root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
+          //debugLog ($pe->id . ' - ' . $pe->wbs . ' - ' . $root);
+          $pe->wbs=($root=='')?$idx:$root.'.'.$idx;
+          $pe->save();
+          if ($pe->id==$destId and $mode=="after") {
+            $idx++;
+            $currentIdx=$idx;
+          }
+        }
+      }
+      $root=substr($this->wbs,0,strrpos($this->wbs,'.'));
+      $this->wbs=($root=='')?$currentIdx:$root.'.'.$currentIdx;
+      $this->save();
+      $returnValue=i18n('moveDone');
+      $status="OK";
+    }
+    $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
+    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
+    $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+    return $returnValue;
   }
 }
 ?>

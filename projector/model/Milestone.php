@@ -44,7 +44,7 @@ class Milestone extends SqlElement {
     <th field="plannedEndDate" from="MilestonePlanningElement" width="10%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
-    <th field="done" width="5%" formatter="booleanFormatter" >${handled}</th>
+    <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -132,12 +132,12 @@ class Milestone extends SqlElement {
 
     if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").attr("value", null); ';
+      $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").set("value", null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idActivity") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").attr("value", null); ';
+      $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").set("value", null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } 

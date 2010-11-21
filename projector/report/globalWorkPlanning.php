@@ -214,7 +214,7 @@ $graph->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_
 $graph->drawLineGraph($dataSet->GetData(),$dataSet->GetDataDescription());  
 $graph->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);  
 
-$imgName=getGraphImgName("ticketYearlyReport");
+$imgName=getGraphImgName("globalWorkPlanning");
 $graph->Render($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />'; 

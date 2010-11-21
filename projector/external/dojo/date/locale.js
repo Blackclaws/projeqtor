@@ -84,7 +84,7 @@ dojo.requireLocalization("dojo.cldr", "gregorian", null, "");
 					break;
 				case 'a':
 					var timePeriod = (dateObject.getHours() < 12) ? 'am' : 'pm';
-					s = bundle[timePeriod];
+					s = bundle['dayPeriods-format-wide-' + timePeriod];
 					break;
 				case 'h':
 				case 'H':
@@ -380,8 +380,8 @@ dojo.date.locale.parse = function(/*String*/value, /*dojo.date.locale.__FormatOp
 				result[2] = v;
 				break;
 			case 'a': //am/pm
-				var am = options.am || bundle.am;
-				var pm = options.pm || bundle.pm;
+				var am = options.am || bundle['dayPeriods-format-wide-am'],
+					pm = options.pm || bundle['dayPeriods-format-wide-pm'];
 				if(!options.strict){
 					var period = /\./g;
 					v = v.replace(period,'').toLowerCase();
@@ -486,7 +486,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 		if(!chunk){
 			chunks[i]='';
 		}else{
-			chunks[i]=(literal ? applyLiteral : applyPattern)(chunk);
+			chunks[i]=(literal ? applyLiteral : applyPattern)(chunk.replace(/''/g, "'"));
 			literal = !literal;
 		}
 	});
@@ -519,12 +519,12 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = p2+'[1-9]|'+p3+'[1-9][0-9]|[12][0-9][0-9]|3[0-5][0-9]|36[0-6]';
 				break;
 			case 'd':
-				s = '[12]\\d|'+p2+'[1-9]|3[01]';
+				s = '3[01]|[12]\\d|'+p2+'[1-9]';
 				break;
 			case 'w':
 				s = p2+'[1-9]|[1-4][0-9]|5[0-3]';
 				break;
-		    case 'E':
+			case 'E':
 				s = '\\S+';
 				break;
 			case 'h': //hour (1-12)
@@ -547,8 +547,8 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				s = '\\d{'+l+'}';
 				break;
 			case 'a':
-				var am = options.am || bundle.am || 'AM';
-				var pm = options.pm || bundle.pm || 'PM';
+				var am = options.am || bundle['dayPeriods-format-wide-am'],
+					pm = options.pm || bundle['dayPeriods-format-wide-pm'];
 				if(options.strict){
 					s = am + '|' + pm;
 				}else{
@@ -623,7 +623,7 @@ dojo.date.locale.getNames = function(/*String*/item, /*String*/type, /*String?*/
 		var key = props.join('-');
 		label = lookup[key];
 		// Fall back to 'format' flavor of name
-		if(label[0] == 1){ label = undefined; } // kludge, in the absense of real aliasing support in dojo.cldr
+		if(label[0] == 1){ label = undefined; } // kludge, in the absence of real aliasing support in dojo.cldr
 	}
 	props[1] = 'format';
 

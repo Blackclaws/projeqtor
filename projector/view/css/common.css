@@ -6,23 +6,30 @@
  * ============================================================================
  */
 
-.dijitSliderDisabled *,.dijitDisabledClickableRegion,.dijitSpinnerDisabled *,.dijitButtonDisabled *,.dijitDropDownButtonDisabled *,.dijitComboButtonDisabled *,.dijitComboBoxDisabled *
-  {
+/* ========================== 
+ * Common.css
+ * ========================== */
+
+.dijitSliderDisabled *,
+.dijitDisabledClickableRegion,
+.dijitSpinnerDisabled *,
+.dijitButtonDisabled *,
+.dijitDropDownButtonDisabled *,
+.dijitComboButtonDisabled *,
+.dijitComboBoxDisabled *
+{
   cursor: not-allowed !important;
 }
 
 .dojoDndItemBefore {
   border-top: 2px solid #666;
 }
-
 .dojoDndItemAfter {
   border-bottom: 2px solid #666;
 }
-
 .dojoDndItemOver {
   cursor: pointer;
 }
-
 table.dojoDndAvatar {
   -moz-border-radius: 0;
   border: 1px solid #ccc;
@@ -31,85 +38,84 @@ table.dojoDndAvatar {
   font-size: 75%;
   color: black;
 }
-
 .dojoDndAvatar td {
   border: none;
 }
-
 .dojoDndAvatar tr {
   border: none;
 }
-
 .dojoDndAvatarHeader td {
   height: 20px;
   padding: 0 0 0 21px;
 }
-
 .dojoDndAvatarItem td {
   padding: 2px;
 }
-
 .dojoDndMove .dojoDndAvatarHeader {
   background-color: #f58383;
   background-image: url(images/dndNoMove.png);
   background-repeat: no-repeat;
   background-position: 2px center;
 }
-
 .dojoDndCopy .dojoDndAvatarHeader {
   background-color: #f58383;
   background-image: url(images/dndNoCopy.png);
   background-repeat: no-repeat;
   background-position: 2px center;
 }
-
 .dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader {
   background-color: #97e68d;
   background-image: url(images/dndMove.png);
   background-repeat: no-repeat;
   background-position: 2px center;
 }
-
 .dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader {
   background-color: #97e68d;
   background-image: url(images/dndCopy.png);
   background-repeat: no-repeat;
   background-position: 2px center;
 }
-
 .dijitContentPaneLoading {
   background: url(images/loading.gif) no-repeat left center;
   padding-left: 25px;
 }
-
 .dijitContentPaneError {
   background: url(images/warning.png) no-repeat left center;
   padding-left: 25px;
 }
-
+/* ========================== 
+ * Layout/ContentPane.css
+ * ========================== */
+ 
 .dijitContentPane {
   padding: 0px;
 }
-
-.dijitTabContainerTop-dijitContentPane,.dijitTabContainerLeft-dijitContentPane,.dijitTabContainerBottom-dijitContentPane,.dijitTabContainerRight-dijitContentPane,.dijitAccordionContainer-dijitContentPane
-  {
+.dijitTabContainerTop-dijitContentPane,
+.dijitTabContainerLeft-dijitContentPane,
+.dijitTabContainerBottom-dijitContentPane,
+.dijitTabContainerRight-dijitContentPane,
+.dijitAccordionContainer-dijitContentPane
+{
   border: none;
   padding: 0px;
 }
-
-.dijitSplitContainer-dijitContentPane,.dijitBorderContainer-dijitContentPane
+.dijitSplitContainer-dijitContentPane,
+.dijitBorderContainer-dijitContentPane
   {
   border: 0px #ccc solid;
   padding: 0px;
 }
 
+/* ========================== 
+ * Layout/TabContainer.css
+ * ========================== */
+ 
 .dijitTabPaneWrapper {
   background: #fff;
   border: 1px solid #ccc;
   margin: 0;
   padding: 0;
 }
-
 .dijitTab {
   line-height: normal;
   margin-right: 4px;
@@ -117,21 +123,31 @@ table.dojoDndAvatar {
   border: 1px solid #ccc;
   background: #e2e2e2 url(images/tabEnabled.png) repeat-x;
 }
-
 .dijitTabInnerDiv {
   padding: 6px 8px 5px 9px;
 }
-
 .dijitTabSpacer {
   font-size: 1px;
+  display: none;
 }
-
+.dijitTabContainer .tabStripRBtn {
+  margin-right: 20px;
+}
+.dijitTabContainer .tabStripLBtn {
+  margin-left: 20px;
+}
+.nowrapTabStrip .dijitTab {
+  top: 2px;
+}
+.dijitTabContainerBottom .nowrapTabStrip .dijitTab {
+  top: 0px;
+  bottom: 2px;
+}
 .dijitTabChecked {
   background-color: #fff;
   border-color: #ccc;
   background-image: none;
 }
-
 .dijitTabHover {
   color: #3C3C3C;
   border-top-color: #a0a0a0;
@@ -139,166 +155,166 @@ table.dojoDndAvatar {
   border-right-color: #a0a0a0;
   background: #e2e2e2 url(images/tabHover.gif) repeat-x;
 }
-
 .dijitTabCheckedHover {
   color: inherit;
   border: 1px solid #ccc;
   background: #fff;
 }
-
-.dijitTab .dijitClosable .closeNode {
-  display: -moz-inline-box;
-  display: inline-block; #
-  zoom: 1; #
-  display: inline;
-  vertical-align: top;
-  width: 1em;
-  height: 1em;
-  padding: 0;
-  margin: 0;
+.dijitTabContainerTop .dijitTabHover {
+  border-bottom-color:#ccc;
 }
-
-.dijitTab .dijitClosable .closeImage {
-  background: url(images/tabClose.png) no-repeat right top;
+.dijitTabContainerBottom .dijitTabHover {
+  border-top-color:#ccc;
+}
+.dijitTabContainerLeft .dijitTabHover {
+  border-right-color:#ccc;
+}
+.dijitTabContainerRight .dijitTabHover {
+  border-left-color:#ccc;
+}
+.dijitTabContainer .dijitTabCheckedHover {
+  color: inherit;
+  border:1px solid #ccc;
+  background:#fff;
+}
+.dijitTab .tabLabel {
+  /* make sure tabs w/close button and w/out close button are same height, even w/small (<12px) font */
+  min-height: 12px;
+  display: inline-block;
+}
+.dijitTabContainerNested .dijitTabListWrapper {
+  height: auto;
+}
+.dijitTabContainerNested .dijitTabContainerTop-tabs {
+  border-bottom: 1px solid #CCC;
+}
+.dijitTabContainerTabListNested .dijitTab {
+  background: none;
+  border: none;
+  top: 0px;   /* to override top: 1px/-1px for normal tabs */
+}
+.dijitTabContainerTabListNested .dijitTab .dijitTabContent {
+}
+.dijitTabContainerTabListNested .dijitTabHover .dijitTabContent .tabLabel {
+  text-decoration: underline;
+}
+.dijitTabContainerTabListNested .dijitTabChecked .dijitTabContent .tabLabel {
+  text-decoration: underline;
+  font-weight: bold;
+}
+.dijitTabContainer .dijitTabPaneWrapperNested {
+  border: none; /* prevent double border */
+}
+.dijitTabCloseButton {
+  background: url("../images/tabClose.png") no-repeat right top;
   width: 12px;
   height: 12px;
 }
-
-.dijitTab .dijitTabButtonSpacer {
-  height: 12px;
-  width: 1px;
+.dj_ie6 .dijitTabCloseButton {
+  background-image : url("../images/tabClose.gif");
 }
-
-.dj_ie6 .dijitTab .dijitClosable .closeImage {
-  background-image: url(images/tabClose.gif);
+.dijitTabCloseButtonHover {
+  background-image : url("../images/tabCloseHover.png");
 }
-
-.dijitTabCloseButton .dijitClosable .closeImage {
-  background-image: url(images/tabClose.png);
+.dj_ie6 .dijitTabCloseButtonHover {
+  background-image : url("../images/tabCloseHover.gif");
 }
-
-.dj_ie6 .dijitTabCloseButton .dijitClosable .closeImage {
-  background-image: url(images/tabClose.gif);
-}
-
-.dijitTabCloseButtonHover .dijitClosable .closeImage {
-  background-image: url(images/tabCloseHover.png);
-}
-
-.dj_ie6 .dijitTabCloseButtonHover .dijitClosable .closeImage {
-  background-image: url(images/tabCloseHover.gif);
-}
-
 .dijitTabContainerTop-tabs {
-  margin-bottom: -1px;
-  border-color: #ccc;
+  margin-bottom: 0px;
+  border-color: #cccccc;
+  padding-left: 3px;
+  background-position: bottom;
 }
-
+.dijitTabContainerTop-tabs .dijitTab {
+  top: 0px;
+  margin-bottom: -1px;
+}
 .dijitTabContainerTop-container {
   border-top: none;
 }
-
 .dijitTabContainerTop-tabs .dijitTabChecked {
-  border-bottom-color: white;
+  border-bottom-color:white;
 }
-
-.dijitTabContainerTopStrip {
-  border: 1px solid #ccc;
-  padding-top: 2px;
+.dijitTabContainerTop-tabs,
+.dijitTabContainerBottom-tabs {
   padding-left: 3px;
+  padding-right: 3px;
 }
-
 .dijitTabContainerTopStrip {
+  border-top: 1px solid #CCC;
+  border-right: 1px solid #CCC;
+  border-left: 1px solid #CCC;
+  padding-top: 2px;
   background: #f2f2f2;
 }
-
-.dijitTabContainerBottom-tabs {
-  margin-top: -1px;
-  border-color: #ccc;
+.dijitTabContainerTopNone {
+  padding-top: 0px;
 }
-
+.dijitTabContainerBottom-tabs {
+  margin-top: 0px;
+  border-color: #cccccc;
+  background-position: top;
+  padding-left: 3px;
+}
+.dijitTabContainerBottom-tabs .dijitTab {
+  bottom: 0px;
+  margin-top: -1px;
+}
 .dijitTabContainerBottom-container {
   border-bottom: none;
 }
-
 .dijitTabContainerBottom-tabs .dijitTabChecked {
-  border-top-color: white;
+  border-top-color:white;
 }
-
 .dijitTabContainerBottomStrip {
   padding-bottom: 2px;
-  padding-left: 3px;
   border: 1px solid #ccc;
-}
-
-.dijitTabContainerBottomStrip {
   background: #f2f2f2;
+  border-top: none;
 }
-
-.dijitTabContainerBottom-spacer,.dijitTabContainerTop-spacer {
-  height: 0px;
-  border-top: 1px solid #ccc;
-  background: #fff;
-}
-
 .dijitTabContainerRight-tabs {
-  margin-left: -1px;
   border-color: #ccc;
+  height: 100%;
+  padding-top: 3px;
 }
-
+.dijitTabContainerRightStrip {
+  margin-left: -1px;
+}
 .dijitTabContainerRight-container {
   border-right: none;
 }
-
 .dijitTabContainerRight-tabs .dijitTabChecked {
-  border-left-color: white;
+  border-left-color:white;
 }
-
 .dijitTabContainerRightStrip {
   padding-right: 2px;
-  padding-top: 3px;
   border: 1px solid #ccc;
 }
-
 .dijitTabContainerRightStrip {
   background: #f2f2f2;
 }
-
 .dijitTabContainerLeft-tabs {
-  margin-right: -1px;
   border-color: #ccc;
+  padding-top: 3px;
+  height: 100%;
 }
-
 .dijitTabContainerLeft-container {
   border-left: none;
 }
-
 .dijitTabContainerLeft-tabs .dijitTabChecked {
-  border-right-color: white;
+  border-right-color:white;
 }
-
 .dijitTabContainerLeftStrip {
   padding-left: 2px;
-  padding-top: 3px;
   border: 1px solid #ccc;
-}
-
-.dijitTabContainerLeftStrip {
   background: #f2f2f2;
+  border-right: none;
 }
-
-.dijitTabContainerLeft-tabs .dijitTab,.dijitTabContainerRight-tabs .dijitTab
-  {
-  margin-right: 0px;
-  margin-bottom: 4px;
+.dijitTabContainerLeft-tabs .dijitTab,
+.dijitTabContainerRight-tabs .dijitTab {
+  margin-right:0px;
+  margin-bottom:4px;  /* space between one tab and the next in left/right mode */
 }
-
-.dijitTabContainerLeft-spacer,.dijitTabContainerRight-spacer {
-  width: 0px;
-  border-left: 1px solid #ccc;
-  background: #fff;
-}
-
 .dijitTabContainerTop-dijitContentPane .dijitTabContainerTop-tabs {
   border-left: 0px solid #ccc;
   border-top: 0px solid #ccc;
@@ -306,40 +322,76 @@ table.dojoDndAvatar {
   padding-top: 0px;
   padding-left: 0px;
 }
+.dijitTabContainer .tabStripButton {
+  margin-right: 0;
+  padding-top: 2px;
+  z-index: 12;
+}
+.dijitTabContainerBottom .tabStripButton {
+  padding-top: 2px;
+}
+.tabStrip-disabled .tabStripButton .dijitTabInnerDiv {
+  padding-bottom: 3px;
+  padding-top: 1px;
+}
+.tabStripButton .dijitTabInnerDiv {
+  padding: 3px 2px 4px 2px;
+}
+.dj_ie6 .tabStripButton .dijitTabInnerDiv,
+.dj_ie7 .tabStripButton .dijitTabInnerDiv,
+.dj_opera .tabStripButton .dijitTabInnerDiv {
+  padding-bottom: 5px;
+}
+.dj_ie6 .tabStrip-disabled .tabStripButton .dijitTabInnerDiv,
+.dj_ie7 .tabStrip-disabled .tabStripButton .dijitTabInnerDiv,
+.dj_opera .tabStrip-disabled .tabStripButton .dijitTabInnerDiv {
+  padding-bottom: 4px;
+}
+.dijitTabStripIcon {
+  height: 14px;
+  width: 14px;
+  background: url(../images/spriteRoundedIconsSmall.png) no-repeat left top ;
+}
+.dj_ie6 .dijitTabStripIcon {
+  background-image: url(../images/spriteRoundedIconsSmall.gif);
+}
+.dijitTabStripSlideRightIcon {
+  background-position: -30px top;
+}
+.dijitTabStripMenuIcon {
+  background-position: -15px top;
+}
 
+/* ========================== 
+ * Layout/AccordionContainer
+ * ========================== */
+ 
 .dijitAccordionContainer {
   border-color: #ccc;
 }
-
 .dijitTabContainer-dijitAccordionContainer {
   border: none;
 }
-
 .dijitAccordionContainer-dijitAccordionContainer {
   border: none;
   background-color: #fff;
 }
-
 .dijitSplitContainer-dijitAccordionContainer,.dijitBorderContainer-dijitAccordionContainer
   {
   border: 0px #ccc solid;
 }
-
 .dijitAccordionPane {
   background-color: #e7e7e7;
 }
-
 .dijitAccordionTitle {
   background: #fafafa url(images/titleBar.png) repeat-x bottom left;
   border-top: 1px solid #bfbfbf;
   padding: 4px 4px 4px 8px;
   cursor: pointer;
 }
-
 .dijitAccordionTitle-hover {
   background: #fafafa url(images/accordionItemHover.gif) bottom repeat-x;
 }
-
 .dijitAccordionTitle-selected {
   background: #f9f9f9 url(images/accordionItemActive.gif) bottom repeat-x;
   font-weight: bold;
@@ -348,11 +400,14 @@ table.dojoDndAvatar {
   padding: 4px 4px 4px 8px;
   cursor: default;
 }
-
 .dijitAccordionBody {
   background: #fff;
 }
 
+/* ========================== 
+ * Layout/SplitContainer.css
+ * ========================== */
+ 
 .dijitSplitContainerSizerH {
   background: url(images/splitContainerSizerV.png) repeat-y #fff;
   border: 0;
@@ -360,7 +415,6 @@ table.dojoDndAvatar {
   border-right: 1px solid #bfbfbf;
   width: 7px;
 }
-
 .dijitSplitContainerSizerH .thumb {
   background: url(images/splitContainerSizerV-thumb.png) no-repeat #ccc;
   left: 1px;
@@ -368,7 +422,6 @@ table.dojoDndAvatar {
   height: 19px;
   overflow: hidden;
 }
-
 .dijitSplitContainerSizerV {
   background: url(images/splitContainerSizerH.png) repeat-x #fff;
   border: 0;
@@ -376,7 +429,6 @@ table.dojoDndAvatar {
   border-bottom: 1px solid #bfbfbf;
   height: 7px;
 }
-
 .dijitSplitContainerSizerV .thumb {
   background: url(images/splitContainerSizerH-thumb.png) no-repeat #ccc;
   top: 1px;
@@ -384,20 +436,37 @@ table.dojoDndAvatar {
   height: 3px;
   overflow: hidden;
 }
-
 .dijitSplitter {
   border-color: #bfbfbf;
 }
 
+/* ========================== 
+ * Layout/BorderContainer.css
+ * ========================== */
+ 
 .dijitBorderContainer {
   padding: 0px;
 }
-
 .dijitBorderContainer-dijitBorderContainer {
   border: none;
   padding: 0px;
 }
 
+.dijitSplitContainer-child,
+.dijitBorderContainer-child {
+  border: none;
+  /* border: 1px #ccc solid; */
+}
+.dijitBorderContainer-dijitTabContainerTop,
+.dijitBorderContainer-dijitTabContainerBottom,
+.dijitBorderContainer-dijitTabContainerLeft,
+.dijitBorderContainer-dijitTabContainerRight {
+   border: none;
+}
+.dijitBorderContainer-dijitBorderContainer {
+  border: none;
+  padding: 0px;
+}
 .dijitSplitterH {
   background: url("images/splitBarH.png") repeat-x;
   border: 0;
@@ -416,18 +485,15 @@ table.dojoDndAvatar {
   width: 20px;
   height: 3px;
 }
-
 .dijitSplitterV {
   background: url("images/splitBarV.png") repeat-y;
   border: 0;
   width: 5px;
 }
-
 .dijitGutterV {
   border: 0;
   width: 0px;
 }
-
 .dijitSplitterV 
 .dijitSplitterThumb {
   background: url("images/splitV.gif") no-repeat;
@@ -435,7 +501,6 @@ table.dojoDndAvatar {
   height: 20px;
   width: 3px;
 }
-
 .dijitSplitterActive {
   font-size: 1px;
   background-color: #CCCCCC;
@@ -445,117 +510,115 @@ table.dojoDndAvatar {
   filter: Alpha(Opacity = 60);
 }
 
-.dijitInputField INPUT,.dijitTextBox,.dijitComboBox,.dijitSpinner {
+/* ========================== 
+ * /form/Common.css
+ * ========================== */
+ 
+.dijitInputField INPUT,.dijitTextBox,.dijitComboBox,.dijitSpinner,
+.dijitInputContainer INPUT {
+  margin: 0em 0.1em;
+}
+.tundra .dijitInputContainer INPUT,
+.tundra .dijitTextBox {
   margin: 0em 0.1em;
 }
 
+.tundra .dijitTextArea {
+  padding: 3px;
+}
 .dijitTextBox,.dijitComboBox,.dijitSpinner,.dijitTextArea {
   font-family: Verdana, Arial, Tahoma, sans-serif;
   font-size: 100%;
   padding: 1px;
 }
-
 .dijitTextArea {
   padding: 1px;
 }
-
 .dijitTextBox,.dijitComboBox,.dijitSpinner,.dijitTextArea,.dijitInlineEditor input
   {
   background: #fff url(images/validationInputBg.gif) repeat-x top left;
   border: 1px solid #b3b3b3;
   line-height: normal;
 }
-
 .dijitTextBoxDisabled,.dijitComboBoxDisabled,.dijitSpinnerDisabled,.dijitTextAreaDisabled
   {
   color: grey;
 }
-
 .dj_safari .dijitTextBoxDisabled,.dj_safari .dijitComboBoxDisabled,.dj_safari .dijitSpinnerDisabled,.dj_safari .dijitTextAreaDisabled
   {
   color: #eee;
 }
-
 .dijitComboBox .dijitInputField {
   padding: 1px 0;
 }
-
 .dijitComboBox .dijitButtonNode {
-  padding: 1px 0.2em;
+  padding: 0px 0.2em;
 }
-
+.dijitTextBox .dijitButtonNode {
+  border-color: #9b9b9b;
+}
 .dijitComboBox .dijitButtonNode,.dijitSpinner .dijitButtonNode {
   border-color: #9b9b9b;
   border-width: 0px 0px 0px 1px;
   border-style: solid;
 }
-
 .dijitTextBoxFocused,.dijitComboBoxFocused,.dijitSpinnerFocused,.dijitTextAreaFocused
   {
   border-color: #606060;
   border: 1px solid; 
 }
-
 .dijitComboBoxFocused .dijitButtonNode,.dijitSpinnerFocused .dijitButtonNode
   {
   border-left-color: #606060;
 }
-
 .dijitSpinnerFocused .dijitDownArrowButton {
   border-top-color: #606060;
 }
-
 .dijitError {
   background-color: #f9f7ba;
   background-image: none;
 }
-
 .dj_ie6 .dijitError INPUT {
   background-color: #f9f7ba !important;
 }
-
 .dijitErrorFocused {
   background-color: #f9f999;
   background-image: none;
 }
-
 .dj_ie6 .dijitErrorFocused INPUT {
   background-color: #f9f999 !important;
 }
-
 .dijitValidationIcon {
   width: 16px;
   background: transparent url(images/warning.png) no-repeat center center;
 }
-
 .dijitInlineValue {
   padding: 3px;
   margin: 4px;
 }
-
 .dijitInlineEditor {
   display: inline-block;
   display: -moz-inline-stack; #
   display: inline;
 }
-
 .dijitInlineEditor .saveButton,.dijitInlineEditor .cancelButton {
   margin: 3px 3px 3px 0px;
 }
-
 .RichTextEditable {
   border: 1px solid #bfbfbf;
   border-top: 0;
 }
-
 .dijitComboBoxHighlightMatch {
   background-color: #a5a5a5;
 }
-
 .dijitFocusedLabel {
   outline: 1px dotted #666666;
 }
 
+/* ========================== 
+ * /form/Button.css  => TODO
+ * ========================== */
+ 
 .dijitButtonNode {
   border: 1px solid #c0c0c0;
   border-bottom: 1px solid #9b9b9b;
@@ -607,6 +670,8 @@ table.dojoDndAvatar {
     top: 0;
     bottom: auto;
 }
+.dijitUpArrowButtonActive,
+.dijitDownArrowButtonActive,
 .dijitSpinnerUpArrowActive .dijitUpArrowButton,
 .dijitSpinnerDownArrowActive .dijitDownArrowButton,
 .dijitButtonActive .dijitButtonNode,
@@ -649,12 +714,10 @@ table.dojoDndAvatar {
 }
 
 .dijitArrowButtonInner {
-  background-image: url(images/spriteArrows.png);
-  background-position: left top;
+  background:url("../images/spriteArrows.png") no-repeat scroll 0px center;
   width: 7px;
   height: 7px;
-  font-size: 1px;
-  margin: 0px px 0px 5px;
+  margin: 0px 4px 0px 4px;
 }
 
 .dj_ie6 .dijitArrowButtonInner {
@@ -688,9 +751,9 @@ table.dojoDndAvatar {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center right;
-  height: auto;
+  width: 7px;
+  height: 7px;
   font-size: 100%;
-  font-size: inherit;
 }
 
 .dijitComboBoxHover .dijitArrowButtonInner {
@@ -970,9 +1033,24 @@ table.dojoDndAvatar {
   height: 18px;
 }
 
+.dijitTreeRow {
+  padding-bottom: 2px;
+}
+
 .dijitTreeContent {
   min-height: 18px;
   min-width: 18px;
+}
+
+.dijitTreeRowSelected .dijitTreeLabel {
+  background:#d2d2d2;
+}
+
+.dijitTreeRowHover {
+  /*background-image: url(images/treeHover.png);
+  background-repeat: repeat;*/
+  /*background-color: transparent !important;*/
+  background-color: #E1E1E1;
 }
 
 .dijitTreeExpand {
@@ -992,23 +1070,23 @@ table.dojoDndAvatar {
 }
 
 .dijitTreeNodeHover {
-  background-color: #e2e2e2 !important;
+  /* background-color: #e2e2e2 !important; */
 }
 
 .dijitTreeExpandoOpened {
-  background-image: url(images/treeExpand_minus.gif);
+  background-image: url('images/treeExpand_minus.gif');
 }
 
 .dijitTreeExpandoClosed {
-  background-image: url(images/treeExpand_plus.gif);
+  background-image: url('images/treeExpand_plus.gif');
 }
 
 .dijitTreeExpandoLeaf {
-  background-image: url(images/treeExpand_leaf.gif);
+  background-image: url('images/treeExpand_leaf.gif');
 }
 
 .dijitTreeExpandoLoading {
-  background-image: url(images/treeExpand_loading.gif);
+  background-image: url('images/treeExpand_loading.gif');
 }
 
 .dijitTreeIcon {
@@ -1017,15 +1095,31 @@ table.dojoDndAvatar {
 }
 
 .dijitFolderOpened {
-  background: url(images/folderOpened.gif) no-repeat;
+  background: url('images/folderOpened.gif') no-repeat;
 }
 
 .dijitFolderClosed {
-  background: url(images/folderClosed.gif) no-repeat;
+  background: url('images/folderClosed.gif') no-repeat;
 }
 
 .dijitLeaf {
   background: url(images/leaf.gif) no-repeat;
+}
+
+.dijitTreeNode .dojoDndItemBefore,
+.dijitTreeNode .dojoDndItemAfter {
+  border-bottom: none;
+  border-top: none;
+}
+
+.dijitTreeNode .dojoDndItemBefore .dijitTreeContent {
+  /* copied from Common.css */
+  border-top: 2px solid #369;
+}
+
+.dijitTreeNode .dojoDndItemAfter .dijitTreeContent {
+  /* copied from Common.css */
+  border-bottom: 2px solid #369;
 }
 
 .dijitProgressBar {
@@ -1033,8 +1127,7 @@ table.dojoDndAvatar {
 }
 
 .dijitProgressBarEmpty {
-  background: #fff url(images/progressBarEmpty.png) repeat-x center center
-    ;
+  background: #fff url(images/progressBarEmpty.png) repeat-x center center;
   border-color: #a2a2a2 #b8b8b8 #b8b8b8 #a2a2a2;
 }
 
@@ -2413,3 +2506,7 @@ table.dijitCalendarContainer {
 .dojoxGrid .dojoDndItemAfter {
 	border-right-color: #3559ac;
 }
+
+
+/* TEST */
+

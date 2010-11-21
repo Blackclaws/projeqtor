@@ -17,9 +17,9 @@
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   global $cr, $print, $treatedObjects, $displayWidth;
   $treatedObjects[]=$obj;
-  $dateWidth='87';
+  $dateWidth='75';
   $verySmallWidth='44';
-  $smallWidth='87';
+  $smallWidth='75';
   $mediumWidth='200';
   $largeWidth='406';
   $labelWidth=175; // To be changed if changes in css file (label and .label)
@@ -163,7 +163,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $attributes=''; $isRequired=false; $readOnly=false;
       if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType) {
         $lock='lock' . ucfirst($col);
-        if ($objType->$lock) {
+        if (property_exists($objType,$lock) and $objType->$lock) {
           $attributes.=' readonly ';
           $readOnly=true;
         }
@@ -257,7 +257,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //  
       } else if (substr($col,0,7)=='_label_') { 
         $captionName=substr($col,7);
-        echo '<label class="shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
+        echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
       } else if ($print) {   //================================================ Printing areas
         if ($hide) { // hidden field
           // nothing
@@ -347,7 +347,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($col=='color' and $dataLength == 7 ){
         // Draw a color selector ============================================== COLOR
         echo "<table ><tr><td class='detail'>";
-        echo '<div dojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly ';
+        echo '<div xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly ';
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode($val) . '" ';
@@ -445,7 +445,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"'; 
         echo ' type="text" maxlength="5" ';
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . round($dateWidth * 0.66) . 'px; text-align: center;" class="input" ';
+        echo ' style="width:50px; text-align: center;" class="input" ';
         echo ' value="T' . $valTime . '" ';
         echo ' >';
         echo $colScriptBis;
@@ -492,12 +492,25 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $isRequired=true;
           }
         }
+        $critFld=null;
+        $critVal=null;
+        $valStore='';
+        if ( ($col=='idResource' or $col=='idActivity') and 
+          ($classObj=='Activity' or $classObj=='Ticket' or $classObj=='Milestone')) {
+          echo '<div dojoType="dojo.data.ItemFileReadStore" jsId="' . $col . 'Store" url="../tool/jsonList.php?listType=empty" searchAttr="name"  /></div>'; ;
+          //$valStore=' store="' . $col . 'Store" ';
+          if (property_exists($obj,'idProject')) {
+            $critFld='idProject';
+            $critVal=$obj->idProject;
+          }
+        }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
         echo '  style="width: ' . $fieldWidth . 'px;"';
         echo $name;
         echo $attributes;
+        echo $valStore;
         echo ' >';
-        htmlDrawOptionForReference($col, $val, $obj, $isRequired);
+        htmlDrawOptionForReference($col, $val, $obj, $isRequired,$critFld, $critVal);
         echo $colScript;
         echo '</select>';
       } else if ($dataType=='int' or $dataType=='decimal'){
@@ -509,12 +522,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         $ent=$spl[0]-$dec;
         $max=substr('99999999999999999999',0,$ent);
-        //$pattern="'" . substr('###################',0,$ent-1) . '0';
-        //if ($dec) {
-        //  $pattern=$pattern . "." . substr('000000000000000000000',0,$dec);
-        //}       
-        //$pattern.="'";
-        //echo $ent . " " . $dec . " " . $max;
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;

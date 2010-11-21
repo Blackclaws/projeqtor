@@ -1197,6 +1197,14 @@ abstract class SqlElement {
       $colScript .= '  if (this.value!=null && this.value!="") { ';
       $colScript .= '    formChanged();';
       $colScript .= '  }';
+      if ( get_class($this)=='Activity' or get_class($this)=='Ticket' or get_class($this)=='Milestone' ) {
+        if ($colName=='idProject' and property_exists($this,'idActivity')) {
+          $colScript .= '   refreshList("idActivity","idProject", this.value);';
+        }
+        if ($colName=='idProject' and property_exists($this,'idResource')) {
+          $colScript .= '   refreshList("idResource","idProject", this.value);';
+        }
+      }
       $colScript .= '</script>';
     } 
     if (substr($colName,$posDate,4)=='Date') {  // Date => onChange
@@ -1221,9 +1229,9 @@ abstract class SqlElement {
         $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
         $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
         $colScript .= '  if (setIdle==1) {';
-        $colScript .= '    dijit.byId("idle").attr("checked", true);';
+        $colScript .= '    dijit.byId("idle").set("checked", true);';
         $colScript .= '  } else {';
-        $colScript .= '    dijit.byId("idle").attr("checked", false);';
+        $colScript .= '    dijit.byId("idle").set("checked", false);';
         $colScript .= '  }';
       }
       if (property_exists($this, 'done')) {
@@ -1232,9 +1240,9 @@ abstract class SqlElement {
         $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
         $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
         $colScript .= '  if (setDone==1) {';
-        $colScript .= '    dijit.byId("done").attr("checked", true);';
+        $colScript .= '    dijit.byId("done").set("checked", true);';
         $colScript .= '  } else {';
-        $colScript .= '    dijit.byId("done").attr("checked", false);';
+        $colScript .= '    dijit.byId("done").set("checked", false);';
         $colScript .= '  }';
       }
       if (property_exists($this, 'handled')) {
@@ -1243,9 +1251,9 @@ abstract class SqlElement {
         $colScript .= '  var filterStatusHandled=dojo.filter(tabStatusHandled, function(item){return item.id==dijit.byId("idStatus").value;});';
         $colScript .= '  dojo.forEach(filterStatusHandled, function(item, i) {setHandled=item.setHandledStatus;});';
         $colScript .= '  if (setHandled==1) {';
-        $colScript .= '    dijit.byId("handled").attr("checked", true);';
+        $colScript .= '    dijit.byId("handled").set("checked", true);';
         $colScript .= '  } else {';
-        $colScript .= '    dijit.byId("handled").attr("checked", false);';
+        $colScript .= '    dijit.byId("handled").set("checked", false);';
         $colScript .= '  }';
       }
       $colScript .= '  formChanged();';
@@ -1256,33 +1264,33 @@ abstract class SqlElement {
       if (property_exists($this, 'idleDateTime')) {
         $colScript .= '    if (dijit.byId("idleDateTime").value==null) {';
         $colScript .= '      var curDate = new Date();';
-        $colScript .= '      dijit.byId("idleDateTime").attr("value", curDate); ';
-        $colScript .= '      dijit.byId("idleDateTimeBis").attr("value", curDate); ';
+        $colScript .= '      dijit.byId("idleDateTime").set("value", curDate); ';
+        $colScript .= '      dijit.byId("idleDateTimeBis").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'idleDate')) {
         $colScript .= '    if (dijit.byId("idleDate").value==null) {';
         $colScript .= '      var curDate = new Date();';
-        $colScript .= '      dijit.byId("idleDate").attr("value", curDate); ';
+        $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'done')) {
-        $colScript .= '    if (! dijit.byId("done").attr("checked")) {';
-        $colScript .= '      dijit.byId("done").attr("checked", true);';
+        $colScript .= '    if (! dijit.byId("done").get("checked")) {';
+        $colScript .= '      dijit.byId("done").set("checked", true);';
         $colScript .= '    }';   
       }
       if (property_exists($this, 'handled')) {   
-        $colScript .= '    if (! dijit.byId("handled").attr("checked")) {';
-        $colScript .= '      dijit.byId("handled").attr("checked", true);';
+        $colScript .= '    if (! dijit.byId("handled").get("checked")) {';
+        $colScript .= '      dijit.byId("handled").set("checked", true);';
         $colScript .= '    }';    
       }  
       $colScript .= '  } else {';
       if (property_exists($this, 'idleDateTime')) {
-        $colScript .= '    dijit.byId("idleDateTime").attr("value", null); ';
-        $colScript .= '    dijit.byId("idleDateTimeBis").attr("value", null); ';
+        $colScript .= '    dijit.byId("idleDateTime").set("value", null); ';
+        $colScript .= '    dijit.byId("idleDateTimeBis").set("value", null); ';
       }
       if (property_exists($this, 'idleDate')) {
-        $colScript .= '    dijit.byId("idleDate").attr("value", null); ';
+        $colScript .= '    dijit.byId("idleDate").set("value", null); ';
       }
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
@@ -1293,32 +1301,32 @@ abstract class SqlElement {
       if (property_exists($this, 'doneDateTime')) {
         $colScript .= '    if (dijit.byId("doneDateTime").value==null) {';
         $colScript .= '      var curDate = new Date();';
-        $colScript .= '      dijit.byId("doneDateTime").attr("value", curDate); ';
-        $colScript .= '      dijit.byId("doneDateTimeBis").attr("value", curDate); ';
+        $colScript .= '      dijit.byId("doneDateTime").set("value", curDate); ';
+        $colScript .= '      dijit.byId("doneDateTimeBis").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'doneDate')) {
         $colScript .= '    if (dijit.byId("doneDate").value==null) {';
         $colScript .= '      var curDate = new Date();';
-        $colScript .= '      dijit.byId("doneDate").attr("value", curDate); ';
+        $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'handled')) { 
-        $colScript .= '    if (! dijit.byId("handled").attr("checked")) {';
-        $colScript .= '      dijit.byId("handled").attr("checked", true);';
+        $colScript .= '    if (! dijit.byId("handled").get("checked")) {';
+        $colScript .= '      dijit.byId("handled").set("checked", true);';
         $colScript .= '    }';
       }      
       $colScript .= '  } else {';
       if (property_exists($this, 'doneDateTime')) {           
-        $colScript .= '    dijit.byId("doneDateTime").attr("value", null); ';
-        $colScript .= '    dijit.byId("doneDateTimeBis").attr("value", null); ';
+        $colScript .= '    dijit.byId("doneDateTime").set("value", null); ';
+        $colScript .= '    dijit.byId("doneDateTimeBis").set("value", null); ';
       }
       if (property_exists($this, 'doneDate')) {           
-        $colScript .= '    dijit.byId("doneDate").attr("value", null); ';
+        $colScript .= '    dijit.byId("doneDate").set("value", null); ';
       }
       if (property_exists($this, 'idle')) {     
-        $colScript .= '    if (dijit.byId("idle").attr("checked")) {';
-        $colScript .= '      dijit.byId("idle").attr("checked", false);';
+        $colScript .= '    if (dijit.byId("idle").get("checked")) {';
+        $colScript .= '      dijit.byId("idle").set("checked", false);';
         $colScript .= '    }'; 
       }
       $colScript .= '  } '; 
@@ -1330,32 +1338,32 @@ abstract class SqlElement {
       if (property_exists($this, 'handledDateTime')) {
         $colScript .= '    if (dijit.byId("handledDateTime").value==null) {';
         $colScript .= '      var curDate = new Date();';
-        $colScript .= '      dijit.byId("handledDateTime").attr("value", curDate); ';
-        $colScript .= '      dijit.byId("handledDateTimeBis").attr("value", curDate); ';
+        $colScript .= '      dijit.byId("handledDateTime").set("value", curDate); ';
+        $colScript .= '      dijit.byId("handledDateTimeBis").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'handledDate')) {
         $colScript .= '    if (dijit.byId("handledDate").value==null) {';
         $colScript .= '      var curDate = new Date();';
-        $colScript .= '      dijit.byId("handledDate").attr("value", curDate); ';
+        $colScript .= '      dijit.byId("handledDate").set("value", curDate); ';
         $colScript .= '    }';
       }
       $colScript .= '  } else {';          
       if (property_exists($this, 'handledDateTime')) { 
-        $colScript .= '    dijit.byId("handledDateTime").attr("value", null); ';
-        $colScript .= '    dijit.byId("handledDateTimeBis").attr("value", null); ';
+        $colScript .= '    dijit.byId("handledDateTime").set("value", null); ';
+        $colScript .= '    dijit.byId("handledDateTimeBis").set("value", null); ';
       }
       if (property_exists($this, 'handledDate')) { 
-        $colScript .= '    dijit.byId("handledDate").attr("value", null); ';
+        $colScript .= '    dijit.byId("handledDate").set("value", null); ';
       }
       if (property_exists($this, 'done')) { 
-        $colScript .= '    if (dijit.byId("done").attr("checked")) {';
-        $colScript .= '      dijit.byId("done").attr("checked", false);';
+        $colScript .= '    if (dijit.byId("done").get("checked")) {';
+        $colScript .= '      dijit.byId("done").set("checked", false);';
         $colScript .= '    }'; 
       }
       if (property_exists($this, 'idle')) { 
-        $colScript .= '    if (dijit.byId("idle").attr("checked")) {';
-        $colScript .= '      dijit.byId("idle").attr("checked", false);';
+        $colScript .= '    if (dijit.byId("idle").get("checked")) {';
+        $colScript .= '      dijit.byId("idle").set("checked", false);';
         $colScript .= '    }'; 
       }
       $colScript .= '  } '; 
@@ -1430,7 +1438,7 @@ abstract class SqlElement {
           }
           if ($dataType=='date' and $val!='') {
             if (strlen($val)!=10 or substr($val,4,1)!='-' or substr($val,7,1)!='-') {
-              $result.='<br/>' . i18n('messageInvalidDate',array(i18n('col' . ucfirst($col))));
+              $result.='<br/>' . i18n('messageInvalidDateNamed',array(i18n('col' . ucfirst($col))));
             }
           }
         }
@@ -1440,19 +1448,22 @@ abstract class SqlElement {
     if (property_exists($this, $idType)) {
       $type=get_class($this).'Type';
       $objType=new $type($this->$idType);
-      if ($objType->mandatoryDescription and property_exists($this, 'description')) {
+      if (property_exists($objType, 'mandatoryDescription') and $objType->mandatoryDescription 
+      and property_exists($this, 'description')) {
         if (! $this->description) {
           $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('description')));
         }
       }
-      if ($objType->mandatoryResourceOnHandled and property_exists($this, 'idResource')
-          and property_exists($this, 'handled')) {
+      if (property_exists($objType, 'mandatoryResourceOnHandled') and $objType->mandatoryResourceOnHandled 
+      and property_exists($this, 'idResource')
+      and property_exists($this, 'handled')) {
         if ($this->handled and ! trim($this->idResource)) {
           $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('idResource')));
         }        
       }
-      if ($objType->mandatoryResultOnDone and property_exists($this, 'result')
-        and property_exists($this, 'done')) {
+      if (property_exists($objType, 'mandatoryResultOnDone') and $objType->mandatoryResultOnDone 
+      and property_exists($this, 'result')
+      and property_exists($this, 'done')) {
         if ($this->done and ! $this->result) {
           $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('result')));
         }

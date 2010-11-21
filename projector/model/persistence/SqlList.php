@@ -84,7 +84,11 @@ class SqlList {
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (idle=0 ";
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
-      $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+      if (strtolower($listType)=='resource' and $col=='idProject') {
+        $query .= " and exists (select 'x' from affectation a where a.idProject='" . $val . "' and a.idResource=user.id)";
+      } else {
+        $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+      }
     }
     $query .=')';
     if ($listType=='Report') {

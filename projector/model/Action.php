@@ -131,14 +131,14 @@ class Action extends SqlElement {
     if ($colName=="initialDueDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (dijit.byId("actualDueDate").value==null) { ';
-      $colScript .= '    dijit.byId("actualDueDate").attr("value", this.value); ';
+      $colScript .= '    dijit.byId("actualDueDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     } else if ($colName=="actualDueDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (dijit.byId("initialDueDate").value==null) { ';
-      $colScript .= '    dijit.byId("initialDueDate").attr("value", this.value); ';
+      $colScript .= '    dijit.byId("initialDueDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';           

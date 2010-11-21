@@ -64,14 +64,14 @@
     		  return false;       
             </script>     
             <div dojoType="dojox.form.PasswordValidator" name="password">
-                <label style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
+                <label class="label" style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
                 <input type="password" pwType="new" /><br/>
                 <br/>
-                <label style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
+                <label class="label" style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
                 <input type="password" pwType="verify" /><br/>
             </div>            
             <br/>
-            <label style="width:200px;">&nbsp;</label>
+            <label class="label" style="width:200px;">&nbsp;</label>
             <button type="submit" style="width:200px" id="goButton" dojoType="dijit.form.Button" showlabel="true">OK
               <script type="dojo/connect" event="onClick" args="evt">
                 loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
@@ -79,7 +79,7 @@
             </button>
             <br/><br/>
             <?php if ( $user->password != md5($paramDefaultPassword) ) {?>
-            <label style="width:200px;">&nbsp;</label>
+            <label class="label" style="width:200px;">&nbsp;</label>
             <button style="width:200px" id="cancelButton" dojoType="dijit.form.Button" showlabel="true"><?php echo i18n('buttonCancel');?>
               <script type="dojo/connect" event="onClick" args="evt">
                 showWait(); 
@@ -90,7 +90,7 @@
           </form>
         </div>
         <br/>
-        <label>&nbsp;</label>
+        <label class="label">&nbsp;</label>
         <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="bottom" >
         </div>
       </td>

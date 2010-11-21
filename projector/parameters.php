@@ -60,7 +60,7 @@ $paramDefaultLocale='en';                       // default locale to be used on 
 $paramDefaultTimezone="Europe/Paris";           // default time zone. List can be found at http://us3.php.net/manual/en/timezones.php
 
 // === display
-$paramFadeLoadingMode='false';                   // Setup the way frames are refreshed : with fading or not {'true', 'false'}
+$paramFadeLoadingMode='true';                   // Setup the way frames are refreshed : with fading or not {'true', 'false'}
 $paramRowPerPage='50';                          // Number of row per page on main Grid view {any integer}
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
 
@@ -73,7 +73,7 @@ $paramPathSeparator='\\';                        // Path separator, depending on
 $logFile='..\\..\\TEMP\\projector_${date}.log';      // Log file name. May contain ${date} to get 1 file a day
 $logLevel=3;                                   // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
 
-$defaultTheme='blue';
+$defaultTheme='blueLight';
 // New parameters V1.2.0
 $paramMailSmtpServer = 'localhost';
 $paramMailSmtpPort = '25';
@@ -84,3 +84,12 @@ $paramMailShowDetail = 'true';
 // New parameters V1.3.0
 $defaultTheme = 'blue';
 
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';

@@ -68,14 +68,18 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 			//some init work for the header cells
 			dojo.connect(view, 'renderHeader', dojo.hitch(view, inGrid._initSelectCols));	
 			dojo.connect(view.header, 'domousemove', view.grid, '_sychronizeResize');					
-		});		
-		inGrid.getSortProps = inGrid._getDsSortAttrs;
-				
-		dojo.connect(inGrid, '_onFetchComplete', inGrid, 'updateNewRowSelection');
+		});	
+		//init sorting
+		this.initSort(inGrid);	
+		//keep selection after sorting if required		
+		inGrid.keepSortSelection && dojo.connect(inGrid, '_onFetchComplete', inGrid, 'updateNewRowSelection');
+		
 		if(inGrid.indirectSelection && inGrid.rowSelectCell.toggleAllSelection){
 			dojo.connect(inGrid.rowSelectCell, 'toggleAllSelection', inGrid, 'allSelectionToggled');			
 		}
-		dojo.subscribe(inGrid.rowSelectionChangedTopic, inGrid, inGrid._selectionChanged);		
+		
+		dojo.subscribe(inGrid.rowMovedTopic, inGrid, inGrid.clearSort);		
+		dojo.subscribe(inGrid.rowSelectionChangedTopic, inGrid, inGrid._selectionChanged);
 		
 		//init focus manager for nested sorting
 		inGrid.focus.destroy();
@@ -83,6 +87,13 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 		
 		//set a11y ARAI information
 		dojo.connect(inGrid.views, 'render', inGrid, 'initAriaInfo');
+	},
+	
+	initSort: function(inGrid){
+		// summary:
+		//		initiate sorting		
+		inGrid.getSortProps = inGrid._getDsSortAttrs;
+		//TODO - set default sorting order
 	},
 	
 	setSortIndex: function(inIndex, inAsc, e){
@@ -100,11 +111,8 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 		if(!this.nestedSorting){
 			this.inherited(arguments);
 		}else{
-			if(this.dnd && !this.dndRowConn){
-				this.dndRowConn = dojo.connect(this.select, 'startMoveRows', dojo.hitch(this, this.clearSort))				
-			} 
 			//cache last selection status
-			this.retainLastRowSelection();			
+			this.keepSortSelection && this.retainLastRowSelection();			
 			//var desc = c["sortDesc"]; //TODO when is c["sortDesc"] used?
 			this.inSorting = true;
 			this._toggleProgressTip(true, e); //turn on progress cursor
@@ -767,37 +775,6 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 		return !(e.nestedSortChoice || e.unarySortChoice || e.selectChoice);
 	},
 	
-	doheaderclick: function(e){
-		// summary:
-		//		Hanlder for events fired on column headers
-		// e: Event
-		//		Decorated event object which contains reference to grid, target cell etc.		
-		if(this.nestedSorting){
-			if(e.selectChoice){
-				this.onHeaderCellSelectClick(e);
-			}else if((e.unarySortChoice || e.nestedSortChoice) && !this._inResize(e.sourceView)){
-				this.onHeaderCellSortClick(e);
-			}
-			return;
-		}
-		this.inherited(arguments);
-	},
-	
-	onHeaderCellSelectClick: function(e){
-		// summary:
-		//		Event fired when selection region is clicked
-		// e: Event
-		//		Decorated event object which contains reference to grid, target cell etc.
-	},
-	
-	onHeaderCellSortClick: function(e){
-		// summary:
-		//		Event fired when unary or nested sort region is clicked
-		// e: Event
-		//		Decorated event object which contains reference to grid, target cell etc.
-		this.setSortIndex(e.cell.index, null, e);
-	},
-	
 	_sychronizeResize: function(e){
 		// summary:
 		//		Each time mouse moved in view.headerNode, check if need to add or remove sort tip
@@ -895,7 +872,7 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 			}
 		}, this);
 		//clear all row selections
-		this.selection.clear();
+		this.selection.selected = [];
 		dojo.publish(this.sortRowSelectionChangedTopic,[this]);
 	},
 	
@@ -908,7 +885,13 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 					item[this.storeItemSelected] = [this.toggleAllValue];	
 				}				
 			}
-			item[this.storeItemSelected] && item[this.storeItemSelected][0] && this.selection.addToSelection(req.start+idx);
+			if(item[this.storeItemSelected] && item[this.storeItemSelected][0]){
+				//don't invoke addToSelection to avoid any onSelected events
+				var rowIndex = req.start + idx;
+				this.selection.selectedIndex = rowIndex;
+				this.selection.selected[rowIndex] = true;
+				this.updateRowStyles(rowIndex);
+			}
 		}, this);
 		dojo.publish(this.sortRowSelectionChangedTopic,[this]);
 		if(dojo.isMoz && this._by_idx.length == 0){
@@ -946,6 +929,7 @@ dojo.declare("dojox.grid.enhanced.plugins.NestedSorting", null, {
 		//		Add ARIA attributes for A11Y	
 		var _sortAttrs = this.sortAttrs;
 		dojo.forEach(_sortAttrs, dojo.hitch(this, function(attr, index){
+			if(!attr.cell || !attr.cellNode){return;}
 			var cellNode = attr.cell.getHeaderNode();
 			var elements = this._getCellElements(cellNode);
 			if(!elements){return;}

@@ -45,7 +45,7 @@ class Parameter extends SqlElement {
     $colScript="";
     if ($colName=="theme") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  changeTheme(this.value);';
+      $colScript .= '  if (this.value!="random") changeTheme(this.value);';
       $colScript .= '</script>';
     } else if ($colName=="lang") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -82,12 +82,22 @@ class Parameter extends SqlElement {
     $list=array();
     switch ($parameter) {
       case 'theme':
-        $list=array('blue'=>'blue', 
-                    'red'=>'red',
-                    'green'=>'green',
-                    'grey'=>'grey',
-                    'orange'=>'orange',
-                    'white'=>'white',
+        $list=array('blueLight'=>'light blue',
+                    'blue'=>'dark blue', 
+                    'blueContrast'=>'contrasted blue',
+                    'redLight'=>'light red',
+                    'red'=>'dark red',
+                    'redContrast'=>'contrasted red',
+                    'greenLight'=>'light green',
+                    'green'=>'dark green',
+                    'greenContrast'=>'contrasted green',
+                    'orangeLight'=>'light orange',
+                    'orange'=>'dark orange',
+                    'orangeContrast'=>'contrasted orange',
+                    'greyLight'=>'light grey',
+                    'grey'=>'dark grey',
+                    'greyContrast'=>'contrasted grey',
+                    'white'=>'black & white',
                     'random'=>'random'); // keep 'random' as last value to assure it is not selected via getTheme()
         break;
       case 'lang':

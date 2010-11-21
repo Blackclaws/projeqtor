@@ -2,6 +2,8 @@
 /** =========================================================================== 
  * Chek login/password entered in connection screen
  */
+
+  include_once("../tool/file.php");
   restore_error_handler();
   error_reporting(0);
   $param=$_REQUEST["param"];
@@ -66,10 +68,10 @@
     }
     if (! $error) {
       $logFile=str_replace('${date}',date('Ymd'),$param['logFile']);
-      if (! write ( $logFile, 'CONFIGURATION CONTROLS ARE OK' )) {
+      if (! writeFile ( 'CONFIGURATION CONTROLS ARE OK', $logFile )) {
         showError("incorrect value for '" . $label['logFile'] . "', cannot write to such a file");
       } else {
-        //echo "Write in $file OK<br/>";
+        //echo "Write in $logFile OK<br/>";
         kill($logFile);
       }
     }
@@ -85,7 +87,7 @@
       } 
     }
     if (! $error) {
-      if (! write ( $paramFile, 'TEST')) {
+      if (! writeFile ( 'TEST' , $paramFile)) {
         showError("incorrect value for 'Parameter file name', cannot write to such a file");
       } else {
         kill($paramFile);
@@ -96,24 +98,24 @@
   if ($error) {exit;}
 
   kill($paramFile);
-  write($paramFile, '<?php ' . "\n");
-  write($paramFile, '// =======================================================================================' . "\n");
-  write($paramFile, '// Automatically generated parameter file' . "\n");
-  write($paramFile, '// =======================================================================================' . "\n");
+  writeFile('<?php ' . "\n", $paramFile);
+  writeFile('// =======================================================================================' . "\n", $paramFile);
+  writeFile('// Automatically generated parameter file' . "\n", $paramFile);
+  writeFile('// =======================================================================================' . "\n", $paramFile);
   foreach ($param as $id=>$val) {
-    write($paramFile, '$' . $pname[$id] . ' = \'' . addslashes($val) . '\';');
-    write($paramFile, "\n");
+    writeFile('$' . $pname[$id] . ' = \'' . addslashes($val) . '\';', $paramFile);
+    writeFile("\n", $paramFile);
   }
   if ($error) {exit;}
   
   $paramLocation="../tool/parametersLocation.php";
   kill($paramLocation);
-  if (! write($paramLocation,  ' ')) {
+  if (! writeFile(' ',$paramLocation)) {
     showError("impossible to write \'$paramLocation\' file, cannot write to such a file");
   }
   kill($paramLocation);
-  write($paramLocation, '<?php ' . "\n");
-  write($paramLocation, '$parametersLocation = \'' . $paramFile . '\';');
+  writeFile('<?php ' . "\n", $paramLocation);
+  writeFile('$parametersLocation = \'' . $paramFile . '\';', $paramLocation);
   
   //rename ('../tool/config.php','../tool/config.php.old');
   showMsg("Parameters are saved.");
@@ -129,15 +131,9 @@
     $error=true;
     echo "<div class='messageERROR'>" . $msg . "</div>";
   }
+
   function showMsg($msg) {
     echo "<div class='messageOK'>" . $msg . "</div>";
   }
-  function write($file,$msg) {
-    return error_log($msg,3,$file);
-  }
-  function kill($file) {
-    if (file_exists($file)) {
-      unlink($file);
-    }
-  }
+
 ?>

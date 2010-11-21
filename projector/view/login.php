@@ -39,7 +39,7 @@
       dijit.Tooltip.defaultPosition=["below","right"];
       dojo.byId('login').focus();
       <?php 
-        echo "dojo.byId('body').className='" . getTheme() . "';";
+        //echo "dojo.byId('body').className='" . getTheme() . "';";
       ?>
       var changePassword=false;
       hideWait();
@@ -71,17 +71,17 @@
             </script>
             <table>
               <tr>     
-                <td><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
+                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
                 <td><input tabindex="1" id="login" name="login" style="width:200px" type="text"  dojoType="dijit.form.TextBox" /></td>
               </tr>
               <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
-                <td><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
+                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
                 <td><input tabindex="2" id="password" name="password" style="width:200px" type="password"  dojoType="dijit.form.TextBox" /></td>
               </tr>
               <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
-                <td><label>&nbsp;</label></td>
+                <td class="label"><label>&nbsp;</label></td>
                 <td>
                   <button tabindex="3" type="submit" id="loginButton" dojoType="dijit.form.Button" showlabel="true">OK
                     <script type="dojo/connect" event="onClick" args="evt">
@@ -100,7 +100,7 @@ if (isset($lockPassword)) {
 if ($showPassword) { 
 ?>              
               <tr>
-                <td><label>&nbsp;</label></td>
+                <td class="label"><label>&nbsp;</label></td>
                 <td>  
                    <button tabindex="4" id="passwordButton" dojoType="dijit.form.Button" showlabel="true">
                      <?php echo i18n('buttonChangePassword') ?>
@@ -115,7 +115,7 @@ if ($showPassword) {
 <?php }?>
               <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
-                <td><label>&nbsp;</label></td>
+                <td class="label"><label>&nbsp;</label></td>
                 <td>
                   <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" >
                   </div>

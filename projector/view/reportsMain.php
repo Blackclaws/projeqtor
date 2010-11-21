@@ -5,7 +5,7 @@
   require_once "../tool/projector.php";
   scriptLog('   ->/view/reportsMain.php');  
 ?>
-
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="Report" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="listReportDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:220px;">
    <?php include 'reportsList.php'?>

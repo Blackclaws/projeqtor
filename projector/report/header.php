@@ -29,10 +29,11 @@ if (! function_exists('ImagePng')) {
   debugLog("GD Library not enabled - impossible to draw charts");
 }
 function getGraphImgName($root) {
-  global $reportCount;
+  global $reportCount, $paramReportTempDirectory;
   //$user=$_SESSION['user'];
   $reportCount+=1;
-  $name="../report/temp/user" . getCurrentUserId() . "_";
+  $name=$paramReportTempDirectory;
+  $name.="/user" . getCurrentUserId() . "_";
   $name.=$root . "_";
   $name.=date("Ymd_His") . "_";
   $name.=$reportCount;

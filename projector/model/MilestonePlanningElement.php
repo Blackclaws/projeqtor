@@ -9,11 +9,13 @@ class MilestonePlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_4_1 = array('requested', 'validated', 'planned', 'real', 'dueDate');
+  public $_tab_6_1 = array('requested', 'validated', 'planned', 'real','' ,'' , 'dueDate');
   public $initialEndDate;
   public $validatedEndDate;
   public $plannedEndDate;
   public $realEndDate;
+  public $_label_planning;
+  public $idMilestonePlanningMode;
   public $wbs;
   public $wbsSortable;
   public $topId;
@@ -38,11 +40,16 @@ class MilestonePlanningElement extends PlanningElement {
     "plannedEndDate"=>"readonly",
     "assignedWork"=>"hidden",
     "leftWork"=>"hidden",
-    "realEndDate"=>"readonly"
+    "realEndDate"=>"readonly",
+    "idMilestonePlanningMode"=>"required,mediumWidth"
   );   
   
   private static $_databaseTableName = 'planningelement';
   
+  private static $_databaseColumnName=array(
+    "idMilestonePlanningMode"=>"idPlanningMode"
+  );
+    
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -78,6 +85,14 @@ class MilestonePlanningElement extends PlanningElement {
     return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
   }
 
+    /** ========================================================================
+   * Return the generic databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
+  }
+  
   /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
    * @see persistence/SqlElement#save()

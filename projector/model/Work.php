@@ -76,11 +76,11 @@ class Work extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    if (dijit.byId("PlanningElement_realEndDate").value==null) {';
-      $colScript .= '      dijit.byId("PlanningElement_realEndDate").attr("value", new Date); ';
+      $colScript .= '      dijit.byId("PlanningElement_realEndDate").set("value", new Date); ';
       $colScript .= '    }';
       $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("PlanningElement_realEndDate").attr("value", null); ';
-      //$colScript .= '    dijit.byId("PlanningElement_realDuration").attr("value", null); ';
+      $colScript .= '    dijit.byId("PlanningElement_realEndDate").set("value", null); ';
+      //$colScript .= '    dijit.byId("PlanningElement_realDuration").set("value", null); ';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';

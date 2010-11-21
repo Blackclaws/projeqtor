@@ -67,11 +67,36 @@ function refreshImputationPeriod() {
 		showAlert(i18n('alertOngoingChange'));
 		return false;
 	}
-	var year=dijit.byId('yearSpinner').attr('value');
-	var week=dijit.byId('weekSpinner').attr('value') + '';
+	var year=dijit.byId('yearSpinner').get('value');
+	var week=dijit.byId('weekSpinner').get('value') + '';
 	if (week.length==1) {
 		week='0' + week;
 	}
+	if (week=='00') {
+		week=getWeek(31,12,year-1);
+		if (week==1) {
+			var day=firstDayOfWeek(1,year);
+			day=day-1;
+			week=getWeek(day.getDate(),day.getMonth()+1,day.getFullYear());
+		}
+		year=year-1;
+		dijit.byId('yearSpinner').set('value',year);
+		dijit.byId('weekSpinner').set('value', week);
+	} else if (parseInt(week)>52) {
+		lastWeek=getWeek(31,12,year);
+		if (lastWeek==1) {
+			var day=firstDayOfWeek(1,year+1);
+			day=day-1;
+			lastWeek=getWeek(day.getDate(),day.getMonth()+1,day.getFullYear());
+		}
+		if (parseInt(week)>parseInt(lastWeek)) {
+			week='01'
+		  year+=1;
+			dijit.byId('yearSpinner').set('value', year);
+			dijit.byId('weekSpinner').set('value', '1');
+		}
+	}
+	
 	dojo.byId('rangeValue').value='' + year + week;
 	if ((year+'').length==4) {
 		refreshImputationList();
@@ -88,7 +113,7 @@ function refreshImputationPeriod() {
 function dispatchWorkValueChange(rowId, colId) {
 	var oldWorkValue=dojo.byId('workOldValue_' + rowId + '_' + colId).value;
 	if (oldWorkValue==null || oldWorkValue=='') {oldWorkValue=0;}		
-	var newWorkValue=dijit.byId('workValue_' + rowId + '_' + colId).attr('value');
+	var newWorkValue=dijit.byId('workValue_' + rowId + '_' + colId).get('value');
 	if (isNaN(newWorkValue)) {
 		newWorkValue=0;
 	}
@@ -124,4 +149,13 @@ function dispatchLeftWorkValueChange(rowId) {
 	var newPlanned=newReal+newLeft;
 	dijit.byId('plannedWork_' + rowId).setValue(newPlanned);
 	formChanged();
+}
+
+
+function startMove(id) {
+	document.body.style.cursor='help';
+}
+
+function endMove(id) {
+	document.body.style.cursor='normal';
 }

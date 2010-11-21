@@ -2,9 +2,10 @@ if(!dojo._hasResource["dojox.form.FilePickerTextBox"]){ //_hasResource checks ad
 dojo._hasResource["dojox.form.FilePickerTextBox"] = true;
 dojo.provide("dojox.form.FilePickerTextBox");
 
-dojo.require("dojox.widget.FilePicker");
+dojo.require("dojo.window");
 dojo.require("dijit.form.ValidationTextBox");
 dojo.require("dijit._HasDropDown");
+dojo.require("dojox.widget.FilePicker");
 
 dojo.declare(
 	"dojox.form.FilePickerTextBox",
@@ -21,10 +22,6 @@ dojo.declare(
 		//		Delay in milliseconds between when user types something and we start
 		//		searching based on that value
 		searchDelay: 500,
-		
-		// _stopClickEvent: boolean
-		//		Set to false since we want to handle our own click events
-		_stopClickEvents: false,
 		
 		// valueItem: item
 		//		The item, in our store, of the directory relating to our value
@@ -105,7 +102,7 @@ dojo.declare(
 			this.inherited(arguments);
 			// Make sure our display is up-to-date with our value
 			if(this._opened){ 
-				this.dropDown.attr("pathValue", this.attr("value"));
+				this.dropDown.attr("pathValue", this.get("value"));
 			}
 		},
 		
@@ -153,7 +150,7 @@ dojo.declare(
 			// summary: sets the value of the widget once focus has left
 			if(this.dropDown && !this._settingBlurValue){
 				this._settingBlurValue = true;
-				this.attr("value", this.focusNode.value);
+				this.set("value", this.focusNode.value);
 			}else{
 				delete this._settingBlurValue;
 				this.inherited(arguments);
@@ -246,7 +243,7 @@ dojo.declare(
 								}
 								targetString = targetString.substring(dir.length);
 								window.setTimeout(function(){
-									dijit.scrollIntoView(first.domNode);
+									dojo.window.scrollIntoView(first.domNode);
 								}, 1);
 								fn.value = oVal + targetString;
 								dijit.selectInputText(fn, oVal.length);

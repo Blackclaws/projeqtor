@@ -135,12 +135,12 @@ class Activity extends SqlElement {
 
     if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("ActivityPlanningElement_wbs").attr("value", null); ';
+      $colScript .= '  dijit.byId("ActivityPlanningElement_wbs").set("value", null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idActivity") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("ActivityPlanningElement_wbs").attr("value", null); ';
+      $colScript .= '  dijit.byId("ActivityPlanningElement_wbs").set("value", null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } 

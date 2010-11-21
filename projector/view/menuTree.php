@@ -121,7 +121,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
      store="menuStore" query="{type:'*'}" rootId="Projector" rootLabel="Projector Menu">
 </div>
 
-<div class="container" dojoType="dijit.layout.BorderContainer" >
+<div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
   <div dojoType="dijit.layout.ContentPane" region="top" style="height: 30px; overflow: hidden;">
     <table><tr>
     <td class="titleProject"><?php echo (i18n("projectSelector"));?></td>

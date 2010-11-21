@@ -149,35 +149,35 @@ class Ticket extends SqlElement {
       $colScript .= '    var filterPriority=dojo.filter(tabPriority, function(item){varChanged=true; return item.value==calculatedValue;});';
       $colScript .= '  }';
       $colScript .= '  var setVar="";';
-      $colScript .= '  dojo.forEach(filterPriority, function(item, i) {if (setVar=="") dijit.byId("idPriority").attr("value",item.id);});';
+      $colScript .= '  dojo.forEach(filterPriority, function(item, i) {if (setVar=="") dijit.byId("idPriority").set("value",item.id);});';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="actualDueDateTime") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("initialDueDateTime");';
       $colScript .= '  if (upd && upd.value==null) { ';
-      $colScript .= '    upd.attr("value", this.value); ';
+      $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     } else if ($colName=="actualDueDateTimeBis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("initialDueDateTimeBis");';
       $colScript .= '  if (upd && upd.value==null) { ';
-      $colScript .= '    upd.attr("value", this.value); ';
+      $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDateTime") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("actualDueDateTime");';
       $colScript .= '  if (upd && upd.value==null) { ';
-      $colScript .= '    upd.attr("value", this.value); ';
+      $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDateTimeBis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("actualDueDateTimeBis");';
       $colScript .= '  if (upd && upd.value==null) { ';
-      $colScript .= '    upd.attr("value", this.value); ';
+      $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     }
