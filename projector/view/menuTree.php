@@ -158,36 +158,37 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
      labelAttr="name" typeAttr="menu" showRoot="false" openOnClick="true">
       <script type="dojo/method" event="onClick" args="item">
     if (checkFormChangeInProgress()) {
-         return false;
+      return false;
     }
+    menuClick();
     if (item.id=='Today') {
-	   cleanContent("detailDiv");
-	   loadContent("today.php","centerDiv");
-       formChangeInProgress=false;    
+	    cleanContent("detailDiv");
+	    loadContent("today.php","centerDiv");
+      formChangeInProgress=false;    
     } else if (item.id=='Planning') {
-	   cleanContent("detailDiv");
-	   loadContent("planningMain.php","centerDiv");
-       formChangeInProgress=false;   
+	    cleanContent("detailDiv");
+	    loadContent("planningMain.php","centerDiv");
+      formChangeInProgress=false;   
     } else if (item.id=='Imputation') {
-       cleanContent("detailDiv");
-       loadContent("imputationMain.php","centerDiv");
-       formChangeInProgress=false;     
+      cleanContent("detailDiv");
+      loadContent("imputationMain.php","centerDiv");
+      formChangeInProgress=false;     
     } else if (item.id=='ImportData') {
-       cleanContent("detailDiv");
-       loadContent("importData.php","centerDiv");
-       formChangeInProgress=false;     
+      cleanContent("detailDiv");
+      loadContent("importData.php","centerDiv");
+      formChangeInProgress=false;     
     } else if (item.id=='Reports') {
-       cleanContent("detailDiv");
-       loadContent("reportsMain.php","centerDiv");
-       formChangeInProgress=false;  
+      cleanContent("detailDiv");
+      loadContent("reportsMain.php","centerDiv");
+      formChangeInProgress=false;  
     } else if (item.type=='object') {
       cleanContent("detailDiv");
-	  formChangeInProgress=false;
-	  loadContent("objectMain.php?objectClass="+item.id,"centerDiv");
+	    formChangeInProgress=false;
+	    loadContent("objectMain.php?objectClass="+item.id,"centerDiv");
     } else if (item.type=='class') {
       cleanContent("detailDiv");
-	  formChangeInProgress=false;
-	  loadContent("objectMain.php?objectClass="+item.objectClass,"centerDiv");
+	    formChangeInProgress=false;
+	    loadContent("objectMain.php?objectClass="+item.objectClass,"centerDiv");
 	} else if (item.type=='menu') {
        // Nothing
 	} else if(item.id=='UserParameter') {
@@ -213,7 +214,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
   } else if(item.id=='HabilitationOther') {
      cleanContent("detailDiv");
      loadContent("parameter.php?type=habilitationOther","centerDiv");
-       formChangeInProgress=false;
+     formChangeInProgress=false;
 	} else if(item.id=='AccessRight') {
 	   cleanContent("detailDiv");
 	   loadContent("parameter.php?type=accessRight","centerDiv");

@@ -19,7 +19,7 @@ class NumberFormatter52  {
     $this->locale=$locale;
     $this->type=$type;
     $this->thouthandSeparator=''; // Can get better ?
-    if (strtolower(substr($locale,0,2))=='fr') {
+    if (strtolower(substr($locale,0,2))=='fr' or strtolower(substr($locale,0,2))=='de') {
       $this->decimalSeparator=',';
     } else {
       $this->decimalSeparator='.';

@@ -747,7 +747,13 @@ abstract class SqlElement {
           } else if (ucfirst($col_name) == $col_name) {
             $obj->getDependantSqlElement($col_name);
           } else {
-            $obj->{$col_name}=$line[$obj->getDatabaseColumnName($col_name)];
+            $dbColName=$obj->getDatabaseColumnName($col_name);
+            if (array_key_exists($dbColName,$line)) {
+              $obj->{$col_name}=$line[$obj->getDatabaseColumnName($col_name)];
+            } else {
+              errorLog("Error on SqlElement to get '" . $col_name . "' for Class '".get_class($obj) . "' "
+                . " : field '" . $dbColName . "' not found in Database.");
+            }
             if ($col_name=='id' and $getIdInKey) {$keyId='#' . $obj->{$col_name};}
           }
         }

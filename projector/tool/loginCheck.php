@@ -95,6 +95,7 @@
     $crit['idProject']=null;
     $obj=new Parameter();
     $objList=$obj->getSqlElementsFromCriteria($crit,false);
+//$user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
     foreach($objList as $obj) {
       if ($obj->parameterCode=='lang') {
         $_SESSION['currentLocale']=$obj->parameterValue;
@@ -106,6 +107,29 @@
         } else {
           $_SESSION['project']='*';
         }
+      } else if (substr($obj->parameterCode,0,6)=='Filter') {
+        if (! $user->_arrayFilters) {
+          $user->_arrayFilters=array();
+        }
+        $idFilter=$obj->parameterValue;
+        $filterObjectClass=substr($obj->parameterCode,6);
+        $filterArray=array();
+        $filter=new Filter($idFilter);
+        $arrayDisp=array();
+        $arraySql=array();
+        if (is_array($filter->_FilterCriteriaArray)) {
+          foreach ($filter->_FilterCriteriaArray as $filterCriteria) {
+            $arrayDisp["attribute"]=$filterCriteria->dispAttribute;
+            $arrayDisp["operator"]=$filterCriteria->dispOperator;
+            $arrayDisp["value"]=$filterCriteria->dispValue;
+            $arraySql["attribute"]=$filterCriteria->sqlAttribute;
+            $arraySql["operator"]=$filterCriteria->sqlOperator;
+            $arraySql["value"]=$filterCriteria->sqlValue;
+            $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
+          }
+        } 
+        $user->_arrayFilters[$filterObjectClass]=$filterArray;
+        $user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
       } else {
         $_SESSION[$obj->parameterCode]=$obj->parameterValue;
       }

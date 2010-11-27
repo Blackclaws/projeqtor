@@ -15,6 +15,7 @@ class Issue extends SqlElement {
   public $idUser;
   public $cause;
   public $impact;
+  public $idCriticality;
   public $idPriority;
   public $_col_2_2_treatment;
   public $idStatus;
@@ -41,7 +42,8 @@ class Issue extends SqlElement {
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameIssueType" width="10%" >${type}</th>
-    <th field="name" width="30%" >${name}</th>
+    <th field="name" width="25%" >${name}</th>
+    <th field="colorNameCriticality" width="5%" formatter="colorNameFormatter" >${idCriticality}</th>
     <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
     <th field="actualEndDate" width="10%" formatter="dateFormatter">${actualEndDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>

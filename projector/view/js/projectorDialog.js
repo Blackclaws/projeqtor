@@ -655,10 +655,34 @@ showConfirm (msg, actionOK);
  * 
  */
 function importData() {
-	showWait();
-	return true;
+	var controls=controlImportData();
+	if (controls) {	showWait();}
+	return controls;
 }
 
+function showHelpImportData() {
+	var controls=controlImportData();
+	if (controls) {	
+		showWait();
+		var url='../tool/importHelp.php?elementType='+dijit.byId('elementType').get('value');
+		url+='&fileType='+dijit.byId('fileType').get('value');
+		frames['resultImportData'].location.href=url;
+  }
+}
+
+function controlImportData() {
+	var elementType=dijit.byId('elementType').get('value');
+	if (! elementType ) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colImportElementType'))));
+		return false;
+	}
+	var fileType=dijit.byId('fileType').get('value');
+	if (! fileType ) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colImportFileType'))));
+		return false;
+	}
+	return true;
+}
 //=============================================================================
 //= Plan
 //=============================================================================
@@ -889,6 +913,21 @@ function clearFilter() {
 }
 
 /**
+ * Action on Default for filter
+ * 
+ */
+function defaultFilter() {
+	if (dijit.byId('filterNameDisplay')) {
+		//if (dijit.byId('filterNameDisplay').get('value')=="") {
+		//	showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
+		//	exit;
+		//}
+		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+	}
+	loadContent("../tool/defaultFilter.php", "listStoredFilters", "dialogFilterForm", false);
+}
+
+/**
  * Save a filter as a stored filter
  * 
  */
@@ -988,3 +1027,166 @@ function refreshList(field, param, paramVal) {
 	var mySelect=dijit.byId(field);
 	mySelect.store=tmpStore;
 }
+
+var menuHidden=false;
+var menuActualStatus='visible';
+var menuDivSize=0; 
+/**
+ * Hide or show the Menu (left part of the screen
+ */
+function hideShowMenu() {
+	if (! dijit.byId("leftDiv")) {
+		return;
+	}
+	if (menuActualStatus=='visible' || ! menuHidden) {
+		dojo.byId('menuBarShow').style.display='block';
+		menuDivSize=dojo.byId("leftDiv").offsetWidth;
+		dojo.byId('leftDiv_splitter').style.display='none';
+		dijit.byId("leftDiv").resize({w: 20});
+		dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
+		menuHidden=true;
+		menuActualStatus='hidden';
+	} else {
+		dojo.byId('menuBarShow').style.display='none';
+		dojo.byId('leftDiv_splitter').style.display='block';
+		dijit.byId("leftDiv").resize({w: menuDivSize});
+		dijit.byId("buttonHideMenu").set('label',i18n('buttonHideMenu'));
+		menuHidden=false;
+		menuActualStatus='visible';
+	}
+	dijit.byId("globalContainer").resize();	
+}
+function tempShowMenu() {
+	hideShowMenu();
+	menuHidden=true;
+}
+function menuClick() {
+	if (menuHidden) {
+		menuHidden=false;
+		hideShowMenu();
+		menuHidden=true;
+	}
+}
+
+var switchedMode=false;
+var listDivSize=0;
+var switchedVisible='';
+function switchMode(){
+	if (! switchedMode) {
+		switchedMode=true;
+		dijit.byId("buttonSwitchMode").set('label',i18n('buttonStandardMode'));
+		if (! dojo.byId("listDiv")) {
+			if (listDivSize==0) {
+			  listDivSize=dojo.byId("centerDiv").offsetHeight*.4;
+			}
+			return;
+		}
+		listDivSize=dojo.byId("listDiv").offsetHeight;
+		if (dojo.byId('listDiv_splitter')) {
+			dojo.byId('listDiv_splitter').style.display='none';
+		}
+		hideList();
+	} else {
+		switchedMode=false;
+		dijit.byId("buttonSwitchMode").set('label',i18n('buttonSwitchedMode'));
+		if (! dojo.byId("listDiv")) {
+			return;
+		}
+		if (dojo.byId('listBarShow')) {
+		  dojo.byId('listBarShow').style.display='none';
+		}
+		if (dojo.byId('detailBarShow')) {
+		  dojo.byId('detailBarShow').style.display='none';
+		}
+		if (dojo.byId('listDiv_splitter')) {
+			dojo.byId('listDiv_splitter').style.display='block';
+		}
+		dijit.byId("listDiv").resize({h: listDivSize});		
+		dijit.byId("mainDivContainer").resize();
+	}
+}
+
+function showList() {
+	//alert("showList");
+	if (! switchedMode) {
+		return;
+	}
+	if (! dijit.byId("listDiv") || ! dijit.byId("mainDivContainer") ) {
+		return;
+	}
+	if (dojo.byId('listDiv_splitter')) {
+		dojo.byId('listDiv_splitter').style.display='none';
+	}
+	if (dojo.byId('listBarShow')) {
+	  dojo.byId('listBarShow').style.display='none';
+	}
+	if (dojo.byId('detailBarShow')) {
+	  dojo.byId('detailBarShow').style.display='block';
+	}
+	fullSize=dojo.byId("listDiv").offsetHeight+dojo.byId("detailDiv").offsetHeight-20;
+	dijit.byId("listDiv").resize({h: fullSize});
+	dijit.byId("mainDivContainer").resize();
+	switchedVisible='list';
+}
+function hideList() {
+	//alert("hideList");
+	if (! switchedMode) {
+		return;
+	}
+	if (! dijit.byId("listDiv") || ! dijit.byId("mainDivContainer") ) {
+		return;
+	}
+	if (dojo.byId('listDiv_splitter')) {
+		dojo.byId('listDiv_splitter').style.display='none';
+	}
+	if (dojo.byId('listBarShow')) {
+	  dojo.byId('listBarShow').style.display='block';
+	}
+	if (dojo.byId('detailBarShow')) {
+	  dojo.byId('detailBarShow').style.display='none';
+	}
+	dijit.byId("listDiv").resize({h: 20});
+	dijit.byId("mainDivContainer").resize();
+	switchedVisible='detail';
+}
+
+function listClick() {
+	if (! switchedMode) {
+		return;
+	}
+	hideList();
+}
+
+/* function hideShowList() {
+	if (! dijit.byId("listDiv") || ! dijit.byId("mainDivContainer") ) {
+		return;
+	}
+	if (listDivSize==0) {
+		dojo.byId('listBarShow').style.display='block';
+		listDivSize=dojo.byId("listDiv").offsetHeight;
+		dojo.byId('listDiv_splitter').style.display='none';
+		dijit.byId("listDiv").resize({h: 20});
+		dijit.byId("buttonHideList").set('label',i18n('buttonShowList'));
+	} else {
+		dojo.byId('listBarShow').style.display='none';
+		dojo.byId('listDiv_splitter').style.display='block';
+		dijit.byId("listDiv").resize({h: listDivSize});
+		listDivSize=0;
+		dijit.byId("buttonHideList").set('label',i18n('buttonHideList'));
+	}
+	dijit.byId("mainDivContainer").resize();
+}*/
+
+/*
+function listOnly() {
+	if (! dijit.byId("listDiv") || ! dijit.byId("mainDivContainer") ) {
+		return;
+	}
+	storeListSize=dojo.byId("listDiv").offsetHeight+dojo.byId("detailDiv").offsetHeight;
+	//storeListSize=listDivSize;
+	dijit.byId("listDiv").resize({h: storeListSize});
+	dijit.byId("mainDivContainer").resize();
+	dojo.byId('listBarShow').style.display='none';
+	dojo.byId('listDiv_splitter').style.display='block';
+	listDivSize=0;
+}*/

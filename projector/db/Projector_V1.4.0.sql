@@ -25,3 +25,5 @@ INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 72, 1);
+
+ALTER TABLE `${prefix}issue` ADD idCriticality int(12) unsigned DEFAULT null;

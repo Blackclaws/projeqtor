@@ -15,7 +15,6 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>   
-  
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projector.css" />
@@ -101,12 +100,10 @@
 <body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
 <div id="mainDiv" >
   <div id="wait" >
-  </div> 
-  <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
-    <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top" >
-     <!-- Menu -->
-    </div>    
+  </div>
+  <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
+     <div id="menuBarShow" onMouseover="tempShowMenu()"><div id="menuBarIcon" valign="middle"></div></div>       
       <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
           <script> 
@@ -148,11 +145,17 @@
               </tr>
             </table>         
           </td>
-          <!-- <td width="30%" >
-            <div id="statusBarProgressDiv" style="text-align: left;">           
+          <td width="30%" >
+            <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
+              <button id="buttonHideMenu" style="font-size: 90%;" dojoType="dijit.form.Button" onclick="hideShowMenu();">
+                <?php echo i18n("buttonHideMenu");?>
+              </button>
+              <button id="buttonSwitchMode" style="font-size: 90%;" dojoType="dijit.form.Button" onclick="switchMode();">
+                <?php echo i18n("buttonSwitchedMode");?>
+              </button>                
             </div>
-          </td> -->
-          <td width="60%" >
+          </td>
+          <td width="30%" >
             <div id="statusBarMessageDiv" style="text-align: left">
               <?php htmlDisplayDatabaseInfos();?>
             </div>
@@ -167,7 +170,6 @@
     </div>    
   </div>
 </div>
-
 <div id="dialogInfo" dojoType="dijit.Dialog" title="<?php echo i18n("dialogInformation");?>">
   <table>
     <tr>
@@ -760,6 +762,9 @@
     </tr>
     <tr>
       <td align="center">
+        <button dojoType="dijit.form.Button" onclick="defaultFilter();">
+          <?php echo i18n("buttonDefault");?>
+        </button>
         <button dojoType="dijit.form.Button" onclick="clearFilter();">
           <?php echo i18n("buttonClear");?>
         </button>
@@ -785,8 +790,5 @@
   </table>
 </div>
 </body>
-<script>
-  //var f=fonction(){alert("OK");};
-  //dojo.byId('leftDiv_splitter').connect('onDoubleClick',f); 
-</script>
+
 </html>

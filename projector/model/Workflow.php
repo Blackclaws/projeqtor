@@ -145,6 +145,12 @@ class Workflow extends SqlElement {
         foreach ($statusList as $statColumnCode => $statColumnValue) {
           $result .= '  <td class="workflowData">';
           if ($statColumnCode!=$statLineCode) {
+            $allChecked=true;
+            foreach ($profileList as $profileCode => $profileValue) {  
+              if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==0) {
+                $allChecked=false;
+              }
+            }
             $title=$statLineValue . ' => ' . $statColumnValue;
             $result .='<table title="' . $title . '">' ;
             $result .= '  <tr><td>';
@@ -153,6 +159,7 @@ class Workflow extends SqlElement {
             $result .= ' onclick="workflowSelectAll('. $statLineCode . ',' . $statColumnCode . ',\'' . $profileIdList .'\');"';
             $name = 'val_' . $statLineCode . '_' . $statColumnCode;
             $result .= ' name="' . $name . '" id="' . $name . '" ';
+            $result .= ($allChecked)?' checked ':'';
             $result .= '/>';
             $result .= ' </td>';
             $result .= '  <td><b>' . i18n('all') . '</b></td></tr>';  
@@ -161,7 +168,7 @@ class Workflow extends SqlElement {
               $result .= '  <tr class="workflowDetail" ><td valign="top" style="vertical-align: top;" >';
               // dojotype not set to improve perfs
               $result .= '  <input xdojoType="dijit.form.CheckBox" type="checkbox" ';
-              $result .= ' onclick="workflowChange();"';
+              $result .= ' onclick="workflowChange('. $statLineCode . ',' . $statColumnCode . ',\'' . $profileIdList .'\');"';
               $name = 'val_' . $statLineCode . '_' . $statColumnCode . '_' . $profileCode;
               $result .= ' name="' . $name . '" id="' . $name . '" ';
               if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==1) { $result .=  'checked'; }

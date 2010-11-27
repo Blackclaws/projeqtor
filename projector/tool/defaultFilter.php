@@ -11,28 +11,6 @@ require_once "../tool/projector.php";
 
 $user=$_SESSION['user'];
 
-if (! $user->_arrayFilters) {
-  $user->_arrayFilters=array();
-}
-
-// Get the filter info
-$cancel=false;
-if (array_key_exists('cancel',$_REQUEST)) {
-  $cancel=true;
-}
-$clean=false;
-if (array_key_exists('clean',$_REQUEST)) {
-  $clean=true;
-}
-$valid=false;
-if (array_key_exists('valid',$_REQUEST)) {
-  $valid=true;
-}
-$default=false;
-if (array_key_exists('default',$_REQUEST)) {
-  $default=true;
-}
-
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
@@ -42,6 +20,7 @@ if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
 }
 
+/*
 $filterName='stockFilter' . $filterObjectClass;
 if ($cancel) {
   if (array_key_exists($filterName,$_SESSION)) {
@@ -71,5 +50,32 @@ if ($valid or $cancel) {
   $user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
   $_SESSION['user']=$user;
 }
+*/
+  
+$flt=new Filter();
+$crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
+$filterList=$flt->getSqlElementsFromCriteria($crit, false);
+htmlDisplayStoredFilter($filterList);
 
+echo '<table width="100%"><tr><td align="center">';
+$crit=array();
+$crit['idUser']=$user->id;
+$crit['idProject']=null;
+$crit['parameterCode']="Filter" . $filterObjectClass;
+$param=SqlElement::getSingleSqlElementFromCriteria('Parameter',$crit);
+if ($name) {
+  $critFilter=array("refType"=>$filterObjectClass, "name"=>$name, "idUser"=>$user->id);
+  $filter=SqlElement::getSingleSqlElementFromCriteria("Filter", $critFilter);
+  if (! $filter->id) {
+    echo '<span class="messageERROR">' . i18n('defaultFilterError', array($name)) . '</span>';
+  } else {
+    $param->parameterValue=$filter->id;
+    $param->save();
+    echo '<span class="messageOK">' . i18n('defaultFilterSet', array($name)) . '</span>';
+  }
+} else {
+  $param->delete();
+  echo '<span class="messageOK">' . i18n('defaultFilterCleared') . '</span>';
+}
+echo '</td></tr></table>';
 ?>

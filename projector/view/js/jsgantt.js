@@ -170,14 +170,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   		vStartDateView=dijit.byId('startDatePlanView').get('value');
   	}
   };
-  this.getShowRes  = function(){ return vShowRes };
-  this.getShowDur  = function(){ return vShowDur };
-  this.getShowComp = function(){ return vShowComp };
-  this.getShowStartDate = function(){ return vShowStartDate };
-  this.getShowEndDate = function(){ return vShowEndDate };
-  this.getDateInputFormat = function() { return vDateInputFormat };
-  this.getDateDisplayFormat = function() { return vDateDisplayFormat };
-  this.getCaptionType = function() { return vCaptionType };
+  this.getShowRes  = function(){ return vShowRes; };
+  this.getShowDur  = function(){ return vShowDur; };
+  this.getShowComp = function(){ return vShowComp; };
+  this.getShowStartDate = function(){ return vShowStartDate; };
+  this.getShowEndDate = function(){ return vShowEndDate; };
+  this.getDateInputFormat = function() { return vDateInputFormat; };
+  this.getDateDisplayFormat = function() { return vDateDisplayFormat; };
+  this.getCaptionType = function() { return vCaptionType; };
   this.getWidth = function() { return vGanttWidth; };
   this.getStartDateView = function() { return vStartDateView; };
   this.getInitialStartDateView = function() { return vInitialStartDateView; };
@@ -213,7 +213,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	* Returns task list Array
 	* @method getList
 	* @return {Array} */ 
-  this.getList   = function() { return vTaskList };
+  this.getList   = function() { return vTaskList; };
 
 	/**
 	* Clears dependency lines between tasks

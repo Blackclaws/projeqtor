@@ -42,7 +42,7 @@ class Ticket extends SqlElement {
     <th field="nameticketType" width="8%" >${idTicketType}</th>
     <th field="name" width="25%" >${name}</th>
     <th field="initialDueDateTime" width="8%" formatter="dateTimeFormatter">${initialDueDateTime}</th>
-    <th field="actualDueDateTime" width="8%" formatter="dateTimeFormatter">${actualDueDateTime}</th>
+    <th field="nameUser" width="8%" >${issuer}</th>
     <th field="colorNamePriority" width="8%" formatter="colorNameFormatter">${idPriority}</th>
     <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="9%" >${responsible}</th>

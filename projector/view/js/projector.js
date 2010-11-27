@@ -294,15 +294,19 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       	if (destination=="detailDiv" || destination=="centerDiv") {
       		finaliseButtonDisplay();
         }
+      	if (destination=="centerDiv") {
+      		showList();
+      	}
         if (directAccess) {
         	if (dijit.byId('listIdFilter')) {
         		//dijit.byId('listIdFilter').set('value',directAccess);
         		//setTimeout("filterJsonList();",100);
         		dojo.byId('objectId').value=directAccess;
-        		//dijit.byId("listDiv").domNode.style.height="100px";
-        		dijit.byId("listDiv").resize({h: 0});
-        		dijit.byId("mainDivContainer").resize();
+        		//dijit.byId("listDiv").resize({h: 0});
+        		//dijit.byId("mainDivContainer").resize();
         		loadContent("objectDetail.php", "detailDiv", 'listForm');
+        		showWait();
+        		hideList();
         	}
         }
     		if (isResultMessage) {
@@ -357,15 +361,20 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           if (destination=="detailDiv" || destination=="centerDiv" ) {
           	finaliseButtonDisplay();
           }
+        	if (destination=="centerDiv" && switchedMode) {
+        		showList();
+        	}
           if (directAccess) {
           	if (dijit.byId('listIdFilter')) {
           		//dijit.byId('listIdFilter').set('value',directAccess);
           		//setTimeout("filterJsonList();",100);
           		dojo.byId('objectId').value=directAccess;
-          		//dijit.byId("listDiv").domNode.style.height="100px";
-          		dijit.byId("listDiv").resize({h: 0});
-          		dijit.byId("mainDivContainer").resize();
+          		//dijit.byId("listDiv").resize({h: 0});
+          		//dijit.byId("mainDivContainer").resize();
+          		showWait();
           		loadContent("objectDetail.php", "detailDiv", 'listForm');
+          		showWait();
+          		hideList();
           	}
           }
           // fade in the destination, to set is visible back
@@ -1009,7 +1018,7 @@ function drawGantt() {
       // runScript : JavaScript to run when click on tack (to display the detail of the task)
       var runScript="dojo.byId('objectClass').value='" + item.refType + "';";
       runScript+="dojo.byId('objectId').value='" + item.refId + "';";
-      runScript+="loadContent('objectDetail.php','detailDiv','listForm');";
+      runScript+="hideList();loadContent('objectDetail.php','detailDiv','listForm');";
       // display Name of the task      
       var pName=( (showWBS)?item.wbs:'') + " " + item.refName; // for testeing purpose, add wbs code
       //var pName=item.refName;
@@ -1148,7 +1157,7 @@ function addWorkDaysToDate(paramDate, paramDays) {
  * @return
  */
 function workflowSelectAll(line, column, profileList) {
-	workflowChange();
+	workflowChange(null,null,null);
 	var reg=new RegExp("[ ]+", "g");
 	var profileArray=profileList.split(reg);
 	var check=dijit.byId('val_' + line + "_" + column);
@@ -1175,10 +1184,39 @@ function workflowSelectAll(line, column, profileList) {
  * Flag a change on workflow definition
  * @return
  */
-function workflowChange() {
+function workflowChange(line, column, profileList) {
 	var change=dojo.byId('workflowUpdate');
 	change.value=new Date();
 	formChanged();
+	if (line==null) {return;}
+	var allChecked=true;
+	var reg=new RegExp("[ ]+", "g");
+	var profileArray=profileList.split(reg);
+	var check=dijit.byId('val_' + line + "_" + column);
+	if (check) {
+		//var newValue=(check.get("checked"))? 'checked': '';
+		for (i=0; i < profileArray.length; i++) {
+			var checkBox=dijit.byId('val_' + line + "_" + column + "_" + profileArray[i]);
+			if (checkBox) {
+				if (checkBox.get("checked")=='false') {
+					allChecked=false;
+				}
+			}
+		}
+		check.set('checked',(allChecked?'true':'false'));
+	} else {
+		//var newValue=dojo.byId('val_' + line + "_" + column).checked;
+		for (i=0; i < profileArray.length; i++) {
+			var checkBox=dojo.byId('val_' + line + "_" + column + "_" + profileArray[i]);
+			if (checkBox) {
+				if (! checkBox.checked) {
+					allChecked=false;
+				}
+		  }
+		}
+		dojo.byId('val_' + line + "_" + column).checked=allChecked;
+	}
+	
 }
 
 /**
@@ -1189,6 +1227,9 @@ function refreshTodayProjectsList() {
 }
 
 function gotoElement(eltClass, eltId) {
+	if (checkFormChangeInProgress() ) {
+    return false;
+	}
   cleanContent("detailDiv");
   formChangeInProgress=false;
   loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);

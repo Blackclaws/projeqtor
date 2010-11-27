@@ -426,7 +426,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($col=='creationDateTime' and ($val=='' or $val==null) and ! $obj->id) {
           $valDate=date('Y-m-d');
-          $valTime=date("G:i");
+          $valTime=date("H:i");
         }
         echo '<div dojoType="dijit.form.DateTextBox" ';
         echo $name;
@@ -497,11 +497,24 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $valStore='';
         if ( ($col=='idResource' or $col=='idActivity') and 
           ($classObj=='Activity' or $classObj=='Ticket' or $classObj=='Milestone')) {
-          echo '<div dojoType="dojo.data.ItemFileReadStore" jsId="' . $col . 'Store" url="../tool/jsonList.php?listType=empty" searchAttr="name"  /></div>'; ;
+          //echo '<div dojoType="dojo.data.ItemFileReadStore" jsId="' . $col . 'Store" url="../tool/jsonList.php?listType=empty" searchAttr="name"  /></div>'; ;
           //$valStore=' store="' . $col . 'Store" ';
           if (property_exists($obj,'idProject')) {
-            $critFld='idProject';
-            $critVal=$obj->idProject;
+            if ($obj->id) {
+              $critFld='idProject';
+              $critVal=$obj->idProject;
+            } else {
+              $table=SqlList::getList('Project','name',null);
+              debugLog($table);
+              if (count($table)>0) {
+                foreach ($table as $idTable=>$valTable) {
+                  $firstId=$idTable;
+                  break;
+                }
+                $critFld='idProject';
+                $critVal=$firstId;
+              }
+            }
           }
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
@@ -864,10 +877,10 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       echo '</td>';
     }
     if ( ! $classLink ) {
-      echo '<td class="linkData">' . i18n(get_class($linkObj)) . '</td>';
+      echo '<td class="linkData" >' . i18n(get_class($linkObj)) . '</td>';
     }
     echo '<td class="linkData">#' . $linkObj->id  . '</td>';
-    echo '<td class="linkData">' . $linkObj->name . '</td>';
+    echo '<td class="linkData" onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;">' . $linkObj->name . '</td>';
     if (property_exists($linkObj, 'idStatus')) {
       $objStatus=new Status($linkObj->idStatus);
       $color=$objStatus->color;
@@ -927,7 +940,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '<td class="dependencyData">' . i18n(get_class($depObj)) . '</td>';
     echo '<td class="dependencyData">#' . $depObj->id  . '</td>';
-    echo '<td class="dependencyData">' . $depObj->name . '</td>';
+    echo '<td class="dependencyData" onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;">' . $depObj->name . '</td>';
     if (property_exists($depObj,'idStatus')) {
       $objStatus=new Status($depObj->idStatus);
     } else {
@@ -1075,17 +1088,17 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   exit;
 }
 ?>
-
 <div dojoType="dijit.layout.BorderContainer" >
   <?php 
-  if ( ! $refresh and  ! $print) { ?>
-    <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" >
-      <div dojoType="dijit.layout.BorderContainer" >
+  if ( ! $refresh and  ! $print) { ?>    
+    <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" >    
+      <div dojoType="dijit.layout.BorderContainer" >        
         <div id="buttonDivContainer" dojoType="dijit.layout.ContentPane" region="left" >
-          <?php  include 'objectButtons.php'; ?>
+          <?php  include 'objectButtons.php'; ?>  
         </div>
         <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="center" >       
         </div> 
+        <div id="detailBarShow" onMouseover="hideList()"><div id="detailBarIcon" align="center"></div></div>
       </div>
     </div>
     <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >
@@ -1183,5 +1196,4 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     </div>
   <?php 
   }?>   
-
 </div>

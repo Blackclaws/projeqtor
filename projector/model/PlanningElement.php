@@ -440,11 +440,22 @@ debugLog ("   => Group");
    *  must be redefined in the inherited class
    */
   public function control(){
-    //echo "xxx";
     $result="";
     if ($this->idle and $this->leftWork>0) {
-      //echo "yyy";
       $result.='<br/>' . i18n('errorIdleWithLeftWork');
+    }
+    $stat=array('initial','validated','planned','real');
+    foreach ($stat as $st) {
+      $start=$st.'StartDate';
+      $end=$st.'EndDate';
+      $startAttr=$this->getFieldAttributes($start);
+      $endAttr=$this->getFieldAttributes($end);
+      if (strpos($startAttr,'hidden')===false and strpos($startAttr,'readonly')===false 
+      and strpos($endAttr,'hidden')===false and strpos($endAttr,'readonly')===false ) {
+        if ($this->$start and $this->$end and $this->$start>$this->$end) {
+          $result.='<br/>' . i18n('errorStartEndDates',array($this->getColCaption($start),$this->getColCaption($end)));
+        }
+      }
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

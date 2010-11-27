@@ -172,6 +172,9 @@
         $pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
         $pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
         //if ($pEnd=="") {$pEnd=date('Y-m-d');}
+        if ($line['refType']=='Milestone') {
+          $pStart=$pEnd;
+        }
         $line['pStart']=$pStart;
         $line['pEnd']=$pEnd;
         $resultArray[]=$line;

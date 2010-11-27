@@ -11,7 +11,7 @@ scriptLog('   ->/view/planningList.php');
 ?>
 
   
-<div dojoType="dijit.layout.BorderContainer">
+<div id="mainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
 <table width="100%" height="27px" class="dojoxGridRowSelected" >
   <tr height="27px">
@@ -74,6 +74,8 @@ scriptLog('   ->/view/planningList.php');
     </td>
   </tr>
 </table>
+<div id="listBarShow" onMouseover="showList()"><div id="listBarIcon" align="center"></div></div>
+
 <div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" style="display: none">
 <?php include '../tool/jsonPlanning.php';?>
 </div>

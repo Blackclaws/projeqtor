@@ -21,7 +21,7 @@
     $where="idle=0";
     $where.=" and (idUser is null or idUser='" . $user->id . "')";
     $where.=" and (idProfile is null or idProfile='" . $user->idProfile . "')";
-    $where.=" and (idProject in " . transformListIntoInClause($prjLst=$user->getVisibleProjects()) . ")";
+    $where.=" and (idProject is null or idProject in " . transformListIntoInClause($prjLst=$user->getVisibleProjects()) . ")";
     
     $sort="id desc";
     $listMsg=$msg->getSqlElementsFromCriteria(null,false,$where,$sort);

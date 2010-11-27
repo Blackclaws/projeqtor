@@ -40,6 +40,7 @@
               <option value="Decision"><?php echo i18n('Decision');?></option>
               <option value="Question"><?php echo i18n('Question');?></option>
               <option value="Client"><?php echo i18n('Client');?></option>
+               <option value="Contact"><?php echo i18n('Contact');?></option>
               <option value="Project"><?php echo i18n('Project');?></option>
               <option value="User"><?php echo i18n('User');?></option>
               <option value="Team"><?php echo i18n('Team');?></option>
@@ -47,8 +48,14 @@
               <option value="Affectation"><?php echo i18n('Affectation');?></option>
            </select> 
         </td>
-        <td  align="right"> 
-          &nbsp;
+        <td  align="left"> 
+          <button id="helpImportData" iconClass="iconHelp" dojoType="dijit.form.Button" showlabel="false"
+          title="<?php echo i18n('helpImport');?>">
+             <script type="dojo/connect" event="onClick" args="evt">
+               showHelpImportData();
+               return false;
+             </script>
+          </button>        
         </td>
       </tr>
       <tr>

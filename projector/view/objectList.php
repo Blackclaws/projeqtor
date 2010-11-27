@@ -17,7 +17,6 @@ $obj=new $objectClass;
   onFetch="alert('OK');"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?>" >
 </div>
-  
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
 <table width="100%" class="dojoxGridRowSelected" >
@@ -131,6 +130,7 @@ $obj=new $objectClass;
     </td>
   </tr>
 </table>
+<div id="listBarShow" onMouseover="showList()"><div id="listBarIcon" align="center"></div></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
 <table id="objectGrid" jsId="objectGrid" dojoType="dojox.grid.DataGrid"
@@ -152,6 +152,7 @@ $obj=new $objectClass;
 	  dojo.byId('objectId').value=id;
 	  //cleanContent("detailDiv");
       formChangeInProgress=false; 
+      listClick();
       loadContent("objectDetail.php", "detailDiv", 'listForm');
    	}
     actionNo = function () {

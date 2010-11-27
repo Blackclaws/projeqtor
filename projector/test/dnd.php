@@ -29,10 +29,10 @@
 <body>
 <table dojoType="dojo.dnd.Source" class="dndContainer">
     <tr><td>Ordre</td><td>Libelle</td></tr>
-    <tr id="dojoUnique1" class="dojoDndItem"><td>1</td><td>Item 1</td</tr>
-    <tr id="dojoUnique2" class="dojoDndItem"><td>2</td><td>Item 2</td</tr>
-    <tr id="dojoUnique3" class="dojoDndItem"><td>3</td><td>Item 3</td</tr>
-    <tr id="dojoUnique4" class="dojoDndItem"><td>4</td><td>Item 4</td</tr>
+    <tr id="dojoUnique1" class="dojoDndItem"><td>1</td><td>Item 1</td></tr>
+    <tr id="dojoUnique2" class="dojoDndItem"><td>2</td><td>Item 2</td></tr>
+    <tr id="dojoUnique3" class="dojoDndItem"><td>3</td><td>Item 3</td></tr>
+    <tr id="dojoUnique4" class="dojoDndItem"><td>4</td><td>Item 4</td></tr>
 </table>
 </body>
 </html>

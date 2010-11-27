@@ -6,7 +6,7 @@
   scriptLog('   ->/view/planningMain.php');  
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Planning" />
-<div class="container" dojoType="dijit.layout.BorderContainer">
+<div id="mainDivContainer" class="container" dojoType="dijit.layout.BorderContainer">
   <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" splitter="true" style="height:60%;">
    <?php include 'planningList.php'?>
   </div>

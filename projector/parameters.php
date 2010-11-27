@@ -93,3 +93,9 @@ $paramReportTempDirectory = '../files/report/';
 $paramReportTempDirectory = '../files/report/';
 // New parameters V1.4.0
 $paramReportTempDirectory = '../files/report/';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
