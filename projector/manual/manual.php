@@ -70,7 +70,7 @@
       <td valign="top" align="center">
         <table width="10%">
           <tr height="40px">
-            <td width="50%" align="left" valign="middle">
+            <td width="120px" align="left" valign="middle">
              <img/ src="img/home.png" onclick="loadPage(0)" /> 
              <?php if ($prev!=='') {?>
                 <img src="img/left.png" onClick="loadPage(<?php echo $prev;?>)" />
@@ -83,7 +83,12 @@
                 <img src="img/right-inactive.png" />
               <?php }?>           
             </td>
-            <td width="50%" align="right" valign="middle">
+            <td valign="top">
+              <div style="overflow: auto; width: 100%; height: 40px">
+                <?php displayTopics($page);?>
+              </div>
+            </td>
+            <td width="80px" align="right" valign="middle">
               <?php if ($prevSec!='') {?>
                 <img src="img/first.png" onClick="loadPage(<?php echo $prevSec;?>)" />
               <?php } else {?>
@@ -97,7 +102,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="4">
+            <td colspan="3">
               <img src="slides/img<?php echo $page;?>.png" />
             </td>
           </tr>
@@ -110,7 +115,7 @@
 
 <?php 
 function displayIndex($page) {
-  global $slide, $section;
+  global $slide, $section, $slideName;
   echo "<br/>";
   echo '<table class="background" width="95%" aligh="center">';
   echo '<tr height="30px"><th colspan="2" class="title" style="text-align:center;">INDEX</th></tr>'; 
@@ -120,7 +125,7 @@ function displayIndex($page) {
     echo ($name==$slide[$page])?'<img src="img/level.png" />':'';
     echo '</td>';
     echo '<td class="menuTree tabLabel" style="text-align:left;cursor: pointer" onClick="loadPage(' . $id . ');">';
-    echo $name;
+    echo $slideName[$id];
     echo '</td></tr>';
   }
   echo '</table>';
@@ -142,4 +147,23 @@ function getTheme() {
     $_SESSION['theme']=$theme; // keep value in session to have same theme during all session...
   }
   return $theme;
+}
+
+function displayTopics($numPage) {
+  global $slideTopics, $slidePage, $slideName;
+  $lstTopics=$slideTopics[$numPage];
+  $split=explode(' ', $lstTopics);
+  //$empty=true;
+  foreach($split as $id=>$top) {
+    if (array_key_exists($top, $slidePage)) {
+      $topPage=$slidePage[$top];
+      if (array_key_exists($topPage, $slideName)) {
+        $topName=$slideName[$topPage];
+        //if (! $empty) {echo ' ';}
+        echo '<a class="menuTree tabLabel" style="line-height:150%; border: 1px solid grey;"' 
+         . ' onclick="loadPage(' . $topPage . ');" title="go to related topic"><nobr>' . $topName . '</nobr></a> ';
+        //$empty=false;
+      }
+    }
+  } 
 }

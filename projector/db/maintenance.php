@@ -22,7 +22,8 @@ $versionParameters =array(
                  'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to ${status}',
                  'paramMailShowDetail'=>'true' ),
   'V1.3.0'=>array('defaultTheme'=>'blue'),
-  'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/') );
+  'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/',
+  'V1.5.0'=>array('costCurrency'=>'€') );
 $SqlEndOfCommand=";";
 $SqlComment="--";
    

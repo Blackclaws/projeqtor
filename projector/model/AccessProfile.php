@@ -27,12 +27,13 @@ class AccessProfile extends SqlElement {
   );  
 
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="name" width="25%" formatter="translateFormatter">${name}</th>
     <th field="nameAccessScopeRead" width="15%" formatter="translateFormatter">${idAccessScopeRead}</th>
     <th field="nameAccessScopeCreate" width="15%" formatter="translateFormatter">${idAccessScopeCreate}</th>
     <th field="nameAccessScopeUpdate" width="15%" formatter="translateFormatter">${idAccessScopeUpdate}</th>
-    <th field="nameAccessScopeDelete" width="15%" formatter="translateFormatter">${idAccessScopeDelete}</th>         
+    <th field="nameAccessScopeDelete" width="15%" formatter="translateFormatter">${idAccessScopeDelete}</th>
+    <th field="sortOrder" width="5%">${sortOrderShort}</th>         
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
   

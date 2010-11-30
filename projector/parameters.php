@@ -56,7 +56,7 @@ $lockPassword='false';                          // disable password change funct
 $paramDebugMode='false';                        // Setup Dojo debugging mode {'true', 'false'}
 
 // === i18n (internationalization)
-$paramDefaultLocale='en';                       // default locale to be used on i18n (default is en) {'en', 'fr'}
+$paramDefaultLocale='fr';                       // default locale to be used on i18n (default is en) {'en', 'fr'}
 $paramDefaultTimezone="Europe/Paris";           // default time zone. List can be found at http://us3.php.net/manual/en/timezones.php
 
 // === display

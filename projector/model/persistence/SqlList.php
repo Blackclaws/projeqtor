@@ -85,7 +85,9 @@ class SqlList {
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
       if (strtolower($listType)=='resource' and $col=='idProject') {
-        $query .= " and exists (select 'x' from affectation a where a.idProject='" . $val . "' and a.idResource=user.id)";
+        $aff=new Affectation();
+        $usr=new User();
+        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject='" . $val . "' and a.idResource=" . $usr->getDatabaseTableName() . ".id)";
       } else {
         $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
       }

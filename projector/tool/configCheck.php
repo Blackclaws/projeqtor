@@ -81,6 +81,10 @@
   $paramFile=$_REQUEST['location'];
   if ($paramFile) {
     $rep=dirname($paramFile);
+    if (! $rep or $rep='.') {
+      $paramFile='../tool/' . $paramFile;
+      $rep=dirname($paramFile);
+    }
     if (! file_exists ($rep)) {
       if (! mkdir($rep,0777,true)) {
         showError("incorrect value for 'Parameter file name', does not include a valid directory name");
@@ -93,7 +97,9 @@
         kill($paramFile);
       }
     }
-  }  
+  } else {
+    showError("incorrect value for 'Parameter file name', field is mandatory");
+  } 
   
   if ($error) {exit;}
 
