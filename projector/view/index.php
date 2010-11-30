@@ -17,7 +17,7 @@
               isDebug: false'></script>
   <script type="text/javascript">             
      dojo.addOnLoad(function(){
-       dojo.byId("currentLocale").value=dojo.locale;
+       //dojo.byId("currentLocale").value=dojo.locale;
        window.setTimeout('dojo.byId("indexForm").submit();',10);
      });
   </script>
@@ -44,7 +44,7 @@
   </table>
   </td></tr></table>
   <form id="indexForm" name="indexForm" action="main.php" method="post">
-    <input type="hidden" id="currentLocale" name="currentLocale" value="en" />
+    <input type="hidden" id="xcurrentLocale" name="xcurrentLocale" value="en" />
   </form>
 </body>
 

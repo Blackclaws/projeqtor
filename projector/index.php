@@ -40,7 +40,7 @@
   </table>
   </td></tr></table>
   <form id="indexForm" name="indexForm" action="view" method="post">
-    <input type="hidden" id="currentLocale" name="currentLocale" value="en" />
+    <input type="hidden" id="xcurrentLocale" name="xcurrentLocale" value="en" />
   </form>
 </body>
 

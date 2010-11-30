@@ -311,7 +311,7 @@ $ctrls['DebugMode'] = '=true=false=';
               <tr><td colspan="4">&nbsp;</td></tr>
               <?php } else {?>
               <tr>     
-                <td class="label"><label style="width:300px"><?php echo $label[$par]?>&nbsp;:&nbsp;</label></td>
+                <td class="label" style="width:300px"><label style="width:300px"><?php echo $label[$par]?>&nbsp;:&nbsp;</label></td>
                 <td><input id="param[<?php echo $par;?>]" name="param[<?php echo $par;?>]" 
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
                    value="<?php echo $val;?>" />
@@ -335,7 +335,7 @@ $ctrls['DebugMode'] = '=true=false=';
               }?>
               <tr><td colspan="4">&nbsp;</td></tr>
               <tr>
-                <td class="label"><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
+                <td class="label" style="width:300px"><label style="width:300px">Parameter file name&nbsp;:&nbsp;</label></td>
                 <td><input id="location" name="location" 
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
                    value="../files/config/parameters.php" />

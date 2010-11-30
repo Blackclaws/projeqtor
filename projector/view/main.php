@@ -492,7 +492,8 @@
                </div>
               <select dojoType="dijit.form.FilteringSelect" 
                 id="assignmentIdResource" name="assignmentIdResource"
-                class="input" value="" store="resourceStore">
+                class="input" value="" store="resourceStore"
+                missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdResource')));?>" >
                  <?php htmlDrawOptionForReference('idResource', null, null, true);?>
                </select>  
              </td>
@@ -506,6 +507,7 @@
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:999}" 
                  style="width:97px" 
+                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colRate')));?>" 
                  required="true" />
              </td>
            </tr>
@@ -601,6 +603,7 @@
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="idProjectPlan" name="idProjectPlan" 
+                missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdProject')));?>" 
                 class="input" value="" >
                  <?php 
                     $proj=null; 
@@ -623,6 +626,8 @@
                  invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
                  type="text" maxlength="10"
                  style="width:100px; text-align: center;" class="input"
+                 required="true"
+                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colStartDate')));?>"
                  value="<?php echo date('Y-m-d');?>" >
                </div>
              </td>
@@ -665,6 +670,7 @@
                <select dojoType="dijit.form.FilteringSelect" 
                 id="dependencyRefTypeDep" name="dependencyRefTypeDep" 
                 onchange="refreshDependencyList();"
+                missingMessage="<?php echo i18n('messageMandatory',array(i18n('linkType')));?>"
                 class="input" value="" >
                  <?php htmlDrawOptionForReference('idDependable', null, null, true);?>
                </select>
@@ -724,6 +730,7 @@
                </div>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="idFilterAttribute" name="idFilterAttribute" 
+                missingMessage="<?php echo i18n('attributeNotSelected');?>"
                 class="input" value="" style="width: 200px;" store="attributeStore">
                   <script type="dojo/method" event="onChange" >
                     filterSelectAtribute(this.value);
@@ -735,6 +742,7 @@
                </div>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="idFilterOperator" name="idFilterOperator" 
+                missingMessage="<?php echo i18n('valueNotSelected');?>"
                 class="input" value="" style="width: 100px;" store="operatorStore">
                </select>
              </td>
