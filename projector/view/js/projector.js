@@ -173,9 +173,13 @@ function changeLocale(locale) {
 	  dojo.xhrPost({
 	  	url: "../tool/saveDataToSession.php?id=currentLocale&value=" + locale,
 	  	load: function(data,args) {
-	  	  action = function() { window.location=("../view/main.php"); };
+	  	  //action = function() { 
+	  	  	noDisconnect=true;
+	  	  	quitConfirmed=true;
+	  	  	window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter"); 
+	  	  //};
 	  	  //showConfirm (i18n('confirmLocaleChange'), action); 
-	  	  showInfo(i18n('infoLocaleChange'));
+	  	  //showInfo(i18n('infoLocaleChange'));
 	      },
 	  	error: function(error,args){}
 	  });
@@ -490,7 +494,7 @@ function finalizeMessageDisplay(destination, validationType) {
   	// add the message in the message Div (left part) and prepares form to new changes
   	addMessage(msg);
   	if (validationType=='note' || validationType=='attachement' || validationType=="link" 
-  		|| validationType=="assignment" || validationType=="dependency") {
+  		|| validationType=="assignment" || validationType=="dependency" || validationType=="resourceCost") {
   		if (validationType=='note') {
   			loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
   		} else if (validationType=='attachement') {
@@ -500,6 +504,8 @@ function finalizeMessageDisplay(destination, validationType) {
   		} else if (validationType=='assignment') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else if (validationType=='dependency') {
+  			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+  		} else if (validationType=='resourceCost') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else {
   			hideWait();
@@ -922,11 +928,14 @@ function disconnect() {
  * Disconnect (kill current session)
  * @return
  */
+var noDisconnect=false;
 function quit() {
-  dojo.xhrPost({
-	  url: "../tool/saveDataToSession.php?id=disconnect",
-	  load: function(data,args) {}
-  });
+	if (! noDisconnect) {
+	  dojo.xhrPost({
+		  url: "../tool/saveDataToSession.php?id=disconnect",
+		  load: function(data,args) {}
+	  });
+	}
 }
 
 /**

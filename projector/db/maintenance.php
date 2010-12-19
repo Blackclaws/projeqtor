@@ -13,7 +13,8 @@ $versionHistory = array(
   "V1.1.0",
   "V1.2.0",
   "V1.3.0",
-  "V1.4.0");
+  "V1.4.0",
+  "V1.5.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -22,8 +23,8 @@ $versionParameters =array(
                  'paramMailMessage'=>'The status of ${item} #${id} [${name}] has changed to ${status}',
                  'paramMailShowDetail'=>'true' ),
   'V1.3.0'=>array('defaultTheme'=>'blue'),
-  'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/',
-  'V1.5.0'=>array('costCurrency'=>'€') );
+  'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/'),
+  'V1.5.0'=>array('currency'=>'€', 'currencyPosition'=>'after') );
 $SqlEndOfCommand=";";
 $SqlComment="--";
    
@@ -70,6 +71,7 @@ if ($currVersion=='0.0.0') {
   $result=$proj->save();
   debugLog($result);
 }
+deleteDupplicate();
 Sql::saveDbVersion($version);
 traceLog('=====================================');
 traceLog("");
@@ -204,4 +206,24 @@ function runScript($vers) {
   return $nbError;
 }
 
+/*
+ * Delete dupplicate if new version has been installed twice :
+ *  - habilitation
+ * 
+ */
+function deleteDupplicate() {
+  // HABILITATION
+  $hab=new Habilitation();
+  $habList=$hab->getSqlElementsFromCriteria(array(), false, null, 'idMenu, idProfile, id ');
+  $idMenu='';
+  $idProfile='';
+  foreach ($habList as $hab) {
+    if ($hab->idMenu==$idMenu and $hab->idProfile==$idProfile) {
+      $hab->delete();
+    } else {
+      $idMenu=$hab->idMenu;
+      $idProfile=$hab->idProfile;
+    }
+  }
+}
 ?>

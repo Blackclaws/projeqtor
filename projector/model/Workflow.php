@@ -13,8 +13,10 @@ class Workflow extends SqlElement {
   public $idle;
   public $workflowUpdate;
   public $_col_2_2;
+  public $_col_1_1_WorkflowDiagram;
+  public $_spe_workflowDiagram;
   public $_col_1_1_WorkflowStatus;
-  public $_spe_workflowstatus;
+  public $_spe_workflowStatus;
   public $_workflowStatus;
   
   private static $_layout='
@@ -122,7 +124,7 @@ class Workflow extends SqlElement {
       $detailWidth="100%";
     }
     $result="";
-    if ($item=='workflowstatus') {
+    if ($item=='workflowStatus') {
       $width="100px";
       $statusList=SqlList::getList('Status');
       $profileList=SqlList::getList('Profile');
@@ -133,13 +135,16 @@ class Workflow extends SqlElement {
       $nbProfiles=count($profileList);
       $result .= '<div style="overflow: auto; width: ' . $detailWidth . '">';
       $result .= '<table>';
-      $result .= ' <tr>';
-      $result .= '  <th class="workflowHeader">' . i18n('from') . '&nbsp;\\&nbsp;' . i18n('to') . '</th>';
-      foreach ($statusList as $statCode => $statValue) {
-        $result .= '  <th class="workflowHeader">' . $statValue . '</th>';
-      }
+
       $wsListArray=$this->getWorkflowstatusArray();
       foreach ($statusList as $statLineCode => $statLineValue) {
+        $result .= ' <tr>';
+        $result .= '  <th class="workflowHeader">' . i18n('from') . '&nbsp;\\&nbsp;' . i18n('to') . '</th>';
+        foreach ($statusList as $statCode => $statValue) {
+          $result .= '  <th class="workflowHeader">' . $statValue . '</th>';
+        }
+        $result .= '  <th class="workflowHeader"></th>';
+        $result .='</tr>'; 
         $result .= '<tr>';
         $result .= '  <td class="workflowHeader">' . $statLineValue . '</td>';
         foreach ($statusList as $statColumnCode => $statColumnValue) {
@@ -152,8 +157,8 @@ class Workflow extends SqlElement {
               }
             }
             $title=$statLineValue . ' => ' . $statColumnValue;
-            $result .='<table title="' . $title . '">' ;
-            $result .= '  <tr><td>';
+            $result .='<table>' ;
+            $result .= '  <tr title="' . $title . '"><td>';
             // dojotype not set to improve perfs
             $result .= '  <input xdojoType="dijit.form.CheckBox" type="checkbox" ';
             $result .= ' onclick="workflowSelectAll('. $statLineCode . ',' . $statColumnCode . ',\'' . $profileIdList .'\');"';
@@ -164,8 +169,9 @@ class Workflow extends SqlElement {
             $result .= ' </td>';
             $result .= '  <td><b>' . i18n('all') . '</b></td></tr>';  
             //$profileIdx=0;
-            foreach ($profileList as $profileCode => $profileValue) {              
-              $result .= '  <tr class="workflowDetail" ><td valign="top" style="vertical-align: top;" >';
+            foreach ($profileList as $profileCode => $profileValue) {  
+              $titleProfile=$title . "\n" . $profileValue;                          
+              $result .= '  <tr title="' . $titleProfile . '" class="workflowDetail" ><td valign="top" style="vertical-align: top;" >';
               // dojotype not set to improve perfs
               $result .= '  <input xdojoType="dijit.form.CheckBox" type="checkbox" ';
               $result .= ' onclick="workflowChange('. $statLineCode . ',' . $statColumnCode . ',\'' . $profileIdList .'\');"';
@@ -174,18 +180,228 @@ class Workflow extends SqlElement {
               if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==1) { $result .=  'checked'; }
               $result .= ' />';
               $result .= ' </td> ';
-              $result .= '  <td>' . $profileValue . '</td></tr>';  
+              $result .= '  <td><div style="width:60px;overflow: hidden; white-space: nowrap; overflow: hidden; "><nobr>' . $profileValue . '</nobr></div></td></tr>';  
             }
             $result .= '</table>';
           }
           $result .='</td>';
         }
+        $result .= '  <td class="workflowHeader">' . $statLineValue . '</td>';
         $result .= '</tr>';
-      }  
-      $result .= '</tr>';
+      } 
+      $result .= ' <tr>';
+      $result .= '  <th class="workflowHeader">' . i18n('from') . '&nbsp;\\&nbsp;' . i18n('to') . '</th>';
+      foreach ($statusList as $statCode => $statValue) {
+        $result .= '  <th class="workflowHeader">' . $statValue . '</th>';
+      }
+      $result .='</tr>'; 
       $result .= '</table>';
       $result .= '</div>';
-    } 
+      
+    // WORKFLOW DIAGRAM  
+    } else if ($item=='workflowDiagram') {
+      $statusList=SqlList::getList('Status');
+      $statusColorList=SqlList::getList('Status', 'color');
+      foreach ($statusColorList as $key=>$val) {
+        if (strtolower($val)=='#ffffff') {
+          $statusColorList[$key]='#eeeeee';
+        }
+      }
+      $profileList=SqlList::getList('Profile');
+      $width="75";
+      $height="15";
+      $sepWidth="10";
+      $sepHeight="10";
+      $dottedStyle='solid';
+      $arrowDownImg='<div class="wfDownArrow"></div>';
+      $arrowUpImg='<div class="wfUpArrow"></div>';
+      $wsListArray=$this->getWorkflowstatusArray();
+      $crossArray=array();
+      foreach ($statusList as $statLineCode => $statLineValue) {
+        $crossArray[$statLineCode]=array();
+        foreach ($statusList as $statColumnCode => $statColumnValue) {
+          $allChecked=true;
+          $oneChecked=false;
+          if ($statColumnCode!=$statLineCode) {           
+            foreach ($profileList as $profileCode => $profileValue) {  
+              if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==0) {
+                $allChecked=false;
+              } else {
+                $oneChecked=true;
+              }
+            }            
+          }
+          if ($allChecked) {
+            $val="ALL";
+          } else if ($oneChecked) {
+            $val="ONE";
+          } else {
+            $val="NO";
+          }
+          $crossArray[$statLineCode][$statColumnCode]=$val;
+        }
+      }
+      $i=0;
+      $max=array();
+      $maxAll=array();
+      $maxOne=array();
+      $min=array();
+      $minAll=array();
+      $minOne=array();
+      $borderLeft=array();
+      $sepLeft=array();
+      $borderRight=array();
+      $sepRight=array();
+      foreach ($statusList as $statLineCode => $statLineValue) {
+        $j=0;
+        $i++;
+        $max[$i]=$i;
+        $maxAll[$i]=$i;
+        $maxOne[$i]=$i;
+        $min[$i]='';
+        $minAll[$i]='';
+        $minOne[$i]='';
+        foreach ($statusList as $statColumnCode => $statColumnValue) {
+          $j++;
+          //$min[$j]=$j;
+          if ($crossArray[$statLineCode][$statColumnCode]!="NO") {
+            if ($crossArray[$statLineCode][$statColumnCode]=="ALL") {
+              $styleLine='solid';
+            } else {
+              $styleLine=$dottedStyle;
+            }      
+            if ($i<$j) {
+              $max[$i]=$j;
+              if ($crossArray[$statLineCode][$statColumnCode]=="ALL") {
+                $maxAll[$i]=$j; 
+              } else {
+                $maxOne[$i]=$j; 
+              }
+              for ($t=$i+1;$t<$j;$t++) {
+                $borderLeft[$t][$j]='2px ' . $styleLine . ' ' . $statusColorList[$statLineCode];
+                $sepLeft[$t][$j]='2px ' . $styleLine . ' ' . $statusColorList[$statLineCode];
+              }
+              $sepLeft[$i][$j]='2px ' . $styleLine . ' ' . $statusColorList[$statLineCode];
+            } else if ($i>$j) {
+              if ($min[$i]=='') {
+                $min[$i]=$j;
+                $minOne[$i]=$j;
+              }
+              if ($crossArray[$statLineCode][$statColumnCode]=="ALL") {
+                if ($minAll[$i]=='') {
+                  $minAll[$i]=$j;
+                }
+              } 
+              for ($t=($j+1);$t<=$i;$t++) {
+                if (! isset($borderRight[$t][$j])) {
+                  $borderRight[$t][$j]='2px ' . $styleLine . ' ' . $statusColorList[$statLineCode];
+                }
+                if (! isset($sepRight[$t-1][$j])) {
+                  $sepRight[$t-1][$j]='2px ' . $styleLine . ' ' . $statusColorList[$statLineCode];
+                }
+              }
+              //$sepRight[$j-1][$i-1]='2px ' . $styleLine . ' ' . $statusColorList[$statLineCode];
+            }
+          }
+        } 
+      }
+      $result.='<table style="margin:0; spacing:0; padding:0; background-color:#FFFFFF">';
+      $result.='<tr><td colspan="' . (count($statusList)*2+1) .'"><div style="height: ' . $sepHeight . 'px;"></div></td></tr>';
+      $i=0;
+      foreach($statusList as $idL=>$nameL) {
+        $i++;
+        $result.='<tr>';
+        $result.='<td><div style="width:' . $sepWidth . 'px">' . '</div></td>'; 
+        $j=0;
+        foreach($statusList as $idC=>$nameC) {
+          $j++;
+          $colorI=$statusColorList[$idL];
+          if (! $colorI or $colorI=='#FFFFFF') {
+            $colorI="#000000";
+          }
+          if ($idL==$idC) {
+            $result.='<td style="border:2px solid ' . $colorI . ';">';
+            $result.='<div style="text-align:center; width:' . $width . 'px;height: ' . $height . 'px;">' . $nameL . '</div>';
+          } else if ($i<$j) {
+            $border='';
+            $arrow="";
+            if ($max[$i]>$j) {
+              $form=$dottedStyle;
+              if ($maxAll[$i]>$j) {
+                $form='solid';
+              }
+              $border.='border-bottom:2px ' . $form . ' ' . $colorI . ';';           
+            }
+            if (isset($borderLeft[$i][$j])) {
+              $border.='border-left:' . $borderLeft[$i][$j] . ';';
+              //$arrow=$arrowImg;
+            }
+            $result.='<td style="' . $border . '">';
+            $result.='<div style="width:' . $width . 'px;height: ' . $height . 'px;">' . $arrow . '</div>';
+          } else {
+            $border='';
+            $arrow="";
+            if ($min[$i] and $min[$i]<=$j) {
+              $form=$dottedStyle;
+              if ($minAll[$i] and $minAll[$i]<=$j) {
+                $form='solid';
+              }
+              $border.='border-bottom:2px ' . $form . ' ' . $colorI . ';';            
+            }
+            if (isset($borderRight[$i][$j])) {
+              $border.='border-left:' . $borderRight[$i][$j] . ';';
+              //$arrow=$arrowImg;
+            }
+            $result.='<td style="' . $border . '">';
+            $result.='<div style="width:' . $width . 'px;height: ' . $height . 'px;">' . $arrow . '</div>';
+          }
+          $result.='</td>';
+          if ($i<=$j and $max[$i]>$j) {
+            $border='border-bottom:2px ' . $dottedStyle . ' ' . $colorI . ';';
+            if ($maxAll[$i]>$j) {
+              $border='border-bottom:2px solid ' . $colorI . ';';
+            }
+            $result.='<td  style="' . $border . '"><div style="width:' . $sepWidth . 'px;height: ' . $height . 'px;"></div></td>';
+          } else if ($j<$i and $min[$i] and $min[$i]<=$j) {
+            $border='border-bottom:2px ' . $dottedStyle . ' ' . $colorI . ';';
+            if ($minAll[$i] and $minAll[$i]<=$j) {
+              $border='border-bottom:2px solid ' . $colorI . ';';
+            }
+            $result.='<td  style="' . $border . '"><div style="width:' . $sepWidth . 'px;height: ' . $height . 'px;"></div></td>';
+          } else {
+            $result.='<td><div style="width:' . $sepWidth . 'px;height: ' . $height . 'px;"></div></td>';
+          } 
+        }
+        $result.='</tr>';
+        $j=0;
+        $result.='<tr>';
+        $result.='<td><div style="width:' . $sepWidth . 'px; height: ' . $sepHeight . 'px;">' . '</div></td>'; 
+        foreach($statusList as $idC=>$nameC) {
+          $j++;
+          $border='';
+          $arrow="";
+          if (isset($sepLeft[$i][$j])){
+            $border.='border-left:' . $sepLeft[$i][$j] . ';';
+            if ($i==$j-1) {
+              $arrow=$arrowDownImg;
+            }
+          }
+          if (isset($sepRight[$i][$j])){
+            $border.='border-left:' . $sepRight[$i][$j] . ';';
+            if ($i==$j) {
+              $arrow=$arrowUpImg;
+            }
+          }
+          $result.='<td style="' . $border . '"><div style="height: ' . $sepHeight . 'px;width:' . $sepWidth . 'px;position: relative;">' . $arrow . '</div></td>';
+          $result.='<td><div style="height: ' . $sepHeight . 'px;width:' . $sepWidth . 'px;"></div></td>';
+        }
+        $result.='</tr>';
+        
+      }
+
+      $result.='</table>';
+    }
+    
     return $result;
   }
   

@@ -83,19 +83,9 @@ $paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${sta
 $paramMailShowDetail = 'true';
 // New parameters V1.3.0
 $defaultTheme = 'blue';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+// New parameters V1.5.0
+$currency = '€';
+$currencyPosition = 'after';
 
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';
-
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';
-// New parameters V1.4.0
-$paramReportTempDirectory = '../files/report/';

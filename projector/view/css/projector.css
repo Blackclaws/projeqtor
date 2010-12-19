@@ -193,7 +193,7 @@ html, body {
 
 #wait, #waitLogin {
   position: absolute;
-  background-image: url(images/spinner04.gif); background-repeat: no-repeat;
+  background-image: url(images/spinner10.gif); background-repeat: no-repeat;
   border: 0px solid #555555;
   margin: -25px -25px;
   height: 50px; width: 50px;
@@ -607,6 +607,19 @@ label, .label {
 }
 .ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover {
   background-color: #ffffaa;
+}
+
+.wfUpArrow {
+  opacity:0.6;filter:alpha(opacity=60);
+  width:7px; height:4px; 
+  background: url(images/grid_sort_up.gif) no-repeat;
+  position:absolute; left:-4px; top:0px;
+}
+.wfDownArrow {
+  opacity:0.6;filter:alpha(opacity=60);
+  width:7px; height:4px; 
+  background: url(images/grid_sort_down.gif) no-repeat;
+  position:absolute; left:-4px; bottom:0px;
 }
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */

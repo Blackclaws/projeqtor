@@ -74,6 +74,20 @@
     var refreshUpdates="YES";
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
+      <?php 
+      if (isset($_SESSION['hideMenu'])) {
+        if ($_SESSION['hideMenu']!='NO') {
+          echo "menuHidden=true;";
+          echo "menuShowMode='" . $_SESSION['hideMenu'] . "';";
+        }
+      }
+      if (isset($_SESSION['switchedMode'])) {
+        if ($_SESSION['switchedMode']!='NO') {
+          echo "switchedMode=true;";
+          echo "switchListMode='" . $_SESSION['switchedMode'] . "';";
+        }
+      }
+      ?>
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo i18n('welcomeMessage');?>");
       //dojo.byId('body').className='<?php echo getTheme();?>';
@@ -89,21 +103,47 @@
         }  
       };
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
-
-      loadContent("today.php","centerDiv");
-      hideWait();
-      //window.onbeforeunload = function() { return beforequit(); };
+      <?php 
+      $firstPage="today.php";
+      if (array_key_exists("directAccessPage",$_REQUEST)) {
+        $firstPage=$_REQUEST['directAccessPage'];
+        if (array_key_exists("menuActualStatus",$_REQUEST)) {
+          $menuActualStatus=$_REQUEST['menuActualStatus'];
+          if ($menuActualStatus!='visible') {
+            echo 'hideShowMenu();';
+          }
+        }  
+        for ($i=1;$i<=9;$i++) {
+          $pName='p'.$i.'name';
+          $pValue='p'.$i.'value';
+          if (array_key_exists($pName,$_REQUEST) and array_key_exists($pValue,$_REQUEST) ) {
+            $firstPage.=($i==1)?'?':'&';
+            $firstPage.=$_REQUEST[$pName]."=".$_REQUEST[$pValue];
+          } else {
+            break;
+          }
+        }
+      }
+      ?>
+      dojo.byId("loadingDiv").style.visibility="hidden";
+      dojo.byId("loadingDiv").style.display="none";
+      dojo.byId("mainDiv").style.visibility="visible";        
+      loadContent("<?php echo $firstPage;?>","centerDiv");
     }); 
   </script>
 </head>
 
 <body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
-<div id="mainDiv" >
+<div id="loadingDiv" class="<?php echo getTheme();?> background" 
+ style="position:relative; visibility: visible; display:block; width:100%; height:100%; ">
+ <table style="width:100%; height:100%; text-align:center; vertical-align:middle;"><tr><td>Loading ...</td></tr></table>
+</div>
+<div id="mainDiv" style="visibility: hidden;">
   <div id="wait" >
   </div>
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
-     <div id="menuBarShow" onMouseover="tempShowMenu()"><div id="menuBarIcon" valign="middle"></div></div>       
+     <div id="menuBarShow" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');"><div id="menuBarIcon" valign="middle"></div></div>       
       <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
           <script> 
@@ -151,7 +191,12 @@
                 <?php echo i18n("buttonHideMenu");?>
               </button>
               <button id="buttonSwitchMode" style="font-size: 90%;" dojoType="dijit.form.Button" onclick="switchMode();">
-                <?php echo i18n("buttonSwitchedMode");?>
+                <?php 
+                  if (isset($_SESSION['switchedMode']) and $_SESSION['switchedMode']!='NO') {
+                    echo i18n("buttonStandardMode");
+                  } else {
+                    echo i18n("buttonSwitchedMode");
+                  }?>
               </button>                
             </div>
           </td>
@@ -488,14 +533,45 @@
                <label for="assignmentIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div dojoType="dojo.data.ItemFileReadStore" jsId="resourceStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
-               </div>
+
               <select dojoType="dijit.form.FilteringSelect" 
                 id="assignmentIdResource" name="assignmentIdResource"
-                class="input" value="" store="resourceStore"
+                class="input" value="" 
+                onChange="assignmentChangeResource();"
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdResource')));?>" >
                  <?php htmlDrawOptionForReference('idResource', null, null, true);?>
                </select>  
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentIdRole" ><?php echo i18n("colIdRole");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <select dojoType="dijit.form.FilteringSelect" 
+                id="assignmentIdRole" name="assignmentIdRole"
+                class="input" value="" 
+                onChange="assignmentChangeRole();" >                
+                 <?php htmlDrawOptionForReference('idRole', null, null, true);?>
+            
+               </select>  
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentDailyCost" ><?php echo i18n("colCost");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <?php echo ($currencyPosition=='before')?$currency:''; ?>
+               <input id="assignmentDailyCost" name="assignmentDailyCost" value="" 
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0}" 
+                 style="width:97px" 
+                 
+                 readonly />
+               <?php echo ($currencyPosition=='after')?$currency:'';
+                     echo " / ";
+                     echo i18n('shortDay'); ?>
              </td>
            </tr>
            <tr>
@@ -700,6 +776,77 @@
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogDependencySubmit" onclick="saveDependency();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="dialogResourceCost" dojoType="dijit.Dialog" title="<?php echo i18n("dialogResourceCost");?>">
+  <table>
+    <tr>
+      <td>
+       <form dojoType="dijit.form.Form" id='resourceCostForm' jsid='resourceCostForm' name='resourceCostForm' onSubmit="return false;">
+         <input id="resourceCostId" name="resourceCostId" type="hidden" value="" />
+         <input id="resourceCostIdResource" name="resourceCostIdResource" type="hidden" value="" />
+         <input id="resourceCostFunctionList" name="resourceCostFunctionList" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="resourceCostIdRole" ><?php echo i18n("colIdRole");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <select dojoType="dijit.form.FilteringSelect" 
+                id="resourceCostIdRole" name="resourceCostIdRole"
+                class="input" value=""
+                onChange="resourceCostUpdateRole();"
+                missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdRole')));?>" >
+                 <?php htmlDrawOptionForReference('idRole', null, null, true);?>
+               </select>  
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="resourceCostValue" ><?php echo i18n("colCost");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td><nobr>
+               <?php echo ($currencyPosition=='before')?$currency:''; ?>
+               <input id="resourceCostValue" name="resourceCostValue" value="" 
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0}" 
+                 style="width:97px; text-align: right;" 
+                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colCost')));?>" 
+                 required="true" />
+               <?php echo ($currencyPosition=='after')?$currency:'';
+                     echo " / ";
+                     echo i18n('shortDay'); ?>
+               </nobr>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="resourceCostStartDate" ><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="resourceCostStartDate" name="resourceCostStartDate" value="" 
+                 dojoType="dijit.form.DateTextBox" 
+                 style="width:97px" class="input"
+               >
+               </div>
+             </td>    
+           </tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogResourceCostAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogResourceCost').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" onclick="saveResourceCost();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

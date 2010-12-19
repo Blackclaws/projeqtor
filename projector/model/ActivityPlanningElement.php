@@ -9,7 +9,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_8_4 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', 'startDate', 'endDate', 'duration', 'work');
+  public $_tab_8_5 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', 'startDate', 'endDate', 'duration', 'work', 'cost');
   public $initialStartDate;
   public $validatedStartDate;
   public $_void_13;
@@ -42,6 +42,12 @@ class ActivityPlanningElement extends PlanningElement {
   public $leftWork;
   public $_void_46;
   public $_void_47;
+  public $_void_51;
+  public $validatedCost;
+  public $assignedCost;
+  public $plannedCost;
+  public $realCost;
+  public $leftCost;
   public $wbs;
   public $wbsSortable;
   public $topId;

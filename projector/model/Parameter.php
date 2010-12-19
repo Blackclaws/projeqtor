@@ -52,13 +52,36 @@ class Parameter extends SqlElement {
       $colScript .= '  changeLocale(this.value);';
       $colScript .= '</script>';
     } else if ($colName=="defaultProject") {
-      //nothing
-    /* } else if ($colName=="refreshUpdates") {
+      //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?id=defaultProject&value=" + this.value;});';
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  newValue=this.value;';
-      $colScript .= '  refreshUpdates=newValue;';
       $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
-      $colScript .= '</script>'; */            
+      $colScript .= '</script>';             
+    } else if ($colName=="hideMenu") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.value=="NO") {';
+      $colScript .= '    if (menuActualStatus!="visible") {hideShowMenu()}';
+      $colScript .= '    menuHidden=false;';
+      $colScript .= '  } else {';
+      $colScript .= '    menuHidden=true;';
+      $colScript .= '    menuShowMode=this.value;';
+      $colScript .= '  }';
+      $colScript .= '  newValue=this.value;';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '</script>';
+    } else if ($colName=="switchedMode") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.value=="NO") {';
+      $colScript .= '    switchedMode=false;';
+      $colScript .= '    dijit.byId("buttonSwitchMode").set("label",i18n("buttonSwitchedMode"));';
+      $colScript .= '  } else {';
+      $colScript .= '    switchedMode=true;';
+      $colScript .= '    switchListMode=this.value;';
+      $colScript .= '    dijit.byId("buttonSwitchMode").set("label",i18n("buttonStandardMode"));';
+      $colScript .= '  }';
+      $colScript .= '  newValue=this.value;';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '</script>';    
     } else {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  newValue=this.value;';
@@ -138,6 +161,16 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('refreshUpdatesYes'),
                     'NO'=>i18n('refreshUpdatesNo'));
         break; */
+      case 'hideMenu':
+        $list=array('NO'=>i18n('displayNo'),
+                    'AUTO'=>i18n('displayYesShowOnMouse'),
+                    'CLICK'=>i18n('displayYesShowOnClick'));
+        break;
+      case 'switchedMode':
+        $list=array('NO'=>i18n('displayNo'),
+                    'AUTO'=>i18n('displayYesShowOnMouse'),
+                    'CLICK'=>i18n('displayYesShowOnClick'));
+        break;
     } 
     return $list;
   }
@@ -151,7 +184,10 @@ class Parameter extends SqlElement {
                            "defaultProject"=>"list",
                            "displayAttachement"=>"list",
                            "displayNote"=>"list",
-                           "displayHistory"=>"list");
+                           "displayHistory"=>"list",
+                           "hideMenu"=>"list",
+                           "switchedMode"=>"list"                   
+        );
         break;
     }
     return $parameterList;

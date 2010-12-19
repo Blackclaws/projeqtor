@@ -463,42 +463,37 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
 	      vLeftTable += 
 	        '  <TD class="ganttName"><img style="width:16px" src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
-	        '  <TD class="ganttName" nowrap><NOBR>';
+	        '  <TD class="ganttName" nowrap>';
 				vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
 				// tab the name depending on level
 				var levl=vTaskList[i].getLevel();
 				var levlWidth = (levl-1) * 16;
 				vLeftTable +='<table><tr><td>';
-				vLeftTable += '<span style="float: left;width:' + levlWidth + 'px;">&nbsp;'
-				//for(j=1; j<levl; j++) {
-	      //  vLeftTable += '&nbsp&nbsp&nbsp&nbsp';
-	      //  vLeftTable += '_';
-	      //}
-	      vLeftTable += '</span>';
-				vLeftTable +='</td><td nowrap>';
+				vLeftTable += '<div style="width:' + levlWidth + 'px;">&nbsp;</div>';
+				vLeftTable +='</td><td>';
 	      if( vTaskList[i].getGroup()) {
 	        if( vTaskList[i].getOpen() == 1) {
 	          vLeftTable += '<div id="group_' + vID + '" class="ganttExpandOpened"' 
-	          + 'style="float: left; width:16px; height:13px;"'
+	          + 'style="width:16px; height:13px;"'
 	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
 	          +'</div>' ;
 	        } else {
 	          vLeftTable += '<div id="group_' + vID + '" class="ganttExpandClosed"' 
-	          + 'style="float: left; width:16px; height:13px;"'
+	          + 'style="width:16px; height:13px;"'
 	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
 	          +'&nbsp;&nbsp;&nbsp;&nbsp;</div>' ;
 	        } 
 	      } else {
-	      	vLeftTable += '<div style="float: left; width:16px; height:13px;">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+	      	vLeftTable += '<div style="width:16px; height:13px;">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 	      }
-	      vLeftTable +='</td><td nowrap><NOBR>';
-	      var nameLeftWidth= vNameWidth - 16 - levlWidth - 18;
+	      vLeftTable +='</td><td>';
+	      var nameLeftWidth= vNameWidth - 16 - levlWidth - 18 ;
 	      vLeftTable += 
 	        '<div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; '
-	      	+'width:'+ nameLeftWidth +'px;" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
-	        +' class="namePart' + vRowType + '">' + vTaskList[i].getName() + '</div>' ;
-	      vLeftTable +='</NOBR></td></tr></table>';
-	      vLeftTable +='</NOBR></TD>';
+	      	+'width:'+ nameLeftWidth +'px;" onclick="JSGantt.taskLink(\'' + vTaskList[i].getLink() + '\');"' 
+	        +' xclass="namePart' + vRowType + '"><NOBR>' + vTaskList[i].getName() + '</NOBR></div>' ;
+	      vLeftTable +='</td></tr></table>';
+	      vLeftTable +='</TD>';
 	        // BABYNUS : change in taskLink parameters
 			  if(vShowRes ==1) {
 			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 

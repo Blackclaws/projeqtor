@@ -31,10 +31,10 @@
   <table align="center">
     <tr>
       <td rowspan="2" width="140px" valign="top">
-        <img src="img/logoFull.gif"></img>
+        <img src="img/logoFull.gif" />
       </td>
       <td  width="550px">
-        <img src="img/titleFull.gif"></img>
+        <img src="img/titleFull.gif" />
       </td>
     <tr height="200px">
       <td align="left">

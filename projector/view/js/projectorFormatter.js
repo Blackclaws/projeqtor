@@ -20,6 +20,10 @@ function formatDate(date) {
 	day=(day<10)?"0"+day:day;
 	return year + "-" + month + "-" + day;
 }
+function getDate(dateString) {
+	if (dateString.length!=10) return null;
+	return new Date(dateString.substring(0,4), parseInt(dateString.substring(5,7))-1, dateString.substring(8));
+}
 
 // ============================================================================
 // = FORMATTERS (available for dojox.DataGrid formating)

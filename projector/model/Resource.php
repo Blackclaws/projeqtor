@@ -20,7 +20,9 @@ class Resource extends SqlElement {
   public $mobile;
   public $fax;
   public $idle;
-  //public $_col_2_2;
+  public $_col_2_2_FunctionCost;
+  public $idRole;
+  public $_ResourceCost=array();
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -41,6 +43,9 @@ class Resource extends SqlElement {
                                               'userName'=>'name');
 
   private static $_databaseCriteria = array('isResource'=>'1');
+  
+  private static $_colCaptionTransposition = array('idRole'=>'mainRole'
+  );
   
   /** ==========================================================================
    * Constructor
@@ -103,6 +108,14 @@ class Resource extends SqlElement {
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
+  }
+  
+    /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
   }
   
 // ============================================================================**********
@@ -258,5 +271,24 @@ class Resource extends SqlElement {
     }
     return $result;
   }
+  
+  public function getResourceCost() {
+    $result=array();
+    $rc=new ResourceCost();
+    $crit=array('idResource'=>$this->id);
+    $rcList=$rc->getSqlElementsFromCriteria($crit, false, null, 'idRole, startDate');
+    return $rcList;
+  }
+  public function getActualResourceCost($idRole=null) {
+    if (! $this->id) return null;
+    if (! $idRole) $idRole=$this->idRole;
+    $where="idResource='" . $this->id . "' and idRole='" . $idRole . "' and endDate is null";
+    $rc=new ResourceCost();
+    $rcL = $rc->getSqlElementsFromCriteria(null, false, $where);
+    if (count($rcL)==1) {
+      return $rcL[0]->cost;
+    }
+    return null;
+  }  
 }
 ?>

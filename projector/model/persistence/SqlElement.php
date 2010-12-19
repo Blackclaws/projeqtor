@@ -46,12 +46,18 @@ abstract class SqlElement {
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Risk"=>"control", 
                                   "Ticket"=>"control"),
+    "DecisionType" =>       array("Decision"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
+    "Function" =>           array("Affectation"=>"control", 
+                                  "Assignment"=>"control",
+                                  "Resource"=>"control",
+                                  "ResourceCost"=>"control"),
     "Issue" =>              array("Attachement"=>"cascade",
                                   "Note"=>"cascade",
                                   "Link"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
+    "MeetingType" =>        array("Meeting"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
     "Milestone" =>          array("Attachement"=>"cascade",
@@ -76,7 +82,11 @@ abstract class SqlElement {
                                   "Risk"=>"control", 
                                   "Ticket"=>"control",
                                   "Work"=>"control",
-                                  "Dependency"=>"cascade"),
+                                  "Dependency"=>"cascade",
+                                  "Decision"=>"control",
+                                  "Meeting"=>"control",
+                                  "Question"=>"control"),
+    "QuestionType" =>       array("Question"=>"control"),
     "Resource" =>           array("Action"=>"control", 
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
@@ -85,7 +95,11 @@ abstract class SqlElement {
                                   "Milestone"=>"control", 
                                   "Risk"=>"control", 
                                   "Ticket"=>"control",
-                                  "Work"=>"control"),
+                                  "Work"=>"control",
+                                  "Decision"=>"control",
+                                  "Meeting"=>"control",
+                                  "Question"=>"control",
+                                  "ResourceCost"=>"delete"),
     "Risk" =>               array("Attachement"=>"cascade",
                                   "Note"=>"cascade",
                                   "Link"=>"cascade"),
@@ -96,7 +110,11 @@ abstract class SqlElement {
                                   "Issue"=>"control",
                                   "Milestone"=>"control", 
                                   "Risk"=>"control", 
-                                  "Ticket"=>"control"),
+                                  "Ticket"=>"control",
+                                  "Decision"=>"control",
+                                  "Meeting"=>"control",
+                                  "Question"=>"control",
+                                  "StatusMail"=>"cascade"),
     "Team" =>               array("Resource"=>"control"),
     "Ticket" =>             array("Attachement"=>"cascade",
                                   "Note"=>"cascade"),
@@ -112,7 +130,10 @@ abstract class SqlElement {
                                   "Parameter"=>"cascade", 
                                   "Project"=>"control", 
                                   "Risk"=>"control", 
-                                  "Ticket"=>"control"),
+                                  "Ticket"=>"control",
+                                  "Decision"=>"control",
+                                  "Meeting"=>"control",
+                                  "Question"=>"control"),
     "Workflow" =>            array("WorkflowStatus"=>"cascade", 
                                   "TicketType"=>"control", 
                                   "ActivityType"=>"control", 
@@ -865,6 +886,8 @@ abstract class SqlElement {
                   $linkClass=substr($colName,5);
                 }
                 $this->{$col_name}=Link::getLinksForObject($this,$linkClass);
+              } else if ($colName=="ResourceCost") {
+                $this->{$col_name}=$this->getResourceCost();
               } else if (substr($colName,0,10)=="Dependency") {
                 $depType=null;
                 $crit=Array();
@@ -876,7 +899,7 @@ abstract class SqlElement {
                   } else {
                     $crit=Array("SuccessorRefType"=>get_class($this),
                                 "SuccessorRefId"=>$this->id );
-                  }  
+                  }
                 }
                 $dep=new Dependency();
                 $this->{$col_name}=$dep->getSqlElementsFromCriteria($crit, false);

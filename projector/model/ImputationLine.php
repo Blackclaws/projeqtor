@@ -372,7 +372,7 @@ class ImputationLine {
               echo '</div>';          
             }
             echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-            echo ' constraints="{min:0,max:9.00,pattern:\'0.0#\'}"'; 
+            echo ' constraints="{min:0}"'; 
             echo '  style="width: 45px; text-align: center;" ';
             echo ' trim="true" maxlength="4" class="input" ';
             echo ' id="workValue_' . $nbLine . '_' . $i . '"';
@@ -402,7 +402,7 @@ class ImputationLine {
       if ($line->imputable) {
         if (!$print) {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-          echo ' constraints="{pattern:\'###0.0#\'}"'; 
+          echo ' constraints="{min:0}"'; 
           echo '  style="width: 60px; text-align: center;" ';
           echo ' trim="true" class="input" ';
           echo ' id="leftWork_' . $nbLine . '"';
@@ -422,7 +422,7 @@ class ImputationLine {
       if ($line->imputable) {
         if (!$print) {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-          echo ' constraints="{pattern:\'###0.0#\'}"'; 
+          echo ' constraints="{}"'; 
           echo '  style="width: 60px; text-align: center;" ';
           echo ' trim="true" class="displayTransparent" readonly="true"';
           echo ' id="plannedWork_' . $nbLine . '"';
@@ -458,7 +458,7 @@ class ImputationLine {
       echo '"><NOBR>'; 
       if (!$print) {
         echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-        echo ' constraints="{pattern:\'###0.0#\'}"'; 
+        echo ' constraints="{}"'; 
         echo '  style="width: 45px; text-align: center;" ';
         echo ' trim="true" class="displayTransparent" ';
         echo ' id="colSumWork_' . $i . '"';

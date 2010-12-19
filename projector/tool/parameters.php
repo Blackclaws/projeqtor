@@ -32,19 +32,19 @@ $paramDbPrefix='';                              // Database prefix for table nam
 $paramMailSender='default@toolware.fr';         // eMail From addressee {a valid email}
 $paramMailReplyTo='default@toolware.fr';        // eMail address to reply to {a valid email}
 $paramAdminMail='default@ltoolware.fr';         // eMail of administrator {a valid email}
-// NEW IN V1.2.0
-  $paramMailSmtpServer='localhost';             // SMTP Server (default is localhost)
-  $paramMailSmtpPort='25';                      // SMTP Port (default is 25)
-  $paramMailSendmailPath=null;                  // sendmail program path, to set only on issue to send mails
-  $paramMailTitle='[Project\'Or RIA] ${item} #${id} moved to status "${status}"'; // Title of the mail 
-  $paramMailMessage='The status of ${item} #${id} [${name}] has changed to "${status}"'; // body of the mail
-  // for $paramMailTitle and $paramMailMessage, subtituation variables can be used :
-  // ${id} : the id of the element
-  // ${item} : the class of the element
-  // ${status} : the new status of the element
-  // ${name} : the name of the element
-  $paramMailShowDetail='true'; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
-// NEW IN V1.2.0
+// NEW IN V1.2.0 - Start
+$paramMailSmtpServer='localhost';             // SMTP Server (default is localhost)
+$paramMailSmtpPort='25';                      // SMTP Port (default is 25)
+$paramMailSendmailPath=null;                  // sendmail program path, to set only on issue to send mails
+$paramMailTitle='[Project\'Or RIA] ${item} #${id} moved to status "${status}"'; // Title of the mail 
+$paramMailMessage='The status of ${item} #${id} [${name}] has changed to "${status}"'; // body of the mail
+// for $paramMailTitle and $paramMailMessage, subtituation variables can be used :
+// ${id} : the id of the element
+// ${item} : the class of the element
+// ${status} : the new status of the element
+// ${name} : the name of the element
+$paramMailShowDetail='true'; // Should Detail of item (pre-formated) be displayed in body, after Mail Message
+// NEW IN V1.2.0 - End
 
 // === user management
 $paramDefaultPassword='projector';              // default password {any string}
@@ -62,9 +62,9 @@ $paramDefaultTimezone="Europe/Paris";           // default time zone. List can b
 $paramFadeLoadingMode='false';                  // Setup the way frames are refreshed : with fading or not {'true', 'false'}
 $paramRowPerPage='50';                          // Number of row per page on main Grid view {any integer}
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
-// NEW IN V1.3.0
-  $defaultTheme = 'blue';
-// NEW IN V1.3.0
+// NEW IN V1.3.0 - Start
+$defaultTheme = 'blue';
+// NEW IN V1.3.0 - End
 
 // === attachement
 $paramAttachementDirectory='/home/projector/files'; // Directory to store Attachements. Set to empty string to disable attachement
@@ -76,5 +76,12 @@ $logFile='/home/projector/logs/projector_${date}.log'; // Log file name. May con
 $logLevel=2;                                    // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
 
 // === defaut values
-$defaultTheme='green';                          // default Display theme : blue, green , orange, red, white, grey
- 
+
+// NEW IN V1.4.0 - Start
+$paramReportTempDirectory = '../files/report/';
+// NEW IN V1.4.0 - End
+
+// NEW IN V1.5.0 - Start
+$currency = '€';
+$currencyPosition = 'after';
+// NEW IN V1.5.0 - End

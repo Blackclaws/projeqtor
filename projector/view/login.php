@@ -37,7 +37,7 @@
       saveResolutionToSession();
       saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
-      dojo.byId('login').focus();
+      dojo.byId('login').focus(); 
       <?php 
         //echo "dojo.byId('body').className='" . getTheme() . "';";
       ?>
@@ -66,8 +66,10 @@
              <script type="dojo/method" event="onSubmit" >
               dojo.byId('login').focus();
               changePassword=false;
-    		  loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
-    		  return false;        
+              quitConfirmed=true; 
+              noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
+    		      loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
+    		      return false;        
             </script>
             <table>
               <tr>     

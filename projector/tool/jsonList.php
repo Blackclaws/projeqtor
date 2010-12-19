@@ -91,6 +91,31 @@
         echo '{id:"' . $id . '", name:"'. $name . '"}';
         $nbRows+=1;
       }
+    } else if ($type=='listRoleResource') {
+      $ctrl="";
+      $idR=$_REQUEST['idResource'];
+      $resource=new Resource($idR);
+      $nbRows=0;
+      if ($resource->idRole) {
+        echo '{id:"' . $resource->idRole . '", name:"'. SqlList::getNameFromId('Role', $resource->idRole) . '"}';
+        $nbRows+=1;
+        $ctrl.='#' . $resource->idRole . '#';
+      }
+
+      $where="idResource='" . $idR . "' and endDate is null";
+      $where.=" and idRole <>'" . $resource->idRole . "'";
+      $rc=new ResourceCost();
+      $lstRoles=$rc->getSqlElementsFromCriteria(null, false, $where);
+      // return result in json format
+      foreach ($lstRoles as $resourceCost) {
+        $key='#' . $resource->idRole . '#';
+        if (strpos($ctrl,$key)===false) {
+          if ($nbRows>0) echo ', ';
+          echo '{id:"' . $resourceCost->idRole . '", name:"'. SqlList::getNameFromId('Role', $resourceCost->idRole) . '"}';
+          $nbRows+=1;
+          $ctrl.=$key;
+        }
+      }
     }
     echo ' ] }';
 ?>

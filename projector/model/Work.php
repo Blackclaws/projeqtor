@@ -18,6 +18,8 @@ class Work extends SqlElement {
   public $week;
   public $month;
   public $year;
+  public $dailyCost;
+  public $cost;
 
   public $_noHistory;
   
@@ -106,6 +108,21 @@ class Work extends SqlElement {
     $this->month=$year . $month; 
     $this->year=$year;
     $this->week=$year . weekNumber($workDate);
+  }
+  
+  public function save() {
+    if ($this->dailyCost==null) {
+      $ass=new Assignment($this->idAssignment);
+      $where="idResource='" . $this->idResource . "' and idRole='" . $ass->idRole . "'"
+       . " and (startDate is null or startDate<='" . $this->workDate . "')"
+       . " and (endDate is null or endDate>='" . $this->workDate . "')";
+      $order="startDate asc";
+      $rc=new ResourceCost();
+      $rcList=$rc->getSqlElementsFromCriteria(null, false, $where, $order);
+      $this->dailyCost=(count($rcList)>0)?$rcList[0]->cost:0;
+    }
+    $this->cost=$this->dailyCost*$this->work;
+    return parent::save();
   }
 }
 ?>

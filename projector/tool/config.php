@@ -155,8 +155,13 @@ $ctrls['DefaultTimezone'] = '';
 $param['Currency'] = '€';                              
 $label['Currency'] = "Currency";
 $value['Currency'] = "currency displayed for costs";
-$pname['Currency'] = 'costCurrency';
+$pname['Currency'] = 'currency';
 $ctrls['Currency'] = '';
+$param['CurrencyPosition'] = 'after';                              
+$label['CurrencyPosition'] = "Currency position";
+$value['CurrencyPosition'] = "position of currency displayed for costs";
+$pname['CurrencyPosition'] = 'currencyPosition';
+$ctrls['CurrencyPosition'] = '=after=before=none=';
 
 $param['crlf05']='';
 $label['crlf05']='crlf';

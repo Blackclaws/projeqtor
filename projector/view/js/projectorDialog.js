@@ -443,11 +443,14 @@ function addAssignment () {
 	}	
 	var prj=dijit.byId('idProject').get('value');
 	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
-		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj});
+		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
+	dijit.byId('assignmentIdResource').store.fetch();
 	dojo.byId("assignmentId").value="";
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
 	dijit.byId("assignmentIdResource").set('value',null);
+	dijit.byId("assignmentIdRole").set('value',null);
+	dijit.byId("assignmentDailyCost").set('value',null);
 	dojo.byId("assignmentRate").value='100';
 	dojo.byId("assignmentAssignedWork").value='0';
 	dojo.byId("assignmentAssignedWorkInit").value='0';
@@ -458,6 +461,7 @@ function addAssignment () {
 	dojo.byId("assignmentComment").value='';
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
 	dijit.byId("assignmentIdResource").set('disabled',false);
+	dijit.byId("assignmentIdRole").set('disabled',false);
 	dijit.byId("dialogAssignment").show();
 }
 
@@ -465,19 +469,30 @@ function addAssignment () {
  * Display a edit Assignment Box
  * 
  */
-function editAssignment (assignmentId, idResource, rate, assignedWork, realWork, leftWork, comment) {
+var editAssignmentLoading=false;
+function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, comment) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	editAssignmentLoading=true;
 	var prj=dijit.byId('idProject').get('value');
+	
 	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
 		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj
 		       +'&selected=' + idResource});
+	dijit.byId('assignmentIdResource').store.fetch();
+	dijit.byId("assignmentIdResource").set("value",idResource);
+	
+	//dijit.byId('assignmentIdRole').store = new dojo.data.ItemFileReadStore({
+  //  url: '../tool/jsonList.php?listType=listRoleResource&idResource='+idRole});
+	//dijit.byId('assignmentIdRole').store.fetch();
+	dijit.byId("assignmentIdRole").set("value",idRole);
+	
 	dojo.byId("assignmentId").value=assignmentId;
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
-	dijit.byId("assignmentIdResource").set("value",idResource);
+	dijit.byId("assignmentDailyCost").set('value',cost);
 	dojo.byId("assignmentRate").value=rate;
 	dojo.byId("assignmentAssignedWork").value=assignedWork;
 	dojo.byId("assignmentAssignedWorkInit").value=dojo.number.parse(assignedWork);
@@ -490,9 +505,12 @@ function editAssignment (assignmentId, idResource, rate, assignedWork, realWork,
 	dijit.byId("dialogAssignment").show();
 	if (dojo.number.parse(realWork)==0) {
 		dijit.byId("assignmentIdResource").set('disabled',false);
+		dijit.byId("assignmentIdRole").set('disabled',false);
 	} else {
 		dijit.byId("assignmentIdResource").set('disabled',true);
+		dijit.byId("assignmentIdRole").set('disabled',true);
 	}
+	setTimeout("editAssignmentLoading=false",1000);
 }
 
 /**
@@ -550,7 +568,7 @@ function saveAssignment() {
     showAlert(i18n("alertInvalidForm"));
   }
 }
-
+ 
 /**
  * Display a delete Assignment Box
  * 
@@ -573,6 +591,41 @@ function removeAssignment (assignmentId, realWork, resource) {
 	showConfirm (msg, actionOK);
 }
 
+/* function assignmentChangeResource() {
+	return;
+	if (editAssignmentLoading) return;
+	var idR=dijit.byId("assignmentIdResource").get("value");
+	if (! idR) {
+		dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+	    url: '../tool/jsonList.php?listType=empty'});
+		return;
+	}
+	dijit.byId('assignmentIdRole').store = new dojo.data.ItemFileReadStore({
+    url: '../tool/jsonList.php?listType=listRoleResource&idResource='+idR});
+	dijit.byId('assignmentIdRole').store.fetch();
+} */
+function assignmentChangeResource() {
+	if (editAssignmentLoading) return;
+	var idResource=dijit.byId("assignmentIdResource").get("value");
+	if (! idResource) return;
+	dijit.byId('assignmentDailyCost').set('value',null);
+	dojo.xhrGet({
+		url: '../tool/getSingleData.php?dataType=resourceRole&idResource=' + idResource,
+		handleAs: "text",
+		load: function (data) {dijit.byId('assignmentIdRole').set('value',data);}
+	});
+}
+function assignmentChangeRole() {
+	if (editAssignmentLoading) return;
+	var idResource=dijit.byId("assignmentIdResource").get("value");
+	var idRole=dijit.byId("assignmentIdRole").get("value");
+	if (! idResource || ! idRole ) return;
+	dojo.xhrGet({
+		url: '../tool/getSingleData.php?dataType=resourceCost&idResource=' + idResource + '&idRole=' + idRole,
+		handleAs: "text",
+		load: function (data) {dijit.byId('assignmentDailyCost').set('value',data);}
+	});
+}
 //=============================================================================
 //= Dependency
 //=============================================================================
@@ -989,6 +1042,78 @@ function reportSelectReport(idReport) {
 }
 
 //=============================================================================
+//= Resource Cost
+//=============================================================================
+
+function addResourceCost(idResource, idRole, funcList) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("resourceCostId").value="";
+	dojo.byId("resourceCostIdResource").value=idResource;
+	dojo.byId("resourceCostFunctionList").value=funcList;
+	dijit.byId("resourceCostIdRole").setDisabled(false);
+	dijit.byId("resourceCostIdRole").set('value',((idRole)?idRole:null));
+	dijit.byId("resourceCostValue").set('value',null);
+	dijit.byId("resourceCostStartDate").set('value',null);
+	resourceCostUpdateRole();
+	dijit.byId("dialogResourceCost").show();
+}
+
+function removeResourceCost(id, idRole, nameRole, startDate) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("resourceCostId").value=id;
+	actionOK=function() {loadContent("../tool/removeResourceCost.php", "resultDiv", "resourceCostForm", true, 'resourceCost');};
+	msg=i18n('confirmDeleteResourceCost',new Array(nameRole, startDate));
+	showConfirm (msg, actionOK);
+} 
+
+function editResourceCost(id, idResource,idRole,cost,startDate,endDate) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("resourceCostId").value=id;
+	dojo.byId("resourceCostIdResource").value=idResource;
+	dijit.byId("resourceCostIdRole").setDisabled(true);
+	dijit.byId("resourceCostIdRole").set('value',idRole);
+	dijit.byId("resourceCostValue").set('value',cost);
+	var dateStartDate=getDate(startDate);
+	dijit.byId("resourceCostStartDate").set('value',dateStartDate);
+	dijit.byId("resourceCostStartDate").setDisabled(true);
+	dijit.byId("resourceCostStartDate").set('required','false');
+	dijit.byId("dialogResourceCost").show();  	
+}
+
+function saveResourceCost() {
+	var formVar = dijit.byId('resourceCostForm');
+  if(formVar.validate()){		
+  	loadContent("../tool/saveResourceCost.php", "resultDiv", "resourceCostForm", true,'resourceCost');
+  	dijit.byId('dialogResourceCost').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+
+function resourceCostUpdateRole() {
+	var funcList=dojo.byId('resourceCostFunctionList').value;
+	$key='#' + dijit.byId("resourceCostIdRole").get('value') + '#';
+	if (funcList.indexOf($key)>=0) {
+		dijit.byId("resourceCostStartDate").setDisabled(false);
+		dijit.byId("resourceCostStartDate").set('required','true');
+	} else {
+		dijit.byId("resourceCostStartDate").setDisabled(true);
+		dijit.byId("resourceCostStartDate").set('value',null);
+		dijit.byId("resourceCostStartDate").set('required','false');
+	}
+}
+
+
+//=============================================================================
 //= Misceallanous
 //=============================================================================
 
@@ -1031,6 +1156,7 @@ function refreshList(field, param, paramVal) {
 var menuHidden=false;
 var menuActualStatus='visible';
 var menuDivSize=0; 
+var menuShowMode='CLICK';
 /**
  * Hide or show the Menu (left part of the screen
  */
@@ -1041,6 +1167,9 @@ function hideShowMenu() {
 	if (menuActualStatus=='visible' || ! menuHidden) {
 		dojo.byId('menuBarShow').style.display='block';
 		menuDivSize=dojo.byId("leftDiv").offsetWidth;
+		if (menuDivSize<2) {
+			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
+		}
 		dojo.byId('leftDiv_splitter').style.display='none';
 		dijit.byId("leftDiv").resize({w: 20});
 		dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
@@ -1049,6 +1178,9 @@ function hideShowMenu() {
 	} else {
 		dojo.byId('menuBarShow').style.display='none';
 		dojo.byId('leftDiv_splitter').style.display='block';
+		if (menuDivSize<20) {
+			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
+		}
 		dijit.byId("leftDiv").resize({w: menuDivSize});
 		dijit.byId("buttonHideMenu").set('label',i18n('buttonHideMenu'));
 		menuHidden=false;
@@ -1056,7 +1188,8 @@ function hideShowMenu() {
 	}
 	dijit.byId("globalContainer").resize();	
 }
-function tempShowMenu() {
+function tempShowMenu(mode) {
+	if (mode=='mouse' && menuShowMode=='CLICK') return;
 	hideShowMenu();
 	menuHidden=true;
 }
@@ -1071,6 +1204,7 @@ function menuClick() {
 var switchedMode=false;
 var listDivSize=0;
 var switchedVisible='';
+var switchListMode='CLICK';
 function switchMode(){
 	if (! switchedMode) {
 		switchedMode=true;
@@ -1080,8 +1214,9 @@ function switchMode(){
 			  listDivSize=dojo.byId("centerDiv").offsetHeight*.4;
 			}
 			return;
+		} else {
+		  listDivSize=dojo.byId("listDiv").offsetHeight;
 		}
-		listDivSize=dojo.byId("listDiv").offsetHeight;
 		if (dojo.byId('listDiv_splitter')) {
 			dojo.byId('listDiv_splitter').style.display='none';
 		}
@@ -1101,13 +1236,17 @@ function switchMode(){
 		if (dojo.byId('listDiv_splitter')) {
 			dojo.byId('listDiv_splitter').style.display='block';
 		}
+		if (listDivSize==0) {
+		  listDivSize=dojo.byId("centerDiv").offsetHeight*.4;
+		}
 		dijit.byId("listDiv").resize({h: listDivSize});		
 		dijit.byId("mainDivContainer").resize();
 	}
 }
 
-function showList() {
+function showList(mode) {
 	//alert("showList");
+	if (mode=='mouse' && switchListMode=='CLICK') return;
 	if (! switchedMode) {
 		return;
 	}
@@ -1128,8 +1267,9 @@ function showList() {
 	dijit.byId("mainDivContainer").resize();
 	switchedVisible='list';
 }
-function hideList() {
+function hideList(mode) {
 	//alert("hideList");
+	if (mode=='mouse' && switchListMode=='CLICK') return;
 	if (! switchedMode) {
 		return;
 	}
@@ -1156,37 +1296,3 @@ function listClick() {
 	}
 	hideList();
 }
-
-/* function hideShowList() {
-	if (! dijit.byId("listDiv") || ! dijit.byId("mainDivContainer") ) {
-		return;
-	}
-	if (listDivSize==0) {
-		dojo.byId('listBarShow').style.display='block';
-		listDivSize=dojo.byId("listDiv").offsetHeight;
-		dojo.byId('listDiv_splitter').style.display='none';
-		dijit.byId("listDiv").resize({h: 20});
-		dijit.byId("buttonHideList").set('label',i18n('buttonShowList'));
-	} else {
-		dojo.byId('listBarShow').style.display='none';
-		dojo.byId('listDiv_splitter').style.display='block';
-		dijit.byId("listDiv").resize({h: listDivSize});
-		listDivSize=0;
-		dijit.byId("buttonHideList").set('label',i18n('buttonHideList'));
-	}
-	dijit.byId("mainDivContainer").resize();
-}*/
-
-/*
-function listOnly() {
-	if (! dijit.byId("listDiv") || ! dijit.byId("mainDivContainer") ) {
-		return;
-	}
-	storeListSize=dojo.byId("listDiv").offsetHeight+dojo.byId("detailDiv").offsetHeight;
-	//storeListSize=listDivSize;
-	dijit.byId("listDiv").resize({h: storeListSize});
-	dijit.byId("mainDivContainer").resize();
-	dojo.byId('listBarShow').style.display='none';
-	dojo.byId('listDiv_splitter').style.display='block';
-	listDivSize=0;
-}*/

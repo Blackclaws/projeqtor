@@ -27,6 +27,11 @@ class PlanningElement extends SqlElement {
   public $plannedWork;
   public $leftWork;
   public $realWork;
+  public $validatedCost;
+  public $assignedCost;
+  public $plannedCost;
+  public $leftCost;
+  public $realCost;
   public $wbs;
   public $wbsSortable;
   public $topId;
@@ -60,6 +65,10 @@ class PlanningElement extends SqlElement {
                                   "realEndDate"=>"readonly",
                                   "realDuration"=>"readonly",
                                   "realWork"=>"readonly",
+                                  "assignedCost"=>"readonly",
+                                  "realCost"=>"readonly",
+                                  "leftCost"=>"readonly",
+                                  "plannedCost"=>"readonly",
                                   "elementary"=>"hidden",
                                   "idPlanningMode"=>"hidden"
   );   
@@ -304,11 +313,14 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   private function updateSynthesisObj () {
-debugLog("PlanningElement #".$this->id . " / " . $this->refType . " #" . $this->refId);
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
     $realWork=0;
+    $assignedCost=0;
+    $leftCost=0;
+    $plannedCost=0;
+    $realCost=0;
     $this->_noHistory=true;
     // Add data from assignments directly linked to this item
     $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
@@ -323,6 +335,10 @@ debugLog("PlanningElement #".$this->id . " / " . $this->refType . " #" . $this->
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
       $realWork+=$ass->realWork;
+      $assignedCost+=$ass->assignedCost;
+      $leftCost+=$ass->leftCost;
+      $plannedCost+=$ass->plannedCost;
+      $realCost+=$ass->realCost;
       if ( $ass->realStartDate and (! $realStartDate or $ass->realStartDate<$realStartDate )) {
         $realStartDate=$ass->realStartDate;
       }
@@ -338,7 +354,6 @@ debugLog("PlanningElement #".$this->id . " / " . $this->refType . " #" . $this->
     }
     // Add data from other planningElements dependant from this one
     if (! $this->elementary) {
-debugLog ("   => Group");
       $critPla=array("topId"=>$this->id);
       $planningElement=new PlanningElement();
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
@@ -348,6 +363,10 @@ debugLog ("   => Group");
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
+        $assignedCost+=$pla->assignedCost;
+        $leftCost+=$pla->leftCost;
+        $plannedCost+=$pla->plannedCost;
+        $realCost+=$pla->realCost;
         if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
           $realStartDate=$pla->realStartDate;
         }
@@ -380,6 +399,10 @@ debugLog ("   => Group");
     $this->leftWork=$leftWork;
     $this->plannedWork=$plannedWork;
     $this->realWork=$realWork;
+    $this->assignedCost=$assignedCost;
+    $this->leftCost=$leftCost;
+    $this->plannedCost=$plannedCost;
+    $this->realCost=$realCost;
     $this->save();
     // Dispath to top element
     if ($this->topId) {

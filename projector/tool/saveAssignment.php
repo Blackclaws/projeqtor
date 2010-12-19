@@ -31,6 +31,15 @@ if (array_key_exists('assignmentIdResource',$_REQUEST)) {
   $idResource=$_REQUEST['assignmentIdResource'];
 }
 
+$idRole=null;
+if (array_key_exists('assignmentIdRole',$_REQUEST)) {
+  $idRole=$_REQUEST['assignmentIdRole'];
+}
+
+$cost=null;
+if (array_key_exists('assignmentDailyCost',$_REQUEST)) {
+  $cost=$_REQUEST['assignmentDailyCost'];
+}
 
 if (! array_key_exists('assignmentRate',$_REQUEST)) {
   throwError('assignmentRate parameter not found in REQUEST');
@@ -63,11 +72,17 @@ $comment=$_REQUEST['assignmentComment'];
 
 // get the modifications (from request)
 $assignment=new assignment($assignmentId);
+$oldCost=$assignment->dailyCost;
 
 $assignment->refId=$refId;
 $assignment->refType=$refType;
 if (! $realWork && $idResource) {
   $assignment->idResource=$idResource;
+}
+$assignment->idRole=$idRole;
+$assignment->dailyCost=$cost;
+if (! $oldCost or $assignment->dailyCost!=$oldCost) {
+  $assignment->newDailyCost=$cost;
 }
 $assignment->rate=$rate;
 $assignment->assignedWork=$assignedWork;

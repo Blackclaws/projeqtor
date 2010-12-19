@@ -130,7 +130,7 @@ $obj=new $objectClass;
     </td>
   </tr>
 </table>
-<div id="listBarShow" onMouseover="showList()"><div id="listBarIcon" align="center"></div></div>
+<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');"><div id="listBarIcon" align="center"></div></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
 <table id="objectGrid" jsId="objectGrid" dojoType="dojox.grid.DataGrid"

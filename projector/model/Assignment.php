@@ -10,6 +10,7 @@ class Assignment extends SqlElement {
   public $refType;
   public $refId;
   public $idResource;
+  public $idRole;
   public $comment;
   public $assignedWork;
   public $realWork;
@@ -20,6 +21,12 @@ class Assignment extends SqlElement {
   public $realEndDate;
   public $plannedStartDate;
   public $plannedEndDate;
+  public $dailyCost;
+  public $newDailyCost;
+  public $assignedCost;
+  public $realCost;
+  public $leftCost;
+  public $plannedCost;
   public $idle;
   
    /** ==========================================================================
@@ -49,7 +56,17 @@ class Assignment extends SqlElement {
    * @see persistence/SqlElement#save()
    */
   public function save() {
+    
+    // if cost has changed, update work 
+    
     $this->plannedWork = $this->realWork + $this->leftWork;
+    
+    $this->assignedCost=$this->assignedWork*$this->dailyCost;    
+    $r=new Resource($this->idResource);
+    $newCost=$r->getActualResourceCost($this->idRole);
+    $this->newDailyCost=$newCost;
+    $this->leftCost=$this->leftWork*$newCost;
+    $this->plannedCost = $this->realCost + $this->leftCost;
     
     /* $limitedRate=false;
     $crit=array("idProject"=>$this->idProject, "idResource"=>$this->idResource);
@@ -92,10 +109,12 @@ class Assignment extends SqlElement {
     $crit=array('idAssignment'=>$this->id);
     $workList=$work->getSqlElementsFromCriteria($crit,false);
     $realWork=0;
+    $realCost=0;
     $this->realStartDate=null;
     $this->realEndDate=null;
     foreach ($workList as $work) {
       $realWork+=$work->work;
+      $realCost+=$work->cost;
       if ( !$this->realStartDate or $work->workDate<$this->realStartDate ) {
         $this->realStartDate=$work->workDate;
       }
@@ -104,11 +123,12 @@ class Assignment extends SqlElement {
       }     
     }
     $this->realWork=$realWork;
+    $this->realCost=$realCost;
   }
   
   public function saveWithRefresh() {
     $this->refresh();
-    $this->save();
+    return $this->save();
   }
 
 /** =========================================================================

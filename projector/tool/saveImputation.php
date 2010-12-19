@@ -56,7 +56,6 @@ for ($i=1; $i<=$nbLines; $i++) {
       break;
     } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
       $status='OK';
-      $finalResult=$result;
     } else { 
       if ($finalResult=="") {
         $finalResult=$result;
@@ -64,7 +63,14 @@ for ($i=1; $i<=$nbLines; $i++) {
     }
     $ass=new Assignment($line->idAssignment);
     $ass->leftWork=$line->leftWork;
-    $ass->saveWithRefresh();
+    $resultAss=$ass->saveWithRefresh();
+    if (stripos($resultAss,'id="lastOperationStatus" value="OK"')>0 ) {
+      $status='OK';
+    } else if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ){
+      $status='ERROR';
+      $finalResult=$resultAss;
+      break;
+    }
   }
 }
 

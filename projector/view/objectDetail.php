@@ -15,7 +15,7 @@
  */
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth;
+  global $cr, $print, $treatedObjects, $displayWidth, $currency, $currencyPosition;
   $treatedObjects[]=$obj;
   $dateWidth='75';
   $verySmallWidth='44';
@@ -153,9 +153,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawLinksFromObject($val, $obj,$linkClass);
     } else if (substr($col,0,11)=='_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
-    } else if (substr($col,0,11)=='_Dependency') { // Display Assignments
+    } else if (substr($col,0,11)=='_Dependency') { // Display Dependencies
       $depType=(strlen($col)>11)?substr($col,12):"";
       drawDependenciesFromObject($val, $obj, $depType);
+    } else if ($col=='_ResourceCost') { // Display ResourceCost     
+      drawResourceCostFromObject($val, $obj, false);      
     } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' 
                                      and substr($col,0,7)!='_label_') { // field not to be displayed
       //    
@@ -300,6 +302,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           //echo '<div style="width: ' . $fieldWidth . 'px;"> ' . htmlEncode($val,'print') . '</div>';
           echo htmlEncode($val,'print');
+        } else if ($dataType=='decimal' and substr($col, -4,4)=='Cost') {
+          if ($currencyPosition=='after') {
+            echo htmlEncode($val,'print') . ' ' . $currency;
+          } else {
+            echo $currency . ' ' . htmlEncode($val,'print');
+          }
         } else {
           if ($obj->isFieldTranslatable($col))  {
               $val=i18n($val);
@@ -347,16 +355,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($col=='color' and $dataLength == 7 ){
         // Draw a color selector ============================================== COLOR
         echo "<table ><tr><td class='detail'>";
-        echo '<div xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly ';
+        echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly ';
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode($val) . '" ';
-        echo '  style="width: ' . $smallWidth . 'px; ';
+        echo '  style="border: 0;width: ' . $smallWidth . 'px; ';
         echo ' color: ' . $val . '; ';
         echo ' background-color: ' . $val . ';"';
-        echo ' >';
-        echo $colScript;
-        echo '</div>';
+        echo ' />';
+        //echo $colScript;
+        //echo '</div>';
         echo '</td><td class="detail">';
         if (! $readOnly) {
           echo '<div id="' . 'colorButton" dojoType="dijit.form.DropDownButton"  ';
@@ -528,6 +536,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '</select>';
       } else if ($dataType=='int' or $dataType=='decimal'){
         // Draw a number field ================================================ NUMBER
+        $cost=false;
+        if ($dataType=='decimal' and substr($col, -4,4)=='Cost') {
+          $cost=true;
+          $fieldWidth=$smallWidth;
+        }
         $spl=explode(',',$dataLength);
         $dec=0;
         if (count($spl)>1) {
@@ -535,6 +548,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         $ent=$spl[0]-$dec;
         $max=substr('99999999999999999999',0,$ent);
+        if ($cost and $currencyPosition=='before') {
+          echo $currency;
+        }
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
@@ -544,7 +560,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' >';
         echo $colScript;
-        echo '</div>';        
+        echo '</div>';
+        if ($cost and $currencyPosition=='after') {
+          echo $currency;
+        }       
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
@@ -889,17 +908,6 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     }
     echo '</tr>';
   }
-  /*echo '<tr>';
-  if (! $print) {
-    echo '<td class="linkDataClosetable">&nbsp;</td>';
-  }
-  if ( ! $classLink ) {
-    echo '<td class="linkDataClosetable">&nbsp;</td>';
-  }
-  echo '<td class="linkDataClosetable">&nbsp;</td>';
-  echo '<td class="linkDataClosetable">&nbsp;</td>';
-  echo '<td class="linkDataClosetable">&nbsp;</td>';
-  echo '</tr>';*/
   echo '</table></td></tr>';
 }
 
@@ -983,6 +991,8 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editAssignment(' . "'" . $assignment->id . "'" 
         . ",'" . $assignment->idResource . "'"
+        . ",'" . $assignment->idRole . "'"
+        . ",'" . $fmt->format($assignment->dailyCost) . "'"
         . ",'" . $assignment->rate . "'"
         . ",'" . $fmt->format($assignment->assignedWork) . "'"
         . ",'" . $fmt->format($assignment->realWork) . "'"
@@ -1002,7 +1012,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     }
     echo '<td class="assignData" title="' . htmlEncodeJson($assignment->comment) . '">'; 
     echo '<table><tr>';
-    echo '<td>' . SqlList::getNameFromId('Resource', $assignment->idResource) . '</td>';
+    echo '<td>' . SqlList::getNameFromId('Resource', $assignment->idResource);
+    echo ($assignment->idRole)?' ('.SqlList::getNameFromId('Role', $assignment->idRole).')':'';
+    echo '</td>';
     if ($assignment->comment) {
      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
     }
@@ -1012,6 +1024,70 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
     echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';
     echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
+    echo '</tr>';
+  }
+  echo '</table></td></tr>';
+}
+
+function drawResourceCostFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale;
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {$canUpdate=false;}
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  $funcList=' ';
+  foreach($list as $rcost) {
+    $key='#' . $rcost->idRole . '#';
+    if (strpos($funcList, $key)===false) {
+      $funcList.=$key;
+    }
+  }
+  if (! $print) {
+    echo '<td class="assignHeader" width="10%">';
+    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\''. $funcList . '\');" title="' . i18n('addResourceCost') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" width="30%">' . i18n('colIdRole') . '</td>';
+  echo '<td class="assignHeader" width="20%">' . i18n('colCost'). '</td>';
+  echo '<td class="assignHeader" width="20%">' . i18n('colStartDate'). '</td>';
+  echo '<td class="assignHeader" width="20%">' . i18n('colEndDate'). '</td>';
+  
+  echo '</tr>';
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  foreach($list as $rcost) {
+    echo '<tr>';
+    if (! $print) {
+      echo '<td class="assignData" style="text-align:center;">';
+      if (! $rcost->endDate and $canUpdate and ! $print) {  
+        echo '  <img src="css/images/smallButtonEdit.png" ' 
+        . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" 
+        . ",'" . $rcost->idResource . "'"
+        . ",'" . $rcost->idRole . "'" 
+        . ",'" . $fmt->format($rcost->cost) . "'"
+        . ",'" . $rcost->startDate . "'"
+        . ",'" . $rcost->endDate . "'"
+        . ');" ' 
+        . 'title="' . i18n('editResourceCost') . '" class="smallButton"/> ';      
+      }
+      if (! $rcost->endDate and $canUpdate and ! $print)  {
+        echo '  <img src="css/images/smallButtonRemove.png" ' 
+        . 'onClick="removeResourceCost(' . "'" . $rcost->id . "'"
+        . ",'" . $rcost->idRole . "'"
+        . ",'" . SqlList::getNameFromId('Role', $rcost->idRole)  . "'" 
+        . ",'" . htmlFormatDate($rcost->startDate) . "'" 
+        . ');" ' 
+        . 'title="' . i18n('removeResourceCost') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    }
+    echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
+    echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
+    echo " / " . i18n('shortDay'); 
+    echo '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
@@ -1038,6 +1114,10 @@ if ( $noselect ) {
   }
   if ( array_key_exists('refreshAssignment',$_REQUEST) ) {
     drawAttachementsFromObject($obj, true);
+    exit;
+  }
+  if ( array_key_exists('refreshResourceCost',$_REQUEST) ) {
+    drawResourceCostFromObject($obj->$_ResourceCost,$obj, true);
     exit;
   }
   if ( array_key_exists('refreshHistory',$_REQUEST) ) {
@@ -1098,7 +1178,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
         </div>
         <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="center" >       
         </div> 
-        <div id="detailBarShow" onMouseover="hideList()"><div id="detailBarIcon" align="center"></div></div>
+        <div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');"><div id="detailBarIcon" align="center"></div></div>
       </div>
     </div>
     <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >

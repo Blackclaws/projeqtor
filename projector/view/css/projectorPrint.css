@@ -30,7 +30,7 @@ tr {
 }
 
 td {
-  margin: px; padding: 4px; cellspacing: 0; cellpadding: 0px;
+  margin: 0; padding: 0; cellspacing: 0; cellpadding: 0;
   border: collapse; border: 0px;
   /* border: 1px solid #00FF00; /* padding: 3px !important; margin: 3px !important; /* for debug purpose */
 }

@@ -41,6 +41,7 @@ class Sql {
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
+//debugLog($sqlRequest);
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       return FALSE;

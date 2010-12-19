@@ -74,7 +74,7 @@ scriptLog('   ->/view/planningList.php');
     </td>
   </tr>
 </table>
-<div id="listBarShow" onMouseover="showList()"><div id="listBarIcon" align="center"></div></div>
+<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');"><div id="listBarIcon" align="center"></div></div>
 
 <div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" style="display: none">
 <?php include '../tool/jsonPlanning.php';?>

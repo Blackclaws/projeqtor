@@ -508,4 +508,24 @@ function htmlDisplayColored($value,$color) {
   $result.= "</td></tr></table>";
   return $result;
 }
+
+function htmlDisplayCurrency($val) {
+  global $currency, $currencyPosition, $browserLocale;
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  if (! isset($currencyPosition) or ! isset($currency) or $currencyPosition=='none') {
+    return $fmt->format($val) ;
+  } 
+  if ($currencyPosition=='after') {
+    return $fmt->format($val) . ' ' . $currency;
+  } else {
+    return $currency . ' ' . $fmt->format($val);
+  }
+}
+
+function htmlDisplayNumeric($val) {
+  global $browserLocale;
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  return $fmt->format($val) ;
+}
+
 ?>
