@@ -84,11 +84,28 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $internalTableRowsCaptions=array_slice($val,$internalTableCols);
       $internalTableCurrentRow=0;
       $colWidth = ( $detailWidth) / $nbCol;
+      if (is_subclass_of($obj,'PlanningElement') and $internalTableRows>=3) {
+        $obj->setVisibility();
+        $workVisibility=$obj->_workVisibility;
+        $costVisibility=$obj->_costVisibility;
+        if ($workVisibility=='NO') {
+          $internalTableRowsCaptions[$internalTableRows-2]='';
+        }
+        if ($costVisibility=='NO') {
+          $internalTableRowsCaptions[$internalTableRows-1]='';
+        }
+        if ($workVisibility!='ALL' and $costVisibility!='ALL') {
+          $val[2]='';
+          $val[5]='';
+        }
+      }
       echo '</table><table id="' . $col .'" class="detail"><tr class="detail">';
       echo '<td class="detail"><label></label></td>' . $cr; // Empty label, to have column header in front of columns
       for ($i=0 ; $i<$internalTableCols ; $i++) { // draw table headers
         echo '<td class="detail">';
-        echo '<input type="text" class="tabLabel" style="text-align:left;" value="' . htmlEncode($obj->getColCaption($val[$i])) . '" tabindex="-1" />' . $cr;
+        if ($val[$i]) {
+          echo '<input type="text" class="tabLabel" style="text-align:left;" value="' . htmlEncode($obj->getColCaption($val[$i])) . '" tabindex="-1" />' . $cr;
+        }
         if ( $i < $internalTableCols-1) { echo '</td>'; }
       }
       // echo '</tr>'; NOT TO DO HERE -  WILL BE DONE AFTER
@@ -198,11 +215,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</td></tr>' . $cr;
           echo '<tr>';
           echo '<td class="label" width="10%">';
-          echo '<label>' . htmlEncode($obj->getColCaption($internalTableRowsCaptions[$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
-          echo '</td><td  width="90%">';
+          if ($internalTableRowsCaptions[$internalTableCurrentRow]) {
+            echo '<label>' . htmlEncode($obj->getColCaption($internalTableRowsCaptions[$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
+          }
+          echo '</td><td width="90%">';
           $internalTableCurrentRow++;
         } else {
-          echo '</td><td  class="detail">';
+          echo '</td><td class="detail">';
         }
       }
       $dataType = $obj->getDataType($col);
@@ -328,11 +347,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($col=='id') {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
-        echo '#<div dojoType="dijit.form.TextBox" type="text"  ';
+        echo '#';
+        echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo ' class="display" ';
         echo ' readonly style="width: ' . $smallWidth . 'px;" ' ;
-        echo ' value="' . htmlEncode($val) . '" ></div>';
+        echo ' value="' . htmlEncode($val) . '" ></span>';
       } else if ($col=='password') {
         global $paramDefaultPassword;       
         // Password specificity  ============================================= PASSWORD
@@ -351,7 +371,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo ' class="display" ';
         echo ' readonly ' ;
-        echo ' value="' . htmlEncode($val) . '" ></div>';
+        echo ' value="' . htmlEncode($val) . '" >';
       } else if ($col=='color' and $dataLength == 7 ){
         // Draw a color selector ============================================== COLOR
         echo "<table ><tr><td class='detail'>";
@@ -563,7 +583,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '</div>';
         if ($cost and $currencyPosition=='after') {
           echo $currency;
-        }       
+        }
+      } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
+        echo '<div ';
+        echo $name;
+        echo ' class="display" ';
+        //echo ' style="margin-top: 3px"';
+        echo' >';
+        echo htmlEncode($val);
+        echo '</div>';
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
@@ -965,29 +993,33 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
 function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale;
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  $pe=new PlanningElement();
+  $pe->setVisibility();
+  $workVisible=($pe->_workVisibility=='ALL')?true:false;
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
     echo '<td class="assignHeader" width="10%">';
-    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
+    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addAssignment();" title="' . i18n('addAssignment') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" width="40%">' . i18n('colIdResource') . '</td>';
+  echo '<td class="assignHeader" >' . i18n('colIdResource') . '</td>';
   echo '<td class="assignHeader" width="14%">' . i18n('colRate'). '</td>';
-  echo '<td class="assignHeader" width="12%">' . i18n('colAssigned'). '</td>';
-  echo '<td class="assignHeader" width="12%">' . i18n('colReal'). '</td>';
-  echo '<td class="assignHeader" width="12%">' . i18n('colLeft'). '</td>';
-  
+  if ($workVisible) {
+    echo '<td class="assignHeader" width="12%">' . i18n('colAssigned'). '</td>';
+    echo '<td class="assignHeader" width="12%">' . i18n('colReal'). '</td>';
+    echo '<td class="assignHeader" width="12%">' . i18n('colLeft'). '</td>';
+  }
   echo '</tr>';
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   foreach($list as $assignment) {
     echo '<tr>';
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';
-      if ($canUpdate and ! $print) {
+      if ($canUpdate and ! $print and $workVisible) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editAssignment(' . "'" . $assignment->id . "'" 
         . ",'" . $assignment->idResource . "'"
@@ -1001,7 +1033,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         . ');" ' 
         . 'title="' . i18n('editAssignment') . '" class="smallButton"/> ';      
       }
-      if ($assignment->realWork==0 and $canUpdate and ! $print)  {
+      if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
         . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" 
                . $assignment->realWork . "','" 
@@ -1021,9 +1053,11 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '</tr></table>';
     echo '</td>';
     echo '<td class="assignData" align="center">' . $assignment->rate  . '</td>';
-    echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
-    echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';
-    echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
+    if ($workVisible) {
+      echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
+    }
     echo '</tr>';
   }
   echo '</table></td></tr>';
@@ -1032,6 +1066,10 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
 function drawResourceCostFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale;
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  $pe=new PlanningElement();
+  $pe->setVisibility();
+  $workVisible=($pe->_workVisibility=='ALL')?true:false;
+  if (! $workVisible) return;
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';

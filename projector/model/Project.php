@@ -22,6 +22,8 @@ class Project extends SqlElement {
   public $idleDate;
   public $_col_2_2_Subprojects;
   public $_spe_subprojects;
+  public $_sec_Affectations;
+  public $_spe_affectations;
   public $_col_1_1_Progress;
   public $ProjectPlanningElement; // is an object
   public $_col_1_2_predecessor;
@@ -34,7 +36,7 @@ class Project extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-     <th field="wbsSortable" from="ProjectPlanningElement" width="5%" >${wbs}</th>
+    <th field="wbsSortable" from="ProjectPlanningElement" formatter="sortableFormatter" width="5%" >${wbs}</th>
     <th field="name" width="25%" >${projectName}</th>
     <th field="color" width="5%" formatter="colorFormatter">${color}</th>
     <th field="projectCode" width="15%" >${projectCode}</th>
@@ -273,8 +275,16 @@ class Project extends SqlElement {
       $result .= $this->drawSubProjects();
       $result .="</td></tr></table>";
       return $result;
-    } 
+    } else if ($item=='affectations') {
+      $aff=new Affectation();
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('resources') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      $result .= $aff->drawAffectationList(array('idProject'=>$this->id,'idle'=>'0'),'Resource');
+      $result .="</td></tr></table>";
+      return $result;
+    }
   }
+  
 
   /** =========================================================================
    * Specific function to draw a recursive tree for subprojects
@@ -348,6 +358,19 @@ class Project extends SqlElement {
    * @see persistence/SqlElement#save()
    * @return the return message of persistence/SqlElement#save() method
    */
+
+  public function drawProjectsList($critArray) {
+    $result="<table>";
+    $prjList=$this->getSqlElementsFromCriteria($critArray, false);
+    foreach ($prjList as $prj) {
+      $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+      $result.=SqlList::getNameFromId('Project', $prj->id);
+      $result.= '</td></tr>';
+    }
+    $result .="</table>";
+    return $result; 
+  }
+  
   public function save() {
     $this->ProjectPlanningElement->refName=$this->name;
     $this->ProjectPlanningElement->idProject=$this->id;

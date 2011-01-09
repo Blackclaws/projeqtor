@@ -9,13 +9,18 @@ class MilestonePlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_6_1 = array('requested', 'validated', 'planned', 'real','' ,'' , 'dueDate');
+  public $_tab_6_2 = array('requested', 'validated', 'planned', 'real','' ,'' , 'dueDate', '');
   public $initialEndDate;
   public $validatedEndDate;
   public $plannedEndDate;
   public $realEndDate;
   public $_label_planning;
   public $idMilestonePlanningMode;
+  public $_void_21;
+  public $_void_22;
+  public $_void_23;
+  public $_void_24;
+  public $_label_wbs;
   public $wbs;
   public $wbsSortable;
   public $topId;
@@ -40,6 +45,11 @@ class MilestonePlanningElement extends PlanningElement {
     "plannedEndDate"=>"readonly",
     "assignedWork"=>"hidden",
     "leftWork"=>"hidden",
+    "validatedCost"=>"hidden",
+    "plannedCost"=>"hidden",
+    "realCost"=>"hidden",
+    "assignedCost"=>"hidden",
+    "leftCost"=>"hidden",
     "realEndDate"=>"readonly",
     "idMilestonePlanningMode"=>"required,mediumWidth"
   );   

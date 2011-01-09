@@ -53,7 +53,7 @@ if ($type=='habilitation') {
     }
   }
 } else if ($type=='habilitationOther') {
-  $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess')), 'profile', 'habilitationOther') ;
+  $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess'),'work'=>i18n('workAccess'),'cost'=>i18n('costAccess')), 'profile', 'habilitationOther') ;
   foreach($crosTable as $lineId => $line) {
     foreach($line as $colId => $val) {
       $crit['scope']=$lineId;

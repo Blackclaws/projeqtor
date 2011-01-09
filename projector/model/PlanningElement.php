@@ -42,13 +42,15 @@ class PlanningElement extends SqlElement {
   public $idle;
   public $done;
   public $idPlanningMode;
+  public $_workVisibility;
+  public $_costVisibility;
 
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
                                   "refType"=>"hidden",
                                   "refId"=>"hidden",
                                   "refName"=>"hidden",
-                                  "wbs"=>"hidden", 
+                                  "wbs"=>"display", 
                                   "wbsSortable"=>"hidden",
                                   "topType"=>"hidden",
                                   "topId"=>"hidden",
@@ -591,5 +593,58 @@ class PlanningElement extends SqlElement {
     $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
     return $returnValue;
   }
+
+  public function setVisibility() {
+    if ($this->_costVisibility and $this->_workVisibility) {
+      return;
+    }
+    $user=$_SESSION['user'];
+    $list=SqlList::getList('VisibilityScope', 'accessCode', null, false);
+    $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'cost'));
+    $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'work'));
+    if ($hCost->id) {
+      $this->_costVisibility=$list[$hCost->rightAccess];
+    } else {
+      $this->_costVisibility='ALL';
+    }
+    if ($hWork->id) {
+      $this->_workVisibility=$list[$hWork->rightAccess];
+    } else {
+      $this->_workVisibility='ALL';
+    }
+  }
+  
+  public function getFieldAttributes($fieldName) {
+    if (! $this->_costVisibility or ! $this->_workVisibility) {
+      $this->setVisibility();
+    }
+    if ($this->_costVisibility =='NO') {
+      if ($fieldName=='validatedCost' or $fieldName=='assignedCost'
+       or $fieldName=='plannedCost' or $fieldName=='leftCost' 
+       or $fieldName=='realCost') {
+         return 'hidden';
+      }
+    } else if ($this->_costVisibility =='VAL') {
+      if ($fieldName=='assignedCost'
+       or $fieldName=='plannedCost' or $fieldName=='leftCost' 
+       or $fieldName=='realCost') {
+         return 'hidden';
+      }
+    }
+    if ($this->_workVisibility=='NO') {
+      if ($fieldName=='validatedWork' or $fieldName=='assignedWork'
+       or $fieldName=='plannedWork' or $fieldName=='leftWork' 
+       or $fieldName=='realWork') {
+         return 'hidden';
+      }
+    } else if ($this->_workVisibility=='VAL') {
+      if ($fieldName=='assignedWork'
+       or $fieldName=='plannedWork' or $fieldName=='leftWork' 
+       or $fieldName=='realWork') {
+         return 'hidden';
+      }
+    }
+    return parent::getFieldAttributes($fieldName);
+  }  
 }
 ?>

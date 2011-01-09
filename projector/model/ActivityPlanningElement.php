@@ -32,8 +32,8 @@ class ActivityPlanningElement extends PlanningElement {
   public $plannedDuration;
   public $realDuration;
   public $_void_35;
-  public $_void_36;
-  public $_void_37;
+  public $_label_wbs;
+  public $wbs;
   public $_void_41;
   public $validatedWork;
   public $assignedWork;
@@ -48,7 +48,6 @@ class ActivityPlanningElement extends PlanningElement {
   public $plannedCost;
   public $realCost;
   public $leftCost;
-  public $wbs;
   public $wbsSortable;
   public $topId;
   public $topRefType;

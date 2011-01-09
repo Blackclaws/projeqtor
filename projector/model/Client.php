@@ -11,7 +11,8 @@ class Client extends SqlElement {
   public $description;
   public $clientCode;
   public $idle;
-  public $_col_2_2;
+  public $_col_2_2_Projects;
+  public $_spe_projects;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -60,5 +61,23 @@ class Client extends SqlElement {
     return self::$_colCaptionTransposition;
   }
   
+  /** =========================================================================
+   * Draw a specific item for the current class.
+   * @param $item the item. Correct values are : 
+   *    - subprojects => presents sub-projects as a tree
+   * @return an html string able to display a specific item
+   *  must be redefined in the inherited class
+   */
+  public function drawSpecificItem($item){
+    $result="";
+    if ($item=='projects') {
+      $prj=new Project();
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      $result .= $prj->drawProjectsList(array('idClient'=>$this->id,'idle'=>'0'));
+      $result .="</td></tr></table>";
+      return $result;
+    }
+  }
 }
 ?>

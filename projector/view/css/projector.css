@@ -244,9 +244,9 @@ label, .label {
   font-weight: bold;
   text-align: right; vertical-align: top;
   width: 150px;
-  padding: 2px 1px 0px 0px;
+  padding: 1px 1px 0px 0px;
   float:left;
-  border: 2px;
+  border: 1px;
 }
 .dialogLabel {
   color: #707070; 
@@ -285,7 +285,7 @@ label, .label {
   font-weight: normal;
   color: #000;
   text-align: left;
-  width: 400px;
+  width: 100%;
   margin: 1px; padding: 0px; 
   cursor: default !important;
 }

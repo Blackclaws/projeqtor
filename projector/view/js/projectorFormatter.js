@@ -155,3 +155,13 @@ function dateTimeFormatter(value) {
   	return value;
   }
 }
+
+function sortableFormatter(value) {
+	var tab=value.split('.');
+	var result='';
+	for (i=0; i<tab.length; i++) {
+		result+=(result!="")?".":"";
+		result+=tab[i].replace(/^0+/,"");
+	}
+  return result; 
+}

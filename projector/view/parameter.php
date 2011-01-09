@@ -107,6 +107,9 @@
         } else if ($type=='habilitationOther') {
           echo '<table width="100%"><tr><td class="section">' . i18n('sectionImputation') . '</td></tr></table>',
           htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
+          echo '<br/><br/>';
+          echo '<table width="100%"><tr><td class="section">' . i18n('sectionWorkCost') . '</td></tr></table>',
+          htmlDrawCrossTable(array('work'=>i18n('workAccess'),'cost'=>i18n('costAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'visibilityScope') ;
         } else {
           drawTableFromObjectList($parameterList);
         }

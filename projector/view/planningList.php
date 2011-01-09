@@ -59,7 +59,15 @@ scriptLog('   ->/view/planningList.php');
                 </script>
               </button>
             </td>
-            <td><div id="planResultDiv" style=" width: 360px;height: 10px;" dojoType="dijit.layout.ContentPane" region="center" ></div></td>
+            <td><div id="planResultDiv" style=" width: 260px;height: 10px;" dojoType="dijit.layout.ContentPane" region="center" ></div></td>
+            <td style="background-color: blue, width: 100px;text-align: right; align: right;">
+              <?php echo i18n("labelShowWbs");?>
+              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="showWBS" name="showWBS">
+                <script type="dojo/method" event="onChange" >
+                  refreshJsonPlanning();
+                </script>
+              </div>&nbsp;
+            </td>
             <td style="background-color: blue, width: 100px;text-align: right; align: right;">
               <?php echo i18n("labelShowIdle");?>
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">

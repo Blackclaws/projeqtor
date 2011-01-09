@@ -23,6 +23,8 @@ class Resource extends SqlElement {
   public $_col_2_2_FunctionCost;
   public $idRole;
   public $_ResourceCost=array();
+  public $_sec_Affectations;
+  public $_spe_affectations;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -290,5 +292,24 @@ class Resource extends SqlElement {
     }
     return null;
   }  
+
+  /** =========================================================================
+   * Draw a specific item for the current class.
+   * @param $item the item. Correct values are : 
+   *    - subprojects => presents sub-projects as a tree
+   * @return an html string able to display a specific item
+   *  must be redefined in the inherited class
+   */
+  public function drawSpecificItem($item){
+    $result="";
+    if ($item=='affectations') {
+      $aff=new Affectation();
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      $result .= $aff->drawAffectationList(array('idResource'=>$this->id,'idle'=>'0'),'Project');
+      $result .="</td></tr></table>";
+      return $result;
+    }
+  }
 }
 ?>

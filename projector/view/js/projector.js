@@ -58,8 +58,20 @@ function refreshJsonList(className) {
  */
 function refreshJsonPlanning() {
 	url="../tool/jsonPlanning.php";
+	param=false;
 	if ( dojo.byId('listShowIdle') ) {
-		if (dojo.byId('listShowIdle').checked) { url = url + "?idle=true"; }
+		if (dojo.byId('listShowIdle').checked) { 
+			url += (param)?"&":"?";
+			url += "idle=true";
+			param=true;
+		}
+	}
+	if ( dojo.byId('showWBS') ) {
+		if (dojo.byId('showWBS').checked) { 
+			url += (param)?"&":"?";
+			url += "showWBS=true";
+			param=true;
+		}
 	}
 	loadContent(url, "planningJsonData",'listForm',false);
 }
@@ -1282,15 +1294,37 @@ function getFirstDayOfWeek(week, year) {
    return testDate;
 }
 
+Date.prototype.getWeek = function (dowOffset) {
+/*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+	dowOffset = (dowOffset==null) ? 1 : dowOffset; //default dowOffset to 1 (ISO 8601)
+	var newYear = new Date(this.getFullYear(),0,1);
+	var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+	day = (day >= 0 ? day : day + 7);
+	var daynum = Math.floor((this.getTime() - newYear.getTime() - 
+	(this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
+	var weeknum;
+	//if the year starts before the middle of a week
+	if(day < 4) {
+		weeknum = Math.floor((daynum+day-1)/7) + 1;
+		if(weeknum > 52) {
+			nYear = new Date(this.getFullYear() + 1,0,1);
+			nday = nYear.getDay() - dowOffset;
+			nday = nday >= 0 ? nday : nday + 7;
+			/*if the next year starts before the middle of
+ 			  the week, it is week #1 of that year*/
+			weeknum = nday < 4 ? 1 : 53;
+		}
+	}
+	else {
+		weeknum = Math.floor((daynum+day-1)/7);
+	}
+	return weeknum;
+}
+
 function getWeek(day, month, year) {  
-  var origin = new Date(year,month-1,day);
-	var target = new Date(origin.valueOf());  
-  var dayNr   = (origin.getDay() + 6) % 7;  
-  target.setDate(target.getDate() - dayNr + 3);  
-  var jan4 = new Date(target.getFullYear(), 0, 4);  
-  var dayDiff = (target - jan4) / 86400000;    
-  var weekNr = 1 + Math.ceil(dayDiff / 7);    
-  return weekNr;    
+	var paramDate=new Date(year, month-1,day);
+	return paramDate.getWeek(1);
+  ////    
 }  
 
 function moveTask(source,destination) {

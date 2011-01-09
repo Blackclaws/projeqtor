@@ -86,5 +86,28 @@ class Affectation extends SqlElement {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
+  public function drawAffectationList($critArray, $nameDisp) {
+    $result="<table>";
+    $affList=$this->getSqlElementsFromCriteria($critArray, false);
+    foreach ($affList as $aff) {
+      $result.= '<tr><td><li>';
+      if ($nameDisp=='Resource') {
+        $result.=SqlList::getNameFromId('Resource', $aff->idResource);
+      } else if ($nameDisp=='Project') {
+        $result.=SqlList::getNameFromId('Project', $aff->idProject);
+      } else{
+        $result.=SqlList::getNameFromId('Resource', $aff->idResource);
+        $result.=' - ';
+        $result.=SqlList::getNameFromId('Project', $aff->idProject);
+      }
+      if ($aff->rate ) {
+        $result.=' (' . $aff->rate . '%)';
+      }
+      $result.= '</li></td></tr>';
+    }
+    $result .="</table>";
+    return $result; 
+  }
+  
 }
 ?>

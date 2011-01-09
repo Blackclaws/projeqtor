@@ -185,6 +185,9 @@ function showPrint (page, context) {
 		  if (dijit.byId('listShowIdle').get('checked')) {
 		  	params+="&idle=true";
 		  }
+		  if (dijit.byId('showWBS').checked) { 
+				params+="&showWBS=true";
+		  }
 		}
 	} else if (context=='report'){
 		var frm=dojo.byId('reportForm');

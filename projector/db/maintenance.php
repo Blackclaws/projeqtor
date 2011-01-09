@@ -225,5 +225,31 @@ function deleteDupplicate() {
       $idProfile=$hab->idProfile;
     }
   }
+  // HABILITATIONREPORT
+  $hab=new HabilitationReport();
+  $habList=$hab->getSqlElementsFromCriteria(array(), false, null, 'idReport, idProfile, id ');
+  $idReport='';
+  $idProfile='';
+  foreach ($habList as $hab) {
+    if ($hab->idReport==$idReport and $hab->idProfile==$idProfile) {
+      $hab->delete();
+    } else {
+      $idReport=$hab->idReport;
+      $idProfile=$hab->idProfile;
+    }
+  }
+// HABILITATIONOTHER
+  $hab=new HabilitationOther();
+  $habList=$hab->getSqlElementsFromCriteria(array(), false, null, 'scope, idProfile, id ');
+  $scope='';
+  $idProfile='';
+  foreach ($habList as $hab) {
+    if ($hab->scope==$scope and $hab->idProfile==$idProfile) {
+      $hab->delete();
+    } else {
+      $scope=$hab->scope;
+      $idProfile=$hab->idProfile;
+    }
+  }
 }
 ?>

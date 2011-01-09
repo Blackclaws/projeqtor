@@ -75,3 +75,13 @@ function percentFormatter($value) {
 function numericFormatter($value) {
   return ltrim($value,"0");
 }
+
+function sortableFormatter($value) {
+  $tab=explode(".",$value);
+  $result='';
+  foreach ($tab as $val) {
+    $result.=($result!="")?".":"";
+    $result.=ltrim($val,"0");
+  }
+  return $result; 
+}

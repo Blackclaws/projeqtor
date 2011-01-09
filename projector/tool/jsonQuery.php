@@ -208,6 +208,8 @@
          . ' order by' . $queryOrderBy;
     $result=Sql::query($query);
     $nbRows=0;
+    
+// If 'print', directly format result
     if ($print) {
       //echo "<div style='overflow: auto;'>";
       echo "<table>";
@@ -235,6 +237,8 @@
               $disp=percentFormatter($val);
             } else if ($formatter[$numField]=="numericFormatter") {
               $disp=numericFormatter($val);
+            } else if ($formatter[$numField]=="sortableFormatter") {
+              $disp=sortableFormatter($val);
             } else {
               $disp=htmlEncode($val);
             }

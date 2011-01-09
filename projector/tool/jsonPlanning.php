@@ -125,6 +125,10 @@
   }
 
   function displayGantt($result) {
+    $showWbs=false;
+    if (array_key_exists('showWBS',$_REQUEST) ) {
+      $showWbs=true;
+    }
     // calculations
     $startDate=date('Y-m-d');
     if (array_key_exists('startDate',$_REQUEST)) {
@@ -305,11 +309,13 @@
         for ($i=1;$i<$level;$i++) {
           $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
         }
+        $pName=($showWbs)?$line['wbs']." ":"";
+        $pName.=$line['refName'];
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . " " . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-        echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';
+        echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $pName . '</NOBR></TD>';
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $duration  . '</NOBR></TD>' ;
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . (($pStart)?dateFormatter($pStart):'-') . '</NOBR></TD>' ;

@@ -15,6 +15,7 @@ class Ticket extends SqlElement {
   public $idUrgency;
   public $creationDateTime;
   public $idUser;
+  public $idContact;
   public $_col_2_2_treatment;
   public $idActivity;
   public $idStatus;
@@ -40,12 +41,13 @@ class Ticket extends SqlElement {
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="8%" >${idProject}</th>
     <th field="nameticketType" width="8%" >${idTicketType}</th>
-    <th field="name" width="25%" >${name}</th>
+    <th field="name" width="20%" >${name}</th>
     <th field="initialDueDateTime" width="8%" formatter="dateTimeFormatter">${initialDueDateTime}</th>
     <th field="nameUser" width="8%" >${issuer}</th>
+    <th field="colorNameUrgency" width="8%" formatter="colorNameFormatter">${idUrgency}</th>
     <th field="colorNamePriority" width="8%" formatter="colorNameFormatter">${idPriority}</th>
     <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="9%" >${responsible}</th>
+    <th field="nameResource" width="8%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
@@ -63,7 +65,8 @@ class Ticket extends SqlElement {
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
-                                                   'idActivity' => 'planningActivity');
+                                                   'idActivity' => 'planningActivity',
+                                                   'idContact' => 'requestor');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
