@@ -16,6 +16,8 @@ var currentRow = null;                 // the row num of the current selected el
 var currentFieldId = '';               // Id of the ciurrent form field (got via onFocus)
 var currentFieldValue = '';            // Value of the current form field (got via onFocus)
 var g;                                 // Gant chart for JsGantt : must be named "g"
+var quitConfirmed=false;
+var noDisconnect=false;
 
 //=============================================================================
 //= Functions
@@ -922,7 +924,6 @@ function setSelectedProject(idProject, nameProject, selectionField) {
  * Ends current user session
  * @return
  */
-var quitConfirmed=false;
 function disconnect() {
 	disconnectFunction = function() {
 		quitConfirmed=true;
@@ -940,7 +941,6 @@ function disconnect() {
  * Disconnect (kill current session)
  * @return
  */
-var noDisconnect=false;
 function quit() {
 	if (! noDisconnect) {
 	  dojo.xhrPost({
@@ -962,6 +962,7 @@ function beforequit() {
 			return(i18n('confirmDisconnection'));
 		}
 	}
+	//return false;
 }
 
 /**

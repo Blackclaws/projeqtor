@@ -23,6 +23,6 @@ $filter->delete();
 $flt=new Filter();
 $crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);
-htmlDisplayStoredFilter($filterList);
+htmlDisplayStoredFilter($filterList,$filterObjectClass);
 
 ?>

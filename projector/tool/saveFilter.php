@@ -32,6 +32,7 @@ if (array_key_exists('filterName',$_REQUEST)) {
 trim($name);
 if (! $name) {
   echo htmlGetErrorMessage((i18n("messageMandatory", array(i18n("filterName")))));
+  return;
 } else {
   $crit=array("refType"=>$filterObjectClass, "name"=>$name, "idUser"=>$user->id);
   $filter=SqlElement::getSingleSqlElementFromCriteria("Filter", $crit);
@@ -56,11 +57,14 @@ if (! $name) {
     $criteria->save();
   }
 }
+echo '<table width="100%"><tr><td align="center">';
+echo '<span class="messageOK" >' . i18n('colFilter') . " '" . $name . "' " . i18n('resultUpdated') . '</span>';
+echo '</td></tr></table>';
 
 $flt=new Filter();
 $crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);
-htmlDisplayStoredFilter($filterList);
+htmlDisplayStoredFilter($filterList,$filterObjectClass);
 
 
 ?>

@@ -179,7 +179,7 @@ table.dojoDndAvatar {
 }
 .dijitTab .tabLabel {
   /* make sure tabs w/close button and w/out close button are same height, even w/small (<12px) font */
-  min-height: 12px;
+  min-height: 10px;
   display: inline-block;
 }
 .dijitTabContainerNested .dijitTabListWrapper {
@@ -622,7 +622,7 @@ table.dojoDndAvatar {
 .dijitButtonNode {
   border: 1px solid #c0c0c0;
   border-bottom: 1px solid #9b9b9b;
-  padding: 0.1em 0.2em 0.2em 0.2em;
+  padding: 0.1em 0.2em 0.1em 0.2em;
   background: #fff url(images/buttonEnabled.png) repeat-x bottom left;
 }
 

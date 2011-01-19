@@ -3,7 +3,16 @@
  * Print page of application.
  */
    require_once "../tool/projector.php";
-   header ('Content-Type: text/html; charset=UTF-8');
+   ob_start();
+   $outMode='html';
+   if (array_key_exists('outMode', $_REQUEST)) {
+     if ($_REQUEST['outMode']) {
+       $outMode=$_REQUEST['outMode'];
+     }
+   }
+   if ($outMode!='pdf') {
+     header ('Content-Type: text/html; charset=UTF-8');
+   }
    scriptLog('   ->/view/print.php'); 
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
@@ -26,16 +35,13 @@
     dojo.require("dojo.i18n");
     //dojo.require("dojo.date.locale");
     dojo.addOnLoad(function(){
-      //fnc = function() {
-      <?php if (array_key_exists('directPrint', $_REQUEST)) {?>
-        window.print();
-        //window.close();
-        <?php }?>
-        //alert('tmp');
-        //top.dojo.byId('printPreview').hide();
-        //alert('done');
-      //};
-      //setTimeout(fnc,1000);
+      <?php 
+        if (array_key_exists('directPrint', $_REQUEST)) {
+          echo "window.print();";
+          //echo "window.close();";
+        }
+      ?>
+      
     }); 
   </script>
 </head>
@@ -56,6 +62,8 @@
     }
   }
   include $includeFile;
-  ?>
+  
+  finalizePrint();
+?>
 </body>
 </html>

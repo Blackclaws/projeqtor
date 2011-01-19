@@ -55,6 +55,8 @@
 .iconDecisionType22 { background-image: url(images/iconDecisionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconDecisionType16 { background-image: url(images/iconDecisionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconDisplay { background-image: url(images/display.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
 .iconEnvironmentalParameter32 { background-image: url(images/iconEnvironmentalParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconEnvironmentalParameter22 { background-image: url(images/iconEnvironmentalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconEnvironmentalParameter16 { background-image: url(images/iconEnvironmentalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -146,6 +148,8 @@
 .iconParameter32 { background-image: url(images/iconParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconParameter22 { background-image: url(images/iconParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconParameter16 { background-image: url(images/iconParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
 .iconPlanning32 { background-image: url(images/iconPlanning32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconPlanning22 { background-image: url(images/iconPlanning22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -250,6 +254,8 @@
 .iconUserParameter32 { background-image: url(images/iconUserParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconUserParameter22 { background-image: url(images/iconUserParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconUserParameter16 { background-image: url(images/iconUserParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconView { background-image: url(images/iconView.png);  background-repeat: no-repeat; width: 10px; height: 10px;}
 
 .iconWork32 { background-image: url(images/iconWork32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconWork22 { background-image: url(images/iconWork22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

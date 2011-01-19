@@ -320,27 +320,39 @@ foreach ($listParam as $param) {
   </tr>
   <tr>
     <td></td>
-    <td>
+    <td><NOBR>
       <button title="<?php echo i18n('reportShow')?>"   
          dojoType="dijit.form.Button" type="submit" 
          id="reportSubmit" name="reportSubmit" 
-         iconClass="displayButton" showLabel="false"
-         onclick="runReport();return false;">
+         iconClass="iconDisplay" showLabel="false"
+         onclick="dojo.byId('outMode').value='';runReport();return false;">
       </button>
       <button title="<?php echo i18n('reportPrint')?>"  
          dojoType="dijit.form.Button" 
          id="reportPrint" name="reportPrint"
          iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
           <script type="dojo/connect" event="onClick" args="evt">
+            dojo.byId('outMode').value='';            
             var fileName=dojo.byId('reportFile').value;
             showPrint("../report/"+ fileName, 'report');
           </script>
-        </button>
+      </button>
+      <button title="<?php echo i18n('reportPrintPdf')?>"  
+         dojoType="dijit.form.Button" 
+         id="reportPrintPdf" name="reportPrintPdf"
+         iconClass="iconPdf" showLabel="false">
+          <script type="dojo/connect" event="onClick" args="evt">
+            dojo.byId('outMode').value='pdf';
+            var fileName=dojo.byId('reportFile').value;
+            showPrint("../report/"+ fileName, 'report', null, 'pdf');
+          </script>
+      </button>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />
+        <input type="hidden" id="outMode" name="outMode" value='' />
         <input type="hidden" id="reportName" name="reportName" value="<?php echo i18n($report->name);?>" />
-      </td>
+      </NOBR></td>
   </tr>
 </table>
 </form>

@@ -89,13 +89,7 @@ $paramReportTempDirectory = '../files/report/';
 $currency = '€';
 $currencyPosition = 'after';
 
-// New parameters V1.5.0
-$currency = '€';
-$currencyPosition = 'after';
-// New parameters V1.5.0
-$currency = '€';
-$currencyPosition = 'after';
-// New parameters V1.5.0
+$printInNewWindow = 'false';// New parameters V1.5.0
 $currency = '€';
 $currencyPosition = 'after';
 // New parameters V1.5.0

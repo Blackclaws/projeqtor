@@ -1,5 +1,6 @@
 <?php 
 // Header
+
 echo "<table width='100%'><tr>";
 echo "<td width='1%' class='reportHeader'>&nbsp;</td>";
 echo "<td width='5%' class='reportHeader'>" . i18n('colParameters') . "</td>";
@@ -9,6 +10,7 @@ echo "<td width='35%'>";
 echo $headerParameters;
 echo "</td>";
 echo "<td width='40%' align='center' style='font-size: 150%; font-weight: bold;'>"; 
+
 if (array_key_exists('reportName', $_REQUEST)) {
   echo '<table><tr><td style="text-align: center; background-color: #E0E0E0; padding: 3px 10px 3px 10px;">';
   echo ucfirst($_REQUEST['reportName']);
@@ -61,5 +63,29 @@ function checkNoData($result) {
     return true;
   }
   return false;
+}
+
+function finalizePrint() {
+  global $outMode;
+  $pdfLib='html2pdf';
+  //$pdfLib='dompdf';
+  if ($outMode=='pdf') {
+    $content = ob_get_clean(); 
+    if ($pdfLib=='html2pdf') {
+      /* HTML2PDF way */
+      require_once('../external/html2pdf/html2pdf.class.php');
+      $html2pdf = new HTML2PDF('L','A4','en');
+      $html2pdf->setDefaultFont('freesans');
+      $html2pdf->writeHTML($content); 
+      $html2pdf->Output();
+    } else if ($pdfLib=='dompdf') {
+    /* DOMPDF way */
+      require_once("../external/dompdf/dompdf_config.inc.php");
+      $dompdf = new DOMPDF();
+      $dompdf->load_html($content);
+      $dompdf->render();
+      $dompdf->stream("sample.pdf");
+    }
+  }
 }
 ?>

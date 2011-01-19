@@ -39,14 +39,19 @@
         echo ' {id:"=", name:"="}';
         echo ',{id:">=", name:">="}';
         echo ',{id:"<=", name:"<="}';
+        echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else if ($dataType=='varchar') {
         echo ' {id:"LIKE", name:"' . i18n("contains") . '"}';
+        echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else if ($dataType=='bool') {
         echo ' {id:"=", name:"="}';
+        echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else if ($dataType=='list') {
         echo ' {id:"IN", name:"' . i18n("amongst") . '"}';
+        echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else  {
         echo ' {id:"UNK", name:"?"}';
+        echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       }
       
     } else if ($type=='list') {    

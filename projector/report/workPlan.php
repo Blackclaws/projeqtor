@@ -118,12 +118,12 @@
       echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
       echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
       echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $validatedWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $assignedWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $plannedWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $realWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $leftWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
+      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $validatedWork  . '</NOBR></TD>' ;
+      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $assignedWork  . '</NOBR></TD>' ;
+      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $plannedWork  . '</NOBR></TD>' ;
+      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $realWork  . '</NOBR></TD>' ;
+      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $leftWork  . '</NOBR></TD>' ;
+      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
       echo '</TR>';        
     }
   }

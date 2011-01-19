@@ -72,6 +72,7 @@
     var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
+    var printInNewWindow=<?php echo getBooleanValueAsString($printInNewWindow);?>;;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
@@ -349,23 +350,65 @@
   <div id="printPreview" dojoType="dijit.layout.ContentPane" region="center">
     <table>
       <tr>
+        <td width="<?php echo $printWidth;?>px" align="right">
+          <div id="sentToPrinterDiv">
+            <table width="100%"><tr><td width="300px" align="right">
+              <button id="sendToPrinter" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('sendToPrinter');?>" 
+                iconClass="dijitEditorIcon dijitEditorIconPrint" >
+                <script type="dojo/connect" event="onClick" args="evt">
+                  sendFrameToPrinter();
+                </script>
+              </button>
+            </td>
+            <td align="left" width="<?php echo $printWidth - 300;?>px">
+              &nbsp;<b><i><?php echo i18n('sendToPrinter')?></i></b>
+            </td></tr></table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>   
+          <iframe width="100%" height="<?php echo $printHeight;?>px"
+            scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="">
+          </iframe>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetail");?>">
+  <?php 
+    $detailHeight=600;
+    $detailWidth=1000;
+    if (array_key_exists('screenWidth',$_SESSION)) {
+       $detailWidth = $_SESSION['screenWidth'] * 0.8;
+    }
+    if (array_key_exists('screenHeight',$_SESSION)) {
+      $detailHeight=round($_SESSION['screenHeight']*0.65);
+    }
+  ?> 
+  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center">
+    <table>
+      <tr>
         <td width="300px" align="right">
-          <button id="sendToPrinter" dojoType="dijit.form.Button" showlabel="false"
+          <!--  <button id="sendToPrinter" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('sendToPrinter');?>" 
             iconClass="dijitEditorIcon dijitEditorIconPrint" >
             <script type="dojo/connect" event="onClick" args="evt">
               sendFrameToPrinter();
             </script>
-          </button>
+          </button> -->
         </td>
-        <td align="left" width="<?php echo $printWidth - 300;?>px">
-          &nbsp;<b><i><?php echo i18n('sendToPrinter')?></i></b>
+        <td align="left" width="<?php echo $detailWidth - 300;?>px">
+          
         </td>
       </tr>
       <tr>
         <td colspan="2">   
-          <iframe width="100%" height="<?php echo $printHeight;?>px"
-            scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="">
+          <iframe width="100%" height="<?php echo $detailHeight;?>px"
+            scrolling="auto" frameborder="0px" name="detailFrame" id="detailFrame" src="">
           </iframe>
         </td>
       </tr>
@@ -891,6 +934,9 @@
                 id="idFilterOperator" name="idFilterOperator" 
                 missingMessage="<?php echo i18n('valueNotSelected');?>"
                 class="input" value="" style="width: 100px;" store="operatorStore">
+                  <script type="dojo/method" event="onChange" >
+                    filterSelectOperator(this.value);
+                  </script>        
                </select>
              </td>
              <td style="width:210px;">
@@ -905,7 +951,14 @@
                  /> 
                 <input id="filterValueDate" name="filterValueDate" value=""  
                  dojoType="dijit.form.DateTextBox" 
-                 style="width:200px" /> 
+                 style="width:200px" />
+                 <select id="filterSortValueList" name="filterSortValueList" value="asc"  
+                 dojoType="dijit.form.FilteringSelect"
+                 missingMessage="<?php echo i18n('valueNotSelected');?>" 
+                 style="width:200px" size="10" class="input">
+                  <option value="asc" SELECTED><?php echo i18n('sortAsc');?></option>
+                  <option value="desc"><?php echo i18n('sortDesc');?></option>
+                 </select> 
              </td>
              <td style="width:25px; text-align: center;" align="center">
                <img src="css/images/smallButtonAdd.png" onClick="addfilterClause();" title="<?php echo i18n('addFilterClause');?>" class="smallButton"/> 

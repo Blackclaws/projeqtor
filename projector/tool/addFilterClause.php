@@ -17,18 +17,22 @@ if (! array_key_exists('idFilterAttribute',$_REQUEST)) {
   throwError('idFilterAttribute parameter not found in REQUEST');
 }
 $idFilterAttribute=$_REQUEST['idFilterAttribute'];
+
 if (! array_key_exists('idFilterOperator',$_REQUEST)) {
   throwError('idFilterOperator parameter not found in REQUEST');
 }
 $idFilterOperator=$_REQUEST['idFilterOperator'];
+
 if (! array_key_exists('filterDataType',$_REQUEST)) {
   throwError('filterDataType parameter not found in REQUEST');
 }
 $filterDataType=$_REQUEST['filterDataType'];
+
 if (! array_key_exists('filterValue',$_REQUEST)) {
   throwError('filterValue parameter not found in REQUEST');
 }
 $filterValue=$_REQUEST['filterValue'];
+
 if (array_key_exists('filterValueList',$_REQUEST)) {
   $filterValueList=$_REQUEST['filterValueList'];
 } else {
@@ -39,15 +43,23 @@ if (! array_key_exists('filterValueDate',$_REQUEST)) {
   throwError('filterValueDate parameter not found in REQUEST');
 }
 $filterValueDate=$_REQUEST['filterValueDate'];
+
 if (! array_key_exists('filterValueCheckbox',$_REQUEST)) {
   $filterValueCheckbox=false;
 } else {
   $filterValueCheckbox=true;
 }
+
+if (! array_key_exists('filterSortValueList',$_REQUEST)) {
+  throwError('filterSortValueList parameter not found in REQUEST');
+}
+$filterSortValue=$_REQUEST['filterSortValueList']; 
+
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
+
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
@@ -101,7 +113,11 @@ if ($idFilterAttribute and $idFilterOperator) {
     }
     //$arrayDisp["value"].=")";
     $arraySql["value"].=")";
-    
+  } else if ($idFilterOperator=="SORT") {  
+    $arrayDisp["operator"]=i18n("sortFilter");
+    $arraySql["operator"]=$idFilterOperator;
+    $arrayDisp["value"]=htmlEncode(i18n('sort' . ucfirst($filterSortValue) ));
+    $arraySql["value"]=$filterSortValue;
   } else {
      htmlGetErrorMessage(i18n('incorrectOperator'));
      exit;

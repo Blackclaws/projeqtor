@@ -35,7 +35,7 @@ if (is_file("../tool/parametersLocation.php")) {
   } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
-
+traceLog($_SERVER["SCRIPT_NAME"]);
 date_default_timezone_set($paramDefaultTimezone);
 
 $testMode=false;              // Setup a variable for testing purpose test.php changes this value to true
@@ -66,11 +66,16 @@ if (! $paramAttachementDirectory or ! $paramAttachementMaxSize) {
 
 // Check 'magic_quotes' : must be disabled ====================================
 if (get_magic_quotes_gpc ()) {
-  debugLog (i18n("errorMagicQuotesGpc"));  
+  errorLog (i18n("errorMagicQuotesGpc"));  
 }
 if (get_magic_quotes_runtime ()) {
   @set_magic_quotes_runtime(0);
 }
+// Check Register Globals 
+if (ini_get('register_globals')) {
+  errorLog (i18n("errorRegisterGlobals"));  
+}
+
 $page=$_SERVER['PHP_SELF'];
 if ( ! (isset($maintenance) and $maintenance) ) {
   // Get the user from session. If not exists, request connection ===============

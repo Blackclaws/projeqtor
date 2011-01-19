@@ -145,11 +145,15 @@ function showAbout (msg) {
  * @param forms the form containing the data to send to the page
  * @return void 
  */
-function showPrint (page, context) {
+function showPrint (page, context, comboName, outMode) {
 	//dojo.byId('printFrame').style.width= 1000 + 'px';
 	showWait();
-	window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
-	dijit.byId("dialogPrint").show();
+	quitConfirmed=true;
+	noDisconnect=true;
+	if ( ! printInNewWindow) {
+	  window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+	  dijit.byId("dialogPrint").show();
+	}
 	if (dojo.byId('objectClass')) {
 		cl=dojo.byId('objectClass').value;
 	}
@@ -157,6 +161,13 @@ function showPrint (page, context) {
 		id=dojo.byId('objectId').value;
 	}
 	var params="";
+	dojo.byId("sentToPrinterDiv").style.display='block';
+	if (outMode) {
+		params+="&outMode=" + outMode;
+		if (outMode=='pdf') {
+			dojo.byId("sentToPrinterDiv").style.display='none';
+		}
+	}
 	if (context=='list') {
 		if (dijit.byId("listShowIdle")) {
 			if (dijit.byId("listShowIdle").get('checked')) {
@@ -192,14 +203,33 @@ function showPrint (page, context) {
 	} else if (context=='report'){
 		var frm=dojo.byId('reportForm');
 		frm.action="../view/print.php";
-		frm.target='printFrame';
+		if (outMode) {
+			dojo.byId('outMode').value=outMode;
+		} else {
+			dojo.byId('outMode').value='';
+		}
+		if (printInNewWindow) {
+			frm.target='#';
+		} else {
+		  frm.target='printFrame';
+		}
 		frm.submit();
+		hideWait();
+		quitConfirmed=false;
+		noDisconnect=false;
 		return;
 	} else if (context=='imputation'){
 		var frm=dojo.byId('listForm');
 		frm.action="../view/print.php";
-		frm.target='printFrame';
+		if (printInNewWindow) {
+			frm.target='#';
+		} else {
+		  frm.target='printFrame';
+		}
 		frm.submit();
+		hideWait();
+		quitConfirmed=false;
+		noDisconnect=false;
 		return;
 	}
 	var grid=dijit.byId('objectGrid');
@@ -212,10 +242,31 @@ function showPrint (page, context) {
 		}
 		//alert("Sort on index "+sortIndex+" asc "+sortAsc);
 	}
-	frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	if (printInNewWindow) {
+		var newWin=window.open("print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params);
+		hideWait();
+	} else {
+	  window.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	}
+	quitConfirmed=false;
+	noDisconnect=false;
 	//document.getElementsByTagName('printFrame')[0].contentWindow.print();
 }
 
+function showDetail (comboName) {
+	var val=dijit.byId(comboName).get('value');
+	if (! val || val=="" || val==" ") {
+		showInfo(i18n('noItemSelected'));
+  	return;
+  }
+	showWait();
+	var params='';
+	cl=comboName.substring(2);
+  id=dijit.byId(comboName).get('value');
+	window.frames['detailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+	dijit.byId("dialogDetail").show();
+	frames['detailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+cl+"&objectId="+id+params;
+}
 
 function sendFrameToPrinter() {
 	dojo.byId("sendToPrinter").blur();
@@ -782,6 +833,7 @@ function showFilterDialog () {
 	dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
 	dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+	dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
 	dijit.byId('idFilterAttribute').set("value","");
 	dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
 	filterType="";
@@ -879,6 +931,33 @@ function filterSelectAtribute(value) {
 		dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
 		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+	}
+}
+
+function filterSelectOperator(operator) {
+	if (operator=="SORT") {
+		filterType="SORT";
+		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'block'});
+	} else {
+		dataType=dojo.byId('filterDataType').value;
+		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
+		if (dataType=="bool") {
+			filterType="bool";
+			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'block'});
+		} else if (dataType=="list") {
+			filterType="list";
+			dojo.style(dijit.byId('filterValueList').domNode, {display:'block'});
+		} else if (dataType=="date") {
+			filterType="date";
+			dojo.style(dijit.byId('filterValueDate').domNode, {display:'block'});
+		} else {
+	  	filterType="text";
+			dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
+		}
 	}
 }
 

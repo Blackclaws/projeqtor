@@ -198,7 +198,7 @@ foreach ($resources as $idR=>$nameR) {
   echo '</tr>';
   
 }
-echo "<tr><td>&nbsp;</td></tr>";
+echo '<tr><td colspan="' . ($nbDays+3) . '">&nbsp;</td></tr>';
 echo '<tr><td class="reportTableHeader" colspan="2">' . i18n('sum') . '</td>';
 $lineSum='';
 for ($i=1; $i<=$nbDays;$i++) {

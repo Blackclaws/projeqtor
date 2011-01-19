@@ -361,7 +361,7 @@
               echo '<td class="ganttDetailNoborder" style="' . $color . '">';
               echo '<table width="100%" >';
               echo '<tr style="height:' . $subHeight . 'px;"><td class="ganttDetailBoderleft" style="' . $noBorder . '"></td></tr>';              
-              echo '<tr height="' . $height . 'px"><td class="ganttDetailNoborder" style="width:1px; background-color:' . $pColor . ';height:' .  $height . 'px;"></td></tr>';              
+              echo '<tr height="' . $height . 'px"><td class="ganttDetailNoborder" style="width:1px; background-color:' . $pColor . ';height:' .  $height . 'px; border-top: 1px solid #777777;border-bottom: 1px solid #777777;"></td></tr>';              
               echo '<tr style="height:' . $subHeight . 'px;"><td class="ganttDetailBoderleft" style="' . $noBorder . '"></td></tr>';
               echo '</table>';
             }

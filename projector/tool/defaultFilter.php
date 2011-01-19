@@ -51,11 +51,6 @@ if ($valid or $cancel) {
   $_SESSION['user']=$user;
 }
 */
-  
-$flt=new Filter();
-$crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
-$filterList=$flt->getSqlElementsFromCriteria($crit, false);
-htmlDisplayStoredFilter($filterList);
 
 echo '<table width="100%"><tr><td align="center">';
 $crit=array();
@@ -78,4 +73,9 @@ if ($name) {
   echo '<span class="messageOK">' . i18n('defaultFilterCleared') . '</span>';
 }
 echo '</td></tr></table>';
+
+$flt=new Filter();
+$crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
+$filterList=$flt->getSqlElementsFromCriteria($crit, false);
+htmlDisplayStoredFilter($filterList,$filterObjectClass);
 ?>

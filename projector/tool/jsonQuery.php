@@ -78,16 +78,46 @@
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
     }
+
+    $arrayFilter=array();
+    if (is_array( $_SESSION['user']->_arrayFilters)) {
+      if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
+        $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+      }
+    }
     
-    $sortIndex=null;
+    // first sort from index (checked in List Header)
+    $sortIndex=null;   
     if ($print) {
       if (array_key_exists('sortIndex', $_REQUEST)) {
         $sortIndex=$_REQUEST['sortIndex']+1;
         $sortWay=(array_key_exists('sortWay', $_REQUEST))?$_REQUEST['sortWay']:'asc';
         $nb=0;
+        $numField=0;
+        foreach ($array as $val) {
+          $fld=htmlExtractArgument($val, 'field');      
+          if ($fld) {            
+            $numField+=1;
+            if ($sortIndex and $sortIndex==$numField) {
+              $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+              $queryOrderBy .= " " . $fld . " " . $sortWay;
+            }
+          }
+        }
       }
     }
+    
+    // Then sort from Filter Criteria
+    foreach ($arrayFilter as $crit) {
+      if ($crit['sql']['operator']=='SORT') {
+        $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+        $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
+                             . " " . $crit['sql']['value'];
+      }
+    }
+    
     // Build select clause, and eventualy extended From clause and Where clause
+    // Also include default Sort criteria
     $numField=0;
     $formatter=array();
     foreach ($array as $val) {
@@ -95,11 +125,7 @@
       //$sp=explode('field=', $val);
       $fld=htmlExtractArgument($val, 'field');      
       if ($fld) {
-        $numField+=1;
-        if ($sortIndex and $sortIndex==$numField) {
-          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-          $queryOrderBy .= " " . $fld . " " . $sortWay;
-        }
+        $numField+=1;        
         $formatter[$numField]=htmlExtractArgument($val, 'formatter');
         $from=htmlExtractArgument($val, 'from');
         $querySelect .= ($querySelect=='')?'':', ';
@@ -160,7 +186,8 @@
               ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
               ' and ' . $externalTableAlias . ".refType='" . $objectClass . "')";
           }
-          if ( property_exists($externalObj,'wbsSortable') and ! $sortIndex) {
+          if ( property_exists($externalObj,'wbsSortable') 
+            and strpos($queryOrderBy,$externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable'))===false) {
             $queryOrderBy .= ($queryOrderBy=='')?'':', ';
             $queryOrderBy .= " " . $externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable') . " ";
           } 
@@ -184,22 +211,17 @@
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
     
-    // Chek for an advanced filter (stored in User
-    
-    $arrayFilter=array();
-    if (is_array( $_SESSION['user']->_arrayFilters)) {
-      if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-        $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
-      }
-      foreach ($arrayFilter as $crit) {
+    // Check for an advanced filter (stored in User
+    foreach ($arrayFilter as $crit) {
+      if ($crit['sql']['operator']!='SORT') {
         $queryWhere.=($queryWhere=='')?'':' and ';
         $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
-                   . $crit['sql']['operator'] . ' '
-                   . $crit['sql']['value'];
+                 . $crit['sql']['operator'] . ' '
+                 . $crit['sql']['value'];
       }
     }
-//debugLog( $queryWhere);   
     
+debugLog($queryOrderBy);
     // constitute query and execute
     $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
     $query='select ' . $querySelect 

@@ -375,8 +375,7 @@ label, .label {
 }
 
 .filterField {
-  color: #555555;
-  
+  color: #555555;  
 }
 
 .selectList {
@@ -597,14 +596,7 @@ label, .label {
  padding: 0px 0px 0px 5px; 
 }
 
-.displayButton {
-  background-image: url(images/display.png);
-  background-repeat: no-repeat;
-  width: 16px;
-  height: 16px;
-  text-align: center;
-  cursor: pointer;
-}
+
 .ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover {
   background-color: #ffffaa;
 }

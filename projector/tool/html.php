@@ -458,8 +458,11 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
  * @param $filterArray Array
  * @return Void
  */
-function htmlDisplayStoredFilter($filterArray) {
+function htmlDisplayStoredFilter($filterArray,$filterObjectClass) {
   // Display Result
+  $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', 
+       array('idUser'=>$_SESSION['user']->id, 'parameterCode'=>'Filter'.$filterObjectClass));
+  $defaultFilter=($param)?$param->parameterValue:'';
   echo "<table width='100%'>";
   echo "<tr>";
   echo "<td class='filterHeader' style='width:525px;'>" . i18n("storedFilters") . "</td>";
@@ -472,6 +475,7 @@ function htmlDisplayStoredFilter($filterArray) {
       echo '<td style="cursor: pointer;" class="filterData" onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" '
            . ' title="' . i18n("selectStoredFilter") . '" >' . 
            $filter->name .
+           ( ($defaultFilter==$filter->id)?' (' . i18n('defaultValue') . ')':'') .
            "</td>";
       echo "<td class='filterData' style='text-align: center;'>";
       echo ' <img src="css/images/smallButtonRemove.png" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncodeJson($filter->name) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
@@ -510,15 +514,17 @@ function htmlDisplayColored($value,$color) {
 }
 
 function htmlDisplayCurrency($val) {
+  if (! $val and $val!='0') return '';
+
   global $currency, $currencyPosition, $browserLocale;
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   if (! isset($currencyPosition) or ! isset($currency) or $currencyPosition=='none') {
     return $fmt->format($val) ;
   } 
   if ($currencyPosition=='after') {
-    return $fmt->format($val) . ' ' . $currency;
+    return '<nobr>' . $fmt->format($val) . ' ' . $currency . '</nobr>';
   } else {
-    return $currency . ' ' . $fmt->format($val);
+    return '<nobr>' . $currency . ' ' . $fmt->format($val) . '</nobr>';
   }
 }
 

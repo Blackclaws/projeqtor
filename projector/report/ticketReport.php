@@ -204,7 +204,7 @@ for ($i=1; $i<=3; $i++) {
       echo '<tr>';
       if ($codeMode==0) {
         echo '<td class="reportTableLineHeader" rowspan="' . count($modeArr) . '">' . i18n($codeArr) . '</td>';
-        echo '<td class="reportTableLineHeader" style="color:#808080;"><i>' . i18n('undefined') .  '</i></td>';
+        echo '<td class="reportTableLineHeader" style="color:#808080;"><i>' . i18n('undefinedValue') .  '</i></td>';
       } else {
         echo '<td class="reportTableLineHeader">' . SqlList::getNameFromId($codeArr, $codeMode) .  '</td>';
       }

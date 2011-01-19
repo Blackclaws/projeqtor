@@ -145,8 +145,10 @@ foreach($arr as $id=>$arrType) {
     }
   } 
   $dataSet->AddPoint($temp,$id);
+  if (isset($lstType[$id])) {
   $dataSet->SetSerieName($lstType[$id],$id);
   $dataSet->AddSerie($id);
+  }
 }
 $dataSet->AddPoint($lstStatus,"status");  
 $dataSet->SetAbsciseLabelSerie("status");   

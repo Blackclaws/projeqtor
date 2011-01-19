@@ -168,43 +168,46 @@ echo '<tr>';
 echo '<td class="section" style="width:49%">' . i18n('TicketType') . '</td>';
 echo '<td style="width:2%">&nbsp;</td>';
 echo '<td class="section" style="width:49%">' . i18n('Urgency') . '</td>';
-echo '<tr><td valign="top">';
+echo '</tr><tr><td valign="top">';
 drawSynthesisTable('TicketType', $lstType); 
 echo '</td><td></td><td valign="top">';
 drawSynthesisTable('Urgency', $lstUrgency);  
-echo '</td></tr>';
+echo '</td>';
 echo '</tr>';
 echo '<tr><td colspan="3">&nbsp;</td></tr>';
 echo '<tr>';
 echo '<td class="section" style="width:49%">' . i18n('Priority') . '</td>';
 echo '<td style="width:2%">&nbsp;</td>';
 echo '<td class="section" style="width:49%">' . i18n('Criticality') . '</td>';
-echo '<tr><td valign="top">';
+echo '</tr><tr><td valign="top">';
 drawSynthesisTable('Priority',$lstPriority); 
 echo '</td><td></td><td valign="top">';
 drawSynthesisTable('Criticality', $lstCriticality);  
-echo '</td></tr>';
+echo '</td>';
 echo '</tr>';
 echo '<tr><td colspan="3">&nbsp;</td></tr>';
 echo '<tr>';
 echo '<td class="section" style="width:49%">' . i18n('colIssuer') . '</td>';
 echo '<td style="width:2%">&nbsp;</td>';
 echo '<td class="section" style="width:49%">' . i18n('colResponsible') . '</td>';
+echo '</tr>';
 echo '<tr><td valign="top">';
 drawSynthesisTable('User',$lstIssuer); 
 echo '</td><td></td><td valign="top">';
 drawSynthesisTable('Resource', $lstResponsible);  
-echo '</td></tr>';
+echo '</td>';
 echo '</tr>';
 echo '</table>';
 
 function drawSynthesisTable($scope, $lst) {
-  echo '<table valign="top" width="100%"><tr>';
-  echo '<td width="50%" valign="top"><table width="100%" valign="top">';
+  echo '<table valign="top" width="100%">';
+  echo '<tr>';
+  echo '<td width="50%" valign="top">';
+  echo '<table width="100%" valign="top">';
   $lstRef=SqlList::getList($scope,'name',false,true);
   if (array_key_exists('0', $lst)) {
     echo '<tr><td class="reportTableHeader" width="80%">';
-    echo '<i>'.i18n('undefined').'</i>';
+    echo '<i>'.i18n('undefinedValue').'</i>';
     echo '</td><td class="reportTableData reportTableDataCenter" width="20%">' . $lst['0'] . '</td></tr>'; 
   }
   foreach ($lstRef as $code=>$val) {
@@ -214,7 +217,8 @@ function drawSynthesisTable($scope, $lst) {
       echo '</td><td class="reportTableData reportTableDataCenter" width="20%">' . $lst[$code] . '</td></tr>'; 
     }
   }
-  echo '</td></table>';
+  echo '</table>';
+  echo '</td>';
   echo '<td width="50%">';
   drawsynthesisGraph($scope, $lst);
   echo '</td>';
@@ -228,7 +232,7 @@ function drawsynthesisGraph($scope, $lst) {
   $legArr=array();
   $lstRef=SqlList::getList($scope,'name',false,true);
   if (array_key_exists('0', $lst)) {
-    $legArr[]=i18n('undefined');
+    $legArr[]=i18n('undefinedValue');
     $valArr[]=$lst['0'];
   }
   foreach ($lstRef as $code=>$val) {

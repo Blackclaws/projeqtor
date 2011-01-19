@@ -101,3 +101,43 @@ INSERT INTO `${prefix}habilitationOther` (`idProfile`, `scope`, `rightAccess`) V
 (5, 'cost', 1);
 
 ALTER TABLE `${prefix}ticket` ADD  `idContact` int(12) unsigned DEFAULT NULL;
+
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
+(6, 'reportCategoryCost', 50);
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
+(26, 'reportCostDetail', 6, 'costPlan.php', 10),
+(27, 'reportCostMonthly', 6, 'globalCostPlanning.php?scale=month', 20);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+(63, 26, 'idProject', 'projectList', 10, 'currentProject'),
+(64, 27, 'idProject', 'projectList', 10, 'currentProject');
+
+INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAccess`) VALUES
+(26, 1, 1),
+(27, 1, 1),
+(26, 2, 1),
+(27, 2, 1),
+(26, 3, 1),
+(27, 3, 1);
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
+(28, 'reportWorkDetailWeekly', 1, 'workdetail.php?scale=week', 240),
+(29, 'reportWorkDetailMonthly', 1, 'workdetail.php?scale=month', 250);
+(30, 'reportWorkDetailYearly', 1, 'workdetail.php?scale=year', 260);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+(65, 28, 'week', 'week', 10, 'currentWeek'),
+(66, 29, 'month', 'month', 10, 'currentMonth'),
+(67, 30, 'year', 'year', 10, 'currentYear');
+
+INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAccess`) VALUES
+(28, 1, 1),
+(29, 1, 1),
+(30, 1, 1),
+(28, 2, 1),
+(29, 2, 1),
+(30, 2, 1),
+(28, 3, 1),
+(29, 3, 1),
+(30, 3, 1);

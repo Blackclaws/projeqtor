@@ -59,15 +59,16 @@ foreach($historyList as $hist) {
   $curObj=null; $dataType=""; $dataLength=0;
   $hide=false;
   $oper=i18n('operation' . ucfirst($hist->operation) );
-  $user=$hist->idUser;
-  $user=SqlList::getNameFromId('User',$user);
+  $userId=$hist->idUser;
+  $userName=SqlList::getNameFromId('User',$userId);
   $date=htmlFormatDateTime($hist->operationDate);
   $class="NewOperation";
   if ($stockDate==$hist->operationDate 
   and $stockUser==$hist->idUser
   and $stockOper==$hist->operation) {
     $oper="";
-    $user="";
+    $userName="";
+    $userId="";
     $date="";
     $class="ContinueOperation";
   }
@@ -90,7 +91,7 @@ foreach($historyList as $hist) {
   if (! $hide) {
     echo '<tr>';
     echo '<td class="historyData'. $class .'">' . $date . '</td>';
-    echo '<td class="historyData'. $class .'">' . $user . '</td>';
+    echo '<td class="historyData'. $class .'">' . $userName . '</td>';
     if ($scope=='deleted') {
       echo '<td class="historyData'. $class .'">' . i18n($hist->refType) . ' #' . $hist->refId . '</td>';
     } else {

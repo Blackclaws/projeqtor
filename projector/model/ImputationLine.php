@@ -322,7 +322,7 @@ class ImputationLine {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
           echo ' constraints="{pattern:\'###0.0#\'}"'; 
           echo '  style="width: 60px; text-align: center;" ';
-          echo ' trim="true" class="displayTransparent" readOnly="true" ';
+          echo ' trim="true" class="displayTransparent" readOnly="true" disabled="true"';
           echo ' id="assignedWork_' . $nbLine . '"';
           echo ' name="assignedWork_' . $nbLine . '"';
           echo ' value="' . $line->assignedWork . '" ';
@@ -339,7 +339,7 @@ class ImputationLine {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
           echo ' constraints="{pattern:\'###0.0#\'}"'; 
           echo '  style="width: 60px; text-align: center;" ';
-          echo ' trim="true" class="displayTransparent" readOnly="true" ';
+          echo ' trim="true" class="displayTransparent" readOnly="true" disabled="true"';
           echo ' id="realWork_' . $nbLine . '"';
           echo ' name="realWork_' . $nbLine . '"';
           echo ' value="' . $line->realWork . '" ';
@@ -422,9 +422,9 @@ class ImputationLine {
       if ($line->imputable) {
         if (!$print) {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-          echo ' constraints="{}"'; 
+          echo ' constraints="{pattern:\'###0.0#\'}"'; 
           echo '  style="width: 60px; text-align: center;" ';
-          echo ' trim="true" class="displayTransparent" readonly="true"';
+          echo ' trim="true" class="displayTransparent" readonly="true" disabled="true"';
           echo ' id="plannedWork_' . $nbLine . '"';
           echo ' name="plannedWork_' . $nbLine . '"';
           echo ' value="' . $line->plannedWork . '" ';
