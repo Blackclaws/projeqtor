@@ -84,7 +84,7 @@ INSERT INTO `${prefix}visibilityscope` (`id`, `name`, `accessCode`, `sortOrder`,
 (2, 'visibilityScopeValid', 'VAL', 200, 0),
 (4, 'visibilityScopeAll', 'ALL', 400, 0);
 
-INSERT INTO `${prefix}habilitationOther` (`idProfile`, `scope`, `rightAccess`) VALUES
+INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
 (1, 'work', 4),
 (2, 'work', 4),
 (3, 'work', 4),
@@ -122,9 +122,9 @@ INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAcces
 (27, 3, 1);
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
-(28, 'reportWorkDetailWeekly', 1, 'workdetail.php?scale=week', 240),
-(29, 'reportWorkDetailMonthly', 1, 'workdetail.php?scale=month', 250);
-(30, 'reportWorkDetailYearly', 1, 'workdetail.php?scale=year', 260);
+(28, 'reportWorkDetailWeekly', 1, 'workDetail.php?scale=week', 240),
+(29, 'reportWorkDetailMonthly', 1, 'workDetail.php?scale=month', 250),
+(30, 'reportWorkDetailYearly', 1, 'workDetail.php?scale=year', 260);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
 (65, 28, 'week', 'week', 10, 'currentWeek'),
@@ -141,3 +141,8 @@ INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAcces
 (28, 3, 1),
 (29, 3, 1),
 (30, 3, 1);
+
+ALTER TABLE `${prefix}statusmail` ADD  `mailToContact` int(1) unsigned DEFAULT 0,
+ADD  `mailToLeader` int(1) unsigned DEFAULT 0,
+ADD  `mailToOther` int(1) unsigned DEFAULT 0,
+ADD `otherMail` varchar(4000) DEFAULT NULL;

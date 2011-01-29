@@ -102,10 +102,12 @@ echo '<tr><td class="reportTableHeader" rowspan="2">' . i18n($refType . 'Type') 
 echo '<td colspan="' . (count($lstStatus  )) . '" class="reportTableHeader">' .  i18n('colIdStatus') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
 echo '</tr>';
+echo '<tr>';
 foreach ($lstStatus as $id=>$status) {
   echo '<td class="reportTableColumnHeader">' . $status . '</td>';
 }
 echo '</tr>';
+
 foreach ($lstType as $idType=>$name) {
   $sum=0;
   echo '<tr><td class="reportTableLineHeader">' . $name . '</td>';
@@ -117,9 +119,10 @@ foreach ($lstType as $idType=>$name) {
     }
     echo '</td>';
   }
-  echo '<td class="reportTableLineHeader reportTableDataCenter">' . $sum . '<td>';
+  echo '<td class="reportTableLineHeader reportTableDataCenter">' . $sum . '</td>';
   echo '</tr>';
 }
+
 echo '<tr><td class="reportTableHeader" >' . i18n('sum') . '</td>';
 $sum=0;
 foreach ($lstStatus as $id=>$val) {

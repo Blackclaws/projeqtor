@@ -1,4 +1,5 @@
 <?php
+session_start();              // Setup session. Must be first command.
 /** ============================================================================
  * Global tool script for the application.
  * Must be included (include once) on each script remotely called.
@@ -7,9 +8,9 @@ set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 $browserLocale="";
 $reportCount=0;
-session_start();              // Setup session. Must be first command.
 include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
+
 /* ============================================================================
  * global variables
  * ============================================================================ */
@@ -35,8 +36,8 @@ if (is_file("../tool/parametersLocation.php")) {
   } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
-traceLog($_SERVER["SCRIPT_NAME"]);
 date_default_timezone_set($paramDefaultTimezone);
+scriptLog($_SERVER["SCRIPT_NAME"]);
 
 $testMode=false;              // Setup a variable for testing purpose test.php changes this value to true
 $i18nMessages=null;           // Array containing messages depending on local (initialized at first need)
@@ -66,14 +67,14 @@ if (! $paramAttachementDirectory or ! $paramAttachementMaxSize) {
 
 // Check 'magic_quotes' : must be disabled ====================================
 if (get_magic_quotes_gpc ()) {
-  errorLog (i18n("errorMagicQuotesGpc"));  
+  debugLog (i18n("errorMagicQuotesGpc"));  
 }
 if (get_magic_quotes_runtime ()) {
   @set_magic_quotes_runtime(0);
 }
 // Check Register Globals 
 if (ini_get('register_globals')) {
-  errorLog (i18n("errorRegisterGlobals"));  
+  debugLog (i18n("errorRegisterGlobals"));  
 }
 
 $page=$_SERVER['PHP_SELF'];
@@ -106,7 +107,7 @@ if ( ! (isset($maintenance) and $maintenance) ) {
   if ($pos) {
     $page=substr($page,$pos+1);
   }
-  scriptLog("Page=" . $page);
+  //scriptLog("Page=" . $page);
   if ( ! $user and $page != 'loginCheck.php') {
     if (is_file("login.php")) {
       include "login.php";
@@ -524,7 +525,7 @@ function sendMail($to, $title, $message, $object=null)  {
 /** ===========================================================================
  * Log tracing. Not to be called directly. Use following functions instead.
  * @param $message message to store on log
- * @param $level level of trace : 1=error trace, 2=general trace, 3=debug
+ * @param $level level of trace : 1=error, 2=trace, 3=debug, 4=script
  * @return void
  */
 function logTracing($message, $level=9) {

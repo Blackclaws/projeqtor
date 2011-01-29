@@ -3,18 +3,11 @@
    header ('Content-Type: text/html; charset=UTF-8');
    scriptLog('   ->/view/preparePreview.php'); 
 ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>   
   <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
-  <script type="text/javascript" src="../external/dojo/dojo.js"
-    djConfig='modulePaths: {i18n: "../../tool/i18n"},
-              parseOnLoad: true, 
-              isDebug: false'></script>
-  <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
-  <script type="text/javascript"> 
-    //dojo.require("dojox.grid.DataGrid");
-    //dojo.require("dojox.form.FileInput");
-  </script>
 </head>
 
 <body id="body" >

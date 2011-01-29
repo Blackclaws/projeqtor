@@ -180,6 +180,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //    
     } else {
       $attributes=''; $isRequired=false; $readOnly=false;
+      $specificStyle=''; 
       if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType) {
         $lock='lock' . ucfirst($col);
         if (property_exists($objType,$lock) and $objType->$lock) {
@@ -196,6 +197,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) {
         $nobr=true;
+      }
+      if (strpos($obj->getFieldAttributes($col), 'invisible')!==false) {
+        $specificStyle.=' visibility:hidden';
       }
       if ( (securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == "NO") 
       or (strpos($obj->getFieldAttributes($col), 'readonly')!==false)
@@ -340,7 +344,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo ' value="' . htmlEncode($val) . '" ></div>';
       } else if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
-        // Display full HTML ================================================== Hidden field
+        // Display full HTML ================================================== Simple Display html field
         echo '<div class="displayHtml">';
         echo $val;
         echo '</div>';
@@ -371,7 +375,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo ' class="display" ';
         echo ' readonly ' ;
-        echo ' value="' . htmlEncode($val) . '" >';
+        echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col=='color' and $dataLength == 7 ){
         // Draw a color selector ============================================== COLOR
         echo "<table ><tr><td class='detail'>";
@@ -438,7 +442,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidDate') . '"'; 
         echo ' type="text" maxlength="' . $dataLength . '" ';
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;" class="input" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' >';
         echo $colScript;
@@ -462,7 +466,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidDate') . '"'; 
         echo ' type="text" maxlength="10" ';
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;" class="input" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="' . $valDate . '" ';
         echo ' >';
         echo $colScript;
@@ -473,7 +477,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"'; 
         echo ' type="text" maxlength="5" ';
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:50px; text-align: center;" class="input" ';
+        echo ' style="width:50px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="T' . $valTime . '" ';
         echo ' >';
         echo $colScriptBis;
@@ -489,7 +493,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"'; 
         echo ' type="text" maxlength="' . $dataLength . '" ';
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;" class="input" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="T' . $val . '" ';
         echo ' >';
         echo $colScript;
@@ -499,6 +503,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<div dojoType="dijit.form.CheckBox" type="checkbox" ';
         echo $name;
         echo $attributes;
+        echo ' style="' . $specificStyle . '" ';
         //echo ' value="' . $col . '" ' ;
         if ($val!='0' and ! $val==null) { echo 'checked'; }
         echo ' >';
@@ -533,7 +538,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
               $critVal=$obj->idProject;
             } else {
               $table=SqlList::getList('Project','name',null);
-              debugLog($table);
               if (count($table)>0) {
                 foreach ($table as $idTable=>$valTable) {
                   $firstId=$idTable;
@@ -546,8 +550,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
-        echo '  style="width: ' . $fieldWidth . 'px;"';
-        //echo '  style="width: ' . ($fieldWidth - 20) . 'px;"';
+        echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
+        //echo '  style="width: ' . ($fieldWidth - 20) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
         echo $valStore;
@@ -584,7 +588,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
-        echo ' style="width: ' . $fieldWidth . 'px;" ';
+        echo ' style="width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         echo ' class="input" ';
         echo ' value="' . htmlEncode($val) . '" ';
@@ -608,7 +612,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
         echo $name;
         echo $attributes;
-        echo '  style="width: ' . $largeWidth . 'px;" ';
+        echo '  style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input" ' . '>';
         echo htmlEncode($val, 'none');
@@ -622,7 +626,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
         echo $name;
         echo $attributes;
-        echo '  style="width: ' . $fieldWidth . 'px;" ';
+        echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' trim="true" maxlength="' . $dataLength . '" class="input" ';
         echo ' value="' . htmlEncode($val) . '" ';
         if ($obj->isFieldTranslatable($col)) {

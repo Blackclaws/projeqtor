@@ -97,7 +97,7 @@
     $objList=$obj->getSqlElementsFromCriteria($crit,false);
 //$user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
     foreach($objList as $obj) {
-      if ($obj->parameterCode=='lang') {
+      if ($obj->parameterCode=='lang' and $obj->parameterValue) {
         $_SESSION['currentLocale']=$obj->parameterValue;
         $i18nMessages=null; 
       } else if ($obj->parameterCode=='defaultProject') {
@@ -141,5 +141,4 @@
     echo '</span>';
     traceLog("NEW CONNECTED USER '" . $login . "'");
   }
-
 ?>

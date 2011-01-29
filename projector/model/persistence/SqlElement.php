@@ -175,7 +175,6 @@ abstract class SqlElement {
    * @return message including definition of html hiddenfields to be used 
    */
   public function save() {
-//debugLog('save('.get_class($this).'#'.$this->id . ')');
     return $this->saveSqlElement();
   }
 
@@ -808,6 +807,11 @@ abstract class SqlElement {
     if (count($objList)==1) {
       return $objList[0];
     } else {
+      $obj->singleElementNotFound=true;
+      if (count($objList)>1) {
+traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned more than 1 element");
+        $obj->tooManyRows=true;
+      }
       return $obj;
     }
   }  
@@ -911,7 +915,7 @@ abstract class SqlElement {
           } else if (ucfirst($col_name) == $col_name) {
             $this->{$col_name}=$this->getDependantSqlElement($col_name);
           } else {
-            $test=$line[$this->getDatabaseColumnName($col_name)];
+            //$test=$line[$this->getDatabaseColumnName($col_name)];
             $this->{$col_name}=$line[$this->getDatabaseColumnName($col_name)];
           }
         }
@@ -1586,9 +1590,14 @@ abstract class SqlElement {
     $crit['idle']='0';
     $statusMail=SqlElement::getSingleSqlElementFromCriteria('StatusMail', $crit);
     if (! $statusMail or ! $statusMail->id) {
+      if (property_exists($statusMail,"tooManyRows") and $statusMail->tooManyRows==true) {
+        errorLog("Too many rows on StatusMail for element '" . get_class($this) . "' "
+        . " and status '" . SqlList::getNameFromId('Status', $this->idStatus) . "'" );
+      }
       return false; // exit not a status for mail sending (on disabled) 
     }
-    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0) {
+    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
+    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0) {
       return false; // exit not a status for mail sending (or disabled) 
     }
     $dest="";
@@ -1612,17 +1621,55 @@ abstract class SqlElement {
         }
       }    
     }
-    if ($statusMail->mailToProject) {
+    if ($statusMail->mailToProject or $statusMail->mailToLeader) {
       $aff=new Affectation();
       $crit=array('idProject'=>$this->idProject, 'idle'=>'0');
       $affList=$aff->getSqlElementsFromCriteria($crit, false);
       if ($affList and count($affList)>0) {
         foreach ($affList as $aff) {
           $resource=new Resource($aff->idResource);
-          $newDest = "###" . $resource->email . "###";
-          if ($resource->email and strpos($dest,$newDest)===false) {
-            $dest.=($dest)?', ':'';
-            $dest.= $newDest;
+          if ($statusMail->mailToProject) {
+            $newDest = "###" . $resource->email . "###";
+            if ($resource->email and strpos($dest,$newDest)===false) {
+              $dest.=($dest)?', ':'';
+              $dest.= $newDest;
+            }
+          }
+          if ($statusMail->mailToLeader and $resource->idProfile) {
+            $prf=new Profile($resource->idProfile);
+            if ($prf->profileCode=='PL') {
+              $newDest = "###" . $resource->email . "###";
+              if ($resource->email and strpos($dest,$newDest)===false) {
+                $dest.=($dest)?', ':'';
+                $dest.= $newDest;
+              }
+            }
+          }
+        }
+      }
+    }
+    if ($statusMail->mailToContact) {
+      if (property_exists($this,'idContact')) {
+        $contact=new Contact($this->idContact);
+        $newDest = "###" . $contact->email . "###";
+        if ($contact->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
+    }
+    if ($statusMail->mailToOther) {
+      if ($statusMail->otherMail) {
+        $otherMail=str_replace(';',',', $statusMail->otherMail);
+        $otherMail=str_replace(' ',',', $otherMail);
+        $split=explode(',',$otherMail);
+        foreach ($split as $adr) {
+          if ($adr and $adr!='') {
+            $newDest = "###" . $adr . "###";
+            if (strpos($dest,$newDest)===false) {
+              $dest.=($dest)?', ':'';
+              $dest.= $newDest;
+            }
           }
         }
       }

@@ -31,10 +31,22 @@
      <copy todir="${deploy.dir}/external/pChart">
        <fileset dir="${src.dir}/external/pChart"/>
      </copy>
+  	 <copy todir="${deploy.dir}/external/html2pdf">
+  	   <fileset dir="${src.dir}/external/html2pdf">
+  	     <exclude name="**/exemples/"/>
+  	     <exclude name="**/_tcpdf/examples/"/>
+  	   	 <exclude name="**/_tcpdf/cache/*.*"/>
+  	   	 <exclude name="**/_tcpdf/fonts/"/>
+  	 	</fileset>
+  	 	<fileset dir="${src.dir}/external/html2pdf">
+         <include name="**/_tcpdf/fonts/freesans.*"/>
+         <include name="**/_tcpdf/fonts/helvetica.*"/>
+      </fileset>
+  	 </copy>
      <copy todir="${deploy.dir}/external">
 		   <fileset dir="${src.dir}/external">
-		     <include name="${src.dir}/external/*.version"/>
-		     <include name="${src.dir}/external/*.php"/>
+		     <include name="../*.version"/>
+		     <include name="../*.php"/>
 		   </fileset>
 		 </copy>
   </target>
@@ -62,8 +74,8 @@
   </target>
   
   <target name="copyModel">
-    <copy todir="${deploy.dir}/db">
-      <fileset dir="${src.dir}/db"/>
+    <copy todir="${deploy.dir}/model">
+      <fileset dir="${src.dir}/model"/>
     </copy>
   </target>
 
@@ -76,8 +88,8 @@
   <target name="copyTool">
     <copy todir="${deploy.dir}/tool">
       <fileset dir="${src.dir}/tool">
-        <exclude name="${src.dir}/tool/i18n/nls/lang.xls"/>
-      	<exclude name="${src.dir}/tool/parametersLocation.php"/>
+        <exclude name="**/i18n/nls/lang.xls"/>
+      	<exclude name="**/parametersLocation.php"/>
       </fileset>
     </copy>
   </target>

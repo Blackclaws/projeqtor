@@ -573,7 +573,6 @@ class PlanningElement extends SqlElement {
           }
           $idx++;
           $root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
-          //debugLog ($pe->id . ' - ' . $pe->wbs . ' - ' . $root);
           $pe->wbs=($root=='')?$idx:$root.'.'.$idx;
           $pe->save();
           if ($pe->id==$destId and $mode=="after") {
@@ -596,6 +595,11 @@ class PlanningElement extends SqlElement {
 
   public function setVisibility() {
     if ($this->_costVisibility and $this->_workVisibility) {
+      $this->_costVisibility='ALL';
+      $this->_workVisibility='ALL';
+      return;
+    }
+    if (! array_key_exists('user',$_SESSION)) {
       return;
     }
     $user=$_SESSION['user'];

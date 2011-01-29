@@ -182,10 +182,10 @@ foreach ($projects as $idP=>$nameP) {
         echo '</td>';
       }
       echo '<td class="reportTableColumnHeader">' . $lineSum . '</td>';
-      echo '</tr>';
+      echo '</tr><tr>';
     }
   }
-  echo '<tr><td class="reportTableLineHeader" >' . i18n('sum') . '</td>';
+  echo '<td class="reportTableLineHeader" >' . i18n('sum') . '</td>';
   $lineSum='';
   for ($i=1; $i<=$nbDays;$i++) {
     $style='';

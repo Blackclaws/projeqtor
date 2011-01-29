@@ -221,7 +221,6 @@
       }
     }
     
-debugLog($queryOrderBy);
     // constitute query and execute
     $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
     $query='select ' . $querySelect 

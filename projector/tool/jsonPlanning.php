@@ -311,15 +311,15 @@
         }
         $pName=($showWbs)?$line['wbs']." ":"";
         $pName.=$line['refName'];
-        $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . " " . i18n("shortDay");
+        $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
         echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $pName . '</NOBR></TD>';
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>' . $duration  . '</NOBR></TD>' ;
+        echo '  <TD class="ganttDetail" style="margin: 0px; padding: px;" align="center" nowrap><NOBR>' . $duration  . '</NOBR></TD>' ;
         echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . (($pStart)?dateFormatter($pStart):'-') . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . (($pEnd)?dateFormatter($pEnd):'-') . '</NOBR></TD>' ;
+        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 2px 0px 2px;" align="center" nowrap><NOBR>'  . (($pStart)?dateFormatter($pStart):'-') . '</NOBR></TD>' ;
+        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 2px 0px 2px;" align="center" nowrap><NOBR>'  . (($pEnd)?dateFormatter($pEnd):'-') . '</NOBR></TD>' ;
         if ($pGroup) {
           $pColor='#505050';
         } else {         
@@ -358,10 +358,10 @@
               }
             } else {
               $subHeight=round((20-$height)/2);
-              echo '<td class="ganttDetailNoborder" style="' . $color . '">';
+              echo '<td class="ganttDetailNoborder" style="' . $color . '; vertical-align: middle;">';
               echo '<table width="100%" >';
               echo '<tr style="height:' . $subHeight . 'px;"><td class="ganttDetailBoderleft" style="' . $noBorder . '"></td></tr>';              
-              echo '<tr height="' . $height . 'px"><td class="ganttDetailNoborder" style="width:1px; background-color:' . $pColor . ';height:' .  $height . 'px; border-top: 1px solid #777777;border-bottom: 1px solid #777777;"></td></tr>';              
+              echo '<tr height="' . $height . 'px"><td class="ganttDetailNoborder" style="width:' . $colWidth .'; background-color:' . $pColor . ';height:' .  $height . 'px;"></td></tr>';              
               echo '<tr style="height:' . $subHeight . 'px;"><td class="ganttDetailBoderleft" style="' . $noBorder . '"></td></tr>';
               echo '</table>';
             }

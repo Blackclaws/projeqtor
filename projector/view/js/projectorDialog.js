@@ -150,9 +150,13 @@ function showPrint (page, context, comboName, outMode) {
 	showWait();
 	quitConfirmed=true;
 	noDisconnect=true;
-	if ( ! printInNewWindow) {
-	  window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
-	  dijit.byId("dialogPrint").show();
+	if (! outMode) ouMode='html';
+	var printInNewWin=printInNewWindow;
+	if (outMode=='pdf') {printInNewWin=true;}
+	if ( ! printInNewWin) {
+	  //window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+		//frames['printFrame'].location.href='../view/preparePreview.php';
+		dijit.byId("dialogPrint").show();
 	}
 	if (dojo.byId('objectClass')) {
 		cl=dojo.byId('objectClass').value;
@@ -208,7 +212,7 @@ function showPrint (page, context, comboName, outMode) {
 		} else {
 			dojo.byId('outMode').value='';
 		}
-		if (printInNewWindow) {
+		if (printInNewWin) {
 			frm.target='#';
 		} else {
 		  frm.target='printFrame';
@@ -221,7 +225,7 @@ function showPrint (page, context, comboName, outMode) {
 	} else if (context=='imputation'){
 		var frm=dojo.byId('listForm');
 		frm.action="../view/print.php";
-		if (printInNewWindow) {
+		if (printInNewWin) {
 			frm.target='#';
 		} else {
 		  frm.target='printFrame';
@@ -242,11 +246,11 @@ function showPrint (page, context, comboName, outMode) {
 		}
 		//alert("Sort on index "+sortIndex+" asc "+sortAsc);
 	}
-	if (printInNewWindow) {
+	if (printInNewWin) {
 		var newWin=window.open("print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params);
 		hideWait();
 	} else {
-	  window.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	  winbdow.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
 	}
 	quitConfirmed=false;
 	noDisconnect=false;

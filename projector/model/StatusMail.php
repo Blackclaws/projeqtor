@@ -11,25 +11,32 @@ class StatusMail extends SqlElement {
   public $idStatus;
   public $idle;
   public $_col_2_2_SendMail;
-  public $_tab_3_1 = array('mailToUser', 'mailToResource', 'mailToProject', 'sendMail');
+  public $mailToContact;
   public $mailToUser;
   public $mailToResource;
   public $mailToProject;
-
+  public $mailToLeader;
+  public $mailToOther;
+  public $otherMail;
   
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameMailable" formatter="translateFormatter" width="20%" >${idMailable}</th>
-    <th field="colorNameStatus" width="25%" formatter="colorNameFormatter">${newStatus}</th>    
-    <th field="mailToUser" width="15%" formatter="booleanFormatter" >${mailToUser}</th>
-    <th field="mailToResource" width="15%" formatter="booleanFormatter" >${mailToResource}</th>
-    <th field="mailToProject" width="15%" formatter="booleanFormatter" >${mailToProject}</th>
+    <th field="colorNameStatus" width="25%" formatter="colorNameFormatter">${newStatus}</th>
+    <th field="mailToContact" width="10%" formatter="booleanFormatter" >${mailToContact}</th>    
+    <th field="mailToUser" width="10%" formatter="booleanFormatter" >${mailToUser}</th>
+    <th field="mailToResource" width="10%" formatter="booleanFormatter" >${mailToResource}</th>
+    <th field="mailToProject" width="10%" formatter="booleanFormatter" >${mailToProject}</th>
+    <th field="mailToLeader" width="10%" formatter="booleanFormatter" >${mailToLeader}</th>
+    <th field="mailToOther" width="10%" formatter="booleanFormatter" >${mailToOther}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("nameMailable"=>"required", 
-                                  "nameStatus"=>"required",
+  private static $_fieldsAttributes=array("idMailable"=>"required", 
+                                  "idStatus"=>"required",
+                                  "mailToOther"=>"nobr",
+                                  "otherMail"=>""
   );  
   
   private static $_colCaptionTransposition = array('idStatus'=>'newStatus');
@@ -91,5 +98,32 @@ class StatusMail extends SqlElement {
     return self::$_databaseColumnName;
   }
   
+  /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo frameword)
+   */
+  public function getValidationScript($colName) {
+    if ($this->mailToOther=='1') {
+      self::$_fieldsAttributes['otherMail']='';
+    } else {
+      self::$_fieldsAttributes['otherMail']='invisible';
+    } 
+    
+    $colScript = parent::getValidationScript($colName);
+
+    if ($colName=="mailToOther") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= ' var fld = dijit.byId("otherMail").domNode;';
+      $colScript .= '  if (this.checked) { ';
+      $colScript .= '    dojo.style(fld, {visibility:"visible"});';
+      $colScript .= '  } else {';
+      $colScript .= '    dojo.style(fld, {visibility:"hidden"});';
+      $colScript .= '    fld.set("value","");';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    return $colScript;
+  }
 }
 ?>

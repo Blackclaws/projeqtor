@@ -65,27 +65,4 @@ function checkNoData($result) {
   return false;
 }
 
-function finalizePrint() {
-  global $outMode;
-  $pdfLib='html2pdf';
-  //$pdfLib='dompdf';
-  if ($outMode=='pdf') {
-    $content = ob_get_clean(); 
-    if ($pdfLib=='html2pdf') {
-      /* HTML2PDF way */
-      require_once('../external/html2pdf/html2pdf.class.php');
-      $html2pdf = new HTML2PDF('L','A4','en');
-      $html2pdf->setDefaultFont('freesans');
-      $html2pdf->writeHTML($content); 
-      $html2pdf->Output();
-    } else if ($pdfLib=='dompdf') {
-    /* DOMPDF way */
-      require_once("../external/dompdf/dompdf_config.inc.php");
-      $dompdf = new DOMPDF();
-      $dompdf->load_html($content);
-      $dompdf->render();
-      $dompdf->stream("sample.pdf");
-    }
-  }
-}
 ?>

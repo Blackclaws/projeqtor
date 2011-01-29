@@ -7,9 +7,9 @@
  *  Remarks for deployment :
  *    - set isDebug:false in djConfig
  */
-   require_once "../tool/projector.php";
-   header ('Content-Type: text/html; charset=UTF-8');
-   scriptLog('   ->/view/main.php'); 
+require_once "../tool/projector.php";
+header ('Content-Type: text/html; charset=UTF-8');
+scriptLog('   ->/view/main.php'); 
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -72,7 +72,7 @@
     var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
-    var printInNewWindow=<?php echo getBooleanValueAsString($printInNewWindow);?>;;
+    var printInNewWindow=<?php echo (isset($printInNewWindow)?getBooleanValueAsString($printInNewWindow):'false');?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
@@ -336,7 +336,7 @@
   </table>
 </div>
 
-<div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>">
+<div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="window.frames['printFrame'].location.href='../view/preparePreview.php';">
   <?php 
     $printHeight=600;
     $printWidth=1000;

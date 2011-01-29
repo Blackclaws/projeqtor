@@ -45,63 +45,81 @@ $order="";
 $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
-$projects=array();
+$activities=array();
+$description=array();
+$parent=array();
 $resources=array();
-$sumProj=array();
+$sumActi=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
   }
-  if (! array_key_exists($work->idProject,$projects)) {
-    $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
+  $refType=$work->refType;
+  $refId=$work->refId;
+  $key=$refType . "#" . $refId;
+  if (! array_key_exists($key,$activities)) {
+    $obj=new $refType($refId);
+    $activities[$key]=$obj->name;
+    $description[$key]=$obj->description;
+    if ($refType=='Project') {
+      $parent[$key]="[" . i18n('Project') . "]";
+    } else {
+      if (property_exists($obj,'idActivity') and $obj->idActivity) {
+        $parent[$key]=SqlList::getNameFromId('Activity', $obj->idActivity);
+      } else {
+        $parent[$key]="";
+      }
+    }
   }
   if (! array_key_exists($work->idResource,$result)) {
     $result[$work->idResource]=array();
   }
-  if (! array_key_exists($work->idProject,$result[$work->idResource])) {
-    $result[$work->idResource][$work->idProject]=0;
+  if (! array_key_exists($key,$result[$work->idResource])) {
+    $result[$work->idResource][$key]=0;
   } 
-  $result[$work->idResource][$work->idProject]+=$work->work;
-
+  $result[$work->idResource][$key]+=$work->work;
 }
 
 if (checkNoData($result)) exit;
 
 // title
-echo '<table width="95%" align="center"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
-echo '<td colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';
-echo '<td class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
+echo '<table width="95%" align="center">';
+echo '<tr>';
+echo '<td class="reportTableHeader" rowspan="2" width="20%">' . i18n('Resource') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" width="10%">' . i18n('colWork') . '</td>';
+echo '<td class="reportTableHeader" colspan="3">' . i18n('Activity') . '</td>';
 echo '</tr><tr>';
-foreach ($projects as $id=>$name) {
-  echo '<td class="reportTableColumnHeader">' . $name . '</td>';
-  $sumProj[$id]=0;  
-}
-
+echo '<td class="reportTableColumnHeader" width="20%">' . i18n('colName') . '</td>';
+echo '<td class="reportTableColumnHeader" width="30%">' . i18n('colDescription') . '</td>';
+echo '<td class="reportTableColumnHeader" width="20%">' . i18n('colParentActivity') . '</td>';
 echo '</tr>';
 
 $sum=0;
 foreach ($resources as $idR=>$nameR) {
   $sumRes=0;
-  echo '<tr><td class="reportTableLineHeader">' . $nameR . '</td>';
-  foreach ($projects as $idP=>$nameP) {
-    echo '<td class="reportTableData reportTableDataCenter">';
+  echo '<tr>';
+  echo '<td class="reportTableLineHeader" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
+  foreach ($activities as $key=>$nameA) {
     if (array_key_exists($idR, $result)) {
-      if (array_key_exists($idP, $result[$idR])) {
-        $val=$result[$idR][$idP];
-        echo $val;
-        $sumProj[$idP]+=$val; 
+      if (array_key_exists($key, $result[$idR])) {
+        $val=$result[$idR][$key];
         $sumRes+=$val; 
         $sum+=$val;
+        echo '<td class="reportTableData reportTableDataCenter">' . $val . '</td>';
+        echo '<td class="reportTableData reportTableDataLeft" >' . $nameA . '</td>'; 
+        echo '<td class="reportTableData reportTableDataLeft" >' . $description[$key] . '</td>'; 
+        echo '<td class="reportTableData reportTableDataLeft" >' . $parent[$key] . '</td>'; 
+        echo '</tr><tr>';
       } 
     }
-    echo '</td>';
   }
   echo '<td class="reportTableColumnHeader">' . $sumRes . '</td>';
+  echo '<td class="reportTableColumnHeader reportTableDataLeft" colspan="3">' . i18n('sum') . " " . $nameR . '</td>';
   echo '</tr>';
 }
-echo '<tr><td class="reportTableHeader">' . i18n('sum') . '</td>';
-foreach ($projects as $id=>$name) {
-  echo '<td class="reportTableColumnHeader">' . $sumProj[$id] . '</td>';
-}
-echo '<td class="reportTableHeader">' . $sum . '</td></tr>';
+echo '<tr>';
+echo '<td class="reportTableHeader">' . i18n('sum') . '</td>';
+echo '<td class="reportTableHeader">' . $sum . '</td>';
+echo '<td colspan="3"></td>';
+echo '</tr>';
 echo '</table>';
