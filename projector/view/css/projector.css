@@ -474,12 +474,25 @@ label, .label {
 }
 .reportTableData {
   border: 1px solid #AAAAAA;
-  text-align: center;
   vertical-align: middle;
+  text-align: center;
   font-weight: normal;
   padding: 0px 1px 0px 1px;
   background: #FFFFFF;
 }
+.reportTableDataBorderRight {
+  border-right: 1px solid #AAAAAA;
+}
+  
+.reportTableDataLeft {
+  border: 1px solid #AAAAAA;
+  vertical-align: middle;
+  text-align: left;
+  font-weight: normal;
+  padding: 0px 1px 0px 1px;
+  background: #FFFFFF;
+}
+
 .reportTableDataFull {
   border: 1px solid #AAAAAA;
   text-align: left;
@@ -489,13 +502,12 @@ label, .label {
   background: #FFFFFF;
   width: 20px; height: 20px;
 }
-.reportTableDataCenter{
-  text-align: center;
-}
-.reportTableDataLeft{
-  text-align: left;
-}
 
+.reportTableDataSimple {
+  border: 1px solid #AAAAAA;
+  vertical-align: middle;
+  padding: 0px 1px 0px 1px;
+}
 
 .historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
 .dependencyData, .workflowData, .filterData, .messageDataValueGrey {

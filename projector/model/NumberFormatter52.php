@@ -8,7 +8,8 @@ class NumberFormatter52  {
    public $type;
    public $decimalSeparator;  
    public $thouthandSeparator;
-   const DECIMAL=1;
+   const DECIMAL=2;
+   const INTEGER=0;
    
    /** ==========================================================================
    * Constructor
@@ -21,8 +22,10 @@ class NumberFormatter52  {
     $this->thouthandSeparator=''; // Can get better ?
     if (strtolower(substr($locale,0,2))=='fr' or strtolower(substr($locale,0,2))=='de') {
       $this->decimalSeparator=',';
+      $this->thouthandSeparator=' ';
     } else {
       $this->decimalSeparator='.';
+      $this->thouthandSeparator=',';
     }
     
   }
@@ -39,7 +42,7 @@ class NumberFormatter52  {
    * Format fonction (simulate)
    */ 
   function format($value) {
-    return number_format($value,2,$this->decimalSeparator,$this->thouthandSeparator);
+    return number_format($value,$this->type,$this->decimalSeparator,$this->thouthandSeparator);
   }
 }
 ?>

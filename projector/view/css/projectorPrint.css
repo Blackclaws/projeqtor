@@ -183,17 +183,19 @@ label, .label {
   padding: 1px 5px 1px 5px;
   vertical-align: top;
   border-top: 1px solid #AAAAAA;
-  border-bottom: 0px solid #FFFFFF;
+  border-bottom: 1px solid #AAAAAA;
   border-left: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
   background-color: #FFFFFF;
 }
 .historyDataContinueOperation {
   font-size: 90%;
   padding: 1px 5px 1px 5px;
   vertical-align: top;
-  border-top: 0px solid #FFFFFF;
-  border-bottom: 0px solid #FFFFFF;
+  border-top: 1px solid #AAAAAA;
+  border-bottom: 1px solid #AAAAAA;
   border-left: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
   background-color: #FFFFFF;
 }
 .historyDataClosetable, .noteDataClosetable, .attachementDataClosetable  {
@@ -262,6 +264,19 @@ label, .label {
   padding: 0px 1px 0px 1px;
   background: #FFFFFF;
 }
+.reportTableDataBorderRight {
+  border-right: 1px solid #AAAAAA;
+}
+  
+.reportTableDataLeft {
+  border: 1px solid #AAAAAA;
+  vertical-align: middle;
+  text-align: left;
+  font-weight: normal;
+  padding: 0px 1px 0px 1px;
+  background: #FFFFFF;
+}
+
 .reportTableDataFull {
   border: 1px solid #AAAAAA;
   text-align: left;
@@ -271,6 +286,9 @@ label, .label {
   background: #FFFFFF;
   width: 20px; height: 20px;
 }
-.reportTableDataCenter{
-  text-align: center;
+
+.reportTableDataSimple {
+  border: 1px solid #AAAAAA;
+  vertical-align: middle;
+  padding: 0px 1px 0px 1px;
 }

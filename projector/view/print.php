@@ -47,6 +47,7 @@
     }); 
   </script>
 </head>
+<page backtop="100px" backbottom="20px" footer="page">
 <body id="bodyPrint" class="white" onload="top.hideWait();";>
   <?php 
   $includeFile=$_REQUEST['page'];
@@ -65,10 +66,11 @@
   include $includeFile;
 ?>
 </body>
+</page>
+</html>
 <?php 
   finalizePrint();
 ?>
-</html>
 <?php function finalizePrint() {
   global $outMode;
   $pdfLib='html2pdf';
@@ -82,7 +84,7 @@
       $html2pdf->pdf->SetDisplayMode('fullpage');
       $html2pdf->setDefaultFont('freesans');
       //$html2pdf->setDefaultFont('uni2cid_ag15');
-      $html2pdf->writeHTML($content); 
+      $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */

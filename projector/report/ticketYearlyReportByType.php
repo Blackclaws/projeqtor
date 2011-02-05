@@ -67,6 +67,8 @@ $lst=SqlList::getList('TicketType');
 
 $includedReport=true;
 
+$cptBoucle=0;
+$cptBoucleMax=count($lst);
 Foreach ($lst as $code=>$name) {
   echo '<table  width="95%" align="center"><tr><td style="width: 100%" class="section">';
   echo "$name" . '<br/>';
@@ -76,6 +78,9 @@ Foreach ($lst as $code=>$name) {
   echo '</table>';
   $paramTicketType=$code;
   include "ticketYearlyReport.php";
-
   echo '<br/>';
+  $cptBoucle++;
+  if ($cptBoucle<$cptBoucleMax) {
+    echo '</page><page pageset="old">';
+  }
 }

@@ -83,10 +83,11 @@ while ($date<=$end) {
 // Header
 $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
-$plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
-
+$plannedStyle=' style="width:20px;text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
+ 
 echo "<table width='95%' align='center'><tr>";
-echo "<td class='reportTableDataFull' width='20px' style='text-align:center;'>";
+echo '<td><table width="100%" align="left"><tr>';
+echo "<td class='reportTableDataFull' style='width:20px; text-align:center;'>";
 echo "1";
 echo "</td><td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
@@ -96,13 +97,13 @@ echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>"
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";
-echo '<table width="95%" align="center">';
+echo '<table width="100%" align="left">';
 echo '<tr rowspan="2">';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
 foreach ($arrYear as $year=>$nb) {
   echo '<td class="reportTableHeader" colspan="' . $nb . '">' . $year . '</td>';
 }
-echo '<td class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:40px;">' . i18n('sum') . '</td>';
 echo '</tr>';
 echo '<tr>';
 $arrSum=array();
@@ -119,7 +120,7 @@ foreach($tab as $proj=>$lists) {
   $sumProj[$proj]=array();
   for ($i=1; $i<=2; $i++) {
     if ($i==1) {
-      echo '<tr><td class="reportTableLineHeader" rowspan="2">' . $lists['name'] . '</td>';
+      echo '<tr><td class="reportTableLineHeader" style="width:200px;" rowspan="2">' . $lists['name'] . '</td>';
       $style='';
       $mode='real';
       $ital=false;
@@ -157,7 +158,7 @@ foreach($tab as $proj=>$lists) {
   }
 }
 echo "<tr><td>&nbsp;</td></tr>";
-echo '<tr><td class="reportTableHeader" >' . i18n('sum') . '</td>';
+echo '<tr><td class="reportTableHeader" style="width:40px;">' . i18n('sum') . '</td>';
 $sum=0;
 $cumul=array();
 foreach ($arrSum as $date=>$val) {
@@ -168,7 +169,7 @@ foreach ($arrSum as $date=>$val) {
 echo '<td class="reportTableHeader">' . $sum . '</td>';
 echo '</tr>';
 echo '</table>';
-
+echo '</td></tr></table>';
 // Graph
 if (! testGraphEnabled()) { return;}
   include("../external/pChart/pData.class");  

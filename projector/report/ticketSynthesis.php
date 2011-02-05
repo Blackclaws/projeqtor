@@ -163,33 +163,34 @@ foreach ($lstTicket as $t) {
 
 if (checkNoData($lstTicket)) exit;
 
-echo '<table width="95%" align="center">';
+echo '<table style="width:95%;" align="center">';
 echo '<tr>';
-echo '<td class="section" style="width:49%">' . i18n('TicketType') . '</td>';
-echo '<td style="width:2%">&nbsp;</td>';
-echo '<td class="section" style="width:49%">' . i18n('Urgency') . '</td>';
+echo '<td class="section" style="width:49%;">' . i18n('TicketType') . '</td>';
+echo '<td style="width:2%;">&nbsp;</td>';
+echo '<td class="section" style="width:49%;">' . i18n('Urgency') . '</td>';
 echo '</tr><tr><td valign="top">';
 drawSynthesisTable('TicketType', $lstType); 
 echo '</td><td></td><td valign="top">';
 drawSynthesisTable('Urgency', $lstUrgency);  
 echo '</td>';
 echo '</tr>';
+
 echo '<tr><td colspan="3">&nbsp;</td></tr>';
 echo '<tr>';
-echo '<td class="section" style="width:49%">' . i18n('Priority') . '</td>';
-echo '<td style="width:2%">&nbsp;</td>';
-echo '<td class="section" style="width:49%">' . i18n('Criticality') . '</td>';
-echo '</tr><tr><td valign="top">';
+echo '<td class="section" style="width:49%;">' . i18n('Priority') . '</td>';
+echo '<td style="width:2%;">&nbsp;</td>';
+echo '<td class="section" style="width:49%;">' . i18n('Criticality') . '</td>';
+echo '</tr><tr><td style="width:49%;" valign="top">';
 drawSynthesisTable('Priority',$lstPriority); 
-echo '</td><td></td><td valign="top">';
+echo '</td><td style="width:2%;"></td><td style="width:49%;" valign="top">';
 drawSynthesisTable('Criticality', $lstCriticality);  
 echo '</td>';
 echo '</tr>';
 echo '<tr><td colspan="3">&nbsp;</td></tr>';
 echo '<tr>';
-echo '<td class="section" style="width:49%">' . i18n('colIssuer') . '</td>';
-echo '<td style="width:2%">&nbsp;</td>';
-echo '<td class="section" style="width:49%">' . i18n('colResponsible') . '</td>';
+echo '<td class="section" style="width:49%;">' . i18n('colIssuer') . '</td>';
+echo '<td style="width:2%;">&nbsp;</td>';
+echo '<td class="section" style="width:49%;">' . i18n('colResponsible') . '</td>';
 echo '</tr>';
 echo '<tr><td valign="top">';
 drawSynthesisTable('User',$lstIssuer); 
@@ -200,26 +201,26 @@ echo '</tr>';
 echo '</table>';
 
 function drawSynthesisTable($scope, $lst) {
-  echo '<table valign="top" width="100%">';
+  echo '<table valign="top" style="width:100%">';
   echo '<tr>';
-  echo '<td width="50%" valign="top">';
-  echo '<table width="100%" valign="top">';
+  echo '<td style="width:50%" valign="top">';
+  echo '<table style="width:230px" valign="top">';
   $lstRef=SqlList::getList($scope,'name',false,true);
   if (array_key_exists('0', $lst)) {
-    echo '<tr><td class="reportTableHeader" width="80%">';
+    echo '<tr><td class="reportTableHeader" style="width:150px">';
     echo '<i>'.i18n('undefinedValue').'</i>';
-    echo '</td><td class="reportTableData reportTableDataCenter" width="20%">' . $lst['0'] . '</td></tr>'; 
+    echo '</td><td class="reportTableData" style="width:80px">' . $lst['0'] . '</td></tr>'; 
   }
   foreach ($lstRef as $code=>$val) {
     if (array_key_exists($code, $lst)) {
-      echo '<tr><td class="reportTableHeader" width="80%">';
+      echo '<tr><td class="reportTableHeader" style="width:150px">';
       echo $val;
-      echo '</td><td class="reportTableData reportTableDataCenter" width="20%">' . $lst[$code] . '</td></tr>'; 
+      echo '</td><td class="reportTableData" style="width:80px">' . $lst[$code] . '</td></tr>'; 
     }
   }
   echo '</table>';
   echo '</td>';
-  echo '<td width="50%">';
+  echo '<td style="width:250px">';
   drawsynthesisGraph($scope, $lst);
   echo '</td>';
   echo "</tr></table>";

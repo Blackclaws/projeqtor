@@ -83,38 +83,38 @@ foreach ($lstWork as $work) {
 if (checkNoData($result)) exit;
 
 // title
-echo '<table width="95%" align="center">';
+echo '<table style="width:95%" align="center">';
 echo '<tr>';
-echo '<td class="reportTableHeader" rowspan="2" width="20%">' . i18n('Resource') . '</td>';
-echo '<td class="reportTableHeader" rowspan="2" width="10%">' . i18n('colWork') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:20%">' . i18n('Resource') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:10%">' . i18n('colWork') . '</td>';
 echo '<td class="reportTableHeader" colspan="3">' . i18n('Activity') . '</td>';
 echo '</tr><tr>';
-echo '<td class="reportTableColumnHeader" width="20%">' . i18n('colName') . '</td>';
-echo '<td class="reportTableColumnHeader" width="30%">' . i18n('colDescription') . '</td>';
-echo '<td class="reportTableColumnHeader" width="20%">' . i18n('colParentActivity') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colName') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:30%">' . i18n('colDescription') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colParentActivity') . '</td>';
 echo '</tr>';
 
 $sum=0;
 foreach ($resources as $idR=>$nameR) {
   $sumRes=0;
   echo '<tr>';
-  echo '<td class="reportTableLineHeader" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
   foreach ($activities as $key=>$nameA) {
     if (array_key_exists($idR, $result)) {
       if (array_key_exists($key, $result[$idR])) {
         $val=$result[$idR][$key];
         $sumRes+=$val; 
         $sum+=$val;
-        echo '<td class="reportTableData reportTableDataCenter">' . $val . '</td>';
-        echo '<td class="reportTableData reportTableDataLeft" >' . $nameA . '</td>'; 
-        echo '<td class="reportTableData reportTableDataLeft" >' . $description[$key] . '</td>'; 
-        echo '<td class="reportTableData reportTableDataLeft" >' . $parent[$key] . '</td>'; 
+        echo '<td class="reportTableData" style="width:10%">' . $val . '</td>';
+        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $nameA . '</td>'; 
+        echo '<td class="reportTableData" style="width:30%; text-align:left;">' . $description[$key] . '</td>'; 
+        echo '<td class="reportTableData" style="width:20%; text-align:left;" >' . $parent[$key] . '</td>'; 
         echo '</tr><tr>';
       } 
     }
   }
   echo '<td class="reportTableColumnHeader">' . $sumRes . '</td>';
-  echo '<td class="reportTableColumnHeader reportTableDataLeft" colspan="3">' . i18n('sum') . " " . $nameR . '</td>';
+  echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="3">' . i18n('sum') . " " . $nameR . '</td>';
   echo '</tr>';
 }
 echo '<tr>';

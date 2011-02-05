@@ -153,12 +153,12 @@ for ($line=1; $line<=3; $line++) {
     $caption=i18n('closed');
     $serie="closed";
   }
-  echo '<tr><td class="reportTableLineHeader">' . $caption . '</td>';
+  echo '<tr><td class="reportTableLineHeader" style="width:18%">' . $caption . '</td>';
   foreach ($tab as $id=>$val) {
     if ($id=='13') {
-      echo '<td class="reportTableColumnHeader">';
+      echo '<td style="width:10%;" class="reportTableColumnHeader">';
     } else {
-      echo '<td class="reportTableData reportTableDataCenter">';
+      echo '<td style="width:6%;" class="reportTableData">';
     }
     echo $val;
     echo '</td>';

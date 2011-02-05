@@ -250,7 +250,7 @@ function showPrint (page, context, comboName, outMode) {
 		var newWin=window.open("print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params);
 		hideWait();
 	} else {
-	  winbdow.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	  window.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
 	}
 	quitConfirmed=false;
 	noDisconnect=false;

@@ -39,16 +39,16 @@ if (checkNoData($historyList)) exit;
 echo '<table width="95%" align="center">';
 echo '<tr>';
 if ($scope=='deleted') {
-  echo '<td class="historyHeader" width="30%">' . i18n('colDate') . '</td>';
-  echo '<td class="historyHeader" width="30%">' . i18n('colUser'). '</td>';
-  echo '<td class="historyHeader" width="40%">' . i18n('colElement'). '</td>';
+  echo '<td class="historyHeader" style="width:30%">' . i18n('colDate') . '</td>';
+  echo '<td class="historyHeader" style="width:30%">' . i18n('colUser'). '</td>';
+  echo '<td class="historyHeader" style="width:40%">' . i18n('colElement'). '</td>';
 } else {
-  echo '<td class="historyHeader" width="20%">' . i18n('colDate') . '</td>';
-  echo '<td class="historyHeader" width="15%">' . i18n('colUser'). '</td>';
-  echo '<td class="historyHeader" width="10%">' . i18n('colOperation'). '</td>';
-  echo '<td class="historyHeader" width="15%">' . i18n('colColumn'). '</td>';
-  echo '<td class="historyHeader" width="20%">' . i18n('colValueBefore'). '</td>';
-  echo '<td class="historyHeader" width="20%">' . i18n('colValueAfter'). '</td>';
+  echo '<td class="historyHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="historyHeader" style="width:10%">' . i18n('colUser'). '</td>';
+  echo '<td class="historyHeader" style="width:10%">' . i18n('colOperation'). '</td>';
+  echo '<td class="historyHeader" style="width:15%">' . i18n('colColumn'). '</td>';
+  echo '<td class="historyHeader" style="width:25%">' . i18n('colValueBefore'). '</td>';
+  echo '<td class="historyHeader" style="width:25%">' . i18n('colValueAfter'). '</td>';
 }
 echo '</tr>';
 $stockDate=null;
@@ -90,14 +90,14 @@ foreach($historyList as $hist) {
   }
   if (! $hide) {
     echo '<tr>';
-    echo '<td class="historyData'. $class .'">' . $date . '</td>';
-    echo '<td class="historyData'. $class .'">' . $userName . '</td>';
+    echo '<td class="historyData'. $class .'" style="width:15%">' . $date . '</td>';
+    echo '<td class="historyData'. $class .'" style="width:10%">' . $userName . '</td>';
     if ($scope=='deleted') {
       echo '<td class="historyData'. $class .'">' . i18n($hist->refType) . ' #' . $hist->refId . '</td>';
     } else {
-      echo '<td class="historyData'. $class .'">' . $oper . '</td>';
+      echo '<td class="historyData'. $class .'" style="width:10%">' . $oper . '</td>';
       
-      echo '<td class="historyData">' . $colCaption . '</td>';
+      echo '<td class="historyData" style="width:15%">' . $colCaption . '</td>';
       $oldValue=$hist->oldValue;
       $newValue=$hist->newValue;
       if ($dataType=='int' and $dataLength==1) { // boolean
@@ -119,8 +119,8 @@ foreach($historyList as $hist) {
         $newValue=htmlEncode($newValue,'print');
       }
       
-      echo '<td class="historyData">' . $oldValue . '</td>';
-      echo '<td class="historyData">' . $newValue . '</td>';
+      echo '<td class="historyData" style="width:25%">' . $oldValue . '</td>';
+      echo '<td class="historyData" style="width:25%">' . $newValue . '</td>';
     }
     echo '</tr>';
     $stockDate=$hist->operationDate;

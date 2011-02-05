@@ -107,8 +107,8 @@ $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . 
 if (checkNoData($result)) exit;
 
 echo "<table width='95%' align='center'>";
-echo "<tr>";
-echo "<td class='reportTableDataFull' width='20px' style='text-align:center;'>1</td>";
+echo "<tr><td><table  width='100%' align='left'><tr>";
+echo "<td class='reportTableDataFull' style='width:20px;text-align:center;'>1</td>";
 echo "<td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
@@ -116,10 +116,10 @@ echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr>";
 echo "</table>";
-echo "<br/>";
+//echo "<br/>";
 
 // title
-echo '<table width="95%" align="center">';
+echo '<table width="100%" align="left">';
 echo '<tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
@@ -153,10 +153,10 @@ foreach ($resources as $idR=>$nameR) {
     $sum[$startDate+$i-1]='';
   }
   echo '<tr height="20px">';
-  echo '<td class="reportTableLineHeader" rowspan="'. (count($result[$idR])+1) . '">' . $nameR . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. (count($result[$idR])+1) . '">' . $nameR . '</td>';
   foreach ($result[$idR] as $idP=>$proj) {
     if (array_key_exists($idP, $projects)) {
-      echo '<td class="reportTableData" style="text-align: left;">' . $projects[$idP] . '</td>';
+      echo '<td class="reportTableData" style="width:150px;text-align: left;">' . $projects[$idP] . '</td>';
       $lineSum='';
       for ($i=1; $i<=$nbDays;$i++) {
         $day=$startDate+$i-1;
@@ -217,3 +217,4 @@ for ($i=1; $i<=$nbDays;$i++) {
 echo '<td class="reportTableHeader">' . $lineSum . '</td>';
 echo '</tr>';
 echo '</table>';
+echo '</td></tr></table>';

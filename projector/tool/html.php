@@ -513,18 +513,21 @@ function htmlDisplayColored($value,$color) {
   return $result;
 }
 
-function htmlDisplayCurrency($val) {
+function htmlDisplayCurrency($val,$noDecimal=false) {
   if (! $val and $val!='0') return '';
-
   global $currency, $currencyPosition, $browserLocale;
-  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  if ($noDecimal) {
+    $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
+  } else {
+    $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  }
   if (! isset($currencyPosition) or ! isset($currency) or $currencyPosition=='none') {
     return $fmt->format($val) ;
   } 
   if ($currencyPosition=='after') {
-    return '<nobr>' . $fmt->format($val) . ' ' . $currency . '</nobr>';
+    return str_replace(' ','&nbsp;',$fmt->format($val)) . '&nbsp;' . $currency; 
   } else {
-    return '<nobr>' . $currency . ' ' . $fmt->format($val) . '</nobr>';
+    return $currency . '&nbsp;' . str_replace(' ','&nbsp;',$fmt->format($val)) ;
   }
 }
 

@@ -66,9 +66,11 @@ foreach ($lstWork as $work) {
 }
 
 if (checkNoData($result)) exit;
-
 // title
-echo '<table width="95%" align="center"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+$colWidth=round(80/count($projects));
+echo '<table style="width:95%;" align="center">';
+echo '<tr>';
+echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
 echo '</tr><tr>';
@@ -82,9 +84,9 @@ echo '</tr>';
 $sum=0;
 foreach ($resources as $idR=>$nameR) {
   $sumRes=0;
-  echo '<tr><td class="reportTableLineHeader">' . $nameR . '</td>';
+  echo '<tr><td style="width:10%" class="reportTableLineHeader">' . $nameR . '</td>';
   foreach ($projects as $idP=>$nameP) {
-    echo '<td class="reportTableData reportTableDataCenter">';
+    echo '<td style="width:' . $colWidth . '%" class="reportTableData">';
     if (array_key_exists($idR, $result)) {
       if (array_key_exists($idP, $result[$idR])) {
         $val=$result[$idR][$idP];
@@ -96,7 +98,7 @@ foreach ($resources as $idR=>$nameR) {
     }
     echo '</td>';
   }
-  echo '<td class="reportTableColumnHeader">' . $sumRes . '</td>';
+  echo '<td style="width:10%" class="reportTableColumnHeader">' . $sumRes . '</td>';
   echo '</tr>';
 }
 echo '<tr><td class="reportTableHeader">' . i18n('sum') . '</td>';

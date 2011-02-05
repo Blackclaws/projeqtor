@@ -101,35 +101,36 @@ $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $week
 
 if (checkNoData($result)) exit;
 
-echo "<table width='95%' align='center'><tr>";
-echo "<td class='reportTableDataFull'>";
-echo "<div style='height:20px;width:20px;position:relative;background-color:#DDDDDD;'>&nbsp;";
-echo "<div style='position:absolute;top:3px;left:5px;color:#000000;'>R</div>";
-echo "<div style='position:absolute;top:2px;left:6px;color:#FFFFFF;'>R</div>";
-echo "</div>";
-echo "</td><td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
-echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
-echo "<td class='reportTableDataFull'>";
-echo "<div style='height:20px;width:20px;position:relative;background-color:#DDDDDD;'>&nbsp;";
-//echo "<div style='position:absolute;top:3px;left:5px;color:#EEEEEE;'>P</div>";
-//echo "<div style='position:absolute;top:2px;left:6px;color:#000000;'>P</div>";
-echo "</div>";
-echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
-echo "<td>&nbsp;</td>";
+echo '<table width="95%" align="center">';
+echo '<tr><td>';
+echo '<table width="100%" align="left">';
+echo '<tr>';
+echo '<td class="reportTableDataFull">';
+echo '<div style="height:20px;width:20px;position:relative;background-color:#DDDDDD;">&nbsp;';
+echo '<div style="width:20px;position:absolute;top:3px;left:5px;color:#000000;">R</div>';
+echo '<div style="width:20px;position:absolute;top:2px;left:6px;color:#FFFFFF;">R</div>';
+echo '</div>';
+echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . i18n('colRealWork') . '</td>';
+echo '<td style="width:5px";>&nbsp;&nbsp;&nbsp;</td>';
+echo '<td class="reportTableDataFull">';
+echo '<div style="height:20px;width:20px;position:relative;background-color:#DDDDDD;">&nbsp;';
+echo '</div>';
+echo '</td><td style="width;100px; padding-left:5px;" class="legend">' . i18n('colPlannedWork') . '</td>';
+echo '<td>&nbsp;</td>';
 echo "</tr></table>";
-echo "<br/>";
-echo "<table width='95%' align='center'><tr>";
+//echo "<br/>";
+echo '<table width="100%" align="left"><tr>';
 foreach($projects as $idP=>$nameP) {
-  echo "<td width='20px'>";
-  echo "<div style='border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:" . $projectsColor[$idP] . ";'>&nbsp;";
-  echo "</div>";
-  echo "</td><td width='100px' class='legend'>" . $nameP . "</td>";
-  echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
+  echo '<td width="20px">';
+  echo '<div style="border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:' . $projectsColor[$idP] . ';">&nbsp;';
+  echo '</div>';
+  echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . $nameP . '</td>';
+  echo '<td width="5px">&nbsp;&nbsp;&nbsp;</td>';
 }
-echo "<td>&nbsp;</td></tr></table>";
-echo "<br/>";
+echo '<td>&nbsp;</td></tr></table>';
+//echo '<br/>';
 // title
-echo '<table width="95%" align="center"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+echo '<table width="100%" align="left"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . $nbDays . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr><tr>';
 $days=array();
@@ -151,7 +152,7 @@ for($i=1; $i<=$nbDays;$i++) {
 echo '</tr>';
 
 foreach ($resources as $idR=>$nameR) {
-  echo '<tr height="20px"><td class="reportTableLineHeader">' . $nameR . '</td>';
+  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:30%">' . $nameR . '</td>';
   for ($i=1; $i<=$nbDays;$i++) {
     $day=$startDate+$i-1;
     $style="";
@@ -182,5 +183,5 @@ foreach ($resources as $idR=>$nameR) {
   }
   echo '</tr>';
 }
-
 echo '</table>';
+echo '</td></tr></table>';

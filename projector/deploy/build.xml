@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Project'Or RIA" default="buildQuick">
 
-  <property name="version"       value="V1.5.0" />
+  <property name="version"       value="V1.5.1" />
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="../../../ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -104,6 +104,11 @@
     <copy todir="${deploy.dir}" file="${src.dir}/index.php" />
   </target>
   
+  <target name="copyMisc">
+    <copy todir="${setup.dir}" file="${src.dir}/tool/i18n/nls/lang.xls" />
+  	<copy todir="${setup.dir}" file="${src.dir}/manual/Project'Or RIA.ppt" />
+  </target>
+	
   <target name="zipVersion">
     <zip destfile="${setup.dir}/${projName}${version}.zip" update="true">
       <zipfileset dir="${deploy.dir}" prefix="${projName}"/>

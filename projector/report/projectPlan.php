@@ -109,6 +109,7 @@ $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . 
 if (checkNoData($result)) exit;
 
 echo "<table width='95%' align='center'><tr>";
+echo '<td><table width="100%" align="left"><tr>';
 echo "<td class='reportTableDataFull' width='20px' style='text-align:center;'>";
 echo "1";
 echo "</td><td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
@@ -118,10 +119,10 @@ echo "<i>1</i>";
 echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
-echo "<br/>";
+//echo "<br/>";
 
 // title
-echo '<table width="95%" align="center"><tr>';
+echo '<table width="100%" align="left"><tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
@@ -152,10 +153,10 @@ foreach ($projects as $idP=>$nameP) {
   for ($i=1; $i<=$nbDays;$i++) {
     $sum[$startDate+$i-1]='';
   }
-  echo '<tr height="20px"><td class="reportTableLineHeader" rowspan="'. (count($result[$idP])+1) . '">' . $nameP . '</td>';
+  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:150px;" rowspan="'. (count($result[$idP])+1) . '">' . $nameP . '</td>';
   foreach ($result[$idP] as $idR=>$ress) {
     if (array_key_exists($idR, $resources)) {
-      echo '<td class="reportTableData" style="text-align: left;">' . $resources[$idR] . '</td>';
+      echo '<td class="reportTableData" style="width:100px; text-align: left;">' . $resources[$idR] . '</td>';
       $lineSum='';
       for ($i=1; $i<=$nbDays;$i++) {
         $day=$startDate+$i-1;
@@ -215,3 +216,4 @@ for ($i=1; $i<=$nbDays;$i++) {
 echo '<td class="reportTableHeader">' . $lineSum . '</td>';
 echo '</tr>';
 echo '</table>';
+echo '</td></tr></table>';

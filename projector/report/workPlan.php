@@ -69,21 +69,19 @@
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;
-  
+
   if (Sql::$lastQueryNbRows > 0) {
     // Header
-    echo '<table class="ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;" align="center">';
-    echo '<tr class="ganttHeight"><td colspan="6">&nbsp;</td>';
-    echo '</tr>';
-    echo '<TR class="ganttHeight">';
-    echo '  <TD class="ganttLeftTitle" width="15px"></TD>';
-    echo '  <TD class="ganttLeftTitle" width="200px" style="border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
-    echo '  <TD class="ganttLeftTitle" width="50px" nowrap>' . i18n('colValidated') . '</TD>' ;
-    echo '  <TD class="ganttLeftTitle" width="50px" nowrap>' . i18n('colAssigned') . '</TD>' ;
-    echo '  <TD class="ganttLeftTitle" width="50px" nowrap>' . i18n('colPlanned') . '</TD>' ;
-    echo '  <TD class="ganttLeftTitle" width="50px" nowrap>' . i18n('colReal') . '</TD>' ;
-    echo '  <TD class="ganttLeftTitle" width="50px" nowrap>' . i18n('colLeft') . '</TD>' ;
-    echo '  <TD class="ganttLeftTitle" width="50px" nowrap>' . i18n('progress') . '</TD>' ;
+    echo '<table>';
+    echo '<TR>';
+    echo '  <TD class="reportTableHeader" style="width:10px; border-right: 0px;"></TD>';
+    echo '  <TD class="reportTableHeader" style="width:200px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
+    echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colValidated') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colAssigned') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colPlanned') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colReal') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colLeft') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
     echo '</TR>';       
     // Treat each line
     while ($line = Sql::fetchLine($result)) {
@@ -102,10 +100,13 @@
       }
       // pGroup : is the tack a group one ?
       $pGroup=($line['elementary']=='0')?1:0;
+      $compStyle="";
       if( $pGroup) {
         $rowType = "group";
+        $compStyle="font-weight: bold; background: #E8E8E8 ;";
       } else if( $line['refType']=='Milestone'){
         $rowType  = "mile";
+        $compStyle="font-weight: light; font-style:italic;";
       } else {
         $rowType  = "row";
       }
@@ -115,15 +116,16 @@
       for ($i=1;$i<$level;$i++) {
         $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
       }
-      echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-      echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $validatedWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $assignedWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $plannedWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $realWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>' . $leftWork  . '</NOBR></TD>' ;
-      echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 5px 0px 5px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
+      
+      echo '<TR>';
+      echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
+      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . $line['refName'] . '</TD>';
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $validatedWork  . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $assignedWork  . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $plannedWork  . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $realWork . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $leftWork . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
       echo '</TR>';        
     }
   }

@@ -46,6 +46,8 @@ if (! isset($includedReport)) {
 
 $includedReport=true;
 $arrType=array('Ticket', 'Activity', 'Milestone');
+$cptLoop=0;
+$cptLoopMax=count($arrType);
 foreach ($arrType as $refType) {
   echo '<table  width="95%" align="center"><tr><td style="width: 100%" class="section">';
   echo i18n($refType);
@@ -54,5 +56,9 @@ foreach ($arrType as $refType) {
   echo '<tr><td></td></tr>';
   echo '</table>';
   include "statusDetail.php";
+  $cptLoop++;
+  if ($cptLoop<$cptLoopMax) {
+    echo '</page><page>';
+  }
 }
 ?>

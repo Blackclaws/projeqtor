@@ -93,20 +93,21 @@ while ($date<=$end) {
 // Header
 $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
-$plannedStyle=' style="text-align:right;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
+$plannedStyle=' style="width:20px;text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
 echo "<table width='95%' align='center'><tr>";
-echo "<td class='reportTableDataFull' width='20px' style='text-align:center;'>";
+echo '<td><table width="100%" align="left"><tr>';
+echo "<td class='reportTableDataFull' style='width:20px; text-align:center;'>";
 echo "1";
-echo "</td><td width='100px' class='legend'>" . i18n('colRealCost') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '>';
 echo "<i>1</i>";
-echo "</td><td width='100px' class='legend'>" . i18n('colPlannedCost') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";
-echo '<table width="95%" align="center">';
+echo '<table width="100%" align="center">';
 echo '<tr rowspan="2">';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
 foreach ($arrYear as $year=>$nb) {
@@ -178,7 +179,7 @@ foreach ($arrSum as $date=>$val) {
 echo '<td class="reportTableHeader" style="text-align:right;">' . htmlDisplayCurrency($sum) . '</td>';
 echo '</tr>';
 echo '</table>';
-
+echo '</td></tr></table>';
 // Graph
 if (! testGraphEnabled()) { return;}
   include("../external/pChart/pData.class");  

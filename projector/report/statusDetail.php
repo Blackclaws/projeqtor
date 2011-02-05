@@ -110,26 +110,31 @@ echo '</tr>';
 
 foreach ($lstType as $idType=>$name) {
   $sum=0;
-  echo '<tr><td class="reportTableLineHeader">' . $name . '</td>';
+  echo '<tr><td class="reportTableLineHeader" style="width:20%">' . $name . '</td>';
+  if (count($lstStatus)) {
+    $detWidth=floor(70/count($lstStatus));
+  } else {
+    $detWidth='70';
+  }
   foreach ($lstStatus as $idStatus=>$status) {
-    echo '<td class="reportTableData reportTableDataCenter">';
+    echo '<td class="reportTableData" style="width:' . $detWidth . '%">';
     if (isset($arr[$idType][$idStatus])) {
       echo $arr[$idType][$idStatus];
       $sum+=$arr[$idType][$idStatus];
     }
     echo '</td>';
   }
-  echo '<td class="reportTableLineHeader reportTableDataCenter">' . $sum . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:10%;text-align:center;">' . $sum . '</td>';
   echo '</tr>';
 }
 
 echo '<tr><td class="reportTableHeader" >' . i18n('sum') . '</td>';
 $sum=0;
 foreach ($lstStatus as $id=>$val) {
-  echo '<td class="reportTableLineHeader reportTableDataCenter">' . $arrStatus[$id] . '</td>';
+  echo '<td class="reportTableLineHeader" style="text-align:center;">' . $arrStatus[$id] . '</td>';
   $sum+=$arrStatus[$id];
 }
-echo '<td class="reportTableHeader reportTableDataCenter" >' . $sum . '</td>';
+echo '<td class="reportTableHeader" >' . $sum . '</td>';
 echo '</tr>';
 echo '</table>';
 

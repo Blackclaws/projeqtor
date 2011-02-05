@@ -65,7 +65,12 @@
   <table valign="top" align="center" width="100%" height="100%">
     <tr>
       <td width="210px" valign="top" align="center">
+        <div class="title" style="text-align:center; height:40px;">
+          <br/>INDEX
+        </div> 
+        <div style="width:200px; height:600px;overflow: auto;">
         <?php displayIndex($page);?>
+        </div>
       </td>
       <td valign="top" align="center">
         <table width="10%">
@@ -116,9 +121,7 @@
 <?php 
 function displayIndex($page) {
   global $slide, $section, $slideName;
-  echo "<br/>";
-  echo '<table class="background" width="95%" aligh="center">';
-  echo '<tr height="30px"><th colspan="2" class="title" style="text-align:center;">INDEX</th></tr>'; 
+  echo '<table class="background" width="100%" align="center">';
   foreach ($section as $id=>$name) {
     echo '<tr class="menuTree" height="20px">';
     echo '<td width="15px" align="center" >';

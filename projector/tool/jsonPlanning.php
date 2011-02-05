@@ -151,7 +151,7 @@
       $colUnit = 7;
       $topUnit=7;
     } else if($format == 'month') {
-      $colWidth = 80;
+      $colWidth = 60;
       $colUnit = 30;
       $topUnit=30;
     }
@@ -219,8 +219,8 @@
       //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;     
       // Header
       //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<table id="wishlistNode" class="ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<tr class="ganttHeight"><td colspan="6">&nbsp;</td>';
+      echo '<table style="font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+      echo '<tr style="height: 20px;"><td colspan="6">&nbsp;</td>';
       $day=$minDate;
       for ($i=0;$i<$topUnits;$i++) {
         $span=$topUnit;
@@ -236,7 +236,7 @@
           $title=substr($day,0,4) . " #" . weekNumber($day);
           $title.=' (' . substr(i18n(date('F', $date)),0,4) . ')';
         }
-        echo '<td class="ganttRightTitle" colspan="' . $span . '">';
+        echo '<td class="reportTableHeader" colspan="' . $span . '">';
         echo $title;
         echo '</td>';
         if ($format=='month') {
@@ -246,13 +246,13 @@
         }
       }
       echo '</tr>';
-      echo '<TR class="ganttHeight">';
-      echo '  <TD class="ganttLeftTitle" width="15px"></TD>';
-      echo '  <TD class="ganttLeftTitle" width="200px" style="border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
-      echo '  <TD class="ganttLeftTitle" width="60px" nowrap>' . i18n('colDuration') . '</TD>' ;
-      echo '  <TD class="ganttLeftTitle" width="50px" nowrap>'  . i18n('colPct') . '</TD>' ;
-      echo '  <TD class="ganttLeftTitle" width="80px" nowrap>'  . i18n('colStart') . '</TD>' ;
-      echo '  <TD class="ganttLeftTitle" width="80px" nowrap>'  . i18n('colEnd') . '</TD>' ;
+      echo '<TR style="height: 20px;">';
+      echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
+      echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
+      echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colDuration') . '</TD>' ;
+      echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
+      echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
+      echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
       $weekendColor="#cfcfcf";
       $day=$minDate;
       for ($i=0;$i<$numUnits;$i++) {
@@ -269,8 +269,8 @@
           $color=($openDays[$i]==1)?'':'background-color:' . $weekendColor . ';';
           $title=substr($days[$i],-2);
         }
-        echo '<td class="ganttRightSubTitle" colspan="' . $span . '" width="' . $colWidth . '" style="' . $color . '">';
-        echo '<div style="width:' . $colWidth . 'px;">' . $title . '</div></td>';
+        echo '<td class="reportTableColumnHeader" colspan="' . $span . '" style="width:' . $colWidth . 'px;magin:0px;padding:0px;' . $color . '">';
+        echo $title . '</td>';
         if ($format=='month') {
           $day=addMonthsToDate($day,1);
         } else {
@@ -296,8 +296,12 @@
         }
         // pGroup : is the tack a group one ?
         $pGroup=($line['elementary']=='0')?1:0;
+        $compStyle="";
+        $bgColor="";
         if( $pGroup) {
           $rowType = "group";
+          $compStyle="font-weight: bold; background: #E8E8E8;";
+          $bgColor="background: #E8E8E8;";
         } else if( $line['refType']=='Milestone'){
           $rowType  = "mile";
         } else {
@@ -313,63 +317,68 @@
         $pName.=$line['refName'];
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
-        echo '<TR class="ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-        echo '  <TD class="ganttName" style="margin: 0px; padding: 0px;" nowrap><NOBR>' . $tab . $pName . '</NOBR></TD>';
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: px;" align="center" nowrap><NOBR>' . $duration  . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px;" align="center" nowrap><NOBR>'  . percentFormatter($progress) . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 2px 0px 2px;" align="center" nowrap><NOBR>'  . (($pStart)?dateFormatter($pStart):'-') . '</NOBR></TD>' ;
-        echo '  <TD class="ganttDetail" style="margin: 0px; padding: 0px 2px 0px 2px;" align="center" nowrap><NOBR>'  . (($pEnd)?dateFormatter($pEnd):'-') . '</NOBR></TD>' ;
+        echo '<TR style="height:18px">';
+        echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
+        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab . $line['refName'] . '</NOBR></TD>';
+        echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
+        echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
+        echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
+        echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
         if ($pGroup) {
-          $pColor='#505050';
+          $pColor='#505050;';
+          //$pBackground='background:#505050 url(../view/img/grey.png) repeat-x;';
+          $pBackground='background-color:#505050;';
         } else {         
           if (trim($line['validatedEndDate'])!="" && $line['validatedEndDate'] < $pEnd) {
-            $pColor='#BB5050'; 
+            $pColor='#BB5050';
+            //$pBackground='background:#BB5050 url(../view/img/red.png) repeat-x;';
+            $pBackground='background-color:#BB5050;';
           } else  {
-            $pColor='#50BB50';
+            $pColor="#50BB50";
+            //$pBackground='background:#50BB50 url(../view/img/green.png) repeat-x;';
+            $pBackground='background-color:#50BB50;';
           }
         }
         for ($i=0;$i<$numDays;$i++) {
-          $color="";
-          $noBorder="";
-
+          $color=$bgColor;
+          $noBorder="border-left: 0px;";
           if ($format=='month') {
             $fontSize='90%';
-            if ( substr($days[$i],-2)!='01' ) {
-              $noBorder="border-left: 0px solid white;";
+            if ( $i<($numDays-1) and substr($days[($i+1)],-2)!='01' ) {
+              $noBorder="border-left: 0px;border-right: 0px;";
             }
           } else if($format=='week') {
             $fontSize='90%';
-            if ( $i % $colUnit) {
-              $noBorder="border-left: 0px solid white;";
+            if ( ( ($i+1) % $colUnit)!=0) {
+              $noBorder="border-left: 0px;border-right: 0px;";
             }
           } else if ($format=='day') {
             $fontSize='150%';
-            $color=($openDays[$i]==1)?'':'background-color:' . $weekendColor . ';';
+            $color=($openDays[$i]==1)?$bgColor:'background-color:' . $weekendColor . ';';
           }
-          $height=($pGroup)?'6':'12';         
+          $height=($pGroup)?'4':'8';         
           if ($days[$i]>=$pStart and $days[$i]<=$pEnd) {
             if ($rowType=="mile") {
-              echo '<td class="ganttDetail" style="margin:0; paging: 0;text-align: center;font-size: ' . $fontSize . ';' . $color . $noBorder . ';color:' . $pColor . ';">';
+              echo '<td class="reportTableData" style="font-size: ' . $fontSize . ';' . $color . $noBorder . ';color:' . $pColor . ';">';
               if($progress < 100) {
                 echo '&loz;' ;
               } else { 
                 echo '&diams;' ;
               }
             } else {
-              $subHeight=round((20-$height)/2);
-              echo '<td class="ganttDetailNoborder" style="' . $color . '; vertical-align: middle;">';
+              $subHeight=round((18-$height)/2);
+              echo '<td class="reportTableData" style="width:' . $width .';padding:0px;' . $color . '; vertical-align: middle;' . $noBorder . '">';
               echo '<table width="100%" >';
-              echo '<tr style="height:' . $subHeight . 'px;"><td class="ganttDetailBoderleft" style="' . $noBorder . '"></td></tr>';              
-              echo '<tr height="' . $height . 'px"><td class="ganttDetailNoborder" style="width:' . $colWidth .'; background-color:' . $pColor . ';height:' .  $height . 'px;"></td></tr>';              
-              echo '<tr style="height:' . $subHeight . 'px;"><td class="ganttDetailBoderleft" style="' . $noBorder . '"></td></tr>';
+              //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';              
+              echo '<tr height="' . $height . 'px"><td style="width:100%; ' . $pBackground . 'height:' .  $height . 'px;"></td></tr>';              
+              //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
             }
           } else { 
-            echo '<td class="ganttDetail" style="' . $color . $width . $noBorder . '">';
-            if($format=='week') {
-              echo '&nbsp;&nbsp;';
-            }
+            echo '<td class="reportTableData" width="' . $width .'" style="width: ' . $width . $color . $noBorder . '">';
+            //if($format=='week') {
+              //echo '&nbsp;&nbsp;';
+            //}
           }
           echo '</td>';
         }

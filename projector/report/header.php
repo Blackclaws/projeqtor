@@ -1,15 +1,15 @@
 <?php 
 // Header
-
-echo "<table width='100%'><tr>";
-echo "<td width='1%' class='reportHeader'>&nbsp;</td>";
-echo "<td width='5%' class='reportHeader'>" . i18n('colParameters') . "</td>";
-echo "<td width='1%' class='reportHeader'>&nbsp;</td>";
-echo "<td width='1%' >&nbsp;</td>";
-echo "<td width='35%'>"; 
+//echo "<page_header>";
+echo "<table style='width:100%'><tr>";
+echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";
+echo "<td style='width:10%' class='reportHeader'>" . i18n('colParameters') . "</td>";
+echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";
+echo "<td style='width:1%' >&nbsp;</td>";
+echo "<td style='width:30%'>"; 
 echo $headerParameters;
 echo "</td>";
-echo "<td width='40%' align='center' style='font-size: 150%; font-weight: bold;'>"; 
+echo "<td align='center' style='width:40%; font-size: 150%; font-weight: bold;'>"; 
 
 if (array_key_exists('reportName', $_REQUEST)) {
   echo '<table><tr><td style="text-align: center; background-color: #E0E0E0; padding: 3px 10px 3px 10px;">';
@@ -17,13 +17,14 @@ if (array_key_exists('reportName', $_REQUEST)) {
   echo '</td></tr></table>';
 }
 echo "</td>";
-echo "<td width='1%'>&nbsp;</td>";
-echo "<td width='15%'align='right'>";
+echo "<td style='width:1%'>&nbsp;</td>";
+echo "<td style='width:15%; text-align:right'>";
 echo  htmlFormatDate(date('Y-m-d')) . " " . date('H:i');
 echo "</td>";
-echo "<td width='1%'>&nbsp;</td>";
+echo "<td style='width:1%'>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";
+//echo "</page_header>";
 
 $graphEnabled=true;
 if (! function_exists('ImagePng')) {

@@ -121,6 +121,11 @@ $lstType=SqlList::getList('TicketType');
 foreach($lstType as $code=>$name) {
   $arrType[$code]=0;
 }
+if (count($lstType)) {
+  $medWidth=floor(65/count($lstType));
+} else {
+  $medWidth="65";
+}
 $arrUrgency=array('0'=>$arrType);
 foreach($lstUrgency as $code=>$name) {
   $arrUrgency[$code]=$arrType;
@@ -175,9 +180,11 @@ for ($i=1; $i<=3; $i++) {
   } else if ($i==2) {
     $tab=$done;
     $caption=i18n('done');
+    echo"</page><page>";
   } else if ($i==3) {
     $tab=$closed;
     $caption=i18n('closed');
+    echo"</page><page>";
   }
   
   // title
@@ -203,20 +210,20 @@ for ($i=1; $i<=3; $i++) {
       $sum=0;
       echo '<tr>';
       if ($codeMode==0) {
-        echo '<td class="reportTableLineHeader" rowspan="' . count($modeArr) . '">' . i18n($codeArr) . '</td>';
-        echo '<td class="reportTableLineHeader" style="color:#808080;"><i>' . i18n('undefinedValue') .  '</i></td>';
+        echo '<td class="reportTableLineHeader" style="width:10%;" rowspan="' . count($modeArr) . '">' . i18n($codeArr) . '</td>';
+        echo '<td class="reportTableLineHeader" style="width:15%" color:#808080;"><i>' . i18n('undefinedValue') .  '</i></td>';
       } else {
         echo '<td class="reportTableLineHeader">' . SqlList::getNameFromId($codeArr, $codeMode) .  '</td>';
       }
       foreach ($arrType as $codeType=>$val) {
-        echo '<td class="reportTableData reportTableDataCenter">' . $val . '</td>';
+        echo '<td class="reportTableData" style="width:' . $medWidth . '%;">' . $val . '</td>';
         $sum+=$val;
         //echo "x";
         if ($codeArr=='Urgency') {
           $arrTypeSum[$codeType]+=$val;
         }
       }
-      echo '<td class="reportTableLineHeader reportTableDataCenter">' . $sum . '</td>';
+      echo '<td class="reportTableLineHeader" style="text-align:center;width:10%">' . $sum . '</td>';
       echo '</tr>';
     }
   }
@@ -224,10 +231,10 @@ for ($i=1; $i<=3; $i++) {
   echo '<tr><td colspan="2"></td>';
   $sum=0;
   foreach ($arrTypeSum as $codeType=>$val) {
-    echo '<td class="reportTableLineHeader reportTableDataCenter">' . $val . '</td>';
+    echo '<td class="reportTableLineHeader" style="text-align:center;">' . $val . '</td>';
     $sum+=$val;
   }
-  echo '<td class="reportTableHeader reportTableDataCenter">' . $sum . '</td>';
+  echo '<td class="reportTableHeader">' . $sum . '</td>';
   echo '</tr>';
   echo '</table>';
   echo '<br/>';
