@@ -1,0 +1,2 @@
+id;name;description;idClient;projectCode;contractCode;idProject;idUser;color;done;doneDate;idle;idleDate;idActivityPlanningMode;initialStartDate;validatedStartDate;initialEndDate;validatedEndDate;initialDuration;validatedDuration;validatedWork
+;New Project;Description of new Project;1;X203;FAC203-0021;1;3;#0000FF;;;;;1;2010-11-02;2010-11-02;2011-01-31;;;;120
