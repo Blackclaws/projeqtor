@@ -110,9 +110,27 @@
     // Then sort from Filter Criteria
     foreach ($arrayFilter as $crit) {
       if ($crit['sql']['operator']=='SORT') {
-        $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-        $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
+        $doneSort=false;
+        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
+          $externalClass = substr($crit['sql']['attribute'],2);
+          $externalObj=new $externalClass();
+          $externalTable = $externalObj->getDatabaseTableName();          
+          if (property_exists($externalObj,'sortOrder')) {
+            $idTab+=1;
+            $externalTableAlias = 'T' . $idTab;
+            $queryOrderBy .= " " . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder')
+               . " " . $crit['sql']['value'];
+            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+            $doneSort=true;
+          }
+        }
+        if (! $doneSort) {
+          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+          $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
                              . " " . $crit['sql']['value'];
+        }
       }
     }
     
@@ -120,6 +138,7 @@
     // Also include default Sort criteria
     $numField=0;
     $formatter=array();
+    $arrayWidth=array();
     foreach ($array as $val) {
       //$sp=preg_split('field=', $val);
       //$sp=explode('field=', $val);
@@ -128,6 +147,7 @@
         $numField+=1;        
         $formatter[$numField]=htmlExtractArgument($val, 'formatter');
         $from=htmlExtractArgument($val, 'from');
+        $arrayWidth[$numField]=htmlExtractArgument($val, 'width');
         $querySelect .= ($querySelect=='')?'':', ';
         if (strlen($fld)>9 and substr($fld,0,9)=="colorName") {
           $idTab+=1;
@@ -229,12 +249,11 @@
          . ' order by' . $queryOrderBy;
     $result=Sql::query($query);
     $nbRows=0;
-    
-// If 'print', directly format result
     if ($print) {
-      //echo "<div style='overflow: auto;'>";
-      echo "<table>";
-      echo $layout;
+      echo '<table>';
+      echo '<tr>';
+      echo str_ireplace('width="','style="width:',$layout);
+      echo '</tr>';
       if (Sql::$lastQueryNbRows > 0) {
         while ($line = Sql::fetchLine($result)) {
           echo '<tr>';
@@ -263,7 +282,7 @@
             } else {
               $disp=htmlEncode($val);
             }
-            echo '<td class="tdListPrint" >' . $disp . '</td>';
+            echo '<td class="tdListPrint" style="width:' . $arrayWidth[$numField] . ';">' . $disp . '</td>';
           }
           echo '</tr>';       
         }

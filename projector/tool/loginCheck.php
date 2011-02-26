@@ -48,6 +48,11 @@
   } 
 
   if (Sql::getDbVersion()!=$version) {
+    $prf=new Profile($user->idProfile);
+    if ($prf->profileCode!='ADM') {
+      loginErrorMaintenance();
+      exit;
+    }
     include "../db/maintenance.php";
     exit;
   }
@@ -78,6 +83,20 @@
     echo '</span>';
     unset($_SESSION['user']);
     traceLog("Login locked for user '" . $login . "'");
+    exit;
+  }
+  
+     /** ========================================================================
+   * Display an error message because of invalid login
+   * @return void
+   */
+  function loginErrorMaintenance() {
+    global $login;
+    echo '<span class="messageERROR">';
+    echo i18n('wrongMaintenanceUser');
+    echo '</span>';
+    unset($_SESSION['user']);
+    traceLog("Login of non admin user during upgrade. User '" . $login . "'");
     exit;
   }
   

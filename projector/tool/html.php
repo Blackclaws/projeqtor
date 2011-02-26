@@ -533,8 +533,23 @@ function htmlDisplayCurrency($val,$noDecimal=false) {
 
 function htmlDisplayNumeric($val) {
   global $browserLocale;
+  // old version : too restrictive
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
   return $fmt->format($val) ;
+  // numflt_* functions unvailable in some PHP versions, so keep old version
+  //$fmt = numfmt_create( $browserLocale, NumberFormatter::DECIMAL );
+  //$data = numfmt_format($fmt, $val);
+  //return $data;
+}
+
+function htmlDisplayPct($val) {
+  return $val . '&nbsp;%';
+}
+
+function htmlRemoveDocumentTags($val) {
+  $res=strstr($val, '<body>');
+  $res=str_replace(array('<html>','</html>','<body>','</body>') , '', $res);
+  return $res;
 }
 
 ?>

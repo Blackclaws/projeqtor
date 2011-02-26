@@ -1,6 +1,6 @@
 <?php
 function colorNameFormatter($value) {
-  
+  global $print;
   if ($value) {
     $tab=explode("#split#",$value);
     if (count($tab)>1) {
@@ -23,9 +23,10 @@ function colorNameFormatter($value) {
         $light=(0.3)*base_convert($red,16,10)+(0.6)*base_convert($green,16,10)+(0.1)*base_convert($blue,16,10);
         if ($light<128) { $foreColor='#FFFFFF'; }
       }
-      return '<table width="100%"><tr><td style="background-color: ' . $color . '; color:' . $foreColor . ';width: 100%;">' . $val . '</td></tr></table>'; 
+      return '<div style="width:' . (($print)?'95':'100') . '%;background-color: ' . $color . '; color:' . $foreColor . ';">' . $val . '</div>';
+
     } else {
-      return value;
+      return $value;
     }
   } else { 
     return ''; 
