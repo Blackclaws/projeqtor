@@ -284,10 +284,14 @@ class Resource extends SqlElement {
   public function getActualResourceCost($idRole=null) {
     if (! $this->id) return null;
     if (! $idRole) $idRole=$this->idRole;
-    $where="idResource='" . $this->id . "' and idRole='" . $idRole . "' and endDate is null";
+    $where="idResource='" . $this->id . "'";
+    if ($idRole) {
+      $where.= " and idRole='" . $idRole . "'";
+    }
+    $where.= " and endDate is null";
     $rc=new ResourceCost();
-    $rcL = $rc->getSqlElementsFromCriteria(null, false, $where);
-    if (count($rcL)==1) {
+    $rcL = $rc->getSqlElementsFromCriteria(null, false, $where, "startDate desc");
+    if (count($rcL)>=1) {
       return $rcL[0]->cost;
     }
     return null;

@@ -192,6 +192,15 @@ class PlanningElement extends SqlElement {
     // Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
 
+    // Bug fixing #300
+    if (! $this->assignedWork) {
+      $this->assignedWork=0;
+    }
+    if (! $this->leftWork) {
+      $this->leftWork=0;
+      $this->plannedWork=$this->realWork;
+    }
+    
     // If done and no work, set up end date
     if (  $this->leftWork==0 and $this->realWork==0 ) {
       $refType=$this->refType;
@@ -218,9 +227,10 @@ class PlanningElement extends SqlElement {
     
     // calculate wbs
     $dispatchNeeded=false;
-    $wbs="";
+    //$wbs="";
     $crit='';
     if (! $this->wbs or trim($this->wbs)=='') {
+      $wbs="";
       //if ( $this->topId and trim($this->topId)!='') {
       if ($topElt) {
         //$elt=new PlanningElement($this->topId);
@@ -251,12 +261,14 @@ class PlanningElement extends SqlElement {
     $this->wbsSortable=$wbsSortable;
     // search for dependant elements
     $crit=" topId='" . $this->id . "'";
+    $this->elementary=1;
     $lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
     if ($lstElt and count($lstElt)>0) {
       $this->elementary=0;
     } else {
       $this->elementary=1;
     }
+
     if (! $this->priority or $this->priority==0) {
       $this->priority=500; // default value for priority
     }
@@ -287,6 +299,8 @@ class PlanningElement extends SqlElement {
     if ($topElt) {
         $topElt->save();    
     }
+    
+    if ($this->topId!=$old->topId)
     
     // save old parent (for synthesis update) if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId) {

@@ -90,7 +90,9 @@ class Affectation extends SqlElement {
     $result="<table>";
     $affList=$this->getSqlElementsFromCriteria($critArray, false);
     foreach ($affList as $aff) {
-      $result.= '<tr><td><li>';
+      $result.= '<tr>';
+      $result.= '<td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
+      $result.= '<td>'; 
       if ($nameDisp=='Resource') {
         $result.=SqlList::getNameFromId('Resource', $aff->idResource);
       } else if ($nameDisp=='Project') {
@@ -103,7 +105,7 @@ class Affectation extends SqlElement {
       if ($aff->rate ) {
         $result.=' (' . $aff->rate . '%)';
       }
-      $result.= '</li></td></tr>';
+      $result.= '</td></tr>';
     }
     $result .="</table>";
     return $result; 

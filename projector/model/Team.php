@@ -14,7 +14,7 @@ class Team extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="80%">${name}</th>
+    <th field="name" width="85%">${name}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   

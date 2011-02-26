@@ -206,33 +206,33 @@ class ImputationLine {
     for ($i=1; $i<=$nbDays; $i++) {
       $colSum[$i]=0;
     }
-    echo '<table class="ganttTable">';
-    echo '<TR class="ganttHeight">';
-    echo '  <TD class="ganttLeftTopLine" ></TD>';
-    echo '  <TD class="ganttLeftTopLine" colspan="5">' . $resource->name . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay . '</TD>';
-    echo '  <TD class="ganttLeftTitle" colspan="' . $nbDays . '" ' 
-      . 'style="border-right: 1px solid #ffffff;border-bottom: 1px solid #DDDDDD;">' 
+    echo '<table style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+    echo '<TR style="height: 20px;">';
+    echo '  <TD class="reportTableHeader" style="border-right:0px"></TD>';
+    echo '  <TD class="reportTableHeader" style="border-left:0px; text-align:left;" colspan="5">' . $resource->name . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay . '</TD>';
+    echo '  <TD class="reportTableHeader" colspan="' . $nbDays . '" ' 
+      . 'style="text-align: center;width:' . ($inputWidth*$nbDays) . 'px;">' 
       . htmlFormatDate($startDate) 
       . ' - ' 
       . htmlFormatDate($endDate)
       . '</TD>';
-    echo '  <TD class="ganttLeftTopLine" colspan="2" style="text-align:center;color: #707070">' .  htmlFormatDate($today) . '</TD>';
+    echo '  <TD class="reportTableHeader" colspan="2" style="text-align:center;color: #707070;width:' . ($workWidth*2) . 'px;">' .  htmlFormatDate($today) . '</TD>';
     echo '</TR>';
-    echo '<TR class="ganttHeight">';
-    echo '  <TD class="ganttLeftTitle" style="width:15px;"></TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $nameWidth . 'px;text-align: left; ' 
+    echo '<TR style="height: 20px;">';
+    echo '  <TD class="reportTableHeader" style="border-right:0px;width:15px;"></TD>';
+    echo '  <TD class="reportTableHeader" style="border-left:0px;width: ' . $nameWidth . 'px;text-align: left; ' 
       . 'border-left:0px; " nowrap>' .  i18n('colTask') . '</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;">' 
+    echo '  <TD class="reportTableHeader" style="width: ' . $dateWidth . 'px;">' 
       . i18n('colStart') . '</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $dateWidth . 'px;">' 
+    echo '  <TD class="reportTableHeader" style="width: ' . $dateWidth . 'px;">' 
       . i18n('colEnd') . '</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">' 
+    echo '  <TD class="reportTableHeader" style="width: ' . $workWidth . 'px;">' 
       . i18n('colAssigned') . '</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">' 
+    echo '  <TD class="reportTableHeader" style="width: ' . $workWidth . 'px;">' 
       . i18n('colReal') . '</TD>';
     $curDate=$startDate;
     for ($i=1; $i<=$nbDays; $i++) {
-      echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
+      echo '  <TD class="reportTableColumnHeader" style="font-size:95%;width: ' . $inputWidth . 'px;';
       if ($today==$curDate) {
         echo ' background-color:#' . $currentdayColor . '; color: #aaaaaa;"';
       } else if (isOffDay($curDate)) {
@@ -240,7 +240,7 @@ class ImputationLine {
       }
       echo '">';
       if ($rangeType=='week') {
-        echo  i18n('colWeekday' . $i) . " "  . date('d',strtotime($curDate)) . '';
+        echo  i18n('colWeekday' . $i) . "&nbsp;"  . date('d',strtotime($curDate)) ;
       }
       if (! $print) {    
         echo ' <input type="hidden" id="day_' . $i . '" name="day_' . $i . '" value="' . $curDate . '" />';
@@ -248,23 +248,26 @@ class ImputationLine {
       echo '</TD>';
       $curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
     }   
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">' 
+    echo '  <TD class="reportTableHeader" style="width: ' . $workWidth . 'px;">' 
       . i18n('colLeft') . '</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">' 
+    echo '  <TD class="reportTableHeader" style="width: ' . $workWidth . 'px;">' 
       . i18n('colPlanned') . '</TD>';
     echo '</TR>';  
     $tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned);
     $nbLine=0;
     foreach ($tab as $key=>$line) {
       $nbLine++;
+      $compStyle="";
+      $bgColor="";
       if ($line->elementary) {
         $rowType="row";
       } else {
         $rowType="group";
+        $compStyle="font-weight: bold; background: #E8E8E8;";
       }
-      echo '<tr id="line_' . $nbLine . '"class="ganttTask' . $rowType . '">';
-      echo '<td class="ganttName" >';
-      if (! $print) {    
+      echo '<tr id="line_' . $nbLine . '" style="height:18px">';
+      echo '<td class="reportTableData" style="' . $compStyle . '">';
+      if (! $print) {
         echo '<input type="hidden" id="wbs_' . $nbLine . '" name="wbs_' . $nbLine . '"' 
           . ' value="' . $line->wbsSortable . '"/>';
         echo '<input type="hidden" id="status_' . $nbLine . '" name="status_' . $nbLine . '"'
@@ -283,9 +286,9 @@ class ImputationLine {
       echo '<img src="css/images/icon' . $line->refType . '16.png" />';
       echo '</td>';
       if (! $print) {
-        echo '<td class="ganttName" title="' . htmlEncodeJson($line->comment) . '">';
+        echo '<td class="reportTableData" style="' . $compStyle . '" title="' . htmlEncodeJson($line->comment) . '">';
       } else {
-        echo '<td class="ganttName" >';
+        echo '<td class="reportTableData" style="' . $compStyle . '">';
       }
       // tab the name depending on level
       echo '<table><tr><td>';
@@ -384,14 +387,12 @@ class ImputationLine {
             echo '</script>';
             echo '</div>';
             echo '</div>';
-            if (! $print) {    
-              echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
-                . 'name="workId_' . $nbLine . '_' . $i . '"'
-                . ' value="' . $idWork . '"/>';
-              echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
-                . 'name="workOldValue_' . $nbLine . '_' . $i . '"'
-                . ' value="' . $valWork . '"/>';
-            }
+            echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
+              . 'name="workId_' . $nbLine . '_' . $i . '"'
+              . ' value="' . $idWork . '"/>';
+            echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
+              . 'name="workOldValue_' . $nbLine . '_' . $i . '"'
+              . ' value="' . $valWork . '"/>';
           } else {
             echo $valWork;
           }
@@ -479,10 +480,8 @@ class ImputationLine {
     echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>' 
       .  '</NOBR></TD>';
     echo '</TR>';      
-    echo '</table>'; 
-    if (! $print) {     
-      echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '"/>';
-    }
+    echo '</table>';  
+    echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '"/>';
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS

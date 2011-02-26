@@ -134,7 +134,7 @@ class Workflow extends SqlElement {
       }     
       $nbProfiles=count($profileList);
       $result .= '<div style="overflow: auto; width: ' . $detailWidth . '">';
-      $result .= '<table>';
+      $result .= '<table style="zoom:90%;">';
 
       $wsListArray=$this->getWorkflowstatusArray();
       foreach ($statusList as $statLineCode => $statLineValue) {
@@ -305,7 +305,7 @@ class Workflow extends SqlElement {
           }
         } 
       }
-      $result.='<table style="margin:0; spacing:0; padding:0; background-color:#FFFFFF">';
+      $result.='<table style="zoom:90%;margin:0; spacing:0; padding:0; background-color:#FFFFFF">';
       $result.='<tr><td colspan="' . (count($statusList)*2+1) .'"><div style="height: ' . $sepHeight . 'px;"></div></td></tr>';
       $i=0;
       foreach($statusList as $idL=>$nameL) {

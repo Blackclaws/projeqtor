@@ -57,26 +57,35 @@ class Assignment extends SqlElement {
    */
   public function save() {
     
+  if (! $this->realWork) { $this->realWork=0; }
     // if cost has changed, update work 
     
     $this->plannedWork = $this->realWork + $this->leftWork;
     
     $this->assignedCost=$this->assignedWork*$this->dailyCost;    
     $r=new Resource($this->idResource);
+    // If idRole not set, set to default for resource
+    if (! $this->idRole) {
+      $this->idRole=$r->idRole;
+    }
     $newCost=$r->getActualResourceCost($this->idRole);
     $this->newDailyCost=$newCost;
     $this->leftCost=$this->leftWork*$newCost;
     $this->plannedCost = $this->realCost + $this->leftCost;
-    
-    /* $limitedRate=false;
-    $crit=array("idProject"=>$this->idProject, "idResource"=>$this->idResource);
-    $affectation=SqlElement::getSingleSqlElementFromCriteria("Affectation", $crit);
-    if ($affectation) {
-      if ($affectation->rate < $this->rate) {
-        $this->rate=$affectation->rate;
-        $limitedRate=true;
-      }
-    }*/
+    if ($this->dailyCost==null) {
+      $this->dailyCost=$newCost;
+      if (! $this->idRole) {
+        // search idRole found for newDailyCost
+        $where="idResource='" . $this->idResource . "'";
+        $where.= " and endDate is null";
+        $where.= " and cost=" . $newCost;
+        $rc=new ResourceCost();
+        $lst = $rc->getSqlElementsFromCriteria(null, false, $where, "startDate desc");
+        if (count($lst)>0) {
+          $this->idRole=$lst[0]->idRole;
+        }
+      }      
+    }
     
     // Dispatch value
     $result = parent::save();

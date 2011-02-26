@@ -124,7 +124,6 @@ class ActivityPlanningElement extends PlanningElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-
     return parent::save();
   }
   

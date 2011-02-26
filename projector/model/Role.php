@@ -5,7 +5,7 @@
 class Role extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2;
+  public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $description;

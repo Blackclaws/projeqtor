@@ -14,5 +14,6 @@ if (array_key_exists('showPlannedWork',$_REQUEST)) {
 }
 //echo '<div style="height:10px">';
 ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, true);
+
 //echo '</div>';
 ?>

@@ -134,20 +134,24 @@ class User extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
+    global $print;
     $result="";
-    if ($item=='buttonSendMail') { 
+    if ($item=='buttonSendMail') {
+      if ($print) {
+        return "";
+      } 
       $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
       $result .= '<button id="sendInfoToUser" dojoType="dijit.form.Button" showlabel="true"'; 
       $result .= ' title="' . i18n('sendInfoToUser') . '" >';
       $result .= '<span>' . i18n('sendInfoToUser') . '</span>';
       $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-	  $result .=  '  var email="";';
-	  $result .=  '  if (dojo.byId("email")) {email = dojo.byId("email").value;}';
+	    $result .=  '  var email="";';
+	    $result .=  '  if (dojo.byId("email")) {email = dojo.byId("email").value;}';
       $result .=  '  if (email==null || email=="") { ';
       $result .=  '    showAlert("' . i18n('emailMandatory') . '");';
-	  $result .=  '  } else {';
+	    $result .=  '  } else {';
       $result .=  '    loadContent("../tool/sendMail.php","resultDiv","objectForm",true);';
-	  $result .=  '  }';	
+	    $result .=  '  }';	
       $result .= '</script>';
       $result .= '</button>';
       $result .= '</td></tr>';

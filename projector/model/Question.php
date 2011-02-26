@@ -37,7 +37,7 @@ class Question extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameQuestionType" width="10%" >${idQuestionType}</th>
-    <th field="name" width="40%" >${name}</th>
+    <th field="name" width="30%" >${name}</th>
     <th field="actualDueDate" width="10%" >${dueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="15%" >${idResource}</th>

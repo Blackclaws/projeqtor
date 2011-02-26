@@ -145,7 +145,7 @@ class Project extends SqlElement {
       $colScript .= '</script>';
     } else if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("ProjectPlanningElement_wbs").set("value", null); ';
+      $colScript .= '  dojo.byId("ProjectPlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idStatus") {
@@ -304,14 +304,13 @@ class Project extends SqlElement {
       $reachableProjectsList=array();
     }
     $result="";
+    $clickEvent=' onClick=""';
     $subList=$this->getSubProjects($limitToActiveProjects);
-    if ($selectField!=null and ! $recursiveCall) {
-      $result .= '<table><tr><td colspan="20"><div dojoType="dijit.form.TextBox" class="menuTree" readonly value="' . i18n('allProjects') . '" >';
-      $result .= ' <script type="dojo/connect" event="onClick" args="evt">';
-      $result .= '  dijit.byId("' . $selectField . '").set("label","<i>' . i18n('allProjects') . '</i>");';
-      $result .= '  setSelectedProject("*", "' . i18n('allProjects') . '", "' . $selectField . '");'; 
-      $result .= '  dijit.byId("' . $selectField . '").closeDropDown();';
-      $result .= ' </script>';
+    if ($selectField!=null and ! $recursiveCall) { 
+      $result .= '<table ><tr><td>';
+      $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';
+      $result .= '<div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
+      $result .= '<i>' . i18n('allProjects') . '</i>';
       $result .= '</div></td></tr></table>';
     }
     $result .='<table >';
@@ -336,12 +335,9 @@ class Project extends SqlElement {
           } else if (! $reachLine) {
             $result .= '<td class="display" style="width: 100%; color: #AAAAAA;" NOWRAP>' . $prj->name;
           } else {
-            $result .= '<td><div dojoType="dijit.form.TextBox" class="menuTree" readonly value="' . htmlEncode($prj->name) . '" >';
-            $result .= ' <script type="dojo/connect" event="onClick" args="evt">';
-            $result .= '  dijit.byId("' . $selectField . '").set("label","' . htmlEncode($prj->name) . '");';
-            $result .= '  setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name) . '", "' . $selectField . '");'; 
-            $result .= '  dijit.byId("' . $selectField . '").closeDropDown();';
-            $result .= ' </script>';
+            $clickEvent=' onClick=\'setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name) . '", "' . $selectField . '");\' ';
+            $result .= '<td><div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
+            $result .= htmlEncode($prj->name);
             $result .= '</div>';
           }
           $result .= $prj->drawSubProjects($selectField,true,$limitToUserProjects,$limitToActiveProjects);
@@ -372,6 +368,9 @@ class Project extends SqlElement {
   }
   
   public function save() {
+    // #305 : need to recalculate before dispatching to PE
+    $this->recalculateCheckboxes();
+    
     $this->ProjectPlanningElement->refName=$this->name;
     $this->ProjectPlanningElement->idProject=$this->id;
     $this->ProjectPlanningElement->idle=$this->idle;

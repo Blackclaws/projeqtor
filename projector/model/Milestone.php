@@ -133,12 +133,12 @@ class Milestone extends SqlElement {
 
     if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").set("value", null); ';
+      $colScript .= '  dojo.byId("MilestonePlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idActivity") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("MilestonePlanningElement_wbs").set("value", null); ';
+      $colScript .= '  dojo.byId("MilestonePlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } 
@@ -151,6 +151,9 @@ class Milestone extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+    // #305 : need to recalculate before dispatching to PE
+    $this->recalculateCheckboxes();
+    
     $this->MilestonePlanningElement->refName=$this->name;
     $this->MilestonePlanningElement->idProject=$this->idProject;
     $this->MilestonePlanningElement->idle=$this->idle;

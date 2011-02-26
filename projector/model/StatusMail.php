@@ -22,8 +22,8 @@ class StatusMail extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameMailable" formatter="translateFormatter" width="20%" >${idMailable}</th>
-    <th field="colorNameStatus" width="25%" formatter="colorNameFormatter">${newStatus}</th>
+    <th field="nameMailable" formatter="translateFormatter" width="15%" >${idMailable}</th>
+    <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${newStatus}</th>
     <th field="mailToContact" width="10%" formatter="booleanFormatter" >${mailToContact}</th>    
     <th field="mailToUser" width="10%" formatter="booleanFormatter" >${mailToUser}</th>
     <th field="mailToResource" width="10%" formatter="booleanFormatter" >${mailToResource}</th>
