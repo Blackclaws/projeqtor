@@ -144,10 +144,15 @@ function dispatchWorkValueChange(rowId, colId) {
  * Dispatch updates for left work : re-calculate planned work 
  */
 function dispatchLeftWorkValueChange(rowId) {
-	var newLeft=dijit.byId('leftWork_' + rowId).value;
-	var newReal=dijit.byId('realWork_' + rowId).value;
+
+	var newLeft=dijit.byId('leftWork_' + rowId).get("value");
+	if (newLeft==null || isNaN(newLeft) || newLeft=='') {
+		dijit.byId('leftWork_' + rowId).set("value",'0');
+		newLeft=0;
+	}
+	var newReal=dijit.byId('realWork_' + rowId).get("value");
 	var newPlanned=newReal+newLeft;
-	dijit.byId('plannedWork_' + rowId).setValue(newPlanned);
+	dijit.byId('plannedWork_' + rowId).set("value",newPlanned);
 	formChanged();
 }
 

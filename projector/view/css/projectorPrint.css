@@ -29,6 +29,15 @@ tr {
    /*border: 2px solid #0000FF;  padding: 3px !important; margin: 3px !important; /* for debug purpose */
 }
 
+.menuTree {
+  font-weight: normal;
+  color: #000;
+  text-align: left;
+  width: 400px;
+  margin: 1px; padding: 0px; 
+  border: 0px;
+}
+
 td {
   margin: 0; padding: 0; cellspacing: 0; cellpadding: 0;
   border: collapse; border: 0px;
@@ -73,7 +82,6 @@ label, .label {
 }
 
 .display {
-  background-image: url(images/noimage.png);
   background-repeat: no-repeat;
   font-weight: normal;
   color: #000;
@@ -105,7 +113,6 @@ label, .label {
 }
 
 .colorDisplay {
-  background-image: url(images/noimage.png);
   background-repeat: no-repeat;
   width: 16px;
   height: 16px;

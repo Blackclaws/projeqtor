@@ -88,6 +88,7 @@ function filterJsonList() {
 	var grid = dijit.byId("objectGrid");
 	if (grid && filterId && filterName) {
 		filter = {};
+		unselectAllRows("objectGrid");
 		filter.id='*'; // delfault
 		if (filterId.value && filterId.value!='') {
 			filter.id = '*' + filterId.value + '*';
@@ -309,6 +310,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         var contentWidget = dijit.byId(destination);
         if (! contentWidget) {return};
       	contentWidget.set('content',data);
+      	checkDestination(destination);
       	if (destination=="detailDiv" || destination=="centerDiv") {
       		finaliseButtonDisplay();
         }
@@ -375,6 +377,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           var contentWidget = dijit.byId(destination);
           if (! contentWidget) {return};
         	contentWidget.set('content',data);
+        	checkDestination(destination);
           var contentNode = dojo.byId(destination);
           if (destination=="detailDiv" || destination=="centerDiv" ) {
           	finaliseButtonDisplay();
@@ -426,6 +429,21 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 }
 
 /** ============================================================================
+ * Check if destnation is correct
+ * If not in main page and detect we have login page => wrong destination
+ */
+function checkDestination(destination){
+	if (dojo.byId("isLoginPage") && destination!="loginResultDiv") {
+		if (dojo.isFF) {
+			quitConfirmed=true;
+      noDisconnect=true;
+	    window.location="main.php?lostConnection=true";
+		} else {
+			showAlert(i18n("errorConnection"));
+		}
+	}
+}
+/** ============================================================================
  * Chek the return code from login check, if valid, refresh page to continue
  * @return void
  */
@@ -435,8 +453,12 @@ function checkLogin() {
 	if (resultNode && resultWidget) {
 		//showWait();
 		if (changePassword) {
+			quitConfirmed=true;
+      noDisconnect=true;
 			window.location="main.php?changePassword=true";
 		} else {
+			quitConfirmed=true;
+      noDisconnect=true;
 		  window.location="main.php";
 		}
 	} else {
@@ -636,7 +658,11 @@ function finaliseButtonDisplay() {
   	// id does not exist => not selected, only new button possible
   	formLock();
   	enableWidget('newButton');
-  	enableWidget('printButton');
+  	// but show print buttons if not in objectDetail (buttonDiv exists)
+  	if (! dojo.byId("buttonDiv")) {
+  	  enableWidget('printButton');
+  	  enableWidget('printButtonPdf');
+  	}
   }
   buttonRightLock();
 }
@@ -654,6 +680,7 @@ function formChanged() {
 	disableWidget('newButton');
 	enableWidget('saveButton');
 	disableWidget('printButton');
+	disableWidget('printButtonPdf');
 	disableWidget('copyButton');
 	enableWidget('undoButton');
 	disableWidget('deleteButton');
@@ -679,6 +706,7 @@ function formInitialize() {
 	enableWidget('newButton');
 	enableWidget('saveButton');
 	enableWidget('printButton');
+	enableWidget('printButtonPdf');
 	enableWidget('copyButton');
 	disableWidget('undoButton');
 	enableWidget('deleteButton');
@@ -695,6 +723,7 @@ function formLock() {
 	disableWidget('newButton');
 	disableWidget('saveButton');
 	disableWidget('printButton');
+	disableWidget('printButtonPdf');
 	disableWidget('copyButton');
 	disableWidget('undoButton');
 	disableWidget('deleteButton');
@@ -902,6 +931,7 @@ function i18n(str, vars) {
  * @return void
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
+	dijit.byId(selectionField).set("label",nameProject);
 	if (idProject!="") {
 	  dojo.xhrPost({
 	  	url: "../tool/saveDataToSession.php?id=project&value=" + idProject,
@@ -918,6 +948,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
 	if (idProject!="" && idProject!="*" && dijit.byId("idProjectPlan")) {
 		dijit.byId("idProjectPlan").set("value",idProject);
   }
+	dijit.byId(selectionField).closeDropDown();
 }
 
 /**
@@ -945,8 +976,9 @@ function quit() {
 	if (! noDisconnect) {
 	  dojo.xhrPost({
 		  url: "../tool/saveDataToSession.php?id=disconnect",
-		  load: function(data,args) {}
+		  load: function(data,args) { }
 	  });
+	  window.location="../index.php";
 	}
 }
 
@@ -1267,6 +1299,9 @@ function runReport() {
  */
 function globalSave() {
 	var button=dijit.byId('saveButton');
+	if (! button) {
+		button=dijit.byId('saveParameterButton');
+	}
 	if ( button && button.isFocusable() ) {
 		button.focus();
 		button.onClick();
