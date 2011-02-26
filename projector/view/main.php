@@ -36,6 +36,7 @@ scriptLog('   ->/view/main.php');
     dojo.require("dojo.i18n");
     dojo.require("dojo.parser");
     dojo.require("dijit.Dialog"); 
+    dojo.require("dijit.Tooltip");
     dojo.require("dijit.layout.BorderContainer");
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.Menu"); 
@@ -43,6 +44,7 @@ scriptLog('   ->/view/main.php');
     dojo.require("dijit.form.Textarea");
     dojo.require("dijit.form.ComboBox");
     dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.form.RadioButton");
     dojo.require("dijit.form.DateTextBox");
     dojo.require("dijit.form.TimeTextBox");
     dojo.require("dijit.form.TextBox");
@@ -595,8 +597,7 @@ scriptLog('   ->/view/main.php');
                 id="assignmentIdRole" name="assignmentIdRole"
                 class="input" value="" 
                 onChange="assignmentChangeRole();" >                
-                 <?php htmlDrawOptionForReference('idRole', null, null, true);?>
-            
+                 <?php htmlDrawOptionForReference('idRole', null, null, true);?>            
                </select>  
              </td>
            </tr>
@@ -639,7 +640,8 @@ scriptLog('   ->/view/main.php');
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px"
-                 onchange="assignmentUpdateLeftWork('assignment');" />
+                 onchange="assignmentUpdateLeftWork('assignment');"
+                 onblur="assignmentUpdateLeftWork('assignment');" />
                <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="" 
                  style="width:97px"/>  
              </td>    
@@ -663,7 +665,8 @@ scriptLog('   ->/view/main.php');
                <input id="assignmentLeftWork" name="assignmentLeftWork" value=""  
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
-                 onchange="assignmentUpdatePlannedWork('assignment');" 
+                 onchange="assignmentUpdatePlannedWork('assignment');"
+                 onblur="assignmentUpdatePlannedWork('assignment');"  
                  style="width:97px" />
                <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="" 
                  style="width:97px"/>  

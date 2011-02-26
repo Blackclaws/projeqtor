@@ -225,6 +225,7 @@
       echo "</table>";
   }  
 ?>      
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
   <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center"> 
     <div id="todayMessageDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuMessage');?>">  

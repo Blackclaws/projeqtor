@@ -46,11 +46,23 @@
        <?php if ($noselect) {echo "disabled";} ?> 
        iconClass="dijitEditorIcon dijitEditorIconPrint" >
         <script type="dojo/connect" event="onClick" args="evt">
-		  dojo.byId("printButton").blur();
-		  showPrint("objectDetail.php");
+		    dojo.byId("printButton").blur();
+        if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
+		    showPrint("objectDetail.php");
+        </script>
+      </button>  
+<?php if (false) {?>    
+     <button id="printPdfButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('reportPrintPdf');?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="iconPdf" >
+        <script type="dojo/connect" event="onClick" args="evt">
+        dojo.byId("printButton").blur();
+        if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
+        showPrint("objectDetail.php", null, null, 'pdf');
         </script>
       </button>   
-
+<?php }?> 
       <button id="copyButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonCopy', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>

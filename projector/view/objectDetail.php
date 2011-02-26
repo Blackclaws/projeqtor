@@ -600,11 +600,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
-        echo $name;
+
         echo ' class="display" ';
         //echo ' style="margin-top: 3px"';
-        echo' >';
+        echo' >'; 
         echo htmlEncode($val);
+        echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
         echo '</div>';
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
         // Draw a long text (as a textarea) =================================== TEXTAREA
@@ -781,16 +782,16 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="noteHeader" width="5%">';
+    echo '<td class="noteHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="noteHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="noteHeader" width="20%">' . i18n('colDate') . '</td>';
-  echo '<td class="noteHeader" width="15%">' . i18n('colUser'). '</td>';
-  echo '<td class="noteHeader" width="55%">' . i18n('colNote'). '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="noteHeader" style="width:20%">' . i18n('colDate') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colUser'). '</td>';
+  echo '<td class="noteHeader" style="width:' . ( ($print)?'60':'55' ) . '%">' . i18n('colNote'). '</td>';
   echo '</tr>';
   foreach($notes as $note) {
     $userId=$note->idUser;
@@ -828,6 +829,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '</table>';
 }
 
+
 function drawAttachementsFromObject($obj, $refresh=false) {
   global $cr, $print, $user;
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -840,18 +842,18 @@ function drawAttachementsFromObject($obj, $refresh=false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="attachementHeader" width="5%">';
+    echo '<td class="attachementHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachement();" title="' . i18n('addAttachement') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="attachementHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="attachementHeader" width="20%">' . i18n('colDate') . '</td>';
-  echo '<td class="attachementHeader" width="15%">' . i18n('colUser'). '</td>';
-  echo '<td class="attachementHeader" width="10%">' . i18n('colType'). '</td>';
-  echo '<td class="attachementHeader" width="10%">' . i18n('colSize'). '</td>';
-  echo '<td class="attachementHeader" width="35%">' . i18n('colFile'). '</td>';
+  echo '<td class="attachementHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colUser'). '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colType'). '</td>';
+  echo '<td class="attachementHeader" style="width:10%">' . i18n('colSize'). '</td>';
+  echo '<td class="attachementHeader" style="width:' . ( ($print)?'40':'35' ) . '%">' . i18n('colFile'). '</td>';
   echo '</tr>';
   foreach($attachements as $attachement) {
     $userId=$attachement->idUser;
@@ -907,19 +909,19 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="linkHeader" width="5%">';
+    echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink  . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   if ( ! $classLink ) {
-    echo '<td class="linkHeader" width="10%">' . i18n('colType') . '</td>';
+    echo '<td class="linkHeader" style="width:10%">' . i18n('colType') . '</td>';
   }
-  echo '<td class="linkHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="linkHeader" width="65%">' . i18n('colName') . '</td>';
+  echo '<td class="linkHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="linkHeader" style="width:55%">' . i18n('colName') . '</td>';
   if (property_exists($classLink, 'idStatus')) {
-    echo '<td class="linkHeader" width="15%">' . i18n('colIdStatus'). '</td>';
+    echo '<td class="linkHeader" style="width:20%">' . i18n('colIdStatus'). '</td>';
   }
   echo '</tr>';
   foreach($list as $link) {
@@ -1014,18 +1016,18 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="assignHeader" width="10%">';
+    echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addAssignment();" title="' . i18n('addAssignment') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" >' . i18n('colIdResource') . '</td>';
-  echo '<td class="assignHeader" width="14%">' . i18n('colRate'). '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'40':'30' ) . '%">' . i18n('colIdResource') . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colRate'). '</td>';
   if ($workVisible) {
-    echo '<td class="assignHeader" width="12%">' . i18n('colAssigned'). '</td>';
-    echo '<td class="assignHeader" width="12%">' . i18n('colReal'). '</td>';
-    echo '<td class="assignHeader" width="12%">' . i18n('colLeft'). '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colAssigned'). '</td>';
+    echo '<td class="assignHeader"style="width:15%">' . i18n('colReal'). '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colLeft'). '</td>';
   }
   echo '</tr>';
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
@@ -1056,12 +1058,14 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="assignData" title="' . htmlEncodeJson($assignment->comment) . '">'; 
+    echo '<td class="assignData" ';
+    if (! $print) {echo 'title="' . htmlEncodeJson($assignment->comment) . '"';}
+    echo '>'; 
     echo '<table><tr>';
     echo '<td>' . SqlList::getNameFromId('Resource', $assignment->idResource);
     echo ($assignment->idRole)?' ('.SqlList::getNameFromId('Role', $assignment->idRole).')':'';
     echo '</td>';
-    if ($assignment->comment) {
+    if ($assignment->comment and ! $print) {
      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
     }
     echo '</tr></table>';
