@@ -10,7 +10,9 @@
       $idRol=$_REQUEST['idRole'];
       if (! $idRol) return;
       $r=new Resource($idRes);
-      echo htmlDisplayNumeric($r->getActualResourceCost($idRol));
+      // #303
+      //echo htmlDisplayNumeric($r->getActualResourceCost($idRol));
+      echo $r->getActualResourceCost($idRol);
     } else if ($type=='resourceRole') {
       $idRes=$_REQUEST['idResource'];
       if (! $idRes) return;

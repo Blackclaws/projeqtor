@@ -19,6 +19,10 @@
        }
      }
    }
+   $tag='';
+   if (array_key_exists('tag', $_REQUEST)) {
+     $tag=$_REQUEST['tag'];
+   }
    $secName=$slide[$page];
    $prev='';
    $prevSec='';
@@ -53,9 +57,21 @@
   <?php } else {?>
     <link rel="stylesheet" type="text/css" href="projector.css" />
   <?php } ?>
+  <?php if (file_exists("../external/dojo/dojo.js")) {?>
+  <script type="text/javascript" 
+          src="../external/dojo/dojo.js" 
+          djConfig="modulePaths: {i18n: '../../tool/i18n'}, parseOnLoad: true, isDebug: false" >
+  </script>
+  <script type="text/javascript">  
+      dojo.require("dijit.form.FilteringSelect");
+  </script>
+  <?php }?>
   <script type="text/javascript">
     function loadPage(page) {
-      window.location='manual.php?page='+page;
+      window.location='manual.php?page='+page+'&tag=<?php echo $tag;?>';
+    }
+    function searchTag(tag) {
+    	window.location='manual.php?tag='+tag+'&page=<?php echo $page;?>';
     }
     self.focus();
   </script>
@@ -65,11 +81,28 @@
   <table valign="top" align="center" width="100%" height="100%">
     <tr>
       <td width="210px" valign="top" align="center">
-        <div class="title" style="text-align:center; height:40px;">
-          <br/>INDEX
+        <div class="title" style="text-align:center; height:20px;">
+          INDEX
+        </div>
+        <div class="title" style="font-size:11px;text-align:left;cursor: pointer; height:20px;">
+          &nbsp;&nbsp;search tag : 
+          <select dojoType="dijit.form.FilteringSelect" class="input" 
+           style="width:115px;font-size:10px"
+           name='manualTag' id='manualTag' value="<?php echo $tag;?>" onchange="searchTag(this.value);">
+            <?php foreach ($tags as $id=>$list) {
+              if ($list) {
+                echo '<option value="' . $id . '" ';
+                echo ($id==$tag)?' SELECTED ':'';
+                echo '>' . $id .'</option>';
+              }
+            }?>
+            <script type="dojo/connect" event="onChange" >
+              searchTag(this.value);
+            </script>
+          </select>
         </div> 
         <div style="width:200px; height:600px;overflow: auto;">
-        <?php displayIndex($page);?>
+        <?php displayIndex($page, $tag);?>
         </div>
       </td>
       <td valign="top" align="center">
@@ -119,17 +152,31 @@
 </html>
 
 <?php 
-function displayIndex($page) {
-  global $slide, $section, $slideName;
+function displayIndex($page, $tag) {
+  global $slide, $section, $slideName, $tags;
   echo '<table class="background" width="100%" align="center">';
-  foreach ($section as $id=>$name) {
-    echo '<tr class="menuTree" height="20px">';
-    echo '<td width="15px" align="center" >';
-    echo ($name==$slide[$page])?'<img src="img/level.png" />':'';
-    echo '</td>';
-    echo '<td class="menuTree tabLabel" style="text-align:left;cursor: pointer" onClick="loadPage(' . $id . ');">';
-    echo $slideName[$id];
-    echo '</td></tr>';
+  if ($tag) {
+    $lst=$tags[$tag];
+    sort($lst);
+    foreach ($lst as $id) {
+      echo '<tr class="menuTree" height="20px">';
+      echo '<td width="15px" align="center" >';
+      echo ($id==$page)?'<img src="img/level.png" />':'';
+      echo '</td>';
+      echo '<td class="menuTree tabLabel" style="text-align:left;cursor: pointer" onClick="loadPage(' . $id . ');">';
+      echo $slideName[$id];
+      echo '</td></tr>';
+    }    
+  } else {
+    foreach ($section as $id=>$name) {
+      echo '<tr class="menuTree" height="20px">';
+      echo '<td width="15px" align="center" >';
+      echo ($name==$slide[$page])?'<img src="img/level.png" />':'';
+      echo '</td>';
+      echo '<td class="menuTree tabLabel" style="text-align:left;cursor: pointer" onClick="loadPage(' . $id . ');">';
+      echo $slideName[$id];
+      echo '</td></tr>';
+    }
   }
   echo '</table>';
 }

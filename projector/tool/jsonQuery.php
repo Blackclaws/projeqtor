@@ -110,9 +110,27 @@
     // Then sort from Filter Criteria
     foreach ($arrayFilter as $crit) {
       if ($crit['sql']['operator']=='SORT') {
-        $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-        $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
+        $doneSort=false;
+        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
+          $externalClass = substr($crit['sql']['attribute'],2);
+          $externalObj=new $externalClass();
+          $externalTable = $externalObj->getDatabaseTableName();          
+          if (property_exists($externalObj,'sortOrder')) {
+            $idTab+=1;
+            $externalTableAlias = 'T' . $idTab;
+            $queryOrderBy .= " " . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder')
+               . " " . $crit['sql']['value'];
+            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+            $doneSort=true;
+          }
+        }
+        if (! $doneSort) {
+          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+          $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
                              . " " . $crit['sql']['value'];
+        }
       }
     }
     
@@ -229,7 +247,7 @@
          . ' order by' . $queryOrderBy;
     $result=Sql::query($query);
     $nbRows=0;
-    
+//echo $query;    
 // If 'print', directly format result
     if ($print) {
       //echo "<div style='overflow: auto;'>";
