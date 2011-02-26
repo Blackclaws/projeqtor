@@ -128,7 +128,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
     <td>
     <span style="height: 30px; " dojoType="dijit.form.DropDownButton" 
      id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true">
-      <span width="200px"><?php
+      <span width="200px" ><?php
         $proj='*'; 
         if (array_key_exists('project',$_SESSION)) {
           $proj=$_SESSION['project'];
@@ -142,13 +142,13 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
         ?>
       </span>
       <span dojoType="dijit.TooltipDialog" class="white">
-        <table><tr><td>
+        
          <?php 
            $prj=new Project();
            $prj->id='*';
            echo $prj->drawSubProjects('selectedProject', false, true, true); 
          ?>
-        </td></tr></table>
+       
       </span>
     </span>
     </td></tr></table>

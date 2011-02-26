@@ -6,6 +6,7 @@
  */
 //session_start();session_destroy();
   require_once "../tool/projector.php";
+  require_once "../tool/formatter.php";
   scriptLog('   ->/view/objectDetail.php');
 /** ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
@@ -15,7 +16,7 @@
  */
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $currency, $currencyPosition;
+  global $cr, $print, $treatedObjects, $displayWidth, $currency, $currencyPosition, $outMode;
   $treatedObjects[]=$obj;
   $dateWidth='75';
   $verySmallWidth='44';
@@ -104,8 +105,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       for ($i=0 ; $i<$internalTableCols ; $i++) { // draw table headers
         echo '<td class="detail">';
         if ($val[$i]) {
-          echo '<input type="text" class="tabLabel" style="text-align:left;" value="' . htmlEncode($obj->getColCaption($val[$i])) . '" tabindex="-1" />' . $cr;
+          if ($print) {
+            echo '<div class="tabLabel" style="text-align:left;">' . htmlEncode($obj->getColCaption($val[$i])) . '</div>';
+          } else {
+            echo '<input type="text" class="tabLabel" style="text-align:left;" value="' . htmlEncode($obj->getColCaption($val[$i])) . '" tabindex="-1" />' . $cr;
+          }
+        } else {
+          echo '<div class="tabLabel" style="text-align:left;">&nbsp;</div>';
         }
+        
         if ( $i < $internalTableCols-1) { echo '</td>'; }
       }
       // echo '</tr>'; NOT TO DO HERE -  WILL BE DONE AFTER
@@ -144,7 +152,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($nbLineSection>1) {
           echo '<tr><td></td><td>&nbsp;</td></tr>';
         }
-        echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+        echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+        if ($print and $outMode=="pdf") { 
+          echo '<tr class="detail" style="height:2px;font-size:2px;">';
+          echo '<td class="detail" style="width:10%;">&nbsp;</td>';
+          echo '<td style="width: 120px">&nbsp;</td>';
+          echo '</tr>';          
+        }
       }
     } else if (substr($col,0,5)=='_sec_') { // if field is _col, draw a new main column
       if (strlen($col)>8) {
@@ -161,7 +175,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</td></tr>';
     } else if (substr($col,0,5)=='_lib_') { // if field is just a caption 
       $item=substr($col,5);
-      echo i18n ($item);
+      echo i18n($item);
+      if (!$nobr) {
+        echo "</td></tr>";
+      }
     } else if (substr($col,0,5)=='_Link') { // Display links to other objects
       $linkClass=null;
       if (strlen($col)>5) {
@@ -177,7 +194,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawResourceCostFromObject($val, $obj, false);      
     } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' 
                                      and substr($col,0,7)!='_label_') { // field not to be displayed
-      //    
+      //
     } else {
       $attributes=''; $isRequired=false; $readOnly=false;
       $specificStyle=''; 
@@ -210,19 +227,24 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } 
       if ($internalTable==0) {
         if (! is_object($val) and ! is_array($val) and !$hide and !$nobr_before) {
-          echo '<tr><td class="label" width="10%">';
+          echo '<tr class="detail"><td class="label" style="width:10%;">';
           echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>' . $cr;
-          echo '</td><td width="90%">';
+          echo '</td>';
+          if ($print and $outMode=="pdf") { 
+            echo '<td style="width: 120px">';
+          } else {
+            echo '<td width="90%">';
+          }
         }
       } else {
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
-          echo '<tr>';
-          echo '<td class="label" width="10%">';
+          echo '<tr class="detail">';
+          echo '<td class="label" style="width:10%">';
           if ($internalTableRowsCaptions[$internalTableCurrentRow]) {
             echo '<label>' . htmlEncode($obj->getColCaption($internalTableRowsCaptions[$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
           }
-          echo '</td><td width="90%">';
+          echo '</td><td style="width:90%">';
           $internalTableCurrentRow++;
         } else {
           echo '</td><td class="detail">';
@@ -289,7 +311,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else  if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
         // Display full HTML ================================================== Hidden field
           //echo '<div class="displayHtml">';
-          echo $val;
+          if ($outMode=='pdf') {
+            echo htmlRemoveDocumentTags($val);
+          } else {
+            echo $val;
+          }
           //echo '</div>';
         } else if ($col=='id') { // id
           echo '#' . $val;
@@ -301,7 +327,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo htmlFormatDateTime($val,false);
         } else if ($col=='color' and $dataLength == 7 ) { // color
           echo '<table><tr><td style="width: 100px;">';
-          echo '<div class="colorDisplay" type="text" readonly ';
+          echo '<div class="colorDisplay" readonly ';
           echo '  value="' . htmlEncode($val) . '" ';
           echo '  style="width: ' . $smallWidth / 2 . 'px; ';
           echo ' color: ' . $val . '; ';
@@ -310,7 +336,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</div>';
           echo '</td>';
           if ($val!=null and $val!='') {
-            echo '<td  class="detail">&nbsp;(' . htmlEncode($val) . ')</td>';
+            //echo '<td  class="detail">&nbsp;(' . htmlEncode($val) . ')</td>';
           }
           echo '</tr></table>';
         } else if ($dataType=='int' and $dataLength==1) { // boolean
@@ -335,14 +361,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if ($obj->isFieldTranslatable($col))  {
               $val=i18n($val);
           }
-          //echo '<div style="width: ' . ($fieldWidth / 2) . 'px;"> ' . htmlEncode($val,'print') . '</div>';
-          echo htmlEncode($val,'print');
+          if (0 and $internalTable==0) {
+            echo '<div style="width: 80%;"> ' . htmlEncode($val,'print') . '</div>';
+          } else {
+            echo htmlEncode($val,'print');
+          }
         }
       } else if ($hide) {
         // Don't draw the field =============================================== Hidden field
-        echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
-        echo $name;
-        echo ' value="' . htmlEncode($val) . '" ></div>';
+        if (! $print) {
+          echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
+          echo $name;
+          echo ' value="' . htmlEncode($val) . '" ></div>';
+        }
       } else if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
         // Display full HTML ================================================== Simple Display html field
         echo '<div class="displayHtml">';
@@ -600,11 +631,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
-        echo $name;
+
         echo ' class="display" ';
         //echo ' style="margin-top: 3px"';
-        echo' >';
+        echo' >'; 
         echo htmlEncode($val);
+        if (! $print) {
+          echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
+        }
         echo '</div>';
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
         // Draw a long text (as a textarea) =================================== TEXTAREA
@@ -650,7 +684,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       } else {
         if ($internalTable==0 and !$hide and !$nobr) {
-            echo '</td></tr>' . $cr;
+          echo '</td></tr>' . $cr;
         }
       }
     }
@@ -781,16 +815,16 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="noteHeader" width="5%">';
+    echo '<td class="noteHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="noteHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="noteHeader" width="20%">' . i18n('colDate') . '</td>';
-  echo '<td class="noteHeader" width="15%">' . i18n('colUser'). '</td>';
-  echo '<td class="noteHeader" width="55%">' . i18n('colNote'). '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="noteHeader" style="width:20%">' . i18n('colDate') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colUser'). '</td>';
+  echo '<td class="noteHeader" style="width:' . ( ($print)?'60':'55' ) . '%">' . i18n('colNote'). '</td>';
   echo '</tr>';
   foreach($notes as $note) {
     $userId=$note->idUser;
@@ -811,7 +845,9 @@ function drawNotesFromObject($obj, $refresh=false) {
     echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
     echo '<td class="noteData">' . $userName . '</td>';
     echo '<td class="noteData">';
-    echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
+    if (! $print) {
+      echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
+    }
     echo htmlEncode($note->note,'print'); 
     echo '</td>';
     echo '</tr>';
@@ -840,18 +876,18 @@ function drawAttachementsFromObject($obj, $refresh=false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="attachementHeader" width="5%">';
+    echo '<td class="attachementHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachement();" title="' . i18n('addAttachement') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="attachementHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="attachementHeader" width="20%">' . i18n('colDate') . '</td>';
-  echo '<td class="attachementHeader" width="15%">' . i18n('colUser'). '</td>';
-  echo '<td class="attachementHeader" width="10%">' . i18n('colType'). '</td>';
-  echo '<td class="attachementHeader" width="10%">' . i18n('colSize'). '</td>';
-  echo '<td class="attachementHeader" width="35%">' . i18n('colFile'). '</td>';
+  echo '<td class="attachementHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colUser'). '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colType'). '</td>';
+  echo '<td class="attachementHeader" style="width:10%">' . i18n('colSize'). '</td>';
+  echo '<td class="attachementHeader" style="width:' . ( ($print)?'40':'35' ) . '%">' . i18n('colFile'). '</td>';
   echo '</tr>';
   foreach($attachements as $attachement) {
     $userId=$attachement->idUser;
@@ -879,7 +915,7 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     echo ' <td>';
     echo htmlEncode($attachement->fileName,'print'); 
     echo ' </td>';
-    if ($attachement->description) {
+    if ($attachement->description and ! $print) {
       echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
     }
     echo '</tr></table>';
@@ -907,19 +943,19 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="linkHeader" width="5%">';
+    echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink  . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   if ( ! $classLink ) {
-    echo '<td class="linkHeader" width="10%">' . i18n('colType') . '</td>';
-  }
-  echo '<td class="linkHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="linkHeader" width="65%">' . i18n('colName') . '</td>';
+    echo '<td class="linkHeader" style="width:10%">' . i18n('colType') . '</td>';
+  } 
+  echo '<td class="linkHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
+  echo '<td class="linkHeader" style="width:' . ( ($classLink)?'70':'60' ) . '%">' . i18n('colName') . '</td>';
   if (property_exists($classLink, 'idStatus')) {
-    echo '<td class="linkHeader" width="15%">' . i18n('colIdStatus'). '</td>';
+    echo '<td class="linkHeader" style="width:20%">' . i18n('colIdStatus'). '</td>';
   }
   echo '</tr>';
   foreach($list as $link) {
@@ -944,9 +980,10 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     echo '<td class="linkData" onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;">' . $linkObj->name . '</td>';
     if (property_exists($linkObj, 'idStatus')) {
       $objStatus=new Status($linkObj->idStatus);
-      $color=$objStatus->color;
-      $foreColor=getForeColor($color);
-      echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
+      //$color=$objStatus->color;
+      //$foreColor=getForeColor($color);
+      //echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
+      echo '<td class="dependencyData" style="width:20%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     }
     echo '</tr>';
   }
@@ -960,16 +997,16 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="dependencyHeader" width="5%">';
+    echo '<td class="dependencyHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addDependency(' . "'" . $depType . "'" . ');" title="' . i18n('addDependency' . $depType) . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="dependencyHeader" width="15%">' . i18n('colType') . '</td>';
-  echo '<td class="dependencyHeader" width="5%">' . i18n('colId') . '</td>';
-  echo '<td class="dependencyHeader" width="60%">' . i18n('colName') . '</td>';
-  echo '<td class="dependencyHeader" width="15%">' . i18n('colIdStatus'). '</td>';
+  echo '<td class="dependencyHeader" style="width:15%">' . i18n('colType') . '</td>';
+  echo '<td class="dependencyHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
+  echo '<td class="dependencyHeader" style="width:60%">' . i18n('colName') . '</td>';
+  echo '<td class="dependencyHeader" style="width:15%">' . i18n('colIdStatus'). '</td>';
   echo '</tr>';
   foreach($list as $dep) {
     $depObj=null;
@@ -990,15 +1027,19 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '<td class="dependencyData">' . i18n(get_class($depObj)) . '</td>';
     echo '<td class="dependencyData">#' . $depObj->id  . '</td>';
-    echo '<td class="dependencyData" onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;">' . $depObj->name . '</td>';
+    echo '<td class="dependencyData"';
+    if (! $print) { echo ' onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;"';}
+    echo '>' . $depObj->name . '</td>';
     if (property_exists($depObj,'idStatus')) {
       $objStatus=new Status($depObj->idStatus);
     } else {
       $objStatus=new Status();
     }
-    $color=$objStatus->color;
-    $foreColor=getForeColor($color);
-    echo '<td class="dependencyData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
+    //$color=$objStatus->color; 
+    //$foreColor=getForeColor($color);
+    //echo '<td class="dependencyData"><table><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';">' . $objStatus->name . '</td></tr></table></td>';
+    //echo '<td class="dependencyData" style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';">' . $objStatus->name . '</td>';
+    echo '<td class="dependencyData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
@@ -1014,18 +1055,18 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="assignHeader" width="10%">';
+    echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addAssignment();" title="' . i18n('addAssignment') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" >' . i18n('colIdResource') . '</td>';
-  echo '<td class="assignHeader" width="14%">' . i18n('colRate'). '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'40':'30' ) . '%">' . i18n('colIdResource') . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colRate'). '</td>';
   if ($workVisible) {
-    echo '<td class="assignHeader" width="12%">' . i18n('colAssigned'). '</td>';
-    echo '<td class="assignHeader" width="12%">' . i18n('colReal'). '</td>';
-    echo '<td class="assignHeader" width="12%">' . i18n('colLeft'). '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colAssigned'). '</td>';
+    echo '<td class="assignHeader"style="width:15%">' . i18n('colReal'). '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colLeft'). '</td>';
   }
   echo '</tr>';
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
@@ -1056,12 +1097,14 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="assignData" title="' . htmlEncodeJson($assignment->comment) . '">'; 
+    echo '<td class="assignData" ';
+    if (! $print) {echo 'title="' . htmlEncodeJson($assignment->comment) . '"';}
+    echo '>'; 
     echo '<table><tr>';
     echo '<td>' . SqlList::getNameFromId('Resource', $assignment->idResource);
     echo ($assignment->idRole)?' ('.SqlList::getNameFromId('Role', $assignment->idRole).')':'';
     echo '</td>';
-    if ($assignment->comment) {
+    if ($assignment->comment and ! $print) {
      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
     }
     echo '</tr></table>';
@@ -1095,16 +1138,16 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
     }
   }
   if (! $print) {
-    echo '<td class="assignHeader" width="10%">';
+    echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\''. $funcList . '\');" title="' . i18n('addResourceCost') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" width="30%">' . i18n('colIdRole') . '</td>';
-  echo '<td class="assignHeader" width="20%">' . i18n('colCost'). '</td>';
-  echo '<td class="assignHeader" width="20%">' . i18n('colStartDate'). '</td>';
-  echo '<td class="assignHeader" width="20%">' . i18n('colEndDate'). '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'40':'30') . '%">' . i18n('colIdRole') . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colCost'). '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colStartDate'). '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colEndDate'). '</td>';
   
   echo '</tr>';
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
@@ -1215,7 +1258,9 @@ if ($print) {
 
 // New refresh method
 if ( array_key_exists('refresh',$_REQUEST) ) {
-  echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;  
+  if (! $print) {
+    echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
+  }  
   drawTableFromObject($obj);
   exit;
 }
@@ -1251,7 +1296,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ( $noselect) {
     echo $noData;
   } else {
-    echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;  
+    if (! $print) {
+      echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
+    }  
     drawTableFromObject($obj); 
   }
   if ( ! $print ) { ?>

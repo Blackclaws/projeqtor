@@ -47,7 +47,7 @@
   </script>
 </head>
 
-<body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto; ">
+<body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
   <div id="waitLogin" >
   </div> 
   <table align="center" width="100%" height="100%" class="background"><tr height="100%"><td width="100%">
@@ -63,10 +63,10 @@
       <td align="left" valign="middle">
         <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >
           <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
-             <script type="dojo/method" event="onSubmit" >
+             <script type="dojo/method" event="onSubmit" >             
               dojo.byId('login').focus();
               changePassword=false;
-              quitConfirmed=true; 
+              quitConfirmed=true;
               noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
     		      loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
     		      return false;        
@@ -86,8 +86,8 @@
                 <td class="label"><label>&nbsp;</label></td>
                 <td>
                   <button tabindex="3" type="submit" id="loginButton" dojoType="dijit.form.Button" showlabel="true">OK
-                    <script type="dojo/connect" event="onClick" args="evt">
-                	  return false;
+                    <script type="dojo/connect" event="onClick" args="evt">              	  
+                      return false;
                     </script>
                   </button>
                 </td>
@@ -120,6 +120,13 @@ if ($showPassword) {
                 <td class="label"><label>&nbsp;</label></td>
                 <td>
                   <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" >
+                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
+                    <?php if (array_key_exists('lostConnection',$_REQUEST)) {
+                            echo i18n("disconnectMessage");
+                            echo '<br/>';
+                            echo i18n("errorConnection");
+                          }
+                     ?>
                   </div>
                 </td>
               </tr>

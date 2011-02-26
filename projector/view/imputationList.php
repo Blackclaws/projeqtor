@@ -129,6 +129,14 @@ $rangeValue=$currentYear . $currentWeek;
             showPrint('../report/imputation.php', 'imputation');
           </script>
         </button>
+        <button title="<?php echo i18n('reportPrintPdf')?>"  
+         dojoType="dijit.form.Button" 
+         id="printButtonPdf" name="printButtonPdf"
+         iconClass="iconPdf" showLabel="false">
+          <script type="dojo/connect" event="onClick" args="evt">
+            showPrint('../report/imputation.php', 'imputation', null, 'pdf');
+          </script>
+        </button>
         <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('buttonUndoImputation');?>"
          "disabled"
@@ -163,6 +171,7 @@ $rangeValue=$currentYear . $currentWeek;
        <input type="checkbox" name="idle" id="idle" style="display: none;">     
        <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
        <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
+       <input type="hidden" id="outMode" name="outMode" value="" />
       <?php ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, true);?>
      </form>
   </div>

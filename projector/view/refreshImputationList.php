@@ -24,6 +24,7 @@ if (array_key_exists('showPlannedWork',$_REQUEST)) {
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
+  <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
 ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork);
 ?>

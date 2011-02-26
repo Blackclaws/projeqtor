@@ -9,8 +9,7 @@
   $user=$_SESSION['user'];
   
   if (array_key_exists('refreshProjects',$_REQUEST)) {
-    $_SESSION['todayCountIdle']=(array_key_exists('countIdle',$_REQUEST))?true:false;
-    $_SESSION['todayCountDone']=(array_key_exists('countDone',$_REQUEST))?true:false;
+    $_SESSION['todayCountScope']=(array_key_exists('countScope',$_REQUEST))?$_REQUEST['countScope']:'todo';
     showProjects();
     exit;
   } 
@@ -43,77 +42,114 @@
     $prjLst=$user->getHierarchicalViewOfVisibleProjects();
     $showIdle=false;
     $showDone=false;
-    if (array_key_exists('todayCountIdle',$_SESSION)) {
-      $showIdle=$_SESSION['todayCountIdle'];
-    }
-    if (array_key_exists('todayCountDone',$_SESSION)) {
-      $showDone=$_SESSION['todayCountDone'];
+    $countScope='todo';
+
+    if (array_key_exists('todayCountScope',$_SESSION)) {
+      $countScope=$_SESSION['todayCountScope'];
     }
     if (count($prjLst)>0) {
       echo '<form id="todayProjectsForm" name="todayProjectsForm">';
-      echo '<table align="center" style="width:95%">';
-      echo '<tr><td align="right">';
-      echo i18n('countDone');
-      echo '&nbsp;<div title="' . i18n('countDone') . '" dojoType="dijit.form.CheckBox" type="checkbox" '
-       . 'id="countDone" name="countDone" ' . ($showDone?'checked="checked"':'') . '>';
-      echo ' <script type="dojo/connect" event="onChange" > refreshTodayProjectsList();</script>';
-      echo '</div>&nbsp;&nbsp;&nbsp;';
-      echo i18n('countIdle');
-      echo '&nbsp;<div title="' . i18n('countIdle') . '" dojoType="dijit.form.CheckBox" type="checkbox" '
-        . 'id="countIdle" name="countIdle" ' . ($showIdle?'checked="checked"':'') . '>';
-      echo ' <script type="dojo/connect" event="onChange" > refreshTodayProjectsList();</script>';
-      echo '</div>&nbsp;';      
+      echo '<table align="center" style="width:95%">'; 
+      echo '<tr><td style="text-align:left;width:40%" class="tabLabel" >';
+      echo i18n('titleCountScope') . " : ";
+      echo '</td><td style="text-align:left;width:20%" class="tabLabel">';
+      echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeTodo" ' 
+          . (($countScope=='todo')?'checked':'') . ' value="todo" />';
+      echo '<label for="countScopeTodo">' . i18n('titleCountTodo') . '</label>';      
+      echo '</td><td style="text-align:left;width:20%" class="tabLabel">';
+      echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeNotClosed" ' 
+          . (($countScope=='notClosed')?'checked':'') . ' value="notClosed" />';
+      echo '<label for="countScopeNotClosed">' . i18n('titleCountNotClosed') . '</label>';
+      echo '</td><td style="text-align:left;width:20%" class="tabLabel">';
+      echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
+          . (($countScope=='all')?'checked':'') . ' value="all" />';
+      echo '<label for="countScopeAll">' . i18n('titleCountAll') . '</label>';
+   
       echo '</td></tr>';
       echo '</table></form>';
       echo '<table align="center" style="width:95%">';
       echo '<tr>' . 
            '  <td class="messageHeader">' . i18n('menuProject') . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . ucfirst(i18n('progress')) . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . ucfirst(i18n('colEndDate')) . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . ucfirst(i18n('colLate')) . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . i18n('menuTicket') . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . i18n('menuActivity') . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . i18n('menuMilestone') . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . i18n('menuAction') . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . i18n('menuRisk') . '</td>' . 
-           '  <td class="messageHeader" width="5%">' . i18n('menuIssue') . '</td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:80px; overflow: hidden; text-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:60px; overflow: hidden; text-overflow: ellipsis;">' . ucfirst(i18n('colLate')) . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuTicket') . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuActivity') . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuMilestone') . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuAction') . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuRisk') . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuIssue') . '</div></td>' .
+           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuQuestion') . '</div></td>' . 
            '</tr>';   
       foreach($prjLst as $sharpid=>$name) {
         $id=substr($sharpid,1);
         $crit=array('idProject'=>$id);
-        if ( ! $showIdle) {$crit['idle']='0';}
-        if ( ! $showDone and ! $showIdle) {$crit['done']='0';}
+        $critAll=array('idProject'=>$id);
+        $critTodo=array('idProject'=>$id, 'done'=>'0', 'idle'=>'0');
+        $critDone=array('idProject'=>$id, 'done'=>'1', 'idle'=>'0');
+        if ( $countScope=='todo') {
+          $crit['idle']='0';
+          $crit['done']='0';
+        }
+        if ( $countScope=='notClosed') {
+          $crit['idle']='0';
+        }
         $obj=new Action();
-        $nbActions=count($obj->getSqlElementsFromCriteria($crit, false));
-        $nbActions=($nbActions==0)?'':$nbActions;
+        $nbActions=$obj->countSqlElementsFromCriteria($crit);        
+        $nbActionsAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbActionsTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbActionsDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbActions=($nbActionsAll==0)?'':$nbActions;
         $obj=new Risk();
-        $nbRisks=count($obj->getSqlElementsFromCriteria($crit, false));
-        $nbRisks=($nbRisks==0)?'':$nbRisks;
+        $nbRisks=$obj->countSqlElementsFromCriteria($crit);
+        $nbRisksAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbRisksTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbRisksDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbRisks=($nbRisksAll==0)?'':$nbRisks;
         $obj=new Issue();
-        $nbIssues=count($obj->getSqlElementsFromCriteria($crit, false));
-        $nbIssues=($nbIssues==0)?'':$nbIssues;
+        $nbIssues=$obj->countSqlElementsFromCriteria($crit);
+        $nbIssuesAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbIssuesTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbIssuesDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbIssues=($nbIssuesAll==0)?'':$nbIssues;
         $obj=new Milestone();
-        $nbMilestones=count($obj->getSqlElementsFromCriteria($crit, false));
-        $nbMilestones=($nbMilestones==0)?'':$nbMilestones;
+        $nbMilestones=$obj->countSqlElementsFromCriteria($crit);
+        $nbMilestonesAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbMilestonesTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbMilestonesDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbMilestones=($nbMilestonesAll==0)?'':$nbMilestones;
         $obj=new Ticket();
-        $nbTickets=count($obj->getSqlElementsFromCriteria($crit, false));
-        $nbTickets=($nbTickets==0)?'':$nbTickets;
+        $nbTickets=$obj->countSqlElementsFromCriteria($crit);
+        $nbTicketsAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbTicketsTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbTicketsDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbTickets=($nbTicketsAll==0)?'':$nbTickets;
         $obj=new Activity();
-        $nbActivities=count($obj->getSqlElementsFromCriteria($crit, false));
-        $nbActivities=($nbActivities==0)?'':$nbActivities;
+        $nbActivities=$obj->countSqlElementsFromCriteria($crit);
+        $nbActivitiesAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbActivitiesTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbActivitiesDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbActivities=($nbActivitiesAll==0)?'':$nbActivities;
+        $obj=new Question();
+        $nbQuestions=$obj->countSqlElementsFromCriteria($crit);
+        $nbQuestionsAll=$obj->countSqlElementsFromCriteria($critAll);
+        $nbQuestionsTodo=$obj->countSqlElementsFromCriteria($critTodo);
+        $nbQuestionsDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbQuestions=($nbQuestionsAll==0)?'':$nbQuestions;
         $prj=new Project($id);
         $endDate=$prj->ProjectPlanningElement->plannedEndDate;
         $endDate=($endDate=='')?$prj->ProjectPlanningElement->validatedEndDate:$endDate;
         $endDate=($endDate=='')?$prj->ProjectPlanningElement->initialEndDate:$endDate;
-        $progress='';
+        $progress='0';
         if ($prj->ProjectPlanningElement->realWork!='' and $prj->ProjectPlanningElement->plannedWork!='' and $prj->ProjectPlanningElement->plannedWork!='0') {
           $progress=round(($prj->ProjectPlanningElement->realWork) / ( $prj->ProjectPlanningElement->plannedWork) * 100 );
-          $progress.=" %";
         }        
         $late='';
         if ($prj->ProjectPlanningElement->plannedEndDate!='' and $prj->ProjectPlanningElement->validatedEndDate!='') {
           $late=dayDiffDates($prj->ProjectPlanningElement->validatedEndDate, $prj->ProjectPlanningElement->plannedEndDate);
-          $late.=" " . i18n("shortDay");
+          $late='<div style="color:' .(($late>0)?'#DD0000':'#00AA00') . ';">' . $late;
+          $late.=" " . i18n("shortDay");         
+          $late.='</div>';
         }
         $wbs=$prj->ProjectPlanningElement->wbsSortable;
         $level=(strlen($wbs)+1)/4;
@@ -127,22 +163,51 @@
           $show=true;
         }
         echo '<tr >' .
-             '  <td class="messageData" '.($show?'':'style="color:#AAAAAA;"') . '>' . $tab . $name . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$progress:'') . '</td>' .
+             '  <td class="messageData" '.($show?'':'style="color:#AAAAAA;"') . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . $name . '</div></td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),100,100-$progress, null, false):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbTickets:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbActivities:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbMilestones:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbActions:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbRisks:'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$nbIssues:'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbTickets,$nbTicketsAll,$nbTicketsTodo, $nbTicketsDone):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbActivities,$nbActivitiesAll,$nbActivitiesTodo,$nbActivitiesDone):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbMilestones,$nbMilestonesAll,$nbMilestonesTodo,$nbMilestonesDone):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbActions,$nbActionsAll,$nbActionsTodo,$nbActionsDone):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbRisks,$nbRisksAll,$nbRisksTodo,$nbRisksDone):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbIssues,$nbIssuesAll,$nbIssuesTodo,$nbIssuesDone):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbQuestions,$nbQuestionsAll,$nbQuestionsTodo,$nbQuestionsDone):'') . '</td>' .
              '</tr>';   
       }
       echo'</table>';
     }
   }
 
+  $cptDisplayId=0;
+  function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true) {
+    global $cptDisplayId;
+    if ($value=='') {return $value;}
+    $width=50;
+    $green=($allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;
+    $red=$width-$green;
+
+    $cptDisplayId+=1;
+    $result='<div style="position:relative; width:' . $width . 'px" id="displayProgress_' . $cptDisplayId . '">';
+    $result.='<div style="position:absolute; width:' . $green . 'px;background: #AAFFAA;">&nbsp;</div>';
+    $result.='<div style="position:absolute; width:' . $red . 'px;left:' . $green . 'px;background: #FFAAAA;">&nbsp;</div>';
+    $result.='<div style="position:relative;">' . $value . '</div>';
+    $result.='</div>';
+    if ($showTitle) {
+      $result.='<div dojoType="dijit.Tooltip" connectId="displayProgress_' . $cptDisplayId . '" position="below">';
+      $result.="<table>";
+      $result.='<tr style="text-align:right;"><td>' . i18n('titleNbTodo') . '&nbsp;:&nbsp;</td><td style="background: #FFAAAA">' . ($todoValue) . '</td></tr>';
+      $result.='<tr style="text-align:right;"><td>' . i18n('titleNbDone') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . ($doneValue) . '</td></tr>';
+      $result.='<tr style="text-align:right;"><td>' . i18n('titleNbClosed') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . ($allValue-$todoValue-$doneValue) . '</td></tr>';
+      $result.='<tr style="text-align:right;font-weight:bold; border-top:1px solid #101010"><td>' . i18n('titleNbAll') . '&nbsp;:&nbsp;</td><td>' . ($allValue) . '</td></tr>';
+      $result.='</table>';
+      $result.='</div>';
+    }
+    return $result;
+  }
+  
+  
   function showWork() {
     echo '<table align="center" style="width:95%">';
     echo '<tr>' . 
@@ -225,6 +290,7 @@
       echo "</table>";
   }  
 ?>      
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
   <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center"> 
     <div id="todayMessageDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuMessage');?>">  
