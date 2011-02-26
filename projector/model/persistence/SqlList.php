@@ -61,8 +61,8 @@ class SqlList {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';
     } else if (property_exists($obj,'order')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
-    } else{
-      $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $displayCol;
+    } else {
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     }
     $result=Sql::query($query);
     if (Sql::$lastQueryNbRows > 0) {
@@ -111,7 +111,7 @@ class SqlList {
     } else if (property_exists($obj,'order')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
     } else{
-      $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $displayCol;
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol); 
     }
     $result=Sql::query($query);
     if (Sql::$lastQueryNbRows > 0) {

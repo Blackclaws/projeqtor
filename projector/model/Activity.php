@@ -136,12 +136,12 @@ class Activity extends SqlElement {
 
     if ($colName=="idProject") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("ActivityPlanningElement_wbs").set("value", null); ';
+      $colScript .= '  dojo.byId("ActivityPlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idActivity") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dijit.byId("ActivityPlanningElement_wbs").set("value", null); ';
+      $colScript .= '  dojo.byId("ActivityPlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } 
@@ -190,7 +190,8 @@ class Activity extends SqlElement {
       $oldIdle=$old->idle;
       $oldIdProject=$old->idProject;
     }
-    
+    // #305 : need to recalculate before dispatching to PE
+    $this->recalculateCheckboxes();
     $this->ActivityPlanningElement->refName=$this->name;
     $this->ActivityPlanningElement->idProject=$this->idProject;
     $this->ActivityPlanningElement->idle=$this->idle;

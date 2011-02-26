@@ -19,15 +19,24 @@ class NumberFormatter52  {
   function __construct($locale, $type) {
     $this->locale=$locale;
     $this->type=$type;
-    $this->thouthandSeparator=''; // Can get better ?
-    if (strtolower(substr($locale,0,2))=='fr' or strtolower(substr($locale,0,2))=='de') {
-      $this->decimalSeparator=',';
-      $this->thouthandSeparator=' ';
-    } else {
-      $this->decimalSeparator='.';
-      $this->thouthandSeparator=',';
-    }
     
+    if (false !== setlocale(LC_ALL, $locale . ".UTF-8@euro", $locale . ".UTF-8", $locale) ) {
+      $locale_info = localeconv();
+      $this->decimalSeparator=$locale_info['decimal_point'];
+      $this->thouthandSeparator=$locale_info['thousands_sep'];
+    } else {
+      $this->thouthandSeparator=''; // Can get better ?
+      if (strtolower(substr($locale,0,2))=='fr' or strtolower(substr($locale,0,2))=='de') {
+        $this->decimalSeparator=',';
+        $this->thouthandSeparator=' ';
+      } else {
+        $this->decimalSeparator='.';
+        $this->thouthandSeparator=',';
+      }
+    }
+    if (ord($this->thouthandSeparator)>127) {
+      $this->thouthandSeparator=" ";
+    }
   }
 
   

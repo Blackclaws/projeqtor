@@ -257,5 +257,17 @@ class Contact extends SqlElement {
     }
     return $result;
   }
+
+  public function drawContactsList($critArray) {
+    $result="<table>";
+    $conList=$this->getSqlElementsFromCriteria($critArray, false);
+    foreach ($conList as $con) {
+      $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+      $result.=SqlList::getNameFromId('Contact', $con->id);
+      $result.= '</td></tr>';
+    }
+    $result .="</table>";
+    return $result; 
+  }
 }
 ?>

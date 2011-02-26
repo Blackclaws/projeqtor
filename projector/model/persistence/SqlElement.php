@@ -207,6 +207,8 @@ abstract class SqlElement {
    * @return void
    */
   private function saveSqlElement() {
+    // #305
+    $this->recalculateCheckboxes();    
     // select operation to be executed
     $control=$this->control();
     if ($control=="OK") {
@@ -793,6 +795,46 @@ abstract class SqlElement {
     }
     return $objects;
   }
+
+  /**  ========================================================================
+   * Retrieve the count of a list of objects from the Database
+   * Called from an empty object of the expected class
+   * @param $critArray the critera asd an array
+   * @param $clauseWhere Sql Where clause (alternative way to define criteria)
+   *        => $critArray must not be set 
+   * @param $clauseOrderBy Sql Order By clause 
+   * @return an array of objects
+   */
+  public function countSqlElementsFromCriteria($critArray, $clauseWhere=null) {
+    // Build where clause from criteria
+    $whereClause='';
+    $objects=array();
+    $className=get_class($this);
+    $defaultObj = new $className();
+    if ($critArray) {
+      foreach ($critArray as $colCrit => $valCrit) {
+        $whereClause.=($whereClause=='')?' where ':' and ';
+        if ($valCrit==null) {
+          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' is null';
+        } else { 
+          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = '" . Sql::str($valCrit) . "' ";
+        }
+        $defaultObj->$colCrit=$valCrit;
+      }
+    } else if ($clauseWhere) { 
+      $whereClause = ' where ' . $clauseWhere;
+    }
+    // If $whereClause is set, get the element from Database
+    $query = "select count(*) as cpt from " . $this->getDatabaseTableName() . $whereClause;
+    
+    $result = Sql::query($query); 
+    if (Sql::$lastQueryNbRows > 0) {
+      $line = Sql::fetchLine($result);
+      return $line['cpt'];
+    }
+    return 0;  
+  }
+  
   
     /**  ==========================================================================
    * Retrieve a single object from the Database
@@ -1738,5 +1780,39 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     return $resultMail;
   }
   
+  /** ========================================================================= 
+   * Specific function added to setup a workaround for bug #305
+   * waiting for Dojo fixing (Dojo V1.6 ?)
+   * @todo : deactivate this function if Dojo fixed.
+   */
+  public function recalculateCheckboxes() {
+    // if no status => nothing to do
+    if (! property_exists($this, 'idStatus')) {
+      return;
+    }
+    $status=new Status($this->idStatus);
+    // if no type => nothong to do
+    $fldType = 'id' . get_class($this) . 'Type';
+    $typeClass=get_class($this) . 'Type';
+    if (! property_exists($this, $fldType)) {
+      return;
+    }
+    $type=new $typeClass($this->$fldType);
+    if (property_exists($type,'lockHandled')
+    and property_exists($this,'handled') 
+    and $type->lockHandled) {
+      $this->handled=($status->setHandledStatus)?1:0;
+    }
+    if (property_exists($type,'lockDone')
+    and property_exists($this,'done') 
+    and $type->lockDone) {
+      $this->done=($status->setDoneStatus)?1:0;
+    }
+    if (property_exists($type,'lockIdle')
+    and property_exists($this,'idle') 
+    and $type->lockIdle) {
+      $this->idle=($status->setIdleStatus)?1:0;
+    }  
+  }
 }
 ?>
