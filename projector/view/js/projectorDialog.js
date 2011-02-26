@@ -150,7 +150,7 @@ function showPrint (page, context, comboName, outMode) {
 	showWait();
 	quitConfirmed=true;
 	noDisconnect=true;
-	if (! outMode) ouMode='html';
+	if (! outMode) outMode='html';
 	var printInNewWin=printInNewWindow;
 	if (outMode=='pdf') {printInNewWin=true;}
 	if ( ! printInNewWin) {
@@ -229,6 +229,11 @@ function showPrint (page, context, comboName, outMode) {
 			frm.target='#';
 		} else {
 		  frm.target='printFrame';
+		}
+		if (outMode) {
+			dojo.byId('outMode').value=outMode;
+		} else {
+			dojo.byId('outMode').value='';
 		}
 		frm.submit();
 		hideWait();
@@ -562,11 +567,11 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment") + " #" + assignmentId);
 	dijit.byId("dialogAssignment").show();
 	if (dojo.number.parse(realWork)==0) {
-		dijit.byId("assignmentIdResource").set('disabled',false);
-		dijit.byId("assignmentIdRole").set('disabled',false);
+		dijit.byId("assignmentIdResource").set('readOnly',false);
+		dijit.byId("assignmentIdRole").set('readOnly',false);
 	} else {
-		dijit.byId("assignmentIdResource").set('disabled',true);
-		dijit.byId("assignmentIdRole").set('disabled',true);
+		dijit.byId("assignmentIdResource").set('readOnly',true);
+		dijit.byId("assignmentIdRole").set('readOnly',true);
 	}
 	setTimeout("editAssignmentLoading=false",1000);
 }
@@ -580,12 +585,17 @@ function assignmentUpdateLeftWork(prefix) {
 	var initAssigned = dojo.byId(prefix + "AssignedWorkInit"); 
   var initLeft =  dojo.byId(prefix + "LeftWorkInit");
   var assigned =  dojo.byId(prefix + "AssignedWork"); 
+  var newAssigned=dojo.number.parse(assigned.value);
+  if (newAssigned==null || isNaN(newAssigned)) {
+  	newAssigned=0;
+  	assigned.value=dojo.number.format(newAssigned);
+	}  
   var left = dojo.byId(prefix + "LeftWork");
   var real = dojo.byId(prefix + "RealWork"); 
   var planned = dojo.byId(prefix + "PlannedWork");
 	diff=dojo.number.parse(assigned.value)-initAssigned.value;
 	newLeft=parseFloat(initLeft.value) + diff;
-	if (newLeft<0) { newLeft=0;}
+	if (newLeft<0 || isNaN(newLeft)) { newLeft=0;}
 	left.value=dojo.number.format(newLeft);
 	assignmentUpdatePlannedWork(prefix);
 }
@@ -597,6 +607,11 @@ function assignmentUpdateLeftWork(prefix) {
  */
 function assignmentUpdatePlannedWork(prefix) {
   var left = dojo.byId(prefix + "LeftWork");
+  var newLeft=dojo.number.parse(left.value);
+  if (newLeft==null || isNaN(newLeft)) {
+  	newLeft=0;
+  	left.value=dojo.number.format(newLeft);
+	}
   var real = dojo.byId(prefix + "RealWork"); 
   var planned = dojo.byId(prefix + "PlannedWork");
 	newPlanned=dojo.number.parse(real.value)+dojo.number.parse(left.value);
@@ -673,6 +688,7 @@ function assignmentChangeResource() {
 		load: function (data) {dijit.byId('assignmentIdRole').set('value',data);}
 	});
 }
+
 function assignmentChangeRole() {
 	if (editAssignmentLoading) return;
 	var idResource=dijit.byId("assignmentIdResource").get("value");
@@ -681,7 +697,11 @@ function assignmentChangeRole() {
 	dojo.xhrGet({
 		url: '../tool/getSingleData.php?dataType=resourceCost&idResource=' + idResource + '&idRole=' + idRole,
 		handleAs: "text",
-		load: function (data) {dijit.byId('assignmentDailyCost').set('value',data);}
+		load: function (data) {
+		  // #303
+		  //dijit.byId('assignmentDailyCost').set('value',data);
+		  dijit.byId('assignmentDailyCost').set('value',dojo.number.format(data));
+		}
 	});
 }
 //=============================================================================

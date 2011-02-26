@@ -902,6 +902,7 @@ function i18n(str, vars) {
  * @return void
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
+	dijit.byId(selectionField).set("label",nameProject);
 	if (idProject!="") {
 	  dojo.xhrPost({
 	  	url: "../tool/saveDataToSession.php?id=project&value=" + idProject,
@@ -918,6 +919,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
 	if (idProject!="" && idProject!="*" && dijit.byId("idProjectPlan")) {
 		dijit.byId("idProjectPlan").set("value",idProject);
   }
+	dijit.byId(selectionField).closeDropDown();
 }
 
 /**
@@ -945,8 +947,9 @@ function quit() {
 	if (! noDisconnect) {
 	  dojo.xhrPost({
 		  url: "../tool/saveDataToSession.php?id=disconnect",
-		  load: function(data,args) {}
+		  load: function(data,args) { }
 	  });
+	  window.location="../index.php";
 	}
 }
 
