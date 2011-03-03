@@ -9,6 +9,10 @@
       $print=true;
       include_once('../tool/formatter.php');
     }
+    $comboDetail=false;
+    if ( array_key_exists('comboDetail',$_REQUEST) ) {
+      $comboDetail=true;
+    }
     $obj=new $objectClass();
     $table=$obj->getDatabaseTableName();
     
@@ -80,9 +84,11 @@
     }
 
     $arrayFilter=array();
-    if (is_array( $_SESSION['user']->_arrayFilters)) {
-      if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-        $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+    if (! $comboDetail) {
+      if (is_array( $_SESSION['user']->_arrayFilters)) {
+        if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
+          $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+        }
       }
     }
     

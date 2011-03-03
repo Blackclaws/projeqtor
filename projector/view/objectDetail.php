@@ -581,8 +581,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
-        echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
-        //echo '  style="width: ' . ($fieldWidth - 20) . 'px;' . $specificStyle . '"';
+        //echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
+        echo '  style="width: ' . ($fieldWidth - 20) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
         echo $valStore;
@@ -590,7 +590,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         htmlDrawOptionForReference($col, $val, $obj, $isRequired,$critFld, $critVal);
         echo $colScript;
         echo '</select>';
-        /*
+        
         echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"'; 
         echo ' title="' . i18n('showDetail') . '" ';
         echo ' iconClass="iconView">';
@@ -598,7 +598,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '  showDetail("' . $col . '");';
         echo ' </script>';
         echo '</button>';
-        */
+        
       } else if ($dataType=='int' or $dataType=='decimal'){
         // Draw a number field ================================================ NUMBER
         $cost=false;
@@ -1228,10 +1228,12 @@ if ( $noselect ) {
 }
 
 // save the current object in session
-$_SESSION['currentObject']=$obj;
 $print=false;
 if ( array_key_exists('print',$_REQUEST) ) {
   $print=true;
+}
+if (! $print) {
+  $_SESSION['currentObject']=$obj;
 }
 $refresh=false;
 if ( array_key_exists('refresh',$_REQUEST) ) {

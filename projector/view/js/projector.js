@@ -34,7 +34,14 @@ function refreshJsonList(className) {
 	if (grid) {
 		//store = grid.store;
 		//store.close();
+		unselectAllRows("objectGrid");
 		url="../tool/jsonQuery.php?objectClass=" + className;
+		if ( dojo.byId('comboDetail') ) {
+			url = url + "&comboDetail=true";
+			if (dojo.byId('comboDetailId') ) {
+				dojo.byId('comboDetailId').value='';
+			}
+		}
 		if ( dojo.byId('listShowIdle') ) {
 			if (dojo.byId('listShowIdle').checked) { url = url + "&idle=true"; }
 		}

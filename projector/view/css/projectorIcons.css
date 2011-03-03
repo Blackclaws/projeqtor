@@ -213,6 +213,9 @@
 .iconRole22 { background-image: url(images/iconRole22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconRole16 { background-image: url(images/iconRole16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconSearch { background-image: url(images/iconSearch.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
+.iconSelect { background-image: url(images/iconSelect.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
+
 .iconSeverity32 { background-image: url(images/iconSeverity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconSeverity22 { background-image: url(images/iconSeverity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconSeverity16 { background-image: url(images/iconSeverity16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }

@@ -6,6 +6,9 @@
 require_once "../tool/projector.php";
 scriptLog('   ->/view/objectList.php');
 
+if (! isset($comboDetail)) {
+  $comboDetail=false;
+}
 $objectClass=$_REQUEST['objectClass'];
 $objectType='';
 if (array_key_exists('objectType',$_REQUEST)) {
@@ -14,8 +17,7 @@ if (array_key_exists('objectType',$_REQUEST)) {
 $obj=new $objectClass;
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
-  onFetch="alert('OK');"
-  url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?>" >
+  url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?>" >
 </div>
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
@@ -86,6 +88,7 @@ $obj=new $objectClass;
                  ?>
             <td >&nbsp;</td>
             <td width="5px"><NOBR>&nbsp;</NOBR></td>
+<?php if (! $comboDetail) {?>            
             <td width="32px">
               <button title="<?php echo i18n('advancedFilter')?>"  
               class="filterField" 
@@ -101,6 +104,8 @@ $obj=new $objectClass;
               <span id="gridRowCount" class="gridRowCount"></span>             
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
+<?php }?>                            
+<?php if (! $comboDetail) {?>                
              <td width="32px">
               <button title="<?php echo i18n('printList')?>"  
                dojoType="dijit.form.Button" 
@@ -111,7 +116,8 @@ $obj=new $objectClass;
                 </script>
               </button>
               </td>
-<?php if (true) {?>        
+<?php }?>              
+<?php if (! $comboDetail) {?>        
              <td width="32px">
               <button title="<?php echo i18n('reportPrintPdf')?>"  
                dojoType="dijit.form.Button" 
@@ -156,7 +162,15 @@ $obj=new $objectClass;
     </tr>
   </thead>
   <script type="dojo/connect" event="onSelected" args="evt">
-	actionYes = function () {
+	  if ( dojo.byId('comboDetail') ) {
+      rows=objectGrid.selection.getSelected();
+      row=rows[0]; 
+      dojo.byId('comboDetailId').value=row.id;
+      dojo.byId('comboDetailId').value=dojo.byId('comboDetailId').value.replace(/^[0]+/g,"");
+      dojo.byId('comboDetailName').value=row.name;
+      return true;
+    }
+    actionYes = function () {
       rows=objectGrid.selection.getSelected();
       row=rows[0]; 
       var id = row.id;
@@ -171,6 +185,17 @@ $obj=new $objectClass;
     }
     if (checkFormChangeInProgress(actionYes, actionNo)) {
       return true;
+    }
+  </script>
+  <script type="dojo/method" event="onRowDblClick" args="row">
+    if ( dojo.byId('comboDetail') ) {
+      rows=objectGrid.selection.getSelected();
+      row=rows[0]; 
+      dojo.byId('comboDetailId').value=row.id;
+      dojo.byId('comboDetailId').value=dojo.byId('comboDetailId').value.replace(/^[0]+/g,"");
+      dojo.byId('comboDetailName').value=row.name;
+      top.selectDetailItem();
+      return;
     }
   </script>
   <script type="dojo/connect" event="_onFetchComplete" args="items, req">

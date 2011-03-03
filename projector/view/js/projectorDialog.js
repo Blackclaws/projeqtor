@@ -44,10 +44,15 @@ function hideWait() {
  * @return void
  */
 function showField(field) {
-  var dest = dojo.byId(field);
+	var dest = dojo.byId(field);
+  if (dijit.byId(field)) {
+  	dest=dijit.byId(field).domNode;
+  }
   if (dest) {
-  	dest.style.visibility = 'visible';
-  	dest.style.display = 'inline';
+  	dojo.style(dest, {visibility:'visible'});
+  	dojo.style(dest, {display:'inline'});
+  	//dest.style.visibility = 'visible';
+  	//dest.style.display = 'inline';
   }
 }
 
@@ -58,9 +63,14 @@ function showField(field) {
  */
 function hideField(field) {
   var dest = dojo.byId(field);
+  if (dijit.byId(field)) {
+  	dest=dijit.byId(field).domNode;
+  }
   if (dest) {
-  	dest.style.visibility = 'hidden';
-  	dest.style.display = 'none';
+  	dojo.style(dest, {visibility:'hidden'});
+  	dojo.style(dest, {display:'none'});
+  	//dest.style.visibility = 'hidden';
+  	//dest.style.display = 'none';
   }
 }
 
@@ -262,21 +272,6 @@ function showPrint (page, context, comboName, outMode) {
 	//document.getElementsByTagName('printFrame')[0].contentWindow.print();
 }
 
-function showDetail (comboName) {
-	var val=dijit.byId(comboName).get('value');
-	if (! val || val=="" || val==" ") {
-		showInfo(i18n('noItemSelected'));
-  	return;
-  }
-	showWait();
-	var params='';
-	cl=comboName.substring(2);
-  id=dijit.byId(comboName).get('value');
-	window.frames['detailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
-	dijit.byId("dialogDetail").show();
-	frames['detailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+cl+"&objectId="+id+params;
-}
-
 function sendFrameToPrinter() {
 	dojo.byId("sendToPrinter").blur();
   //printFrame.focus();
@@ -286,6 +281,91 @@ function sendFrameToPrinter() {
   //var myRef = window.open(window.frames['printFrame'].location +"&directPrint=true",'mywin', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
   dijit.byId('dialogPrint').hide();        
 }
+//=============================================================================
+//= Detail (from combo)
+//=============================================================================
+
+function showDetail (comboName) {
+	dojo.byId('comboName').value=comboName;
+	var val=dijit.byId(comboName).get('value');
+	if (! val || val=="" || val==" ") {
+		cl=comboName.substring(2);
+		window.frames['detailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+		dijit.byId("dialogDetail").show();
+		displaySearch(cl);
+  } else {
+		cl=comboName.substring(2);
+	  id=dijit.byId(comboName).get('value');
+		window.frames['detailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+		dijit.byId("dialogDetail").show();
+		displayDetail(cl,id);
+	}
+}
+
+function displayDetail(objClass, objId) {
+	showWait();
+	showField('comboSearchButton');
+	hideField('comboSelectButton');
+	hideField('comboNewButton');
+	hideField('comboSaveButton');
+	showField('comboCloseButton');	
+  frames['detailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
+}
+
+function selectDetailItem() {
+	idFld=frames['detailFrame'].dojo.byId('comboDetailId');
+	if (! idFld) {
+		showError('error : comboDetailId not defined');
+		return;
+	}
+	idFldVal=idFld.value;
+	if (! idFldVal) {
+		showAlert(i18n('noItemSelected'));
+		return;
+	}
+	comboName=dojo.byId('comboName').value;
+	combo=dijit.byId(comboName);
+	$crit=null;
+	$critVal=null;
+	if (comboName=='idActivity' || comboName=='idResource') {
+		$prj=dijit.byId('idProject');
+		if ($prj) {
+		  $crit='idProject';
+		  $critVal=$prj.get("value");
+		}		
+	}
+	if (comboName!='idStatus' && comboName!='idProject') {
+	  // TODO : study if such restriction should be applied to idActivity
+		refreshList(comboName, $crit, $critVal, idFldVal);
+	}
+	combo.set("value", idFldVal);
+  hideDetail();
+}
+
+function displaySearch(objClass) {
+	if (! objClass) {
+		comboName=dojo.byId('comboName').value;
+		objClass=comboName.substring(2);
+	}
+	showWait();
+	hideField('comboSearchButton');
+	showField('comboSelectButton');
+	showField('comboNewButton');
+	hideField('comboSaveButton');
+	showField('comboCloseButton');	
+  frames['detailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
+}
+
+function hideDetail() {
+	hideField('comboSearchButton');
+	hideField('comboSelectButton');
+	hideField('comboNewButton');
+	hideField('comboSaveButton');
+	hideField('comboCloseButton');
+	frames['detailFrame'].location.href="preparePreview.php";
+	dijit.byId("dialogDetail").hide();
+}
+
 //=============================================================================
 //= Notes
 //=============================================================================
@@ -1248,11 +1328,14 @@ function showHelp() {
 /**
  * Refresh a list (after update)
  */
-function refreshList(field, param, paramVal) {
+function refreshList(field, param, paramVal, selected) {
 	var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
 	if (param) {
 	  urlList+='&critField='+param;
 	  urlList+='&critValue='+paramVal;
+	}
+	if (selected) {
+		urlList+='&selected='+selected;
 	}
 	var tmpStore = new dojo.data.ItemFileReadStore({url: urlList});
 	var mySelect=dijit.byId(field);

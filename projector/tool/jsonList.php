@@ -56,12 +56,19 @@
       
     } else if ($type=='list') {    
       $dataType=$_REQUEST['dataType'];
+      $selected="";
+      if ( array_key_exists('selected',$_REQUEST) ) {
+        $selected=$_REQUEST['selected'];
+      }
       $class=substr($dataType,2);
       if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $crit=array( $_REQUEST['critField'] => $_REQUEST['critValue']);
         $list=SqlList::getListWithCrit($class, $crit);
       } else {
         $list=SqlList::getList($class);
+      }
+      if ($selected) {
+        $list[$selected]=SqlList::getNameFromId($class, $selected);
       }
       $nbRows=0;
       // return result in json format

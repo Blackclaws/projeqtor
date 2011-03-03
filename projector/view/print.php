@@ -66,7 +66,7 @@
   include $includeFile;
 ?>
 </body>
-</xpage>
+</page>
 </html>
 <?php 
   finalizePrint();

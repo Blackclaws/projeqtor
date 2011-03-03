@@ -380,7 +380,7 @@ scriptLog('   ->/view/main.php');
   </div>
 </div>
 
-<div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetail");?>">
+<div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetailCombo");?>">
   <?php 
     $detailHeight=600;
     $detailWidth=1000;
@@ -391,22 +391,52 @@ scriptLog('   ->/view/main.php');
       $detailHeight=round($_SESSION['screenHeight']*0.65);
     }
   ?> 
-  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center">
+  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="title">
     <table>
       <tr>
-        <td width="300px" align="right">
-          <!--  <button id="sendToPrinter" dojoType="dijit.form.Button" showlabel="false"
-            title="<?php echo i18n('sendToPrinter');?>" 
-            iconClass="dijitEditorIcon dijitEditorIconPrint" >
+        <td width="300px" align="left">
+          <button id="comboSearchButton" dojoType="dijit.form.Button" showlabel="false"
+            title="<?php echo i18n('comboSearchButton');?>" 
+            iconClass="iconSearch" >
             <script type="dojo/connect" event="onClick" args="evt">
-              sendFrameToPrinter();
+              displaySearch();
             </script>
-          </button> -->
+          </button>
+          <button id="comboSelectButton" dojoType="dijit.form.Button" showlabel="false"
+            title="<?php echo i18n('comboSelectButton');?>" 
+            iconClass="iconSelect" >
+            <script type="dojo/connect" event="onClick" args="evt">
+              selectDetailItem();
+            </script>
+          </button>
+          <button id="comboNewButton" dojoType="dijit.form.Button" showlabel="false"
+            title="<?php echo i18n('comboNewButton');?>" 
+            iconClass="dijitEditorIcon dijitEditorIconNew" >
+            <script type="dojo/connect" event="onClick" args="evt">
+              alert("comboNewButton");
+            </script>
+          </button>
+          <button id="comboSaveButton" dojoType="dijit.form.Button" showlabel="false"
+            title="<?php echo i18n('comboSaveButton');?>" 
+            iconClass="dijitEditorIcon dijitEditorIconSave" >
+            <script type="dojo/connect" event="onClick" args="evt">
+              alert("comboSaveButton");
+            </script>
+          </button>
+         <button id="comboCloseButton" dojoType="dijit.form.Button" showlabel="false"
+            title="<?php echo i18n('comboCloseButton');?>" 
+            iconClass="dijitEditorIcon dijitEditorIconUndo" >
+            <script type="dojo/connect" event="onClick" args="evt">
+              hideDetail();
+            </script>
+          </button>
+          <input type="hidden" id='comboName' name='comboName' value='' />
         </td>
         <td align="left" width="<?php echo $detailWidth - 300;?>px">
           
         </td>
       </tr>
+      <tr><td>&nbsp;</td></tr>
       <tr>
         <td colspan="2">   
           <iframe width="100%" height="<?php echo $detailHeight;?>px"
