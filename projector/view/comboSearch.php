@@ -75,6 +75,10 @@
     echo '<div id="listDiv" style="height:100%" dojoType="dijit.layout.ContentPane" region="top" splitter="true">';
     include 'objectList.php';
     echo '</div>';
+  } else if ($mode=='new'){
+    echo '<div id="detailDiv" style="height:100%" dojoType="dijit.layout.ContentPane" region="center" splitter="false">';
+    include 'objectDetail.php';
+    echo '</div>';    
   }
   ?>
 </body>

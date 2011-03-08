@@ -6,6 +6,7 @@
    set_time_limit(300);
    ob_start();
    $outMode='html';
+   $printInNewPage=false;
    if (array_key_exists('outMode', $_REQUEST)) {
      if ($_REQUEST['outMode']) {
        $outMode=$_REQUEST['outMode'];
@@ -13,6 +14,8 @@
    }
    if ($outMode!='pdf') {
      header ('Content-Type: text/html; charset=UTF-8');
+   } else {
+     $printInNewPage=true;
    }
    scriptLog('   ->/view/print.php'); 
   if ($outMode!='pdf') {?> 
@@ -21,7 +24,6 @@
 <?php }?>
 <html>
 <head>   
-  
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
@@ -43,12 +45,12 @@
           //echo "window.close();";
         }
       ?>
-      
+      top.hideWait();
     }); 
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<body id="bodyPrint" class="white" onload="top.hideWait();";>
+<<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?> id="bodyPrint" class="white" onload="top.hideWait();";>
   <?php 
   $includeFile=$_REQUEST['page'];
   if (! substr($_REQUEST['page'],0,3)=='../') {
@@ -65,7 +67,7 @@
   }
   include $includeFile;
 ?>
-</body>
+</<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?>>
 </page>
 </html>
 <?php 

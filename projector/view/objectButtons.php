@@ -14,6 +14,7 @@
     <td><span class="title"><?php echo i18n($_REQUEST['objectClass']);?></span></td>
     <td width="15px">&nbsp;</td>
     <td>
+    <?php if (! isset($comboDetail)) {?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
        iconClass="dijitEditorIcon dijitEditorIconNew" >
@@ -112,7 +113,7 @@
           loadContent("objectDetail.php", "detailDiv", 'listForm');
         </script>
       </button>    
-      
+    <?php }?>
       <?php 
         $id=null;
         $class=$_REQUEST['objectClass'];

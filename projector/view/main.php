@@ -413,14 +413,14 @@ scriptLog('   ->/view/main.php');
             title="<?php echo i18n('comboNewButton');?>" 
             iconClass="dijitEditorIcon dijitEditorIconNew" >
             <script type="dojo/connect" event="onClick" args="evt">
-              alert("comboNewButton");
+              newDetailItem();
             </script>
           </button>
           <button id="comboSaveButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboSaveButton');?>" 
             iconClass="dijitEditorIcon dijitEditorIconSave" >
             <script type="dojo/connect" event="onClick" args="evt">
-              alert("comboSaveButton");
+              saveDetailItem();
             </script>
           </button>
          <button id="comboCloseButton" dojoType="dijit.form.Button" showlabel="false"
@@ -440,7 +440,7 @@ scriptLog('   ->/view/main.php');
       <tr>
         <td colspan="2">   
           <iframe width="100%" height="<?php echo $detailHeight;?>px"
-            scrolling="auto" frameborder="0px" name="detailFrame" id="detailFrame" src="">
+            scrolling="auto" frameborder="0px" name="comboDetailFrame" id="comboDetailFrame" src="" >
           </iframe>
         </td>
       </tr>

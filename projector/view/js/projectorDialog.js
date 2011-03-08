@@ -84,9 +84,9 @@ function hideField(field) {
  * @return void
  */
 function showError (msg) {
-	hideWait();
-	dojo.byId("dialogErrorMessage").innerHTML=msg ;
-	dijit.byId("dialogError").show();
+	top.hideWait();
+	top.dojo.byId("dialogErrorMessage").innerHTML=msg ;
+	top.dijit.byId("dialogError").show();
 }
 
 /** ============================================================================
@@ -95,8 +95,8 @@ function showError (msg) {
  * @return void
  */
 function showInfo (msg) {
-	dojo.byId("dialogInfoMessage").innerHTML=msg ;
-	dijit.byId("dialogInfo").show();
+	top.dojo.byId("dialogInfoMessage").innerHTML=msg ;
+	top.dijit.byId("dialogInfo").show();
 }
 
 /** ============================================================================
@@ -105,8 +105,8 @@ function showInfo (msg) {
  * @return void
  */
 function showAlert (msg) {
-	dojo.byId("dialogAlertMessage").innerHTML=msg ;
-	dijit.byId("dialogAlert").show();
+	top.dojo.byId("dialogAlertMessage").innerHTML=msg ;
+	top.dijit.byId("dialogAlert").show();
 }
 
 /** ============================================================================
@@ -290,13 +290,13 @@ function showDetail (comboName) {
 	var val=dijit.byId(comboName).get('value');
 	if (! val || val=="" || val==" ") {
 		cl=comboName.substring(2);
-		window.frames['detailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displaySearch(cl);
   } else {
 		cl=comboName.substring(2);
 	  id=dijit.byId(comboName).get('value');
-		window.frames['detailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
+		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displayDetail(cl,id);
 	}
@@ -309,11 +309,11 @@ function displayDetail(objClass, objId) {
 	hideField('comboNewButton');
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
-  frames['detailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
+  frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
 }
 
 function selectDetailItem() {
-	idFld=frames['detailFrame'].dojo.byId('comboDetailId');
+	idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
 	if (! idFld) {
 		showError('error : comboDetailId not defined');
 		return;
@@ -353,7 +353,24 @@ function displaySearch(objClass) {
 	showField('comboNewButton');
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
-  frames['detailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
+  top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
+}
+
+function newDetailItem() {
+	comboName=dojo.byId('comboName').value;
+	objClass=comboName.substring(2);
+	showWait();
+	showField('comboSearchButton');
+	hideField('comboSelectButton');
+	hideField('comboNewButton');
+	showField('comboSaveButton');
+	showField('comboCloseButton');	
+	top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&objectId=0&mode=new";
+}
+
+function saveDetailItem() {
+	comboName=dojo.byId('comboName').value;
+	alert("comboSaveButton");	
 }
 
 function hideDetail() {
@@ -362,7 +379,7 @@ function hideDetail() {
 	hideField('comboNewButton');
 	hideField('comboSaveButton');
 	hideField('comboCloseButton');
-	frames['detailFrame'].location.href="preparePreview.php";
+	frames['comboDetailFrame'].location.href="preparePreview.php";
 	dijit.byId("dialogDetail").hide();
 }
 
