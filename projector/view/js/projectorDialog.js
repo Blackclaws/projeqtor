@@ -369,8 +369,35 @@ function newDetailItem() {
 }
 
 function saveDetailItem() {
+	// submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
+	// submitForm(page, destination, formName)
 	comboName=dojo.byId('comboName').value;
-	alert("comboSaveButton");	
+	var formVar = frames['comboDetailFrame'].dijit.byId("objectForm");
+	if ( ! formVar) {
+		showError(i18n("errorSubmitForm", new Array(page, destination, formName)));
+		return;
+	}
+	// validate form Data
+	if(formVar.validate()){
+		//formLock();
+		// form is valid, continue and submit it
+       // loadContent("../tool/saveObject.php","comboDetailResult", formVar, true);
+		dojo.xhrPost({
+		      url: "../tool/saveObject.php",
+		      form: frames['comboDetailFrame'].dojo.byId("comboDetailResult"),
+		      handleAs: "text",
+		      load: function(data,args){
+				        var contentWidget = dijit.byId("comboDetailResult");
+				        if (! contentWidget) {return};
+				      	contentWidget.set('content',data);
+				      	checkDestination("comboDetailResult");
+  		    			//finalizeMessageDisplay("comboDetailResult",validationType);
+                    }
+		});
+
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
 }
 
 function hideDetail() {

@@ -36,8 +36,8 @@
        <?php if ($noselect) {echo "disabled";} ?>
        iconClass="dijitEditorIcon dijitEditorIconSave" >
         <script type="dojo/connect" event="onClick" args="evt">
-		      dojo.byId("saveButton").blur();
-          unselectAllRows("objectGrid");
+		    dojo.byId("saveButton").blur();
+            unselectAllRows("objectGrid");
 	        submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
         </script>
       </button>

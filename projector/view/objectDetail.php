@@ -1319,6 +1319,8 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   if ( ! $print) { ?>
       <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm" name="objectForm" encType="multipart/form-data" action="" method="" >
+        <?php if () {?>
+        <?php }?>
         <script type="dojo/method" event="onSubmit" >
         // Don't do anything on submit, just cancel : no button is default => must click
         //alert("OK");

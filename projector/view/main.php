@@ -432,9 +432,10 @@ scriptLog('   ->/view/main.php');
           </button>
           <input type="hidden" id='comboName' name='comboName' value='' />
         </td>
-        <td align="left" width="<?php echo $detailWidth - 300;?>px">
-          
+        <td align="left" width="<?php echo $detailWidth - 350;?>px">
+          <div style="border: 1px solid red;width:100%" dojoType="dijit.layout.ContentPane" region="center" name="comboDetailResult" id="comboDetailResult"></div>
         </td>
+        
       </tr>
       <tr><td>&nbsp;</td></tr>
       <tr>
