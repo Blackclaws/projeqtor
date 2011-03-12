@@ -1319,8 +1319,6 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   if ( ! $print) { ?>
       <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm" name="objectForm" encType="multipart/form-data" action="" method="" >
-        <?php if () {?>
-        <?php }?>
         <script type="dojo/method" event="onSubmit" >
         // Don't do anything on submit, just cancel : no button is default => must click
         //alert("OK");
@@ -1334,7 +1332,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ( $noselect) {
     echo $noData;
   } else {
-    if (! $print) {
+    if (! $print or isset($comboDetail)) {
       echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
     }  
     drawTableFromObject($obj); 

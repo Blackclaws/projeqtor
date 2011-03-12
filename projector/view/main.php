@@ -432,14 +432,14 @@ scriptLog('   ->/view/main.php');
           </button>
           <input type="hidden" id='comboName' name='comboName' value='' />
         </td>
-        <td align="left" width="<?php echo $detailWidth - 350;?>px">
-          <div style="border: 1px solid red;width:100%" dojoType="dijit.layout.ContentPane" region="center" name="comboDetailResult" id="comboDetailResult"></div>
+        <td align="left" style="width:<?php echo ($detailWidth - 400);?>px">
+          <div style="width:100%;font-size:8pt" dojoType="dijit.layout.ContentPane" region="center" name="comboDetailResult" id="comboDetailResult"></div>
         </td>
-        
+        <td></td>
       </tr>
-      <tr><td>&nbsp;</td></tr>
+      <tr><td colspan="3">&nbsp;</td></tr>
       <tr>
-        <td colspan="2">   
+        <td colspan="3">   
           <iframe width="100%" height="<?php echo $detailHeight;?>px"
             scrolling="auto" frameborder="0px" name="comboDetailFrame" id="comboDetailFrame" src="" >
           </iframe>
