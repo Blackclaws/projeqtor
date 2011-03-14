@@ -312,16 +312,20 @@ function displayDetail(objClass, objId) {
   frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
 }
 
-function selectDetailItem() {
-	idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
-	if (! idFld) {
-		showError('error : comboDetailId not defined');
-		return;
-	}
-	idFldVal=idFld.value;
-	if (! idFldVal) {
-		showAlert(i18n('noItemSelected'));
-		return;
+function selectDetailItem(selectedValue) {
+	if (selectedValue) {
+		idFldVal=selectedValue;
+	} else {
+		idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
+		if (! idFld) {
+			showError('error : comboDetailId not defined');
+			return;
+		}
+		idFldVal=idFld.value;
+		if (! idFldVal) {
+			showAlert(i18n('noItemSelected'));
+			return;
+		}
 	}
 	comboName=dojo.byId('comboName').value;
 	combo=dijit.byId(comboName);
@@ -382,16 +386,22 @@ function saveDetailItem() {
 		//formLock();
 		// form is valid, continue and submit it
        // loadContent("../tool/saveObject.php","comboDetailResult", formVar, true);
-		dojo.xhrPost({
-		      url: "../tool/saveObject.php",
-		      form: frames['comboDetailFrame'].dojo.byId("comboDetailResult"),
+		frames['comboDetailFrame'].dojo.xhrPost({
+		      url: "../tool/saveObject.php?comboDetail=true",
+		      form: "objectForm",
 		      handleAs: "text",
 		      load: function(data,args){
 				        var contentWidget = dijit.byId("comboDetailResult");
 				        if (! contentWidget) {return};
-				      	contentWidget.set('content',data);
-				      	checkDestination("comboDetailResult");
-  		    			//finalizeMessageDisplay("comboDetailResult",validationType);
+				        contentWidget.set('content',data);
+				        checkDestination("comboDetailResult");
+				        //finalizeMessageDisplay("comboDetailResult",validationType);
+				        var lastOperationStatus = top.dojo.byId('lastOperationStatusComboDetail');
+				        var lastOperation = top.dojo.byId('lastOperationComboDetail');
+				        var lastSaveId=top.dojo.byId('lastSaveIdComboDetail');
+				        if (lastOperationStatus.value=="OK") {
+				        	selectDetailItem(lastSaveId.value);
+				        }
                     }
 		});
 

@@ -715,8 +715,8 @@ abstract class SqlElement {
    * Retrieve an object from the Request (modified Form) - Public method
    * @return void (operate directly on the object)
    */
-  public function fillFromRequest() {
-    $this->fillSqlElementFromRequest();
+  public function fillFromRequest($ext=null) {
+    $this->fillSqlElementFromRequest(null,$ext);
   }
   
   /**  ========================================================================
@@ -862,7 +862,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
    * Retrieve an object from the Request (modified Form)
    * @return void (operate directly on the object)
    */
-  private function fillSqlElementFromRequest($included=false) {
+  private function fillSqlElementFromRequest($included=false,$ext=null) {
     foreach($this as $key => $value) {
       // If property is an object, recusively fill it
       if (ucfirst($key) == $key and substr($key,0,1)<> "_") {
@@ -873,7 +873,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           $subObjectClass = $key;
           $subObject= new $subObjectClass;
         }
-        $subObject->fillSqlElementFromRequest(true);
+        $subObject->fillSqlElementFromRequest(true,$ext);
         $this->$key = $subObject;
       } else {
         if (substr($key,0,1)== "_") {
@@ -881,9 +881,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         } else { 
           $dataType = $this->getDataType($key);
           $dataLength = $this->getDataLength($key);
-          $formField = $key;
+          $formField = $key . $ext;
           if ($included) { // if included, then object is called recursively, name is prefixed by className
-            $formField = get_class($this) . '_' . $key;
+            $formField = get_class($this) . '_' . $key . $ext;
           }
           //echo get_class($this) . '->' . $key . ' ==> ' . $formField . '=' . $_REQUEST[$formField] . '<br/>'; 
           if ($dataType=='int' and $dataLength==1) {
@@ -897,7 +897,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
             }
           } else if ($dataType=='datetime') {
             $keyBis = $key . "Bis";
-            $this->$key = $_REQUEST[$key] . " " . substr($_REQUEST[$keyBis],1);
+            $this->$key = $_REQUEST[$key . $ext] . " " . substr($_REQUEST[$keyBis . $ext],1);
         } else {
             if (array_key_exists($formField,$_REQUEST)) {
               $this->$key = $_REQUEST[$formField];
