@@ -8,6 +8,9 @@
   require_once "../tool/projector.php";
   require_once "../tool/formatter.php";
   scriptLog('   ->/view/objectDetail.php');
+  if (! isset($comboDetail)) {
+    $comboDetail=false;
+  }
 /** ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
  * @param $obj the object to present
@@ -28,7 +31,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $currentCol=0;
   $nbCol=1;
   $extName="";
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     $extName="_detail";
   }
   $detailWidth=null; // Default detail div width
@@ -295,7 +298,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ($dataType=='datetime') {
         $colScriptBis = $obj->getValidationScript($col."Bis");
       }
-      //if (isset($comboDetail)) {
+      //if ($comboDetail) {
       //  $colScript=str_replace($col,$col . $extName,$colScript);
       //  $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
       //}
@@ -589,7 +592,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
           }
         }
-        if (! isset($comboDetail)) {
+        if (! $comboDetail) {
           $fieldWidth -= 20;
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
@@ -603,7 +606,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $colScript;
         echo '</select>';
         // TODO : Add rights management
-        if (! isset($comboDetail) ) { 
+        if (! $comboDetail ) { 
           echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"'; 
           echo ' title="' . i18n('showDetail') . '" ';
           echo ' iconClass="iconView">';
@@ -714,7 +717,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 
 function drawHistoryFromObjects($refresh=false) {
   global $cr, $print, $treatedObjects, $comboDetail;
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     return;
   }
   $inList="( ('x',0)"; // initialize with non existing element, to avoid error if 1 only object involved
@@ -821,7 +824,7 @@ function drawHistoryFromObjects($refresh=false) {
 
 function drawNotesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -885,7 +888,7 @@ function drawNotesFromObject($obj, $refresh=false) {
 
 function drawAttachementsFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -960,7 +963,7 @@ function drawAttachementsFromObject($obj, $refresh=false) {
 
 function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -1017,7 +1020,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
 
 function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
-  if (isset($comboDetail)) {
+  if ( $comboDetail ) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -1075,7 +1078,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
 
 function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -1153,7 +1156,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
 
 function drawResourceCostFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
-  if (isset($comboDetail)) {
+  if ($comboDetail) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -1266,7 +1269,7 @@ $print=false;
 if ( array_key_exists('print',$_REQUEST) ) {
   $print=true;
 }
-if (! $print and ! isset($comboDetail)) {
+if (! $print and ! $comboDetail) {
   $_SESSION['currentObject']=$obj;
 }
 $refresh=false;
@@ -1332,7 +1335,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ( $noselect) {
     echo $noData;
   } else {
-    if (! $print or isset($comboDetail)) {
+    if (! $print or $comboDetail) {
       echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
     }  
     drawTableFromObject($obj); 
@@ -1346,7 +1349,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (array_key_exists('displayAttachement',$_SESSION)) {
     $displayAttachement=$_SESSION['displayAttachement'];
   }
-  if (isset($obj->_Attachement) and $isAttachementEnabled and ! isset($comboDetail) ) { ?>
+  if (isset($obj->_Attachement) and $isAttachementEnabled and ! $comboDetail ) { ?>
     <br/>
     <?php if ($print) {?>
     <table width="100%">
@@ -1369,7 +1372,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (array_key_exists('displayNote',$_SESSION)) {
     $displayNote=$_SESSION['displayNote'];
   }
-  if (isset($obj->_Note) and ! isset($comboDetail) ) { ?>
+  if (isset($obj->_Note) and ! $comboDetail) { ?>
     <br/>
     <?php if ($print) {?>
     <table width="100%">
@@ -1395,7 +1398,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ($obj and property_exists($obj, '_noHistory')) {
     $displayHistory='NO';
   }
-  if (  ( ! $noselect) and $displayHistory != 'NO' and ! isset($comboDetail) ) { 
+  if (  ( ! $noselect) and $displayHistory != 'NO' and ! $comboDetail) { 
     echo '<br/>';
     ?>
       <div id="historyPane" style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 

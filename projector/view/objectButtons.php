@@ -5,6 +5,9 @@
  */ 
   require_once "../tool/projector.php";
   scriptLog('   ->/view/objectButton.php'); 
+  if (! isset($comboDetail)) {
+    $comboDetail=false;
+  }
 ?>
 <table>
   <tr>
@@ -14,7 +17,7 @@
     <td><span class="title"><?php echo i18n($_REQUEST['objectClass']);?></span></td>
     <td width="15px">&nbsp;</td>
     <td>
-    <?php if (! isset($comboDetail)) {?>
+    <?php if (! $comboDetail) {?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
        iconClass="dijitEditorIcon dijitEditorIconNew" >
@@ -113,7 +116,7 @@
           loadContent("objectDetail.php", "detailDiv", 'listForm');
         </script>
       </button>    
-    <?php }?>
+    <?php } ?>
       <?php 
         $id=null;
         $class=$_REQUEST['objectClass'];
