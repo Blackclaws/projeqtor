@@ -385,7 +385,7 @@ scriptLog('   ->/view/main.php');
     $detailHeight=600;
     $detailWidth=1000;
     if (array_key_exists('screenWidth',$_SESSION)) {
-       $detailWidth = $_SESSION['screenWidth'] * 0.8;
+       $detailWidth = $_SESSION['screenWidth'] * 0.87;
     }
     if (array_key_exists('screenHeight',$_SESSION)) {
       $detailHeight=round($_SESSION['screenHeight']*0.65);

@@ -286,6 +286,10 @@ function sendFrameToPrinter() {
 //=============================================================================
 
 function showDetail (comboName) {
+	contentWidget = dijit.byId("comboDetailResult");
+    if (contentWidget) {
+      contentWidget.set('content','');
+    }
 	dojo.byId('comboName').value=comboName;
 	var val=dijit.byId(comboName).get('value');
 	if (! val || val=="" || val==" ") {
@@ -368,8 +372,15 @@ function newDetailItem() {
 	hideField('comboSelectButton');
 	hideField('comboNewButton');
 	showField('comboSaveButton');
-	showField('comboCloseButton');	
-	top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&objectId=0&mode=new";
+	showField('comboCloseButton');
+	contentNode=frames['comboDetailFrame'].dojo.byId('body');
+	destinationWidth=dojo.style(contentNode, "width");
+	page="comboSearch.php";
+	page+="?objectClass="+objClass;
+	page+="&objectId=0";
+	page+="&mode=new";
+    page+="&destinationWidth="+destinationWidth;
+	top.frames['comboDetailFrame'].location.href=page;
 }
 
 function saveDetailItem() {
