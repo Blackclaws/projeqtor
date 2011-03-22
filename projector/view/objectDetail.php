@@ -31,6 +31,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $currentCol=0;
   $nbCol=1;
   $extName="";
+  $user=$_SESSION['user'];
+  $displayComboButton=false;
+  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'combo'));
+  if ($habil) {
+  	$list=new ListYesNo($habil->rightAccess);
+  	if ($list->code=='YES') {
+      $displayComboButton=true;
+  	}
+  }
   if ($comboDetail) {
     $extName="_detail";
   }
@@ -555,6 +564,23 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if (substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 
                  and substr($col,2,1)==strtoupper(substr($col,2,1))) {
         // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox
+        $displayComboButtonCol=$displayComboButton;
+        $canCreateCol=false;
+        if ($comboDetail) {
+          $displayComboButtonCol=false;
+        }
+        if ($displayComboButtonCol) {
+        	$menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menu' . substr($col,2)));
+        	$crit=array();
+        	$crit['idProfile']=$user->idProfile;
+        	$crit['idMenu']=$menu->id;
+        	$habil=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
+        	if ($habil and $habil->allowAccess) {
+        	  	
+        	} else {
+        	  $displayComboButtonCol=false;
+        	}
+        }
         if ($col=='idProject') {
           if ($obj->id==null) {
             if (array_key_exists('project',$_SESSION)) {
@@ -592,7 +618,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
           }
         }
-        if (! $comboDetail) {
+        if ($displayComboButtonCol) {
           $fieldWidth -= 20;
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
@@ -606,7 +632,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $colScript;
         echo '</select>';
         // TODO : Add rights management
-        if (! $comboDetail ) { 
+        if ($displayComboButtonCol) { 
           echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"'; 
           echo ' title="' . i18n('showDetail') . '" ';
           echo ' iconClass="iconView">';

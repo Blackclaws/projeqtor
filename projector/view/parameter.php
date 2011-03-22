@@ -110,6 +110,10 @@
           echo '<br/><br/>';
           echo '<table width="100%"><tr><td class="section">' . i18n('sectionWorkCost') . '</td></tr></table>',
           htmlDrawCrossTable(array('work'=>i18n('workAccess'),'cost'=>i18n('costAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'visibilityScope') ;
+          echo '<br/><br/>';
+          echo '<table width="100%"><tr><td class="section">' . i18n('sectionComboDetail') . '</td></tr></table>',
+          htmlDrawCrossTable(array('combo'=>i18n('comboDetailAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+          
         } else {
           drawTableFromObjectList($parameterList);
         }
