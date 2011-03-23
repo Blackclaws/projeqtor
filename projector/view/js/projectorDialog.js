@@ -285,8 +285,9 @@ function sendFrameToPrinter() {
 //= Detail (from combo)
 //=============================================================================
 
-function showDetail (comboName) {
+function showDetail (comboName, canCreate) {
 	contentWidget = dijit.byId("comboDetailResult");
+	dojo.byId("canCreateDetail").value=canCreate;
     if (contentWidget) {
       contentWidget.set('content','');
     }
@@ -358,7 +359,11 @@ function displaySearch(objClass) {
 	showWait();
 	hideField('comboSearchButton');
 	showField('comboSelectButton');
-	showField('comboNewButton');
+	if (dojo.byId("canCreateDetail").value=="1") { 
+	  showField('comboNewButton');
+	} else {
+      hideField('comboNewButton');	
+	}
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
   top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
@@ -371,7 +376,11 @@ function newDetailItem() {
 	showField('comboSearchButton');
 	hideField('comboSelectButton');
 	hideField('comboNewButton');
-	showField('comboSaveButton');
+	if (dojo.byId("canCreateDetail").value=="1") { 
+	  showField('comboSaveButton');
+	} else {
+      hideField('comboSaveButton');	
+	}
 	showField('comboCloseButton');
 	contentNode=frames['comboDetailFrame'].dojo.byId('body');
 	destinationWidth=dojo.style(contentNode, "width");

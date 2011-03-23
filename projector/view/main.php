@@ -395,6 +395,7 @@ scriptLog('   ->/view/main.php');
     <table>
       <tr>
         <td width="300px" align="left">
+          <input type="hidden" name="canCreateDetail" id="canCreateDetail" />
           <button id="comboSearchButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboSearchButton');?>" 
             iconClass="iconSearch" >

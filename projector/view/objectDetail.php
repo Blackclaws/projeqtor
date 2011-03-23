@@ -576,7 +576,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         	$crit['idMenu']=$menu->id;
         	$habil=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
         	if ($habil and $habil->allowAccess) {
-        	  	
+        	  $accessRight=SqlElement::getSingleSqlElementFromCriteria('AccessRight', array('idMenu'=>$menu->id, 'idProfile'=>$user->idProfile));
+        	  if ($accessRight) {
+        	  	$accessProfile=new AccessProfile($accessRight->idAccessProfile);
+        	  	if ($accessProfile) {
+        	  		$accessScope=new AccessScope($accessProfile->idAccessScopeCreate);
+        	  		if ($accessScope and $accessScope->accessCode!='NO') {
+        	  		  $canCreateCol=true;	
+        	  		}
+        	  	}
+        	  }
         	} else {
         	  $displayComboButtonCol=false;
         	}
@@ -637,7 +646,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo ' title="' . i18n('showDetail') . '" ';
           echo ' iconClass="iconView">';
           echo ' <script type="dojo/connect" event="onClick" args="evt">';
-          echo '  showDetail("' . $col . '");';
+          echo '  showDetail("' . $col . '",' . (($canCreateCol)?1:0) . ');';
           echo ' </script>';
           echo '</button>';
         }    
