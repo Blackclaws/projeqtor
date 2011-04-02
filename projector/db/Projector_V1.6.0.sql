@@ -32,3 +32,30 @@ INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) V
 (7, 'combo', 2),
 (5, 'combo', 2);
 
+CREATE TABLE `${prefix}expense` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) unsigned DEFAULT null, 
+  `idResource` int(12) unsigned DEFAULT null, 
+  `idExpenseType` int(12) unsigned DEFAULT null, 
+  `expenseDate` date DEFAULT null, 
+  `scope` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
+  `plannedAmount` NUMERIC(11,2) DEFAULT null,
+  `realAmount` NUMERIC(11,2) DEFAULT null,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE `${prefix}expenseDetail` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idExpense` int(12) unsigned DEFAULT null, 
+  `expenseDate` date DEFAULT null, 
+  `idExpenseDetailType` int(12) unsigned DEFAULT null, 
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
+  `plannedAmount` NUMERIC(11,2) DEFAULT null,
+  `amount` NUMERIC(11,2) DEFAULT null,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
