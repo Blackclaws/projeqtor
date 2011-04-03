@@ -3,6 +3,14 @@
 /* ICONS                                                                           */
 /* =============================================================================== */
 
+.iconAccessProfile32 { background-image: url(images/iconAccessProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAccessProfile22 { background-image: url(images/iconAccessProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAccessProfile16 { background-image: url(images/iconAccessProfile16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAccessRight32 { background-image: url(images/iconAccessRight32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAccessRight22 { background-image: url(images/iconAccessRight22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAccessRight16 { background-image: url(images/iconAccessRight16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconAction32 { background-image: url(images/iconAction32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconAction22 { background-image: url(images/iconAction22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconAction16 { background-image: url(images/iconAction16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -11,13 +19,9 @@
 .iconActionType22 { background-image: url(images/iconActionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconActionType16 { background-image: url(images/iconActionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconAccessProfile32 { background-image: url(images/iconAccessProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconAccessProfile22 { background-image: url(images/iconAccessProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconAccessProfile16 { background-image: url(images/iconAccessProfile16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
-
-.iconAccessRight32 { background-image: url(images/iconAccessRight32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconAccessRight22 { background-image: url(images/iconAccessRight22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconAccessRight16 { background-image: url(images/iconAccessRight16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconActiveFilter32 { background-image: url(images/iconActiveFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActiveFilter22 { background-image: url(images/iconActiveFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActiveFilter16 { background-image: url(images/iconActiveFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconActivity32 { background-image: url(images/iconActivity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconActivity22 { background-image: url(images/iconActivity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -61,6 +65,18 @@
 .iconEnvironmentalParameter22 { background-image: url(images/iconEnvironmentalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconEnvironmentalParameter16 { background-image: url(images/iconEnvironmentalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconFilter32 { background-image: url(images/iconFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFilter22 { background-image: url(images/iconFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFilter16 { background-image: url(images/iconFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconFinancial32 { background-image: url(images/iconFinancial32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFinancial22 { background-image: url(images/iconFinancial22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFinancial16 { background-image: url(images/iconFinancial16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconFollowup32 { background-image: url(images/iconFollowup32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFollowup22 { background-image: url(images/iconFollowup22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFollowup16 { background-image: url(images/iconFollowup16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconGlobalParameter32 { background-image: url(images/iconGlobalParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconGlobalParameter22 { background-image: url(images/iconGlobalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconGlobalParameter16 { background-image: url(images/iconGlobalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -81,17 +97,9 @@
 .iconHabilitationParameter22 { background-image: url(images/iconHabilitationParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconHabilitationParameter16 { background-image: url(images/iconHabilitationParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconFilter32 { background-image: url(images/iconFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconFilter22 { background-image: url(images/iconFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconFilter16 { background-image: url(images/iconFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
-
-.iconActiveFilter32 { background-image: url(images/iconActiveFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconActiveFilter22 { background-image: url(images/iconActiveFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconActiveFilter16 { background-image: url(images/iconActiveFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
-
-.iconFollowup32 { background-image: url(images/iconFollowup32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconFollowup22 { background-image: url(images/iconFollowup22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconFollowup16 { background-image: url(images/iconFollowup16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconIndividualExpense32 { background-image: url(images/iconIndividualExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIndividualExpense22 { background-image: url(images/iconIndividualExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIndividualExpense16 { background-image: url(images/iconIndividualExpense16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconImportData32 { background-image: url(images/iconImportData32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconImportData22 { background-image: url(images/iconImportData22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -100,6 +108,18 @@
 .iconImputation32 { background-image: url(images/iconImputation32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconImputation22 { background-image: url(images/iconImputation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconImputation16 { background-image: url(images/iconImputation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIndividualExpenseType32 { background-image: url(images/iconIndividualExpenseType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIndividualExpenseType22 { background-image: url(images/iconIndividualExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIndividualExpenseType16 { background-image: url(images/iconIndividualExpenseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconInvoice32 { background-image: url(images/iconInvoice32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconInvoice22 { background-image: url(images/iconInvoice22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconInvoice16 { background-image: url(images/iconInvoice16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconInvoiceType32 { background-image: url(images/iconInvoiceType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconInvoiceType22 { background-image: url(images/iconInvoiceType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconInvoiceType16 { background-image: url(images/iconInvoiceType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconIssue32 { background-image: url(images/iconIssue32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconIssue22 { background-image: url(images/iconIssue22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -149,9 +169,16 @@
 .iconParameter22 { background-image: url(images/iconParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconParameter16 { background-image: url(images/iconParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconPayment32 { background-image: url(images/iconPayment32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconPayment22 { background-image: url(images/iconPayment22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconPayment16 { background-image: url(images/iconPayment16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconPaymentType32 { background-image: url(images/iconPaymentType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconPaymentType22 { background-image: url(images/iconPaymentType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconPaymentType16 { background-image: url(images/iconPaymentType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .dijitDisabled .iconPdf { background-image: url(images/pdfDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
-
 
 .iconPlanning32 { background-image: url(images/iconPlanning32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconPlanning22 { background-image: url(images/iconPlanning22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -168,6 +195,14 @@
 .iconProject32 { background-image: url(images/iconProject32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProject22 { background-image: url(images/iconProject22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProject16 { background-image: url(images/iconProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProjectExpense32 { background-image: url(images/iconProjectExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectExpense22 { background-image: url(images/iconProjectExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectExpense16 { background-image: url(images/iconProjectExpense16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProjectExpenseType32 { background-image: url(images/iconProjectExpenseType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectExpenseType22 { background-image: url(images/iconProjectExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectExpenseType16 { background-image: url(images/iconProjectExpenseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconProjectParameter32 { background-image: url(images/iconProjectParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProjectParameter22 { background-image: url(images/iconProjectParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -247,6 +282,10 @@
 .iconTool32 { background-image: url(images/iconTool32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTool22 { background-image: url(images/iconTool22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTool16 { background-image: url(images/iconTool16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconType32 { background-image: url(images/iconType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconType22 { background-image: url(images/iconType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconType16 { background-image: url(images/iconType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconUrgency32 { background-image: url(images/iconUrgency32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconUrgency22 { background-image: url(images/iconUrgency22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

@@ -74,7 +74,7 @@ UPDATE MENU SET sortOrder=680 where id=50;
 UPDATE MENU SET sortOrder=690 where id=36;
 UPDATE MENU SET sortOrder=700 where id=73;
 UPDATE MENU SET sortOrder=710 where id=34;
-UPDATE MENU SET sortOrder=720 where id=38;
+UPDATE MENU SET sortOrder=720 where id=39;
 UPDATE MENU SET sortOrder=730 where id=40;
 UPDATE MENU SET sortOrder=740 where id=38;
 UPDATE MENU SET sortOrder=750 where id=42;
@@ -98,8 +98,8 @@ INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level
 (76, 'menuProjectExpense', 74, 'object', 260, 'project', 0),
 (77, 'menuInvoice', 74, 'object', 265, 'project', 0),
 (78, 'menuPayment', 74, 'object', 270, 'project', 0),
-(79, 'menuType', 14, 'object', 800, null, 0),
-(80, 'menuIndividualExpenseType', 79, 'object', 840, 'project', 0),
+(79, 'menuType', 13, 'menu', 800, null, 0),
+(80, 'menuIndividualExpenseType', 79, 'object', 840, null, 0),
 (81, 'menuProjectExpenseType', 79, 'object', 850, null, 0),
 (82, 'menuInvoiceType', 79, 'object', 860, null, 0),
 (83, 'menuPaymentType', 79, 'object', 870, null, 0);
@@ -121,6 +121,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 78, 1),
 (2, 78, 1),
 (3, 78, 1),
+(1, 79, 1),
+(2, 79, 1),
+(3, 79, 1),
 (1, 80, 1),
 (2, 80, 1),
 (1, 81, 1),
@@ -160,3 +163,13 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (7, 78, 9),
 (5, 78, 9);
 
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
+('IndividualExpense', 'Expense report', 10, 0, NULL, 7),
+('ProjectExpense', 'Machine expense', 10, 0, NULL, 7),
+('ProjectExpense', 'Office expense', 20, 0, NULL, 7),
+('Invoice', 'event invoice', 10, 0, NULL, 7),
+('Invoice', 'partial invoice', 20, 0, NULL, 7),
+('Invoice', 'final invoice', 30, 0, NULL, 7),
+('Payment', 'event payment', 10, 0, NULL, 7),
+('Payment', 'partial payment', 20, 0, NULL, 7),
+('Payment', 'final payment', 30, 0, NULL, 7);

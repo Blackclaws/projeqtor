@@ -15,7 +15,6 @@
     }
     $obj=new $objectClass();
     $table=$obj->getDatabaseTableName();
-    
     $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
     
     $querySelect = '';
@@ -124,8 +123,9 @@
           if (property_exists($externalObj,'sortOrder')) {
             $idTab+=1;
             $externalTableAlias = 'T' . $idTab;
+            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
             $queryOrderBy .= " " . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder')
-               . " " . $crit['sql']['value'];
+               . " " . str_replace("'","",$crit['sql']['value']);
             $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
             ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
             ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
@@ -253,6 +253,7 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
+//debugLog($query);
     $result=Sql::query($query);
     $nbRows=0;
     if ($print) {
