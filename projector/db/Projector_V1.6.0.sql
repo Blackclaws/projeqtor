@@ -52,7 +52,6 @@ CREATE TABLE `${prefix}expenseDetail` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT null, 
   `idExpense` int(12) unsigned DEFAULT null, 
-  `expenseDate` date DEFAULT null, 
   `idExpenseDetailType` int(12) unsigned DEFAULT null, 
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(4000) DEFAULT NULL,
