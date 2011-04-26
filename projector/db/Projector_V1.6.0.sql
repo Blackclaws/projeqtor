@@ -39,6 +39,7 @@ CREATE TABLE `${prefix}expense` (
   `idExpenseType` int(12) unsigned DEFAULT null,  
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
+  `idStatus` int(12) unsigned DEFAULT null, 
   `description` varchar(4000) DEFAULT NULL,
   `expensePlannedDate` date DEFAULT null,
   `expenseRealDate` date DEFAULT null,
@@ -163,12 +164,35 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (5, 78, 9);
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
-('IndividualExpense', 'Expense report', 10, 0, NULL, 7),
-('ProjectExpense', 'Machine expense', 10, 0, NULL, 7),
-('ProjectExpense', 'Office expense', 20, 0, NULL, 7),
-('Invoice', 'event invoice', 10, 0, NULL, 7),
-('Invoice', 'partial invoice', 20, 0, NULL, 7),
-('Invoice', 'final invoice', 30, 0, NULL, 7),
-('Payment', 'event payment', 10, 0, NULL, 7),
-('Payment', 'partial payment', 20, 0, NULL, 7),
-('Payment', 'final payment', 30, 0, NULL, 7);
+('IndividualExpense', 'Expense report', 10, 0, NULL, 8),
+('ProjectExpense', 'Machine expense', 10, 0, NULL, 8),
+('ProjectExpense', 'Office expense', 20, 0, NULL, 8),
+('Invoice', 'event invoice', 10, 0, NULL, 8),
+('Invoice', 'partial invoice', 20, 0, NULL, 8),
+('Invoice', 'final invoice', 30, 0, NULL, 8),
+('Payment', 'event payment', 10, 0, NULL, 8),
+('Payment', 'partial payment', 20, 0, NULL, 8),
+('Payment', 'final payment', 30, 0, NULL, 8);
+
+INSERT INTO `${prefix}workflow` (id,name, description, idle, workflowUpdate) VALUES 
+(8,'Simple with Project Leader validation','Simple workflow with limited status, including Project Leader validation.
+Anyone can change status, except validation : only Project Leader.',0,'[     ]');
+
+INSERT INTO `${prefix}workflowstatus` (idWorkflow,idStatusFrom,idStatusTo,idProfile,allowed) VALUES 
+(8,1,3,1,1),
+(8,1,3,2,1),
+(8,1,3,3,1),
+(8,1,3,4,1),
+(8,1,3,6,1),
+(8,1,3,7,1),
+(8,1,3,5,1),
+(8,3,4,1,1),
+(8,3,4,2,1),
+(8,3,4,3,1),
+(8,3,4,4,1),
+(8,3,4,6,1),
+(8,3,4,7,1),
+(8,3,4,5,1),
+(8,4,3,3,1),
+(8,4,12,3,1),
+(8,12,7,3,1);
