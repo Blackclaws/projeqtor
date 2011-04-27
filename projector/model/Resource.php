@@ -310,7 +310,9 @@ class Resource extends SqlElement {
       $aff=new Affectation();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      $result .= $aff->drawAffectationList(array('idResource'=>$this->id,'idle'=>'0'),'Project');
+      if ($this->id) {
+        $result .= $aff->drawAffectationList(array('idResource'=>$this->id,'idle'=>'0'),'Project');
+      }
       $result .="</td></tr></table>";
       return $result;
     }
