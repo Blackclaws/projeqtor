@@ -36,6 +36,7 @@ CREATE TABLE `${prefix}expense` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT null, 
   `idResource` int(12) unsigned DEFAULT null, 
+  `idUser` int(12) unsigned DEFAULT null, 
   `idExpenseType` int(12) unsigned DEFAULT null,  
   `scope` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,

@@ -121,7 +121,7 @@ function dispatchWorkValueChange(rowId, colId) {
 	// Update sum for column
 	var oldSum=dijit.byId('colSumWork_' + colId).value;
 	var newSum=oldSum + diff;
-	newSum=Math.round(newSum*10)/10;
+	newSum=Math.round(newSum*100)/100;
 	dijit.byId('colSumWork_' + colId).setValue(newSum);
   //Update real work
 	var oldReal=dijit.byId('realWork_' + rowId).value;
