@@ -295,7 +295,7 @@ function htmlEncode($val,$context="default") {
       $str=str_replace('\\\\','\\',$str);
     }
     return nl2br(htmlentities($str,ENT_QUOTES,'UTF-8'));
-  }
+  } 
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
 
@@ -305,15 +305,16 @@ function htmlEncode($val,$context="default") {
  * @return unknown_type
  */
 function htmlEncodeJson($val, $numericLength=0) {
-  $val = str_replace('"',"",$val);
-  $val = str_replace("'","",$val);
-  $val = str_replace("&","",$val);
-  $val = str_replace("<","",$val);
-  $val = str_replace(">","",$val);       
+  $val=htmlspecialchars($val,ENT_QUOTES,'UTF-8');
+	$val = str_replace('&quot;',"''",$val);
+  $val = str_replace("&#039;","'",$val);
+  $val = str_replace("&amp;","&",$val);
+  $val = str_replace("&lt;","<",$val);
+  $val = str_replace("&gt;",">",$val);       
   if ($numericLength>0) {
     $val=str_pad($val,$numericLength,'0', STR_PAD_LEFT);
   }
-  return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
+  return $val;
 }
 
 /** ============================================================================

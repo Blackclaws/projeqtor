@@ -76,14 +76,18 @@ class Client extends SqlElement {
       $prj=new Project();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      $result .= $prj->drawProjectsList(array('idClient'=>$this->id,'idle'=>'0'));
+      if ($this->id) {
+        $result .= $prj->drawProjectsList(array('idClient'=>$this->id,'idle'=>'0'));
+      }
       $result .="</td></tr></table>";
       return $result;
     } else if ($item=='contacts') {
       $con=new Contact();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('contacts') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      $result .= $con->drawContactsList(array('idClient'=>$this->id,'idle'=>'0'));
+      if ($this->id) {
+        $result .= $con->drawContactsList(array('idClient'=>$this->id,'idle'=>'0'));
+      }
       $result .="</td></tr></table>";
       return $result;
     }
