@@ -39,11 +39,11 @@ class IndividualExpense extends SqlElement {
 
   private static $_fieldsAttributes=array("idProject"=>"required",
                                   "idIndividualExpenseType"=>"required",
-                                  "expensePlannedDate"=>"required",
-                                  "plannedAmount"=>"required",
+                                  "expensePlannedDate"=>"",
+                                  "plannedAmount"=>"",
                                   "idResource"=>"required",
                                   "idStatus"=>"required",
-  								  "idUser"=>"hidden"
+  								                "idUser"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idIndividualExpenseType'=>'type',
@@ -167,6 +167,29 @@ class IndividualExpense extends SqlElement {
     return $colScript;
   }
 
+  public function control() {
+  	$result="";
+  	if (! $this->plannedAmount and ! $this->realAmount) {
+  		$result.= '<br/>' . i18n('msgEnterRPAmount');
+  	}
+    if (! $this->expensePlannedDate and ! $this->expenseRealDate) {
+      $result.= '<br/>' . i18n('msgEnterRPDate');
+    }
+    if ( ($this->plannedAmount and ! $this->expensePlannedDate ) 
+      or (! $this->plannedAmount and $this->expensePlannedDate ) ){
+      $result.= '<br/>' . i18n('msgEnterPlannedDA');	
+    }
+    if ( ($this->realAmount and ! $this->expenseRealDate ) 
+      or (! $this->realAmount and $this->expenseRealDate ) ){
+      $result.= '<br/>' . i18n('msgEnterRealDA');  
+    }
+    if ($result=="") {
+    	return 'OK';
+    } else {
+    	return $result;
+    }
+  }
+  
   public function save() {
     $this->idUser=$this->idResource;
     return parent::save();
