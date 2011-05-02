@@ -208,6 +208,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawDependenciesFromObject($val, $obj, $depType);
     } else if ($col=='_ResourceCost') { // Display ResourceCost     
       drawResourceCostFromObject($val, $obj, false);      
+    } else if ($col=='_ExpenseDetail') { // Display ResourceCost     
+      drawExpenseDetailFromObject($val, $obj, false);      
     } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' 
                                      and substr($col,0,7)!='_label_') { // field not to be displayed
       //
@@ -372,7 +374,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           //echo '<div style="width: ' . $fieldWidth . 'px;"> ' . htmlEncode($val,'print') . '</div>';
           echo htmlEncode($val,'print');
-        } else if ($dataType=='decimal' and substr($col, -4,4)=='Cost') {
+        } else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') ) {
           if ($currencyPosition=='after') {
             echo htmlEncode($val,'print') . ' ' . $currency;
           } else {
@@ -653,7 +655,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($dataType=='int' or $dataType=='decimal'){
         // Draw a number field ================================================ NUMBER
         $cost=false;
-        if ($dataType=='decimal' and substr($col, -4,4)=='Cost') {
+        if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') ) {
           $cost=true;
           $fieldWidth=$smallWidth;
         }
@@ -1185,6 +1187,81 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
     }
     echo '</tr>';
+  }
+  echo '</table></td></tr>';
+}
+
+function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+//  $pe=new PlanningElement();
+//  $pe->setVisibility();
+//  $workVisible=($pe->_workVisibility=='ALL')?true:false;
+  if ($obj->idle==1) {$canUpdate=false;}
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="assignHeader" style="width:5%">';
+    //if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
+    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
+    	echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail();" title="' . i18n('addExpenseDetail') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'15':'10' ) . '%">' . i18n('colDate') . '</td>';
+  echo '<td class="assignHeader"style="width:35%">' . i18n('colName'). '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colType'). '</td>';  
+  echo '<td class="assignHeader"style="width:25%">' . i18n('colDetail'). '</td>';  
+  //  if ($workVisible) {
+    echo '<td class="assignHeader" style="width:10%">' . i18n('colAmount'). '</td>';
+//  }
+  echo '</tr>';
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  foreach($list as $expenseDetail) {
+    echo '<tr>';
+    if (! $print) {
+      echo '<td class="assignData" style="text-align:center;">';
+//      if ($canUpdate and ! $print and $workVisible) {
+      if ($canUpdate and ! $print) {
+      	echo '  <img src="css/images/smallButtonEdit.png" ' 
+        . 'onClick="editExpenseDetail(' . "'" . $expenseDetail->id . "'" 
+        . ",'" . $expenseDetail->expenseDate . "'"
+        . ",'" . $expenseDetail->idExpenseDetail . "'"
+        . ",'" . $expenseDetail->name . "'"        
+        . ",'" . $fmt->format($expenseDetail->amount) . "'"
+        . ');" ' 
+        . 'title="' . i18n('editExpenseDetail') . '" class="smallButton"/> ';      
+      }
+//      if ($canUpdate and ! $print and $workVisible )  {
+      if ($canUpdate and ! $print)  {
+        echo '  <img src="css/images/smallButtonRemove.png" ' 
+        . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "','" 
+               . $expenseDetail->name . "'" . ');" ' 
+        . 'title="' . i18n('removeExpenseDetail') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    }
+    echo '<td class="assignData" ';
+    if (! $print) {echo 'title="' . htmlEncodeJson($expenseDetail->description) . '"';}
+    echo '>'; 
+    echo '<table><tr>';
+    echo '<td>' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType);
+    echo '</td>';
+    if ($expenseDetail->description and ! $print) {
+     echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+    }
+    echo '</tr></table>';
+    echo '</td>';
+/*    echo '<td class="assignData" align="center">' . $assignment->rate  . '</td>';
+    if ($workVisible) {
+      echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
+    }
+*/    echo '</tr>';
   }
   echo '</table></td></tr>';
 }

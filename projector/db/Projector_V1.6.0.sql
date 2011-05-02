@@ -44,8 +44,8 @@ CREATE TABLE `${prefix}expense` (
   `description` varchar(4000) DEFAULT NULL,
   `expensePlannedDate` date DEFAULT null,
   `expenseRealDate` date DEFAULT null,
-  `plannedAmount` NUMERIC(11,2) DEFAULT null,
-  `realAmount` NUMERIC(11,2) DEFAULT null,
+  `plannedAmount` decimal(11,2) DEFAULT null,
+  `realAmount` decimal(11,2) DEFAULT null,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
@@ -54,14 +54,31 @@ CREATE TABLE `${prefix}expenseDetail` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT null, 
   `idExpense` int(12) unsigned DEFAULT null, 
-  `idExpenseDetailType` int(12) unsigned DEFAULT null, 
-  `name` varchar(100) DEFAULT NULL,
-  `description` varchar(4000) DEFAULT NULL,
   `expenseDate` date DEFAULT null, 
+  `name` varchar(100) DEFAULT NULL,
+  `idExpenseDetailType` int(12) unsigned DEFAULT null,
+  `value01` decimal(8,2) DEFAULT null,
+  `value02` decimal(8,2) DEFAULT null,
+  `value03` decimal(8,2) DEFAULT null,
+  `unit01` varchar(20) DEFAULT NULL,
+  `unit02` varchar(20) DEFAULT NULL,
+  `unit03` varchar(20) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
   `amount` NUMERIC(11,2) DEFAULT null,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE `${prefix}expenseDetailType` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `unit01` varchar(20) DEFAULT NULL,
+  `unit02` varchar(20) DEFAULT NULL,
+  `unit03` varchar(20) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
 
 UPDATE MENU SET sortOrder=600 where id=13;
 UPDATE MENU SET sortOrder=610 where id=14;
