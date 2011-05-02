@@ -20,8 +20,8 @@ class IndividualExpense extends SqlElement {
   public $expenseRealDate;
   public $realAmount;
   public $idle;
-  
   public $_col_1_1_Detail;
+  public $_ExpenseDetail=array();
   public $_Attachement=array();
   public $_Note=array();
 
