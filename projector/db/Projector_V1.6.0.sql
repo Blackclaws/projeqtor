@@ -72,6 +72,10 @@ CREATE TABLE `${prefix}expenseDetail` (
 CREATE TABLE `${prefix}expenseDetailType` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
+  `sortOrder` int(3) DEFAULT NULL,
+  `value01` decimal(8,2) DEFAULT null,
+  `value02` decimal(8,2) DEFAULT null,
+  `value03` decimal(8,2) DEFAULT null,
   `unit01` varchar(20) DEFAULT NULL,
   `unit02` varchar(20) DEFAULT NULL,
   `unit03` varchar(20) DEFAULT NULL,
@@ -122,6 +126,9 @@ INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level
 (82, 'menuInvoiceType', 79, 'object', 860, null, 0),
 (83, 'menuPaymentType', 79, 'object', 870, null, 0);
 
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(84, 'menuExpenseDetailType', 79, 'object', 855, null, 0);
+
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 74, 1),
 (2, 74, 1),
@@ -150,6 +157,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 82, 1),
 (1, 83, 1),
 (2, 83, 1);
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 84, 1),
+(2, 84, 1);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
 (1, 75, 8),
@@ -180,6 +190,8 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (6, 78, 9),
 (7, 78, 9),
 (5, 78, 9);
+
+DELETE from `${prefix}type` where scope in ('IndividualExpense', 'ProjectExpense', 'Invoice', 'Payment');
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
 ('IndividualExpense', 'Expense report', 10, 0, NULL, 8),
@@ -214,3 +226,10 @@ INSERT INTO `${prefix}workflowstatus` (idWorkflow,idStatusFrom,idStatusTo,idProf
 (8,4,3,3,1),
 (8,4,12,3,1),
 (8,12,7,3,1);
+
+INSERT INTO `${prefix}expenseDetailType` (id, name, sortOrder, value01, unit01, value02, unit02, value03, unit03, idle) VALUES
+(1,'travel by car', 10, null, 'km', 0.544, '€/km', null, null, 0),
+(2,'regular mission car travel', 20, null, 'days', null, 'km/day', 0.544, '€/km', 0),
+(3,'lunch for guests', 30, null, 'guests', null, '€/guest', null, null, 0),
+(4, 'justified expense', 40, null, '€', null, null, null, null, 0);
+ 
