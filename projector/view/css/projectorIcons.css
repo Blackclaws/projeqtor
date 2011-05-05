@@ -65,6 +65,10 @@
 .iconEnvironmentalParameter22 { background-image: url(images/iconEnvironmentalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconEnvironmentalParameter16 { background-image: url(images/iconEnvironmentalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconExpenseDetailType32 { background-image: url(images/iconExpenseDetailType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconExpenseDetailType22 { background-image: url(images/iconExpenseDetailType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconExpenseDetailType16 { background-image: url(images/iconExpenseDetailType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconFilter32 { background-image: url(images/iconFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconFilter22 { background-image: url(images/iconFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconFilter16 { background-image: url(images/iconFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -132,10 +136,6 @@
 .iconLikelihood32 { background-image: url(images/iconLikelihood32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconLikelihood22 { background-image: url(images/iconLikelihood22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconLikelihood16 { background-image: url(images/iconLikelihood16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
-
-.iconType32 { background-image: url(images/iconListOfTypes32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconType22 { background-image: url(images/iconListOfTypes22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconType16 { background-image: url(images/iconListOfTypes16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconListOfValues32 { background-image: url(images/iconListOfValues32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconListOfValues22 { background-image: url(images/iconListOfValues22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -287,9 +287,9 @@
 .iconTool22 { background-image: url(images/iconTool22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTool16 { background-image: url(images/iconTool16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
-.iconType32 { background-image: url(images/iconType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconType22 { background-image: url(images/iconType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconType16 { background-image: url(images/iconType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconType32 { background-image: url(images/iconListOfTypes32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconType22 { background-image: url(images/iconListOfTypes22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconType16 { background-image: url(images/iconListOfTypes16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconUrgency32 { background-image: url(images/iconUrgency32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconUrgency22 { background-image: url(images/iconUrgency22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
