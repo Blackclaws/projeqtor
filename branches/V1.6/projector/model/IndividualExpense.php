@@ -38,6 +38,7 @@ class IndividualExpense extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("idProject"=>"required",
+                                  "name"=>"required",
                                   "idIndividualExpenseType"=>"required",
                                   "expensePlannedDate"=>"",
                                   "plannedAmount"=>"",

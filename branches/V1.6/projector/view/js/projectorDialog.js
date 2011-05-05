@@ -858,6 +858,157 @@ function assignmentChangeRole() {
 		}
 	});
 }
+
+//=============================================================================
+//= ExpenseDetail
+//=============================================================================
+
+/**
+* Display a add Assignment Box
+* 
+*/
+function addExpenseDetail () {
+	alert("TO DO"); return;
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	var prj=dijit.byId('idProject').get('value');
+	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
+	dijit.byId('assignmentIdResource').store.fetch();
+	dojo.byId("assignmentId").value="";
+	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+	dijit.byId("assignmentIdResource").set('value',null);
+	dijit.byId("assignmentIdRole").set('value',null);
+	dijit.byId("assignmentDailyCost").set('value',null);
+	dojo.byId("assignmentRate").value='100';
+	dojo.byId("assignmentAssignedWork").value='0';
+	dojo.byId("assignmentAssignedWorkInit").value='0';
+	dojo.byId("assignmentRealWork").value='0';
+	dojo.byId("assignmentLeftWork").value='0';
+	dojo.byId("assignmentLeftWorkInit").value='0';
+	dojo.byId("assignmentPlannedWork").value='0';
+	dojo.byId("assignmentComment").value='';
+	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
+	dijit.byId("assignmentIdResource").set('disabled',false);
+	dijit.byId("assignmentIdRole").set('disabled',false);
+	dijit.byId("dialogAssignment").show();
+}
+
+/**
+* Display a edit Assignment Box
+* 
+*/
+var editExpenseDetailLoading=false;
+function editExpenseDetail (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, comment) {
+	alert("TO DO"); return;
+	
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	editExpenseDetailLoading=true;
+	var prj=dijit.byId('idProject').get('value');
+	
+	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj
+		       +'&selected=' + idResource});
+	dijit.byId('assignmentIdResource').store.fetch();
+	dijit.byId("assignmentIdResource").set("value",idResource);
+	
+	//dijit.byId('assignmentIdRole').store = new dojo.data.ItemFileReadStore({
+//  url: '../tool/jsonList.php?listType=listRoleResource&idResource='+idRole});
+	//dijit.byId('assignmentIdRole').store.fetch();
+	dijit.byId("assignmentIdRole").set("value",idRole);
+	
+	dojo.byId("assignmentId").value=assignmentId;
+	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+	dijit.byId("assignmentDailyCost").set('value',cost);
+	dojo.byId("assignmentRate").value=rate;
+	dojo.byId("assignmentAssignedWork").value=assignedWork;
+	dojo.byId("assignmentAssignedWorkInit").value=dojo.number.parse(assignedWork);
+	dojo.byId("assignmentRealWork").value=realWork;
+	dojo.byId("assignmentLeftWork").value=leftWork;
+	dojo.byId("assignmentComment").value=comment;
+	dojo.byId("assignmentLeftWorkInit").value=dojo.number.parse(leftWork);
+	assignmentUpdatePlannedWork('assignment');
+	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment") + " #" + assignmentId);
+	dijit.byId("dialogAssignment").show();
+	if (dojo.number.parse(realWork)==0) {
+		dijit.byId("assignmentIdResource").set('readOnly',false);
+		dijit.byId("assignmentIdRole").set('readOnly',false);
+	} else {
+		dijit.byId("assignmentIdResource").set('readOnly',true);
+		dijit.byId("assignmentIdRole").set('readOnly',true);
+	}
+	setTimeout("editAssignmentLoading=false",1000);
+}
+
+/**
+* save an Assignment (after addAssignment or editAssignment)
+* 
+*/
+function saveExpenseDetail() {
+	/*if (! dijit.byId('assignmentIdResource').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colIdResource'))));
+		return;
+	}
+	if (! dijit.byId('assignmentIdResource').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colIdResource'))));
+		return;
+	}	*/
+	alert("TO DO"); return;
+	var formVar = dijit.byId('assignmentForm');
+if(formVar.validate()){		
+	  dijit.byId("assignmentPlannedWork").focus();
+	  dijit.byId("assignmentLeftWork").focus();
+	  loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');
+	  dijit.byId('dialogAssignment').hide();
+} else {
+  showAlert(i18n("alertInvalidForm"));
+}
+}
+
+/**
+* Display a delete Assignment Box
+* 
+*/
+function removeExpenseDetail (assignmentId, realWork, resource) {
+	alert("TO DO"); return;
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	if (parseFloat(realWork)) {
+		msg=i18n('msgUnableToDeleteRealWork');
+		showAlert (msg);
+		return;
+	}
+	dojo.byId("assignmentId").value=assignmentId;
+	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+	actionOK=function() {loadContent("../tool/removeAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');};
+	msg=i18n('confirmDeleteAssignment',new Array(resource));
+	showConfirm (msg, actionOK);
+}
+
+
+function expenseDetailChangeType() {
+	alert("TO DO");return ;
+	if (editAssignmentLoading) return;
+	var idResource=dijit.byId("assignmentIdResource").get("value");
+	if (! idResource) return;
+	dijit.byId('assignmentDailyCost').set('value',null);
+	dojo.xhrGet({
+		url: '../tool/getSingleData.php?dataType=resourceRole&idResource=' + idResource,
+		handleAs: "text",
+		load: function (data) {dijit.byId('assignmentIdRole').set('value',data);}
+	});
+}
+
 //=============================================================================
 //= Dependency
 //=============================================================================
