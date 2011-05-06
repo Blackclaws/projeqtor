@@ -744,6 +744,154 @@ scriptLog('   ->/view/main.php');
   </table>
 </div>
 
+<div id="dialogExpenseDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogExpenseDetail");?>">
+  <table>
+    <tr>
+      <td>
+       <form dojoType="dijit.form.Form" id='expenseDetailForm' jsid='expenseDetailForm' name='expenseDetailForm' onSubmit="return false;">
+         <input id="ExpenseDetailId" name="ExpenseDetailId" type="hidden" value="" />
+         <input id="idExpense" name="idExpense" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="expenseDetailDate" ><?php echo i18n("colDate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="expenseDetailDate" name="expenseDetailDate"
+                 dojoType="dijit.form.DateTextBox" 
+                 invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
+                 type="text" maxlength="10" 
+                 style="width:75px; text-align: center;" class="input"
+                 required="true" 
+                 missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+                 invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+                 >
+             </div>
+             </td>
+           </tr>
+            <tr>
+             <td class="dialogLabel" >
+               <label for="expenseDetailName" ><?php echo i18n("colName");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="expenseDetailName" name="expenseDetailName" value="" 
+                 dojoType="dijit.form.TextBox" 
+                 style="width:200px" 
+                 required="true" 
+                 missingMessage="<?php echo i18n('messageMandatory',array('colName'));?>" 
+                 invalidMessage="<?php echo i18n('messageMandatory',array('colName'));?>"              
+               />
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="expenseDetailType" ><?php echo i18n("colType");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <select dojoType="dijit.form.FilteringSelect" 
+                id="expenseDetailType" name="expenseDetailType"
+                class="input" value="" 
+                onChange="expenseDetailTypeChange();" >                
+                 <?php htmlDrawOptionForReference('idExpenseDetailType', null, null, true);?>            
+               </select>  
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="expenseDetailAmount" ><?php echo i18n("colAmount");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <?php echo ($currencyPosition=='before')?$currency:''; ?>
+               <input id="expenseDetailAmount" name="expenseDetailAmount" value="" 
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0}" 
+                 style="width:97px"              
+               />
+               <?php echo ($currencyPosition=='after')?$currency:'';?>
+             </td>
+           </tr>
+          
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentAssignedWork" ><?php echo i18n("colAssignedWork");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="assignmentAssignedWork" name="assignmentAssignedWork" value="" 
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0,max:9999.99}" 
+                 style="width:97px"
+                 onchange="assignmentUpdateLeftWork('assignment');"
+                 onblur="assignmentUpdateLeftWork('assignment');" />
+               <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="" 
+                 style="width:97px"/>  
+             </td>    
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentRealWork" ><?php echo i18n("colRealWork");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="assignmentRealWork" name="assignmentRealWork" value=""  
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0,max:9999.99}" 
+                 style="width:97px" readonly />
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentLeftWork" ><?php echo i18n("colLeftWork");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="assignmentLeftWork" name="assignmentLeftWork" value=""  
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0,max:9999.99}" 
+                 onchange="assignmentUpdatePlannedWork('assignment');"
+                 onblur="assignmentUpdatePlannedWork('assignment');"  
+                 style="width:97px" />
+               <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="" 
+                 style="width:97px"/>  
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentPlannedWork" ><?php echo i18n("colPlannedWork");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="assignmentPlannedWork" name="assignmentPlannedWork" value=""  
+                 dojoType="dijit.form.NumberTextBox" 
+                 constraints="{min:0,max:9999.99}" 
+                 style="width:97px" readonly /> 
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="assignmentComment" ><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <input id="assignmentComment" name="assignmentComment" value=""  
+                 dojoType="dijit.form.Textarea"
+                 class="input" 
+                 /> 
+             </td>
+           </tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogAssignmentAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAssignment').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" onclick="saveAssignment();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <div id="dialogPlan" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPlan");?>">
   <table>
     <tr>
