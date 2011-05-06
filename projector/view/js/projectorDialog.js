@@ -868,12 +868,11 @@ function assignmentChangeRole() {
 * 
 */
 function addExpenseDetail () {
-	alert("TO DO"); return;
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
-	var prj=dijit.byId('idProject').get('value');
+	/*var prj=dijit.byId('idProject').get('value');
 	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
 		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
 	dijit.byId('assignmentIdResource').store.fetch();
@@ -894,7 +893,8 @@ function addExpenseDetail () {
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
 	dijit.byId("assignmentIdResource").set('disabled',false);
 	dijit.byId("assignmentIdRole").set('disabled',false);
-	dijit.byId("dialogAssignment").show();
+	*/
+	dijit.byId("dialogExpenseDetail").show();
 }
 
 /**
