@@ -872,28 +872,14 @@ function addExpenseDetail () {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
-	/*var prj=dijit.byId('idProject').get('value');
-	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
-		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
-	dijit.byId('assignmentIdResource').store.fetch();
-	dojo.byId("assignmentId").value="";
-	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
-	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
-	dijit.byId("assignmentIdResource").set('value',null);
-	dijit.byId("assignmentIdRole").set('value',null);
-	dijit.byId("assignmentDailyCost").set('value',null);
-	dojo.byId("assignmentRate").value='100';
-	dojo.byId("assignmentAssignedWork").value='0';
-	dojo.byId("assignmentAssignedWorkInit").value='0';
-	dojo.byId("assignmentRealWork").value='0';
-	dojo.byId("assignmentLeftWork").value='0';
-	dojo.byId("assignmentLeftWorkInit").value='0';
-	dojo.byId("assignmentPlannedWork").value='0';
-	dojo.byId("assignmentComment").value='';
-	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
-	dijit.byId("assignmentIdResource").set('disabled',false);
-	dijit.byId("assignmentIdRole").set('disabled',false);
-	*/
+	dojo.byId("expenseDetailId").value="";
+	dojo.byId("idExpense").value=dojo.byId("objectId").value;
+	dijit.byId("expenseDetailName").set('value','');
+	dijit.byId("expenseDetailDate").set('value','');
+	dijit.byId("expenseDetailType").set('value',null);
+	dojo.byId("expenseDetailDiv").innerHtml="";
+	dijit.byId("expenseDetailAmount").set('value','');
+	//dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail"));
 	dijit.byId("dialogExpenseDetail").show();
 }
 
@@ -996,17 +982,39 @@ function removeExpenseDetail (assignmentId, realWork, resource) {
 }
 
 
-function expenseDetailChangeType() {
-	alert("TO DO");return ;
-	if (editAssignmentLoading) return;
-	var idResource=dijit.byId("assignmentIdResource").get("value");
-	if (! idResource) return;
-	dijit.byId('assignmentDailyCost').set('value',null);
-	dojo.xhrGet({
-		url: '../tool/getSingleData.php?dataType=resourceRole&idResource=' + idResource,
-		handleAs: "text",
-		load: function (data) {dijit.byId('assignmentIdRole').set('value',data);}
-	});
+function expenseDetailTypeChange() {
+	if (editExpenseDetailLoading) return;
+	var idType=dijit.byId("expenseDetailType").get("value");
+	loadContent('../tool/expenseDetailDiv.php?idType='+idType, 'expenseDetailDiv', null, false);
+}
+
+function expenseDetailRecalculate() {
+	if (dijit.byId('expenseDetailValue01')) {
+		val01=dijit.byId('expenseDetailValue01').get("value");
+	} else {
+		val01=dojo.byId('expenseDetailValue01').value;
+	}
+	if (dijit.byId('expenseDetailValue02')) {
+		val02=dijit.byId('expenseDetailValue02').get("value");
+	} else {
+		val02=dojo.byId('expenseDetailValue02').value;
+	}
+	if (dijit.byId('expenseDetailValue03')) {
+		val03=dijit.byId('expenseDetailValue03').get("value");
+	} else {
+		val03=dojo.byId('expenseDetailValue03').value;
+	}	
+	total=1;
+	if (dojo.byId('expenseDetailUnit01').value) {
+		total=total*val01;
+	}
+	if (dojo.byId('expenseDetailUnit02').value) {
+		total=total*val02;
+	}
+	if (dojo.byId('expenseDetailUnit03').value) {
+		total=total*val03;
+	}
+	dijit.byId("expenseDetailAmount").set('value',total);
 }
 
 //=============================================================================
