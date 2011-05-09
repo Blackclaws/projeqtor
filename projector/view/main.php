@@ -749,7 +749,7 @@ scriptLog('   ->/view/main.php');
     <tr>
       <td>
        <form dojoType="dijit.form.Form" id='expenseDetailForm' jsid='expenseDetailForm' name='expenseDetailForm' onSubmit="return false;">
-         <input id="ExpenseDetailId" name="ExpenseDetailId" type="hidden" value="" />
+         <input id="expenseDetailId" name="expenseDetailId" type="hidden" value="" />
          <input id="idExpense" name="idExpense" type="hidden" value="" />
          <table>
            <tr>
@@ -759,7 +759,7 @@ scriptLog('   ->/view/main.php');
              <td>
                <input id="expenseDetailName" name="expenseDetailName" value="" 
                  dojoType="dijit.form.TextBox" 
-                 style="width:200px" 
+                 style="width:400px" 
                  required="true" 
                  missingMessage="<?php echo i18n('messageMandatory',array('colName'));?>" 
                  invalidMessage="<?php echo i18n('messageMandatory',array('colName'));?>"              
@@ -791,12 +791,20 @@ scriptLog('   ->/view/main.php');
              <td>
               <select dojoType="dijit.form.FilteringSelect" 
                 id="expenseDetailType" name="expenseDetailType"
+                style="width:200px" 
                 class="input" value="" 
                 onChange="expenseDetailTypeChange();" >                
                  <?php htmlDrawOptionForReference('idExpenseDetailType', null, null, true);?>            
                </select>  
              </td>
            </tr>
+           <tr>
+            <td colspan="2">
+              <div id="expenseDetailDiv" dojoType="dijit.layout.ContentPane" region="center" >    
+              </div>
+            </td> 
+           </tr>
+
            <tr>
              <td class="dialogLabel" >
                <label for="expenseDetailAmount" ><?php echo i18n("colAmount");?>&nbsp;:&nbsp;</label>
@@ -806,7 +814,8 @@ scriptLog('   ->/view/main.php');
                <input id="expenseDetailAmount" name="expenseDetailAmount" value="" 
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0}" 
-                 style="width:97px"              
+                 style="width:97px"
+                 readonly="readonly"              
                />
                <?php echo ($currencyPosition=='after')?$currency:'';?>
              </td>
