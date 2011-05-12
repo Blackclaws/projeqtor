@@ -13,6 +13,12 @@ class ExpenseDetail extends SqlElement {
   public $description;
   public $expenseDate; 
   public $amount;
+  public $expenseDetailValue01;
+  public $expenseDetailValue02;
+  public $expenseDetailValue03;
+  public $expenseDetailUnit01;
+  public $expenseDetailUnit02;
+  public $expenseDetailUnit03;
   public $idle;
   
    /** ==========================================================================
@@ -51,6 +57,7 @@ class ExpenseDetail extends SqlElement {
    * @see persistence/SqlElement#save()
    */
   public function delete() {
+  	$result = parent::delete();
     return $result;
   }
     
@@ -62,6 +69,7 @@ class ExpenseDetail extends SqlElement {
    */
   public function control(){
     $result="";
+    $result = parent::control();
     return $result;
   }
 }

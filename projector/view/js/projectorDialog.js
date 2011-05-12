@@ -938,24 +938,31 @@ function editExpenseDetail (assignmentId, idResource, idRole, cost, rate, assign
 * 
 */
 function saveExpenseDetail() {
-	/*if (! dijit.byId('assignmentIdResource').get('value')) {
-		showAlert(i18n('messageMandatory',new Array(i18n('colIdResource'))));
+	if (! dijit.byId('expenseDetailName').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colName'))));
 		return;
 	}
-	if (! dijit.byId('assignmentIdResource').get('value')) {
-		showAlert(i18n('messageMandatory',new Array(i18n('colIdResource'))));
+	if (! dijit.byId('expenseDetailDate').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colDate'))));
 		return;
-	}	*/
-	alert("TO DO"); return;
-	var formVar = dijit.byId('assignmentForm');
-if(formVar.validate()){		
-	  dijit.byId("assignmentPlannedWork").focus();
-	  dijit.byId("assignmentLeftWork").focus();
-	  loadContent("../tool/saveAssignment.php", "resultDiv", "assignmentForm", true, 'assignment');
-	  dijit.byId('dialogAssignment').hide();
-} else {
-  showAlert(i18n("alertInvalidForm"));
-}
+	}
+	if (! dijit.byId('expenseDetailType').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colType'))));
+		return;
+	}
+	if (! dijit.byId('expenseDetailAmount').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colAmount'))));
+		return;
+	}
+	var formVar = dijit.byId('expenseDetailForm');
+    if(formVar.validate()){		
+	  dijit.byId("expenseDetailName").focus();
+	  dijit.byId("expenseDetailAmount").focus();
+	  loadContent("../tool/saveExpenseDetail.php", "resultDiv", "expenseDetailForm", true, 'expenseDetail');
+	  dijit.byId('dialogExpenseDetail').hide();
+    } else {
+    	showAlert(i18n("alertInvalidForm"));
+    }
 }
 
 /**
