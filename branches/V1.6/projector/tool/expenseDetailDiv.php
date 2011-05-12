@@ -18,7 +18,7 @@ function showLine($nb, $value, $unit) {
 	if ($unit) {			
 		echo '<tr>';
 		echo '<td class="dialogLabel" >';
-	    echo '<label for="expenseDetailValue1" >' . ($nb=='01'?'':'x&nbsp;') . '</label>';
+	    echo '<label for="expenseDetailValue' . $nb . '" >' . ($nb=='01'?'':'x&nbsp;') . '</label>';
 	    echo '</td>';
 	    echo '<td>';
 	    if ($value) {
