@@ -324,6 +324,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       	if (destination=="centerDiv") {
       		showList();
       	}
+	  	if (destination=="expenseDetailDiv") {
+		  	  expenseDetailRecalculate();
+	  	}
         if (directAccess) {
         	if (dijit.byId('listIdFilter')) {
         		//dijit.byId('listIdFilter').set('value',directAccess);
@@ -392,6 +395,10 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         	if (destination=="centerDiv" && switchedMode) {
         		showList();
         	}
+    	  	if (destination=="expenseDetailDiv") {
+    		  	  expenseDetailRecalculate();
+    	  	}
+
           if (directAccess) {
           	if (dijit.byId('listIdFilter')) {
           		//dijit.byId('listIdFilter').set('value',directAccess);
@@ -504,7 +511,7 @@ function submitForm(page, destination, formName) {
  * @return void
  */
 function finalizeMessageDisplay(destination, validationType) {
-	var contentNode = dojo.byId(destination);
+  var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var lastOperationStatus = dojo.byId('lastOperationStatus');
   var lastOperation = dojo.byId('lastOperation');
@@ -537,7 +544,8 @@ function finalizeMessageDisplay(destination, validationType) {
   	// add the message in the message Div (left part) and prepares form to new changes
   	addMessage(msg);
   	if (validationType=='note' || validationType=='attachement' || validationType=="link" 
-  		|| validationType=="assignment" || validationType=="dependency" || validationType=="resourceCost") {
+  		|| validationType=="assignment" || validationType=="dependency" || validationType=="resourceCost"
+  		|| validationType=="expenseDetail") {
   		if (validationType=='note') {
   			loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
   		} else if (validationType=='attachement') {
@@ -546,6 +554,8 @@ function finalizeMessageDisplay(destination, validationType) {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else if (validationType=='assignment') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+  		} else if (validationType=='expenseDetail') {
+  			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');	
   		} else if (validationType=='dependency') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else if (validationType=='resourceCost') {

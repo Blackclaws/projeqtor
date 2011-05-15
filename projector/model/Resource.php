@@ -146,7 +146,6 @@ class Resource extends SqlElement {
 
   } 
 
-
   public function getWork($startDate, $withProjectRepartition=false) {
     $result=array();
     $startDay=str_replace('-','',$startDate);

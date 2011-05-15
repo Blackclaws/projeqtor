@@ -12,13 +12,13 @@ class ExpenseDetail extends SqlElement {
   public $name;
   public $description;
   public $expenseDate; 
-  public $amount;
-  public $expenseDetailValue01;
-  public $expenseDetailValue02;
-  public $expenseDetailValue03;
-  public $expenseDetailUnit01;
-  public $expenseDetailUnit02;
-  public $expenseDetailUnit03;
+  public $amount; 
+  public $value01;
+  public $value02;
+  public $value03;
+  public $unit01;
+  public $unit02;
+  public $unit03;
   public $idle;
   
    /** ==========================================================================
@@ -70,6 +70,23 @@ class ExpenseDetail extends SqlElement {
   public function control(){
     $result="";
     $result = parent::control();
+    return $result;
+  }
+  
+  public function getFormatedDetail() {
+  	$result="";
+  	if ($this->value01 or $this->unit01) {
+  		$result.=($result)?' <b>x</b> ':'';
+  		$result.=htmlDisplayNumeric($this->value01) . " " . $this->unit01;
+  	}
+    if ($this->value02 or $this->unit02) {
+      $result.=($result)?' <b>x</b> ':'';
+      $result.=htmlDisplayNumeric($this->value02) . " " . $this->unit02;
+    }
+    if ($this->value03 or $this->unit03) {
+      $result.=($result)?' <b>x</b> ':'';
+      $result.=htmlDisplayNumeric($this->value03) . " " . $this->unit03;
+    }
     return $result;
   }
 }

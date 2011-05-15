@@ -935,6 +935,8 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
                 $this->{$col_name}=Link::getLinksForObject($this,$linkClass);
               } else if ($colName=="ResourceCost") {
                 $this->{$col_name}=$this->getResourceCost();
+              } else if ($colName=="ExpenseDetail") {
+                $this->{$col_name}=$this->getExpenseDetail();
               } else if (substr($colName,0,10)=="Dependency") {
                 $depType=null;
                 $crit=Array();
@@ -1299,7 +1301,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     }
     if ($colName=="idStatus") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      if (property_exists($this, 'idle')) {
+      if (property_exists($this, 'idle') and get_class($this)!='StatusMail') {
         $colScript .= htmlGetJsTable('Status', 'setIdleStatus', 'tabStatusIdle');
         $colScript .= '  var setIdle=0;';
         $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';

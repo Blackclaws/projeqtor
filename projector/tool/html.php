@@ -282,7 +282,7 @@ function htmlFormatDateTime($val, $withSecond=true) {
  */
 function htmlEncode($val,$context="default") {
   if ($context=='none') {
-    return $val;
+    return str_replace('"',"''",$val);
   } else if ($context=='print') {
     return nl2br(htmlentities($val,ENT_COMPAT,'UTF-8'));
   } else if ($context=='withBR') {
@@ -295,7 +295,11 @@ function htmlEncode($val,$context="default") {
       $str=str_replace('\\\\','\\',$str);
     }
     return nl2br(htmlentities($str,ENT_QUOTES,'UTF-8'));
-  } 
+  } else if ($context=='quotes') {
+  	$str=str_replace("'"," ",$val);
+  	$str=str_replace('"'," ",$str);
+  	return $str;
+  }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
 

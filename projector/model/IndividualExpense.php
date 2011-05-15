@@ -2,7 +2,7 @@
 /** ============================================================================
  * Action is establised during meeting, to define an action to be followed.
  */ 
-class IndividualExpense extends SqlElement {
+class IndividualExpense extends Expense {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
@@ -131,69 +131,6 @@ class IndividualExpense extends SqlElement {
     return self::$_databaseCriteria; 
   }
   
-// ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo framework)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
 
-    if ($colName=="idStatus") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= htmlGetJsTable('Status', 'setIdleStatus', 'tabStatusIdle');
-      $colScript .= htmlGetJsTable('Status', 'setDoneStatus', 'tabStatusDone');
-      $colScript .= '  var setIdle=0;';
-      $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
-      $colScript .= '  if (setIdle==1) {';
-      $colScript .= '    dijit.byId("idle").set("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idle").set("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  var setDone=0;';
-      $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
-      $colScript .= '  if (setDone==1) {';
-      $colScript .= '    dijit.byId("done").set("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("done").set("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';     
-    }
-    return $colScript;
-  }
-
-  public function control() {
-  	$result="";
-  	if (! $this->plannedAmount and ! $this->realAmount) {
-  		$result.= '<br/>' . i18n('msgEnterRPAmount');
-  	}
-    if (! $this->expensePlannedDate and ! $this->expenseRealDate) {
-      $result.= '<br/>' . i18n('msgEnterRPDate');
-    }
-    if ( ($this->plannedAmount and ! $this->expensePlannedDate ) 
-      or (! $this->plannedAmount and $this->expensePlannedDate ) ){
-      $result.= '<br/>' . i18n('msgEnterPlannedDA');	
-    }
-    if ( ($this->realAmount and ! $this->expenseRealDate ) 
-      or (! $this->realAmount and $this->expenseRealDate ) ){
-      $result.= '<br/>' . i18n('msgEnterRealDA');  
-    }
-    if ($result=="") {
-    	return 'OK';
-    } else {
-    	return $result;
-    }
-  }
-  
-  public function save() {
-    $this->idUser=$this->idResource;
-    return parent::save();
-  }
 }
 ?>

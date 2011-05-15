@@ -11,20 +11,20 @@ class Milestone extends SqlElement {
   public $idProject;
   public $idMilestoneType;
   public $name;
-  public $description;
   public $creationDate;
   public $idUser;
+  public $description;
   public $_col_2_2_treatment;
   public $idActivity;
   public $idStatus;
   public $idResource;
-  public $result;
   public $handled;
   public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $result;
   public $_col_1_1_Progress;
   public $MilestonePlanningElement; // is an object
   public $_col_1_2_predecessor;
