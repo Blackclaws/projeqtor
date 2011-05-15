@@ -10,7 +10,7 @@ class Expense extends SqlElement {
   public $idProject;
   public $idResource;
   public $idUser;
-  public $idExpenseType;
+  //public $idExpenseType;
   public $name;
   public $description;
   public $_col_2_2_treatment;
@@ -30,7 +30,6 @@ class Expense extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="15%" >${idProject}</th>
-    <th field="nameResource" width="15%" >${idResource}</th>
     <th field="nameExpenseType" width="15%" >${type}</th>
     <th field="name" formatter="dateFormatter" width="20%" >${name}</th>
     <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${idStatus}</th>
@@ -40,11 +39,8 @@ class Expense extends SqlElement {
   private static $_fieldsAttributes=array("idProject"=>"required",
                                   "name"=>"required",
                                   "idExpenseType"=>"required",
-                                  "expensePlannedDate"=>"",
-                                  "plannedAmount"=>"",
-                                  "idResource"=>"required",
                                   "idStatus"=>"required",
-  								  "idUser"=>"hidden"
+  								                "idUser"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('expensePlannedDate'=>'plannedDate',
@@ -162,5 +158,14 @@ class Expense extends SqlElement {
     $this->idUser=$this->idResource;
     return parent::save();
   }
+
+  public function getExpenseDetail() {
+    $result=array();
+    $ed=new ExpenseDetail();
+    $crit=array('idExpense'=>$this->id);
+    $edList=$ed->getSqlElementsFromCriteria($crit, false, null, 'expenseDate');
+    return $edList;
+  }
+  
 }
 ?>

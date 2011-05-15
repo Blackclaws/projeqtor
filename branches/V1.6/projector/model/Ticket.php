@@ -11,11 +11,11 @@ class Ticket extends SqlElement {
   public $idProject;
   public $idTicketType;
   public $name;
-  public $description;
   public $idUrgency;
   public $creationDateTime;
   public $idUser;
   public $idContact;
+  public $description;
   public $_col_2_2_treatment;
   public $idActivity;
   public $idStatus;
@@ -24,15 +24,14 @@ class Ticket extends SqlElement {
   public $idPriority;
   public $initialDueDateTime; // is an object
   public $actualDueDateTime;
-  public $result;
   public $handled;
   public $handledDateTime;
   public $done;
   public $doneDateTime;
   public $idle;
   public $idleDateTime;
-  
-  //public $_col_1_1_Progress;
+  public $result;
+//public $_col_1_1_Progress;
   public $_Attachement=array();
   public $_Note=array();
   

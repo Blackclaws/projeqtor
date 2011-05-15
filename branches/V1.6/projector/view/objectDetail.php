@@ -701,6 +701,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $attributes;
         echo '  style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
+//        echo ' maxSize="4" ';
         echo ' class="input" ' . '>';
         echo htmlEncode($val, 'none');
         //echo $colScript; // => this leads to the display of script in textarea
@@ -1228,9 +1229,9 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
       if ($canUpdate and ! $print) {
       	echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editExpenseDetail(' . "'" . $expenseDetail->id . "'" 
-        . ",'" . $expenseDetail->expenseDate . "'"
-        . ",'" . $expenseDetail->idExpenseDetail . "'"
-        . ",'" . $expenseDetail->name . "'"        
+        . ",'" . $expenseDetail->idExpense . "'"
+        . ",'" . $expenseDetail->idExpenseDetailType . "'"               
+        . ",'" . $expenseDetail->expenseDate . "'"    
         . ",'" . $fmt->format($expenseDetail->amount) . "'"
         . ');" ' 
         . 'title="' . i18n('editExpenseDetail') . '" class="smallButton"/> ';      
@@ -1238,30 +1239,28 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
 //      if ($canUpdate and ! $print and $workVisible )  {
       if ($canUpdate and ! $print)  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
-        . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "','" 
-               . $expenseDetail->name . "'" . ');" ' 
+        . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "'" . ');" ' 
         . 'title="' . i18n('removeExpenseDetail') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
+    echo '<td class="assignData" >' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
     echo '<td class="assignData" ';
     if (! $print) {echo 'title="' . htmlEncodeJson($expenseDetail->description) . '"';}
-    echo '>'; 
-    echo '<table><tr>';
-    echo '<td>' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType);
-    echo '</td>';
+    echo '>' . $expenseDetail->name ;
     if ($expenseDetail->description and ! $print) {
-     echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+     echo '<span>&nbsp;&nbsp;<img src="img/note.png" /></span>';
     }
-    echo '</tr></table>';
+    echo '<input type="hidden" id="expenseDetail_' . $expenseDetail->id . '" value="' . htmlEncode($expenseDetail->name,'none') .'"/>';
+    
+    echo '</td>';    
+    echo '<td class="assignData" >' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType) .'</td>';
+    echo '<td class="assignData" >';
+    echo $expenseDetail->getFormatedDetail();
     echo '</td>';
-/*    echo '<td class="assignData" align="center">' . $assignment->rate  . '</td>';
-    if ($workVisible) {
-      echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
-    }
-*/    echo '</tr>';
+    echo '<td class="assignData" style="text-align:right;">' . htmlDisplayCurrency($expenseDetail->amount) . '</td>';
+
+    echo '</tr>';
   }
   echo '</table></td></tr>';
 }
