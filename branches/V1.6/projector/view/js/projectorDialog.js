@@ -887,22 +887,22 @@ function addExpenseDetail () {
 * Display a edit Assignment Box
 * 
 */
-var editExpenseDetailLoading=false;
+//var editExpenseDetailLoading=false;
 function editExpenseDetail (id, idExpense, type, expenseDate, amount) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	editExpenseDetailLoading=true;
-	//var prj=dijit.byId('idProject').get('value');
-
 	dojo.byId("expenseDetailId").value=id;
 	dojo.byId("idExpense").value=idExpense;	
 	dijit.byId("expenseDetailName").set("value",dojo.byId('expenseDetail_'+id).value);
   	dijit.byId("expenseDetailDate").set("value",new Date(expenseDate));
-	dijit.byId("expenseDetailType").set("value",type);
-	dijit.byId("expenseDetailAmount").set("value",amount);
-	expenseDetailTypeChange(id);
+	dijit.byId("expenseDetailAmount").set("value",dojo.number.parse(amount));
+  	var oldType=dijit.byId("expenseDetailType").get("value");
+  	dijit.byId("expenseDetailType").set("value",type);
+	if (oldType==type) {
+		expenseDetailTypeChange();
+	}
 	dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail") + " #" + id);
 	dijit.byId("dialogExpenseDetail").show();
 	setTimeout("editExpenseDetailLoading=false",1000);
@@ -956,10 +956,17 @@ function removeExpenseDetail (expenseDetailId) {
 	showConfirm (msg, actionOK);
 }
 
-function expenseDetailTypeChange(expenseDetailId) {
-	if (editExpenseDetailLoading) return;
+function expenseDetailTypeChange() {
+//	if (editExpenseDetailLoading) return;
+//	editExpenseDetailLoading=true;
 	var idType=dijit.byId("expenseDetailType").get("value");
-	loadContent('../tool/expenseDetailDiv.php?idType='+idType, 'expenseDetailDiv', null, false);
+	var expenseDetailId=dojo.byId("expenseDetailId").value;
+//alert(expenseDetailId);
+	var url='../tool/expenseDetailDiv.php?idType='+idType;
+	if (expenseDetailId) {
+	  url+='&expenseDetailId='+expenseDetailId;
+	}
+	loadContent(url, 'expenseDetailDiv', null, false);
 }
 
 function expenseDetailRecalculate() {
