@@ -8,6 +8,12 @@ require_once "../tool/projector.php";
 $idType=$_REQUEST['idType'];
 
 $detail=new ExpenseDetailType($idType);
+
+if (array_key_exists('expenseDetailId',$_REQUEST)) {
+	$expenseDetailId=$_REQUEST['expenseDetailId'];
+	$detail=new ExpenseDetail($expenseDetailId);
+}
+
 echo "<table>";
 
 showLine('01',$detail->value01, $detail->unit01);
