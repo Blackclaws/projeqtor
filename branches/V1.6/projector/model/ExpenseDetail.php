@@ -49,6 +49,8 @@ class ExpenseDetail extends SqlElement {
    */
   public function save() {
     $result = parent::save();
+    $exp=new Expense($result->idExpense);
+    $exp->updateAmount();
     return $result;
   }
   
@@ -58,7 +60,9 @@ class ExpenseDetail extends SqlElement {
    */
   public function delete() {
   	$result = parent::delete();
-    return $result;
+    $exp=new Expense($result->idExpense);
+    $exp->updateAmount();  	
+  	return $result;
   }
     
 /** =========================================================================
