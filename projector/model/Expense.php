@@ -133,12 +133,12 @@ class Expense extends SqlElement {
 
   public function control() {
   	$result="";
-  	if (! $this->plannedAmount and ! $this->realAmount) {
-  		$result.= '<br/>' . i18n('msgEnterRPAmount');
-  	}
-    if (! $this->expensePlannedDate and ! $this->expenseRealDate) {
-      $result.= '<br/>' . i18n('msgEnterRPDate');
-    }
+  	//if (! $this->plannedAmount and ! $this->realAmount) {
+  	//	$result.= '<br/>' . i18n('msgEnterRPAmount');
+  	//}
+    //if (! $this->expensePlannedDate and ! $this->expenseRealDate) {
+    //  $result.= '<br/>' . i18n('msgEnterRPDate');
+    //}
     if ( ($this->plannedAmount and ! $this->expensePlannedDate ) 
       or (! $this->plannedAmount and $this->expensePlannedDate ) ){
       $result.= '<br/>' . i18n('msgEnterPlannedDA');	
@@ -167,5 +167,16 @@ class Expense extends SqlElement {
     return $edList;
   }
   
+  public function updateAmount() {
+  	$total=0;
+  	$date=null;
+  	foreach ($_ExpenseDetail as $ed) {
+  		$total+=$ed->amount;
+  		$date=$ed->expenseDate;
+  	} 
+  	$this->realAmount=$total;
+  	$this->expenseRealDate=$date;
+  	$this->save;
+  }
 }
 ?>
