@@ -1591,7 +1591,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         }
       }
       if ($objects!="") {
-        $result.=i18n("errorControlDelete") . $objects;
+        $result.="<br/>" . i18n("errorControlDelete") . $objects;
       }
     }
     if ($result=="") {

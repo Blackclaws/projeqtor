@@ -31,7 +31,9 @@ class Contact extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required", 
+                                          "idProfile"=>"hidden",
+                                          "isUser"=>"readonly"
   );    
   
   private static $_databaseTableName = 'user';
@@ -258,6 +260,25 @@ class Contact extends SqlElement {
     return $result;
   }
 
+  public function deleteControl() {
+    
+    $result="";
+    if ($this->isUser) {    
+      $crit=array("name"=>"menuUser");
+      $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+      if (! $menu) {
+        return;
+      }     
+      if (! securityCheckDisplayMenu($menu->id)) {
+        $result="<br/>" . i18n("msgCannotDeleteResource");
+      }             
+    }
+    if (! $result) {  
+      $result=parent::deleteControl();
+    }
+    return $result;
+  }
+  
   public function drawContactsList($critArray) {
     $result="<table>";
     $conList=$this->getSqlElementsFromCriteria($critArray, false);

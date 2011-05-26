@@ -170,13 +170,13 @@ class Expense extends SqlElement {
   public function updateAmount() {
   	$total=0;
   	$date=null;
-  	foreach ($_ExpenseDetail as $ed) {
+  	foreach ($this->_ExpenseDetail as $ed) {
   		$total+=$ed->amount;
   		$date=$ed->expenseDate;
   	} 
   	$this->realAmount=$total;
   	$this->expenseRealDate=$date;
-  	$this->save;
+  	$this->save();
   }
 }
 ?>
