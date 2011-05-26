@@ -49,7 +49,7 @@ class ExpenseDetail extends SqlElement {
    */
   public function save() {
     $result = parent::save();
-    $exp=new Expense($result->idExpense);
+    $exp=new Expense($this->idExpense);
     $exp->updateAmount();
     return $result;
   }
@@ -59,8 +59,9 @@ class ExpenseDetail extends SqlElement {
    * @see persistence/SqlElement#save()
    */
   public function delete() {
+  	$ref=$this->idExpense;
   	$result = parent::delete();
-    $exp=new Expense($result->idExpense);
+    $exp=new Expense($ref);
     $exp->updateAmount();  	
   	return $result;
   }

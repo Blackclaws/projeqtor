@@ -36,7 +36,9 @@ class Resource extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required", 
+                                          "idProfile"=>"readonly",
+                                          "isUser"=>"readonly"
   );    
   
   private static $_databaseTableName = 'user';
@@ -56,6 +58,16 @@ class Resource extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    
+    $crit=array("name"=>"menuUser");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }     
+    if (securityCheckDisplayMenu($menu->id)) {
+    	self::$_fieldsAttributes["isUser"]="";
+    	self::$_fieldsAttributes["idProfile"]="";
+    } 
   }
 
   
@@ -316,5 +328,25 @@ class Resource extends SqlElement {
       return $result;
     }
   }
+  
+  public function deleteControl() {
+    
+  	$result="";
+    if ($this->isUser) {   	
+	    $crit=array("name"=>"menuUser");
+	    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+	    if (! $menu) {
+	      return;
+	    }     
+	    if (! securityCheckDisplayMenu($menu->id)) {
+	      $result="<br/>" . i18n("msgCannotDeleteResource");
+	    }     	    	
+    }
+    if (! $result) {	
+      $result=parent::deleteControl();
+    }
+    return $result;
+  }
+  
 }
 ?>
