@@ -2,15 +2,14 @@
 /** ============================================================================
  * Action is establised during meeting, to define an action to be followed.
  */ 
-class IndividualExpense extends Expense {
+class ProjectExpense extends Expense {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $idProject;
-  public $idResource;
   public $idUser;
-  public $idIndividualExpenseType;
+  public $idProjectExpenseType;
   public $name;
   public $description;
   public $_col_2_2_treatment;
@@ -20,8 +19,8 @@ class IndividualExpense extends Expense {
   public $expenseRealDate;
   public $realAmount;
   public $idle;
-  public $_col_1_1_Detail;
-  public $_ExpenseDetail=array();
+  //public $_col_1_1_Detail;
+  //public $_ExpenseDetail=array();
   public $_Attachement=array();
   public $_Note=array();
 
@@ -30,33 +29,33 @@ class IndividualExpense extends Expense {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="15%" >${idProject}</th>
-    <th field="nameIndividualExpenseType" width="15%" >${type}</th>
-    <th field="nameResource" width="15%" >${idResource}</th>
-    <th field="name" width="25%" >${name}</th>
+    <th field="nameProjectExpenseType" width="15%" >${type}</th>
+    <th field="name" width="50%" >${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("idProject"=>"required",
                                   "name"=>"required",
-                                  "idIndividualExpenseType"=>"required",
+                                  "idProjectExpenseType"=>"required",
                                   "expensePlannedDate"=>"",
                                   "plannedAmount"=>"",
                                   "idResource"=>"required",
                                   "idStatus"=>"required",
+                                  "idResource"=>"hidden",
   								                "idUser"=>"hidden"
   );  
   
-  private static $_colCaptionTransposition = array('idIndividualExpenseType'=>'type',
+  private static $_colCaptionTransposition = array('idProjectExpenseType'=>'type',
   'expensePlannedDate'=>'plannedDate',
   'expenseRealDate'=>'realDate'
   );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array("idIndividualExpenseType"=>"idExpenseType",
+  private static $_databaseColumnName = array("idProjectExpenseType"=>"idExpenseType",
   );
 
-  private static $_databaseCriteria = array('scope'=>'IndividualExpense');
+  private static $_databaseCriteria = array('scope'=>'ProjectExpense');
 
   private static $_databaseTableName = 'expense';
   

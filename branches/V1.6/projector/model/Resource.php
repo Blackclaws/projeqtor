@@ -8,7 +8,6 @@ class Resource extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $description;
   public $idProfile;
   public $capacity;
   public $idTeam;
@@ -20,6 +19,7 @@ class Resource extends SqlElement {
   public $mobile;
   public $fax;
   public $idle;
+  public $description;
   public $_col_2_2_FunctionCost;
   public $idRole;
   public $_ResourceCost=array();

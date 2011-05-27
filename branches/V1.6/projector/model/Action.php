@@ -10,22 +10,22 @@ class Action extends SqlElement {
   public $idProject;
   public $idActionType;
   public $name;
-  public $description;
   public $creationDate;
   public $idUser;
   public $idPriority;
+  public $description;
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
   public $initialDueDate; // is an object
   public $actualDueDate;
-  public $result;
   public $handled;
   public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $result;
   public $_sec_linkRisk;
   public $_Link_Risk=array();
   public $_sec_linkIssue;

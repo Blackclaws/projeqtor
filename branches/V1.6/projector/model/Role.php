@@ -8,9 +8,9 @@ class Role extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $description;
   public $sortOrder=0;
   public $idle;
+  public $description;
   public $_col_2_2;
   
   // Define the layout that will be used for lists

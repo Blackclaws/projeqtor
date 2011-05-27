@@ -285,26 +285,65 @@ function sendFrameToPrinter() {
 //= Detail (from combo)
 //=============================================================================
 
-function showDetail (comboName, canCreate) {
+function showDetailDependency() {
+	var depType=dijit.byId('dependencyRefTypeDep').get("value");
+	if (depType) {
+		var dependable=dependableArray[depType];
+		var canCreate=0;
+		if (canCreateArray[dependable]=="YES") {
+			canCreate=1;
+	    }
+		showDetail('dependencyRefIdDep',canCreate, dependable);
+		
+	} else {
+		showInfo(i18n('messageMandatory', new Array(i18n('linkType'))));
+	}
+}
+
+function showDetailLink() {
+	var linkType=dijit.byId('linkRef2Type').get("value");
+	if (linkType) {
+		var linkable=linkableArray[linkType];
+		var canCreate=0;
+		if (canCreateArray[linkable]=="YES") {
+			canCreate=1;
+	    }
+		showDetail('linkRef2Id',canCreate, linkable);
+		
+	} else {
+		showInfo(i18n('messageMandatory', new Array(i18n('linkType'))));
+	}
+}
+
+function showDetail (comboName, canCreate, objectClass) {
 	contentWidget = dijit.byId("comboDetailResult");
 	dojo.byId("canCreateDetail").value=canCreate;
     if (contentWidget) {
       contentWidget.set('content','');
     }
+    if (! objectClass) {
+    	objectClass=comboName.substring(2);
+    }
 	dojo.byId('comboName').value=comboName;
-	var val=dijit.byId(comboName).get('value');
+	dojo.byId('comboClass').value=objectClass;
+	var val=null;
+	if (dijit.byId(comboName)) {
+	  val=dijit.byId(comboName).get('value');
+	} else {
+	  val=dojo.byId(comboName).value;	
+	}
 	if (! val || val=="" || val==" ") {
-		cl=comboName.substring(2);
+		cl=objectClass;
 		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displaySearch(cl);
   } else {
-		cl=comboName.substring(2);
-	  id=dijit.byId(comboName).get('value');
+		cl=objectClass;
+	    id=val;
 		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displayDetail(cl,id);
-	}
+  }
 }
 
 function displayDetail(objClass, objId) {
@@ -334,27 +373,42 @@ function selectDetailItem(selectedValue) {
 	}
 	comboName=dojo.byId('comboName').value;
 	combo=dijit.byId(comboName);
-	$crit=null;
-	$critVal=null;
+	crit=null;
+	critVal=null;
 	if (comboName=='idActivity' || comboName=='idResource') {
-		$prj=dijit.byId('idProject');
-		if ($prj) {
-		  $crit='idProject';
-		  $critVal=$prj.get("value");
+		prj=dijit.byId('idProject');
+		if (prj) {
+		  crit='idProject';
+		  critVal=prj.get("value");
 		}		
 	}
 	if (comboName!='idStatus' && comboName!='idProject') {
 	  // TODO : study if such restriction should be applied to idActivity
-		refreshList(comboName, $crit, $critVal, idFldVal);
+		if (combo) {
+		  refreshList(comboName, crit, critVal, idFldVal);
+		} else {
+			if (comboName=='dependencyRefIdDep') {
+				refreshDependencyList(idFldVal);
+				setTimeout("dojo.byId('dependencyRefIdDep').focus()",1000);
+				enableWidget('dialogDependencySubmit');
+			} else if (comboName=='linkRef2Id') {
+				refreshLinkList(idFldVal);
+				setTimeout("dojo.byId('linkRef2Id').focus()",1000);
+				enableWidget('dialogLinkSubmit');
+			}
+		}			
 	}
-	combo.set("value", idFldVal);
+	if (combo) {
+	  combo.set("value", idFldVal);
+	}
+		
   hideDetail();
 }
 
 function displaySearch(objClass) {
 	if (! objClass) {
 		comboName=dojo.byId('comboName').value;
-		objClass=comboName.substring(2);
+		objClass=dojo.byId('comboClass').value;
 	}
 	showWait();
 	hideField('comboSearchButton');
@@ -371,7 +425,7 @@ function displaySearch(objClass) {
 
 function newDetailItem() {
 	comboName=dojo.byId('comboName').value;
-	objClass=comboName.substring(2);
+	objClass=dojo.byId('comboClass').value;
 	showWait();
 	showField('comboSearchButton');
 	hideField('comboSelectButton');
@@ -393,8 +447,6 @@ function newDetailItem() {
 }
 
 function saveDetailItem() {
-	// submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
-	// submitForm(page, destination, formName)
 	comboName=dojo.byId('comboName').value;
 	var formVar = frames['comboDetailFrame'].dijit.byId("objectForm");
 	if ( ! formVar) {
@@ -403,9 +455,6 @@ function saveDetailItem() {
 	}
 	// validate form Data
 	if(formVar.validate()){
-		//formLock();
-		// form is valid, continue and submit it
-       // loadContent("../tool/saveObject.php","comboDetailResult", formVar, true);
 		frames['comboDetailFrame'].dojo.xhrPost({
 		      url: "../tool/saveObject.php?comboDetail=true",
 		      form: "objectForm",
@@ -415,7 +464,6 @@ function saveDetailItem() {
 				        if (! contentWidget) {return};
 				        contentWidget.set('content',data);
 				        checkDestination("comboDetailResult");
-				        //finalizeMessageDisplay("comboDetailResult",validationType);
 				        var lastOperationStatus = top.dojo.byId('lastOperationStatusComboDetail');
 				        var lastOperation = top.dojo.byId('lastOperationComboDetail');
 				        var lastSaveId=top.dojo.byId('lastSaveIdComboDetail');
@@ -611,10 +659,14 @@ function addLink (classLink) {
 /**
  * Refresh the link list (after update)
  */
-function refreshLinkList() {
-	if (dojo.byId("linkFixedClass").value!="") return;
-	disableWidget('dialogLinkSubmit'); 
-	loadContent('../tool/dynamicListLink.php', 'dialogLinkList', 'linkForm', false);
+function refreshLinkList(selected) {
+	if (! selected && dojo.byId("linkFixedClass").value!="") return;
+	disableWidget('dialogLinkSubmit');
+	var url='../tool/dynamicListLink.php';
+	if (selected) {
+	  url+='?selected='+selected;	
+	}
+	loadContent(url, 'dialogLinkList', 'linkForm', false);
 }
 
 /**
@@ -1047,9 +1099,13 @@ disableWidget('dialogDependencySubmit');
 /**
 * Refresh the Dependency list (after update)
 */
-function refreshDependencyList() {
-disableWidget('dialogDependencySubmit'); 
-loadContent('../tool/dynamicListDependency.php', 'dialogDependencyList', 'dependencyForm', false);
+function refreshDependencyList(selected) {
+disableWidget('dialogDependencySubmit');
+var url='../tool/dynamicListDependency.php';
+if (selected) {
+	url+='?selected='+selected;
+}
+loadContent(url, 'dialogDependencyList', 'dependencyForm', false);
 }
 
 /**

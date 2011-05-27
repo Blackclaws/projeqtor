@@ -10,25 +10,25 @@ class Issue extends SqlElement {
   public $idProject;
   public $idIssueType;
   public $name;
-  public $description;
   public $creationDate;
   public $idUser;
   public $cause;
   public $impact;
   public $idCriticality;
   public $idPriority;
+  public $description;
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
   public $initialEndDate; // is an object
   public $actualEndDate;
-  public $result;
   public $handled;
   public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $result;
   public $_sec_linkAction;
   public $_Link_Action=array();
   public $_sec_linkRisk;

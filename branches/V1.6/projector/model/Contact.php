@@ -8,7 +8,6 @@ class Contact extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $description;
   public $idClient;
   public $isUser;
   public $idProfile;
@@ -19,7 +18,8 @@ class Contact extends SqlElement {
   public $mobile;
   public $fax;
   public $idle;
-  //public $_col_2_2;
+  public $description;
+  public $_col_2_2;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -280,7 +280,7 @@ class Contact extends SqlElement {
         return;
       }     
       if (! securityCheckDisplayMenu($menu->id)) {
-        $result="<br/>" . i18n("msgCannotDeleteResource");
+        $result="<br/>" . i18n("msgCannotDeleteContact");
       }             
     }
     if (! $result) {  

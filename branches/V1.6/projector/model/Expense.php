@@ -20,8 +20,6 @@ class Expense extends SqlElement {
   public $expenseRealDate;
   public $realAmount;
   public $idle;
-  public $_col_1_1_Detail;
-  public $_ExpenseDetail=array();
   public $_Attachement=array();
   public $_Note=array();
 
@@ -31,7 +29,7 @@ class Expense extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="15%" >${idProject}</th>
     <th field="nameExpenseType" width="15%" >${type}</th>
-    <th field="name" formatter="dateFormatter" width="20%" >${name}</th>
+    <th field="name" width="20%" >${name}</th>
     <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';

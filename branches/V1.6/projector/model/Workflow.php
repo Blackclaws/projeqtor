@@ -8,10 +8,10 @@ class Workflow extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $description;
   public $sortOrder;
   public $idle;
   public $workflowUpdate;
+  public $description;
   public $_col_2_2;
   public $_col_1_1_WorkflowDiagram;
   public $_spe_workflowDiagram;

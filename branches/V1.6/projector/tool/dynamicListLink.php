@@ -9,6 +9,10 @@ $ref1Type=$_REQUEST['linkRef1Type'];
 $ref1Id=$_REQUEST['linkRef1Id'];
 $ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
 //$id=$_REQUEST['id'];
+$selected=null;
+if (array_key_exists('selected',$_REQUEST)) {
+  $selected=$_REQUEST['selected'];
+}
 
 $obj=new $ref1Type($ref1Id);
 
@@ -23,8 +27,18 @@ $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
 onchange="enableWidget('dialogLinkSubmit');"  
 class="selectList" >
  <?php
+ $found=false;
  foreach ($list as $lstObj) {
-   echo "<option value='$lstObj->id'>#$lstObj->id - $lstObj->name</option>";
+   $sel="";
+   if ($lstObj->id==$selected) {
+    $sel=" selected='selected' ";
+    $found=true;
+   }
+   echo "<option value='$lstObj->id'" . $sel . ">#$lstObj->id - $lstObj->name</option>";
+ }
+ if ($selected and ! $found) {
+   $lstObj=new $ref2Type($selected);
+   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
  }
  ?>
 </select>

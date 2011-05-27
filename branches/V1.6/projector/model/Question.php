@@ -10,15 +10,14 @@ class Question extends SqlElement {
   public $idProject;
   public $idQuestionType;
   public $name;
-  public $description;
   public $creationDate;
   public $idUser;
+  public $description;
   public $_col_2_2_answer;
   public $idStatus;
   public $idResource;
   public $initialDueDate;
   public $actualDueDate;
-  public $result;    
   public $replier;    
   public $handled;
   public $handledDate;
@@ -26,6 +25,7 @@ class Question extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $result;    
   public $_sec_linkMeeting;
   public $_Link_Meeting=array();
   public $_Attachement=array();

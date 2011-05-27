@@ -11,8 +11,8 @@ class Affectation extends SqlElement {
   public $idResource;
   public $idProject;
   public $rate;
-  public $description;
   public $idle;
+  public $description;
   public $_col_2_2;
 
   // Define the layout that will be used for lists

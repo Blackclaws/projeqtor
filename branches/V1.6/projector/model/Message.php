@@ -9,12 +9,12 @@ class Message extends SqlElement {
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $idMessageType;
-  public $description;
   public $idProfile;
   public $idProject;
   public $idUser;
   public $idle;
-  public $_col_2_2;
+  public $_col_2_2_Message;
+  public $description;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -26,7 +26,7 @@ class Message extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_colCaptionTransposition = array('name'=> 'title');
+  private static $_colCaptionTransposition = array('name'=> 'title', 'description'=>'message');
   
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "idMessageType"=>"required"

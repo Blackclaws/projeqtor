@@ -133,6 +133,23 @@ scriptLog('   ->/view/main.php');
       dojo.byId("mainDiv").style.visibility="visible";        
       loadContent("<?php echo $firstPage;?>","centerDiv");
     }); 
+    var canCreateArray=new Array();
+    var dependableArray=new Array();
+    var linkableArray=new Array();
+    <?php 
+      $list=SqlList::getList('Dependable');
+      foreach ($list as $id=>$name) {
+      	$right=securityGetAccessRightYesNo('menu' . $name,'create');
+      	echo "canCreateArray['" . $name . "']='" . $right . "';";
+      	echo "dependableArray['" . $id . "']='" . $name . "';";
+      }
+      $list=SqlList::getList('Linkable');
+      foreach ($list as $id=>$name) {
+        $right=securityGetAccessRightYesNo('menu' . $name,'create');
+        echo "canCreateArray['" . $name . "']='" . $right . "';";
+        echo "linkableArray['" . $id . "']='" . $name . "';";
+      }    
+    ?>
   </script>
 </head>
 
@@ -432,6 +449,7 @@ scriptLog('   ->/view/main.php');
             </script>
           </button>
           <input type="hidden" id='comboName' name='comboName' value='' />
+          <input type="hidden" id='comboClass' name='comboClass' value='' />
         </td>
         <td align="left" style="width:<?php echo ($detailWidth - 400);?>px">
           <div style="width:100%;font-size:8pt" dojoType="dijit.layout.ContentPane" region="center" name="comboDetailResult" id="comboDetailResult"></div>
@@ -511,9 +529,19 @@ scriptLog('   ->/view/main.php');
                <label for="linkRef2Id" ><?php echo i18n("linkElement") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
+               <table><tr><td>
                <div id="dialogLinkList" dojoType="dijit.layout.ContentPane" region="center">
                  <input id="linkRef2Id" name="linkRef2Id" type="hidden" value="" />
                </div>
+               </td><td style="vertical-align: top">
+               <button id="linkDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    showDetailLink();
+                 </script>
+               </button>
+               </td></tr></table>
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -819,10 +847,7 @@ scriptLog('   ->/view/main.php');
                />
                <?php echo ($currencyPosition=='after')?$currency:'';?>
              </td>
-           </tr>
-          
-
- 
+           </tr> 
          </table>
         </form>
       </td>
@@ -932,11 +957,20 @@ scriptLog('   ->/view/main.php');
              <td class="dialogLabel" >
                <label for="dependencyRefIdDep" ><?php echo i18n("linkElement") ?>&nbsp;:&nbsp;</label>
              </td>
-             <td>
+             <td><table><tr><td>
                <div id="dialogDependencyList" dojoType="dijit.layout.ContentPane" region="center">
                  <input id="dependencyRefIdDep" name="dependencyRefIdDep" type="hidden" value="" />
                   OK
                </div>
+               </td><td style="vertical-align: top">
+               <button id="dependencyDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    showDetailDependency();
+                 </script>
+               </button>
+               </td></tr></table>
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>

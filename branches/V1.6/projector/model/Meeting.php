@@ -16,13 +16,13 @@ class Meeting extends SqlElement {
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
-  public $result;
   public $handled;
   public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $result;
   public $_sec_linkDecision;
   public $_Link_Decision=array();
   public $_sec_linkQuestion;
