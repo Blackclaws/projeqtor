@@ -8,10 +8,10 @@ class Profile extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
-  public $description;
   public $profileCode;
   public $sortOrder=0;
   public $idle;
+  public $description;
   public $_col_2_2;
   
   private static $_layout='

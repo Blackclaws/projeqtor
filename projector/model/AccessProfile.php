@@ -8,13 +8,13 @@ class AccessProfile extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
-  public $description;
   public $idAccessScopeRead;
   public $idAccessScopeCreate;
   public $idAccessScopeUpdate;
   public $idAccessScopeDelete;
   public $sortOrder=0;
   public $idle;
+  public $description;
   public $_col_2_2;
   
   public $_isNameTranslatable = true;

@@ -9,6 +9,10 @@ $refType=$_REQUEST['dependencyRefType'];
 $refId=$_REQUEST['dependencyRefId'];
 $refTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
 //$id=$_REQUEST['id'];
+$selected=null;
+if (array_key_exists('selected',$_REQUEST)) {
+	$selected=$_REQUEST['selected'];
+}
 
 $obj=new $refType($refId);
 
@@ -29,8 +33,18 @@ if (class_exists ($refTypeDep) ) {
 onchange="enableWidget('dialogDependencySubmit');"  
 class="selectList" >
  <?php
+ $found=false;
  foreach ($list as $lstObj) {
-   echo "<option value='$lstObj->id'>#$lstObj->id - $lstObj->name</option>";
+ 	 $sel="";
+ 	 if ($lstObj->id==$selected) {
+ 	 	$sel=" selected='selected' ";
+ 	 	$found=true;
+ 	 }
+   echo "<option value='$lstObj->id'" . $sel . ">#$lstObj->id - $lstObj->name</option>";
+ }
+ if ($selected and ! $found) {
+ 	 $lstObj=new $refTypeDep($selected);
+ 	 echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
  }
  ?>
 </select>

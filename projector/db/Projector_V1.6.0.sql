@@ -115,16 +115,16 @@ UPDATE MENU SET sortOrder=930, idMenu=79 where id=67;
 UPDATE MENU SET sortOrder=940, idMenu=79 where id=52;
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
-(74, 'menuFinancial', 0, 'menu', 250, Null, 0),
+(74, 'menuFinancial', 0, 'menu', 250, Null, 1),
 (75, 'menuIndividualExpense', 74, 'object', 255, 'project', 0),
 (76, 'menuProjectExpense', 74, 'object', 260, 'project', 0),
-(77, 'menuInvoice', 74, 'object', 265, 'project', 0),
-(78, 'menuPayment', 74, 'object', 270, 'project', 0),
+(77, 'menuInvoice', 74, 'object', 265, 'project', 1),
+(78, 'menuPayment', 74, 'object', 270, 'project', 1),
 (79, 'menuType', 13, 'menu', 800, null, 0),
 (80, 'menuIndividualExpenseType', 79, 'object', 840, null, 0),
 (81, 'menuProjectExpenseType', 79, 'object', 850, null, 0),
-(82, 'menuInvoiceType', 79, 'object', 860, null, 0),
-(83, 'menuPaymentType', 79, 'object', 870, null, 0);
+(82, 'menuInvoiceType', 79, 'object', 860, null, 1),
+(83, 'menuPaymentType', 79, 'object', 870, null, 1);
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
 (84, 'menuExpenseDetailType', 79, 'object', 855, null, 0);
@@ -140,12 +140,12 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 76, 1),
 (2, 76, 1),
 (3, 76, 1),
-(1, 77, 1),
-(2, 77, 1),
-(3, 77, 1),
-(1, 78, 1),
-(2, 78, 1),
-(3, 78, 1),
+(1, 77, 0),
+(2, 77, 0),
+(3, 77, 0),
+(1, 78, 0),
+(2, 78, 0),
+(3, 78, 0),
 (1, 79, 1),
 (2, 79, 1),
 (3, 79, 1),
@@ -153,10 +153,10 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 80, 1),
 (1, 81, 1),
 (2, 81, 1),
-(1, 82, 1),
-(2, 82, 1),
-(1, 83, 1),
-(2, 83, 1);
+(1, 82, 0),
+(2, 82, 0),
+(1, 83, 0),
+(2, 83, 0);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 84, 1),
 (2, 84, 1);

@@ -9,7 +9,6 @@ class Project extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $description;
   public $idClient;
   public $projectCode;
   public $contractCode;
@@ -20,6 +19,7 @@ class Project extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $description;
   public $_col_2_2_Subprojects;
   public $_spe_subprojects;
   public $_sec_Affectations;

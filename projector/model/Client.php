@@ -8,9 +8,9 @@ class Client extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
-  public $description;
   public $clientCode;
   public $idle;
+  public $description;
   public $_col_2_2_Projects;
   public $_spe_projects;
   public $_sec_Contacts;

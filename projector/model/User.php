@@ -9,7 +9,6 @@ class User extends SqlElement {
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $email;
-  public $description;
   public $password;
   public $_spe_buttonSendMail;
   public $idProfile;
@@ -18,6 +17,7 @@ class User extends SqlElement {
   public $isContact;
   public $locked;
   public $idle;
+  public $description;
   public $_col_2_2;
   public $_arrayFilters;
   
