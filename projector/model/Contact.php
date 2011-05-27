@@ -32,7 +32,7 @@ class Contact extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("name"=>"required", 
-                                          "idProfile"=>"hidden",
+                                          "idProfile"=>"readonly",
                                           "isUser"=>"readonly"
   );    
   
@@ -50,6 +50,16 @@ class Contact extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+        
+    $crit=array("name"=>"menuUser");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }     
+    if (securityCheckDisplayMenu($menu->id)) {
+      self::$_fieldsAttributes["isUser"]="";
+      self::$_fieldsAttributes["idProfile"]="";
+    } 
   }
 
   
