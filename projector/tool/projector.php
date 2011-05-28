@@ -388,8 +388,12 @@ function array_merge_preserve_keys() {
  * @param $menu the name of the menu to check
  * @return boolean, true if displayable, false either
  */
-function securityCheckDisplayMenu($idMenu) {
+function securityCheckDisplayMenu($idMenu, $class=null) {
   $user=null;
+  $menu=$idMenu;
+  if (! $idMenu and $class) {
+  	$menu=SqlList::getIdFromName('MenuList','menu'.$class);
+  }
   if (array_key_exists('user',$_SESSION)) {
     $user=$_SESSION['user'];
   }
@@ -399,7 +403,7 @@ function securityCheckDisplayMenu($idMenu) {
   $profile=$user->idProfile;
   $crit=array();
   $crit['idProfile']=$profile;
-  $crit['idMenu']=$idMenu;
+  $crit['idMenu']=$menu;
   $obj=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
   if ($obj->id==null) {
     return false;
@@ -687,7 +691,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj);
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN')?'NO':'YES';
-  } else if ($accessType=='update' or $accessType=='delete') {
+  } else if ($accessType=='update' or $accessType=='delete' or $accessType='read') {
     if ($accessRight=='NO') {
       // will return no
     } else if ($accessRight=='ALL') {

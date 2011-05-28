@@ -1043,7 +1043,13 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       echo '<td class="linkData" >' . i18n(get_class($linkObj)) . '</td>';
     }
     echo '<td class="linkData">#' . $linkObj->id  . '</td>';
-    echo '<td class="linkData" onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;">' . $linkObj->name . '</td>';
+    $goto="";
+    if (! $print 
+    and securityCheckDisplayMenu(null,get_class($linkObj)) 
+    and securityGetAccessRightYesNo('menu' . get_class($linkObj), 'read', $linkObj)=="YES") {
+      $goto=' onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;" ';	
+    }
+    echo '<td class="linkData" ' . $goto . '>' . $linkObj->name . '</td>';
     if (property_exists($linkObj, 'idStatus')) {
       $objStatus=new Status($linkObj->idStatus);
       //$color=$objStatus->color;
@@ -1097,7 +1103,12 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     echo '<td class="dependencyData">' . i18n(get_class($depObj)) . '</td>';
     echo '<td class="dependencyData">#' . $depObj->id  . '</td>';
     echo '<td class="dependencyData"';
-    if (! $print) { echo ' onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;"';}
+    $goto="";
+    if (securityCheckDisplayMenu(null,get_class($depObj)) 
+    and securityGetAccessRightYesNo('menu' . get_class($depObj), 'read', $depObj)=="YES") {
+      $goto=' onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;" ';  
+    }    
+    if (! $print) { echo $goto;}
     echo '>' . $depObj->name . '</td>';
     if (property_exists($depObj,'idStatus')) {
       $objStatus=new Status($depObj->idStatus);
