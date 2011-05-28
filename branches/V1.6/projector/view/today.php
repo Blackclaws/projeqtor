@@ -274,7 +274,12 @@
 
       $statusColor=SqlList::getFieldFromId('Status', $elt->idStatus, 'color');
       $status=SqlList::getNameFromId('Status',$elt->idStatus);
-      echo '<tr onClick="gotoElement(' . "'" . $class . "','" . $elt->id . "'" . ');" style="cursor: pointer;">' .
+      $goto="";
+      if (securityCheckDisplayMenu(null,$class) 
+      and securityGetAccessRightYesNo('menu' . $class, 'read', $elt)=="YES") {
+        $goto=' onClick="gotoElement(' . "'" . $class . "','" . $elt->id . "'" . ');" style="cursor: pointer;" ';  
+      }         
+      echo '<tr ' . $goto . '>' .
              '  <td class="messageData">' . 
                    '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" title="' . i18n($class). '"/>' .
                    '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
