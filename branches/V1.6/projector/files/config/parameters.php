@@ -36,3 +36,17 @@ $paramReportTempDirectory = '../files/report/';
 $logFile = '../files/logs/projector_${date}.log';
 $logLevel = '4';
 $paramDebugMode = 'false';
+// New parameters V1.2.0
+$paramMailSmtpServer = 'localhost';
+$paramMailSmtpPort = '25';
+$paramMailSendmailPath = '';
+$paramMailTitle = '[Project\'Or RIA] ${item} #${id} moved to status ${status}';
+$paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${status}';
+$paramMailShowDetail = 'true';
+// New parameters V1.3.0
+$defaultTheme = 'blue';
+// New parameters V1.4.0
+$paramReportTempDirectory = '../files/report/';
+// New parameters V1.5.0
+$currency = '€';
+$currencyPosition = 'after';

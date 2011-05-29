@@ -232,4 +232,40 @@ INSERT INTO `${prefix}expenseDetailType` (id, name, sortOrder, value01, unit01, 
 (2,'regular mission car travel', 20, null, 'days', null, 'km/day', 0.544, '€/km', 0),
 (3,'lunch for guests', 30, null, 'guests', null, '€/guest', null, null, 0),
 (4, 'justified expense', 40, null, '€', null, null, null, null, 0);
- 
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
+(31, 'reportPlanDetail', 2, 'detailPlan.php', 455),
+(32, 'reportAvailabilityPlan', 2, 'availabilityPlan.php', 480),
+(33, 'reportExpenseProject', 6, 'expenseProject.php?scale=month', 660),
+(34, 'reportExpenseResource', 6, 'expenseResourcePlan.php?scale=month', 670),
+(35, 'reportExpenseTotal', 6, 'expenseTotalPlan.php?scale=month', 680),
+(36, 'reportExpenseCostTotal', 6, 'expenseCostTotalPlan.php?scale=month', 690);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+(68, 31, 'idProject', 'projectList', 10, 'currentProject'),
+(69, 31, 'month', 'month', 20, 'currentMonth'),
+(70, 32, 'month', 'month', 10, 'currentMonth'),
+(71, 33, 'idProject', 'projectList', 10, 'currentProject'),
+(72, 34, 'idProject', 'projectList', 10, 'currentProject'),
+(73, 35, 'idProject', 'projectList', 10, 'currentProject'),
+(74, 36, 'idProject', 'projectList', 10, 'currentProject');
+
+INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAccess`) VALUES
+(31, 1, 1),
+(31, 2, 1),
+(31, 3, 1),
+(32, 1, 1),
+(32, 2, 1),
+(32, 3, 1),
+(33, 1, 1),
+(33, 2, 1),
+(33, 3, 1),
+(34, 1, 1),
+(34, 2, 1),
+(34, 3, 1),
+(35, 1, 1),
+(35, 2, 1),
+(35, 3, 1),
+(36, 1, 1),
+(36, 2, 1),
+(36, 3, 1); 
