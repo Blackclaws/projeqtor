@@ -1,4 +1,5 @@
 <?php
+
 include_once '../tool/projector.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -35,8 +36,8 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$where="1=1 ";
+$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
@@ -46,8 +47,8 @@ $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
 $projects=array();
-$projectsColor=array();
 $resources=array();
+$activities=array();
 $realDays=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
@@ -57,16 +58,22 @@ foreach ($lstWork as $work) {
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
-    $projectsColor[$work->idProject]=SqlList::getFieldFromId('Project', $work->idProject, 'color');
   }
   if (! array_key_exists($work->idProject,$result[$work->idResource])) {
     $result[$work->idResource][$work->idProject]=array();
   }
-  if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject])) {
-    $result[$work->idResource][$work->idProject][$work->day]=0;
+  $ref=$work->refType . "#" . $work->refId;
+  if (! array_key_exists($ref,$activities)) {
+    $activities[$ref]=SqlList::getNameFromId($work->refType,  $work->refId);
+  }
+  if (! array_key_exists($ref,$result[$work->idResource][$work->idProject])) {
+    $result[$work->idResource][$work->idProject][$ref]=array();
+  }  
+  if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject][$ref])) {
+    $result[$work->idResource][$work->idProject][$ref][$work->day]=0;
     $realDays[$work->idResource][$work->day]='real';
   } 
-  $result[$work->idResource][$work->idProject][$work->day]+=$work->work;
+  $result[$work->idResource][$work->idProject][$ref][$work->day]+=$work->work;
 }
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
@@ -78,16 +85,22 @@ foreach ($lstPlanWork as $work) {
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
-    $projectsColor[$work->idProject]=SqlList::getFieldFromId('Project', $work->idProject, 'color');
   }
   if (! array_key_exists($work->idProject,$result[$work->idResource])) {
     $result[$work->idResource][$work->idProject]=array();
   }
-  if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject])) {
-    $result[$work->idResource][$work->idProject][$work->day]=0;
+  $ref=$work->refType . "#" . $work->refId;
+  if (! array_key_exists($ref,$activities)) {
+    $activities[$ref]=SqlList::getNameFromId($work->refType,  $work->refId);
+  }
+  if (! array_key_exists($ref,$result[$work->idResource][$work->idProject])) {
+    $result[$work->idResource][$work->idProject][$ref]=array();
+  }
+  if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject][$ref])) {
+    $result[$work->idResource][$work->idProject][$ref][$work->day]=0;
   }
   if (! array_key_exists($work->day,$realDays[$work->idResource])) { // Do not add planned if real exists 
-    $result[$work->idResource][$work->idProject][$work->day]+=$work->work;
+    $result[$work->idResource][$work->idProject][$ref][$work->day]+=$work->work;
   }
 }
 
@@ -123,6 +136,7 @@ echo '<table width="100%" align="left">';
 echo '<tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Project') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2">' . i18n('Activity') . '</td>';
 echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr>';
 echo '<tr>';
@@ -153,40 +167,49 @@ foreach ($resources as $idR=>$nameR) {
     $sum[$startDate+$i-1]='';
   }
   echo '<tr height="20px">';
-  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. (count($result[$idR])+1) . '">' . $nameR . '</td>';
+  $cpt=0;
+  foreach ($result[$idR] as $res) { 
+    $cpt+=count($res);
+  }
+  $cpt+=1;
+  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . $nameR . '</td>';
   foreach ($result[$idR] as $idP=>$proj) {
-    if (array_key_exists($idP, $projects)) {
-      echo '<td class="reportTableData" style="width:150px;text-align: left;">' . $projects[$idP] . '</td>';
-      $lineSum='';
-      for ($i=1; $i<=$nbDays;$i++) {
-        $day=$startDate+$i-1;
-        $style="";
-        $ital=false;
-        if ($days[$day]=="off") {
-          $style=$weekendStyle;
-        } else {
-          if (! array_key_exists($day, $realDays[$idR]) 
-          and array_key_exists($day,$result[$idR][$idP])) {
-            $style=$plannedStyle;
-            $ital=true;
-          }
-        }
-        echo '<td class="reportTableData" ' . $style . ' valign="top">';
-        if (array_key_exists($day,$result[$idR][$idP])) {
-          echo ($ital)?'<i>':'';
-          echo $result[$idR][$idP][$day];
-          echo ($ital)?'</i>':'';
-          $sum[$day]+=$result[$idR][$idP][$day];
-          $globalSum[$day]+=$result[$idR][$idP][$day];
-          $lineSum+=$result[$idR][$idP][$day];
-        }
-        echo '</td>';
-      }
-      echo '<td class="reportTableColumnHeader">' . $lineSum . '</td>';
-      echo '</tr><tr>';
+    foreach ($result[$idR][$idP] as $idA=>$acti) { 
+	    if (array_key_exists($idP, $projects)) {
+	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $projects[$idP] . '</td>';
+	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $activities[$idA] . '</td>';
+        
+	      $lineSum='';
+	      for ($i=1; $i<=$nbDays;$i++) {
+	        $day=$startDate+$i-1;
+	        $style="";
+	        $ital=false;
+	        if ($days[$day]=="off") {
+	          $style=$weekendStyle;
+	        } else {
+	          if (! array_key_exists($day, $realDays[$idR]) 
+	          and array_key_exists($day,$result[$idR][$idP][$idA])) {
+	            $style=$plannedStyle;
+	            $ital=true;
+	          }
+	        }
+	        echo '<td class="reportTableData" ' . $style . ' valign="top">';
+	        if (array_key_exists($day,$result[$idR][$idP][$idA])) {
+	          echo ($ital)?'<i>':'';
+	          echo $result[$idR][$idP][$idA][$day];
+	          echo ($ital)?'</i>':'';
+	          $sum[$day]+=$result[$idR][$idP][$idA][$day];
+	          $globalSum[$day]+=$result[$idR][$idP][$idA][$day];
+	          $lineSum+=$result[$idR][$idP][$idA][$day];
+	        }
+	        echo '</td>';
+	      }
+	      echo '<td class="reportTableColumnHeader">' . $lineSum . '</td>';
+	      echo '</tr><tr>';
+	    }
     }
   }
-  echo '<td class="reportTableLineHeader" >' . i18n('sum') . '</td>';
+  echo '<td class="reportTableLineHeader" colspan="2">' . i18n('sum') . '</td>';
   $lineSum='';
   for ($i=1; $i<=$nbDays;$i++) {
     $style='';
@@ -197,13 +220,13 @@ foreach ($resources as $idR=>$nameR) {
     echo '<td class="reportTableColumnHeader" ' . $style . ' >' . $sum[$startDate+$i-1] . '</td>';
     $lineSum+=$sum[$startDate+$i-1];
   }
-  echo '<td class="reportTableHeader">' . $lineSum . '</td>';
+  echo '<td class="reportTableHeader" >' . $lineSum . '</td>';
   echo '</tr>';
   
 }
 
 echo '<tr><td colspan="' . ($nbDays+3) . '">&nbsp;</td></tr>';
-echo '<tr><td class="reportTableHeader" colspan="2">' . i18n('sum') . '</td>';
+echo '<tr><td class="reportTableHeader" colspan="3">' . i18n('sum') . '</td>';
 $lineSum='';
 for ($i=1; $i<=$nbDays;$i++) {
   $style='';

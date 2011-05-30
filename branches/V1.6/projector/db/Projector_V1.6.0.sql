@@ -236,7 +236,7 @@ INSERT INTO `${prefix}expenseDetailType` (id, name, sortOrder, value01, unit01, 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (31, 'reportPlanDetail', 2, 'detailPlan.php', 455),
 (32, 'reportAvailabilityPlan', 2, 'availabilityPlan.php', 480),
-(33, 'reportExpenseProject', 6, 'expenseProject.php?scale=month', 660),
+(33, 'reportExpenseProject', 6, 'expenseProjectPlan.php?scale=month', 660),
 (34, 'reportExpenseResource', 6, 'expenseResourcePlan.php?scale=month', 670),
 (35, 'reportExpenseTotal', 6, 'expenseTotalPlan.php?scale=month', 680),
 (36, 'reportExpenseCostTotal', 6, 'expenseCostTotalPlan.php?scale=month', 690);
@@ -248,7 +248,8 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 (71, 33, 'idProject', 'projectList', 10, 'currentProject'),
 (72, 34, 'idProject', 'projectList', 10, 'currentProject'),
 (73, 35, 'idProject', 'projectList', 10, 'currentProject'),
-(74, 36, 'idProject', 'projectList', 10, 'currentProject');
+(74, 36, 'idProject', 'projectList', 10, 'currentProject'),
+(75, 34, 'idResource', 'resourceList', 20, null);
 
 INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAccess`) VALUES
 (31, 1, 1),
