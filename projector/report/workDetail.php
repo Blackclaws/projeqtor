@@ -35,8 +35,8 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$where="1=1 ";
+$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
@@ -46,6 +46,7 @@ $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
 $activities=array();
+$project=array();
 $description=array();
 $parent=array();
 $resources=array();
@@ -70,6 +71,7 @@ foreach ($lstWork as $work) {
         $parent[$key]="";
       }
     }
+    $project[$key]=SqlList::getNameFromId('Project', $obj->idProject);
   }
   if (! array_key_exists($work->idResource,$result)) {
     $result[$work->idResource]=array();
@@ -85,12 +87,13 @@ if (checkNoData($result)) exit;
 // title
 echo '<table style="width:95%" align="center">';
 echo '<tr>';
-echo '<td class="reportTableHeader" rowspan="2" style="width:20%">' . i18n('Resource') . '</td>';
-echo '<td class="reportTableHeader" rowspan="2" style="width:10%">' . i18n('colWork') . '</td>';
-echo '<td class="reportTableHeader" colspan="3">' . i18n('Activity') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:15%">' . i18n('Resource') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:5%">' . i18n('colWork') . '</td>';
+echo '<td class="reportTableHeader" colspan="4">' . i18n('Activity') . '</td>';
 echo '</tr><tr>';
+echo '<td class="reportTableColumnHeader" style="width:15%">' . i18n('colIdProject') . '</td>';
 echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colName') . '</td>';
-echo '<td class="reportTableColumnHeader" style="width:30%">' . i18n('colDescription') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:25%">' . i18n('colDescription') . '</td>';
 echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colParentActivity') . '</td>';
 echo '</tr>';
 
@@ -98,28 +101,29 @@ $sum=0;
 foreach ($resources as $idR=>$nameR) {
   $sumRes=0;
   echo '<tr>';
-  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:15%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
   foreach ($activities as $key=>$nameA) {
     if (array_key_exists($idR, $result)) {
       if (array_key_exists($key, $result[$idR])) {
         $val=$result[$idR][$key];
         $sumRes+=$val; 
         $sum+=$val;
-        echo '<td class="reportTableData" style="width:10%">' . $val . '</td>';
+        echo '<td class="reportTableData" style="width:5%">' . $val . '</td>';
+        echo '<td class="reportTableData" style="width:15%; text-align:left;">' . $project[$key] . '</td>';
         echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $nameA . '</td>'; 
-        echo '<td class="reportTableData" style="width:30%; text-align:left;">' . $description[$key] . '</td>'; 
+        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . $description[$key] . '</td>'; 
         echo '<td class="reportTableData" style="width:20%; text-align:left;" >' . $parent[$key] . '</td>'; 
         echo '</tr><tr>';
       } 
     }
   }
   echo '<td class="reportTableColumnHeader">' . $sumRes . '</td>';
-  echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="3">' . i18n('sum') . " " . $nameR . '</td>';
+  echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="4">' . i18n('sum') . " " . $nameR . '</td>';
   echo '</tr>';
 }
 echo '<tr>';
 echo '<td class="reportTableHeader">' . i18n('sum') . '</td>';
 echo '<td class="reportTableHeader">' . $sum . '</td>';
-echo '<td colspan="3"></td>';
+echo '<td colspan="4"></td>';
 echo '</tr>';
 echo '</table>';

@@ -1,4 +1,8 @@
 <?php
+echo "Not implemented";
+echo "<br/><i>(availabilityPlan.php)</i>";
+
+
 include_once '../tool/projector.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -45,47 +49,34 @@ $order="";
 $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
-$projects=array();
-$projectsColor=array();
 $resources=array();
+$capacity=array();
+$real=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
-  if (! array_key_exists($work->idProject,$projects)) {
-    $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
-    $projectsColor[$work->idProject]=SqlList::getFieldFromId('Project', $work->idProject, 'color');
-  }
   if (! array_key_exists($work->day,$result[$work->idResource])) {
-    $result[$work->idResource][$work->day]=array();
+    $result[$work->idResource][$work->day]=0;
+    $real[$work->day]=true;
   }
-  if (! array_key_exists($work->idProject,$result[$work->idResource][$work->day])) {
-    $result[$work->idResource][$work->day][$work->idProject]=0;
-    $result[$work->idResource][$work->day]['real']=true;
-  } 
-  $result[$work->idResource][$work->day][$work->idProject]+=$work->work;
-  //echo "work : " . $work->day . " / " . $work->idProject . " / " . $work->idResource . " / " . $work->work . "<br/>";
+  $result[$work->idResource][$work->day]+=$work->work;
 }
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
-  if (! array_key_exists($work->idProject,$projects)) {
-    $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
-    $projectsColor[$work->idProject]=SqlList::getFieldFromId('Project', $work->idProject, 'color');
-  }
   if (! array_key_exists($work->day,$result[$work->idResource])) {
-    $result[$work->idResource][$work->day]=array();
+    $result[$work->idResource][$work->day]=0;
   }
-  if (! array_key_exists($work->idProject,$result[$work->idResource][$work->day])) {
-    $result[$work->idResource][$work->day][$work->idProject]=0;
-  }
-  if (! array_key_exists('real',$result[$work->idResource][$work->day])) { // Do not add planned if real exists 
-    $result[$work->idResource][$work->day][$work->idProject]+=$work->work;
+  if (! array_key_exists($work->day,$real)) { // Do not add planned if real exists 
+    $result[$work->idResource][$work->day]+=$work->work;
   }
 }
 
@@ -98,39 +89,32 @@ if ($periodType=='month') {
 $weekendBGColor='#cfcfcf';
 $weekendFrontColor='#555555';
 $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
+$plannedBGColor='#FFFFDD';
+$plannedFrontColor='#777777';
+$plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
 if (checkNoData($result)) exit;
 
-echo '<table width="95%" align="center">';
+
+echo '<table width="100%" align="center">';
 echo '<tr><td>';
-echo '<table width="100%" align="left">';
-echo '<tr>';
-echo '<td class="reportTableDataFull">';
-echo '<div style="height:20px;width:20px;position:relative;background-color:#DDDDDD;">&nbsp;';
-echo '<div style="width:20px;position:absolute;top:3px;left:5px;color:#000000;">R</div>';
-echo '<div style="width:20px;position:absolute;top:2px;left:6px;color:#FFFFFF;">R</div>';
-echo '</div>';
-echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . i18n('colRealWork') . '</td>';
-echo '<td style="width:5px";>&nbsp;&nbsp;&nbsp;</td>';
-echo '<td class="reportTableDataFull">';
-echo '<div style="height:20px;width:20px;position:relative;background-color:#DDDDDD;">&nbsp;';
-echo '</div>';
-echo '</td><td style="width;100px; padding-left:5px;" class="legend">' . i18n('colPlannedWork') . '</td>';
-echo '<td>&nbsp;</td>';
-echo "</tr></table>";
-//echo "<br/>";
-echo '<table width="100%" align="left"><tr>';
-foreach($projects as $idP=>$nameP) {
-  echo '<td width="20px">';
-  echo '<div style="border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:' . $projectsColor[$idP] . ';">&nbsp;';
-  echo '</div>';
-  echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . $nameP . '</td>';
-  echo '<td width="5px">&nbsp;&nbsp;&nbsp;</td>';
-}
-echo '<td>&nbsp;</td></tr></table>';
+
+echo "<table width='95%' align='center'>";
+echo "<tr><td><table  width='100%' align='left'><tr>";
+echo "<td class='reportTableDataFull' style='width:20px;text-align:center;'>1</td>";
+echo "<td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
+echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
+echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
+echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
+echo "<td>&nbsp;</td>";
+echo "</tr>";
+echo "</table>";
+
 //echo '<br/>';
 // title
-echo '<table width="100%" align="left"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+echo '<table width="100%" align="left"><tr>';
+echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2">' . i18n('colCapacity') . '</td>';
 echo '<td colspan="' . $nbDays . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr><tr>';
 $days=array();
@@ -152,34 +136,43 @@ for($i=1; $i<=$nbDays;$i++) {
 echo '</tr>';
 
 foreach ($resources as $idR=>$nameR) {
-  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:30%">' . $nameR . '</td>';
+  echo '<tr height="20px">';
+  echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
   for ($i=1; $i<=$nbDays;$i++) {
     $day=$startDate+$i-1;
     $style="";
+    $italic=false;
     if ($days[$day]=="off") {
       $style=$weekendStyle;
-    }
-    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
-    
-    if (array_key_exists($day,$result[$idR])) {
-      echo "<div style='position:relative;'>";
-      $real=false;
-      foreach ($result[$idR][$day] as $idP=>$val) {
-        if ($idP=='real') {
-          $real=true;
-        } else {
-          $height=20*$val;
-          echo "<div style='position:relative;height:" . $height . "px; background-color:" . $projectsColor[$idP] . ";' ></div>";
-        }
+    } else {
+      if (array_key_exists($day,$result[$idR])) {
+        $val=$capacity[$idR]-$result[$idR][$day];
+      } else {
+        $val=$capacity[$idR]*1;
       }
-      if ($real) {
-        echo "<div style='position:absolute;top:3px;left:5px;color:#000000;'>R</div>";
-        echo "<div style='position:absolute;top:2px;left:6px;color:#FFFFFF;'>R</div>";
+      $style=' style="text-align:center;';
+      if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {
+        $style.='background-color:' . $plannedBGColor . ';';
+        $italic=true;
       }
-      echo "</div>";
-    
+      if ($val>0) {
+        $style.='color: #00AA00;';      	
+      } else if ($val < 0) {
+      	$style.='color: #AA0000;';
+      } else {
+      	$style.='color: ' . $plannedFrontColor . ';';
+      }
+      $style.='"';  
     }
-    echo '</td>';
+    if ($style==$weekendStyle) {$val="";}
+    echo '<td class="reportTableDataFull" ' . $style . ' valign="middle">';    
+     if ($italic) {
+     	 echo '<i>' . $val . '</i>';
+     } else { 
+     	 echo $val;
+     }
+  	echo '</td>';
   }
   echo '</tr>';
 }

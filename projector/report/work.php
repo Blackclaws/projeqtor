@@ -35,8 +35,8 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$where="1=1 ";
+$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$where="1=1 ";
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
