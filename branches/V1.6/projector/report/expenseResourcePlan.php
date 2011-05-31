@@ -1,7 +1,7 @@
 <?PHP
 echo "Not implemented";
 echo "<br/><i>(expenseResourcePlan.php)</i>";
-return;
+//return;
 
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
