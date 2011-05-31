@@ -3,9 +3,9 @@
 
   <property name="version"       value="V1.6.0" />
   <property name="projName"       value="projectorria" />
-  <property name="setup.dir"     value="../../../ProjectOr/setup" />
+  <property name="setup.dir"     value="D:/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value=".." />
+  <property name="src.dir"       value="D:/www/projectorria" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -144,5 +144,66 @@
   	<antcall target="copyMisc"/>
     <antcall target="zipVersion"/>                             
   </target>
-  
+
+<!-- ==============================================================================================
+     ==============================================================================================
+     ==== BUILD A NEW DOJO RELEASE                                                              ===
+     ==============================================================================================
+     ============================================================================================== --> 
+<!-- Full  : 40,9 Mo -->
+<!-- Build : 14,8 Mo -->
+<!-- Clean :  Mo -->
+	
+	<property name="dojo.release.dir" value ="${setup.dir}/dojo-release-1.6.1-src"/>
+	<property name="dojo.version" value="1.6.1"/>
+	<property name="build.name" value="external"/> 
+  <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
+	<property name="release.dir" value="${setup.dir}/${build.name}/"/>
+
+  <target name="_dojoBuild">
+    <antcall target="_dojoPackaging"/>
+    <antcall target="_dojoOptimisation"/>
+  </target>
+  	
+	<target name="_dojoPackaging" depends="" description="Build du projet">        
+	  <java classname="org.mozilla.javascript.tools.shell.Main"
+	        dir="${buildscripts.dir}"
+	        fork="true"
+	        failonerror="true"
+	        maxmemory="128m">
+	    <arg line="build.js"/>
+	    <arg line="action=clean,release"/>
+	    <arg line="dojodir=${dojo.release.dir}/"/>
+	    <arg line="profileFile=${src.dir}/deploy/projector.profile.js"/>
+	    <arg line="releaseName=${build.name}"/>
+	    <arg line="releaseDir=${setup.dir}"/>
+	    <arg line="version=${dojo.version}"/>
+	    <arg line="cssOptimize=comments"/>
+	    <arg line="layerOptimize=shrinksafe"/>
+	    <arg line="copyTests=false"/>
+	    <classpath>
+	      <pathelement location="${buildscripts.dir}\..\shrinksafe\shrinksafe.jar"/>
+	      <pathelement location="${buildscripts.dir}\..\shrinksafe\js.jar"/>
+	      <pathelement path="${java.class.path}"/>
+	    </classpath>     
+	  </java>
+	</target>
+	    
+	<target name="_dojoOptimisation" description="optimisation de la release">	        
+		<delete dir="${release.dir}/dojo/_firebug"/> 
+		<delete>
+		  <fileset dir="${release.dir}" includes="**/*.uncompressed.js"/>
+		</delete>
+		<delete includeemptydirs="true">
+		  <fileset dir="${release.dir}/dojox" >
+		  	<include name="**/*"/>
+		  	<exclude name="*.js"/>
+		  	<exclude name="LICENSE"/>
+		  	<exclude name="data"/>
+		  	<exclude name="form"/>
+		    <exclude name="grid"/>
+		  </fileset>
+		</delete>  
+	</target>
+
 </project>
