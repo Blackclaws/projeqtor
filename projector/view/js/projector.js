@@ -305,7 +305,8 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	}
 	showWait();
 	// Direct mode, without fading effect =====
-	if ( ! fadeLoading) {
+	// IE Issue : must not fade load
+	if ( (dojo.isIE) || ! fadeLoading) {
 		// send Ajax request
 		dojo.xhrPost({
       url: page,
@@ -377,18 +378,18 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     duration: 100, 
     onEnd: function() {
       // send Ajax request
-  	dojo.xhrPost({
-        url: page,
-        form: dojo.byId(formName),
-        handleAs: "text",
-        load: function(data,args){
-  		// update the destination when ajax request is received
-  		    //cleanContent(destination);
-          var contentWidget = dijit.byId(destination);
-          if (! contentWidget) {return};
-        	contentWidget.set('content',data);
-        	checkDestination(destination);
-          var contentNode = dojo.byId(destination);
+	  dojo.xhrPost({
+	      url: page,
+	      form: dojo.byId(formName),
+	      handleAs: "text",
+	      load: function(data,args){
+				  // update the destination when ajax request is received
+				  //cleanContent(destination);
+	        var contentWidget = dijit.byId(destination);
+	        if (! contentWidget) {return};
+	      	contentWidget.set('content',data);
+	      	checkDestination(destination);
+        	var contentNode = dojo.byId(destination);
           if (destination=="detailDiv" || destination=="centerDiv" ) {
           	finaliseButtonDisplay();
           }
@@ -398,8 +399,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     	  	if (destination=="expenseDetailDiv") {
     		  	  expenseDetailRecalculate();
     	  	}
-
-          if (directAccess) {
+    	  if (directAccess) {
           	if (dijit.byId('listIdFilter')) {
           		//dijit.byId('listIdFilter').set('value',directAccess);
           		//setTimeout("filterJsonList();",100);
@@ -415,7 +415,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           // fade in the destination, to set is visible back
   		    dojo.fadeIn({
   		    	node: contentNode, 
-  		    	duration: 100,
+  		    	duration: 200,
   		    	onEnd: function() {
   		    		if (isResultMessage) {
   		    		  // finalize message is return from treatment

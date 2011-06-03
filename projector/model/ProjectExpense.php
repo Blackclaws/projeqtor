@@ -20,7 +20,7 @@ class ProjectExpense extends Expense {
   public $realAmount;
   public $idle;
   //public $_col_1_1_Detail;
-  //public $_ExpenseDetail=array();
+  public $_ExpenseDetail=array();
   public $_Attachement=array();
   public $_Note=array();
 
@@ -43,7 +43,8 @@ class ProjectExpense extends Expense {
                                   "idResource"=>"required",
                                   "idStatus"=>"required",
                                   "idResource"=>"hidden",
-  								                "idUser"=>"hidden"
+  								                "idUser"=>"hidden",
+                                  "_ExpenseDetail"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idProjectExpenseType'=>'type',

@@ -208,8 +208,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawDependenciesFromObject($val, $obj, $depType);
     } else if ($col=='_ResourceCost') { // Display ResourceCost     
       drawResourceCostFromObject($val, $obj, false);      
-    } else if ($col=='_ExpenseDetail') { // Display ResourceCost     
-      drawExpenseDetailFromObject($val, $obj, false);      
+    } else if ($col=='_ExpenseDetail') { // Display ExpenseDetail
+    	if ($obj->getFieldAttributes($col)!='hidden') {     
+        drawExpenseDetailFromObject($val, $obj, false);      
+    	}
     } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' 
                                      and substr($col,0,7)!='_label_') { // field not to be displayed
       //
@@ -498,6 +500,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
         echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="' . htmlEncode($val) . '" ';
+        echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScript;
         echo '</div>';
@@ -522,6 +525,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
         echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="' . $valDate . '" ';
+        echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScript;
         echo '</div>';
@@ -533,6 +537,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
         echo ' style="width:50px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="T' . $valTime . '" ';
+        echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScriptBis;
         echo '</div>';      
@@ -672,9 +677,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
+        //echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' style="width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         echo ' class="input" ';
+        //echo ' layoutAlign ="right" ';
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' >';
         echo $colScript;

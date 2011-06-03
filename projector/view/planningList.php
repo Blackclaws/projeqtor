@@ -43,6 +43,7 @@ scriptLog('   ->/view/planningList.php');
                  invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
                  type="text" maxlength="10"
                  style="width:100px; text-align: center;" class="input"
+                 hasDownArrow="true"
                  value="<?php echo date('Y-m-d');?>" >
                  <script type="dojo/method" event="onChange" >
                   refreshJsonPlanning();
