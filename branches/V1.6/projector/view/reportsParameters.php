@@ -154,10 +154,11 @@ foreach ($listParam as $param) {
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
-    <td><div style="width:90px; text-align: center; color: #000000;" 
+    <td><div style="width:100px; text-align: center; color: #000000;" 
       dojoType="dijit.form.DateTextBox" 
       invalidMessage="<?php echo i18n('messageInvalidDate');?>" 
       value="<?php echo $defaultDate;?>"
+      hasDownArrow="true"
       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>" >
     </div></td>
     </tr>

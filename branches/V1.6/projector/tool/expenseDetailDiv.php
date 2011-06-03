@@ -27,18 +27,18 @@ function showLine($nb, $value, $unit) {
 	    echo '<label for="expenseDetailValue' . $nb . '" >' . ($nb=='01'?'':'x&nbsp;') . '</label>';
 	    echo '</td>';
 	    echo '<td>';
-	    if ($value) {
-	      echo $value . " ";	
-		  echo '<input id="expenseDetailValue' . $nb . '" name="expenseDetailValue' . $nb . '" value="' . $value . '"'; 
-		  echo '  type="hidden"/>';	
-	    } else {
-	      echo '<input id="expenseDetailValue' . $nb . '" name="expenseDetailValue' . $nb . '" value=""'; 
+	    //if ($value) {
+	    //  echo $value . " ";	
+		  //echo '<input id="expenseDetailValue' . $nb . '" name="expenseDetailValue' . $nb . '" value="' . $value . '"'; 
+		  //echo '  type="hidden"/>';	
+	    //} else {
+	      echo '<input id="expenseDetailValue' . $nb . '" name="expenseDetailValue' . $nb . '" value="' . $value . '"'; 
           echo '  dojoType="dijit.form.NumberTextBox"'; 
           echo '  constraints="{min:0}" ';
           echo '  onChange=expenseDetailRecalculate();';
           echo '  style="width:97px"';              
           echo '  />';	
-	    }
+	    //}
 	    echo  " " . $unit;
 		echo '</td>';
 		echo '</tr>';

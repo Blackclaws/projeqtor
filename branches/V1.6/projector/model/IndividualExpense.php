@@ -130,7 +130,5 @@ class IndividualExpense extends Expense {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria; 
   }
-  
-
 }
 ?>

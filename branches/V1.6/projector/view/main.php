@@ -803,8 +803,9 @@ scriptLog('   ->/view/main.php');
                  dojoType="dijit.form.DateTextBox" 
                  invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
                  type="text" maxlength="10" 
-                 style="width:75px; text-align: center;" class="input"
-                 required="true" 
+                 style="width:100px; text-align: center;" class="input"
+                 required="true"
+                 hasDownArrow="true" 
                  missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                  invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                  >
@@ -903,6 +904,7 @@ scriptLog('   ->/view/main.php');
                  type="text" maxlength="10"
                  style="width:100px; text-align: center;" class="input"
                  required="true"
+                 hasDownArrow="true"
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colStartDate')));?>"
                  value="<?php echo date('Y-m-d');?>" >
                </div>
@@ -1040,7 +1042,8 @@ scriptLog('   ->/view/main.php');
              <td>
                <div id="resourceCostStartDate" name="resourceCostStartDate" value="" 
                  dojoType="dijit.form.DateTextBox" 
-                 style="width:97px" class="input"
+                 style="width:100px" class="input"
+                 hasDownArrow="true"
                >
                </div>
              </td>    

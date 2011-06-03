@@ -1340,14 +1340,14 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       if (property_exists($this, 'idleDateTime')) {
-        $colScript .= '    if (dijit.byId("idleDateTime").value==null) {';
+        $colScript .= '    if (! dijit.byId("idleDateTime").get("value")) {';
         $colScript .= '      var curDate = new Date();';
         $colScript .= '      dijit.byId("idleDateTime").set("value", curDate); ';
         $colScript .= '      dijit.byId("idleDateTimeBis").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'idleDate')) {
-        $colScript .= '    if (dijit.byId("idleDate").value==null) {';
+        $colScript .= '    if (! dijit.byId("idleDate").get("value")) {';
         $colScript .= '      var curDate = new Date();';
         $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
         $colScript .= '    }';
@@ -1377,14 +1377,14 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       if (property_exists($this, 'doneDateTime')) {
-        $colScript .= '    if (dijit.byId("doneDateTime").value==null) {';
+        $colScript .= '    if (! dijit.byId("doneDateTime").get("value")) {';
         $colScript .= '      var curDate = new Date();';
         $colScript .= '      dijit.byId("doneDateTime").set("value", curDate); ';
         $colScript .= '      dijit.byId("doneDateTimeBis").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'doneDate')) {
-        $colScript .= '    if (dijit.byId("doneDate").value==null) {';
+        $colScript .= '    if (! dijit.byId("doneDate").get("value")) {';
         $colScript .= '      var curDate = new Date();';
         $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
         $colScript .= '    }';
@@ -1414,14 +1414,14 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       if (property_exists($this, 'handledDateTime')) {
-        $colScript .= '    if (dijit.byId("handledDateTime").value==null) {';
+        $colScript .= '    if ( ! dijit.byId("handledDateTime").get("value")) {';
         $colScript .= '      var curDate = new Date();';
         $colScript .= '      dijit.byId("handledDateTime").set("value", curDate); ';
         $colScript .= '      dijit.byId("handledDateTimeBis").set("value", curDate); ';
         $colScript .= '    }';
       }
       if (property_exists($this, 'handledDate')) {
-        $colScript .= '    if (dijit.byId("handledDate").value==null) {';
+        $colScript .= '    if (! dijit.byId("handledDate").get("value")) {';
         $colScript .= '      var curDate = new Date();';
         $colScript .= '      dijit.byId("handledDate").set("value", curDate); ';
         $colScript .= '    }';

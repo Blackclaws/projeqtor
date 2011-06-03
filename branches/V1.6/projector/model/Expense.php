@@ -20,6 +20,8 @@ class Expense extends SqlElement {
   public $expenseRealDate;
   public $realAmount;
   public $idle;
+  //public $_col_1_1_Detail;
+  public $_ExpenseDetail=array();
   public $_Attachement=array();
   public $_Note=array();
 
@@ -158,7 +160,7 @@ class Expense extends SqlElement {
   }
 
   public function getExpenseDetail() {
-    $result=array();
+  	$result=array();
     $ed=new ExpenseDetail();
     $crit=array('idExpense'=>$this->id);
     $edList=$ed->getSqlElementsFromCriteria($crit, false, null, 'expenseDate');
@@ -166,6 +168,9 @@ class Expense extends SqlElement {
   }
   
   public function updateAmount() {
+  	if (count($this->_ExpenseDetail)==0) {
+  		return;
+  	}
   	$total=0;
   	$date=null;
   	foreach ($this->_ExpenseDetail as $ed) {

@@ -926,8 +926,8 @@ function addExpenseDetail () {
 	}	
 	dojo.byId("expenseDetailId").value="";
 	dojo.byId("idExpense").value=dojo.byId("objectId").value;
-	dijit.byId("expenseDetailName").set('value','');
-	dijit.byId("expenseDetailDate").set('value','');
+	dijit.byId("expenseDetailName").set('value',null);
+	dijit.byId("expenseDetailDate").set('value',null);
 	dijit.byId("expenseDetailType").set('value',null);
 	dojo.byId("expenseDetailDiv").innerHtml="";
 	dijit.byId("expenseDetailAmount").set('value','');
@@ -939,8 +939,9 @@ function addExpenseDetail () {
 * Display a edit Assignment Box
 * 
 */
-//var editExpenseDetailLoading=false;
+var expenseDetailLoad=false;
 function editExpenseDetail (id, idExpense, type, expenseDate, amount) {
+	expenseDetailLoad=true;
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -948,16 +949,15 @@ function editExpenseDetail (id, idExpense, type, expenseDate, amount) {
 	dojo.byId("expenseDetailId").value=id;
 	dojo.byId("idExpense").value=idExpense;	
 	dijit.byId("expenseDetailName").set("value",dojo.byId('expenseDetail_'+id).value);
-  	dijit.byId("expenseDetailDate").set("value",new Date(expenseDate));
+  	dijit.byId("expenseDetailDate").set("value",getDate(expenseDate));
 	dijit.byId("expenseDetailAmount").set("value",dojo.number.parse(amount));
-  	var oldType=dijit.byId("expenseDetailType").get("value");
-  	dijit.byId("expenseDetailType").set("value",type);
-	if (oldType==type) {
-		expenseDetailTypeChange();
-	}
 	dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail") + " #" + id);
+	dijit.byId("expenseDetailType").set("value",type);
+	expenseDetailLoad=false;
+	expenseDetailTypeChange(id);
+	expenseDetailLoad=true;
+	setTimeout('expenseDetailLoad=false;',500);
 	dijit.byId("dialogExpenseDetail").show();
-	setTimeout("editExpenseDetailLoading=false",1000);
 }
 
 /**
@@ -1008,12 +1008,9 @@ function removeExpenseDetail (expenseDetailId) {
 	showConfirm (msg, actionOK);
 }
 
-function expenseDetailTypeChange() {
-//	if (editExpenseDetailLoading) return;
-//	editExpenseDetailLoading=true;
+function expenseDetailTypeChange(expenseDetailId) {
+	if (expenseDetailLoad) return;
 	var idType=dijit.byId("expenseDetailType").get("value");
-	var expenseDetailId=dojo.byId("expenseDetailId").value;
-//alert(expenseDetailId);
 	var url='../tool/expenseDetailDiv.php?idType='+idType;
 	if (expenseDetailId) {
 	  url+='&expenseDetailId='+expenseDetailId;
@@ -1518,7 +1515,7 @@ function addResourceCost(idResource, idRole, funcList) {
 	dojo.byId("resourceCostId").value="";
 	dojo.byId("resourceCostIdResource").value=idResource;
 	dojo.byId("resourceCostFunctionList").value=funcList;
-	dijit.byId("resourceCostIdRole").setDisabled(false);
+	dijit.byId("resourceCostIdRole").set('disabled',false);
 	dijit.byId("resourceCostIdRole").set('value',((idRole)?idRole:null));
 	dijit.byId("resourceCostValue").set('value',null);
 	dijit.byId("resourceCostStartDate").set('value',null);
@@ -1537,6 +1534,7 @@ function removeResourceCost(id, idRole, nameRole, startDate) {
 	showConfirm (msg, actionOK);
 } 
 
+reourceCostLoad=false;
 function editResourceCost(id, idResource,idRole,cost,startDate,endDate) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
@@ -1545,12 +1543,14 @@ function editResourceCost(id, idResource,idRole,cost,startDate,endDate) {
 	dojo.byId("resourceCostId").value=id;
 	dojo.byId("resourceCostIdResource").value=idResource;
 	dijit.byId("resourceCostIdRole").setDisabled(true);
-	dijit.byId("resourceCostIdRole").set('value',idRole);
 	dijit.byId("resourceCostValue").set('value',cost);
 	var dateStartDate=getDate(startDate);
 	dijit.byId("resourceCostStartDate").set('value',dateStartDate);
-	dijit.byId("resourceCostStartDate").setDisabled(true);
+	dijit.byId("resourceCostStartDate").set('disabled',true);
 	dijit.byId("resourceCostStartDate").set('required','false');
+	reourceCostLoad=true;
+	dijit.byId("resourceCostIdRole").set('value',idRole);
+	setTimeout('reourceCostLoad=false;',300);
 	dijit.byId("dialogResourceCost").show();  	
 }
 
@@ -1565,13 +1565,14 @@ function saveResourceCost() {
 }
 
 function resourceCostUpdateRole() {
+	if (reourceCostLoad) {return;}
 	var funcList=dojo.byId('resourceCostFunctionList').value;
 	$key='#' + dijit.byId("resourceCostIdRole").get('value') + '#';
 	if (funcList.indexOf($key)>=0) {
-		dijit.byId("resourceCostStartDate").setDisabled(false);
+		dijit.byId("resourceCostStartDate").set('disabled',false);
 		dijit.byId("resourceCostStartDate").set('required','true');
 	} else {
-		dijit.byId("resourceCostStartDate").setDisabled(true);
+		dijit.byId("resourceCostStartDate").set('disabled',true);
 		dijit.byId("resourceCostStartDate").set('value',null);
 		dijit.byId("resourceCostStartDate").set('required','false');
 	}
