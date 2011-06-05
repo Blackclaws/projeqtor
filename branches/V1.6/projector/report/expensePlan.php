@@ -1,4 +1,5 @@
 <?php 
+echo "expenseProjectPlan.php";
 include_once '../tool/projector.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -7,6 +8,10 @@ if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!=""
 $scale='month';
 if (array_key_exists('scale',$_REQUEST)) {
   $scale=$_REQUEST['scale'];
+}
+$scope='';
+if (array_key_exists('scope',$_REQUEST)) {
+  $scope=$_REQUEST['scope'];
 }
 
 $headerParameters="";
@@ -18,28 +23,33 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
-$queryWhere="w.idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$queryWhere="exp.idProject in " . transformListIntoInClause($user->getVisibleProjects());
 
 if ($idProject!='') {
-  $queryWhere.=  " and w.idProject in " . getVisibleProjectsList(true, $idProject) ;
+  $queryWhere.=  " and exp.idProject in " . getVisibleProjectsList(true, $idProject) ;
 } else {
-  //$queryWhere.=  "and w.idProject in " . getVisibleProjectsList() ;
+  //$queryWhere.=  "and exp.idProject in " . getVisibleProjectsList() ;
 }
   
-$querySelect1= 'select sum(w.cost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 
-$queryGroupBy1 = 'w.'.$scale . ', w.idProject';
-$queryWhere1 = $queryWhere;
+$querySelect1= 'select sum(exp.realAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
+$queryGroupBy1 = 'exp.'.$scale . ', exp.idProject';
+$queryWhere1 = $queryWhere . ' and exp.expenseRealDate is not null ';
 
-$querySelect2= 'select sum(w.work * a.dailyCost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 
-$queryGroupBy2 = $scale . ', w.idProject';
-$queryWhere2 = $queryWhere . ' and w.idAssignment=a.id ';
+$querySelect2= 'select sum(exp.plannedAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
+$queryGroupBy2 = 'exp.'.$scale . ', exp.idProject';
+$queryWhere2 = $queryWhere . ' and exp.expenseRealDate is null ';
+
+if ($scope) {
+	$queryWhere1 .= ' and scope="' . $scope . 'Expense" ';
+	$queryWhere2 .= ' and scope="' . $scope . 'Expense" ';
+}
 // constitute query and execute
 
 $tab=array();
 $start="";
 $end="";
 for ($i=1;$i<=2;$i++) {
-  $obj=($i==1)?new Work():new PlannedWork();
+  $obj=new ProjectExpense();
   $ass=new Assignment();
   $var=($i==1)?'real':'plan';
   $querySelect=($i==1)?$querySelect1:$querySelect2;
@@ -48,10 +58,12 @@ for ($i=1;$i<=2;$i++) {
   //$queryFrom=($i==1)?$queryFrom1:$queryFrom2;
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query=$querySelect 
-     . ' from ' . $obj->getDatabaseTableName().' w '.(($i==2)?', '.$ass->getDatabaseTableName() . ' a':'') 
+     . ' from ' . $obj->getDatabaseTableName().' exp ' 
      . ' where ' . $queryWhere
      . ' group by ' . $queryGroupBy; 
   $result=Sql::query($query);
+//echo $query . '<br/>';
+  
   while ($line = Sql::fetchLine($result)) {
     $date=$line['scale'];
     $proj=$line['idProject'];
@@ -158,7 +170,7 @@ foreach($tab as $proj=>$lists) {
       echo '</td>';
       $sumProj[$proj][$date]+=$val;
     }
-    echo '<td class="reportTableColumnHeader" style="text-align:right;">';
+    echo '<td class="reportTableColumnHeader">';
     echo ($ital)?'<i>':'';
     echo htmlDisplayCurrency($sum);
     echo ($ital)?'</i>':'';

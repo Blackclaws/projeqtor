@@ -1,7 +1,7 @@
 <?PHP
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
- */
+ */ 
   require_once "../tool/projector.php";  
   $objectClass='PlanningElement';
   $obj=new $objectClass();

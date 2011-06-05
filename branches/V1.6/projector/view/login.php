@@ -50,92 +50,106 @@
 <body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
   <div id="waitLogin" >
   </div> 
-  <table align="center" width="100%" height="100%" class="background"><tr height="100%"><td width="100%">
-  <table  align="center" >
-    <tr >
-      <td  rowspan="2" width="140px" valign="top">
-        <img src="img/logoFull.gif">
-      </td>
-      <td  width="550px">
-        <img src="img/titleFull.gif">
-      </td>
-    <tr  height="250px">
-      <td align="left" valign="middle">
-        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >
-          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
-             <script type="dojo/method" event="onSubmit" >             
-              dojo.byId('login').focus();
-              changePassword=false;
-              quitConfirmed=true;
-              noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
-    		      loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
-    		      return false;        
-            </script>
-            <table>
-              <tr>     
-                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
-                <td><input tabindex="1" id="login" name="login" style="width:200px" type="text"  dojoType="dijit.form.TextBox" /></td>
-              </tr>
-              <tr><td colspan="2">&nbsp;</td></tr>
-              <tr>
-                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
-                <td><input tabindex="2" id="password" name="password" style="width:200px" type="password"  dojoType="dijit.form.TextBox" /></td>
-              </tr>
-              <tr><td colspan="2">&nbsp;</td></tr>
-              <tr>
-                <td class="label"><label>&nbsp;</label></td>
-                <td>
-                  <button tabindex="3" type="submit" id="loginButton" dojoType="dijit.form.Button" showlabel="true">OK
-                    <script type="dojo/connect" event="onClick" args="evt">              	  
-                      return false;
-                    </script>
-                  </button>
-                </td>
-              </tr>
-<?php 
-$showPassword=true;
-if (isset($lockPassword)) {
-  if (getBooleanValue($lockPassword)) {
-    $showPassword=false;
-  }
-}
-if ($showPassword) { 
-?>              
-              <tr>
-                <td class="label"><label>&nbsp;</label></td>
-                <td>  
-                   <button tabindex="4" id="passwordButton" dojoType="dijit.form.Button" showlabel="true">
-                     <?php echo i18n('buttonChangePassword') ?>
-                     <script type="dojo/connect" event="onClick" args="evt">
-                       dojo.byId('login').focus();
-                       changePassword=true;
-                       loadContent("../tool/loginCheck.php?resetPassword=true","loginResultDiv","loginForm");
-                    </script>
-                  </button>  
-                </td>
-              </tr>
-<?php }?>
-              <tr><td colspan="2">&nbsp;</td></tr>
-              <tr>
-                <td class="label"><label>&nbsp;</label></td>
-                <td>
-                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" >
-                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
-                    <?php if (array_key_exists('lostConnection',$_REQUEST)) {
-                            echo i18n("disconnectMessage");
-                            echo '<br/>';
-                            echo i18n("errorConnection");
-                          }
-                     ?>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </form>
-        </div>
+  <table align="center" width="100%" height="100%" class="background">
+    <tr height="100%">
+	    <td width="100%">
+			  <table  align="center" >
+			    <tr >
+			      <td  rowspan="2" width="140px" valign="top">
+			        <img src="img/logoFull.gif">
+			      </td>
+			      <td  width="560px">
+			        <img src="img/titleFull.gif">
+			      </td>
+			    </tr>
+			    <tr  height="100%">
+			      <td align="left" valign="middle">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:100%;">
+			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
+			            <script type="dojo/method" event="onSubmit" >             
+                    dojo.byId('login').focus();
+                    changePassword=false;
+                    quitConfirmed=true;
+                    noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
+    		            loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
+    		            return false;        
+                  </script>
+			            <table>
+			              <tr>     
+			                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
+			                <td>
+			                  <input tabindex="1" id="login" name="login" style="width:200px" type="text"  
+			                   dojoType="dijit.form.TextBox" />
+			                </td>
+			              </tr>
+			              <tr>
+			                <td colspan="2">&nbsp;</td>
+			              </tr>
+			              <tr>
+			                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
+			                <td>
+			                  <input tabindex="2" id="password" name="password" style="width:200px" type="password"  
+			                   dojoType="dijit.form.TextBox" />
+			                </td>
+			              </tr>
+			              <tr><td colspan="2">&nbsp;</td></tr>
+			              <tr>
+			                <td class="label"><label>&nbsp;</label></td>
+			                <td>
+			                  <button tabindex="3" type="submit" id="loginButton" 
+			                   dojoType="dijit.form.Button" showlabel="true">OK
+			                    <script type="dojo/connect" event="onClick" args="evt">              	  
+                            return false;
+                          </script>
+			                  </button>
+			                </td>
+			              </tr>
+	<?php 
+	$showPassword=true;
+	if (isset($lockPassword)) {
+	  if (getBooleanValue($lockPassword)) {
+	    $showPassword=false;
+	  }
+	}
+	if ($showPassword) { 
+	?>              
+			              <tr>
+			                <td class="label"><label>&nbsp;</label></td>
+			                <td>  
+			                  <button tabindex="4" id="passwordButton" dojoType="dijit.form.Button" showlabel="true">
+			                    <?php echo i18n('buttonChangePassword') ?>
+			                    <script type="dojo/connect" event="onClick" args="evt">
+                            dojo.byId('login').focus();
+                            changePassword=true;
+                            loadContent("../tool/loginCheck.php?resetPassword=true","loginResultDiv","loginForm");
+                          </script>
+			                  </button>  
+			                </td>
+			              </tr>
+  <?php }?>
+			              <tr><td colspan="2">&nbsp;</td></tr>
+			              <tr>
+			                <td class="label"><label>&nbsp;</label></td>
+			                <td>
+			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="200px" style="overflow: auto;" >
+			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
+			                    <?php if (array_key_exists('lostConnection',$_REQUEST)) {
+			                            echo i18n("disconnectMessage");
+			                            echo '<br/>';
+			                            echo i18n("errorConnection");
+			                          }
+			                     ?>
+			                  </div>
+			                </td>
+			              </tr>
+			            </table>
+			          </form>
+		          </div>
+		        </td>
+		      </tr>
+	      </table>
       </td>
     </tr>
   </table>
-  </td></tr></table>
 </body>
 </html>

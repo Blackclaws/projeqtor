@@ -19,6 +19,10 @@ class Expense extends SqlElement {
   public $plannedAmount;
   public $expenseRealDate;
   public $realAmount;
+  public $day;
+  public $week;
+  public $month;
+  public $year;
   public $idle;
   //public $_col_1_1_Detail;
   public $_ExpenseDetail=array();
@@ -40,7 +44,11 @@ class Expense extends SqlElement {
                                   "name"=>"required",
                                   "idExpenseType"=>"required",
                                   "idStatus"=>"required",
-  								                "idUser"=>"hidden"
+  								                "idUser"=>"hidden",
+                                  "day"=>"hidden",
+                                  "week"=>"hidden",
+                                  "month"=>"hidden",
+                                  "year"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('expensePlannedDate'=>'plannedDate',
@@ -156,6 +164,11 @@ class Expense extends SqlElement {
   
   public function save() {
     $this->idUser=$this->idResource;
+    if ($this->expenseRealDate) {
+    	$this->setDates($this->expenseRealDate);
+    } else {
+    	$this->setDates($this->expensePlannedDate);
+    }
     return parent::save();
   }
 
@@ -178,8 +191,21 @@ class Expense extends SqlElement {
   		$date=$ed->expenseDate;
   	} 
   	$this->realAmount=$total;
-  	$this->expenseRealDate=$date;
+  	if (! $this->expenseRealDate) {
+  	  $this->expenseRealDate=$date;
+  	}
   	$this->save();
   }
+  
+  public function setDates($workDate) {
+    $year=substr($workDate,0,4);
+    $month=substr($workDate,5,2);
+    $day=substr($workDate,8,2);
+    $this->day=$year . $month . $day;
+    $this->month=$year . $month; 
+    $this->year=$year;
+    $this->week=$year . weekNumber($workDate);
+  }
+  
 }
 ?>

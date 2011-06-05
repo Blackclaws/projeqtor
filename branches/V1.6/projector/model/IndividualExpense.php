@@ -44,7 +44,11 @@ class IndividualExpense extends Expense {
                                   "plannedAmount"=>"",
                                   "idResource"=>"required",
                                   "idStatus"=>"required",
-  								                "idUser"=>"hidden"
+  								                "idUser"=>"hidden",
+                                  "day"=>"hidden",
+                                  "week"=>"hidden",
+                                  "month"=>"hidden",
+                                  "year"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idIndividualExpenseType'=>'type',
