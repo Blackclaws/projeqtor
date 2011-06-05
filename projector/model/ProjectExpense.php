@@ -44,7 +44,11 @@ class ProjectExpense extends Expense {
                                   "idStatus"=>"required",
                                   "idResource"=>"hidden",
   								                "idUser"=>"hidden",
-                                  "_ExpenseDetail"=>"hidden"
+                                  "_ExpenseDetail"=>"hidden",
+                                  "day"=>"hidden",
+                                  "week"=>"hidden",
+                                  "month"=>"hidden",
+                                  "year"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idProjectExpenseType'=>'type',

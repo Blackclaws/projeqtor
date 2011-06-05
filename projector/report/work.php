@@ -1,4 +1,4 @@
-<?php
+<?php 
 include_once '../tool/projector.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {

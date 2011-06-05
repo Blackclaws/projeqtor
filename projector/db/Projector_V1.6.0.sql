@@ -46,6 +46,10 @@ CREATE TABLE `${prefix}expense` (
   `expenseRealDate` date DEFAULT null,
   `plannedAmount` decimal(11,2) DEFAULT null,
   `realAmount` decimal(11,2) DEFAULT null,
+  `day`  varchar(8),
+  `week` varchar(6),
+  `month` varchar(6),
+  `year` varchar(4),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
@@ -236,9 +240,9 @@ INSERT INTO `${prefix}expenseDetailType` (id, name, sortOrder, value01, unit01, 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (31, 'reportPlanDetail', 2, 'detailPlan.php', 455),
 (32, 'reportAvailabilityPlan', 2, 'availabilityPlan.php', 480),
-(33, 'reportExpenseProject', 6, 'expenseProjectPlan.php?scale=month', 660),
-(34, 'reportExpenseResource', 6, 'expenseResourcePlan.php?scale=month', 670),
-(35, 'reportExpenseTotal', 6, 'expenseTotalPlan.php?scale=month', 680),
+(33, 'reportExpenseProject', 6, 'expensePlan.php?scale=month&scope=Project', 660),
+(34, 'reportExpenseResource', 6, 'expensePlan.php?scale=month&scope=Individual', 670),
+(35, 'reportExpenseTotal', 6, 'expensePlan.php?scale=month', 680),
 (36, 'reportExpenseCostTotal', 6, 'expenseCostTotalPlan.php?scale=month', 690);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 

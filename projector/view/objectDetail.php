@@ -1277,7 +1277,6 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     echo $expenseDetail->getFormatedDetail();
     echo '</td>';
     echo '<td class="assignData" style="text-align:right;">' . htmlDisplayCurrency($expenseDetail->amount) . '</td>';
-
     echo '</tr>';
   }
   echo '</table></td></tr>';
