@@ -1,9 +1,12 @@
 <?php 
-echo "expenseProjectPlan.php";
 include_once '../tool/projector.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
+}
+$idResource="";
+if (array_key_exists('idResource',$_REQUEST) and trim($_REQUEST['idResource'])!="") {
+  $idResource=trim($_REQUEST['idResource']);
 }
 $scale='month';
 if (array_key_exists('scale',$_REQUEST)) {
@@ -17,6 +20,9 @@ if (array_key_exists('scope',$_REQUEST)) {
 $headerParameters="";
 if ($idProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project',$idProject) . '<br/>';
+}
+if ($idResource!="") {
+  $headerParameters.= i18n("colIdResource") . ' : ' . SqlList::getNameFromId('Resource',$idResource) . '<br/>';
 }
 include "header.php";
 
@@ -40,8 +46,14 @@ $queryGroupBy2 = 'exp.'.$scale . ', exp.idProject';
 $queryWhere2 = $queryWhere . ' and exp.expenseRealDate is null ';
 
 if ($scope) {
-	$queryWhere1 .= ' and scope="' . $scope . 'Expense" ';
-	$queryWhere2 .= ' and scope="' . $scope . 'Expense" ';
+	$scopeWhere = ' and scope="' . $scope . 'Expense" ';
+	$queryWhere1 .= $scopeWhere;
+	$queryWhere2 .= $scopeWhere;
+}
+if ($idResource) {
+	$resWhere = ' and idResource="' . $idResource .'" ';
+  $queryWhere1 .= $resWhere;
+  $queryWhere2 .= $resWhere;
 }
 // constitute query and execute
 
