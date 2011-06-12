@@ -13,6 +13,7 @@ class Meeting extends SqlElement {
   public $name;
   public $attendees;
   public $idUser;
+  public $description;
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;

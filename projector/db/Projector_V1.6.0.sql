@@ -274,3 +274,5 @@ INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAcces
 (36, 1, 1),
 (36, 2, 1),
 (36, 3, 1); 
+
+ALTER TABLE `${prefix}meeting` ADD description VARCHAR(4000);
