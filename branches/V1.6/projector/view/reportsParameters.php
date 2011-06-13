@@ -28,7 +28,7 @@ echo "<input type='hidden' id='reportFile' name='reportFile' value='" . $report-
 echo "<input type='hidden' id='reportId' name='reportId' value='" . $report->id . "' />";
 $param=new ReportParameter();
 $crit=array('idReport'=>$idReport);
-$listParam=$param->getSqlElementsFromCriteria($crit);
+$listParam=$param->getSqlElementsFromCriteria($crit,false,null,'`order`');
 foreach ($listParam as $param) {
   if ($param->paramType=='week') {
     $defaultWeek='';
@@ -249,6 +249,30 @@ foreach ($listParam as $param) {
      </select>    
     </td>
     </tr>
+<?php 
+  } else if ($param->paramType=='requestorList') {
+    $defaultValue='';
+    /*if ($param->defaultValue=='currentResource') {
+      if (array_key_exists('project',$_SESSION)) {
+        $user=$_SESSION['user'];
+        $defaultValue=$user->id;
+      }
+    } else if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }*/
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <?php htmlDrawOptionForReference('idContact', $defaultValue, null, false); ?>
+     </select>    
+    </td>
+    </tr>    
+    
 <?php 
   } else if ($param->paramType=='ticketType') {
     $defaultValue='';

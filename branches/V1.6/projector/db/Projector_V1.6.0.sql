@@ -276,3 +276,15 @@ INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAcces
 (36, 3, 1); 
 
 ALTER TABLE `${prefix}meeting` ADD description VARCHAR(4000);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+(76, 9, 'requestor', 'requestorList', 35, null),
+(77, 10, 'requestor', 'requestorList', 35, null),
+(78, 11, 'requestor', 'requestorList', 25, null),
+(79, 12, 'requestor', 'requestorList', 25, null),
+(80, 13, 'requestor', 'requestorList', 25, null),
+(81, 14, 'requestor', 'requestorList', 25, null),
+(82, 15, 'requestor', 'requestorList', 25, null),
+(83, 16, 'requestor', 'requestorList', 25, null),
+(84, 17, 'requestor', 'requestorList', 15, null),
+(85, 18, 'requestor', 'requestorList', 15, null);

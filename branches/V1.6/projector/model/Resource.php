@@ -38,7 +38,8 @@ class Resource extends SqlElement {
 
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "idProfile"=>"readonly",
-                                          "isUser"=>"readonly"
+                                          "isUser"=>"readonly",
+                                          "isContact"=>"readonly"
   );    
   
   private static $_databaseTableName = 'user';
@@ -67,7 +68,16 @@ class Resource extends SqlElement {
     if (securityCheckDisplayMenu($menu->id)) {
     	self::$_fieldsAttributes["isUser"]="";
     	self::$_fieldsAttributes["idProfile"]="";
-    } 
+    }
+    
+    $crit=array("name"=>"menuContact");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }     
+    if (securityCheckDisplayMenu($menu->id)) {
+      self::$_fieldsAttributes["isContact"]="";
+    }
   }
 
   

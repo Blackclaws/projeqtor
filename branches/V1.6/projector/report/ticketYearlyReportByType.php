@@ -29,6 +29,11 @@ if (array_key_exists('issuer',$_REQUEST)) {
   $paramIssuer=trim($_REQUEST['issuer']);
 };
 
+  $paramRequestor='';
+  if (array_key_exists('requestor',$_REQUEST)) {
+    $paramRequestor=trim($_REQUEST['requestor']);
+  }
+  
 $paramResponsible='';
 if (array_key_exists('responsible',$_REQUEST)) {
   $paramResponsible=trim($_REQUEST['responsible']);
@@ -55,6 +60,9 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
+  if ($paramRequestor!="") {
+    $headerParameters.= i18n("colRequestor") . ' : ' . SqlList::getNameFromId('Contact', $paramRequestor) . '<br/>';
+  }
 if ($paramIssuer!="") {
   $headerParameters.= i18n("colIssuer") . ' : ' . SqlList::getNameFromId('User', $paramIssuer) . '<br/>';
 }

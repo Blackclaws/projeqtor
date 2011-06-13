@@ -12,6 +12,7 @@ class Contact extends SqlElement {
   public $isUser;
   public $idProfile;
   public $userName;
+  public $isResource;
   public $email;
   public $address;
   public $phone;
@@ -33,7 +34,8 @@ class Contact extends SqlElement {
 
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "idProfile"=>"readonly",
-                                          "isUser"=>"readonly"
+                                          "isUser"=>"readonly",
+                                          "isResource"=>"readonly" 
   );    
   
   private static $_databaseTableName = 'user';
@@ -60,6 +62,15 @@ class Contact extends SqlElement {
       self::$_fieldsAttributes["isUser"]="";
       self::$_fieldsAttributes["idProfile"]="";
     } 
+    
+    $crit=array("name"=>"menuResource");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }     
+    if (securityCheckDisplayMenu($menu->id)) {
+      self::$_fieldsAttributes["isResource"]="";
+    }
   }
 
   
