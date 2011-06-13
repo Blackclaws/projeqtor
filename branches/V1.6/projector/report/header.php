@@ -86,12 +86,17 @@ function getAccesResctictionClause($objectClass,$alias=null) {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  "(1 = 2)";      
   } else if ($accessRightRead=='OWN') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    if ($alias===false) {
-    	$queryWhere.=  "idUser = '" . $_SESSION['user']->id . "'";   
-    } else {
-      $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";   
-    }         
+  	if (propertyExists($obj,"idUser")) {
+	    $queryWhere.= ($queryWhere=='')?'':' and ';
+	    if ($alias===false) {
+	    	$queryWhere.=  "idUser = '" . $_SESSION['user']->id . "'";   
+	    } else {
+	      $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";   
+	    }
+  	} else {
+  		$queryWhere.= ($queryWhere=='')?'':' and ';
+      $queryWhere.=  "(1 = 2)";  
+  	}         
   } else if ($accessRightRead=='PRO') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     if ($alias===false) {
