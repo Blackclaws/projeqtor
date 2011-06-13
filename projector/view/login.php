@@ -74,6 +74,7 @@
     		            loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
     		            return false;        
                   </script>
+                  <br/><br/>
 			            <table>
 			              <tr>     
 			                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>

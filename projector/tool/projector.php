@@ -666,7 +666,7 @@ function securityGetAccessRight($menuName, $accessType, $obj=null) {
   $accessRightList=$user->getAccessControlRights();
   //$accessRight='NO';
   // TODO : set default to NO, when non-project-dependant lists are implemented
-  $accessRight='YES';
+  $accessRight='ALL';
   if ($accessType=='update' and $obj and $obj->id==null) {
     return securityGetAccessRight($menuName, 'create');
   }

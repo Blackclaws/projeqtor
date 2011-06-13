@@ -608,11 +608,11 @@ class PlanningElement extends SqlElement {
   }
 
   public function setVisibility() {
-    if ($this->_costVisibility and $this->_workVisibility) {
-      $this->_costVisibility='ALL';
-      $this->_workVisibility='ALL';
-      return;
-    }
+    //if ($this->_costVisibility and $this->_workVisibility) {
+      //$this->_costVisibility='ALL';
+      //$this->_workVisibility='ALL';
+      //return;
+    //}
     if (! array_key_exists('user',$_SESSION)) {
       return;
     }
