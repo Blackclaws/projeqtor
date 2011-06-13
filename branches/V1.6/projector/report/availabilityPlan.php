@@ -1,7 +1,5 @@
 <?php
-echo "Not implemented";
-echo "<br/><i>(availabilityPlan.php)</i>";
-
+//echo "<br/><i>(availabilityPlan.php)</i>";
 
 include_once '../tool/projector.php';
 $paramYear='';
@@ -40,7 +38,11 @@ if ( $periodType=='week') {
 include "header.php";
 
 //$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$where="1=1 ";
+$where=getAccesResctictionClause('Resource',false);
+echo $where;
+
+//$where="1=1 ";
+
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
@@ -49,8 +51,14 @@ $order="";
 $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
-$resources=array();
+//$resources=array();
+$resources=SqlList::getList('Resource');
 $capacity=array();
+foreach ($resources as $id=>$name) {
+	$capacity[$id]=SqlList::getFieldFromId('Resource', $id, 'capacity');
+  $result[$id]=array();
+}
+
 $real=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
@@ -93,7 +101,7 @@ $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
-if (checkNoData($result)) exit;
+//if (checkNoData($result)) exit;
 
 
 echo '<table width="100%" align="center">';

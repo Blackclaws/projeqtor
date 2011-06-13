@@ -213,16 +213,20 @@ class Activity extends SqlElement {
       and stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
       // Add assignment for responsible
       $ass=new Assignment();
-      $ass->idProject=$this->idProject;
-      $ass->refType='Activity';
-      $ass->refId=$this->id;
-      $ass->idResource=$this->idResource;
-      $ass->assignedWork=0;
-      $ass->realWork=0;
-      $ass->leftWork=0;
-      $ass->plannedWork=0;
-      $ass->rate='100';
-      $ass->save();   
+      $crit=array('idResource'=>$this->idResource);
+      $lst=$ass->getSqlElementsFromCriteria($crit, false);
+      if (count($lst)==0) {
+	      $ass->idProject=$this->idProject;
+	      $ass->refType='Activity';
+	      $ass->refId=$this->id;
+	      $ass->idResource=$this->idResource;
+	      $ass->assignedWork=0;
+	      $ass->realWork=0;
+	      $ass->leftWork=0;
+	      $ass->plannedWork=0;
+	      $ass->rate='100';
+	      $ass->save();
+      }   
     }
 
     // Change idle or idProject value => update idle and idProject for assignments

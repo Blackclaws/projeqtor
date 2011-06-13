@@ -103,6 +103,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $colWidth = ( $detailWidth) / $nbCol;
       if (is_subclass_of($obj,'PlanningElement') and $internalTableRows>=3) {
         $obj->setVisibility();
+//echo "(" . $obj->_workVisibility . "/" . $obj->_costVisibility . ")";        
         $workVisibility=$obj->_workVisibility;
         $costVisibility=$obj->_costVisibility;
         if ($workVisibility=='NO') {
