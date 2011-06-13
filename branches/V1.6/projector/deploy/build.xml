@@ -152,7 +152,7 @@
      ============================================================================================== --> 
 <!-- Full  : 40,9 Mo -->
 <!-- Build : 14,8 Mo -->
-<!-- Clean :  Mo -->
+<!-- Clean :  5,7 Mo -->
 	
 	<property name="dojo.release.dir" value ="${setup.dir}/dojo-release-1.6.1-src"/>
 	<property name="dojo.version" value="1.6.1"/>
@@ -198,10 +198,10 @@
 		  <fileset dir="${release.dir}/dojox" >
 		  	<include name="**/*"/>
 		  	<exclude name="*.js"/>
-		  	<exclude name="LICENSE"/>
-		  	<exclude name="data"/>
-		  	<exclude name="form"/>
-		    <exclude name="grid"/>
+		  	<exclude name="LICENSE/*.*"/>
+		  	<exclude name="data/*.js"/>
+		  	<exclude name="form/*.js"/>
+		    <exclude name="grid/*.js"/>
 		  </fileset>
 		</delete>  
 	</target>
