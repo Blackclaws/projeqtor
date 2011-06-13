@@ -2,6 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
+//echo "costPlan.php";
   require_once "../tool/projector.php";  
   $objectClass='PlanningElement';
   $obj=new $objectClass();
@@ -67,7 +68,7 @@
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-echo $query;
+//echo $query;
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;

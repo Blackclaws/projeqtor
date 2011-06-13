@@ -1,4 +1,5 @@
 <?php 
+//echo "globalWorkPlanning.php";
 include_once '../tool/projector.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -18,7 +19,8 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
-$queryWhere="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$queryWhere="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$queryWhere=getAccesResctictionClause('Activity',false);
 
 if ($idProject!='') {
   $queryWhere.=  " and idProject in " . getVisibleProjectsList(true, $idProject) ;
