@@ -41,7 +41,7 @@
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
   }
   
-  if ($accessRightRead=='NO') {
+/*  if ($accessRightRead=='NO') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  "(1 = 2)";      
   } else if ($accessRightRead=='OWN') {
@@ -52,8 +52,10 @@
     $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      
   } else if ($accessRightRead=='ALL') {
     // No restriction to add
-  }
-
+  } */  
+  $queryWhere.= ($queryWhere=='')?'':' and ';
+  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;  
   $queryOrderBy .= $table . ".wbsSortable ";
@@ -65,7 +67,7 @@
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-
+echo $query;
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;

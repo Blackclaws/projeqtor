@@ -75,7 +75,7 @@ for ($i=1;$i<=2;$i++) {
      . ' where ' . $queryWhere
      . ' group by ' . $queryGroupBy; 
   $result=Sql::query($query);
-echo $query . '<br/><br/>';
+//echo $query . '<br/><br/>';
   
   while ($line = Sql::fetchLine($result)) {
     $date=$line['scale'];
