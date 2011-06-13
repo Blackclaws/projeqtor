@@ -77,9 +77,6 @@ function getAccesResctictionClause($objectClass,$alias=null) {
 	} else {
     $table=$obj->getDatabaseTableName();
 	}
-	if ($objectClass=="Resource") {
-		
-	}
   $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
   $queryWhere="";
   if ($accessRightRead=='NO') {

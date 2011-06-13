@@ -1,4 +1,5 @@
 <?php 
+//echo "expensePlan.php";
 include_once '../tool/projector.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -30,7 +31,8 @@ $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
 //$queryWhere="exp.idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$queryWhere=getAccesResctictionClause('Expense','exp');
+$queryWhere=getAccesResctictionClause('ProjectExpense','exp');
+//echo $queryWhere;
 
 if ($idProject!='') {
   $queryWhere.=  " and exp.idProject in " . getVisibleProjectsList(true, $idProject) ;

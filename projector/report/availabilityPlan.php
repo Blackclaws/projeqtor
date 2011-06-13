@@ -1,5 +1,5 @@
 <?php
-//echo "<br/><i>(availabilityPlan.php)</i>";
+//echo "availabilityPlan.php";
 
 include_once '../tool/projector.php';
 $paramYear='';
@@ -38,10 +38,13 @@ if ( $periodType=='week') {
 include "header.php";
 
 //$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$where=getAccesResctictionClause('Resource',false);
-echo $where;
-
-//$where="1=1 ";
+$where=getAccesResctictionClause('Affectation',false);
+$resources=array();
+$aff=new Affectation();
+$affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
+foreach($affLst as $aff){
+  $resources[$aff->idResource]=SqlList::getNameFromId('Resource', $aff->idResource);
+}
 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
@@ -52,7 +55,7 @@ $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
 //$resources=array();
-$resources=SqlList::getList('Resource');
+
 $capacity=array();
 foreach ($resources as $id=>$name) {
 	$capacity[$id]=SqlList::getFieldFromId('Resource', $id, 'capacity');
@@ -167,7 +170,7 @@ foreach ($resources as $idR=>$nameR) {
       if ($val>0) {
         $style.='color: #00AA00;';      	
       } else if ($val < 0) {
-      	$style.='color: #AA0000;';
+      	$style.='color: #FF0000;';
       } else {
       	$style.='color: ' . $plannedFrontColor . ';';
       }

@@ -1,5 +1,5 @@
 <?php
-
+//echo "detailPlan.php";
 include_once '../tool/projector.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -36,8 +36,10 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$where=getAccesResctictionClause('Activity',false);
 //$where="1=1 ";
+
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';

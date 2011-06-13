@@ -1,4 +1,5 @@
 <?php 
+//echo "globalCostPlanning.php";
 include_once '../tool/projector.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -18,7 +19,8 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
-$queryWhere="w.idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$queryWhere="w.idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$queryWhere=getAccesResctictionClause('Activity','w');
 
 if ($idProject!='') {
   $queryWhere.=  " and w.idProject in " . getVisibleProjectsList(true, $idProject) ;
