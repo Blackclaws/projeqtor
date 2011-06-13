@@ -53,6 +53,16 @@ class User extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    
+    $crit=array("name"=>"menuContact");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }     
+    if (securityCheckDisplayMenu($menu->id)) {
+      self::$_fieldsAttributes["isContact"]="";
+    }
+    
   }
 
   

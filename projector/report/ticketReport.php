@@ -30,6 +30,11 @@ if (! isset($includedReport)) {
     $paramTicketType=trim($_REQUEST['idTicketType']);
   };
   
+  $paramRequestor='';
+  if (array_key_exists('requestor',$_REQUEST)) {
+    $paramRequestor=trim($_REQUEST['requestor']);
+  }
+    
   $paramIssuer='';
   if (array_key_exists('issuer',$_REQUEST)) {
     $paramIssuer=trim($_REQUEST['issuer']);
@@ -66,6 +71,9 @@ if (! isset($includedReport)) {
   if ($paramTicketType!="") {
     $headerParameters.= i18n("colIdTicketType") . ' : ' . SqlList::getNameFromId('TicketType', $paramTicketType) . '<br/>';
   }
+  if ($paramRequestor!="") {
+    $headerParameters.= i18n("colRequestor") . ' : ' . SqlList::getNameFromId('Contact', $paramRequestor) . '<br/>';
+  }
   if ($paramIssuer!="") {
     $headerParameters.= i18n("colIssuer") . ' : ' . SqlList::getNameFromId('User', $paramIssuer) . '<br/>';
   }
@@ -101,6 +109,9 @@ if ($paramProject!="") {
 }
 if ($paramTicketType!="") {
   $where.=" and idTicketType='" . $paramTicketType . "'";
+}
+if ($paramRequestor!="") {
+  $where.=" and idContact='" . $paramRequestor . "'";
 }
 if ($paramIssuer!="") {
   $where.=" and idUser='" . $paramIssuer . "'";

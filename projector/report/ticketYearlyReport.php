@@ -1,4 +1,5 @@
 <?php
+//echo "ticketYearlyReport.php";
 include_once '../tool/projector.php';
 
 if (! isset($includedReport)) {
@@ -34,7 +35,12 @@ if (! isset($includedReport)) {
   if (array_key_exists('issuer',$_REQUEST)) {
     $paramIssuer=trim($_REQUEST['issuer']);
   };
-  
+
+  $paramRequestor='';
+  if (array_key_exists('requestor',$_REQUEST)) {
+    $paramRequestor=trim($_REQUEST['requestor']);
+  }
+    
   $paramResponsible='';
   if (array_key_exists('responsible',$_REQUEST)) {
     $paramResponsible=trim($_REQUEST['responsible']);
@@ -64,6 +70,9 @@ if (! isset($includedReport)) {
   if ($paramTicketType!="") {
     $headerParameters.= i18n("colIdTicketType") . ' : ' . SqlList::getNameFromId('TicketType', $paramTicketType) . '<br/>';
   }
+  if ($paramRequestor!="") {
+    $headerParameters.= i18n("colRequestor") . ' : ' . SqlList::getNameFromId('Contact', $paramRequestor) . '<br/>';
+  }
   if ($paramIssuer!="") {
     $headerParameters.= i18n("colIssuer") . ' : ' . SqlList::getNameFromId('User', $paramIssuer) . '<br/>';
   }
@@ -72,7 +81,9 @@ if (! isset($includedReport)) {
   }
   include "header.php";
 }
-$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+
+//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$where=getAccesResctictionClause('Ticket',false);
 
 $where.=" and ( (    creationDateTime>= '" . $paramYear . "-01-01'";
 $where.="        and creationDateTime<='" . $paramYear . "-12-31' )";
@@ -85,6 +96,9 @@ if ($paramProject!="") {
 }
 if ($paramTicketType!="") {
   $where.=" and idTicketType='" . $paramTicketType . "'";
+}
+if ($paramRequestor!="") {
+  $where.=" and idContact='" . $paramRequestor . "'";
 }
 if ($paramIssuer!="") {
   $where.=" and idUser='" . $paramIssuer . "'";

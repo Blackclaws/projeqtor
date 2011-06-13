@@ -30,6 +30,7 @@ class Action extends SqlElement {
   public $_Link_Risk=array();
   public $_sec_linkIssue;
   public $_Link_Issue=array();
+  public $_Attachement=array();
   public $_Note=array();
 
 
