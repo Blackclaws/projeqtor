@@ -13,6 +13,11 @@
     if ( array_key_exists('comboDetail',$_REQUEST) ) {
       $comboDetail=true;
     }
+    $quickSearch=false;
+    if ( array_key_exists('quickSearch',$_REQUEST) ) {
+      $quickSearch=$_REQUEST['quickSearch'];
+    } 
+       
     $obj=new $objectClass();
     $table=$obj->getDatabaseTableName();
     $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
@@ -27,23 +32,37 @@
     $layout=$obj->getLayout();
     $array=explode('</th>',$layout);
 
-    if (! array_key_exists('idle',$_REQUEST) ) {
+    if ($quickSearch) {
+    	$queryWhere.= ($queryWhere=='')?'':' and ';
+    	$queryWhere.="( 1=2 ";
+    	foreach($obj as $fld=>$val) {
+    		if ($obj->getDataType($fld)=='varchar') {    				
+            $queryWhere.= ' or ' . $table . "." . $fld . " like '%" . $quickSearch . "%'";
+    		}
+    	}
+    	if (is_numeric($quickSearch)) {
+    		$queryWhere.= ' or ' . $table . ".id='" . $quickSearch . "'";
+    	}
+    	$queryWhere.=" )";
+    }
+//debugLog($queryWhere); 
+    if (! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idle') . "=0";
     }
-    if (array_key_exists('listIdFilter',$_REQUEST) ) {
+    if (array_key_exists('listIdFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listIdFilter'];
       $param=strtr($param,"*?","%_");
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id') . " like '%" . $param . "%'";
     }
-    if (array_key_exists('listNameFilter',$_REQUEST) ) {
+    if (array_key_exists('listNameFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listNameFilter'];
       $param=strtr($param,"*?","%_");
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('name') . " like '%" . $param . "%'";
     }
-    if ( array_key_exists('objectType',$_REQUEST) ) {
+    if ( array_key_exists('objectType',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectType'])!='') {
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "='" . $_REQUEST['objectType'] . "'";
@@ -83,7 +102,7 @@
     }
 
     $arrayFilter=array();
-    if (! $comboDetail) {
+    if (! $comboDetail  and ! $quickSearch) {
       if (is_array( $_SESSION['user']->_arrayFilters)) {
         if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
           $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
@@ -113,31 +132,33 @@
     }
     
     // Then sort from Filter Criteria
-    foreach ($arrayFilter as $crit) {
-      if ($crit['sql']['operator']=='SORT') {
-        $doneSort=false;
-        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
-          $externalClass = substr($crit['sql']['attribute'],2);
-          $externalObj=new $externalClass();
-          $externalTable = $externalObj->getDatabaseTableName();          
-          if (property_exists($externalObj,'sortOrder')) {
-            $idTab+=1;
-            $externalTableAlias = 'T' . $idTab;
-            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-            $queryOrderBy .= " " . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder')
-               . " " . str_replace("'","",$crit['sql']['value']);
-            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
-            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-            $doneSort=true;
-          }
-        }
-        if (! $doneSort) {
-          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-          $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
-                             . " " . $crit['sql']['value'];
-        }
-      }
+    if (! $quickSearch) {
+	    foreach ($arrayFilter as $crit) {
+	      if ($crit['sql']['operator']=='SORT') {
+	        $doneSort=false;
+	        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
+	          $externalClass = substr($crit['sql']['attribute'],2);
+	          $externalObj=new $externalClass();
+	          $externalTable = $externalObj->getDatabaseTableName();          
+	          if (property_exists($externalObj,'sortOrder')) {
+	            $idTab+=1;
+	            $externalTableAlias = 'T' . $idTab;
+	            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+	            $queryOrderBy .= " " . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder')
+	               . " " . str_replace("'","",$crit['sql']['value']);
+	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+	            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+	            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+	            $doneSort=true;
+	          }
+	        }
+	        if (! $doneSort) {
+	          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+	          $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName($crit['sql']['attribute']) 
+	                             . " " . $crit['sql']['value'];
+	        }
+	      }
+	    }
     }
     
     // Build select clause, and eventualy extended From clause and Where clause

@@ -46,10 +46,16 @@ function refreshJsonList(className) {
 			if (dojo.byId('listShowIdle').checked) { url = url + "&idle=true"; }
 		}
 		if ( dijit.byId('listTypeFilter') ) {
-			if (dijit.byId('listTypeFilter').value!='') {
-				url = url + "&objectType=" + dijit.byId('listTypeFilter').value; 
+			if (dijit.byId('listTypeFilter').get("value")!='') {
+				url = url + "&objectType=" + dijit.byId('listTypeFilter').get("value"); 
 		  }
 		}
+		if ( dijit.byId('quickSearchValue') ) {
+			if (dijit.byId('quickSearchValue').get("value")!='') {
+				url = url + "&quickSearch=" + dijit.byId('quickSearchValue').get("value"); 
+		  }
+		}
+
 		//store.fetch();
 		grid.setStore(new dojo.data.ItemFileReadStore({
 			url: url, 

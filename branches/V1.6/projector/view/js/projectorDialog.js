@@ -205,7 +205,7 @@ function showPrint (page, context, comboName, outMode) {
 		}
 	} else if (context=='planning'){
 		if (dijit.byId("startDatePlanView").get('value')) {
-		  params+="&startDate="+encodeURIComponent(formatDate(dijit.byId("startDatePlanView").value));
+		  params+="&startDate="+encodeURIComponent(formatDate(dijit.byId("startDatePlanView").get("value")));
 		  params+="&format="+g.getFormat();
 		  if (dijit.byId('listShowIdle').get('checked')) {
 		  	params+="&idle=true";
@@ -1764,4 +1764,35 @@ function listClick() {
 		return;
 	}
 	hideList();
+}
+
+function quickSearchOpen() {
+  dojo.style("quickSearchDiv","display","block");
+  if (dijit.byId("listTypeFilter")) {
+	  dojo.style("listTypeFilter","display","none");	  
+  }
+  dojo.style("listIdFilter","display","none");
+  dojo.style("listNameFilter","display","none");	
+  dijit.byId("quickSearchValue").set("value",null);
+}
+
+function quickSearchClose() {
+  dojo.style("quickSearchDiv","display","none");
+  if (dijit.byId("listTypeFilter")) {
+	  dojo.style("listTypeFilter","display","block");	  
+  }
+  dojo.style("listIdFilter","display","block");
+  dojo.style("listNameFilter","display","block");
+  dijit.byId("quickSearchValue").set("value",null);
+  var objClass=dojo.byId('objectClass').value;
+  refreshJsonList(objClass);
+}
+
+function quickSearchExecute() {
+  if (! dijit.byId("quickSearchValue").get("value")) {
+	showInfo(i18n('messageMandatory', new Array(i18n('quickSearch'))));
+    return;
+  }	
+  var objClass=dojo.byId('objectClass').value;
+  refreshJsonList(objClass);
 }

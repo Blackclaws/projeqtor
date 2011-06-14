@@ -88,35 +88,35 @@ CREATE TABLE `${prefix}expenseDetailType` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 
-UPDATE MENU SET sortOrder=600 where id=13;
-UPDATE MENU SET sortOrder=610 where id=14;
-UPDATE MENU SET sortOrder=620 where id=15;
-UPDATE MENU SET sortOrder=630 where id=72;
-UPDATE MENU SET sortOrder=640 where id=16;
-UPDATE MENU SET sortOrder=650 where id=17;
-UPDATE MENU SET sortOrder=660 where id=57;
-UPDATE MENU SET sortOrder=670 where id=44;
-UPDATE MENU SET sortOrder=680 where id=50;
-UPDATE MENU SET sortOrder=690 where id=36;
-UPDATE MENU SET sortOrder=700 where id=73;
-UPDATE MENU SET sortOrder=710 where id=34;
-UPDATE MENU SET sortOrder=720 where id=39;
-UPDATE MENU SET sortOrder=730 where id=40;
-UPDATE MENU SET sortOrder=740 where id=38;
-UPDATE MENU SET sortOrder=750 where id=42;
-UPDATE MENU SET sortOrder=760 where id=41;
-UPDATE MENU SET sortOrder=770 where id=59;
-UPDATE MENU SET sortOrder=780 where id=68;
-UPDATE MENU SET sortOrder=810, idMenu=79 where id=53;
-UPDATE MENU SET sortOrder=820, idMenu=79 where id=55;
-UPDATE MENU SET sortOrder=830, idMenu=79 where id=56;
-UPDATE MENU SET sortOrder=880, idMenu=79 where id=45;
-UPDATE MENU SET sortOrder=890, idMenu=79 where id=60;
-UPDATE MENU SET sortOrder=900, idMenu=79 where id=46;
-UPDATE MENU SET sortOrder=910, idMenu=79 where id=65;
-UPDATE MENU SET sortOrder=920, idMenu=79 where id=66;
-UPDATE MENU SET sortOrder=930, idMenu=79 where id=67;
-UPDATE MENU SET sortOrder=940, idMenu=79 where id=52;
+UPDATE `${prefix}menu` SET sortOrder=600 where id=13;
+UPDATE `${prefix}menu` SET sortOrder=610 where id=14;
+UPDATE `${prefix}menu` SET sortOrder=620 where id=15;
+UPDATE `${prefix}menu` SET sortOrder=630 where id=72;
+UPDATE `${prefix}menu` SET sortOrder=640 where id=16;
+UPDATE `${prefix}menu` SET sortOrder=650 where id=17;
+UPDATE `${prefix}menu` SET sortOrder=660 where id=57;
+UPDATE `${prefix}menu` SET sortOrder=670 where id=44;
+UPDATE `${prefix}menu` SET sortOrder=680 where id=50;
+UPDATE `${prefix}menu` SET sortOrder=690 where id=36;
+UPDATE `${prefix}menu` SET sortOrder=700 where id=73;
+UPDATE `${prefix}menu` SET sortOrder=710 where id=34;
+UPDATE `${prefix}menu` SET sortOrder=720 where id=39;
+UPDATE `${prefix}menu` SET sortOrder=730 where id=40;
+UPDATE `${prefix}menu` SET sortOrder=740 where id=38;
+UPDATE `${prefix}menu` SET sortOrder=750 where id=42;
+UPDATE `${prefix}menu` SET sortOrder=760 where id=41;
+UPDATE `${prefix}menu` SET sortOrder=770 where id=59;
+UPDATE `${prefix}menu` SET sortOrder=780 where id=68;
+UPDATE `${prefix}menu` SET sortOrder=810, idMenu=79 where id=53;
+UPDATE `${prefix}menu` SET sortOrder=820, idMenu=79 where id=55;
+UPDATE `${prefix}menu` SET sortOrder=830, idMenu=79 where id=56;
+UPDATE `${prefix}menu` SET sortOrder=880, idMenu=79 where id=45;
+UPDATE `${prefix}menu` SET sortOrder=890, idMenu=79 where id=60;
+UPDATE `${prefix}menu` SET sortOrder=900, idMenu=79 where id=46;
+UPDATE `${prefix}menu` SET sortOrder=910, idMenu=79 where id=65;
+UPDATE `${prefix}menu` SET sortOrder=920, idMenu=79 where id=66;
+UPDATE `${prefix}menu` SET sortOrder=930, idMenu=79 where id=67;
+UPDATE `${prefix}menu` SET sortOrder=940, idMenu=79 where id=52;
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
 (74, 'menuFinancial', 0, 'menu', 250, Null, 1),
@@ -235,7 +235,7 @@ INSERT INTO `${prefix}expenseDetailType` (id, name, sortOrder, value01, unit01, 
 (1,'travel by car', 10, null, 'km', 0.544, '€/km', null, null, 0),
 (2,'regular mission car travel', 20, null, 'days', null, 'km/day', 0.544, '€/km', 0),
 (3,'lunch for guests', 30, null, 'guests', null, '€/guest', null, null, 0),
-(4, 'justified expense', 40, null, '€', null, null, null, null, 0);
+(4, 'justified expense', 40, null, null, null, null, null, null, 0);
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (31, 'reportPlanDetail', 2, 'detailPlan.php', 455),
