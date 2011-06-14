@@ -51,7 +51,7 @@ function refreshImputationList() {
 		return false;
 	}
 	formInitialize();
-	dojo.byId('userId').value=dijit.byId('userName').value;
+	dojo.byId('userId').value=dijit.byId('userName').get("value");
 	dojo.byId('idle').checked=dojo.byId('listShowIdle').checked;
 	dojo.byId('showPlannedWork').checked=dojo.byId('listShowPlannedWork').checked;
 	loadContent('../view/refreshImputationList.php', 'workDiv', 'listForm', false);
@@ -119,22 +119,22 @@ function dispatchWorkValueChange(rowId, colId) {
 	}
 	var diff=newWorkValue-oldWorkValue;
 	// Update sum for column
-	var oldSum=dijit.byId('colSumWork_' + colId).value;
+	var oldSum=dijit.byId('colSumWork_' + colId).get("value");
 	var newSum=oldSum + diff;
 	newSum=Math.round(newSum*100)/100;
-	dijit.byId('colSumWork_' + colId).setValue(newSum);
+	dijit.byId('colSumWork_' + colId).set("value",newSum);
   //Update real work
-	var oldReal=dijit.byId('realWork_' + rowId).value;
+	var oldReal=dijit.byId('realWork_' + rowId).get("value");
 	var newReal=oldReal + diff;
-	dijit.byId('realWork_' + rowId).setValue(newReal);
+	dijit.byId('realWork_' + rowId).set("value",newReal);
   //Update left work
-	var oldLeft=dijit.byId('leftWork_' + rowId).value;
+	var oldLeft=dijit.byId('leftWork_' + rowId).get("value");
 	var newLeft=oldLeft - diff;
 	newLeft=(newLeft<0)?0:newLeft;
-	dijit.byId('leftWork_' + rowId).setValue(newLeft);
+	dijit.byId('leftWork_' + rowId).set("value",newLeft);
   //Update planned work
 	var newPlanned=newReal+newLeft;
-	dijit.byId('plannedWork_' + rowId).setValue(newPlanned);
+	dijit.byId('plannedWork_' + rowId).set("value",newPlanned);
 	// store new value for next calculation...
 	dojo.byId('workOldValue_' + rowId + '_' + colId).value=newWorkValue;
 	formChanged();

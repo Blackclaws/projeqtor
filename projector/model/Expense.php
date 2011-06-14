@@ -62,6 +62,10 @@ class Expense extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    
+    if (count($this->getExpenseDetail())>0) {
+    	self::$_fieldsAttributes['realAmount']="readonly";
+    }
   }
 
    /** ==========================================================================

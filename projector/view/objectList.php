@@ -21,6 +21,56 @@ $obj=new $objectClass;
 </div>
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
+
+  <div class="dojoxGridRowSelected" id="quickSearchDiv" 
+     style="display:none; height:100%; width: 100%; position: absolute;">
+    <table >
+      <tr height="100%" style="vertical-align: middle;">
+        <td width="50px" align="center">
+          <img src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
+        </td>
+        <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
+        <td style="text-align:right;" width="200px">
+                <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("quickSearch");?>
+                &nbsp;</NOBR> 
+        </td>
+        <td style="vertical-align: middle;">
+          <div title="<?php echo i18n('quickSearch')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
+             id="quickSearchValue" name="quickSearchValue"
+             required="true" missingMessage="<?php echo i18n('messageMandatory',array("quickSearch"));?>" 
+             style="width:200px;">
+          </div>
+        </td>
+
+	      <td>             
+	        <button title="<?php echo i18n('quickSearch')?>"  
+	          dojoType="dijit.form.Button" 
+	          id="listQuickSearchExecute" name="listQuickSearchExecute"
+	          iconClass="iconSearch" showLabel="false">
+	          <script type="dojo/connect" event="onClick" args="evt">
+              quickSearchExecute();
+          </script>
+	        </button>
+	      </td>      
+      
+        <td>
+          <button title="<?php echo i18n('comboCloseButton')?>"  
+            dojoType="dijit.form.Button" 
+            id="listQuickSearchClose" name="listQuickSearchClose"
+            iconClass="dijitEditorIcon dijitEditorIconUndo" showLabel="false">
+            <script type="dojo/connect" event="onClick" args="evt">
+              quickSearchClose();
+            </script>
+          </button>
+        </td>    
+
+    
+    
+      </tr>
+    </table>
+  </div>
+
 <table width="100%" class="dojoxGridRowSelected" >
   <tr >
     <td width="50px" align="center">
@@ -89,6 +139,20 @@ $obj=new $objectClass;
             <td >&nbsp;</td>
             <td width="5px"><NOBR>&nbsp;</NOBR></td>
 <?php if (! $comboDetail) {?>            
+            <td width="32px">
+              <button title="<?php echo i18n('quickSearch')?>"  
+               dojoType="dijit.form.Button" 
+               id="iconSearchOpenButton" name=""iconSearchOpenButton""
+               iconClass="iconSearch" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  quickSearchOpen();
+                </script>
+              </button>
+              <span id="gridRowCountShadow1" class="gridRowCountShadow1"></span>
+              <span id="gridRowCountShadow2" class="gridRowCountShadow2"></span>              
+              <span id="gridRowCount" class="gridRowCount"></span>             
+              <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
+            </td>
             <td width="32px">
               <button title="<?php echo i18n('advancedFilter')?>"  
               class="filterField" 

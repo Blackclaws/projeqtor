@@ -10,7 +10,7 @@
   if ( array_key_exists('print',$_REQUEST) ) {
     $print=true;
     include_once('../tool/formatter.php');
-  }
+  }  
   
   // Header
   if ( array_key_exists('report',$_REQUEST) ) {
