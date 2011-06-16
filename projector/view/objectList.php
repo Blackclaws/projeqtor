@@ -21,7 +21,11 @@ $obj=new $objectClass;
 </div>
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
-
+  <form dojoType="dijit.form.Form" id="quickSearchListForm" action="" method="" >
+  <script type="dojo/method" event="onSubmit" >
+    quickSearchExecute();
+    return false;        
+  </script>
   <div class="dojoxGridRowSelected" id="quickSearchDiv" 
      style="display:none; height:100%; width: 100%; position: absolute;">
     <table >
@@ -38,7 +42,6 @@ $obj=new $objectClass;
         <td style="vertical-align: middle;">
           <div title="<?php echo i18n('quickSearch')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
              id="quickSearchValue" name="quickSearchValue"
-             required="true" missingMessage="<?php echo i18n('messageMandatory',array("quickSearch"));?>" 
              style="width:200px;">
           </div>
         </td>
@@ -70,7 +73,7 @@ $obj=new $objectClass;
       </tr>
     </table>
   </div>
-
+  </form>
 <table width="100%" class="dojoxGridRowSelected" >
   <tr >
     <td width="50px" align="center">
@@ -79,6 +82,9 @@ $obj=new $objectClass;
     <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
     <td>   
       <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
+        <script type="dojo/method" event="onSubmit" >
+          return false;        
+        </script>
         <table style="width: 100%; height: 27px;">
           <tr>
             <td style="text-align:right;" width="5px">
