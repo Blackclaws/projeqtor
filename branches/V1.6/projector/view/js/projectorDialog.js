@@ -1766,17 +1766,31 @@ function listClick() {
 	hideList();
 }
 
+// Stock id and name, to 
+// => avoid filterJsonList to reduce visibility => clear this data on open
+// => retrieve data before close to retrieve the previous visibility
+var quickSearchStockId=null;
+var quickSearchStockName=null;
+var quickSearchIsOpen=false;
+
 function quickSearchOpen() {
   dojo.style("quickSearchDiv","display","block");
   if (dijit.byId("listTypeFilter")) {
 	  dojo.style("listTypeFilter","display","none");	  
   }
+  quickSearchStockId=dijit.byId('listIdFilter').get("value");
+  quickSearchStockName=dijit.byId('listNameFilter').get("value");
+  dijit.byId('listIdFilter').set("value",null);
+  dijit.byId('listNameFilter').set("value",null);
   dojo.style("listIdFilter","display","none");
   dojo.style("listNameFilter","display","none");	
   dijit.byId("quickSearchValue").set("value",null);
+  dijit.byId("quickSearchValue").focus();
+  quickSearchIsOpen=true;
 }
 
 function quickSearchClose() {
+  quickSearchIsOpen=false;
   dojo.style("quickSearchDiv","display","none");
   if (dijit.byId("listTypeFilter")) {
 	  dojo.style("listTypeFilter","display","block");	  
@@ -1784,11 +1798,16 @@ function quickSearchClose() {
   dojo.style("listIdFilter","display","block");
   dojo.style("listNameFilter","display","block");
   dijit.byId("quickSearchValue").set("value",null);
+  dijit.byId('listIdFilter').set("value",quickSearchStockId);
+  dijit.byId('listNameFilter').set("value",quickSearchStockName);
   var objClass=dojo.byId('objectClass').value;
   refreshJsonList(objClass);
 }
 
 function quickSearchExecute() {
+  if (! quickSearchIsOpen){
+	  return;
+  }
   if (! dijit.byId("quickSearchValue").get("value")) {
 	showInfo(i18n('messageMandatory', new Array(i18n('quickSearch'))));
     return;

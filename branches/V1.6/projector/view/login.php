@@ -37,10 +37,10 @@
       saveResolutionToSession();
       saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
-      dojo.byId('login').focus(); 
-      <?php 
-        //echo "dojo.byId('body').className='" . getTheme() . "';";
-      ?>
+      //dijit.byId('login').focus(); 
+      // For IE, focus to login is delayed
+      dijit.byId('password').focus(); 
+      setTimeout("dijit.byId('login').focus();",10);
       var changePassword=false;
       hideWait();
     }); 
