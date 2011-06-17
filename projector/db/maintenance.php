@@ -25,7 +25,10 @@ $versionParameters =array(
                  'paramMailShowDetail'=>'true' ),
   'V1.3.0'=>array('defaultTheme'=>'blue'),
   'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/'),
-  'V1.5.0'=>array('currency'=>'€', 'currencyPosition'=>'after') );
+  'V1.5.0'=>array('currency'=>'€', 
+                  'currencyPosition'=>'after'),
+  'V1.6.1'=>array('paramMemoryLimitForPDF'=>'512') 
+);
 $SqlEndOfCommand=";";
 $SqlComment="--";
    

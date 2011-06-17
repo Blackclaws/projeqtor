@@ -16,6 +16,22 @@
      header ('Content-Type: text/html; charset=UTF-8');
    } else {
      $printInNewPage=true;
+     if (isset($paramMemoryLimitForPDF)) {
+       $limit=$paramMemoryLimitForPDF;	
+     } else {
+     	 $limit='';
+     }
+     if ($limit==0) {
+     	 header ('Content-Type: text/html; charset=UTF-8');
+     	 echo "<html><head></head><body>";
+     	 echo i18n("msgPdfDisabled");
+     	 echo "</body></html>";
+     	 return;
+     } else if ($limit=='') {
+       // Keep existing
+     } else {
+      ini_set("memory_limit", $limit.'M');
+     }
    }
    scriptLog('   ->/view/print.php'); 
   if ($outMode!='pdf') {?> 
