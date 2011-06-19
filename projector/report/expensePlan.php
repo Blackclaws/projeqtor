@@ -30,7 +30,6 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
-//$queryWhere="exp.idProject in " . transformListIntoInClause($user->getVisibleProjects());
 $queryWhere=getAccesResctictionClause('ProjectExpense','exp');
 //echo $queryWhere;
 
