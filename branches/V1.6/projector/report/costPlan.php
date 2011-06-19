@@ -2,7 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-//echo "costPlan.php";
+echo "costPlan.php";
   require_once "../tool/projector.php";  
   $objectClass='PlanningElement';
   $obj=new $objectClass();
@@ -30,32 +30,12 @@
   if (! array_key_exists('idle',$_REQUEST) ) {
     $queryWhere= $table . ".idle=0 ";
   }
-  if (array_key_exists('idProject',$_REQUEST) ) {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    if ($_REQUEST['idProject']!=' ') {
-      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
-    } else {
-      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
-    }
-  } else if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
-  }
-  
-/*  if ($accessRightRead=='NO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  "(1 = 2)";      
-  } else if ($accessRightRead=='OWN') {
-    $queryWhere.= ($queryWhere=='')?'':' and '; 
-    $queryWhere.=  "(1 = 2)"; // If visibility = own => no visibility            
-  } else if ($accessRightRead=='PRO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      
-  } else if ($accessRightRead=='ALL') {
-    // No restriction to add
-  } */  
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
+    $queryWhere.= ($queryWhere=='')?'':' and ';
+    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+  }
   
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;  

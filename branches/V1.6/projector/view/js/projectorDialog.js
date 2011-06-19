@@ -1779,11 +1779,13 @@ function quickSearchOpen() {
 	  dojo.style("listTypeFilter","display","none");	  
   }
   quickSearchStockId=dijit.byId('listIdFilter').get("value");
-  quickSearchStockName=dijit.byId('listNameFilter').get("value");
-  dijit.byId('listIdFilter').set("value",null);
-  dijit.byId('listNameFilter').set("value",null);
-  dojo.style("listIdFilter","display","none");
-  dojo.style("listNameFilter","display","none");	
+  if (dijit.byId('listNameFilter')) {
+    quickSearchStockName=dijit.byId('listNameFilter').get("value");
+    dojo.style("listNameFilter","display","none");
+    dijit.byId('listNameFilter').set("value",null);
+  }  
+  dijit.byId('listIdFilter').set("value",null); 
+  dojo.style("listIdFilter","display","none");	
   dijit.byId("quickSearchValue").set("value",null);
   dijit.byId("quickSearchValue").focus();
   quickSearchIsOpen=true;
@@ -1796,10 +1798,12 @@ function quickSearchClose() {
 	  dojo.style("listTypeFilter","display","block");	  
   }
   dojo.style("listIdFilter","display","block");
-  dojo.style("listNameFilter","display","block");
+  if (dijit.byId('listNameFilter')) {
+    dojo.style("listNameFilter","display","block");
+    dijit.byId('listNameFilter').set("value",quickSearchStockName);
+  }
   dijit.byId("quickSearchValue").set("value",null);
-  dijit.byId('listIdFilter').set("value",quickSearchStockId);
-  dijit.byId('listNameFilter').set("value",quickSearchStockName);
+  dijit.byId('listIdFilter').set("value",quickSearchStockId);  
   var objClass=dojo.byId('objectClass').value;
   refreshJsonList(objClass);
 }

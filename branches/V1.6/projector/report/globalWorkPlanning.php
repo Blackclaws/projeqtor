@@ -19,7 +19,6 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
-//$queryWhere="idProject in " . transformListIntoInClause($user->getVisibleProjects());
 $queryWhere=getAccesResctictionClause('Activity',false);
 
 if ($idProject!='') {

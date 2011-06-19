@@ -16,12 +16,15 @@ include "header.php";
 if ($paramProject!="") {
   
 }
-$queryWhere=" idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$queryWhereAction=getAccesResctictionClause('Action',false);
+$queryWhereRisk=getAccesResctictionClause('Risk',false);
+$queryWhereIssue=getAccesResctictionClause('Issue',false);
 
+$queryWherePlus="";
 if ($paramProject!="") {
-  $queryWhere.=" and idProject in " . getVisibleProjectsList(true, $paramProject);
+  $queryWherePlus.=" and idProject in " . getVisibleProjectsList(true, $paramProject);
 }
-$queryWhere.=" and idle=0";
+$queryWherePlus.=" and idle=0";
 $clauseOrderBy=" actualEndDate asc";
 
 echo '<table  width="95%" align="center"><tr><td style="width: 100%" class="section">';
@@ -30,7 +33,7 @@ echo '</td></tr>';
 echo '<tr><td>&nbsp;</td></tr>';
 echo '</table>';
 $obj=new Risk();
-$lst=$obj->getSqlElementsFromCriteria(null, false, $queryWhere, $clauseOrderBy);
+$lst=$obj->getSqlElementsFromCriteria(null, false, $queryWhereRisk . $queryWherePlus, $clauseOrderBy);
 echo '<table  width="95%" align="center">';
 echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';
@@ -87,7 +90,7 @@ echo '</td></tr>';
 echo '<tr><td>&nbsp;</td></tr>';
 echo '</table>';
 $obj=new Issue();
-$lst=$obj->getSqlElementsFromCriteria(null, false, $queryWhere, $clauseOrderBy);
+$lst=$obj->getSqlElementsFromCriteria(null, false, $queryWhereIssue . $queryWherePlus, $clauseOrderBy);
 echo '<table  width="95%" align="center">';
 echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';
@@ -141,7 +144,7 @@ echo '<tr><td>&nbsp;</td></tr>';
 echo '</table>';
 $obj=new Action();
 $clauseOrderBy=" actualDueDate asc";
-$lst=$obj->getSqlElementsFromCriteria(null, false, $queryWhere, $clauseOrderBy);
+$lst=$obj->getSqlElementsFromCriteria(null, false, $queryWhereAction . $queryWherePlus, $clauseOrderBy);
 echo '<table  width="95%" align="center">';
 echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';

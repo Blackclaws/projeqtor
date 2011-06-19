@@ -1,4 +1,5 @@
 <?PHP
+//echo "workPlan.php";
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */ 
@@ -29,43 +30,28 @@
   if (! array_key_exists('idle',$_REQUEST) ) {
     $queryWhere= $table . ".idle=0 ";
   }
-  if (array_key_exists('idProject',$_REQUEST) ) {
+  $queryWhere.= ($queryWhere=='')?'':' and ';
+  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
-    if ($_REQUEST['idProject']!=' ') {
-      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
-    } else {
-      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
-    }
-  } else if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
+    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
   
-  if ($accessRightRead=='NO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  "(1 = 2)";      
-  } else if ($accessRightRead=='OWN') {
-    $queryWhere.= ($queryWhere=='')?'':' and '; 
-    $queryWhere.=  "(1 = 2)"; // If visibility = own => no visibility            
-  } else if ($accessRightRead=='PRO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      
-  } else if ($accessRightRead=='ALL') {
-    // No restriction to add
-  }
-
+  $queryWhere.= ($queryWhere=='')?'':' and ';
+  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;  
   $queryOrderBy .= $table . ".wbsSortable ";
 
   // constitute query and execute
-  $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
+  //$queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect 
        . ' from ' . $queryFrom
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-
+echo $query;
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;

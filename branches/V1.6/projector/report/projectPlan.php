@@ -36,7 +36,6 @@ if ( $periodType=='week') {
 }
 include "header.php";
 
-//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
 $where=getAccesResctictionClause('Activity',false);
 
 //$where="1=1 ";
