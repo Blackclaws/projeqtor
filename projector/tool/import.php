@@ -101,8 +101,9 @@ foreach ($lines as $nbl=>$line) {
       } 
       $idTitle='id' . ucfirst($title[$idx]);
       if (property_exists($obj,$idTitle)) {
-        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';   
         $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);
+        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . "/" . htmlEncode($val) . '</td>';   
+        
         //echo " => " . htmlEncode($idTitle);
         //echo "=" . htmlEncode($val);
         $obj->$idTitle=$val;

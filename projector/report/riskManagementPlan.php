@@ -17,6 +17,7 @@ if ($paramProject!="") {
   
 }
 $queryWhere=" idProject in " . transformListIntoInClause($user->getVisibleProjects());
+
 if ($paramProject!="") {
   $queryWhere.=" and idProject in " . getVisibleProjectsList(true, $paramProject);
 }

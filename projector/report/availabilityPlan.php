@@ -107,11 +107,10 @@ $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . 
 //if (checkNoData($result)) exit;
 
 
-echo '<table width="100%" align="center">';
+echo '<table width="95%" align="center">';
 echo '<tr><td>';
-
-echo "<table width='95%' align='center'>";
-echo "<tr><td><table  width='100%' align='left'><tr>";
+echo '<table width="100%" align="left">';
+echo '<tr>';
 echo "<td class='reportTableDataFull' style='width:20px;text-align:center;'>1</td>";
 echo "<td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
@@ -120,9 +119,11 @@ echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr>";
 echo "</table>";
-
+echo '</td></tr>';
+echo '<tr><td>';
 //echo '<br/>';
 // title
+
 echo '<table width="100%" align="left"><tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('colCapacity') . '</td>';
@@ -187,5 +188,7 @@ foreach ($resources as $idR=>$nameR) {
   }
   echo '</tr>';
 }
+
 echo '</table>';
+
 echo '</td></tr></table>';

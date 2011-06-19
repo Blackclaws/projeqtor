@@ -101,6 +101,7 @@
       $html2pdf = new HTML2PDF('L','A4','en');
       $html2pdf->pdf->SetDisplayMode('fullpage');
       $html2pdf->setDefaultFont('freesans');
+      $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setDefaultFont('uni2cid_ag15');
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();

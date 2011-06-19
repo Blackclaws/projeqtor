@@ -84,7 +84,8 @@ if (! isset($includedReport)) {
   include "header.php";
 }
 
-$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$where="idProject in " . transformListIntoInClause($user->getVisibleProjects());
+$where=getAccesResctictionClause('Ticket',false);
 if ($periodType) {
   $start=date('Y-m-d');
   $end=date('Y-m-d');

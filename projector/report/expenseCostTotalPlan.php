@@ -30,8 +30,8 @@ include "header.php";
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
 $user=$_SESSION['user'];
-$queryWhereW="w.idProject in " . transformListIntoInClause($user->getVisibleProjects());
-$queryWhereExp="exp.idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$queryWhereW="w.idProject in " . transformListIntoInClause($user->getVisibleProjects());
+//$queryWhereExp="exp.idProject in " . transformListIntoInClause($user->getVisibleProjects());
 
 $queryWhereW=getAccesResctictionClause('Activity','w');
 $queryWhereExp=getAccesResctictionClause('Activity','exp');
