@@ -150,8 +150,8 @@ class SqlList {
   public static function getIdFromName($listType, $name) {
     if ($name==null or $name=='') {
       return '';
-    }    
-    $list=self::getList($listType);    
+    } 
+    $list=self::getList($listType);      
     $id=array_search($name,$list);
     return $id;
   }
