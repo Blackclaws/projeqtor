@@ -111,9 +111,9 @@ foreach ($resources as $idR=>$nameR) {
         $sum+=$val;
         echo '<td class="reportTableData" style="width:5%">' . $val . '</td>';
         echo '<td class="reportTableData" style="width:15%; text-align:left;">' . $project[$key] . '</td>';
-        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $nameA . '</td>'; 
-        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . $description[$key] . '</td>'; 
-        echo '<td class="reportTableData" style="width:20%; text-align:left;" >' . $parent[$key] . '</td>'; 
+        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
+        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
+        echo '<td class="reportTableData" style="width:20%; text-align:left;" >' . htmlEncode($parent[$key]) . '</td>'; 
         echo '</tr><tr>';
       } 
     }

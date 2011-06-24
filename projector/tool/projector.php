@@ -3,6 +3,9 @@ session_start();              // Setup session. Must be first command.
 /** ============================================================================
  * Global tool script for the application.
  * Must be included (include once) on each script remotely called.
+ * $Revision$
+ * $Author$
+ * $Date$
  */
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
@@ -443,6 +446,42 @@ function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) {
   return $result;
 }
 
+function getAccesResctictionClause($objectClass,$alias=null) {
+  $obj=new $objectClass();
+  if ($alias) {
+    $table=$alias;
+  } else {
+    $table=$obj->getDatabaseTableName();
+  }
+  $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
+  $queryWhere="";
+  if ($accessRightRead=='NO') {
+    $queryWhere.= ($queryWhere=='')?'':' and ';
+    $queryWhere.=  "(1 = 2)";      
+  } else if ($accessRightRead=='OWN') {
+    if (propertyExists($obj,"idUser")) {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      if ($alias===false) {
+        $queryWhere.=  "idUser = '" . $_SESSION['user']->id . "'";   
+      } else {
+        $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";   
+      }
+    } else {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      $queryWhere.=  "(1 = 2)";  
+    }         
+  } else if ($accessRightRead=='PRO') {
+    $queryWhere.= ($queryWhere=='')?'':' and ';
+    if ($alias===false) {
+      $queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;   
+    } else {
+      $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+    }      
+  } else if ($accessRightRead=='ALL') {
+    $queryWhere.= ' (1=1) ';
+  }
+  return " " . $queryWhere . " ";
+}
 /** ============================================================================
  * Return the name of the theme : defaut of selected by user
  */

@@ -1068,6 +1068,17 @@ scriptLog('   ->/view/main.php');
 
 
 <div id="dialogFilter" dojoType="dijit.Dialog" title="<?php echo i18n("dialogFilter");?>" style="top: 100px;">
+  <table>
+    <tr>
+     <td class="section"><?php echo i18n("sectionStoredFilters");?></td>
+    </tr>
+    <tr>
+      <td>
+        <div id='listStoredFilters' dojoType="dijit.layout.ContentPane" region="center"></div>
+      </td>
+    </tr>
+    <tr><td>&nbsp;</td></tr>
+  </table>
   <table style="border: 1px solid grey;">
     <tr>
      <td class="section"><?php echo i18n("sectionActiveFilter");?></td>
@@ -1151,17 +1162,6 @@ scriptLog('   ->/view/main.php');
         <button dojoType="dijit.form.Button" type="submit" id="dialogFilterSubmit" onclick="selectFilter();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
-      </td>
-    </tr>
-  </table>
-  <table>
-    <tr><td>&nbsp;</td></tr>
-    <tr>
-     <td class="section"><?php echo i18n("sectionStoredFilters");?></td>
-    </tr>
-    <tr>
-      <td>
-        <div id='listStoredFilters' dojoType="dijit.layout.ContentPane" region="center"></div>
       </td>
     </tr>
   </table>
