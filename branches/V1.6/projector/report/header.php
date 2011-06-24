@@ -70,40 +70,4 @@ function checkNoData($result) {
   return false;
 }
 
-function getAccesResctictionClause($objectClass,$alias=null) {
-	$obj=new $objectClass();
-	if ($alias) {
-		$table=$alias;
-	} else {
-    $table=$obj->getDatabaseTableName();
-	}
-  $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
-  $queryWhere="";
-  if ($accessRightRead=='NO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  "(1 = 2)";      
-  } else if ($accessRightRead=='OWN') {
-  	if (propertyExists($obj,"idUser")) {
-	    $queryWhere.= ($queryWhere=='')?'':' and ';
-	    if ($alias===false) {
-	    	$queryWhere.=  "idUser = '" . $_SESSION['user']->id . "'";   
-	    } else {
-	      $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";   
-	    }
-  	} else {
-  		$queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  "(1 = 2)";  
-  	}         
-  } else if ($accessRightRead=='PRO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    if ($alias===false) {
-      $queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;   
-    } else {
-      $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
-    }      
-  } else if ($accessRightRead=='ALL') {
-    $queryWhere.= ' (1=1) ';
-  }
-  return " " . $queryWhere . " ";
-}
 ?>

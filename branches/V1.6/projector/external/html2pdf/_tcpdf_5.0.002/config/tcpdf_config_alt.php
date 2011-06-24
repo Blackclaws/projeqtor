@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
-// Last Update : 2011-04-15
+// Last Update : 2010-04-28
 //
 // Description : Alternative configuration file for TCPDF.
 //
@@ -21,8 +21,11 @@
 /**
  * Alternative configuration file for TCPDF.
  * @author Nicola Asuni
+ * @copyright 2004-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @package com.tecnick.tcpdf
  * @version 4.9.005
+ * @link http://tcpdf.sourceforge.net
+ * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2004-10-27
  */
 
@@ -32,9 +35,9 @@ if ((!isset($_SERVER['DOCUMENT_ROOT'])) OR (empty($_SERVER['DOCUMENT_ROOT']))) {
 		$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0-strlen($_SERVER['PHP_SELF'])));
 	} elseif(isset($_SERVER['PATH_TRANSLATED'])) {
 		$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0-strlen($_SERVER['PHP_SELF'])));
-	} else {
-		// define here your DOCUMENT_ROOT path if the previous fails (e.g. '/var/www')
-		$_SERVER['DOCUMENT_ROOT'] = '/';
+	}	else {
+		// define here your DOCUMENT_ROOT path if the previous fails
+		$_SERVER['DOCUMENT_ROOT'] = '/var/www';
 	}
 }
 
@@ -58,7 +61,7 @@ if (isset($_SERVER['HTTP_HOST']) AND (!empty($_SERVER['HTTP_HOST']))) {
 		$k_path_url = 'http://';
 	}
 	$k_path_url .= $_SERVER['HTTP_HOST'];
-	$k_path_url .= str_replace( '\\', '/', substr(K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']) - 1)));
+	$k_path_url .= str_replace( '\\', '/', substr($_SERVER['PHP_SELF'], 0, -24));
 }
 
 /**
@@ -232,3 +235,4 @@ define('K_TCPDF_CALLS_IN_HTML', true);
 //============================================================+
 // END OF FILE
 //============================================================+
+?>

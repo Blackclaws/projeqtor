@@ -64,22 +64,22 @@
       echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
           . (($countScope=='all')?'checked':'') . ' value="all" />';
       echo '<label for="countScopeAll">' . i18n('titleCountAll') . '</label>';
-   
+      $width=70;
       echo '</td></tr>';
       echo '</table></form>';
       echo '<table align="center" style="width:95%">';
       echo '<tr>' . 
            '  <td class="messageHeader">' . i18n('menuProject') . '</td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:80px; overflow: hidden; text-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:60px; overflow: hidden; text-overflow: ellipsis;">' . ucfirst(i18n('colLate')) . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuTicket') . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuActivity') . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuMilestone') . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuAction') . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuRisk') . '</div></td>' . 
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuIssue') . '</div></td>' .
-           '  <td class="messageHeader" width="5%"><div style="width:50px; overflow: hidden; text-overflow: ellipsis;">' . i18n('menuQuestion') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div xstyle="width:80px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' . 
+           '  <td class="messageHeader" width="5%"><div xstyle="width:60px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLate')) . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuTicket') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuActivity') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuMilestone') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuAction') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuRisk') . '</div></td>' . 
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuIssue') . '</div></td>' .
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuQuestion') . '</div></td>' . 
            '</tr>';   
       foreach($prjLst as $sharpid=>$name) {
         $id=substr($sharpid,1);
@@ -184,7 +184,7 @@
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true) {
     global $cptDisplayId;
     if ($value=='') {return $value;}
-    $width=50;
+    $width=70;
     $green=($allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;
     $red=$width-$green;
 

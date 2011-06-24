@@ -51,7 +51,7 @@
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-echo $query;
+//echo $query;
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;
@@ -105,7 +105,7 @@ echo $query;
       
       echo '<TR>';
       echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . $line['refName'] . '</TD>';
+      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refName']) . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $validatedWork  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $assignedWork  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . $plannedWork  . '</TD>' ;

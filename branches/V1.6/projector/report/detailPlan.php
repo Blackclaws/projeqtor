@@ -177,7 +177,7 @@ foreach ($resources as $idR=>$nameR) {
     foreach ($result[$idR][$idP] as $idA=>$acti) { 
 	    if (array_key_exists($idP, $projects)) {
 	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $projects[$idP] . '</td>';
-	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $activities[$idA] . '</td>';
+	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($activities[$idA]) . '</td>';
         
 	      $lineSum='';
 	      for ($i=1; $i<=$nbDays;$i++) {
