@@ -165,6 +165,12 @@ class Activity extends SqlElement {
         $result.='<br/>' . i18n('errorHierarchicLoop');
       }
     }
+    if (trim($this->idActivity)) {
+      $parentActivity=new Activity($this->idActivity);
+      if ($parentActivity->idProject!=$this->idProject) {
+    	  $result.='<br/>' . i18n('msgParentActivityInSameProject');
+      }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -206,7 +212,9 @@ class Activity extends SqlElement {
       $this->ActivityPlanningElement->topId='';
     } 
     $result = parent::save();
-    
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;    	
+    }
     
     if ( $this->idResource and trim($this->idResource) != ''
       and ! $oldResource
@@ -261,6 +269,19 @@ class Activity extends SqlElement {
         }   
       }      
     }   
+    if ($this->idProject != $oldIdProject ) {
+    	$lstElt=array('Activity','Ticket','Milestone');
+    	foreach ($lstElt as $elt) {
+    		$eltObj=new $elt();
+    		$crit=array('idActivity'=>$this->id);
+    		$lst=$eltObj->getSqlElementsFromCriteria($crit, false,null,null,true);
+    		foreach($lst as $obj) {
+          $objBis=new $elt($obj->id);   			
+    			$objBis->idProject=$this->idProject;
+    			$tmpRes=$objBis->save();
+    		}
+    	}
+    }
     return $result;
   }
 

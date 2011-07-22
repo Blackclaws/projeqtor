@@ -283,6 +283,9 @@ class PlanningElement extends SqlElement {
     }
     
     $result=parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
 
     // Update dependant objects
     if ($dispatchNeeded) {

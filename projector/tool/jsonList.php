@@ -72,6 +72,10 @@
       }
       $nbRows=0;
       // return result in json format
+      if (! array_key_exists('required', $_REQUEST)) {
+      	echo '{id:" ", name:""}';
+        $nbRows+=1;
+      }
       foreach ($list as $id=>$name) {
         if ($nbRows>0) echo ', ';
         echo '{id:"' . $id . '", name:"'. str_replace('"', "''",$name) . '"}';

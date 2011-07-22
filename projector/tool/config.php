@@ -225,6 +225,12 @@ $value['ReportTempDirectory'] = "any valid directory in the web structure";
 $pname['ReportTempDirectory'] = 'paramReportTempDirectory';
 $ctrls['ReportTempDirectory'] = '';
 
+$param['MemoryLimitForPDF'] = '512';                              
+$label['MemoryLimitForPDF'] = "Memory limit for PDF reports";
+$value['MemoryLimitForPDF'] = "any numeric value, for size in MB";
+$pname['MemoryLimitForPDF'] = 'paramMemoryLimitForPDF';
+$ctrls['MemoryLimitForPDF'] = '';
+
 $param['crlf09']='';
 $label['crlf09']='crlf';
 
@@ -310,7 +316,8 @@ $ctrls['DebugMode'] = '=true=false=';
     </tr>
     <tr>
       <td colspan="2" align="left" valign="top">
-        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >
+        <div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%;">
+        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow: auto; ">
           <form  dojoType="dijit.form.Form" id="configForm" jsId="configForm" name="configForm" encType="multipart/form-data" action="" method="" >
             <script type="dojo/method" event="onSubmit" >
               loadContent("../tool/configCheck.php","configResultDiv", "configForm");
@@ -376,6 +383,7 @@ $ctrls['DebugMode'] = '=true=false=';
               </tr>
             </table>
           </form>
+        </div>
         </div>
       </td>
     </tr>

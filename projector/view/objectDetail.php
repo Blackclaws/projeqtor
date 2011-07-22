@@ -1457,7 +1457,8 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
 		//submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
 		return false;        
         </script>
-        <div id="detailFormDiv" dojoType="dijit.layout.ContentPane" region="top" >       
+        <div style="width: 100%; height: 100%;">
+        <div id="detailFormDiv" dojoType="dijit.layout.ContentPane" region="top" style="width: 100%; height: 100%;">       
   <?php 
   }
   $noData=htmlGetNoDataMessage($objClass); 
@@ -1470,6 +1471,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     drawTableFromObject($obj); 
   }
   if ( ! $print ) { ?>
+      </div>
       </div>
       </form>
   <?php

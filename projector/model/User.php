@@ -265,7 +265,9 @@ class User extends SqlElement {
    * @return a list of projects id
    */
   public function getHierarchicalViewOfVisibleProjects($projId='*') {
-//echo "getHierarchicalViewOfVisibleProjects($projId)<br/>";
+  	if ($this->_hierarchicalViewOfVisibleProjects) {
+  		return $this->_hierarchicalViewOfVisibleProjects;
+  	}
     $result=array();
     $visibleProjectsList=$this->getVisibleProjects();
     if ($projId=='*') {
@@ -276,24 +278,21 @@ class User extends SqlElement {
     }
     $lst=$prj->getSubProjects();
     foreach ($lst as $prj) {
-//echo $projId . "#" . $prj->id . '<br/>';
       if (array_key_exists( $prj->id , $visibleProjectsList)) {
         $subList=$prj->getRecursiveSubProjectsFlatList(false);
-//echo '  ->' . $prj->id . '<br/>';
         $result['#' . $prj->id]=$prj->name;
         foreach($subList as $id=>$name) {
-//echo '    ->' . $id . '<br/>';
           $result['#' . $id]=$name;
         }
       } else {
         $recursList=$this->getHierarchicalViewOfVisibleProjects($prj->id);
         if (count($recursList)>0) {
-//echo '  =>' . $prj->id . '<br/>';
           $result['#' . $prj->id]=$prj->name;
           $result=array_merge($result,$recursList);
         }  
       }
     }
+    $this->_hierarchicalViewOfVisibleProjects=$result;
     return $result;
   }
   /** =========================================================================

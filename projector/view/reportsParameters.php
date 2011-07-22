@@ -199,7 +199,7 @@ foreach ($listParam as $param) {
        style="width: 200px;"
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
-       <?php htmlDrawOptionForReference('idProject', $defaultValue, new Project(), false); ?>
+       <?php htmlDrawOptionForReference('idProject', $defaultValue, null, false); ?>
      </select>    
     </td>
     </tr>

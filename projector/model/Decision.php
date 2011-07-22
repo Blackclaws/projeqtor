@@ -136,14 +136,14 @@ class Decision extends SqlElement {
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("actualDueDate").value==null) { ';
+      $colScript .= '  if (dijit.byId("actualDueDate").get("value")==null) { ';
       $colScript .= '    dijit.byId("actualDueDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     } else if ($colName=="actualDueDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("initialDueDate").value==null) { ';
+      $colScript .= '  if (dijit.byId("initialDueDate").get("value")==null) { ';
       $colScript .= '    dijit.byId("initialDueDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
@@ -151,7 +151,7 @@ class Decision extends SqlElement {
     } else     if ($colName=="idle") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("idleDate").value==null) {';
+      $colScript .= '    if (dijit.byId("idleDate").get("value")==null) {';
       $colScript .= '      var curDate = new Date();';
       $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
       $colScript .= '    }';
@@ -166,7 +166,7 @@ class Decision extends SqlElement {
     } else if ($colName=="done") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("doneDate").value==null) {';
+      $colScript .= '    if (dijit.byId("doneDate").get("value")==null) {';
       $colScript .= '      var curDate = new Date();';
       $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
       $colScript .= '    }';

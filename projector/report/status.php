@@ -1,4 +1,5 @@
 <?php 
+//echo "status.php";
 include_once '../tool/projector.php';
 
 if (! isset($includedReport)) {

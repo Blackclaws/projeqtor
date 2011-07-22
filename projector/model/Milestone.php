@@ -169,5 +169,28 @@ class Milestone extends SqlElement {
     } 
     return parent::save();
   }
+  
+/** =========================================================================
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message 
+   *  must be redefined in the inherited class
+   */
+  public function control(){
+    $result="";
+    if (trim($this->idActivity)) {
+      $parentActivity=new Activity($this->idActivity);
+      if ($parentActivity->idProject!=$this->idProject) {
+        $result.='<br/>' . i18n('msgParentActivityInSameProject');
+      }
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
 }
 ?>
