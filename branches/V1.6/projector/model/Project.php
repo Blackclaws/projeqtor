@@ -116,7 +116,7 @@ class Project extends SqlElement {
     if ($colName=="idle") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("idleDate").value==null) {';
+      $colScript .= '    if (dijit.byId("idleDate").get("value")==null) {';
       $colScript .= '      var curDate = new Date();';
       $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
       $colScript .= '    }';
@@ -131,7 +131,7 @@ class Project extends SqlElement {
     } else if ($colName=="done") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("doneDate").value==null) {';
+      $colScript .= '    if (dijit.byId("doneDate").get("value")==null) {';
       $colScript .= '      var curDate = new Date();';
       $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
       $colScript .= '    }';

@@ -153,14 +153,14 @@ class Risk extends SqlElement {
       $colScript .= '</script>';
     } else if ($colName=="initialEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("actualEndDate").value==null) { ';
+      $colScript .= '  if (dijit.byId("actualEndDate").get("value")==null) { ';
       $colScript .= '    dijit.byId("actualEndDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     } else if ($colName=="actualEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("initialEndDate").value==null) { ';
+      $colScript .= '  if (dijit.byId("initialEndDate").get("value")==null) { ';
       $colScript .= '    dijit.byId("initialEndDate").set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '  formChanged();';

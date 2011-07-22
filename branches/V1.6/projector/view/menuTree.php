@@ -141,7 +141,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
         };
         ?>
       </span>
-      <span dojoType="dijit.TooltipDialog" class="white">
+      <span dojoType="dijit.TooltipDialog" class="white" xstyle="height:200px">
         
          <?php 
            $prj=new Project();

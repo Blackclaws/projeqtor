@@ -211,10 +211,12 @@ if (! testGraphEnabled()) { return;}
   include("../external/pChart/pData.class");  
   include("../external/pChart/pChart.class");  
 $dataSet=new pData;
+$nbItem=0;
 foreach($sumProj as $id=>$vals) {
   $dataSet->AddPoint($vals,$id);
   $dataSet->SetSerieName($tab[$id]['name'],$id);
   $dataSet->AddSerie($id);
+  $nbItem++;
 }
 $arrLabel=array();
 foreach($arrDates as $date){
@@ -224,6 +226,9 @@ $dataSet->AddPoint($arrLabel,"dates");
 $dataSet->SetAbsciseLabelSerie("dates");   
 $width=700;
 $graph = new pChart($width,260);  
+for ($i=0;$i<=$nbItem;$i++) {
+  $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
+}
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
 $graph->drawRoundedRectangle(5,5,$width-5,258,5,230,230,230);  
 $graph->setGraphArea(40,30,$width-200,200);  

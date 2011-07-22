@@ -60,8 +60,8 @@ class ResourceCost extends SqlElement {
       $newCost=($old->cost==$this->cost)?false:true;
     }
     $result=parent::save();
-    if (strpos($result,'lastOperationStatus" value="OK"')==0) {
-      return $result;
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
     }
     $id=($this->id)?$this->id:SQL::$lastQueryNewid;
     if ($this->startDate and $new) {

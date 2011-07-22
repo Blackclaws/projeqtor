@@ -4,7 +4,6 @@ session_start();              // Setup session. Must be first command.
  * Global tool script for the application.
  * Must be included (include once) on each script remotely called.
  * $Revision$
- * $Author$
  * $Date$
  */
 set_exception_handler('exceptionHandler');
@@ -52,8 +51,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.6.0";            // Version of application : Major / Minor / Release
-$build="0032";                // Build number. To be increased on each release
+$version="V1.6.1";            // Version of application : Major / Minor / Release
+$build="0033";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';

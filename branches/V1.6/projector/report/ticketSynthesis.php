@@ -1,4 +1,5 @@
 <?php
+//echo "tichetSyntesis.php";
 include_once '../tool/projector.php';
 
 if (! isset($includedReport)) {
@@ -238,6 +239,7 @@ function drawSynthesisTable($scope, $lst) {
 }
 
 function drawsynthesisGraph($scope, $lst) {
+	global $rgbPalette;
   if (! testGraphEnabled()) { return;}
   if (count($lst)==0) { return;}  
   $valArr=array();
@@ -247,10 +249,12 @@ function drawsynthesisGraph($scope, $lst) {
     $legArr[]=i18n('undefinedValue');
     $valArr[]=$lst['0'];
   }
+  $nbItem=0;
   foreach ($lstRef as $code=>$val) {
     if (array_key_exists($code, $lst)) {
       $valArr[]=$lst[$code];
       $legArr[]=$val;
+      $nbItem++;
     }
   }
   $dataSet=new pData;
@@ -260,8 +264,14 @@ function drawsynthesisGraph($scope, $lst) {
   $dataSet->AddPoint($legArr,"legend");  
   $dataSet->SetAbsciseLabelSerie("legend"); 
   
-  // Initialise the graph  
-  $graph = new pChart(220,110);
+  // Initialise the graph
+  $hgt=$nbItem*20;
+  $hgt=($hgt<110)?110:$hgt;
+    
+  $graph = new pChart(220,$hgt);
+  for ($i=0;$i<=$nbItem;$i++) {
+    $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
+  }
   //$graph->drawRoundedRectangle(2,2,196,96,2,230,230,230);    
   $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);
     

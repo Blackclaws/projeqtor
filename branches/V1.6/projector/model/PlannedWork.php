@@ -63,7 +63,7 @@ class PlannedWork extends Work {
     if ($colName=="idle") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("PlanningElement_realEndDate").value==null) {';
+      $colScript .= '    if (dijit.byId("PlanningElement_realEndDate").get("value")==null) {';
       $colScript .= '      dijit.byId("PlanningElement_realEndDate").set("value", new Date); ';
       $colScript .= '    }';
       $colScript .= '  } else {';

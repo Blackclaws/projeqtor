@@ -131,6 +131,7 @@ scriptLog('   ->/view/main.php');
       dojo.byId("loadingDiv").style.visibility="hidden";
       dojo.byId("loadingDiv").style.display="none";
       dojo.byId("mainDiv").style.visibility="visible";        
+
       loadContent("<?php echo $firstPage;?>","centerDiv");
     }); 
     var canCreateArray=new Array();
@@ -150,6 +151,7 @@ scriptLog('   ->/view/main.php');
         echo "linkableArray['" . $id . "']='" . $name . "';";
       }    
     ?>
+    //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
 </head>
 

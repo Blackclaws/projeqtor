@@ -419,6 +419,9 @@ class Workflow extends SqlElement {
       }
     }
     $result = parent::save();   
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     // save detail (workflowstatus)
     $statusList=SqlList::getList('Status');
     $profileList=SqlList::getList('Profile');

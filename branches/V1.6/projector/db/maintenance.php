@@ -27,7 +27,6 @@ $versionParameters =array(
   'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/'),
   'V1.5.0'=>array('currency'=>'€', 
                   'currencyPosition'=>'after'),
-  'V1.6.1'=>array('paramMemoryLimitForPDF'=>'512') 
 );
 $SqlEndOfCommand=";";
 $SqlComment="--";
@@ -76,6 +75,14 @@ if ($currVersion=='0.0.0') {
   debugLog($result);
 }
 deleteDupplicate();
+
+// For V1.6.1
+$tst=new ExpenseDetailType('1');
+if (! $tst->id) {
+	$nbErrors+=runScript('V1.6.1');
+}
+
+
 Sql::saveDbVersion($version);
 traceLog('=====================================');
 traceLog("");
@@ -132,6 +139,9 @@ function runScript($vers) {
             if (substr($query,0,12)=='CREATE TABLE') {
               $action="CREATE TABLE";
             }
+            if (substr($query,0,12)=='RENAME TABLE') {
+              $action="RENAME TABLE";
+            }
             if (substr($query,0,11)=='INSERT INTO') {
               $action="INSERT INTO";
             }
@@ -166,7 +176,10 @@ function runScript($vers) {
               case "ALTER TABLE" :
                 traceLog(" Table \"" . $tableName . "\" altered."); 
                 break;
-              case "TRUNCATE TABLE" :
+              case "RENAME TABLE" :
+                traceLog(" Table \"" . $tableName . "\" renamed."); 
+                break;
+                case "TRUNCATE TABLE" :
                 traceLog(" Table \"" . $tableName . "\" truncated."); 
                 break;                
               case "INSERT INTO":

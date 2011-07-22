@@ -54,7 +54,7 @@ CREATE TABLE `${prefix}expense` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-CREATE TABLE `${prefix}expenseDetail` (
+CREATE TABLE `${prefix}expensedetail` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT null, 
   `idExpense` int(12) unsigned DEFAULT null, 
@@ -73,7 +73,7 @@ CREATE TABLE `${prefix}expenseDetail` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-CREATE TABLE `${prefix}expenseDetailType` (
+CREATE TABLE `${prefix}expensedetailtype` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `sortOrder` int(3) DEFAULT NULL,
@@ -231,7 +231,7 @@ INSERT INTO `${prefix}workflowstatus` (idWorkflow,idStatusFrom,idStatusTo,idProf
 (8,4,12,3,1),
 (8,12,7,3,1);
 
-INSERT INTO `${prefix}expenseDetailType` (id, name, sortOrder, value01, unit01, value02, unit02, value03, unit03, idle) VALUES
+INSERT INTO `${prefix}expensedetailtype` (id, name, sortOrder, value01, unit01, value02, unit02, value03, unit03, idle) VALUES
 (1,'travel by car', 10, null, 'km', 0.544, '€/km', null, null, 0),
 (2,'regular mission car travel', 20, null, 'days', null, 'km/day', 0.544, '€/km', 0),
 (3,'lunch for guests', 30, null, 'guests', null, '€/guest', null, null, 0),

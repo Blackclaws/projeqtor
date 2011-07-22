@@ -89,6 +89,9 @@ class Assignment extends SqlElement {
     
     // Dispatch value
     $result = parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     
     PlanningElement::updateSynthesis($this->refType, $this->refId);
     

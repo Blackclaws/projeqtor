@@ -29,12 +29,14 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     } else if ($col=="idProject") {
       $user=$_SESSION["user"];
       $controlRightsTable=$user->getAccessControlRights();
+//debugLog($controlRightsTable);
 	  if (! array_key_exists($obj->getMenuClass(),$controlRightsTable)) {
 	    // If AccessRight notdefined for object and user profile => empty list + log error
-		debugLog('Error : no AccessRight for user ' . $user->id . '/' . $user->name . ' and item ' . $obj->getMenuClass());
+//debugLog('Error : no AccessRight for user ' . $user->id . '/' . $user->name . ' and item ' . $obj->getMenuClass());
         return;		
 	  }
       $controlRights=$controlRightsTable[$obj->getMenuClass()];
+//debugLog($controlRights);      
       if ($obj->id==null) {
         // creation mode
         if ($controlRights["create"]=="PRO") {
@@ -74,6 +76,16 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           $table=array(key($table)=>current($table));
         }
       }
+    }
+  } else { // (! $obj)
+  	if ($col=="idProject") {
+      $user=$_SESSION["user"];
+      if (! $user->_accessControlVisibility) {
+        $user->getAccessControlRights(); // Force setup of accessControlVisibility
+      }      
+      if ($user->_accessControlVisibility != 'ALL') {
+      	$restrictArray=$user->getVisibleProjects();
+  	  }
     }
   }
   if (! $required) {

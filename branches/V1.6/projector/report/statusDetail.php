@@ -144,6 +144,7 @@ echo '</table>';
 if (! testGraphEnabled()) { return;}
 
 $dataSet=new pData;
+$nbItem=0;
 foreach($arr as $id=>$arrType) {
   $temp=array();
   foreach ($lstStatus as $is=>$status) {
@@ -157,12 +158,16 @@ foreach($arr as $id=>$arrType) {
   if (isset($lstType[$id])) {
   $dataSet->SetSerieName($lstType[$id],$id);
   $dataSet->AddSerie($id);
+  $nbItem++;
   }
 }
 $dataSet->AddPoint($lstStatus,"status");  
 $dataSet->SetAbsciseLabelSerie("status");   
 $width=650;
 $graph = new pChart($width,250);  
+for ($i=0;$i<=$nbItem;$i++) {
+  $graph->setColorPalette($i,$rgbPalette[($i % 12)]['R'],$rgbPalette[($i % 12)]['G'],$rgbPalette[($i % 12)]['B']);
+}
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",10);
 $graph->drawRoundedRectangle(5,5,$width-5,248,5,230,230,230);  
 $graph->setGraphArea(40,30,$width-160,220);  

@@ -1482,7 +1482,7 @@ function removeStoredFilter(idFilter, nameFilter) {
 
 function reportSelectCategory(idCateg) {
 	loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv", null, false);
-	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});
+	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?required=true&listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});
 	var mySelect=dojo.byId("reportsList");
 	//dijit.byId("reportsList").set('value','');
 	mySelect.options.length=0;

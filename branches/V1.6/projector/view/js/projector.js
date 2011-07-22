@@ -997,9 +997,12 @@ function disconnect() {
  */
 function quit() {
 	if (! noDisconnect) {
-	  dojo.xhrPost({
+	  showWait();
+	  dojo.xhrGet({
 		  url: "../tool/saveDataToSession.php?id=disconnect",
-		  load: function(data,args) { }
+		  load: function(data,args) { 
+		      hideWait();
+	        }
 	  });
 	  window.location="../index.php";
 	}
@@ -1011,7 +1014,7 @@ function quit() {
  */
 function beforequit() {
 	if (formChangeInProgress) {
-    return (i18n("alertQuitOngoingChange"));
+      return (i18n("alertQuitOngoingChange"));
 	} else {
 		if (! quitConfirmed) {
 			return(i18n('confirmDisconnection'));

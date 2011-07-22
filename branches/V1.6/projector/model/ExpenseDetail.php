@@ -49,6 +49,9 @@ class ExpenseDetail extends SqlElement {
    */
   public function save() {
     $result = parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     $exp=new Expense($this->idExpense);
     $exp->updateAmount();
     return $result;
