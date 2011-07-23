@@ -8,10 +8,9 @@
 if(!dojo._hasResource["dijit.layout.LinkPane"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["dijit.layout.LinkPane"] = true;
 dojo.provide("dijit.layout.LinkPane");
+
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Templated");
-
-
 
 dojo.declare("dijit.layout.LinkPane",
 	[dijit.layout.ContentPane, dijit._Templated],

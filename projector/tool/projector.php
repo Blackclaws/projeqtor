@@ -849,6 +849,9 @@ function addWorkDaysToDate($date, $days) {
   if ($days<=0) {
     return $date;
   }
+  if (! $date) {
+  	return;
+  }
   $days-=1;
   $tDate = explode("-", $date);
   $dStart=mktime(0, 0, 0, $tDate[1], $tDate[2], $tDate[0]);

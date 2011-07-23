@@ -8,11 +8,10 @@
 if(!dojo._hasResource["dijit.layout.TabContainer"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["dijit.layout.TabContainer"] = true;
 dojo.provide("dijit.layout.TabContainer");
+
 dojo.require("dijit.layout._TabContainerBase");
 dojo.require("dijit.layout.TabController");
 dojo.require("dijit.layout.ScrollingTabController");
-
-
 
 dojo.declare("dijit.layout.TabContainer",
 	dijit.layout._TabContainerBase,
@@ -73,5 +72,6 @@ dojo.declare("dijit.layout.TabContainer",
 			}
 		}
 });
+
 
 }
