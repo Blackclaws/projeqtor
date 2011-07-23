@@ -67,7 +67,6 @@ D:/ProjectOr/setup/external/dijit/DialogUnderlay.js
 D:/ProjectOr/setup/external/dijit/_Contained.js
 D:/ProjectOr/setup/external/dijit/_Container.js
 D:/ProjectOr/setup/external/dijit/layout/_LayoutWidget.js
-D:/ProjectOr/setup/external/dijit/layout/_ContentPaneResizeMixin.js
 D:/ProjectOr/setup/external/dojo/html.js
 D:/ProjectOr/setup/external/dijit/layout/ContentPane.js
 D:/ProjectOr/setup/external/dijit/TooltipDialog.js
@@ -106,6 +105,7 @@ D:/ProjectOr/setup/external/dijit/form/NumberTextBox.js
 D:/ProjectOr/setup/external/dojo/colors.js
 D:/ProjectOr/setup/external/dijit/_PaletteMixin.js
 D:/ProjectOr/setup/external/dijit/ColorPalette.js
+D:/ProjectOr/setup/external/dijit/layout/_ContentPaneResizeMixin.js
 D:/ProjectOr/setup/external/dijit/form/Form.js
 D:/ProjectOr/setup/external/dijit/form/FilteringSelect.js
 D:/ProjectOr/setup/external/dijit/form/MultiSelect.js

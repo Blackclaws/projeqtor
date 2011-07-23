@@ -127,9 +127,14 @@ class PlannedWork extends Work {
         $profile=$pm->code;  
       }
       if ($profile=="REGUL" or $profile=="FULL" 
-       or $profile=="HALF"  or $profile=="FDUR") { // Regular planning
+       or $profile=="HALF" ) { // Regular planning
         $startPlan=$plan->validatedStartDate;
         $endPlan=$plan->validatedEndDate;
+        $step=1;
+      } else if ($profile=="FDUR") { // Fixed duration
+      	if ($plan->validatedStartDate) { 
+      	  $startPlan=$plan->validatedStartDate;
+      	}
         $step=1;
       } else if ($profile=="ASAP") { // As soon as possible
         $startPlan=$plan->validatedStartDate;
@@ -170,8 +175,12 @@ class PlannedWork extends Work {
         if ($prec==null) {
           $prec=new PlanningElement($precDep->predecessorId);
         }
-        if ($prec->plannedEndDate > $startPlan) {
-          $startPlan=$prec->plannedEndDate;
+        if ($prec->plannedEndDate > $startPlan) {        
+          if ($profile=="FDUR") {
+          	$startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
+          } else {
+          	$startPlan=$prec->plannedEndDate;
+          }
         }
       }
       if ($plan->refType=='Milestone') {
@@ -198,9 +207,7 @@ class PlannedWork extends Work {
           if (! $plan->realEndDate) {
             $plan->plannedEndDate=$endPlan;
           }
-          if (! $plan->leftWork>0) {
-            $plan->save();
-          }
+          $plan->save();
         }
         // get list of top project to chek limit on each project
         if ($withProjectRepartition) {

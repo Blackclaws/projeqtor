@@ -8,13 +8,11 @@
 if(!dojo._hasResource["dijit.layout.StackContainer"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["dijit.layout.StackContainer"] = true;
 dojo.provide("dijit.layout.StackContainer");
+
 dojo.require("dijit._Templated");
 dojo.require("dijit.layout._LayoutWidget");
 dojo.requireLocalization("dijit", "common", null, "ROOT,ar,ca,cs,da,de,el,es,fi,fr,he,hu,it,ja,kk,ko,nb,nl,pl,pt,pt-pt,ro,ru,sk,sl,sv,th,tr,zh,zh-tw");
 dojo.require("dojo.cookie");
-dojo.require("dijit.layout.StackController");
-
-
 
 dojo.declare(
 	"dijit.layout.StackContainer",
@@ -49,14 +47,10 @@ dojo.declare(
 	selectedChildWidget: null,
 =====*/
 
-	buildRendering: function(){
+	postCreate: function(){
 		this.inherited(arguments);
 		dojo.addClass(this.domNode, "dijitLayoutContainer");
 		dijit.setWaiRole(this.containerNode, "tabpanel");
-	},
-
-	postCreate: function(){
-		this.inherited(arguments);
 		this.connect(this.domNode, "onkeypress", this._onKeyPress);
 	},
 
@@ -112,7 +106,8 @@ dojo.declare(
 
 		this.inherited(arguments);
 
-		dojo.replaceClass(child.domNode, "dijitHidden", "dijitVisible");
+		dojo.removeClass(child.domNode, "dijitVisible");
+		dojo.addClass(child.domNode, "dijitHidden");
 
 		// remove the title attribute so it doesn't show up when i hover
 		// over a node
@@ -185,19 +180,17 @@ dojo.declare(
 
 		if(this.selectedChildWidget != page){
 			// Deselect old page and select new one
-			var d = this._transition(page, this.selectedChildWidget, animate);
-			this._set("selectedChildWidget", page);
+			this._transition(page, this.selectedChildWidget, animate);
+			this.selectedChildWidget = page;
 			dojo.publish(this.id+"-selectChild", [page]);
 
 			if(this.persist){
 				dojo.cookie(this.id + "_selectedChild", this.selectedChildWidget.id);
 			}
 		}
-
-		return d;		// If child has an href, promise that fires when the child's href finishes loading
 	},
 
-	_transition: function(/*dijit._Widget*/ newWidget, /*dijit._Widget*/ oldWidget, /*Boolean*/ animate){
+	_transition: function(/*dijit._Widget*/newWidget, /*dijit._Widget*/oldWidget){
 		// summary:
 		//		Hide the old widget and display the new widget.
 		//		Subclasses should override this.
@@ -206,7 +199,7 @@ dojo.declare(
 		if(oldWidget){
 			this._hideChild(oldWidget);
 		}
-		var d = this._showChild(newWidget);
+		this._showChild(newWidget);
 
 		// Size the new widget, in case this is the first time it's being shown,
 		// or I have been resized since the last time it was shown.
@@ -220,8 +213,6 @@ dojo.declare(
 				newWidget.resize();
 			}
 		}
-
-		return d;	// If child has an href, promise that fires when the child's href finishes loading
 	},
 
 	_adjacent: function(/*Boolean*/ forward){
@@ -236,13 +227,13 @@ dojo.declare(
 	forward: function(){
 		// summary:
 		//		Advance to next page.
-		return this.selectChild(this._adjacent(true), true);
+		this.selectChild(this._adjacent(true), true);
 	},
 
 	back: function(){
 		// summary:
 		//		Go back to previous page.
-		return this.selectChild(this._adjacent(false), true);
+		this.selectChild(this._adjacent(false), true);
 	},
 
 	_onKeyPress: function(e){
@@ -260,24 +251,24 @@ dojo.declare(
 		// summary:
 		//		Show the specified child by changing it's CSS, and call _onShow()/onShow() so
 		//		it can do any updates it needs regarding loading href's etc.
-		// returns:
-		//		Promise that fires when page has finished showing, or true if there's no href
 		var children = this.getChildren();
 		page.isFirstChild = (page == children[0]);
 		page.isLastChild = (page == children[children.length-1]);
-		page._set("selected", true);
+		page.selected = true;
 
-		dojo.replaceClass(page.domNode, "dijitVisible", "dijitHidden");
+		dojo.removeClass(page.domNode, "dijitHidden");
+		dojo.addClass(page.domNode, "dijitVisible");
 
-		return page._onShow() || true;
+		page._onShow();
 	},
 
 	_hideChild: function(/*dijit._Widget*/ page){
 		// summary:
 		//		Hide the specified child by changing it's CSS, and call _onHide() so
 		//		it's notified.
-		page._set("selected", false);
-		dojo.replaceClass(page.domNode, "dijitHidden", "dijitVisible");
+		page.selected=false;
+		dojo.removeClass(page.domNode, "dijitVisible");
+		dojo.addClass(page.domNode, "dijitHidden");
 
 		page.onHide();
 	},
@@ -296,7 +287,7 @@ dojo.declare(
 		}
 	},
 
-	destroyDescendants: function(/*Boolean*/ preserveDom){
+	destroyDescendants: function(/*Boolean*/preserveDom){
 		dojo.forEach(this.getChildren(), function(child){
 			this.removeChild(child);
 			child.destroyRecursive(preserveDom);
@@ -305,6 +296,7 @@ dojo.declare(
 });
 
 // For back-compat, remove for 2.0
+dojo.require("dijit.layout.StackController");
 
 
 // These arguments can be specified for the children of a StackContainer.

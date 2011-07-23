@@ -8,16 +8,14 @@
 if(!dojo._hasResource["dijit.layout.SplitContainer"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["dijit.layout.SplitContainer"] = true;
 dojo.provide("dijit.layout.SplitContainer");
-dojo.require("dojo.cookie");
-dojo.require("dijit.layout._LayoutWidget");
-
-
 
 //
 // FIXME: make it prettier
 // FIXME: active dragging upwards doesn't always shift other bars (direction calculation is wrong in this case)
 //
 
+dojo.require("dojo.cookie");
+dojo.require("dijit.layout._LayoutWidget");
 
 dojo.declare("dijit.layout.SplitContainer",
 	dijit.layout._LayoutWidget,
