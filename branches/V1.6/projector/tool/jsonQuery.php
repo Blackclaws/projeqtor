@@ -183,7 +183,7 @@
           $externalObj=new $externalClass();
           $externalTable = $externalObj->getDatabaseTableName();
           $externalTableAlias = 'T' . $idTab;
-          $querySelect .= 'concat(';
+          $querySelect .= 'convert(concat(';
           if (property_exists($externalObj,'sortOrder')) {
             $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
             $querySelect .=  ",'#split#',";
@@ -191,7 +191,7 @@
           $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
           $querySelect .=  ",'#split#',";
           $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color');
-          $querySelect .= ') as ' . $fld;
+          $querySelect .= ') using utf8) as ' . $fld;
           $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
             ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
             ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');

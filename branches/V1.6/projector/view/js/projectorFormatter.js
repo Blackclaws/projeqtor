@@ -62,7 +62,6 @@ function colorFormatter(value) {
  */
 function colorNameFormatter(value) {
   if (value) {
-
   	var tab=value.split("#split#");
   	if (tab.length>1) {
   		if (tab.length==2) { // just found : val #split# color
