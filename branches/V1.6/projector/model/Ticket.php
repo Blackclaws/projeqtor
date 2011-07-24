@@ -160,6 +160,7 @@ class Ticket extends SqlElement {
       $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
+      $colScript .= '  formChanged();';      
       $colScript .= '</script>';     
     } else if ($colName=="actualDueDateTimeBis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -167,6 +168,7 @@ class Ticket extends SqlElement {
       $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDateTime") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -174,6 +176,7 @@ class Ticket extends SqlElement {
       $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDateTimeBis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -181,6 +184,7 @@ class Ticket extends SqlElement {
       $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';     
     }
     return $colScript;
