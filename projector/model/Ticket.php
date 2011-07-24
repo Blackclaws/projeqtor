@@ -157,28 +157,28 @@ class Ticket extends SqlElement {
     } else if ($colName=="actualDueDateTime") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("initialDueDateTime");';
-      $colScript .= '  if (upd && upd.value==null) { ';
+      $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     } else if ($colName=="actualDueDateTimeBis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("initialDueDateTimeBis");';
-      $colScript .= '  if (upd && upd.value==null) { ';
+      $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDateTime") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("actualDueDateTime");';
-      $colScript .= '  if (upd && upd.value==null) { ';
+      $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
     } else if ($colName=="initialDueDateTimeBis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var upd=dijit.byId("actualDueDateTimeBis");';
-      $colScript .= '  if (upd && upd.value==null) { ';
+      $colScript .= '  if (upd && upd.get("value")==null) { ';
       $colScript .= '    upd.set("value", this.value); ';
       $colScript .= '  } ';
       $colScript .= '</script>';     
