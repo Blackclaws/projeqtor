@@ -107,7 +107,7 @@ foreach ($lstPlanWork as $work) {
 if ($periodType=='month') {
   $startDate=$periodValue. "01";
   $time=mktime(0, 0, 0, $paramMonth, 1, $paramYear);
-  $header=strftime("%B %Y", $time);
+  $header=i18n(strftime("%B", $time)).strftime(" %Y", $time);
   $nbDays=date("t", $time);
 }
 $weekendBGColor='#cfcfcf';
