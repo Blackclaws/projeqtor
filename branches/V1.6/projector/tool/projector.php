@@ -51,8 +51,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.6.1";            // Version of application : Major / Minor / Release
-$build="0033";                // Build number. To be increased on each release
+$version="V1.7.0";            // Version of application : Major / Minor / Release
+$build="0034";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -983,32 +983,48 @@ function isOffDay ($dateValue) {
 /*
  * Checks if a date is a "off day" (weekend or else)
  */
+$bankHolidays=array();
+$bankWorkdays=array();
 function isOpenDay ($dateValue) {
-  global $paramDefaultLocale;
+  global $paramDefaultLocale, $bankHolidays,$bankWorkdays;
   $iDate=strtotime($dateValue);
-  if ($paramDefaultLocale=='xxxfr') {  // Temporary desactivate France Holidays
-    $aBankHolidays = array (
-          '1_1',
-          '1_5',
-          '8_5',
-          '14_7',
-          '15_8',
-          '1_11',
-          '11_11',
-          '25_12'
-          );
-    $iEaster = getEaster ((int)date('Y'), $iDate);
-    $aBankHolidays[] = date ('j_n', $iEaster);
-    $aBankHolidays[] = date ('j_n', $iEaster + (86400*39));
-    $aBankHolidays[] = date ('j_n', $iEaster + (86400*49));
+  $year=date('Y',$iDate);
+  if (array_key_exists($year,$bankWorkdays)) {
+    $aBankWorkdays=$bankWorkdays[$year];
   } else {
-    $aBankHolidays = array ();
-  }  
-  //TODO : add off days management and calendar management : here are french holidays
-  if (in_array (date ('w', $iDate),array (0,6) ) || in_array (date ('j_n', $iDate), $aBankHolidays)) {
-    return false;
+    $cal=new Calendar();
+    $crit=array('year'=>$year, 'isOffDay'=>'0');
+    $aBankWorkdays=array();
+    $lstCal=$cal->getSqlElementsFromCriteria($crit);
+    foreach ($lstCal as $obj) {
+      $aBankWorkdays[]=$obj->day;
+    }
+    $bankWorkdays[$year]=$aBankWorkdays;
+  }
+  if (array_key_exists($year,$bankHolidays)) {
+    $aBankHolidays=$bankHolidays[$year];
   } else {
-    return true;
+    $cal=new Calendar();
+    $crit=array('year'=>$year, 'isOffDay'=>'1');
+    $aBankHolidays=array();
+    $lstCal=$cal->getSqlElementsFromCriteria($crit);
+    foreach ($lstCal as $obj) {
+      $aBankHolidays[]=$obj->day;
+    }
+    $bankHolidays[$year]=$aBankHolidays;
+  }
+  if (in_array (date ('w', $iDate),array (0,6) ) ) {
+    if (in_array (date ('Ymd', $iDate), $aBankWorkdays)) {
+      return true;
+    } else {
+    	return false;
+    }
+  } else {
+  	if (in_array (date ('Ymd', $iDate), $aBankHolidays)) {
+      return false;
+  	} else {
+  		return true;
+  	} 
   }
 }
 

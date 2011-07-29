@@ -413,8 +413,20 @@ label, .label {
   height: 1px;
 }
 
+.calendar {
+	font-size: 7pt;
+	background: #FFFFFF;
+	border: 1px solid #AAAAAA;
+	text-align: center;
+	width: 30px;
+	height: 20px;
+}
+.calendar .offDay {
+	background: #DDDDDD;
+}
+
 .historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, 
-.dependencyHeader, .workflowHeader, .filterHeader {
+.dependencyHeader, .workflowHeader, .filterHeader, .calendarHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
