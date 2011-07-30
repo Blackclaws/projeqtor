@@ -21,7 +21,7 @@
      } else {
      	 $limit='';
      }
-     if ($limit==0) {
+     if ($limit===0) {
      	 header ('Content-Type: text/html; charset=UTF-8');
      	 echo "<html><head></head><body>";
      	 echo i18n("msgPdfDisabled");
