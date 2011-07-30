@@ -83,6 +83,13 @@ if (! $tst->id) {
 	$nbErrors+=runScript('V1.6.1');
 }
 
+// For V1.7.0
+if (! isset($paramMemoryLimitForPDF) ) {
+	writeFile('$paramMemoryLimitForPDF = \'512\';',$parametersLocation);
+  writeFile("\n",$parametersLocation);
+  traceLog('Parameter $paramMemoryLimitForPDF added');
+}
+
 
 Sql::saveDbVersion($version);
 traceLog('=====================================');
