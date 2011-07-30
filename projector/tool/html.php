@@ -55,7 +55,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $idType='id' . get_class($obj) . 'Type';
       $typeClass=get_class($obj) . 'Type';
       if (property_exists($obj,$idType) ) {
-        if ($obj->$idType) {
+        if ($obj->$idType and $obj->idStatus) {
           $profile="";
           if (array_key_exists('user', $_SESSION)) {
             $profile=$_SESSION['user']->idProfile;
