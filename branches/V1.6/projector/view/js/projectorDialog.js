@@ -407,7 +407,7 @@ function selectDetailItem(selectedValue) {
 
 function displaySearch(objClass) {
 	if (! objClass) {
-		comboName=dojo.byId('comboName').value;
+		//comboName=dojo.byId('comboName').value;
 		objClass=dojo.byId('comboClass').value;
 	}
 	showWait();
