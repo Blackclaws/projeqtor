@@ -1,0 +1,2 @@
+<?php 
+$parametersLocation = '../tool/aa';

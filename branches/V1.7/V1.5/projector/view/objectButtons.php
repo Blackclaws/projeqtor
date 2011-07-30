@@ -1,0 +1,132 @@
+<?php
+/* ============================================================================
+ * Presents the action buttons of an object.
+ * 
+ */ 
+  require_once "../tool/projector.php";
+  scriptLog('   ->/view/objectButton.php'); 
+?>
+<table>
+  <tr>
+    <td width="50px" align="center">
+      <img src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
+    </td>
+    <td><span class="title"><?php echo i18n($_REQUEST['objectClass']);?></span></td>
+    <td width="15px">&nbsp;</td>
+    <td>
+      <button id="newButton" dojoType="dijit.form.Button" showlabel="false" 
+       title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
+       iconClass="dijitEditorIcon dijitEditorIconNew" >
+        <script type="dojo/connect" event="onClick" args="evt">
+		  dojo.byId("newButton").blur();
+          id=dojo.byId('objectId');
+	      if (id) { 	
+		    id.value="";
+		    unselectAllRows("objectGrid");
+            loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+          } else { 
+            showError(i18n("errorObjectId"));
+	      }
+        </script>
+      </button>
+    
+      <button id="saveButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonSave', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?>
+       iconClass="dijitEditorIcon dijitEditorIconSave" >
+        <script type="dojo/connect" event="onClick" args="evt">
+		      dojo.byId("saveButton").blur();
+          unselectAllRows("objectGrid");
+	        submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
+        </script>
+      </button>
+
+      <button id="printButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonPrint', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="dijitEditorIcon dijitEditorIconPrint" >
+        <script type="dojo/connect" event="onClick" args="evt">
+		    dojo.byId("printButton").blur();
+        if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
+		    showPrint("objectDetail.php");
+        </script>
+      </button>  
+<?php if (false) {?>    
+     <button id="printPdfButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('reportPrintPdf');?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="iconPdf" >
+        <script type="dojo/connect" event="onClick" args="evt">
+        dojo.byId("printButton").blur();
+        if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
+        showPrint("objectDetail.php", null, null, 'pdf');
+        </script>
+      </button>   
+<?php }?> 
+      <button id="copyButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonCopy', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?>
+       iconClass="dijitEditorIcon dijitEditorIconCopy" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          dojo.byId("copyButton").blur();
+          action=function(){
+            unselectAllRows('objectGrid');
+		    loadContent("../tool/copyObject.php", "resultDiv", 'objectForm', true);
+          };
+		  showConfirm(i18n("confirmCopy", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value)) ,action);
+        </script>
+      </button>    
+
+      <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonUndo', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect or 1) {echo "disabled";} ?>
+       iconClass="dijitEditorIcon dijitEditorIconUndo" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          dojo.byId("undoButton").blur();
+          loadContent("objectDetail.php", "detailDiv", 'listForm');
+          formChangeInProgress=false;
+        </script>
+      </button>    
+
+
+      <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
+       title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="dijitEditorIcon dijitEditorIconDelete" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          dojo.byId("deleteButton").blur();
+		  action=function(){
+            unselectAllRows('objectGrid');
+		    loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
+          };
+		  showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value)) ,action);
+        </script>
+      </button>    
+      
+     <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false" 
+       title="<?php echo i18n('buttonRefresh', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?> 
+       iconClass="dijitEditorIcon dijitEditorIconRefresh" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          dojo.byId("refreshButton").blur();
+          loadContent("objectDetail.php", "detailDiv", 'listForm');
+        </script>
+      </button>    
+      
+      <?php 
+        $id=null;
+        $class=$_REQUEST['objectClass'];
+        if (array_key_exists('objectId',$_REQUEST)) {
+          $id=$_REQUEST['objectId'];
+          $obj=new $class($id);
+        }
+        $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
+        $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
+        $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
+      ?>
+      <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
+      <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
+      <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
+    </td>
+  </tr>
+</table>

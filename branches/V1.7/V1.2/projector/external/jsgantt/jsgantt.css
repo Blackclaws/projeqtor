@@ -1,0 +1,240 @@
+
+// These are the class/styles used by various objects in GanttChart.  However, Firefox has problems deciphering class style when DIVs are embedded in other DIVs.
+
+div.scrollLeft { 
+  border: #c0c0c0 1px solid; 
+  spacing: 0px;
+  padding: 0px; 
+  margin: 0px;
+  overflow: hidden;
+  background-color: #ffffff; 
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+}
+
+div.scrollRight { 
+  position:relative; 
+  padding: 0px; 
+  overflow:auto ;
+  overflow-x:scroll;
+  overflow-y:hidden; 
+  background-color: #dddddd;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  border-left: 1px solid #aaaaaa;
+  border-right: 1px solid #aaaaaa;
+}
+
+.ganttLeftTitle, .ganttRightSubTitle,
+.ganttHeight, .ganttTaskrow, .ganttTaskgroup, .ganttTaskmile,
+.ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover,
+.ganttName, .ganttDetail, .ganttExpandOpened, .ganttExpandClosed, .ganttDetailNoborder {
+  height: 20px;
+}
+
+.ganttLeftTopLine, .ganttRightTitle {
+  height: 22px;
+}
+
+.ganttLeftTopLine {
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  spacing: 0px; padding: 0px; margin: 0px;
+}
+
+.ganttTable {
+  spacing: 0px; padding: 0px; margin: 0px;
+  text-align: left;
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  vertical-align: top;
+}
+
+.ganttLeftTitle, .ganttRightTitle {
+  vertical-align: center; 
+  text-align: center;
+  font-weight: bold;
+  background-color:#aaaaaa;
+  color: #ffffff;
+  spacing: 0px; padding: 0px; margin: 0px;
+  border-left: #efefef 1px solid;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+}
+
+.ganttRightSubTitle {
+  vertical-align: center; 
+  text-align: center;
+  font-weight: normal;
+  background-color:#e0e0e0;
+  color: #000000;
+  spacing: 0px; padding: 0px; margin: 0px;
+  /*border-top: #c0c0c0 1px solid;*/
+  border-left: #eeeeee 1px solid;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+}
+
+.ganttTaskrow {
+  spacing: 0px; padding: 0px; margin: 0px;
+  background-color: #ffffff;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+}
+
+.ganttTaskrowBar {
+   height: 13px; 
+   cursor: pointer;
+   opacity:0.9;
+   filter: alpha(opacity=90);
+}
+
+.ganttTaskrowBarComplete { 
+  background-color:#000000; 
+  height:5px; 
+  overflow: hidden; 
+  margin-top:4px;
+  opacity:0.8; 
+  filter: alpha(opacity=80);
+  z-index: -4; 
+  float:left; 
+}
+
+
+.ganttTaskgroup {
+  spacing: 0px; padding: 0px; margin: 0px;
+  font-weight: bold;
+  background-color: #f3f3f3;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  border-color: #F6F6F6 #ACACAC #ACACAC #F6F6F6;
+  background: url(xgradient.gif) #E8E8E8 top repeat-x;
+}
+
+.ganttTaskgroupBar { 
+  background-color:#505050; 
+  text-align:center;
+  height: 7px;
+  cursor: pointer;
+  opacity:0.9; 
+}
+
+.ganttTaskgroupBarExt { 
+  Z-INDEX: -4; 
+  background-color:#505050; 
+  overflow: hidden; 
+  width:1px
+}
+
+.ganttTaskgroupBarText { 
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  position:absolute; 
+  top:-3px; 
+  width:120px; 
+}
+
+.ganttTaskmile {
+  spacing: 0px; padding: 0px; margin: 0px;
+  font-weight: light;
+  font-style:italic;
+  background-color: #ffffff;
+  font-family: Verdana, Arial, Tahoma, sans-serif;
+}
+
+.ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover {
+  background-color: #ffffaa;
+}
+
+.ganttName { 
+  border-top: #c0c0c0 1px solid;
+  font-size: 90%;      
+  spacing: 0px; padding: 0px; margin: 0px;
+  z-index: 0;
+}
+
+.hideLeftPartrow, .hideLeftPartmile {
+  z-index: 999;
+  background-color:#FFFFFF;
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  
+}
+.hideLeftPartgroup {
+  z-index: 999;
+  background-color: #E5E5E5;
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+}
+.namePartrow, .namePartmile {
+  z-index: -999;
+  display: inline-block;
+  width: 99%;
+  cursor: pointer;
+}
+.namePartgroup {
+  z-index: -999;
+  display: inline-block;
+  width: 99%;
+  cursor: pointer;
+}
+
+.ganttDetail, .ganttDetailNoborder {
+  border-top: #c0c0c0 1px solid;
+  font-size: 90%;  
+  spacing: 0px; padding: 0px; margin: 0px;
+  z-index: 10;   
+}
+.ganttDetail, .ganttDetailBoderleft {
+  border-left: #dddddd 1px solid;
+}
+.ganttDetailBoderleft, .ganttSubDetailNoborder  {
+  font-size: 5%;  
+  spacing: 0px; padding: 0px; margin: 0px;     
+}
+.ganttDetailNoborder {
+
+}
+.ganttExpandOpened {
+  background-image: url(minus.gif);  background-repeat: no-repeat;
+  cursor: pointer;
+}
+  
+.ganttExpandClosed {
+  background-image: url(plus.gif);  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.ganttSep {
+  width: 16px;
+  font-size: 90%;
+  font-weight: normal;
+  font-style: normal; 
+}
+..ghead { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px;   HEIGHT: 20px }
+
+..ghead A { FONT-SIZE: 10px; COLOR: #000000; TEXT-DECORATION: none }
+
+..gheadwkend A { FONT-SIZE: 10px; COLOR: #000000; TEXT-DECORATION: none }
+
+..gheadwkend { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid; WIDTH: 24px; HEIGHT: 20px; background-color: #cfcfcf }
+
+..gfiller { BORDER-TOP: #efefef 1px solid; BORDER-LEFT: #efefef 1px solid; WIDTH: 18px; HEIGHT: 18px }
+
+..gfillerwkend { BORDER-LEFT: #efefef 1px solid; WIDTH: 18px; HEIGHT: 18px; BACKGROUND-COLOR: #cfcfcf }
+
+..gitem { BORDER-TOP: #cccccc 1px solid; WIDTH: 18px; HEIGHT: 18px }
+
+..gitemwkend { BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; WIDTH: 18px; HEIGHT: 18px }
+
+..gmilestone {  BORDER-TOP: #efefef 1px solid; FONT-SIZE: 14px; OVERFLOW: hidden; BORDER-LEFT: #efefef 1px solid; WIDTH: 18px; HEIGHT: 18px}
+
+..gmilestonewkend { BORDER-TOP: #efefef 1px solid; BORDER-LEFT: #cccccc 1px solid; WIDTH: 18px; HEIGHT: 18px}
+
+..btn { BORDER-RIGHT: #ffffff; BORDER-TOP: #ffffff; FONT-WEIGHT: bold; FONT-SIZE: 10px; BORDER-LEFT: #ffffff; WIDTH: 12px; COLOR: #cccccc; BORDER-BOTTOM: #ffffff; BACKGROUND-COLOR: #ffffff }
+
+..hrcomplete { BORDER-RIGHT: #000000 2px solid; PADDING-RIGHT: 0px; BORDER-TOP: #000000 2px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; BORDER-LEFT: #000000 2px solid; WIDTH: 20px; COLOR: #000000; PADDING-TOP: 0px; BORDER-BOTTOM: #000000 2px solid; HEIGHT: 4px }
+
+..hrhalfcomplete { BORDER-RIGHT: #000000 2px solid; BORDER-TOP: #000000 2px solid; BORDER-LEFT: #000000 2px solid; WIDTH: 9px; COLOR: #000000; BORDER-BOTTOM: #000000 2px solid; HEIGHT: 4px }
+
+..gweekend { font-family:tahoma, arial, verdana; font-size:11px; background-color:#EEEEEE; text-align:center; }
+
+
+
+..gday { font-family:tahoma, arial, verdana; font-size:11px; text-align:center; }
+
+
