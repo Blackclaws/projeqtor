@@ -49,24 +49,30 @@
     }
     if (count($prjLst)>0) {
       echo '<form id="todayProjectsForm" name="todayProjectsForm">';
-      echo '<table align="center" style="width:95%">'; 
+      echo '<table align="center" style="border: 1px solid blue; width:95%">'; 
       echo '<tr><td style="text-align:left;width:40%" class="tabLabel" >';
       echo i18n('titleCountScope') . " : ";
-      echo '</td><td style="text-align:left;width:20%" class="tabLabel">';
+      echo '</td>';
+      echo '<td style="text-align:right; width:5%" class="tabLabel">';
+      echo '<label for="countScopeTodo">' . i18n('titleCountTodo') . '&nbsp;</label>';
+      echo '</td><td style="text-align:left;" class="tabLabel">';
       echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeTodo" ' 
-          . (($countScope=='todo')?'checked':'') . ' value="todo" />';
-      echo '<label for="countScopeTodo">' . i18n('titleCountTodo') . '</label>';      
-      echo '</td><td style="text-align:left;width:20%" class="tabLabel">';
+          . (($countScope=='todo')?'checked':'') . ' value="todo" />';         
+      echo '</td>';
+      echo '<td style="text-align:right; width:5%" class="tabLabel">';
+      echo '<label for="countScopeNotClosed">' . i18n('titleCountNotClosed') . '&nbsp;</label>';
+      echo '</td><td style="text-align:left;" class="tabLabel">';      
       echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeNotClosed" ' 
           . (($countScope=='notClosed')?'checked':'') . ' value="notClosed" />';
-      echo '<label for="countScopeNotClosed">' . i18n('titleCountNotClosed') . '</label>';
-      echo '</td><td style="text-align:left;width:20%" class="tabLabel">';
+      echo '</td>';
+      echo '<td style="text-align:right; width:5%" class="tabLabel">';
+      echo '<label for="countScopeAll">' . i18n('titleCountAll') . '&nbsp;</label>';
+      echo '</td><td style="text-align:left;" class="tabLabel">';
       echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
           . (($countScope=='all')?'checked':'') . ' value="all" />';
-      echo '<label for="countScopeAll">' . i18n('titleCountAll') . '</label>';
-      $width=70;
       echo '</td></tr>';
-      echo '</table></form>';
+      echo '</table></form>';          
+      $width=70;
       echo '<table align="center" style="width:95%">';
       echo '<tr>' . 
            '  <td class="messageHeader">' . i18n('menuProject') . '</td>' . 
@@ -190,7 +196,7 @@
 
     $cptDisplayId+=1;
     $result='<div style="position:relative; width:' . $width . 'px" id="displayProgress_' . $cptDisplayId . '">';
-    $result.='<div style="position:absolute; width:' . $green . 'px;background: #AAFFAA;">&nbsp;</div>';
+    $result.='<div style="position:absolute; left:0px; width:' . $green . 'px;background: #AAFFAA;">&nbsp;</div>';
     $result.='<div style="position:absolute; width:' . $red . 'px;left:' . $green . 'px;background: #FFAAAA;">&nbsp;</div>';
     $result.='<div style="position:relative;">' . $value . '</div>';
     $result.='</div>';
