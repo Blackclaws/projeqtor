@@ -247,7 +247,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $readOnly=true;     
       } 
       if ($internalTable==0) {
-        if (! is_object($val) and ! is_array($val) and !$hide and !$nobr_before) {
+        if (! is_object($val) and ! is_array($val) and ! $hide and !$nobr_before) {
           echo '<tr class="detail"><td class="label" style="width:10%;">';
           echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>' . $cr;
           echo '</td>';
@@ -317,9 +317,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       //  $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
       //}
       if (is_object($val)) {
-        // Draw an included object (recursive call) =========================== Type Object
-        drawTableFromObject($val, true, $readOnly);
-        $hide=true; // to avoid display of an extra field for the object and an additional carriage return 
+      	if ($col=='Origin') {
+      		drawOrigin($val->originType, $val->originId, $obj, $col, $print);
+      	} else {
+          // Draw an included object (recursive call) =========================== Type Object
+          drawTableFromObject($val, true, $readOnly);
+          $hide=true; // to avoid display of an extra field for the object and an additional carriage return
+        } 
       } else if (is_array($val)) {
         // Draw an array ====================================================== Type Array
         // TODO : impement array fields
@@ -760,6 +764,33 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   } 
 }
 
+function drawOrigin ($refType, $refId, $obj, $col, $print) {
+  echo '<tr class="detail"><td class="label" style="width:10%;">';
+  echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>';
+  echo '</td>';
+  if ($print and $outMode=="pdf") { 
+    echo '<td style="width: 120px">';
+  } else {
+    echo '<td width="90%">';
+  }
+  if ($refType and $refId) {
+    echo '<table width="100%"><tr height="20px"><td xclass="noteData" width="1%" xvalign="top">';
+    echo '<img src="css/images/smallButtonRemove.png" ';
+    echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="smallButton"/> ';
+    echo '</td><td width="5%" xclass="noteData" xvalign="top">';
+    echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
+    echo '</td><td xclass="noteData" style="height: 15px">';
+    $orig=new $refType($refId);
+    echo $orig->name;
+    echo '</td></tr></table>';    
+  } else {
+  	echo '<table><tr height="20px"><td>';
+  	if ($obj->id) {
+	    echo '<img src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="smallButton"/> ';
+  	}
+	  echo '</td></tr></table>';  	
+  }	
+}
 
 function drawHistoryFromObjects($refresh=false) {
   global $cr, $print, $treatedObjects, $comboDetail;

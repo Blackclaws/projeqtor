@@ -39,6 +39,8 @@
               <option value="Meeting"><?php echo i18n('Meeting');?></option>
               <option value="Decision"><?php echo i18n('Decision');?></option>
               <option value="Question"><?php echo i18n('Question');?></option>
+              <option value="IndividualExpense"><?php echo i18n('IndividualExpense');?></option>
+              <option value="ProjectExpense"><?php echo i18n('ProjectExpense');?></option> 
               <option value="Client"><?php echo i18n('Client');?></option>
                <option value="Contact"><?php echo i18n('Contact');?></option>
               <option value="Project"><?php echo i18n('Project');?></option>
@@ -67,7 +69,7 @@
         <td width="10px" >
           <select dojoType="dijit.form.FilteringSelect" 
             id="fileType" name="fileType" 
-            class="input" value="" style="width: 200px;">
+            class="input" value="csv" style="width: 200px;">
               <option value="csv"><?php echo i18n('csvFile')?></option>
            </select> 
         </td>

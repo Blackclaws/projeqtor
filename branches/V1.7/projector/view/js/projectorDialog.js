@@ -315,8 +315,23 @@ function showDetailLink() {
 	}
 }
 
+function showDetailOrigin() {
+	var originType=dijit.byId('originOriginType').get("value");
+	if (originType) {
+		var originable=originableArray[originType];
+		var canCreate=0;
+		if (canCreateArray[originable]=="YES") {
+			canCreate=1;
+	    }
+		showDetail('originOriginId',canCreate, originable);
+		
+	} else {
+		showInfo(i18n('messageMandatory', new Array(i18n('originType'))));
+	}
+}
+
 function showDetail (comboName, canCreate, objectClass) {
-	contentWidget = dijit.byId("comboDetailResult");
+	var contentWidget = dijit.byId("comboDetailResult");
 	dojo.byId("canCreateDetail").value=canCreate;
     if (contentWidget) {
       contentWidget.set('content','');
@@ -358,9 +373,9 @@ function displayDetail(objClass, objId) {
 
 function selectDetailItem(selectedValue) {
 	if (selectedValue) {
-		idFldVal=selectedValue;
+		var idFldVal=selectedValue;
 	} else {
-		idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
+		var idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
 		if (! idFld) {
 			showError('error : comboDetailId not defined');
 			return;
@@ -371,8 +386,8 @@ function selectDetailItem(selectedValue) {
 			return;
 		}
 	}
-	comboName=dojo.byId('comboName').value;
-	combo=dijit.byId(comboName);
+	var comboName=dojo.byId('comboName').value;
+	var combo=dijit.byId(comboName);
 	crit=null;
 	critVal=null;
 	if (comboName=='idActivity' || comboName=='idResource') {
@@ -395,6 +410,10 @@ function selectDetailItem(selectedValue) {
 				refreshLinkList(idFldVal);
 				setTimeout("dojo.byId('linkRef2Id').focus()",1000);
 				enableWidget('dialogLinkSubmit');
+			} else if (comboName=='originOriginId') {
+				refreshOriginList(idFldVal);
+				setTimeout("dojo.byId('originOriginId').focus()",1000);
+				enableWidget('dialogOriginSubmit');
 			}
 		}			
 	}
@@ -407,7 +426,7 @@ function selectDetailItem(selectedValue) {
 
 function displaySearch(objClass) {
 	if (! objClass) {
-		//comboName=dojo.byId('comboName').value;
+		// comboName=dojo.byId('comboName').value;
 		objClass=dojo.byId('comboClass').value;
 	}
 	showWait();
@@ -420,12 +439,13 @@ function displaySearch(objClass) {
 	}
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
-  top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
+    top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
+    setTimeout(dijit.byId("dialogDetail").show(),10);
 }
 
 function newDetailItem() {
-	comboName=dojo.byId('comboName').value;
-	objClass=dojo.byId('comboClass').value;
+	//comboName=dojo.byId('comboName').value;
+	var objClass=dojo.byId('comboClass').value;
 	showWait();
 	showField('comboSearchButton');
 	hideField('comboSelectButton');
@@ -444,10 +464,11 @@ function newDetailItem() {
 	page+="&mode=new";
     page+="&destinationWidth="+destinationWidth;
 	top.frames['comboDetailFrame'].location.href=page;
+	setTimeout(dijit.byId("dialogDetail").show(),10);
 }
 
 function saveDetailItem() {
-	comboName=dojo.byId('comboName').value;
+	var comboName=dojo.byId('comboName').value;
 	var formVar = frames['comboDetailFrame'].dijit.byId("objectForm");
 	if ( ! formVar) {
 		showError(i18n("errorSubmitForm", new Array(page, destination, formName)));
@@ -560,6 +581,7 @@ function removeNote (noteId) {
 	msg=i18n('confirmDelete',new Array(i18n('Note'), noteId));
 	showConfirm (msg, actionOK);
 }
+
 
 //=============================================================================
 //= Attachements
@@ -694,6 +716,70 @@ function removeLink (linkId, refType, refId) {
 	dojo.byId("linkRef2Id").value=refId;
 	actionOK=function() {loadContent("../tool/removeLink.php", "resultDiv", "linkForm", true,'link');};
 	msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
+	showConfirm (msg, actionOK);
+}
+
+//=============================================================================
+//= Origin
+//=============================================================================
+
+/**
+* Display a add origin Box
+* 
+*/
+function addOrigin () {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	dijit.byId("originOriginType").set('value',null);
+	refreshOriginList();
+	dojo.byId("originId").value="";
+	dojo.byId("originRefType").value=objectClass;
+	dojo.byId("originRefId").value=objectId;
+	dijit.byId("dialogOrigin").show();
+	disableWidget('dialogOriginSubmit');
+}
+
+/**
+* Refresh the origin list (after update)
+*/
+function refreshOriginList(selected) {
+	disableWidget('dialogOriginSubmit');
+	var url='../tool/dynamicListOrigin.php';
+	if (selected) {
+	  url+='?selected='+selected;	
+    }
+	loadContent(url, 'dialogOriginList', 'originForm', false);
+}
+
+/**
+* save a link (after addLink)
+* 
+*/
+function saveOrigin() {
+	loadContent("../tool/saveOrigin.php", "resultDiv", "originForm", true,'origin');
+	dijit.byId('dialogOrigin').hide();
+}
+
+/**
+* Display a delete Link Box
+* 
+*/
+function removeOrigin (id, origType, origId) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("originId").value=id;
+	dojo.byId("originRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("originRefId").value=dojo.byId("objectId").value;
+	dojo.byId("originOriginType").value=origType;
+	dojo.byId("originOriginId").value=origId;
+	actionOK=function() {loadContent("../tool/removeOrigin.php", "resultDiv", "originForm", true,'origin');};
+	msg=i18n('confirmDeleteOrigin',new Array(i18n(origType),origId));
 	showConfirm (msg, actionOK);
 }
 
