@@ -13,6 +13,7 @@ class Milestone extends SqlElement {
   public $name;
   public $creationDate;
   public $idUser;
+  public $Origin;
   public $description;
   public $_col_2_2_treatment;
   public $idActivity;

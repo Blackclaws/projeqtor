@@ -26,7 +26,7 @@ $ref2Id=$_REQUEST['linkRef2Id'];
 $linkId=null;
 
 // get the modifications (from request)
-$link=new link($linkId);
+$link=new Link($linkId);
 
 $link->ref1Id=$ref1Id;
 $link->ref1Type=$ref1Type;

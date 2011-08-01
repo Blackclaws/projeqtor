@@ -551,7 +551,7 @@ function finalizeMessageDisplay(destination, validationType) {
   	addMessage(msg);
   	if (validationType=='note' || validationType=='attachement' || validationType=="link" 
   		|| validationType=="assignment" || validationType=="dependency" || validationType=="resourceCost"
-  		|| validationType=="expenseDetail") {
+  		|| validationType=="expenseDetail" || validationType=="origin" ) {
   		if (validationType=='note') {
   			loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
   		} else if (validationType=='attachement') {
@@ -565,6 +565,8 @@ function finalizeMessageDisplay(destination, validationType) {
   		} else if (validationType=='dependency') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else if (validationType=='resourceCost') {
+  			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+  		} else if (validationType=='origin') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else {
   			hideWait();

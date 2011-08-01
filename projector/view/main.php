@@ -139,6 +139,7 @@ scriptLog('   ->/view/main.php');
     var canCreateArray=new Array();
     var dependableArray=new Array();
     var linkableArray=new Array();
+    var originableArray=new Array();
     <?php 
       $list=SqlList::getList('Dependable');
       foreach ($list as $id=>$name) {
@@ -152,7 +153,13 @@ scriptLog('   ->/view/main.php');
         echo "canCreateArray['" . $name . "']='" . $right . "';";
         echo "linkableArray['" . $id . "']='" . $name . "';";
       }    
-    ?>
+      $list=SqlList::getList('Originable');
+      foreach ($list as $id=>$name) {
+        $right=securityGetAccessRightYesNo('menu' . $name,'create');
+        echo "canCreateArray['" . $name . "']='" . $right . "';";
+        echo "originableArray['" . $id . "']='" . $name . "';";
+      }      
+      ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
 </head>
@@ -560,6 +567,68 @@ scriptLog('   ->/view/main.php');
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogLinkSubmit" onclick="saveLink();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="dialogOrigin" dojoType="dijit.Dialog" title="<?php echo i18n("dialogOrigin");?>">
+  <table>
+    <tr>
+      <td>
+       <form id='originForm' name='originForm' onSubmit="return false;">
+         <input id="originId" name="originId" type="hidden" value="" />
+         <input id="originRefId" name="originRefId" type="hidden" value="" />
+         <input id="originRefType" name="originRefType" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="originOriginType" ><?php echo i18n("originType") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="originOriginType" name="originOriginType" 
+                onchange="refreshOriginList();"
+                class="input" value="" >
+                 <?php htmlDrawOptionForReference('idOriginable', null, null, true);?>
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="OriginOriginId" ><?php echo i18n("originElement") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <table><tr><td>
+               <div id="dialogOriginList" dojoType="dijit.layout.ContentPane" region="center">
+                 <input id="originOriginId" name="originOriginId" type="hidden" value="" />
+               </div>
+               </td><td style="vertical-align: top">
+               <button id="originDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    showDetailOrigin();
+                 </script>
+               </button>
+               </td></tr></table>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogOriginAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogOrigin').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogOriginSubmit" onclick="saveOrigin();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

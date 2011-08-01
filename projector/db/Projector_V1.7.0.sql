@@ -58,3 +58,42 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 85, 1),
 (2, 85, 1),
 (3, 85, 1);
+
+CREATE TABLE `${prefix}origin` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `originType` varchar(100),
+  `originId` int(12) unsigned NOT NULL,
+  `refType` varchar(100),
+  `refId` int(12) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}origin` ADD INDEX originOrigin (originType, originId),
+ADD INDEX originRef (refType, refId);
+
+CREATE TABLE `${prefix}originable` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}originable` (`id`, `name`, `idle`) VALUES
+(1, 'Ticket', 0),
+(2, 'Activity', 0),
+(3, 'Milestone', 0);
+
+CREATE TABLE `${prefix}copyable` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE `${prefix}copyablefromto` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `classFrom` varchar(100) DEFAULT NULL,
+  `classTo` varchar(100) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
