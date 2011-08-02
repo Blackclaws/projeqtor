@@ -7,7 +7,9 @@ require_once "../tool/projector.php";
 
 $ref1Type=$_REQUEST['linkRef1Type'];
 $ref1Id=$_REQUEST['linkRef1Id'];
-$ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
+//$ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
+$ref2TypeObj=new Linkable($_REQUEST['linkRef2Type']);
+$ref2Type=$ref2TypeObj->name;
 //$id=$_REQUEST['id'];
 $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {

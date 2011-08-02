@@ -27,7 +27,17 @@ class SqlList {
     if (array_key_exists($listName, self::$list)) {
       return self::$list[$listName];
     } else {
-      return self::fetchList($listType, $displayCol, $selectedValue, $showIdle);
+      return self::fetchList($listType, $displayCol, $selectedValue, $showIdle, true);
+    }
+  }
+  
+  public static function getListNotTranslated($listType, $displayCol='name', $selectedValue=null, $showIdle=false) {
+    $listName='no_tr_' . $listType . "_" . $displayCol;
+    if ($showIdle) { $listName .= '_all'; }
+    if (array_key_exists($listName, self::$list)) {
+      return self::$list[$listName];
+    } else {
+      return self::fetchList($listType, $displayCol, $selectedValue, $showIdle, false);
     }
   }
 
@@ -40,7 +50,7 @@ class SqlList {
    * @param $listType the name of the table containing the data
    * @return an array containing the list of references
    */
-  private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false) {
+  private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false, $translate=true) {
     $res=array();
     $obj=new $listType();
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() ;
@@ -68,13 +78,17 @@ class SqlList {
     if (Sql::$lastQueryNbRows > 0) {
       while ($line = Sql::fetchLine($result)) {
         $name=$line['name'];
-        if ($obj->isFieldTranslatable($displayCol)){
+        if ($obj->isFieldTranslatable($displayCol) and $translate){
           $name=i18n($name);
         }
         $res[($line['id'])]=$name;
       }
     }
-    self::$list[$listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
+    if ($translate) {
+      self::$list[$listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
+    } else {
+    	self::$list['no_tr_' . $listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
+    }
     return $res;
   }
  

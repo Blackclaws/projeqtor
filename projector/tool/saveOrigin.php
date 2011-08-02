@@ -9,14 +9,14 @@ require_once "../tool/projector.php";
 if (! array_key_exists('originOriginType',$_REQUEST)) {
   throwError('originOriginType parameter not found in REQUEST');
 }
-$originOriginType=SqlList::getNameFromId('Originable', $_REQUEST['originOriginType']);
-echo $originOriginType;
-echo "/";
+$originOriginTypeObj=New Originable($_REQUEST['originOriginType']);
+$originOriginType=$originOriginTypeObj->name;
+
 if (! array_key_exists('originOriginId',$_REQUEST)) {
   throwError('originOriginId parameter not found in REQUEST');
 }
 $originOriginId=$_REQUEST['originOriginId'];
-echo $originOriginId;
+
 if (! array_key_exists('originRefType',$_REQUEST)) {
   throwError('originRefType parameter not found in REQUEST');
 }

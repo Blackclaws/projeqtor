@@ -72,12 +72,15 @@
        <?php if ($noselect) {echo "disabled";} ?>
        iconClass="dijitEditorIcon dijitEditorIconCopy" >
         <script type="dojo/connect" event="onClick" args="evt">
-          dojo.byId("copyButton").blur();
-          action=function(){
-            unselectAllRows('objectGrid');
-		    loadContent("../tool/copyObject.php", "resultDiv", 'objectForm', true);
-          };
-		  showConfirm(i18n("confirmCopy", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value)) ,action);
+          <?php 
+          $crit=array('name'=> $_REQUEST['objectClass']);
+          $copyable=SqlElement::getSingleSqlElementFromCriteria('Copyable', $crit);
+          if ($copyable->id) {
+            echo "copyObjectTo('" . $_REQUEST['objectClass'] . "');";
+          } else {
+            echo "copyObject('" .$_REQUEST['objectClass'] . "');";
+          }
+          ?>
         </script>
       </button>    
 

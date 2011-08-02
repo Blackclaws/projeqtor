@@ -141,19 +141,19 @@ scriptLog('   ->/view/main.php');
     var linkableArray=new Array();
     var originableArray=new Array();
     <?php 
-      $list=SqlList::getList('Dependable');
+      $list=SqlList::getListNotTranslated('Dependable');
       foreach ($list as $id=>$name) {
       	$right=securityGetAccessRightYesNo('menu' . $name,'create');
       	echo "canCreateArray['" . $name . "']='" . $right . "';";
       	echo "dependableArray['" . $id . "']='" . $name . "';";
       }
-      $list=SqlList::getList('Linkable');
+      $list=SqlList::getListNotTranslated('Linkable');
       foreach ($list as $id=>$name) {
         $right=securityGetAccessRightYesNo('menu' . $name,'create');
         echo "canCreateArray['" . $name . "']='" . $right . "';";
         echo "linkableArray['" . $id . "']='" . $name . "';";
       }    
-      $list=SqlList::getList('Originable');
+      $list=SqlList::getListNotTranslated('Originable');
       foreach ($list as $id=>$name) {
         $right=securityGetAccessRightYesNo('menu' . $name,'create');
         echo "canCreateArray['" . $name . "']='" . $right . "';";
@@ -629,6 +629,59 @@ scriptLog('   ->/view/main.php');
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogOriginSubmit" onclick="saveOrigin();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="dialogCopy" dojoType="dijit.Dialog" title="<?php echo i18n("dialogCopy");?>">
+  <table>
+    <tr>
+      <td>
+       <form id='copyForm' name='copyForm' onSubmit="return false;">
+         <input id="copyClass" name="copyClass" type="hidden" value="" />
+         <input id="copyId" name="copyId" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="copyToClass" ><?php echo i18n("copyToClass") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="copyToClass" name="copyToClass" 
+                class="input" value="" >
+                 <?php htmlDrawOptionForReference('idCopyable', null, null, true);?>
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="copyToName" ><?php echo i18n("copyToName") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="copyToName" name="copyToName" dojoType="dijit.form.ValidationTextBox"
+                required="required"
+                style="width: 400px;"
+                trim="true" maxlength="100" class="input"
+                value="">
+               </div>';     
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="copyAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogCopy').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="copyTo();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

@@ -256,6 +256,11 @@ abstract class SqlElement {
    * @return void
    */
   private function insertSqlElement() {
+  	if (get_class($this)=='Origin') {
+  	  if (! $this->originId or ! $this->originType) {
+  	  	return;
+  	  }
+  	}
     $depedantObjects=array();
     $returnStatus="OK";
     $objectClass = get_class($this);
@@ -637,7 +642,7 @@ abstract class SqlElement {
       //$list=SqlList::getList('Status');
       //$revert=array_keys($list);
       //$newObj->idStatus=$revert[0];
-      $newObj->idStatus='x';
+      $newObj->idStatus=' 0';
     }
     if (property_exists($newObj,"idUser")) {
       $newObj->idUser=$_SESSION['user']->id;

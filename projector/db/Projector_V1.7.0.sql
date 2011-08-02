@@ -61,10 +61,11 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 CREATE TABLE `${prefix}origin` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `originType` varchar(100),
-  `originId` int(12) unsigned NOT NULL,
+  `originType` varchar(100) default NULL,
+  `originId` int(12) unsigned default NULL,
   `refType` varchar(100),
-  `refId` int(12) unsigned NOT NULL,
+  `refId` int(12) unsigned,
+  `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
@@ -81,7 +82,15 @@ CREATE TABLE `${prefix}originable` (
 INSERT INTO `${prefix}originable` (`id`, `name`, `idle`) VALUES
 (1, 'Ticket', 0),
 (2, 'Activity', 0),
-(3, 'Milestone', 0);
+(3, 'Milestone', 0),
+(4, 'IndividualExpense', 0),
+(5, 'ProjectExpense', 0),
+(6, 'Risk', 0),
+(7, 'Action', 0),
+(8, 'Issue', 0),
+(9, 'Meeting', 0),
+(10, 'Decision', 0),
+(11, 'Question', 0);
 
 CREATE TABLE `${prefix}copyable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -90,10 +99,15 @@ CREATE TABLE `${prefix}copyable` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-CREATE TABLE `${prefix}copyablefromto` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `classFrom` varchar(100) DEFAULT NULL,
-  `classTo` varchar(100) DEFAULT NULL,
-  `idle` int(1) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`) VALUES
+(1, 'Ticket', 0),
+(2, 'Activity', 0),
+(3, 'Milestone', 0),
+(4, 'IndividualExpense', 0),
+(5, 'ProjectExpense', 0),
+(6, 'Risk', 0),
+(7, 'Action', 0),
+(8, 'Issue', 0),
+(9, 'Meeting', 0),
+(10, 'Decision', 0),
+(11, 'Question', 0);
