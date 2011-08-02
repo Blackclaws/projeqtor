@@ -7,18 +7,17 @@ require_once "../tool/projector.php";
 
 $refType=$_REQUEST['originRefType'];
 $refId=$_REQUEST['originRefId'];
-$originType=SqlList::getNameFromId('Originable', $_REQUEST['originOriginType']);
+$originTypeObj=new Originable($_REQUEST['originOriginType']);
+$originType=$originTypeObj->name;
 $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {
   $selected=$_REQUEST['selected'];
 }
 
-$obj=new $refType($refId);
-
-$crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
-
 if ($originType) {
-  $objList=new $originType();
+  $obj=new $refType($refId);
+  $crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
+	$objList=new $originType();
   $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
 } else {
 	$list=array();

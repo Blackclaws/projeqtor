@@ -7,7 +7,9 @@ require_once "../tool/projector.php";
 
 $refType=$_REQUEST['dependencyRefType'];
 $refId=$_REQUEST['dependencyRefId'];
-$refTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
+//$refTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
+$refTypeDepObj=new Dependable($_REQUEST['dependencyRefTypeDep']);
+$refTypeDep=$refTypeDepObj->name;
 //$id=$_REQUEST['id'];
 $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {

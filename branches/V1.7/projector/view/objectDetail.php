@@ -768,7 +768,7 @@ function drawOrigin ($refType, $refId, $obj, $col, $print) {
   echo '<tr class="detail"><td class="label" style="width:10%;">';
   echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>';
   echo '</td>';
-  if ($print and $outMode=="pdf") { 
+  if ($print) { 
     echo '<td style="width: 120px">';
   } else {
     echo '<td width="90%">';

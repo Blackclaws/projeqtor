@@ -7,7 +7,7 @@ class Dependable extends SqlElement {
   // extends SqlElement, so has $id
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  
+  public $_isNameTranslatable = true;
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

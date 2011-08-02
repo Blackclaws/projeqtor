@@ -1905,3 +1905,20 @@ function quickSearchExecute() {
   var objClass=dojo.byId('objectClass').value;
   refreshJsonList(objClass);
 }
+
+/* ==========================================
+ * Copy functions
+ */
+function copyObject(objectClass) {
+  dojo.byId("copyButton").blur();
+  action=function(){
+    unselectAllRows('objectGrid');
+    loadContent("../tool/copyObject.php", "resultDiv", 'objectForm', true);
+  };
+  showConfirm(i18n("confirmCopy", new Array(i18n(objectClass),dojo.byId('id').value)) ,action);
+}
+
+function copyObjectTo(objectClass) {
+  dijit.byId('copyToClass').set('displayedValue',i18n(objectClass));
+  dijit.byId('dialogCopy').show();	
+}
