@@ -17,7 +17,10 @@ $ref1Id=$_REQUEST['linkRef1Id'];
 if (! array_key_exists('linkRef2Type',$_REQUEST)) {
   throwError('linkRef2Type parameter not found in REQUEST');
 }
-$ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
+//$ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);
+$ref2TypeObj=New Linkable($_REQUEST['linkRef2Type']);
+$ref2Type=$ref2TypeObj->name;
+
 if (! array_key_exists('linkRef2Id',$_REQUEST)) {
   throwError('linkRef2Id parameter not found in REQUEST');
 }

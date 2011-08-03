@@ -24,7 +24,9 @@ $dependencyType=$_REQUEST['dependencyType'];
 if (! array_key_exists('dependencyRefTypeDep',$_REQUEST)) {
   throwError('dependencyRefTypeDep parameter not found in REQUEST');
 }
-$dependencyRefTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
+//$dependencyRefTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
+$dependencyRefTypeDepObj=New Dependable($_REQUEST['dependencyRefTypeDep']);
+$dependencyRefTypeDep=$dependencyRefTypeDepObj->name;
 
 if (! array_key_exists('dependencyRefIdDep',$_REQUEST)) {
   throwError('dependencyRefIdDep parameter not found in REQUEST');

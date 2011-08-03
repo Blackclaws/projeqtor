@@ -20,9 +20,12 @@ $obj=new $ref1Type($ref1Id);
 
 $crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
 
-$objList=new $ref2Type();
-$list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
-
+if ($ref2Type) {
+  $objList=new $ref2Type();
+  $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
+} else {
+  $list=array();
+}
 
 ?>
 <select id="linkRef2Id" multiple="false" name="linkRef2Id"
