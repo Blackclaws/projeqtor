@@ -656,13 +656,14 @@ function addLink (classLink) {
 	if (classLink) {
 		dojo.byId("linkFixedClass").value=classLink;
   	message = i18n("dialogLinkRestricted", new Array(i18n(objectClass), objectId, i18n(classLink)));
-  	dijit.byId("linkRef2Type").setDisplayedValue(classLink);
+  	dijit.byId("linkRef2Type").setDisplayedValue(i18n(classLink));
   	lockWidget("linkRef2Type");
-  	var url="../tool/dynamicListLink.php" 
-  		+ "?linkRef2Type="+dojo.byId("linkRef2Type").value
-  	  + "&linkRef1Type="+objectClass
-  		+ "&linkRef1Id="+objectId;
-  	loadContent(url, "dialogLinkList", null, false);
+  	//var url="../tool/dynamicListLink.php" 
+  	//	+ "?linkRef2Type="+dojo.byId("linkRef2Type").value
+  	//  + "&linkRef1Type="+objectClass
+  	//	+ "&linkRef1Id="+objectId;
+  	//loadContent(url, "dialogLinkList", null, false);
+  	refreshLinkList();
   } else {
   	dojo.byId("linkFixedClass").value="";
   	message = i18n("dialogLinkExtended", new Array(i18n(objectClass), objectId.value));
@@ -1162,15 +1163,17 @@ if (depType) {
 	dojo.byId("dependencyType").value=depType;
 	message = i18n("dialogDependencyRestricted", new Array(i18n(objectClass), objectId, i18n(depType)));
 } else {
-	dojo.byId("dependencyType").value="";
+	dojo.byId("dependencyType").value=null;
 	message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
 }
-var url="../tool/dynamicListDependency.php" 
-	+ "?dependencyType="+depType
-  + "&dependencyRefType="+objectClass
-	+ "&dependencyRefId="+objectId
-	+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
-loadContent(url, "dialogDependencyList", null, false);
+dijit.byId("dependencyRefTypeDep").set('value',null);
+refreshDependencyList();
+//var url="../tool/dynamicListDependency.php" 
+//	+ "?dependencyType="+depType
+//  + "&dependencyRefType="+objectClass
+//	+ "&dependencyRefId="+objectId
+//	+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
+//loadContent(url, "dialogDependencyList", null, false);
 dojo.byId("dependencyId").value="";
 dojo.byId("dependencyRefType").value=objectClass;
 dojo.byId("dependencyRefId").value=objectId;
