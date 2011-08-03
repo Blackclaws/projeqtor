@@ -667,7 +667,18 @@ scriptLog('   ->/view/main.php');
                 style="width: 400px;"
                 trim="true" maxlength="100" class="input"
                 value="">
-               </div>';     
+               </div>     
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="copyToOrigin" ><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="copyToOrigin" name="copyToOrigin" dojoType="dijit.form.CheckBox" type="checkbox" 
+                checked >
+               </div>
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>

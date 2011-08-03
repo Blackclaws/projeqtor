@@ -32,7 +32,7 @@ if (class_exists ($refTypeDep) ) {
 
 ?>
 <select id="dependencyRefIdDep" multiple="false" name="dependencyRefIdDep"
-onchange="enableWidget('dialogDependencySubmit');"  
+onchange="enableWidget('dialogDependencySubmit');" ondblclick="saveDependency();" 
 class="selectList" >
  <?php
  $found=false;

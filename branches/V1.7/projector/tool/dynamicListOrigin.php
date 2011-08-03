@@ -25,7 +25,7 @@ if ($originType) {
 
 ?>
 <select id="originOriginId" multiple="false" name="originOriginId"
-onchange="enableWidget('dialogOriginSubmit');"  
+onchange="enableWidget('dialogOriginSubmit');"  ondblclick="saveOrigin();"
 class="selectList" >
  <?php
  $found=false;

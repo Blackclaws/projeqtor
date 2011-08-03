@@ -29,7 +29,7 @@ if ($ref2Type) {
 
 ?>
 <select id="linkRef2Id" multiple="false" name="linkRef2Id"
-onchange="enableWidget('dialogLinkSubmit');"  
+onchange="enableWidget('dialogLinkSubmit');"  ondblclick="saveLink();"
 class="selectList" >
  <?php
  $found=false;

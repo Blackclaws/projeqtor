@@ -525,7 +525,7 @@ function addNote () {
 	dojo.byId("noteId").value="";
 	dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("noteRefId").value=dojo.byId("objectId").value;
-	dijit.byId("noteNote").set("value","");
+	dijit.byId("noteNote").reset();
 	dijit.byId("dialogNote").set('title',i18n("dialogNote"));
 	dijit.byId("dialogNote").show();
 }
@@ -598,7 +598,7 @@ function addAttachement () {
 	if (dijit.byId("attachementFile")) {
 		dijit.byId("attachementFile").reset();
 	}
-	dijit.byId("attachementDescription").set("value","");
+	dijit.byId("attachementDescription").reset();
 	dijit.byId("dialogAttachement").set('title',i18n("dialogAttachement"));
 	dijit.byId("dialogAttachement").show();
 }
@@ -645,34 +645,39 @@ function removeAttachement (attachementId) {
  * Display a add link Box
  * 
  */
+var noRefreshLink=false;
 function addLink (classLink) {
+	noRefreshLink=true;
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
 	var objectClass=dojo.byId("objectClass").value;
 	var objectId=dojo.byId("objectId").value;
-  var message=i18n("dialogLink");
-	if (classLink) {
-		dojo.byId("linkFixedClass").value=classLink;
-  	message = i18n("dialogLinkRestricted", new Array(i18n(objectClass), objectId, i18n(classLink)));
-  	dijit.byId("linkRef2Type").setDisplayedValue(i18n(classLink));
-  	lockWidget("linkRef2Type");
-  	//var url="../tool/dynamicListLink.php" 
-  	//	+ "?linkRef2Type="+dojo.byId("linkRef2Type").value
-  	//  + "&linkRef1Type="+objectClass
-  	//	+ "&linkRef1Id="+objectId;
-  	//loadContent(url, "dialogLinkList", null, false);
-  	refreshLinkList();
-  } else {
-  	dojo.byId("linkFixedClass").value="";
-  	message = i18n("dialogLinkExtended", new Array(i18n(objectClass), objectId.value));
-  	unlockWidget("linkRef2Type");
-  	refreshLinkList();
-  }
+    var message=i18n("dialogLink");
 	dojo.byId("linkId").value="";
 	dojo.byId("linkRef1Type").value=objectClass;
 	dojo.byId("linkRef1Id").value=objectId;
+	if (classLink) {
+	    dojo.byId("linkFixedClass").value=classLink;
+	  	message = i18n("dialogLinkRestricted", new Array(i18n(objectClass), objectId, i18n(classLink)));
+	  	dijit.byId("linkRef2Type").setDisplayedValue(i18n(classLink));
+	  	lockWidget("linkRef2Type");
+	  	//var url="../tool/dynamicListLink.php" 
+	  	//	+ "?linkRef2Type="+dojo.byId("linkRef2Type").value
+	  	//  + "&linkRef1Type="+objectClass
+	  	//	+ "&linkRef1Id="+objectId;
+	  	//loadContent(url, "dialogLinkList", null, false);
+	  	noRefreshLink=false;
+	  	refreshLinkList();
+	} else {
+	  	dojo.byId("linkFixedClass").value="";
+	  	message = i18n("dialogLinkExtended", new Array(i18n(objectClass), objectId.value));
+	  	unlockWidget("linkRef2Type");
+	  	noRefreshLink=false;
+	  	refreshLinkList();
+    }
+
 	//dojo.byId("linkRef2Id").value='';
 	dijit.byId("dialogLink").set('title', message);
 	dijit.byId("dialogLink").show();
@@ -683,7 +688,7 @@ function addLink (classLink) {
  * Refresh the link list (after update)
  */
 function refreshLinkList(selected) {
-	if (! selected && dojo.byId("linkFixedClass").value!="") return;
+	if (noRefreshLink) return;
 	disableWidget('dialogLinkSubmit');
 	var url='../tool/dynamicListLink.php';
 	if (selected) {
@@ -735,7 +740,7 @@ function addOrigin () {
 	}
 	var objectClass=dojo.byId("objectClass").value;
 	var objectId=dojo.byId("objectId").value;
-	dijit.byId("originOriginType").set('value',null);
+	dijit.byId("originOriginType").reset();
 	refreshOriginList();
 	dojo.byId("originId").value="";
 	dojo.byId("originRefType").value=objectClass;
@@ -804,9 +809,9 @@ function addAssignment () {
 	dojo.byId("assignmentId").value="";
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
-	dijit.byId("assignmentIdResource").set('value',null);
-	dijit.byId("assignmentIdRole").set('value',null);
-	dijit.byId("assignmentDailyCost").set('value',null);
+	dijit.byId("assignmentIdResource").reset();
+	dijit.byId("assignmentIdRole").reset();
+	dijit.byId("assignmentDailyCost").reset();
 	dojo.byId("assignmentRate").value='100';
 	dojo.byId("assignmentAssignedWork").value='0';
 	dojo.byId("assignmentAssignedWorkInit").value='0';
@@ -974,7 +979,7 @@ function assignmentChangeResource() {
 	if (editAssignmentLoading) return;
 	var idResource=dijit.byId("assignmentIdResource").get("value");
 	if (! idResource) return;
-	dijit.byId('assignmentDailyCost').set('value',null);
+	dijit.byId('assignmentDailyCost').reset();
 	dojo.xhrGet({
 		url: '../tool/getSingleData.php?dataType=resourceRole&idResource=' + idResource,
 		handleAs: "text",
@@ -1013,11 +1018,11 @@ function addExpenseDetail () {
 	}	
 	dojo.byId("expenseDetailId").value="";
 	dojo.byId("idExpense").value=dojo.byId("objectId").value;
-	dijit.byId("expenseDetailName").set('value',null);
-	dijit.byId("expenseDetailDate").set('value',null);
-	dijit.byId("expenseDetailType").set('value',null);
+	dijit.byId("expenseDetailName").reset();
+	dijit.byId("expenseDetailDate").reset();
+	dijit.byId("expenseDetailType").reset();
 	dojo.byId("expenseDetailDiv").innerHtml="";
-	dijit.byId("expenseDetailAmount").set('value','');
+	dijit.byId("expenseDetailAmount").reset();
 	//dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail"));
 	dijit.byId("dialogExpenseDetail").show();
 }
@@ -1166,7 +1171,7 @@ if (depType) {
 	dojo.byId("dependencyType").value=null;
 	message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
 }
-dijit.byId("dependencyRefTypeDep").set('value',null);
+dijit.byId("dependencyRefTypeDep").reset();
 refreshDependencyList();
 //var url="../tool/dynamicListDependency.php" 
 //	+ "?dependencyType="+depType
@@ -1303,7 +1308,7 @@ function showFilterDialog () {
 	dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
 	dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
-	dijit.byId('idFilterAttribute').set("value","");
+	dijit.byId('idFilterAttribute').reset();
 	dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
 	filterType="";
 	dojo.xhrPost({url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value});
@@ -1362,7 +1367,7 @@ function filterSelectAtribute(value) {
 	  			mySelect.size=(nbVal>0)?10:nbVal;
 	  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'block'});
-	  			dijit.byId('filterValueList').set('value','');
+	  			dijit.byId('filterValueList').reset();
 	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		} else if (dataType=="date") {
@@ -1371,11 +1376,11 @@ function filterSelectAtribute(value) {
 	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'block'});
-	  			dijit.byId('filterValueDate').set('value','');
+	  			dijit.byId('filterValueDate').reset();
 	  		} else {
 	  	  	filterType="text";
 	  			dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
-	  			dijit.byId('filterValue').set('value','');
+	  			dijit.byId('filterValue').reset();
 	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
@@ -1390,10 +1395,10 @@ function filterSelectAtribute(value) {
 	  		//hideWait();
 	    }
     }) ;
-	  dijit.byId('filterValue').set('value','');
-		dijit.byId('filterValueList').set('value','');
-		dijit.byId('filterValueCheckbox').set('value','');
-		dijit.byId('filterValueDate').set('value','');
+	  dijit.byId('filterValue').reset();
+		dijit.byId('filterValueList').reset();
+		dijit.byId('filterValueCheckbox').reset();
+		dijit.byId('filterValueDate').reset();
 	} else {
 		dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
 		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
@@ -1508,7 +1513,7 @@ function cancelFilter() {
  */
 function clearFilter() {
 	if (dijit.byId('filterNameDisplay')) {
-		dijit.byId('filterNameDisplay').set('value',"");
+		dijit.byId('filterNameDisplay').reset();
 	}
 	dojo.byId('filterName').value="";
 	removefilterClause('all');	
@@ -1573,7 +1578,7 @@ function reportSelectCategory(idCateg) {
 	loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv", null, false);
 	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?required=true&listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});
 	var mySelect=dojo.byId("reportsList");
-	//dijit.byId("reportsList").set('value','');
+	//dijit.byId("reportsList").reset();
 	mySelect.options.length=0;
 	var nbVal=0;
 	tmpStore.fetch({
@@ -1606,8 +1611,8 @@ function addResourceCost(idResource, idRole, funcList) {
 	dojo.byId("resourceCostFunctionList").value=funcList;
 	dijit.byId("resourceCostIdRole").set('disabled',false);
 	dijit.byId("resourceCostIdRole").set('value',((idRole)?idRole:null));
-	dijit.byId("resourceCostValue").set('value',null);
-	dijit.byId("resourceCostStartDate").set('value',null);
+	dijit.byId("resourceCostValue").reset();
+	dijit.byId("resourceCostStartDate").reset();
 	resourceCostUpdateRole();
 	dijit.byId("dialogResourceCost").show();
 }
@@ -1662,7 +1667,7 @@ function resourceCostUpdateRole() {
 		dijit.byId("resourceCostStartDate").set('required','true');
 	} else {
 		dijit.byId("resourceCostStartDate").set('disabled',true);
-		dijit.byId("resourceCostStartDate").set('value',null);
+		dijit.byId("resourceCostStartDate").reset();
 		dijit.byId("resourceCostStartDate").set('required','false');
 	}
 }
@@ -1871,11 +1876,11 @@ function quickSearchOpen() {
   if (dijit.byId('listNameFilter')) {
     quickSearchStockName=dijit.byId('listNameFilter').get("value");
     dojo.style("listNameFilter","display","none");
-    dijit.byId('listNameFilter').set("value",null);
+    dijit.byId('listNameFilter').reset();
   }  
-  dijit.byId('listIdFilter').set("value",null); 
+  dijit.byId('listIdFilter').reset(); 
   dojo.style("listIdFilter","display","none");	
-  dijit.byId("quickSearchValue").set("value",null);
+  dijit.byId("quickSearchValue").reset();
   dijit.byId("quickSearchValue").focus();
   quickSearchIsOpen=true;
 }
@@ -1891,7 +1896,7 @@ function quickSearchClose() {
     dojo.style("listNameFilter","display","block");
     dijit.byId('listNameFilter').set("value",quickSearchStockName);
   }
-  dijit.byId("quickSearchValue").set("value",null);
+  dijit.byId("quickSearchValue").reset();
   dijit.byId('listIdFilter').set("value",quickSearchStockId);  
   var objClass=dojo.byId('objectClass').value;
   refreshJsonList(objClass);
@@ -1923,5 +1928,7 @@ function copyObject(objectClass) {
 
 function copyObjectTo(objectClass) {
   dijit.byId('copyToClass').set('displayedValue',i18n(objectClass));
+  dijit.byId('copyToName').set('value',dijit.byId('name').get('value'));
+  dijit.byId('copyToOrigin').set('checked','checked');
   dijit.byId('dialogCopy').show();	
 }
