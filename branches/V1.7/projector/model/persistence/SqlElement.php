@@ -202,6 +202,9 @@ abstract class SqlElement {
     return $this->copySqlElement();
   }
 
+  public function copyTo ($newClass, $newName, $setOrigin) {
+  	return $this->copySqlElementTo($newClass, $newName, $setOrigin);
+  }
   /** =========================================================================
    * Save an object to the database
    * @return void
@@ -328,7 +331,7 @@ abstract class SqlElement {
     }
     // save depedant elements (properties that are objects)
     if ($returnStatus!="ERROR") {
-      $returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
+      //$returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
     }
     // Prepare return data
     if ($returnStatus!="ERROR") {
@@ -711,7 +714,66 @@ abstract class SqlElement {
     $newObj->_copyResult=$returnValue; 
     return $newObj;
   }
-    
+  
+  private function copySqlElementTo($newClass, $newName, $setOrigin) {
+    $newObj=new $newClass();
+    var_dump($newObj);
+    $newObj->id=null;
+    if (property_exists($newObj,"idStatus")) {
+      $newObj->idStatus=' 0';
+    }
+    if (property_exists($newObj,"idUser")) {
+      $newObj->idUser=$_SESSION['user']->id;
+    }
+    if (property_exists($newObj,"creationDate")) {
+      $newObj->creationDate=date('Y-m-d');
+    }
+    if (property_exists($newObj,"creationDateTime")) {
+      $newObj->creationDateTime=date('Y-m-d G:i');
+    }
+    $newObj->name=$newName;
+    if ($setOrigin and property_exists($newObj,'Origin')) {
+      $newObj->Origin->originType=get_class($this);
+      $newObj->Origin->originId=$this->id;
+    }
+    foreach($newObj as $col_name => $col_value) {
+    	if (ucfirst($col_name) == $col_name) {
+    		if ($newObj->$col_name instanceof PlanningElement) {
+    			$sub=substr($col_name, 0,strlen($col_name)-15    );
+    			$plMode='id' . $sub . 'PlanningMode';
+    			echo $plMode . " / ";
+    			$newObj->$col_name->$plMode="1"; 
+    		}
+    	}
+    }     
+    foreach($this as $col_name => $col_value) {
+    	if (property_exists($newObj,$col_name)) {
+        if (ucfirst($col_name) == $col_name) {
+          if ($this->$col_name instanceof SqlElement) {
+            $newObj->$col_name->id=null;
+            if ($this->$col_name instanceof PlanningElement) {
+          	  $newObj->$col_name->idPlanningMode=$this->$col_name->idPlanningMode;
+            }
+          }
+        } else if ($col_name!="wbs" and $col_name!='name' 
+                 and $col_name!="done" and $col_name!="doneDate" and $col_name!="doneDateTime"
+                 and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"){ //topId ?
+      	  $newObj->$col_name=$this->$col_name;
+      	}
+      }
+    }
+    $result=$newObj->saveSqlElement();
+    if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) { 
+      $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;    
+      $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $newObj->id . '" />';
+      $returnValue .= '<input type="hidden" id="lastOperation" value="copy" />';
+      $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
+    } else {
+      $returnValue=$result;
+    }
+    $newObj->_copyResult=$returnValue; 
+    return $newObj;
+  }    
 
 // ============================================================================**********
 // GET AND FETCH OBJECTS FUNCTIONS
