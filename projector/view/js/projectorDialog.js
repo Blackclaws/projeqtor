@@ -1927,8 +1927,16 @@ function copyObject(objectClass) {
 }
 
 function copyObjectTo(objectClass) {
+  dojo.byId('copyClass').value=dojo.byId("objectClass").value;
+  dojo.byId('copyId').value=dojo.byId("objectId").value;
   dijit.byId('copyToClass').set('displayedValue',i18n(objectClass));
   dijit.byId('copyToName').set('value',dijit.byId('name').get('value'));
   dijit.byId('copyToOrigin').set('checked','checked');
   dijit.byId('dialogCopy').show();	
+}
+
+function copyObjectToSubmit(objectClass) {
+  unselectAllRows('objectGrid');
+  loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true);
+  dijit.byId('dialogCopy').hide();	
 }

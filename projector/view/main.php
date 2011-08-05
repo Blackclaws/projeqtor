@@ -648,7 +648,7 @@ scriptLog('   ->/view/main.php');
              <td class="dialogLabel"  >
                <label for="copyToClass" ><?php echo i18n("copyToClass") ?>&nbsp;:&nbsp;</label>
              </td>
-             <td colspan="2">
+             <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="copyToClass" name="copyToClass" 
                 class="input" value="" >
@@ -656,12 +656,12 @@ scriptLog('   ->/view/main.php');
                </select>
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel" >
                <label for="copyToName" ><?php echo i18n("copyToName") ?>&nbsp;:&nbsp;</label>
              </td>
-             <td colspan="2">
+             <td>
                <div id="copyToName" name="copyToName" dojoType="dijit.form.ValidationTextBox"
                 required="required"
                 style="width: 400px;"
@@ -670,18 +670,16 @@ scriptLog('   ->/view/main.php');
                </div>     
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
-             <td class="dialogLabel" colspan="2">
-               <label for="copyToOrigin" stye="width:300px";><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
-             </td>
-             <td>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToOrigin" style="width:90%;text-align: right;"><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
                <div id="copyToOrigin" name="copyToOrigin" dojoType="dijit.form.CheckBox" type="checkbox" 
                 checked >
                </div>
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
+           <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
          </table>
         </form>
       </td>
@@ -692,7 +690,7 @@ scriptLog('   ->/view/main.php');
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogCopy').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="copyTo();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="copyObjectToSubmit();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
