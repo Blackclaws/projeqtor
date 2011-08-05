@@ -648,7 +648,7 @@ scriptLog('   ->/view/main.php');
              <td class="dialogLabel"  >
                <label for="copyToClass" ><?php echo i18n("copyToClass") ?>&nbsp;:&nbsp;</label>
              </td>
-             <td>
+             <td colspan="2">
                <select dojoType="dijit.form.FilteringSelect" 
                 id="copyToClass" name="copyToClass" 
                 class="input" value="" >
@@ -656,12 +656,12 @@ scriptLog('   ->/view/main.php');
                </select>
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel" >
                <label for="copyToName" ><?php echo i18n("copyToName") ?>&nbsp;:&nbsp;</label>
              </td>
-             <td>
+             <td colspan="2">
                <div id="copyToName" name="copyToName" dojoType="dijit.form.ValidationTextBox"
                 required="required"
                 style="width: 400px;"
@@ -670,10 +670,10 @@ scriptLog('   ->/view/main.php');
                </div>     
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
            <tr>
-             <td class="dialogLabel" >
-               <label for="copyToOrigin" ><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
+             <td class="dialogLabel" colspan="2">
+               <label for="copyToOrigin" stye="width:300px";><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <div id="copyToOrigin" name="copyToOrigin" dojoType="dijit.form.CheckBox" type="checkbox" 
@@ -681,7 +681,7 @@ scriptLog('   ->/view/main.php');
                </div>
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
          </table>
         </form>
       </td>
