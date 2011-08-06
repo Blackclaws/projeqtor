@@ -140,6 +140,7 @@ scriptLog('   ->/view/main.php');
     var dependableArray=new Array();
     var linkableArray=new Array();
     var originableArray=new Array();
+    var copyableArray=new Array();
     <?php 
       $list=SqlList::getListNotTranslated('Dependable');
       foreach ($list as $id=>$name) {
@@ -158,7 +159,11 @@ scriptLog('   ->/view/main.php');
         $right=securityGetAccessRightYesNo('menu' . $name,'create');
         echo "canCreateArray['" . $name . "']='" . $right . "';";
         echo "originableArray['" . $id . "']='" . $name . "';";
-      }      
+      }
+      $list=SqlList::getListNotTranslated('Copyable');
+      foreach ($list as $id=>$name) {
+        echo "copyableArray['" . $id . "']='" . $name . "';";
+      }            
       ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
@@ -653,6 +658,22 @@ scriptLog('   ->/view/main.php');
                 id="copyToClass" name="copyToClass" 
                 class="input" value="" >
                  <?php htmlDrawOptionForReference('idCopyable', null, null, true);?>
+                 <script type="dojo/connect" event="onChange" args="evt">
+                   var class=copyableArray[this.value];
+                   refreshList("idType","scope", class, null,'copyToType');
+                 </script> 
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="copyToType" ><?php echo i18n("copyToType") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="copyToType" name="copyToType" 
+                class="input" value="" >
                </select>
              </td>
            </tr>
