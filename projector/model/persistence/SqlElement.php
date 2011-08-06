@@ -717,7 +717,6 @@ abstract class SqlElement {
   
   private function copySqlElementTo($newClass, $newName, $setOrigin) {
     $newObj=new $newClass();
-    var_dump($newObj);
     $newObj->id=null;
     if (property_exists($newObj,"idStatus")) {
       $newObj->idStatus=' 0';
@@ -741,7 +740,6 @@ abstract class SqlElement {
     		if ($newObj->$col_name instanceof PlanningElement) {
     			$sub=substr($col_name, 0,strlen($col_name)-15    );
     			$plMode='id' . $sub . 'PlanningMode';
-    			echo $plMode . " / ";
     			$newObj->$col_name->$plMode="1"; 
     		}
     	}
@@ -755,7 +753,8 @@ abstract class SqlElement {
           	  $newObj->$col_name->idPlanningMode=$this->$col_name->idPlanningMode;
             }
           }
-        } else if ($col_name!="wbs" and $col_name!='name' 
+        } else if ($col_name!='id' and $col_name!="wbs" and $col_name!='name'
+                 and $col_name!="handled" and $col_name!="handledDate" and $col_name!="handledDateTime" 
                  and $col_name!="done" and $col_name!="doneDate" and $col_name!="doneDateTime"
                  and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"){ //topId ?
       	  $newObj->$col_name=$this->$col_name;
