@@ -1702,7 +1702,7 @@ function showHelp() {
 /**
  * Refresh a list (after update)
  */
-function refreshList(field, param, paramVal, selected) {
+function refreshList(field, param, paramVal, selected, destination) {
 	var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
 	if (param) {
 	  urlList+='&critField='+param;
@@ -1712,7 +1712,12 @@ function refreshList(field, param, paramVal, selected) {
 		urlList+='&selected='+selected;
 	}
 	var tmpStore = new dojo.data.ItemFileReadStore({url: urlList});
-	var mySelect=dijit.byId(field);
+	if (destination) {
+	  var mySelect=dijit.byId(destination);	
+	} else {
+	  var mySelect=dijit.byId(field);
+	}
+	alert(tmpStore);
 	mySelect.store=tmpStore;
 }
 
