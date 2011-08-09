@@ -596,7 +596,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		        + '<div style="width: '+vColWidth+'px">&nbsp&nbsp</div></td>';
 		      vTmpDate.setHours(vTmpDate.getHours() + 1);
 		    } else if(vFormat == 'day' ) { 
-		      if(isOffDay(vTmpDate)) {
+		      if(vTmpDate.getDay() % 6 == 0) {
 		        vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; " >'
 		          + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
 		        vItemRowStr  += '<td class="ganttDetail" style="background-color:#' + vWeekendColor + ';">'

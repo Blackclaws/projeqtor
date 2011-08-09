@@ -52,7 +52,6 @@ $obj=new $objectClass;
 	          id="listQuickSearchExecute" name="listQuickSearchExecute"
 	          iconClass="iconSearch" showLabel="false">
 	          <script type="dojo/connect" event="onClick" args="evt">
-              //dijit.byId('quickSearchListForm').submit();
               quickSearchExecute();
           </script>
 	        </button>
