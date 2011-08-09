@@ -15,8 +15,7 @@ $versionHistory = array(
   "V1.3.0",
   "V1.4.0",
   "V1.5.0",
-  "V1.6.0",
-  "V1.7.0");
+  "V1.6.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -83,7 +82,7 @@ if (! $tst->id) {
 	$nbErrors+=runScript('V1.6.1');
 }
 
-// For V1.7.0
+// For V1.6.2 or V1.7.0
 if (! isset($paramMemoryLimitForPDF) ) {
 	writeFile('$paramMemoryLimitForPDF = \'512\';',$parametersLocation);
   writeFile("\n",$parametersLocation);
