@@ -315,15 +315,30 @@ function showDetailLink() {
 	}
 }
 
+function showDetailOrigin() {
+	var originType=dijit.byId('originOriginType').get("value");
+	if (originType) {
+		var originable=originableArray[originType];
+		var canCreate=0;
+		if (canCreateArray[originable]=="YES") {
+			canCreate=1;
+	    }
+		showDetail('originOriginId',canCreate, originable);
+		
+	} else {
+		showInfo(i18n('messageMandatory', new Array(i18n('originType'))));
+	}
+}
+
 function showDetail (comboName, canCreate, objectClass) {
-	contentWidget = dijit.byId("comboDetailResult");
+	var contentWidget = dijit.byId("comboDetailResult");
 	dojo.byId("canCreateDetail").value=canCreate;
-    if (contentWidget) {
-      contentWidget.set('content','');
-    }
-    if (! objectClass) {
-    	objectClass=comboName.substring(2);
-    }
+  if (contentWidget) {
+    contentWidget.set('content','');
+  }
+  if (! objectClass) {
+  	objectClass=comboName.substring(2);
+  }
 	dojo.byId('comboName').value=comboName;
 	dojo.byId('comboClass').value=objectClass;
 	var val=null;
@@ -337,13 +352,13 @@ function showDetail (comboName, canCreate, objectClass) {
 		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displaySearch(cl);
-  } else {
+} else {
 		cl=objectClass;
 	    id=val;
 		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displayDetail(cl,id);
-  }
+}
 }
 
 function displayDetail(objClass, objId) {
@@ -353,14 +368,14 @@ function displayDetail(objClass, objId) {
 	hideField('comboNewButton');
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
-  frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
+frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
 }
 
 function selectDetailItem(selectedValue) {
 	if (selectedValue) {
-		idFldVal=selectedValue;
+		var idFldVal=selectedValue;
 	} else {
-		idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
+		var idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
 		if (! idFld) {
 			showError('error : comboDetailId not defined');
 			return;
@@ -371,8 +386,8 @@ function selectDetailItem(selectedValue) {
 			return;
 		}
 	}
-	comboName=dojo.byId('comboName').value;
-	combo=dijit.byId(comboName);
+	var comboName=dojo.byId('comboName').value;
+	var combo=dijit.byId(comboName);
 	crit=null;
 	critVal=null;
 	if (comboName=='idActivity' || comboName=='idResource') {
@@ -395,6 +410,10 @@ function selectDetailItem(selectedValue) {
 				refreshLinkList(idFldVal);
 				setTimeout("dojo.byId('linkRef2Id').focus()",1000);
 				enableWidget('dialogLinkSubmit');
+			} else if (comboName=='originOriginId') {
+				refreshOriginList(idFldVal);
+				setTimeout("dojo.byId('originOriginId').focus()",1000);
+				enableWidget('dialogOriginSubmit');
 			}
 		}			
 	}
@@ -402,12 +421,12 @@ function selectDetailItem(selectedValue) {
 	  combo.set("value", idFldVal);
 	}
 		
-  hideDetail();
+hideDetail();
 }
 
 function displaySearch(objClass) {
 	if (! objClass) {
-		//comboName=dojo.byId('comboName').value;
+		// comboName=dojo.byId('comboName').value;
 		objClass=dojo.byId('comboClass').value;
 	}
 	showWait();
@@ -416,16 +435,17 @@ function displaySearch(objClass) {
 	if (dojo.byId("canCreateDetail").value=="1") { 
 	  showField('comboNewButton');
 	} else {
-      hideField('comboNewButton');	
+    hideField('comboNewButton');	
 	}
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
   top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
+  setTimeout(dijit.byId("dialogDetail").show(),10);
 }
 
 function newDetailItem() {
-	comboName=dojo.byId('comboName').value;
-	objClass=dojo.byId('comboClass').value;
+	//comboName=dojo.byId('comboName').value;
+	var objClass=dojo.byId('comboClass').value;
 	showWait();
 	showField('comboSearchButton');
 	hideField('comboSelectButton');
@@ -433,7 +453,7 @@ function newDetailItem() {
 	if (dojo.byId("canCreateDetail").value=="1") { 
 	  showField('comboSaveButton');
 	} else {
-      hideField('comboSaveButton');	
+    hideField('comboSaveButton');	
 	}
 	showField('comboCloseButton');
 	contentNode=frames['comboDetailFrame'].dojo.byId('body');
@@ -442,12 +462,13 @@ function newDetailItem() {
 	page+="?objectClass="+objClass;
 	page+="&objectId=0";
 	page+="&mode=new";
-    page+="&destinationWidth="+destinationWidth;
+  page+="&destinationWidth="+destinationWidth;
 	top.frames['comboDetailFrame'].location.href=page;
+	setTimeout(dijit.byId("dialogDetail").show(),10);
 }
 
 function saveDetailItem() {
-	comboName=dojo.byId('comboName').value;
+	var comboName=dojo.byId('comboName').value;
 	var formVar = frames['comboDetailFrame'].dijit.byId("objectForm");
 	if ( ! formVar) {
 		showError(i18n("errorSubmitForm", new Array(page, destination, formName)));
@@ -470,12 +491,12 @@ function saveDetailItem() {
 				        if (lastOperationStatus.value=="OK") {
 				        	selectDetailItem(lastSaveId.value);
 				        }
-                    }
+                  }
 		});
 
-  } else {
-    showAlert(i18n("alertInvalidForm"));
-  }
+} else {
+  showAlert(i18n("alertInvalidForm"));
+}
 }
 
 function hideDetail() {
