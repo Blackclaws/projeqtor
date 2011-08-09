@@ -202,8 +202,8 @@ abstract class SqlElement {
     return $this->copySqlElement();
   }
 
-  public function copyTo ($newClass, $newName, $setOrigin) {
-  	return $this->copySqlElementTo($newClass, $newName, $setOrigin);
+  public function copyTo ($newClass, $newType, $newName, $setOrigin) {
+  	return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin);
   }
   /** =========================================================================
    * Save an object to the database
@@ -715,9 +715,10 @@ abstract class SqlElement {
     return $newObj;
   }
   
-  private function copySqlElementTo($newClass, $newName, $setOrigin) {
+  private function copySqlElementTo($newClass, $newType, $newName, $setOrigin) {
     $newObj=new $newClass();
     $newObj->id=null;
+    $typeName='id' . $newClass . 'Type';
     if (property_exists($newObj,"idStatus")) {
       $newObj->idStatus=' 0';
     }
@@ -731,6 +732,7 @@ abstract class SqlElement {
       $newObj->creationDateTime=date('Y-m-d G:i');
     }
     $newObj->name=$newName;
+    $newObj->$typeName=$newType;
     if ($setOrigin and property_exists($newObj,'Origin')) {
       $newObj->Origin->originType=get_class($this);
       $newObj->Origin->originId=$this->id;
@@ -753,7 +755,7 @@ abstract class SqlElement {
           	  $newObj->$col_name->idPlanningMode=$this->$col_name->idPlanningMode;
             }
           }
-        } else if ($col_name!='id' and $col_name!="wbs" and $col_name!='name'
+        } else if ($col_name!='id' and $col_name!="wbs" and $col_name!='name' and $col_name != $typeName
                  and $col_name!="handled" and $col_name!="handledDate" and $col_name!="handledDateTime" 
                  and $col_name!="done" and $col_name!="doneDate" and $col_name!="doneDateTime"
                  and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"){ //topId ?

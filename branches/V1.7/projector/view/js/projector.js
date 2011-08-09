@@ -551,7 +551,7 @@ function finalizeMessageDisplay(destination, validationType) {
   	addMessage(msg);
   	if (validationType=='note' || validationType=='attachement' || validationType=="link" 
   		|| validationType=="assignment" || validationType=="dependency" || validationType=="resourceCost"
-  		|| validationType=="expenseDetail" || validationType=="origin" ) {
+  		|| validationType=="expenseDetail" || validationType=="origin" || validationType=="copyTo" ) {
   		if (validationType=='note') {
   			loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
   		} else if (validationType=='attachement') {
@@ -568,6 +568,12 @@ function finalizeMessageDisplay(destination, validationType) {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
   		} else if (validationType=='origin') {
   			loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+  		} else if (validationType=='copyTo') {
+  		  	var lastSaveId=dojo.byId('lastSaveId');
+  		  	var lastSaveClass=dojo.byId('objectClass');
+  		  	if (lastSaveClass && lastSaveId) {
+  		  	   gotoElement(lastSaveClass.value, lastSaveId.value);
+  		  	}
   		} else {
   			hideWait();
   	  }
@@ -1309,7 +1315,7 @@ function refreshTodayProjectsList() {
 }
 
 function gotoElement(eltClass, eltId) {
-	if (checkFormChangeInProgress() ) {
+  if (checkFormChangeInProgress() ) {
     return false;
 	}
   cleanContent("detailDiv");

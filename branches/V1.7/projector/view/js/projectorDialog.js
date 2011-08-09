@@ -1702,7 +1702,7 @@ function showHelp() {
 /**
  * Refresh a list (after update)
  */
-function refreshList(field, param, paramVal, selected, destination) {
+function refreshList(field, param, paramVal, selected, destination, required) {
 	var urlList='../tool/jsonList.php?listType=list&dataType=' + field;
 	if (param) {
 	  urlList+='&critField='+param;
@@ -1711,13 +1711,15 @@ function refreshList(field, param, paramVal, selected, destination) {
 	if (selected) {
 		urlList+='&selected='+selected;
 	}
+	if (required) {
+		urlList+='&required=true';
+	}
 	var tmpStore = new dojo.data.ItemFileReadStore({url: urlList});
 	if (destination) {
 	  var mySelect=dijit.byId(destination);	
 	} else {
 	  var mySelect=dijit.byId(field);
 	}
-	alert(tmpStore);
 	mySelect.store=tmpStore;
 }
 
@@ -1942,6 +1944,7 @@ function copyObjectTo(objectClass) {
 
 function copyObjectToSubmit(objectClass) {
   unselectAllRows('objectGrid');
-  loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true);
-  dijit.byId('dialogCopy').hide();	
+  loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true, 'copyTo');
+  dijit.byId('dialogCopy').hide();
+  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
 }

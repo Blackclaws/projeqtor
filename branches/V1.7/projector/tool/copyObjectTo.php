@@ -37,9 +37,13 @@ $copyToOrigin=false;
 if (array_key_exists('copyToOrigin',$_REQUEST)) {
   $copyToOrigin=true;
 }
+if (! array_key_exists('copyToType',$_REQUEST)) {
+  throwError('copyToType parameter not found in REQUEST');
+}
+$toType=$_REQUEST['copyToType'];
 
 // copy from existing object
-$newObj=$obj->copyTo($toClassName,$toName, $copyToOrigin);
+$newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin);
 // save the new object to session (modified status)
 $result=$newObj->_copyResult;
 unset($newObj->_copyResult);

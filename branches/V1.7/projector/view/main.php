@@ -655,12 +655,13 @@ scriptLog('   ->/view/main.php');
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
-                id="copyToClass" name="copyToClass" 
+                id="copyToClass" name="copyToClass" required
                 class="input" value="" >
                  <?php htmlDrawOptionForReference('idCopyable', null, null, true);?>
-                 <script type="dojo/connect" event="onChange" args="evt">
+                 <script type="dojo/connect" event="onChange" args="evt" >
                    var class=copyableArray[this.value];
-                   refreshList("idType","scope", class, null,'copyToType');
+                   dijit.byId('copyToType').reset();
+                   refreshList("idType","scope", class, null,'copyToType',true);
                  </script> 
                </select>
              </td>
@@ -672,7 +673,7 @@ scriptLog('   ->/view/main.php');
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
-                id="copyToType" name="copyToType" 
+                id="copyToType" name="copyToType" required
                 class="input" value="" >
                </select>
              </td>
