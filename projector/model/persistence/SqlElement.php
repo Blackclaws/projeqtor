@@ -634,10 +634,9 @@ abstract class SqlElement {
       $newObj->topId=null;
     }
     if (property_exists($newObj,"idStatus")) {
-      //$list=SqlList::getList('Status');
-      //$revert=array_keys($list);
-      //$newObj->idStatus=$revert[0];
-      $newObj->idStatus='x';
+      $list=SqlList::getList('Status');
+      $revert=array_keys($list);
+      $newObj->idStatus=$revert[0];
     }
     if (property_exists($newObj,"idUser")) {
       $newObj->idUser=$_SESSION['user']->id;
@@ -663,7 +662,7 @@ abstract class SqlElement {
       if (property_exists($newObj,"idleDateTime")) {
       $newObj->idleDateTime=0;
     }
-    if (property_exists($newObj,"doneDateTime")) {
+      if (property_exists($newObj,"doneDateTime")) {
       $newObj->doneDateTime=0;
     }
     foreach($newObj as $col_name => $col_value) {
