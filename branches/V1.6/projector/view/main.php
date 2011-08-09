@@ -75,8 +75,6 @@ scriptLog('   ->/view/main.php');
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
     var printInNewWindow=<?php echo (isset($printInNewWindow)?getBooleanValueAsString($printInNewWindow):'false');?>;
-    var offDayList='<?php echo Calendar::getOffDayList();?>';
-    var workDayList='<?php echo Calendar::getWorkDayList();?>';
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 

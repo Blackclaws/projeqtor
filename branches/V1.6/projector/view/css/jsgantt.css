@@ -3,6 +3,7 @@
 
 div.scrollLeft { 
   border: #c0c0c0 1px solid; 
+  spacing: 0px;
   padding: 0px; 
   margin: 0px;
   overflow: hidden;
@@ -35,11 +36,11 @@ div.scrollRight {
 
 .ganttLeftTopLine {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
 }
 
 .ganttTable {
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   text-align: left;
   font-weight: normal;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -52,7 +53,7 @@ div.scrollRight {
   font-weight: bold;
   background-color:#aaaaaa;
   color: #ffffff;
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   border-left: #efefef 1px solid;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
@@ -63,14 +64,14 @@ div.scrollRight {
   font-weight: normal;
   background-color:#e0e0e0;
   color: #000000;
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   /*border-top: #c0c0c0 1px solid;*/
   border-left: #eeeeee 1px solid;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 
 .ganttTaskrow {
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   background-color: #ffffff;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
@@ -95,7 +96,7 @@ div.scrollRight {
 
 
 .ganttTaskgroup {
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   font-weight: bold;
   background-color: #f3f3f3;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -126,7 +127,7 @@ div.scrollRight {
 }
 
 .ganttTaskmile {
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   font-weight: light;
   font-style:italic;
   background-color: #ffffff;
@@ -137,7 +138,7 @@ div.scrollRight {
 .ganttName { 
   border-top: #c0c0c0 1px solid;
   font-size: 90%;      
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   z-index: 0;
 }
 
@@ -170,7 +171,7 @@ div.scrollRight {
 .ganttDetail, .ganttDetailNoborder {
   border-top: #c0c0c0 1px solid;
   font-size: 90%;  
-  padding: 0px; margin: 0px;
+  spacing: 0px; padding: 0px; margin: 0px;
   z-index: 10;   
 }
 .ganttDetail, .ganttDetailBoderleft {
@@ -178,7 +179,7 @@ div.scrollRight {
 }
 .ganttDetailBoderleft, .ganttSubDetailNoborder  {
   font-size: 5%;  
-  padding: 0px; margin: 0px;     
+  spacing: 0px; padding: 0px; margin: 0px;     
 }
 .ganttDetailNoborder {
 
