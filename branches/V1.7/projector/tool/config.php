@@ -301,7 +301,7 @@ $ctrls['DebugMode'] = '=true=false=';
   <div id="waitLogin" >
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">
-    <tr height="1px">
+    <tr height="10%">
       <td rowspan="2" width="10px" valign="top">
         <img src="img/logoFull.gif" />
       </td>
@@ -314,10 +314,8 @@ $ctrls['DebugMode'] = '=true=false=';
         This screen will help you configure Project'Or RIA at first run.
       </td>
     </tr>
-    <tr>
-      <td colspan="2" align="left" valign="top">
-        <div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%;">
-        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow: auto; ">
+    <tr height="90%">
+      <td colspan="3" align="left" valign="top">
           <form  dojoType="dijit.form.Form" id="configForm" jsId="configForm" name="configForm" encType="multipart/form-data" action="" method="" >
             <script type="dojo/method" event="onSubmit" >
               loadContent("../tool/configCheck.php","configResultDiv", "configForm");
@@ -378,13 +376,13 @@ $ctrls['DebugMode'] = '=true=false=';
                 <td colspan="3">
                   <div id="configResultDiv" dojoType="dijit.layout.ContentPane" region="center" 
                     style="width:100%; border: 0px solid black; overflow: auto;">
+					<br/><br/><br/><br/><br/>
                   </div>
+				  <br/>
                 </td>
               </tr>
             </table>
           </form>
-        </div>
-        </div>
       </td>
     </tr>
   </table>
