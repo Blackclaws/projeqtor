@@ -44,6 +44,7 @@ class Type extends SqlElement {
                                           "lockIdle"=>"nobr");
   
   private static $_databaseTableName = 'type';
+  private static $_databaseCriteria = array();
   
    /** ==========================================================================
    * Constructor
