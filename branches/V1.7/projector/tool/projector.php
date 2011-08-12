@@ -876,6 +876,7 @@ function addWorkDaysToDate($date, $days) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addDaysToDate($date, $days) {
+	if (! $date) return null;
   $tDate = explode("-", $date);
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]));
 }
