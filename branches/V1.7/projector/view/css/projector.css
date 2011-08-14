@@ -651,7 +651,7 @@ label, .label {
 .blue .dijitMenuItemHover,
 .blue .dijitMenuPassive .dijitMenuItemHover,
 .blue .dijitMenuItemSelected   {
-  background-color: #53539B;
+  background-color: #545281;
 }
 
 .blue #mapDiv, .blue #messageDiv, .blue #listDiv, .blue #detailDiv, .blue #formDiv, .blue .display, .blue .background,
@@ -662,11 +662,11 @@ label, .label {
 
 .blue #toolBarDiv, .blue #statusBarDiv, .blue .statusBar, .blue .dojoxGridRowSelected, 
 .blue .section, .blue .dijitTitlePane .dijitTitlePaneTitle, .blue .title {
-  background-color: #53539B;  color: #EEEEEE;  
+  background-color: #545281;  color: #EEEEEE;  
 }
 
 .blue .tabLabel, .blue .label, .blue .dojoxGridRowOver .dojoxGridCell {
-  background-color: #C3C3EB; color: #53539B;
+  background-color: #C3C3EB; color: #545281;
 }
 
 .blue .display, .blue #printPreview {
@@ -674,7 +674,7 @@ label, .label {
 }
 
 .blue .titleProject {
- color: #53539B;  
+ color: #545281;  
 }
 
 .blue #mainDiv {
@@ -684,7 +684,7 @@ label, .label {
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3C3EB;
-    scrollbar-arrow-color: #53539B;
+    scrollbar-arrow-color: #545281;
 }
 
 /* =============================================================================== */
@@ -937,11 +937,11 @@ label, .label {
 
 .blueLight #toolBarDiv, .blueLight #statusBarDiv, .blueLight .statusBar, .blueLight .dojoxGridRowSelected, 
 .blueLight .section, .blueLight .dijitTitlePane .dijitTitlePaneTitle, .blueLight .title  {
-  background-color: #C3C3EB;  color: #53539B;  
+  background-color: #C3C3EB;  color: #545281;  
 }
 
 .blueLight .tabLabel, .blueLight .label, .blueLight .dojoxGridRowOver .dojoxGridCell {
-  background-color: #EEEEFF; color: #53539B;
+  background-color: #EEEEFF; color: #545281;
 }
 
 .blueLight .display, .blueLight #printPreview {
@@ -949,7 +949,7 @@ label, .label {
 }
 
 .blueLight .titleProject {
- color: #53539B;  
+ color: #545281;  
 }
 .blueLight #mainDiv {
     scrollbar-face-color: #EEEEFF;
@@ -971,7 +971,7 @@ label, .label {
 .blueContrast .dijitMenuItemHover,
 .blueContrast .dijitMenuPassive .dijitMenuItemHover,
 .blueContrast .dijitMenuItemSelected   {
-  background-color: #53539B;
+  background-color: #545281;
 }
 
 .blueContrast #mapDiv, .blueContrast #messageDiv, .blueContrast #listDiv, .blueContrast #detailDiv, .blueContrast #formDiv, .blueContrast .display, .blueContrast .background,
@@ -982,14 +982,14 @@ label, .label {
 
 .blueContrast #toolBarDiv, .blueContrast #statusBarDiv, .blueContrast .statusBar, .blueContrast .dojoxGridRowSelected, 
 .blueContrast .section, .blueContrast .dijitTitlePane .dijitTitlePaneTitle, .blueContrast .title  {
-  background-color: #53539B;  color: #FFFFFF;  
+  background-color: #545281;  color: #FFFFFF;  
 }
 
 .blueContrast .tabLabel, .blueContrast .label, .blueContrast .dojoxGridRowOver .dojoxGridCell {
-  background-color: #FFFFFF; color: #53539B;
+  background-color: #FFFFFF; color: #545281;
 }
 .blueContrast .dojoxGridRowOver .dojoxGridCell {
-  background-color: #C3C3EB; color: #53539B;
+  background-color: #C3C3EB; color: #545281;
 }
 
 .blueContrast .display, .blueContrast #printPreview {
@@ -997,7 +997,7 @@ label, .label {
 }
 
 .blueContrast .titleProject {
- color: #53539B;  
+ color: #545281;  
 }
 .blueContrast #mainDiv {
     scrollbar-face-color: #EEEEFF;
@@ -1381,4 +1381,96 @@ label, .label {
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F0F0F0;
     scrollbar-arrow-color: #C3C3C3;
+}
+
+/* =============================================================================== */
+/* SPECIFIC PROJECTORRIA THEME                                                             */
+/* =============================================================================== */
+
+.ProjectOrRia html, .ProjectOrRia body, .ProjectOrRia #leftDiv, .ProjectOrRia #logoDiv,
+.ProjectOrRia #buttonDiv,
+.ProjectOrRia .dijitSplitterH, .ProjectOrRia .dijitGutterH, .ProjectOrRia .dijitSplitterV, .ProjectOrRia .dijitGutterV,
+.ProjectOrRia .dijitMenuItemHover,
+.ProjectOrRia .dijitMenuPassive .dijitMenuItemHover,
+.ProjectOrRia .dijitMenuItemSelected   {
+  background-color: #545281;
+}
+
+.ProjectOrRia #mapDiv, .ProjectOrRia #messageDiv, .ProjectOrRia #listDiv, .ProjectOrRia #detailDiv, .ProjectOrRia #formDiv, .ProjectOrRia .display, .ProjectOrRia .background,
+.ProjectOrRia #printPreview, .ProjectOrRia .dijitTitlePaneContentInner, 
+.ProjectOrRia #mainDiv,  .ProjectOrRia #contentDiv, .ProjectOrRia #centerDiv {
+  background-color: #ececec;
+}
+
+.ProjectOrRia #toolBarDiv, .ProjectOrRia #statusBarDiv, .ProjectOrRia .statusBar, .ProjectOrRia .dojoxGridRowSelected, 
+.ProjectOrRia .section, .ProjectOrRia .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRia .title {
+  background-color: #545281;  color: #EEEEEE;  
+}
+
+.ProjectOrRia .tabLabel, .ProjectOrRia .label, .ProjectOrRia .dojoxGridRowOver .dojoxGridCell {
+  background-color: #ececec; color: #545281;
+}
+
+.ProjectOrRia .display, .ProjectOrRia #printPreview {
+  border: 1px solid #ececec;
+}
+
+.ProjectOrRia .titleProject {
+ color: #545281;  
+}
+
+.ProjectOrRia #mainDiv {
+    scrollbar-face-color: #ececec;
+    scrollbar-shadow-color: #ececec;
+    scrollbar-highlight-color: #ececec;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #ececec;
+    scrollbar-arrow-color: #545281;
+}
+
+
+/* =============================================================================== */
+/* SPECIFIC PROJECTORRIA LIGHT THEME                                                             */
+/* =============================================================================== */
+
+.ProjectOrRiaLight html, .ProjectOrRiaLight body, .ProjectOrRiaLight #leftDiv, .ProjectOrRiaLight #logoDiv,
+.ProjectOrRiaLight #buttonDiv,
+.ProjectOrRiaLight .dijitSplitterH, .ProjectOrRiaLight .dijitGutterH, .ProjectOrRiaLight .dijitSplitterV, .ProjectOrRiaLight .dijitGutterV,
+.ProjectOrRiaLight .dijitMenuItemHover,
+.ProjectOrRiaLight .dijitMenuPassive .dijitMenuItemHover,
+.ProjectOrRiaLight .dijitMenuItemSelected   {
+  background-color: #d4d5da;
+}
+
+.ProjectOrRiaLight #mapDiv, .ProjectOrRiaLight #messageDiv, .ProjectOrRiaLight #listDiv, .ProjectOrRiaLight #detailDiv, .ProjectOrRiaLight #formDiv, .ProjectOrRiaLight .display, .ProjectOrRiaLight .background,
+.ProjectOrRiaLight #printPreview, .ProjectOrRiaLight .dijitTitlePaneContentInner, 
+.ProjectOrRiaLight #mainDiv,  .ProjectOrRiaLight #contentDiv, .ProjectOrRiaLight #centerDiv {
+  background-color: #ececec;
+}
+
+.ProjectOrRiaLight #toolBarDiv, .ProjectOrRiaLight #statusBarDiv, .ProjectOrRiaLight .statusBar, .ProjectOrRiaLight .dojoxGridRowSelected, 
+.ProjectOrRiaLight .section, .ProjectOrRiaLight .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaLight .title  {
+  background-color: #d4d5da;  color: #545281;  
+}
+
+.ProjectOrRiaLight .tabLabel, .ProjectOrRiaLight .label, .ProjectOrRiaLight .dojoxGridRowOver .dojoxGridCell {
+  background-color: #ececec; color: #545281;
+}
+
+.ProjectOrRiaLight .display, .ProjectOrRiaLight #printPreview {
+  border: 1px solid #ececec;
+}
+
+.ProjectOrRiaLight .titleProject {
+ color: #545281;  
+}
+.ProjectOrRiaLight #mainDiv {
+    scrollbar-face-color: #ececec;
+    scrollbar-shadow-color: #ececec;
+    scrollbar-highlight-color: #ececec;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #000000; 
+    scrollbar-track-color: #ececec;
+    scrollbar-arrow-color: #d4d5da;
 }
