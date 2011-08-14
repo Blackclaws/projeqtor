@@ -105,7 +105,9 @@ class Parameter extends SqlElement {
     $list=array();
     switch ($parameter) {
       case 'theme':
-        $list=array('blueLight'=>'light blue',
+        $list=array('ProjectOrRia'=>'Project\'Or RIA',
+                    'ProjectOrRiaLight'=>'Project\'Or RIA Light',
+                    'blueLight'=>'light blue',
                     'blue'=>'dark blue', 
                     'blueContrast'=>'contrasted blue',
                     'redLight'=>'light red',
