@@ -24,6 +24,15 @@ html, body, #mainDiv,
   text-decoration: none;
   text-align: left;
 }
+body {
+background: #130e0a url(../img/bg.jpg) 50% 0;
+width: 100%;
+font-family: Verdana,Arial,FreeSans,sans-serif;
+font-weight:normal;
+color: #3a3a3a;
+margin:0 !important;
+padding:0 !important;
+}
 
 /* Specific style for debug purpose============================================ */
 html, body { 

@@ -107,7 +107,7 @@
         </div>
       </td>
       <td valign="top" align="left" width="800px">
-        <table width="10%">
+        <table width="100%">
           <tr height="40px">
             <td width="120px" align="left" valign="middle">
              <img/ src="img/home.png" onclick="loadPage(0)" /> 
