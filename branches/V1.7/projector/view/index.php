@@ -23,7 +23,7 @@
   </script>
 </head>
 
-<body class="blue" style='background-color: #C3C3EB' >
+<body class="ProjectOrRia" style='background-color: #C3C3EB' >
   <div id="wait">
   &nbsp;
   </div> 

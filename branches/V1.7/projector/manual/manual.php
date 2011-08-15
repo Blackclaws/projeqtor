@@ -42,7 +42,7 @@
        break;
      }
    }
-   $defaultTheme="blueLight";
+   $defaultTheme="ProjectOrRiaLight";
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -78,7 +78,8 @@
 </head>
 
 <body class="<?php echo getTheme();?>">
-  <table valign="top" align="center" width="100%" height="100%">
+<table valign="top" align="center" width="100%" height="100%" ><tr><td text-align="center" align="center">  
+  <table valign="top" align="center" height="100%">
     <tr>
       <td width="210px" valign="top" align="center">
         <div class="title" style="text-align:center; height:20px;">
@@ -105,7 +106,7 @@
         <?php displayIndex($page, $tag);?>
         </div>
       </td>
-      <td valign="top" align="center">
+      <td valign="top" align="left" width="800px">
         <table width="10%">
           <tr height="40px">
             <td width="120px" align="left" valign="middle">
@@ -148,6 +149,7 @@
       </td>
     </tr>
   </table>
+</td></tr></table>
 </body>
 </html>
 
@@ -183,7 +185,7 @@ function displayIndex($page, $tag) {
 
 function getTheme() {
   global $defaultTheme;
-  $theme='blue'; // default if never  set
+  $theme='ProjectOrRia'; // default if never  set
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
   }
@@ -196,6 +198,7 @@ function getTheme() {
     $theme=$themes[$rnd];
     $_SESSION['theme']=$theme; // keep value in session to have same theme during all session...
   }
+  //if ($theme=='ProjectOrRia') {$theme.='Light';}
   return $theme;
 }
 

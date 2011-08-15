@@ -19,7 +19,7 @@
   </script>
 </head>
 
-<body class="blue"  style='background-color: #C3C3EB' onload="autoRedirect();">
+<body class="ProjectOrRia"  style='background-color: #C3C3EB' onload="autoRedirect();">
   <div id="wait">
   &nbsp;
   </div> 
