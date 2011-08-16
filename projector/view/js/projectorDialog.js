@@ -1939,6 +1939,13 @@ function copyObjectTo(objectClass) {
   dijit.byId('copyToClass').set('displayedValue',i18n(objectClass));
   dijit.byId('copyToName').set('value',dijit.byId('name').get('value'));
   dijit.byId('copyToOrigin').set('checked','checked');
+
+  dijit.byId('copyToType').reset();
+  //if (dojo.byId('copyClass').value==class) {
+    var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objectClass+"Type').get('value'))";
+    setTimeout(runModif,1);
+  //}  
+  
   dijit.byId('dialogCopy').show();	
 }
 
