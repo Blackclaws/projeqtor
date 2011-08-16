@@ -763,8 +763,7 @@ abstract class SqlElement {
         if ($this->$col_name instanceof SqlElement) {
           //$newObj->$col_name->id=null;            
           if ($this->$col_name instanceof PlanningElement) {
-          	$sub=substr($col_name, 0,strlen($col_name)-15    );
-            $pe=$sub . 'PlanningElement';
+            $pe=$newClass . 'PlanningElement';
             if (property_exists($newObj, $pe)) {
         	    $newObj->$pe->idPlanningMode=$this->$col_name->idPlanningMode;
         	    $newObj->$pe->initialStartDate=$this->$col_name->initialStartDate;
@@ -791,8 +790,19 @@ abstract class SqlElement {
     	    $newObj->$col_name=$this->$col_name;
     	  }
       }
+    } 
+    // check description
+    if (property_exists($newObj,'description') and ! $newObj->description ) {
+      $idType='id'.$newClass.'Type';
+      if (property_exists($newObj, $idType)) {
+        $type=$newClass.'Type';
+        $objType=new $type($newObj->$idType);
+        if (property_exists($objType, 'mandatoryDescription') and $objType->mandatoryDescription) {
+          $newObj->description=$newObj->name;
+        }
+      }
     }
-    $result=$newObj->saveSqlElement();
+    $result=$newObj->save();
     if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) { 
       $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;    
       $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $newObj->id . '" />';
