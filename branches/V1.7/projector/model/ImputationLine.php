@@ -27,6 +27,8 @@ class ImputationLine {
   public $arrayPlannedWork;
   public $startDate;
   public $endDate;
+  public $idle;
+  public $locked;
 
   /** ==========================================================================
    * Constructor
@@ -64,7 +66,7 @@ class ImputationLine {
     if ($showPlanned) {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
-    // Check if asxsignment exists for each work (may be closed, so make it appear)
+    // Check if assignment exists for each work (may be closed, so make it appear)
     if (! $showIdle) {
       foreach ($workList as $work) { 
         $found=false;
@@ -82,6 +84,7 @@ class ImputationLine {
     }
     foreach ($assList as $ass) {      
       $elt=new ImputationLine();
+      $elt->idle=$ass->idle;
       $elt->refType=$ass->refType;
       $elt->refId=$ass->refId;
       $elt->comment=$ass->comment;
@@ -157,6 +160,7 @@ class ImputationLine {
       $key=$plan->wbsSortable . ' ' . $plan->refType . '#' . $plan->refId;
       if (! array_key_exists($key,$result)) {
         $top=new ImputationLine();
+        $top->idle=$plan->idle;
         $top->imputable=false;
         $top->name=$plan->refName;
         $top->wbs=$plan->wbs;
@@ -373,11 +377,14 @@ class ImputationLine {
             }
             echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
             echo ' constraints="{min:0}"'; 
-            echo '  style="width: 45px; text-align: center;" ';
+            echo '  style="width: 45px; text-align: center; ' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
             echo ' trim="true" maxlength="4" class="input" ';
             echo ' id="workValue_' . $nbLine . '_' . $i . '"';
             echo ' name="workValue_' . $nbLine . '_' . $i . '"';
             echo ' value="' . $valWork . '" ';
+            if ($line->idle or $line->locked) {
+            	echo ' readOnly="true" ';
+            }
             echo ' >';
             echo '<script type="dojo/method" event="onChange" args="evt">';
             echo '  dispatchWorkValueChange("' . $nbLine . '","' . $i . '");';
@@ -405,11 +412,14 @@ class ImputationLine {
         if (!$print) {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
           echo ' constraints="{min:0}"'; 
-          echo '  style="width: 60px; text-align: center;" ';
+          echo '  style="width: 60px; text-align: center;' . (($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'') .' " ';
           echo ' trim="true" class="input" ';
           echo ' id="leftWork_' . $nbLine . '"';
           echo ' name="leftWork_' . $nbLine . '"';
           echo ' value="' . $line->leftWork . '" ';
+          if ($line->idle or $line->locked) {
+              echo ' readOnly="true" ';
+            }
           echo ' >';
           echo '<script type="dojo/method" event="onChange" args="evt">';
           echo '  dispatchLeftWorkValueChange("' . $nbLine . '");';
