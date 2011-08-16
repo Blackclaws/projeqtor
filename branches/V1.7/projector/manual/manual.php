@@ -198,7 +198,6 @@ function getTheme() {
     $theme=$themes[$rnd];
     $_SESSION['theme']=$theme; // keep value in session to have same theme during all session...
   }
-  //if ($theme=='ProjectOrRia') {$theme.='Light';}
   return $theme;
 }
 
