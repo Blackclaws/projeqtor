@@ -731,9 +731,12 @@ abstract class SqlElement {
     if (property_exists($newObj,"creationDateTime")) {
       $newObj->creationDateTime=date('Y-m-d G:i');
     }
+    if (property_exists($newObj,"meetingDate")) {
+      $newObj->meetingDate=date('Y-m-d');
+    }
     $newObj->name=$newName;
     $newObj->$typeName=$newType;
-    if ($setOrigin) {
+    if ($setOrigin and property_exists($newObj, 'Origin')) {
       $newObj->Origin->originType=get_class($this);
       $newObj->Origin->originId=$this->id;
       $newObj->Origin->refType=$newClass;
@@ -751,24 +754,42 @@ abstract class SqlElement {
     			if (get_class($this)==$newClass) {
     				$newObj->$col_name->$plMode=$this->$col_name->$plMode;
     			}
+    			$newObj->$col_name->refName=$newName;
     		}
     	}
     }     
-    foreach($this as $col_name => $col_value) {
-    	if (property_exists($newObj,$col_name)) {
-        if (ucfirst($col_name) == $col_name) {
-          if ($this->$col_name instanceof SqlElement) {
-            $newObj->$col_name->id=null;
-            if ($this->$col_name instanceof PlanningElement) {
-          	  $newObj->$col_name->idPlanningMode=$this->$col_name->idPlanningMode;
+    foreach($this as $col_name => $col_value) { 	
+      if (ucfirst($col_name) == $col_name) {
+        if ($this->$col_name instanceof SqlElement) {
+          //$newObj->$col_name->id=null;            
+          if ($this->$col_name instanceof PlanningElement) {
+          	$sub=substr($col_name, 0,strlen($col_name)-15    );
+            $pe=$sub . 'PlanningElement';
+            if (property_exists($newObj, $pe)) {
+        	    $newObj->$pe->idPlanningMode=$this->$col_name->idPlanningMode;
+        	    $newObj->$pe->initialStartDate=$this->$col_name->initialStartDate;
+        	    $newObj->$pe->initialEndDate=$this->$col_name->initialEndDate;
+        	    $newObj->$pe->initialDuration=$this->$col_name->initialDuration;
+        	    $newObj->$pe->validatedStartDate=$this->$col_name->validatedStartDate;
+        	    $newObj->$pe->validatedEndDate=$this->$col_name->validatedEndDate;
+        	    $newObj->$pe->validatedDuration=$this->$col_name->validatedDuration;
+        	    $newObj->$pe->validatedWork=$this->$col_name->validatedWork;
+        	    $newObj->$pe->validatedCost=$this->$col_name->validatedCost;
+        	    $newObj->$pe->priority=$this->$col_name->priority;
+        	    //$newObj->$pe->topId=$this->$col_name->topId;
+        	    $newObj->$pe->topRefType=$this->$col_name->topRefType;
+        	    $newObj->$pe->topRefId=$this->$col_name->topRefId;
             }
           }
-        } else if ($col_name!='id' and $col_name!="wbs" and $col_name!='name' and $col_name != $typeName
+        }
+      } else if (property_exists($newObj,$col_name)) {
+        if ($col_name!='id' and $col_name!="wbs" and $col_name!='name' and $col_name != $typeName
                  and $col_name!="handled" and $col_name!="handledDate" and $col_name!="handledDateTime" 
                  and $col_name!="done" and $col_name!="doneDate" and $col_name!="doneDateTime"
-                 and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"){ //topId ?
-      	  $newObj->$col_name=$this->$col_name;
-      	}
+                 and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"
+                 and $col_name!="idStatus"){ //topId ?
+    	    $newObj->$col_name=$this->$col_name;
+    	  }
       }
     }
     $result=$newObj->saveSqlElement();

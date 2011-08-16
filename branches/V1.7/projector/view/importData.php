@@ -7,7 +7,7 @@
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Import" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="importDiv" class="dojoxGridRowSelected" dojoType="dijit.layout.ContentPane" region="top" splitter="false">
+  <div id="importDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top" splitter="false">
     <form dojoType="dijit.form.Form" id="importDataForm" 
       ENCTYPE="multipart/form-data" method=POST
       action="../tool/import.php"

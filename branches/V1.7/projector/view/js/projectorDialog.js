@@ -368,7 +368,7 @@ function displayDetail(objClass, objId) {
 	hideField('comboNewButton');
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
-  frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId;
+  frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId+"&detail=true";
 }
 
 function selectDetailItem(selectedValue) {
@@ -1950,6 +1950,11 @@ function copyObjectTo(objectClass) {
 }
 
 function copyObjectToSubmit(objectClass) {
+  var formVar = dijit.byId('copyForm');
+  if(! formVar.validate()){  
+    showAlert(i18n("alertInvalidForm"));
+	return;
+  }
   unselectAllRows('objectGrid');
   loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true, 'copyTo');
   dijit.byId('dialogCopy').hide();

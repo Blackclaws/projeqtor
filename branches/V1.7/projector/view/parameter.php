@@ -66,7 +66,7 @@
 ?>
 
 <div class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="parameterButtonDiv" class="dojoxGridRowSelected" dojoType="dijit.layout.ContentPane" region="top">
+  <div id="parameterButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top">
     <table width="100%">
       <tr>
         <td width="50px" align="center">

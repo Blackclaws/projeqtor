@@ -867,7 +867,11 @@ function drawHistoryFromObjects($refresh=false) {
       } else if (substr($colName,0,2)=='id' and strlen($colName)>2
                  and strtoupper(substr($colName,2,1))==substr($colName,2,1)) {
         if ($oldValue!=null and $oldValue!='') {
-          $oldValue=SqlList::getNameFromId(substr($colName,2),$oldValue);
+        	if ($oldValue==0 and $colName=='idStatus') {
+        		$oldValue='';
+        	} else {
+            $oldValue=SqlList::getNameFromId(substr($colName,2),$oldValue);
+        	}
         }
         if ($newValue!=null and $newValue!='') {
           $newValue=SqlList::getNameFromId(substr($colName,2),$newValue);
@@ -1464,7 +1468,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   exit;
 }
 ?>
-<div dojoType="dijit.layout.BorderContainer" >
+<div dojoType="dijit.layout.BorderContainer" class="background">
   <?php 
   if ( ! $refresh and  ! $print ) { ?>    
     <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" >    

@@ -33,6 +33,10 @@
       ini_set("memory_limit", $limit.'M');
      }
    }
+   $detail=false;
+   if (array_key_exists('detail', $_REQUEST)) {
+   	$detail=true;
+   }
    scriptLog('   ->/view/print.php'); 
   if ($outMode!='pdf') {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
