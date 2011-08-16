@@ -15,15 +15,15 @@ $rangeValue=$currentYear . $currentWeek;
 ?>
 
 <div dojoType="dijit.layout.BorderContainer">
-  <div dojoType="dijit.layout.ContentPane" region="top" id="imputationButtonDiv" class="dojoxGridRowSelected" >
-  <table width="100%" height="27px" class="dojoxGridRowSelected" >
+  <div dojoType="dijit.layout.ContentPane" region="top" id="imputationButtonDiv" class="listTitle" >
+  <table width="100%" height="27px" class="listTitle" >
     <tr height="27px">
       <td width="50px" align="center">
         <img src="css/images/iconImputation32.png" width="32" height="32" />
       </td>
       <td width="200px" ><span class="title"><?php echo i18n('menuImputation');?></span></td>
       <td>   
-          <table style="width: 100%; ">
+          <table style="width: 100%;" class="listTitle" >
             <tr>
               <td nowrap="nowrap">
                 <?php echo i18n("colIdResource");?> 
@@ -108,7 +108,7 @@ $rangeValue=$currentYear . $currentWeek;
       </td>
     </tr>
   </table>
-  <table width="100%" height="27px" class="dojoxGridRowSelected" >
+  <table width="100%" height="27px" class="listTitle" >
     <tr>
       <td width="50px" >
         &nbsp;

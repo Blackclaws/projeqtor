@@ -415,7 +415,7 @@ scriptLog('   ->/view/main.php');
   </div>
 </div>
 
-<div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetailCombo");?>">
+<div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetailCombo");?>" class="background" >
   <?php 
     $detailHeight=600;
     $detailWidth=1000;
@@ -426,7 +426,7 @@ scriptLog('   ->/view/main.php');
       $detailHeight=round($_SESSION['screenHeight']*0.65);
     }
   ?> 
-  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="title">
+  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="white">
     <table>
       <tr>
         <td width="300px" align="left">
@@ -647,7 +647,7 @@ scriptLog('   ->/view/main.php');
   <table>
     <tr>
       <td>
-       <form id='copyForm' name='copyForm' onSubmit="return false;">
+       <form dojoType="dijit.form.Form" id='copyForm' name='copyForm' onSubmit="return false;">
          <input id="copyClass" name="copyClass" type="hidden" value="" />
          <input id="copyId" name="copyId" type="hidden" value="" />
          <table>

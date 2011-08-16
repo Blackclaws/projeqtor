@@ -13,7 +13,7 @@ scriptLog('   ->/view/planningList.php');
   
 <div id="mainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
-<table width="100%" height="27px" class="dojoxGridRowSelected" >
+<table width="100%" height="27px" class="listTitle" >
   <tr height="27px">
     <td width="50px" align="center">
       <span style="position:absolute; left:+10px; top: +2px"><img src="css/images/iconPlanning22.png" width="22" height="22" /></span>

@@ -416,7 +416,10 @@ label, .label {
   text-align: center;
   font-weight: bold;
   width: 100%;
-  height: 1px;
+  height: 18px;
+}
+.dijitTitlePane .dijitTitlePaneTitle {
+	height: 18px;
 }
 
 .calendar {
@@ -1526,8 +1529,7 @@ label, .label {
 .ProjectOrRia .tabLabel, .ProjectOrRia .label, .ProjectOrRia .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
-
-.ProjectOrRia .section, 
+	
 .ProjectOrRia .dijitTitlePane .dijitTitlePaneTitle {
   background-color: #d4d5da;  color: #545281;
   border-top: 1px solid #A0A0A0;
@@ -1538,6 +1540,9 @@ label, .label {
   border-radius: 7px;
 }
 .ProjectOrRia .section {
+	background-color: #d4d5da;  color: #545281;
+	border-top: 1px solid #A0A0A0;
+  border-left: 1px solid #A0A0A0;
 	border-bottom: 1px solid #A0A0A0; 
 	border-right: 1px solid #A0A0A0;
 }

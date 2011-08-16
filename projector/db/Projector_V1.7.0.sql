@@ -96,18 +96,19 @@ CREATE TABLE `${prefix}copyable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
+  `sortOrder` int(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`) VALUES
-(1, 'Ticket', 0),
-(2, 'Activity', 0),
-(3, 'Milestone', 0),
-(4, 'IndividualExpense', 0),
-(5, 'ProjectExpense', 0),
-(6, 'Risk', 0),
-(7, 'Action', 0),
-(8, 'Issue', 0),
-(9, 'Meeting', 0),
-(10, 'Decision', 0),
-(11, 'Question', 0);
+INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
+(1, 'Ticket', 0, 10),
+(2, 'Activity', 0, 20),
+(3, 'Milestone', 0, 30),
+(4, 'IndividualExpense', 0, 40),
+(5, 'ProjectExpense', 0, 50),
+(6, 'Risk', 0, 60),
+(7, 'Action', 0, 70),
+(8, 'Issue', 0, 80),
+(9, 'Meeting', 0, 90),
+(10, 'Decision', 0, 100),
+(11, 'Question', 0, 110);
