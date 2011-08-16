@@ -42,9 +42,14 @@
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
-  if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+  if ( array_key_exists('report',$_REQUEST) ) {
+    if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+    }
+  } else {
+  	$queryWhere.= ($queryWhere=='')?'':' and ';
+    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
   }
   
 /*  if ($accessRightRead=='NO') {
@@ -60,7 +65,6 @@
   } else if ($accessRightRead=='ALL') {
     // No restriction to add
   }*/
-
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;
   // Link to resource
@@ -75,7 +79,6 @@
        . ' from ' . $queryFrom
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
-debugLog($query);
   $result=Sql::query($query);
   $nbRows=0;
   if ($print) {
