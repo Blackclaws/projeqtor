@@ -331,7 +331,7 @@ abstract class SqlElement {
     }
     // save depedant elements (properties that are objects)
     if ($returnStatus!="ERROR") {
-      //$returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
+      $returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
     }
     // Prepare return data
     if ($returnStatus!="ERROR") {
@@ -733,16 +733,24 @@ abstract class SqlElement {
     }
     $newObj->name=$newName;
     $newObj->$typeName=$newType;
-    if ($setOrigin and property_exists($newObj,'Origin')) {
+    if ($setOrigin) {
       $newObj->Origin->originType=get_class($this);
       $newObj->Origin->originId=$this->id;
+      $newObj->Origin->refType=$newClass;
     }
     foreach($newObj as $col_name => $col_value) {
     	if (ucfirst($col_name) == $col_name) {
     		if ($newObj->$col_name instanceof PlanningElement) {
     			$sub=substr($col_name, 0,strlen($col_name)-15    );
     			$plMode='id' . $sub . 'PlanningMode';
-    			$newObj->$col_name->$plMode="1"; 
+    			if ($newClass=="Activity") {
+    			  $newObj->$col_name->$plMode="1";
+    			} else if ($newClass=="Milestone") {
+    				$newObj->$col_name->$plMode="5";
+    			}  
+    			if (get_class($this)==$newClass) {
+    				$newObj->$col_name->$plMode=$this->$col_name->$plMode;
+    			}
     		}
     	}
     }     

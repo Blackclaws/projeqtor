@@ -26,7 +26,7 @@ $obj=new $objectClass;
     quickSearchExecute();
     return false;        
   </script>
-  <div class="dojoxGridRowSelected" id="quickSearchDiv" 
+  <div class="listTitle" id="quickSearchDiv" 
      style="display:none; height:100%; width: 100%; position: absolute;">
     <table >
       <tr height="100%" style="vertical-align: middle;">
@@ -75,7 +75,7 @@ $obj=new $objectClass;
     </table>
   </div>
   </form>
-<table width="100%" class="dojoxGridRowSelected" >
+<table width="100%" class="listTitle" >
   <tr >
     <td width="50px" align="center">
       <img src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />

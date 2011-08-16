@@ -193,13 +193,13 @@ class PlanningElement extends SqlElement {
     $old=new PlanningElement($this->id);
 
     // Bug fixing #300
-    if (! $this->assignedWork) {
+    /*if (! $this->assignedWork) {
       $this->assignedWork=0;
     }
     if (! $this->leftWork) {
       $this->leftWork=0;
       $this->plannedWork=$this->realWork;
-    }
+    }*/
     
     // If done and no work, set up end date
     if (  $this->leftWork==0 and $this->realWork==0 ) {

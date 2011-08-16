@@ -203,7 +203,9 @@ scriptLog('   ->/view/main.php');
         <div id="messageDiv" dojoType="dijit.layout.ContentPane" region="bottom" splitter="true">
         </div>
       </div> 
-    </div>    
+    </div>
+    <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top"  >    
+    </div>
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >      
     </div>
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
@@ -659,9 +661,13 @@ scriptLog('   ->/view/main.php');
                 class="input" value="" >
                  <?php htmlDrawOptionForReference('idCopyable', null, null, true);?>
                  <script type="dojo/connect" event="onChange" args="evt" >
-                   var class=copyableArray[this.value];
+                   var objclass=copyableArray[this.value];
                    dijit.byId('copyToType').reset();
-                   refreshList("idType","scope", class, null,'copyToType',true);
+                   refreshList("idType","scope", objclass, null,'copyToType',true);
+                   if (dojo.byId('copyClass').value==objclass) {
+                     var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objclass+"Type').get('value'))";
+                     setTimeout(runModif,1);
+                   }
                  </script> 
                </select>
              </td>
