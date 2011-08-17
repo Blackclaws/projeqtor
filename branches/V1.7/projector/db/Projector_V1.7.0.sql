@@ -52,7 +52,7 @@ ADD INDEX calendarMonth (month),
 ADD INDEX calendarYear (year);
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
-(85, 'menuCalendar', 14, 'object', 685, Null, 1);
+(85, 'menuCalendar', 14, 'object', 685, Null, 0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 85, 1),
@@ -113,22 +113,18 @@ INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
 (10, 'Decision', 0, 100),
 (11, 'Question', 0, 110);
 
-CREATE TABLE `${prefix}application` (
+CREATE TABLE `${prefix}product` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `idProject` int(12) unsigned DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(4000) DEFAULT NULL,
   `creationDate` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
-ALTER TABLE `${prefix}application` ADD INDEX applicationProject (idProject);
 
 CREATE TABLE `${prefix}version` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `idProject` int(12) unsigned DEFAULT NULL,
-  `idApplication` int(12) unsigned DEFAULT NULL,
+  `idProduct` int(12) unsigned DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(4000) DEFAULT NULL,
   `creationDate` date DEFAULT NULL,
@@ -136,8 +132,7 @@ CREATE TABLE `${prefix}version` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}version` ADD INDEX versionProject (idProject),
-  ADD INDEX versionApplication (idApplication);
+ALTER TABLE `${prefix}version` ADD INDEX versionProduct (idProduct);
 
 CREATE TABLE `${prefix}versionproject` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -151,9 +146,13 @@ ALTER TABLE `${prefix}versionprojet` ADD INDEX versionprojectProject (idProject)
   ADD INDEX versionprojectVersion (idVersion);
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
-(85, 'menuCalendar', 14, 'object', 685, Null, 1);
+(86, 'menuProduct', 14, 'object', 642, Null, 0),
+(87, 'menuVersion', 14, 'object', 644, Null, 0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
-(1, 85, 1),
-(2, 85, 1),
-(3, 85, 1);
+(1, 86, 1),
+(2, 86, 1),
+(3, 86, 1),
+(1, 87, 1),
+(2, 87, 1),
+(3, 87, 1);
