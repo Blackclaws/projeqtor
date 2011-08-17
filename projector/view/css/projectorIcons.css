@@ -196,6 +196,10 @@
 .iconPriority22 { background-image: url(images/iconPriority22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconPriority16 { background-image: url(images/iconPriority16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconProduct32 { background-image: url(images/iconProduct32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProduct22 { background-image: url(images/iconProduct22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProduct16 { background-image: url(images/iconProduct16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconProfile32 { background-image: url(images/iconProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProfile22 { background-image: url(images/iconProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProfile16 { background-image: url(images/iconProfile16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -306,6 +310,10 @@
 .iconUserParameter32 { background-image: url(images/iconUserParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconUserParameter22 { background-image: url(images/iconUserParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconUserParameter16 { background-image: url(images/iconUserParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconVersion32 { background-image: url(images/iconVersion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconVersion22 { background-image: url(images/iconVersion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconVersion16 { background-image: url(images/iconVersion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconView { background-image: url(images/iconView.png);  background-repeat: no-repeat; width: 10px; height: 10px;}
 
