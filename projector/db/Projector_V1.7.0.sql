@@ -112,3 +112,48 @@ INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
 (9, 'Meeting', 0, 90),
 (10, 'Decision', 0, 100),
 (11, 'Question', 0, 110);
+
+CREATE TABLE `${prefix}application` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
+  `creationDate` date DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}application` ADD INDEX applicationProject (idProject);
+
+CREATE TABLE `${prefix}version` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idApplication` int(12) unsigned DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
+  `creationDate` date DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}version` ADD INDEX versionProject (idProject),
+  ADD INDEX versionApplication (idApplication);
+
+CREATE TABLE `${prefix}versionproject` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idVersion` int(12) unsigned DEFAULT NULL
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}versionprojet` ADD INDEX versionprojectProject (idProject),
+  ADD INDEX versionprojectVersion (idVersion);
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(85, 'menuCalendar', 14, 'object', 685, Null, 1);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 85, 1),
+(2, 85, 1),
+(3, 85, 1);
