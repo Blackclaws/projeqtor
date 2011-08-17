@@ -33,9 +33,30 @@ html, body {
 /* DIV styles presented as included in pages ================================== */
 
 #toolBarDiv {
-  height: 0px;
+  height: 25px;
   border-bottom: 1px solid #eeeeee;
 }
+  .menuBarItem {
+    background: #ececec url(images/buttonActive.png) repeat-x bottom left;
+    cursor:pointer;
+    margin:0px; 
+    padding:2px; 
+    border: 1px solid #c0c0c0;
+    border-bottom: 1px solid #9b9b9b;
+    vertical-align:middle;
+  }
+  .menuBarItem:hover {
+    border-color: #a5a5a5;
+    border-bottom-color: #757575;
+    color: #3C3C3C;
+    background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
+  }
+  .menuBarSeparator {
+    width: 15px;
+    text-align: center;
+    /* background: url(images/splitV.gif) repeat-y left;*/
+    background: url(images/splitContainerSizerV-thumb.png) repeat-y left;
+  }
 #leftDiv {
   width: 20%;
   overflow: hidden;
