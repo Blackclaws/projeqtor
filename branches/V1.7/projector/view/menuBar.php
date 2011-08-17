@@ -14,24 +14,39 @@
     	if ($menu->idMenu==0) {
     		echo '<td class="menuBarSeparator" ></td>';
     	}
+    } else if ($menu->type=='item') {
+    	  $class=substr($menuName,4); 
+        echo '<td class="menuBarItem" title="' .i18n($menu->name) . '">';
+        echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarItem(\'' . $class . '\');" />';
+        echo '</td><td>&nbsp;</td>';    	
     } else if ($menu->type=='object') { 
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
       	echo '<td class="menuBarItem" title="' .i18n('menu'.$class) . '">';
-      	echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarClass(\'' . $class . '\');" />';
+      	echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarObject(\'' . $class . '\');" />';
       	echo '</td><td>&nbsp;</td>';
       }
     }
   }  
   
   function drawAllMenus() {
+  	echo '<td class="menuBarSeparator"></td>';
     $obj=new Menu();
+    $suspend=false;
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
     foreach ($menuList as $menu) { 
-    	if (securityCheckDisplayMenu($menu->id,$menu) ) {
+    	if ($menu->id==36) {$suspend=true;}
+    	if (! $suspend and securityCheckDisplayMenu($menu->id,$menu) ) {
     		drawMenu($menu);
+    		$lastType=$menu->type;
     	}
     }
+    if ($lastType!='menu') {
+      echo '<td class="menuBarSeparator" ></td>';
+    }
+    $menu=new Menu('20');
+    drawMenu($menu);
+    echo '<td class="menuBarSeparator" ></td>';
 	/*	    if ($level>0 and securityCheckDisplayMenu($menu->id,$menu) ) {
 		      while ($level>0 and $menu->idMenu!= $menuLevel[$level]) {
 		        drawMenuCloseChildren();
@@ -52,11 +67,12 @@
 	  }*/
   }
 ?>
-  <table><tr>
-    <td class="titleProject">&nbsp;<?php echo (i18n("projectSelector"));?></td>
-    <td>
+  <table width="100%"><tr>
+    
+    <td width="20%">
+    <span class="titleProject">&nbsp;<?php echo (i18n("projectSelector"));?></span>
     <span style="height: 20px; " dojoType="dijit.form.DropDownButton" 
-     id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true">
+     id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
       <span width="200px" ><?php
         $proj='*'; 
         if (array_key_exists('project',$_SESSION)) {
@@ -79,6 +95,10 @@
       </span>
     </span>
     </td>
-    <td style="width:50px">&nbsp;</td>
+    <td width="3px"></td>
+    <td>
+      <table><tr>
     <?php drawAllMenus();?>
+    </tr></table>
+    </td>
   </tr></table>

@@ -1962,11 +1962,32 @@ function copyObjectToSubmit(objectClass) {
   dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
 }
 
-function loadMenuBarClass(menuClass) {
+function loadMenuBarObject(menuClass) {
   	if (checkFormChangeInProgress()) {
   		return false;
   	}
   	cleanContent("detailDiv");
     formChangeInProgress=false;
     loadContent("objectMain.php?objectClass="+menuClass,"centerDiv");
+}
+
+function loadMenuBarItem(item) {
+  	if (checkFormChangeInProgress()) {
+  		return false;
+  	}
+  	cleanContent("detailDiv");
+    formChangeInProgress=false;
+    if (item=='Today') {
+	    loadContent("today.php","centerDiv");
+    } else if (item=='Planning') {
+	    loadContent("planningMain.php","centerDiv");
+    } else if (item=='Imputation') {
+      loadContent("imputationMain.php","centerDiv");
+    } else if (item=='ImportData') {
+      loadContent("importData.php","centerDiv");
+    } else if (item=='Reports') {
+      loadContent("reportsMain.php","centerDiv");
+	} else if(item=='UserParameter') {
+	   loadContent("parameter.php?type=userParameter","centerDiv");
+	}
 }

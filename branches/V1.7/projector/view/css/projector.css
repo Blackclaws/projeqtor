@@ -52,7 +52,7 @@ html, body {
     background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
   }
   .menuBarSeparator {
-    width: 15px;
+    width: 5px;
     text-align: center;
     /* background: url(images/splitV.gif) repeat-y left;*/
     background: url(images/splitContainerSizerV-thumb.png) repeat-y left;
@@ -294,7 +294,7 @@ label, .label {
 .titleProject {
     font-size: 10pt; 
     font-weight: bold;
-    vertical-align: top;
+    vertical-align: middle;
     padding: 5px 2px 0px 0px;
 }
 
