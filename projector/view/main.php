@@ -40,6 +40,9 @@ scriptLog('   ->/view/main.php');
     dojo.require("dijit.layout.BorderContainer");
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.Menu"); 
+    dojo.require("dijit.MenuBar"); 
+    dojo.require("dijit.MenuBarItem"); 
+    dojo.require("dijit.PopupMenuBarItem");
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.form.Textarea");
     dojo.require("dijit.form.ComboBox");
@@ -133,8 +136,11 @@ scriptLog('   ->/view/main.php');
       dojo.byId("loadingDiv").style.visibility="hidden";
       dojo.byId("loadingDiv").style.display="none";
       dojo.byId("mainDiv").style.visibility="visible";        
-
       loadContent("<?php echo $firstPage;?>","centerDiv");
+      <?php if (! $showTopMenu) {
+          echo "dijit.byId('toolBarDiv').resize({h: 0});;";
+          echo "dijit.byId('globalContainer').resize();";
+       } ?>  
     }); 
     var canCreateArray=new Array();
     var dependableArray=new Array();
@@ -204,7 +210,8 @@ scriptLog('   ->/view/main.php');
         </div>
       </div> 
     </div>
-    <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top"  >    
+    <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top"  >
+      <?php include "menuBar.php";?>
     </div>
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >      
     </div>

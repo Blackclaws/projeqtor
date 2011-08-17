@@ -13,6 +13,7 @@ $reportCount=0;
 include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
 
+$showTopMenu=true;
 /* ============================================================================
  * global variables
  * ============================================================================ */

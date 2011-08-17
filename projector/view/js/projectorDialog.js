@@ -1734,8 +1734,7 @@ function hideShowMenu() {
 	if (! dijit.byId("leftDiv")) {
 		return;
 	}
-	if (menuActualStatus=='visible' || ! menuHidden) {
-		dojo.byId('menuBarShow').style.display='block';
+	if (menuActualStatus=='visible' || ! menuHidden) {		
 		menuDivSize=dojo.byId("leftDiv").offsetWidth;
 		if (menuDivSize<2) {
 			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
@@ -1743,6 +1742,7 @@ function hideShowMenu() {
 		dojo.byId('leftDiv_splitter').style.display='none';
 		dijit.byId("leftDiv").resize({w: 20});
 		dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
+		setTimeout("dojo.byId('menuBarShow').style.display='block'",10);
 		menuHidden=true;
 		menuActualStatus='hidden';
 	} else {
@@ -1757,6 +1757,7 @@ function hideShowMenu() {
 		menuActualStatus='visible';
 	}
 	dijit.byId("globalContainer").resize();	
+	//dojo.byId('menuBarShow').style.top='50px';
 }
 function tempShowMenu(mode) {
 	if (mode=='mouse' && menuShowMode=='CLICK') return;
@@ -1959,4 +1960,13 @@ function copyObjectToSubmit(objectClass) {
   loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true, 'copyTo');
   dijit.byId('dialogCopy').hide();
   dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
+}
+
+function loadMenuBarClass(menuClass) {
+  	if (checkFormChangeInProgress()) {
+  		return false;
+  	}
+  	cleanContent("detailDiv");
+    formChangeInProgress=false;
+    loadContent("objectMain.php?objectClass="+menuClass,"centerDiv");
 }
