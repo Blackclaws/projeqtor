@@ -116,6 +116,8 @@ INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
 CREATE TABLE `${prefix}product` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
+  `idClient` int(12) unsigned DEFAULT NULL,
+  `idContact` int(12) unsigned DEFAULT NULL,
   `description` varchar(4000) DEFAULT NULL,
   `creationDate` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
@@ -125,6 +127,8 @@ CREATE TABLE `${prefix}product` (
 CREATE TABLE `${prefix}version` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProduct` int(12) unsigned DEFAULT NULL,
+  `idContact` int(12) unsigned DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(4000) DEFAULT NULL,
   `creationDate` date DEFAULT NULL,
@@ -156,3 +160,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 87, 1),
 (2, 87, 1),
 (3, 87, 1);
+
+ALTER TABLE `${prefix}projet` ADD `idContact` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}projet` ADD ADD projectContact (idContact);
