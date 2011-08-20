@@ -702,10 +702,8 @@ function getIP(){
  */
 function securityGetAccessRight($menuName, $accessType, $obj=null) {
   $user=$_SESSION['user'];
-  $accessRightList=$user->getAccessControlRights();
-  //$accessRight='NO';
-  // TODO : set default to NO, when non-project-dependant lists are implemented
-  $accessRight='ALL';
+  $accessRightList=$user->getAccessControlRights();  
+  $accessRight='NO';
   if ($accessType=='update' and $obj and $obj->id==null) {
     return securityGetAccessRight($menuName, 'create');
   }

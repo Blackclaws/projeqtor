@@ -182,7 +182,9 @@ class User extends SqlElement {
     if ($this->_accessControlRights) {
       return $this->_accessControlRights;
     }
-    
+    $menuList=SqlList::getListNotTranslated('Menu');
+    $noAccessArray=array( 'read' => 'NO', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO');
+    $allAccessArray=array( 'read' => 'ALL', 'create' => 'ALL', 'update' => 'ALL', 'delete' => 'ALL');
     // first time function is called for object, so go and fetch data
     $this->_accessControlVisibility='PRO';
     $accessControlRights=array();
@@ -190,18 +192,37 @@ class User extends SqlElement {
     $accessRight=new AccessRight();
     $crit=array('idProfile'=>$this->idProfile);
     $accessRightList=$accessRight->getSqlElementsFromCriteria( $crit, false);
+    $habilitation=new Habilitation();
+    $crit=array('idProfile'=>$this->idProfile, 'allowAccess'=>'1');
+    $habilitationList=$habilitation->getSqlElementsFromCriteria( $crit, false);
+    foreach ($habilitationList as $hab) {
+    	if (array_key_exists($hab->idMenu,$menuList)) {
+    	  $menuName=$menuList[$hab->idMenu];
+    	  $accessControlRights[$menuName]=$allAccessArray;
+    	}
+    }
     foreach ($accessRightList as $arObj) {
-      $menu=new Menu($arObj->idMenu);
-      $accessProfile=new AccessProfile($arObj->idAccessProfile);
-      $scopeArray=array( 'read' =>  $accessScopeList[$accessProfile->idAccessScopeRead],
-                         'create' => $accessScopeList[$accessProfile->idAccessScopeCreate],
-                         'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
-                         'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete] );
-      $accessControlRights[$menu->name]=$scopeArray;
-      if ($accessScopeList[$accessProfile->idAccessScopeRead]=='ALL') {
-        $this->_accessControlVisibility='ALL';
+      $menuName=(array_key_exists($arObj->idMenu,$menuList))?$menuList[$arObj->idMenu]:'';
+      if (! $menuName or ! array_key_exists($menuName, $accessControlRights)) {
+        $accessControlRights[$menuName]=$noAccessArray;	
+      } else {
+        $accessProfile=new AccessProfile($arObj->idAccessProfile);
+        $scopeArray=array( 'read' =>  $accessScopeList[$accessProfile->idAccessScopeRead],
+                           'create' => $accessScopeList[$accessProfile->idAccessScopeCreate],
+                           'update' => $accessScopeList[$accessProfile->idAccessScopeUpdate],
+                           'delete' => $accessScopeList[$accessProfile->idAccessScopeDelete] );
+        $accessControlRights[$menuName]=$scopeArray;
+        if ($accessScopeList[$accessProfile->idAccessScopeRead]=='ALL') {
+          $this->_accessControlVisibility='ALL';
+        }
       }
     }
+    foreach ($menuList as $menuId=>$menuName) {
+      if (! array_key_exists($menuName, $accessControlRights)) {
+        $accessControlRights[$menuName]=$noAccessArray; 
+      }     	
+    }
+    // override with habilitation 
     $this->_accessControlRights=$accessControlRights;
     return $this->_accessControlRights;
   }

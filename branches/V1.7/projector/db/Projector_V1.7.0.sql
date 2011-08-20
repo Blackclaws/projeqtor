@@ -124,6 +124,9 @@ CREATE TABLE `${prefix}product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
+ALTER TABLE `${prefix}product` ADD INDEX productClient (idClient),
+ADD INDEX pruductContact (idContact);
+
 CREATE TABLE `${prefix}version` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProduct` int(12) unsigned DEFAULT NULL,
@@ -136,7 +139,9 @@ CREATE TABLE `${prefix}version` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}version` ADD INDEX versionProduct (idProduct);
+ALTER TABLE `${prefix}version` ADD INDEX versionProduct (idProduct),
+ADD INDEX versionContact (idContact),
+ADD INDEX versionResource (idResource);
 
 CREATE TABLE `${prefix}versionproject` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
