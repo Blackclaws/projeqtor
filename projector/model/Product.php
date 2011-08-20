@@ -9,7 +9,7 @@ class Product extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $idCustomer;
+  public $idClient;
   public $idContact;
   public $creationDate;
   public $idle;
@@ -17,21 +17,20 @@ class Product extends SqlElement {
   public $_col_2_2_Projects;
   public $_spe_projects;
 
-
-
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
     <th field="name" width="80%" >${projectName}</th>
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
-// Removed in 1.2.0 
-//     <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
 
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "description"=>"required"
   );   
- 
+
+  private static $_colCaptionTransposition = array('idContact'=>'manager'
+  );
+  
   
    /** ==========================================================================
    * Constructor
@@ -61,7 +60,14 @@ class Product extends SqlElement {
   protected function getStaticLayout() {
     return self::$_layout;
   }
-
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }  
+  
     /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes

@@ -398,10 +398,13 @@ label, .label {
   padding: 0;
 }
 
-.dijitReset, .dijitRight, .dijitInline, .dijitReset, .dijitInline, .dijitButtonNode {
+.dijitReset, .dijitRight, .dijitInline, .dijitReset, .dijitInline, .dijitButtonNode, .link {
   cursor: pointer; 
 }
-
+.link:hover {
+	background-color: #eeeeee;
+	text-decoration: underline;
+}
 .filterField {
   color: #555555;  
 }

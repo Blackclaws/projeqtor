@@ -364,7 +364,7 @@ class Project extends SqlElement {
     $prjList=$this->getSqlElementsFromCriteria($critArray, false);
     foreach ($prjList as $prj) {
       $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
-      $result.=SqlList::getNameFromId('Project', $prj->id);
+      $result.=htmlDrawLink($prj);
       $result.= '</td></tr>';
     }
     $result .="</table>";

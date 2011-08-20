@@ -9,6 +9,9 @@
 
 <?php 
 require_once "../tool/projector.php";
+$user=new User('1');
+$rights=$user->getAccessControlRights();
+var_dump($rights);
 var_dump($_SESSION);
 
 ?>

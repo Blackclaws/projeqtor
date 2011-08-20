@@ -29,14 +29,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     } else if ($col=="idProject") {
       $user=$_SESSION["user"];
       $controlRightsTable=$user->getAccessControlRights();
-//debugLog($controlRightsTable);
-	  if (! array_key_exists($obj->getMenuClass(),$controlRightsTable)) {
-	    // If AccessRight notdefined for object and user profile => empty list + log error
-//debugLog('Error : no AccessRight for user ' . $user->id . '/' . $user->name . ' and item ' . $obj->getMenuClass());
+  	  if (! array_key_exists($obj->getMenuClass(),$controlRightsTable)) {
+	      // If AccessRight notdefined for object and user profile => empty list + log error
         return;		
-	  }
+	    }
       $controlRights=$controlRightsTable[$obj->getMenuClass()];
-//debugLog($controlRights);      
       if ($obj->id==null) {
         // creation mode
         if ($controlRights["create"]=="PRO") {
@@ -574,4 +571,14 @@ function htmlRemoveDocumentTags($val) {
   return $res;
 }
 
+function htmlDrawLink($obj) {
+	$canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+	if ($canRead) {
+	  $result='<a class="link" onClick="gotoElement(\'' . get_class($obj) .'\',\''. $obj->id .'\');">' . $obj->name . '</a>';
+	} else {
+		$result=$obj->name;
+	}  
+	 
+	return $result;
+}
 ?>
