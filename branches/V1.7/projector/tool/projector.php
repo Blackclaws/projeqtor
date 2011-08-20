@@ -703,7 +703,7 @@ function getIP(){
 function securityGetAccessRight($menuName, $accessType, $obj=null) {
   $user=$_SESSION['user'];
   $accessRightList=$user->getAccessControlRights();  
-  $accessRight='NO';
+  $accessRight='ALL';
   if ($accessType=='update' and $obj and $obj->id==null) {
     return securityGetAccessRight($menuName, 'create');
   }
