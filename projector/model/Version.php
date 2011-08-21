@@ -8,9 +8,10 @@ class Version extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $idProduct;
   public $name;
-  public $idClient;
   public $idContact;
+  public $idResource;
   public $creationDate;
   public $idle;
   public $description;
@@ -24,11 +25,10 @@ class Version extends SqlElement {
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", 
-                                  "description"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required"
   );   
 
-  private static $_colCaptionTransposition = array('idContact'=>'manager'
+  private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
   );
   
   

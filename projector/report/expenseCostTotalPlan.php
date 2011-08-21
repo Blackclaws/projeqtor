@@ -38,7 +38,7 @@ if ($idProject!='') {
   $queryWhereW.=  " and w.idProject in " . getVisibleProjectsList(true, $idProject) ;
   $queryWhereExp.=  " and exp.idProject in " . getVisibleProjectsList(true, $idProject) ;
 } else {
-  //$queryWhere.=  "and exp.idProject in " . getVisibleProjectsList() ;
+  // 
 }
   
 $querySelect1= 'select sum(exp.realAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 

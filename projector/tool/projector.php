@@ -473,9 +473,17 @@ function getAccesResctictionClause($objectClass,$alias=null) {
   } else if ($accessRightRead=='PRO') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     if ($alias===false) {
-      $queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;   
+      if ($objectClass=='Project') {
+        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+      } else {
+       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+      }   
     } else {
-      $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+    	if ($objectClass=='Project') {
+    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+    	} else {
+        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+    	}
     }      
   } else if ($accessRightRead=='ALL') {
     $queryWhere.= ' (1=1) ';
@@ -736,7 +744,11 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
     } else if ($accessRight=='PRO') {
       $accessRight='NO';
       if ($obj != null) {
-        if (property_exists($obj, 'idProject')) {
+        if (get_class($obj)=='Project') {
+          if (array_key_exists($obj->id, $user->getVisibleProjects()) ) {
+            $accessRight='YES';
+          }
+        } else if (property_exists($obj, 'idProject')) {
           if (array_key_exists($obj->idProject, $user->getVisibleProjects()) or $obj->id==null) {
             $accessRight='YES';
           }

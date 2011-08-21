@@ -14,8 +14,8 @@ class Product extends SqlElement {
   public $creationDate;
   public $idle;
   public $description;
-  public $_col_2_2_Projects;
-  public $_spe_projects;
+  public $_col_2_2_Versions;
+  public $_spe_versions;
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -24,11 +24,10 @@ class Product extends SqlElement {
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", 
-                                  "description"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required"
   );   
 
-  private static $_colCaptionTransposition = array('idContact'=>'manager'
+  private static $_colCaptionTransposition = array('idContact'=>'contractor'
   );
   
   

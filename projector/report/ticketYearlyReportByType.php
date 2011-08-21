@@ -40,7 +40,6 @@ if (array_key_exists('responsible',$_REQUEST)) {
 };
 
 $user=$_SESSION['user'];
-$lstProj=$user->getVisibleProjects();
 
 $periodType='year';
 //$periodValue=$_REQUEST['periodValue'];

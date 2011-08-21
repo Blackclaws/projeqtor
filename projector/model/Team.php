@@ -10,7 +10,8 @@ class Team extends SqlElement {
   public $name;
   public $idle;
   public $description;
-  public $_col_2_2;
+  public $_col_2_2_members;
+  public $_spe_members;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -56,6 +57,20 @@ class Team extends SqlElement {
    */
   protected function getStaticColCaptionTransposition($fld) {
     return self::$_colCaptionTransposition;
+  }
+  
+  public function drawSpecificItem($item){
+    $result="";
+    if ($item=='members') {
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('members') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      if ($this->id) {
+        $ress=new Resource();
+        $result .= $ress->drawMemberList($this->id);
+      }
+      $result .="</td></tr></table>";
+      return $result;
+    }
   }
   
 }

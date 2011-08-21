@@ -571,12 +571,13 @@ function htmlRemoveDocumentTags($val) {
   return $res;
 }
 
-function htmlDrawLink($obj) {
-	$canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+function htmlDrawLink($obj, $display=null) {
+	$canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj)=="YES";
+	$disp=htmlencode(($display)?$display:$obj->name);
 	if ($canRead) {
-	  $result='<a class="link" onClick="gotoElement(\'' . get_class($obj) .'\',\''. $obj->id .'\');">' . $obj->name . '</a>';
+	  $result='<a class="link" onClick="gotoElement(\'' . get_class($obj) .'\',\''. $obj->id .'\');">' . $disp . '</a>';
 	} else {
-		$result=$obj->name;
+		$result=$disp;
 	}  
 	 
 	return $result;

@@ -335,7 +335,7 @@ class Project extends SqlElement {
         if ($showLine) {
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
-            $result .= '<td class="display" style="width: 100%;" NOWRAP>' . $prj->name;
+            $result .= '<td class="display" style="width: 100%;" NOWRAP>' . htmlDrawLink($prj);
           } else if (! $reachLine) {
             $result .= '<td class="display" style="width: 100%; color: #AAAAAA;" NOWRAP>' . $prj->name;
           } else {

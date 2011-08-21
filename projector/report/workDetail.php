@@ -17,7 +17,6 @@ if (array_key_exists('weekSpinner',$_REQUEST)) {
 };
 
 $user=$_SESSION['user'];
-$lstProj=$user->getVisibleProjects();
 
 $periodType=$_REQUEST['periodType'];
 $periodValue=$_REQUEST['periodValue'];
