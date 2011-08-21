@@ -20,8 +20,7 @@
        
     $obj=new $objectClass();
     $table=$obj->getDatabaseTableName();
-    $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
-    
+    $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');  
     $querySelect = '';
     $queryFrom=$table;
     $queryWhere='';
@@ -45,7 +44,6 @@
     	}
     	$queryWhere.=" )";
     }
-//debugLog($queryWhere); 
     if (! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idle') . "=0";
@@ -83,6 +81,8 @@
           }
         }
     }
+// 
+/*
     if ($accessRightRead=='NO') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=  "(1 = 2)";      
@@ -95,6 +95,11 @@
     } else if ($accessRightRead=='ALL') {
       // No restriction to add
     }
+*/ 
+// 
+    $queryWhere.= ($queryWhere=='')?'':' and ';
+    $queryWhere.= getAccesResctictionClause($objectClass,$table);
+    
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -274,7 +279,6 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-//debugLog($query);
     $result=Sql::query($query);
     $nbRows=0;
     if ($print) {

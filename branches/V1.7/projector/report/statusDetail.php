@@ -51,7 +51,6 @@ $user=$_SESSION['user'];
 
 $query = "select count(id) as nb, id" . $refType . "Type as idType, idStatus ";
 $query .= " from " . $obj->getDatabaseTableName();
-//$query.=" where idProject in " . transformListIntoInClause($user->getVisibleProjects());
 $query.=" where " . getAccesResctictionClause($refType,false);
 if ($paramProject!='') {
   $query.=  "and idProject in " . getVisibleProjectsList(true, $paramProject) ;

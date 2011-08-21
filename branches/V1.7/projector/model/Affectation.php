@@ -14,6 +14,7 @@ class Affectation extends SqlElement {
   public $idle;
   public $description;
   public $_col_2_2;
+  
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -92,19 +93,21 @@ class Affectation extends SqlElement {
     foreach ($affList as $aff) {
       $result.= '<tr>';
       $result.= '<td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
-      $result.= '<td>'; 
+      $result.= '<td>';
+      $disp=''; 
       if ($nameDisp=='Resource') {
-        $result.=SqlList::getNameFromId('Resource', $aff->idResource);
+        $disp.=SqlList::getNameFromId('Resource', $aff->idResource);
       } else if ($nameDisp=='Project') {
-        $result.=SqlList::getNameFromId('Project', $aff->idProject);
+        $disp.=SqlList::getNameFromId('Project', $aff->idProject);
       } else{
-        $result.=SqlList::getNameFromId('Resource', $aff->idResource);
-        $result.=' - ';
-        $result.=SqlList::getNameFromId('Project', $aff->idProject);
+        $disp.=SqlList::getNameFromId('Resource', $aff->idResource);
+        $disp.=' - ';
+        $disp.=SqlList::getNameFromId('Project', $aff->idProject);
       }
       if ($aff->rate ) {
-        $result.=' (' . $aff->rate . '%)';
+        $disp.=' (' . $aff->rate . '%)';
       }
+      $result.=htmlDrawLink($aff,$disp);
       $result.= '</td></tr>';
     }
     $result .="</table>";

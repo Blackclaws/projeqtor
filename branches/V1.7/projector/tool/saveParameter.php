@@ -27,6 +27,7 @@ if ($type=='habilitation') {
         }
       }
     }
+    resetUser();
   }
   Habilitation::correctUpdates(); // Call correct updates 3 times, to assure all level updates
   Habilitation::correctUpdates();
@@ -97,6 +98,7 @@ if ($type=='habilitation') {
         }
       }
     }
+    resetUser();
   }
 } else if ($type=='userParameter') {
   $parameterList=Parameter::getParamtersList($type);
@@ -135,4 +137,9 @@ if ($status=='ERROR') {
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
 echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . $status .'">';
 
+function resetUser() {
+	$user=$_SESSION['user'];
+  $user->reset();
+	$_SESSION['user']=$user;
+}
 ?>

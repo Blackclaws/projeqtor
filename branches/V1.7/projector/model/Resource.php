@@ -358,5 +358,18 @@ class Resource extends SqlElement {
     return $result;
   }
   
+  public function drawMemberList($team) {
+    $result="<table>";
+    $crit=array('idTeam'=>$team);
+    $resList=$this->getSqlElementsFromCriteria($crit, false);
+    foreach ($resList as $res) {
+      $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+      $result.=htmlDrawLink($res);
+      $result.='</td></tr>';
+    }
+    $result .="</table>";
+    return $result; 
+  }
+  
 }
 ?>

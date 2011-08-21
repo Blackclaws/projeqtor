@@ -243,6 +243,7 @@ class User extends SqlElement {
       $result[$aff->idProject]=SqlList::getNameFromId('Project',$aff->idProject);
     }
     // Also get Project user have created
+    /* V1.7 => removed : it's not because user created the project that he is alowed to see all data about it
     $prj=new Project();
     $crit = array("idUser"=>$this->id);
     $prjList=$prj->getSqlElementsFromCriteria($crit,false);
@@ -251,6 +252,7 @@ class User extends SqlElement {
         $result[$prj->id]=$prj->name;
       }
     }
+    */
     $this->_affectedProjects=$result;
     return $this->_affectedProjects;
   }
@@ -342,6 +344,13 @@ class User extends SqlElement {
       $result='OK';
     }
     return $result;
+  }
+  
+  public function reset() {
+    $this->_accessControlRights=null;
+    $this->_accessControlVisibility=null;
+    $this->_visibleProjects=null;
+    $this->_hierarchicalViewOfVisibleProjects=null;
   }
 }
 ?>

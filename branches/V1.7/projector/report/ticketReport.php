@@ -46,7 +46,6 @@ if (! isset($includedReport)) {
   };
   
   $user=$_SESSION['user'];
-  $lstProj=$user->getVisibleProjects();
   
   $periodType="";
   $periodValue="";

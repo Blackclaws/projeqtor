@@ -65,7 +65,7 @@ foreach ($versionHistory as $vers) {
 }
 
 if ($currVersion=='0.0.0') {
-  debugLog ("create default project");
+  traceLog ("create default project");
   $proj=new Project();
   $proj->color='#0000FF';
   $proj->description='Default project' . "\n" .
@@ -73,7 +73,7 @@ if ($currVersion=='0.0.0') {
                      'Remove or rename this project when initializing your own data.';
   $proj->name='Default project';
   $result=$proj->save();
-  debugLog($result);
+  traceLog($result);
 }
 deleteDupplicate();
 

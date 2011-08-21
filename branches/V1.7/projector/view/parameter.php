@@ -83,6 +83,12 @@
             iconClass="dijitEditorIcon dijitEditorIconSave" >
               <script type="dojo/connect" event="onClick" args="evt">
         	submitForm("../tool/saveParameter.php","resultDiv", "parameterForm", true);
+<?php if ($type=='habilitation') {
+?>
+          forceRefreshMenu="<?php echo $type;?>";
+<?php	
+}
+?>
           </script>
           </button>
           <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveParameter")?></div>

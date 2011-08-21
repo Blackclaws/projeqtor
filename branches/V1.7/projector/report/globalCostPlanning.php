@@ -24,7 +24,7 @@ $queryWhere=getAccesResctictionClause('Activity','w');
 if ($idProject!='') {
   $queryWhere.=  " and w.idProject in " . getVisibleProjectsList(true, $idProject) ;
 } else {
-  //$queryWhere.=  "and w.idProject in " . getVisibleProjectsList() ;
+  //
 }
   
 $querySelect1= 'select sum(w.cost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 

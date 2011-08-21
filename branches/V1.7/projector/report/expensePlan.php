@@ -36,7 +36,7 @@ $queryWhere=getAccesResctictionClause('ProjectExpense','exp');
 if ($idProject!='') {
   $queryWhere.=  " and exp.idProject in " . getVisibleProjectsList(true, $idProject) ;
 } else {
-  //$queryWhere.=  "and exp.idProject in " . getVisibleProjectsList() ;
+  //
 }
   
 $querySelect1= 'select sum(exp.realAmount) as sumCost, exp.' . $scale . ' as scale , exp.idProject'; 
