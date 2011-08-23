@@ -280,6 +280,7 @@
 
       $statusColor=SqlList::getFieldFromId('Status', $elt->idStatus, 'color');
       $status=SqlList::getNameFromId('Status',$elt->idStatus);
+      $status=($status=='0')?'':$status;
       $goto="";
       if (securityCheckDisplayMenu(null,$class) 
       and securityGetAccessRightYesNo('menu' . $class, 'read', $elt)=="YES") {

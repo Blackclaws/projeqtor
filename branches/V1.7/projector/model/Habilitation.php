@@ -41,7 +41,12 @@ class Habilitation extends SqlElement {
    */
   static function correctUpdates() {
 
-    
+  	$query="insert into habilitation (idProfile, idMenu, allowAccess)";
+    $query.=" SELECT profile.id, menu.id, 0";
+    $query.=" FROM profile, menu";
+    $query.=" WHERE (profile.id, menu.id) not in (select idProfile, idMenu from habilitation)";
+  	$result=Sql::query($query);
+  	
     $habiObj=new Habilitation();
     $menuObj=new Menu();
     
@@ -50,11 +55,14 @@ class Habilitation extends SqlElement {
     $query.=" where h.idMenu = m.id and h.allowAccess=1 and m.idMenu<>0";
     $result=Sql::query($query);
     $critList="";
+    $critListInsert="";
     if (Sql::$lastQueryNbRows > 0) {
       $line = Sql::fetchLine($result);
       while ($line) {
         $critList.=($critList=='')?'(':',';
+        $critListInsert.=($critListInsert=='')?'(':',';
         $critList.="('" . $line['idMenu'] . "', '" . $line['idProfile'] . "')";
+        $critListInsert.="('" . $line['idMenu'] . "', '" . $line['idProfile'] . "')";
         $line = Sql::fetchLine($result);
       }
       $critList.=')';

@@ -16,11 +16,13 @@ if (array_key_exists('selected',$_REQUEST)) {
 	$selected=$_REQUEST['selected'];
 }
 
-$obj=new $refType($refId);
-
 $crit = array ( 'idle'=>'0');
-if ($refTypeDep<>"Project") {
-  $crit['idProject']=$obj->idProject;
+
+if ($refType) {
+  $obj=new $refType($refId);
+  if ($refTypeDep<>"Project") {
+    $crit['idProject']=$obj->idProject;
+  }
 }
 
 if (class_exists ($refTypeDep) ) {
@@ -31,7 +33,7 @@ if (class_exists ($refTypeDep) ) {
 }
 
 ?>
-<select id="dependencyRefIdDep" multiple="false" name="dependencyRefIdDep"
+<select id="dependencyRefIdDep" size="14" name="dependencyRefIdDep"
 onchange="enableWidget('dialogDependencySubmit');" ondblclick="saveDependency();" 
 class="selectList" >
  <?php

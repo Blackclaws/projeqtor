@@ -24,7 +24,7 @@ if ($originType) {
 }
 
 ?>
-<select id="originOriginId" multiple="false" name="originOriginId"
+<select id="originOriginId" size="14" name="originOriginId"
 onchange="enableWidget('dialogOriginSubmit');"  ondblclick="saveOrigin();"
 class="selectList" >
  <?php
