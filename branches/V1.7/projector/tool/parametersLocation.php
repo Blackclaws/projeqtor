@@ -1,2 +1,2 @@
 <?php 
-$parametersLocation = '../tool/../files/config/parameters.php';
+$parametersLocation = '../files/config/parameters.php';
