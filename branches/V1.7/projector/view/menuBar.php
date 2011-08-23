@@ -84,14 +84,20 @@
           $projObject=new Project($proj);
           echo htmlEncode($projObject->name);
         };
+        $prj=new Project();
+        $prj->id='*';
+        $cpt=$prj->countMenuProjectsList();
         ?>
       </span>
-      <span dojoType="dijit.TooltipDialog" class="white" xstyle="height:200px">       
+      <?php ?>
+      <span dojoType="dijit.TooltipDialog" class="white" <?php echo ($cpt>25)?'style="width:300px;"':'';?>>   
+        <div <?php echo ($cpt>25)?'style="height: 500px; overflow-y: scroll;"':'';?>>    
          <?php 
            $prj=new Project();
            $prj->id='*';
            echo $prj->drawSubProjects('selectedProject', false, true, true); 
-         ?>       
+         ?>
+        </div>       
       </span>
     </span>
     </td>

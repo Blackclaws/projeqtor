@@ -330,7 +330,7 @@ class Project extends SqlElement {
             if (! array_key_exists($prj->id,$reachableProjectsList)) {
               $reachLine=false;
             }
-          }
+          }  
         }
         if ($showLine) {
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
@@ -353,6 +353,29 @@ class Project extends SqlElement {
     return $result;
   }
 
+  public function countMenuProjectsList() {
+    $user=$_SESSION['user'];
+    if (! $user->_accessControlVisibility) {
+      $user->getAccessControlRights(); // Force setup of accessControlVisibility
+    }      
+    $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
+    $result=0;
+    $subList=$this->getSubProjects(true);
+    foreach ($subList as $prj) {
+      $showLine=true;
+      if ($user->_accessControlVisibility != 'ALL') {
+        if (! array_key_exists('#' . $prj->id,$visibleProjectsList)) {
+          $showLine=false;
+        }
+      }
+      if ($showLine) {
+        $result+=1;
+      	$result+=$prj->countMenuProjectsList(true);
+      }
+    }
+    return $result;
+  }
+  
   /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
    * @see persistence/SqlElement#save()
@@ -423,5 +446,6 @@ class Project extends SqlElement {
     }
     return $result;
   }
+  
 }
 ?>
