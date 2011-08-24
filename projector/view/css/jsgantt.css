@@ -22,15 +22,13 @@ div.scrollRight {
   border-right: 1px solid #aaaaaa;
 }
 
-.ganttLeftTitle, .ganttRightSubTitle,
-.ganttHeight, .ganttTaskrow, .ganttTaskgroup, .ganttTaskmile,
-.ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover,
-.ganttName, .ganttDetail, .ganttExpandOpened, .ganttExpandClosed, .ganttDetailNoborder {
+.ganttHeight, .ganttExpandOpened, .ganttExpandClosed, .ganttDetail {
   height: 20px;
 }
 
+.ganttLeftTitle, .ganttRightSubTitle, .gantHeightLeftTitle,
 .ganttLeftTopLine, .ganttRightTitle {
-  height: 22px;
+  height: 20px;
 }
 
 .ganttLeftTopLine {
@@ -167,7 +165,14 @@ div.scrollRight {
   cursor: pointer;
 }
 
-.ganttDetail, .ganttDetailNoborder {
+.ganttDetail {
+  border-top: #c0c0c0 0px solid;
+  font-size: 90%;  
+  padding: 0px; margin: 0px;
+  z-index: 10;   
+}
+
+.ganttDetailNoborder {
   border-top: #c0c0c0 1px solid;
   font-size: 90%;  
   padding: 0px; margin: 0px;
@@ -199,13 +204,13 @@ div.scrollRight {
   font-weight: normal;
   font-style: normal; 
 }
-..ghead { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px;   HEIGHT: 20px }
+..ghead { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px;   HEIGHT: 18px }
 
 ..ghead A { FONT-SIZE: 10px; COLOR: #000000; TEXT-DECORATION: none }
 
 ..gheadwkend A { FONT-SIZE: 10px; COLOR: #000000; TEXT-DECORATION: none }
 
-..gheadwkend { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid; WIDTH: 24px; HEIGHT: 20px; background-color: #cfcfcf }
+..gheadwkend { BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid; WIDTH: 24px; HEIGHT: 18px; background-color: #cfcfcf }
 
 ..gfiller { BORDER-TOP: #efefef 1px solid; BORDER-LEFT: #efefef 1px solid; WIDTH: 18px; HEIGHT: 18px }
 
