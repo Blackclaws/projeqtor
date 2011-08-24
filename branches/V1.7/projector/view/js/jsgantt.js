@@ -25,10 +25,12 @@ Copyright (c) 2009, Shlomy Gantz BlueBrick Inc. All rights reserved.
 */
 
 /**
-* JSGantt component is a UI control that displays gantt charts based by using CSS and HTML 
-* @module    jsgantt
-* @title    JSGantt
-*/
+ * JSGantt component is a UI control that displays gantt charts based by using
+ * CSS and HTML
+ * 
+ * @module jsgantt
+ * @title JSGantt
+ */
 
 var JSGantt; if (!JSGantt) JSGantt = {};
 var vTimeout = 0;
@@ -57,10 +59,10 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 	var vVisible  = 1;
 	var x1, y1, x2, y2;
 	var vClass=pClass;
-	//if (vGroup != 1){  
+	// if (vGroup != 1){
 	   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
 	   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
-	//} 
+	// }
   this.getID       = function(){ return vID; };
   this.getName     = function(){ return vName; };
   this.getStart    = function(){ return vStart;};
@@ -119,8 +121,8 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 };	
 	
 /**
-* Creates the gant chart.
-*/
+ * Creates the gant chart.
+ */
 JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   var vGanttVar = pGanttVar;
   var vDiv      = pDiv;
@@ -202,23 +204,29 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
 
 	/**
-	* Adds a TaskItem to the Gantt object task list array
-	* @method AddTaskItem
-	* @return {Void} */  
+	 * Adds a TaskItem to the Gantt object task list array
+	 * 
+	 * @method AddTaskItem
+	 * @return {Void}
+	 */  
   this.AddTaskItem = function(value) {
     vTaskList.push(value);
   };
 
   /**
-	* Returns task list Array
-	* @method getList
-	* @return {Array} */ 
+	 * Returns task list Array
+	 * 
+	 * @method getList
+	 * @return {Array}
+	 */ 
   this.getList   = function() { return vTaskList; };
 
 	/**
-	* Clears dependency lines between tasks
-	* @method clearDependencies
-	* @return {Void} */ 
+	 * Clears dependency lines between tasks
+	 * 
+	 * @method clearDependencies
+	 * @return {Void}
+	 */ 
   this.clearDependencies = function() {
     var parent = JSGantt.findObj('rightside');
     var depLine;
@@ -231,9 +239,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
   
 	/**
-	* Draw a straight line (colored one-pixel wide DIV), need to parameterize doc item
-	* @method sLine
-	* @return {Void} 	*/  
+	 * Draw a straight line (colored one-pixel wide DIV), need to parameterize
+	 * doc item
+	 * 
+	 * @method sLine
+	 * @return {Void}
+	 */  
   this.sLine = function(x1,y1,x2,y2) {
 	  vLeft = Math.min(x1,x2);
 	  vTop  = Math.min(y1,y2);
@@ -260,9 +271,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
 
 	/**
-	* Draw a diaganol line (calc line x,y pairs and draw multiple one-by-one sLines)
-	* @method dLine
-	* @return {Void} 	*/  
+	 * Draw a diaganol line (calc line x,y pairs and draw multiple one-by-one
+	 * sLines)
+	 * 
+	 * @method dLine
+	 * @return {Void}
+	 */  
   this.dLine = function(x1,y1,x2,y2) {
     var dx = x2 - x1;
     var dy = y2 - y1;
@@ -282,9 +296,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
 
 	/**
-	* Draw dependency line between two points (task 1 end -> task 2 start)
-	* @method drawDependency
-	* @return {Void} */ 
+	 * Draw dependency line between two points (task 1 end -> task 2 start)
+	 * 
+	 * @method drawDependency
+	 * @return {Void}
+	 */ 
   this.drawDependency =function(x1,y1,x2,y2) {
     if(x1 + 10 < x2){ 
       this.sLine(x1,y1,x1+4,y1);
@@ -308,11 +324,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
 
 	/**
-	* Draw all task dependencies 
-	* @method DrawDependencies
-	* @return {Void} */  
+	 * Draw all task dependencies
+	 * 
+	 * @method DrawDependencies
+	 * @return {Void}
+	 */  
   this.DrawDependencies = function () {
-    //First recalculate the x,y
+    // First recalculate the x,y
     this.CalcTaskXY();
     this.clearDependencies();
     var vList = this.getList();
@@ -333,9 +351,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
 
 	/**
-	* Find location of TaskItem based on the task ID
-	* @method getArrayLocationByID
-	* @return {Void} */  
+	 * Find location of TaskItem based on the task ID
+	 * 
+	 * @method getArrayLocationByID
+	 * @return {Void}
+	 */  
   this.getArrayLocationByID = function(pId)  {
     var vList = this.getList();
     for(var i = 0; i < vList.length; i++) {
@@ -346,9 +366,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
 
 	/**
-	* Draw gantt chart
-	* @method Draw
-	* @return {Void} */ 
+	 * Draw gantt chart
+	 * 
+	 * @method Draw
+	 * @return {Void}
+	 */ 
   this.Draw = function(){
   	var vMaxDate = new Date();
     var vMinDate = new Date();
@@ -389,8 +411,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vMinDate = JSGantt.getMinDate(vTaskList, vFormat,g.getStartDateView());
       vDefaultMinDate = JSGantt.getMinDate(vTaskList, vFormat);
       vMaxDate = JSGantt.getMaxDate(vTaskList, vFormat);
-      // Calculate chart width variables.  vColWidth can be altered manually to change each column width
-      // May be smart to make this a parameter of GanttChart or set it based on existing pWidth parameter
+      // Calculate chart width variables. vColWidth can be altered manually to
+		// change each column width
+      // May be smart to make this a parameter of GanttChart or set it based
+		// on existing pWidth parameter
       if(vFormat == 'day') {
         vColWidth = 18;
         vColUnit = 1;
@@ -475,7 +499,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        if( vTaskList[i].getOpen() == 1) {
 	          vLeftTable += '<div id="group_' + vID + '" class="ganttExpandOpened"' 
 	          + 'style="width:16px; height:13px;"'
-	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
+	          +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">'	         
 	          +'</div>' ;
 	        } else {
 	          vLeftTable += '<div id="group_' + vID + '" class="ganttExpandClosed"' 
@@ -498,7 +522,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 			  if(vShowRes ==1) {
 			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 
 	          +'<NOBR><span class="namePart' + vRowType + '">' + vTaskList[i].getResource() + '</span></NOBR>';
-			  vLeftTable +='</div>';
+			  // vLeftTable +='</div>';
 			  vLeftTable +='</TD>' ;
 			  }
 			  if(vShowDur ==1) { 
@@ -521,7 +545,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 			  }
 	      vLeftTable += '</TR>';
 	    }
-      vLeftTable += '<TR><TD style="width:15px;"></TD>';
+      vLeftTable	 += '<TR><TD style="width:15px;"></TD>';
 	    vLeftTable += '<TD colspan=4><NOBR>';
 
 	    // Draw format selector
@@ -540,10 +564,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	    
 	    vTmpDate.setHours(0);
 	    vTmpDate.setMinutes(0);
-	    // Major Date Header	    
+	    // Major Date Header
 	    while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {	
 	    	vStr = vTmpDate.getFullYear() + '';
-	      //vStr = vStr.substring(2,4);    
+	      // vStr = vStr.substring(2,4);
 	      if(vFormat == 'minute') {
 	        vRightTable += '<td class="ganttRightTitle" colspan=60>' ;
 	        vRightTable += JSGantt.formatDateStr(vTmpDate, vDateDisplayFormat) + ' ' + vTmpDate.getHours() + ':00 -' 
@@ -701,7 +725,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        vRightTable += '<DIV><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
 	          + '<TR id=childrow_' + vID + ' class="ganttTaskmile" '
 	          + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
-	          + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
+	          + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")><td>' + vItemRowStr + '</td></TR></TABLE></DIV>';
 	        // Build date string for Title
 	        vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
 	        vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000) ) + 0.25;
@@ -747,18 +771,17 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	          if (vMinDate>vDefaultMinDate) {
 	          	vTaskLeft = vTaskLeft - 1;
 	          }
-	          /* if (vFormat='day') {
-	            var tTime=new Date();
-	            tTime.setTime(Date.parse(vTaskList[i].getStart()));
-	            if (tTime.getMinutes() > 29) {
-	              vTaskLeft+=.5;
-	            }
-	          }*/
+	          /*
+				 * if (vFormat='day') { var tTime=new Date();
+				 * tTime.setTime(Date.parse(vTaskList[i].getStart())); if
+				 * (tTime.getMinutes() > 29) { vTaskLeft+=.5; } }
+				 */
 	        }
 	        var vBarLeft=Math.ceil(vTaskLeft * (vDayWidth) + 1);
 	        var vBarWidth=Math.ceil((vTaskRight) * (vDayWidth) - 1 );
 	        if (vBarWidth<10) vBarWidth=10;
-	        // Draw Group Bar  which has outer div with inner group div and several small divs to left and right 
+	        // Draw Group Bar which has outer div with inner group div and
+			// several small divs to left and right
 	        // to create angled-end indicators
 	        if( vTaskList[i].getGroup()) {
 	          vRightTable += '<DIV><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
@@ -803,7 +826,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	            +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
 	            + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
 	          vRightTable += vDivStr;               
-	          // Draw Task Bar  which has outer DIV with enclosed colored bar div, and opaque completion div
+	          // Draw Task Bar which has outer DIV with enclosed colored bar
+				// div, and opaque completion div
 		        vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:4px; '
 		          + ' left:' + vBarLeft + 'px; height:18px; '
 		          + ' width:' + vBarWidth + 'px">' 
@@ -833,21 +857,21 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 			vDiv.innerHTML = vMainTable;
 			dojo.parser.parse('GanttChartDIV');
 	  }
-  }; //this.draw
+  }; // this.draw
    
-}; //GanttChart
+}; // GanttChart
 
 
 /**
-* 
-@class 
-*/
+ * 
+ * @class
+ */
 
 /**
-* Checks whether browser is IE
-* 
-* @method isIE 
-*/
+ * Checks whether browser is IE
+ * 
+ * @method isIE
+ */
 JSGantt.isIE = function () {
 	if(typeof document.all != 'undefined') {
 		return true;
@@ -857,16 +881,22 @@ JSGantt.isIE = function () {
 };
 	
 /**
-* Recursively process task tree ... set min, max dates of parent tasks and identfy task level.
-*
-* @method processRows
-* @param pList {Array} - Array of TaskItem Objects
-* @param pID {Number} - task ID
-* @param pRow {Number} - Row in chart
-* @param pLevel {Number} - Current tree level
-* @param pOpen {Boolean}
-* @return void
-*/ 
+ * Recursively process task tree ... set min, max dates of parent tasks and
+ * identfy task level.
+ * 
+ * @method processRows
+ * @param pList
+ *            {Array} - Array of TaskItem Objects
+ * @param pID
+ *            {Number} - task ID
+ * @param pRow
+ *            {Number} - Row in chart
+ * @param pLevel
+ *            {Number} - Current tree level
+ * @param pOpen
+ *            {Boolean}
+ * @return void
+ */ 
 JSGantt.processRows = function(pList, pID, pRow, pLevel, pOpen) {
   var vMinDate = new Date();
   var vMaxDate = new Date();
@@ -914,24 +944,27 @@ JSGantt.processRows = function(pList, pID, pRow, pLevel, pOpen) {
     	  vMaxDate=vMinDate;
     	}
     }		
-    //pList[pRow].setStart(vMinDate);
-    //pList[pRow].setEnd(vMaxDate);
+    // pList[pRow].setStart(vMinDate);
+    // pList[pRow].setEnd(vMaxDate);
     pList[pRow].setNumKid(vNumKid);
-    //pList[pRow].setCompVal(Math.ceil(vCompSum/vNumKid));
+    // pList[pRow].setCompVal(Math.ceil(vCompSum/vNumKid));
   }
 };
 
 /**
-* Determine the minimum date of all tasks and set lower bound based on format
-*
-* @method getMinDate
-* @param pList {Array} - Array of TaskItem Objects
-* @param pFormat {String} - current format (minute,hour,day...)
-* @return {Datetime}
-*/
+ * Determine the minimum date of all tasks and set lower bound based on format
+ * 
+ * @method getMinDate
+ * @param pList
+ *            {Array} - Array of TaskItem Objects
+ * @param pFormat
+ *            {String} - current format (minute,hour,day...)
+ * @return {Datetime}
+ */
 JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
   var vDate = new Date();
-  //vDate.setFullYear(pList[0].getStart().getFullYear(), pList[0].getStart().getMonth(), pList[0].getStart().getDate());
+  // vDate.setFullYear(pList[0].getStart().getFullYear(),
+	// pList[0].getStart().getMonth(), pList[0].getStart().getDate());
   // Parse all Task End dates to find min
   for(i = 0; i < pList.length; i++) {
     if(pList[i].getStart()!=null && Date.parse(pList[i].getStart()) < Date.parse(vDate)) {
@@ -941,7 +974,8 @@ JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
   if (pStartDateView && vDate<pStartDateView) {
   	vDate=g.getStartDateView();
   }
-  // Adjust min date to specific format boundaries (first of week or first of month)
+  // Adjust min date to specific format boundaries (first of week or first of
+	// month)
   if ( pFormat== 'minute') {
     vDate.setHours(0);
     vDate.setMinutes(0);
@@ -977,21 +1011,26 @@ JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
 };
 
 /**
-* Used to determine the minimum date of all tasks and set lower bound based on format
-*
-* @method getMaxDate
-* @param pList {Array} - Array of TaskItem Objects
-* @param pFormat {String} - current format (minute,hour,day...)
-* @return {Datetime}
-*/
+ * Used to determine the minimum date of all tasks and set lower bound based on
+ * format
+ * 
+ * @method getMaxDate
+ * @param pList
+ *            {Array} - Array of TaskItem Objects
+ * @param pFormat
+ *            {String} - current format (minute,hour,day...)
+ * @return {Datetime}
+ */
 JSGantt.getMaxDate = function (pList, pFormat)
 {
   var vDate = new Date();
-  //vDate.setFullYear(pList[0].getEnd().getFullYear(), pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());         
+  // vDate.setFullYear(pList[0].getEnd().getFullYear(),
+	// pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());
   // Parse all Task End dates to find max
   for(i = 0; i < pList.length; i++) {
     if(pList[i].getEnd()!=null && Date.parse(pList[i].getEnd()) > Date.parse(vDate)) {
-      //vDate.setFullYear(pList[0].getEnd().getFullYear(), pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());
+      // vDate.setFullYear(pList[0].getEnd().getFullYear(),
+		// pList[0].getEnd().getMonth(), pList[0].getEnd().getDate());
       vDate.setTime(Date.parse(pList[i].getEnd()));
 		}	
 	}
@@ -1001,7 +1040,8 @@ JSGantt.getMaxDate = function (pList, pFormat)
   }	else if (pFormat == 'hour') {
     vDate.setHours(vDate.getHours() + 2);
   }	else if (pFormat=='day') {			
-  // Adjust max date to specific format boundaries (end of week or end of month)      
+  // Adjust max date to specific format boundaries (end of week or end of
+	// month)
     vDate.setDate(vDate.getDate() + 1);
     while(vDate.getDay() != 0) {
       vDate.setDate(vDate.getDate() + 1);
@@ -1034,49 +1074,43 @@ JSGantt.getMaxDate = function (pList, pFormat)
 
 
 /**
-* Returns an object from the current DOM
-*
-* @method findObj
-* @param theObj {String} - Object name
-* @param theDoc {Document} - current document (DOM)
-* @return {Object}
-*/
+ * Returns an object from the current DOM
+ * 
+ * @method findObj
+ * @param theObj
+ *            {String} - Object name
+ * @param theDoc
+ *            {Document} - current document (DOM)
+ * @return {Object}
+ */
 JSGantt.findObj = function (theObj, theDoc) {
-	/* BABYNUS : replace default JSGant function by Dojo function
-  var p, i, foundObj;
-  if(!theDoc) {
-  	theDoc = document;
-  }
-  if( (p = theObj.indexOf("?")) > 0 && parent.frames.length){
-    theDoc = parent.frames[theObj.substring(p+1)].document;
-    theObj = theObj.substring(0,p);
-  }
-  if(!(foundObj = theDoc[theObj]) && theDoc.all) {
-  	foundObj = theDoc.all[theObj];
-  }
-  for (i=0; !foundObj && i < theDoc.forms.length; i++) {
-  	foundObj = theDoc.forms[i][theObj];
-  }
-  for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) {
-  	foundObj = JSGantt.findObj(theObj,theDoc.layers[i].document);
-  }
-  if(!foundObj && document.getElementById) {
-  	foundObj = document.getElementById(theObj);
-  }
-  return foundObj;
-  */
+	/*
+	 * BABYNUS : replace default JSGant function by Dojo function var p, i,
+	 * foundObj; if(!theDoc) { theDoc = document; } if( (p =
+	 * theObj.indexOf("?")) > 0 && parent.frames.length){ theDoc =
+	 * parent.frames[theObj.substring(p+1)].document; theObj =
+	 * theObj.substring(0,p); } if(!(foundObj = theDoc[theObj]) && theDoc.all) {
+	 * foundObj = theDoc.all[theObj]; } for (i=0; !foundObj && i <
+	 * theDoc.forms.length; i++) { foundObj = theDoc.forms[i][theObj]; }
+	 * for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) {
+	 * foundObj = JSGantt.findObj(theObj,theDoc.layers[i].document); }
+	 * if(!foundObj && document.getElementById) { foundObj =
+	 * document.getElementById(theObj); } return foundObj;
+	 */
 	return dojo.byId(theObj);
 };
 
 
 /**
-* Change display format of current gantt chart
-*
-* @method changeFormat
-* @param pFormat {String} - Current format (minute,hour,day...)
-* @param ganttObj {GanttChart} - The gantt object
-* @return {void}
-*/
+ * Change display format of current gantt chart
+ * 
+ * @method changeFormat
+ * @param pFormat
+ *            {String} - Current format (minute,hour,day...)
+ * @param ganttObj
+ *            {GanttChart} - The gantt object
+ * @return {void}
+ */
 JSGantt.changeFormat =      function(pFormat,ganttObj) {
   if(ganttObj) {
   	ganttObj.resetStartDateView();
@@ -1089,13 +1123,15 @@ JSGantt.changeFormat =      function(pFormat,ganttObj) {
 
 
 /**
-* Open/Close and hide/show children of specified task
-*
-* @method folder
-* @param pID {Number} - Task ID
-* @param ganttObj {GanttChart} - The gantt object
-* @return {void}
-*/
+ * Open/Close and hide/show children of specified task
+ * 
+ * @method folder
+ * @param pID
+ *            {Number} - Task ID
+ * @param ganttObj
+ *            {GanttChart} - The gantt object
+ * @return {void}
+ */
 JSGantt.folder= function (pID,ganttObj) {
   var vList = ganttObj.getList();
   for(i = 0; i < vList.length; i++) {
@@ -1114,12 +1150,15 @@ JSGantt.folder= function (pID,ganttObj) {
 };
 
 /**
-* Hide children of a task
-* @method hide
-* @param pID {Number} - Task ID
-* @param ganttObj {GanttChart} - The gantt object
-* @return {void}
-*/
+ * Hide children of a task
+ * 
+ * @method hide
+ * @param pID
+ *            {Number} - Task ID
+ * @param ganttObj
+ *            {GanttChart} - The gantt object
+ * @return {void}
+ */
 JSGantt.hide=function (pID,ganttObj) {
    var vList=ganttObj.getList();
    var vID=0;
@@ -1137,12 +1176,15 @@ JSGantt.hide=function (pID,ganttObj) {
 };
 
 /**
-* Show children of a task
-* @method show
-* @param pID {Number} - Task ID
-* @param ganttObj {GanttChart} - The gantt object
-* @return {void}
-*/
+ * Show children of a task
+ * 
+ * @method show
+ * @param pID
+ *            {Number} - Task ID
+ * @param ganttObj
+ *            {GanttChart} - The gantt object
+ * @return {void}
+ */
 JSGantt.show =  function (pID, ganttObj) {
   var vList = ganttObj.getList();
   var vID   = 0;
@@ -1166,29 +1208,34 @@ JSGantt.show =  function (pID, ganttObj) {
 };
 
 /**
-* Handles click events on task name, currently opens a new window
-*
-* @method taskLink
-* @param pRef {String} - Javascript code to be executed !!! Must not include " char // BABYNUS 2009-09-10 : change text
-// BABYNUS 2009-09-10 : remove 2 lines
-* @return {void}
-*/
+ * Handles click events on task name, currently opens a new window
+ * 
+ * @method taskLink
+ * @param pRef
+ *            {String} - Javascript code to be executed !!! Must not include "
+ *            char // BABYNUS 2009-09-10 : change text // BABYNUS 2009-09-10 :
+ *            remove 2 lines
+ * @return {void}
+ */
 JSGantt.taskLink = function(pRef){
   eval(pRef); // BABYNUS 2009-09-10 : add this line
 };
 
 /**
-* Parse dates based on gantt date format setting as defined in JSGantt.GanttChart.setDateInputFormat()
-*
-* @method parseDateStr
-* @param pDateStr {String} - A string that contains the date (i.e. "01/01/09")
-* @param pFormatStr {String} - The date format (mm/dd/yyyy,dd/mm/yyyy,yyyy-mm-dd)
-* @return {Datetime}
-*/
+ * Parse dates based on gantt date format setting as defined in
+ * JSGantt.GanttChart.setDateInputFormat()
+ * 
+ * @method parseDateStr
+ * @param pDateStr
+ *            {String} - A string that contains the date (i.e. "01/01/09")
+ * @param pFormatStr
+ *            {String} - The date format (mm/dd/yyyy,dd/mm/yyyy,yyyy-mm-dd)
+ * @return {Datetime}
+ */
 JSGantt.parseDateStr = function(pDateStr,pFormatStr) {
   if (pDateStr==null || pDateStr=='' || pDateStr==' ') return null;
 	var vDate =new Date();	
-  //vDate.setTime( Date.parse(pDateStr));
+  // vDate.setTime( Date.parse(pDateStr));
   switch(pFormatStr) {
 	  case 'mm/dd/yyyy':
 	    var vDateParts = pDateStr.split('/');
@@ -1205,7 +1252,8 @@ JSGantt.parseDateStr = function(pDateStr,pFormatStr) {
 	  case 'yyyy-mm-dd':
 	    var vDateParts = pDateStr.split('-');
 	    if (vDateParts.length==3) {
-        vDate.setFullYear(parseInt(vDateParts[0], 10), parseInt(vDateParts[1], 10) - 1, parseInt(vDateParts[2], 10)); // BABYNUS CORRECTION
+        vDate.setFullYear(parseInt(vDateParts[0], 10), parseInt(vDateParts[1], 10) - 1, parseInt(vDateParts[2], 10)); // BABYNUS
+																														// CORRECTION
 	    }
       break;
   }
@@ -1213,13 +1261,16 @@ JSGantt.parseDateStr = function(pDateStr,pFormatStr) {
 };
 
 /**
-* Display a formatted date based on gantt date format setting as defined in JSGantt.GanttChart.setDateDisplayFormat()
-*
-* @method formatDateStr
-* @param pDate {Date} - A javascript date object
-* @param pFormatStr {String} - The date format (mm/dd/yyyy,dd/mm/yyyy,yyyy-mm-dd...)
-* @return {String}
-*/
+ * Display a formatted date based on gantt date format setting as defined in
+ * JSGantt.GanttChart.setDateDisplayFormat()
+ * 
+ * @method formatDateStr
+ * @param pDate
+ *            {Date} - A javascript date object
+ * @param pFormatStr
+ *            {String} - The date format (mm/dd/yyyy,dd/mm/yyyy,yyyy-mm-dd...)
+ * @return {String}
+ */
 JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
 	if (pDate==null || pDate=='') return '-';
 	var vYear4Str = pDate.getFullYear() + '';
@@ -1229,7 +1280,8 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
   var vDayStr   = pDate.getDate() + '';
   if (vDayStr.length==1) vDayStr="0"+vDayStr;
   var onejan = new Date(pDate.getFullYear(),0,1);
-	//var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) + onejan.getDay()+1)/7) + '';
+	// var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) +
+	// onejan.getDay()+1)/7) + '';
 	var vWeekNum = dojo.date.locale.format(pDate, {datePattern: "w", selector: "date"});
   var vDateStr = "";	
   switch(pFormatStr) {
@@ -1277,20 +1329,24 @@ Date.prototype.getWeek = function() {
 }
 
 /**
-* Parse an external XML file containing task items.
-*
-* @method parseXML
-* @param ThisFile {String} - URL to XML file
-* @param pGanttVar {Gantt} - Gantt object
-* @return {void}
-*/
+ * Parse an external XML file containing task items.
+ * 
+ * @method parseXML
+ * @param ThisFile
+ *            {String} - URL to XML file
+ * @param pGanttVar
+ *            {Gantt} - Gantt object
+ * @return {void}
+ */
 JSGantt.parseXML = function(ThisFile,pGanttVar){
-	var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;   // Is this Chrome 	
-	try { //Internet Explorer  
+	var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;   // Is
+																				// this
+																				// Chrome
+	try { // Internet Explorer
 		xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 	}
 	catch(e) {
-		try { //Firefox, Mozilla, Opera, Chrome etc. 
+		try { // Firefox, Mozilla, Opera, Chrome etc.
 			if (is_chrome==false) {  xmlDoc=document.implementation.createDocument("","",null); }
 		}
 		catch(e) {
@@ -1300,39 +1356,46 @@ JSGantt.parseXML = function(ThisFile,pGanttVar){
 	}
 	if (is_chrome==false) { 	// can't use xmlDoc.load in chrome at the moment
 		xmlDoc.async=false;
-		xmlDoc.load(ThisFile);		// we can use  loadxml
+		xmlDoc.load(ThisFile);		// we can use loadxml
 		JSGantt.AddXMLTask(pGanttVar);
 		xmlDoc=null;			// a little tidying
 		Task = null;
 	}
 	else {
 		JSGantt.ChromeLoadXML(ThisFile,pGanttVar);	
-		ta=null;	// a little tidying	
+		ta=null;	// a little tidying
 	}
 };
 
 /**
-* Add a task based on parsed XML doc
-*
-* @method AddXMLTask
-* @param pGanttVar {Gantt} - Gantt object
-* @return {void}
-*/
+ * Add a task based on parsed XML doc
+ * 
+ * @method AddXMLTask
+ * @param pGanttVar
+ *            {Gantt} - Gantt object
+ * @return {void}
+ */
 JSGantt.AddXMLTask = function(pGanttVar){
 	Task=xmlDoc.getElementsByTagName("task");
-	var n = xmlDoc.documentElement.childNodes.length;	// the number of tasks. IE gets this right, but mozilla add extra ones (Whitespace)
+	var n = xmlDoc.documentElement.childNodes.length;	// the number of tasks.
+														// IE gets this right,
+														// but mozilla add extra
+														// ones (Whitespace)
 	for(var i=0;i<n;i++) {
-		// optional parameters may not have an entry (Whitespace from mozilla also returns an error )
+		// optional parameters may not have an entry (Whitespace from mozilla
+		// also returns an error )
 		// Task ID must NOT be zero other wise it will be skipped
 		try { pID = Task[i].getElementsByTagName("pID")[0].childNodes[0].nodeValue;
 		} catch (error) {pID =0;}
-		pID *= 1;	// make sure that these are numbers rather than strings in order to make jsgantt.js behave as expected.
+		pID *= 1;	// make sure that these are numbers rather than strings in
+					// order to make jsgantt.js behave as expected.
 		if(pID!=0){
 	 		try { 
 	 			pName = Task[i].getElementsByTagName("pName")[0].childNodes[0].nodeValue;
 			} catch (error) {
 				pName ="No Task Name";
-		  }			// If there is no corresponding entry in the XML file the set a default.		
+		  }			// If there is no corresponding entry in the XML file the
+					// set a default.
 			try { 
 				pColor = Task[i].getElementsByTagName("pColor")[0].childNodes[0].nodeValue;
 			} catch (error) {
@@ -1408,13 +1471,15 @@ JSGantt.AddXMLTask = function(pGanttVar){
 };
 
 /**
-* Load an XML document in Chrome
-*
-* @method ChromeLoadXML
-* @param ThisFile {String} - URL to XML file
-* @param pGanttVar {Gantt} - Gantt object
-* @return {void}
-*/
+ * Load an XML document in Chrome
+ * 
+ * @method ChromeLoadXML
+ * @param ThisFile
+ *            {String} - URL to XML file
+ * @param pGanttVar
+ *            {Gantt} - Gantt object
+ * @return {void}
+ */
 JSGantt.ChromeLoadXML = function(ThisFile,pGanttVar){
 // Thanks to vodobas at mindlence,com for the initial pointers here.
 	XMLLoader = new XMLHttpRequest();
@@ -1426,17 +1491,18 @@ JSGantt.ChromeLoadXML = function(ThisFile,pGanttVar){
 };
 
 /**
-* Parse XML document in Chrome
-*
-* @method ChromeXMLParse
-* @param pGanttVar {Gantt} - Gantt object
-* @return {void}
-*/
+ * Parse XML document in Chrome
+ * 
+ * @method ChromeXMLParse
+ * @param pGanttVar
+ *            {Gantt} - Gantt object
+ * @return {void}
+ */
 JSGantt.ChromeXMLParse = function (pGanttVar){
 // Manually parse the file as it is loads quicker
 	if (XMLLoader.readyState == 4) {
 		var ta=XMLLoader.responseText.split(/<task>/gi);
-		var n = ta.length;	// the number of tasks. 
+		var n = ta.length;	// the number of tasks.
 		for(var i=1;i<n;i++) {
 			Task = ta[i].replace(/<[/]p/g, '<p');	
 			var te = Task.split(/<pid>/i);	
@@ -1540,12 +1606,13 @@ JSGantt.ChromeXMLParse = function (pGanttVar){
 };
 
 /**
-* Used for benchmarking performace
-*
-* @method benchMark
-* @param pItem {TaskItem} - TaskItem object
-* @return {void}
-*/
+ * Used for benchmarking performace
+ * 
+ * @method benchMark
+ * @param pItem
+ *            {TaskItem} - TaskItem object
+ * @return {void}
+ */
 JSGantt.benchMark = function(pItem){
    var vEndTime=new Date().getTime();
    alert(pItem + ': Elapsed time: '+((vEndTime-vBenchTime)/1000)+' seconds.');
@@ -1553,13 +1620,11 @@ JSGantt.benchMark = function(pItem){
 };
 
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {
-  /*if( pPos == 'right' ) {
-  	vID = 'child_' + pID;
-  } else {
-  	vID = 'childrow_' + pID;
-  }
-  var vRowObj = JSGantt.findObj(vID);
-  if (vRowObj) vRowObj.className = "ganttTask" + pType + " ganttRowHover";*/
+  /*
+	 * if( pPos == 'right' ) { vID = 'child_' + pID; } else { vID = 'childrow_' +
+	 * pID; } var vRowObj = JSGantt.findObj(vID); if (vRowObj) vRowObj.className =
+	 * "ganttTask" + pType + " ganttRowHover";
+	 */
 	var vRowObj1 = JSGantt.findObj('child_' + pID);
 	if (vRowObj1) vRowObj1.className = "ganttTask" + pType + " ganttRowHover";
 	var vRowObj2 = JSGantt.findObj('childrow_' + pID);
@@ -1567,15 +1632,11 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
 };
 
 JSGantt.ganttMouseOut = function(pID, pPos, pType) {
-  /*if( pPos == 'right' ) {
-  	vID = 'child_' + pID;
-  } else {
-  	vID = 'childrow_' + pID;
-  }
-  var vRowObj = JSGantt.findObj(vID);
-  if (vRowObj) {
-  	vRowObj.className = "ganttTask" + pType;
-  }*/
+  /*
+	 * if( pPos == 'right' ) { vID = 'child_' + pID; } else { vID = 'childrow_' +
+	 * pID; } var vRowObj = JSGantt.findObj(vID); if (vRowObj) {
+	 * vRowObj.className = "ganttTask" + pType; }
+	 */
 	var vRowObj1 = JSGantt.findObj('child_' + pID);
 	if (vRowObj1) vRowObj1.className = "ganttTask" + pType;
 	var vRowObj2 = JSGantt.findObj('childrow_' + pID);
@@ -1587,7 +1648,8 @@ JSGantt.i18n = function (message) {
 };
 
 JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
-  // DRAW the date format selector at bottom left.  Another potential GanttChart parameter to hide/show this selector
+  // DRAW the date format selector at bottom left. Another potential
+	// GanttChart parameter to hide/show this selector
   var vLeftTable='';
   vLeftTable +='&nbsp;' + JSGantt.i18n('periodScale') + '&nbsp;:&nbsp;&nbsp;';
   if (vFormatArr.join().indexOf("minute")!=-1) { 
