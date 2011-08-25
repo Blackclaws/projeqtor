@@ -168,3 +168,5 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 ALTER TABLE `${prefix}projet` ADD `idContact` int(12) unsigned DEFAULT NULL;
 ALTER TABLE `${prefix}projet` ADD ADD projectContact (idContact);
+
+ALTER TABLE `${prefix}plannedwork` CHANGE `work` `work` DECIMAL(5,2) UNSIGNED;

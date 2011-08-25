@@ -404,6 +404,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vWidth=this.getWidth();
     var vLeftWidth = 15 + vNameWidth + vResourceWidth + vDurationWidth + vProgressWidth + vDateWidth + vDateWidth;
     var vRightWidth = vWidth - vLeftWidth - 18;
+    var ffSpecificHeight=(dojo.isFF)?' class="ganttHeight"':'';
+    
     if(vTaskList.length > 0) {
 		  // Process all tasks preset parent date and completion %
       JSGantt.processRows(vTaskList, 0, -1, 1, 1);
@@ -558,7 +560,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	    vRightTable = 
 	      '<TD valign="top">' +
 	      '<DIV class="scrollRight" style="width: ' + vRightWidth + 'px;" id="rightside">' +
-	      '<TABLE style="width: ' + vChartWidth + 'px;">' +
+	      '<DIV '+((dojo.isFF)?'style="height:39px':'')+'"><TABLE style="width: ' + vChartWidth + 'px;">' +
 	      '<TBODY><TR class="ganttRightTitle">';
 	    vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
 	    
@@ -702,7 +704,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		    }
 		  }
 	    vRightTable += vDateRowStr + '</TR>';
-	    vRightTable += '</TBODY></TABLE>';
+	    vRightTable += '</TBODY></TABLE></DIV>';
 	    // Draw each row
 	    for(i = 0; i < vTaskList.length; i++) {
 	      vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
@@ -722,16 +724,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		      vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative;">';
 	      }
 	      if( vTaskList[i].getMile() ) {
-	        vRightTable += '<DIV><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
+	        vRightTable += '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
 	          + '<TR id=childrow_' + vID + ' class="ganttTaskmile" '
 	          + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
-	          + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")><td>' + vItemRowStr + '</td></TR></TABLE></DIV>';
+	          + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
 	        // Build date string for Title
 	        vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
 	        vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000) ) + 0.25;
-          if (vMinDate>vDefaultMinDate) {
-          	vTaskLeft = vTaskLeft - 1;
-          }
+            if (vMinDate>vDefaultMinDate) {
+          	  vTaskLeft = vTaskLeft - 1;
+            }
 	        vTaskRight = 1;
 	        vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:0px; ' 
 	          + 'color:#' + vTaskList[i].getColor() + ';' 
@@ -784,7 +786,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 			// several small divs to left and right
 	        // to create angled-end indicators
 	        if( vTaskList[i].getGroup()) {
-	          vRightTable += '<DIV><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
+	          vRightTable += '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
 	            + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
 	            + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
 	            + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
@@ -821,7 +823,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	          };
 	          vRightTable += '</div>' ;
 	        } else { // task (not a milstone, not a group)
-	          vDivStr = '<DIV><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;" >' 
+	          vDivStr = '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;" >' 
 	            + '<TR id=childrow_' + vID + ' class="ganttTaskrow" '
 	            +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
 	            + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
