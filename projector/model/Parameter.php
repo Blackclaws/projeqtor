@@ -82,6 +82,26 @@ class Parameter extends SqlElement {
       $colScript .= '  newValue=this.value;';
       $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';    
+    } else  if ($colName=="printInNewWindow"){
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  newValue=this.value;';
+      $colScript .= '  if (newValue=="YES") {'; 
+      $colScript .= '    printInNewWindow=true;';
+      $colScript .= '  } else {';
+      $colScript .= '    printInNewWindow=false;';
+      $colScript .= '  }';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '</script>';
+    } else  if ($colName=="pdfInNewWindow"){
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  newValue=this.value;';
+      $colScript .= '  if (newValue=="YES") {'; 
+      $colScript .= '    pdfInNewWindow=true;';
+      $colScript .= '  } else {';
+      $colScript .= '    pdfInNewWindow=false;';
+      $colScript .= '  }';
+      $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
+      $colScript .= '</script>';
     } else {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  newValue=this.value;';
@@ -174,6 +194,14 @@ class Parameter extends SqlElement {
                     'AUTO'=>i18n('displayYesShowOnMouse'),
                     'CLICK'=>i18n('displayYesShowOnClick'));
         break;
+      case 'printInNewWindow':
+        $list=array('NO'=>i18n('displayNo'),
+                    'YES'=>i18n('displayYes'));
+        break;
+      case 'pdfInNewWindow':
+        $list=array('YES'=>i18n('displayYes'),
+                    'NO'=>i18n('displayNo'));
+        break;
     } 
     return $list;
   }
@@ -189,7 +217,9 @@ class Parameter extends SqlElement {
                            "displayNote"=>"list",
                            "displayHistory"=>"list",
                            "hideMenu"=>"list",
-                           "switchedMode"=>"list"                   
+                           "switchedMode"=>"list",
+                           "printInNewWindow"=>"list",
+                           "pdfInNewWindow"=>"list"                      
         );
         break;
     }

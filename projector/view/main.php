@@ -77,7 +77,8 @@ scriptLog('   ->/view/main.php');
     var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
-    var printInNewWindow=<?php echo (isset($printInNewWindow)?getBooleanValueAsString($printInNewWindow):'false');?>;
+    var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
+    var pdfInNewWindow=<?php echo (getPrintInNewWindow('pdf'))?'true':'false';?>;
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
     dojo.addOnLoad(function(){
