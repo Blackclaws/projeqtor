@@ -6,7 +6,7 @@
    set_time_limit(300);
    ob_start();
    $outMode='html';
-   $printInNewPage=false;
+   $printInNewPage=getPrintInNewWindow();
    if (array_key_exists('outMode', $_REQUEST)) {
      if ($_REQUEST['outMode']) {
        $outMode=$_REQUEST['outMode'];
@@ -15,7 +15,7 @@
    if ($outMode!='pdf') {
      header ('Content-Type: text/html; charset=UTF-8');
    } else {
-     $printInNewPage=true;
+     $printInNewPage=getPrintInNewWindow('pdf');
      if (isset($paramMemoryLimitForPDF)) {
        $limit=$paramMemoryLimitForPDF;	
      } else {

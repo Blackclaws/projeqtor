@@ -37,4 +37,3 @@ $logFile = '../files/logs/projector_${date}.log';
 $logLevel = '4';
 $paramDebugMode = 'false';
 $paramMemoryLimitForPDF = '512';
-$printInNewWindow=false;

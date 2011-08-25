@@ -1109,4 +1109,16 @@ function getAppRoot() {
   }
   return $appRoot;
 }
+
+function getPrintInNewWindow($mode='print') {
+  $printInNewWindow=($mode=='pdf')?true:false;
+  if (array_key_exists($mode.'InNewWindow', $_SESSION)) {
+    if ($_SESSION[$mode.'InNewWindow']=='YES') {
+      $printInNewWindow=true;
+    } else if ($_SESSION[$mode.'InNewWindow']=='NO') {
+    	$printInNewWindow=false;
+    }
+  }
+  return $printInNewWindow;
+}
 ?>
