@@ -807,7 +807,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	            + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>' 
 	            + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>' 
 	            + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' 
-	            + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>'; 
+	            + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';  
 	          if( g.getCaptionType() ) {
 	            vCaptionStr = '';
 	            switch( g.getCaptionType() ) {           
