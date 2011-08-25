@@ -524,7 +524,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 			  if(vShowRes ==1) {
 			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 
 	          +'<NOBR><span class="namePart' + vRowType + '">' + vTaskList[i].getResource() + '</span></NOBR>';
-			  // vLeftTable +='</div>';
+			  //vLeftTable +='</div>';
 			  vLeftTable +='</TD>' ;
 			  }
 			  if(vShowDur ==1) { 
@@ -559,8 +559,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	    // Draw the Chart Rows
 	    vRightTable = 
 	      '<TD valign="top">' +
-	      '<DIV class="scrollRight" style="width: ' + vRightWidth + 'px;" id="rightside">' +
-	      '<DIV '+((dojo.isFF)?'style="height:39px':'')+'"><TABLE style="width: ' + vChartWidth + 'px;">' +
+	      '<DIV class="scrollRight" style="width: ' + vRightWidth + 'px;" id="rightside">';
+	    if (dojo.isFF) {vRightTable += '<DIV '+((dojo.isFF)?'style="height:39px':'')+'">';}
+	    vRightTable += '<TABLE style="width: ' + vChartWidth + 'px;">' +
 	      '<TBODY><TR class="ganttRightTitle">';
 	    vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
 	    
@@ -704,7 +705,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		    }
 		  }
 	    vRightTable += vDateRowStr + '</TR>';
-	    vRightTable += '</TBODY></TABLE></DIV>';
+	    vRightTable += '</TBODY></TABLE>';
+	    if (dojo.isFF) {vRightTable +='</DIV>';}
 	    // Draw each row
 	    for(i = 0; i < vTaskList.length; i++) {
 	      vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
