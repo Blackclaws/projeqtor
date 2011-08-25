@@ -22,11 +22,11 @@ div.scrollRight {
   border-right: 1px solid #aaaaaa;
 }
 
-.ganttDetail {
-	height:20px;
+.ganttDetail, .ganttExpandOpened, .ganttExpandClosed {
+	height: 20px;
 }
-.ganttHeight, .ganttExpandOpened, .ganttExpandClosed {
-  height: 18px;
+.ganttHeight {
+  height: 20px;
 }
 
 .ganttLeftTitle, .ganttRightSubTitle, .gantHeightLeftTitle,

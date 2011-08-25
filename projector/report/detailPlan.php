@@ -1,5 +1,5 @@
 <?php
-//echo "detailPlan.php";
+echo "detailPlan.php";
 include_once '../tool/projector.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -33,10 +33,17 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
+if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
+  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+}
 include "header.php";
 
 $where=getAccesResctictionClause('Activity',false);
-
+if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
+  $where.= ($where=='')?'':' and ';
+  $where.=  " idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+}
+  
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
