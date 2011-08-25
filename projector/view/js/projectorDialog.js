@@ -267,8 +267,9 @@ function showPrint (page, context, comboName, outMode) {
 		var newWin=window.open("print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params);
 		hideWait();
 	} else {
-	  window.frames['printFrame'].location.href="preparePreview.php";	
-	  window.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	  // Fixing IE9 bug
+	  //window.frames['printFrame'].location.href="print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	  dojo.byId("printFrame").src = "print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
 	  if (outMode=='pdf') {
 		  hideWait();
 	  }
