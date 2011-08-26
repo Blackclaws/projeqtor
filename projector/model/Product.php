@@ -101,11 +101,13 @@ class Product extends SqlElement {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='projects') {
+    if ($item=='versions') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       if ($this->id) {
-        //$result .= $this->drawSubProjects();
+        $vers=new Version();
+        $crit=array('idProduct'=>$this->id);
+      	$result .= $vers->drawVersionsList($crit);
       }
       $result .="</td></tr></table>";
       return $result;

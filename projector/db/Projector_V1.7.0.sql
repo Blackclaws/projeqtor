@@ -146,7 +146,9 @@ ADD INDEX versionResource (idResource);
 CREATE TABLE `${prefix}versionproject` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT NULL,
-  `idVersion` int(12) unsigned DEFAULT NULL
+  `idVersion` int(12) unsigned DEFAULT NULL,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

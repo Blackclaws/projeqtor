@@ -204,6 +204,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawLinksFromObject($val, $obj,$linkClass);
     } else if (substr($col,0,11)=='_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
+    } else if (substr($col,0,15)=='_VersionProject') { // Display Version Project
+      drawVersionProjectsFromObject($val, $obj);
     } else if (substr($col,0,11)=='_Dependency') { // Display Dependencies
       $depType=(strlen($col)>11)?substr($col,12):"";
       drawDependenciesFromObject($val, $obj, $depType);
@@ -1389,6 +1391,77 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
   echo '</table></td></tr>';
 }
 
+
+function drawVersionProjects($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  $pe=new PlanningElement();
+  $pe->setVisibility();
+  $workVisible=($pe->_workVisibility=='ALL')?true:false;
+  if (! $workVisible) return;
+  if ($obj->idle==1) {$canUpdate=false;}
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  $funcList=' ';
+  foreach($list as $rcost) {
+    $key='#' . $rcost->idRole . '#';
+    if (strpos($funcList, $key)===false) {
+      $funcList.=$key;
+    }
+  }
+  if (! $print) {
+    echo '<td class="assignHeader" style="width:10%">';
+    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\''. $funcList . '\');" title="' . i18n('addResourceCost') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:' . (($print)?'40':'30') . '%">' . i18n('colIdRole') . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colCost'). '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colStartDate'). '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colEndDate'). '</td>';
+  
+  echo '</tr>';
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  foreach($list as $rcost) {
+    echo '<tr>';
+    if (! $print) {
+      echo '<td class="assignData" style="text-align:center;">';
+      if (! $rcost->endDate and $canUpdate and ! $print) {  
+        echo '  <img src="css/images/smallButtonEdit.png" ' 
+        . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" 
+        . ",'" . $rcost->idResource . "'"
+        . ",'" . $rcost->idRole . "'" 
+        . ",'" . $fmt->format($rcost->cost) . "'"
+        . ",'" . $rcost->startDate . "'"
+        . ",'" . $rcost->endDate . "'"
+        . ');" ' 
+        . 'title="' . i18n('editResourceCost') . '" class="smallButton"/> ';      
+      }
+      if (! $rcost->endDate and $canUpdate and ! $print)  {
+        echo '  <img src="css/images/smallButtonRemove.png" ' 
+        . 'onClick="removeResourceCost(' . "'" . $rcost->id . "'"
+        . ",'" . $rcost->idRole . "'"
+        . ",'" . SqlList::getNameFromId('Role', $rcost->idRole)  . "'" 
+        . ",'" . htmlFormatDate($rcost->startDate) . "'" 
+        . ');" ' 
+        . 'title="' . i18n('removeResourceCost') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    }
+    echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
+    echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
+    echo " / " . i18n('shortDay'); 
+    echo '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';
+    echo '</tr>';
+  }
+  echo '</table></td></tr>';
+}
 // fetch information depending on, request
 $objClass=$_REQUEST['objectClass'];
 if (! isset($noselect)) { 
