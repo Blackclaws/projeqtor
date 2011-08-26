@@ -3,25 +3,21 @@
  * Project is the main object of the project managmement.
  * Almost all other objects are linked to a given project.
  */ 
-class Version extends SqlElement {
+class VersionProject extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $idProduct;
-  public $name;
-  public $idContact;
-  public $idResource;
-  public $creationDate;
+  public $idVersion;
+  public $idProject;
+  public $startDate;
+  public $endDate;
   public $idle;
-  public $description;
-  public $_col_2_2_Versionproject_projects;
-  public $_VersionProject=array();
-  
+
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="name" width="80%" >${name}</th>
+    <th field="nameProject" width="10%" >${idProject}</th>
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -102,29 +98,15 @@ class Version extends SqlElement {
    */
   public function drawSpecificItem($item){
     $result="";
-    if ($item=='VersionProjects') {
+    if ($item=='projects') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       if ($this->id) {
-        $result .= "xx";
+        //$result .= $this->drawSubProjects();
       }
       $result .="</td></tr></table>";
       return $result;
     } 
-  }
-  
-  public function drawVersionsList($critArray) {
-    $result="<table>";
-    $versList=$this->getSqlElementsFromCriteria($critArray);
-    foreach ($versList as $vers) {
-      $result.= '<tr>';
-      $result.= '<td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
-      $result.= '<td>';   
-      $result.=htmlDrawLink($vers);
-      $result.= '</td></tr>';
-    }
-    $result .="</table>";
-    return $result; 
   }
 
 }
