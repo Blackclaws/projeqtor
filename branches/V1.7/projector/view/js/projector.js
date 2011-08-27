@@ -624,6 +624,8 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='origin') {
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+      } else if (validationType=='versionProject') {
+          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='copyTo') {
           var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');

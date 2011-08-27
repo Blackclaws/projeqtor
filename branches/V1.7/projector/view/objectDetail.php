@@ -1392,76 +1392,76 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
 }
 
 
-function drawVersionProjects($list, $obj, $refresh=false) {
+function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
-  $pe=new PlanningElement();
-  $pe->setVisibility();
-  $workVisible=($pe->_workVisibility=='ALL')?true:false;
-  if (! $workVisible) return;
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  $funcList=' ';
-  foreach($list as $rcost) {
-    $key='#' . $rcost->idRole . '#';
-    if (strpos($funcList, $key)===false) {
-      $funcList.=$key;
-    }
+  if (get_class($obj)=='Project') {
+  	$idProj=$obj->id;
+  	$idVers=null;
+  } else if (get_class($obj)=='Version') {
+    $idProj=null;
+    $idVers=$obj->id;
   }
   if (! $print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\''. $funcList . '\');" title="' . i18n('addResourceCost') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addVersionProject(\'' . $idVers . '\', \'' . $idProj . '\');" title="' . i18n('addVersionProject') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print)?'40':'30') . '%">' . i18n('colIdRole') . '</td>';
-  echo '<td class="assignHeader" style="width:20%">' . i18n('colCost'). '</td>';
+  if ($idProj) {
+    echo '<td class="assignHeader" style="width:' . (($print)?'50':'40') . '%">' . i18n('colIdVersion') . '</td>';
+  } else {
+  	echo '<td class="assignHeader" style="width:' . (($print)?'50':'40') . '%">' . i18n('colIdProject') . '</td>';
+  }
   echo '<td class="assignHeader" style="width:20%">' . i18n('colStartDate'). '</td>';
   echo '<td class="assignHeader" style="width:20%">' . i18n('colEndDate'). '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
   
   echo '</tr>';
-  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
-  foreach($list as $rcost) {
+  foreach($list as $vp) {
     echo '<tr>';
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';
-      if (! $rcost->endDate and $canUpdate and ! $print) {  
+      if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
-        . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" 
-        . ",'" . $rcost->idResource . "'"
-        . ",'" . $rcost->idRole . "'" 
-        . ",'" . $fmt->format($rcost->cost) . "'"
-        . ",'" . $rcost->startDate . "'"
-        . ",'" . $rcost->endDate . "'"
+        . 'onClick="editVersionProject(' . "'" . $list->id . "'"
+        . ",'" . $list->idVersion . "'" 
+        . ",'" . $list->idProject . "'"
+        . ",'" . $list->startDate . "'"
+        . ",'" . $list->endDate . "'"
+        . ",'" . $list->idle . "'" 
         . ');" ' 
-        . 'title="' . i18n('editResourceCost') . '" class="smallButton"/> ';      
+        . 'title="' . i18n('editVersionProject') . '" class="smallButton"/> ';      
       }
-      if (! $rcost->endDate and $canUpdate and ! $print)  {
+      if ($canUpdate and ! $print)  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
-        . 'onClick="removeResourceCost(' . "'" . $rcost->id . "'"
-        . ",'" . $rcost->idRole . "'"
-        . ",'" . SqlList::getNameFromId('Role', $rcost->idRole)  . "'" 
-        . ",'" . htmlFormatDate($rcost->startDate) . "'" 
+        . 'onClick="removeVersionProject(' . "'" . $list->id . "'"
         . ');" ' 
-        . 'title="' . i18n('removeResourceCost') . '" class="smallButton"/> ';
+        . 'title="' . i18n('removeVersionProject') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
-    echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
-    echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
-    echo " / " . i18n('shortDay'); 
-    echo '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';
+    if ($idProj) {
+      echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Version', $list->idProject) . '</td>';
+    } else {
+    	echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Project', $list->idVersion) . '</td>';
+    }
+    echo '<td class="assignData" align="center">' . htmlFormatDate($list->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($list->endDate) . '</td>';
+    echo '<td class="assignData" align="right">' . $list->idle . '</td>';
+    
     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
+
 // fetch information depending on, request
 $objClass=$_REQUEST['objectClass'];
 if (! isset($noselect)) { 
@@ -1487,6 +1487,10 @@ if ( $noselect ) {
   }
   if ( array_key_exists('refreshResourceCost',$_REQUEST) ) {
     drawResourceCostFromObject($obj->$_ResourceCost,$obj, true);
+    exit;
+  }
+  if ( array_key_exists('refreshVersionProject',$_REQUEST) ) {
+    drawVersionFromObjectFromObject($obj->$_VersionProject,$obj, true);
     exit;
   }
   if ( array_key_exists('refreshHistory',$_REQUEST) ) {

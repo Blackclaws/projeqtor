@@ -1238,6 +1238,58 @@ scriptLog('   ->/view/main.php');
 </div>
 
 
+<div id="dialogVersionProject" dojoType="dijit.Dialog" title="<?php echo i18n("dialogVersionProject");?>">
+  <table>
+    <tr>
+      <td>
+       <form id='versionProjectForm' name='versionProjectForm' onSubmit="return false;">
+         <input id="versionProjectId" name="linkId" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="versionProjectProject" ><?php echo i18n("versionProjectProject") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="versionProjectProject" name="versionProjectProject" 
+                class="input" value="" >
+                 <?php htmlDrawOptionForReference('idProject', null, null, true);?>
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="versionProjectVersion" ><?php echo i18n("versionProjectVersion") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="versionProjectVersion" name="versionProjectVersion" 
+                class="input" value="" >
+                 <?php htmlDrawOptionForReference('idVersion', null, null, true);?>
+               </select>
+             </td>
+           </tr>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="versionProjectAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogVersionProject').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogVersionProjectSubmit" onclick="saveVersionProject();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <div id="dialogFilter" dojoType="dijit.Dialog" title="<?php echo i18n("dialogFilter");?>" style="top: 100px;">
   <table>
     <tr>
