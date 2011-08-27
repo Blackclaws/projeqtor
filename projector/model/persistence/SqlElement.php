@@ -1043,6 +1043,10 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
                 $this->{$col_name}=Link::getLinksForObject($this,$linkClass);
               } else if ($colName=="ResourceCost") {
                 $this->{$col_name}=$this->getResourceCost();
+              }  else if ($colName=="VersionProject") {
+              	$vp=new VersionProject();
+              	$crit=array('id'.get_class($this)=>$this->id);
+                $this->{$col_name}=$vp->getSqlElementsFromCriteria($crit,false);
               } else if ($colName=="ExpenseDetail") {
                 $this->{$col_name}=$this->getExpenseDetail();
               } else if (substr($colName,0,10)=="Dependency") {
