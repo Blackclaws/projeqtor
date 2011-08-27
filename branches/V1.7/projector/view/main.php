@@ -1242,8 +1242,8 @@ scriptLog('   ->/view/main.php');
   <table>
     <tr>
       <td>
-       <form id='versionProjectForm' name='versionProjectForm' onSubmit="return false;">
-         <input id="versionProjectId" name="linkId" type="hidden" value="" />
+       <form dojoType="dijit.form.Form" id='versionProjectForm' name='versionProjectForm' onSubmit="return false;">
+         <input id="versionProjectId" name="versionProjectId" type="hidden" value="" />
          <table>
            <tr>
              <td class="dialogLabel"  >
@@ -1252,7 +1252,7 @@ scriptLog('   ->/view/main.php');
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="versionProjectProject" name="versionProjectProject" 
-                class="input" value="" >
+                class="input" value="" required="required">
                  <?php htmlDrawOptionForReference('idProject', null, null, true);?>
                </select>
              </td>
@@ -1264,7 +1264,7 @@ scriptLog('   ->/view/main.php');
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="versionProjectVersion" name="versionProjectVersion" 
-                class="input" value="" >
+                class="input" value="" required="required">
                  <?php htmlDrawOptionForReference('idVersion', null, null, true);?>
                </select>
              </td>
@@ -1274,7 +1274,7 @@ scriptLog('   ->/view/main.php');
                <label for="versionProjectStartDate" ><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <div id="versionProjectStartDate" name="versionProjectCostStartDate" value="" 
+               <div id="versionProjectStartDate" name="versionProjectStartDate" value="" 
                  dojoType="dijit.form.DateTextBox" 
                  style="width:100px" class="input"
                  hasDownArrow="true"
