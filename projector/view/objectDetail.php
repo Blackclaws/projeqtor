@@ -713,7 +713,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
         echo $name;
         echo $attributes;
-        echo '  style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
+        if (strpos($attributes, 'readonly')>0) {
+        	$specificStyle.=' color:grey; ';
+        }
+        echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
 //        echo ' maxSize="4" ';
         echo ' class="input" ' . '>';
