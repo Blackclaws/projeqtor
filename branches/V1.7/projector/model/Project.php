@@ -24,6 +24,8 @@ class Project extends SqlElement {
   public $_spe_subprojects;
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $_sec_Versionproject_versions;
+  public $_VersionProject=array();
   public $_col_1_1_Progress;
   public $ProjectPlanningElement; // is an object
   public $_col_1_2_predecessor;
