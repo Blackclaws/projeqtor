@@ -1247,7 +1247,7 @@ scriptLog('   ->/view/main.php');
          <table>
            <tr>
              <td class="dialogLabel"  >
-               <label for="versionProjectProject" ><?php echo i18n("versionProjectProject") ?>&nbsp;:&nbsp;</label>
+               <label for="versionProjectProject" ><?php echo i18n("colIdProject") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
@@ -1257,10 +1257,9 @@ scriptLog('   ->/view/main.php');
                </select>
              </td>
            </tr>
-           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel"  >
-               <label for="versionProjectVersion" ><?php echo i18n("versionProjectVersion") ?>&nbsp;:&nbsp;</label>
+               <label for="versionProjectVersion" ><?php echo i18n("colIdVersion") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
@@ -1270,6 +1269,41 @@ scriptLog('   ->/view/main.php');
                </select>
              </td>
            </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="versionProjectStartDate" ><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="versionProjectStartDate" name="versionProjectCostStartDate" value="" 
+                 dojoType="dijit.form.DateTextBox" 
+                 style="width:100px" class="input"
+                 hasDownArrow="true"
+               >
+               </div>
+             </td>    
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="versionProjectEndDate" ><?php echo i18n("colEndDate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="versionProjectEndDate" name="versionProjectEndDate" value="" 
+                 dojoType="dijit.form.DateTextBox" 
+                 style="width:100px" class="input"
+                 hasDownArrow="true"
+               >
+               </div>
+             </td>    
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="versionProjectIdle" ><?php echo i18n("colIdle");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="versionProjectIdle" name="versionProjectIdle"
+                 dojoType="dijit.form.CheckBox" type="checkbox" >
+               </div>
+             </td>    
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
          </table>

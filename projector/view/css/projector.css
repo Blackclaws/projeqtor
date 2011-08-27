@@ -464,6 +464,7 @@ label, .label {
   text-align: center;
   font-weight: bold;
   background: #DDDDDD;
+  color: #505050;
 }
 .workflowHeader {
   font-size: 90%;

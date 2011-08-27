@@ -1679,6 +1679,77 @@ function resourceCostUpdateRole() {
 	}
 }
 
+//=============================================================================
+//= Version Project
+//=============================================================================
+
+function addVersionProject(idVersion, idProject) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("versionProjectId").value="";
+	if (idVersion) {
+		dijit.byId("versionProjectVersion").set('disabled',true);
+		dijit.byId("versionProjectVersion").set('value',idVersion);
+	} else {
+	    dijit.byId("versionProjectVersion").set('disabled',false);
+		dijit.byId("versionProjectVersion").reset();
+	}
+	if (idProject) {
+		dijit.byId("versionProjectProject").set('disabled',true);
+		dijit.byId("versionProjectProject").set('value',idVersion);
+	} else {
+		dijit.byId("versionProjectProject").set('disabled',false);
+		dijit.byId("versionProjectProject").reset();
+	}
+	
+	dijit.byId("versionProjectIdle").reset();
+	dijit.byId("versionProjectStartDate").reset();
+	dijit.byId("versionProjectEndDate").reset();
+	dijit.byId("dialogVersionProject").show();
+}
+
+function removeVersionProject(id) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("resourceCostId").value=id;
+	actionOK=function() {loadContent("../tool/removeResourceCost.php", "resultDiv", "resourceCostForm", true, 'resourceCost');};
+	msg=i18n('confirmDeleteResourceCost',new Array(nameRole, startDate));
+	showConfirm (msg, actionOK);
+} 
+
+versionProjectLoad=false;
+function editVersionProject(id, idVersion,idProject,startDate,endDate,idle) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("resourceCostId").value=id;
+	dojo.byId("resourceCostIdResource").value=idResource;
+	dijit.byId("resourceCostIdRole").setDisabled(true);
+	dijit.byId("resourceCostValue").set('value',cost);
+	var dateStartDate=getDate(startDate);
+	dijit.byId("resourceCostStartDate").set('value',dateStartDate);
+	dijit.byId("resourceCostStartDate").set('disabled',true);
+	dijit.byId("resourceCostStartDate").set('required','false');
+	reourceCostLoad=true;
+	dijit.byId("resourceCostIdRole").set('value',idRole);
+	setTimeout('reourceCostLoad=false;',300);
+	dijit.byId("dialogResourceCost").show();  	
+}
+
+function saveVersionProject() {
+	var formVar = dijit.byId('versionProjectForm');
+	if(formVar.validate()){		
+		loadContent("../tool/saveVersionProject.php", "resultDiv", "versionProjectForm", true,'versionProject');
+		dijit.byId('dialogVersionProject').hide();
+	} else {
+		showAlert(i18n("alertInvalidForm"));
+	}
+}
 
 //=============================================================================
 //= Misceallanous
