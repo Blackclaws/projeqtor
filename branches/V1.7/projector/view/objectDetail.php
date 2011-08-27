@@ -1434,31 +1434,31 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="text-align:center;">';
       if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
-        . 'onClick="editVersionProject(' . "'" . $list->id . "'"
-        . ",'" . $list->idVersion . "'" 
-        . ",'" . $list->idProject . "'"
-        . ",'" . $list->startDate . "'"
-        . ",'" . $list->endDate . "'"
-        . ",'" . $list->idle . "'" 
+        . 'onClick="editVersionProject(' . "'" . $vp->id . "'"
+        . ",'" . $vp->idVersion . "'" 
+        . ",'" . $vp->idProject . "'"
+        . ",'" . $vp->startDate . "'"
+        . ",'" . $vp->endDate . "'"
+        . ",'" . $vp->idle . "'" 
         . ');" ' 
         . 'title="' . i18n('editVersionProject') . '" class="smallButton"/> ';      
       }
       if ($canUpdate and ! $print)  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
-        . 'onClick="removeVersionProject(' . "'" . $list->id . "'"
+        . 'onClick="removeVersionProject(' . "'" . $vp->id . "'"
         . ');" ' 
         . 'title="' . i18n('removeVersionProject') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
     if ($idProj) {
-      echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Version', $list->idProject) . '</td>';
+      echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Version', $vp->idVersion) . '</td>';
     } else {
-    	echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Project', $list->idVersion) . '</td>';
+    	echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Project', $vp->idProject) . '</td>';
     }
-    echo '<td class="assignData" align="center">' . htmlFormatDate($list->startDate) . '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate($list->endDate) . '</td>';
-    echo '<td class="assignData" align="right">' . $list->idle . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($vp->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($vp->endDate) . '</td>';
+    echo '<td class="assignData" align="right">' . $vp->idle . '</td>';
     
     echo '</tr>';
   }
