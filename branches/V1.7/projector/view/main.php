@@ -73,7 +73,8 @@ scriptLog('   ->/view/main.php');
          setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100); 
        }
     });
-    
+    var historyTable=new Array();
+    var historyPosition=-1;    
     var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";

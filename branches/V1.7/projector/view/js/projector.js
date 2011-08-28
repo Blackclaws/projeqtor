@@ -1438,13 +1438,16 @@ function refreshTodayProjectsList() {
   loadContent("../view/today.php?refreshProjects=true", "todayProjectDiv", "todayProjectsForm", false);  
 }
 
-function gotoElement(eltClass, eltId) {
+function gotoElement(eltClass, eltId, noHistory) {
   if (checkFormChangeInProgress() ) {
     return false;
   }
   cleanContent("detailDiv");
   formChangeInProgress=false;
   loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
+  if (! noHistory) {
+    stockHistory(eltClass,eltId);
+  }
 }
 
 function runReport() {

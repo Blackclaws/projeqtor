@@ -1964,10 +1964,53 @@ function hideList(mode) {
 }
 
 function listClick() {
+	stockHistory(dojo.byId('objectClass').value, dojo.byId('objectId').value);
 	if (! switchedMode) {
 		return;
 	}
 	hideList();
+}
+
+function stockHistory(curClass,curId) {
+	var len=historyTable.length;
+	var lastClass="";
+	var lastId=0;
+	if (len>0) { 
+	  var lastClass=historyTable[len-1][0];
+	  var lastId=historyTable[len-1][1];
+	}
+	if (len==0 || curClass!=lastClass || curId!=lastId) {
+	  historyTable[len]=new Array(curClass, curId);
+	  historyPosition=len;
+	  if (historyPosition>=1) {
+	    enableWidget('menuBarUndoButton');
+	  }
+	  disableWidget('menuBarRedoButton');
+	}
+}
+
+function undoItemButton() {
+	var len=historyTable.length;
+	if (len==0) {return;}
+	if (historyPosition==0) {return;}
+	historyPosition-=1;
+	gotoElement(historyTable[historyPosition][0],historyTable[historyPosition][1], true);
+	enableWidget('menuBarRedoButton');
+	if (historyPosition==0) {
+	   disableWidget('menuBarUndoButton');
+	}
+}
+
+function redoItemButton() {
+	var len=historyTable.length;
+	if (len==0) {return;}
+	if (historyPosition==len-1) {return;}
+	historyPosition+=1;
+	gotoElement(historyTable[historyPosition][0],historyTable[historyPosition][1], true);
+	enableWidget('menuBarUndoButton');
+	if (historyPosition==(len-1)) {
+	   disableWidget('menuBarRedoButton');
+	}
 }
 
 // Stock id and name, to 

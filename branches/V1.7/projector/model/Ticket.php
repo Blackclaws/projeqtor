@@ -16,6 +16,7 @@ class Ticket extends SqlElement {
   public $idUser;
   public $idContact;
   public $Origin;
+  public $idOriginalVersion;
   public $description;
   public $_col_2_2_treatment;
   public $idActivity;
@@ -31,6 +32,7 @@ class Ticket extends SqlElement {
   public $doneDateTime;
   public $idle;
   public $idleDateTime;
+  public $idVersion;
   public $result;
 //public $_col_1_1_Progress;
   public $_Attachement=array();
@@ -66,7 +68,9 @@ class Ticket extends SqlElement {
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'planningActivity',
-                                                   'idContact' => 'requestor');
+                                                   'idContact' => 'requestor',
+                                                   'idVersion'=>'targetVersion',
+                                                   'idOriginalVersion'=>'originalVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
