@@ -107,4 +107,14 @@
     <?php drawAllMenus();?>
     </tr></table>
     </td>
+    <td width="5%" align="right">
+      <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonBackItem');?>"
+       disabled="disabled"
+       iconClass="dijitEditorIcon dijitEditorIconUndo" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          backButton();
+        </script>
+      </button>    
+    </td>
   </tr></table>
