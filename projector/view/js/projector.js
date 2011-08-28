@@ -605,27 +605,11 @@ function finalizeMessageDisplay(destination, validationType) {
     // add the message in the message Div (left part) and prepares form to new
     // changes
     addMessage(msg);
-    if (validationType=='note' || validationType=='attachement' || validationType=="link" 
-      || validationType=="assignment" || validationType=="dependency" || validationType=="resourceCost"
-      || validationType=="expenseDetail" || validationType=="origin" || validationType=="copyTo" ) {
+    if (validationType) {
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
       } else if (validationType=='attachement') {
         loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');
-      } else if (validationType=='link') {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-      } else if (validationType=='assignment') {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-      } else if (validationType=='expenseDetail') {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');  
-      } else if (validationType=='dependency') {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-      } else if (validationType=='resourceCost') {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-      } else if (validationType=='origin') {
-        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-      } else if (validationType=='versionProject') {
-          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='copyTo') {
           var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');
@@ -633,7 +617,8 @@ function finalizeMessageDisplay(destination, validationType) {
              gotoElement(lastSaveClass.value, lastSaveId.value);
           }
       } else {
-        hideWait();
+          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	  //hideWait();
       }
     } else {
       formInitialize();

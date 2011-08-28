@@ -413,6 +413,15 @@ class Project extends SqlElement {
       $this->ProjectPlanningElement->topRefType=null;
       $this->ProjectPlanningElement->topRefId=null;
     }
+    if ($this->idle) {
+      $crit=array('idProject'=>$this->id, 'idle'=>'0');
+      $vp=new VersionProject();
+      $vpLst=$vp->getSqlElementsFromCriteria($crit, false);
+      foreach ($vpLst as $vp) {
+      	$vp->idle=$this->idle;
+      	$vp->save();
+      }
+    }
     // Initialize user->_visibleProjects, to force recalculate
     if (array_key_exists('user',$_SESSION)) {
       $user=$_SESSION['user'];

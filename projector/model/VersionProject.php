@@ -109,5 +109,23 @@ class VersionProject extends SqlElement {
     } 
   }
 
+  public function control() {
+  	$result="";
+  	if (! $this->id) {
+  	  $crit=array('idProject'=>$this->idProject, 'idVersion'=>$this->idVersion);
+  	  $list=$this->getSqlElementsFromCriteria($crit, false);
+  	  if (count($list)>0) {
+        $result.='<br/>' . i18n('errorDuplicateVersionProject');
+      }     
+  	}
+  	$defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
 }
 ?>

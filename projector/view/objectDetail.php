@@ -1232,7 +1232,12 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     if (! $print) {echo 'title="' . htmlEncodeJson($assignment->comment) . '"';}
     echo '>'; 
     echo '<table><tr>';
-    echo '<td>' . SqlList::getNameFromId('Resource', $assignment->idResource);
+      $goto="";
+    if (!$print and securityCheckDisplayMenu(null,'Resource') 
+    and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
+      $goto=' onClick="gotoElement(\'Resource\',\'' . $assignment->idResource . '\');" style="cursor: pointer;" ';  
+    }    
+    echo '<td '. $goto .'>' . SqlList::getNameFromId('Resource', $assignment->idResource);
     echo ($assignment->idRole)?' ('.SqlList::getNameFromId('Role', $assignment->idRole).')':'';
     echo '</td>';
     if ($assignment->comment and ! $print) {
@@ -1451,14 +1456,23 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
+    $goto="";
     if ($idProj) {
-      echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Version', $vp->idVersion) . '</td>';
+    	if (!$print and securityCheckDisplayMenu(null,'Version') 
+        and securityGetAccessRightYesNo('menuVersion', 'read', '')=="YES") {
+        $goto=' onClick="gotoElement(\'Version\',\'' . $vp->idVersion . '\');" style="cursor: pointer;" ';  
+      }    
+      echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId('Version', $vp->idVersion) . '</td>';
     } else {
-    	echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Project', $vp->idProject) . '</td>';
+    	if (!$print and securityCheckDisplayMenu(null,'Project') 
+        and securityGetAccessRightYesNo('menuProject', 'read', '')=="YES") {
+        $goto=' onClick="gotoElement(\'Project\',\'' . $vp->idProject . '\');" style="cursor: pointer;" ';  
+    }    
+    	echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId('Project', $vp->idProject) . '</td>';
     }
     echo '<td class="assignData" align="center">' . htmlFormatDate($vp->startDate) . '</td>';
     echo '<td class="assignData" align="center">' . htmlFormatDate($vp->endDate) . '</td>';
-    echo '<td class="assignData" align="right">' . $vp->idle . '</td>';
+    echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($vp->idle)?'OK':'KO') . '.png" /></td>';
     
     echo '</tr>';
   }

@@ -1688,6 +1688,8 @@ function addVersionProject(idVersion, idProject) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
+	refreshList('idProject', null, null, null, 'versionProjectProject', true);
+	refreshList('idVersion', null, null, null, 'versionProjectVersion', true);
 	dojo.byId("versionProjectId").value="";
 	//dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
 	//       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
@@ -1701,7 +1703,7 @@ function addVersionProject(idVersion, idProject) {
 	}
 	if (idProject) {
 		dijit.byId("versionProjectProject").set('readOnly',true);
-		dijit.byId("versionProjectProject").set('value',idVersion);
+		dijit.byId("versionProjectProject").set('value',idProject);
 	} else {
 		dijit.byId("versionProjectProject").set('readOnly',false);
 		dijit.byId("versionProjectProject").reset();
@@ -1730,7 +1732,7 @@ function editVersionProject(id, idVersion,idProject,startDate,endDate,idle) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	dojo.byId("versionProjectId").value="";
+	dojo.byId("versionProjectId").value=id;
 	if (idVersion) {
 		dijit.byId("versionProjectVersion").set('readOnly',true);
 		dijit.byId("versionProjectVersion").set('value',idVersion);
@@ -1740,14 +1742,26 @@ function editVersionProject(id, idVersion,idProject,startDate,endDate,idle) {
 	}
 	if (idProject) {
 		dijit.byId("versionProjectProject").set('readOnly',true);
-		dijit.byId("versionProjectProject").set('value',idVersion);
+		dijit.byId("versionProjectProject").set('value',idProject);
 	} else {
 		dijit.byId("versionProjectProject").set('readOnly',false);
 		dijit.byId("versionProjectProject").reset();
 	}
-	dijit.byId("versionProjectStartDate").set('value',startDate);
-	dijit.byId("versionProjectEndDate").set('value',endDate);
-	dijit.byId("versionProjectIdle").set('value',idle);
+	if (startDate) {
+	  dijit.byId("versionProjectStartDate").set('value',startDate);
+	} else {
+		dijit.byId("versionProjectStartDate").reset();
+	}
+	if (endDate) {
+	  dijit.byId("versionProjectEndDate").set('value',endDate);
+	} else {
+		dijit.byId("versionProjectEndDate").reset();
+	}
+	if (idle==1) {
+		dijit.byId("versionProjectIdle").set('value',idle);
+	} else {
+		dijit.byId("versionProjectIdle").reset();
+	}
 	dijit.byId("dialogVersionProject").show();  	
 }
 
