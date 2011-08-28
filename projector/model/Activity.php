@@ -25,6 +25,7 @@ class Activity extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $idVersion;
   public $result;
   public $_sec_Assignment;
   public $_Assignment=array();
@@ -65,7 +66,8 @@ class Activity extends SqlElement {
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
-                                                   'idActivity' => 'parentActivity');
+                                                   'idActivity' => 'parentActivity',
+                                                   'idVersion'=>'targetVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();

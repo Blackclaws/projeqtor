@@ -107,13 +107,22 @@
     <?php drawAllMenus();?>
     </tr></table>
     </td>
-    <td width="5%" align="right">
+    <td class="menuBarSeparator" ></td>
+    <td width="60px" align="center">
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
-       title="<?php echo i18n('buttonBackItem');?>"
+       title="<?php echo i18n('buttonUndoItem');?>"
        disabled="disabled"
        iconClass="dijitEditorIcon dijitEditorIconUndo" >
         <script type="dojo/connect" event="onClick" args="evt">
-          backButton();
+          undoItemButton();
+        </script>
+      </button>    
+      <button id="menuBarRedoButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonRedoItem');?>"
+       disabled="disabled"
+       iconClass="dijitEditorIcon dijitEditorIconRedo" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          redoItemButton();
         </script>
       </button>    
     </td>

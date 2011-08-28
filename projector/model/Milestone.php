@@ -25,6 +25,7 @@ class Milestone extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $idVersion;
   public $result;
   public $_col_1_1_Progress;
   public $MilestonePlanningElement; // is an object
@@ -62,7 +63,8 @@ class Milestone extends SqlElement {
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
-                                                   'idActivity' => 'parentActivity');
+                                                   'idActivity' => 'parentActivity',
+                                                   'idVersion'=>'targetVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
