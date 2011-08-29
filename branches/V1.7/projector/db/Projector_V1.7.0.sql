@@ -179,3 +179,6 @@ ADD `idOriginalVersion` int(12) unsigned DEFAULT NULL;
 ALTER TABLE `${prefix}activity` ADD `idVersion` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}milestone` ADD `idVersion` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}affectation` ADD `idContact` int(12) unsigned DEFAULT NULL,
+ADD `idUser` int(12) unsigned DEFAULT NULL;
