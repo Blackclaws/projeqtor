@@ -459,7 +459,7 @@ function getAccesResctictionClause($objectClass,$alias=null) {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  "(1 = 2)";      
   } else if ($accessRightRead=='OWN') {
-    if (propertyExists($obj,"idUser")) {
+    if (property_exists($obj,"idUser")) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       if ($alias===false) {
         $queryWhere.=  "idUser = '" . $_SESSION['user']->id . "'";   

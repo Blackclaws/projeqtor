@@ -9,6 +9,7 @@ class Affectation extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idResource;
+  public $idContact;
   public $idProject;
   public $rate;
   public $idle;
@@ -25,7 +26,6 @@ class Affectation extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -112,6 +112,32 @@ class Affectation extends SqlElement {
     }
     $result .="</table>";
     return $result; 
+  }
+  
+  public function control(){
+    $result="";
+    if ($this->id and $this->id==$this->idActivity) {
+      $result.='<br/>' . i18n('errorHierarchicLoop');
+    } else {
+    
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
+  
+  /**=========================================================================
+   * Overrides SqlElement::save() function to add specific treatments
+   * @see persistence/SqlElement#save()
+   * @return the return message of persistence/SqlElement#save() method
+   */
+  public function save() {
+   	$result = parent::save();
+    return $result;
   }
   
 }

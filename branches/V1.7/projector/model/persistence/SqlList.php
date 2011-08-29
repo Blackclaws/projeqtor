@@ -100,8 +100,13 @@ class SqlList {
     foreach ($crit as $col => $val) {
       if (strtolower($listType)=='resource' and $col=='idProject') {
         $aff=new Affectation();
-        $usr=new User();
-        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject='" . $val . "' and a.idResource=" . $usr->getDatabaseTableName() . ".id)";
+        $user=new Resource();
+        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject='" . $val . "' and a.idResource=" . $user->getDatabaseTableName() . ".id)";
+      } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion') and $col=='idProject') {
+        $vp=new VersionProject();
+        $ver=new Version();
+        $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject='" . $val . "' and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
+      	
       } else {
         $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
       }
