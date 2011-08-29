@@ -1389,12 +1389,19 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $colScript .= '  if (this.value!=null && this.value!="") { ';
       $colScript .= '    formChanged();';
       $colScript .= '  }';
-      if ( get_class($this)=='Activity' or get_class($this)=='Ticket' or get_class($this)=='Milestone' ) {
+      //if ( get_class($this)=='Activity' or get_class($this)=='Ticket' or get_class($this)=='Milestone' ) {
+      if ( get_class($this)!='Project' ) {
         if ($colName=='idProject' and property_exists($this,'idActivity')) {
           $colScript .= '   refreshList("idActivity","idProject", this.value);';
         }
         if ($colName=='idProject' and property_exists($this,'idResource')) {
           $colScript .= '   refreshList("idResource","idProject", this.value);';
+        }
+        if ($colName=='idProject' and property_exists($this,'idVersion')) {
+          $colScript .= '   refreshList("idVersion","idProject", this.value);';
+        }
+        if ($colName=='idProject' and property_exists($this,'idOriginalVersion')) {
+          $colScript .= '   refreshList("idOriginalVersion","idProject", this.value);';
         }
       }
       $colScript .= '</script>';
