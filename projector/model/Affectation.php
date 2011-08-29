@@ -10,6 +10,7 @@ class Affectation extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $idResource;
   public $idContact;
+  public $idUser;
   public $idProject;
   public $rate;
   public $idle;
@@ -25,7 +26,10 @@ class Affectation extends SqlElement {
     <th field="rate" width="15%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
-
+  
+  private static $_colCaptionTransposition = array('idUser'=>'orUser', 
+                                                   'idContact'=>'orContact');
+  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -33,6 +37,16 @@ class Affectation extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    if ($this->id) {
+    	if ($this->idResource) {
+    		if (!$this->idContact) {
+    			$this->idContact=$this->idResource;
+    		}
+    	  if (!$this->idUser) {
+          $this->idUser=$this->idResource;
+        }
+    	}
+    }
   }
 
    /** ==========================================================================
@@ -55,7 +69,13 @@ class Affectation extends SqlElement {
     return self::$_layout;
   }
 
-
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
 // ============================================================================**********
 // GET VALIDATION SCRIPT
 // ============================================================================**********
@@ -77,6 +97,36 @@ class Affectation extends SqlElement {
       $colScript .= '    dijit.byId("PlanningElement_realEndDate").set("value", null); ';
       //$colScript .= '    dijit.byId("PlanningElement_realDuration").set("value", null); ';
       $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+     if ($colName=="idResource") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (! this.value) {return;}';
+      $colScript .= '  dijit.byId("idContact").set("value",this.value);';
+      $colScript .= '  if (! dijit.byId("idContact").get("value")) { dijit.byId("idContact").set("value",null); }'; 
+      $colScript .= '  dijit.byId("idUser").set("value",this.value);'; 
+      $colScript .= '  if (! dijit.byId("idUser").get("value")) { dijit.byId("idUser").set("value",null); }'; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    if ($colName=="idContact") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (! this.value) {return;}';
+      $colScript .= '  dijit.byId("idResource").set("value",this.value);';
+      $colScript .= '  if (! dijit.byId("idResource").get("value")) { dijit.byId("idResource").set("value",null); }'; 
+      $colScript .= '  dijit.byId("idUser").set("value",this.value);'; 
+      $colScript .= '  if (! dijit.byId("idUser").get("value")) { dijit.byId("idUser").set("value",null); }'; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    if ($colName=="idUser") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (! this.value) {return;}';
+      $colScript .= '  dijit.byId("idContact").set("value",this.value);';
+      $colScript .= '  if (! dijit.byId("idContact").get("value")) { dijit.byId("idContact").set("value",null); }'; 
+      $colScript .= '  dijit.byId("idResource").set("value",this.value);'; 
+      $colScript .= '  if (! dijit.byId("idResource").get("value")) { dijit.byId("idResource").set("value",null); }'; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
@@ -136,6 +186,9 @@ class Affectation extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+  	if (! $this->idResource) {
+  		$this->idResource=$this->idContact;
+  	}
    	$result = parent::save();
     return $result;
   }
