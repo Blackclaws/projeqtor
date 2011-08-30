@@ -20,10 +20,12 @@ class Affectation extends SqlElement {
 
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="nameResource" width="35%" >${resourceName}</th>
-    <th field="nameProject" width="35%" >${projectName}</th>
-    <th field="rate" width="15%" formatter="percentFormatter">${rate}</th>  
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="nameResource" width="20%" >${resourceName}</th>
+    <th field="nameContact" width="20%" >${contactName}</th>
+    <th field="nameUser" width="20%" >${userName}</th>
+    <th field="nameProject" width="20%" >${projectName}</th>
+    <th field="rate" width="10%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
   
@@ -46,6 +48,9 @@ class Affectation extends SqlElement {
           $this->idUser=$this->idResource;
         }
     	}
+    }
+    if (! $this->id) {
+    	$this->rate=100;
     }
   }
 
@@ -87,47 +92,40 @@ class Affectation extends SqlElement {
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
 
-    if ($colName=="idle") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("PlanningElement_realEndDate").get("value")==null) {';
-      $colScript .= '      dijit.byId("PlanningElement_realEndDate").set("value", new Date); ';
-      $colScript .= '    }';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("PlanningElement_realEndDate").set("value", null); ';
-      //$colScript .= '    dijit.byId("PlanningElement_realDuration").set("value", null); ';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    }
      if ($colName=="idResource") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (! this.value) {return;}';
+      $colScript .= 'if (testAllowedChange(this.value)) {';
       $colScript .= '  dijit.byId("idContact").set("value",this.value);';
       $colScript .= '  if (! dijit.byId("idContact").get("value")) { dijit.byId("idContact").set("value",null); }'; 
       $colScript .= '  dijit.byId("idUser").set("value",this.value);'; 
       $colScript .= '  if (! dijit.byId("idUser").get("value")) { dijit.byId("idUser").set("value",null); }'; 
+      $colScript .= '  terminateChange();';
       $colScript .= '  formChanged();';
+      $colScript .= '};';
       $colScript .= '</script>';
     }
     if ($colName=="idContact") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (! this.value) {return;}';
+      $colScript .= 'if (testAllowedChange(this.value)) {';
       $colScript .= '  dijit.byId("idResource").set("value",this.value);';
       $colScript .= '  if (! dijit.byId("idResource").get("value")) { dijit.byId("idResource").set("value",null); }'; 
       $colScript .= '  dijit.byId("idUser").set("value",this.value);'; 
       $colScript .= '  if (! dijit.byId("idUser").get("value")) { dijit.byId("idUser").set("value",null); }'; 
+      $colScript .= '  terminateChange();';
       $colScript .= '  formChanged();';
+      $colScript .= '}';
       $colScript .= '</script>';
     }
     if ($colName=="idUser") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (! this.value) {return;}';
+      $colScript .= 'if (testAllowedChange(this.value)) {';;
       $colScript .= '  dijit.byId("idContact").set("value",this.value);';
       $colScript .= '  if (! dijit.byId("idContact").get("value")) { dijit.byId("idContact").set("value",null); }'; 
       $colScript .= '  dijit.byId("idResource").set("value",this.value);'; 
       $colScript .= '  if (! dijit.byId("idResource").get("value")) { dijit.byId("idResource").set("value",null); }'; 
+      $colScript .= '  terminateChange();';
       $colScript .= '  formChanged();';
+      $colScript .= '}';
       $colScript .= '</script>';
     }
     return $colScript;
@@ -166,8 +164,31 @@ class Affectation extends SqlElement {
   
   public function control(){
     $result="";
-    if ($this->id and $this->id==$this->idActivity) {
-      $result.='<br/>' . i18n('errorHierarchicLoop');
+    $this->idResource=trim($this->idResource);
+    $this->idContact=trim($this->idContact);
+    $this->idUser=trim($this->idUser);
+    $this->idProject=trim($this->idProject);
+    if (!$this->idResource) {
+      if ($this->idContact) {
+      	$this->idResource=$this->idContact;
+      } else {
+      	$this->idResource=$this->idUser;
+      }
+    }
+    if (! $this->idResource) {
+    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdResource') 
+    	                                         . ' ' . i18n('colOrContact') 
+    	                                         . ' ' . i18n('colOrUser')));
+    }
+    if (! $this->idProject) {
+    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdProject')));
+    }
+    if ($result=='') {
+      $clauseWhere=" idResource='$this->idResource' and idProject='$this->idProject' and id!='$this->id' ";
+      $search=$this->getSqlElementsFromCriteria(null, false, $clauseWhere);
+      if (count($search)>0) { 
+      	$result.='<br/>' . i18n('errorDupplicateAffectation');
+      }
     } else {
     
     }
@@ -186,9 +207,7 @@ class Affectation extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-  	if (! $this->idResource) {
-  		$this->idResource=$this->idContact;
-  	}
+
    	$result = parent::save();
     return $result;
   }
