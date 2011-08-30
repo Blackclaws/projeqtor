@@ -649,7 +649,7 @@ abstract class SqlElement {
       //$newObj->idStatus=$revert[0];
       $newObj->idStatus=' 0';
     }
-    if (property_exists($newObj,"idUser")) {
+    if (property_exists($newObj,"idUser") and get_class($newObj!='Affectation')) {
       $newObj->idUser=$_SESSION['user']->id;
     }
     if (property_exists($newObj,"creationDate")) {
@@ -724,7 +724,7 @@ abstract class SqlElement {
     if (property_exists($newObj,"idStatus")) {
       $newObj->idStatus=' 0';
     }
-    if (property_exists($newObj,"idUser")) {
+    if (property_exists($newObj,"idUser") and get_class($newObj!='Affectation')) {
       $newObj->idUser=$_SESSION['user']->id;
     }
     if (property_exists($newObj,"creationDate")) {
@@ -1090,7 +1090,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         }
       }
       // set default idUser if exists
-      if (property_exists($this, 'idUser')) {
+      if (property_exists($this, 'idUser') and get_class($this)!='Affectation') {
         if (array_key_exists('user', $_SESSION)) {
           $this->idUser=$_SESSION['user']->id;
         }
@@ -1390,7 +1390,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $colScript .= '    formChanged();';
       $colScript .= '  }';
       //if ( get_class($this)=='Activity' or get_class($this)=='Ticket' or get_class($this)=='Milestone' ) {
-      if ( get_class($this)!='Project' ) {
+      if ( get_class($this)!='Project' and get_class($this)!='Affectation' ) {
         if ($colName=='idProject' and property_exists($this,'idActivity')) {
           $colScript .= '   refreshList("idActivity","idProject", this.value);';
         }
@@ -1767,7 +1767,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     }
     $dest="";
     if ($statusMail->mailToUser) {
-      if (property_exists($this,'idUser')) {
+      if (property_exists($this,'')) {
         $user=new User($this->idUser);
         $newDest = "###" . $user->email . "###";
         if ($user->email and strpos($dest,$newDest)===false) {

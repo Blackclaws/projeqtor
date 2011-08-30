@@ -620,12 +620,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $critFld=null;
         $critVal=null;
         $valStore='';
-        if ( ($col=='idResource' or $col=='idActivity' or $col=='idVersion' or $col=='idOriginalVersion') 
-        //and  ($classObj=='Activity' or $classObj=='Ticket' or $classObj=='Milestone')
-        ) {
+        if ($col=='idResource' or $col=='idActivity' or $col=='idVersion' or $col=='idOriginalVersion'
+        or $col=='idContact') {
           //echo '<div dojoType="dojo.data.ItemFileReadStore" jsId="' . $col . 'Store" url="../tool/jsonList.php?listType=empty" searchAttr="name"  /></div>'; ;
           //$valStore=' store="' . $col . 'Store" ';
-          if (property_exists($obj,'idProject')) {
+          if (property_exists($obj,'idProject') 
+          and get_class($obj)!='Project' and get_class($obj)!='Affectation') {
             if ($obj->id) {
               $critFld='idProject';
               $critVal=$obj->idProject;
