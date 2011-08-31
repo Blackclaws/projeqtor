@@ -153,7 +153,7 @@ CREATE TABLE `${prefix}versionproject` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}versionprojet` ADD INDEX versionprojectProject (idProject),
+ALTER TABLE `${prefix}versionproject` ADD INDEX versionprojectProject (idProject),
   ADD INDEX versionprojectVersion (idVersion);
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
@@ -168,8 +168,8 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 87, 1),
 (3, 87, 1);
 
-ALTER TABLE `${prefix}projet` ADD `idContact` int(12) unsigned DEFAULT NULL;
-ALTER TABLE `${prefix}projet` ADD ADD projectContact (idContact);
+ALTER TABLE `${prefix}project` ADD `idContact` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}project` ADD INDEX projectContact (idContact);
 
 ALTER TABLE `${prefix}plannedwork` CHANGE `work` `work` DECIMAL(5,2) UNSIGNED;
 
