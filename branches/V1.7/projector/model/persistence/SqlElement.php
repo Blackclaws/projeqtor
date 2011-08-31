@@ -724,7 +724,7 @@ abstract class SqlElement {
     if (property_exists($newObj,"idStatus")) {
       $newObj->idStatus=' 0';
     }
-    if (property_exists($newObj,"idUser") and get_class($newObj!='Affectation')) {
+    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
       $newObj->idUser=$_SESSION['user']->id;
     }
     if (property_exists($newObj,"creationDate")) {

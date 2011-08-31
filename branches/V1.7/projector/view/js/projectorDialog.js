@@ -532,7 +532,7 @@ function addNote () {
 	dojo.byId("noteId").value="";
 	dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("noteRefId").value=dojo.byId("objectId").value;
-	dijit.byId("noteNote").reset();
+	dijit.byId("noteNote").set("value",null);
 	dijit.byId("dialogNote").set('title',i18n("dialogNote"));
 	dijit.byId("dialogNote").show();
 }
