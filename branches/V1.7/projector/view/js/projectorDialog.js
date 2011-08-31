@@ -605,7 +605,7 @@ function addAttachement () {
 	if (dijit.byId("attachementFile")) {
 		dijit.byId("attachementFile").reset();
 	}
-	dijit.byId("attachementDescription").reset();
+	dijit.byId("attachementDescription").set('value',null);
 	dijit.byId("dialogAttachement").set('title',i18n("dialogAttachement"));
 	dijit.byId("dialogAttachement").show();
 }
@@ -725,7 +725,7 @@ function removeLink (linkId, refType, refId) {
 	dojo.byId("linkId").value=linkId;
 	dojo.byId("linkRef1Type").value=dojo.byId("objectClass").value;
 	dojo.byId("linkRef1Id").value=dojo.byId("objectId").value;
-	dojo.byId("linkRef2Type").value=refType;
+	dijit.byId("linkRef2Type").set('value',refType);
 	dojo.byId("linkRef2Id").value=refId;
 	actionOK=function() {loadContent("../tool/removeLink.php", "resultDiv", "linkForm", true,'link');};
 	msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
@@ -789,7 +789,7 @@ function removeOrigin (id, origType, origId) {
 	dojo.byId("originId").value=id;
 	dojo.byId("originRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("originRefId").value=dojo.byId("objectId").value;
-	dojo.byId("originOriginType").value=origType;
+	dijit.byId("originOriginType").set('value',origType);
 	dojo.byId("originOriginId").value=origId;
 	actionOK=function() {loadContent("../tool/removeOrigin.php", "resultDiv", "originForm", true,'origin');};
 	msg=i18n('confirmDeleteOrigin',new Array(i18n(origType),origId));
@@ -819,14 +819,14 @@ function addAssignment () {
 	dijit.byId("assignmentIdResource").reset();
 	dijit.byId("assignmentIdRole").reset();
 	dijit.byId("assignmentDailyCost").reset();
-	dojo.byId("assignmentRate").value='100';
-	dojo.byId("assignmentAssignedWork").value='0';
+	dijit.byId("assignmentRate").set('value','100');
+	dijit.byId("assignmentAssignedWork").set('value','0');
 	dojo.byId("assignmentAssignedWorkInit").value='0';
-	dojo.byId("assignmentRealWork").value='0';
-	dojo.byId("assignmentLeftWork").value='0';
+	dijit.byId("assignmentRealWork").set('value','0');
+	dijit.byId("assignmentLeftWork").set('value','0');
 	dojo.byId("assignmentLeftWorkInit").value='0';
-	dojo.byId("assignmentPlannedWork").value='0';
-	dojo.byId("assignmentComment").value='';
+	dijit.byId("assignmentPlannedWork").set('value','0');
+	dijit.byId("assignmentComment").set('value','');
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
 	dijit.byId("assignmentIdResource").set('readOnly',false);
 	dijit.byId("assignmentIdRole").set('readOnly',false);
