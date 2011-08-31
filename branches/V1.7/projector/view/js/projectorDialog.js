@@ -862,11 +862,11 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
 	dijit.byId("assignmentDailyCost").set('value',cost);
 	dojo.byId("assignmentRate").value=rate;
-	dojo.byId("assignmentAssignedWork").value=assignedWork;
+	dijit.byId("assignmentAssignedWork").set('value',assignedWork);
 	dojo.byId("assignmentAssignedWorkInit").value=dojo.number.parse(assignedWork);
-	dojo.byId("assignmentRealWork").value=realWork;
-	dojo.byId("assignmentLeftWork").value=leftWork;
-	dojo.byId("assignmentComment").value=comment;
+	dijit.byId("assignmentRealWork").set('value',realWork);
+	dijit.byId("assignmentLeftWork").set('value',leftWork);
+	dijit.byId("assignmentComment").set('value',comment);
 	dojo.byId("assignmentLeftWorkInit").value=dojo.number.parse(leftWork);
 	assignmentUpdatePlannedWork('assignment');
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment") + " #" + assignmentId);
@@ -969,19 +969,6 @@ function removeAssignment (assignmentId, realWork, resource) {
 	showConfirm (msg, actionOK);
 }
 
-/* function assignmentChangeResource() {
-	return;
-	if (editAssignmentLoading) return;
-	var idR=dijit.byId("assignmentIdResource").get("value");
-	if (! idR) {
-		dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
-	    url: '../tool/jsonList.php?listType=empty'});
-		return;
-	}
-	dijit.byId('assignmentIdRole').store = new dojo.data.ItemFileReadStore({
-    url: '../tool/jsonList.php?listType=listRoleResource&idResource='+idR});
-	dijit.byId('assignmentIdRole').store.fetch();
-} */
 function assignmentChangeResource() {
 	if (editAssignmentLoading) return;
 	var idResource=dijit.byId("assignmentIdResource").get("value");
@@ -1026,7 +1013,7 @@ function addExpenseDetail () {
 	dojo.byId("expenseDetailId").value="";
 	dojo.byId("idExpense").value=dojo.byId("objectId").value;
 	dijit.byId("expenseDetailName").reset();
-	dijit.byId("expenseDetailDate").reset();
+	dijit.byId("expenseDetailDate").set('value',null);
 	dijit.byId("expenseDetailType").reset();
 	dojo.byId("expenseDetailDiv").innerHtml="";
 	dijit.byId("expenseDetailAmount").reset();
@@ -1617,9 +1604,13 @@ function addResourceCost(idResource, idRole, funcList) {
 	dojo.byId("resourceCostIdResource").value=idResource;
 	dojo.byId("resourceCostFunctionList").value=funcList;
 	dijit.byId("resourceCostIdRole").set('readOnly',false);
-	dijit.byId("resourceCostIdRole").set('value',((idRole)?idRole:null));
-	dijit.byId("resourceCostValue").reset();
-	dijit.byId("resourceCostStartDate").reset();
+	if (idRole) {
+	  dijit.byId("resourceCostIdRole").set('value',idRole);
+	} else {
+		dijit.byId("resourceCostIdRole").reset();
+	}
+	dijit.byId("resourceCostValue").reset('value');
+	dijit.byId("resourceCostStartDate").set('value',null);
 	resourceCostUpdateRole();
 	dijit.byId("dialogResourceCost").show();
 }
@@ -1647,7 +1638,7 @@ function editResourceCost(id, idResource,idRole,cost,startDate,endDate) {
 	dijit.byId("resourceCostValue").set('value',cost);
 	var dateStartDate=getDate(startDate);
 	dijit.byId("resourceCostStartDate").set('value',dateStartDate);
-	dijit.byId("resourceCostStartDate").set('readOnly',true);
+	dijit.byId("resourceCostStartDate").set('disabled',true);
 	dijit.byId("resourceCostStartDate").set('required','false');
 	reourceCostLoad=true;
 	dijit.byId("resourceCostIdRole").set('value',idRole);
@@ -1670,11 +1661,11 @@ function resourceCostUpdateRole() {
 	var funcList=dojo.byId('resourceCostFunctionList').value;
 	$key='#' + dijit.byId("resourceCostIdRole").get('value') + '#';
 	if (funcList.indexOf($key)>=0) {
-		dijit.byId("resourceCostStartDate").set('readOnly',false);
+		dijit.byId("resourceCostStartDate").set('disabled',false);
 		dijit.byId("resourceCostStartDate").set('required','true');
 	} else {
-		dijit.byId("resourceCostStartDate").set('readOnly',true);
-		dijit.byId("resourceCostStartDate").reset();
+		dijit.byId("resourceCostStartDate").set('disabled',true);
+		dijit.byId("resourceCostStartDate").set('value',null);
 		dijit.byId("resourceCostStartDate").set('required','false');
 	}
 }
