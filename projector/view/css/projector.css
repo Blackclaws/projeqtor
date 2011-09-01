@@ -276,6 +276,9 @@ label, .label {
   float:left;
   border: 1px;
 }
+.largeLabel {
+	width: 300px;
+}
 .dialogLabel {
   color: #707070; 
 }

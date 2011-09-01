@@ -154,7 +154,7 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   }
   echo '</tr>';
   foreach($lineList as $lineId => $lineName) {
-    echo '<tr><td class="crossTableLine"><label class="label">' . $lineName . '</label></td>';
+    echo '<tr><td class="crossTableLine"><label class="label largeLabel">' . $lineName . '</label></td>';
     foreach ($columnList as $colId => $colName) {
       $crit=array();
       $crit[$lineProp]=$lineId;
