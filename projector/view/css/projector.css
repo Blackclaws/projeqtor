@@ -276,6 +276,9 @@ label, .label {
   float:left;
   border: 1px;
 }
+.largeLabel {
+	width: 300px;
+}
 .dialogLabel {
   color: #707070; 
 }
@@ -1436,7 +1439,7 @@ label, .label {
   background-color: #ececec;
 }
 
-.ProjectOrRiaContrasted #toolBarDiv, .ProjectOrRiaContrasted #statusBarDiv, .ProjectOrRiaContrasted .statusBar, 
+.ProjectOrRiaContrasted #statusBarDiv, .ProjectOrRiaContrasted .statusBar, 
 .ProjectOrRiaContrasted .dojoxGridRowSelected, .ProjectOrRiaContrasted .listTitle,	 
 .ProjectOrRiaContrasted .section, .ProjectOrRiaContrasted .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaContrasted .title {
   background-color: #545281;  color: #EEEEEE;  
@@ -1449,9 +1452,12 @@ label, .label {
 .ProjectOrRiaContrasted .display, .ProjectOrRiaContrasted #printPreview {
   border: 1px solid #ececec;
 }
-
+.ProjectOrRiaContrasted #toolBarDiv {
+	color: ##545281;
+	background-color: #545281; 
+}
 .ProjectOrRiaContrasted .titleProject {
- color: #545281;  
+ color: #ececec;  
 }
 
 .ProjectOrRiaContrasted #mainDiv {
