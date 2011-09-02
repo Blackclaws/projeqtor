@@ -23,8 +23,9 @@ class User extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="40%">${name}</th>
-    <th field="resourceName" width="40%">${resourceName}</th>  
+    <th field="name" width="30%">${name}</th>
+    <th field="nameProfile" width="20%" formatter="translateFormatter">${idProfile}</th>
+    <th field="resourceName" width="30%">${resourceName}</th>  
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>

@@ -39,7 +39,7 @@ class Affectation extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
-    if ($this->id) {
+    /*if ($this->id) {
     	if ($this->idResource) {
     		if (!$this->idContact) {
     			$this->idContact=$this->idResource;
@@ -48,7 +48,7 @@ class Affectation extends SqlElement {
           $this->idUser=$this->idResource;
         }
     	}
-    }
+    }*/
     if (! $this->id) {
     	$this->rate=100;
     }

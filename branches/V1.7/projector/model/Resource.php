@@ -29,8 +29,9 @@ class Resource extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="name" width="30%">${name}</th> 
-    <th field="nameTeam" width="20%">${team}</th> 
-    <th field="userName" width="30%">${userName}</th> 
+    <th field="nameTeam" width="20%">${team}</th>
+    <th field="capacity" width="10%" >${capacity}</th>
+    <th field="userName" width="20%">${userName}</th> 
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>

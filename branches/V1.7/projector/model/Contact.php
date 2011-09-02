@@ -24,9 +24,10 @@ class Contact extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="30%">${name}</th> 
+    <th field="name" width="20%">${name}</th> 
     <th field="nameClient" width="20%">${client}</th> 
-    <th field="userName" width="30%">${userName}</th>
+    <th field="nameProfile" width="20%" formatter="translateFormatter">${idProfile}</th>
+    <th field="userName" width="20%">${userName}</th>
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>    
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>

@@ -21,7 +21,7 @@ class Product extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
     <th field="name" width="50%" >${productName}</th>
-    <th field="name" width="30%" >${clientName}</th>
+    <th field="nameClient" width="30%" >${clientName}</th>
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 

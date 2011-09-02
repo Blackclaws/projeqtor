@@ -18,8 +18,8 @@ class Client extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="clientCode" width="25%">${clientCode}</th> 
     <th field="name" width="60%">${clientName}</th>
+    <th field="clientCode" width="25%">${clientCode}</th> 
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
