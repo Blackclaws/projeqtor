@@ -176,10 +176,10 @@ class PlannedWork extends Work {
           $prec=new PlanningElement($precDep->predecessorId);
         }
         if ($prec->plannedEndDate > $startPlan) {        
-          if ($profile=="FDUR") {
-          	$startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
+          if ($plan->refType=='Milestone') {
+          	$startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
           } else {
-          	$startPlan=$prec->plannedEndDate;
+          	$startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
           }
         }
       }
