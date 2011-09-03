@@ -487,12 +487,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      vLeftTable += '<TR id=child_' + vID + ' class="dojoDndItem ganttTask' + vRowType + '" ' + invisibleDisplay
 	        + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
 	        + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
-	      /*vLeftTable += '<script type="dojo/connect" event="onMouseOver" >';
-	      vLeftTable += ' JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")';
-	      vLeftTable += '</script>';
-	      vLeftTable += '<script type="dojo/connect" event="onMouseOut" >';
-	      vLeftTable += ' JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")';
-	      vLeftTable += '</script>';*/
 	      vLeftTable += 
 	        '  <TD class="ganttName"><img style="width:16px" src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
 	        '  <TD class="ganttName" nowrap>';
