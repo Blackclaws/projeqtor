@@ -474,6 +474,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       if(vShowStartDate==1) vLeftTable += '  <TD class="ganttLeftTitle" nowrap>' + JSGantt.i18n('colStart') + '</TD>' ;
       if(vShowEndDate==1) vLeftTable += '  <TD class="ganttLeftTitle" nowrap>' + JSGantt.i18n('colEnd') + '</TD>' ;
       vLeftTable += '</TR>';
+      vLeftTable +='</TBODY></TABLE>'
+      vLeftTable +='<TABLE dojoType="dojo.dnd.Source" withHandles="false" jsId="dndSourceTable" id="dndSourceTable" class="container" xclass="ganttTable"><TBODY>';
+
       for(i = 0; i < vTaskList.length; i++) {
 	      if( vTaskList[i].getGroup()) {
 	        vRowType = "group";
@@ -553,7 +556,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	    // Draw format selector
 	    vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar, 'bottom');
 			
-			vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV></TD>';
+		vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV></DIV></TD>';
 	    vMainTable += vLeftTable;
 	    
 	    // Draw the Chart Rows
