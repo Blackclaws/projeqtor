@@ -16,12 +16,12 @@ scriptLog('   ->/view/main.php');
 <html>
 <head>   
   <title><?php echo i18n("applicationTitle");?></title>
-  <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
+  <link rel="stylesheet" type="text/css" href="css/jsganttNew.css" />
   <link rel="stylesheet" type="text/css" href="css/projector.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <script type="text/javascript" src="js/jsgantt.js"></script>
   <script type="text/javascript" src="js/projector.js" ></script>
+  <script type="text/javascript" src="js/jsganttNew.js"></script>
   <script type="text/javascript" src="js/projectorWork.js" ></script>
   <script type="text/javascript" src="js/projectorDialog.js" ></script>
   <script type="text/javascript" src="js/projectorFormatter.js" ></script>

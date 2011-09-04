@@ -16,7 +16,6 @@
 <html>
 <head>   
   <title><?php echo i18n("applicationTitle");?></title>
-  <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projector.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
