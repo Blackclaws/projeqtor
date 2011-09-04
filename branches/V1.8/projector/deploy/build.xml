@@ -5,7 +5,7 @@
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="D:/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="D:/www/projectorria" />
+  <property name="src.dir"       value="D:/www/projectorriaV1.8" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
