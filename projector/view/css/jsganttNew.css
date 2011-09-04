@@ -7,6 +7,7 @@
   font-weight: normal;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 25pt;
   vertical-align: top;
+  background-color: #dddddd;
 }
 div .scrollLeft { 
   border: #c0c0c0 1px solid; 
@@ -14,7 +15,7 @@ div .scrollLeft {
   padding: 0px; 
   margin: 0px;
   overflow-x: scroll;overflow-y: hidden;
-  background-color: #ffffff; 
+  background-color: tranparent; 
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 div .scrollLeftTop { 
@@ -22,7 +23,7 @@ div .scrollLeftTop {
   padding: 0px; 
   margin: 0px;
   overflow: hidden;
-  background-color: #ffffff; 
+  background-color: transparent; 
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 div .scrollRight { 
@@ -52,6 +53,7 @@ div .scrollRight {
 .ganttLeftTopLine {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   padding: 0px; margin: 0px;
+  background-color: transparent;
 }
 
 .ganttTable {
