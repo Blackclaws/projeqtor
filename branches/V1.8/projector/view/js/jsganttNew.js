@@ -439,7 +439,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vNumUnits=Math.round(vNumUnits);
       vChartWidth = vNumUnits * vColWidth + 1;
       vDayWidth = (vColWidth / vColUnit) + (1/vColUnit);
-      vMainTable = '<div id="theTable" class="mainGanttTable" dojoType="dijit.layout.BorderContainer"'
+      vMainTable = '<div class="mainGanttTable" id="theTable" dojoType="dijit.layout.BorderContainer"'
     	         + ' liveSplitters="false" style="width:100%;height: 100%;overflow: hidden;">';
       if(vShowRes !=1) vNameWidth+=vResourceWidth;
       if(vShowDur !=1) vNameWidth+=vDurationWidth;
@@ -448,8 +448,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 		  if(vShowEndDate!=1) vNameWidth+=vDateWidth;  
 //=LEFT=========================================================================================
 		  // DRAW the Left-side of the chart (names, resources, comp%)
-     vLeftDiv='<div class="scrollLeft" id="leftsideContent"  dojoType="dijit.layout.ContentPane" '
-    	     +' region="left" splitter="true" style="width:425px; height:100%;border: 1px solid blue;">';
+     vLeftDiv='<div xclass="scrollLeft" id="leftsideContent"  dojoType="dijit.layout.ContentPane" '
+    	     +' region="left" splitter="true" style="position: absolute; top:0px; left:425px; width:100%; height:100%;">';
      vLeftTable =
         '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' +
         '<TABLE dojoType="dojo.dnd.Source" withHandles="false" jsId="dndSourceTable" id="dndSourceTable" class="container" xclass="ganttTable"><TBODY>' +
@@ -474,8 +474,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       if(vShowEndDate==1) vLeftTable += '  <TD class="ganttLeftTitle" nowrap>' + JSGantt.i18n('colEnd') + '</TD>' ;
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>';
-      vLeftTable += '<DIV class="scrollLeft" id="leftsideMain" style="width:' + vLeftWidth + 'px;">';
-      
+      vLeftTable += '<DIV class="scrollLeftMain" id="leftsideMain" style="width:' + vLeftWidth + 'px;">';
+      vLeftTable += '<TABLE dojoType="dojo.dnd.Source" withHandles="false" '
+	        + ' jsId="dndSourceTable" id="dndSourceTable" class="container" xclass="ganttTable">'
+	        + '<TBODY>';
       for(i = 0; i < vTaskList.length; i++) {
 	      if( vTaskList[i].getGroup()) {
 	        vRowType = "group";
@@ -490,8 +492,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
 	        + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
 	      vLeftTable += 
-	        '  <TD class="ganttName"><img style="width:16px" src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
-	        '  <TD class="ganttName" nowrap>';
+	        '  <TD class="ganttName" style="width:15px;"><img style="width:16px" src="css/images/icon' + vTaskList[i].getClass() + '16.png" /></TD>' +
+	        '  <TD class="ganttName" style="width: ' + vNameWidth + 'px;" nowrap>';
 				vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
 				// tab the name depending on level
 				var levl=vTaskList[i].getLevel();
@@ -524,26 +526,26 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      vLeftTable +='</TD>';
 	        // BABYNUS : change in taskLink parameters
 			  if(vShowRes ==1) {
-			  	vLeftTable += '  <TD class="ganttDetail" align="center">' 
+			  	vLeftTable += '  <TD class="ganttDetail" align="center" style="width: ' + vResourceWidth + 'px;">' 
 	          +'<NOBR><span class="namePart' + vRowType + '">' + vTaskList[i].getResource() + '</span></NOBR>';
 			  //vLeftTable +='</div>';
 			  vLeftTable +='</TD>' ;
 			  }
 			  if(vShowDur ==1) { 
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
+			  	vLeftTable += '  <TD class="ganttDetail" align="center" style="width: ' + vDurationWidth + 'px;"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
 			  		+' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getDuration(vFormat) + '</span></NOBR></TD>' ;
 			  }
 			  if(vShowComp==1) { 
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
+			  	vLeftTable += '  <TD class="ganttDetail" align="center" style="width: ' + vProgressWidth + 'px;"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
 			  	  +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getCompStr()  + '</span></NOBR></TD>' ;
 			  }
 			  if(vShowStartDate==1) {
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
+			  	vLeftTable += '  <TD class="ganttDetail" align="center" style="width: ' + vDateWidth + 'px;"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
 			  	  +' class="hideLeftPart' + vRowType + '">' 
 			  		+ JSGantt.formatDateStr( vTaskList[i].getStart(), vDateDisplayFormat) + '</span></NOBR></TD>' ;
 			  }
 			  if(vShowEndDate==1) {
-			  	vLeftTable += '  <TD class="ganttDetail" align="center"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
+			  	vLeftTable += '  <TD class="ganttDetail" align="center" style="width: ' + vDateWidth + 'px;"><NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
 			  	  +' class="hideLeftPart' + vRowType + '">' 
 			  		+ JSGantt.formatDateStr( vTaskList[i].getEnd(), vDateDisplayFormat) + '</span></NOBR></TD>' ;
 			  }
@@ -554,20 +556,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	    // Draw format selector
 	    vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar, 'bottom');
 		vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV>';
-		vLeftTable += '<TABLE dojoType="dojo.dnd.Source" withHandles="false" '
-			        + ' jsId="dndSourceTable" id="dndSourceTable" class="container" xclass="ganttTable">'
-			        + '<TBODY>';
 
 		
 //=====		
 		vLeftDiv+=vLeftTable;
-		vLeftDiv+='x</div>';
-		vMainTable += vLeftDiv;
-			
+		vLeftDiv+='</div>';
+		vMainTable += vLeftDiv;	
 //=RIGHT=======================================================================================================		
 	    // Draw the Chart Rows
-		vRightDiv = '<div class="scrollRight" id="rightside" dojoType="dijit.layout.ContentPane" '
-   	               +' region="center" >';	
+		vRightDiv ='<div class="scrollRight" id="rightsideContent" dojoType="dijit.layout.ContentPane" '
+   	     +' region="center" style="width:100px; height:100px; border:5px solid red;">';
 	    vRightTable = 
 	      '<TD valign="top">' +
 	      '<DIV class="scrollRight" style="width: ' + vRightWidth + 'px;" id="rightside">';
@@ -868,8 +866,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      }
 	      vRightTable += '</DIV>';
 	    }
-	    
-	    vRightDiv+='</div>';
+	    vRightDiv += vRightTable;
+	    vRightDiv +='</div>';
 	    vMainTable += vRightDiv;
 		vMainTable += '</div>'
 		vDiv.innerHTML = vMainTable;
