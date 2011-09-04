@@ -308,7 +308,7 @@ $ctrls['DebugMode'] = '=true=false=';
   </script>
 </head>
 
-<body id="body" class="blue" onLoad="hideWait();" style="overflow: auto; ">
+<body id="body" class="ProjectOrRia" onLoad="hideWait();" style="overflow: auto; ">
   <div id="waitLogin" >
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">
