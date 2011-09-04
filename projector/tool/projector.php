@@ -495,7 +495,7 @@ function getAccesResctictionClause($objectClass,$alias=null) {
  */
 function getTheme() {
   global $defaultTheme;
-  $theme='blue'; // default if never  set
+  $theme='ProjectOrRia'; // default if never  set
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
   }
