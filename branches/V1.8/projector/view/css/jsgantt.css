@@ -1,16 +1,31 @@
 
 // These are the class/styles used by various objects in GanttChart.  However, Firefox has problems deciphering class style when DIVs are embedded in other DIVs.
-
-div.scrollLeft { 
+.mainGanttTable {
+  padding: 0px; margin: 0px;
+  text-align: left;
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 25pt;
+  vertical-align: top;
+  background-color: #dddddd;
+}
+div .scrollLeft { 
+  border: #c0c0c0 1px solid; 
+  height:100%;
+  padding: 0px; 
+  margin: 0px;
+  overflow: hidden;
+  background-color: tranparent; 
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+}
+div .scrollLeftTop { 
   border: #c0c0c0 1px solid; 
   padding: 0px; 
   margin: 0px;
   overflow: hidden;
-  background-color: #ffffff; 
+  background-color: transparent; 
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
-
-div.scrollRight { 
+div .scrollRight { 
   position:relative; 
   padding: 0px; 
   overflow:auto ;
