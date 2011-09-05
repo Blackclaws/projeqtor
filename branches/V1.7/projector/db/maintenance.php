@@ -75,7 +75,7 @@ if ($currVersion=='0.0.0') {
   $result=$proj->save();
   traceLog($result);
 }
-deleteDupplicate();
+deleteDuplicate();
 
 // For V1.6.1
 $tst=new ExpenseDetailType('1');
@@ -232,11 +232,11 @@ function runScript($vers) {
 }
 
 /*
- * Delete dupplicate if new version has been installed twice :
+ * Delete duplicate if new version has been installed twice :
  *  - habilitation
  * 
  */
-function deleteDupplicate() {
+function deleteDuplicate() {
   // HABILITATION
   $hab=new Habilitation();
   $habList=$hab->getSqlElementsFromCriteria(array(), false, null, 'idMenu, idProfile, id ');
