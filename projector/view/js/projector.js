@@ -1153,7 +1153,7 @@ function drawGantt() {
   if (g) {
     gFormat=g.getFormat();
   }
-  g = new JSGantt.GanttChart('g',document.getElementById('GanttChartDIV'), gFormat);
+  g = new JSGantt.GanttChart('g',dojo.byId('GanttChartDIV'), gFormat);
   g.setShowRes(0);                       // Show/Hide Responsible (0/1)
   g.setShowDur(1);                       // Show/Hide Duration (0/1)
   g.setShowComp(1);                      // Show/Hide % Complete(0/1)
