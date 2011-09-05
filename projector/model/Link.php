@@ -133,7 +133,7 @@ class Link extends SqlElement {
     $lnk=new Link();
     $check=$lnk->getSqlElementsFromCriteria($checkCrit);
     if (count($check)>0) {
-      $result.='<br/>' . i18n('errorDupplicateLink');
+      $result.='<br/>' . i18n('errorDuplicateLink');
     } 
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

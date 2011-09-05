@@ -187,7 +187,7 @@ class Affectation extends SqlElement {
       $clauseWhere=" idResource='$this->idResource' and idProject='$this->idProject' and id!='$this->id' ";
       $search=$this->getSqlElementsFromCriteria(null, false, $clauseWhere);
       if (count($search)>0) { 
-      	$result.='<br/>' . i18n('errorDupplicateAffectation');
+      	$result.='<br/>' . i18n('errorDuplicateAffectation');
       }
     } else {
     
