@@ -1,15 +1,8 @@
 
 // These are the class/styles used by various objects in GanttChart.  However, Firefox has problems deciphering class style when DIVs are embedded in other DIVs.
-.mainGanttTable {
-  padding: 0px; margin: 0px;
-  text-align: left;
-  font-weight: normal;
-  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 25pt;
-  vertical-align: top;
-  background-color: #dddddd;
-}
+
 div .scrollLeft { 
-  border: #c0c0c0 1px solid; 
+  /*border: #c0c0c0 1px solid;*/ 
   height:100%;
   padding: 0px; 
   margin: 0px;
@@ -18,19 +11,29 @@ div .scrollLeft {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 div .scrollLeftTop { 
-  border: #c0c0c0 1px solid; 
+  /*border: #c0c0c0 1px solid;*/
+  border-bottom: #707070 2px solid; 
   padding: 0px; 
   margin: 0px;
   overflow: hidden;
-  background-color: transparent; 
+  background-color:#aaaaaa;
+  color: #ffffff;
+  font-weight: bold;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 div .scrollRight { 
-  position:relative; 
   padding: 0px; 
-  overflow:auto ;
-  overflow-x:scroll;
+  overflow-x:hidden;
   overflow-y:hidden; 
+  background-color: #dddddd;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  border-left: 1px solid #aaaaaa;
+  border-right: 1px solid #aaaaaa;
+}
+div .scrollRightTop { 
+	border-bottom: #707070 2px solid; 
+  padding: 0px; 
+  overflow:hidden ;
   background-color: #dddddd;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   border-left: 1px solid #aaaaaa;
@@ -52,10 +55,12 @@ div .scrollRight {
 .ganttLeftTopLine {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   padding: 0px; margin: 0px;
+  border-bottom: 1px solid #ffffff;
 }
 
 .ganttTable {
   padding: 0px; margin: 0px;
+  height: 100%; width: 100%; overflow: hidden;
   text-align: left;
   font-weight: normal;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -71,6 +76,15 @@ div .scrollRight {
   padding: 0px; margin: 0px;
   border-left: #efefef 1px solid;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+}
+.ganttRightTitle {
+  border-bottom: 1px solid #ffffff;
+}
+* .ganttAlignLeft {
+  text-align: left;
+}
+* .ganntNoLeftBorder {
+  border-left:0px;
 }
 
 .ganttRightSubTitle {
@@ -188,6 +202,7 @@ div .scrollRight {
   font-size: 90%;  
   padding: 0px; margin: 0px;
   z-index: 10;   
+  text-align: center;
 }
 
 .ganttDetailNoborder {

@@ -89,7 +89,7 @@ class Workflow extends SqlElement {
     $result=array();
     // Initialize
     $statusList=SqlList::getList('Status');
-    $profileList=SqlList::getList('Status');
+    $profileList=SqlList::getList('Profile');
     foreach($statusList as $idFrom => $valFrom) {
       $result[$idFrom]=array();
       foreach($statusList as $idTo => $valTo) {
