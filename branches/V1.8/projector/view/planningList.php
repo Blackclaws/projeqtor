@@ -79,21 +79,26 @@ scriptLog('   ->/view/planningList.php');
                   </div>
                 </td>
 		            <td style="background-color: blue, width: 100px;text-align: right; align: right;">
-		              <?php echo i18n("labelShowWbs");?>
+		              <table width="100%"><tr><td>
+                  <?php echo i18n("labelShowWbs");?>
+                  </td><td width:"10px">
 		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="showWBS" name="showWBS">
 		                <script type="dojo/method" event="onChange" >
                       refreshJsonPlanning();
                     </script>
-		              </div>
-		              <br/>
+		              </div>&nbsp;
+		              </td></tr><tr><td>
 		              <?php echo i18n("labelShowIdle");?>
+                  </td><td>
 		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="listShowIdle" name="listShowIdle">
 		                <script type="dojo/method" event="onChange" >
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
+                  </td></tr>
+                  </table>
 		            </td>
 		          </tr>
 		        </table>    
@@ -111,10 +116,12 @@ scriptLog('   ->/view/planningList.php');
 		</div>
 	</div>
 	<div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
-   <div id="submainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
+   <div id="submainPlanningDivContainer" dojoType="dijit.layout.BorderContainer"
+    style="border-top:1px solid #ffffff;">
 	   <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" 
       style="width:425px; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
-      id="leftGanttChartDIV" name="leftGanttChartDIV">
+      id="leftGanttChartDIV" name="leftGanttChartDIV"
+      onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px';">
      </div>
      <div dojoType="dijit.layout.ContentPane" region="center" 
       style="height:100%; overflow:hidden;" class="ganttDiv" 
@@ -125,7 +132,7 @@ scriptLog('   ->/view/planningList.php');
           id="topGanttChartDIV" name="topGanttChartDIV">
          </div>
          <div dojoType="dijit.layout.ContentPane" region="center" 
-          style="width:100%; overflow-x:scroll; overflow-y:scroll;" class="ganttDiv"
+          style="width:100%; overflow-x:scroll; overflow-y:scroll; position: relative; top:-10px;" class="ganttDiv"
           id="rightGanttChartDIV" name="rightGanttChartDIV"
           onScroll="dojo.byId('rightside').style.left='-'+(this.scrollLeft+1)+'px';
                     dojo.byId('leftside').style.top='-'+(this.scrollTop)+'px';"

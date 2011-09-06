@@ -22,7 +22,7 @@ div .scrollLeftTop {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 div .scrollRight { 
-  padding: 0px; 
+  padding: 0px; margin: 0px;
   overflow-x:hidden;
   overflow-y:hidden; 
   background-color: #dddddd;
@@ -32,7 +32,7 @@ div .scrollRight {
 }
 div .scrollRightTop { 
 	border-bottom: #707070 2px solid; 
-  padding: 0px; 
+  padding: 0px; margin: 0px;
   overflow:hidden ;
   background-color: #dddddd;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -237,3 +237,8 @@ div .scrollRightTop {
   font-weight: normal;
   font-style: normal; 
 }
+.ganttScale {
+	width:100px;
+	float:none;
+}
+	

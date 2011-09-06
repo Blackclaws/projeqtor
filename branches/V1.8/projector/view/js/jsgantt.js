@@ -638,6 +638,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vTopRightTable += vDateRowStr + '</TR>';
       vTopRightTable += '</TBODY></TABLE></DIV>';
+      //vRightTable += '<div class="scrollRight">'
       // if (dojo.isFF) {vTopRightTable +='</DIV>';}
       for(i = 0; i < vTaskList.length; i++) {
         vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
@@ -654,7 +655,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         if(vTaskList[i].getVisible() == 0) {
           vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative; display:none;">';
         } else {
-        vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative;">';
+          vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative;">';
         }
         if( vTaskList[i].getMile() ) {
           vRightTable += '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
@@ -788,14 +789,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vRightTable += '</DIV>';
       }
-    dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
-    dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
-    dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
-    dojo.parser.parse('leftGanttChartDIV');
-    dojo.parser.parse('rightGanttChartDIV');
-    dojo.parser.parse('topGanttChartDIV');
-    dojo.byId('rightside').style.left='-'+(dojo.byId('rightGanttChartDIV').scrollLeft+1)+'px';
-    dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
+      //vRightTable += '</div>';
+      dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
+      dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
+      dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
+      dojo.parser.parse('leftGanttChartDIV');
+      dojo.parser.parse('rightGanttChartDIV');
+      dojo.parser.parse('topGanttChartDIV');
+      dojo.byId('rightside').style.left='-'+(dojo.byId('rightGanttChartDIV').scrollLeft+1)+'px';
+      dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
+      dojo.byId('ganttScale').style.left=(dojo.byId('leftGanttChartDIV').scrollLeft)+'px';
     }
   }; // this.draw
    
@@ -1558,34 +1561,58 @@ JSGantt.i18n = function (message) {
 };
 
 JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
-  var vLeftTable='';
-  vLeftTable +='&nbsp;' + JSGantt.i18n('periodScale') + '&nbsp;:&nbsp;&nbsp;';
+  var vLeftTable='<div style="position:relative;" id="ganttScale">';
+  vLeftTable +='<b>' + JSGantt.i18n('periodScale') + '&nbsp;:&nbsp;&nbsp;</b>';
   if (vFormatArr.join().indexOf("day")!=-1) { 
     if (vFormat=='day') {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '" VALUE="day" checked>' + JSGantt.i18n('day');
+      vLeftTable += '<label class="ganttScale">'
+    	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
+    	+' name="radFormat' + vPos + '" value="day" checked>' 
+    	+JSGantt.i18n('day')
+    	+'</label>';
     } else {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '"' 
-        + ' onclick=JSGantt.changeFormat("day",'+vGanttVar+'); VALUE="day">' + JSGantt.i18n('day');
+      vLeftTable += '<label class="ganttScale" style="cursor:pointer;">'
+    	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
+    	+' name="radFormat' + vPos + '"' 
+        +' onclick=JSGantt.changeFormat("day",'+vGanttVar+'); value="day">' 
+        + JSGantt.i18n('day')
+        + '</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   if (vFormatArr.join().indexOf("week")!=-1) { 
     if (vFormat=='week') {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '" VALUE="week" checked>' + JSGantt.i18n('week');
+      vLeftTable += '<label class="ganttScale">'
+    	+'<input type="RADIO" dojoType="dijit.form.RadioButton" '
+    	+' name="radFormat' + vPos + '" value="week" checked>' 
+    	+JSGantt.i18n('week') 
+    	+'</label>';
     } else {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '"' 
-      + ' onclick=JSGantt.changeFormat("week",'+vGanttVar+') VALUE="week">' + JSGantt.i18n('week');
+      vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
+    	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
+        +' name="radFormat' + vPos + '"' 
+        +' onclick=JSGantt.changeFormat("week",'+vGanttVar+') value="week">'
+        + JSGantt.i18n('week') 
+        +'</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   if (vFormatArr.join().indexOf("month")!=-1) { 
     if (vFormat=='month') { 
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '" VALUE="month" checked>' + JSGantt.i18n('month');
+      vLeftTable += '<label class="ganttScale">'
+        +'<input type="RADIO" dojoType="dijit.form.RadioButton" '
+        +'name="radFormat' + vPos + '" value="month" checked>' 
+        +JSGantt.i18n('month')
+        +'</label>';
     } else {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '"' 
-      + ' onclick=JSGantt.changeFormat("month",'+vGanttVar+') VALUE="month">' + JSGantt.i18n('month');
+      vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
+    	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
+    	+' name="radFormat' + vPos + '"' 
+        + ' onclick=JSGantt.changeFormat("month",'+vGanttVar+') value="month">' 
+        +JSGantt.i18n('month')
+        +'</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   if (vFormatArr.join().indexOf("quarter")!=-1) { 
     if (vFormat=='quarter') {
@@ -1594,7 +1621,8 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
       vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '"' 
       + ' onclick=JSGantt.changeFormat("quarter",'+vGanttVar+') VALUE="quarter">' + JSGantt.i18n('quarter');
     }
-    vLeftTable += '&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
   }
+  vLeftTable+='</div>';
   return vLeftTable;
 };
