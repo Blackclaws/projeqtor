@@ -403,6 +403,17 @@ label, .label {
   padding: 0;
 }
 
+.imputationTable {
+  padding: 0px; margin: 0px;
+  width: 100%; overflow: hidden;
+  text-align: left;
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  vertical-align: top;
+  border-top: 1px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
 .dijitReset, .dijitRight, .dijitInline, .dijitReset, .dijitInline, .dijitButtonNode, .link {
   cursor: pointer; 
 }

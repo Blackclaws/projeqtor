@@ -216,9 +216,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.sLine = function(x1,y1,x2,y2) {
     vLeft = Math.min(x1,x2);
     vTop  = Math.min(y1,y2);
-    vWid  = Math.abs(x2-x1) + 2;
-    vHgt  = Math.abs(y2-y1) + 2;
-    vDoc = JSGantt.findObj('rightside');
+    vWid  = Math.abs(x2-x1) + 1;
+    vHgt  = Math.abs(y2-y1) + 1;
+    vDoc = JSGantt.findObj('rightGanttChartDIV');
     var oDiv = document.createElement('div');
     oDiv.id = "line"+vDepId++;
     oDiv.style.position = "absolute";
@@ -252,7 +252,15 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     };
   };
   this.drawDependency =function(x1,y1,x2,y2) {
-    if(x1 + 10 < x2){ 
+    if (x1 <= x2 && y1 < y2) {
+      this.sLine(x1,y1,x2+4,y1);
+      this.sLine(x2+4,y1,x2+4,y2-6);
+      //this.dLine(x2+1, y2-9, x2+4, y2-6);
+      //this.dLine(x2+7, y2-9, x2+4, y2-6);
+      this.sLine(x2+1, y2-9, x2+7, y2-9);
+      this.sLine(x2+2, y2-8, x2+6, y2-8);
+      this.sLine(x2+3, y2-7, x2+5, y2-7);
+    } else if(x1 + 10 < x2){ 
       this.sLine(x1,y1,x1+4,y1);
       this.sLine(x1+4,y1,x1+4,y2);
       this.sLine(x1+4,y2,x2,y2);
@@ -417,6 +425,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>'
         +'<DIV class="scrollLeft" id="leftside" style="z-index:-1;position:relative;width:' + vLeftWidth + 'px;">'
+        + ( (dojo.ifFF)?'<div style="height:1px"></div>':'')
         +'<TABLE dojoType="dojo.dnd.Source" withHandles="false" jsId="dndSourceTable" id="dndSourceTable" '
         +'class="ganttTable"  ><TBODY>';
       for(i = 0; i < vTaskList.length; i++) {
@@ -542,19 +551,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       var vWeekendColor="dfdfdf";
       var vCurrentdayColor="ffffaa";
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
-        if (vFormat == 'minute') {
-          vDateRowStr += '<td class="ganttRightSubTitle"><div style="width: '+vColWidth+'px">' 
-            + vTmpDate.getMinutes() + '</div></td>';
-          vItemRowStr += '<td class="ganttDetail" ><div style="width: '+vColWidth+'px">'
-            + '&nbsp;&nbsp;</div></td>';
-          vTmpDate.setMinutes(vTmpDate.getMinutes() + 1);
-        } else if (vFormat == 'hour') {  
-          vDateRowStr += '<td class="ganttRightSubTitle">'
-            + '<div style="width: '+vColWidth+'px">' + vTmpDate.getHours() + '</div></td>';
-          vItemRowStr += '<td class="ganttDetail" style="cursor>' 
-            + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
-          vTmpDate.setHours(vTmpDate.getHours() + 1);
-        } else if(vFormat == 'day' ) { 
+        if(vFormat == 'day' ) { 
           if(isOffDay(vTmpDate)) {
             vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; " >'
               + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
@@ -638,8 +635,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vTopRightTable += vDateRowStr + '</TR>';
       vTopRightTable += '</TBODY></TABLE></DIV>';
-      //vRightTable += '<div class="scrollRight">'
-      // if (dojo.isFF) {vTopRightTable +='</DIV>';}
       for(i = 0; i < vTaskList.length; i++) {
         vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
         vTaskStart = vTaskList[i].getStart();
@@ -647,103 +642,35 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vNumCols = 0;
         vID = vTaskList[i].getID();
         vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (24 * 60 * 60 * 1000) + 1;
-        if (vFormat=='hour') {
-          vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (  60 * 1000) + 1;
-        } else if (vFormat=='minute') {
-          vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (  60 * 1000) + 1;
-        }
         if(vTaskList[i].getVisible() == 0) {
           vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative; display:none;">';
         } else {
           vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative;">';
         }
         if( vTaskList[i].getMile() ) {
-          vRightTable += '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
+          vRightTable += '<DIV ' + ffSpecificHeight+ '>'
+            + '<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
             + '<TR id=childrow_' + vID + ' class="ganttTaskmile" '
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
-          // Build date string for Title
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
           vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000) ) + 0.25;
-            if (vMinDate>vDefaultMinDate) {
-              vTaskLeft = vTaskLeft - 1;
-            }
+          if (vMinDate>vDefaultMinDate) {
+            vTaskLeft = vTaskLeft - 1;
+          }
           vTaskRight = 1;
-          vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:0px; ' 
+          vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:-2px; ' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
             + 'left:' + Math.ceil(vTaskLeft * vDayWidth) + 'px; overflow:hidden;">' 
             + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
-            + ' style="overflow:hidden; cursor: pointer;font-size:18px" '
+            + ' style="overflow:hidden; cursor: pointer; font-size:18px;" '
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>';
-          if(vTaskList[i].getCompVal() < 100) {
-            vRightTable += '&loz;</div>' ;
-          } else { 
-            vRightTable += '&diams;</div>' ;
-          }
-          if( g.getCaptionType() ) {
-            vCaptionStr = '';
-            switch( g.getCaptionType() ) {           
-              case 'Caption':    vCaptionStr = vTaskList[i].getCaption();  break;
-              case 'Resource':   vCaptionStr = vTaskList[i].getResource();  break;
-              case 'Duration':   vCaptionStr = vTaskList[i].getDuration(vFormat);  break;
-              case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
-            }
-            vRightTable += '<div position:absolute; top:2px; width:120px; left:12px">' + vCaptionStr + '</div>';
-          };
-          vRightTable += '</div>';
-        } else {
-          // Build date string for Title
-          vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat) + ' - ' 
-            + JSGantt.formatDateStr(vTaskEnd,vDateDisplayFormat);
-          if (vFormat=='minute') {
-            vTaskRight = (Date.parse(vTaskList[i].getEnd()) - Date.parse(vTaskList[i].getStart())) / ( 60 * 1000) + 1/vColUnit;
-            vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / ( 60 * 1000));
-          } else if (vFormat=='hour') {
-            vTaskRight = (Date.parse(vTaskList[i].getEnd()) - Date.parse(vTaskList[i].getStart())) / ( 60 * 60 * 1000) + 1/vColUnit;
-            vTaskLeft = (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / ( 60 * 60 * 1000);
-          } else {
-            vTaskRight = (Date.parse(vTaskList[i].getEnd()) - Date.parse(vTaskList[i].getStart())) / (24 * 60 * 60 * 1000) + 1/vColUnit;
-            vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
-            if (vMinDate>vDefaultMinDate) {
-              vTaskLeft = vTaskLeft - 1;
-            }
-            /*
-       * if (vFormat='day') { var tTime=new Date();
-       * tTime.setTime(Date.parse(vTaskList[i].getStart())); if
-       * (tTime.getMinutes() > 29) { vTaskLeft+=.5; } }
-       */
-          }
-          var vBarLeft=Math.ceil(vTaskLeft * (vDayWidth) + 1);
-          var vBarWidth=Math.ceil((vTaskRight) * (vDayWidth) - 1 );
-          if (vBarWidth<10) vBarWidth=10;
-          // Draw Group Bar which has outer div with inner group div and
-      // several small divs to left and right
-          // to create angled-end indicators
-          if( vTaskList[i].getGroup()) {
-            vRightTable += '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
-              + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
-              + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
-              + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
-            vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:5px; '
-              + ' left:' + vBarLeft + 'px; height: 7px; '
-              + ' width:' + vBarWidth + 'px">' 
-              + '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
-              + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
-              // ??????
-              + '<div style="Z-INDEX: -4; float:left; background-color:#666666; height:3px; '
-              + ' overflow: hidden; margin-top:1px; margin-left:1px; margin-right:1px; '
-              + ' filter: alpha(opacity=80); opacity:0.8; width:' + vTaskList[i].getCompStr() + '; ' 
-              + ' cursor: pointer;" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>' 
-              + '</div>' 
-              + '</div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
-              + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' 
-              + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';  
+          if (vTaskStart && vTaskEnd) {
+            if(vTaskList[i].getCompVal() < 100) {
+              vRightTable += '&loz;</div>' ;
+            } else { 
+              vRightTable += '&diams;</div>' ;
+            }          
             if( g.getCaptionType() ) {
               vCaptionStr = '';
               switch( g.getCaptionType() ) {           
@@ -752,18 +679,66 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 case 'Duration':   vCaptionStr = vTaskList[i].getDuration(vFormat);  break;
                 case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
               }
-              vRightTable += '<div class="ganttTaskgroupBarText" '
-                + 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
-            };
-            vRightTable += '</div>' ;
+              vRightTable += '<div position:absolute; top:2px; width:120px; left:12px">' + vCaptionStr + '</div>';
+            }
+          }
+          vRightTable += '</div>';
+        } else {
+          vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat) + ' - ' 
+            + JSGantt.formatDateStr(vTaskEnd,vDateDisplayFormat);
+          vTaskRight = (Date.parse(vTaskList[i].getEnd()) - Date.parse(vTaskList[i].getStart())) / (24 * 60 * 60 * 1000) + 1/vColUnit;
+          vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+          if (vMinDate>vDefaultMinDate) {
+            vTaskLeft = vTaskLeft - 1;
+          }
+          var vBarLeft=Math.ceil(vTaskLeft * (vDayWidth) + 1);
+          var vBarWidth=Math.ceil((vTaskRight) * (vDayWidth) - 1 );
+          if (vBarWidth<10) vBarWidth=10;
+          if( vTaskList[i].getGroup()) {
+            
+              vRightTable += '<DIV ' + ffSpecificHeight+ '>'
+                + '<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
+                + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
+                + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
+                + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
+            if (vTaskStart && vTaskEnd) {
+              vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:5px; '
+                + ' left:' + vBarLeft + 'px; height: 7px; '
+                + ' width:' + vBarWidth + 'px">' 
+                + '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+                + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
+                + '<div style="width:' + vTaskList[i].getCompStr() + ';"' 
+                + ' class="ganttGrouprowBarComplete" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>' 
+                + '</div>' 
+                + '</div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';  
+              if( g.getCaptionType() ) {
+                vCaptionStr = '';
+                switch( g.getCaptionType() ) {           
+                  case 'Caption':    vCaptionStr = vTaskList[i].getCaption();  break;
+                  case 'Resource':   vCaptionStr = vTaskList[i].getResource();  break;
+                  case 'Duration':   vCaptionStr = vTaskList[i].getDuration(vFormat);  break;
+                  case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
+                }
+                vRightTable += '<div class="ganttTaskgroupBarText" '
+                  + 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
+              }
+              vRightTable += '</div>';
+        	}
           } else { // task (not a milstone, not a group)
-            vDivStr = '<DIV ' + ffSpecificHeight+ '><TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;" >' 
-              + '<TR id=childrow_' + vID + ' class="ganttTaskrow" '
+            vDivStr = '<DIV ' + ffSpecificHeight+ '>'
+              +'<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;" >' 
+              +'<TR id=childrow_' + vID + ' class="ganttTaskrow" '
               +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
             vRightTable += vDivStr;               
-            // Draw Task Bar which has outer DIV with enclosed colored bar
-        // div, and opaque completion div
             vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:4px; '
               + ' left:' + vBarLeft + 'px; height:18px; '
               + ' width:' + vBarWidth + 'px">' 
@@ -789,7 +764,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vRightTable += '</DIV>';
       }
-      //vRightTable += '</div>';
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
       dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
@@ -805,18 +779,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 }; // GanttChart
 
 
-/**
- * 
- * @class
- */
-
-/**
- * Checks whether browser is IE
- * 
- * @method isIE
- */
 JSGantt.isIE = function () {
-  if(typeof document.all != 'undefined') {
+  if(dojo.isIE) {
     return true;
   } else {
     return false;

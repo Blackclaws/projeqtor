@@ -210,7 +210,7 @@ class ImputationLine {
     for ($i=1; $i<=$nbDays; $i++) {
       $colSum[$i]=0;
     }
-    echo '<table class="ganttTable">';
+    echo '<table class="imputationTable">';
     echo '<TR class="ganttHeight">';
     echo '  <TD class="ganttLeftTopLine" ></TD>';
     echo '  <TD class="ganttLeftTopLine" colspan="5">' . $resource->name . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay . '</TD>';
