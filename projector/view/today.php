@@ -268,10 +268,9 @@
       } else if ($class=='Activity' or $class=='Milestone') {
         $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$class,'refId'=>$elt->id));
         $echeance=($pe->realEndDate)?$pe->realEndDate
-            :($pe->plannedEndDate)?$pe->plannedEndDate
-            :($pe->validatedEndDate)?$pe->validatedEndDate
-            :$pe->initialEndDate;
-          
+                 :(($pe->plannedEndDate)?$pe->plannedEndDate
+                 :(($pe->validatedEndDate)?$pe->validatedEndDate
+                 :$pe->initialEndDate));
       } else if ($class=="Risk" or $class=="Issue") {
         $echeance=($elt->actualEndDate)?$elt->actualEndDate:$elt->initialEndDate;
       } else if ($class=="Action" ) {
