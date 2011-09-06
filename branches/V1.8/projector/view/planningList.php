@@ -16,7 +16,9 @@ scriptLog('   ->/view/planningList.php');
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="27px">
 		    <td width="50px" align="center">
-		      <span style="position:absolute; left:+10px; top: +2px"><img src="css/images/iconPlanning22.png" width="22" height="22" /></span>
+		      <span style="position:absolute; left:+10px; top: +2px">
+            <img src="css/images/iconPlanning22.png" width="22" height="22" />
+          </span>
 		    </td>
 		    <td><span class="title"><?php echo i18n('menuPlanning');?></span></td>
 		    <td>   
@@ -71,20 +73,26 @@ scriptLog('   ->/view/planningList.php');
 		              </button>
 		              <input type="hidden" id="outMode" name="outMode" value="" />
 		            </td>
-		            <td><div id="planResultDiv" style=" width: 260px;height: 10px;" dojoType="dijit.layout.ContentPane" region="center" ></div></td>
+		            <td>
+                  <div id="planResultDiv" style=" width: 260px;height: 10px;" 
+                    dojoType="dijit.layout.ContentPane" region="center" >
+                  </div>
+                </td>
 		            <td style="background-color: blue, width: 100px;text-align: right; align: right;">
-		                          <?php echo i18n("labelShowWbs");?>
-		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="showWBS" name="showWBS">
+		              <?php echo i18n("labelShowWbs");?>
+		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="showWBS" name="showWBS">
 		                <script type="dojo/method" event="onChange" >
-                  refreshJsonPlanning();
-                </script>
+                      refreshJsonPlanning();
+                    </script>
 		              </div>
 		              <br/>
 		              <?php echo i18n("labelShowIdle");?>
-		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">
+		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="listShowIdle" name="listShowIdle">
 		                <script type="dojo/method" event="onChange" >
-                  refreshJsonPlanning();
-                </script>
+                      refreshJsonPlanning();
+                    </script>
 		              </div>&nbsp;
 		            </td>
 		          </tr>
@@ -97,15 +105,33 @@ scriptLog('   ->/view/planningList.php');
 		  <div id="listBarIcon" align="center"></div>
 		</div>
 	
-		<div xdojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" style="display: none">
+		<div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" 
+     style="display: none">
 		  <?php include '../tool/jsonPlanning.php';?>
 		</div>
 	</div>
 	<div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
    <div id="submainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
-	   <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" style="width:425px; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" id="leftGanttChartDIV" name="leftGanttChartDIV">
+	   <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" 
+      style="width:425px; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
+      id="leftGanttChartDIV" name="leftGanttChartDIV">
      </div>
-     <div dojoType="dijit.layout.ContentPane" region="center" style="position:relative; height:100%;" id="GanttChartDIV" name="GanttChartDIV" class="ganttDiv">
+     <div dojoType="dijit.layout.ContentPane" region="center" 
+      style="height:100%; overflow:hidden;" class="ganttDiv" 
+      id="GanttChartDIV" name="GanttChartDIV" >
+       <div id="mainRightPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
+         <div dojoType="dijit.layout.ContentPane" region="top" 
+          style="width:100%; height:43px; overflow:hidden;" class="ganttDiv"
+          id="topGanttChartDIV" name="topGanttChartDIV">
+         </div>
+         <div dojoType="dijit.layout.ContentPane" region="center" 
+          style="width:100%; overflow-x:scroll; overflow-y:scroll;" class="ganttDiv"
+          id="rightGanttChartDIV" name="rightGanttChartDIV"
+          onScroll="dojo.byId('rightside').style.left='-'+(this.scrollLeft+1)+'px';
+                    dojo.byId('leftside').style.top='-'+(this.scrollTop)+'px';"
+         >
+         </div>
+       </div>
      </div>
    </div>
 	</div>
