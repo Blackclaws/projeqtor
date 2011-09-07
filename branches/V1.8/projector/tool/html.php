@@ -361,9 +361,14 @@ function htmlGetWarningMessage($message) {
  * @param $mimeType the textual mimeType
  * @return formated html mimeType, as an image
  */
-function htmlGetMimeType($mimeType) {
-  // TODO : transform mimeType into Image
-  return $mimeType;
+function htmlGetMimeType($mimeType,$fileName) {
+  $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+  if (file_exists("../view/img/mime/$ext.png")) {
+    $img="../view/img/mime/$ext.png";
+  } else {
+    $img= "../view/img/mime/unknown.png";
+  }
+  return '<img src="' . $img . '" title="' . $mimeType . '" />';
 }
 
 /** ============================================================================

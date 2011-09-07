@@ -193,9 +193,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vParDiv  = JSGantt.findObj("childgrid_"+vID);
       if(vBarDiv) {
         vList[i].setStartX( vBarDiv.offsetLeft );
-        vList[i].setStartY( vParDiv.offsetTop+vBarDiv.offsetTop+6 );
         vList[i].setEndX( vBarDiv.offsetLeft + vBarDiv.offsetWidth );
-        vList[i].setEndY( vParDiv.offsetTop+vBarDiv.offsetTop+6 );
+        if (vList[i].getMile()) {
+          vList[i].setEndY( vParDiv.offsetTop+vBarDiv.offsetTop+12 );
+          vList[i].setStartY( vParDiv.offsetTop+vBarDiv.offsetTop+12 );
+        } else {
+          vList[i].setEndY( vParDiv.offsetTop+vBarDiv.offsetTop+6 );
+          vList[i].setStartY( vParDiv.offsetTop+vBarDiv.offsetTop+6 );
+        }
       };
     };
   };
@@ -213,7 +218,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     };
     vDepId = 1;
   };
-  this.sLine = function(x1,y1,x2,y2) {
+  this.sLine = function(x1,y1,x2,y2,color) {
     vLeft = Math.min(x1,x2);
     vTop  = Math.min(y1,y2);
     vWid  = Math.abs(x2-x1) + 1;
@@ -227,7 +232,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
     oDiv.style.zIndex = 0;
-    oDiv.style.backgroundColor = "#000000";
+    if (!color) color="#000000";
+    color="#000000"
+    oDiv.style.backgroundColor = color;
     oDiv.style.left = vLeft + "px";
     oDiv.style.top = vTop + "px";
     oDiv.style.width = vWid + "px";
@@ -235,7 +242,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.visibility = "visible";
     vDoc.appendChild(oDiv);
   };
-  this.dLine = function(x1,y1,x2,y2) {
+  this.dLine = function(x1,y1,x2,y2,color) {
     var dx = x2 - x1;
     var dy = y2 - y1;
     var x = x1;
@@ -246,38 +253,46 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     for ( i = 0; i <= n; i++ ) {
       vx = Math.round(x); 
       vy = Math.round(y);
-      this.sLine(vx,vy,vx,vy);
+      if (!color) color="#000000";
+      this.sLine(vx,vy,vx,vy,color);
       x += dx;
       y += dy;
     };
   };
-  this.drawDependency =function(x1,y1,x2,y2) {
-    if (x1 <= x2 && y1 < y2) {
-      this.sLine(x1,y1,x2+4,y1);
-      this.sLine(x2+4,y1,x2+4,y2-6);
-      //this.dLine(x2+1, y2-9, x2+4, y2-6);
-      //this.dLine(x2+7, y2-9, x2+4, y2-6);
-      this.sLine(x2+1, y2-9, x2+7, y2-9);
-      this.sLine(x2+2, y2-8, x2+6, y2-8);
-      this.sLine(x2+3, y2-7, x2+5, y2-7);
-    } else if(x1 + 10 < x2){ 
+  this.drawDependency =function(x1,y1,x2,y2,color) {
+    if (x1 <= x2+4 && y1 < y2) {
+      this.sLine(x1,y1,x2+4,y1,color);
+      this.sLine(x2+4,y1,x2+4,y2-6,color);
+      this.sLine(x2+1, y2-9, x2+7, y2-9,color);
+      this.sLine(x2+2, y2-8, x2+6, y2-8,color);
+      this.sLine(x2+3, y2-7, x2+5, y2-7,color);
+    } else if (x1 <= x2 && y1 > y2) {
+      this.sLine(x1,y1,x2+4,y1,color);
+      this.sLine(x2+4,y1,x2+4,y2+6,color);
+      this.sLine(x2+1, y2+9, x2+7, y2+9,color);
+      this.sLine(x2+2, y2+8, x2+6, y2+8,color);
+      this.sLine(x2+3, y2+7, x2+5, y2+7,color);
+    /*} else if(x1 + 10 < x2){ 
       this.sLine(x1,y1,x1+4,y1);
       this.sLine(x1+4,y1,x1+4,y2);
       this.sLine(x1+4,y2,x2,y2);
       this.dLine(x2,y2,x2-3,y2-3);
       this.dLine(x2,y2,x2-3,y2+3);
       this.dLine(x2-1,y2,x2-3,y2-2);
-      this.dLine(x2-1,y2,x2-3,y2+2);
+      this.dLine(x2-1,y2,x2-3,y2+2);*/
     } else {
-      this.sLine(x1,y1,x1+4,y1);
-      this.sLine(x1+4,y1,x1+4,y2-10);
-      this.sLine(x1+4,y2-10,x2-8,y2-10);
-      this.sLine(x2-8,y2-10,x2-8,y2);
-      this.sLine(x2-8,y2,x2,y2);
-      this.dLine(x2,y2,x2-3,y2-3);
-      this.dLine(x2,y2,x2-3,y2+3);
-      this.dLine(x2-1,y2,x2-3,y2-2);
-      this.dLine(x2-1,y2,x2-3,y2+2);
+      this.sLine(x1,y1,x1+4,y1,color);
+      this.sLine(x1+4,y1,x1+4,y2-10,color);
+      this.sLine(x1+4,y2-10,x2-8,y2-10,color);
+      this.sLine(x2-8,y2-10,x2-8,y2,color);
+      this.sLine(x2-8,y2,x2,y2,color);
+      this.sLine(x2-3,y2+3,x2-3,y2-3,color);
+      this.sLine(x2-2,y2+2,x2-2,y2-2,color);
+      this.sLine(x2-1,y2+1,x2-1,y2-1,color);
+      /*this.dLine(x2,y2,x2-3,y2-3,color);
+      this.dLine(x2,y2,x2-3,y2+3,color);
+      this.dLine(x2-1,y2,x2-3,y2-2,color);
+      this.dLine(x2-1,y2,x2-3,y2+2,color);*/
     }
   };
   this.DrawDependencies = function () {
@@ -294,7 +309,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           var vTask = this.getArrayLocationByID(vDepList[k]);
           if(vTask!=null && vList[vTask].getVisible()==1) {
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
-                            vList[i].getStartY());
+                            vList[i].getStartY(),"#"+vList[vTask].getColor());
           }
         }
       }

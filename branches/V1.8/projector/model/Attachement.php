@@ -47,6 +47,13 @@ class Attachement extends SqlElement {
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
   }
+  
+  public function delete() {
+  	global $paramPathSeparator;
+  	unlink($this->subDirectory . $paramPathSeparator . $this->fileName);
+  	rmdir($this->subDirectory);
+  	return parent::delete();
+  }
     
 }
 ?>

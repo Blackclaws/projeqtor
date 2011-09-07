@@ -102,11 +102,17 @@
        iconClass="dijitEditorIcon dijitEditorIconDelete" >
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("deleteButton").blur();
-		  action=function(){
+		      action=function(){
             unselectAllRows('objectGrid');
-		    loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
+		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
           };
-		  showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value)) ,action);
+          var alsoDelete="";
+		      if (dojo.byId('nbAttachements')) {
+            if (dojo.byId('nbAttachements').value>0) {
+              alsoDelete+="<br/><br/>" + i18n('alsoDeleteAttachement', new Array(dojo.byId('nbAttachements').value) );
+            }
+          }
+          showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
         </script>
       </button>    
       
