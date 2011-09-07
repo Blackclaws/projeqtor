@@ -996,10 +996,10 @@ function drawAttachementsFromObject($obj, $refresh=false) {
   }
   echo '<td class="attachementHeader" style="width:5%">' . i18n('colId') . '</td>';
   echo '<td class="attachementHeader" style="width:15%">' . i18n('colDate') . '</td>';
-  echo '<td class="attachementHeader" style="width:15%">' . i18n('colUser'). '</td>';
-  echo '<td class="attachementHeader" style="width:15%">' . i18n('colType'). '</td>';
-  echo '<td class="attachementHeader" style="width:10%">' . i18n('colSize'). '</td>';
-  echo '<td class="attachementHeader" style="width:' . ( ($print)?'40':'35' ) . '%">' . i18n('colFile'). '</td>';
+  echo '<td class="attachementHeader" style="width:20%">' . i18n('colUser'). '</td>';
+  echo '<td class="attachementHeader" style="width:10%;">' . i18n('colSize'). '</td>';
+  echo '<td class="attachementHeader" style="width:5%;">' . i18n('colType'). '</td>';
+  echo '<td class="attachementHeader" style="width:' . ( ($print)?'45':'40' ) . '%">' . i18n('colFile'). '</td>';
   echo '</tr>';
   foreach($attachements as $attachement) {
     $userId=$attachement->idUser;
@@ -1020,8 +1020,8 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     echo '<td class="attachementData">#' . $attachement->id  . '</td>';
     echo '<td class="attachementData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
     echo '<td class="attachementData">' . $userName . '</td>';
-    echo '<td class="attachementData">' . htmlGetMimeType($attachement->mimeType) . '</td>';
-    echo '<td class="attachementData">' . htmlGetFileSize($attachement->fileSize) . '</td>';
+    echo '<td class="attachementData" style="text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
+    echo '<td class="attachementData" style="text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName) . '</td>';
     echo '<td class="attachementData" title="' . $attachement->description . '">';
     echo '<table><tr >';
     echo ' <td>';
@@ -1036,7 +1036,9 @@ function drawAttachementsFromObject($obj, $refresh=false) {
   }
   echo '<tr>';
   if (! $print) {
-    echo '<td class="attachementDataClosetable">&nbsp;</td>';
+    echo '<td class="attachementDataClosetable">&nbsp;';
+    echo '<input type="hidden" name="nbAttachements" id="nbAttachements" value="'.count($attachements).'" />';
+    echo '</td>';    
   }
   echo '<td class="attachementDataClosetable">&nbsp;</td>';
   echo '<td class="attachementDataClosetable">&nbsp;</td>';
