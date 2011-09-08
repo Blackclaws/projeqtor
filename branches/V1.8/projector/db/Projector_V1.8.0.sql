@@ -20,7 +20,17 @@ INSERT INTO `${prefix}indicatordefinition` (`id`, `code`, `name`, `idle`) VALUES
 (1, 'IDDT', 'InitialDueDateTime', 0),
 (2, 'ADDT', 'ActualDueDateTime', 0),
 (3, 'IDD', 'InitialDueDate', 0),
-(4, 'ADD', 'ActualDueDate', 0);
+(4, 'ADD', 'ActualDueDate', 0),
+(5, 'RED', 'RequestedEndDate', 1),
+(6, 'VED', 'ValidatedEndDate', 0),
+(7, 'PED', 'PlannedEndDate', 0),
+(8, 'RED', 'RequestedStartDate', 1),
+(9, 'VED', 'ValidatedStartDate', 1),
+(10, 'PED', 'PlannedStartDate', 1),
+(11, 'PCOEC', 'PlannedCostOverValidatedCost', 0),
+(12, 'PCOAC', 'PlannedCostOverAssignedCost', 0),
+(13, 'PWOEW', 'PlannedWorkOverValidatedWork', 0),
+(14, 'PWOAW', 'PlannedWorkOverAssignedWork', 0);
 
 CREATE TABLE `${prefix}indicatorable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -41,6 +51,8 @@ INSERT INTO `${prefix}indicatorable` (`id`, `idIndicatorDefinition`, `refType`, 
 (8, 4, 'Action', 0),
 (9, 4, 'Issue', 0),
 (10, 4, 'Question', 0),
+(, 5, 'Activity',0),
+(,5 
 ;
 
 CREATE TABLE `${prefix}indicator` (

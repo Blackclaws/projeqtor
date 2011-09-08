@@ -260,39 +260,40 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     };
   };
   this.drawDependency =function(x1,y1,x2,y2,color) {
-    if (x1 <= x2+4 && y1 < y2) {
-      this.sLine(x1,y1,x2+4,y1,color);
-      this.sLine(x2+4,y1,x2+4,y2-6,color);
-      this.sLine(x2+1, y2-9, x2+7, y2-9,color);
-      this.sLine(x2+2, y2-8, x2+6, y2-8,color);
-      this.sLine(x2+3, y2-7, x2+5, y2-7,color);
-    } else if (x1 <= x2 && y1 > y2) {
-      this.sLine(x1,y1,x2+4,y1,color);
-      this.sLine(x2+4,y1,x2+4,y2+6,color);
-      this.sLine(x2+1, y2+9, x2+7, y2+9,color);
-      this.sLine(x2+2, y2+8, x2+6, y2+8,color);
-      this.sLine(x2+3, y2+7, x2+5, y2+7,color);
-    /*} else if(x1 + 10 < x2){ 
-      this.sLine(x1,y1,x1+4,y1);
-      this.sLine(x1+4,y1,x1+4,y2);
-      this.sLine(x1+4,y2,x2,y2);
-      this.dLine(x2,y2,x2-3,y2-3);
-      this.dLine(x2,y2,x2-3,y2+3);
-      this.dLine(x2-1,y2,x2-3,y2-2);
-      this.dLine(x2-1,y2,x2-3,y2+2);*/
+    if (x1 <= x2+4) {
+      if (y1 <= y2) {
+        this.sLine(x1,y1,x2+4,y1,color);
+        this.sLine(x2+4,y1,x2+4,y2-6,color);
+        this.sLine(x2+1, y2-9, x2+7, y2-9,color);
+        this.sLine(x2+2, y2-8, x2+6, y2-8,color);
+        this.sLine(x2+3, y2-7, x2+5, y2-7,color);
+      } else {
+        this.sLine(x1,y1,x2+4,y1,color);
+        this.sLine(x2+4,y1,x2+4,y2+6,color);
+        this.sLine(x2+1, y2+9, x2+7, y2+9,color);
+        this.sLine(x2+2, y2+8, x2+6, y2+8,color);
+        this.sLine(x2+3, y2+7, x2+5, y2+7,color);
+      }
     } else {
-      this.sLine(x1,y1,x1+4,y1,color);
-      this.sLine(x1+4,y1,x1+4,y2-10,color);
-      this.sLine(x1+4,y2-10,x2-8,y2-10,color);
-      this.sLine(x2-8,y2-10,x2-8,y2,color);
-      this.sLine(x2-8,y2,x2,y2,color);
-      this.sLine(x2-3,y2+3,x2-3,y2-3,color);
-      this.sLine(x2-2,y2+2,x2-2,y2-2,color);
-      this.sLine(x2-1,y2+1,x2-1,y2-1,color);
-      /*this.dLine(x2,y2,x2-3,y2-3,color);
-      this.dLine(x2,y2,x2-3,y2+3,color);
-      this.dLine(x2-1,y2,x2-3,y2-2,color);
-      this.dLine(x2-1,y2,x2-3,y2+2,color);*/
+      if (y1 <= y2) {
+        this.sLine(x1,y1,x1+4,y1,color);
+        this.sLine(x1+4,y1,x1+4,y2-8,color);
+        this.sLine(x1+4,y2-8,x2-8,y2-8,color);
+        this.sLine(x2-8,y2-8,x2-8,y2,color);
+        this.sLine(x2-8,y2,x2,y2,color);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color);
+      } else {
+    	this.sLine(x1,y1,x1+4,y1,color);
+        this.sLine(x1+4,y1,x1+4,y2+8,color);
+        this.sLine(x1+4,y2+8,x2-8,y2+8,color);
+        this.sLine(x2-8,y2+8,x2-8,y2,color);
+        this.sLine(x2-8,y2,x2,y2,color);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color);
+      }
     }
   };
   this.DrawDependencies = function () {
