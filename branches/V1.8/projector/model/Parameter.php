@@ -225,5 +225,22 @@ class Parameter extends SqlElement {
     }
     return $parameterList;
   }
+  
+  static public function getGlobalParameter($code) {
+  	$paramCode='globalParameter_'.$code;
+  	if (array_key_exists($paramCode,$_SESSION)) {
+  		return $_SESSION[$paramCode];
+  	} else {
+  		$p=new Parameter();
+  	  $crit=" idUser is null and idProject is null and parameterCode='" . $code . "'";
+  	  $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
+  	  $val='';
+  	  if (count($lst)==1) {
+  	  	$val=$lst[0]->parameterValue;
+  	  }
+  	  $_SESSION[$paramCode]=$val;
+  	  return $val;
+    }
+  }
 }
 ?>

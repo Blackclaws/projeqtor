@@ -212,6 +212,18 @@ function saveBrowserLocaleToSession() {
     url: "../tool/saveDataToSession.php?id=browserLocale&value=" + browserLocale,
     load: function(data,args) { }
   });
+  var date = new Date(2000, 11, 31, 0, 0, 0, 0);
+  var formatted=dojo.date.locale.format(date);
+  var format="YYYYMMDD";
+  if (formatted.substr(0,2)=='31') {
+    format='DDMMYYYY';  
+  } else if (formatted.substr(0,2)=='12') {
+	format='MMDDYYYY';
+  }
+  dojo.xhrPost({
+    url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + format,
+    load: function(data,args) { }
+  });
 }
 
 /**
