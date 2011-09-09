@@ -16,7 +16,8 @@ $versionHistory = array(
   "V1.4.0",
   "V1.5.0",
   "V1.6.0",
-  "V1.7.0");
+  "V1.7.0",
+  "V1.8.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
