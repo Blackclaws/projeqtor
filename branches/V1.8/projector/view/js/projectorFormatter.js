@@ -124,7 +124,10 @@ function percentFormatter(value) {
  * @return the formatted value 
  */
 function numericFormatter(value) {
-  return value.replace(/^0+/g,'');
+  result=dojo.number.format(value);
+  //var result = value.replace(/^0+/g,'');
+  //result = value.replace(/^0+/g,'');
+  return result;
 }
 
 /** ============================================================================

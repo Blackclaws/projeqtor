@@ -918,6 +918,131 @@ function addWeeksToDate($date, $weeks) {
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+(7*$weeks), $tDate[0]));
 }
 
+function addDelayToDatetime($dateTime, $delay, $unit) {
+	$date=substr($dateTime, 0,10);
+	$time=substr($dateTime, 11,5);
+	if ($unit=='DD') {
+		$newDate=addDaysToDate($date,$delay);
+		return $newDate . " " .$time;
+	} else if ($unit=='OD') {
+    $newDate=addWorkDaysToDate($date,$delay+1);
+    return $newDate . " " .$time;
+	} else if ($unit=='HH') {
+		$hh = substr($time,0,2);
+		$mn = substr($time,3,2);
+		$res=minutesToTime($hh*60+$mn+$delay*60);
+		$newDate=addDaysToDate($date,$res['d']);
+    return $newDate . " " . $res['h'] . ":" . $res['m'] . ':00'; 
+	 } else if ($unit=='OH') {
+    $startAM=Parameter::getGlobalParameter('startAM');
+    $endAM=Parameter::getGlobalParameter('startAM');
+    $startPM=Parameter::getGlobalParameter('startAM');
+    $endPM=Parameter::getGlobalParameter('startAM');
+    $mnEndAM=(substr($endAM,0,2)*60+substr($endAM,0,3));
+    $mnStartAM=(substr($startAM,0,2)*60+substr($startAM,0,3));
+    $mnEndPM=(substr($endPM,0,2)*60+substr($endPM,0,3));
+    $mnStartPM=(substr($startPM,0,2)*60+substr($startPM,0,3));
+    $mnDelay=$delay*60;
+    $hh = substr($time,0,2);
+    $mn = substr($time,3,2);
+    $mnTime=$hh*60+$mn;
+    $AMPM='AM';
+	 	if (isOffDay($date)) {
+      $date=addWorkDaysToDate($date,2);
+      $mnTime=$mnStartAM;
+      $AMPM='AM';
+    } else if ($mnTime>=$mnEndPM) {
+    	$date=addWorkDaysToDate($date,2);
+      $mnTime=$mnStartAM;
+      $AMPM='AM';
+    } else if ($mnTime>=$mnStartPM) {
+      $AMPM='PM'; 
+    } else if ($mnTime>=$mnEndAM) {
+	    $mnTime=$mnStartPM;
+      $AMPM='PM';
+	  } else if ($mnTime>=$mnStartAM) {
+	  	$AMPM='AM';
+	  } else {
+	  	$mnTime=$mnStartAM;
+      $AMPM='AM';
+	  }
+	  while ($mnDelay>0) {
+	  	if ($AMPM=='AM') {
+	  		$left=$mnEndAM-$mnTime;
+	  		if ($left>$mnDelay) {
+	  			$mnTime+=$mnDelay;
+	  			$mnDelay=0;
+	  		} else {
+	  			$mnTime=$mnStartPM;
+	  			$mnDelay-=$left;
+	  			$AMPM='PM';
+	  		}
+	  	} else {
+	  	  $left=$mnEndPM-$mnTime;
+        if ($left>$mnDelay) {
+          $mnTime+=$mnDelay;
+          $mnDelay=0;
+        } else {
+          $mnTime=$mnStartAM;
+          $mnDelay-=$left;
+          $date=addWorkDaysToDate($date,2);
+          $AMPM='AM';
+        }
+	  	}
+	  }
+	  $res=minutesToTime($mnTime);
+    return $date . " " . $res['h'] . ":" . $res['m'] . ':00'; 
+	 } else {
+		//return $dateTime;
+	}
+}
+function secondsToTime($time){
+  if(is_numeric($time)){
+    $value = array(
+      "y" => 0, "d" => 0, "h" => 0,
+      "m" => 0, "s" => 0,
+    );
+    if($time >= 31556926){
+      $value["y"] = floor($time/31556926);
+      $time = ($time%31556926);
+    }
+    if($time >= 86400){
+      $value["d"] = floor($time/86400);
+      $time = ($time%86400);
+    }
+    if($time >= 3600){
+      $value["h"] = floor($time/3600);
+      $time = ($time%3600);
+    }
+    if($time >= 60){
+      $value["m"] = floor($time/60);
+      $time = ($time%60);
+    }
+    $value["s"] = floor($time);
+    return (array) $value;
+  }else{
+    return (bool) FALSE;
+  }
+}
+function minutesToTime($time){
+  if(is_numeric($time)){
+    $value = array(
+      "d" => 0, "h" => 0, "m" => 0
+    );
+    if($time >= 1440){
+      $value["d"] = floor($time/1440);
+      $time = ($time%1440);
+    }
+    if($time >= 60){
+      $value["h"] = floor($time/60);
+      $time = ($time%60);
+    }
+    $value["m"] = floor($time);
+    return (array) $value;
+  }else{
+    return (bool) FALSE;
+  }
+}
 /**
  * Return wbs code as a sortable value string (pad number with zeros)
  * @param $wbs wbs code 

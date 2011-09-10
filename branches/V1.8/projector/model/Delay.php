@@ -2,13 +2,13 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
-class Type extends SqlElement {
+class Delay extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place
-  public $refType; 
-  public $idTicketType;
+  public $scope; 
+  public $idType;
   public $idUrgency;
   public $value;
   public $idDelayUnit;
@@ -16,21 +16,15 @@ class Type extends SqlElement {
   public $_col_2_2;
   
   // Define the layout that will be used for lists
-  private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="60%">${name}</th>
-    <th field="sortOrder" width="5%">${sortOrderShort}</th>
-    <th field="nameWorkflow" width="20%" >${idWorkflow}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
-    ';
-
-  private static $_fieldsAttributes=array("idTicketType"=>"required", 
+  
+  private static $_fieldsAttributes=array("idType"=>"hidden", 
                                           "idUrgency"=>"required",
                                           "value"=>"required",
-                                          "idDelayUnit"=>"required");
+                                          "idDelayUnit"=>"required",
+                                          "scope"=>"hidden");
   
-  private static $_databaseTableName = 'delay';
   private static $_databaseCriteria = array();
+  private static $_databaseTableName = 'delay';
   
    /** ==========================================================================
    * Constructor
@@ -53,14 +47,6 @@ class Type extends SqlElement {
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the specific layout
-   * @return the layout
-   */
-  protected function getStaticLayout() {
-    return self::$_layout;
-  }
 
     /** ==========================================================================
    * Return the specific fieldsAttributes
@@ -70,15 +56,6 @@ class Type extends SqlElement {
     return self::$_fieldsAttributes;
   }
   
-    /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseTableName() {
-    global $paramDbPrefix;
-    return $paramDbPrefix . self::$_databaseTableName;
-  }
-  
   /** ========================================================================
    * Return the specific database criteria
    * @return the databaseTableName
@@ -86,6 +63,12 @@ class Type extends SqlElement {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
+  
+  protected function getStaticDatabaseTableName() {
+    global $paramDbPrefix;
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
+  
   
 }
 ?>

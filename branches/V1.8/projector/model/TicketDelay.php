@@ -2,12 +2,39 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
-class TicketType extends Type {
+class TicketDelay extends Delay {
 
   // Define the layout that will be used for lists
     
+  public $_col_1_2_Description;
+  public $id;    // redefine $id to specify its visible place
+  public $scope; 
+  public $idTicketType;
+  public $idUrgency;
+  public $value;
+  public $idDelayUnit;
+  public $idle;
+  public $_col_2_2;
+  
+  private static $_layout='
+    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
+    <th field="nameTicketType" width="25%">${idTicketType}</th>
+    <th field="nameUrgency" width="25%">${urgency}</th>
+    <th field="value" width="10%" formatter="numericFormatter">${value}</th>
+    <th field="nameDelayUnit" width="25%" formatter="translateFormatter">${unit}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    ';
+
+  private static $_fieldsAttributes=array("idTicketType"=>"required",
+                                          "idType"=>"hidden", 
+                                          "idUrgency"=>"required",
+                                          "value"=>"required",
+                                          "idDelayUnit"=>"required",
+                                          "scope"=>"hidden");
+  
   private static $_databaseCriteria = array('scope'=>'Ticket');
   
+  private static $_databaseColumnName = array("idTicketType"=>"idType");
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -30,7 +57,13 @@ class TicketType extends Type {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
-
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
+  }
   /** ========================================================================
    * Return the specific database criteria
    * @return the databaseTableName
@@ -38,6 +71,19 @@ class TicketType extends Type {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
-  
+    /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
+  }
 }
 ?>
