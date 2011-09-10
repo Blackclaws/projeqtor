@@ -935,16 +935,17 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
     return $newDate . " " . $res['h'] . ":" . $res['m'] . ':00'; 
 	 } else if ($unit=='OH') {
     $startAM=Parameter::getGlobalParameter('startAM');
-    $endAM=Parameter::getGlobalParameter('startAM');
-    $startPM=Parameter::getGlobalParameter('startAM');
-    $endPM=Parameter::getGlobalParameter('startAM');
+    $endAM=Parameter::getGlobalParameter('endAM');
+    $startPM=Parameter::getGlobalParameter('startPM');
+    $endPM=Parameter::getGlobalParameter('endPM');
     if (!$startAM or !$endAM or !$startPM or !$endPM) {
     	return $dateTime;
     }
-    $mnEndAM=(substr($endAM,0,2)*60+substr($endAM,0,3));
-    $mnStartAM=(substr($startAM,0,2)*60+substr($startAM,0,3));
-    $mnEndPM=(substr($endPM,0,2)*60+substr($endPM,0,3));
-    $mnStartPM=(substr($startPM,0,2)*60+substr($startPM,0,3));
+    $mnEndAM=(substr($endAM,0,2)*60+substr($endAM,3));
+    $mnStartAM=(substr($startAM,0,2)*60+substr($startAM,3));
+    $mnEndPM=(substr($endPM,0,2)*60+substr($endPM,3));
+    $mnStartPM=(substr($startPM,0,2)*60+substr($startPM,3));
+//debugLog("mnStartAM=$mnStartAM mnEndAM=$mnEndAM mnStartPM=$mnStartPM $mnEndPM=$mnEndPM");
     $mnDelay=$delay*60;
     $hh = substr($time,0,2);
     $mn = substr($time,3,2);
@@ -970,15 +971,13 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
       $AMPM='AM';
 	  }
 	  while ($mnDelay>0) {
-debugLog("mnDelay=$mnDelay  mnTime=$mnTime  AMPM=$AMPM");	  	
+//debugLog("mnDelay=$mnDelay  mnTime=$mnTime  AMPM=$AMPM");	  	
 	  	if ($AMPM=='AM') {
 	  		$left=$mnEndAM-$mnTime;
 	  		if ($left>$mnDelay) {
-debugLog("  cas1  left=$left");
 	  			$mnTime+=$mnDelay;
 	  			$mnDelay=0;
 	  		} else {
-debugLog('  cas2');
 	  			$mnTime=$mnStartPM;
 	  			$mnDelay-=$left;
 	  			$AMPM='PM';
@@ -986,11 +985,9 @@ debugLog('  cas2');
 	  	} else {
 	  	  $left=$mnEndPM-$mnTime;
         if ($left>$mnDelay) {
-debugLog('  cas3');
         	$mnTime+=$mnDelay;
           $mnDelay=0;
         } else {
-debugLog('  cas4');
           $mnTime=$mnStartAM;
           $mnDelay-=$left;
           $date=addWorkDaysToDate($date,2);
