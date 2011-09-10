@@ -3,7 +3,7 @@
  * Html specific functions
  */
 require_once "../tool/projector.php";
-
+//scriptLog('   ->/tool/html.php');
 /** ===========================================================================
  * Draw the options list for a select  
  * @param $col the name of the field, as idXxx. The table ref is then xxx.
@@ -13,7 +13,8 @@ require_once "../tool/projector.php";
  * @return void
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null) {
-  $listType=substr($col,2);
+//scriptLog("      =>htmlDrawOptionForReference($col,$selection,obj,$required,$critFld,$critVal)");
+	$listType=substr($col,2);
   if ($critFld) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,'name',$selection);

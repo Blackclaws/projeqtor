@@ -5,7 +5,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/selectStoredFilter.php');
 $user=$_SESSION['user'];
 
 if (! $user->_arrayFilters) {

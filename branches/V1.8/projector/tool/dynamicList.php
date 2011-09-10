@@ -4,7 +4,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/dynamicList.php');
 $ref1Type=$_REQUEST['linkRef1Type'];
 $ref1Id=$_REQUEST['linkRef1Id'];
 $ref2Type=SqlList::getNameFromId('Linkable', $_REQUEST['linkRef2Type']);

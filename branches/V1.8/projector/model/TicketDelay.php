@@ -35,6 +35,9 @@ class TicketDelay extends Delay {
   private static $_databaseCriteria = array('scope'=>'Ticket');
   
   private static $_databaseColumnName = array("idTicketType"=>"idType");
+  
+  private static $_colCaptionTransposition = array('idDelayUnit'=>'unit');
+  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -85,5 +88,12 @@ class TicketDelay extends Delay {
   protected function getStaticDatabaseColumnName() {
     return self::$_databaseColumnName;
   }
+    /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }  
 }
 ?>

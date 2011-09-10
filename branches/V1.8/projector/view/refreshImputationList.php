@@ -4,7 +4,7 @@
  *
  */
 require_once "../tool/projector.php";
-
+scriptLog('   ->/view/refrehImputationList.php'); 
 $rangeType=$_REQUEST['rangeType'];
 $rangeValue=$_REQUEST['rangeValue'];
 $userId=$_REQUEST['userId'];

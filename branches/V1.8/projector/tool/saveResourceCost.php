@@ -5,7 +5,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/saveResourceCost.php');
 $id=null;
 if (array_key_exists('resourceCostId',$_REQUEST)) {
   $id=trim($_REQUEST['resourceCostId']);
