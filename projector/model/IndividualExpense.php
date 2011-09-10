@@ -57,8 +57,7 @@ class IndividualExpense extends Expense {
   );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array("idIndividualExpenseType"=>"idExpenseType",
-  );
+  private static $_databaseColumnName = array("idIndividualExpenseType"=>"idExpenseType");
 
   private static $_databaseCriteria = array('scope'=>'IndividualExpense');
 

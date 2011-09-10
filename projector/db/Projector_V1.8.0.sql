@@ -101,31 +101,50 @@ CREATE TABLE `${prefix}delayunit` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(10),
   `name` varchar(100),
+  `sortOrder` int(3),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
   
-INSERT INTO `${prefix}delayunit` (id, code, name, idle) VALUES 
-(1,'HH','hours',0),
-(2,'OH','openHours',0),
-(3,'DD','days',0),
-(4,'OD','openDays',0),
+INSERT INTO `${prefix}delayunit` (id, code, name, sortOrder, idle) VALUES 
+(1,'HH','hours',100, 0),
+(2,'OH','openHours',200, 0),
+(3,'DD','days',300, 0),
+(4,'OD','openDays',400, 0);
 
 CREATE TABLE `${prefix}delay` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `refType` varchar(100),
+  `scope` varchar(100),
   `idType` int(12) unsigned,
-  `idUrgency` varchar(100),
+  `idUrgency` int(12) unsigned,
   `value` decimal(6,3),
   `idDelayUnit` int(12) unsigned,
+  `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
+INSERT INTO `${prefix}delay` (`id`, `scope`, `idType`, `idUrgency`, `value`, `idDelayUnit`, `idle`) VALUES
+(1,'Ticket',16,1,2,2,0),
+(2,'Ticket',16,2,1,4,0),
+(3,'Ticket',17,1,1,4,0),
+(4,'Ticket',17,1,4,4,0),
+(5,'Ticket',18,1,4,2,0),
+(6,'Ticket',18,2,2,4,0);
+
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
 (88, 'menuAutomation', 13, 'menu', 765, Null, 0);
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 88, 1),
+(2, 88, 1),
+(3, 88, 1);
 
 UPDATE `${prefix}menu` SET idMenu=88 where id=59;
 UPDATE `${prefix}menu` SET idMenu=88 where id=68;
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
 (89, 'menuTicketDelay', 88, 'object', 785, Null, 0);
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 89, 1),
+(2, 89, 1),
+(3, 89, 1);
+

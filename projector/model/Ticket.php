@@ -217,6 +217,21 @@ class Ticket extends SqlElement {
     }
     return $result;
   }
+  
+  public function save() {
+  	$old=new Ticket($this->id);
+  	if ($this->idTicketType != $old->idTicketType 
+  	 or $this->idUrgency != $old->idUrgency
+  	 or $this->creationDateTime != $old->creationDateTime) {
+  	 	$crit=array('idTicketType'=>$this->idTicketType, 'idUrgency'=>$this->idUrgency);
+  		$delay=SqlElement::getSingleSqlElementFromCriteria('TicketDelay', $crit);
+  		if ($delay and $delay->id) {
+  			$unit=new DelayUnit($delay->idDelayUnit);
+  			$this->initialDueDateTime=addDelayToDatetime($this->creationDateTime,$delay->value, $unit->code);
+  		}
+  	}
+  	return parent::save();
+  }
 
   
 }

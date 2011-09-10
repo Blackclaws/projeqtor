@@ -35,6 +35,10 @@
 .iconAffectation22 { background-image: url(images/iconAffectation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconAffectation16 { background-image: url(images/iconAffectation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconAutomation32 { background-image: url(images/iconAutomation32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAutomation22 { background-image: url(images/iconAutomation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAutomation16 { background-image: url(images/iconAutomation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconCalendar32 { background-image: url(images/iconCalendar32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconCalendar22 { background-image: url(images/iconCalendar22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconCalendar16 { background-image: url(images/iconCalendar16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -282,6 +286,10 @@
 .iconTicket32 { background-image: url(images/iconTicket32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicket22 { background-image: url(images/iconTicket22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTicket16 { background-image: url(images/iconTicket16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTicketDelay32 { background-image: url(images/iconTicketDelay32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTicketDelay22 { background-image: url(images/iconTicketDelay22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTicketDelay16 { background-image: url(images/iconTicketDelay16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconTicketType32 { background-image: url(images/iconTicketType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicketType22 { background-image: url(images/iconTicketType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
