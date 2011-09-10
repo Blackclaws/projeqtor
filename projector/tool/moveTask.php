@@ -3,7 +3,7 @@
  * Move task (from before to)
  */
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/moveTask.php');
 if (! array_key_exists('from',$_REQUEST)) {
   throwError('from parameter not found in REQUEST');
 }

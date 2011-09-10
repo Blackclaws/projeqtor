@@ -7,7 +7,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/download.php');
 $class=$_REQUEST['class'];
 $id=$_REQUEST['id'];
 

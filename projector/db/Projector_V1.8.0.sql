@@ -90,12 +90,12 @@ CREATE TABLE `${prefix}indicatorvalue` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ADD INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'startAM','08:00'),
 (null, null, 'endAM','12:00'),
 (null, null, 'startPM','14:00'),
 (null, null, 'endPM','18:00'),
-(null, null, 'dayTime','8,00');
+(null, null, 'dayTime','8.00');
 
 CREATE TABLE `${prefix}delayunit` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -133,6 +133,7 @@ INSERT INTO `${prefix}delay` (`id`, `scope`, `idType`, `idUrgency`, `value`, `id
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
 (88, 'menuAutomation', 13, 'menu', 765, Null, 0);
+
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 88, 1),
 (2, 88, 1),

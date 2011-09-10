@@ -3,6 +3,7 @@
  * Print page of application.
  */
    require_once "../tool/projector.php";
+   scriptLog('   ->/view/print.php'); 
    set_time_limit(300);
    ob_start();
    $outMode='html';

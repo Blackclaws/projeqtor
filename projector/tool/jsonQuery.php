@@ -2,7 +2,8 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-    require_once "../tool/projector.php"; 
+    require_once "../tool/projector.php";
+    scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
     $print=false;
     if ( array_key_exists('print',$_REQUEST) ) {

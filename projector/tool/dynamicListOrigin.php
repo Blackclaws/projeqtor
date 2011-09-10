@@ -4,7 +4,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/dynamicListOrigin.php');
 $refType=$_REQUEST['originRefType'];
 $refId=$_REQUEST['originRefId'];
 $originTypeObj=new Originable($_REQUEST['originOriginType']);

@@ -5,7 +5,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/displayFiletrList.php');
 $user=$_SESSION['user'];
 
 if (! $user->_arrayFilters) {

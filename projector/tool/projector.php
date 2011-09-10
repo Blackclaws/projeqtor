@@ -938,6 +938,9 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
     $endAM=Parameter::getGlobalParameter('startAM');
     $startPM=Parameter::getGlobalParameter('startAM');
     $endPM=Parameter::getGlobalParameter('startAM');
+    if (!$startAM or !$endAM or !$startPM or !$endPM) {
+    	return $dateTime;
+    }
     $mnEndAM=(substr($endAM,0,2)*60+substr($endAM,0,3));
     $mnStartAM=(substr($startAM,0,2)*60+substr($startAM,0,3));
     $mnEndPM=(substr($endPM,0,2)*60+substr($endPM,0,3));
@@ -967,12 +970,15 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
       $AMPM='AM';
 	  }
 	  while ($mnDelay>0) {
+debugLog("mnDelay=$mnDelay  mnTime=$mnTime  AMPM=$AMPM");	  	
 	  	if ($AMPM=='AM') {
 	  		$left=$mnEndAM-$mnTime;
 	  		if ($left>$mnDelay) {
+debugLog("  cas1  left=$left");
 	  			$mnTime+=$mnDelay;
 	  			$mnDelay=0;
 	  		} else {
+debugLog('  cas2');
 	  			$mnTime=$mnStartPM;
 	  			$mnDelay-=$left;
 	  			$AMPM='PM';
@@ -980,9 +986,11 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
 	  	} else {
 	  	  $left=$mnEndPM-$mnTime;
         if ($left>$mnDelay) {
-          $mnTime+=$mnDelay;
+debugLog('  cas3');
+        	$mnTime+=$mnDelay;
           $mnDelay=0;
         } else {
+debugLog('  cas4');
           $mnTime=$mnStartAM;
           $mnDelay-=$left;
           $date=addWorkDaysToDate($date,2);

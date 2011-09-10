@@ -3,6 +3,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projector.php"; 
+    scriptLog('   ->/tool/jsonList.php');
     $type=$_REQUEST['listType'];
     echo '{"identifier":"id",' ;
     echo 'label: "name",';

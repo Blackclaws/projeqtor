@@ -3,7 +3,7 @@
  * Run planning
  */
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/plan.php');
 if (! array_key_exists('idProjectPlan',$_REQUEST)) {
   throwError('idProjectPlan parameter not found in REQUEST');
 }

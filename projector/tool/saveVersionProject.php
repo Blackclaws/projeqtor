@@ -4,7 +4,7 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/saveVersionProject.php');
 // Get the info
 if (! array_key_exists('versionProjectId',$_REQUEST)) {
   throwError('versionProjectId parameter not found in REQUEST');

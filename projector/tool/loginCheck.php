@@ -3,7 +3,7 @@
  * Chek login/password entered in connection screen
  */
   require_once "../tool/projector.php"; 
-  
+  scriptLog('   ->/tool/loginCheck.php');
   $login="";
   $password="";
   if (array_key_exists('login',$_POST)) {

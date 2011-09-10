@@ -1,5 +1,6 @@
 <?php
 include_once "../tool/projector.php";
+scriptLog('   ->/tool/import.php');
 header ('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 

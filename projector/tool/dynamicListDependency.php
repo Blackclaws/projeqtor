@@ -4,7 +4,7 @@
  */
 
 require_once "../tool/projector.php";
-
+scriptLog('   ->/tool/dynamicListDependency.php');
 $refType=$_REQUEST['dependencyRefType'];
 $refId=$_REQUEST['dependencyRefId'];
 //$refTypeDep=SqlList::getNameFromId('Dependable', $_REQUEST['dependencyRefTypeDep']);
