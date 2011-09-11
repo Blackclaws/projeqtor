@@ -228,8 +228,8 @@ class Ticket extends SqlElement {
   		if ($delay and $delay->id) {
   			$unit=new DelayUnit($delay->idDelayUnit);
   			$this->initialDueDateTime=addDelayToDatetime($this->creationDateTime,$delay->value, $unit->code);
-  			if (! $this->actualDueDateTime or ($old->actualDueDateTime==$old->initialDueDateTime 
-  			                               and $old->actualDueDateTime==$this->actualDueDateTime) ) {
+  			if (! trim($this->actualDueDateTime) or ($old->actualDueDateTime==$old->initialDueDateTime 
+  			                                     and $old->actualDueDateTime==$this->actualDueDateTime) ) {
   			  $this->actualDueDateTime=$this->initialDueDateTime;                                 	
   			}
   		}
