@@ -212,7 +212,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (3, 89, 1);
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
-(90, 'menuIndicator', 88, 'object', 790, Null, 0);
+(90, 'menuIndicatorDefinition', 88, 'object', 790, Null, 0);
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 90, 1),
 (2, 90, 1),
