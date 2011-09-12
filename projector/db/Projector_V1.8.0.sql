@@ -8,77 +8,117 @@
 --
 --
 
-CREATE TABLE `${prefix}indicatordefinition` (
+CREATE TABLE `${prefix}indicator` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
   `code` varchar(10),
+  `type` varchar(10),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `${prefix}indicatordefinition` (`id`, `code`, `name`, `idle`) VALUES
-(1, 'IDDT', 'InitialDueDateTime', 0),
-(2, 'ADDT', 'ActualDueDateTime', 0),
-(3, 'IDD', 'InitialDueDate', 0),
-(4, 'ADD', 'ActualDueDate', 0),
-(5, 'RED', 'RequestedEndDate', 1),
-(6, 'VED', 'ValidatedEndDate', 0),
-(7, 'PED', 'PlannedEndDate', 0),
-(8, 'RED', 'RequestedStartDate', 1),
-(9, 'VED', 'ValidatedStartDate', 1),
-(10, 'PED', 'PlannedStartDate', 1),
-(11, 'PCOEC', 'PlannedCostOverValidatedCost', 0),
-(12, 'PCOAC', 'PlannedCostOverAssignedCost', 0),
-(13, 'PWOEW', 'PlannedWorkOverValidatedWork', 0),
-(14, 'PWOAW', 'PlannedWorkOverAssignedWork', 0);
+INSERT INTO `${prefix}indicator` (`id`, `code`, `type`, `name`, `idle`) VALUES
+  (1, 'IDDT', 'delay', 'InitialDueDateTime', 0),
+  (2, 'ADDT', 'delay', 'ActualDueDateTime', 0),
+  (3, 'IDD', 'delay', 'InitialDueDate', 0),
+  (4, 'ADD', 'delay', 'ActualDueDate', 0),
+  (5, 'RED', 'delay', 'RequestedEndDate', 0),
+  (6, 'VED', 'delay', 'ValidatedEndDate', 0),
+  (7, 'PED', 'delay', 'PlannedEndDate', 0),
+  (8, 'RSD', 'delay', 'RequestedStartDate', 0),
+  (9, 'VSD', 'delay', 'ValidatedStartDate', 0),
+  (10, 'PSD', 'delay', 'PlannedStartDate', 0),
+  (11, 'PCOVC', 'percent', 'PlannedCostOverValidatedCost', 0),
+  (12, 'PCOAC', 'percent', 'PlannedCostOverAssignedCost', 0),
+  (13, 'PWOVW', 'percent', 'PlannedWorkOverValidatedWork', 0),
+  (14, 'PWOAW', 'percent', 'PlannedWorkOverAssignedWork', 0);
 
 CREATE TABLE `${prefix}indicatorable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `refType` varchar(100),
-  `idIndicatorDefinition` varchar(100),
+  `name` varchar(100),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `${prefix}indicatorable` (`idIndicatorDefinition`, `refType`, `idle`) VALUES
+INSERT INTO `${prefix}indicatorable` (`id`, `name`, `idle`) VALUES
 (1, 'Ticket', 0),
-(2, 'Ticket', 0),
-(3, 'Risk', 0),
-(3, 'Action', 0),
-(3, 'Issue', 0),
-(3, 'Question', 0),
+(2, 'Activity', 0),
+(3, 'Milestone', 0),
 (4, 'Risk', 0),
-(4, 'Action', 0),
-(4, 'Issue', 0),
-(4, 'Question', 0),
-(5, 'Activity',0),
-(5, 'Milestone',0),
-(5, 'Project',0),
-(6, 'Activity',0),
-(6, 'Milestone',0),
-(6, 'Project',0),
-(7, 'Activity',0),
-(7, 'Milestone',0),
-(7, 'Project',0),
-(8, 'Activity',0),
-(8, 'Project',0),
-(9, 'Activity',0),
-(9, 'Project',0),
-(10, 'Activity',0),
-(10, 'Project',0),
-(11, 'Activity',0),
-(11, 'Project',0),
-(12, 'Activity',0),
-(12, 'Project',0),
-(13, 'Activity',0),
-(13, 'Project',0),
-(14, 'Activity',0),
-(14, 'Project',0);
+(5, 'Action', 0),
+(6, 'Issue', 0),
+(7, 'Question', 0),
+(8, 'Project', 0);
 
-CREATE TABLE `${prefix}indicator` (
+CREATE TABLE `${prefix}indicatorableindicator` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `refType` varchar(100),
-  `idIndicator` varchar(100),
+  `idIndicatorable` int(12) unsigned,
+  `nameIndicatorable` varchar(100), 
+  `idIndicator` int(12) unsigned,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`, `nameIndicatorable`, `idle`) VALUES
+(1, 1, 'Ticket', 0),
+(2, 1, 'Ticket', 0),
+(3, 4, 'Risk', 0),
+(3, 5, 'Action', 0),
+(3, 6, 'Issue', 0),
+(3, 7, 'Question', 0),
+(4, 4, 'Risk', 0),
+(4, 5, 'Action', 0),
+(4, 6, 'Issue', 0),
+(4, 7, 'Question', 0),
+(5, 2, 'Activity',0),
+(5, 3, 'Milestone',0),
+(5, 8, 'Project',0),
+(6, 2, 'Activity',0),
+(6, 3, 'Milestone',0),
+(6, 8, 'Project',0),
+(7, 2, 'Activity',0),
+(7, 3, 'Milestone',0),
+(7, 8, 'Project',0),
+(8, 2, 'Activity',0),
+(8, 8, 'Project',0),
+(9, 2, 'Activity',0),
+(9, 8, 'Project',0),
+(10, 2, 'Activity',0),
+(10, 8, 'Project',0),
+(11, 2, 'Activity',0),
+(11, 8, 'Project',0),
+(12, 2, 'Activity',0),
+(12, 8, 'Project',0),
+(13, 2, 'Activity',0),
+(13, 8, 'Project',0),
+(14, 2, 'Activity',0),
+(14, 8, 'Project',0);
+
+CREATE TABLE `${prefix}indicatordefinition` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idIndicatorable` int(12) unsigned,
+  `nameIndicatorable` varchar(100),
+  `idIndicator` int(12) unsigned,
+  `codeIndicator` varchar(10),
+  `typeIndicator` varchar(10),
+  `idType` int(12) unsigned,
+  `warningValue` decimal(6,3),
+  `idWarningDelayUnit` int(12) unsigned,
+  `codeWarningDelayUnit` varchar(10),
+  `alertValue` decimal(6,3), 
+  `idAlertDelayUnit` int(12) unsigned,
+  `codeAlertDelayUnit` varchar(10),
+  `mailToUser` int(1) unsigned DEFAULT 0,
+  `mailToResource` int(1) unsigned DEFAULT 0,
+  `mailToProject` int(1) unsigned DEFAULT 0,
+  `mailToContact` int(1) unsigned DEFAULT 0,
+  `mailToLeader` int(1) unsigned DEFAULT 0,
+  `mailToOther` int(1) unsigned DEFAULT 0,
+  `alertToUser` int(1) unsigned DEFAULT 0,
+  `alertToResource` int(1) unsigned DEFAULT 0,
+  `alertToProject` int(1) unsigned DEFAULT 0,
+  `alertToContact` int(1) unsigned DEFAULT 0,
+  `alertToLeader` int(1) unsigned DEFAULT 0,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
@@ -87,8 +127,30 @@ CREATE TABLE `${prefix}indicatorvalue` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `refType` varchar(100),
   `refId` int(10) unsigned,
+  `idIndicatoDefinition` int(10) unsigned,
+  `targetDateTime` datetime,
+  `warningTargetDateTime` datetime,
+  `warningSent` int(1) unsigned default 0, 
+  `alertTargetDateTime` datetime,
+  `alertSent` int(1) unsigned default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE `${prefix}alert` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject`  int(12) unsigned DEFAULT NULL,
+  `refType` int(12) unsigned DEFAULT NULL,
+  `refId` int(12) unsigned DEFAULT NULL,
+  `idIndicatorValue` int(12) unsigned,
+  `idUser`  int(12) unsigned DEFAULT NULL,
+  `alertType` varchar(10), 
+  `alertTargetDateTime` datetime,
+  `alertDateTime` datetime DEFAULT NULL,
+  `read` int(1) unsigned DEFAULT '0',
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'startAM','08:00'),
@@ -149,3 +211,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 89, 1),
 (3, 89, 1);
 
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(90, 'menuIndicator', 88, 'object', 790, Null, 0);
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 90, 1),
+(2, 90, 1),
+(3, 90, 1);

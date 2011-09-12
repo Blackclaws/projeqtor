@@ -277,5 +277,20 @@ function deleteDuplicate() {
       $idProfile=$hab->idProfile;
     }
   }
+// PARAMETER
+  $par=new Parameter();
+  $parList=$par->getSqlElementsFromCriteria(array(), false, null, 'idUser, idProject, parameterCode, id');
+  $idUser='';
+  $idProject='';
+  $parameterCode='';
+  foreach ($parList as $par) {
+    if ($par->idUser==$idUser and $par->idProject==$idProject and $par->parameterCode==$parameterCode) {
+      $par->delete();
+    } else {
+      $idUser=$par->idUser;
+      $idProject=$par->idProject;
+      $parameterCode=$par->parameterCode;
+    }
+  }
 }
 ?>
