@@ -136,14 +136,14 @@ CREATE TABLE `${prefix}indicatorvalue` (
   `refId` int(10) unsigned,
   `idIndicatorDefinition` int(10) unsigned,
   `targetDateTime` datetime,
-  `targetValue` varchar(100),
+  `targetValue` decimal(11,2),
   `warningTargetDateTime` datetime,
-  `warningTargetValue` varchar(100),
+  `warningTargetValue` decimal(11,2),
   `warningSent` int(1) unsigned default 0, 
   `alertTargetDateTime` datetime,
-  `alertTargetValue` varchar(100),
+  `alertTargetValue` decimal(11,2),
   `alertSent` int(1) unsigned default 0,
-  `idle`  int(1) unsigned default 0
+  `idle`  int(1) unsigned default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

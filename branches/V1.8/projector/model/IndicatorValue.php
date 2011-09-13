@@ -99,19 +99,21 @@ class IndicatorValue extends SqlElement {
   		$fld=$ind->name;
   		if (substr($fld,7)=='EndDate' or substr($fld,8)=='StartDate') {
   		  $sub=$class . "PlanningElement";
-  		   $this->targetDateTime=$obj->$sub->$fld;
+  		   $indVal->targetDateTime=$obj->$sub->$fld;
   	  } else {
-  	     $this->targetDateTime=$fldVal=$obj->$fld;
+  	     $indVal->targetDateTime=$fldVal=$obj->$fld;
   	  }
-  	  $this->targetValue=null;
-  	  $this->warningTargetValue=null;
-  	  $this->alertTargetValue=null;
+  	  $indVal->targetValue=null;
+  	  $indVal->warningTargetValue=null;
+  	  $indVal->alertTargetValue=null;
+  	  $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
+  	  $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
   	} else if ($ind-typ=="percent") {
-  	
+  	  
     } else {
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
     }
-  
+    $indVal->save();
   	
   }
 }

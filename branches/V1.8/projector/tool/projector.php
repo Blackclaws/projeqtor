@@ -862,8 +862,11 @@ function dayDiffDates($start, $end) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addWorkDaysToDate($date, $days) {
-  if ($days<=0) {
+  if ($days==0) {
     return $date;
+  }
+	if ($days<0) {
+    return removeWorkDaysToDate($date, (-1)*$days);
   }
   if (! $date) {
   	return;
@@ -882,6 +885,33 @@ function addWorkDaysToDate($date, $days) {
   }
   $days+=2*$weekEnds;
   $dEnd=mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]);
+  return date("Y-m-d", $dEnd);
+}
+
+function removeWorkDaysToDate($date, $days) {
+  if ($days==0) {
+    return $date;
+  }
+	if ($days<=0) {
+    return addWorkDaysToDate($date, (-1)*$days);
+  }
+  if (! $date) {
+    return;
+  }
+  //$days+=1;
+  $tDate = explode("-", $date);
+  $dStart=mktime(0, 0, 0, $tDate[1], $tDate[2], $tDate[0]);
+  if (date("N",$dStart) >=6) {
+    $tDate[2]=$tDate[2]+5-date("N",$dStart);
+    $dStart=mktime(0, 0, 0, $tDate[1], $tDate[2], $tDate[0]);
+  }
+  $weekEnds=floor($days/5);
+  $additionalDays=$days-(5*$weekEnds);
+  if (date("N",$dStart) - $additionalDays <=0) {
+    $weekEnds+=1;
+  }
+  $days+=2*$weekEnds;
+  $dEnd=mktime(0, 0, 0, $tDate[1], $tDate[2]-$days, $tDate[0]);
   return date("Y-m-d", $dEnd);
 }
 
@@ -925,7 +955,11 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
 		$newDate=addDaysToDate($date,$delay);
 		return $newDate . " " .$time;
 	} else if ($unit=='OD') {
-    $newDate=addWorkDaysToDate($date,$delay+1);
+		if ($delay<0) {
+			$newDate=removeWorkDaysToDate($date,(-1)*$delay);
+		} else {
+      $newDate=addWorkDaysToDate($date,$delay+1);
+		}
     return $newDate . " " .$time;
 	} else if ($unit=='HH') {
 		$hh = substr($time,0,2);
@@ -933,7 +967,7 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
 		$res=minutesToTime($hh*60+$mn+$delay*60);
 		$newDate=addDaysToDate($date,$res['d']);
     return $newDate . " " . $res['h'] . ":" . $res['m'] . ':00'; 
-	 } else if ($unit=='OH') {
+	} else if ($unit=='OH') {
     $startAM=Parameter::getGlobalParameter('startAM');
     $endAM=Parameter::getGlobalParameter('endAM');
     $startPM=Parameter::getGlobalParameter('startPM');
@@ -945,7 +979,6 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
     $mnStartAM=(substr($startAM,0,2)*60+substr($startAM,3));
     $mnEndPM=(substr($endPM,0,2)*60+substr($endPM,3));
     $mnStartPM=(substr($startPM,0,2)*60+substr($startPM,3));
-//debugLog("mnStartAM=$mnStartAM mnEndAM=$mnEndAM mnStartPM=$mnStartPM $mnEndPM=$mnEndPM");
     $mnDelay=$delay*60;
     $hh = substr($time,0,2);
     $mn = substr($time,3,2);
@@ -1001,39 +1034,16 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
 		//return $dateTime;
 	}
 }
-function secondsToTime($time){
-  if(is_numeric($time)){
-    $value = array(
-      "y" => 0, "d" => 0, "h" => 0,
-      "m" => 0, "s" => 0,
-    );
-    if($time >= 31556926){
-      $value["y"] = floor($time/31556926);
-      $time = ($time%31556926);
-    }
-    if($time >= 86400){
-      $value["d"] = floor($time/86400);
-      $time = ($time%86400);
-    }
-    if($time >= 3600){
-      $value["h"] = floor($time/3600);
-      $time = ($time%3600);
-    }
-    if($time >= 60){
-      $value["m"] = floor($time/60);
-      $time = ($time%60);
-    }
-    $value["s"] = floor($time);
-    return (array) $value;
-  }else{
-    return (bool) FALSE;
-  }
-}
+
 function minutesToTime($time){
   if(is_numeric($time)){
     $value = array(
       "d" => 0, "h" => 0, "m" => 0
     );
+    while($time<0) {
+      $value["d"]-=1;
+      $time+=1440;
+    }
     if($time >= 1440){
       $value["d"] = floor($time/1440);
       $time = ($time%1440);

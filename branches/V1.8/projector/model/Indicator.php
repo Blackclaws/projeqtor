@@ -10,8 +10,6 @@ class Indicator extends SqlElement {
   public $name;
   public $code;
   public $type;
-  public $field;
-  public $subObject;
   public $idle;
   public $_col_2_2;
   public $_isNameTranslatable = true;
