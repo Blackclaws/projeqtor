@@ -36,12 +36,12 @@ class IndicatorDefinition extends SqlElement {
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameIndicatorable" width="15%" >${element}</th>
-    <th field="nameIndicator" width="20%" >${idIndicator}</th>
+    <th field="nameIndicator" width="20%" formatter="translateFormatter">${idIndicator}</th>
     <th field="nameType" width="10%" >${type}</th>
     <th field="warningValue" width="8%" formatter="numericFormatter">${warning}</th>
-    <th field="idWarningDelayUnit" width="12%" formatter="translatableFormatter">${unit}</th>
+    <th field="nameWarningDelayUnit" width="12%" formatter="translateFormatter">${unit}</th>
     <th field="alertValue" width="8%" formatter="numericFormatter">${alert}</th>
-    <th field="idAlertDelayUnit" width="12%" formatter="translatableFormatter">${unit}</th> 
+    <th field="nameAlertDelayUnit" width="12%" formatter="translateFormatter">${unit}</th> 
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -136,27 +136,39 @@ class IndicatorDefinition extends SqlElement {
       $colScript .= '  refreshList("idIndicator","idIndicatorable", this.value, null, null, true);';
       $colScript .= '  refreshList("idType","scope", indicatorableArray[this.value]);';
       $colScript .= '</script>';
-    } 
+    }
+    if ($colName=='idIndicator') { 
+      $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+      $colScript .= '  refreshList("idWarningDelayUnit","idIndicator", this.value, null, null, true);';
+      $colScript .= '  refreshList("idAlertDelayUnit","idIndicator", this.value, null, null, true);';
+      $colScript .= '</script>';
+    }  
     return $colScript;
   }
   
   public function control(){
     $result="";
-    if (! $this->idIndicatorable) {
-    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdIndicatorable')));
+    if (! trim($this->idIndicatorable)) {
+    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colElement')));
     }
-    if (! $this->idIndicatore) {
+    if (! trim($this->idIndicator)) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdIndicator')));
     }
-    if (! $this->idType) {
-      $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdType')));
+    if ($this->alertValue!="" and ! trim($this->idAlertDelayUnit) ) {
+      $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
     }
+    if ($this->warningValue!="" and ! trim($this->idWarningDelayUnit) ) {
+      $result.='<br/>' . i18n('messageMandatory',array(i18n('colUnit')));
+    }    
+    //if (! trim($this->idType)) {
+    //  $result.='<br/>' . i18n('messageMandatory',array(i18n('colType')));
+    //}
     $crit=array('idIndicatorable'=>$this->idIndicatorable,
                 'idIndicator'=>$this->idIndicator,
                 'idType'=>$this->idType);
     $elt=SqlElement::getSingleSqlElementFromCriteria('IndicatorDefinition', $crit);
-    if ($elt and $elt->id!=$this->id) {
-      $result.='<br/>' . i18n('errorHierarchicLoop');
+    if ($elt and $elt->id and $elt->id!=$this->id) {
+      $result.='<br/>' . i18n('errorDuplicateIndicator');
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

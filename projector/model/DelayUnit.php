@@ -8,8 +8,12 @@ class DelayUnit extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $code;
   public $name;
+  public $type;
   public $idle;
   public $_isNameTranslatable = true;
+  
+  private static $_databaseTableName = 'delayunit';
+  private static $_databaseCriteria = array('type'=>'delay');
   
    /** ==========================================================================
    * Constructor
@@ -32,6 +36,21 @@ class DelayUnit extends SqlElement {
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
+    /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    global $paramDbPrefix;
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
   
+ /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
+  }
 }
 ?>

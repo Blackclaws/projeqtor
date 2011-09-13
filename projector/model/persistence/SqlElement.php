@@ -245,6 +245,15 @@ abstract class SqlElement {
       } else {
         $returnValue=str_replace('${mailMsg}','',$returnValue);
       }
+      // indicators
+      if (SqlList::getIdFromName('Indicatorable')) {
+        $indDef=new IndicatorDefinition();
+      	$crit=array('nameIndicatorable'=>get_class($this));
+        $lstInd=$indDef->getSqlElementsFromCriteria($critArray, false);
+      	foreach ($lst as $ind) {
+      		IndicatorValue::addIndicatorValue($ind,$this);
+      	}
+      }
       return $returnValue;
     } else {
       // errors on control => don't save, display error message

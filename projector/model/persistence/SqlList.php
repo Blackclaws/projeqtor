@@ -106,7 +106,14 @@ class SqlList {
         $vp=new VersionProject();
         $ver=new Version();
         $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject='" . $val . "' and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
-      	
+      } else if (strtolower($listType)=='indicator' and $col=='idIndicatorable' ) {
+      	$ii=new IndicatorableIndicator();
+      	$i=new Indicator();
+      	$query.=" and exists ( select 'x' from " . $ii->getDatabaseTableName() . " ii " 
+      	      . " where ii.idIndicatorable='" . $val . "' and ii.idIndicator=" . $i->getDatabaseTableName() . ".id)"; 
+      } else if ( (strtolower($listType)=='warningdelayunit' or strtolower($listType)=='alertdelayunit') and $col=='idIndicator' ) {
+        $ind=new Indicator($val);
+        $query .= " and " . $obj->getDatabaseTableName() . ".type='" . $ind->type . "'";
       } else {
         $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
       }

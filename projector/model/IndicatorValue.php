@@ -1,0 +1,118 @@
+<?php 
+/* ============================================================================
+ * RiskType defines the type of a risk.
+ */ 
+class IndicatorValue extends SqlElement {
+
+  // extends SqlElement, so has $id
+  public $_col_1_2_Description;
+  public $id;
+  public $refType;
+  public $refId;
+  public $idIndicatorDefinition;
+  public $targetDateTime;
+  public $targetValue;
+  public $warningTargetDateTime;
+  public $warningTargetValue;
+  public $warningSent;
+  public $alertTargetDateTime;
+  public $alertTargetValue;
+  public $alertSent;
+  public $idle;
+  
+  // Define the layout that will be used for lists
+  private static $_layout='
+    <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
+    <th field="refType" width="20%">${name}</th>
+    <th field="refId" width="20">${code}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    ';
+
+  private static $_fieldsAttributes=array("name"=>"required");
+    
+   /** ==========================================================================
+   * Constructor
+   * @param $id the id of the object in the database (null if not stored yet)
+   * @return void
+   */ 
+  function __construct($id = NULL) {
+    parent::__construct($id);
+  }
+
+  
+   /** ==========================================================================
+   * Destructor
+   * @return void
+   */ 
+  function __destruct() {
+    parent::__destruct();
+  }
+
+// ============================================================================**********
+// GET STATIC DATA FUNCTIONS
+// ============================================================================**********
+  
+  /** ==========================================================================
+   * Return the specific layout
+   * @return the layout
+   */
+  protected function getStaticLayout() {
+    return self::$_layout;
+  }
+
+    /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
+    
+  static public function addIndicatorValue($def, $obj) {
+  	$class=get_class($obj);
+  	if ($def->nameIndicatorable!=$class) {
+  		debugLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
+  		return;
+  	}
+  	$crit=array('idIndicatorDefinition'=>$def->id, 'refType'=>$class, 'refId'=>$obj->id);
+  	$indVal=new IndicatorValue();
+  	$lst=$indVal->getSqlElementsFromCriteria($crit, true);
+  	if (count($lst)==1) {
+  		$indVal=$lst[0];
+  	} else if (count($lst)==0) {
+  		$indVal=new IndicatorValue();
+  		$indVal->idIndicatorDefinition=$def->id;
+  		$indVal->refType=$class;
+  		$indVal->refId=$obj->id;
+  	} else {
+  		$cpt=count($lst);
+      debugLog("ERROR in IndicatorValue::addIndicatorValue() => more than 1 (exactely $cpt) line of IndicatorValue for refType=$class, refId=$obj->id, idIndicatorDefinition=$def->id");
+      return;  		
+  	}
+  	$type=$def->typeIndicator;
+  	$code=$def->codeIndicator;
+  	$fld="";
+  	$fldVal;
+  	$sub="";
+  	$ind=new Indicator($def->idIndicator);
+  	if ($ind->type=="delay") {
+  		$fld=$ind->name;
+  		if (substr($fld,7)=='EndDate' or substr($fld,8)=='StartDate') {
+  		  $sub=$class . "PlanningElement";
+  		   $this->targetDateTime=$obj->$sub->$fld;
+  	  } else {
+  	     $this->targetDateTime=$fldVal=$obj->$fld;
+  	  }
+  	  $this->targetValue=null;
+  	  $this->warningTargetValue=null;
+  	  $this->alertTargetValue=null;
+  	} else if ($ind-typ=="percent") {
+  	
+    } else {
+      debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
+    }
+  
+  	
+  }
+}
+?>

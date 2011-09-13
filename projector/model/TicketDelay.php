@@ -28,7 +28,7 @@ class TicketDelay extends Delay {
   private static $_fieldsAttributes=array("idTicketType"=>"required",
                                           "idType"=>"hidden", 
                                           "idUrgency"=>"required",
-                                          "value"=>"required",
+                                          "value"=>"required, nobr",
                                           "idDelayUnit"=>"required",
                                           "scope"=>"hidden");
   

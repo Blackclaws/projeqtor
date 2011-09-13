@@ -645,6 +645,21 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
           }
         }
+        if ( get_class($obj)=='IndicatorDefinition'  ) {
+        	if ($col=='idIndicator') {
+            $critFld='idIndicatorable';
+            $critVal=$obj->idIndicatorable;
+        	}
+          if ($col=='idType') {
+            $critFld='scope';
+            $critVal=SqlList::getNameFromId('Indicatorable', $obj->idIndicatorable);
+          }
+          if ($col=='idWarningDelayUnit' or $col=='idAlertDelayUnit') {
+            $critFld='idIndicator';
+            $critVal=$obj->idIndicatorable;
+          }
+          
+        }
         if ($displayComboButtonCol) {
           $fieldWidth -= 20;
         }
