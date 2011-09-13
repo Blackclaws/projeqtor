@@ -26,7 +26,6 @@ class IndicatorDefinition extends SqlElement {
   public $mailToProject;
   public $mailToContact;
   public $mailToLeader;
-  public $mailToOther;
   public $_sec_InternalAlert;
   public $alertToUser;
   public $alertToResource;
@@ -46,9 +45,8 @@ class IndicatorDefinition extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("idIndicatorable"=>"required", 
-                                  "idIndicator"=>"required",
-                                  "idType"=>"required",
+  private static $_fieldsAttributes=array(
+                                  "idType"=>"nocombo",
                                   "warningValue"=>"nobr",
                                   "alertValue"=>"nobr",
                                   "nameIndicatorable"=>"hidden",
@@ -133,16 +131,10 @@ class IndicatorDefinition extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-
-    if ($colName=="idProject") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dojo.byId("ActivityPlanningElement_wbs").value=""; ';
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="idActivity") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  dojo.byId("ActivityPlanningElement_wbs").value=""; ';
-      $colScript .= '  formChanged();';
+    if ($colName=='idIndicatorable') { 
+      $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+      $colScript .= '  refreshList("idIndicator","idIndicatorable", this.value, null, null, true);';
+      $colScript .= '  refreshList("idType","scope", indicatorableArray[this.value]);';
       $colScript .= '</script>';
     } 
     return $colScript;
@@ -150,15 +142,22 @@ class IndicatorDefinition extends SqlElement {
   
   public function control(){
     $result="";
-    if (0) {
-      $crit=array('idIndicatorable'=>$this->idIndicatorable,
-                  'idIndicator'=>$this->idIndicator,
-                  'idType'=>$this->idType);
-      $elt=SqlElement::getSingleSqlElementFromCriteria('IndicatorDefinition', $crit);
-      if ($elt and $elt->id!=$this->id) {
-    	   $result.='<br/>' . i18n('errorHierarchicLoop');
-      }
-    } 
+    if (! $this->idIndicatorable) {
+    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdIndicatorable')));
+    }
+    if (! $this->idIndicatore) {
+      $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdIndicator')));
+    }
+    if (! $this->idType) {
+      $result.='<br/>' . i18n('messageMandatory',array(i18n('colIdType')));
+    }
+    $crit=array('idIndicatorable'=>$this->idIndicatorable,
+                'idIndicator'=>$this->idIndicator,
+                'idType'=>$this->idType);
+    $elt=SqlElement::getSingleSqlElementFromCriteria('IndicatorDefinition', $crit);
+    if ($elt and $elt->id!=$this->id) {
+      $result.='<br/>' . i18n('errorHierarchicLoop');
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

@@ -583,6 +583,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($comboDetail) {
           $displayComboButtonCol=false;
         }
+        if (strpos($obj->getFieldAttributes($col), 'nocombo')!==false) {
+        	$displayComboButtonCol=false;
+        }
         if ($displayComboButtonCol) {
         	$menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menu' . substr($col,2)));
         	$crit=array();
@@ -644,6 +647,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($displayComboButtonCol) {
           $fieldWidth -= 20;
+        }
+        if ($nobr_before) {
+        	$fieldWidth=$fieldWidth/3;
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
         //echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
