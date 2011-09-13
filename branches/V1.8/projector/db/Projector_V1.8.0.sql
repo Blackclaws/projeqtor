@@ -18,16 +18,16 @@ CREATE TABLE `${prefix}indicator` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}indicator` (`id`, `code`, `type`, `name`, `idle`) VALUES
-  (1, 'IDDT', 'delay', 'InitialDueDateTime', 0),
-  (2, 'ADDT', 'delay', 'ActualDueDateTime', 0),
-  (3, 'IDD', 'delay', 'InitialDueDate', 0),
-  (4, 'ADD', 'delay', 'ActualDueDate', 0),
-  (5, 'RED', 'delay', 'RequestedEndDate', 0),
-  (6, 'VED', 'delay', 'ValidatedEndDate', 0),
-  (7, 'PED', 'delay', 'PlannedEndDate', 0),
-  (8, 'RSD', 'delay', 'RequestedStartDate', 0),
-  (9, 'VSD', 'delay', 'ValidatedStartDate', 0),
-  (10, 'PSD', 'delay', 'PlannedStartDate', 0),
+  (1, 'IDDT', 'delay', 'initialDueDateTime', 0),
+  (2, 'ADDT', 'delay', 'actualDueDateTime', 0),
+  (3, 'IDD', 'delay', 'initialDueDate', 0),
+  (4, 'ADD', 'delay', 'actualDueDate', 0),
+  (5, 'RED', 'delay', 'initialEndDate', 0),
+  (6, 'VED', 'delay', 'validatedEndDate', 0),
+  (7, 'PED', 'delay', 'plannedEndDate', 0),
+  (8, 'RSD', 'delay', 'initialStartDate', 0),
+  (9, 'VSD', 'delay', 'validatedStartDate', 0),
+  (10, 'PSD', 'delay', 'plannedStartDate', 0),
   (11, 'PCOVC', 'percent', 'PlannedCostOverValidatedCost', 0),
   (12, 'PCOAC', 'percent', 'PlannedCostOverAssignedCost', 0),
   (13, 'PWOVW', 'percent', 'PlannedWorkOverValidatedWork', 0),
@@ -58,6 +58,9 @@ CREATE TABLE `${prefix}indicatorableindicator` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}indicatorableindicator` ADD INDEX indicatorableindicatorIndicatorable (idIndicatorable),
+ADD INDEX indicatorableindicatorIndicator (idIndicator);
 
 INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`, `nameIndicatorable`, `idle`) VALUES
 (1, 1, 'Ticket', 0),
@@ -123,18 +126,29 @@ CREATE TABLE `${prefix}indicatordefinition` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
+ALTER TABLE `${prefix}indicatordefinition` ADD INDEX indicatordefinitionIndicatorable (idIndicatorable),
+ADD INDEX indicatordefinitionIndicator (idIndicator), 
+ADD INDEX indicatordefinitionType (idType);
+
 CREATE TABLE `${prefix}indicatorvalue` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `refType` varchar(100),
   `refId` int(10) unsigned,
-  `idIndicatoDefinition` int(10) unsigned,
+  `idIndicatorDefinition` int(10) unsigned,
   `targetDateTime` datetime,
+  `targetValue` varchar(100),
   `warningTargetDateTime` datetime,
+  `warningTargetValue` varchar(100),
   `warningSent` int(1) unsigned default 0, 
   `alertTargetDateTime` datetime,
+  `alertTargetValue` varchar(100),
   `alertSent` int(1) unsigned default 0,
+  `idle`  int(1) unsigned default 0
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE `${prefix}indicatorvalue` ADD INDEX indicatorvalueIndicatordefinition (idIndicatorDefinition),
+ADD INDEX indicatorvalueReference (refType, refId);
 
 CREATE TABLE `${prefix}alert` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -163,16 +177,18 @@ CREATE TABLE `${prefix}delayunit` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(10),
   `name` varchar(100),
+  `type` varchar(10),
   `sortOrder` int(3),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
   
-INSERT INTO `${prefix}delayunit` (id, code, name, sortOrder, idle) VALUES 
-(1,'HH','hours',100, 0),
-(2,'OH','openHours',200, 0),
-(3,'DD','days',300, 0),
-(4,'OD','openDays',400, 0);
+INSERT INTO `${prefix}delayunit` (id, code, name, type, sortOrder, idle) VALUES 
+(1,'HH','hours', 'delay', 100, 0),
+(2,'OH','openHours', 'delay', 200, 0),
+(3,'DD','days', 'delay', 300, 0),
+(4,'OD','openDays', 'delay', 400, 0),
+(5,'PCT','percent', 'percent', 500,0);
 
 CREATE TABLE `${prefix}delay` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
