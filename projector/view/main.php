@@ -149,6 +149,7 @@ scriptLog('   ->/view/main.php');
     var linkableArray=new Array();
     var originableArray=new Array();
     var copyableArray=new Array();
+    var indicatorableArray=new Array();
     <?php 
       $list=SqlList::getListNotTranslated('Dependable');
       foreach ($list as $id=>$name) {
@@ -171,7 +172,11 @@ scriptLog('   ->/view/main.php');
       $list=SqlList::getListNotTranslated('Copyable');
       foreach ($list as $id=>$name) {
         echo "copyableArray['" . $id . "']='" . $name . "';";
-      }            
+      }
+      $list=SqlList::getListNotTranslated('Indicatorable');
+      foreach ($list as $id=>$name) {
+        echo "indicatorableArray['" . $id . "']='" . $name . "';";
+      }                
       ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
