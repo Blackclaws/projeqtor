@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Project'Or RIA" default="buildQuick">
 
-  <property name="version"       value="V1.7.1" />
+  <property name="version"       value="V1.7.2" />
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="D:/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
