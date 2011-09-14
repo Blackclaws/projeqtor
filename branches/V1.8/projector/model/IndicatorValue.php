@@ -19,6 +19,11 @@ class IndicatorValue extends SqlElement {
   public $alertTargetValue;
   public $alertSent;
   public $idle;
+  public $handle;
+  public $done;
+  public $trigger;
+  
+  public $_noHistory=true;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -97,24 +102,63 @@ class IndicatorValue extends SqlElement {
   	$ind=new Indicator($def->idIndicator);
   	if ($ind->type=="delay") {
   		$fld=$ind->name;
-  		if (substr($fld,7)=='EndDate' or substr($fld,8)=='StartDate') {
+  		if (substr($fld,-7)=='EndDate' or substr($fld,-8)=='StartDate') {
   		  $sub=$class . "PlanningElement";
-  		   $indVal->targetDateTime=$obj->$sub->$fld;
+  		  $indVal->targetDateTime=$obj->$sub->$fld;
   	  } else {
-  	     $indVal->targetDateTime=$fldVal=$obj->$fld;
+  	    $indVal->targetDateTime=$fldVal=$obj->$fld;
+  	  }
+  	  if (substr($fld,-8)=='StartDate') {
+  	  	$indVal->trigger='StartDate';
+  	  } else {
+  	  	$indVal->trigger='EndDate';
   	  }
   	  $indVal->targetValue=null;
   	  $indVal->warningTargetValue=null;
   	  $indVal->alertTargetValue=null;
   	  $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
   	  $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
-  	} else if ($ind-typ=="percent") {
+  	  $indVal->checkDates(true);
   	  
+  	} else if ($ind-typ=="percent") {
+  	  if (strpos($ind->name, 'Cost')>0) {
+  		  $indVal->trigger='Cost';
+  	  } else {
+  	  	$indVal->trigger='Work';
+  	  }
     } else {
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
     }
+    $indVal->idle=$obj->idle;
+    if (property_exists($obj, 'done')) {
+    	$indVal->done=$obj->done;
+    }
+    if (property_exists($obj, 'done')) {
+      $indVal->done=$obj->done;
+    }
     $indVal->save();
   	
+  }
+  
+  public function checkDates($noSave=false) {
+  	if ($this->idle) {
+  		return;
+  	}
+  	if ($this->trigger!="StartDate" and $this->trigger!="EndDate") {
+  		return;
+  	}
+  	if ($this->trigger=='StartDate') {
+  		if ($this->handled) {
+  		  return;
+  		}
+  	} else {
+  		if ($this->done) {
+  			return;
+  		}
+  	}
+  	if (! $noSave) { 
+  	  $this->save();
+    }
   }
 }
 ?>

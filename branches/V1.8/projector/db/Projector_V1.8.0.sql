@@ -137,12 +137,15 @@ CREATE TABLE `${prefix}indicatorvalue` (
   `idIndicatorDefinition` int(10) unsigned,
   `targetDateTime` datetime,
   `targetValue` decimal(11,2),
+  `trigger` varchar(10),
   `warningTargetDateTime` datetime,
   `warningTargetValue` decimal(11,2),
   `warningSent` int(1) unsigned default 0, 
   `alertTargetDateTime` datetime,
   `alertTargetValue` decimal(11,2),
   `alertSent` int(1) unsigned default 0,
+  `handled`  int(1) unsigned default 0,
+  `done`  int(1) unsigned default 0,
   `idle`  int(1) unsigned default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

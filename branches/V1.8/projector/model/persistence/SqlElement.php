@@ -246,13 +246,15 @@ abstract class SqlElement {
         $returnValue=str_replace('${mailMsg}','',$returnValue);
       }
       // indicators
-//debugLog(SqlList::getIdFromName('Indicatorable',get_class($this)));
       if (SqlList::getIdFromName('Indicatorable',get_class($this))) {
         $indDef=new IndicatorDefinition();
       	$crit=array('nameIndicatorable'=>get_class($this));
         $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
       	foreach ($lstInd as $ind) {
-      		IndicatorValue::addIndicatorValue($ind,$this);
+      		$fldType='id'.get_class($this).'Type';
+      		if (! $ind->idType or $ind->idType==$this->$fldType) {
+      		  IndicatorValue::addIndicatorValue($ind,$this);
+      	  }
       	}
       }
       return $returnValue;

@@ -9,10 +9,10 @@ class IndicatorDefinition extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $idIndicatorable;
   public $nameIndicatorable;
+  public $idType;
   public $idIndicator;
   public $codeIndicator;
   public $typeIndicator;
-  public $idType;
   public $warningValue;
   public $idWarningDelayUnit;
   public $codeWarningDelayUnit;
