@@ -7,6 +7,8 @@ class IndicatorValue extends SqlElement {
   // extends SqlElement, so has $id
   public $_col_1_2_Description;
   public $id;
+  public $code;
+  public $type;
   public $refType;
   public $refId;
   public $idIndicatorDefinition;
@@ -18,10 +20,9 @@ class IndicatorValue extends SqlElement {
   public $alertTargetDateTime;
   public $alertTargetValue;
   public $alertSent;
-  public $idle;
-  public $handle;
+  public $handled;
   public $done;
-  public $trigger;
+  public $idle;
   
   public $_noHistory=true;
   
@@ -88,17 +89,24 @@ class IndicatorValue extends SqlElement {
   		$indVal=new IndicatorValue();
   		$indVal->idIndicatorDefinition=$def->id;
   		$indVal->refType=$class;
-  		$indVal->refId=$obj->id;
+  		$indVal->refId=$obj->id; 		
   	} else {
   		$cpt=count($lst);
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => more than 1 (exactely $cpt) line of IndicatorValue for refType=$class, refId=$obj->id, idIndicatorDefinition=$def->id");
       return;  		
   	}
-  	$type=$def->typeIndicator;
-  	$code=$def->codeIndicator;
   	$fld="";
   	$fldVal;
   	$sub="";
+    $indVal->idle=$obj->idle;
+    if (property_exists($obj, 'handled')) {
+      $indVal->handled=$obj->handled;
+    }
+    if (property_exists($obj, 'done')) {
+      $indVal->done=$obj->done;
+    }
+    $indVal->code=$def->codeIndicator;
+    $indVal->type=$def->typeIndicator;
   	$ind=new Indicator($def->idIndicator);
   	if ($ind->type=="delay") {
   		$fld=$ind->name;
@@ -108,18 +116,12 @@ class IndicatorValue extends SqlElement {
   	  } else {
   	    $indVal->targetDateTime=$fldVal=$obj->$fld;
   	  }
-  	  if (substr($fld,-8)=='StartDate') {
-  	  	$indVal->trigger='StartDate';
-  	  } else {
-  	  	$indVal->trigger='EndDate';
-  	  }
   	  $indVal->targetValue=null;
   	  $indVal->warningTargetValue=null;
   	  $indVal->alertTargetValue=null;
   	  $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
   	  $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
-  	  $indVal->checkDates(true);
-  	  
+  	  $indVal->checkDates($obj);  	  
   	} else if ($ind-typ=="percent") {
   	  if (strpos($ind->name, 'Cost')>0) {
   		  $indVal->trigger='Cost';
@@ -129,36 +131,86 @@ class IndicatorValue extends SqlElement {
     } else {
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
     }
-    $indVal->idle=$obj->idle;
-    if (property_exists($obj, 'done')) {
-    	$indVal->done=$obj->done;
-    }
-    if (property_exists($obj, 'done')) {
-      $indVal->done=$obj->done;
-    }
     $indVal->save();
   	
   }
   
-  public function checkDates($noSave=false) {
-  	if ($this->idle) {
+  public function checkDates($obj=null) {
+//debugLog('checkDates');
+//debugLog("type=$this->type");
+    if ($this->type!='delay') {
   		return;
   	}
-  	if ($this->trigger!="StartDate" and $this->trigger!="EndDate") {
+  	if (!$obj and ($this->idle or $this->done)) {
   		return;
+  	} 
+//debugLog("code=$this->code");
+  	switch ($this->code) {
+  		case 'IDDT' :   //InitialDueDateTime
+  		case 'ADDT' :   //ActualDueDateTime
+      case 'IDD' :    //InitialDueDate
+      case 'ADD' :    //ActualDueDate
+      	if (substr($this->code,-3)=='DDT'){
+          $date=date('Y-m-d H:i');
+      	} else {
+      		$date=date('Y-m-d');
+      	}
+        if ($obj and $obj->done) {
+          if (substr($this->code,-3)=='DDT'){
+          	$date=$obj->doneDateTime;
+          } else {
+          	$date=$obj->doneDate;
+          }
+        }        
+      	break;
+      case 'IED' :    //InitialEndDate
+      case 'VED' :    //ValidatedEndDate
+      case 'PED' :    //PlannedEndDate
+      	$date=date('Y-m-d');
+        if ($obj and $obj->done) {
+        	$date=$obj->doneDate;
+        }        
+      	break;
+      case 'ISD' :    //InitialStartDate
+      case 'VSD' :    //ValidatedStartDate
+      case 'PSD' :    //PlannedStartDate
+      	$date=date('Y-m-d');
+        if ($obj and property_exists($obj,'handeledDate') and $obj->handeled) {
+          $date=$obj->handledDate;
+        }
+        $pe=get_class($obj).'PlanningElement';
+        if ($obj->pe->realStartDate and $obj->pe->realStartDate<$date) {
+        	$date=$obj->pe->realStartDate;
+        }        
+        break;
   	}
-  	if ($this->trigger=='StartDate') {
-  		if ($this->handled) {
-  		  return;
-  		}
-  	} else {
-  		if ($this->done) {
-  			return;
-  		}
-  	}
-  	if (! $noSave) { 
-  	  $this->save();
+    if ($date>$this->warningTargetDateTime) {
+      if (! $this->warningSent) {
+        $this->sendWarning();
+        $this->warningSent=true;
+      }
+    } else {
+      $this->warningSent=false;
     }
+    if ($date>$this->alertTargetDateTime) {
+      if (! $this->alertSent) {
+        $this->sendAlert();
+        $this->alertSent=true;
+      }
+    } else {
+      $this->alertSent=false;
+    }        
+  	if (!$obj) $this->save();
+  }
+  
+  public function sendAlert() {
+debugLog ("alert sent for refType=$this->refType refId=$this->refId id=$this->id");  	
+  	
+  }
+  
+  public function sendWarning() {
+debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->id");   
+  	  	
   }
 }
 ?>
