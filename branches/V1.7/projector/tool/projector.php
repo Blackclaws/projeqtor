@@ -153,7 +153,7 @@ if ( ! (isset($maintenance) and $maintenance) ) {
  * @return void 
  */
 function setupLocale () {
-  global $currentLocale, $paramDefaultLocale, $browserLocale;
+  global $currentLocale, $paramDefaultLocale, $browserLocale, $browserLocaleDateFormat;
   if (isset($_SESSION['currentLocale'])) {
     // First fetch in Session (filled in at login depending on user parameter)
     $currentLocale=$_SESSION['currentLocale'];
@@ -172,6 +172,11 @@ function setupLocale () {
     $browserLocale=$currentLocale;
   }
   $_SESSION['lang']=$currentLocale; // Must be kept for user parameter screen initialization
+  if (isset($_SESSION['browserLocaleDateFormat'])) {
+    $browserLocaleDateFormat=$_SESSION['browserLocaleDateFormat'];
+  } else {
+    $browserLocale='YYYYMMDD';
+  }
 }
 
 /** ============================================================================

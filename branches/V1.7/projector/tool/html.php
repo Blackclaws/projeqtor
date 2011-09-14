@@ -250,15 +250,16 @@ function htmlGetJsTable($tableName, $colName, $jsTableName=null) {
  * @return unknown_type
  */
 function htmlFormatDate($val) {
-  global $browserLocale;
-  $locale=substr($browserLocale, 0,2);
+  global $browserLocaleDateFormat;
   if (strlen($val)!=10) {
     return $val;
   }
-  if ($locale=='en') {
+  if ($browserLocaleDateFormat=='MMDDYYYY') {
     return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4);
-  } else {
+  } else if ($browserLocaleDateFormat=='DDMMYYYY') {
     return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4);
+  } else {
+     return $val;
   }
 }
 
