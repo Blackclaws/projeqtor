@@ -984,50 +984,96 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
     $mn = substr($time,3,2);
     $mnTime=$hh*60+$mn;
     $AMPM='AM';
-	 	if (isOffDay($date)) {
-      $date=addWorkDaysToDate($date,2);
-      $mnTime=$mnStartAM;
-      $AMPM='AM';
-    } else if ($mnTime>=$mnEndPM) {
-    	$date=addWorkDaysToDate($date,2);
-      $mnTime=$mnStartAM;
-      $AMPM='AM';
-    } else if ($mnTime>=$mnStartPM) {
-      $AMPM='PM'; 
-    } else if ($mnTime>=$mnEndAM) {
-	    $mnTime=$mnStartPM;
-      $AMPM='PM';
-	  } else if ($mnTime>=$mnStartAM) {
-	  	$AMPM='AM';
-	  } else {
-	  	$mnTime=$mnStartAM;
-      $AMPM='AM';
-	  }
-	  while ($mnDelay>0) {
-//debugLog("mnDelay=$mnDelay  mnTime=$mnTime  AMPM=$AMPM");	  	
-	  	if ($AMPM=='AM') {
-	  		$left=$mnEndAM-$mnTime;
-	  		if ($left>$mnDelay) {
-	  			$mnTime+=$mnDelay;
-	  			$mnDelay=0;
-	  		} else {
-	  			$mnTime=$mnStartPM;
-	  			$mnDelay-=$left;
-	  			$AMPM='PM';
-	  		}
-	  	} else {
-	  	  $left=$mnEndPM-$mnTime;
-        if ($left>$mnDelay) {
-        	$mnTime+=$mnDelay;
-          $mnDelay=0;
+    if ($mnDelay>=0) {
+		 	if (isOffDay($date)) {
+	      $date=addWorkDaysToDate($date,2);
+	      $mnTime=$mnStartAM;
+	      $AMPM='AM';
+	    } else if ($mnTime>=$mnEndPM) {
+	    	$date=addWorkDaysToDate($date,2);
+	      $mnTime=$mnStartAM;
+	      $AMPM='AM';
+	    } else if ($mnTime>=$mnStartPM) {
+	      $AMPM='PM'; 
+	    } else if ($mnTime>=$mnEndAM) {
+		    $mnTime=$mnStartPM;
+	      $AMPM='PM';
+		  } else if ($mnTime>=$mnStartAM) {
+		  	$AMPM='AM';
+		  } else {
+		  	$mnTime=$mnStartAM;
+	      $AMPM='AM';
+		  }
+		  while ($mnDelay>0) {
+	//debugLog("mnDelay=$mnDelay  mnTime=$mnTime  AMPM=$AMPM");	  	
+		  	if ($AMPM=='AM') {
+		  		$left=$mnEndAM-$mnTime;
+		  		if ($left>$mnDelay) {
+		  			$mnTime+=$mnDelay;
+		  			$mnDelay=0;
+		  		} else {
+		  			$mnTime=$mnStartPM;
+		  			$mnDelay-=$left;
+		  			$AMPM='PM';
+		  		}
+		  	} else {
+		  	  $left=$mnEndPM-$mnTime;
+	        if ($left>$mnDelay) {
+	        	$mnTime+=$mnDelay;
+	          $mnDelay=0;
+	        } else {
+	          $mnTime=$mnStartAM;
+	          $mnDelay-=$left;
+	          $date=addWorkDaysToDate($date,2);
+	          $AMPM='AM';
+	        }
+		  	}
+		  }
+    } else { // $mnDelay<0
+      if (isOffDay($date)) {
+        $date=removeWorkDaysToDate($date,1);
+        $mnTime=$mnEndPM;
+        $AMPM='PM';
+      } else if ($mnTime>=$mnEndPM) {
+        $mnTime=$mnEndPM;
+        $AMPM='AP';
+      } else if ($mnTime>=$mnStartPM) {
+        $AMPM='PM'; 
+      } else if ($mnTime>=$mnEndAM) {
+        $mnTime=$mnEndAM;
+        $AMPM='AM';
+      } else if ($mnTime>=$mnStartAM) {
+        $AMPM='AM';
+      } else {
+      	$date=removeWorkDaysToDate($date,1);
+        $mnTime=$mnEndPM;
+        $AMPM='PM';
+      }
+      while ($mnDelay<0) {
+        if ($AMPM=='AM') {
+          $left=$mnTime-$mnStartAM;
+          if ($left>abs($mnDelay)) {
+            $mnTime+=$mnDelay;
+            $mnDelay=0;
+          } else {
+          	$date=removeWorkDaysToDate($date,1);
+            $mnTime=$mnEndPM;
+            $mnDelay+=$left;
+            $AMPM='PM';
+          }
         } else {
-          $mnTime=$mnStartAM;
-          $mnDelay-=$left;
-          $date=addWorkDaysToDate($date,2);
-          $AMPM='AM';
+          $left=$mnTime-$mnStartPM;
+          if ($left>abs($mnDelay)) {
+            $mnTime+=$mnDelay;
+            $mnDelay=0;
+          } else {
+            $mnTime=$mnEndAM;
+            $mnDelay+=$left;
+            $AMPM='AM';
+          }
         }
-	  	}
-	  }
+      }
+    }	
 	  $res=minutesToTime($mnTime);
     return $date . " " . $res['h'] . ":" . $res['m'] . ':00'; 
 	 } else {
