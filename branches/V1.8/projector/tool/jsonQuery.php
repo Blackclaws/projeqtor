@@ -232,7 +232,10 @@
           $externalClass = $from;
           $externalObj=new $externalClass();
           $externalTable = $externalObj->getDatabaseTableName();
-          $externalTableAlias = $externalClass;
+          // Test for bug #419
+          //$externalTableAlias = $externalClass;
+          //$externalTableAlias = $externalObj->getDatabaseTableName();          
+          $externalTableAlias = strtolower($externalClass);
           $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . $fld;
           if (! stripos($queryFrom,$externalTable)) {
             $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .

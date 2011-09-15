@@ -13,25 +13,26 @@ CREATE TABLE `${prefix}indicator` (
   `name` varchar(100),
   `code` varchar(10),
   `type` varchar(10),
+  `sortOrder` int(3),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `${prefix}indicator` (`id`, `code`, `type`, `name`, `idle`) VALUES
-  (1, 'IDDT', 'delay', 'initialDueDateTime', 0),
-  (2, 'ADDT', 'delay', 'actualDueDateTime', 0),
-  (3, 'IDD', 'delay', 'initialDueDate', 0),
-  (4, 'ADD', 'delay', 'actualDueDate', 0),
-  (5, 'IED', 'delay', 'initialEndDate', 0),
-  (6, 'VED', 'delay', 'validatedEndDate', 0),
-  (7, 'PED', 'delay', 'plannedEndDate', 0),
-  (8, 'ISD', 'delay', 'initialStartDate', 0),
-  (9, 'VSD', 'delay', 'validatedStartDate', 0),
-  (10, 'PSD', 'delay', 'plannedStartDate', 0),
-  (11, 'PCOVC', 'percent', 'PlannedCostOverValidatedCost', 0),
-  (12, 'PCOAC', 'percent', 'PlannedCostOverAssignedCost', 0),
-  (13, 'PWOVW', 'percent', 'PlannedWorkOverValidatedWork', 0),
-  (14, 'PWOAW', 'percent', 'PlannedWorkOverAssignedWork', 0);
+INSERT INTO `${prefix}indicator` (`id`, `code`, `type`, `name`, `sortOrder`, `idle`) VALUES
+  (1, 'IDDT', 'delay', 'initialDueDateTime', 110, 0),
+  (2, 'ADDT', 'delay', 'actualDueDateTime', 120, 0),
+  (3, 'IDD', 'delay', 'initialDueDate', 130, 0),
+  (4, 'ADD', 'delay', 'actualDueDate', 140, 0),
+  (5, 'IED', 'delay', 'initialEndDate', 150, 0),
+  (6, 'VED', 'delay', 'validatedEndDate', 160, 0),
+  (7, 'PED', 'delay', 'plannedEndDate', 170, 0),
+  (8, 'ISD', 'delay', 'initialStartDate', 180, 0),
+  (9, 'VSD', 'delay', 'validatedStartDate', 190, 0),
+  (10, 'PSD', 'delay', 'plannedStartDate', 200, 0),
+  (11, 'PCOVC', 'percent', 'PlannedCostOverValidatedCost', 210, 0),
+  (12, 'PCOAC', 'percent', 'PlannedCostOverAssignedCost', 220, 0),
+  (13, 'PWOVW', 'percent', 'PlannedWorkOverValidatedWork', 230, 0),
+  (14, 'PWOAW', 'percent', 'PlannedWorkOverAssignedWork', 240, 0);
 
 CREATE TABLE `${prefix}indicatorable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -162,8 +163,8 @@ CREATE TABLE `${prefix}alert` (
   `idIndicatorValue` int(12) unsigned,
   `idUser`  int(12) unsigned DEFAULT NULL,
   `alertType` varchar(10), 
-  `alertTargetDateTime` datetime,
-  `alertDateTime` datetime DEFAULT NULL,
+  `title` varchar(100),
+  `message` varchar(4000),
   `read` int(1) unsigned DEFAULT '0',
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
