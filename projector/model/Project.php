@@ -287,6 +287,18 @@ class Project extends SqlElement {
         $result .= $aff->drawAffectationList(array('idProject'=>$this->id,'idle'=>'0'),'Resource');
       }
       $result .="</td></tr></table>";
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('contacts') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      if ($this->id) {
+        $result .= $aff->drawAffectationList(array('idProject'=>$this->id,'idle'=>'0'),'Contact');
+      }
+      $result .="</td></tr></table>";
+      /*$result .="<table><tr><td class='label' valign='top'><label>" . i18n('menuUser') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      if ($this->id) {
+        $result .= $aff->drawAffectationList(array('idProject'=>$this->id,'idle'=>'0'),'User');
+      }
+      $result .="</td></tr></table>";*/
       return $result;
     }
   }

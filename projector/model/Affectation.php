@@ -8,6 +8,7 @@ class Affectation extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
+  public $idResourceSelect;
   public $idResource;
   public $idContact;
   public $idUser;
@@ -21,7 +22,7 @@ class Affectation extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameResource" width="20%" >${resourceName}</th>
+    <th field="nameResourceSelect" width="20%" >${resourceName}</th>
     <th field="nameContact" width="20%" >${contactName}</th>
     <th field="nameUser" width="20%" >${userName}</th>
     <th field="nameProject" width="20%" >${projectName}</th>
@@ -32,6 +33,7 @@ class Affectation extends SqlElement {
   private static $_colCaptionTransposition = array('idUser'=>'orUser', 
                                                    'idContact'=>'orContact');
   
+   private static $_fieldsAttributes=array("idResourceSelect"=>"hidden"); 
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -49,6 +51,10 @@ class Affectation extends SqlElement {
         }
     	}
     }*/
+    if (SqlList::getNameFromId('Resource', $this->idResource)==$this->idResource) {
+    	$this->idResource=null;
+    }
+    
     if (! $this->id) {
     	$this->rate=100;
     }
@@ -73,7 +79,13 @@ class Affectation extends SqlElement {
   protected function getStaticLayout() {
     return self::$_layout;
   }
-
+     /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
   /** ============================================================================
    * Return the specific colCaptionTransposition
    * @return the colCaptionTransposition
@@ -139,14 +151,22 @@ class Affectation extends SqlElement {
     $result="<table>";
     $affList=$this->getSqlElementsFromCriteria($critArray, false);
     foreach ($affList as $aff) {
+    	if ($nameDisp=='Resource' and ! $aff->idResource) continue;
+    	if ($nameDisp=='Resource' and SqlList::getNameFromId('Resource', $aff->idResource)==$aff->idResource) continue;
+    	if ($nameDisp=='Contact' and ! $aff->idContact) continue;
+    	if ($nameDisp=='User' and ! $aff->idUser) continue; 
       $result.= '<tr>';
       $result.= '<td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
       $result.= '<td>';
       $disp=''; 
       if ($nameDisp=='Resource') {
         $disp.=SqlList::getNameFromId('Resource', $aff->idResource);
+      } else if ($nameDisp=='Contact') {
+        $disp.=SqlList::getNameFromId('Contact', $aff->idContact);
+      } else if ($nameDisp=='User') {
+        $disp.=SqlList::getNameFromId('User', $aff->idUser);
       } else if ($nameDisp=='Project') {
-        $disp.=SqlList::getNameFromId('Project', $aff->idProject);
+        $disp.=SqlList::getNameFromId('Project', $aff->idProject);      
       } else{
         $disp.=SqlList::getNameFromId('Resource', $aff->idResource);
         $disp.=' - ';
@@ -165,6 +185,7 @@ class Affectation extends SqlElement {
   public function control(){
     $result="";
     $this->idResource=trim($this->idResource);
+    $this->idResourceSelect=$this->idResource;
     $this->idContact=trim($this->idContact);
     $this->idUser=trim($this->idUser);
     $this->idProject=trim($this->idProject);
@@ -175,6 +196,7 @@ class Affectation extends SqlElement {
       	$this->idResource=$this->idUser;
       }
     }
+    
     if (! $this->idResource) {
     	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdResource') 
     	                                         . ' ' . i18n('colOrContact') 
