@@ -334,8 +334,10 @@ debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->
     if ($dest!="") {     
       $resultMail=sendMail($dest, $title, $messageMail, $obj);
     }
+debugLog(count($arrayAlertDest));
     if (count($arrayAlertDest)>0) {
       foreach ($arrayAlertDest as $id=>$name) {
+debugLog($id.'=>'.$name);      	
       	// Create alert
       	$alert=new Alert();
       	$alert->idProject=$obj->idProject;
@@ -343,7 +345,7 @@ debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->
       	$alert->refId=$obj->id;
       	$alert->idIndicatorValue=$this->id;
       	$alert->idUser=$id;
-      	$alert->type=$type;
+      	$alert->alertType=$type;
       	$alert->message=$messageAlert;
       	$alert->title=$title;
       	$alert->read=0;
