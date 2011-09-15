@@ -1782,7 +1782,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     }
     $dest="";
     if ($statusMail->mailToUser) {
-      if (property_exists($this,'')) {
+      if (property_exists($this,'idUser')) {
         $user=new User($this->idUser);
         $newDest = "###" . $user->email . "###";
         if ($user->email and strpos($dest,$newDest)===false) {

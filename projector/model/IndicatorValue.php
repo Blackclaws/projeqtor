@@ -110,11 +110,17 @@ class IndicatorValue extends SqlElement {
   	$ind=new Indicator($def->idIndicator);
   	if ($ind->type=="delay") {
   		$fld=$ind->name;
-  		if (substr($fld,-7)=='EndDate' or substr($fld,-8)=='StartDate') {
+  		if (substr($fld,-7)=='EndDate' or substr($fld,-9)=='StartDate') {
   		  $sub=$class . "PlanningElement";
   		  $indVal->targetDateTime=$obj->$sub->$fld;
   	  } else {
   	    $indVal->targetDateTime=$fldVal=$obj->$fld;
+  	  }
+  	  if (! $indVal->targetDateTime) {
+  	  	if ($indVal->id) {
+  	  		$indVal->delete();
+  	  	}
+  	  	return;
   	  }
   	  $indVal->targetValue=null;
   	  $indVal->warningTargetValue=null;
@@ -122,11 +128,11 @@ class IndicatorValue extends SqlElement {
   	  $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
   	  $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
   	  $indVal->checkDates($obj);  	  
-  	} else if ($ind-typ=="percent") {
+  	} else if ($ind->type=="percent") {
   	  if (strpos($ind->name, 'Cost')>0) {
-  		  $indVal->trigger='Cost';
+  		  //$indVal->trigger='Cost';
   	  } else {
-  	  	$indVal->trigger='Work';
+  	  	//$indVal->trigger='Work';
   	  }
     } else {
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
@@ -175,11 +181,11 @@ class IndicatorValue extends SqlElement {
       case 'VSD' :    //ValidatedStartDate
       case 'PSD' :    //PlannedStartDate
       	$date=date('Y-m-d');
-        if ($obj and property_exists($obj,'handeledDate') and $obj->handeled) {
+        if ($obj and property_exists($obj,'handledDate') and $obj->handled) {
           $date=$obj->handledDate;
         }
         $pe=get_class($obj).'PlanningElement';
-        if ($obj->pe->realStartDate and $obj->pe->realStartDate<$date) {
+        if ($obj->$pe->realStartDate and $obj->$pe->realStartDate<$date) {
         	$date=$obj->pe->realStartDate;
         }        
         break;
@@ -205,12 +211,147 @@ class IndicatorValue extends SqlElement {
   
   public function sendAlert() {
 debugLog ("alert sent for refType=$this->refType refId=$this->refId id=$this->id");  	
-  	
+  	$this->send('ALERT');
   }
   
   public function sendWarning() {
 debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->id");   
-  	  	
+  	$this->send('WARNING');  	
+  }
+  
+  public function send($type) {
+    $def=new IndicatorDefinition($this->idIndicatorDefinition);
+    $obj=new $this->refType($this->refId);
+    $arrayAlertDest=array();
+  	if ($def->mailToUser==0 and $def->mailToResource==0 and $def->mailToProject==0
+    and $def->mailToLeader==0  and $def->mailToContact==0
+    and $def->alertToUser==0 and $def->alertToResource==0 and $def->alertToProject==0
+    and $def->alertToLeader==0  and $def->alertToContact==0) {
+      return false; // exit not a status for mail sending (or disabled) 
+    }
+    $dest="";
+    if ($def->mailToUser or $def->alertToUser) {
+      if (property_exists($obj,'idUser')) {
+        $user=new User($obj->idUser);
+        if ($def->alertToUser) {
+        	$arrayAlertDest[$user->id]=$user->name;
+        }
+        $newDest = "###" . $user->email . "###";
+        if ($def->mailToUser and $user->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
+    }
+    if ($def->mailToResource or $def->alertToResource) {
+      if (property_exists($obj, 'idResource')) {
+        $resource=new Resource($obj->idResource);
+        if ($def->alertToResource and $resource->isUser) {
+          $arrayAlertDest[$resource->id]=$resource->name;
+        }
+        $newDest = "###" . $resource->email . "###";
+        if ($def->mailToResource and $resource->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }    
+    }
+    if ($def->mailToProject or $def->mailToLeader or $def->alertToProject or $def->alertToLeader) {
+      $aff=new Affectation();
+      $crit=array('idProject'=>$obj->idProject, 'idle'=>'0');
+      $affList=$aff->getSqlElementsFromCriteria($crit, false);
+      if ($affList and count($affList)>0) {
+        foreach ($affList as $aff) {
+          $resource=new Resource($aff->idResource);
+          if ($def->alertToProject and $resource->isUser) {
+          	$arrayAlertDest[$resource->id]=$resource->name;
+          }
+          if ($def->mailToProject) {
+            $newDest = "###" . $resource->email . "###";
+            if ($resource->email and strpos($dest,$newDest)===false) {
+              $dest.=($dest)?', ':'';
+              $dest.= $newDest;
+            }
+          }
+          if (($def->mailToLeader or $def->alertToLeader) and $resource->idProfile) {
+            $prf=new Profile($resource->idProfile);
+            if ($prf->profileCode=='PL') {
+            	if ($def->alertToLeader) {
+            		$arrayAlertDest[$resource->id]=$resource->name;
+            	}
+              $newDest = "###" . $resource->email . "###";
+              if ($def->mailToLeader and $resource->email and strpos($dest,$newDest)===false) {
+                $dest.=($dest)?', ':'';
+                $dest.= $newDest;
+              }
+            }
+          }
+        }
+      }
+    }
+    if ($def->mailToContact or $def->alertToContact) {
+      if (property_exists($obj,'idContact')) {
+        $contact=new Contact($obj->idContact);
+        if ($def->alertToContact and $contact->isUser) {
+        	$arrayAlertDest[$contact->id]=$contact->name;
+        }
+        $newDest = "###" . $contact->email . "###";
+        if ($def->mailToContact and $contact->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
+    }
+    if ($dest=="" and count($arrayAlertDest)==0) {
+      return false; // exit no addressees 
+    }
+    $dest=str_replace('###','',$dest);
+    $paramTitle='${type} for element ${item} ${id}';
+    $paramMailMessage='${type} for element ${item} ${id} - ${name}';
+    $paramMailMessage.='<BR/> => indicator : ${indicator}'; 
+    $paramAlertMessage='${type} for element ${item} ${id} - ${name}';
+    $paramAlertMessage.="\n" . ' => indicator : ${indicator}'; 
+    // substituable items
+    $item=i18n(get_class($obj));
+    $id=$obj->id;
+    $name=$obj->name;
+    $status=(property_exists($obj, 'idStatus'))?SqlList::getNameFromId('Status', $obj->idStatus):"";
+    $indicator=SqlList::getNameFromId('Indicator',$def->idIndicator);
+    $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
+    $arrayTo=array($type, $item, $id, $name, $status, $indicator);
+    $title=str_replace($arrayFrom, $arrayTo, $paramTitle);
+    $messageAlert=str_replace($arrayFrom, $arrayTo, $paramAlertMessage);
+    $messageMail=str_replace($arrayFrom, $arrayTo, $paramMailMessage);
+    $messageMail='<html>' . "\n" .
+      '<head>'  . "\n" .
+      '<title>' . $title . '</title>' . "\n" .
+      '</head>' . "\n" .
+      '<body>' . "\n" .
+      $messageMail . "\n" .
+      '<body>' . "\n" .
+      '</html>';
+    $messageMail = wordwrap($messageMail, 70); // wrapt text so that line do not exceed 70 cars per line
+    if ($dest!="") {     
+      $resultMail=sendMail($dest, $title, $messageMail, $obj);
+    }
+    if (count($arrayAlertDest)>0) {
+      foreach ($arrayAlertDest as $id=>$name) {
+      	// Create alert
+      	$alert=new Alert();
+      	$alert->idProject=$obj->idProject;
+      	$alert->refType=get_class($obj);
+      	$alert->refId=$obj->id;
+      	$alert->idIndicatorValue=$this->id;
+      	$alert->idUser=$id;
+      	$alert->type=$type;
+      	$alert->message=$messageAlert;
+      	$alert->title=$title;
+      	$alert->read=0;
+      	$alert->idle=0;
+      	$alert->save();
+      } 
+    }
+  	
   }
 }
 ?>
