@@ -237,3 +237,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 90, 1),
 (2, 90, 1),
 (3, 90, 1);
+
+ALTER TABLE `${prefix}affectation` ADD idResourceSelect int(12) unsigned;
+
+UPDATE `${prefix}affectation` SET idResourceSelect=idResource where
+exists (select 'x' from `${prefix}user` user where user.id=idResource and user.isResource='1');
+ 
