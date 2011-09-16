@@ -158,14 +158,14 @@ ADD INDEX indicatorvalueReference (refType, refId);
 CREATE TABLE `${prefix}alert` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject`  int(12) unsigned DEFAULT NULL,
-  `refType` int(12) unsigned DEFAULT NULL,
+  `refType` varchar(100),
   `refId` int(12) unsigned DEFAULT NULL,
   `idIndicatorValue` int(12) unsigned,
   `idUser`  int(12) unsigned DEFAULT NULL,
   `alertType` varchar(10), 
   `title` varchar(100),
   `message` varchar(4000),
-  `read` int(1) unsigned DEFAULT '0',
+  `readFlag` int(1) unsigned DEFAULT '0',
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

@@ -348,7 +348,7 @@ debugLog($id.'=>'.$name);
       	$alert->alertType=$type;
       	$alert->message=$messageAlert;
       	$alert->title=$title;
-      	$alert->read=0;
+      	$alert->readFlag=0;
       	$alert->idle=0;
       	$alert->save();
       } 
