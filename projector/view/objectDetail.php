@@ -686,6 +686,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo ' </script>';
           echo '</button>';
         }    
+      } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
+        echo '<div ';
+
+        echo ' class="display" ';
+        //echo ' style="width:10%; border:1px solid red;"';
+        echo' >'; 
+        echo htmlEncode($val);
+        if (! $print) {
+          echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
+        }
+        echo '</div>';
       } else if ($dataType=='int' or $dataType=='decimal'){
         // Draw a number field ================================================ NUMBER
         $cost=false;
@@ -718,17 +729,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($cost and $currencyPosition=='after') {
           echo $currency;
         }
-      } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
-        echo '<div ';
-
-        echo ' class="display" ';
-        //echo ' style="margin-top: 3px"';
-        echo' >'; 
-        echo htmlEncode($val);
-        if (! $print) {
-          echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
-        }
-        echo '</div>';
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';

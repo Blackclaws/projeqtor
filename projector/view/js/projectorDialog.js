@@ -261,7 +261,6 @@ function showPrint (page, context, comboName, outMode) {
 			params+="&sortIndex="+sortIndex;
 			params+="&sortWay="+sortWay;
 		}
-		//alert("Sort on index "+sortIndex+" asc "+sortAsc);
 	}
 	if (printInNewWin) {
 		var newWin=window.open("print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params);
@@ -1208,8 +1207,6 @@ dijit.byId('dialogDependency').hide();
 * 
 */
 function removeDependency (dependencyId, refType, refId) {
-//alert("Not implemented");
-//return;
 if (formChangeInProgress) {
 	showAlert(i18n('alertOngoingChange'));
 	return;
@@ -1909,7 +1906,6 @@ function switchMode(){
 }
 
 function showList(mode) {
-	//alert("showList");
 	if (mode=='mouse' && switchListMode=='CLICK') return;
 	if (! switchedMode) {
 		return;
@@ -1932,7 +1928,6 @@ function showList(mode) {
 	switchedVisible='list';
 }
 function hideList(mode) {
-	//alert("hideList");
 	if (mode=='mouse' && switchListMode=='CLICK') return;
 	if (! switchedMode) {
 		return;
@@ -2172,7 +2167,7 @@ function setAlertReadMessage() {
 function setAlertRemindMessage() {
  //alertDisplayed=false;
   closeAlertBox();
-  alert(dijit.byId('remindAlertTime').get('value'));
+  //alert(dijit.byId('remindAlertTime').get('value'));
   setAlertRead(dojo.byId('idAlert').value, dijit.byId('remindAlertTime').get('value'));
 }
 
@@ -2181,7 +2176,7 @@ function setAlertRead(id, remind) {
   if (remind) {
 	url+='&remind='+remind;
   }
-alert(url);
+  //alert(url);
   dojo.xhrGet({
 	url: url,
 	handleAs: "text",

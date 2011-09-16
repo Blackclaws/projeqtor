@@ -144,7 +144,7 @@ scriptLog('   ->/view/main.php');
           echo "dijit.byId('toolBarDiv').resize({h: 0});;";
           echo "dijit.byId('globalContainer').resize();";
        } ?>
-       setTimeout('checkAlert();',alertCheckTime*200);  
+       setTimeout('checkAlert();',5000); //first check at 5 seco  
     }); 
     var canCreateArray=new Array();
     var dependableArray=new Array();
