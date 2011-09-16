@@ -1952,5 +1952,27 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $this->idle=($status->setIdleStatus)?1:0;
     }  
   }
+  
+  public function getAlertLevel($withIndicator=false) {
+  	$crit=array('refType'=>get_class($this),'refId'=>$this->id);
+  	$indVal=new IndicatorValue();
+  	$lst=$indVal->getSqlElementsFromCriteria($crit, false);
+  	$level="NONE";
+  	$desc="";
+  	foreach($lst as $ind) {
+  		if ($ind->warningSent and $level!="ALERT") {
+  			$level="WARNING";
+  		}
+  	  if ($ind->alertSent) {
+        $level="ALERT";
+      }
+      if ($withIndicator) {
+      	$desc+=($desc)?'<br/>':'';
+      	$desc+=$ind->getShortDescription();
+      	
+      }
+  	}
+  	return array('level'=>$level,'description'=>$desc);
+  }
 }
 ?>

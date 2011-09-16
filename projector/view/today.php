@@ -284,18 +284,26 @@
       if (securityCheckDisplayMenu(null,$class) 
       and securityGetAccessRightYesNo('menu' . $class, 'read', $elt)=="YES") {
         $goto=' onClick="gotoElement(' . "'" . $class . "','" . $elt->id . "'" . ');" style="cursor: pointer;" ';  
-      }         
-      echo '<tr ' . $goto . '>' .
-             '  <td class="messageData">' . 
+      }
+      $alertLevelArray=$elt->getAlertLevel(true);
+      $alertLevel=$alertLevelArray['level'];
+      $color="";
+      if ($alertLevel=='ALERT') {
+      	$color='background-color:#FFAAAA;';
+      } else if ($alertLevel=='WARNING') {
+      	$color='background-color:#FFFFAA;';         
+      }
+      echo '<tr ' . $goto . (($alertLevel!='NONE')?' title="' . $alertLevelArray['description'] . '"':'') .' >' .
+             '  <td class="messageData" style="'.$color.'">' . 
                    '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" title="' . i18n($class). '"/>' .
                    '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
-             '  <td class="messageData">' . SqlList::getNameFromId('Project', $elt->idProject) . '</td>' .
-             '  <td class="messageData">' . SqlList::getNameFromId($class .'Type', $elt->$idType) . '</td>' .
-             '  <td class="messageData">' . $elt->name . '</td>' .
-             '  <td class="messageDataValue" NOWRAP>' . htmlFormatDate($echeance) . '</td>' .
-             '  <td class="messageData">' . htmlDisplayColored($status,$statusColor) . '</td>' .
-             '  <td class="messageDataValue">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' .
-             '  <td class="messageDataValue">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' .
+             '  <td class="messageData" style="'.$color.'">' . SqlList::getNameFromId('Project', $elt->idProject) . '</td>' .
+             '  <td class="messageData" style="'.$color.'">' . SqlList::getNameFromId($class .'Type', $elt->$idType) . '</td>' .
+             '  <td class="messageData" style="'.$color.'">' . $elt->name . '</td>' .
+             '  <td class="messageDataValue" style="'.$color.'" NOWRAP>' . htmlFormatDate($echeance) . '</td>' .
+             '  <td class="messageData" style="'.$color.'">' . htmlDisplayColored($status,$statusColor) . '</td>' .
+             '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' .
+             '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' .
             '</tr>';
       }
       echo "</table>";

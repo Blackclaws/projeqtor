@@ -359,5 +359,10 @@ debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->
     }
   	
   }
+  
+  public function getShortDescription() {
+  	$result=SqlList::getNameFromId('IndicatorDefinition', $this->idIndicatorDefinition);
+  	return $result;
+  }
 }
 ?>

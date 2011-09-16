@@ -101,6 +101,7 @@ INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`,
 CREATE TABLE `${prefix}indicatordefinition` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idIndicatorable` int(12) unsigned,
+  `name` varchar(100),
   `nameIndicatorable` varchar(100),
   `idIndicator` int(12) unsigned,
   `codeIndicator` varchar(10),

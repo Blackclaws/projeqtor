@@ -8,6 +8,7 @@ class IndicatorDefinition extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $idIndicatorable;
+  public $name;
   public $nameIndicatorable;
   public $idType;
   public $idIndicator;
@@ -32,6 +33,7 @@ class IndicatorDefinition extends SqlElement {
   public $alertToProject;
   public $alertToContact;
   public $alertToLeader;
+  public $_isNameTranslatable = true;
 
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
@@ -45,7 +47,7 @@ class IndicatorDefinition extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array(
+  private static $_fieldsAttributes=array("name"=>"hidden",
                                   "idType"=>"nocombo",
                                   "warningValue"=>"nobr",
                                   "alertValue"=>"nobr",
@@ -122,6 +124,7 @@ class IndicatorDefinition extends SqlElement {
   	$indicator=new Indicator($this->idIndicator);
     $this->codeIndicator=$indicator->code;
   	$this->typeIndicator=$indicator->type;
+  	$this->name=$indicator->name;
   	return parent::save();
   }
   
