@@ -80,6 +80,7 @@ scriptLog('   ->/view/main.php');
     var refreshUpdates="YES";
     var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
     var pdfInNewWindow=<?php echo (getPrintInNewWindow('pdf'))?'true':'false';?>;
+    var alertCheckTime='<?php echo Parameter::getGlobalParameter('alertCheckTime');?>';
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
     dojo.addOnLoad(function(){
@@ -142,7 +143,8 @@ scriptLog('   ->/view/main.php');
       <?php if (! $showTopMenu) {
           echo "dijit.byId('toolBarDiv').resize({h: 0});;";
           echo "dijit.byId('globalContainer').resize();";
-       } ?>  
+       } ?>
+       setTimeout('checkAlert();',alertCheckTime*200);  
     }); 
     var canCreateArray=new Array();
     var dependableArray=new Array();
@@ -266,6 +268,22 @@ scriptLog('   ->/view/main.php');
       </table>  
     </div>    
   </div>
+</div>
+<div id="dialogReminder" >
+ <div id="reminderDiv" style="width:100%;height: 75%"></div>
+  <div style="width:100%; height:15%; text-align:right">
+    <?php echo i18n("remindMeIn");?>
+   <input type="input" dojoType="dijit.form.TextBox" id="remindAlertTime" name="remindAletTime" value="15" style="width:25px" />
+    <?php echo i18n("shortMinute");?>
+   <button dojoType="dijit.form.Button" onclick="setAlertRemindMessage();">
+            <?php echo i18n("remind");?>
+   </button>
+ </div>
+ <div style="width:100%; height:10%; text-align:right">
+	 <button dojoType="dijit.form.Button" onclick="setAlertReadMessage();">
+	          <?php echo i18n("markAsRead");?>
+	 </button>
+ </div>
 </div>
 <div id="dialogInfo" dojoType="dijit.Dialog" title="<?php echo i18n("dialogInformation");?>">
   <table>

@@ -163,6 +163,9 @@ CREATE TABLE `${prefix}alert` (
   `idIndicatorValue` int(12) unsigned,
   `idUser`  int(12) unsigned DEFAULT NULL,
   `alertType` varchar(10), 
+  `alertInitialDateTime` datetime,
+  `alertDateTime` datetime,
+  `alertReadDateTime` datetime,  
   `title` varchar(100),
   `message` varchar(4000),
   `readFlag` int(1) unsigned DEFAULT '0',
@@ -243,4 +246,30 @@ ALTER TABLE `${prefix}affectation` ADD idResourceSelect int(12) unsigned;
 
 UPDATE `${prefix}affectation` SET idResourceSelect=idResource where
 exists (select 'x' from `${prefix}user` user where user.id=idResource and user.isResource='1');
- 
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'alertCheckTime','60');
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(91, 'menuAlert', 11, 'object', 505, 'Project', 0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 91, 1),
+(2, 91, 1),
+(3, 91, 1),
+(4, 91, 1),
+(5, 91, 1),
+(6, 91, 1),
+(7, 91, 1);
+
+INSERT INTO `${prefix}accessprofile`(`id`,`name`,`description`,`idAccessScopeRead`,`idAccessScopeCreate`,`idAccessScopeUpdate`,`idAccessScopeDelete`,`sortOrder`,`idle`) values 
+(10,'accessReadOwnOnly',null,2,1,1,1,900,0);
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
+(1, 91, 1),
+(2, 91, 1),
+(3, 91, 1),
+(4, 91, 10),
+(6, 91, 10),
+(7, 91, 10),
+(5, 91, 10);
