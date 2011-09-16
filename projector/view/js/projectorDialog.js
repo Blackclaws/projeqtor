@@ -2127,3 +2127,76 @@ function loadMenuBarItem(item) {
 	   loadContent("parameter.php?type=userParameter","centerDiv");
 	}
 }
+
+//var alertDisplayed=false;
+function checkAlert() {
+  //if (alertDisplayed) return;
+  dojo.xhrGet({
+	url: "../tool/checkAlertToDisplay.php",
+	handleAs: "text",
+	load: function(data,args) { checkAlertRetour(data); },
+    error: function() { checkAlert(); }
+  });
+}
+function checkAlertRetour(data) {
+  if (data) {
+	var reminderDiv=dojo.byId('reminderDiv');
+	var dialogReminder=dojo.byId('dialogReminder');
+	reminderDiv.innerHTML=data;
+	//dojo.parser.parse(reminderDiv);
+	dojo.style(dialogReminder, {visibility:'visible', display:'inline', bottom: '-200px'});
+	//alertDisplayed=true;
+	var toColor='#FFCCCC';
+	if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
+		toColor='#FFFFCC';
+	}
+	dojo.animateProperty({
+        node: dialogReminder,
+        properties: {
+            bottom: { start: -200, end: 0 },
+            right: 0,
+            backgroundColor: { start: '#FFFFFF', end: toColor }
+        },
+        duration: 2000
+    }).play();
+	
+  } else {
+	setTimeout('checkAlert();',alertCheckTime*1000);  
+  }
+}
+function setAlertReadMessage() {
+  //alertDisplayed=false;
+  closeAlertBox();
+  setAlertRead(dojo.byId('idAlert').value);
+}
+function setAlertRemindMessage() {
+ //alertDisplayed=false;
+  closeAlertBox();
+  alert(dijit.byId('remindAlertTime').get('value'));
+  setAlertRead(dojo.byId('idAlert').value, dijit.byId('remindAlertTime').get('value'));
+}
+
+function setAlertRead(id, remind) {
+  var url="../tool/setAlertRead.php?idAlert="+id;
+  if (remind) {
+	url+='&remind='+remind;
+  }
+alert(url);
+  dojo.xhrGet({
+	url: url,
+	handleAs: "text",
+	load: function(data,args) { setTimeout('checkAlert();',1000); },
+	error: function() {setTimeout('checkAlert();',1000);}
+  });
+}
+function closeAlertBox() {
+	var dialogReminder=dojo.byId('dialogReminder');
+	dojo.animateProperty({
+        node: dialogReminder,
+        properties: {
+            bottom: { start: 0, end: -200 }
+        },
+        duration: 900,
+        onEnd: function () {dojo.style(dialogReminder, {visibility:'hidden', display:'none', bottom: '-200px'}); }
+    }).play();
+}

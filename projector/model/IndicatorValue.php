@@ -90,6 +90,8 @@ class IndicatorValue extends SqlElement {
   		$indVal->idIndicatorDefinition=$def->id;
   		$indVal->refType=$class;
   		$indVal->refId=$obj->id; 		
+  		$indVal->warningSent='0';
+  		$indVal->alertSent='0';
   	} else {
   		$cpt=count($lst);
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => more than 1 (exactely $cpt) line of IndicatorValue for refType=$class, refId=$obj->id, idIndicatorDefinition=$def->id");
@@ -193,18 +195,18 @@ class IndicatorValue extends SqlElement {
     if ($date>$this->warningTargetDateTime) {
       if (! $this->warningSent) {
         $this->sendWarning();
-        $this->warningSent=true;
+        $this->warningSent='1';
       }
     } else {
-      $this->warningSent=false;
+      $this->warningSent='0';
     }
     if ($date>$this->alertTargetDateTime) {
       if (! $this->alertSent) {
         $this->sendAlert();
-        $this->alertSent=true;
+        $this->alertSent='1';
       }
     } else {
-      $this->alertSent=false;
+      $this->alertSent='0';
     }        
   	if (!$obj) $this->save();
   }
@@ -212,11 +214,13 @@ class IndicatorValue extends SqlElement {
   public function sendAlert() {
 debugLog ("alert sent for refType=$this->refType refId=$this->refId id=$this->id");  	
   	$this->send('ALERT');
+  	$this->alertSent='1';
   }
   
   public function sendWarning() {
 debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->id");   
   	$this->send('WARNING');  	
+  	$this->warningSent='1';
   }
   
   public function send($type) {
@@ -334,10 +338,8 @@ debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->
     if ($dest!="") {     
       $resultMail=sendMail($dest, $title, $messageMail, $obj);
     }
-debugLog(count($arrayAlertDest));
     if (count($arrayAlertDest)>0) {
-      foreach ($arrayAlertDest as $id=>$name) {
-debugLog($id.'=>'.$name);      	
+      foreach ($arrayAlertDest as $id=>$name) {     	
       	// Create alert
       	$alert=new Alert();
       	$alert->idProject=$obj->idProject;
@@ -349,6 +351,8 @@ debugLog($id.'=>'.$name);
       	$alert->message=$messageAlert;
       	$alert->title=$title;
       	$alert->readFlag=0;
+      	$alert->alertInitialDateTime=date('Y-m-d H:i:s');
+      	$alert->alertDateTime=date('Y-m-d H:i');
       	$alert->idle=0;
       	$alert->save();
       } 
