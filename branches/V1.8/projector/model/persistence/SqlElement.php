@@ -1959,19 +1959,20 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	$lst=$indVal->getSqlElementsFromCriteria($crit, false);
   	$level="NONE";
   	$desc="";
-  	foreach($lst as $ind) {
-  		if ($ind->warningSent and $level!="ALERT") {
+  	foreach($lst as $indVal) {
+  		if ($indVal->warningSent and $level!="ALERT") {
   			$level="WARNING";
   		}
-  	  if ($ind->alertSent) {
+  	  if ($indVal->alertSent) {
         $level="ALERT";
       }
       if ($withIndicator) {
-      	$desc+=($desc)?'<br/>':'';
-      	$desc+=$ind->getShortDescription();
+      	$desc.=($desc)?'<br/>':'';
+      	$desc.=$indVal->getShortDescription();
       	
       }
   	}
+  	//debugLog(get_class($this). " #" . $this->id . " - " . $desc);
   	return array('level'=>$level,'description'=>$desc);
   }
 }
