@@ -362,6 +362,11 @@ debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->
   
   public function getShortDescription() {
   	$result=SqlList::getNameFromId('IndicatorDefinition', $this->idIndicatorDefinition);
+  	$result.=' - ' . i18n('target') . ': ';
+  	if ($this->type=='delay') {
+  		$result.=$this->targetDateTime;
+  	}
+  	//debugLog($result);
   	return $result;
   }
 }
