@@ -282,4 +282,4 @@ UPDATE `${prefix}menu` SET idle=0 where id=18;
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 18, 1),
-(1, 92, 1),;
+(1, 92, 1);

@@ -8,7 +8,7 @@ set_time_limit(0);
 ignore_user_abort(1);
 session_write_close();
 
-$cronSleepTime=10; // in seconds
+$cronSleepTime=10; // in seconds. Attention, if changed, also change cronSleepTime in projectorDialog.php
 $cronCheckDates=0.2*60; // every minute
 
 function endCron()
@@ -44,7 +44,7 @@ while(1)
 }
 
 function checkDates() {
-	debugLog("checkDates at " .date('d/m/Y H:i:s'));
+	debugLog("cron : checkDates at " .date('d/m/Y H:i:s'));
 	$indVal=new IndicatorValue();
 	$where="idle='0' and (";
 	$where.=" ( warningTargetDateTime>'" . date('d/m/Y H:i:s') . "' and warningSent='0')" ;
