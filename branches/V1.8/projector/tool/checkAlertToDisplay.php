@@ -1,5 +1,8 @@
 <?php
+// Artefact to avoid scriptLog display even if debugLog=4. Comment the line to have it displayed again.
+$noScriptLog=true;
 require_once "../tool/projector.php";
+
 if (! array_key_exists('user',$_SESSION)) {
 	echo "noUser";
 	return;

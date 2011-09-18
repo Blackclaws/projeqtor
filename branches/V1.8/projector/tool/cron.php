@@ -6,14 +6,15 @@ if (file_exists('../files/cron/RUNNING')) {
 }
 set_time_limit(0);
 ignore_user_abort(1);
+session_write_close();
 
 $cronSleepTime=10; // in seconds
 $cronCheckDates=0.2*60; // every minute
 
 function endCron()
 {
-  fopen('../files/cron/ERROR_ON_'.date('Ymd_His'), 'w');
   unlink('../files/cron/RUNNING');
+	fopen('../files/cron/ERROR_ON_'.date('Ymd_His'), 'w');  
   errorLog('cron abnormally stopped');
 }
 
@@ -29,7 +30,9 @@ while(1)
 	debugLog(date('d/m/Y H:i:s'));
   if (file_exists('../files/cron/STOP')) { 
   	debugLog('cron normally stopped at '.date('d/m/Y H:i:s'));
-  	die(); 
+  	unlink('../files/cron/RUNNING');
+  	unlink('../files/cron/STOP');
+  	return; 
   }
   $tmpCronCheckDates-=$cronSleepTime;
   if ($tmpCronCheckDates<=0) {
