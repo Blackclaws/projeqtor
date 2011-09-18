@@ -2195,3 +2195,44 @@ function closeAlertBox() {
         onEnd: function () {dojo.style(dialogReminder, {visibility:'hidden', display:'none', bottom: '-200px'}); }
     }).play();
 }
+
+var cronCheckNumber=0;
+var cronCheckFrequency=1; // In seconds
+var cronCheckTimeout=120;
+function adminLaunchScript(scriptName) {
+  var url="../tool/" + scriptName + ".php";
+  dojo.xhrGet({
+	url: url,
+	handleAs: "text",
+	load: function(data,args) {  },
+	error: function() { }
+  });	
+  if (scriptName=='cronRun') {
+    setTimeout('loadContent("admin.php","centerDiv");',1000);
+  } else if (scriptName=='cronStop') {
+	i=120;
+	cronCheckNumber=cronCheckTimeout/cronCheckFrequency;
+	setTimeout('adminCronCheck();',1000*cronCheckFrequency);
+	i--; 
+  }
+} 
+
+function adminCronCheck() {
+  dojo.xhrGet({
+	url: "../tool/cronCheck.php",
+	handleAs: "text",
+	load: function(data,args) {
+	        if (data!='running') {
+	          loadContent("admin.php","centerDiv");
+	        } else {
+	          cronCheckNumber-=cronCheckFrequency;
+	          if (cronCheckNumber>0) {
+	        	setTimeout('adminCronCheck();',1000*cronCheckFrequency);
+	          } else {
+	            loadContent("admin.php","centerDiv");
+	          }
+	        }
+	      },
+	error: function() {loadContent("admin.php","centerDiv");}
+  });  
+}
