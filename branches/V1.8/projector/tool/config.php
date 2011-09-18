@@ -144,7 +144,7 @@ $param['DefaultLocale'] = 'en';
 $label['DefaultLocale'] = "Default locale to be used on i18n";
 $value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'de' for German (more locales to come next)";
 $pname['DefaultLocale'] = 'paramDefaultLocale';
-$ctrls['DefaultLocale'] = '=en=fr=de=';
+$ctrls['DefaultLocale'] = '=en=fr=de=es=';
 
 $param['DefaultTimezone'] = 'Europe/Paris';                              
 $label['DefaultTimezone'] = "Default time zone";

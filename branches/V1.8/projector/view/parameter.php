@@ -45,7 +45,7 @@
           $obj->parameterValue=$_SESSION[$code];
         }
       }
-      echo '<tr><td class="label"><label for="' . $code . '" title="' . i18n('help' . ucfirst($code)) . '">' . i18n('param' . ucfirst($code) ) . ' :&nbsp;</label></td><td>';
+      echo '<tr><td class="crossTableLine"><label class="label largeLabel" for="' . $code . '" title="' . i18n('help' . ucfirst($code)) . '">' . i18n('param' . ucfirst($code) ) . ' :&nbsp;</label></td><td>';
       if ($format=='list') {
         $listValues=Parameter::getList($code);
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" name="' . $code . '" id="' . $code . '" ';
