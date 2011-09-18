@@ -40,8 +40,9 @@ if (is_file("../tool/parametersLocation.php")) {
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
 date_default_timezone_set($paramDefaultTimezone);
-scriptLog($_SERVER["SCRIPT_NAME"]);
-
+if (! isset($noScriptLog)) {
+  scriptLog($_SERVER["SCRIPT_NAME"]);
+}
 $testMode=false;              // Setup a variable for testing purpose test.php changes this value to true
 $i18nMessages=null;           // Array containing messages depending on local (initialized at first need)
    

@@ -274,3 +274,12 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (6, 91, 10),
 (7, 91, 10),
 (5, 91, 10);
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES
+(92, 'menuAdmin', 13, 'item', 975, Null, 0);
+
+UPDATE `${prefix}menu` SET idle=0 where id=18;
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 18, 1),
+(1, 92, 1),;
