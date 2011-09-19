@@ -71,7 +71,7 @@
     
     <td width="20%">
     <span class="titleProject">&nbsp;<?php echo (i18n("projectSelector"));?></span>
-    <span style="height: 20px; " dojoType="dijit.form.DropDownButton" 
+    <span style="height: 20px; color:#202020; " dojoType="dijit.form.DropDownButton" 
      id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
       <span width="200px" ><?php
         $proj='*'; 

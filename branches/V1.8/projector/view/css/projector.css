@@ -295,7 +295,10 @@ label, .label {
 .dialogLabel {
   color: #707070; 
 }
-
+.adminLabel {
+	margin-top:3px;
+	vertical-align: middle;
+}	
 .shortlabel {
   width: 87px;
 }
@@ -736,7 +739,7 @@ label, .label {
 }
 
 .blue .titleProject {
- color: #545281;  
+ color: #C3C3EB;  
 }
 
 .blue #mainDiv {
@@ -782,7 +785,7 @@ label, .label {
 }
 
 .red .titleProject {
- color: #9B5353;  
+ color: #EBC3C3;  
 }
 
 .red #mainDiv {
@@ -827,7 +830,7 @@ label, .label {
 }
 
 .green .titleProject {
- color: #539B53;  
+ color: #C3EBC3;  
 }
 
 .green #mainDiv {
@@ -873,7 +876,7 @@ label, .label {
 }
 
 .grey .titleProject {
- color: #535353;  
+ color: #C3C3C3;  
 }
 
 .grey #mainDiv {
@@ -919,7 +922,7 @@ label, .label {
 }
 
 .orange .titleProject {
- color: #D98F0E;  
+ color: #F6C672;  
 }
 
 .orange #mainDiv {
@@ -966,7 +969,7 @@ label, .label {
   border: 1px solid #FFFFFF;
 }
 .white .titleProject {
- color: #000000;  
+ color: #FFFFFF;  
 }
 .white #mainDiv {
     scrollbar-face-color: #FFFFFF;
@@ -1011,7 +1014,7 @@ label, .label {
 }
 
 .blueLight .titleProject {
- color: #545281;  
+ color: #EEEEFF;  
 }
 .blueLight #mainDiv {
     scrollbar-face-color: #EEEEFF;
@@ -1059,7 +1062,7 @@ label, .label {
 }
 
 .blueContrast .titleProject {
- color: #545281;  
+ color: #FFFFFF;  
 }
 .blueContrast #mainDiv {
     scrollbar-face-color: #EEEEFF;
@@ -1153,7 +1156,7 @@ label, .label {
 }
 
 .redContrast .titleProject {
- color: #9B5353;  
+ color: #FFFFFF;  
 }
 .redContrast #mainDiv {
     scrollbar-face-color: #FFEEEE;
@@ -1198,7 +1201,7 @@ label, .label {
 }
 
 .greenLight .titleProject {
- color: #539B53;  
+ color: #EEFFEE;  
 }
 .greenLight #mainDiv {
     scrollbar-face-color: #EEFFEE;
@@ -1246,7 +1249,7 @@ label, .label {
 }
 
 .greenContrast .titleProject {
- color: #539B53;  
+ color: #FFFFFF;  
 }
 .greenContrast #mainDiv {
     scrollbar-face-color: #EEFFEE;
@@ -1291,7 +1294,7 @@ label, .label {
 }
 
 .orangeLight .titleProject {
- color: #D98F0E;  
+ color: #FFFFDD;  
 }
 .orangeLight #mainDiv {
     scrollbar-face-color: #FFFFDD;
@@ -1339,7 +1342,7 @@ label, .label {
 }
 
 .orangeContrast .titleProject {
- color: #D98F0E;  
+ color: #FFFFFF;  
 }
 .orangeContrast #mainDiv {
     scrollbar-face-color: #FFFFDD;
@@ -1384,7 +1387,7 @@ label, .label {
 }
 
 .greyLight .titleProject {
- color: #9B9B9B;  
+ color: #F0F0F0;  
 }
 
 .greyLight #mainDiv {
@@ -1433,7 +1436,7 @@ label, .label {
 }
 
 .greyContrast .titleProject {
- color: #9B9B9B;  
+ color: #FFFFFF;  
 }
 .greyContrast #mainDiv {
     scrollbar-face-color: #F0F0F0;

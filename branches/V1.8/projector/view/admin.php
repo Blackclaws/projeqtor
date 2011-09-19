@@ -42,8 +42,8 @@
               </tr>
               <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
-                <td class="label"><?php echo i18n("alertCronStatus"). " : ";?></td>
-                <td class="display">
+                <td class="label adminLabel"><?php echo i18n("alertCronStatus"). " : ";?></td>
+                <td class="display"> &nbsp;&nbsp;
                   <?php if (file_exists('../files/cron/RUNNING')) {
                   	$cronStatus='running';
                   } else {
@@ -51,11 +51,7 @@
                   }
                   echo i18n($cronStatus);
                   ?>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>
+                  &nbsp;&nbsp;
                   <button id="alertRunStop" dojoType="dijit.form.Button" showlabel="true">
                     <?php echo ($cronStatus=='stopped')?i18n('run'):i18n('stop'); ?>
                    <script type="dojo/connect" event="onClick" args="evt">                 
@@ -76,7 +72,23 @@
           <td style="width:49%;vertical-align:top;">
             <table style="width:100%;">
               <tr>
-                <td width="100%" colspan="2" class="section">CRON</td>
+                <td width="100%" colspan="2" class="section"><?php echo i18n('dbMaintenance');?></td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td class="label adminLabel">
+                  <?php echo i18n("closeEmails"). " : ";?>
+                </td>
+                <td class="display adminLabel">&nbsp;&nbsp;
+                  <?php echo i18n('sendSinceMore');?>&nbsp;&nbsp;
+                  <input type="text" style="width:50px" />
+                  <button id="closeEmails" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('stop'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                 
+                     </script>
+                 </button>
+                </td>
               </tr>
             </table> 
           </td>

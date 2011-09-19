@@ -233,6 +233,7 @@ $obj=new $objectClass;
     </tr>
   </thead>
   <script type="dojo/connect" event="onSelected" args="evt">
+    if (gridReposition) {return;}
 	  if ( dojo.byId('comboDetail') ) {
       rows=objectGrid.selection.getSelected();
       row=rows[0]; 

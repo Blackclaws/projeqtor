@@ -643,10 +643,19 @@ function finalizeMessageDisplay(destination, validationType) {
       // Refresh the Grid list (if visible)
       var grid = dijit.byId("objectGrid");  
       if (grid) {
+    	var sortIndex=grid.getSortIndex();
+    	var sortAsc=grid.getSortAsc();
+    	var scrollTop=grid.scrollTop;
+    	//alert(scrollTop);
         store = grid.store;
         store.close();
-        store.fetch();
-        grid._refresh();
+        store.fetch({onComplete: function(){
+        	grid._refresh();
+        	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
+            setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
+            setTimeout('selectRowById("objectGrid", '+objectId.value+');',30);
+        	}
+        });
       }
       // Refresh the planning Gantt (if visible)
       if (dojo.byId(destination=="planResultDiv" || dojo.byId("GanttChartDIV"))) {
@@ -1004,22 +1013,25 @@ function unselectAllRows(gridName) {
  *            the searched id
  * @return void
  */
+var gridReposition=false;
 function selectRowById(gridName, id) {
   grid = dijit.byId(gridName); // if the element is not a widget, exit.
   if ( ! grid) { 
     return;
   }
-  grid.
   unselectAllRows(gridName); // first unselect, to be sure to select only
-                // requested id
   var nbRow=grid.rowCount;
+  gridReposition=true;
   for (i=0; i<nbRow; i++) {
-    item=grid.getItem(i);
+	  item=grid.getItem(i);
     itemId=item.id;
     if (itemId==id) {
       grid.selection.setSelected(i,true);
+      gridReposition=false;
+      return;
     }
   }
+  gridReposition=false;
 }
 
 /**
