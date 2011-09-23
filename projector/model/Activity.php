@@ -218,13 +218,12 @@ class Activity extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;    	
     }
-    
     if ( $this->idResource and trim($this->idResource) != ''
-      and ! $oldResource
+      and ! trim($oldResource)
       and stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-      // Add assignment for responsible
+      	// Add assignment for responsible
       $ass=new Assignment();
-      $crit=array('idResource'=>$this->idResource);
+      $crit=array('idResource'=>$this->idResource, 'refType'=>'Activity', 'refId'=>$this->id);
       $lst=$ass->getSqlElementsFromCriteria($crit, false);
       if (count($lst)==0) {
 	      $ass->idProject=$this->idProject;

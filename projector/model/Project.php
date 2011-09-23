@@ -32,7 +32,7 @@ class Project extends SqlElement {
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
   public $_Dependency_Successor=array();
-  
+  public $sortOrder;
 
 
   // Define the layout that will be used for lists
@@ -54,7 +54,8 @@ class Project extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required", 
                                   "description"=>"required",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "sortOrder"=>"hidden"
   );   
  
   private static $_colCaptionTransposition = array('idUser'=>'manager',
@@ -425,6 +426,7 @@ class Project extends SqlElement {
       $this->ProjectPlanningElement->topRefType=null;
       $this->ProjectPlanningElement->topRefId=null;
     }
+    //$this->sortOrder=$this->ProjectPlanningElement->wbsSortable;
     if ($this->idle) {
       $crit=array('idProject'=>$this->id, 'idle'=>'0');
       $vp=new VersionProject();

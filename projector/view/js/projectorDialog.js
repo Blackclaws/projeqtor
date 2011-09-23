@@ -2123,6 +2123,10 @@ function loadMenuBarItem(item) {
 	}
 }
 
+// ====================================================================================
+// ALERTS
+// ====================================================================================
+//
 //var alertDisplayed=false;
 function checkAlert() {
   //if (alertDisplayed) return;
@@ -2142,8 +2146,11 @@ function checkAlertRetour(data) {
 	dojo.style(dialogReminder, {visibility:'visible', display:'inline', bottom: '-200px'});
 	//alertDisplayed=true;
 	var toColor='#FFCCCC';
-	if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
+    if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
 		toColor='#FFFFCC';
+	}
+	if (dojo.byId('alertType') && dojo.byId('alertType').value=='INFO') {
+		toColor='#CCCCFF';
 	}
 	dojo.animateProperty({
         node: dialogReminder,
@@ -2184,6 +2191,7 @@ function setAlertRead(id, remind) {
 	error: function() {setTimeout('checkAlert();',1000);}
   });
 }
+
 function closeAlertBox() {
 	var dialogReminder=dojo.byId('dialogReminder');
 	dojo.animateProperty({
@@ -2196,9 +2204,11 @@ function closeAlertBox() {
     }).play();
 }
 
-var cronCheckNumber=0;
-var cronCheckFrequency=1; // In seconds
-var cronCheckTimeout=120;
+// ===========================================================================================
+// ADMIN functionalities
+// ===========================================================================================
+//
+var cronCheckIteration=5; // Number of cronCheckTimeout to way max
 function adminLaunchScript(scriptName) {
   var url="../tool/" + scriptName + ".php";
   dojo.xhrGet({
@@ -2211,13 +2221,12 @@ function adminLaunchScript(scriptName) {
     setTimeout('loadContent("admin.php","centerDiv");',1000);
   } else if (scriptName=='cronStop') {
 	i=120;
-	cronCheckNumber=cronCheckTimeout/cronCheckFrequency;
-	setTimeout('adminCronCheck();',1000*cronCheckFrequency);
-	i--; 
+	cronCheckIteration=5;
+	setTimeout('adminCronCheckStop();',1000*cronSleepTime); 
   }
 } 
 
-function adminCronCheck() {
+function adminCronCheckStop() {
   dojo.xhrGet({
 	url: "../tool/cronCheck.php",
 	handleAs: "text",
@@ -2225,9 +2234,9 @@ function adminCronCheck() {
 	        if (data!='running') {
 	          loadContent("admin.php","centerDiv");
 	        } else {
-	          cronCheckNumber-=cronCheckFrequency;
+	          cronCheckIteration--;
 	          if (cronCheckNumber>0) {
-	        	setTimeout('adminCronCheck();',1000*cronCheckFrequency);
+	        	setTimeout('adminCronCheckStop();',1000*cronSleepTime);
 	          } else {
 	            loadContent("admin.php","centerDiv");
 	          }
@@ -2235,4 +2244,16 @@ function adminCronCheck() {
 	      },
 	error: function() {loadContent("admin.php","centerDiv");}
   });  
+}
+
+function adminSendAlert() {
+  formVar=dijit.byId("adminForm");	
+  if(formVar.validate()){
+    loadContent("../tool/adminFunctionalities.php?adminFunctionality=sendAlert","resultDiv", "adminForm", true, 'admin');
+  }
+}
+
+function maintenance(operation,item) {
+  var nb=dijit.byId(operation+item+"Days").get('value');
+  loadContent("../tool/adminFunctionalities.php?adminFunctionality=maintenance&operation="+operation+"&item="+item+"&nbDays="+nb,"resultDiv", "adminForm", true, 'admin');
 }

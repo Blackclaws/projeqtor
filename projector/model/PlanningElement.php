@@ -312,8 +312,15 @@ class PlanningElement extends SqlElement {
     // save new parent (for synthesis update) if parent has changed
     if ($this->topId!='' and $old->topId!=$this->topId) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
-    }       
-    
+    }          
+    if ($this->wbsSortable!=$old->wbsSortable) {
+    	$refType=$this->refType;
+      if ($refType=='Project') {
+        $refObj=new $refType($this->refId);
+        $refObj->sortOrder=$this->wbsSortable;
+        $refObj->save();
+      }
+    }
     return $result;
   }
 

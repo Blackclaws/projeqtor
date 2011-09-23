@@ -628,6 +628,8 @@ function finalizeMessageDisplay(destination, validationType) {
           if (lastSaveClass && lastSaveId) {
              gotoElement(lastSaveClass.value, lastSaveId.value);
           }
+      } else if (validationType='admin'){
+    	  hideWait()
       } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  //hideWait();
