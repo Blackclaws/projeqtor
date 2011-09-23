@@ -14,11 +14,12 @@ class MessageType extends SqlElement {
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;
+  //public $_isNameTranslatable = true;
   
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="65%">${name}</th>
+    <th field="name" width="65%" formatter="translationFormatter">${name}</th>
     <th field="sortOrder" width="5%">${sortOrderShort}</th>
     <th field="color" width="15%" formatter="colorFormatter">${color}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>

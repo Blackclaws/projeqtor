@@ -146,6 +146,7 @@ scriptLog('   ->/view/main.php');
        } ?>
        setTimeout('checkAlert();',5000); //first check at 5 seco  
     }); 
+    var cronSleepTime=<?php echo Cron::getSleepTime();?>;
     var canCreateArray=new Array();
     var dependableArray=new Array();
     var linkableArray=new Array();

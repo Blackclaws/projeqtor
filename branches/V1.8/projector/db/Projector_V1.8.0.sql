@@ -283,3 +283,15 @@ UPDATE `${prefix}menu` SET idle=0 where id=18;
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 18, 1),
 (1, 92, 1);
+
+ALTER TABLE `${prefix}project` ADD sortOrder varchar(400);
+
+UPDATE `${prefix}project` SET sortOrder = (select wbsSortable from planningelement pe 
+ where pe.refType='Project' and pe.refId=`${prefix}project`.id);
+ 
+UPDATE `${prefix}type` SET name = 'ALERT'  
+ where scope='Message' and name='ERROR';
+ 
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'cronSleepTime','10'),
+(null, null, 'cronCheckDates','30');
