@@ -96,7 +96,13 @@ function maintenance() {
   } else if ($item=="Mail") {
   	$clauseWhere="mailDateTime<'" . $targetDate . "'"; 
   }
-  $nb=0;
+  if ($operation=="close") {
+  	return $obj->close($clauseWhere);
+  }
+  if ($operation=="delete") {
+    return $obj->purge($clauseWhere);
+  }
+  /*$nb=0;
   $lst=$obj->getSqlElementsFromCriteria(null, false, $clauseWhere);
   foreach($lst as $obj) {
   	if ($operation=="close") {
@@ -111,5 +117,5 @@ function maintenance() {
   $returnValue= i18n('maintenanceDone',array($nb,i18n('menu'.$item),i18n('doneoperation'.$operation)));
   $returnValue .= '<input type="hidden" id="lastOperation" value="' . $operation .'" />';
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
-  return $returnValue;
+  return $returnValue;*/
 }
