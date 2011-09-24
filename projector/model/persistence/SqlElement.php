@@ -188,6 +188,14 @@ abstract class SqlElement {
     return $this->purgeSqlElement($clause);
   }
   
+   /** =========================================================================
+   * Give public visibility to the closeSqlElement action
+   * @return message including definition of html hiddenfields to be used 
+   */
+  public function close($clause) {
+    return $this->closeSqlElement($clause);
+  }
+  
   /** =========================================================================
    * Give public visibility to the deleteSqlElement action
    * @return message including definition of html hiddenfields to be used 
@@ -619,7 +627,7 @@ abstract class SqlElement {
    *   => does not automatically purges included elements ...
    *   => does not include history insertion
    * @return void
-   */
+   */ 
   private function purgeSqlElement($clause) {
     $objectClass = get_class($this);
     // get all data, and identify if changes
@@ -631,7 +639,7 @@ abstract class SqlElement {
       $returnStatus="ERROR";
     }    
     if ($returnStatus!="ERROR") {
-      $returnValue=Sql::$lastQueryNbRows . " " . i18n(get_class($this)) . '(s) ' . i18n('resultDeleted');   
+      $returnValue=Sql::$lastQueryNbRows . " " . i18n(get_class($this)) . '(s) ' . i18n('doneoperationdelete');   
     } else {
       $returnValue=Sql::$lastQueryErrorMessage;
     } 
@@ -641,6 +649,37 @@ abstract class SqlElement {
     $returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
     return $returnValue;
   }
+
+  /** =========================================================================
+   * Close objects from the database : delete all objects corresponding 
+   * to clause $ clause
+   * Important : 
+   *   => does not automatically purges included elements ...
+   *   => does not include history insertion
+   * @return void
+   */
+  private function closeSqlElement($clause) {
+    $objectClass = get_class($this);
+    // get all data, and identify if changes
+    $query="update " .  $this->getDatabaseTableName() . " set idle='1' where " . $clause;
+    // execute request
+    $returnStatus="OK";
+    $result = Sql::query($query);
+    if (!$result) {
+      $returnStatus="ERROR";
+    }    
+    if ($returnStatus!="ERROR") {
+      $returnValue=Sql::$lastQueryNbRows . " " . i18n(get_class($this)) . '(s) ' . i18n('doneoperationclose');   
+    } else {
+      $returnValue=Sql::$lastQueryErrorMessage;
+    } 
+    $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+    $returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
+    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
+    $returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
+    return $returnValue;
+  }
+    
   
   /** =========================================================================
    * Copy the curent object as a new one of the same class
@@ -1958,7 +1997,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	$indVal=new IndicatorValue();
   	$lst=$indVal->getSqlElementsFromCriteria($crit, false);
   	$level="NONE";
-  	$desc="";
+  	$desc='';
   	foreach($lst as $indVal) {
   		if ($indVal->warningSent and $level!="ALERT") {
   			$level="WARNING";
@@ -1967,12 +2006,14 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         $level="ALERT";
       }
       if ($withIndicator) {
-      	$desc.=($desc)?'<br/>':'';
-      	$desc.=$indVal->getShortDescription();
-      	
+      	$color=($level=="ALERT")?"#FFCCCC":"#FFFFCC";
+      	$desc.='<div style="font-size:80%;background-color:'.$color.'">'.$indVal->getShortDescription().'</div>';
+      	//$indDesc=$indVal->getShortDescriptionArray();
+      	//$desc.=$indDesc['indicator'];
+      	//$desc.=$indDesc['target'];
       }
   	}
-  	//debugLog(get_class($this). " #" . $this->id . " - " . $desc);
+debugLog($desc);
   	return array('level'=>$level,'description'=>$desc);
   }
 }

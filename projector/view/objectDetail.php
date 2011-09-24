@@ -524,7 +524,30 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $valDate=date('Y-m-d');
           $valTime=date("H:i");
         }
-
+        echo '<div dojoType="dijit.form.DateTextBox" ';
+        echo $name;
+        echo $attributes;
+        echo ' invalidMessage="' . i18n('messageInvalidDate') . '"'; 
+        echo ' type="text" maxlength="10" ';
+        //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' value="' . $valDate . '" ';
+        echo ' hasDownArrow="false" ';
+        echo ' >';
+        echo $colScript;
+        echo '</div>';
+         echo '<div dojoType="dijit.form.TimeTextBox" ';
+        echo $nameBis;
+        echo $attributes;
+        echo ' invalidMessage="' . i18n('messageInvalidTime') . '"'; 
+        echo ' type="text" maxlength="5" ';
+        //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
+        echo ' style="width:50px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' value="T' . $valTime . '" ';
+        echo ' hasDownArrow="false" ';
+        echo ' >';
+        echo $colScriptBis;
+        echo '</div>';      
       } else if ($dataType=='time') {
         // Draw a date ======================================================== TIME
         if ($col=='creationTime' and ($val=='' or $val==null) and ! $obj->id) {

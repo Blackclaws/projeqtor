@@ -257,8 +257,9 @@
     $issue= new Issue();
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order);
     $list=array_merge($list, $listIssue);   
-         
+    $cptDisplayId=0;     
     foreach($list as $elt) {
+    	$cptDisplayId++;
       $idType='id' . get_class($elt) . 'Type';
       $echeance="";
       $class=get_class($elt);
@@ -293,8 +294,13 @@
       } else if ($alertLevel=='WARNING') {
       	$color='background-color:#FFFFAA;';         
       }
-      echo '<tr ' . $goto . (($alertLevel!='NONE')?' title="' . $alertLevelArray['description'] . '"':'') .' >' .
-             '  <td class="messageData" style="'.$color.'">' . 
+      echo '<tr ' . $goto . ' id="displayWork_' . $cptDisplayId . '" >';
+      if ($alertLevel!='NONE') {
+        echo '<div dojoType="dijit.Tooltip" connectId="displayWork_' . $cptDisplayId . '" position="below">';
+        echo $alertLevelArray['description'];
+        echo '</div>';
+      }
+      echo '  <td class="messageData" style="'.$color.'">' . 
                    '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" title="' . i18n($class). '"/>' .
                    '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
              '  <td class="messageData" style="'.$color.'">' . SqlList::getNameFromId('Project', $elt->idProject) . '</td>' .

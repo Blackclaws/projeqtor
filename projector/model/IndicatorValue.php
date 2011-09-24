@@ -118,7 +118,7 @@ class IndicatorValue extends SqlElement {
   	  } else {
   	    $indVal->targetDateTime=$fldVal=$obj->$fld;
   	  }
-  	  if (! $indVal->targetDateTime) {
+  	  if (! trim($indVal->targetDateTime)) {
   	  	if ($indVal->id) {
   	  		$indVal->delete();
   	  	}
@@ -127,8 +127,10 @@ class IndicatorValue extends SqlElement {
   	  $indVal->targetValue=null;
   	  $indVal->warningTargetValue=null;
   	  $indVal->alertTargetValue=null;
-  	  $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
-  	  $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
+  	  if (trim($indVal->targetDateTime)) {
+  	    $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
+  	    $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
+  	  }
   	  $indVal->checkDates($obj);  	  
   	} else if ($ind->type=="percent") {
   	  if (strpos($ind->name, 'Cost')>0) {
@@ -362,12 +364,17 @@ debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->
   
   public function getShortDescription() {
   	$result=SqlList::getNameFromId('IndicatorDefinition', $this->idIndicatorDefinition);
-  	$result.=' - ' . i18n('target') . ': ';
-  	if ($this->type=='delay') {
-  		$result.=$this->targetDateTime;
-  	}
-  	//debugLog($result);
   	return $result;
+  }
+  
+  public function getShortDescriptionArray() {
+    $result=array('indicator'=>'','target');
+  	$result['indicator']=SqlList::getNameFromId('IndicatorDefinition', $this->idIndicatorDefinition);
+    if ($this->type=='delay') {
+      $result['target']=$this->targetDateTime;
+    }
+    //debugLog($result);
+    return $result;
   }
 }
 ?>
