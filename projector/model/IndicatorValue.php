@@ -194,7 +194,7 @@ class IndicatorValue extends SqlElement {
         }        
         break;
   	}
-    if ($date>$this->warningTargetDateTime) {
+    if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime) {
       if (! $this->warningSent) {
         $this->sendWarning();
         $this->warningSent='1';
@@ -202,7 +202,7 @@ class IndicatorValue extends SqlElement {
     } else {
       $this->warningSent='0';
     }
-    if ($date>$this->alertTargetDateTime) {
+    if (trim($this->alertTargetDateTime) and $date>$this->alertTargetDateTime) {
       if (! $this->alertSent) {
         $this->sendAlert();
         $this->alertSent='1';
@@ -214,13 +214,13 @@ class IndicatorValue extends SqlElement {
   }
   
   public function sendAlert() {
-debugLog ("alert sent for refType=$this->refType refId=$this->refId id=$this->id");  	
+//debugLog ("alert sent for refType=$this->refType refId=$this->refId id=$this->id");  	
   	$this->send('ALERT');
   	$this->alertSent='1';
   }
   
   public function sendWarning() {
-debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->id");   
+//debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->id");   
   	$this->send('WARNING');  	
   	$this->warningSent='1';
   }
