@@ -42,7 +42,10 @@ $resources=array();
 $aff=new Affectation();
 $affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
 foreach($affLst as $aff){
-  $resources[$aff->idResource]=SqlList::getNameFromId('Resource', $aff->idResource);
+	$name=SqlList::getNameFromId('Resource', $aff->idResource);
+	if ($name!=$aff->idResource  ) {
+    $resources[$aff->idResource]=$name;
+	}
 }
 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
