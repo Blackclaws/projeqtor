@@ -23,6 +23,7 @@ class IndicatorValue extends SqlElement {
   public $handled;
   public $done;
   public $idle;
+  public $status;
   
   public $_noHistory=true;
   
@@ -75,6 +76,7 @@ class IndicatorValue extends SqlElement {
   }
     
   static public function addIndicatorValue($def, $obj) {
+debugLog("addIndicatorValue");
   	$class=get_class($obj);
   	if ($def->nameIndicatorable!=$class) {
   		debugLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
@@ -133,11 +135,7 @@ class IndicatorValue extends SqlElement {
   	  }
   	  $indVal->checkDates($obj);  	  
   	} else if ($ind->type=="percent") {
-  	  if (strpos($ind->name, 'Cost')>0) {
-  		  //$indVal->trigger='Cost';
-  	  } else {
-  	  	//$indVal->trigger='Work';
-  	  }
+  		$indVal->checkPercent($obj,$def);
     } else {
       debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
     }
@@ -145,23 +143,59 @@ class IndicatorValue extends SqlElement {
   	
   }
   
+  public function checkPercent($obj,$def) {
+  	$pe=get_class($obj).'PlanningElement';
+  	switch ($this->code) {
+      case 'PCOVC' :   //PlannedCostOverValidatedCost
+      	$this->targetValue=$obj->$pe->validatedCost;
+      	$value=$obj->$pe->plannedCost;
+      	break;
+      case 'PCOAC' :   //PlannedCostOverAssignedCost
+      	$this->targetValue=$obj->$pe->assignedCost;
+      	$value=$obj->$pe->plannedCost;
+      	break;
+      case 'PWOVW' :   //PlannedWorkOverValidatedWork
+      	$this->targetValue=$obj->$pe->validatedWork;
+      	$value=$obj->$pe->plannedWork;
+        break;
+      case 'PWOAW' :   //PlannedWorkOverAssignedWork
+      	$this->targetValue=$obj->$pe->assignedWork;
+      	$value=$obj->$pe->plannedWork;
+        break;
+  	}
+  	$this->warningTargetValue=$this->targetValue*$def->warningValue/100;
+  	$this->alertTargetValue=$this->targetValue*$def->alertValue/100;
+  	if (!$this->warningSent and $value>$this->warningTargetValue) {
+        $this->sendWarning();
+        $this->warningSent='1';  		
+  	}
+    if (!$this->alertSent and $value>$this->alertTargetValue) {
+        $this->sendAlert();
+        $this->alertSent='1';      
+    }
+    if ($obj->done) {
+      if ($value>$this->targetValue) {
+      	$this->status="KO";
+      } else {
+      	$this->status="OK";
+      }   	
+    }
+  }
+  
   public function checkDates($obj=null) {
-//debugLog('checkDates');
-//debugLog("type=$this->type");
     if ($this->type!='delay') {
   		return;
   	}
   	if (!$obj and ($this->idle or $this->done)) {
   		return;
   	} 
-//debugLog("code=$this->code");
   	switch ($this->code) {
   		case 'IDDT' :   //InitialDueDateTime
   		case 'ADDT' :   //ActualDueDateTime
       case 'IDD' :    //InitialDueDate
       case 'ADD' :    //ActualDueDate
       	if (substr($this->code,-3)=='DDT'){
-          $date=date('Y-m-d H:i');
+          $date=date('Y-m-d H:i:s');
       	} else {
       		$date=date('Y-m-d');
       	}
@@ -171,6 +205,7 @@ class IndicatorValue extends SqlElement {
           } else {
           	$date=$obj->doneDate;
           }
+          $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
       	break;
       case 'IED' :    //InitialEndDate
@@ -179,6 +214,7 @@ class IndicatorValue extends SqlElement {
       	$date=date('Y-m-d');
         if ($obj and $obj->done) {
         	$date=$obj->doneDate;
+        	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
       	break;
       case 'ISD' :    //InitialStartDate
@@ -187,14 +223,16 @@ class IndicatorValue extends SqlElement {
       	$date=date('Y-m-d');
         if ($obj and property_exists($obj,'handledDate') and $obj->handled) {
           $date=$obj->handledDate;
+          $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }
         $pe=get_class($obj).'PlanningElement';
         if ($obj->$pe->realStartDate and $obj->$pe->realStartDate<$date) {
         	$date=$obj->pe->realStartDate;
+        	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
         break;
   	}
-    if (trim($this->warningTargetDateTime) and $date>$this->warningTargetDateTime) {
+    if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime) {
       if (! $this->warningSent) {
         $this->sendWarning();
         $this->warningSent='1';
@@ -202,7 +240,7 @@ class IndicatorValue extends SqlElement {
     } else {
       $this->warningSent='0';
     }
-    if (trim($this->alertTargetDateTime) and $date>$this->alertTargetDateTime) {
+    if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime) {
       if (! $this->alertSent) {
         $this->sendAlert();
         $this->alertSent='1';
@@ -214,13 +252,11 @@ class IndicatorValue extends SqlElement {
   }
   
   public function sendAlert() {
-//debugLog ("alert sent for refType=$this->refType refId=$this->refId id=$this->id");  	
   	$this->send('ALERT');
   	$this->alertSent='1';
   }
   
   public function sendWarning() {
-//debugLog ("warning sent for refType=$this->refType refId=$this->refId id=$this->id");   
   	$this->send('WARNING');  	
   	$this->warningSent='1';
   }

@@ -150,6 +150,7 @@ CREATE TABLE `${prefix}indicatorvalue` (
   `handled`  int(1) unsigned default 0,
   `done`  int(1) unsigned default 0,
   `idle`  int(1) unsigned default 0,
+  `status` varchar(2),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

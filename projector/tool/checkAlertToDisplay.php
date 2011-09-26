@@ -14,7 +14,7 @@ $lst=$alert->getSqlElementsFromCriteria($crit, false, null, 'id asc');
 if (count($lst)==0) {
 	return;
 }
-$date=date('Y-m-d H:i');
+$date=date('Y-m-d H:i:s');
 foreach($lst as $alert) {
 	if ($alert->alertDateTime<=$date) {
 	  echo '<b>' . htmlEncode($alert->title) . '</b>';

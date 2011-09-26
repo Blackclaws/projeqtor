@@ -254,11 +254,15 @@ abstract class SqlElement {
         $returnValue=str_replace('${mailMsg}','',$returnValue);
       }
       // indicators
-      if (SqlList::getIdFromName('Indicatorable',get_class($this))) {
+debuglog(get_class($this));
+debugLog(SqlList::getIdFromTranslatableName('Indicatorable',get_class($this)));
+      if (SqlList::getIdFromTranslatableName('Indicatorable',get_class($this))) {
+debugLog("OK");
         $indDef=new IndicatorDefinition();
       	$crit=array('nameIndicatorable'=>get_class($this));
         $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
       	foreach ($lstInd as $ind) {
+debugLog($ind);
       		$fldType='id'.get_class($this).'Type';
       		if (! $ind->idType or $ind->idType==$this->$fldType) {
       		  IndicatorValue::addIndicatorValue($ind,$this);
@@ -2013,7 +2017,6 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       	//$desc.=$indDesc['target'];
       }
   	}
-debugLog($desc);
   	return array('level'=>$level,'description'=>$desc);
   }
 }

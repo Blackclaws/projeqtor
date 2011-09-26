@@ -40,7 +40,7 @@
        iconClass="dijitEditorIcon dijitEditorIconSave" >
         <script type="dojo/connect" event="onClick" args="evt">
 		    dojo.byId("saveButton").blur();
-            unselectAllRows("objectGrid");
+          //unselectAllRows("objectGrid");
 	        submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
         </script>
       </button>
@@ -103,7 +103,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("deleteButton").blur();
 		      action=function(){
-            unselectAllRows('objectGrid');
+            //unselectAllRows('objectGrid');
 		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
           };
           var alsoDelete="";

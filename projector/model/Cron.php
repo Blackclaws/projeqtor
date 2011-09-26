@@ -115,16 +115,46 @@ class Cron {
   }
   
 	public static function checkDates() {
-debugLog("cron : checkDates at " .date('d/m/Y H:i:s'));
+debugLog("cron : checkDates");
 	  $indVal=new IndicatorValue();
 	  $where="idle='0' and (";
-	  $where.=" ( warningTargetDateTime>'" . date('d/m/Y H:i:s') . "' and warningSent='0')" ;
-	  $where.=" or ( alertTargetDateTime>'" . date('d/m/Y H:i:s') . "' and alertSent='0')" ;
+	  $where.=" ( warningTargetDateTime<='" . date('Y-m-d H:i:s') . "' and warningSent='0')" ;
+	  $where.=" or ( alertTargetDateTime<='" . date('Y-m-d H:i:s') . "' and alertSent='0')" ;
 	  $where.=")";
 	  $lst=$indVal->getSqlElementsFromCriteria(null, null, $where);
+
 	  foreach ($lst as $indVal) {
 	    $indVal->checkDates();
 	  }
 	}
+	
+	public static function run() {
+		if (self::check()=='running') {
+      errorLog('try to run cron already running');
+      return;
+    }
+    set_time_limit(0);
+    ignore_user_abort(1);
+    session_write_close();
+
+    $cronCheckDates=self::getCheckDates();
+    $cronSleepTime=self::getSleepTime();
+    self::removeStopFlag();
+    self::setRunningFlag(); 
+    while(1) {
+debugLog("cron : loop");
+      if (self::checkStopFlag()) { 
+        return; 
+      }
+      self::setRunningFlag();
+      $cronCheckDates-=$cronSleepTime;
+      if ($cronCheckDates<=0) {
+        self::checkDates();
+        $cronCheckDates=Cron::getCheckDates();
+      }
+      sleep($cronSleepTime);
+    }
+  }
+  
 }
 ?>

@@ -253,7 +253,8 @@ $obj=new $objectClass;
       loadContent("objectDetail.php", "detailDiv", 'listForm');
    	}
     actionNo = function () {
-	  unselectAllRows("objectGrid");
+	    //unselectAllRows("objectGrid");
+      selectRowById('objectGrid', dojo.byId('objectId').value);
     }
     if (checkFormChangeInProgress(actionYes, actionNo)) {
       return true;
