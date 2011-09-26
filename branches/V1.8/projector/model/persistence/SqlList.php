@@ -181,6 +181,10 @@ class SqlList {
     $id=array_search($name,$list);
     return $id;
   }
+  
+  public static function getIdFromTranslatableName($listType, $name) {
+    return self::getIdFromName($listType, i18n($name));
+  }
 }
 
 ?>
