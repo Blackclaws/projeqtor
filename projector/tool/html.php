@@ -253,7 +253,11 @@ function htmlGetJsTable($tableName, $colName, $jsTableName=null) {
 function htmlFormatDate($val) {
   global $browserLocaleDateFormat;
   if (strlen($val)!=10) {
-    return $val;
+  	if (strlen($val)!=19) {
+  		return htmlFormatDateTime($val);
+  	} else {
+      return $val;
+  	}
   }
   if ($browserLocaleDateFormat=='MMDDYYYY') {
     return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4);
@@ -273,7 +277,11 @@ function htmlFormatDateTime($val, $withSecond=true) {
   global $browserLocale;
   $locale=substr($browserLocale, 0,2);
   if (strlen($val)!=19) {
-    return $val;
+  	if (strlen($val)=="10") {
+  		return htmlFormatDate($val);
+  	} else {
+      return $val;
+  	}
   }
   if ($locale=='en') {
     return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4) 

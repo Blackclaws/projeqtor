@@ -923,7 +923,7 @@ function removeWorkDaysToDate($date, $days) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addDaysToDate($date, $days) {
-	if (! $date) return null;
+	if (! trim($date)) return null;
   $tDate = explode("-", $date);
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]));
 }
@@ -944,6 +944,10 @@ function addMonthsToDate($date, $months) {
  * @param $weeks numbers of weeks to add (can be < 0 to subtract weeks)
  * @return new calculated date - format yyyy-mm-dd
  */
+function padto2($val) {
+	return str_pad($val, 2, "0", STR_PAD_LEFT); 
+}
+
 function addWeeksToDate($date, $weeks) {
   $tDate = explode("-", $date);
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+(7*$weeks), $tDate[0]));
@@ -967,7 +971,7 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
 		$mn = substr($time,3,2);
 		$res=minutesToTime($hh*60+$mn+$delay*60);
 		$newDate=addDaysToDate($date,$res['d']);
-    return $newDate . " " . $res['h'] . ":" . $res['m'] . ':00'; 
+    return $newDate . " " . padto2($res['h']) . ":" . padto2($res['m']) . ':00'; 
 	} else if ($unit=='OH') {
     $startAM=Parameter::getGlobalParameter('startAM');
     $endAM=Parameter::getGlobalParameter('endAM');
@@ -1076,7 +1080,7 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
       }
     }	
 	  $res=minutesToTime($mnTime);
-    return $date . " " . $res['h'] . ":" . $res['m'] . ':00'; 
+    return $date . " " . padto2($res['h']) . ":" . padto2($res['m']) . ':00'; 
 	 } else {
 		//return $dateTime;
 	}

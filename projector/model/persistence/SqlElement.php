@@ -254,15 +254,15 @@ abstract class SqlElement {
         $returnValue=str_replace('${mailMsg}','',$returnValue);
       }
       // indicators
-debuglog(get_class($this));
-debugLog(SqlList::getIdFromTranslatableName('Indicatorable',get_class($this)));
+//debuglog(get_class($this));
+//debugLog(SqlList::getIdFromTranslatableName('Indicatorable',get_class($this)));
       if (SqlList::getIdFromTranslatableName('Indicatorable',get_class($this))) {
-debugLog("OK");
+//debugLog("OK");
         $indDef=new IndicatorDefinition();
       	$crit=array('nameIndicatorable'=>get_class($this));
         $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
       	foreach ($lstInd as $ind) {
-debugLog($ind);
+//debugLog($ind);
       		$fldType='id'.get_class($this).'Type';
       		if (! $ind->idType or $ind->idType==$this->$fldType) {
       		  IndicatorValue::addIndicatorValue($ind,$this);
@@ -2010,7 +2010,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         $level="ALERT";
       }
       if ($withIndicator) {
-      	$color=($level=="ALERT")?"#FFCCCC":"#FFFFCC";
+      	$color=($indVal->alertSent)?"#FFCCCC":"#FFFFCC";
       	$desc.='<div style="font-size:80%;background-color:'.$color.'">'.$indVal->getShortDescription().'</div>';
       	//$indDesc=$indVal->getShortDescriptionArray();
       	//$desc.=$indDesc['indicator'];
