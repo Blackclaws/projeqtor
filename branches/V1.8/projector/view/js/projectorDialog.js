@@ -2169,7 +2169,9 @@ function checkAlertRetour(data) {
 function setAlertReadMessage() {
   //alertDisplayed=false;
   closeAlertBox();
-  setAlertRead(dojo.byId('idAlert').value);
+  if (dojo.byId('idAlert')) {
+    setAlertRead(dojo.byId('idAlert').value);
+  }
 }
 function setAlertRemindMessage() {
  //alertDisplayed=false;

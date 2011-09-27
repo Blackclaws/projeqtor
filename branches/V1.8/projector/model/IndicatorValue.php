@@ -76,7 +76,6 @@ class IndicatorValue extends SqlElement {
   }
     
   static public function addIndicatorValue($def, $obj) {
-debugLog("addIndicatorValue");
   	$class=get_class($obj);
   	if ($def->nameIndicatorable!=$class) {
   		debugLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
@@ -117,8 +116,10 @@ debugLog("addIndicatorValue");
   		if (substr($fld,-7)=='EndDate' or substr($fld,-9)=='StartDate') {
   		  $sub=$class . "PlanningElement";
   		  $indVal->targetDateTime=$obj->$sub->$fld;
+  		  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  } else {
-  	    $indVal->targetDateTime=$fldVal=$obj->$fld;
+  	    $indVal->targetDateTime=$fldVal=$obj->$fld . " 00:00:00";
+  	    $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  }
   	  if (! trim($indVal->targetDateTime)) {
   	  	if ($indVal->id) {
@@ -137,7 +138,7 @@ debugLog("addIndicatorValue");
   	} else if ($ind->type=="percent") {
   		$indVal->checkPercent($obj,$def);
     } else {
-      debugLog("ERROR in IndicatorValue::addIndicatorValue() => uncknown indicator type = $ind->type");    	
+      debugLog("ERROR in IndicatorValue::addIndicatorValue() => unknown indicator type = $ind->type");    	
     }
     $indVal->save();
   	
@@ -165,7 +166,7 @@ debugLog("addIndicatorValue");
   	}
   	$this->warningTargetValue=$this->targetValue*$def->warningValue/100;
   	$this->alertTargetValue=$this->targetValue*$def->alertValue/100;
-  	if (!$this->warningSent and $value>$this->warningTargetValue) {
+  	if (! $this->warningSent and $value>$this->warningTargetValue) {
         $this->sendWarning();
         $this->warningSent='1';  		
   	}
@@ -197,23 +198,25 @@ debugLog("addIndicatorValue");
       	if (substr($this->code,-3)=='DDT'){
           $date=date('Y-m-d H:i:s');
       	} else {
-      		$date=date('Y-m-d');
+      		$date=date('Y-m-d H:i:s');
       	}
         if ($obj and $obj->done) {
           if (substr($this->code,-3)=='DDT'){
           	$date=$obj->doneDateTime;
           } else {
-          	$date=$obj->doneDate;
+          	$date=$obj->doneDate . " 00:00:00";
           }
+debugLog("'$date' > '$this->targetDateTime'");
           $this->status=($date>$this->targetDateTime)?'KO':'OK';
-        }        
+        }
       	break;
       case 'IED' :    //InitialEndDate
       case 'VED' :    //ValidatedEndDate
       case 'PED' :    //PlannedEndDate
       	$date=date('Y-m-d');
         if ($obj and $obj->done) {
-        	$date=$obj->doneDate;
+        	$date=$obj->doneDate . " 00:00:00";
+debugLog("'$date' > '$this->targetDateTime'");
         	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
       	break;
@@ -222,12 +225,12 @@ debugLog("addIndicatorValue");
       case 'PSD' :    //PlannedStartDate
       	$date=date('Y-m-d');
         if ($obj and property_exists($obj,'handledDate') and $obj->handled) {
-          $date=$obj->handledDate;
+          $date=$obj->handledDate . " 00:00:00";
           $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }
         $pe=get_class($obj).'PlanningElement';
         if ($obj->$pe->realStartDate and $obj->$pe->realStartDate<$date) {
-        	$date=$obj->pe->realStartDate;
+        	$date=$obj->$pe->realStartDate . " 00:00:00";
         	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
         break;
@@ -348,30 +351,51 @@ debugLog("addIndicatorValue");
       return false; // exit no addressees 
     }
     $dest=str_replace('###','',$dest);
-    $paramTitle='${type} for element ${item} ${id}';
-    $paramMailMessage='${type} for element ${item} ${id} - ${name}';
-    $paramMailMessage.='<BR/> => indicator : ${indicator}'; 
-    $paramAlertMessage='${type} for element ${item} ${id} - ${name}';
-    $paramAlertMessage.="\n" . ' => indicator : ${indicator}'; 
+    
+    $paramMailMessage='${type} - ${item} #${id} - ${name}';
+    $paramMailMessage.='<BR/>' . i18n('indicator') . ' : ${indicator}'; 
+    
     // substituable items
     $item=i18n(get_class($obj));
     $id=$obj->id;
     $name=$obj->name;
     $status=(property_exists($obj, 'idStatus'))?SqlList::getNameFromId('Status', $obj->idStatus):"";
     $indicator=SqlList::getNameFromId('Indicator',$def->idIndicator);
+    $target="";
+    $warningTarget="";
+    $alertTarget="";
+    $value="";
+    if ($this->type=="delay") {
+    	$target=htmlFormatDateTime(trim($this->targetDateTime),false);
+    	$warningTarget=htmlFormatDateTime(trim($this->warningTargetDateTime),false);
+    	$alertTarget=htmlFormatDateTime(trim($this->alertTargetDateTime),false);
+    } else if ($this->type=="percent") {
+    	$target=$this->targetValue;
+    	$warningTarget=$this->warningTargetValue;
+    	$alertTarget=$this->alertTargetValue;
+    }
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
-    $title=str_replace($arrayFrom, $arrayTo, $paramTitle);
-    $messageAlert=str_replace($arrayFrom, $arrayTo, $paramAlertMessage);
-    $messageMail=str_replace($arrayFrom, $arrayTo, $paramMailMessage);
+    
+    $title=$type.' - '. $item . ' #' . $id; 
+    $message='<table>';
+    $message.='<tr><td colspan="3" style="border:1px solid grey">' . htmlEncode($name) . '</td></tr>';
+    $message.='<tr><td width="30%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';
+    $message.='<tr><td width="30%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
+    $message.=($warningTarget and $type=="WARNING")?'<tr><td width="30%" align="right">' . i18n('warningValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $warningTarget . '</td>':'';
+    $message.=($alertTarget and $type=="ALERT")?'<tr><td width="30%" align="right">' . i18n('alertValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $alertTarget . '</td>':'';
+    $message.=($value)?'<tr><td width="30%">' . i18n('value') . '</td><td>&nbsp;:&nbsp;</td><td>' . $value . '</td>':'';
+    $message.='</table>';
     $messageMail='<html>' . "\n" .
       '<head>'  . "\n" .
       '<title>' . $title . '</title>' . "\n" .
       '</head>' . "\n" .
       '<body>' . "\n" .
-      $messageMail . "\n" .
+      '<b>' . $title . '</b><br/>' . "\n" .
+      $message . "\n" .
       '<body>' . "\n" .
       '</html>';
+    $messageAlert=$message;
     $messageMail = wordwrap($messageMail, 70); // wrapt text so that line do not exceed 70 cars per line
     if ($dest!="") {     
       $resultMail=sendMail($dest, $title, $messageMail, $obj);
@@ -404,7 +428,7 @@ debugLog("addIndicatorValue");
   }
   
   public function getShortDescriptionArray() {
-    $result=array('indicator'=>'','target');
+    $result=array('indicator'=>'','target'=>'');
   	$result['indicator']=SqlList::getNameFromId('IndicatorDefinition', $this->idIndicatorDefinition);
     if ($this->type=='delay') {
       $result['target']=$this->targetDateTime;
@@ -412,5 +436,6 @@ debugLog("addIndicatorValue");
     //debugLog($result);
     return $result;
   }
+  
 }
 ?>

@@ -19,7 +19,7 @@ foreach($lst as $alert) {
 	if ($alert->alertDateTime<=$date) {
 	  echo '<b>' . htmlEncode($alert->title) . '</b>';
 	  echo '<br/><br/>';
-	  echo  htmlEncode($alert->message,'withBR');
+	  echo  $alert->message;
 	  echo '<input type="hidden" id="idAlert" name="idAlert" value="' . $alert->id . ' " ./>';
 	  echo '<input type="hidden" id="alertType" name="alertType" value="' . $alert->alertType . '" ./>';
 	  return;
