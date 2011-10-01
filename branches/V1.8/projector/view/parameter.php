@@ -58,6 +58,27 @@
           echo '<option value="' . $value . '" ' . $selected . '>' . $valueLabel . '</option>';
         }
         echo '</select>';
+      } else if ($format=='time') {
+      	echo '<div dojoType="dijit.form.TimeTextBox" ';
+        echo ' name="' . $code . '" id="' . $code . '"';
+        echo ' title="' . i18n('help' . ucfirst($code)) . '"';
+        echo ' type="text" maxlength="5" ';
+        echo ' style="width:50px; text-align: center;" class="input" ';
+        echo ' value="T' . $obj->parameterValue . '" ';
+        echo ' hasDownArrow="false" ';
+        echo ' >';
+        echo $obj->getValidationScript($code);
+        echo '</div>';
+      } else if ($format=='number') {
+      	echo '<div dojoType="dijit.form.NumberTextBox" ';
+        echo ' name="' . $code . '" id="' . $code . '"';
+        echo ' title="' . i18n('help' . ucfirst($code)) . '"';
+        echo ' style="width: 50px;" ';
+        echo ' class="input" ';
+        echo ' value="' .  $obj->parameterValue  . '" ';
+        echo ' >';
+        echo $obj->getValidationScript($code);
+        echo '</div>';
       }
       echo '</td></tr>'; 
     }

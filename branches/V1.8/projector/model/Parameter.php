@@ -203,6 +203,10 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
         break;
+      case 'imputationUnit':
+      	$list=array('days'=>i18n('days'),
+      	            'hours'=>i18n('hours'));
+      	break;
     } 
     return $list;
   }
@@ -223,6 +227,15 @@ class Parameter extends SqlElement {
                            "pdfInNewWindow"=>"list"                      
         );
         break;
+      case ('globalParameter'):
+      	$parameterList=array('startAM'=>'time',
+      	                     'endAM'=>'time',
+      	                     'startPM'=>'time',
+      	                     'endPM'=>'time',
+      	                     'dayTime'=>'number',
+      	                     'imputationUnit'=>'list',
+      	                     'alertCheckTime'=>'number'
+      	);
     }
     return $parameterList;
   }

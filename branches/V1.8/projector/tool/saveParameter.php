@@ -123,6 +123,33 @@ if ($type=='habilitation') {
       }
     }
   }
+} else if ($type=='globalParameter') {
+  $parameterList=Parameter::getParamtersList($type);
+  foreach($_REQUEST as $fld => $val) {
+    if (array_key_exists($fld, $parameterList)) {
+      $crit['parameterCode']=$fld;
+      $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+      if ($parameterList[$fld]=='time') {
+      	$val=substr($val,1,5);
+      }
+      $obj->parameterValue=$val;
+      $obj->idUser=null;
+      $obj->idProject=null;
+      $result=$obj->save();
+      $paramCode='globalParameter_'.$fld;
+      $_SESSION[$paramCode]=$val;
+      $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
+      $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
+      if ($isSaveNO_CHANGE===false) {
+        if ($isSaveOK===false) {
+          $status="ERROR";
+          $errors=$result;
+        } else if ($status=="NO_CHANGE") {
+          $status="OK";
+        }
+      }
+    }
+  }
 } else {
    $errors="Save not implemented";
    $status='ERROR';

@@ -193,6 +193,11 @@ class ImputationLine {
     $dateWidth=80;
     $workWidth=60;
     $inputWidth=30;
+    $unit=Parameter::getGlobalParameter('imputationUnit');
+    $unit=($unit)?$unit:'days';
+    $hoursPerDay=Parameter::getGlobalParameter('dayTime');
+    $hoursPerDay=($hoursPerDay)?$hoursPerDay:'8';
+    $coef=($unit=='days')?'1':$hoursPerDay;
     $resource=new Resource($resourceId);
     $weekendColor="cfcfcf";
     $currentdayColor="ffffaa";
@@ -329,11 +334,11 @@ class ImputationLine {
           echo ' trim="true" class="displayTransparent" readOnly="true" disabled="true"';
           echo ' id="assignedWork_' . $nbLine . '"';
           echo ' name="assignedWork_' . $nbLine . '"';
-          echo ' value="' . $line->assignedWork . '" ';
+          echo ' value="' . ($coef * $line->assignedWork) . '" ';
           echo ' >';
           echo '</div>';
         } else {
-          echo $line->assignedWork;
+          echo ($coef * $line->assignedWork);
         }
       }
       echo '</td>';
@@ -346,11 +351,11 @@ class ImputationLine {
           echo ' trim="true" class="displayTransparent" readOnly="true" disabled="true"';
           echo ' id="realWork_' . $nbLine . '"';
           echo ' name="realWork_' . $nbLine . '"';
-          echo ' value="' . $line->realWork . '" ';
+          echo ' value="' . ($coef * $line->realWork) . '" ';
           echo ' >';
           echo '</div>';
         } else {
-          echo  $line->realWork;
+          echo  ($coef * $line->realWork);
         }
       }
       echo '</td>';
@@ -370,9 +375,9 @@ class ImputationLine {
             echo '<div style="position: relative">';
             if ($showPlanned) {
               echo '<div style="display: inline;';
-              echo ' position: absolute; right: 2px; top: 0px; text-align: right;';
+              echo ' position: absolute; right: 5px; top: 0px; text-align: right;';
               echo ' color:#8080DD; font-size:80%;">';
-              echo $line->arrayPlannedWork[$i]->work;
+              echo ($coef * $line->arrayPlannedWork[$i]->work);
               echo '</div>';          
             }
             echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -381,7 +386,7 @@ class ImputationLine {
             echo ' trim="true" maxlength="4" class="input" ';
             echo ' id="workValue_' . $nbLine . '_' . $i . '"';
             echo ' name="workValue_' . $nbLine . '_' . $i . '"';
-            echo ' value="' . $valWork . '" ';
+            echo ' value="' . ($coef * $valWork) . '" ';
             if ($line->idle or $line->locked) {
             	echo ' readOnly="true" ';
             }
@@ -397,12 +402,12 @@ class ImputationLine {
                 . ' value="' . $idWork . '"/>';
               echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
                 . 'name="workOldValue_' . $nbLine . '_' . $i . '"'
-                . ' value="' . $valWork . '"/>';
+                . ' value="' . ($coef * $valWork) . '"/>';
             }
           } else {
-            echo $valWork;
+            echo ($coef * $valWork);
           }
-          $colSum[$i]+=$valWork;             
+          $colSum[$i]+=($coef * $valWork);             
         }
         echo '</td>';
         $curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
@@ -416,7 +421,7 @@ class ImputationLine {
           echo ' trim="true" class="input" ';
           echo ' id="leftWork_' . $nbLine . '"';
           echo ' name="leftWork_' . $nbLine . '"';
-          echo ' value="' . $line->leftWork . '" ';
+          echo ' value="' . ($coef * $line->leftWork) . '" ';
           if ($line->idle or $line->locked) {
               echo ' readOnly="true" ';
             }
@@ -426,7 +431,7 @@ class ImputationLine {
           echo '</script>';
           echo '</div>';
         } else {
-          echo $line->leftWork;
+          echo ($coef * $line->leftWork);
         }
       } 
       echo '</td>';
@@ -439,11 +444,11 @@ class ImputationLine {
           echo ' trim="true" class="displayTransparent" readonly="true" disabled="true"';
           echo ' id="plannedWork_' . $nbLine . '"';
           echo ' name="plannedWork_' . $nbLine . '"';
-          echo ' value="' . $line->plannedWork . '" ';
+          echo ' value="' . ($coef * $line->plannedWork) . '" ';
           echo ' >';
           echo '</div>';
         } else {
-          echo $line->plannedWork;
+          echo ($coef * $line->plannedWork);
         }
       } 
       echo '</td>';
@@ -451,16 +456,20 @@ class ImputationLine {
     }
     echo '<TR class="ganttDetail" >';
     echo '  <TD class="ganttLeftTopLine" style="width:15px;"></TD>';
-    echo '  <TD class="ganttLeftTopLine" style="width: ' . $nameWidth . 'px;text-align: left; ' 
-      . 'border-left:0px; " nowrap><NOBR></NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" style="width: ' . $dateWidth . 'px;"><NOBR>' 
+    echo '  <TD class="ganttLeftTopLine" colspan="5" style="text-align: left; ' 
+      . 'border-left:0px; " nowrap><NOBR><b>' . i18n('paramImputationUnit') . " = " . i18n($unit) . '</b>';
+    if ($unit=="hours") {
+    	echo ' - ' . i18n('paramDayTime') . " = " . $hoursPerDay ;
+    } 
+    echo '</NOBR></TD>';
+    /*echo '  <TD class="ganttLeftTopLine" style="width: ' . $dateWidth . 'px;"><NOBR>' 
       . '</NOBR></TD>';
     echo '  <TD class="ganttLeftTopLine" style="width: ' . $dateWidth . 'px;"><NOBR>' 
       . '</NOBR></TD>';
     echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>' 
       . '</NOBR></TD>';
     echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>' 
-      . '</NOBR></TD>';
+      . '</NOBR></TD>';*/
     $curDate=$startDate;
     for ($i=1; $i<=$nbDays; $i++) {
       echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';

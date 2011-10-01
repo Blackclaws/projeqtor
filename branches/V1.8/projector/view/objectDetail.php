@@ -536,7 +536,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' >';
         echo $colScript;
         echo '</div>';
-         echo '<div dojoType="dijit.form.TimeTextBox" ';
+        echo '<div dojoType="dijit.form.TimeTextBox" ';
         echo $nameBis;
         echo $attributes;
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"'; 

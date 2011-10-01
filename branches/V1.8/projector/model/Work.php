@@ -22,6 +22,9 @@ class Work extends SqlElement {
   public $cost;
 
   public $_noHistory;
+  private static $hoursPerDay;
+  private static $imputationUnit;
+  private static $imputationCoef;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -124,5 +127,32 @@ class Work extends SqlElement {
     $this->cost=$this->dailyCost*$this->work;
     return parent::save();
   }
+  
+  public static function displayImputation($val) {
+  	self::setImputationUnit();
+    $coef=self::imputationCoef;
+  	return ($val*$coef);
+  }
+  
+  private static function setImputationUnit() {
+    if (self::$imputationUnit) return;
+  	$unit=Parameter::getGlobalParameter('imputationUnit');
+    $unit=($unit)?$unit:'days';
+    self::$imputationUnit=$unit;
+    $hoursPerDay=Parameter::getGlobalParameter('dayTime');
+    $hoursPerDay=($hoursPerDay)?$hoursPerDay:'8';
+    self::$hoursPerDay=$hoursPerDay;
+    $coef=($unit=='days')?'1':$hoursPerDay;
+    self::$imputationCoef=$coef;
+  }
+  
+  public static function displayImputationUnit() {
+  	self::setImputationUnit();
+  	$res='<b>' . i18n('paramImputationUnit') . " = " . i18n(self::$imputationUnit) . '</b>';
+    if (self::$imputationUnit=="hours") {
+      $res.= ' - ' . i18n('paramDayTime') . " = " . self::$hoursPerDay ;
+    } 
+    return $res;
+  }
 }
-?>
+?>;

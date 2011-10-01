@@ -296,3 +296,24 @@ UPDATE `${prefix}type` SET name = 'ALERT'
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'cronSleepTime','10'),
 (null, null, 'cronCheckDates','30');
+
+insert into `${prefix}indicatordefinition` (`id`,`idIndicatorable`,`name`,`nameIndicatorable`,`idIndicator`,`codeIndicator`,`typeIndicator`,`idType`,`warningValue`,`idWarningDelayUnit`,`codeWarningDelayUnit`,`alertValue`,`idAlertDelayUnit`,`codeAlertDelayUnit`,`mailToUser`,`mailToResource`,`mailToProject`,`mailToContact`,`mailToLeader`,`mailToOther`,`alertToUser`,`alertToResource`,`alertToProject`,`alertToContact`,`alertToLeader`,`idle`) values 
+(1,1,'actualDueDateTime','Ticket',2,'ADDT','delay',null,1.000,1,'HH',0.000,1,'HH',0,0,0,0,0,0,1,1,0,0,1,0),
+(2,1,'initialDueDateTime','Ticket',1,'IDDT','delay',null,0.000,1,'HH',null,null,null,0,0,0,0,0,0,1,0,0,0,0,0),
+(3,2,'validatedEndDate','Activity',6,'VED','delay',null,1.000,4,'OD',0.000,1,'HH',0,0,0,0,0,0,1,1,0,0,0,0),
+(7,2,'PlannedWorkOverValidatedWork','Activity',13,'PWOVW','percent',null,100.000,5,'PCT',110.000,5,'PCT',0,0,0,0,0,0,0,1,0,0,1,0),
+(8,5,'actualDueDate','Action',4,'ADD','delay',null,1.000,4,'OD',1.000,2,'OH',0,0,0,0,0,0,0,1,0,0,0,0),
+(9,3,'validatedEndDate','Milestone',6,'VED','delay',25,1.000,4,'OD',null,null,null,0,0,0,0,1,0,0,1,1,0,1,0);
+
+ALTER TABLE `${prefix}work`
+ CHANGE `work` `work` DECIMAL(8,5) UNSIGNED;
+ 
+ALTER TABLE `${prefix}planningelement`
+ CHANGE `initialWork` `initialWork` DECIMAL(9,5) UNSIGNED,
+ CHANGE `validatedWork` `validatedWork` DECIMAL(9,5) UNSIGNED,
+ CHANGE `plannedWork` `plannedWork` DECIMAL(9,5) UNSIGNED,
+ CHANGE `realWork` `realWork` DECIMAL(9,5) UNSIGNED,
+ CHANGE `leftWork` `leftWork` DECIMAL(9,5) UNSIGNED,
+ CHANGE `assignedWork` `assignedWork` DECIMAL(9,5) UNSIGNED;
+ 
+ 
