@@ -17,6 +17,11 @@ if ($rangeType=='week') {
   $nbDays=7;
 }
 
+$unit=Parameter::getGlobalParameter('imputationUnit');
+$unit=($unit)?$unit:'days';
+$hoursPerDay=Parameter::getGlobalParameter('dayTime');
+$hoursPerDay=($hoursPerDay)?$hoursPerDay:'8';
+$coef=($unit=='days')?'1':$hoursPerDay;
 for ($i=1; $i<=$nbLines; $i++) {
   $imputable=$_REQUEST['imputable_' . $i];
   if ($imputable) {
@@ -25,12 +30,12 @@ for ($i=1; $i<=$nbLines; $i++) {
     $line->refId=$_REQUEST['refId_' . $i];
     $line->idAssignment=$_REQUEST['idAssignment_' . $i];
     $line->idResource=$userId;
-    $line->leftWork=$_REQUEST['leftWork_' . $i];;
+    $line->leftWork=$_REQUEST['leftWork_' . $i]/$coef;
     $line->imputable=$imputable;
     $arrayWork=array();
     for ($j=1; $j<$nbDays; $j++) {
       $workId=$_REQUEST['workId_' . $i . '_' . $j];
-      $workValue=$_REQUEST['workValue_' . $i . '_' . $j];
+      $workValue=$_REQUEST['workValue_' . $i . '_' . $j]/$coef;
       $workDate=$_REQUEST['day_' . $j];
       if ($workId) {
         $work=new Work($workId);
