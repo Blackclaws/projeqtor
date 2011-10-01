@@ -63,7 +63,6 @@ class User extends SqlElement {
     if (securityCheckDisplayMenu($menu->id)) {
       self::$_fieldsAttributes["isContact"]="";
     }
-    
   }
 
   
