@@ -220,6 +220,9 @@ class Ticket extends SqlElement {
   
   public function save() {
   	$old=new Ticket($this->id);
+  	if (! trim($this->creationDateTime)) {
+  	  $this->creationDateTime=date('Y-m-d H:i');
+  	}
   	if ($this->idTicketType != $old->idTicketType 
   	 or $this->idUrgency != $old->idUrgency
   	 or $this->creationDateTime != $old->creationDateTime) {

@@ -12,9 +12,9 @@ class User extends SqlElement {
   public $password;
   public $_spe_buttonSendMail;
   public $idProfile;
+  public $isContact;
   public $isResource=0;
   public $resourceName;
-  public $isContact;
   public $locked;
   public $idle;
   public $description;
@@ -23,9 +23,9 @@ class User extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="30%">${name}</th>
+    <th field="name" width="30%">${userName}</th>
     <th field="nameProfile" width="20%" formatter="translateFormatter">${idProfile}</th>
-    <th field="resourceName" width="30%">${resourceName}</th>  
+    <th field="resourceName" width="30%">${name}</th>  
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
@@ -37,6 +37,9 @@ class User extends SqlElement {
   private static $_databaseCriteria = array('isUser'=>'1');
   
   private static $_databaseColumnName = array('resourceName'=>'fullName');
+  
+  private static $_colCaptionTransposition = array('resourceName'=>'name',
+   'name'=> 'userName');
   
   private $_accessControlRights;
   
@@ -86,6 +89,14 @@ class User extends SqlElement {
     return self::$_layout;
   }
    
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }  
+  
   /** ========================================================================
    * Return the specific databaseTableName
    * @return the databaseTableName
@@ -123,7 +134,18 @@ class User extends SqlElement {
 
     if ($colName=="isResource") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
+      $colScript .= '  if (this.checked || dijit.byId("isContact").get("checked")) { ';
+      $colScript .= '    dijit.byId("resourceName").set("required", "true");';
+      $colScript .= '  } else {';
+      $colScript .= '    dijit.byId("resourceName").set("required", null);';
+      $colScript .= '    dijit.byId("resourceName").set("value", "");';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    if ($colName=="isContact") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.checked || dijit.byId("isResource").get("checked")) { ';
       $colScript .= '    dijit.byId("resourceName").set("required", "true");';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("resourceName").set("required", null);';

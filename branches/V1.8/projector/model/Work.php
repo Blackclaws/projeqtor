@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** ============================================================================
  * Project is the main object of the project managmement.
  * Almost all other objects are linked to a given project.
@@ -130,8 +130,14 @@ class Work extends SqlElement {
   
   public static function displayImputation($val) {
   	self::setImputationUnit();
-    $coef=self::imputationCoef;
-  	return ($val*$coef);
+    $coef=self::$imputationCoef;
+  	return (round($val*$coef,2));
+  }
+  
+  public static function convertImputation($val) {
+    self::setImputationUnit();
+    $coef=self::$imputationCoef;
+    return (round($val/$coef,5));
   }
   
   private static function setImputationUnit() {
@@ -155,4 +161,4 @@ class Work extends SqlElement {
     return $res;
   }
 }
-?>;
+?>

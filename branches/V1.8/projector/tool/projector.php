@@ -534,7 +534,7 @@ function sendMail($to, $title, $message, $object=null)  {
     $mail->refId=$object->id;
     $mail->idStatus=$object->idStatus;
   }
-  $mail->mailDateTime=date('Y-m-d G:i');
+  $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
   $mail->mailTitle=$title;
   $mail->mailBody=$message;
@@ -923,6 +923,7 @@ function removeWorkDaysToDate($date, $days) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addDaysToDate($date, $days) {
+	//if (strlen($date)>10) $date=substr($date,0,10);
 	if (! trim($date)) return null;
   $tDate = explode("-", $date);
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]));
@@ -1316,5 +1317,36 @@ function getPrintInNewWindow($mode='print') {
     }
   }
   return $printInNewWindow;
+}
+
+function checkVersion() {
+	global $version, $website;
+	$user=$_SESSION['user'];
+	$checkUrl='http://projectorria.toolware.fr/currentVersion.txt';
+	$currentVersion=file_get_contents($checkUrl); 
+	$current=explode(".",substr($currentVersion,1));
+  $check=explode(".",substr($version,1));
+  $newVersion="";
+  for ($i=0; $i<3; $i++) {
+    //echo "'$check[$i]' - '$current[$i]'\n";
+    if ($check[$i]<$current[$i]) {
+      $newVersion=$currentVersion;
+      break;
+    }
+    if ($check[$i]>$current[$i]) {
+      debugLog("current version $version is higher than latest released $currentVersion");
+    	break;
+    }
+  }
+  if ($newVersion) {
+  	$alert=new Alert();
+  	$alert->title=$currentVersion;
+  	$alert->message=i18n('newVersion',array($newVersion)). '<br/>' . $website;
+  	$alert->alertDateTime=date("Y-m-d H:i:s");
+  	$alert->alertInitialDateTime=$alert->alertDateTime;
+  	$alert->idUser=$user->id;
+  	$alert->alertType='INFO';
+  	debugLog($alert->save());
+  }
 }
 ?>

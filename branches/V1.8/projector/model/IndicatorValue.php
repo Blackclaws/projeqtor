@@ -118,7 +118,7 @@ class IndicatorValue extends SqlElement {
   		  $indVal->targetDateTime=$obj->$sub->$fld;
   		  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  } else {
-  	    $indVal->targetDateTime=$fldVal=$obj->$fld . " 00:00:00";
+  	    $indVal->targetDateTime=$fldVal=$obj->$fld;
   	    $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  }
   	  if (! trim($indVal->targetDateTime)) {
@@ -127,11 +127,12 @@ class IndicatorValue extends SqlElement {
   	  	}
   	  	return;
   	  }
+  	  if (trim($indVal->targetDateTime)=="00:00:00") $indVal->targetDateTime==null;
   	  $indVal->targetValue=null;
   	  $indVal->warningTargetValue=null;
   	  $indVal->alertTargetValue=null;
   	  if (trim($indVal->targetDateTime)) {
-  	    $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
+  	  	$indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
   	    $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
   	  }
   	  $indVal->checkDates($obj);  	  
