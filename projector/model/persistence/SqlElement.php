@@ -254,15 +254,11 @@ abstract class SqlElement {
         $returnValue=str_replace('${mailMsg}','',$returnValue);
       }
       // indicators
-//debuglog(get_class($this));
-//debugLog(SqlList::getIdFromTranslatableName('Indicatorable',get_class($this)));
       if (SqlList::getIdFromTranslatableName('Indicatorable',get_class($this))) {
-//debugLog("OK");
         $indDef=new IndicatorDefinition();
       	$crit=array('nameIndicatorable'=>get_class($this));
         $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
       	foreach ($lstInd as $ind) {
-//debugLog($ind);
       		$fldType='id'.get_class($this).'Type';
       		if (! $ind->idType or $ind->idType==$this->$fldType) {
       		  IndicatorValue::addIndicatorValue($ind,$this);
@@ -711,7 +707,7 @@ abstract class SqlElement {
       $newObj->creationDate=date('Y-m-d');
     }
     if (property_exists($newObj,"creationDateTime")) {
-      $newObj->creationDateTime=date('Y-m-d G:i');
+      $newObj->creationDateTime=date('Y-m-d H:i');
     }
     if (property_exists($newObj,"done")) {
       $newObj->done=0;
@@ -786,7 +782,7 @@ abstract class SqlElement {
       $newObj->creationDate=date('Y-m-d');
     }
     if (property_exists($newObj,"creationDateTime")) {
-      $newObj->creationDateTime=date('Y-m-d G:i');
+      $newObj->creationDateTime=date('Y-m-d H:i');
     }
     if (property_exists($newObj,"meetingDate")) {
       $newObj->meetingDate=date('Y-m-d');

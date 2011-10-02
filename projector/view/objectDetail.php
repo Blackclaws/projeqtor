@@ -436,7 +436,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // password not visible
         echo '<input type="password"  ';
         echo $name;
-        echo ' class="display" ';
+        echo ' class="display" style="width:150px"';
         echo ' readonly ' ;
         echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col=='color' and $dataLength == 7 ){
@@ -551,7 +551,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($dataType=='time') {
         // Draw a date ======================================================== TIME
         if ($col=='creationTime' and ($val=='' or $val==null) and ! $obj->id) {
-          $val=date("G:i");
+          $val=date("H:i");
         }
         echo '<div dojoType="dijit.form.TimeTextBox" ';
         echo $name;

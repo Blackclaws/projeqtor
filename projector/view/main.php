@@ -9,8 +9,8 @@
  */
 require_once "../tool/projector.php";
 header ('Content-Type: text/html; charset=UTF-8');
-scriptLog('   ->/view/main.php'); 
-?> 
+scriptLog('   ->/view/main.php');
+checkVersion(); ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -144,7 +144,7 @@ scriptLog('   ->/view/main.php');
           echo "dijit.byId('toolBarDiv').resize({h: 0});;";
           echo "dijit.byId('globalContainer').resize();";
        } ?>
-       setTimeout('checkAlert();',5000); //first check at 5 seco  
+       setTimeout('checkAlert();',5000); //first check at 5 seco 
     }); 
     var cronSleepTime=<?php echo Cron::getSleepTime();?>;
     var canCreateArray=new Array();

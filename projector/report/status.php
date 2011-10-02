@@ -1,6 +1,6 @@
 <?php 
-//echo "status.php";
 include_once '../tool/projector.php';
+echo "status.php";
 
 if (! isset($includedReport)) {
   include("../external/pChart/pData.class");  
