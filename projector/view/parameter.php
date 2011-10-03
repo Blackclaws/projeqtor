@@ -49,7 +49,7 @@
       if ($format=='list') {
         $listValues=Parameter::getList($code);
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" name="' . $code . '" id="' . $code . '" ';
-        echo ' title="' . i18n('help' . ucfirst($code)) . '">';
+        echo ' title="' . i18n('help' . ucfirst($code)) . '" style="width:200px">';
         if ($type=='userParameter') {
           echo $obj->getValidationScript($code);
         } 
