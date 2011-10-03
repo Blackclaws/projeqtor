@@ -207,6 +207,10 @@ class Parameter extends SqlElement {
       	$list=array('days'=>i18n('days'),
       	            'hours'=>i18n('hours'));
       	break;
+      case 'getVersion':
+      	$list=array('YES'=>i18n('displayYes'),
+                    'NO'=>i18n('displayNo'));
+      	break;
     } 
     return $list;
   }
@@ -234,7 +238,8 @@ class Parameter extends SqlElement {
       	                     'endPM'=>'time',
       	                     'dayTime'=>'number',
       	                     'imputationUnit'=>'list',
-      	                     'alertCheckTime'=>'number'
+      	                     'alertCheckTime'=>'number',
+      	                     'getVersion'=>'list'
       	);
     }
     return $parameterList;

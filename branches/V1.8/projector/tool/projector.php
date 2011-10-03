@@ -53,7 +53,7 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.8.0";            // Version of application : Major / Minor / Release
+$version="V1.7.0";            // Version of application : Major / Minor / Release
 $build="0036";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
@@ -1322,8 +1322,24 @@ function getPrintInNewWindow($mode='print') {
 function checkVersion() {
 	global $version, $website;
 	$user=$_SESSION['user'];
-	$checkUrl='http://projectorria.toolware.fr/currentVersion.txt';
+	$profile=new Profile($user->idProfile);
+	if ($profile->profileCode!='ADM') {
+		return;
+	}
+	$getYesNo=Parameter::getGlobalParameter('getVersion');
+	if ($getYesNo=='NO') {
+		return;
+	}
+	$checkUrl='http://projectorria.toolware.fr/getVersion.php';
+	//$checkUrl='http://localhost/projectorriaV1.8/deploy/getVersion.php';
 	$currentVersion=file_get_contents($checkUrl); 
+	if (! $currentVersion) { return; }
+	$crit=array('title'=>$currentVersion,'idUser'=>$user->id);
+	$alert=new Alert();
+	$lst=$alert->getSqlElementsFromCriteria($crit, false);
+	if(count($lst)>0) {
+		return;
+	}
 	$current=explode(".",substr($currentVersion,1));
   $check=explode(".",substr($version,1));
   $newVersion="";
@@ -1341,12 +1357,12 @@ function checkVersion() {
   if ($newVersion) {
   	$alert=new Alert();
   	$alert->title=$currentVersion;
-  	$alert->message=i18n('newVersion',array($newVersion)). '<br/>' . $website;
+  	$alert->message=i18n('newVersion',array($newVersion)). '<br/><a href="' . $website . '" target="#">' . $website . '</a>';
   	$alert->alertDateTime=date("Y-m-d H:i:s");
   	$alert->alertInitialDateTime=$alert->alertDateTime;
   	$alert->idUser=$user->id;
   	$alert->alertType='INFO';
-  	debugLog($alert->save());
+  	$alert->save();
   }
 }
 ?>
