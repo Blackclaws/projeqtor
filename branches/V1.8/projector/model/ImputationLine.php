@@ -448,14 +448,7 @@ class ImputationLine {
       . 'border-left:0px;" nowrap><NOBR>';
     echo  Work::displayImputationUnit();
     echo '</NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" style="width: ' . $dateWidth . 'px;"><NOBR>' 
-      . '</NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" style="width: ' . $dateWidth . 'px;"><NOBR>' 
-      . '</NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>' 
-      . '</NOBR></TD>';
-    echo '  <TD class="ganttLeftTopLine" style="width: ' . $workWidth . 'px;"><NOBR>' 
-      . '</NOBR></TD>';
+    
     $curDate=$startDate;
     for ($i=1; $i<=$nbDays; $i++) {
       echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
