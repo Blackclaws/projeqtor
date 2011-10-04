@@ -307,13 +307,21 @@ insert into `${prefix}indicatordefinition` (`id`,`idIndicatorable`,`name`,`nameI
 
 ALTER TABLE `${prefix}work`
  CHANGE `work` `work` DECIMAL(8,5) UNSIGNED;
- 
+
+ALTER TABLE `${prefix}plannedwork`
+ CHANGE `work` `work` DECIMAL(8,5) UNSIGNED;
+  
 ALTER TABLE `${prefix}planningelement`
- CHANGE `initialWork` `initialWork` DECIMAL(9,5) UNSIGNED,
- CHANGE `validatedWork` `validatedWork` DECIMAL(9,5) UNSIGNED,
- CHANGE `plannedWork` `plannedWork` DECIMAL(9,5) UNSIGNED,
- CHANGE `realWork` `realWork` DECIMAL(9,5) UNSIGNED,
- CHANGE `leftWork` `leftWork` DECIMAL(9,5) UNSIGNED,
- CHANGE `assignedWork` `assignedWork` DECIMAL(9,5) UNSIGNED;
+ CHANGE `initialWork` `initialWork` DECIMAL(14,5) UNSIGNED,
+ CHANGE `validatedWork` `validatedWork` DECIMAL(14,5) UNSIGNED,
+ CHANGE `plannedWork` `plannedWork` DECIMAL(14,5) UNSIGNED,
+ CHANGE `realWork` `realWork` DECIMAL(14,5) UNSIGNED,
+ CHANGE `leftWork` `leftWork` DECIMAL(14,5) UNSIGNED,
+ CHANGE `assignedWork` `assignedWork` DECIMAL(14,5) UNSIGNED;
  
+ALTER TABLE `${prefix}assignment`
+ CHANGE `assignedWork` `assignedWork` DECIMAL(12,5) UNSIGNED,
+ CHANGE `realWork` `realWork` DECIMAL(12,5) UNSIGNED,
+ CHANGE `leftWork` `leftWork` DECIMAL(12,5) UNSIGNED,
+ CHANGE `plannedWork` `plannedWork` DECIMAL(12,5) UNSIGNED;
  
