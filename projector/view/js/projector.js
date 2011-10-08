@@ -1021,13 +1021,13 @@ function selectRowById(gridName, id) {
   if ( ! grid) { 
     return;
   }
-  unselectAllRows(gridName); // first unselect, to be sure to select only
+  unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   var nbRow=grid.rowCount;
   gridReposition=true;
   for (i=0; i<nbRow; i++) {
-	  item=grid.getItem(i);
-    itemId=item.id;
-    if (itemId==id) {
+	item=grid.getItem(i);
+    //itemId=item.id;
+    if (item && item.id==id) {
       grid.selection.setSelected(i,true);
       gridReposition=false;
       return;

@@ -188,7 +188,7 @@ function runScript($vers) {
               case "RENAME TABLE" :
                 traceLog(" Table \"" . $tableName . "\" renamed."); 
                 break;
-                case "TRUNCATE TABLE" :
+              case "TRUNCATE TABLE" :
                 traceLog(" Table \"" . $tableName . "\" truncated."); 
                 break;                
               case "INSERT INTO":
@@ -201,7 +201,7 @@ function runScript($vers) {
                 traceLog(" " . Sql::$lastQueryNbRows . " lines deleted from table \"" . $tableName . "\"."); 
                 break;              
               default:
-                traceLog("ACTION NOT EXPECTED FOR QUERY : " . $query);
+                traceLog("ACTION '$action' NOT EXPECTED FOR QUERY : " . $query);
             }
           }
           $query="";

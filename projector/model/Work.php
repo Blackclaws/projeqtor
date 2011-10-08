@@ -25,6 +25,8 @@ class Work extends SqlElement {
   private static $hoursPerDay;
   private static $imputationUnit;
   private static $imputationCoef;
+  private static $workUnit;
+  private static $workCoef;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -145,9 +147,13 @@ class Work extends SqlElement {
   	$unit=Parameter::getGlobalParameter('imputationUnit');
     $unit=($unit)?$unit:'days';
     self::$imputationUnit=$unit;
-    $hoursPerDay=Parameter::getGlobalParameter('dayTime');
-    $hoursPerDay=($hoursPerDay)?$hoursPerDay:'8';
-    self::$hoursPerDay=$hoursPerDay;
+    if (self::$hoursPerDay) {
+      $hoursPerDay=self::$hoursPerDay;
+    } else {
+      $hoursPerDay=Parameter::getGlobalParameter('dayTime');
+      $hoursPerDay=($hoursPerDay)?$hoursPerDay:'8';
+      self::$hoursPerDay=$hoursPerDay;
+    }
     $coef=($unit=='days')?'1':$hoursPerDay;
     self::$imputationCoef=$coef;
   }
@@ -156,6 +162,50 @@ class Work extends SqlElement {
   	self::setImputationUnit();
   	$res='<b>' . i18n('paramImputationUnit') . " = " . i18n(self::$imputationUnit) . '</b>';
     if (self::$imputationUnit=="hours") {
+      $res.= ' - ' . i18n('paramDayTime') . " = " . self::$hoursPerDay ;
+    } 
+    return $res;
+  }
+  
+  private static function setWorkUnit() {
+    if (self::$workUnit) return;
+    $unit=Parameter::getGlobalParameter('workUnit');
+    $unit=($unit)?$unit:'days';
+    self::$workUnit=$unit;
+    if (self::$hoursPerDay) {
+    	$hoursPerDay=self::$hoursPerDay;
+    } else {
+      $hoursPerDay=Parameter::getGlobalParameter('dayTime');
+      $hoursPerDay=($hoursPerDay)?$hoursPerDay:'8';
+      self::$hoursPerDay=$hoursPerDay;
+    }
+    $coef=($unit=='days')?'1':$hoursPerDay;
+    self::$workCoef=$coef;
+  }
+  
+  public static function displayWork($val) {
+    self::setWorkUnit();
+    $coef=self::$workCoef;
+//debugLog ("work unit = " . self::$workUnit . "   coef = " . self::$workCoef); 
+//debugLog ("'" . round($val*$coef,2) . "'");
+    return (round($val*$coef,2));
+  }
+  
+  public static function convertWork($val) {
+    self::setWorkUnit();
+    $coef=self::$workCoef;
+    return (round($val/$coef,5));
+  }
+  
+  public static function displayShortWorkUnit() {
+    self::setWorkUnit();
+    $res=substr(i18n(self::$workUnit),0,1);
+    return $res;
+  }
+  public static function displayWorkUnit() {
+    self::setWorkUnit();
+    $res='<b>' . i18n('paramWorkUnit') . " = " . i18n(self::$workUnit) . '</b>';
+    if (self::$workUnit=="hours") {
       $res.= ' - ' . i18n('paramDayTime') . " = " . self::$hoursPerDay ;
     } 
     return $res;

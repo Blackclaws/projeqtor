@@ -27,7 +27,9 @@ class Alert extends SqlElement {
   private static $_fieldsAttributes=array("idIndicatorValue"=>"hidden",
                                           "readFlag"=>"nobr", 
                                           "refType"=>"display,nobr", 
-                                          "refId"=>"display");
+                                          "refId"=>"display",
+                                          "title"=>"display, html",
+                                          "message"=>"display, html");
   
     private static $_colCaptionTransposition = array('alertType'=>'type',
                                                      'refType'=>'element',
