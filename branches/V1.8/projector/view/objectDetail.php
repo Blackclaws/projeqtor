@@ -694,17 +694,31 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 
         echo ' class="display" ';
         //echo ' style="width:10%; border:1px solid red;"';
-        echo' >'; 
-        echo htmlEncode($val);
+        echo' >';
+        if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
+        	echo $val;
+        } else {
+          echo htmlEncode($val);
+        }
         if (! $print) {
           echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
         }
         echo '</div>';
       } else if ($dataType=='int' or $dataType=='decimal'){
         // Draw a number field ================================================ NUMBER
-        $cost=false;
+        $isCost=false;
+        $isWork=false;
+        $isDuration=false;
         if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') ) {
-          $cost=true;
+          $isCost=true;
+          $fieldWidth=$smallWidth;
+        }
+        if ($dataType=='decimal' and (substr($col, -4,4)=='Work') ) {
+          $isWork=true;
+          $fieldWidth=$smallWidth;
+        }
+        if ($dataType=='int' and (substr($col, -8,8)=='Duration') ) {
+          $isDuration=true;
           $fieldWidth=$smallWidth;
         }
         $spl=explode(',',$dataLength);
@@ -714,7 +728,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         $ent=$spl[0]-$dec;
         $max=substr('99999999999999999999',0,$ent);
-        if ($cost and $currencyPosition=='before') {
+        if ($isCost and $currencyPosition=='before') {
           echo $currency;
         }
         echo '<div dojoType="dijit.form.NumberTextBox" ';
@@ -725,12 +739,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         echo ' class="input" ';
         //echo ' layoutAlign ="right" ';
-        echo ' value="' . htmlEncode($val) . '" ';
+        echo ' value="' . (($isWork)?Work::displayWork($val):htmlEncode($val)) . '" ';
         echo ' >';
         echo $colScript;
         echo '</div>';
-        if ($cost and $currencyPosition=='after') {
+        if ($isCost and $currencyPosition=='after') {
           echo $currency;
+        }
+        if ($isWork) {
+        	echo Work::displayShortWorkUnit();
+        }
+        if ($isDuration) {
+          echo i18n("shortDay");
         }
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
         // Draw a long text (as a textarea) =================================== TEXTAREA
@@ -1222,9 +1242,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   echo '<td class="assignHeader" style="width:' . ( ($print)?'40':'30' ) . '%">' . i18n('colIdResource') . '</td>';
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colRate'). '</td>';
   if ($workVisible) {
-    echo '<td class="assignHeader" style="width:15%">' . i18n('colAssigned'). '</td>';
-    echo '<td class="assignHeader"style="width:15%">' . i18n('colReal'). '</td>';
-    echo '<td class="assignHeader" style="width:15%">' . i18n('colLeft'). '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colAssigned'). ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
+    echo '<td class="assignHeader"style="width:15%">' . i18n('colReal'). ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colLeft'). ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
   }
   echo '</tr>';
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
@@ -1239,9 +1259,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         . ",'" . $assignment->idRole . "'"
         . ",'" . $fmt->format($assignment->dailyCost) . "'"
         . ",'" . $assignment->rate . "'"
-        . ",'" . $fmt->format($assignment->assignedWork) . "'"
-        . ",'" . $fmt->format($assignment->realWork) . "'"
-        . ",'" . $fmt->format($assignment->leftWork) . "'"
+        . ",'" . $fmt->format(Work::displayWork($assignment->assignedWork)) . "'"
+        . ",'" . $fmt->format(Work::displayWork($assignment->realWork)) . "'"
+        . ",'" . $fmt->format(Work::displayWork($assignment->leftWork)) . "'"
         . ",'" . htmlEncodeJson($assignment->comment) . "'"    
         . ');" ' 
         . 'title="' . i18n('editAssignment') . '" class="smallButton"/> ';      
@@ -1249,7 +1269,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
         . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" 
-               . $assignment->realWork . "','" 
+               . Work::displayWork($assignment->realWork) . "','" 
                . SqlList::getNameFromId('Resource', $assignment->idResource)  . "'" . ');" ' 
         . 'title="' . i18n('removeAssignment') . '" class="smallButton"/> ';
       }
@@ -1274,9 +1294,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '</td>';
     echo '<td class="assignData" align="center">' . $assignment->rate  . '</td>';
     if ($workVisible) {
-      echo '<td class="assignData" align="right">' . $fmt->format($assignment->assignedWork)  . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format($assignment->realWork)  . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format($assignment->leftWork)  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->assignedWork))  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->realWork))  . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->leftWork))  . '</td>';
     }
     echo '</tr>';
   }

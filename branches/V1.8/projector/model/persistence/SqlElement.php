@@ -1059,7 +1059,11 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           } else if ($dataType=='datetime') {
             $keyBis = $key . "Bis";
             $this->$key = $_REQUEST[$key . $ext] . " " . substr($_REQUEST[$keyBis . $ext],1);
-        } else {
+          } else if ($dataType=='decimal' and (substr($key, -4,4)=='Work')) {
+          	if (array_key_exists($formField,$_REQUEST)) {
+          	  $this->$key=Work::convertWork($_REQUEST[$formField]);
+          	}
+          } else {
             if (array_key_exists($formField,$_REQUEST)) {
               $this->$key = $_REQUEST[$formField];
             }

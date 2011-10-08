@@ -85,10 +85,10 @@ if (! $oldCost or $assignment->dailyCost!=$oldCost) {
   $assignment->newDailyCost=$cost;
 }
 $assignment->rate=$rate;
-$assignment->assignedWork=$assignedWork;
+$assignment->assignedWork=Work::convertWork($assignedWork);
 //$assignment->realWork=$realWork;
-$assignment->leftWork=$leftWork;
-$assignment->plannedWork=$plannedWork;
+$assignment->leftWork=Work::convertWork($leftWork);
+$assignment->plannedWork=Work::convertWork($plannedWork);
 $assignment->comment=htmlEncodeJson($comment);
 
 if (! $assignment->idProject) {
