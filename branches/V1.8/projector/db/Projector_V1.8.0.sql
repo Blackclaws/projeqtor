@@ -323,5 +323,5 @@ ALTER TABLE `${prefix}assignment` CHANGE `assignedWork` `assignedWork` DECIMAL(1
  CHANGE `realWork` `realWork` DECIMAL(12,5) UNSIGNED,
  CHANGE `leftWork` `leftWork` DECIMAL(12,5) UNSIGNED,
  CHANGE `plannedWork` `plannedWork` DECIMAL(12,5) UNSIGNED;
- 
+
 ALTER TABLE `${prefix}user` ADD `isLdap` int(1) unsigned DEFAULT '0';
