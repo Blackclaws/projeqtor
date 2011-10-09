@@ -55,57 +55,57 @@ $param['crlf00']='';
 $label['crlf00']='crlf';
 
 $param['ldap_allow_login'] = 'false';                              
-$label['ldap_allow_login'] = "LdapAllowLogin";
+$label['ldap_allow_login'] = "Allow login from Ldap";
 $value['ldap_allow_login'] = "'true' or 'false', if set to true, Projectorria can log user from Ldap";
-$pname['ldap_allow_login'] = 'paramldap_allow_login';
+$pname['ldap_allow_login'] = 'paramLdap_allow_login';
 $ctrls['ldap_allow_login'] = '=false=true=';
 
-$param['ldap_base_dn'] = 'dc=example,dc=com';                              
-$label['ldap_base_dn'] = "LDAP Base DN";
-$value['ldap_base_dn'] = "LDAP Base DN";
-$pname['ldap_base_dn'] = 'paramldap_base_dn';
+$param['ldap_base_dn'] = 'dc=mydomain,dc=com';                              
+$label['ldap_base_dn'] = "Ldap Base DN";
+$value['ldap_base_dn'] = "Ldap Base DN (dc=mydomain,dc=com)";
+$pname['ldap_base_dn'] = 'paramLdap_base_dn';
 $ctrls['ldap_base_dn'] = '';
 
-$param['ldap_host'] = '';                              
+$param['ldap_host'] = 'localhost';                              
 $label['ldap_host'] = "Ldap Host Adress";
-$value['ldap_host'] = "Ldap Host Adress";
-$pname['ldap_host'] = 'paramldap_host';
+$value['ldap_host'] = "Ldap Host Adress (server)";
+$pname['ldap_host'] = 'paramLdap_host';
 $ctrls['ldap_host'] = '';
 
 $param['ldap_port'] = '389';                              
 $label['ldap_port'] = "Ldap Port";
-$value['ldap_port'] = "Ldap Port";
-$pname['ldap_port'] = 'paramldap_port';
+$value['ldap_port'] = "Ldap Port (default is 389)";
+$pname['ldap_port'] = 'paramLdap_port';
 $ctrls['ldap_port'] = '';
 
 $param['ldap_version'] = '3';                              
 $label['ldap_version'] = "Ldap version";
 $value['ldap_version'] = "Ldap version (can be 2 or 3)";
-$pname['ldap_version'] = 'paramldap_version';
+$pname['ldap_version'] = 'paramLdap_version';
 $ctrls['ldap_version'] = '=2=3=';
 
-$param['ldap_search_user'] = '';                              
-$label['ldap_search_user'] = "LDAP Search User";
-$value['ldap_search_user'] = "LDAP Search User";
-$pname['ldap_search_user'] = 'paramldap_search_user';
+$param['ldap_search_user'] = 'cn=Manager,dc=mydomain,dc=com';                              
+$label['ldap_search_user'] = "Ldap Search User";
+$value['ldap_search_user'] = "DN of Ldap user used for search functionality";
+$pname['ldap_search_user'] = 'paramLdap_search_user';
 $ctrls['ldap_search_user'] = '';
 
-$param['ldap_search_pass'] = '';                              
+$param['ldap_search_pass'] = 'secret';                              
 $label['ldap_search_pass'] = "LDAP Search User Password";
-$value['ldap_search_pass'] = "LDAP Search User Password";
-$pname['ldap_search_pass'] = 'paramldap_search_pass';
+$value['ldap_search_pass'] = "Password of Ldap user used for search functionality";
+$pname['ldap_search_pass'] = 'paramLdap_search_pass';
 $ctrls['ldap_search_pass'] = '';
 
-$param['ldap_user_filter'] = 'sAMAccountName=%USERNAME%';                              
-$label['ldap_user_filter'] = "LDAP User Filter";
-$value['ldap_user_filter'] = "LDAP User Filter";
-$pname['ldap_user_filter'] = 'paramldap_user_filter';
+$param['ldap_user_filter'] = 'uid=%USERNAME%';                              
+$label['ldap_user_filter'] = "Ldap filter";
+$value['ldap_user_filter'] = "Ldap filter to find used name (must include %USERNAME%)";
+$pname['ldap_user_filter'] = 'paramLdap_user_filter';
 $ctrls['ldap_user_filter'] = '';
 
 $param['ldap_defaultprofile'] = '5';                              
 $label['ldap_defaultprofile'] = "Default profile";
-$value['ldap_defaultprofile'] = "Default profile for new user created from LDAP";
-$pname['ldap_defaultprofile'] = 'paramldap_defaultprofile';
+$value['ldap_defaultprofile'] = "Default profile for new user created from Ldap (5=Guest)";
+$pname['ldap_defaultprofile'] = 'paramLdap_defaultprofile';
 $ctrls['ldap_defaultprofile'] = '';
 
 $param['crlf01']='';
