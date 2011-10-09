@@ -264,7 +264,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (6, 91, 1),
 (7, 91, 1);
 
-INSERT INTO `${prefix}accessprofile`(`id`,`name`,`description`,`idAccessScopeRead`,`idAccessScopeCreate`,`idAccessScopeUpdate`,`idAccessScopeDelete`,`sortOrder`,`idle`) values 
+INSERT INTO `${prefix}accessprofile` (`id`,`name`,`description`,`idAccessScopeRead`,`idAccessScopeCreate`,`idAccessScopeUpdate`,`idAccessScopeDelete`,`sortOrder`,`idle`) values 
 (10,'accessReadOwnOnly',null,2,1,1,1,900,0);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
@@ -284,6 +284,9 @@ UPDATE `${prefix}menu` SET idle=0 where id=18;
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 18, 1),
 (1, 92, 1);
+
+UPDATE `${prefix}habilitation` SET allowAccess=1 
+where idMenu='18' and idProfile='1';
 
 ALTER TABLE `${prefix}project` ADD sortOrder varchar(400);
 
@@ -321,3 +324,4 @@ ALTER TABLE `${prefix}assignment` CHANGE `assignedWork` `assignedWork` DECIMAL(1
  CHANGE `leftWork` `leftWork` DECIMAL(12,5) UNSIGNED,
  CHANGE `plannedWork` `plannedWork` DECIMAL(12,5) UNSIGNED;
  
+ALTER TABLE `${prefix}user` ADD `isLdap` int(1) unsigned DEFAULT '0';

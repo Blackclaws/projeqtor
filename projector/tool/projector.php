@@ -122,25 +122,28 @@ if ( ! (isset($maintenance) and $maintenance) ) {
     }
     exit;
   }
-  
-  if ($user and $page != 'loginCheck.php' and $page != "changePassword.php") {
-    $changePassword=false;
-    if (array_key_exists('changePassword',$_REQUEST)) {
-      $changePassword=true;
-    }
-    if ( $user->password==md5($paramDefaultPassword)) {
-      $changePassword=true;
-    }
-    if ( $changePassword ) {
-      if (is_file("passwordChange.php")) {
-        include "passwordChange.php";
-      } else {
-        echo '<input type="hidden" id="lastOperation" name="lastOperation" value="testPassword">';
-        echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="ERROR">';    
-        echo '<span class="messageERROR" >' . i18n('invalidPasswordChange') . '</span>';
-      }
-      exit;  
-    }
+  if (isset($user)) {
+  	if ($user->isLdap==0) {
+		  if ($user and $page != 'loginCheck.php' and $page != "changePassword.php") {
+		    $changePassword=false;
+		    if (array_key_exists('changePassword',$_REQUEST)) {
+		      $changePassword=true;
+		    }
+		    if ( $user->password==md5($paramDefaultPassword)) {
+		      $changePassword=true;
+		    }
+		    if ( $changePassword ) {
+		      if (is_file("passwordChange.php")) {
+		        include "passwordChange.php";
+		      } else {
+		        echo '<input type="hidden" id="lastOperation" name="lastOperation" value="testPassword">';
+		        echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="ERROR">';    
+		        echo '<span class="messageERROR" >' . i18n('invalidPasswordChange') . '</span>';
+		      }
+		      exit;  
+		    }
+		  }
+  	}
   }
 }
 

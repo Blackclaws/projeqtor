@@ -1,7 +1,7 @@
 <?php 
 /* ============================================================================
  * User is a resource that can connect to the application.
- */ 
+ */
 class User extends SqlElement {
 
   // extends SqlElement, so has $id
@@ -15,6 +15,7 @@ class User extends SqlElement {
   public $isContact;
   public $isResource=0;
   public $resourceName;
+  public $isLdap;
   public $locked;
   public $idle;
   public $description;
@@ -24,14 +25,16 @@ class User extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="name" width="30%">${userName}</th>
-    <th field="nameProfile" width="20%" formatter="translateFormatter">${idProfile}</th>
+    <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
     <th field="resourceName" width="30%">${name}</th>  
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
+    <th field="isLdap" width="5%" formatter="booleanFormatter">${isLdap}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_fieldsAttributes=array("name"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required",
+  										                    "isLdap"=>"hidden"
   );  
   
   private static $_databaseCriteria = array('isUser'=>'1');
@@ -65,6 +68,13 @@ class User extends SqlElement {
     }     
     if (securityCheckDisplayMenu($menu->id)) {
       self::$_fieldsAttributes["isContact"]="";
+    }
+    if ($this->isLdap==0) {	
+  	  self::$_fieldsAttributes["name"]="required";
+    } else {
+    	self::$_fieldsAttributes["name"]="readonly";
+    	self::$_fieldsAttributes["email"]="readonly";
+    	self::$_fieldsAttributes["password"]="hidden";
     }
   }
 
@@ -118,7 +128,8 @@ class User extends SqlElement {
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
-    return self::$_fieldsAttributes;
+	
+  	return self::$_fieldsAttributes;
   }
   
 // ============================================================================**********
@@ -373,6 +384,131 @@ class User extends SqlElement {
     $this->_accessControlVisibility=null;
     $this->_visibleProjects=null;
     $this->_hierarchicalViewOfVisibleProjects=null;
+  }
+  
+  
+  /** =========================================================================
+   * fonction for authentificate user with user/password
+   * @param $Username $Password
+   * can create user directly from Ldap
+   * @return -1 or Id of authentified user
+   */
+	public function authenticate( $paramlogin, $parampassword) {
+	  scriptLog("UserClass->authenticate ('" . $paramlogin . "', '*****')" );	
+	
+	  global $paramldap_allow_login, $paramldap_base_dn, $paramldap_host, $paramldap_port, $paramldap_version, $paramldap_search_user, $paramldap_search_pass, $paramldap_user_filter, $paramldap_defaultprofile;
+	
+	 	if ( ! $this->id ) {
+			debugLog("authenticate - user '" . $paramlogin . "' unknown in database" );
+			if (strtolower($paramldap_allow_login)=='true') {
+		  	debugLog("authenticate - user '" . $paramlogin . "' - LDAP enabled - create from LDAP directory if password is OK" );
+		  	$this->name=$paramlogin;
+		  	$this->isLdap = 1;
+		  	//$this->id=-2;
+			} else {
+			  debugLog("authenticate - user '" . $paramlogin . "' - unknown in database - LDAP disabled" );
+				return "login";
+		  }	
+	 	}	
+ 	
+	 	debugLog("authenticate - user '" . $paramlogin . "' isLdap=".$this->isLdap );
+		if ($this->isLdap == 0) {
+			debugLog("authenticate - user '" . $paramlogin . "' - integrated mode" );
+			if ($this->password <> md5($parampassword)) {
+				debugLog("authenticate - user '" . $paramlogin . "' - wrong password" );
+	      return "password";
+			} else {
+				debugLog("authenticate - user '" . $paramlogin . "' - password OK" );
+	  	  return "OK";	
+	  	}
+	  } else {
+	  	// check passsword on LDAP
+			debugLog("authenticate - user '" . $paramlogin . "' - LDAP mode" );
+			debugLog("authenticate - LDAP - Host='". $paramldap_host ."' Port='". $paramldap_port ."' Version='". $paramldap_version . "'" );
+	    if (! function_exists('ldap_connect')) {
+	    	errorLog('Ldap non installed on your PHP server, you should not set $paramldap_allow_login to "true"');        
+        return "ldap";
+	    }
+			try { 
+	    	$ldapCnx=ldap_connect($paramldap_host, $paramldap_port);
+			} catch (Exception $e) {
+          traceLog("authenticate - LDAP error : " . $e->getMessage() );
+          return "ldap";
+	    }
+	    if (! $ldapCnx) {
+        traceLog("authenticate - Mode LDAP - LdapConnectError");        
+        return "ldap";
+      }
+			debugLog("authenticate - Mode LDAP - LdapConnect OK");       
+			@ldap_set_option($ldapCnx, LDAP_OPT_PROTOCOL_VERSION, $paramldap_version);
+			@ldap_set_option($ldapCnx, LDAP_OPT_REFERRALS, 0);
+	
+			//$ldap_bind_dn = 'cn='.$this->ldap_search_user.','.$this->base_dn;
+			$ldap_bind_dn = empty($paramldap_search_user) ? null : $paramldap_search_user;
+			$ldap_bind_pw = empty($paramldap_search_pass) ? null : $paramldap_search_pass;
+	
+			debugLog("authenticate - LdapBind - DN='". $ldap_bind_dn ."' PW='". $ldap_bind_pw ."'" );
+  		try {
+			  $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
+  		} catch (Exception $e) {
+        traceLog("authenticate - LdapBind Error : " . $e->getMessage() );
+        return "ldap";
+      } 
+			if (! $bind) {
+	      traceLog("authenticate - LdapBind Error" );
+				return "ldap";
+			}
+			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramldap_user_filter), ENT_COMPAT, 'UTF-8');
+			debugLog("authenticate - LdapSearch - DN '". $paramldap_base_dn ."' Filter : '". $filter_r ."'" );
+			$result = @ldap_search($ldapCnx, $paramldap_base_dn, $filter_r);
+			if (!$result) {
+				debugLog("authenticate - Mode LDAP - LdapSearch - USERNAME not found");
+				return "login";
+			}
+			debugLog("authenticate - Mode LDAP - Ldap_get_entries'");
+			$result_user = ldap_get_entries($ldapCnx, $result);
+			if ($result_user['count'] == 0) {
+				debugLog("authenticate - Mode LDAP - Ldap_get_entries - no result = unknown login'");
+				return "login";
+			}
+		  if ($result_user['count'] > 1) {
+        debugLog("authenticate - Mode LDAP - Ldap_get_entries - too many results = ambigous login");
+        return "login";
+      }
+			$first_user = $result_user[0];
+			$ldap_user_dn = $first_user['dn'];
+
+			// Bind with the dn of the user that matched our filter (only one user should match filter ..)
+
+			debugLog("authenticate - Mode LDAP - LdapBind - DN '". $ldap_user_dn ."' Password : '". $parampassword ."'" );
+			try {
+			  $bind_user = ldap_bind($ldapCnx, $ldap_user_dn, $parampassword);
+			} catch (Exception $e) {
+        traceLog("authenticate - LdapBind Error : " . $e->getMessage() );
+        return "ldap";
+      }   
+			if (! $bind_user) {
+				debugLog("authenticate - Mode LDAP - LdapBind - KO" );
+				return "login";
+			}
+			debugLog("authenticate - Mode LDAP - LdapBind - SUCCESS" );
+			if (! $this->id and $this->isLdap) {
+				debugLog("authenticate - Mode LDAP - LdapBind - SUCCESS - Create user from LDAP" );
+				if (!count($first_user) == 0) {
+					// Contact information based on the inetOrgPerson class schema
+					if (isset( $first_user['mail'][0] )) {
+				  		$this->email=$first_user['mail'][0];						
+					} 
+				  $this->isLdap=1;
+				  $this->name=$paramlogin;
+				  $this->idProfile=$paramldap_defaultprofile; // TODO : have this value as a parameter
+				  $this->save();
+					debugLog("authenticate - Mode LDAP - Create user from LDAP - new id=".$this->id );
+					  // TODO send mail to admin to inform new user has registerd through LDAP				
+				}					
+			}
+	  }
+	  return "OK";     
   }
 }
 ?>

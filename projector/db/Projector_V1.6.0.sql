@@ -195,7 +195,7 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (7, 78, 9),
 (5, 78, 9);
 
-DELETE from `${prefix}type` where scope in ('IndividualExpense', 'ProjectExpense', 'Invoice', 'Payment');
+DELETE FROM `${prefix}type` WHERE scope in ('IndividualExpense', 'ProjectExpense', 'Invoice', 'Payment');
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
 ('IndividualExpense', 'Expense report', 10, 0, NULL, 8),
