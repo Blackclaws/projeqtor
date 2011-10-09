@@ -55,7 +55,7 @@
 // "ldap"      error connecting to Ldap  
   
   if ( $authResult!="OK") {
-    if ($authResult) {
+    if ($authResult=="ldap") {
     	loginLdapError();
     } else {
   	  loginError();

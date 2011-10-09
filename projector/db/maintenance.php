@@ -30,15 +30,14 @@ $versionParameters =array(
   'V1.5.0'=>array('currency'=>'€', 
                   'currencyPosition'=>'after'),
   'V1.8.0'=>array('paramldap_allow_login'=>'false',
-					'paramldap_base_dn'=>'dc=example,dc=com',
-					'paramldap_host'=>'127.0.0.1',
-					'paramldap_port'=>'389',
-					'paramldap_version'=>'3',
-					'paramldap_search_user'=>'name',
-					'paramldap_search_pass'=>'password',
-					'paramldap_user_filter'=>'sAMAccountName=%USERNAME%'),
-					'paramldap_defaultprofile'=>'5'
-
+					'paramLdap_base_dn'=>'dc=mydomain,dc=com',
+					'paramLdap_host'=>'localhost',
+					'paramLdap_port'=>'389',
+					'paramLdap_version'=>'3',
+					'paramLdap_search_user'=>'cn=Manager,dc=mydomain,dc=com',
+					'paramLdap_search_pass'=>'secret',
+					'paramLdap_user_filter'=>'uid=%USERNAME%',
+					'paramLdap_defaultprofile'=>'5')
 );
 $SqlEndOfCommand=";";
 $SqlComment="--";
