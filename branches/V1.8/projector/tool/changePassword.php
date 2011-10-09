@@ -25,6 +25,9 @@
   if ( $user->idle!=0) {
     passwordError();
   } 
+  if ($user->isLdap<>0) {
+    passwordError();
+  } 
 
   if (strlen($password)<5) {
     passwordError();

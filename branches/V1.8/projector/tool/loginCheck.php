@@ -18,31 +18,55 @@
   if ($password=="") {
     loginError();
   }
+  if (! Sql::getDbVersion()) {
+    if ($login=="admin" and $password=="admin") {
+      include "../db/maintenance.php";
+      exit;
+    }
+  }
   
   $obj=new User();
-  $crit=array('name'=>$login, 'password'=>md5($password));
+	$crit=array('name'=>$login);
   $users=$obj->getSqlElementsFromCriteria($crit,true);
   if ( ! $users ) {
-   loginError();
-   exit;
+  	loginError();
+  	exit;
   } 
-  if ( count($users)!=1) {
+  if ( count($users)==1 ) {
+  	$user=$users[0];
+  } else if ( count($users)>1 ) {
+  	traceLog("User '" . $login . "' : too many rows in Database" );
     loginError();
-    exit;
+   	exit;
+  } else {
+  	$user=new User();
   } 
-  $user=$users[0];
+  
+  try {
+    $authResult=$user->authenticate($login, $password);
+  } catch (Exception $e) {
+  	$authResult="KO";
+  }
 
-  if ( ! $user->id) {
-    // 
-    if (! Sql::getDbVersion()) {
-      if ($login=="admin" and $password=="admin") {
-        include "../db/maintenance.php";
-        exit;
-      }
+// possible returns are 
+// "OK"        login OK
+// "login"     unknown login
+// "password"  wrong password
+// "ldap"      error connecting to Ldap  
+  
+  if ( $authResult!="OK") {
+    if ($authResult) {
+    	loginLdapError();
+    } else {
+  	  loginError();
     }
-    loginError();
     exit;
-  } 
+ 	} 
+	
+ 	if ( ! $user->id) {
+   	loginError();
+   	exit;
+ 	} 
   if ( $user->idle!=0 or  $user->locked!=0) {
     loginErrorLocked();
   } 
@@ -66,6 +90,34 @@
     global $login;
     echo '<span class="messageERROR">';
     echo i18n('invalidLogin');
+    echo '</span>';
+    unset($_SESSION['user']);
+    traceLog("Login error for user '" . $login . "'");
+    exit;
+  }
+  
+    /** ========================================================================
+   * Display an error message because of invalid login
+   * @return void
+   */
+  function loginLdapError() {
+    global $login;
+    echo '<span class="messageERROR">';
+    echo i18n('ldapError');
+    echo '</span>';
+    unset($_SESSION['user']);
+    traceLog("Error contacting Ldap for user '" . $login . "'");
+    exit;
+  }
+  
+  /** ========================================================================
+   * Display an error message because of bad password
+   * @return void
+   */
+  function loginPasswordError() {
+    global $login;
+    echo '<span class="messageERROR">';
+    echo i18n('invalidLoginPassword');
     echo '</span>';
     unset($_SESSION['user']);
     traceLog("Login error for user '" . $login . "'");

@@ -51,6 +51,63 @@ $value['DbPrefix'] = "prefix on table names, used to store several instances und
 $pname['DbPrefix'] = 'paramDbPrefix';
 $ctrls['DbPrefix'] = '';
 
+$param['crlf00']='';
+$label['crlf00']='crlf';
+
+$param['ldap_allow_login'] = 'false';                              
+$label['ldap_allow_login'] = "LdapAllowLogin";
+$value['ldap_allow_login'] = "'true' or 'false', if set to true, Projectorria can log user from Ldap";
+$pname['ldap_allow_login'] = 'paramldap_allow_login';
+$ctrls['ldap_allow_login'] = '=false=true=';
+
+$param['ldap_base_dn'] = 'dc=example,dc=com';                              
+$label['ldap_base_dn'] = "LDAP Base DN";
+$value['ldap_base_dn'] = "LDAP Base DN";
+$pname['ldap_base_dn'] = 'paramldap_base_dn';
+$ctrls['ldap_base_dn'] = '';
+
+$param['ldap_host'] = '';                              
+$label['ldap_host'] = "Ldap Host Adress";
+$value['ldap_host'] = "Ldap Host Adress";
+$pname['ldap_host'] = 'paramldap_host';
+$ctrls['ldap_host'] = '';
+
+$param['ldap_port'] = '389';                              
+$label['ldap_port'] = "Ldap Port";
+$value['ldap_port'] = "Ldap Port";
+$pname['ldap_port'] = 'paramldap_port';
+$ctrls['ldap_port'] = '';
+
+$param['ldap_version'] = '3';                              
+$label['ldap_version'] = "Ldap version";
+$value['ldap_version'] = "Ldap version (can be 2 or 3)";
+$pname['ldap_version'] = 'paramldap_version';
+$ctrls['ldap_version'] = '=2=3=';
+
+$param['ldap_search_user'] = '';                              
+$label['ldap_search_user'] = "LDAP Search User";
+$value['ldap_search_user'] = "LDAP Search User";
+$pname['ldap_search_user'] = 'paramldap_search_user';
+$ctrls['ldap_search_user'] = '';
+
+$param['ldap_search_pass'] = '';                              
+$label['ldap_search_pass'] = "LDAP Search User Password";
+$value['ldap_search_pass'] = "LDAP Search User Password";
+$pname['ldap_search_pass'] = 'paramldap_search_pass';
+$ctrls['ldap_search_pass'] = '';
+
+$param['ldap_user_filter'] = 'sAMAccountName=%USERNAME%';                              
+$label['ldap_user_filter'] = "LDAP User Filter";
+$value['ldap_user_filter'] = "LDAP User Filter";
+$pname['ldap_user_filter'] = 'paramldap_user_filter';
+$ctrls['ldap_user_filter'] = '';
+
+$param['ldap_defaultprofile'] = '5';                              
+$label['ldap_defaultprofile'] = "Default profile";
+$value['ldap_defaultprofile'] = "Default profile for new user created from LDAP";
+$pname['ldap_defaultprofile'] = 'paramldap_defaultprofile';
+$ctrls['ldap_defaultprofile'] = '';
+
 $param['crlf01']='';
 $label['crlf01']='crlf';
  
