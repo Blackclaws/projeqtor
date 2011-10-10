@@ -369,6 +369,13 @@ class User extends SqlElement {
     if ($this->isResource and (! $this->resourceName or $this->resourceName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colresourceName')));
     } 
+    $crit=array("name"=>$this->name);
+    $lst=$this->getSqlElementsFromCriteria($crit,false);
+    if (count($lst)>0) {
+    	if (! $this->id or count($lst)>1 or $lst[0]->id!=$this->id) {
+    		$result.='<br/>' . i18n('errorDuplicateUser');
+    	}
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

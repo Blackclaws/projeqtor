@@ -1050,8 +1050,12 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           if ($dataType=='int' and $dataLength==1) {
             //echo "Boolean / key '" . $key . "' ";
             if (array_key_exists($formField,$_REQUEST)) {
-              //echo "val=True<br/>";
-              $this->$key = 1;
+              //if filed is hidden, must check value, otherwise just check existence
+              if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
+               	$this->$key = $_REQUEST[$formField];
+              } else {
+                $this->$key = 1;
+              }
             } else {
               //echo "val=False<br/>";
               $this->$key = 0;

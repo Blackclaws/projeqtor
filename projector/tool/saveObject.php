@@ -37,7 +37,6 @@ if (! array_key_exists('comboDetail', $_REQUEST)) {
 // get the modifications (from request)
 $newObj=new $className();
 $newObj->fillFromRequest($ext);
-
 //var_dump($obj);
 
 // save to database
