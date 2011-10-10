@@ -207,7 +207,6 @@ class IndicatorValue extends SqlElement {
           } else {
           	$date=$obj->doneDate . " 00:00:00";
           }
-debugLog("'$date' > '$this->targetDateTime'");
           $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }
       	break;
@@ -217,7 +216,6 @@ debugLog("'$date' > '$this->targetDateTime'");
       	$date=date('Y-m-d');
         if ($obj and $obj->done) {
         	$date=$obj->doneDate . " 00:00:00";
-debugLog("'$date' > '$this->targetDateTime'");
         	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        
       	break;
@@ -371,9 +369,9 @@ debugLog("'$date' > '$this->targetDateTime'");
     	$warningTarget=htmlFormatDateTime(trim($this->warningTargetDateTime),false);
     	$alertTarget=htmlFormatDateTime(trim($this->alertTargetDateTime),false);
     } else if ($this->type=="percent") {
-    	$target=$this->targetValue;
-    	$warningTarget=$this->warningTargetValue;
-    	$alertTarget=$this->alertTargetValue;
+    	$target=Work::displayWork($this->targetValue) . ' ' . Work::displayShortWorkUnit();
+    	$warningTarget=Work::displayWork($this->warningTargetValue) . ' ' . Work::displayShortWorkUnit();
+    	$alertTarget=Work::displayWork($this->alertTargetValue) . ' ' . Work::displayShortWorkUnit();
     }
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);

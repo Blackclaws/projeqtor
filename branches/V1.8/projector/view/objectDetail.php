@@ -402,7 +402,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($hide) {
         // Don't draw the field =============================================== Hidden field
         if (! $print) {
-          echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
+        	echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
           echo $name;
           echo ' value="' . htmlEncode($val) . '" ></div>';
         }
