@@ -215,6 +215,15 @@ class Parameter extends SqlElement {
       	$list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
       	break;
+      case 'ldapDefaultProfile':
+      	$list=SqlList::getList('Profile');
+      	break;
+      case 'ldapMsgOnUserCreation';
+        $list=array('NO'=>i18n('displayNo'),
+                    'ALERT'=>i18n('displayAlert'),
+                    'MAIL'=>i18n('displayMail'),
+                    'ALERT&MAIL'=>i18n('displayAlertAndMail'));
+        break;
     } 
     return $list;
   }
@@ -223,27 +232,39 @@ class Parameter extends SqlElement {
     $parameterList=array();
     switch ($typeParameter) {
       case ('userParameter'):
-        $parameterList=array("theme"=>"list", 
-                           "lang"=>"list", 
-                           "defaultProject"=>"list",
+        $parameterList=array('sectionDisplayPerameter'=>"section",
+                           "theme"=>"list", 
+                           "lang"=>"list",
+                           'sectionObjectDetail'=>'section', 
                            "displayAttachement"=>"list",
                            "displayNote"=>"list",
                            "displayHistory"=>"list",
+                           'sectionIHM'=>'section',  
                            "hideMenu"=>"list",
                            "switchedMode"=>"list",
+                           'sectionPrintExport'=>'section',  
                            "printInNewWindow"=>"list",
-                           "pdfInNewWindow"=>"list"                      
+                           "pdfInNewWindow"=>"list", 
+                           'sectionMiscellaneous'=>'section',      
+                           "defaultProject"=>"list"                 
         );
         break;
       case ('globalParameter'):
-      	$parameterList=array('startAM'=>'time',
+      	$parameterList=array('sectionDailyHours'=>"section",
+      	                     'startAM'=>'time',
       	                     'endAM'=>'time',
       	                     'startPM'=>'time',
       	                     'endPM'=>'time',
-      	                     'dayTime'=>'number',
+      	                     'sectionWorkUnit'=>'section',      	                     
       	                     'imputationUnit'=>'list',
       	                     'workUnit'=>'list',
+      	                     'dayTime'=>'number',
+      	                     'sectionAlerts'=>'section',  
       	                     'alertCheckTime'=>'number',
+      	                     'sectionLdap'=>'section', 
+      	                     'ldapDefaultProfile'=>'list',
+      	                     'ldapMsgOnUserCreation'=>'list',
+      	                     'sectionMiscellaneous'=>'section',  
       	                     'getVersion'=>'list'
       	);
     }

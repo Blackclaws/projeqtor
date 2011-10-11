@@ -803,11 +803,11 @@ function removeOrigin (id, origType, origId) {
  * Display a add Assignment Box
  * 
  */
-function addAssignment () {
+function addAssignment (unit) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
-	}	
+	}
 	var prj=dijit.byId('idProject').get('value');
 	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
 		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
@@ -829,6 +829,10 @@ function addAssignment () {
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
 	dijit.byId("assignmentIdResource").set('readOnly',false);
 	dijit.byId("assignmentIdRole").set('readOnly',false);
+	dijit.byId("assignmentPlannedUnit").set("value",unit);
+	dijit.byId("assignmentLeftUnit").set("value",unit);
+	dijit.byId("assignmentRealUnit").set("value",unit);
+	dijit.byId("assignmentAssignedUnit").set("value",unit);
 	dijit.byId("dialogAssignment").show();
 }
 
@@ -837,7 +841,7 @@ function addAssignment () {
  * 
  */
 var editAssignmentLoading=false;
-function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, comment) {
+function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, comment, unit) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -866,6 +870,10 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dijit.byId("assignmentRealWork").set('value',realWork);
 	dijit.byId("assignmentLeftWork").set('value',leftWork);
 	dijit.byId("assignmentComment").set('value',comment);
+	dijit.byId("assignmentPlannedUnit").set("value",unit);
+	dijit.byId("assignmentLeftUnit").set("value",unit);
+	dijit.byId("assignmentRealUnit").set("value",unit);
+	dijit.byId("assignmentAssignedUnit").set("value",unit);	
 	dojo.byId("assignmentLeftWorkInit").value=dojo.number.parse(leftWork);
 	assignmentUpdatePlannedWork('assignment');
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment") + " #" + assignmentId);

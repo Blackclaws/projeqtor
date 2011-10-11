@@ -510,9 +510,37 @@ class User extends SqlElement {
 					} 
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
-				  $this->idProfile=$paramLdap_defaultprofile; // TODO : have this value as a parameter
+				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  $this->save();
-					debugLog("authenticate - Mode LDAP - Create user from LDAP - new id=".$this->id );			
+					debugLog("authenticate - Mode LDAP - Create user from LDAP - new id=".$this->id );
+					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');	
+					if ($sendAlert!='NO') {
+						$title="Project'Or RIA - " . i18n('newUser');
+						$message=i18n("newUserMessage",array($paramlogin));
+						if ($sendAlert=='MAIL' or $sendAlert=='ALERT&MAIL') {
+							global $paramAdminMail;
+						  sendMail($paramAdminMail, $title, $message);
+						}
+						if ($sendAlert=='ALERT' or $sendAlert=='ALERT&MAIL') {
+							$prof=new Profile();
+							$crit=array('profileCode'=>'ADM');
+							$lstProf=$prof->getSqlElementsFromCriteria($crit,false);
+							foreach ($lstProf as $prof) {
+								$crit=array('idProfile'=>$prof->id);
+								$lstUsr=$this->getSqlElementsFromCriteria($crit,false);
+								foreach($lstUsr as $usr) {
+									$alert=new Alert();
+									$alert->idUser=$usr->id;
+									$alert->alertType='INFO';
+									$alert->alertInitialDateTime=date('Y-m-d h:i:s');
+									$alert->message=$message;
+									$alert->title=$title;
+									$alert->alertDateTime=date('Y-m-d h:i:s');
+									$alert->save();
+								}
+							}
+						}
+					}	
 				}					
 			}
 	  }
