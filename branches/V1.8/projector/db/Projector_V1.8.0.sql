@@ -325,3 +325,7 @@ ALTER TABLE `${prefix}assignment` CHANGE `assignedWork` `assignedWork` DECIMAL(1
  CHANGE `plannedWork` `plannedWork` DECIMAL(12,5) UNSIGNED;
 
 ALTER TABLE `${prefix}user` ADD `isLdap` int(1) unsigned DEFAULT '0';
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'ldapDefaultProfile','5'),
+(null, null, 'ldapMsgOnUserCreation','NO');

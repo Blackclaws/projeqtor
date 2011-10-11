@@ -898,6 +898,9 @@ checkVersion(); ?>
                  style="width:97px"
                  onchange="assignmentUpdateLeftWork('assignment');"
                  onblur="assignmentUpdateLeftWork('assignment');" />
+               <input id="assignmentAssignedUnit" name="assignmentAssignedUnit" value="" readonly tabindex="-1"
+                 dojoType="dijit.form.TextBox" 
+                 class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
                <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="" 
                  style="width:97px"/>  
              </td>    
@@ -911,6 +914,9 @@ checkVersion(); ?>
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px" readonly />
+               <input id="assignmentRealUnit" name="assignmentRealUnit" value="" readonly tabindex="-1"
+                 dojoType="dijit.form.TextBox" 
+                 class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
              </td>
            </tr>
            <tr>
@@ -924,6 +930,9 @@ checkVersion(); ?>
                  onchange="assignmentUpdatePlannedWork('assignment');"
                  onblur="assignmentUpdatePlannedWork('assignment');"  
                  style="width:97px" />
+               <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="" readonly tabindex="-1"
+                 dojoType="dijit.form.TextBox" 
+                 class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
                <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="" 
                  style="width:97px"/>  
              </td>
@@ -937,6 +946,9 @@ checkVersion(); ?>
                  dojoType="dijit.form.NumberTextBox" 
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px" readonly /> 
+               <input id="assignmentPlannedUnit" name="assignmentPlannedUnit" value="" readonly tabindex="-1"
+                 dojoType="dijit.form.TextBox" 
+                 class="display" style="width:15px;background-color:#FFFFFF; border:0px;"/>
              </td>
            </tr>
            <tr>

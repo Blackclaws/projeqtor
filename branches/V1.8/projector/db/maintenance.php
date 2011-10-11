@@ -36,8 +36,7 @@ $versionParameters =array(
 					'paramLdap_version'=>'3',
 					'paramLdap_search_user'=>'cn=Manager,dc=mydomain,dc=com',
 					'paramLdap_search_pass'=>'secret',
-					'paramLdap_user_filter'=>'uid=%USERNAME%',
-					'paramLdap_defaultprofile'=>'5')
+					'paramLdap_user_filter'=>'uid=%USERNAME%')
 );
 $SqlEndOfCommand=";";
 $SqlComment="--";

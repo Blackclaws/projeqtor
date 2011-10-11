@@ -1235,7 +1235,8 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   if (! $print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAssignment();" title="' . i18n('addAssignment') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\');" ';
+      echo ' title="' . i18n('addAssignment') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -1263,6 +1264,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         . ",'" . $fmt->format(Work::displayWork($assignment->realWork)) . "'"
         . ",'" . $fmt->format(Work::displayWork($assignment->leftWork)) . "'"
         . ",'" . htmlEncodeJson($assignment->comment) . "'"    
+        . ",'" . Work::displayShortWorkUnit() . "'"    
         . ');" ' 
         . 'title="' . i18n('editAssignment') . '" class="smallButton"/> ';      
       }

@@ -102,12 +102,6 @@ $value['ldap_user_filter'] = "Ldap filter to find used name (must include %USERN
 $pname['ldap_user_filter'] = 'paramLdap_user_filter';
 $ctrls['ldap_user_filter'] = '';
 
-$param['ldap_defaultprofile'] = '5';                              
-$label['ldap_defaultprofile'] = "Default profile";
-$value['ldap_defaultprofile'] = "Default profile for new user created from Ldap (5=Guest)";
-$pname['ldap_defaultprofile'] = 'paramLdap_defaultprofile';
-$ctrls['ldap_defaultprofile'] = '';
-
 $param['crlf01']='';
 $label['crlf01']='crlf';
  

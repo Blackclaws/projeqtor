@@ -530,7 +530,9 @@ function sendMail($to, $title, $message, $object=null)  {
   global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath;
   // Save data of the mail
   $mail=new Mail();
-  $mail->idUser=$_SESSION['user']->id;
+  if (array_key_exists('user',$_SESSION)) {
+    $mail->idUser=$_SESSION['user']->id;
+  }
   if ($object) {
     $mail->idProject=$object->idProject;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
