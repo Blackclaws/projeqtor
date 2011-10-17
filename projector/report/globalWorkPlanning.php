@@ -1,6 +1,7 @@
 <?php 
-//echo "globalWorkPlanning.php";
 include_once '../tool/projector.php';
+//echo "globalWorkPlanning.php";
+
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
@@ -96,6 +97,8 @@ echo '<td class="reportTableDataFull" ' . $plannedStyle . '>';
 echo "<i>1</i>";
 echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
+echo "</td><td class='legend'>" . Work::displayWorkUnit() . "</td>";
+echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";
 echo '<table width="100%" align="left">';
@@ -142,7 +145,7 @@ foreach($tab as $proj=>$lists) {
       }
       echo '<td class="reportTableData" ' . $style . '>';
       echo ($ital)?'<i>':'';
-      echo $val;
+      echo Work::displayWork($val);
       echo ($ital)?'</i>':'';
       $sum+=$val;
       $arrSum[$date]+=$val;
@@ -151,7 +154,7 @@ foreach($tab as $proj=>$lists) {
     }
     echo '<td class="reportTableColumnHeader">';
     echo ($ital)?'<i>':'';
-    echo $sum;
+    echo Work::displayWork($sum);
     echo ($ital)?'</i>':'';
     echo '</td>';
     echo '</tr>';
@@ -163,11 +166,11 @@ echo '<tr><td class="reportTableHeader" style="width:40px;">' . i18n('sum') . '<
 $sum=0;
 $cumul=array();
 foreach ($arrSum as $date=>$val) {
-  echo '<td class="reportTableHeader" >' . $val . '</td>';
+  echo '<td class="reportTableHeader" >' . Work::displayWork($val) . '</td>';
   $sum+=$val;
   $cumul[$date]=$sum;
 }
-echo '<td class="reportTableHeader">' . $sum . '</td>';
+echo '<td class="reportTableHeader">' . Work::displayWork($sum) . '</td>';
 echo '</tr>';
 echo '</table>';
 echo '</td></tr></table>';

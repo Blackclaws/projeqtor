@@ -100,6 +100,7 @@
 // 
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.= getAccesResctictionClause($objectClass,$table);
+//debugLog(getAccesResctictionClause($objectClass,$table));
     
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {

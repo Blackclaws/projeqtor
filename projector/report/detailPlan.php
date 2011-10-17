@@ -1,5 +1,7 @@
 <?php
 include_once '../tool/projector.php';
+//echo "detailPlan.php";
+
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -132,6 +134,8 @@ echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
 echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
+echo "<td class='legend'>" . Work::displayWorkUnit() . "</td>";
+echo "<td>&nbsp;</td>";
 echo "</tr>";
 echo "</table>";
 //echo "<br/>";
@@ -201,7 +205,7 @@ foreach ($resources as $idR=>$nameR) {
 	        echo '<td class="reportTableData" ' . $style . ' valign="top">';
 	        if (array_key_exists($day,$result[$idR][$idP][$idA])) {
 	          echo ($ital)?'<i>':'';
-	          echo $result[$idR][$idP][$idA][$day];
+	          echo Work::displayWork($result[$idR][$idP][$idA][$day]);
 	          echo ($ital)?'</i>':'';
 	          $sum[$day]+=$result[$idR][$idP][$idA][$day];
 	          $globalSum[$day]+=$result[$idR][$idP][$idA][$day];
@@ -209,7 +213,7 @@ foreach ($resources as $idR=>$nameR) {
 	        }
 	        echo '</td>';
 	      }
-	      echo '<td class="reportTableColumnHeader">' . $lineSum . '</td>';
+	      echo '<td class="reportTableColumnHeader">' . Work::displayWork($lineSum) . '</td>';
 	      echo '</tr><tr>';
 	    }
     }
@@ -222,10 +226,10 @@ foreach ($resources as $idR=>$nameR) {
     if ($days[$day]=="off") {
           $style=$weekendStyle;
     }
-    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . $sum[$startDate+$i-1] . '</td>';
+    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . Work::displayWork($sum[$startDate+$i-1]) . '</td>';
     $lineSum+=$sum[$startDate+$i-1];
   }
-  echo '<td class="reportTableHeader" >' . $lineSum . '</td>';
+  echo '<td class="reportTableHeader" >' . Work::displayWork($lineSum) . '</td>';
   echo '</tr>';
   
 }
@@ -239,10 +243,10 @@ for ($i=1; $i<=$nbDays;$i++) {
   if ($days[$day]=="off") {
     $style=$weekendStyle;
   }
-  echo '<td class="reportTableHeader" ' . $style . '>' . $globalSum[$startDate+$i-1] . '</td>';
+  echo '<td class="reportTableHeader" ' . $style . '>' . Work::displayWork($globalSum[$startDate+$i-1]) . '</td>';
   $lineSum+=$globalSum[$startDate+$i-1];
 }
-echo '<td class="reportTableHeader">' . $lineSum . '</td>';
+echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
 echo '</tr>';
 echo '</table>';
 echo '</td></tr></table>';

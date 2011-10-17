@@ -329,3 +329,6 @@ ALTER TABLE `${prefix}user` ADD `isLdap` int(1) unsigned DEFAULT '0';
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'ldapDefaultProfile','5'),
 (null, null, 'ldapMsgOnUserCreation','NO');
+
+UPDATE `${prefix}accessright` set idAccessProfile=2 
+where idMenu=91 and idProfile=1;

@@ -104,6 +104,9 @@ class Parameter extends SqlElement {
       $colScript .= '</script>';
     } else {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
+      //if (! $this->idUser and ! $this->idProject) {
+      //  $colScript .= '  formChanged();';
+      //}
       $colScript .= '  newValue=this.value;';
       $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
       $colScript .= '</script>';

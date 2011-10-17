@@ -67,8 +67,8 @@ $pname['ldap_base_dn'] = 'paramLdap_base_dn';
 $ctrls['ldap_base_dn'] = '';
 
 $param['ldap_host'] = 'localhost';                              
-$label['ldap_host'] = "Ldap Host Adress";
-$value['ldap_host'] = "Ldap Host Adress (server)";
+$label['ldap_host'] = "Ldap Host address";
+$value['ldap_host'] = "Ldap Host address (server name)";
 $pname['ldap_host'] = 'paramLdap_host';
 $ctrls['ldap_host'] = '';
 

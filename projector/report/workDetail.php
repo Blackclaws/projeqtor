@@ -1,6 +1,7 @@
 <?php
-//echo "workDetail.php";
 include_once '../tool/projector.php';
+//echo "workDetail.php";
+
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -108,7 +109,7 @@ foreach ($resources as $idR=>$nameR) {
         $val=$result[$idR][$key];
         $sumRes+=$val; 
         $sum+=$val;
-        echo '<td class="reportTableData" style="width:5%">' . $val . '</td>';
+        echo '<td class="reportTableData" style="width:5%">' . Work::displayWorkWithUnit($val). '</td>';
         echo '<td class="reportTableData" style="width:15%; text-align:left;">' . $project[$key] . '</td>';
         echo '<td class="reportTableData" style="width:20%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
         echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
@@ -117,13 +118,13 @@ foreach ($resources as $idR=>$nameR) {
       } 
     }
   }
-  echo '<td class="reportTableColumnHeader">' . $sumRes . '</td>';
+  echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
   echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="4">' . i18n('sum') . " " . $nameR . '</td>';
   echo '</tr>';
 }
 echo '<tr>';
 echo '<td class="reportTableHeader">' . i18n('sum') . '</td>';
-echo '<td class="reportTableHeader">' . $sum . '</td>';
+echo '<td class="reportTableHeader">' . Work::displayWorkWithUnit($sum) . '</td>';
 echo '<td colspan="4"></td>';
 echo '</tr>';
 echo '</table>';

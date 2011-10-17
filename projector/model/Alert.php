@@ -24,6 +24,8 @@ class Alert extends SqlElement {
   public $message;  
   // Define the layout that will be used for lists
   
+  public $_noHistory=true;
+  
   private static $_fieldsAttributes=array("idIndicatorValue"=>"hidden",
                                           "readFlag"=>"nobr", 
                                           "refType"=>"display,nobr", 

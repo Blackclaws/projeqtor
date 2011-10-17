@@ -119,6 +119,8 @@ echo '<td class="reportTableDataFull" ' . $plannedStyle . '>';
 echo "<i>1</i>";
 echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
+echo "</td><td class='legend'>" . Work::displayWorkUnit() . "</td>";
+echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 //echo "<br/>";
 
@@ -175,7 +177,7 @@ foreach ($projects as $idP=>$nameP) {
         echo '<td class="reportTableData" ' . $style . ' valign="top">';
         if (array_key_exists($day,$result[$idP][$idR])) {
           echo ($ital)?'<i>':'';
-          echo $result[$idP][$idR][$day];
+          echo Work::displayWork($result[$idP][$idR][$day]);
           echo ($ital)?'</i>':'';
           $sum[$day]+=$result[$idP][$idR][$day];
           $globalSum[$day]+=$result[$idP][$idR][$day];
@@ -183,7 +185,7 @@ foreach ($projects as $idP=>$nameP) {
         }
         echo '</td>';
       }
-      echo '<td class="reportTableColumnHeader">' . $lineSum . '</td>';
+      echo '<td class="reportTableColumnHeader">' . Work::displayWork($lineSum) . '</td>';
       echo '</tr><tr>';
     }
   }
@@ -195,10 +197,10 @@ foreach ($projects as $idP=>$nameP) {
     if ($days[$day]=="off") {
           $style=$weekendStyle;
     }
-    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . $sum[$startDate+$i-1] . '</td>';
+    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . Work::displayWork($sum[$startDate+$i-1]) . '</td>';
     $lineSum+=$sum[$startDate+$i-1];
   }
-  echo '<td class="reportTableHeader">' . $lineSum . '</td>';
+  echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
   echo '</tr>';
   
 }
@@ -211,10 +213,10 @@ for ($i=1; $i<=$nbDays;$i++) {
   if ($days[$day]=="off") {
     $style=$weekendStyle;
   }
-  echo '<td class="reportTableHeader" ' . $style . '>' . $globalSum[$startDate+$i-1] . '</td>';
+  echo '<td class="reportTableHeader" ' . $style . '>' . Work::displayWork($globalSum[$startDate+$i-1]) . '</td>';
   $lineSum+=$globalSum[$startDate+$i-1];
 }
-echo '<td class="reportTableHeader">' . $lineSum . '</td>';
+echo '<td class="reportTableHeader">' . Work::displayWork($lineSum) . '</td>';
 echo '</tr>';
 echo '</table>';
 echo '</td></tr></table>';

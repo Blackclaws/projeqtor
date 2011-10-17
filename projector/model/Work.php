@@ -191,6 +191,10 @@ class Work extends SqlElement {
     return (round($val*$coef,2));
   }
   
+  public static function displayWorkWithUnit($val) {
+    return self::displayWork($val) . '&nbsp;' . self::displayShortWorkUnit();
+  }
+  
   public static function convertWork($val) {
     self::setWorkUnit();
     $coef=self::$workCoef;
