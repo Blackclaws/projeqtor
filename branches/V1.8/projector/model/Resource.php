@@ -8,10 +8,10 @@ class Resource extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $idProfile;
   public $capacity;
   public $idTeam;
   public $isUser;
+  public $idProfile;
   public $userName;
   public $isContact;
   public $email;

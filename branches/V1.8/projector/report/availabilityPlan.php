@@ -119,6 +119,8 @@ echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
 echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
+echo "<td class='legend'>" . Work::displayWorkUnit() . "</td>";
+echo "<td>&nbsp;</td>";
 echo "</tr>";
 echo "</table>";
 echo '</td></tr>';
@@ -184,7 +186,7 @@ foreach ($resources as $idR=>$nameR) {
      if ($italic) {
      	 echo '<i>' . $val . '</i>';
      } else { 
-     	 echo $val;
+     	 echo Work::displayWork($val);
      }
   	echo '</td>';
   }

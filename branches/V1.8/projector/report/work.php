@@ -1,5 +1,7 @@
 <?php 
 include_once '../tool/projector.php';
+//echo "work.php";
+
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -89,7 +91,7 @@ foreach ($resources as $idR=>$nameR) {
     if (array_key_exists($idR, $result)) {
       if (array_key_exists($idP, $result[$idR])) {
         $val=$result[$idR][$idP];
-        echo $val;
+        echo Work::displayWorkWithUnit($val);
         $sumProj[$idP]+=$val; 
         $sumRes+=$val; 
         $sum+=$val;
@@ -97,12 +99,12 @@ foreach ($resources as $idR=>$nameR) {
     }
     echo '</td>';
   }
-  echo '<td style="width:10%" class="reportTableColumnHeader">' . $sumRes . '</td>';
+  echo '<td style="width:10%" class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
   echo '</tr>';
 }
 echo '<tr><td class="reportTableHeader">' . i18n('sum') . '</td>';
 foreach ($projects as $id=>$name) {
-  echo '<td class="reportTableColumnHeader">' . $sumProj[$id] . '</td>';
+  echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumProj[$id]) . '</td>';
 }
-echo '<td class="reportTableHeader">' . $sum . '</td></tr>';
+echo '<td class="reportTableHeader">' . Work::displayWorkWithUnit($sum) . '</td></tr>';
 echo '</table>';
