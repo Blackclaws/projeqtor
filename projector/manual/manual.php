@@ -78,7 +78,7 @@
 </head>
 
 <body class="<?php echo getTheme();?>">
-<table valign="top" align="center" width="100%" height="100%" ><tr><td text-align="center" align="center">  
+<table class="section" valign="top" align="center" width="100%" height="100%" ><tr><td text-align="center" align="center">  
   <table valign="top" align="center" height="100%">
     <tr>
       <td width="210px" valign="top" align="center">
