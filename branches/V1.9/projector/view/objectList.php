@@ -199,6 +199,16 @@ $obj=new $objectClass;
                 </script>
               </button>              
             </td>
+             <td width="32px">
+              <button title="<?php echo i18n('reportPrintCsv')?>"  
+               dojoType="dijit.form.Button" 
+               id="listPrintCsv" name="listPrintCsv"
+               iconClass="iconCsv" showLabel="false">
+                <script type="dojo/connect" event="onClick" args="evt">
+                  showPrint("../tool/jsonQuery.php", 'list', null, 'csv');
+                </script>
+              </button>              
+            </td>
 <?php }?>            
             <td style="text-align: right; vertical-align: center;" width="5px">
               <NOBR>&nbsp;&nbsp;&nbsp;
