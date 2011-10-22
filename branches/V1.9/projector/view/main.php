@@ -10,6 +10,13 @@
 require_once "../tool/projector.php";
 header ('Content-Type: text/html; charset=UTF-8');
 scriptLog('   ->/view/main.php');
+if (Sql::getDbVersion()!=$version) {
+	//Here difference of version is an important issue => disconnect and get back to login page.
+	session_destroy();
+	include_once 'login.php';
+	exit;
+}
+
 checkVersion(); ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">

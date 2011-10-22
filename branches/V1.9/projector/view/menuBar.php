@@ -77,6 +77,8 @@
         $proj='*'; 
         if (array_key_exists('project',$_SESSION)) {
           $proj=$_SESSION['project'];
+        } else {
+        	$_SESSION['project']="*";
         }
         if ($proj=='*') {
           echo '<i>' . i18n('allProjects') . '</i>';

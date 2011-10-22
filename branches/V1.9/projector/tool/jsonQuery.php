@@ -284,7 +284,7 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-debugLog($query);
+//debugLog($query);
     $result=Sql::query($query);
     $nbRows=0;
     if ($print) {

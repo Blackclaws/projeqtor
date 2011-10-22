@@ -6,6 +6,7 @@ session_start();              // Setup session. Must be first command.
  * $Revision$
  * $Date$
  */
+$globalCatchErrors=false;
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 $browserLocale="";
@@ -53,8 +54,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V1.8.0";            // Version of application : Major / Minor / Release
-$build="0038";                // Build number. To be increased on each release
+$version="V1.9.0";            // Version of application : Major / Minor / Release
+$build="0040";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -303,17 +304,28 @@ function exceptionHandler($exception) {
  * @return void
  */
 function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
-  global $logLevel;
+  global $logLevel, $globalCatchErrors;
   errorLog("ERROR *****");
   errorLog("on file '" . $errorFile . "' at line (" . $errorLine . ")");
   errorLog("cause = " . $errorMessage);
   //echo "<span class='messageERROR'>" . i18n("messageError") . " : " . $exception->getMessage() . "</span>  ";
   //echo "(" . i18n("contactAdministrator") . ")";
+  if ($globalCatchErrors) {
+  	return true;
+  }
   if ($logLevel>=3) {
     throwError($errorMessage . "<br/>&nbsp;&nbsp;&nbsp;in " . basename($errorFile) . "<br/>&nbsp;&nbsp;&nbsp;at line " . $errorLine);
   } else {
     throwError(i18n('errorMessage', array( date('Y-m-d'),date('H:i:s')) ));
-  } 
+  }
+}
+function enableCatchErrors() {
+	global $globalCatchErrors;
+	$globalCatchErrors=true;
+}
+function disableCatchErrors() {
+  global $globalCatchErrors;
+  $globalCatchErrors=false;
 }
 
 /** ============================================================================
@@ -329,7 +341,7 @@ function throwError($message, $code=null) {
   echo '<input type="hidden" id="lastSaveId" value="" />';
   echo '<input type="hidden" id="lastOperation" value="ERROR" />';
   echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
-  exit();  
+  //exit();  
 }
 
 
@@ -563,11 +575,13 @@ function sendMail($to, $title, $message, $object=null)  {
     ini_set('sendmail_path',$paramMailSendmailPath);
   }
   
-  error_reporting(E_ERROR);  
-  restore_error_handler();
+  //error_reporting(E_ERROR);  
+  //restore_error_handler();
+  enableCatchErrors();
   $resultMail=mail($to,$title,$message,$headers);
-  error_reporting(E_ALL);
-  set_error_handler('errorHandler');
+  disableCatchErrors();
+  //error_reporting(E_ALL);
+  //set_error_handler('errorHandler');
   if (! $resultMail) {
     errorLog("Error sending mail");
     $smtp=ini_get('SMTP');
@@ -1337,7 +1351,14 @@ function checkVersion() {
 	}
 	$checkUrl='http://projectorria.toolware.fr/getVersion.php';
 	//$checkUrl='http://localhost/projectorriaV1.8/deploy/getVersion.php';
-	$currentVersion=file_get_contents($checkUrl); 
+  $currentVersion=null;
+  enableCatchErrors();
+	$currentVersion=file_get_contents($checkUrl);
+  disableCatchErrors();
+	if (! $currentVersion) {
+    traceLog('Cannot check Version at ' . $checkUrl);
+    traceLog('Maybe allow_url_fopen is Off in php.ini...');
+  }
 	if (! $currentVersion) { return; }
 	$crit=array('title'=>$currentVersion,'idUser'=>$user->id);
 	$alert=new Alert();
