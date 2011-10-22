@@ -34,6 +34,12 @@ class NumberFormatter52  {
         $this->thouthandSeparator=',';
       }
     }
+    if (array_key_exists('browserLocaleDecimalPoint', $_SESSION)) {
+      $this->decimalSeparator=$_SESSION['browserLocaleDecimalPoint'];
+    }
+    if (array_key_exists('browserLocaleThousandSeparator', $_SESSION)) {
+      $this->thouthandSeparator=$_SESSION['browserLocaleThousandSeparator'];
+    }
     if (ord($this->thouthandSeparator)>127) {
       $this->thouthandSeparator=" ";
     }

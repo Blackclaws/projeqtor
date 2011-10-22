@@ -1254,15 +1254,16 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';
       if ($canUpdate and ! $print and $workVisible) {
+      	debugLog(Work::displayWork($assignment->assignedWork));
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editAssignment(' . "'" . $assignment->id . "'" 
         . ",'" . $assignment->idResource . "'"
         . ",'" . $assignment->idRole . "'"
-        . ",'" . $fmt->format($assignment->dailyCost) . "'"
+        . ",'" . ($assignment->dailyCost * 100) . "'"
         . ",'" . $assignment->rate . "'"
-        . ",'" . $fmt->format(Work::displayWork($assignment->assignedWork)) . "'"
-        . ",'" . $fmt->format(Work::displayWork($assignment->realWork)) . "'"
-        . ",'" . $fmt->format(Work::displayWork($assignment->leftWork)) . "'"
+        . ",'" . Work::displayWork($assignment->assignedWork)*100 . "'"
+        . ",'" . Work::displayWork($assignment->realWork)*100 . "'"
+        . ",'" . Work::displayWork($assignment->leftWork)*100 . "'"
         . ",'" . htmlEncodeJson($assignment->comment) . "'"    
         . ",'" . Work::displayShortWorkUnit() . "'"    
         . ');" ' 
@@ -1271,7 +1272,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
         . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" 
-               . Work::displayWork($assignment->realWork) . "','" 
+               . Work::displayWork($assignment->realWork)*100 . "','" 
                . SqlList::getNameFromId('Resource', $assignment->idResource)  . "'" . ');" ' 
         . 'title="' . i18n('removeAssignment') . '" class="smallButton"/> ';
       }
@@ -1420,7 +1421,7 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
         . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" 
         . ",'" . $rcost->idResource . "'"
         . ",'" . $rcost->idRole . "'" 
-        . ",'" . $fmt->format($rcost->cost) . "'"
+        . ",'" . $rcost->cost*100 . "'"
         . ",'" . $rcost->startDate . "'"
         . ",'" . $rcost->endDate . "'"
         . ');" ' 
