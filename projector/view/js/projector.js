@@ -224,6 +224,24 @@ function saveBrowserLocaleToSession() {
     url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + format,
     load: function(data,args) { }
   });
+  var fmt=""+dojo.number.format(1.1)+" ";
+  var decPoint=fmt.substr(1,1);
+  //alert(fmt+" => decimal point='"+decPoint+"'");
+  dojo.xhrPost({
+	url: "../tool/saveDataToSession.php?id=browserLocaleDecimalPoint&value=" + decPoint,
+	load: function(data,args) { }
+  });
+  var fmt=dojo.number.format(100000)+' ';
+  var thousandSep=fmt.substr(3,1);
+  if (thousandSep=='0') {
+	  thousandSep=''
+  }
+  dojo.xhrPost({
+	url: "../tool/saveDataToSession.php?id=browserLocaleThousandSeparator&value=" + thousandSep,
+	load: function(data,args) { }
+  });
+  //alert(fmt+" => decimal separator='"+decSep+"'");
+  
 }
 
 /**

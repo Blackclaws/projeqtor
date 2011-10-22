@@ -42,12 +42,10 @@
   	$user=new User();
   } 
   
-  try {
-    $authResult=$user->authenticate($login, $password);
-  } catch (Exception $e) {
-  	$authResult="KO";
-  }
-
+  enableCatchErrors();
+  $authResult=$user->authenticate($login, $password);
+  disableCatchErrors();
+    
 // possible returns are 
 // "OK"        login OK
 // "login"     unknown login
