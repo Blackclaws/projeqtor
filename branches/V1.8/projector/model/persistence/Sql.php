@@ -49,6 +49,7 @@ class Sql {
     $cnx = self::getConnection();
     self::$lastQueryErrorMessage=NULL;
     self::$lastQueryErrorCode=NULL;
+    enableCatchErrors();
     try { 
       $result = mysql_query($sqlRequest,$cnx);
       if (! $result) {
@@ -62,6 +63,7 @@ class Sql {
       $result=false;
       errorLog('[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
     }
+    disableCatchErrors();
     // store informations about last query
     self::$lastQuery=$sqlRequest;
     self::$lastQueryResult=$result;
@@ -191,8 +193,9 @@ class Sql {
       exit;
     }
 
-    restore_error_handler();
-    error_reporting(0);
+    //restore_error_handler();
+    //error_reporting(0);
+    enableCatchErrors();
     // defines the connection to MySql Database
     ini_set('mysql.connect_timeout', 10);
     if ( ! self::$connexion = mysql_connect(self::$dbHost, self::$dbUser, self::$dbPassword) ) { 
@@ -219,8 +222,9 @@ class Sql {
       exit;
     }
     ini_set('mysql.connect_timeout', 60);
-    set_error_handler('errorHandler');
-    error_reporting(E_ALL);
+    //set_error_handler('errorHandler');
+    //error_reporting(E_ALL);
+    disableCatchErrors();
     self::$lastConnectError=NULL;
     return self::$connexion;
   }

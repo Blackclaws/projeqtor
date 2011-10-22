@@ -405,32 +405,32 @@ class User extends SqlElement {
 	  global $paramLdap_allow_login, $paramLdap_base_dn, $paramLdap_host, $paramLdap_port, $paramLdap_version, $paramLdap_search_user, $paramLdap_search_pass, $paramLdap_user_filter, $paramLdap_defaultprofile;
 	
 	 	if ( ! $this->id ) {
-			debugLog("authenticate - user '" . $paramlogin . "' unknown in database" );
+			//debugLog("authenticate - user '" . $paramlogin . "' unknown in database" );
 			if (isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
-		  	debugLog("authenticate - user '" . $paramlogin . "' - LDAP enabled - create from LDAP directory if password is OK" );
+		  	//debugLog("authenticate - user '" . $paramlogin . "' - LDAP enabled - create from LDAP directory if password is OK" );
 		  	$this->name=$paramlogin;
 		  	$this->isLdap = 1;
 		  	//$this->id=-2;
 			} else {
-			  debugLog("authenticate - user '" . $paramlogin . "' - unknown in database - LDAP disabled" );
+			  //debugLog("authenticate - user '" . $paramlogin . "' - unknown in database - LDAP disabled" );
 				return "login";
 		  }	
 	 	}	
  	
-	 	debugLog("authenticate - user '" . $paramlogin . "' isLdap=".$this->isLdap );
+	 	//debugLog("authenticate - user '" . $paramlogin . "' isLdap=".$this->isLdap );
 		if ($this->isLdap == 0) {
-			debugLog("authenticate - user '" . $paramlogin . "' - integrated mode" );
+			//debugLog("authenticate - user '" . $paramlogin . "' - integrated mode" );
 			if ($this->password <> md5($parampassword)) {
-				debugLog("authenticate - user '" . $paramlogin . "' - wrong password" );
+				//debugLog("authenticate - user '" . $paramlogin . "' - wrong password" );
 	      return "password";
 			} else {
-				debugLog("authenticate - user '" . $paramlogin . "' - password OK" );
+				//debugLog("authenticate - user '" . $paramlogin . "' - password OK" );
 	  	  return "OK";	
 	  	}
 	  } else {
 	  	// check passsword on LDAP
-			debugLog("authenticate - user '" . $paramlogin . "' - LDAP mode" );
-			debugLog("authenticate - LDAP - Host='". $paramLdap_host ."' Port='". $paramLdap_port ."' Version='". $paramLdap_version . "'" );
+			//debugLog("authenticate - user '" . $paramlogin . "' - LDAP mode" );
+			//debugLog("authenticate - LDAP - Host='". $paramLdap_host ."' Port='". $paramLdap_port ."' Version='". $paramLdap_version . "'" );
 	    if (! function_exists('ldap_connect')) {
 	    	errorLog('Ldap non installed on your PHP server, you should not set $paramLdap_allow_login to "true"');        
         return "ldap";
@@ -445,7 +445,7 @@ class User extends SqlElement {
         traceLog("authenticate - Mode LDAP - LdapConnectError");        
         return "ldap";
       }
-			debugLog("authenticate - Mode LDAP - LdapConnect OK");       
+			//debugLog("authenticate - Mode LDAP - LdapConnect OK");       
 			@ldap_set_option($ldapCnx, LDAP_OPT_PROTOCOL_VERSION, $paramLdap_version);
 			@ldap_set_option($ldapCnx, LDAP_OPT_REFERRALS, 0);
 	
@@ -453,7 +453,7 @@ class User extends SqlElement {
 			$ldap_bind_dn = empty($paramLdap_search_user) ? null : $paramLdap_search_user;
 			$ldap_bind_pw = empty($paramLdap_search_pass) ? null : $paramLdap_search_pass;
 	
-			debugLog("authenticate - LdapBind - DN='". $ldap_bind_dn ."' PW='". $ldap_bind_pw ."'" );
+			//debugLog("authenticate - LdapBind - DN='". $ldap_bind_dn ."' PW='". $ldap_bind_pw ."'" );
   		try {
 			  $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
   		} catch (Exception $e) {
@@ -465,20 +465,20 @@ class User extends SqlElement {
 				return "ldap";
 			}
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
-			debugLog("authenticate - LdapSearch - DN '". $paramLdap_base_dn ."' Filter : '". $filter_r ."'" );
+			//debugLog("authenticate - LdapSearch - DN '". $paramLdap_base_dn ."' Filter : '". $filter_r ."'" );
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
 			if (!$result) {
-				debugLog("authenticate - Mode LDAP - LdapSearch - USERNAME not found");
+				//debugLog("authenticate - Mode LDAP - LdapSearch - USERNAME not found");
 				return "login";
 			}
-			debugLog("authenticate - Mode LDAP - Ldap_get_entries'");
+			//debugLog("authenticate - Mode LDAP - Ldap_get_entries'");
 			$result_user = ldap_get_entries($ldapCnx, $result);
 			if ($result_user['count'] == 0) {
-				debugLog("authenticate - Mode LDAP - Ldap_get_entries - no result = unknown login'");
+				//debugLog("authenticate - Mode LDAP - Ldap_get_entries - no result = unknown login'");
 				return "login";
 			}
 		  if ($result_user['count'] > 1) {
-        debugLog("authenticate - Mode LDAP - Ldap_get_entries - too many results = ambigous login");
+        //debugLog("authenticate - Mode LDAP - Ldap_get_entries - too many results = ambigous login");
         return "login";
       }
 			$first_user = $result_user[0];
@@ -486,7 +486,7 @@ class User extends SqlElement {
 
 			// Bind with the dn of the user that matched our filter (only one user should match filter ..)
 
-			debugLog("authenticate - Mode LDAP - LdapBind - DN '". $ldap_user_dn ."' Password : '". $parampassword ."'" );
+			//debugLog("authenticate - Mode LDAP - LdapBind - DN '". $ldap_user_dn ."' Password : '". $parampassword ."'" );
 			try {
 			  $bind_user = ldap_bind($ldapCnx, $ldap_user_dn, $parampassword);
 			} catch (Exception $e) {
@@ -494,12 +494,12 @@ class User extends SqlElement {
         return "ldap";
       }   
 			if (! $bind_user) {
-				debugLog("authenticate - Mode LDAP - LdapBind - KO" );
+				//debugLog("authenticate - Mode LDAP - LdapBind - KO" );
 				return "login";
 			}
-			debugLog("authenticate - Mode LDAP - LdapBind - SUCCESS" );
+			//debugLog("authenticate - Mode LDAP - LdapBind - SUCCESS" );
 			if (! $this->id and $this->isLdap) {
-				debugLog("authenticate - Mode LDAP - LdapBind - SUCCESS - Create user from LDAP" );
+				//debugLog("authenticate - Mode LDAP - LdapBind - SUCCESS - Create user from LDAP" );
 				if (!count($first_user) == 0) {
 					// Contact information based on the inetOrgPerson class schema
 					if (isset( $first_user['mail'][0] )) {
@@ -512,7 +512,7 @@ class User extends SqlElement {
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  $this->save();
-					debugLog("authenticate - Mode LDAP - Create user from LDAP - new id=".$this->id );
+					//debugLog("authenticate - Mode LDAP - Create user from LDAP - new id=".$this->id );
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');	
 					if ($sendAlert!='NO') {
 						$title="Project'Or RIA - " . i18n('newUser');

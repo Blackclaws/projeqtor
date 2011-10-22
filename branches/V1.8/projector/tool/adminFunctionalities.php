@@ -7,7 +7,6 @@ if (! $adminFunctionality) {
 }
 $nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
 if ($adminFunctionality=='sendAlert') {
-;
 	$result=sendAlert();
 } else if ($adminFunctionality=='maintenance') {
 	$result=maintenance();	
@@ -57,7 +56,7 @@ function sendAlert(){
     $alert->alertType=$alertSendType;
     $alert->alertInitialDateTime=$alertSendDate . " " . substr($alertSendTime,1);
     $alert->alertDateTime=$alertSendDate . " " . substr($alertSendTime,1);
-    $alert->title=$alertSendTitle;
+    $alert->title=ucfirst(i18n($alertSendType)) . ' - ' . $alertSendTitle;
     $alert->message=$alertSendMessage;  
     $alert->save();
   }
