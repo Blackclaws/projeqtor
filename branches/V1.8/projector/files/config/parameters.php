@@ -6,6 +6,7 @@ $paramDbType = 'mysql';
 $paramDbHost = 'localhost';
 $paramDbUser = 'root';
 $paramDbPassword = 'mysql';
+//$paramDbPassword = '';
 $paramDbName = 'projectorria_V18';
 //$paramDbName = 'projectorria_manual';
 $paramDbDisplayName = 'Project\'Or RIA V1.8.0';
