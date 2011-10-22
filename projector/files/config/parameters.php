@@ -40,7 +40,7 @@ $logLevel = '4';
 $paramDebugMode = 'false';
 $paramMemoryLimitForPDF = '512';
 // New parameters V1.8.0
-$paramLdap_allow_login = 'true';
+$paramLdap_allow_login = 'false';
 $paramLdap_base_dn = 'dc=maxcrc,dc=com';
 $paramLdap_host = 'localhost';
 $paramLdap_port = '389';
@@ -48,13 +48,4 @@ $paramLdap_version = '3';
 $paramLdap_search_user = 'cn=Manager,dc=maxcrc,dc=com';
 $paramLdap_search_pass = 'secret';
 $paramLdap_user_filter = 'uid=%USERNAME%';
-$paramLdap_defaultprofile='5';
-// New parameters V1.8.0
-$paramldap_allow_login = 'false';
-$paramLdap_base_dn = 'dc=mydomain,dc=com';
-$paramLdap_host = 'localhost';
-$paramLdap_port = '389';
-$paramLdap_version = '3';
-$paramLdap_search_user = 'cn=Manager,dc=mydomain,dc=com';
-$paramLdap_search_pass = 'secret';
-$paramLdap_user_filter = 'uid=%USERNAME%';
+
