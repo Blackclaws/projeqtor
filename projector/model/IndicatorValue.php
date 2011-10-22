@@ -376,7 +376,7 @@ class IndicatorValue extends SqlElement {
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
     
-    $title=$type.' - '. $item . ' #' . $id; 
+    $title=ucfirst(i18n($type)) .' - '. $item . ' #' . $id; 
     $message='<table>';
     $message.='<tr><td colspan="3" style="border:1px solid grey">' . htmlEncode($name) . '</td></tr>';
     $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';

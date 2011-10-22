@@ -313,7 +313,8 @@ function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
     throwError($errorMessage . "<br/>&nbsp;&nbsp;&nbsp;in " . basename($errorFile) . "<br/>&nbsp;&nbsp;&nbsp;at line " . $errorLine);
   } else {
     throwError(i18n('errorMessage', array( date('Y-m-d'),date('H:i:s')) ));
-  } 
+  }
+  return new Exception($errorMessage, $errorType); 
 }
 
 /** ============================================================================
@@ -1337,7 +1338,20 @@ function checkVersion() {
 	}
 	$checkUrl='http://projectorria.toolware.fr/getVersion.php';
 	//$checkUrl='http://localhost/projectorriaV1.8/deploy/getVersion.php';
-	$currentVersion=file_get_contents($checkUrl); 
+  $currentVersion=null;
+  error_reporting(E_ERROR);  
+  restore_error_handler();
+	try {
+	  $currentVersion=file_get_contents($checkUrl);
+	} catch (Exception $e) {
+		traceLog('Cannot check Version : ');
+		traceLog($e->getMessage());
+	}
+	set_error_handler("errorHandler");
+  if (! $currentVersion) {
+    traceLog('Cannot check Version at ' . $checkUrl);
+    traceLog('Maybe allow_url_fopen is Off in php.ini...');
+  }
 	if (! $currentVersion) { return; }
 	$crit=array('title'=>$currentVersion,'idUser'=>$user->id);
 	$alert=new Alert();

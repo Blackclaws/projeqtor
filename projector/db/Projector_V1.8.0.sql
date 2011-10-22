@@ -290,7 +290,7 @@ where idMenu='18' and idProfile='1';
 
 ALTER TABLE `${prefix}project` ADD sortOrder varchar(400);
 
-UPDATE `${prefix}project` SET sortOrder = (select wbsSortable from planningelement pe 
+UPDATE `${prefix}project` SET sortOrder = (select wbsSortable from ${prefix}planningelement pe 
  where pe.refType='Project' and pe.refId=`${prefix}project`.id);
  
 UPDATE `${prefix}type` SET name = 'ALERT'  
