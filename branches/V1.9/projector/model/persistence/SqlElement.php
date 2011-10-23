@@ -2029,22 +2029,30 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	$select="";
   	$from="";
   	if (is_subclass_of($this,'PlanningElement')) {
-  		$workVisibility=$obj->_workVisibility;
-      $costVisibility=$obj->_costVisibility;
+  		$workVisibility=$this->_workVisibility;
+      $costVisibility=$this->_costVisibility;
   	}
   	foreach ($this as $col=>$val) {
-  		if ( ($included and ($col=='refId' or $col=='refType' or $col=='refName') ) 
+  		if ( ($included and ($col=='id' or $col=='refId' or $col=='refType' or $col=='refName') ) 
   		  or (substr($col,0,1)=='_') 
   		  or (strpos($this->getFieldAttributes($col), 'hidden')!==false )
   		  or ($col=='password')
   		) {
   			// Here are all cases of not dispalyed fields
   		} else if (ucfirst($col)==$col) {
-  			//object
+  			$ext=new $col();
+  			if (is_subclass_of($ext,'PlanningElement')) {
+  				$from=' left join ' . $ext->getDatabaseTableName() .
+              ' on ' . $table . ".id" .  
+              ' = ' . $ext->getDatabaseTableName() . '.refId' .
+  				    ' and ' . $ext->getDatabaseTableName() . ".refType='" . get_class($this) . "'";
+  				$extClause=$ext->buildSelectClause(true);
+  				$select.=', '.$extClause['select'];
+  			}
   	  } else {
   			$select .= ($select=='')?'':', ';
-  			$select .= $col;
-  		}
+  			$select .= $table . '.' . $this->getDatabaseColumnName($col);
+  	  }
   	}
   	return array('select'=>$select,'from'=>$from);
   	
