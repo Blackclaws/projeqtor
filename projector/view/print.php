@@ -13,9 +13,7 @@
        $outMode=$_REQUEST['outMode'];
      }
    }
-   if ($outMode!='pdf') {
-     header ('Content-Type: text/html; charset=UTF-8');
-   } else {
+   if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
      if (isset($paramMemoryLimitForPDF)) {
        $limit=$paramMemoryLimitForPDF;	
@@ -33,16 +31,29 @@
      } else {
       ini_set("memory_limit", $limit.'M');
      }
+   } else if ($outMode=='csv')  {
+     $contentType="application/force-download";
+     $name="export_" . $_REQUEST['objectClass'] . "_" . date('YYYYmmdd_hhmnss') . ".csv";
+     header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
+	   header("Content-Transfer-Encoding: binary"); 
+	   //header("Content-Length: $size"); 
+	   header("Content-Disposition: attachment; filename=\"" .$name . "\""); 
+	   header("Expires: 0"); 
+	   header("Cache-Control: no-cache, must-revalidate");
+	   header("Pragma: no-cache");
+   } else {
+     header ('Content-Type: text/html; charset=UTF-8');
    }
    $detail=false;
    if (array_key_exists('detail', $_REQUEST)) {
    	$detail=true;
    }
    scriptLog('   ->/view/print.php'); 
-  if ($outMode!='pdf') {?> 
+  if ($outMode!='pdf' and $outMode!='csv') {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
-<?php }?>
+<?php }
+   if ($outMode!='csv') {?> ?>
 <html>
 <head>   
   <title><?php echo i18n("applicationTitle");?></title>
@@ -71,8 +82,9 @@
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?> id="bodyPrint" class="white" onload="top.hideWait();";>
+<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> id="bodyPrint" class="white" onload="top.hideWait();";>
   <?php 
+  }
   $includeFile=$_REQUEST['page'];
   if (! substr($_REQUEST['page'],0,3)=='../') {
     $includeFile.='../view/';
@@ -87,11 +99,12 @@
     }
   }
   include $includeFile;
-?>
+  if ($outMode!='csv') {?>
 </<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?>>
 </page>
 </html>
-<?php 
+<?php
+  } 
   finalizePrint();
 ?>
 <?php function finalizePrint() {

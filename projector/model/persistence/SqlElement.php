@@ -2023,5 +2023,31 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	}
   	return array('level'=>$level,'description'=>$desc);
   }
+  
+  public function buildSelectClause($included=false){
+  	$table=$this->getDatabaseTableName();
+  	$select="";
+  	$from="";
+  	if (is_subclass_of($this,'PlanningElement')) {
+  		$workVisibility=$obj->_workVisibility;
+      $costVisibility=$obj->_costVisibility;
+  	}
+  	foreach ($this as $col=>$val) {
+  		if ( ($included and ($col=='refId' or $col=='refType' or $col=='refName') ) 
+  		  or (substr($col,0,1)=='_') 
+  		  or (strpos($this->getFieldAttributes($col), 'hidden')!==false )
+  		  or ($col=='password')
+  		) {
+  			// Here are all cases of not dispalyed fields
+  		} else if (ucfirst($col)==$col) {
+  			//object
+  	  } else {
+  			$select .= ($select=='')?'':', ';
+  			$select .= $col;
+  		}
+  	}
+  	return array('select'=>$select,'from'=>$from);
+  	
+  }
 }
 ?>

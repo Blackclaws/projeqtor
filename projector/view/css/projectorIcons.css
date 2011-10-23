@@ -204,6 +204,9 @@
 .iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .dijitDisabled .iconPdf { background-image: url(images/pdfDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
+.iconCsv { background-image: url(images/csv.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+.dijitDisabled .iconCsv { background-image: url(images/csvDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
 .iconPlanning32 { background-image: url(images/iconPlanning32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconPlanning22 { background-image: url(images/iconPlanning22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconPlanning16 { background-image: url(images/iconPlanning16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
