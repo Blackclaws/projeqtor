@@ -33,7 +33,7 @@
      }
    } else if ($outMode=='csv')  {
      $contentType="application/force-download";
-     $name="export_" . $_REQUEST['objectClass'] . "_" . date('YYYYmmdd_hhmnss') . ".csv";
+     $name="export_" . $_REQUEST['objectClass'] . "_" . date('Ymd_His') . ".csv";
      header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
 	   header("Content-Transfer-Encoding: binary"); 
 	   //header("Content-Length: $size"); 

@@ -160,9 +160,11 @@
     $arrayWidth=array();
     if ($outMode=='csv') {
     	$obj=new $objectClass();
-    	$querySelect .= ($querySelect=='')?'':', ';
     	$clause=$obj->buildSelectClause();
+    	$querySelect .= ($querySelect=='')?'':', ';
     	$querySelect .= $clause['select'];
+    	//$queryFrom .= ($queryFrom=='')?'':', ';
+    	$queryFrom .= $clause['from'];
     } else {
 	    foreach ($array as $val) {
 	      //$sp=preg_split('field=', $val);
@@ -275,9 +277,9 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-
     $result=Sql::query($query);
     $nbRows=0;
+    $dataType=array();
     if ($print) {
     	if ($outMode=='csv') {
     		$obj=new $objectClass();
@@ -285,7 +287,10 @@
     		while ($line = Sql::fetchLine($result)) {
     			if ($first) {
 	    			foreach ($line as $id => $val) {
-	            echo utf8_decode($obj->getColCaption($id)) . ';';
+	    				$val=utf8_decode($obj->getColCaption($id));
+	    				$val=str_replace(';',',',$val);
+	            echo $val . ';';
+	            $dataType[$id]=$obj->getDataType($id);
 	          }
 	          echo "\n";
     			}
@@ -296,7 +301,15 @@
     					  $val=SqlList::getNameFromId($class, $val);
     					}
     				}
-    				echo utf8_decode($val) . ';';
+    				$val=utf8_decode($val);
+            $val=str_replace(';',',',$val);
+            $val=str_replace('"',"'",$val);
+            //$val=preg_replace( "/\r\n|\r|\n/",' ',$val);
+            if ($dataType[$id]=='varchar') {
+              echo '"' . $val . '";';
+            } else {
+            	echo $val . ';';
+            }
     			}
     			$first=false;
     			echo "\n";
