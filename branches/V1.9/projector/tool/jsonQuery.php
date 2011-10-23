@@ -17,7 +17,8 @@
     $quickSearch=false;
     if ( array_key_exists('quickSearch',$_REQUEST) ) {
       $quickSearch=$_REQUEST['quickSearch'];
-    } 
+    }
+    if (! isset($outMode)) { $outMode=""; } 
        
     $obj=new $objectClass();
     $table=$obj->getDatabaseTableName();
@@ -82,25 +83,9 @@
           }
         }
     }
-// 
-/*
-    if ($accessRightRead=='NO') {
-      $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  "(1 = 2)";      
-    } else if ($accessRightRead=='OWN') {
-      $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";            
-    } else if ($accessRightRead=='PRO') {
-      $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      
-    } else if ($accessRightRead=='ALL') {
-      // No restriction to add
-    }
-*/ 
-// 
+
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.= getAccesResctictionClause($objectClass,$table);
-//debugLog(getAccesResctictionClause($objectClass,$table));
     
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
@@ -173,89 +158,95 @@
     $numField=0;
     $formatter=array();
     $arrayWidth=array();
-    foreach ($array as $val) {
-      //$sp=preg_split('field=', $val);
-      //$sp=explode('field=', $val);
-      $fld=htmlExtractArgument($val, 'field');      
-      if ($fld) {
-        $numField+=1;        
-        $formatter[$numField]=htmlExtractArgument($val, 'formatter');
-        $from=htmlExtractArgument($val, 'from');
-        $arrayWidth[$numField]=htmlExtractArgument($val, 'width');
-        $querySelect .= ($querySelect=='')?'':', ';
-        if (strlen($fld)>9 and substr($fld,0,9)=="colorName") {
-          $idTab+=1;
-          // requested field are colorXXX and nameXXX => must fetch the from external table, using idXXX
-          $externalClass = substr($fld,9);
-          $externalObj=new $externalClass();
-          $externalTable = $externalObj->getDatabaseTableName();
-          $externalTableAlias = 'T' . $idTab;
-          $querySelect .= 'convert(concat(';
-          if (property_exists($externalObj,'sortOrder')) {
-            $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
-            $querySelect .=  ",'#split#',";
-          }
-          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
-          $querySelect .=  ",'#split#',";
-          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color');
-          $querySelect .= ') using utf8) as ' . $fld;
-          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
-            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-        } else if (strlen($fld)>4 and substr($fld,0,4)=="name") {
-          $idTab+=1;
-          // requested field is nameXXX => must fetch it from external table, using idXXX
-          $externalClass = substr($fld,4);
-          $externalObj=new $externalClass();
-          $externalTable = $externalObj->getDatabaseTableName();
-          $externalTableAlias = 'T' . $idTab;
-          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . $fld;
-          //if (! stripos($queryFrom,$externalTable)) {
-            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
-              ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-          //}   
-        } else if (strlen($fld)>5 and substr($fld,0,5)=="color") {
-          $idTab+=1;
-          // requested field is colorXXX => must fetch it from external table, using idXXX
-          $externalClass = substr($fld,5);
-          $externalObj=new $externalClass();
-          $externalTable = $externalObj->getDatabaseTableName();
-          $externalTableAlias = 'T' . $idTab;
-          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color') . ' as ' . $fld;
-          //if (! stripos($queryFrom,$externalTable)) {
-            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias . 
-              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
-              ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-          //}
-        } else if ($from) {
-          // Link to external table
-          $externalClass = $from;
-          $externalObj=new $externalClass();
-          $externalTable = $externalObj->getDatabaseTableName();
-          // Test for bug #419
-          //$externalTableAlias = $externalClass;
-          //$externalTableAlias = $externalObj->getDatabaseTableName();          
-          $externalTableAlias = strtolower($externalClass);
-          $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . $fld;
-          if (! stripos($queryFrom,$externalTable)) {
-            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-              ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
-              ' and ' . $externalTableAlias . ".refType='" . $objectClass . "')";
-          }
-          if ( property_exists($externalObj,'wbsSortable') 
-            and strpos($queryOrderBy,$externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable'))===false) {
-            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-            $queryOrderBy .= " " . $externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable') . " ";
-          } 
-        } else {      
-        //var_dump($fld); echo '<br/>';
-          // Simple field to add to request 
-          $querySelect .= $table . '.' . $obj->getDatabaseColumnName($fld) . ' as ' . strtr($fld,'.','_');
-        }
-      }
+    if ($outMode=='csv') {
+    	$obj=new $objectClass();
+    	$querySelect .= ($querySelect=='')?'':', ';
+    	$clause=$obj->buildSelectClause();
+    	$querySelect .= $clause['select'];
+    } else {
+	    foreach ($array as $val) {
+	      //$sp=preg_split('field=', $val);
+	      //$sp=explode('field=', $val);
+	      $fld=htmlExtractArgument($val, 'field');      
+	      if ($fld) {
+	        $numField+=1;        
+	        $formatter[$numField]=htmlExtractArgument($val, 'formatter');
+	        $from=htmlExtractArgument($val, 'from');
+	        $arrayWidth[$numField]=htmlExtractArgument($val, 'width');
+	        $querySelect .= ($querySelect=='')?'':', ';
+	        if (strlen($fld)>9 and substr($fld,0,9)=="colorName") {
+	          $idTab+=1;
+	          // requested field are colorXXX and nameXXX => must fetch the from external table, using idXXX
+	          $externalClass = substr($fld,9);
+	          $externalObj=new $externalClass();
+	          $externalTable = $externalObj->getDatabaseTableName();
+	          $externalTableAlias = 'T' . $idTab;
+	          $querySelect .= 'convert(concat(';
+	          if (property_exists($externalObj,'sortOrder')) {
+	            $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
+	            $querySelect .=  ",'#split#',";
+	          }
+	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
+	          $querySelect .=  ",'#split#',";
+	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color');
+	          $querySelect .= ') using utf8) as ' . $fld;
+	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+	            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+	            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+	        } else if (strlen($fld)>4 and substr($fld,0,4)=="name") {
+	          $idTab+=1;
+	          // requested field is nameXXX => must fetch it from external table, using idXXX
+	          $externalClass = substr($fld,4);
+	          $externalObj=new $externalClass();
+	          $externalTable = $externalObj->getDatabaseTableName();
+	          $externalTableAlias = 'T' . $idTab;
+	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . $fld;
+	          //if (! stripos($queryFrom,$externalTable)) {
+	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+	              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+	              ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+	          //}   
+	        } else if (strlen($fld)>5 and substr($fld,0,5)=="color") {
+	          $idTab+=1;
+	          // requested field is colorXXX => must fetch it from external table, using idXXX
+	          $externalClass = substr($fld,5);
+	          $externalObj=new $externalClass();
+	          $externalTable = $externalObj->getDatabaseTableName();
+	          $externalTableAlias = 'T' . $idTab;
+	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color') . ' as ' . $fld;
+	          //if (! stripos($queryFrom,$externalTable)) {
+	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias . 
+	              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+	              ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+	          //}
+	        } else if ($from) {
+	          // Link to external table
+	          $externalClass = $from;
+	          $externalObj=new $externalClass();
+	          $externalTable = $externalObj->getDatabaseTableName();
+	          // Test for bug #419
+	          //$externalTableAlias = $externalClass;
+	          //$externalTableAlias = $externalObj->getDatabaseTableName();          
+	          $externalTableAlias = strtolower($externalClass);
+	          $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . $fld;
+	          if (! stripos($queryFrom,$externalTable)) {
+	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+	              ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
+	              ' and ' . $externalTableAlias . ".refType='" . $objectClass . "')";
+	          }
+	          if ( property_exists($externalObj,'wbsSortable') 
+	            and strpos($queryOrderBy,$externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable'))===false) {
+	            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+	            $queryOrderBy .= " " . $externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable') . " ";
+	          } 
+	        } else {      
+	        //var_dump($fld); echo '<br/>';
+	          // Simple field to add to request 
+	          $querySelect .= $table . '.' . $obj->getDatabaseColumnName($fld) . ' as ' . strtr($fld,'.','_');
+	        }
+	      }
+	    }
     }
-  
     // build order by clause
     if ( property_exists($objectClass,'wbsSortable')) {
       $queryOrderBy .= ($queryOrderBy=='')?'':', ';
@@ -284,49 +275,73 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-//debugLog($query);
+
     $result=Sql::query($query);
     $nbRows=0;
     if ($print) {
-      echo '<table>';
-      echo '<tr>';
-      echo str_ireplace('width="','style="width:',$layout);
-      echo '</tr>';
-      if (Sql::$lastQueryNbRows > 0) {
-        while ($line = Sql::fetchLine($result)) {
-          echo '<tr>';
-          $numField=0;
-          foreach ($line as $id => $val) {
-            $numField+=1;
-            $disp="";
-            if ($formatter[$numField]=="colorNameFormatter") {
-              $disp=colorNameFormatter($val);
-            } else if ($formatter[$numField]=="booleanFormatter") {
-              $disp=booleanFormatter($val);
-            } else if ($formatter[$numField]=="colorFormatter") {
-              $disp=colorFormatter($val);
-            } else if ($formatter[$numField]=="dateTimeFormatter") {
-              $disp=dateTimeFormatter($val);
-            } else if ($formatter[$numField]=="dateFormatter") {
-              $disp=dateFormatter($val);
-            } else if ($formatter[$numField]=="translateFormatter") {
-              $disp=translateFormatter($val);
-            } else if ($formatter[$numField]=="percentFormatter") {
-              $disp=percentFormatter($val);
-            } else if ($formatter[$numField]=="numericFormatter") {
-              $disp=numericFormatter($val);
-            } else if ($formatter[$numField]=="sortableFormatter") {
-              $disp=sortableFormatter($val);
-            } else {
-              $disp=htmlEncode($val);
-            }
-            echo '<td class="tdListPrint" style="width:' . $arrayWidth[$numField] . ';">' . $disp . '</td>';
-          }
-          echo '</tr>';       
-        }
-      }
-      echo "</table>";
-      //echo "</div>";
+    	if ($outMode=='csv') {
+    		$obj=new $objectClass();
+    		$first=true;
+    		while ($line = Sql::fetchLine($result)) {
+    			if ($first) {
+	    			foreach ($line as $id => $val) {
+	            echo utf8_decode($obj->getColCaption($id)) . ';';
+	          }
+	          echo "\n";
+    			}
+    			foreach ($line as $id => $val) {
+    				if (substr($id, 0,2)=='id' and strlen($id)>2) {
+    					$class=substr($id, 2);
+    					if (ucfirst($class)==$class) {
+    					  $val=SqlList::getNameFromId($class, $val);
+    					}
+    				}
+    				echo utf8_decode($val) . ';';
+    			}
+    			$first=false;
+    			echo "\n";
+    		}
+    	} else {
+	      echo '<table>';
+	      echo '<tr>';
+	      echo str_ireplace('width="','style="width:',$layout);
+	      echo '</tr>';
+	      if (Sql::$lastQueryNbRows > 0) {
+	        while ($line = Sql::fetchLine($result)) {
+	          echo '<tr>';
+	          $numField=0;
+	          foreach ($line as $id => $val) {
+	            $numField+=1;
+	            $disp="";
+	            if ($formatter[$numField]=="colorNameFormatter") {
+	              $disp=colorNameFormatter($val);
+	            } else if ($formatter[$numField]=="booleanFormatter") {
+	              $disp=booleanFormatter($val);
+	            } else if ($formatter[$numField]=="colorFormatter") {
+	              $disp=colorFormatter($val);
+	            } else if ($formatter[$numField]=="dateTimeFormatter") {
+	              $disp=dateTimeFormatter($val);
+	            } else if ($formatter[$numField]=="dateFormatter") {
+	              $disp=dateFormatter($val);
+	            } else if ($formatter[$numField]=="translateFormatter") {
+	              $disp=translateFormatter($val);
+	            } else if ($formatter[$numField]=="percentFormatter") {
+	              $disp=percentFormatter($val);
+	            } else if ($formatter[$numField]=="numericFormatter") {
+	              $disp=numericFormatter($val);
+	            } else if ($formatter[$numField]=="sortableFormatter") {
+	              $disp=sortableFormatter($val);
+	            } else {
+	              $disp=htmlEncode($val);
+	            }
+	            echo '<td class="tdListPrint" style="width:' . $arrayWidth[$numField] . ';">' . $disp . '</td>';
+	          }
+	          echo '</tr>';       
+	        }
+	      }
+	      echo "</table>";
+	      //echo "</div>";
+    	}
     } else {
       // return result in json format
       echo '{"identifier":"id",' ;

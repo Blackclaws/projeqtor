@@ -165,6 +165,9 @@ function showPrint (page, context, comboName, outMode) {
 	if (outMode=="pdf") {
 	  printInNewWin=pdfInNewWindow;
 	}
+	if (outMode=="csv") {
+		printInNewWin=true;
+	}
 	if ( ! printInNewWin) {
 	  //window.frames['printFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		//frames['printFrame'].location.href='../view/preparePreview.php';
