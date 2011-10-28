@@ -227,6 +227,8 @@ class Parameter extends SqlElement {
                     'MAIL'=>i18n('displayMail'),
                     'ALERT&MAIL'=>i18n('displayAlertAndMail'));
         break;
+      case 'csvSeparator';
+         $list=array(';'=>';',','=>',');
     } 
     return $list;
   }
@@ -268,7 +270,8 @@ class Parameter extends SqlElement {
       	                     'ldapDefaultProfile'=>'list',
       	                     'ldapMsgOnUserCreation'=>'list',
       	                     'sectionMiscellaneous'=>'section',  
-      	                     'getVersion'=>'list'
+      	                     'getVersion'=>'list',
+      	                     'csvSeparator'=>'list'
       	);
     }
     return $parameterList;

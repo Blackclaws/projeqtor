@@ -62,7 +62,9 @@ function getFields($obj, $included=false) {
     if ($firstCar=="_") {
       // don't display
     } else if ( $included and ($fld=='id' or $threeCars=='ref' or $threeCars=='top' 
-                            or $fld=='idle' or $threeCars=='wbs')) {
+                            or $fld=='idle' 
+                            //or $threeCars=='wbs'
+                            )) {
       // don't display
     } else if ( strpos($obj->getFieldAttributes($fld),'hidden')!==false) {
       // don't display

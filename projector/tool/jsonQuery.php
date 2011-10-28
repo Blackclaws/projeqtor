@@ -282,37 +282,48 @@
     $dataType=array();
     if ($print) {
     	if ($outMode=='csv') {
+    		$csvSep=Parameter::getGlobalParameter('csvSeparator');
+    		$csvQuotedText=true;
     		$obj=new $objectClass();
     		$first=true;
     		while ($line = Sql::fetchLine($result)) {
     			if ($first) {
 	    			foreach ($line as $id => $val) {
 	    				$val=utf8_decode($obj->getColCaption($id));
-	    				$val=str_replace(';',',',$val);
-	            echo $val . ';';
+	    				//$val=utf8_decode($id);
+	    				$val=str_replace($csvSep,' ',$val);
+	            if ($id!='id') { echo $csvSep ;}
+	    				echo $val;
 	            $dataType[$id]=$obj->getDataType($id);
 	          }
-	          echo "\n";
+	          echo "\r\n";
     			}
     			foreach ($line as $id => $val) {
+    				$foreign=false;
     				if (substr($id, 0,2)=='id' and strlen($id)>2) {
     					$class=substr($id, 2);
     					if (ucfirst($class)==$class) {
+    						$foreign=true;
     					  $val=SqlList::getNameFromId($class, $val);
     					}
     				}
     				$val=utf8_decode($val);
-            $val=str_replace(';',',',$val);
-            $val=str_replace('"',"'",$val);
-            //$val=preg_replace( "/\r\n|\r|\n/",' ',$val);
-            if ($dataType[$id]=='varchar') {
-              echo '"' . $val . '";';
+    				if ($csvQuotedText) {
+    				  $val=str_replace('"','""',$val);	
+    				}
+            $val=str_replace($csvSep,' ',$val);
+            if ($id!='id') { echo $csvSep ;}
+            if ( ($dataType[$id]=='varchar' or $foreign) and $csvQuotedText) {
+              echo '"' . $val . '"';
             } else {
-            	echo $val . ';';
+            	echo $val;
             }
     			}
     			$first=false;
-    			echo "\n";
+    			echo "\r\n";
+    		}
+    		if ($first) {
+    			echo utf8_decode(i18n("reportNoData")); 
     		}
     	} else {
 	      echo '<table>';

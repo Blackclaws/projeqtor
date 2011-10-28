@@ -2029,29 +2029,32 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	$select="";
   	$from="";
   	if (is_subclass_of($this,'PlanningElement')) {
-  		$workVisibility=$this->_workVisibility;
-      $costVisibility=$this->_costVisibility;
+  		$this->setVisibility();
   	}
   	foreach ($this as $col=>$val) {
-  		if ( ($included and ($col=='id' or $col=='refId' or $col=='refType' or $col=='refName') ) 
-  		  or (substr($col,0,1)=='_') 
+  		$firstCar=substr($col,0,1);
+      $threeCars=substr($col,0,3);
+      if ( ($included and ($col=='id' or $threeCars=='ref' or $threeCars=='top' or $col=='idle') ) 
+  		  or ($firstCar=='_') 
   		  or (strpos($this->getFieldAttributes($col), 'hidden')!==false )
   		  or ($col=='password')
+  		  //or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
+  		  //or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )
   		) {
   			// Here are all cases of not dispalyed fields
-  		} else if (ucfirst($col)==$col) {
+  		} else if ($firstCar==ucfirst($firstCar)) {
   			$ext=new $col();
-  			if (is_subclass_of($ext,'PlanningElement')) {
-  				$from=' left join ' . $ext->getDatabaseTableName() .
+  			//if (is_subclass_of($ext,'PlanningElement')) {
+  				$from.=' left join ' . $ext->getDatabaseTableName() .
               ' on ' . $table . ".id" .  
               ' = ' . $ext->getDatabaseTableName() . '.refId' .
   				    ' and ' . $ext->getDatabaseTableName() . ".refType='" . get_class($this) . "'";
   				$extClause=$ext->buildSelectClause(true);
   				$select.=', '.$extClause['select'];
-  			}
+  			//}
   	  } else {
   			$select .= ($select=='')?'':', ';
-  			$select .= $table . '.' . $this->getDatabaseColumnName($col);
+  			$select .= $table . '.' . $this->getDatabaseColumnName($col) . ' as ' . $col;
   	  }
   	}
   	return array('select'=>$select,'from'=>$from);
