@@ -142,8 +142,8 @@ class IndicatorDefinition extends SqlElement {
     }
     if ($colName=='idIndicator') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
-      $colScript .= '  refreshList("idWarningDelayUnit","idIndicator", this.value, null, null, true);';
-      $colScript .= '  refreshList("idAlertDelayUnit","idIndicator", this.value, null, null, true);';
+      $colScript .= '  refreshList("idWarningDelayUnit","idIndicator", this.value, null, null, false);';
+      $colScript .= '  refreshList("idAlertDelayUnit","idIndicator", this.value, null, null, false);';
       $colScript .= '</script>';
     }  
     return $colScript;

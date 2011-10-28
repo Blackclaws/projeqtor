@@ -273,23 +273,21 @@ function htmlFormatDate($val) {
  * @param $val
  * @return unknown_type
  */
-function htmlFormatDateTime($val, $withSecond=true) {
+function htmlFormatDateTime($val, $withSecond=true, $hideZeroTime=false) {
   global $browserLocale;
   $locale=substr($browserLocale, 0,2);
-  if (strlen($val)!=19) {
+  if (strlen($val)!=19 and strlen($val)!=16) {
   	if (strlen($val)=="10") {
   		return htmlFormatDate($val);
   	} else {
       return $val;
   	}
   }
-  if ($locale=='en') {
-    return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4) 
-      . " " . (($withSecond)?substr($val,11):substr($val,11,5));
-  } else {
-    return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4) 
-      . " " . (($withSecond)?substr($val,11):substr($val,11,5));
+  $result=htmlFormatDate(substr($val,0,10));
+  if (! $hideZeroTime or substr($val,11,5)!='00:00') {
+    $result.= " " . (($withSecond)?substr($val,11):substr($val,11,5));
   }
+  return $result;
 }
 /** ============================================================================
  * Transform string to be displays in html, pedending on context 
