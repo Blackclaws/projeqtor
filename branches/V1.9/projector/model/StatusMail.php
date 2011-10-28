@@ -39,7 +39,7 @@ class StatusMail extends SqlElement {
                                   "otherMail"=>""
   );  
   
-  private static $_colCaptionTransposition = array('idStatus'=>'newStatus');
+  private static $_colCaptionTransposition = array('idStatus'=>'newStatus','otherMail'=>'email');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();

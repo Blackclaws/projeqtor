@@ -38,7 +38,10 @@ class ExpenseDetailType extends SqlElement {
       
       private static $_colCaptionTransposition = array('value01'=>'valueUnit', 
                                                    'value02'=> 'valueUnit',
-                                                   'value03' => 'valueUnit');
+                                                   'value03' => 'valueUnit',
+                                                   'unit01'=>'unit', 
+                                                   'unit02'=>'unit',
+                                                   'unit03'=>'unit');
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

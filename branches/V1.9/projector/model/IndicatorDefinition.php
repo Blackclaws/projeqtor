@@ -136,14 +136,20 @@ class IndicatorDefinition extends SqlElement {
     $colScript = parent::getValidationScript($colName);
     if ($colName=='idIndicatorable') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+      $colScript .= '  dijit.byId("idIndicator").set("value",null);';
+      $colScript .= '  dijit.byId("idType").set("value",null);';
       $colScript .= '  refreshList("idIndicator","idIndicatorable", this.value, null, null, true);';
       $colScript .= '  refreshList("idType","scope", indicatorableArray[this.value]);';
       $colScript .= '</script>';
     }
     if ($colName=='idIndicator') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
-      $colScript .= '  refreshList("idWarningDelayUnit","idIndicator", this.value, null, null, true);';
-      $colScript .= '  refreshList("idAlertDelayUnit","idIndicator", this.value, null, null, true);';
+      $colScript .= '  dijit.byId("idWarningDelayUnit").set("value",null);';
+      $colScript .= '  dijit.byId("idAlertDelayUnit").set("value",null);';
+      $colScript .= '  dijit.byId("warningValue").set("value",null);';
+      $colScript .= '  dijit.byId("alertValue").set("value",null);';
+      $colScript .= '  refreshList("idWarningDelayUnit","idIndicator", this.value, null, null, false);';
+      $colScript .= '  refreshList("idAlertDelayUnit","idIndicator", this.value, null, null, false);';
       $colScript .= '</script>';
     }  
     return $colScript;
@@ -166,9 +172,9 @@ class IndicatorDefinition extends SqlElement {
     //if (! trim($this->idType)) {
     //  $result.='<br/>' . i18n('messageMandatory',array(i18n('colType')));
     //}
-    $crit=array('idIndicatorable'=>$this->idIndicatorable,
-                'idIndicator'=>$this->idIndicator,
-                'idType'=>$this->idType);
+    $crit=array('idIndicatorable'=>trim($this->idIndicatorable),
+                'idIndicator'=>trim($this->idIndicator),
+                'idType'=>trim($this->idType));
     $elt=SqlElement::getSingleSqlElementFromCriteria('IndicatorDefinition', $crit);
     if ($elt and $elt->id and $elt->id!=$this->id) {
       $result.='<br/>' . i18n('errorDuplicateIndicator');

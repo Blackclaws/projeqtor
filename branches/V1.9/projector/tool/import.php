@@ -79,11 +79,15 @@ $fileName=$uploadfile;
 $lines=file($fileName);
 $title=null;
 $idxId=-1;
+$csvSep=Parameter::getGlobalParameter('csvSeparator');
 echo '<TABLE WIDTH="100%" style="border: 1px solid black">';
 foreach ($lines as $nbl=>$line) {
+	if (! mb_detect_encoding($line, 'UTF-8', true) ) {
+		$line=utf8_encode($line);
+	}
   if ($title) {
     echo '<TR>';
-    $fields=explode(';',$line);     
+    $fields=explode($csvSep,$line);     
     $id=($idxId>=0)?$fields[$idxId]:null;
     $obj=new $class($id);
 //echo $id . "/" . $obj->id . "<br/>";
@@ -94,7 +98,11 @@ foreach ($lines as $nbl=>$line) {
       }
       if ( strtolower($field)=='null') {
         $field=null;
-      }      
+      } 
+      if (substr(trim($field),0,1)=='"' and substr(trim($field),-1,1)=='"') {
+      	$field=substr(trim($field),1,strlen(trim($field))-2);
+      }
+      $field=str_replace('""','"',$field);     
       if (property_exists($obj,$title[$idx])) {
         $obj->$title[$idx]=$field;
         echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
@@ -103,8 +111,7 @@ foreach ($lines as $nbl=>$line) {
       $idTitle='id' . ucfirst($title[$idx]);
       if (property_exists($obj,$idTitle)) {
         $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);
-        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . "/" . htmlEncode($val) . '</td>';   
-        
+        echo '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . "/" . htmlEncode($val) . '</td>';
         //echo " => " . htmlEncode($idTitle);
         //echo "=" . htmlEncode($val);
         $obj->$idTitle=$val;
@@ -144,7 +151,7 @@ foreach ($lines as $nbl=>$line) {
     }
     echo '</TD></TR>';
   } else {
-    $title=explode(';',$line);
+    $title=explode($csvSep,$line);
     echo "<TR>";
     foreach ($title as $idx=>$caption) {
       $title[$idx]=str_replace(' ','',strtolower(substr($caption,0,1)) . substr($caption,1));
