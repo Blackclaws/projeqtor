@@ -113,12 +113,15 @@ class IndicatorValue extends SqlElement {
   	$ind=new Indicator($def->idIndicator);
   	if ($ind->type=="delay") {
   		$fld=$ind->name;
-  		if (substr($fld,-7)=='EndDate' or substr($fld,-9)=='StartDate') {
-  		  $sub=$class . "PlanningElement";
+  		if ($class=='Risk' or $class=='Issue') {
+  			$fld=str_replace('Due','End',$fld);
+  		}
+  		$sub=$class . "PlanningElement";
+  		if ( (substr($fld,-7)=='EndDate' or substr($fld,-9)=='StartDate') and property_exists($obj, $sub) ) {
   		  $indVal->targetDateTime=$obj->$sub->$fld;
   		  $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  } else {
-  	    $indVal->targetDateTime=$fldVal=$obj->$fld;
+  	    $indVal->targetDateTime=$obj->$fld;
   	    $indVal->targetDateTime.=(strlen($indVal->targetDateTime)=='10')?" 00:00:00":"";
   	  }
   	  if (! trim($indVal->targetDateTime)) {
@@ -264,6 +267,7 @@ class IndicatorValue extends SqlElement {
   }
   
   public function send($type) {
+  	global $currency, $currencyPosition;
     $def=new IndicatorDefinition($this->idIndicatorDefinition);
     $obj=new $this->refType($this->refId);
     $arrayAlertDest=array();
@@ -365,13 +369,26 @@ class IndicatorValue extends SqlElement {
     $alertTarget="";
     $value="";
     if ($this->type=="delay") {
-    	$target=htmlFormatDateTime(trim($this->targetDateTime),false);
-    	$warningTarget=htmlFormatDateTime(trim($this->warningTargetDateTime),false);
-    	$alertTarget=htmlFormatDateTime(trim($this->alertTargetDateTime),false);
+    	$target=htmlFormatDateTime(trim($this->targetDateTime),false,true);
+    	$warningTarget=htmlFormatDateTime(trim($this->warningTargetDateTime),false, true);
+    	$alertTarget=htmlFormatDateTime(trim($this->alertTargetDateTime),false, true);
     } else if ($this->type=="percent") {
-    	$target=Work::displayWork($this->targetValue) . ' ' . Work::displayShortWorkUnit();
-    	$warningTarget=Work::displayWork($this->warningTargetValue) . ' ' . Work::displayShortWorkUnit();
-    	$alertTarget=Work::displayWork($this->alertTargetValue) . ' ' . Work::displayShortWorkUnit();
+    	if (substr($this->code,-1)=='W') {
+    	  $target=Work::displayWork($this->targetValue) . ' ' . Work::displayShortWorkUnit();
+    	  $warningTarget=Work::displayWork($this->warningTargetValue) . ' ' . Work::displayShortWorkUnit();
+    	  $alertTarget=Work::displayWork($this->alertTargetValue) . ' ' . Work::displayShortWorkUnit();
+    	} else {
+    		if ($currencyPosition=='before') {
+    			$befCur=$currency;
+    			$aftCur='';
+    		} else {
+    			$befCur='';
+    			$aftCur=$currency;
+    		}
+    		$target=$befCur . ' ' . $this->targetValue . ' ' . $aftCur;
+        $warningTarget=$befCur . ' ' . $this->warningTargetValue . ' ' . $aftCur;
+        $alertTarget=$befCur . ' ' . $this->alertTargetValue . ' ' . $aftCur;
+    	}
     }
     $arrayFrom=array('${type}','${item}','${id}','${name}','${status}','${indicator}');
     $arrayTo=array($type, $item, $id, $name, $status, $indicator);
