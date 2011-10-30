@@ -34,6 +34,7 @@
     $obj=new Menu();
     $suspend=false;
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
+    $lastType='';
     foreach ($menuList as $menu) { 
     	if ($menu->id==36) {$suspend=true;}
     	if (! $suspend and securityCheckDisplayMenu($menu->id,$menu) ) {

@@ -41,6 +41,16 @@
 	   header("Expires: 0"); 
 	   header("Cache-Control: no-cache, must-revalidate");
 	   header("Pragma: no-cache");
+   } else if ($outMode=='mpp')  {
+     $contentType="application/force-download";
+     $name="export_planning_" . date('Ymd_His') . ".xml";
+     header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
+     header("Content-Transfer-Encoding: binary"); 
+     //header("Content-Length: $size"); 
+     header("Content-Disposition: attachment; filename=\"" .$name . "\""); 
+     header("Expires: 0"); 
+     header("Cache-Control: no-cache, must-revalidate");
+     header("Pragma: no-cache");
    } else {
      header ('Content-Type: text/html; charset=UTF-8');
    }
@@ -49,11 +59,11 @@
    	$detail=true;
    }
    scriptLog('   ->/view/print.php'); 
-  if ($outMode!='pdf' and $outMode!='csv') {?> 
+  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp') {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <?php }
-   if ($outMode!='csv') {?> ?>
+   if ($outMode!='csv' and $outMode!='mpp') {?>
 <html>
 <head>   
   <title><?php echo i18n("applicationTitle");?></title>
@@ -99,7 +109,7 @@
     }
   }
   include $includeFile;
-  if ($outMode!='csv') {?>
+  if ($outMode!='csv' and $outMode!='mpp') {?>
 </<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?>>
 </page>
 </html>
