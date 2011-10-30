@@ -395,6 +395,8 @@
   	$nl="\n";
   	$hoursPerDay=Parameter::getGlobalParameter('dayTime');
     $startDate=date('Y-m-d');
+    $startTime=Parameter::getGlobalParameter('startAM') . ':00';
+    $endTime=Parameter::getGlobalParameter('endPM') . ':00';
     if (array_key_exists('startDate',$_REQUEST)) {
       $startDate=$_REQUEST['startDate'];
     }
@@ -451,7 +453,8 @@
     echo '<CurrencySymbol>' . $currency . '</CurrencySymbol>' . $nl;
     echo '<CurrencySymbolPosition>' . (($currencyPosition=='before')?'0':'1') . '</CurrencySymbolPosition>' . $nl;
     echo '<CalendarUID>1</CalendarUID>' . $nl;
-    echo '<DefaultStartTime>' . Parameter::getGlobalParameter('startAM') . ':00</DefaultStartTime>' . $nl;
+    echo '<DefaultStartTime>' . $startTime . '</DefaultStartTime>' . $nl;
+    echo '<DefaultFinishTime>' . $endTime . '</DefaultFinishTime>' . $nl;
     echo '<MinutesPerDay>' . ($hoursPerDay*60) . '</MinutesPerDay>' . $nl;
     echo '<MinutesPerWeek>' . ($hoursPerDay*60*5) . '</MinutesPerWeek>' . $nl;
     echo '<DaysPerMonth>20</DaysPerMonth>' . $nl;
@@ -543,15 +546,15 @@
       echo '<Task>' . $nl;
       echo ' <UID>' . $line['id'] . '</UID>' . $nl;
       echo ' <ID>' . $cpt . '</ID>' . $nl;  // TODO : should be order of the tack in the list
-      echo ' <Name>' . $line['refName'] . '</Name>' . $nl;
+      echo ' <Name>' . htmlEncode($line['refName']) . '</Name>' . $nl;
       echo ' <Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
       echo ' <IsNull>0</IsNull>' . $nl;
       echo ' <WBS>' . $line['wbs'] . '</WBS>' . $nl;
       echo ' <OutlineNumber>' . $line['wbs'] . '</OutlineNumber>' . $nl;
       echo ' <OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
       echo ' <Priority>' . $line['priority'] . '</Priority>' . $nl;
-      echo ' <Start>' . $line['pStart'] . '</Start>' . $nl;
-      echo ' <Finish>' . $line['pEnd'] . '</Finish>' . $nl;
+      echo ' <Start>' . $line['pStart'] . 'T' . $startTime . '</Start>' . $nl;
+      echo ' <Finish>' . $line['pEnd'] . 'T' . $endTime . '</Finish>' . $nl;
       echo ' <Duration>' . formatDuration($line['pDuration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
       echo ' <DurationFormat>7</DurationFormat>' . $nl;
       echo ' <ResumeValid>0</ResumeValid>' . $nl;
