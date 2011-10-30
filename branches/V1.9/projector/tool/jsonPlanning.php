@@ -537,24 +537,26 @@
     echo '</Calendar>' . $nl;
     echo '</Calendars>' . $nl;
     echo '<Tasks>' . $nl;
+    $cpt=0;
     foreach ($resultArray as $line) {
+    	$cpt++;
       echo '<Task>' . $nl;
       echo ' <UID>' . $line['id'] . '</UID>' . $nl;
-      echo ' <ID>' . $line['id'] . '</ID>' . $nl;  // TODO : should be order of the tack in the list
-      echo '<Name>' . $line['refName'] . '</Name>' . $nl;
-      echo '<Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
-      echo '<IsNull>0</IsNull>' . $nl;
-      echo '<WBS>' . $line['wbs'] . '</WBS>' . $nl;
-      echo '<OutlineNumber>' . $line['wbs'] . '</OutlineNumber>' . $nl;
-      echo '<OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
-      echo '<Priority>' . $line['priority'] . '</Priority>' . $nl;
-      echo '<Start>' . $line['pStart'] . '</Start>' . $nl;
-      echo '<Finish>' . $line['pEnd'] . '</Finish>' . $nl;
-      echo '<Duration>' . formatDuration($line['pDuration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
-      echo '<DurationFormat>7</DurationFormat>' . $nl;
-      echo '<ResumeValid>0</ResumeValid>' . $nl;
-      echo '<EffortDriven>1</EffortDriven>' . $nl;
-      echo '<Recurring>0</Recurring>' . $nl;
+      echo ' <ID>' . $cpt . '</ID>' . $nl;  // TODO : should be order of the tack in the list
+      echo ' <Name>' . $line['refName'] . '</Name>' . $nl;
+      echo ' <Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
+      echo ' <IsNull>0</IsNull>' . $nl;
+      echo ' <WBS>' . $line['wbs'] . '</WBS>' . $nl;
+      echo ' <OutlineNumber>' . $line['wbs'] . '</OutlineNumber>' . $nl;
+      echo ' <OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
+      echo ' <Priority>' . $line['priority'] . '</Priority>' . $nl;
+      echo ' <Start>' . $line['pStart'] . '</Start>' . $nl;
+      echo ' <Finish>' . $line['pEnd'] . '</Finish>' . $nl;
+      echo ' <Duration>' . formatDuration($line['pDuration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
+      echo ' <DurationFormat>7</DurationFormat>' . $nl;
+      echo ' <ResumeValid>0</ResumeValid>' . $nl;
+      echo ' <EffortDriven>1</EffortDriven>' . $nl;
+      echo ' <Recurring>0</Recurring>' . $nl;
       /*      <OverAllocated>0</OverAllocated>' . $nl;
             <Estimated>0</Estimated>' . $nl;
             <Milestone>0</Milestone>' . $nl;
