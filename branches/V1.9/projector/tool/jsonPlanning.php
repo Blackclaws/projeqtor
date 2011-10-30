@@ -30,6 +30,7 @@
     }
     include "../report/header.php";
   }
+  if (! isset($outMode)) { $outMode=""; } 
   
   $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
@@ -88,7 +89,11 @@
       if (Sql::$lastQueryNbRows > 0) $test[]="OK";
       if (checkNoData($test))  exit;
     }
-    displayGantt($result);
+    if ($outMode=='mpp') {
+    	exportGantt($result);
+    } else {
+    	displayGantt($result);
+    }
   } else {
     // return result in json format
     $d=new Dependency();
@@ -383,5 +388,207 @@
       }
     }
     echo "</table>"; 
+  }
+  
+  function exportGantt($result) {
+  	global $paramDbDisplayName, $currency, $currencyPosition;
+  	$nl="\n";
+  	$hoursPerDay=Parameter::getGlobalParameter('dayTime');
+    $startDate=date('Y-m-d');
+    if (array_key_exists('startDate',$_REQUEST)) {
+      $startDate=$_REQUEST['startDate'];
+    }
+    $endDate='';
+    if (array_key_exists('endDate',$_REQUEST)) {
+      $endDate=$_REQUEST['endDate'];
+    }
+    $maxDate = '';
+    $minDate = '';
+    $resultArray=array();
+    if (Sql::$lastQueryNbRows > 0) {
+      while ($line = Sql::fetchLine($result)) {
+        $pStart="";
+        $pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
+        $pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
+        $pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
+        $pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
+        if (trim($line['plannedStartDate'])!=""
+        and trim($line['realStartDate'])!=""
+        and $line['plannedStartDate']<$line['realStartDate'] ) {
+          $pStart=$line['plannedStartDate'];
+        }
+        $pEnd="";
+        $pEnd=(trim($line['initialEndDate'])!="")?$line['initialEndDate']:$pEnd;
+        $pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
+        $pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
+        $pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
+        if ($line['refType']=='Milestone') {
+          $pStart=$pEnd;
+        }
+        $line['pStart']=$pStart;
+        $line['pEnd']=$pEnd;
+        $line['pDuration']=workDayDiffDates($pStart,$pEnd);
+        $resultArray[]=$line;
+        if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
+        if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
+      }
+      if ($minDate<$startDate) {
+        $minDate=$startDate;
+      }
+      if ($endDate and $maxDate>$endDate) {
+        $maxDate=$endDate;
+      }
+    }
+  	echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
+    echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
+    echo '<Title>' . $paramDbDisplayName . '</Title>' . $nl;
+    echo '<ScheduleFromStart>1</ScheduleFromStart>' . $nl;
+    echo '<StartDate>' . $minDate . 'T00:00:00</StartDate>' . $nl;
+    echo '<FinishDate>' . $maxDate . 'T00:00:00</FinishDate>' . $nl;
+    echo '<FYStartDate>1</FYStartDate>' . $nl;
+    echo '<CriticalSlackLimit>0</CriticalSlackLimit>' . $nl;
+    echo '<CurrencyDigits>2</CurrencyDigits>' . $nl;
+    echo '<CurrencySymbol>' . $currency . '</CurrencySymbol>' . $nl;
+    echo '<CurrencySymbolPosition>' . (($currencyPosition=='before')?'0':'1') . '</CurrencySymbolPosition>' . $nl;
+    echo '<CalendarUID>1</CalendarUID>' . $nl;
+    echo '<DefaultStartTime>' . Parameter::getGlobalParameter('startAM') . ':00</DefaultStartTime>' . $nl;
+    echo '<MinutesPerDay>' . ($hoursPerDay*60) . '</MinutesPerDay>' . $nl;
+    echo '<MinutesPerWeek>' . ($hoursPerDay*60*5) . '</MinutesPerWeek>' . $nl;
+    echo '<DaysPerMonth>20</DaysPerMonth>' . $nl;
+    /*<DefaultTaskType>0</DefaultTaskType>
+    <DefaultFixedCostAccrual>2</DefaultFixedCostAccrual>
+    <DefaultStandardRate>10</DefaultStandardRate>
+    <DefaultOvertimeRate>15</DefaultOvertimeRate>*/
+    echo '<DurationFormat>7</DurationFormat>' . $nl;
+    echo '<WorkFormat>2</WorkFormat>' . $nl;
+    /*<EditableActualCosts>0</EditableActualCosts>
+    <HonorConstraints>0</HonorConstraints>
+    <EarnedValueMethod>0</EarnedValueMethod>
+    <InsertedProjectsLikeSummary>0</InsertedProjectsLikeSummary>
+    <MultipleCriticalPaths>0</MultipleCriticalPaths>
+    <NewTasksEffortDriven>0</NewTasksEffortDriven>
+    <NewTasksEstimated>1</NewTasksEstimated>
+    <SplitsInProgressTasks>0</SplitsInProgressTasks>
+    <SpreadActualCost>0</SpreadActualCost>
+    <SpreadPercentComplete>0</SpreadPercentComplete>
+    <TaskUpdatesResource>1</TaskUpdatesResource>
+    <FiscalYearStart>0</FiscalYearStart>
+    <WeekStartDay>0</WeekStartDay>
+    <MoveCompletedEndsBack>0</MoveCompletedEndsBack>
+    <MoveRemainingStartsBack>0</MoveRemainingStartsBack>
+    <MoveRemainingStartsForward>0</MoveRemainingStartsForward>
+    <MoveCompletedEndsForward>0</MoveCompletedEndsForward>
+    <BaselineForEarnedValue>0</BaselineForEarnedValue>
+    <AutoAddNewResourcesAndTasks>1</AutoAddNewResourcesAndTasks>*/
+    echo '<CurrentDate>' . date('Y-m-dTh:i:s') . '</CurrentDate>' . $nl;
+    echo '<MicrosoftProjectServerURL>1</MicrosoftProjectServerURL>' . $nl;
+    echo '<Autolink>1</Autolink>' . $nl;
+    echo '<NewTaskStartDate>0</NewTaskStartDate>' . $nl;
+    echo '<DefaultTaskEVMethod>0</DefaultTaskEVMethod>' . $nl;
+    echo '<ProjectExternallyEdited>0</ProjectExternallyEdited>' . $nl;
+    echo '<ActualsInSync>0</ActualsInSync>' . $nl;
+    echo '<RemoveFileProperties>0</RemoveFileProperties>' . $nl;
+    echo '<AdminProject>0</AdminProject>' . $nl;
+    /*<ExtendedAttributes>
+        <ExtendedAttribute>
+            <FieldID>188743731</FieldID>
+            <FieldName>Text1</FieldName>
+        </ExtendedAttribute>
+    </ExtendedAttributes>*/
+    echo '<Calendars>' . $nl;
+    echo '<Calendar>' . $nl;
+    echo ' <UID>1</UID>' . $nl;
+    echo ' <IsBaseCalendar>1</IsBaseCalendar>' . $nl;
+    echo ' <WeekDays>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>1</DayType>' . $nl;
+    echo '  <DayWorking>0</DayWorking>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>2</DayType>' . $nl;
+    echo '  <DayWorking>1</DayWorking>' . $nl;
+    echo '  <WorkingTimes/>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>3</DayType>' . $nl;
+    echo '  <DayWorking>1</DayWorking>' . $nl;
+    echo '  <WorkingTimes/>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>4</DayType>' . $nl;
+    echo '  <DayWorking>1</DayWorking>' . $nl;
+    echo '  <WorkingTimes/>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>5</DayType>' . $nl;
+    echo '  <DayWorking>1</DayWorking>' . $nl;
+    echo '  <WorkingTimes/>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>6</DayType>' . $nl;
+    echo '  <DayWorking>1</DayWorking>' . $nl;
+    echo '  <WorkingTimes/>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' <WeekDay>' . $nl;
+    echo '  <DayType>7</DayType>' . $nl;
+    echo '  <DayWorking>0</DayWorking>' . $nl;
+    echo ' </WeekDay>' . $nl;
+    echo ' </WeekDays>' . $nl;
+    echo '</Calendar>' . $nl;
+    echo '</Calendars>' . $nl;
+    echo '<Tasks>' . $nl;
+    foreach ($resultArray as $line) {
+      echo '<Task>' . $nl;
+      echo ' <UID>' . $line['id'] . '</UID>' . $nl;
+      echo ' <ID>' . $line['id'] . '</ID>' . $nl;  // TODO : should be order of the tack in the list
+      echo '<Name>' . $line['refName'] . '</Name>' . $nl;
+      echo '<Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
+      echo '<IsNull>0</IsNull>' . $nl;
+      echo '<WBS>' . $line['wbs'] . '</WBS>' . $nl;
+      echo '<OutlineNumber>' . $line['wbs'] . '</OutlineNumber>' . $nl;
+      echo '<OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
+      echo '<Priority>' . $line['priority'] . '</Priority>' . $nl;
+      echo '<Start>' . $line['pStart'] . '</Start>' . $nl;
+      echo '<Finish>' . $line['pEnd'] . '</Finish>' . $nl;
+      echo '<Duration>' . formatDuration($line['pDuration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
+      echo '<DurationFormat>7</DurationFormat>' . $nl;
+      echo '<ResumeValid>0</ResumeValid>' . $nl;
+      echo '<EffortDriven>1</EffortDriven>' . $nl;
+      echo '<Recurring>0</Recurring>' . $nl;
+      /*      <OverAllocated>0</OverAllocated>' . $nl;
+            <Estimated>0</Estimated>' . $nl;
+            <Milestone>0</Milestone>' . $nl;
+            <Summary>1</Summary>' . $nl;
+            <Critical>1</Critical>' . $nl;
+            <IsSubproject>0</IsSubproject>' . $nl;
+            <IsSubprojectReadOnly>0</IsSubprojectReadOnly>' . $nl;
+            <ExternalTask>0</ExternalTask>' . $nl;
+            <FixedCostAccrual>3</FixedCostAccrual>' . $nl;
+            <PercentComplete>0</PercentComplete>' . $nl;
+            <RemainingDuration>PT111H39M50S</RemainingDuration>' . $nl;
+            <ConstraintType>0</ConstraintType>' . $nl;
+            <CalendarUID>-1</CalendarUID>' . $nl;
+            <LevelAssignments>0</LevelAssignments>' . $nl;
+            <LevelingCanSplit>0</LevelingCanSplit>' . $nl;
+            <IgnoreResourceCalendar>0</IgnoreResourceCalendar>' . $nl;
+            <HideBar>0</HideBar>' . $nl;
+            <Rollup>0</Rollup>' . $nl;
+            <EarnedValueMethod>0</EarnedValueMethod>' . $nl;
+            /*<ExtendedAttribute>
+                <FieldID>188743731</FieldID>
+                <Value>lmk</Value>
+            </ExtendedAttribute>*/
+      echo ' <Active>1</Active>' . $nl;
+      echo ' <Manual>0</Manual>' . $nl;
+      echo '</Task>' . $nl;
+    }
+    echo '</Tasks>' . $nl;
+    echo '</Project>' . $nl;
+  }
+  
+  function formatDuration($duration, $hoursPerDay) {
+    $hourDuration=$duration=$hoursPerDay;
+  	$res = 'PT' . $hourDuration . 'H0M0S'; 
+  	return $res;
   }
 ?>

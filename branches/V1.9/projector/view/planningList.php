@@ -73,6 +73,17 @@ scriptLog('   ->/view/planningList.php');
 		              </button>
 		              <input type="hidden" id="outMode" name="outMode" value="" />
 		            </td>
+                 <td width="32px">
+                  <button title="<?php echo i18n('reportExportMSProject')?>"  
+                   dojoType="dijit.form.Button" 
+                   id="listPrintMpp" name="listPrintMpp"
+                   iconClass="iconMpp" showLabel="false">
+                    <script type="dojo/connect" event="onClick" args="evt">
+                  showPrint("../tool/jsonPlanning.php", 'planning', null, 'mpp');
+                </script>
+                  </button>
+                  <input type="hidden" id="outMode" name="outMode" value="" />
+                </td>
 		            <td>
                   <div id="planResultDiv" style=" width: 260px;height: 10px;" 
                     dojoType="dijit.layout.ContentPane" region="center" >
