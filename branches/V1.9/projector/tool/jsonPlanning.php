@@ -438,9 +438,6 @@
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
       }
-      if ($minDate<$startDate) {
-        $minDate=$startDate;
-      }
       if ($endDate and $maxDate>$endDate) {
         $maxDate=$endDate;
       }
@@ -465,7 +462,7 @@
     echo '<MinutesPerDay>' . ($hoursPerDay*60) . '</MinutesPerDay>' . $nl;
     echo '<MinutesPerWeek>' . ($hoursPerDay*60*5) . '</MinutesPerWeek>' . $nl;
     echo '<DaysPerMonth>20</DaysPerMonth>' . $nl;
-    echo '<DefaultTaskType>2</DefaultTaskType>' . $nl;
+    echo '<DefaultTaskType>1</DefaultTaskType>' . $nl;
     echo '<DefaultFixedCostAccrual>2</DefaultFixedCostAccrual>' . $nl;
     echo '<DefaultStandardRate>10</DefaultStandardRate>' . $nl;
     echo '<DefaultOvertimeRate>15</DefaultOvertimeRate>' . $nl;
@@ -476,14 +473,14 @@
     // echo '<EarnedValueMethod>0</EarnedValueMethod>' . $nl;
     echo '<InsertedProjectsLikeSummary>0</InsertedProjectsLikeSummary>' . $nl;
     echo '<MultipleCriticalPaths>0</MultipleCriticalPaths>' . $nl;
-    echo '<NewTasksEffortDriven>1</NewTasksEffortDriven>' . $nl;
+    echo '<NewTasksEffortDriven>0</NewTasksEffortDriven>' . $nl;
     echo '<NewTasksEstimated>1</NewTasksEstimated>' . $nl;
     echo '<SplitsInProgressTasks>0</SplitsInProgressTasks>' . $nl;
     echo '<SpreadActualCost>0</SpreadActualCost>' . $nl;
     echo '<SpreadPercentComplete>0</SpreadPercentComplete>' . $nl;
     echo '<TaskUpdatesResource>1</TaskUpdatesResource>' . $nl;
     echo '<FiscalYearStart>0</FiscalYearStart>' . $nl;
-    echo '<WeekStartDay>0</WeekStartDay>' . $nl;
+    echo '<WeekStartDay>1</WeekStartDay>' . $nl;
     echo '<MoveCompletedEndsBack>0</MoveCompletedEndsBack>' . $nl;
     echo '<MoveRemainingStartsBack>0</MoveRemainingStartsBack>' . $nl;
     echo '<MoveRemainingStartsForward>0</MoveRemainingStartsForward>' . $nl;
@@ -560,13 +557,13 @@
       echo '<DurationFormat>7</DurationFormat>' . $nl;
       echo '<Work>PT0H0M0S</Work>' . $nl;
       echo '<ResumeValid>0</ResumeValid>' . $nl;
-      echo '<EffortDriven>1</EffortDriven>' . $nl;
+      echo '<EffortDriven>0</EffortDriven>' . $nl;
       echo '<Recurring>0</Recurring>' . $nl;
       echo '<OverAllocated>0</OverAllocated>' . $nl;
       echo '<Estimated>0</Estimated>' . $nl;
       echo '<Milestone>' . (($line['refType']=='Milestone')?'1':'0') . '</Milestone>' . $nl;
       echo '<Summary>' . (($line['elementary'])?'0':'1') . '</Summary>' . $nl;
-      echo '<Critical>1</Critical>' . $nl;
+      echo '<Critical>0</Critical>' . $nl;
       echo '<IsSubproject>0</IsSubproject>' . $nl;
       echo '<IsSubprojectReadOnly>0</IsSubprojectReadOnly>' . $nl;
       echo '<ExternalTask>0</ExternalTask>' . $nl;
@@ -580,30 +577,31 @@
       echo '<FreeSlack>0</FreeSlack>' . $nl;
       echo '<TotalSlack>0</TotalSlack>' . $nl;
       echo '<FixedCost>0</FixedCost>' . $nl;
-      echo '<FixedCostAccrual>3</FixedCostAccrual>' . $nl;
+      echo '<FixedCostAccrual>2</FixedCostAccrual>' . $nl;
       echo '<PercentComplete>' . $pct .'</PercentComplete>' . $nl;
       echo '<PercentWorkComplete>' . $pct .'</PercentWorkComplete>' . $nl;
       echo '<Cost>0</Cost>' . $nl;
       echo '<OvertimeCost>0</OvertimeCost>' . $nl;
       echo '<OvertimeWork>PT0H0M0S</OvertimeWork>' . $nl;
+      echo '<ActualStart>' .  $line['pStart'] . 'T' . $startAM . '</ActualStart>' . $nl;
       echo '<ActualDuration>PT0H0M0S</ActualDuration>' . $nl;
       echo '<ActualCost>0</ActualCost>' . $nl;
       echo '<ActualOvertimeCost>0</ActualOvertimeCost>' . $nl;
       echo '<ActualWork>PT0H0M0S</ActualWork>' . $nl;
       echo '<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>' . $nl;
       echo '<RegularWork>PT0H0M0S</RegularWork>' . $nl;
-      echo '<RemainingDuration>PT111H39M50S</RemainingDuration>' . $nl;
+      echo '<RemainingDuration>PT56H0M0S</RemainingDuration>' . $nl;
       echo '<RemainingCost>0</RemainingCost>' . $nl;
       echo '<RemainingWork>PT0H0M0S</RemainingWork>' . $nl;
       echo '<RemainingOvertimeCost>0</RemainingOvertimeCost>' . $nl;
       echo '<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>' . $nl;
       echo '<ACWP>0</ACWP>' . $nl;
       echo '<CV>0</CV>' . $nl;
-      echo '<ConstraintType>' . (($line['elementary'])?'4':'0') . '</ConstraintType>' . $nl;
+      echo '<ConstraintType>' . (($line['elementary'])?'0':'0') . '</ConstraintType>' . $nl;
       echo '<CalendarUID>-1</CalendarUID>' . $nl;
       if ($line['elementary']) { echo '<ConstraintDate>' . $line['pStart'] . 'T' . $startAM . '</ConstraintDate>' . $nl;}
       echo '<LevelAssignments>0</LevelAssignments>' . $nl;
-      echo '<LevelingCanSplit>0</LevelingCanSplit>' . $nl;
+      echo '<LevelingCanSplit>1</LevelingCanSplit>' . $nl;
       echo '<LevelingDelay>0</LevelingDelay>' . $nl;
       echo '<LevelingDelayFormat>8</LevelingDelayFormat>' . $nl;
       echo '<IgnoreResourceCalendar>0</IgnoreResourceCalendar>' . $nl;
@@ -621,6 +619,18 @@
       //echo '<Manual>0</Manual>' . $nl;
       echo '<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>' . $nl;
       echo '<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>' . $nl;
+      $crit=array('successorId'=>$line['id']);
+      $d=new Dependency();
+      $depList=$d->getSqlElementsFromCriteria($crit,false);
+      foreach ($depList as $dep) {
+        echo '<PredecessorLink>' . $nl;
+        echo '<PredecessorUID>' . $dep->predecessorId . '</PredecessorUID>' . $nl;
+        echo '<Type>1</Type>' . $nl;
+        echo '<CrossProject>0</CrossProject>' . $nl;
+        echo '<LinkLag>0</LinkLag>' . $nl;
+        echo '<LagFormat>7</LagFormat>' . $nl;
+        echo '</PredecessorLink>' . $nl;
+      }      
       echo '</Task>' . $nl;
     }
     echo '</Tasks>' . $nl;
