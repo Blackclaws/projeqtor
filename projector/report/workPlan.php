@@ -33,15 +33,12 @@
     $queryWhere= $table . ".idle=0 ";
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  $queryWhere.=getAccesResctictionClause('Activity',$table);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
-  
-  $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
-  
+ 
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;  
   $queryOrderBy .= $table . ".wbsSortable ";
