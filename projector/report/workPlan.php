@@ -4,7 +4,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */ 
   require_once "../tool/projector.php";  
-  //echo "workPlan.php";
+//echo "workPlan.php";
   
   $objectClass='PlanningElement';
   $obj=new $objectClass();
@@ -33,15 +33,12 @@
     $queryWhere= $table . ".idle=0 ";
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  $queryWhere.=getAccesResctictionClause('Activity',$table);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
-  
-  $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
-  
+    
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;  
   $queryOrderBy .= $table . ".wbsSortable ";
@@ -53,7 +50,7 @@
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-//echo $query;
+//debugLog($query);
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;

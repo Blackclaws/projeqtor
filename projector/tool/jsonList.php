@@ -18,7 +18,8 @@
       // return result in json format
       foreach ($obj as $col=>$val) {
         if (substr($col, 0,1) <> "_" 
-        and substr($col, 0,1) <> ucfirst(substr($col, 0,1))) { 
+        and substr($col, 0,1) <> ucfirst(substr($col, 0,1))
+        and $obj->getFieldAttributes($col)!='hidden') { 
           if ($nbRows>0) echo ', ';
           $dataType = $obj->getDataType($col);
           $dataLength = $obj->getDataLength($col);

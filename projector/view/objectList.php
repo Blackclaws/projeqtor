@@ -161,15 +161,35 @@ $obj=new $objectClass;
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
             <td width="32px">
-              <button title="<?php echo i18n('advancedFilter')?>"  
-              class="filterField" 
-               dojoType="dijit.form.Button" 
+              <button 
+              title="<?php echo i18n('advancedFilter')?>"  
+              class="filterField"
+               dojoType="dijit.form.DropDownButton" 
                id="listFilterFilter" name="listFilterFilter"
                iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter16" showLabel="false">
+       
                 <script type="dojo/connect" event="onClick" args="evt">
                   showFilterDialog();
                 </script>
+                <script type="dojo/connect" event="onMouseEnter" args="evt">
+                  this.openDropDown();
+                </script>
+                <script type="dojo/connect" event="onMouseLeave" args="evt">
+                  closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",1000);
+                </script>
+                <div dojoType="dijit.TooltipDialog" i style="z-index: 999999;display:none; position: absolute;">
+                  <?php 
+                     //$_REQUEST['filterObjectClass']=$objectClass;
+                     include "../tool/displayFilterList.php";?>
+                 <script type="dojo/connect" event="onMouseEnter" args="evt">
+                    clearTimeout(closeFilterListTimeout);
+                </script>
+                <script type="dojo/connect" event="onMouseLeave" args="evt">
+                  dijit.byId('listFilterFilter').closeDropDown();
+                </script>
+                </div> 
               </button>
+               
               <span id="gridRowCountShadow1" class="gridRowCountShadow1"></span>
               <span id="gridRowCountShadow2" class="gridRowCountShadow2"></span>              
               <span id="gridRowCount" class="gridRowCount"></span>             
