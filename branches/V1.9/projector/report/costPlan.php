@@ -2,8 +2,8 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-//echo "costPlan.php";
   require_once "../tool/projector.php";  
+//echo "costPlan.php";
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
@@ -31,7 +31,7 @@
     $queryWhere= $table . ".idle=0 ";
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$objectClass);
+  $queryWhere.=getAccesResctictionClause('Activity',$table);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;

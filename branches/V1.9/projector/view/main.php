@@ -192,7 +192,7 @@ checkVersion(); ?>
   </script>
 </head>
 
-<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
+<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="alert('OK');quit();">
 <div id="loadingDiv" class="<?php echo getTheme();?> background" 
  style="position:relative; visibility: visible; display:block; width:100%; height:100%; ">
  <table style="width:100%; height:100%; text-align:center; vertical-align:middle;"><tr><td>Loading ...</td></tr></table>
