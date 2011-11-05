@@ -41,7 +41,8 @@ if ($filterClauseId=='all') {
 }
 $user->_arrayFilters[$filterObjectClass]=$filterArray;
 
-$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
+//$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
+$user->_arrayFilters[$filterObjectClass . "FilterName"]="";
 
 htmlDisplayFilterCriteria($filterArray,$name);
 

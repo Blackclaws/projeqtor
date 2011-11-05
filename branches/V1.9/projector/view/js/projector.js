@@ -404,6 +404,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         if (destination=="centerDiv") {
           showList();
         }
+        if (destination=="directFilterList") {
+        	if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
+              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
+        	} else {
+        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
+            }
+        	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+          }
       if (destination=="expenseDetailDiv") {
           expenseDetailRecalculate();
       }
@@ -475,6 +483,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           }
           if (destination=="centerDiv" && switchedMode) {
             showList();
+          }
+          if (destination=="directFilterList") {
+        	if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
+              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
+        	} else {
+        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
+            }
+        	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
           }
           if (destination=="expenseDetailDiv") {
               expenseDetailRecalculate();

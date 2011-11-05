@@ -43,6 +43,10 @@ if (is_array($filter->_FilterCriteriaArray)) {
 $user->_arrayFilters[$filterObjectClass]=$filterArray;
 $user->_arrayFilters[$filterObjectClass . "FilterName"]=$filter->name;
 
-htmlDisplayFilterCriteria($filterArray,$filter->name);
+if (array_key_exists('context',$_REQUEST) and $_REQUEST['context']=='directFilterList') {
+	include "../tool/displayFilterList.php";
+} else {
+  htmlDisplayFilterCriteria($filterArray,$filter->name);
+}
 
 ?>
