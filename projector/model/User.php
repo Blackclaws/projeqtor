@@ -21,6 +21,7 @@ class User extends SqlElement {
   public $description;
   public $_col_2_2;
   public $_arrayFilters;
+  public $_arrayFiltersId;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>

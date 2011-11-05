@@ -1560,8 +1560,15 @@ function saveFilter() {
  * Select a stored filter in the list and fetch criteria
  * 
  */
-function selectStoredFilter(idFilter) {
+function selectStoredFilter(idFilter,context) {
+  if (context=='directFilterList') {
+	loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter+"&context=" + context 
+			+ "&filterObjectClass="+dojo.byId('objectClass').value, "directFilterList", null, false);
+	//loadContent("../tool/displayFilterList.php?", "directFilterList",  "dialogFilterForm", false);
+	
+  } else {
 	loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter, "listFilterClauses", "dialogFilterForm", false);
+  }
 }
 
 /**

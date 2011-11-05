@@ -490,28 +490,50 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
  * @param $filterArray Array
  * @return Void
  */
-function htmlDisplayStoredFilter($filterArray,$filterObjectClass) {
+function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter="", $context="") {
   // Display Result
   $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', 
        array('idUser'=>$_SESSION['user']->id, 'parameterCode'=>'Filter'.$filterObjectClass));
   $defaultFilter=($param)?$param->parameterValue:'';
   echo "<table width='100%'>";
   echo "<tr>";
-  echo "<td class='filterHeader' style='width:525px;'>" . i18n("storedFilters") . "</td>";
-  echo "<td class='filterHeader' style='width:25px;'>";
+  if ($context!='directFilterList') {
+  	echo "<td class='filterHeader' style='width:525px;'>" . i18n("storedFilters") . "</td>";
+    echo "<td class='filterHeader' style='width:25px;'>";
+  } else {
+  	echo "<td class='filterHeader' style='font-size:8pt;width:300px;'>" . i18n("storedFilters") . "</td>";
+  }
   echo "</td>";
   echo "</tr>";
+  if ($context=='directFilterList') {
+    echo "<tr>";
+    echo '<td style="font-size:8pt;"' 
+           . ' class="filterData" '
+           . 'onClick="selectStoredFilter(\'0\',\'' . $context . '\');" ' 
+           . ' title="' . i18n("clearFilter") . '" >'
+           . i18n("clearFilter")
+           . "</td>";
+    echo "</tr>";
+  }
+  if (! $currentFilter) {
+  	echo '<input type="hidden" id="noFilterSelected" value="true" />';
+  }
   if (count($filterArray)>0) { 
     foreach ($filterArray as $filter) {
       echo "<tr>";
-      echo '<td style="cursor: pointer;" class="filterData" onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" '
-           . ' title="' . i18n("selectStoredFilter") . '" >' . 
-           $filter->name .
-           ( ($defaultFilter==$filter->id)?' (' . i18n('defaultValue') . ')':'') .
-           "</td>";
-      echo "<td class='filterData' style='text-align: center;'>";
-      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncodeJson($filter->name) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
-      echo "</td>";
+      echo '<td style="font-size:8pt;'. (($filter->name==$currentFilter)?' font-weight:light;color:grey; font-style:italic;':'cursor: pointer;') . '"' 
+           . ' class="filterData" '
+           //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" ')
+           . 'onClick="selectStoredFilter(\'' . $filter->id . '\',\'' . $context . '\');" ' 
+           . ' title="' . i18n("selectStoredFilter") . '" >'
+           . $filter->name
+           . ( ($defaultFilter==$filter->id)?' (' . i18n('defaultValue') . ')':'')
+           . "</td>";
+      if ($context!='directFilterList') {
+        echo "<td class='filterData' style='text-align: center;'>";      
+        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncodeJson($filter->name) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
+        echo "</td>";
+      }
       echo "</tr>";
     }
   } else {
