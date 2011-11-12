@@ -9,6 +9,7 @@ class Project extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $idProjectType;
   public $idClient;
   public $projectCode;
   public $contractCode;
@@ -40,9 +41,10 @@ class Project extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="wbsSortable" from="ProjectPlanningElement" formatter="sortableFormatter" width="5%" >${wbs}</th>
     <th field="name" width="25%" >${projectName}</th>
+    <th field="nameProjectType" width="10%" >${type}</th>
     <th field="color" width="5%" formatter="colorFormatter">${color}</th>
-    <th field="projectCode" width="15%" >${projectCode}</th>
-    <th field="nameClient" width="15%" >${clientName}</th>
+    <th field="projectCode" width="10%" >${projectCode}</th>
+    <th field="nameClient" width="10%" >${clientName}</th>
     <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${validatedEnd}</th>
     <th field="plannedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${plannedEnd}</th>  
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>

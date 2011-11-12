@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <project name="Project'Or RIA" default="buildQuick">
 
-  <property name="version"       value="V1.8.1" />
+  <property name="version"       value="V1.9.0" />
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="D:/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="D:/www/projectorriaV1.8" />
+  <property name="src.dir"       value="D:/www/projectorriaV1.9" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -56,11 +56,13 @@
     <mkdir dir="${deploy.dir}/files/config"/>
     <mkdir dir="${deploy.dir}/files/logs"/>
     <mkdir dir="${deploy.dir}/files/report"/>
+  	<mkdir dir="${deploy.dir}/files/cron"/>
     <copy todir="${deploy.dir}/files" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/attach" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/config" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/logs" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/report" file="${src.dir}/files/index.php" />
+  	<copy todir="${deploy.dir}/files/cron" file="${src.dir}/files/index.php" />
   </target>
   
   <target name="copyManual">

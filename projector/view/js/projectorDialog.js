@@ -2109,6 +2109,19 @@ function copyObjectTo(objectClass) {
   dijit.byId('dialogCopy').show();	
 }
 
+function copyProject() {
+  var objectClass="Project";
+  dojo.byId('copyId').value=dojo.byId("objectId").value;
+  dijit.byId('copyToName').set('value',dijit.byId('name').get('value'));
+  //dijit.byId('copyToOrigin').set('checked','checked');
+  dijit.byId('copyProjectToType').reset();
+  //if (dojo.byId('copyClass').value==class) {
+    //var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objectClass+"Type').get('value'))";
+    //setTimeout(runModif,1);
+  //}    
+  dijit.byId('dialogCopyProject').show();	
+}
+
 function copyObjectToSubmit(objectClass) {
   var formVar = dijit.byId('copyForm');
   if(! formVar.validate()){  
