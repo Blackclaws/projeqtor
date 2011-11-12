@@ -507,11 +507,12 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
   echo "</tr>";
   if ($context=='directFilterList') {
     echo "<tr>";
-    echo '<td style="font-size:8pt;"' 
+    echo '<td style="cursor:pointer;font-size:8pt;font-style:italic;' 
+           . '"' 
            . ' class="filterData" '
            . 'onClick="selectStoredFilter(\'0\',\'' . $context . '\');" ' 
-           . ' title="' . i18n("clearFilter") . '" >'
-           . i18n("clearFilter")
+           . ' title="' . i18n("selectStoredFilter") . '" >'
+           . i18n("noFilterClause")
            . "</td>";
     echo "</tr>";
   }
@@ -521,13 +522,13 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
   if (count($filterArray)>0) { 
     foreach ($filterArray as $filter) {
       echo "<tr>";
-      echo '<td style="font-size:8pt;'. (($filter->name==$currentFilter)?' font-weight:light;color:grey; font-style:italic;':'cursor: pointer;') . '"' 
+      echo '<td style="font-size:8pt;'. (($filter->name==$currentFilter and $context=='directFilterList')?'color:white; background-color: grey;':'cursor: pointer;') . '"' 
            . ' class="filterData" '
            //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" ')
            . 'onClick="selectStoredFilter(\'' . $filter->id . '\',\'' . $context . '\');" ' 
            . ' title="' . i18n("selectStoredFilter") . '" >'
            . $filter->name
-           . ( ($defaultFilter==$filter->id)?' (' . i18n('defaultValue') . ')':'')
+           . ( ($defaultFilter==$filter->id and $context!='directFilterList')?' (' . i18n('defaultValue') . ')':'')
            . "</td>";
       if ($context!='directFilterList') {
         echo "<td class='filterData' style='text-align: center;'>";      

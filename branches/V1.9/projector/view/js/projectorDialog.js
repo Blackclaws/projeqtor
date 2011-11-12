@@ -1466,6 +1466,8 @@ function addfilterClause() {
 	}		
 	// Add controls on operator and value
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	dijit.byId('filterNameDisplay').set('value',null);
+	dojo.byId('filterName').value=null;
 }
 
 /**
@@ -1479,6 +1481,8 @@ function removefilterClause(id) {
 	// Add controls on operator and value
 	dojo.byId("filterClauseId").value=id;
 	loadContent("../tool/removeFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	dijit.byId('filterNameDisplay').set('value',null);
+	dojo.byId('filterName').value=null;
 }
 
 /**
@@ -1497,6 +1501,7 @@ function selectFilter() {
 	} else {
 		dijit.byId("listFilterFilter").set("iconClass","iconFilter16");
 	}
+	loadContent("../tool/displayFilterList.php?context=directFilterList&filterObjectClass="+dojo.byId('objectClass').value, "directFilterList", null, false,'returnFromFilter', false);
 	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
 	dijit.byId("dialogFilter").hide();
 }
@@ -1524,6 +1529,8 @@ function clearFilter() {
 	removefilterClause('all');	
 	//setTimeout("selectFilter();dijit.byId('listFilterFilter').set('iconClass','iconFilter16');",100);
 	dijit.byId('listFilterFilter').set('iconClass','iconFilter16');
+	dijit.byId('filterNameDisplay').set('value',null);
+	dojo.byId('filterName').value=null;
 }
 
 /**

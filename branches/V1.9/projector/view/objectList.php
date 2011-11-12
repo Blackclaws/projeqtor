@@ -175,7 +175,7 @@ $obj=new $objectClass;
                   this.openDropDown();
                 </script>
                 <script type="dojo/connect" event="onMouseLeave" args="evt">
-                  closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",1000);
+                  closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",2000);
                 </script>
                 <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;display:none; position: absolute;">
                   <?php 
