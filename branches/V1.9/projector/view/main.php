@@ -766,6 +766,67 @@ checkVersion(); ?>
   </table>
 </div>
 
+<div id="dialogCopyProject" dojoType="dijit.Dialog" title="<?php echo i18n("dialogCopyProject");?>">
+  <table>
+    <tr>
+      <td>
+       <form dojoType="dijit.form.Form" id='copyProjectForm' name='copyProjectForm' onSubmit="return false;">
+         <input id="copyId" name="copyId" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="copyProjectToType" ><?php echo i18n("colProjectType") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="copyProjectToType" name="copyProjectyToType" required
+                class="input" value="" >
+                
+               </select>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="copyProjectToName" ><?php echo i18n("copyToName") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="copyProjectToName" name="copyProjectToName" dojoType="dijit.form.ValidationTextBox"
+                required="required"
+                style="width: 400px;"
+                trim="true" maxlength="100" class="input"
+                value="">
+               </div>     
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyProjectStructure" style="width:90%;text-align: right;"><?php echo i18n("copyProjectStructure") ?>&nbsp;:&nbsp;</label>
+               <div id="copyProjectStructure" name="copyProjectStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
+                checked >
+               </div>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="copyProjectAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogCopyProject').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="copyProjectSubmit();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>">
   <form id='attachementForm' name='attachementForm' 
   ENCTYPE="multipart/form-data" method=POST

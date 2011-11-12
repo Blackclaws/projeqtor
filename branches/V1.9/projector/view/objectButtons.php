@@ -74,11 +74,15 @@
         <script type="dojo/connect" event="onClick" args="evt">
           <?php 
           $crit=array('name'=> $_REQUEST['objectClass']);
-          $copyable=SqlElement::getSingleSqlElementFromCriteria('Copyable', $crit);
-          if ($copyable->id) {
-            echo "copyObjectTo('" . $_REQUEST['objectClass'] . "');";
+          if ( $_REQUEST['objectClass'] == "Project") {
+            echo "copyProject();";
           } else {
-            echo "copyObject('" .$_REQUEST['objectClass'] . "');";
+            $copyable=SqlElement::getSingleSqlElementFromCriteria('Copyable', $crit);
+	          if ($copyable->id) {
+	            echo "copyObjectTo('" . $_REQUEST['objectClass'] . "');";
+	          } else {
+	            echo "copyObject('" .$_REQUEST['objectClass'] . "');";
+	          }
           }
           ?>
         </script>

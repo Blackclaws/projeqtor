@@ -20,8 +20,8 @@ class User extends SqlElement {
   public $idle;
   public $description;
   public $_col_2_2;
-  public $_arrayFilters;
-  public $_arrayFiltersId;
+  public $_arrayFilters=array();
+  public $_arrayFiltersId=array();
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -322,7 +322,7 @@ class User extends SqlElement {
    * @return a list of projects id
    */
   public function getHierarchicalViewOfVisibleProjects($projId='*') {
-  	if ($this->_hierarchicalViewOfVisibleProjects) {
+  	if ($this->_hierarchicalViewOfVisibleProjects and $projId=='*') {
   		return $this->_hierarchicalViewOfVisibleProjects;
   	}
     $result=array();
@@ -402,7 +402,7 @@ class User extends SqlElement {
    * @return -1 or Id of authentified user
    */
 	public function authenticate( $paramlogin, $parampassword) {
-	  scriptLog("UserClass->authenticate ('" . $paramlogin . "', '*****')" );	
+//scriptLog("UserClass->authenticate ('" . $paramlogin . "', '*****')" );	
 	
 	  global $paramLdap_allow_login, $paramLdap_base_dn, $paramLdap_host, $paramLdap_port, $paramLdap_version, $paramLdap_search_user, $paramLdap_search_pass, $paramLdap_user_filter, $paramLdap_defaultprofile;
 	
