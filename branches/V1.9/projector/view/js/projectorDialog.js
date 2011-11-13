@@ -2111,14 +2111,15 @@ function copyObjectTo(objectClass) {
 
 function copyProject() {
   var objectClass="Project";
-  dojo.byId('copyId').value=dojo.byId("objectId").value;
-  dijit.byId('copyToName').set('value',dijit.byId('name').get('value'));
+  dojo.byId('copyProjectId').value=dojo.byId("objectId").value;
+  dijit.byId('copyProjectToName').set('value',dijit.byId('name').get('value'));
   //dijit.byId('copyToOrigin').set('checked','checked');
   dijit.byId('copyProjectToType').reset();
-  //if (dojo.byId('copyClass').value==class) {
-    //var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objectClass+"Type').get('value'))";
-    //setTimeout(runModif,1);
-  //}    
+  if (dijit.byId('idProjectType') && dojo.byId('codeType') && dojo.byId('codeType').value!='TMP') {
+    var runModif="dijit.byId('copyProjectToType').set('value',dijit.byId('idProjectType').get('value'))";
+    setTimeout(runModif,1);
+  }
+      
   dijit.byId('dialogCopyProject').show();	
 }
 
@@ -2132,6 +2133,18 @@ function copyObjectToSubmit(objectClass) {
   loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true, 'copyTo');
   dijit.byId('dialogCopy').hide();
   dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
+}
+
+function copyProjectToSubmit(objectClass) {
+  var formVar = dijit.byId('copyProjectForm');
+  if(! formVar.validate()){  
+    showAlert(i18n("alertInvalidForm"));
+	return;
+  }
+  unselectAllRows('objectGrid');
+  loadContent("../tool/copyProjectTo.php", "resultDiv", 'copyProjectForm', true, 'copyTo');
+  dijit.byId('dialogCopyProject').hide();
+  //dojo.byId('objectClass').value='Project';
 }
 
 function loadMenuBarObject(menuClass) {

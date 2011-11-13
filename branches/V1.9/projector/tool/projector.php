@@ -337,11 +337,14 @@ function disableCatchErrors() {
  * @return void
  */
 function throwError($message, $code=null) {
+	global $globalCatchErrors;
   echo '<span class="messageERROR" >ERROR : ' . $message . '</span>';
   echo '<input type="hidden" id="lastSaveId" value="" />';
   echo '<input type="hidden" id="lastOperation" value="ERROR" />';
   echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
-  //exit();  
+  if (! $globalCatchErrors) {
+    exit();
+  }  
 }
 
 
