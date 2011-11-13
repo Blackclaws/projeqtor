@@ -192,7 +192,7 @@ checkVersion(); ?>
   </script>
 </head>
 
-<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="alert('OK');quit();">
+<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onClose="alert('Close');" onUnload="alert('Unload');quit();">
 <div id="loadingDiv" class="<?php echo getTheme();?> background" 
  style="position:relative; visibility: visible; display:block; width:100%; height:100%; ">
  <table style="width:100%; height:100%; text-align:center; vertical-align:middle;"><tr><td>Loading ...</td></tr></table>
@@ -771,7 +771,7 @@ checkVersion(); ?>
     <tr>
       <td>
        <form dojoType="dijit.form.Form" id='copyProjectForm' name='copyProjectForm' onSubmit="return false;">
-         <input id="copyId" name="copyId" type="hidden" value="" />
+         <input id="copyProjectId" name="copyProjectId" type="hidden" value="" />
          <table>
            <tr>
              <td class="dialogLabel"  >
@@ -779,9 +779,9 @@ checkVersion(); ?>
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
-                id="copyProjectToType" name="copyProjectyToType" required
+                id="copyProjectToType" name="copyProjectToType" required
                 class="input" value="" >
-                
+                <?php htmlDrawOptionForReference('idProjectType', null, null, true);?>
                </select>
              </td>
            </tr>
@@ -819,7 +819,7 @@ checkVersion(); ?>
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogCopyProject').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="copyProjectSubmit();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="copyProjectToSubmit();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

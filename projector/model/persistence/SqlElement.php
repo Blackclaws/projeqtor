@@ -72,6 +72,7 @@ abstract class SqlElement {
                                   "Message"=>"cascade",
                                   "Resource"=>"control",
                                   "User"=>"control"),
+    "ProjectType" =>        array("Project"=>"control"), 
     "Project" =>            array("Action"=>"control", 
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
@@ -804,7 +805,7 @@ abstract class SqlElement {
     			} else if ($newClass=="Milestone") {
     				$newObj->$col_name->$plMode="5";
     			}  
-    			if (get_class($this)==$newClass) {
+    			if (get_class($this)==$newClass and $newClass!='Project') {
     				$newObj->$col_name->$plMode=$this->$col_name->$plMode;
     			}
     			$newObj->$col_name->refName=$newName;

@@ -10,6 +10,7 @@ class Project extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idProjectType;
+  public $codeType;
   public $idClient;
   public $projectCode;
   public $contractCode;
@@ -53,15 +54,17 @@ class Project extends SqlElement {
 // Removed in 1.2.0 
 //     <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
 
-  private static $_fieldsAttributes=array("name"=>"required", 
-                                  "description"=>"required",
+  private static $_fieldsAttributes=array("name"=>"required",                                   
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
-                                  "sortOrder"=>"hidden"
+                                  "sortOrder"=>"hidden",
+                                  "codeType"=>"hidden",
+                                  "idProjectType"=>"required"
   );   
  
   private static $_colCaptionTransposition = array('idUser'=>'manager',
-   'idProject'=> 'isSubProject');
+   'idProject'=> 'isSubProject',
+   'idProjectType'=>'type');
   
    /** ==========================================================================
    * Constructor
@@ -414,6 +417,9 @@ class Project extends SqlElement {
   public function save() {
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
+
+    $type=new ProjectType($this->idProjectType);
+    $this->codeType=$type->code;
     
     $this->ProjectPlanningElement->refName=$this->name;
     $this->ProjectPlanningElement->idProject=$this->id;

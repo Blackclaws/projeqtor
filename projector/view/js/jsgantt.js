@@ -670,14 +670,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
-          vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000) ) + 0.25;
+          vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000)) ;
           if (vMinDate>vDefaultMinDate) {
             vTaskLeft = vTaskLeft - 1;
           }
           vTaskRight = 1;
           vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:-2px; ' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
-            + 'left:' + Math.ceil(vTaskLeft * vDayWidth) + 'px; overflow:hidden;">' 
+            + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;">' 
             + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
             + ' style="overflow:hidden; cursor: pointer; font-size:18px;" '
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>';
