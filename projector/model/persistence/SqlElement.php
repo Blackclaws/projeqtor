@@ -822,7 +822,9 @@ abstract class SqlElement {
             	if (get_class($this)==$newClass) {            		
             	  $plMode='id' . $newClass . 'PlanningMode';
             	  if (property_exists($this->$col_name,$plMode)) {
-        	        $newObj->$pe->$plMode=$this->$col_name->$plMode;
+//debugLog("existing PlanningMode=".$this->$col_name->$plMode);
+        	        $newObj->$col_name->$plMode=$this->$col_name->$plMode;
+//debugLog("copied PlanningMode=".$newObj->$col_name->$plMode);        	        
             	  }
             	}
         	    $newObj->$pe->initialStartDate=$this->$col_name->initialStartDate;
