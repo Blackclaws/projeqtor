@@ -43,9 +43,8 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   $activity=New Activity();
   $activities=$activity->getSqlElementsFromCriteria($crit, false, null, null, true);
   foreach ($activities as $activity) {
-debugLog($activity->id);
+  	$activity=new Activity($activity->id);
     $new=$activity->copyTo('Activity',$activity->idActivityType, $activity->name, false);
-debugLog($new->_copyResult);   
     $actArrayObj[$new->id]=$new;
     $actArray[$activity->id]=$new->id;
   }
@@ -56,12 +55,14 @@ debugLog($new->_copyResult);
 		 	$new->idActivity=$actArray[$new->idActivity];
 		 }
 		}
+		$new->ActivityPlanningElement->wbs=null;
 		$new->save();
 	}
   // Copy milestones
 	$mile=New Milestone();
 	$miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
 	foreach ($miles as $mile) {
+		$mile=new Milestone($mile->id);
 		$new=$mile->copyTo('Milestone',$mile->idMilestoneType, $mile->name, false);
     $milArrayObj[$new->id]=$new;
     $milArray[$mile->id]=$new->id;
@@ -73,8 +74,57 @@ debugLog($new->_copyResult);
       $new->idActivity=$actArray[$new->idActivity];
      }
     }
+    $new->MilestonePlanningElement->wbs=null;
     $new->save();
   }	
+  // Copy dependencies
+  $critWhere="";
+  foreach ($actArray as $id=>$new) {
+  	$critWhere.=($critWhere)?', ':'';
+  	$critWhere.="('Activity','$id')";
+  }
+  foreach ($milArray as $id=>$new) {
+    $critWhere.=($critWhere)?', ':'';
+    $critWhere.="('Milestone','$id')";
+  }
+  $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
+         . " or (successorRefType,successorRefId) in (" . $critWhere . ")";
+  $dep=New dependency();
+  $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
+  foreach ($deps as $dep) {
+  	if ($dep->predecessorRefType=='Activity') {
+  		if (array_key_exists($dep->predecessorRefId, $actArray)) {
+  			$dep->predecessorRefId=$actArray[$dep->predecessorRefId];
+  			$crit=array('refType'=>'Activity', 'refId'=>$dep->predecessorRefId);
+  			$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+  			$dep->predecessorId=$pe->id;
+  		}
+  	}	else if ($dep->predecessorRefType=='Milstone') {
+  	  if (array_key_exists($dep->predecessorRefId, $milArray)) {
+        $dep->predecessorRefId=$milArray[$dep->predecessorRefId];
+        $crit=array('refType'=>'Milestone', 'refId'=>$dep->predecessorRefId);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->predecessorId=$pe->id;
+      }
+    }
+    if ($dep->successorRefType=='Activity') {
+      if (array_key_exists($dep->successorRefId, $actArray)) {
+        $dep->successorRefId=$actArray[$dep->successorRefId];
+        $crit=array('refType'=>'Activity', 'refId'=>$dep->successorRefId);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->successorId=$pe->id;
+      }
+    } else if ($dep->successorRefType=='Milstone') {
+      if (array_key_exists($dep->successorRefId, $actArray)) {
+        $dep->successorRefId=$actArray[$dep->successorRefId];
+        $crit=array('refType'=>'Milestone', 'refId'=>$dep->successorRefId);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->successorId=$pe->id;
+      }
+    }
+    $dep->id=null;
+    $dep->save();
+  }
 	$_SESSION['currentObject']=new Project($newProj->id);
 }
 
