@@ -43,12 +43,14 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   $activity=New Activity();
   $activities=$activity->getSqlElementsFromCriteria($crit, false, null, null, true);
   foreach ($activities as $activity) {
-  	$activity=new Activity($activity->id);
-    $new=$activity->copyTo('Activity',$activity->idActivityType, $activity->name, false);
+  	$act=new Activity($activity->id);
+//debugLog ("Original PE->pm=" . $act->ActivityPlanningElement->idActivityPlanningMode);
+    $new=$act->copyTo('Activity',$act->idActivityType, $act->name, false);
     $actArrayObj[$new->id]=$new;
     $actArray[$activity->id]=$new->id;
   }
 	foreach ($actArrayObj as $new) {
+		//$new=new Activity($new->id);
 		$new->idProject=$newProj->id;
 		if ($new->idActivity) {
 		 if (array_key_exists($new->idActivity,$actArray)) {
@@ -61,13 +63,14 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   // Copy milestones
 	$mile=New Milestone();
 	$miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
-	foreach ($miles as $mile) {
-		$mile=new Milestone($mile->id);
+	foreach ($miles as $milestone) {
+		$mile=new Milestone($milestone->id);
 		$new=$mile->copyTo('Milestone',$mile->idMilestoneType, $mile->name, false);
     $milArrayObj[$new->id]=$new;
     $milArray[$mile->id]=$new->id;
 	}
   foreach ($milArrayObj as $new) {
+  	//$new=new Milestone($newTmp->id);
     $new->idProject=$newProj->id;
     if ($new->idActivity) {
      if (array_key_exists($new->idActivity,$actArray)) {
@@ -99,7 +102,7 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   			$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
   			$dep->predecessorId=$pe->id;
   		}
-  	}	else if ($dep->predecessorRefType=='Milstone') {
+  	}	else if ($dep->predecessorRefType=='Milestone') {
   	  if (array_key_exists($dep->predecessorRefId, $milArray)) {
         $dep->predecessorRefId=$milArray[$dep->predecessorRefId];
         $crit=array('refType'=>'Milestone', 'refId'=>$dep->predecessorRefId);
@@ -114,9 +117,9 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
         $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
         $dep->successorId=$pe->id;
       }
-    } else if ($dep->successorRefType=='Milstone') {
-      if (array_key_exists($dep->successorRefId, $actArray)) {
-        $dep->successorRefId=$actArray[$dep->successorRefId];
+    } else if ($dep->successorRefType=='Milestone') {
+      if (array_key_exists($dep->successorRefId, $milArray)) {
+        $dep->successorRefId=$milArray[$dep->successorRefId];
         $crit=array('refType'=>'Milestone', 'refId'=>$dep->successorRefId);
         $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
         $dep->successorId=$pe->id;
