@@ -801,7 +801,7 @@ abstract class SqlElement {
     			$sub=substr($col_name, 0,strlen($col_name)-15    );
     			$plMode='id' . $sub . 'PlanningMode';
     			if ($newClass=="Activity") {
-    			  $newObj->$col_name->$plMode="1";
+    				$newObj->$col_name->$plMode="1";
     			} else if ($newClass=="Milestone") {
     				$newObj->$col_name->$plMode="5";
     			}  
@@ -819,7 +819,12 @@ abstract class SqlElement {
           if ($this->$col_name instanceof PlanningElement) {
             $pe=$newClass . 'PlanningElement';
             if (property_exists($newObj, $pe)) {
-        	    $newObj->$pe->idPlanningMode=$this->$col_name->idPlanningMode;
+            	if (get_class($this)==$newClass) {            		
+            	  $plMode='id' . $newClass . 'PlanningMode';
+            	  if (property_exists($this->$col_name,$plMode)) {
+        	        $newObj->$pe->$plMode=$this->$col_name->$plMode;
+            	  }
+            	}
         	    $newObj->$pe->initialStartDate=$this->$col_name->initialStartDate;
         	    $newObj->$pe->initialEndDate=$this->$col_name->initialEndDate;
         	    $newObj->$pe->initialDuration=$this->$col_name->initialDuration;
