@@ -45,12 +45,13 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   foreach ($activities as $activity) {
   	$act=new Activity($activity->id);
 //debugLog ("Original PE->pm=" . $act->ActivityPlanningElement->idActivityPlanningMode);
-    $new=$act->copyTo('Activity',$act->idActivityType, $act->name, false);
+    $new=$act->copy();
     $actArrayObj[$new->id]=$new;
     $actArray[$activity->id]=$new->id;
   }
 	foreach ($actArrayObj as $new) {
 		//$new=new Activity($new->id);
+		//$new->name='Copied ' . $new->name;
 		$new->idProject=$newProj->id;
 		if ($new->idActivity) {
 		 if (array_key_exists($new->idActivity,$actArray)) {
@@ -65,12 +66,13 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
 	$miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
 	foreach ($miles as $milestone) {
 		$mile=new Milestone($milestone->id);
-		$new=$mile->copyTo('Milestone',$mile->idMilestoneType, $mile->name, false);
+		$new=$mile->copy();
     $milArrayObj[$new->id]=$new;
     $milArray[$mile->id]=$new->id;
 	}
   foreach ($milArrayObj as $new) {
   	//$new=new Milestone($newTmp->id);
+  	//$new->name='Copied ' . $new->name;
     $new->idProject=$newProj->id;
     if ($new->idActivity) {
      if (array_key_exists($new->idActivity,$actArray)) {

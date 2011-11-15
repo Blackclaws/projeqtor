@@ -445,12 +445,28 @@ class Project extends SqlElement {
       }
     }
     // Initialize user->_visibleProjects, to force recalculate
+    $result = parent::save();
+        // Create affectation for Manager.
+    if ($this->idUser) {
+      if (securityGetAccessRight('menuProject', 'update', $this)=="PRO"){
+        $id=($this->id)?$this->id:Sql::$lastQueryNewid;
+        $crit=array('idProject'=>$id, 'idResource'=>$this->idUser);
+        $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
+        if ( ! $aff or ! $aff->id) {
+        	$aff=new Affectation();
+        	$aff->idResource=$this->idUser;
+        	$aff->idProject=$id;
+        	$aff->save();
+        } 
+      }
+    }
     if (array_key_exists('user',$_SESSION)) {
       $user=$_SESSION['user'];
       $user->resetVisibleProjects();
       $_SESSION['user']=$user;
-    }
-    return parent::save();
+    }   
+    return $result;
+    
   }
   
 /** =========================================================================

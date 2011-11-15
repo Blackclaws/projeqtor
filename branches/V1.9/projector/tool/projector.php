@@ -773,7 +773,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
       $accessRight='NO';
       if ($obj != null) {
         if (get_class($obj)=='Project') {
-          if (array_key_exists($obj->id, $user->getVisibleProjects()) ) {
+          if (array_key_exists($obj->id, $user->getVisibleProjects()) or !$obj->id ) {
             $accessRight='YES';
           }
         } else if (property_exists($obj, 'idProject')) {
