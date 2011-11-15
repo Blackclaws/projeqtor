@@ -863,6 +863,9 @@ abstract class SqlElement {
         }
       }
     }
+    if (property_exists($newObj,'idUser')) {
+    	$newObj->idUser=$_SESSION['user']->id;
+    } 
     $result=$newObj->save();
     if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) { 
       $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;    

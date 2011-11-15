@@ -71,7 +71,11 @@
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+        if ($objectClass=='Project') {
+          $queryWhere.= " or codeType='TMP' ";
+        }
+        $queryWhere.= ')';
     } 
     if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
         if ($_SESSION['project']!='*') {
@@ -84,8 +88,12 @@
         }
     }
 
-    $queryWhere.= ($queryWhere=='')?'':' and ';
+    $queryWhere.= ($queryWhere=='')?'':' and (';
     $queryWhere.= getAccesResctictionClause($objectClass,$table);
+    if ($objectClass=='Project') {
+    	$queryWhere.= " or codeType='TMP' ";
+    }
+    $queryWhere.= ')';
     
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {

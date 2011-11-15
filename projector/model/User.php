@@ -358,6 +358,7 @@ class User extends SqlElement {
    */  
   public function resetVisibleProjects() {
     $this->_visibleProjects=null;
+    $this->_affectedProjects=null;
   }
 
 /** =========================================================================

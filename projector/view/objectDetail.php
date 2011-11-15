@@ -616,7 +616,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           } else {
             $accessRight=securityGetAccessRight('menu' . $classObj, 'update');
           }
-          if ( securityGetAccessRight('menu' . $classObj, 'read')=='PRO') { 
+          if ( securityGetAccessRight('menu' . $classObj, 'read')=='PRO' and $classObj!='Project') { 
             $isRequired=true;
           }
         }
