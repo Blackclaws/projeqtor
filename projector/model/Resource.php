@@ -8,6 +8,7 @@ class Resource extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $initials;
   public $capacity;
   public $idTeam;
   public $isUser;
@@ -28,8 +29,9 @@ class Resource extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="30%">${name}</th> 
-    <th field="nameTeam" width="20%">${team}</th>
+    <th field="name" width="25%">${name}</th>
+    <th field="initials" width="10%">${initials}</th>  
+    <th field="nameTeam" width="15%">${team}</th>
     <th field="capacity" width="10%" >${capacity}</th>
     <th field="userName" width="20%">${userName}</th> 
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>

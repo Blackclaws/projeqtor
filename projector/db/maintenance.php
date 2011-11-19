@@ -30,7 +30,7 @@ $versionParameters =array(
   'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/'),
   'V1.5.0'=>array('currency'=>'€', 
                   'currencyPosition'=>'after'),
-  'V1.8.0'=>array('paramldap_allow_login'=>'false',
+  'V1.8.0'=>array('paramLdap_allow_login'=>'false',
 					'paramLdap_base_dn'=>'dc=mydomain,dc=com',
 					'paramLdap_host'=>'localhost',
 					'paramLdap_port'=>'389',

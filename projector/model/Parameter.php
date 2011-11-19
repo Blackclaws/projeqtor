@@ -153,7 +153,8 @@ class Parameter extends SqlElement {
         $list=array('en'=>i18n('langEn'), 
                     'fr'=>i18n('langFr'), 
                     'de'=>i18n('langDe'),
-                    'es'=>i18n('langEs'));
+                    'es'=>i18n('langEs'),
+                    'pt'=>i18n('langPt'));
         break;
       case 'defaultProject':
         if (array_key_exists('user',$_SESSION)) {
