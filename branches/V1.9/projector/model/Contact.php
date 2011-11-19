@@ -8,6 +8,7 @@ class Contact extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $initials;
   public $idClient;
   public $isUser;
   public $idProfile;
@@ -24,9 +25,10 @@ class Contact extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="20%">${name}</th> 
-    <th field="nameClient" width="20%">${client}</th> 
-    <th field="nameProfile" width="20%" formatter="translateFormatter">${idProfile}</th>
+    <th field="name" width="20%">${name}</th>
+    <th field="initials" width="10%">${initials}</th>  
+    <th field="nameClient" width="15%">${client}</th> 
+    <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
     <th field="userName" width="20%">${userName}</th>
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>    

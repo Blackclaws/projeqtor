@@ -443,7 +443,10 @@
         $maxDate=$endDate;
       }
     }
-  	echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
+    $res=New Resource();
+    $resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
+  	
+    echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
     echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
     echo '<Name>' . $name . '</Name>' . $nl;
     echo '<Title>' . $paramDbDisplayName . '</Title>' . $nl;
@@ -509,7 +512,7 @@
     </ExtendedAttributes>*/
     echo '<Calendars>' . $nl;
     echo '<Calendar>' . $nl;
-    echo '<UID>1</UID>' . $nl;
+    echo '<UID>0</UID>' . $nl;
     echo '<Name>Standard</Name>' . $nl;
     echo '<IsBaseCalendar>1</IsBaseCalendar>' . $nl;
     echo '<BaseCalendarUID>-1</BaseCalendarUID>' . $nl;
@@ -536,6 +539,14 @@
     }
     echo ' </WeekDays>' . $nl;
     echo '</Calendar>' . $nl;
+    foreach ($resourceList as $resource) {
+    	echo "<Calendar>" . $nl;
+      echo "<UID>" . $resource->id . "</UID>" . $nl;
+      echo "<Name>" . $resource->name . "</Name>" . $nl;
+      echo "<IsBaseCalendar>0</IsBaseCalendar>" . $nl;
+      echo "<BaseCalendarUID>0</BaseCalendarUID>" . $nl;
+      echo "</Calendar>" . $nl;
+    } 
     echo '</Calendars>' . $nl;
     echo '<Tasks>' . $nl;
     $cpt=0;
@@ -635,6 +646,131 @@
       echo '</Task>' . $nl;
     }
     echo '</Tasks>' . $nl;
+    echo '<Resources>' . $nl;
+    foreach ($resourceList as $resource) {
+      echo "<Resource>" . $nl;
+      echo "<UID>" . $resource->id . "</UID>" . $nl;
+      echo "<ID>" . $resource->id . "</ID>" . $nl;
+      echo "<Name>" . $resource->name . "</Name>" . $nl;
+      echo "<Type>1</Type>" . $nl;
+      echo "<IsNull>0</IsNull>" . $nl;
+      echo "<Initials>" . $resource->initials . "</Initials>" . $nl;
+      echo "<Group>" . SqlList::getNameFromId('Team',$resource->idTeam) . "</Group>" . $nl;
+      echo "<WorkGroup>0</WorkGroup>" . $nl;
+      echo "<EmailAddress>" . $resource->email . "</EmailAddress>" . $nl;
+      echo "<MaxUnits>" . $resource->capacity . "</MaxUnits>" . $nl;
+      echo "<PeakUnits>0</PeakUnits>" . $nl;
+      echo "<OverAllocated>0</OverAllocated>" . $nl;
+      echo "<CanLevel>1</CanLevel>" . $nl;
+      echo "<AccrueAt>3</AccrueAt>" . $nl;
+      echo "<Work>PT0H0M0S</Work>" . $nl;
+      echo "<RegularWork>PT0H0M0S</RegularWork>" . $nl;
+      echo "<OvertimeWork>PT0H0M0S</OvertimeWork>" . $nl;
+      echo "<ActualWork>PT0H0M0S</ActualWork>" . $nl;
+      echo "<RemainingWork>PT0H0M0S</RemainingWork>" . $nl;
+      echo "<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>" . $nl;
+      echo "<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>" . $nl;
+      echo "<PercentWorkComplete>0</PercentWorkComplete>" . $nl;
+      $rate=0;
+      $critCost=array('idResource'=>$resource->id, 'endDate'=>null);
+      $rc=new ResourceCost();
+      $rcList=$rc->getSqlElementsFromCriteria($critCost, false, null, ' startDate desc');
+      if (count($rcList)>0) {
+      	$rate=($hoursPerDay)?round($rcList[0]->cost / $hoursPerDay,2):0;
+      	
+      }
+      echo "<StandardRate>" . $rate . "</StandardRate>" . $nl;
+      echo "<StandardRateFormat>3</StandardRateFormat>" . $nl;
+      echo "<Cost>0</Cost>" . $nl;
+      echo "<OvertimeRate>0</OvertimeRate>" . $nl;
+      echo "<OvertimeRateFormat>3</OvertimeRateFormat>" . $nl;
+      echo "<OvertimeCost>0</OvertimeCost>" . $nl;
+      echo "<CostPerUse>0</CostPerUse>" . $nl;
+      echo "<ActualCost>0</ActualCost>" . $nl;
+      echo "<ActualOvertimeCost>0</ActualOvertimeCost>" . $nl;
+      echo "<RemainingCost>0</RemainingCost>" . $nl;
+      echo "<RemainingOvertimeCost>0</RemainingOvertimeCost>" . $nl;
+      echo "<WorkVariance>0</WorkVariance>" . $nl;
+      echo "<CostVariance>0</CostVariance>" . $nl;
+      echo "<SV>0</SV>" . $nl;
+      echo "<CV>0</CV>" . $nl;
+      echo "<ACWP>0</ACWP>" . $nl;
+      echo "<CalendarUID>" . $resource->id . "</CalendarUID>" . $nl;
+      echo "<BCWS>0</BCWS>" . $nl;
+      echo "<BCWP>0</BCWP>" . $nl;
+      echo "<IsGeneric>0</IsGeneric>" . $nl;
+      echo "<IsInactive>0</IsInactive>" . $nl;
+      echo "<IsEnterprise>0</IsEnterprise>" . $nl;
+      echo "<BookingType>0</BookingType>" . $nl;
+      echo "<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>" . $nl;
+      echo "<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>" . $nl;
+      echo "<CreationDate></CreationDate>" . $nl;
+      echo "</Resource>" . $nl;
+    } 
+    echo '</Resources>' . $nl;
+    echo '<Assignments>' . $nl;
+/*<Assignment>
+<UID>1</UID>
+<TaskUID>7</TaskUID>
+<ResourceUID>-65535</ResourceUID>
+<PercentWorkComplete>0</PercentWorkComplete>
+<ActualCost>0</ActualCost>
+<ActualOvertimeCost>0</ActualOvertimeCost>
+<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>
+<ActualStart>2011-11-17T08:00:00</ActualStart>
+<ActualWork>PT0H0M0S</ActualWork>
+<ACWP>0</ACWP>
+<Confirmed>0</Confirmed>
+<Cost>0</Cost>
+<CostRateTable>0</CostRateTable>
+<CostVariance>0</CostVariance>
+<CV>0</CV>
+<Delay>0</Delay>
+<Finish>2012-02-01T18:00:00</Finish>
+<FinishVariance>0</FinishVariance>
+<WorkVariance>0</WorkVariance>
+<HasFixedRateUnits>1</HasFixedRateUnits>
+<FixedMaterial>0</FixedMaterial>
+<LevelingDelay>0</LevelingDelay>
+<LevelingDelayFormat>7</LevelingDelayFormat>
+<LinkedFields>0</LinkedFields>
+<Milestone>0</Milestone>
+<Overallocated>0</Overallocated>
+<OvertimeCost>0</OvertimeCost>
+<OvertimeWork>PT0H0M0S</OvertimeWork>
+<RegularWork>PT0H0M0S</RegularWork>
+<RemainingCost>0</RemainingCost>
+<RemainingOvertimeCost>0</RemainingOvertimeCost>
+<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>
+<RemainingWork>PT0H0M0S</RemainingWork>
+<ResponsePending>0</ResponsePending>
+<Start>2011-11-17T08:00:00</Start>
+<Stop>2011-11-17T08:00:00</Stop>
+<Resume>2011-11-17T08:00:00</Resume>
+<StartVariance>0</StartVariance>
+<Units>1</Units>
+<UpdateNeeded>0</UpdateNeeded>
+<VAC>0</VAC>
+<Work>PT0H0M0S</Work>
+<WorkContour>0</WorkContour>
+<BCWS>0</BCWS>
+<BCWP>0</BCWP>
+<BookingType>0</BookingType>
+<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>
+<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>
+<CreationDate>2011-11-18T21:06:00</CreationDate>
+<TimephasedData>
+<Type>1</Type>
+<UID>1</UID>
+<Start>2011-11-17T08:00:00</Start>
+<Finish>2011-11-18T08:00:00</Finish>
+<Unit>2</Unit>
+<Value>PT8H0M0S</Value>
+</TimephasedData>
+</Assignment>
+</Assignments>
+
+     */
     echo '</Project>' . $nl;
   }
   

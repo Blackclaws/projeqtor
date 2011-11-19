@@ -33,3 +33,5 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 93, 1),
 (2, 93, 1),
 (3, 93, 1);
+
+ALTER TABLE `${prefix}user` ADD initials varchar(10);

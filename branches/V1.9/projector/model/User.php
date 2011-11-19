@@ -15,6 +15,7 @@ class User extends SqlElement {
   public $isContact;
   public $isResource=0;
   public $resourceName;
+  public $initials;
   public $isLdap;
   public $locked;
   public $idle;
@@ -25,9 +26,10 @@ class User extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="30%">${userName}</th>
+    <th field="name" width="25%">${userName}</th>
     <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
-    <th field="resourceName" width="30%">${name}</th>  
+    <th field="resourceName" width="25%">${name}</th>
+    <th field="initials" width="10%">${initials}</th> 
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
     <th field="isLdap" width="5%" formatter="booleanFormatter">${isLdap}</th>
