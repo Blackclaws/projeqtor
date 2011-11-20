@@ -277,7 +277,7 @@ class Parameter extends SqlElement {
       	                     'ldapMsgOnUserCreation'=>'list',
       	                     'sectionReferenceFormat'=>'section',
       	                     'referenceFormatPrefix'=>'text',
-      	                     'referenceFormatNumber'=>'text',
+      	                     'referenceFormatNumber'=>'number',
                              'changeReferenceOnTypeChange'=>'list',
       	                     'sectionMiscellaneous'=>'section',  
       	                     'getVersion'=>'list',

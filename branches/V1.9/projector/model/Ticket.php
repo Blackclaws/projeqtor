@@ -9,10 +9,10 @@ class Ticket extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
-  public $externalReference;
   public $idProject;
   public $idTicketType;
   public $name;
+  public $externalReference;
   public $idUrgency;
   public $creationDateTime;
   public $idUser;

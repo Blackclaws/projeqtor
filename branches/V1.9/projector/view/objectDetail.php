@@ -420,6 +420,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' class="display" ';
         echo ' readonly style="width: ' . $smallWidth . 'px;" ' ;
         echo ' value="' . htmlEncode($val) . '" ></span>';
+      } else if ($col=='reference') {
+        // Draw reference (only visible) ============================================= ID
+        // id is only visible
+        echo '<span dojoType="dijit.form.TextBox" type="text"  ';
+        echo $name;
+        echo ' class="display" ';
+        echo ' readonly style="width: ' . ($largeWidth - $smallWidth -20) . 'px;" ' ;
+        echo ' value="' . htmlEncode($val) . '" ></span>';        
       } else if ($col=='password') {
         global $paramDefaultPassword;       
         // Password specificity  ============================================= PASSWORD
