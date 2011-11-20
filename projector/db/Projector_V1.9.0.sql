@@ -35,3 +35,41 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (3, 93, 1);
 
 ALTER TABLE `${prefix}user` ADD initials varchar(10);
+
+ALTER TABLE `${prefix}ticket` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}activity` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}milestone` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+
+ALTER TABLE `${prefix}expense` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}risk` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}action` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}issue` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}meeting` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}decision` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+ALTER TABLE `${prefix}question` ADD reference varchar(100),
+ADD externalReference varchar(100);
+
+UPDATE `${prefix}type` set code=UPPER(SUBSTRING(name,1,3))
+WHERE code is null;
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'referenceFormatPrefix','{PROJ}-{TYPE}-'),
+(null, null, 'changeReferenceOnTypeChange','NO');

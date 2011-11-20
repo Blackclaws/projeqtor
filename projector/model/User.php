@@ -323,10 +323,15 @@ class User extends SqlElement {
    * and their sub projects
    * @return a list of projects id
    */
-  public function getHierarchicalViewOfVisibleProjects($projId='*') {
+/*  public function getHierarchicalViewOfVisibleProjects($projId='*') {
   	if ($this->_hierarchicalViewOfVisibleProjects and $projId=='*') {
   		return $this->_hierarchicalViewOfVisibleProjects;
-  	}
+  	} */
+  	
+  public function getHierarchicalViewOfVisibleProjects($projId='*') {
+    if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
+      return $this->_hierarchicalViewOfVisibleProjects;
+    }	
     $result=array();
     $visibleProjectsList=$this->getVisibleProjects();
     if ($projId=='*') {

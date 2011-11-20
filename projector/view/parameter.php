@@ -84,6 +84,16 @@
         echo ' >';
         echo $obj->getValidationScript($code);
         echo '</div>';
+      } else if ($format=='text') {
+        echo '<div dojoType="dijit.form.TextBox" ';
+        echo ' name="' . $code . '" id="' . $code . '"';
+        echo ' title="' . i18n('help' . ucfirst($code)) . '"';
+        echo ' style="width: 200px;" ';
+        echo ' class="input" ';
+        echo ' value="' .  $obj->parameterValue  . '" ';
+        echo ' >';
+        echo $obj->getValidationScript($code);
+        echo '</div>';
       }
       echo '</td></tr>'; 
     }

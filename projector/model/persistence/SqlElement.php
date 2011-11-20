@@ -221,17 +221,22 @@ abstract class SqlElement {
    * @return void
    */
   private function saveSqlElement() {
-    // #305
+  	// #305
     $this->recalculateCheckboxes();    
     // select operation to be executed
     $control=$this->control();
     if ($control=="OK") {
+      if (property_exists($this, 'idStatus') or property_exists($this,'reference') ) {
+        $class=get_class($this);
+        $old=new $class($this->id);
+      }
+    	if (property_exists($this,'reference') and ! $this->reference) {
+    		$this->reference=getReference;
+    	}
       $statusChanged=false;
       if ($this->id != null) {
         if (property_exists($this, 'idStatus')) {
           if ($this->idStatus) {
-            $class=get_class($this);
-            $old=new $class($this->id);
             if ($old->idStatus!=$this->idStatus) {
               $statusChanged=true;
             }            
