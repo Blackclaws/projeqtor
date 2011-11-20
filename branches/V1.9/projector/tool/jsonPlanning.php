@@ -708,69 +708,72 @@
       echo "</Resource>" . $nl;
     } 
     echo '</Resources>' . $nl;
+    $ass=new Assignment();
+    $clauseWhere="";
+    $lstAss=$ass->getSqlElementsFromCriteria(null, false, $clauseWhere, null, false);
     echo '<Assignments>' . $nl;
-/*<Assignment>
-<UID>1</UID>
-<TaskUID>7</TaskUID>
-<ResourceUID>-65535</ResourceUID>
-<PercentWorkComplete>0</PercentWorkComplete>
-<ActualCost>0</ActualCost>
-<ActualOvertimeCost>0</ActualOvertimeCost>
-<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>
-<ActualStart>2011-11-17T08:00:00</ActualStart>
-<ActualWork>PT0H0M0S</ActualWork>
-<ACWP>0</ACWP>
-<Confirmed>0</Confirmed>
-<Cost>0</Cost>
-<CostRateTable>0</CostRateTable>
-<CostVariance>0</CostVariance>
-<CV>0</CV>
-<Delay>0</Delay>
-<Finish>2012-02-01T18:00:00</Finish>
-<FinishVariance>0</FinishVariance>
-<WorkVariance>0</WorkVariance>
-<HasFixedRateUnits>1</HasFixedRateUnits>
-<FixedMaterial>0</FixedMaterial>
-<LevelingDelay>0</LevelingDelay>
-<LevelingDelayFormat>7</LevelingDelayFormat>
-<LinkedFields>0</LinkedFields>
-<Milestone>0</Milestone>
-<Overallocated>0</Overallocated>
-<OvertimeCost>0</OvertimeCost>
-<OvertimeWork>PT0H0M0S</OvertimeWork>
-<RegularWork>PT0H0M0S</RegularWork>
-<RemainingCost>0</RemainingCost>
-<RemainingOvertimeCost>0</RemainingOvertimeCost>
-<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>
-<RemainingWork>PT0H0M0S</RemainingWork>
-<ResponsePending>0</ResponsePending>
-<Start>2011-11-17T08:00:00</Start>
-<Stop>2011-11-17T08:00:00</Stop>
-<Resume>2011-11-17T08:00:00</Resume>
-<StartVariance>0</StartVariance>
-<Units>1</Units>
-<UpdateNeeded>0</UpdateNeeded>
-<VAC>0</VAC>
-<Work>PT0H0M0S</Work>
-<WorkContour>0</WorkContour>
-<BCWS>0</BCWS>
-<BCWP>0</BCWP>
-<BookingType>0</BookingType>
-<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>
-<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>
-<CreationDate>2011-11-18T21:06:00</CreationDate>
-<TimephasedData>
-<Type>1</Type>
-<UID>1</UID>
-<Start>2011-11-17T08:00:00</Start>
-<Finish>2011-11-18T08:00:00</Finish>
-<Unit>2</Unit>
-<Value>PT8H0M0S</Value>
-</TimephasedData>
-</Assignment>
-</Assignments>
-
-     */
+    foreach ($lstAss as $ass) {
+      echo "<Assignment>" . $nl;
+      echo "<UID>" . $ass->id . "</UID>" . $nl;
+      echo "<TaskUID>" . $ass->id . "</TaskUID>" . $nl;
+      echo "<ResourceUID>-65535</ResourceUID>" . $nl;
+      echo "<PercentWorkComplete>0</PercentWorkComplete>" . $nl;
+      echo "<ActualCost>0</ActualCost>" . $nl;
+      echo "<ActualOvertimeCost>0</ActualOvertimeCost>" . $nl;
+      echo "<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>" . $nl;
+      echo "<ActualStart>2011-11-17T08:00:00</ActualStart>" . $nl;
+      echo "<ActualWork>PT0H0M0S</ActualWork>" . $nl;
+      echo "<ACWP>0</ACWP>" . $nl;
+      echo "<Confirmed>0</Confirmed>" . $nl;
+      echo "<Cost>0</Cost>" . $nl;
+      echo "<CostRateTable>0</CostRateTable>" . $nl;
+      echo "<CostVariance>0</CostVariance>" . $nl;
+      echo "<CV>0</CV>" . $nl;
+      echo "<Delay>0</Delay>" . $nl;
+      echo "<Finish>2012-02-01T18:00:00</Finish>" . $nl;
+      echo "<FinishVariance>0</FinishVariance>" . $nl;
+      echo "<WorkVariance>0</WorkVariance>" . $nl;
+      echo "<HasFixedRateUnits>1</HasFixedRateUnits>" . $nl;
+      echo "<FixedMaterial>0</FixedMaterial>" . $nl;
+      echo "<LevelingDelay>0</LevelingDelay>" . $nl;
+      echo "<LevelingDelayFormat>7</LevelingDelayFormat>" . $nl;
+      echo "<LinkedFields>0</LinkedFields>" . $nl;
+      echo "<Milestone>0</Milestone>" . $nl;
+      echo "<Overallocated>0</Overallocated>" . $nl;
+      echo "<OvertimeCost>0</OvertimeCost>" . $nl;
+      echo "<OvertimeWork>PT0H0M0S</OvertimeWork>" . $nl;
+      echo "<RegularWork>PT0H0M0S</RegularWork>" . $nl;
+      echo "<RemainingCost>0</RemainingCost>" . $nl;
+      echo "<RemainingOvertimeCost>0</RemainingOvertimeCost>" . $nl;
+      echo "<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>" . $nl;
+      echo "<RemainingWork>PT0H0M0S</RemainingWork>" . $nl;
+      echo "<ResponsePending>0</ResponsePending>" . $nl;
+      echo "<Start>2011-11-17T08:00:00</Start>" . $nl;
+      echo "<Stop>2011-11-17T08:00:00</Stop>" . $nl;
+      echo "<Resume>2011-11-17T08:00:00</Resume>" . $nl;
+      echo "<StartVariance>0</StartVariance>" . $nl;
+      echo "<Units>1</Units>" . $nl;
+      echo "<UpdateNeeded>0</UpdateNeeded>" . $nl;
+      echo "<VAC>0</VAC>" . $nl;
+      echo "<Work>PT0H0M0S</Work>" . $nl;
+      echo "<WorkContour>0</WorkContour>" . $nl;
+      echo "<BCWS>0</BCWS>" . $nl;
+      echo "<BCWP>0</BCWP>" . $nl;
+      echo "<BookingType>0</BookingType>" . $nl;
+      echo "<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>" . $nl;
+      echo "<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>" . $nl;
+      echo "<CreationDate>2011-11-18T21:06:00</CreationDate>" . $nl;
+      echo "<TimephasedData>" . $nl;
+      echo "<Type>1</Type>" . $nl;
+      echo "<UID>1</UID>" . $nl;
+      echo "<Start>2011-11-17T08:00:00</Start>" . $nl;
+      echo "<Finish>2011-11-18T08:00:00</Finish>" . $nl;
+      echo "<Unit>2</Unit>" . $nl;
+      echo "<Value>PT8H0M0S</Value>" . $nl;
+      echo "</TimephasedData>" . $nl;
+      echo "</Assignment>" . $nl;
+    }  
+    echo "</Assignments>" . $nl;
     echo '</Project>' . $nl;
   }
   

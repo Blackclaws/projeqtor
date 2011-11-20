@@ -229,7 +229,12 @@ class Parameter extends SqlElement {
                     'ALERT&MAIL'=>i18n('displayAlertAndMail'));
         break;
       case 'csvSeparator';
-         $list=array(';'=>';',','=>',');
+        $list=array(';'=>';',','=>',');
+        break;
+      case 'changeReferenceOnTypeChange';
+        $list=array('YES'=>i18n('displayYes'),
+                    'NO'=>i18n('displayNo'));
+        break; 
     } 
     return $list;
   }
@@ -270,9 +275,14 @@ class Parameter extends SqlElement {
       	                     'sectionLdap'=>'section', 
       	                     'ldapDefaultProfile'=>'list',
       	                     'ldapMsgOnUserCreation'=>'list',
+      	                     'sectionReferenceFormat'=>'section',
+      	                     'referenceFormatPrefix'=>'text',
+      	                     'referenceFormatNumber'=>'text',
+                             'changeReferenceOnTypeChange'=>'list',
       	                     'sectionMiscellaneous'=>'section',  
       	                     'getVersion'=>'list',
       	                     'csvSeparator'=>'list'
+      	                    
       	);
     }
     return $parameterList;

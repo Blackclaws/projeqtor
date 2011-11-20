@@ -8,6 +8,7 @@ class Type extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $code;
   public $idWorkflow;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
@@ -28,7 +29,8 @@ class Type extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="60%">${name}</th>
+    <th field="name" width="50%">${name}</th>
+    <th field="code" width="10%">${code}</th>
     <th field="sortOrder" width="5%">${sortOrderShort}</th>
     <th field="nameWorkflow" width="20%" >${idWorkflow}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
