@@ -230,8 +230,8 @@ abstract class SqlElement {
         $class=get_class($this);
         $old=new $class($this->id);
       }
-    	if (property_exists($this,'reference') and ! $this->reference) {
-    		$this->reference=getReference;
+    	if (property_exists($this,'reference')) {
+    		$this->setReference($old);
     	}
       $statusChanged=false;
       if ($this->id != null) {
@@ -2074,6 +2074,52 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	  }
   	}
   	return array('select'=>$select,'from'=>$from);
+  	
+  }
+  
+  public function setReference($old=null, $force=false) {
+  	$class=get_class($this);
+  	if ($old==null) {
+      $old=new $class($this->id);
+    }
+    if (! property_exists($this,'reference')) {
+      return;
+    }
+  	$fmtPrefix=Parameter::getGlobalParameter('referenceFormatPrefix');
+  	$fmtNumber=Parameter::getGlobalParameter('referenceFormatNumber');
+    $change=Parameter::getGlobalParameter('changeReferenceOnTypeChange');
+    $type='id' . $class . 'Type';
+    if ($this->reference and ! $force) {
+      if ($change!='YES') {
+    	  return;
+      }
+      if (! property_exists($this,$type)) {
+      	return;
+      }
+      if ($this->$type==$old->$type) {
+      	return;
+      }
+    }
+    $projObj=new Project($this->idProject);
+    $typeObj=new Type($this->$type);
+    $prefix=str_replace(array('{PROJ}', '{TYPE}'), array($projObj->projectCode,$typeObj->code),$fmtPrefix);
+  	$query="select max(reference) as ref from " . $this->getDatabaseTableName();
+  	$query.=" where reference like '" . $prefix . "%'";
+  	$ref=$prefix;
+  	$result=Sql::query($query);
+  	$numMax='0';
+  	if (count($result)>0) {
+      $line=Sql::fetchLine($result);
+  	  $refMax=$line['ref'];
+  	  $numMax=substr($refMax,strlen($fmtPrefix));
+  	}
+  	$numMax+=1;
+  	if ($fmtNumber and  $fmtNumber-strlen($numMax)>0) {
+  		$num=substr('0000000000', 0, $fmtNumber-strlen($numMax)) . $numMax;
+  	} else {
+  		$num=$numMax;
+  	}  	
+  	$this->reference=$prefix.$num;
   	
   }
 }
