@@ -37,7 +37,7 @@ class IndicatorDefinition extends SqlElement {
 
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameIndicatorable" width="15%" >${element}</th>
+    <th field="nameIndicatorable" formatter="translateFormatter" width="15%" >${element}</th>
     <th field="nameIndicator" width="20%" formatter="translateFormatter">${idIndicator}</th>
     <th field="nameType" width="10%" >${type}</th>
     <th field="warningValue" width="8%" formatter="numericFormatter">${warning}</th>
