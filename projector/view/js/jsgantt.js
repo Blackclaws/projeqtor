@@ -209,8 +209,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   };
   this.getList   = function() { return vTaskList; };
   this.clearDependencies = function() {
-    var parent = JSGantt.findObj('rightside');
-    var depLine;
+    //var parent = JSGantt.findObj('rightside');
+	  var parent = JSGantt.findObj('rightGanttChartDIV');
+	var depLine;
     var vMaxId = vDepId;
     for ( i=1; i<vMaxId; i++ ) {
       depLine = JSGantt.findObj("line"+i);
@@ -224,6 +225,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vWid  = Math.abs(x2-x1) + 1;
     vHgt  = Math.abs(y2-y1) + 1;
     vDoc = JSGantt.findObj('rightGanttChartDIV');
+    //vDoc = JSGantt.findObj('rightside');
     var oDiv = document.createElement('div');
     oDiv.id = "line"+vDepId++;
     oDiv.style.position = "absolute";

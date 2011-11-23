@@ -53,6 +53,9 @@ try {
   $req="select count(distinct(traceIp)) as `Distinct IP`, count(*) as Total from trace";
   showStat($cnx,$req);
   
+  $req="select traceIp as `IP`, count(*) as Total from trace group by traceIp having count(*) > 5 order by count(*) desc";
+  showStat($cnx,$req);
+  
 } catch (Exception $e) {
 	echo "error";
 }

@@ -7,6 +7,7 @@ class Decision extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
+  public $reference;
   public $idProject;
   public $idDecisionType;
   public $name;
@@ -34,7 +35,8 @@ class Decision extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", 
+  private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
+                                  "name"=>"required", 
                                   "idProject"=>"required",
                                   "idDecisionType"=>"required",
                                   "idUser"=>"hidden",

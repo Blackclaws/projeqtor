@@ -16,6 +16,8 @@ class Product extends SqlElement {
   public $description;
   public $_col_2_2_Versions;
   public $_spe_versions;
+  public $_Attachement=array();
+  public $_Note=array();
 
   // Define the layout that will be used for lists
   private static $_layout='
