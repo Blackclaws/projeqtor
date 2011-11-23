@@ -8,7 +8,6 @@ class TicketDelay extends Delay {
     
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place
-  public $scope; 
   public $idTicketType;
   public $idUrgency;
   public $value;

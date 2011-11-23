@@ -6,7 +6,8 @@ class ProjectExpense extends Expense {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
-  public $id;    // redefine $id to specify its visible place 
+  public $id;    // redefine $id to specify its visible place
+  public $reference; 
   public $idProject;
   public $idUser;
   public $idProjectExpenseType;
@@ -35,7 +36,8 @@ class ProjectExpense extends Expense {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("idProject"=>"required",
+  private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
+                                  "idProject"=>"required",
                                   "name"=>"required",
                                   "idProjectExpenseType"=>"required",
                                   "expensePlannedDate"=>"",

@@ -35,7 +35,8 @@ class Project extends SqlElement {
   public $_col_2_2_successor;
   public $_Dependency_Successor=array();
   public $sortOrder;
-
+  public $_Attachement=array();
+  public $_Note=array();
 
   // Define the layout that will be used for lists
   private static $_layout='

@@ -7,6 +7,7 @@ class Action extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
+  public $reference;
   public $idProject;
   public $idActionType;
   public $name;
@@ -48,7 +49,8 @@ class Action extends SqlElement {
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", 
+  private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
+                                  "name"=>"required", 
                                   "idProject"=>"required",
                                   "idStatus"=>"required",
                                   "idActionType"=>"required",

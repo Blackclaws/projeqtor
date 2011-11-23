@@ -230,9 +230,6 @@ abstract class SqlElement {
         $class=get_class($this);
         $old=new $class($this->id);
       }
-    	if (property_exists($this,'reference')) {
-    		$this->setReference($old);
-    	}
       $statusChanged=false;
       if ($this->id != null) {
         if (property_exists($this, 'idStatus')) {
@@ -270,6 +267,9 @@ abstract class SqlElement {
       		  IndicatorValue::addIndicatorValue($ind,$this);
       	  }
       	}
+      }
+      if (property_exists($this,'reference')) {
+        $this->setReference($old);
       }
       return $returnValue;
     } else {
@@ -2106,6 +2106,8 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	$query="select max(reference) as ref from " . $this->getDatabaseTableName();
   	$query.=" where reference like '" . $prefix . "%'";
   	$ref=$prefix;
+  	$mutex = new Mutex($prefix);
+  	$mutex->reserve();
   	$result=Sql::query($query);
   	$numMax='0';
   	if (count($result)>0) {
@@ -2120,6 +2122,8 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   		$num=$numMax;
   	}  	
   	$this->reference=$prefix.$num;
+  	$this->updateSqlElement();
+  	$mutex->release();
   	
   }
 }
