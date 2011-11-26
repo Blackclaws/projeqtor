@@ -305,9 +305,11 @@ function exceptionHandler($exception) {
  */
 function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
   global $logLevel, $globalCatchErrors;
-  errorLog("ERROR *****");
-  errorLog("on file '" . $errorFile . "' at line (" . $errorLine . ")");
-  errorLog("cause = " . $errorMessage);
+  if ( ! strpos($errorMessage, "getVersion.php") and ! strpos($errorMessage, "file-get-contents") ) {
+    errorLog("ERROR *****");
+    errorLog("on file '" . $errorFile . "' at line (" . $errorLine . ")");
+    errorLog("cause = " . $errorMessage);
+  }
   //echo "<span class='messageERROR'>" . i18n("messageError") . " : " . $exception->getMessage() . "</span>  ";
   //echo "(" . i18n("contactAdministrator") . ")";
   if ($globalCatchErrors) {

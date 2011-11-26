@@ -50,8 +50,14 @@ class Attachement extends SqlElement {
   
   public function delete() {
   	global $paramPathSeparator;
-  	unlink($this->subDirectory . $paramPathSeparator . $this->fileName);
-  	rmdir($this->subDirectory);
+  	enableCatchErrors();
+  	if (file_exists($this->subDirectory . $paramPathSeparator . $this->fileName)) {
+  	  unlink($this->subDirectory . $paramPathSeparator . $this->fileName);
+  	}
+  	if (file_exists($this->subDirectory)) {
+  	  rmdir($this->subDirectory);
+  	}
+  	disableCatchErrors();
   	return parent::delete();
   }
     
