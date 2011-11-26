@@ -226,7 +226,6 @@ function saveBrowserLocaleToSession() {
   });
   var fmt=""+dojo.number.format(1.1)+" ";
   var decPoint=fmt.substr(1,1);
-  //alert(fmt+" => decimal point='"+decPoint+"'");
   dojo.xhrPost({
 	url: "../tool/saveDataToSession.php?id=browserLocaleDecimalPoint&value=" + decPoint,
 	load: function(data,args) { }
@@ -240,7 +239,6 @@ function saveBrowserLocaleToSession() {
 	url: "../tool/saveDataToSession.php?id=browserLocaleThousandSeparator&value=" + thousandSep,
 	load: function(data,args) { }
   });
-  //alert(fmt+" => decimal separator='"+decSep+"'");
   
 }
 
@@ -686,7 +684,6 @@ function finalizeMessageDisplay(destination, validationType) {
     	var sortIndex=grid.getSortIndex();
     	var sortAsc=grid.getSortAsc();
     	var scrollTop=grid.scrollTop;
-    	//alert(scrollTop);
         store = grid.store;
         store.close();
         store.fetch({onComplete: function(){
@@ -1089,9 +1086,14 @@ function selectRowById(gridName, id) {
  * @return the formated message, in the correct language
  */
 function i18n(str, vars) {
-  if ( ! i18nMessages) {
-    dojo.requireLocalization("i18n","lang", currentLocale);
-    i18nMessages=dojo.i18n.getLocalization("i18n","lang", currentLocale);
+  if ( ! i18nMessages ) {
+	try {
+	  //dojo.registerModulePath('i18n', '/tool/i18n'); 
+      dojo.requireLocalization("i18n","lang", currentLocale);
+      i18nMessages=dojo.i18n.getLocalization("i18n","lang", currentLocale);
+	} catch(err) {
+	  i18nMessages=new Array();
+    }
   }
   if (i18nMessages[str]) {
     ret = i18nMessages[str];
@@ -1217,7 +1219,7 @@ function drawGantt() {
   if (g) {
     gFormat=g.getFormat();
   }
-  g = new JSGantt.GanttChart('g',document.getElementById('GanttChartDIV'), gFormat);
+  g = new JSGantt.GanttChart('g',dojo.byId('GanttChartDIV'), gFormat); 
   g.setShowRes(0);                       // Show/Hide Responsible (0/1)
   g.setShowDur(1);                       // Show/Hide Duration (0/1)
   g.setShowComp(1);                      // Show/Hide % Complete(0/1)
@@ -1405,7 +1407,6 @@ function addDaysToDate(paramDate, paramDays) {
  * @return new calculated date
  */
 function addWorkDaysToDate(paramDate, paramDays) {
-// alert("paramDate=" + paramDate + "\nparamDays=" + paramDays);
   var startDate=paramDate;
   var days=paramDays;
   if (days<=0) {
@@ -1539,16 +1540,13 @@ function getFirstDayOfWeek(week, year) {
    var month=testDate.getMonth()+1;
    var year=testDate.getFullYear();
    var testWeek=getWeek(day, month, year);
-// alert("testDate = " + testDate);
-// alert("testWeek (" + day + "/" + month + "/" + year + ") = " + testWeek);
+
    while (testWeek>=week) {
      testDate.setDate(testDate.getDate()-1);     
      day=testDate.getDate();
      month=testDate.getMonth()+1;
      year=testDate.getFullYear();
      testWeek=getWeek(day, month, year);
-// alert("testDate = " + testDate);
-// alert("testWeek (" + day + "/" + month + "/" + year + ") = " + testWeek);
      if (testWeek>10 && week==1) {testWeek=0};
    }
    testDate.setDate(testDate.getDate()+1)

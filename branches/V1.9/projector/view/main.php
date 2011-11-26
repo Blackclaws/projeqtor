@@ -33,7 +33,7 @@ checkVersion(); ?>
   <script type="text/javascript" src="js/projectorDialog.js" ></script>
   <script type="text/javascript" src="js/projectorFormatter.js" ></script>
   <script type="text/javascript" src="../external/dojo/dojo.js"
-    djConfig='modulePaths: {i18n: "../../tool/i18n"},
+    djConfig='modulePaths: {"i18n":"../../tool/i18n"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
@@ -192,7 +192,7 @@ checkVersion(); ?>
   </script>
 </head>
 
-<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onClose="alert('Close');" onUnload="alert('Unload');quit();">
+<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
 <div id="loadingDiv" class="<?php echo getTheme();?> background" 
  style="position:relative; visibility: visible; display:block; width:100%; height:100%; ">
  <table style="width:100%; height:100%; text-align:center; vertical-align:middle;"><tr><td>Loading ...</td></tr></table>

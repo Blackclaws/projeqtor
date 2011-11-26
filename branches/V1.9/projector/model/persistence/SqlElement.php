@@ -49,10 +49,6 @@ abstract class SqlElement {
                                   "Ticket"=>"control"),
     "DecisionType" =>       array("Decision"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
-    "Function" =>           array("Affectation"=>"control", 
-                                  "Assignment"=>"control",
-                                  "Resource"=>"control",
-                                  "ResourceCost"=>"control"),
     "Issue" =>              array("Attachement"=>"cascade",
                                   "Note"=>"cascade",
                                   "Link"=>"cascade"),
@@ -107,6 +103,10 @@ abstract class SqlElement {
                                   "Note"=>"cascade",
                                   "Link"=>"cascade"),
     "RiskType" =>           array("Risk"=>"control"),
+    "Role" =>               array("Affectation"=>"control", 
+                                  "Assignment"=>"control",
+                                  "Resource"=>"control",
+                                  "ResourceCost"=>"control"),
     "Severity" =>           array("Risk"=>"control"),
     "Status" =>             array("Action"=>"control", 
                                   "Activity"=>"control",
@@ -580,7 +580,7 @@ abstract class SqlElement {
         if ($mode=="cascade") {      
                   $where=null;
           $crit=array('id' . get_class($this) => $this->id);
-          if ($object=="Assignment" or $object=="Note" or $object=="Attachement") {
+          if ( ($object=="Assignment" and $objectClass=="Activity") or $object=="Note" or $object=="Attachement") {
             $crit=array("refType"=>get_class($this), "refId"=>$this->id);
           }
           if ($object=="Dependency") {
@@ -1768,7 +1768,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         if ($mode=="control") {
           $where=null;
           $crit=array('id' . get_class($this) => $this->id);
-          if ($object=="Assignment" or $object=="Note" or $object=="Attachement") {
+          if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachement") {
             $crit=array("refType"=>get_class($this), "refId"=>$this->id);
           }
           if ($object=="Dependency") {
