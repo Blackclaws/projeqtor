@@ -158,6 +158,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.setDateInputFormat = function(pShow) { vDateInputFormat = pShow; };
   this.setDateDisplayFormat = function(pShow) { vDateDisplayFormat = pShow; };
   this.setCaptionType = function(pType) { vCaptionType = pType };
+
   this.setFormat = function(pFormat){ 
     vFormat = pFormat; 
     this.Draw(); 
@@ -483,7 +484,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               +'&nbsp;&nbsp;&nbsp;&nbsp;</div>' ;
           } 
         } else {
-          vLeftTable += '<div style="width:16px; height:13px;">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+          if( vTaskList[i].getMile() ) {
+        	  vLeftTable += '<div style="width:16px; height:13px;" class="ganttNoExpandMile"></div>';	
+          } else {
+            vLeftTable += '<div style="width:16px; height:13px;" class="ganttNoExpand"></div>';
+          }
         }
         vLeftTable +='</td><td>';
         var nameLeftWidth= vNameWidth - 16 - levlWidth - 18 ;
@@ -528,6 +533,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable += '<TR><TD style="width:16px;"></TD>';
       vLeftTable += '<TD colspan="4"><NOBR>';
       vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV>';
+console.log(vLeftTable);
 // RIGHT ======================================================================
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop" '
     	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
@@ -672,10 +678,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat);
-          vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000)) ;
-          if (vMinDate>vDefaultMinDate) {
-            vTaskLeft = vTaskLeft - 1;
-          }
+          //vTaskLeft = ( (Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate))  / (24 * 60 * 60 * 1000)) ;
+          //if (vMinDate>vDefaultMinDate) {
+          // vTaskLeft = vTaskLeft - 1;
+          //}
+          vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+          //if (vMinDate>vDefaultMinDate) {
+            vTaskLeft = vTaskLeft - 0.8;
+          //}
           vTaskRight = 1;
           vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:-2px; ' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
@@ -706,9 +716,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + JSGantt.formatDateStr(vTaskEnd,vDateDisplayFormat);
           vTaskRight = (Date.parse(vTaskList[i].getEnd()) - Date.parse(vTaskList[i].getStart())) / (24 * 60 * 60 * 1000) + 1/vColUnit;
           vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
-          if (vMinDate>vDefaultMinDate) {
+          //if (vMinDate>vDefaultMinDate) {
             vTaskLeft = vTaskLeft - 1;
-          }
+          //}
           var vBarLeft=Math.ceil(vTaskLeft * (vDayWidth) + 1);
           var vBarWidth=Math.ceil((vTaskRight) * (vDayWidth) - 1 );
           if (vBarWidth<10) vBarWidth=10;
@@ -908,12 +918,12 @@ JSGantt.getMinDate = function getMinDate(pList, pFormat, pStartDateView) {
     vDate.setHours(0);
     vDate.setMinutes(0);
   } else if (pFormat=='day') {   
-    vDate.setDate(vDate.getDate() - 1);
+    //vDate.setDate(vDate.getDate() - 1);
     while(vDate.getDay() % 7 != 1) {
       vDate.setDate(vDate.getDate() - 1);
     }
   } else if (pFormat=='week') {
-    vDate.setDate(vDate.getDate() - 1);
+    //vDate.setDate(vDate.getDate() - 1);
     while(vDate.getDay() % 7 != 1) {
       vDate.setDate(vDate.getDate() - 1);
     }

@@ -196,7 +196,7 @@
                 <td></td>
                 <td>
                   <button id="deleteEmails" dojoType="dijit.form.Button" showlabel="true">
-                    <?php echo i18n('delete'); ?>
+                    <?php echo i18n('deleteButton'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('delete','Mail');
                      </script>
@@ -248,7 +248,7 @@
                 <td></td>
                 <td>
                   <button id="deleteAlerts" dojoType="dijit.form.Button" showlabel="true">
-                    <?php echo i18n('delete'); ?>
+                    <?php echo i18n('deleteButton'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('delete','Alert');
                      </script>

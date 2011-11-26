@@ -54,17 +54,17 @@
     <tr height="100%">
 	    <td width="100%">
 			  <table  align="center" >
-			    <tr >
-			      <td  rowspan="2" width="140px" valign="top">
+			    <tr style="height:10px">
+			      <td rowspan="2" width="140px" valign="top">
 			        <img src="img/logoFull.gif">
 			      </td>
-			      <td  width="560px">
+			      <td  style="height: 1%" width="560px">
 			        <img src="img/titleFull.gif">
 			      </td>
 			    </tr>
-			    <tr  height="100%">
-			      <td align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:100%;">
+			    <tr style="height:100%" height="100%">
+			      <td style="height:99%" align="left" valign="middle">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:300px;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
                     dojo.byId('login').focus();
