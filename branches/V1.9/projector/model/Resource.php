@@ -335,7 +335,10 @@ class Resource extends SqlElement {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       if ($this->id) {
-        $result .= $aff->drawAffectationList(array('idResource'=>$this->id,'idle'=>'0'),'Project');
+      	//$result .= $aff->drawAffectationList(,'Project', $this);
+      	$critArray=array('idResource'=>$this->id,'idle'=>'0');
+        $affList=$aff->getSqlElementsFromCriteria($critArray, false);
+        drawAffectationsFromObject($affList, $this, 'Project', false);   
       }
       $result .="</td></tr></table>";
       return $result;

@@ -88,7 +88,7 @@
         }
     }
 
-    $queryWhere.= ($queryWhere=='')?'':' and (';
+    $queryWhere.= ($queryWhere=='')?'(':' and (';
     $queryWhere.= getAccesResctictionClause($objectClass,$table);
     if ($objectClass=='Project') {
     	$queryWhere.= " or codeType='TMP' ";

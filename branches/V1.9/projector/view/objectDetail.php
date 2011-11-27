@@ -1457,7 +1457,6 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
   echo '</table></td></tr>';
 }
 
-
 function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
@@ -1537,7 +1536,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   echo '</table></td></tr>';
 }
 
-function drawAffectationsFromObject($list, $obj, $refresh=false) {
+function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
@@ -1563,20 +1562,17 @@ function drawAffectationsFromObject($list, $obj, $refresh=false) {
     $idProj=null;
     $idRess=null;
   }
+  
   if (! $print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAffectationt(\'' . $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addVersionProject') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addAffectationt(\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  if ($idProj) {
-    echo '<td class="assignHeader" style="width:' . (($print)?'70':'60') . '%">' . i18n('colIdResource') . '</td>';
-  } else {
-    echo '<td class="assignHeader" style="width:' . (($print)?'70':'60') . '%">' . i18n('colIdProject') . '</td>';
-  }
+  echo '<td class="assignHeader" style="width:' . (($print)?'80':'70') . '%">' . i18n('colId'.$type) . '</td>';
   echo '<td class="assignHeader" style="width:20%">' . i18n('colRate'). '</td>';
-  echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
+  //echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
   
   echo '</tr>';
   foreach($list as $aff) {
@@ -1612,7 +1608,7 @@ function drawAffectationsFromObject($list, $obj, $refresh=false) {
     	echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId('Project', $aff->idProject) . '</td>';
     }
     echo '<td class="assignData" align="center">' . $aff->rate . '</td>';
-    echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
+    //echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
