@@ -150,6 +150,10 @@ class Affectation extends SqlElement {
   public function drawAffectationList($critArray, $nameDisp) {
     $result="<table>";
     $affList=$this->getSqlElementsFromCriteria($critArray, false);
+// TEST - New - Start
+drawAffectationsFromObject($affList, $this, false);
+return;    
+// TEST - New - Stop
     foreach ($affList as $aff) {
     	if ($nameDisp=='Resource' and ! $aff->idResource) continue;
     	if ($nameDisp=='Resource' and SqlList::getNameFromId('Resource', $aff->idResource)==$aff->idResource) continue;
