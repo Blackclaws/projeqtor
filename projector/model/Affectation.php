@@ -151,8 +151,8 @@ class Affectation extends SqlElement {
     $result="<table>";
     $affList=$this->getSqlElementsFromCriteria($critArray, false);
 // TEST - New - Start
-drawAffectationsFromObject($affList, $this, false);
-return;    
+//drawAffectationsFromObject($affList, $$obj, $nameDisp, false);
+//return;    
 // TEST - New - Stop
     foreach ($affList as $aff) {
     	if ($nameDisp=='Resource' and ! $aff->idResource) continue;
