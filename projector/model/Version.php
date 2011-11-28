@@ -13,6 +13,14 @@ class Version extends SqlElement {
   public $idContact;
   public $idResource;
   public $creationDate;
+  public $_tab_4_2 = array('initial', 'planned', 'real', 'idStatus', 'eisDate', 'endDate');
+  public $initialEisDate;
+  public $plannedEisDate;
+  public $realEisDate;
+  public $isEis;
+  public $initialEndDate;
+  public $plannedEndDate;
+  public $realEndDate;
   public $idle;
   public $description;
   public $_col_2_2_Versionproject_projects;
@@ -22,10 +30,14 @@ class Version extends SqlElement {
   
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="name" width="80%" >${versionName}</th>
-    <th field="nameProduct" width="80%" >${productName}</th>
-    <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="name" width="25%" >${versionName}</th>
+    <th field="nameProduct" width="25%" >${productName}</th>
+    <th field="plannedEisDate" width="10%" formatter="dateFormatter">${plannedEis}</th>
+    <th field="realEisDate" width="10%" formatter="dateFormatter">${realEis}</th>
+    <th field="plannedEndDate" width="10%" formatter="dateFormatter">${plannedEnd}</th>
+    <th field="realEndDate" width="10%" formatter="dateFormatter">${realEnd}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("name"=>"required"
@@ -88,6 +100,54 @@ class Version extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
+    if ($colName=="initialEisDate") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (! dijit.byId("plannedEisDate").get("value")) {'; 
+      $colScript .= '  dijit.byId("plannedEisDate").set("value",this.value);'; 
+      $colScript .= '};';
+      $colScript .= '</script>';
+    }
+    if ($colName=="initialEndDate") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (! dijit.byId("plannedEndDate").get("value")) {'; 
+      $colScript .= '  dijit.byId("plannedEndDate").set("value",this.value);'; 
+      $colScript .= '};';
+      $colScript .= '</script>';
+    }
+    if ($colName=="realEisDate") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.value) {'; 
+      $colScript .= '  dijit.byId("isEis").set("checked","checked");'; 
+      $colScript .= '};';
+      $colScript .= '</script>';
+    }
+    if ($colName=="isEis") { 
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.checked) { ';
+      $colScript .= '  if (! dijit.byId("realEisDate").get("value")) {';
+      $colScript .= '    var curDate = new Date();';
+      $colScript .= '    dijit.byId("realEisDate").set("value", curDate); ';
+      $colScript .= '  }';    
+      $colScript .= '};';
+      $colScript .= '</script>';  
+    }
+    if ($colName=="realEndDate") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.value) {'; 
+      $colScript .= '  dijit.byId("idle").set("checked","checked");'; 
+      $colScript .= '};';
+      $colScript .= '</script>';
+    }
+    if ($colName=="idle") { 
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.checked) { ';
+      $colScript .= '  if (! dijit.byId("realEndDate").get("value")) {';
+      $colScript .= '    var curDate = new Date();';
+      $colScript .= '    dijit.byId("realEndDate").set("value", curDate); ';
+      $colScript .= '  }';    
+      $colScript .= '};';
+      $colScript .= '</script>';  
+    }
     return $colScript;
   }
   

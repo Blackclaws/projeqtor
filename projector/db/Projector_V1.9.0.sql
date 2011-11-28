@@ -75,8 +75,9 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null, null, 'changeReferenceOnTypeChange','NO');
 
 ALTER TABLE `${prefix}version` ADD initialEisDate date,
-ADD acutalEisDate date,
-ADD realEiaDate date,
+ADD plannedEisDate date,
+ADD realEisDate date,
 ADD initialEndDate date,
 ADD plannedEndDate date,
+ADD realEndDate date,
 ADD isEis int(1) unsigned default 0;

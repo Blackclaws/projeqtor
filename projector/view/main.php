@@ -1429,6 +1429,79 @@ checkVersion(); ?>
   </table>
 </div>
 
+<div id="dialogAffectation" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAffectation");?>">
+  <table>
+    <tr>
+      <td>
+       <form dojoType="dijit.form.Form" id='affectationForm' name='affectationForm' onSubmit="return false;">
+         <input id="affectationId" name="affectationId" type="hidden" value="" />
+         <table>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="affectationProject" ><?php echo i18n("colIdProject") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="affectationProject" name="affectationProject" 
+                class="input" value="" required="required">
+                 <?php htmlDrawOptionForReference('idProject', null, null, true);?>
+               </select>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel"  >
+               <label for="affectationResource" ><?php echo i18n("colIdResource") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="affectationResource" name="affectationResource" 
+                class="input" value="" required="required">
+                 <?php htmlDrawOptionForReference('idAffectation', null, null, true);?>
+               </select>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="affectationRate" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="affectationRate" name="affectationRate" value="" 
+                 dojoType="dijit.form.NumberTextBox" 
+                 style="width:100px" class="input"
+                 hasDownArrow="true"
+               >
+               </div>
+             </td>    
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="affectationIdle" ><?php echo i18n("colIdle");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="affectationIdle" name="affectationIdle"
+                 dojoType="dijit.form.CheckBox" type="checkbox" >
+               </div>
+             </td>    
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="affectationAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAffectation').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogAffectationSubmit" onclick="saveAffectation();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <div id="dialogFilter" dojoType="dijit.Dialog" title="<?php echo i18n("dialogFilter");?>" style="top: 100px;">
   <table>
     <tr>
