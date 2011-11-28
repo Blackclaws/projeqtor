@@ -1792,6 +1792,96 @@ function saveVersionProject() {
 	}
 }
 
+
+//=============================================================================
+//= Affectation
+//=============================================================================
+
+function addAffectation(objectClass, type, idResource, idProject) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	refreshList('idProject', null, null, null, 'affectationProject', true);
+	refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
+	dojo.byId("affectationId").value="";
+	if (idResource) {
+		dijit.byId("affectationResource").set('readOnly',true);
+		dijit.byId("affectationResource").set('value',idResource);
+	} else {
+	    dijit.byId("affectationResource").set('readOnly',false);
+		dijit.byId("affectationResource").reset();
+	}
+	if (idProject) {
+		dijit.byId("affectationProject").set('readOnly',true);
+		dijit.byId("affectationProject").set('value',idProject);
+	} else {
+		dijit.byId("affectationProject").set('readOnly',false);
+		dijit.byId("affectationProject").reset();
+	}
+	dijit.byId("affectationIdle").reset();
+	dijit.byId("dialogAffectation").show();
+}
+
+function removeAffectation(id) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("versionProjectId").value=id;
+	actionOK=function() {loadContent("../tool/removeVersionProject.php", "resultDiv", "versionProjectForm", true, 'versionProject');};
+	msg=i18n('confirmDeleteVersionProject');
+	showConfirm (msg, actionOK);
+} 
+
+versionProjectLoad=false;
+function editAffectation(id, idVersion,idProject,startDate,endDate,idle) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("versionProjectId").value=id;
+	if (idVersion) {
+		dijit.byId("versionProjectVersion").set('readOnly',true);
+		dijit.byId("versionProjectVersion").set('value',idVersion);
+	} else {
+	    dijit.byId("versionProjectVersion").set('readOnly',false);
+		dijit.byId("versionProjectVersion").reset();
+	}
+	if (idProject) {
+		dijit.byId("versionProjectProject").set('readOnly',true);
+		dijit.byId("versionProjectProject").set('value',idProject);
+	} else {
+		dijit.byId("versionProjectProject").set('readOnly',false);
+		dijit.byId("versionProjectProject").reset();
+	}
+	if (startDate) {
+	  dijit.byId("versionProjectStartDate").set('value',startDate);
+	} else {
+		dijit.byId("versionProjectStartDate").reset();
+	}
+	if (endDate) {
+	  dijit.byId("versionProjectEndDate").set('value',endDate);
+	} else {
+		dijit.byId("versionProjectEndDate").reset();
+	}
+	if (idle==1) {
+		dijit.byId("versionProjectIdle").set('value',idle);
+	} else {
+		dijit.byId("versionProjectIdle").reset();
+	}
+	dijit.byId("dialogVersionProject").show();  	
+}
+
+function saveAffectation() {
+	var formVar = dijit.byId('versionProjectForm');
+	if(formVar.validate()){		
+		loadContent("../tool/saveVersionProject.php", "resultDiv", "versionProjectForm", true,'versionProject');
+		dijit.byId('dialogVersionProject').hide();
+	} else {
+		showAlert(i18n("alertInvalidForm"));
+	}
+}
 //=============================================================================
 //= Misceallanous
 //=============================================================================

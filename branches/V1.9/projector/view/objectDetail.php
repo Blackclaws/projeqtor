@@ -1541,15 +1541,12 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   if ($comboDetail) {
     return;
   }
-  $canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update', $obj)=="YES";
-  $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create', $obj)=="YES";
-  $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete', $obj)=="YES";
+  $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create')=="YES";
   if ($obj->idle==1) {
   	$canUpdate=false;
     $canCreate=false;
     $canDelete=false;
   }
-//echo "/$canUpdate/$canCreate/$canDelete";
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (get_class($obj)=='Project') {
@@ -1566,7 +1563,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   if (! $print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAffectationt(\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -1576,6 +1573,8 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   
   echo '</tr>';
   foreach($list as $aff) {
+  	$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
+    $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
     echo '<tr>';
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';

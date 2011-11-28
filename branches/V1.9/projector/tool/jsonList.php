@@ -63,7 +63,10 @@
         $selected=$_REQUEST['selected'];
       }
       $class=substr($dataType,2);
-      if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
+      if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
+      	$user=$_SESSION['user'];
+      	$list=$user->getVisibleProjects();
+      } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $crit=array( $_REQUEST['critField'] => $_REQUEST['critValue']);
         $list=SqlList::getListWithCrit($class, $crit);
       } else {
