@@ -73,3 +73,10 @@ WHERE code is null;
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'referenceFormatPrefix','{PROJ}-{TYPE}-'),
 (null, null, 'changeReferenceOnTypeChange','NO');
+
+ALTER TABLE `${prefix}version` ADD initialEisDate date,
+ADD acutalEisDate date,
+ADD realEiaDate date,
+ADD initialEndDate date,
+ADD plannedEndDate date,
+ADD isEis int(1) unsigned default 0;
