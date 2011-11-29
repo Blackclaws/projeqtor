@@ -22,6 +22,8 @@ class Contact extends SqlElement {
   public $idle;
   public $description;
   public $_col_2_2;
+  public $_sec_Affectations;
+  public $_spe_affectations;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -313,6 +315,17 @@ class Contact extends SqlElement {
     }
     $result .="</table>";
     return $result; 
+  }
+  
+  public function drawSpecificItem($item){
+    $result="";
+    if ($item=='affectations') {
+      $aff=new Affectation();
+      $critArray=array('idContact'=>$this->id,'idle'=>'0');
+      $affList=$aff->getSqlElementsFromCriteria($critArray, false);
+      drawAffectationsFromObject($affList, $this, 'Project', false);   
+      return $result;
+    }
   }
 }
 ?>
