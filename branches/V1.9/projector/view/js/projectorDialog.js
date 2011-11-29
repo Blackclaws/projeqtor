@@ -1750,6 +1750,8 @@ function editVersionProject(id, idVersion,idProject,startDate,endDate,idle) {
 		return;
 	}
 	dojo.byId("versionProjectId").value=id;
+	refreshList('idProject', null, null, null, 'versionProjectProject', true);
+	refreshList('idVersion', null, null, null, 'versionProjectVersion', true);
 	if (idVersion) {
 		dijit.byId("versionProjectVersion").set('readOnly',true);
 		dijit.byId("versionProjectVersion").set('value',idVersion);
@@ -1803,22 +1805,24 @@ function addAffectation(objectClass, type, idResource, idProject) {
 		return;
 	}	
 	refreshList('idProject', null, null, null, 'affectationProject', true);
-	refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
-	dojo.byId("affectationId").value="";
-	if (idResource) {
-		dijit.byId("affectationResource").set('readOnly',true);
-		dijit.byId("affectationResource").set('value',idResource);
-	} else {
-	    dijit.byId("affectationResource").set('readOnly',false);
-		dijit.byId("affectationResource").reset();
+	if (objectClass=='Project') {
+	  refreshList('id'+type, null, null, null, 'affectationResource', true);
+	} else { 
+	  refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
 	}
-	if (idProject) {
+	dojo.byId("affectationId").value="";
+	if (objectClass=='Project') {
 		dijit.byId("affectationProject").set('readOnly',true);
 		dijit.byId("affectationProject").set('value',idProject);
+		dijit.byId("affectationResource").set('readOnly',false);
+		dijit.byId("affectationResource").reset();
 	} else {
+		dijit.byId("affectationResource").set('readOnly',true);
+		dijit.byId("affectationResource").set('value',idResource);
 		dijit.byId("affectationProject").set('readOnly',false);
 		dijit.byId("affectationProject").reset();
 	}
+	dijit.byId("affectationRate").set('value','100');
 	dijit.byId("affectationIdle").reset();
 	dijit.byId("dialogAffectation").show();
 }
@@ -1828,56 +1832,54 @@ function removeAffectation(id) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	dojo.byId("versionProjectId").value=id;
-	actionOK=function() {loadContent("../tool/removeVersionProject.php", "resultDiv", "versionProjectForm", true, 'versionProject');};
-	msg=i18n('confirmDeleteVersionProject');
+	dojo.byId("affectationId").value=id;
+	actionOK=function() {loadContent("../tool/removeAffectation.php", "resultDiv", "affectationForm", true, 'affectation');};
+	msg=i18n('confirmDeleteAffectation',new Array(id));
 	showConfirm (msg, actionOK);
 } 
 
-versionProjectLoad=false;
-function editAffectation(id, idVersion,idProject,startDate,endDate,idle) {
+affectationLoad=false;
+function editAffectation(id, objectClass, type, idResource, idProject, rate,idle) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	dojo.byId("versionProjectId").value=id;
-	if (idVersion) {
-		dijit.byId("versionProjectVersion").set('readOnly',true);
-		dijit.byId("versionProjectVersion").set('value',idVersion);
-	} else {
-	    dijit.byId("versionProjectVersion").set('readOnly',false);
-		dijit.byId("versionProjectVersion").reset();
+	refreshList('idProject', null, null, null, 'affectationProject', true);
+	if (objectClass=='Project') {
+	  refreshList('id'+type, null, null, null, 'affectationResource', true);
+	} else { 
+	  refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
 	}
-	if (idProject) {
-		dijit.byId("versionProjectProject").set('readOnly',true);
-		dijit.byId("versionProjectProject").set('value',idProject);
+	dojo.byId("affectationId").value=id;
+	if (objectClass=='Project') {
+		dijit.byId("affectationProject").set('readOnly',true);
+		dijit.byId("affectationProject").set('value',idProject);
+		dijit.byId("affectationResource").set('readOnly',false);
+		dijit.byId("affectationResource").set('value',idResource);
 	} else {
-		dijit.byId("versionProjectProject").set('readOnly',false);
-		dijit.byId("versionProjectProject").reset();
+		dijit.byId("affectationResource").set('readOnly',true);
+		dijit.byId("affectationResource").set('value',idResource);
+		dijit.byId("affectationProject").set('readOnly',false);
+		dijit.byId("affectationProject").set('value',idProject);
 	}
-	if (startDate) {
-	  dijit.byId("versionProjectStartDate").set('value',startDate);
+	if (rate) {
+	  dijit.byId("affectationRate").set('value',rate);
 	} else {
-		dijit.byId("versionProjectStartDate").reset();
-	}
-	if (endDate) {
-	  dijit.byId("versionProjectEndDate").set('value',endDate);
-	} else {
-		dijit.byId("versionProjectEndDate").reset();
+      dijit.byId("affectationRate").reset();
 	}
 	if (idle==1) {
-		dijit.byId("versionProjectIdle").set('value',idle);
+		dijit.byId("affectationIdle").set('value',idle);
 	} else {
-		dijit.byId("versionProjectIdle").reset();
+		dijit.byId("affectationIdle").reset();
 	}
-	dijit.byId("dialogVersionProject").show();  	
+	dijit.byId("dialogAffectation").show();  	
 }
 
 function saveAffectation() {
-	var formVar = dijit.byId('versionProjectForm');
+	var formVar = dijit.byId('affectationForm');
 	if(formVar.validate()){		
-		loadContent("../tool/saveVersionProject.php", "resultDiv", "versionProjectForm", true,'versionProject');
-		dijit.byId('dialogVersionProject').hide();
+		loadContent("../tool/saveAffectation.php", "resultDiv", "affectationForm", true,'affectation');
+		dijit.byId('dialogAffectation').hide();
 	} else {
 		showAlert(i18n("alertInvalidForm"));
 	}

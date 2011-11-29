@@ -286,7 +286,7 @@ class Project extends SqlElement {
       }
       $result .="</td></tr></table>";
       return $result;
-    } else if ($item=='affectations') {
+   /* } else if ($item=='affectations') {
       $aff=new Affectation();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('resources') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
@@ -300,12 +300,13 @@ class Project extends SqlElement {
         $result .= $aff->drawAffectationList(array('idProject'=>$this->id,'idle'=>'0'),'Contact');
       }
       $result .="</td></tr></table>";
-      /*$result .="<table><tr><td class='label' valign='top'><label>" . i18n('menuUser') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
-      if ($this->id) {
-        $result .= $aff->drawAffectationList(array('idProject'=>$this->id,'idle'=>'0'),'User');
-      }
-      $result .="</td></tr></table>";*/
+      return $result;*/
+    } else if ($item=='affectations') {
+      $aff=new Affectation();
+      $critArray=array('idProject'=>$this->id,'idle'=>'0');
+      $affList=$aff->getSqlElementsFromCriteria($critArray, false);
+      drawAffectationsFromObject($affList, $this, 'Resource', false);  
+      drawAffectationsFromObject($affList, $this, 'Contact', false); 
       return $result;
     }
   }

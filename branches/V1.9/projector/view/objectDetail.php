@@ -1563,11 +1563,13 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   if (! $print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" ' . 
+           ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print)?'80':'70') . '%">' . i18n('colId'.$type) . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colId') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'70':'60') . '%">' . i18n('colId'.$type) . '</td>';
   echo '<td class="assignHeader" style="width:20%">' . i18n('colRate'). '</td>';
   //echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
   
@@ -1575,40 +1577,46 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   foreach($list as $aff) {
   	$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
     $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
-    echo '<tr>';
-    if (! $print) {
-      echo '<td class="assignData" style="text-align:center;">';
-      if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' 
-        . 'onClick="editAffectation(' . "'" . $aff->id . "'"
-        . ",'" . $aff->idResource . "'" 
-        . ",'" . $aff->idProject . "'"
-        . ",'" . $aff->rate . "'"
-        . ",'" . $aff->idle . "'" 
-        . ');" ' 
-        . 'title="' . i18n('editAffectation') . '" class="smallButton"/> ';      
-      }
-      if ($canDelete and ! $print)  {
-        echo '  <img src="css/images/smallButtonRemove.png" ' 
-        . 'onClick="removeAffectation(' . "'" . $aff->id . "'"
-        . ');" ' 
-        . 'title="' . i18n('removeAffectation') . '" class="smallButton"/> ';
-      }
-      echo '</td>';
+    $name=SqlList::getNameFromId($type, $aff->idResource);
+    if ($aff->idResource!=$name) {
+	    echo '<tr>';
+	    if (! $print) {
+	      echo '<td class="assignData" style="text-align:center;">';
+	      if ($canUpdate and ! $print) {
+	        echo '  <img src="css/images/smallButtonEdit.png" ' 
+	        . 'onClick="editAffectation(' . "'" . $aff->id . "'"
+	        . ",'" . get_class($obj) . "'" 
+	        . ",'" . $type . "'" 
+	        . ",'" . $aff->idResource . "'" 
+	        . ",'" . $aff->idProject . "'"
+	        . ",'" . $aff->rate . "'"
+	        . ",'" . $aff->idle . "'" 
+	        . ');" ' 
+	        . 'title="' . i18n('editAffectation') . '" class="smallButton"/> ';      
+	      }
+	      if ($canDelete and ! $print)  {
+	        echo '  <img src="css/images/smallButtonRemove.png" ' 
+	        . 'onClick="removeAffectation(' . "'" . $aff->id . "'"
+	        . ');" ' 
+	        . 'title="' . i18n('removeAffectation') . '" class="smallButton"/> ';
+	      }
+	      echo '</td>';
+	    }
+	    $goto=""; 
+	    if (!$print and securityCheckDisplayMenu(null,'Affectation') 
+	      and securityGetAccessRightYesNo('menuAffectation', 'read', '')=="YES") {
+	      $goto=' onClick="gotoElement(\'Affectation\',\'' . $aff->id . '\');" style="cursor: pointer;" ';  
+	    }
+	    echo '<td class="assignData" align="center">' . $aff->id . '</td>';
+	    if ($idProj) {    
+	      echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId($type, $aff->idResource) . '</td>';
+	    } else {
+	    	echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId('Project', $aff->idProject) . '</td>';
+	    }
+	    echo '<td class="assignData" align="center">' . $aff->rate . '</td>';
+	    //echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
+	    echo '</tr>';
     }
-    $goto=""; 
-    if (!$print and securityCheckDisplayMenu(null,'Affectation') 
-      and securityGetAccessRightYesNo('menuAffectation', 'read', '')=="YES") {
-      $goto=' onClick="gotoElement(\'Affectation\',\'' . $aff->id . '\');" style="cursor: pointer;" ';  
-    }
-    if ($idProj) {    
-      echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId('Resource', $aff->idResource) . '</td>';
-    } else {
-    	echo '<td class="assignData" align="left"' . $goto . '>' . SqlList::getNameFromId('Project', $aff->idProject) . '</td>';
-    }
-    echo '<td class="assignData" align="center">' . $aff->rate . '</td>';
-    //echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
-    echo '</tr>';
   }
   echo '</table></td></tr>';
 }

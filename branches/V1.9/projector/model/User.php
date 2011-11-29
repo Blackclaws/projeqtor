@@ -23,6 +23,8 @@ class User extends SqlElement {
   public $_col_2_2;
   public $_arrayFilters=array();
   public $_arrayFiltersId=array();
+  public $_sec_Affectations;
+  public $_spe_affectations;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -203,6 +205,13 @@ class User extends SqlElement {
       $result .= '</td></tr>';
       return $result;
     } 
+    if ($item=='affectations') {
+      $aff=new Affectation();
+      $critArray=array('idUser'=>$this->id,'idle'=>'0');
+      $affList=$aff->getSqlElementsFromCriteria($critArray, false);
+      drawAffectationsFromObject($affList, $this, 'Project', false);   
+      return $result;
+    }
   }
 
   /** =========================================================================
