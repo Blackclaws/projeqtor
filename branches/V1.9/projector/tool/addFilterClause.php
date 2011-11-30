@@ -118,8 +118,13 @@ if ($idFilterAttribute and $idFilterOperator) {
     $arraySql["operator"]=$idFilterOperator;
     $arrayDisp["value"]=htmlEncode(i18n('sort' . ucfirst($filterSortValue) ));
     $arraySql["value"]=$filterSortValue;
+  } else if ($idFilterOperator=="<=now+") {  
+    $arrayDisp["operator"]="<= " . i18n('today') . ' +';
+    $arraySql["operator"]="<=";
+    $arrayDisp["value"]=htmlEncode($filterValue) . ' ' . i18n('days');
+    $arraySql["value"]= "( now() + " . $filterValue . ")";
   } else {
-     htmlGetErrorMessage(i18n('incorrectOperator'));
+     echo htmlGetErrorMessage(i18n('incorrectOperator'));
      exit;
   } 
   $filterArray[]=array("disp"=>$arrayDisp,"sql"=>$arraySql);
