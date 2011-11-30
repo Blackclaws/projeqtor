@@ -44,7 +44,7 @@
         if ($dataType!='int') {
           //echo ',{id:"xx", name:"xx"}';
           echo ',{id:"<=now+", name:"<= ' . i18n('today') . ' + "}';
-          echo ',{id:">=now+", name:"<= ' . i18n('today') . ' + "}';
+          echo ',{id:">=now+", name:">= ' . i18n('today') . ' + "}';
         }
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else if ($dataType=='varchar') {
