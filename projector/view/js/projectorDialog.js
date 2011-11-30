@@ -1422,7 +1422,15 @@ function filterSelectOperator(operator) {
 		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
 		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'block'});
+	} else if (operator=="<=now+" || operator==">=now+") {
+		filterType="text";
+		dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
+		dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
 	} else {
+		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
 		dataType=dojo.byId('filterDataType').value;
 		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
 		if (dataType=="bool") {

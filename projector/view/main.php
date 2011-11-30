@@ -1456,7 +1456,7 @@ checkVersion(); ?>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="affectationResource" name="affectationResource" 
                 class="input" value="" required="required">
-                 <?php htmlDrawOptionForReference('idAffectation', null, null, true);?>
+                 <?php htmlDrawOptionForReference('idResource', null, null, true);?>
                </select>
              </td>
            </tr>
