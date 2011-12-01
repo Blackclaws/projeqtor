@@ -684,7 +684,7 @@ console.log(vLeftTable);
           //}
           vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
           //if (vMinDate>vDefaultMinDate) {
-            vTaskLeft = vTaskLeft - 0.8;
+            vTaskLeft = vTaskLeft - 0.85;
           //}
           vTaskRight = 1;
           vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:-2px; ' 
