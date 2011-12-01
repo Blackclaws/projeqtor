@@ -176,10 +176,18 @@ class PlannedWork extends Work {
           $prec=new PlanningElement($precDep->predecessorId);
         }
         if ($prec->plannedEndDate > $startPlan) {        
-          if ($plan->refType=='Milestone') {
-          	$startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+          if ($prec->refType=='Milestone') {
+          	if ($plan->refType=='Milestone') {
+          	  $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+          	} else {
+              $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+            }         	
           } else {
-          	$startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
+          	if ($plan->refType=='Milestone') {
+          	  $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+          	} else {
+              $startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
+            }           
           }
         }
       }
@@ -188,6 +196,11 @@ class PlannedWork extends Work {
           $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
           $plan->plannedEndDate=$plan->plannedStartDate;
           $plan->plannedDuration=0;
+          $plan->save();
+        }
+        if ($profile=="FIXED") {
+        	$plan->plannedEndDate=$plan->validatedEndDate;
+        	$plan->plannedDuration=0;
           $plan->save();
         }
       } else {        
