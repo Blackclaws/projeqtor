@@ -1,7 +1,9 @@
 <?php
 require_once "../tool/projector.php";
-$adminFunctionality=(array_key_exists('adminFunctionality', $_REQUEST))?$_REQUEST['adminFunctionality']:'';
-if (! $adminFunctionality) {
+if (array_key_exists('adminFunctionality', $_REQUEST)) {
+	$adminFunctionality=$_REQUEST['adminFunctionality'];
+}
+if (! isset($adminFunctionality)) {
 	echo "ERROR - functionality not defined";
 	return;
 }
@@ -9,7 +11,13 @@ $nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
 if ($adminFunctionality=='sendAlert') {
 	$result=sendAlert();
 } else if ($adminFunctionality=='maintenance') {
-	$result=maintenance();	
+	$result=maintenance();
+} else if ($adminFunctionality=='updateReference') {
+	$element=null;
+	if (array_key_exists('$element', $_REQUEST)) {
+	  $type=$_REQUEST['$element'];
+	}	
+	$result=updateReference($element);
 } else {
 	$result="ERROR - functionality '$adminFunctionality' not defined";
 }
@@ -117,4 +125,34 @@ function maintenance() {
   $returnValue .= '<input type="hidden" id="lastOperation" value="' . $operation .'" />';
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
   return $returnValue;*/
+}
+
+function updateReference($element) {
+debugLog("updateReference");
+	$arrayElements=array();
+	if ($element) {
+		$arrayElements[]=ucfirst($element);
+	} else {
+		$arrayElements=array("Action",
+		                     "Activity",
+		                     "Decision",
+		                     "IndividualExpense",
+		                     "Issue", 
+		                     "Meeting", 
+		                     "Milestone", 
+		                     "ProjectExpense",
+		                     "Question",
+		                     "Risk",
+		                     "Ticket");
+	}
+	foreach ($arrayElements as $element) {
+		$obj=new $element();
+		$request="update " . $obj->getDatabaseTableName() . " set reference=null";
+		SqlDirectElement::execute($request); 
+		$lst=$obj->getSqlElementsFromCriteria(null, false);
+	  foreach ($lst as $object) {
+		  $object->setReference(true);
+		}
+	}	
+	
 }

@@ -81,3 +81,5 @@ ADD initialEndDate date,
 ADD plannedEndDate date,
 ADD realEndDate date,
 ADD isEis int(1) unsigned default 0;
+
+ALTER TABLE `${prefix}activity` ADD idContact int(10) unsigned;

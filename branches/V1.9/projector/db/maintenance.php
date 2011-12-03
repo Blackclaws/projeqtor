@@ -62,6 +62,7 @@ $currVer=$arrVers[0];
 $currMaj=$arrVers[1];
 $currRel=$arrVers[2];
 
+
 foreach ($versionHistory as $vers) {
   $arrVers=explode('.',substr($vers,1));
   $histVer=$arrVers[0];
@@ -98,6 +99,12 @@ if (! isset($paramMemoryLimitForPDF) ) {
 	writeFile('$paramMemoryLimitForPDF = \'512\';',$parametersLocation);
   writeFile("\n",$parametersLocation);
   traceLog('Parameter $paramMemoryLimitForPDF added');
+}
+
+// For V1.9.0
+if ($currVersion<"V1.9.0") {
+	$adminFunctionality='updateReference';
+	include('../tool/adminFunctionalities.php');
 }
 
 

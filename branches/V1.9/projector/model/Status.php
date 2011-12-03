@@ -65,7 +65,7 @@ class Status extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="setIdleStatus") {   
+    /*if ($colName=="setIdleStatus") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    if (! dijit.byId("setDoneStatus").get("checked")) {';
@@ -83,7 +83,7 @@ class Status extends SqlElement {
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    }
+    }*/
     return $colScript;
   }
 }

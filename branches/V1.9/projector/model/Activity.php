@@ -14,6 +14,7 @@ class Activity extends SqlElement {
   public $name;  
   public $creationDate;
   public $idUser;
+  public $idContact;
   public $Origin;
   public $description;  
   public $_col_2_2_treatment;
@@ -69,6 +70,7 @@ class Activity extends SqlElement {
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'parentActivity',
+                                                   'idContact' => 'requestor',
                                                    'idVersion'=>'targetVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
