@@ -1,0 +1,359 @@
+/* =============================================================================== */
+/* BUTTONS                                                                         */
+/* =============================================================================== */
+
+.iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+.dijitDisabled .iconPdf { background-image: url(images/pdfDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
+.iconCsv { background-image: url(images/csv.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+.dijitDisabled .iconCsv { background-image: url(images/csvDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
+.iconMpp { background-image: url(images/mpp.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+.dijitDisabled .iconMpp { background-image: url(images/mppDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
+/* =============================================================================== */
+/* ICONS                                                                           */
+/* =============================================================================== */
+
+.iconAccessProfile32 { background-image: url(images/iconAccessProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAccessProfile22 { background-image: url(images/iconAccessProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAccessProfile16 { background-image: url(images/iconAccessProfile16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAccessRight32 { background-image: url(images/iconAccessRight32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAccessRight22 { background-image: url(images/iconAccessRight22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAccessRight16 { background-image: url(images/iconAccessRight16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAction32 { background-image: url(images/iconAction32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAction22 { background-image: url(images/iconAction22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAction16 { background-image: url(images/iconAction16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconActionType32 { background-image: url(images/iconActionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActionType22 { background-image: url(images/iconActionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActionType16 { background-image: url(images/iconActionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconActiveFilter32 { background-image: url(images/iconActiveFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActiveFilter22 { background-image: url(images/iconActiveFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActiveFilter16 { background-image: url(images/iconActiveFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconActivity32 { background-image: url(images/iconActivity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActivity22 { background-image: url(images/iconActivity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActivity16 { background-image: url(images/iconActivity16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconActivityType32 { background-image: url(images/iconActivityType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActivityType22 { background-image: url(images/iconActivityType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActivityType16 { background-image: url(images/iconActivityType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAdmin32 { background-image: url(images/iconAdmin32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAdmin22 { background-image: url(images/iconAdmin22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAdmin16 { background-image: url(images/iconAdmin16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAffectation32 { background-image: url(images/iconAffectation32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAffectation22 { background-image: url(images/iconAffectation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAffectation16 { background-image: url(images/iconAffectation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAlert32 { background-image: url(images/iconAlert32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAlert22 { background-image: url(images/iconAlert22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAlert16 { background-image: url(images/iconAlert16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconAutomation32 { background-image: url(images/iconAutomation32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconAutomation22 { background-image: url(images/iconAutomation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconAutomation16 { background-image: url(images/iconAutomation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconCalendar32 { background-image: url(images/iconCalendar32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconCalendar22 { background-image: url(images/iconCalendar22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconCalendar16 { background-image: url(images/iconCalendar16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconClient32 { background-image: url(images/iconClient32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconClient22 { background-image: url(images/iconClient22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconClient16 { background-image: url(images/iconClient16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconComponent32 { background-image: url(images/iconComponent32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconComponent22 { background-image: url(images/iconComponent22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconComponent16 { background-image: url(images/iconComponent16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconContact32 { background-image: url(images/iconContact32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconContact22 { background-image: url(images/iconContact22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconContact16 { background-image: url(images/iconContact16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconCriticality32 { background-image: url(images/iconCriticality32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconCriticality22 { background-image: url(images/iconCriticality22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconCriticality16 { background-image: url(images/iconCriticality16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconDecision32 { background-image: url(images/iconDecision32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDecision22 { background-image: url(images/iconDecision22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDecision16 { background-image: url(images/iconDecision16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconDecisionType32 { background-image: url(images/iconDecisionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconDecisionType22 { background-image: url(images/iconDecisionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconDecisionType16 { background-image: url(images/iconDecisionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconDisplay { background-image: url(images/display.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
+.iconEnvironmentalParameter32 { background-image: url(images/iconEnvironmentalParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconEnvironmentalParameter22 { background-image: url(images/iconEnvironmentalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconEnvironmentalParameter16 { background-image: url(images/iconEnvironmentalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconExpenseDetailType32 { background-image: url(images/iconExpenseDetailType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconExpenseDetailType22 { background-image: url(images/iconExpenseDetailType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconExpenseDetailType16 { background-image: url(images/iconExpenseDetailType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconFilter32 { background-image: url(images/iconFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFilter22 { background-image: url(images/iconFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFilter16 { background-image: url(images/iconFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconFinancial32 { background-image: url(images/iconFinancial32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFinancial22 { background-image: url(images/iconFinancial22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFinancial16 { background-image: url(images/iconFinancial16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconFollowup32 { background-image: url(images/iconFollowup32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFollowup22 { background-image: url(images/iconFollowup22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFollowup16 { background-image: url(images/iconFollowup16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconGlobalParameter32 { background-image: url(images/iconGlobalParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconGlobalParameter22 { background-image: url(images/iconGlobalParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconGlobalParameter16 { background-image: url(images/iconGlobalParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconHabilitation32 { background-image: url(images/iconHabilitation32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconHabilitation22 { background-image: url(images/iconHabilitation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconHabilitation16 { background-image: url(images/iconHabilitation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconHabilitationOther32 { background-image: url(images/iconHabilitationOther32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconHabilitationOther22 { background-image: url(images/iconHabilitationOther22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconHabilitationOther16 { background-image: url(images/iconHabilitationOther16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconHabilitationReport32 { background-image: url(images/iconHabilitationReport32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconHabilitationReport22 { background-image: url(images/iconHabilitationReport22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconHabilitationReport16 { background-image: url(images/iconHabilitationReport16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconHabilitationParameter32 { background-image: url(images/iconHabilitationParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconHabilitationParameter22 { background-image: url(images/iconHabilitationParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconHabilitationParameter16 { background-image: url(images/iconHabilitationParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIndividualExpense32 { background-image: url(images/iconIndividualExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIndividualExpense22 { background-image: url(images/iconIndividualExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIndividualExpense16 { background-image: url(images/iconIndividualExpense16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconImportData32 { background-image: url(images/iconImportData32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconImportData22 { background-image: url(images/iconImportData22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconImportData16 { background-image: url(images/iconImportData16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconImputation32 { background-image: url(images/iconImputation32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconImputation22 { background-image: url(images/iconImputation22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconImputation16 { background-image: url(images/iconImputation16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIndicatorDefinition32 { background-image: url(images/iconIndicatorDefinition32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIndicatorDefinition22 { background-image: url(images/iconIndicatorDefinition22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIndicatorDefinition16 { background-image: url(images/iconIndicatorDefinition16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIndividualExpenseType32 { background-image: url(images/iconIndividualExpenseType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIndividualExpenseType22 { background-image: url(images/iconIndividualExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIndividualExpenseType16 { background-image: url(images/iconIndividualExpenseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconInvoice32 { background-image: url(images/iconInvoice32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconInvoice22 { background-image: url(images/iconInvoice22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconInvoice16 { background-image: url(images/iconInvoice16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconInvoiceType32 { background-image: url(images/iconInvoiceType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconInvoiceType22 { background-image: url(images/iconInvoiceType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconInvoiceType16 { background-image: url(images/iconInvoiceType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIssue32 { background-image: url(images/iconIssue32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIssue22 { background-image: url(images/iconIssue22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIssue16 { background-image: url(images/iconIssue16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconIssueType32 { background-image: url(images/iconIssueType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconIssueType22 { background-image: url(images/iconIssueType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconIssueType16 { background-image: url(images/iconIssueType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconLikelihood32 { background-image: url(images/iconLikelihood32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconLikelihood22 { background-image: url(images/iconLikelihood22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconLikelihood16 { background-image: url(images/iconLikelihood16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconListOfValues32 { background-image: url(images/iconListOfValues32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconListOfValues22 { background-image: url(images/iconListOfValues22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconListOfValues16 { background-image: url(images/iconListOfValues16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMail32 { background-image: url(images/iconMail32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMail22 { background-image: url(images/iconMail22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMail16 { background-image: url(images/iconMail16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMeeting32 { background-image: url(images/iconMeeting32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMeeting22 { background-image: url(images/iconMeeting22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMeeting16 { background-image: url(images/iconMeeting16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMeetingType32 { background-image: url(images/iconMeetingType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMeetingType22 { background-image: url(images/iconMeetingType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMeetingType16 { background-image: url(images/iconMeetingType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMessage32 { background-image: url(images/iconMessage32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMessage22 { background-image: url(images/iconMessage22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMessage16 { background-image: url(images/iconMessage16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMessageType32 { background-image: url(images/iconMessageType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMessageType22 { background-image: url(images/iconMessageType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMessageType16 { background-image: url(images/iconMessageType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMilestone32 { background-image: url(images/iconMilestone32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMilestone22 { background-image: url(images/iconMilestone22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMilestone16 { background-image: url(images/iconMilestone16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconMilestoneType32 { background-image: url(images/iconMilestoneType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconMilestoneType22 { background-image: url(images/iconMilestoneType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconMilestoneType16 { background-image: url(images/iconMilestoneType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconParameter32 { background-image: url(images/iconParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconParameter22 { background-image: url(images/iconParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconParameter16 { background-image: url(images/iconParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconPayment32 { background-image: url(images/iconPayment32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconPayment22 { background-image: url(images/iconPayment22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconPayment16 { background-image: url(images/iconPayment16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconPaymentType32 { background-image: url(images/iconPaymentType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconPaymentType22 { background-image: url(images/iconPaymentType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconPaymentType16 { background-image: url(images/iconPaymentType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconPlanning32 { background-image: url(images/iconPlanning32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconPlanning22 { background-image: url(images/iconPlanning22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconPlanning16 { background-image: url(images/iconPlanning16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconPriority32 { background-image: url(images/iconPriority32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconPriority22 { background-image: url(images/iconPriority22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconPriority16 { background-image: url(images/iconPriority16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProduct32 { background-image: url(images/iconProduct32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProduct22 { background-image: url(images/iconProduct22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProduct16 { background-image: url(images/iconProduct16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProfile32 { background-image: url(images/iconProfile32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProfile22 { background-image: url(images/iconProfile22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProfile16 { background-image: url(images/iconProfile16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProject32 { background-image: url(images/iconProject32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProject22 { background-image: url(images/iconProject22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProject16 { background-image: url(images/iconProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProjectExpense32 { background-image: url(images/iconProjectExpense32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectExpense22 { background-image: url(images/iconProjectExpense22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectExpense16 { background-image: url(images/iconProjectExpense16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProjectExpenseType32 { background-image: url(images/iconProjectExpenseType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectExpenseType22 { background-image: url(images/iconProjectExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectExpenseType16 { background-image: url(images/iconProjectExpenseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProjectParameter32 { background-image: url(images/iconProjectParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectParameter22 { background-image: url(images/iconProjectParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectParameter16 { background-image: url(images/iconProjectParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconProjectType32 { background-image: url(images/iconProjectType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectType22 { background-image: url(images/iconProjectType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectType16 { background-image: url(images/iconProjectType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconQuestion32 { background-image: url(images/iconQuestion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconQuestion22 { background-image: url(images/iconQuestion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconQuestion16 { background-image: url(images/iconQuestion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconQuestionType32 { background-image: url(images/iconQuestionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconQuestionType22 { background-image: url(images/iconQuestionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconQuestionType16 { background-image: url(images/iconQuestionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconReports32 { background-image: url(images/iconReports32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconReports22 { background-image: url(images/iconReports22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconReports16 { background-image: url(images/iconReports16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRequestor32 { background-image: url(images/iconRequestor32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRequestor22 { background-image: url(images/iconRequestor22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRequestor16 { background-image: url(images/iconRequestor16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconResource32 { background-image: url(images/iconResource32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconResource22 { background-image: url(images/iconResource22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconResource16 { background-image: url(images/iconResource16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconReview32 { background-image: url(images/iconReview32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconReview22 { background-image: url(images/iconReview22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconReview16 { background-image: url(images/iconReview16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRisk32 { background-image: url(images/iconRisk32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRisk22 { background-image: url(images/iconRisk22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRisk16 { background-image: url(images/iconRisk16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRiskManagementPlan32 { background-image: url(images/iconRiskManagementPlan32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRiskManagementPlan22 { background-image: url(images/iconRiskManagementPlan22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRiskManagementPlan16 { background-image: url(images/iconRiskManagementPlan16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRiskType32 { background-image: url(images/iconRiskType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRiskType22 { background-image: url(images/iconRiskType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRiskType16 { background-image: url(images/iconRiskType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRole32 { background-image: url(images/iconRole32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRole22 { background-image: url(images/iconRole22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRole16 { background-image: url(images/iconRole16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconSearch { background-image: url(images/iconSearch.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
+.iconSelect { background-image: url(images/iconSelect.png);  background-repeat: no-repeat; width: 16px; height: 16px;}
+
+.iconSeverity32 { background-image: url(images/iconSeverity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconSeverity22 { background-image: url(images/iconSeverity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconSeverity16 { background-image: url(images/iconSeverity16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconStatus32 { background-image: url(images/iconStatus32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconStatus22 { background-image: url(images/iconStatus22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconStatus16 { background-image: url(images/iconStatus16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconStatusMail32 { background-image: url(images/iconStatusMail32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconStatusMail22 { background-image: url(images/iconStatusMail22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconStatusMail16 { background-image: url(images/iconStatusMail16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTeam32 { background-image: url(images/iconTeam32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTeam22 { background-image: url(images/iconTeam22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTeam16 { background-image: url(images/iconTeam16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTicket32 { background-image: url(images/iconTicket32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTicket22 { background-image: url(images/iconTicket22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTicket16 { background-image: url(images/iconTicket16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTicketDelay32 { background-image: url(images/iconTicketDelay32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTicketDelay22 { background-image: url(images/iconTicketDelay22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTicketDelay16 { background-image: url(images/iconTicketDelay16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTicketType32 { background-image: url(images/iconTicketType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTicketType22 { background-image: url(images/iconTicketType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTicketType16 { background-image: url(images/iconTicketType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconToday32 { background-image: url(images/iconToday32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconToday22 { background-image: url(images/iconToday22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconToday16 { background-image: url(images/iconToday16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTool32 { background-image: url(images/iconTool32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTool22 { background-image: url(images/iconTool22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTool16 { background-image: url(images/iconTool16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconType32 { background-image: url(images/iconListOfTypes32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconType22 { background-image: url(images/iconListOfTypes22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconType16 { background-image: url(images/iconListOfTypes16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconUrgency32 { background-image: url(images/iconUrgency32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconUrgency22 { background-image: url(images/iconUrgency22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconUrgency16 { background-image: url(images/iconUrgency16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconUser32 { background-image: url(images/iconUser32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconUser22 { background-image: url(images/iconUser22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconUser16 { background-image: url(images/iconUser16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconUserParameter32 { background-image: url(images/iconUserParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconUserParameter22 { background-image: url(images/iconUserParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconUserParameter16 { background-image: url(images/iconUserParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconVersion32 { background-image: url(images/iconVersion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconVersion22 { background-image: url(images/iconVersion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconVersion16 { background-image: url(images/iconVersion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconView { background-image: url(images/iconView.png);  background-repeat: no-repeat; width: 10px; height: 10px;}
+
+.iconWork32 { background-image: url(images/iconWork32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconWork22 { background-image: url(images/iconWork22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconWork16 { background-image: url(images/iconWork16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconWorkflow32 { background-image: url(images/iconWorkflow32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconWorkflow22 { background-image: url(images/iconWorkflow22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconWorkflow16 { background-image: url(images/iconWorkflow16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
