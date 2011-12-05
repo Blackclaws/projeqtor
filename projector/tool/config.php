@@ -315,6 +315,13 @@ $value['DebugMode'] = "'true' or 'false'";
 $pname['DebugMode'] = 'paramDebugMode';
 $ctrls['DebugMode'] = '=true=false=';
 
+$defaultBillCode = '0';
+$param['billCode'] = '0';                              
+$label['billCode'] = "initial bill code";
+$value['billCode'] = "a number";
+$pname['billCode'] = 'defaultBillCode';
+$ctrls['billCode'] = '>=0';
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">

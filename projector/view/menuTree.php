@@ -8,7 +8,7 @@
   $level=0;
   $menuLevel=array('0'=>'0');
   /** ==========================================================================
-   * Draw an tree item to present a menu
+   * Draw a tree item to present a menu
    * @param $menu the name of menu
    * @param $type the type : 'menu', 'item' or 'object'
    * @param $hasChildren boolean wether the menu has sub-menu or not

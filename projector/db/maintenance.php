@@ -18,7 +18,8 @@ $versionHistory = array(
   "V1.6.0",
   "V1.7.0",
   "V1.8.0",
-  "V1.9.0");
+  "V1.9.0",
+  "V2.0.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -37,7 +38,8 @@ $versionParameters =array(
 					'paramLdap_version'=>'3',
 					'paramLdap_search_user'=>'cn=Manager,dc=mydomain,dc=com',
 					'paramLdap_search_pass'=>'secret',
-					'paramLdap_user_filter'=>'uid=%USERNAME%')
+					'paramLdap_user_filter'=>'uid=%USERNAME%'),
+  'V2.0.0'=>array('defaultBillCode'=>'0')
 );
 $SqlEndOfCommand=";";
 $SqlComment="--";

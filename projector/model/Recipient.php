@@ -1,33 +1,38 @@
 <?php 
 /* ============================================================================
- * Client is the owner of a project.
+ * defines recipient for a bill
  */ 
-class Client extends SqlElement {
+class Recipient extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
-  public $id;    // redefine $id to specify its visiblez place 
+  public $_col_1_2;
+  public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $clientCode;
-  public $delay;
-  public $tva;
+  public $siret;
+  public $numTva;  
+  public $bank;
+  public $numBank;
+  public $numGuichet;
+  public $numCompte;
+  public $cleRib;
   public $idle;
-  public $description;
   public $_col_2_2_Projects;
   public $_spe_projects;
   public $_sec_Contacts;
   public $_spe_contacts;
   
+  // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="name" width="40%">${clientName}</th>
-    <th field="clientCode" width="25%">${clientCode}</th> 
-    <th field="delay" width="10%">${delay}</th>
-    <th field="tva" width="10%">${tva}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
+    <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
+    <th field="name" width="20%">${name}</th>
+    <th field="siret" width="20%">${siret}</th>
+    <th field="numTva" width="20%">${numTva}</th>
+    <th field="bank" width="10%">${bank}</th>
+    <th field="idle" formatter="booleanFormatter" width="5%">${idle}</th>
     ';
   
-  private static $_colCaptionTransposition = array('name'=> 'clientName');
+  private static $_fieldsAttributes=array("name"=>"required");
+
   
    /** ==========================================================================
    * Constructor
@@ -59,15 +64,7 @@ class Client extends SqlElement {
     return self::$_layout;
   }
   
-  /** ============================================================================
-   * Return the specific colCaptionTransposition
-   * @return the colCaptionTransposition
-   */
-  protected function getStaticColCaptionTransposition($fld) {
-    return self::$_colCaptionTransposition;
-  }
-  
-  /** =========================================================================
+/** =========================================================================
    * Draw a specific item for the current class.
    * @param $item the item. Correct values are : 
    *    - subprojects => presents sub-projects as a tree
@@ -80,21 +77,39 @@ class Client extends SqlElement {
       $prj=new Project();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('projects') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      if ($this->id) {
-        $result .= $prj->drawProjectsList(array('idClient'=>$this->id,'idle'=>'0'));
-      }
+      $result .= $prj->drawProjectsList(array('idRecipient'=>$this->id,'idle'=>'0'));
       $result .="</td></tr></table>";
       return $result;
     } else if ($item=='contacts') {
       $con=new Contact();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('contacts') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      if ($this->id) {
-        $result .= $con->drawContactsList(array('idClient'=>$this->id,'idle'=>'0'));
-      }
+      $result .= $con->drawContactsList(array('idRecipient'=>$this->id,'idle'=>'0'));
       $result .="</td></tr></table>";
       return $result;
     }
   }
+  
+  
+  
+  /** =========================================================================
+   * Overrides SqlElement::deleteControl() function to add specific treatments
+   * @see persistence/SqlElement#deleteControl()
+   * @return the return message of persistence/SqlElement#deleteControl() method
+   */  
+  
+  public function deleteControl()
+  {
+  	$result = "OK";
+  	
+  	$proj = new Project();
+  	$crit = array("idRecipient"=>$this->id);
+  	$projList = $proj->getSqlElementsFromCriteria($crit,false);
+  	
+  	if (count($projList)!=0) $result = "Suppression impossible : contractant rattach&eacute a un ou plusieurs projets";
+
+  	return $result;
+  }
+  
 }
 ?>

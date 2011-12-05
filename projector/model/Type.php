@@ -25,6 +25,7 @@ class Type extends SqlElement {
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;
+  public $internalData;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -43,7 +44,8 @@ class Type extends SqlElement {
                                           "mandatoryResultOnDone"=>"nobr",
                                           "lockHandled"=>"nobr",
                                           "lockDone"=>"nobr",
-                                          "lockIdle"=>"nobr");
+                                          "lockIdle"=>"nobr",
+  										                    "internalData"=>"hidden");
   
   private static $_databaseTableName = 'type';
   private static $_databaseCriteria = array();

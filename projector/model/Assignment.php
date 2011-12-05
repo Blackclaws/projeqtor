@@ -28,6 +28,7 @@ class Assignment extends SqlElement {
   public $leftCost;
   public $plannedCost;
   public $idle;
+  public $billedWork;
   
    /** ==========================================================================
    * Constructor
