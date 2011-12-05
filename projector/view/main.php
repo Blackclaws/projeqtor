@@ -46,6 +46,7 @@ checkVersion(); ?>
     dojo.require("dijit.Tooltip");
     dojo.require("dijit.layout.BorderContainer");
     dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.layout.AccordionContainer");
     dojo.require("dijit.Menu"); 
     dojo.require("dijit.MenuBar"); 
     dojo.require("dijit.MenuBarItem"); 
@@ -220,8 +221,15 @@ checkVersion(); ?>
           </div>
           <div style="position:absolute; right:0;" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
         </div>
-        <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center">
-          <?php include "menuTree.php"; ?>
+        <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
+          <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;">
+            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" selected="true">
+              <?php include "menuTree.php"; ?>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>" >
+              Docs
+            </div>
+          </div>
         </div>
         <div id="messageDiv" dojoType="dijit.layout.ContentPane" region="bottom" splitter="true">
         </div>
@@ -1317,7 +1325,6 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
-
 
 
 <div id="dialogDependency" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDependency");?>">
