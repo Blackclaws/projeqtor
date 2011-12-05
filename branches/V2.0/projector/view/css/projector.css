@@ -649,10 +649,10 @@ label, .label {
 }
 
 .iconPlan {
-  background-image: url(images/iconPlan.png);
+  background-image: url(images/plan.jpg);
   background-repeat: no-repeat;
   width: 30px;
-  height: 16px;
+  height: 30px;
   text-align: center;
   cursor: pointer;
 }
