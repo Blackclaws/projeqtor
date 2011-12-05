@@ -10,12 +10,19 @@ class Contact extends SqlElement {
   public $name;
   public $initials;
   public $idClient;
+  public $idRecipient;
   public $isUser;
   public $idProfile;
   public $userName;
   public $isResource;
   public $email;
-  public $address;
+  public $designation;
+  public $street;
+  public $complement;
+  public $zip;
+  public $city;
+  public $state;
+  public $country;
   public $phone;
   public $mobile;
   public $fax;
@@ -29,9 +36,10 @@ class Contact extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="name" width="20%">${name}</th>
     <th field="initials" width="10%">${initials}</th>  
-    <th field="nameClient" width="15%">${client}</th> 
-    <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
-    <th field="userName" width="20%">${userName}</th>
+    <th field="nameClient" width="15%">${client}</th>
+    <th field="nameRecipient" width="10%">${recipient}</th> 
+    <th field="nameProfile" width="10%" formatter="translateFormatter">${idProfile}</th>
+    <th field="userName" width="15%">${userName}</th>
     <th field="isUser" width="5%" formatter="booleanFormatter">${isUser}</th>
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>    
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
@@ -266,6 +274,27 @@ class Contact extends SqlElement {
     }
     return $result;
   }
+  
+  /** =========================================================================
+   * Overrides SqlElement::deleteControl() function to add specific treatments
+   * @see persistence/SqlElement#deleteControl()
+   * @return the return message of persistence/SqlElement#deleteControl() method
+   */  
+  
+  public function deleteControl()
+  {
+  	$result = "OK";
+  	
+  	$rec = new Recipient();
+  	$crit = array("id"=>$this->idRecipient);
+  	$recList = $rec->getSqlElementsFromCriteria($crit,false);
+  	
+  	if (count($recList)!=0) $result = "Suppression impossible : contact li&eacute a un contractant";
+
+  	return $result;
+  }
+  
+  
 /** =========================================================================
    * control data corresponding to Model constraints
    * @param void

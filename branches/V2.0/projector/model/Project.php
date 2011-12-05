@@ -12,15 +12,19 @@ class Project extends SqlElement {
   public $idProjectType;
   public $codeType;
   public $idClient;
+  public $idRecipient;
   public $projectCode;
   public $contractCode;
   public $idProject;
   public $idUser;
   public $color;
+  public $delay;
   public $done;
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $longitude;
+  public $latitude;
   public $description;
   public $_col_2_2_Subprojects;
   public $_spe_subprojects;
@@ -42,11 +46,12 @@ class Project extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="wbsSortable" from="ProjectPlanningElement" formatter="sortableFormatter" width="5%" >${wbs}</th>
-    <th field="name" width="25%" >${projectName}</th>
+    <th field="name" width="20%" >${projectName}</th>
     <th field="nameProjectType" width="10%" >${type}</th>
     <th field="color" width="5%" formatter="colorFormatter">${color}</th>
-    <th field="projectCode" width="10%" >${projectCode}</th>
+    <th field="projectCode" width="5%" >${projectCode}</th>
     <th field="nameClient" width="10%" >${clientName}</th>
+    <th field="nameRecipient" width="10%" >${idRecipient}</th>
     <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${validatedEnd}</th>
     <th field="plannedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${plannedEnd}</th>  
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
@@ -488,6 +493,10 @@ class Project extends SqlElement {
         $result.='<br/>' . i18n('errorHierarchicLoop');
       }
     }
+    
+    if ($this->longitude > 180 || $this->longitude < -180 || $this->latitude < -90 || $this->latitude > 90)
+    $result = "Probl&egraveme de coordonn&eacutees GPS";
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

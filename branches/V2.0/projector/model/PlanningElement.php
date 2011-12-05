@@ -44,6 +44,7 @@ class PlanningElement extends SqlElement {
   public $idPlanningMode;
   public $_workVisibility;
   public $_costVisibility;
+  public $isBilled;
 
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
@@ -72,7 +73,8 @@ class PlanningElement extends SqlElement {
                                   "leftCost"=>"readonly",
                                   "plannedCost"=>"readonly",
                                   "elementary"=>"hidden",
-                                  "idPlanningMode"=>"hidden"
+                                  "idPlanningMode"=>"hidden",
+  								  "isBilled"=>"hidden"
   );   
   /** ==========================================================================
    * Constructor

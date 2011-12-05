@@ -99,7 +99,7 @@ $obj=new $objectClass;
               <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
-                  filterJsonList() ;
+				  setTimeout("filterJsonList()",10);
                 </script>
               </div>
             </td>
@@ -113,7 +113,7 @@ $obj=new $objectClass;
                 <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
                 id="listNameFilter" name="listNameFilter">
                   <script type="dojo/method" event="onKeyUp" >
-                  filterJsonList() ;
+                  setTimeout("filterJsonList()",10);
                 </script>
                 </div>
               </td>

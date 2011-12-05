@@ -29,6 +29,7 @@ class ImputationLine {
   public $endDate;
   public $idle;
   public $locked;
+  public $description;
 
   /** ==========================================================================
    * Constructor
@@ -304,6 +305,33 @@ class ImputationLine {
         echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
       } else if (! $print) {
         echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
+      } 
+			
+      //echo $line->wbs . ' '. $line->name . '</td>'; // for testing purpose, add wbs code  
+			//display the description of the project and the activity
+		
+      if($line->refType == "Project")
+      {
+		  $description=null;
+		  $crit=array();
+		  $crit['id']=$line->refId;
+		  $description=SqlElement::getSingleSqlElementFromCriteria('Project', $crit);
+		  if($description)
+		  {
+				$line->description=$description->description;
+		  }
+      }
+      else if ($line->refType == "Activity")
+      {	
+		$descriptionActivity=null;
+		$crit2=array();
+		$crit2['id']=$line->refId;
+		$crit2['idProject']=$line->idProject;
+		$descriptionActivity=SqlElement::getSingleSqlElementFromCriteria('Activity', $crit2);
+		if($descriptionActivity)
+		{
+			$line->description=$descriptionActivity->description;
+		}
       }
       echo '<td>' . $line->name . '</td>';
       if ($line->comment and !$print) {
@@ -311,6 +339,7 @@ class ImputationLine {
       }
       echo '</tr></table>';
       echo '</td>'; 
+			//echo '<td class="ganttDetail" align="center">' . $line->description . '</td>';
       echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->startDate) . '</td>';
       echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->endDate) . '</td>';
       echo '<td class="ganttDetail" align="center">';
@@ -458,7 +487,7 @@ class ImputationLine {
       echo '"><NOBR>'; 
       if (!$print) {
         echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-        echo ' constraints="{}"'; 
+        echo ' constraints="{pattern:\'###0.0#\'}"'; 
         echo '  style="width: 45px; text-align: center;" ';
         echo ' trim="true" class="displayTransparent" ';
         echo ' id="colSumWork_' . $i . '"';

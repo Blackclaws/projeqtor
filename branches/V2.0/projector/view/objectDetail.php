@@ -1024,6 +1024,75 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '</tr>';
   echo '</table>';
 }
+function drawLinesFromObject($obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale;
+  //$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {$canUpdate=false;}
+  $lock=false;
+  if (($obj->idStatus != 1 && $obj->idStatus != 5) || $obj->idle == 1) $lock=true;
+  if (isset($obj->_Line)) {
+    $lines=$obj->_Line;
+  } else {
+    $lines=array();
+  }   
+  echo '<table width="100%">';
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="noteHeader" style="width:5%">';  //changer le header
+    if ($obj->id!=null and ! $print and ! $lock) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addLine();" title="' . i18n('addLine') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colLine') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colQuantity') . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('colDescription') . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('Activity') . '</td>';
+  echo '<td class="noteHeader" style="width:10%">' . i18n('colPrice') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colSum') . '</td>';
+  echo '</tr>';
+  
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
+  $fmtd = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  foreach($lines as $line) {
+    echo '<tr>';
+      echo '<td class="noteData" style="text-align:center;">';
+      if ($lock==0)
+      {
+	      echo ' <img src="css/images/smallButtonEdit.png" onClick="editLine(
+	      ' . "'" . $line->id . "'" 
+	        . ",'" . htmlEncodeJson($line->description) . "'"
+	        . ",'" . $fmt->format($line->line) . "'"
+	        . ",'" . $fmtd->format($line->quantity) . "'"
+	        . ",'" . htmlEncodeJson($line->reference) . "'"
+	        . ",'" . $fmtd->format($line->price) . "'"
+	        . ",'" . $fmtd->format($line->sum) . "'"
+	        . ",'" . $line->idTerm . "'"
+	     . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+	      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeLine(' . $line->id . ');" title="' . i18n('removeLine') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    echo '<td class="noteData">#' . $line->id  . '</td>';
+    echo '<td class="noteData">' . $line->line . '</td>';
+    echo '<td class="noteData">' . $line->quantity . '</td>';
+    echo '<td class="noteData">' . $line->description . '</td>';
+    echo '<td class="noteData">' . $line->reference . '</td>';
+    echo '<td class="noteData">' . $line->price . '</td>';
+    echo '<td class="noteData">' . $line->sum . '</td>';
+    echo '</tr>';
+  }
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="noteDataClosetable">&nbsp;</td>';
+  }
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '</tr>';
+  echo '</table>';
+}
 
 function drawAttachementsFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
@@ -1171,6 +1240,10 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if(get_class($obj)=="Term")
+  {
+  	if($obj->isBilled) $canUpdate=false;
+  }
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
@@ -1448,7 +1521,8 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
     }
     echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
     echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
-    echo " / " . i18n('shortDay'); 
+    if($rcost->idRole==7) echo " / " . i18n('shortMonth');
+    else echo " / " . i18n('shortDay'); 
     echo '</td>';
     echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
     echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';
@@ -1636,6 +1710,10 @@ if ( $noselect ) {
     drawNotesFromObject($obj, true);
     exit;
   }
+if ( array_key_exists('refreshLines',$_REQUEST) ) {
+    drawLinesFromObject($obj, true);
+    exit;
+  }
   if ( array_key_exists('refreshAttachements',$_REQUEST) ) {
     drawAttachementsFromObject($obj, true);
     exit;
@@ -1789,6 +1867,29 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
      <?php $openMode=($displayNote=='YES_OPENED')?'true':'false'; ?>
      open="<?php echo $openMode; ?>" > 
      <?php drawNotesFromObject($obj); ?>
+    </div>
+    <?php }?>
+  <?php    
+  }
+  $displayLine='YES_OPENED';
+  if (array_key_exists('displayLine',$_SESSION)) {
+    $displayLine=$_SESSION['displayLine'];
+  }
+  if (isset($obj->_Line)) { ?>
+    <br/>
+    <?php if ($print) {?>
+    <table width="100%">
+      <tr><td class="section"> <?php echo i18n('sectionLines');?> </td></tr>
+      <tr><td>
+      <?php drawLinesFromObject($obj);?>
+      </td></tr>
+    </table>
+    <?php } else { ?>
+    <div id="linesPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+     title="<?php echo i18n('sectionLines');?>"
+     <?php $openMode=($displayLine=='YES_OPENED')?'true':'false'; ?>
+     open="<?php echo $openMode; ?>" > 
+     <?php drawLinesFromObject($obj); ?>
     </div>
     <?php }?>
   <?php    

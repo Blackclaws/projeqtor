@@ -39,6 +39,10 @@
 .iconActivity22 { background-image: url(images/iconActivity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconActivity16 { background-image: url(images/iconActivity16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconActivityPrice32 { background-image: url(images/iconActivityPrice32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconActivityPrice22 { background-image: url(images/iconActivityPrice22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconActivityPrice16 { background-image: url(images/iconActivityPrice16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconActivityType32 { background-image: url(images/iconActivityType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconActivityType22 { background-image: url(images/iconActivityType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconActivityType16 { background-image: url(images/iconActivityType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -66,6 +70,14 @@
 .iconClient32 { background-image: url(images/iconClient32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconClient22 { background-image: url(images/iconClient22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconClient16 { background-image: url(images/iconClient16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconBill32 { background-image: url(images/iconBill32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconBill22 { background-image: url(images/iconBill22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconBill16 { background-image: url(images/iconBill16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconBillType32 { background-image: url(images/iconBillType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconBillType22 { background-image: url(images/iconBillType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconBillType16 { background-image: url(images/iconBillType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconComponent32 { background-image: url(images/iconComponent32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconComponent22 { background-image: url(images/iconComponent22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -241,6 +253,10 @@
 .iconProjectExpenseType22 { background-image: url(images/iconProjectExpenseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProjectExpenseType16 { background-image: url(images/iconProjectExpenseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconProjectLife32 { background-image: url(images/iconProjectLife32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconProjectLife22 { background-image: url(images/iconProjectLife22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconProjectLife16 { background-image: url(images/iconProjectLife16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconProjectParameter32 { background-image: url(images/iconProjectParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconProjectParameter22 { background-image: url(images/iconProjectParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProjectParameter16 { background-image: url(images/iconProjectParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -256,6 +272,10 @@
 .iconQuestionType32 { background-image: url(images/iconQuestionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconQuestionType22 { background-image: url(images/iconQuestionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconQuestionType16 { background-image: url(images/iconQuestionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRecipient32 { background-image: url(images/iconRecipient32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRecipient22 { background-image: url(images/iconRecipient22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRecipient16 { background-image: url(images/iconRecipient16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconReports32 { background-image: url(images/iconReports32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconReports22 { background-image: url(images/iconReports22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -307,6 +327,10 @@
 .iconTeam32 { background-image: url(images/iconTeam32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTeam22 { background-image: url(images/iconTeam22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTeam16 { background-image: url(images/iconTeam16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTerm32 { background-image: url(images/iconTerm32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTerm22 { background-image: url(images/iconTerm22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTerm16 { background-image: url(images/iconTerm16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconTicket32 { background-image: url(images/iconTicket32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicket22 { background-image: url(images/iconTicket22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

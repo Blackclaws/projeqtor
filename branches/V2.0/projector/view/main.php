@@ -558,6 +558,119 @@ checkVersion(); ?>
   </table>
 </div>
 
+
+
+<div id="dialogLine" dojoType="dijit.Dialog" title="<?php echo i18n("dialogLine");?>">
+  <table>
+    <tr>
+      <td>
+       <form id='lineForm' name='lineForm' onSubmit="return false;">
+      	 <input id="lineId" name="lineId" type="hidden" value="" />
+         <input id="lineRefType" name="lineRefType" type="hidden" value="" />
+         <input id="lineRefId" name="lineRefId" type="hidden" value="" />
+         <input id="lineIdTerm" name="lineIdTerm" type="hidden" value="" />
+       	 <table>
+           <tr>
+             <td class="dialogLabel" >
+              <label for="lineLine" ><?php echo i18n("colLine");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+		      <textarea dojoType="dijit.form.NumberTextBox" 
+			      id="lineLine" name="lineLine"
+			      style="width: 50px;"
+			      class="input"
+			      onClick="dijit.byId('lineLine').setAttribute('class','');">  
+		      </textarea>
+		    </td>
+		   </tr>
+		   <tr>
+             <td class="dialogLabel" >
+               <label for="lineIdTerm" ><?php echo i18n("colTerm");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <select dojoType="dijit.form.FilteringSelect" 
+                id="lineIdTerm" name="lineIdTerm"
+                missingMessage="<?php echo "Valeur non modifiable";?>"
+                class="input" value="" >
+                <?php 
+                   htmlDrawOptionForReference('idTerm', null,null,false);
+                 ?>
+               </select>  
+             </td>
+           </tr>
+		   <tr>
+             <td class="dialogLabel" >
+              <label for="lineQuantity" ><?php echo i18n("colQuantity");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+             <input dojoType="dijit.form.NumberTextBox" 
+	          id="lineQuantity" name="lineQuantity"
+	          style="width: 50px;"
+	          class="input"
+	          onClick="dijit.byId('lineQuantity').setAttribute('class','');">  
+	         </input> 
+	         </td>
+	       </tr>
+           <tr>
+             <td class="dialogLabel" >
+              <label for="lineDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <textarea dojoType="dijit.form.Textarea" 
+	          id="lineDescription" name="lineDescription"
+	          style="width: 500px;"
+	          maxlength="200"
+	          class="input"
+	          onClick="dijit.byId('lineDescription').setAttribute('class','');">  
+	          </textarea>
+	         </td>
+	        </tr>
+            <tr>
+             <td class="dialogLabel" >
+              <label for="lineReference" ><?php echo i18n("colReference");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <textarea dojoType="dijit.form.Textarea" 
+	          id="lineReference" name="lineReference"
+	          style="width: 500px;"
+	          maxlength="200"
+	          class="input"
+	          onClick="dijit.byId('lineReference').setAttribute('class','');">  
+	          </textarea> 
+	         </td>
+	        </tr>
+            <tr>
+             <td class="dialogLabel" >
+              <label for="linePrice" ><?php echo i18n("colPrice");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <textarea dojoType="dijit.form.NumberTextBox" 
+	          id="linePrice" name="linePrice"
+	          style="width: 100px;"
+	          class="input"
+	          onClick="dijit.byId('linePrice').setAttribute('class','');">  
+	          </textarea> 
+	         </td>
+	        </tr>
+	      </table>     
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogLineAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogLine').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" onclick="saveLine();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
 <div id="dialogLink" dojoType="dijit.Dialog" title="<?php echo i18n("dialogLink");?>">
   <table>
     <tr>
@@ -1204,6 +1317,7 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
+
 
 
 <div id="dialogDependency" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDependency");?>">
