@@ -14,14 +14,16 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 
 ALTER TABLE `${prefix}type` ADD `code` varchar(10);
 
+ALTER TABLE `${prefix}type` ADD COLUMN `internalData` varchar(100) NULL after `lockIdle`;
+
 DELETE FROM `${prefix}type` WHERE scope='Project';
-INSERT INTO `${prefix}type` (`scope`, `code`, `name`, `sortOrder`) VALUES
-('Project', 'OPE', 'Fixed price', '10'),
-('Project', 'OPE', 'Time & Materials', '20'),
-('Project', 'OPE', 'Internal', '30'),
-('Project', 'OPE', 'Mixed', '40'),
-('Project', 'ADM', 'Administrative', '80'),
-('Project', 'TMP', 'Template', '90');
+INSERT INTO `${prefix}type` (`scope`, `code`, `name`, `sortOrder`, `internalData` ) VALUES
+('Project', 'OPE', 'Fixed Price', '10', 'E'),
+('Project', 'OPE', 'Time & Materials', '20', 'R'),
+('Project', 'OPE', 'Capped Time & Materials', '30', 'P'),
+('Project', 'OPE', 'Internal', '40', 'N'),
+('Project', 'ADM', 'Administrative', '80', 'N'),
+('Project', 'TMP', 'Template', '90', 'N');
 
 ALTER TABLE `${prefix}project` ADD idProjectType int(12) unsigned,
 ADD codeType varchar(10) default 'OPE';
@@ -44,7 +46,6 @@ ADD externalReference varchar(100);
 
 ALTER TABLE `${prefix}milestone` ADD reference varchar(100),
 ADD externalReference varchar(100);
-
 
 ALTER TABLE `${prefix}expense` ADD reference varchar(100),
 ADD externalReference varchar(100);

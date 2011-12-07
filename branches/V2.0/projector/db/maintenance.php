@@ -85,6 +85,7 @@ if ($currVersion=='0.0.0') {
                      'For example use only.' . "\n" .
                      'Remove or rename this project when initializing your own data.';
   $proj->name='Default project';
+  $proj->idProjectType=1;
   $result=$proj->save();
   traceLog($result);
 }

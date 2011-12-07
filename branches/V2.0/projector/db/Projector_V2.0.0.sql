@@ -21,9 +21,7 @@ CREATE TABLE `${prefix}activityprice` (
   `commissionCost` decimal(10,2) DEFAULT NULL,
   `isRef` int(1) NOT NULL DEFAULT '0',
   `pct` int(3) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `activitypriceProject` (`idProject`),
-  KEY `activitypriceActivityType` (`idActivityType`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `${prefix}activityprice` ADD INDEX activitypriceProject (idProject),
@@ -56,11 +54,8 @@ ALTER TABLE `${prefix}bill` ADD INDEX billBillType (idBillType),
  ADD INDEX billResource (idResource);
  
 ALTER TABLE `${prefix}client` ADD COLUMN `paymentDelay` int(3) NULL after `clientCode`, 
-	ADD COLUMN `tax` decimal(5,2) DEFAULT NULL after `delay`,
-	CHANGE `idle` `idle` int(1) unsigned   NULL DEFAULT '0' after `tax`;
+ ADD COLUMN `tax` decimal(5,2) DEFAULT NULL after `paymentDelay`;
 	
-ALTER TABLE `${prefix}type` ADD COLUMN `internalData` varchar(1000) NULL after `lockIdle`;
-
 CREATE TABLE `${prefix}line` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `line` int(3) unsigned DEFAULT NULL,
@@ -76,8 +71,7 @@ CREATE TABLE `${prefix}line` (
 	`idActivity` int(12) unsigned DEFAULT NULL,
 	`startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `detailRef` (`refId`,`refType`)
+  PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `${prefix}line` ADD INDEX lineReference (refType, refId),
@@ -88,25 +82,22 @@ ALTER TABLE `${prefix}project` ADD COLUMN `idRecipient` int(12) unsigned   NULL 
 	ADD COLUMN `paymentDelay` int(3) NULL after `doneDate`,
 	ADD COLUMN `longitude` float(15,12) NULL after `paymentDelay`,
 	ADD COLUMN `latitude` float(15,12) NULL after `longitude`;
-	
 
+ALTER TABLE `${prefix}project` ADD INDEX projectRecipient(idRecipient);
 
 CREATE TABLE `${prefix}recipient` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
-  `siret` varchar(14) DEFAULT NULL,
-  `numTva` varchar(100) DEFAULT NULL,
+  `companyNumber` varchar(14) DEFAULT NULL,
+  `numTax` varchar(100) DEFAULT NULL,
   `bank` varchar(100) DEFAULT NULL,
   `numBank` varchar(5) DEFAULT NULL,
-	`numGuichet` varchar(5) DEFAULT NULL,
-	`numCompte` varchar(11) DEFAULT NULL,
-	`cleRib` varchar(2) DEFAULT NULL,
+	`numOffice` varchar(5) DEFAULT NULL,
+	`numAccount` varchar(11) DEFAULT NULL,
+	`numKey` varchar(2) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-
-
 
 CREATE TABLE `${prefix}term` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -116,23 +107,21 @@ CREATE TABLE `${prefix}term` (
   `date` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT NULL,
   `isBilled` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `termProject` (`idProject`)
+  PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+ALTER TABLE `${prefix}term` ADD INDEX termProject (idProject);
 
-
-ALTER TABLE `${prefix}user` CHANGE `isContact` `isContact` int(1) unsigned   NULL DEFAULT '0' after `capacity`, 
-	ADD COLUMN `designation` varchar(50)  COLLATE utf8_general_ci NULL after `isContact`, 
-	ADD COLUMN `street` varchar(50)  COLLATE utf8_general_ci NULL after `designation`, 
-	ADD COLUMN `complement` varchar(50)  COLLATE utf8_general_ci NULL after `street`, 
-	ADD COLUMN `zip` varchar(50)  COLLATE utf8_general_ci NULL after `complement`, 
-	ADD COLUMN `city` varchar(50)  COLLATE utf8_general_ci NULL after `zip`, 
-	ADD COLUMN `state` varchar(50)  COLLATE utf8_general_ci NULL after `city`, 
-	ADD COLUMN `country` varchar(50)  COLLATE utf8_general_ci NULL after `state`, 
-	CHANGE `idClient` `idClient` int(12) unsigned   NULL after `country`,
-	CHANGE `idRole` `idRole` int(12) unsigned   NULL after `idClient`,
+ALTER TABLE `${prefix}user` ADD COLUMN `designation` varchar(50) after `isContact`, 
+	ADD COLUMN `street` varchar(50) after `designation`, 
+	ADD COLUMN `complement` varchar(50) after `street`, 
+	ADD COLUMN `zip` varchar(50) after `complement`, 
+	ADD COLUMN `city` varchar(50) after `zip`, 
+	ADD COLUMN `state` varchar(50) after `city`, 
+	ADD COLUMN `country` varchar(50) after `state`, 
 	ADD COLUMN `idRecipient` int(12)  unsigned NULL after `idRole`;
+
+ALTER TABLE `${prefix}user` ADD INDEX userRecipient (idRecipient);
 
 ALTER TABLE `${prefix}work` ADD COLUMN `isBilled` int(12) unsigned NOT NULL DEFAULT '0' after `cost`;
 
@@ -141,35 +130,40 @@ ALTER TABLE `${prefix}planningelement` ADD COLUMN `isBilled` int(12) unsigned NO
 ALTER TABLE `${prefix}assignment` ADD COLUMN `billedWork` decimal(10,2) NOT NULL DEFAULT '0' after `plannedCost`;
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
-	(94,'menuActivityPrice',79,'object',115,NULL,0),
-	(95,'menuRecipient',14,'object',913,NULL,0),
-	(96,'menuTerm',80,'object',125,NULL,0),
-	(97,'menuBill',80,'object',126,NULL,0),
-	(98,'menuProjectParameter',2,'menu',111,NULL,1),
-	(99,'menuProjectLife',2,'menu',120,NULL,1),
-	(100,'menuBillType',36,'object',947,NULL,1);
+	(94,'menuActivityPrice',74,'object',280,NULL,0),
+	(95,'menuRecipient',14,'object',635,NULL,0),
+	(96,'menuTerm',74,'object',262,NULL,0),
+	(97,'menuBill',74,'object',267,NULL,0),
+	(100,'menuBillType',79,'object',865,NULL,1);
 	
--- UPDATE `${prefix}menu` SET
--- 	`idMenu`=79, `sortOrder`=112
---	WHERE `id`=16;
-	
---UPDATE `${prefix}menu` SET
---	`idMenu`=80, `sortOrder`=123
---	WHERE `id`=22;
-	
---UPDATE `${prefix}menu` SET
---	`idMenu`=80, `sortOrder`=122
---	WHERE `id`=25;
-	
---UPDATE `${prefix}menu` SET
---	`idMenu`=80, `sortOrder`=124
---	WHERE `id`=26;
-	
---UPDATE `${prefix}menu` SET
---	`idMenu`=79, `sortOrder`=114
---	WHERE `id`=50;
+UPDATE `${prefix}menu` SET `sortOrder`=10 WHERE `id`=1;
 
+UPDATE `${prefix}menu` SET `idMenu`=0, `sortOrder`=90 WHERE `id`=16;
 	
+UPDATE `${prefix}menu` SET `idMenu`=2, `sortOrder`=160 WHERE `id`=4;
+	
+UPDATE `${prefix}menu` SET `idMenu`=0,  `sortOrder`=600 WHERE `id`=14;
+	
+UPDATE `${prefix}menu` SET `idMenu`=79, `sortOrder`=688 WHERE `id`=13;
+
+UPDATE `${prefix}menu` SET `sortOrder`=610 WHERE `id`=50;
+
+UPDATE `${prefix}menu` SET `sortOrder`=615 WHERE `id`=17;
+
+UPDATE `${prefix}menu` SET `sortOrder`=620 WHERE `id`=44;
+
+UPDATE `${prefix}menu` SET `sortOrder`=630 WHERE `id`=72;
+
+UPDATE `${prefix}menu` SET `sortOrder`=635 WHERE `id`=15;
+
+UPDATE `${prefix}menu` SET `sortOrder`=640 WHERE `id`=95;
+
+UPDATE `${prefix}menu` SET `sortOrder`=645 WHERE `id`=57;
+
+UPDATE `${prefix}menu` SET `sortOrder`=650 WHERE `id`=86;
+
+UPDATE `${prefix}menu` SET `sortOrder`=655 WHERE `id`=87;
+
 INSERT INTO `${prefix}accessright` (idProfile,idMenu,idAccessProfile) VALUES 
 (1,94,8),
 (1,95,8),
@@ -189,18 +183,18 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 100, 1);
 
 
-INSERT INTO `${prefix}reportcategory` (id, name, order, idle) VALUES 
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`, `idle`) VALUES 
 (7,'reportCategoryFacture',60,0);
 	
-INSERT INTO `${prefix}report`(id, name, idReportCategory, file,sortOrder,idle) 
+INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 VALUES (37,'reportFactureProject',7,'facture.php',1,0);
 
-INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, order, idle, defaultValue) VALUES
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
 (86,37,'idBill','billList',10,0,NULL),
 (87,37,'idProject','projectList',20,0,'currentProject'),
 (88,37,'idClient','clientList',30,0,NULL);
 
-INSERT INTO `${prefix}habilitationreport` (idProfile, idReport, allowAccess) VALUES
+INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
 (1,37,1),
 (2,37,0),
 (3,37,0),
@@ -208,10 +202,3 @@ INSERT INTO `${prefix}habilitationreport` (idProfile, idReport, allowAccess) VAL
 (5,37,0),
 (6,37,0),
 (7,37,0);
-
-INSERT INTO `${prefix}type` (`id` ,`scope` ,`name` ,`sortOrder` ,`idle` ,`color` ,`idWorkflow` ,`mandatoryDescription` ,`mandatoryResultOnDone` ,`mandatoryResourceOnHandled` ,`lockHandled` ,`lockDone` ,`lockIdle`, `internalData`) VALUES 
-(NULL , 'Project', 'scheduled', NULL , '0', NULL , NULL , '0', '0', '0', '0', '0', '0','E'),
-(NULL , 'Project', 'time and material', NULL , '0', NULL , NULL , '0', '0', '0', '0', '0', '0','R'),
-(NULL , 'Project', 'internal project', NULL , '0', NULL , NULL , '0', '0', '0', '0', '0', '0','N'),
-(NULL , 'Project', 'capped time and materials', NULL , '0', NULL , NULL , '0', '0', '0', '0', '0', '0','P');
-	

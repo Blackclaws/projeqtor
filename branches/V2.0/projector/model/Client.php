@@ -10,7 +10,7 @@ class Client extends SqlElement {
   public $name;
   public $clientCode;
   public $delay;
-  public $tva;
+  public $tax;
   public $idle;
   public $description;
   public $_col_2_2_Projects;
