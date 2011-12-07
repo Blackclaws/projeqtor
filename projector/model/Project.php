@@ -339,8 +339,8 @@ class Project extends SqlElement {
       $result .= '<i>' . i18n('allProjects') . '</i>';
       $result .= '</div></td></tr></table>';
     }
-    $result .='<table >';
     if (count($subList)>0) {
+    	$result .='<table >';
       foreach ($subList as $prj) {
         $showLine=true;
         $reachLine=true;
@@ -370,8 +370,8 @@ class Project extends SqlElement {
           $result .= '</td></tr>';
         }
       }
+      $result .='</table>';      
     }
-    $result .='</table>';
     return $result;
   }
 
