@@ -71,7 +71,7 @@ foreach ($billList as $bill)
 	$client = new Client($bill->idClient);
 	echo $client->name."<br/>";
 	echo $client->description."<br/>";
-	echo "Delai : ".$client->delay."<br/>";
+	echo "Delai : ".$client->paymentDelay."<br/>";
 	
 	if ($client->id)
 	{
@@ -147,8 +147,8 @@ foreach ($billList as $bill)
 	echo "<table>";
 	
 	echo "<tr><td width=100px>Total HT : </td><td>".$acc."</td></tr>";
-	echo "<tr><td>TVA : </td><td>".$client->tva."</td></tr>";
-	echo "<tr><td>Total TTC : </td><td>".($acc+$acc/100*$client->tva)."</td></tr>";
+	echo "<tr><td>TVA : </td><td>".$client->tax."</td></tr>";
+	echo "<tr><td>Total TTC : </td><td>".($acc+$acc/100*$client->tax)."</td></tr>";
 	
 	echo "</table>";
 	echo "</td></tr>";
@@ -156,10 +156,10 @@ foreach ($billList as $bill)
 	// détails contractant
 	echo "<tr><td>";
 	
-	echo "numero SIRET : ".$recipient->siret."<br/>";
-	echo "numero TVA : ".$recipient->numTva."<br/>";
+	echo i18n("colCompanyNumber") . " : ".$recipient->siret."<br/>";
+	echo "numero TVA : ".$recipient->numTax."<br/>";
 	echo "banque : ".$recipient->bank."<br/>";
-	echo "numero RIB : ".$recipient->numBank." ".$recipient->numGuichet." ".$recipient->numCompte." ".$recipient->cleRib."<br/>";
+	echo "numero RIB : ".$recipient->numBank." ".$recipient->numOffice." ".$recipient->numAccount." ".$recipient->numKey."<br/>";
 	
 	echo "</td></tr>";
 	echo "</table>";

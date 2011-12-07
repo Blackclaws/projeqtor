@@ -42,7 +42,7 @@ echo '<table id="bill" align="center">';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>';
-						echo "N de SIRET : ___________";
+						echo i18n("colCompanyNumber") . " : ___________";
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';

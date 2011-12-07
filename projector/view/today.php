@@ -168,6 +168,8 @@
         if (array_key_exists($prj->id, $prjVisLst)) {
           $show=true;
         }
+        $subPrj=$prj->getSqlElementsFromCriteria(array('idProject'=>$prj->id), false);
+        if ($show or count($subPrj)>0) {
         echo '<tr >' .
              '  <td class="messageData" '.($show?'':'style="color:#AAAAAA;"') . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . $name . '</div></td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),100,100-$progress, null, false):'') . '</td>' .
@@ -181,6 +183,7 @@
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbIssues,$nbIssuesAll,$nbIssuesTodo,$nbIssuesDone):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbQuestions,$nbQuestionsAll,$nbQuestionsTodo,$nbQuestionsDone):'') . '</td>' .
              '</tr>';   
+        }
       }
       echo'</table>';
     }

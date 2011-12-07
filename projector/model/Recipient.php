@@ -8,13 +8,13 @@ class Recipient extends SqlElement {
   public $_col_1_2;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $siret;
-  public $numTva;  
+  public $companyNumber;
+  public $numTax;  
   public $bank;
   public $numBank;
-  public $numGuichet;
-  public $numCompte;
-  public $cleRib;
+  public $numOffice;
+  public $numAccount;
+  public $numKey;
   public $idle;
   public $_col_2_2_Projects;
   public $_spe_projects;
@@ -25,8 +25,8 @@ class Recipient extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="name" width="20%">${name}</th>
-    <th field="siret" width="20%">${siret}</th>
-    <th field="numTva" width="20%">${numTva}</th>
+    <th field="companyNumber" width="20%">${companyNumber}</th>
+    <th field="numTax" width="20%">${numTax}</th>
     <th field="bank" width="10%">${bank}</th>
     <th field="idle" formatter="booleanFormatter" width="5%">${idle}</th>
     ';

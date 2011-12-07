@@ -9,8 +9,8 @@ class Term extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idProject;
-  public $idle;
   public $isBilled;
+  public $idle;
   public $_col_2_2_forfait;
   public $amount; 
   public $date;

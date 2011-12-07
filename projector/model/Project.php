@@ -18,7 +18,7 @@ class Project extends SqlElement {
   public $idProject;
   public $idUser;
   public $color;
-  public $delay;
+  public $paymentDelay;
   public $done;
   public $doneDate;
   public $idle;
@@ -494,8 +494,11 @@ class Project extends SqlElement {
       }
     }
     
-    if ($this->longitude > 180 || $this->longitude < -180 || $this->latitude < -90 || $this->latitude > 90)
-    $result = "Probl&egraveme de coordonn&eacutees GPS";
+    if ($this->longitude!=null and $this->latitude!=null) {
+      if ($this->longitude > 180 || $this->longitude < -180 || $this->latitude < -90 || $this->latitude > 90) {
+        $result = i18n('invalidGpsData');
+      }
+    }
     
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

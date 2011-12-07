@@ -111,16 +111,14 @@ class Bill extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function control(){
-    $result="";
+  	
+  	$result="";
     
-    if(new DateTime($this->startDate) <= new DateTime($this->endDate))
-    {
-    	$result='OK';
+    if(new DateTime($this->startDate) > new DateTime($this->endDate)) {
+    	$result=i18n('errorStartEndDates',array(i18n('colStartDate'),i18n('colEndDate')));
     }
-    else $result='dateError';
     
-    if ($this->id)
-    {
+    if ($this->id) {
     	$bill = new Bill($this->id);
     	if ($this->idStatus != 1 && $this->idStatus != 5 && ($bill->idStatus == 1 || $bill->idStatus == 5) && $this->date == null)
     	{
@@ -146,6 +144,13 @@ class Bill extends SqlElement {
     	}
     }
     
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
     return $result;
   }
   
