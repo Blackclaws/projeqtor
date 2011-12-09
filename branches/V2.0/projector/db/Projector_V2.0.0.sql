@@ -202,3 +202,14 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (5,37,0),
 (6,37,0),
 (7,37,0);
+
+CREATE TABLE `${prefix}directory` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idDirectory` int(12) unsigned,
+  PRIMARY KEY (`id`),
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}directory` ADD INDEX directoryProject (idDirectory),
+ADD INDEX directoryDirectory (idDirectory);
