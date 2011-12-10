@@ -311,14 +311,14 @@ class Project extends SqlElement {
    *  must be redefined in the inherited class
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
-    if ($limitToUserProjects) {
+  	if ($limitToUserProjects) {
       $user=$_SESSION['user'];
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
       }      
       $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
       $reachableProjectsList=$user->getVisibleProjects();
-    } else {  
+    } else {
       $visibleProjectsList=array();
       $reachableProjectsList=array();
     }

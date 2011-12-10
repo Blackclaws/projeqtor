@@ -320,7 +320,7 @@ class User extends SqlElement {
    * @return a list of projects id
    */
   public function getHierarchicalViewOfVisibleProjects($projId='*') {
-  	if ($this->_hierarchicalViewOfVisibleProjects) {
+  	if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
   		return $this->_hierarchicalViewOfVisibleProjects;
   	}
     $result=array();
