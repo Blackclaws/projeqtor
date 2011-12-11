@@ -9,7 +9,7 @@ class Client extends SqlElement {
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $clientCode;
-  public $delay;
+  public $paymentDelay;
   public $tax;
   public $idle;
   public $description;

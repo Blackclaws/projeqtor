@@ -51,7 +51,7 @@ foreach ($billList as $bill)
 	echo "<tr><td>";
 	
 	$recipient = new Recipient($bill->idRecipient);
-	$user = new User();
+	$user = new Contact();
 	$critb = array("idRecipient"=>$recipient->id);
 	$userList = $user->getSqlElementsFromCriteria($critb,false);
 	echo $recipient->name."<br/><br/>";
@@ -156,7 +156,7 @@ foreach ($billList as $bill)
 	// détails contractant
 	echo "<tr><td>";
 	
-	echo i18n("colCompanyNumber") . " : ".$recipient->siret."<br/>";
+	echo i18n("colCompanyNumber") . " : ".$recipient->companyNumber."<br/>";
 	echo "numero TVA : ".$recipient->numTax."<br/>";
 	echo "banque : ".$recipient->bank."<br/>";
 	echo "numero RIB : ".$recipient->numBank." ".$recipient->numOffice." ".$recipient->numAccount." ".$recipient->numKey."<br/>";

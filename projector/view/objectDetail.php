@@ -192,7 +192,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</td></tr>';
     } else if (substr($col,0,5)=='_lib_') { // if field is just a caption 
       $item=substr($col,5);
-      echo i18n($item);
+      if ($obj->getFieldAttributes($col)!='hidden') {
+        echo i18n($item);
+      }
       if (!$nobr) {
         echo "</td></tr>";
       }

@@ -222,12 +222,23 @@ checkVersion(); ?>
           <div style="position:absolute; right:0;" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
-          <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;">
+          <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;" >
             <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" selected="true">
               <?php include "menuTree.php"; ?>
             </div>
-            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>" >
-              Docs
+            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>">
+              <div dojoType="dojo.data.ItemFileReadStore" jsId="directoryStore" url="../tool/jsonDirectory.php">
+              </div>
+              <div dojoType="dijit.tree.ForestStoreModel" jsId="directoryModel" store="directoryStore"
+               query="{id:'*'}" rootId="directoryRoot" rootLabel="Documents"
+               childrenAttrs="children">
+              </div>
+              <div dojoType="dijit.Tree" id="documentDirectoryTree" model="directoryModel" openOnClick="false" showRoot='false'>
+                <script type="dojo/method" event="onClick" args="item">
+                  loadContent("objectMain.php?objectClass=Document&Directory="+directoryStore.getValue(item, "id"),"centerDiv");
+                  //alert("Execute of node " + directoryStore.getLabel(item) + ", population=" +);
+                </script>
+              </div>
             </div>
           </div>
         </div>

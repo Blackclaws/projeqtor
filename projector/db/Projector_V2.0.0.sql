@@ -95,7 +95,7 @@ CREATE TABLE `${prefix}recipient` (
 	`numOffice` varchar(5) DEFAULT NULL,
 	`numAccount` varchar(11) DEFAULT NULL,
 	`numKey` varchar(2) DEFAULT NULL,
-  `idle` int(1) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -203,13 +203,103 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (6,37,0),
 (7,37,0);
 
-CREATE TABLE `${prefix}directory` (
+CREATE TABLE `${prefix}documentdirectory` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `reference` varchar(100),
   `name` varchar(100) DEFAULT NULL,
+  `location` varchar(4000),
   `idProject` int(12) unsigned DEFAULT NULL,
+  `idProduct` int(12) unsigned DEFAULT NULL,
   `idDirectory` int(12) unsigned,
-  PRIMARY KEY (`id`),
+  `sortOrder` int(3) unsigned,
+  `idle` int(1) unsigned default '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}directory` ADD INDEX directoryProject (idDirectory),
-ADD INDEX directoryDirectory (idDirectory);
+ALTER TABLE `${prefix}documentdirectory` ADD INDEX documentdirectoryProject (idProject),
+ADD INDEX documentdirectoryDirectory (idDirectory);
+
+INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDirectory,sortOrder,location) values
+(1,'Project',null,null, 100,'/Project'),
+(2,'Product',null,null, 200,'/Product'),
+(3,'Need',null,2,210,'/Product/Need'),
+(4,'Specification',null,2,220,'/Product/Specification'),
+(5,'Conception',null,2, 230,'/Product/Conception'),
+(7,'Testing',null,2, 240,'/Product/Testing'),
+(8,'Deployment',null, 2,250,'/Product/Deployment'),
+(9,'Exploitation',null,2,260,'/Product/Exploitation'),
+(10,'Contract',null,1,110,'/Project/Contract'),
+(11,'Management',null,1,120,'/Project/Management'),
+(12,'Reviews',null,1,130,'/Project/Reviews'),
+(13,'Follow-up',null,1,140,'/Project/Follow-up'),
+(14,'Financial',null,1,150,'/Project/Financial'); 
+
+CREATE TABLE `${prefix}document` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `extension` varchar(4) DEFAULT NULL,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idProduct` int(12) unsigned DEFAULT NULL,
+  `idDocumentType` int(12) unsigned DEFAULT NULL,
+  `idVersionType` int(12) unsigned DEFAULT NULL,
+  `idDocumentDirectory` int(12) unsigned,
+  `idStatus` int(12) unsigned,
+  `currentVersion` varchar(100),
+  `currentRefVersion` varchar(100),
+  `locked` int(1) unsigned default '0',
+  `idAuthor` int(1) unsigned default '0',
+  `lockedDate` datetime,
+  `fileName` varchar(100),
+  `description` varchar(4000),
+  `idle` int(1) unsigned default '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}document` ADD INDEX documentProject (idProject),
+ADD INDEX documentProduct (idProduct),
+ADD INDEX documentDocumentType (idDocumentType),
+ADD INDEX documentVersionType (idVersionType),
+ADD INDEX documentDirectory (idDirectory),
+ADD INDEX documentStatus (idStatus);
+
+CREATE TABLE `${prefix}documentVersion` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `version` varchar(100) DEFAULT NULL,
+  `extension` varchar(100) DEFAULT NULL,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idProduct` int(12) unsigned DEFAULT NULL,
+  `idDocument` int(12) unsigned DEFAULT NULL,
+  `idAuthor` int(12) unsigned DEFAULT NULL,
+  `idReader` int(12) unsigned DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
+  `idVersionType` int(12) unsigned DEFAULT NULL,
+  `idStatus` int(12) unsigned DEFAULT NULL,
+  `description` varchar(4000),
+  `isRef` int(1) unsigned default '0',
+  `idle` int(1) unsigned default '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
+('Document','Need expression','NEEDEXP',1,210),
+('Document','General Specification','GENSPEC', 1,220),
+('Document','Detailed Specification','DETSPEC', 1,230),
+('Document','General Conception','GENCON', 1, 240),
+('Document','Detail Conception','DETCON'1, 250),
+('Document','Test Plan','TEST', 1, 260),
+('Document','Installaton manual','INST', 1,270),
+('Document','Exploitation manual','EXPL', 1,280),
+('Document','User manual','MANUAL', 1,290),
+('Document','Contract','CTRCT', 1,110),
+('Document','Management','MGT', 1,120),
+('Document','Meeting Review','MEETREV', 1,130),
+('Document','Follow-up','F-UP', 1,140),
+('Document','Financial','FIN', 1,150); 
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(101,'menuDocumentType',79,'object',950,NULL,1);
+  
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 101, 1);
+
