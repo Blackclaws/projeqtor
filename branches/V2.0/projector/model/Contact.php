@@ -280,20 +280,7 @@ class Contact extends SqlElement {
    * @see persistence/SqlElement#deleteControl()
    * @return the return message of persistence/SqlElement#deleteControl() method
    */  
-  
-  public function deleteControl()
-  {
-  	$result = "OK";
-  	
-  	$rec = new Recipient();
-  	$crit = array("id"=>$this->idRecipient);
-  	$recList = $rec->getSqlElementsFromCriteria($crit,false);
-  	
-  	if (count($recList)!=0) $result = "Suppression impossible : contact li&eacute a un contractant";
-
-  	return $result;
-  }
-  
+    
   
 /** =========================================================================
    * control data corresponding to Model constraints
@@ -306,6 +293,7 @@ class Contact extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -328,6 +316,14 @@ class Contact extends SqlElement {
         $result="<br/>" . i18n("msgCannotDeleteContact");
       }             
     }
+    $rec = new Recipient();
+    $crit = array("id"=>$this->idRecipient);
+    $recList = $rec->getSqlElementsFromCriteria($crit,false);
+    if (count($recList)!=0) {
+    	//$result = "Suppression impossible : contact li&eacute; a un contractant";
+    	$result="<br/>" . i18n("msgCannotDeleteContact");
+    }
+    
     if (! $result) {  
       $result=parent::deleteControl();
     }
