@@ -16,19 +16,19 @@ class Contact extends SqlElement {
   public $userName;
   public $isResource;
   public $email;
+  public $phone;
+  public $mobile;
+  public $fax;
+  public $idle;
+  public $description;
+  public $_col_2_2_Address;
   public $designation;
   public $street;
   public $complement;
   public $zip;
   public $city;
   public $state;
-  public $country;
-  public $phone;
-  public $mobile;
-  public $fax;
-  public $idle;
-  public $description;
-  public $_col_2_2;
+  public $country;  
   public $_sec_Affectations;
   public $_spe_affectations;
   
@@ -346,7 +346,7 @@ class Contact extends SqlElement {
     $result="";
     if ($item=='affectations') {
       $aff=new Affectation();
-      $critArray=array('idContact'=>$this->id,'idle'=>'0');
+      $critArray=array('idContact'=>$this->id);
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;

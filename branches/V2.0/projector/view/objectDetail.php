@@ -1653,7 +1653,11 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   foreach($list as $aff) {
   	$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
     $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
-    $name=SqlList::getNameFromId($type, $aff->idResource);
+    if ($type=='Project') {
+    	$name=SqlList::getNameFromId($type, $aff->idProject);
+    } else {
+      $name=SqlList::getNameFromId($type, $aff->idResource);
+    }
     if ($aff->idResource!=$name) {
 	    echo '<tr>';
 	    if (! $print) {

@@ -3,10 +3,12 @@
  * Project is the main object of the project managmement.
  * Almost all other objects are linked to a given project.
  */ 
-class OriginalVersion extends Version {
+class TargetVersion extends Version {
 
     private static $_databaseTableName = 'version';
   
+    private static $_databaseCriteria = array('isEis'=>'0');
+    
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -15,9 +17,9 @@ class OriginalVersion extends Version {
   function __construct($id = NULL) {
     parent::__construct($id);
     if ($this->name) {
-      if ($this->realEisDate){
-        $this->name.=" - " . htmlFormatDate($this->realEisDate);
-      } else if ($this->plannedEisDate){
+    	if ($this->realEisDate){
+    	  $this->name.=" - " . htmlFormatDate($this->realEisDate);
+    	} else if ($this->plannedEisDate){
         $this->name.=" - " . htmlFormatDate($this->plannedEisDate);
       }
     }
@@ -38,6 +40,14 @@ class OriginalVersion extends Version {
   protected function getStaticDatabaseTableName() {
     global $paramDbPrefix;
     return $paramDbPrefix . self::$_databaseTableName;
+  }
+  
+    /** ========================================================================
+   * Return the specific database criteria
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseCriteria() {
+    return self::$_databaseCriteria;
   }
   
 }
