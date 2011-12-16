@@ -11,7 +11,8 @@ class Activity extends SqlElement {
   public $reference;
   public $idProject;
   public $idActivityType;
-  public $name;  
+  public $name;
+  public $externalReference;  
   public $creationDate;
   public $idUser;
   public $idContact;

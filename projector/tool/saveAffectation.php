@@ -35,12 +35,7 @@ $affectation=new Affectation($id);
 
 $affectation->idProject=$project;
 $affectation->idResource=$resource;
-$res=new Resource($resource);
-$affectation->idResourceSelect=$res->id;
-$usr=new User($resource);
-$affectation->idUser=$usr->id;
-$con=new Contact($resource);
-$affectation->idContact=$con->id;
+
 $affectation->idle=$idle;
 $affectation->rate=$rate;
 

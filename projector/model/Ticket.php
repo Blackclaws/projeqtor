@@ -34,7 +34,7 @@ class Ticket extends SqlElement {
   public $doneDateTime;
   public $idle;
   public $idleDateTime;
-  public $idVersion;
+  public $idTargetVersion;
   public $result;
 //public $_col_1_1_Progress;
   public $_Attachement=array();
@@ -73,11 +73,11 @@ class Ticket extends SqlElement {
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'planningActivity',
                                                    'idContact' => 'requestor',
-                                                   'idVersion'=>'targetVersion',
+                                                   'idTargetVersion'=>'targetVersion',
                                                    'idOriginalVersion'=>'originalVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array();
+  private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
     
    /** ==========================================================================
    * Constructor
