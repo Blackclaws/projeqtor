@@ -241,7 +241,7 @@ CREATE TABLE `${prefix}document` (
   `idProject` int(12) unsigned DEFAULT NULL,
   `idProduct` int(12) unsigned DEFAULT NULL,
   `idDocumentType` int(12) unsigned DEFAULT NULL,
-  `idVersionType` int(12) unsigned DEFAULT NULL,
+  `idVersioningType` int(12) unsigned DEFAULT NULL,
   `idDocumentDirectory` int(12) unsigned,
   `idStatus` int(12) unsigned,
   `currentVersion` varchar(100),
@@ -303,3 +303,8 @@ INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`id
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 101, 1);
 
+INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
+('Versioning','evolutive','EVO',1,10),
+('Versioning','chronological','EVT',1,20),
+('Versioning','sequential','SEQ',1,30),
+('Versioning','external','EXT',1,40);
