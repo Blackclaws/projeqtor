@@ -8,11 +8,20 @@ class Document extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
+  public $idDocumentType;
   public $name;
   public $extension;
   public $idProject;
   public $idProduct;
+  public $idVersioningType;
+  public $idStatus;
+  public $currentVersion;
+  public $currentRefVersion;
   public $idDocumentDirectory;
+  public $locked;
+  public $idAuthor;
+  public $idLocker;
+  public $lockedDate;
   public $idle;
   public $_col_2_2; 
   
