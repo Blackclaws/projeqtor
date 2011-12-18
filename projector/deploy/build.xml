@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <project name="Project'Or RIA" default="buildQuick">
 
-  <property name="version"       value="V1.9.0" />
+  <property name="version"       value="V2.0.0" />
   <property name="projName"       value="projectorria" />
-  <property name="setup.dir"     value="D:/ProjectOr/setup" />
+  <property name="setup.dir"     value="G:/ProjectOr/setupTemp" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="D:/www/projectorriaV1.9" />
+  <property name="src.dir"       value="G:/www/projectorriaV2.0" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>

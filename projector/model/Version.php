@@ -197,6 +197,15 @@ class Version extends SqlElement {
     $result .="</table>";
     return $result; 
   }
+  
+  public function save() {
+  	$result=parent::save();
+  	if ($this->idle) {
+  		VersionProject::updateIdle('Version', $this->id);
+  	}
+  	
+  	return $result;
+  }
 
 }
 ?>

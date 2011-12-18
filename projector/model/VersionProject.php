@@ -127,5 +127,14 @@ class VersionProject extends SqlElement {
     }
     return $result;
   }
+  
+  public static function updateIdle($type,$id) {
+    $vp=new VersionProject();
+    $vps=$vp->getSqlElementsFromCriteria(array("id".$type=>$id, "idle"=>'0'), false);
+    foreach ($vps as $vp) {
+      $vp->idle=1;
+      $vp->save();
+    }
+  }
 }
 ?>

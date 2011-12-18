@@ -138,7 +138,7 @@ INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`id
 	
 UPDATE `${prefix}menu` SET `sortOrder`=10 WHERE `id`=1;
 
-UPDATE `${prefix}menu` SET `idMenu`=0, `sortOrder`=90 WHERE `id`=16;
+UPDATE `${prefix}menu` SET `idMenu`=0, `sortOrder`=50 WHERE `id`=16;
 	
 UPDATE `${prefix}menu` SET `idMenu`=2, `sortOrder`=160 WHERE `id`=4;
 	
@@ -237,17 +237,17 @@ INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDirectory,sortOrde
 CREATE TABLE `${prefix}document` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `extension` varchar(4) DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idProduct` int(12) unsigned DEFAULT NULL,
   `idDocumentType` int(12) unsigned DEFAULT NULL,
-  `idVersioningType` int(12) unsigned DEFAULT NULL,
   `idDocumentDirectory` int(12) unsigned,
+  `idVersioningType` int(12) unsigned DEFAULT NULL,
   `idStatus` int(12) unsigned,
-  `currentVersion` varchar(100),
-  `currentRefVersion` varchar(100),
+  `idCurrentVersion` int(12) unsigned,
+  `idCurrentRefVersion` int(12) unsigned,
+  `idAuthor` int(12) unsigned,
   `locked` int(1) unsigned default '0',
-  `idAuthor` int(1) unsigned default '0',
+  `idLocker` int(12) unsigned,
   `lockedDate` datetime,
   `fileName` varchar(100),
   `description` varchar(4000),
@@ -286,7 +286,7 @@ INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
 ('Document','General Specification','GENSPEC', 1,220),
 ('Document','Detailed Specification','DETSPEC', 1,230),
 ('Document','General Conception','GENCON', 1, 240),
-('Document','Detail Conception','DETCON'1, 250),
+('Document','Detail Conception','DETCON', 1, 250),
 ('Document','Test Plan','TEST', 1, 260),
 ('Document','Installaton manual','INST', 1,270),
 ('Document','Exploitation manual','EXPL', 1,280),
@@ -308,3 +308,6 @@ INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
 ('Versioning','chronological','EVT',1,20),
 ('Versioning','sequential','SEQ',1,30),
 ('Versioning','external','EXT',1,40);
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(102,'menuDocument',0,'object',60,'Project',1);

@@ -9,37 +9,14 @@
 
 <?php 
 include_once '../tool/projector.php';
-$user=$_SESSION['user'];
-                    $crit=array('scope'=>'imputation', 'idProfile'=>$user->idProfile);
-                    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-                    $scope=new AccessScope($habilitation->rightAccess);
-                    $table=array();
-                    if ($scope->accessCode=='NO') {
-                      $table[$user->id]=' ';
-                    } else if ($scope->accessCode=='ALL') {
-                      $table=SqlList::getList('Resource');
-                    } else if ($scope->accessCode=='OWN' and $user->isResource ) {
-                      $table=array($user->id=>SqlList::getNameFromId('Resource', $user->id));
-                    } else if ($scope->accessCode=='PRO') {
-                      $crit='idProject in ' . transformListIntoInClause($user->getVisibleProjects());
-                      $aff=new Affectation();
-                      $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
-                      $fullTable=SqlList::getList('Resource');
-                      foreach ($lstAff as $id=>$aff) {
-                        if (array_key_exists($aff->idResource,$fullTable)) {
-                          $table[$aff->idResource]=$fullTable[$aff->idResource];
-                        }
-                      }
-                    }
-                    if (count($table)==0) {
-                      $table=array($user->id=>' ');
-                    }
-                    foreach($table as $key => $val) {
-                      echo '<OPTION value="' . $key . '"';
-                      if ( $key==$user->id ) { echo ' SELECTED '; } 
-                      echo '>' . $val . '</OPTION>';
-                    }?>  
+echo '2011-12-24->' . isOffDay('2011-12-24') . "\n";
+echo '2011-12-25->' . isOffDay('2011-12-25') . "\n";
+echo '2011-12-26->' . isOffDay('2011-12-26') . "\n";
+echo '2011-12-27->' . isOffDay('2011-12-27') . "\n";
+echo '2011-12-28->' . isOffDay('2011-12-28') . "\n";
 
+echo workDayDiffDates('2011-12-23','2011-12-28');
+?>
 </pre>
 
 </body>

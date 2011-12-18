@@ -831,7 +831,7 @@ function transformValueListIntoInClause($list) {
  * @param $end end date - format yyyy-mm-dd
  * @return int number of work days (remove week-ends)
  */
-function workDayDiffDates($start, $end) {
+function workDayDiffDates_old($start, $end) {
   if (! $start or ! $end) {
     return "";
   }
@@ -863,7 +863,24 @@ function workDayDiffDates($start, $end) {
   $diffDay+=1;
   return($diffDay);
 }
-
+function workDayDiffDates($start, $end) {
+  if (! $start or ! $end) {
+    return "";
+  }
+  $currentDate=$start;
+  $endDate=$end;
+  if ($end<$start) {
+    return 0;
+  }
+  $duration=0;
+  while ($currentDate<=$endDate) {
+	  if (! isOffDay($currentDate)) {
+	      $duration++;
+ 	  }
+	  $currentDate=addDaysToDate($currentDate,1);
+  }
+  return $duration;
+}
 /** ============================================================================
  * Calculate difference between 2 dates
  * @param $start start date - format yyyy-mm-dd
@@ -886,7 +903,7 @@ function dayDiffDates($start, $end) {
  * @param $days numbers of days to add (can be < 0 to subtract days)
  * @return new calculated date - format yyyy-mm-dd
  */
-function addWorkDaysToDate($date, $days) {
+function addWorkDaysToDate_old($date, $days) {
   if ($days==0) {
     return $date;
   }
@@ -912,8 +929,29 @@ function addWorkDaysToDate($date, $days) {
   $dEnd=mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]);
   return date("Y-m-d", $dEnd);
 }
+function addWorkDaysToDate($date, $days) {
+  if ($days==0) {
+    return $date;
+  }
+  if ($days<0) {
+    return removeWorkDaysToDate($date, (-1)*$days);
+  }
+  if (! $date) {
+    return;
+  }
+  $endDate=$date;
+  $left=$days;
+  $left--;
+  while ($left>0) {
+    $endDate=addDaysToDate($endDate,1);
+    if (! isOffDay($endDate)) {
+      $left--;
+    }
+  }
+  return $endDate;
+}
 
-function removeWorkDaysToDate($date, $days) {
+function removeWorkDaysToDate_old($date, $days) {
   if ($days==0) {
     return $date;
   }
@@ -938,6 +976,26 @@ function removeWorkDaysToDate($date, $days) {
   $days+=2*$weekEnds;
   $dEnd=mktime(0, 0, 0, $tDate[1], $tDate[2]-$days, $tDate[0]);
   return date("Y-m-d", $dEnd);
+}
+function removeWorkDaysToDate($date, $days) {
+  if ($days==0) {
+    return $date;
+  }
+  if ($days<=0) {
+    return addWorkDaysToDate($date, (-1)*$days);
+  }
+  if (! $date) {
+    return;
+  }
+  $endDate=$date;
+  $left=$days;
+  while ($left>0) {
+    $endDate=addDaysToDate($endDate,-1);
+    if (! isOffDay($endDate)) {
+      $left--;
+    }
+  }
+  return $endDate;
 }
 
 /** ============================================================================
