@@ -81,6 +81,10 @@ class SqlList {
         if ($obj->isFieldTranslatable($displayCol) and $translate){
           $name=i18n($name);
         }
+        if (property_exists($obj,'_constructForName')) {
+        	$nameObj=new $listType($line['id']);
+        	$name=$nameObj->name;
+        }
         $res[($line['id'])]=$name;
       }
     }
