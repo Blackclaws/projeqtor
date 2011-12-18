@@ -10,16 +10,15 @@ class Document extends SqlElement {
   public $reference;
   public $idDocumentType;
   public $name;
-  public $extension;
   public $idProject;
   public $idProduct;
   public $idVersioningType;
   public $idStatus;
-  public $currentVersion;
-  public $currentRefVersion;
+  public $idCurrentVersion;
+  public $idCurrentRefVersion;
   public $idDocumentDirectory;
   public $locked;
-  public $idAuthor;
+  public $idUser;
   public $idLocker;
   public $lockedDate;
   public $idle;
@@ -35,7 +34,7 @@ class Document extends SqlElement {
     ';
 
    private static $_fieldsAttributes=array(
-    "id"=>"nobr");
+    "id"=>"nobr", "idAuthor");
    
    /** ==========================================================================
    * Constructor

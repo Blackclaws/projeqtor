@@ -303,6 +303,12 @@ class Contact extends SqlElement {
     return $result;
   }
 
+  public function save() {
+    $result=parent::save();
+    Affectation::updateAffectations($this->id);
+    return $result;
+  }
+  
   public function deleteControl() {
     
     $result="";

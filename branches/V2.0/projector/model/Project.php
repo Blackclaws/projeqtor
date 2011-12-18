@@ -471,7 +471,12 @@ class Project extends SqlElement {
       $user=$_SESSION['user'];
       $user->resetVisibleProjects();
       $_SESSION['user']=$user;
-    }   
+    }
+
+    if ($this->idle) {
+      VersionProject::updateIdle('Version', $this->id);
+    }
+    
     return $result;
     
   }
