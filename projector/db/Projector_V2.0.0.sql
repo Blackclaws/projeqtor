@@ -236,6 +236,7 @@ INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDirectory,sortOrde
 
 CREATE TABLE `${prefix}document` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `reference` varchar(100),
   `name` varchar(100) DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idProduct` int(12) unsigned DEFAULT NULL,
