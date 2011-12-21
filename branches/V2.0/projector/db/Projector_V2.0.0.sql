@@ -259,7 +259,7 @@ CREATE TABLE `${prefix}document` (
 ALTER TABLE `${prefix}document` ADD INDEX documentProject (idProject),
 ADD INDEX documentProduct (idProduct),
 ADD INDEX documentDocumentType (idDocumentType),
-ADD INDEX documentVersionType (idVersionType),
+ADD INDEX documentVersionType (idVersioningType),
 ADD INDEX documentDirectory (idDirectory),
 ADD INDEX documentStatus (idStatus);
 
@@ -311,4 +311,21 @@ INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
 ('Versioning','external','EXT',1,40);
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
-(102,'menuDocument',0,'object',60,'Project',1);
+(102,'menuDocument',0,'object',60,'Project',0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 102, 1),
+(2, 102, 1),
+(3, 102, 1),
+(4, 102, 1),
+(6, 102, 1),
+(7, 102, 1);
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
+(1, 102, 8),
+(2, 102, 2),
+(3, 102, 7),
+(4, 102, 7),
+(6, 102, 2),
+(7, 102, 2),
+(5, 102, 9);
