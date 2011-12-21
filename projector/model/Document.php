@@ -43,7 +43,9 @@ class Document extends SqlElement {
     "id"=>"nobr",
     "locked"=>"readonly",
     "idLocker"=>"readonly",
-    "lockedDate"=>"readonly");
+    "lockedDate"=>"readonly",
+    "idDocumentDirectory"=>"required",
+    "idDocumentType"=>"required");
    
    private static $_colCaptionTransposition = array('idDocumentType' => 'type');
    
@@ -55,6 +57,10 @@ class Document extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    if (!$this->id and array_key_exists('Directory',$_SESSION)) {
+    	$this->idDocumentDirectory=$_SESSION['Directory'];
+    	self::$_fieldsAttributes['idDocumentDirectory']="readonly";
+    }
   }
 
   
@@ -117,5 +123,23 @@ class Document extends SqlElement {
     	return $result;
     }
   }
+  
+  public function control() {
+  	$result="";
+
+  	if (!trim($this->idProject) and !trim($this->idProduct)) {
+  		$result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . "', '" . i18n('colIdProduct')));
+  	}
+  	
+  	$defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;  	 
+  }
+
 }
 ?>

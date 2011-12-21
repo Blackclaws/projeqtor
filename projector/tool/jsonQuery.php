@@ -101,6 +101,13 @@
       $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
     }
 
+    if ($objectClass=='Document') {
+    	if (array_key_exists('Directory',$_SESSION)) {
+    		$queryWhere.= ($queryWhere=='')?'':' and ';
+        $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idDocumentDirectory') . "='" . $_SESSION['Directory'] . "'";
+    	}
+    }
+    
     $arrayFilter=array();
     if (! $comboDetail  and ! $quickSearch) {
       if (is_array( $_SESSION['user']->_arrayFilters)) {

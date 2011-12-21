@@ -15,6 +15,12 @@ if (array_key_exists('objectType',$_REQUEST)) {
   $objectType=$_REQUEST['objectType'];
 }
 $obj=new $objectClass;
+
+if (array_key_exists('Directory', $_REQUEST)) {
+	$_SESSION['Directory']=$_REQUEST['Directory'];
+} else {
+	unset($_SESSION['Directory']);
+}
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?>" >

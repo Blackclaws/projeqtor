@@ -35,6 +35,10 @@ if (! file_exists($parametersLocation)) {
   $parametersLocation = "../files/config/parameters.php";
 }
 include_once $parametersLocation;
+//echo $paramDbHost . "<br/>";
+//echo $paramDbUser . "<br/>";
+//echo $paramDbPassword . "<br/>";
+//echo $paramDbName . "<br/>";
 
 try {   
   ini_set('mysql.connect_timeout', 10);
@@ -51,9 +55,6 @@ try {
   showStat($cnx,$req);
 
   $req="select count(distinct(traceIp)) as `Distinct IP`, count(*) as Total from trace";
-  showStat($cnx,$req);
-  
-  $req="select traceIp as `IP`, count(*) as Total from trace group by traceIp having count(*) > 5 order by count(*) desc";
   showStat($cnx,$req);
   
 } catch (Exception $e) {
