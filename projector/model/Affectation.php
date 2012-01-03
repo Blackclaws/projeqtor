@@ -238,5 +238,14 @@ class Affectation extends SqlElement {
     return $result;
   }
   
+  public static function updateAffectations($resource) {
+    $crit=array('idResource'=>$resource);
+    $aff=new Affectation();
+    $affList=$aff->getSqlElementsFromCriteria($crit, false);
+    foreach ($affList as $aff) {
+      $aff->save();
+    }
+  }
+    
 }
 ?>

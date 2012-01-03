@@ -144,16 +144,17 @@ class PlannedWork extends Work {
           $startPlan=$plan->validatedEndDate;
           $endPlan=$startDate;
           $step=-1;
-      } else if ($profile=="FLOAT") { // milestone
+      } else if ($profile=="FLOAT") { // Floating milestone
         $startPlan=$startDate;
         $endPlan=null;
         $step=1;
       } else if ($profile=="FIXED") { // Fixed milestone
         $startPlan=$plan->validatedEndDate;
         $endPlan=$plan->validatedEndDate;
-        $plan->plannedStartDate=null;
-        $plan->plannedEndDate=null;
-        $plan->save();
+        $plan->plannedStartDate=$plan->validatedEndDate;
+        $plan->plannedEndDate=$plan->validatedEndDate;
+        $listPlan=self::storeListPlan($listPlan,$plan);
+        //$plan->save();
         $step=1;
       } else {
         $profile=="ASAP"; // Default is ASAP
@@ -192,16 +193,22 @@ class PlannedWork extends Work {
         }
       }
       if ($plan->refType=='Milestone') {
-        if (count($precList)>0 and $profile!="FIXED") {
-          $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
+        if ($profile!="FIXED") {
+        	if (count($precList)>0) {
+            $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
+        	} else {
+        		$plan->plannedStartDate=addWorkDaysToDate($startPlan,1);
+        	}
           $plan->plannedEndDate=$plan->plannedStartDate;
           $plan->plannedDuration=0;
-          $plan->save();
+          //$plan->save();
+          $listPlan=self::storeListPlan($listPlan,$plan);
         }
         if ($profile=="FIXED") {
         	$plan->plannedEndDate=$plan->validatedEndDate;
         	$plan->plannedDuration=0;
-          $plan->save();
+          //$plan->save();
+          $listPlan=self::storeListPlan($listPlan,$plan);
         }
       } else {        
         if (! $plan->realStartDate) {
@@ -220,6 +227,7 @@ class PlannedWork extends Work {
           if (! $plan->realEndDate) {
             $plan->plannedEndDate=$endPlan;
           }
+          $listPlan=self::storeListPlan($listPlan,$plan);
           $plan->save();
         }
         // get list of top project to chek limit on each project
@@ -266,6 +274,7 @@ class PlannedWork extends Work {
               }
             }
           }
+          //$projRate=$ress['Project#' . $ass->idProject]['rate'];
           $capacityRate=round($assRate*$capacity,2);
           $left=$ass->leftWork;
           $regul=false;
@@ -285,7 +294,6 @@ class PlannedWork extends Work {
             if ($currentDate==$globalMaxDate) { break; }         
             if ($currentDate==$globalMinDate) { break; }
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
-            
             if (isOpenDay($currentDate)) {
               $planned=0;
               $week=weekFormat($currentDate);
@@ -295,8 +303,11 @@ class PlannedWork extends Work {
               if ($regul) {
                   $interval+=$step;
               }
-              if ($planned < $capacityRate)  {
-                $value=$capacityRate-$planned; 
+              if ($planned < $capacity)  {
+                $value=$capacity-$planned; 
+                 if ($value>$capacityRate) {
+                 	 $value=$capacityRate;
+                 }
                 if ($withProjectRepartition) {
                   foreach ($listTopProjects as $idProject) {
                     $projectKey='Project#' . $idProject;
@@ -384,7 +395,7 @@ class PlannedWork extends Work {
           $resources[$ass->idResource]=$ress;
         } 
       }
-      $listPlan[$idPlan]=$plan;
+      $listPlan=self::storeListPlan($listPlan,$plan);
     }
     $cpt=0;
     $query='';
@@ -425,21 +436,43 @@ class PlannedWork extends Work {
     foreach ($arrayAssignment as $ass) {
       $ass->save();
     }
-    // save PlanningElements
-    //foreach ($arrayPlanningElement as $pe) {
-    //  $pe->save();
-    //}
+    // save PlanningElements with no assignments 
+    foreach ($listPlan as $pe) {
+      if (! $pe->elementary or $pe->refType=="Milestone") { 
+    	  $pe->save();
+      }
+    }
+    // Recalculate not elementary items
+    $clause.=" and elementary=0";
+    $order="wbsSortable desc";
+    $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
+    foreach ($list as $plan) {
+    	PlanningElement::updateSynthesis($plan->refType, $plan->refId);
+    }
+    
     $endTime=time();
     $endMicroTime=microtime(true);
-//echo "<br/>";
-//echo "<br/>****************************";
-//echo "<br/>PLANNING - Ended at " . date('H:i:s');
-//echo "<br/>****************************";
+
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
     $result=i18n('planDone', array($duration));
     $result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
 
     return $result;
+  }
+  
+  private static function storeListPlan($listPlan,$plan) {
+  	$listPlan[$plan->id]=$plan;
+  	if ($plan->topId and array_key_exists($plan->topId, $listPlan)) {
+  		$top=$listPlan[$plan->topId];
+  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
+  			$top->plannedStartDate=$plan->plannedStartDate;
+  		}
+  	  if (! $top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
+        $top->plannedEndDate=$plan->plannedEndDate;
+      }
+      $listPlan[$top->id]=$top;
+  	}
+  	return $listPlan;
   }
   
   private static function sortPlanningElements($planList) {

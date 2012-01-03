@@ -383,6 +383,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vColWidth = 100;
         vColUnit = 90;
       }
+      vMinDate.setHours(0, 0, 0, 0);
+      vMaxDate.setHours(23, 59, 59, 0);
       vNumDays = (Date.parse(vMaxDate) - Date.parse(vMinDate)) / ( 24 * 60 * 60 * 1000);
       vNumDays = Math.ceil(vNumDays);
       vNumUnits = vNumDays / vColUnit;
@@ -533,7 +535,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable += '<TR><TD style="width:16px;"></TD>';
       vLeftTable += '<TD colspan="4"><NOBR>';
       vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV>';
-console.log(vLeftTable);
 // RIGHT ======================================================================
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop" '
     	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
@@ -575,7 +576,7 @@ console.log(vLeftTable);
       var vWeekendColor="dfdfdf";
       var vCurrentdayColor="ffffaa";
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
-        if(vFormat == 'day' ) { 
+        if(vFormat == 'day' ) {
           if(isOffDay(vTmpDate)) {
             vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; " >'
               + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';

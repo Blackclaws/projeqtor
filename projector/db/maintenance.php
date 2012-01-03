@@ -106,7 +106,15 @@ if ($currVersion<"V1.9.0") {
 	$adminFunctionality='updateReference';
 	include('../tool/adminFunctionalities.php');
 }
-
+// For V1.9.1
+if ($currVersion<"V1.9.1") {
+  // update affectations
+  $aff=new Affectation();
+  $affList=$aff->getSqlElementsFromCriteria(null, false);
+  foreach ($affList as $aff) {
+    $aff->save();
+  }
+}
 
 Sql::saveDbVersion($version);
 traceLog('=====================================');
