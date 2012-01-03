@@ -213,6 +213,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawDependenciesFromObject($val, $obj, $depType);
     } else if ($col=='_ResourceCost') { // Display ResourceCost     
       drawResourceCostFromObject($val, $obj, false);      
+    } else if ($col=='_DocumentVersion') { // Display ResourceCost     
+      drawDocumentVersionFromObject($val, $obj, false);    
     } else if ($col=='_ExpenseDetail') { // Display ExpenseDetail
     	if ($obj->getFieldAttributes($col)!='hidden') {     
         drawExpenseDetailFromObject($val, $obj, false);      
@@ -352,7 +354,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
           //echo '</div>';
         } else if ($col=='id') { // id
-          echo '#' . $val;
+          echo '<span style="color:grey;">#</span>' . $val;
         } else if ($col=='password') {
           echo "..."; // nothing
         } else if ($dataType=='date' and $val!=null and $val != '') {
@@ -416,7 +418,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($col=='id') {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
-        echo '#';
+        echo '<span style="color:grey;vertical-align:middle;">#</span>';
         echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo ' class="display" ';
@@ -769,7 +771,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         if (strpos($attributes, 'readonly')>0) {
-        	$specificStyle.=' color:grey; ';
+        	$specificStyle.=' color:grey; background: #F0F0F0 url(); ';
         }
         echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
@@ -822,6 +824,60 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</table></td></tr></table>';
     }
   } 
+}
+
+function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->locked) {
+  	$canUpdate=false;
+  }
+  if ($obj->idle==1) {$canUpdate=false;}
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="assignHeader" style="width:10%">';
+    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . $obj->id . '\');" ';
+      echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colIdVersion'). '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colDate'). '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'35':'30' ) . '%">' . i18n('colIdAuthor') . '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'35':'30' ) . '%">' . i18n('colIdStatus') . '</td>';
+  echo '</tr>';
+  foreach($list as $version) {
+    echo '<tr>';
+    if (! $print) {
+      echo '<td class="assignData" style="text-align:center;">';
+      if ($canUpdate and ! $print and $workVisible) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' 
+        . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
+        . ",'" . $version->idStatus . "'"
+        . ",'" . htmlEncodeJson($version->description) . "'"
+        . ');" ' 
+        . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
+      }
+      if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
+        echo '  <img src="css/images/smallButtonRemove.png" ' 
+        . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" 
+        . ');" ' 
+        . 'title="' . i18n('removeDocumentVersion') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    }
+    echo '<td class="assignData">' . $version->name  . '</td>';
+    echo '<td class="assignData">' . $version->versionDate . '</td>';
+    echo '<td class="assignData">' . SqlList::getNameFromId('Author', $version->idAuthor) . '</td>';
+    echo '<td class="assignData">' . SqlList::getNameFromId('Status', $version->idStatus) . '</td>';
+    echo '</tr>';
+  }
+  echo '</table></td></tr>';
 }
 
 function drawOrigin ($refType, $refId, $obj, $col, $print) {
@@ -1337,7 +1393,6 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';
       if ($canUpdate and ! $print and $workVisible) {
-      	debugLog(Work::displayWork($assignment->assignedWork));
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editAssignment(' . "'" . $assignment->id . "'" 
         . ",'" . $assignment->idResource . "'"
@@ -1734,6 +1789,10 @@ if ( array_key_exists('refreshLines',$_REQUEST) ) {
   }
   if ( array_key_exists('refreshVersionProject',$_REQUEST) ) {
     drawVersionFromObjectFromObject($obj->$_VersionProject,$obj, true);
+    exit;
+  }
+  if ( array_key_exists('refreshDocumentVersion',$_REQUEST) ) {
+    drawVersionFromObjectFromObject($obj->$_DocumentVersion,$obj, true);
     exit;
   }
   if ( array_key_exists('refreshHistory',$_REQUEST) ) {

@@ -229,7 +229,7 @@
                  </button>
                 </td>
               </tr>
-                       <tr><td colspan="2">&nbsp;</td></tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
                 <td class="label" style="width:200px">
                   <?php echo i18n("deleteAlerts"). "&nbsp;:&nbsp;";?>
@@ -251,6 +251,31 @@
                     <?php echo i18n('deleteButton'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('delete','Alert');
+                     </script>
+                 </button>
+                </td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td class="label" style="width:200px">
+                  <?php echo i18n("updateReference"). "&nbsp;:&nbsp;";?>
+                </td>
+                <td class="display">
+                  <select dojoType="dijit.form.FilteringSelect" class="input" 
+                    name="updateReferenceItem" id="updateReferenceItem" required="true">
+                      <option value="*"><?php echo i18n('all')?></option>
+                      <?php htmlDrawOptionForReference('idReferencable', null, null, true);?> 
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <button id="updateReference" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('operationUpdate'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                       item=dijit.byId('updateReferenceItem').get('value');
+                       maintenance('updateReference',item);
                      </script>
                  </button>
                 </td>

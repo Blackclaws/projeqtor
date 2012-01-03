@@ -1157,6 +1157,155 @@ function expenseDetailRecalculate() {
 }
 
 //=============================================================================
+//= DocumentVersion
+//=============================================================================
+
+/**
+* Display a add Assignment Box
+* 
+*/
+function addDocumentVersion () {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("documentVersionId").value="";
+	dojo.byId("documentVersionVersion").value=dojo.byId('version').value;
+	dojo.byId("documentVersionRevision").value=dojo.byId('revision').value;
+	dojo.byId("documentVersionDraft").value=dojo.byId('draft').value;
+	dijit.byId('documentVersionVersionDisplay').set('value',
+			getDisplayVersion(dojo.byId('documentVersionVersion').value,
+					dojo.byId('documentVersionRevision').value,
+					dojo.byId('documentVersionDraft').value));
+	calculateNewVersion();
+	dijit.byId("documentVersionLink").set('value','');
+	dijit.byId("documentVersionFile").reset();
+	dijit.byId("documentVersionDescription").set('value','');
+	dijit.byId("documentVersionUpdateMajor").set('checked','true');
+	dijit.byId("documentVersionUpdateDraft").set('checked',false);
+	dijit.byId("dialogDocumentVersion").show();
+}
+
+/**
+* Display a edit Assignment Box
+* 
+*/
+var documentVersionLoad=false;
+function editDocumentVersion (id, idExpense, type, expenseDate, amount) {
+	expenseDetailLoad=true;
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("expenseDetailId").value=id;
+	dojo.byId("idExpense").value=idExpense;	
+	dijit.byId("expenseDetailName").set("value",dojo.byId('expenseDetail_'+id).value);
+	dijit.byId("expenseDetailDate").set("value",getDate(expenseDate));
+	dijit.byId("expenseDetailAmount").set("value",dojo.number.parse(amount));
+	dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail") + " #" + id);
+	dijit.byId("expenseDetailType").set("value",type);
+	expenseDetailLoad=false;
+	expenseDetailTypeChange(id);
+	expenseDetailLoad=true;
+	setTimeout('expenseDetailLoad=false;',500);
+	dijit.byId("dialogExpenseDetail").show();
+}
+
+/**
+* save an Assignment (after addAssignment or editAssignment)
+* 
+*/
+function saveDocumentVersion() {
+	expenseDetailRecalculate();
+	if (! dijit.byId('expenseDetailName').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colName'))));
+		return;
+	}
+	if (! dijit.byId('expenseDetailDate').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colDate'))));
+		return;
+	}
+	if (! dijit.byId('expenseDetailType').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colType'))));
+		return;
+	}
+	if (! dijit.byId('expenseDetailAmount').get('value')) {
+		showAlert(i18n('messageMandatory',new Array(i18n('colAmount'))));
+		return;
+	}
+	var formVar = dijit.byId('expenseDetailForm');
+  if(formVar.validate()){		
+	  dijit.byId("expenseDetailName").focus();
+	  dijit.byId("expenseDetailAmount").focus();
+	  loadContent("../tool/saveExpenseDetail.php", "resultDiv", "expenseDetailForm", true, 'expenseDetail');
+	  dijit.byId('dialogExpenseDetail').hide();
+  } else {
+  	showAlert(i18n("alertInvalidForm"));
+  }
+}
+
+/**
+* Display a delete Assignment Box
+* 
+*/
+function removeDocumentVersion (documentVersionId, documentVersionName) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("documentVersionId").value=documentVersionId;
+	actionOK=function() {loadContent("../tool/removeDocumentVersion.php", "resultDiv", "documentVersionForm", true, 'documentVersion');};
+	msg=i18n('confirmDeleteDocumentVersion',new Array(documentVersionName));
+	showConfirm (msg, actionOK);
+}
+
+function getDisplayVersion(version,revision,draft) {
+  var res="";
+  if (version!="" && revision !="") {
+	res=version+"."+revision;
+  }
+  if (draft) {
+	res+=draftSeparator+draft;
+  }
+  return res;
+}
+
+function calculateNewVersion() {
+  var type="";
+  if (dijit.byId('documentVersionUpdateMajor').get('checked')) {
+	  type="major";
+  } else if (dijit.byId('documentVersionUpdateMinor').get('checked')) {
+	  type="minor";
+  } else if (dijit.byId('documentVersionUpdateNo').get('checked')) {
+	  type="none";
+  }
+  version=dojo.byId('documentVersionVersion').value;
+  revision=dojo.byId('documentVersionRevision').value;
+  draft=dojo.byId('documentVersionDraft').value;
+  isDraft=dijit.byId('documentVersionUpdateDraft').get('checked');
+  if (version=='') {version=0;}
+  if (revision=='') {revision=0;}
+  if (draft=='') {draft=0;}
+  if (type=="major") {
+	dojo.byId('documentVersionNewVersion').value=version+1;
+	dojo.byId('documentVersionNewRevision').value=0;
+	dojo.byId('documentVersionNewDraft').value=(isDraft)?'1':'';
+  } else if (type=="minor") {
+	dojo.byId('documentVersionNewVersion').value=version;
+	dojo.byId('documentVersionNewRevision').value=revision+1;
+	dojo.byId('documentVersionNewDraft').value=(isDraft)?'1':'';
+  } else { // 'none'
+	dojo.byId('documentVersionNewVersion').value=version;
+	dojo.byId('documentVersionNewRevision').value=revision;
+	dojo.byId('documentVersionNewDraft').value=(isDraft)?draft+1:'';
+  }
+  dijit.byId('documentVersionNewVersionDisplay').set('value',
+  getDisplayVersion(dojo.byId('documentVersionNewVersion').value,
+		  dojo.byId('documentVersionNewRevision').value,
+		  dojo.byId('documentVersionNewDraft').value));
+}
+
+//=============================================================================
 //= Dependency
 //=============================================================================
 
@@ -2500,6 +2649,35 @@ function adminSendAlert() {
 }
 
 function maintenance(operation,item) {
-  var nb=dijit.byId(operation+item+"Days").get('value');
-  loadContent("../tool/adminFunctionalities.php?adminFunctionality=maintenance&operation="+operation+"&item="+item+"&nbDays="+nb,"resultDiv", "adminForm", true, 'admin');
+  if (operation=="updateReference")	{
+	loadContent("../tool/adminFunctionalities.php?adminFunctionality="+operation+"&element="+item, "resultDiv", "adminForm", true, 'admin');  
+  } else {
+    var nb=dijit.byId(operation+item+"Days").get('value');
+    loadContent("../tool/adminFunctionalities.php?adminFunctionality=maintenance&operation="+operation+"&item="+item+"&nbDays="+nb,"resultDiv", "adminForm", true, 'admin');
+  }
+}
+
+function lockDocument() {
+  if (checkFormChangeInProgress()) {
+	return false;
+  }
+  dijit.byId('locked').set('checked',true);
+  dijit.byId('idLocker').set('value',dojo.byId('idCurrentUser').value);
+  var curDate = new Date();
+  dijit.byId('lockedDate').set('value',curDate);
+  dijit.byId('lockedDateBis').set('value',curDate);
+  formChanged();
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true); 
+}
+
+function unlockDocument() {
+  if (checkFormChangeInProgress()) {
+	return false;
+  }
+  dijit.byId('locked').set('checked',false);
+  dijit.byId('idLocker').set('value',null);
+  dijit.byId('lockedDate').set('value',null);
+  dijit.byId('lockedDateBis').set('value',null);
+  formChanged();
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true); 
 }

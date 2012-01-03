@@ -1124,6 +1124,10 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
               	$vp=new VersionProject();
               	$crit=array('id'.get_class($this)=>$this->id);
                 $this->{$col_name}=$vp->getSqlElementsFromCriteria($crit,false);
+              }  else if ($colName=="DocumentVersion") {
+                $dv=new DocumentVersion();
+                $crit=array('idDocument'=>$this->id);
+                $this->{$col_name}=$dv->getSqlElementsFromCriteria($crit,false);
               } else if ($colName=="ExpenseDetail") {
                 $this->{$col_name}=$this->getExpenseDetail();
               } else if (substr($colName,0,10)=="Dependency") {

@@ -546,10 +546,14 @@ table.dojoDndAvatar {
 .dijitTextBoxDisabled,.dijitComboBoxDisabled,.dijitSpinnerDisabled,.dijitTextAreaDisabled
   {
   color: grey;
+  background: #555 url(images/noimage.gif) no-repeat;
+  border:5px solid red;
 }
 .dj_safari .dijitTextBoxDisabled,.dj_safari .dijitComboBoxDisabled,.dj_safari .dijitSpinnerDisabled,.dj_safari .dijitTextAreaDisabled
   {
   color: #eee;
+  background: #555 url(images/noimage.gif) no-repeat;
+  border:5px solid red;
 }
 .dijitComboBox .dijitInputField {
   padding: 1px 0;
@@ -788,6 +792,15 @@ table.dojoDndAvatar {
   height: 16px;
   margin: 0 2px 0 0;
   padding: 0;
+}
+.dijitCheckBoxDisabled, .dijitCheckBoxReadOnly {
+  /* disabled */
+  background-position: -48px !important;
+}
+
+.dijitCheckBoxCheckedDisabled, .dijitCheckBoxCheckedReadOnly {
+  /* disabled but checked */
+  background-position: -32px !important;
 }
 
 .dj_ie6 .dijitCheckBox,.dj_ie6 .dijitCheckBoxIcon {
@@ -2512,8 +2525,10 @@ table.dijitCalendarContainer {
  
 .dijitReadOnly *,.dijitDisabled *, .dijitReadOnly, .dijitDisabled {
 	color:grey;
-	cursor: normal !important;
-	}   
+	cursor: default !important;
+	background-color: #F0F0F0;  
+}
+   
 /* TEST */
 
 .dijit_a11y .dijitTextBoxReadOnly .dijitInputField,.dijit_a11y .dijitTextBoxReadOnly .dijitButtonNode {

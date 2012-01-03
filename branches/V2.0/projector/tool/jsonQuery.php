@@ -102,7 +102,7 @@
     }
 
     if ($objectClass=='Document') {
-    	if (array_key_exists('Directory',$_SESSION)) {
+    	if (array_key_exists('Directory',$_SESSION) and ! $quickSearch) {
     		$queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName('idDocumentDirectory') . "='" . $_SESSION['Directory'] . "'";
     	}
