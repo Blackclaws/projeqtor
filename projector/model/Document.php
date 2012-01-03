@@ -23,8 +23,12 @@ class Document extends SqlElement {
   public $lockedDate;
   public $_col_2_2_Version; 
   public $idVersioningType;
-  //public $idCurrentVersion;
-  //public $idCurrentRefVersion;
+  public $idCurrentVersion;
+  public $idCurrentRefVersion;
+  public $_DocumentVersion=array();
+  public $version;
+  public $revision;
+  public $draft;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -41,11 +45,16 @@ class Document extends SqlElement {
     
    private static $_fieldsAttributes=array(
     "id"=>"nobr",
+    "idStatus"=>"required",
     "locked"=>"readonly",
     "idLocker"=>"readonly",
     "lockedDate"=>"readonly",
     "idDocumentDirectory"=>"required",
-    "idDocumentType"=>"required");
+    "idDocumentType"=>"required",
+    "idVersioningType"=>"required",
+    "version"=>"hidden",
+    "revision"=>"hidden",
+    "draft"=>"hidden");
    
    private static $_colCaptionTransposition = array('idDocumentType' => 'type');
    
@@ -61,6 +70,11 @@ class Document extends SqlElement {
     	$this->idDocumentDirectory=$_SESSION['Directory'];
     	self::$_fieldsAttributes['idDocumentDirectory']="readonly";
     }
+    if (!$this->id and ! $this->idAuthor) {
+    	$user=$_SESSION['user'];
+    	$this->idAuthor=$user->id;
+    }
+    
   }
 
   
@@ -120,6 +134,7 @@ class Document extends SqlElement {
 	      $result .= '</button>';
 	      $result .= '</td></tr>';
     	}
+    	$result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . $_SESSION['user']->id . '" />';
     	return $result;
     }
   }
@@ -128,7 +143,7 @@ class Document extends SqlElement {
   	$result="";
 
   	if (!trim($this->idProject) and !trim($this->idProduct)) {
-  		$result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . "', '" . i18n('colIdProduct')));
+  		$result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
   	}
   	
   	$defaultControl=parent::control();
@@ -141,5 +156,14 @@ class Document extends SqlElement {
     return $result;  	 
   }
 
+  public function getNewVersion($type, $draft) {
+    if ($type=="major") {
+      
+    } else if ($type=="minor") {
+      
+    } else { // 'none'
+      
+    }
+  }
 }
 ?>

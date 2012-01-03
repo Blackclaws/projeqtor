@@ -6,7 +6,9 @@ class VersioningType extends Type {
 
   // Define the layout that will be used for lists
     
-  private static $_databaseCriteria = array('scope'=>'Versionning');
+	public $_isNameTranslatable = true;
+	
+  private static $_databaseCriteria = array('scope'=>'Versioning');
   
    /** ==========================================================================
    * Constructor

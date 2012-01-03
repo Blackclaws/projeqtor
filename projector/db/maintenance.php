@@ -110,7 +110,8 @@ if ($currVersion<"V1.9.0") {
 	include('../tool/adminFunctionalities.php');
 }
 
-if ($currVersion<"V2.0.0") {
+// For V1.9.1
+if ($currVersion<"V1.9.1") {
   // update affectations
   $aff=new Affectation();
   $affList=$aff->getSqlElementsFromCriteria(null, false);

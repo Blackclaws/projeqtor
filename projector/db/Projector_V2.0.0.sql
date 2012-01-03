@@ -243,6 +243,9 @@ CREATE TABLE `${prefix}document` (
   `idDocumentType` int(12) unsigned DEFAULT NULL,
   `idDocumentDirectory` int(12) unsigned,
   `idVersioningType` int(12) unsigned DEFAULT NULL,
+  `version` int(3),
+  `revision` int(3),
+  `draft` int(3),
   `idStatus` int(12) unsigned,
   `idCurrentVersion` int(12) unsigned,
   `idCurrentRefVersion` int(12) unsigned,
@@ -263,18 +266,18 @@ ADD INDEX documentVersionType (idVersioningType),
 ADD INDEX documentDirectory (idDirectory),
 ADD INDEX documentStatus (idStatus);
 
-CREATE TABLE `${prefix}documentVersion` (
+CREATE TABLE `${prefix}documentversion` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `version` varchar(100) DEFAULT NULL,
+  `version` int(3),
+  `revision` int(3),
+  `draft` int(3),
+  `fileName` varchar(400) DEFAULT NULL,
+  `link` varchar(400) DEFAULT NULL,
+  `versionDate` date,
   `extension` varchar(100) DEFAULT NULL,
-  `idProject` int(12) unsigned DEFAULT NULL,
-  `idProduct` int(12) unsigned DEFAULT NULL,
   `idDocument` int(12) unsigned DEFAULT NULL,
   `idAuthor` int(12) unsigned DEFAULT NULL,
-  `idReader` int(12) unsigned DEFAULT NULL,
-  `idResource` int(12) unsigned DEFAULT NULL,
-  `idVersionType` int(12) unsigned DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
   `description` varchar(4000),
   `isRef` int(1) unsigned default '0',
@@ -329,3 +332,27 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (6, 102, 2),
 (7, 102, 2),
 (5, 102, 9);
+
+CREATE TABLE `${prefix}referencable` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}referencable` (`id`, `name`, `idle`) VALUES
+(1, 'Ticket', 0),
+(2, 'Activity', 0),
+(3, 'Milestone', 0),
+(4, 'IndividualExpense', 0),
+(5, 'ProjectExpense', 0),
+(6, 'Risk', 0),
+(7, 'Action', 0),
+(8, 'Issue', 0),
+(9, 'Meeting', 0),
+(10, 'Decision', 0),
+(11, 'Question', 0),
+(12, 'Document', 0);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'draftSeparator','_draft');

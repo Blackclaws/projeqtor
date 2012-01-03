@@ -1,5 +1,6 @@
 <?php
 require_once "../tool/projector.php";
+scriptLog("adminFunctionalities.php");
 if (array_key_exists('adminFunctionality', $_REQUEST)) {
 	$adminFunctionality=$_REQUEST['adminFunctionality'];
 }
@@ -14,9 +15,17 @@ if ($adminFunctionality=='sendAlert') {
 	$result=maintenance();
 } else if ($adminFunctionality=='updateReference') {
 	$element=null;
-	if (array_key_exists('$element', $_REQUEST)) {
-	  $type=$_REQUEST['$element'];
-	}	
+	if (array_key_exists('element', $_REQUEST)) {
+	  $element=$_REQUEST['element'];
+	}
+	if ($element=='*') {
+		$element=null;
+	}	else {
+		if (intval($element)>0) {
+			$elt=new Referencable($element);
+			$element=$elt->name;
+		}
+	}
 	$result=updateReference($element);
 } else {
 	$result="ERROR - functionality '$adminFunctionality' not defined";
@@ -128,31 +137,27 @@ function maintenance() {
 }
 
 function updateReference($element) {
-debugLog("updateReference");
 	$arrayElements=array();
 	if ($element) {
 		$arrayElements[]=ucfirst($element);
 	} else {
-		$arrayElements=array("Action",
-		                     "Activity",
-		                     "Decision",
-		                     "IndividualExpense",
-		                     "Issue", 
-		                     "Meeting", 
-		                     "Milestone", 
-		                     "ProjectExpense",
-		                     "Question",
-		                     "Risk",
-		                     "Ticket");
+		$list=SqlList::getListNotTranslated('Referencable');
+		foreach ($list as $ref) {		
+			$arrayElements[]=$ref;
+		}
 	}
-	foreach ($arrayElements as $element) {
-		$obj=new $element();
+	foreach ($arrayElements as $elt) {
+		$obj=new $elt();
 		$request="update " . $obj->getDatabaseTableName() . " set reference=null";
 		SqlDirectElement::execute($request); 
 		$lst=$obj->getSqlElementsFromCriteria(null, false);
 	  foreach ($lst as $object) {
 		  $object->setReference(true);
 		}
-	}	
-	
+	}
+	$element=(!$element)?'all':$element;
+	$returnValue=i18n('updatedReference',array(i18n($element)));	
+	$returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
+  $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
+  return $returnValue;
 }

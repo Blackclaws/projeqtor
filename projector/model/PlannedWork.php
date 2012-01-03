@@ -114,7 +114,6 @@ class PlannedWork extends Work {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $idPlan=>$plan) {
-debugLog("Item to plan : #" . $plan->id . " = " . $plan->refType . " #" . $plan->refId);
       //$changedPlan=false;
       // Determine planning profile
       $profile="ASAP";
@@ -149,7 +148,6 @@ debugLog("Item to plan : #" . $plan->id . " = " . $plan->refType . " #" . $plan-
         $startPlan=$startDate;
         $endPlan=null;
         $step=1;
-debugLog (">>>>>>>>>> Floating Milestone : " . $plan->refId); 
       } else if ($profile=="FIXED") { // Fixed milestone
         $startPlan=$plan->validatedEndDate;
         $endPlan=$plan->validatedEndDate;
@@ -172,14 +170,12 @@ debugLog (">>>>>>>>>> Floating Milestone : " . $plan->refId);
         foreach ($listPlan as $tstPrec) {
           if ($tstPrec->id==$precDep->predecessorId) {
             $prec=$tstPrec;
-debugLog ("           Predecessor : #" . $precDep->predecessorId . " from stored array");           
             break;
           }
         }
         if ($prec==null) {
           $prec=new PlanningElement($precDep->predecessorId);
         }
-debugLog ("           Predecessor : " . $prec->refType . " #" . $prec->refId . " -> " . $prec->plannedEndDate); 
         if ($prec->plannedEndDate > $startPlan) {        
           if ($prec->refType=='Milestone') {
           	if ($plan->refType=='Milestone') {
@@ -190,7 +186,6 @@ debugLog ("           Predecessor : " . $prec->refType . " #" . $prec->refId . "
           } else {
           	if ($plan->refType=='Milestone') {
           	  $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
-debugLog ("           NewStartDate = " . $startPlan); 
           	} else {
               $startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
             }           
@@ -279,6 +274,7 @@ debugLog ("           NewStartDate = " . $startPlan);
               }
             }
           }
+          //$projRate=$ress['Project#' . $ass->idProject]['rate'];
           $capacityRate=round($assRate*$capacity,2);
           $left=$ass->leftWork;
           $regul=false;
@@ -298,7 +294,6 @@ debugLog ("           NewStartDate = " . $startPlan);
             if ($currentDate==$globalMaxDate) { break; }         
             if ($currentDate==$globalMinDate) { break; }
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
-            
             if (isOpenDay($currentDate)) {
               $planned=0;
               $week=weekFormat($currentDate);
@@ -308,8 +303,11 @@ debugLog ("           NewStartDate = " . $startPlan);
               if ($regul) {
                   $interval+=$step;
               }
-              if ($planned < $capacityRate)  {
-                $value=$capacityRate-$planned; 
+              if ($planned < $capacity)  {
+                $value=$capacity-$planned; 
+                 if ($value>$capacityRate) {
+                 	 $value=$capacityRate;
+                 }
                 if ($withProjectRepartition) {
                   foreach ($listTopProjects as $idProject) {
                     $projectKey='Project#' . $idProject;
@@ -463,18 +461,13 @@ debugLog ("           NewStartDate = " . $startPlan);
   }
   
   private static function storeListPlan($listPlan,$plan) {
-debugLog("          Store #" . $plan->id . " (" . $plan->refType . " #" . $plan->refId . ")");
-debugLog("            top #" . $plan->topId);   	
   	$listPlan[$plan->id]=$plan;
   	if ($plan->topId and array_key_exists($plan->topId, $listPlan)) {
   		$top=$listPlan[$plan->topId];
-debugLog("            found in stored list");  
   		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
   			$top->plannedStartDate=$plan->plannedStartDate;
-debugLog("            new start = " . $top->plannedStartDate );
   		}
   	  if (! $top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
-debugLog("            new end = " . $top->plannedStartDate );
         $top->plannedEndDate=$plan->plannedEndDate;
       }
       $listPlan[$top->id]=$top;

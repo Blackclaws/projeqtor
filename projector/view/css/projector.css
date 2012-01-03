@@ -292,6 +292,10 @@ label, .label {
 .largeLabel {
 	width: 300px;
 }
+.smallRadioLabel {
+	width:95px;
+	font-weight: normal;
+}
 .dialogLabel {
   color: #707070; 
 }

@@ -91,6 +91,7 @@ checkVersion(); ?>
     var alertCheckTime='<?php echo Parameter::getGlobalParameter('alertCheckTime');?>';
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
+    var draftSeparator='<?php echo Parameter::getGlobalParameter('draftSeparator');?>';
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
@@ -1019,7 +1020,148 @@ checkVersion(); ?>
     </table>
   </form>
 </div>
- 
+
+<div id="dialogDocumentVersion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDocumentVersion");?>">
+  <form id='documentVersionForm' name='documentVersionForm' 
+  ENCTYPE="multipart/form-data" method=POST
+  action="../tool/saveDocumentVersion.php"
+  target="resultPost"
+  onSubmit="return saveDocumentVersion();" >
+    <input id="documentVersionId" name="documentVersionId" type="hidden" value="" />
+    <input id="documentVersionVersion" name="documentVersionVersion" type="hidden" value="" />
+    <input id="documentVersionRevision" name="documentVersionRevision" type="hidden" value="" />
+    <input id="documentVersionDraft" name="documentVersionDraft" type="hidden" value="" />
+    <input id="documentVersionNewVersion" name="documentVersionNewVersion" type="hidden" value="" />
+    <input id="documentVersionNewRevision" name="documentVersionNewRevision" type="hidden" value="" />
+    <input id="documentVersionNewDraft" name="documentVersionNewDraft" type="hidden" value="" />
+    <input id="documentId" name="documentId" type="hidden" value="" />
+    <table>
+      <tr height="30px"> 
+        <td class="dialogLabel" >
+         <label for="documentVersionFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td>
+         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $paramAttachementMaxSize;?>" />     
+         <input MAX_FILE_SIZE="<?php echo $paramAttachementMaxSize;?>"
+          dojoType="dojox.form.FileInput" type="file" 
+          name="documentVersionFile" id="documentVersionFile" 
+          cancelText="<?php echo i18n("buttonReset");?>"
+          label="<?php echo i18n("buttonBrowse");?>"
+          title="<?php echo i18n("helpSelectFile");?>" />
+        </td>
+      </tr>
+      <tr> 
+        <td class="dialogLabel" >
+         <label for="documentVersionLink" ><?php echo i18n("colOrLink");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td> 
+         <div dojoType="dijit.form.TextBox" 
+          id="documentVersionLink" name="documentVersionLink"
+          style="width: 450px;"
+          maxlength="400"
+          class="input">  
+         </div>  
+        </td>
+      </tr>
+      <tr> 
+        <td class="dialogLabel" >
+         <label for="documentVersionVersionDisplay" ><?php echo i18n("currentDocumentVersion");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td> 
+         <div dojoType="dijit.form.TextBox" 
+          id="documentVersionVersionDisplay" name="documentVersionVersionDisplay"
+          style="width: 450px;" readonly
+          maxlength="100"
+          class="input">  
+         </div>  
+        </td>
+      </tr>            
+      <tr>
+        <td class="dialogLabel" >
+         <label for="documentVersionUpdate" ><?php echo i18n("documentVersionUpdate");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td>
+          <table><tr>
+            <td style="text-align:right; width:5%;">
+              <label class="smallRadioLabel" for="documentVersionUpdateMajor"><?php echo i18n('versionMajorUpdate');?>&nbsp;</label>
+            </td><td style="text-align:left;"> 
+              <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.RadioButton" 
+			         name="documentVersionUpdate" id="documentVersionUpdateMajor"
+			         checked value="major" />
+            </td>
+            <td style="text-align:right; width:5%">
+              <label class="smallRadioLabel" for="documentVersionUpdateMinor"><?php echo i18n('versionMinorUpdate');?>&nbsp;</label>
+            </td><td style="text-align:left;">    
+			        <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.RadioButton" 
+			         name="documentVersionUpdate" id="documentVersionUpdateMinor"
+			         value="minor" />
+			      </td>
+            <td style="text-align:right; width:5%">
+              <label class="smallRadioLabel" for="documentVersionUpdateNo"><?php echo i18n('versionNoUpdate');?>&nbsp;</label>
+            </td><td style="text-align:left;">    
+              <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.RadioButton" 
+               name="documentVersionUpdate" id="documentVersionUpdateNo"
+               value="no" />
+            </td>
+            <td style="text-align:right; width:5%">
+              <label class="smallRadioLabel" for="documentVersionUpdateDraft"><?php echo i18n('versionDraftUpdate');?>&nbsp;</label>
+            </td>
+            <td style="text-align:right; width:5%">
+		        <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.CheckBox" 
+		         name="documentVersionUpdateDraft" id="documentVersionUpdateDraft"
+		         value="draft" />
+		        </td>
+		      </tr></table>
+         </td> 
+      </tr>
+      <tr> 
+        <td class="dialogLabel" >
+         <label for="documentVersionNewVersionDisplay" ><?php echo i18n("nextDocumentVersion");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td> 
+         <div dojoType="dijit.form.TextBox" 
+          id="documentVersionNewVersionDisplay" name="documentVersionNewVersionDisplay"
+          style="width: 450px;" readonly
+          maxlength="100"
+          class="input">  
+         </div>  
+        </td>
+      </tr>             
+      <tr> 
+        <td class="dialogLabel" >
+         <label for="documentVersionDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td> 
+         <textarea dojoType="dijit.form.Textarea" 
+          id="documentVersionDescription" name="documentVersionDescription"
+          style="width: 350px;"
+          maxlength="4000"
+          class="input">  
+         </textarea><textarea style="display:none" id="documentVersionAck" name="documentVersionAck"></textarea>      
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center">
+          <input type="hidden" id="dialogDocumentVersionAction">
+          <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogDocumentVersion').hide();">
+            <?php echo i18n("buttonCancel");?>
+          </button>
+          <button id="submitDocumentVersionUpload" dojoType="dijit.form.Button" type="submit">
+            <?php echo i18n("buttonOK");?>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center">
+         <div style="display:none">
+           <iframe name="documentVersionPost" id="documentVersionPost"></iframe>
+         </div>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+  
 <div id="dialogAssignment" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAssignment");?>">
   <table>
     <tr>
@@ -1295,7 +1437,7 @@ checkVersion(); ?>
                     if (array_key_exists('project',$_SESSION)) {
                         $proj=$_SESSION['project'];
                     }
-                    htmlDrawOptionForReference('idProject', $proj, null, true);
+                    htmlDrawOptionForReference('idProject', $proj, null, false);
                  ?>
                </select>
              </td>

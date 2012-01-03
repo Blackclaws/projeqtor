@@ -1,12 +1,14 @@
 <?php 
 /* ============================================================================
- * RiskType defines the type of a risk.
+ * List of orginable items
  */ 
-class Locker extends User {
+class Referencable extends SqlElement {
 
-  // Define the layout that will be used for lists
-    
-  private static $_databaseTableName = 'user';
+  // extends SqlElement, so has $id
+  public $id;    // redefine $id to specify its visible place 
+  public $name;
+  
+  public $_isNameTranslatable = true;
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -26,17 +28,8 @@ class Locker extends User {
   }
 
 // ============================================================================**********
-// GET STATIC DATA FUNCTIONS
+// MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  
-  /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseTableName() {
-    global $paramDbPrefix;
-    return $paramDbPrefix . self::$_databaseTableName;
-  }
   
 }
 ?>
