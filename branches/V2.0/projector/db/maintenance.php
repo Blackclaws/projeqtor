@@ -79,13 +79,16 @@ foreach ($versionHistory as $vers) {
 
 if ($currVersion=='0.0.0') {
   traceLog ("create default project");
+  $type=new ProjectType();
+  $lst=$type->getSqlElementsFromCriteria(array('name'=>'Fixed Price'));
+  $type=$lst[0];
   $proj=new Project();
   $proj->color='#0000FF';
   $proj->description='Default project' . "\n" .
                      'For example use only.' . "\n" .
                      'Remove or rename this project when initializing your own data.';
   $proj->name='Default project';
-  $proj->idProjectType=1;
+  $proj->idProjectType=$type->id;
   $result=$proj->save();
   traceLog($result);
 }
