@@ -192,7 +192,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</td></tr>';
     } else if (substr($col,0,5)=='_lib_') { // if field is just a caption 
       $item=substr($col,5);
-      echo i18n($item);
+      if ($obj->getFieldAttributes($col)!='hidden') {
+        echo i18n($item);
+      }
       if (!$nobr) {
         echo "</td></tr>";
       }
@@ -211,6 +213,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawDependenciesFromObject($val, $obj, $depType);
     } else if ($col=='_ResourceCost') { // Display ResourceCost     
       drawResourceCostFromObject($val, $obj, false);      
+    } else if ($col=='_DocumentVersion') { // Display ResourceCost     
+      drawDocumentVersionFromObject($val, $obj, false);    
     } else if ($col=='_ExpenseDetail') { // Display ExpenseDetail
     	if ($obj->getFieldAttributes($col)!='hidden') {     
         drawExpenseDetailFromObject($val, $obj, false);      
@@ -350,7 +354,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
           //echo '</div>';
         } else if ($col=='id') { // id
-          echo '#' . $val;
+          echo '<span style="color:grey;">#</span>' . $val;
         } else if ($col=='password') {
           echo "..."; // nothing
         } else if ($dataType=='date' and $val!=null and $val != '') {
@@ -414,7 +418,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($col=='id') {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
-        echo '#';
+        echo '<span style="color:grey;vertical-align:middle;">#</span>';
         echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo ' class="display" ';
@@ -767,7 +771,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         if (strpos($attributes, 'readonly')>0) {
-        	$specificStyle.=' color:grey; ';
+        	$specificStyle.=' color:grey; background: #F0F0F0 url(); ';
         }
         echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
@@ -820,6 +824,60 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</table></td></tr></table>';
     }
   } 
+}
+
+function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->locked) {
+  	$canUpdate=false;
+  }
+  if ($obj->idle==1) {$canUpdate=false;}
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="assignHeader" style="width:10%">';
+    if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . $obj->id . '\');" ';
+      echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colIdVersion'). '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colDate'). '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'35':'30' ) . '%">' . i18n('colIdAuthor') . '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'35':'30' ) . '%">' . i18n('colIdStatus') . '</td>';
+  echo '</tr>';
+  foreach($list as $version) {
+    echo '<tr>';
+    if (! $print) {
+      echo '<td class="assignData" style="text-align:center;">';
+      if ($canUpdate and ! $print and $workVisible) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' 
+        . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
+        . ",'" . $version->idStatus . "'"
+        . ",'" . htmlEncodeJson($version->description) . "'"
+        . ');" ' 
+        . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
+      }
+      if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
+        echo '  <img src="css/images/smallButtonRemove.png" ' 
+        . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" 
+        . ');" ' 
+        . 'title="' . i18n('removeDocumentVersion') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    }
+    echo '<td class="assignData">' . $version->name  . '</td>';
+    echo '<td class="assignData">' . $version->versionDate . '</td>';
+    echo '<td class="assignData">' . SqlList::getNameFromId('Author', $version->idAuthor) . '</td>';
+    echo '<td class="assignData">' . SqlList::getNameFromId('Status', $version->idStatus) . '</td>';
+    echo '</tr>';
+  }
+  echo '</table></td></tr>';
 }
 
 function drawOrigin ($refType, $refId, $obj, $col, $print) {
@@ -1024,6 +1082,75 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '</tr>';
   echo '</table>';
 }
+function drawLinesFromObject($obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale;
+  //$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {$canUpdate=false;}
+  $lock=false;
+  if (($obj->idStatus != 1 && $obj->idStatus != 5) || $obj->idle == 1) $lock=true;
+  if (isset($obj->_Line)) {
+    $lines=$obj->_Line;
+  } else {
+    $lines=array();
+  }   
+  echo '<table width="100%">';
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="noteHeader" style="width:5%">';  //changer le header
+    if ($obj->id!=null and ! $print and ! $lock) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addLine();" title="' . i18n('addLine') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colLine') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colQuantity') . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('colDescription') . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('Activity') . '</td>';
+  echo '<td class="noteHeader" style="width:10%">' . i18n('colPrice') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colSum') . '</td>';
+  echo '</tr>';
+  
+  $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
+  $fmtd = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  foreach($lines as $line) {
+    echo '<tr>';
+      echo '<td class="noteData" style="text-align:center;">';
+      if ($lock==0)
+      {
+	      echo ' <img src="css/images/smallButtonEdit.png" onClick="editLine(
+	      ' . "'" . $line->id . "'" 
+	        . ",'" . htmlEncodeJson($line->description) . "'"
+	        . ",'" . $fmt->format($line->line) . "'"
+	        . ",'" . $fmtd->format($line->quantity) . "'"
+	        . ",'" . htmlEncodeJson($line->reference) . "'"
+	        . ",'" . $fmtd->format($line->price) . "'"
+	        . ",'" . $fmtd->format($line->sum) . "'"
+	        . ",'" . $line->idTerm . "'"
+	     . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+	      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeLine(' . $line->id . ');" title="' . i18n('removeLine') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    echo '<td class="noteData">#' . $line->id  . '</td>';
+    echo '<td class="noteData">' . $line->line . '</td>';
+    echo '<td class="noteData">' . $line->quantity . '</td>';
+    echo '<td class="noteData">' . $line->description . '</td>';
+    echo '<td class="noteData">' . $line->reference . '</td>';
+    echo '<td class="noteData">' . $line->price . '</td>';
+    echo '<td class="noteData">' . $line->sum . '</td>';
+    echo '</tr>';
+  }
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="noteDataClosetable">&nbsp;</td>';
+  }
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '</tr>';
+  echo '</table>';
+}
 
 function drawAttachementsFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
@@ -1171,6 +1298,10 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if(get_class($obj)=="Term")
+  {
+  	if($obj->isBilled) $canUpdate=false;
+  }
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
@@ -1262,7 +1393,6 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';
       if ($canUpdate and ! $print and $workVisible) {
-      	debugLog(Work::displayWork($assignment->assignedWork));
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editAssignment(' . "'" . $assignment->id . "'" 
         . ",'" . $assignment->idResource . "'"
@@ -1448,7 +1578,8 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
     }
     echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
     echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
-    echo " / " . i18n('shortDay'); 
+    if($rcost->idRole==7) echo " / " . i18n('shortMonth');
+    else echo " / " . i18n('shortDay'); 
     echo '</td>';
     echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
     echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';
@@ -1577,7 +1708,11 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   foreach($list as $aff) {
   	$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
     $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
-    $name=SqlList::getNameFromId($type, $aff->idResource);
+    if ($type=='Project') {
+    	$name=SqlList::getNameFromId($type, $aff->idProject);
+    } else {
+      $name=SqlList::getNameFromId($type, $aff->idResource);
+    }
     if ($aff->idResource!=$name) {
 	    echo '<tr>';
 	    if (! $print) {
@@ -1636,6 +1771,10 @@ if ( $noselect ) {
     drawNotesFromObject($obj, true);
     exit;
   }
+if ( array_key_exists('refreshLines',$_REQUEST) ) {
+    drawLinesFromObject($obj, true);
+    exit;
+  }
   if ( array_key_exists('refreshAttachements',$_REQUEST) ) {
     drawAttachementsFromObject($obj, true);
     exit;
@@ -1650,6 +1789,10 @@ if ( $noselect ) {
   }
   if ( array_key_exists('refreshVersionProject',$_REQUEST) ) {
     drawVersionFromObjectFromObject($obj->$_VersionProject,$obj, true);
+    exit;
+  }
+  if ( array_key_exists('refreshDocumentVersion',$_REQUEST) ) {
+    drawVersionFromObjectFromObject($obj->$_DocumentVersion,$obj, true);
     exit;
   }
   if ( array_key_exists('refreshHistory',$_REQUEST) ) {
@@ -1789,6 +1932,29 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
      <?php $openMode=($displayNote=='YES_OPENED')?'true':'false'; ?>
      open="<?php echo $openMode; ?>" > 
      <?php drawNotesFromObject($obj); ?>
+    </div>
+    <?php }?>
+  <?php    
+  }
+  $displayLine='YES_OPENED';
+  if (array_key_exists('displayLine',$_SESSION)) {
+    $displayLine=$_SESSION['displayLine'];
+  }
+  if (isset($obj->_Line)) { ?>
+    <br/>
+    <?php if ($print) {?>
+    <table width="100%">
+      <tr><td class="section"> <?php echo i18n('sectionLines');?> </td></tr>
+      <tr><td>
+      <?php drawLinesFromObject($obj);?>
+      </td></tr>
+    </table>
+    <?php } else { ?>
+    <div id="linesPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+     title="<?php echo i18n('sectionLines');?>"
+     <?php $openMode=($displayLine=='YES_OPENED')?'true':'false'; ?>
+     open="<?php echo $openMode; ?>" > 
+     <?php drawLinesFromObject($obj); ?>
     </div>
     <?php }?>
   <?php    

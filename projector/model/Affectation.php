@@ -200,6 +200,22 @@ class Affectation extends SqlElement {
       	$this->idResource=$this->idUser;
       }
     }
+      $affectable=new Affectable($this->idResource);
+    if ($affectable->isResource) {
+      $this->idResourceSelect=$this->idResource;
+    } else {
+      $this->idResourceSelect=null;
+    }
+    if ($affectable->isUser) {
+      $this->idUser=$this->idResource;
+    } else {
+      $this->idUser=null;
+    }
+    if ($affectable->isContact) {
+      $this->idContact=$this->idResource;
+    } else {
+      $this->idContact=null;
+    }
     
     if (! $this->idResource) {
     	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdResource') 
@@ -233,19 +249,18 @@ class Affectation extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-
    	$result = parent::save();
     return $result;
   }
   
   public static function updateAffectations($resource) {
-    $crit=array('idResource'=>$resource);
-    $aff=new Affectation();
-    $affList=$aff->getSqlElementsFromCriteria($crit, false);
-    foreach ($affList as $aff) {
-      $aff->save();
-    }
+  	$crit=array('idResource'=>$resource);
+  	$aff=new Affectation();
+  	$affList=$aff->getSqlElementsFromCriteria($crit, false);
+  	foreach ($affList as $aff) {
+  		$aff->save();
+  	}
   }
-    
+  
 }
 ?>
