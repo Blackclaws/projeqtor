@@ -13,7 +13,7 @@ class Version extends SqlElement {
   public $idContact;
   public $idResource;
   public $creationDate;
-  public $_tab_4_2 = array('initial', 'planned', 'real', 'idStatus', 'eisDate', 'endDate');
+  public $_tab_4_2 = array('initial', 'planned', 'real', 'done', 'eisDate', 'endDate');
   public $initialEisDate;
   public $plannedEisDate;
   public $realEisDate;
@@ -117,8 +117,10 @@ class Version extends SqlElement {
     if ($colName=="realEisDate") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= 'if (this.value) {'; 
-      $colScript .= '  dijit.byId("isEis").set("checked","checked");'; 
-      $colScript .= '};';
+      $colScript .= '  dijit.byId("isEis").set("checked","checked");';
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("isEis").set("checked",null);';
+      $colScript .= '};'; 
       $colScript .= '</script>';
     }
     if ($colName=="isEis") { 
@@ -127,7 +129,9 @@ class Version extends SqlElement {
       $colScript .= '  if (! dijit.byId("realEisDate").get("value")) {';
       $colScript .= '    var curDate = new Date();';
       $colScript .= '    dijit.byId("realEisDate").set("value", curDate); ';
-      $colScript .= '  }';    
+      $colScript .= '  }';
+      $colScript .= '} else {;';    
+      $colScript .= '  dijit.byId("realEisDate").reset(); ';
       $colScript .= '};';
       $colScript .= '</script>';  
     }
@@ -135,7 +139,9 @@ class Version extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= 'if (this.value) {'; 
       $colScript .= '  dijit.byId("idle").set("checked","checked");'; 
-      $colScript .= '};';
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("idle").set("checked",null);';
+      $colScript .= '};'; 
       $colScript .= '</script>';
     }
     if ($colName=="idle") { 
@@ -144,7 +150,9 @@ class Version extends SqlElement {
       $colScript .= '  if (! dijit.byId("realEndDate").get("value")) {';
       $colScript .= '    var curDate = new Date();';
       $colScript .= '    dijit.byId("realEndDate").set("value", curDate); ';
-      $colScript .= '  }';    
+      $colScript .= '  }';   
+      $colScript .= '} else {;';    
+      $colScript .= '  dijit.byId("realEndDate").reset(); '; 
       $colScript .= '};';
       $colScript .= '</script>';  
     }
@@ -188,6 +196,15 @@ class Version extends SqlElement {
     }
     $result .="</table>";
     return $result; 
+  }
+  
+  public function save() {
+    $result=parent::save();
+    if ($this->idle) {
+      VersionProject::updateIdle('Version', $this->id);
+    }
+    
+    return $result;
   }
 
 }

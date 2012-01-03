@@ -1232,6 +1232,95 @@ msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
 showConfirm (msg, actionOK);
 }
 
+
+//=============================================================================
+//= Lines
+//=============================================================================
+
+/**
+* Display a add line Box
+* 
+*/
+
+
+function addLine () {
+	dojo.byId("lineId").value="";
+	var prj=dijit.byId('idProject').get('value');
+	dijit.byId('lineIdTerm').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj });
+	dijit.byId('lineIdTerm').store.fetch();
+	dijit.byId("lineIdTerm").set("value",null);
+	dojo.byId("lineRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("lineRefId").value=dojo.byId("objectId").value;
+	dijit.byId("lineDescription").set("value","");
+	dijit.byId("lineLine").set("value",null);
+	dijit.byId("lineQuantity").set("value",null);
+	dijit.byId("lineReference").set("value","");
+	dijit.byId("linePrice").set("value",null);
+	dijit.byId("dialogLine").set('title',i18n("dialogLine"));
+	dijit.byId("dialogLine").show();
+}
+
+
+/**
+* Display a edit line Box
+* 
+*/
+function editLine (id,description,line,quantity,reference,price,idTerm) {
+	dojo.byId("lineId").value=id;
+	
+	var prj=dijit.byId('idProject').get('value');
+	dijit.byId('lineIdTerm').store = new dojo.data.ItemFileReadStore({
+		       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj+'&selected=1'});
+	dijit.byId('assignmentIdResource').store.fetch();	
+	
+	dojo.byId("lineRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("lineRefId").value=dojo.byId("objectId").value;
+	dijit.byId("lineDescription").set('value',description);
+	dijit.byId("lineReference").set('value',reference);
+	dijit.byId("lineLine").set('value',line);
+	dijit.byId("lineQuantity").set('value',quantity);
+	dijit.byId("linePrice").set('value',price);
+	dijit.byId("dialogLine").set('title',i18n("dialogLine") + " #" + id);
+	dijit.byId("dialogLine").show();
+}
+
+/**
+* save a line (after addDetail or editDetail)
+* 
+*/
+function saveLine() {
+	if (isNaN(dijit.byId("lineLine").getValue())) {
+		dijit.byId("lineLine").set("class","dijitError");
+		//dijit.byId("noteNote").blur();
+		var msg=i18n('messageMandatory', new Array(i18n('Line')));
+		new dijit.Tooltip({
+			id : "lineToolTip",
+    connectId: ["lineLine"],
+    label: msg,
+    showDelay: 0
+  });
+		dijit.byId("lineLine").focus();
+	} else {
+		loadContent("../tool/saveLine.php", "resultDiv", "lineForm", true, 'line');
+		dijit.byId('dialogLine').hide();
+	}
+}
+
+
+/**
+* Display a delete line Box
+* 
+*/
+function removeLine (lineId) {
+	dojo.byId("lineId").value=lineId;
+	actionOK=function() {loadContent("../tool/removeLine.php", "resultDiv", "lineForm", true, 'line');};
+	msg=i18n('confirmDelete',new Array(i18n('Line'), lineId));
+	showConfirm (msg, actionOK);
+}
+
+
+
 //=============================================================================
 //= Import
 //=============================================================================

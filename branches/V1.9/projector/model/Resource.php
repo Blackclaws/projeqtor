@@ -297,6 +297,12 @@ class Resource extends SqlElement {
     }
     return $result;
   }
+
+  public function save() {
+    $result=parent::save();
+    Affectation::updateAffectations($this->id);
+    return $result;
+  }
   
   public function getResourceCost() {
     $result=array();

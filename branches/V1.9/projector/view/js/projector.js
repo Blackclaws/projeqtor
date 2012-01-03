@@ -1326,7 +1326,7 @@ function drawGantt() {
 /**
  * calculate diffence (in work days) between dates
  */ 
-function workDayDiffDates(paramStartDate, paramEndDate) {
+function workDayDiffDates_old(paramStartDate, paramEndDate) {
   var startDate=paramStartDate;
   var endDate=paramEndDate;
   var valDay=(24 * 60 * 60 * 1000);
@@ -1356,6 +1356,23 @@ function workDayDiffDates(paramStartDate, paramEndDate) {
   return duration;
 }
 
+function workDayDiffDates(paramStartDate, paramEndDate) {
+  //alert(paramStartDate + "\n" + paramEndDate);
+  var currentDate=new Date();
+  currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate.getMonth(), paramStartDate.getDate());
+  var endDate=paramEndDate;
+  if (paramEndDate<paramStartDate) {
+	return 0;
+  }
+  var duration=1;
+  while (currentDate<=endDate) {	
+	if (! isOffDay(currentDate)) {
+      duration++;
+	}
+	currentDate=addDaysToDate(currentDate,1);
+  }
+  return duration;
+}
 /**
  * calculate diffence (in days) between dates
  */ 
@@ -1406,7 +1423,7 @@ function addDaysToDate(paramDate, paramDays) {
  *            numbers of days to add (can be < 0 to subtract days)
  * @return new calculated date
  */
-function addWorkDaysToDate(paramDate, paramDays) {
+function addWorkDaysToDate_old(paramDate, paramDays) {
   var startDate=paramDate;
   var days=paramDays;
   if (days<=0) {
@@ -1427,6 +1444,18 @@ function addWorkDaysToDate(paramDate, paramDays) {
   return endDate;
 }
 
+function addWorkDaysToDate(paramDate, paramDays) {
+  endDate=paramDate;
+  left=paramDays;
+  left--;
+  while (left>0) {
+	endDate=addDaysToDate(endDate,1);
+	if (! isOffDay(endDate)) {
+	  left--;
+	}
+  }
+  return endDate;
+}
 /**
  * Check "all" checkboxes on workflow definition
  * 
