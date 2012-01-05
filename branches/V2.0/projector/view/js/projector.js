@@ -658,6 +658,8 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
       } else if (validationType=='attachement') {
         loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');
+      //} else if (validationType=='documentVersion') {
+      //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='copyTo') {
           var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');

@@ -1170,6 +1170,7 @@ function addDocumentVersion () {
 		return;
 	}	
 	dojo.byId("documentVersionId").value="";
+	dojo.byId("documentId").value=dojo.byId("objectId").value;
 	dojo.byId("documentVersionVersion").value=dojo.byId('version').value;
 	dojo.byId("documentVersionRevision").value=dojo.byId('revision').value;
 	dojo.byId("documentVersionDraft").value=dojo.byId('draft').value;
@@ -1187,7 +1188,7 @@ function addDocumentVersion () {
 }
 
 /**
-* Display a edit Assignment Box
+* Display a edit Document Version Box
 * 
 */
 var documentVersionLoad=false;
@@ -1216,33 +1217,22 @@ function editDocumentVersion (id, idExpense, type, expenseDate, amount) {
 * 
 */
 function saveDocumentVersion() {
-	expenseDetailRecalculate();
-	if (! dijit.byId('expenseDetailName').get('value')) {
-		showAlert(i18n('messageMandatory',new Array(i18n('colName'))));
-		return;
-	}
-	if (! dijit.byId('expenseDetailDate').get('value')) {
-		showAlert(i18n('messageMandatory',new Array(i18n('colDate'))));
-		return;
-	}
-	if (! dijit.byId('expenseDetailType').get('value')) {
-		showAlert(i18n('messageMandatory',new Array(i18n('colType'))));
-		return;
-	}
-	if (! dijit.byId('expenseDetailAmount').get('value')) {
-		showAlert(i18n('messageMandatory',new Array(i18n('colAmount'))));
-		return;
-	}
-	var formVar = dijit.byId('expenseDetailForm');
-  if(formVar.validate()){		
-	  dijit.byId("expenseDetailName").focus();
-	  dijit.byId("expenseDetailAmount").focus();
-	  loadContent("../tool/saveExpenseDetail.php", "resultDiv", "expenseDetailForm", true, 'expenseDetail');
-	  dijit.byId('dialogExpenseDetail').hide();
-  } else {
-  	showAlert(i18n("alertInvalidForm"));
-  }
+    showWait();
+	dijit.byId('dialogDocumentVersion').hide();
+	return true;
 }
+
+/**
+ * Acknoledge the attachment save
+ * @return void
+ */
+function saveDocumentVersionAck() {
+	resultFrame=document.getElementById("documentVersionPost");
+	resultText=documentVersionPost.document.body.innerHTML;
+	dojo.byId('documentVersionAck').value=resultText;
+	loadContent("../tool/ack.php", "resultDiv", "documentVersionForm", true, 'documentVersion');
+}
+
 
 /**
 * Display a delete Assignment Box
@@ -1283,9 +1273,9 @@ function calculateNewVersion() {
   revision=dojo.byId('documentVersionRevision').value;
   draft=dojo.byId('documentVersionDraft').value;
   isDraft=dijit.byId('documentVersionUpdateDraft').get('checked');
-  if (version=='') {version=0;}
-  if (revision=='') {revision=0;}
-  if (draft=='') {draft=0;}
+  version=(version=='')?0:parseInt(version);
+  revision=(revision=='')?0:parseInt(revision);
+  draft=(draft=='')?0:parseInt(draft);
   if (type=="major") {
 	dojo.byId('documentVersionNewVersion').value=version+1;
 	dojo.byId('documentVersionNewRevision').value=0;
