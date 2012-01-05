@@ -1025,7 +1025,7 @@ checkVersion(); ?>
   <form id='documentVersionForm' name='documentVersionForm' 
   ENCTYPE="multipart/form-data" method=POST
   action="../tool/saveDocumentVersion.php"
-  target="resultPost"
+  target="documentVersionPost"
   onSubmit="return saveDocumentVersion();" >
     <input id="documentVersionId" name="documentVersionId" type="hidden" value="" />
     <input id="documentVersionVersion" name="documentVersionVersion" type="hidden" value="" />
@@ -1134,7 +1134,7 @@ checkVersion(); ?>
         <td> 
          <textarea dojoType="dijit.form.Textarea" 
           id="documentVersionDescription" name="documentVersionDescription"
-          style="width: 350px;"
+          style="width: 450px;"
           maxlength="4000"
           class="input">  
          </textarea><textarea style="display:none" id="documentVersionAck" name="documentVersionAck"></textarea>      

@@ -855,7 +855,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     echo '<tr>';
     if (! $print) {
       echo '<td class="assignData" style="text-align:center;">';
-      if ($canUpdate and ! $print and $workVisible) {
+      if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
         . ",'" . $version->idStatus . "'"
@@ -863,7 +863,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ');" ' 
         . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
       }
-      if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
+      if ($canUpdate and ! $print )  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
         . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" 
         . ');" ' 
@@ -872,7 +872,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       echo '</td>';
     }
     echo '<td class="assignData">' . $version->name  . '</td>';
-    echo '<td class="assignData">' . $version->versionDate . '</td>';
+    echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
     echo '<td class="assignData">' . SqlList::getNameFromId('Author', $version->idAuthor) . '</td>';
     echo '<td class="assignData">' . SqlList::getNameFromId('Status', $version->idStatus) . '</td>';
     echo '</tr>';

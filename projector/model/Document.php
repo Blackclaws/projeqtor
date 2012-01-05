@@ -23,8 +23,8 @@ class Document extends SqlElement {
   public $lockedDate;
   public $_col_2_2_Version; 
   public $idVersioningType;
-  public $idCurrentVersion;
-  public $idCurrentRefVersion;
+  //public $idCurrentVersion;
+  //public $idCurrentRefVersion;
   public $_DocumentVersion=array();
   public $version;
   public $revision;
