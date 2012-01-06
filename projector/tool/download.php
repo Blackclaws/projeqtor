@@ -13,11 +13,21 @@ $id=$_REQUEST['id'];
 
 $obj=new $class($id);
 
-$path = $obj->subDirectory;
-$name = $obj->fileName;
-$size = $obj->fileSize;
-$type = $obj->mimeType;
-$file = $path . $name;
+if ($class=='Attachement') {
+  $path = $obj->subDirectory;
+  $name = $obj->fileName;
+  $size = $obj->fileSize;
+  $type = $obj->mimeType;
+  $file = $path . $name;
+} else if ($class=='DocumentVersion') {
+	$doc=new Document($obj->idDocument);
+	$dir=new DocumentDirectory($doc->idDocumentDirectory);
+	$path = Parameter::getGlobalParameter('documentRoot') . $dir->location;
+  $name = $obj->fileName;
+  $size = $obj->fileSize;
+  $type = $obj->mimeType;
+  $file = $path . $paramPathSeparator . $name . '.' . $obj->id;
+}
 $contentType="application/force-download";
 //if (array_key_exists('display',$_REQUEST)) {
 //  $contentType=$type;
@@ -32,6 +42,8 @@ if (($file != "") && (file_exists($file))) {
   header("Cache-Control: no-cache, must-revalidate");
   header("Pragma: no-cache");
   readfile($file);  
+} else {
+	debugLog($file . ' not found');
 }
 
 ?>

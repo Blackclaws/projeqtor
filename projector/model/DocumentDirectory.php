@@ -11,6 +11,7 @@ class DocumentDirectory extends SqlElement {
   //public $localName;
   public $idProject;
   public $idDirectory;
+  public $location;
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;

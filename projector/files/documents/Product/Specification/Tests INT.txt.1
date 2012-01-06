@@ -1,0 +1,19 @@
+Lors de l'arrêt JanusStopWSFlow :
+Une erreur apparait parfois
+[jboss@tgd6lab log]$ tail -f server.log | grep Thread-359
+2011-05-31 10:42:42,612 ERROR [STDERR] (Thread-359) java.lang.NullPointerException
+2011-05-31 10:42:42,612 ERROR [STDERR] (Thread-359)     at fr.cnrs.dsi.service.flux.janus.FluxJanusService$UserJanusDurableSubscriber.fetchUtilisateurData(FluxJanusService.java:342)
+2011-05-31 10:42:42,612 ERROR [STDERR] (Thread-359)     at fr.cnrs.dsi.service.flux.janus.FluxJanusService.go(FluxJanusService.java:237)
+2011-05-31 10:42:42,612 ERROR [STDERR] (Thread-359)     at fr.cnrs.dsi.service.flux.janus.FluxJanusService.access$2(FluxJanusService.java:224)
+2011-05-31 10:42:42,612 ERROR [STDERR] (Thread-359)     at fr.cnrs.dsi.service.flux.janus.FluxJanusService$1.run(FluxJanusService.java:166)
+2011-05-31 10:42:42,612 ERROR [STDERR] (Thread-359)     at java.lang.Thread.run(Thread.java:662)
+
+Lors de l'arrêt JanusStopWSFlow :
+Le service démarre
+2011-05-31 10:42:42,610 INFO  [STDOUT] (Thread-369) Flux Janus service run
+2011-05-31 10:42:52,611 INFO  [STDOUT] (Thread-369) Flux Janus Start2
+2011-05-31 10:42:52,611 INFO  [STDOUT] (Thread-369) Flux Janus Start3
+2011-05-31 10:42:52,612 INFO  [STDOUT] (Thread-369) Hibernate:
+2011-05-31 10:42:52,616 INFO  [STDOUT] (Thread-369) Flux Janus Start4
+2011-05-31 10:42:52,616 INFO  [STDOUT] (Thread-369) BROKER_HOST =theeai3.dsi.cnrs.fr
+2011-05-31 10:42:52,616 INFO  [STDOUT] (Thread-369) BROKER_PORT =6849

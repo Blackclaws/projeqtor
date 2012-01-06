@@ -848,13 +848,17 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   }
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colIdVersion'). '</td>';
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colDate'). '</td>';
-  echo '<td class="assignHeader" style="width:' . ( ($print)?'35':'30' ) . '%">' . i18n('colIdAuthor') . '</td>';
-  echo '<td class="assignHeader" style="width:' . ( ($print)?'35':'30' ) . '%">' . i18n('colIdStatus') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colIdAuthor') . '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'55':'45' ) . '%">' . i18n('colFileName') . '</td>';
   echo '</tr>';
   foreach($list as $version) {
     echo '<tr>';
     if (! $print) {
-      echo '<td class="assignData" style="text-align:center;">';
+      echo '<td class="assignData" style="text-align:center; white-space: nowrap;">';
+      if (! $print) {
+        echo '<a href="../tool/download.php?class=DocumentVersion&id='. $version->id . '"'; 
+        echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
+      }
       if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
@@ -874,7 +878,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData">' . $version->name  . '</td>';
     echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
     echo '<td class="assignData">' . SqlList::getNameFromId('Author', $version->idAuthor) . '</td>';
-    echo '<td class="assignData">' . SqlList::getNameFromId('Status', $version->idStatus) . '</td>';
+    echo '<td class="assignData">' . SqlList::getNameFromId('Status', $version->fileName) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
