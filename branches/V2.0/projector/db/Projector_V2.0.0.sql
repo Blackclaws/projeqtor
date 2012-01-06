@@ -273,6 +273,8 @@ CREATE TABLE `${prefix}documentversion` (
   `revision` int(3),
   `draft` int(3),
   `fileName` varchar(400) DEFAULT NULL,
+  `mimeType` varchar(100),
+  `fileSize` int(12),
   `link` varchar(400) DEFAULT NULL,
   `versionDate` date,
   `extension` varchar(100) DEFAULT NULL,
@@ -356,3 +358,6 @@ INSERT INTO `${prefix}referencable` (`id`, `name`, `idle`) VALUES
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'draftSeparator','_draft');
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'documentRoot','../files/documents');

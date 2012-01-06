@@ -12,6 +12,8 @@ class DocumentVersion extends SqlElement {
   public $revision;
   public $draft;
   public $fileName;
+  public $fileSize;
+  public $mimeType;
   public $versionDate;
   public $extension;
   public $idDocument;

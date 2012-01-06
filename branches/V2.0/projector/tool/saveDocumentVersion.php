@@ -124,8 +124,8 @@ if (! $error) {
   	
   } else {
     $dv->fileName=basename($uploadedFile['name']);
-    //$dv->mimeType=$uploadedFile['type'];
-    //$dv->fileSize=$uploadedFile['size'];
+    $dv->mimeType=$uploadedFile['type'];
+    $dv->fileSize=$uploadedFile['size'];
   }
   $dv->description=$documentVersionDescription;
   $dv->version=$documentVersionNewVersion;
@@ -147,11 +147,17 @@ if (! $error) {
 }
 
 if (! $error and !$documentVersionLink) {
-  $uploaddir = $paramAttachementDirectory . $paramPathSeparator . $dir->name . $paramPathSeparator;
-  if (! file_exists($uploaddir)) {
-    mkdir($uploaddir);
-  }
-  $uploadfile = $uploaddir . basename($uploadedFile['name']);
+  $root=Parameter::getGlobalParameter('documentRoot');
+	$uploaddir = $root . $dir->location ;
+	$split=explode('/',$uploaddir);
+	$dir='';
+	foreach ($split as $dirElt) { 
+		$dir.=$dirElt.'/';
+    if (! file_exists($dir)) {
+      mkdir($dir);
+    }
+	}
+  $uploadfile = $uploaddir . $paramPathSeparator . basename($uploadedFile['name'] . '.' . $dv->id);
   if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
      echo htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
      errorLog(i18n('errorUploadFile','hacking ?'));

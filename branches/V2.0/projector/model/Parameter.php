@@ -281,8 +281,11 @@ class Parameter extends SqlElement {
                              'changeReferenceOnTypeChange'=>'list',
       	                     'sectionMiscellaneous'=>'section',  
       	                     'getVersion'=>'list',
-      	                     'csvSeparator'=>'list'
-      	                    
+      	                     'csvSeparator'=>'list',
+      	                     'newColumn'=>'newColumn',
+      	                     'sectionDocument'=>'section',
+      	                     'documentRoot'=>'text',
+      	                     'draftSeparator'=>'text'
       	);
     }
     return $parameterList;

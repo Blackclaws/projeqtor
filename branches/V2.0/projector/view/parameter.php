@@ -34,6 +34,7 @@
    */
   function drawTableFromObjectList($objectList) {
     global $criteriaRoot, $type;
+    echo '<table style="width:100%"><tr><td style="width:50%;vertical-align:top;">';
     echo '<table>';
     foreach($objectList as $code => $format) { 
       $criteria=$criteriaRoot;
@@ -45,6 +46,9 @@
           $obj->parameterValue=$_SESSION[$code];
         }
       }
+      if ($format=='newColumn') {
+      	echo '</table></td><td style="width:50%;vertical-align:top;"><table>';
+      } else {
       echo '<tr>';
       if ($format!="section") {
         echo '<td class="crossTableLine"><label class="label largeLabel" for="' . $code . '" title="' . i18n('help' . ucfirst($code)) . '">' . i18n('param' . ucfirst($code) ) . ' :&nbsp;</label></td><td>';
@@ -95,9 +99,11 @@
         echo $obj->getValidationScript($code);
         echo '</div>';
       }
-      echo '</td></tr>'; 
+      echo '</td></tr>';
+      } 
     }
     echo '</table>';
+    echo '</td></tr></table>';
   }
 ?>
 
