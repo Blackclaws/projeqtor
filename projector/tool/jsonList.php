@@ -223,6 +223,32 @@
           $ctrl.=$key;
         }
       }
+    } else if ($type=='listStatusDocumentVersion') {
+    	$doc=$_SESSION['currentObject'];
+    	$idDocumentVersion=$_REQUEST['idDocumentVersion'];
+      $docVers=new documentVersion($idDocumentVersion);
+    	$table=SqlList::getList('Status','name',$docVers->idStatus);
+    	if ($docVers->idStatus) {      
+	      $profile=$_SESSION['user']->idProfile;
+	      $type=new DocumentType($doc->idDocumentType);
+	      $ws=new WorkflowStatus();
+	      $crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$docVers->idStatus);
+	      $wsList=$ws->getSqlElementsFromCriteria($crit, false);
+	      $compTable=array($docVers->idStatus=>'ok');
+	      foreach ($wsList as $ws) {
+	        $compTable[$ws->idStatusTo]="ok";
+	      }
+        $table=array_intersect_key($table,$compTable);
+      } else {
+        reset($table);
+        $table=array(key($table)=>current($table));
+      }  
+      $nbRows=0;
+      foreach ($table as $id=>$name) {    
+        if ($nbRows>0) echo ', ';
+        echo '{id:"' . $id . '", name:"'. $name . '"}';
+        $nbRows+=1;
+      }
     }
     echo ' ] }';
 ?>

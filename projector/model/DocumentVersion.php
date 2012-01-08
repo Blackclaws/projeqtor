@@ -90,6 +90,7 @@ class DocumentVersion extends SqlElement {
   		$this->createDateTime=Date('Y-m-d H:i:s');
   	}
   	$doc=new Document($this->idDocument);
+  	$saveDoc=false;
   	$this->fullName=$doc->name."_".$this->name;
   	$result=parent::save();
     if ( ($doc->version==null) 
@@ -100,6 +101,23 @@ class DocumentVersion extends SqlElement {
       $doc->revision=$this->revision;
       $doc->draft=$this->draft;
       $doc->idDocumentVersion=$this->id;
+      $saveDoc=true;
+    }
+    if ($this->isRef) {
+      $doc->idDocumentVersionRef=$this->id;
+      $saveDoc=true;
+      $critWhere="idDocument='" . $this->idDocument . "' and isRef='1' and id!='" . $this->id . "'";
+      $list=$this->getSqlElementsFromCriteria(null, false, $critWhere);
+      foreach ($list as $elt) {
+      	$elt->isRef='0';
+      	$elt->save();
+      } 
+    }
+    if ($doc->idDocumentVersion==$this->id) {
+    	$doc->idStatus=$this->idStatus;
+      $saveDoc=true;
+    }
+    if ($saveDoc) {
       $doc->save();
     }
   	return $result;
