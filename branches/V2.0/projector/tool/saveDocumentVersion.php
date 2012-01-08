@@ -106,6 +106,18 @@ if (! array_key_exists('documentVersionDate',$_REQUEST)) {
 }
 $documentVersionDate=$_REQUEST['documentVersionDate'];
 
+$documentVersionIsRef=0;
+if (array_key_exists('documentVersionIsRef',$_REQUEST)) {
+  $documentVersionIsRef=1;
+}
+
+$documentVersionIdStatus=null;
+if (! array_key_exists('documentVersionIdStatus',$_REQUEST)) {
+    echo htmlGetErrorMessage('documentVersionIdStatus parameter not found in REQUEST');
+    $error=true;
+}
+$documentVersionIdStatus=$_REQUEST['documentVersionIdStatus'];
+
 $documentVersionDescription=null;
 if (! array_key_exists('documentVersionDescription',$_REQUEST)) {
     echo htmlGetErrorMessage('documentVersionDescription parameter not found in REQUEST');
@@ -138,6 +150,8 @@ if (! $error) {
   $dv->version=$documentVersionNewVersion;
   $dv->revision=$documentVersionNewRevision;
   $dv->draft=$documentVersionNewDraft;
+  $dv->idStatus=$documentVersionIdStatus;
+  $dv->isRef=$documentVersionIsRef;
   $dv->name=$documentVersionNewVersionDisplay;
   $result=$dv->save();
   $newId= $dv->id;

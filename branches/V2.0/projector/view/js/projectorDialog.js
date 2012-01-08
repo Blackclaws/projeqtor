@@ -1164,13 +1164,18 @@ function expenseDetailRecalculate() {
 * Display a add Document Version Box
 * 
 */
-function addDocumentVersion () {
+function addDocumentVersion (defaultStatus) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'block'});
 	dojo.byId("documentVersionId").value="";
+	dijit.byId('documentVersionIdStatus').store = new dojo.data.ItemFileReadStore({
+		       url: '../tool/jsonList.php?listType=listStatusDocumentVersion&idDocumentVersion=' });
+	dijit.byId('documentVersionIdStatus').store.fetch();
+	dijit.byId('documentVersionIdStatus').set('value',defaultStatus);
+	//dijit.byId('documentVersionIdStatus').reset();
+	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'block'});
 	dojo.byId("documentId").value=dojo.byId("objectId").value;
 	dojo.byId("documentVersionVersion").value=dojo.byId('version').value;
 	dojo.byId("documentVersionRevision").value=dojo.byId('revision').value;
@@ -1186,6 +1191,11 @@ function addDocumentVersion () {
 	dijit.byId("documentVersionUpdateMajor").set('checked','true');
 	dijit.byId("documentVersionUpdateDraft").set('checked',false);
 	dijit.byId("documentVersionDate").set('value',new Date());
+	dijit.byId("documentVersionUpdateMajor").set('readOnly',false);
+	dijit.byId("documentVersionUpdateMinor").set('readOnly',false);
+	dijit.byId("documentVersionUpdateNo").set('readonly',false);
+	dijit.byId("documentVersionUpdateDraft").set('readonly',false);
+	dijit.byId("documentVersionIsRef").set('checked',false);
 	setDisplayIsRefDocumentVersion()
 	dijit.byId("dialogDocumentVersion").show();
 }
@@ -1195,11 +1205,15 @@ function addDocumentVersion () {
 * 
 */
 //var documentVersionLoad=false;
-function editDocumentVersion (id,name,version,revision,draft,description,versionDate) {
+function editDocumentVersion (id,name,version,revision,draft,versionDate, status, isRef, description) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	dijit.byId('documentVersionIdStatus').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=listStatusDocumentVersion&idDocumentVersion='+id });
+    dijit.byId('documentVersionIdStatus').store.fetch();
+    dijit.byId('documentVersionIdStatus').set('value',status);
 	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'none'});
 	dojo.byId("documentVersionId").value=id;
 	dojo.byId("documentId").value=dojo.byId("objectId").value;
@@ -1210,6 +1224,11 @@ function editDocumentVersion (id,name,version,revision,draft,description,version
 		dijit.byId('documentVersionUpdateDraft').set('checked',true);
 	} else {
 		dijit.byId('documentVersionUpdateDraft').set('checked',false);
+	}
+	if (isRef=='1') {
+		dijit.byId('documentVersionIsRef').set('checked',true);
+	} else {
+		dijit.byId('documentVersionIsRef').set('checked',false);
 	}
 	dijit.byId('documentVersionVersionDisplay').set('value',name);
 	dijit.byId("documentVersionLink").set('value','');
@@ -1310,11 +1329,17 @@ function calculateNewVersion() {
   getDisplayVersion(dojo.byId('documentVersionNewVersion').value,
 		  dojo.byId('documentVersionNewRevision').value,
 		  dojo.byId('documentVersionNewDraft').value));
+  if (isDraft) {
+	dijit.byId('documentVersionIsRef').set('checked',false);
+	setDisplayIsRefDocumentVersion();
+  }
 }
 
 function setDisplayIsRefDocumentVersion() {
 	if (dijit.byId('documentVersionIsRef').get('checked')) {
 		dojo.style(dojo.byId('documentVersionIsRefDisplay'), {display:'block'});
+		dijit.byId('documentVersionUpdateDraft').set('checked',false);
+		calculateNewVersion();
 	} else {
 		dojo.style(dojo.byId('documentVersionIsRefDisplay'), {display:'none'});
 	}

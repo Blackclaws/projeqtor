@@ -1151,6 +1151,20 @@ checkVersion(); ?>
       </tr>
       <tr>
         <td class="dialogLabel" >
+          <label for="documentVersionIdStatus" ><?php echo i18n("colIdStatus");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td>
+          <select dojoType="dijit.form.FilteringSelect" 
+                id="documentVersionIdStatus" name="documentVersionIdStatus"
+                class="input" value="" 
+                onChange=""
+                missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdStatus')));?>" >
+                 <?php //htmlDrawOptionForReference('idStatus', null, null, true);?>
+          </select>  
+        </td>
+      </tr>
+      <tr>
+        <td class="dialogLabel" >
           <label for="documentVersionIsRef" ><?php echo i18n("colIsRef");?>&nbsp;:&nbsp;</label>
         </td>
         <td>

@@ -592,7 +592,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox
         $displayComboButtonCol=$displayComboButton;
         $canCreateCol=false;
-        if ($comboDetail) {
+        if ($comboDetail or strpos($attributes, 'readonly')!==false) {
           $displayComboButtonCol=false;
         }
         if (strpos($obj->getFieldAttributes($col), 'nocombo')!==false) {
@@ -839,16 +839,18 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
+  	$statusTable=SqlList::getList('Status','name',null);
+  	reset($statusTable);
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . $obj->id . '\');" ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . key($statusTable) . '\');" ';
       echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colIdVersion'). '</td>';
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colDate'). '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n('colIdAuthor') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
   echo '<td class="assignHeader" style="width:' . ( ($print)?'55':'45' ) . '%">' . i18n('colFile') . '</td>';
   echo '</tr>';
   foreach($list as $version) {
@@ -866,6 +868,9 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ",'" . $version->version . "'"
         . ",'" . $version->revision . "'"
         . ",'" . $version->draft . "'"
+        . ",'" . $version->versionDate . "'"
+        . ",'" . $version->idStatus . "'"
+        . ",'" . $version->isRef . "'"
         . ",'" . htmlEncodeJson($version->description) . "'"
         . ');" ' 
         . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
@@ -878,9 +883,10 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="assignData">' . $version->name  . '</td>';
+    echo '<td class="assignData">' . (($version->isRef)?'<b>':'') . $version->name  . (($version->isRef)?'</b>':'') . '</td>';
     echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
-    echo '<td class="assignData">' . SqlList::getNameFromId('Author', $version->idAuthor) . '</td>';
+    $objStatus=new Status($version->idStatus);
+    echo '<td class="assignData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     echo '<td class="assignData" title="' . $version->description . '">';
     echo '<table><tr >';
     echo ' <td>';
