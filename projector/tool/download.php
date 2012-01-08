@@ -20,13 +20,10 @@ if ($class=='Attachement') {
   $type = $obj->mimeType;
   $file = $path . $name;
 } else if ($class=='DocumentVersion') {
-	$doc=new Document($obj->idDocument);
-	$dir=new DocumentDirectory($doc->idDocumentDirectory);
-	$path = Parameter::getGlobalParameter('documentRoot') . $dir->location;
   $name = $obj->fileName;
   $size = $obj->fileSize;
   $type = $obj->mimeType;
-  $file = $path . $paramPathSeparator . $name . '.' . $obj->id;
+  $file = $obj->getUploadFileName();
 }
 $contentType="application/force-download";
 //if (array_key_exists('display',$_REQUEST)) {

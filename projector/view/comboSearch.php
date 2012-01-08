@@ -61,7 +61,13 @@
     dojo.require("dojo.dnd.Manager");
     dojo.require("dojo.dnd.Source");
     dojo.addOnLoad(function(){
-
+      var onKeyPressFunc = function(event) {
+            if(event.ctrlKey && event.keyChar == 's'){
+              event.preventDefault();
+              top.globalSave();
+            }  
+      };
+      dojo.connect(document, "onkeypress", this, onKeyPressFunc);
     });
   </script>
 </head>

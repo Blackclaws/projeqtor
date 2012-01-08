@@ -849,7 +849,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colIdVersion'). '</td>';
   echo '<td class="assignHeader" style="width:15%" >' . i18n('colDate'). '</td>';
   echo '<td class="assignHeader" style="width:15%">' . i18n('colIdAuthor') . '</td>';
-  echo '<td class="assignHeader" style="width:' . ( ($print)?'55':'45' ) . '%">' . i18n('colFileName') . '</td>';
+  echo '<td class="assignHeader" style="width:' . ( ($print)?'55':'45' ) . '%">' . i18n('colFile') . '</td>';
   echo '</tr>';
   foreach($list as $version) {
     echo '<tr>';
@@ -862,7 +862,10 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
-        . ",'" . $version->idStatus . "'"
+        . ",'" . $version->name . "'"
+        . ",'" . $version->version . "'"
+        . ",'" . $version->revision . "'"
+        . ",'" . $version->draft . "'"
         . ",'" . htmlEncodeJson($version->description) . "'"
         . ');" ' 
         . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
@@ -878,7 +881,15 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData">' . $version->name  . '</td>';
     echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
     echo '<td class="assignData">' . SqlList::getNameFromId('Author', $version->idAuthor) . '</td>';
-    echo '<td class="assignData">' . SqlList::getNameFromId('Status', $version->fileName) . '</td>';
+    echo '<td class="assignData" title="' . $version->description . '">';
+    echo '<table><tr >';
+    echo ' <td>';
+    echo htmlEncode($version->fileName,'print'); 
+    echo ' </td>';
+    if ($version->description and ! $print) {
+      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+    }
+    echo '</tr></table>';
     echo '</tr>';
   }
   echo '</table></td></tr>';

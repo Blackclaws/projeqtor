@@ -570,7 +570,7 @@ checkVersion(); ?>
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogNote').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" onclick="saveNote();return false;">
+        <button id="dialogNoteSubmit" dojoType="dijit.form.Button" type="submit" onclick="saveNote();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -682,7 +682,7 @@ checkVersion(); ?>
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogLine').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" onclick="saveLine();return false;">
+        <button dojoType="dijit.form.Button" id="dialogLineSubmit" type="submit" onclick="saveLine();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1005,7 +1005,7 @@ checkVersion(); ?>
           <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAttachement').hide();">
             <?php echo i18n("buttonCancel");?>
           </button>
-          <button id="submitUpload" dojoType="dijit.form.Button" type="submit">
+          <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit">
             <?php echo i18n("buttonOK");?>
           </button>
         </td>
@@ -1035,6 +1035,7 @@ checkVersion(); ?>
     <input id="documentVersionNewRevision" name="documentVersionNewRevision" type="hidden" value="" />
     <input id="documentVersionNewDraft" name="documentVersionNewDraft" type="hidden" value="" />
     <input id="documentId" name="documentId" type="hidden" value="" />
+<div id="inputFileDocumentVersion" name="inputFileDocumentVersion">
     <table>
       <tr height="30px"> 
         <td class="dialogLabel" >
@@ -1063,9 +1064,12 @@ checkVersion(); ?>
          </div>  
         </td>
       </tr>
+    </table>
+</div>
+    <table>
       <tr> 
         <td class="dialogLabel" >
-         <label for="documentVersionVersionDisplay" ><?php echo i18n("currentDocumentVersion");?>&nbsp;:&nbsp;</label>
+         <label for="documentVersionVersionDisplay" ><?php echo i18n("colCurrentDocumentVersion");?>&nbsp;:&nbsp;</label>
         </td>
         <td> 
          <div dojoType="dijit.form.TextBox" 
@@ -1076,7 +1080,7 @@ checkVersion(); ?>
          </div>  
         </td>
       </tr>            
-      <tr>
+      <tr style="height:21px">
         <td class="dialogLabel" >
          <label for="documentVersionUpdate" ><?php echo i18n("documentVersionUpdate");?>&nbsp;:&nbsp;</label>
         </td>
@@ -1087,21 +1091,21 @@ checkVersion(); ?>
             </td><td style="text-align:left;"> 
               <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.RadioButton" 
 			         name="documentVersionUpdate" id="documentVersionUpdateMajor"
-			         checked value="major" />
+			         checked value="major" style="background-color:white;"/>
             </td>
             <td style="text-align:right; width:5%">
               <label class="smallRadioLabel" for="documentVersionUpdateMinor"><?php echo i18n('versionMinorUpdate');?>&nbsp;</label>
             </td><td style="text-align:left;">    
 			        <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.RadioButton" 
 			         name="documentVersionUpdate" id="documentVersionUpdateMinor"
-			         value="minor" />
+			         value="minor" style="background-color:white;"/>
 			      </td>
             <td style="text-align:right; width:5%">
               <label class="smallRadioLabel" for="documentVersionUpdateNo"><?php echo i18n('versionNoUpdate');?>&nbsp;</label>
             </td><td style="text-align:left;">    
               <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.RadioButton" 
                name="documentVersionUpdate" id="documentVersionUpdateNo"
-               value="no" />
+               value="no" style="background-color:white;"/>
             </td>
             <td style="text-align:right; width:5%">
               <label class="smallRadioLabel" for="documentVersionUpdateDraft"><?php echo i18n('versionDraftUpdate');?>&nbsp;</label>
@@ -1109,14 +1113,14 @@ checkVersion(); ?>
             <td style="text-align:right; width:5%">
 		        <input onChange="calculateNewVersion();" type="radio" dojoType="dijit.form.CheckBox" 
 		         name="documentVersionUpdateDraft" id="documentVersionUpdateDraft"
-		         value="draft" />
+		         value="draft" style="background-color:white;"/>
 		        </td>
 		      </tr></table>
          </td> 
       </tr>
       <tr> 
         <td class="dialogLabel" >
-         <label for="documentVersionNewVersionDisplay" ><?php echo i18n("nextDocumentVersion");?>&nbsp;:&nbsp;</label>
+         <label for="documentVersionNewVersionDisplay" ><?php echo i18n("colNextDocumentVersion");?>&nbsp;:&nbsp;</label>
         </td>
         <td> 
          <div dojoType="dijit.form.TextBox" 
@@ -1126,7 +1130,41 @@ checkVersion(); ?>
           class="input">  
          </div>  
         </td>
-      </tr>             
+      </tr>   
+      <tr>
+        <td class="dialogLabel" >
+          <label for="documentVersionDate" ><?php echo i18n("colDate");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td>
+          <div id="documentVersionDate" name="documentVersionDate"
+           dojoType="dijit.form.DateTextBox" 
+           invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
+           type="text" maxlength="10" 
+           style="width:100px; text-align: center;" class="input"
+           required="true"
+           hasDownArrow="true" 
+           missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+           invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+          >
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="dialogLabel" >
+          <label for="documentVersionIsRef" ><?php echo i18n("colIsRef");?>&nbsp;:&nbsp;</label>
+        </td>
+        <td>
+          <table><tr><td>
+          <input dojoType="dijit.form.CheckBox" 
+           name="documentVersionIsRef" id="documentVersionIsRef"
+           style="background-color:white;"
+           onclick="setDisplayIsRefDocumentVersion();"
+           />
+           </td><td>
+          <span id="documentVersionIsRefDisplay" style="font-size:80%"><i><?php echo i18n('documentVersionIsRef');?>&nbsp;</i></span>
+          </tr></table>
+        </td>     
+      </tr>          
       <tr> 
         <td class="dialogLabel" >
          <label for="documentVersionDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
@@ -1241,8 +1279,8 @@ checkVersion(); ?>
                  onchange="assignmentUpdateLeftWork('assignment');"
                  onblur="assignmentUpdateLeftWork('assignment');" />
                <input id="assignmentAssignedUnit" name="assignmentAssignedUnit" value="" readonly tabindex="-1"
-                 dojoType="dijit.form.TextBox" 
-                 class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
+                 xdojoType="dijit.form.TextBox" 
+                 class="display" style="width:15px; background-color:white; color:#000000; border:0px;"/>
                <input type="hidden" id="assignmentAssignedWorkInit" name="assignmentAssignedWorkInit" value="" 
                  style="width:97px"/>  
              </td>    
@@ -1257,7 +1295,7 @@ checkVersion(); ?>
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px" readonly />
                <input id="assignmentRealUnit" name="assignmentRealUnit" value="" readonly tabindex="-1"
-                 dojoType="dijit.form.TextBox" 
+                 xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
              </td>
            </tr>
@@ -1273,7 +1311,7 @@ checkVersion(); ?>
                  onblur="assignmentUpdatePlannedWork('assignment');"  
                  style="width:97px" />
                <input id="assignmentLeftUnit" name="assignmentLeftUnit" value="" readonly tabindex="-1"
-                 dojoType="dijit.form.TextBox" 
+                 xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; color:#000000; border:0px;"/>
                <input type="hidden" id="assignmentLeftWorkInit" name="assignmentLeftWorkInit" value="" 
                  style="width:97px"/>  
@@ -1289,7 +1327,7 @@ checkVersion(); ?>
                  constraints="{min:0,max:9999.99}" 
                  style="width:97px" readonly /> 
                <input id="assignmentPlannedUnit" name="assignmentPlannedUnit" value="" readonly tabindex="-1"
-                 dojoType="dijit.form.TextBox" 
+                 xdojoType="dijit.form.TextBox" 
                  class="display" style="width:15px;background-color:#FFFFFF; border:0px;"/>
              </td>
            </tr>
@@ -1314,7 +1352,7 @@ checkVersion(); ?>
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAssignment').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" onclick="saveAssignment();return false;">
+        <button dojoType="dijit.form.Button" id="dialogAssignmentSubmit" type="submit" onclick="saveAssignment();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1409,7 +1447,7 @@ checkVersion(); ?>
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogExpenseDetail').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" onclick="saveExpenseDetail();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogExpenseDetailSubmit" onclick="saveExpenseDetail();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1608,7 +1646,7 @@ checkVersion(); ?>
         <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogResourceCost').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" onclick="saveResourceCost();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogResourceCostSubmit" onclick="saveResourceCost();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

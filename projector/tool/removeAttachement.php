@@ -17,7 +17,6 @@ if ($attachementId==null) {
   throwError('attachementId parameter not found in REQUEST');
 }
 $obj=new Attachement($attachementId);
-// TODO : file may have been deleted / chek before
 if (file_exists($obj->subDirectory . $obj->fileName)) {
   unlink($obj->subDirectory . $obj->fileName);
   rmdir($obj->subDirectory);
