@@ -1555,7 +1555,44 @@ function runReport() {
  * Global save function through [CTRL)+s
  */
 function globalSave() {
-  var button=dijit.byId('saveButton');
+
+  if (dijit.byId('dialogDetail') && dijit.byId('dialogDetail').open) {
+	var button=dijit.byId('comboSaveButton');
+  } else if (dijit.byId('dialogNote') && dijit.byId('dialogNote').open) {
+	var button=dijit.byId('dialogNoteSubmit');
+  } else if (dijit.byId('dialogLine') && dijit.byId('dialogLine').open) {
+		var button=dijit.byId('dialogLineSubmit');
+  } else if (dijit.byId('dialogLink') && dijit.byId('dialogLink').open) {
+		var button=dijit.byId('dialogLinkSubmit');
+  } else if (dijit.byId('dialogOrigin') && dijit.byId('dialogOrigin').open) {
+		var button=dijit.byId('dialogOriginSubmit');
+  } else if (dijit.byId('dialogCopy') && dijit.byId('dialogCopy').open) {
+		var button=dijit.byId('dialogCopySubmit');
+  } else if (dijit.byId('dialogCopyProject') && dijit.byId('dialogCopyProject').open) {
+		var button=dijit.byId('dialogProjectCopySubmit');
+  } else if (dijit.byId('dialogAttachement') && dijit.byId('dialogAttachement').open) {
+		var button=dijit.byId('dialogAttachementSubmit');
+  } else if (dijit.byId('dialogDocumentVersion') && dijit.byId('dialogDocumentVersion').open) {
+		var button=dijit.byId('submitDocumentVersionUpload');
+  } else if (dijit.byId('dialogAssignment') && dijit.byId('dialogAssignment').open) {
+		var button=dijit.byId('dialogAssignmentSubmit');
+  } else if (dijit.byId('dialogExpenseDetail') && dijit.byId('dialogExpenseDetail').open) {
+		var button=dijit.byId('dialogExpenseDetailSubmit');
+  } else if (dijit.byId('dialogPlan') && dijit.byId('dialogPlan').open) {
+		var button=dijit.byId('dialogPlanSubmit');
+  } else if (dijit.byId('dialogDependency') && dijit.byId('dialogDependency').open) {
+		var button=dijit.byId('dialogDependencySubmit');
+  } else if (dijit.byId('dialogResourceCost') && dijit.byId('dialogResourceCost').open) {
+		var button=dijit.byId('dialogResourceCostSubmit');
+  } else if (dijit.byId('dialogVersionProject') && dijit.byId('dialogVersionProject').open) {
+		var button=dijit.byId('dialogVersionProjectSubmit');
+  } else if (dijit.byId('dialogAffectation') && dijit.byId('dialogAffectation').open) {
+		var button=dijit.byId('dialogAffectationSubmit');
+  } else if (dijit.byId('dialogFilter') && dijit.byId('dialogFilter').open) {
+		var button=dijit.byId('dialogFilterSubmit');
+  } else {
+    var button=dijit.byId('saveButton');
+  }
   if (! button) {
     button=dijit.byId('saveParameterButton');
   }

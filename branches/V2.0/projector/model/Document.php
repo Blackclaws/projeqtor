@@ -23,8 +23,8 @@ class Document extends SqlElement {
   public $lockedDate;
   public $_col_2_2_Version; 
   public $idVersioningType;
-  //public $idCurrentVersion;
-  //public $idCurrentRefVersion;
+  public $idDocumentVersion;
+  //public $idDocumentVersionRef;
   public $_DocumentVersion=array();
   public $version;
   public $revision;
@@ -36,7 +36,8 @@ class Document extends SqlElement {
     <th field="nameProject" width="10%">${idProject}</th>
     <th field="nameProduct" width="10%">${idProduct}</th>
     <th field="nameDocumentType" width="10%">${type}</th>
-    <th field="name" width="35%">${name}</th>
+    <th field="name" width="25%">${name}</th>
+    <th field="nameDocumentVersion" width="10%">${currentDocumentVersion}</th>
     <th field="locked" width="5%" formatter="booleanFormatter">${locked}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
@@ -52,11 +53,13 @@ class Document extends SqlElement {
     "idDocumentDirectory"=>"required",
     "idDocumentType"=>"required",
     "idVersioningType"=>"required",
+    "idDocumentVersion"=>"readonly",
     "version"=>"hidden",
     "revision"=>"hidden",
     "draft"=>"hidden");
    
-   private static $_colCaptionTransposition = array('idDocumentType' => 'type');
+   private static $_colCaptionTransposition = array('idDocumentType' => 'type',
+   'idDocumentVersion' => 'currentDocumentVersion');
    
    
    /** ==========================================================================

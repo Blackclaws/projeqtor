@@ -836,10 +836,10 @@ function addAssignment (unit) {
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment"));
 	dijit.byId("assignmentIdResource").set('readOnly',false);
 	dijit.byId("assignmentIdRole").set('readOnly',false);
-	dijit.byId("assignmentPlannedUnit").set("value",unit);
-	dijit.byId("assignmentLeftUnit").set("value",unit);
-	dijit.byId("assignmentRealUnit").set("value",unit);
-	dijit.byId("assignmentAssignedUnit").set("value",unit);
+	dojo.byId("assignmentPlannedUnit").value=unit;
+	dojo.byId("assignmentLeftUnit").value=unit;
+	dojo.byId("assignmentRealUnit").value=unit;
+	dojo.byId("assignmentAssignedUnit").value=unit;
 	dijit.byId("dialogAssignment").show();
 }
 
@@ -877,10 +877,10 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dijit.byId("assignmentRealWork").set('value',dojo.number.format(realWork/100));
 	dijit.byId("assignmentLeftWork").set('value',dojo.number.format(leftWork/100));
 	dijit.byId("assignmentComment").set('value',comment);
-	dijit.byId("assignmentPlannedUnit").set("value",unit);
-	dijit.byId("assignmentLeftUnit").set("value",unit);
-	dijit.byId("assignmentRealUnit").set("value",unit);
-	dijit.byId("assignmentAssignedUnit").set("value",unit);	
+	dojo.byId("assignmentPlannedUnit").value=unit;
+	dojo.byId("assignmentLeftUnit").value=unit;
+	dojo.byId("assignmentRealUnit").value=unit;
+	dojo.byId("assignmentAssignedUnit").value=unit;
 	dojo.byId("assignmentLeftWorkInit").value=leftWork/100;
 	assignmentUpdatePlannedWork('assignment');
 	dijit.byId("dialogAssignment").set('title',i18n("dialogAssignment") + " #" + assignmentId);
@@ -1161,14 +1161,15 @@ function expenseDetailRecalculate() {
 //=============================================================================
 
 /**
-* Display a add Assignment Box
+* Display a add Document Version Box
 * 
 */
 function addDocumentVersion () {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
-	}	
+	}
+	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'block'});
 	dojo.byId("documentVersionId").value="";
 	dojo.byId("documentId").value=dojo.byId("objectId").value;
 	dojo.byId("documentVersionVersion").value=dojo.byId('version').value;
@@ -1184,6 +1185,8 @@ function addDocumentVersion () {
 	dijit.byId("documentVersionDescription").set('value','');
 	dijit.byId("documentVersionUpdateMajor").set('checked','true');
 	dijit.byId("documentVersionUpdateDraft").set('checked',false);
+	dijit.byId("documentVersionDate").set('value',new Date());
+	setDisplayIsRefDocumentVersion()
 	dijit.byId("dialogDocumentVersion").show();
 }
 
@@ -1191,25 +1194,35 @@ function addDocumentVersion () {
 * Display a edit Document Version Box
 * 
 */
-var documentVersionLoad=false;
-function editDocumentVersion (id, idExpense, type, expenseDate, amount) {
-	expenseDetailLoad=true;
+//var documentVersionLoad=false;
+function editDocumentVersion (id,name,version,revision,draft,description,versionDate) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	dojo.byId("expenseDetailId").value=id;
-	dojo.byId("idExpense").value=idExpense;	
-	dijit.byId("expenseDetailName").set("value",dojo.byId('expenseDetail_'+id).value);
-	dijit.byId("expenseDetailDate").set("value",getDate(expenseDate));
-	dijit.byId("expenseDetailAmount").set("value",dojo.number.parse(amount));
-	dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail") + " #" + id);
-	dijit.byId("expenseDetailType").set("value",type);
-	expenseDetailLoad=false;
-	expenseDetailTypeChange(id);
-	expenseDetailLoad=true;
-	setTimeout('expenseDetailLoad=false;',500);
-	dijit.byId("dialogExpenseDetail").show();
+	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'none'});
+	dojo.byId("documentVersionId").value=id;
+	dojo.byId("documentId").value=dojo.byId("objectId").value;
+	dojo.byId("documentVersionVersion").value=version;
+	dojo.byId("documentVersionRevision").value=revision;
+	dojo.byId("documentVersionDraft").value=draft;
+	if (draft) {
+		dijit.byId('documentVersionUpdateDraft').set('checked',true);
+	} else {
+		dijit.byId('documentVersionUpdateDraft').set('checked',false);
+	}
+	dijit.byId('documentVersionVersionDisplay').set('value',name);
+	dijit.byId("documentVersionLink").set('value','');
+	dijit.byId("documentVersionFile").reset();
+	dijit.byId("documentVersionDescription").set('value',description);
+	dijit.byId("documentVersionUpdateMajor").set('readOnly','readOnly');
+	dijit.byId("documentVersionUpdateMinor").set('readOnly','readOnly');
+	dijit.byId("documentVersionUpdateNo").set('readonly','readonly');
+	dijit.byId("documentVersionUpdateNo").set('checked',true);
+	dijit.byId("documentVersionUpdateDraft").set('readonly','readonly');
+	dijit.byId("documentVersionDate").set('value',versionDate);
+	setDisplayIsRefDocumentVersion()
+	dijit.byId("dialogDocumentVersion").show();
 }
 
 /**
@@ -1252,7 +1265,7 @@ function removeDocumentVersion (documentVersionId, documentVersionName) {
 function getDisplayVersion(version,revision,draft) {
   var res="";
   if (version!="" && revision !="") {
-	res=version+"."+revision;
+	res="V"+version+"."+revision;
   }
   if (draft) {
 	res+=draftSeparator+draft;
@@ -1287,7 +1300,11 @@ function calculateNewVersion() {
   } else { // 'none'
 	dojo.byId('documentVersionNewVersion').value=version;
 	dojo.byId('documentVersionNewRevision').value=revision;
-	dojo.byId('documentVersionNewDraft').value=(isDraft)?draft+1:'';
+	if (dojo.byId('documentVersionId').value) {
+	  dojo.byId('documentVersionNewDraft').value=(isDraft)?((draft)?draft:1):'';	
+	} else {
+	  dojo.byId('documentVersionNewDraft').value=(isDraft)?draft+1:'';
+	}
   }
   dijit.byId('documentVersionNewVersionDisplay').set('value',
   getDisplayVersion(dojo.byId('documentVersionNewVersion').value,
@@ -1295,6 +1312,13 @@ function calculateNewVersion() {
 		  dojo.byId('documentVersionNewDraft').value));
 }
 
+function setDisplayIsRefDocumentVersion() {
+	if (dijit.byId('documentVersionIsRef').get('checked')) {
+		dojo.style(dojo.byId('documentVersionIsRefDisplay'), {display:'block'});
+	} else {
+		dojo.style(dojo.byId('documentVersionIsRefDisplay'), {display:'none'});
+	}
+}
 //=============================================================================
 //= Dependency
 //=============================================================================
