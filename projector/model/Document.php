@@ -78,6 +78,9 @@ class Document extends SqlElement {
     	$this->idDocumentDirectory=$_SESSION['Directory'];
     	self::$_fieldsAttributes['idDocumentDirectory']="readonly";
     }
+    if ($this->id and $this->idDocumentVersion) {
+    	self::$_fieldsAttributes['idVersioningType']="required,readonly";
+    }
     if (!$this->id and ! $this->idAuthor) {
     	$user=$_SESSION['user'];
     	$this->idAuthor=$user->id;

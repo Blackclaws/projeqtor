@@ -842,7 +842,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   $type=new VersioningType($obj->idVersioningType);   
   $typeEvo=$type->code;
   $num="";
-  $vers=new Version($obj->idDocumentVersion);
+  $vers=new DocumentVersion($obj->idDocumentVersion);
   if ($typeEvo=='SEQ') {
     $num=intVal($vers->name)+1;
   }
@@ -877,7 +877,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
       }
       if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' 
+        echo '  <img src="css/images/smallButtonEdit.png" '     
         . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
         . ",'" . $version->version . "'"
         . ",'" . $version->revision . "'"
@@ -887,6 +887,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ",'" . $version->isRef . "'"
         . ",'" . htmlEncodeJson($version->description) . "'"
         . ",'" . $typeEvo . "'"
+        . ",'" . $version->name . "'"
         . ",'" . $version->name . "'"
         . ",'" . $version->name . "'"
         . ');" ' 

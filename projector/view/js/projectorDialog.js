@@ -1181,15 +1181,6 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 	dojo.byId("documentVersionRevision").value=dojo.byId('revision').value;
 	dojo.byId("documentVersionDraft").value=dojo.byId('draft').value;
 	dojo.byId("typeEvo").value=typeEvo;
-	dijit.byId('documentVersionVersionDisplay').set('value',
-			getDisplayVersion(typeEvo,
-					dojo.byId('documentVersionVersion').value,
-					dojo.byId('documentVersionRevision').value,
-					dojo.byId('documentVersionDraft').value),
-					numVers, 
-					dateVers,
-					nameVers);
-	calculateNewVersion(false);
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();
 	dijit.byId("documentVersionDescription").set('value','');
@@ -1201,6 +1192,16 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 	dijit.byId("documentVersionUpdateNo").set('readonly',false);
 	dijit.byId("documentVersionUpdateDraft").set('readonly',false);
 	dijit.byId("documentVersionIsRef").set('checked',false);
+	dijit.byId('documentVersionVersionDisplay').set('value',
+			getDisplayVersion(typeEvo,
+					dojo.byId('documentVersionVersion').value,
+					dojo.byId('documentVersionRevision').value,
+					dojo.byId('documentVersionDraft').value),
+					numVers, 
+					dateVers,
+					nameVers);
+	dojo.byId('documentVersionMode').value="add";
+	calculateNewVersion();
 	setDisplayIsRefDocumentVersion()
 	dijit.byId("dialogDocumentVersion").show();
 }
@@ -1236,8 +1237,6 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 	} else {
 		dijit.byId('documentVersionIsRef').set('checked',false);
 	}
-	calculateNewVersion(false);
-	dijit.byId('documentVersionVersionDisplay').set('value',nameVers);
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();
 	dijit.byId("documentVersionDescription").set('value',description);
@@ -1247,6 +1246,9 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 	dijit.byId("documentVersionUpdateNo").set('checked',true);
 	dijit.byId("documentVersionUpdateDraft").set('readonly','readonly');
 	dijit.byId("documentVersionDate").set('value',versionDate);
+	dojo.byId('documentVersionMode').value="edit";
+	dijit.byId('documentVersionVersionDisplay').set('value',nameVers);
+	calculateNewVersion(false);
 	setDisplayIsRefDocumentVersion()
 	dijit.byId("dialogDocumentVersion").show();
 }
@@ -1288,7 +1290,7 @@ function removeDocumentVersion (documentVersionId, documentVersionName) {
 	showConfirm (msg, actionOK);
 }
 
-function getDisplayVersion(type, version, revision, draft, numVers, dateVers, nameVers) {
+function getDisplayVersion(typeEvo, version, revision, draft, numVers, dateVers, nameVers) {
   var res="";
   if (typeEvo=="EVO") {
 	if (version!="" && revision !="") {
@@ -1343,19 +1345,21 @@ function calculateNewVersion(update) {
 	  dojo.byId('documentVersionNewDraft').value=(isDraft)?draft+1:'';
 	}
   }
-  dateVers=dijit.byId("documentVersionDate").get('value');
-  nameVers=dijit.byId("documentVersionNewVersionDisplay").get('value');
-  if (update && typeEvo=="SEQ") {
-	  numVer=parseInt(nameVers)+1;
+  dateVers=dojo.date.locale.format(dijit.byId("documentVersionDate").get('value'), {datePattern: "yyyyMMdd", selector: "date"});
+  nameVers=dijit.byId("documentVersionVersionDisplay").get('value');
+  numVers=nameVers;
+  if (typeEvo=="SEQ" && dojo.byId('documentVersionMode').value=="add") {
+	  if (! nameVers) {nameVers=0;}
+	  numVers=parseInt(nameVers)+1;
   }
-  dijit.byId('documentVersionNewVersionDisplay').set('value',
-      getDisplayVersion(typeEvo,
+  var newVers=getDisplayVersion(typeEvo,
 		  dojo.byId('documentVersionNewVersion').value,
 		  dojo.byId('documentVersionNewRevision').value,
-		  dojo.byId('documentVersionNewDraft').value),
+		  dojo.byId('documentVersionNewDraft').value,
 		  numVers, 
 		  dateVers, 
 		  nameVers);
+  dijit.byId('documentVersionNewVersionDisplay').set('value',newVers);
   if (isDraft) {
 	dijit.byId('documentVersionIsRef').set('checked',false);
 	setDisplayIsRefDocumentVersion();

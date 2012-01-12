@@ -1035,6 +1035,7 @@ checkVersion(); ?>
     <input id="documentVersionNewRevision" name="documentVersionNewRevision" type="hidden" value="" />
     <input id="documentVersionNewDraft" name="documentVersionNewDraft" type="hidden" value="" />
     <input id="documentId" name="documentId" type="hidden" value="" />
+    <input id="documentVersionMode" name="documentVersionMode" type="hidden" value="" />
     <input id="typeEvo" name="typeEvo" type="hidden" value="" />
 <div id="inputFileDocumentVersion" name="inputFileDocumentVersion">
     <table>
@@ -1146,6 +1147,7 @@ checkVersion(); ?>
            style="width:100px; text-align: center;" class="input"
            required="true"
            hasDownArrow="true" 
+           onchange="calculateNewVersion(false);"
            missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
            invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
           >
