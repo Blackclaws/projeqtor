@@ -1035,6 +1035,7 @@ checkVersion(); ?>
     <input id="documentVersionNewRevision" name="documentVersionNewRevision" type="hidden" value="" />
     <input id="documentVersionNewDraft" name="documentVersionNewDraft" type="hidden" value="" />
     <input id="documentId" name="documentId" type="hidden" value="" />
+    <input id="typeEvo" name="typeEvo" type="hidden" value="" />
 <div id="inputFileDocumentVersion" name="inputFileDocumentVersion">
     <table>
       <tr height="30px"> 
@@ -1051,6 +1052,7 @@ checkVersion(); ?>
           title="<?php echo i18n("helpSelectFile");?>" />
         </td>
       </tr>
+      <tr><td colspan="2"><div style="display:none"><table>
       <tr> 
         <td class="dialogLabel" >
          <label for="documentVersionLink" ><?php echo i18n("colOrLink");?>&nbsp;:&nbsp;</label>
@@ -1064,6 +1066,7 @@ checkVersion(); ?>
          </div>  
         </td>
       </tr>
+      </table></div></td></tr>
     </table>
 </div>
     <table>
