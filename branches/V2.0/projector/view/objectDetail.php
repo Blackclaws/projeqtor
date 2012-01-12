@@ -842,8 +842,8 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   $type=new VersioningType($obj->idVersioningType);   
   $typeEvo=$type->code;
   $num="";
+  $vers=new Version($obj->idDocumentVersion);
   if ($typeEvo=='SEQ') {
-    $vers=new Version($obj->idDocumentVersion);
     $num=intVal($vers->name)+1;
   }
   echo '<tr>';
@@ -852,7 +852,13 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   	reset($statusTable);
   	echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . key($statusTable) . '\',\'' . $typeEvo . '\',\'' . $num . '\');" ';
+      echo '<img src="css/images/smallButtonAdd.png" ' 
+         . 'onClick="addDocumentVersion(' . "'" . key($statusTable) . "'" 
+         . ",'" . $typeEvo . "'" 
+         . ",'" . $num . "'" 
+         . ",'" . $vers->name . "'"
+         . ",'" . $vers->name . "'" 
+         . ');" ';
       echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
     }
     echo '</td>';
@@ -873,7 +879,6 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" 
-        . ",'" . $version->name . "'"
         . ",'" . $version->version . "'"
         . ",'" . $version->revision . "'"
         . ",'" . $version->draft . "'"
@@ -882,6 +887,8 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ",'" . $version->isRef . "'"
         . ",'" . htmlEncodeJson($version->description) . "'"
         . ",'" . $typeEvo . "'"
+        . ",'" . $version->name . "'"
+        . ",'" . $version->name . "'"
         . ');" ' 
         . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
       }
