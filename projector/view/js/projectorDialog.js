@@ -1164,7 +1164,7 @@ function expenseDetailRecalculate() {
 * Display a add Document Version Box
 * 
 */
-function addDocumentVersion (defaultStatus, typeEvo, numVers) {
+function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1182,10 +1182,14 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers) {
 	dojo.byId("documentVersionDraft").value=dojo.byId('draft').value;
 	dojo.byId("typeEvo").value=typeEvo;
 	dijit.byId('documentVersionVersionDisplay').set('value',
-			getDisplayVersion(dojo.byId('documentVersionVersion').value,
+			getDisplayVersion(typeEvo,
+					dojo.byId('documentVersionVersion').value,
 					dojo.byId('documentVersionRevision').value,
-					dojo.byId('documentVersionDraft').value));
-	calculateNewVersion();
+					dojo.byId('documentVersionDraft').value),
+					numVers, 
+					dateVers,
+					nameVers);
+	calculateNewVersion(false);
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();
 	dijit.byId("documentVersionDescription").set('value','');
@@ -1206,7 +1210,7 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers) {
 * 
 */
 //var documentVersionLoad=false;
-function editDocumentVersion (id,name,version,revision,draft,versionDate, status, isRef, description, typeEvo) {
+function editDocumentVersion (id,version,revision,draft,versionDate, status, isRef, description, typeEvo, numVers, dateVers, nameVers) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1232,8 +1236,8 @@ function editDocumentVersion (id,name,version,revision,draft,versionDate, status
 	} else {
 		dijit.byId('documentVersionIsRef').set('checked',false);
 	}
-	calculateNewVersion();
-	dijit.byId('documentVersionVersionDisplay').set('value',name);
+	calculateNewVersion(false);
+	dijit.byId('documentVersionVersionDisplay').set('value',nameVers);
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();
 	dijit.byId("documentVersionDescription").set('value',description);
@@ -1284,19 +1288,30 @@ function removeDocumentVersion (documentVersionId, documentVersionName) {
 	showConfirm (msg, actionOK);
 }
 
-function getDisplayVersion(version,revision,draft) {
+function getDisplayVersion(type, version, revision, draft, numVers, dateVers, nameVers) {
   var res="";
-  if (version!="" && revision !="") {
-	res="V"+version+"."+revision;
-  }
-  if (draft) {
-	res+=draftSeparator+draft;
+  if (typeEvo=="EVO") {
+	if (version!="" && revision !="") {
+	  res="V"+version+"."+revision;
+    }
+	if (draft) {
+	  res+=draftSeparator+draft;
+	}
+  } else if (typeEvo=="EVT") {
+	res=dateVers;
+  } else if (typeEvo=="SEQ") {
+	res=numVers;
+  } else if (typeEvo=="EXT") {
+	res=nameVers
   }
   return res;
 }
 
-function calculateNewVersion() {
-  var type="";
+function calculateNewVersion(update) {
+  var typeEvo=dojo.byId("typeEvo").value;
+  var numVers="";
+  var dateVers="";
+  var nameVers="";
   if (dijit.byId('documentVersionUpdateMajor').get('checked')) {
 	  type="major";
   } else if (dijit.byId('documentVersionUpdateMinor').get('checked')) {
@@ -1328,10 +1343,19 @@ function calculateNewVersion() {
 	  dojo.byId('documentVersionNewDraft').value=(isDraft)?draft+1:'';
 	}
   }
+  dateVers=dijit.byId("documentVersionDate").get('value');
+  nameVers=dijit.byId("documentVersionNewVersionDisplay").get('value');
+  if (update && typeEvo=="SEQ") {
+	  numVer=parseInt(nameVers)+1;
+  }
   dijit.byId('documentVersionNewVersionDisplay').set('value',
-  getDisplayVersion(dojo.byId('documentVersionNewVersion').value,
+      getDisplayVersion(typeEvo,
+		  dojo.byId('documentVersionNewVersion').value,
 		  dojo.byId('documentVersionNewRevision').value,
-		  dojo.byId('documentVersionNewDraft').value));
+		  dojo.byId('documentVersionNewDraft').value),
+		  numVers, 
+		  dateVers, 
+		  nameVers);
   if (isDraft) {
 	dijit.byId('documentVersionIsRef').set('checked',false);
 	setDisplayIsRefDocumentVersion();
