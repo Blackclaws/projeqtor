@@ -186,9 +186,7 @@ class Work extends SqlElement {
   public static function displayWork($val) {
     self::setWorkUnit();
     $coef=self::$workCoef;
-//debugLog ("work unit = " . self::$workUnit . "   coef = " . self::$workCoef); 
-//debugLog ("'" . round($val*$coef,2) . "'");
-    return (round($val*$coef,2));
+    return round($val*$coef,2);
   }
   
   public static function displayWorkWithUnit($val) {

@@ -1164,7 +1164,7 @@ function expenseDetailRecalculate() {
 * Display a add Document Version Box
 * 
 */
-function addDocumentVersion (defaultStatus) {
+function addDocumentVersion (defaultStatus, typeEvo, numVers) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1180,6 +1180,7 @@ function addDocumentVersion (defaultStatus) {
 	dojo.byId("documentVersionVersion").value=dojo.byId('version').value;
 	dojo.byId("documentVersionRevision").value=dojo.byId('revision').value;
 	dojo.byId("documentVersionDraft").value=dojo.byId('draft').value;
+	dojo.byId("typeEvo").value=typeEvo;
 	dijit.byId('documentVersionVersionDisplay').set('value',
 			getDisplayVersion(dojo.byId('documentVersionVersion').value,
 					dojo.byId('documentVersionRevision').value,
@@ -1205,7 +1206,7 @@ function addDocumentVersion (defaultStatus) {
 * 
 */
 //var documentVersionLoad=false;
-function editDocumentVersion (id,name,version,revision,draft,versionDate, status, isRef, description) {
+function editDocumentVersion (id,name,version,revision,draft,versionDate, status, isRef, description, typeEvo) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1220,6 +1221,7 @@ function editDocumentVersion (id,name,version,revision,draft,versionDate, status
 	dojo.byId("documentVersionVersion").value=version;
 	dojo.byId("documentVersionRevision").value=revision;
 	dojo.byId("documentVersionDraft").value=draft;
+	dojo.byId("typeEvo").value=typeEvo;
 	if (draft) {
 		dijit.byId('documentVersionUpdateDraft').set('checked',true);
 	} else {
@@ -1230,6 +1232,7 @@ function editDocumentVersion (id,name,version,revision,draft,versionDate, status
 	} else {
 		dijit.byId('documentVersionIsRef').set('checked',false);
 	}
+	calculateNewVersion();
 	dijit.byId('documentVersionVersionDisplay').set('value',name);
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();

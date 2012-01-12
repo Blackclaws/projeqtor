@@ -283,7 +283,6 @@ class PlanningElement extends SqlElement {
     if ($this->initialStartDate and $this->initialEndDate) {
       $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
     }
-    
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -341,6 +340,7 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   private function updateSynthesisObj () {
+
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
@@ -359,7 +359,7 @@ class PlanningElement extends SqlElement {
     $plannedStartDate=null;
     $plannedEndDate=null;
     foreach ($assList as $ass) {
-      $assignedWork+=$ass->assignedWork;
+    	$assignedWork+=$ass->assignedWork;
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
       $realWork+=$ass->realWork;
@@ -392,7 +392,7 @@ class PlanningElement extends SqlElement {
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
         $assignedCost+=$pla->assignedCost;
-        $leftCost+=$pla->leftCost;
+        $leftCost=+$pla->leftCost;
         $plannedCost+=$pla->plannedCost;
         $realCost+=$pla->realCost;
         if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {

@@ -717,7 +717,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         echo '</div>';
       } else if ($dataType=='int' or $dataType=='decimal'){
-        // Draw a number field ================================================ NUMBER
+      	// Draw a number field ================================================ NUMBER
         $isCost=false;
         $isWork=false;
         $isDuration=false;
@@ -752,6 +752,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' class="input" ';
         //echo ' layoutAlign ="right" ';
         echo ' value="' . (($isWork)?Work::displayWork($val):htmlEncode($val)) . '" ';
+        //echo ' value="' . htmlEncode($val) . '" ';
         echo ' >';
         echo $colScript;
         echo '</div>';
@@ -837,13 +838,21 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   }
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  $typeEvo="EVO";
+  $type=new VersioningType($obj->idVersioningType);   
+  $typeEvo=$type->code;
+  $num="";
+  if ($typeEvo=='SEQ') {
+    $vers=new Version($obj->idDocumentVersion);
+    $num=intVal($vers->name)+1;
+  }
   echo '<tr>';
   if (! $print) {
   	$statusTable=SqlList::getList('Status','name',null);
   	reset($statusTable);
-    echo '<td class="assignHeader" style="width:10%">';
+  	echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . key($statusTable) . '\');" ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion(\'' . key($statusTable) . '\',\'' . $typeEvo . '\',\'' . $num . '\');" ';
       echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
     }
     echo '</td>';
@@ -872,6 +881,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ",'" . $version->idStatus . "'"
         . ",'" . $version->isRef . "'"
         . ",'" . htmlEncodeJson($version->description) . "'"
+        . ",'" . $typeEvo . "'"
         . ');" ' 
         . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';      
       }
