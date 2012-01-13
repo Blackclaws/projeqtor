@@ -125,15 +125,30 @@ class Document extends SqlElement {
     $result="";
     if ($item=='lockButton') {
     	if ($this->locked) {
-    		$result .= '<tr><td></td><td>';
-        $result .= '<button id="unlockDocument" dojoType="dijit.form.Button" showlabel="true"'; 
-        $result .= ' title="' . i18n('unlockDocument') . '" >';
-        $result .= '<span>' . i18n('unlockDocument') . '</span>';
-        $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-        $result .=  '  unlockDocument();';
-        $result .= '</script>';
-        $result .= '</button>';
-        $result .= '</td></tr>';
+        $canUnlock=false;
+        $user=$_SESSION['user'];
+        if ($user->id==$this->idLocker) {
+        	$canUnlock=true;
+    	  } else {
+          $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'document'));        
+          if ($right) {
+            $list=new ListYesNo($right->rightAccess);
+            if ($list->code=='YES') {
+              $canUnlock=true;
+            }
+          }  
+    	  }
+    	  if ($canUnlock) {
+	    		$result .= '<tr><td></td><td>';
+	        $result .= '<button id="unlockDocument" dojoType="dijit.form.Button" showlabel="true"'; 
+	        $result .= ' title="' . i18n('unlockDocument') . '" >';
+	        $result .= '<span>' . i18n('unlockDocument') . '</span>';
+	        $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+	        $result .=  '  unlockDocument();';
+	        $result .= '</script>';
+	        $result .= '</button>';
+	        $result .= '</td></tr>';
+    	  }
     	} else {
 	    	$result .= '<tr><td></td><td>';
 	    	$result .= '<button id="lockDocument" dojoType="dijit.form.Button" showlabel="true"'; 
