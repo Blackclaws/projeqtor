@@ -364,3 +364,20 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'documentRoot','../files/documents');
+
+INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
+(1, 'planning', 1),
+(2, 'planning', 2),
+(3, 'planning', 1),
+(4, 'planning', 2),
+(6, 'planning', 2),
+(7, 'planning', 2),
+(5, 'planning', 2),
+(1, 'document', 1),
+(2, 'document', 2),
+(3, 'document', 1),
+(4, 'document', 2),
+(6, 'document', 2),
+(7, 'document', 2),
+(5, 'document', 2);
+

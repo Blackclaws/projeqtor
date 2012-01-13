@@ -29,14 +29,25 @@ scriptLog('   ->/view/planningList.php');
 		              <input type="hidden" id="objectClass" name="objectClass" value="" /> 
 		              <input type="hidden" id="objectId" name="objectId" value="" />
 		              &nbsp;&nbsp;&nbsp;
+<?php
+$canPlan=false; 
+$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
+if ($right) {
+  $list=new ListYesNo($right->rightAccess);
+  if ($list->code=='YES') {
+    $canPlan=true;
+  }
+}
+if ($canPlan) { ?> 
 		              <button id="planButton" dojoType="dijit.form.Button" showlabel="false"
 		                title="<?php echo i18n('buttonPlan');?>"
 		                iconClass="iconPlan" >
 		                <script type="dojo/connect" event="onClick" args="evt">
-                  showPlanParam();
-                  return false;
-                </script>
-		              </button>             
+                     showPlanParam();
+                     return false;
+                    </script>
+		              </button>
+<?php }?>             
 		            </td>
 		            <td>
 		             &nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>
