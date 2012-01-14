@@ -229,11 +229,16 @@ checkVersion(); ?>
             </div>
             <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>">
               <div dojoType="dojo.data.ItemFileReadStore" jsId="directoryStore" url="../tool/jsonDirectory.php">
+              <div style="position: absolute; float:right; right: 5px; cursor:pointer;"
+                title="<?php echo i18n("menuDocumentDirectory");?>"
+                onclick="loadContent('objectMain.php?objectClass=DocumentDirectory','centerDiv');"
+                class="iconDocumentDirectory22">
+              </div>
               </div>
               <div dojoType="dijit.tree.ForestStoreModel" jsId="directoryModel" store="directoryStore"
                query="{id:'*'}" rootId="directoryRoot" rootLabel="Documents"
                childrenAttrs="children">
-              </div>
+              </div>             
               <div dojoType="dijit.Tree" id="documentDirectoryTree" model="directoryModel" openOnClick="false" showRoot='false'>
                 <script type="dojo/method" event="onClick" args="item">
                   loadContent("objectMain.php?objectClass=Document&Directory="+directoryStore.getValue(item, "id"),"centerDiv");

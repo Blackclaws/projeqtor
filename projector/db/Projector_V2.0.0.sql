@@ -210,8 +210,8 @@ CREATE TABLE `${prefix}documentdirectory` (
   `location` varchar(4000),
   `idProject` int(12) unsigned DEFAULT NULL,
   `idProduct` int(12) unsigned DEFAULT NULL,
-  `idDirectory` int(12) unsigned,
-  `sortOrder` int(3) unsigned,
+  `idDocumentDirectory` int(12) unsigned,
+  `idDocumentType` int(12) unsigned,
   `idle` int(1) unsigned default '0',
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -219,20 +219,20 @@ CREATE TABLE `${prefix}documentdirectory` (
 ALTER TABLE `${prefix}documentdirectory` ADD INDEX documentdirectoryProject (idProject),
 ADD INDEX documentdirectoryDirectory (idDirectory);
 
-INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDirectory,sortOrder,location) values
-(1,'Project',null,null, 100,'/Project'),
-(2,'Product',null,null, 200,'/Product'),
-(3,'Need',null,2,210,'/Product/Need'),
-(4,'Specification',null,2,220,'/Product/Specification'),
-(5,'Conception',null,2, 230,'/Product/Conception'),
-(7,'Testing',null,2, 240,'/Product/Testing'),
-(8,'Deployment',null, 2,250,'/Product/Deployment'),
-(9,'Exploitation',null,2,260,'/Product/Exploitation'),
-(10,'Contract',null,1,110,'/Project/Contract'),
-(11,'Management',null,1,120,'/Project/Management'),
-(12,'Reviews',null,1,130,'/Project/Reviews'),
-(13,'Follow-up',null,1,140,'/Project/Follow-up'),
-(14,'Financial',null,1,150,'/Project/Financial'); 
+INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDocumentDirectory,location) values
+(1,'Project',null,null,'/Project'),
+(2,'Product',null,null,'/Product'),
+(3,'Need',null,2,'/Product/Need'),
+(4,'Specification',null,2,'/Product/Specification'),
+(5,'Conception',null,2,'/Product/Conception'),
+(7,'Testing',null,2,'/Product/Testing'),
+(8,'Deployment',null,2,'/Product/Deployment'),
+(9,'Exploitation',null,2,'/Product/Exploitation'),
+(10,'Contract',null,1,'/Project/Contract'),
+(11,'Management',null,1,'/Project/Management'),
+(12,'Reviews',null,1,'/Project/Reviews'),
+(13,'Follow-up',null,1,'/Project/Follow-up'),
+(14,'Financial',null,1,'/Project/Financial'); 
 
 CREATE TABLE `${prefix}document` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -381,3 +381,9 @@ INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) V
 (7, 'document', 2),
 (5, 'document', 2);
 
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+  (103,'menuDocumentDirectory',14,'object',686,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 103, 1),
+(3, 103, 1);

@@ -77,9 +77,13 @@ class Document extends SqlElement {
     if (!$this->id and array_key_exists('Directory',$_SESSION)) {
     	$this->idDocumentDirectory=$_SESSION['Directory'];
     	self::$_fieldsAttributes['idDocumentDirectory']="readonly";
-    }
+    	$dir=new DocumentDirectory($this->idDocumentDirectory);
+    	$this->idDocumentType=$dir->idDocumentType;
+    	$this->idProduct=$dir->idProduct;
+    	$this->idProject=$dir->idProject;
+    } 
     if ($this->id and $this->idDocumentVersion) {
-    	self::$_fieldsAttributes['idVersioningType']="required,readonly";
+    	self::$_fieldsAttributes['idVersioningType']="readonly";
     }
     if (!$this->id and ! $this->idAuthor) {
     	$user=$_SESSION['user'];

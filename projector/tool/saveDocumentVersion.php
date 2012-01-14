@@ -164,7 +164,7 @@ if (! $documentVersionId) {
 		unset($split[count($split)-1]);
 		$dir='';
 		foreach ($split as $dirElt) { 
-			$dir.=$dirElt.'/';
+			$dir.=$dirElt.$paramPathSeparator;
 	    if (! file_exists($dir)) {
 	      mkdir($dir);
 	    }

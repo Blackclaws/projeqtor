@@ -15,26 +15,37 @@ require_once "../tool/projector.php";
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null) {
 //scriptLog("      =>htmlDrawOptionForReference($col,$selection,obj,$required,$critFld,$critVal)");
 	$listType=substr($col,2);
+	$column='name';
+	if ($listType=='DocumentDirectory') {
+		$column='location';
+	}
   if ($critFld) {
     $critArray=array($critFld=>$critVal);
-    $table=SqlList::getListWithCrit($listType,$critArray,'name',$selection);
+    $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
   } else {
-    $table=SqlList::getList($listType,'name',$selection);
+    $table=SqlList::getList($listType,$column,$selection);
   }
   $restrictArray=array();
   $excludeArray=array();
   if ($obj) {
-    if (get_class($obj)=='Project' and $col=="idProject" and $obj->id!=null) {
+  	$class=get_class($obj);
+    if ( $class=='Project' and $col=="idProject" and $obj->id!=null) {
       $excludeArray=$obj->getRecursiveSubProjectsFlatList();
       $excludeArray[$obj->id]=$obj->name;
     } else if ($col=="idProject") {
+    	$menuClass=$obj->getMenuClass();
+    	if ($class=='DocumentDirectory') {
+    		$doc=new Document();
+    		$menuClass=$doc->getMenuClass();
+    	}
       $user=$_SESSION["user"];
       $controlRightsTable=$user->getAccessControlRights();
-  	  if (! array_key_exists($obj->getMenuClass(),$controlRightsTable)) {
+      if (! array_key_exists($menuClass,$controlRightsTable)) {
 	      // If AccessRight notdefined for object and user profile => empty list + log error
+	      debugLog('error in htmlDrawOptionForReference : no control rights for ' . $class);
         return;		
 	    }
-      $controlRights=$controlRightsTable[$obj->getMenuClass()];
+      $controlRights=$controlRightsTable[$menuClass];
       if ($obj->id==null) {
         // creation mode
         if ($controlRights["create"]=="PRO") {
@@ -42,7 +53,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         }
       } else {
         // read or update mode
-        if (securityGetAccessRightYesNo($obj->getMenuClass(), 'update', $obj)=="YES") {
+        if (securityGetAccessRightYesNo($menuClass, 'update', $obj)=="YES") {
           // update
           if ($controlRights["update"]=="PRO") {
             $restrictArray=$user->getVisibleProjects();
@@ -50,8 +61,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         }
       }
     } else if ($col=='idStatus') {        
-      $idType='id' . get_class($obj) . 'Type';
-      $typeClass=get_class($obj) . 'Type';
+      $idType='id' . $class . 'Type';
+      $typeClass=$class . 'Type';
       if (property_exists($obj,$idType) ) {
         if ($obj->$idType and $obj->idStatus) {
           $profile="";

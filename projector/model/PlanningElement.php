@@ -468,7 +468,9 @@ class PlanningElement extends SqlElement {
     $refType=$this->topRefType;
     $refId=$this->topRefId;
     $result = parent::delete();
-    
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     $topElt=null;
     if ( $refId and trim($refId)!='') {
       $crit=array("refType"=>$refType, "refId"=>$refId);

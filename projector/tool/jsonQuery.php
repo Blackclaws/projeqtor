@@ -265,7 +265,10 @@
 	    }
     }
     // build order by clause
-    if ( property_exists($objectClass,'wbsSortable')) {
+    if ($objectClass=='DocumentDirectory') {
+    	$queryOrderBy .= ($queryOrderBy=='')?'':', ';
+    	$queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('location');
+    } else if ( property_exists($objectClass,'wbsSortable')) {
       $queryOrderBy .= ($queryOrderBy=='')?'':', ';
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('wbsSortable');
     } else if (property_exists($objectClass,'sortOrder')) {

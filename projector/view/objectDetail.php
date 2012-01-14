@@ -621,7 +621,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($col=='idProject') {
           if ($obj->id==null) {
-            if (array_key_exists('project',$_SESSION)) {
+            if (array_key_exists('project',$_SESSION) and ! $obj->$col) {
               $val=$_SESSION['project'];
             }
             $accessRight=securityGetAccessRight('menu' . $classObj, 'create');
@@ -765,7 +765,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($isDuration) {
           echo i18n("shortDay");
         }
-      } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST)){
+      } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST) ){
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
         echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
