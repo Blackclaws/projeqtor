@@ -108,9 +108,11 @@ class Assignment extends SqlElement {
    * Delete object and dispatch updates to top 
    * @see persistence/SqlElement#save()
    */
-  public function delete() {
-    
+  public function delete() {    
     $result = parent::delete();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     PlanningElement::updateSynthesis($this->refType, $this->refId);
     
     // Dispatch value

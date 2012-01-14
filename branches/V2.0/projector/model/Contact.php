@@ -305,6 +305,9 @@ class Contact extends SqlElement {
 
   public function save() {
     $result=parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     Affectation::updateAffectations($this->id);
     return $result;
   }

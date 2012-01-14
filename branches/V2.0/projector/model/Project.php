@@ -441,19 +441,22 @@ class Project extends SqlElement {
       $this->ProjectPlanningElement->topRefType=null;
       $this->ProjectPlanningElement->topRefId=null;
     }
-    //$this->sortOrder=$this->ProjectPlanningElement->wbsSortable;
+
+    // Initialize user->_visibleProjects, to force recalculate
+    $result = parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     if ($this->idle) {
       $crit=array('idProject'=>$this->id, 'idle'=>'0');
       $vp=new VersionProject();
       $vpLst=$vp->getSqlElementsFromCriteria($crit, false);
       foreach ($vpLst as $vp) {
-      	$vp->idle=$this->idle;
-      	$vp->save();
+        $vp->idle=$this->idle;
+        $vp->save();
       }
     }
-    // Initialize user->_visibleProjects, to force recalculate
-    $result = parent::save();
-        // Create affectation for Manager.
+    // Create affectation for Manager.
     if ($this->idUser) {
       if (securityGetAccessRight('menuProject', 'update', $this)=="PRO"){
         $id=($this->id)?$this->id:Sql::$lastQueryNewid;

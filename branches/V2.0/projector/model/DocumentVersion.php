@@ -93,6 +93,9 @@ class DocumentVersion extends SqlElement {
   	$saveDoc=false;
   	$this->fullName=$doc->name."_".$this->name;
   	$result=parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
     if ( ($doc->version==null) 
     or ( $this->version>$doc->version ) 
     or ( $this->version==$doc->version and $this->revision>$doc->revision) 
@@ -124,6 +127,10 @@ class DocumentVersion extends SqlElement {
   }
   
   function delete() {
+    $result=parent::delete();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
   	$recalcDoc=false;
   	$crit=array('idDocument'=>$this->idDocument);
   	$doc=new Document($this->idDocument);
@@ -134,7 +141,6 @@ class DocumentVersion extends SqlElement {
       $doc->idDocumentVersion=null;
       $doc->save();
     }
-  	$result=parent::delete();
   	$list=$this->getSqlElementsFromCriteria($crit, false, null, 'id desc',false);
   	if (count($list)>0) {
   		$dv=$list[0];
@@ -147,8 +153,10 @@ class DocumentVersion extends SqlElement {
   	global $paramPathSeparator;
   	$doc=New Document($this->idDocument);
     $dir=New DocumentDirectory($doc->idDocumentDirectory);
-  	$root=Parameter::getGlobalParameter('documentRoot');
-    $uploaddir = $root . $dir->location ;
+    $uploaddir = $dir->getLocation();
+    if (! file_exists($uploaddir)) {
+    	$dir->createDirectory();
+    }
     return $uploaddir . $paramPathSeparator . $this->fileName . '.' . $this->id;
   }
 }

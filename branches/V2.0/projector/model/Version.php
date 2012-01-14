@@ -200,6 +200,9 @@ class Version extends SqlElement {
   
   public function save() {
   	$result=parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
   	if ($this->idle) {
   		VersionProject::updateIdle('Version', $this->id);
   	}

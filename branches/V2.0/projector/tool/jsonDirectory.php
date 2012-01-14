@@ -8,14 +8,13 @@
     echo 'label: "name",';
     echo ' "items":[';
     
-    
     getSubdirectories(null);
     
     echo ' ] }';
     
     function getSubdirectories($id) {
     	$dir=new DocumentDirectory();
-    	$dirList=$dir->getSqlElementsFromCriteria(array('idDirectory'=>$id),false,null,'sortOrder asc');
+    	$dirList=$dir->getSqlElementsFromCriteria(array('idDocumentDirectory'=>$id),false,null,'location asc');
       $nbRows=0;
       foreach ($dirList as $dir) {
         if ($nbRows>0) echo ', ';

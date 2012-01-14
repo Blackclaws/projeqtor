@@ -190,12 +190,12 @@ class Bill extends SqlElement {
   
   public function delete()
   {
-  	if (($result = parent::delete()) == "OK")
-  	{
-	  	if ($this->startDate!=null && $this->endDate!=null && $this->idProject!=null)
-		{
+  	$result = parent::delete();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
+  	if ($this->startDate!=null && $this->endDate!=null && $this->idProject!=null) {
 			$crit = "idProject=".$this->idProject;
-			
 			$crit.=" and ";
 			$crit.="workDate>=\"".$this->startDate."\"";
 			$crit.=" and ";
@@ -216,9 +216,8 @@ class Bill extends SqlElement {
 				$work->save();
 			}	
 		}
-  	}
 	
-	return $result;
+	  return $result;
   }
     
 

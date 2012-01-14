@@ -50,6 +50,10 @@ class Attachement extends SqlElement {
   
   public function delete() {
   	global $paramPathSeparator;
+  	return parent::delete();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
   	enableCatchErrors();
   	if (file_exists($this->subDirectory . $paramPathSeparator . $this->fileName)) {
   	  unlink($this->subDirectory . $paramPathSeparator . $this->fileName);
@@ -58,7 +62,6 @@ class Attachement extends SqlElement {
   	  rmdir($this->subDirectory);
   	}
   	disableCatchErrors();
-  	return parent::delete();
   }
     
 }

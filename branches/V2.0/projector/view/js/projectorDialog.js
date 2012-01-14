@@ -1352,6 +1352,10 @@ function calculateNewVersion(update) {
 	  if (! nameVers) {nameVers=0;}
 	  numVers=parseInt(nameVers)+1;
   }
+  dijit.byId("documentVersionNewVersionDisplay").set('readOnly','readOnly');
+  if (typeEvo=="EXT" ) {
+	  dijit.byId("documentVersionNewVersionDisplay").set('readOnly', false);
+  }
   var newVers=getDisplayVersion(typeEvo,
 		  dojo.byId('documentVersionNewVersion').value,
 		  dojo.byId('documentVersionNewRevision').value,
