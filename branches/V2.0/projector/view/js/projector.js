@@ -751,6 +751,22 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       }
     }
+    var classObj=dojo.byId('objectClass');
+    if (classObj && classObj.value=='DocumentDirectory') {
+    	dijit.byId("documentDirectoryTree").model.store.clearOnClose = true;
+    	dijit.byId("documentDirectoryTree").model.store.close();
+  	    // Completely delete every node from the dijit.Tree     
+   	    dijit.byId("documentDirectoryTree")._itemNodesMap = {};
+   	    dijit.byId("documentDirectoryTree").rootNode.state = "UNCHECKED";
+   	    dijit.byId("documentDirectoryTree").model.root.children = null;
+   	    // Destroy the widget
+   	    dijit.byId("documentDirectoryTree").rootNode.destroyRecursive();
+   	    // Recreate the model, (with the model again)
+   	    dijit.byId("documentDirectoryTree").model.constructor(dijit.byId("documentDirectoryTree").model)
+   	    // Rebuild the tree
+   	    dijit.byId("documentDirectoryTree").postMixInProperties();
+   	    dijit.byId("documentDirectoryTree")._load();
+    }
     if (forceRefreshMenu) {
     	//loadContent("../view/menuTree.php", "mapDiv",null,false);
     	//loadContent("../view/menuBar.php", "toolBarDiv",null,false);
