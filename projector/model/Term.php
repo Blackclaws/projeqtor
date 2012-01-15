@@ -119,9 +119,9 @@ class Term extends SqlElement {
    */  
   
   public function deleteControl() {
-  	$result = "OK";
+  	$result = "";
   	if ($this->isBilled){
-  		$result .= "<br/>" . i18n("cannotDelleteBilledTerm");
+  		$result .= "<br/>" . i18n("cannotDeleteBilledTerm");
   	}
   	if (! $result) {  
       $result=parent::deleteControl();

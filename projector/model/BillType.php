@@ -18,6 +18,8 @@ class BillType extends Type {
    
     "mandatoryResourceOnHandled"=>"hidden",
     "_lib_mandatoryOnHandledStatus"=>"hidden");
+  
+   private static $_colCaptionTransposition = array('mandatoryDescription'=>'comment');   
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -51,6 +53,14 @@ class BillType extends Type {
   
   protected function getStaticFieldsAttributes() {
     return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
+  }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
   }
 }
 ?>

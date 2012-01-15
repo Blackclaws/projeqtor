@@ -16,8 +16,8 @@ class Recipient extends SqlElement {
   public $ibanKey;
   public $ibanBban;
   public $idle;
-  public $_col_2_2_projects;
-  public $_spe_projects;
+  //public $_col_2_2_projects;
+  //public $_spe_projects;
   //public $_sec_Contacts;
   //public $_spe_contacts;
   
@@ -88,27 +88,6 @@ class Recipient extends SqlElement {
       $result .="</td></tr></table>";
       return $result;
     }
-  }
-  
-  
-  
-  /** =========================================================================
-   * Overrides SqlElement::deleteControl() function to add specific treatments
-   * @see persistence/SqlElement#deleteControl()
-   * @return the return message of persistence/SqlElement#deleteControl() method
-   */  
-  
-  public function deleteControl()
-  {
-  	$result = "OK";
-  	
-  	$proj = new Project();
-  	$crit = array("idRecipient"=>$this->id);
-  	$projList = $proj->getSqlElementsFromCriteria($crit,false);
-  	
-  	if (count($projList)!=0) $result = "Suppression impossible : contractant rattach&eacute a un ou plusieurs projets";
-
-  	return $result;
   }
   
 }

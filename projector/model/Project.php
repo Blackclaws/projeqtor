@@ -12,7 +12,7 @@ class Project extends SqlElement {
   public $idProjectType;
   public $codeType;
   public $idClient;
-  public $idRecipient;
+  //public $idRecipient;
   public $projectCode;
   public $contractCode;
   public $idProject;
