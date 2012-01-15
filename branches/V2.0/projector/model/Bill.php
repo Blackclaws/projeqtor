@@ -16,6 +16,7 @@ class Bill extends SqlElement {
   public $idStatus;
   public $idle;
   public $billId;
+  public $description;
   public $_col_2_2_regie;
   public $startDate;
   public $endDate;
@@ -45,7 +46,7 @@ class Bill extends SqlElement {
   										'billId'=>'readonly',
   										'idPrec'=>'required');  
   
-  private static $_colCaptionTransposition = array();
+  private static $_colCaptionTransposition = array('description'=>'comment');
   
   private static $_databaseColumnName = array();
     

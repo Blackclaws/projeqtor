@@ -57,8 +57,11 @@ if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess'),
                                      'work'=>i18n('workAccess'),
                                      'cost'=>i18n('costAccess'),
-                                     'combo'=>i18n('comboDetailAccess')), 
-                               'profile', 'habilitationOther') ;
+                                     'combo'=>i18n('comboDetailAccess'),
+                                     'planning'=>i18n('comboDetailAccess'),
+                                     'document'=>i18n('comboDetailAccess')), 
+                               'profile', 
+                               'habilitationOther') ;
   foreach($crosTable as $lineId => $line) {
     foreach($line as $colId => $val) {
       $crit['scope']=$lineId;

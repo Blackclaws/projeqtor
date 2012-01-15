@@ -22,6 +22,7 @@ class Profile extends SqlElement {
   
   public $_isNameTranslatable = true;
   
+  private static $_fieldsAttributes=array();
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -29,6 +30,9 @@ class Profile extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    if ($this->profileCode=="ADM" or $this->profileCode=="PL") {
+      self::$_fieldsAttributes["profileCode"]="readonly";
+    }
   }
 
   
@@ -40,6 +44,17 @@ class Profile extends SqlElement {
     parent::__destruct();
   }
 
+  public function deleteControl() {
+    $result="";
+    if ($this->profileCode=='ADM' or $this->profileCode=='PL') {    
+      $result="<br/>" . i18n("msgCannotDeleteProfile");
+    }
+    if (! $result) {  
+      $result=parent::deleteControl();
+    }
+    return $result;
+  }
+  
       /** ==========================================================================
    * Return the specific layout
    * @return the layout
@@ -47,6 +62,13 @@ class Profile extends SqlElement {
   protected function getStaticLayout() {
     return self::$_layout;
   }
- 
+  
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
 }
 ?>

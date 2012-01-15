@@ -5,21 +5,21 @@
 class Recipient extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2;
+  public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $companyNumber;
   public $numTax;  
+  public $_sec_IBAN;
   public $bank;
-  public $numBank;
-  public $numOffice;
-  public $numAccount;
-  public $numKey;
+  public $ibanCountry;
+  public $ibanKey;
+  public $ibanBban;
   public $idle;
-  public $_col_2_2_Projects;
+  public $_col_2_2_projects;
   public $_spe_projects;
-  public $_sec_Contacts;
-  public $_spe_contacts;
+  //public $_sec_Contacts;
+  //public $_spe_contacts;
   
   // Define the layout that will be used for lists
   private static $_layout='

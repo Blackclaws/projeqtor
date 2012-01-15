@@ -61,7 +61,22 @@ class StatusMail extends SqlElement {
     parent::__destruct();
   }
 
-
+  public function control() {
+    $result="";
+    $crit="idMailable='" . $this->idMailable . "' and idStatus='" . $this->idStatus . "' and id!='" . $this->id . "'";
+    $list=$this->getSqlElementsFromCriteria(null, false, $crit);
+    if (count($list)>0) {
+      $result.="<br/>" . i18n('errorDuplicateStatusMail',null);
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;    
+  }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
