@@ -8,6 +8,16 @@ class BillType extends Type {
     
   private static $_databaseCriteria = array('scope'=>'Bill');
   
+  private static $_fieldsAttributes=array(
+    "mandatoryResultOnDone"=>"hidden",
+    "_lib_mandatoryOnDoneStatus"=>"hidden",
+    "lockHandled"=>"hidden",
+    "_lib_statusMustChangeHandled"=>"hidden",
+    "lockDone"=>"hidden",
+    "_lib_statusMustChangeDone"=>"hidden",
+   
+    "mandatoryResourceOnHandled"=>"hidden",
+    "_lib_mandatoryOnHandledStatus"=>"hidden");
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -39,5 +49,8 @@ class BillType extends Type {
     return self::$_databaseCriteria;
   }
   
+  protected function getStaticFieldsAttributes() {
+    return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
+  }
 }
 ?>

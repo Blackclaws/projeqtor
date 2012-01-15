@@ -20,11 +20,11 @@ class User extends SqlElement {
   public $locked;
   public $idle;
   public $description;
-  public $_col_2_2;
+  public $_col_2_2_Affectations;
+  public $_spe_affectations;
   public $_arrayFilters=array();
   public $_arrayFiltersId=array();
-  public $_sec_Affectations;
-  public $_spe_affectations;
+  
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>

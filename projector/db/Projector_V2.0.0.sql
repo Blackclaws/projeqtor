@@ -35,7 +35,7 @@ CREATE TABLE `${prefix}bill` (
   `idProject` int(12) unsigned DEFAULT NULL,
   `idClient` int(12) unsigned DEFAULT NULL,
   `idRecipient` int(12) unsigned DEFAULT NULL,
-  `comment` varchar(4000) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
@@ -91,10 +91,9 @@ CREATE TABLE `${prefix}recipient` (
   `companyNumber` varchar(14) DEFAULT NULL,
   `numTax` varchar(100) DEFAULT NULL,
   `bank` varchar(100) DEFAULT NULL,
-  `numBank` varchar(5) DEFAULT NULL,
-	`numOffice` varchar(5) DEFAULT NULL,
-	`numAccount` varchar(11) DEFAULT NULL,
-	`numKey` varchar(2) DEFAULT NULL,
+  `ibanCountry` varchar(2) DEFAULT NULL,
+	`ibanKey` varchar(2) DEFAULT NULL,
+	`ibanBban` varchar(34) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -104,7 +103,11 @@ CREATE TABLE `${prefix}term` (
   `name` varchar(100) DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `amount` decimal(10,2) DEFAULT NULL,
+  `validatedAmount` decimal(10,2) DEFAULT NULL,
+  `plannedAmount` decimal(10,2) DEFAULT NULL,
   `date` date DEFAULT NULL,
+  `validatedDate` date DEFAULT NULL,
+  `plannedDate` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT NULL,
   `isBilled` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
@@ -387,3 +390,7 @@ INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`id
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 103, 1),
 (3, 103, 1);
+
+ALTER TABLE `${prefix}type` CHANGE internalData internalData VARCHAR(1);
+
+ALTER TABLE `${prefix}dependency` CHANGE successorId successorId INT(12) UNSIGNED;

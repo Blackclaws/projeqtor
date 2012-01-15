@@ -20,10 +20,10 @@ $paramLdap_user_filter = 'uid=%USERNAME%';
 $paramMailSender = '';
 $paramMailReplyTo = '';
 $paramAdminMail = '';
-$paramMailSmtpServer = 'localhost';
+$paramMailSmtpServer = 'smtp.free.fr';
 $paramMailSmtpPort = '25';
 $paramMailSendmailPath = '';
-$paramMailTitle = '[Project\'Or RIA] ${item} #${id} moved to status ${status}';
+$paramMailTitle = '[Project\'Or RIA DEV] ${item} #${id} moved to status ${status}';
 $paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${status}';
 $paramMailShowDetail = 'true';
 $paramDefaultPassword = 'projector';
@@ -46,6 +46,12 @@ $logFile = '../files/logs/projector_${date}.log';
 $logLevel = '4';
 $paramDebugMode = 'false';
 $defaultBillCode = '0';// New parameters V2.0.0
+$defaultBillCode = '0';
+// New parameters V2.0.0
+$defaultBillCode = '0';
+// New parameters V2.0.0
+$defaultBillCode = '0';
+// New parameters V2.0.0
 $defaultBillCode = '0';
 // New parameters V2.0.0
 $defaultBillCode = '0';

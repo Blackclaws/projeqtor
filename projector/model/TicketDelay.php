@@ -55,6 +55,22 @@ class TicketDelay extends Delay {
     parent::__destruct();
   }
 
+  public function control() {
+    $result="";
+    $crit="scope='Ticket' and idType='" . $this->idTicketType . "' and idUrgency='" . $this->idUrgency . "' and id!='" . $this->id . "'";
+    $list=$this->getSqlElementsFromCriteria(null, false, $crit);
+    if (count($list)>0) {
+      $result.="<br/>" . i18n('errorDuplicateTicketDelay',null);
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;    
+  }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********

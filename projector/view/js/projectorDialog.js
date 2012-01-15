@@ -1388,46 +1388,47 @@ function setDisplayIsRefDocumentVersion() {
 * 
 */
 function addDependency (depType) {
-if (formChangeInProgress) {
-	showAlert(i18n('alertOngoingChange'));
-	return;
-}
-var objectClass=dojo.byId("objectClass").value;
-var objectId=dojo.byId("objectId").value;
-var message=i18n("dialogDependency");
-if (depType) {
-	dojo.byId("dependencyType").value=depType;
-	message = i18n("dialogDependencyRestricted", new Array(i18n(objectClass), objectId, i18n(depType)));
-} else {
-	dojo.byId("dependencyType").value=null;
-	message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
-}
-dijit.byId("dependencyRefTypeDep").reset();
-refreshDependencyList();
-//var url="../tool/dynamicListDependency.php" 
-//	+ "?dependencyType="+depType
-//  + "&dependencyRefType="+objectClass
-//	+ "&dependencyRefId="+objectId
-//	+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
-//loadContent(url, "dialogDependencyList", null, false);
-dojo.byId("dependencyId").value="";
-dojo.byId("dependencyRefType").value=objectClass;
-dojo.byId("dependencyRefId").value=objectId;
-dijit.byId("dialogDependency").set('title', message);
-dijit.byId("dialogDependency").show();
-disableWidget('dialogDependencySubmit');
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	alert(depType);
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var message=i18n("dialogDependency");
+	if (depType) {
+		dojo.byId("dependencyType").value=depType;
+		message = i18n("dialogDependencyRestricted", new Array(i18n(objectClass), objectId, i18n(depType)));
+	} else {
+		dojo.byId("dependencyType").value=null;
+		message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
+	}
+	dijit.byId("dependencyRefTypeDep").reset();
+	refreshDependencyList();
+	//var url="../tool/dynamicListDependency.php" 
+	//	+ "?dependencyType="+depType
+	//  + "&dependencyRefType="+objectClass
+	//	+ "&dependencyRefId="+objectId
+	//	+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
+	//loadContent(url, "dialogDependencyList", null, false);
+	dojo.byId("dependencyId").value="";
+	dojo.byId("dependencyRefType").value=objectClass;
+	dojo.byId("dependencyRefId").value=objectId;
+	dijit.byId("dialogDependency").set('title', message);
+	dijit.byId("dialogDependency").show();
+	disableWidget('dialogDependencySubmit');
 }
 
 /**
 * Refresh the Dependency list (after update)
 */
 function refreshDependencyList(selected) {
-disableWidget('dialogDependencySubmit');
-var url='../tool/dynamicListDependency.php';
-if (selected) {
-	url+='?selected='+selected;
-}
-loadContent(url, 'dialogDependencyList', 'dependencyForm', false);
+	disableWidget('dialogDependencySubmit');
+	var url='../tool/dynamicListDependency.php';
+	if (selected) {
+		url+='?selected='+selected;
+	}
+	loadContent(url, 'dialogDependencyList', 'dependencyForm', false);
 }
 
 /**
@@ -1435,9 +1436,9 @@ loadContent(url, 'dialogDependencyList', 'dependencyForm', false);
 * 
 */
 function saveDependency() {
-if (dojo.byId("dependencyRefIdDep").value=="") return;
-loadContent("../tool/saveDependency.php", "resultDiv", "dependencyForm", true,'dependency');
-dijit.byId('dialogDependency').hide();
+	if (dojo.byId("dependencyRefIdDep").value=="") return;
+	loadContent("../tool/saveDependency.php", "resultDiv", "dependencyForm", true,'dependency');
+	dijit.byId('dialogDependency').hide();
 }
 
 /**
@@ -1445,14 +1446,14 @@ dijit.byId('dialogDependency').hide();
 * 
 */
 function removeDependency (dependencyId, refType, refId) {
-if (formChangeInProgress) {
-	showAlert(i18n('alertOngoingChange'));
-	return;
-}	
-dojo.byId("dependencyId").value=dependencyId;
-actionOK=function() {loadContent("../tool/removeDependency.php", "resultDiv", "dependencyForm", true,'dependency');};
-msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
-showConfirm (msg, actionOK);
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	dojo.byId("dependencyId").value=dependencyId;
+	actionOK=function() {loadContent("../tool/removeDependency.php", "resultDiv", "dependencyForm", true,'dependency');};
+	msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
+	showConfirm (msg, actionOK);
 }
 
 

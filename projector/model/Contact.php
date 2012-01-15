@@ -10,7 +10,7 @@ class Contact extends SqlElement {
   public $name;
   public $initials;
   public $idClient;
-  public $idRecipient;
+  //public $idRecipient;
   public $isUser;
   public $idProfile;
   public $userName;

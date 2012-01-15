@@ -387,7 +387,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           //echo '<div style="width: ' . $fieldWidth . 'px;"> ' . htmlEncode($val,'print') . '</div>';
           echo htmlEncode($val,'print');
-        } else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') ) {
+        } else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount' or $col=='amount') ) {
           if ($currencyPosition=='after') {
             echo htmlEncode($val,'print') . ' ' . $currency;
           } else {
@@ -721,7 +721,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $isCost=false;
         $isWork=false;
         $isDuration=false;
-        if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') ) {
+        if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount'  or $col=='amount') ) {
           $isCost=true;
           $fieldWidth=$smallWidth;
         }

@@ -11,6 +11,8 @@ class ProjectType extends SqlElement {
   public $name;
   //public $idWorkflow;
   public $code;
+  public $internalData;
+  public $_spe_billingType;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $sortOrder=0;
@@ -29,7 +31,11 @@ class ProjectType extends SqlElement {
    private static $_fieldsAttributes=array("name"=>"required", 
                                           "idWorkflow"=>"hidden",
                                           "mandatoryDescription"=>"nobr",
-                                          "code"=> "hidden");
+                                          "code"=> "readonly,nobr",
+                                          "internalData"=>"readonly,nobr");
+   
+   private static $_databaseColumnName = array();
+   
    private static $_databaseTableName = 'type';
    /** ==========================================================================
    * Constructor
@@ -68,6 +74,14 @@ class ProjectType extends SqlElement {
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
   }
+
+  /** ========================================================================
+   * Return the specific databaseColumnName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseColumnName() {
+    return self::$_databaseColumnName;
+  }
   
   /** ==========================================================================
    * Return the specific fieldsAttributes
@@ -97,6 +111,36 @@ class ProjectType extends SqlElement {
     return $result;
   }
   
+  public function save() {
+  	if (! $this->code) {
+  		$this->code='OPE';
+  	}
+  	return parent::save();
+  }
+  
+    public function drawSpecificItem($item){
+    $result="";
+    if ($item=='billingType') {
+    	$val=$this->internalData;
+      $result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";
+      $result .="</td><td>";
+      $result .='<select dojoType="dijit.form.FilteringSelect" class="input" ';
+      if ($this->code=="ADM" or $this->code=="TMP") {
+      	$result.=' readonly="readlony"';
+      } 
+      $result .='  style="width: 200px;" name="billingType" id="billingType" >';
+      $result .='<option value="E" ' . (($val=="E" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeE') . '</option>';
+      $result .='<option value="R" ' . (($val=="R" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeR') . '</option>';
+      $result .='<option value="P" ' . (($val=="P" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeP') . '</option>';
+      $result .='<option value="N" ' . (($val=="N" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeN') . '</option>';
+      $result .= '<script type="dojo/connect" event="onChange" >';
+      $result .=' dijit.byId("internalData").set("value",this.value);';
+      $result .=' formChanged(); ';
+      $result .= '</script>';
+      $result .='</select>';
+      return $result;
+    }
+  }
   
 }
 ?>
