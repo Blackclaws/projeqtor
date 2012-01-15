@@ -1392,7 +1392,6 @@ function addDependency (depType) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	alert(depType);
 	var objectClass=dojo.byId("objectClass").value;
 	var objectId=dojo.byId("objectId").value;
 	var message=i18n("dialogDependency");

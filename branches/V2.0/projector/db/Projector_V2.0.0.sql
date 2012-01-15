@@ -394,3 +394,8 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 ALTER TABLE `${prefix}type` CHANGE internalData internalData VARCHAR(1);
 
 ALTER TABLE `${prefix}dependency` CHANGE successorId successorId INT(12) UNSIGNED;
+
+INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
+('Bill','Partial bill','PARTIAL',1,100),
+('Bill','Final bill','FINAL',1,200),
+('Bill','Complete bill','COMPLETE',1,300);
