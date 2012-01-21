@@ -1457,7 +1457,7 @@ function removeDependency (dependencyId, refType, refId) {
 
 
 //=============================================================================
-//= Lines
+//= BillLines
 //=============================================================================
 
 /**
@@ -1466,22 +1466,22 @@ function removeDependency (dependencyId, refType, refId) {
 */
 
 
-function addLine () {
-	dojo.byId("lineId").value="";
+function addBillLine () {
+	dojo.byId("billLineId").value="";
 	var prj=dijit.byId('idProject').get('value');
-	dijit.byId('lineIdTerm').store = new dojo.data.ItemFileReadStore({
+	dijit.byId('billLineIdTerm').store = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj });
-	dijit.byId('lineIdTerm').store.fetch();
-	dijit.byId("lineIdTerm").set("value",null);
-	dojo.byId("lineRefType").value=dojo.byId("objectClass").value;
-	dojo.byId("lineRefId").value=dojo.byId("objectId").value;
-	dijit.byId("lineDescription").set("value","");
-	dijit.byId("lineLine").set("value",null);
-	dijit.byId("lineQuantity").set("value",null);
-	dijit.byId("lineReference").set("value","");
-	dijit.byId("linePrice").set("value",null);
-	dijit.byId("dialogLine").set('title',i18n("dialogLine"));
-	dijit.byId("dialogLine").show();
+	dijit.byId('billLineIdTerm').store.fetch();
+	dijit.byId("billLineIdTerm").set("value",null);
+	dojo.byId("billLineRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("billLineRefId").value=dojo.byId("objectId").value;
+	dijit.byId("billLineDescription").set("value","");
+	dijit.byId("billLineLine").set("value",null);
+	dijit.byId("billLineQuantity").set("value",null);
+	dijit.byId("billLineReference").set("value","");
+	dijit.byId("billLinePrice").set("value",null);
+	dijit.byId("dialogBillLine").set('title',i18n("dialogBillLine"));
+	dijit.byId("dialogBillLine").show();
 }
 
 
@@ -1489,44 +1489,44 @@ function addLine () {
 * Display a edit line Box
 * 
 */
-function editLine (id,description,line,quantity,reference,price,idTerm) {
-	dojo.byId("lineId").value=id;
+function editBillLine (id,description,line,quantity,reference,price,idTerm) {
+	dojo.byId("billLineId").value=id;
 	
 	var prj=dijit.byId('idProject').get('value');
-	dijit.byId('lineIdTerm').store = new dojo.data.ItemFileReadStore({
+	dijit.byId('billLineIdTerm').store = new dojo.data.ItemFileReadStore({
 		       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj+'&selected=1'});
 	dijit.byId('assignmentIdResource').store.fetch();	
 	
-	dojo.byId("lineRefType").value=dojo.byId("objectClass").value;
-	dojo.byId("lineRefId").value=dojo.byId("objectId").value;
-	dijit.byId("lineDescription").set('value',description);
-	dijit.byId("lineReference").set('value',reference);
-	dijit.byId("lineLine").set('value',line);
-	dijit.byId("lineQuantity").set('value',quantity);
-	dijit.byId("linePrice").set('value',price);
-	dijit.byId("dialogLine").set('title',i18n("dialogLine") + " #" + id);
-	dijit.byId("dialogLine").show();
+	dojo.byId("billLineRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("billLineRefId").value=dojo.byId("objectId").value;
+	dijit.byId("billLineDescription").set('value',description);
+	dijit.byId("billLineReference").set('value',reference);
+	dijit.byId("billLineLine").set('value',line);
+	dijit.byId("billLineQuantity").set('value',quantity);
+	dijit.byId("billLinePrice").set('value',price);
+	dijit.byId("dialogBillLine").set('title',i18n("dialogBillLine") + " #" + id);
+	dijit.byId("dialogBillLine").show();
 }
 
 /**
 * save a line (after addDetail or editDetail)
 * 
 */
-function saveLine() {
-	if (isNaN(dijit.byId("lineLine").getValue())) {
-		dijit.byId("lineLine").set("class","dijitError");
+function saveBillLine() {
+	if (isNaN(dijit.byId("billLineLine").getValue())) {
+		dijit.byId("billLineLine").set("class","dijitError");
 		//dijit.byId("noteNote").blur();
-		var msg=i18n('messageMandatory', new Array(i18n('Line')));
+		var msg=i18n('messageMandatory', new Array(i18n('BillLine')));
 		new dijit.Tooltip({
-			id : "lineToolTip",
-    connectId: ["lineLine"],
+			id : "billLineToolTip",
+    connectId: ["billLineLine"],
     label: msg,
     showDelay: 0
   });
-		dijit.byId("lineLine").focus();
+		dijit.byId("billLineLine").focus();
 	} else {
-		loadContent("../tool/saveLine.php", "resultDiv", "lineForm", true, 'line');
-		dijit.byId('dialogLine').hide();
+		loadContent("../tool/saveBillLine.php", "resultDiv", "billLineForm", true, 'billLine');
+		dijit.byId('dialogBillLine').hide();
 	}
 }
 
@@ -1535,10 +1535,10 @@ function saveLine() {
 * Display a delete line Box
 * 
 */
-function removeLine (lineId) {
-	dojo.byId("lineId").value=lineId;
-	actionOK=function() {loadContent("../tool/removeLine.php", "resultDiv", "lineForm", true, 'line');};
-	msg=i18n('confirmDelete',new Array(i18n('Line'), lineId));
+function removeBillLine (lineId) {
+	dojo.byId("billLineId").value=lineId;
+	actionOK=function() {loadContent("../tool/removeBillLine.php", "resultDiv", "billLineForm", true, 'billLine');};
+	msg=i18n('confirmDelete',new Array(i18n('BillLine'), lineId));
 	showConfirm (msg, actionOK);
 }
 

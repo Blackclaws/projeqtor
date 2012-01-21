@@ -658,6 +658,8 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
       } else if (validationType=='attachement') {
         loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');
+      } else if (validationType=='billLine') {
+        loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='copyTo') {
@@ -742,6 +744,9 @@ function finalizeMessageDisplay(destination, validationType) {
             }
             if (dojo.byId("notesPane")) {
               loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
+            }
+            if (dojo.byId("billLinesPane")) {
+                loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
             }
           }
         }
@@ -1606,6 +1611,8 @@ function globalSave() {
 		var button=dijit.byId('dialogAffectationSubmit');
   } else if (dijit.byId('dialogFilter') && dijit.byId('dialogFilter').open) {
 		var button=dijit.byId('dialogFilterSubmit');
+  } else if (dijit.byId('dialogBillLine') && dijit.byId('dialogBillLine').open) {
+		var button=dijit.byId('dialogBillLineSubmit');
   } else {
     var button=dijit.byId('saveButton');
   }

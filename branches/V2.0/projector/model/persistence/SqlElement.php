@@ -44,6 +44,7 @@ abstract class SqlElement {
                                   "Attachement"=>"cascade",
                                   "Dependency"=>"cascade"),
     "ActivityType" =>       array("Activity"=>"control"),
+    "Bill" =>               array("BillLine"=>"control"),
     "BillType" =>           array("Bill"=>"control"),
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Risk"=>"control", 

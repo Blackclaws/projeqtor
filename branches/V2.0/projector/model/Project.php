@@ -65,7 +65,8 @@ class Project extends SqlElement {
                                   "idle"=>"nobr",
                                   "sortOrder"=>"hidden",
                                   "codeType"=>"hidden",
-                                  "idProjectType"=>"required"
+                                  "idProjectType"=>"required",
+  "longitude"=>"hidden", "latitude"=>"hidden"
   );   
  
   private static $_colCaptionTransposition = array('idUser'=>'manager',

@@ -7,39 +7,39 @@
 require_once "../tool/projector.php";
 
 // Get the line info
-if (! array_key_exists('lineRefType',$_REQUEST)) {
-  throwError('lineRefType parameter not found in REQUEST');
+if (! array_key_exists('billLineRefType',$_REQUEST)) {
+  throwError('billLineRefType parameter not found in REQUEST');
 }
-$refType=$_REQUEST['lineRefType'];
+$refType=$_REQUEST['billLineRefType'];
 
-if (! array_key_exists('lineRefId',$_REQUEST)) {
-  throwError('lineRefId parameter not found in REQUEST');
+if (! array_key_exists('billLineRefId',$_REQUEST)) {
+  throwError('billLineRefId parameter not found in REQUEST');
 }
-$refId=$_REQUEST['lineRefId'];
+$refId=$_REQUEST['billLineRefId'];
 
-if (! array_key_exists('lineLine',$_REQUEST)) {
-	throwError('lineLine parameter not found in REQUEST');
+if (! array_key_exists('billLineLine',$_REQUEST)) {
+	throwError('billLineLine parameter not found in REQUEST');
 }
-$Line=$_REQUEST['lineLine'];
+$Line=$_REQUEST['billLineLine'];
 
 $quantity=null;
-if (array_key_exists('lineQuantity',$_REQUEST)) {
-  $quantity=$_REQUEST['lineQuantity'];
+if (array_key_exists('billLineQuantity',$_REQUEST)) {
+  $quantity=$_REQUEST['billLineQuantity'];
 }
 
 $description=null;
-if (array_key_exists('lineDescription',$_REQUEST)) {
-  $description=$_REQUEST['lineDescription'];
+if (array_key_exists('billLineDescription',$_REQUEST)) {
+  $description=$_REQUEST['billLineDescription'];
 }
 
 $reference=null;
-if (array_key_exists('lineReference',$_REQUEST)) {
-  $reference=$_REQUEST['lineReference'];
+if (array_key_exists('billLineReference',$_REQUEST)) {
+  $reference=$_REQUEST['billLineReference'];
 }
 
 $price=null;
-if (array_key_exists('linePrice',$_REQUEST)) {
-  $price=$_REQUEST['linePrice'];
+if (array_key_exists('billLinePrice',$_REQUEST)) {
+  $price=$_REQUEST['billLinePrice'];
 }
 
 $sum=null;
@@ -48,8 +48,8 @@ if ($price!=null && $quantity!=null) {
 }
 
 $lineId=null;
-if (array_key_exists('lineId',$_REQUEST)) {
-  $lineId=$_REQUEST['lineId'];
+if (array_key_exists('billLineId',$_REQUEST)) {
+  $lineId=$_REQUEST['billLineId'];
 }
 $lineId=trim($lineId);
 if ($lineId=='') {
@@ -58,23 +58,19 @@ if ($lineId=='') {
 
 if( $lineId!=null)
 {
-	$line = new Line($lineId);
+	$line = new BillLine($lineId);
 	$idTerm = $line->idTerm;
 }
 else $idTerm=null;
 
-if (array_key_exists('lineIdTerm',$_REQUEST)) {
-  $idTerm=$_REQUEST['lineIdTerm'];
+if (array_key_exists('billLineIdTerm',$_REQUEST)) {
+  $idTerm=$_REQUEST['billLineIdTerm'];
 }
-
-
 
 //if($description!='') $idTerm=null;
 
-
-if (!is_numeric($idTerm) || is_numeric($lineId))
-{
-	$line=new Line($lineId);
+if (!is_numeric($idTerm) || is_numeric($billLineId)) {
+	$line=new BillLine($lineId);
 
 	$line->description=$description;
 	$line->line=$Line;
@@ -85,8 +81,7 @@ if (!is_numeric($idTerm) || is_numeric($lineId))
 	$line->refId=$refId;
 	$line->refType=$refType;
 	$result=$line->save();
-} else 
-{
+} else {
 	$terms = new Term($idTerm);
 	$idTerm=$terms->id;
 	$sum=null;	
@@ -95,7 +90,7 @@ if (!is_numeric($idTerm) || is_numeric($lineId))
 	$terms->isBilled = 1;
 	$terms->save();
 	
-	//$line = new Line($lineId);
+	//$line = new BillLine($lineId);
 	//$line->line=$Line;
 	//$line->refId=$refId;
 	//$line->refType=$refType;
@@ -110,11 +105,10 @@ if (!is_numeric($idTerm) || is_numeric($lineId))
 	
 	//$result = $line->save();
 	
-	if ($terms->amount!=null) 
-	{
+	if ($terms->amount!=null) {
 		$price=$terms->amount;
 		$sum=$terms->amount;
-		$line = new Line();
+		$line = new BillLine();
 		$line->line=$Line;
 		$line->refId=$refId;
 		$line->refType=$refType;
@@ -209,7 +203,7 @@ if (!is_numeric($idTerm) || is_numeric($lineId))
     			}
     		}
     		
-    		$line = new Line();
+    		$line = new BillLine();
     		$line->line=$Line + $number;
 			$line->refId=$refId;
 			$line->refType=$refType;

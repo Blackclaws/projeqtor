@@ -21,9 +21,9 @@ class Client extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="40%">${clientName}</th>
-    <th field="clientCode" width="25%">${clientCode}</th> 
-    <th field="delay" width="10%">${delay}</th>
-    <th field="tva" width="10%">${tva}</th>
+    <th field="clientCode" width="20%">${clientCode}</th> 
+    <th field="paymentDelay" width="15%">${paymentDelay}</th>
+    <th field="tax" width="10%">${tax}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
