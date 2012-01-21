@@ -32,7 +32,8 @@ class ProjectType extends SqlElement {
                                           "idWorkflow"=>"hidden",
                                           "mandatoryDescription"=>"nobr",
                                           "code"=> "readonly,nobr",
-                                          "internalData"=>"readonly,nobr");
+                                          "internalData"=>"readonly",
+                                          "internalData"=>"hidden");
    
    private static $_databaseColumnName = array();
    
@@ -126,18 +127,20 @@ class ProjectType extends SqlElement {
       $result .="</td><td>";
       $result .='<select dojoType="dijit.form.FilteringSelect" class="input" ';
       if ($this->code=="ADM" or $this->code=="TMP") {
-      	$result.=' readonly="readlony"';
+      	$result.=' readonly="readonlyy"';
       } 
       $result .='  style="width: 200px;" name="billingType" id="billingType" >';
       $result .='<option value="E" ' . (($val=="E" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeE') . '</option>';
       $result .='<option value="R" ' . (($val=="R" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeR') . '</option>';
       $result .='<option value="P" ' . (($val=="P" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeP') . '</option>';
+      $result .='<option value="M" ' . (($val=="M" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeM') . '</option>';
       $result .='<option value="N" ' . (($val=="N" or !$val)?' SELECTED ':'') .'>' . i18n('billingTypeN') . '</option>';
       $result .= '<script type="dojo/connect" event="onChange" >';
       $result .=' dijit.byId("internalData").set("value",this.value);';
       $result .=' formChanged(); ';
       $result .= '</script>';
       $result .='</select>';
+      $result .= '</td></tr></table>';
       return $result;
     }
   }

@@ -31,6 +31,7 @@ ALTER TABLE `${prefix}activityprice` ADD INDEX activitypriceProject (idProject),
 CREATE TABLE `${prefix}bill` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idBillType` int(12) unsigned DEFAULT NULL,
+  `billingType` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idClient` int(12) unsigned DEFAULT NULL,
@@ -38,11 +39,9 @@ CREATE TABLE `${prefix}bill` (
   `description` varchar(4000) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
+  `done` int(1) unsigned DEFAULT '0',
   `idle` int(1) unsigned DEFAULT '0',
   `billId` int(12) unsigned DEFAULT NULL,
-  `startDate` date DEFAULT NULL,
-  `endDate` date DEFAULT NULL,
-  `idResource` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -56,7 +55,7 @@ ALTER TABLE `${prefix}bill` ADD INDEX billBillType (idBillType),
 ALTER TABLE `${prefix}client` ADD COLUMN `paymentDelay` int(3) NULL after `clientCode`, 
  ADD COLUMN `tax` decimal(5,2) DEFAULT NULL after `paymentDelay`;
 	
-CREATE TABLE `${prefix}line` (
+CREATE TABLE `${prefix}billline` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `line` int(3) unsigned DEFAULT NULL,
   `quantity` decimal(5,2) DEFAULT NULL,
@@ -220,7 +219,7 @@ CREATE TABLE `${prefix}documentdirectory` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `${prefix}documentdirectory` ADD INDEX documentdirectoryProject (idProject),
-ADD INDEX documentdirectoryDirectory (idDirectory);
+ADD INDEX documentdirectoryDocumentDirectory (idDocumentDirectory);
 
 INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDocumentDirectory,location) values
 (1,'Project',null,null,'/Project'),
@@ -395,7 +394,14 @@ ALTER TABLE `${prefix}type` CHANGE internalData internalData VARCHAR(1);
 
 ALTER TABLE `${prefix}dependency` CHANGE successorId successorId INT(12) UNSIGNED;
 
-INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
-('Bill','Partial bill','PARTIAL',1,100),
-('Bill','Final bill','FINAL',1,200),
-('Bill','Complete bill','COMPLETE',1,300);
+INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder, lockDone, lockIdle) values
+('Bill','Partial bill','PARTIAL',1,100, 1, 1),
+('Bill','Final bill','FINAL',1,200, 1, 1),
+('Bill','Complete bill','COMPLETE',1,300, 1, 1);
+
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'billPrefix','BILL'),
+(null, null, 'billSuffix','_FR'),
+(null, null, 'billNumSize','5'),
+(null, null, 'billNumStart','10000');

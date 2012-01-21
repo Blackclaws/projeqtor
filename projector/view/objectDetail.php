@@ -1121,14 +1121,14 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '</tr>';
   echo '</table>';
 }
-function drawLinesFromObject($obj, $refresh=false) {
+function drawBillLinesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale;
   //$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
   if ($obj->idle==1) {$canUpdate=false;}
   $lock=false;
   if (($obj->idStatus != 1 && $obj->idStatus != 5) || $obj->idle == 1) $lock=true;
-  if (isset($obj->_Line)) {
-    $lines=$obj->_Line;
+  if (isset($obj->_BillLine)) {
+    $lines=$obj->_BillLine;
   } else {
     $lines=array();
   }   
@@ -1137,17 +1137,17 @@ function drawLinesFromObject($obj, $refresh=false) {
   if (! $print) {
     echo '<td class="noteHeader" style="width:5%">';  //changer le header
     if ($obj->id!=null and ! $print and ! $lock) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addLine();" title="' . i18n('addLine') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine();" title="' . i18n('addLine') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
-  echo '<td class="noteHeader" style="width:5%">' . i18n('colLine') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colLineNumber') . '</td>';
   echo '<td class="noteHeader" style="width:5%">' . i18n('colQuantity') . '</td>';
   echo '<td class="noteHeader" style="width:30%">' . i18n('colDescription') . '</td>';
-  echo '<td class="noteHeader" style="width:30%">' . i18n('Activity') . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('colDetail') . '</td>';
   echo '<td class="noteHeader" style="width:10%">' . i18n('colPrice') . '</td>';
-  echo '<td class="noteHeader" style="width:15%">' . i18n('colSum') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' .  strtolower(i18n('sum')) . '</td>';
   echo '</tr>';
   
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
@@ -1157,7 +1157,7 @@ function drawLinesFromObject($obj, $refresh=false) {
       echo '<td class="noteData" style="text-align:center;">';
       if ($lock==0)
       {
-	      echo ' <img src="css/images/smallButtonEdit.png" onClick="editLine(
+	      echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
 	      ' . "'" . $line->id . "'" 
 	        . ",'" . htmlEncodeJson($line->description) . "'"
 	        . ",'" . $fmt->format($line->line) . "'"
@@ -1166,8 +1166,8 @@ function drawLinesFromObject($obj, $refresh=false) {
 	        . ",'" . $fmtd->format($line->price) . "'"
 	        . ",'" . $fmtd->format($line->sum) . "'"
 	        . ",'" . $line->idTerm . "'"
-	     . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
-	      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeLine(' . $line->id . ');" title="' . i18n('removeLine') . '" class="smallButton"/> ';
+	     . ');" title="' . i18n('editBillLine') . '" class="smallButton"/> ';
+	      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeBillLine(' . $line->id . ');" title="' . i18n('removeBillLine') . '" class="smallButton"/> ';
       }
       echo '</td>';
     echo '<td class="noteData">#' . $line->id  . '</td>';
@@ -1810,8 +1810,8 @@ if ( $noselect ) {
     drawNotesFromObject($obj, true);
     exit;
   }
-if ( array_key_exists('refreshLines',$_REQUEST) ) {
-    drawLinesFromObject($obj, true);
+  if ( array_key_exists('refreshBillLines',$_REQUEST) ) {
+    drawBillLinesFromObject($obj, true);
     exit;
   }
   if ( array_key_exists('refreshAttachements',$_REQUEST) ) {
@@ -1952,6 +1952,29 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     <?php }?>
   <?php    
   }
+  $displayBillLine='YES_OPENED';
+  if (array_key_exists('displayBillLine',$_SESSION)) {
+    $displayBillLine=$_SESSION['displayBillLine'];
+  }
+  if (isset($obj->_BillLine)) { ?>
+    <br/>
+    <?php if ($print) {?>
+    <table width="100%">
+      <tr><td class="section"> <?php echo i18n('sectionBillLines');?> </td></tr>
+      <tr><td>
+      <?php drawBillLinesFromObject($obj);?>
+      </td></tr>
+    </table>
+    <?php } else { ?>
+    <div id="billLinesPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+     title="<?php echo i18n('sectionBillLines');?>"
+     <?php $openMode=($displayBillLine=='YES_OPENED')?'true':'false'; ?>
+     open="<?php echo $openMode; ?>" > 
+     <?php drawBillLinesFromObject($obj); ?>
+    </div>
+    <?php }?>
+  <?php    
+  }
   $displayNote='YES_OPENED';
   if (array_key_exists('displayNote',$_SESSION)) {
     $displayNote=$_SESSION['displayNote'];
@@ -1975,29 +1998,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     <?php }?>
   <?php    
   }
-  $displayLine='YES_OPENED';
-  if (array_key_exists('displayLine',$_SESSION)) {
-    $displayLine=$_SESSION['displayLine'];
-  }
-  if (isset($obj->_Line)) { ?>
-    <br/>
-    <?php if ($print) {?>
-    <table width="100%">
-      <tr><td class="section"> <?php echo i18n('sectionLines');?> </td></tr>
-      <tr><td>
-      <?php drawLinesFromObject($obj);?>
-      </td></tr>
-    </table>
-    <?php } else { ?>
-    <div id="linesPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
-     title="<?php echo i18n('sectionLines');?>"
-     <?php $openMode=($displayLine=='YES_OPENED')?'true':'false'; ?>
-     open="<?php echo $openMode; ?>" > 
-     <?php drawLinesFromObject($obj); ?>
-    </div>
-    <?php }?>
-  <?php    
-  }
+  
   $displayHistory='NO';
   if (! $print and array_key_exists('displayHistory',$_SESSION)) {
     $displayHistory=$_SESSION['displayHistory'];

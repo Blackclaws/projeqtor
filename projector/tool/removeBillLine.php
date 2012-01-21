@@ -6,17 +6,17 @@
 require_once "../tool/projector.php";
 
 $lineId=null;
-if (array_key_exists('lineId',$_REQUEST)) {
-  $lineId=$_REQUEST['lineId'];
+if (array_key_exists('billLineId',$_REQUEST)) {
+  $lineId=$_REQUEST['billLineId'];
 }
 $lineId=trim($lineId);
 if ($lineId=='') {
   $lineId=null;
 } 
 if ($lineId==null) {
-  throwError('lineId parameter not found in REQUEST');
+  throwError('billLineId parameter not found in REQUEST');
 }
-$obj=new Line($lineId);
+$obj=new BillLine($lineId);
 $result=$obj->delete();
 
 // Message of correct saving

@@ -224,7 +224,7 @@ checkVersion(); ?>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
           <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;" >
-            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" selected="true">
+            <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" style="overflow: hidden !important;" selected="true">
               <?php include "menuTree.php"; ?>
             </div>
             <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>">
@@ -585,37 +585,49 @@ checkVersion(); ?>
 
 
 
-<div id="dialogLine" dojoType="dijit.Dialog" title="<?php echo i18n("dialogLine");?>">
+<div id="dialogBillLine" dojoType="dijit.Dialog" title="<?php echo i18n("dialogBillLine");?>">
   <table>
     <tr>
       <td>
-       <form id='lineForm' name='lineForm' onSubmit="return false;">
-      	 <input id="lineId" name="lineId" type="hidden" value="" />
-         <input id="lineRefType" name="lineRefType" type="hidden" value="" />
-         <input id="lineRefId" name="lineRefId" type="hidden" value="" />
-         <input id="lineIdTerm" name="lineIdTerm" type="hidden" value="" />
+       <form id='billLineForm' name='billLineForm' onSubmit="return false;">
+      	 <input id="billLineId" name="billLineId" type="hidden" value="" />
+         <input id="billLineRefType" name="billLineRefType" type="hidden" value="" />
+         <input id="billLineRefId" name="billLineRefId" type="hidden" value="" />
+         <input id="billLineIdTerm" name="billLineIdTerm" type="hidden" value="" />
        	 <table>
            <tr>
              <td class="dialogLabel" >
-              <label for="lineLine" ><?php echo i18n("colLine");?>&nbsp;:&nbsp;</label>
+              <label for="billLineLine" ><?php echo i18n("colLineNumber");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-		      <textarea dojoType="dijit.form.NumberTextBox" 
-			      id="lineLine" name="lineLine"
-			      style="width: 50px;"
-			      class="input"
-			      onClick="dijit.byId('lineLine').setAttribute('class','');">  
-		      </textarea>
-		    </td>
-		   </tr>
-		   <tr>
+		           <textarea dojoType="dijit.form.NumberTextBox" 
+			          id="billLineLine" name="billLineLine"
+			          style="width: 50px;"
+			          class="input"
+			          onClick="dijit.byId('billLineLine').setAttribute('class','');">  
+		           </textarea>
+		         </td>
+		       </tr>
+		       <tr>
              <td class="dialogLabel" >
-               <label for="lineIdTerm" ><?php echo i18n("colTerm");?>&nbsp;:&nbsp;</label>
+               <label for="billLineQuantity" ><?php echo i18n("colQuantity");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-              <select dojoType="dijit.form.FilteringSelect" 
-                id="lineIdTerm" name="lineIdTerm"
-                missingMessage="<?php echo "Valeur non modifiable";?>"
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="billLineQuantity" name="billLineQuantity"
+                style="width: 50px;"
+                class="input">  
+               </input> 
+             </td>
+           </tr>
+		       <tr>
+             <td class="dialogLabel" >
+               <label for="billLineIdTerm" ><?php echo i18n("colIdTerm");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="billLineIdTerm" name="billLineIdTerm"
+                missingMessage="<?php echo i18n('mandatory');?>"
                 class="input" value="" >
                 <?php 
                    htmlDrawOptionForReference('idTerm', null,null,false);
@@ -623,57 +635,85 @@ checkVersion(); ?>
                </select>  
              </td>
            </tr>
-		   <tr>
-             <td class="dialogLabel" >
-              <label for="lineQuantity" ><?php echo i18n("colQuantity");?>&nbsp;:&nbsp;</label>
-             </td>
-             <td>
-             <input dojoType="dijit.form.NumberTextBox" 
-	          id="lineQuantity" name="lineQuantity"
-	          style="width: 50px;"
-	          class="input"
-	          onClick="dijit.byId('lineQuantity').setAttribute('class','');">  
-	         </input> 
-	         </td>
-	       </tr>
            <tr>
              <td class="dialogLabel" >
-              <label for="lineDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
+               <label for="billLineIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="billLineIdResource" name="billLineIdResource"
+                missingMessage="<?php echo i18n('mandatory');?>"
+                class="input" value="" >
+                <?php 
+                   htmlDrawOptionForReference('idResource', null,null,false);
+                 ?>
+               </select>  
+             </td>
+           </tr>
+		       <tr>
+             <td class="dialogLabel" >
+               <label for="billLineStartDate" ><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="billLineStartDate" name="billLineStartDate"
+                dojoType="dijit.form.DateTextBox" required="true" hasDownArrow="false"   
+                type="text" maxlength="10"  style="width:100px; text-align: center;" class="input"
+                missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+                invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" >
+               </div>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="billLineEndDate" ><?php echo i18n("colEndDate");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <div id="billLineEndDate" name="billLineEndDate"
+                dojoType="dijit.form.DateTextBox" required="true" hasDownArrow="false"   
+                type="text" maxlength="10"  style="width:100px; text-align: center;" class="input"
+                missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+                invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" >
+               </div>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+              <label for="billLineDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
               <textarea dojoType="dijit.form.Textarea" 
-	          id="lineDescription" name="lineDescription"
+	          id="billLineDescription" name="billLineDescription"
 	          style="width: 500px;"
 	          maxlength="200"
 	          class="input"
-	          onClick="dijit.byId('lineDescription').setAttribute('class','');">  
+	          onClick="dijit.byId('billLineDescription').setAttribute('class','');">  
 	          </textarea>
 	         </td>
 	        </tr>
             <tr>
              <td class="dialogLabel" >
-              <label for="lineReference" ><?php echo i18n("colReference");?>&nbsp;:&nbsp;</label>
+              <label for="billLineReference" ><?php echo i18n("colReference");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <textarea dojoType="dijit.form.Textarea" 
-	          id="lineReference" name="lineReference"
+	          id="billLineReference" name="billLineReference"
 	          style="width: 500px;"
 	          maxlength="200"
 	          class="input"
-	          onClick="dijit.byId('lineReference').setAttribute('class','');">  
+	          onClick="dijit.byId('billLineReference').setAttribute('class','');">  
 	          </textarea> 
 	         </td>
 	        </tr>
             <tr>
              <td class="dialogLabel" >
-              <label for="linePrice" ><?php echo i18n("colPrice");?>&nbsp;:&nbsp;</label>
+              <label for="billLinePrice" ><?php echo i18n("colPrice");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
               <textarea dojoType="dijit.form.NumberTextBox" 
-	          id="linePrice" name="linePrice"
+	          id="billLinePrice" name="billLinePrice"
 	          style="width: 100px;"
 	          class="input"
-	          onClick="dijit.byId('linePrice').setAttribute('class','');">  
+	          onClick="dijit.byId('billLinePrice').setAttribute('class','');">  
 	          </textarea> 
 	         </td>
 	        </tr>
@@ -683,11 +723,11 @@ checkVersion(); ?>
     </tr>
     <tr>
       <td align="center">
-        <input type="hidden" id="dialogLineAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogLine').hide();">
+        <input type="hidden" id="dialogBillLineAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogBillLine').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" id="dialogLineSubmit" type="submit" onclick="saveLine();return false;">
+        <button dojoType="dijit.form.Button" id="dialogBillLineSubmit" type="submit" onclick="saveBillLine();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

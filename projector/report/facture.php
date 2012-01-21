@@ -114,7 +114,7 @@ foreach ($billList as $bill)
 	
 	echo "<table>";
 	$acc=0;
-	$line = new Line();
+	$line = new BillLine();
 	$crit = array("refId"=>$bill->id,"refType"=>"Bill");
 	$lineList = $line->getSqlElementsFromCriteria($crit,false,null,"line");
 	echo "<tr><th width=70px style='border:solid 1px black'>Quantite";	

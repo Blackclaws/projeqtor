@@ -308,6 +308,20 @@ function deleteDuplicate() {
       $idProfile=$hab->idProfile;
     }
   }
+  // ACCESSRIGHT
+  $acc=new AccessRight();
+  $accList=$acc->getSqlElementsFromCriteria(array(), false, null, 'idProfile, idMenu, id ');
+  $idMenu='';
+  $idProfile='';
+  foreach ($accList as $acc) {
+    if ($acc->idMenu==$idMenu and $acc->idProfile==$idProfile) {
+      $acc->delete();
+    } else {
+      $idMenu=$acc->idMenu;
+      $idProfile=$acc->idProfile;
+    }
+  }
+  
 // PARAMETER
   $par=new Parameter();
   $parList=$par->getSqlElementsFromCriteria(array(), false, null, 'idUser, idProject, parameterCode, id');

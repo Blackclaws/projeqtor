@@ -13,9 +13,6 @@ class BillType extends Type {
     "_lib_mandatoryOnDoneStatus"=>"hidden",
     "lockHandled"=>"hidden",
     "_lib_statusMustChangeHandled"=>"hidden",
-    "lockDone"=>"hidden",
-    "_lib_statusMustChangeDone"=>"hidden",
-   
     "mandatoryResourceOnHandled"=>"hidden",
     "_lib_mandatoryOnHandledStatus"=>"hidden");
   
