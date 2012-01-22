@@ -347,7 +347,7 @@ class ImputationLine {
         if (!$print) {
           echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
           echo ' constraints="{pattern:\'###0.0#\'}"'; 
-          echo '  style="width: 60px; text-align: center;" ';
+          echo '  style="width: 60px; text-align: center; color: #000; background-color: transparent; background: none;" ';
           echo ' trim="true" class="displayTransparent" readOnly="true" disabled="true"';
           echo ' id="assignedWork_' . $nbLine . '"';
           echo ' name="assignedWork_' . $nbLine . '"';
