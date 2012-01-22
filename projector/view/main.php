@@ -593,7 +593,6 @@ checkVersion(); ?>
       	 <input id="billLineId" name="billLineId" type="hidden" value="" />
          <input id="billLineRefType" name="billLineRefType" type="hidden" value="" />
          <input id="billLineRefId" name="billLineRefId" type="hidden" value="" />
-         <input id="billLineIdTerm" name="billLineIdTerm" type="hidden" value="" />
        	 <table>
            <tr>
              <td class="dialogLabel" >
@@ -620,6 +619,9 @@ checkVersion(); ?>
                </input> 
              </td>
            </tr>
+          </table>
+          <div id='billLineFrameTerm'>
+          <table>
 		       <tr>
              <td class="dialogLabel" >
                <label for="billLineIdTerm" ><?php echo i18n("colIdTerm");?>&nbsp;:&nbsp;</label>
@@ -635,6 +637,10 @@ checkVersion(); ?>
                </select>  
              </td>
            </tr>
+           </table>
+           </div> 
+           <div id='billLineFrameResource'>
+           <table>
            <tr>
              <td class="dialogLabel" >
                <label for="billLineIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
@@ -646,6 +652,21 @@ checkVersion(); ?>
                 class="input" value="" >
                 <?php 
                    htmlDrawOptionForReference('idResource', null,null,false);
+                 ?>
+               </select>  
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="billLineIdActivityPrice" ><?php echo i18n("colIdActivityPrice");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="billLineIdActivityPrice" name="billLineIdActivityPrice"
+                missingMessage="<?php echo i18n('mandatory');?>"
+                class="input" value="" >
+                <?php 
+                   htmlDrawOptionForReference('idActivityPrice', null,null,false);
                  ?>
                </select>  
              </td>
@@ -676,6 +697,10 @@ checkVersion(); ?>
                </div>
              </td>
            </tr>
+           </table>
+           </div> 
+           <div id='billLineFrameDescription'>
+           <table>
            <tr>
              <td class="dialogLabel" >
               <label for="billLineDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
@@ -692,18 +717,20 @@ checkVersion(); ?>
 	        </tr>
             <tr>
              <td class="dialogLabel" >
-              <label for="billLineReference" ><?php echo i18n("colReference");?>&nbsp;:&nbsp;</label>
+              <label for="billLineDetail" ><?php echo i18n("colDetail");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <textarea dojoType="dijit.form.Textarea" 
-	          id="billLineReference" name="billLineReference"
+	          id="billLineDetail" name="billLineDetail"
 	          style="width: 500px;"
 	          maxlength="200"
-	          class="input"
-	          onClick="dijit.byId('billLineReference').setAttribute('class','');">  
-	          </textarea> 
+	          class="input">
+	          </textarea>  
 	         </td>
 	        </tr>
+          </table>
+          </div>
+          <table>
             <tr>
              <td class="dialogLabel" >
               <label for="billLinePrice" ><?php echo i18n("colPrice");?>&nbsp;:&nbsp;</label>

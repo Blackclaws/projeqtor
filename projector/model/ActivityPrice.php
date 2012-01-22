@@ -11,8 +11,8 @@ class ActivityPrice extends SqlElement {
   public $name;
   public $idActivityType; 
   public $priceCost;
-  public $subcontractorCost;
-  public $commissionCost;
+  //public $subcontractorCost;
+  //public $commissionCost;
   //public $idTeam;
   public $sortOrder=0;
   public $idle;

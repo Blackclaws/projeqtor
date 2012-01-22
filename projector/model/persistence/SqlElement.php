@@ -2109,8 +2109,16 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       	return;
       }
     }
-    $projObj=new Project($this->idProject);
-    $typeObj=new Type($this->$type);
+    if (isset($this->idProject)) {
+      $projObj=new Project($this->idProject);
+    } else {
+    	 $projObj=new Project();
+    }
+    if (isset($this->$type)) {
+      $typeObj=new Type($this->$type);
+    } else {
+    	$typeObj=new Type();
+    }
     $prefix=str_replace(array('{PROJ}', '{TYPE}'), array($projObj->projectCode,$typeObj->code),$fmtPrefix);
   	$query="select max(reference) as ref from " . $this->getDatabaseTableName();
   	$query.=" where reference like '" . $prefix . "%'";

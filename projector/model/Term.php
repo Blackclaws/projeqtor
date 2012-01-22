@@ -9,7 +9,7 @@ class Term extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idProject;
-  public $isBilled;
+  public $idBill;
   public $idle;
   public $_col_2_2_Price;
   public $_tab_3_2 = array('real', 'validated', 'planned', 'amount', 'date');
@@ -30,13 +30,13 @@ class Term extends SqlElement {
     <th field="name" width="30%">${name}</th>
     <th field="amount" width="15%" fomatter="numericFormatter">${amount}</th>
     <th field="date" width="15%" formatter="dateFormatter">${date}</th>
-    <th field="isBilled" width="10%" formatter="booleanFormatter" >${isBilled}</th>
+    <th field="idBill" width="10%" formatter="booleanFormatter" >${isBilled}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
   
   private static $_fieldsAttributes=array("name"=>"required",
                                           "idProject"=>"required",
-  								                        "isBilled"=>"readonly",
+  								                        "idBill"=>"readonly",
                                           "validatedAmount"=>"readonly",
                                           "validatedDate"=>"readonly",
                                           "plannedAmount"=>"readonly",
@@ -120,7 +120,7 @@ class Term extends SqlElement {
   
   public function deleteControl() {
   	$result = "";
-  	if ($this->isBilled){
+  	if ($this->idBill){
   		$result .= "<br/>" . i18n("cannotDeleteBilledTerm");
   	}
   	if (! $result) {  

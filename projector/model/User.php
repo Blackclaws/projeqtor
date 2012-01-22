@@ -207,7 +207,7 @@ class User extends SqlElement {
     } 
     if ($item=='affectations') {
       $aff=new Affectation();
-      $critArray=array('idUser'=>$this->id,'idle'=>'0');
+      $critArray=array('idUser'=>(($this->id)?$this->id:'0'),'idle'=>'0');
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
@@ -436,7 +436,7 @@ class User extends SqlElement {
 			//debugLog("authenticate - user '" . $paramlogin . "' unknown in database" );
 			if (isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
 		  	//debugLog("authenticate - user '" . $paramlogin . "' - LDAP enabled - create from LDAP directory if password is OK" );
-		  	$this->name=$paramlogin;
+		  	$this->name=strtolower($paramlogin);
 		  	$this->isLdap = 1;
 		  	//$this->id=-2;
 			} else {

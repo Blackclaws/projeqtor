@@ -1126,7 +1126,9 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   //$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
   if ($obj->idle==1) {$canUpdate=false;}
   $lock=false;
-  if (($obj->idStatus != 1 && $obj->idStatus != 5) || $obj->idle == 1) $lock=true;
+  if ($obj->done or $obj->idle or $obj->billingType=="N") {
+  	$lock=true;
+  }
   if (isset($obj->_BillLine)) {
     $lines=$obj->_BillLine;
   } else {
@@ -1137,15 +1139,15 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   if (! $print) {
     echo '<td class="noteHeader" style="width:5%">';  //changer le header
     if ($obj->id!=null and ! $print and ! $lock) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine();" title="' . i18n('addLine') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine(' . (count($lines)+1) . ');" title="' . i18n('addLine') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
   echo '<td class="noteHeader" style="width:5%">' . i18n('colLineNumber') . '</td>';
   echo '<td class="noteHeader" style="width:5%">' . i18n('colQuantity') . '</td>';
-  echo '<td class="noteHeader" style="width:30%">' . i18n('colDescription') . '</td>';
-  echo '<td class="noteHeader" style="width:30%">' . i18n('colDetail') . '</td>';
+  echo '<td class="noteHeader" style="width:25%">' . i18n('colDescription') . '</td>';
+  echo '<td class="noteHeader" style="width:35%">' . i18n('colDetail') . '</td>';
   echo '<td class="noteHeader" style="width:10%">' . i18n('colPrice') . '</td>';
   echo '<td class="noteHeader" style="width:15%">' .  strtolower(i18n('sum')) . '</td>';
   echo '</tr>';
@@ -1158,25 +1160,32 @@ function drawBillLinesFromObject($obj, $refresh=false) {
       if ($lock==0)
       {
 	      echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
-	      ' . "'" . $line->id . "'" 
-	        . ",'" . htmlEncodeJson($line->description) . "'"
-	        . ",'" . $fmt->format($line->line) . "'"
+	      ' . "'" . $line->id . "'" 	        
+	        . ",'" . $line->line . "'"
 	        . ",'" . $fmtd->format($line->quantity) . "'"
-	        . ",'" . htmlEncodeJson($line->reference) . "'"
-	        . ",'" . $fmtd->format($line->price) . "'"
-	        . ",'" . $fmtd->format($line->sum) . "'"
 	        . ",'" . $line->idTerm . "'"
-	     . ');" title="' . i18n('editBillLine') . '" class="smallButton"/> ';
-	      echo ' <img src="css/images/smallButtonRemove.png" onClick="removeBillLine(' . $line->id . ');" title="' . i18n('removeBillLine') . '" class="smallButton"/> ';
+	        . ",'" . $line->idResource . "'"
+	        . ",'" . $line->idActivityPrice . "'"
+	        . ",'" . $line->startDate . "'"
+	        . ",'" . $line->endDate . "'"
+	        . ",'" . $fmtd->format($line->price) . "'"
+	     . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+	      echo ' <img src="css/images/smallButtonRemove.png"' 
+	        .' onClick="removeBillLine(' . $line->id . ');"'
+	        .' title="' . i18n('removeLine') . '" class="smallButton"/> ';
       }
       echo '</td>';
     echo '<td class="noteData">#' . $line->id  . '</td>';
     echo '<td class="noteData">' . $line->line . '</td>';
     echo '<td class="noteData">' . $line->quantity . '</td>';
-    echo '<td class="noteData">' . $line->description . '</td>';
-    echo '<td class="noteData">' . $line->reference . '</td>';
+    echo '<td class="noteData">' . htmlEncode($line->description,'withBR');
+    echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
+    echo '</td>';
+    echo '<td class="noteData">' . htmlEncode($line->detail,'withBR');
+    echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
+    echo '</td>';
     echo '<td class="noteData">' . $line->price . '</td>';
-    echo '<td class="noteData">' . $line->sum . '</td>';
+    echo '<td class="noteData">' . $line->amount . '</td>';
     echo '</tr>';
   }
   echo '<tr>';
@@ -1339,7 +1348,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
   if(get_class($obj)=="Term")
   {
-  	if($obj->isBilled) $canUpdate=false;
+  	if($obj->idBill) $canUpdate=false;
   }
   if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
