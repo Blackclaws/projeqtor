@@ -1480,7 +1480,7 @@ function addBillLine (line) {
 	dijit.byId('billLineIdResource').store.fetch();
 	dijit.byId("billLineIdResource").reset("value");
 	dijit.byId('billLineIdActivityPrice').store = new dojo.data.ItemFileReadStore({
-	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject$critValue='+prj });
+	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject&critValue='+prj });
 	dijit.byId('billLineIdActivityPrice').store.fetch();
 	dijit.byId("billLineIdActivityPrice").reset("value");
 	dijit.byId("billLineStartDate").reset("value");
@@ -1514,7 +1514,7 @@ function editBillLine (id,line,quantity,idTerm,idResource, idActivityPrice, star
 	dijit.byId('billLineIdResource').store.fetch();
 	dijit.byId("billLineIdResource").set("value",idResource);
 	dijit.byId('billLineIdActivityPrice').store = new dojo.data.ItemFileReadStore({
-	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject$critValue='+prj });
+	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject&critValue='+prj });
 	dijit.byId('billLineIdActivityPrice').store.fetch();
 	dijit.byId("billLineIdActivityPrice").set("value",idActivityPrice);
 	dijit.byId("billLineStartDate").set("value",startDate);
@@ -1544,7 +1544,7 @@ function manageBillingType() {
 	  }
 	  dijit.byId("billLineQuantity").set('readOnly',false);
 	  dijit.byId("billLinePrice").set('readOnly',true);
-	} else if (type=='R') {
+	} else if (type=='R' || type=='P') {
 	  dojo.style(dojo.byId('billLineFrameTerm'), {display:'none'});
 	  dojo.style(dojo.byId('billLineFrameResource'), {display:'block'});
 	  dijit.byId("billLineQuantity").set('readOnly',true);
@@ -1560,8 +1560,6 @@ function manageBillingType() {
 		dijit.byId("billLineStartDate").set('readOnly',true);
 		dijit.byId("billLineEndDate").set('readOnly',true);
 	  }
-	} else if (type=='P') {
-	  
 	} else if (type=='M') {
 	  if (! dijit.byId("billLineQuantity").get("value")) {
 		dijit.byId("billLineQuantity").set("value",'1');

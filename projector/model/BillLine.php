@@ -122,49 +122,7 @@ class BillLine extends SqlElement {
   public function delete()
   {  	
   	global $paramDbPrefix;
-  	
-  	// TODO : If billingTypee = R or P
-  	// $work->isBilled = 0;
-  	// for idProject, startDate<=workDate<=endDate, isBilled = $this->id;      
-  	
-  	/*$bill = new Bill($this->refId);
-  	if ($this->idActivity and $this->quantity and ! $this->idTerm){
-  		$act = new Activity($this->idActivity);
-  		$prj = new Project($act->idProject);
-  		$type =new Type($prj->idProjectType);
-  		$work = new Work();
-		  $crit = "idProject=".$prj->id;
-		  $crit.=" and ";
-		  $crit.= "idResource=".$this->idResource;		
-		  $crit.=" and ";
-		  $crit.="workDate>=\"".$bill->startDate."\"";
-		  $crit.=" and ";
-		  $crit.="workDate<=\"".$bill->endDate."\"";
-		  $crit.=" and isBilled != 0";
-		  $crit.=" and refId=".$this->idActivity;		
-		  $workList = $work->getSqlElementsFromCriteria(null,false,$crit, "idAssignment asc");
-		  $assId="";
-		  $ass=null;
-		  foreach ($workList as $work) {
-		  	if ($work->idAssignment!=$assId) {
-		  		if ($assId) { $ass->save(); }
-		  		$ass=new Assignment($work->idAssignment);
-		  		$assId=$work->idAssignment;
-		  	}
-			  $ass->billedWork -=$work->work;
-		  }
-		  if ($ass) {
-		  	$ass->save();
-		  }
-  	}	  	
-  	if ($this->refId and $this->idResource) {
-		  $query = "UPDATE `".$paramDbPrefix."work` SET isBilled=0 WHERE isBilled=".$this->refId." AND idResource=".$this->idResource;
-  		if(is_numeric($this->idActivity)) {
-  			$query.= " AND refId=".$this->idActivity;
-  		}
-		  Sql::query($query);
-	  }*/
-	
+  		
 	  $bill=new Bill($this->refId);
     $billingType=$bill->billingType;
 	  if ($billingType=='E') {
@@ -249,7 +207,7 @@ class BillLine extends SqlElement {
   		  }
   		}
   	}
-  	if ($billingType=='R' or$billingType=='P' ) {
+  	if ($billingType=='R' or $billingType=='P' ) {
       if (! $this->id) {
       	$this->detail="";
       	$totalWork=0;
@@ -301,14 +259,18 @@ class BillLine extends SqlElement {
             }
       		}
       		if ($selectedAct) {
-      			$actBillable=round((($actWork+$actBilled)*($actAssigned/$actPlanned))-$actBilled);
+      			$doneWork=($actWork+$actBilled);
+      			$progressWork=round( ($doneWork/$actPlanned),3);
+      			$actBillable=round( ( ($actAssigned*$progressWork)-$actBilled),1);
+      			$actBillable=($actBillable>0)?$actBillable:0;
       			$billableWork+=$actBillable;
       			$this->detail.=(($this->detail)?"\n":"").$act->name;
       			if ($billingType=='P') {
       				$this->detail.=" : ".$actBillable." ".i18n('days');
-      				$this->detail.="\n..." . i18n('colDone') . "=" . ($actWork+$actBilled);
-      				$this->detail.="\n..." . i18n('colProgress') . "=" . round($actAssigned/$actPlanned*100,1) . "%";
-      				$this->detail.="\n..." . i18n('colBilled') . "=" . $actBilled;
+      				$this->detail.="\n...[" . i18n('colBillable') . "] = [" . i18n('colValidated') . "]"
+      				                        . " x [" . i18n('progress')  . "] - [" . i18n('colIsBilled') . "]";
+      				$this->detail.="\n...[" . $actBillable . " " . i18n('days') . "] = [" . $actAssigned . " " . i18n('days') . "]"
+      				                        . " x [" . ($progressWork*100) . "%] - [" . $actBilled . " " . i18n('days') . "]";
       			} else {
       			  $this->detail.=" : ".$actWork." ".i18n('days');
       			}

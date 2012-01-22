@@ -31,14 +31,14 @@ class ActivityPrice extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="name" width="25%" >${name}</th>
-    <th field="nameProject" width="15%" >${idProject}</th>
-    <th field="nameActivityType" width="15%" >${idActivityType}</th>
-    <th field="priceCost" width="10%" >${priceCost}</th>
-    <th field="subcontractorCost" width="10%" >${subcontractorCost}</th>
-    <th field="commissionCost" width="10%" >${commissionCost}</th>
-    <th field="sortOrder" width="5%" >${sortOrderShort}</th>    
+    <th field="nameProject" width="20%" >${idProject}</th>
+    <th field="nameActivityType" width="20%" >${idActivityType}</th>
+    <th field="priceCost" width="15%" >${priceCost}</th>
+    <th field="sortOrder" width="10%" >${sortOrderShort}</th>    
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
+//    <th field="subcontractorCost" width="10%" >${subcontractorCost}</th>
+//    <th field="commissionCost" width="10%" >${commissionCost}</th>
 //  <th field="nameTeam" width="15%" >${idTeam}</th>  
 //  <th field="isRef" width="5%" formatter="booleanFormatter" >${isRef}</th>
 //  <th field="pct" width="8%" >${pct}</th>
