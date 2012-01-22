@@ -660,6 +660,7 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');
       } else if (validationType=='billLine') {
         loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
+        loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='copyTo') {
@@ -738,6 +739,9 @@ function finalizeMessageDisplay(destination, validationType) {
           if (dojo.byId("historyPane")) {
             loadContent("objectDetail.php?refreshHistory=true", "historyPane", 'listForm');
           }
+          if (dojo.byId("billLinesPane")) {
+              loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
+            }
           if (lastOperation.value=="insert" && ! validationType) {
             if (dojo.byId("attachementsPane")) {
               loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');

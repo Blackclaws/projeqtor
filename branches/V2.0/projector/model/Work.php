@@ -20,7 +20,7 @@ class Work extends SqlElement {
   public $year;
   public $dailyCost;
   public $cost;
-
+  public $idBill;
   public $_noHistory;
   private static $hoursPerDay;
   private static $imputationUnit;

@@ -118,86 +118,71 @@
 	        $nbRows+=1;
 	      }
 	    } else if ($type=='listTermProject') {
-	    	if(!isset($_REQUEST['selected']))
-    	{
-	      $obj=$_SESSION['currentObject'];
-	      $idPrj=$_REQUEST['idProject'];
-	      $prj=new Project($obj->idProject);
-	      $lstTopPrj=$prj->getTopProjectList(true);
-	      $in=transformValueListIntoInClause($lstTopPrj);
-	      $where="idProject in " . $in." AND isBilled=0";
-	       
-	      $term=new Term();
-	      $list=$term->getSqlElementsFromCriteria(null,null, $where);
-	      $listFinal = array();
-	      //if (array_key_exists('selected', $_REQUEST)) { 
-	      //  $lstFinal[$_REQUEST['selected']]=SqlList::getNameFromId('Term', $_REQUEST['selected']);
-	      //}
-	      
-	      $listFinal = array();
-	      foreach ($list as $term)
-	      {
-	      	// on récupère les trigger
-	      	$dep = new Dependency();
-	      	$crit = array("successorRefType"=>"Term","successorRefId"=>$term->id);
-	      	$depList = $dep->getSqlElementsFromCriteria($crit,false);
-	      	$idle = 1;
-	      	foreach ($depList as $dep)
-	      	{
-	      		switch ($dep->predecessorRefType)
-	      		{
-	      			case "Activity":
-	      				//$act = new Activity($dep->predecessorRefId);
-	      				//if ($act->idle == 0) $idle = 0;
-	      				break;
-	      			case "Milestone":
-	      				$mil = new Milestone($dep->predecessorRefId);
-	      				if ($mil->idle == 0) $idle = 0;
-	      				break;
-	      			case "Project":
-	      				//$project = new Project($dep->predecessorRefId);
-	      				//if ($project->idle == 0) $idle = 0;
-	      				break;
-	      		}
-	      	}      	
-	
-	      	// si tous les trigger sont clos alors on ajoute le term à la liste des term disponibles
-	      	if($idle==1)
-	      	{
-	      		if($term->date!=null)
-	      		{
-	      			$now = date('Y-m-d');
-	      			$now = new DateTime($now);
-	      			$now = $now->format('Y-m-d');
-	      			
-	      			if ($now >= $term->date)
-	      			{
-	      				$listFinal[$term->id]=$term;
-	      			}
-	      		}
-	      		else $listFinal[$term->id]=$term;
-	      	}
-	      }
-	
-	      foreach ($listFinal as $term) {
-	        if (! array_key_exists($term->id, $listFinal)) {
+	    	if(!isset($_REQUEST['selected']))	{
+	        $obj=$_SESSION['currentObject'];
+	        $idPrj=$_REQUEST['idProject'];
+	        $prj=new Project($obj->idProject);
+	        $lstTopPrj=$prj->getTopProjectList(true);
+	        $in=transformValueListIntoInClause($lstTopPrj);
+	        $where="idProject in " . $in." AND idBill is null";	       
+	        $term=new Term();
+	        $list=$term->getSqlElementsFromCriteria(null,null, $where);
+	        $listFinal = array();
+	        foreach ($list as $term) {
+	      	  // on récupère les trigger
+	      	  $dep = new Dependency();
+	      	  $crit = array("successorRefType"=>"Term","successorRefId"=>$term->id);
+	      	  $depList = $dep->getSqlElementsFromCriteria($crit,false);
+	      	  $idle = 1;
+	      	  foreach ($depList as $dep) {
+	      		  switch ($dep->predecessorRefType) {
+	      			  case "Activity":
+	      				  //$act = new Activity($dep->predecessorRefId);
+	      				  //if ($act->idle == 0) $idle = 0;
+	      				  break;
+	      			  case "Milestone":
+	      				  $mil = new Milestone($dep->predecessorRefId);
+	      				  if ($mil->idle == 0) $idle = 0;
+	      				  break;
+	      			  case "Project":
+	      				  //$project = new Project($dep->predecessorRefId);
+	      				  //if ($project->idle == 0) $idle = 0;
+	      				  break;
+	      		  }
+	      	  }      	
+	      	  // si tous les trigger sont clos alors on ajoute le term à la liste des term disponibles
+	      	  if($idle==1) {
+	      		  if($term->date!=null) {
+  	      			$now = date('Y-m-d');
+	        			$now = new DateTime($now);
+	        			$now = $now->format('Y-m-d');
+	        			if ($now >= $term->date) {
+	        				$listFinal[$term->id]=$term;
+	      	  		}
+	      		  } else { 
+	      			  $listFinal[$term->id]=$term;
+	      		  }
+	      	  }
+	        }	
+	        foreach ($listFinal as $term) {
+	          if (! array_key_exists($term->id, $listFinal)) {
 	          $listFinal[$term->id]=SqlList::getNameFromId('Term', $term->id);
+	          }
 	        }
-	      }
-	      asort($listFinal);
-	      // return result in json format
-	      
-	      echo '{id:null, name:""}';
-	     // $i=0;
-	      foreach ($listFinal as $term) {
-	      	//if($i!=0) 
-	      	echo ', ';
-	        echo '{id:"' . $term->id . '", name:"'. $term->name . '"}';
-	       //$i++;
-	      }
-	    }
-	    else echo '{id:null, name:""}';     
-      
+	        
+	        asort($listFinal);
+	        // return result in json format	      
+	        echo '{id:null, name:""}';
+	        // $i=0;
+	        foreach ($listFinal as $term) {
+	      	  //if($i!=0) 
+	      	  echo ', ';
+	          echo '{id:"' . $term->id . '", name:"'. $term->name . '"}';
+	         //$i++;
+	        }
+	      } else {
+	      	echo '{id:'.$_REQUEST['selected'].', name:"' . SqlList::getNameFromId('Term', $_REQUEST['selected']) . '"}';
+	      }           
     } else if ($type=='listRoleResource') {
       $ctrl="";
       $idR=$_REQUEST['idResource'];

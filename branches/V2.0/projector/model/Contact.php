@@ -355,7 +355,7 @@ class Contact extends SqlElement {
     $result="";
     if ($item=='affectations') {
       $aff=new Affectation();
-      $critArray=array('idContact'=>$this->id);
+      $critArray=array('idContact'=>(($this->id)?$this->id:'0'),'idle'=>'0');
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;

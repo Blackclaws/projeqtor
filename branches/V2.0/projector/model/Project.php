@@ -18,7 +18,7 @@ class Project extends SqlElement {
   public $idProject;
   public $idUser;
   public $color;
-  public $paymentDelay;
+  //public $paymentDelay;
   public $done;
   public $doneDate;
   public $idle;
@@ -309,7 +309,7 @@ class Project extends SqlElement {
       return $result;*/
     } else if ($item=='affectations') {
       $aff=new Affectation();
-      $critArray=array('idProject'=>$this->id,'idle'=>'0');
+      $critArray=array('idProject'=>(($this->id)?$this->id:'0'),'idle'=>'0');
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Resource', false);  
       drawAffectationsFromObject($affList, $this, 'Contact', false); 

@@ -11,12 +11,12 @@ class BillLine extends SqlElement {
   public $line;
   public $quantity;
   public $description;
-  public $reference;
+  public $detail;
   public $price;
-  public $sum;
+  public $amount;
   public $idTerm;
   public $idResource;
-  public $idActivity;
+  public $idActivityPrice;
   public $startDate;
   public $endDate;
   
@@ -53,9 +53,29 @@ class BillLine extends SqlElement {
   public function control(){
     $result="";    
   	$bill = new Bill($this->refId);
+    $billingType=$bill->billingType;
 	  if (is_numeric($bill->billId)) {
 		  $result.='<br/>' . i18n('errorLockedBill');
-	  }    
+	  }
+	  if ($billingType=='E') {
+	    if ( ! trim($this->idTerm) ){
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdTerm')));
+      }
+	  }
+	  if ($billingType=='R') {
+      if ( ! trim($this->idResource) ){
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdResource')));
+      }
+	    if ( ! trim($this->idActivityPrice) ){
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdResource')));
+      }
+	    if ( ! $this->startDate){
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colStartDate')));
+      }
+	    if ( ! $this->endDate){
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colEndDate')));
+	    }
+    }       
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -99,7 +119,6 @@ class BillLine extends SqlElement {
    * @see persistence/SqlElement#delete()
    * @return the return message of persistence/SqlElement#delete() method
    */  
-  
   public function delete()
   {  	
   	global $paramDbPrefix;
@@ -108,7 +127,7 @@ class BillLine extends SqlElement {
   	// $work->isBilled = 0;
   	// for idProject, startDate<=workDate<=endDate, isBilled = $this->id;      
   	
-  	$bill = new Bill($this->refId);
+  	/*$bill = new Bill($this->refId);
   	if ($this->idActivity and $this->quantity and ! $this->idTerm){
   		$act = new Activity($this->idActivity);
   		$prj = new Project($act->idProject);
@@ -144,26 +163,177 @@ class BillLine extends SqlElement {
   			$query.= " AND refId=".$this->idActivity;
   		}
 		  Sql::query($query);
-	  }
+	  }*/
 	
-	  if ($this->idTerm != null) {
-		  $term = new Term($this->idTerm);
-		  $term->isBilled = 0;
-		  $term->save();		
-		  if($this->idActivity != null) {
-			  $query = "UPDATE `".$paramDbPrefix."planningelement` SET isBilled=0 WHERE isBilled=".$this->idTerm." AND refId=".$this->idActivity;
-			  Sql::query($query);
-		  }
-		}
-	  return parent::delete();
+	  $bill=new Bill($this->refId);
+    $billingType=$bill->billingType;
+	  if ($billingType=='E') {
+      $term=new Term($this->idTerm);
+      $term->idBill=null;
+      $term->save();
+      $crit=array('successorRefType'=>'Term','successorRefId'=>$term->id);
+      $dep=new Dependency();
+      $depList=$dep->getSqlElementsFromCriteria($crit, null);
+      foreach($depList as $dep) {
+        $class=$dep->predecessorRefType;
+        $obj=new $class($dep->predecessorRefId);
+        $pe=new PlanningElement($dep->predecessorId);
+        $pe->idBill=null;
+        $pe->save();          
+      }
+    }
+    if ($billingType=='R' or$billingType=='P' ) {
+      $price=New ActivityPrice($this->idActivityPrice);
+      $act=New Activity();
+      $critAct=array("idActivityType"=>$price->idActivityType, "idProject"=>$price->idProject);
+      $actList=$act->getSqlElementsFromCriteria($critAct, false);
+      foreach ($actList as $act) {
+        $ass=new Assignment();
+        $critAss=array("refType"=>"Activity", "refId"=>$act->id, "idProject"=>$act->idProject, "idResource"=>$this->idResource);
+        $assList=$ass->getSqlElementsFromCriteria($critAss, false);
+        foreach ($assList as $ass) {
+          $selectedAss=false;
+          $work = new Work();
+          $crit = "idProject='".$bill->idProject . "'";
+          $crit.=" and idResource='".$this->idResource. "'";    
+          $crit.=" and workDate>=\"".$this->startDate."\"";
+          $crit.=" and workDate<=\"".$this->endDate."\"";
+          $crit.=" and idAssignment='".$ass->id."'";
+          $crit.=" and idBill='" . $bill->id . "'";   
+          $workList = $work->getSqlElementsFromCriteria(null,false,$crit, "idAssignment asc");
+          foreach ($workList as $work) {
+            $work->idBill=null;
+            $selectedAss=true;
+            $ass->billedWork-=$work->work;
+            $work->save();
+          }
+          if ($selectedAss) {
+            $ass->save();
+          }
+        }
+      }       
+    }
+
+    return parent::delete();
   }
   
+  /** =========================================================================
+   * Overrides SqlElement::save() function to add specific treatments
+   * @see persistence/SqlElement#save()
+   * @return the return message of persistence/SqlElement#save() method
+   */  
   public function save() {
   	
-  	// TODO : $work->isBilled = $this->id;
-    // idProject, startDate<=workDate<=endDate, isBilled =0 ;    
-    
-  	return parent::save();
+    $bill=new Bill($this->refId);
+  	$billingType=$bill->billingType;
+  	
+  	if ($billingType=='E') {
+  		if (! $this->id) {
+  		  $term=new Term($this->idTerm);
+  		  $this->description=$term->name;
+  		  $this->price=$term->amount;
+  		  $term->idBill=$bill->id;
+  		  $term->save();
+  		  $crit=array('successorRefType'=>'Term','successorRefId'=>$term->id);
+  		  $dep=new Dependency();
+  		  $depList=$dep->getSqlElementsFromCriteria($crit, null);
+  		  $this->detail="";
+  		  foreach($depList as $dep) {
+  		  	$class=$dep->predecessorRefType;
+  		  	$obj=new $class($dep->predecessorRefId);
+  		  	$this->detail.=($this->detail)?"\n":'';
+  		  	$this->detail.=$obj->name;
+  		  	$pe=new PlanningElement($dep->predecessorId);
+  		  	$pe->idBill=$bill->id;
+  		  	$pe->save();  		  	
+  		  }
+  		}
+  	}
+  	if ($billingType=='R' or$billingType=='P' ) {
+      if (! $this->id) {
+      	$this->detail="";
+      	$totalWork=0;
+      	$billableWork=0;
+      	$listDates=array();
+      	$price=New ActivityPrice($this->idActivityPrice);
+      	$act=New Activity();
+      	$critAct=array("idActivityType"=>$price->idActivityType, "idProject"=>$price->idProject);
+      	$actList=$act->getSqlElementsFromCriteria($critAct, false);
+      	foreach ($actList as $act) {
+      		$actWork=0;
+      		$actBilled=0;
+      		$actAssigned=0;
+      		$actPlanned=0;
+      		$selectedAct=false;
+      		$ass=new Assignment();
+      		$critAss=array("refType"=>"Activity", "refId"=>$act->id, "idProject"=>$act->idProject, "idResource"=>$this->idResource);
+      		$assList=$ass->getSqlElementsFromCriteria($critAss, false);
+      		foreach ($assList as $ass) {
+      			$selectedAss=false;
+      			$actBilled+=$ass->billedWork;
+      			$actAssigned+=$ass->assignedWork;
+      			$actPlanned+=$ass->plannedWork;
+      			$work = new Work();
+            $crit = "idProject='".$bill->idProject . "'";
+            $crit.=" and idResource='".$this->idResource. "'";    
+            $crit.=" and workDate>=\"".$this->startDate."\"";
+            $crit.=" and workDate<=\"".$this->endDate."\"";
+            $crit.=" and idAssignment='".$ass->id."'";
+            $crit.=" and idBill is null";   
+            $workList = $work->getSqlElementsFromCriteria(null,false,$crit, "idAssignment asc");
+            foreach ($workList as $work) {
+            	$work->idBill=$bill->id;
+            	$totalWork+=$work->work;
+            	$actWork+=$work->work;
+            	$selectedAct=true;
+            	$selectedAss=true;
+            	$ass->billedWork+=$work->work;
+            	// Sum of work for dates : to be displayed if needed
+            	if (array_key_exists($work->workDate, $listDates)) {
+            	  $listDates[$work->workDate]+=$work->work;
+              } else {
+                $listDates[$work->workDate]=$work->work;
+              }
+            	$work->save();
+            }
+            if ($selectedAss) {
+            	$ass->save();
+            }
+      		}
+      		if ($selectedAct) {
+      			$actBillable=round((($actWork+$actBilled)*($actAssigned/$actPlanned))-$actBilled);
+      			$billableWork+=$actBillable;
+      			$this->detail.=(($this->detail)?"\n":"").$act->name;
+      			if ($billingType=='P') {
+      				$this->detail.=" : ".$actBillable." ".i18n('days');
+      				$this->detail.="\n..." . i18n('colDone') . "=" . ($actWork+$actBilled);
+      				$this->detail.="\n..." . i18n('colProgress') . "=" . round($actAssigned/$actPlanned*100,1) . "%";
+      				$this->detail.="\n..." . i18n('colBilled') . "=" . $actBilled;
+      			} else {
+      			  $this->detail.=" : ".$actWork." ".i18n('days');
+      			}
+      		}
+      	}
+      	if ($billingType=='P') {
+      		$this->quantity=$billableWork;
+      	} else {     	
+      	  $this->quantity=$totalWork;
+      	}
+      	$this->price=$price->priceCost;
+      	$ress=new Resource($this->idResource);
+        $this->description=$ress->name 
+                 . "\n" . $price->name 
+                 . "\n" . htmlFormatDate($this->startDate) . " - " . htmlFormatDate($this->endDate);
+      }
+  	}
+  	
+  	$this->amount=$this->quantity*$this->price;
+  	$result=parent::save();
+  	
+  	// Update Bill to get total of amount
+  	$bill->save(); 
+  	
+  	return $result;
   }
 }
 ?>

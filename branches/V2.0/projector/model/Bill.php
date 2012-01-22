@@ -19,7 +19,9 @@ class Bill extends SqlElement {
   public $idStatus;
   public $done;
   public $idle;
-  
+  public $untaxedAmount;
+  public $tax;
+  public $fullAmount;
   public $description;
   public $billingType;
   public $_BillLine=array();
@@ -32,9 +34,10 @@ class Bill extends SqlElement {
     <th field="name" width="20%" >${name}</th>
     <th field="date" formatter="dateFormatter" width="10%" >${date}</th>
     <th field="nameProject" width="15%" >${idProject}</th>
-    <th field="nameClient" width="20%" >${idClient}</th>
+    <th field="nameClient" width="15%" >${idClient}</th>
     <th field="nameRecipient" width="15%" >${idRecipient}</th>
-    <th field="billId" width="10%" ># ${billId}</th>
+    <th field="fullAmount" width="10%" >${fullAmount}</th>
+    <th field="billId" width="5%" >${billId}</th>
     <th field="idle" formatter="booleanFormatter" width="5%" >${idle}</th>
     ';
   
@@ -44,7 +47,10 @@ class Bill extends SqlElement {
                       'idProject'=>'required',
   										'billId'=>'readonly',
   										'idPrec'=>'required',
-                      'billingType'=>'hidden');  
+                      'billingType'=>'hidden',
+                      'fullAmount'=>'readonly',
+                      'untaxedAmount'=>'readonly',
+                      );  
   
   private static $_colCaptionTransposition = array('description'=>'comment');
   
@@ -64,6 +70,9 @@ class Bill extends SqlElement {
     	self::$_fieldsAttributes['date']='readonly';
     	self::$_fieldsAttributes['idProject']='readonly';
     	self::$_fieldsAttributes['idRecipient']='readonly';
+    }
+    if (count($this->_BillLine)) {
+    	self::$_fieldsAttributes['idProject']='readonly';
     }
   }
 
@@ -124,8 +133,8 @@ class Bill extends SqlElement {
   	$result="";
     
     // When bill is done
-    // some data is mandatory
     if ( $this->done ) {
+    	// some data is mandatory
       if ( ! $this->date ){
     	  $result.="<br/>" . i18n('messageMandatory',array(i18n('colDate')));
       }
@@ -135,10 +144,7 @@ class Bill extends SqlElement {
       if ( ! trim($this->idRecipient) ){
         $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdRecipient')));
       }
-    }
-
-    // Lines must exist when bill is done
-    if ( $this->done ) {    	
+      // Lines must exist when bill is done
     	if(!$this->id) {
     		$result.="<br/>" . i18n('errorEmptyBill');
     	} else {   	
@@ -237,7 +243,31 @@ class Bill extends SqlElement {
 			$proj=new Project($this->idProject);
 			$this->idClient=$proj->idClient;
 		}
+
+		// Get the tax from Client / Recipient
+		if (trim($this->idClient)) {
+			$client=new Client($this->idClient);
+			$this->tax=$client->tax;
+		}
+	  if (trim($this->idRecipient)) {
+      $recipient=new Recipient($this->idRecipient);
+      if ($recipient->taxFree) {
+      	$this->tax=0;
+      }
+    }
 		
+		
+		// calculate amounts for bill lines
+		$billLine=new BillLine();
+		$crit = array("refType"=> "Bill", "refId"=>$this->id);
+    $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
+    $amount=0;
+    foreach ($billLineList as $line) {
+    	$amount+=$line->amount;
+    }
+    $this->untaxedAmount=$amount;
+    $this->fullAmount=$amount*(1+$this->tax/100);
+      
 		$result= parent::save();
 		return $result;
 	}  

@@ -1464,23 +1464,32 @@ function removeDependency (dependencyId, refType, refId) {
 * Display a add line Box
 * 
 */
-
-
-function addBillLine () {
+function addBillLine (line) {
 	dojo.byId("billLineId").value="";
+	dojo.byId("billLineRefType").value=dojo.byId("objectClass").value;
+	dojo.byId("billLineRefId").value=dojo.byId("objectId").value;	
+	dijit.byId("billLineLine").set("value",line);
+	dijit.byId("billLineQuantity").set("value",null);
 	var prj=dijit.byId('idProject').get('value');
 	dijit.byId('billLineIdTerm').store = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj });
 	dijit.byId('billLineIdTerm').store.fetch();
 	dijit.byId("billLineIdTerm").set("value",null);
-	dojo.byId("billLineRefType").value=dojo.byId("objectClass").value;
-	dojo.byId("billLineRefId").value=dojo.byId("objectId").value;
+	dijit.byId('billLineIdResource').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
+	dijit.byId('billLineIdResource').store.fetch();
+	dijit.byId("billLineIdResource").reset("value");
+	dijit.byId('billLineIdActivityPrice').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject$critValue='+prj });
+	dijit.byId('billLineIdActivityPrice').store.fetch();
+	dijit.byId("billLineIdActivityPrice").reset("value");
+	dijit.byId("billLineStartDate").reset("value");
+	dijit.byId("billLineEndDate").reset("value");
 	dijit.byId("billLineDescription").set("value","");
-	dijit.byId("billLineLine").set("value",null);
-	dijit.byId("billLineQuantity").set("value",null);
-	dijit.byId("billLineReference").set("value","");
+	dijit.byId("billLineDetail").set("value","");
 	dijit.byId("billLinePrice").set("value",null);
 	dijit.byId("dialogBillLine").set('title',i18n("dialogBillLine"));
+	manageBillingType();
 	dijit.byId("dialogBillLine").show();
 }
 
@@ -1489,25 +1498,87 @@ function addBillLine () {
 * Display a edit line Box
 * 
 */
-function editBillLine (id,description,line,quantity,reference,price,idTerm) {
+function editBillLine (id,line,quantity,idTerm,idResource, idActivityPrice, startDate, endDate,price) {
 	dojo.byId("billLineId").value=id;
-	
-	var prj=dijit.byId('idProject').get('value');
-	dijit.byId('billLineIdTerm').store = new dojo.data.ItemFileReadStore({
-		       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj+'&selected=1'});
-	dijit.byId('assignmentIdResource').store.fetch();	
-	
 	dojo.byId("billLineRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("billLineRefId").value=dojo.byId("objectId").value;
-	dijit.byId("billLineDescription").set('value',description);
-	dijit.byId("billLineReference").set('value',reference);
-	dijit.byId("billLineLine").set('value',line);
+	dijit.byId("billLineLine").set("value",line);
 	dijit.byId("billLineQuantity").set('value',quantity);
-	dijit.byId("billLinePrice").set('value',price);
+	var prj=dijit.byId('idProject').get('value');
+	dijit.byId('billLineIdTerm').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj+'&selected='+idTerm });
+	dijit.byId('billLineIdTerm').store.fetch();
+	dijit.byId("billLineIdTerm").set("value",idTerm);
+	dijit.byId('billLineIdResource').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj+'&selected='+idResource });
+	dijit.byId('billLineIdResource').store.fetch();
+	dijit.byId("billLineIdResource").set("value",idResource);
+	dijit.byId('billLineIdActivityPrice').store = new dojo.data.ItemFileReadStore({
+	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject$critValue='+prj });
+	dijit.byId('billLineIdActivityPrice').store.fetch();
+	dijit.byId("billLineIdActivityPrice").set("value",idActivityPrice);
+	dijit.byId("billLineStartDate").set("value",startDate);
+	dijit.byId("billLineEndDate").set("value",endDate);
+	dijit.byId("billLineDescription").set('value',dojo.byId('billLineDescription_'+id).value);
+	dijit.byId("billLineDetail").set("value",dojo.byId('billLineDetail_'+id).value);
+	dijit.byId("billLinePrice").set("value",price);
 	dijit.byId("dialogBillLine").set('title',i18n("dialogBillLine") + " #" + id);
+	manageBillingType();
 	dijit.byId("dialogBillLine").show();
 }
 
+function manageBillingType() {
+	type=dijit.byId('billingType').get('value');
+	if (type=='E') {
+	  if (! dijit.byId("billLineQuantity").get("value")) {
+		  dijit.byId("billLineQuantity").set("value",'1');
+	  }
+	  dojo.style(dojo.byId('billLineFrameTerm'), {display:'block'});
+	  dojo.style(dojo.byId('billLineFrameResource'), {display:'none'});
+	  if (! dojo.byId("billLineId").value) { // add
+		dijit.byId("billLineIdTerm").set('readOnly',false);
+		dojo.style(dojo.byId('billLineFrameDescription'), {display:'none'});
+	  } else { // edit
+		dijit.byId("billLineIdTerm").set('readOnly',true);
+		dojo.style(dojo.byId('billLineFrameDescription'), {display:'block'});
+	  }
+	  dijit.byId("billLineQuantity").set('readOnly',false);
+	  dijit.byId("billLinePrice").set('readOnly',true);
+	} else if (type=='R') {
+	  dojo.style(dojo.byId('billLineFrameTerm'), {display:'none'});
+	  dojo.style(dojo.byId('billLineFrameResource'), {display:'block'});
+	  dijit.byId("billLineQuantity").set('readOnly',true);
+	  dijit.byId("billLinePrice").set('readOnly',true);
+	  if (! dojo.byId("billLineId").value) { // add
+		dojo.style(dojo.byId('billLineFrameDescription'), {display:'none'});  
+		dijit.byId("billLineIdResource").set('readOnly',false);
+		dijit.byId("billLineStartDate").set('readOnly',false);
+		dijit.byId("billLineEndDate").set('readOnly',false);
+	  } else { // edit
+		dojo.style(dojo.byId('billLineFrameDescription'), {display:'block'});
+		dijit.byId("billLineIdResource").set('readOnly',true);
+		dijit.byId("billLineStartDate").set('readOnly',true);
+		dijit.byId("billLineEndDate").set('readOnly',true);
+	  }
+	} else if (type=='P') {
+	  
+	} else if (type=='M') {
+	  if (! dijit.byId("billLineQuantity").get("value")) {
+		dijit.byId("billLineQuantity").set("value",'1');
+	  }
+	  dojo.style(dojo.byId('billLineFrameDescription'), {display:'block'});
+	  dojo.style(dojo.byId('billLineFrameTerm'), {display:'none'});
+	  dojo.style(dojo.byId('billLineFrameResource'), {display:'none'});
+	  dijit.byId("billLineQuantity").set('readOnly',false);
+	  dijit.byId("billLinePrice").set('readOnly',false);
+	  dijit.byId("billLineDescription").set('readOnly',false);
+	  dijit.byId("billLineDetail").set('readOnly',false);
+    } else if (type=='N') {
+      showAlert(i18n('billingTypeN'));
+    } else {
+      showAlert('error : unknown billing type');
+    }
+}
 /**
 * save a line (after addDetail or editDetail)
 * 

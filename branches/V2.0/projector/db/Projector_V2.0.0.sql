@@ -42,6 +42,9 @@ CREATE TABLE `${prefix}bill` (
   `done` int(1) unsigned DEFAULT '0',
   `idle` int(1) unsigned DEFAULT '0',
   `billId` int(12) unsigned DEFAULT NULL,
+  `tax` decimal(5,2) DEFAULT NULL,
+  `untaxedAmount` decimal(12,2) DEFAULT NULL,
+  `fullAmount` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -60,14 +63,14 @@ CREATE TABLE `${prefix}billline` (
   `line` int(3) unsigned DEFAULT NULL,
   `quantity` decimal(5,2) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `reference` varchar(200) DEFAULT NULL,
+  `detail` varchar(4000) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
-  `sum` decimal(10,2) DEFAULT NULL,
+  `amount` decimal(12,2) DEFAULT NULL,
   `refId` int(12) unsigned NOT NULL,
   `refType` varchar(100) NOT NULL,
   `idTerm` int(12) unsigned DEFAULT NULL,
   `idResource` int(12) unsigned DEFAULT NULL,
-	`idActivity` int(12) unsigned DEFAULT NULL,
+	`idActivityPrice` int(12) unsigned DEFAULT NULL,
 	`startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -93,6 +96,14 @@ CREATE TABLE `${prefix}recipient` (
   `ibanCountry` varchar(2) DEFAULT NULL,
 	`ibanKey` varchar(2) DEFAULT NULL,
 	`ibanBban` varchar(34) DEFAULT NULL,
+	`designation` varchar(50), 
+  `street` varchar(50) , 
+  `complement` varchar(50), 
+  `zip` varchar(50), 
+  `city` varchar(50), 
+  `state` varchar(50), 
+  `country` varchar(50),
+  `taxFree` int(1) unsigned DEFAULT 0,
   `idle` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -108,7 +119,7 @@ CREATE TABLE `${prefix}term` (
   `validatedDate` date DEFAULT NULL,
   `plannedDate` date DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT NULL,
-  `isBilled` int(1) NOT NULL DEFAULT '0',
+  `idBill` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -125,9 +136,9 @@ ALTER TABLE `${prefix}user` ADD COLUMN `designation` varchar(50) after `isContac
 
 ALTER TABLE `${prefix}user` ADD INDEX userRecipient (idRecipient);
 
-ALTER TABLE `${prefix}work` ADD COLUMN `isBilled` int(12) unsigned NOT NULL DEFAULT '0' after `cost`;
+ALTER TABLE `${prefix}work` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `cost`;
 
-ALTER TABLE `${prefix}planningelement` ADD COLUMN `isBilled` int(12) unsigned NOT NULL DEFAULT '0' after `plannedCost`;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `plannedCost`;
 
 ALTER TABLE `${prefix}assignment` ADD COLUMN `billedWork` decimal(10,2) NOT NULL DEFAULT '0' after `plannedCost`;
 
