@@ -53,7 +53,7 @@ ALTER TABLE `${prefix}bill` ADD INDEX billBillType (idBillType),
  ADD INDEX billClient (idClient),
  ADD INDEX billRecipient (idRecipient),
  ADD INDEX billStatus (idStatus),
- ADD INDEX billResource (idResource);
+ ADD INDEX billBillType(idBillType);
  
 ALTER TABLE `${prefix}client` ADD COLUMN `paymentDelay` int(3) NULL after `clientCode`, 
  ADD COLUMN `tax` decimal(5,2) DEFAULT NULL after `paymentDelay`;
@@ -66,8 +66,8 @@ CREATE TABLE `${prefix}billline` (
   `detail` varchar(4000) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `amount` decimal(12,2) DEFAULT NULL,
-  `refId` int(12) unsigned NOT NULL,
   `refType` varchar(100) NOT NULL,
+  `refId` int(12) unsigned NOT NULL,
   `idTerm` int(12) unsigned DEFAULT NULL,
   `idResource` int(12) unsigned DEFAULT NULL,
 	`idActivityPrice` int(12) unsigned DEFAULT NULL,
@@ -76,9 +76,10 @@ CREATE TABLE `${prefix}billline` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}line` ADD INDEX lineReference (refType, refId),
-ADD INDEX lineResource (idResource),
-ADD INDEX lineActivitye (idActivity);
+ALTER TABLE `${prefix}billline` ADD INDEX billlineReference (refType, refId),
+ADD INDEX billlineTerm (idTerm),
+ADD INDEX billlineResource (idResource),
+ADD INDEX billlineActivityPrice (idActivityPrice);
 
 ALTER TABLE `${prefix}project` ADD COLUMN `idRecipient` int(12) unsigned   NULL after `idClient`, 
 	ADD COLUMN `paymentDelay` int(3) NULL after `doneDate`,
@@ -123,7 +124,8 @@ CREATE TABLE `${prefix}term` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}term` ADD INDEX termProject (idProject);
+ALTER TABLE `${prefix}term` ADD INDEX termProject (idProject)
+ADD INDEX termBill (idBillt);
 
 ALTER TABLE `${prefix}user` ADD COLUMN `designation` varchar(50) after `isContact`, 
 	ADD COLUMN `street` varchar(50) after `designation`, 
@@ -138,7 +140,11 @@ ALTER TABLE `${prefix}user` ADD INDEX userRecipient (idRecipient);
 
 ALTER TABLE `${prefix}work` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `cost`;
 
+ALTER TABLE `${prefix}work` ADD INDEX workBill (idBill);
+
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `plannedCost`;
+
+LTER TABLE `${prefix}planningelement` ADD INDEX planningelementBill (idBill);
 
 ALTER TABLE `${prefix}assignment` ADD COLUMN `billedWork` decimal(10,2) NOT NULL DEFAULT '0' after `plannedCost`;
 
@@ -195,12 +201,11 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 99, 1),
 (1, 100, 1);
 
-
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`, `idle`) VALUES 
-(7,'reportCategoryFacture',60,0);
+(7,'reportCategoryBill',60,0);
 	
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
-VALUES (37,'reportFactureProject',7,'facture.php',1,0);
+VALUES (37,'reportBill',7,'bill.php',1,0);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
 (86,37,'idBill','billList',10,0,NULL),
@@ -230,7 +235,9 @@ CREATE TABLE `${prefix}documentdirectory` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `${prefix}documentdirectory` ADD INDEX documentdirectoryProject (idProject),
-ADD INDEX documentdirectoryDocumentDirectory (idDocumentDirectory);
+ADD INDEX documentdirectoryProduct (idProduct),
+ADD INDEX documentdirectoryDocumentDirectory (idDocumentDirectory),
+ADD INDEX documentdirectoryDocumentType (idDocumentType);
 
 INSERT INTO `${prefix}documentdirectory` (id,name,idProject,idDocumentDirectory,location) values
 (1,'Project',null,null,'/Project'),
@@ -275,9 +282,13 @@ CREATE TABLE `${prefix}document` (
 ALTER TABLE `${prefix}document` ADD INDEX documentProject (idProject),
 ADD INDEX documentProduct (idProduct),
 ADD INDEX documentDocumentType (idDocumentType),
+ADD INDEX documentDocumentDirectory (idDocumentDirectory),
 ADD INDEX documentVersionType (idVersioningType),
-ADD INDEX documentDirectory (idDirectory),
-ADD INDEX documentStatus (idStatus);
+ADD INDEX documentStatus (idStatus),
+ADD INDEX documentDocumentVersion (idDocumentVersion),
+ADD INDEX documentDocumentVersionRef (idDocumentVersionRef),
+ADD INDEX documentAuthor (idAuthor),
+ADD INDEX documentLocker (idLocker);
 
 CREATE TABLE `${prefix}documentversion` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -302,6 +313,10 @@ CREATE TABLE `${prefix}documentversion` (
   `idle` int(1) unsigned default '0',
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}documentversion` ADD INDEX documentversionDocument (idDocument),
+ADD INDEX documentversionAuthor (idAuthor),
+ADD INDEX documentversionStatus (idStatus);
 
 INSERT INTO `${prefix}type` (scope,name,code, idWorkflow,sortOrder) values
 ('Document','Need expression','NEEDEXP',1,210),

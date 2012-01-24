@@ -292,7 +292,7 @@ function sendFrameToPrinter() {
   window.frames['printFrame'].print();
   //var myRef = window.open(window.frames['printFrame'].location +"&directPrint=true",'mywin', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
   dijit.byId('dialogPrint').hide();      
-  return false;
+  //return true;
 }
 //=============================================================================
 //= Detail (from combo)

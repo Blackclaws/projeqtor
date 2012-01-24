@@ -36,10 +36,11 @@ class Meeting extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameProject" width="20%" >${idProject}</th>
-    <th field="nameMeetingType" width="30%" >${idMeetingType}</th>
+    <th field="nameProject" width="15%" >${idProject}</th>
+    <th field="nameMeetingType" width="15%" >${idMeetingType}</th>
     <th field="meetingDate" formatter="dateFormatter" width="15%" >${meetingDate}</th>
-    <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="name" width="25%" >${name}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
@@ -49,7 +50,6 @@ class Meeting extends SqlElement {
                                   "idProject"=>"required",
                                   "idMeetingType"=>"required",
                                   "meetingDate"=>"required",
-                                  "name"=>"hidden",
                                   "idUser"=>"hidden",
                                   "idResource"=>"idden",
                                   "idStatus"=>"required",
@@ -199,7 +199,9 @@ class Meeting extends SqlElement {
   }
 
   public function save() {
-    $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
+  	if (! $this->name) {
+      $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
+  	}
     return parent::save();
   }
 }

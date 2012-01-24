@@ -1,56 +1,77 @@
 <?php
-// Header
+//
+// THIS IS THE BILL REPORT
+// USE IT AS A TEMPLATE (GO TO "BILL TEMPLATE" COMMENT) 
+// INSERT YOUR OWN LOGO, CHANGE DISPLAY TO EDIT YOUR OWN BILL FORMAT
+//
 include_once '../tool/projector.php';
-
 $idProject = "";
-if (array_key_exists('idProject', $_REQUEST))
-{
+if (array_key_exists('idProject', $_REQUEST)){
 	$idProject=trim($_REQUEST['idProject']);
 }
-
 $idClient = "";
-if (array_key_exists('idClient', $_REQUEST))
-{
+if (array_key_exists('idClient', $_REQUEST)){
 	$idClient=trim($_REQUEST['idClient']);
 }
-
 $idBill = "";
-if (array_key_exists('idBill', $_REQUEST))
-{
+if (array_key_exists('idBill', $_REQUEST)){
 	$idBill=trim($_REQUEST['idBill']);
 }
-
 $crit = array();
 $crit['idle']="0";
-
-if ($idBill != "")
-{
+if ($idBill != ""){
 	$crit['id']=$idBill;
+} else {
+	if ($idClient)	$crit['idClient']=$idClient;
+	if ($idProject) $crit['idProject']=$idProject;
 }
-else 
-{
-	if ($idClient!='')	$crit['idClient']=$idClient;
-	if ($idProject!='') $crit['idProject']=$idProject;
-}
-
 $bill = new Bill();
 $billList = $bill->getSqlElementsFromCriteria($crit,false);
-
-
-// affichage des détails
-
+$first=true;
 foreach ($billList as $bill)
 {
-	
-	echo '<table  width="95%" align="center"><tr><td style="width: 100%" class="section" colspan=2>';
-	echo $bill->name;
-	echo '</td></tr>';
-	echo '<tr><td>&nbsp;</td></tr>';
-	
-	// Contractant
-	echo "<tr><td>";
-	
+  // BILL TEMPLATE : BRING YOUR CHANGES HERE
 	$recipient = new Recipient($bill->idRecipient);
+	if (! $first) {
+	  echo '<div style="page-break-before:always;"></div>';
+	}
+	echo '<div style="position: relative; font-family: arial; font-size: 11px; min-height: 50em">';
+	$first=false;
+	// RECIPIENT ADDRESS
+	echo '<div style="position: absolute; top: 5em; left: 1em; width: 20em; height: 10em; border: 1px solid grey;">';
+  	echo '<b>' . $recipient->designation .'</b><br/>';
+	  echo ($recipient->street)?$recipient->street . '<br/>':'';
+	  echo ($recipient->complement)?$recipient->complement . '<br/>':'';
+	  echo ($recipient->zip)?$recipient->zip . '<br/>':'';
+	  echo ($recipient->city)?$recipient->city . '<br/>':'';
+	  echo ($recipient->state)?$recipient->state . '<br/>':'';
+	  echo ($recipient->country)?$recipient->country . '<br/>':'';
+  echo '</div>';
+	// LOGO
+  echo '<div style="position: absolute; top: 0em; left: 1em; width: 20em; height: 5em; border: 1px solid grey;">';
+    echo '<img style="width:20em; height:5em" src="http://projectorria.toolware.fr/track/view/img/logo.png" />';
+  echo '</div>';
+  // BILLING  
+  echo '<div style="position: absolute; top: 0em; right: 1em; width: 20em; height: 5em; border: 1px solid grey;">';
+    echo '<table>';
+    echo '<tr><td style="text-align:right; width:90%"><b>' . i18n('colBillId') . ' : </b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $bill->billId . '</td></tr>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colCompanyNumber') . ' : </b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->companyNumber . '</td></tr>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colNumTax') . ' : </b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->numTax . '</td></tr>';
+    echo '</table>';
+	  echo '</td>';
+	  echo '</tr></table>';
+	echo '</div>';
+	// TITLE
+	echo '<div style="position: absolute; top: 15em; left: 1em; width: 98%; height: 2em; border: 1px solid grey;">';
+    echo '<div style="width: 100%;border-bottom: 2px solid #555">&nbsp;</div>';
+	  echo '<div style="width: 100%;text-align:center;"><h1><b>BILL</b></h1></div>';
+	echo '</div>';
+	
+	echo '</div>';
+	continue;
 	$user = new Contact();
 	$critb = array("idRecipient"=>$recipient->id);
 	$userList = $user->getSqlElementsFromCriteria($critb,false);

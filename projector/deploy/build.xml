@@ -3,9 +3,9 @@
 
   <property name="version"       value="V2.0.0" />
   <property name="projName"       value="projectorria" />
-  <property name="setup.dir"     value="G:/ProjectOr/setupTemp" />
+  <property name="setup.dir"     value="D:/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="G:/www/projectorriaV2.0" />
+  <property name="src.dir"       value="D:/www/projectorriaV2.0" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -152,15 +152,15 @@
      ==== BUILD A NEW DOJO RELEASE                                                              ===
      ==============================================================================================
      ============================================================================================== --> 
-<!-- Full  : 40,9 Mo -->
+<!-- Full  : 56,1 Mo -->
 <!-- Build : 14,8 Mo -->
 <!-- Clean :  5,7 Mo -->
 	
-	<property name="dojo.release.dir" value ="${setup.dir}/dojo-release-1.6.1-src"/>
-	<property name="dojo.version" value="1.6.1"/>
-	<property name="build.name" value="external"/> 
+	<property name="dojo.release.dir" value ="${setup.dir}/../external/dojo-release-1.7.1-src"/>
+	<property name="dojo.version" value="1.7.1"/>
+	<property name="build.name" value="dojo"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
-	<property name="release.dir" value="${setup.dir}/${build.name}/"/>
+	<property name="release.dir" value="${setup.dir}/../external/${build.name}/"/>
 
   <target name="_dojoBuild">
     <antcall target="_dojoPackaging"/>
