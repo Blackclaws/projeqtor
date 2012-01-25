@@ -32,10 +32,12 @@ foreach ($billList as $bill)
 {
   // BILL TEMPLATE : BRING YOUR CHANGES HERE
 	$recipient = new Recipient($bill->idRecipient);
+	$project=new Project($bill->idProject);
+	$client=new Client($project->idClient);
+	
 	if (! $first) {
 	  echo '<div style="page-break-before:always;"></div>';
 	}
-	echo '<div style="position: relative; font-family: arial; font-size: 11px; min-height: 50em">';
 	$first=false;
 	// RECIPIENT ADDRESS
 	echo '<div style="position: absolute; top: 5em; left: 1em; width: 20em; height: 10em; border: 1px solid grey;">';
@@ -70,8 +72,18 @@ foreach ($billList as $bill)
 	  echo '<div style="width: 100%;text-align:center;"><h1><b>BILL</b></h1></div>';
 	echo '</div>';
 	
+	// CLIENT
+	echo '<div style="position: absolute; top: 15em; left: 1em; width: 98%; height: 2em; border: 1px solid grey;">';
+	  echo '<div style="width: 100%;border-bottom: 2px solid #555">&nbsp;</div>';
+    echo '<div style="width: 100%;text-align:center;"><h1><b>BILL</b></h1></div>';
+  echo '</div>';
+	
+	// BILL LINES
+	echo '<div style="position: relative; font-family: arial; font-size: 11px; min-height: 50em">';
 	echo '</div>';
 	continue;
+	
+	
 	$user = new Contact();
 	$critb = array("idRecipient"=>$recipient->id);
 	$userList = $user->getSqlElementsFromCriteria($critb,false);

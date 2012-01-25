@@ -2391,7 +2391,11 @@ function switchMode(){
 		if (dojo.byId('listDiv_splitter')) {
 			dojo.byId('listDiv_splitter').style.display='none';
 		}
-		hideList();
+		if (dijit.byId('id')) {
+		  hideList();
+		} else {
+		  showList();
+		}
 	} else {
 		switchedMode=false;
 		dijit.byId("buttonSwitchMode").set('label',i18n('buttonSwitchedMode'));
