@@ -33,14 +33,15 @@ foreach ($billList as $bill)
   // BILL TEMPLATE : BRING YOUR CHANGES HERE
 	$recipient = new Recipient($bill->idRecipient);
 	$project=new Project($bill->idProject);
-	$client=new Client($project->idClient);
+	$client=new Client($bill->idClient);
+	$contact=new Contact($bill->idContact);
 	
 	if (! $first) {
 	  echo '<div style="page-break-before:always;"></div>';
 	}
 	$first=false;
 	// RECIPIENT ADDRESS
-	echo '<div style="position: absolute; top: 5em; left: 1em; width: 20em; height: 10em; border: 1px solid grey;">';
+	echo '<div style="position: absolute; top: 5em; left: 1em; width: 20em; height: 10em;font-size: 12px">';
   	echo '<b>' . $recipient->designation .'</b><br/>';
 	  echo ($recipient->street)?$recipient->street . '<br/>':'';
 	  echo ($recipient->complement)?$recipient->complement . '<br/>':'';
@@ -50,13 +51,14 @@ foreach ($billList as $bill)
 	  echo ($recipient->country)?$recipient->country . '<br/>':'';
   echo '</div>';
 	// LOGO
-  echo '<div style="position: absolute; top: 0em; left: 1em; width: 20em; height: 5em; border: 1px solid grey;">';
+  echo '<div style="position: absolute; top: 0em; left: 1em; width: 20em; height: 5em;">';
     echo '<img style="width:20em; height:5em" src="http://projectorria.toolware.fr/track/view/img/logo.png" />';
   echo '</div>';
   // BILLING  
-  echo '<div style="position: absolute; top: 0em; right: 1em; width: 20em; height: 5em; border: 1px solid grey;">';
-    echo '<table>';
-    echo '<tr><td style="text-align:right; width:90%"><b>' . i18n('colBillId') . ' : </b></td>';
+    echo '<div style="position: absolute; top: 1em; right: 1em; width: 45%; height: 5em; ';
+    echo ' border: 2px solid #A0A0D0;-moz-border-radius: 15px; border-radius: 15px;">';
+    echo '<table style="width:100%">';
+    echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId') . ' : </b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $bill->billId . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colCompanyNumber') . ' : </b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->companyNumber . '</td></tr>';
@@ -67,38 +69,65 @@ foreach ($billList as $bill)
 	  echo '</tr></table>';
 	echo '</div>';
 	// TITLE
-	echo '<div style="position: absolute; top: 15em; left: 1em; width: 98%; height: 2em; border: 1px solid grey;">';
-    echo '<div style="width: 100%;border-bottom: 2px solid #555">&nbsp;</div>';
-	  echo '<div style="width: 100%;text-align:center;"><h1><b>BILL</b></h1></div>';
-	echo '</div>';
-	
-	// CLIENT
-	echo '<div style="position: absolute; top: 15em; left: 1em; width: 98%; height: 2em; border: 1px solid grey;">';
-	  echo '<div style="width: 100%;border-bottom: 2px solid #555">&nbsp;</div>';
-    echo '<div style="width: 100%;text-align:center;"><h1><b>BILL</b></h1></div>';
+	echo '<div style="position: absolute; top: 22em; right: 1em; width: 98%; height: 2em;">';
+    echo '<div style="width: 100%;border-bottom: 3px solid #A0A0D0">&nbsp;</div>';
   echo '</div>';
-	
-	// BILL LINES
-	echo '<div style="position: relative; font-family: arial; font-size: 11px; min-height: 50em">';
+  echo '<div style="position: absolute; top: 23em; right: 1em; width: 98%; height: 2em;">';
+	  echo '<div style="width: 100%;text-align:center;color:#A0A0D0"><h1><b>BILL</b></h1></div>';
 	echo '</div>';
-	continue;
+	echo '<div style="position: absolute; top: 26em; right: 1em; width: 98%; height: 2em;">';
+    echo '<div style="width: 100%;border-bottom: 3px solid #A0A0D0">&nbsp;</div>';
+  echo '</div>';	
+	// CONTACT
+	echo '<div style="position: absolute; top: 8em; left: 50%; width: 45%; height: 10em; font-size:14px;">';
+	  echo '<b>' . $contact->designation .'</b><br/>';
+    echo ($contact->street)?$contact->street . '<br/>':'';
+    echo ($contact->complement)?$contact->complement . '<br/>':'';
+    echo ($contact->zip)?$contact->zip . '<br/>':'';
+    echo ($contact->city)?$contact->city . '<br/>':'';
+    echo ($contact->state)?$contact->state . '<br/>':'';
+    echo ($contact->country)?$contact->country . '<br/>':'';
+  echo '</div>';
+	// NAME
+	echo '<div style="position: absolute; top: 28em; left: 1em; width: 50%; height: 5em; ">';
+    echo " " . $bill->name . '<br/>';
+    echo " " . i18n('Project') . " : " . $project->name;
+  echo '</div>';  
+  // DATE
+  echo '<div style="position: absolute; top: 28em; right: 1em; width: 10em; height: 1.5em;';
+  echo ' border: 2px solid #A0A0D0;-moz-border-radius: 15px; border-radius: 15px;';
+  echo ' text-align:center; vertical-align: middle; ">';
+    echo htmlFormatDate($bill->date);
+  echo '</div>';
+	// BILL LINES
+	$line = new BillLine();
+  $crit = array("refId"=>$bill->id,"refType"=>"Bill");
+  $lineList = $line->getSqlElementsFromCriteria($crit,false,null,"line");
+  echo '<div style="width:98%; text-align: center; position: absolute; top: 30em; left: 1em; ';
+  echo ' font-family: arial; font-size: 11px; min-height: 30em">';
+	echo '<table style="width:100%; vertical-align: middle; text-align: center;">';
+  echo '<tr>';
+  echo '<th style="width:10%; border:solid 2px #A0A0D0">' . i18n('colQuantity') . '</th>';  
+  echo '<th style="width:30%; border:solid 2px #A0A0D0">' . i18n('colDescription') . '</th>';
+  echo '<th style="width:40%; border:solid 2px #A0A0D0">' . i18n('colDetail') . '</th>';
+  echo '<th style="width:10%; border:solid 2px #A0A0D0">' . i18n('colPrice') . '</th>';
+  echo '<th style="width:10%; border:solid 2px #A0A0D0">' . i18n('colAmount') . '</th>';  
+  echo '</tr>';
+  foreach ($lineList as $line) {
+    echo '<tr>';
+    echo '<td style="text-align: center; vertical-align: top;">' . $line->quantity . '</td>';
+    echo '<td style="text-align: center; vertical-align: top;">' . $line->description . '</td>';
+    echo '<td style="text-align: center; vertical-align: top;">' . $line->detail . '</td>';
+    echo '<td style="text-align: center; vertical-align: top;">' . $line->price . '</td>';
+    echo '<td style="text-align: center; vertical-align: top;">' . $line->amount . '</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+	echo '</div>';
+
 	
 	
-	$user = new Contact();
-	$critb = array("idRecipient"=>$recipient->id);
-	$userList = $user->getSqlElementsFromCriteria($critb,false);
-	echo $recipient->name."<br/><br/>";
-	if(count($userList)!=0)
-	{
-		echo $userList[0]->street."<br/>";
-		echo $userList[0]->complement."<br/>";
-		echo $userList[0]->zip."  ".$userList[0]->city."<br/>";
-		echo $userList[0]->country."  ".$userList[0]->state."<br/>";
-	}
 	
-	echo "</td>";
-	//Client
-	echo "<td width=200px>";
 
 	
 	$client = new Client($bill->idClient);
@@ -145,32 +174,7 @@ foreach ($billList as $bill)
 	// affichage des lignes
 	echo "<tr><td>";
 	
-	echo "<table>";
-	$acc=0;
-	$line = new BillLine();
-	$crit = array("refId"=>$bill->id,"refType"=>"Bill");
-	$lineList = $line->getSqlElementsFromCriteria($crit,false,null,"line");
-	echo "<tr><th width=70px style='border:solid 1px black'>Quantite";	
-	echo "</th><th width=300px style='border:solid 1px black'>Description";
-	echo "</th><th width=300px style='border:solid 1px black'>Reference";
-	echo "</th><th width=100px style='border:solid 1px black'>Prix unitaire";
-	echo "</th><th width=100px style='border:solid 1px black'>Prix total";
 	
-	echo "</th></tr>";
-	foreach ($lineList as $line)
-	{
-		echo "<tr><td width=50px>";
-		
-		echo $line->quantity."</td><td>";
-		echo $line->description."</td><td>";
-		echo $line->reference."</td><td>";
-		echo $line->price."</td><td>";
-		echo $line->sum;
-		$acc+=$line->sum;
-		
-		echo "</td></tr>";
-	}
-	echo "</table>";
 
 
 	echo "</td></tr>";

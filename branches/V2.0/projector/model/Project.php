@@ -12,6 +12,7 @@ class Project extends SqlElement {
   public $idProjectType;
   public $codeType;
   public $idClient;
+  public $idContact;
   //public $idRecipient;
   public $projectCode;
   public $contractCode;
@@ -71,7 +72,8 @@ class Project extends SqlElement {
  
   private static $_colCaptionTransposition = array('idUser'=>'manager',
    'idProject'=> 'isSubProject',
-   'idProjectType'=>'type');
+   'idProjectType'=>'type',
+   'idContact'=>'billContact');
   
    /** ==========================================================================
    * Constructor

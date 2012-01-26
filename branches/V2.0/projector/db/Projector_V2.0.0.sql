@@ -35,7 +35,7 @@ CREATE TABLE `${prefix}bill` (
   `name` varchar(100) DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idClient` int(12) unsigned DEFAULT NULL,
-  `idRecipient` int(12) unsigned DEFAULT NULL,
+  `idContact` int(12) unsigned DEFAULT NULL,
   `description` varchar(4000) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
