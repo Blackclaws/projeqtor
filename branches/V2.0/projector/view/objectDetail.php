@@ -228,7 +228,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType) {
         $lock='lock' . ucfirst($col);
         if (property_exists($objType,$lock) and $objType->$lock) {
-          $attributes.=' readonly ';
+          $attributes.=' readonly tabindex="-1"';
           $readOnly=true;
         }
       }
@@ -249,7 +249,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       or (strpos($obj->getFieldAttributes($col), 'readonly')!==false)
       or $parentReadOnly 
       or ($obj->idle==1 and $col!='idle' and $col!='idStatus') ) {
-        $attributes.=' readonly ';
+        $attributes.=' readonly tabindex="-1"';
         $readOnly=true;     
       } 
       if ($internalTable==0) {
@@ -363,7 +363,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo htmlFormatDateTime($val,false);
         } else if ($col=='color' and $dataLength == 7 ) { // color
           echo '<table><tr><td style="width: 100px;">';
-          echo '<div class="colorDisplay" readonly ';
+          echo '<div class="colorDisplay" readonly tabindex="-1" ';
           echo '  value="' . htmlEncode($val) . '" ';
           echo '  style="width: ' . $smallWidth / 2 . 'px; ';
           echo ' color: ' . $val . '; ';
@@ -422,7 +422,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo ' class="display" ';
-        echo ' readonly style="width: ' . $smallWidth . 'px;" ' ;
+        echo ' readonly tabindex="-1" style="width: ' . $smallWidth . 'px;" ' ;
         echo ' value="' . htmlEncode($val) . '" ></span>';
       } else if ($col=='reference') {
         // Draw reference (only visible) ============================================= ID
@@ -430,7 +430,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo ' class="display" ';
-        echo ' readonly style="width: ' . ($largeWidth - $smallWidth -20) . 'px;" ' ;
+        echo ' readonly tabindex="-1" style="width: ' . ($largeWidth - $smallWidth -20) . 'px;" ' ;
         echo ' value="' . htmlEncode($val) . '" ></span>';        
       } else if ($col=='password') {
         global $paramDefaultPassword;       
@@ -449,12 +449,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<input type="password"  ';
         echo $name;
         echo ' class="display" style="width:150px"';
-        echo ' readonly ' ;
+        echo ' readonly tabindex="-1" ' ;
         echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col=='color' and $dataLength == 7 ){
         // Draw a color selector ============================================== COLOR
         echo "<table ><tr><td class='detail'>";
-        echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly ';
+        echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly tabindex="-1" ';
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode($val) . '" ';
@@ -801,7 +801,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($obj->isFieldTranslatable($col)) {
           echo '<div dojoType="dijit.form.TextBox" type="text"  ';
           echo ' class="display" ';
-          echo ' readonly style="width: ' . $fieldWidth . 'px;" ' ;
+          echo ' readonly tabindex="-1" style="width: ' . $fieldWidth . 'px;" ' ;
           echo ' title="' . i18n("msgTranslation") . '" ';
           echo ' value="' . htmlEncode(i18n($val)) . '" ></div>';
         } 
@@ -1154,6 +1154,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   
   $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
   $fmtd = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+  $lines=array_reverse($lines);
   foreach($lines as $line) {
     echo '<tr>';
       echo '<td class="noteData" style="text-align:center;">';

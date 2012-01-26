@@ -19,6 +19,7 @@ if (array_key_exists('idBill', $_REQUEST)){
 }
 $crit = array();
 $crit['idle']="0";
+$crit['done']="1";
 if ($idBill != ""){
 	$crit['id']=$idBill;
 } else {
@@ -40,8 +41,12 @@ foreach ($billList as $bill)
 	  echo '<div style="page-break-before:always;"></div>';
 	}
 	$first=false;
+  // LOGO
+  echo '<div style="position: relative; top: 0em; left: 1em; width: 20em; height: 5em;">';
+    echo '<img style="width:20em; height:5em" src="http://projectorria.toolware.fr/track/view/img/logo.png" />';
+  echo '</div>';
 	// RECIPIENT ADDRESS
-	echo '<div style="position: absolute; top: 5em; left: 1em; width: 20em; height: 10em;font-size: 12px">';
+	echo '<div style="position: relative; top: 1em; left: 1em; width: 20em; height: 10em;font-size: 12px">';
   	echo '<b>' . $recipient->designation .'</b><br/>';
 	  echo ($recipient->street)?$recipient->street . '<br/>':'';
 	  echo ($recipient->complement)?$recipient->complement . '<br/>':'';
@@ -50,13 +55,9 @@ foreach ($billList as $bill)
 	  echo ($recipient->state)?$recipient->state . '<br/>':'';
 	  echo ($recipient->country)?$recipient->country . '<br/>':'';
   echo '</div>';
-	// LOGO
-  echo '<div style="position: absolute; top: 0em; left: 1em; width: 20em; height: 5em;">';
-    echo '<img style="width:20em; height:5em" src="http://projectorria.toolware.fr/track/view/img/logo.png" />';
-  echo '</div>';
   // BILLING  
-    echo '<div style="position: absolute; top: 1em; right: 1em; width: 45%; height: 5em; ';
-    echo ' border: 2px solid #A0A0D0;-moz-border-radius: 15px; border-radius: 15px;">';
+    echo '<div style="position: relative; top: -15em; left: 50%; width: 45%; height: 5em; ';
+    echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 15px;">';
     echo '<table style="width:100%">';
     echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId') . ' : </b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $bill->billId . '</td></tr>';
@@ -68,65 +69,106 @@ foreach ($billList as $bill)
 	  echo '</td>';
 	  echo '</tr></table>';
 	echo '</div>';
-	// TITLE
-	echo '<div style="position: absolute; top: 22em; right: 1em; width: 98%; height: 2em;">';
-    echo '<div style="width: 100%;border-bottom: 3px solid #A0A0D0">&nbsp;</div>';
-  echo '</div>';
-  echo '<div style="position: absolute; top: 23em; right: 1em; width: 98%; height: 2em;">';
-	  echo '<div style="width: 100%;text-align:center;color:#A0A0D0"><h1><b>BILL</b></h1></div>';
-	echo '</div>';
-	echo '<div style="position: absolute; top: 26em; right: 1em; width: 98%; height: 2em;">';
-    echo '<div style="width: 100%;border-bottom: 3px solid #A0A0D0">&nbsp;</div>';
-  echo '</div>';	
 	// CONTACT
-	echo '<div style="position: absolute; top: 8em; left: 50%; width: 45%; height: 10em; font-size:14px;">';
-	  echo '<b>' . $contact->designation .'</b><br/>';
+  echo '<div style="position: relative; top: -8em; left: 50%; width: 45%; height: 10em; font-size:14px;">';
+    echo '<b>' . $contact->designation .'</b><br/>';
     echo ($contact->street)?$contact->street . '<br/>':'';
     echo ($contact->complement)?$contact->complement . '<br/>':'';
     echo ($contact->zip)?$contact->zip . '<br/>':'';
     echo ($contact->city)?$contact->city . '<br/>':'';
     echo ($contact->state)?$contact->state . '<br/>':'';
     echo ($contact->country)?$contact->country . '<br/>':'';
+  echo '</div>';  
+	// TITLE
+	echo '<div style="solid red;position: relative; top: -10em; left: 1em; width: 98%; height: 2em;">';
+    echo '<div style="width: 100%;border-bottom: 3px solid #7070A0">&nbsp;</div>';
   echo '</div>';
+  echo '<div style="position: relative; top: -11em; left: 1em; width: 98%; height: 2em;">';
+	  echo '<div style="width: 100%;text-align:center;color:#7070A0"><h1><b>BILL</b></h1></div>';
+	echo '</div>';
+	echo '<div style="position: relative; top: -11em; left: 1em; width: 98%; height: 2em;">';
+    echo '<div style="width: 100%;border-bottom: 3px solid #7070A0">&nbsp;</div>';
+  echo '</div>';	
 	// NAME
-	echo '<div style="position: absolute; top: 28em; left: 1em; width: 50%; height: 5em; ">';
+	echo '<div style="position: relative; top: -11em; left: 1em; width: 50%; height: 3em; ">';
     echo " " . $bill->name . '<br/>';
     echo " " . i18n('Project') . " : " . $project->name;
   echo '</div>';  
   // DATE
-  echo '<div style="position: absolute; top: 28em; right: 1em; width: 10em; height: 1.5em;';
-  echo ' border: 2px solid #A0A0D0;-moz-border-radius: 15px; border-radius: 15px;';
+  echo '<div style="position: relative; top: -14em; left: 80%; width: 15%; height: 1.5em;';
+  echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 15px;';
   echo ' text-align:center; vertical-align: middle; ">';
     echo htmlFormatDate($bill->date);
   echo '</div>';
-	// BILL LINES
+	// BILL LINES and TOTAL
 	$line = new BillLine();
   $crit = array("refId"=>$bill->id,"refType"=>"Bill");
   $lineList = $line->getSqlElementsFromCriteria($crit,false,null,"line");
-  echo '<div style="width:98%; text-align: center; position: absolute; top: 30em; left: 1em; ';
-  echo ' font-family: arial; font-size: 11px; min-height: 30em">';
+  echo '<div style="border: 1px solid red;width:98%; text-align: center; position: relative; top: -12em; left: 1em; ';
+  echo ' font-family: arial; font-size: 11px; min-height: 40em; page-break-inside:avoid">';
 	echo '<table style="width:100%; vertical-align: middle; text-align: center;">';
   echo '<tr>';
-  echo '<th style="width:10%; border:solid 2px #A0A0D0">' . i18n('colQuantity') . '</th>';  
-  echo '<th style="width:30%; border:solid 2px #A0A0D0">' . i18n('colDescription') . '</th>';
-  echo '<th style="width:40%; border:solid 2px #A0A0D0">' . i18n('colDetail') . '</th>';
-  echo '<th style="width:10%; border:solid 2px #A0A0D0">' . i18n('colPrice') . '</th>';
-  echo '<th style="width:10%; border:solid 2px #A0A0D0">' . i18n('colAmount') . '</th>';  
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colQuantity') . '</th>';  
+  echo '<th style="width:30%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colDescription') . '</th>';
+  echo '<th style="width:40%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colDetail') . '</th>';
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colPrice') . '</th>';
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colAmount') . '</th>';  
   echo '</tr>';
   foreach ($lineList as $line) {
+  	echo '<tr>';
+  	echo '<td style="border-left:solid 2px #7070A0; border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';
+  	echo '</tr>';
     echo '<tr>';
-    echo '<td style="text-align: center; vertical-align: top;">' . $line->quantity . '</td>';
-    echo '<td style="text-align: center; vertical-align: top;">' . $line->description . '</td>';
-    echo '<td style="text-align: center; vertical-align: top;">' . $line->detail . '</td>';
-    echo '<td style="text-align: center; vertical-align: top;">' . $line->price . '</td>';
-    echo '<td style="text-align: center; vertical-align: top;">' . $line->amount . '</td>';
+    echo '<td style="text-align: center; vertical-align: top; border-left:solid 2px #7070A0; border-right:solid 2px #7070A0;">' . $line->quantity . '</td>';
+    echo '<td style="text-align: left; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->description,'withBR') . '</td>';
+    echo '<td style="text-align: left; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->detail,'withBR') . '</td>';
+    echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($line->price) . '</td>';
+    echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($line->amount) . '</td>';
     echo '</tr>';
   }
+  echo '<tr>';
+    echo '<td style="border-left:solid 2px #7070A0; border-right:solid 2px #7070A0;border-bottom:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;border-bottom:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;border-bottom:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;border-bottom:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;border-bottom:solid 2px #7070A0;">&nbsp;</td>';
+  echo '</tr>';
+  echo '<tr>';
+    echo '<td colspan="4" style=" border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';   
+  echo '</tr>';
+  echo '<tr>';
+    echo '<td colspan="3" style="text-align: right;">&nbsp;</td>';
+    echo '<td style=" border-right:solid 2px #7070A0;text-align: center;">' . i18n('colUntaxedAmount') . '&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($bill->untaxedAmount) . '</td>';   
+  echo '</tr>';
+  echo '<tr>';
+    echo '<td colspan="4" style=" border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';   
+  echo '</tr>';
+  echo '<tr>';
+    echo '<td colspan="3" style="text-align: right;">' . i18n('colTax') . '&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">' . htmlDisplayPct($bill->tax) . '</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">' . htmlDisplayCurrency(( $bill->fullAmount - $bill->untaxedAmount) ) . '</td>';   
+  echo '</tr>';
+  echo '<tr>';
+    echo '<td colspan="4" style="border-right:solid 2px #7070A0;">&nbsp;</td>';
+    echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';   
+  echo '</tr>';
+  echo '<tr>';
+    echo '<td colspan="3" style="text-align: right;">&nbsp;</td>';
+    echo '<td style=" border-right:solid 2px #7070A0;text-align: center;font-weight: bold;">' . i18n('colFullAmount') . '&nbsp;</td>';
+    echo '<td style="border:solid 2px #7070A0;font-weight: bold;">' . htmlDisplayCurrency($bill->fullAmount) . '</td>';   
+  echo '</tr>';
+  
   echo '</table>';
-	echo '</div>';
-
+  echo '</div>';
 	
-	
+	continue;
 	
 
 	
