@@ -12,6 +12,7 @@ class Bill extends SqlElement {
   public $date;
   public $idProject;
   public $idClient;
+  public $idContact;
   public $idRecipient;
   public $_spe_billingType;
   public $_col_2_2_treatment;  
@@ -52,7 +53,8 @@ class Bill extends SqlElement {
                       'untaxedAmount'=>'readonly',
                       );  
   
-  private static $_colCaptionTransposition = array('description'=>'comment');
+  private static $_colCaptionTransposition = array('description'=>'comment',
+                                                   'idContact'=>'billContact');
   
   private static $_databaseColumnName = array();
     
@@ -70,6 +72,7 @@ class Bill extends SqlElement {
     	self::$_fieldsAttributes['date']='readonly';
     	self::$_fieldsAttributes['idProject']='readonly';
     	self::$_fieldsAttributes['idRecipient']='readonly';
+    	self::$_fieldsAttributes['idContact']='readonly';
     }
     if (count($this->_BillLine)) {
     	self::$_fieldsAttributes['idProject']='readonly';
@@ -140,6 +143,9 @@ class Bill extends SqlElement {
       }
       if ( ! trim($this->idClient) ){
         $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdClient')));
+      }
+      if ( ! trim($this->idContact) ){
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdContact')));
       }
       if ( ! trim($this->idRecipient) ){
         $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdRecipient')));
@@ -240,11 +246,14 @@ class Bill extends SqlElement {
 
 		// Get Client
 		if (! trim($this->idClient)) {
-			$proj=new Project($this->idProject);
 			$this->idClient=$proj->idClient;
 		}
+		// get Contact
+	  if (! trim($this->idContact)) {
+      $this->idContact=$proj->idContact;
+    }
 
-		// Get the tax from Client / Recipient
+		// Get the tax from Client / Contact / Recipient 
 		if (trim($this->idClient)) {
 			$client=new Client($this->idClient);
 			$this->tax=$client->tax;
