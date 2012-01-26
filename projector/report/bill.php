@@ -41,6 +41,7 @@ foreach ($billList as $bill)
 	  echo '<div style="page-break-before:always;"></div>';
 	}
 	$first=false;
+	echo '<table style="width: 100%;"><tr><td style="width: 50%;">';
   // LOGO
   echo '<div style="position: relative; top: 0em; left: 1em; width: 20em; height: 5em;">';
     echo '<img style="width:20em; height:5em" src="http://projectorria.toolware.fr/track/view/img/logo.png" />';
@@ -55,22 +56,21 @@ foreach ($billList as $bill)
 	  echo ($recipient->state)?$recipient->state . '<br/>':'';
 	  echo ($recipient->country)?$recipient->country . '<br/>':'';
   echo '</div>';
+  echo '</td><td style="width:50%">';
   // BILLING  
-    echo '<div style="position: relative; top: -15em; left: 50%; width: 45%; height: 5em; ';
+  echo '<div style="position: relative; top: 1em; left: 1em; width: 90%; height: 4em; ';
     echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 15px;">';
     echo '<table style="width:100%">';
-    echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId') . ' : </b></td>';
+    echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId') . '&nbsp;:&nbsp;</b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $bill->billId . '</td></tr>';
-    echo '<tr><td style="text-align:right;"><b>' . i18n('colCompanyNumber') . ' : </b></td>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colCompanyNumber') . '&nbsp;:&nbsp;</b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->companyNumber . '</td></tr>';
-    echo '<tr><td style="text-align:right;"><b>' . i18n('colNumTax') . ' : </b></td>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colNumTax') . '&nbsp;:&nbsp;</b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->numTax . '</td></tr>';
     echo '</table>';
-	  echo '</td>';
-	  echo '</tr></table>';
 	echo '</div>';
 	// CONTACT
-  echo '<div style="position: relative; top: -8em; left: 50%; width: 45%; height: 10em; font-size:14px;">';
+  echo '<div style="position: relative; top: 3em; left: 1em; width: 90%; height: 10em; font-size:14px;">';
     echo '<b>' . $contact->designation .'</b><br/>';
     echo ($contact->street)?$contact->street . '<br/>':'';
     echo ($contact->complement)?$contact->complement . '<br/>':'';
@@ -78,41 +78,50 @@ foreach ($billList as $bill)
     echo ($contact->city)?$contact->city . '<br/>':'';
     echo ($contact->state)?$contact->state . '<br/>':'';
     echo ($contact->country)?$contact->country . '<br/>':'';
-  echo '</div>';  
+  echo '</div>';
+  echo '</td></tr></table>';  
+  echo '<table style="width:100%;"><tr><td width="100%">';
 	// TITLE
-	echo '<div style="solid red;position: relative; top: -10em; left: 1em; width: 98%; height: 2em;">';
+	echo '<div style="solid red;position: relative; top: 3em; left: 1em; width: 98%; height: 2em;">';
     echo '<div style="width: 100%;border-bottom: 3px solid #7070A0">&nbsp;</div>';
   echo '</div>';
-  echo '<div style="position: relative; top: -11em; left: 1em; width: 98%; height: 2em;">';
-	  echo '<div style="width: 100%;text-align:center;color:#7070A0"><h1><b>BILL</b></h1></div>';
+  echo '</td></tr><tr><td>';
+  echo '<div style="position: relative; top: 1.5em; left: 1em; width: 98%; height: 2em;">';
+	  echo '<div style="width: 100%;text-align:center;color:#7070A0"><h1><b>' . strtoupper(i18n('Bill')) . '</b></h1></div>';
 	echo '</div>';
-	echo '<div style="position: relative; top: -11em; left: 1em; width: 98%; height: 2em;">';
+	echo '</td></tr><tr><td>';
+	echo '<div style="position: relative; top: 1em; left: 1em; width: 98%; height: 2em;">';
     echo '<div style="width: 100%;border-bottom: 3px solid #7070A0">&nbsp;</div>';
-  echo '</div>';	
+  echo '</div>';
+  echo '</td></tr><tr><td>';	
 	// NAME
-	echo '<div style="position: relative; top: -11em; left: 1em; width: 50%; height: 3em; ">';
+	echo '<table width="100%"><tr><td width="70%">';
+	echo '<div style="position: relative; top: 1em; left: 1em; width: 100%; height: 3em; ">';
     echo " " . $bill->name . '<br/>';
     echo " " . i18n('Project') . " : " . $project->name;
   echo '</div>';  
+  echo '</td><td style="width:30%; text-align: right;">';
   // DATE
-  echo '<div style="position: relative; top: -14em; left: 80%; width: 15%; height: 1.5em;';
+  echo '<div style="position: relative; top: 1em; width: 12em; height: 1.5em;';
   echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 15px;';
   echo ' text-align:center; vertical-align: middle; ">';
     echo htmlFormatDate($bill->date);
   echo '</div>';
+  echo '</td></tr></table>';
+  echo '</td></tr></table>';
 	// BILL LINES and TOTAL
 	$line = new BillLine();
   $crit = array("refId"=>$bill->id,"refType"=>"Bill");
   $lineList = $line->getSqlElementsFromCriteria($crit,false,null,"line");
-  echo '<div style="border: 1px solid red;width:98%; text-align: center; position: relative; top: -12em; left: 1em; ';
-  echo ' font-family: arial; font-size: 11px; min-height: 40em; page-break-inside:avoid">';
+  echo '<div style="border: 0px solid red;width:98%; text-align: center; position: relative; top: 2em; left: 1em; ';
+  echo ' font-family: arial; font-size: 11px; min-height: 55em; page-break-inside:avoid">';
 	echo '<table style="width:100%; vertical-align: middle; text-align: center;">';
   echo '<tr>';
-  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colQuantity') . '</th>';  
-  echo '<th style="width:30%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colDescription') . '</th>';
-  echo '<th style="width:40%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colDetail') . '</th>';
-  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colPrice') . '</th>';
-  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . i18n('colAmount') . '</th>';  
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colQuantity')) . '</th>';  
+  echo '<th style="width:30%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colDescription')) . '</th>';
+  echo '<th style="width:40%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colDetail')) . '</th>';
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colPrice')) . '</th>';
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colAmount')) . '</th>';  
   echo '</tr>';
   foreach ($lineList as $line) {
   	echo '<tr>';
@@ -167,7 +176,23 @@ foreach ($billList as $bill)
   
   echo '</table>';
   echo '</div>';
-	
+	// PAYMENT  
+  echo '<div style="position: relative; top: -6.5em; left: 1em; width: 55%; height: 8em; ';
+    echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 5px;">';
+    echo '<table style="width:100%">';
+    echo '<tr><td colspan="2" style="text-align:center; font-size: 120%; font-weight: bold; color: #7070A0">' . i18n('Payment') . '</td></tr>';
+    echo '<tr><td style="text-align:right; width:50%;"><b>' . i18n('colDesignation') . '&nbsp;:&nbsp;</b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->designation . '</td></tr>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colIbanCountry') . '&nbsp;:&nbsp;</b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->ibanCountry . '</td></tr>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colIbanKey') . '&nbsp;:&nbsp;</b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->ibanKey . '</td></tr>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colIbanBban') . '&nbsp;:&nbsp;</b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->ibanBban . '</td></tr>';
+    echo '<tr><td style="text-align:right;"><b>' . i18n('colPaymentDelay') . '&nbsp;:&nbsp;</b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $client->paymentDelay . ' ' . i18n('days') . '</td></tr>';
+    echo '</table>';
+  echo '</div>';
 	continue;
 	
 
