@@ -32,13 +32,14 @@ class Bill extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameClient" width="15%" >${idClient}</th>
-    <th field="nameProject" width="15%" >${idProject}</th>
+    <th field="nameClient" width="14%" >${idClient}</th>
+    <th field="nameProject" width="14%" >${idProject}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="date" formatter="dateFormatter" width="10%" >${date}</th>  
-    <th field="nameRecipient" width="15%" >${idRecipient}</th>
-    <th field="fullAmount" width="10%" >${fullAmount}</th>
+    <th field="nameRecipient" width="14%" >${idRecipient}</th>
+    <th field="fullAmount" width="8%" >${fullAmount}</th>
     <th field="billId" width="5%" >${billId}</th>
+    <th field="done" formatter="booleanFormatter" width="5%" >${done}</th>
     <th field="idle" formatter="booleanFormatter" width="5%" >${idle}</th>
     ';
   
