@@ -768,6 +768,9 @@ abstract class SqlElement {
         }       
       } 
     }
+    if (get_class($this)=='User') {
+    	$newObj->name=i18n('copiedFrom') . ' ' . $newObj->name;
+    }
     $result=$newObj->saveSqlElement();
     if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) { 
       $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;    

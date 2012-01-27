@@ -17,6 +17,8 @@ class DocumentDirectory extends SqlElement {
   public $idle;
   public $_col_2_2;
   
+  public $_noCopy;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>

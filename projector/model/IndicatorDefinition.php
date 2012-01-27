@@ -35,6 +35,8 @@ class IndicatorDefinition extends SqlElement {
   public $alertToLeader;
   public $_isNameTranslatable = true;
 
+  public $_noCopy;
+    
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameIndicatorable" formatter="translateFormatter" width="15%" >${element}</th>

@@ -19,6 +19,8 @@ class StatusMail extends SqlElement {
   public $mailToOther;
   public $otherMail;
   
+  public $_noCopy;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>

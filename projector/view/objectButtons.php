@@ -66,7 +66,8 @@
         showPrint("objectDetail.php", null, null, 'pdf');
         </script>
       </button>   
-<?php }?> 
+<?php } 
+      if (! (property_exists($_REQUEST['objectClass'], '_noCopy')) ) { ?>
       <button id="copyButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonCopy', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
@@ -87,7 +88,7 @@
           ?>
         </script>
       </button>    
-
+<?php }?>
       <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndo', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect or 1) {echo "disabled";} ?>
