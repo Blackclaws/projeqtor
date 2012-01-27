@@ -431,3 +431,12 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null, null, 'billSuffix','_FR'),
 (null, null, 'billNumSize','5'),
 (null, null, 'billNumStart','10000');
+
+CREATE TABLE `${prefix}collapsed` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `scope` varchar(200) NOT NULL,
+  `idUser` int(12) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}collapsed` ADD INDEX collapsedUser (idUser);
