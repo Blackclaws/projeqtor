@@ -8,8 +8,8 @@ class ActivityPrice extends SqlElement {
   public $_col_1_2;
   public $id;    // redefine $id to specify its visible place
   public $idProject;
-  public $name;
-  public $idActivityType; 
+  public $idActivityType;
+  public $name; 
   public $priceCost;
   //public $subcontractorCost;
   //public $commissionCost;
@@ -20,11 +20,14 @@ class ActivityPrice extends SqlElement {
   //public $_sec_Abacus;
   //public $isRef;
   //public $pct;
+  
+  public $_noCopy;
 
   
   private static $_fieldsAttributes=array("idActivity"=>"required",
   								  "value"=>"required",
-  								  "idProject"=>"required"
+  								  "idProject"=>"required",
+                    "idActivityType"=>"required"
   );
   
   // Define the layout that will be used for lists
@@ -79,5 +82,28 @@ class ActivityPrice extends SqlElement {
     return self::$_layout;
   }
  
+/** =========================================================================
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message 
+   *  must be redefined in the inherited class
+   */
+  public function control(){
+    $result="";
+    $crit=array("idProject"=>$this->idProject, "idActivityType"=>$this->idActivityType);
+    $lst=$this->getSqlElementsFromCriteria($crit,false);
+    if (count($lst)>0) {
+      if (! $this->id or count($lst)>1 or $lst[0]->id!=$this->id) {
+        $result.='<br/>' . i18n('errorDuplicateActivityPrice');
+      }
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }  
 }
 ?>

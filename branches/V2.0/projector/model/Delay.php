@@ -15,6 +15,8 @@ class Delay extends SqlElement {
   public $idle;
   public $_col_2_2;
   
+  public $_noCopy;
+  
   // Define the layout that will be used for lists
   
   private static $_fieldsAttributes=array("idType"=>"hidden", 

@@ -1809,7 +1809,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 $objClass=$_REQUEST['objectClass'];
 if (! isset($noselect)) { 
   $noselect=false; 
-} 
+}
 if ( $noselect ) {
   $objId="";
   $obj=null;

@@ -7,6 +7,7 @@
   scriptLog('   ->/view/today.php');
   
   $user=$_SESSION['user'];
+  $profile=new Profile($user->idProfile);
   
   if (array_key_exists('refreshProjects',$_REQUEST)) {
     $_SESSION['todayCountScope']=(array_key_exists('countScope',$_REQUEST))?$_REQUEST['countScope']:'todo';
@@ -216,30 +217,40 @@
     return $result;
   }
   
-  
   function showWork() {
-    echo '<table align="center" style="width:95%">';
-    echo '<tr>' . 
-           ' <td class="messageHeader" width="6%">' . ucfirst(i18n('colId')) . '</td>' .  
-           ' <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdProject')) . '</td>' . 
-           '  <td class="messageHeader" width="12%">' .  ucfirst(i18n('colType')) . '</td>' . 
-           '  <td class="messageHeader" width="40%">' . ucfirst(i18n('colName')) . '</td>' . 
-           '  <td class="messageHeader" width="8%">' . ucfirst(i18n('colDueDate')) . '</td>' . 
-           '  <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdStatus')) . '</td>' . 
-           '  <td class="messageHeader" width="5%" title="'. i18n('isIssuerOf') . '">' . ucfirst(i18n('colIssuerShort')) . '</td>' . 
-           '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
-           '</tr>';
-    $user=$_SESSION['user'];
-    $ass=new Assignment();
+  	$user=$_SESSION['user'];
+  	$ass=new Assignment();
     $act=new Activity();
-    $where="(idUser='" . $user->id . "'" . 
+  	$where="(idResource='" . $user->id . "'" .
+  	  ") and idle=0 and done=0";
+    $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
+      "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . $user->id . "')" .
+      ") and idle=0 and done=0";
+    showActivitiesList($where, $whereActivity, 'todayWorkDiv', 'menuWork');
+  }
+  
+  function showFollow() {
+  	$user=$_SESSION['user'];
+  	$where="(idUser='" . $user->id . "'" . 
        " or idResource='" . $user->id . "'" .
        ") and idle=0 and done=0";
     $whereActivity="(idUser='" . $user->id . "'" . 
-       " or idResource='" . $user->id . "'" .
-       " or exists (select 'x' from " . $ass->getDatabaseTableName() . " x " . 
-                   "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . $user->id . "')" .
+      " or idResource='" . $user->id . "'" .
        ") and idle=0 and done=0";
+    showActivitiesList($where, $whereActivity, 'todayFollowDiv', 'menuFollowup');
+  }
+  
+  function showProjectTasks() {
+    $where="(idProject in " . getVisibleProjectsList() .
+       ") and idle=0 and done=0";
+    $whereActivity=$where;
+    showActivitiesList($where, $whereActivity, 'todayProjectTasks', 'myProjects');
+  }
+  
+  function showActivitiesList($where, $whereActivity, $divName, $title) {
+    $user=$_SESSION['user'];
+    $ass=new Assignment();
+    $act=new Activity();
     $order="";
     $list=array();
     $ticket=new Ticket();
@@ -260,7 +271,21 @@
     $issue= new Issue();
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order);
     $list=array_merge($list, $listIssue);   
-    $cptDisplayId=0;     
+    $cptDisplayId=0;
+    echo '<div id="' . $divName . '" dojoType="dijit.TitlePane" open="true" ';
+    echo 'title="' . i18n($title) . '"';
+    echo '>';
+    echo '<table align="center" style="width:95%">';
+    echo '<tr>' . 
+           ' <td class="messageHeader" width="6%">' . ucfirst(i18n('colId')) . '</td>' .  
+           ' <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdProject')) . '</td>' . 
+           '  <td class="messageHeader" width="12%">' .  ucfirst(i18n('colType')) . '</td>' . 
+           '  <td class="messageHeader" width="40%">' . ucfirst(i18n('colName')) . '</td>' . 
+           '  <td class="messageHeader" width="8%">' . ucfirst(i18n('colDueDate')) . '</td>' . 
+           '  <td class="messageHeader" width="12%">' . ucfirst(i18n('colIdStatus')) . '</td>' . 
+           '  <td class="messageHeader" width="5%" title="'. i18n('isIssuerOf') . '">' . ucfirst(i18n('colIssuerShort')) . '</td>' . 
+           '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
+           '</tr>';     
     foreach($list as $elt) {
     	$cptDisplayId++;
       $idType='id' . get_class($elt) . 'Type';
@@ -316,6 +341,7 @@
             '</tr>';
       }
       echo "</table>";
+      echo "</div><br/>";
   }  
 ?>      
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
@@ -327,8 +353,12 @@
     <div id="todayProjectDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuProject');?>">
     <?php showProjects();?>
     </div><br/>
-    <div id="todayWorkDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuWork');?>">
-    <?php showWork();?>
-  </div><br/>
+    <?php 
+    showWork();
+    showFollow();
+    if ($profile->profileCode=='PL') {
+      showProjectTasks();
+    }
+?>
   </div>
 </div>

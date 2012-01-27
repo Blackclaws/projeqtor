@@ -107,7 +107,11 @@
 	      }
 	      foreach ($list as $aff) {
 	        if (! array_key_exists($aff->idResource, $lstRes)) {
-	          $lstRes[$aff->idResource]=SqlList::getNameFromId('Resource', $aff->idResource);
+	        	$id=$aff->idResource;
+	        	$name=SqlList::getNameFromId('Resource', $id);
+	        	if ($name!=$id) {
+	            $lstRes[$id]=$name;
+	        	}
 	        }
 	      }
 	      asort($lstRes);
