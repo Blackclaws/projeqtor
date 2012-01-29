@@ -6,16 +6,18 @@
 /**
  * Open / Close Group : hide sub-lines
  */
-function workOpenCloseLine(line) {
+function workOpenCloseLine(line, scope) {
 	var nbLines=dojo.byId('nbLines').value;
 	var wbsLine=dojo.byId('wbs_'+line).value;
 	var action=(dojo.byId('status_'+line).value=='opened')?"close":"open";
 	if (action=="close") {
 		dojo.byId('group_' + line).className="ganttExpandClosed";
 		dojo.byId('status_'+line).value="closed";
+		saveCollapsed(scope);
 	} else {
 		dojo.byId('group_' + line).className="ganttExpandOpened";
 		dojo.byId('status_'+line).value="opened";
+		saveExpanded(scope);
 	}
 	for (i=line+1; i<=nbLines; i++) {
 		var wbs=dojo.byId('wbs_'+i).value;

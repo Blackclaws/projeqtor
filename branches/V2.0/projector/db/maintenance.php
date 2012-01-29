@@ -38,8 +38,7 @@ $versionParameters =array(
 					'paramLdap_version'=>'3',
 					'paramLdap_search_user'=>'cn=Manager,dc=mydomain,dc=com',
 					'paramLdap_search_pass'=>'secret',
-					'paramLdap_user_filter'=>'uid=%USERNAME%'),
-  'V2.0.0'=>array('defaultBillCode'=>'0')
+					'paramLdap_user_filter'=>'uid=%USERNAME%')
 );
 $SqlEndOfCommand=";";
 $SqlComment="--";
@@ -108,9 +107,10 @@ if (! isset($paramMemoryLimitForPDF) ) {
 }
 
 // For V1.9.0
-if ($currVersion<"V1.9.0") {
+if ($currVersion<"V1.9.0" and $currVersion!='0.0.0') {
 	$adminFunctionality='updateReference';
 	include('../tool/adminFunctionalities.php');
+	echo "<br/>";
 }
 
 // For V1.9.1

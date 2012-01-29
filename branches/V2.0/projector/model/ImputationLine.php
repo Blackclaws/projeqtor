@@ -261,6 +261,8 @@ class ImputationLine {
     echo '</TR>';  
     $tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned);
     $nbLine=0;
+    $collapsedList=Collapsed::getCollaspedList();
+    $closedWbs='';
     foreach ($tab as $key=>$line) {
       $nbLine++;
       if ($line->elementary) {
@@ -268,13 +270,33 @@ class ImputationLine {
       } else {
         $rowType="group";
       }
-      echo '<tr id="line_' . $nbLine . '"class="ganttTask' . $rowType . '">';
+      if ($closedWbs and strlen($line->wbsSortable)<=strlen($closedWbs)) {
+      	$closedWbs="";
+      }
+      $scope='Imputation_'.$resourceId.'_'.$line->refType.'_'.$line->refId;
+      $collapsed=false;
+      if ($rowType=="group" and array_key_exists($scope, $collapsedList)) {
+        $collapsed=true;
+        if (! $closedWbs) {
+        	$closedWbs=$line->wbsSortable;
+        }
+      }
+      echo '<tr id="line_' . $nbLine . '"class="ganttTask' . $rowType . '"';
+      if ($closedWbs and $closedWbs!=$line->wbsSortable) {
+      	echo ' style="display:none" ';
+      }
+      echo '>';
       echo '<td class="ganttName" >';
       if (! $print) {    
         echo '<input type="hidden" id="wbs_' . $nbLine . '" name="wbs_' . $nbLine . '"' 
           . ' value="' . $line->wbsSortable . '"/>';
-        echo '<input type="hidden" id="status_' . $nbLine . '" name="status_' . $nbLine . '"'
-          . ' value="opened"/>';
+        echo '<input type="hidden" id="status_' . $nbLine . '" name="status_' . $nbLine . '"';
+        if ($collapsed) {
+        	echo   ' value="closed"';
+        } else {
+          echo   ' value="opened"';
+        }
+        echo '/>';
         echo '<input type="hidden" id="refType_' . $nbLine . '" name="refType_' . $nbLine . '"'
           . ' value="' . $line->refType . '"/>';
         echo '<input type="hidden" id="refId_' . $nbLine . '" name="refId_' . $nbLine . '"'
@@ -299,14 +321,25 @@ class ImputationLine {
       $levelWidth = ($level-1) * 16;
       echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';     
       echo '</td>';
-      if ($rowType=="group" and ! $print) {
-        echo '<td width="16"><span id="group_' . $nbLine . '" class="ganttExpandOpened"';
-        echo 'onclick="workOpenCloseLine(' . $nbLine . ')">'; 
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
-      } else if (! $print) {
-        echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
-      } 
-			
+      if (! $print) {
+	      if ($rowType=="group") {
+	        echo '<td width="16"><span id="group_' . $nbLine . '" ';
+	        if ($collapsed) {
+	        	echo 'class="ganttExpandClosed"';
+	        } else {
+	          echo 'class="ganttExpandOpened"';
+	        }
+	        if (! $print) {
+	          echo 'onclick="workOpenCloseLine(' . $nbLine . ',\''.$scope.'\')"';
+	        } else {
+	        	echo ' style="cursor:default;"';
+	        }
+	        echo '>'; 
+	        echo '&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp</span></td>' ;
+	      } else {
+	        echo '<td width="16"><div style="float: left;width:16px;">&nbsp;</div></td>';
+	      } 
+      }
       //echo $line->wbs . ' '. $line->name . '</td>'; // for testing purpose, add wbs code  
 			//display the description of the project and the activity
 		

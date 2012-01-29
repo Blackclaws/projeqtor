@@ -101,6 +101,7 @@
     echo '{"identifier":"id",' ;
     echo ' "items":[';
     if (Sql::$lastQueryNbRows > 0) {
+    	$collapsedList=Collapsed::getCollaspedList();
       while ($line = Sql::fetchLine($result)) {
         echo (++$nbRows>1)?',':'';
         echo  '{';
@@ -112,6 +113,12 @@
           echo (++$nbFields>1)?',':'';
           echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val) . '"';
           if ($id=='id') {$idPe=$val;}
+        } 
+        //add expanded status
+        if (array_key_exists('Planning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
+        	echo ',"collapsed":"1"';
+        } else {
+        	echo ',"collapsed":"0"';
         }
         $crit=array('successorId'=>$idPe);
         $listPred="";
@@ -284,6 +291,8 @@
       
       // lines
       $width=round($colWidth/$colUnit) . "px;";
+      $collapsedList=Collapsed::getCollaspedList();
+      $closedWbs='';
       foreach ($resultArray as $line) {
         $pEnd=$line['pEnd'];
         $pStart=$line['pStart'];
@@ -299,6 +308,17 @@
         }
         // pGroup : is the tack a group one ?
         $pGroup=($line['elementary']=='0')?1:0;
+        if ($closedWbs and strlen($line['wbsSortable'])<=strlen($closedWbs)) {
+          $closedWbs="";
+        }
+        $scope='Planning_'.$line['refType'].'_'.$line['refId'];
+        $collapsed=false;
+        if ($pGroup and array_key_exists($scope, $collapsedList)) {
+          $collapsed=true;
+          if (! $closedWbs) {
+            $closedWbs=$line['wbsSortable'];
+          }
+        }
         $compStyle="";
         $bgColor="";
         if( $pGroup) {
@@ -320,9 +340,26 @@
         $pName.=$line['refName'];
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
-        echo '<TR style="height:18px">';
+        
+        echo '<TR style="height:18px;' ;
+        if ($closedWbs and $closedWbs!=$line['wbsSortable']) {
+          echo ' display:none;';
+        }
+        echo '">';
         echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab . htmlEncode($line['refName']) . '</NOBR></TD>';
+        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
+        /*if ($pGroup) {
+          echo '<span width="16"';
+          if ($collapsed) {
+            echo 'class="ganttExpandClosed"';
+          } else {
+            echo 'class="ganttExpandOpened"';
+          }
+          echo '&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+        } else {
+          echo '<span width="16"><div style="float: left;width:16px;">&nbsp;</div></span>';
+        } */
+        echo htmlEncode($line['refName']) . '</NOBR></TD>';
         echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
         echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
         echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;

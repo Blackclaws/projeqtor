@@ -37,7 +37,7 @@ var vBenchTime = new Date().getTime();
 var arrayClosed=new Array();
 
 JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp, pGroup, 
-                            pParent, pOpen, pDepend, pCaption, pClass) {
+                            pParent, pOpen, pDepend, pCaption, pClass, pScope) {
   var vID    = pID;
   var vName  = pName;
   var vStart = new Date();  
@@ -58,6 +58,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   var vVisible  = 1;
   var x1, y1, x2, y2;
   var vClass=pClass;
+  var vScope=pScope;
   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
 
@@ -102,6 +103,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.getEndX     = function(){ return x2 };
   this.getEndY     = function(){ return y2 };
   this.getVisible  = function(){ return vVisible };
+  this.getScope    = function(){ return vScope };
   this.getClass  = function(){ return vClass };
   this.setDepend   = function(pDepend){ vDepend = pDepend;};
   this.setStart    = function(pStart){ vStart = pStart;};
@@ -116,6 +118,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.setOpen     = function(pOpen) {vOpen = pOpen; };
   this.setVisible  = function(pVisible) {vVisible = pVisible; };
   this.setClass  = function(pClass) {vClass = pClass; };
+  this.setScope  = function(pScope) {vScope = pScope; };
 };  
   
 /**
@@ -1063,10 +1066,12 @@ JSGantt.folder= function (pID,ganttObj) {
         vList[i].setOpen(0);
         JSGantt.hide(pID,ganttObj);
         JSGantt.findObj('group_'+pID).className = "ganttExpandClosed";
+        saveCollapsed(vList[i].getScope());
       } else {
         vList[i].setOpen(1);
         JSGantt.show(pID, ganttObj);
         JSGantt.findObj('group_'+pID).className = "ganttExpandOpened";
+        saveExpanded(vList[i].getScope());
       }
     }
   }

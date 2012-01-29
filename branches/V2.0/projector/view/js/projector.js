@@ -114,15 +114,19 @@ function filterJsonList() {
   var filterId=dojo.byId('listIdFilter');
   var filterName=dojo.byId('listNameFilter');
   var grid = dijit.byId("objectGrid");
-  if (grid && filterId && filterName) {
+  if (grid && (filterId || filterName)) {
     filter = {};
     unselectAllRows("objectGrid");
     filter.id='*'; // delfault
-    if (filterId.value && filterId.value!='') {
-      filter.id = '*' + filterId.value + '*';
+    if (filterId) {
+      if (filterId.value && filterId.value!='') {
+        filter.id = '*' + filterId.value + '*';
+      }
     }
-    if (filterName.value && filterName.value!='') {
-      filter.name = '*' + filterName.value + '*';
+    if (filterName) {
+      if (filterName.value && filterName.value!='') {
+        filter.name = '*' + filterName.value + '*';
+      }
     }
     grid.query=filter;
     grid._refresh();
@@ -1325,11 +1329,14 @@ function drawGantt() {
       var pMile=(item.refType=='Milestone')?1:0;
       if (pMile) { pStart=pEnd; }
       pClass=item.refType;
+      pId=item.refId;
+      pScope="Planning_"+pClass+"_"+pId;
+      pOpen=(item.collapsed=='1')?'0':'1';
       var pDepend=item.depend;
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
-      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress, pGroup, topId,   1,     pDepend  ,    '' ,    pClass));
+      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress, pGroup, topId,   pOpen,     pDepend  ,    '' ,    pClass, pScope));
     }
     g.Draw();  
     g.DrawDependencies();
@@ -1703,4 +1710,18 @@ function moveTask(source,destination) {
   }
   var url='../tool/moveTask.php?from='+source+'&to='+destination+'&mode='+mode;
   loadContent(url, "planResultDiv", null, true,null);
+}
+
+function saveCollapsed(scope){
+  dojo.xhrPost({
+	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
+	load: function(data,args) { }
+  });
+}
+
+function saveExpanded(scope){
+  dojo.xhrPost({
+	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
+	load: function(data,args) { }
+  });
 }
