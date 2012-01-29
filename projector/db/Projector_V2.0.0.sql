@@ -31,11 +31,12 @@ ALTER TABLE `${prefix}activityprice` ADD INDEX activitypriceProject (idProject),
 CREATE TABLE `${prefix}bill` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idBillType` int(12) unsigned DEFAULT NULL,
-  `billingType` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idClient` int(12) unsigned DEFAULT NULL,
   `idContact` int(12) unsigned DEFAULT NULL,
+  `idRecipient` int(12) unsigned DEFAULT NULL,
+  `billingType` varchar(10),
   `description` varchar(4000) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
@@ -52,8 +53,7 @@ ALTER TABLE `${prefix}bill` ADD INDEX billBillType (idBillType),
  ADD INDEX billProject (idProject),
  ADD INDEX billClient (idClient),
  ADD INDEX billRecipient (idRecipient),
- ADD INDEX billStatus (idStatus),
- ADD INDEX billBillType(idBillType);
+ ADD INDEX billStatus (idStatus);
  
 ALTER TABLE `${prefix}client` ADD COLUMN `paymentDelay` int(3) NULL after `clientCode`, 
  ADD COLUMN `tax` decimal(5,2) DEFAULT NULL after `paymentDelay`;
@@ -124,8 +124,8 @@ CREATE TABLE `${prefix}term` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}term` ADD INDEX termProject (idProject)
-ADD INDEX termBill (idBillt);
+ALTER TABLE `${prefix}term` ADD INDEX termProject (idProject),
+ADD INDEX termBill (idBill);
 
 ALTER TABLE `${prefix}user` ADD COLUMN `designation` varchar(50) after `isContact`, 
 	ADD COLUMN `street` varchar(50) after `designation`, 
@@ -144,7 +144,7 @@ ALTER TABLE `${prefix}work` ADD INDEX workBill (idBill);
 
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `plannedCost`;
 
-LTER TABLE `${prefix}planningelement` ADD INDEX planningelementBill (idBill);
+ALTER TABLE `${prefix}planningelement` ADD INDEX planningelementBill (idBill);
 
 ALTER TABLE `${prefix}assignment` ADD COLUMN `billedWork` decimal(10,2) NOT NULL DEFAULT '0' after `plannedCost`;
 

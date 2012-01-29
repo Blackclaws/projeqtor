@@ -5,8 +5,10 @@
  */ 
 class TargetVersion extends Version {
 
+	public $_constructForName;
+	
     private static $_databaseTableName = 'version';
-  
+    
     private static $_databaseCriteria = array('isEis'=>'0');
     
    /** ==========================================================================
@@ -18,9 +20,9 @@ class TargetVersion extends Version {
     parent::__construct($id);
     if ($this->name) {
     	if ($this->realEisDate){
-    	  $this->name.=" - " . htmlFormatDate($this->realEisDate);
+    	  $this->name.=" (" . htmlFormatDate($this->realEisDate) . ")";
     	} else if ($this->plannedEisDate){
-        $this->name.=" - " . htmlFormatDate($this->plannedEisDate);
+        $this->name.=" (" . htmlFormatDate($this->plannedEisDate) . ")";
       }
     }
   }
@@ -48,7 +50,7 @@ class TargetVersion extends Version {
    */
   protected function getStaticDatabaseCriteria() {
     return self::$_databaseCriteria;
-  }
+  } 
   
 }
 ?>
