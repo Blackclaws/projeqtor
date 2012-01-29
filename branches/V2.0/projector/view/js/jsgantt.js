@@ -89,6 +89,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
       } else {
         tmpPer =  workDayDiffDates(this.getStart(), this.getEnd());
         vDuration = tmpPer + ' ' + i18n('shortDay');
+//console.log(this.getID()+" = "+this.getEnd()+" - "+this.getStart()+" = "+vDuration);    	  
       }
     }
     return( vDuration )

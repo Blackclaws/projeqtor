@@ -32,7 +32,6 @@ unset($newProj->_copyResult);
 $_SESSION['currentObject']=$newProj;
 
 // Save Structure
-
 if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exists('copyProjectStructure',$_REQUEST)) {
 	$milArray=array();
   $milArrayObj=array();
@@ -44,7 +43,6 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   $activities=$activity->getSqlElementsFromCriteria($crit, false, null, null, true);
   foreach ($activities as $activity) {
   	$act=new Activity($activity->id);
-//debugLog ("Original PE->pm=" . $act->ActivityPlanningElement->idActivityPlanningMode);
     $new=$act->copy();
     $actArrayObj[$new->id]=$new;
     $actArray[$activity->id]=$new->id;

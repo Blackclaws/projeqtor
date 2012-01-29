@@ -86,7 +86,7 @@ if (! $oldCost or $assignment->dailyCost!=$oldCost) {
 }
 $assignment->rate=$rate;
 $assignment->assignedWork=Work::convertWork($assignedWork);
-$assignment->realWork=$realWork;
+$assignment->realWork=Work::convertWork($realWork);
 $assignment->leftWork=Work::convertWork($leftWork);
 $assignment->plannedWork=Work::convertWork($plannedWork);
 $assignment->comment=htmlEncodeJson($comment);

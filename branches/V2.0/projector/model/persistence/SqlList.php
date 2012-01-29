@@ -81,7 +81,7 @@ class SqlList {
         if ($obj->isFieldTranslatable($displayCol) and $translate){
           $name=i18n($name);
         }
-        if (property_exists($obj,'_constructForName')) {
+        if (property_exists($obj,'_constructForName')) {      
         	$nameObj=new $listType($line['id']);
         	$name=$nameObj->name;
         }
@@ -106,8 +106,8 @@ class SqlList {
         $aff=new Affectation();
         $user=new Resource();
         $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject='" . $val . "' and a.idResource=" . $user->getDatabaseTableName() . ".id)";
-      } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion') and $col=='idProject') {
-        $vp=new VersionProject();
+      } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion' or strtolower($listType)=='targetversion') and $col=='idProject') {
+      	$vp=new VersionProject();
         $ver=new Version();
         $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject='" . $val . "' and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
       } else if (strtolower($listType)=='indicator' and $col=='idIndicatorable' ) {
