@@ -2128,7 +2128,7 @@ traceLog('SqlElement::setReference');
   	$ref=$prefix;
   	$mutex = new Mutex($prefix);
   	$mutex->reserve();
-debugLog($query);
+//debugLog($query);
   	$result=Sql::query($query);
   	$numMax='0';
   	if (count($result)>0) {
