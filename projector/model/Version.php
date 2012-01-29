@@ -105,6 +105,7 @@ class Version extends SqlElement {
       $colScript .= 'if (! dijit.byId("plannedEisDate").get("value")) {'; 
       $colScript .= '  dijit.byId("plannedEisDate").set("value",this.value);'; 
       $colScript .= '};';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
     if ($colName=="initialEndDate") {   
@@ -112,15 +113,17 @@ class Version extends SqlElement {
       $colScript .= 'if (! dijit.byId("plannedEndDate").get("value")) {'; 
       $colScript .= '  dijit.byId("plannedEndDate").set("value",this.value);'; 
       $colScript .= '};';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
     if ($colName=="realEisDate") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= 'if (this.value) {'; 
-      $colScript .= '  dijit.byId("isEis").set("checked","checked");';
+      $colScript .= '  dijit.byId("isEis").set("checked",true);';
       $colScript .= '} else {;';
-      $colScript .= '  dijit.byId("isEis").set("checked",null);';
+      $colScript .= '  dijit.byId("isEis").set("checked",false);';
       $colScript .= '};'; 
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
     if ($colName=="isEis") { 
@@ -131,17 +134,19 @@ class Version extends SqlElement {
       $colScript .= '    dijit.byId("realEisDate").set("value", curDate); ';
       $colScript .= '  }';
       $colScript .= '} else {;';    
-      $colScript .= '  dijit.byId("realEisDate").reset(); ';
+      $colScript .= '  dijit.byId("realEisDate").set("value", null); ';
       $colScript .= '};';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
     if ($colName=="realEndDate") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= 'if (this.value) {'; 
-      $colScript .= '  dijit.byId("idle").set("checked","checked");'; 
+      $colScript .= '  dijit.byId("idle").set("checked",true);'; 
       $colScript .= '} else {;';
-      $colScript .= '  dijit.byId("idle").set("checked",null);';
+      $colScript .= '  dijit.byId("idle").set("checked",false);';
       $colScript .= '};'; 
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
     if ($colName=="idle") { 
@@ -152,8 +157,9 @@ class Version extends SqlElement {
       $colScript .= '    dijit.byId("realEndDate").set("value", curDate); ';
       $colScript .= '  }';   
       $colScript .= '} else {;';    
-      $colScript .= '  dijit.byId("realEndDate").reset(); '; 
+      $colScript .= '  dijit.byId("realEndDate").set("value", null); '; 
       $colScript .= '};';
+      $colScript .= '  formChanged();';
       $colScript .= '</script>';  
     }
     return $colScript;

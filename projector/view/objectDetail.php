@@ -635,7 +635,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $critFld=null;
         $critVal=null;
         $valStore='';
-        if ($col=='idResource' or $col=='idActivity' or $col=='idVersion' or $col=='idOriginalVersion'
+        if ($col=='idResource' or $col=='idActivity' or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
         or $col=='idContact') {
           //echo '<div dojoType="dojo.data.ItemFileReadStore" jsId="' . $col . 'Store" url="../tool/jsonList.php?listType=empty" searchAttr="name"  /></div>'; ;
           //$valStore=' store="' . $col . 'Store" ';
@@ -772,7 +772,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         if (strpos($attributes, 'readonly')>0) {
-        	$specificStyle.=' color:grey; background: #F0F0F0 url(); ';
+        	$specificStyle.=' color:grey; background:none; background-color: transparent; ';
         }
         echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';

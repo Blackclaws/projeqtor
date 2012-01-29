@@ -18,7 +18,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	$column='name';
 	if ($listType=='DocumentDirectory') {
 		$column='location';
-	}
+	}	
   if ($critFld) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);

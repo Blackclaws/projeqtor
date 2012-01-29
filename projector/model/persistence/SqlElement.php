@@ -153,8 +153,7 @@ abstract class SqlElement {
                                   "ActionType"=>"control", 
                                   "IssueType"=>"control",)
   );
-// Not taken into account :
-// XxxPlanningelement => Project, XxxPlanningMode  
+
 
   /** =========================================================================
    * Constructor. Protected because this class must be extended.
@@ -238,6 +237,9 @@ abstract class SqlElement {
         $old=new $class($this->id);
       }
       $statusChanged=false;
+      if (property_exists($this,'reference')) {
+        $this->setReference(false, $old);
+      }
       if ($this->id != null) {
         if (property_exists($this, 'idStatus')) {
           if ($this->idStatus) {
@@ -275,9 +277,6 @@ abstract class SqlElement {
       	  }
       	}
       }
-      if (property_exists($this,'reference')) {
-        $this->setReference($old);
-      }
       return $returnValue;
     } else {
       // errors on control => don't save, display error message
@@ -294,7 +293,7 @@ abstract class SqlElement {
    * @return void
    */
   private function insertSqlElement() {
-  	if (get_class($this)=='Origin') {
+   	if (get_class($this)=='Origin') {
   	  if (! $this->originId or ! $this->originType) {
   	  	return;
   	  }
@@ -729,16 +728,16 @@ abstract class SqlElement {
       $newObj->idle=0;
     }
     if (property_exists($newObj,"idleDate")) {
-      $newObj->idleDate=0;
+      $newObj->idleDate=null;
     }
       if (property_exists($newObj,"doneDate")) {
-      $newObj->doneDate=0;
+      $newObj->doneDate=null;
     }
       if (property_exists($newObj,"idleDateTime")) {
-      $newObj->idleDateTime=0;
+      $newObj->idleDateTime=null;
     }
     if (property_exists($newObj,"doneDateTime")) {
-      $newObj->doneDateTime=0;
+      $newObj->doneDateTime=null;
     }
     foreach($newObj as $col_name => $col_value) {
       if (ucfirst($col_name) == $col_name) {
@@ -2089,14 +2088,12 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	
   }
   
-  public function setReference($old=null, $force=false) {
-  	$class=get_class($this);
-  	if ($old==null) {
-      $old=new $class($this->id);
-    }
+  public function setReference($force=false, $old=null) {
+traceLog('SqlElement::setReference');
     if (! property_exists($this,'reference')) {
       return;
     }
+  	$class=get_class($this);
   	$fmtPrefix=Parameter::getGlobalParameter('referenceFormatPrefix');
   	$fmtNumber=Parameter::getGlobalParameter('referenceFormatNumber');
     $change=Parameter::getGlobalParameter('changeReferenceOnTypeChange');
@@ -2107,6 +2104,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       }
       if (! property_exists($this,$type)) {
       	return;
+      }
+      if (! $old) {
+        $old=new $class($this->id);
       }
       if ($this->$type==$old->$type) {
       	return;
@@ -2128,6 +2128,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   	$ref=$prefix;
   	$mutex = new Mutex($prefix);
   	$mutex->reserve();
+debugLog($query);
   	$result=Sql::query($query);
   	$numMax='0';
   	if (count($result)>0) {
@@ -2142,7 +2143,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   		$num=$numMax;
   	}  	
   	$this->reference=$prefix.$num;
-  	$this->updateSqlElement();
+  	if ($force) {
+  	  $this->updateSqlElement();
+  	}
   	$mutex->release();
   	
   }

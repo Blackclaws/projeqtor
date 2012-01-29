@@ -17,6 +17,7 @@ class TargetVersion extends Version {
    * @return void
    */ 
   function __construct($id = NULL) {
+  	unset($this->_VersionProject);
     parent::__construct($id);
     if ($this->name) {
     	if ($this->realEisDate){

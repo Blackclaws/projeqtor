@@ -77,23 +77,28 @@ function refreshImputationPeriod() {
 	if (week=='00') {
 		week=getWeek(31,12,year-1);
 		if (week==1) {
-			var day=firstDayOfWeek(1,year);
-			day=day-1;
-			week=getWeek(day.getDate(),day.getMonth()+1,day.getFullYear());
+			var day=getFirstDayOfWeek(1,year);
+			//day=day-1;
+			week=getWeek(day.getDate()-1,day.getMonth()+1,day.getFullYear());
 		}
 		year=year-1;
 		dijit.byId('yearSpinner').set('value',year);
 		dijit.byId('weekSpinner').set('value', week);
+	} else if (parseInt(week)>53) {
+    	week='01'
+	    year+=1;
+		dijit.byId('yearSpinner').set('value', year);
+		dijit.byId('weekSpinner').set('value', '1');
 	} else if (parseInt(week)>52) {
 		lastWeek=getWeek(31,12,year);
 		if (lastWeek==1) {
-			var day=firstDayOfWeek(1,year+1);
-			day=day-1;
-			lastWeek=getWeek(day.getDate(),day.getMonth()+1,day.getFullYear());
+			var day=getFirstDayOfWeek(1,year+1);
+			//day=day-1;
+			lastWeek=getWeek(day.getDate()-1,day.getMonth()+1,day.getFullYear());
 		}
 		if (parseInt(week)>parseInt(lastWeek)) {
 			week='01'
-		  year+=1;
+		    year+=1;
 			dijit.byId('yearSpinner').set('value', year);
 			dijit.byId('weekSpinner').set('value', '1');
 		}
