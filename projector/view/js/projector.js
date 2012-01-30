@@ -1734,3 +1734,41 @@ function saveExpanded(scope){
 	load: function(data,args) { }
   });
 }
+
+// *********************************************************************************
+// IBAN KEY CALCULATOR
+// *********************************************************************************
+function calculateIbanKey() {
+	var country=ibanFormater(dijit.byId('ibanCountry').get('value'));
+	var bban=ibanFormater(dijit.byId('ibanBban').get('value'));
+	var number=ibanConvertLetters(bban.toString()+country.toString())+"00";	
+	var calculateKey=0;
+	var pos=0;
+	while (pos<number.length) {
+		calculateKey=parseInt(calculateKey.toString()+number.substr(pos,9),10) % 97;
+		pos+=9;
+	}
+	calculateKey=98-(calculateKey % 97);
+	var key=(calculateKey<10 ? "0" : "")+calculateKey.toString();
+	dijit.byId('ibanKey').set('value',key);
+}
+
+function ibanFormater(text) {
+	var text=(text==null ? "" : text.toString().toUpperCase());	
+	return text;	
+}
+
+function ibanConvertLetters(text) {
+	convertedText="";
+	for (i=0;i<text.length;i++) {
+		car=text.charAt(i);
+		if (car>"9") {
+			if (car>="A" && car<="Z") {
+				convertedText+=(car.charCodeAt(0)-55).toString();
+			}
+		}else if (car>="0"){
+			convertedText+=car;
+		}
+	}
+	return convertedText;
+}

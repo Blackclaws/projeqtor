@@ -98,5 +98,26 @@ class Recipient extends SqlElement {
     }
   }
   
+    /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo framework)
+   */
+  public function getValidationScript($colName) {
+    $colScript = parent::getValidationScript($colName);
+
+    if ($colName=="ibanCountry") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  calculateIbanKey();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } else if ($colName=="ibanBban") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  calculateIbanKey(); ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
+    return $colScript;
+  }
+  
 }
 ?>
