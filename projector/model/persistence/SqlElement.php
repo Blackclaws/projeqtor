@@ -2128,13 +2128,15 @@ traceLog('SqlElement::setReference');
   	$ref=$prefix;
   	$mutex = new Mutex($prefix);
   	$mutex->reserve();
-//debugLog($query);
+debugLog($query);
   	$result=Sql::query($query);
   	$numMax='0';
   	if (count($result)>0) {
       $line=Sql::fetchLine($result);
-  	  $refMax=$line['ref'];
-  	  $numMax=substr($refMax,strlen($fmtPrefix));
+      $refMax=$line['ref'];
+debugLog("refMax=$refMax");
+  	  $numMax=substr($refMax,strlen($prefix));
+debugLog("numMax=$numMax");
   	}
   	$numMax+=1;
   	if ($fmtNumber and  $fmtNumber-strlen($numMax)>0) {
@@ -2143,6 +2145,7 @@ traceLog('SqlElement::setReference');
   		$num=$numMax;
   	}  	
   	$this->reference=$prefix.$num;
+debugLog("reference=".$this->reference);  	
   	if ($force) {
   	  $this->updateSqlElement();
   	}
