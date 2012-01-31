@@ -2089,7 +2089,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   }
   
   public function setReference($force=false, $old=null) {
-traceLog('SqlElement::setReference');
+scriptLog('SqlElement::setReference');
     if (! property_exists($this,'reference')) {
       return;
     }
@@ -2125,18 +2125,17 @@ traceLog('SqlElement::setReference');
     $prefix=str_replace(array('{PROJ}', '{TYPE}'), array($projObj->projectCode,$typeObj->code),$fmtPrefix);
   	$query="select max(reference) as ref from " . $this->getDatabaseTableName();
   	$query.=" where reference like '" . $prefix . "%'";
+  	$query.=" and length(reference)=( select max(length(reference)) from " . $this->getDatabaseTableName();
+  	$query.=" where reference like '" . $prefix . "%')";
   	$ref=$prefix;
   	$mutex = new Mutex($prefix);
   	$mutex->reserve();
-debugLog($query);
   	$result=Sql::query($query);
   	$numMax='0';
   	if (count($result)>0) {
       $line=Sql::fetchLine($result);
       $refMax=$line['ref'];
-debugLog("refMax=$refMax");
   	  $numMax=substr($refMax,strlen($prefix));
-debugLog("numMax=$numMax");
   	}
   	$numMax+=1;
   	if ($fmtNumber and  $fmtNumber-strlen($numMax)>0) {
@@ -2145,7 +2144,6 @@ debugLog("numMax=$numMax");
   		$num=$numMax;
   	}  	
   	$this->reference=$prefix.$num;
-debugLog("reference=".$this->reference);  	
   	if ($force) {
   	  $this->updateSqlElement();
   	}
