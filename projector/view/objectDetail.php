@@ -149,6 +149,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ($print) {
         $widthPct= round( ( 900 / $nbCol) - 2 * ($nbCol-1) ) . "px";
       }
+      $prevSection=$section;
       if (strlen($col)>8) {
         $section=substr($col,9);
       } else {
@@ -169,7 +170,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($nbLineSection>1) {
           echo '<tr><td></td><td>&nbsp;</td></tr>';
         }
-        echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+        echo '</table>';
+        if ($prevSection) {
+        	echo '</div>';
+        }
+        echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
+        echo '<table class="detail" style="width:' . $widthPct . ';" >';
+        //echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
         if ($print and $outMode=="pdf") { 
           echo '<tr class="detail" style="height:2px;font-size:2px;">';
           echo '<td class="detail" style="width:10%;">&nbsp;</td>';
@@ -178,13 +185,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       }
     } else if (substr($col,0,5)=='_sec_') { // if field is _col, draw a new main column
-      if (strlen($col)>8) {
+      echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr></table>';
+      if ($section) {
+      	echo '</div><div>';
+      }
+    	if (strlen($col)>8) {
         $section=substr($col,5);
       } else {
         $section='';
       }
-      echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr>';
-      echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+      echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
+      echo '<table class="detail" style="width:' . $widthPct . ';" >';
+      //echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
     } else if (substr($col,0,5)=='_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col,5);
       echo '<tr><td colspan=2>';
@@ -820,9 +832,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
   if ( ! $included) {
     if ($currentCol==0) {
+    	if ($section) {
+    		echo '</div>';
+    	}
       echo '</table>';
     } else {
-      echo '</table></td></tr></table>';
+      echo '</table>';
+      if ($section) {
+        echo '</div>';
+      }
+      echo '</td></tr></table>';
     }
   } 
 }
