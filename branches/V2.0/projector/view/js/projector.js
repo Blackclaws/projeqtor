@@ -196,7 +196,8 @@ function changeTheme(newTheme) {
   if (newTheme!="") {
     dojo.byId('body').className=newTheme;
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=theme&value=" + newTheme
+      url: "../tool/saveDataToSession.php?id=theme&value=" + newTheme,
+      handleAs: "text"
       // , load: function(data,args) { addMessage("Theme=" + newTheme ); }
     });
   }
@@ -214,6 +215,7 @@ function saveBrowserLocaleToSession() {
   browserLocale=dojo.locale;
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=browserLocale&value=" + browserLocale,
+    handleAs: "text",
     load: function(data,args) { }
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
@@ -226,12 +228,14 @@ function saveBrowserLocaleToSession() {
   }
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + format,
+    handleAs: "text",
     load: function(data,args) { }
   });
   var fmt=""+dojo.number.format(1.1)+" ";
   var decPoint=fmt.substr(1,1);
   dojo.xhrPost({
 	url: "../tool/saveDataToSession.php?id=browserLocaleDecimalPoint&value=" + decPoint,
+	handleAs: "text",
 	load: function(data,args) { }
   });
   var fmt=dojo.number.format(100000)+' ';
@@ -241,6 +245,7 @@ function saveBrowserLocaleToSession() {
   }
   dojo.xhrPost({
 	url: "../tool/saveDataToSession.php?id=browserLocaleThousandSeparator&value=" + thousandSep,
+	handleAs: "text",
 	load: function(data,args) { }
   });
   
@@ -260,6 +265,7 @@ function changeLocale(locale) {
     currentLocale=locale;
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=currentLocale&value=" + locale,
+      handleAs: "text",
       load: function(data,args) {
         // action = function() {
     	  showWait();
@@ -289,10 +295,12 @@ function saveResolutionToSession() {
   var width=screen.width;
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=screenHeight&value=" + height,
+    handleAs: "text",
     load: function(data,args) { }
   });
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=screenWidth&value=" + width,
+    handleAs: "text",
     load: function(data,args) { }
   });
 }
@@ -475,6 +483,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         form: dojo.byId(formName),
         handleAs: "text",
         load: function(data,args){
+console.log(data);
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
@@ -1161,6 +1170,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   if (idProject!="") {
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=project&value=" + idProject,
+      handleAs: "text",
       load: function(data,args) { 
         addMessage(i18n("Project")+ "=" + nameProject );
         if (dojo.byId("GanttChartDIV")) {
@@ -1187,6 +1197,7 @@ function disconnect() {
     quitConfirmed=true;
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=disconnect",
+      handleAs: "text",
       load: function(data,args) { window.location="../index.php"; }
     });
   };
@@ -1724,6 +1735,7 @@ function moveTask(source,destination) {
 function saveCollapsed(scope){
   dojo.xhrPost({
 	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
+	handleAs: "text",
 	load: function(data,args) { }
   });
 }
@@ -1731,6 +1743,7 @@ function saveCollapsed(scope){
 function saveExpanded(scope){
   dojo.xhrPost({
 	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
+	handleAs: "text",
 	load: function(data,args) { }
   });
 }

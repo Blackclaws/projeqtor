@@ -1698,7 +1698,11 @@ function showFilterDialog () {
 	dijit.byId('idFilterAttribute').reset();
 	dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
 	filterType="";
-	dojo.xhrPost({url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value});
+	dojo.xhrPost({
+		url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value,
+		handleAs: "text",
+		load: function(data,args) { }
+		});
 	loadContent("../tool/displayFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 	loadContent("../tool/displayFilterList.php", "listStoredFilters", "dialogFilterForm", false);
 	dijit.byId('idFilterAttribute').store = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
@@ -1883,8 +1887,11 @@ function selectFilter() {
 	if (dijit.byId('filterNameDisplay')) {
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
-	dojo.xhrPost({url: "../tool/backupFilter.php?valid=true",
-		form: dojo.byId('dialogFilterForm')
+	dojo.xhrPost({
+		url: "../tool/backupFilter.php?valid=true",
+		form: dojo.byId('dialogFilterForm'),
+		handleAs: "text",
+		load: function(data,args) { }
 	});
 	if (dojo.byId("nbFilterCirteria").value>0) {
 		dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
@@ -1902,7 +1909,9 @@ function selectFilter() {
  */
 function cancelFilter() {
 	dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true",
-		form: dojo.byId('dialogFilterForm')
+		form: dojo.byId('dialogFilterForm'),
+		handleAs: "text",
+		load: function(data,args) { }
 	});
 		dijit.byId('dialogFilter').hide();
 }

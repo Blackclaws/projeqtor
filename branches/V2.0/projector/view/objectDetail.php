@@ -155,28 +155,40 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         $section='';
       }
+     
       if ($currentCol=='1') {
         if ($previousCol==0) {
           echo '</table>';
         } else {
-          echo '</table></td></tr></table>';
+          echo '</table>'; 
+          if ($prevSection and ! $print) {
+            echo '</div>';
+          } 
+          echo '</td></tr></table>';
         }
         echo '<table id="col1_' . $col .'" class="detail"><tr class="detail"><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="Subcol1_' . $col .'" >';
         $nbLineSection++;
       } else {
-        echo '</table></td><td class="detail" style="width: 2px;">&nbsp;</td><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="subcol' . $currentCol . '_' . $col .'" >';
+      	echo '</table>';
+      	if ($prevSection and ! $print) {
+            echo '</div>';
+        } 
+        echo '</td><td class="detail" style="width: 2px;">&nbsp;</td><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="subcol' . $currentCol . '_' . $col .'" >';
       }
       if (strlen($section)>1) {
         if ($nbLineSection>1) {
           echo '<tr><td></td><td>&nbsp;</td></tr>';
         }
-        echo '</table>';
-        if ($prevSection) {
-        	echo '</div>';
+        if (! $print) {
+          echo '</table>';
+          if ($prevSection) {
+        	  echo '</div>';
+          } 
+          echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
+          echo '<table class="detail" style="width:' . $widthPct . ';" >';
+        } else {
+          echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
         }
-        echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
-        echo '<table class="detail" style="width:' . $widthPct . ';" >';
-        //echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
         if ($print and $outMode=="pdf") { 
           echo '<tr class="detail" style="height:2px;font-size:2px;">';
           echo '<td class="detail" style="width:10%;">&nbsp;</td>';
@@ -185,18 +197,21 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       }
     } else if (substr($col,0,5)=='_sec_') { // if field is _col, draw a new main column
-      echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr></table>';
-      if ($section) {
-      	echo '</div><div>';
+      echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr>';
+      if ($section and !$print) {
+      	echo '</table></div>';
       }
     	if (strlen($col)>8) {
         $section=substr($col,5);
       } else {
         $section='';
       }
-      echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
-      echo '<table class="detail" style="width:' . $widthPct . ';" >';
-      //echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+      if (! $print) {
+        echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
+        echo '<table class="detail" style="width:' . $widthPct . ';" >';
+      } else {
+        echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+      }
     } else if (substr($col,0,5)=='_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col,5);
       echo '<tr><td colspan=2>';
@@ -784,7 +799,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         if (strpos($attributes, 'readonly')>0) {
-        	$specificStyle.=' color:grey; background:none; background-color: transparent; ';
+        	$specificStyle.=' color:grey; background:none; background-color: #F0F0F0; ';
         }
         echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
@@ -832,13 +847,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
   if ( ! $included) {
     if ($currentCol==0) {
-    	if ($section) {
+    	if ($section and !$print) {
     		echo '</div>';
     	}
       echo '</table>';
     } else {
       echo '</table>';
-      if ($section) {
+      if ($section and !$print) {
         echo '</div>';
       }
       echo '</td></tr></table>';
@@ -942,6 +957,8 @@ function drawOrigin ($refType, $refId, $obj, $col, $print) {
   echo '<tr class="detail"><td class="label" style="width:10%;">';
   echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>';
   echo '</td>';
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {$canUpdate=false;}
   if ($print) { 
     echo '<td style="width: 120px">';
   } else {
@@ -949,8 +966,10 @@ function drawOrigin ($refType, $refId, $obj, $col, $print) {
   }
   if ($refType and $refId) {
     echo '<table width="100%"><tr height="20px"><td xclass="noteData" width="1%" xvalign="top">';
-    echo '<img src="css/images/smallButtonRemove.png" ';
-    echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="smallButton"/> ';
+    if (! $print and $canUpdate) {
+      echo '<img src="css/images/smallButtonRemove.png" ';
+      echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="smallButton"/> ';
+    }
     echo '</td><td width="5%" xclass="noteData" xvalign="top">';
     echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
     echo '</td><td xclass="noteData" style="height: 15px">';
@@ -959,7 +978,7 @@ function drawOrigin ($refType, $refId, $obj, $col, $print) {
     echo '</td></tr></table>';    
   } else {
   	echo '<table><tr height="20px"><td>';
-  	if ($obj->id) {
+  	if ($obj->id and! $print and $canUpdate) {
 	    echo '<img src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="smallButton"/> ';
   	}
 	  echo '</td></tr></table>';  	
