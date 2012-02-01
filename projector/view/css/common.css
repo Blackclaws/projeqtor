@@ -2530,7 +2530,7 @@ table.dijitCalendarContainer {
 }
 .dijitTextBoxReadOnly {
 	background:none;
-	background-color: transparent;  
+	background-color: #F0F0F0;  
 }
    
 /* TEST */
