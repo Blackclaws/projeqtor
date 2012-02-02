@@ -483,7 +483,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         form: dojo.byId(formName),
         handleAs: "text",
         load: function(data,args){
-console.log(data);
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
@@ -668,11 +667,11 @@ function finalizeMessageDisplay(destination, validationType) {
     addMessage(msg);
     if (validationType) {
       if (validationType=='note') {
-        loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
+        loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
       } else if (validationType=='attachement') {
-        loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');
+        loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
       } else if (validationType=='billLine') {
-        loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
+        loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -1748,6 +1747,15 @@ function saveExpanded(scope){
   });
 }
 
+function togglePane(pane) {
+  titlepane=dijit.byId(pane);
+  if (titlepane.get('open')) {
+    saveExpanded(pane);
+  } else {
+	saveCollapsed(pane);
+  }
+  
+}
 // *********************************************************************************
 // IBAN KEY CALCULATOR
 // *********************************************************************************

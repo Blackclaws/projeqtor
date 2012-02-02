@@ -6,9 +6,8 @@
   require_once "../tool/projector.php";
   scriptLog('   ->/view/parameter.php');
   
-
   $user=$_SESSION['user'];
-      
+  $collapsedList=Collapsed::getCollaspedList();      
 ?>
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="adminButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top">
@@ -36,11 +35,12 @@
       <table style="width:98%;margin:10px;padding:10px;vertical-align:top;">
         <tr style="">
           <td style="width:49%;vertical-align:top;">
-            <table style="width:100%;">
-              <tr>
-                <td width="100%" colspan="2" class="section"><?php echo i18n('cronTasks');?></td>
-              </tr>
-              <tr><td colspan="2">&nbsp;</td></tr>
+            <?php $titlePane="Admin_cronTasks"; ?> 
+            <div dojoType="dijit.TitlePane" 
+             open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+             id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+             title="<?php echo i18n('cronTasks');?>">
+            <table style="width:100%;">            
               <tr>
                 <td class="label"><?php echo i18n("alertCronStatus"). "&nbsp;:&nbsp;";?></td>
                 <td class="display">
@@ -68,14 +68,17 @@
                  </button>
                 </td>
               </tr>
-              <tr><td colspan="2">&nbsp;</td></tr>
+            </table>
+            </div><br/>
+            <?php $titlePane="Admin_sendAlert"; ?> 
+            <div dojoType="dijit.TitlePane"
+             open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+             id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+             title="<?php echo i18n('sendAlert');?>">
+            <table style="width:100%;">
               <tr>
-                <td width="100%" colspan="2" class="section"><?php echo i18n('sendAlert');?></td>
-              </tr>
-              <tr><td colspan="2">&nbsp;</td></tr>
-              <tr>
-                <td class="label"><?php echo i18n("colMailTo"). "&nbsp;:&nbsp;";?></td>
-                <td>
+                <td width="200px;" class="label"><?php echo i18n("colMailTo"). "&nbsp;:&nbsp;";?></td>
+                <td width="90%">
                   <select dojoType="dijit.form.FilteringSelect" class="input" required="true"
                     style="width: 98%;" name="alertSendTo" id="alertSendTo">
                     <option value="*"><?php echo i18n('allUsers')?></option>
@@ -147,16 +150,17 @@
           </td>
           <td width="10px">&nbsp;</td>
           <td style="width:49%;vertical-align:top;">
+            <?php $titlePane="Admin_dbMaintenance"; ?> 
+            <div dojoType="dijit.TitlePane"
+             open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+             id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+             title="<?php echo i18n('dbMaintenance');?>">
             <table style="width:100%;">
-              <tr>
-                <td width="100%" colspan="2" class="section"><?php echo i18n('dbMaintenance');?></td>
-              </tr>
-              <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
                 <td class="label" style="width:200px">
                   <?php echo i18n("closeEmails"). "&nbsp;:&nbsp;";?>
                 </td>
-                <td class="display">
+                <td class="display" width="90%">
                   <?php echo i18n('sentSinceMore');?>&nbsp;
                   <div dojoType="dijit.form.NumberTextBox" constraints="{min:0,max:999}"
                     style="width:30px;"
@@ -261,7 +265,7 @@
                   <?php echo i18n("updateReference"). "&nbsp;:&nbsp;";?>
                 </td>
                 <td class="display">
-                  <select dojoType="dijit.form.FilteringSelect" class="input" 
+                  <select dojoType="dijit.form.FilteringSelect" class="input" style="width:200px;"
                     name="updateReferenceItem" id="updateReferenceItem" required="true">
                       <option value="*"><?php echo i18n('all')?></option>
                       <?php htmlDrawOptionForReference('idReferencable', null, null, true);?> 

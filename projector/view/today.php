@@ -8,6 +8,8 @@
   
   $user=$_SESSION['user'];
   $profile=new Profile($user->idProfile);
+
+  $collapsedList=Collapsed::getCollaspedList();
   
   if (array_key_exists('refreshProjects',$_REQUEST)) {
     $_SESSION['todayCountScope']=(array_key_exists('countScope',$_REQUEST))?$_REQUEST['countScope']:'todo';
@@ -226,7 +228,7 @@
     $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
       "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . $user->id . "')" .
       ") and idle=0 and done=0";
-    showActivitiesList($where, $whereActivity, 'todayWorkDiv', 'menuWork');
+    showActivitiesList($where, $whereActivity, 'Today_WorkDiv', 'menuWork');
   }
   
   function showFollow() {
@@ -237,17 +239,18 @@
     $whereActivity="(idUser='" . $user->id . "'" . 
       " or idResource='" . $user->id . "'" .
        ") and idle=0 and done=0";
-    showActivitiesList($where, $whereActivity, 'todayFollowDiv', 'menuFollowup');
+    showActivitiesList($where, $whereActivity, 'Today_FollowDiv', 'menuFollowup');
   }
   
   function showProjectTasks() {
     $where="(idProject in " . getVisibleProjectsList() .
        ") and idle=0 and done=0";
     $whereActivity=$where;
-    showActivitiesList($where, $whereActivity, 'todayProjectTasks', 'myProjects');
+    showActivitiesList($where, $whereActivity, 'Today_ProjectTasks', 'myProjects');
   }
   
   function showActivitiesList($where, $whereActivity, $divName, $title) {
+  	global $collapsedList;
     $user=$_SESSION['user'];
     $ass=new Assignment();
     $act=new Activity();
@@ -272,8 +275,10 @@
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order);
     $list=array_merge($list, $listIssue);   
     $cptDisplayId=0;
-    echo '<div id="' . $divName . '" dojoType="dijit.TitlePane" open="true" ';
-    echo 'title="' . i18n($title) . '"';
+    echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
+    echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
+    echo ' onclick="togglePane(\'' . $divName . '\');"';
+    echo ' title="' . i18n($title) . '"';
     echo '>';
     echo '<table align="center" style="width:95%">';
     echo '<tr>' . 
@@ -346,11 +351,19 @@
 ?>      
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
-  <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center"> 
-    <div id="todayMessageDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuMessage');?>">  
+  <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+    <?php $titlePane="Today_message"; ?>  
+    <div dojoType="dijit.TitlePane" 
+      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+      id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');" 
+      title="<?php echo i18n('menuMessage');?>">  
 <?php showMessages();?>
     </div><br/>
-    <div id="todayProjectDiv" dojoType="dijit.TitlePane" open="true" title="<?php echo i18n('menuProject');?>">
+    <?php $titlePane="Today_project"; ?> 
+    <div dojoType="dijit.TitlePane" 
+      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+      id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+      title="<?php echo i18n('menuProject');?>">
     <?php showProjects();?>
     </div><br/>
     <?php 

@@ -1258,6 +1258,7 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 * 
 */
 function saveDocumentVersion() {
+	dojo.byId('documentVersionForm').submit();
     showWait();
 	dijit.byId('dialogDocumentVersion').hide();
 	return true;

@@ -170,8 +170,7 @@ class Parameter extends SqlElement {
         break;
       case 'displayHistory':
         $list=array('NO'=>i18n('displayNo'),
-                    'YES_CLOSED'=>i18n('displayYesClosed'),
-                    'YES_OPENED'=>i18n('displayYesOpened'));
+                    'YES'=>i18n('displayYes'));
         break;
       case 'displayNote':
         $list=array('YES_OPENED'=>i18n('displayYesOpened'),
@@ -246,18 +245,20 @@ class Parameter extends SqlElement {
         $parameterList=array('sectionDisplayPerameter'=>"section",
                            "theme"=>"list", 
                            "lang"=>"list",
-                           'sectionObjectDetail'=>'section', 
-                           "displayAttachement"=>"list",
-                           "displayNote"=>"list",
-                           "displayHistory"=>"list",
-                           'sectionIHM'=>'section',  
+                           //'sectionObjectDetail'=>'section', 
+                           //"displayAttachement"=>"list",
+                           //"displayNote"=>"list",
+                           'sectionIHM'=>'section',
+                           "displayHistory"=>"list",  
                            "hideMenu"=>"list",
                            "switchedMode"=>"list",
                            'sectionPrintExport'=>'section',  
                            "printInNewWindow"=>"list",
                            "pdfInNewWindow"=>"list", 
                            'sectionMiscellaneous'=>'section',      
-                           "defaultProject"=>"list"                 
+                           "defaultProject"=>"list",
+                           'newColumn'=>'newColumn'
+        
         );
         break;
       case ('globalParameter'):

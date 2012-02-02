@@ -9,6 +9,8 @@
   $type=$_REQUEST['type'];
   $criteriaRoot=array();
   $user=$_SESSION['user'];
+  
+  $collapsedList=Collapsed::getCollaspedList();
       
   $parameterList=Parameter::getParamtersList($type);
   switch ($type) {
@@ -33,8 +35,9 @@
    * @return void
    */
   function drawTableFromObjectList($objectList) {
-    global $criteriaRoot, $type;
+    global $criteriaRoot, $type, $collapsedList;
     echo '<table style="width:100%"><tr><td style="width:50%;vertical-align:top;">';
+    echo '<div>';
     echo '<table>';
     foreach($objectList as $code => $format) { 
       $criteria=$criteriaRoot;
@@ -47,13 +50,22 @@
         }
       }
       if ($format=='newColumn') {
-      	echo '</table></td><td style="width:50%;vertical-align:top;"><table>';
+      	echo '</table></div></td><td style="width:50%;vertical-align:top;"><div><table>';
       } else {
-      echo '<tr>';
+      
       if ($format!="section") {
+      	echo '<tr>';
         echo '<td class="crossTableLine"><label class="label largeLabel" for="' . $code . '" title="' . i18n('help' . ucfirst($code)) . '">' . i18n('param' . ucfirst($code) ) . ' :&nbsp;</label></td><td>';
       } else {
-      	echo '<td colspan="2" class="section">' . i18n($code) ;
+      	echo '</table></div><br/>';
+      	$divName=$type.'_'.$code;
+      	echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
+        echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
+        echo ' onclick="togglePane(\'' . $divName . '\');"';
+        echo ' title="' . i18n($code) . '"';
+        echo '>';
+      	echo '<table>';
+      	echo '<tr>';
       }
       if ($format=='list') {
         $listValues=Parameter::getList($code);
@@ -153,21 +165,41 @@
         } else if ($type=='habilitationReport') {
           htmlDrawCrossTable('report', 'idReport', 'profile', 'idProfile', 'habilitationReport', 'allowAccess', 'check') ;
         } else if ($type=='habilitationOther') {
-          echo '<table width="100%"><tr><td class="section">' . i18n('sectionImputation') . '</td></tr></table>',
+        	$titlePane="habilitationOther_Imputation"; 
+          echo '<div dojoType="dijit.TitlePane"'; 
+          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');"';
+          echo ' title="' . i18n('sectionImputation') . '">';
           htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
-          echo '<br/><br/>';
-          echo '<table width="100%"><tr><td class="section">' . i18n('sectionWorkCost') . '</td></tr></table>',
+          echo '</div><br/>';
+          $titlePane="habilitationOther_WorkCost"; 
+          echo '<div dojoType="dijit.TitlePane"'; 
+          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');"';
+          echo ' title="' . i18n('sectionWorkCost') . '">';
           htmlDrawCrossTable(array('work'=>i18n('workAccess'),'cost'=>i18n('costAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'visibilityScope') ;
-          echo '<br/><br/>';
-          echo '<table width="100%"><tr><td class="section">' . i18n('sectionComboDetail') . '</td></tr></table>',
+          echo '</div><br/>';
+          $titlePane="habilitationOther_ComboDetail"; 
+          echo '<div dojoType="dijit.TitlePane"'; 
+          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');"';
+          echo ' title="' . i18n('sectionComboDetail') . '">';
           htmlDrawCrossTable(array('combo'=>i18n('comboDetailAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
-          echo '<br/><br/>';
-          echo '<table width="100%"><tr><td class="section">' . i18n('sectionPlanningRight') . '</td></tr></table>',
+          echo '</div><br/>';
+          $titlePane="habilitationOther_PlanningRight"; 
+          echo '<div dojoType="dijit.TitlePane"'; 
+          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');"';
+          echo ' title="' . i18n('sectionPlanningRight') . '">';
           htmlDrawCrossTable(array('planning'=>i18n('planningRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
-          echo '<br/><br/>';
-          echo '<table width="100%"><tr><td class="section">' . i18n('sectionDocumentUnlock') . '</td></tr></table>',
+          echo '</div><br/>';
+          $titlePane="habilitationOther_DocumentUnlock"; 
+          echo '<div dojoType="dijit.TitlePane"'; 
+          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');"';
+          echo ' title="' . i18n('sectionDocumentUnlock') . '">';
           htmlDrawCrossTable(array('document'=>i18n('documentUnlockRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
-          
+          echo '</div>';
         } else {
           drawTableFromObjectList($parameterList);
         }
