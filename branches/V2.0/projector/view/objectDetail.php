@@ -11,6 +11,7 @@
   if (! isset($comboDetail)) {
     $comboDetail=false;
   }
+  $collapsedList=Collapsed::getCollaspedList();
 /** ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
  * @param $obj the object to present
@@ -19,7 +20,7 @@
  */
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $currency, $currencyPosition, $outMode, $comboDetail;
+  global $cr, $print, $treatedObjects, $displayWidth, $currency, $currencyPosition, $outMode, $comboDetail, $collapsedList;
   $treatedObjects[]=$obj;
   $dateWidth='75';
   $verySmallWidth='44';
@@ -183,8 +184,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</table>';
           if ($prevSection) {
         	  echo '</div>';
-          } 
-          echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
+          }
+          $titlePane=$classObj."_".$section; 
+          echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
+          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
+          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');">';
           echo '<table class="detail" style="width:' . $widthPct . ';" >';
         } else {
           echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
@@ -207,7 +211,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section='';
       }
       if (! $print) {
-        echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" >';
+      	$titlePane=$classObj."_".$section; 
+        echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
+        echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
+        echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');">';
         echo '<table class="detail" style="width:' . $widthPct . ';" >';
       } else {
         echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
@@ -1990,19 +1997,16 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
       <?php drawAttachementsFromObject($obj); ?>
       </td></tr>
     </table>
-    <?php } else { ?>
-    <div id="attachementsPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+    <?php } else {
+    $titlePane=$objClass."_attachment"; ?> 
+    <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionAttachements');?>"
-     <?php $openMode=($displayAttachement=='YES_OPENED')?'true':'false'; ?>
-     open="<?php echo $openMode; ?>" > 
+     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+     id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
      <?php drawAttachementsFromObject($obj); ?>
     </div>
     <?php }?>
   <?php    
-  }
-  $displayBillLine='YES_OPENED';
-  if (array_key_exists('displayBillLine',$_SESSION)) {
-    $displayBillLine=$_SESSION['displayBillLine'];
   }
   if (isset($obj->_BillLine)) { ?>
     <br/>
@@ -2013,19 +2017,16 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
       <?php drawBillLinesFromObject($obj);?>
       </td></tr>
     </table>
-    <?php } else { ?>
-    <div id="billLinesPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+    <?php } else { 
+     $titlePane=$objClass."_billLine"; ?> 
+    <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionBillLines');?>"
-     <?php $openMode=($displayBillLine=='YES_OPENED')?'true':'false'; ?>
-     open="<?php echo $openMode; ?>" > 
+     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+     id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
      <?php drawBillLinesFromObject($obj); ?>
     </div>
     <?php }?>
   <?php    
-  }
-  $displayNote='YES_OPENED';
-  if (array_key_exists('displayNote',$_SESSION)) {
-    $displayNote=$_SESSION['displayNote'];
   }
   if (isset($obj->_Note) and ! $comboDetail) { ?>
     <br/>
@@ -2036,11 +2037,12 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
       <?php drawNotesFromObject($obj); ?>
       </td></tr>
     </table>
-    <?php } else { ?>
-    <div id="notesPane" style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+    <?php } else {
+    $titlePane=$objClass."_note"; ?> 
+    <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionNotes');?>"
-     <?php $openMode=($displayNote=='YES_OPENED')?'true':'false'; ?>
-     open="<?php echo $openMode; ?>" > 
+     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+     id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
      <?php drawNotesFromObject($obj); ?>
     </div>
     <?php }?>
@@ -2056,11 +2058,11 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   if (  ( ! $noselect) and $displayHistory != 'NO' and ! $comboDetail) { 
     echo '<br/>';
-    ?>
-      <div id="historyPane" style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
+    $titlePane=$objClass."_history"; ?> 
+      <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
-       <?php $openMode=($displayHistory=='YES_OPENED')?'true':'false'; ?>
-        open="<?php echo $openMode; ?>" >
+       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+       id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
         <?php drawHistoryFromObjects();?>
       </div>
       <br/>

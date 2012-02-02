@@ -440,3 +440,8 @@ CREATE TABLE `${prefix}collapsed` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `${prefix}collapsed` ADD INDEX collapsedUser (idUser);
+
+INSERT INTO `${prefix}collapsed` (`idUser`, `scope` ) select user.id, concat(copyable.name,'_history') from user, copyable;
+ 
+UPDATE `${prefix}parameter` SET parameterValue='YES'
+WHERE parameterCode='displayHistory' and parameterValue<>'NO';

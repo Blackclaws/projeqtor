@@ -1094,7 +1094,7 @@ checkVersion(); ?>
 </div>
 
 <div id="dialogDocumentVersion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDocumentVersion");?>">
-  <form id='documentVersionForm' name='documentVersionForm' 
+  <form id='documentVersionForm' name='documentVersionForm' jsId='documentVersionForm' 
   ENCTYPE="multipart/form-data" method=POST
   action="../tool/saveDocumentVersion.php"
   target="documentVersionPost"
@@ -1275,7 +1275,8 @@ checkVersion(); ?>
           <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogDocumentVersion').hide();">
             <?php echo i18n("buttonCancel");?>
           </button>
-          <button id="submitDocumentVersionUpload" dojoType="dijit.form.Button" type="submit">
+          <button id="submitDocumentVersionUpload" dojoType="dijit.form.Button" type="submit" 
+           onclick="saveDocumentVersion();">
             <?php echo i18n("buttonOK");?>
           </button>
         </td>
