@@ -817,8 +817,9 @@ function addAssignment (unit) {
 	}
 	var prj=dijit.byId('idProject').get('value');
 	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+		       query: {id:'*'},
 		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
-	dijit.byId('assignmentIdResource').store.fetch();
+	dijit.byId('assignmentIdResource').store.fetch({query:{id:"*"}});
 	dojo.byId("assignmentId").value="";
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
@@ -847,6 +848,7 @@ function addAssignment (unit) {
  * Display a edit Assignment Box
  * 
  */
+
 var editAssignmentLoading=false;
 function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, comment, unit) {
 	if (formChangeInProgress) {
@@ -855,18 +857,17 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	}
 	editAssignmentLoading=true;
 	var prj=dijit.byId('idProject').get('value');
-	
 	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
 		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj
-		       +'&selected=' + idResource});
+		       +'&selected=' + idResource,
+		       clearOnClose: true});
 	dijit.byId('assignmentIdResource').store.fetch();
-	dijit.byId("assignmentIdResource").set("value",idResource);
-	
+	dijit.byId("assignmentIdResource").set("value",idResource);console.log('4');	
 	//dijit.byId('assignmentIdRole').store = new dojo.data.ItemFileReadStore({
   //  url: '../tool/jsonList.php?listType=listRoleResource&idResource='+idRole});
 	//dijit.byId('assignmentIdRole').store.fetch();
 	dijit.byId("assignmentIdRole").set("value",idRole);
-	
+
 	dojo.byId("assignmentId").value=assignmentId;
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;

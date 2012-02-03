@@ -2063,7 +2063,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $threeCars=substr($col,0,3);
       if ( ($included and ($col=='id' or $threeCars=='ref' or $threeCars=='top' or $col=='idle') ) 
   		  or ($firstCar=='_') 
-  		  or (strpos($this->getFieldAttributes($col), 'hidden')!==false )
+  		  or ( strpos($this->getFieldAttributes($col), 'hidden')!==false and strpos($this->getFieldAttributes($col), 'forceExport')===false )
   		  or ($col=='password')
   		  //or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
   		  //or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )

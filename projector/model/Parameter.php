@@ -286,7 +286,12 @@ class Parameter extends SqlElement {
       	                     'newColumn'=>'newColumn',
       	                     'sectionDocument'=>'section',
       	                     'documentRoot'=>'text',
-      	                     'draftSeparator'=>'text'
+      	                     'draftSeparator'=>'text',
+      	                     'sectionBilling'=>'section',
+      	                     //'billPrefix'=>'text',
+      	                     //'billSuffix'=>'text',
+      	                     'billNumSize'=>'number',
+      	                     'billNumStart'=>'number'
       	);
     }
     return $parameterList;

@@ -1306,8 +1306,7 @@ checkVersion(); ?>
                <label for="assignmentIdResource" ><?php echo i18n("colIdResource");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-
-              <select dojoType="dijit.form.FilteringSelect" 
+              <select dojoType="dijit.form.FilteringSelect"
                 id="assignmentIdResource" name="assignmentIdResource"
                 class="input" value="" 
                 onChange="assignmentChangeResource();"

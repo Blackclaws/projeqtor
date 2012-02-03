@@ -39,7 +39,7 @@ class User extends SqlElement {
     ';
   
   private static $_fieldsAttributes=array("name"=>"required",
-  										                    "isLdap"=>"hidden",
+  										                    "isLdap"=>"hidden,forceExport",
                                           "idProfile"=>"required"
   );  
   
