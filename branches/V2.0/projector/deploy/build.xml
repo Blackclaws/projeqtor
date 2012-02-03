@@ -152,15 +152,15 @@
      ==== BUILD A NEW DOJO RELEASE                                                              ===
      ==============================================================================================
      ============================================================================================== --> 
-<!-- Full  : 56,1 Mo -->
-<!-- Build : 14,8 Mo -->
-<!-- Clean :  5,7 Mo -->
+<!-- Full  : 56,2 Mo -->
+<!-- Build : 21,4 Mo -->
+<!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="${setup.dir}/../external/dojo-release-1.7.1-src"/>
+	<property name="dojo.release.dir" value ="D:/ProjectOr/External/dojo-release-1.7.1-src"/>
 	<property name="dojo.version" value="1.7.1"/>
-	<property name="build.name" value="dojo"/> 
+	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
-	<property name="release.dir" value="${setup.dir}/../external/${build.name}/"/>
+	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>
 
   <target name="_dojoBuild">
     <antcall target="_dojoPackaging"/>
@@ -173,18 +173,19 @@
 	        fork="true"
 	        failonerror="true"
 	        maxmemory="128m">
-	    <arg line="build.js"/>
-	    <arg line="action=clean,release"/>
-	    <arg line="dojodir=${dojo.release.dir}/"/>
-	    <arg line="profileFile=${src.dir}/deploy/projector.profile.js"/>
-	    <arg line="releaseName=${build.name}"/>
-	    <arg line="releaseDir=${setup.dir}"/>
-	    <arg line="version=${dojo.version}"/>
-	    <arg line="cssOptimize=comments"/>
-	    <arg line="layerOptimize=shrinksafe"/>
-	    <arg line="copyTests=false"/>
+	  	  <arg value="../../dojo/dojo.js"/>
+	  	  <arg value="baseUrl=../../dojo"/>
+	  	  <arg value="load=build"/>
+	  	  <arg value="version=${dojo.version}"/>
+	  	  <arg value="profileFile=../../../projector.profile.js"/>
+	  	  <arg value="action=release"/>
+	  	  <arg value="releaseDir=../../../"/>
+	  	  <arg value="releaseName=${build.name}" />
+	  	  <arg value="optimize=shrinksafe"/>
+	  	  <arg value="cssOptimize=comments.keepLines"/>
 	    <classpath>
 	      <pathelement location="${buildscripts.dir}\..\shrinksafe\shrinksafe.jar"/>
+		    <pathelement location="${dojo.build.util.dir}\..\closureCompiler\compiler.jar"/>
 	      <pathelement location="${buildscripts.dir}\..\shrinksafe\js.jar"/>
 	      <pathelement path="${java.class.path}"/>
 	    </classpath>     

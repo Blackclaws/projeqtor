@@ -14,27 +14,7 @@
     } else if ($type=='object') {    
       $objectClass=$_REQUEST['objectClass'];
       $obj=new $objectClass();
-      $nbRows=0;
-      // return result in json format
-      foreach ($obj as $col=>$val) {
-        if (substr($col, 0,1) <> "_" 
-        and substr($col, 0,1) <> ucfirst(substr($col, 0,1))
-        and $obj->getFieldAttributes($col)!='hidden') { 
-          if ($nbRows>0) echo ', ';
-          $dataType = $obj->getDataType($col);
-          $dataLength = $obj->getDataLength($col);
-          if ($dataType=='int' and $dataLength==1) { 
-            $dataType='bool'; 
-          } else if ($dataType=='datetime') { 
-            $dataType='date'; 
-          } else if ((substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 
-                      and substr($col,2,1)==strtoupper(substr($col,2,1)))) { 
-            $dataType='list'; 
-          }
-          echo '{id:"' . $col . '", name:"'. $obj->getColCaption($col) .'", dataType:"' . $dataType . '"}';
-          $nbRows++;
-        }
-      }
+      $nbRows=listFieldsForFilter ($obj,0);
     } else if ($type=='operator') {    
       $dataType=$_REQUEST['dataType'];
       if ($dataType=='int' or $dataType=='date' or $dataType=='datetime') {
@@ -240,4 +220,31 @@
       }
     }
     echo ' ] }';
+
+function listFieldsForFilter ($obj,$nbRows) {
+  // return result in json format
+  foreach ($obj as $col=>$val) {
+    if (substr($col, 0,1) <> "_" 
+    and substr($col, 0,1) <> ucfirst(substr($col, 0,1))
+    and $obj->getFieldAttributes($col)!='hidden') { 
+      if ($nbRows>0) echo ', ';
+      $dataType = $obj->getDataType($col);
+      $dataLength = $obj->getDataLength($col);
+      if ($dataType=='int' and $dataLength==1) { 
+        $dataType='bool'; 
+      } else if ($dataType=='datetime') { 
+        $dataType='date'; 
+      } else if ((substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 
+              and substr($col,2,1)==strtoupper(substr($col,2,1)))) { 
+        $dataType='list'; 
+      }
+      echo '{id:"' . $col . '", name:"'. $obj->getColCaption($col) .'", dataType:"' . $dataType . '"}';
+      $nbRows++;
+    } else if (substr($col, 0,1)<>"_" and substr($col, 0,1) == ucfirst(substr($col, 0,1)) ) {
+    	$sub=new $col();
+      //$nbRows=listFieldsForFilter ($sub,$nbRows);
+    }
+  }  
+  return $nbRows;
+}
 ?>

@@ -748,21 +748,21 @@ function finalizeMessageDisplay(destination, validationType) {
         } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
           // Need also to refresh History
-          if (dojo.byId("historyPane")) {
-            loadContent("objectDetail.php?refreshHistory=true", "historyPane", 'listForm');
+          if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
+            loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
           }
-          if (dojo.byId("billLinesPane")) {
-              loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
+          if (dojo.byId(dojo.byId('objectClass').value+'_billLine')) {
+              loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
             }
           if (lastOperation.value=="insert" && ! validationType) {
-            if (dojo.byId("attachementsPane")) {
-              loadContent("objectDetail.php?refreshAttachements=true", "attachementsPane", 'listForm');
+            if (dojo.byId(dojo.byId('objectClass').value+'_attachment')) {
+              loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
             }
-            if (dojo.byId("notesPane")) {
-              loadContent("objectDetail.php?refreshNotes=true", "notesPane", 'listForm');
+            if (dojo.byId(dojo.byId('objectClass').value+'_note')) {
+              loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
             }
-            if (dojo.byId("billLinesPane")) {
-                loadContent("objectDetail.php?refreshBillLines=true", "billLinesPane", 'listForm');
+            if (dojo.byId(dojo.byId('objectClass').value+'_billLine')) {
+                loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
             }
           }
         }
@@ -1165,7 +1165,7 @@ function i18n(str, vars) {
  * @return void
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
-  dijit.byId(selectionField).set("label",nameProject);
+  dijit.byId(selectionField).set("label",'<div style="width:180px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
   if (idProject!="") {
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=project&value=" + idProject,
@@ -1573,7 +1573,7 @@ function workflowChange(line, column, profileList) {
  * refresh Projects List on Today screen
  */
 function refreshTodayProjectsList() {
-  loadContent("../view/today.php?refreshProjects=true", "todayProjectDiv", "todayProjectsForm", false);  
+  loadContent("../view/today.php?refreshProjects=true", "Today_project", "todayProjectsForm", false);  
 }
 
 function gotoElement(eltClass, eltId, noHistory) {

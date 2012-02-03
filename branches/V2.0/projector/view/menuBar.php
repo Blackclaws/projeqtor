@@ -71,10 +71,11 @@
   <table width="100%"><tr>
     
     <td width="20%">
-    <span class="titleProject">&nbsp;<?php echo (i18n("projectSelector"));?></span>
-    <span style="height: 20px; color:#202020; " dojoType="dijit.form.DropDownButton" 
+    <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:80px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
+    <span maxsize="180px" style="position: absolute; left:80px; top:1px; height: 20px; width: 160px; color:#202020;" dojoType="dijit.form.DropDownButton" 
      id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
-      <span width="200px" ><?php
+      <span style="width:180px; text-align: left;">
+      <div style="width:180px; overflow: hidden; text-align: left;" ><?php
         $proj='*'; 
         if (array_key_exists('project',$_SESSION)) {
           $proj=$_SESSION['project'];
@@ -91,9 +92,10 @@
         $prj->id='*';
         $cpt=$prj->countMenuProjectsList();
         ?>
+      </div>
       </span>
       <?php ?>
-      <span dojoType="dijit.TooltipDialog" class="white" <?php echo ($cpt>25)?'style="width:300px;"':'';?>>   
+      <span dojoType="dijit.TooltipDialog" class="white" <?php echo ($cpt>25)?'style="width:200px;"':'';?>>   
         <div <?php echo ($cpt>25)?'style="height: 500px; overflow-y: scroll;"':'';?>>    
          <?php 
            $prj=new Project();
