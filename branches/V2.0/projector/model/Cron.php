@@ -128,7 +128,24 @@ debugLog("cron : checkDates");
 	  }
 	}
 	
+	// If running flag exists and cron is not really running, relaunch
+	public static function relaunch() {
+		if (file_exists(self::$runningFile)) {
+      $handle=fopen(self::$runningFile, 'r');
+      $last=fgets($handle);
+      $now=time();
+      fclose($handle);
+      if ( ($now-$last) > (self::getSleepTime()*5)) {
+        // not running for more than 5 cycles : dead process
+        self::removeRunningFlag();
+        self::run();
+      }
+		}
+	}
+	
 	public static function run() {
+scriptLog('Cron::run()');
+debugLog('Cron::run()');		
 		if (self::check()=='running') {
       errorLog('try to run cron already running');
       return;

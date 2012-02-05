@@ -221,12 +221,13 @@
     }
     echo ' ] }';
 
-function listFieldsForFilter ($obj,$nbRows) {
+function listFieldsForFilter ($obj,$nbRows, $included=false) {
   // return result in json format
   foreach ($obj as $col=>$val) {
     if (substr($col, 0,1) <> "_" 
     and substr($col, 0,1) <> ucfirst(substr($col, 0,1))
-    and $obj->getFieldAttributes($col)!='hidden') { 
+    and $obj->getFieldAttributes($col)!='hidden'
+    and (!$included or ($col!='id' and $col!='refType' and $col!='refId' and $col!='idle')  )) { 
       if ($nbRows>0) echo ', ';
       $dataType = $obj->getDataType($col);
       $dataLength = $obj->getDataLength($col);
@@ -238,11 +239,11 @@ function listFieldsForFilter ($obj,$nbRows) {
               and substr($col,2,1)==strtoupper(substr($col,2,1)))) { 
         $dataType='list'; 
       }
-      echo '{id:"' . $col . '", name:"'. $obj->getColCaption($col) .'", dataType:"' . $dataType . '"}';
+      echo '{id:"' . ($included?get_class($obj).'_':'') . $col . '", name:"'. $obj->getColCaption($col) .'", dataType:"' . $dataType . '"}';
       $nbRows++;
     } else if (substr($col, 0,1)<>"_" and substr($col, 0,1) == ucfirst(substr($col, 0,1)) ) {
     	$sub=new $col();
-      //$nbRows=listFieldsForFilter ($sub,$nbRows);
+      $nbRows=listFieldsForFilter ($sub,$nbRows,true);
     }
   }  
   return $nbRows;

@@ -143,6 +143,20 @@
 	    foreach ($arrayFilter as $crit) {
 	      if ($crit['sql']['operator']=='SORT') {
 	        $doneSort=false;
+          $split=explode('_', $crit['sql']['attribute']);
+	        if (count($split)>1 ) {
+	          $externalClass=$split[0];
+	          $externalObj=new $externalClass();
+	          $externalTable = $externalObj->getDatabaseTableName();          
+	          $idTab+=1;
+	          $externalTableAlias = 'T' . $idTab;
+	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+	           ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
+	          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+            $queryOrderBy .= " " . $externalTableAlias . '.' . $split[1] 
+            . " " . $crit['sql']['value'];
+	          $doneSort=true;
+          }
 	        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
 	          $externalClass = substr($crit['sql']['attribute'],2);
 	          $externalObj=new $externalClass();
@@ -246,7 +260,7 @@
 	          //$externalTableAlias = $externalObj->getDatabaseTableName();          
 	          $externalTableAlias = strtolower($externalClass);
 	          $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . $fld;
-	          if (! stripos($queryFrom,$externalTable)) {
+	          if (! stripos($queryFrom,$externalTableAlias)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	              ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
 	              ' and ' . $externalTableAlias . ".refType='" . $objectClass . "')";
@@ -282,10 +296,25 @@
     // Check for an advanced filter (stored in User
     foreach ($arrayFilter as $crit) {
       if ($crit['sql']['operator']!='SORT') {
-        $queryWhere.=($queryWhere=='')?'':' and ';
-        $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
+      	$split=explode('_', $crit['sql']['attribute']);
+        if (count($split)>1 ) {
+          $externalClass=$split[0];
+          $externalObj=new $externalClass();
+          $externalTable = $externalObj->getDatabaseTableName();          
+          $idTab+=1;
+          $externalTableAlias = 'T' . $idTab;
+          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+           ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
+          $queryWhere.=($queryWhere=='')?'':' and ';
+          $queryWhere.=$externalTableAlias . "." . $split[1] . ' ' 
                  . $crit['sql']['operator'] . ' '
                  . $crit['sql']['value'];
+        } else {
+          $queryWhere.=($queryWhere=='')?'':' and ';
+          $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
+		                 . $crit['sql']['operator'] . ' '
+		                 . $crit['sql']['value'];
+        }
       }
     }
     

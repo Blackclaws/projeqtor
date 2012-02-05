@@ -113,6 +113,8 @@ checkVersion(); ?>
       //dojo.byId('body').className='<?php echo getTheme();?>';
       saveResolutionToSession();
       saveBrowserLocaleToSession();
+      // Relaunch Cron (if stopped, any connexion will restart it)
+      adminCronRelaunch();
       var onKeyPressFunc = function(event) {
         if(event.ctrlKey && event.keyChar == 's'){
           event.preventDefault();
@@ -1077,7 +1079,8 @@ checkVersion(); ?>
           <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAttachement').hide();">
             <?php echo i18n("buttonCancel");?>
           </button>
-          <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit">
+          <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit"
+           onclick="saveAttachement();">
             <?php echo i18n("buttonOK");?>
           </button>
         </td>

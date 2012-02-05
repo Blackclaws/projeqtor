@@ -12,20 +12,18 @@
 	  background: #EEEEEE;
 	  border: 1px solid #AAAAAA;
 	  padding: 0px 10px 0px 10px;
+    font-size:12px;
 	}
-	
 	tr{
 	}
-	
 	td {
 	  border: 1px solid #AAAAAA;
     margin: 0;
     padding: 0px 10px 0px 10px;
     background-color: #FFC;
     text-align: center;
+    font-size:11px;
 	}  
-  
-  
  </style>
 </head>
 <body>
@@ -46,16 +44,19 @@ try {
   mysql_select_db($paramDbName, $cnx);
   ini_set('mysql.connect_timeout', 60);
   
-  $req="select traceVersion as Version, count(distinct(traceIp)) as `Distinct IP`, count(*)as Count from trace group by traceVersion order by traceVersion desc";
+  $req="select count(distinct(traceIp)) as `Distinct IP`, count(*) as Total from trace";
   showStat($cnx,$req);
-  
+
   $req="select concat(year(traceDateTime),'-',month(traceDateTime)) as Month, count(distinct(traceIp)) as `Distinct IP`, count(*) as Count "
      . " from trace group by concat(year(traceDateTime),'-',month(traceDateTime)) " 
      . " order by concat(year(traceDateTime),'-',month(traceDateTime))  desc";
   showStat($cnx,$req);
-
-  $req="select count(distinct(traceIp)) as `Distinct IP`, count(*) as Total from trace";
+  
+  $req="select traceVersion as Version, count(distinct(traceIp)) as `Distinct IP`, count(*)as Count from trace group by traceVersion order by traceVersion desc";
   showStat($cnx,$req);
+  
+
+  
   
 } catch (Exception $e) {
 	echo "error";

@@ -1202,25 +1202,26 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   $lines=array_reverse($lines);
   foreach($lines as $line) {
     echo '<tr>';
-      echo '<td class="noteData" style="text-align:center;">';
-      if ($lock==0)
-      {
-	      echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
-	      ' . "'" . $line->id . "'" 	        
-	        . ",'" . $line->line . "'"
-	        . ",'" . $fmtd->format($line->quantity) . "'"
-	        . ",'" . $line->idTerm . "'"
-	        . ",'" . $line->idResource . "'"
-	        . ",'" . $line->idActivityPrice . "'"
-	        . ",'" . $line->startDate . "'"
-	        . ",'" . $line->endDate . "'"
-	        . ",'" . $fmtd->format($line->price) . "'"
-	     . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
-	      echo ' <img src="css/images/smallButtonRemove.png"' 
-	        .' onClick="removeBillLine(' . $line->id . ');"'
-	        .' title="' . i18n('removeLine') . '" class="smallButton"/> ';
+      if ( ! $print) {
+	      echo '<td class="noteData" style="text-align:center;">';
+	      if ($lock==0) {
+		      echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
+		      ' . "'" . $line->id . "'" 	        
+		        . ",'" . $line->line . "'"
+		        . ",'" . $fmtd->format($line->quantity) . "'"
+		        . ",'" . $line->idTerm . "'"
+		        . ",'" . $line->idResource . "'"
+		        . ",'" . $line->idActivityPrice . "'"
+		        . ",'" . $line->startDate . "'"
+		        . ",'" . $line->endDate . "'"
+		        . ",'" . $fmtd->format($line->price) . "'"
+		     . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+		      echo ' <img src="css/images/smallButtonRemove.png"' 
+		        .' onClick="removeBillLine(' . $line->id . ');"'
+		        .' title="' . i18n('removeLine') . '" class="smallButton"/> ';
+	      }
+        echo '</td>';
       }
-      echo '</td>';
     echo '<td class="noteData">#' . $line->id  . '</td>';
     echo '<td class="noteData">' . $line->line . '</td>';
     echo '<td class="noteData">' . $line->quantity . '</td>';
