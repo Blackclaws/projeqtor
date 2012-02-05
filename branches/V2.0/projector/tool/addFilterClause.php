@@ -88,7 +88,7 @@ if ($idFilterAttribute and $idFilterOperator) {
   } else { 
     $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
   }
-  $arraySql["attribute"]=$idFilterAttribute;
+  $arraySql["attribute"]=$obj->getDatabaseColumnName($idFilterAttribute);
   if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<=") {
     $arrayDisp["operator"]=$idFilterOperator;
     $arraySql["operator"]=$idFilterOperator;
