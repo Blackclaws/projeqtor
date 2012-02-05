@@ -57,12 +57,15 @@ foreach ($billList as $bill)
 	  echo ($recipient->country)?$recipient->country . '<br/>':'';
   echo '</div>';
   echo '</td><td style="width:50%">';
-  // BILLING  
+  // BILLING
+  $numBill=Parameter::getGlobalParameter('billPrefix')
+          . str_pad($bill->billId,Parameter::getGlobalParameter('billNumSize'),'0', STR_PAD_LEFT)
+          . Parameter::getGlobalParameter('billSuffix');   
   echo '<div style="position: relative; top: 1em; left: 1em; width: 90%; height: 4em; ';
     echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 15px;">';
     echo '<table style="width:100%">';
-    echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId') . '&nbsp;:&nbsp;</b></td>';
-    echo '    <td style="text-align:left;white-space:nowrap;">' . $bill->billId . '</td></tr>';
+    echo '<tr><td style="text-align:right; width:50%"><b>' . i18n('colBillId')  . '&nbsp;:&nbsp;</b></td>';
+    echo '    <td style="text-align:left;white-space:nowrap;">' . $numBill . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colCompanyNumber') . '&nbsp;:&nbsp;</b></td>';
     echo '    <td style="text-align:left;white-space:nowrap;">' . $recipient->companyNumber . '</td></tr>';
     echo '<tr><td style="text-align:right;"><b>' . i18n('colNumTax') . '&nbsp;:&nbsp;</b></td>';

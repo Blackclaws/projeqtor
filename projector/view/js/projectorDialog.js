@@ -621,6 +621,7 @@ function addAttachement () {
  * 
  */
 function saveAttachement() {
+	dojo.byId('attachementForm').submit();
 	showWait();
 	dijit.byId('dialogAttachement').hide();
 	return true;
@@ -2799,6 +2800,16 @@ function adminCronCheckStop() {
 	error: function() {loadContent("admin.php","centerDiv");}
   });  
 }
+
+function adminCronRelaunch() {
+  var url="../tool/cronRelaunch.php";
+  dojo.xhrGet({
+	url: url,
+	handleAs: "text",
+	load: function(data,args) {  },
+	error: function() { }
+  });	
+} 
 
 function adminSendAlert() {
   formVar=dijit.byId("adminForm");	

@@ -80,7 +80,14 @@ if ($idFilterAttribute and $idFilterOperator) {
   $arraySql=array();
   $dataType=$obj->getDataType($idFilterAttribute);
   $dataLength=$obj->getDataLength($idFilterAttribute);
-  $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
+  $split=explode('_',$idFilterAttribute);
+  if (count($split)>1 ) {
+  	$externalClass=$split[0];
+    $externalObj=new $externalClass();
+    $arrayDisp["attribute"]=$externalObj->getColCaption($split[1]);
+  } else { 
+    $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
+  }
   $arraySql["attribute"]=$idFilterAttribute;
   if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<=") {
     $arrayDisp["operator"]=$idFilterOperator;

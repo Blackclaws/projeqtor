@@ -74,6 +74,7 @@ class Bill extends SqlElement {
     	self::$_fieldsAttributes['idProject']='readonly';
     	self::$_fieldsAttributes['idRecipient']='readonly';
     	self::$_fieldsAttributes['idContact']='readonly';
+    	self::$_fieldsAttributes['tax']='readonly';
     }
     if (count($this->_BillLine)) {
     	self::$_fieldsAttributes['idProject']='readonly';
@@ -257,7 +258,9 @@ class Bill extends SqlElement {
 		// Get the tax from Client / Contact / Recipient 
 		if (trim($this->idClient)) {
 			$client=new Client($this->idClient);
-			$this->tax=$client->tax;
+			if ($client->tax!='') {
+		  	$this->tax=$client->tax;
+			}
 		}
 	  if (trim($this->idRecipient)) {
       $recipient=new Recipient($this->idRecipient);
@@ -283,18 +286,23 @@ class Bill extends SqlElement {
 	}  
 
   public function drawSpecificItem($item){
+  	global $print;
     $result="";
     if ($item=='billingType') {
     	$result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
-      $result .='<input dojoType="dijit.form.TextBox" class="input" ';
-      if ($this->billingType) {
-        $result .=' value="' . i18n('billingType'.$this->billingType) . '"';
-      } 
-      $result.=' readonly="readonlyy"';
-      $result .='/>';
-      $result .= '</td></tr></table>';
-    	return $result;     
+      if ($print) {
+      	$result.=i18n('billingType'.$this->billingType);
+      } else {
+	      $result .='<input dojoType="dijit.form.TextBox" class="input" ';
+	      if ($this->billingType) {
+	        $result .=' value="' . i18n('billingType'.$this->billingType) . '"';
+	      } 
+	      $result.=' readonly="readonlyy"';
+	      $result .='/>';
+      }
+	    $result .= '</td></tr></table>';
+      return $result;     
     }
   }
 }

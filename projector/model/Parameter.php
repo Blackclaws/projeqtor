@@ -288,8 +288,8 @@ class Parameter extends SqlElement {
       	                     'documentRoot'=>'text',
       	                     'draftSeparator'=>'text',
       	                     'sectionBilling'=>'section',
-      	                     //'billPrefix'=>'text',
-      	                     //'billSuffix'=>'text',
+      	                     'billPrefix'=>'text',
+      	                     'billSuffix'=>'text',
       	                     'billNumSize'=>'number',
       	                     'billNumStart'=>'number'
       	);

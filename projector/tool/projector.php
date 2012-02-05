@@ -13,7 +13,6 @@ $browserLocale="";
 $reportCount=0;
 include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
-
 $showTopMenu=true;
 /* ============================================================================
  * global variables
@@ -83,7 +82,7 @@ if (ini_get('register_globals')) {
 }
 
 $page=$_SERVER['PHP_SELF'];
-if ( ! (isset($maintenance) and $maintenance) ) {
+if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batchMode)) {
   // Get the user from session. If not exists, request connection ===============
   if (isset($_SESSION['user'])) {
     $user=$_SESSION['user'];
@@ -722,9 +721,11 @@ function getIP(){
     $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
   } else if (isset($_SERVER['HTTP_CLIENT_IP'])) {  
     $ip = $_SERVER['HTTP_CLIENT_IP'];
-  } else { 
+  } else if (isset($_SERVER['REMOTE_ADDR'])){ 
     $ip = $_SERVER['REMOTE_ADDR'];
-  }  
+  } else {
+  	$ip = 'batch';
+  } 
   return $ip;
 } 
 

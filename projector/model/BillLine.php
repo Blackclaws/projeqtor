@@ -62,12 +62,12 @@ class BillLine extends SqlElement {
         $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdTerm')));
       }
 	  }
-	  if ($billingType=='R') {
+	  if ($billingType=='R' or $billingType=='P') {
       if ( ! trim($this->idResource) ){
         $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdResource')));
       }
 	    if ( ! trim($this->idActivityPrice) ){
-        $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdResource')));
+        $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdActivityPrice')));
       }
 	    if ( ! $this->startDate){
         $result.="<br/>" . i18n('messageMandatory',array(i18n('colStartDate')));
