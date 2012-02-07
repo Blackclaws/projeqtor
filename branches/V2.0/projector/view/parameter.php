@@ -76,6 +76,7 @@
         } 
         foreach ($listValues as $value => $valueLabel ) {
           $selected = ($obj->parameterValue==$value)?'selected':'';
+          $value=str_replace(',','#comma#',$value); // Comma sets an isse (not selected) when in value
           echo '<option value="' . $value . '" ' . $selected . '>' . $valueLabel . '</option>';
         }
         echo '</select>';

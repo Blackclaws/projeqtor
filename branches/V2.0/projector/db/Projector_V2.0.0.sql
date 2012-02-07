@@ -441,7 +441,7 @@ CREATE TABLE `${prefix}collapsed` (
 
 ALTER TABLE `${prefix}collapsed` ADD INDEX collapsedUser (idUser);
 
-INSERT INTO `${prefix}collapsed` (`idUser`, `scope` ) select user.id, concat(copyable.name,'_history') from user, copyable;
+INSERT INTO `${prefix}collapsed` (`idUser`, `scope` ) select user.id, concat(copyable.name,'_history') from `${prefix}user`, `${prefix}copyable`;
  
 UPDATE `${prefix}parameter` SET parameterValue='YES'
 WHERE parameterCode='displayHistory' and parameterValue<>'NO';

@@ -135,6 +135,7 @@ if ($type=='habilitation') {
       if ($parameterList[$fld]=='time') {
       	$val=substr($val,1,5);
       }
+      $val=str_replace('#comma#',',',$val); 
       $obj->parameterValue=$val;
       $obj->idUser=null;
       $obj->idProject=null;

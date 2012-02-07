@@ -70,9 +70,9 @@
 ?>
   <table width="100%"><tr>
     
-    <td width="20%">
-    <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:80px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
-    <span maxsize="180px" style="position: absolute; left:80px; top:1px; height: 20px; width: 160px; color:#202020;" dojoType="dijit.form.DropDownButton" 
+    <td width="285px">
+    <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:75px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
+    <span maxsize="180px" style="position: absolute; left:75px; top:1px; height: 20px; width: 160px; color:#202020;" dojoType="dijit.form.DropDownButton" 
      id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
       <span style="width:180px; text-align: left;">
       <div style="width:180px; overflow: hidden; text-align: left;" ><?php
@@ -108,9 +108,11 @@
     </td>
     <td width="3px"></td>
     <td>
+    <div style="overflow:hidden">
       <table><tr>
     <?php drawAllMenus();?>
     </tr></table>
+    </div>
     </td>
     <td class="menuBarSeparator" ></td>
     <td width="60px" align="center">
