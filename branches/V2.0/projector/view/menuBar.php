@@ -12,7 +12,7 @@
     $idMenu=$menu->id;
     if ($menu->type=='menu') {
     	if ($menu->idMenu==0) {
-    		echo '<td class="menuBarSeparator" ></td>';
+    		echo '<td class="menuBarSeparator" style="width:5px;"></td>';
     	}
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
@@ -108,7 +108,7 @@
     </td>
     <td width="3px"></td>
     <td>
-    <div style="overflow:hidden">
+    <div style="width: 100px; position: relative; left: 0px; top: 0px; float:left;">
       <table><tr>
     <?php drawAllMenus();?>
     </tr></table>

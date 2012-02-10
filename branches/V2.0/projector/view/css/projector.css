@@ -54,6 +54,8 @@ html, body {
   .menuBarSeparator {
     width: 5px;
     text-align: center;
+    margin:0px; 
+    padding:2px; 
     /* background: url(images/splitV.gif) repeat-y left;*/
     background: url(images/splitContainerSizerV-thumb.png) repeat-y left;
   }
