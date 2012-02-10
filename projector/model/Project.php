@@ -48,11 +48,10 @@ class Project extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="wbsSortable" from="ProjectPlanningElement" formatter="sortableFormatter" width="5%" >${wbs}</th>
     <th field="name" width="20%" >${projectName}</th>
-    <th field="nameProjectType" width="10%" >${type}</th>
+    <th field="nameProjectType" width="15%" >${type}</th>
     <th field="color" width="5%" formatter="colorFormatter">${color}</th>
     <th field="projectCode" width="5%" >${projectCode}</th>
-    <th field="nameClient" width="10%" >${clientName}</th>
-    <th field="nameRecipient" width="10%" >${idRecipient}</th>
+    <th field="nameClient" width="15%" >${clientName}</th>
     <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${validatedEnd}</th>
     <th field="plannedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${plannedEnd}</th>  
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
@@ -60,6 +59,9 @@ class Project extends SqlElement {
     ';
 // Removed in 1.2.0 
 //     <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
+// Removed in 2.0.1
+//  <th field="nameRecipient" width="10%" >${idRecipient}</th>
+  
 
   private static $_fieldsAttributes=array("name"=>"required",                                   
                                   "done"=>"nobr",

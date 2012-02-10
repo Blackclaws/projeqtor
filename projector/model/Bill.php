@@ -286,7 +286,9 @@ class Bill extends SqlElement {
 	}  
 
   public function drawSpecificItem($item){
-  	global $print;
+  	global $print,$displayWidth;
+  	$labelWidth=175; // To be changed if changes in css file (label and .label)
+  	$largeWidth=( ($displayWidth+30) / 2) - $labelWidth;
     $result="";
     if ($item=='billingType') {
     	$result .="<table><tr><td class='label' valign='top'><label>" . i18n('colBillingType') . "&nbsp;:&nbsp;</label>";
@@ -296,9 +298,10 @@ class Bill extends SqlElement {
       } else {
 	      $result .='<input dojoType="dijit.form.TextBox" class="input" ';
 	      if ($this->billingType) {
-	        $result .=' value="' . i18n('billingType'.$this->billingType) . '"';
+	        $result .=' value="' .  i18n('billingType'.$this->billingType) . '"';
 	      } 
-	      $result.=' readonly="readonlyy"';
+	      $result.=' style="width:' . $largeWidth . 'px;"';
+	      $result.=' readonly="readonly"';
 	      $result .='/>';
       }
 	    $result .= '</td></tr></table>';

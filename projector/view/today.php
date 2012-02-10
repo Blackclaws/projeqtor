@@ -321,7 +321,7 @@
       }
       $alertLevelArray=$elt->getAlertLevel(true);
       $alertLevel=$alertLevelArray['level'];
-      $color="#FFFFFF";
+      $color="background-color:#FFFFFF";
       if ($alertLevel=='ALERT') {
       	$color='background-color:#FFAAAA;';
       } else if ($alertLevel=='WARNING') {
