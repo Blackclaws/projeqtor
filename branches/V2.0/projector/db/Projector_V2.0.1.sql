@@ -22,4 +22,7 @@ DELETE FROM `${prefix}menu` WHERE id in (10);
 DELETE FROM `${prefix}habilitation` WHERE idMenu in (10); 
 
 -- Fix Hierarchic presentation
-UPDATE `menu` SET idMenu=0 WHERE id=13;
+UPDATE `${prefix}menu` SET idMenu=0 WHERE id=13;
+
+-- Fix reports order in habilitation for reports
+UPDATE `${prefix}report` set sortOrder = (idReportCategory * 100) + sortOrder - (round(sortOrder/100) * 100);
