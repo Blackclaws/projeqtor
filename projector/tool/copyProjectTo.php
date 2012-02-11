@@ -33,110 +33,109 @@ $_SESSION['currentObject']=$newProj;
 
 // Save Structure
 if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exists('copyProjectStructure',$_REQUEST)) {
+	$nbErrors=0;
 	$milArray=array();
   $milArrayObj=array();
   $actArray=array();
   $actArrayObj=array();
 	$crit=array('idProject'=>$proj->id);
-	// Copy activities
+	$items=array();
+	// Activities to be copied
   $activity=New Activity();
   $activities=$activity->getSqlElementsFromCriteria($crit, false, null, null, true);
   foreach ($activities as $activity) {
-  	$act=new Activity($activity->id);
-    $new=$act->copy();
-    $actArrayObj[$new->id]=$new;
-    $actArray[$activity->id]=$new->id;
+    $act=new Activity($activity->id);
+    $items['Activity_'.$activity->id]=$act;
   }
-	foreach ($actArrayObj as $new) {
-		//$new=new Activity($new->id);
-		//$new->name='Copied ' . $new->name;
+  $mile=New Milestone();
+  $miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
+  foreach ($miles as $mile) {
+    $mil=new Milestone($mile->id);
+    $items['Milestone_'.$mile->id]=$mil;
+  }
+  // Sort by wbsSortable
+  uasort($items, "customSortByWbsSortable");
+  foreach ($items as $id=>$item) {
+  	$new=$item->copy();
+  	$itemArrayObj[get_class($new) . '_' . $new->id]=$new;
+    $itemArray[$id]=get_class($new) . '_' . $new->id;
+  }
+  foreach ($itemArrayObj as $new) {
 		$new->idProject=$newProj->id;
 		if ($new->idActivity) {
-		 if (array_key_exists($new->idActivity,$actArray)) {
-		 	$new->idActivity=$actArray[$new->idActivity];
+		 if (array_key_exists('Activity_' . $new->idActivity,$itemArray)) {
+		 	$split=explode('_',$itemArray['Activity_' . $new->idActivity]);
+		 	$new->idActivity=$split[1];
 		 }
 		}
-		$new->ActivityPlanningElement->wbs=null;
-		$new->save();
+		$pe=get_class($new).'PlanningElement';
+		$new->$pe->wbs=null;
+		$tmpRes=$new->save();
+		if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+			errorLog($tmpRes);
+			$nbErrors++;
+		} 
 	}
-  // Copy milestones
-	$mile=New Milestone();
-	$miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
-	foreach ($miles as $milestone) {
-		$mile=new Milestone($milestone->id);
-		$new=$mile->copy();
-    $milArrayObj[$new->id]=$new;
-    $milArray[$mile->id]=$new->id;
-	}
-  foreach ($milArrayObj as $new) {
-  	//$new=new Milestone($newTmp->id);
-  	//$new->name='Copied ' . $new->name;
-    $new->idProject=$newProj->id;
-    if ($new->idActivity) {
-     if (array_key_exists($new->idActivity,$actArray)) {
-      $new->idActivity=$actArray[$new->idActivity];
-     }
-    }
-    $new->MilestonePlanningElement->wbs=null;
-    $new->save();
-  }	
   // Copy dependencies
   $critWhere="";
-  foreach ($actArray as $id=>$new) {
+  foreach ($itemArray as $id=>$new) {
+  	$split=explode('_',$id);
   	$critWhere.=($critWhere)?', ':'';
-  	$critWhere.="('Activity','$id')";
-  }
-  foreach ($milArray as $id=>$new) {
-    $critWhere.=($critWhere)?', ':'';
-    $critWhere.="('Milestone','$id')";
+  	$critWhere.="('" . $split[0] . "','" . $split[1] . "')";
   }
   $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
          . " or (successorRefType,successorRefId) in (" . $critWhere . ")";
   $dep=New dependency();
   $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
   foreach ($deps as $dep) {
-  	if ($dep->predecessorRefType=='Activity') {
-  		if (array_key_exists($dep->predecessorRefId, $actArray)) {
-  			$dep->predecessorRefId=$actArray[$dep->predecessorRefId];
-  			$crit=array('refType'=>'Activity', 'refId'=>$dep->predecessorRefId);
-  			$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-  			$dep->predecessorId=$pe->id;
-  		}
-  	}	else if ($dep->predecessorRefType=='Milestone') {
-  	  if (array_key_exists($dep->predecessorRefId, $milArray)) {
-        $dep->predecessorRefId=$milArray[$dep->predecessorRefId];
-        $crit=array('refType'=>'Milestone', 'refId'=>$dep->predecessorRefId);
-        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-        $dep->predecessorId=$pe->id;
-      }
+  	if (array_key_exists($dep->predecessorRefType . "_" . $dep->predecessorRefId, $itemArray) ) {
+  		$split=explode('_',$itemArray[$dep->predecessorRefType . "_" . $dep->predecessorRefId]);
+  		$dep->predecessorRefType=$split[0];
+  		$dep->predecessorRefId=$split[1];
+      $crit=array('refType'=>$split[0], 'refId'=>$split[1]);
+      $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+      $dep->predecessorId=$pe->id;
+  	}
+    if (array_key_exists($dep->successorRefType . "_" . $dep->successorRefId, $itemArray) ) {
+      $split=explode('_',$itemArray[$dep->successorRefType . "_" . $dep->successorRefId]);
+      $dep->successorRefType=$split[0];
+      $dep->successorRefId=$split[1];
+      $crit=array('refType'=>$split[0], 'refId'=>$split[1]);
+      $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+      $dep->successorId=$pe->id;
     }
-    if ($dep->successorRefType=='Activity') {
-      if (array_key_exists($dep->successorRefId, $actArray)) {
-        $dep->successorRefId=$actArray[$dep->successorRefId];
-        $crit=array('refType'=>'Activity', 'refId'=>$dep->successorRefId);
-        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-        $dep->successorId=$pe->id;
-      }
-    } else if ($dep->successorRefType=='Milestone') {
-      if (array_key_exists($dep->successorRefId, $milArray)) {
-        $dep->successorRefId=$milArray[$dep->successorRefId];
-        $crit=array('refType'=>'Milestone', 'refId'=>$dep->successorRefId);
-        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-        $dep->successorId=$pe->id;
-      }
-    }
-    $dep->id=null;
-    $dep->save();
+  	$dep->id=null;
+    $tmpRes=$dep->save();
+    if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+      errorLog($tmpRes);
+      $nbErrors++;
+    } 
   }
 	$_SESSION['currentObject']=new Project($newProj->id);
 }
 
+if ($nbErrors>0) {
+  $result.= '<br/><span class="messageWARNING" >' 
+         . i18n('errorMessage',array(i18n('copyProjectStructure'),' x ' . $nbErrors))
+         . '<br/>' . i18n('contactAdministrator')
+         . '</span>';
+  $result=str_replace('id="lastOperationStatus" value="OK"','id="lastOperationStatus" value="ERROR"',$result);
+}
+
 // Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
   echo '<span class="messageWARNING" >' . $result . '</span>';
+}
+
+function customSortByWbsSortable($a,$b) {
+	$pe=get_class($a).'PlanningElement';
+	$wbsA=$a->$pe->wbsSortable;
+	$pe=get_class($b).'PlanningElement';
+  $wbsB=$b->$pe->wbsSortable;
+  return ($wbsA > $wbsB)?1:-1;
 }
 ?>

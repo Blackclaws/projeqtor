@@ -105,7 +105,7 @@ class Cron {
   
   public static function checkStopFlag() {
     if (file_exists(self::$stopFile)) { 
-      debugLog('cron normally stopped at '.date('d/m/Y H:i:s'));
+      traceLog('cron normally stopped at '.date('d/m/Y H:i:s'));
       unlink(self::$runningFile);
       unlink(self::$stopFile);
       return true; 
@@ -115,7 +115,7 @@ class Cron {
   }
   
 	public static function checkDates() {
-debugLog("cron : checkDates");
+//debugLog("cron : checkDates");
 	  $indVal=new IndicatorValue();
 	  $where="idle='0' and (";
 	  $where.=" ( warningTargetDateTime<='" . date('Y-m-d H:i:s') . "' and warningSent='0')" ;
@@ -144,8 +144,7 @@ debugLog("cron : checkDates");
 	}
 	
 	public static function run() {
-scriptLog('Cron::run()');
-debugLog('Cron::run()');		
+scriptLog('Cron::run()');		
 		if (self::check()=='running') {
       errorLog('try to run cron already running');
       return;
@@ -157,9 +156,10 @@ debugLog('Cron::run()');
     $cronCheckDates=self::getCheckDates();
     $cronSleepTime=self::getSleepTime();
     self::removeStopFlag();
-    self::setRunningFlag(); 
+    self::setRunningFlag();
+    traceLog('cron started at '.date('d/m/Y H:i:s')); 
     while(1) {
-debugLog("cron : loop");
+//debugLog("cron : loop");
       if (self::checkStopFlag()) { 
         return; 
       }

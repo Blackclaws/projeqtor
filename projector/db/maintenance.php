@@ -19,7 +19,8 @@ $versionHistory = array(
   "V1.7.0",
   "V1.8.0",
   "V1.9.0",
-  "V2.0.0");
+  "V2.0.0",
+  "V2.0.1");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -122,6 +123,11 @@ if ($currVersion<"V1.9.1") {
     $aff->save();
   }
 }
+
+// To be sure, after habilitations updates ...
+Habilitation::correctUpdates();
+Habilitation::correctUpdates();
+Habilitation::correctUpdates();
 
 Sql::saveDbVersion($version);
 traceLog('=====================================');
