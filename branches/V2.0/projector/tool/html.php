@@ -270,13 +270,20 @@ function htmlFormatDate($val) {
       return $val;
   	}
   }
-  if ($browserLocaleDateFormat=='MMDDYYYY') {
+  $year=substr($val,0,4);
+  $month=substr($val,5,2);
+  $day=substr($val,8,2);
+  /*if ($browserLocaleDateFormat=='MMDDYYYY') {
     return substr($val,5,2) . "/" . substr($val,8,2)  . "/" . substr($val,0,4);
   } else if ($browserLocaleDateFormat=='DDMMYYYY') {
     return substr($val,8,2) . "/" . substr($val,5,2)  . "/" . substr($val,0,4);
   } else {
   	return $val;
-  }
+  }*/
+  $result=str_replace('YYYY', $year, $browserLocaleDateFormat);
+  $result=str_replace('MM', $month, $result);
+  $result=str_replace('DD', $day, $result);
+  return $result;
 }
 
 /**

@@ -179,7 +179,7 @@ function setupLocale () {
   if (isset($_SESSION['browserLocaleDateFormat'])) {
     $browserLocaleDateFormat=$_SESSION['browserLocaleDateFormat'];
   } else {
-    $browserLocale='YYYYMMDD';
+    $browserLocaleDateFormat='YYYY-MM-DD';
   }
 }
 

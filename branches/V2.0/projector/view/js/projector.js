@@ -219,13 +219,21 @@ function saveBrowserLocaleToSession() {
     load: function(data,args) { }
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
-  var formatted=dojo.date.locale.format(date);
-  var format="YYYYMMDD";
+  var formatted=dojo.date.locale.format(date, {formatLength: "short", selector: "date"});
+  /*var format="YYYYMMDD";
   if (formatted.substr(0,2)=='31') {
     format='DDMMYYYY';  
   } else if (formatted.substr(0,2)=='12') {
 	format='MMDDYYYY';
-  }
+  }*/
+  var reg=new RegExp("(2000)", "g");
+  format=formatted.replace(reg,'YYYY');
+  reg=new RegExp("(00)", "g");
+  format=format.replace(reg,'YYYY');
+  reg=new RegExp("(12)", "g");
+  format=format.replace(reg,'MM');
+  reg=new RegExp("(31)", "g");
+  format=format.replace(reg,'DD');
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + format,
     handleAs: "text",
