@@ -114,6 +114,7 @@ class PlannedWork extends Work {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $idPlan=>$plan) {
+//debugLog('planningElement-id='.$plan->id.' refType='.$plan->refType.' refId='.$plan->refId);
       //$changedPlan=false;
       // Determine planning profile
       $profile="ASAP";
@@ -176,18 +177,22 @@ class PlannedWork extends Work {
         if ($prec==null) {
           $prec=new PlanningElement($precDep->predecessorId);
         }
-        if ($prec->plannedEndDate > $startPlan) {        
+        $precEnd=$prec->plannedEndDate;
+        if ($prec->realEndDate) {
+        	$precEnd=$prec->realEndDate;
+        }
+        if ($precEnd > $startPlan) {        
           if ($prec->refType=='Milestone') {
           	if ($plan->refType=='Milestone') {
-          	  $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+          	  $startPlan=addWorkDaysToDate($precEnd,1);
           	} else {
-              $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+              $startPlan=addWorkDaysToDate($precEnd,1);
             }         	
           } else {
           	if ($plan->refType=='Milestone') {
-          	  $startPlan=addWorkDaysToDate($prec->plannedEndDate,1);
+          	  $startPlan=addWorkDaysToDate($precEnd,1);
           	} else {
-              $startPlan=addWorkDaysToDate($prec->plannedEndDate,2);
+              $startPlan=addWorkDaysToDate($precEnd,2);
             }           
           }
         }

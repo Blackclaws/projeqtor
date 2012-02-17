@@ -1099,11 +1099,15 @@ function unselectAllRows(gridName) {
  */
 var gridReposition=false;
 function selectRowById(gridName, id) {
-  grid = dijit.byId(gridName); // if the element is not a widget, exit.
+  var grid = dijit.byId(gridName); // if the element is not a widget, exit.
   if ( ! grid) { 
     return;
   }
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
+  //De-activate this function for IE8 : grid.getItem does not work
+  if (dojo.isIE=='8') { 
+	return;
+  }
   var nbRow=grid.rowCount;
   gridReposition=true;
   for (i=0; i<nbRow; i++) {
