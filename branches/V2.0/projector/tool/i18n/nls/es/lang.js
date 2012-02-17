@@ -819,6 +819,7 @@ msgPlanningActivityInSameProject: "La actividad de planificación debe ser del m
 msgTranslatable: "Atención - Este campo será traducido de acuerdo a su configuración de localización",
 msgTranslation: "Traducción",
 msgUnableToDeleteRealWork: "No se puede borrar un ítem con trabajo real",
+myProjects: "[myProjects]",
 newLine: "<br/><br/>",
 newParameters: "${1} nuevo parámetro agregado en la versión ${2}",
 newPassword: "nueva contraseña",
