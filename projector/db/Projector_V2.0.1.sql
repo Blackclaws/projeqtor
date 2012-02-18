@@ -12,7 +12,7 @@
 UPDATE `${prefix}menu` SET idle=0 where id in (101, 100);
 
 -- Disable Menus : Type (is a goup menu)
-UPDATE `${prefix}menu` SET idle=1 where id in (79);
+UPDATE `${prefix}menu` SET idle=1 where id in (79,88);
 
 -- Remove habilitations to Disabled sub-Menus : Invoice, Payment, Requestor, InvoiceType,PaymentType, ProjectParameter
 UPDATE `${prefix}habilitation` SET allowAccess=0 where idMenu in (77, 78, 12, 82, 83, 19);
