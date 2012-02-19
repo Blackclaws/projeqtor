@@ -149,23 +149,63 @@ function htmlGetNoDataMessage($className) {
  * @param $format the format of data : check, text, label
  * @return void
  */
-function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj, $pivotProp, $format='label', $formatList=null) {
-  if (is_array($lineObj)) {
+function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj, $pivotProp, $format='label', $formatList=null, $break=null) {
+  global $collapsedList;
+	if (is_array($lineObj)) {
     $lineList=$lineObj;
   } else {
     $lineList=SqlList::getList($lineObj);
   }
   
   $columnList=SqlList::getList($columnObj);
-
-  echo '<table class="crossTable">';
-  // Draw Header
-  echo '<tr><td></td>';
-  foreach ($columnList as $col) {
-    echo '<td class="tabLabel">' . $col . '</td>';
+  echo '<div style="width:98%; overflow-x:auto;  overflow-y:hidden;">';
+  if ( ! ($break and ! is_array($lineObj)) ) {
+	  echo '<table class="crossTable" >';
+	  // Draw Header
+	  echo '<tr><td>&nbsp;</td>';
+	  foreach ($columnList as $col) {
+	    echo '<td class="tabLabel">' . $col . '</td>';
+	  }
+	  echo '</tr>';
   }
-  echo '</tr>';
+  $breakVal='';
+  $breakNum=0;
   foreach($lineList as $lineId => $lineName) {
+  	if ($break and ! is_array($lineObj)) {
+  		$class=ucfirst($lineObj);
+  		$test=new $class($lineId);
+  		if ($test->$break != $breakVal) {
+  			$breakNum++;
+  			$breakClass=substr($break,2);
+  			$breakObj=new $breakClass($test->$break);
+  			$breakName="";
+  			if ($breakObj->name) {
+  			  $breakName=(property_exists($breakObj,'_isNameTranslatable'))?i18n($breakObj->name):$breakObj->name;
+  			} 
+  			//echo '<tr><td class="tabLabel" style="text-align:left;border-top:2px solid #A0A0A0;">' . $breakName  . '</td>';
+  			if ($test->$break) {
+  			  $breakCode=$breakObj->name;
+  			} else {
+  				$breakCode=$breakNum;
+  			} 
+  			echo '</table></div><br/>';
+        $divName='CrossTable_'.$lineObj.'_'.$breakCode;
+        echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
+        echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
+        echo ' onclick="togglePane(\'' . $divName . '\');"';
+        echo ' title="' .$breakName . '"';
+        echo ' style="width:98%; overflow-x:auto;  overflow-y:hidden;"';
+        echo '>';
+        echo '<table class="crossTable">';
+        echo '<tr><td>&nbsp;</td>';
+			  foreach ($columnList as $col) {
+			    echo '<td class="tabLabel">' . $col . '</td>';
+			  }
+			  echo '</tr>';
+        echo '<tr>';  			
+  		}
+  		$breakVal=$test->$break;
+  	}
     echo '<tr><td class="crossTableLine"><label class="label largeLabel">' . $lineName . '</label></td>';
     foreach ($columnList as $colId => $colName) {
       $crit=array();
@@ -203,7 +243,7 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   }
   
   
-  echo '</table>';
+  echo '</table></div>';
   
 }
 

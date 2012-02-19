@@ -11,8 +11,8 @@
 -- Enable Menus : DocumentType, BillType
 UPDATE `${prefix}menu` SET idle=0 where id in (101, 100);
 
--- Disable Menus : Type (is a goup menu)
-UPDATE `${prefix}menu` SET idle=1 where id in (79);
+-- Disable Menus : Type, Automation, Review (goup menus)
+UPDATE `${prefix}menu` SET idle=1 where id in (79,88,6);
 
 -- Remove habilitations to Disabled sub-Menus : Invoice, Payment, Requestor, InvoiceType,PaymentType, ProjectParameter
 UPDATE `${prefix}habilitation` SET allowAccess=0 where idMenu in (77, 78, 12, 82, 83, 19);
