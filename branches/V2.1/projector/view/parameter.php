@@ -155,16 +155,16 @@
       </tr>
     </table>
   </div>
-  <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"> 
+  <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-y:auto;  overflow-x:hidden;"> 
     <form dojoType="dijit.form.Form" id="parameterForm" jsId="objectForm" name="objectForm" encType="multipart/form-data" action="" method="" >
       <input type="hidden" name="parameterType" value="<?php echo $type;?>" />
       <?php 
         if ($type=='habilitation') {
-          htmlDrawCrossTable('menu', 'idMenu', 'profile', 'idProfile', 'habilitation', 'allowAccess', 'check') ;
+          htmlDrawCrossTable('menu', 'idMenu', 'profile', 'idProfile', 'habilitation', 'allowAccess', 'check', null,'idMenu') ;
         } else if ($type=='accessRight') {
-          htmlDrawCrossTable('menuProject', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'accessProfile') ;
+          htmlDrawCrossTable('menuProject', 'idMenu', 'profile', 'idProfile', 'accessRight', 'idAccessProfile', 'list', 'accessProfile', 'idMenu') ;
         } else if ($type=='habilitationReport') {
-          htmlDrawCrossTable('report', 'idReport', 'profile', 'idProfile', 'habilitationReport', 'allowAccess', 'check') ;
+          htmlDrawCrossTable('report', 'idReport', 'profile', 'idProfile', 'habilitationReport', 'allowAccess', 'check', null, 'idReportCategory') ;
         } else if ($type=='habilitationOther') {
         	$titlePane="habilitationOther_Imputation"; 
           echo '<div dojoType="dijit.TitlePane"'; 
