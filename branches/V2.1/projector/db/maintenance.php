@@ -20,7 +20,8 @@ $versionHistory = array(
   "V1.8.0",
   "V1.9.0",
   "V2.0.0",
-  "V2.0.1");
+  "V2.0.1",
+  "V2.1.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -90,7 +91,8 @@ if ($currVersion=='0.0.0') {
   $proj->name='Default project';
   $proj->idProjectType=$type->id;
   $result=$proj->save();
-  traceLog($result);
+  $split=explode("<", $result);
+  traceLog($split[0]);
 }
 deleteDuplicate();
 

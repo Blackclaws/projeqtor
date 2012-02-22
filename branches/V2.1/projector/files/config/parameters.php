@@ -17,14 +17,23 @@ $paramLdap_version = '3';
 $paramLdap_search_user = 'cn=Manager,dc=mydomain,dc=com';
 $paramLdap_search_pass = 'secret';
 $paramLdap_user_filter = 'uid=%USERNAME%';
-$paramMailSender = '';
-$paramMailReplyTo = '';
-$paramAdminMail = '';
+$paramMailSender = 'support@toolware.fr';
+$paramMailReplyTo = 'support@toolware.fr';
+$paramAdminMail = 'support@toolware.fr';
 $paramMailSmtpServer = 'smtp.free.fr';
 $paramMailSmtpPort = '25';
-$paramMailSendmailPath = '';
+$paramMailSendmailPath = ''; 
 $paramMailTitle = '[Project\'Or RIA DEV] ${item} #${id} moved to status ${status}';
-$paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${status}';
+$paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${status}<br/>
+id=${id}<br/>
+name=${name}<br/>
+status=${status}<br/>
+project=${project}<br/>
+type=${type}<br/>
+reference=${reference}<br/>
+externalReference${externalReference}<br/>
+issuer=${issuer}<br/>
+responsible=${responsible}<br/>';
 $paramMailShowDetail = 'true';
 $paramDefaultPassword = 'projector';
 $paramPasswordMinLength = '5';

@@ -1904,7 +1904,7 @@ if ( $noselect ) {
 
 // save the current object in session
 $print=false;
-if ( array_key_exists('print',$_REQUEST) ) {
+if ( array_key_exists('print',$_REQUEST) or isset($callFromMail) ) {
   $print=true;
 }
 if (! $print and ! $comboDetail) {
