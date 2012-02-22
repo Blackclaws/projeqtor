@@ -1934,12 +1934,54 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     $dest=str_replace('###','',$dest);
     global $paramMailTitle, $paramMailMessage, $paramMailShowDetail;
     // substituable items
+    $arrayFrom=array();
+    $arrayTo=array();
+    // Class of item
+    $arrayFrom[]='${item}';
     $item=i18n(get_class($this));
-    $id=$this->id;
-    $name=$this->name;
-    $status=SqlList::getNameFromId('Status', $this->idStatus);
-    $arrayFrom=array('${item}','${id}','${name}','${status}');
-    $arrayTo=array($item,$id,$name,$status);
+    $arrayTo[]=$item;
+    // id
+    $arrayFrom[]='${id}';
+    $arrayTo[]=$this->id;
+    // name
+    $arrayFrom[]='${name}';
+    $arrayTo[]=(property_exists($this, 'name'))?$this->name:'';
+    // status
+    $arrayFrom[]='${status}';
+    $arrayTo[]=(property_exists($this, 'idStatus'))?SqlList::getNameFromId('Status', $this->idStatus):'';
+    // project
+    $arrayFrom[]='${project}';
+    $arrayTo[]=(property_exists($this, 'idProject'))?SqlList::getNameFromId('Project', $this->idProject):'';
+    // type
+    $typeName='id' . get_class($this) . 'Type';
+    $arrayFrom[]='${type}';
+    $arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId(get_class($this) . 'Type', $this->$typeName):'';
+    // reference
+    $arrayFrom[]='${reference}';
+    $arrayTo[]=(property_exists($this, 'reference'))?$this->reference:'';
+    // externalReference
+    $arrayFrom[]='${externalReference}';
+    $arrayTo[]=(property_exists($this, 'externalReference'))?$this->externalReference:'';
+    // issuer
+    $arrayFrom[]='${issuer}';
+    $arrayTo[]=(property_exists($this, 'idUser'))?SqlList::getNameFromId('User', $this->idUser):'';
+    // responsible
+    $arrayFrom[]='${responsible}';
+    $arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
+    
+    /*foreach ($this as $col=>$val) {
+    	if (substr($col, 0,1) != "_" 
+    	and substr($col, 0,1)!=strtoupper(substr($col, 0,1)) 
+    	and ! is_array($val) and ! is_object($val)) {
+    		$arrayFrom[]='${' . $col . '}';
+    		$arrayTo[]=$val;
+    		if (substr($col, 0,1)=='id' and strlen($col)>2) {
+    			$cl=substr($col, 2);
+    			$arrayFrom[]='${' . $cl . '}';
+    			$arrayTo[]=SqlList::getNameFromId($cl, $val);
+    		}
+    	}
+    }*/
     $title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
     $message=str_replace($arrayFrom, $arrayTo, $paramMailMessage);
     $nx='<br/>' . "\n" . '<br/>' . "\n" . '<div style="font-weight: bold;">';
@@ -1949,7 +1991,16 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     $tx='';
     $xt='<br/><br/>' . "\n";
     if (getBooleanValue($paramMailShowDetail)) {
-      $message.= $nx . $item . " #" . $id . $xn;
+    	/*ob_start();
+    	$print=true;
+    	$_REQUEST['objectClass']=get_class($this);
+    	$_REQUEST['objectId']=$this->id;
+    	$_REQUEST['print']='true';
+    	$callFromMail=true;
+    	include '../view/objectDetail.php';
+    	$message.=ob_get_clean();
+    	ob_clean();*/
+      $message.= $nx . $item . " #" . $this->id . $xn;
 
       $message.=$hx . $this->getColCaption('idProject') . $xh;
       $message.=$tx . SqlList::getNameFromId('Project', $this->idProject) . $xt;
@@ -1968,7 +2019,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       $message.=$tx . SqlList::getNameFromId('User', $this->idUser) . $xt;
 
       $message.=$hx . $this->getColCaption('idStatus') . $xh;
-      $message.=$tx . $status . $xt;
+      $message.=$tx . SqlList::getNameFromId('Status', $this->idStatus) . $xt;
 
       $message.=$hx . $this->getColCaption('idResource') . $xh;
       $message.=$tx . SqlList::getNameFromId('Resource', $this->idResource) . $xt;

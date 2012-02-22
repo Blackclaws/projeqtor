@@ -40,15 +40,17 @@ class Habilitation extends SqlElement {
    * @return void
    */
   static function correctUpdates() {
-
-  	$query="insert into habilitation (idProfile, idMenu, allowAccess)";
+    $habiObj=new Habilitation();
+    $menuObj=new Menu();
+    $profObj=new Profile();
+    
+  	$query="insert into " . $habiObj->getDatabaseTableName() . " (idProfile, idMenu, allowAccess)";
     $query.=" SELECT profile.id, menu.id, 0";
-    $query.=" FROM profile, menu";
+    $query.=" FROM " . $profObj->getDatabaseTableName() . " profile, " . $menuObj->getDatabaseTableName() . " menu";
     $query.=" WHERE (profile.id, menu.id) not in (select idProfile, idMenu from habilitation)";
   	$result=Sql::query($query);
   	
-    $habiObj=new Habilitation();
-    $menuObj=new Menu();
+    
     
     // Set Main menu to accessible if one of sub-menu is available
     $query="select distinct h.idProfile, m.idMenu from " . $habiObj->getDatabaseTableName() . " h," .  $menuObj->getDatabaseTableName() . " m";
