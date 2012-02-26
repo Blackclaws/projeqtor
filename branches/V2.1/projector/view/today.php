@@ -219,37 +219,49 @@
     return $result;
   }
   
-  function showWork() {
+  function showAssignedTasks() {
   	$user=$_SESSION['user'];
   	$ass=new Assignment();
     $act=new Activity();
-  	$where="(idResource='" . $user->id . "'" .
-  	  ") and idle=0 and done=0";
+  	$where="1=0";
+  	$whereTicket=$where;
     $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
       "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . $user->id . "')" .
       ") and idle=0 and done=0";
-    showActivitiesList($where, $whereActivity, 'Today_WorkDiv', 'menuWork');
+    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_WorkDiv', 'todayAssignedTasks');
   }
   
-  function showFollow() {
+  function showResponsibleTasks() {
+    $user=$_SESSION['user'];
+    $ass=new Assignment();
+    $act=new Activity();
+    $where="(idResource='" . $user->id . "'" .
+      ") and idle=0 and done=0";
+    $whereTicket=$where;
+    $whereActivity=$where;
+    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_RespDiv', 'todayResponsibleTasks');
+  }
+  
+  function showIssuerRequestorTasks() {
   	$user=$_SESSION['user'];
   	$where="(idUser='" . $user->id . "'" . 
-       " or idResource='" . $user->id . "'" .
        ") and idle=0 and done=0";
-    $whereActivity="(idUser='" . $user->id . "'" . 
-      " or idResource='" . $user->id . "'" .
+  	$whereTicket="(idUser='" . $user->id . "'" . 
+       " or idContact='" . $user->id . "'" .
        ") and idle=0 and done=0";
-    showActivitiesList($where, $whereActivity, 'Today_FollowDiv', 'menuFollowup');
+    $whereActivity=$whereTicket;
+    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_FollowDiv', 'todayIssuerRequestorTasks');
   }
   
-  function showProjectTasks() {
+  function showProjectsTasks() {
     $where="(idProject in " . getVisibleProjectsList() .
        ") and idle=0 and done=0";
+    $whereTicket=$where;
     $whereActivity=$where;
-    showActivitiesList($where, $whereActivity, 'Today_ProjectTasks', 'myProjects');
+    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_ProjectTasks', 'todayProjectsTasks');
   }
   
-  function showActivitiesList($where, $whereActivity, $divName, $title) {
+  function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
   	global $collapsedList;
     $user=$_SESSION['user'];
     $ass=new Assignment();
@@ -257,7 +269,7 @@
     $order="";
     $list=array();
     $ticket=new Ticket();
-    $listTicket=$ticket->getSqlElementsFromCriteria(null, null, $where, $order);
+    $listTicket=$ticket->getSqlElementsFromCriteria(null, null, $whereTicket, $order);
     $list=array_merge($list, $listTicket);
     $activity= new Activity();
     $listActivity=$activity->getSqlElementsFromCriteria(null, null, $whereActivity, $order);
@@ -278,7 +290,7 @@
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
     echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
     echo ' onclick="togglePane(\'' . $divName . '\');"';
-    echo ' title="' . i18n($title) . '"';
+    echo ' title="' . ucfirst(i18n($title)) . '"';
     echo '>';
     echo '<table align="center" style="width:95%">';
     echo '<tr>' . 
@@ -367,10 +379,11 @@
     <?php showProjects();?>
     </div><br/>
     <?php 
-    showWork();
-    showFollow();
+    showAssignedTasks();
+    showResponsibleTasks();
+    showIssuerRequestorTasks();
     if ($profile->profileCode=='PL') {
-      showProjectTasks();
+      showProjectsTasks();
     }
 ?>
   </div>
