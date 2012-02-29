@@ -55,6 +55,8 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   }
   // Sort by wbsSortable
   uasort($items, "customSortByWbsSortable");
+  $itemArrayObj=array();
+  $itemArray=array();
   foreach ($items as $id=>$item) {
   	$new=$item->copy();
   	$itemArrayObj[get_class($new) . '_' . $new->id]=$new;

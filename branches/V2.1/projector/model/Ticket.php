@@ -18,6 +18,7 @@ class Ticket extends SqlElement {
   public $idUser;
   public $idContact;
   public $Origin;
+  public $idTicket;
   public $idOriginalVersion;
   public $description;
   public $_col_2_2_treatment;
@@ -28,6 +29,8 @@ class Ticket extends SqlElement {
   public $idPriority;
   public $initialDueDateTime; // is an object
   public $actualDueDateTime;
+  public $plannedWork;
+  public $realWork;
   public $handled;
   public $handledDateTime;
   public $done;
@@ -74,7 +77,8 @@ class Ticket extends SqlElement {
                                                    'idActivity' => 'planningActivity',
                                                    'idContact' => 'requestor',
                                                    'idTargetVersion'=>'targetVersion',
-                                                   'idOriginalVersion'=>'originalVersion');
+                                                   'idOriginalVersion'=>'originalVersion',
+                                                   'idTicket'=>'duplicateTicket');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
@@ -213,10 +217,21 @@ class Ticket extends SqlElement {
         $result.='<br/>' . i18n('msgParentActivityInSameProject');
       }
     }
+    if ($this->idTicket) {
+    	if ($this->idTicket==$this->id) {
+    		$result.='<br/>' . i18n('duplicateIsSame');
+    	} else {
+    	  $duplicate=new Ticket($this->idTicket);
+    	  if ($duplicate->idTicket and $duplicate->idTicket!=$this->id) {
+    		  $result.='<br/>' . i18n('duplicateAlreadyLinked');
+    	  }
+    	}
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
-    }if ($result=="") {
+    }
+    if ($result=="") {
       $result='OK';
     }
     return $result;
@@ -241,7 +256,18 @@ class Ticket extends SqlElement {
   			}
   		}
   	}
-  	return parent::save();
+  	$result=parent::save();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;     
+    }
+  	if ($this->idTicket and ! $old->idTicket) {
+      $duplicate=new Ticket($this->idTicket);
+      if (! $duplicate->idTicket) {
+      	$duplicate->idTicket=$this->id;
+      	$duplicate->save();
+      }
+  	}
+  	return $result;
   }
 
   

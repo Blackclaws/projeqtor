@@ -541,7 +541,7 @@ class ImputationLine {
     echo '</TR>';      
     echo '</table>'; 
     if (! $print) {     
-      echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '"/>';
+      echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '" />';
     }
   }
 // ============================================================================**********
