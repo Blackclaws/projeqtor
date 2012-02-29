@@ -11,6 +11,7 @@ class Product extends SqlElement {
   public $name;
   public $idClient;
   public $idContact;
+  public $idProduct;
   public $creationDate;
   public $idle;
   public $description;
@@ -22,15 +23,16 @@ class Product extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="name" width="50%" >${productName}</th>
-    <th field="nameClient" width="30%" >${clientName}</th>
+    <th field="name" width="30%" >${productName}</th>
+    <th field="nameProduct" width="30%" >${isSubProductOf}</th>
+    <th field="nameClient" width="20%" >${clientName}</th>
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("name"=>"required"
   );   
 
-  private static $_colCaptionTransposition = array('idContact'=>'contractor'
+  private static $_colCaptionTransposition = array('idContact'=>'contractor','idProduct'=>'isSubProductOf'
   );
   
   
@@ -116,6 +118,38 @@ class Product extends SqlElement {
       return $result;
     } 
   }
+  
+  /** =========================================================================
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message 
+   *  must be redefined in the inherited class
+   */
+  public function control(){
+    $result="";
+    if ($this->id and $this->id==$this->idProduct) {
+      $result.='<br/>' . i18n('errorHierarchicLoop');
+    } else if ($this->idProduct){
+    	$parent=new Product($this->idProduct);
+    	while ($parent->id) {
+    	  if ($parent->id==$this->id) {
+          $result.='<br/>' . i18n('errorHierarchicLoop');
+          break;
+        }
+        $parent=new Product($parent->idProduct);
+    	}
+    }
+        
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
+  
 
 }
 ?>

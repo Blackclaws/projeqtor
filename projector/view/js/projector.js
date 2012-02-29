@@ -1105,7 +1105,7 @@ function selectRowById(gridName, id) {
   }
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   //De-activate this function for IE8 : grid.getItem does not work
-  if (dojo.isIE=='8') { 
+  if (dojo.isIE && parseInt(dojo.isIE)<='8') { 
 	return;
   }
   var nbRow=grid.rowCount;

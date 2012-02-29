@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2009, Shlomy Gantz BlueBrick Inc. All rights reserved.
+=> Closing Sub 2 or Sub 2.2 or Act 2.2 : OKCopyright (c) 2009, Shlomy Gantz BlueBrick Inc. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -714,6 +714,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               }
               vRightTable += '<div position:absolute; top:2px; width:120px; left:12px">' + vCaptionStr + '</div>';
             }
+          } else {
+        	  vRightTable += '</div>' ;  
           }
           vRightTable += '</div>';
         } else {
@@ -797,6 +799,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vRightTable += '</DIV>';
       }
+ console.log(vRightTable);
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
       dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;

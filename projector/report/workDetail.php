@@ -88,32 +88,32 @@ if (checkNoData($result)) exit;
 // title
 echo '<table style="width:95%" align="center">';
 echo '<tr>';
-echo '<td class="reportTableHeader" rowspan="2" style="width:15%">' . i18n('Resource') . '</td>';
-echo '<td class="reportTableHeader" rowspan="2" style="width:5%">' . i18n('colWork') . '</td>';
-echo '<td class="reportTableHeader" colspan="4">' . i18n('Activity') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:20%">' . i18n('Resource') . '</td>';
+echo '<td class="reportTableHeader" rowspan="2" style="width:10%">' . i18n('colWork') . '</td>';
+echo '<td class="reportTableHeader" colspan="3">' . i18n('Activity') . '</td>';
 echo '</tr><tr>';
-echo '<td class="reportTableColumnHeader" style="width:15%">' . i18n('colIdProject') . '</td>';
-echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colName') . '</td>';
-echo '<td class="reportTableColumnHeader" style="width:25%">' . i18n('colDescription') . '</td>';
-echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colParentActivity') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:20%">' . i18n('colIdProject') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:25%">' . i18n('colName') . '</td>';
+//echo '<td class="reportTableColumnHeader" style="width:25%">' . i18n('colDescription') . '</td>';
+echo '<td class="reportTableColumnHeader" style="width:25%">' . i18n('colParentActivity') . '</td>';
 echo '</tr>';
 
 $sum=0;
 foreach ($resources as $idR=>$nameR) {
   $sumRes=0;
   echo '<tr>';
-  echo '<td class="reportTableLineHeader" style="width:15%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
   foreach ($activities as $key=>$nameA) {
     if (array_key_exists($idR, $result)) {
       if (array_key_exists($key, $result[$idR])) {
         $val=$result[$idR][$key];
         $sumRes+=$val; 
         $sum+=$val;
-        echo '<td class="reportTableData" style="width:5%">' . Work::displayWorkWithUnit($val). '</td>';
-        echo '<td class="reportTableData" style="width:15%; text-align:left;">' . $project[$key] . '</td>';
-        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
-        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
-        echo '<td class="reportTableData" style="width:20%; text-align:left;" >' . htmlEncode($parent[$key]) . '</td>'; 
+        echo '<td class="reportTableData" style="width:10%">' . Work::displayWorkWithUnit($val). '</td>';
+        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $project[$key] . '</td>';
+        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
+//        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
+        echo '<td class="reportTableData" style="width:25%; text-align:left;" >' . htmlEncode($parent[$key]) . '</td>'; 
         echo '</tr><tr>';
       } 
     }

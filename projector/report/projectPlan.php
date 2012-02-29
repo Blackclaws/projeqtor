@@ -1,6 +1,6 @@
 <?php
-//echo "projectPlan.php";
 include_once '../tool/projector.php';
+//echo "projectPlan.php";
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -119,7 +119,7 @@ echo '<td class="reportTableDataFull" ' . $plannedStyle . '>';
 echo "<i>1</i>";
 echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
-echo "</td><td class='legend'>" . Work::displayWorkUnit() . "</td>";
+echo "<td class='legend'>" . Work::displayWorkUnit() . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 //echo "<br/>";
