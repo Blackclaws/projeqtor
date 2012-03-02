@@ -12,6 +12,7 @@ class Team extends SqlElement {
   public $description;
   public $_col_2_2_members;
   public $_spe_members;
+  public $_spe_affectMembers;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -70,6 +71,18 @@ class Team extends SqlElement {
       }
       $result .="</td></tr></table>";
       return $result;
+    } else if ($item=='affectMembers') {
+    	
+    	if ($this->id) {
+	    	$result .= '<button id="affectTeamMembers" dojoType="dijit.form.Button" showlabel="true"'; 
+	      $result .= ' title="' . i18n('affectTeamMembers') . '" >';
+	      $result .= '<span>' . i18n('affectTeamMembers') . '</span>';
+	      $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+	      $result .=  '  affectTeamMembers(' . $this->id . ');';
+	      $result .= '</script>';
+	      $result .= '</button>';
+	      return $result;
+    	}
     }
   }
   

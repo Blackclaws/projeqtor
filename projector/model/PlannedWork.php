@@ -3,7 +3,7 @@
  * Project is the main object of the project managmement.
  * Almost all other objects are linked to a given project.
  */ 
-class PlannedWork extends Work {
+class PlannedWork extends GeneralWork {
 
   public $_noHistory;
     
