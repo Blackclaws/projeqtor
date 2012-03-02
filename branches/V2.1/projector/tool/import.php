@@ -80,6 +80,11 @@ $lines=file($fileName);
 $title=null;
 $idxId=-1;
 $csvSep=Parameter::getGlobalParameter('csvSeparator');
+$obj=new $class();
+$captionArray=array();
+foreach ($obj as $fld=>$val) {
+	$captionArray[$obj->getColCaption($fld)]=$fld;
+}
 echo '<TABLE WIDTH="100%" style="border: 1px solid black">';
 foreach ($lines as $nbl=>$line) {
 	if (! mb_detect_encoding($line, 'UTF-8', true) ) {
@@ -153,11 +158,11 @@ foreach ($lines as $nbl=>$line) {
   } else {
     $title=explode($csvSep,$line);
     echo "<TR>";
+    $obj=new $class();
     foreach ($title as $idx=>$caption) {
       $title[$idx]=str_replace(' ','',strtolower(substr($caption,0,1)) . substr($caption,1));
       $title[$idx]=str_replace(chr(13),'',$title[$idx]);
       $title[$idx]=str_replace(chr(10),'',$title[$idx]);
-      $obj=new $class();
       $color="#A0A0A0";
       $colCaption=$caption;
       if (property_exists($obj,$title[$idx])) {
@@ -171,6 +176,13 @@ foreach ($lines as $nbl=>$line) {
         if (property_exists($obj,$idTitle)) {   
           $color="#000000";
           $colCaption=$obj->getColCaption($idTitle);
+        } else if (array_key_exists($caption,$captionArray) and property_exists($obj,$captionArray[$caption]) ) {
+          $color="#000000";
+          $colCaption=$caption;
+          $title[$idx]=$captionArray[$caption];
+          if (substr($title[$idx],0,2)=="id" and strlen($title[$idx])>2) {
+          	$title[$idx]=substr($title[$idx],2);
+          }
         } else if (property_exists($obj,get_class($obj).'PlanningElement')) {
           $peClass=get_class($obj).'PlanningElement';
           $pe=$obj->$peClass;

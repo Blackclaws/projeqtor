@@ -2116,6 +2116,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   		  or ($firstCar=='_') 
   		  or ( strpos($this->getFieldAttributes($col), 'hidden')!==false and strpos($this->getFieldAttributes($col), 'forceExport')===false )
   		  or ($col=='password')
+  		  or (strpos($this->getFieldAttributes($col), 'noExport')!==false)
   		  //or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
   		  //or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )
   		) {

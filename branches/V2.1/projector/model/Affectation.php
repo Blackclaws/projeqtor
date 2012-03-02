@@ -32,9 +32,10 @@ public $_noCopy;
     ';
   
   private static $_colCaptionTransposition = array('idUser'=>'orUser', 
-                                                   'idContact'=>'orContact');
+                                                   'idContact'=>'orContact',
+                                                   'idResourceSelect'=>'idResource');
   
-   private static $_fieldsAttributes=array("idResourceSelect"=>"hidden"); 
+   private static $_fieldsAttributes=array("idResourceSelect"=>"hidden, forceExport", "idResource"=>"noExport"); 
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -190,18 +191,22 @@ public $_noCopy;
   public function control(){
     $result="";
     $this->idResource=trim($this->idResource);
-    $this->idResourceSelect=$this->idResource;
+    $this->idResourceSelect=trim($this->idResourceSelect);
     $this->idContact=trim($this->idContact);
     $this->idUser=trim($this->idUser);
     $this->idProject=trim($this->idProject);
     if (!$this->idResource) {
       if ($this->idContact) {
       	$this->idResource=$this->idContact;
+      } else if ($this->idResourceSelect) {
+      	$this->idResource=$this->idResourceSelect;
       } else {
       	$this->idResource=$this->idUser;
       }
     }
-      $affectable=new Affectable($this->idResource);
+    //echo " ress=".$this->idResourceSelect." cont=".$this->idContact." user=".$this->idUser;
+    //echo " id=".$this->idResource;
+    $affectable=new Affectable($this->idResource);
     if ($affectable->isResource) {
       $this->idResourceSelect=$this->idResource;
     } else {

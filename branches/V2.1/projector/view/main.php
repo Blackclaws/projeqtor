@@ -1841,6 +1841,7 @@ checkVersion(); ?>
       <td>
        <form dojoType="dijit.form.Form" id='affectationForm' name='affectationForm' onSubmit="return false;">
          <input id="affectationId" name="affectationId" type="hidden" value="" />
+         <input id="affectationIdTeam" name="affectationIdTeam" type="hidden" value="" />
          <table>
            <tr>
              <td class="dialogLabel"  >

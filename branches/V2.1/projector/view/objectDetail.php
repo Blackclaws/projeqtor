@@ -633,7 +633,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         	$displayComboButtonCol=false;
         }
         if ($displayComboButtonCol) {
-        	$menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menu' . substr($col,2)));
+        	$idMenu=($col=="idResourceSelect")?'menuResource':'menu' . substr($col,2);        
+        	$menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>$idMenu));
         	$crit=array();
         	$crit['idProfile']=$user->idProfile;
         	$crit['idMenu']=$menu->id;
