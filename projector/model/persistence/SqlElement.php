@@ -757,10 +757,10 @@ abstract class SqlElement {
             $newObj->$col_name->realEndDate="";
             $newObj->$col_name->plannedDuration="";
             $newObj->$col_name->realDuration="";
-            $newObj->$col_name->assignedWork="";
-            $newObj->$col_name->plannedWork="";
-            $newObj->$col_name->leftWork="";
-            $newObj->$col_name->realWork="";
+            $newObj->$col_name->assignedWork=0;
+            $newObj->$col_name->plannedWork=0;
+            $newObj->$col_name->leftWork=0;
+            $newObj->$col_name->realWork=0;
             $newObj->$col_name->idle=0;
             $newObj->$col_name->done=0;
           }

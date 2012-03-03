@@ -1299,15 +1299,17 @@ function getDisplayVersion(typeEvo, version, revision, draft, numVers, dateVers,
 	if (version!="" && revision !="") {
 	  res="V"+version+"."+revision;
     }
-	if (draft) {
-	  res+=draftSeparator+draft;
-	}
   } else if (typeEvo=="EVT") {
 	res=dateVers;
   } else if (typeEvo=="SEQ") {
 	res=numVers;
   } else if (typeEvo=="EXT") {
 	res=nameVers
+  }
+  if (typeEvo=="EVO" || typeEvo=="EVT" || typeEvo=="SEQ") {
+	if (draft) {
+	  res+=draftSeparator+draft;
+	}
   }
   return res;
 }
@@ -2224,6 +2226,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
 		dijit.byId("affectationProject").set('readOnly',false);
 		dijit.byId("affectationProject").reset();
 	}
+	dijit.byId("affectationResource").set('required',true);
 	dijit.byId("affectationRate").set('value','100');
 	dijit.byId("affectationIdle").reset();
 	dijit.byId("dialogAffectation").show();
@@ -2253,6 +2256,7 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 	} else { 
 	  refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
 	}
+	dijit.byId("affectationResource").set('required',true);
 	dojo.byId("affectationId").value=id;
 	dojo.byId("affectationIdTeam").value="";
 	if (objectClass=='Project') {
@@ -2295,26 +2299,16 @@ function affectTeamMembers(idTeam) {
 		return;
 	}	
 	refreshList('idProject', null, null, null, 'affectationProject', true);
-	if (objectClass=='Project') {
-	  refreshList('id'+type, null, null, null, 'affectationResource', true);
-	} else { 
-	  refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
-	}
 	dojo.byId("affectationId").value="";
 	dojo.byId("affectationIdTeam").value=idTeam;
-	if (objectClass=='Project') {
-		dijit.byId("affectationProject").set('readOnly',true);
-		dijit.byId("affectationProject").set('value',idProject);
-		dijit.byId("affectationResource").set('readOnly',false);
-		dijit.byId("affectationResource").reset();
-	} else {
-		dijit.byId("affectationResource").set('readOnly',true);
-		dijit.byId("affectationResource").set('value',idResource);
-		dijit.byId("affectationProject").set('readOnly',false);
-		dijit.byId("affectationProject").reset();
-	}
+    dijit.byId("affectationResource").set('readOnly',true);
+    dijit.byId("affectationResource").set('required',false);
+	dijit.byId("affectationResource").reset();
+	dijit.byId("affectationProject").set('readOnly',false);
+	dijit.byId("affectationProject").reset();
 	dijit.byId("affectationRate").set('value','100');
 	dijit.byId("affectationIdle").reset();
+	dijit.byId("affectationIdle").set('readOnly',true);
 	dijit.byId("dialogAffectation").show();
 }
 //=============================================================================

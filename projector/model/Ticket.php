@@ -29,8 +29,7 @@ class Ticket extends SqlElement {
   public $idPriority;
   public $initialDueDateTime; // is an object
   public $actualDueDateTime;
-  public $plannedWork;
-  public $realWork;
+  public $WorkElement;
   public $handled;
   public $handledDateTime;
   public $done;
