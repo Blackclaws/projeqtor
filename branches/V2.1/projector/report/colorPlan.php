@@ -1,6 +1,12 @@
 <?php
 //echo "colorPlan.php";
 include_once '../tool/projector.php';
+
+$paramProject='';
+if (array_key_exists('idProject',$_REQUEST)) {
+  $paramProject=trim($_REQUEST['idProject']);
+}
+
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -23,6 +29,10 @@ $periodValue=$_REQUEST['periodValue'];
 
 // Header
 $headerParameters="";
+if ($paramProject!="") {
+  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+}
+
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
   
@@ -40,6 +50,9 @@ $where=getAccesResctictionClause('Activity',false);
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
+if ($paramProject!='') {
+  $where.=  "and idProject in " . getVisibleProjectsList(true, $paramProject) ;
+}
 $order="";
 //echo $where;
 $work=new Work();

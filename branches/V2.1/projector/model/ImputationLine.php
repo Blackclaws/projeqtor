@@ -46,8 +46,11 @@ class ImputationLine {
    */ 
   function __destruct() {
   }
-
+  
   static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true) {
+  	// Insert new lines for admin projects
+  	Assignment::insertAdministrativeLines($resourceId);
+  	
   	$result=array();
     if ($rangeType=='week') {
       $nbDays=7;
@@ -260,6 +263,9 @@ class ImputationLine {
       . i18n('colPlanned') . '</TD>';
     echo '</TR>';  
     $tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned);
+    if (! $print) {     
+      echo '<input type="hidden" id="nbLines" name="nbLines" value="' . count($tab) . '" />';
+    }
     $nbLine=0;
     $collapsedList=Collapsed::getCollaspedList();
     $closedWbs='';
@@ -540,9 +546,6 @@ class ImputationLine {
       .  '</NOBR></TD>';
     echo '</TR>';      
     echo '</table>'; 
-    if (! $print) {     
-      echo '<input type="hidden" id="nbLines" name="nbLines" value="' . $nbLine . '" />';
-    }
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
