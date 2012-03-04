@@ -109,7 +109,15 @@ class SqlList {
       } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion' or strtolower($listType)=='targetversion') and $col=='idProject') {
       	$vp=new VersionProject();
         $ver=new Version();
-        $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject='" . $val . "' and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
+        $proj=new Project($val);
+        $lst=$proj->getTopProjectList(true);
+        $inClause='(';
+        foreach ($lst as $prj) {
+        	$inClause.=($inClause=='(')?'':',';
+        	$inClause.=$prj;
+        }
+        $inClause.=')';
+        $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject in " . $inClause . " and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";
       } else if (strtolower($listType)=='indicator' and $col=='idIndicatorable' ) {
       	$ii=new IndicatorableIndicator();
       	$i=new Indicator();
