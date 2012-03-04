@@ -166,5 +166,57 @@ class Assignment extends SqlElement {
     }
     return $result;
   }
+  
+  public static function insertAdministrativeLines($resourceId) {
+    // Insert new assignment for all administrative activities
+    $type=new ProjectType();
+    $critType=array('code'=>'ADM', 'idle'=>'0');
+    $lstType=$type->getSqlElementsFromCriteria($critType);
+    foreach ($lstType as $type) {
+//debugLog("Type=#$type->id-$type->name");    	
+    	$proj=new Project();
+    	$critProj=array('idProjectType'=>$type->id, 'idle'=>'0');
+    	$lstProj=$proj->getSqlElementsFromCriteria($critProj);
+    	foreach ($lstProj as $proj) {
+//debugLog("  proj=#$proj->id-$proj->name");
+    		$acti=new Activity();
+    	  $critActi=array('idProject'=>$proj->id, 'idle'=>'0');
+    	  $lstActi=$acti->getSqlElementsFromCriteria($critActi);
+    	  foreach ($lstActi as $acti) {
+//debugLog("    acti=#$acti->id-$acti->name");    	  	
+          $assi=new Assignment();
+          $critAssi=array('refType'=>'Activity', 'refId'=>$acti->id, 'idResource'=>$resourceId);
+          $lstAssi=$assi->getSqlElementsFromCriteria($critAssi,false);
+//debugLog("      nbAssi=".count($lstAssi));
+          if (count($lstAssi)==0) {
+          	$assi->idProject=$proj->id;
+          	$assi->refType='Activity';
+          	$assi->refId=$acti->id;
+          	$assi->idResource=$resourceId;          	
+            //$assi->idRole;
+            //$assi->comment;
+            $assi->assignedWork=0;
+            $assi->realWork=0;
+            $assi->leftWork=0;
+            $assi->plannedWork=0;
+            $assi->rate=0;
+            //$assi->realStartDate;
+            //$assi->$realEndDate;
+            //$assi->plannedStartDate;
+            //$assi->plannedEndDate;
+            //$assi->dailyCost;
+            //$assi->newDailyCost;
+            //$assi->assignedCost;
+            //$assi->realCost;
+            //$assi->leftCost;
+            //$assi->plannedCost;
+            $assi->idle=0;
+            //$assi->billedWork;
+            $assi->save();
+          }
+    	  }
+    	}
+    }
+  }
 }
 ?>
