@@ -13,7 +13,7 @@ require_once "../tool/projector.php";
  * @return void
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null) {
-debugLog("      =>htmlDrawOptionForReference($col,$selection,obj,$required,$critFld,$critVal)");
+//traceLog("      =>htmlDrawOptionForReference($col,$selection,obj,$required,$critFld,$critVal)");
 	$listType=substr($col,2);
 	$column='name';
 	if ($listType=='DocumentDirectory') {

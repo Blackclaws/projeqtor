@@ -28,7 +28,7 @@ class Activity extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
-  public $idVersion;
+  public $idTargetVersion;
   public $result;
   public $_sec_Assignment;
   public $_Assignment=array();
@@ -73,10 +73,10 @@ class Activity extends SqlElement {
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'parentActivity',
                                                    'idContact' => 'requestor',
-                                                   'idVersion'=>'targetVersion');
+                                                   'idTargetVersion'=>'targetVersion');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array();
+  private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
     
    /** ==========================================================================
    * Constructor

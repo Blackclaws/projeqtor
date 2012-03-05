@@ -69,3 +69,14 @@ INSERT INTO `${prefix}reportparameter` (idReport, name, paramType, `order`, defa
 (4,'idProject', 'projectList', 1, 'currentProject'),
 (5,'idProject', 'projectList', 1, 'currentProject'),
 (6,'idProject', 'projectList', 1, 'currentProject');
+
+CREATE TABLE `${prefix}environment` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}environment` ADD INDEX environmentProject (idProject);
