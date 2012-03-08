@@ -279,6 +279,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if (strpos($obj->getFieldAttributes($col), 'invisible')!==false) {
         $specificStyle.=' visibility:hidden';
       }
+      if (strpos($obj->getFieldAttributes($col), 'title')!==false) {
+      	$attributes.=' title="' . i18n('col'.ucfirst($col)) . '"';
+      }
       if ( (securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == "NO") 
       or (strpos($obj->getFieldAttributes($col), 'readonly')!==false)
       or $parentReadOnly 
@@ -713,8 +716,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($displayComboButtonCol) {
           $fieldWidth -= 20;
         }
-        if ($nobr_before) {
-        	$fieldWidth=$fieldWidth/3;
+        if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3')!==false) {
+        	$fieldWidth=$fieldWidth/3-3;
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
         //echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';

@@ -19,6 +19,9 @@ class Ticket extends SqlElement {
   public $idContact;
   public $Origin;
   public $idTicket;
+  public $idContext1;
+  public $idContext2;
+  public $idContext3;
   public $idOriginalVersion;
   public $description;
   public $_col_2_2_treatment;
@@ -68,7 +71,10 @@ class Ticket extends SqlElement {
                                   "creationDateTime"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "idContext1"=>"nobr,size1/3,title",
+                                  "idContext2"=>"nobr,title", 
+                                  "idContext3"=>"title"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -77,7 +83,8 @@ class Ticket extends SqlElement {
                                                    'idContact' => 'requestor',
                                                    'idTargetVersion'=>'targetVersion',
                                                    'idOriginalVersion'=>'originalVersion',
-                                                   'idTicket'=>'duplicateTicket');
+                                                   'idTicket'=>'duplicateTicket',
+                                                   'idContext1'=>'idContext');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');

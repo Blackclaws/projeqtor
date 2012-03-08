@@ -89,7 +89,7 @@ for ($i=1;$i<=2;$i++) {
     if (! array_key_exists($date, $tab[$proj][$var])) {
     	$tab[$proj][$var][$date]=0;
     }
-    $tab[$proj][$var][$date]=+$cost;
+    $tab[$proj][$var][$date]+=$cost;
     if ($start=="" or $start>$date) {
       $start=$date;
     }

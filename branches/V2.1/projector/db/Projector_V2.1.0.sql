@@ -70,13 +70,53 @@ INSERT INTO `${prefix}reportparameter` (idReport, name, paramType, `order`, defa
 (5,'idProject', 'projectList', 1, 'currentProject'),
 (6,'idProject', 'projectList', 1, 'currentProject');
 
-CREATE TABLE `${prefix}environment` (
+CREATE TABLE `${prefix}contexttype` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `idProject` int(12) unsigned DEFAULT NULL,
-  `description` varchar(4000) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}environment` ADD INDEX environmentProject (idProject);
+INSERT INTO `${prefix}contexttype` (id, name) VALUES
+(1,'colIdContext1'),
+(2,'colIdContext2'),
+(3,'colIdContext3');
+
+CREATE TABLE `${prefix}context` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idContextType`  int(12) unsigned DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `sortOrder` int(3) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}context` ADD INDEX contextContextType (idContextType);
+
+INSERT INTO  `${prefix}context` (idContextType, name, sortOrder) VALUES 
+(1,'Production', 100),
+(1,'Validation', 200),
+(2,'Windows 7', 100),
+(2,'Windows Vista', 110),
+(2,'Windows XP', 120),
+(2,'Mac OS X', 200),
+(2,'Mac OS <=9', 210),
+(2,'Linux', 210),
+(3,'IE 9', 100),
+(3,'IE 8', 110),
+(3,'IE 7', 120),
+(3,'IE <= 6', 130),
+(3,'FireFox >= 5', 200),
+(3,'FireFox <= 4', 210),
+(3,'Chrome', 300),
+(3,'Safari', 400);
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(104,'menuContext',14,'object',660,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 104, 1);
+
+ALTER TABLE `${prefix}ticket` ADD COLUMN `idContext1` int(12) unsigned DEFAULT NULL,
+ADD COLUMN `idContext2` int(12) unsigned DEFAULT NULL,
+ADD COLUMN `idContext3` int(12) unsigned DEFAULT NULL;
