@@ -8,14 +8,17 @@
 <pre>
 
 <?php 
-include_once '../tool/projector.php';
-echo '2011-12-24->' . isOffDay('2011-12-24') . "\n";
-echo '2011-12-25->' . isOffDay('2011-12-25') . "\n";
-echo '2011-12-26->' . isOffDay('2011-12-26') . "\n";
-echo '2011-12-27->' . isOffDay('2011-12-27') . "\n";
-echo '2011-12-28->' . isOffDay('2011-12-28') . "\n";
 
-echo workDayDiffDates('2011-12-23','2011-12-28');
+$var=5;
+echo $var . "\n";
+$var=+2;
+echo $var . "\n";
+$var=+3;
+echo $var . "\n";
+$var+=2;
+echo $var . "\n";
+$var+=3;
+echo $var . "\n";
 ?>
 </pre>
 

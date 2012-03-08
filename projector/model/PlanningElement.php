@@ -392,7 +392,7 @@ class PlanningElement extends SqlElement {
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
         $assignedCost+=$pla->assignedCost;
-        $leftCost=+$pla->leftCost;
+        $leftCost+=$pla->leftCost;
         $plannedCost+=$pla->plannedCost;
         $realCost+=$pla->realCost;
         if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
