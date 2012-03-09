@@ -28,7 +28,7 @@ if ($ref2Type) {
 }
 
 ?>
-<select id="linkRef2Id" size="14"" name="linkRef2Id"
+<select id="linkRef2Id" size="14"" name="linkRef2Id[]" multiple
 onchange="enableWidget('dialogLinkSubmit');"  ondblclick="saveLink();"
 class="selectList" >
  <?php

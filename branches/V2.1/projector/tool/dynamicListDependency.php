@@ -33,7 +33,7 @@ if (class_exists ($refTypeDep) ) {
 }
 
 ?>
-<select id="dependencyRefIdDep" size="14" name="dependencyRefIdDep"
+<select id="dependencyRefIdDep" size="14" name="dependencyRefIdDep[]" multiple
 onchange="enableWidget('dialogDependencySubmit');" ondblclick="saveDependency();" 
 class="selectList" >
  <?php

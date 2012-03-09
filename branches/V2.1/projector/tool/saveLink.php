@@ -28,15 +28,37 @@ $ref2Id=$_REQUEST['linkRef2Id'];
 
 $linkId=null;
 
+$arrayId=array();
+if (is_array($ref2Id)) {
+	$arrayId=$ref2Id;
+} else {
+	$arrayId[]=$ref2Id;
+}
+
+$result="";
 // get the modifications (from request)
-$link=new Link($linkId);
-
-$link->ref1Id=$ref1Id;
-$link->ref1Type=$ref1Type;
-$link->ref2Id=$ref2Id;
-$link->ref2Type=$ref2Type;
-
-$result=$link->save();
+foreach ($arrayId as $ref2Id) {
+	$link=new Link($linkId);
+	$link->ref1Id=$ref1Id;
+	$link->ref1Type=$ref1Type;
+	$link->ref2Id=$ref2Id;
+	$link->ref2Type=$ref2Type;
+  $res=$link->save();
+  if (!$result) {
+    $result=$res;
+  } else if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
+  	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+  		$deb=stripos($res,'#');
+  		$fin=stripos($res,' ',$deb);
+  		$resId=substr($res,$deb, $fin-$deb);
+  		$deb=stripos($result,'#');
+      $fin=stripos($result,' ',$deb);
+      $result=substr($result, 0, $fin).','.$resId.substr($result,$fin);
+  	} else {
+  	  $result=$res;
+  	} 
+  }
+}
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
