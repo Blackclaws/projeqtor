@@ -196,7 +196,8 @@ class ImputationLine {
   }
   
   static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
-    $nameWidth=220;
+    $oldValues="";
+  	$nameWidth=220;
     $dateWidth=80;
     $workWidth=60;
     $inputWidth=30;
@@ -296,23 +297,23 @@ class ImputationLine {
       if (! $print) {    
         echo '<input type="hidden" id="wbs_' . $nbLine . '" name="wbs_' . $nbLine . '"' 
           . ' value="' . $line->wbsSortable . '"/>';
-        echo '<input type="hidden" id="status_' . $nbLine . '" name="status_' . $nbLine . '"';
+        echo '<input type="hidden" id="status_' . $nbLine . '" xname="status_' . $nbLine . '"';
         if ($collapsed) {
         	echo   ' value="closed"';
         } else {
           echo   ' value="opened"';
         }
         echo '/>';
-        echo '<input type="hidden" id="refType_' . $nbLine . '" name="refType_' . $nbLine . '"'
-          . ' value="' . $line->refType . '"/>';
-        echo '<input type="hidden" id="refId_' . $nbLine . '" name="refId_' . $nbLine . '"'
-          . ' value="' . $line->refId . '"/>';
+        //echo '<input type="hidden" id="refType_' . $nbLine . '" name="refType_' . $nbLine . '"'
+        //  . ' value="' . $line->refType . '"/>';
+        //echo '<input type="hidden" id="refId_' . $nbLine . '" name="refId_' . $nbLine . '"'
+        //  . ' value="' . $line->refId . '"/>';
         echo '<input type="hidden" id="idAssignment_' . $nbLine . '" name="idAssignment_' . $nbLine . '"'
           . ' value="' . $line->idAssignment . '"/>';
         echo '<input type="hidden" id="imputable_' . $nbLine . '" name="imputable_' . $nbLine . '"'
           . ' value="' . $line->imputable . '"/>';
-        echo '<input type="hidden" id="idProject_' . $nbLine . '" name="idProject_' . $nbLine . '"'
-          . ' value="' . $line->idProject . '"/>';
+        //echo '<input type="hidden" id="idProject_' . $nbLine . '" name="idProject_' . $nbLine . '"'
+        //  . ' value="' . $line->idProject . '"/>';
       }
       echo '<img src="css/images/icon' . $line->refType . '16.png" />';
       echo '</td>';
@@ -452,12 +453,14 @@ class ImputationLine {
             echo '</script>';
             echo '</div>';
             echo '</div>';
-            if (! $print) {    
-              echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
-                . 'name="workId_' . $nbLine . '_' . $i . '"'
-                . ' value="' . $idWork . '"/>';
+            if (! $print) {  
+            	if ($idWork) {
+                echo '<input type="hidden" id="workId_' . $nbLine . '_' . $i . '"'
+                  . 'name="workId_' . $nbLine . '_' . $i . '"'
+                  . ' value="' . $idWork . '"/>';
+            	}
               echo '<input type="hidden" id="workOldValue_' . $nbLine . '_' . $i . '"'
-                . 'name="workOldValue_' . $nbLine . '_' . $i . '"'
+                . ' xname="workOldValue_' . $nbLine . '_' . $i . '"'
                 . ' value="' .  Work::displayImputation($valWork) . '"/>';
             }
           } else {

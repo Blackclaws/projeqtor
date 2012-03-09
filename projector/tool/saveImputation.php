@@ -21,15 +21,19 @@ for ($i=1; $i<=$nbLines; $i++) {
   $imputable=$_REQUEST['imputable_' . $i];
   if ($imputable) {
     $line=new ImputationLine();
-    $line->refType=$_REQUEST['refType_' . $i];
-    $line->refId=$_REQUEST['refId_' . $i];
     $line->idAssignment=$_REQUEST['idAssignment_' . $i];
+    $ass=new Assignment($line->idAssignment);
+    $line->refType=$ass->refType;
+    $line->refId=$ass->refId;
     $line->idResource=$userId;
     $line->leftWork=Work::convertImputation($_REQUEST['leftWork_' . $i]);
     $line->imputable=$imputable;
     $arrayWork=array();
     for ($j=1; $j<$nbDays; $j++) {
-      $workId=$_REQUEST['workId_' . $i . '_' . $j];
+    	$workId=null;
+    	if (array_key_exists('workId_' . $i . '_' . $j, $_REQUEST)) {
+        $workId=$_REQUEST['workId_' . $i . '_' . $j];
+    	}
       $workValue=Work::convertImputation($_REQUEST['workValue_' . $i . '_' . $j]);
       $workDate=$_REQUEST['day_' . $j];
       if ($workId) {
@@ -42,7 +46,7 @@ for ($i=1; $i<=$nbLines; $i++) {
       $arrayWork[$j]=$work;
       $arrayWork[$j]->work=$workValue;
       $arrayWork[$j]->idResource=$userId;
-      $arrayWork[$j]->idProject=$_REQUEST['idProject_' . $i];;
+      $arrayWork[$j]->idProject=$ass->idProject;
       $arrayWork[$j]->refType=$line->refType;
       $arrayWork[$j]->refId=$line->refId;
       $arrayWork[$j]->idAssignment=$line->idAssignment;     
@@ -61,7 +65,6 @@ for ($i=1; $i<=$nbLines; $i++) {
         $finalResult=$result;
       }
     }
-    $ass=new Assignment($line->idAssignment);
     $ass->leftWork=$line->leftWork;
     $resultAss=$ass->saveWithRefresh();
     if (stripos($resultAss,'id="lastOperationStatus" value="OK"')>0 ) {
