@@ -99,7 +99,9 @@ class PlannedWork extends GeneralWork {
     
     // build in list to get a where clause : "idProject in ( ... )" 
     $proj=new Project($projectId);
-    $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));  
+    $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
+    // Remove administrative projects :
+    $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;  
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);

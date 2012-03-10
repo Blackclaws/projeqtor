@@ -233,7 +233,12 @@ class Parameter extends SqlElement {
       case 'changeReferenceOnTypeChange';
         $list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
-        break; 
+        break;
+      case 'displayResourcePlan';
+        $list=array('name'=>i18n('colName'),
+                    'initials'=>i18n('colInitials'),
+                    'NO'=>i18n('displayNo'));
+        break;  
     } 
     return $list;
   }
@@ -291,7 +296,9 @@ class Parameter extends SqlElement {
       	                     'billPrefix'=>'text',
       	                     'billSuffix'=>'text',
       	                     'billNumSize'=>'number',
-      	                     'billNumStart'=>'number'
+      	                     'billNumStart'=>'number',
+      	                     'sectionPlanning'=>'section',
+      	                     'displayResourcePlan'=>'list',
       	);
     }
     return $parameterList;

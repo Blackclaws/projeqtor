@@ -7,6 +7,7 @@
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
+  $displayResource=Parameter::getGlobalParameter('displayResourcePlan');
   $print=false;
   if ( array_key_exists('print',$_REQUEST) ) {
     $print=true;
@@ -54,24 +55,12 @@
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
   }
   
-/*  if ($accessRightRead=='NO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  "(1 = 2)";      
-  } else if ($accessRightRead=='OWN') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    //$queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";     
-    $queryWhere.=  "(1 = 2)"; // If visibility = own => no visibility            
-  } else if ($accessRightRead=='PRO') {
-    $queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      
-  } else if ($accessRightRead=='ALL') {
-    // No restriction to add
-  }*/
+  // Remove administrative projects :
+  $queryWhere.= ($queryWhere=='')?'':' and ';
+  $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
+    
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;
-  // Link to resource
-  //$querySelect .= ", user.fullName as nameResource ";
-  //$queryFrom .= " left join user on ( task.idResource=user.id )";    
   
   $queryOrderBy .= $table . ".wbsSortable ";
 
@@ -119,6 +108,26 @@
         	echo ',"collapsed":"1"';
         } else {
         	echo ',"collapsed":"0"';
+        }
+        if ($displayResource and strtoupper($displayResource)!='NO') {
+        	//debugLog($displayResource);
+          $crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
+          $ass=new Assignment();
+          $assList=$ass->getSqlElementsFromCriteria($crit,false);
+	        $arrayResource=array();
+	        $objElt=new $line['refType']($line['refId']);
+	        foreach ($assList as $ass) {
+	        	$res=new Resource($ass->idResource);
+	        	if ($res->$displayResource)	{        	
+	        	  $arrayResource[$res->id]=$res->$displayResource;
+	        	  if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
+	        		  $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
+	        	  }
+	        	}
+	        	// debugLog($res->$displayResource);
+	        }
+	        $res=new Resource($ass->idResource);
+	        echo ',"resource":"' . implode(', ',$arrayResource) . '"';
         }
         $crit=array('successorId'=>$idPe);
         $listPred="";
@@ -298,14 +307,8 @@
         $pStart=$line['pStart'];
         $realWork=$line['realWork'];
         $plannedWork=$line['plannedWork'];
-        $progress=' 0';
-        if ($plannedWork>0) {
-          $progress=round(100*$realWork/$plannedWork);
-        } else {
-          if ($line['done']) {
-            $progress=100;
-          }
-        }
+        $progress=$line['progress'];
+        
         // pGroup : is the tack a group one ?
         $pGroup=($line['elementary']=='0')?1:0;
         if ($closedWbs and strlen($line['wbsSortable'])<=strlen($closedWbs)) {
