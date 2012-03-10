@@ -126,6 +126,17 @@ if ($currVersion<"V1.9.1") {
   }
 }
 
+// For V2.1.0
+if ($currVersion<"V2.1.0") {
+  // update PlanningElements (progress)
+  $pe=new PlanningElement();
+  $peList=$pe->getSqlElementsFromCriteria(null, false);
+  foreach ($peList as $pe) {
+    $pe->save();
+  }
+}
+
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

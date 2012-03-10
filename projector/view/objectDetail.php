@@ -753,12 +753,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (! $print) {
           echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
         }
+        if (strtolower(substr($col,-8,8))=='progress') {
+          echo '&nbsp;%';
+        }
         echo '</div>';
+        
       } else if ($dataType=='int' or $dataType=='decimal'){
       	// Draw a number field ================================================ NUMBER
         $isCost=false;
         $isWork=false;
         $isDuration=false;
+        $isPercent=false;
         if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount'  or $col=='amount') ) {
           $isCost=true;
           $fieldWidth=$smallWidth;
@@ -770,6 +775,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($dataType=='int' and (substr($col, -8,8)=='Duration') ) {
           $isDuration=true;
           $fieldWidth=$smallWidth;
+        }
+        if ($dataType=='int' and strtolower(substr($col, -8,8)=='progress')) {
+        	$isPercent=true;
         }
         $spl=explode(',',$dataLength);
         $dec=0;
@@ -802,6 +810,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if ($isDuration) {
           echo i18n("shortDay");
+        }
+        if ($isPercent) {
+          echo '%'; 
         }
       } else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST) ){
         // Draw a long text (as a textarea) =================================== TEXTAREA

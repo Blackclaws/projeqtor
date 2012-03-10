@@ -24,8 +24,8 @@ class ProjectPlanningElement extends PlanningElement {
   public $plannedEndDate;
   public $realEndDate;
   public $_void_25;
-  public $_void_26;
-  public $_void_27;
+  public $_label_progress;
+  public $progress;
   public $initialDuration;
   public $validatedDuration;
   public $_void_33;

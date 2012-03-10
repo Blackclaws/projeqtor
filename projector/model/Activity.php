@@ -45,12 +45,13 @@ class Activity extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="9%" >${idProject}</th>
-    <th field="nameActivityType" width="9%" >${idActivityType}</th>
+    <th field="nameActivityType" width="7%" >${idActivityType}</th>
     <th field="wbsSortable" from="ActivityPlanningElement" formatter="sortableFormatter" width="5%" >${wbs}</th>
-    <th field="name" width="20%" >${name}</th>
+    <th field="name" width="12%" >${name}</th>
     <th field="validatedEndDate" from="ActivityPlanningElement" width="8%" formatter="dateFormatter">${validatedDueDate}</th>
     <th field="plannedEndDate" from="ActivityPlanningElement" width="8%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="progress" from="ActivityPlanningElement" width="5%" formatter="percentFormatter">${progress}</th>
     <th field="nameVersion" width="8%" >${targetVersion}</th>
     <th field="nameResource" width="8%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>

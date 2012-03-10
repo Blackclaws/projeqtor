@@ -27,6 +27,7 @@ class PlanningElement extends SqlElement {
   public $plannedWork;
   public $leftWork;
   public $realWork;
+  public $progress;
   public $validatedCost;
   public $assignedCost;
   public $plannedCost;
@@ -53,6 +54,7 @@ class PlanningElement extends SqlElement {
                                   "refName"=>"hidden",
                                   "wbs"=>"display", 
                                   "wbsSortable"=>"hidden",
+                                  "progress"=>"display",
                                   "topType"=>"hidden",
                                   "topId"=>"hidden",
                                   "topRefType"=>"hidden",
@@ -210,10 +212,14 @@ class PlanningElement extends SqlElement {
         $refObj=new $refType($this->refId);
         if ($this->done and property_exists($refObj, 'doneDate')) {
           $this->realEndDate=$refObj->doneDate;
+          $this->progress=100;
         } else {
           $this->realEndDate=null;
+          $this->progress=0;
         }
       }
+    } else {
+    	$this->progress = $this->realWork / ($this->realWork + $this->leftWork) * 100;
     }
     
     // update topId if needed

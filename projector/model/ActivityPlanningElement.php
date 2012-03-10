@@ -40,8 +40,8 @@ class ActivityPlanningElement extends PlanningElement {
   public $plannedWork;
   public $realWork;
   public $leftWork;
-  public $_void_46;
-  public $_void_47;
+  public $_label_progress;
+  public $progress;
   public $_void_51;
   public $validatedCost;
   public $assignedCost;

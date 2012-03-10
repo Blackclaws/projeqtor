@@ -16,6 +16,11 @@ $nbLines=$_REQUEST['nbLines'];
 if ($rangeType=='week') {
   $nbDays=7;
 }
+//echo ini_get('max_input_vars');
+if (!ini_get('max_input_vars')) {
+    ini_set('max_input_vars', 25*$nbLines+20);
+}
+//echo ini_get('max_input_vars');
 
 for ($i=1; $i<=$nbLines; $i++) {
   $imputable=$_REQUEST['imputable_' . $i];
