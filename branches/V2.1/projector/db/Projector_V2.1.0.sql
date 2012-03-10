@@ -131,3 +131,5 @@ INSERT INTO `${prefix}originable` (`id`, `name`, `idle`) VALUES
 
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `progress` int(3) unsigned DEFAULT 0;
 
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'displayResourcePlan','initials');

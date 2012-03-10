@@ -527,5 +527,21 @@ class Project extends SqlElement {
     return $result;
   }
   
+  public static function getAdminitrativeProjectList() {
+  	$arrayProj=array();
+  	$type=new ProjectType();
+  	$critType=array('code'=>'ADM');
+  	$listType=$type->getSqlElementsFromCriteria($critType, false);
+  	foreach ($listType as $type) {
+  	  $proj=new Project(); 
+  		$critProj=array('idProjectType'=>$type->id);
+      $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
+      foreach ($listProj as $proj) {
+      	$arrayProj[]=$proj->id;
+      }
+  	}
+  	return '(' . implode(', ',$arrayProj) . ')';
+  }
+  
 }
 ?>

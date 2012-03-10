@@ -1354,11 +1354,12 @@ function drawGantt() {
       pId=item.refId;
       pScope="Planning_"+pClass+"_"+pId;
       pOpen=(item.collapsed=='1')?'0':'1';
+      pResource=item.resource;
       var pDepend=item.depend;
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
-      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, '',   progress, pGroup, topId,   pOpen,     pDepend  ,    '' ,    pClass, pScope));
+      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, pResource,   progress, pGroup, topId,   pOpen,     pDepend  , pResource,    pClass, pScope));
     }
     g.Draw();  
     g.DrawDependencies();
