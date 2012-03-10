@@ -17,9 +17,6 @@ ALTER TABLE `${prefix}planningelement` CHANGE initialWork initialWork DECIMAL(14
  
 ALTER TABLE `${prefix}product` ADD COLUMN `idProduct`  int(12) unsigned DEFAULT NULL;
 
---ALTER TABLE `${prefix}ticket` ADD COLUMN `plannedWork`  DECIMAL(6,2) unsigned default 0,
---ADD COLUMN `realWork`  DECIMAL(6,2) unsigned DEFAULT 0;
-
 ALTER TABLE `${prefix}ticket` ADD COLUMN `idTicket` int(12) unsigned DEFAULT NULL;
 
 CREATE TABLE `${prefix}workelement` (
@@ -120,3 +117,17 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 ALTER TABLE `${prefix}ticket` ADD COLUMN `idContext1` int(12) unsigned DEFAULT NULL,
 ADD COLUMN `idContext2` int(12) unsigned DEFAULT NULL,
 ADD COLUMN `idContext3` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}project` ADD COLUMN `idStatus` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}project` ADD INDEX projectStatus (idStatus);
+
+UPDATE `${prefix}project` SET idStatus=1;
+UPDATE `${prefix}type` SET idWorkflow=1 WHERE scope='Project';
+
+
+INSERT INTO `${prefix}originable` (`id`, `name`, `idle`) VALUES
+(12, 'Project', 0),
+(13, 'Document', 0);
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `progress` int(3) unsigned DEFAULT 0;
+

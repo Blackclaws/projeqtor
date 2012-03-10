@@ -20,6 +20,7 @@ class Project extends SqlElement {
   public $idUser;
   public $color;
   //public $paymentDelay;
+  public $idStatus;
   public $done;
   public $doneDate;
   public $idle;
@@ -47,11 +48,13 @@ class Project extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="wbsSortable" from="ProjectPlanningElement" formatter="sortableFormatter" width="5%" >${wbs}</th>
-    <th field="name" width="20%" >${projectName}</th>
-    <th field="nameProjectType" width="15%" >${type}</th>
+    <th field="name" width="15%" >${projectName}</th>
+    <th field="nameProjectType" width="10%" >${type}</th>
     <th field="color" width="5%" formatter="colorFormatter">${color}</th>
     <th field="projectCode" width="5%" >${projectCode}</th>
-    <th field="nameClient" width="15%" >${clientName}</th>
+    <th field="nameClient" width="10%" >${clientName}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="progress" from="ProjectPlanningElement" width="5%" formatter="percentFormatter">${progress}</th>
     <th field="validatedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${validatedEnd}</th>
     <th field="plannedEndDate" from="ProjectPlanningElement" width="10%" formatter="dateFormatter">${plannedEnd}</th>  
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
@@ -69,7 +72,8 @@ class Project extends SqlElement {
                                   "sortOrder"=>"hidden",
                                   "codeType"=>"hidden",
                                   "idProjectType"=>"required",
-  "longitude"=>"hidden", "latitude"=>"hidden"
+                                  "longitude"=>"hidden", "latitude"=>"hidden",
+                                  "idStatus"=>"required"
   );   
  
   private static $_colCaptionTransposition = array('idUser'=>'manager',

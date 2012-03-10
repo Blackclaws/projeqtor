@@ -151,7 +151,7 @@
         $endDate=($endDate=='')?$prj->ProjectPlanningElement->initialEndDate:$endDate;
         $progress='0';
         if ($prj->ProjectPlanningElement->realWork!='' and $prj->ProjectPlanningElement->plannedWork!='' and $prj->ProjectPlanningElement->plannedWork!='0') {
-          $progress=round(($prj->ProjectPlanningElement->realWork) / ( $prj->ProjectPlanningElement->plannedWork) * 100 );
+          $progress=$prj->ProjectPlanningElement->progress;
         }        
         $late='';
         if ($prj->ProjectPlanningElement->plannedEndDate!='' and $prj->ProjectPlanningElement->validatedEndDate!='') {
