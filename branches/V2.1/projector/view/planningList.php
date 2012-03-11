@@ -16,8 +16,8 @@ scriptLog('   ->/view/planningList.php');
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="27px">
 		    <td width="50px" align="center">
-		      <span style="position:absolute; left:+10px; top: +2px">
-            <img src="css/images/iconPlanning22.png" width="22" height="22" />
+		      <span style="position:absolute; left:+10px; top: +7px">
+            <img src="css/images/iconPlanning32.png" width="32" height="32" />
           </span>
 		    </td>
 		    <td><span class="title"><?php echo i18n('menuPlanning');?></span></td>
@@ -50,7 +50,7 @@ if ($canPlan) { ?>
 <?php }?>             
 		            </td>
 		            <td>
-		             &nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>
+		              <table><tr><td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
 		              <div dojoType="dijit.form.DateTextBox" 
 		                 id="startDatePlanView" name="startDatePlanView" 
 		                 invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
@@ -62,6 +62,19 @@ if ($canPlan) { ?>
                   refreshJsonPlanning();
                 </script>                
 		               </div>
+                   </td></tr><tr><td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayEndDate");?>&nbsp;&nbsp;</td><td>
+                  <div dojoType="dijit.form.DateTextBox" 
+                     id="endDatePlanView" name="endDatePlanView" 
+                     invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
+                     type="text" maxlength="10"
+                     style="width:100px; text-align: center;" class="input"
+                     hasDownArrow="true"
+                     value="" >
+                     <script type="dojo/method" event="onChange" >
+                  refreshJsonPlanning();
+                </script>                
+                   </div>
+                   </td></tr></table>
 		             </td>
 		            <td width="32px">
 		              <button title="<?php echo i18n('printPlanning')?>"  
@@ -120,6 +133,18 @@ if ($canPlan) { ?>
                     </script>
 		              </div>&nbsp;
                   </td></tr>
+                  <?php if (strtoupper(Parameter::getGlobalParameter('displayResourcePlan'))!='NO') {?>
+                  <tr><td>
+                  <?php echo i18n("labelShowResource");?>
+                  </td><td>
+                  <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="listShowResource" name="listShowResource">
+                    <script type="dojo/method" event="onChange" >
+                      refreshJsonPlanning();
+                    </script>
+                  </div>&nbsp;
+                  </td></tr>
+                  <?php }?>
                   </table>
 		            </td>
 		          </tr>
