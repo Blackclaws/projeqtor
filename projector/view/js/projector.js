@@ -101,6 +101,13 @@ function refreshJsonPlanning() {
       param=true;
     }
   }
+  if ( dojo.byId('listShowResource') ) {
+    if (dojo.byId('listShowResource').checked) { 
+      url += (param)?"&":"?";
+      url += "showResource=true";
+      param=true;
+    }
+  }
   loadContent(url, "planningJsonData",'listForm',false);
 }
 
@@ -1262,6 +1269,11 @@ function drawGantt() {
   } else {
     var startDateView=new Date();
   }
+  if (dijit.byId('endDatePlanView')) {
+    var endDateView=dijit.byId('endDatePlanView').get('value');
+  } else {
+    var endDateView=null;
+  }
   if (dijit.byId('showWBS')) {
     var showWBS=dijit.byId('showWBS').get('checked');
   } else {
@@ -1289,6 +1301,7 @@ function drawGantt() {
   g.setFormatArr("day","week","month"); // Set format options (up to 4 :
                     // "minute","hour","day","week","month","quarter")
   g.setStartDateView(startDateView);
+  g.setEndDateView(endDateView);
   var contentNode = dojo.byId('gridContainerDiv');
   if (contentNode) {
     g.setWidth(dojo.style(contentNode, "width"));
@@ -1354,7 +1367,12 @@ function drawGantt() {
       pId=item.refId;
       pScope="Planning_"+pClass+"_"+pId;
       pOpen=(item.collapsed=='1')?'0':'1';
-      pResource=item.resource;
+      var pResource="";
+      if ( dojo.byId('listShowResource') ) {
+	    if (dojo.byId('listShowResource').checked) { 
+	    	pResource=item.resource;
+	    }
+	  }
       var pDepend=item.depend;
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
