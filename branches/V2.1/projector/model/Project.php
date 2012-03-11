@@ -529,6 +529,7 @@ class Project extends SqlElement {
   
   public static function getAdminitrativeProjectList() {
   	$arrayProj=array();
+  	$arrayProj[]=0;
   	$type=new ProjectType();
   	$critType=array('code'=>'ADM');
   	$listType=$type->getSqlElementsFromCriteria($critType, false);
