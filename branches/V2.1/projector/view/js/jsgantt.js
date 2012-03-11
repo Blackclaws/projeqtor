@@ -309,6 +309,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.DrawDependencies = function () {
     this.CalcTaskXY();
     this.clearDependencies();
+    vEndDate=g.getEndDateView();
     var vList = this.getList();
     for(var i = 0; i < vList.length; i++) {
       vDepend = vList[i].getDepend();
@@ -318,7 +319,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var n = vDepList.length;
         for(var k=0;k<n;k++) {
           var vTask = this.getArrayLocationByID(vDepList[k]);
-          if(vTask!=null && vList[vTask].getVisible()==1) {
+          if(vTask!=null && vList[vTask].getVisible()==1 ) {
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
                             vList[i].getStartY(),"#"+vList[vTask].getColor());
           }
@@ -780,28 +781,30 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               +'<TR id=childrow_' + vID + ' class="ganttTaskrow" '
               +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
-            vRightTable += vDivStr;               
-            vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:4px; '
-              + ' left:' + vBarLeft + 'px; height:18px; '
-              + ' width:' + vBarWidth + 'px">' 
-              + '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
-              + ' class="ganttTaskrowBar" style="background-color:#' + vTaskList[i].getColor() +'; '
-              + ' width:' + vBarWidth + 'px; " ' 
-              + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >' 
-              + ' <div class="ganttTaskrowBarComplete"  style="width:' + vTaskList[i].getCompStr() + '; ">' 
-              + ' </div>' 
-              + ' </div>';
-            if( g.getCaptionType() ) {
-              vCaptionStr = '';
-              switch( g.getCaptionType() ) {           
-                case 'Caption':    vCaptionStr = vTaskList[i].getCaption();  break;
-                case 'Resource':   vCaptionStr = vTaskList[i].getResource();  break;
-                case 'Duration':   vCaptionStr = vTaskList[i].getDuration(vFormat);  break;
-                case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
+            if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
+              vRightTable += vDivStr;               
+              vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:4px; '
+	            + ' left:' + vBarLeft + 'px; height:18px; '
+	            + ' width:' + vBarWidth + 'px">' 
+	            + '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+	            + ' class="ganttTaskrowBar" style="background-color:#' + vTaskList[i].getColor() +'; '
+	            + ' width:' + vBarWidth + 'px; " ' 
+	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >' 
+	            + ' <div class="ganttTaskrowBarComplete"  style="width:' + vTaskList[i].getCompStr() + '; ">' 
+	            + ' </div>' 
+	            + ' </div>';
+              if( g.getCaptionType() ) {
+               vCaptionStr = '';
+                switch( g.getCaptionType() ) {           
+                  case 'Caption':    vCaptionStr = vTaskList[i].getCaption();  break;
+                  case 'Resource':   vCaptionStr = vTaskList[i].getResource();  break;
+                  case 'Duration':   vCaptionStr = vTaskList[i].getDuration(vFormat);  break;
+                  case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
+                }
+                vRightTable += '<div style="FONT-SIZE:12px; position:absolute; top:-3px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
               }
-              vRightTable += '<div style="FONT-SIZE:12px; position:absolute; top:-3px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
+              vRightTable += '</div>' ;
             }
-            vRightTable += '</div>' ;
           }
         }
         vRightTable += '</DIV>';
