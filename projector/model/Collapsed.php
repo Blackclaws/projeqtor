@@ -8,6 +8,8 @@ class Collapsed extends SqlElement {
    public $scope;
    public $idUser;
   
+   public $_noHistory=true; // Will never save history for this object
+   
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

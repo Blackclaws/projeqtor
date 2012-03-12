@@ -166,6 +166,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 
   this.setFormat = function(pFormat){ 
     vFormat = pFormat; 
+    this.clearDependencies();
+    this.ClearGraph();
     this.Draw(); 
   };
   this.setWidth = function (pWidth) {vGanttWidth=pWidth;};
@@ -176,6 +178,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vStartDateView=dijit.byId('startDatePlanView').get('value');
     }
   };
+  this.resetEndDateView = function () {
+	    if (dijit.byId('endDatePlanView')) {
+	      vEndDateView=dijit.byId('endDatePlanView').get('value');
+	    }
+	  };
   this.getShowRes  = function(){ return vShowRes; };
   this.getShowDur  = function(){ return vShowDur; };
   this.getShowComp = function(){ return vShowComp; };
@@ -211,6 +218,20 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
       };
     };
+  };
+  /* Does not work : cannot remove node, always referenced */
+   this.ClearGraph = function () {
+	  var vList = this.getList();
+	  var vBarDiv;
+	  for(i = 0; i < vList.length; i++) {
+		  vID = vList[i].getID();
+		  vBarDiv  = JSGantt.findObj("bardiv_"+vID);
+		  if(vBarDiv) {
+			  //vBarDiv.parentNode.removeChild(vBarDiv); 
+			  //dojo.destroy(vBarDiv);
+			  dojo.query("#bardiv_"+vID).orphan();
+		  }
+	  }
   };
   this.AddTaskItem = function(value) {
     vTaskList.push(value);
@@ -309,7 +330,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.DrawDependencies = function () {
     this.CalcTaskXY();
     this.clearDependencies();
-    vEndDate=g.getEndDateView();
     var vList = this.getList();
     for(var i = 0; i < vList.length; i++) {
       vDepend = vList[i].getDepend();
@@ -697,7 +717,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vTaskLeft = vTaskLeft - 0.85;
           //}
           vTaskRight = 1;
-          vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:-2px; ' 
+          if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getEnd())) {
+        	  vBardivName='bardiv_' + vID;
+          } else {
+        	  vBardivName='outbardiv_' + vID;
+          }	  
+          vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:-2px; ' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
             + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;">' 
             + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
@@ -737,16 +762,21 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           var vBarWidth=Math.ceil((vTaskRight) * (vDayWidth) - 1 );
           if (vBarWidth<10) vBarWidth=10;
           if( vTaskList[i].getGroup()) {            
-              vRightTable += '<DIV ' + ffSpecificHeight+ '>'
-                + '<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
-                + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
-                + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
-                + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
-            if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
-              vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:5px; '
+            vRightTable += '<DIV ' + ffSpecificHeight+ '>'
+              + '<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
+              + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
+              + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
+              + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
+	        if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
+	          vBardivName='bardiv_' + vID;
+	        } else {
+	          vBardivName='outbardiv_' + vID;
+	        }	 
+            vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:5px; '
                 + ' left:' + vBarLeft + 'px; height: 7px; '
-                + ' width:' + vBarWidth + 'px">' 
-                + '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+                + ' width:' + vBarWidth + 'px">';
+            if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
+              vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
                 + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
                 + '<div style="width:' + vTaskList[i].getCompStr() + ';"' 
                 + ' class="ganttGrouprowBarComplete" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>' 
@@ -773,20 +803,25 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 vRightTable += '<div class="ganttTaskgroupBarText" '
                   + 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
               }
-              vRightTable += '</div>';
-        	}
+            }
+            vRightTable += '</div>';
           } else { // task (not a milstone, not a group)
             vDivStr = '<DIV ' + ffSpecificHeight+ '>'
               +'<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;" >' 
               +'<TR id=childrow_' + vID + ' class="ganttTaskrow" '
               +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
-            if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
+            if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
+  	          vBardivName='bardiv_' + vID;
+  	        } else {
+  	          vBardivName='outbardiv_' + vID;
+  	        }
               vRightTable += vDivStr;               
-              vRightTable += '<div id=bardiv_' + vID + ' style="position:absolute; top:4px; '
+              vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:4px; '
 	            + ' left:' + vBarLeft + 'px; height:18px; '
 	            + ' width:' + vBarWidth + 'px">' 
-	            + '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+	        if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
+	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
 	            + ' class="ganttTaskrowBar" style="background-color:#' + vTaskList[i].getColor() +'; '
 	            + ' width:' + vBarWidth + 'px; " ' 
 	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >' 
@@ -803,8 +838,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 }
                 vRightTable += '<div style="FONT-SIZE:12px; position:absolute; top:-3px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
               }
-              vRightTable += '</div>' ;
-            }
+	        }
+            vRightTable += '</div>' ;
           }
         }
         vRightTable += '</DIV>';
@@ -1054,11 +1089,17 @@ JSGantt.findObj = function (theObj, theDoc) {
  *            {GanttChart} - The gantt object
  * @return {void}
  */
-JSGantt.changeFormat =      function(pFormat,ganttObj) {
+JSGantt.changeFormat = function(pFormat,ganttObj) {
   if(ganttObj) {
-    ganttObj.resetStartDateView();
-    ganttObj.setFormat(pFormat);
-    ganttObj.DrawDependencies();
+    if (ganttObj.getFormat()=='month' && ganttObj.getEndDateView() ) {
+      ganttObj.setFormat(pFormat);
+	  refreshJsonPlanning();
+	} else {
+      ganttObj.resetStartDateView();
+      ganttObj.resetEndDateView();
+      ganttObj.setFormat(pFormat);
+      ganttObj.DrawDependencies();
+	}
   } else {
     alert('Chart undefined');
   };

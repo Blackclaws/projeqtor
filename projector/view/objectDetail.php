@@ -73,6 +73,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ( ! $included) {
     echo '<table id="mainTable" >'; // Main table to present multi-column
   }
+  if (is_subclass_of($obj,'PlanningElement')) {
+    $obj->setVisibility();
+    $workVisibility=$obj->_workVisibility;
+    $costVisibility=$obj->_costVisibility;
+  }
   $nobr=false;
   foreach ($obj as $col => $val) {
     if ($detailWidth) {
@@ -103,10 +108,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $internalTableCurrentRow=0;
       $colWidth = ( $detailWidth) / $nbCol;
       if (is_subclass_of($obj,'PlanningElement') and $internalTableRows>=3) {
-        $obj->setVisibility();
-//echo "(" . $obj->_workVisibility . "/" . $obj->_costVisibility . ")";        
-        $workVisibility=$obj->_workVisibility;
-        $costVisibility=$obj->_costVisibility;
         if ($workVisibility=='NO') {
           $internalTableRowsCaptions[$internalTableRows-2]='';
         }

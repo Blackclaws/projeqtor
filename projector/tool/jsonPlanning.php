@@ -211,15 +211,15 @@
         $maxDate=$endDate;
       }
       if ($format=='day' or $format=='week') {   
-        $minDate=addDaysToDate($minDate,-1);
+        //$minDate=addDaysToDate($minDate,-1);
         $minDate=date('Y-m-d',firstDayofWeek(weekNumber($minDate),substr($minDate,0,4)));
-        $maxDate=addDaysToDate($maxDate,+1);
+        //$maxDate=addDaysToDate($maxDate,+1);
         $maxDate=date('Y-m-d',firstDayofWeek(weekNumber($maxDate),substr($maxDate,0,4)));
         $maxDate=addDaysToDate($maxDate,+6);
       } else if ($format=='month') {
         //$minDate=addDaysToDate($minDate,-1);
         $minDate=substr($minDate,0,8).'01';
-        $maxDate=addDaysToDate($maxDate,+1);
+        //$maxDate=addDaysToDate($maxDate,+1);
         $maxDate=addMonthsToDate($maxDate,+1);
         $maxDate=substr($maxDate,0,8).'01';
         $maxDate=addDaysToDate($maxDate,-1);
