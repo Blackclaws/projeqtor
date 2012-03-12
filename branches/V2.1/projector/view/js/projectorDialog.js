@@ -214,6 +214,7 @@ function showPrint (page, context, comboName, outMode) {
 	} else if (context=='planning'){
 		if (dijit.byId("startDatePlanView").get('value')) {
 		  params+="&startDate="+encodeURIComponent(formatDate(dijit.byId("startDatePlanView").get("value")));
+		  params+="&endDate="+encodeURIComponent(formatDate(dijit.byId("endDatePlanView").get("value")));
 		  params+="&format="+g.getFormat();
 		  if (dijit.byId('listShowIdle').get('checked')) {
 		  	params+="&idle=true";

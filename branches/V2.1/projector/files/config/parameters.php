@@ -3,7 +3,7 @@
 // Automatically generated parameter file
 // =======================================================================================
 $paramDbType = 'mysql';
-$paramDbHost = 'localhost';
+$paramDbHost = '127.0.0.1';
 $paramDbUser = 'root';
 $paramDbPassword = 'mysql';
 $paramDbName = 'projectorria_v21';
@@ -52,7 +52,7 @@ $paramAttachementMaxSize = '2097152';
 $paramReportTempDirectory = '../files/report/';
 $paramMemoryLimitForPDF = '512';
 $logFile = '../files/logs/projector_${date}.log';
-$logLevel = '3';
+$logLevel = '4';
 $paramDebugMode = 'false';
 
 //======= END

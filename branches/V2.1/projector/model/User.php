@@ -65,22 +65,26 @@ class User extends SqlElement {
    * @return void
    */ 
   function __construct($id = NULL) {
-    parent::__construct($id);
+    global $objClass;
+  	parent::__construct($id);
     
-    $crit=array("name"=>"menuContact");
-    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
-    if (! $menu) {
-      return;
-    }     
-    if (securityCheckDisplayMenu($menu->id)) {
-      self::$_fieldsAttributes["isContact"]="";
-    }
-    if ($this->isLdap!=0) {
-    	self::$_fieldsAttributes["name"]="readonly";
-    	//self::$_fieldsAttributes["resourceName"]="readonly";
-    	self::$_fieldsAttributes["email"]="readonly";
-    	self::$_fieldsAttributes["password"]="hidden";
-    }
+  	// Fetch data to set attributes only to display user. Other access to User (for History) don't need these attributes.
+  	if (isset($objClass) and $objClass and $objClass=='User') {
+	    $crit=array("name"=>"menuContact");
+	    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+	    if (! $menu) {
+	      return;
+	    }     
+	    if (securityCheckDisplayMenu($menu->id)) {
+	      self::$_fieldsAttributes["isContact"]="";
+	    }
+	    if ($this->isLdap!=0) {
+	    	self::$_fieldsAttributes["name"]="readonly";
+	    	//self::$_fieldsAttributes["resourceName"]="readonly";
+	    	self::$_fieldsAttributes["email"]="readonly";
+	    	self::$_fieldsAttributes["password"]="hidden";
+	    }
+  	}
   }
 
   

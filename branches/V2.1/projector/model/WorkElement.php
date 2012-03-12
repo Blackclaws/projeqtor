@@ -17,7 +17,9 @@ class WorkElement extends SqlElement {
    
    private static $_fieldsAttributes=array("refType"=>"hidden", "refId"=>"hidden", "refName"=>"hidden",
                                            "leftWork"=>"hidden", "done"=>"hidden", "idle"=>"hidden");
-                                     
+
+   private static $_colCaptionTransposition = array('plannedWork'=>'estimatedWork');
+   
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -48,6 +50,14 @@ class WorkElement extends SqlElement {
     return self::$_fieldsAttributes;
   }
 
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
+    
   public function save() {
   	$this->leftWork=$this->plannedWork-$this->realWork;  
   	if ($this->leftWork<0 or $this->done) {
