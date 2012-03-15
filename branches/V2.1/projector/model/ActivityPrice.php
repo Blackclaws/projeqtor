@@ -5,7 +5,7 @@
 class ActivityPrice extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2;
+  public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place
   public $idProject;
   public $idActivityType;
