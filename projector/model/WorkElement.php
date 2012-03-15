@@ -16,7 +16,7 @@ class WorkElement extends SqlElement {
   public $idle;
    
    private static $_fieldsAttributes=array("refType"=>"hidden", "refId"=>"hidden", "refName"=>"hidden",
-                                           "leftWork"=>"hidden", "done"=>"hidden", "idle"=>"hidden");
+                                           "leftWork"=>"readonly", "done"=>"hidden", "idle"=>"hidden");
 
    private static $_colCaptionTransposition = array('plannedWork'=>'estimatedWork');
    

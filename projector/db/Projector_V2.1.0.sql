@@ -56,16 +56,16 @@ UPDATE `${prefix}report` set sortOrder=680 where name='reportExpenseTotal';
 UPDATE `${prefix}report` set sortOrder=690 where name='reportExpenseCostTotal';
 UPDATE `${prefix}report` set sortOrder=710 where name='reportBill';
 
-INSERT INTO `${prefix}reportparameter` (idReport, name, paramType, `order`, defaultValue) VALUES 
-(1,'idProject', 'projectList', 1, 'currentProject'),
-(2,'idProject', 'projectList', 1, 'currentProject'),
-(3,'idProject', 'projectList', 1, 'currentProject'),
-(28,'idProject', 'projectList', 1, 'currentProject'),
-(29,'idProject', 'projectList', 1, 'currentProject'),
-(30,'idProject', 'projectList', 1, 'currentProject'),
-(4,'idProject', 'projectList', 1, 'currentProject'),
-(5,'idProject', 'projectList', 1, 'currentProject'),
-(6,'idProject', 'projectList', 1, 'currentProject');
+INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `order`, defaultValue) VALUES 
+(89,1,'idProject', 'projectList', 1, 'currentProject'),
+(90,2,'idProject', 'projectList', 1, 'currentProject'),
+(91,3,'idProject', 'projectList', 1, 'currentProject'),
+(92,28,'idProject', 'projectList', 1, 'currentProject'),
+(93,29,'idProject', 'projectList', 1, 'currentProject'),
+(94,'idProject', 'projectList', 1, 'currentProject'),
+(95,'idProject', 'projectList', 1, 'currentProject'),
+(96,'idProject', 'projectList', 1, 'currentProject'),
+(97,'idProject', 'projectList', 1, 'currentProject');
 
 CREATE TABLE `${prefix}contexttype` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -133,3 +133,20 @@ ALTER TABLE `${prefix}planningelement` ADD COLUMN `progress` int(3) unsigned DEF
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'displayResourcePlan','initials');
+
+INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
+VALUES (38,'reportVersionStatus',4,'versionReport.php',440,0);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+(98,38,'idProject','projectList',10,0,'currentProject'),
+(99,38,'idTicketType','ticketType',20,0,NULL),
+(100,38,'responsible','resourceList',30,0,NULL);
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
+(1,38,1),
+(2,38,1),
+(3,38,1),
+(4,38,0),
+(5,38,0),
+(6,38,0),
+(7,38,0);
