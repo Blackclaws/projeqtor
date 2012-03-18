@@ -61,7 +61,8 @@ INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `order`, 
 (90,2,'idProject', 'projectList', 1, 'currentProject'),
 (91,3,'idProject', 'projectList', 1, 'currentProject'),
 (92,28,'idProject', 'projectList', 1, 'currentProject'),
-(93,29,'idProject', 'projectList', 1, 'currentProject'),
+(93,29,'idProject', 'projectList', 1, 'currentProject');
+INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `order`, defaultValue) VALUES
 (94,'idProject', 'projectList', 1, 'currentProject'),
 (95,'idProject', 'projectList', 1, 'currentProject'),
 (96,'idProject', 'projectList', 1, 'currentProject'),
