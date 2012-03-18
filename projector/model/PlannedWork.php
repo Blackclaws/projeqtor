@@ -165,9 +165,9 @@ class PlannedWork extends GeneralWork {
         $endPlan=null;
         $step=1;
       }
-      // If dependencies exist,
-      $dep=new Dependency(); 
-      $precList=$dep->getSqlElementsFromCriteria(array("successorId"=>$plan->id),false);
+      // If dependencies exist,           
+      //$precList=$dep->getSqlElementsFromCriteria(array("successorId"=>$plan->id),false);
+      $precList=PlanningElement::getPredecessorList($plan->id, true);
       foreach ($precList as $precDep) {
         $prec=null;
         foreach ($listPlan as $tstPrec) {

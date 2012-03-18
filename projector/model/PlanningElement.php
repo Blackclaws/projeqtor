@@ -684,5 +684,22 @@ class PlanningElement extends SqlElement {
     }
     return parent::getFieldAttributes($fieldName);
   }  
+  
+  public static function getPredecessorList($idCurrent, $includeParents=false) {
+	  $dep=new Dependency();
+	  if (! $includeParents) {
+	    return $dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false);
+	  }
+	  // Include parents successsors
+	  $testParent=new PlanningElement($idCurrent);
+	  $resultList=$dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false,null, null, true);
+	  while ($testParent->topId) {
+	  	$testParent=new PlanningElement($testParent->topId);
+	  	$list=$dep->getSqlElementsFromCriteria(array("successorId"=>$testParent->id),false,null, null, true);
+	    $resultList=array_merge($resultList,$list);
+	  }
+	  return $resultList;
+  }
+  
 }
 ?>
