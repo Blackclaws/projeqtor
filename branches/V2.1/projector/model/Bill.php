@@ -308,5 +308,9 @@ class Bill extends SqlElement {
       return $result;     
     }
   }
+  
+  public function simpleSave() {
+     return parent::save();
+  }
 }
 ?>

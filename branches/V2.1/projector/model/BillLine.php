@@ -171,7 +171,14 @@ class BillLine extends SqlElement {
         }
       }       
     }
-
+//Debut Code Marc
+    // Update Bill to get total of amount
+    $bill->untaxedAmount=$bill->untaxedAmount-$this->amount;
+    $bill->fullAmount=$bill->untaxedAmount*(1+$bill->tax*0.01);
+    // Only save without calculate the amount
+    $bill->simpleSave(); 
+// Fin Code Marc
+    
     return parent::delete();
   }
   
@@ -223,6 +230,10 @@ class BillLine extends SqlElement {
       		$actAssigned=0;
       		$actPlanned=0;
       		$selectedAct=false;
+// D�but Code Marc
+      		// Activity closed => idle=1
+      		$actClose = $act->idle;
+// Fin Code Marc
       		$ass=new Assignment();
       		$critAss=array("refType"=>"Activity", "refId"=>$act->id, "idProject"=>$act->idProject, "idResource"=>$this->idResource);
       		$assList=$ass->getSqlElementsFromCriteria($critAss, false);
@@ -245,8 +256,16 @@ class BillLine extends SqlElement {
             	$actWork+=$work->work;
             	$selectedAct=true;
             	$selectedAss=true;
-            	$ass->billedWork+=$work->work;
-            	// Sum of work for dates : to be displayed if needed
+//            	$ass->billedWork+=$work->work;
+// D�but Code Marc
+				if ($billingType=='P') {
+					// Add until not > assignment
+					$ass->billedWork=min($ass->billedWork+$work->work,$actAssigned);
+				} else {           	
+	            	$ass->billedWork+=$work->work;
+				}
+// Fin Code Marc
+            	            	// Sum of work for dates : to be displayed if needed
             	if (array_key_exists($work->workDate, $listDates)) {
             	  $listDates[$work->workDate]+=$work->work;
               } else {
@@ -254,10 +273,24 @@ class BillLine extends SqlElement {
               }
             	$work->save();
             }
-            if ($selectedAss) {
+/*            if ($selectedAss) {
             	$ass->save();
             }
-      		}
+*/
+// D�but Code Marc
+            // If some work to bill [$selectedAss==true] or the activity is close [$actClose==1]
+            if ($selectedAss OR $actClose==1) {
+            	// If the activity is close AND the $billingType=='P'
+            	if ($actClose==1 AND $billingType=='P') {
+            		// The billedWork is the assigned work
+            		$ass->billedWork=$actAssigned;
+            	}
+            	// Fin mon code
+            	$ass->save();
+            }
+// Fin Code Marc            
+            }
+/*
       		if ($selectedAct) {
       			$doneWork=($actWork+$actBilled);
       			$progressWork=round( ($doneWork/$actPlanned),3);
@@ -275,7 +308,48 @@ class BillLine extends SqlElement {
       			  $this->detail.=" : ".$actWork." ".i18n('days');
       			}
       		}
-      	}
+*/
+//D�but Code Marc
+      		// If some work to bill [$selectedAct==true] or the activity is close [$actClose==1]
+      		if ($selectedAct OR $actClose==1) {
+      			$doneWork=($actWork+$actBilled);
+    	  		if ($actClose==0) {
+					// Activity NOT CLOSE
+					// Work Billable = MIN(work of period, assigned Work - work billed)
+    	  			$actBillable = min($actWork,$actAssigned-$actBilled);
+    	  		} else {
+    			  	// Activity CLOSE
+    			  	// Work Billable = MAX(0, assigned Work - work billed) <== The sold
+    			  	$actBillable = max(0,$actAssigned-$actBilled);  			
+    	  		}
+      			$actBillable=($actBillable>0)?$actBillable:0;
+      			$billableWork+=$actBillable;      			
+      			if ($billingType=='P') {
+      				if ($actBillable>0) {
+	      				$this->detail.=(($this->detail)?"\n":"").$act->name;
+      					$this->detail.=" : ".$actBillable." ".i18n('days');
+      					if($actClose==0) {
+	    	  				$this->detail.="\n...[" . i18n('colBillable') . "] = MIN([" . i18n('colWork') . "]"
+    	  				                        . " , [" . i18n('colValidated')  . "] - [" . i18n('colIsBilled') . "])";
+							$this->detail.="\n...[" . $actBillable . " " . i18n('days') . "] = MIN([" . $actWork . " " . i18n('days') . "]"
+      				    	                    . " , [" . $actAssigned . " " . i18n('days') . "] - [" . $actBilled . " " . i18n('days') . "])";
+						} else {
+      						$this->detail.="\n...[" . i18n('colBillable') . "] = MAX(0 ," 
+      					                        . " [" . i18n('colValidated')  . "] - [" . i18n('colIsBilled') . "])";
+							$this->detail.="\n...[" . $actBillable . " " . i18n('days') . "] = MAX(0,[" . $actAssigned . " " . i18n('days') . "]"
+    	  				                        . "] - [" . $actBilled . " " . i18n('days') . "])";
+						
+						}
+      				}
+      			} else {
+      				if ($actWork>0) {
+	      				$this->detail.=(($this->detail)?"\n":"").$act->name;
+      					$this->detail.=" : ".$actWork." ".i18n('days');
+      				}
+      			}
+      		}
+//Fin Code Marc      		
+        }
       	if ($billingType=='P') {
       		$this->quantity=$billableWork;
       	} else {     	
