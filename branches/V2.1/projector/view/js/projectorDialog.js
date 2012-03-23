@@ -1690,11 +1690,13 @@ function plan() {
  * Display a Filter Box
  * 
  */
+var filterStartInput=false;
 function showFilterDialog () {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	filterStartInput=false;
 	dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
 	dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
 	dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
@@ -1721,6 +1723,7 @@ function showFilterDialog () {
  */
 function filterSelectAtribute(value) {
 	if (value) {
+	  filterStartInput=true;	
 	  dijit.byId('idFilterAttribute').store.fetchItemByIdentity({
 	    identity : value, 
 	    onItem : function(item) { 
@@ -1806,6 +1809,7 @@ function filterSelectAtribute(value) {
 }
 
 function filterSelectOperator(operator) {
+	filterStartInput=true;
 	if (operator=="SORT") {
 		filterType="SORT";
 		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
@@ -1845,6 +1849,7 @@ function filterSelectOperator(operator) {
  * 
  */
 function addfilterClause() {
+	filterStartInput=false;
 	if (dijit.byId('filterNameDisplay')) {
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
@@ -1878,9 +1883,10 @@ function removefilterClause(id) {
 	if (dijit.byId('filterNameDisplay')) {
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
+	alert(dojo.byId('filterName').value);
 	// Add controls on operator and value
 	dojo.byId("filterClauseId").value=id;
-	loadContent("../tool/removeFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	loadContent("../tool/removeFilterClause.php?filterName="+dojo.byId('filterName').value, "listFilterClauses", "dialogFilterForm", false);
 	dijit.byId('filterNameDisplay').set('value',null);
 	dojo.byId('filterName').value=null;
 }
@@ -1914,6 +1920,7 @@ function selectFilter() {
  * 
  */
 function cancelFilter() {
+	filterStartInput=true;
 	dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true",
 		form: dojo.byId('dialogFilterForm'),
 		handleAs: "text",
