@@ -186,6 +186,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
                 <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;display:none; position: absolute;">
                   <?php 
                      //$_REQUEST['filterObjectClass']=$objectClass;
+                     //$_REQUEST['context']="directFilterList";
                      include "../tool/displayFilterList.php";?>
                  <script type="dojo/connect" event="onMouseEnter" args="evt">
                     clearTimeout(closeFilterListTimeout);

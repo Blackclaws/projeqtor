@@ -512,7 +512,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             showList();
           }
           if (destination=="directFilterList") {
-          	if (validationType!='returnFromFilter') {
+        	  if (!validationType && validationType!='returnFromFilter') {
   	        	if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
   	              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
   	        	} else {
