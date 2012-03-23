@@ -566,6 +566,7 @@ errorConnectionDB: "SQL ERROR<BR/>Connexion error unknown database '${1}'.<BR/>C
 errorControlDelete: "Impossible to delete this element because of existing dependent elements",
 errorDeleteCostStartDate: "New cost cannot start before previous one",
 errorDeleteDoneBill: "Cannot delete done bill",
+errorDependencyHierarchy: "Can't create dependency with parent item",
 errorDependencyLoop: "Can't create loop dependency",
 errorDuplicateActivityPrice: "An Activity Price already exists with same project and type",
 errorDuplicateAffectation: "Duplicate affectation",

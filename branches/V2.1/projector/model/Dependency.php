@@ -50,6 +50,8 @@ class Dependency extends SqlElement {
     $succ=new PlanningElement($this->successorId);    
     $precList=$prec->getPredecessorItemsArray();
     $succList=$succ->getSuccessorItemsArray();
+    $precParentList=$prec->getParentItemsArray();
+    $succParentList=$succ->getParentItemsArray();
     if (array_key_exists('#' . $this->successorId,$precList)) {
       $result.='<br/>' . i18n('errorDependencyLoop');
     }
@@ -58,6 +60,13 @@ class Dependency extends SqlElement {
     }
     if ($this->predecessorId==$this->successorId) {
       $result.='<br/>' . i18n('errorDependencyLoop');
+    }
+    // cannot create dependency into parent hierarchy
+    if (array_key_exists('#' . $this->successorId,$precParentList)) {
+      $result.='<br/>' . i18n('errorDependencyHierarchy');
+    }
+    if (array_key_exists('#' .$this->predecessorId,$succParentList)) {
+      $result.='<br/>' . i18n('errorDependencyHierarchy');
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

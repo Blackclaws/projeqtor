@@ -566,6 +566,7 @@ errorConnectionDB: "SQL ERROR<BR/>Error de conexión, base de datos desconocida 
 errorControlDelete: "Imposible borrar éste elemento ya que existen elementos dependientes",
 errorDeleteCostStartDate: "Un nuevo costo no puede empezar antes que uno previo",
 errorDeleteDoneBill: "[errorDeleteDoneBill]",
+errorDependencyHierarchy: "[errorDependencyHierarchy]",
 errorDependencyLoop: "No se puede crear una dependencia cíclica",
 errorDuplicateActivityPrice: "[errorDuplicateActivityPrice]",
 errorDuplicateAffectation: "afectación duplicada",

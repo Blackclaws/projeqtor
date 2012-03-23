@@ -84,7 +84,11 @@ class PlannedWork extends GeneralWork {
 //echo "<br/>******************************";
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
-    set_time_limit(300);
+//debugLog("******************************");
+//debugLog("PLANNING - Started at " . date('H:i:s'));
+//debugLog("******************************");
+  	
+  	set_time_limit(300);
 
     $withProjectRepartition=true;
     $result="";
@@ -107,18 +111,24 @@ class PlannedWork extends GeneralWork {
     $plan->purge($inClause);
     // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
-    $clause=$inClause . " and idle=0";
-    $order=" priority asc, wbsSortable asc";
+    $clause=$inClause;
+    $order="wbsSortable asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
-    $listPlan=self::sortPlanningElements($list);
+    $fullListPlan=PlanningElement::initializeFullList($list);
+    $listPlan=self::sortPlanningElements($fullListPlan);
     $resources=array();
     $a=new Assignment();
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $idPlan=>$plan) {
-//debugLog('planningElement-id='.$plan->id.' refType='.$plan->refType.' refId='.$plan->refId);
-      //$changedPlan=false;
+    	$plan=$fullListPlan['#'.$plan->id];
       // Determine planning profile
+      if ($plan->idle) {
+      	continue;
+      }
+      if (isset($plan->_noPlan) and $plan->_noPlan) {
+      	continue;
+      } 
       $profile="ASAP";
       $startPlan=$startDate;
       $endPlan=null;
@@ -156,7 +166,7 @@ class PlannedWork extends GeneralWork {
         $endPlan=$plan->validatedEndDate;
         $plan->plannedStartDate=$plan->validatedEndDate;
         $plan->plannedEndDate=$plan->validatedEndDate;
-        $listPlan=self::storeListPlan($listPlan,$plan);
+        $fullListPlan=self::storeListPlan($fullListPlan,$plan);
         //$plan->save();
         $step=1;
       } else {
@@ -165,20 +175,9 @@ class PlannedWork extends GeneralWork {
         $endPlan=null;
         $step=1;
       }
-      // If dependencies exist,           
-      //$precList=$dep->getSqlElementsFromCriteria(array("successorId"=>$plan->id),false);
-      $precList=PlanningElement::getPredecessorList($plan->id, true);
-      foreach ($precList as $precDep) {
-        $prec=null;
-        foreach ($listPlan as $tstPrec) {
-          if ($tstPrec->id==$precDep->predecessorId) {
-            $prec=$tstPrec;
-            break;
-          }
-        }
-        if ($prec==null) {
-          $prec=new PlanningElement($precDep->predecessorId);
-        }
+      $precList=$plan->_predecessorListWithParent;
+      foreach ($precList as $precId=>$precVal) {
+      	$prec=$fullListPlan[$precId];
         $precEnd=$prec->plannedEndDate;
         if ($prec->realEndDate) {
         	$precEnd=$prec->realEndDate;
@@ -209,20 +208,20 @@ class PlannedWork extends GeneralWork {
           $plan->plannedEndDate=$plan->plannedStartDate;
           $plan->plannedDuration=0;
           //$plan->save();
-          $listPlan=self::storeListPlan($listPlan,$plan);
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
         }
         if ($profile=="FIXED") {
         	$plan->plannedEndDate=$plan->validatedEndDate;
         	$plan->plannedDuration=0;
           //$plan->save();
-          $listPlan=self::storeListPlan($listPlan,$plan);
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
         }
       } else {        
         if (! $plan->realStartDate) {
-          $plan->plannedStartDate=($plan->leftWork>0)?null:$startPlan;
+          $plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
         }
         if (! $plan->realEndDate) {
-          $plan->plannedEndDate=($plan->leftWork>0)?null:$startPlan;
+          //$plan->plannedEndDate=($plan->leftWork>0)?$plan->plannedEndDate:$startPlan;
         }
         if ($profile=="FDUR") {
           if (! $plan->realStartDate) {
@@ -234,16 +233,14 @@ class PlannedWork extends GeneralWork {
           if (! $plan->realEndDate) {
             $plan->plannedEndDate=$endPlan;
           }
-          $listPlan=self::storeListPlan($listPlan,$plan);
-          $plan->save();
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
+          //$plan->save();
         }
         // get list of top project to chek limit on each project
         if ($withProjectRepartition) {
           $proj = new Project($plan->idProject);
           $listTopProjects=$proj->getTopProjectList(true);
         }
-        //$minDate=$globalMaxDate;
-        //$maxDate=addDaysToDate($startDate,-1);
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
         $listAss=$a->getSqlElementsFromCriteria($crit,false);        
         foreach ($listAss as $ass) {
@@ -402,7 +399,7 @@ class PlannedWork extends GeneralWork {
           $resources[$ass->idResource]=$ress;
         } 
       }
-      $listPlan=self::storeListPlan($listPlan,$plan);
+      $fullListPlan=self::storeListPlan($fullListPlan,$plan);
     }
     $cpt=0;
     $query='';
@@ -438,28 +435,29 @@ class PlannedWork extends GeneralWork {
       $query.=';';
       SqlDirectElement::execute($query);
     }
-    
     // save Assignment
     foreach ($arrayAssignment as $ass) {
-      $ass->save();
+      $ass->simpleSave();
+      /*$query='UPDATE ' . $ass->getDatabaseTableName() 
+       . ' SET plannedEndDate=\'' . $ass->plannedEndDate . '\''
+       . ', plannedStartDate=\'' .  $ass->plannedStartDate . '\''
+       . ' WHERE id=' . $ass->id . ';';
+       SqlDirectElement::execute($query);*/
     }
-    // save PlanningElements with no assignments 
-    foreach ($listPlan as $pe) {
-      if (! $pe->elementary or $pe->refType=="Milestone") { 
-    	  $pe->save();
-      }
+    
+    foreach ($fullListPlan as $pe) {
+   	  $pe->simpleSave();
+   	  /*$query='UPDATE ' . $pe->getDatabaseTableName() 
+       . ' SET plannedEndDate=\'' . $pe->plannedEndDate . '\''
+       . ', plannedStartDate=\'' .  $pe->plannedStartDate . '\''
+      . ' WHERE id=' . $pe->id . ';';
+      SqlDirectElement::execute($query);*/  
     }
-    // Recalculate not elementary items
-    $clause.=" and elementary=0";
-    $order="wbsSortable desc";
-    $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
-    foreach ($list as $plan) {
-    	PlanningElement::updateSynthesis($plan->refType, $plan->refId);
-    }
+    
     
     $endTime=time();
     $endMicroTime=microtime(true);
-
+    
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
     $result=i18n('planDone', array($duration));
     $result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
@@ -468,25 +466,25 @@ class PlannedWork extends GeneralWork {
   }
   
   private static function storeListPlan($listPlan,$plan) {
-  	$listPlan[$plan->id]=$plan;
-  	if ($plan->topId and array_key_exists($plan->topId, $listPlan)) {
-  		$top=$listPlan[$plan->topId];
+  	$listPlan['#'.$plan->id]=$plan;
+  	foreach ($plan->_parentList as $topId=>$topVal) {
+  		$top=$listPlan[$topId];
   		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
   			$top->plannedStartDate=$plan->plannedStartDate;
   		}
   	  if (! $top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
         $top->plannedEndDate=$plan->plannedEndDate;
       }
-      $listPlan[$top->id]=$top;
+      $listPlan[$topId]=$top;
   	}
   	return $listPlan;
   }
   
-  private static function sortPlanningElements($planList) {
+  /*private static function sortPlanningElements($planList) {
     $result=array();
     foreach ($planList as $key=>$plan) {
       if ( ! array_key_exists ($key,$result)) {
-        $predList=$plan->getPredecessorItemsArray();
+        $predList=$plan->getPredecessorItemsArrayIncludingParents();
         if (count($predList)==0) {
           $result[$key]=$plan;
         } else {
@@ -502,6 +500,12 @@ class PlannedWork extends GeneralWork {
       }
     }
     return $result;
+  }*/
+  
+  private static function sortPlanningElements($list) {
+    $result = usort($list,array(new PlanningElement(), "comparePlanningElement"));
+    return $list;
   }
+  
 }
 ?>
