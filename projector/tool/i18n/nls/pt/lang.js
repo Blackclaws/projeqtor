@@ -566,6 +566,7 @@ errorConnectionDB: "ERRO DE SQL<BR/>Erro de base de dados desconhecida '${1}'.<B
 errorControlDelete: "Impossível eliminar este elemento porque existem outros elementos dependentes dele",
 errorDeleteCostStartDate: "O novo custo não pode iniciar antes do anterior",
 errorDeleteDoneBill: "Não é possível apagar uma factura fechada",
+errorDependencyHierarchy: "[errorDependencyHierarchy]",
 errorDependencyLoop: "Não é possível criar dependências cíclicas",
 errorDuplicateActivityPrice: "Já existe um preço de actividade com o mesmo projecto e tipo",
 errorDuplicateAffectation: "afectação duplicada",

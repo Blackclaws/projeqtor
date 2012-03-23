@@ -231,7 +231,7 @@ class IndicatorValue extends SqlElement {
           $this->status=($date>$this->targetDateTime)?'KO':'OK';
         }
         $pe=get_class($obj).'PlanningElement';
-        if ($obj->$pe->realStartDate and $obj->$pe->realStartDate<$date) {
+        if ($obj and property_exists($obj,$pe) and property_exists($obj->$pe,'realStartDate') and $obj->$pe->realStartDate and $obj->$pe->realStartDate<$date) {
         	$date=$obj->$pe->realStartDate . " 00:00:00";
         	$this->status=($date>$this->targetDateTime)?'KO':'OK';
         }        

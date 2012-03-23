@@ -78,6 +78,9 @@ class PlanningElement extends SqlElement {
                                   "idPlanningMode"=>"hidden",
   								                "idBill"=>"hidden"
   );   
+  
+  private static $predecessorItemsArray = array();
+  
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -330,6 +333,10 @@ class PlanningElement extends SqlElement {
     }
     return $result;
   }
+  
+  public function simpleSave() {
+    $result = parent::save();
+  }
 
     /** ==========================================================================
    * Return the specific fieldsAttributes
@@ -527,29 +534,24 @@ class PlanningElement extends SqlElement {
   }
   
   public function getParentItemsArray() {
-    $elt=new $this->refType($this->refId);
+    // V2.1 refactoring of function
     $result=array();
-    if (property_exists($elt,'idActivity') and $elt->idActivity) {
-      $crit=array('refType'=>'Activity', 'refId'=>$elt->idActivity);
-      $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-      if ($parent->id and ! array_key_exists('#' . $parent->id, $result)) {
-        $result=$parent->getParentItemsArray();
-        $result['#' . $parent->id]=$parent;
-      }
-    } else {
-      if (property_exists($elt,'idProject') and $elt->idProject) {
-        $crit=array('refType'=>'Project', 'refId'=>$elt->idProject);
-        $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-        if ($parent->id and ! array_key_exists('#' . $parent->id, $result)) {
-          $result=$parent->getParentItemsArray();
-          $result['#' . $parent->id]=$parent;
-        }        
-      }
+    if ($this->topId) {
+      $parent=new PlanningElement($this->topId);
+      $result=$parent->getParentItemsArray();
+      $result['#' . $parent->id]=$parent;
     }
     return $result;
   }
   
+  /** ==============================================================
+   * Retrieve the list of all Predecessors, recursively
+   */
   public function getPredecessorItemsArray() {
+  	// Imporvement : get static stored value if already fetched 
+  	/*if (array_key_exists('#' . $this->id, self::$predecessorItemsArray)) {
+  		return self::$predecessorItemsArray['#' . $this->id]; 
+  	}*/
     $result=array();
     $crit=array("successorId"=>$this->id);
     $dep=new Dependency();
@@ -562,9 +564,42 @@ class PlanningElement extends SqlElement {
         $result=array_merge($result,$resultPredecessor);
       }
     }
+    // Imporvement : static store result to avoid multiple fetch
+    //self::$predecessorItemsArray['#' . $this->id]=$result;
     return $result;
   }
   
+    /** ==============================================================
+   * Retrieve the list of direct Predecessors, and may include direct parents predecessors
+   */
+  public static function getPredecessorList($idCurrent, $includeParents=false) {
+    $dep=new Dependency();
+    if (! $includeParents) {
+      return $dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false);
+    }
+    // Include parents successsors
+    $testParent=new PlanningElement($idCurrent);
+    $resultList=$dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false,null, null, true);
+    while ($testParent->topId) {
+      $testParent=new PlanningElement($testParent->topId);
+      $list=$dep->getSqlElementsFromCriteria(array("successorId"=>$testParent->id),false,null, null, true);
+      $resultList=array_merge($resultList,$list);
+    }
+    return $resultList;
+  }
+  public function getPredecessorItemsArrayIncludingParents() {
+  	$result=$this->getPredecessorItemsArray();
+  	$parents=$this->getParentItemsArray();
+  	foreach ($parents as $parent) {
+  		$resParent=$parent->getPredecessorItemsArray();
+  		array_merge($result,$resParent);
+  	}
+    return $result;
+  }
+  
+   /** ==============================================================
+   * Retrieve the list of all Successors, recursively
+   */
   public function getSuccessorItemsArray() {
     $result=array();
     $crit=array("predecessorId"=>$this->id);
@@ -685,21 +720,131 @@ class PlanningElement extends SqlElement {
     return parent::getFieldAttributes($fieldName);
   }  
   
-  public static function getPredecessorList($idCurrent, $includeParents=false) {
-	  $dep=new Dependency();
-	  if (! $includeParents) {
-	    return $dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false);
-	  }
-	  // Include parents successsors
-	  $testParent=new PlanningElement($idCurrent);
-	  $resultList=$dep->getSqlElementsFromCriteria(array("successorId"=>$idCurrent),false,null, null, true);
-	  while ($testParent->topId) {
-	  	$testParent=new PlanningElement($testParent->topId);
-	  	$list=$dep->getSqlElementsFromCriteria(array("successorId"=>$testParent->id),false,null, null, true);
-	    $resultList=array_merge($resultList,$list);
-	  }
-	  return $resultList;
+  /**
+   * Fulfill a planningElementList with :
+   *  - parents for each item
+   *  - predecessor for each item
+   * @param List of PlanningElements
+   */
+  public static function initializeFullList($list) {
+    $idList=array();
+  	// $list must be sorted on WBS !
+    $result=$list;
+    
+    // Parents
+    foreach ($list as $id=>$pe) {
+    	$idList[$pe->id]=$pe->id;
+    	$pe->_parentList=array();
+      if ($pe->topId) { 
+      	if (array_key_exists('#'.$pe->topId, $result)) {
+      		$parent=$result['#'.$pe->topId];
+      	} else {
+          $parent=new PlanningElement($pe->topId);
+          $parent->_parentList=array();
+          $parent->_predecessorList=array();
+          $parent->_predecessorListWithParent=array();
+          $parent->_noPlan=true;
+          $result['#'.$pe->topId]=$parent;
+      	}
+      	if (isset($parent->_parentList)) {
+          $pe->_parentList=$parent->_parentList;
+        }
+        $pe->_parentList['#'.$pe->topId]=$pe->topId;
+      }
+      $result[$id]=$pe;
+    }
+    
+    // Predecessors
+    $crit='successorId in (' . implode(',',$idList) . ')';
+    $dep=new Dependency();
+    
+    $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);
+    $directPredecessors=array();
+    foreach ($depList as $dep) {
+      if (! array_key_exists("#".$dep->successorId, $directPredecessors)) {
+   	    $directPredecessors["#".$dep->successorId]=array();
+      }
+      $directPredecessors["#".$dep->successorId]["#".$dep->predecessorId]=$dep->predecessorId;
+      if (! array_key_exists("#".$dep->predecessorId, $result)) {
+      	$predecessor=ningElement($dep->predecessorId);
+      	$predecessor->_parentList=array();
+      	$parent->_noPlan=true;
+        $result["#".$dep->predecessorId]=$predecessor;
+      }
+    }
+    foreach ($result as $id=>$pe) {
+    	$pe=$result[$id];
+    	if (array_key_exists($id, $directPredecessors)) {
+    	  $pe->_directPredecessorList=$directPredecessors[$id];
+    	} else {
+    		$pe->_directPredecessorList=array();
+    	} 
+    	$pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result);
+    	$pe->_predecessorListWithParent=$pe->_predecessorList;
+    	foreach ($pe->_parentList as $idParent=>$parent) {
+    		$pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result));
+    	}
+    	if (! $pe->realStartDate) {
+    		$pe->plannedStartDate=null;
+    	}
+      if (! $pe->realEndDate) {
+        $pe->plannedEndDate=null;
+      }
+    	$result[$id]=$pe;
+    }
+    return $result;
   }
   
+  private static function getRecursivePredecessor($directFullList, $id, $result) {
+  	if (isset($result[$id]->_predecessorList)) {
+  		return $result[$id]->_predecessorList;
+  	}
+  	if (array_key_exists($id, $directFullList)) {
+      $result=$directFullList[$id];
+  	  foreach ($directFullList[$id] as $idPrec=>$prec) {
+        $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result));
+      }
+    } else {
+      $result=array();
+    } 
+  	return $result;
+  }
+  
+  static function comparePlanningElement($a, $b) {
+    if (array_key_exists('#'.$a->id, $b->_predecessorListWithParent)) {
+    	return -1;
+    }
+    if (array_key_exists('#'.$b->id, $a->_predecessorListWithParent)) {
+      return +1;
+    }
+    if (array_key_exists('#'.$a->id, $b->_parentList)) {
+      return +1;
+    }
+    if (array_key_exists('#'.$b->id, $a->_parentList)) {
+      return -1;
+    }
+    // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
+    if ($a->idPlanningMode=='2' or $a->idPlanningMode=='3' or $a->idPlanningMode=='2') {
+    	return -1;
+    }
+    if ($b->idPlanningMode=='2' or $b->idPlanningMode=='3' or $b->idPlanningMode=='2') {
+      return +1;
+    }
+    if ($a->priority<$b->priority) {
+      return -1;
+    }
+    if ($a->priority>$b->priority) {
+      return +1;
+    }
+    
+    if ($a->wbsSortable<$b->wbsSortable) {
+      return -1;
+    }
+    if ($a->wbsSortable>$b->wbsSortable) {
+      return +1;
+    }
+    return 0;       
+  }
+    
 }
 ?>

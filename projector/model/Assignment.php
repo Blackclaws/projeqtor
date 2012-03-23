@@ -104,6 +104,9 @@ class Assignment extends SqlElement {
     return $result;
   }
   
+  public function simpleSave() {
+  	$result = parent::save();
+  }
   /**
    * Delete object and dispatch updates to top 
    * @see persistence/SqlElement#save()

@@ -566,6 +566,7 @@ errorConnectionDB: "SQL FEHLER<BR/>Verbindungsproblem 'unbekannte Datenbank' '${
 errorControlDelete: "Element kann nicht gelöscht werden, da es bestehende Abhängigkeiten gibt.",
 errorDeleteCostStartDate: "Neuer Kostensatz kann nicht vor dem alten wirksam werden",
 errorDeleteDoneBill: "Erledigte Rechnung kann nicht gelöscht werden.",
+errorDependencyHierarchy: "[errorDependencyHierarchy]",
 errorDependencyLoop: "Kann keine gegenseitigen Abhängigkeiten erstellen.",
 errorDuplicateActivityPrice: "Ein Aktivitätspreis für das selbe Projekt und Typ bereits vorhanden",
 errorDuplicateAffectation: "Dupliziere Zuordnung",

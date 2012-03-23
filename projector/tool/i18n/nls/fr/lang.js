@@ -566,6 +566,7 @@ errorConnectionDB: "ERREUR SQL<BR/>Connexion impossible car la database '${1}' e
 errorControlDelete: "Impossible de supprimer cet élément car il a des éléments dépendants",
 errorDeleteCostStartDate: "Le nouveau coût ne peut pas commencer avant le précédent",
 errorDeleteDoneBill: "Impossible de supprimer une facture traitée",
+errorDependencyHierarchy: "Impossible de créer une dépedance avec un élément parent",
 errorDependencyLoop: "Impossible de créer une boucle de dépendance",
 errorDuplicateActivityPrice: "Un prix d'activité existe déjà pour ce projet et ce type",
 errorDuplicateAffectation: "Affectation en double",
