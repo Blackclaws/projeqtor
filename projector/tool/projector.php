@@ -501,7 +501,13 @@ function getAccesResctictionClause($objectClass,$alias=null) {
       if ($objectClass=='Project') {
         $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
       } else if ($objectClass=='Document') {
-        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) . " or idProject is null)";          
+      	$v=new Version();
+      	$vp=new VersionProject();
+        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) 
+                    . " or (idProject is null and idProduct in"
+                    . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
+                    . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects()) . ") ) )";        
       } else {
        	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
       }   
@@ -509,8 +515,13 @@ function getAccesResctictionClause($objectClass,$alias=null) {
     	if ($objectClass=='Project') {
     		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
       } else if ($objectClass=='Document') {
+      	$v=new Version();
+        $vp=new VersionProject();
         $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) 
-                    . " or " . $table . ".idProject is null)";          
+                    . " or (" . $table . ".idProject is null and " . $table . ".idProduct in"
+                    . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
+                    . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects()) . ") ) )";        
     	} else {
         $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
     	}
