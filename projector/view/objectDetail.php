@@ -183,9 +183,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         if (! $print) {
           echo '</table>';
-          if ($prevSection) {
-        	  echo '</div>';
-          }
+          // Extra div closure : leads to scrollbar error (mostly on workflow) 
+          //if ($prevSection) {
+        	  //echo 'z</div>';
+          //}
           $titlePane=$classObj."_".$section; 
           echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
           echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
