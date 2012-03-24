@@ -82,6 +82,8 @@
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
             $queryWhere.=  $table . '.id in ' . getVisibleProjectsList() ;
+          } else if ($objectClass=='Document') {
+          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList() . " or " . $table . ".idProject is null)";
           } else {
             $queryWhere.= $table . ".idProject in " . getVisibleProjectsList() ;
           }
@@ -324,7 +326,7 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-//debugLog($query);
+debugLog($query);
     $result=Sql::query($query);
     $nbRows=0;
     $dataType=array();
