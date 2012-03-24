@@ -142,7 +142,7 @@
           </tr>
           <tr>
             <td colspan="3">
-              <img src="slides/Diapositive<?php echo $page;?>.PNG" />
+              <img src="slides/img<?php echo $page;?>.png" />
             </td>
           </tr>
         </table>
