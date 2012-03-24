@@ -574,9 +574,6 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
            . "</td>";
     echo "</tr>";
   }
-  if (! $currentFilter) {
-  	echo '<input type="hidden" id="noFilterSelected" value="true" />';
-  }
   if (count($filterArray)>0) { 
     foreach ($filterArray as $filter) {
       echo "<tr>";
@@ -596,7 +593,9 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
       echo "</tr>";
     }
   } else {
-    echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noStoredFilter") . "</i></td></tr>";
+  	if ($context!='directFilterList') {
+      echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noStoredFilter") . "</i></td></tr>";
+  	}
   }
   echo "</table>";
 

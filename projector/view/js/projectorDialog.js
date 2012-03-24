@@ -1848,31 +1848,31 @@ function filterSelectOperator(operator) {
  * Save filter clause
  * 
  */
-function addfilterClause() {
+function addfilterClause(silent) {
 	filterStartInput=false;
 	if (dijit.byId('filterNameDisplay')) {
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
 	if (filterType=="") { 
-		showAlert(i18n('attributeNotSelected')); 
-		exit;
+		if (!silent) showAlert(i18n('attributeNotSelected')); 
+		return;
 	}
 	if (filterType=="list" && dijit.byId('filterValueList').get('value')=='') {
-		showAlert(i18n('valueNotSelected')); 
-		exit;
+		if (!silent) showAlert(i18n('valueNotSelected')); 
+		return;
 	}
 	if (filterType=="date" && ! dijit.byId('filterValueDate').get('value')) {
-		showAlert(i18n('valueNotSelected')); 
-		exit;
+		if (!silent) showAlert(i18n('valueNotSelected')); 
+		return;
 	}		
 	if (filterType=="text" && ! dijit.byId('filterValue').get('value')) {
-		showAlert(i18n('valueNotSelected')); 
-		exit;
+		if (!silent) showAlert(i18n('valueNotSelected')); 
+		return;
 	}		
 	// Add controls on operator and value
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
-	dijit.byId('filterNameDisplay').set('value',null);
-	dojo.byId('filterName').value=null;
+	//dijit.byId('filterNameDisplay').set('value',null);
+	//dojo.byId('filterName').value=null;
 }
 
 /**
@@ -1883,12 +1883,11 @@ function removefilterClause(id) {
 	if (dijit.byId('filterNameDisplay')) {
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
-	alert(dojo.byId('filterName').value);
 	// Add controls on operator and value
 	dojo.byId("filterClauseId").value=id;
-	loadContent("../tool/removeFilterClause.php?filterName="+dojo.byId('filterName').value, "listFilterClauses", "dialogFilterForm", false);
-	dijit.byId('filterNameDisplay').set('value',null);
-	dojo.byId('filterName').value=null;
+	loadContent("../tool/removeFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	//dijit.byId('filterNameDisplay').set('value',null);
+	//dojo.byId('filterName').value=null;
 }
 
 /**
@@ -1896,6 +1895,14 @@ function removefilterClause(id) {
  * 
  */
 function selectFilter() {
+	if (filterStartInput) {
+		addfilterClause(true);
+		setTimeout("selectFilterContinue();",1000);
+	} else {
+		selectFilterContinue();
+	}
+}
+function selectFilterContinue() {
 	if (dijit.byId('filterNameDisplay')) {
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
@@ -1913,6 +1920,7 @@ function selectFilter() {
 	loadContent("../tool/displayFilterList.php?context=directFilterList&filterObjectClass="+dojo.byId('objectClass').value, "directFilterList", null, false,'returnFromFilter', false);
 	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
 	dijit.byId("dialogFilter").hide();
+	filterStartInput=false;
 }
 
 /**
@@ -1981,8 +1989,14 @@ function saveFilter() {
  */
 function selectStoredFilter(idFilter,context) {
   if (context=='directFilterList') {
-	loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter+"&context=" + context 
+	  if (idFilter=='0') {
+			dojo.byId('noFilterSelected').value='true';
+	  } else {
+			dojo.byId('noFilterSelected').value='false';
+	  }
+	  loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter+"&context=" + context 
 			+ "&filterObjectClass="+dojo.byId('objectClass').value, "directFilterList", null, false);
+	
 	//loadContent("../tool/displayFilterList.php?", "directFilterList",  "dialogFilterForm", false);
 	
   } else {
