@@ -3,7 +3,6 @@
  * Save a note : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
  */
-
 require_once "../tool/projector.php";
 
 $user=$_SESSION['user'];
@@ -145,7 +144,6 @@ if ($idFilterAttribute and $idFilterOperator) {
 
 //$user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
 $user->_arrayFilters[$filterObjectClass . "FilterName"]="";
-
 htmlDisplayFilterCriteria($filterArray,$name); 
 
 // save user (for filter saving)
