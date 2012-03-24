@@ -500,12 +500,17 @@ function getAccesResctictionClause($objectClass,$alias=null) {
     if ($alias===false) {
       if ($objectClass=='Project') {
         $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+      } else if ($objectClass=='Document') {
+        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) . " or idProject is null)";          
       } else {
        	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
       }   
     } else {
     	if ($objectClass=='Project') {
     		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+      } else if ($objectClass=='Document') {
+        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) 
+                    . " or " . $table . ".idProject is null)";          
     	} else {
         $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
     	}

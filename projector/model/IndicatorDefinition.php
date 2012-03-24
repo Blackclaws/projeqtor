@@ -77,6 +77,11 @@ class IndicatorDefinition extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    
+    if ($this->id) {
+      self::$_fieldsAttributes["idIndicatorable"]='readonly'; 
+      self::$_fieldsAttributes["idIndicator"]='readonly';
+    }
   }
 
   
