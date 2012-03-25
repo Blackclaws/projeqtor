@@ -9,6 +9,7 @@
   $user=$_SESSION['user'];
   $collapsedList=Collapsed::getCollaspedList();      
 ?>
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="Administration" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="adminButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top">
     <table width="100%">
