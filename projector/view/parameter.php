@@ -9,6 +9,7 @@
   $type=$_REQUEST['type'];
   $criteriaRoot=array();
   $user=$_SESSION['user'];
+  $manual=ucfirst($type);
   
   $collapsedList=Collapsed::getCollaspedList();
       
@@ -24,7 +25,7 @@
       break;
     case ('globalParameter'):
       $criteriaRoot['idUser']=null; 
-      $criteriaRoot['idProject']=null; 
+      $criteriaRoot['idProject']=null;
       break;
   }
   
@@ -119,7 +120,7 @@
     echo '</td></tr></table>';
   }
 ?>
-
+<input type="hidden" name="objectClassManual" id="objectClassManual" value="<?php echo $manual;?>" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
   <div id="parameterButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top">
     <table width="100%">
