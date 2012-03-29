@@ -61,12 +61,11 @@ INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `order`, 
 (90,2,'idProject', 'projectList', 1, 'currentProject'),
 (91,3,'idProject', 'projectList', 1, 'currentProject'),
 (92,28,'idProject', 'projectList', 1, 'currentProject'),
-(93,29,'idProject', 'projectList', 1, 'currentProject');
-INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `order`, defaultValue) VALUES
-(94,'idProject', 'projectList', 1, 'currentProject'),
-(95,'idProject', 'projectList', 1, 'currentProject'),
-(96,'idProject', 'projectList', 1, 'currentProject'),
-(97,'idProject', 'projectList', 1, 'currentProject');
+(93,29,'idProject', 'projectList', 1, 'currentProject'),
+(94,30,'idProject', 'projectList', 1, 'currentProject'),
+(95,4, 'idProject', 'projectList', 1, 'currentProject'),
+(96,5,'idProject', 'projectList', 1, 'currentProject'),
+(97,6,'idProject', 'projectList', 1, 'currentProject');
 
 CREATE TABLE `${prefix}contexttype` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
