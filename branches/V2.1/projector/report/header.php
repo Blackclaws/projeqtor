@@ -1,6 +1,10 @@
 <?php 
 // Header
 //echo "<page_header>";
+
+// extend timout to 5mn
+set_time_limit(300);
+
 echo "<table style='width:100%'><tr>";
 echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";
 echo "<td style='width:10%' class='reportHeader'>" . i18n('colParameters') . "</td>";
