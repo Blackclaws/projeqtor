@@ -58,7 +58,7 @@ class Assignment extends SqlElement {
    */
   public function save() {
     
-  if (! $this->realWork) { $this->realWork=0; }
+    if (! $this->realWork) { $this->realWork=0; }
     // if cost has changed, update work 
     
     $this->plannedWork = $this->realWork + $this->leftWork;

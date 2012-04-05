@@ -356,7 +356,8 @@ class PlannedWork extends GeneralWork {
                   $plannedWork->work=$value;
                   $plannedWork->setDates($currentDate);
                   $arrayPlannedWork[]=$plannedWork;
-                  $ass->plannedWork+=$value;
+                  // plannedWork is alway Left + Real, not to be updated
+                  //$ass->plannedWork+=$value;
                   if (! $ass->plannedStartDate or $ass->plannedStartDate>$currentDate) {
                     $ass->plannedStartDate=$currentDate;
                   }
