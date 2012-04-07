@@ -1289,7 +1289,11 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     } else if ($type=='double') {
       return 2;
     } else {
-      return $split[1];
+    	if (count($split)>=2) {
+        return $split[1];
+    	} else {
+    		return 0;
+    	}
     }
   }
 
