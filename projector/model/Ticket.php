@@ -277,6 +277,14 @@ class Ticket extends SqlElement {
   	return $result;
   }
 
+  public function getTitle($col) {
+  	if (substr($col,0,9)=='idContext') {
+  	  return SqlList::getNameFromId('ContextType', substr($col, 9));
+  	} else {
+  		return parent::getTitle($col);
+  	} 
+  	
+  }
   
 }
 ?>

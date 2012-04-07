@@ -1219,5 +1219,7 @@ workAccess: "Visibilité des charges",
 Workflow: "Workflow",
 wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se connecter",
 year: "année",
+ContextType: "Type de contexte",
+menuContextType: "Types de contexte",
 currentLocaleOfFile: "fr"
 }

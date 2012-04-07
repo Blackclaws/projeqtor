@@ -1219,5 +1219,7 @@ workAccess: "Anzeige von Arbeit",
 Workflow: "Workflow",
 wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administrator kann sich verbinden.",
 year: "Jahr",
+ContextType: "Kontextyp",
+menuContextType: "Kontextypen",
 currentLocaleOfFile: "de"
 }

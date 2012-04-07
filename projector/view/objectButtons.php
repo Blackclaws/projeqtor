@@ -8,6 +8,7 @@
   if (! isset($comboDetail)) {
     $comboDetail=false;
   }
+  $obj=new $_REQUEST['objectClass']();
 ?>
 <table>
   <tr>
@@ -17,7 +18,7 @@
     <td><span class="title"><?php echo i18n($_REQUEST['objectClass']);?></span></td>
     <td width="15px">&nbsp;</td>
     <td>
-    <?php if (! $comboDetail) {?>
+    <?php if (! $comboDetail ) {?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
        iconClass="dijitEditorIcon dijitEditorIconNew" >
@@ -33,7 +34,6 @@
 	      }
         </script>
       </button>
-    
       <button id="saveButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonSave', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
