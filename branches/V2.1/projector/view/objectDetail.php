@@ -282,7 +282,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $specificStyle.=' visibility:hidden';
       }
       if (strpos($obj->getFieldAttributes($col), 'title')!==false) {
-      	$attributes.=' title="' . i18n('col'.ucfirst($col)) . '"';
+      	$attributes.=' title="' . $obj->getTitle($col) . '"';
       }
       if ( (securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == "NO") 
       or (strpos($obj->getFieldAttributes($col), 'readonly')!==false)

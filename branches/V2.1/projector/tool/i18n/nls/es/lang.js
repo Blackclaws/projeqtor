@@ -1219,5 +1219,7 @@ workAccess: "Visibilidad del Trabajo",
 Workflow: "Workflow",
 wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se puede conectar.",
 year: "año",
+ContextType: "[ContextType]",
+menuContextType: "[menuContextType]",
 currentLocaleOfFile: "es"
 }

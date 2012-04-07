@@ -1219,5 +1219,7 @@ workAccess: "Visibilidade do trabalho",
 Workflow: "Workflow",
 wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin se pode ligar.",
 year: "ano",
+ContextType: "Tipo de contexto",
+menuContextType: "Tipos de contexto",
 currentLocaleOfFile: "pt"
 }

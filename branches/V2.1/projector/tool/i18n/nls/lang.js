@@ -1219,5 +1219,7 @@ workAccess: "Work visibility",
 Workflow: "Workflow",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 year: "year",
+ContextType: "Context type",
+menuContextType: "Context types",
 currentLocaleOfFile: "default"
 }
