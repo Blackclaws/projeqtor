@@ -54,6 +54,7 @@ $ticket=new Ticket();
 $lstTicket=$ticket->getSqlElementsFromCriteria(null,false, $where, $order);
 
 $lstVersion=SqlList::getList('TargetVersion');
+//var_dump($lstVersion);
 $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 if ($paramTicketType!="") {
 	$lstType=array($paramTicketType=>SqlList::getNameFromId('TicketType', $paramTicketType));
