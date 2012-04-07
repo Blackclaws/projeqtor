@@ -53,8 +53,7 @@ $order="";
 $ticket=new Ticket();
 $lstTicket=$ticket->getSqlElementsFromCriteria(null,false, $where, $order);
 
-$lstVersion=SqlList::getList('TargetVersion');
-//var_dump($lstVersion);
+$lstVersion=SqlList::getList('Version');
 $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 if ($paramTicketType!="") {
 	$lstType=array($paramTicketType=>SqlList::getNameFromId('TicketType', $paramTicketType));
@@ -81,8 +80,8 @@ if (count($lstType)) {
 foreach ($lstTicket as $t) {
 	$ticket=new Ticket($t->id);
 	$vers=($t->idTargetVersion)?$t->idTargetVersion:'0';
-  $version[$vers][$t->idTicketType]['count']+=1;
-  echo $t->WorkElement->plannedWork . '/';
+  if (! isset($version[$vers][$t->idTicketType])) {continue;}
+	$version[$vers][$t->idTicketType]['count']+=1;
   $version[$vers][$t->idTicketType]['estimated']+=$ticket->WorkElement->plannedWork;
   $version[$vers][$t->idTicketType]['real']+=$ticket->WorkElement->realWork;
   $version[$vers][$t->idTicketType]['left']+=$ticket->WorkElement->leftWork;
