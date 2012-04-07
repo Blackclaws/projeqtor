@@ -17,7 +17,7 @@
       $nbRows=listFieldsForFilter ($obj,0);
     } else if ($type=='operator') {    
       $dataType=$_REQUEST['dataType'];
-      if ($dataType=='int' or $dataType=='date' or $dataType=='datetime' or 'decimal') {
+      if ($dataType=='int' or $dataType=='date' or $dataType=='datetime' or $dataType=='decimal') {
         echo ' {id:"=", name:"="}';
         echo ',{id:">=", name:">="}';
         echo ',{id:"<=", name:"<="}';
