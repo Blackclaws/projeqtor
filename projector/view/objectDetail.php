@@ -2074,8 +2074,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ($obj and property_exists($obj, '_noHistory')) {
     $displayHistory='NO';
   }
+  echo '<br/>';
   if (  ( ! $noselect) and $displayHistory != 'NO' and ! $comboDetail) { 
-    echo '<br/>';
+    
     $titlePane=$objClass."_history"; ?> 
       <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
