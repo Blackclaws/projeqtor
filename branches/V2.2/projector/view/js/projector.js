@@ -498,7 +498,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         form: dojo.byId(formName),
         handleAs: "text",
         load: function(data,args){
-console.log(data);
+//console.log(data);
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);

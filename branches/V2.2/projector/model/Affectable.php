@@ -36,7 +36,7 @@ class Affectable extends SqlElement {
   function __construct($id = NULL) {
     parent::__construct($id);
     if ($this->id and !$this->name and $this->userName) {
-    	$this->name=$this->userName;
+      $this->name=$this->userName;
     }
   }
 
