@@ -2206,5 +2206,9 @@ scriptLog('SqlElement::setReference');
   	$mutex->release();
   	
   }
+  
+  public function getTitle($col) {
+    return i18n('col'.$col);
+  }
 }
 ?>
