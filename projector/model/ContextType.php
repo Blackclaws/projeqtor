@@ -9,7 +9,10 @@ class ContextType extends SqlElement {
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $idle;
-  public $_isNameTranslatable = true;
+  
+  public $_noDelete=true;
+  public $_noCreate=true;
+  //public $_isNameTranslatable = true;
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

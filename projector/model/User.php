@@ -197,6 +197,7 @@ class User extends SqlElement {
       $result .= ' title="' . i18n('sendInfoToUser') . '" >';
       $result .= '<span>' . i18n('sendInfoToUser') . '</span>';
       $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+      $result .= '   if (checkFormChangeInProgress()) {return false;}';
 	    $result .=  '  var email="";';
 	    $result .=  '  if (dojo.byId("email")) {email = dojo.byId("email").value;}';
       $result .=  '  if (email==null || email=="") { ';
