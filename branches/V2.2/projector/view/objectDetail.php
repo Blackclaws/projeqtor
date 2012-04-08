@@ -282,7 +282,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $specificStyle.=' visibility:hidden';
       }
       if (strpos($obj->getFieldAttributes($col), 'title')!==false) {
-      	$attributes.=' title="' . i18n('col'.ucfirst($col)) . '"';
+      	$attributes.=' title="' . $obj->getTitle($col) . '"';
       }
       if ( (securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == "NO") 
       or (strpos($obj->getFieldAttributes($col), 'readonly')!==false)
@@ -2074,8 +2074,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ($obj and property_exists($obj, '_noHistory')) {
     $displayHistory='NO';
   }
+  echo '<br/>';
   if (  ( ! $noselect) and $displayHistory != 'NO' and ! $comboDetail) { 
-    echo '<br/>';
+    
     $titlePane=$objClass."_history"; ?> 
       <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
