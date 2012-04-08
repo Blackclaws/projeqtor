@@ -1,9 +1,8 @@
 <?php 
 // Header
 //echo "<page_header>";
-
-// extend timout to 5mn
 set_time_limit(300);
+ini_set('memory_limit', '128M');
 
 echo "<table style='width:100%'><tr>";
 echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";
