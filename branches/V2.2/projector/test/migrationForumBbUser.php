@@ -26,7 +26,7 @@ class BbUser extends SqlElement {
   public $num_posts;
   public $registration_ip;
     
-  private static $_databaseTableName = 'o101506_projectorforum.forum_users';
+  private static $_databaseTableName = 'o101506_projectorForum.forum_users';
 
   
   /** ==========================================================================

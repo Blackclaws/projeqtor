@@ -18,7 +18,7 @@ class BbPost extends SqlElement {
   public $edited_by;
   public $topic_id;
     
-  private static $_databaseTableName = 'o101506_projectorforum.forum_posts';
+  private static $_databaseTableName = 'o101506_projectorForum.forum_posts';
 
   
   /** ==========================================================================

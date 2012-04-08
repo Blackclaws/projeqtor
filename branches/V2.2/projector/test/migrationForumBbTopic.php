@@ -21,7 +21,7 @@ class BbTopic extends SqlElement {
   public $moved_to;
   public $forum_id;
     
-  private static $_databaseTableName = 'o101506_projectorforum.forum_topics';
+  private static $_databaseTableName = 'o101506_projectorForum.forum_topics';
 
   
   /** ==========================================================================
