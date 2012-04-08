@@ -238,7 +238,7 @@ class IndicatorValue extends SqlElement {
         break;
   	}
     if (trim($this->warningTargetDateTime) and $date>=$this->warningTargetDateTime) {
-      if (! $this->warningSent) {
+      if (! $this->warningSent and !$this->done) {
         $this->sendWarning();
         $this->warningSent='1';
       }
@@ -246,7 +246,7 @@ class IndicatorValue extends SqlElement {
       $this->warningSent='0';
     }
     if (trim($this->alertTargetDateTime) and $date>=$this->alertTargetDateTime) {
-      if (! $this->alertSent) {
+      if (! $this->alertSent and !$this->done) {
         $this->sendAlert();
         $this->alertSent='1';
       }

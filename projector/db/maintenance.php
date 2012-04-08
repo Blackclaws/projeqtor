@@ -136,7 +136,15 @@ if ($currVersion<"V2.1.0") {
     $pe->save();
   }
 }
-
+// For V2.1.1
+if ($currVersion<"V2.1.1") {
+  // update PlanningElements (progress)
+  $ass=new Assignment();
+  $assList=$ass->getSqlElementsFromCriteria(null, false);
+  foreach ($assList as $ass) {
+    $ass->saveWithRefresh();
+  }
+}
 
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
