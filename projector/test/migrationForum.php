@@ -1,3 +1,7 @@
+<?php
+require "../tool/projector.php";
+header ('Content-Type: text/html; charset=UTF-8');
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -23,7 +27,6 @@
 
 <body>
 <?php
-require "../tool/projector.php";
 require './migrationForumBbBan.php';
 require './migrationForumBbPost.php';
 require './migrationForumBbTopic.php';
@@ -32,8 +35,6 @@ require './migrationForumJoMessage.php';
 require './migrationForumJoUser.php';
 require './migrationForumJoUserGroup.php';
 
-
-header ('Content-Type: text/html; charset=UTF-8');
 set_time_limit(300);
 
 $mode='update';

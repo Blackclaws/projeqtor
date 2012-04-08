@@ -14,7 +14,7 @@ class BbBan extends SqlElement {
   public $expire;
   public $ban_creator;
     
-  private static $_databaseTableName = 'o101506_projectorforum.forum_bans';
+  private static $_databaseTableName = 'o101506_projectorForum.forum_bans';
 
   
   /** ==========================================================================
