@@ -1220,6 +1220,8 @@ Workflow: "Workflow",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 year: "year",
 ContextType: "Context type",
+isEmpty: "is empty",
+isNotEmpty: "is not empty",
 menuContextType: "Context types",
 currentLocaleOfFile: "en"
 }

@@ -1220,6 +1220,8 @@ Workflow: "Workflow",
 wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin se pode ligar.",
 year: "ano",
 ContextType: "Tipo de contexto",
+isEmpty: "[isEmpty]",
+isNotEmpty: "[isNotEmpty]",
 menuContextType: "Tipos de contexto",
 currentLocaleOfFile: "pt"
 }

@@ -1824,6 +1824,13 @@ function filterSelectOperator(operator) {
 		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
 		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
+    } else if (operator=="isEmpty" || operator=="isNotEmpty") {
+        filterType="null";
+        dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
+        dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
+        dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+        dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+        dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
 	} else {
 		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
 		dataType=dojo.byId('filterDataType').value;
@@ -1857,18 +1864,18 @@ function addfilterClause(silent) {
 		if (!silent) showAlert(i18n('attributeNotSelected')); 
 		return;
 	}
-	if (filterType=="list" && dijit.byId('filterValueList').get('value')=='') {
-		if (!silent) showAlert(i18n('valueNotSelected')); 
-		return;
-	}
-	if (filterType=="date" && ! dijit.byId('filterValueDate').get('value')) {
-		if (!silent) showAlert(i18n('valueNotSelected')); 
-		return;
-	}		
-	if (filterType=="text" && ! dijit.byId('filterValue').get('value')) {
-		if (!silent) showAlert(i18n('valueNotSelected')); 
-		return;
-	}		
+    if (filterType=="list" && dijit.byId('filterValueList').get('value')=='') {
+        if (!silent) showAlert(i18n('valueNotSelected'));
+        return;
+    }
+    if (filterType=="date" && ! dijit.byId('filterValueDate').get('value')) {
+        if (!silent) showAlert(i18n('valueNotSelected'));
+        return;
+    }
+    if (filterType=="text" && ! dijit.byId('filterValue').get('value')) {
+        if (!silent) showAlert(i18n('valueNotSelected'));
+        return;
+    }
 	// Add controls on operator and value
 	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 	//dijit.byId('filterNameDisplay').set('value',null);

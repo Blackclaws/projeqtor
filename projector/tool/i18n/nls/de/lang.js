@@ -1220,6 +1220,8 @@ Workflow: "Workflow",
 wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administrator kann sich verbinden.",
 year: "Jahr",
 ContextType: "Kontextyp",
+isEmpty: "[isEmpty]",
+isNotEmpty: "[isNotEmpty]",
 menuContextType: "Kontextypen",
 currentLocaleOfFile: "de"
 }

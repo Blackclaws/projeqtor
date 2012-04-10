@@ -1220,6 +1220,8 @@ Workflow: "Workflow",
 wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se connecter",
 year: "année",
 ContextType: "Type de contexte",
+isEmpty: "est vide",
+isNotEmpty: "est non vide",
 menuContextType: "Types de contexte",
 currentLocaleOfFile: "fr"
 }

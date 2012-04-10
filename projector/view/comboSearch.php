@@ -2,6 +2,7 @@
 /* ============================================================================
  * Print page of application.
  */
+/* @var string $paramDebugMode */
    require_once "../tool/projector.php";
    ob_start();
    scriptLog('   ->/view/comboSearch.php'); 
@@ -71,7 +72,7 @@
     });
   </script>
 </head>
-<body id="body" class="<?php echo getTheme();?>" onload="top.hideWait();";>
+<body id="body" class="<?php echo getTheme();?>" onload="top.hideWait();">
   <input type="hidden" id="comboDetail" name="comboDetail" value="true" />
   <input type="hidden" id="comboDetailId" name="comboDetailId" value="" />
   <input type="hidden" id="comboDetailName" name="comboDetailName" value="" />
