@@ -333,7 +333,7 @@ function disableCatchErrors() {
  * Format error message, display it and exit script
  * NB : error messages are not using i18n (because it may be the origin of the error)
  *      Error messages are always displayed in english (hard coded)
- * @param $message the message of the error to be returned
+ * @param $message string the message of the error to be returned
  * @param $code not used
  * @return void
  */
@@ -348,7 +348,6 @@ function throwError($message, $code=null) {
   }  
 }
 
-
 /** ============================================================================
  * Autoload fonction, to automatically load classes
  * Class file is searched in :
@@ -356,7 +355,7 @@ function throwError($message, $code=null) {
  *   2 => model directory => all object model classes should be here
  *   3 => model/persistence => all Sql classes, to interact with database
  *   4 => tool directory [DISABLED]
- * @param $className the name of the class
+ * @param $className string the name of the class
  * @return void
  */
 function __autoload($className) {

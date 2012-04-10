@@ -902,18 +902,19 @@ abstract class SqlElement {
   public function fillFromRequest($ext=null) {
     $this->fillSqlElementFromRequest(null,$ext);
   }
-  
-  /**  ========================================================================
-   * Retrieve a list of objects from the Database
-   * Called from an empty object of the expected class
-   * @param $critArray the critera asd an array
-   * @param $initializeIfEmpty boolean indicating if no result returns an 
-   * initialised element or not
-   * @param $clauseWhere Sql Where clause (alternative way to define criteria)
-   *        => $critArray must not be set 
-   * @param $clauseOrderBy Sql Order By clause 
-   * @return an array of objects
-   */
+
+    /**  ========================================================================
+     * Retrieve a list of objects from the Database
+     * Called from an empty object of the expected class
+     * @param array $critArray the critera as an array
+     * @param boolean $initializeIfEmpty indicating if no result returns an
+     * initialised element or not
+     * @param string $clauseWhere Sql Where clause (alternative way to define criteria)
+     *        => $critArray must not be set
+     * @param string $clauseOrderBy Sql Order By clause
+     * @param boolean $getIdInKey
+     * @return SqlElement[] an array of objects
+     */
   public function getSqlElementsFromCriteria($critArray, $initializeIfEmpty=false, 
   $clauseWhere=null, $clauseOrderBy=null, $getIdInKey=false ) {
     // Build where clause from criteria
