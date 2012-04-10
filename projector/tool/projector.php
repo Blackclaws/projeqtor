@@ -53,8 +53,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V2.1.1";            // Version of application : Major / Minor / Release
-$build="0047";                // Build number. To be increased on each release
+$version="V2.2.0";            // Version of application : Major / Minor / Release
+$build="0048";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -384,12 +384,12 @@ function __autoload($className) {
  */
 function getCurrentUserId() {
   if ( ! array_key_exists('user',$_SESSION)) {
-    throw "ERROR user does not exist";
+    throw new Exception("ERROR user does not exist");
     exit;
   }
   $user=$_SESSION['user'];
   if (get_class($user) != 'User') {
-    throw "ERROR user is not a User object";
+    throw new Exception("ERROR user is not a User object");
     exit;
   }
   return $user->id;
