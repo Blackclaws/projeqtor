@@ -1220,6 +1220,8 @@ Workflow: "Workflow",
 wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se puede conectar.",
 year: "año",
 ContextType: "[ContextType]",
+isEmpty: "[isEmpty]",
+isNotEmpty: "[isNotEmpty]",
 menuContextType: "[menuContextType]",
 currentLocaleOfFile: "es"
 }

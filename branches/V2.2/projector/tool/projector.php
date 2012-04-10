@@ -1283,7 +1283,6 @@ function weekFormat($dateValue) {
  * Checks if a date is a "off day" (weekend or else)
  */
 function isOffDay ($dateValue) {
-  //TODO : add off days management and calendar management : here are french holidays
   if (isOpenDay ($dateValue)) {
     return false;
   } else {

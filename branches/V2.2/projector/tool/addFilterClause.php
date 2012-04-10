@@ -119,6 +119,16 @@ if ($idFilterAttribute and $idFilterOperator) {
     }
     //$arrayDisp["value"].=")";
     $arraySql["value"].=")";
+  } else if ($idFilterOperator=="isEmpty") {
+      $arrayDisp["operator"]=i18n("isEmpty");
+      $arraySql["operator"]="is null";
+      $arrayDisp["value"]="";
+      $arraySql["value"]="";
+  } else if ($idFilterOperator=="isNotEmpty") {
+      $arrayDisp["operator"]=i18n("isNotEmpty");
+      $arraySql["operator"]="is not null";
+      $arrayDisp["value"]="";
+      $arraySql["value"]="";
   } else if ($idFilterOperator=="SORT") {  
     $arrayDisp["operator"]=i18n("sortFilter");
     $arraySql["operator"]=$idFilterOperator;
