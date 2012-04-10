@@ -10,6 +10,7 @@ if (! array_key_exists('currentObject',$_SESSION)) {
   throwError('currentObject parameter not found in SESSION');
 }
 $obj=$_SESSION['currentObject'];
+/* @var SqlElement $obj */
 if (! is_object($obj)) {
   throwError('last saved object is not a real object');
 }

@@ -20,11 +20,12 @@ abstract class SqlDirectElement {
    */ 
   function __destruct() {
   }
- 
-   /** ==========================================================================
-   * Returns an array (lines) of corresponing objects
-   * @return void
-   */  
+
+    /** ==========================================================================
+     * Returns an array (lines) of corresponing objects
+     * @param $query string Query to get Lines
+     * @return SqlElement[]
+     */
   public function getLines($query) {
     $result = Sql::query($query); 
     if (Sql::$lastQueryNbRows > 0) {
