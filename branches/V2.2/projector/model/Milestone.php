@@ -34,6 +34,8 @@ class Milestone extends SqlElement {
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
   public $_Dependency_Successor=array();
+  public $_col_1_1_Link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();  
   // Define the layout that will be used for lists

@@ -18,6 +18,8 @@ class Issue extends SqlElement {
   public $idCriticality;
   public $idPriority;
   public $description;
+  public $_sec_link;
+  public $_Link=array();
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;

@@ -1362,9 +1362,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   } 
   echo '<td class="linkHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
   echo '<td class="linkHeader" style="width:' . ( ($classLink)?'70':'60' ) . '%">' . i18n('colName') . '</td>';
-  if (property_exists($classLink, 'idStatus')) {
+  //if ($classLink and property_exists($classLink, 'idStatus')) {
     echo '<td class="linkHeader" style="width:20%">' . i18n('colIdStatus'). '</td>';
-  }
+  //}
   echo '</tr>';
   foreach($list as $link) {
     $linkObj=null;
@@ -1373,33 +1373,36 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     } else {
       $linkObj=new $link->ref1Type($link->ref1Id);
     }
-    echo '<tr>';
-    if (! $print) {
-      echo '<td class="linkData" style="text-align:center;">';
-      if ($canUpdate) {
-        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
-      }
-      echo '</td>';
+    $prop='_Link_'.get_class($linkObj);
+    if( $classLink or ! property_exists($obj,$prop ) ) {
+        echo '<tr>';
+        if (! $print) {
+          echo '<td class="linkData" style="text-align:center;">';
+          if ($canUpdate) {
+            echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
+          }
+          echo '</td>';
+        }
+        if ( ! $classLink ) {
+          echo '<td class="linkData" >' . i18n(get_class($linkObj)) . '</td>';
+        }
+        echo '<td class="linkData">#' . $linkObj->id  . '</td>';
+        $goto="";
+        if (! $print
+        and securityCheckDisplayMenu(null,get_class($linkObj))
+        and securityGetAccessRightYesNo('menu' . get_class($linkObj), 'read', $linkObj)=="YES") {
+          $goto=' onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;" ';
+        }
+        echo '<td class="linkData" ' . $goto . '>' . $linkObj->name . '</td>';
+        if (property_exists($linkObj, 'idStatus')) {
+          $objStatus=new Status($linkObj->idStatus);
+          //$color=$objStatus->color;
+          //$foreColor=getForeColor($color);
+          //echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
+          echo '<td class="dependencyData" style="width:20%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+        }
+        echo '</tr>';
     }
-    if ( ! $classLink ) {
-      echo '<td class="linkData" >' . i18n(get_class($linkObj)) . '</td>';
-    }
-    echo '<td class="linkData">#' . $linkObj->id  . '</td>';
-    $goto="";
-    if (! $print 
-    and securityCheckDisplayMenu(null,get_class($linkObj)) 
-    and securityGetAccessRightYesNo('menu' . get_class($linkObj), 'read', $linkObj)=="YES") {
-      $goto=' onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;" ';	
-    }
-    echo '<td class="linkData" ' . $goto . '>' . $linkObj->name . '</td>';
-    if (property_exists($linkObj, 'idStatus')) {
-      $objStatus=new Status($linkObj->idStatus);
-      //$color=$objStatus->color;
-      //$foreColor=getForeColor($color);
-      //echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
-      echo '<td class="dependencyData" style="width:20%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
-    }
-    echo '</tr>';
   }
   echo '</table></td></tr>';
 }
@@ -2006,7 +2009,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (array_key_exists('displayAttachement',$_SESSION)) {
     $displayAttachement=$_SESSION['displayAttachement'];
   }
-  if (isset($obj->_Attachement) and $isAttachementEnabled and ! $comboDetail ) { ?>
+  if (! $noselect and isset($obj->_Attachement) and $isAttachementEnabled and ! $comboDetail ) { ?>
     <br/>
     <?php if ($print) {?>
     <table width="100%">
@@ -2046,7 +2049,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     <?php }?>
   <?php    
   }
-  if (isset($obj->_Note) and ! $comboDetail) { ?>
+  if (! $noselect and isset($obj->_Note) and ! $comboDetail) { ?>
     <br/>
     <?php if ($print) {?>
     <table width="100%">

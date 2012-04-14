@@ -14,6 +14,8 @@ class Question extends SqlElement {
   public $creationDate;
   public $idUser;
   public $description;
+  public $_sec_link;
+  public $_Link=array();
   public $_col_2_2_answer;
   public $idStatus;
   public $idResource;
