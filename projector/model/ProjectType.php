@@ -15,6 +15,10 @@ class ProjectType extends SqlElement {
   public $_spe_billingType;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
+  public $lockDone;
+  public $_lib_statusMustChangeDone;
+  public $lockIdle;
+  public $_lib_statusMustChangedIdle;
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;
@@ -34,7 +38,8 @@ class ProjectType extends SqlElement {
                                           "idWorkflow"=>"required",
                                           "mandatoryDescription"=>"nobr",
                                           "code"=> "readonly,nobr",
-                                          "internalData"=>"readonly",
+                                          "lockDone"=>"nobr",
+                                          "lockIdle"=>"nobr",
                                           "internalData"=>"hidden");
    
    private static $_databaseColumnName = array();
