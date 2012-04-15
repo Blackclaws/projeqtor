@@ -74,7 +74,7 @@
       }
       foreach ($list as $id=>$name) {
         if ($nbRows>0) echo ', ';
-        echo '{id:"' . $id . '", name:"'. str_replace('"', "''",$name) . '"}';
+        echo '{id:"' . $id . '", name:"'. str_replace('"', "''",htmlEncodeJson($name)) . '"}';
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {
@@ -245,7 +245,11 @@ function listFieldsForFilter ($obj,$nbRows, $included=false) {
               and substr($col,2,1)==strtoupper(substr($col,2,1)))) { 
         $dataType='list'; 
       }
-      echo '{id:"' . ($included?get_class($obj).'_':'') . $col . '", name:"'. $obj->getColCaption($col) .'", dataType:"' . $dataType . '"}';
+      $colName=$obj->getColCaption($col);
+      if (substr($col,0,9)=='idContext') {
+        $colName=SqlList::getNameFromId('ContextType',substr($col,9));
+      }
+      echo '{id:"' . ($included?get_class($obj).'_':'') . $col . '", name:"'. $colName .'", dataType:"' . $dataType . '"}';
       $nbRows++;
     } else if (substr($col, 0,1)<>"_" and substr($col, 0,1) == ucfirst(substr($col, 0,1)) ) {
     	$sub=new $col();
