@@ -1223,5 +1223,6 @@ ContextType: "Type de contexte",
 isEmpty: "est vide",
 isNotEmpty: "est non vide",
 menuContextType: "Types de contexte",
+selectProjectToPlan: "Vous devez sélectionner un projet",
 currentLocaleOfFile: "fr"
 }

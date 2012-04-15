@@ -80,7 +80,14 @@ class PlannedWork extends GeneralWork {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
-  public static function plan($projectId, $startDate) {
+  /**
+   * Run planning calculation for project, starting at start date
+   * @static
+   * @param string $projectId id of project to plan
+   * @param string $startDate start date for planning
+   * @return string result
+   */
+    public static function plan($projectId, $startDate) {
 //echo "<br/>******************************";
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
@@ -100,8 +107,15 @@ class PlannedWork extends GeneralWork {
     $arrayPlannedWork=array();
     $arrayAssignment=array();
     $arrayPlanningElement=array();
-    
-    // build in list to get a where clause : "idProject in ( ... )" 
+
+    $accessRightRead=securityGetAccessRight('menuActivity', 'read');
+    //echo $accessRightRead . "|" . $projectId . '|';
+    if ($accessRightRead=='ALL' and ! trim($projectId)) {
+        $result=i18n('selectProjectToPlan');
+        $result .= '<input type="hidden" id="lastPlanStatus" value="CONTROL" />';
+        return $result;
+    }
+      // build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     // Remove administrative projects :

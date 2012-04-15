@@ -1308,6 +1308,11 @@ function drawGantt() {
     g.setWidth(dojo.style(contentNode, "width"));
   }
   jsonData=dojo.byId('planningJsonData');
+  if ( jsonData.innerHTML.indexOf('{"identifier"')<0) {
+      showAlert(jsonData.innerHTML);
+      hideWait();
+      return;
+  }
   // g.AddTaskItem(new JSGantt.TaskItem( 0, 'project', '', '', 'ff0000', '',
   // 0, '', '10', 1, '', 1, '' , 'test'));
   if( g && jsonData) {
