@@ -48,6 +48,7 @@
               <option value="Team"><?php echo i18n('Team');?></option>
               <option value="Resource"><?php echo i18n('Resource');?></option>
               <option value="Affectation"><?php echo i18n('Affectation');?></option>
+              <option value="Assignment"><?php echo i18n('Assignment');?></option>
            </select> 
         </td>
         <td  align="left"> 

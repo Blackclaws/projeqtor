@@ -73,6 +73,7 @@ if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
    exit; 
 }
 ////
+set_time_limit(3600);
 
 $fileName=$uploadfile;
 
