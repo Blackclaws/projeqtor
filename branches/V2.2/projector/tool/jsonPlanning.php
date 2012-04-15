@@ -33,10 +33,8 @@
   }
   if (! isset($outMode)) { $outMode=""; } 
   
-  $accessRightRead=securityGetAccessRight('menuProject', 'read');
-  if ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*') ) {
-      //include '../tool/jsonPlanning.php';
-  } else {
+  $accessRightRead=securityGetAccessRight('menuActivity', 'read');
+  if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*')) ) {
       echo i18n('selectProjectToPlan');
       return;
   }
@@ -63,7 +61,7 @@
   // Remove administrative projects :
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
-    
+
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;
   
