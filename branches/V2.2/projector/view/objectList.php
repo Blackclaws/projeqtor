@@ -196,11 +196,6 @@ if (array_key_exists('Directory', $_REQUEST)) {
                 </script>
                 </div> 
               </button>
-               
-              <span id="gridRowCountShadow1" class="gridRowCountShadow1"></span>
-              <span id="gridRowCountShadow2" class="gridRowCountShadow2"></span>              
-              <span id="gridRowCount" class="gridRowCount"></span>             
-              <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
 <?php }?>                            
 <?php if (! $comboDetail) {?>                
@@ -237,7 +232,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
               </button>              
             </td>
 <?php }?>            
-            <td style="text-align: right; vertical-align: center;" width="5px">
+            <td style="text-align: right; " width="5px">
               <NOBR>&nbsp;&nbsp;&nbsp;
               <?php echo i18n("labelShowIdle");?>
               </NOBR>

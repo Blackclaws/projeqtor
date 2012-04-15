@@ -16,7 +16,7 @@ scriptLog('   ->/view/planningList.php');
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="27px">
 		    <td width="50px" align="center">
-		      <span style="position:absolute; left:+10px; top: +7px">
+		      <span style="position:absolute; left:10px; top:7px">
             <img src="css/images/iconPlanning32.png" width="32" height="32" />
           </span>
 		    </td>
@@ -95,7 +95,6 @@ if ($canPlan) { ?>
                   showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
                 </script>
 		              </button>
-		              <input type="hidden" id="outMode" name="outMode" value="" />
 		            </td>
                  <td width="32px">
                   <button title="<?php echo i18n('reportExportMSProject')?>"  
@@ -113,10 +112,10 @@ if ($canPlan) { ?>
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
                 </td>
-		            <td style="background-color: blue, width: 100px;text-align: right; align: right;">
+		            <td style="text-align: right; align: right;">
 		              <table width="100%"><tr><td>
                   <?php echo i18n("labelShowWbs");?>
-                  </td><td width:"10px">
+                  </td><td >
 		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="showWBS" name="showWBS">
 		                <script type="dojo/method" event="onChange" >

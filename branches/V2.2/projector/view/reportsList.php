@@ -16,7 +16,7 @@ scriptLog('   ->/view/reportsList.php');
 <table width="100%" height="27px" class="listTitle" >
   <tr height="27px">
     <td width="50px" align="center">
-      <span style="position:absolute; left:+10px; top: +2px"><img src="css/images/iconReports22.png" width="22" height="22" /></span>
+      <span style="position:absolute; left:10px; top:2px"><img src="css/images/iconReports22.png" width="22" height="22" /></span>
     </td>
     <td><span class="title"><?php echo i18n('menuReports');?></span></td>
     <td>   
@@ -31,7 +31,7 @@ scriptLog('   ->/view/reportsList.php');
             <td>
             </td>
             <td><div id="planResultDiv" style=" width: 400px;height: 10px;" dojoType="dijit.layout.ContentPane" region="center" ></div></td>
-            <td style="background-color: blue, width: 100px;text-align: right; align: right;">
+            <td style="text-align: right; align: right;">
             </td>
           </tr>
         </table>    
