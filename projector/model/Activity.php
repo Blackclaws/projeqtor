@@ -271,7 +271,6 @@ class Activity extends SqlElement {
     }
 
     // Change idle or idProject value => update idle and idProject for assignments
-    // TODO : check if Project work values are to be updated ?
      if ( ($this->idle !=  $oldIdle ) 
        or ($this->idProject != $oldIdProject ) ) {
       // Add assignment for responsible

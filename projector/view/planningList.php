@@ -159,7 +159,9 @@ if ($canPlan) { ?>
 	
 		<div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" 
      style="display: none">
-		  <?php include '../tool/jsonPlanning.php';?>
+		  <?php
+            include '../tool/jsonPlanning.php';
+          ?>
 		</div>
 	</div>
 	<div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">

@@ -1223,5 +1223,6 @@ ContextType: "Kontextyp",
 isEmpty: "[isEmpty]",
 isNotEmpty: "[isNotEmpty]",
 menuContextType: "Kontextypen",
+selectProjectToPlan: "[selectProjectToPlan]",
 currentLocaleOfFile: "de"
 }
