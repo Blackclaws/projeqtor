@@ -1,4 +1,4 @@
-idContextType<?php 
+<?php
 /* ============================================================================
  * Client is the owner of a project.
  */ 

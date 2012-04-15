@@ -14,7 +14,7 @@ class Context extends SqlElement {
  
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameContextType" width="30%" formatter="translateFormatter">${idContextType}</th>
+    <th field="nameContextType" width="30%">${idContextType}</th>
     <th field="name" width="50%" >${name}</th>
     <th field="sortOrder" width="10%" >${sortOrder}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>

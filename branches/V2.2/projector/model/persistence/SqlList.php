@@ -74,6 +74,7 @@ class SqlList {
     } else {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     }
+ //debugLog($query);
     $result=Sql::query($query);
     if (Sql::$lastQueryNbRows > 0) {
       while ($line = Sql::fetchLine($result)) {

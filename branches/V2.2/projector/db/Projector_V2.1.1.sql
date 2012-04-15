@@ -27,6 +27,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 104, 1),
 (1, 105, 1);
 
-UPDATE `${prefix}contexttype` SET name='Environment' WHERE id=1;
+UPDATE `${prefix}contexttype` SET name='environment' WHERE id=1;
 UPDATE `${prefix}contexttype` SET name='OS' WHERE id=2;
-UPDATE `${prefix}contexttype` SET name='Browser' WHERE id=3;
+UPDATE `${prefix}contexttype` SET name='browser' WHERE id=3;
