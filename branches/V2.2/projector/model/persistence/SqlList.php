@@ -102,7 +102,7 @@ class SqlList {
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (idle=0 ";
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
-      if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact') and $col=='idProject') {
+      if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact' or strtolower($listType)=='user') and $col=='idProject') {
         $aff=new Affectation();
         $user=new Resource();
         $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject='" . $val . "' and a.idResource=" . $user->getDatabaseTableName() . ".id)";
