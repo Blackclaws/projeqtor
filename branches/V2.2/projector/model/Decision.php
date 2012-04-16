@@ -13,16 +13,16 @@ class Decision extends SqlElement {
   public $name;
   public $idUser;
   public $description;
-  public $_sec_link;
-  public $_Link=array();
   public $_col_2_2_validation;
   public $idStatus;
   public $decisionDate;
   public $origin;
   public $idResource;
   public $idle;
-  public $_sec_linkMeeting;
-  public $_Link_Meeting=array();
+  //public $_sec_linkMeeting;
+  //public $_Link_Meeting=array();
+  public $_col_1_1_link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();
 

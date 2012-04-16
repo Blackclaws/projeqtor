@@ -15,8 +15,6 @@ class Action extends SqlElement {
   public $idUser;
   public $idPriority;
   public $description;
-  public $_sec_link;
-  public $_Link=array();
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
@@ -29,10 +27,12 @@ class Action extends SqlElement {
   public $idle;
   public $idleDate;
   public $result;
-  public $_sec_linkRisk;
-  public $_Link_Risk=array();
-  public $_sec_linkIssue;
-  public $_Link_Issue=array();
+  //public $_sec_linkRisk;
+  //public $_Link_Risk=array();
+  //public $_sec_linkIssue;
+  //public $_Link_Issue=array();
+  public $_col_1_1_link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();
 
