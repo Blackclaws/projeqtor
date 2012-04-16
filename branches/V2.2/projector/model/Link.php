@@ -103,18 +103,19 @@ class Link extends SqlElement {
   
   static function getLinksAsObjectsForObject($obj, $classLink=null) {
     $list = getLinksForObject($obj, $classLink);
+    $class=get_class($obj);
     foreach($list as $lstObj) {
       $type="";
       $id="";
-      if ($lisObj->ref1Type=$class and $listObj->ref1Id=$obj->id ) {
-         $type=$lisObj->ref2Type;
-         $id=$lisObj->ref2Id;
+      if ($lstObj->ref1Type=$class and $lstObj->ref1Id=$obj->id ) {
+         $type=$lstObj->ref2Type;
+         $id=$lstObj->ref2Id;
       } else {
-         $type=$lisObj->ref1Type;
-         $id=$lisObj->ref1Id;
+         $type=$lstObj->ref1Type;
+         $id=$lstObj->ref1Id;
       }
       $resObj=new $type($id);
-      $result[$lisObj->id]=$resObj;
+      $result[$lstObj->id]=$resObj;
     }
     return $result;
   }
