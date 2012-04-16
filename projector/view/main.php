@@ -810,6 +810,19 @@ checkVersion(); ?>
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+               <td class="dialogLabel" >
+                   <label for="linkRef2Type" ><?php echo i18n("colComment") ?>&nbsp;:&nbsp;</label>
+               </td>
+               <td>
+                   <textarea dojoType="dijit.form.Textarea"
+                             id="linkComment" name="linkComment"
+                             style="width: 400px;"
+                             maxlength="4000"
+                             class="input"></textarea>
+               </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
          </table>
         </form>
       </td>

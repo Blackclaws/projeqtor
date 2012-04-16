@@ -10,6 +10,7 @@ class Link extends SqlElement {
   public $ref1Id;
   public $ref2Type;
   public $ref2Id;
+  public $comment;
   
    /** ==========================================================================
    * Constructor

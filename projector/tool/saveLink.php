@@ -26,6 +26,12 @@ if (! array_key_exists('linkRef2Id',$_REQUEST)) {
 }
 $ref2Id=$_REQUEST['linkRef2Id'];
 
+$comment="";
+if (array_key_exists('linkComment',$_REQUEST)) {
+    $comment=$_REQUEST['linkComment'];
+}
+
+
 $linkId=null;
 
 $arrayId=array();
@@ -43,6 +49,7 @@ foreach ($arrayId as $ref2Id) {
 	$link->ref1Type=$ref1Type;
 	$link->ref2Id=$ref2Id;
 	$link->ref2Type=$ref2Type;
+    $link->comment=$comment;
   $res=$link->save();
   if (!$result) {
     $result=$res;

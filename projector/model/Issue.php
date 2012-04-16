@@ -18,8 +18,6 @@ class Issue extends SqlElement {
   public $idCriticality;
   public $idPriority;
   public $description;
-  public $_sec_link;
-  public $_Link=array();
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
@@ -32,10 +30,12 @@ class Issue extends SqlElement {
   public $idle;
   public $idleDate;
   public $result;
-  public $_sec_linkAction;
-  public $_Link_Action=array();
-  public $_sec_linkRisk;
-  public $_Link_Risk=array();
+  //public $_sec_linkAction;
+  //public $_Link_Action=array();
+  //public $_sec_linkRisk;
+  //public $_Link_Risk=array();
+  public $_col_1_1_link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();
   

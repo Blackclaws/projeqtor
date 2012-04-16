@@ -15,8 +15,6 @@ class Meeting extends SqlElement {
   public $attendees;
   public $idUser;
   public $description;
-  public $_sec_link;
-  public $_Link=array();
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
@@ -27,10 +25,12 @@ class Meeting extends SqlElement {
   public $idle;
   public $idleDate;
   public $result;
-  public $_sec_linkDecision;
-  public $_Link_Decision=array();
-  public $_sec_linkQuestion;
-  public $_Link_Question=array();
+  //public $_sec_linkDecision;
+  //public $_Link_Decision=array();
+  //public $_sec_linkQuestion;
+  //public $_Link_Question=array();
+  public $_col_1_1_link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();
 
