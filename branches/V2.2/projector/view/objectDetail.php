@@ -1393,7 +1393,11 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         and securityGetAccessRightYesNo('menu' . get_class($linkObj), 'read', $linkObj)=="YES") {
           $goto=' onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;" ';
         }
-        echo '<td class="linkData" ' . $goto . '>' . $linkObj->name . '</td>';
+        echo '<td class="linkData" ' . $goto . ' title="' . $link->comment . '">' . $linkObj->name ;
+        if ($link->comment and ! $print) {
+          echo '&nbsp;&nbsp;<img src="img/note.png" />';
+        } 
+        echo '</td>';
         if (property_exists($linkObj, 'idStatus')) {
           $objStatus=new Status($linkObj->idStatus);
           //$color=$objStatus->color;
