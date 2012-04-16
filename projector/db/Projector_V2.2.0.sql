@@ -18,6 +18,5 @@ INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`) VALUES
 --INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`) VALUES
 --(11,'DocumentVersion',0);
 
-ALTER TABLE `${prefix}link` ADD COLUMN `comment`  varchar(4000);
-
-
+ALTER TABLE `${prefix}link` ADD COLUMN `comment` varchar(4000);
+ALTER TABLE `${prefix}link` ADD COLUMN `versionType` varchar(10);

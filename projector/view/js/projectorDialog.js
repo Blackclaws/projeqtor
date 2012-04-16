@@ -695,6 +695,7 @@ function addLink (classLink) {
 
 	//dojo.byId("linkRef2Id").value='';
 	dijit.byId("dialogLink").set('title', message);
+	dijit.byId("linkComment").set('value', '');
 	dijit.byId("dialogLink").show();
 	disableWidget('dialogLinkSubmit');
 }
