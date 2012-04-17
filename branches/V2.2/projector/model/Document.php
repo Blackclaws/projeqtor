@@ -29,7 +29,9 @@ class Document extends SqlElement {
   public $version;
   public $revision;
   public $draft;
-  
+  public $_col_1_1_Link;
+  public $_Link=array();
+    
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>

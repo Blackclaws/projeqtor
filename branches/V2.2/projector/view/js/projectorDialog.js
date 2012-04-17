@@ -434,8 +434,7 @@ function selectDetailItem(selectedValue) {
 	if (combo) {
 	  combo.set("value", idFldVal);
 	}
-		
-  hideDetail();
+    hideDetail();
 }
 
 function displaySearch(objClass) {
@@ -673,6 +672,8 @@ function addLink (classLink) {
 	dojo.byId("linkId").value="";
 	dojo.byId("linkRef1Type").value=objectClass;
 	dojo.byId("linkRef1Id").value=objectId;
+	dojo.style(dojo.byId('linkDocumentVersionDiv'), {display:'none'});
+	dijit.byId("linkDocumentVersion").reset();
 	if (classLink) {
 	    dojo.byId("linkFixedClass").value=classLink;
 	  	message = i18n("dialogLinkRestricted", new Array(i18n(objectClass), objectId, i18n(classLink)));
@@ -700,6 +701,30 @@ function addLink (classLink) {
 	disableWidget('dialogLinkSubmit');
 }
 
+function selectLinkItem() {
+  enableWidget('dialogLinkSubmit');
+  if (dojo.byId("linkRef2Type").value=="Document") {
+	  list=dojo.byId(linkRef2Id);
+	  selected = new Array(); 
+	  for (var i = 0; i < list.options.length; i++) {
+		  if (list.options[i].selected) {
+			  selected.push(list.options[ i ].value);
+		  }
+	  }
+	  if (selected.length==1) {
+		  dijit.byId("linkDocumentVersion").reset();
+		  refreshList('idDocumentVersion', 'idDocument', selected[0], null, 'linkDocumentVersion', false);
+		  dojo.style(dojo.byId('linkDocumentVersionDiv'), {display:'block'});
+	  } else {
+		  dojo.style(dojo.byId('linkDocumentVersionDiv'), {display:'none'});
+		  dijit.byId("linkDocumentVersion").reset();
+	  }
+	  
+  } else {
+	  dojo.style(dojo.byId('linkDocumentVersionDiv'), {display:'none'});
+	  dijit.byId("linkDocumentVersion").reset();
+  }
+}
 /**
  * Refresh the link list (after update)
  */
@@ -709,6 +734,9 @@ function refreshLinkList(selected) {
 	var url='../tool/dynamicListLink.php';
 	if (selected) {
 	  url+='?selected='+selected;	
+	}
+	if (!selected) {
+	  selectLinkItem();
 	}
 	loadContent(url, 'dialogLinkList', 'linkForm', false);
 }

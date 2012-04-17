@@ -18,18 +18,27 @@ if (array_key_exists('selected',$_REQUEST)) {
 
 $obj=new $ref1Type($ref1Id);
 
-$crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
-
 if ($ref2Type) {
   $objList=new $ref2Type();
-  $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
+  if (property_exists($objList, "idProject")) {
+    $crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
+    $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
+  } else if ($ref2Type=='DocumentVersionFull' or $ref2Type=='DocumentVersion') {
+    $doc=new Document();
+  	$critWhere = "idle='0' and exists(select 'x' from " . $doc->getDatabaseTableName() . " doc where doc.id=idDocument and doc.idProject='" . $obj->idProject . "')";
+    $list=$objList->getSqlElementsFromCriteria(null,false,$critWhere, 'id desc');
+  } else {
+  	$crit = array ( 'idle'=>'0');
+  	$list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
+  }
+  
 } else {
   $list=array();
 }
 
 ?>
 <select id="linkRef2Id" size="14"" name="linkRef2Id[]" multiple
-onchange="enableWidget('dialogLinkSubmit');"  ondblclick="saveLink();"
+onchange="selectLinkItem();"  ondblclick="saveLink();"
 class="selectList" >
  <?php
  $found=false;

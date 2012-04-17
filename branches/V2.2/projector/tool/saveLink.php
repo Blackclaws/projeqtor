@@ -26,11 +26,20 @@ if (! array_key_exists('linkRef2Id',$_REQUEST)) {
 }
 $ref2Id=$_REQUEST['linkRef2Id'];
 
+if ($ref2Type=='Document') {
+  if (array_key_exists('linkDocumentVersion',$_REQUEST)) {
+    $version=$_REQUEST['linkDocumentVersion'];
+    if (trim($version)) {
+    	$ref2Type='DocumentVersion';
+    	$ref2Id=$version;
+    }
+  }
+}
+
 $comment="";
 if (array_key_exists('linkComment',$_REQUEST)) {
     $comment=$_REQUEST['linkComment'];
 }
-
 
 $linkId=null;
 
