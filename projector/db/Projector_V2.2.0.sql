@@ -16,4 +16,9 @@ INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`) VALUES
 INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`) VALUES
 (10,'Document',0);
 
-ALTER TABLE `${prefix}link` ADD COLUMN `comment` varchar(4000); 
+ALTER TABLE `${prefix}link` ADD COLUMN `comment` varchar(4000), 
+ADD COLUMN `creationDate` datetime, 
+ADD COLUMN `idUser` int(12) unsigned default null;
+
+ALTER TABLE `${prefix}attachment` ADD COLUMN `link` varchar(400);
+ 
