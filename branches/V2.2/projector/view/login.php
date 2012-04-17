@@ -56,7 +56,11 @@
 			  <table  align="center" >
 			    <tr style="height:10px">
 			      <td rowspan="2" width="140px" valign="top">
+			        <?php if (file_exists("../logo.gif")) {?>
+			        <img src="../logo.gif">
+			        <?php } else {?> 
 			        <img src="img/logoFull.gif">
+			        <?php }?>
 			      </td>
 			      <td  style="height: 1%" width="560px">
 			        <img src="img/titleFull.gif">
