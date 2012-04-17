@@ -1385,8 +1385,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
            and (get_class($linkObj)=='DocumentVersion' or get_class($linkObj)=='Document')
            and isset( $gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion ) {
 	          echo '<a href="../tool/download.php?class=' . get_class($linkObj) . '&id='. $linkObj->id . '"'; 
-	          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
-	          echo '&nbsp;&nbsp;';            
+	          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';            
 	        } 
           if ($canUpdate) {
             echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
