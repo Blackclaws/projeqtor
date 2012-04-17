@@ -1026,12 +1026,12 @@ function drawHistoryFromObjects($refresh=false) {
   $historyList=$hist->getSqlElementsFromCriteria(null,false,$where,$order);
   echo '<table width="100%">';
   echo '<tr>';
-  echo '<td class="historyHeader" width="20%">' . i18n('colDate') . '</td>';
-  echo '<td class="historyHeader" width="15%">' . i18n('colUser'). '</td>';
   echo '<td class="historyHeader" width="10%">' . i18n('colOperation'). '</td>';
-  echo '<td class="historyHeader" width="15%">' . i18n('colColumn'). '</td>';
-  echo '<td class="historyHeader" width="20%">' . i18n('colValueBefore'). '</td>';
-  echo '<td class="historyHeader" width="20%">' . i18n('colValueAfter'). '</td>';
+  echo '<td class="historyHeader" width="14%">' . i18n('colColumn'). '</td>';
+  echo '<td class="historyHeader" width="23%">' . i18n('colValueBefore'). '</td>';
+  echo '<td class="historyHeader" width="23%">' . i18n('colValueAfter'). '</td>';
+  echo '<td class="historyHeader" width="15%">' . i18n('colDate') . '</td>';
+  echo '<td class="historyHeader" width="15%">' . i18n('colUser'). '</td>';
   echo '</tr>';
   $stockDate=null;
   $stockUser=null;
@@ -1071,8 +1071,6 @@ function drawHistoryFromObjects($refresh=false) {
     }
     if (! $hide) {
       echo '<tr>';
-      echo '<td class="historyData'. $class .'">' . $date . '</td>';
-      echo '<td class="historyData'. $class .'">' . $user . '</td>';
       echo '<td class="historyData'. $class .'">' . $oper . '</td>';
       
       echo '<td class="historyData">' . $colCaption . '</td>';
@@ -1103,6 +1101,8 @@ function drawHistoryFromObjects($refresh=false) {
       
       echo '<td class="historyData">' . $oldValue . '</td>';
       echo '<td class="historyData">' . $newValue . '</td>';
+      echo '<td class="historyData'. $class .'">' . $date . '</td>';
+      echo '<td class="historyData'. $class .'">' . $user . '</td>';
       echo '</tr>';
       $stockDate=$hist->operationDate;
       $stockUser=$hist->idUser;
@@ -1142,9 +1142,9 @@ function drawNotesFromObject($obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
-  echo '<td class="noteHeader" style="width:20%">' . i18n('colDate') . '</td>';
+  echo '<td class="noteHeader" style="width:' . ( ($print)?'65':'60' ) . '%">' . i18n('colNote'). '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . i18n('colDate') . '</td>';
   echo '<td class="noteHeader" style="width:15%">' . i18n('colUser'). '</td>';
-  echo '<td class="noteHeader" style="width:' . ( ($print)?'60':'55' ) . '%">' . i18n('colNote'). '</td>';
   echo '</tr>';
   foreach($notes as $note) {
     $userId=$note->idUser;
@@ -1162,14 +1162,14 @@ function drawNotesFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     echo '<td class="noteData">#' . $note->id  . '</td>';
-    echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
-    echo '<td class="noteData">' . $userName . '</td>';
     echo '<td class="noteData">';
     if (! $print) {
       echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
     }
     echo htmlEncode($note->note,'print'); 
     echo '</td>';
+    echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
+    echo '<td class="noteData">' . $userName . '</td>';
     echo '</tr>';
   }
   echo '<tr>';
@@ -1286,11 +1286,11 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="attachementHeader" style="width:5%">' . i18n('colId') . '</td>';
-  echo '<td class="attachementHeader" style="width:15%">' . i18n('colDate') . '</td>';
-  echo '<td class="attachementHeader" style="width:20%">' . i18n('colUser'). '</td>';
   echo '<td class="attachementHeader" style="width:10%;">' . i18n('colSize'). '</td>';
   echo '<td class="attachementHeader" style="width:5%;">' . i18n('colType'). '</td>';
-  echo '<td class="attachementHeader" style="width:' . ( ($print)?'45':'40' ) . '%">' . i18n('colFile'). '</td>';
+  echo '<td class="attachementHeader" style="width:' . ( ($print)?'50':'45' ) . '%">' . i18n('colFile'). '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="attachementHeader" style="width:15%">' . i18n('colUser'). '</td>';
   echo '</tr>';
   foreach($attachements as $attachement) {
     $userId=$attachement->idUser;
@@ -1309,8 +1309,6 @@ function drawAttachementsFromObject($obj, $refresh=false) {
       echo '</td>';
     }
     echo '<td class="attachementData">#' . $attachement->id  . '</td>';
-    echo '<td class="attachementData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
-    echo '<td class="attachementData">' . $userName . '</td>';
     echo '<td class="attachementData" style="text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
     echo '<td class="attachementData" style="text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName) . '</td>';
     echo '<td class="attachementData" title="' . $attachement->description . '">';
@@ -1323,6 +1321,9 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     }
     echo '</tr></table>';
     echo '</td>';
+    
+    echo '<td class="attachementData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
+    echo '<td class="attachementData">' . $userName . '</td>';
     echo '</tr>';
   }
   echo '<tr>';
@@ -1361,10 +1362,12 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     echo '<td class="linkHeader" style="width:10%">' . i18n('colType') . '</td>';
   } 
   echo '<td class="linkHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
-  echo '<td class="linkHeader" style="width:' . ( ($classLink)?'70':'60' ) . '%">' . i18n('colName') . '</td>';
+  echo '<td class="linkHeader" style="width:' . ( ($classLink)?'45':'35' ) . '%">' . i18n('colName') . '</td>';
   //if ($classLink and property_exists($classLink, 'idStatus')) {
-    echo '<td class="linkHeader" style="width:20%">' . i18n('colIdStatus'). '</td>';
+    echo '<td class="linkHeader" style="width:15%">' . i18n('colIdStatus'). '</td>';
   //}
+  echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="linkHeader" style="width:15%">' . i18n('colUser'). '</td>';  
   echo '</tr>';
   foreach($list as $link) {
     $linkObj=null;
@@ -1373,6 +1376,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     } else {
       $linkObj=new $link->ref1Type($link->ref1Id);
     }
+    $userId=$link->idUser;
+    $userName=SqlList::getNameFromId('User',$userId);
+    $creationDate=$link->creationDate;
     $prop='_Link_'.get_class($linkObj);
     if( $classLink or ! property_exists($obj,$prop ) ) {
     	  $gotoObj=(get_class($linkObj)=='DocumentVersion')?new Document($linkObj->idDocument):$linkObj;
@@ -1412,8 +1418,10 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           //$color=$objStatus->color;
           //$foreColor=getForeColor($color);
           //echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
-          echo '<td class="dependencyData" style="width:20%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+          echo '<td class="dependencyData" >' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
         }
+        echo '<td class="dependencyData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
+        echo '<td class="dependencyData">' . $userName . '</td>';
         echo '</tr>';
     }
   }

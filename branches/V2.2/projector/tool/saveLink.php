@@ -58,7 +58,9 @@ foreach ($arrayId as $ref2Id) {
 	$link->ref1Type=$ref1Type;
 	$link->ref2Id=$ref2Id;
 	$link->ref2Type=$ref2Type;
-    $link->comment=$comment;
+  $link->comment=$comment;
+  $link->idUser=$user->id;
+  $link->creationDate=date("Y-m-d H:i:s"); 
   $res=$link->save();
   if (!$result) {
     $result=$res;

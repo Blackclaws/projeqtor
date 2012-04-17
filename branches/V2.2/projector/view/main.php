@@ -220,7 +220,9 @@ checkVersion(); ?>
             }
             $zoom=round($width/300*100, 0);  
           ?>
-          <div id="logoTitleDiv" onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
+          <div id="logoTitleDiv" 
+               <?php if (file_exists("../logo.gif")) echo 'style="background-image: url(../logo.gif);"'; ?> 
+               onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
           <div style="position:absolute; right:0;" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
         </div>
