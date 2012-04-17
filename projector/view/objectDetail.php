@@ -1375,9 +1375,19 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     }
     $prop='_Link_'.get_class($linkObj);
     if( $classLink or ! property_exists($obj,$prop ) ) {
+    	  $gotoObj=(get_class($linkObj)=='DocumentVersion')?new Document($linkObj->idDocument):$linkObj;
+    	  $canGoto=(securityCheckDisplayMenu(null,get_class($gotoObj)) 
+    	            and securityGetAccessRightYesNo('menu' . get_class($gotoObj), 'read', $gotoObj)=="YES")?true:false;
         echo '<tr>';
         if (! $print) {
           echo '<td class="linkData" style="text-align:center;">';
+          if ( $canGoto 
+           and (get_class($linkObj)=='DocumentVersion' or get_class($linkObj)=='Document')
+           and isset( $gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion ) {
+	          echo '<a href="../tool/download.php?class=' . get_class($linkObj) . '&id='. $linkObj->id . '"'; 
+	          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
+	          echo '&nbsp;&nbsp;';            
+	        } 
           if ($canUpdate) {
             echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
           }
@@ -1386,14 +1396,14 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         if ( ! $classLink ) {
           echo '<td class="linkData" >' . i18n(get_class($linkObj)) . '</td>';
         }
-        echo '<td class="linkData">#' . $linkObj->id  . '</td>';
+        echo '<td class="linkData">#' . $linkObj->id;    
+        echo '</td>';
         $goto="";
-        if (! $print
-        and securityCheckDisplayMenu(null,get_class($linkObj))
-        and securityGetAccessRightYesNo('menu' . get_class($linkObj), 'read', $linkObj)=="YES") {
-          $goto=' onClick="gotoElement(' . "'" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" style="cursor: pointer;" ';
+        if (! $print and $canGoto) {
+          $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
         }
-        echo '<td class="linkData" ' . $goto . ' title="' . $link->comment . '">' . $linkObj->name ;
+        echo '<td class="linkData" ' . $goto . ' title="' . $link->comment . '">';
+        echo (get_class($linkObj)=='DocumentVersion')?$linkObj->fullName:$linkObj->name;
         if ($link->comment and ! $print) {
           echo '&nbsp;&nbsp;<img src="img/note.png" />';
         } 

@@ -429,6 +429,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         if (destination=="centerDiv") {
           showList();
         }
+        if (destination=="dialogLinkList") {
+      	  selectLinkItem();
+        }
         if (destination=="directFilterList") {
         	if (validationType!='returnFromFilter') {
 	        	if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
@@ -511,6 +514,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           }
           if (destination=="centerDiv" && switchedMode) {
             showList();
+          }
+          if (destination=="dialogLinkList") {
+        	  selectLinkItem();
           }
           if (destination=="directFilterList") {
         	  if (!validationType && validationType!='returnFromFilter') {

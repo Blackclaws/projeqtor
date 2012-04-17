@@ -24,6 +24,13 @@ if ($class=='Attachement') {
   $size = $obj->fileSize;
   $type = $obj->mimeType;
   $file = $obj->getUploadFileName();
+} else if ($class=='Document') {
+	if (!$obj->idDocumentVersion) return;
+	$obj=new DocumentVersion($obj->idDocumentVersion);
+	$name = $obj->fileName;
+  $size = $obj->fileSize;
+  $type = $obj->mimeType;
+  $file = $obj->getUploadFileName();
 }
 $contentType="application/force-download";
 //if (array_key_exists('display',$_REQUEST)) {

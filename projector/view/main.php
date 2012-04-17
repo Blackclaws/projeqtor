@@ -811,22 +811,17 @@ checkVersion(); ?>
            </tr>
             <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            </table>
-           <div id="linkDocumentVersionDiv" style="display:block">
+           <div id="linkDocumentVersionDiv" style="display:none">
            <table>
            <tr>
                <td class="dialogLabel" >
-                   <label for="linkRef2Type" ><?php echo i18n("colDocumentVersion") ?>&nbsp;:&nbsp;</label>
+                   <label for="linkRef2Type" ><?php echo i18n("colIdVersion") ?>&nbsp;:&nbsp;</label>
                </td>
                <td>
                   <select dojoType="dijit.form.FilteringSelect" 
-                    id="linkVersionType" name="linkVersionType" 
+                    id="linkDocumentVersion" name="linkDocumentVersion" 
                     onchange=""
                     class="input" value="" >
-                    <option selected="selected" value="last" ><?php echo i18n("lastVersion");?></option>
-                    <option value="lastRef"><?php echo i18n("lastRefVersion");?></option>
-                    <option value="current"><?php echo i18n("currentVersion");?></option>
-                    <option value="currentRef"><?php echo i18n("currentRefVersion");?></option>
-                    <option value="create"><?php echo i18n("createVersion");?></option>
                   </select>
                </td>
            </tr>
