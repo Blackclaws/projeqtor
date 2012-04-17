@@ -823,6 +823,9 @@ checkVersion(); ?>
                     onchange=""
                     class="input" value="" >
                   </select>
+                  <?php if (0) { //Desactivated?>                
+                  <img src="css/images/smallButtonAdd.png" onClick="addDocumentVersion();" title="<?php echo i18n('addDocumentVersion');?>" class="smallButton"/>
+                  <?php }?>
                </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>

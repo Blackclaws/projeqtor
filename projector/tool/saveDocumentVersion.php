@@ -98,6 +98,12 @@ if (! array_key_exists('documentId',$_REQUEST)) {
     $error=true;
 }
 $documentId=$_REQUEST['documentId'];
+// Verify that user has rights to update the document
+$doc= new Document($documentId);
+if (securityGetAccessRightYesNo('menuDocument', 'update', $doc)!="YES" or $doc->locked) {
+  echo htmlGetWarningMessage(i18n('msgNotGranted'));
+  $error=true;
+}
 
 $documentVersionDate=null;
 if (! array_key_exists('documentVersionDate',$_REQUEST)) {
