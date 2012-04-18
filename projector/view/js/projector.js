@@ -549,15 +549,15 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             node: contentNode, 
             duration: 200,
             onEnd: function() {
-              if (isResultMessage) {
+        	  if (isResultMessage) {
                 // finalize message is return from treatment
-                finalizeMessageDisplay(destination, validationType);
+        		  finalizeMessageDisplay(destination, validationType);
               } else if (destination=="loginResultDiv") {
                 checkLogin();
                } else if (destination=="passwordResultDiv") {
                 checkLogin();
                } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
-                       || page.indexOf("jsonPlanning.php")>=0) {                
+                       || (page.indexOf("jsonPlanning.php")>=0 && dijit.byId("startDatePlanView")) ) {                
                  drawGantt();
                  hideWait();
               } else {
@@ -571,7 +571,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         }
       },true);
     }
-  }).play(); 
+  }).play();
 }
 
 /**
