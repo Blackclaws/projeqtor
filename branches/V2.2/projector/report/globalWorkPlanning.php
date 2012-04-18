@@ -120,8 +120,10 @@ foreach ($arrDates as $date) {
 echo '</tr>';
 asort($tab);
 $sumProj=array();
+$sumProjUnit=array();
 foreach($tab as $proj=>$lists) {
   $sumProj[$proj]=array();
+  $sumProjUnit[$proj]=array();
   for ($i=1; $i<=2; $i++) {
     if ($i==1) {
       echo '<tr><td class="reportTableLineHeader" style="width:200px;" rowspan="2">' . $lists['name'] . '</td>';
@@ -138,6 +140,7 @@ foreach($tab as $proj=>$lists) {
     foreach($arrDates as $date) {
       if ($i==1) {
         $sumProj[$proj][$date]=0;
+        $sumProjUnit[$proj][$date]=0;
       }
       $val="";
       if (array_key_exists($mode, $lists) and array_key_exists($date,$lists[$mode])) {
@@ -151,6 +154,7 @@ foreach($tab as $proj=>$lists) {
       $arrSum[$date]+=$val;
       echo '</td>';
       $sumProj[$proj][$date]+=$val;
+      $sumProjUnit[$proj][$date]+=Work::displayWork($val);
     }
     echo '<td class="reportTableColumnHeader">';
     echo ($ital)?'<i>':'';
@@ -165,22 +169,25 @@ echo "<tr><td>&nbsp;</td></tr>";
 echo '<tr><td class="reportTableHeader" style="width:40px;">' . i18n('sum') . '</td>';
 $sum=0;
 $cumul=array();
+$cumulUnit=array();
 foreach ($arrSum as $date=>$val) {
   echo '<td class="reportTableHeader" >' . Work::displayWork($val) . '</td>';
   $sum+=$val;
   $cumul[$date]=$sum;
+  $cumulUnit[$date]=Work::displayWork($sum);
 }
 echo '<td class="reportTableHeader">' . Work::displayWork($sum) . '</td>';
 echo '</tr>';
 echo '</table>';
 echo '</td></tr></table>';
+
 // Graph
 if (! testGraphEnabled()) { return;}
   include("../external/pChart/pData.class");  
   include("../external/pChart/pChart.class");  
 $dataSet=new pData;
 $nbItem=0;
-foreach($sumProj as $id=>$vals) {
+foreach($sumProjUnit as $id=>$vals) {
   $dataSet->AddPoint($vals,$id);
   $dataSet->SetSerieName($tab[$id]['name'],$id);
   $dataSet->AddSerie($id);
@@ -210,11 +217,11 @@ $graph->drawLegend($width-150,35,$dataSet->GetDataDescription(),240,240,240);
 
 $graph->clearScale();
 $serie=0;  
-foreach($sumProj as $id=>$vals) {
+foreach($sumProjUnit as $id=>$vals) {
   $serie+=1;
   $dataSet->RemoveSerie($id);
 }
-$dataSet->AddPoint($cumul,"sum");
+$dataSet->AddPoint($cumulUnit,"sum");
 $dataSet->SetSerieName(i18n("cumulated"),"sum");  
 $dataSet->AddSerie("sum");
 $dataSet->SetYAxisName(i18n("cumulated"));

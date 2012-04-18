@@ -34,7 +34,8 @@
   if (! isset($outMode)) { $outMode=""; } 
   
   $accessRightRead=securityGetAccessRight('menuActivity', 'read');
-  if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*')) ) {
+  if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*')) 
+   and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
       echo i18n('selectProjectToPlan');
       return;
   }
