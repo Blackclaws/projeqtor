@@ -23,7 +23,6 @@ ADD COLUMN `idUser` int(12) unsigned default null;
 ALTER TABLE `${prefix}attachement` ADD COLUMN `link` varchar(400),
 ADD COLUMN `type` varchar(10) default 'file';
 
-
 INSERT INTO `${prefix}indicator` (`id`, `code`, `type`, `name`, `sortOrder`, `idle`) VALUES
 (15, 'RWOVW', 'percent', 'RealWorkOverValidatedWork', 250, 0),
 (16, 'RWOAW', 'percent', 'RealWorkOverAssignedWork', 260, 0);
