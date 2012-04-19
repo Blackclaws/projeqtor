@@ -14,7 +14,9 @@ class Attachement extends SqlElement {
   public $description;
   public $subDirectory;
   public $mimeType; 
-  public $fileSize; 
+  public $fileSize;
+  public $type;
+  public $link;
   
   public $_noHistory=true; // Will never save history for this object
   

@@ -1080,23 +1080,43 @@ checkVersion(); ?>
     <input id="attachementId" name="attachementId" type="hidden" value="" />
     <input id="attachementRefType" name="attachementRefType" type="hidden" value="" />
     <input id="attachementRefId" name="attachementRefId" type="hidden" value="" />
+    <input id="attachementType" name="attachementType" type="hidden" value="" />
+    <div id="dialogAttachementFileDiv">
+      <table>
+        <tr height="30px">
+          <td class="dialogLabel" >
+           <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
+          </td>
+          <td>
+           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $paramAttachementMaxSize;?>" />
+           <input MAX_FILE_SIZE="<?php echo $paramAttachementMaxSize;?>"
+            dojoType="dojox.form.FileInput" type="file"
+            name="attachementFile" id="attachementFile"
+            cancelText="<?php echo i18n("buttonReset");?>"
+            label="<?php echo i18n("buttonBrowse");?>"
+            title="<?php echo i18n("helpSelectFile");?>" />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="dialogAttachementLinkDiv">
+      <table>
+        <tr height="30px">
+          <td class="dialogLabel" >
+            <label for="attachementLink" ><?php echo i18n("colHyperlink");?>&nbsp;:&nbsp;</label>
+          </td>
+          <td>
+            <div id="attachementLink" name="attachementLink" dojoType="dijit.form.ValidationTextBox"
+               style="width: 350px;"
+               trim="true" maxlength="400" class="input"
+               value="">
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <table>
-      <tr height="30px"> 
-        <td class="dialogLabel" >
-         <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
-        </td>
-        <td>
-         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $paramAttachementMaxSize;?>" />     
-         <input MAX_FILE_SIZE="<?php echo $paramAttachementMaxSize;?>"
-          dojoType="dojox.form.FileInput" type="file" 
-          name="attachementFile" id="attachementFile" 
-          cancelText="<?php echo i18n("buttonReset");?>"
-          label="<?php echo i18n("buttonBrowse");?>"
-          title="<?php echo i18n("helpSelectFile");?>" />
-        </td>
-      </tr>
-      
-      <tr> 
+      <tr>
         <td class="dialogLabel" >
          <label for="attachementDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
         </td>
@@ -1198,7 +1218,7 @@ checkVersion(); ?>
       </tr>            
       <tr style="height:21px">
         <td class="dialogLabel" >
-         <label for="documentVersionUpdate" ><?php echo i18n("documentVersionUpdate");?>&nbsp;:&nbsp;</label>
+         <label for="documentVersionUpdateMajor" ><?php echo i18n("documentVersionUpdate");?>&nbsp;:&nbsp;</label>
         </td>
         <td>
           <table><tr>

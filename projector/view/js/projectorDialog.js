@@ -386,8 +386,9 @@ function displayDetail(objClass, objId) {
 }
 
 function selectDetailItem(selectedValue) {
+    var idFldVal="";
 	if (selectedValue) {
-		var idFldVal=selectedValue;
+		idFldVal=selectedValue;
 	} else {
 		var idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
 		if (! idFld) {
@@ -495,7 +496,7 @@ function saveDetailItem() {
 		      handleAs: "text",
 		      load: function(data,args){
 				        var contentWidget = dijit.byId("comboDetailResult");
-				        if (! contentWidget) {return};
+				        if (! contentWidget) {return;}
 				        contentWidget.set('content',data);
 				        checkDestination("comboDetailResult");
 				        var lastOperationStatus = top.dojo.byId('lastOperationStatusComboDetail');
@@ -597,20 +598,29 @@ function removeNote (noteId) {
 
 
 //=============================================================================
-//= Attachements
+//= Attachments
 //=============================================================================
 
 /**
  * Display an add attachement Box
  * 
  */
-function addAttachement () {
+function addAttachement (attachmentType) {
 	dojo.byId("attachementId").value="";
 	dojo.byId("attachementRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("attachementRefId").value=dojo.byId("objectId").value;
-	if (dijit.byId("attachementFile")) {
-		dijit.byId("attachementFile").reset();
-	}
+  dojo.byId("attachementType").value=attachmentType;
+    if (attachmentType=='file') {
+      if (dijit.byId("attachementFile")) {
+        dijit.byId("attachementFile").reset();
+      }
+      dojo.style(dojo.byId('dialogAttachementFileDiv'), {display:'block'});
+      dojo.style(dojo.byId('dialogAttachementLinkDiv'), {display:'none'});
+    } else {
+      dijit.byId("attachementLink").set('value', null);
+      dojo.style(dojo.byId('dialogAttachementFileDiv'), {display:'none'});
+      dojo.style(dojo.byId('dialogAttachementLinkDiv'), {display:'block'});
+    }
 	dijit.byId("attachementDescription").set('value',null);
 	dijit.byId("dialogAttachement").set('title',i18n("dialogAttachement"));
 	dijit.byId("dialogAttachement").show();
@@ -628,7 +638,7 @@ function saveAttachement() {
 }
 
 /**
- * Acknoledge the attachment save
+ * Acknowledge the attachment save
  * @return void
  */
 function saveAttachementAck() {
@@ -1234,7 +1244,7 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 					nameVers);
 	dojo.byId('documentVersionMode').value="add";
 	calculateNewVersion();
-	setDisplayIsRefDocumentVersion()
+	setDisplayIsRefDocumentVersion();
 	dijit.byId("dialogDocumentVersion").show();
 }
 
@@ -1281,7 +1291,7 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 	dojo.byId('documentVersionMode').value="edit";
 	dijit.byId('documentVersionVersionDisplay').set('value',nameVers);
 	calculateNewVersion(false);
-	setDisplayIsRefDocumentVersion()
+	setDisplayIsRefDocumentVersion();
 	dijit.byId("dialogDocumentVersion").show();
 }
 
@@ -1747,7 +1757,7 @@ function showFilterDialog () {
 }
 
 /**
- * Select attribute : refresh depedant lists box
+ * Select attribute : refresh dependant lists box
  * 
  */
 function filterSelectAtribute(value) {
@@ -1948,7 +1958,7 @@ function selectFilterContinue() {
 		handleAs: "text",
 		load: function(data,args) { }
 	});
-	if (dojo.byId("nbFilterCirteria").value>0) {
+	if (dojo.byId("nbFilterCriteria").value>0) {
 		dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
 	} else {
 		dijit.byId("listFilterFilter").set("iconClass","iconFilter16");
@@ -2012,7 +2022,7 @@ function saveFilter() {
 	if (dijit.byId('filterNameDisplay')) {
 		if (dijit.byId('filterNameDisplay').get('value')=="") {
 			showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
-			exit;
+			return;
 		}
 		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	}
@@ -2046,7 +2056,7 @@ function selectStoredFilter(idFilter,context) {
  */
 function removeStoredFilter(idFilter, nameFilter) {
   var action=function() {
-  	loadContent("../tool/removeFilter.php?idFilter="+idFilter, "listStoredFilters", "dialogFilterForm", false);;
+  	loadContent("../tool/removeFilter.php?idFilter="+idFilter, "listStoredFilters", "dialogFilterForm", false);
   };
   showConfirm(i18n("confirmRemoveFilter",new Array(nameFilter)),action);
 }
@@ -2572,8 +2582,8 @@ function stockHistory(curClass,curId) {
 	var lastClass="";
 	var lastId=0;
 	if (len>0) { 
-	  var lastClass=historyTable[len-1][0];
-	  var lastId=historyTable[len-1][1];
+	  lastClass=historyTable[len-1][0];
+	  lastId=historyTable[len-1][1];
 	}
 	if (len==0 || curClass!=lastClass || curId!=lastId) {
 	  historyTable[len]=new Array(curClass, curId);
@@ -2736,6 +2746,7 @@ function loadMenuBarObject(menuClass) {
   	cleanContent("detailDiv");
     formChangeInProgress=false;
     loadContent("objectMain.php?objectClass="+menuClass,"centerDiv");
+    return true;
 }
 
 function loadMenuBarItem(item) {
@@ -2757,6 +2768,7 @@ function loadMenuBarItem(item) {
 	} else if(item=='UserParameter') {
 	   loadContent("parameter.php?type=userParameter","centerDiv");
 	}
+    return true;
 }
 
 // ====================================================================================
@@ -2921,7 +2933,8 @@ function lockDocument() {
   dijit.byId('lockedDate').set('value',curDate);
   dijit.byId('lockedDateBis').set('value',curDate);
   formChanged();
-  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true); 
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+  return true;
 }
 
 function unlockDocument() {
@@ -2933,5 +2946,6 @@ function unlockDocument() {
   dijit.byId('lockedDate').set('value',null);
   dijit.byId('lockedDateBis').set('value',null);
   formChanged();
-  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true); 
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+  return true;
 }

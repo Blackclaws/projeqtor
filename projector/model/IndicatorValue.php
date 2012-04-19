@@ -76,6 +76,7 @@ class IndicatorValue extends SqlElement {
   }
     
   static public function addIndicatorValue($def, $obj) {
+scriptLog("addIndicatorValue($def->name)");
   	$class=get_class($obj);
   	if ($def->nameIndicatorable!=$class) {
   		debugLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
@@ -167,16 +168,32 @@ class IndicatorValue extends SqlElement {
       	$this->targetValue=$obj->$pe->assignedWork;
       	$value=$obj->$pe->plannedWork;
         break;
+      case 'RWOVW' :   //RealWorkOverValidatedWork
+        $this->targetValue=$obj->$pe->validatedWork;
+        $value=$obj->$pe->realWork;
+        break;
+      case 'RWOAW' :   //RealWorkOverAssignedWork
+        $this->targetValue=$obj->$pe->assignedWork;
+        $value=$obj->$pe->realWork;
+        break;        
   	}
   	$this->warningTargetValue=$this->targetValue*$def->warningValue/100;
   	$this->alertTargetValue=$this->targetValue*$def->alertValue/100;
-  	if (! $this->warningSent and $value>$this->warningTargetValue) {
+  	if ($value>$this->warningTargetValue) {
+  		if (! $this->warningSent) {
         $this->sendWarning();
-        $this->warningSent='1';  		
+        $this->warningSent='1';  
+  		}		
+  	} else {
+  		$this->warningSent='0';  
   	}
-    if (!$this->alertSent and $value>$this->alertTargetValue) {
+    if ($value>$this->alertTargetValue) {
+    	if (! $this->alertSent) {
         $this->sendAlert();
-        $this->alertSent='1';      
+        $this->alertSent='1';
+      }      
+    } else {
+    	$this->alertSent='0';
     }
     if ($obj->done) {
       if ($value>$this->targetValue) {

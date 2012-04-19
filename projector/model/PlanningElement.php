@@ -344,7 +344,7 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   private function updateSynthesisObj () {
-
+//scriptLog("updateSynthesisObj($this->id)");
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
