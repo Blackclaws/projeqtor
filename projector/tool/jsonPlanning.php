@@ -36,8 +36,11 @@
   $accessRightRead=securityGetAccessRight('menuActivity', 'read');
   if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*')) 
    and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
-      echo i18n('selectProjectToPlan');
-      return;
+      $listProj=explode(',',getVisibleProjectsList());
+      if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
+        echo i18n('selectProjectToPlan');
+        return;
+      }
   }
   $querySelect = '';
   $queryFrom='';

@@ -252,7 +252,14 @@ checkVersion(); ?>
             </div>
           </div>
         </div>
-        <div id="messageDiv" dojoType="dijit.layout.ContentPane" region="bottom" splitter="true">
+        <div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true" style="height: 300px;">
+          <div dojoType="dijit.layout.AccordionContainer">
+            <div id="projectLinkDiv" class="background" dojoType="dijit.layout.ContentPane" selected="true" title="<?php echo i18n('ExternalShortcuts');?>">
+              <?php include "../view/shortcut.php"?>
+            </div>
+            <div id="messageDiv" dojoType="dijit.layout.ContentPane" title="<?php echo i18n('Console');?>" >
+            </div>
+          </div>
         </div>
       </div> 
     </div>

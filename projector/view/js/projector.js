@@ -1210,6 +1210,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
     dijit.byId("idProjectPlan").set("value",idProject);
   }
   dijit.byId(selectionField).closeDropDown();
+  loadContent('../view/shortcut.php',"projectLinkDiv");
 }
 
 /**

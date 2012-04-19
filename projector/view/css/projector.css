@@ -279,9 +279,16 @@ td {
 }
 
 a {
- text-decoration: none; 
+ text-decoration: none;
 }
+.hyperlink {
+ color: #333333;
 
+}
+.hyperlink:hover {
+  font-weight: bold;
+  color: #000000;
+}
 label, .label {
   font-weight: bold;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;

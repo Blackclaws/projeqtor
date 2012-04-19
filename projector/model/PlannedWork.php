@@ -17,7 +17,6 @@ class PlannedWork extends GeneralWork {
     <th field="rate" width="15%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
-
   
    /** ==========================================================================
    * Constructor
@@ -111,9 +110,12 @@ class PlannedWork extends GeneralWork {
     $accessRightRead=securityGetAccessRight('menuActivity', 'read');
     //echo $accessRightRead . "|" . $projectId . '|';
     if ($accessRightRead=='ALL' and ! trim($projectId)) {
+      $listProj=explode(',',getVisibleProjectsList());
+      if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
         $result=i18n('selectProjectToPlan');
         $result .= '<input type="hidden" id="lastPlanStatus" value="CONTROL" />';
         return $result;
+      }
     }
       // build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId);

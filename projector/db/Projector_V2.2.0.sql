@@ -33,3 +33,6 @@ INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`,
 (15, 8, 'Project',0),
 (16, 2, 'Activity',0),
 (16, 8, 'Project',0);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null, null, 'maxProjectsToDisplay','25');
