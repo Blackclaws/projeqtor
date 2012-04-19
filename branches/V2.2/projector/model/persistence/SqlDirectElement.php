@@ -23,7 +23,7 @@ abstract class SqlDirectElement {
 
     /** ==========================================================================
      * Returns an array (lines) of corresponing objects
-     * @param $query string Query to get Lines
+     * @param string $query Query to get Lines
      * @return SqlElement[]
      */
   public function getLines($query) {

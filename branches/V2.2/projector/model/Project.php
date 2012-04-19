@@ -328,7 +328,7 @@ class Project extends SqlElement {
 
   /** =========================================================================
    * Specific function to draw a recursive tree for subprojects
-   * @return the html table for the given level of subprojects
+   * @return string the html table for the given level of subprojects
    *  must be redefined in the inherited class
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
