@@ -710,7 +710,7 @@ function errorLog($message) {
  * @return void
  */
 function scriptLog($script) {
-  logTracing(getIP() . $script,4);
+  logTracing(getIP() . " " . $script,4);
 }
 
 /** ===========================================================================

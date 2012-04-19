@@ -1281,7 +1281,8 @@ function drawAttachementsFromObject($obj, $refresh=false) {
   if (! $print) {
     echo '<td class="attachementHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachement();" title="' . i18n('addAttachement') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="' . i18n('addAttachement') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonLink.png" onClick="addAttachement(\'link\');" title="' . i18n('addHyperlink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -1303,6 +1304,10 @@ function drawAttachementsFromObject($obj, $refresh=false) {
         echo '<a href="../tool/download.php?class=Attachement&id='. $attachement->id . '"'; 
         echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
       }
+      if ($attachement->link and ! $print) {
+        echo '<a href="' . $attachement->link .'"';
+        echo ' target="#" title="' . urldecode($attachement->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
+      }
       if ($attachement->idUser==$user->id and ! $print and $canUpdate) {
         echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachement(' . $attachement->id . ');" title="' . i18n('removeAttachement') . '" class="smallButton"/>';
       }
@@ -1310,7 +1315,8 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     }
     echo '<td class="attachementData">#' . $attachement->id  . '</td>';
     echo '<td class="attachementData" style="text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
-    echo '<td class="attachementData" style="text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName) . '</td>';
+    echo '<td class="attachementData" style="text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName);
+    echo  '</td>';
     echo '<td class="attachementData" title="' . $attachement->description . '">';
     echo '<table><tr >';
     echo ' <td>';

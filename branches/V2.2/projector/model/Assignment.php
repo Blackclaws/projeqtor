@@ -95,6 +95,21 @@ class Assignment extends SqlElement {
     }
     
     PlanningElement::updateSynthesis($this->refType, $this->refId);
+    // Recalculate indicators
+    if (SqlList::getIdFromTranslatableName('Indicatorable',$this->refType)) {
+        $indDef=new IndicatorDefinition();
+        $crit=array('nameIndicatorable'=>$this->refType);
+        $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
+        if (count($lstInd)>0) {
+        	$item=new $this->refType($this->refId);
+	        foreach ($lstInd as $ind) {
+	          $fldType='id'. $this->refType .'Type';
+	          if (! $ind->idType or $ind->idType==$item->$fldType) {
+	            IndicatorValue::addIndicatorValue($ind,$item);
+	          }
+	        }
+        }
+      }
     
     /*if ($limitedRate==true) {
       $result = i18n("limitedRate", array($affectation->rate)) . $result;      

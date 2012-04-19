@@ -62,9 +62,6 @@ $paramDefaultTimezone="Europe/Paris";           // default time zone. List can b
 $paramFadeLoadingMode='false';                  // Setup the way frames are refreshed : with fading or not {'true', 'false'}
 $paramRowPerPage='50';                          // Number of row per page on main Grid view {any integer}
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
-// NEW IN V1.3.0 - Start
-$defaultTheme = 'ProjectOrRia';
-// NEW IN V1.3.0 - End
 
 // === attachement
 $paramAttachementDirectory='/home/projector/files'; // Directory to store Attachements. Set to empty string to disable attachement
@@ -76,6 +73,10 @@ $logFile='/home/projector/logs/projector_${date}.log'; // Log file name. May con
 $logLevel=2;                                    // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
 
 // === defaut values
+
+// NEW IN V1.3.0 - Start
+$defaultTheme = 'ProjectOrRia';
+// NEW IN V1.3.0 - End
 
 // NEW IN V1.4.0 - Start
 $paramReportTempDirectory = '../files/report/';

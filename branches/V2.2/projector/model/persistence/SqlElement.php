@@ -227,6 +227,7 @@ abstract class SqlElement {
    * @return void
    */
   private function saveSqlElement() {
+//scriptLog("saveSqlElement(" . get_class($this) . "#$this->id)");
   	// #305
     $this->recalculateCheckboxes();    
     // select operation to be executed

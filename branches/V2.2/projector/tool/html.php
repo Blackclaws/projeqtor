@@ -540,7 +540,7 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
     echo "<tr><td class='filterData' colspan='2'><i>" . i18n("noFilterClause") . "</i></td></tr>";
   }
   echo "</table>";
-  echo '<input id="nbFilterCirteria" name="nbFilterCirteria" type="hidden" value="' . count($filterArray) . '" />';
+  echo '<input id="nbFilterCriteria" name="nbFilterCriteria" type="hidden" value="' . count($filterArray) . '" />';
 }
 
 /**

@@ -15,42 +15,66 @@ header ('Content-Type: text/html; charset=UTF-8');
 <body onload="parent.saveAttachementAck();">
 <?php 
 $error=false;
-if (array_key_exists('attachementFile',$_FILES)) {
-  $uploadedFile=$_FILES['attachementFile'];
+
+$type='file';
+if (! array_key_exists('attachementType',$_REQUEST)) {
+    echo htmlGetErrorMessage('attachementType parameter not found in REQUEST');
+    errorLog('attachementType parameter not found in REQUEST');
+    $error=true;
 } else {
-  echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-  errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-  $error=true; 
+  $type=$_REQUEST['attachementType'];
 }
-if (! $error) {
-  if ( $uploadedFile['error']!=0 ) {
-    switch ($uploadedFile['error']) {
-      case 1:
-        echo htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-        errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-        break; 
-      case 2:
-        echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-        errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-        break;  
-      case 4:
-        echo htmlGetWarningMessage(i18n('errorNoFile'));
-        errorLog(i18n('errorNoFile'));
-        break;  
-      default:
-        echo htmlGetErrorMessage(i18n('errorUploadFile',array($uploadedFile['error'])));
-        errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
-        break;
+
+if ($type=='file') {
+  if (array_key_exists('attachementFile',$_FILES)) {
+    $uploadedFile=$_FILES['attachementFile'];
+  } else {
+    echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+    errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+    $error=true;
+  }
+  if (! $error) {
+    if ( $uploadedFile['error']!=0 ) {
+      switch ($uploadedFile['error']) {
+        case 1:
+          echo htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+          errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+          break;
+        case 2:
+          echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+          errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+          break;
+        case 4:
+          echo htmlGetWarningMessage(i18n('errorNoFile'));
+          errorLog(i18n('errorNoFile'));
+          break;
+        default:
+          echo htmlGetErrorMessage(i18n('errorUploadFile',array($uploadedFile['error'])));
+          errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
+          break;
+      }
+      $error=true;
     }
-    $error=true; 
   }
-}
-if (! $error) {
-  if (! $uploadedFile['name']) {
-    echo htmlGetWarningMessage(i18n('errorNoFile'));
-    errorLog(i18n('errorNoFile'));
-    $error=true; 
+  if (! $error) {
+    if (! $uploadedFile['name']) {
+      echo htmlGetWarningMessage(i18n('errorNoFile'));
+      errorLog(i18n('errorNoFile'));
+      $error=true;
+    }
   }
+} else if ($type=='link') {
+  if (! array_key_exists('attachementLink',$_REQUEST)) {
+    echo htmlGetWarningMessage(i18n('attachementLink parameter not found in REQUEST'));
+    errorLog(i18n('attachementLink parameter not found in REQUEST'));
+    $error=true;
+  } else {
+    $link=$_REQUEST['attachementLink'];
+  }
+} else {
+  echo htmlGetWarningMessage(i18n('error : unknown type '));
+  errorLog(i18n('error : unknown type '.$type));
+  $error=true;
 }
 if (! $error) {
   if (! array_key_exists('attachementRefType',$_REQUEST)) {
@@ -86,14 +110,20 @@ if (! $error) {
   $attachement->refType=$refType;
   $attachement->idUser=$user->id;
   $attachement->creationDate=date("Y-m-d H:i:s");
-  $attachement->fileName=basename($uploadedFile['name']);
+  if ($type=='file') {
+    $attachement->fileName=basename($uploadedFile['name']);
+    $attachement->mimeType=$uploadedFile['type'];
+    $attachement->fileSize=$uploadedFile['size'];
+  } else if ($type=='link') {
+    $attachement->link=$link;
+    $attachement->fileName=urldecode(basename($link));
+  }
+  $attachement->type=$type;
   $attachement->description=$attachementDescription;
-  $attachement->mimeType=$uploadedFile['type'];
-  $attachement->fileSize=$uploadedFile['size'];
   $result=$attachement->save();
   $newId= $attachement->id;
 }
-if (! $error) {
+if (! $error and $type=='file') {
   $uploaddir = $paramAttachementDirectory . $paramPathSeparator . "attachement_" . $newId . $paramPathSeparator;
   if (! file_exists($uploaddir)) {
     mkdir($uploaddir);
