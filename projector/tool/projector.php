@@ -1472,4 +1472,15 @@ function checkVersion() {
   	$alert->save();
   }
 }
+
+function wbsProjectSort($p1, $p2) {
+debugLog ($p1->ProjectPlanningElement->wbsSortable . " | " . $p1->ProjectPlanningElement->wbsSortable);
+  if ($p1->ProjectPlanningElement->wbsSortable<$p1->ProjectPlanningElement->wbsSortable) {
+debugLog("-1");
+    return -1;
+  } else {
+debugLog("1");
+    return 1;
+  }
+}
 ?>

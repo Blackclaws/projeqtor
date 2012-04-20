@@ -35,3 +35,9 @@ INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`,
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'maxProjectsToDisplay','25');
+
+ALTER TABLE `${prefix}workelement` ADD COLUMN `ongoing` int(1) unsigned default 0,
+ADD COLUMN `idUser` int(12) unsigned default null;
+
+ALTER TABLE `${prefix}workelement` ADD INDEX workelementUser (idUser);
+

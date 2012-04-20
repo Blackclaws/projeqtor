@@ -605,7 +605,7 @@ table.dojoDndAvatar {
 }
 .dijitInlineEditor {
   display: inline-block;
-  display: -moz-inline-stack; #
+  display: -moz-inline-stack;
   display: inline;
 }
 .dijitInlineEditor .saveButton,.dijitInlineEditor .cancelButton {
@@ -928,7 +928,7 @@ table.dojoDndAvatar {
 }
 
 .dijitSliderFocused .dijitSliderImageHandleH {
-  background-image: url(images/preciseSliderThumbFocus.png); #
+  background-image: url(images/preciseSliderThumbFocus.png);
   background-image: url(images/preciseSliderThumbFocus.gif);
 }
 
@@ -1020,7 +1020,7 @@ table.dojoDndAvatar {
 
 .dj_ie6 .dijitSliderDisabled,.dj_ie6 .dijitSliderDisabled .dijitRuleContainer,.dj_ie6 .dijitSliderDisabled .dijitSliderRemainingBar,.dj_ie6 .dijitSliderDisabled .dijitSliderProgressBar
   {
-  filter: gray() alpha(opacity = 40);
+  filter: alpha(opacity = 40);
 }
 
 .dijitSliderDisabled * {
@@ -1334,7 +1334,7 @@ table.dijitCalendarContainer {
 }
 .dijitCalendarYearLabel {	
 	margin:0;
-	padding-bottom:0.25em solid white;
+	padding-bottom:0.25em;
 	text-align:center;
 }
 .dijitCalendarSelectedYear {	
@@ -1699,8 +1699,8 @@ table.dijitCalendarContainer {
 
 .dijitIEFixedToolbar {
   position: absolute;
-  top: expression(eval(( document.documentElement || document.body) .
-    scrollTop ) );
+  /*top: expression(eval(( document.documentElement || document.body) .
+    scrollTop ) );*/
 }
 
 .dijitToolbar .dijitToolbarSeparator {
@@ -2090,7 +2090,7 @@ table.dijitCalendarContainer {
   padding: 6px 9px 5px 8px;
 }
 
-.dijitRtl .dijitTabPaneWrapper { #
+.dijitRtl .dijitTabPaneWrapper {
   zoom: 1;
 }
 
@@ -2380,12 +2380,12 @@ table.dijitCalendarContainer {
 	background-position: center center;
 }
 .dojoDndMove .dojoDndAvatarCanDrop .dojoxGridDndAvatarItem .dojoxGridDndAvatarItemImage {
-	background-image: url(../../../dojo/resources/images/dndMove.png);
+	background-image: url(images/dndMove.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 }
 .dojoDndCopy .dojoDndAvatarCanDrop .dojoxGridDndAvatarItem .dojoxGridDndAvatarItemImage {
-	background-image: url(../../../dojo/resources/images/dndCopy.png);
+	background-image: url(images/dndCopy.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 }
@@ -2421,7 +2421,7 @@ table.dijitCalendarContainer {
 .dojoxGridHeader .dojoxGridCell { 
 	border-width: 1px;
 	padding-bottom: 0px;
-	border-color: transparent #ACACAC9 #919191 transparent;
+	border-color: transparent #ACACAC #919191 transparent;
 	background: url(images/tabEnabled.png) #e9e9e9 repeat-x top;
 	color: #000 !important;
 }
@@ -2548,5 +2548,5 @@ table.dijitCalendarContainer {
 
 .dijitTextBox .dijitTextArea .dijitExpandingTextArea .input .dijitTextBoxReadOnly .dijitTextAreaReadOnly .dijitExpandingTextAreaReadOnly .dijitReadOnly {
 	color:grey;
-  cursor: normal !important;
+  cursor: default !important;
 }
