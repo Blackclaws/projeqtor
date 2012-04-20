@@ -68,7 +68,7 @@ div .scrollRightTop {
 }
 
 .ganttLeftTitle, .ganttRightTitle {
-  vertical-align: center; 
+  vertical-align: middle;
   text-align: center;
   font-weight: bold;
   background-color:#aaaaaa;
@@ -88,7 +88,7 @@ div .scrollRightTop {
 }
 
 .ganttRightSubTitle {
-  vertical-align: center; 
+  vertical-align: middle;
   text-align: center;
   font-weight: normal;
   background-color:#e0e0e0;
@@ -167,12 +167,11 @@ div .scrollRightTop {
 
 .ganttTaskmile {
   padding: 0px; margin: 0px;
-  font-weight: light;
+  font-weight: lighter;
   font-style:italic;
   background-color: #ffffff;
   font-family: Verdana, Arial, Tahoma, sans-serif;
 }
-
 
 .ganttName { 
   border-top: #c0c0c0 1px solid;

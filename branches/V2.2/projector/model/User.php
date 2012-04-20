@@ -582,5 +582,17 @@ class User extends SqlElement {
 	  }
 	  return "OK";     
   }
+
+  public function disconnect() {
+    global $paramReportTempDirectory;
+    purgeFiles($paramReportTempDirectory,"user" . $this->id . "_");
+    $we=new WorkElement();
+    $weList=$we->getSqlElementsFromCriteria(array('idUser'=>$this->id, 'ongoing'=>'1'));
+    foreach ($weList as $we) {
+      // TODO : close ongoing work
+      $we->stop();
+    }
+    traceLog("DISCONNECTED USER '" . $this->name . "'");
+  }
 }
 ?>

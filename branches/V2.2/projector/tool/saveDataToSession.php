@@ -6,8 +6,8 @@ require_once "../tool/projector.php";
 
 $id=$_REQUEST['id'];
 if ($id=='disconnect') {
-  purgeFiles($paramReportTempDirectory,"user" . getCurrentUserId() . "_");
-  traceLog("DISCONNECTED USER '" . $_SESSION['user']->name . "'");
+  $user=$_SESSION['user'];
+  $user->disconnect();
   session_destroy();
   exit;
 }

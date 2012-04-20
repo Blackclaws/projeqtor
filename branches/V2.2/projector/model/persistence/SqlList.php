@@ -128,7 +128,11 @@ class SqlList {
         $ind=new Indicator($val);
         $query .= " and " . $obj->getDatabaseTableName() . ".type='" . $ind->type . "'";
       } else {
-        $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+        if ($val==null or $val=='') {
+          $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
+        } else {
+          $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+        }
       }
     }
     $query .=')';

@@ -209,16 +209,26 @@ class Project extends SqlElement {
     if ($this->id==null or $this->id=='') {
       return array();
     }
+    $crit=array();
     if ($this->id=='*') {
-      $this->id=null;
+      $crit['idProject']='';
+    } else {
+      $crit['idProject']=$this->id;
     }
-    $crit=array('idProject'=>$this->id);
+
     if ($limitToActiveProjects) {
       $crit['idle']='0';
     }
-    $subProjects=$this->getSqlElementsFromCriteria($crit, false) ;
+    $sorted=SqlList::getListWithCrit('Project',$crit,'name');
+    //$subProjects=$this->getSqlElementsFromCriteria($crit, false);
+    //uasort($subProjects,'wbsProjectSort');
+    $subProjects=array();
+    foreach($sorted as $projId=>$projName) {
+      $subProjects[$projId]=new Project($projId);
+    }
     return $subProjects;
   }
+
 
   /** ==========================================================================
    * Recusively retrieves all the hierarchic sub-projects of the current project

@@ -65,5 +65,13 @@ class WorkElement extends SqlElement {
   	}
   	return parent::save();
   }
+
+  public function start() {
+
+  }
+
+  public function stop() {
+
+  }
 }
 ?>
