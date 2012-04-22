@@ -84,6 +84,23 @@ class WorkElement extends SqlElement {
           foreach ($workList as $work) {
             $crit=array('idResource'=>$user->id, 'refType'=>'Activity', 'refId'=>$this->idActivity, 'workDate'=>$work->workDate);
             $newWork=SqlElement::getSingleSqlElementFromCriteria('Work',$crit);
+            if (! $newWork->id) {
+              $ass=new Assignment();
+              $crit=array('refType'=>'Activity', 'refId'=>$top->idActivity, 'idResource'=>$user->id);
+              $lstAss=$ass->getSqlElementsFromCriteria($crit);
+              if (count($lstAss)>0) {
+                $ass=$lstAss[count($lstAss)-1];
+              } else {
+                $ass=new Assignment();
+                $ass->refType='Activity';
+                $ass->refId=$top->idActivity;
+                $ass->idResource=$user->id;
+              }
+              $ass->leftWork-=$work->work;
+              if ($ass->leftWork<0) {$ass->leftWork=0;}
+              $ass->save();
+              $newWork->idAssignment=$ass->id;
+            }
             $newWork->work+=$work->work;
             $newWork->setDates($work->workDate);
             $newWork->idProject=$top->idProject;
@@ -119,12 +136,13 @@ class WorkElement extends SqlElement {
           $work->idAssignment=$ass->id;
           $work->setDates(date('Y-m-d'));
         }
-        $work->work+=$diff;
-        if ($work->work<0) {$work->work=0;}
-        $work->save();
         $ass->leftWork-=$diff;
         if ($ass->leftWork<0) {$ass->leftWork=0;}
         $ass->save();
+        $work->idAssignment=$ass->id;
+        $work->work+=$diff;
+        if ($work->work<0) {$work->work=0;}
+        $work->save();
       } else {
         $crit=array('refType'=>$this->refType, 'refId'=>$this->refId, 'idResource'=>$user->id, 'idProject'=>$top->idProject);
         $crit['workDate']=date('Y-m-d');

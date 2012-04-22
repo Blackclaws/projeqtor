@@ -97,6 +97,9 @@ class Ticket extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    if ($this->idActivity and $this->WorkElement->realWork>0) {
+      self::$_fieldsAttributes['idActivity']='readonly';
+    }
   }
 
    /** ==========================================================================
