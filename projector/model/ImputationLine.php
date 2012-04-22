@@ -73,8 +73,8 @@ class ImputationLine {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
     // Check if assignment exists for each work (may be closed, so make it appear)
-    if (! $showIdle) {
-      foreach ($workList as $work) { 
+    foreach ($workList as $work) {
+      if ($work->idAssignment) {
         $found=false;
         foreach ($assList as $ass) {
           if ($work->refType==$ass->refType and $work->refId==$ass->refId) {
@@ -86,9 +86,28 @@ class ImputationLine {
           $ass=new Assignment($work->idAssignment);
           $assList[]=$ass;
         }
+      } else {
+        $id=$work->refType.'#'.$work->refId;
+        if (isset($assList[$id])) {
+          $ass=$assList[$id];
+        } else {
+          $ass=new Assignment();
+        }
+        $obj=new $work->refType($work->refId);
+        //$ass->name=$id . " " . $obj->name;
+        $ass->name=$obj->name;
+        $ass->realWork=$obj->WorkElement->realWork;
+        $ass->leftWork=$obj->WorkElement->leftWork;
+        $ass->id=null;
+        $ass->refType=$work->refType;
+        $ass->refId=$work->refId;
+        $ass->comment=i18n($work->refType) . ' #' . $work->refId;
+        $assList[$id]=$ass;
       }
     }
-    foreach ($assList as $ass) {      
+
+    $cptNotAssigned=0;
+    foreach ($assList as $idAss=>$ass) {
       $elt=new ImputationLine();
       $elt->idle=$ass->idle;
       $elt->refType=$ass->refType;
@@ -105,7 +124,7 @@ class ImputationLine {
       $crit=array('refType'=>$elt->refType, 'refId'=>$elt->refId);
       $plan=null;
       $plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-      if ($plan) {
+      if ($plan and $plan->id) {
         $elt->name=$plan->refName;
         $elt->wbs=$plan->wbs;
         $elt->wbsSortable=$plan->wbsSortable;
@@ -113,18 +132,32 @@ class ImputationLine {
         $elt->elementary=$plan->elementary;
         $elt->startDate=($plan->realStartDate)?$plan->realStartDate:$plan->plannedStartDate;
         $elt->endDate=($plan->realEndDate)?$plan->realEndDate:$plan->plannedEndDate;
+        $elt->imputable=true;
+      } else {
+        $cptNotAssigned+=1;
+        $elt->name=$ass->name;
+        $elt->wbs='0.'.$cptNotAssigned;
+        $elt->wbsSortable='000.'. str_pad($cptNotAssigned, 3, "0", STR_PAD_LEFT);
+        $elt->elementary=1;
+        $elt->topId=null;
+        $elt->imputable=true;
+        $elt->idAssignment=null;
+        $elt->locked=true;
       }
-      $elt->imputable=true;
       $key=$elt->wbsSortable . ' ' . $ass->refType . '#' . $ass->refId;
       if (array_key_exists($key,$result)) {
         $key.= '/#' . $ass->id;
       }
       // fetch all work stored in database for this assignment
       foreach ($workList as $work) {
-        if ($work->idAssignment==$elt->idAssignment) {
+        if ( ($work->idAssignment and $work->idAssignment==$elt->idAssignment) or ($work->refType==$elt->refType and $work->refId==$elt->refId) ) {
           $workDate=$work->workDate;
           $offset=dayDiffDates($startDate, $workDate)+1;
-          $elt->arrayWork[$offset]=$work;
+          if (isset($elt->arrayWork[$offset])) {
+            $elt->arrayWork[$offset]->work+=$work->work;
+          } else {
+            $elt->arrayWork[$offset]=$work;
+          }
         }
       }
       // Fill arrayWork for days without an input
@@ -149,6 +182,25 @@ class ImputationLine {
         }    
       }
       $result[$key]=$elt;
+    }
+    // If some not assigned work exists : add group line
+    if ($cptNotAssigned >0) {
+      $elt=new ImputationLine();
+      $elt->idle=0;
+      $elt->arrayWork=array();
+      $elt->arrayPlannedWork=array();
+      $elt->name=i18n('notAssignedWork');
+      $elt->wbs=0;
+      $elt->wbsSortable='000';
+      $elt->elementary=false;
+      $elt->imputable=false;
+      $elt->refType='Imputation';
+      for ($i=1; $i<=$nbDays; $i++) {
+        if ( ! array_key_exists($i, $elt->arrayWork)) {
+          $elt->arrayWork[$i]=new Work();
+        }
+      }
+      $result['#']=$elt;
     }
     foreach ($result as $key=>$elt) {
       $result=self::getParent($elt, $result);

@@ -568,10 +568,10 @@ class User extends SqlElement {
 									$alert=new Alert();
 									$alert->idUser=$usr->id;
 									$alert->alertType='INFO';
-									$alert->alertInitialDateTime=date('Y-m-d h:i:s');
+									$alert->alertInitialDateTime=date('Y-m-d H:i:s');
 									$alert->message=$message;
 									$alert->title=$title;
-									$alert->alertDateTime=date('Y-m-d h:i:s');
+									$alert->alertDateTime=date('Y-m-d H:i:s');
 									$alert->save();
 								}
 							}
@@ -586,13 +586,16 @@ class User extends SqlElement {
   public function disconnect() {
     global $paramReportTempDirectory;
     purgeFiles($paramReportTempDirectory,"user" . $this->id . "_");
+    $this->stopAllWork();
+    traceLog("DISCONNECTED USER '" . $this->name . "'");
+  }
+
+  public function stopAllWork() {
     $we=new WorkElement();
     $weList=$we->getSqlElementsFromCriteria(array('idUser'=>$this->id, 'ongoing'=>'1'));
     foreach ($weList as $we) {
-      // TODO : close ongoing work
       $we->stop();
     }
-    traceLog("DISCONNECTED USER '" . $this->name . "'");
   }
 }
 ?>

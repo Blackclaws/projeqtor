@@ -1086,8 +1086,16 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
               $this->$key = 0;
             }
           } else if ($dataType=='datetime') {
-            $keyBis = $key . "Bis";
-            $this->$key = $_REQUEST[$key . $ext] . " " . substr($_REQUEST[$keyBis . $ext],1);
+            $formFieldBis = $key . "Bis" . $ext;
+            if ($included) {
+              $formFieldBis = get_class($this) . '_' . $key . "Bis" . $ext;
+            }
+            if (isset($_REQUEST[$formFieldBis])) {
+              $this->$key = $_REQUEST[$formField] . " " . substr($_REQUEST[$formFieldBis],1);
+            } else {
+              //hidden field
+              $this->$key = $_REQUEST[$formField];
+            }
           } else if ($dataType=='decimal' and (substr($key, -4,4)=='Work')) {
           	if (array_key_exists($formField,$_REQUEST)) {
           	  $this->$key=Work::convertWork($_REQUEST[$formField]);
