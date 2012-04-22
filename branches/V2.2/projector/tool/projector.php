@@ -1055,6 +1055,22 @@ function addWeeksToDate($date, $weeks) {
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+(7*$weeks), $tDate[0]));
 }
 
+function workTimeDiffDateTime($start, $end) {
+debugLog("workTimeDiffDateTime($start, $end)");
+  $days=workDayDiffDates($start, $end);
+debugLog("days=$days");
+  $time=substr($start, 11,5);
+  $hh = substr($time,0,2);
+  $mn = substr($time,3,2);
+  $mnStart=$hh*60+$mn;
+  $time=substr($end, 11,5);
+  $hh = substr($time,0,2);
+  $mn = substr($time,3,2);
+  $mnStop=$hh*60+$mn;
+  $delay=$days+($mnStop-$mnStart)/(60*Parameter::getGlobalParameter('dayTime'));
+debugLog("mn=" . $mnStop . "-" . $mnStart . "=" . $delay);
+  return $delay;
+}
 function addDelayToDatetime($dateTime, $delay, $unit) {
 	$date=substr($dateTime, 0,10);
 	$time=substr($dateTime, 11,5);

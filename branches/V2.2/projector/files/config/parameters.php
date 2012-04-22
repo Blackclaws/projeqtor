@@ -52,7 +52,7 @@ $paramAttachementMaxSize = '2097152';
 $paramReportTempDirectory = '../files/report/';
 $paramMemoryLimitForPDF = '512';
 $logFile = '../files/logs/projector_${date}.log';
-$logLevel = '4';
+$logLevel = '3';
 $paramDebugMode = 'false';
 
 //======= END

@@ -41,11 +41,10 @@ if (! array_key_exists('comboDetail', $_REQUEST)) {
 // get the modifications (from request)
 $newObj=new $className();
 $newObj->fillFromRequest($ext);
-//var_dump($obj);
+//debugLog($newObj);
 
 // save to database
 $result=$newObj->save();
-
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {

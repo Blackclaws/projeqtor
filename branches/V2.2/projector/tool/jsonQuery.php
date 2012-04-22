@@ -46,9 +46,12 @@
     	}
     	$queryWhere.=" )";
     }
+    $showIdle=false;
     if (! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idle') . "=0";
+    } else {
+      $showIdle=true;
     }
     if (array_key_exists('listIdFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listIdFilter'];
@@ -81,7 +84,7 @@
         if ($_SESSION['project']!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
-            $queryWhere.=  $table . '.id in ' . getVisibleProjectsList() ;
+            $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdle) ;
           } else if ($objectClass=='Document') {
           	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList() . " or " . $table . ".idProject is null)";
           } else {

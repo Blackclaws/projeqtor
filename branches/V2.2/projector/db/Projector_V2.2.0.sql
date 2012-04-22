@@ -37,7 +37,9 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null, null, 'maxProjectsToDisplay','25');
 
 ALTER TABLE `${prefix}workelement` ADD COLUMN `ongoing` int(1) unsigned default 0,
-ADD COLUMN `idUser` int(12) unsigned default null;
+ADD COLUMN `ongoingStartDateTime` datetime default null,
+ADD COLUMN `idUser` int(12) unsigned default null,
+ADD COLUMN `idActivity` int(12) unsigned default null,;
 
 ALTER TABLE `${prefix}workelement` ADD INDEX workelementUser (idUser);
 
