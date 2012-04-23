@@ -43,3 +43,21 @@ ADD COLUMN `idActivity` int(12) unsigned default null;
 
 ALTER TABLE `${prefix}workelement` ADD INDEX workelementUser (idUser);
 
+INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`)
+VALUES (39,'reportVersionDetail',4,'versionDetail.php',450,0);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+(101,39,'idProject','projectList',10,0,'currentProject'),
+(102,39,'idVersion','versionList',20,0,NULL),
+(103,39,'responsible','resourceList',30,0,NULL);
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
+(1,39,1),
+(2,39,1),
+(3,39,1),
+(4,39,0),
+(5,39,0),
+(6,39,0),
+(7,39,0);
+
+
