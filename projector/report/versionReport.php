@@ -2,38 +2,47 @@
 include_once '../tool/projector.php';
 //echo 'versionReport.php';
 
-$paramProject='';
-if (array_key_exists('idProject',$_REQUEST)) {
-  $paramProject=trim($_REQUEST['idProject']);
-};
+if (! isset($includedReport)) {
+  include("../external/pChart/pData.class");  
+  include("../external/pChart/pChart.class");  
   
-$paramResponsible='';
-if (array_key_exists('responsible',$_REQUEST)) {
-  $paramResponsible=trim($_REQUEST['responsible']);
-};
-$paramVersion='';
-if (array_key_exists('version',$_REQUEST)) {
-  $paramVersion=trim($_REQUEST['version']);
-};
-
-$user=$_SESSION['user'];
+  $paramProject='';
+  if (array_key_exists('idProject',$_REQUEST)) {
+    $paramProject=trim($_REQUEST['idProject']);
+  };
+  
+  $paramTicketType='';
+  if (array_key_exists('idTicketType',$_REQUEST)) {
+    $paramTicketType=trim($_REQUEST['idTicketType']);
+  };
+  
+  $paramResponsible='';
+  if (array_key_exists('responsible',$_REQUEST)) {
+    $paramResponsible=trim($_REQUEST['responsible']);
+  };
+  
+  $user=$_SESSION['user'];
   
   // Header
-$headerParameters="";
-if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters="";
+  if ($paramProject!="") {
+    $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  }
+  if ($paramTicketType!="") {
+    $headerParameters.= i18n("colIdTicketType") . ' : ' . SqlList::getNameFromId('TicketType', $paramTicketType) . '<br/>';
+  }
+  if ($paramResponsible!="") {
+    $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
+  }
+  include "header.php";
 }
-if ($paramResponsible!="") {
-  $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
-}
-if ($paramVersion!="") {
-  $headerParameters.= i18n("colVersion") . ' : ' . SqlList::getNameFromId('Version', $paramVersion) . '<br/>';
-}
-include "header.php";
 
 $where=getAccesResctictionClause('Ticket',false);
 if ($paramProject!="") {
   $where.=" and idProject='" . $paramProject . "'";
+}
+if ($paramTicketType!="") {
+  $where.=" and idTicketType='" . $paramTicketType . "'";
 }
 if ($paramResponsible!="") {
   $where.=" and idResource='" . $paramResponsible . "'";
@@ -41,95 +50,75 @@ if ($paramResponsible!="") {
 
 $order="";
 
+$ticket=new Ticket();
+$lstTicket=$ticket->getSqlElementsFromCriteria(null,false, $where, $order);
+
 $lstVersion=SqlList::getList('Version');
 $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
-
-if (checkNoData($lstVersion)) exit;
-
-$lstObj=array(new Ticket());
-
-foreach ($lstVersion as $versId=>$versName) {
-  echo '<table width="95%" align="center">';
-  echo '<tr>';
-  echo '<td class="reportTableHeader" colspan="3">' . $versName . '</td>';
-  echo '<td class="reportTableLineHeader" width="10%" style="text-align:center;" rowspan="2">' . i18n('colIdStatus') . '</td>';
-  echo '<td class="reportTableLineHeader" width="10%" style="text-align:center;" rowspan="2">' . i18n('colResponsible') . '</td>';
-  echo '<td class="reportTableLineHeader" width="10%" style="text-align:center;" rowspan="2">' . i18n('colIdPriority') . '</td>';
-  echo '<td class="reportTableLineHeader" colspan="4" style="text-align:center;">' . i18n('colWork') . '</td>';
-  echo '<td class="reportTableLineHeader" width="5%" style="text-align:center;" rowspan="2">' . i18n('colHandled') . '</td>';
-  echo '<td class="reportTableLineHeader" width="5%" style="text-align:center;" rowspan="2">' . i18n('colDone') . '</td>';
-  echo '</tr>';
-  echo '<tr>';
-  echo '<td class="reportTableLineHeader" width="10%" style="text-align:center;">' . i18n('colId') . '</td>';
-  echo '<td class="reportTableLineHeader" width="10%" style="text-align:center;">' . i18n('colType') . '</td>';
-  echo '<td class="reportTableLineHeader" width="20%" style="text-align:center;">' . i18n('colName') . '</td>';
-  echo '<td class="reportTableLineHeader" width="5%" style="text-align:center;">' . i18n('colInitial') . '</td>';
-  echo '<td class="reportTableLineHeader" width="5%" style="text-align:center;">' . i18n('colReal') . '</td>';
-  echo '<td class="reportTableLineHeader" width="5%" style="text-align:center;">' . i18n('colLeft') . '</td>';
-  echo '<td class="reportTableLineHeader" width="5%" style="text-align:center;">' . strtolower(i18n('sum')) . '</td>';
-  echo '</tr>';
-  $sumInitial='';
-  $sumReal='';
-  $sumLeft='';
-  $sumPlanned='';
-  $sumHandled='';
-  $sumDone='';
-  $cpt=0;
-  $crit=array('idTargetVersion'=>$versId);
-	foreach ($lstObj as $obj) {
-    $lst=$obj->getSqlElementsFromCriteria($crit);
-    $type='id'.get_class($obj).'Type';
-    foreach ($lst as $item) {
-      $class=get_class($item);
-      $item=new $class($item->id);
-      $initial=0;
-      $real='';
-      $left='';
-      $planned='';
-      $cpt++;
-      if (isset($item->WorkElement)) {
-        $initial=$item->WorkElement->plannedWork;
-        $real=$item->WorkElement->realWork;
-        $left=$item->WorkElement->leftWork;
-        $planned=$real+$left;
-      }
-      echo '<tr>';
-      echo '<td class="reportTableData">' . i18n(get_class($item)) . ' #' . $item->id . '</td>';
-      echo '<td class="reportTableData">' . SqlList::getNameFromId('Type',$item->$type) . '</td>';
-      echo '<td class="reportTableData" style="text-align:left;">' . $item->name . '</td>';
-      echo '<td class="reportTableData">' .formatColor('Status', $item->idStatus) . '</td>';
-      echo '<td class="reportTableData">' . SqlList::getNameFromId('Resource',$item->idResource) . '</td>';
-      echo '<td class="reportTableData">' .formatColor('Priority', $item->idPriority) . '</td>';
-      echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($initial) . '</td>';
-      echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($real) . '</td>';
-      echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($left) . '</td>';
-      echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($planned) . '</td>';
-      echo '<td class="reportTableData"><img src="../view/img/checked' . (($item->handled)?'OK':'KO') . '.png" /></td>';
-      echo '<td class="reportTableData"><img src="../view/img/checked' . (($item->done)?'OK':'KO') . '.png" /></td>';
-      echo '</tr>';
-      $sumInitial+=$initial;
-      $sumReal+=$real;
-      $sumLeft+=$left;
-      $sumPlanned+=$planned;
-      $sumHandled+=($item->handled)?1:0;
-      $sumDone+=($item->done)?1:0;
-    }
-  }
-  $progress=0;
-  if ($sumPlanned>0) {
-    $progress=round($sumReal/$sumPlanned*100,0);
-  }
-  echo '<tr>';
-  echo '<td class="reportTableHeader" colspan="2">' . i18n('sum') . '</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . $cpt . '</td>';
-  echo '<td class="reportTableLineHeader" colspan="3" style="text-align:center;">' . i18n('progress') . ' : ' . $progress . '%</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . Work::displayWorkWithUnit($sumInitial) . '</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . Work::displayWorkWithUnit($sumReal) . '</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . Work::displayWorkWithUnit($sumLeft) . '</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . Work::displayWorkWithUnit($sumPlanned) . '</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . $sumHandled . '</td>';
-  echo '<td class="reportTableLineHeader" style="text-align:center;">' . $sumDone . '</td>';
-  echo '</tr>';
-  echo '</table>';
-  echo '<br/>';
+if ($paramTicketType!="") {
+	$lstType=array($paramTicketType=>SqlList::getNameFromId('TicketType', $paramTicketType));
+} else {
+  $lstType=SqlList::getList('TicketType');
 }
+
+$arrType=array();
+foreach($lstType as $code=>$name) {
+  $arrType[$code]=array('name'=>$name,'count'=>0,'estimated'=>0,'real'=>0,'left'=>0);
+}
+$version=array();
+foreach($lstVersion as $code=>$name) {
+  $version[$code]=$arrType;
+}
+$version['0']=$arrType;
+
+if (count($lstType)) {
+  $medWidth=floor(65/count($lstType));
+} else {
+  $medWidth="65";
+}
+
+foreach ($lstTicket as $t) {
+	$ticket=new Ticket($t->id);
+	$vers=($t->idTargetVersion)?$t->idTargetVersion:'0';
+  if (! isset($version[$vers][$t->idTicketType])) {continue;}
+	$version[$vers][$t->idTicketType]['count']+=1;
+  $version[$vers][$t->idTicketType]['estimated']+=$ticket->WorkElement->plannedWork;
+  $version[$vers][$t->idTicketType]['real']+=$ticket->WorkElement->realWork;
+  $version[$vers][$t->idTicketType]['left']+=$ticket->WorkElement->leftWork;
+}
+
+if (checkNoData($lstTicket)) exit;
+  
+// title
+echo '<table width="95%" align="center">';
+echo '<tr><td class="reportTableHeader" rowspan="2" colspan="2">' . i18n('Version') . '</td>';
+echo '<td colspan="' . (count($lstType)+1) . '" class="reportTableHeader">' . i18n('TicketType') . '</td>';
+echo '</tr><tr>';
+foreach ($lstType as $type) {
+  echo '<td class="reportTableColumnHeader">' . $type . '</td>';
+}
+echo '<td class="reportTableHeader" >' . i18n('sum') . '</td>';
+echo '</tr>';
+
+$arrSum=$arrType;
+foreach ($version as $idVersion=>$arrayVers) {
+  echo '<tr><td style="font-size:25%;">&nbsp;</td></tr>';
+  echo '<tr>';
+  echo '<td class="reportTableLineHeader" style="width:10%;" rowspan="4">' . $lstVersion[$idVersion] . '</td>'; 
+  // count
+  $arrLines=array('count','estimated','real','left');
+  foreach ($arrLines as $val) {
+  	$sum=0;
+  	if ($val!='count') {echo '<tr>';}
+    echo '<td class="reportTableLineHeader" style="width:10%;" >' . i18n($val) . '</td>';
+    foreach ($arrayVers as $idType=>$arrayType) {
+  	  echo '<td class="reportTableData" style="width:' . $medWidth . '%;">' . $arrayType[$val] . '</td>';
+  	  $sum+=$arrayType[$val];
+    }
+    echo '<td class="reportTableData" style="width:' . $medWidth . '%;">' . $sum . '</td></tr>';
+  }  
+}  
+  
+echo '</table>';
+echo '<br/>';
+ 

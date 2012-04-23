@@ -226,7 +226,22 @@ foreach ($listParam as $param) {
      </select>    
     </td>
     </tr>
-<?php 
+<?php
+  } else if ($param->paramType=='versionList') {
+    $defaultValue=$param->defaultValue;
+    ?>
+  <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+      <select dojoType="dijit.form.FilteringSelect" class="input"
+              style="width: 200px;"
+              id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+        >
+        <?php htmlDrawOptionForReference('idVersion', $defaultValue, null, false); ?>
+      </select>
+    </td>
+  </tr>
+<?php
   } else if ($param->paramType=='resourceList') {
     $defaultValue='';
     if ($param->defaultValue=='currentResource') {

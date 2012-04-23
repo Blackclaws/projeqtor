@@ -12,8 +12,8 @@ if (array_key_exists('responsible',$_REQUEST)) {
   $paramResponsible=trim($_REQUEST['responsible']);
 };
 $paramVersion='';
-if (array_key_exists('version',$_REQUEST)) {
-  $paramVersion=trim($_REQUEST['version']);
+if (array_key_exists('idVersion',$_REQUEST)) {
+  $paramVersion=trim($_REQUEST['idVersion']);
 };
 
 $user=$_SESSION['user'];
@@ -32,21 +32,19 @@ if ($paramVersion!="") {
 include "header.php";
 
 $where=getAccesResctictionClause('Ticket',false);
-if ($paramProject!="") {
-  $where.=" and idProject='" . $paramProject . "'";
-}
-if ($paramResponsible!="") {
-  $where.=" and idResource='" . $paramResponsible . "'";
-}
 
 $order="";
 
-$lstVersion=SqlList::getList('Version');
-$lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
+if ($paramVersion) {
+  $lstVersion=array($paramVersion=>SqlList::getNameFromId('Version',$paramVersion));
+} else {
+  $lstVersion=SqlList::getList('Version');
+  $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
+}
 
 if (checkNoData($lstVersion)) exit;
 
-$lstObj=array(new Ticket());
+$lstObj=array(new Ticket(), new Activity());
 
 foreach ($lstVersion as $versId=>$versName) {
   echo '<table width="95%" align="center">';
@@ -76,6 +74,12 @@ foreach ($lstVersion as $versId=>$versName) {
   $sumDone='';
   $cpt=0;
   $crit=array('idTargetVersion'=>$versId);
+  if ($paramResponsible) {
+    $crit['idResource']=$paramResponsible;
+  }
+  if ($paramProject) {
+    $crit['idProject']=$paramProject;
+  }
 	foreach ($lstObj as $obj) {
     $lst=$obj->getSqlElementsFromCriteria($crit);
     $type='id'.get_class($obj).'Type';
@@ -87,10 +91,16 @@ foreach ($lstVersion as $versId=>$versName) {
       $left='';
       $planned='';
       $cpt++;
+      $pe=get_class($item).'PlanningElement';
       if (isset($item->WorkElement)) {
         $initial=$item->WorkElement->plannedWork;
         $real=$item->WorkElement->realWork;
         $left=$item->WorkElement->leftWork;
+        $planned=$real+$left;
+      } else if (isset($item->$pe)) {
+        $initial=$item->$pe->assignedWork;
+        $real=$item->$pe->realWork;
+        $left=$item->$pe->leftWork;
         $planned=$real+$left;
       }
       echo '<tr>';
@@ -99,7 +109,7 @@ foreach ($lstVersion as $versId=>$versName) {
       echo '<td class="reportTableData" style="text-align:left;">' . $item->name . '</td>';
       echo '<td class="reportTableData">' .formatColor('Status', $item->idStatus) . '</td>';
       echo '<td class="reportTableData">' . SqlList::getNameFromId('Resource',$item->idResource) . '</td>';
-      echo '<td class="reportTableData">' .formatColor('Priority', $item->idPriority) . '</td>';
+      echo '<td class="reportTableData">' . ((isset($item->idPriority))?formatColor('Priority', $item->idPriority):'') . '</td>';
       echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($initial) . '</td>';
       echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($real) . '</td>';
       echo '<td class="reportTableData">' .  Work::displayWorkWithUnit($left) . '</td>';
