@@ -1898,6 +1898,9 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   echo '</table></td></tr>';
 }
 
+// ********************************************************************************************************
+// MAIN PAGE
+// ********************************************************************************************************
 // fetch information depending on, request
 $objClass=$_REQUEST['objectClass'];
 if (! isset($noselect)) { 
@@ -1960,6 +1963,11 @@ if (! $print and ! $comboDetail) {
 $refresh=false;
 if ( array_key_exists('refresh',$_REQUEST) ) {
   $refresh=true;
+}
+if ($print) {
+  echo '<br/>';
+  echo '<div class="reportTableHeader" style="width:100%; font-size:150%;border: 0px solid #000000;">' . i18n($objClass) . ' #' . ($objId+0) . '</div>';
+  echo '<br/>';
 }
 
 $treatedObjects=array();

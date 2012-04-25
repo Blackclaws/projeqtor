@@ -66,14 +66,14 @@
    if ($outMode!='csv' and $outMode!='mpp') {?>
 <html>
 <head>   
-  <title><?php echo i18n("applicationTitle");?></title>
+  <title><?php echo getPrintTitle();?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
-              parseOnLoad: true, 
+              parseOnLoad: true,
               isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
@@ -88,6 +88,8 @@
         }
       ?>
       top.hideWait();
+      top.window.document.title="<?php echo getPrintTitle();?>";
+      window.document.title="<?php echo getPrintTitle();?>";
     }); 
   </script>
 </head>

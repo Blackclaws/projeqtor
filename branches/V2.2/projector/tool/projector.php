@@ -1515,4 +1515,16 @@ function formatColor($type, $val) {
   $result='<div align="center" style="text-align:center;  background:' . $color . ';color:' . $foreColor . ';">' . SqlList::getNameFromId($type,$val) . '</div>';
   return $result;
 }
+
+function getPrintTitle() {
+  $result = i18n("applicationTitle");
+  if (isset($_REQUEST['objectClass']) and isset($_REQUEST['page'])) {
+    if ($_REQUEST['page']=='objectDetail.php') {
+      $result.=' - ' . i18n($_REQUEST['objectClass']) . ' #' . ($_REQUEST['objectId']+0);
+    } else if ($_REQUEST['page']=='../tool/jsonQuery.php') {
+      $result.=' - ' . i18n('menu'.$_REQUEST['objectClass']);
+    }
+  }
+  return $result;
+}
 ?>

@@ -379,6 +379,9 @@
     			echo utf8_decode(i18n("reportNoData")); 
     		}
     	} else {
+        echo '<br/>';
+        echo '<div class="reportTableHeader" style="width:100%; font-size:150%;border: 0px solid #000000;">' . i18n('menu'.$objectClass) . '</div>';
+        echo '<br/>';
 	      echo '<table>';
 	      echo '<tr>';
 	      echo str_ireplace('width="','style="width:',$layout);

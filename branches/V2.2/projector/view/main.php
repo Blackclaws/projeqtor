@@ -449,7 +449,7 @@ checkVersion(); ?>
   </table>
 </div>
 
-<div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="dojo.byId('printFrame').src='../view/preparePreview.php';">
+<div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="window.document.title=i18n('applicationTitle');dojo.byId('printFrame').src='../view/preparePreview.php';" onClose="alert('close');">
   <?php 
     $printHeight=600;
     $printWidth=1000;
