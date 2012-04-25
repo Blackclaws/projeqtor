@@ -32,7 +32,7 @@ for ($i=1; $i<=$nbLines; $i++) {
     $line->leftWork=Work::convertImputation($_REQUEST['leftWork_' . $i]);
     $line->imputable=$imputable;
     $arrayWork=array();
-    for ($j=1; $j<$nbDays; $j++) {
+    for ($j=1; $j<=$nbDays; $j++) {
     	$workId=null;
     	if (array_key_exists('workId_' . $i . '_' . $j, $_REQUEST)) {
         $workId=$_REQUEST['workId_' . $i . '_' . $j];
