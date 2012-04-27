@@ -326,6 +326,7 @@ class PlanningElement extends SqlElement {
   }
   
   public function simpleSave() {
+    $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     $result = parent::save();
   }
 
