@@ -19,6 +19,9 @@ if ($class=='Attachement') {
   $size = $obj->fileSize;
   $type = $obj->mimeType;
   $file = $path . $name;
+  if (! is_file($file)) {
+    $file=addslashes($file);
+  }
 } else if ($class=='DocumentVersion') {
   $name = $obj->fileName;
   $size = $obj->fileSize;

@@ -13,6 +13,7 @@ var closeFilterListTimeout;
 //= Wait spinner
 //=============================================================================
 
+var waitingForReply=false;
 /** ============================================================================
  * Shows a wait spinner
  * @return void
@@ -20,6 +21,7 @@ var closeFilterListTimeout;
 function showWait() {
 	if (dojo.byId("wait")) {
 		showField("wait");
+    waitingForReply=true;
 	} else {
 		showField("waitLogin");
 	}
@@ -30,8 +32,10 @@ function showWait() {
  * @return void
  */
 function hideWait() {
+  waitingForReply=false;
 	hideField("wait");
 	hideField("waitLogin");
+  top.dijit.byId("dialogAlert").hide();
 }
 
 //=============================================================================
