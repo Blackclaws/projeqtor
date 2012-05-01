@@ -12,6 +12,8 @@ class Affectable extends SqlElement {
   public $isResource;
   public $isUser;
   public $isContact;
+  public $email;
+  public $idTeam;
   
   public $_constructForName=true;
   

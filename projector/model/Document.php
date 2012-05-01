@@ -26,6 +26,8 @@ class Document extends SqlElement {
   public $idDocumentVersionRef;
   public $idStatus;
   public $_DocumentVersion=array();
+  public $_sec_approvers;
+  public $_Approver=Array();
   public $version;
   public $revision;
   public $draft;

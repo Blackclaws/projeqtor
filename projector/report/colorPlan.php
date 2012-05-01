@@ -68,7 +68,8 @@ foreach ($lstWork as $work) {
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
-    $projectsColor[$work->idProject]=SqlList::getFieldFromId('Project', $work->idProject, 'color');
+    $proj=new Project($work->idProject);
+    $projectsColor[$work->idProject]=$proj->getColor();
   }
   if (! array_key_exists($work->day,$result[$work->idResource])) {
     $result[$work->idResource][$work->day]=array();
@@ -89,7 +90,8 @@ foreach ($lstPlanWork as $work) {
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
-    $projectsColor[$work->idProject]=SqlList::getFieldFromId('Project', $work->idProject, 'color');
+    $proj=new Project($work->idProject);
+    $projectsColor[$work->idProject]=$proj->getColor();
   }
   if (! array_key_exists($work->day,$result[$work->idResource])) {
     $result[$work->idResource][$work->day]=array();

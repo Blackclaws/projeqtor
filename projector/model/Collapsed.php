@@ -39,7 +39,6 @@ class Collapsed extends SqlElement {
    */
 
   public static function collapse($scope) {
-//debugLog('collapse:'.$scope);
   	$userId=self::getUserId();
   	$crit=array('scope'=>$scope, 'idUser'=>$userId);
     $col=SqlElement::getSingleSqlElementFromCriteria('Collapsed', $crit);
@@ -55,7 +54,6 @@ class Collapsed extends SqlElement {
   }
   
   public static function expand($scope) {
-//debugLog('expand:'.$scope);
   	$userId=self::getUserId();
   	$crit=array('scope'=>$scope, 'idUser'=>$userId);
     $col=SqlElement::getSingleSqlElementFromCriteria('Collapsed', $crit);

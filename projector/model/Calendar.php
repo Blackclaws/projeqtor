@@ -189,11 +189,12 @@ class Calendar extends SqlElement {
   	if (! $this->id) {
   		//return;
   	}
+    $today=date('Y-m-d');
   	global $bankHolidays,$bankWorkdays;
     $result="<br/>";
     if ($item=='calendarView') {
       $result .='<table >';
-      if ($this->id) {
+      if ($this->year) {
         $y=$this->year;
       } else {
       	$y=date('Y');
@@ -203,7 +204,7 @@ class Calendar extends SqlElement {
       	$mx=($m<10)?'0'.$m:''.$m;
       	$time=mktime(0, 0, 0, $m, 1, $y);
         $libMonth=i18n(strftime("%B", $time));
-      	$result .= '<tr>';
+      	$result .= '<tr style="height:30px">';
       	$result .= '<td class="calendar" style="background:#F0F0F0; width: 150px;">' . $libMonth . '</td>';
       	for ($d=1;$d<=date('t',strtotime($y.'-'.$mx.'-01'));$d++) {
       		$dx=($d<10)?'0'.$d:''.$d;
@@ -211,25 +212,21 @@ class Calendar extends SqlElement {
       		$iDay=strtotime($day);
       		$isOff=isOffDay($day);
       		$style='';
-      		$link=($this->id)?false:true;
-      		if ($y.$mx.$dx==$this->day) {
+      		if ($day==$today) {
       			$style.='font-weight: bold; font-size: 9pt;';
-      			$link=false;
       		}
       		if (in_array (date ('Ymd', $iDay), $bankWorkdays[$y])) {
       			$style.='color: #FF0000; background: #FFF0F0;';
-      			$link=false;
       		} else if (in_array (date ('Ymd', $iDay), $bankHolidays[$y])) {
             $style.='color: #0000FF; background: #D0D0FF;';
-            $link=false;
           } else {
             $style.='background: ';
           	$style.=($isOff)?'#DDDDDD;':'#FFFFFF;';
           }
       		$result.= '<td class="calendar" style="'.$style.'">';
-      		if ($link) $result.= '<div style="cursor: pointer;" onClick="dijit.byId(\'calendarDate\').set(\'value\',\''.$day.'\');">';
+      		$result.= '<div style="cursor: pointer;" onClick="loadContent(\'calendar.php?day=' . $day . '\',\'centerDiv\');">';
       		$result.=  substr(i18n(date('l',$iDay)),0,1) . $d ;
-      		if ($link) $result.= '</div>';
+      		$result.= '</div>';
       		$result.= '</td>';
       	}
       	$result .= '</tr>';

@@ -553,6 +553,17 @@ class Project extends SqlElement {
   	}
   	return '(' . implode(', ',$arrayProj) . ')';
   }
+
+  public function getColor() {
+    $color=null;
+    if ($this->color) {
+      $color=$this->color;
+    } else if ($this->idProject) {
+      $top=new Project($this->idProject);
+      $color=$top->getColor();
+    }
+    return $color;
+  }
   
 }
 ?>

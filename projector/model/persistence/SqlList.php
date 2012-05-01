@@ -74,7 +74,6 @@ class SqlList {
     } else {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     }
- //debugLog($query);
     $result=Sql::query($query);
     if (Sql::$lastQueryNbRows > 0) {
       while ($line = Sql::fetchLine($result)) {
@@ -82,7 +81,7 @@ class SqlList {
         if ($obj->isFieldTranslatable($displayCol) and $translate){
           $name=i18n($name);
         }
-        if (property_exists($obj,'_constructForName')) {      
+        if ($displayCol=='name' and property_exists($obj,'_constructForName')) {
         	$nameObj=new $listType($line['id']);
         	$name=$nameObj->name;
         }
@@ -112,9 +111,9 @@ class SqlList {
         $ver=new Version();
         $proj=new Project($val);
         $lst=$proj->getTopProjectList(true);
-        $inClause='(';
+        $inClause='(0';
         foreach ($lst as $prj) {
-        	$inClause.=($inClause=='(')?'':',';
+        	$inClause.=',';
         	$inClause.=$prj;
         }
         $inClause.=')';

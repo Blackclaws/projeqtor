@@ -40,7 +40,7 @@ class Version extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required"
+  private static $_fieldsAttributes=array("name"=>"required", "idProduct"=>"required"
   );   
 
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'

@@ -36,7 +36,6 @@ $result=$newObj->save();
 
 //$newObj->start();
 $action="";
-//debugLog($result);
 if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0
    and ! stripos($result,'id="lastOperationStatus" value="INVALID"')>0
    and isset($newObj->WorkElement)) {

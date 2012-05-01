@@ -191,21 +191,17 @@ class Assignment extends SqlElement {
     $critType=array('code'=>'ADM', 'idle'=>'0');
     $lstType=$type->getSqlElementsFromCriteria($critType);
     foreach ($lstType as $type) {
-//debugLog("Type=#$type->id-$type->name");    	
     	$proj=new Project();
     	$critProj=array('idProjectType'=>$type->id, 'idle'=>'0');
     	$lstProj=$proj->getSqlElementsFromCriteria($critProj);
     	foreach ($lstProj as $proj) {
-//debugLog("  proj=#$proj->id-$proj->name");
     		$acti=new Activity();
     	  $critActi=array('idProject'=>$proj->id, 'idle'=>'0');
     	  $lstActi=$acti->getSqlElementsFromCriteria($critActi);
     	  foreach ($lstActi as $acti) {
-//debugLog("    acti=#$acti->id-$acti->name");    	  	
           $assi=new Assignment();
           $critAssi=array('refType'=>'Activity', 'refId'=>$acti->id, 'idResource'=>$resourceId);
           $lstAssi=$assi->getSqlElementsFromCriteria($critAssi,false);
-//debugLog("      nbAssi=".count($lstAssi));
           if (count($lstAssi)==0) {
           	$assi->idProject=$proj->id;
           	$assi->refType='Activity';

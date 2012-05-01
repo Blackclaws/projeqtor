@@ -181,8 +181,6 @@ class WorkElement extends SqlElement {
    *
    */
   public function stop() {
-    debugLog ($this->id . " " . $this->refType. " " . $this->refId );
-    debugLog ($this->ongoingStartDateTime);
     $start=$this->ongoingStartDateTime;
     $stop=date('Y-m-d H:i');
     $work=workTimeDiffDateTime($start,$stop);

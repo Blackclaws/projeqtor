@@ -79,7 +79,7 @@ class IndicatorValue extends SqlElement {
 scriptLog("addIndicatorValue($def->name)");
   	$class=get_class($obj);
   	if ($def->nameIndicatorable!=$class) {
-  		debugLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
+  		errorLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
   		return;
   	}
   	$crit=array('idIndicatorDefinition'=>$def->id, 'refType'=>$class, 'refId'=>$obj->id);
@@ -96,7 +96,7 @@ scriptLog("addIndicatorValue($def->name)");
   		$indVal->alertSent='0';
   	} else {
   		$cpt=count($lst);
-      debugLog("ERROR in IndicatorValue::addIndicatorValue() => more than 1 (exactely $cpt) line of IndicatorValue for refType=$class, refId=$obj->id, idIndicatorDefinition=$def->id");
+      errorLog("ERROR in IndicatorValue::addIndicatorValue() => more than 1 (exactely $cpt) line of IndicatorValue for refType=$class, refId=$obj->id, idIndicatorDefinition=$def->id");
       return;  		
   	}
   	$fld="";
@@ -143,7 +143,7 @@ scriptLog("addIndicatorValue($def->name)");
   	} else if ($ind->type=="percent") {
   		$indVal->checkPercent($obj,$def);
     } else {
-      debugLog("ERROR in IndicatorValue::addIndicatorValue() => unknown indicator type = $ind->type");    	
+      errorLog("ERROR in IndicatorValue::addIndicatorValue() => unknown indicator type = $ind->type");
     }
     $indVal->save();
   	
@@ -466,7 +466,6 @@ scriptLog("addIndicatorValue($def->name)");
     if ($this->type=='delay') {
       $result['target']=$this->targetDateTime;
     }
-    //debugLog($result);
     return $result;
   }
   

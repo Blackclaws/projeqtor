@@ -11,8 +11,14 @@ class Meeting extends SqlElement {
   public $idProject;
   public $idMeetingType;
   public $meetingDate;
+  public $_lib_from;
+  public $meetingStartTime;
+  public $_lib_to;
+  public $meetingEndTime;
   public $name;
+  public $location;
   public $attendees;
+  public $_spe_buttonSendMail;
   public $idUser;
   public $description;
   public $_col_2_2_treatment;
@@ -51,7 +57,10 @@ class Meeting extends SqlElement {
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
                                   "idProject"=>"required",
                                   "idMeetingType"=>"required",
-                                  "meetingDate"=>"required",
+                                  "meetingDate"=>"required, nobr",
+                                  "_lib_from"=>'nobr',
+                                  "_lib_to"=>'nobr',
+                                  "meetingStartTime"=>'nobr',
                                   "idUser"=>"hidden",
                                   "idResource"=>"idden",
                                   "idStatus"=>"required",
@@ -200,11 +209,151 @@ class Meeting extends SqlElement {
     return $colScript;
   }
 
+  public function drawSpecificItem($item){
+    global $print;
+    $result="";
+    if ($item=='buttonSendMail') {
+      if ($print) {
+        return "";
+      }
+      $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
+      $result .= '<button id="sendMailToAttendees" dojoType="dijit.form.Button" showlabel="true"';
+      $result .= ' title="' . i18n('sendMailToAttendees') . '" >';
+      $result .= '<span>' . i18n('sendMailToAttendees') . '</span>';
+      $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+      $result .= '   if (checkFormChangeInProgress()) {return false;}';
+      $result .=  '  loadContent("../tool/sendMail.php","resultDiv","objectForm",true);';
+      $result .= '</script>';
+      $result .= '</button>';
+      $result .= '</td></tr>';
+      return $result;
+    }
+  }
+
   public function save() {
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
   	}
+    $listTeam=SqlList::getList('Team','name');
+    $listName=SqlList::getList('Affectable');
+    $listUserName=SqlList::getList('Affectable','userName');
+    $listInitials=SqlList::getList('Affectable','initials');
+    if ($this->attendees) {
+      $listAttendees=explode(',',$this->attendees);
+      $this->attendees="";
+      foreach ($listAttendees as $attendee) {
+        $attendee=trim($attendee);
+        if (in_array($attendee,$listName)) {
+          $this->attendees.=($this->attendees)?', ':'';
+          $this->attendees.='"' . $attendee . '"';
+          $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('name'=>$attendee));
+          if ($aff->email) {
+            $this->attendees.=' <' . $aff->email . '>';
+          }
+        } else if (in_array($attendee,$listUserName)) {
+          $this->attendees.=($this->attendees)?', ':'';
+          $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('userName'=>$attendee));
+          $this->attendees.='"' . (($aff->name)?$aff->name:$attendee) . '"';
+          if ($aff->email) {
+            $this->attendees.=' <' . $aff->email . '>';
+          }
+        } else if (in_array($attendee,$listInitials)) {
+          $this->attendees.=($this->attendees)?', ':'';
+          $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('initials'=>$attendee));
+          $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$attendee)) . '"';
+          if ($aff->email) {
+            $this->attendees.=' <' . $aff->email . '>';
+          }
+        } else if (in_array($attendee,$listTeam)) {
+          $this->attendees.=($this->attendees)?', ':'';
+          $id=array_search($attendee,$listTeam);
+          $aff=new Affectable();
+          $lst=$aff->getSqlElementsFromCriteria(array('idTeam'=>$id));
+          foreach ($lst as $aff) {
+            $this->attendees.=($this->attendees)?', ':'';
+            $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$attendee)) . '"';
+            if ($aff->email) {
+              $this->attendees.=' <' . $aff->email . '>';
+            }
+          }
+        } else {
+          $this->attendees.=($this->attendees)?', ':'';
+          $this->attendees.=$attendee;
+        }
+      }
+
+    }
     return parent::save();
+
+  }
+
+  function sendMail() {
+    global $paramMailSender, $paramMailReplyTo;
+    $lstDest=explode(',',$this->attendees);
+    $lstMail=array();
+    foreach ($lstDest as $dest) {
+      $to="";
+      $name="";
+      $start=strpos($dest,'<');
+      if ($start>0) {
+        $end=strpos($dest,'>');
+        $to=substr( $dest, $start+1, $end-$start-1);
+      } else if (strpos($dest,'@')>0){
+        $to=$dest;
+      }
+      $nameExplode=explode('"',$dest);
+      if (count($nameExplode)>=2){
+        $name=$nameExplode[1];
+      }
+      if ($to) {
+        if (!$name) {
+          $name=$to;
+        }
+        $lstMail[$name]=$to;
+      }
+    }
+    $sent=0;
+    $vcal = "BEGIN:VCALENDAR\r\n";
+    $vcal .= "VERSION:2.0\r\n";
+    $vcal .= "PRODID:-//CompanyName//ProductName//EN\r\n";
+    $vcal .= "METHOD:REQUEST\r\n";
+    $vcal .= "BEGIN:VEVENT\r\n";
+    $user=$_SESSION['user'];
+    $vcal .= "ORGANIZER;CN=" . (($user->resourceName)?$user->resourceName:$user->name). ":MAILTO:$user->email\r\n";
+    foreach($lstMail as $name=>$to) {
+      $vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
+    }
+    $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-domain.com\r\n";
+    $vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
+    $vcal .= "DTSTART:" . str_replace('-','',$this->meetingDate) . 'T' . str_replace(':','',$this->meetingStartTime) . "\r\n";
+    $vcal .= "DTEND:" . str_replace('-','',$this->meetingDate) . 'T' .str_replace('','',$this->meetingEndTime) . "\r\n";
+    if ($this->location != "") $vcal .= "LOCATION:$this->location\r\n";
+    $vcal .= "SUMMARY:$this->name\r\n";
+    $vcal .= "DESCRIPTION:$this->description\r\n";
+    $vcal .= "BEGIN:VALARM\r\n";
+    $vcal .= "TRIGGER:-PT15M\r\n";
+    $vcal .= "ACTION:DISPLAY\r\n";
+    $vcal .= "DESCRIPTION:Reminder\r\n";
+    $vcal .= "END:VALARM\r\n";
+    $vcal .= "END:VEVENT\r\n";
+    $vcal .= "END:VCALENDAR\r\n";
+
+    $sender=($user->email)?$user->email:$paramMailSender;
+    $replyTo=($user->email)?$user->email:$paramMailReplyTo;
+    $headers = "From: $sender\r\nReply-To: $replyTo";
+    $headers .= "\r\nMIME-version: 1.0\r\nContent-Type: text/calendar; method=REQUEST; charset=\"utf-8\"";
+    $headers .= "\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 12.0";
+    //mail($to, $this->description, $vcal, $headers);
+    $destList="";
+    foreach($lstMail as $name=>$to) {
+      $destList.=($destList)?',':'';
+      $destList.=$to;
+      $sent++;
+    }
+
+    $result=sendMail($destList, $this->name, $vcal, $this, $headers,$sender);
+    return $sent;
+
   }
 }
 ?>

@@ -50,7 +50,10 @@ class ImputationLine {
   static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true) {
   	// Insert new lines for admin projects
   	Assignment::insertAdministrativeLines($resourceId);
-  	
+
+    $user=$_SESSION['user'];
+    $visibleProject=$user->getVisibleProjects();
+
   	$result=array();
     if ($rangeType=='week') {
       $nbDays=7;
@@ -68,7 +71,14 @@ class ImputationLine {
     $work=new Work();
     $workList=$work->getSqlElementsFromCriteria($crit,false);
     $plannedWork=new PlannedWork();
-    
+
+    if ($user->id != $resourceId) {
+      foreach ($assList as $id=>$ass) {
+        if (! array_key_exists($ass->idProject, $visibleProject) ) {
+          unset ($assList[$id]);
+        }
+      }
+    }
     if ($showPlanned) {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
@@ -142,6 +152,9 @@ class ImputationLine {
         $elt->topId=null;
         $elt->imputable=true;
         $elt->idAssignment=null;
+        $elt->locked=true;
+      }
+      if ($user->id != $resourceId and ! array_key_exists($ass->idProject, $visibleProject) ) {
         $elt->locked=true;
       }
       $key=$elt->wbsSortable . ' ' . $ass->refType . '#' . $ass->refId;

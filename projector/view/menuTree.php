@@ -161,71 +161,19 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
       return false;
     }
     menuClick();
-    if (item.id=='Today') {
-	    cleanContent("detailDiv");
-	    loadContent("today.php","centerDiv");
-      formChangeInProgress=false;    
-    } else if (item.id=='Planning') {
-	    cleanContent("detailDiv");
-	    loadContent("planningMain.php","centerDiv");
-      formChangeInProgress=false;   
-    } else if (item.id=='Imputation') {
-      cleanContent("detailDiv");
-      loadContent("imputationMain.php","centerDiv");
-      formChangeInProgress=false;     
-    } else if (item.id=='ImportData') {
-      cleanContent("detailDiv");
-      loadContent("importData.php","centerDiv");
-      formChangeInProgress=false;     
-    } else if (item.id=='Reports') {
-      cleanContent("detailDiv");
-      loadContent("reportsMain.php","centerDiv");
-      formChangeInProgress=false;  
-    } else if (item.id=='Admin') {
-      cleanContent("detailDiv");
-      loadContent("admin.php","centerDiv");
-      formChangeInProgress=false;  
-    } else if (item.type=='object') {
-      cleanContent("detailDiv");
-	    formChangeInProgress=false;
-	    loadContent("objectMain.php?objectClass="+item.id,"centerDiv");
+    if (item.type=='object') {
+        loadMenuBarObject(item.id)
+    } else if (item.type=='item') {
+        loadMenuBarItem(item.id);
     } else if (item.type=='class') {
       cleanContent("detailDiv");
 	    formChangeInProgress=false;
 	    loadContent("objectMain.php?objectClass="+item.objectClass,"centerDiv");
-	} else if (item.type=='menu') {
+	  } else if (item.type=='menu') {
        // Nothing
-	} else if(item.id=='UserParameter') {
-	   cleanContent("detailDiv");
-	   loadContent("parameter.php?type=userParameter","centerDiv");
-     formChangeInProgress=false;
-	} else if(item.id=='ProjectParameter') {
-	   cleanContent("detailDiv");
-	   loadContent("parameter.php?type=projectParameter","centerDiv");
-     formChangeInProgress=false;
-	} else if(item.id=='GlobalParameter') {
-	   cleanContent("detailDiv");
-	   loadContent("parameter.php?type=globalParameter","centerDiv");
-     formChangeInProgress=false;
-	} else if(item.id=='Habilitation') {
-	   cleanContent("detailDiv");
-	   loadContent("parameter.php?type=habilitation","centerDiv");
-     formChangeInProgress=false;
-  } else if(item.id=='HabilitationReport') {
-     cleanContent("detailDiv");
-     loadContent("parameter.php?type=habilitationReport","centerDiv");
-     formChangeInProgress=false;
-  } else if(item.id=='HabilitationOther') {
-     cleanContent("detailDiv");
-     loadContent("parameter.php?type=habilitationOther","centerDiv");
-     formChangeInProgress=false;
-	} else if(item.id=='AccessRight') {
-	   cleanContent("detailDiv");
-	   loadContent("parameter.php?type=accessRight","centerDiv");
-     formChangeInProgress=false;    
     } else {
-	   showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
-	}
+	    showInfo(i18n("messageSelectedNotAvailable", new Array(item.name)));
+	  }
       </script>
       <script type="dojo/method" event="getIconClass" args="item, opened">
     if (item == this.model.root) {

@@ -35,7 +35,9 @@ function hideWait() {
   waitingForReply=false;
 	hideField("wait");
 	hideField("waitLogin");
-  top.dijit.byId("dialogAlert").hide();
+  if (top.dijit.byId("dialogInfo")) {
+    top.dijit.byId("dialogInfo").hide();
+  }
 }
 
 //=============================================================================
@@ -333,6 +335,14 @@ function showDetailLink() {
 	}
 }
 
+function showDetailApprover() {
+  var canCreate=0;
+  if (canCreateArray['Resource']=="YES") {
+    canCreate=1;
+  }
+  showDetail('approverId',canCreate, 'Resource');
+}
+
 function showDetailOrigin() {
 	var originType=dijit.byId('originOriginType').get("value");
 	if (originType) {
@@ -372,7 +382,7 @@ function showDetail (comboName, canCreate, objectClass) {
 		displaySearch(cl);
   } else {
 		cl=objectClass;
-	    id=val;
+	  id=val;
 		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displayDetail(cl,id);
@@ -429,6 +439,10 @@ function selectDetailItem(selectedValue) {
 				refreshLinkList(idFldVal);
 				setTimeout("dojo.byId('linkRef2Id').focus()",1000);
 				enableWidget('dialogLinkSubmit');
+      } else if (comboName=='approverId') {
+        refreshApproverList(idFldVal);
+        setTimeout("dojo.byId('approverId').focus()",1000);
+        enableWidget('dialogApproverSubmit');
 			} else if (comboName=='originOriginId') {
 				refreshOriginList(idFldVal);
 				setTimeout("dojo.byId('originOriginId').focus()",1000);
@@ -702,7 +716,8 @@ function addLink (classLink) {
 	  	refreshLinkList();
 	} else {
 	  	dojo.byId("linkFixedClass").value="";
-	  	message = i18n("dialogLinkExtended", new Array(i18n(objectClass), objectId.value));
+    dijit.byId("linkRef2Type").reset();
+	  	message = i18n("dialogLinkExtended", new Array(i18n(objectClass), objectId));
 	  	unlockWidget("linkRef2Type");
 	  	noRefreshLink=false;
 	  	refreshLinkList();
@@ -716,13 +731,14 @@ function addLink (classLink) {
 }
 
 function selectLinkItem() {
-  enableWidget('dialogLinkSubmit');
+  var nbSelected=0;
+  list=dojo.byId(linkRef2Id);
   if (dojo.byId("linkRef2Type").value=="Document") {
-	  list=dojo.byId(linkRef2Id);
 	  selected = new Array(); 
 	  for (var i = 0; i < list.options.length; i++) {
 		  if (list.options[i].selected) {
 			  selected.push(list.options[ i ].value);
+        nbSelected++;
 		  }
 	  }
 	  if (selected.length==1) {
@@ -735,10 +751,23 @@ function selectLinkItem() {
 	  }
 	  
   } else {
+    if (list.options) {
+      for (var i = 0; i < list.options.length; i++) {
+        if (list.options[i].selected) {
+          nbSelected++;
+        }
+      }
+    }
 	  dojo.style(dojo.byId('linkDocumentVersionDiv'), {display:'none'});
 	  dijit.byId("linkDocumentVersion").reset();
   }
+  if (nbSelected>0) {
+    enableWidget('dialogLinkSubmit');
+  } else {
+    disableWidget('dialogLinkSubmit');
+  }
 }
+
 /**
  * Refresh the link list (after update)
  */
@@ -749,7 +778,7 @@ function refreshLinkList(selected) {
 	if (selected) {
 	  url+='?selected='+selected;	
 	}
-	if (!selected) {
+	if (! selected) {
 	  selectLinkItem();
 	}
 	loadContent(url, 'dialogLinkList', 'linkForm', false);
@@ -783,6 +812,91 @@ function removeLink (linkId, refType, refId) {
 	showConfirm (msg, actionOK);
 }
 
+//=============================================================================
+//= Approvers
+//=============================================================================
+
+/**
+ * Display a add link Box
+ *
+ */
+function addApprover () {
+  if (formChangeInProgress) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var objectClass=dojo.byId("objectClass").value;
+  var objectId=dojo.byId("objectId").value;
+  dojo.byId("approverRefType").value=objectClass;
+  dojo.byId("approverRefId").value=objectId;
+  refreshApproverList();
+  dijit.byId("dialogApprover").show();
+  disableWidget('dialogApproverSubmit');
+}
+
+function selectApproverItem() {
+  var nbSelected=0;
+  list=dojo.byId(approverId);
+  if (list.options) {
+    for (var i = 0; i < list.options.length; i++) {
+      if (list.options[i].selected) {
+        nbSelected++;
+      }
+    }
+  }
+  if (nbSelected>0) {
+    enableWidget('dialogApproverSubmit');
+  } else {
+    disableWidget('dialogApproverSubmit');
+  }
+}
+
+/**
+ * Refresh the Approver list (after update)
+ */
+function refreshApproverList(selected) {
+  disableWidget('dialogApproverSubmit');
+  var url='../tool/dynamicListApprover.php';
+  if (selected) {
+    url+='?selected='+selected;
+  }
+  selectApproverItem();
+  loadContent(url, 'dialogApproverList', 'approverForm', false);
+}
+
+/**
+ * save a link (after addLink)
+ *
+ */
+function saveApprover() {
+  loadContent("../tool/saveApprover.php", "resultDiv", "approverForm", true,'approver');
+  dijit.byId('dialogApprover').hide();
+}
+
+/**
+ * Display a delete Link Box
+ *
+ */
+function removeApprover (approverId, approverName) {
+  if (formChangeInProgress) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  dojo.byId("approverItemId").value=approverId;
+  dojo.byId("approverRefType").value=dojo.byId("objectClass").value;
+  dojo.byId("approverRefId").value=dojo.byId("objectId").value;
+  actionOK=function() {loadContent("../tool/removeApprover.php", "resultDiv", "approverForm", true,'approver');};
+  msg=i18n('confirmDeleteApprover',new Array(approverName));
+  showConfirm (msg, actionOK);
+}
+
+function approveItem(approverId) {
+  if (formChangeInProgress) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  loadContent("../tool/approveItem.php?approverId="+approverId, "resultDiv", null, true,'approver');
+}
 //=============================================================================
 //= Origin
 //=============================================================================
@@ -2754,25 +2868,42 @@ function loadMenuBarObject(menuClass) {
 }
 
 function loadMenuBarItem(item) {
-  	if (checkFormChangeInProgress()) {
-  		return false;
-  	}
-  	cleanContent("detailDiv");
-    formChangeInProgress=false;
-    if (item=='Today') {
-	    loadContent("today.php","centerDiv");
-    } else if (item=='Planning') {
-	    loadContent("planningMain.php","centerDiv");
-    } else if (item=='Imputation') {
-      loadContent("imputationMain.php","centerDiv");
-    } else if (item=='ImportData') {
-      loadContent("importData.php","centerDiv");
-    } else if (item=='Reports') {
-      loadContent("reportsMain.php","centerDiv");
-	} else if(item=='UserParameter') {
-	   loadContent("parameter.php?type=userParameter","centerDiv");
-	}
-    return true;
+  if (checkFormChangeInProgress()) {
+    return false;
+  }
+  cleanContent("detailDiv");
+  formChangeInProgress=false;
+  if (item=='Today') {
+    loadContent("today.php","centerDiv");
+  } else if (item=='Planning') {
+    loadContent("planningMain.php","centerDiv");
+  } else if (item=='Imputation') {
+    loadContent("imputationMain.php","centerDiv");
+  } else if (item=='ImportData') {
+    loadContent("importData.php","centerDiv");
+  } else if (item=='Reports') {
+    loadContent("reportsMain.php","centerDiv");
+  } else if(item=='UserParameter') {
+    loadContent("parameter.php?type=userParameter","centerDiv");
+  } else if(item=='ProjectParameter') {
+    loadContent("parameter.php?type=projectParameter","centerDiv");
+  } else if(item=='GlobalParameter') {
+    loadContent("parameter.php?type=globalParameter","centerDiv");
+  } else if(item=='Habilitation') {
+    loadContent("parameter.php?type=habilitation","centerDiv");
+  } else if(item=='HabilitationReport') {
+    loadContent("parameter.php?type=habilitationReport","centerDiv");
+  } else if(item=='HabilitationOther') {
+    loadContent("parameter.php?type=habilitationOther","centerDiv");
+  } else if(item=='AccessRight') {
+    loadContent("parameter.php?type=accessRight","centerDiv");
+  } else if(item=='Admin') {
+    loadContent("admin.php","centerDiv");
+
+  } else if(item=='Calendar') {
+    loadContent("calendar.php","centerDiv");
+  }
+  return true;
 }
 
 // ====================================================================================

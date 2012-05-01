@@ -44,13 +44,11 @@
   $queryOrderBy .= $table . ".wbsSortable ";
 
   // constitute query and execute
-  //$queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
-  $query='select ' . $querySelect 
+  $query='select ' . $querySelect
        . ' from ' . $queryFrom
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-//debugLog($query);
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;

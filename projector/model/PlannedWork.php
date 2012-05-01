@@ -90,10 +90,6 @@ class PlannedWork extends GeneralWork {
 //echo "<br/>******************************";
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
-//debugLog("******************************");
-//debugLog("PLANNING - Started at " . date('H:i:s'));
-//debugLog("******************************");
-  	
   	set_time_limit(300);
 
     $withProjectRepartition=true;

@@ -152,7 +152,10 @@
         $progress='0';
         if ($prj->ProjectPlanningElement->realWork!='' and $prj->ProjectPlanningElement->plannedWork!='' and $prj->ProjectPlanningElement->plannedWork!='0') {
           $progress=$prj->ProjectPlanningElement->progress;
-        }        
+        }
+        $real=$prj->ProjectPlanningElement->realWork;
+        $left=$prj->ProjectPlanningElement->leftWork;
+        $planned=$prj->ProjectPlanningElement->plannedWork;
         $late='';
         if ($prj->ProjectPlanningElement->plannedEndDate!='' and $prj->ProjectPlanningElement->validatedEndDate!='') {
           $late=dayDiffDates($prj->ProjectPlanningElement->validatedEndDate, $prj->ProjectPlanningElement->plannedEndDate);
@@ -175,7 +178,7 @@
         if ($show or count($subPrj)>0) {
         echo '<tr >' .
              '  <td class="messageData" '.($show?'':'style="color:#AAAAAA;"') . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . $name . '</div></td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),100,100-$progress, null, false):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbTickets,$nbTicketsAll,$nbTicketsTodo, $nbTicketsDone):'') . '</td>' .
@@ -193,7 +196,7 @@
   }
 
   $cptDisplayId=0;
-  function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true) {
+  function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
     global $cptDisplayId;
     if ($value=='') {return $value;}
     $width=70;
@@ -209,10 +212,16 @@
     if ($showTitle) {
       $result.='<div dojoType="dijit.Tooltip" connectId="displayProgress_' . $cptDisplayId . '" position="below">';
       $result.="<table>";
-      $result.='<tr style="text-align:right;"><td>' . i18n('titleNbTodo') . '&nbsp;:&nbsp;</td><td style="background: #FFAAAA">' . ($todoValue) . '</td></tr>';
-      $result.='<tr style="text-align:right;"><td>' . i18n('titleNbDone') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . ($doneValue) . '</td></tr>';
-      $result.='<tr style="text-align:right;"><td>' . i18n('titleNbClosed') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . ($allValue-$todoValue-$doneValue) . '</td></tr>';
-      $result.='<tr style="text-align:right;font-weight:bold; border-top:1px solid #101010"><td>' . i18n('titleNbAll') . '&nbsp;:&nbsp;</td><td>' . ($allValue) . '</td></tr>';
+      if ($isWork) {
+        $result.='<tr style="text-align:right;"><td>' . i18n('real') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . Work::displayWorkWithUnit($doneValue) . '</td></tr>';
+        $result.='<tr style="text-align:right;"><td>' . i18n('left') . '&nbsp;:&nbsp;</td><td style="background: #FFAAAA">' . Work::displayWorkWithUnit($todoValue) . '</td></tr>';
+        $result.='<tr style="text-align:right;font-weight:bold; border-top:1px solid #101010"><td>' . i18n('sum') . '&nbsp;:&nbsp;</td><td>' . Work::displayWorkWithUnit($allValue) . '</td></tr>';
+      } else {
+        $result.='<tr style="text-align:right;"><td>' . i18n('titleNbTodo') . '&nbsp;:&nbsp;</td><td style="background: #FFAAAA">' . ($todoValue) . '</td></tr>';
+        $result.='<tr style="text-align:right;"><td>' . i18n('titleNbDone') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . ($doneValue) . '</td></tr>';
+        $result.='<tr style="text-align:right;"><td>' . i18n('titleNbClosed') . '&nbsp;:&nbsp;</td><td style="background: #AAFFAA">' . ($allValue-$todoValue-$doneValue) . '</td></tr>';
+        $result.='<tr style="text-align:right;font-weight:bold; border-top:1px solid #101010"><td>' . i18n('titleNbAll') . '&nbsp;:&nbsp;</td><td>' . ($allValue) . '</td></tr>';
+      }
       $result.='</table>';
       $result.='</div>';
     }
