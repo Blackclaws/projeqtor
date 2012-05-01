@@ -1061,7 +1061,7 @@ function terminateChange() {
  */
 function checkFormChangeInProgress(actionYes, actionNo) {
   if (waitingForReply)  {
-    showAlert(i18n("alertOngoingQuery"));
+    showInfo(i18n("alertOngoingQuery"));
     return true;
   } else if (formChangeInProgress) {
     if (actionYes) {

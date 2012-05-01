@@ -41,8 +41,7 @@ class Sql {
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
-//scriptLog('Sql::query() - '.$sqlRequest);
-//if (strtoupper(substr($sqlRequest,0,6))=='INSERT' or strtoupper(substr($sqlRequest, 0,6))=='UPDATE') debugLog($sqlRequest);  	
+scriptLog('Sql::query('.$sqlRequest.')');
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       return FALSE;

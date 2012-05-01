@@ -50,7 +50,7 @@ if (($file != "") && (file_exists($file))) {
   header("Pragma: no-cache");
   readfile($file);  
 } else {
-	debugLog($file . ' not found');
+	errorLog("download.php : ".$file . ' not found');
 }
 
 ?>

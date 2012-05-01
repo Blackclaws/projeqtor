@@ -320,5 +320,16 @@ class Parameter extends SqlElement {
   	  return $val;
     }
   }
+  static public function getUserParameter($code) {
+    $p=new Parameter();
+    $user=$_SESSION['user'];
+    $crit=" idUser ='" . $user->id . "' and idProject is null and parameterCode='" . $code . "'";
+    $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
+    $val='';
+    if (count($lst)==1) {
+      $val=$lst[0]->parameterValue;
+    }
+    return $val;
+  }
 }
 ?>

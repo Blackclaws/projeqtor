@@ -12,8 +12,33 @@
   if ( array_key_exists('print',$_REQUEST) ) {
     $print=true;
     include_once('../tool/formatter.php');
-  }  
-  
+  }
+  $saveDates=false;
+  if ( array_key_exists('listSaveDates',$_REQUEST) ) {
+    $saveDates=true;
+  }
+  $starDate="";
+  $endDate="";
+  if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
+    $starDate= trim($_REQUEST['startDatePlanView']);
+    $endDate= trim($_REQUEST['endDatePlanView']);
+    $user=$_SESSION['user'];
+    $paramStart=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningStartDate'));
+    $paramEnd=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningEndDate'));
+    if ($saveDates) {
+      $paramStart->parameterValue=$starDate;
+      $paramStart->save();
+      $paramEnd->parameterValue=$endDate;
+      $paramEnd->save();
+    } else {
+      if ($paramStart->id) {
+        $paramStart->delete();
+      }
+      if ($paramEnd->id) {
+        $paramEnd->delete();
+      }
+    }
+  }
   // Header
   if ( array_key_exists('report',$_REQUEST) ) {
     $headerParameters="";
@@ -31,8 +56,8 @@
     }
     include "../report/header.php";
   }
-  if (! isset($outMode)) { $outMode=""; } 
-  
+  if (! isset($outMode)) { $outMode=""; }
+
   $accessRightRead=securityGetAccessRight('menuActivity', 'read');
   if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*')) 
    and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
@@ -77,7 +102,6 @@
        . ' from ' . $queryFrom
        . ' where ' . $queryWhere 
        . ' order by ' . $queryOrderBy;
-//debugLog ($query);
   $result=Sql::query($query);
   $nbRows=0;
   if ($print) {
@@ -117,8 +141,7 @@
         	echo ',"collapsed":"0"';
         }
         if ($displayResource and strtoupper($displayResource)!='NO') {
-        	//debugLog($displayResource);
-          $crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
+        	$crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
 	        $arrayResource=array();
@@ -131,7 +154,6 @@
 	        		  $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
 	        	  }
 	        	}
-	        	// debugLog($res->$displayResource);
 	        }
 	        $res=new Resource($ass->idResource);
 	        echo ',"resource":"' . implode(', ',$arrayResource) . '"';

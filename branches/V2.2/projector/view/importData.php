@@ -49,6 +49,9 @@
               <option value="Resource"><?php echo i18n('Resource');?></option>
               <option value="Affectation"><?php echo i18n('Affectation');?></option>
               <option value="Assignment"><?php echo i18n('Assignment');?></option>
+              <option value="Product"><?php echo i18n('Product');?></option>
+              <option value="Version"><?php echo i18n('Version');?></option>
+              <option value="Document"><?php echo i18n('Document');?></option>
            </select> 
         </td>
         <td  align="left"> 

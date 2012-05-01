@@ -71,14 +71,14 @@ if (! $paramAttachementDirectory or ! $paramAttachementMaxSize) {
 
 // Check 'magic_quotes' : must be disabled ====================================
 if (get_magic_quotes_gpc ()) {
-  debugLog (i18n("errorMagicQuotesGpc"));  
+  traceLog (i18n("errorMagicQuotesGpc"));
 }
 if (get_magic_quotes_runtime ()) {
   @set_magic_quotes_runtime(0);
 }
 // Check Register Globals 
 if (ini_get('register_globals')) {
-  debugLog (i18n("errorRegisterGlobals"));  
+  traceLog (i18n("errorRegisterGlobals"));
 }
 
 $page=$_SERVER['PHP_SELF'];
@@ -557,7 +557,7 @@ function getTheme() {
  * @param $message the main body of the message
  * @return unknown_type
  */ 
-function sendMail($to, $title, $message, $object=null)  {
+function sendMail($to, $title, $message, $object=null, $headers=null, $sender=null)  {
   global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath;
   // Save data of the mail
   $mail=new Mail();
@@ -578,12 +578,14 @@ function sendMail($to, $title, $message, $object=null)  {
   $mail->idle='0';
   $mail->save();  
   // Send then mail
-  $headers  = 'MIME-Version: 1.0' . "\r\n";
-  $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-  $headers .= 'From: ' . $paramMailSender . "\r\n";
-  $headers .= 'Reply-To: ' . $paramMailReplyTo . "\r\n";
-  $headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n"; 
-  $headers .= 'X-Mailer: PHP/' . phpversion();
+  if (!$headers) {
+    $headers  = 'MIME-Version: 1.0' . "\r\n";
+    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+    $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . "\r\n";
+    $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . "\r\n";
+    $headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
+    $headers .= 'X-Mailer: PHP/' . phpversion();
+  }
   if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
     ini_set('SMTP',$paramMailSmtpServer);
   }
@@ -1056,9 +1058,7 @@ function addWeeksToDate($date, $weeks) {
 }
 
 function workTimeDiffDateTime($start, $end) {
-debugLog("workTimeDiffDateTime($start, $end)");
   $days=workDayDiffDates($start, $end);
-debugLog("days=$days");
   $time=substr($start, 11,5);
   $hh = substr($time,0,2);
   $mn = substr($time,3,2);
@@ -1068,7 +1068,6 @@ debugLog("days=$days");
   $mn = substr($time,3,2);
   $mnStop=$hh*60+$mn;
   $delay=$days+($mnStop-$mnStart)/(60*Parameter::getGlobalParameter('dayTime'));
-debugLog("mn=" . $mnStop . "-" . $mnStart . "=" . $delay);
   return $delay;
 }
 function addDelayToDatetime($dateTime, $delay, $unit) {
@@ -1128,7 +1127,6 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
 	      $AMPM='AM';
 		  }
 		  while ($mnDelay>0) {
-	//debugLog("mnDelay=$mnDelay  mnTime=$mnTime  AMPM=$AMPM");	  	
 		  	if ($AMPM=='AM') {
 		  		$left=$mnEndAM-$mnTime;
 		  		if ($left>$mnDelay) {
@@ -1473,7 +1471,7 @@ function checkVersion() {
       break;
     }
     if ($check[$i]>$current[$i]) {
-      debugLog("current version $version is higher than latest released $currentVersion");
+      traceLog("current version $version is higher than latest released $currentVersion");
     	break;
     }
   }
@@ -1490,12 +1488,9 @@ function checkVersion() {
 }
 
 function wbsProjectSort($p1, $p2) {
-debugLog ($p1->ProjectPlanningElement->wbsSortable . " | " . $p1->ProjectPlanningElement->wbsSortable);
   if ($p1->ProjectPlanningElement->wbsSortable<$p1->ProjectPlanningElement->wbsSortable) {
-debugLog("-1");
     return -1;
   } else {
-debugLog("1");
     return 1;
   }
 }

@@ -6,10 +6,32 @@
 require_once "../tool/projector.php";
 scriptLog('   ->/view/planningList.php');
 
+$canPlan=false;
+$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
+if ($right) {
+  $list=new ListYesNo($right->rightAccess);
+  if ($list->code=='YES') {
+    $canPlan=true;
+  }
+}
+$startDate=date('Y-m-d');
+$endDate=null;
+$user=$_SESSION['user'];
+$saveDates=false;
+$paramStart=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningStartDate'));
+if ($paramStart->id) {
+  $startDate=$paramStart->parameterValue;
+  $saveDates=true;
+}
+$paramEnd=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningEndDate'));
+if ($paramEnd->id) {
+  $endDate=$paramEnd->parameterValue;
+  $saveDates=true;
+}
+
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
-
   
 <div id="mainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
 	<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
@@ -29,16 +51,7 @@ scriptLog('   ->/view/planningList.php');
 		              <input type="hidden" id="objectClass" name="objectClass" value="" /> 
 		              <input type="hidden" id="objectId" name="objectId" value="" />
 		              &nbsp;&nbsp;&nbsp;
-<?php
-$canPlan=false; 
-$right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
-if ($right) {
-  $list=new ListYesNo($right->rightAccess);
-  if ($list->code=='YES') {
-    $canPlan=true;
-  }
-}
-if ($canPlan) { ?> 
+<?php if ($canPlan) { ?>
 		              <button id="planButton" dojoType="dijit.form.Button" showlabel="false"
 		                title="<?php echo i18n('buttonPlan');?>"
 		                iconClass="iconPlan" >
@@ -49,63 +62,90 @@ if ($canPlan) { ?>
 		              </button>
 <?php }?>             
 		            </td>
-		            <td>
-		              <table><tr><td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
-		              <div dojoType="dijit.form.DateTextBox" 
-		                 id="startDatePlanView" name="startDatePlanView" 
-		                 invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
-		                 type="text" maxlength="10"
-		                 style="width:100px; text-align: center;" class="input"
-		                 hasDownArrow="true"
-		                 value="<?php echo date('Y-m-d');?>" >
-		                 <script type="dojo/method" event="onChange" >
-                  refreshJsonPlanning();
-                </script>                
-		               </div>
-                   </td></tr><tr><td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayEndDate");?>&nbsp;&nbsp;</td><td>
-                  <div dojoType="dijit.form.DateTextBox" 
-                     id="endDatePlanView" name="endDatePlanView" 
-                     invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
-                     type="text" maxlength="10"
-                     style="width:100px; text-align: center;" class="input"
-                     hasDownArrow="true"
-                     value="" >
-                     <script type="dojo/method" event="onChange" >
-                  refreshJsonPlanning();
-                </script>                
-                   </div>
-                   </td></tr></table>
-		             </td>
-		            <td width="32px">
-		              <button title="<?php echo i18n('printPlanning')?>"  
-		               dojoType="dijit.form.Button" 
-		               id="listPrint" name="listPrint"
-		               iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
-		                <script type="dojo/connect" event="onClick" args="evt">
-                  showPrint("../tool/jsonPlanning.php", 'planning');
-                </script>
-		              </button>
-		              </td>
-		            <td width="32px">
-		              <button title="<?php echo i18n('reportPrintPdf')?>"  
-		               dojoType="dijit.form.Button" 
-		               id="listPrintPdf" name="listPrintPdf"
-		               iconClass="iconPdf" showLabel="false">
-		                <script type="dojo/connect" event="onClick" args="evt">
-                  showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
-                </script>
-		              </button>
+		            <td style="white-space:nowrap;">
+		              <table>
+                    <tr>
+                      <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
+                        <div dojoType="dijit.form.DateTextBox"
+                           id="startDatePlanView" name="startDatePlanView"
+                           invalidMessage="<?php echo i18n('messageInvalidDate')?>"
+                           type="text" maxlength="10"
+                           style="width:100px; text-align: center;" class="input"
+                           hasDownArrow="true"
+                           value="<?php echo $startDate;?>" >
+                           <script type="dojo/method" event="onChange" >
+                            refreshJsonPlanning();
+                           </script>
+                         </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayEndDate");?>&nbsp;&nbsp;</td>
+                      <td>
+                        <div dojoType="dijit.form.DateTextBox"
+                           id="endDatePlanView" name="endDatePlanView"
+                           invalidMessage="<?php echo i18n('messageInvalidDate')?>"
+                           type="text" maxlength="10"
+                           style="width:100px; text-align: center;" class="input"
+                           hasDownArrow="true"
+                           value="<?php echo $endDate;?>" >
+                           <script type="dojo/method" event="onChange" >
+                            refreshJsonPlanning();
+                           </script>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
 		            </td>
-                 <td width="32px">
-                  <button title="<?php echo i18n('reportExportMSProject')?>"  
-                   dojoType="dijit.form.Button" 
-                   id="listPrintMpp" name="listPrintMpp"
-                   iconClass="iconMpp" showLabel="false">
-                    <script type="dojo/connect" event="onClick" args="evt">
-                  showPrint("../tool/jsonPlanning.php", 'planning', null, 'mpp');
-                </script>
-                  </button>
-                  <input type="hidden" id="outMode" name="outMode" value="" />
+                <td>
+                  <table>
+                    <tr>
+                      <td width="32px">
+                        <button title="<?php echo i18n('printPlanning')?>"
+                         dojoType="dijit.form.Button"
+                         id="listPrint" name="listPrint"
+                         iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+                          <script type="dojo/connect" event="onClick" args="evt">
+                          showPrint("../tool/jsonPlanning.php", 'planning');
+                          </script>
+                        </button>
+                      </td>
+                      <td width="32px">
+                        <button title="<?php echo i18n('reportPrintPdf')?>"
+                         dojoType="dijit.form.Button"
+                         id="listPrintPdf" name="listPrintPdf"
+                         iconClass="iconPdf" showLabel="false">
+                          <script type="dojo/connect" event="onClick" args="evt">
+                          showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
+                          </script>
+                        </button>
+                      </td>
+                      <td width="32px">
+                        <button title="<?php echo i18n('reportExportMSProject')?>"
+                         dojoType="dijit.form.Button"
+                         id="listPrintMpp" name="listPrintMpp"
+                         iconClass="iconMpp" showLabel="false">
+                          <script type="dojo/connect" event="onClick" args="evt">
+                          showPrint("../tool/jsonPlanning.php", 'planning', null, 'mpp');
+                          </script>
+                        </button>
+                        <input type="hidden" id="outMode" name="outMode" value="" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" style="white-space:nowrap;">
+                        <span title="<?php echo i18n('saveDates')?>" dojoType="dijit.form.CheckBox"
+                           type="checkbox" id="listSaveDates" name="listSaveDates" class=""
+                           <?php if ( $saveDates) {echo 'checked="checked"'; } ?>  >
+
+                          <script type="dojo/method" event="onChange" >
+                            refreshJsonPlanning();
+                          </script>
+                        </span>
+                        <span for="listSaveDates"><?php echo i18n("saveDates");?></span>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
 		            <td>
                   <div id="planResultDiv" style=" width: 260px;height: 10px;" 

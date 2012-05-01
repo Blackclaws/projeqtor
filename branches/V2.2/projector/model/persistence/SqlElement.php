@@ -42,6 +42,7 @@ abstract class SqlElement {
                                   "Assignment"=>"control",
                                   "Note"=>"cascade",
                                   "Attachement"=>"cascade",
+                                  "Link"=>"cascade",
                                   "Dependency"=>"cascade"),
     "ActivityType" =>       array("Activity"=>"control"),
     "Bill" =>               array("BillLine"=>"control"),
@@ -49,7 +50,12 @@ abstract class SqlElement {
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Risk"=>"control", 
                                   "Ticket"=>"control"),
+    "Decision" =>           array("Link"=>"cascade"),
     "DecisionType" =>       array("Decision"=>"control"),
+    "Document" =>           array("DocumentVersion"=>"control",
+                                  "Link"=>"cascade",
+                                  "Approver"=>"control"),
+    "DocumentVersion" =>    array("Approver"=>"cascade"),
     "DocumentDirectory" =>  array("Document"=>"control",
                                   "DocumentDirectory"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
@@ -58,11 +64,13 @@ abstract class SqlElement {
                                   "Link"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
+    "Meeting" =>            array("Link"=>"cascade"),
     "MeetingType" =>        array("Meeting"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
     "Milestone" =>          array("Attachement"=>"cascade",
                                   "Note"=>"cascade",
+                                  "Link"=>"cascade",
                                   "Dependency"=>"cascade"),
     "MilestoneType" =>      array("Milestone"=>"control"),
     "Priority" =>           array("Issue"=>"control", 
@@ -73,10 +81,16 @@ abstract class SqlElement {
                                   "Resource"=>"control",
                                   "User"=>"control"),
     "ProjectType" =>        array("Project"=>"control"), 
-    "Project" =>            array("Action"=>"control", 
+    "Product" =>            array("Version"=>"control"),
+    "Project" =>            array("Action"=>"control",
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
+                                  "Document"=>"control",
                                   "Issue"=>"control",
+                                  "IndividualExpense"=>"control",
+                                  "ProjectExpense"=>"control",
+                                  "Term"=>"control",
+                                  "Bill"=>"control",
                                   "Message"=>"cascade",
                                   "Milestone"=>"control",
                                   "Parameter"=>"cascade", 
@@ -89,6 +103,7 @@ abstract class SqlElement {
                                   "Meeting"=>"control",
                                   "VersionProject"=>"cascade",
                                   "Question"=>"control"),
+    "Question" =>           array("Link"=>"cascade"),
     "QuestionType" =>       array("Question"=>"control"),
     "Recipient" =>          array("Bill"=>"control",
                                   "Project"=>"control"),
@@ -127,7 +142,8 @@ abstract class SqlElement {
     "Team" =>               array("Resource"=>"control"),
     "Term" =>               array("Dependency"=>"cascade"),
     "Ticket" =>             array("Attachement"=>"cascade",
-                                  "Note"=>"cascade"),
+                                  "Note"=>"cascade",
+                                  "Link"=>"cascade"),
     "TicketType" =>         array("Ticket"=>"control"),
     "Urgency" =>            array("Ticket"=>"control"),
     "User" =>               array("Action"=>"control", 
@@ -585,9 +601,10 @@ abstract class SqlElement {
       $relations=$relationShip[get_class($this)];
       foreach ($relations as $object=>$mode) {
         if ($mode=="cascade") {      
-                  $where=null;
+          $where=null;
+          $obj=new $object();
           $crit=array('id' . get_class($this) => $this->id);
-          if ( ($object=="Assignment" and $objectClass=="Activity") or $object=="Note" or $object=="Attachement") {
+          if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
             $crit=array("refType"=>get_class($this), "refId"=>$this->id);
           }
           if ($object=="Dependency") {
@@ -600,7 +617,6 @@ abstract class SqlElement {
             $where="(ref1Type='" . get_class($this) . "' and ref1Id='" . $this->id ."')"
              . " or (ref2Type='" . get_class($this) . "' and ref2Id='" . $this->id ."')"; 
           }
-          $obj=new $object();
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           foreach ($list as $subObj) {
             $subObj->delete();
@@ -1100,6 +1116,11 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           	if (array_key_exists($formField,$_REQUEST)) {
           	  $this->$key=Work::convertWork($_REQUEST[$formField]);
           	}
+          } else if ($dataType=='time') {
+            if (array_key_exists($formField,$_REQUEST)) {
+              $this->$key=substr($_REQUEST[$formField],1);
+            }
+
           } else {
             if (array_key_exists($formField,$_REQUEST)) {
               $this->$key = $_REQUEST[$formField];
@@ -1798,8 +1819,10 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       foreach ($relations as $object=>$mode) {
         if ($mode=="control") {
           $where=null;
+          $obj=new $object();
           $crit=array('id' . get_class($this) => $this->id);
-          if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachement") {
+          if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+          //if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachement") {
             $crit=array("refType"=>get_class($this), "refId"=>$this->id);
           }
           if ($object=="Dependency") {
@@ -1812,7 +1835,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
             $where="(ref1Type='" . get_class($this) . "' and ref1Id='" . $this->id ."')"
              . " or (ref2Type='" . get_class($this) . "' and ref2Id='" . $this->id ."')"; 
           }
-          $obj=new $object();
+
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           $nb=count($list);
           if ($nb>0) {

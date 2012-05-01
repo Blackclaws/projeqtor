@@ -872,6 +872,54 @@ checkVersion(); ?>
   </table>
 </div>
 
+<div id="dialogApprover" dojoType="dijit.Dialog" title="<?php echo i18n("dialogApprover");?>">
+  <table>
+    <tr>
+      <td>
+        <form id='approverForm' name='approverForm' onSubmit="return false;">
+          <input id="approverRefType" name="approverRefType" type="hidden" value="" />
+          <input id="approverRefId" name="approverRefId" type="hidden" value="" />
+          <input id="approverItemId" name="approverItemId" type="hidden" value="" />
+          <table>
+            <tr>
+              <td class="dialogLabel" >
+                <label for="approverId" ><?php echo i18n("approver") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <table><tr><td>
+                  <div id="dialogApproverList" dojoType="dijit.layout.ContentPane" region="center">
+                    <input id="approverId" name="approverId" type="hidden" value="" />
+                  </div>
+                </td><td style="vertical-align: top">
+                  <button id="approverIdDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                          title="<?php echo i18n('showDetail')?>"
+                          iconClass="iconView">
+                    <script type="dojo/connect" event="onClick" args="evt">
+                      showDetailApprover();
+                    </script>
+                  </button>
+                </td></tr></table>
+              </td>
+            </tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </table>
+         </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="approverAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogApprover').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogApproverSubmit" onclick="saveApprover();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <div id="dialogOrigin" dojoType="dijit.Dialog" title="<?php echo i18n("dialogOrigin");?>">
   <table>
     <tr>

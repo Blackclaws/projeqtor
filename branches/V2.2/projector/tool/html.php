@@ -42,7 +42,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $controlRightsTable=$user->getAccessControlRights();
       if (! array_key_exists($menuClass,$controlRightsTable)) {
 	      // If AccessRight notdefined for object and user profile => empty list + log error
-	      debugLog('error in htmlDrawOptionForReference : no control rights for ' . $class);
+	      traceLog('error in htmlDrawOptionForReference : no control rights for ' . $class);
         return;		
 	    }
       $controlRights=$controlRightsTable[$menuClass];
@@ -335,16 +335,22 @@ function htmlFormatDateTime($val, $withSecond=true, $hideZeroTime=false) {
   global $browserLocale;
   $locale=substr($browserLocale, 0,2);
   if (strlen($val)!=19 and strlen($val)!=16) {
-  	if (strlen($val)=="10") {
-  		return htmlFormatDate($val);
-  	} else {
+    if (strlen($val)=="10") {
+      return htmlFormatDate($val);
+    } else {
       return $val;
-  	}
+    }
   }
   $result=htmlFormatDate(substr($val,0,10));
   if (! $hideZeroTime or substr($val,11,5)!='00:00') {
     $result.= " " . (($withSecond)?substr($val,11):substr($val,11,5));
   }
+  return $result;
+}
+function htmlFormatTime($val, $withSecond=true) {
+  global $browserLocale;
+  $locale=substr($browserLocale, 0,2);
+  $result= (($withSecond)?$val:substr($val,0,5));
   return $result;
 }
 /** ============================================================================

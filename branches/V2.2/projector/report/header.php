@@ -32,7 +32,7 @@ echo "<br/>";
 $graphEnabled=true;
 if (! function_exists('ImagePng')) {
   $graphEnabled=false;
-  debugLog("GD Library not enabled - impossible to draw charts");
+  errorLog("GD Library not enabled - impossible to draw charts");
 }
 function getGraphImgName($root) {
   global $reportCount, $paramReportTempDirectory;

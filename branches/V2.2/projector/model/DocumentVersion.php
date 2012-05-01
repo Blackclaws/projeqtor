@@ -24,6 +24,7 @@ class DocumentVersion extends SqlElement {
   public $idStatus;
   public $description;
   public $isRef;
+  public $approved;
   public $idle;
   
   private static $_colCaptionTransposition = array();
@@ -84,10 +85,13 @@ class DocumentVersion extends SqlElement {
   
   
   function save() {
+    $mode="";
   	if ($this->id) {
   		$this->updateDateTime=Date('Y-m-d H:i:s');
+      $mode='update';
   	} else  {
   		$this->createDateTime=Date('Y-m-d H:i:s');
+      $mode='insert';
   	}
   	$doc=new Document($this->idDocument);
   	$saveDoc=false;
@@ -122,6 +126,19 @@ class DocumentVersion extends SqlElement {
     }
     if ($saveDoc) {
       $doc->save();
+    }
+    // Inset approvers from document if not existing (on creation)
+    if ($mode=='insert') {
+      $approver=new Approver();
+      $crit=array('refType'=>'Document','refId'=>$this->idDocument);
+      $lstDocApp=$approver->getSqlElementsFromCriteria($crit);
+      foreach ($lstDocApp as $app) {
+        $newApp=new Approver();
+        $newApp->refType='DocumentVersion';
+        $newApp->refId=$this->id;
+        $newApp->idAffectable=$app->idAffectable;
+        $newApp->save();
+      }
     }
   	return $result;
   }
@@ -158,6 +175,22 @@ class DocumentVersion extends SqlElement {
     	$dir->createDirectory();
     }
     return $uploaddir . $paramPathSeparator . $this->fileName . '.' . $this->id;
+  }
+
+  function checkApproved() {
+    $crit=array('refType'=>'DocumentVersion','refId'=>$this->id);
+    $app=new Approver();
+    $list=$app->getSqlElementsFromCriteria($crit);
+    $approved=null;
+    foreach ($list as $app) {
+      if ($app->approved) {
+        if ($approved==null) {$approved=1;}
+      } else {
+        $approved=0;
+      }
+    }
+    $this->approved=($approved==1)?1:0;
+    $this->save();
   }
 }
 ?>

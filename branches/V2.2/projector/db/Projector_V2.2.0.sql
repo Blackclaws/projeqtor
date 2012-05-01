@@ -60,4 +60,24 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (6,39,0),
 (7,39,0);
 
+update `${prefix}menu` set type='item' where name='menuCalendar';
 
+ALTER TABLE `${prefix}meeting` ADD COLUMN meetingStartTime time,
+ADD COLUMN meetingEndTime time,
+ADD COLUMN location varchar(100);
+
+CREATE TABLE `${prefix}approver` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `refType` varchar(100) DEFAULT NULL,
+  `refId` int(12) unsigned DEFAULT NULL,
+  `idAffectable` int(12) unsigned DEFAULT NULL,
+  `approved` int(1) unsigned default '0',
+  `approvedDate` datetime default NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}approver` ADD INDEX approverRef (refType, refId),
+ADD INDEX approverAffectable (idAffectable);
+
+ALTER TABLE `${prefix}documentversion` ADD COLUMN `approved` int(1) unsigned default '0';

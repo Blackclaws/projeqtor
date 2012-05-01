@@ -115,7 +115,6 @@ class Cron {
   }
   
 	public static function checkDates() {
-//debugLog("cron : checkDates");
 	  $indVal=new IndicatorValue();
 	  $where="idle='0' and (";
 	  $where.=" ( warningTargetDateTime<='" . date('Y-m-d H:i:s') . "' and warningSent='0')" ;
@@ -159,8 +158,7 @@ scriptLog('Cron::run()');
     self::setRunningFlag();
     traceLog('cron started at '.date('d/m/Y H:i:s')); 
     while(1) {
-//debugLog("cron : loop");
-      if (self::checkStopFlag()) { 
+      if (self::checkStopFlag()) {
         return; 
       }
       self::setRunningFlag();

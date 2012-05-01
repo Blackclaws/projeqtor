@@ -228,9 +228,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</td></tr>';
     } else if (substr($col,0,5)=='_lib_') { // if field is just a caption 
       $item=substr($col,5);
-      if ($obj->getFieldAttributes($col)!='hidden') {
-        echo i18n($item);
+      if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) {
+        $nobr=true;
       }
+      if ($obj->getFieldAttributes($col)!='hidden') {
+        if ($nobr) echo '&nbsp;';
+        echo  i18n($item);
+        echo '&nbsp;';
+      }
+
       if (!$nobr) {
         echo "</td></tr>";
       }
@@ -242,6 +248,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       drawLinksFromObject($val, $obj,$linkClass);
     } else if (substr($col,0,11)=='_Assignment') { // Display Assignments
       drawAssignmentsFromObject($val, $obj);
+    } else if (substr($col,0,11)=='_Approver') { // Display Assignments
+      drawApproverFromObject($val, $obj);
     } else if (substr($col,0,15)=='_VersionProject') { // Display Version Project
       drawVersionProjectsFromObject($val, $obj);
     } else if (substr($col,0,11)=='_Dependency') { // Display Dependencies
@@ -400,6 +408,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo htmlFormatDate($val);
         } else if ($dataType=='datetime' and $val!=null and $val != '') {
           echo htmlFormatDateTime($val,false);
+        } else if ($dataType=='time' and $val!=null and $val != '') {
+          echo htmlFormatTime($val,false);
         } else if ($col=='color' and $dataLength == 7 ) { // color
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
@@ -499,8 +509,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '  value="' . htmlEncode($val) . '" ';
         echo '  style="border: 0;width: ' . $smallWidth . 'px; ';
         echo ' color: ' . $val . '; ';
-        echo ' background-color: ' . $val . ';"';
-        echo ' />';
+        if ($val) {
+          echo ' background-color: ' . $val . ';';
+        } else {
+          echo ' background-color: transparent;';
+        }
+        echo '" />';
         //echo $colScript;
         //echo '</div>';
         echo '</td><td class="detail">';
@@ -520,6 +534,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '  </div>';
           echo '</div>';
         }
+        echo '</td><td>';
+        echo '&nbsp;';
+        echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
+        echo ' title="' . i18n('helpResetColor') . '" >';
+        echo '<span>' . i18n('resetColor') . '</span>';
+        echo '<script type="dojo/connect" event="onClick" args="evt">';
+        echo '      var fld=dojo.byId("color");';
+        echo '      fld.style.color="transparent";';
+        echo '      fld.style.backgroundColor="transparent";';
+        echo '      fld.value="";';
+        echo '      formChanged();';
+        echo '</script>';
+        echo '</button>';
         echo '</td></tr></table>';
       } else if ($col=='durationSla'){
       // Draw a color selector ============================================== SLA as a duration
@@ -610,8 +637,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"'; 
         echo ' type="text" maxlength="' . $dataLength . '" ';
         //echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' style="width:50px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="T' . $val . '" ';
+        echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScript;
         echo '</div>';
@@ -829,7 +857,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' maxlength="' . $dataLength . '" ';
 //        echo ' maxSize="4" ';
         echo ' class="input" ' . '>';
-        echo htmlEncode($val, 'none');
+        echo htmlEncode($val);
         //echo $colScript; // => this leads to the display of script in textarea
         echo '</textarea>';
       } else {
@@ -954,12 +982,14 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       if ($canUpdate and ! $print )  {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
         . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" 
-        . ');" ' 
+        . ', \'' . $version->name . '\');" '
         . 'title="' . i18n('removeDocumentVersion') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
-    echo '<td class="assignData">' . (($version->isRef)?'<b>':'') . $version->name  . (($version->isRef)?'</b>':'') . '</td>';
+    echo '<td class="assignData">' . (($version->isRef)?'<b>':'') . $version->name  . (($version->isRef)?'</b>':'');
+    if ($version->approved) { echo '&nbsp;&nbsp;<img src="../view/img/check.png" height="12px" title="' . i18n('approved') . '"/>';}
+    echo '</td>';
     echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
     $objStatus=new Status($version->idStatus);
     echo '<td class="assignData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
@@ -1430,6 +1460,81 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '<td class="dependencyData">' . $userName . '</td>';
         echo '</tr>';
     }
+  }
+  echo '</table></td></tr>';
+}
+
+function drawApproverFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $comboDetail;
+  if ( $comboDetail ) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {$canUpdate=false;}
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (! $print) {
+    echo '<td class="dependencyHeader" style="width:5%">';
+    if ($obj->id!=null and ! $print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addApprover();" title="' . i18n('addApprover') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="dependencyHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
+  echo '<td class="dependencyHeader" style="width:40%">' . i18n('colName') . '</td>';
+  echo '<td class="dependencyHeader" style="width:50%">' . i18n('colIdStatus'). '</td>';
+  echo '</tr>';
+  if ($obj and get_class($obj)=='Document') {
+    $docVers=new DocumentVersion($obj->idDocumentVersion);
+  }
+  foreach($list as $app) {
+    $appName=SqlList::getNameFromId('Affectable',$app->idAffectable);
+    echo '<tr>';
+    if (! $print) {
+      echo '<td class="dependencyData" style="text-align:center;">';
+      if ($canUpdate) {
+        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeApprover(' . "'" . $app->id . "','" . $appName .  "'" . ');" title="' . i18n('removeApprover') . '" class="smallButton"/> ';
+      }
+      echo '</td>';
+    }
+    echo '<td class="dependencyData">#' . $app->id  . '</td>';
+    echo '<td class="dependencyData">' . $appName . '</td>';
+    echo '<td class="dependencyData">';
+    $approved=0;
+    $compMsg="";
+    $date="";
+    $approverId=null;
+    if ($obj and get_class($obj)=='Document') {
+      $crit=array('refType'=>'DocumentVersion','refId'=>$obj->idDocumentVersion,'idAffectable'=>$app->idAffectable);
+      $versApp=SqlElement::getSingleSqlElementFromCriteria('Approver',$crit);
+      if ($versApp->id) {
+        $approved=$versApp->approved;
+        $compMsg=' ' .  $docVers->name;
+        $date=" (".htmlFormatDateTime($versApp->approvedDate,false). ")";
+        $approverId=$versApp->id;
+      }
+    } else {
+      $approved=$app->approved;
+      $approverId=$app->id;
+      $date=" (".htmlFormatDateTime($app->approvedDate,false). ")";
+    }
+    if ($approved) {
+      echo '<img src="../view/img/check.png" height="12px"/>&nbsp;';
+      echo i18n("approved"). $compMsg . $date;
+    } else {
+      echo i18n("notApproved"). $compMsg;
+      if ($user->id==$app->idAffectable) {
+        echo '&nbsp;&nbsp;<button dojoType="dijit.form.Button" showlabel="true" >';
+        echo i18n('approveNow');
+        echo '  <script type="dojo/connect" event="onClick" args="evt">';
+        echo '   approveItem(' . $approverId . ');';
+        echo '  </script>';
+        echo '</button>';
+      }
+    }
+
+    echo '</td>';
+    echo '</tr>';
   }
   echo '</table></td></tr>';
 }
