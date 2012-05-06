@@ -210,18 +210,20 @@ class WorkElement extends SqlElement {
       if ($this->ongoing) {
         $title = i18n('stopWork');
       }
-      $result .= '<div style="position: absolute; right: 12px; top : 175px;
-                   border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
-      $result .= '<button id="startStopWork" dojoType="dijit.form.Button" showlabel="true"';
-      if ( ($this->ongoing and $this->idUser!=$user->id) or ! $user->isResource ) {
-        $result .= ' disabled="disabled" ';
+      if ($user->isResource ) {
+        $result .= '<div style="position: absolute; right: 12px; top : 175px;
+                     border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
+        $result .= '<button id="startStopWork" dojoType="dijit.form.Button" showlabel="true"';
+        if ( ($this->ongoing and $this->idUser!=$user->id) or ! $user->isResource ) {
+          $result .= ' disabled="disabled" ';
+        }
+        $result .= ' title="' . $title . '" style="vertical-align: middle;">';
+        $result .= '<span>' . $title . '</span>';
+        $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+        $result .=  '    loadContent("../tool/startStopWork.php?action=' . (($this->ongoing)?'stop':'start') .'","resultDiv","objectForm",true);';
+        $result .= '</script>';
+        $result .= '</button><br/>';
       }
-      $result .= ' title="' . $title . '" style="vertical-align: middle;">';
-      $result .= '<span>' . $title . '</span>';
-      $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-      $result .=  '    loadContent("../tool/startStopWork.php?action=' . (($this->ongoing)?'stop':'start') .'","resultDiv","objectForm",true);';
-      $result .= '</script>';
-      $result .= '</button><br/>';
       if ($this->ongoing) {
         if ($this->idUser==$user->id) {
           $days=workDayDiffDates($this->ongoingStartDateTime,date('Y-m-d H:i'));
