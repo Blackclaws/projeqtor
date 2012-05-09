@@ -720,32 +720,42 @@ class PlanningElement extends SqlElement {
    */
   public static function initializeFullList($list) {
     $idList=array();
-  	// $list must be sorted on WBS !
+    // $list must be sorted on WBS !
     $result=$list;
     
     // Parents
     foreach ($list as $id=>$pe) {
-    	$idList[$pe->id]=$pe->id;
-    	$pe->_parentList=array();
+      $idList[$pe->id]=$pe->id;
+      $pe->_parentList=array();
+      $pe->_childList=array();
       if ($pe->topId) { 
-      	if (array_key_exists('#'.$pe->topId, $result)) {
-      		$parent=$result['#'.$pe->topId];
-      	} else {
+        if (array_key_exists('#'.$pe->topId, $result)) {
+          $parent=$result['#'.$pe->topId];
+        } else {
           $parent=new PlanningElement($pe->topId);
           $parent->_parentList=array();
           $parent->_predecessorList=array();
           $parent->_predecessorListWithParent=array();
           $parent->_noPlan=true;
+          $parent->_childList=array();
           $result['#'.$pe->topId]=$parent;
-      	}
-      	if (isset($parent->_parentList)) {
+        }
+        if (isset($parent->_parentList)) {
           $pe->_parentList=$parent->_parentList;
         }
         $pe->_parentList['#'.$pe->topId]=$pe->topId;
       }
       $result[$id]=$pe;
     }
-    
+    $reverse=array_reverse($result, true);
+    foreach ($reverse as $id=>$pe) {
+      if ($pe->topId) {
+        $parent=$result['#'.$pe->topId];
+        $parent->_childList=array_merge_preserve_keys($pe->_childList,$parent->_childList);
+        $parent->_childList['#'.$pe->id]=$pe->id;
+        $result['#'.$pe->topId]=$parent;
+      }
+    }
     // Predecessors
     $crit='successorId in (' . implode(',',$idList) . ')';
     $dep=new Dependency();
@@ -754,38 +764,41 @@ class PlanningElement extends SqlElement {
     $directPredecessors=array();
     foreach ($depList as $dep) {
       if (! array_key_exists("#".$dep->successorId, $directPredecessors)) {
-   	    $directPredecessors["#".$dep->successorId]=array();
+        $directPredecessors["#".$dep->successorId]=array();
       }
-      $directPredecessors["#".$dep->successorId]["#".$dep->predecessorId]=$dep->predecessorId;
+      $lstPrec=$directPredecessors["#".$dep->successorId];
+      $lstPrec["#".$dep->predecessorId]=$dep->predecessorId;      
+      $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$result["#".$dep->predecessorId]->_childList);
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
-      	$predecessor=ningElement($dep->predecessorId);
-      	$predecessor->_parentList=array();
-      	$parent->_noPlan=true;
+        $predecessor=new PlanningElement($dep->predecessorId);
+        $predecessor->_parentList=array();
+        $parent->_noPlan=true;
         $result["#".$dep->predecessorId]=$predecessor;
       }
     }
     foreach ($result as $id=>$pe) {
-    	$pe=$result[$id];
-    	if (array_key_exists($id, $directPredecessors)) {
-    	  $pe->_directPredecessorList=$directPredecessors[$id];
-    	} else {
-    		$pe->_directPredecessorList=array();
-    	} 
-    	$pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result);
-    	$pe->_predecessorListWithParent=$pe->_predecessorList;
-    	foreach ($pe->_parentList as $idParent=>$parent) {
-    		$pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result));
-    	}
-    	if (! $pe->realStartDate) {
-    		$pe->plannedStartDate=null;
-    	}
+      $pe=$result[$id];
+      if (array_key_exists($id, $directPredecessors)) {
+        $pe->_directPredecessorList=$directPredecessors[$id];
+      } else {
+        $pe->_directPredecessorList=array();
+      } 
+      $pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result);
+      $pe->_predecessorListWithParent=$pe->_predecessorList;
+      foreach ($pe->_parentList as $idParent=>$parent) {
+        $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result));
+      }
+      if (! $pe->realStartDate) {
+        $pe->plannedStartDate=null;
+      }
       if (! $pe->realEndDate) {
         $pe->plannedEndDate=null;
       }
-    	$result[$id]=$pe;
+      $result[$id]=$pe;
     }
     return $result;
   }
+  
   
   private static function getRecursivePredecessor($directFullList, $id, $result) {
   	if (isset($result[$id]->_predecessorList)) {
