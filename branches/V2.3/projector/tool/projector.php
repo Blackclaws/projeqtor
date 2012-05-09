@@ -1058,7 +1058,7 @@ function addWeeksToDate($date, $weeks) {
 }
 
 function workTimeDiffDateTime($start, $end) {
-  $days=workDayDiffDates($start, $end);
+  $days=workDayDiffDates($start, $end)-1;
   $time=substr($start, 11,5);
   $hh = substr($time,0,2);
   $mn = substr($time,3,2);
