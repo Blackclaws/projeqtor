@@ -326,6 +326,7 @@ class PlanningElement extends SqlElement {
   }
   
   public function simpleSave() {
+    $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     $result = parent::save();
   }
 
@@ -726,6 +727,7 @@ class PlanningElement extends SqlElement {
     foreach ($list as $id=>$pe) {
     	$idList[$pe->id]=$pe->id;
     	$pe->_parentList=array();
+    	$pe->_childList=array();
       if ($pe->topId) { 
       	if (array_key_exists('#'.$pe->topId, $result)) {
       		$parent=$result['#'.$pe->topId];
@@ -735,6 +737,7 @@ class PlanningElement extends SqlElement {
           $parent->_predecessorList=array();
           $parent->_predecessorListWithParent=array();
           $parent->_noPlan=true;
+          $parent->_childList=array();
           $result['#'.$pe->topId]=$parent;
       	}
       	if (isset($parent->_parentList)) {
@@ -744,7 +747,15 @@ class PlanningElement extends SqlElement {
       }
       $result[$id]=$pe;
     }
-    
+    $reverse=array_reverse($result, true);
+    foreach ($reverse as $id=>$pe) {
+    	if ($pe->topId) {
+    	  $parent=$result['#'.$pe->topId];
+    	  $parent->_childList=array_merge_preserve_keys($pe->_childList,$parent->_childList);
+    	  $parent->_childList['#'.$pe->id]=$pe->id;
+    	  $result['#'.$pe->topId]=$parent;
+    	}
+    }
     // Predecessors
     $crit='successorId in (' . implode(',',$idList) . ')';
     $dep=new Dependency();
@@ -755,9 +766,11 @@ class PlanningElement extends SqlElement {
       if (! array_key_exists("#".$dep->successorId, $directPredecessors)) {
    	    $directPredecessors["#".$dep->successorId]=array();
       }
-      $directPredecessors["#".$dep->successorId]["#".$dep->predecessorId]=$dep->predecessorId;
+      $lstPrec=$directPredecessors["#".$dep->successorId];
+      $lstPrec["#".$dep->predecessorId]=$dep->predecessorId;      
+      $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$result["#".$dep->predecessorId]->_childList);
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
-      	$predecessor=ningElement($dep->predecessorId);
+      	$predecessor=new PlanningElement($dep->predecessorId);
       	$predecessor->_parentList=array();
       	$parent->_noPlan=true;
         $result["#".$dep->predecessorId]=$predecessor;
