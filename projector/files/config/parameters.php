@@ -20,7 +20,7 @@ $paramLdap_user_filter = 'uid=%USERNAME%';
 $paramMailSender = 'support@toolware.fr';
 $paramMailReplyTo = 'support@toolware.fr';
 $paramAdminMail = 'support@toolware.fr';
-$paramMailSmtpServer = 'smtp.free.fr';
+$paramMailSmtpServer = '';
 $paramMailSmtpPort = '25';
 $paramMailSendmailPath = ''; 
 $paramMailTitle = '[Project\'Or RIA DEV] ${item} #${id} moved to status ${status}';
