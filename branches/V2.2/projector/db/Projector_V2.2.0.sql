@@ -60,7 +60,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (6,39,0),
 (7,39,0);
 
-update `${prefix}menu` set type='item' where name='menuCalendar';
+UPDATE `${prefix}menu` set type='item' where name='menuCalendar';
 
 ALTER TABLE `${prefix}meeting` ADD COLUMN meetingStartTime time,
 ADD COLUMN meetingEndTime time,
