@@ -750,6 +750,17 @@ class PlanningElement extends SqlElement {
     $reverse=array_reverse($result, true);
     foreach ($reverse as $id=>$pe) {
       if ($pe->topId) {
+        if (array_key_exists('#'.$pe->topId, $result)) {
+          $parent=$result['#'.$pe->topId];
+        } else {
+          $parent=new PlanningElement($pe->topId);
+          $parent->_parentList=array();
+          $parent->_predecessorList=array();
+          $parent->_predecessorListWithParent=array();
+          $parent->_noPlan=true;
+          $parent->_childList=array();
+          $result['#'.$pe->topId]=$parent;
+        } 
         $parent=$result['#'.$pe->topId];
         $parent->_childList=array_merge_preserve_keys($pe->_childList,$parent->_childList);
         $parent->_childList['#'.$pe->id]=$pe->id;
