@@ -133,7 +133,7 @@ class PlannedWork extends GeneralWork {
     $a=new Assignment();
     $topList=array();
     // Treat each PlanningElement
-    foreach ($listPlan as $idPlan=>$plan) {
+    foreach ($listPlan as $plan) {
     	$plan=$fullListPlan['#'.$plan->id];
       // Determine planning profile
       if ($plan->idle) {
@@ -480,17 +480,20 @@ class PlannedWork extends GeneralWork {
   }
   
   private static function storeListPlan($listPlan,$plan) {
-  	$listPlan['#'.$plan->id]=$plan;
-  	foreach ($plan->_parentList as $topId=>$topVal) {
-  		$top=$listPlan[$topId];
-  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
-  			$top->plannedStartDate=$plan->plannedStartDate;
-  		}
-  	  if (! $top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
-        $top->plannedEndDate=$plan->plannedEndDate;
-      }
-      $listPlan[$topId]=$top;
-  	}
+//traceLog("storeListPlan(listPlan,$plan->id)");
+    $listPlan['#'.$plan->id]=$plan;
+    if ($plan->plannedStartDate and $plan->plannedEndDate) {
+	  	foreach ($plan->_parentList as $topId=>$topVal) {
+	  		$top=$listPlan[$topId];
+	  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
+	  			$top->plannedStartDate=$plan->plannedStartDate;
+	  		}
+	  	  if (!$top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
+	        $top->plannedEndDate=$plan->plannedEndDate;
+	      }
+	      $listPlan[$topId]=$top;
+	  	}
+    }
   	return $listPlan;
   }
   

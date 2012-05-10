@@ -2,7 +2,7 @@
 // Header
 //echo "<page_header>";
 set_time_limit(300);
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '512M');
 
 echo "<table style='width:100%'><tr>";
 echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";

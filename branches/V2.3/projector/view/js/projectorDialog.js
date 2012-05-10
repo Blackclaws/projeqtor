@@ -969,20 +969,29 @@ function removeOrigin (id, origType, origId) {
  * Display a add Assignment Box
  * 
  */
+
 function addAssignment (unit) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
 	var prj=dijit.byId('idProject').get('value');
-	dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
-		       query: {id:'*'},
-		       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
-	dijit.byId('assignmentIdResource').store.fetch({query:{id:"*"}});
+alert("1");
+	//dijit.byId('assignmentIdResource').store = new dojo.data.ItemFileReadStore({
+	//	       query: {id:'*'},
+	//	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj });
+    store=dijit.byId('assignmentIdResource').store;
+    store.clearOnClose=true ;
+    store.url='../tool/jsonList.php?listType=listResourceProject&idProject='+prj;
+    store.fetch({query:{id:"*"}});
+alert("2");
+	//dijit.byId('assignmentIdResource').store.fetch({query:{id:"*"}});
+alert("3");
+    dijit.byId("assignmentIdResource").reset();
+alert("4");
 	dojo.byId("assignmentId").value="";
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
-	dijit.byId("assignmentIdResource").reset();
 	dijit.byId("assignmentIdRole").reset();
 	dijit.byId("assignmentDailyCost").reset();
 	dijit.byId("assignmentRate").set('value','100');
