@@ -17,7 +17,6 @@ class PlannedWork extends GeneralWork {
     <th field="rate" width="15%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
-
   
    /** ==========================================================================
    * Constructor
@@ -80,14 +79,17 @@ class PlannedWork extends GeneralWork {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
-  public static function plan($projectId, $startDate) {
+  /**
+   * Run planning calculation for project, starting at start date
+   * @static
+   * @param string $projectId id of project to plan
+   * @param string $startDate start date for planning
+   * @return string result
+   */
+    public static function plan($projectId, $startDate) {
 //echo "<br/>******************************";
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
-//debugLog("******************************");
-//debugLog("PLANNING - Started at " . date('H:i:s'));
-//debugLog("******************************");
-  	
   	set_time_limit(300);
 
     $withProjectRepartition=true;
@@ -100,12 +102,13 @@ class PlannedWork extends GeneralWork {
     $arrayPlannedWork=array();
     $arrayAssignment=array();
     $arrayPlanningElement=array();
-    
-    // build in list to get a where clause : "idProject in ( ... )" 
+
+    // build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     // Remove administrative projects :
-    $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;  
+    $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
+    $inClause.=" and " . getAccesResctictionClause('Activity',false);
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
@@ -120,7 +123,7 @@ class PlannedWork extends GeneralWork {
     $a=new Assignment();
     $topList=array();
     // Treat each PlanningElement
-    foreach ($listPlan as $idPlan=>$plan) {
+    foreach ($listPlan as $plan) {
     	$plan=$fullListPlan['#'.$plan->id];
       // Determine planning profile
       if ($plan->idle) {
@@ -467,17 +470,20 @@ class PlannedWork extends GeneralWork {
   }
   
   private static function storeListPlan($listPlan,$plan) {
-  	$listPlan['#'.$plan->id]=$plan;
-  	foreach ($plan->_parentList as $topId=>$topVal) {
-  		$top=$listPlan[$topId];
-  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
-  			$top->plannedStartDate=$plan->plannedStartDate;
-  		}
-  	  if (! $top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
-        $top->plannedEndDate=$plan->plannedEndDate;
-      }
-      $listPlan[$topId]=$top;
-  	}
+//traceLog("storeListPlan(listPlan,$plan->id)");
+    $listPlan['#'.$plan->id]=$plan;
+    if ($plan->plannedStartDate and $plan->plannedEndDate) {
+	  	foreach ($plan->_parentList as $topId=>$topVal) {
+	  		$top=$listPlan[$topId];
+	  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
+	  			$top->plannedStartDate=$plan->plannedStartDate;
+	  		}
+	  	  if (!$top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
+	        $top->plannedEndDate=$plan->plannedEndDate;
+	      }
+	      $listPlan[$topId]=$top;
+	  	}
+    }
   	return $listPlan;
   }
   
