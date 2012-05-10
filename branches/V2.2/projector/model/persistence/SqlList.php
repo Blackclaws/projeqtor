@@ -22,6 +22,7 @@ class SqlList {
    * @return an array containing the list of references
    */
   public static function getList($listType, $displayCol='name', $selectedValue=null, $showIdle=false) {
+//traceLog("       =>getList($listType, $displayCol, $selectedValue, $showIdle)");
     $listName=$listType . "_" . $displayCol;
     if ($showIdle) { $listName .= '_all'; }
     if (array_key_exists($listName, self::$list)) {
@@ -42,6 +43,7 @@ class SqlList {
   }
 
    public static function getListWithCrit($listType, $crit, $displayCol='name', $selectedValue=null) {
+//traceLog("       =>getListWithCrit($listType, $crit, $displayCol, $selectedValue)");
      return self::fetchListWithCrit($listType, $crit, $displayCol, $selectedValue);
    }
   /** ==========================================================================
@@ -169,7 +171,8 @@ class SqlList {
         $res[($line['id'])]=$name;
       }
     }
-    self::$list[$listType . "_" . $displayCol]=$res;
+    // In fetchListWithCrit, never store the list : results may always depend on criteria => must fetch every time.
+    //self::$list[$listType . "_" . $displayCol]=$res;
     return $res;
   }
   
