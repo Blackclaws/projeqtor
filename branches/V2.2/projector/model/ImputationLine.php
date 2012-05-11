@@ -103,7 +103,12 @@ class ImputationLine {
         } else {
           $ass=new Assignment();
         }
-        $obj=new $work->refType($work->refId);
+        if ($work->refType) {        	
+          $obj=new $work->refType($work->refId);
+        } else {
+          $obj=new Ticket(); 
+          $obj->name=i18n('notAssignedWork');
+        }
         //$ass->name=$id . " " . $obj->name;
         $ass->name=$obj->name;
         $ass->realWork=$obj->WorkElement->realWork;
@@ -111,7 +116,9 @@ class ImputationLine {
         $ass->id=null;
         $ass->refType=$work->refType;
         $ass->refId=$work->refId;
-        $ass->comment=i18n($work->refType) . ' #' . $work->refId;
+        if ($work->refType) {       
+          $ass->comment=i18n($work->refType) . ' #' . $work->refId;
+        }
         $assList[$id]=$ass;
       }
     }
@@ -145,7 +152,11 @@ class ImputationLine {
         $elt->imputable=true;
       } else {
         $cptNotAssigned+=1;
-        $elt->name=$ass->name;
+        if (isset($ass->name)) {
+          $elt->name=$ass->name;
+        } else {
+        	$elt->name=i18n('notAssignedWork');
+        }
         $elt->wbs='0.'.$cptNotAssigned;
         $elt->wbsSortable='000.'. str_pad($cptNotAssigned, 3, "0", STR_PAD_LEFT);
         $elt->elementary=1;
@@ -380,6 +391,7 @@ class ImputationLine {
         //echo '<input type="hidden" id="idProject_' . $nbLine . '" name="idProject_' . $nbLine . '"'
         //  . ' value="' . $line->idProject . '"/>';
       }
+      if (! $line->refType) {$line->refType='Imputation';};
       echo '<img src="css/images/icon' . $line->refType . '16.png" />';
       echo '</td>';
       if (! $print) {

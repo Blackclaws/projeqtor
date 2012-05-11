@@ -403,11 +403,56 @@ class User extends SqlElement {
     		$result.='<br/>' . i18n('errorDuplicateUser');
     	}
     }
+    $old=new User($this->id);
+    // if uncheck isResource must check resource for deletion
+    if ($old->isResource and ! $this->isResource and $this->id) {
+    		$obj=new Resource($this->id);
+    		$resultDelete=$obj->deleteControl(true);
+    		if ($resultDelete and $resultDelete!='OK') {
+    			$result.=$resultDelete;
+    		}
+    }
+    // if uncheck isContact must check contact for deletion
+    if ($old->isContact and ! $this->isContact and $this->id) {
+        $obj=new Contact($this->id);
+        $resultDelete=$obj->deleteControl(true);
+        if ($resultDelete and $resultDelete!='OK') {
+          $result.=$resultDelete;
+        }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
     }if ($result=="") {
       $result='OK';
+    }
+    return $result;
+  }
+  
+  public function deleteControl($nested=false)
+  {
+    $result="";
+    
+    if (! $nested) {
+	    // if uncheck isResource must check resource for deletion
+	    if ($this->isResource) {
+	        $obj=new Resource($this->id);
+	        $resultDelete=$obj->deleteControl(true);
+	        if ($resultDelete and $resultDelete!='OK') {
+	          $result.=$resultDelete;
+	        }
+	    }
+	    // if uncheck isContact must check contact for deletion
+	    if ($this->isContact) {
+	        $obj=new Contact($this->id);
+	        $resultDelete=$obj->deleteControl(true);
+	        if ($resultDelete and $resultDelete!='OK') {
+	          $result.=$resultDelete;
+	        }
+      }
+    }
+    if (! $result) {  
+      $result=parent::deleteControl();
     }
     return $result;
   }
