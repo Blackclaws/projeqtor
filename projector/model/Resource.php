@@ -289,6 +289,23 @@ class Resource extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
+    $old=new Resource($this->id);
+    // if uncheck isUser must check user for deletion
+    if ($old->isUser and ! $this->isUser and $this->id) {
+        $obj=new User($this->id);
+        $resultDelete=$obj->deleteControl(true);
+        if ($resultDelete and $resultDelete!='OK') {
+          $result.=$resultDelete;
+        }
+    }
+    // if uncheck isContact must check contact for deletion
+    if ($old->isContact and ! $this->isContact and $this->id) {
+        $obj=new Contact($this->id);
+        $resultDelete=$obj->deleteControl(true);
+        if ($resultDelete and $resultDelete!='OK') {
+          $result.=$resultDelete;
+        }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -348,7 +365,7 @@ class Resource extends SqlElement {
     }
   }
   
-  public function deleteControl() {
+  public function deleteControl($nested=false) {
     
   	$result="";
     if ($this->isUser) {   	
@@ -360,6 +377,24 @@ class Resource extends SqlElement {
 	    if (! securityCheckDisplayMenu($menu->id)) {
 	      $result="<br/>" . i18n("msgCannotDeleteResource");
 	    }     	    	
+    }
+    if (! $nested) {
+	    // if uncheck isContact must check contact for deletion
+	    if ($this->isContact) {
+	        $obj=new Contact($this->id);
+	        $resultDelete=$obj->deleteControl(true);
+	        if ($resultDelete and $resultDelete!='OK') {
+	          $result.=$resultDelete;
+	        }
+	    }
+	  // if uncheck isUser must check user for deletion
+	    if ($this->isUser) {
+	        $obj=new User($this->id);
+	        $resultDelete=$obj->deleteControl(true);
+	        if ($resultDelete and $resultDelete!='OK') {
+	          $result.=$resultDelete;
+	        }
+	    }
     }
     if (! $result) {	
       $result=parent::deleteControl();

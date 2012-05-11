@@ -157,7 +157,7 @@ class Contact extends SqlElement {
       $colScript .= '    dijit.byId("userName").set("required", "true");';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("userName").set("required", null);';
-      $colScript .= '    dijit.byId("userName").set("value", "");';
+      //$colScript .= '    dijit.byId("userName").set("value", "");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -275,13 +275,7 @@ class Contact extends SqlElement {
     return $result;
   }
   
-  /** =========================================================================
-   * Overrides SqlElement::deleteControl() function to add specific treatments
-   * @see persistence/SqlElement#deleteControl()
-   * @return the return message of persistence/SqlElement#deleteControl() method
-   */  
-    
-  
+ 
 /** =========================================================================
    * control data corresponding to Model constraints
    * @param void
@@ -293,7 +287,23 @@ class Contact extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
-    
+    $old=new Contact($this->id);
+    // if uncheck isResource must check resource for deletion
+    if ($old->isResource and ! $this->isResource and $this->id) {
+        $obj=new Resource($this->id);
+        $resultDelete=$obj->deleteControl(true);
+        if ($resultDelete and $resultDelete!='OK') {
+          $result.=$resultDelete;
+        }
+    }
+    // if uncheck isUser must check user for deletion
+    if ($old->isUser and ! $this->isUser and $this->id) {
+        $obj=new User($this->id);
+        $resultDelete=$obj->deleteControl(true);
+        if ($resultDelete and $resultDelete!='OK') {
+          $result.=$resultDelete;
+        }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -312,7 +322,7 @@ class Contact extends SqlElement {
     return $result;
   }
   
-  public function deleteControl() {
+  public function deleteControl($nested=false) {
     
     $result="";
     if ($this->isUser) {    
@@ -325,14 +335,31 @@ class Contact extends SqlElement {
         $result="<br/>" . i18n("msgCannotDeleteContact");
       }             
     }
-    $rec = new Recipient();
+    /*$rec = new Recipient();
     $crit = array("id"=>$this->idRecipient);
     $recList = $rec->getSqlElementsFromCriteria($crit,false);
     if (count($recList)!=0) {
     	//$result = "Suppression impossible : contact li&eacute; a un contractant";
     	$result="<br/>" . i18n("msgCannotDeleteContact");
+    }*/
+    if (! $nested) {
+	  // if uncheck isResource must check resource for deletion
+	    if ($this->isResource) {
+	        $obj=new Resource($this->id);
+	        $resultDelete=$obj->deleteControl(true);
+	        if ($resultDelete and $resultDelete!='OK') {
+	          $result.=$resultDelete;
+	        }
+	    }
+	  // if uncheck isUser must check user for deletion
+	    if ($this->isUser) {
+	        $obj=new User($this->id);
+	        $resultDelete=$obj->deleteControl(true);
+	        if ($resultDelete and $resultDelete!='OK') {
+	          $result.=$resultDelete;
+	        }
+	    }
     }
-    
     if (! $result) {  
       $result=parent::deleteControl();
     }

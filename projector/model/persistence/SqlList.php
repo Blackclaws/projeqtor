@@ -115,8 +115,10 @@ class SqlList {
         $lst=$proj->getTopProjectList(true);
         $inClause='(0';
         foreach ($lst as $prj) {
-        	$inClause.=',';
-        	$inClause.=$prj;
+        	if ($prj) {
+        	  $inClause.=',';
+        	  $inClause.=$prj;
+        	}
         }
         $inClause.=')';
         $query .= " and exists (select 'x' from " . $vp->getDatabaseTableName() . " vp where vp.idProject in " . $inClause . " and vp.idVersion=" . $ver->getDatabaseTableName() . ".id)";

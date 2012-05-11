@@ -599,7 +599,10 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   //error_reporting(E_ERROR);  
   //restore_error_handler();
   enableCatchErrors();
-  $resultMail=mail($to,$title,$message,$headers);
+  $resultMail="NO";
+  if ($paramMailSmtpServer!==null) {
+    $resultMail=mail($to,$title,$message,$headers);
+  }
   disableCatchErrors();
   //error_reporting(E_ALL);
   //set_error_handler('errorHandler');
@@ -613,6 +616,7 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
     errorLog("   Sendmail path : " . $path);
     errorLog("   Mail stored in Database : #" . $mail->id);
   }
+  if ($resultMail=='NO')$resultMail="";
   // save the status of the sending
   $mail->mailStatus=($resultMail)?'OK':'ERROR';
   $mail->save(); 

@@ -199,21 +199,6 @@ class Activity extends SqlElement {
    * @return the return message of persistence/SqlElement#deleteControl() method
    */  
   
-  public function deleteControl()
-  {
-  	$result = "OK";
-  	
-  	$dep = new Dependency();
-  	$crit = "successorRefType = 'Term' 
-  	AND (( predecessorRefId = ".$this->id." AND predecessorRefType = 'Activity' ) 
-  	OR ( predecessorRefId = ".$this->idProject." AND predecessorRefType = 'Project' ))";
-  	$depList = $dep->getSqlElementsFromCriteria(null,false,$crit);
-  	
-  	if (count($depList)!=0) $result = "Suppression Impossible : Activit&eacute pr&eacutesente dans une &eacutech&eacuteance.";
-
-  	return $result;
-  }
-  
   /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
    * @see persistence/SqlElement#save()

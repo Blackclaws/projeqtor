@@ -100,6 +100,10 @@ class WorkElement extends SqlElement {
               if ($ass->leftWork<0) {$ass->leftWork=0;}
               $ass->save();
               $newWork->idAssignment=$ass->id;
+              if (!$newWork->refType) {
+              	$newWork->refType='Activity';
+              	$newWork->refId=$this->idActivity;
+              }
             }
             $newWork->work+=$work->work;
             $newWork->setDates($work->workDate);
@@ -142,6 +146,10 @@ class WorkElement extends SqlElement {
         $work->idAssignment=$ass->id;
         $work->work+=$diff;
         if ($work->work<0) {$work->work=0;}
+        if (! $work->refType) {
+        	$work->refType='Activity';
+          $work->refId=$top->idActivity;
+        }
         $work->save();
       } else {
         $crit=array('refType'=>$this->refType, 'refId'=>$this->refId, 'idResource'=>$user->id, 'idProject'=>$top->idProject);
@@ -160,6 +168,10 @@ class WorkElement extends SqlElement {
         $work->work+=$diff;
         $work->setDates(date('Y-m-d'));
         if ($work->work<0) {$work->work=0;}
+        if (! $work->refType) {
+          $work->refType=$this->refType;
+          $work->refId=$this->refId;
+        }
         $work->save();
       }
     }
