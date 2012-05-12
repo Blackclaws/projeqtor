@@ -20,24 +20,24 @@ ini_set('max_input_vars', 25*$nbLines+20);
 ini_set('suhosin.post.max_vars', 25*$nbLines+20);
 ini_set('suhosin.request.max_vars', 25*$nbLines+20);
 
-for ($i=1; $i<=$nbLines; $i++) {
-  $imputable=$_REQUEST['imputable_' . $i];
+for ($i=0; $i<$nbLines; $i++) {
+  $imputable=$_REQUEST['imputable'][$i];
   if ($imputable) {
     $line=new ImputationLine();
-    $line->idAssignment=$_REQUEST['idAssignment_' . $i];
+    $line->idAssignment=$_REQUEST['idAssignment'][$i];
     $ass=new Assignment($line->idAssignment);
     $line->refType=$ass->refType;
     $line->refId=$ass->refId;
     $line->idResource=$userId;
-    $line->leftWork=Work::convertImputation($_REQUEST['leftWork_' . $i]);
+    $line->leftWork=Work::convertImputation($_REQUEST['leftWork'][$i]);
     $line->imputable=$imputable;
     $arrayWork=array();
     for ($j=1; $j<=$nbDays; $j++) {
     	$workId=null;
-    	if (array_key_exists('workId_' . $i . '_' . $j, $_REQUEST)) {
-        $workId=$_REQUEST['workId_' . $i . '_' . $j];
+    	if (array_key_exists('workId_' . $j, $_REQUEST)) {
+        $workId=$_REQUEST['workId_' . $j][$i];
     	}
-      $workValue=Work::convertImputation($_REQUEST['workValue_' . $i . '_' . $j]);
+      $workValue=Work::convertImputation($_REQUEST['workValue_'.$j][$i]);
       $workDate=$_REQUEST['day_' . $j];
       if ($workId) {
         $work=new Work($workId);
