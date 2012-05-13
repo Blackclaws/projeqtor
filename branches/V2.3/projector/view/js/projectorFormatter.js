@@ -13,6 +13,9 @@
  * @return the formatted value 
  */
 function formatDate(date) {
+	if (! date) {
+      return '';
+	}
 	var month=date.getMonth()+1;
 	var year=date.getFullYear();
 	var day=date.getDate()
