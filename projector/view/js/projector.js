@@ -701,7 +701,9 @@ function finalizeMessageDisplay(destination, validationType) {
           var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');
           if (lastSaveClass && lastSaveId) {
+         	 waitingForReply=false;
              gotoElement(lastSaveClass.value, lastSaveId.value);
+             waitingForReply=true;
           }
       } else if (validationType=='admin'){
     	  hideWait()
