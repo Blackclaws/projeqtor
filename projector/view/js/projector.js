@@ -85,7 +85,11 @@ function refreshJsonList(className) {
  * @return void
  */
 function refreshJsonPlanning() {
-  url="../tool/jsonPlanning.php";
+  if (dojo.byId("resourcePlanning")) {
+	url="../tool/jsonResourcePlanning.php";  
+  } else {
+	url="../tool/jsonPlanning.php";
+  }
   param=false;
   if ( dojo.byId('listShowIdle') ) {
     if (dojo.byId('listShowIdle').checked) { 
@@ -476,7 +480,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         } else if (destination=="passwordResultDiv") {
           checkLogin();
         } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
-             || page.indexOf("jsonPlanning.php")>=0) {                
+             || page.indexOf("jsonPlanning.php")>=0
+             || page.indexOf("resourcePlanningMain.php")>=0 || page.indexOf("resourcePlanningList.php")>=0
+             || page.indexOf("jsonResourcePlanning.php")>=0) {                
           drawGantt();
           hideWait();
         } else {
@@ -557,7 +563,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
                } else if (destination=="passwordResultDiv") {
                 checkLogin();
                } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
-                       || (page.indexOf("jsonPlanning.php")>=0 && dijit.byId("startDatePlanView")) ) {                
+                       || (page.indexOf("jsonPlanning.php")>=0 && dijit.byId("startDatePlanView"))
+                       || page.indexOf("resourcePlanningMain.php")>=0 || page.indexOf("resourcePlanningList.php")>=0
+                       || (page.indexOf("jsonResourcePlanning.php")>=0 && dijit.byId("startDatePlanView")) ) {                
                  drawGantt();
                  hideWait();
               } else {
@@ -701,7 +709,9 @@ function finalizeMessageDisplay(destination, validationType) {
           var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');
           if (lastSaveClass && lastSaveId) {
+        	 waitingForReply=false;
              gotoElement(lastSaveClass.value, lastSaveId.value);
+             waitingForReply=true;
           }
       } else if (validationType=='admin'){
     	  hideWait()
@@ -1202,7 +1212,11 @@ function setSelectedProject(idProject, nameProject, selectionField) {
       load: function(data,args) { 
         addMessage(i18n("Project")+ "=" + nameProject );
         if (dojo.byId("GanttChartDIV")) {
-          loadContent("planningList.php", "listDiv", 'listForm');
+          if (dojo.byId("resourcePlanning")) {
+        	loadContent("resourcePlanningList.php", "listDiv", 'listForm');  
+          } else {
+            loadContent("planningList.php", "listDiv", 'listForm');
+          }
         } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
           refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
         }
@@ -1330,7 +1344,8 @@ function drawGantt() {
     var items=store.items;
     for (var i=0; i< items.length; i++) {
       var item=items[i];
-      var topId=(i==0)?'':item.topId;
+      //var topId=(i==0)?'':item.topId;
+      var topId=item.topId;
       // pStart : start date of task
       var pStart="";
       pStart=(item.initialStartDate!=" ")?item.initialStartDate:pStart;
@@ -1393,6 +1408,7 @@ function drawGantt() {
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
+console.log('item.id='+item.id+'   pname='+pName);      
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, pResource,   progress, pGroup, topId,   pOpen,     pDepend  , pResource,    pClass, pScope));
     }
     g.Draw();  

@@ -2857,7 +2857,7 @@ function copyProjectToSubmit(objectClass) {
   //dojo.byId('objectClass').value='Project';
 }
 
-function loadMenuBarObject(menuClass) {
+function loadMenuBarObject(menuClass, itemName) {
   	if (checkFormChangeInProgress()) {
   		return false;
   	}
@@ -2867,7 +2867,7 @@ function loadMenuBarObject(menuClass) {
     return true;
 }
 
-function loadMenuBarItem(item) {
+function loadMenuBarItem(item,itemName) {
   if (checkFormChangeInProgress()) {
     return false;
   }
@@ -2877,6 +2877,8 @@ function loadMenuBarItem(item) {
     loadContent("today.php","centerDiv");
   } else if (item=='Planning') {
     loadContent("planningMain.php","centerDiv");
+  } else if (item=='ResourcePlanning') {
+	loadContent("resourcePlanningMain.php","centerDiv");
   } else if (item=='Imputation') {
     loadContent("imputationMain.php","centerDiv");
   } else if (item=='ImportData') {
@@ -2902,6 +2904,8 @@ function loadMenuBarItem(item) {
 
   } else if(item=='Calendar') {
     loadContent("calendar.php","centerDiv");
+  } else {
+	  showInfo(i18n("messageSelectedNotAvailable", new Array(itemName)));
   }
   return true;
 }

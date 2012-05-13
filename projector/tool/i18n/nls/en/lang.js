@@ -1260,5 +1260,6 @@ workStartedSince: "started since ${1} day(s)",
 workStopped: "work stopped",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 year: "year",
+menuResourcePlanning: "Resource planning",
 currentLocaleOfFile: "en"
 }
