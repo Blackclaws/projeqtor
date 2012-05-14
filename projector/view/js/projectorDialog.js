@@ -789,6 +789,7 @@ function refreshLinkList(selected) {
  * 
  */
 function saveLink() {
+  if (dojo.byId("linkRef2Id").value=="") return;
   loadContent("../tool/saveLink.php", "resultDiv", "linkForm", true,'link');
 	dijit.byId('dialogLink').hide();
 }
@@ -869,6 +870,7 @@ function refreshApproverList(selected) {
  *
  */
 function saveApprover() {
+  if (dojo.byId("approverId").value=="") return;
   loadContent("../tool/saveApprover.php", "resultDiv", "approverForm", true,'approver');
   dijit.byId('dialogApprover').hide();
 }
@@ -938,6 +940,7 @@ function refreshOriginList(selected) {
 * 
 */
 function saveOrigin() {
+	if (dojo.byId("originOriginId").value=="") return;
 	loadContent("../tool/saveOrigin.php", "resultDiv", "originForm", true,'origin');
 	dijit.byId('dialogOrigin').hide();
 }
