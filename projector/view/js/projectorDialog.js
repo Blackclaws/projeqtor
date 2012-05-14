@@ -732,7 +732,7 @@ function addLink (classLink) {
 
 function selectLinkItem() {
   var nbSelected=0;
-  list=dojo.byId(linkRef2Id);
+  list=dojo.byId('linkRef2Id');
   if (dojo.byId("linkRef2Type").value=="Document") {
 	  selected = new Array(); 
 	  for (var i = 0; i < list.options.length; i++) {
@@ -836,7 +836,7 @@ function addApprover () {
 
 function selectApproverItem() {
   var nbSelected=0;
-  list=dojo.byId(approverId);
+  list=dojo.byId('approverId');
   if (list.options) {
     for (var i = 0; i < list.options.length; i++) {
       if (list.options[i].selected) {
