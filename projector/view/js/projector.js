@@ -1408,7 +1408,7 @@ function drawGantt() {
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
-console.log('item.id='+item.id+'   pname='+pName);      
+//console.log('item.id='+item.id+'   pname='+pName+'   pGroup='+pGroup+'   topId='+topId);      
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, pResource,   progress, pGroup, topId,   pOpen,     pDepend  , pResource,    pClass, pScope));
     }
     g.Draw();  

@@ -135,6 +135,7 @@ if (Sql::$lastQueryNbRows > 0) {
 			$resAr["plannedEndDate"]='';
 			$resAr["idResource"]=$idResource;
 			$resAr["progress"]=0;
+			$resAr["topId"]=0;
 			$list['Resource#'.$idResource]=$resAr;
 			$sumReal=0;
 			$sumPlanned=0;

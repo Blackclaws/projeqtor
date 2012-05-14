@@ -499,6 +499,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
         var levl=vTaskList[i].getLevel();
         var levlWidth = (levl-1) * 16;
+//console.log(i + " | " + levl + " | " + levlWidth + " | "+ vTaskList[i].getName());
         vLeftTable +='<table><tr><td>';
         vLeftTable += '<div style="width:' + levlWidth + 'px;">&nbsp;</div>';
         vLeftTable +='</td><td>';
