@@ -836,7 +836,7 @@ function addApprover () {
 
 function selectApproverItem() {
   var nbSelected=0;
-  list=dojo.byId(approverId);
+  list=dojo.byId('approverId');
   if (list.options) {
     for (var i = 0; i < list.options.length; i++) {
       if (list.options[i].selected) {
