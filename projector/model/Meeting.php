@@ -352,6 +352,7 @@ class Meeting extends SqlElement {
     }
 
     $result=sendMail($destList, $this->name, $vcal, $this, $headers,$sender);
+    if (! $result) {$sent=0;}
     return $sent;
 
   }
