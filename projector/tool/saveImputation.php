@@ -29,7 +29,9 @@ for ($i=0; $i<$nbLines; $i++) {
     $line->refType=$ass->refType;
     $line->refId=$ass->refId;
     $line->idResource=$userId;
-    $line->leftWork=Work::convertImputation($_REQUEST['leftWork'][$i]);
+    if (isset($_REQUEST['leftWork'][$i])) {
+      $line->leftWork=Work::convertImputation($_REQUEST['leftWork'][$i]);
+    }
     $line->imputable=$imputable;
     $arrayWork=array();
     for ($j=1; $j<=$nbDays; $j++) {
