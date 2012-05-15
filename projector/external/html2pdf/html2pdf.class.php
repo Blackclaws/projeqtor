@@ -2153,7 +2153,7 @@ if (!defined('__CLASS_HTML2PDF__')) {
                         } else {
                             $s = 0;
                             for ($i=0; $i<$corr[$y][$x][2]; $i++) {
-                                $s+= $sw[$x+$i];
+                                $s+= (isset($sw[$x+$i])?$sw[$x+$i]:0);
                             }
                             $cases[$corr[$y][$x][1]][$corr[$y][$x][0]]['w'] = $s;
                         }
