@@ -72,7 +72,11 @@ foreach ($lstWork as $work) {
   $refId=$work->refId;
   $key=$refType . "#" . $refId;
   if (! array_key_exists($key,$activities)) {
-    $obj=new $refType($refId);
+    if ($refType) {
+      $obj=new $refType($refId);
+    } else {
+      $obj=new Ticket();
+    }
     $activities[$key]=$obj->name;
     $description[$key]=$obj->description;
     if ($refType=='Project') {

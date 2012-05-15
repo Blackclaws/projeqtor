@@ -2130,7 +2130,7 @@ if (!defined('__CLASS_HTML2PDF__')) {
                     if (isset($corr[$y][$x]) && is_array($corr[$y][$x]) && $corr[$y][$x][2]>1) {
 
                         // sum the max width of each column in colspan
-                        $s = 0; for ($i=0; $i<$corr[$y][$x][2]; $i++) $s+= $sw[$x+$i];
+                        $s = 0; for ($i=0; $i<$corr[$y][$x][2]; $i++) $s+= (isset($sw[$x+$i])?$sw[$x+$i]:0);
 
                         // if the max width is < the width of the cell with colspan => we adapt the width of each max width
                         if ($s>0 && $s<$cases[$corr[$y][$x][1]][$corr[$y][$x][0]]['w']) {
@@ -2153,7 +2153,7 @@ if (!defined('__CLASS_HTML2PDF__')) {
                         } else {
                             $s = 0;
                             for ($i=0; $i<$corr[$y][$x][2]; $i++) {
-                                $s+= $sw[$x+$i];
+                                $s+= (isset($sw[$x+$i])?$sw[$x+$i]:0);
                             }
                             $cases[$corr[$y][$x][1]][$corr[$y][$x][0]]['w'] = $s;
                         }
