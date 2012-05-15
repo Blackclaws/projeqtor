@@ -135,6 +135,9 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
+      if (! $plan->id) {
+        continue;
+      }
     	$plan=$fullListPlan['#'.$plan->id];
       // Determine planning profile
       if ($plan->idle) {
