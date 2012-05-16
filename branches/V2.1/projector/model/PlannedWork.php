@@ -91,6 +91,7 @@ class PlannedWork extends GeneralWork {
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
   	set_time_limit(300);
+  	ini_set('memory_limit', '512M');
 
     $withProjectRepartition=true;
     $result="";
@@ -124,6 +125,9 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
+      if (! $plan->id) {
+        continue;
+      }
     	$plan=$fullListPlan['#'.$plan->id];
       // Determine planning profile
       if ($plan->idle) {
@@ -224,7 +228,7 @@ class PlannedWork extends GeneralWork {
           $plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
         }
         if (! $plan->realEndDate) {
-          //$plan->plannedEndDate=($plan->leftWork>0)?$plan->plannedEndDate:$startPlan;
+          $plan->plannedEndDate=($plan->plannedWork==0)?$plan->validatedEndDate:$plan->plannedEndDate;
         }
         if ($profile=="FDUR") {
           if (! $plan->realStartDate) {

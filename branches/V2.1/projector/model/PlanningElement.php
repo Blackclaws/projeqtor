@@ -768,7 +768,7 @@ class PlanningElement extends SqlElement {
       }
     }
     // Predecessors
-    $crit='successorId in (' . implode(',',$idList) . ')';
+    $crit='successorId in (0,' . implode(',',$idList) . ')';
     $dep=new Dependency();
     
     $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);
@@ -778,14 +778,17 @@ class PlanningElement extends SqlElement {
         $directPredecessors["#".$dep->successorId]=array();
       }
       $lstPrec=$directPredecessors["#".$dep->successorId];
-      $lstPrec["#".$dep->predecessorId]=$dep->predecessorId;      
-      $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$result["#".$dep->predecessorId]->_childList);
+      $lstPrec["#".$dep->predecessorId]=$dep->predecessorId;   
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
-        $predecessor=new PlanningElement($dep->predecessorId);
-        $predecessor->_parentList=array();
+      	$parent=new PlanningElement($dep->predecessorId);
+        $parent->_parentList=array();
+        $parent->_predecessorList=array();
+        $parent->_predecessorListWithParent=array();
         $parent->_noPlan=true;
-        $result["#".$dep->predecessorId]=$predecessor;
+        $parent->_childList=array();
+        $result["#".$dep->predecessorId]=$parent;
       }
+      $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$result["#".$dep->predecessorId]->_childList);
     }
     foreach ($result as $id=>$pe) {
       $pe=$result[$id];
@@ -799,10 +802,10 @@ class PlanningElement extends SqlElement {
       foreach ($pe->_parentList as $idParent=>$parent) {
         $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result));
       }
-      if (! $pe->realStartDate) {
+      if (! $pe->realStartDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
         $pe->plannedStartDate=null;
       }
-      if (! $pe->realEndDate) {
+      if (! $pe->realEndDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
         $pe->plannedEndDate=null;
       }
       $result[$id]=$pe;
