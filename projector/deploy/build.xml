@@ -2,7 +2,7 @@
 <project name="Project'Or RIA" default="buildQuick">
 
 	<property name="drive"       value="D:" />
-  <property name="version"       value="V2.2.2" />
+  <property name="version"       value="V2.2.3" />
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="${drive}/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -194,7 +194,6 @@
 	</target>
 	    
 	<target name="_dojoOptimisation" description="optimisation de la release">	        
-		<delete dir="${release.dir}/dojo/_firebug"/> 
 		<delete>
 		  <fileset dir="${release.dir}" includes="**/*.uncompressed.js"/>
 		</delete>
