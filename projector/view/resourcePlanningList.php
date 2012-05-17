@@ -163,6 +163,15 @@ if ($paramEnd->id) {
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
+                  </td></tr><tr><td>
+                  <?php echo i18n("labelShowWork");?>
+                  </td><td>
+                  <div title="<?php echo i18n('showWork')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="listShowWork" name="listShowWork">
+                    <script type="dojo/method" event="onChange" >
+                      refreshJsonPlanning();
+                    </script>
+                  </div>&nbsp;
                   </td></tr>
                   </table>
 		            </td>

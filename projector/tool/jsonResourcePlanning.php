@@ -172,7 +172,7 @@ if (Sql::$lastQueryNbRows > 0) {
 		}
 		$list['Resource#'.$idResource]["realWork"]=$sumReal;
 		$list['Resource#'.$idResource]["plannedWork"]=$sumPlanned;
-		$list['Resource#'.$idResource]["progress"]=($sumPlanned)?1:0;
+		$list['Resource#'.$idResource]["progress"]=($sumPlanned)?round($sumReal/$sumPlanned,2):0;
 		if (! isset($arrayPeAss[$line['idPe']])) {
 			$arrayPeAss[$line['idPe']]=array();
 		}
@@ -243,9 +243,12 @@ function displayGantt($list) {
 	}
 	// calculations
 	$startDate=date('Y-m-d');
+debugLog("StartDate(1) - $startDate");
 	if (array_key_exists('startDate',$_REQUEST)) {
 		$startDate=$_REQUEST['startDate'];
 	}
+debugLog("StartDate(2) - $startDate");
+	
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
 		$endDate=$_REQUEST['endDate'];
@@ -295,11 +298,14 @@ function displayGantt($list) {
 			$line['pEnd']=$pEnd;
 			$resultArray[]=$line;
 			if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
-			if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
+			if ($minDate=='' or ($minDate>$pStart and trim($pStart))) {$minDate=$pStart;}
+			debugLog("id" . $line['id']." - pStart=$pStart => minDate=$minDate"); 
+			
 		}
 		if ($minDate<$startDate) {
 			$minDate=$startDate;
 		}
+debugLog("minDate(1)=$minDate"); 		
 		if ($endDate and $maxDate>$endDate) {
 			$maxDate=$endDate;
 		}
@@ -323,6 +329,7 @@ function displayGantt($list) {
 		$days=array();
 		$openDays=array();
 		$day=$minDate;
+debugLog("minDate(2)=$minDate");
 		for ($i=0;$i<$numDays; $i++) {
 			$days[$i]=$day;
 			$openDays[$i]=isOpenDay($day);
@@ -456,7 +463,7 @@ function displayGantt($list) {
 			 } */
 			echo htmlEncode($line['refName']) . '</NOBR></TD>';
 			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
-			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
+			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter(round($progress*100,0)) . '</TD>' ;
 			echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
 			echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
 			if ($pGroup) {
