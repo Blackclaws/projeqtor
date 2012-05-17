@@ -1260,6 +1260,7 @@ workStartedSince: "iniciado à ${1} dia(s)",
 workStopped: "trabalho parado",
 wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin se pode ligar.",
 year: "ano",
+labelShowWork: "[labelShowWork]",
 menuResourcePlanning: "[menuResourcePlanning]",
 currentLocaleOfFile: "pt"
 }

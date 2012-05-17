@@ -1260,6 +1260,7 @@ workStartedSince: "gestartet seit ${1} Tag(en)",
 workStopped: "Arbeit gestoppt",
 wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administrator kann sich verbinden.",
 year: "Jahr",
+labelShowWork: "[labelShowWork]",
 menuResourcePlanning: "[menuResourcePlanning]",
 currentLocaleOfFile: "de"
 }
