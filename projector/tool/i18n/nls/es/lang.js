@@ -1260,7 +1260,7 @@ workStartedSince: "[workStartedSince]",
 workStopped: "[workStopped]",
 wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se puede conectar.",
 year: "año",
-labelShowWork: "[labelShowWork]",
+labelShowLeftWork: "[labelShowLeftWork]",
 menuResourcePlanning: "[menuResourcePlanning]",
 currentLocaleOfFile: "es"
 }
