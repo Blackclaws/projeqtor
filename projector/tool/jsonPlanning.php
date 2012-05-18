@@ -428,7 +428,7 @@
             $fontSize='150%';
             $color=($openDays[$i]==1)?$bgColor:'background-color:' . $weekendColor . ';';
           }
-          $height=($pGroup)?'4':'8';         
+          $height=($pGroup)?'8':'12';      
           if ($days[$i]>=$pStart and $days[$i]<=$pEnd) {
             if ($rowType=="mile") {
               echo '<td class="reportTableData" style="font-size: ' . $fontSize . ';' . $color . $noBorder . ';color:' . $pColor . ';">';

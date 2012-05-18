@@ -557,7 +557,7 @@ class ImputationLine {
 					echo  Work::displayImputation($line->leftWork);
 				}
 			} else {
-				  echo '<input type="hidden" name="leftWork[]" />';
+				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
 			}
 			echo '</td>';
 			echo '<td class="ganttDetail" align="center">';

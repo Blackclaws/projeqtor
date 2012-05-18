@@ -54,11 +54,11 @@ if (! $name) {
     $criteria->sqlOperator=$filterCriteria["sql"]["operator"];
     $criteria->sqlValue=$filterCriteria["sql"]["value"];
     if ($criteria->sqlValue==null) {
-      if ($criteria->sqlOperator=='is null' or $criteria->sqlOperator=='is not null') {
-        $criteria->sqlValue=null;
-      } else {
-        $criteria->sqlValue='0';
-      }
+    	if ($criteria->sqlOperator=='is null' or $criteria->sqlOperator=='is not null') {
+    		$criteria->sqlValue=null;
+    	} else {
+    	  $criteria->sqlValue='0';
+    	}
     }
     $criteria->save();
   }

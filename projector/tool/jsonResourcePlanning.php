@@ -103,7 +103,7 @@ $query='select ' . $querySelect
 . ' from ' . $queryFrom
 . ' where ' . $queryWhere
 . ' order by ' . $queryOrderBy;
-//debugLog("query=$query");
+
 $result=Sql::query($query);
 $arrayPeAss=array();
 $arrayResource=array();
@@ -136,31 +136,37 @@ if (Sql::$lastQueryNbRows > 0) {
 			$resAr["idResource"]=$idResource;
 			$resAr["progress"]=0;
 			$resAr["topId"]=0;
+			$resAr["leftWork"]=0;
 			$list['Resource#'.$idResource]=$resAr;
 			$sumReal=0;
 			$sumPlanned=0;
+			$sumLeft=0;
 		}
 		$line["elementary"]='1';
 		$line["topRefType"]='Resource';
 		$line["topRefId"]=$idResource;
+		$line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
 		$line["topId"]=9999999999+$idResource;
 		if ($line["leftWork"]>0) {
-			$line['realEndDate']='';
+			//$line['realEndDate']='';
 		}
-		if (trim($line["realStartDate"])) {
+		if (trim($line["realStartDate"]) and !trim($line["plannedStartDate"])) {
 			$line['plannedStartDate']=$line['realStartDate'];
 		}
 		$line['progress']=($line["plannedWork"]>0)?$line["realWork"]/$line["plannedWork"]:'';
 		$list[]=$line;
 		$sumReal+=$line["realWork"];
 		$sumPlanned+=$line["plannedWork"];
+		$sumLeft+=$line["leftWork"];
 		if (! $list['Resource#'.$idResource]["realStartDate"] or $line['realStartDate'] < $list['Resource#'.$idResource]["realStartDate"]) {
-			if ($line['realStartDate']) {
+			if ($line['realStartDate'] and $line['realStartDate']<$line['plannedStartDate']) {
 			  $list['Resource#'.$idResource]["realStartDate"]=$line['realStartDate'];
 			}
 		}
 		if (! $list['Resource#'.$idResource]["realEndDate"] or $line['realEndDate'] > $list['Resource#'.$idResource]["realEndDate"]) {
-			$list['Resource#'.$idResource]["realEndDate"]=$line['realEndDate'];
+			if ($line['realEndDate'] and $line['realEndDate']>$line['plannedEndDate']) {
+			  $list['Resource#'.$idResource]["realEndDate"]=$line['realEndDate'];
+			}
 		}
 		if (! $list['Resource#'.$idResource]["plannedStartDate"] or $line['plannedStartDate'] < $list['Resource#'.$idResource]["plannedStartDate"]) {
       if ($line['plannedStartDate'] ) {
@@ -168,10 +174,17 @@ if (Sql::$lastQueryNbRows > 0) {
       }
 		}
 		if (! $list['Resource#'.$idResource]["plannedEndDate"] or $line['plannedEndDate'] > $list['Resource#'.$idResource]["plannedEndDate"]) {
-			$list['Resource#'.$idResource]["plannedEndDate"]=$line['plannedEndDate'];
+			if ($line['plannedEndDate']) {
+			  $list['Resource#'.$idResource]["plannedEndDate"]=$line['plannedEndDate'];
+			  if ($list['Resource#'.$idResource]["plannedEndDate"]>$list['Resource#'.$idResource]["realEndDate"]) {
+			  	$list['Resource#'.$idResource]["realEndDate"]="";
+			  }
+			}
 		}
 		$list['Resource#'.$idResource]["realWork"]=$sumReal;
 		$list['Resource#'.$idResource]["plannedWork"]=$sumPlanned;
+		$list['Resource#'.$idResource]["leftWork"]=$sumLeft;
+		$list['Resource#'.$idResource]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumLeft);
 		$list['Resource#'.$idResource]["progress"]=($sumPlanned)?round($sumReal/$sumPlanned,2):0;
 		if (! isset($arrayPeAss[$line['idPe']])) {
 			$arrayPeAss[$line['idPe']]=array();
@@ -243,11 +256,9 @@ function displayGantt($list) {
 	}
 	// calculations
 	$startDate=date('Y-m-d');
-debugLog("StartDate(1) - $startDate");
 	if (array_key_exists('startDate',$_REQUEST)) {
 		$startDate=$_REQUEST['startDate'];
 	}
-debugLog("StartDate(2) - $startDate");
 	
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
@@ -276,8 +287,6 @@ debugLog("StartDate(2) - $startDate");
 		$resultArray=array();
 		foreach ($list as $line) {
 			$pStart="";
-			//$pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
-			//$pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
 			$pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
 			$pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
 			if (trim($line['plannedStartDate'])!=""
@@ -286,26 +295,23 @@ debugLog("StartDate(2) - $startDate");
 				$pStart=$line['plannedStartDate'];
 			}
 			$pEnd="";
-			//$pEnd=(trim($line['initialEndDate'])!="")?$line['initialEndDate']:$pEnd;
-			//$pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
-			$pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
-			$pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
-			//if ($pEnd=="") {$pEnd=date('Y-m-d');}
+			$pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$line['realEndDate'];
+			//$pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
 			if ($line['refType']=='Milestone') {
 				$pStart=$pEnd;
 			}
 			$line['pStart']=$pStart;
 			$line['pEnd']=$pEnd;
+			$line['pRealEnd']=$line['realEndDate'];
+			$line['pPlanStart']=$line['plannedStartDate'];
 			$resultArray[]=$line;
 			if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
 			if ($minDate=='' or ($minDate>$pStart and trim($pStart))) {$minDate=$pStart;}
-			debugLog("id" . $line['id']." - pStart=$pStart => minDate=$minDate"); 
 			
 		}
 		if ($minDate<$startDate) {
 			$minDate=$startDate;
 		}
-debugLog("minDate(1)=$minDate"); 		
 		if ($endDate and $maxDate>$endDate) {
 			$maxDate=$endDate;
 		}
@@ -329,7 +335,6 @@ debugLog("minDate(1)=$minDate");
 		$days=array();
 		$openDays=array();
 		$day=$minDate;
-debugLog("minDate(2)=$minDate");
 		for ($i=0;$i<$numDays; $i++) {
 			$days[$i]=$day;
 			$openDays[$i]=isOpenDay($day);
@@ -338,7 +343,7 @@ debugLog("minDate(2)=$minDate");
 		//echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;
 		// Header
 		//echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-		echo '<table style="font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
+		echo '<table style="-webkit-print-color-adjust: exact;font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
 		echo '<tr style="height: 20px;"><td colspan="6">&nbsp;</td>';
 		$day=$minDate;
 		for ($i=0;$i<$topUnits;$i++) {
@@ -405,6 +410,8 @@ debugLog("minDate(2)=$minDate");
 		foreach ($resultArray as $line) {
 			$pEnd=$line['pEnd'];
 			$pStart=$line['pStart'];
+			$pRealEnd=$line['pRealEnd'];
+			$pPlanStart=$line['pPlanStart'];
 			$realWork=$line['realWork'];
 			$plannedWork=$line['plannedWork'];
 			$progress=$line['progress'];
@@ -450,17 +457,6 @@ debugLog("minDate(2)=$minDate");
 			echo '">';
 			echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
 			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
-			/*if ($pGroup) {
-			 echo '<span width="16"';
-			 if ($collapsed) {
-			 echo 'class="ganttExpandClosed"';
-			 } else {
-			 echo 'class="ganttExpandOpened"';
-			 }
-			 echo '&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-			 } else {
-			 echo '<span width="16"><div style="float: left;width:16px;">&nbsp;</div></span>';
-			 } */
 			echo htmlEncode($line['refName']) . '</NOBR></TD>';
 			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
 			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter(round($progress*100,0)) . '</TD>' ;
@@ -468,18 +464,10 @@ debugLog("minDate(2)=$minDate");
 			echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
 			if ($pGroup) {
 				$pColor='#505050;';
-				//$pBackground='background:#505050 url(../view/img/grey.png) repeat-x;';
 				$pBackground='background-color:#505050;';
 			} else {
-				//if (trim($line['validatedEndDate'])!="" && $line['validatedEndDate'] < $pEnd) {
-					//$pColor='#BB5050';
-					//$pBackground='background:#BB5050 url(../view/img/red.png) repeat-x;';
-					//$pBackground='background-color:#BB5050;';
-				//} else  {
 					$pColor="#50BB50";
-					//$pBackground='background:#50BB50 url(../view/img/green.png) repeat-x;';
 					$pBackground='background-color:#50BB50;';
-				//}
 			}
 			for ($i=0;$i<$numDays;$i++) {
 				$color=$bgColor;
@@ -498,7 +486,7 @@ debugLog("minDate(2)=$minDate");
 					$fontSize='150%';
 					$color=($openDays[$i]==1)?$bgColor:'background-color:' . $weekendColor . ';';
 				}
-				$height=($pGroup)?'4':'8';
+				$height=($pGroup)?'8':'12';
 				if ($days[$i]>=$pStart and $days[$i]<=$pEnd) {
 					if ($rowType=="mile") {
 						echo '<td class="reportTableData" style="font-size: ' . $fontSize . ';' . $color . $noBorder . ';color:' . $pColor . ';">';
@@ -511,9 +499,19 @@ debugLog("minDate(2)=$minDate");
 						$subHeight=round((18-$height)/2);
 						echo '<td class="reportTableData" style="width:' . $width .';padding:0px;' . $color . '; vertical-align: middle;' . $noBorder . '">';
 						echo '<table width="100%" >';
-						//echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
-						echo '<tr height="' . $height . 'px"><td style="width:100%; ' . $pBackground . 'height:' .  $height . 'px;"></td></tr>';
-						//echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
+						$pBgColor=$pBackground;
+						$pHeight=$height;
+						$border="";
+						if (! $pGroup) {
+							if ($days[$i]<=$pRealEnd) {
+								$pBgColor="background: #999999;";
+							} else if ($days[$i]<$pPlanStart) {
+								$pBgColor="";
+								$border='border-bottom: 2px solid ' . $pColor . ';';
+								$pHeight=$height-2;
+							}
+						}
+						echo '<tr height="' . $pHeight . 'px"><td style="' . $border . ' width:100%; ' . $pBgColor . 'height:' .  $pHeight . 'px;"></td></tr>';
 						echo '</table>';
 					}
 				} else {
