@@ -1260,7 +1260,7 @@ workStartedSince: "started since ${1} day(s)",
 workStopped: "work stopped",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 year: "year",
-labelShowWork: "Show work",
+labelShowLeftWork: "Show left work",
 menuResourcePlanning: "Resource planning",
 currentLocaleOfFile: "en"
 }

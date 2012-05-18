@@ -616,7 +616,7 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
     errorLog("   Sendmail path : " . $path);
     errorLog("   Mail stored in Database : #" . $mail->id);
   }
-  if ($resultMail==='NO')$resultMail="";
+  if ( $resultMail==="NO" ) {$resultMail="";}
   // save the status of the sending
   $mail->mailStatus=($resultMail)?'OK':'ERROR';
   $mail->save(); 
