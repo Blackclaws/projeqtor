@@ -28,7 +28,14 @@ if ($paramEnd->id) {
   $endDate=$paramEnd->parameterValue;
   $saveDates=true;
 }
-
+$saveShowWbsObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWbs'));
+$saveShowWbs=$saveShowWbsObj->parameterValue;
+$saveShowResourceObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowResource'));
+$saveShowResource=$saveShowResourceObj->parameterValue;
+$saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowWork'));
+$saveShowWork=$saveShowWorkObj->parameterValue;
+$saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
+$saveShowClosed=$saveShowClosedObj->parameterValue;
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
@@ -157,8 +164,10 @@ if ($paramEnd->id) {
                   <?php echo i18n("labelShowWbs");?>
                   </td><td >
 		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="showWBS" name="showWBS">
+                    type="checkbox" id="showWBS" name="showWBS"
+                    <?php if ($saveShowWbs=='1') { echo ' checked="checked" '; }?> >
 		                <script type="dojo/method" event="onChange" >
+                      saveUserParameter('planningShowWbs',((this.checked)?'1':'0'));
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
@@ -166,8 +175,10 @@ if ($paramEnd->id) {
 		              <?php echo i18n("labelShowIdle");?>
                   </td><td>
 		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowIdle" name="listShowIdle">
+                    type="checkbox" id="listShowIdle" name="listShowIdle"
+                    <?php if ($saveShowClosed=='1') { echo ' checked="checked" '; }?> >
 		                <script type="dojo/method" event="onChange" >
+                      saveUserParameter('planningShowClosed',((this.checked)?'1':'0'));
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
@@ -177,8 +188,10 @@ if ($paramEnd->id) {
                   <?php echo i18n("labelShowResource");?>
                   </td><td>
                   <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowResource" name="listShowResource">
+                    type="checkbox" id="listShowResource" name="listShowResource"
+                    <?php if ($saveShowResource=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
+                      saveUserParameter('planningShowResource',((this.checked)?'1':'0'));
                       refreshJsonPlanning();
                     </script>
                   </div>&nbsp;

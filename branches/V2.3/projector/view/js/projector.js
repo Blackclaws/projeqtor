@@ -112,6 +112,13 @@ function refreshJsonPlanning() {
       param=true;
     }
   }
+  if ( dojo.byId('listShowWork') ) {
+    if (dojo.byId('listShowWork').checked) { 
+      url += (param)?"&":"?";
+      url += "showWork=true";
+      param=true;
+    }
+  }
   loadContent(url, "planningJsonData",'listForm',false);
 }
 
@@ -214,6 +221,12 @@ function changeTheme(newTheme) {
   }
 }
 
+function saveUserParameter(parameter, value) {
+  dojo.xhrPost({
+    url: "../tool/saveUserParameter.php?parameter="+parameter+"&value=" + value,
+    handleAs: "text"
+  });	 
+}
 /**
  * ============================================================================
  * Save the browser locale to session. Needed for number formating under PHP 5.2
@@ -1313,7 +1326,7 @@ function drawGantt() {
   g.setShowRes(0);                       // Show/Hide Responsible (0/1)
   g.setShowDur(1);                       // Show/Hide Duration (0/1)
   g.setShowComp(1);                      // Show/Hide % Complete(0/1)
-  g.setCaptionType('Caption');              // Set to Show Caption
+  g.setCaptionType('Caption');           // Set to Show Caption
                           // (None,Caption,Resource,Duration,Complete)
   g.setShowStartDate(1);                 // Show/Hide Start Date(0/1)
   g.setShowEndDate(1);                   // Show/Hide End Date(0/1)
@@ -1362,7 +1375,17 @@ function drawGantt() {
       pEnd=(item.initialEndDate!=" ")?item.initialEndDate:pEnd;
       pEnd=(item.validatedEndDate!=" ")?item.validatedEndDate:pEnd;
       pEnd=(item.plannedEndDate!=" ")?item.plannedEndDate:pEnd;
-      pEnd=(item.realEndDate!=" ")?item.realEndDate:pEnd;
+      pRealEnd="";
+      pPlannedStart=""
+      pWork="";
+      if (dojo.byId('resourcePlanning')) {
+    	pRealEnd=item.realEndDate;
+    	pPlannedStart=item.plannedStartDate;
+        pWork=item.leftWorkDisplay;
+        g.setSplitted(true);
+      } else {
+    	pEnd=(item.realEndDate!=" ")?item.realEndDate:pEnd;
+      }
       var realWork=parseFloat(item.realWork);
       var plannedWork=parseFloat(item.plannedWork);
       var progress=0;
@@ -1404,12 +1427,20 @@ function drawGantt() {
 	    	pResource=item.resource;
 	    }
 	  }
+      var pCaption=pResource;
+      if ( dojo.byId('listShowLeftWork') && dojo.byId('listShowLeftWork').checked ) {
+  	    if (item.leftWork>0) { 
+  	    	pCaption=item.leftWorkDisplay;
+  	    } else {
+  	    	pCaption="";
+  	    }
+  	  }
       var pDepend=item.depend;
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
 //console.log('item.id='+item.id+'   pname='+pName+'   pGroup='+pGroup+'   topId='+topId);      
-      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, pResource,   progress, pGroup, topId,   pOpen,     pDepend  , pResource,    pClass, pScope));
+      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, pResource,   progress, pGroup, topId,   pOpen,     pDepend  , pCaption, pClass, pScope, pWork, pRealEnd, pPlannedStart));
     }
     g.Draw();  
     g.DrawDependencies();

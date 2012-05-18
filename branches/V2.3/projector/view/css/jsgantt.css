@@ -119,8 +119,8 @@ div .scrollRightTop {
   margin-top:4px;
   opacity:0.4; 
   filter: alpha(opacity=40);
-  z-index: -4; 
-  float:left; 
+  z-index: 14; 
+  position: absolute; top: 0px; left: 0px;; 
 }
 .ganttGrouprowBarComplete { 
   z-index: -4; 

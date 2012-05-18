@@ -76,7 +76,7 @@ class PlanningElement extends SqlElement {
                                   "plannedCost"=>"readonly",
                                   "elementary"=>"hidden",
                                   "idPlanningMode"=>"hidden",
-                                  "idBill"=>"hidden"
+  								                "idBill"=>"hidden"
   );   
   
   private static $predecessorItemsArray = array();
@@ -213,7 +213,7 @@ class PlanningElement extends SqlElement {
         }
       }
     } else {
-      $this->progress = $this->realWork / ($this->realWork + $this->leftWork) * 100;
+    	$this->progress = $this->realWork / ($this->realWork + $this->leftWork) * 100;
     }
     
     // update topId if needed
@@ -315,7 +315,7 @@ class PlanningElement extends SqlElement {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
     }          
     if ($this->wbsSortable!=$old->wbsSortable) {
-      $refType=$this->refType;
+    	$refType=$this->refType;
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
         $refObj->sortOrder=$this->wbsSortable;
@@ -364,7 +364,7 @@ class PlanningElement extends SqlElement {
     $plannedStartDate=null;
     $plannedEndDate=null;
     foreach ($assList as $ass) {
-      $assignedWork+=$ass->assignedWork;
+    	$assignedWork+=$ass->assignedWork;
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
       $realWork+=$ass->realWork;
@@ -540,10 +540,10 @@ class PlanningElement extends SqlElement {
    * Retrieve the list of all Predecessors, recursively
    */
   public function getPredecessorItemsArray() {
-    // Imporvement : get static stored value if already fetched 
-    /*if (array_key_exists('#' . $this->id, self::$predecessorItemsArray)) {
-      return self::$predecessorItemsArray['#' . $this->id]; 
-    }*/
+  	// Imporvement : get static stored value if already fetched 
+  	/*if (array_key_exists('#' . $this->id, self::$predecessorItemsArray)) {
+  		return self::$predecessorItemsArray['#' . $this->id]; 
+  	}*/
     $result=array();
     $crit=array("successorId"=>$this->id);
     $dep=new Dependency();
@@ -580,12 +580,12 @@ class PlanningElement extends SqlElement {
     return $resultList;
   }
   public function getPredecessorItemsArrayIncludingParents() {
-    $result=$this->getPredecessorItemsArray();
-    $parents=$this->getParentItemsArray();
-    foreach ($parents as $parent) {
-      $resParent=$parent->getPredecessorItemsArray();
-      array_merge($result,$resParent);
-    }
+  	$result=$this->getPredecessorItemsArray();
+  	$parents=$this->getParentItemsArray();
+  	foreach ($parents as $parent) {
+  		$resParent=$parent->getPredecessorItemsArray();
+  		array_merge($result,$resParent);
+  	}
     return $result;
   }
   
@@ -780,7 +780,7 @@ class PlanningElement extends SqlElement {
       $lstPrec=$directPredecessors["#".$dep->successorId];
       $lstPrec["#".$dep->predecessorId]=$dep->predecessorId;   
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
-        $parent=new PlanningElement($dep->predecessorId);
+      	$parent=new PlanningElement($dep->predecessorId);
         $parent->_parentList=array();
         $parent->_predecessorList=array();
         $parent->_predecessorListWithParent=array();
@@ -815,23 +815,23 @@ class PlanningElement extends SqlElement {
   
   
   private static function getRecursivePredecessor($directFullList, $id, $result) {
-    if (isset($result[$id]->_predecessorList)) {
-      return $result[$id]->_predecessorList;
-    }
-    if (array_key_exists($id, $directFullList)) {
+  	if (isset($result[$id]->_predecessorList)) {
+  		return $result[$id]->_predecessorList;
+  	}
+  	if (array_key_exists($id, $directFullList)) {
       $result=$directFullList[$id];
-      foreach ($directFullList[$id] as $idPrec=>$prec) {
+  	  foreach ($directFullList[$id] as $idPrec=>$prec) {
         $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result));
       }
     } else {
       $result=array();
     } 
-    return $result;
+  	return $result;
   }
   
   static function comparePlanningElement($a, $b) {
     if (array_key_exists('#'.$a->id, $b->_predecessorListWithParent)) {
-      return -1;
+    	return -1;
     }
     if (array_key_exists('#'.$b->id, $a->_predecessorListWithParent)) {
       return +1;
@@ -844,7 +844,7 @@ class PlanningElement extends SqlElement {
     }
     // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
     if ($a->idPlanningMode=='2' or $a->idPlanningMode=='3' or $a->idPlanningMode=='2') {
-      return -1;
+    	return -1;
     }
     if ($b->idPlanningMode=='2' or $b->idPlanningMode=='3' or $b->idPlanningMode=='2') {
       return +1;

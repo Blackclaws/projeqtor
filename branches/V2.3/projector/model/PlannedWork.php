@@ -238,7 +238,7 @@ class PlannedWork extends GeneralWork {
           $plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
         }
         if (! $plan->realEndDate) {
-          //$plan->plannedEndDate=($plan->leftWork>0)?$plan->plannedEndDate:$startPlan;
+          $plan->plannedEndDate=($plan->plannedWork==0)?$plan->validatedEndDate:$plan->plannedEndDate;
         }
         if ($profile=="FDUR") {
           if (! $plan->realStartDate) {
