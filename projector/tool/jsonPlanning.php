@@ -173,9 +173,14 @@
   }
 
   function displayGantt($result) {
+  	global $displayResource;
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
       $showWbs=true;
+    }
+    $showResource=false;
+    if ( array_key_exists('showResource',$_REQUEST) ) {
+      $showResource=true;
     }
     // calculations
     $startDate=date('Y-m-d');
@@ -229,6 +234,23 @@
         }
         $line['pStart']=$pStart;
         $line['pEnd']=$pEnd;
+        if ($showResource) {
+          $crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
+          $ass=new Assignment();
+          $assList=$ass->getSqlElementsFromCriteria($crit,false);
+          $arrayResource=array();
+          $objElt=new $line['refType']($line['refId']);
+          foreach ($assList as $ass) {
+            $res=new Resource($ass->idResource);
+            if ($res->$displayResource) {         
+              $arrayResource[$res->id]=$res->$displayResource;
+              if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
+                $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
+              }
+            }
+          }
+          $line["resource"]=implode(', ',$arrayResource);
+        }
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
@@ -411,6 +433,7 @@
             $pBackground='background-color:#50BB50;';
           }
         }
+        $dispCaption=false;
         for ($i=0;$i<$numDays;$i++) {
           $color=$bgColor;
           $noBorder="border-left: 0px;";
@@ -445,12 +468,21 @@
               echo '<tr height="' . $height . 'px"><td style="width:100%; ' . $pBackground . 'height:' .  $height . 'px;"></td></tr>';              
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
-            }
+              $dispCaption=($showResource)?true:false;
+            } 
           } else { 
             echo '<td class="reportTableData" width="' . $width .'" style="width: ' . $width . $color . $noBorder . '">';
             //if($format=='week') {
               //echo '&nbsp;&nbsp;';
             //}
+            if ($days[$i]>$pEnd and $dispCaption) {
+            	echo '<div style="position: relative; top: 0px; height: 12px;">';
+            	echo '<div style="position: absolute; top: -1px; left: 1px; height:12px; width:200px;">';
+            	echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">' . $line['resource'] . '</div>';
+            	echo '</div>';
+            	echo '</div>';
+            	$dispCaption=false;
+            }
           }
           echo '</td>';
         }
