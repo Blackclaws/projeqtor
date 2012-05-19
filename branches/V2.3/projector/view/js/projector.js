@@ -112,8 +112,8 @@ function refreshJsonPlanning() {
       param=true;
     }
   }
-  if ( dojo.byId('listShowWork') ) {
-    if (dojo.byId('listShowWork').checked) { 
+  if ( dojo.byId('listShowLeftWork') ) {
+    if (dojo.byId('listShowLeftWork').checked) { 
       url += (param)?"&":"?";
       url += "showWork=true";
       param=true;

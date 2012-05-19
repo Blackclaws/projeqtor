@@ -228,6 +228,16 @@ function showPrint (page, context, comboName, outMode) {
 		  if (dijit.byId('showWBS').checked) { 
 				params+="&showWBS=true";
 		  }
+		  if ( dijit.byId('listShowResource') ) {
+		    if (dijit.byId('listShowResource').checked) { 
+		      params+="&showResource=true";
+		    }
+		  }
+		  if ( dijit.byId('listShowLeftWork') ) {
+		    if (dijit.byId('listShowLeftWork').checked) { 
+		      params+="&showWork=true";
+		    }
+		  }
 		}
 	} else if (context=='report'){
 		var frm=dojo.byId('reportForm');

@@ -254,6 +254,10 @@ function displayGantt($list) {
 	if (array_key_exists('showWBS',$_REQUEST) ) {
 		$showWbs=true;
 	}
+  $showWork=false;
+  if ( array_key_exists('showWork',$_REQUEST) ) {
+    $showWork=true;
+  }
 	// calculations
 	$startDate=date('Y-m-d');
 	if (array_key_exists('startDate',$_REQUEST)) {
@@ -469,6 +473,7 @@ function displayGantt($list) {
 					$pColor="#50BB50";
 					$pBackground='background-color:#50BB50;';
 			}
+			$dispCaption=false;
 			for ($i=0;$i<$numDays;$i++) {
 				$color=$bgColor;
 				$noBorder="border-left: 0px;";
@@ -513,12 +518,19 @@ function displayGantt($list) {
 						}
 						echo '<tr height="' . $pHeight . 'px"><td style="' . $border . ' width:100%; ' . $pBgColor . 'height:' .  $pHeight . 'px;"></td></tr>';
 						echo '</table>';
+						$dispCaption=($showWork)?true:false;
 					}
 				} else {
 					echo '<td class="reportTableData" width="' . $width .'" style="width: ' . $width . $color . $noBorder . '">';
-					//if($format=='week') {
-					//echo '&nbsp;&nbsp;';
-					//}
+				  if ($days[$i]>$pEnd and $dispCaption) {
+              echo '<div style="position: relative; top: 0px; height: 12px;">';
+              echo '<div style="position: absolute; top: -1px; left: 1px; height:12px; width:200px;">';
+              echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">' 
+                 . Work::displayWorkWithUnit($line['leftWork']) . '</div>'; 
+              echo '</div>';
+              echo '</div>';
+              $dispCaption=false;
+          }
 				}
 				echo '</td>';
 			}

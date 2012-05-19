@@ -94,6 +94,7 @@ for ($i=1;$i<=2;$i++) {
     }
   }
 }
+if (! $start and ! $end) {$tab=array();}
 if (checkNoData($tab)) exit;
 
 $arrDates=array();
