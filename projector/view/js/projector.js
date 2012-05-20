@@ -1440,7 +1440,10 @@ function drawGantt() {
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
 //console.log('item.id='+item.id+'   pname='+pName+'   pGroup='+pGroup+'   topId='+topId);      
-      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, pResource,   progress, pGroup, topId,   pOpen,     pDepend  , pCaption, pClass, pScope, pWork, pRealEnd, pPlannedStart));
+      g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, 
+    		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
+    		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
+    		                             pWork, pWork, pWork, pWork, pWork));
     }
     g.Draw();  
     g.DrawDependencies();
