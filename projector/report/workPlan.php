@@ -1,5 +1,4 @@
 <?PHP
-//echo "workPlan.php";
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */ 

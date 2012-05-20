@@ -388,32 +388,35 @@
         $level=(strlen($wbs)+1)/4;
         $tab=""; 
         for ($i=1;$i<$level;$i++) {
-          $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-        }
+          $tab.='<span class="ganttSep" >&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+        }       
         $pName=($showWbs)?$line['wbs']." ":"";
-        $pName.=$line['refName'];
+        $pName.= htmlEncode($line['refName']);
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
         
-        echo '<TR style="height:18px;' ;
         if ($closedWbs and $closedWbs!=$line['wbsSortable']) {
-          echo ' display:none;';
+          //echo ' display:none;';
+          continue;
         }
+        echo '<TR style="height:18px;' ;
+        
         echo '">';
         echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
         echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
-        /*if ($pGroup) {
-          echo '<span width="16"';
+        echo '<span style="width: 16px;height:100%;vertical-align:middle;">';
+        if ($pGroup) {
           if ($collapsed) {
-            echo 'class="ganttExpandClosed"';
+            echo '<img style="width:12px" src="../view/css/images/plus.gif" />';
           } else {
-            echo 'class="ganttExpandOpened"';
-          }
-          echo '&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+            echo '<img style="width:12px" src="../view/css/images/minus.gif" />';
+          }         
         } else {
-          echo '<span width="16"><div style="float: left;width:16px;">&nbsp;</div></span>';
-        } */
-        echo htmlEncode($line['refName']) . '</NOBR></TD>';
+          echo '<img style="width:12px" src="../view/css/images/none.gif" />';
+        }
+        //<div style="float: left;width:16px;">&nbsp;</div></span>';
+        echo '</span>&nbsp;';
+        echo $pName . '</NOBR></TD>';
         echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
         echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
         echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;

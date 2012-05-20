@@ -10,7 +10,23 @@
 
 .iconMpp { background-image: url(images/mpp.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .dijitDisabled .iconMpp { background-image: url(images/mppDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
-
+	
+.iconCollapse {
+  background-image: url(images/minus.gif);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+.iconExpand {
+  background-image: url(images/plus.gif);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  cursor: pointer;
+}
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */

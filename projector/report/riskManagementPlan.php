@@ -193,7 +193,7 @@ function listLinks($obj) {
   $res='<table style="width:100%; margin:0 ; spacing:0 ; padding: 0">';
   foreach ($lst as $link) {
   $obj=new $link['type']($link['id']);
-  $style=($obj->done)?'style="text-decoration: line-through;"':'';
+  $style=(isset($obj->done) and $obj->done)?'style="text-decoration: line-through;"':'';
     $res.='<tr><td '. $style . '>' . substr($link['type'],0,1) . $link['id'] . '</td></tr>';
   }
   $res.='</table>';

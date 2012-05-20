@@ -11,12 +11,12 @@ class Recipient extends SqlElement {
   public $companyNumber;
   public $numTax;  
   public $taxFree;
+  public $idle;
   public $_sec_IBAN;
   public $bank;
   public $ibanCountry;
   public $ibanKey;
   public $ibanBban;
-  public $idle;
   public $_col_2_2_Address;
   public $designation;
   public $street;

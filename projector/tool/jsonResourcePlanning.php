@@ -223,7 +223,7 @@ if (Sql::$lastQueryNbRows > 0) {
 				if ($id=='idPe') {$idPe=$val;}
 			}
 			//add expanded status
-			if ($line['refType']=='Resource' and array_key_exists('ResourcePlanning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
+			if ($line['refType']=='Resource' and array_key_exists('Planning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
 				echo ',"collapsed":"1"';
 			} else {
 				echo ',"collapsed":"0"';
@@ -250,6 +250,7 @@ if (Sql::$lastQueryNbRows > 0) {
 }
 
 function displayGantt($list) {
+	global $outMode;
 	$showWbs=false;
 	if (array_key_exists('showWBS',$_REQUEST) ) {
 		$showWbs=true;
@@ -410,7 +411,6 @@ function displayGantt($list) {
 		// lines
 		$width=round($colWidth/$colUnit) . "px;";
 		$collapsedList=Collapsed::getCollaspedList();
-		$closedWbs='';
 		foreach ($resultArray as $line) {
 			$pEnd=$line['pEnd'];
 			$pStart=$line['pStart'];
@@ -420,16 +420,12 @@ function displayGantt($list) {
 			$plannedWork=$line['plannedWork'];
 			$progress=$line['progress'];
 			// pGroup : is the tack a group one ?
-			$pGroup=($line['elementary']=='0')?1:0;
-			if ($closedWbs and strlen($line['wbsSortable'])<=strlen($closedWbs)) {
-				$closedWbs="";
-			}
+			$pGroup=($line['refType']=='Resource')?1:0;
 			$scope='Planning_'.$line['refType'].'_'.$line['refId'];
-			$collapsed=false;
-			if ($pGroup and array_key_exists($scope, $collapsedList)) {
-				$collapsed=true;
-				if (! $closedWbs) {
-					$closedWbs=$line['wbsSortable'];
+			if ($pGroup) {
+				$collapsed=false;
+				if (array_key_exists($scope, $collapsedList)) {
+				  $collapsed=true;
 				}
 			}
 			$compStyle="";
@@ -450,18 +446,29 @@ function displayGantt($list) {
 				$tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
 			}
 			$pName=($showWbs)?$line['wbs']." ":"";
-			$pName.=$line['refName'];
+			$pName.=htmlEncode($line['refName']);
 			$duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
 			//echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
 
-			echo '<TR style="height:18px;' ;
-			if ($closedWbs and $closedWbs!=$line['wbsSortable']) {
-				echo ' display:none;';
-			}
+			if ($collapsed and ! $pGroup) {
+        continue;
+      }
+      echo '<TR style="height:18px;' ;
 			echo '">';
 			echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
 			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
-			echo htmlEncode($line['refName']) . '</NOBR></TD>';
+		  echo '<span style="width: 16px;height:100%;vertical-align:middle;">';
+			if ($pGroup) {
+        if ($collapsed) {
+          echo '<img style="width:12px" src="../view/css/images/plus.gif" />';
+        } else {
+          echo '<img style="width:12px" src="../view/css/images/minus.gif" />';
+        }         
+      } else {
+        echo '<img style="width:12px" src="../view/css/images/none.gif" />';
+      }
+      echo '</span>&nbsp;';
+      echo $pName . '</NOBR></TD>';
 			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
 			echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter(round($progress*100,0)) . '</TD>' ;
 			echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
@@ -503,6 +510,9 @@ function displayGantt($list) {
 					} else {
 						$subHeight=round((18-$height)/2);
 						echo '<td class="reportTableData" style="width:' . $width .';padding:0px;' . $color . '; vertical-align: middle;' . $noBorder . '">';
+						if ($pGroup and ($days[$i]==$pStart or $days[$i]==$pEnd) and $outMode!='pdf') {
+							echo '<div class="ganttTaskgroupBarExtInvisible" style="float:left; height:4px"></div>';
+						}
 						echo '<table width="100%" >';
 						$pBgColor=$pBackground;
 						$pHeight=$height;
@@ -518,6 +528,18 @@ function displayGantt($list) {
 						}
 						echo '<tr height="' . $pHeight . 'px"><td style="' . $border . ' width:100%; ' . $pBgColor . 'height:' .  $pHeight . 'px;"></td></tr>';
 						echo '</table>';
+            if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
+						  echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
+                . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
+                . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
+                . '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>';
+					  }
+					  if ($pGroup and $days[$i]==$pEnd and $outMode!='pdf') {
+              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'               
+                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'                 
+                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'              
+                . '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';
+            }  
 						$dispCaption=($showWork)?true:false;
 					}
 				} else {
