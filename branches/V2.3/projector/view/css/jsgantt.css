@@ -157,6 +157,11 @@ div .scrollRightTop {
   overflow: hidden; 
   width:1px
 }
+.ganttTaskgroupBarExtInvisible { 
+  Z-INDEX: -4; 
+  overflow: hidden; 
+  width:1px
+}
 
 .ganttTaskgroupBarText { 
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -259,5 +264,6 @@ div .scrollRightTop {
 .ganttScale {
 	width:100px;
 	float:none;
+	test-align: left;
 }
 	
