@@ -1323,9 +1323,20 @@ function drawGantt() {
     gFormat=g.getFormat();
   }
   g = new JSGantt.GanttChart('g',dojo.byId('GanttChartDIV'), gFormat); 
-  g.setShowRes(0);                       // Show/Hide Responsible (0/1)
+  g.setShowRes(1);                       // Show/Hide Responsible (0/1)
   g.setShowDur(1);                       // Show/Hide Duration (0/1)
   g.setShowComp(1);                      // Show/Hide % Complete(0/1)
+  g.setShowStartDate(1);   
+  g.setShowEndDate(1);   
+  g.setShowValidatedWork(1);
+  g.setShowAssignedWork(1);
+  g.setShowRealWork(1);
+  g.setShowLeftWork(1);
+  g.setShowPlannedWork(1);
+  if (dojo.byId('resourcePlanning')) {
+	  g.setShowRes(0); 
+	  g.setShowValidatedWork(0);
+  }
   g.setCaptionType('Caption');           // Set to Show Caption
                           // (None,Caption,Resource,Duration,Complete)
   g.setShowStartDate(1);                 // Show/Hide Start Date(0/1)
@@ -1443,7 +1454,8 @@ function drawGantt() {
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, 
     		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
     		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
-    		                             pWork, pWork, pWork, pWork, pWork));
+    		                             item.validatedWorkDisplay, item.assignedWorkDisplay, 
+    		                             item.realWorkDisplay, item.leftWorkDisplay, item.plannedWorkDisplay));
     }
     g.Draw();  
     g.DrawDependencies();

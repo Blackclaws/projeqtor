@@ -127,6 +127,11 @@
         echo  '{';
         $nbFields=0;
         $idPe="";
+        $line["validatedWorkDisplay"]=Work::displayWorkWithUnit($line["validatedWork"]);
+        $line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
+        $line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
+        $line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
+        $line["plannedWorkDisplay"]=Work::displayWorkWithUnit($line["plannedWork"]);
         foreach ($line as $id => $val) {
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
@@ -173,7 +178,7 @@
   }
 
   function displayGantt($result) {
-  	global $displayResource;
+  	global $displayResource, $outMode;;
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
       $showWbs=true;
@@ -466,11 +471,26 @@
             } else {
               $subHeight=round((18-$height)/2);
               echo '<td class="reportTableData" style="width:' . $width .';padding:0px;' . $color . '; vertical-align: middle;' . $noBorder . '">';
+              if ($pGroup and ($days[$i]==$pStart or $days[$i]==$pEnd) and $outMode!='pdf') {
+                echo '<div class="ganttTaskgroupBarExtInvisible" style="float:left; height:4px"></div>';
+              }
               echo '<table width="100%" >';
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';              
               echo '<tr height="' . $height . 'px"><td style="width:100%; ' . $pBackground . 'height:' .  $height . 'px;"></td></tr>';              
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
+              if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
+                echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
+                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
+                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
+                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>';
+              }
+              if ($pGroup and $days[$i]==$pEnd and $outMode!='pdf') {
+	              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'               
+	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'                 
+	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'              
+	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';
+	            }  
               $dispCaption=($showResource)?true:false;
             } 
           } else { 
