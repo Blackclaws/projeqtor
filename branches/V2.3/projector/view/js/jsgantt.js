@@ -79,7 +79,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.getPlanStart= function(){ return vPlanStart;  };
   this.getValidatedWork     = function(){ return vValidatedWork;  };
   this.getAssignedWork     = function(){ return vAssignedWork;  };
-  this.getRealWork     = function(){ return vWRealork;  };
+  this.getRealWork     = function(){ return vRealWork;  };
   this.getLeftWork     = function(){ return vLeftWork;  };
   this.getPlannedWork     = function(){ return vPlannedWork;  };
   this.getColor    = function(){ return vColor;};
@@ -418,24 +418,24 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vRowType="";
     var vNameWidth = 300;  
     var vStatusWidth = 70;
-    var vResourceWidth = 70;
+    var vResourceWidth = 90;
     var vWorkWidth = 70;
     var vDateWidth = 80;
     var vDurationWidth = 60;
     var vProgressWidth = 50;
     var vWidth=this.getWidth();
     var vLeftWidth = 16 
-      + (vNameWidth * 1) 
-      + (vResourceWidth * this.getShowRes() )
-      + (vDurationWidth * this.getShowDur() )
-      + (vProgressWidth * this.getShowComp() )
-      + (vDateWidth * this.getShowStartDate() )
-      + (vDateWidth * this.getShowEndDate() )
-      + (vWorkWidth * this.getShowLeftWork() )
-      + (vWorkWidth * this.getShowAssignedWork() )
-      + (vWorkWidth * this.getShowPlannedWork() )
-      + (vWorkWidth * this.getShowRealWork() )
-      + (vWorkWidth * this.getShowValidatedWork() );
+      +   vNameWidth 
+      + ( (1+vResourceWidth) * this.getShowRes() )
+      + ( (1+vDurationWidth) * this.getShowDur() )
+      + ( (1+vProgressWidth) * this.getShowComp() )
+      + ( (1+vDateWidth) * this.getShowStartDate() )
+      + ( (1+vDateWidth) * this.getShowEndDate() )
+      + ( (1+vWorkWidth) * this.getShowLeftWork() )
+      + ( (1+vWorkWidth) * this.getShowAssignedWork() )
+      + ( (1+vWorkWidth) * this.getShowPlannedWork() )
+      + ( (1+vWorkWidth) * this.getShowRealWork() )
+      + ( (1+vWorkWidth) * this.getShowValidatedWork() );
     var vRightWidth = vWidth - vLeftWidth - 18;
     var ffSpecificHeight=(dojo.isFF)?' class="ganttHeight"':'';
     var vLeftTable="";
@@ -557,7 +557,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       if(vShowRes ==1) {
         vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colResource') + '</TD>' ;
+          + JSGantt.i18n('colIdResource') + '</TD>' ;
       }
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>'
@@ -615,11 +615,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           +' class="namePart' + vRowType + '"><NOBR>' + vTaskList[i].getName() + '</NOBR></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
-        if(vShowRes ==1) {
-          vLeftTable += '<TD class="ganttDetail" >' 
-            +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;">' 
-            + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
-        }
         if(vShowValidatedWork ==1) { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
@@ -677,6 +672,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + JSGantt.formatDateStr( vTaskList[i].getEnd(), vDateDisplayFormat) 
             + '</span></NOBR></TD>' ;
         }
+        if(vShowRes ==1) {
+            vLeftTable += '<TD class="ganttDetail" >' 
+              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;">' 
+              + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
+          }
         vLeftTable += '</TR>';
       }
       vLeftTable += '<TR><TD style="width:16px;"></TD>';

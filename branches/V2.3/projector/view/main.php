@@ -164,6 +164,7 @@ checkVersion(); ?>
     var originableArray=new Array();
     var copyableArray=new Array();
     var indicatorableArray=new Array();
+    var planningColumnOrder=new Array();
     <?php 
       $list=SqlList::getListNotTranslated('Dependable');
       foreach ($list as $id=>$name) {
@@ -190,7 +191,11 @@ checkVersion(); ?>
       $list=SqlList::getListNotTranslated('Indicatorable');
       foreach ($list as $id=>$name) {
         echo "indicatorableArray['" . $id . "']='" . $name . "';";
-      }                
+      }        
+      $list=Parameter::getPlanningColumnOrder();
+      foreach ($list as $id=>$name) {
+        echo "planningColumnOrder['" . $id . "']='" . $name . "';";
+      }
       ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>

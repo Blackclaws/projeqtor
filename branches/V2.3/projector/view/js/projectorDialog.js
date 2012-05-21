@@ -1034,7 +1034,7 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 		       +'&selected=' + idResource,
 		       clearOnClose: true});
 	dijit.byId('assignmentIdResource').store.fetch();
-	dijit.byId("assignmentIdResource").set("value",idResource);console.log('4');	
+	dijit.byId("assignmentIdResource").set("value",idResource);	
 	//dijit.byId('assignmentIdRole').store = new dojo.data.ItemFileReadStore({
   //  url: '../tool/jsonList.php?listType=listRoleResource&idResource='+idRole});
 	//dijit.byId('assignmentIdRole').store.fetch();

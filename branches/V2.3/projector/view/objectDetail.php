@@ -1658,7 +1658,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <img src="css/images/smallButtonRemove.png" ' 
         . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" 
                . Work::displayWork($assignment->realWork)*100 . "','" 
-               . SqlList::getNameFromId('Resource', $assignment->idResource)  . "'" . ');" ' 
+               . htmlEncode(SqlList::getNameFromId('Resource', $assignment->idResource),'quotes')  . "'" . ');" ' 
         . 'title="' . i18n('removeAssignment') . '" class="smallButton"/> ';
       }
       echo '</td>';

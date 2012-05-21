@@ -114,7 +114,10 @@ if (Sql::$lastQueryNbRows > 0) {
 	$collapsedList=Collapsed::getCollaspedList();
 	$list=array();
 	$idResource="";
+	//$sumValidated=0;
+	$sumAssigned=0;
 	$sumReal=0;
+	$sumLeft=0;
 	$sumPlanned=0;
 	while ($line = Sql::fetchLine($result)) {
 		if ($line['idResource']!=$idResource) {
@@ -138,14 +141,20 @@ if (Sql::$lastQueryNbRows > 0) {
 			$resAr["topId"]=0;
 			$resAr["leftWork"]=0;
 			$list['Resource#'.$idResource]=$resAr;
-			$sumReal=0;
-			$sumPlanned=0;
-			$sumLeft=0;
+			//$sumValidated=0;
+		  $sumAssigned=0;
+		  $sumReal=0;
+		  $sumLeft=0;
+		  $sumPlanned=0;
 		}
 		$line["elementary"]='1';
 		$line["topRefType"]='Resource';
 		$line["topRefId"]=$idResource;
+		$line["validatedWorkDisplay"]='';
+		$line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
+		$line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
 		$line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
+		$line["plannedWorkDisplay"]=Work::displayWorkWithUnit($line["plannedWork"]);
 		$line["topId"]=9999999999+$idResource;
 		if ($line["leftWork"]>0) {
 			//$line['realEndDate']='';
@@ -155,9 +164,11 @@ if (Sql::$lastQueryNbRows > 0) {
 		}
 		$line['progress']=($line["plannedWork"]>0)?$line["realWork"]/$line["plannedWork"]:'';
 		$list[]=$line;
-		$sumReal+=$line["realWork"];
+		//$sumValidated=0;
+    $sumAssigned+=$line["assignedWork"];
+    $sumReal+=$line["realWork"];
+    $sumLeft+=$line["leftWork"];
 		$sumPlanned+=$line["plannedWork"];
-		$sumLeft+=$line["leftWork"];
 		if (! $list['Resource#'.$idResource]["realStartDate"] or $line['realStartDate'] < $list['Resource#'.$idResource]["realStartDate"]) {
 			if ($line['realStartDate'] and $line['realStartDate']<$line['plannedStartDate']) {
 			  $list['Resource#'.$idResource]["realStartDate"]=$line['realStartDate'];
@@ -181,10 +192,15 @@ if (Sql::$lastQueryNbRows > 0) {
 			  }
 			}
 		}
+		$list['Resource#'.$idResource]["assignedWork"]=$sumAssigned;
 		$list['Resource#'.$idResource]["realWork"]=$sumReal;
-		$list['Resource#'.$idResource]["plannedWork"]=$sumPlanned;
 		$list['Resource#'.$idResource]["leftWork"]=$sumLeft;
+		$list['Resource#'.$idResource]["plannedWork"]=$sumPlanned;
+		$list['Resource#'.$idResource]["validatedWorkDisplay"]='';
+		$list['Resource#'.$idResource]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumAssigned);
+		$list['Resource#'.$idResource]["realWorkDisplay"]=Work::displayWorkWithUnit($sumReal);
 		$list['Resource#'.$idResource]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumLeft);
+		$list['Resource#'.$idResource]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumPlanned);
 		$list['Resource#'.$idResource]["progress"]=($sumPlanned)?round($sumReal/$sumPlanned,2):0;
 		if (! isset($arrayPeAss[$line['idPe']])) {
 			$arrayPeAss[$line['idPe']]=array();

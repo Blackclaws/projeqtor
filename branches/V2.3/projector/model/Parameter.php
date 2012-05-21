@@ -331,5 +331,20 @@ class Parameter extends SqlElement {
     }
     return $val;
   }
+  
+  static public function getPlanningColumnOrder() {
+  	$res=array();
+  	$i=1;
+  	$res['ValidatedWork']=$i++;
+  	$res['AssignedWork']=$i++;
+  	$res['RealWork']=$i++;
+  	$res['LeftWork']=$i++;
+  	$res['PlannedWork']=$i++;
+  	$res['Duration']=$i++;
+  	$res['StartDate']=$i++;
+  	$res['EndDate']=$i++;
+  	$res['Resource']=$i++;
+  	return $res;
+  }
 }
 ?>
