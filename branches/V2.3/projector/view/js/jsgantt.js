@@ -85,7 +85,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.getColor    = function(){ return vColor;};
   this.getLink     = function(){ return vLink; };
   this.getMile     = function(){ return vMile; };
-  this.getDepend   = function(){ if(vDepend) return vDepend; else return null };
+  this.getDepend   = function(){ if(vDepend) return vDepend; else return null; };
   this.getCaption  = function(){ if(vCaption) return vCaption; else return ''; };
   this.getResource = function(){ if(vRes) return vRes; else return '&nbsp';  };
   this.getCompVal  = function(){ if(vComp) return vComp; else return 0; };
@@ -108,20 +108,20 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
 //console.log(this.getID()+" = "+this.getEnd()+" - "+this.getStart()+" = "+vDuration);    	  
       }
     }
-    return( vDuration )
+    return( vDuration );
   };
-  this.getParent   = function(){ return vParent };
-  this.getGroup    = function(){ return vGroup };
-  this.getOpen     = function(){ return vOpen };
-  this.getLevel    = function(){ return vLevel };
-  this.getNumKids  = function(){ return vNumKid };
-  this.getStartX   = function(){ return x1 };
-  this.getStartY   = function(){ return y1 };
-  this.getEndX     = function(){ return x2 };
-  this.getEndY     = function(){ return y2 };
-  this.getVisible  = function(){ return vVisible };
-  this.getScope    = function(){ return vScope };
-  this.getClass  = function(){ return vClass };
+  this.getParent   = function(){ return vParent; };
+  this.getGroup    = function(){ return vGroup; };
+  this.getOpen     = function(){ return vOpen; };
+  this.getLevel    = function(){ return vLevel; };
+  this.getNumKids  = function(){ return vNumKid; };
+  this.getStartX   = function(){ return x1; };
+  this.getStartY   = function(){ return y1; };
+  this.getEndX     = function(){ return x2; };
+  this.getEndY     = function(){ return y2; };
+  this.getVisible  = function(){ return vVisible; };
+  this.getScope    = function(){ return vScope; };
+  this.getClass  = function(){ return vClass; };
   this.setDepend   = function(pDepend){ vDepend = pDepend;};
   this.setStart    = function(pStart){ vStart = pStart;};
   this.setEnd      = function(pEnd)  { vEnd   = pEnd;  };
@@ -158,6 +158,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   var vShowRealWork = 0;
   var vShowLeftWork = 0;
   var vShowPlannedWork = 0;
+  var vSortArray=new Array();
   var vSplitted = false;
   var vDateInputFormat = "yyyy-mm-dd";
   var vDateDisplayFormat = "yyyy-mm-dd";
@@ -188,6 +189,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.setShowRealWork = function(pRealWork) { vShowRealWork = pRealWork; };
   this.setShowLeftWork = function(pLeftWork) { vShowLeftWork = pLeftWork; };
   this.setShowPlannedWork = function(pPlannedWork) { vShowPlannedWork = pPlannedWork; };
+  this.setSortArray = function(pSortArray) { vSortArray = pSortArray; };
   this.setSplitted = function(pSplitted) { vSplitted = pSplitted; };
   this.setShowStartDate = function(pShow) { vShowStartDate = pShow; };
   this.setShowEndDate = function(pShow) { vShowEndDate = pShow; };
@@ -225,6 +227,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.getSplitted = function(){ return vSplitted; };
   this.getShowStartDate = function(){ return vShowStartDate; };
   this.getShowEndDate = function(){ return vShowEndDate; };
+  this.getSortArray = function(){ return vSortArray; };
   this.getDateInputFormat = function() { return vDateInputFormat; };
   this.getDateDisplayFormat = function() { return vDateDisplayFormat; };
   this.getCaptionType = function() { return vCaptionType; };
@@ -301,7 +304,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.border = "0px";
     oDiv.style.zIndex = 0;
     if (!color) color="#000000";
-    color="#000000"
+    color="#000000";
     oDiv.style.backgroundColor = color;
     oDiv.style.left = vLeft + "px";
     oDiv.style.top = vTop + "px";
@@ -485,79 +488,84 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         +'<TD class="ganttLeftTopLine" style="width: ' + vNameWidth + 'px;"><NOBR>';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
       vLeftTable+= '</NOBR></TD>'; 
-      if(vShowValidatedWork ==1) { 
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
-      }
-      if(vShowAssignedWork ==1) { 
-          vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
-      }
-      if(vShowRealWork ==1) { 
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
-      }
-      if(vShowLeftWork ==1) { 
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
-      }
-      if(vShowPlannedWork ==1) { 
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
-      }        
-      if(vShowDur ==1) { 
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vDurationWidth + 'px;"></TD>' ;
-      }
-      if(vShowComp==1) {
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vProgressWidth + 'px;"></TD>' ;
-      }
-      if(vShowStartDate==1) {
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vDateWidth + 'px;"></TD>' ;
-      }
-      if(vShowEndDate==1) {
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vDateWidth + 'px;"></TD>' ;
-      }
-      if(vShowRes ==1) {
-        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vResourceWidth + 'px;"></TD>' ;
+      sortArray=this.getSortArray();
+      for (iSort=0;iSort<sortArray.length;iSort++) {
+	      if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') { 
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowAssignedWork ==1 && sortArray[iSort]=='AssignedWork') { 
+	          vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowRealWork ==1 && sortArray[iSort]=='RealWork') { 
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowLeftWork ==1 && sortArray[iSort]=='LeftWork') { 
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') { 
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vWorkWidth + 'px;"></TD>' ;
+	      }        
+	      if(vShowDur ==1 && sortArray[iSort]=='Duration') { 
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vDurationWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowComp==1 && sortArray[iSort]=='Progress') {
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vProgressWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowStartDate==1 && sortArray[iSort]=='StartDate') {
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vDateWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowEndDate==1 && sortArray[iSort]=='EndDate') {
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vDateWidth + 'px;"></TD>' ;
+	      }
+	      if(vShowRes ==1 && sortArray[iSort]=='Resource') {
+	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vResourceWidth + 'px;"></TD>' ;
+	      }
       }
       vLeftTable += '</TR><TR class="ganttHeight">'
         +'<TD class="ganttLeftTitle" style="width:16px;"></TD>'
         +'<TD class="ganttLeftTitle ganttAlignLeft ganntNoLeftBorder" style="width: ' + vNameWidth + 'px;">'
-        +JSGantt.i18n('colTask') +'</TD>' ;
-      if(vShowValidatedWork ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colValidated') + '</TD>' ;
-      }
-      if(vShowAssignedWork ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colAssigned') + '</TD>' ;
-      }
-      if(vShowRealWork ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colReal') + '</TD>' ;
-      }
-      if(vShowLeftWork ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colLeft') + '</TD>' ;
-      }
-      if(vShowPlannedWork ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colPlanned') + '</TD>' ;
-      }
-      if(vShowDur ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDurationWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colDuration') + '</TD>' ;
-      }
-      if(vShowComp==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vProgressWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colPct') + '</TD>' ;
-      }
-      if(vShowStartDate==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colStart') + '</TD>' ;
-      }
-      if(vShowEndDate==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colEnd') + '</TD>' ;
-      }
-      if(vShowRes ==1) {
-        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;" nowrap>' 
-          + JSGantt.i18n('colIdResource') + '</TD>' ;
+        +JSGantt.i18n('colTask') +'</TD>' ;     
+      for (iSort=0;iSort<sortArray.length;iSort++) {
+	      if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colValidated') + '</TD>' ;
+	      }
+	      if(vShowAssignedWork ==1 && sortArray[iSort]=='AssignedWork') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colAssigned') + '</TD>' ;
+	      }
+	      if(vShowRealWork ==1 && sortArray[iSort]=='RealWork') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colReal') + '</TD>' ;
+	      }
+	      if(vShowLeftWork ==1 && sortArray[iSort]=='LeftWork') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colLeft') + '</TD>' ;
+	      }
+	      if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vWorkWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colPlanned') + '</TD>' ;
+	      }
+	      if(vShowDur ==1 && sortArray[iSort]=='Duration') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDurationWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colDuration') + '</TD>' ;
+	      }
+	      if(vShowComp==1 && sortArray[iSort]=='Progress') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vProgressWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colPct') + '</TD>' ;
+	      }
+	      if(vShowStartDate==1 && sortArray[iSort]=='StartDate') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colStart') + '</TD>' ;
+	      }
+	      if(vShowEndDate==1 && sortArray[iSort]=='EndDate') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vDateWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colEnd') + '</TD>' ;
+	      }
+	      if(vShowRes ==1 && sortArray[iSort]=='Resource') {
+	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colIdResource') + '</TD>' ;
+	      }
       }
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>'
@@ -615,72 +623,73 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           +' class="namePart' + vRowType + '"><NOBR>' + vTaskList[i].getName() + '</NOBR></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
-        if(vShowValidatedWork ==1) { 
+        for (iSort=0;iSort<sortArray.length;iSort++) {
+          if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
               +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getValidatedWork() 
               +'</span></NOBR></TD>' ;
           }
-        if(vShowAssignedWork ==1) { 
+          if(vShowAssignedWork ==1 && sortArray[iSort]=='AssignedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
               +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getAssignedWork() 
               +'</span></NOBR></TD>' ;
           }
-        if(vShowRealWork ==1) { 
+          if(vShowRealWork ==1 && sortArray[iSort]=='RealWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
               +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getRealWork() 
               +'</span></NOBR></TD>' ;
           }
-        if(vShowLeftWork ==1) { 
+          if(vShowLeftWork ==1 && sortArray[iSort]=='LeftWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
               +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getLeftWork() 
               +'</span></NOBR></TD>' ;
           }
-        if(vShowPlannedWork ==1) { 
+          if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
               +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
               +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getPlannedWork() 
               +'</span></NOBR></TD>' ;
           }
-
-        if(vShowDur ==1) { 
+          if(vShowDur ==1 && sortArray[iSort]=='Duration') { 
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vDurationWidth + 'px;">'
             +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");' 
             +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getDuration(vFormat) 
             +'</span></NOBR></TD>' ;
-        }
-        if(vShowComp==1) { 
+          }
+          if(vShowComp==1 && sortArray[iSort]=='Progress') { 
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vProgressWidth + 'px;">'
             +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
             +' class="hideLeftPart' + vRowType + '">' + vTaskList[i].getCompStr()  
             +'</span></NOBR></TD>' ;
-        }
-        if(vShowStartDate==1) {
+          }
+          if(vShowStartDate==1 && sortArray[iSort]=='StartDate') {
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vDateWidth + 'px;">'
             +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
             +' class="hideLeftPart' + vRowType + '">' 
             + JSGantt.formatDateStr( vTaskList[i].getStart(), vDateDisplayFormat) 
             + '</span></NOBR></TD>' ;
-        }
-        if(vShowEndDate==1) {
+          }
+          if(vShowEndDate==1 && sortArray[iSort]=='EndDate') {
           vLeftTable += '  <TD class="ganttDetail" style="width: ' + vDateWidth + 'px;">'
             +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
             +' class="hideLeftPart' + vRowType + '">' 
             + JSGantt.formatDateStr( vTaskList[i].getEnd(), vDateDisplayFormat) 
             + '</span></NOBR></TD>' ;
-        }
-        if(vShowRes ==1) {
+          }
+          if(vShowRes ==1 && sortArray[iSort]=='Resource') {
             vLeftTable += '<TD class="ganttDetail" >' 
               +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;">' 
               + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
           }
+        }
         vLeftTable += '</TR>';
       }
       vLeftTable += '<TR><TD style="width:16px;"></TD>';
-      vLeftTable += '<TD colspan="4"><NOBR>';
+      vLeftTable += '<TD colspan="' + sortArray.length +'"><NOBR>';
       vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop" '
@@ -914,7 +923,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
-                + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' 
+                + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' ;
               if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getEnd())) {
                 vRightTable += '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>' 
                   + '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
@@ -1483,7 +1492,7 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
 Date.prototype.getWeek = function() {
   var onejan = new Date(this.getFullYear(),0,1);
   return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
-}
+};
 
 /**
  * Parse an external XML file containing task items.
@@ -1614,7 +1623,7 @@ JSGantt.AddXMLTask = function(pGanttVar){
         pDepend =0;
       }
       if (pDepend.length==0){
-        pDepend=''
+        pDepend='';
       } // need this to draw the dependency lines
       try { 
         pCaption = Task[i].getElementsByTagName("pCaption")[0].childNodes[0].nodeValue;
@@ -1747,7 +1756,7 @@ JSGantt.ChromeXMLParse = function (pGanttVar){
         var pDepend = "";
       }  
       if (pDepend.length==0){
-        pDepend=''
+        pDepend='';
       } // need this to draw the dependency lines
       var te = Task.split(/<pCaption>/i);
       if(te.length> 2){
