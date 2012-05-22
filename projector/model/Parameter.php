@@ -336,14 +336,17 @@ class Parameter extends SqlElement {
   	$res=array();
   	$i=1;
   	$res['ValidatedWork']=$i++;
-  	$res['AssignedWork']=$i++;
-  	$res['RealWork']=$i++;
-  	$res['LeftWork']=$i++;
-  	$res['PlannedWork']=$i++;
-  	$res['Duration']=$i++;
-  	$res['StartDate']=$i++;
-  	$res['EndDate']=$i++;
+    $res['AssignedWork']=$i++;
+    $res['RealWork']=$i++;
+    $res['LeftWork']=$i++;
+    $res['PlannedWork']=$i++;
+    $res['Duration']=$i++;
+    $res['Progress']=$i++;
+    $res['StartDate']=$i++;
+    $res['EndDate']=$i++;
   	$res['Resource']=$i++;
+  	
+  	
   	return $res;
   }
 }

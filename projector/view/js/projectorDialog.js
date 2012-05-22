@@ -1325,7 +1325,7 @@ function expenseDetailRecalculate() {
 	  dijit.byId("expenseDetailAmount").set('value',total);
 	  lockWidget("expenseDetailAmount");
 	} else {
-      unlockWidget("expenseDetailAmount")
+      unlockWidget("expenseDetailAmount");
 	}
 }
 
@@ -1475,7 +1475,7 @@ function getDisplayVersion(typeEvo, version, revision, draft, numVers, dateVers,
   } else if (typeEvo=="SEQ") {
 	res=numVers;
   } else if (typeEvo=="EXT") {
-	res=nameVers
+	res=nameVers;
   }
   if (typeEvo=="EVO" || typeEvo=="EVT" || typeEvo=="SEQ") {
 	if (draft) {

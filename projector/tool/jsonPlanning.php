@@ -293,9 +293,11 @@
       }
       //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;     
       // Header
+      $sortArray=Parameter::getPlanningColumnOrder();
+      asort($sortArray);
       //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
       echo '<table style="font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<tr style="height: 20px;"><td colspan="6">&nbsp;</td>';
+      echo '<tr style="height: 20px;"><td colspan="' . (2+count($sortArray)) . '">&nbsp;</td>';
       $day=$minDate;
       for ($i=0;$i<$topUnits;$i++) {
         $span=$topUnit;
@@ -324,10 +326,18 @@
       echo '<TR style="height: 20px;">';
       echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
       echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
-      echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colDuration') . '</TD>' ;
-      echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
-      echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
-      echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
+      foreach ($sortArray as $col=>$pos) {
+        if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colValidated') . '</TD>' ;
+      	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colAssigned') . '</TD>' ;
+        if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colReal') . '</TD>' ;
+        if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colLeft') . '</TD>' ;
+        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colPlanned') . '</TD>' ;
+        if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colDuration') . '</TD>' ;
+        if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
+        if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
+        if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
+        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colIdResource') . '</TD>' ;
+      }
       $weekendColor="#cfcfcf";
       $day=$minDate;
       for ($i=0;$i<$numUnits;$i++) {
@@ -422,10 +432,18 @@
         //<div style="float: left;width:16px;">&nbsp;</div></span>';
         echo '</span>&nbsp;';
         echo $pName . '</NOBR></TD>';
-        echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
-        echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
-        echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
-        echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
+        foreach ($sortArray as $col=>$pos) {
+          if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
+          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
+          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;
+          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["leftWork"])  . '</TD>' ;
+          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["plannedWork"])  . '</TD>' ;
+          if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
+          if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
+          if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
+          if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
+          if ($col=='Resource') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
+        }
         if ($pGroup) {
           $pColor='#505050;';
           //$pBackground='background:#505050 url(../view/img/grey.png) repeat-x;';

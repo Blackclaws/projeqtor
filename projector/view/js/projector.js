@@ -273,7 +273,7 @@ function saveBrowserLocaleToSession() {
   var fmt=dojo.number.format(100000)+' ';
   var thousandSep=fmt.substr(3,1);
   if (thousandSep=='0') {
-	  thousandSep=''
+	  thousandSep='';
   }
   dojo.xhrPost({
 	url: "../tool/saveDataToSession.php?id=browserLocaleThousandSeparator&value=" + thousandSep,
@@ -437,7 +437,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         // update the destination when ajax request is received
         // cleanContent(destination);
         var contentWidget = dijit.byId(destination);
-        if (! contentWidget) {return};
+        if (! contentWidget) {return;}
         contentWidget.set('content',data);
         checkDestination(destination);
         if (destination=="detailDiv" || destination=="centerDiv") {
@@ -524,7 +524,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
-          if (! contentWidget) {return};
+          if (! contentWidget) {return;};
           contentWidget.set('content',data);
           checkDestination(destination);
           var contentNode = dojo.byId(destination);
@@ -694,7 +694,7 @@ function finalizeMessageDisplay(destination, validationType) {
     hideWait();
     return;    
   }
-  if (! contentWidget) {return};
+  if (! contentWidget) {return;};
   // fetch last message type
   var message=contentWidget.get('content');
   posdeb=message.indexOf('class="')+7;
@@ -727,7 +727,7 @@ function finalizeMessageDisplay(destination, validationType) {
              waitingForReply=true;
           }
       } else if (validationType=='admin'){
-    	  hideWait()
+    	  hideWait();
       } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  //hideWait();
@@ -828,7 +828,7 @@ function finalizeMessageDisplay(destination, validationType) {
    	    // Destroy the widget
    	    dijit.byId("documentDirectoryTree").rootNode.destroyRecursive();
    	    // Recreate the model, (with the model again)
-   	    dijit.byId("documentDirectoryTree").model.constructor(dijit.byId("documentDirectoryTree").model)
+   	    dijit.byId("documentDirectoryTree").model.constructor(dijit.byId("documentDirectoryTree").model);
    	    // Rebuild the tree
    	    dijit.byId("documentDirectoryTree").postMixInProperties();
    	    dijit.byId("documentDirectoryTree")._load();
@@ -1323,24 +1323,39 @@ function drawGantt() {
     gFormat=g.getFormat();
   }
   g = new JSGantt.GanttChart('g',dojo.byId('GanttChartDIV'), gFormat); 
-  g.setShowRes(1);                       // Show/Hide Responsible (0/1)
-  g.setShowDur(1);                       // Show/Hide Duration (0/1)
-  g.setShowComp(1);                      // Show/Hide % Complete(0/1)
-  g.setShowStartDate(1);   
-  g.setShowEndDate(1);   
-  g.setShowValidatedWork(1);
-  g.setShowAssignedWork(1);
-  g.setShowRealWork(1);
-  g.setShowLeftWork(1);
-  g.setShowPlannedWork(1);
+  g.setShowRes(0);                       
+  g.setShowDur(0);                       
+  g.setShowComp(0);                      
+  g.setShowStartDate(0);   
+  g.setShowEndDate(0);   
+  g.setShowValidatedWork(0);
+  g.setShowAssignedWork(0);
+  g.setShowRealWork(0);
+  g.setShowLeftWork(0);
+  g.setShowPlannedWork(0);
+  for (iSort=0;iSort<planningColumnOrder.length; iSort++) {
+	switch (planningColumnOrder[iSort]) {
+	  case 'Resource' : g.setShowRes(1);break;                       
+	  case 'Duration' : g.setShowDur(1); break;                 
+	  case 'Progress' : g.setShowComp(1); break;             
+	  case 'StartDate' : g.setShowStartDate(1);break;  
+	  case 'EndDate' : g.setShowEndDate(1);break;   
+	  case 'ValidatedWork' : g.setShowValidatedWork(1);break;
+	  case 'AssignedWork' : g.setShowAssignedWork(1);break;
+	  case 'RealWork' : g.setShowRealWork(1);break;
+	  case 'LeftWork' : g.setShowLeftWork(1);break;
+	  case 'PlannedWork' : g.setShowPlannedWork(1);break;
+	}
+  }
+  g.setSortArray(planningColumnOrder);
   if (dojo.byId('resourcePlanning')) {
 	  g.setShowRes(0); 
 	  g.setShowValidatedWork(0);
   }
   g.setCaptionType('Caption');           // Set to Show Caption
                           // (None,Caption,Resource,Duration,Complete)
-  g.setShowStartDate(1);                 // Show/Hide Start Date(0/1)
-  g.setShowEndDate(1);                   // Show/Hide End Date(0/1)
+  //g.setShowStartDate(1);                 // Show/Hide Start Date(0/1)
+  //g.setShowEndDate(1);                   // Show/Hide End Date(0/1)
   g.setDateInputFormat('yyyy-mm-dd');   // Set format of input dates
                     // ('mm/dd/yyyy', 'dd/mm/yyyy',
                     // 'yyyy-mm-dd')
@@ -1387,7 +1402,7 @@ function drawGantt() {
       pEnd=(item.validatedEndDate!=" ")?item.validatedEndDate:pEnd;
       pEnd=(item.plannedEndDate!=" ")?item.plannedEndDate:pEnd;
       pRealEnd="";
-      pPlannedStart=""
+      pPlannedStart="";
       pWork="";
       if (dojo.byId('resourcePlanning')) {
     	pRealEnd=item.realEndDate;
@@ -1768,9 +1783,9 @@ function getFirstDayOfWeek(week, year) {
      month=testDate.getMonth()+1;
      year=testDate.getFullYear();
      testWeek=getWeek(day, month, year);
-     if (testWeek>10 && week==1) {testWeek=0};
+     if (testWeek>10 && week==1) {testWeek=0;}
    }
-   testDate.setDate(testDate.getDate()+1)
+   testDate.setDate(testDate.getDate()+1);
    return testDate;
 }
 
@@ -1816,7 +1831,7 @@ dateGetWeek = function (paramDate,dowOffset) {
       }
   }
   return weeknum;
-}
+};
 
 function getWeek(day, month, year) {  
   var paramDate=new Date(year, month-1,day);
