@@ -332,7 +332,7 @@ class Parameter extends SqlElement {
     return $val;
   }
   
-  static public function getPlanningColumnOrder() {
+  static public function getPlanningColumnOrder($all=false) {
   	$res=array();
   	// Default Values
   	$user=$_SESSION['user'];
