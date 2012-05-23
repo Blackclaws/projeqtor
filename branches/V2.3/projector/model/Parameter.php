@@ -346,16 +346,16 @@ class Parameter extends SqlElement {
   		}
   	}
   	$i=1;
-  	if (!strpos($hidden,'ValidatedWork')>0) $res['ValidatedWork']=$i++; else $res['ValidatedWork']=0;
-    if (!strpos($hidden,'AssignedWork')>0) $res['AssignedWork']=$i++; else $res['AssignedWork']=0;
-    if (!strpos($hidden,'RealWork')>0) $res['RealWork']=$i++; else $res['RealWork']=0;
-    if (!strpos($hidden,'LeftWork')>0) $res['LeftWork']=$i++; else $res['LeftWork']=0;
-    if (!strpos($hidden,'PlannedWork')>0) $res['PlannedWork']=$i++; else $res['PlannedWork']=0;
-    if (!strpos($hidden,'Duration')>0) $res['Duration']=$i++; else $res['Duration']=0;
-    if (!strpos($hidden,'Progress')>0) $res['Progress']=$i++; else $res['Progress']=0;
-    if (!strpos($hidden,'StartDate')>0) $res['StartDate']=$i++; else $res['StartDate']=0;
-    if (!strpos($hidden,'EndDate')>0) $res['EndDate']=$i++; else $res['EndDate']=0;
-  	if (!strpos($hidden,'Resource')>0) $res['Resource']=$i++; else $res['Resource']=0;
+  	$res[$i++]=($all or !strpos($hidden,'ValidatedWork')>0)?'ValidatedWork':'';
+    $res[$i++]=($all or !strpos($hidden,'AssignedWork')>0)?'AssignedWork':'';
+    $res[$i++]=($all or !strpos($hidden,'RealWork')>0)?'RealWork':'';
+    $res[$i++]=($all or !strpos($hidden,'LeftWork')>0)?'LeftWork':'';
+    $res[$i++]=($all or !strpos($hidden,'PlannedWork')>0)?'PlannedWork':'';
+    $res[$i++]=($all or !strpos($hidden,'Duration')>0)?'Duration':'';
+    $res[$i++]=($all or !strpos($hidden,'Progress')>0)?'Progress':'';
+    $res[$i++]=($all or !strpos($hidden,'StartDate')>0)?'StartDate':'';
+    $res[$i++]=($all or !strpos($hidden,'EndDate')>0)?'EndDate':'';
+  	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'';
   	return $res;
   }
 }

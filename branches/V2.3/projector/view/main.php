@@ -193,9 +193,8 @@ checkVersion(); ?>
         echo "indicatorableArray['" . $id . "']='" . $name . "';";
       }        
       $list=Parameter::getPlanningColumnOrder();
-      asort($list);
-      foreach ($list as $id=>$name) {
-        echo "planningColumnOrder[" . ($name-1) . "]='" . $id . "';";
+      foreach ($list as $order=>$name) {
+        echo "planningColumnOrder[" . ($order-1) . "]='" . $name . "';";
       }
       ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
