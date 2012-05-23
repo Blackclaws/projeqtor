@@ -1262,6 +1262,7 @@ wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin s
 year: "ano",
 buttonCollapse: "[buttonCollapse]",
 buttonExpand: "[buttonExpand]",
+colResource: "[colResource]",
 colVersion: "[colVersion]",
 labelShowLeftWork: "[labelShowLeftWork]",
 menuResourcePlanning: "[menuResourcePlanning]",

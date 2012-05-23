@@ -3101,3 +3101,24 @@ function unlockDocument() {
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
   return true;
 }
+
+/* ========================================================================
+ * Planning columns management
+ * ========================================================================
+ */
+function openPlanningColumnMgt() {
+	
+  alert("openPlanningColumnMgt");
+}
+
+function enablePlanningColumn() {
+	alert("enablePlanningColumn");
+}
+
+function disablePlanningColumn() {
+	alert("disablePlanningColumn");
+}
+
+function sortPlanningColumn() {
+	alert("sortPlanningColumn");
+}

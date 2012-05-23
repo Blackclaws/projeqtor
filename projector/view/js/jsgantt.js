@@ -564,7 +564,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      }
 	      if(vShowRes ==1 && sortArray[iSort]=='Resource') {
 	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;" nowrap>' 
-	          + JSGantt.i18n('colIdResource') + '</TD>' ;
+	          + JSGantt.i18n('colResource') + '</TD>' ;
 	      }
       }
       vLeftTable += '</TR>';
