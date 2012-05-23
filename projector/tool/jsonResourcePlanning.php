@@ -363,11 +363,12 @@ function displayGantt($list) {
 		}
 		//echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;
 		// Header
-		$sortArray=Parameter::getPlanningColumnOrder();
-    asort($sortArray);  
+	  $sortArray=Parameter::getPlanningColumnOrder();
+    $cptSort=0;
+    foreach ($sortArray as $name) { if ($name and $name!='ValidatedWork' and $name!='Resource') $cptSort++; }
 		//echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
 		echo '<table style="-webkit-print-color-adjust: exact;font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-		echo '<tr style="height: 20px;"><td colspan="' . (count($sortArray)) . '">&nbsp;</td>';
+		echo '<tr style="height: 20px;"><td colspan="' . (2+$cptSort) . '">&nbsp;</td>';
 		$day=$minDate;
 		for ($i=0;$i<$topUnits;$i++) {
 			$span=$topUnit;
@@ -396,7 +397,7 @@ function displayGantt($list) {
 		echo '<TR style="height: 20px;">';
 		echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
 		echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
-    foreach ($sortArray as $pos=>$col) {
+    foreach ($sortArray as $col) {
         //if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colValidated') . '</TD>' ;
         if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colAssigned') . '</TD>' ;
         if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colReal') . '</TD>' ;
@@ -495,7 +496,7 @@ function displayGantt($list) {
       }
       echo '</span>&nbsp;';
       echo $pName . '</NOBR></TD>';
-		  foreach ($sortArray as $pos=>$col) {
+		  foreach ($sortArray as $col) {
           //if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
           if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;

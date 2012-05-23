@@ -3120,6 +3120,14 @@ function changePlanningColumn(col,status,order) {
 	} 
 	setGanttVisibility(g);
 	JSGantt.changeFormat(g.getFormat(),g);
+	dojo.xhrGet({
+		url: '../tool/savePlanningColumn.php?action=status&status='
+			+ ((status)?'visible':'hidden')+'&item='+col,
+		handleAs: "text",
+		load: function(data,args) {  },
+		error: function() { }
+	  });	
+	
 }
 
 

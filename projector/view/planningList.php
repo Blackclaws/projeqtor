@@ -138,9 +138,24 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
                         </button>
                         <input type="hidden" id="outMode" name="outMode" value="" />
                       </td>
+                      <td>
+                       <div dojoType="dijit.form.DropDownButton"
+                             style="height: 20px; color:#202020;"  
+                             id="planningColumnSelector" jsId="planningColumnSelector" name="planningColumnSelector" 
+                             showlabel="false" class="" iconClass="iconColumnSelector"
+                             title="<?php echo i18n('columnSelector');?>">
+                          <span>title</span>
+                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
+                            <div id="menuPlanningColumn">    
+                               <?php 
+                                 include('../tool/planningColumnSelector.php')?>
+                            </div>       
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
-                      <td colspan="3" style="white-space:nowrap;">
+                      <td colspan="4" style="white-space:nowrap;">
                         <span title="<?php echo i18n('saveDates')?>" dojoType="dijit.form.CheckBox"
                            type="checkbox" id="listSaveDates" name="listSaveDates" class=""
                            <?php if ( $saveDates) {echo 'checked="checked"'; } ?>  >
