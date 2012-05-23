@@ -1877,3 +1877,35 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
   vLeftTable+='</div>';
   return vLeftTable;
 };
+
+function setGanttVisibility(g) {
+	g.setShowRes(0);                       
+	g.setShowDur(0);                       
+	g.setShowComp(0);                      
+	g.setShowStartDate(0);   
+	g.setShowEndDate(0);   
+	g.setShowValidatedWork(0);
+	g.setShowAssignedWork(0);
+	g.setShowRealWork(0);
+	g.setShowLeftWork(0);
+	g.setShowPlannedWork(0);
+	for (iSort=0;iSort<planningColumnOrder.length; iSort++) {
+		switch (planningColumnOrder[iSort]) {
+		  case 'Resource' : g.setShowRes(1);break;                       
+		  case 'Duration' : g.setShowDur(1); break;                 
+		  case 'Progress' : g.setShowComp(1); break;             
+		  case 'StartDate' : g.setShowStartDate(1);break;  
+		  case 'EndDate' : g.setShowEndDate(1);break;   
+		  case 'ValidatedWork' : g.setShowValidatedWork(1);break;
+		  case 'AssignedWork' : g.setShowAssignedWork(1);break;
+		  case 'RealWork' : g.setShowRealWork(1);break;
+		  case 'LeftWork' : g.setShowLeftWork(1);break;
+		  case 'PlannedWork' : g.setShowPlannedWork(1);break;
+		}
+	}
+	if (dojo.byId('resourcePlanning')) {
+	  g.setShowRes(0); 
+	  g.setShowValidatedWork(0);
+	}
+	g.setSortArray(planningColumnOrder);
+}

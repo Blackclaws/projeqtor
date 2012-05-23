@@ -3111,13 +3111,17 @@ function openPlanningColumnMgt() {
   alert("openPlanningColumnMgt");
 }
 
-function enablePlanningColumn() {
-	alert("enablePlanningColumn");
+function changePlanningColumn(col,status,order) {
+	dijit.byId('planningColumnSelector').closeDropDown();
+	if (status) {
+	  planningColumnOrder[order-1]=col;
+	} else {
+	  planningColumnOrder[order-1]='';
+	} 
+	setGanttVisibility(g);
+	JSGantt.changeFormat(g.getFormat(),g);
 }
 
-function disablePlanningColumn() {
-	alert("disablePlanningColumn");
-}
 
 function sortPlanningColumn() {
 	alert("sortPlanningColumn");

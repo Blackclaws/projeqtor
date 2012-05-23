@@ -396,7 +396,7 @@ function displayGantt($list) {
 		echo '<TR style="height: 20px;">';
 		echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
 		echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
-    foreach ($sortArray as $col=>$pos) {
+    foreach ($sortArray as $pos=>$col) {
         //if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colValidated') . '</TD>' ;
         if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colAssigned') . '</TD>' ;
         if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colReal') . '</TD>' ;
@@ -495,7 +495,7 @@ function displayGantt($list) {
       }
       echo '</span>&nbsp;';
       echo $pName . '</NOBR></TD>';
-		  foreach ($sortArray as $col=>$pos) {
+		  foreach ($sortArray as $pos=>$col) {
           //if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
           if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
           if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;
