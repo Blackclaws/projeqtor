@@ -1262,6 +1262,7 @@ wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se 
 year: "año",
 buttonCollapse: "[buttonCollapse]",
 buttonExpand: "[buttonExpand]",
+colResource: "[colResource]",
 colVersion: "[colVersion]",
 labelShowLeftWork: "[labelShowLeftWork]",
 menuResourcePlanning: "[menuResourcePlanning]",

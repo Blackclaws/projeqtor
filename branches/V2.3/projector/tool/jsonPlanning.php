@@ -336,7 +336,7 @@
         if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
         if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
         if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
-        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colIdResource') . '</TD>' ;
+        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colResource') . '</TD>' ;
       }
       $weekendColor="#cfcfcf";
       $day=$minDate;

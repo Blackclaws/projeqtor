@@ -78,7 +78,7 @@ class Collapsed extends SqlElement {
   
   public static function getCollaspedList() {
     if (! array_key_exists('collapsed', $_SESSION) ) {
-      self::initialiseCollasedList();
+      self::initialiseCollapsedList();
     }
     return $_SESSION['collapsed'];
   }
@@ -87,7 +87,7 @@ class Collapsed extends SqlElement {
   	$_SESSION['collapsed']=$list;
   }
   
-  private static function initialiseCollasedList() {
+  private static function initialiseCollapsedList() {
   	$list=array();
   	$crit=array('idUser'=>self::getUserId());
   	$col=new Collapsed();

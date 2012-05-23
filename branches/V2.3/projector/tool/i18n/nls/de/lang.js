@@ -1262,6 +1262,7 @@ wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administra
 year: "Jahr",
 buttonCollapse: "[buttonCollapse]",
 buttonExpand: "[buttonExpand]",
+colResource: "[colResource]",
 colVersion: "[colVersion]",
 labelShowLeftWork: "[labelShowLeftWork]",
 menuResourcePlanning: "[menuResourcePlanning]",

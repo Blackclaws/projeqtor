@@ -1262,6 +1262,7 @@ wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se 
 year: "année",
 buttonCollapse: "Réduire tous les groupes",
 buttonExpand: "Etendre tous les groupes",
+colResource: "ressources",
 colVersion: "Version",
 labelShowLeftWork: "Monter la charge restante",
 menuResourcePlanning: "Planning par ressource",

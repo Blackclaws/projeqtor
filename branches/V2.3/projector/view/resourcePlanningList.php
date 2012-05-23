@@ -129,6 +129,18 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
                       </td>
                       <td width="32px">
                         <input type="hidden" id="outMode" name="outMode" value="" />
+                        <div dojoType="dijit.form.DropDownButton"
+                             style="height: 20px; color:#202020;"  
+                             id="planningColumnSelector" jsId="planningColumnSelector" name="planningColumnSelector" 
+                             showlabel="false" class="" iconClass="iconColumnSelector"
+                             title="<?php echo i18n('columnSelector');?>">
+                          <span>title</span>
+                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
+									          <div id="menuPlanningColumn">    
+									             <?php include('../tool/planningColumnSelector.php')?>
+									          </div>       
+									        </div>
+									      </div>
                       </td>
                     </tr>
                     <tr>
