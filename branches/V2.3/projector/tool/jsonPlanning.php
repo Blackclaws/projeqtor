@@ -145,7 +145,7 @@
         } else {
         	echo ',"collapsed":"0"';
         }
-        if ($displayResource and strtoupper($displayResource)!='NO') {
+        //if ($displayResource and strtoupper($displayResource)!='NO') {
         	$crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
@@ -162,7 +162,7 @@
 	        }
 	        $res=new Resource($ass->idResource);
 	        echo ',"resource":"' . implode(', ',$arrayResource) . '"';
-        }
+        //}
         $crit=array('successorId'=>$idPe);
         $listPred="";
         $depList=$d->getSqlElementsFromCriteria($crit,false);
@@ -239,7 +239,7 @@
         }
         $line['pStart']=$pStart;
         $line['pEnd']=$pEnd;
-        if ($showResource) {
+        //if ($showResource) {
           $crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
@@ -255,7 +255,7 @@
             }
           }
           $line["resource"]=implode(', ',$arrayResource);
-        }
+        //}
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
