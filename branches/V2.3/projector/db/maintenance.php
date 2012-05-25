@@ -97,7 +97,6 @@ if ($currVersion=='0.0.0') {
   $split=explode("<", $result);
   traceLog($split[0]);
 }
-deleteDuplicate();
 
 // For V1.6.1
 $tst=new ExpenseDetailType('1');
@@ -152,6 +151,7 @@ if ($currVersion<"V2.1.1") {
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
+deleteDuplicate();
 
 Sql::saveDbVersion($version);
 traceLog('=====================================');
@@ -301,7 +301,7 @@ function runScript($vers) {
 function deleteDuplicate() {
   // HABILITATION
   $hab=new Habilitation();
-  $habList=$hab->getSqlElementsFromCriteria(array(), false, null, 'idMenu, idProfile, id ');
+  $habList=$hab->getSqlElementsFromCriteria(null, false, null, 'idMenu, idProfile, id ');
   $idMenu='';
   $idProfile='';
   foreach ($habList as $hab) {
