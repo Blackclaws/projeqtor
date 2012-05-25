@@ -76,6 +76,9 @@ if (! array_key_exists('idle',$_REQUEST) ) {
 	$queryWhere= $table . ".idle=0 ";
 }
 $queryWhere.= ($queryWhere=='')?'':' and ';
+$queryWhere.=' ass.plannedWork>0 ';
+
+$queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=getAccesResctictionClause('Activity',$table);
 if ( array_key_exists('report',$_REQUEST) ) {
 	if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
@@ -503,7 +506,7 @@ function displayGantt($list) {
           if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["leftWork"])  . '</TD>' ;
           if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["plannedWork"])  . '</TD>' ;
           if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
-          if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
+          if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter(round($progress*100)) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
           //if ($col=='Resource') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;

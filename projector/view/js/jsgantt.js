@@ -680,8 +680,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + JSGantt.formatDateStr( vTaskList[i].getEnd(), vDateDisplayFormat) 
             + '</span></NOBR></TD>' ;
           }
-          if(vShowRes ==1 && sortArray[iSort]=='Resource') {
-            vLeftTable += '<TD class="ganttDetail" >' 
+          if(vShowRes==1 && sortArray[iSort]=='Resource') {
+            vLeftTable += '<TD class="ganttDetail" style="text-align:left;">' 
               +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;">' 
               + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
           }

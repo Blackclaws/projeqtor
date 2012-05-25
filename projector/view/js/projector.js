@@ -1419,13 +1419,13 @@ function drawGantt() {
       pId=item.refId;
       pScope="Planning_"+pClass+"_"+pId;
       pOpen=(item.collapsed=='1')?'0':'1';
-      var pResource="";
+      var pResource=item.resource;
+      var pCaption="";
       if ( dojo.byId('listShowResource') ) {
 	    if (dojo.byId('listShowResource').checked) { 
-	    	pResource=item.resource;
+	    	pCaption=pResource;
 	    }
 	  }
-      var pCaption=pResource;
       if ( dojo.byId('listShowLeftWork') && dojo.byId('listShowLeftWork').checked ) {
   	    if (item.leftWork>0) { 
   	    	pCaption=item.leftWorkDisplay;
