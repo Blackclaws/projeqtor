@@ -428,7 +428,11 @@
             echo '<img style="width:12px" src="../view/css/images/minus.gif" />';
           }         
         } else {
-          echo '<img style="width:12px" src="../view/css/images/none.gif" />';
+        	if ($line['refType']=='Milestone') {
+        		echo '<img style="width:12px" src="../view/css/images/mile.gif" />';
+        	} else {
+            echo '<img style="width:12px" src="../view/css/images/none.gif" />';
+        	}
         }
         //<div style="float: left;width:16px;">&nbsp;</div></span>';
         echo '</span>&nbsp;';
@@ -443,7 +447,7 @@
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
-          if ($col=='Resource') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
+          if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';

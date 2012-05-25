@@ -1526,4 +1526,16 @@ function getPrintTitle() {
   }
   return $result;
 }
+
+$startMicroTime=null;
+function traceExecutionTime($step='', $reset=false) {
+	global $startMicroTime;
+	if ($reset) {
+		$startMicroTime=microtime(true);
+		return;
+	}
+  debugLog(round((microtime(true) - $startMicroTime)*1000)/1000 . (($step)?" ms for step " . $step:'') );
+  $startMicroTime=microtime(true);
+}
+
 ?>

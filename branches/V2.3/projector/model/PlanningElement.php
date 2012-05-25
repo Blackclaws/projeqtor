@@ -829,6 +829,7 @@ class PlanningElement extends SqlElement {
   	return $result;
   }
   
+  /* not used anymore
   static function comparePlanningElement($a, $b) {
     if (array_key_exists('#'.$a->id, $b->_predecessorListWithParent)) {
     	return -1;
@@ -863,7 +864,43 @@ class PlanningElement extends SqlElement {
       return +1;
     }
     return 0;       
-  }
+  }*/
+  
+  /* not used anymore
+  static function comparePlanningElementPredecessor($a, $b) {
+    if (array_key_exists('#'.$a->id, $b->_predecessorListWithParent)) {
+      return -1;
+    }
+    if (array_key_exists('#'.$b->id, $a->_predecessorListWithParent)) {
+      return +1;
+    }
+    return 0;
+  }*/
+  
+  static function comparePlanningElementSimple($a, $b) {
+    // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
+    if ( ($a->idPlanningMode=='2' or  $a->idPlanningMode=='3' or  $a->idPlanningMode=='7') and 
+         ($b->idPlanningMode!='2' and $a->idPlanningMode!='3' and $a->idPlanningMode!='7') ) {
+      return -1;
+    }
+    if ( ( $b->idPlanningMode=='2' or $b->idPlanningMode=='3' or $b->idPlanningMode=='7') and 
+         ($a->idPlanningMode!='2' and $a->idPlanningMode!='3' and $a->idPlanningMode!='7') ) {
+      return +1;
+    }
+    if ($a->priority<$b->priority) {
+      return -1;
+    }
+    if ($a->priority>$b->priority) {
+      return +1;
+    }
     
+    if ($a->wbsSortable<$b->wbsSortable) {
+      return -1;
+    }
+    if ($a->wbsSortable>$b->wbsSortable) {
+      return +1;
+    }
+    return 0;       
+  }
 }
 ?>
