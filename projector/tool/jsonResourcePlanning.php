@@ -117,11 +117,16 @@ if (Sql::$lastQueryNbRows > 0) {
 	$collapsedList=Collapsed::getCollaspedList();
 	$list=array();
 	$idResource="";
+	$idProject="";
 	//$sumValidated=0;
 	$sumAssigned=0;
 	$sumReal=0;
 	$sumLeft=0;
 	$sumPlanned=0;
+	$sumProjAssigned=0;
+  $sumProjReal=0;
+  $sumProjLeft=0;
+  $sumProjPlanned=0;
 	while ($line = Sql::fetchLine($result)) {
 		if ($line['idResource']!=$idResource) {
 			$idResource=$line['idResource'];
@@ -149,16 +154,44 @@ if (Sql::$lastQueryNbRows > 0) {
 		  $sumReal=0;
 		  $sumLeft=0;
 		  $sumPlanned=0;
+		  $idProject="";
 		}
+	  if ($line['idProject']!=$idProject) {
+      $idProject=$line['idProject'];
+      $resPr=array();
+      $resPr["refName"]=SqlList::getNameFromId('Project', $line['idProject']);
+      $resPr["refType"]='Project';
+      $resPr["refId"]=$idProject;
+      $resPr["elementary"]='0';
+      $resPr["id"]=8888888888+$idProject;
+      $resPr["idle"]='0';
+      $resPr["wbs"]=$line['wbs'];
+      $resPr["wbsSortable"]=$line['wbsSortable'];
+      $resPr["realStartDate"]='';
+      $resPr["realEndDate"]='';
+      $resPr["plannedStartDate"]='';
+      $resPr["plannedEndDate"]='';
+      $resPr["idResource"]=$idResource;
+      $resPr["progress"]=0;
+      $resPr["topId"]=9999999999+$idResource;
+      $resPr["leftWork"]=0;
+      $list['Project#'.$idProject]=$resPr;
+      //$sumValidated=0;
+      $sumProjAssigned=0;
+      $sumProjReal=0;
+      $sumProjLeft=0;
+      $sumProjPlanned=0;
+      $idProject="";
+    }
 		$line["elementary"]='1';
 		$line["topRefType"]='Resource';
-		$line["topRefId"]=$idResource;
+		$line["topRefId"]=$idProject;
 		$line["validatedWorkDisplay"]='';
 		$line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
 		$line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
 		$line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
 		$line["plannedWorkDisplay"]=Work::displayWorkWithUnit($line["plannedWork"]);
-		$line["topId"]=9999999999+$idResource;
+		$line["topId"]=8888888888+$idProject;
 		if ($line["leftWork"]>0) {
 			//$line['realEndDate']='';
 		}
