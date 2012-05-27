@@ -36,6 +36,8 @@ $saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('
 $saveShowWork=$saveShowWorkObj->parameterValue;
 $saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
 $saveShowClosed=$saveShowClosedObj->parameterValue;
+$saveShowProjectObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowProject'));
+$saveShowProject=$saveShowProjectObj->parameterValue;
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
@@ -196,6 +198,17 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
                     <?php if ($saveShowWork=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowWork',((this.checked)?'1':'0'));
+                      refreshJsonPlanning();
+                    </script>
+                  </div>&nbsp;
+                  </td></tr><tr><td>
+                  <?php echo i18n("labelShowProjectLevel");?>
+                  </td><td >
+                  <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="showProject" name="showProject" 
+                    <?php if ($saveShowProject=='1') { echo ' checked="checked" '; }?> >
+                    <script type="dojo/method" event="onChange" >
+                      saveUserParameter('planningShowProject',((this.checked)?'1':'0'));
                       refreshJsonPlanning();
                     </script>
                   </div>&nbsp;

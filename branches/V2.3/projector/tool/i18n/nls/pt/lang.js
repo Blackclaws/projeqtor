@@ -1266,6 +1266,8 @@ colResource: "[colResource]",
 columnSelector: "[columnSelector]",
 colVersion: "[colVersion]",
 labelShowLeftWork: "[labelShowLeftWork]",
+labelShowProjectLevel: "[labelShowProjectLevel]",
 menuResourcePlanning: "[menuResourcePlanning]",
+showProjectLevel: "[showProjectLevel]",
 currentLocaleOfFile: "pt"
 }
