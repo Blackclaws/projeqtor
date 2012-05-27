@@ -119,6 +119,13 @@ function refreshJsonPlanning() {
       param=true;
     }
   }
+  if ( dojo.byId('listShowProject') ) {
+    if (dojo.byId('listShowProject').checked) { 
+      url += (param)?"&":"?";
+      url += "showProject=true";
+      param=true;
+    }
+  }
   loadContent(url, "planningJsonData",'listForm',false);
 }
 

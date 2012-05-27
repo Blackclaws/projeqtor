@@ -238,6 +238,11 @@ function showPrint (page, context, comboName, outMode) {
 		      params+="&showWork=true";
 		    }
 		  }
+		  if ( dijit.byId('listShowProject') ) {
+		    if (dijit.byId('listShowProject').checked) { 
+		      params+="&showProject=true";
+		    }
+		  }
 		}
 	} else if (context=='report'){
 		var frm=dojo.byId('reportForm');
@@ -3112,19 +3117,21 @@ function openPlanningColumnMgt() {
 }
 
 function changePlanningColumn(col,status,order) {
+    showWait();
 	dijit.byId('planningColumnSelector').closeDropDown();
 	if (status) {
 	  planningColumnOrder[order-1]=col;
 	} else {
 	  planningColumnOrder[order-1]='';
 	} 
-	setGanttVisibility(g);
-	JSGantt.changeFormat(g.getFormat(),g);
 	dojo.xhrGet({
 		url: '../tool/savePlanningColumn.php?action=status&status='
 			+ ((status)?'visible':'hidden')+'&item='+col,
 		handleAs: "text",
-		load: function(data,args) {  },
+		load: function(data,args) { 
+			setGanttVisibility(g);
+			JSGantt.changeFormat(g.getFormat(),g);
+			hideWait(); },
 		error: function() { }
 	  });	
 	
