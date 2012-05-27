@@ -75,6 +75,11 @@ $idTab=0;
 if (! array_key_exists('idle',$_REQUEST) ) {
 	$queryWhere= $table . ".idle=0 ";
 }
+$showProject=(isset($saveShowProject) and $saveShowProject==1)?true:false;
+if ( array_key_exists('showProject',$_REQUEST) ) {
+  $showProject=true;
+}
+  
 $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=' ass.plannedWork>0 ';
 
@@ -110,6 +115,7 @@ $query='select ' . $querySelect
 $result=Sql::query($query);
 $arrayPeAss=array();
 $arrayResource=array();
+$arrayProject=array();
 $nbRows=0;
 // return result in json format
 $d=new Dependency();
@@ -127,6 +133,10 @@ if (Sql::$lastQueryNbRows > 0) {
   $sumProjReal=0;
   $sumProjLeft=0;
   $sumProjPlanned=0;
+  $keyProj="";
+  $idProj='';
+  $keyRes="";
+  $idRes='';
 	while ($line = Sql::fetchLine($result)) {
 		if ($line['idResource']!=$idResource) {
 			$idResource=$line['idResource'];
@@ -136,7 +146,8 @@ if (Sql::$lastQueryNbRows > 0) {
 			$resAr["refType"]='Resource';
 			$resAr["refId"]=$idResource;
 			$resAr["elementary"]='0';
-			$resAr["id"]=9999999999+$idResource;
+			$idRes=9999999999+$idResource;
+			$resAr["id"]=$idRes;
 			$resAr["idle"]='0';
 			$resAr["wbs"]='';
 			$resAr["wbsSortable"]='';
@@ -148,7 +159,8 @@ if (Sql::$lastQueryNbRows > 0) {
 			$resAr["progress"]=0;
 			$resAr["topId"]=0;
 			$resAr["leftWork"]=0;
-			$list['Resource#'.$idResource]=$resAr;
+			$keyRes='Resource#'.$idResource;
+			$list[$keyRes]=$resAr;
 			//$sumValidated=0;
 		  $sumAssigned=0;
 		  $sumReal=0;
@@ -156,42 +168,49 @@ if (Sql::$lastQueryNbRows > 0) {
 		  $sumPlanned=0;
 		  $idProject="";
 		}
-	  if ($line['idProject']!=$idProject) {
+	  if ($showProject and $line['idProject']!=$idProject) {
       $idProject=$line['idProject'];
+      if (array_key_exists($idProject, $arrayProject)) {
+      	$prj=$arrayProject[$idProject];
+      } else {
+        $prj=new Project($idProject);
+        $arrayProject[$idProject]=$prj;
+      }
       $resPr=array();
-      $resPr["refName"]=SqlList::getNameFromId('Project', $line['idProject']);
+      $resPr["refName"]=$prj->name;
       $resPr["refType"]='Project';
       $resPr["refId"]=$idProject;
       $resPr["elementary"]='0';
-      $resPr["id"]=8888888888+$idProject;
+      $idProj=$idRes+88888888+$idProject;
+      $resPr["id"]=$idProj;
       $resPr["idle"]='0';
-      $resPr["wbs"]=$line['wbs'];
-      $resPr["wbsSortable"]=$line['wbsSortable'];
+      $resPr["wbs"]=$prj->ProjectPlanningElement->wbs;
+      $resPr["wbsSortable"]=$prj->ProjectPlanningElement->wbsSortable;
       $resPr["realStartDate"]='';
       $resPr["realEndDate"]='';
       $resPr["plannedStartDate"]='';
       $resPr["plannedEndDate"]='';
       $resPr["idResource"]=$idResource;
       $resPr["progress"]=0;
-      $resPr["topId"]=9999999999+$idResource;
+      $resPr["topId"]=$idRes;
       $resPr["leftWork"]=0;
-      $list['Project#'.$idProject]=$resPr;
+      $keyProj=$keyRes.'_Project#'.$idProject;
+      $list[$keyProj]=$resPr;
       //$sumValidated=0;
       $sumProjAssigned=0;
       $sumProjReal=0;
       $sumProjLeft=0;
       $sumProjPlanned=0;
-      $idProject="";
     }
 		$line["elementary"]='1';
-		$line["topRefType"]='Resource';
-		$line["topRefId"]=$idProject;
+		$line["topRefType"]=($showProject)?'Project':'Resource';
+		$line["topRefId"]=($showProject)?$idProject:$idResource;
 		$line["validatedWorkDisplay"]='';
 		$line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
 		$line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
 		$line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
 		$line["plannedWorkDisplay"]=Work::displayWorkWithUnit($line["plannedWork"]);
-		$line["topId"]=8888888888+$idProject;
+		$line["topId"]=($showProject)?$idProj:$idRes;
 		if ($line["leftWork"]>0) {
 			//$line['realEndDate']='';
 		}
@@ -205,39 +224,73 @@ if (Sql::$lastQueryNbRows > 0) {
     $sumReal+=$line["realWork"];
     $sumLeft+=$line["leftWork"];
 		$sumPlanned+=$line["plannedWork"];
-		if (! $list['Resource#'.$idResource]["realStartDate"] or $line['realStartDate'] < $list['Resource#'.$idResource]["realStartDate"]) {
+		if (! $list[$keyRes]["realStartDate"] or $line['realStartDate'] < $list[$keyRes]["realStartDate"]) {
 			if ($line['realStartDate'] and $line['realStartDate']<$line['plannedStartDate']) {
-			  $list['Resource#'.$idResource]["realStartDate"]=$line['realStartDate'];
+			  $list[$keyRes]["realStartDate"]=$line['realStartDate'];
 			}
 		}
-		if (! $list['Resource#'.$idResource]["realEndDate"] or $line['realEndDate'] > $list['Resource#'.$idResource]["realEndDate"]) {
+		if (! $list[$keyRes]["realEndDate"] or $line['realEndDate'] > $list[$keyRes]["realEndDate"]) {
 			if ($line['realEndDate'] and $line['realEndDate']>$line['plannedEndDate']) {
-			  $list['Resource#'.$idResource]["realEndDate"]=$line['realEndDate'];
+			  $list[$keyRes]["realEndDate"]=$line['realEndDate'];
 			}
 		}
-		if (! $list['Resource#'.$idResource]["plannedStartDate"] or $line['plannedStartDate'] < $list['Resource#'.$idResource]["plannedStartDate"]) {
+		if (! $list[$keyRes]["plannedStartDate"] or $line['plannedStartDate'] < $list[$keyRes]["plannedStartDate"]) {
       if ($line['plannedStartDate'] ) {
-			  $list['Resource#'.$idResource]["plannedStartDate"]=$line['plannedStartDate'];
+			  $list[$keyRes]["plannedStartDate"]=$line['plannedStartDate'];
       }
 		}
-		if (! $list['Resource#'.$idResource]["plannedEndDate"] or $line['plannedEndDate'] > $list['Resource#'.$idResource]["plannedEndDate"]) {
+		if (! $list[$keyRes]["plannedEndDate"] or $line['plannedEndDate'] > $list[$keyRes]["plannedEndDate"]) {
 			if ($line['plannedEndDate']) {
-			  $list['Resource#'.$idResource]["plannedEndDate"]=$line['plannedEndDate'];
-			  if ($list['Resource#'.$idResource]["plannedEndDate"]>$list['Resource#'.$idResource]["realEndDate"]) {
-			  	$list['Resource#'.$idResource]["realEndDate"]="";
+			  $list[$keyRes]["plannedEndDate"]=$line['plannedEndDate'];
+			  if ($list[$keyRes]["plannedEndDate"]>$list[$keyRes]["realEndDate"]) {
+			  	$list[$keyRes]["realEndDate"]="";
 			  }
 			}
 		}
-		$list['Resource#'.$idResource]["assignedWork"]=$sumAssigned;
-		$list['Resource#'.$idResource]["realWork"]=$sumReal;
-		$list['Resource#'.$idResource]["leftWork"]=$sumLeft;
-		$list['Resource#'.$idResource]["plannedWork"]=$sumPlanned;
-		$list['Resource#'.$idResource]["validatedWorkDisplay"]='';
-		$list['Resource#'.$idResource]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumAssigned);
-		$list['Resource#'.$idResource]["realWorkDisplay"]=Work::displayWorkWithUnit($sumReal);
-		$list['Resource#'.$idResource]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumLeft);
-		$list['Resource#'.$idResource]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumPlanned);
-		$list['Resource#'.$idResource]["progress"]=($sumPlanned)?round($sumReal/$sumPlanned,2):0;
+		$list[$keyRes]["assignedWork"]=$sumAssigned;
+		$list[$keyRes]["realWork"]=$sumReal;
+		$list[$keyRes]["leftWork"]=$sumLeft;
+		$list[$keyRes]["plannedWork"]=$sumPlanned;
+		$list[$keyRes]["validatedWorkDisplay"]='';
+		$list[$keyRes]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumAssigned);
+		$list[$keyRes]["realWorkDisplay"]=Work::displayWorkWithUnit($sumReal);
+		$list[$keyRes]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumLeft);
+		$list[$keyRes]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumPlanned);
+		$list[$keyRes]["progress"]=($sumPlanned)?round($sumReal/$sumPlanned,2):0;
+		if ($showProject) {	
+			$sumProjAssigned+=$line["assignedWork"];
+	    $sumProjReal+=$line["realWork"];
+	    $sumProjLeft+=$line["leftWork"];
+	    $sumProjPlanned+=$line["plannedWork"];	    
+	    $list[$keyProj]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumProjAssigned);
+	    $list[$keyProj]["realWorkDisplay"]=Work::displayWorkWithUnit($sumProjReal);
+	    $list[$keyProj]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumProjLeft);
+	    $list[$keyProj]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumProjPlanned);
+	    $list[$keyProj]["progress"]=($sumProjPlanned)?round($sumProjReal/$sumProjPlanned,2):0;
+			if (! $list[$keyProj]["realStartDate"] or $line['realStartDate'] < $list[$keyProj]["realStartDate"]) {
+	      if ($line['realStartDate'] and $line['realStartDate']<$line['plannedStartDate']) {
+	        $list[$keyProj]["realStartDate"]=$line['realStartDate'];
+	      }
+	    }
+	    if (! $list[$keyProj]["realEndDate"] or $line['realEndDate'] > $list[$keyProj]["realEndDate"]) {
+	      if ($line['realEndDate'] and $line['realEndDate']>$line['plannedEndDate']) {
+	        $list[$keyProj]["realEndDate"]=$line['realEndDate'];
+	      }
+	    }
+	    if (! $list[$keyProj]["plannedStartDate"] or $line['plannedStartDate'] < $list[$keyProj]["plannedStartDate"]) {
+	      if ($line['plannedStartDate'] ) {
+	        $list[$keyProj]["plannedStartDate"]=$line['plannedStartDate'];
+	      }
+	    }
+	    if (! $list[$keyProj]["plannedEndDate"] or $line['plannedEndDate'] > $list[$keyProj]["plannedEndDate"]) {
+	      if ($line['plannedEndDate']) {
+	        $list[$keyProj]["plannedEndDate"]=$line['plannedEndDate'];
+	        if ($list[$keyProj]["plannedEndDate"]>$list[$keyProj]["realEndDate"]) {
+	          $list[$keyProj]["realEndDate"]="";
+	        }
+	      }
+	    }
+		}
 		if (! isset($arrayPeAss[$line['idPe']])) {
 			$arrayPeAss[$line['idPe']]=array();
 		}
@@ -275,7 +328,7 @@ if (Sql::$lastQueryNbRows > 0) {
 				if ($id=='idPe') {$idPe=$val;}
 			}
 			//add expanded status
-			if ($line['refType']=='Resource' and array_key_exists('Planning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
+			if (($line['refType']=='Resource' or $line['refType']=='Project') and array_key_exists('Planning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
 				echo ',"collapsed":"1"';
 			} else {
 				echo ',"collapsed":"0"';

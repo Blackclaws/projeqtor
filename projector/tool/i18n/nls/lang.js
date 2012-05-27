@@ -1266,6 +1266,8 @@ colResource: "resources",
 columnSelector: "Select columns to display",
 colVersion: "Version",
 labelShowLeftWork: "Show left work",
+labelShowProjectLevel: "Show project level",
 menuResourcePlanning: "Resource planning",
+showProjectLevel: "Show the project level above activities",
 currentLocaleOfFile: "default"
 }

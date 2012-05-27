@@ -1266,6 +1266,8 @@ colResource: "ressources",
 columnSelector: "Sélectionner les colonnes à afficher",
 colVersion: "Version",
 labelShowLeftWork: "Monter la charge restante",
+labelShowProjectLevel: "Montrer le niveau projet",
 menuResourcePlanning: "Planning par ressource",
+showProjectLevel: "Montrer le niveau projet au dessus des activités",
 currentLocaleOfFile: "fr"
 }

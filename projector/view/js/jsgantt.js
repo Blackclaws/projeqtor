@@ -674,10 +674,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + '</span></NOBR></TD>' ;
           }
           if(vShowEndDate==1 && sortArray[iSort]=='EndDate') {
+          vDispEnd=(vTaskList[i].getEnd())?vTaskList[i].getEnd():vTaskList[i].getRealEnd();
           vLeftTable += '  <TD class="ganttDetail" style="width: ' + vDateWidth + 'px;">'
             +'<NOBR><span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
             +' class="hideLeftPart' + vRowType + '">' 
-            + JSGantt.formatDateStr( vTaskList[i].getEnd(), vDateDisplayFormat) 
+            + JSGantt.formatDateStr( vDispEnd, vDateDisplayFormat) 
             + '</span></NOBR></TD>' ;
           }
           if(vShowRes==1 && sortArray[iSort]=='Resource') {
@@ -822,6 +823,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vTaskEnd   = vTaskList[i].getEnd();
         vTaskRealEnd = vTaskList[i].getRealEnd();
         vTaskPlanStart = vTaskList[i].getPlanStart();
+        if (vTaskList[i].getGroup() && vTaskEnd==null && vTaskRealEnd!=null)vTaskEnd=vTaskRealEnd;
         vNumCols = 0;
         vID = vTaskList[i].getID();
         vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (24 * 60 * 60 * 1000) + 1;
@@ -881,15 +883,15 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         } else {
           vDateRowStr = JSGantt.formatDateStr(vTaskStart,vDateDisplayFormat) + ' - ' 
             + JSGantt.formatDateStr(vTaskEnd,vDateDisplayFormat);
-          vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vTaskList[i].getEnd()))?vMaxDate:vTaskList[i].getEnd();
-          vTaskRight = (Date.parse(vTmpEnd) - Date.parse(vTaskList[i].getStart())) / (24 * 60 * 60 * 1000) + 1 ;
-          vTaskLeft = Math.ceil((Date.parse(vTaskList[i].getStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+          vTmpEnd=(Date.parse(vMaxDate)<Date.parse(vTaskEnd))?vMaxDate:vTaskEnd;
+          vTaskRight = (Date.parse(vTmpEnd) - Date.parse(vTaskStart)) / (24 * 60 * 60 * 1000) + 1 ;
+          vTaskLeft = Math.ceil((Date.parse(vTaskStart) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
           vTaskLeft = vTaskLeft - 1;
           var vBarLeft=Math.ceil(vTaskLeft * (vDayWidth));
           var vBarWidth=Math.ceil((vTaskRight) * (vDayWidth) );
           //if (vBarWidth<10) vBarWidth=10;
    
-          if (g.getSplitted()==true) {
+          if (g.getSplitted()==true && !vTaskList[i].getGroup()) {
               var vTmpEndReal=(Date.parse(vMaxDate)<Date.parse(vTaskList[i].getRealEnd()))?vMaxDate:vTaskList[i].getRealEnd();
               vTaskRightReal = (Date.parse(vTmpEndReal) - Date.parse(vTaskList[i].getStart())) / (24 * 60 * 60 * 1000) + 1 ;
               vTaskLeftPlan = Math.ceil((Date.parse(vTaskList[i].getPlanStart()) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
@@ -913,7 +915,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:5px; '
                 + ' left:' + vBarLeft + 'px; height: 7px; '
                 + ' width:' + vBarWidth + 'px">';
-            if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart()) ) {
+            if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskStart) ) {
               vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
                 + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
                 + '<div style="width:' + vTaskList[i].getCompStr() + ';"' 
@@ -924,7 +926,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>' ;
-              if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getEnd())) {
+              if (Date.parse(vMaxDate)>=Date.parse(vTaskEnd)) {
                 vRightTable += '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>' 
                   + '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
                   + '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>' 
