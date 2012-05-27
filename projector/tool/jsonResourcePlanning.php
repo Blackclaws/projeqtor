@@ -217,7 +217,7 @@ if (Sql::$lastQueryNbRows > 0) {
 		if (trim($line["realStartDate"]) and !trim($line["plannedStartDate"])) {
 			$line['plannedStartDate']=$line['realStartDate'];
 		}
-		$line['progress']=($line["plannedWork"]>0)?$line["realWork"]/$line["plannedWork"]:'';
+		$line['progress']=($line["plannedWork"]>0)?round($line["realWork"]/$line["plannedWork"],2):'';
 		$list[]=$line;
 		//$sumValidated=0;
     $sumAssigned+=$line["assignedWork"];
@@ -256,12 +256,16 @@ if (Sql::$lastQueryNbRows > 0) {
 		$list[$keyRes]["realWorkDisplay"]=Work::displayWorkWithUnit($sumReal);
 		$list[$keyRes]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumLeft);
 		$list[$keyRes]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumPlanned);
-		$list[$keyRes]["progress"]=($sumPlanned)?round($sumReal/$sumPlanned,2):0;
+		$list[$keyRes]["progress"]=($sumPlanned>0)?round($sumReal/$sumPlanned,2):0;
 		if ($showProject) {	
 			$sumProjAssigned+=$line["assignedWork"];
 	    $sumProjReal+=$line["realWork"];
 	    $sumProjLeft+=$line["leftWork"];
 	    $sumProjPlanned+=$line["plannedWork"];	    
+	    $list[$keyProj]["assignedWork"]=$sumProjAssigned;
+	    $list[$keyProj]["realWork"]=$sumProjReal;
+	    $list[$keyProj]["leftWork"]=$sumProjLeft;
+	    $list[$keyProj]["plannedWork"]=$sumProjPlanned;
 	    $list[$keyProj]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumProjAssigned);
 	    $list[$keyProj]["realWorkDisplay"]=Work::displayWorkWithUnit($sumProjReal);
 	    $list[$keyProj]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumProjLeft);
@@ -355,7 +359,7 @@ if (Sql::$lastQueryNbRows > 0) {
 }
 
 function displayGantt($list) {
-	global $outMode;
+	global $outMode,$showProject;
 	$showWbs=false;
 	if (array_key_exists('showWBS',$_REQUEST) ) {
 		$showWbs=true;
@@ -527,6 +531,8 @@ function displayGantt($list) {
 		// lines
 		$width=round($colWidth/$colUnit) . "px;";
 		$collapsedList=Collapsed::getCollaspedList();
+		$levelCollpased=0;
+		$collapsed=false;
 		foreach ($resultArray as $line) {
 			$pEnd=$line['pEnd'];
 			$pStart=$line['pStart'];
@@ -536,14 +542,8 @@ function displayGantt($list) {
 			$plannedWork=$line['plannedWork'];
 			$progress=$line['progress'];
 			// pGroup : is the tack a group one ?
-			$pGroup=($line['refType']=='Resource')?1:0;
+			$pGroup=($line['refType']=='Resource' or $line['refType']=='Project')?1:0;
 			$scope='Planning_'.$line['refType'].'_'.$line['refId'];
-			if ($pGroup) {
-				$collapsed=false;
-				if (array_key_exists($scope, $collapsedList)) {
-				  $collapsed=true;
-				}
-			}
 			$compStyle="";
 			$bgColor="";
 			if( $pGroup) {
@@ -556,7 +556,28 @@ function displayGantt($list) {
 				$rowType  = "row";
 			}
 			$wbs=$line['wbsSortable'];
-			$level=($line['refType']=='Resource')?1:2;
+			if ($line['refType']=='Resource') {
+				$level=1;
+			} else if ($line['refType']=='Project') {
+				$level=2;
+			} else if ($showProject) {
+				$level=3;
+			} else {
+				$level=2;	
+			}
+			if ($collapsed and $collapsedLevel<$level) {
+				continue;
+			}
+			if ($pGroup) {
+        $collapsed=false;
+        if (array_key_exists($scope, $collapsedList)) {
+          $collapsed=true;
+          $collapsedLevel=$level;
+        }
+      }
+      if ($collapsed and ! $pGroup) {
+        continue;
+      }
 			$tab="";
 			for ($i=1;$i<$level;$i++) {
 				$tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
@@ -566,10 +587,7 @@ function displayGantt($list) {
 			$duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
 			//echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
 
-			if ($collapsed and ! $pGroup) {
-        continue;
-      }
-      echo '<TR style="height:18px;' ;
+			echo '<TR style="height:18px;' ;
 			echo '">';
 			echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
 			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;

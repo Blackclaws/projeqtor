@@ -205,7 +205,7 @@ $saveShowProject=$saveShowProjectObj->parameterValue;
                   <?php echo i18n("labelShowProjectLevel");?>
                   </td><td >
                   <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="showProject" name="showProject" 
+                    type="checkbox" id="listShowProject" name="listShowProject" 
                     <?php if ($saveShowProject=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowProject',((this.checked)?'1':'0'));
