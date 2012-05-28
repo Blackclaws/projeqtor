@@ -127,6 +127,10 @@
         echo  '{';
         $nbFields=0;
         $idPe="";
+        if ($line["plannedWork"]>0 and $line["leftWork"]==0) {
+        	$line["plannedStartDate"]='';
+        	$line["plannedEndDate"]='';
+        }
         $line["validatedWorkDisplay"]=Work::displayWorkWithUnit($line["validatedWork"]);
         $line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
         $line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
@@ -218,6 +222,10 @@
     if (Sql::$lastQueryNbRows > 0) {
       $resultArray=array();
       while ($line = Sql::fetchLine($result)) {
+        if ($line["plannedWork"]>0 and $line["leftWork"]==0) {
+          $line["plannedStartDate"]='';
+          $line["plannedEndDate"]='';
+        }
         $pStart="";
         $pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
         $pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
