@@ -48,7 +48,7 @@ $saveShowProject=$saveShowProjectObj->parameterValue;
 		  <tr height="27px">
 		    <td width="50px" align="center">
 		      <span style="position:absolute; left:10px; top:7px">
-            <img src="css/images/iconPlanning32.png" width="32" height="32" />
+            <img src="css/images/iconResourcePlanning32.png" width="32" height="32" />
           </span>
 		    </td>
 		    <td  width="120px"><span class="title"><?php echo i18n('menuResourcePlanning');?></span></td>
