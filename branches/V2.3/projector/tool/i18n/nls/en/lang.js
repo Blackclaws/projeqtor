@@ -1268,6 +1268,7 @@ colVersion: "Version",
 labelShowLeftWork: "Show left work",
 labelShowProjectLevel: "Show project level",
 menuResourcePlanning: "Resource planning",
+reportWorkPerActivity: "work synthesis per activity",
 showProjectLevel: "Show the project level above activities",
 currentLocaleOfFile: "en"
 }
