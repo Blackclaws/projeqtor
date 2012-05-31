@@ -1268,6 +1268,7 @@ colVersion: "[colVersion]",
 labelShowLeftWork: "[labelShowLeftWork]",
 labelShowProjectLevel: "[labelShowProjectLevel]",
 menuResourcePlanning: "[menuResourcePlanning]",
+reportWorkPerActivity: "[reportWorkPerActivity]",
 showProjectLevel: "[showProjectLevel]",
 currentLocaleOfFile: "de"
 }

@@ -1,7 +1,7 @@
 <?PHP
   require_once "../tool/projector.php";  
 
-// Création de l'objet table correspondant à la table où se trouve les infos désirées pour le rapport 
+// Creation of object "table"
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
@@ -23,7 +23,7 @@
   
   $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
-  // Préparation de la requête ///
+  // Preparation of query ///
   $querySelect = '';
   $queryFrom='';
   $queryWhere='';
@@ -33,7 +33,7 @@
     $queryWhere= $table . ".idle=0 ";
   }
   
-  // Création du WHERE. Jointure entre la table PlanningElement et la table Activity
+  // Where clause
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=getAccesResctictionClause('Activity',$table);
   if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
@@ -41,16 +41,16 @@
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
   
-  // Création du SELECT de la requête (select *)
+  // Select clause
   $querySelect .= $table . ".* ";
   
-  // Création du FROM de la requête
+  // From clause
   $queryFrom .= $table;  
 
-  // Création du ORDER BY (par wbs)
+  // Order By clause
   $queryOrderBy .= $table . ".wbsSortable ";
 
-  // Construction et execution de la requete
+  // build of query
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect 
        . ' from ' . $queryFrom
@@ -58,15 +58,15 @@
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
   
-  // Test de la bonne execution de la requête
+  // Test execution of query
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;
 
-  // Vérifie que le requête n'est pas vide
+  // Verify query result is not empty
   if (Sql::$lastQueryNbRows > 0) {
     
-    // Création des colonnes tu tableau ou s'affichera le resultat
+    // Headers of columns
     echo '<table>';
     echo '<TR>';
     echo '  <TD class="reportTableHeader" style="width:10px; border-right: 0px;"></TD>';
@@ -80,10 +80,10 @@
 	echo '  <TD class="reportTableHeader" style="width:70px" nowrap>Indicator</TD>' ;
     echo '</TR>';       
     
-    // Traitement de chaque ligne du résultat de la requête
+    // Treat each line of result
     while ($line = Sql::fetchLine($result)) {
     
-  	  // Récupération des éléments de resultat dans des variables
+  	  // Store result elements
       $validatedWork=round($line['validatedWork'],2);
       $assignedWork=round($line['assignedWork'],2);
       $plannedWork=round($line['plannedWork'],2);
@@ -91,7 +91,7 @@
       $leftWork=round($line['leftWork'],2);
       $progress=' 0';
       
-      // Calcul et création de la variable Progress
+      // Compute progress value
       if ($plannedWork>0) {
         $progress=round(100*$realWork/$plannedWork);
       } else {
@@ -100,27 +100,27 @@
         }
       }
       
-      // Vérifie si la tâche est une tâche parente ou non
+      // Check if activity has a parent one
           $pGroup=($line['elementary']=='0')?1:0;
-      $compStyle=""; // Variable dédiée au style CSS
-	  $compStyleWarning=""; // Variable dédiée au style CSS
-	$indicator=""; // Variable dédiée à l'indicateur (Smiley)
+      $compStyle=""; // complementary css style
+	  $compStyleWarning=""; // complementary css style
+	$indicator=""; // indicator for smiley
 	 
-	  // Tests de comparaison entre le temps planifié et le temps assigné	
-	  // Suivant le resultat, l'indicateur peut être happy, unhappy ou neutral	
+	  // Compare planned and assigned work
+	  // Depending on result, display correspondong smiley
+	  $indicator="neutral"; 
 	  if($plannedWork >$assignedWork) {
 			$indicator="unhappy"; 
-		  if( $pGroup) { // Si c'est un parent, on ajuste le style de texte
+		  if( $pGroup) { 
 			$rowType = "group";
 			$compStyle="font-weight: bold; background: #E8E8E8 ;";
-		  } else if( $line['refType']=='Milestone'){ // Si c'est un Jalon, on ajuste le style de texte
+		  } else if( $line['refType']=='Milestone'){
 			$rowType  = "mile";
 			$compStyle="font-weight: light; font-style:italic;";
-		  } else { // Si c'est une simple tâche, on ajuste le style de texte suivant s'il est happy ou non
+		  } else { 
 			$rowType  = "row";
 			$compStyleWarning="color: #FF1C32 ;";
 		  }
-		// Idem que le précédent. Seul le style pour les tâches change suivant s'il est unhappy ou non
 	  }	 else if($plannedWork<$assignedWork) {
 			$indicator="happy"; 
 			if( $pGroup) {
@@ -133,7 +133,6 @@
 			$rowType  = "row";
 			$compStyleWarning="color: #65FF2D ;";
 		  }
-		  // Idem que le précédent. Seul le style pour les tâches change suivant s'il est neutral ou non	
 		} else if($plannedWork == $assignedWork) {
 			$indicator="neutral"; 
 			if( $pGroup) {
@@ -145,10 +144,9 @@
 		  } else {
 			$rowType  = "row";
 		  }
-		  $indicator="neutral"; 
 		}
 	
-	// Création des lignes du tableau contenant les variables voulues et application des styles correspondants
+	// Display the line
       $wbs=$line['wbsSortable'];
       $level=(strlen($wbs)+1)/4;
       $tab="";

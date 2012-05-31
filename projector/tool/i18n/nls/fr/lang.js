@@ -1268,6 +1268,7 @@ colVersion: "Version",
 labelShowLeftWork: "Monter la charge restante",
 labelShowProjectLevel: "Montrer le niveau projet",
 menuResourcePlanning: "Planning par ressource",
+reportWorkPerActivity: "synthèse des charges par activité",
 showProjectLevel: "Montrer le niveau projet au dessus des activités",
 currentLocaleOfFile: "fr"
 }
