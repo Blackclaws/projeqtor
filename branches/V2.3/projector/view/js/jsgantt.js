@@ -384,7 +384,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         var n = vDepList.length;
         for(var k=0;k<n;k++) {
           var vTask = this.getArrayLocationByID(vDepList[k]);
-          if(vTask!=null && vList[vTask].getVisible()==1 ) {
+          if(vTask!=null && vList[vTask].getVisible()==1 && vList[i].getVisible()==1) {
             this.drawDependency(vList[vTask].getEndX(),vList[vTask].getEndY(),vList[i].getStartX()-1,
                             vList[i].getStartY(),"#"+vList[vTask].getColor());
           }
@@ -1373,7 +1373,7 @@ JSGantt.show =  function (pID, ganttObj) {
         JSGantt.findObj('childgrid_'+vID).style.display = "";
         vList[i].setVisible(1);
       }
-      if(vList[i].getGroup() == 1 && vList[i].getOpen()) {
+      if(vList[i].getGroup() == 1 && vList[i].getVisible()) {
         JSGantt.show(vID, ganttObj);
       }
     }
