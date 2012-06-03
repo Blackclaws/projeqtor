@@ -1373,7 +1373,7 @@ JSGantt.show =  function (pID, ganttObj) {
         JSGantt.findObj('childgrid_'+vID).style.display = "";
         vList[i].setVisible(1);
       }
-      if(vList[i].getGroup() == 1) {
+      if(vList[i].getGroup() == 1 && vList[i].getOpen()) {
         JSGantt.show(vID, ganttObj);
       }
     }
