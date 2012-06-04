@@ -85,8 +85,12 @@ if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exist
   	$critWhere.=($critWhere)?', ':'';
   	$critWhere.="('" . $split[0] . "','" . $split[1] . "')";
   }
-  $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
+  if ($critWhere) {
+    $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
          . " or (successorRefType,successorRefId) in (" . $critWhere . ")";
+  } else {
+  	$clauseWhere=" 1=0 ";
+  }
   $dep=New dependency();
   $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
   foreach ($deps as $dep) {
