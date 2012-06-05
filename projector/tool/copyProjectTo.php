@@ -31,9 +31,9 @@ $result=$newProj->_copyResult;
 unset($newProj->_copyResult);
 $_SESSION['currentObject']=$newProj;
 
+$nbErrors=0;
 // Save Structure
 if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and array_key_exists('copyProjectStructure',$_REQUEST)) {
-	$nbErrors=0;
 	$milArray=array();
   $milArrayObj=array();
   $actArray=array();
