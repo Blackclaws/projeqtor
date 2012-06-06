@@ -48,6 +48,11 @@ if (($file != "") && (file_exists($file))) {
   header("Expires: 0"); 
   header("Cache-Control: no-cache, must-revalidate");
   header("Pragma: no-cache");
+  if (ob_get_length()){   
+    ob_clean();
+  }
+  flush();
+  
   readfile($file);  
 } else {
 	errorLog("download.php : ".$file . ' not found');
