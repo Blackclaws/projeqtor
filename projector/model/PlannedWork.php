@@ -525,13 +525,16 @@ class PlannedWork extends GeneralWork {
   
   private static function sortPlanningElements($list) {
   	// first sort on simple criterias
-    //traceExecutionTime(null, true); 
-    $result = uasort($list,array(new PlanningElement(), "comparePlanningElementSimple"));
-    //traceExecutionTime('uasort simple');
-    //$result=$list;
-    // the sort on predecessors
+    foreach ($list as $id=>$elt) {
+      $crit=($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7')?'0':'1';
+      $crit.=str_pad($elt->priority,5,'0').$elt->wbsSortable;
+      $elt->_sortCriteria=$crit;
+      $list[$id]=$elt;
+    }
+    $bool = uasort($list,array(new PlanningElement(), "comparePlanningElementSimple"));
+    self::traceArray($list);
+    // then sort on predecessors
     $result=self::specificSort($list);
-    //traceExecutionTime('specific sort');
     //self::traceArray($result);
     return $result;
   }
@@ -551,7 +554,7 @@ class PlannedWork extends GeneralWork {
   				}
   			} 			
   			if (count($pe->_tmpPrec)>0) {
-  				// if had not sorted predecessor => wait (until no more predecessor)
+  				// if has some not written predecessor => wait (until no more predecessor)
   				$wait[$id]=$pe;
   				$canInsert=false;
   			} else {
@@ -565,22 +568,7 @@ class PlannedWork extends GeneralWork {
   		if ($canInsert) {
   			$result[$id]=$pe;
   			// now, must check if can insert waiting ones
-  			foreach($wait as $wId=>$wPe) {
-  			  if (array_key_exists($id, $wPe->_tmpPrec)) {
-  			  	// ok, prec has been inserted, not waiting for it anymore
-            unset($wPe->_tmpPrec[$id]);
-  			    if (count($wPe->_tmpPrec)==0) {
-              // Waiting for no more prec => store it
-              unset($wPe->_tmpPrec);
-              $result[$wId]=$wPe;
-              // and remove it from wait list
-              unset ($wait[$wId]);
-            } else {
-              // Store wait stack with new prec list (with less items...)
-              $wait[$wId]=$wPe;
-            }
-          }
-  			}
+  			self::insertWaiting($result,$wait,$id);
   		}
   	}
   	// in the end, empty wait stack (should be empty !!!!)
@@ -591,7 +579,29 @@ class PlannedWork extends GeneralWork {
   	return $result;
   }
   
+  private static function insertWaiting(&$result,&$wait,$id) {
+  	traceLog("insertWaiting($id)");
+    foreach($wait as $wId=>$wPe) {
+      if (isset($wPe->_tmpPrec) and array_key_exists($id, $wPe->_tmpPrec)) {
+        // ok, prec has been inserted, not waiting for it anymore
+        unset($wPe->_tmpPrec[$id]);
+        if (count($wPe->_tmpPrec)==0) {
+          // Waiting for no more prec => store it
+          unset($wPe->_tmpPrec);
+          $result[$wId]=$wPe;
+          // and remove it from wait list
+          unset ($wait[$wId]);
+          // and check if this new insertion can release others
+          self::insertWaiting($result,$wait,$wId); 
+        } else {
+          // Store wait stack with new prec list (with less items...)
+          $wait[$wId]=$wPe;
+        }
+      }
+    }
+  }
   private static function traceArray($list) {
+  	debugLog('*****traceArray()*****');
   	foreach($list as $id=>$pe) {
   		debugLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority);
   		if (count($pe->_predecessorListWithParent)>0) {

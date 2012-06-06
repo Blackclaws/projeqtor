@@ -877,9 +877,9 @@ class PlanningElement extends SqlElement {
     return 0;
   }*/
   
-  static function comparePlanningElementSimple($a, $b) {
+  static function comparePlanningElementSimpleOld($a, $b) {
     // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
-    if ( ($a->idPlanningMode=='2' or  $a->idPlanningMode=='3' or  $a->idPlanningMode=='7') and 
+  	if ( ($a->idPlanningMode=='2' or  $a->idPlanningMode=='3' or  $a->idPlanningMode=='7') and 
          ($b->idPlanningMode!='2' and $a->idPlanningMode!='3' and $a->idPlanningMode!='7') ) {
       return -1;
     }
@@ -898,6 +898,17 @@ class PlanningElement extends SqlElement {
       return -1;
     }
     if ($a->wbsSortable>$b->wbsSortable) {
+      return +1;
+    }
+    return 0;       
+  }
+  static function comparePlanningElementSimple($a, $b) {
+    // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
+    
+    if ($a->_sortCriteria<$b->_sortCriteria) {
+      return -1;
+    }
+    if ($a->_sortCriteria>$b->_sortCriteria) {
       return +1;
     }
     return 0;       
