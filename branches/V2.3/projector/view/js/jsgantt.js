@@ -1059,7 +1059,7 @@ JSGantt.processRows = function(pList, pID, pRow, pLevel, pOpen) {
   var vCompSum = 0;
   var vVisible = pOpen;   
   for(i = 0; i < pList.length; i++) {
-    if(pList[i].getParent() == pID) {
+    if(pList[i].getParent() == pID || (pID==0 && i==0) ) {
       vVisible = pOpen;
       pList[i].setVisible(vVisible);
       if(vVisible==1 && pList[i].getOpen() == 0) {
