@@ -146,7 +146,7 @@ if (Sql::$lastQueryNbRows > 0) {
 			$resAr["refType"]='Resource';
 			$resAr["refId"]=$idResource;
 			$resAr["elementary"]='0';
-			$idRes=9999999999+$idResource;
+			$idRes=$idResource*1000000;
 			$resAr["id"]=$idRes;
 			$resAr["idle"]='0';
 			$resAr["wbs"]='';
@@ -181,7 +181,7 @@ if (Sql::$lastQueryNbRows > 0) {
       $resPr["refType"]='Project';
       $resPr["refId"]=$idProject;
       $resPr["elementary"]='0';
-      $idProj=$idRes+88888888+$idProject;
+      $idProj=$idRes+$idProject;
       $resPr["id"]=$idProj;
       $resPr["idle"]='0';
       $resPr["wbs"]=$prj->ProjectPlanningElement->wbs;
