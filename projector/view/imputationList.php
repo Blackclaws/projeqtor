@@ -77,6 +77,9 @@ $rangeValue=$currentYear . $currentWeek;
                   maxlength="4"
                   value="<?php echo $currentYear;?>" smallDelta="1"
                   id="yearSpinner" name="yearSpinner" >
+                  <script type="dojo/method" event="onFocus" >
+                   return saveImputationPeriod();
+                  </script>
                   <script type="dojo/method" event="onChange" >
                    return refreshImputationPeriod();
                   </script>
@@ -89,6 +92,9 @@ $rangeValue=$currentYear . $currentWeek;
                   maxlength="2"
                   value="<?php echo $currentWeek;?>" smallDelta="1"
                   id="weekSpinner" name="weekSpinner" >
+                  <script type="dojo/method" event="onFocus" >
+                   return saveImputationPeriod();
+                  </script>
                   <script type="dojo/method" event="onChange" >
                    return refreshImputationPeriod();
                   </script>
