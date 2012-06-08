@@ -34,6 +34,11 @@ if (! function_exists('ImagePng')) {
   $graphEnabled=false;
   errorLog("GD Library not enabled - impossible to draw charts");
 }
+if (! function_exists('imageftbbox')) {
+  $graphEnabled=false;
+  errorLog("GD Library or FreeType Librairy incorrect or not correctly installed - impossible to draw charts");
+}
+
 function getGraphImgName($root) {
   global $reportCount, $paramReportTempDirectory;
   //$user=$_SESSION['user'];

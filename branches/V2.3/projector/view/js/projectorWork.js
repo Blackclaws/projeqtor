@@ -60,13 +60,26 @@ function refreshImputationList() {
 	return true;
 }
 
+
 /**
  * Refresh the imputation list after period update (check format first)
  * @return
  */
+var noRefreshImputationPeriod=false;
 function refreshImputationPeriod() {
+	if (noRefreshImputationPeriod) {
+		return;
+	}
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
+		noRefreshImputationPeriod=true;
+		var period=dojo.byId('rangeValue').value;
+		var year=period.substr(0,4);
+        dijit.byId('yearSpinner').set('value',year);
+        var week=period.substr(4,2);
+        dijit.byId('weekSpinner').set('value',week);
+		var week=dijit.byId('weekSpinner').get('value') + '';
+		noRefreshImputationPeriod=false;
 		return false;
 	}
 	var year=dijit.byId('yearSpinner').get('value');

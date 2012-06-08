@@ -49,7 +49,10 @@ $lstObj=array(new Ticket(), new Activity());
 foreach ($lstVersion as $versId=>$versName) {
   echo '<table width="95%" align="center">';
   echo '<tr>';
-  echo '<td class="reportTableHeader" style="width:40%" colspan="3">' . $versName . '</td>';
+  $version=new TargetVersion($versId);
+  //$versDate = ' (' . htmlFormatDate(SqlList::getFieldFromId('Version', $versId, 'plannedEisDate')) . ')';
+  //if ($versDate=='')
+  echo '<td class="reportTableHeader" style="width:40%" colspan="3">' . $version->name . '</td>';
   echo '<td class="largeReportHeader" style="width:10%;text-align:center;" rowspan="2">' . i18n('colIdStatus') . '</td>';
   echo '<td class="largeReportHeader" style="width:10%;text-align:center;" rowspan="2">' . i18n('colResponsible') . '</td>';
   echo '<td class="largeReportHeader" style="width:10%;text-align:center;" rowspan="2">' . i18n('colIdPriority') . '</td>';
