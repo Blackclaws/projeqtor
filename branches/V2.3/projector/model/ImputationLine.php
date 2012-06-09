@@ -52,7 +52,14 @@ class ImputationLine {
 		Assignment::insertAdministrativeLines($resourceId);
 
 		$user=$_SESSION['user'];
-		$visibleProject=$user->getVisibleProjects();
+		$user=new User($user->id);
+		
+		$visibleProjects=$user->getVisibleProjects();
+		
+		$crit=array('scope'=>'imputation', 'idProfile'=>$user->idProfile);
+    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+    $scope=new AccessScope($habilitation->rightAccess);
+    $scopeCode=$scope->accessCode;
 
 		$result=array();
 		if ($rangeType=='week') {
@@ -72,9 +79,10 @@ class ImputationLine {
 		$workList=$work->getSqlElementsFromCriteria($crit,false);
 		$plannedWork=new PlannedWork();
 
-		if ($user->id != $resourceId) {
+		// visibility security : hide line depending on access rights
+		if ($user->id != $resourceId and $scopeCode!='ALL') {
 			foreach ($assList as $id=>$ass) {
-				if (! array_key_exists($ass->idProject, $visibleProject) ) {
+				if (! array_key_exists($ass->idProject, $visibleProjects) or $scopeCode!='PRO') {
 					unset ($assList[$id]);
 				}
 			}
@@ -165,7 +173,7 @@ class ImputationLine {
 				$elt->idAssignment=null;
 				$elt->locked=true;
 			}
-			if ($user->id != $resourceId and ! array_key_exists($ass->idProject, $visibleProject) ) {
+			if ( ! ($user->id = $resourceId or $scopeCode!='ALL' or ($scopeCode='PRO' and array_key_exists($ass->idProject, $visibleProjects) ) ) ) {
 				$elt->locked=true;
 			}
 			$key=$elt->wbsSortable . ' ' . $ass->refType . '#' . $ass->refId;
