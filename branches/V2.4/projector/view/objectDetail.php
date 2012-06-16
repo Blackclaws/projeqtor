@@ -705,8 +705,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $valStore='';
         if ($col=='idResource' or $col=='idActivity' or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
         or $col=='idContact' or $col=='idTicket' or $col=='idUser') {
-          //echo '<div dojoType="dojo.data.ItemFileReadStore" jsId="' . $col . 'Store" url="../tool/jsonList.php?listType=empty" searchAttr="name"  /></div>'; ;
-          //$valStore=' store="' . $col . 'Store" ';
           if (property_exists($obj,'idProject') 
           and get_class($obj)!='Project' and get_class($obj)!='Affectation') {
             if ($obj->id) {

@@ -25,6 +25,10 @@
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
+    dojo.require("dojo.date");
+    dojo.require("dojo.date.locale");
+    dojo.require("dojo.number");
+    dojo.require("dijit.focus");
     dojo.require("dojo.i18n");
     dojo.require("dijit.Dialog"); 
     dojo.require("dijit.form.ValidationTextBox");
@@ -38,10 +42,11 @@
       saveResolutionToSession();
       saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
-      //dijit.byId('login').focus(); 
+      dijit.byId('login').focus(); 
       // For IE, focus to login is delayed
       dijit.byId('password').focus(); 
       setTimeout("dijit.byId('login').focus();",10);
+      //dijit.byId('login').focus(); 
       var changePassword=false;
       hideWait();
     }); 

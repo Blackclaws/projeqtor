@@ -1,1 +1,519 @@
-dojo.provide("dojo.nls.projectorDojo_fr-fr");dojo.provide("dijit.nls.loading");dijit.nls.loading._built=true;dojo.provide("dijit.nls.loading.fr_fr");dijit.nls.loading.fr_fr={"loadingState":"Chargement...","errorState":"Une erreur est survenue"};dojo.provide("dijit.nls.common");dijit.nls.common._built=true;dojo.provide("dijit.nls.common.fr_fr");dijit.nls.common.fr_fr={"buttonOk":"OK","buttonCancel":"Annuler","buttonSave":"Sauvegarder","itemClose":"Fermer"};dojo.provide("dijit.form.nls.validate");dijit.form.nls.validate._built=true;dojo.provide("dijit.form.nls.validate.fr_fr");dijit.form.nls.validate.fr_fr={"rangeMessage":"Cette valeur n'est pas comprise dans la plage autorisée.","invalidMessage":"La valeur indiquée n'est pas correcte.","missingMessage":"Cette valeur est requise."};dojo.provide("dijit.form.nls.ComboBox");dijit.form.nls.ComboBox._built=true;dojo.provide("dijit.form.nls.ComboBox.fr_fr");dijit.form.nls.ComboBox.fr_fr={"previousMessage":"Choix précédents","nextMessage":"Plus de choix"};dojo.provide("dojo.cldr.nls.gregorian");dojo.cldr.nls.gregorian._built=true;dojo.provide("dojo.cldr.nls.gregorian.fr_fr");dojo.cldr.nls.gregorian.fr_fr={"months-format-narrow":["J","F","M","A","M","J","J","A","S","O","N","D"],"field-weekday":"jour de la semaine","dateFormatItem-yyQQQQ":"QQQQ yy","dateFormatItem-yQQQ":"QQQ y","dateFormatItem-yMEd":"EEE d/M/yyyy","dateFormatItem-MMMEd":"E d MMM","eraNarrow":["av. J.-C.","ap. J.-C."],"dayPeriods-format-wide-morning":"matin","dateFormatItem-MMMdd":"dd MMM","dateFormat-long":"d MMMM y","months-format-wide":["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],"dayPeriods-format-wide-pm":"PM","dateFormat-full":"EEEE d MMMM y","dateFormatItem-Md":"d/M","dayPeriods-format-wide-noon":"midi","field-era":"ère","dateFormatItem-yM":"M/yyyy","months-standAlone-wide":["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],"timeFormat-short":"HH:mm","quarters-format-wide":["1er trimestre","2e trimestre","3e trimestre","4e trimestre"],"timeFormat-long":"HH:mm:ss z","field-year":"année","dateFormatItem-yMMM":"MMM y","dateFormatItem-yQ":"'T'Q y","dateFormatItem-yyyyMMMM":"MMMM y","field-hour":"heure","dateFormatItem-MMdd":"dd/MM","months-format-abbr":["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."],"dateFormatItem-yyQ":"'T'Q yy","timeFormat-full":"HH:mm:ss zzzz","field-day-relative+0":"aujourd’hui","field-day-relative+1":"demain","field-day-relative+2":"après-demain","field-day-relative+3":"après-après-demain","months-standAlone-abbr":["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."],"quarters-format-abbr":["T1","T2","T3","T4"],"quarters-standAlone-wide":["1er trimestre","2e trimestre","3e trimestre","4e trimestre"],"dateFormatItem-M":"L","days-standAlone-wide":["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"],"dateFormatItem-yyMMMEEEd":"EEE d MMM yy","dateFormatItem-yyMMM":"MMM yy","timeFormat-medium":"HH:mm:ss","dateFormatItem-Hm":"HH:mm","quarters-standAlone-abbr":["T1","T2","T3","T4"],"eraAbbr":["av. J.-C.","ap. J.-C."],"field-minute":"minute","field-dayperiod":"cadran","days-standAlone-abbr":["dim.","lun.","mar.","mer.","jeu.","ven.","sam."],"dayPeriods-format-wide-night":"soir","dateFormatItem-yyMMMd":"d MMM yy","dateFormatItem-d":"d","dateFormatItem-ms":"mm:ss","quarters-format-narrow":["T1","T2","T3","T4"],"field-day-relative+-1":"hier","field-day-relative+-2":"avant-hier","field-day-relative+-3":"avant-avant-hier","dateFormatItem-MMMd":"d MMM","dateFormatItem-MEd":"EEE d/M","field-day":"jour","days-format-wide":["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"],"field-zone":"fuseau horaire","dateFormatItem-y":"y","months-standAlone-narrow":["J","F","M","A","M","J","J","A","S","O","N","D"],"dateFormatItem-yyMM":"MM/yy","days-format-abbr":["dim.","lun.","mar.","mer.","jeu.","ven.","sam."],"eraNames":["avant Jésus-Christ","après Jésus-Christ"],"days-format-narrow":["D","L","M","M","J","V","S"],"field-month":"mois","days-standAlone-narrow":["D","L","M","M","J","V","S"],"dateFormatItem-MMM":"LLL","dayPeriods-format-wide-am":"AM","dateFormatItem-MMMMEd":"EEE d MMMM","dateFormat-short":"dd/MM/yy","dateFormatItem-MMd":"d/MM","dayPeriods-format-wide-afternoon":"après-midi","field-second":"seconde","dateFormatItem-yMMMEd":"EEE d MMM y","dateFormatItem-Ed":"E d","field-week":"semaine","dateFormat-medium":"d MMM y","dateFormatItem-Hms":"HH:mm:ss","quarters-standAlone-narrow":["1","2","3","4"],"dateTimeFormats-appendItem-Day-Of-Week":"{0} {1}","dateTimeFormat-medium":"{1} {0}","dateFormatItem-EEEd":"d EEE","dayPeriods-format-abbr-am":"AM","dateTimeFormats-appendItem-Second":"{0} ({2}: {1})","dateTimeFormats-appendItem-Era":"{0} {1}","dateTimeFormats-appendItem-Week":"{0} ({2}: {1})","dateFormatItem-H":"HH","dateFormatItem-h":"h a","dateTimeFormat-long":"{1} {0}","dayPeriods-format-narrow-am":"AM","dateTimeFormat-full":"{1} {0}","dateTimeFormats-appendItem-Day":"{0} ({2}: {1})","dateFormatItem-hm":"h:mm a","dateTimeFormats-appendItem-Year":"{0} {1}","dateTimeFormats-appendItem-Hour":"{0} ({2}: {1})","dayPeriods-format-abbr-pm":"PM","dateTimeFormats-appendItem-Quarter":"{0} ({2}: {1})","dateTimeFormats-appendItem-Month":"{0} ({2}: {1})","dateTimeFormats-appendItem-Minute":"{0} ({2}: {1})","dateTimeFormats-appendItem-Timezone":"{0} {1}","dayPeriods-format-narrow-pm":"PM","dateTimeFormat-short":"{1} {0}","dateFormatItem-hms":"h:mm:ss a"};dojo.provide("dojo.cldr.nls.number");dojo.cldr.nls.number._built=true;dojo.provide("dojo.cldr.nls.number.fr_fr");dojo.cldr.nls.number.fr_fr={"group":" ","percentSign":"%","exponential":"E","percentFormat":"#,##0 %","scientificFormat":"#E0","list":";","infinity":"∞","patternDigit":"#","minusSign":"-","decimal":",","nan":"NaN","nativeZeroDigit":"0","perMille":"‰","decimalFormat":"#,##0.###","currencyFormat":"#,##0.00 ¤","plusSign":"+","currencySpacing-afterCurrency-currencyMatch":"[:letter:]","currencySpacing-beforeCurrency-surroundingMatch":"[:digit:]","decimalFormat-short":"000T","currencySpacing-afterCurrency-insertBetween":" ","currencySpacing-afterCurrency-surroundingMatch":"[:digit:]","currencySpacing-beforeCurrency-currencyMatch":"[:letter:]","currencySpacing-beforeCurrency-insertBetween":" "};dojo.provide("dojo.nls.colors");dojo.nls.colors._built=true;dojo.provide("dojo.nls.colors.fr_fr");dojo.nls.colors.fr_fr={"lightsteelblue":"bleu acier clair","orangered":"rouge orangé","midnightblue":"bleu nuit","cadetblue":"bleu pétrole","seashell":"coquillage","slategrey":"gris ardoise","coral":"corail","darkturquoise":"turquoise foncé","antiquewhite":"blanc antique","mediumspringgreen":"vert printemps moyen","salmon":"saumon","darkgrey":"gris foncé","ivory":"ivoire","greenyellow":"vert-jaune","mistyrose":"rose pâle","lightsalmon":"saumon clair","silver":"argent","dimgrey":"gris soutenu","orange":"orange","white":"blanc","navajowhite":"chair","royalblue":"bleu roi","deeppink":"rose soutenu","lime":"vert citron","oldlace":"blanc cassé","chartreuse":"vert vif","darkcyan":"cyan foncé","yellow":"jaune","linen":"écru","olive":"olive","gold":"or","lawngreen":"vert prairie","lightyellow":"jaune clair","tan":"grège","darkviolet":"violet foncé","lightslategrey":"gris ardoise clair","grey":"gris","darkkhaki":"kaki foncé","green":"vert","deepskyblue":"bleu ciel soutenu","aqua":"bleu-vert","sienna":"terre de sienne","mintcream":"crème de menthe","rosybrown":"vieux rose","mediumslateblue":"bleu ardoise moyen","magenta":"magenta","lightseagreen":"vert d'eau clair","cyan":"cyan","olivedrab":"brun verdâtre","darkgoldenrod":"jaune paille foncé","slateblue":"bleu ardoise","mediumaquamarine":"aigue-marine moyen","lavender":"lavande","mediumseagreen":"vert d'eau moyen","maroon":"marron","darkslategray":"gris ardoise foncé","mediumturquoise":"turquoise moyen","ghostwhite":"blanc laiteux","darkblue":"bleu foncé","mediumvioletred":"rouge violacé moyen","brown":"brun","lightgray":"gris clair","sandybrown":"sable","pink":"rose","firebrick":"rouge brique","indigo":"indigo","snow":"neige","darkorchid":"lilas foncé","turquoise":"turquoise","chocolate":"chocolat","springgreen":"vert printemps","moccasin":"chamois","navy":"bleu marine","lemonchiffon":"mousse de citron","teal":"sarcelle","floralwhite":"lys","cornflowerblue":"bleuet","paleturquoise":"turquoise pâle","purple":"pourpre","gainsboro":"gris souris","plum":"prune","red":"rouge","blue":"bleu","forestgreen":"vert sapin","darkgreen":"vert foncé","honeydew":"opalin","darkseagreen":"vert d'eau foncé","lightcoral":"corail clair","palevioletred":"rouge violacé pâle","mediumpurple":"pourpre moyen","saddlebrown":"brun cuir","darkmagenta":"magenta foncé","thistle":"chardon","whitesmoke":"blanc cendré","wheat":"blé","violet":"violet","lightskyblue":"bleu ciel clair","goldenrod":"jaune paille","mediumblue":"bleu moyen","skyblue":"bleu ciel","crimson":"cramoisi","darksalmon":"saumon foncé","darkred":"rouge foncé","darkslategrey":"gris ardoise foncé","peru":"caramel","lightgrey":"gris clair","lightgoldenrodyellow":"jaune paille clair","blanchedalmond":"coquille d'oeuf","aliceblue":"bleu gris","bisque":"beige rosé","slategray":"gris ardoise","palegoldenrod":"jaune paille pâle","darkorange":"orange foncé","aquamarine":"aigue-marine","lightgreen":"vert clair","burlywood":"bois précieux","dodgerblue":"bleu France","darkgray":"gris foncé","lightcyan":"cyan clair","powderblue":"bleu de smalt","blueviolet":"bleu-violet","orchid":"lilas","dimgray":"gris soutenu","beige":"beige","fuchsia":"fuchsia","lavenderblush":"lavandin","hotpink":"rose intense","steelblue":"bleu acier","tomato":"tomate","lightpink":"rose clair","limegreen":"citron vert","indianred":"rose indien","papayawhip":"crème de papaye","lightslategray":"gris ardoise clair","gray":"gris","mediumorchid":"lilas moyen","cornsilk":"vanille","black":"noir","seagreen":"vert d'eau","darkslateblue":"bleu ardoise foncé","khaki":"kaki","lightblue":"bleu clair","palegreen":"vert pâle","azure":"bleu azur","peachpuff":"pêche","darkolivegreen":"olive foncé","yellowgreen":"vert jaunâtre"};dojo.provide("dojox.form.nls.PasswordValidator");dojox.form.nls.PasswordValidator._built=true;dojo.provide("dojox.form.nls.PasswordValidator.fr_fr");dojox.form.nls.PasswordValidator.fr_fr={"badPasswordMessage":"Mot de passe incorrect.","nomatchMessage":"Les mots de passe ne correspondent pas."};
+require({cache:{
+'dijit/form/nls/fr/validate':function(){
+define(
+"dijit/form/nls/fr/validate", //begin v1.x content
+({
+	invalidMessage: "La valeur indiquée n'est pas correcte.",
+	missingMessage: "Cette valeur est requise.",
+	rangeMessage: "Cette valeur n'est pas comprise dans la plage autorisée."
+})
+//end v1.x content
+);
+
+},
+'dijit/form/nls/fr-fr/validate':function(){
+define('dijit/form/nls/fr-fr/validate',{});
+},
+'dojo/cldr/nls/fr/gregorian':function(){
+define(
+"dojo/cldr/nls/fr/gregorian", //begin v1.x content
+{
+	"months-format-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"field-weekday": "jour de la semaine",
+	"dateFormatItem-yyQQQQ": "QQQQ yy",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateFormatItem-yMEd": "EEE d/M/yyyy",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"eraNarrow": [
+		"av. J.-C.",
+		"ap. J.-C."
+	],
+	"dayPeriods-format-wide-morning": "matin",
+	"dateFormatItem-MMMdd": "dd MMM",
+	"dateFormat-long": "d MMMM y",
+	"months-format-wide": [
+		"janvier",
+		"février",
+		"mars",
+		"avril",
+		"mai",
+		"juin",
+		"juillet",
+		"août",
+		"septembre",
+		"octobre",
+		"novembre",
+		"décembre"
+	],
+	"dayPeriods-format-wide-pm": "PM",
+	"dateFormat-full": "EEEE d MMMM y",
+	"dateFormatItem-Md": "d/M",
+	"dayPeriods-format-wide-noon": "midi",
+	"field-era": "ère",
+	"dateFormatItem-yM": "M/yyyy",
+	"months-standAlone-wide": [
+		"janvier",
+		"février",
+		"mars",
+		"avril",
+		"mai",
+		"juin",
+		"juillet",
+		"août",
+		"septembre",
+		"octobre",
+		"novembre",
+		"décembre"
+	],
+	"timeFormat-short": "HH:mm",
+	"quarters-format-wide": [
+		"1er trimestre",
+		"2e trimestre",
+		"3e trimestre",
+		"4e trimestre"
+	],
+	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "année",
+	"dateFormatItem-yMMM": "MMM y",
+	"dateFormatItem-yQ": "'T'Q y",
+	"dateFormatItem-yyyyMMMM": "MMMM y",
+	"field-hour": "heure",
+	"dateFormatItem-MMdd": "dd/MM",
+	"months-format-abbr": [
+		"janv.",
+		"févr.",
+		"mars",
+		"avr.",
+		"mai",
+		"juin",
+		"juil.",
+		"août",
+		"sept.",
+		"oct.",
+		"nov.",
+		"déc."
+	],
+	"dateFormatItem-yyQ": "'T'Q yy",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"field-day-relative+0": "aujourd’hui",
+	"field-day-relative+1": "demain",
+	"field-day-relative+2": "après-demain",
+	"field-day-relative+3": "après-après-demain",
+	"months-standAlone-abbr": [
+		"janv.",
+		"févr.",
+		"mars",
+		"avr.",
+		"mai",
+		"juin",
+		"juil.",
+		"août",
+		"sept.",
+		"oct.",
+		"nov.",
+		"déc."
+	],
+	"quarters-format-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"quarters-standAlone-wide": [
+		"1er trimestre",
+		"2e trimestre",
+		"3e trimestre",
+		"4e trimestre"
+	],
+	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"dimanche",
+		"lundi",
+		"mardi",
+		"mercredi",
+		"jeudi",
+		"vendredi",
+		"samedi"
+	],
+	"dateFormatItem-yyMMMEEEd": "EEE d MMM yy",
+	"dateFormatItem-yyMMM": "MMM yy",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormatItem-Hm": "HH:mm",
+	"quarters-standAlone-abbr": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"eraAbbr": [
+		"av. J.-C.",
+		"ap. J.-C."
+	],
+	"field-minute": "minute",
+	"field-dayperiod": "cadran",
+	"days-standAlone-abbr": [
+		"dim.",
+		"lun.",
+		"mar.",
+		"mer.",
+		"jeu.",
+		"ven.",
+		"sam."
+	],
+	"dayPeriods-format-wide-night": "soir",
+	"dateFormatItem-yyMMMd": "d MMM yy",
+	"dateFormatItem-d": "d",
+	"dateFormatItem-ms": "mm:ss",
+	"quarters-format-narrow": [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	"field-day-relative+-1": "hier",
+	"field-day-relative+-2": "avant-hier",
+	"field-day-relative+-3": "avant-avant-hier",
+	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MEd": "EEE d/M",
+	"field-day": "jour",
+	"days-format-wide": [
+		"dimanche",
+		"lundi",
+		"mardi",
+		"mercredi",
+		"jeudi",
+		"vendredi",
+		"samedi"
+	],
+	"field-zone": "fuseau horaire",
+	"dateFormatItem-y": "y",
+	"months-standAlone-narrow": [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"dateFormatItem-yyMM": "MM/yy",
+	"days-format-abbr": [
+		"dim.",
+		"lun.",
+		"mar.",
+		"mer.",
+		"jeu.",
+		"ven.",
+		"sam."
+	],
+	"eraNames": [
+		"avant Jésus-Christ",
+		"après Jésus-Christ"
+	],
+	"days-format-narrow": [
+		"D",
+		"L",
+		"M",
+		"M",
+		"J",
+		"V",
+		"S"
+	],
+	"field-month": "mois",
+	"days-standAlone-narrow": [
+		"D",
+		"L",
+		"M",
+		"M",
+		"J",
+		"V",
+		"S"
+	],
+	"dateFormatItem-MMM": "LLL",
+	"dayPeriods-format-wide-am": "AM",
+	"dateFormatItem-MMMMEd": "EEE d MMMM",
+	"dateFormat-short": "dd/MM/yy",
+	"dateFormatItem-MMd": "d/MM",
+	"dayPeriods-format-wide-afternoon": "après-midi",
+	"field-second": "seconde",
+	"dateFormatItem-yMMMEd": "EEE d MMM y",
+	"dateFormatItem-Ed": "E d",
+	"field-week": "semaine",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-Hms": "HH:mm:ss"
+}
+//end v1.x content
+);
+},
+'dojo/cldr/nls/fr-fr/gregorian':function(){
+define('dojo/cldr/nls/fr-fr/gregorian',{});
+},
+'dijit/nls/fr/loading':function(){
+define(
+"dijit/nls/fr/loading", //begin v1.x content
+({
+	loadingState: "Chargement...",
+	errorState: "Une erreur est survenue"
+})
+//end v1.x content
+);
+
+},
+'dijit/nls/fr-fr/loading':function(){
+define('dijit/nls/fr-fr/loading',{});
+},
+'dojo/nls/fr/colors':function(){
+define(
+"dojo/nls/fr/colors", //begin v1.x content
+({
+// local representation of all CSS3 named colors, companion to dojo.colors.  To be used where descriptive information
+// is required for each color, such as a palette widget, and not for specifying color programatically.
+
+//Note: due to the SVG 1.0 spec additions, some of these are alternate spellings for the same color e.g. gray vs. gray.
+//TODO: should we be using unique rgb values as keys instead and avoid these duplicates, or rely on the caller to do the reverse mapping?
+aliceblue: "bleu gris",
+antiquewhite: "blanc antique",
+aqua: "bleu-vert",
+aquamarine: "aigue-marine",
+azure: "bleu azur",
+beige: "beige",
+bisque: "beige rosé",
+black: "noir",
+blanchedalmond: "coquille d'oeuf",
+blue: "bleu",
+blueviolet: "bleu-violet",
+brown: "brun",
+burlywood: "bois précieux",
+cadetblue: "bleu pétrole",
+chartreuse: "vert vif",
+chocolate: "chocolat",
+coral: "corail",
+cornflowerblue: "bleuet",
+cornsilk: "vanille",
+crimson: "cramoisi",
+cyan: "cyan",
+darkblue: "bleu foncé",
+darkcyan: "cyan foncé",
+darkgoldenrod: "jaune paille foncé",
+darkgray: "gris foncé",
+darkgreen: "vert foncé",
+darkgrey: "gris foncé", // same as darkgray
+darkkhaki: "kaki foncé",
+darkmagenta: "magenta foncé",
+darkolivegreen: "olive foncé",
+darkorange: "orange foncé",
+darkorchid: "lilas foncé",
+darkred: "rouge foncé",
+darksalmon: "saumon foncé",
+darkseagreen: "vert d'eau foncé",
+darkslateblue: "bleu ardoise foncé",
+darkslategray: "gris ardoise foncé",
+darkslategrey: "gris ardoise foncé", // same as darkslategray
+darkturquoise: "turquoise foncé",
+darkviolet: "violet foncé",
+deeppink: "rose soutenu",
+deepskyblue: "bleu ciel soutenu",
+dimgray: "gris soutenu",
+dimgrey: "gris soutenu", // same as dimgray
+dodgerblue: "bleu France",
+firebrick: "rouge brique",
+floralwhite: "lys",
+forestgreen: "vert sapin",
+fuchsia: "fuchsia",
+gainsboro: "gris souris",
+ghostwhite: "blanc laiteux",
+gold: "or",
+goldenrod: "jaune paille",
+gray: "gris",
+green: "vert",
+greenyellow: "vert-jaune",
+grey: "gris", // same as gray
+honeydew: "opalin",
+hotpink: "rose intense",
+indianred: "rose indien",
+indigo: "indigo",
+ivory: "ivoire",
+khaki: "kaki",
+lavender: "lavande",
+lavenderblush: "lavandin",
+lawngreen: "vert prairie",
+lemonchiffon: "mousse de citron",
+lightblue: "bleu clair",
+lightcoral: "corail clair",
+lightcyan: "cyan clair",
+lightgoldenrodyellow: "jaune paille clair",
+lightgray: "gris clair",
+lightgreen: "vert clair",
+lightgrey: "gris clair", // same as lightgray
+lightpink: "rose clair",
+lightsalmon: "saumon clair",
+lightseagreen: "vert d'eau clair",
+lightskyblue: "bleu ciel clair",
+lightslategray: "gris ardoise clair",
+lightslategrey: "gris ardoise clair", // same as lightslategray
+lightsteelblue: "bleu acier clair",
+lightyellow: "jaune clair",
+lime: "vert citron",
+limegreen: "citron vert",
+linen: "écru",
+magenta: "magenta",
+maroon: "marron",
+mediumaquamarine: "aigue-marine moyen",
+mediumblue: "bleu moyen",
+mediumorchid: "lilas moyen",
+mediumpurple: "pourpre moyen",
+mediumseagreen: "vert d'eau moyen",
+mediumslateblue: "bleu ardoise moyen",
+mediumspringgreen: "vert printemps moyen",
+mediumturquoise: "turquoise moyen",
+mediumvioletred: "rouge violacé moyen",
+midnightblue: "bleu nuit",
+mintcream: "crème de menthe",
+mistyrose: "rose pâle",
+moccasin: "chamois",
+navajowhite: "chair",
+navy: "bleu marine",
+oldlace: "blanc cassé",
+olive: "olive",
+olivedrab: "brun verdâtre",
+orange: "orange",
+orangered: "rouge orangé",
+orchid: "lilas",
+palegoldenrod: "jaune paille pâle",
+palegreen: "vert pâle",
+paleturquoise: "turquoise pâle",
+palevioletred: "rouge violacé pâle",
+papayawhip: "crème de papaye",
+peachpuff: "pêche",
+peru: "caramel",
+pink: "rose",
+plum: "prune",
+powderblue: "bleu de smalt",
+purple: "pourpre",
+red: "rouge",
+rosybrown: "vieux rose",
+royalblue: "bleu roi",
+saddlebrown: "brun cuir",
+salmon: "saumon",
+sandybrown: "sable",
+seagreen: "vert d'eau",
+seashell: "coquillage",
+sienna: "terre de sienne",
+silver: "argent",
+skyblue: "bleu ciel",
+slateblue: "bleu ardoise",
+slategray: "gris ardoise",
+slategrey: "gris ardoise", // same as slategray
+snow: "neige",
+springgreen: "vert printemps",
+steelblue: "bleu acier",
+tan: "grège",
+teal: "sarcelle",
+thistle: "chardon",
+tomato: "tomate",
+transparent: "transparent",
+turquoise: "turquoise",
+violet: "violet",
+wheat: "blé",
+white: "blanc",
+whitesmoke: "blanc cendré",
+yellow: "jaune",
+yellowgreen: "vert jaunâtre"
+})
+//end v1.x content
+);
+
+},
+'dojo/nls/fr-fr/colors':function(){
+define('dojo/nls/fr-fr/colors',{});
+},
+'dojo/cldr/nls/fr/number':function(){
+define(
+"dojo/cldr/nls/fr/number", //begin v1.x content
+{
+	"group": " ",
+	"percentSign": "%",
+	"exponential": "E",
+	"scientificFormat": "#E0",
+	"percentFormat": "#,##0 %",
+	"list": ";",
+	"infinity": "∞",
+	"patternDigit": "#",
+	"minusSign": "-",
+	"decimal": ",",
+	"nan": "NaN",
+	"nativeZeroDigit": "0",
+	"perMille": "‰",
+	"decimalFormat": "#,##0.###",
+	"currencyFormat": "#,##0.00 ¤",
+	"plusSign": "+"
+}
+//end v1.x content
+);
+},
+'dojo/cldr/nls/fr-fr/number':function(){
+define('dojo/cldr/nls/fr-fr/number',{});
+},
+'dojox/form/nls/fr/PasswordValidator':function(){
+define(
+"dojox/form/nls/fr/PasswordValidator", //begin v1.x content
+({
+        nomatchMessage: "Les mots de passe ne correspondent pas.",
+		badPasswordMessage: "Mot de passe incorrect."
+})
+
+//end v1.x content
+);
+},
+'dojox/form/nls/fr-fr/PasswordValidator':function(){
+define('dojox/form/nls/fr-fr/PasswordValidator',{});
+},
+'dijit/form/nls/fr/ComboBox':function(){
+define(
+"dijit/form/nls/fr/ComboBox", //begin v1.x content
+({
+		previousMessage: "Choix précédents",
+		nextMessage: "Plus de choix"
+})
+//end v1.x content
+);
+
+},
+'dijit/form/nls/fr-fr/ComboBox':function(){
+define('dijit/form/nls/fr-fr/ComboBox',{});
+},
+'dijit/nls/fr/common':function(){
+define(
+"dijit/nls/fr/common", //begin v1.x content
+({
+	buttonOk: "OK",
+	buttonCancel: "Annuler",
+	buttonSave: "Sauvegarder",
+	itemClose: "Fermer"
+})
+//end v1.x content
+);
+
+},
+'dijit/nls/fr-fr/common':function(){
+define('dijit/nls/fr-fr/common',{});
+}}});
+define("dojo/nls/projectorDojo_fr-fr", [], 1);

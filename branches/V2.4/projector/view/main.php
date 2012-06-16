@@ -38,6 +38,7 @@ checkVersion(); ?>
               isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
+    dojo.require("dojo.store.DataStore");
     dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojo.date");
     dojo.require("dojo.i18n");
@@ -648,7 +649,8 @@ checkVersion(); ?>
                 missingMessage="<?php echo i18n('mandatory');?>"
                 class="input" value="" >
                 <?php 
-                   htmlDrawOptionForReference('idTerm', null,null,false);
+                   //htmlDrawOptionForReference('idTerm', null,null,false)
+                   // no use : will be updated on dialog opening;
                  ?>
                </select>  
              </td>
@@ -667,7 +669,8 @@ checkVersion(); ?>
                 missingMessage="<?php echo i18n('mandatory');?>"
                 class="input" value="" >
                 <?php 
-                   htmlDrawOptionForReference('idResource', null,null,false);
+                   //htmlDrawOptionForReference('idResource', null,null,false)
+                   // no use : will be updated on dialog opening;
                  ?>
                </select>  
              </td>
@@ -682,7 +685,8 @@ checkVersion(); ?>
                 missingMessage="<?php echo i18n('mandatory');?>"
                 class="input" value="" >
                 <?php 
-                   htmlDrawOptionForReference('idActivityPrice', null,null,false);
+                   //htmlDrawOptionForReference('idActivityPrice', null,null,false)
+                   // no use : will be updated on dialog opening;
                  ?>
                </select>  
              </td>
@@ -1356,7 +1360,8 @@ checkVersion(); ?>
                 class="input" value="" 
                 onChange=""
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdStatus')));?>" >
-                 <?php //htmlDrawOptionForReference('idStatus', null, null, true);?>
+                 <?php //htmlDrawOptionForReference('idStatus', null, null, true);
+                       // no need will be updated on dialog opening?>
           </select>  
         </td>
       </tr>
@@ -1431,7 +1436,8 @@ checkVersion(); ?>
                 class="input" value="" 
                 onChange="assignmentChangeResource();"
                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdResource')));?>" >
-                 <?php htmlDrawOptionForReference('idResource', null, null, true);?>
+                 <?php //htmlDrawOptionForReference('idResource', null, null, true); 
+                       // No need : will be updated when opening Dialog?>
                </select>  
              </td>
            </tr>
@@ -1881,7 +1887,8 @@ checkVersion(); ?>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="versionProjectProject" name="versionProjectProject" 
                 class="input" value="" required="required">
-                 <?php htmlDrawOptionForReference('idProject', null, null, true);?>
+                 <?php //htmlDrawOptionForReference('idProject', null, null, true);
+                       // no use : will be updated on dialog opening;?>
                </select>
              </td>
            </tr>
@@ -1893,7 +1900,8 @@ checkVersion(); ?>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="versionProjectVersion" name="versionProjectVersion" 
                 class="input" value="" required="required">
-                 <?php htmlDrawOptionForReference('idVersion', null, null, true);?>
+                 <?php //htmlDrawOptionForReference('idVersion', null, null, true);
+                       // no use : will be updated on dialog opening;?>
                </select>
              </td>
            </tr>
@@ -1968,7 +1976,8 @@ checkVersion(); ?>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="affectationProject" name="affectationProject" 
                 class="input" value="" required="required">
-                 <?php htmlDrawOptionForReference('idProject', null, null, true);?>
+                 <?php //htmlDrawOptionForReference('idProject', null, null, true);
+                       // no use : will be updated on dialog opening;?>
                </select>
              </td>
            </tr>
@@ -1980,7 +1989,8 @@ checkVersion(); ?>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="affectationResource" name="affectationResource" 
                 class="input" value="" required="required">
-                 <?php htmlDrawOptionForReference('idResource', null, null, true);?>
+                 <?php //htmlDrawOptionForReference('idResource', null, null, true);
+                       // no use : will be updated on dialog opening;?>
                </select>
              </td>
            </tr>
