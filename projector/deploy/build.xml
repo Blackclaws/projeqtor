@@ -157,8 +157,8 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="D:/ProjectOr/External/dojo-release-1.7.1-src"/>
-	<property name="dojo.version" value="1.7.1"/>
+	<property name="dojo.release.dir" value ="D:/ProjectOr/External/dojo-release-1.7.2-src"/>
+	<property name="dojo.version" value="1.7.2"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>

@@ -1,1 +1,469 @@
-dojo.provide("dojo.nls.projectorDojo_sl");dojo.provide("dijit.nls.loading");dijit.nls.loading._built=true;dojo.provide("dijit.nls.loading.sl");dijit.nls.loading.sl={"loadingState":"Nalaganje ...","errorState":"Oprostite, prišlo je do napake."};dojo.provide("dijit.nls.common");dijit.nls.common._built=true;dojo.provide("dijit.nls.common.sl");dijit.nls.common.sl={"buttonOk":"V redu","buttonCancel":"Prekliči","buttonSave":"Shrani","itemClose":"Zapri"};dojo.provide("dijit.form.nls.validate");dijit.form.nls.validate._built=true;dojo.provide("dijit.form.nls.validate.sl");dijit.form.nls.validate.sl={"rangeMessage":"Ta vrednost je izven območja.","invalidMessage":"Vnesena vrednost ni veljavna.","missingMessage":"Ta vrednost je zahtevana."};dojo.provide("dijit.form.nls.ComboBox");dijit.form.nls.ComboBox._built=true;dojo.provide("dijit.form.nls.ComboBox.sl");dijit.form.nls.ComboBox.sl={"previousMessage":"Prejšnje izbire","nextMessage":"Dodatne izbire"};dojo.provide("dojo.cldr.nls.gregorian");dojo.cldr.nls.gregorian._built=true;dojo.provide("dojo.cldr.nls.gregorian.sl");dojo.cldr.nls.gregorian.sl={"field-dayperiod":"Čas dneva","dayPeriods-format-wide-pm":"pop.","field-minute":"Minuta","eraNames":["pred našim štetjem","naše štetje"],"dateFormatItem-MMMEd":"E., d. MMM","field-day-relative+-1":"Včeraj","field-weekday":"Dan v tednu","field-day-relative+-2":"Predvčerajšnjim","field-day-relative+-3":"Pred tremi dnevi","days-standAlone-wide":["nedelja","ponedeljek","torek","sreda","četrtek","petek","sobota"],"months-standAlone-narrow":["j","f","m","a","m","j","j","a","s","o","n","d"],"field-era":"Doba","field-hour":"Ura","dayPeriods-format-wide-am":"dop.","dateFormatItem-y":"y","timeFormat-full":"HH:mm:ss zzzz","months-standAlone-abbr":["jan","feb","mar","apr","maj","jun","jul","avg","sep","okt","nov","dec"],"dateFormatItem-Ed":"E., d.","dateFormatItem-yMMM":"MMM y","field-day-relative+0":"Danes","field-day-relative+1":"Jutri","days-standAlone-narrow":["n","p","t","s","č","p","s"],"eraAbbr":["pr. n. št.","po Kr."],"field-day-relative+2":"Pojutrišnjem","field-day-relative+3":"Čez tri dni","dateFormatItem-yyyyMMMM":"MMMM y","dateFormat-long":"dd. MMMM y","timeFormat-medium":"HH:mm:ss","field-zone":"Območje","dateFormatItem-Hm":"HH:mm","dateFormat-medium":"d. MMM yyyy","dateFormatItem-Hms":"HH:mm:ss","quarters-standAlone-wide":["1. četrtletje","2. četrtletje","3. četrtletje","4. četrtletje"],"dateFormatItem-ms":"mm:ss","field-year":"Leto","field-week":"Teden","months-standAlone-wide":["januar","februar","marec","april","maj","junij","julij","avgust","september","oktober","november","december"],"dateFormatItem-MMMd":"d. MMM","dateFormatItem-yyQ":"Q/yy","timeFormat-long":"HH:mm:ss z","months-format-abbr":["jan.","feb.","mar.","apr.","maj","jun.","jul.","avg.","sep.","okt.","nov.","dec."],"timeFormat-short":"HH:mm","field-month":"Mesec","quarters-format-abbr":["Q1","Q2","Q3","Q4"],"days-format-abbr":["ned","pon","tor","sre","čet","pet","sob"],"dateFormatItem-mmss":"mm:ss","days-format-narrow":["n","p","t","s","č","p","s"],"field-second":"Sekunda","field-day":"Dan","dateFormatItem-MEd":"E., d. MM.","months-format-narrow":["j","f","m","a","m","j","j","a","s","o","n","d"],"days-standAlone-abbr":["ned","pon","tor","sre","čet","pet","sob"],"dateFormat-short":"d. MM. yy","dateFormatItem-yyyyM":"M/yyyy","dateFormatItem-yMMMEd":"E., d. MMM y","dateFormat-full":"EEEE, dd. MMMM y","dateFormatItem-Md":"d. M.","dateFormatItem-yMEd":"E., d. M. y","months-format-wide":["januar","februar","marec","april","maj","junij","julij","avgust","september","oktober","november","december"],"quarters-format-wide":["1. četrtletje","2. četrtletje","3. četrtletje","4. četrtletje"],"days-format-wide":["nedelja","ponedeljek","torek","sreda","četrtek","petek","sobota"],"eraNarrow":["pr. n. št.","po Kr."],"quarters-standAlone-narrow":["1","2","3","4"],"dateFormatItem-yQQQ":"y QQQ","dateTimeFormats-appendItem-Day-Of-Week":"{0} {1}","dateTimeFormat-medium":"{1} {0}","dateFormatItem-EEEd":"d EEE","dayPeriods-format-abbr-am":"AM","dateTimeFormats-appendItem-Second":"{0} ({2}: {1})","dateFormatItem-yM":"y-M","dateFormatItem-yQ":"y Q","dateTimeFormats-appendItem-Era":"{0} {1}","dateTimeFormats-appendItem-Week":"{0} ({2}: {1})","dateFormatItem-H":"HH","dateFormatItem-M":"L","quarters-standAlone-abbr":["Q1","Q2","Q3","Q4"],"dateFormatItem-d":"d","quarters-format-narrow":["1","2","3","4"],"dateFormatItem-h":"h a","dateTimeFormat-long":"{1} {0}","dayPeriods-format-narrow-am":"AM","dateTimeFormat-full":"{1} {0}","dateTimeFormats-appendItem-Day":"{0} ({2}: {1})","dateFormatItem-hm":"h:mm a","dateTimeFormats-appendItem-Year":"{0} {1}","dateTimeFormats-appendItem-Hour":"{0} ({2}: {1})","dayPeriods-format-abbr-pm":"PM","dateFormatItem-MMM":"LLL","dateTimeFormats-appendItem-Quarter":"{0} ({2}: {1})","dateTimeFormats-appendItem-Month":"{0} ({2}: {1})","dateTimeFormats-appendItem-Minute":"{0} ({2}: {1})","dateTimeFormats-appendItem-Timezone":"{0} {1}","dayPeriods-format-narrow-pm":"PM","dateTimeFormat-short":"{1} {0}","dateFormatItem-hms":"h:mm:ss a"};dojo.provide("dojo.cldr.nls.number");dojo.cldr.nls.number._built=true;dojo.provide("dojo.cldr.nls.number.sl");dojo.cldr.nls.number.sl={"group":".","percentSign":"%","exponential":"e","percentFormat":"#,##0%","scientificFormat":"#E0","list":";","infinity":"∞","patternDigit":"#","minusSign":"-","decimal":",","nan":"NaN","nativeZeroDigit":"0","perMille":"‰","decimalFormat":"#,##0.###","currencyFormat":"#,##0.00 ¤","plusSign":"+","currencySpacing-afterCurrency-currencyMatch":"[:letter:]","currencySpacing-beforeCurrency-surroundingMatch":"[:digit:]","decimalFormat-short":"000T","currencySpacing-afterCurrency-insertBetween":" ","currencySpacing-afterCurrency-surroundingMatch":"[:digit:]","currencySpacing-beforeCurrency-currencyMatch":"[:letter:]","currencySpacing-beforeCurrency-insertBetween":" "};dojo.provide("dojo.nls.colors");dojo.nls.colors._built=true;dojo.provide("dojo.nls.colors.sl");dojo.nls.colors.sl={"lightsteelblue":"svetlo kovinsko modra","orangered":"oranžno-rdeča","midnightblue":"polnočno modra","cadetblue":"kadetsko modra","seashell":"morska lupina","slategrey":"skrilasto siva","coral":"koralna","darkturquoise":"temno turkizna","antiquewhite":"antično bela","mediumspringgreen":"srednje pomladno zelena","salmon":"lososova","darkgrey":"temno siva","ivory":"slonokoščena","greenyellow":"zeleno-rumena","mistyrose":"megleno rožnata","lightsalmon":"svetlo lososova","silver":"srebrna","dimgrey":"pepelnato siva","orange":"oranžna","white":"bela","navajowhite":"navajo bela","royalblue":"kraljevsko modra","deeppink":"temno rožnata","lime":"limetasta","oldlace":"stara čipka","chartreuse":"chartreuse","darkcyan":"temno cijan","yellow":"rumena","linen":"lanena","olive":"olivna","gold":"zlata","lawngreen":"travniško zelena","lightyellow":"svetlo rumena","tan":"rumeno-rjava","darkviolet":"temno vijolična","lightslategrey":"svetlo skrilasto siva","grey":"siva","darkkhaki":"temno kaki","green":"zelena","deepskyblue":"temno nebeško modra","aqua":"akva","sienna":"sienna","mintcream":"metina krema","rosybrown":"rožnato rjava","mediumslateblue":"srednje skrilasto modra","magenta":"magenta","lightseagreen":"svetlo morsko zelena","cyan":"cijan","olivedrab":"umazano olivna","darkgoldenrod":"temna zlata rozga","slateblue":"skrilasto modra","mediumaquamarine":"srednji akvamarin","lavender":"sivka","mediumseagreen":"srednje morsko zelena","maroon":"kostanjeva","darkslategray":"temno skrilasto siva","mediumturquoise":"srednje turkizna","ghostwhite":"senčnato bela","darkblue":"temno modra","mediumvioletred":"srednje vijolično rdeča","brown":"rjava","lightgray":"svetlo siva","sandybrown":"peščeno rjava","pink":"rožnata","firebrick":"opečnata","indigo":"indigo","snow":"snežena","darkorchid":"temno orhidejasta","turquoise":"turkizna","chocolate":"čokoladna","springgreen":"pomladno zelena","moccasin":"mokasinasta","navy":"mornarska","lemonchiffon":"limonast šifon","teal":"modrozelena","floralwhite":"cvetno bela","cornflowerblue":"plavičasto modra","paleturquoise":"bledo turkizna","purple":"škrlatna","gainsboro":"gainsboro","plum":"slivova","red":"rdeča","blue":"modra","forestgreen":"gozdno zelena","darkgreen":"temno zelena","honeydew":"medena rosa","darkseagreen":"temno morsko zelena","lightcoral":"svetlo koralna","palevioletred":"bledo vijolično-rdeča","mediumpurple":"srednje škrlatna","saddlebrown":"sedlasto rjava","darkmagenta":"temna magenta","thistle":"osatna","whitesmoke":"megleno bela","wheat":"pšenična","violet":"vijolična","lightskyblue":"svetlo nebeško modra","goldenrod":"zlata rozga","mediumblue":"srednje modra","skyblue":"nebeško modra","crimson":"karminasta","darksalmon":"temno lososova","darkred":"temno rdeča","darkslategrey":"temno skrilasto siva","peru":"perujska","lightgrey":"svetlo siva","lightgoldenrodyellow":"svetlo rumena zlata rozga","blanchedalmond":"obledelo mandljeva","aliceblue":"alice blue modra","bisque":"porcelanasta","slategray":"skrilasto siva","palegoldenrod":"bleda zlata rozga","darkorange":"temno oranžna","aquamarine":"akvamarin","lightgreen":"svetlo zelena","burlywood":"peščeno sivo-rjava","dodgerblue":"dodgersko modra","darkgray":"temno siva","lightcyan":"svetlo cijan","powderblue":"kobaltovo modra","blueviolet":"modro vijolična","orchid":"orhidejasta","dimgray":"pepelnato siva","beige":"bež","fuchsia":"fuksija","lavenderblush":"rožnato sivka","hotpink":"kričeče rožnata","steelblue":"kovinsko modra","tomato":"paradižnikova","lightpink":"svetlo rožnata","limegreen":"apneno zelena","indianred":"indijansko rdeča","papayawhip":"papaja","lightslategray":"svetlo skrilasto siva","gray":"siva","mediumorchid":"srednje orhidejasta","cornsilk":"koruzna","black":"črna","seagreen":"morsko zelena","darkslateblue":"temno skrilasto modra","khaki":"kaki","lightblue":"svetlo modra","palegreen":"bledo zelena","azure":"azurno modra","peachpuff":"breskova","darkolivegreen":"temna olivno zelena","yellowgreen":"rumeno-zelena"};dojo.provide("dojox.form.nls.PasswordValidator");dojox.form.nls.PasswordValidator._built=true;dojo.provide("dojox.form.nls.PasswordValidator.sl");dojox.form.nls.PasswordValidator.sl={"badPasswordMessage":"Neveljavno geslo.","nomatchMessage":"Gesli se ne ujemata."};
+require({cache:{
+'dijit/form/nls/sl/validate':function(){
+define(
+"dijit/form/nls/sl/validate", //begin v1.x content
+({
+	invalidMessage: "Vnesena vrednost ni veljavna.",
+	missingMessage: "Ta vrednost je zahtevana.",
+	rangeMessage: "Ta vrednost je izven območja."
+})
+
+//end v1.x content
+);
+
+},
+'dojo/cldr/nls/sl/gregorian':function(){
+define(
+"dojo/cldr/nls/sl/gregorian", //begin v1.x content
+{
+	"field-dayperiod": "Čas dneva",
+	"dayPeriods-format-wide-pm": "pop.",
+	"field-minute": "Minuta",
+	"eraNames": [
+		"pred našim štetjem",
+		"naše štetje"
+	],
+	"dateFormatItem-MMMEd": "E., d. MMM",
+	"field-day-relative+-1": "Včeraj",
+	"field-weekday": "Dan v tednu",
+	"field-day-relative+-2": "Predvčerajšnjim",
+	"field-day-relative+-3": "Pred tremi dnevi",
+	"days-standAlone-wide": [
+		"nedelja",
+		"ponedeljek",
+		"torek",
+		"sreda",
+		"četrtek",
+		"petek",
+		"sobota"
+	],
+	"months-standAlone-narrow": [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	"field-era": "Doba",
+	"field-hour": "Ura",
+	"dayPeriods-format-wide-am": "dop.",
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"months-standAlone-abbr": [
+		"jan",
+		"feb",
+		"mar",
+		"apr",
+		"maj",
+		"jun",
+		"jul",
+		"avg",
+		"sep",
+		"okt",
+		"nov",
+		"dec"
+	],
+	"dateFormatItem-Ed": "E., d.",
+	"dateFormatItem-yMMM": "MMM y",
+	"field-day-relative+0": "Danes",
+	"field-day-relative+1": "Jutri",
+	"days-standAlone-narrow": [
+		"n",
+		"p",
+		"t",
+		"s",
+		"č",
+		"p",
+		"s"
+	],
+	"eraAbbr": [
+		"pr. n. št.",
+		"po Kr."
+	],
+	"field-day-relative+2": "Pojutrišnjem",
+	"field-day-relative+3": "Čez tri dni",
+	"dateFormatItem-yyyyMMMM": "MMMM y",
+	"dateFormat-long": "dd. MMMM y",
+	"timeFormat-medium": "HH:mm:ss",
+	"field-zone": "Območje",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d. MMM yyyy",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"quarters-standAlone-wide": [
+		"1. četrtletje",
+		"2. četrtletje",
+		"3. četrtletje",
+		"4. četrtletje"
+	],
+	"dateFormatItem-ms": "mm:ss",
+	"field-year": "Leto",
+	"field-week": "Teden",
+	"months-standAlone-wide": [
+		"januar",
+		"februar",
+		"marec",
+		"april",
+		"maj",
+		"junij",
+		"julij",
+		"avgust",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"dateFormatItem-MMMd": "d. MMM",
+	"dateFormatItem-yyQ": "Q/yy",
+	"timeFormat-long": "HH:mm:ss z",
+	"months-format-abbr": [
+		"jan.",
+		"feb.",
+		"mar.",
+		"apr.",
+		"maj",
+		"jun.",
+		"jul.",
+		"avg.",
+		"sep.",
+		"okt.",
+		"nov.",
+		"dec."
+	],
+	"timeFormat-short": "HH:mm",
+	"field-month": "Mesec",
+	"quarters-format-abbr": [
+		"Q1",
+		"Q2",
+		"Q3",
+		"Q4"
+	],
+	"days-format-abbr": [
+		"ned",
+		"pon",
+		"tor",
+		"sre",
+		"čet",
+		"pet",
+		"sob"
+	],
+	"dateFormatItem-mmss": "mm:ss",
+	"days-format-narrow": [
+		"n",
+		"p",
+		"t",
+		"s",
+		"č",
+		"p",
+		"s"
+	],
+	"field-second": "Sekunda",
+	"field-day": "Dan",
+	"dateFormatItem-MEd": "E., d. MM.",
+	"months-format-narrow": [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	"days-standAlone-abbr": [
+		"ned",
+		"pon",
+		"tor",
+		"sre",
+		"čet",
+		"pet",
+		"sob"
+	],
+	"dateFormat-short": "d. MM. yy",
+	"dateFormatItem-yyyyM": "M/yyyy",
+	"dateFormatItem-yMMMEd": "E., d. MMM y",
+	"dateFormat-full": "EEEE, dd. MMMM y",
+	"dateFormatItem-Md": "d. M.",
+	"dateFormatItem-yMEd": "E., d. M. y",
+	"months-format-wide": [
+		"januar",
+		"februar",
+		"marec",
+		"april",
+		"maj",
+		"junij",
+		"julij",
+		"avgust",
+		"september",
+		"oktober",
+		"november",
+		"december"
+	],
+	"quarters-format-wide": [
+		"1. četrtletje",
+		"2. četrtletje",
+		"3. četrtletje",
+		"4. četrtletje"
+	],
+	"days-format-wide": [
+		"nedelja",
+		"ponedeljek",
+		"torek",
+		"sreda",
+		"četrtek",
+		"petek",
+		"sobota"
+	],
+	"eraNarrow": [
+		"pr. n. št.",
+		"po Kr."
+	]
+}
+//end v1.x content
+);
+},
+'dijit/nls/sl/loading':function(){
+define(
+"dijit/nls/sl/loading", //begin v1.x content
+({
+	loadingState: "Nalaganje ...",
+	errorState: "Oprostite, prišlo je do napake."
+})
+//end v1.x content
+);
+
+},
+'dojo/nls/sl/colors':function(){
+define(
+"dojo/nls/sl/colors", //begin v1.x content
+({
+// local representation of all CSS3 named colors, companion to dojo.colors.  To be used where descriptive information
+// is required for each color, such as a palette widget, and not for specifying color programatically.
+
+//Note: due to the SVG 1.0 spec additions, some of these are alternate spellings for the same color e.g. gray vs. gray.
+//TODO: should we be using unique rgb values as keys instead and avoid these duplicates, or rely on the caller to do the reverse mapping?
+aliceblue: "alice blue modra",
+antiquewhite: "antično bela",
+aqua: "akva",
+aquamarine: "akvamarin",
+azure: "azurno modra",
+beige: "bež",
+bisque: "porcelanasta",
+black: "črna",
+blanchedalmond: "obledelo mandljeva",
+blue: "modra",
+blueviolet: "modro vijolična",
+brown: "rjava",
+burlywood: "peščeno sivo-rjava",
+cadetblue: "kadetsko modra",
+chartreuse: "chartreuse",
+chocolate: "čokoladna",
+coral: "koralna",
+cornflowerblue: "plavičasto modra",
+cornsilk: "koruzna",
+crimson: "karminasta",
+cyan: "cijan",
+darkblue: "temno modra",
+darkcyan: "temno cijan",
+darkgoldenrod: "temna zlata rozga",
+darkgray: "temno siva",
+darkgreen: "temno zelena",
+darkgrey: "temno siva", // same as darkgray
+darkkhaki: "temno kaki",
+darkmagenta: "temna magenta",
+darkolivegreen: "temna olivno zelena",
+darkorange: "temno oranžna",
+darkorchid: "temno orhidejasta",
+darkred: "temno rdeča",
+darksalmon: "temno lososova",
+darkseagreen: "temno morsko zelena",
+darkslateblue: "temno skrilasto modra",
+darkslategray: "temno skrilasto siva",
+darkslategrey: "temno skrilasto siva", // same as darkslategray
+darkturquoise: "temno turkizna",
+darkviolet: "temno vijolična",
+deeppink: "temno rožnata",
+deepskyblue: "temno nebeško modra",
+dimgray: "pepelnato siva",
+dimgrey: "pepelnato siva", // same as dimgray
+dodgerblue: "dodgersko modra",
+firebrick: "opečnata",
+floralwhite: "cvetno bela",
+forestgreen: "gozdno zelena",
+fuchsia: "fuksija",
+gainsboro: "gainsboro",
+ghostwhite: "senčnato bela",
+gold: "zlata",
+goldenrod: "zlata rozga",
+gray: "siva",
+green: "zelena",
+greenyellow: "zeleno-rumena",
+grey: "siva", // same as gray
+honeydew: "medena rosa",
+hotpink: "kričeče rožnata",
+indianred: "indijansko rdeča",
+indigo: "indigo",
+ivory: "slonokoščena",
+khaki: "kaki",
+lavender: "sivka",
+lavenderblush: "rožnato sivka",
+lawngreen: "travniško zelena",
+lemonchiffon: "limonast šifon",
+lightblue: "svetlo modra",
+lightcoral: "svetlo koralna",
+lightcyan: "svetlo cijan",
+lightgoldenrodyellow: "svetlo rumena zlata rozga",
+lightgray: "svetlo siva",
+lightgreen: "svetlo zelena",
+lightgrey: "svetlo siva", // same as lightgray
+lightpink: "svetlo rožnata",
+lightsalmon: "svetlo lososova",
+lightseagreen: "svetlo morsko zelena",
+lightskyblue: "svetlo nebeško modra",
+lightslategray: "svetlo skrilasto siva",
+lightslategrey: "svetlo skrilasto siva", // same as lightslategray
+lightsteelblue: "svetlo kovinsko modra",
+lightyellow: "svetlo rumena",
+lime: "limetasta",
+limegreen: "apneno zelena",
+linen: "lanena",
+magenta: "magenta",
+maroon: "kostanjeva",
+mediumaquamarine: "srednji akvamarin",
+mediumblue: "srednje modra",
+mediumorchid: "srednje orhidejasta",
+mediumpurple: "srednje škrlatna",
+mediumseagreen: "srednje morsko zelena",
+mediumslateblue: "srednje skrilasto modra",
+mediumspringgreen: "srednje pomladno zelena",
+mediumturquoise: "srednje turkizna",
+mediumvioletred: "srednje vijolično rdeča",
+midnightblue: "polnočno modra",
+mintcream: "metina krema",
+mistyrose: "megleno rožnata",
+moccasin: "mokasinasta",
+navajowhite: "navajo bela",
+navy: "mornarska",
+oldlace: "stara čipka",
+olive: "olivna",
+olivedrab: "umazano olivna",
+orange: "oranžna",
+orangered: "oranžno-rdeča",
+orchid: "orhidejasta",
+palegoldenrod: "bleda zlata rozga",
+palegreen: "bledo zelena",
+paleturquoise: "bledo turkizna",
+palevioletred: "bledo vijolično-rdeča",
+papayawhip: "papaja",
+peachpuff: "breskova",
+peru: "perujska",
+pink: "rožnata",
+plum: "slivova",
+powderblue: "kobaltovo modra",
+purple: "škrlatna",
+red: "rdeča",
+rosybrown: "rožnato rjava",
+royalblue: "kraljevsko modra",
+saddlebrown: "sedlasto rjava",
+salmon: "lososova",
+sandybrown: "peščeno rjava",
+seagreen: "morsko zelena",
+seashell: "morska lupina",
+sienna: "sienna",
+silver: "srebrna",
+skyblue: "nebeško modra",
+slateblue: "skrilasto modra",
+slategray: "skrilasto siva",
+slategrey: "skrilasto siva", // same as slategray
+snow: "snežena",
+springgreen: "pomladno zelena",
+steelblue: "kovinsko modra",
+tan: "rumeno-rjava",
+teal: "modrozelena",
+thistle: "osatna",
+tomato: "paradižnikova",
+transparent: "prosojno",
+turquoise: "turkizna",
+violet: "vijolična",
+wheat: "pšenična",
+white: "bela",
+whitesmoke: "megleno bela",
+yellow: "rumena",
+yellowgreen: "rumeno-zelena"
+})
+//end v1.x content
+);
+
+},
+'dojo/cldr/nls/sl/number':function(){
+define(
+"dojo/cldr/nls/sl/number", //begin v1.x content
+{
+	"group": ".",
+	"percentSign": "%",
+	"exponential": "e",
+	"scientificFormat": "#E0",
+	"percentFormat": "#,##0%",
+	"list": ";",
+	"infinity": "∞",
+	"patternDigit": "#",
+	"minusSign": "-",
+	"decimal": ",",
+	"nan": "NaN",
+	"nativeZeroDigit": "0",
+	"perMille": "‰",
+	"decimalFormat": "#,##0.###",
+	"currencyFormat": "#,##0.00 ¤",
+	"plusSign": "+"
+}
+//end v1.x content
+);
+},
+'dojox/form/nls/sl/PasswordValidator':function(){
+define(
+"dojox/form/nls/sl/PasswordValidator", //begin v1.x content
+({
+        nomatchMessage: "Gesli se ne ujemata.",
+		badPasswordMessage: "Neveljavno geslo."
+})
+
+//end v1.x content
+);
+},
+'dijit/form/nls/sl/ComboBox':function(){
+define(
+"dijit/form/nls/sl/ComboBox", //begin v1.x content
+({
+		previousMessage: "Prejšnje izbire",
+		nextMessage: "Dodatne izbire"
+})
+
+//end v1.x content
+);
+
+},
+'dijit/nls/sl/common':function(){
+define(
+"dijit/nls/sl/common", //begin v1.x content
+({
+	buttonOk: "V redu",
+	buttonCancel: "Prekliči",
+	buttonSave: "Shrani",
+	itemClose: "Zapri"
+})
+
+//end v1.x content
+);
+
+}}});
+define("dojo/nls/projectorDojo_sl", [], 1);

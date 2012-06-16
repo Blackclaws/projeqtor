@@ -5,6 +5,7 @@
     require_once "../tool/projector.php"; 
     scriptLog('   ->/tool/jsonList.php');
     $type=$_REQUEST['listType'];
+    debugLog("   ->/tool/jsonList.php($type)");
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
     echo ' "items":[';

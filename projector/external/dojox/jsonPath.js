@@ -1,13 +1,2 @@
-/*
-	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
-	Available via Academic Free License >= 2.1 OR the modified BSD license.
-	see: http://dojotoolkit.org/license for details
-*/
-
-
-if(!dojo._hasResource["dojox.jsonPath"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["dojox.jsonPath"] = true;
-dojo.provide("dojox.jsonPath");
-dojo.require("dojox.jsonPath.query");
-
-}
+//>>built
+define(["dijit","dojo","dojox","dojo/require!dojox/jsonPath/query"],function(_1,_2,_3){_2.provide("dojox.jsonPath");_2.require("dojox.jsonPath.query");});
