@@ -15,11 +15,11 @@ INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`id
 (108,'menuTestCaseType',79,'object',955,NULL,0),
 (109,'menuTestSessionType',79,'object',956,NULL,0),
 (110, 'menuRequirementTest',0,'menu',300,NULL,0),
-(111, 'menuRequirement',110,'menu',310,'project',0),
-(112, 'menuTestCase',110,'menu',320,'project',0),
-(113, 'menuTestSession',110,'menu',330,'project',0),
-(114, 'menuRiskLevel',36,'menu',761,NULL,0),
-(115, 'menuFeasibikity',36,'menu',762,NULL,0);
+(111, 'menuRequirement',110,'object',310,'project',0),
+(112, 'menuTestCase',110,'object',320,'project',0),
+(113, 'menuTestSession',110,'object',330,'project',0),
+(114, 'menuRiskLevel',36,'object',761,NULL,0),
+(115, 'menuFeasibility',36,'object',762,NULL,0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 107, 1),
@@ -156,7 +156,7 @@ INSERT INTO `${prefix}runstatus` (id, name, color, sortOrder, idle) VALUES
 (1, 'planned', '#00AAAA', 100, 0),
 (2, 'passed', '#00FF00', 200,0),
 (3, 'failed', '#FF0000', 300,0),
-(3, 'blocked', '#AAAA00', 400,0);
+(4, 'blocked', '#AAAA00', 400,0);
 
 CREATE TABLE `${prefix}requirement` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
