@@ -148,6 +148,10 @@
 .iconExpenseDetailType22 { background-image: url(images/iconExpenseDetailType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconExpenseDetailType16 { background-image: url(images/iconExpenseDetailType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconFeasibility32 { background-image: url(images/iconFeasibility32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconFeasibility22 { background-image: url(images/iconFeasibility22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconFeasibility16 { background-image: url(images/iconFeasibility16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconFilter32 { background-image: url(images/iconFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconFilter22 { background-image: url(images/iconFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconFilter16 { background-image: url(images/iconFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -324,6 +328,18 @@
 .iconRequestor22 { background-image: url(images/iconRequestor22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconRequestor16 { background-image: url(images/iconRequestor16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconRequirement32 { background-image: url(images/iconRequirement32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRequirement22 { background-image: url(images/iconRequirement22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRequirement16 { background-image: url(images/iconRequirement16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRequirementTest32 { background-image: url(images/iconRequirementTest32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRequirementTest22 { background-image: url(images/iconRequirementTest22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRequirementTest16 { background-image: url(images/iconRequirementTest16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRequirementType32 { background-image: url(images/iconRequirementType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRequirementType22 { background-image: url(images/iconRequirementType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRequirementType16 { background-image: url(images/iconRequirementType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconResource32 { background-image: url(images/iconResource32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconResource22 { background-image: url(images/iconResource22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconResource16 { background-image: url(images/iconResource16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -339,6 +355,10 @@
 .iconRisk32 { background-image: url(images/iconRisk32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconRisk22 { background-image: url(images/iconRisk22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconRisk16 { background-image: url(images/iconRisk16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconRiskLevel32 { background-image: url(images/iconRiskLevel32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconRiskLevel22 { background-image: url(images/iconRiskLevel22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconRiskLevel16 { background-image: url(images/iconRiskLevel16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconRiskManagementPlan32 { background-image: url(images/iconRiskManagementPlan32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconRiskManagementPlan22 { background-image: url(images/iconRiskManagementPlan22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -374,6 +394,22 @@
 .iconTerm32 { background-image: url(images/iconTerm32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTerm22 { background-image: url(images/iconTerm22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTerm16 { background-image: url(images/iconTerm16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTestCase32 { background-image: url(images/iconTestCase32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTestCase22 { background-image: url(images/iconTestCase22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTestCase16 { background-image: url(images/iconTestCase16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTestCaseType32 { background-image: url(images/iconTestCaseType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTestCaseType22 { background-image: url(images/iconTestCaseType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTestCaseType16 { background-image: url(images/iconTestCaseType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTestSession32 { background-image: url(images/iconTestSession32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTestSession22 { background-image: url(images/iconTestSession22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTestSession16 { background-image: url(images/iconTestSession16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTestSessionType32 { background-image: url(images/iconTestSessionType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTestSessionType22 { background-image: url(images/iconTestSessionType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTestSessionType16 { background-image: url(images/iconTestSessionType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconTicket32 { background-image: url(images/iconTicket32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicket22 { background-image: url(images/iconTicket22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
