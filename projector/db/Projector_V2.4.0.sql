@@ -102,18 +102,18 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (7, 113, 2),
 (5, 113, 9);
 
-INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow, code) VALUES
-('Requirement', 'Functional', 10, 0, NULL, 1, 'FUNC'),
-('Requirement', 'Technical', 20, 0, NULL, 1, 'TECH'),
-('Requirement', 'Security', 30, 0, NULL, 1, 'SECU'),
-('Requirement', 'Regulatory', 40, 0, NULL, 1, 'REGL'),
-('TestCase', 'Requirement test', 10, 0, NULL, 1, 'REQU'),
-('TestCase', 'Non regression', 30, 0, NULL, 1, 'NR'),
-('TestCase', 'Unit test', 20, 0, NULL, 1 , 'UT'),
-('TestSession', 'Evolution test session', 10, 0, NULL, 1, 'EVO'),
-('TestSession', 'Development test session', 20, 0, NULL, 1, 'DEV'),
-('TestSession', 'Non regression test session', 30, 0, NULL, 1 , 'NR'),
-('TestSession', 'Unitary case test session', 40, 0, NULL, 1 , 'UT');
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow, code, mandatoryDescription, mandatoryResultOnDone, mandatoryResourceOnHandled, lockHandled, lockDone, lockIdle) VALUES
+('Requirement', 'Functional', 10, 0, NULL, 1, 'FUNC', 1,0,1,1,1,1),
+('Requirement', 'Technical', 20, 0, NULL, 1, 'TECH', 1,0,1,1,1,1),
+('Requirement', 'Security', 30, 0, NULL, 1, 'SECU', 1,0,1,1,1,1),
+('Requirement', 'Regulatory', 40, 0, NULL, 1, 'REGL', 1,0,1,1,1,1),
+('TestCase', 'Requirement test', 10, 0, NULL, 1, 'REQU', 1,1,1,1,1,1),
+('TestCase', 'Non regression', 30, 0, NULL, 1, 'NR', 1,1,1,1,1,1),
+('TestCase', 'Unit test', 20, 0, NULL, 1 , 'UT', 1,1,1,1,1,1),
+('TestSession', 'Evolution test session', 10, 0, NULL, 1, 'EVO', 1,1,1,1,1,1),
+('TestSession', 'Development test session', 20, 0, NULL, 1, 'DEV', 1,1,1,1,1,1),
+('TestSession', 'Non regression test session', 30, 0, NULL, 1 , 'NR', 1,1,1,1,1,1),
+('TestSession', 'Unitary case test session', 40, 0, NULL, 1 , 'UT', 1,1,1,1,1,1);
 
 CREATE TABLE `${prefix}risklevel` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -199,7 +199,7 @@ ADD INDEX requirementStatus (idStatus),
 ADD INDEX requirementResource (idResource),
 ADD INDEX requirementTargetVersion (idTargetVersion),
 ADD INDEX requirementUrgency (idUrgency),
-ADD INDEX requirementCriticallity (idCriticallity),
+ADD INDEX requirementCriticality (idCriticality),
 ADD INDEX requirementFeasibility (idFeasibility),
 ADD INDEX requiremenRiskLevel (idRiskLevel);
 
@@ -290,10 +290,10 @@ INSERT INTO `${prefix}referencable` (`id`, `name`, `idle`) VALUES
 (14, 'TestCase', 0),
 (15, 'TestSession', 0);
 
-ALTER TABLE `${prefix}link` ADD COLUMN `idDefaultLinkable`  int(12) unsigned DEFAULT NULL; 
+ALTER TABLE `${prefix}linkable` ADD COLUMN `idDefaultLinkable`  int(12) unsigned DEFAULT NULL; 
 INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`, idDefaultLinkable) VALUES
 (11,'Requirement',0,12),
-(12,'TestCase',0,11),;
+(12,'TestCase',0,11);
 
 CREATE TABLE `${prefix}testcaserun` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -301,6 +301,9 @@ CREATE TABLE `${prefix}testcaserun` (
   `idTestSession` int(12) unsigned DEFAULT NULL,
   `idProduct` int(12) unsigned DEFAULT NULL,
 
+UPDATE `${prefix}priority` set name='High priority'
+WHERE name='Hight priority';
+ 
 --INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 --VALUES (40,'reportWorkPerActivity',1,'workPerActivity.php',170,0);
 
