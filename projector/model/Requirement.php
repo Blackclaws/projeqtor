@@ -10,17 +10,22 @@ class Requirement extends SqlElement {
   public $reference;
   public $idProject;
   public $idProduct;
-  public $idVersion;
+  //public $idVersion;
   public $idRequirementType;
   public $name;
   public $externalReference;
   public $creationDateTime;
   public $idUser;
+  public $idUrgency;
   public $description;
   public $_col_2_2_treatment;
   public $idRequirement;
   public $idStatus;
   public $idResource;
+  public $idCriticality;
+  public $idFeasibility;
+  public $idRiskLevel;
+  public $plannedWork;
   public $handled;
   public $handledDate;
   public $done;
@@ -36,33 +41,39 @@ class Requirement extends SqlElement {
   
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="3%" ># ${id}</th>
-    <th field="nameProject" width="8%" >${idProject}</th>
-    <th field="nameRequirementType" width="8%" >${idTicketType}</th>
-    <th field="name" width="19%" >${name}</th>
-    <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="8%" >${responsible}</th>
-    <th field="handled" width="3%" formatter="booleanFormatter" >${handled}</th>
-    <th field="done" width="3%" formatter="booleanFormatter" >${done}</th>
-    <th field="idle" width="3%" formatter="booleanFormatter" >${idle}</th>
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="nameProject" width="10%" >${idProject}</th>
+    <th field="nameProduct" width="10%" >${idProduct}</th>
+    <th field="nameRequirementType" width="10%" >${type}</th>
+    <th field="name" width="20%" >${name}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="nameResource" width="10%" >${responsible}</th>
+    <th field="nameTargetVersion" width="10%" >${idVersion}</th>
+    <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
+    <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
                                   "name"=>"required", 
-                                  "idProject"=>"required",
+                                  "idRequirementType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "idUser"=>"hidden"
   );  
   
-  private static $_colCaptionTransposition = array('idUser'=>'issuer', 
-                                                   'idResource'=> 'responsible'
+  private static $_colCaptionTransposition = array('idResource'=> 'responsible',
+                                                   'idRequirementType'=>'type',
+                                                   'idTargetVersion'=>'targetVersion',
+                                                   'idRiskLevel'=>'technicalRisk',
+                                                   'plannedWork'=>'estimatedEffort'
                                                    );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
-  private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
+  private static $_databaseColumnName = array();
     
    /** ==========================================================================
    * Constructor
@@ -139,7 +150,11 @@ class Requirement extends SqlElement {
    */
   public function control(){
     $result="";
-
+    
+    if (!trim($this->idProject) and !trim($this->idProduct)) {
+      $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
+    }
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
