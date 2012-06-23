@@ -102,18 +102,18 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (7, 113, 2),
 (5, 113, 9);
 
-INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
-('Requirement', 'Functional', 10, 0, NULL, 1),
-('Requirement', 'Technical', 20, 0, NULL, 1),
-('Requirement', 'Security', 30, 0, NULL, 1),
-('Requirement', 'Regulatory', 40, 0, NULL, 1),
-('TestCase', 'Requirement test', 10, 0, NULL, 1),
-('TestCase', 'Non regression', 30, 0, NULL, 1),
-('TestCase', 'Unit test', 20, 0, NULL, 1),
-('TestSession', 'Evolution test session', 10, 0, NULL, 1),
-('TestSession', 'Development test session', 20, 0, NULL, 1),
-('TestSession', 'Non regression test session', 30, 0, NULL, 1),
-('TestSession', 'Unitary case test session', 40, 0, NULL, 1);
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow, code) VALUES
+('Requirement', 'Functional', 10, 0, NULL, 1, 'FUNC'),
+('Requirement', 'Technical', 20, 0, NULL, 1, 'TECH'),
+('Requirement', 'Security', 30, 0, NULL, 1, 'SECU'),
+('Requirement', 'Regulatory', 40, 0, NULL, 1, 'REGL'),
+('TestCase', 'Requirement test', 10, 0, NULL, 1, 'REQU'),
+('TestCase', 'Non regression', 30, 0, NULL, 1, 'NR'),
+('TestCase', 'Unit test', 20, 0, NULL, 1 , 'UT'),
+('TestSession', 'Evolution test session', 10, 0, NULL, 1, 'EVO'),
+('TestSession', 'Development test session', 20, 0, NULL, 1, 'DEV'),
+('TestSession', 'Non regression test session', 30, 0, NULL, 1 , 'NR'),
+('TestSession', 'Unitary case test session', 40, 0, NULL, 1 , 'UT');
 
 CREATE TABLE `${prefix}risklevel` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -182,10 +182,9 @@ CREATE TABLE `${prefix}requirement` (
   `idTargetVersion` int(12) unsigned DEFAULT NULL,
   `plannedWork` decimal(14,5) UNSIGNED DEFAULT '0',
   `idUrgency` int(12) unsigned DEFAULT NULL,
-  `idCriticallity` int(12) unsigned DEFAULT NULL,
+  `idCriticality` int(12) unsigned DEFAULT NULL,
   `idFeasibility` int(12) unsigned DEFAULT NULL,
   `idRiskLevel` int(12) unsigned DEFAULT NULL,
-  `prerequisite` varchar(4000) DEFAULT NULL,
   `result` varchar(4000) DEFAULT NULL,
   `testCoverage` int(5) default 0,
   PRIMARY KEY (`id`)
@@ -229,6 +228,7 @@ CREATE TABLE `${prefix}testcase` (
   `idle` int(1) unsigned DEFAULT '0',
   `idleDate` date DEFAULT NULL,
   `idPriority` int(12) unsigned DEFAULT NULL,
+  `prerequisite` varchar(4000) DEFAULT NULL,
   `result` varchar(4000) DEFAULT NULL,
   `sessionCount` int(5) default 0,
   `runCount` int(5) default 0,
@@ -285,6 +285,22 @@ ADD INDEX testsessionUser (idUser),
 ADD INDEX testsessionStatus (idStatus),
 ADD INDEX testsessionResource (idResource);
 
+INSERT INTO `${prefix}referencable` (`id`, `name`, `idle`) VALUES
+(13, 'Requirement', 0),
+(14, 'TestCase', 0),
+(15, 'TestSession', 0);
+
+ALTER TABLE `${prefix}link` ADD COLUMN `idDefaultLinkable`  int(12) unsigned DEFAULT NULL; 
+INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`, idDefaultLinkable) VALUES
+(11,'Requirement',0,12),
+(12,'TestCase',0,11),;
+
+CREATE TABLE `${prefix}testcaserun` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idTestCase` int(12) unsigned DEFAULT NULL,
+  `idTestSession` int(12) unsigned DEFAULT NULL,
+  `idProduct` int(12) unsigned DEFAULT NULL,
+
 --INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 --VALUES (40,'reportWorkPerActivity',1,'workPerActivity.php',170,0);
 
@@ -299,3 +315,4 @@ ADD INDEX testsessionResource (idResource);
 --(5,40,0),
 --(6,40,0),
 --(7,40,0);
+
