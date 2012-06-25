@@ -1524,7 +1524,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           $colScript .= '   refreshList("idActivity","idProject", this.value);';
         }
         if ($colName=='idProject' and property_exists($this,'idResource')) {
-          $colScript .= '   refreshList("idResource","idProject", this.value);';
+          $colScript .= '   refreshList("idResource","idProject", this.value, "' . $this->idResource. '");';
         }
         if ($colName=='idProject' and property_exists($this,'idVersion')) {
           $colScript .= '   refreshList("idVersion","idProject", this.value);';

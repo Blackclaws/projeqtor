@@ -210,7 +210,7 @@ CREATE TABLE `${prefix}testcase` (
   `idProduct` int(12) unsigned DEFAULT NULL,
   `idVersion` int(12) unsigned DEFAULT NULL,
   `idTestCaseType`  int(12) unsigned DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
+  `name` varchar(200) DEFAULT NULL,
   `externalReference` varchar(100) DEFAULT NULL,
   `idUser` int(12) unsigned DEFAULT NULL,
   `creationDateTime` datetime DEFAULT NULL,

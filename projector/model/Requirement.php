@@ -155,6 +155,27 @@ class Requirement extends SqlElement {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
     
+    if ($this->id and $this->id==$this->idRequirement) {
+      $result.='<br/>' . i18n('errorHierarchicLoop');
+    } else if (trim($this->idRequirement)){
+      $parentList=array();
+    	$parent=new Requirement($this->idRequirement);
+    	while ($parent->idRequirement) {
+    		$parentList[$parent->idRequirement]=$parent->idRequirement;
+    		$parent=new Requirement($parent->idRequirement);
+    	}
+      if (array_key_exists($this->id,$parentList)) {
+        $result.='<br/>' . i18n('errorHierarchicLoop');
+      }
+    }
+    if (trim($this->idRequirement)) {
+      $parentRequirement=new Requirement($this->idRequirement);
+      if (trim($parentRequirement->idProject)!=trim($this->idProject)  
+      or trim($parentRequirement->idProduct)!=trim($this->idProduct)) {
+        $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
+      }
+    }
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

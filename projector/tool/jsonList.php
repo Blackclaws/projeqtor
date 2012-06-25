@@ -10,6 +10,17 @@
     echo 'label: "name",';
     echo ' "items":[';
     
+    // If type = 'list' and $dataType = idResource : execute the listResourceProject type
+    $required=true; // when directly requesting 'listResourceProject', required is by default
+    if ($type=='list'
+    and array_key_exists('dataType', $_REQUEST) and $_REQUEST['dataType']=='idResource' 
+    and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)
+    and $_REQUEST['critField']=='idProject') {
+    	$type='listResourceProject';
+    	$_REQUEST['idProject']=$_REQUEST['critValue'];
+    	$required=array_key_exists('required', $_REQUEST);
+    }
+    
     if ($type=='empty') {
           
     } else if ($type=='object') {    
@@ -79,9 +90,10 @@
         $nbRows+=1;
       }
     } else if ($type=='listResourceProject') {
-	      $obj=$_SESSION['currentObject'];
+	      //$obj=$_SESSION['currentObject'];
+	      //$prj=new Project($obj->idProject);
 	      $idPrj=$_REQUEST['idProject'];
-	      $prj=new Project($obj->idProject);
+	      $prj=new Project($idPrj);
 	      $lstTopPrj=$prj->getTopProjectList(true);
 	      $in=transformValueListIntoInClause($lstTopPrj);
 	      $where="idProject in " . $in; 
@@ -103,6 +115,10 @@
 	      }
 	      asort($lstRes);
 	      // return result in json format
+        if (! $required) {
+          echo '{id:" ", name:""}';
+          $nbRows+=1;
+        }
 	      foreach ($lstRes as $id=>$name) {
 	        if ($nbRows>0) echo ', ';
 	        echo '{id:"' . $id . '", name:"'. $name . '"}';

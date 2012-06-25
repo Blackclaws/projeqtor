@@ -11,24 +11,23 @@ class TestSession extends SqlElement {
   public $idProject;
   public $idProduct;
   public $idVersion;
-  public $idTestCaseType;
+  public $idTestSessionType;
   public $name;
   public $externalReference;
   public $creationDateTime;
   public $idUser;
   public $description;
   public $_col_2_2_treatment;
-  public $idTestCase;
   public $idStatus;
   public $idResource;
-  public $idPriority;
+  public $startDate;
+  public $endDate;
   public $handled;
   public $handledDate;
   public $done;
   public $doneDate;
   public $idle;
   public $idleDate;
-  public $prerequisite;
   public $result;
   public $_col_1_1_Link;
   public $_Link=array();
@@ -62,7 +61,7 @@ class TestSession extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
-                                                   'idTestCaseType'=>'type',
+                                                   'idTestSessionType'=>'type',
                                                    'result'=>'expectedResult'
                                                    );
   
@@ -160,10 +159,6 @@ class TestSession extends SqlElement {
   
   public function save() {
 
-  	if (! $this->prerequisite and $this->idTestCase) {
-  		$parent=new TestCase($this->idTestCase);
-  		$this->prerequisite=$parent->prerequisite;
-  	}
   	$result=parent::save();
     return $result;
   }

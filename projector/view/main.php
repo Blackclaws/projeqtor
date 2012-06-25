@@ -50,7 +50,8 @@ checkVersion(); ?>
     dojo.require("dijit.layout.AccordionContainer");
     dojo.require("dijit.Menu"); 
     dojo.require("dijit.MenuBar"); 
-    dojo.require("dijit.MenuBarItem"); 
+    dojo.require("dijit.MenuBarItem");
+    dojo.require("dijit.Toolbar") 
     dojo.require("dijit.PopupMenuBarItem");
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.form.Textarea");

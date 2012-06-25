@@ -1900,3 +1900,14 @@ function ibanConvertLetters(text) {
 function trim (myString) {
   return myString.replace(/^\s+/g,'').replace(/\s+$/g,'');
 } 
+
+function moveMenuBar(way) {
+	var bar=dojo.byId('menubarContainer');
+	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2));
+	var step=50;
+	if (way=='left')  {pos=left+step;}
+	if (way=='right') {pos=left-step;}
+	if (pos>0) pos=0;
+	bar.style.left=pos+'px';
+	//alert(bar.style.left);
+}
