@@ -15,6 +15,9 @@ class TestCase extends SqlElement {
   public $name;
   public $externalReference;
   public $creationDateTime;
+  public $idContext1;
+  public $idContext2;
+  public $idContext3;
   public $idUser;
   public $description;
   public $_col_2_2_treatment;
@@ -58,7 +61,10 @@ class TestCase extends SqlElement {
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
-                                  "idUser"=>"hidden"
+                                  "idUser"=>"hidden",
+                                  "idContext1"=>"nobr,size1/3,title",
+                                  "idContext2"=>"nobr,title", 
+                                  "idContext3"=>"title"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
@@ -148,6 +154,26 @@ class TestCase extends SqlElement {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
     
+    if ($this->id and $this->id==$this->idTestCase) {
+      $result.='<br/>' . i18n('errorHierarchicLoop');
+    } else if (trim($this->idTestCase)){
+      $parentList=array();
+      $parent=new TestCase($this->idTestCase);
+      while ($parent->idTestCase) {
+        $parentList[$parent->idTestCase]=$parent->idTestCase;
+        $parent=new TestCase($parent->idTestCase);
+      }
+      if (array_key_exists($this->id,$parentList)) {
+        $result.='<br/>' . i18n('errorHierarchicLoop');
+      }
+    }
+    if (trim($this->idTestCase)) {
+      $parent=new TestCase($this->idTestCase);
+      if (trim($parent->idProject)!=trim($this->idProject)  
+      or trim($parent->idProduct)!=trim($this->idProduct)) {
+        $result.='<br/>' . i18n('msgParentTestCaseInSameProjectProduct');
+      }
+    }    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

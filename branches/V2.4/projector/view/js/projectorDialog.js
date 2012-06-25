@@ -2591,10 +2591,11 @@ function refreshList(field, param, paramVal, selected, destination, required) {
 	if (required) {
 		urlList+='&required=true';
 	}
+//alert(urlList);
 	var datastore = new dojo.data.ItemFileReadStore({url: urlList});
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
-	dijit.byId('assignmentIdResource').set('store',store);
+	//dijit.byId('assignmentIdResource').set('store',store);
 	if (destination) {
 	  var mySelect=dijit.byId(destination);	
 	} else {

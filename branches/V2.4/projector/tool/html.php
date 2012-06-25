@@ -19,12 +19,36 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	if ($listType=='DocumentDirectory') {
 		$column='location';
 	}	
-  if ($critFld) {
+  
+  if ($col=='idResource' and $critFld=='idProject') {
+  	$prj=new Project($critVal);
+    $lstTopPrj=$prj->getTopProjectList(true);
+    $in=transformValueListIntoInClause($lstTopPrj);
+    $where="idProject in " . $in; 
+    $aff=new Affectation();
+    $list=$aff->getSqlElementsFromCriteria(null,null, $where);
+    $nbRows=0;
+    $table=array();
+    if ($selection) {
+       $table[$selection]=SqlList::getNameFromId('Resource', $selection);
+    }
+    foreach ($list as $aff) {
+      if (! array_key_exists($aff->idResource, $table)) {
+        $id=$aff->idResource;
+        $name=SqlList::getNameFromId('Resource', $id);
+        if ($name!=$id) {
+          $table[$id]=$name;
+        }
+      }
+    }
+    asort($table);
+  } else if ($critFld) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
   } else {
     $table=SqlList::getList($listType,$column,$selection);
   }
+  
   $restrictArray=array();
   $excludeArray=array();
   if ($obj) {

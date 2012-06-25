@@ -30,7 +30,7 @@
   }  
   
   function drawAllMenus() {
-  	echo '<td class="menuBarSeparator"></td>';
+  	//echo '<td class="menuBarSeparator"></td>';
     $obj=new Menu();
     $suspend=false;
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
@@ -107,12 +107,46 @@
     </span>
     </td>
     <td width="3px"></td>
-    <td>
-    <div style="width: 100px; position: relative; left: 0px; top: 0px; float:left;">
-      <table><tr>
-    <?php drawAllMenus();?>
-    </tr></table>
+    <td class="menuBarSeparator" ></td>
+    <td width="8px">
+      <button id="menuBarMoveLeft" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('menuBarMoveLeft');?>"
+       iconClass="leftBarIcon" 
+       style="position:relative; left: -6px; width: 14px;margin:0">
+       <script type="dojo/connect" event="onClick" args="evt">
+          moveMenuBar('left');
+        </script>
+      </button>    
+    </td>
+    <td class="menuBarSeparator" ></td>
+    <td >
+    <div style="width: <?php 
+      if (array_key_exists('screenWidth',$_SESSION)) {
+         $width = $_SESSION['screenWidth'] - 412;
+         echo $width . 'px';
+      } else {
+      	echo '100%';
+      }
+    ?>; position: absolute; top: 0px; left: 320px; ">
+      <div style="width: 100%; height:30px; position: absolute; left: 0px; top:0px; overflow:hidden; ">
+	    <div name="menubarContainer" id="menubarContainer" style="width: 2000px; position: absolute; left:0px; overflow:hidden;">
+	      <table><tr>
+	    <?php drawAllMenus();?>
+	    </tr></table>
+	    </div>
+      </div>
     </div>
+    </td>
+    <td class="menuBarSeparator" ></td>
+    <td width="8px">
+      <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('menuBarMoveRight');?>"
+       iconClass="rightBarIcon" 
+       style="position:relative; left: -6px; width: 14px;margin:0">
+       <script type="dojo/connect" event="onClick" args="evt">
+          moveMenuBar('right');
+        </script>
+      </button>    
     </td>
     <td class="menuBarSeparator" ></td>
     <td width="60px" align="center">

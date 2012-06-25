@@ -703,7 +703,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $critFld=null;
         $critVal=null;
         $valStore='';
-        if ($col=='idResource' or $col=='idActivity' or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
+        if ($col=='idResource' or $col=='idActivity' 
+        or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
         or $col=='idContact' or $col=='idTicket' or $col=='idUser') {
           if (property_exists($obj,'idProject') 
           and get_class($obj)!='Project' and get_class($obj)!='Affectation') {
