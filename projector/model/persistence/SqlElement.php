@@ -960,6 +960,13 @@ abstract class SqlElement {
     } else if ($clauseWhere) { 
       $whereClause = ' where ' . $clauseWhere;
     }
+    $objectCrit=$this->getDatabaseCriteria();
+    if (count($objectCrit)>0) {
+    	foreach ($objectCrit as $colCrit => $valCrit) {
+    		$whereClause.=($whereClause=='')?' where ':' and ';
+    		$whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = '" . Sql::str($valCrit) . "' ";
+    	}
+    }
     // If $whereClause is set, get the element from Database
     $query = "select * from " . $this->getDatabaseTableName() . $whereClause;
     if ($clauseOrderBy) {
@@ -1527,10 +1534,40 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           $colScript .= '   refreshList("idResource","idProject", this.value, "' . $this->idResource. '");';
         }
         if ($colName=='idProject' and property_exists($this,'idVersion')) {
-          $colScript .= '   refreshList("idVersion","idProject", this.value);';
+	        if (property_exists($this,'idProduct')) {
+	        	$colScript .="    var idProduct=trim(dijit.byId('idProduct').get('value'));";
+	          $colScript .= '   if (idProduct) {';
+	          $colScript .= '     refreshList("idVersion","idProduct", idPoduct);';
+	          $colScript .= '   } else {';
+	          $colScript .= '     refreshList("idVersion","idProject", this.value);';
+	          $colScript .= '   }';
+	        } else {
+	          $colScript .= '   refreshList("idVersion","idProject", this.value);';
+	        }
         }
         if ($colName=='idProject' and property_exists($this,'idOriginalVersion')) {
-          $colScript .= '   refreshList("idOriginalVersion","idProject", this.value);';
+          if (property_exists($this,'idProduct')) {
+            $colScript .="    var idProduct=trim(dijit.byId('idProduct').get('value'));";
+            $colScript .= '   if (idProduct) {';
+            $colScript .= '     refreshList("idOriginalVersion","idProduct", idPoduct);';
+            $colScript .= '   } else {';
+            $colScript .= '     refreshList("idOriginalVersion","idProject", this.value);';
+            $colScript .= '   }';
+          } else {
+            $colScript .= '   refreshList("idOriginalVersion","idProject", this.value);';
+          }
+        }
+        if ($colName=='idProject' and property_exists($this,'idTargetVersion')) {
+          if (property_exists($this,'idProduct')) {
+            $colScript .="    var idProduct=trim(dijit.byId('idProduct').get('value'));";
+            $colScript .= '   if (idProduct) {';
+            $colScript .= '     refreshList("idTargetVersion","idProduct", idPoduct);';
+            $colScript .= '   } else {';
+            $colScript .= '     refreshList("idTargetVersion","idProject", this.value);';
+            $colScript .= '   }';
+          } else {
+            $colScript .= '   refreshList("idTargetVersion","idProject", this.value);';
+          }
         }
         if ($colName=='idProject' and property_exists($this,'idContact')) {
           $colScript .= '   refreshList("idContact","idProject", this.value);';
@@ -1540,6 +1577,39 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         }
         if ($colName=='idProject' and property_exists($this,'idUser')) {
           $colScript .= '   refreshList("idUser","idProject", this.value);';
+        }
+      }
+      if ($colName=='idProduct' and property_exists($this,'idVersion')) {
+      	if (property_exists($this,'idProject')) {
+      		$colScript .= '   if (trim(this.value)) {';
+      		$colScript .= '     refreshList("idVersion","idProduct", this.value);';
+      		$colScript .= '   } else {';
+      		$colScript .= '     refreshList("idVersion","idProject", dijit.byId("idProject").get("value"));';
+      		$colScript .= '   }';
+      	} else {
+      		$colScript .= '   refreshList("idVersion","idProduct", this.value);';
+      	}
+      }
+      if ($colName=='idProduct' and property_exists($this,'idTargetVersion')) {
+        if (property_exists($this,'idProject')) {
+          $colScript .= '   if (trim(this.value)) {';
+          $colScript .= '     refreshList("idTargetVersion","idProduct", this.value);';
+          $colScript .= '   } else {';
+          $colScript .= '     refreshList("idTargetVersion","idProject", dijit.byId("idProject").get("value"));';
+          $colScript .= '   }';
+        } else {
+          $colScript .= '   refreshList("idTargetVersion","idProduct", this.value);';
+        }
+      }
+      if ($colName=='idProduct' and property_exists($this,'idOriginalVersion')) {
+        if (property_exists($this,'idProject')) {
+          $colScript .= '   if (trim(this.value)) {';
+          $colScript .= '     refreshList("idOriginalVersion","idProduct", this.value);';
+          $colScript .= '   } else {';
+          $colScript .= '     refreshList("idOriginalVersion","idProject", dijit.byId("idProject").get("value"));';
+          $colScript .= '   }';
+        } else {
+          $colScript .= '   refreshList("idOriginalVersion","idProduct", this.value);';
         }
       }
       $colScript .= '</script>';

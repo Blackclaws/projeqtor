@@ -17,7 +17,6 @@ if (array_key_exists('selected',$_REQUEST)) {
 }
 
 $obj=new $ref1Type($ref1Id);
-
 if ($ref2Type) {
   $objList=new $ref2Type();
   if (property_exists($objList, "idProject")) {

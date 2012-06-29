@@ -813,7 +813,7 @@ function saveLink() {
  * Display a delete Link Box
  * 
  */
-function removeLink (linkId, refType, refId) {
+function removeLink (linkId, refType, refId, refTypeName) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -824,7 +824,10 @@ function removeLink (linkId, refType, refId) {
 	dijit.byId("linkRef2Type").set('value',refType);
 	dojo.byId("linkRef2Id").value=refId;
 	actionOK=function() {loadContent("../tool/removeLink.php", "resultDiv", "linkForm", true,'link');};
-	msg=i18n('confirmDeleteLink',new Array(i18n(refType),refId));
+	if (! refTypeName) {
+		refTypeName=i18n(refType);
+	}
+	msg=i18n('confirmDeleteLink',new Array(refTypeName,refId));
 	showConfirm (msg, actionOK);
 }
 
@@ -994,13 +997,14 @@ function addAssignment (unit) {
 	}
 	var prj=dijit.byId('idProject').get('value');
 
-	var datastore =new dojo.data.ItemFileReadStore({
+	/*var datastore =new dojo.data.ItemFileReadStore({
 	       query: {id:'*'},
 	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj,
            clearOnClose: true });
 	var store = new dojo.store.DataStore({store: datastore});
 	//store.query({id:"*"});
-	dijit.byId('assignmentIdResource').set('store',store);
+	dijit.byId('assignmentIdResource').set('store',store);*/
+	refreshListSpecific('listResourceProject', 'assignmentIdResource', 'idProject', prj);
 	dijit.byId("assignmentIdResource").reset();
 
 	dojo.byId("assignmentId").value="";
@@ -1039,14 +1043,15 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	}
 	editAssignmentLoading=true;
 	var prj=dijit.byId('idProject').get('value');
-	var datastore =new dojo.data.ItemFileReadStore({
+	/*var datastore =new dojo.data.ItemFileReadStore({
 	       query: {id:'*'},
 	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj
 	           +'&selected=' + idResource,
 	           clearOnClose: true });
 	var store = new dojo.store.DataStore({store: datastore});
 	//store.query({id:"*"});
-	dijit.byId('assignmentIdResource').set('store',store);
+	dijit.byId('assignmentIdResource').set('store',store);*/
+	refreshListSpecific('listResourceProject', 'assignmentIdResource', 'idProject', prj, idResource);
 	dijit.byId("assignmentIdResource").reset();
 	dijit.byId("assignmentIdResource").set("value",idResource);	
 	
@@ -1355,13 +1360,14 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 		return;
 	}
 	dojo.byId("documentVersionId").value="";
-	var datastore =new dojo.data.ItemFileReadStore({
+	/*var datastore =new dojo.data.ItemFileReadStore({
 	       query: {id:'*'},
 	       url: '../tool/jsonList.php?listType=listStatusDocumentVersion&idDocumentVersion=',
            clearOnClose: true });
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
-	dijit.byId('documentVersionIdStatus').set('store',store);
+	dijit.byId('documentVersionIdStatus').set('store',store);*/
+	refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus','idDocumentVersion', '');
 	dijit.byId('documentVersionIdStatus').set('value',defaultStatus);
 	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'block'});
 	dojo.byId("documentId").value=dojo.byId("objectId").value;
@@ -1405,12 +1411,13 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 		return;
 	}
 	dijit.byId('documentVersionIdStatus').store;
-	var datastore = new dojo.data.ItemFileReadStore({
+	/*var datastore = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listStatusDocumentVersion&idDocumentVersion='+id,
            clearOnClose: true });
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
-	dijit.byId('documentVersionIdStatus').set('store',store);
+	dijit.byId('documentVersionIdStatus').set('store',store);*/
+	refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus','idDocumentVersion', id);
     dijit.byId('documentVersionIdStatus').set('value',status);
 	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'none'});
 	dojo.byId("documentVersionId").value=id;
@@ -1666,26 +1673,29 @@ function addBillLine (line) {
 	dijit.byId("billLineLine").set("value",line);
 	dijit.byId("billLineQuantity").set("value",null);
 	var prj=dijit.byId('idProject').get('value');
-	var datastoreTerm = new dojo.data.ItemFileReadStore({
+	/*var datastoreTerm = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj,
            clearOnClose: true });
 	var storeTerm = new dojo.store.DataStore({store: datastoreTerm});
 	storeTerm.query({id:"*"});
-	dijit.byId('billLineIdTerm').set('store',storeTerm);
+	dijit.byId('billLineIdTerm').set('store',storeTerm);*/
+	refreshListSpecific('listTermProject', 'billLineIdTerm','idProject', prj);
 	dijit.byId("billLineIdTerm").reset();
-	var datastoreResource = new dojo.data.ItemFileReadStore({
+	/*var datastoreResource = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj,
            clearOnClose: true });
 	var storeResource = new dojo.store.DataStore({store: datastoreResource});
 	storeResource.query({id:"*"});
-	dijit.byId('billLineIdResource').set('store',storeResource);
+	dijit.byId('billLineIdResource').set('store',storeResource);*/
+	refreshListSpecific('listResourceProject', 'billLineIdResource','idProject', prj);
 	dijit.byId("billLineIdResource").reset();
-	var datastoreActivityPrice = new dojo.data.ItemFileReadStore({
+	/*var datastoreActivityPrice = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject&critValue='+prj,
            clearOnClose: true });
 	var storeActivityPrice = new dojo.store.DataStore({store: datastoreActivityPrice});
 	storeActivityPrice.query({id:"*"});
-	dijit.byId('billLineIdActivityPrice').set('store',storeActivityPrice);
+	dijit.byId('billLineIdActivityPrice').set('store',storeActivityPrice);*/
+	refreshList('idActivityPrice', 'idProject', prj,null,'billLineIdActivityPrice');
 	dijit.byId("billLineIdActivityPrice").reset("value");
 	dijit.byId("billLineStartDate").reset("value");
 	dijit.byId("billLineEndDate").reset("value");
@@ -1709,27 +1719,29 @@ function editBillLine (id,line,quantity,idTerm,idResource, idActivityPrice, star
 	dijit.byId("billLineLine").set("value",line);
 	dijit.byId("billLineQuantity").set('value',quantity);
 	var prj=dijit.byId('idProject').get('value');
-	var datastoreTerm = new dojo.data.ItemFileReadStore({
+	/*var datastoreTerm = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listTermProject&idProject='+prj+'&selected='+idTerm,
            clearOnClose: true });
 	var storeTerm = new dojo.store.DataStore({store: datastoreTerm});
 	storeTerm.query({id:"*"});
-	dijit.byId('billLineIdTerm').set('store',storeTerm);
+	dijit.byId('billLineIdTerm').set('store',storeTerm);*/
+	refreshListSpecific('listTermProject', 'billLineIdTerm','idProject', prj,idTerm);
 	dijit.byId("billLineIdTerm").set("value",idTerm);
-	var datastoreResource = new dojo.data.ItemFileReadStore({
+	/*var datastoreResource = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=listResourceProject&idProject='+prj+'&selected='+idResource,
            clearOnClose: true });
 	var storeResource = new dojo.store.DataStore({store: datastoreResource});
 	storeResource.query({id:"*"});
-	dijit.byId('billLineIdResource').set('store',storeResource);
+	dijit.byId('billLineIdResource').set('store',storeResource);*/
+	refreshListSpecific('listResourceProject', 'billLineIdResource','idProject', prj,idResource);
 	dijit.byId("billLineIdResource").set("value",idResource);
-	var datastoreActivityPrice = new dojo.data.ItemFileReadStore({
+	/*var datastoreActivityPrice = new dojo.data.ItemFileReadStore({
 	       url: '../tool/jsonList.php?listType=list&dataType=idActivityPrice&critField=idProject&critValue='+prj,
            clearOnClose: true });
 	var storeActivityPrice = new dojo.store.DataStore({store: datastoreActivityPrice});
 	storeActivityPrice.query({id:"*"});
-	dijit.byId('billLineIdActivityPrice').set('store',storeActivityPrice);
-	dijit.byId('billLineIdActivityPrice').store.fetch();
+	dijit.byId('billLineIdActivityPrice').set('store',storeActivityPrice);*/
+	refreshList('idActivityPrice', 'idProject', prj,null,'billLineIdActivityPrice');
 	dijit.byId("billLineIdActivityPrice").set("value",idActivityPrice);
 	dijit.byId("billLineStartDate").set("value",startDate);
 	dijit.byId("billLineEndDate").set("value",endDate);
@@ -1921,10 +1933,11 @@ function showFilterDialog () {
 		});
 	loadContent("../tool/displayFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
 	loadContent("../tool/displayFilterList.php", "listStoredFilters", "dialogFilterForm", false);
-	var datastore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
+	/*var datastore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
-	dijit.byId('idFilterAttribute').set('store',store);
+	dijit.byId('idFilterAttribute').set('store',store);*/
+	refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
 	dijit.byId("dialogFilter").show();
 }
 
@@ -2591,16 +2604,31 @@ function refreshList(field, param, paramVal, selected, destination, required) {
 	if (required) {
 		urlList+='&required=true';
 	}
-//alert(urlList);
 	var datastore = new dojo.data.ItemFileReadStore({url: urlList});
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
-	//dijit.byId('assignmentIdResource').set('store',store);
 	if (destination) {
 	  var mySelect=dijit.byId(destination);	
 	} else {
 	  var mySelect=dijit.byId(field);
 	}
+	mySelect.set('store',store);
+}
+function refreshListSpecific(listType, destination, param, paramVal, selected, required ) {
+	var urlList='../tool/jsonList.php?listType='+listType;
+	if (param) {
+	  urlList+='&'+param+'='+paramVal;
+    }
+	if (selected) {
+		urlList+='&selected='+selected;
+	}
+	if (required) {
+		urlList+='&required=true';
+	}
+	var datastore = new dojo.data.ItemFileReadStore({url: urlList});
+	var store = new dojo.store.DataStore({store: datastore});
+	store.query({id:"*"});
+	var mySelect=dijit.byId(destination);	
 	mySelect.set('store',store);
 }
 

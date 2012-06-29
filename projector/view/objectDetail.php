@@ -727,6 +727,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             }
           }
         }
+        // if version and idProduct exists and is set : criteria is product
+        if ( isset($obj->idProduct)   
+        and ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion') ) {
+        	$critFld='idProduct';
+        	$critVal=$obj->idProduct;
+        }
         if ( get_class($obj)=='IndicatorDefinition'  ) {
         	if ($col=='idIndicator') {
             $critFld='idIndicatorable';
@@ -1420,6 +1426,11 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     	  $canGoto=(securityCheckDisplayMenu(null,get_class($gotoObj)) 
     	            and securityGetAccessRightYesNo('menu' . get_class($gotoObj), 'read', $gotoObj)=="YES")?true:false;
         echo '<tr>';
+        if (substr(get_class($linkObj),0,7)=='Context') {
+          $classLinkName=SqlList::getNameFromId('ContextType', substr(get_class($linkObj),7,1));
+        } else {
+          $classLinkName=i18n(get_class($linkObj));
+        }
         if (! $print) {
           echo '<td class="linkData" style="text-align:center;">';
           if ( $canGoto 
@@ -1429,12 +1440,12 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
 	          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';            
 	        } 
           if ($canUpdate) {
-            echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
+            echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
           }
           echo '</td>';
         }
         if ( ! $classLink ) {
-          echo '<td class="linkData" >' . i18n(get_class($linkObj)) . '</td>';
+          echo '<td class="linkData" >' . $classLinkName . '</td>';
         }
         echo '<td class="linkData">#' . $linkObj->id;    
         echo '</td>';
