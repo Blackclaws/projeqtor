@@ -81,7 +81,11 @@ class SqlList {
       while ($line = Sql::fetchLine($result)) {
         $name=$line['name'];
         if ($obj->isFieldTranslatable($displayCol) and $translate){
-          $name=i18n($name);
+        	if ($listType=='Linkable' and substr($name,0,7)=='Context') {
+        		$name=SqlList::getNameFromId('ContextType', substr($name,7,1));
+        	} else {
+            $name=i18n($name);
+        	}
         }
         if ($displayCol=='name' and property_exists($obj,'_constructForName')) {
         	$nameObj=new $listType($line['id']);
