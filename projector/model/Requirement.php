@@ -34,6 +34,24 @@ class Requirement extends SqlElement {
   public $idleDate;
   public $idTargetVersion;
   public $result;
+  public $_col_1_1_Progress;
+  public $_tab_7_1 = array('linked', 'planned', 'passed', 'blocked', 'failed', '', '', 'countTests');
+  public $countLinked;
+  public $_calc_noDisplay1;
+  public $countPlanned;
+  public $_calc_noDisplay2;
+  public $countPassed;
+  public $_calc_pctPassed;
+  public $countBlocked;
+  public $_calc_pctBlocked;
+  public $countFailed;
+  public $_calc_pctFailed;
+  public $countIssues;
+  public $_calc_noDisplay3;
+  public $_col_1_2_predecessor;
+  public $_Dependency_Predecessor=array();
+  public $_col_2_2_successor;
+  public $_Dependency_Successor=array();
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachement=array();
@@ -62,14 +80,20 @@ class Requirement extends SqlElement {
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
-                                  "idUser"=>"hidden"
+                                  "idUser"=>"hidden",
+                                  "countLinked"=>"display",
+                                  "countPlanned"=>"display",
+                                  "countPassed"=>"display",
+                                  "countFailed"=>"display",
+                                  "countBlocked"=>"display",
+                                  "countIssues"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
                                                    'idRequirementType'=>'type',
                                                    'idTargetVersion'=>'targetVersion',
                                                    'idRiskLevel'=>'technicalRisk',
-                                                   'plannedWork'=>'estimatedEffort'
+                                                   'plannedWork'=>'estimatedEffort',
                                                    );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
@@ -170,9 +194,14 @@ class Requirement extends SqlElement {
     }
     if (trim($this->idRequirement)) {
       $parentRequirement=new Requirement($this->idRequirement);
-      if (trim($parentRequirement->idProject)!=trim($this->idProject)  
-      or trim($parentRequirement->idProduct)!=trim($this->idProduct)) {
-        $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
+      if ( trim($this->idProduct)) {
+        if (trim($parentRequirement->idProduct)!=trim($this->idProduct)) {
+          $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
+        }
+      } else {
+        if (trim($parentRequirement->idProject)!=trim($this->idProject)) {
+          $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
+        }
       }
     }
     
@@ -192,5 +221,55 @@ class Requirement extends SqlElement {
     return $result;
   }
   
+   public function drawCalculatedItem($item){
+     $result="&nbsp;";
+     if ($item=='pctPassed') {
+       return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countPassed/$this->countPlanned*100)).')</i>';
+     } else if ($item=='pctFailed') {
+       return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countFailed/$this->countPlanned*100)).')</i>';
+     } else if ($item=='pctBlocked') {
+       return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countBlocked/$this->countPlanned*100)).')</i>';
+     } else {
+      return "&nbsp;"; 
+     }
+     return $result;
+   }
+  
+  public function updateDependencies() {
+  	$listCrit='idTestCase in (0';
+  	$this->countLinked=0;
+    foreach ($this->_Link as $link) {
+    	if ($link->ref2Type=='TestCase') {
+    		$listCrit.=','.$link->ref2Id;
+    		$this->countLinked+=1;
+    	}
+    }
+    $listCrit.=")";
+    $tcr=new TestCaseRun();
+    $listTcr=$tcr->getSqlElementsFromCriteria(null, false, $listCrit);
+    $this->countBlocked=0;
+    $this->countFailed=0;
+    $this->countIssues=0;
+    $this->countPassed=0;
+    $this->countPlanned=0;
+    foreach($listTcr as $tcr) {
+      $this->countPlanned+=1;
+      if ($tcr->idRunStatus==2) {
+        $this->countPassed+=1;
+      }
+      if ($tcr->idRunStatus==3) {
+        $this->countFailed+=1;
+      }
+      if ($tcr->idRunStatus==4) {
+        $this->countBlocked+=1;
+      }
+    }
+    foreach($this->_Link as $link) {
+      if ($link->ref2Type=='Ticket') {
+        $this->countIssues+=1;
+      }
+    }
+    $this->save();
+  }
 }
 ?>

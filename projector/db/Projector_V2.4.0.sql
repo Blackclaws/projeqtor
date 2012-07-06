@@ -153,10 +153,10 @@ CREATE TABLE `${prefix}runstatus` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 INSERT INTO `${prefix}runstatus` (id, name, color, sortOrder, idle) VALUES
-(1, 'planned', '#00AAAA', 100, 0),
-(2, 'passed', '#00FF00', 200,0),
+(1, 'planned', '#FFFFFF', 100, 0),
+(2, 'passed', '#32CD32', 200,0),
 (3, 'failed', '#FF0000', 300,0),
-(4, 'blocked', '#AAAA00', 400,0);
+(4, 'blocked', '#FFA500', 400,0);
 
 CREATE TABLE `${prefix}requirement` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -186,7 +186,12 @@ CREATE TABLE `${prefix}requirement` (
   `idFeasibility` int(12) unsigned DEFAULT NULL,
   `idRiskLevel` int(12) unsigned DEFAULT NULL,
   `result` varchar(4000) DEFAULT NULL,
-  `testCoverage` int(5) default 0,
+  `countPassed` int(5) default 0,
+  `countFailed` int(5) default 0,
+  `countBlocked` int(5) default 0,
+  `countPlanned` int(5) default 0,
+  `countLinked` int(5) default 0,
+  `countIssues` int(5) default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `${prefix}requirement` ADD INDEX requirementProject (idProject),
@@ -272,9 +277,9 @@ CREATE TABLE `${prefix}testsession` (
   `result` varchar(4000) DEFAULT NULL,
   `countPassed` int(5) default 0,
   `countFailed` int(5) default 0,
+  `countBlocked` int(5) default 0,
   `countTotal` int(5) default 0,
   `countIssues` int(5) default 0,
-  `runCount` int(5) default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `${prefix}testsession` ADD INDEX testsessionProject (idProject),
@@ -299,23 +304,80 @@ CREATE TABLE `${prefix}testcaserun` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idTestCase` int(12) unsigned DEFAULT NULL,
   `idTestSession` int(12) unsigned DEFAULT NULL,
-  `idProduct` int(12) unsigned DEFAULT NULL,
+  `idRunStatus` int(12) unsigned DEFAULT NULL,
+  `idTicket` int(12) unsigned DEFAULT NULL,
+  `statusDateTime` datetime DEFAULT NULL,
+  `comment` varchar(4000) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `${prefix}testcaserun` ADD INDEX testcaserunTestCase (idTestCase),
+ADD INDEX testcaserunTestSession (idTestSession),
+ADD INDEX testcaserunRunStatus (idRunStatus),
+ADD INDEX testcaserunTicket (idTicket);
 
 UPDATE `${prefix}priority` set name='High priority'
 WHERE name='Hight priority';
- 
---INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
---VALUES (40,'reportWorkPerActivity',1,'workPerActivity.php',170,0);
 
---INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
---(104,40,'idProject','projectList',10,0,'currentProject');
+ALTER TABLE `${prefix}dependable` ADD COLUMN `scope`  varchar(10) DEFAULT 'PE'; 
+INSERT INTO `${prefix}dependable` (`id`,`name`,`idle`, `scope`) VALUES
+(4,'Requirement',0,'R'),
+(5,'TestCase',0,'TC');
 
---INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
---(1,40,1),
---(2,40,1),
---(3,40,1),
---(4,40,0),
---(5,40,0),
---(6,40,0),
---(7,40,0);
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
+(8, 'reportCategoryRequirementTest', 70);
+
+INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
+(40,'reportRequirementTest',8,'requirementTest.php',810,0),
+(41,'reportProductTest',8,'productTest.php',820,0),
+(42,'reportPlanActivityMonthly',2,'activityPlan.php',252,0),
+(43,'reportTestSession',8,'testSession.php',830,0);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+(104,40,'idProject','projectList',10,0,null),
+(105,40,'idProduct','productList',20,0,null),
+(106,40,'idVersion','versionList',30,0,null),
+(107,40,'showDetail','showDetail',40,0,null),
+(108,41,'idProject','projectList',10,0,null),
+(109,41,'idProduct','productList',20,0,null),
+(110,41,'idVersion','versionList',30,0,null),
+(111,41,'showDetail','showDetail',40,0,null),
+(112,42,'idProject', 'projectList', 10, 0, 'currentProject'),
+(113,42,'month', 'month', 20, 0, 'currentMonth'),
+(114,43,'idProject','projectList',10,0,null),
+(115,43,'idProduct','productList',20,0,null),
+(116,43,'idVersion','versionList',30,0,null),
+(117,43,'idTestSession','testSessionList',40,0,null),
+(118,43,'showDetail','showDetail',50,0,null);
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
+(1,40,1),
+(2,40,1),
+(3,40,1),
+(4,40,0),
+(5,40,0),
+(6,40,0),
+(7,40,0),
+(1,41,1),
+(2,41,1),
+(3,41,1),
+(4,41,0),
+(5,41,0),
+(6,41,0),
+(7,41,0),
+(1,42,1),
+(2,42,1),
+(3,42,1),
+(4,42,0),
+(5,42,0),
+(6,42,0),
+(7,42,0),
+(1,43,1),
+(2,43,1),
+(3,43,1),
+(4,43,0),
+(5,43,0),
+(6,43,0),
+(7,43,0);
 

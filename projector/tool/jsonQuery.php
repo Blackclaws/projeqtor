@@ -36,6 +36,8 @@
     if ($quickSearch) {
     	$queryWhere.= ($queryWhere=='')?'':' and ';
     	$queryWhere.="( 1=2 ";
+    	$note=new Note();
+    	$noteTable=$note->getDatabaseTableName();
     	foreach($obj as $fld=>$val) {
     		if ($obj->getDataType($fld)=='varchar') {    				
             $queryWhere.= ' or ' . $table . "." . $fld . " like '%" . $quickSearch . "%'";
@@ -44,6 +46,10 @@
     	if (is_numeric($quickSearch)) {
     		$queryWhere.= ' or ' . $table . ".id='" . $quickSearch . "'";
     	}
+    	$queryWhere.=" or exists ( select 'x' from $noteTable " 
+    	                           . " where $noteTable.refType='$objectClass' "
+    	                           . " and $noteTable.refId=$table.id " 
+    	                           . " and $noteTable.note like '%" . $quickSearch . "%' ) ";
     	$queryWhere.=" )";
     }
     $showIdle=false;

@@ -33,6 +33,12 @@ class TestCase extends SqlElement {
   public $idleDate;
   public $prerequisite;
   public $result;
+  public $_col_1_1_TestCaseRun;
+  public $_TestCaseRun=array();
+  public $_col_1_2_predecessor;
+  public $_Dependency_Predecessor=array();
+  public $_col_2_2_successor;
+  public $_Dependency_Successor=array();
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachement=array();
@@ -58,7 +64,7 @@ class TestCase extends SqlElement {
                                   "idTestCaseType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
-                                  "handled"=>"nobr",
+                                  "handled"=>"hidden","handledDate"=>"hidden",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
                                   "idUser"=>"hidden",
@@ -169,9 +175,14 @@ class TestCase extends SqlElement {
     }
     if (trim($this->idTestCase)) {
       $parent=new TestCase($this->idTestCase);
-      if (trim($parent->idProject)!=trim($this->idProject)  
-      or trim($parent->idProduct)!=trim($this->idProduct)) {
-        $result.='<br/>' . i18n('msgParentTestCaseInSameProjectProduct');
+      if ( trim($this->idProduct)) {
+        if (trim($parent->idProduct)!=trim($this->idProduct)) {
+      	  $result.='<br/>' . i18n('msgParentTestCaseInSameProjectProduct');
+        }
+      } else {
+      	if (trim($parent->idProject)!=trim($this->idProject)) {
+          $result.='<br/>' . i18n('msgParentTestCaseInSameProjectProduct');
+        }
       }
     }    
     $defaultControl=parent::control();

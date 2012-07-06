@@ -14,8 +14,6 @@ if ($id=='') {
   $id=null;
 }
 
-
-
 // Get the assignment info
 if (! array_key_exists('resourceCostIdResource',$_REQUEST)) {
   throwError('resourceCostIdResource parameter not found in REQUEST');
@@ -58,54 +56,6 @@ if ($startDate) {
 $result=$rc->save();
 
 $rcb = new ResourceCost($id);
-
-// ajout coût salaire et coût personnel 
-
-
-//$testb = $testb[0];
-//echo $testb->name;
-
-/*
-if (array_key_exists('resourceCostIdRole',$_REQUEST))
-{
-	
-$test = new Role();
-$crit= array('id'=> $_REQUEST['resourceCostIdRole']);
-$testb = $test->getSingleSqlElementFromCriteria("Role", $crit);
-	
-	
-	if ($testb->name=="Salaire") //salaire
-	{
-		$rcb->id=$id;
-		$rcb->idResource=$idResource;
-		if ($idRole) {
-		  $rcb->idRole=6;
-		}
-		$rcb->cost=$value*1.2/20;
-		if ($startDate) {
-		  $rcb->startDate=$startDate;
-		}
-		$result2=$rcb->save();
-	}
-	
-	
-
-
-	if ($testb->name="Personnel")
-	{
-		$rcb->id=$id;
-		$rcb->idResource=$idResource;
-		$rcb->idRole=7;
-		$rcb->cost=$value*20/1.2;
-		if ($startDate) {
-		  $rcb->startDate=$startDate;
-		}
-		$result2=$rcb->save();	
-	}
-}
-*/
-
-
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {

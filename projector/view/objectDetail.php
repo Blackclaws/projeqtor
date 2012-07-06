@@ -226,6 +226,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '<tr><td colspan=2>';
       echo $obj->drawSpecificItem($item); // the method must be implemented in the corresponidng class
       echo '</td></tr>';
+    } else if (substr($col,0,6)=='_calc_') { // if field is _calc_xxxx, draw calculated item
+      $item=substr($col,6);
+      echo $obj->drawCalculatedItem($item); // the method must be implemented in the corresponidng class
     } else if (substr($col,0,5)=='_lib_') { // if field is just a caption 
       $item=substr($col,5);
       if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) {
@@ -263,7 +266,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     	if ($obj->getFieldAttributes($col)!='hidden') {     
         drawExpenseDetailFromObject($val, $obj, false);      
     	}
-    } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' 
+    } else if (substr($col,0,12)=='_TestCaseRun') { // Display TestCaseRun
+      drawTestCaseRunFromObject($val, $obj);
+     } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' 
                                      and substr($col,0,7)!='_label_') { // field not to be displayed
       //
     } else {
@@ -705,6 +710,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $valStore='';
         if ($col=='idResource' or $col=='idActivity' 
         or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
+        or $col=='idTestCase' or $col=='idRequirement'
         or $col=='idContact' or $col=='idTicket' or $col=='idUser') {
           if (property_exists($obj,'idProject') 
           and get_class($obj)!='Project' and get_class($obj)!='Affectation') {
@@ -729,7 +735,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         // if version and idProduct exists and is set : criteria is product
         if ( isset($obj->idProduct)   
-        and ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion') ) {
+        and ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
+             or $col=='idTestCase' or $col=='idRequirement') ) {
         	$critFld='idProduct';
         	$critVal=$obj->idProduct;
         }
@@ -1218,6 +1225,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '</tr>';
   echo '</table>';
 }
+
 function drawBillLinesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale;
   //$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
@@ -2013,6 +2021,142 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   echo '</table></td></tr>';
 }
 
+function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $class=get_class($obj);
+  $otherClass=($class=='TestCase')?'TestSession':'TestCase';
+  $nameWidth=60;
+  $canCreate=securityGetAccessRightYesNo('menu'.$class, 'update')=="YES";
+  $canUpdate=$canCreate;
+  $canDelete=$canCreate;
+  if ($obj->idle==1) {
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
+  }
+  echo '<tr><td colspan=2 style="width:100%;">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
+  if (! $print and $class=='TestSession') {
+  	$nameWidth-=10;
+    echo '<td class="assignHeader" style="width:10%">';
+    if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" ' . 
+           ' onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" class="smallButton"/> ';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" colspan="3" style="width:' . ($nameWidth+15) . '%">' . i18n('col'.$otherClass) . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colIdStatus'). '</td>';
+  echo '</tr>';
+  foreach($list as $tcr) {
+  	if ($otherClass=='TestCase') {
+  	  $tc=new TestCase($tcr->idTestCase);
+  	} else {
+  		$tc=new TestSession($tcr->idTestSession);
+  	}
+  	$st=new RunStatus($tcr->idRunStatus);
+    echo '<tr>';
+    if (! $print and $class=='TestSession') {
+      echo '<td class="assignData" style="text-align:center;">';
+      echo '<table width="100%"><tr><td width=50%">';
+      if ($canUpdate and ! $print) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' 
+        . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'"
+          . ",'" . $tcr->idTestCase . "'" 
+          . ",'" . $tcr->idRunStatus . "'" 
+          . ",'" . $tcr->idTicket . "'" 
+          . ');" ' 
+          . 'title="' . i18n('editTestCaseRun') . '" class="smallButton"/> ';      
+      }
+      if ($canDelete and ! $print)  {
+        echo '  <img src="css/images/smallButtonRemove.png" ' 
+          . 'onClick="removeTestCaseRun(' . "'" . $tcr->id . "'"
+          . ",'" . $tcr->idTestCase . "'" 
+          . ');" ' 
+          . 'title="' . i18n('removeTestCaseRun') . '" class="smallButton"/> ';
+      }
+      if (! $print) {
+        echo '<input type="hidden" id="comment_' . $tcr->id . '" value="' . htmlEncode($tcr->comment,'none') .'"/>';
+      }
+      echo '</td><td width="50%">';
+      if ($tcr->idRunStatus==1 or $tcr->idRunStatus==3 or $tcr->idRunStatus==4) {
+        echo '  <img src="css/images/ok.png" ' 
+          . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'"
+          . ",'" . $tcr->idTestCase . "'" 
+          . ",'" . $tcr->idRunStatus . "'" 
+          . ",'" . $tcr->idTicket . "'" 
+          . ');" ' 
+          . 'title="' . i18n('passedTestCaseRun') . '" class="smallButton"/> ';
+      }
+      if ($tcr->idRunStatus==1 or $tcr->idRunStatus==4) {
+        echo '  <img src="css/images/ko.png" ' 
+          . 'onClick="failedTestCaseRun(' . "'" . $tcr->id . "'"
+          . ",'" . $tcr->idTestCase . "'" 
+          . ",'" . $tcr->idRunStatus . "'" 
+          . ",'" . $tcr->idTicket . "'" 
+          . ');" ' 
+          . 'title="' . i18n('failedTestCaseRun') . '" class="smallButton"/> ';
+      }  
+      if ($tcr->idRunStatus==1 or $tcr->idRunStatus==3) {
+        echo '  <img src="css/images/stop.png" ' 
+          . 'onClick="blockedTestCaseRun(' . "'" . $tcr->id . "'"
+          . ",'" . $tcr->idTestCase . "'" 
+          . ",'" . $tcr->idRunStatus . "'" 
+          . ",'" . $tcr->idTicket . "'" 
+          . ');" ' 
+          . 'title="' . i18n('blockedTestCaseRun') . '" class="smallButton"/> ';
+      }          
+      echo '</td></tr></table>';
+      echo '</td>';
+    }
+    $goto=""; 
+    if (!$print and securityCheckDisplayMenu(null,'TestCase') 
+    and securityGetAccessRightYesNo('menuTestCase', 'read', '')=="YES") {
+      $goto=' onClick="gotoElement(\'' . $otherClass . '\',\'' . $tc->id . '\');" style="cursor: pointer;" ';  
+    }
+    $typeClass='id'.$otherClass.'Type';
+    echo '<td class="assignData" align="center" style="width:10%">' . SqlList::getNameFromId($otherClass.'Type', $tc->$typeClass) . '</td>';
+    echo '<td class="assignData" align="center" style="width:5%">#' . $tc->id . '</td>';
+    echo '<td class="assignData" align="left"' . $goto . ' title="' . $tcr->comment . '" style="width:' . $nameWidth . '%">' . $tc->name ;
+    if ($tcr->comment and ! $print) {
+      echo '&nbsp;&nbsp;<img src="img/note.png" />';
+    }  
+    echo '</td>';
+    echo '<td class="assignData" align="center">';
+      if ($tc->description) {
+        echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
+        echo '&nbsp;';
+      }
+      if ($tc->result) {
+        echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result) . '" alt="desc" />';
+        echo '&nbsp;';
+      }
+      if (isset($tc->prerequisite) and $tc->prerequisite) {
+      	echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite) . '" alt="desc" />';
+      } 
+    echo '</td>';
+    echo '<td class="assignData" align="center">';
+    echo '<table width="100%"><tr><td width="40%" style="text-align: center;">';
+    echo colorNameFormatter(i18n($st->name) . '#split#' . $st->color);
+    echo '<td width="60%" style="font-size:' . (($tcr->idTicket and $tcr->idRunStatus=='3')?'100':'80') . '%; text-align: center;">';
+    if ($tcr->idTicket and $tcr->idRunStatus=='3') {
+    	echo i18n('Ticket') . ' #' . $tcr->idTicket;
+    } else if ($tcr->statusDateTime) {
+      echo ' <i>(' . htmlFormatDateTime($tcr->statusDateTime, false) . ')</i> ';
+    }
+    echo '</td></tr></table>';
+    echo '</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+  echo '</td></tr>';
+}
+
 // ********************************************************************************************************
 // MAIN PAGE
 // ********************************************************************************************************
@@ -2053,6 +2197,16 @@ if ( $noselect ) {
   }
   if ( array_key_exists('refreshDocumentVersion',$_REQUEST) ) {
     drawVersionFromObjectFromObject($obj->$_DocumentVersion,$obj, true);
+    exit;
+  }
+  if ( array_key_exists('refreshTestCaseRun',$_REQUEST) ) {
+    drawTestCaseRunFromObject($obj->_TestCaseRun, $obj, true);
+    exit;
+  }
+  if ( array_key_exists('refreshLinks',$_REQUEST) ) {
+  	if (property_exists($obj, '_Link')) {
+      drawLinksFromObject($obj->_Link ,$obj, null, true);
+    }
     exit;
   }
   if ( array_key_exists('refreshHistory',$_REQUEST) ) {
@@ -2112,7 +2266,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   exit;
 }
 ?>
-<div dojoType="dijit.layout.BorderContainer" class="background">
+<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background">
   <?php 
   if ( ! $refresh and  ! $print ) { ?>    
     <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" >    
