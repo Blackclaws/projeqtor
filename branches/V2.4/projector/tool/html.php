@@ -124,6 +124,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if (! $required) {
     echo '<OPTION value=" " ></OPTION>';
   }
+  if ($listType=='Linkable') {
+    asort($table);
+  }
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
       echo '<OPTION value="' . $key . '"';
@@ -325,11 +328,15 @@ function htmlGetJsTable($tableName, $colName, $jsTableName=null) {
  * @param $val
  * @return unknown_type
  */
-function htmlFormatDate($val) {
+function htmlFormatDate($val,$trunc=false) {
   global $browserLocaleDateFormat;
   if (strlen($val)!=10) {
-  	if (strlen($val)!=19) {
-  		return htmlFormatDateTime($val);
+  	if (strlen($val)==19) {
+  		if ($trunc) {
+  			$val=substr($val,0,10);
+  		} else {
+  		  return htmlFormatDateTime($val);
+  		}
   	} else {
       return $val;
   	}

@@ -56,7 +56,8 @@ abstract class SqlElement {
                                   "Version"=>"control"),
     "Client" =>             array("Project"=>"control"),
     "Criticality" =>        array("Risk"=>"control", 
-                                  "Ticket"=>"control"),
+                                  "Ticket"=>"control",
+                                  "Requirement"=>"control"),
     "Decision" =>           array("Link"=>"cascade"),
     "DecisionType" =>       array("Decision"=>"control"),
     "Document" =>           array("DocumentVersion"=>"control",
@@ -65,6 +66,7 @@ abstract class SqlElement {
     "DocumentVersion" =>    array("Approver"=>"cascade"),
     "DocumentDirectory" =>  array("Document"=>"control",
                                   "DocumentDirectory"=>"control"),
+    "Feasibility" =>        array("Requirement"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
     "Issue" =>              array("Attachement"=>"cascade",
                                   "Note"=>"cascade",
@@ -88,7 +90,10 @@ abstract class SqlElement {
                                   "Resource"=>"control",
                                   "User"=>"control"),
     "ProjectType" =>        array("Project"=>"control"), 
-    "Product" =>            array("Version"=>"control"),
+    "Product" =>            array("Version"=>"control",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control"),
     "Project" =>            array("Action"=>"control",
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
@@ -109,11 +114,19 @@ abstract class SqlElement {
                                   "Decision"=>"control",
                                   "Meeting"=>"control",
                                   "VersionProject"=>"cascade",
-                                  "Question"=>"control"),
+                                  "Question"=>"control",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control"),
     "Question" =>           array("Link"=>"cascade"),
     "QuestionType" =>       array("Question"=>"control"),
     "Recipient" =>          array("Bill"=>"control",
                                   "Project"=>"control"),
+    "RequirementType" =>    array("Requirement"=>"control"),
+    "Requirement" =>        array("Attachement"=>"cascade",
+                                  "Note"=>"cascade",
+                                  "Link"=>"cascade",
+                                  "Requirement"=>"control"),
     "Resource" =>           array("Action"=>"control", 
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
@@ -126,10 +139,14 @@ abstract class SqlElement {
                                   "Decision"=>"control",
                                   "Meeting"=>"control",
                                   "Question"=>"control",
-                                  "ResourceCost"=>"delete"),
+                                  "ResourceCost"=>"cascade",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control"),
     "Risk" =>               array("Attachement"=>"cascade",
                                   "Note"=>"cascade",
                                   "Link"=>"cascade"),
+    "RiskLevel" =>           array("Requirement"=>"control"),
     "RiskType" =>           array("Risk"=>"control"),
     "Role" =>               array("Affectation"=>"control", 
                                   "Assignment"=>"control",
@@ -145,14 +162,24 @@ abstract class SqlElement {
                                   "Decision"=>"control",
                                   "Meeting"=>"control",
                                   "Question"=>"control",
-                                  "StatusMail"=>"cascade"),
+                                  "StatusMail"=>"cascade",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control"),
     "Team" =>               array("Resource"=>"control"),
     "Term" =>               array("Dependency"=>"cascade"),
-    "Ticket" =>             array("Attachement"=>"cascade",
+    "TestCase" =>           array("TestCase"=>"control",
+                                  "TestCaseRun"=>"control" ),
+    "TestCaseType" =>       array("TestCase"=>"control"),
+    "TestSession" =>        array("TestCaseRun"=>"cascade" ),
+    "TestSessionType" =>    array("TestSession"=>"control"),
+    "Ticket" =>             array("Ticket"=>"control",
+                                  "Attachement"=>"cascade",
                                   "Note"=>"cascade",
                                   "Link"=>"cascade"),
     "TicketType" =>         array("Ticket"=>"control"),
-    "Urgency" =>            array("Ticket"=>"control"),
+    "Urgency" =>            array("Ticket"=>"control",
+                                  "Requirement"=>"control"),
     "User" =>               array("Affectation"=>"control", 
                                   "Action"=>"control", 
                                   "Activity"=>"control",
@@ -167,8 +194,14 @@ abstract class SqlElement {
                                   "Ticket"=>"control",
                                   "Decision"=>"control",
                                   "Meeting"=>"control",
-                                  "Question"=>"control"),
-    "Version" =>             array("VersionProject"=>"cascade"),
+                                  "Question"=>"control",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control"),
+    "Version" =>            array("VersionProject"=>"cascade",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
+                                  "TestSession"=>"control"),
     "Workflow" =>            array("WorkflowStatus"=>"cascade", 
                                   "TicketType"=>"control", 
                                   "ActivityType"=>"control", 
@@ -1275,10 +1308,14 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     if ( ($curId != NULL) and ($obj instanceof SqlElement) ) {
       // set the reference data
       // build query
-      $query = "select id from " . $obj->getDatabaseTableName()
-      . " where refId ='" . Sql::str($curId) . "'"
-      . " and refType ='" . get_class($this) . "'" 
-      . " order by id desc ";
+      $query = "select id from " . $obj->getDatabaseTableName();
+      if (property_exists($objClass, 'id'.get_class($this))) {
+        $query .= " where " . $obj->getDatabaseColumnName('id' . get_class($this)) . "='" . Sql::str($curId) . "'";	
+      } else {
+        $query .= " where refId ='" . Sql::str($curId) . "'"
+        . " and refType ='" . get_class($this) . "'";
+      } 
+      $query .= " order by id asc ";
       $result = Sql::query($query);
       // if no element in database, will return empty array
       if (Sql::$lastQueryNbRows > 0) {
@@ -1569,6 +1606,30 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
             $colScript .= '   refreshList("idTargetVersion","idProject", this.value);';
           }
         }
+        if ($colName=='idProject' and property_exists($this,'idTestCase')) {
+          if (property_exists($this,'idProduct')) {
+            $colScript .="    var idProduct=trim(dijit.byId('idProduct').get('value'));";
+            $colScript .= '   if (idProduct) {';
+            $colScript .= '     refreshList("idTestCase","idProduct", idPoduct);';
+            $colScript .= '   } else {';
+            $colScript .= '     refreshList("idTestCase","idProject", this.value);';
+            $colScript .= '   }';
+          } else {
+            $colScript .= '   refreshList("idTestCase","idProject", this.value);';
+          }
+        }
+        if ($colName=='idProject' and property_exists($this,'idRequirement')) {
+          if (property_exists($this,'idProduct')) {
+            $colScript .="    var idProduct=trim(dijit.byId('idProduct').get('value'));";
+            $colScript .= '   if (idProduct) {';
+            $colScript .= '     refreshList("idRequirement","idProduct", idPoduct);';
+            $colScript .= '   } else {';
+            $colScript .= '     refreshList("idRequirement","idProject", this.value);';
+            $colScript .= '   }';
+          } else {
+            $colScript .= '   refreshList("idRequirement","idProject", this.value);';
+          }
+        }
         if ($colName=='idProject' and property_exists($this,'idContact')) {
           $colScript .= '   refreshList("idContact","idProject", this.value);';
         }
@@ -1610,6 +1671,28 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           $colScript .= '   }';
         } else {
           $colScript .= '   refreshList("idOriginalVersion","idProduct", this.value);';
+        }
+      }
+      if ($colName=='idProduct' and property_exists($this,'idTestCase')) {
+        if (property_exists($this,'idProject')) {
+          $colScript .= '   if (trim(this.value)) {';
+          $colScript .= '     refreshList("idTestCase","idProduct", this.value);';
+          $colScript .= '   } else {';
+          $colScript .= '     refreshList("idTestCase","idProject", dijit.byId("idProject").get("value"));';
+          $colScript .= '   }';
+        } else {
+          $colScript .= '   refreshList("idTestCase","idProduct", this.value);';
+        }
+      }
+      if ($colName=='idProduct' and property_exists($this,'idRequirement')) {
+        if (property_exists($this,'idProject')) {
+          $colScript .= '   if (trim(this.value)) {';
+          $colScript .= '     refreshList("idRequirement","idProduct", this.value);';
+          $colScript .= '   } else {';
+          $colScript .= '     refreshList("idRequirement","idProject", dijit.byId("idProject").get("value"));';
+          $colScript .= '   }';
+        } else {
+          $colScript .= '   refreshList("idRequirement","idProduct", this.value);';
         }
       }
       $colScript .= '</script>';
@@ -1792,10 +1875,13 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
    * @return a message to draw (to echo) : always an error in this class, 
    *  must be redefined in the inherited class
    */
-  public function drawSpecificItem($item){
-    return "No specific item " . $item . " for object " . get_class($this);  
-  }
+   public function drawSpecificItem($item){
+   	 return "No calculated item " . $item . " for object " . get_class($this); 
+   }
   
+   public function drawCalculatedItem($item){
+     return "No calculated item " . $item . " for object " . get_class($this); 
+   }
   /** =========================================================================
    * Indicate if a property of is translatable 
    * @param $col the nale of the property

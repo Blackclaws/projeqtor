@@ -200,6 +200,67 @@ foreach ($listParam as $param) {
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
        <?php htmlDrawOptionForReference('idProject', $defaultValue, null, false); ?>
+       <script type="dojo/connect" event="onChange" args="evt">
+          if (dijit.byId('idVersion')) {
+            if (dijit.byId('idProduct')) {
+              var idProduct=trim(dijit.byId('idProduct').get('value'));
+              if (idProduct) {
+                refreshList("idVersion","idProduct", idPoduct);
+              } else {
+                if (trim(this.value)) {
+                  refreshList("idVersion","idProject", this.value);
+                } else {
+                  refreshList("idVersion");
+                }
+              }
+            } else {
+              if (trim(this.value)) {
+                refreshList("idVersion","idProject", this.value);
+              } else {
+                refreshList("idVersion");
+              }
+            }
+          } 
+       </script>
+     </select>    
+    </td>
+    </tr>
+<?php    
+  } else if ($param->paramType=='productList') {
+    $defaultValue='';
+    if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <?php htmlDrawOptionForReference('idProduct', $defaultValue, null, false); ?>
+       <script type="dojo/connect" event="onChange" args="evt">
+          if (dijit.byId('idVersion')) {
+            if (dijit.byId('idProject')) {
+              if (trim(this.value)) {
+                refreshList("idVersion","idProduct", this.value);
+              } else {
+                if (trim( dijit.byId("idProject").get("value")) ) {
+                  refreshList("idVersion","idProject", dijit.byId("idProject").get("value"));
+                } else {
+                  refreshList("idVersion");
+                }
+              }
+            } else {
+              if (trim(this.value)) {
+                refreshList("idVersion","idProduct", this.value);
+              } else {
+                refreshList("idVersion");
+              }
+            }
+          } 
+       </script>
      </select>    
     </td>
     </tr>
@@ -242,6 +303,21 @@ foreach ($listParam as $param) {
     </td>
   </tr>
 <?php
+  } else if ($param->paramType=='testSessionList') {
+    $defaultValue=$param->defaultValue;
+    ?>
+  <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+      <select dojoType="dijit.form.FilteringSelect" class="input"
+              style="width: 200px;"
+              id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+        >
+        <?php htmlDrawOptionForReference('idTestSession', $defaultValue, null, false); ?>
+      </select>
+    </td>
+  </tr>  
+<?php
   } else if ($param->paramType=='resourceList') {
     $defaultValue='';
     if ($param->defaultValue=='currentResource') {
@@ -267,14 +343,6 @@ foreach ($listParam as $param) {
 <?php 
   } else if ($param->paramType=='requestorList') {
     $defaultValue='';
-    /*if ($param->defaultValue=='currentResource') {
-      if (array_key_exists('project',$_SESSION)) {
-        $user=$_SESSION['user'];
-        $defaultValue=$user->id;
-      }
-    } else if ($param->defaultValue) {
-      $defaultValue=$param->defaultValue; 
-    }*/
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
@@ -287,7 +355,17 @@ foreach ($listParam as $param) {
      </select>    
     </td>
     </tr>    
-    
+<?php 
+  } else if ($param->paramType=='showDetail') {
+    $defaultValue='';
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <input dojoType="dijit.form.CheckBox"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+    </td>
+    </tr>       
 <?php 
   } else if ($param->paramType=='ticketType') {
     $defaultValue='';

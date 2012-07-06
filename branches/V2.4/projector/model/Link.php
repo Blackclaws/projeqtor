@@ -49,9 +49,27 @@ class Link extends SqlElement {
       $this->ref1Type=$type;
       $this->ref1Id=$id;
     } 
-    return parent::save();
+    $result=parent::save();
+    
+    if ($this->ref1Type=='Requirement' and $this->ref2Type=='TestCase') {
+    	$req=new Requirement($this->ref1Id);
+      $req->updateDependencies();
+    }
+    
+    return $result;
   }
   
+  public function delete() {
+  	
+  	$result=parent::delete();
+  	
+    if ($this->ref1Type=='Requirement' and $this->ref2Type=='TestCase') {
+      $req=new Requirement($this->ref1Id);
+      $req->updateDependencies();
+    }
+    
+    return $result;
+  }
   /** ==========================================================================
    * Return a list of Link objects involving one given object
    * @param $obj the object we are looking links for

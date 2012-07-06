@@ -267,6 +267,7 @@ class Ticket extends SqlElement {
   		}
   	}
   	$this->WorkElement->done=$this->done;
+  	$this->WorkElement->idle=$this->idle;
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     

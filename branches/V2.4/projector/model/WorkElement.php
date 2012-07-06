@@ -213,7 +213,7 @@ class WorkElement extends SqlElement {
   public function drawSpecificItem($item){
     global $print, $comboDetail;
     $result="";
-    if ($item=='run' and ! $comboDetail) {
+    if ($item=='run' and ! $comboDetail and !$this->idle) {
       if ($print) {
         return "";
       }

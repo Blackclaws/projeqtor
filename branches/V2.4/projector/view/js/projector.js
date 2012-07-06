@@ -527,7 +527,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         form: dojo.byId(formName),
         handleAs: "text",
         load: function(data,args){
-//console.log(data);
+//alert(data);
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
@@ -557,7 +557,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           if (destination=="expenseDetailDiv") {
               expenseDetailRecalculate();
           }
-        if (directAccess) {
+          if (directAccess) {
             if (dijit.byId('listIdFilter')) {
               // dijit.byId('listIdFilter').set('value',directAccess);
               // setTimeout("filterJsonList();",100);
@@ -725,6 +725,10 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+      } else if (validationType=='testCaseRun') {
+    	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+        //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
+        //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo') {
           var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');
@@ -1700,7 +1704,6 @@ function runReport() {
  * Global save function through [CTRL)+s
  */
 function globalSave() {
-
   if (dijit.byId('dialogDetail') && dijit.byId('dialogDetail').open) {
 	var button=dijit.byId('comboSaveButton');
   } else if (dijit.byId('dialogNote') && dijit.byId('dialogNote').open) {

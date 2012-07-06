@@ -29,6 +29,20 @@ class TestSession extends SqlElement {
   public $idle;
   public $idleDate;
   public $result;
+  public $_col_1_1_Progress;
+  public $_tab_6_1 = array('sum', 'passed', 'blocked', 'failed', 'issues', '', 'countTests');
+  public $countTotal;
+  public $_calc_noDisplay1;
+  public $countPassed;
+  public $_calc_pctPassed;
+  public $countBlocked;
+  public $_calc_pctBlocked;
+  public $countFailed;
+  public $_calc_pctFailed;
+  public $countIssues;
+  public $_calc_noDisplay2;
+  public $_col_1_1_TestCaseRun;
+  public $_TestCaseRun=array();
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachement=array();
@@ -40,7 +54,7 @@ class TestSession extends SqlElement {
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="nameProduct" width="10%" >${idProduct}</th>
     <th field="nameVersion" width="10%" >${idVersion}</th>
-    <th field="nameTestCaseType" width="10%" >${type}</th>
+    <th field="nameTestSessionType" width="10%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="10%" >${responsible}</th>
@@ -57,12 +71,16 @@ class TestSession extends SqlElement {
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
-                                  "idUser"=>"hidden"
+                                  "idUser"=>"hidden",
+                                  "countTotal"=>"display",
+                                  "countPassed"=>"display",
+                                  "countFailed"=>"display",
+                                  "countBlocked"=>"display",
+                                  "countIssues"=>"display"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
                                                    'idTestSessionType'=>'type',
-                                                   'result'=>'expectedResult'
                                                    );
   
   private static $_databaseColumnName = array();
@@ -163,5 +181,67 @@ class TestSession extends SqlElement {
     return $result;
   }
   
+  public function copy() {
+
+    $newObj=parent::copy();
+    
+    // Copy TestCaseRun for session
+    $newId=$newObj->id;
+    $crit=array('idTestSession'=>$this->id);
+    $tcr=new TestCaseRun();
+    $list=$tcr->getSqlElementsFromCriteria($crit);
+    foreach ($list as $tcr) {
+    	$new=new TestCaseRun();
+    	$new->idTestSession=$newId;
+    	$new->idTestCase=$tcr->idTestCase;
+    	$new->idRunStatus='1';
+    	$new->save();
+    }
+    
+    return $newObj;
+  
+  }
+  
+  
+  public function updateDependencies() {
+  	
+  	$this->countBlocked=0;
+  	$this->countFailed=0;
+  	$this->countIssues=0;
+  	$this->countPassed=0;
+  	$this->countTotal=0;
+  	foreach($this->_TestCaseRun as $tcr) {
+  		$this->countTotal+=1;
+  		if ($tcr->idRunStatus==2) {
+  			$this->countPassed+=1;
+  		}
+  	  if ($tcr->idRunStatus==3) {
+        $this->countFailed+=1;
+      }
+  	  if ($tcr->idRunStatus==4) {
+        $this->countBlocked+=1;
+      }
+  	}
+  	foreach($this->_Link as $link) {
+  		if ($link->ref2Type=='Ticket') {
+  			$this->countIssues+=1;
+  		}
+  	}
+  	$this->save();
+  }
+  
+   public function drawCalculatedItem($item){
+     $result="&nbsp;";
+     if ($item=='pctPassed') {
+    	 return ($this->countTotal==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
+     } else if ($item=='pctFailed') {
+       return ($this->countTotal==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
+     } else if ($item=='pctBlocked') {
+       return ($this->countTotal==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
+     } else {
+     	return "&nbsp;"; 
+     }
+     return $result;
+   }
 }
 ?>

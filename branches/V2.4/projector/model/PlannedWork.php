@@ -117,12 +117,14 @@ class PlannedWork extends GeneralWork {
       // build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
-    // Remove administrative projects :
-    $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
     $inClause.=" and " . getAccesResctictionClause('Activity',false);
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
+    
+    // #697 : moved the administrative project clause after the purge
+    // Remove administrative projects :
+    $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
     // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause;
@@ -532,7 +534,6 @@ class PlannedWork extends GeneralWork {
       $list[$id]=$elt;
     }
     $bool = uasort($list,array(new PlanningElement(), "comparePlanningElementSimple"));
-    self::traceArray($list);
     // then sort on predecessors
     $result=self::specificSort($list);
     //self::traceArray($result);
@@ -580,7 +581,7 @@ class PlannedWork extends GeneralWork {
   }
   
   private static function insertWaiting(&$result,&$wait,$id) {
-  	traceLog("insertWaiting($id)");
+//traceLog("insertWaiting($id)");
     foreach($wait as $wId=>$wPe) {
       if (isset($wPe->_tmpPrec) and array_key_exists($id, $wPe->_tmpPrec)) {
         // ok, prec has been inserted, not waiting for it anymore

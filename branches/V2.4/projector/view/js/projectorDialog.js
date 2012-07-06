@@ -397,7 +397,7 @@ function showDetail (comboName, canCreate, objectClass) {
 		displaySearch(cl);
   } else {
 		cl=objectClass;
-	  id=val;
+	    id=val;
 		window.frames['comboDetailFrame'].document.body.innerHTML='<i>' + i18n("messagePreview") + '</i>';
 		dijit.byId("dialogDetail").show();
 		displayDetail(cl,id);
@@ -432,9 +432,10 @@ function selectDetailItem(selectedValue) {
 	}
 	var comboName=dojo.byId('comboName').value;
 	var combo=dijit.byId(comboName);
+	var comboClass=dojo.byId('comboClass').value;
 	crit=null;
 	critVal=null;
-	if (comboName=='idActivity' || comboName=='idResource') {
+	if (comboClass=='Activity' || comboClass=='Resource' || comboClass=='Ticket') {
 		prj=dijit.byId('idProject');
 		if (prj) {
 		  crit='idProject';
@@ -444,7 +445,7 @@ function selectDetailItem(selectedValue) {
 	if (comboName!='idStatus' && comboName!='idProject') {
 	  // TODO : study if such restriction should be applied to idActivity
 		if (combo) {
-		  refreshList(comboName, crit, critVal, idFldVal);
+		  refreshList('id'+comboClass, crit, critVal, idFldVal,comboName);
 		} else {
 			if (comboName=='dependencyRefIdDep') {
 				refreshDependencyList(idFldVal);
@@ -454,15 +455,19 @@ function selectDetailItem(selectedValue) {
 				refreshLinkList(idFldVal);
 				setTimeout("dojo.byId('linkRef2Id').focus()",1000);
 				enableWidget('dialogLinkSubmit');
-      } else if (comboName=='approverId') {
-        refreshApproverList(idFldVal);
-        setTimeout("dojo.byId('approverId').focus()",1000);
-        enableWidget('dialogApproverSubmit');
+		    } else if (comboName=='approverId') {
+		        refreshApproverList(idFldVal);
+		        setTimeout("dojo.byId('approverId').focus()",1000);
+		        enableWidget('dialogApproverSubmit');
 			} else if (comboName=='originOriginId') {
 				refreshOriginList(idFldVal);
 				setTimeout("dojo.byId('originOriginId').focus()",1000);
 				enableWidget('dialogOriginSubmit');
-			}
+			} else if (comboName=='testCaseRunTestCaseList') {
+				refreshTestCaseRunList(idFldVal);
+				setTimeout("dojo.byId('testCaseRunTestCaseList').focus()",1000);
+				enableWidget('dialogTestCaseRunSubmit');
+			} 
 		}			
 	}
 	if (combo) {
@@ -1604,14 +1609,17 @@ function addDependency (depType) {
 		dojo.byId("dependencyType").value=null;
 		message = i18n("dialogDependencyExtended", new Array(i18n(objectClass), objectId.value));
 	}
-	dijit.byId("dependencyRefTypeDep").reset();
+	if (objectClass=='Requirement') {
+	  refreshList('idDependable', 'scope', 'R',null,'dependencyRefTypeDep',true);
+	  dijit.byId("dependencyRefTypeDep").set('value','4');
+	} else if (objectClass=='TestCase') {
+	  refreshList('idDependable', 'scope', 'TC',null,'dependencyRefTypeDep',true);
+	  dijit.byId("dependencyRefTypeDep").set('value','5');
+	} else{
+	  refreshList('idDependable', 'scope', 'PE',null,'dependencyRefTypeDep',true);
+	  dijit.byId("dependencyRefTypeDep").set('value','1');	
+	}
 	refreshDependencyList();
-	//var url="../tool/dynamicListDependency.php" 
-	//	+ "?dependencyType="+depType
-	//  + "&dependencyRefType="+objectClass
-	//	+ "&dependencyRefId="+objectId
-	//	+ "&dependencyRefTypeDep="+dojo.byId("dependencyRefTypeDep").value;
-	//loadContent(url, "dialogDependencyList", null, false);
 	dojo.byId("dependencyId").value="";
 	dojo.byId("dependencyRefType").value=objectClass;
 	dojo.byId("dependencyRefId").value=objectId;
@@ -2449,6 +2457,124 @@ function saveVersionProject() {
 	}
 }
 
+//=============================================================================
+//= Test Case Run
+//=============================================================================
+
+function addTestCaseRun() {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	refreshTestCaseRunList();
+	dojo.byId("testCaseRunId").value="";
+	dojo.byId("testCaseRunMode").value="add";
+	dojo.byId("testCaseRunTestSession").value=dijit.byId('id').get('value');
+	dijit.byId('testCaseRunComment').reset();
+	dijit.byId('testCaseRunStatus').set('value',1);
+	dojo.byId('testCaseRunAddDiv').style.display="block";
+	dojo.byId('testCaseRunEditDiv').style.display="none";
+	disableWidget('dialogTestCaseRunSubmit');
+	dijit.byId("dialogTestCaseRun").show();
+}
+function refreshTestCaseRunList(selected) {
+	disableWidget('dialogTestCaseRunSubmit');
+	var url='../tool/dynamicListTestCase.php'
+		+'?idProject='+dijit.byId('idProject').get('value')
+		+'&idProduct='+dijit.byId('idProduct').get('value');
+	if (selected) {
+		url+='&selected='+selected;
+	}
+	loadContent(url, 'testCaseRunListDiv', 'testCaseRunForm', false);
+}
+
+function editTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket, hide) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	idProject=dijit.byId('idProject').get('value');
+	refreshList('idTestCase', 'idProject', '0', idTestCase, 'testCaseRunTestCase', true);
+	refreshList('idTicket', 'idProject', idProject, idTicket, 'testCaseRunTicket', false);
+	dijit.byId("testCaseRunTestCase").set('readOnly',true);
+	dijit.byId('testCaseRunTestCase').set('value',idTestCase);
+	dijit.byId('testCaseRunTicket').set('value',idTicket);
+	dojo.byId("testCaseRunId").value=idTestCaseRun;
+	dojo.byId("testCaseRunMode").value="edit";
+	dojo.byId("testCaseRunTestSession").value=dijit.byId('id').get('value');
+	dijit.byId('testCaseRunComment').set('value',dojo.byId("comment_"+idTestCaseRun).value);
+	dijit.byId('testCaseRunStatus').set('value',idRunStatus);
+	dojo.byId('testCaseRunAddDiv').style.display="none";
+	dojo.byId('testCaseRunEditDiv').style.display="block";
+	testCaseRunChangeStatus();
+	enableWidget('dialogTestCaseRunSubmit');
+	if (! hide) {
+	  dijit.byId("dialogTestCaseRun").show();
+	}
+}
+
+function passedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
+	showWait();
+	editTestCaseRun(idTestCaseRun, idTestCase, '2', idTicket, true);
+	setTimeout("saveTestCaseRun()",100);
+}
+
+function failedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
+	editTestCaseRun(idTestCaseRun, idTestCase, '3', idTicket, false);
+}
+
+function blockedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
+	showWait();
+	editTestCaseRun(idTestCaseRun, idTestCase, '4', idTicket, true);
+	setTimeout("saveTestCaseRun()",100);
+}
+
+function testCaseRunChangeStatus() {
+	var status=dijit.byId('testCaseRunStatus').get('value');
+	if (status=='3') {
+		dojo.byId('testCaseRunTicketDiv').style.display="block";
+	} else {
+		if (! trim(dijit.byId('testCaseRunTicket').get('value'))) {
+		  dojo.byId('testCaseRunTicketDiv').style.display="none";
+		}
+		//dijit.byId('testCaseRunTicket').set('value',' ');
+	}
+}
+
+function removeTestCaseRun(id, idTestCase) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	dojo.byId("testCaseRunId").value=id;
+	actionOK=function() {loadContent("../tool/removeTestCaseRun.php", "resultDiv", "testCaseRunForm", true, 'testCaseRun');};
+	msg=i18n('confirmDeleteTestCaseRun', new Array(idTestCase));
+	showConfirm (msg, actionOK);
+} 
+
+function saveTestCaseRun() {
+	var formVar = dijit.byId('testCaseRunForm');
+	var mode = dojo.byId("testCaseRunMode").value;
+	if (mode=='add' && dojo.byId("testCaseRunTestCaseList").value=="") return;
+	if (mode=='edit') {
+	  var status=dijit.byId('testCaseRunStatus').get('value');
+	  if (status=='3') {
+		  if (trim(dijit.byId('testCaseRunTicket').get('value'))=='') {
+			  dijit.byId("dialogTestCaseRun").show();
+			showAlert(i18n('messageMandatory', new Array(i18n('colTicket'))));
+			return;
+		}
+	  }
+	}
+	if(mode=='add' || formVar.validate()){		
+		loadContent("../tool/saveTestCaseRun.php", "resultDiv", "testCaseRunForm", true,'testCaseRun');
+		dijit.byId('dialogTestCaseRun').hide();
+	} else {
+		dijit.byId("dialogTestCaseRun").show();
+		showAlert(i18n("alertInvalidForm"));
+	}
+}
+
 
 //=============================================================================
 //= Affectation
@@ -2781,21 +2907,30 @@ function listClick() {
 }
 
 function stockHistory(curClass,curId) {
-	var len=historyTable.length;
-	var lastClass="";
+	//var len=historyTable.length;
+	/*var lastClass="";
 	var lastId=0;
 	if (len>0) { 
 	  lastClass=historyTable[len-1][0];
 	  lastId=historyTable[len-1][1];
-	}
-	if (len==0 || curClass!=lastClass || curId!=lastId) {
+	}*/
+	/*if (len==0 || curClass!=lastClass || curId!=lastId) {
 	  historyTable[len]=new Array(curClass, curId);
 	  historyPosition=len;
 	  if (historyPosition>=1) {
 	    enableWidget('menuBarUndoButton');
 	  }
 	  disableWidget('menuBarRedoButton');
+	}*/
+	historyPosition+=1;
+	historyTable[historyPosition]=new Array(curClass, curId);
+	if (historyPosition>0) {
+	  enableWidget('menuBarUndoButton');
 	}
+	if (historyPosition==historyTable.length-1) {
+	  disableWidget('menuBarRedoButton');	
+	}
+	
 }
 
 function undoItemButton() {
