@@ -195,24 +195,24 @@ class PlannedWork extends GeneralWork {
         $step=1;
       }
       $precList=$plan->_predecessorListWithParent;
-      foreach ($precList as $precId=>$precVal) {
+      foreach ($precList as $precId=>$precVal) { // #77 : $precVal = dependency delay
       	$prec=$fullListPlan[$precId];
         $precEnd=$prec->plannedEndDate;
         if ($prec->realEndDate) {
         	$precEnd=$prec->realEndDate;
         }
-        if ($precEnd > $startPlan) {        
+        if ($precEnd + $precVal > $startPlan) { // #77       
           if ($prec->refType=='Milestone') {
           	if ($plan->refType=='Milestone') {
-          	  $startPlan=addWorkDaysToDate($precEnd,1);
+          	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
           	} else {
-              $startPlan=addWorkDaysToDate($precEnd,1);
+              $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
             }         	
           } else {
           	if ($plan->refType=='Milestone') {
-          	  $startPlan=addWorkDaysToDate($precEnd,1);
+          	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
           	} else {
-              $startPlan=addWorkDaysToDate($precEnd,2);
+              $startPlan=addWorkDaysToDate($precEnd,2+$precVal); // #77 
             }           
           }
         }

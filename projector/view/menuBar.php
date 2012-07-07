@@ -120,11 +120,12 @@
     </td>
     <td class="menuBarSeparator" ></td>
     <td >
-    <div style="width: <?php 
+    <div id="menuBarVisibleDiv" style="width: <?php 
       if (array_key_exists('screenWidth',$_SESSION)) {
          $width = $_SESSION['screenWidth'] - 412;
          echo $width . 'px';
       } else {
+      	debugLog ("screenWidth not set");
       	echo '100%';
       }
     ?>; position: absolute; top: 0px; left: 320px; ">

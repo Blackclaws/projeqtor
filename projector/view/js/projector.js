@@ -333,12 +333,12 @@ function saveResolutionToSession() {
   var height=screen.height;
   var width=screen.width;
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=screenHeight&value=" + height,
-    handleAs: "text",
-    load: function(data,args) { }
-  });
+	    url: "../tool/saveDataToSession.php?id=screenWidth&value=" + width,
+	    handleAs: "text",
+	    load: function(data,args) {}
+	  });
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=screenWidth&value=" + width,
+    url: "../tool/saveDataToSession.php?id=screenHeight&value=" + height,
     handleAs: "text",
     load: function(data,args) { }
   });
@@ -628,6 +628,7 @@ function checkLogin() {
   resultNode=dojo.byId('validated');
   resultWidget=dojo.byId('validated');
   if (resultNode && resultWidget) {
+	saveResolutionToSession();  
     // showWait();
     if (changePassword) {
       quitConfirmed=true;
