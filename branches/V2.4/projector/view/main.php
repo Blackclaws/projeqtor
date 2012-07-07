@@ -1740,7 +1740,7 @@ checkVersion(); ?>
   <table>
     <tr>
       <td>
-       <form id='dependencyForm' name='dependencyForm' onSubmit="return false;">
+       <form dojoType="dijit.form.Form" id='dependencyForm' name='dependencyForm' onSubmit="return false;">
          <input id="dependencyId" name="dependencyId" type="hidden" value="" />
          <input id="dependencyRefType" name="dependencyRefType" type="hidden" value="" />
          <input id="dependencyRefId" name="dependencyRefId" type="hidden" value="" />
@@ -1783,6 +1783,27 @@ checkVersion(); ?>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
          </table>
+         <div id="dependencyOverlapDiv">
+	         <table>
+	           <tr>
+	             <td class="dialogLabel" >
+	               <label for="dependencyDelay" ><?php echo i18n("colDependencyDelay");?>&nbsp;:&nbsp;</label>
+	             </td>
+	             <td><nobr>
+	               <?php echo ($currencyPosition=='before')?$currency:''; ?>
+	               <input id="dependencyDelay" name="dependencyDelay" value="0" 
+	                 dojoType="dijit.form.NumberTextBox" 
+                   constraints="{min:-999, max:999}" 
+	                 style="width:50px; text-align: right;" 
+	                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colDependencyDelay')));?>" 
+	                 required="true" />&nbsp;
+	               <?php echo i18n('colDependencyDelayComment'); ?>
+	               </nobr>
+	             </td>
+	           </tr>
+	           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+	         </table>
+          </div>
         </form>
       </td>
     </tr>

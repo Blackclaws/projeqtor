@@ -33,6 +33,11 @@ if (! array_key_exists('dependencyRefIdDep',$_REQUEST)) {
 }
 $dependencyRefIdDep=$_REQUEST['dependencyRefIdDep'];
 
+$dependencyDelay=0;
+if (array_key_exists('dependencyDelay',$_REQUEST)) {
+  $dependencyDelay=$_REQUEST['dependencyDelay'];
+}
+
 $arrayDependencyRefIdDep=array();
 if (is_array($dependencyRefIdDep)) {
   $arrayDependencyRefIdDep=$dependencyRefIdDep;
@@ -63,7 +68,8 @@ foreach ($arrayDependencyRefIdDep as $dependencyRefIdDep) {
 	$dep->predecessorRefType=$predecessor->refType;
 	$dep->predecessorRefId=$predecessor->refId;
 	$dep->dependencyType='E-S';
-	$dep->dependencyDelay=0;
+	//$dep->dependencyDelay=0;
+	$dep->dependencyDelay=$dependencyDelay;
   $res=$dep->save();
   if (!$result) {
     $result=$res;

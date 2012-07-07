@@ -778,7 +778,8 @@ class PlanningElement extends SqlElement {
         $directPredecessors["#".$dep->successorId]=array();
       }
       $lstPrec=$directPredecessors["#".$dep->successorId];
-      $lstPrec["#".$dep->predecessorId]=$dep->predecessorId;   
+      //$lstPrec["#".$dep->predecessorId]=$dep->predecessorId;
+      $lstPrec["#".$dep->predecessorId]=$dep->dependencyDelay;  // #77 : store delay of dependency
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
       	$parent=new PlanningElement($dep->predecessorId);
         $parent->_parentList=array();

@@ -1612,12 +1612,17 @@ function addDependency (depType) {
 	if (objectClass=='Requirement') {
 	  refreshList('idDependable', 'scope', 'R',null,'dependencyRefTypeDep',true);
 	  dijit.byId("dependencyRefTypeDep").set('value','4');
+	  dijit.byId("dependencyOverlap").set('value','0');
+	  dojo.byId("dependencyOverlapDiv").style.display="none";
 	} else if (objectClass=='TestCase') {
 	  refreshList('idDependable', 'scope', 'TC',null,'dependencyRefTypeDep',true);
 	  dijit.byId("dependencyRefTypeDep").set('value','5');
+	  dijit.byId("dependencyOverlap").set('value','0');
+	  dojo.byId("dependencyOverlapDiv").style.display="none";
 	} else{
 	  refreshList('idDependable', 'scope', 'PE',null,'dependencyRefTypeDep',true);
 	  dijit.byId("dependencyRefTypeDep").set('value','1');	
+	  dojo.byId("dependencyOverlapDiv").style.display="block";
 	}
 	refreshDependencyList();
 	dojo.byId("dependencyId").value="";
@@ -1645,6 +1650,11 @@ function refreshDependencyList(selected) {
 * 
 */
 function saveDependency() {
+	var formVar = dijit.byId('dependencyForm');
+	if(! formVar.validate()){		
+	  showAlert(i18n("alertInvalidForm"));
+	  return;
+	}
 	if (dojo.byId("dependencyRefIdDep").value=="") return;
 	loadContent("../tool/saveDependency.php", "resultDiv", "dependencyForm", true,'dependency');
 	dijit.byId('dialogDependency').hide();

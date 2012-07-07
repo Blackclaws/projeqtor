@@ -381,3 +381,5 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (6,43,0),
 (7,43,0);
 
+ALTER TABLE `${prefix}dependency` CHANGE dependencyDelay dependencyDelay INT(3) DEFAULT '0';
+UPDATE `${prefix}dependency` set dependencyDelay=0;
