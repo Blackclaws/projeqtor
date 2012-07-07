@@ -17,8 +17,8 @@ if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
 };
 $paramSession='';
-if (array_key_exists('idSession',$_REQUEST)) {
-  $paramSession=trim($_REQUEST['idSession']);
+if (array_key_exists('idTestSession',$_REQUEST)) {
+  $paramSession=trim($_REQUEST['idTestSession']);
 };
 $paramDetail=false;
 if (array_key_exists('showDetail',$_REQUEST)) {
@@ -65,7 +65,7 @@ if ($paramProduct) {
 
 if ($paramSession) {
   $lstSession=array($paramSession=>SqlList::getNameFromId('TestSession',$paramSession));
-  $where.=" and idTestSession=".$paramSession;
+  $where.=" and id=".$paramSession;
 } else {
   $lstSession=SqlList::getList('TestSession');
   $lstSession[0]='<i>'.i18n('undefinedValue').'</i>';
