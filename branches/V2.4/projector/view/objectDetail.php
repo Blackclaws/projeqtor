@@ -1563,6 +1563,10 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     return;
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  $canEdit=$canUpdate;
+  if (get_class($obj)=="Term" or get_class($obj)=="Requirement" or get_class($obj)=="TestCase") {
+  	$canEdit=false;
+  }
   if(get_class($obj)=="Term")
   {
   	if($obj->idBill) $canUpdate=false;
@@ -1571,7 +1575,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="dependencyHeader" style="width:5%">';
+    echo '<td class="dependencyHeader" style="width:10%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addDependency(' . "'" . $depType . "'" . ');" title="' . i18n('addDependency' . $depType) . '" class="smallButton"/> ';
     }
@@ -1579,7 +1583,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   }
   echo '<td class="dependencyHeader" style="width:15%">' . i18n('colType') . '</td>';
   echo '<td class="dependencyHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
-  echo '<td class="dependencyHeader" style="width:60%">' . i18n('colName') . '</td>';
+  echo '<td class="dependencyHeader" style="width:55%">' . i18n('colName') . '</td>';
   echo '<td class="dependencyHeader" style="width:15%">' . i18n('colIdStatus'). '</td>';
   echo '</tr>';
   foreach($list as $dep) {
@@ -1594,8 +1598,13 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     echo '<tr>';
     if (! $print) {
       echo '<td class="dependencyData" style="text-align:center;">';
-      if ($canUpdate) {
-        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeDependency(' . "'" . $dep->id . "','" . get_class($depObj) . "','" . $depObj->id . "'" . ');" title="' . i18n('removeDependency' . $depType) . '" class="smallButton"/> ';
+      if ($canEdit) {
+      	echo '  <img src="css/images/smallButtonEdit.png" '
+      	 . ' onClick="editDependency(' . "'" . $depType . "','" . $dep->id . "','" . SqlList::getIdFromName('Dependable',i18n(get_class($depObj))) . "','" . get_class($depObj) . "','" . $depObj->id . "','" . $dep->dependencyDelay . "'" . ');" '
+      	 . ' title="' . i18n('editDependency' . $depType) . '" class="smallButton"/> ';
+      }
+      if ($canUpdate) {  
+      	 echo '  <img src="css/images/smallButtonRemove.png" onClick="removeDependency(' . "'" . $dep->id . "','" . get_class($depObj) . "','" . $depObj->id . "'" . ');" title="' . i18n('removeDependency' . $depType) . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
@@ -1608,7 +1617,13 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
       $goto=' onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;" ';  
     }    
     if (! $print) { echo $goto;}
-    echo '>' . $depObj->name . '</td>';
+    echo '>' . $depObj->name ;
+    if ($dep->dependencyDelay!=0 and $canEdit) {
+    	echo  '&nbsp;<span style="background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;font-size:80%;" title="'.i18n("colDependencyDelay") .'">&nbsp;'
+    	  . $dep->dependencyDelay . '&nbsp;' . i18n('shortDay') 
+    	  . '&nbsp;</span>' ; 
+    }
+    echo '</td>';
     if (property_exists($depObj,'idStatus')) {
       $objStatus=new Status($depObj->idStatus);
     } else {

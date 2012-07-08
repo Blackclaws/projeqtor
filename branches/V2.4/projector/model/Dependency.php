@@ -45,6 +45,7 @@ class Dependency extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function control(){
+  	if ($this->id) return "OK";
     $result="";
     $this->predecessorRefId=intval($this->predecessorRefId);
     $this->successorRefId=intval($this->successorRefId);

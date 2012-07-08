@@ -1599,6 +1599,7 @@ function addDependency (depType) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	noRefreshDependencyList=false;
 	var objectClass=dojo.byId("objectClass").value;
 	var objectId=dojo.byId("objectId").value;
 	var message=i18n("dialogDependency");
@@ -1612,31 +1613,78 @@ function addDependency (depType) {
 	if (objectClass=='Requirement') {
 	  refreshList('idDependable', 'scope', 'R',null,'dependencyRefTypeDep',true);
 	  dijit.byId("dependencyRefTypeDep").set('value','4');
-	  dijit.byId("dependencyOverlap").set('value','0');
-	  dojo.byId("dependencyOverlapDiv").style.display="none";
+	  dijit.byId("dependencyDelay").set('value','0');
+	  dojo.byId("dependencyDelayDiv").style.display="none";
 	} else if (objectClass=='TestCase') {
 	  refreshList('idDependable', 'scope', 'TC',null,'dependencyRefTypeDep',true);
 	  dijit.byId("dependencyRefTypeDep").set('value','5');
-	  dijit.byId("dependencyOverlap").set('value','0');
-	  dojo.byId("dependencyOverlapDiv").style.display="none";
+	  dijit.byId("dependencyDelay").set('value','0');
+	  dojo.byId("dependencyDelayDiv").style.display="none";
 	} else{
 	  refreshList('idDependable', 'scope', 'PE',null,'dependencyRefTypeDep',true);
 	  dijit.byId("dependencyRefTypeDep").set('value','1');	
-	  dojo.byId("dependencyOverlapDiv").style.display="block";
+	  dojo.byId("dependencyDelayDiv").style.display="block";
 	}
 	refreshDependencyList();
+	refreshList('idActivity', 'idProject', '0', null, 'dependencyRefIdDepEdit', false);
+	dijit.byId('dependencyRefIdDepEdit').reset();
 	dojo.byId("dependencyId").value="";
 	dojo.byId("dependencyRefType").value=objectClass;
 	dojo.byId("dependencyRefId").value=objectId;
 	dijit.byId("dialogDependency").set('title', message);
 	dijit.byId("dialogDependency").show();
+	dojo.byId('dependencyAddDiv').style.display='block';
+	dojo.byId('dependencyEditDiv').style.display='none';
+	dijit.byId("dependencyRefTypeDep").set('readOnly',false);
 	disableWidget('dialogDependencySubmit');
+}
+
+function editDependency (depType, id, refType, refTypeName, refId, delay) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	noRefreshDependencyList=true;
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var message=i18n("dialogDependencyEdit");
+	if (objectClass=='Requirement') {
+	  refreshList('idDependable', 'scope', 'R',null,'dependencyRefTypeDep',true);
+	  dijit.byId("dependencyRefTypeDep").set('value',refType);
+	  dijit.byId("dependencyDelay").set('value','0');
+	  dojo.byId("dependencyDelayDiv").style.display="none";
+	} else if (objectClass=='TestCase') {
+	  refreshList('idDependable', 'scope', 'TC',null,'dependencyRefTypeDep',true);
+	  dijit.byId("dependencyRefTypeDep").set('value',refType);
+	  dijit.byId("dependencyDelay").set('value','0');
+	  dojo.byId("dependencyDelayDiv").style.display="none";
+	} else{
+	  refreshList('idDependable', 'scope', 'PE',null,'dependencyRefTypeDep',true);
+	  dijit.byId("dependencyRefTypeDep").set('value',refType);	
+	  dijit.byId("dependencyDelay").set('value',delay);
+	  dojo.byId("dependencyDelayDiv").style.display="block";
+	}
+	//refreshDependencyList();
+	refreshList('id'+refTypeName, 'idProject', '0', refId, 'dependencyRefIdDepEdit', true);
+	dijit.byId('dependencyRefIdDepEdit').set('value',refId);
+	dojo.byId("dependencyId").value=id;
+	dojo.byId("dependencyRefType").value=objectClass;
+	dojo.byId("dependencyRefId").value=objectId;
+	dijit.byId("dialogDependency").set('title', message);
+	dijit.byId("dialogDependency").show();
+	dojo.byId('dependencyAddDiv').style.display='none';
+	dojo.byId('dependencyEditDiv').style.display='block';
+	dijit.byId("dependencyRefTypeDep").set('readOnly',true);
+	dijit.byId("dependencyRefIdDepEdit").set('readOnly',true);
+	enableWidget('dialogDependencySubmit');
 }
 
 /**
 * Refresh the Dependency list (after update)
 */
+var noRefreshDependencyList=false;
 function refreshDependencyList(selected) {
+	if (noRefreshDependencyList) return;
 	disableWidget('dialogDependencySubmit');
 	var url='../tool/dynamicListDependency.php';
 	if (selected) {
@@ -1655,7 +1703,7 @@ function saveDependency() {
 	  showAlert(i18n("alertInvalidForm"));
 	  return;
 	}
-	if (dojo.byId("dependencyRefIdDep").value=="") return;
+	if (dojo.byId("dependencyRefIdDep").value=="" && ! dojo.byId('dependencyId').value) return;
 	loadContent("../tool/saveDependency.php", "resultDiv", "dependencyForm", true,'dependency');
 	dijit.byId('dialogDependency').hide();
 }
