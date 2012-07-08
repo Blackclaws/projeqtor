@@ -708,7 +708,7 @@ function removeAttachement (attachementId) {
  * 
  */
 var noRefreshLink=false;
-function addLink (classLink) {
+function addLink (classLink, defaultLink) {
 	noRefreshLink=true;
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
@@ -736,7 +736,11 @@ function addLink (classLink) {
 	  	refreshLinkList();
 	} else {
 	  	dojo.byId("linkFixedClass").value="";
-    dijit.byId("linkRef2Type").reset();
+	  	if (defaultLink) {
+	  	  dijit.byId("linkRef2Type").set('value',defaultLink);
+	  	} else {
+          dijit.byId("linkRef2Type").reset();
+	  	}
 	  	message = i18n("dialogLinkExtended", new Array(i18n(objectClass), objectId));
 	  	unlockWidget("linkRef2Type");
 	  	noRefreshLink=false;
@@ -1622,7 +1626,11 @@ function addDependency (depType) {
 	  dojo.byId("dependencyDelayDiv").style.display="none";
 	} else{
 	  refreshList('idDependable', 'scope', 'PE',null,'dependencyRefTypeDep',true);
-	  dijit.byId("dependencyRefTypeDep").set('value','1');	
+	  if (objectClass=='Project') {
+		dijit.byId("dependencyRefTypeDep").set('value','3');  
+	  } else {
+	    dijit.byId("dependencyRefTypeDep").set('value','1');
+	  }
 	  dojo.byId("dependencyDelayDiv").style.display="block";
 	}
 	refreshDependencyList();

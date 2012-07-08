@@ -296,9 +296,18 @@ INSERT INTO `${prefix}referencable` (`id`, `name`, `idle`) VALUES
 (15, 'TestSession', 0);
 
 ALTER TABLE `${prefix}linkable` ADD COLUMN `idDefaultLinkable`  int(12) unsigned DEFAULT NULL; 
+UPDATE `${prefix}linkable` SET idDefaultLinkable='1' WHERE id in (2,3);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='3' WHERE id in (1);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='4' WHERE id in (5,6);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='5' WHERE id in (4);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='7' WHERE id in (7);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='8' WHERE id in (8,9);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='10' WHERE id in (10);
+UPDATE `${prefix}linkable` SET idDefaultLinkable='10' WHERE id in (10);
 INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`, idDefaultLinkable) VALUES
 (11,'Requirement',0,12),
-(12,'TestCase',0,11);
+(12,'TestCase',0,11)
+(13,'TestSession',0,8);
 
 CREATE TABLE `${prefix}testcaserun` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -320,10 +329,13 @@ ADD INDEX testcaserunTicket (idTicket);
 UPDATE `${prefix}priority` set name='High priority'
 WHERE name='Hight priority';
 
-ALTER TABLE `${prefix}dependable` ADD COLUMN `scope`  varchar(10) DEFAULT 'PE'; 
-INSERT INTO `${prefix}dependable` (`id`,`name`,`idle`, `scope`) VALUES
-(4,'Requirement',0,'R'),
-(5,'TestCase',0,'TC');
+ALTER TABLE `${prefix}dependable` ADD COLUMN `scope`  varchar(10) DEFAULT 'PE',
+ADD COLUMN `idDefaultDependable` int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}dependable` SET idDefaultDependable='1' WHERE id in (1,2);
+UPDATE `${prefix}dependable` SET idDefaultDependable='3' WHERE id='3';
+INSERT INTO `${prefix}dependable` (`id`,`name`,`idle`, `scope`, `idDefaultDependable`) VALUES
+(4,'Requirement',0,'R', '4'),
+(5,'TestCase',0,'TC', '5');
 
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
 (8, 'reportCategoryRequirementTest', 70);
