@@ -1761,6 +1761,9 @@ checkVersion(); ?>
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+         <div id="dependencyAddDiv" >
+         <table>
            <tr>
              <td class="dialogLabel" >
                <label for="dependencyRefIdDep" ><?php echo i18n("linkElement") ?>&nbsp;:&nbsp;</label>
@@ -1783,7 +1786,24 @@ checkVersion(); ?>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
          </table>
-         <div id="dependencyOverlapDiv">
+         </div>
+         <div id="dependencyEditDiv">
+           <table>
+             <tr>
+               <td class="dialogLabel"  >
+                 <label for="dependencyRefIdDepEdit" ><?php echo i18n("linkElement") ?>&nbsp;:&nbsp;</label>
+               </td>
+               <td>
+                 <select dojoType="dijit.form.FilteringSelect" 
+                  id="dependencyRefIdDepEdit" name="dependencyRefIdDepEdit" 
+                  class="input" value="" size="10">
+                 </select>
+               </td>
+             </tr>
+              <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           </table>  
+         </div>
+         <div id="dependencyDelayDiv">
 	         <table>
 	           <tr>
 	             <td class="dialogLabel" >
