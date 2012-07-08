@@ -1403,7 +1403,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   if (! $print) {
     echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id!=null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink  . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
+    	$linkable=SqlElement::getSingleSqlElementFromCriteria('Linkable', array('name'=>get_class($obj)));
+    	$default=$linkable->idDefaultLinkable;
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink  . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -2390,16 +2392,26 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   
   $displayHistory='NO';
-  if (! $print and array_key_exists('displayHistory',$_SESSION)) {
+  if (array_key_exists('displayHistory',$_SESSION)) {
     $displayHistory=$_SESSION['displayHistory'];
   }
   if ($obj and property_exists($obj, '_noHistory')) {
     $displayHistory='NO';
   }
+  if ($print and Parameter::getUserParameter('printHistory')!='YES') {
+    $displayHistory='NO';
+  }
   echo '<br/>';
   if (  ( ! $noselect) and $displayHistory != 'NO' and ! $comboDetail) { 
-    
-    $titlePane=$objClass."_history"; ?> 
+    if ($print) {?>
+    <table width="100%">
+      <tr><td class="section"> <?php echo i18n('elementHistoty');?> </td></tr>
+      <tr><td>
+      <?php drawHistoryFromObjects();?>
+      </td></tr>
+    </table>
+    <?php } else {
+      $titlePane=$objClass."_history"; ?>
       <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
        open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -2407,6 +2419,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
         <?php drawHistoryFromObjects();?>
       </div>
       <br/>
+      <?php }?>
   <?php 
   } 
   if ( ! $refresh and  ! $print) { ?>

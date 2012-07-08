@@ -172,6 +172,10 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
+      case 'printHistory':
+        $list=array('NO'=>i18n('displayNo'),
+                    'YES'=>i18n('displayYes'));
+        break;
       case 'displayNote':
         $list=array('YES_OPENED'=>i18n('displayYesOpened'),
                     'YES_CLOSED'=>i18n('displayYesClosed'));
@@ -257,7 +261,8 @@ class Parameter extends SqlElement {
                            "displayHistory"=>"list",  
                            "hideMenu"=>"list",
                            "switchedMode"=>"list",
-                           'sectionPrintExport'=>'section',  
+                           'sectionPrintExport'=>'section',
+                           'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
                            "pdfInNewWindow"=>"list", 
                            'sectionMiscellaneous'=>'section',      
