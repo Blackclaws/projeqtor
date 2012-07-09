@@ -21,7 +21,7 @@ class WorkElement extends SqlElement {
   public $idle;
    
    private static $_fieldsAttributes=array("refType"=>"hidden", "refId"=>"hidden", "refName"=>"hidden",
-                                           "realWork"=>"nobr", "ongoing"=>"hidden", "ongoingStartDateTime"=>"hidden",
+                                           "realWork"=>"", "ongoing"=>"hidden", "ongoingStartDateTime"=>"hidden",
                                            "idUser"=>"hidden", "idActivity"=>"hidden",
                                            "leftWork"=>"readonly", "done"=>"hidden", "idle"=>"hidden");
 
@@ -67,6 +67,7 @@ class WorkElement extends SqlElement {
     
   public function save() {
   	$old=new WorkElement($this->id);
+  	if (! array_key_exists('user', $_SESSION)) return parent::save();
     $user=$_SESSION['user'];
     $this->leftWork=$this->plannedWork-$this->realWork;
   	if ($this->leftWork<0 or $this->done) {

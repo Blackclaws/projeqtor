@@ -362,8 +362,7 @@ foreach ($listParam as $param) {
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
-    <input dojoType="dijit.form.CheckBox"
-       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+      <input dojoType="dijit.form.CheckBox" id="<?php echo $param->name;?>" name="<?php echo $param->name;?>" />
     </td>
     </tr>       
 <?php 

@@ -171,7 +171,6 @@ class PlanningElement extends SqlElement {
       $colScript .= '  if (testAllowedChange(value)) {';
       $colScript .= '    var duration=(value==null || value=="")?"":parseInt(value.get("value"));';
       $colScript .= '    var startDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").get("value");';
-      //$colScript .= 'alert("test Duration:" + startDate);';
       $colScript .= '    var endDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'EndDate").get("value");';
       $colScript .= '    if (duration!=null && duration!="") {';
       $colScript .= '      if (startDate!=null && startDate!="") {';

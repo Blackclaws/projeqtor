@@ -55,6 +55,10 @@ class Link extends SqlElement {
     	$req=new Requirement($this->ref1Id);
       $req->updateDependencies();
     }
+    if ($this->ref1Type=='TestSession' and $this->ref2Type=='Ticket') {
+      $ts=new TestSession($this->ref1Id);
+      $ts->updateDependencies();
+    }
     
     return $result;
   }
@@ -66,6 +70,10 @@ class Link extends SqlElement {
     if ($this->ref1Type=='Requirement' and $this->ref2Type=='TestCase') {
       $req=new Requirement($this->ref1Id);
       $req->updateDependencies();
+    }
+    if ($this->ref1Type=='TestSession' and $this->ref2Type=='Ticket') {
+      $ts=new TestSession($this->ref1Id);
+      $ts->updateDependencies();
     }
     
     return $result;

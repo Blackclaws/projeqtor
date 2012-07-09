@@ -71,7 +71,7 @@ $lst=$req->getSqlElementsFromCriteria(null, false, $where,'idProject, idProduct,
 
 if (checkNoData($lst)) exit;
 
-echo '<table width="95%" align="center">';
+echo '<table style="width:' . ((isset($outMode) and $outMode=='pdf')?'90':'95') . '%" align="center">';
 echo '<tr>';
 echo '<td class="reportTableHeader" style="width:8%" rowspan="2" >' . i18n('colIdProject') . '</td>';
 echo '<td class="reportTableHeader" style="width:8%" rowspan="2" >' . i18n('colIdProduct') . '</td>';
@@ -83,11 +83,11 @@ echo '<td class="reportTableHeader" style="width:40%" colspan="2" rowspan="2" >'
 echo '<td class="reportTableHeader" style="width:25%" colspan="5" >' .  i18n('TestCase') . " / " . i18n('sectionProgress') . '</td>';
 echo '</tr>';
 echo '<tr>';
-echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colLinked') . '</td>';
-echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colPlanned') . '</td>';
-echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colPassed') . '</td>';
-echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colBlocked') . '</td>';
-echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colFailed') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountLinked') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountPlanned') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountPassed') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountBlocked') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountFailed') . '</td>';
 echo '</tr>';
 $sumPlanned=0;
 $sumLinked=0;
@@ -102,17 +102,17 @@ if ($paramDetail) {
 }
 foreach ($lst as $req) {
   echo '<tr>';
-  echo '<td class="reportTableData">' . (($req->idProject)?$lstProject[$req->idProject]:'') . '</td>';
-  echo '<td class="reportTableData">' . (($req->idProduct)?$lstProduct[$req->idProduct]:'') . '</td>';
-  echo '<td class="reportTableData">' . (($req->idTargetVersion)?$lstVersion[$req->idTargetVersion]:'') . '</td>';
-  echo '<td class="reportTableData">' . (($req->idRequirementType)?$lstType[$req->idRequirementType]:'') . '</td>';
-  echo '<td class="reportTableData">#' . $req->id . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;">' . $req->name . '</td>';
-  echo '<td class="reportTableData">' . $req->countLinked . '</td>';
-  echo '<td class="reportTableData" >' . $req->countPlanned . '</td>';
-  echo '<td class="reportTableData" style="' . (($req->countPassed and $req->countPassed==$req->countPlanned)?'color:green;':'') . '">' . $req->countPassed . '</td>';
-  echo '<td class="reportTableData" style="' . (($req->countBlocked)?'color:orange;':'') . '">' . $req->countBlocked . '</td>';
-  echo '<td class="reportTableData" style="' . (($req->countFailed)?'color:red;':'') . '">' . $req->countFailed . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($req->idProject)?$lstProject[$req->idProject]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($req->idProduct)?$lstProduct[$req->idProduct]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:12%">' . (($req->idTargetVersion)?$lstVersion[$req->idTargetVersion]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($req->idRequirementType)?$lstType[$req->idRequirementType]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:5%">#' . $req->id . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:35%;">' . $req->name . '</td>';
+  echo '<td class="reportTableData" style="width:5%">' . $req->countLinked . '</td>';
+  echo '<td class="reportTableData" style="width:5%;">' . $req->countPlanned . '</td>';
+  echo '<td class="reportTableData" style="width:5%;' . (($req->countPassed and $req->countPassed==$req->countPlanned)?'color:green;':'') . '">' . $req->countPassed . '</td>';
+  echo '<td class="reportTableData" style="width:5%;' . (($req->countBlocked)?'color:orange;':'') . '">' . $req->countBlocked . '</td>';
+  echo '<td class="reportTableData" style="width:5%;' . (($req->countFailed)?'color:red;':'') . '">' . $req->countFailed . '</td>';
   echo '</tr>';
   $sumLinked+=$req->countLinked;
   $sumPlanned+=$req->countPlanned;
@@ -125,12 +125,12 @@ foreach ($lst as $req) {
   	$crit=array('ref1Type'=>'Requirement', 'ref1Id'=>$req->id, 'ref2Type'=>'TestCase');
   	$lst=$link->getSqlElementsFromCriteria($crit, null, null, 'ref2id');
   	if (count($lst)>0) {
-	  	echo '<tr><td></td><td colspan="10">';
-	  	echo '<table width="100%">';
+	  	echo '<tr><td style="width:8%"></td><td style="width:92%" colspan="10">';
+	  	echo '<table style="width:100%">';
 	  	echo '<tr>';
-	  	echo '<td class="largeReportHeader" colspan="2">' . i18n('TestCase') . '</td>';
-	  	echo '<td class="largeReportHeader" colspan="2">' . i18n('TestSession') . '</td>';
-	  	echo '<td class="largeReportHeader" colspan="2" width="10%">' . i18n('colResult') . '</td>';
+	  	echo '<td class="largeReportHeader" colspan="2" style="width:45%">' . i18n('TestCase') . '</td>';
+	  	echo '<td class="largeReportHeader" colspan="2" style="width:40%">' . i18n('TestSession') . '</td>';
+	  	echo '<td class="largeReportHeader" colspan="2" style="width:15%">' . i18n('colResult') . '</td>';
 	  	echo '</tr>';
 	  	
   	  foreach ($lst as $link) {
@@ -139,17 +139,17 @@ foreach ($lst as $req) {
         $lstTcr=$tcr->getSqlElementsFromCriteria($crit,true, false, 'idTestSession');
         foreach ($lstTcr as $tcr) {
         	echo '<tr>';
-        	echo '<td class="largeReportData" width="5%" style="text-align: center;">#' . $tcr->idTestCase . '</td>';
-        	echo '<td class="largeReportData width="40%"">' . SqlList::getNameFromId('TestCase',$tcr->idTestCase) . '</td>';
-        	echo '<td class="largeReportData" width="5%" style="text-align: center;">' . (($tcr->idTestSession)?'#':'') . $tcr->idTestSession . '</td>';
-        	echo '<td class="largeReportData" width="45%" >' . (($tcr->idTestSession)?SqlList::getNameFromId('TestSession', $tcr->idTestSession):'') . '</td>';
+        	echo '<td class="largeReportData" style="width:5%" style="text-align: center;">#' . $tcr->idTestCase . '</td>';
+        	echo '<td class="largeReportData style="width:40%"">' . SqlList::getNameFromId('TestCase',$tcr->idTestCase) . '</td>';
+        	echo '<td class="largeReportData" style="width:5%" style="text-align: center;">' . (($tcr->idTestSession)?'#':'') . $tcr->idTestSession . '</td>';
+        	echo '<td class="largeReportData" style="width:35%" >' . (($tcr->idTestSession)?SqlList::getNameFromId('TestSession', $tcr->idTestSession):'') . '</td>';
           $st=new RunStatus($tcr->idRunStatus);
-        	echo '<td class="largeReportData" style="text-align: center;" width="4%" >' . (($tcr->id)?colorNameFormatter(i18n($st->name) . '#split#' . $st->color):'') . '</td>';
-        	echo '<td class="largeReportData" style="text-align: center;font-size:75%;" width="6%" >' . htmlFormatDate($tcr->statusDateTime, true) . '</td>';
+        	echo '<td class="largeReportData" style="text-align: left;width:7%" >' . (($tcr->id)?colorNameFormatter(i18n($st->name) . '#split#' . $st->color):'') . '</td>';
+        	echo '<td class="largeReportData" style="text-align: center;font-size:75%;width:8%" >' . htmlFormatDate($tcr->statusDateTime, true) . '</td>';
         	echo '</tr>';
         }
       }
-      echo '<tr><td colspan="6" style="font-size:3px;">&nbsp;</td></tr>';
+      echo '<tr><td colspan="6" style="font-size:3px;" style="width:100%">&nbsp;</td></tr>';
       echo '</table>';
       echo '</td></tr>';
   	}

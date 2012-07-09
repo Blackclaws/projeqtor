@@ -32,7 +32,6 @@ $newObj=$obj->copy();
 $result=$newObj->_copyResult;
 unset($newObj->_copyResult);
 $_SESSION['currentObject']=$newObj;
-
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   echo '<span class="messageERROR" >' . $result . '</span>';

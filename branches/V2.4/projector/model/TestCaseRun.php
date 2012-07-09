@@ -81,17 +81,6 @@ class TestCaseRun extends SqlElement {
       }
   	}
   	
-    $session=new TestSession($this->idTestSession);
-    $session->updateDependencies();
-    
-    $link=new Link();
-    $crit=array('ref1Type'=>'Requirement', 'ref2Type'=>'TestCase', 'ref2Id'=>$this->idTestCase);
-    $listLink=$link->getSqlElementsFromCriteria($crit);
-    foreach ($listLink as $link) {
-      $req=new Requirement($link->ref1Id);
-      $req->updateDependencies();
-    }
-  	
   	if ($new) {
   		// on insertion, insert sub-test cases if exists
   	  $tc=new TestCase();
@@ -118,6 +107,17 @@ class TestCaseRun extends SqlElement {
   	  }	
   	}
   	
+  	$session=new TestSession($this->idTestSession);
+    $session->updateDependencies();
+    
+    $link=new Link();
+    $crit=array('ref1Type'=>'Requirement', 'ref2Type'=>'TestCase', 'ref2Id'=>$this->idTestCase);
+    $listLink=$link->getSqlElementsFromCriteria($crit);
+    foreach ($listLink as $link) {
+      $req=new Requirement($link->ref1Id);
+      $req->updateDependencies();
+    }
+    
   	return $result;
   }
   
@@ -131,6 +131,8 @@ class TestCaseRun extends SqlElement {
       $req=new Requirement($link->ref1Id);
       $req->updateDependencies();
     }
+    $session=new TestSession($this->idTestSession);
+    $session->updateDependencies();
     return $result;
   }
   

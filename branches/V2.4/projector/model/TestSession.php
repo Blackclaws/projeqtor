@@ -30,7 +30,7 @@ class TestSession extends SqlElement {
   public $idleDate;
   public $result;
   public $_col_1_1_Progress;
-  public $_tab_6_1 = array('sum', 'passed', 'blocked', 'failed', 'issues', '', 'countTests');
+  public $_tab_6_1 = array('countTotal', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', '', 'countTests');
   public $countTotal;
   public $_calc_noDisplay1;
   public $countPassed;
@@ -184,7 +184,7 @@ class TestSession extends SqlElement {
   public function copy() {
 
     $newObj=parent::copy();
-    
+    $copyResult=$newObj->_copyResult;
     // Copy TestCaseRun for session
     $newId=$newObj->id;
     $crit=array('idTestSession'=>$this->id);
@@ -196,15 +196,21 @@ class TestSession extends SqlElement {
     	$new->idTestCase=$tcr->idTestCase;
     	$new->idRunStatus='1';
     	$new->save();
-    }
-    
-    return $newObj;
+    }  
+    $new=new TestSession($newId);
+    $new->_noHistory=true;
+    $new->save();
+    $new->updateDependencies();
+    $new->_copyResult=$copyResult;
+    unset($new->_noHistory);
+    return $new;
   
   }
   
   
   public function updateDependencies() {
   	
+  	$this->_noHistory=true;
   	$this->countBlocked=0;
   	$this->countFailed=0;
   	$this->countIssues=0;
@@ -228,6 +234,7 @@ class TestSession extends SqlElement {
   		}
   	}
   	$this->save();
+  	
   }
   
    public function drawCalculatedItem($item){

@@ -527,7 +527,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         form: dojo.byId(formName),
         handleAs: "text",
         load: function(data,args){
-//alert(data);
+//console.log(data);
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
@@ -1509,7 +1509,6 @@ function workDayDiffDates_old(paramStartDate, paramEndDate) {
 }
 
 function workDayDiffDates(paramStartDate, paramEndDate) {
-  //alert(paramStartDate + "\n" + paramEndDate);
   var currentDate=new Date();
   currentDate.setFullYear(paramStartDate.getFullYear(), paramStartDate.getMonth(), paramStartDate.getDate());
   var endDate=paramEndDate;
@@ -1913,5 +1912,4 @@ function moveMenuBar(way) {
 	if (way=='right') {pos=left-step;}
 	if (pos>0) pos=0;
 	bar.style.left=pos+'px';
-	//alert(bar.style.left);
 }

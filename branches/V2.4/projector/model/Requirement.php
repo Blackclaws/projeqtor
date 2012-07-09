@@ -35,7 +35,7 @@ class Requirement extends SqlElement {
   public $idTargetVersion;
   public $result;
   public $_col_1_1_Progress;
-  public $_tab_7_1 = array('linked', 'planned', 'passed', 'blocked', 'failed', '', '', 'countTests');
+  public $_tab_7_1 = array('countLinked', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', '', '', 'countTests');
   public $countLinked;
   public $_calc_noDisplay1;
   public $countPlanned;
@@ -236,6 +236,7 @@ class Requirement extends SqlElement {
    }
   
   public function updateDependencies() {
+  	$this->_noHistory=true;
   	$listCrit='idTestCase in (0';
   	$this->countLinked=0;
     foreach ($this->_Link as $link) {
