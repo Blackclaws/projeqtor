@@ -125,7 +125,6 @@
          $width = $_SESSION['screenWidth'] - 412;
          echo $width . 'px';
       } else {
-      	debugLog ("screenWidth not set");
       	echo '100%';
       }
     ?>; position: absolute; top: 0px; left: 320px; ">

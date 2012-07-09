@@ -306,7 +306,7 @@ UPDATE `${prefix}linkable` SET idDefaultLinkable='10' WHERE id in (10);
 UPDATE `${prefix}linkable` SET idDefaultLinkable='10' WHERE id in (10);
 INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`, idDefaultLinkable) VALUES
 (11,'Requirement',0,12),
-(12,'TestCase',0,11)
+(12,'TestCase',0,11),
 (13,'TestSession',0,8);
 
 CREATE TABLE `${prefix}testcaserun` (
@@ -341,16 +341,16 @@ INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
 (8, 'reportCategoryRequirementTest', 70);
 
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
-(40,'reportRequirementTest',8,'requirementTest.php',810,0),
+(44,'reportRequirementTest',8,'requirementTest.php',810,0),
 (41,'reportProductTest',8,'productTest.php',820,0),
 (42,'reportPlanActivityMonthly',2,'activityPlan.php',252,0),
 (43,'reportTestSession',8,'testSession.php',830,0);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
-(104,40,'idProject','projectList',10,0,null),
-(105,40,'idProduct','productList',20,0,null),
-(106,40,'idVersion','versionList',30,0,null),
-(107,40,'showDetail','showDetail',40,0,null),
+(119,44,'idProject','projectList',10,0,null),
+(105,44,'idProduct','productList',20,0,null),
+(106,44,'idVersion','versionList',30,0,null),
+(107,44,'showDetail','showDetail',40,0,null),
 (108,41,'idProject','projectList',10,0,null),
 (109,41,'idProduct','productList',20,0,null),
 (110,41,'idVersion','versionList',30,0,null),
@@ -364,13 +364,13 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 (118,43,'showDetail','showDetail',50,0,null);
 
 INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
-(1,40,1),
-(2,40,1),
-(3,40,1),
-(4,40,0),
-(5,40,0),
-(6,40,0),
-(7,40,0),
+(1,44,1),
+(2,44,1),
+(3,44,1),
+(4,44,0),
+(5,44,0),
+(6,44,0),
+(7,44,0),
 (1,41,1),
 (2,41,1),
 (3,41,1),

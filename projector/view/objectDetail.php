@@ -1066,14 +1066,14 @@ function drawHistoryFromObjects($refresh=false) {
   $order = ' operationDate desc, id asc';
   $hist=new History();
   $historyList=$hist->getSqlElementsFromCriteria(null,false,$where,$order);
-  echo '<table width="100%">';
+  echo '<table style="width:100%;">';
   echo '<tr>';
-  echo '<td class="historyHeader" width="10%">' . i18n('colOperation'). '</td>';
-  echo '<td class="historyHeader" width="14%">' . i18n('colColumn'). '</td>';
-  echo '<td class="historyHeader" width="23%">' . i18n('colValueBefore'). '</td>';
-  echo '<td class="historyHeader" width="23%">' . i18n('colValueAfter'). '</td>';
-  echo '<td class="historyHeader" width="15%">' . i18n('colDate') . '</td>';
-  echo '<td class="historyHeader" width="15%">' . i18n('colUser'). '</td>';
+  echo '<td class="historyHeader" style="width:10%">' . i18n('colOperation'). '</td>';
+  echo '<td class="historyHeader" style="width:14%">' . i18n('colColumn'). '</td>';
+  echo '<td class="historyHeader" style="width:23%">' . i18n('colValueBefore'). '</td>';
+  echo '<td class="historyHeader" style="width:23%">' . i18n('colValueAfter'). '</td>';
+  echo '<td class="historyHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="historyHeader" style="width:15%">' . i18n('colUser'). '</td>';
   echo '</tr>';
   $stockDate=null;
   $stockUser=null;
@@ -1113,9 +1113,9 @@ function drawHistoryFromObjects($refresh=false) {
     }
     if (! $hide) {
       echo '<tr>';
-      echo '<td class="historyData'. $class .'">' . $oper . '</td>';
+      echo '<td class="historyData'. $class .'" width="10%">' . $oper . '</td>';
       
-      echo '<td class="historyData">' . $colCaption . '</td>';
+      echo '<td class="historyData" width="14%">' . $colCaption . '</td>';
       $oldValue=$hist->oldValue;
       $newValue=$hist->newValue;
       if ($dataType=='int' and $dataLength==1) { // boolean
@@ -1141,10 +1141,10 @@ function drawHistoryFromObjects($refresh=false) {
         $newValue=htmlEncode($newValue,'print');
       }
       
-      echo '<td class="historyData">' . $oldValue . '</td>';
-      echo '<td class="historyData">' . $newValue . '</td>';
-      echo '<td class="historyData'. $class .'">' . $date . '</td>';
-      echo '<td class="historyData'. $class .'">' . $user . '</td>';
+      echo '<td class="historyData" width="23%">' . $oldValue . '</td>';
+      echo '<td class="historyData" width="23%">' . $newValue . '</td>';
+      echo '<td class="historyData'. $class .'" width="15%">' . $date . '</td>';
+      echo '<td class="historyData'. $class .'" width="15%">' . $user . '</td>';
       echo '</tr>';
       $stockDate=$hist->operationDate;
       $stockUser=$hist->idUser;
@@ -2303,9 +2303,8 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
       <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm" name="objectForm" encType="multipart/form-data" action="" method="" >
         <script type="dojo/method" event="onSubmit" >
         // Don't do anything on submit, just cancel : no button is default => must click
-        //alert("OK");
-		//submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
-		return false;        
+		    //submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+		    return false;        
         </script>
         <div style="width: 100%; height: 100%;">
         <div id="detailFormDiv" dojoType="dijit.layout.ContentPane" region="top" style="width: 100%; height: 100%;">       
@@ -2406,10 +2405,8 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     if ($print) {?>
     <table width="100%">
       <tr><td class="section"> <?php echo i18n('elementHistoty');?> </td></tr>
-      <tr><td>
-      <?php drawHistoryFromObjects();?>
-      </td></tr>
     </table>
+      <?php drawHistoryFromObjects();?>
     <?php } else {
       $titlePane=$objClass."_history"; ?>
       <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 

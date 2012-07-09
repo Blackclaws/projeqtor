@@ -2540,6 +2540,7 @@ function addTestCaseRun() {
 	dijit.byId('testCaseRunStatus').set('value',1);
 	dojo.byId('testCaseRunAddDiv').style.display="block";
 	dojo.byId('testCaseRunEditDiv').style.display="none";
+	dijit.byId('testCaseRunTicket').reset();
 	disableWidget('dialogTestCaseRunSubmit');
 	dijit.byId("dialogTestCaseRun").show();
 }
@@ -2564,7 +2565,11 @@ function editTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket, hide)
 	refreshList('idTicket', 'idProject', idProject, idTicket, 'testCaseRunTicket', false);
 	dijit.byId("testCaseRunTestCase").set('readOnly',true);
 	dijit.byId('testCaseRunTestCase').set('value',idTestCase);
-	dijit.byId('testCaseRunTicket').set('value',idTicket);
+	if (idTicket) {
+	  dijit.byId('testCaseRunTicket').set('value',idTicket);
+	} else {
+		dijit.byId('testCaseRunTicket').reset();
+	}
 	dojo.byId("testCaseRunId").value=idTestCaseRun;
 	dojo.byId("testCaseRunMode").value="edit";
 	dojo.byId("testCaseRunTestSession").value=dijit.byId('id').get('value');
@@ -2582,7 +2587,7 @@ function editTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket, hide)
 function passedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
 	showWait();
 	editTestCaseRun(idTestCaseRun, idTestCase, '2', idTicket, true);
-	setTimeout("saveTestCaseRun()",100);
+	setTimeout("saveTestCaseRun()",500);
 }
 
 function failedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
@@ -2592,7 +2597,7 @@ function failedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
 function blockedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
 	showWait();
 	editTestCaseRun(idTestCaseRun, idTestCase, '4', idTicket, true);
-	setTimeout("saveTestCaseRun()",100);
+	setTimeout("saveTestCaseRun()",500);
 }
 
 function testCaseRunChangeStatus() {
@@ -2602,8 +2607,9 @@ function testCaseRunChangeStatus() {
 	} else {
 		if (! trim(dijit.byId('testCaseRunTicket').get('value'))) {
 		  dojo.byId('testCaseRunTicketDiv').style.display="none";
+		} else {
+			dojo.byId('testCaseRunTicketDiv').style.display="block";
 		}
-		//dijit.byId('testCaseRunTicket').set('value',' ');
 	}
 }
 
@@ -3216,9 +3222,7 @@ function checkAlertRetour(data) {
 	var dialogReminder=dojo.byId('dialogReminder');
 	reminderDiv.innerHTML=data;
 	if (dojo.byId('alertType')) {
-		//dojo.parser.parse(reminderDiv);
 		dojo.style(dialogReminder, {visibility:'visible', display:'inline', bottom: '-200px'});
-		//alertDisplayed=true;
 		var toColor='#FFCCCC';
 	    if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
 			toColor='#FFFFCC';
@@ -3248,9 +3252,7 @@ function setAlertReadMessage() {
   }
 }
 function setAlertRemindMessage() {
- //alertDisplayed=false;
   closeAlertBox();
-  //alert(dijit.byId('remindAlertTime').get('value'));
   setAlertRead(dojo.byId('idAlert').value, dijit.byId('remindAlertTime').get('value'));
 }
 
@@ -3259,7 +3261,6 @@ function setAlertRead(id, remind) {
   if (remind) {
 	url+='&remind='+remind;
   }
-  //alert(url);
   dojo.xhrGet({
 	url: url,
 	handleAs: "text",
@@ -3380,8 +3381,7 @@ function unlockDocument() {
  * ========================================================================
  */
 function openPlanningColumnMgt() {
-	
-  alert("openPlanningColumnMgt");
+  //alert("openPlanningColumnMgt");
 }
 
 function changePlanningColumn(col,status,order) {
@@ -3407,5 +3407,5 @@ function changePlanningColumn(col,status,order) {
 
 
 function sortPlanningColumn() {
-	alert("sortPlanningColumn");
+	//alert("sortPlanningColumn");
 }

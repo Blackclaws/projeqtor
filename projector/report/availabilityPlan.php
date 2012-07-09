@@ -71,9 +71,12 @@ foreach ($lstWork as $work) {
     $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
+  if (! array_key_exists($work->idResource,$real)) {
+  	$real[$work->idResource]=array();
+  }
   if (! array_key_exists($work->day,$result[$work->idResource])) {
     $result[$work->idResource][$work->day]=0;
-    $real[$work->day]=true;
+    $real[$work->idResource][$work->day]=true;
   }
   $result[$work->idResource][$work->day]+=$work->work;
 }
@@ -85,12 +88,15 @@ foreach ($lstPlanWork as $work) {
     $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
+  if (! array_key_exists($work->idResource,$real)) {
+    $real[$work->idResource]=array();
+  }
   if (! array_key_exists($work->day,$result[$work->idResource])) {
     $result[$work->idResource][$work->day]=0;
   }
-  if (! array_key_exists($work->day,$real)) { // Do not add planned if real exists 
+  //if (! array_key_exists($work->day,$real)) { // Do not add planned if real exists 
     $result[$work->idResource][$work->day]+=$work->work;
-  }
+  //}
 }
 
 if ($periodType=='month') {
@@ -131,7 +137,7 @@ echo '<tr><td>';
 echo '<table width="100%" align="left"><tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('colCapacity') . '</td>';
-echo '<td colspan="' . $nbDays . '" class="reportTableHeader">' . $header . '</td>';
+echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr><tr>';
 $days=array();
 for($i=1; $i<=$nbDays;$i++) {
@@ -148,10 +154,11 @@ for($i=1; $i<=$nbDays;$i++) {
     echo '<td class="reportTableColumnHeader" ' . $style . '>' . $day . '</td>';
   }  
 }
-
+echo '<td class="reportTableHeader" style="width:5%">' . i18n('sum') . '</td>';
 echo '</tr>';
 
 foreach ($resources as $idR=>$nameR) {
+	$sum=0;
   echo '<tr height="20px">';
   echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
   echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
@@ -168,7 +175,8 @@ foreach ($resources as $idR=>$nameR) {
         $val=$capacity[$idR]*1;
       }
       $style=' style="text-align:center;';
-      if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {
+      //if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {
+      if (array_key_exists($idR,$real) and ! array_key_exists($day,$real[$idR]) and array_key_exists($day,$result[$idR])) {
         $style.='background-color:' . $plannedBGColor . ';';
         $italic=true;
       }
@@ -189,7 +197,11 @@ foreach ($resources as $idR=>$nameR) {
      	 echo Work::displayWork($val);
      }
   	echo '</td>';
+  	if ($val>0) {
+  		$sum+=$val;
+  	}
   }
+  echo '<td class="reportTableColumnHeader" style="width:5%">' . $sum . '</td>';
   echo '</tr>';
 }
 

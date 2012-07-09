@@ -86,17 +86,11 @@ $lst=$ts->getSqlElementsFromCriteria(null, false, $where,'idProject, idProduct, 
 
 if (checkNoData($lst)) exit;
 
-
-
-  
-if ($paramDetail) {
-  echo '<tr><td colspan="10" style="font-size:3px;">&nbsp;</td></tr>';
-}
 foreach ($lst as $ts) {
 	$tcr=new TestCaseRun();
   $crit=array('idTestSession'=>$ts->id);
   $lstTcr=$tcr->getSqlElementsFromCriteria($crit,true, false, 'idTestCase');
-  echo '<table width="95%" align="center">';
+  echo '<table style="width:' . ((isset($outMode) and $outMode=='pdf')?'90':'95') . '%" align="center">';
 	echo '<tr>';
 	echo '<td class="reportTableHeader" style="width:8%" rowspan="2" >' . i18n('colIdProject') . '</td>';
 	echo '<td class="reportTableHeader" style="width:8%" rowspan="2" >' . i18n('colIdProduct') . '</td>';
@@ -106,53 +100,53 @@ foreach ($lst as $ts) {
 	echo '<td class="reportTableHeader" style="width:25%" colspan="5" >' .  i18n('TestCase') . " / " . i18n('sectionProgress') . '</td>';
 	echo '</tr>';
 	echo '<tr>';
-	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colSum') . '</td>';
-	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colPlanned') . '</td>';
-	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colPassed') . '</td>';
-	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colBlocked') . '</td>';
-	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colFailed') . '</td>';
+	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountTotal') . '</td>';
+	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountPlanned') . '</td>';
+	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountPassed') . '</td>';
+	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountBlocked') . '</td>';
+	echo '<td class="largeReportHeader" style="width:5%;text-align:center;">' . i18n('colCountFailed') . '</td>';
 	echo '</tr>';
   echo '<tr>';
-  echo '<td class="reportTableData">' . (($ts->idProject)?$lstProject[$ts->idProject]:'') . '</td>';
-  echo '<td class="reportTableData">' . (($ts->idProduct)?$lstProduct[$ts->idProduct]:'') . '</td>';
-  echo '<td class="reportTableData">' . (($ts->idVersion)?$lstVersion[$ts->idVersion]:'') . '</td>';
-  echo '<td class="reportTableData">' . (($ts->idTestSessionType)?$lstType[$ts->idTestSessionType]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($ts->idProject)?$lstProject[$ts->idProject]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:8%">' . (($ts->idProduct)?$lstProduct[$ts->idProduct]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:10%">' . (($ts->idVersion)?$lstVersion[$ts->idVersion]:'') . '</td>';
+  echo '<td class="reportTableData" style="width:9%">' . (($ts->idTestSessionType)?$lstType[$ts->idTestSessionType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . $ts->id . '</td>';
   echo '<td class="reportTableData" style="text-align:left;width:35%;">' . $ts->name . '</td>';
-  echo '<td class="reportTableData">' . $ts->countTotal . '</td>';
-  echo '<td class="reportTableData" >' . ($ts->countTotal-$ts->countPassed-$ts->countBlocked-$ts->countFailed) . '</td>';
-  echo '<td class="reportTableData" style="' . (($ts->countPassed and $ts->countPassed==$ts->countTotal)?'color:green;':'') . '">' . $ts->countPassed . '</td>';
-  echo '<td class="reportTableData" style="' . (($ts->countBlocked)?'color:orange;':'') . '">' . $ts->countBlocked . '</td>';
-  echo '<td class="reportTableData" style="' . (($ts->countFailed)?'color:red;':'') . '">' . $ts->countFailed . '</td>';
+  echo '<td class="reportTableData" style="width:5%">' . $ts->countTotal . '</td>';
+  echo '<td class="reportTableData" style="width:5%">' . ($ts->countTotal-$ts->countPassed-$ts->countBlocked-$ts->countFailed) . '</td>';
+  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countPassed and $ts->countPassed==$ts->countTotal)?'color:green;':'') . '">' . $ts->countPassed . '</td>';
+  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countBlocked)?'color:orange;':'') . '">' . $ts->countBlocked . '</td>';
+  echo '<td class="reportTableData" style=""width:5%;' . (($ts->countFailed)?'color:red;':'') . '">' . $ts->countFailed . '</td>';
   echo '</tr>';
   if (count($lstTcr)>0) {
   	echo '<tr><td></td><td colspan="10">';
-  	echo '<table width="100%">';
+  	echo '<table style="width:100%">';
   	echo '<tr>';
-  	echo '<td class="largeReportHeader" colspan="2" width="' . (($paramDetail)?'30':'90') . '%">' . i18n('TestCase') . '</td>';
-  	echo '<td class="largeReportHeader" colspan="2" width="10%">' . i18n('colResult') . '</td>';
+  	echo '<td class="largeReportHeader" colspan="2" style="width:' . (($paramDetail)?'25':'85') . '%">' . i18n('TestCase') . '</td>';
+  	echo '<td class="largeReportHeader" colspan="2" style="width:15%">' . i18n('colResult') . '</td>';
   	if ($paramDetail) {
-  		echo '<td class="largeReportHeader" colspan="2" width="20%">' . i18n('colDescription') . '</td>';
-  		echo '<td class="largeReportHeader" colspan="2" width="20%">' . i18n('colPrerequisite') . '</td>';
-  		echo '<td class="largeReportHeader" colspan="2" width="20%">' . i18n('colExpectedResult') . '</td>';
+  		echo '<td class="largeReportHeader" style="width:20%">' . i18n('colDescription') . '</td>';
+  		echo '<td class="largeReportHeader" style="width:20%">' . i18n('colPrerequisite') . '</td>';
+  		echo '<td class="largeReportHeader" style="width:20%">' . i18n('colExpectedResult') . '</td>';
   	} else {
-  		echo '<td width="0%" colspan="3"></td>';
+  		echo '<td style="width:0%" colspan="3"></td>';
   	}
   	echo '</tr>';
     foreach ($lstTcr as $tcr) {
       $tc=new TestCase($tcr->idTestCase);
     	echo '<tr>';
-      echo '<td class="largeReportData" width="5%" style="text-align: center;">' . (($tc->id)?'#':'') . $tc->id . '</td>';
-      echo '<td class="largeReportData" width="' . (($paramDetail)?'25':'85') . '%" >' . $tc->name . '</td>';
+      echo '<td class="largeReportData" style="text-align: center;width:5%">' . (($tc->id)?'#':'') . $tc->id . '</td>';
+      echo '<td class="largeReportData" style="width:' . (($paramDetail)?'20':'80') . '%" >' . $tc->name . '</td>';
       $st=new RunStatus($tcr->idRunStatus);
-      echo '<td class="largeReportData" style="text-align: center;" width="4%" >' . (($tcr->id)?colorNameFormatter(i18n($st->name) . '#split#' . $st->color):'') . '</td>';
-      echo '<td class="largeReportData" style="text-align: center;font-size:75%;" width="6%" >' . htmlFormatDate($tcr->statusDateTime, true) . '</td>';
+      echo '<td class="largeReportData" style="text-align: left;width:7%" >' . (($tcr->id)?colorNameFormatter(i18n($st->name) . '#split#' . $st->color):'') . '</td>';
+      echo '<td class="largeReportData" style="text-align: center;font-size:75%;width:8%" >' . htmlFormatDate($tcr->statusDateTime, true) . '</td>';
       if ($paramDetail) {
-        echo '<td class="largeReportData" colspan="2" width="20%">' . htmlEncode($tc->description,'print') . '</td>';
-        echo '<td class="largeReportData" colspan="2" width="20%">' . htmlEncode($tc->prerequisite,'print') . '</td>';
-        echo '<td class="largeReportData" colspan="2" width="20%">' . htmlEncode($tc->result,'print') . '</td>';
+        echo '<td class="largeReportData" style="width:20%">' . htmlEncode($tc->description,'print') . '</td>';
+        echo '<td class="largeReportData" style="width:20%">' . htmlEncode($tc->prerequisite,'print') . '</td>';
+        echo '<td class="largeReportData" style="width:20%">' . htmlEncode($tc->result,'print') . '</td>';
       } else {
-        echo '<td width="0%" colspan="3"></td>';
+        echo '<td style="width:0%" colspan="3"></td>';
       }
       echo '</tr>';
     
@@ -163,7 +157,7 @@ foreach ($lst as $ts) {
     echo '</td></tr>';
   }
   echo '</table>';
-  echo '<br/>';
+  echo '<br/>'; 
   
 }
 

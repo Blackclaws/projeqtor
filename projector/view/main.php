@@ -253,7 +253,6 @@ checkVersion(); ?>
               <div dojoType="dijit.Tree" id="documentDirectoryTree" model="directoryModel" openOnClick="false" showRoot='false'>
                 <script type="dojo/method" event="onClick" args="item">
                   loadContent("objectMain.php?objectClass=Document&Directory="+directoryStore.getValue(item, "id"),"centerDiv");
-                  //alert("Execute of node " + directoryStore.getLabel(item) + ", population=" +);
                 </script>
               </div>
             </div>
