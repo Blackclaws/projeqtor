@@ -77,6 +77,7 @@ class TestCaseRun extends SqlElement {
       	$link->ref1Id=$this->idTestSession;
       	$link->ref2Type='Ticket';
       	$link->ref2Id=$this->idTicket;
+      	$link->comment=i18n('TestCase') . ' #' . $this->idTestCase;
       	$link->save();
       }
   	}
@@ -117,7 +118,7 @@ class TestCaseRun extends SqlElement {
       $req=new Requirement($link->ref1Id);
       $req->updateDependencies();
     }
-    
+    // Store history for TestSession
   	return $result;
   }
   

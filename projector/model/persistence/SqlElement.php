@@ -418,7 +418,7 @@ abstract class SqlElement {
     $newId= Sql::$lastQueryNewid;
     $this->id=$newId;
     if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {      
-      $result = History::store($objectClass,$newId,'insert');
+      $result = History::store($this, $objectClass,$newId,'insert');
       if (!$result) {$returnStatus="ERROR";}
     }
     // save depedant elements (properties that are objects)
@@ -499,7 +499,7 @@ abstract class SqlElement {
           $nbChanged+=1;
           // Save change history
           if ($objectClass!='History' and ! property_exists($this,'_noHistory') ) {      
-            $result = History::store($objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
+            $result = History::store($this, $objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
             if (!$result) {
               $returnStatus="ERROR";
               $returnValue=Sql::$lastQueryErrorMessage;
@@ -674,7 +674,7 @@ abstract class SqlElement {
     }    
     // save history
     if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {      
-      $result = History::store($objectClass,$this->id,'delete');
+      $result = History::store($this, $objectClass,$this->id,'delete');
       if (!$result) {$returnStatus="ERROR";}
     }
     if ($returnStatus!="ERROR") {
