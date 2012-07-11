@@ -197,7 +197,7 @@ foreach ($projects as $idP=>$nameP) {
 	        if ($days[$day]=="off") {
 	          $style=$weekendStyle;
 	        } else {
-	          if (! array_key_exists($day, $realDays[$idR]) 
+	          if ( ( ! isset($realDays[$idR]) or ! array_key_exists($day, $realDays[$idR]) ) 
 	          and array_key_exists($day,$result[$idP][$idA][$idR])) {
 	            $style=$plannedStyle;
 	            $ital=true;

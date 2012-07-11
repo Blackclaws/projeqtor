@@ -45,7 +45,7 @@ class History extends SqlElement {
    * @param $newValue new value of column (after update)
    * @return boolean true if save is OK, false either
    */
-  public static function store ($refType, $refId, $operation, $colName=null, $oldValue=null, $newValue=null) {
+  public static function store ($obj, $refType, $refId, $operation, $colName=null, $oldValue=null, $newValue=null) {
     $user=(array_key_exists('user',$_SESSION))?$_SESSION['user']:new User();
     $hist=new History();
     $hist->refType=$refType;
@@ -56,6 +56,21 @@ class History extends SqlElement {
     $hist->newValue=$newValue;
     $hist->idUser=$user->id;
     $returnValue=$hist->save();
+    // For TestCaseRun : store history for TestSession 
+    if ($refType=='TestCaseRun') {
+    	if ($operation=="insert") {
+    		$colName="TestCase";
+    		$newValue="#".$obj->idTestCase;
+    	}
+      if ($operation=="insert" or $operation=="delete") {
+        $colName="TestCase";
+        $oldValue="#".$obj->idTestCase;
+      }
+      if ($operation=='update') {
+      	$colName.= '|' . 'TestCase' . '|' .$refId;
+      }
+    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName, $oldValue, $newValue);
+    }
     if (strpos($returnValue,'<input type="hidden" id="lastOperationStatus" value="OK"')) {
       return true;
     } else {

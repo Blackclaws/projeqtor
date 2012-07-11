@@ -728,6 +728,7 @@ function finalizeMessageDisplay(destination, validationType) {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo') {

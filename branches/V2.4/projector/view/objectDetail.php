@@ -1080,6 +1080,15 @@ function drawHistoryFromObjects($refresh=false) {
   $stockOper=null;
   foreach($historyList as $hist) {
     $colName=($hist->colName==null)?'':$hist->colName;
+    $split=explode('|', $colName);
+    if (count($split)==3) {
+    	$colName=$split[0];
+    	$refType=$split[1];
+    	$refId=$split[2];
+    } else {
+    	$refType='';
+    	$refId='';
+    }
     $curObj=null; $dataType=""; $dataLength=0;
     $hide=false;
     $oper=i18n('operation' . ucfirst($hist->operation) );
@@ -1096,9 +1105,17 @@ function drawHistoryFromObjects($refresh=false) {
       $class="ContinueOperation";
     }
     if ($colName!='') {
-      $curObj=new $hist->refType();
+    	if ($refType) {
+    		$curObj=new $refType();
+    	} else {
+        $curObj=new $hist->refType();
+    	}
       if ($curObj) {
-        $colCaption=$curObj->getColCaption($hist->colName);
+        if ($refType) {
+        	$colCaption=i18n($refType). ' #' . $refId . ' ' . $curObj->getColCaption($colName);
+        } else {
+      	  $colCaption=$curObj->getColCaption($colName);
+        }
         $dataType=$obj->getDataType($colName);
         $dataLength=$obj->getDataLength($colName);
         if (strpos($curObj->getFieldAttributes($colName), 'hidden')!==false) {

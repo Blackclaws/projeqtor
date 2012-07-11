@@ -192,7 +192,7 @@ foreach ($resources as $idR=>$nameR) {
     if ($style==$weekendStyle) {$val="";}
     echo '<td class="reportTableDataFull" ' . $style . ' valign="middle">';    
      if ($italic) {
-     	 echo '<i>' . $val . '</i>';
+     	 echo '<i>' . Work::displayWork($val) . '</i>';
      } else { 
      	 echo Work::displayWork($val);
      }
@@ -201,7 +201,7 @@ foreach ($resources as $idR=>$nameR) {
   		$sum+=$val;
   	}
   }
-  echo '<td class="reportTableColumnHeader" style="width:5%">' . $sum . '</td>';
+  echo '<td class="reportTableColumnHeader" style="width:5%">' . Work::displayWork($sum) . '</td>';
   echo '</tr>';
 }
 
