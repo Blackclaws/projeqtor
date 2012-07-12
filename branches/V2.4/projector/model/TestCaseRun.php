@@ -14,6 +14,10 @@ class TestCaseRun extends SqlElement {
   public $statusDateTime;
   public $idTicket;
   public $idle;
+  
+  private static $_colCaptionTransposition = array('idRunStatus'=> 'idStatus',
+                                                   'idTicket'=>'ticket',
+                                                   );
     
    /** ==========================================================================
    * Constructor
@@ -37,6 +41,14 @@ class TestCaseRun extends SqlElement {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+    return self::$_colCaptionTransposition;
+  }
+  
   // ============================================================================**********
 // GET VALIDATION SCRIPT
 // ============================================================================**********

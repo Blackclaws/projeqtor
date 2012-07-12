@@ -788,7 +788,11 @@ class PlanningElement extends SqlElement {
         $parent->_childList=array();
         $result["#".$dep->predecessorId]=$parent;
       }
-      $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$result["#".$dep->predecessorId]->_childList);
+      $parentChilds=$result["#".$dep->predecessorId]->_childList;
+      foreach ($parentChilds as $tmpIdChild=>$tempValChild) {
+      	$parentChilds[$tmpIdChild]=$dep->dependencyDelay;
+      }
+      $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$parentChilds);
     }
     foreach ($result as $id=>$pe) {
       $pe=$result[$id];
