@@ -197,11 +197,11 @@ class PlannedWork extends GeneralWork {
       $precList=$plan->_predecessorListWithParent;
       foreach ($precList as $precId=>$precVal) { // #77 : $precVal = dependency delay
       	$prec=$fullListPlan[$precId];
-        $precEnd=$prec->plannedEndDate;
+        $precEnd=$prec->plannedEndDate;       
         if ($prec->realEndDate) {
         	$precEnd=$prec->realEndDate;
         }
-        if ($precEnd + $precVal > $startPlan) { // #77       
+        if (addWorkDaysToDate($precEnd,1+$precVal) > $startPlan) { // #77       
           if ($prec->refType=='Milestone') {
           	if ($plan->refType=='Milestone') {
           	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
