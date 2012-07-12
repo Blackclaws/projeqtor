@@ -1106,7 +1106,11 @@ function drawHistoryFromObjects($refresh=false) {
     }
     if ($colName!='') {
     	if ($refType) {
-    		$curObj=new $refType();
+    		if ($refType=="TestCase") {
+    			$curObj=new TestCaseRun();
+    		} else {
+    		  $curObj=new $refType();
+    		}
     	} else {
         $curObj=new $hist->refType();
     	}
