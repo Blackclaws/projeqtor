@@ -404,7 +404,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           } else {
             echo $val;
           }
-          //echo '</div>';
         } else if ($col=='id') { // id
           echo '<span style="color:grey;">#</span>' . $val;
         } else if ($col=='password') {
@@ -452,9 +451,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
               $val=i18n($val);
           }
           if (0 and $internalTable==0) {
-            echo '<div style="width: 80%;"> ' . htmlEncode($val,'print') . '</div>';
+            echo '<div style="width: 80%;"> '; 
+            if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
+              echo $val;
+            } else {
+              echo htmlEncode($val,'print');
+            } 
+            echo '</div>';
           } else {
-            echo htmlEncode($val,'print');
+            if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
+              echo $val;
+            } else {
+              echo htmlEncode($val,'print');
+            } 
           }
         }
       } else if ($hide) {
@@ -783,7 +792,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }    
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
-
         echo ' class="display" ';
         //echo ' style="width:10%; border:1px solid red;"';
         echo' >';
@@ -1363,7 +1371,7 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     $creationDate=$attachement->creationDate;
     echo '<tr>';
     if (! $print) {
-      echo '<td class="attachementData" style="text-align:center;">';
+      echo '<td class="attachementData" style="text-align:center;width:5%"">';
       if ($attachement->fileName and $attachement->subDirectory and ! $print) {
         echo '<a href="../tool/download.php?class=Attachement&id='. $attachement->id . '"'; 
         echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
@@ -1377,11 +1385,11 @@ function drawAttachementsFromObject($obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="attachementData">#' . $attachement->id  . '</td>';
-    echo '<td class="attachementData" style="text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
-    echo '<td class="attachementData" style="text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName);
+    echo '<td class="attachementData" style="width:5%;">#' . $attachement->id  . '</td>';
+    echo '<td class="attachementData" style="width:10%;text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
+    echo '<td class="attachementData" style="width:5%;text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName);
     echo  '</td>';
-    echo '<td class="attachementData" title="' . $attachement->description . '">';
+    echo '<td class="attachementData" style="width:' . ( ($print)?'50':'45' ) . '%" title="' . $attachement->description . '">';
     echo '<table><tr >';
     echo ' <td>';
     echo htmlEncode($attachement->fileName,'print'); 
@@ -1392,8 +1400,8 @@ function drawAttachementsFromObject($obj, $refresh=false) {
     echo '</tr></table>';
     echo '</td>';
     
-    echo '<td class="attachementData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
-    echo '<td class="attachementData">' . $userName . '</td>';
+    echo '<td class="attachementData" style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
+    echo '<td class="attachementData" style="width:15%">' . $userName . '</td>';
     echo '</tr>';
   }
   echo '<tr>';
@@ -1419,7 +1427,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   }
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
   if ($obj->idle==1) {$canUpdate=false;}
-  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr><td colspan="2" style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (! $print) {
     echo '<td class="linkHeader" style="width:5%">';
@@ -1463,7 +1471,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           $classLinkName=i18n(get_class($linkObj));
         }
         if (! $print) {
-          echo '<td class="linkData" style="text-align:center;">';
+          echo '<td class="linkData" style="text-align:center;width:5%;">';
           if ( $canGoto 
            and (get_class($linkObj)=='DocumentVersion' or get_class($linkObj)=='Document')
            and isset( $gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion ) {
@@ -1476,15 +1484,15 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           echo '</td>';
         }
         if ( ! $classLink ) {
-          echo '<td class="linkData" >' . $classLinkName . '</td>';
+          echo '<td class="linkData" style="width:10%">' . $classLinkName . '</td>';
         }
-        echo '<td class="linkData">#' . $linkObj->id;    
+        echo '<td class="linkData" style="width:' . ( ($print)?'10':'5' ) . '%">#' . $linkObj->id;    
         echo '</td>';
         $goto="";
         if (! $print and $canGoto) {
           $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
         }
-        echo '<td class="linkData" ' . $goto . ' title="' . $link->comment . '">';
+        echo '<td class="linkData" ' . $goto . ' style="width:' . ( ($classLink)?'45':'35' ) . '%" title="' . $link->comment . '">';
         echo (get_class($linkObj)=='DocumentVersion')?$linkObj->fullName:$linkObj->name;
         if ($link->comment and ! $print) {
           echo '&nbsp;&nbsp;<img src="img/note.png" />';
@@ -1495,10 +1503,10 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           //$color=$objStatus->color;
           //$foreColor=getForeColor($color);
           //echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
-          echo '<td class="dependencyData" >' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+          echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
         }
-        echo '<td class="dependencyData">' . htmlFormatDateTime($creationDate) . '<br/></td>';
-        echo '<td class="dependencyData">' . $userName . '</td>';
+        echo '<td class="dependencyData"  style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
+        echo '<td class="dependencyData"  style="width:15%">' . $userName . '</td>';
         echo '</tr>';
     }
   }
@@ -1605,7 +1613,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="dependencyHeader" style="width:15%">' . i18n('colType') . '</td>';
-  echo '<td class="dependencyHeader" style="width:' . ( ($print)?'10':'5' ) . '%">' . i18n('colId') . '</td>';
+  echo '<td class="dependencyHeader" style="width:' . ( ($print)?'15':'5' ) . '%">' . i18n('colId') . '</td>';
   echo '<td class="dependencyHeader" style="width:55%">' . i18n('colName') . '</td>';
   echo '<td class="dependencyHeader" style="width:15%">' . i18n('colIdStatus'). '</td>';
   echo '</tr>';
@@ -2066,7 +2074,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   }
   $class=get_class($obj);
   $otherClass=($class=='TestCase')?'TestSession':'TestCase';
-  $nameWidth=60;
+  $nameWidth=67;
   $canCreate=securityGetAccessRightYesNo('menu'.$class, 'update')=="YES";
   $canUpdate=$canCreate;
   $canDelete=$canCreate;
@@ -2075,21 +2083,25 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     $canCreate=false;
     $canDelete=false;
   }
-  echo '<tr><td colspan=2 style="width:100%;">';
+  echo '<tr><td colspan="2" style="width:100%;">';
   echo '<table style="width:100%;">';
   echo '<tr>';
   if (! $print and $class=='TestSession') {
   	$nameWidth-=10;
-    echo '<td class="assignHeader" style="width:10%">';
+    echo '<td class="assignHeader" style="width:10%;">';
     if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
       echo '<img src="css/images/smallButtonAdd.png" ' . 
            ' onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" class="smallButton"/> ';
     }
     echo '</td>';
+    // also count colDetail size
+    $nameWidth-=10;
   }
   echo '<td class="assignHeader" colspan="3" style="width:' . ($nameWidth+15) . '%">' . i18n('col'.$otherClass) . '</td>';
-  echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n('colIdStatus'). '</td>';
+  if (! $print and $class=='TestSession') {
+    echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
+  }
+  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus'). '</td>';
   echo '</tr>';
   foreach($list as $tcr) {
   	if ($otherClass=='TestCase') {
@@ -2100,8 +2112,8 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   	$st=new RunStatus($tcr->idRunStatus);
     echo '<tr>';
     if (! $print and $class=='TestSession') {
-      echo '<td class="assignData" style="text-align:center;">';
-      echo '<table width="100%"><tr><td width=50%">';
+      echo '<td class="assignData" style="width:10%;text-align:center;">';
+      echo '<table style="width:100%"><tr><td style="width:50%">';
       if ($canUpdate and ! $print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' 
         . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'"
@@ -2121,7 +2133,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       if (! $print) {
         echo '<input type="hidden" id="comment_' . $tcr->id . '" value="' . htmlEncode($tcr->comment,'none') .'"/>';
       }
-      echo '</td><td width="50%">';
+      echo '</td><td style="width:50%">';
       if ($tcr->idRunStatus==1 or $tcr->idRunStatus==3 or $tcr->idRunStatus==4) {
         echo '  <img src="css/images/ok.png" ' 
           . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'"
@@ -2160,12 +2172,13 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     $typeClass='id'.$otherClass.'Type';
     echo '<td class="assignData" align="center" style="width:10%">' . SqlList::getNameFromId($otherClass.'Type', $tc->$typeClass) . '</td>';
     echo '<td class="assignData" align="center" style="width:5%">#' . $tc->id . '</td>';
-    echo '<td class="assignData" align="left"' . $goto . ' title="' . $tcr->comment . '" style="width:' . $nameWidth . '%">' . $tc->name ;
+    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" title="' . $tcr->comment . '" >' . $tc->name ;
     if ($tcr->comment and ! $print) {
       echo '&nbsp;&nbsp;<img src="img/note.png" />';
     }  
     echo '</td>';
-    echo '<td class="assignData" align="center">';
+    if (! $print and $class=='TestSession') {
+      echo '<td class="assignData" style="width:10%" align="center">';
       if ($tc->description) {
         echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
         echo '&nbsp;';
@@ -2177,17 +2190,17 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       if (isset($tc->prerequisite) and $tc->prerequisite) {
       	echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite) . '" alt="desc" />';
       } 
-    echo '</td>';
-    echo '<td class="assignData" align="center">';
-    echo '<table width="100%"><tr><td width="40%" style="text-align: center;">';
+      echo '</td>';
+    }
+    echo '<td class="assignData" style="width:8%;text-align:left;border-right:0px;">';
     echo colorNameFormatter(i18n($st->name) . '#split#' . $st->color);
-    echo '<td width="60%" style="font-size:' . (($tcr->idTicket and $tcr->idRunStatus=='3')?'100':'80') . '%; text-align: center;">';
+    echo '</td>';
+    echo '<td class="assignData" style="width:10%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus=='3')?'100':'80') . '%; text-align: center;">';
     if ($tcr->idTicket and $tcr->idRunStatus=='3') {
     	echo i18n('Ticket') . ' #' . $tcr->idTicket;
     } else if ($tcr->statusDateTime) {
       echo ' <i>(' . htmlFormatDateTime($tcr->statusDateTime, false) . ')</i> ';
     }
-    echo '</td></tr></table>';
     echo '</td>';
     echo '</tr>';
   }
