@@ -1245,6 +1245,8 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
             }
           } else if (ucfirst($col_name) == $col_name) {
             $this->{$col_name}=$this->getDependantSqlElement($col_name);
+          } else if (strpos($this->getFieldAttributes($col_name),'calculated')!==false) {
+           
           } else {
             //$test=$line[$this->getDatabaseColumnName($col_name)];
             $this->{$col_name}=$line[$this->getDatabaseColumnName($col_name)];

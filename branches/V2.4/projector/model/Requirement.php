@@ -35,19 +35,19 @@ class Requirement extends SqlElement {
   public $idTargetVersion;
   public $result;
   public $_col_1_1_Progress;
-  public $_tab_7_1 = array('countLinked', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', '', '', 'countTests');
+  public $_tab_6_2 = array('countLinked', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests', '');
   public $countLinked;
-  public $_calc_noDisplay1;
   public $countPlanned;
-  public $_calc_noDisplay2;
   public $countPassed;
-  public $_calc_pctPassed;
   public $countBlocked;
-  public $_calc_pctBlocked;
   public $countFailed;
-  public $_calc_pctFailed;
   public $countIssues;
-  public $_calc_noDisplay3;
+  public $noDisplay1;
+  public $noDisplay2;
+  public $pctPassed;
+  public $pctBlocked;
+  public $pctFailed;
+  public $noDisplay3;
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
@@ -86,11 +86,16 @@ class Requirement extends SqlElement {
                                   "countPassed"=>"display",
                                   "countFailed"=>"display",
                                   "countBlocked"=>"display",
-                                  "countIssues"=>"hidden"
+                                  "countIssues"=>"hidden",
+                                  "noDisplay1"=>"calculated,hidden",
+                                  "noDisplay2"=>"calculated,hidden",
+                                  "pctPassed"=>"calculated,display,html",
+                                  "pctBlocked"=>"calculated,display,html",
+                                  "pctFailed"=>"calculated,display,html",
+                                  "noDisplay3"=>"calculated,hidden"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
-                                                   'idRequirementType'=>'type',
                                                    'idTargetVersion'=>'targetVersion',
                                                    'idRiskLevel'=>'technicalRisk',
                                                    'plannedWork'=>'estimatedEffort',
@@ -106,6 +111,7 @@ class Requirement extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    $this->getCalculatedItem();
   }
 
    /** ==========================================================================
@@ -221,7 +227,7 @@ class Requirement extends SqlElement {
     return $result;
   }
   
-   public function drawCalculatedItem($item){
+   /*public function drawCalculatedItem($item){
      $result="&nbsp;";
      if ($item=='pctPassed') {
        return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countPassed/$this->countPlanned*100)).')</i>';
@@ -233,7 +239,15 @@ class Requirement extends SqlElement {
       return "&nbsp;"; 
      }
      return $result;
-   }
+   }*/
+   
+  public function getCalculatedItem(){
+     if ($this->countPlanned!=0) {
+     	$this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countPlanned*100)).')</i>';
+      $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countPlanned*100)).')</i>';
+      $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countPlanned*100)).')</i>';
+     }
+  }
   
   public function updateDependencies() {
   	$this->_noHistory=true;

@@ -64,7 +64,7 @@ class TestCase extends SqlElement {
                                   "idTestCaseType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
-                                  "handled"=>"hidden","handledDate"=>"hidden",
+                                  "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
                                   "idUser"=>"hidden",
@@ -74,8 +74,8 @@ class TestCase extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
-                                                   'idTestCaseType'=>'type',
-                                                   'result'=>'expectedResult'
+                                                   'result'=>'expectedResult',
+                                                   'idVersion'=>'productVersion'
                                                    );
   
   private static $_databaseColumnName = array();
