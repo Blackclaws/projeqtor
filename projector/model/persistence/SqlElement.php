@@ -367,45 +367,51 @@ abstract class SqlElement {
     foreach ($crit as $col_name => $col_value) {
       $dataType = $this->getDataType($col_name);
       $dataLength = $this->getDataLength($col_name);
-      if ($dataType=='int' and $dataLength==1) {
-        if ($col_value==NULL or $col_value=="") {
-          $col_value='0';
-        }
-      }
-      if ($col_value != NULL and $col_value != '' and $col_value != ' ' and $col_name != 'id') {
-        if ($queryColumns != "") {
-          $queryColumns.=", ";
-          $queryValues.=", ";
-        }
-        $queryColumns .= $this->getDatabaseColumnName($col_name);
-        $queryValues .= "'" . Sql::str($col_value, $objectClass) . "'";
+      $attribute= $this->getFieldAttributes($col_name);
+      if (strpos($attribute,'calculated')===false) {
+	      if ($dataType=='int' and $dataLength==1) {
+	        if ($col_value==NULL or $col_value=="") {
+	          $col_value='0';
+	        }
+	      }
+	      if ($col_value != NULL and $col_value != '' and $col_value != ' ' and $col_name != 'id') {
+	        if ($queryColumns != "") {
+	          $queryColumns.=", ";
+	          $queryValues.=", ";
+	        }
+	        $queryColumns .= $this->getDatabaseColumnName($col_name);
+	        $queryValues .= "'" . Sql::str($col_value, $objectClass) . "'";
+	      }
       }    
     }
     // get all data
     foreach($this as $col_name => $col_value) {
-      if (substr($col_name,0,1)=="_") {
-        // not a fiels, just for presentation purpose
-      } else if (ucfirst($col_name) == $col_name) {
-        // if property is an object, store it to save it at the end of script
-        $depedantObjects[$col_name]=($this->$col_name);
-      } else {
-        $dataType = $this->getDataType($col_name);
-        $dataLength = $this->getDataLength($col_name);
-        if ($dataType=='int' and $dataLength==1) {
-          if ($col_value==NULL or $col_value=="") {
-            $col_value='0';
-          }
-        }
-        if ($col_value != NULL and $col_value != '' and $col_value != ' ' 
-            and $col_name != 'id' 
-            and strpos($queryColumns, ' '. $this->getDatabaseColumnName($col_name) . ' ')===false ) {
-          if ($queryColumns != "") {
-            $queryColumns.=",";
-            $queryValues.=", ";
-          }
-          $queryColumns .= ' ' . $this->getDatabaseColumnName($col_name) . ' ';
-          $queryValues .= "'" . Sql::str($col_value, $objectClass) . "'";
-        }
+    	$attribute= $this->getFieldAttributes($col_name);
+      if (strpos($attribute,'calculated')===false) {
+	      if (substr($col_name,0,1)=="_") {
+	        // not a fiels, just for presentation purpose
+	      } else if (ucfirst($col_name) == $col_name) {
+	        // if property is an object, store it to save it at the end of script
+	        $depedantObjects[$col_name]=($this->$col_name);
+	      } else {
+	        $dataType = $this->getDataType($col_name);
+	        $dataLength = $this->getDataLength($col_name);
+	        if ($dataType=='int' and $dataLength==1) {
+	          if ($col_value==NULL or $col_value=="") {
+	            $col_value='0';
+	          }
+	        }
+	        if ($col_value != NULL and $col_value != '' and $col_value != ' ' 
+	            and $col_name != 'id' 
+	            and strpos($queryColumns, ' '. $this->getDatabaseColumnName($col_name) . ' ')===false ) {
+	          if ($queryColumns != "") {
+	            $queryColumns.=",";
+	            $queryValues.=", ";
+	          }
+	          $queryColumns .= ' ' . $this->getDatabaseColumnName($col_name) . ' ';
+	          $queryValues .= "'" . Sql::str($col_value, $objectClass) . "'";
+	        }
+	      }
       }
     }
     $query.=" ($queryColumns) values ($queryValues)";
@@ -468,7 +474,10 @@ abstract class SqlElement {
     $query="update " . $this->getDatabaseTableName();
     // get all data, and identify if changes
     foreach($this as $col_name => $col_new_value) {     
-      if (substr($col_name,0,1)=="_") {
+    	$attribute= $this->getFieldAttributes($col_name);
+      if (strpos($attribute,'calculated')!==false) {
+      	// calculated field, not to be save
+      } else if (substr($col_name,0,1)=="_") {
         // not a fiels, just for presentation purpose
       } else if (ucfirst($col_name) == $col_name) {
         $depedantObjects[$col_name]=($this->$col_name);

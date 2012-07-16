@@ -67,7 +67,7 @@ class TestSession extends SqlElement {
 
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
                                   "name"=>"required", 
-                                  "idTestCaseType"=>"required",
+                                  "idTestSessionType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
                                   "handled"=>"nobr",
