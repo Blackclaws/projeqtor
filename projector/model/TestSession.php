@@ -75,7 +75,7 @@ class TestSession extends SqlElement {
                                   "idle"=>"nobr",
                                   "idUser"=>"hidden",
                                   "countTotal"=>"display",
-                                  "countPlanned"=>"calculated,display",
+                                  "countPlanned"=>"display",
                                   "countPassed"=>"display",
                                   "countFailed"=>"display",
                                   "countBlocked"=>"display",
@@ -219,7 +219,6 @@ class TestSession extends SqlElement {
   
   
   public function updateDependencies() {
-  	
   	$this->_noHistory=true;
   	$this->countBlocked=0;
   	$this->countFailed=0;
@@ -228,6 +227,9 @@ class TestSession extends SqlElement {
   	$this->countTotal=0;
   	foreach($this->_TestCaseRun as $tcr) {
   		$this->countTotal+=1;
+      if ($tcr->idRunStatus==1) {
+        $this->countPlanned+=1;
+      }
   		if ($tcr->idRunStatus==2) {
   			$this->countPassed+=1;
   		}
@@ -247,27 +249,13 @@ class TestSession extends SqlElement {
   	
   }
   
-   /*public function drawCalculatedItem($item){
-     $result="&nbsp;";
-     if ($item=='pctPassed') {
-    	 return ($this->countTotal==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
-     } else if ($item=='pctFailed') {
-       return ($this->countTotal==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
-     } else if ($item=='pctBlocked') {
-       return ($this->countTotal==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
-     } else {
-     	return "&nbsp;"; 
-     }
-     return $result;
-   }*/
    public function getCalculatedItem(){
-   	$this->countPlanned=$this->countTotal - $this->countPassed - $this->countFailed - $this->countBlocked;
-     if ($this->countTotal!=0) {
-     	$this->pctPlanned='<i>('.htmlDisplayPct(round($this->countPlanned/$this->countTotal*100)).')</i>';
-      $this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
-      $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
-      $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
-   }
+   	 if ($this->countTotal!=0) {
+       $this->pctPlanned='<i>('.htmlDisplayPct(round($this->countPlanned/$this->countTotal*100)).')</i>';
+       $this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
+       $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
+       $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
+     }
   }
 }
 ?>

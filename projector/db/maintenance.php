@@ -25,7 +25,8 @@ $versionHistory = array(
   "V2.1.1",
   "V2.2.0",
   "V2.3.0",
-  "V2.4.0");
+  "V2.4.0",
+  "V2.4.1");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -145,6 +146,22 @@ if ($currVersion<"V2.1.1") {
   $assList=$ass->getSqlElementsFromCriteria(null, false);
   foreach ($assList as $ass) {
     $ass->saveWithRefresh();
+  }
+}
+
+// For V2.4.1
+if ($currVersion<"V2.4.1") {
+  $req=new Requirement();
+  $reqList=$req->getSqlElementsFromCriteria(null, false);
+  foreach ($reqList as $req) {
+  	$rq=new Requirement($req->id);
+    $rq->updateDependencies();
+  }
+  $ses=new TestSession();
+  $sesList=$ses->getSqlElementsFromCriteria(null, false);
+  foreach ($sesList as $ses) {
+  	$ss=new TestSession($ses->id);
+    $ss->updateDependencies();
   }
 }
 

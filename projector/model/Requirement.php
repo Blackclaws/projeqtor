@@ -35,8 +35,9 @@ class Requirement extends SqlElement {
   public $idTargetVersion;
   public $result;
   public $_col_1_1_Progress;
-  public $_tab_6_2 = array('countLinked', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests', '');
+  public $_tab_7_2 = array('countLinked', 'countTotal', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests', '');
   public $countLinked;
+  public $countTotal;
   public $countPlanned;
   public $countPassed;
   public $countBlocked;
@@ -44,6 +45,7 @@ class Requirement extends SqlElement {
   public $countIssues;
   public $noDisplay1;
   public $noDisplay2;
+  public $pctPlanned;
   public $pctPassed;
   public $pctBlocked;
   public $pctFailed;
@@ -82,6 +84,7 @@ class Requirement extends SqlElement {
                                   "idle"=>"nobr",
                                   "idUser"=>"hidden",
                                   "countLinked"=>"display",
+                                  "countTotal"=>"display",
                                   "countPlanned"=>"display",
                                   "countPassed"=>"display",
                                   "countFailed"=>"display",
@@ -89,6 +92,7 @@ class Requirement extends SqlElement {
                                   "countIssues"=>"hidden",
                                   "noDisplay1"=>"calculated,hidden",
                                   "noDisplay2"=>"calculated,hidden",
+                                  "pctPlanned"=>"calculated,display,html",
                                   "pctPassed"=>"calculated,display,html",
                                   "pctBlocked"=>"calculated,display,html",
                                   "pctFailed"=>"calculated,display,html",
@@ -242,10 +246,11 @@ class Requirement extends SqlElement {
    }*/
    
   public function getCalculatedItem(){
-     if ($this->countPlanned!=0) {
-     	$this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countPlanned*100)).')</i>';
-      $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countPlanned*100)).')</i>';
-      $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countPlanned*100)).')</i>';
+     if ($this->countTotal!=0) {
+     	$this->pctPlanned='<i>('.htmlDisplayPct(round($this->countPlanned/$this->countTotal*100)).')</i>';
+     	$this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
+      $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
+      $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
      }
   }
   
@@ -267,8 +272,12 @@ class Requirement extends SqlElement {
     $this->countIssues=0;
     $this->countPassed=0;
     $this->countPlanned=0;
+    $this->countTotal=0;
     foreach($listTcr as $tcr) {
-      $this->countPlanned+=1;
+    	$this->countTotal+=1;
+      if ($tcr->idRunStatus==1) {
+        $this->countPlanned+=1;
+      }
       if ($tcr->idRunStatus==2) {
         $this->countPassed+=1;
       }
