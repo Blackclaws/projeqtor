@@ -1937,9 +1937,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
           // check if required
           if (strpos($this->getFieldAttributes($col), 'required')!==false) {
             if (!$val) {
-              $result.='<br/>' . i18n('messageMandatory',array(i18n('col' . ucfirst($col))));
+              $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
             } else if (trim($val)==''){
-              $result.='<br/>' . i18n('messageMandatory',array(i18n('col' . ucfirst($col))));
+              $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
             }
           }
           $dataType=$this->getDataType($col);
