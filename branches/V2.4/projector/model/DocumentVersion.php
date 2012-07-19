@@ -27,7 +27,7 @@ class DocumentVersion extends SqlElement {
   public $approved;
   public $idle;
   
-  private static $_colCaptionTransposition = array();
+  private static $_colCaptionTransposition = array('name'=>'nextDocumentVersion');
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
