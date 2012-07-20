@@ -47,7 +47,7 @@ class Habilitation extends SqlElement {
   	$query="insert into " . $habiObj->getDatabaseTableName() . " (idProfile, idMenu, allowAccess)";
     $query.=" SELECT profile.id, menu.id, 0";
     $query.=" FROM " . $profObj->getDatabaseTableName() . " profile, " . $menuObj->getDatabaseTableName() . " menu";
-    $query.=" WHERE (profile.id, menu.id) not in (select idProfile, idMenu from habilitation)";
+    $query.=" WHERE (profile.id, menu.id) not in (select idProfile, idMenu from " . $habiObj->getDatabaseTableName() . ")";
   	$result=Sql::query($query);
   	
     
