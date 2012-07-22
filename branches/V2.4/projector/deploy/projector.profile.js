@@ -33,11 +33,13 @@ dependencies = {
 			    "dijit.form.FilteringSelect",
 			    "dijit.form.MultiSelect",
 			    "dijit.form.NumberSpinner",
+			    "dijit.Toolbar",
 			    "dijit.Tree", 
 			    "dijit.TitlePane",
 			    "dojox.grid.DataGrid",
 			    "dojox.form.FileInput",
 			    "dojox.form.PasswordValidator",
+			    "dojo.store.DataStore",
 			    "dojo.dnd.Container",
 			    "dojo.dnd.Manager",
 			    "dojo.dnd.Source"

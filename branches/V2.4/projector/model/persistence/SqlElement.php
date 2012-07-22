@@ -1034,6 +1034,8 @@ abstract class SqlElement {
         foreach ($obj as $col_name => $col_value) {
           if (substr($col_name,0,1)=="_") {
             // not a fiels, just for presentation purpose
+          } else if (strpos($this->getFieldAttributes($col_name),'calculated')!==false) {
+          	// calculated field : not to be fetched
           } else if (ucfirst($col_name) == $col_name) {
             $obj->getDependantSqlElement($col_name);
           } else {
@@ -2343,8 +2345,10 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   		  or ( strpos($this->getFieldAttributes($col), 'hidden')!==false and strpos($this->getFieldAttributes($col), 'forceExport')===false )
   		  or ($col=='password')
   		  or (strpos($this->getFieldAttributes($col), 'noExport')!==false)
+  		  or (strpos($this->getFieldAttributes($col),'calculated')!==false)        
   		  //or ($costVisibility!="ALL" and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount') )
   		  //or ($workVisibility!="ALL" and (substr($col, -4,4)=='Work') )
+  		  // or calculated field : not to be fetched
   		) {
   			// Here are all cases of not dispalyed fields
   		} else if ($firstCar==ucfirst($firstCar)) {
