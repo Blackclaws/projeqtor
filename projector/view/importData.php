@@ -30,28 +30,7 @@
           <select dojoType="dijit.form.FilteringSelect" 
             id="elementType" name="elementType" 
             class="input" value="" style="width: 200px;">
-              <option value="Ticket"><?php echo i18n('Ticket');?></option>
-              <option value="Activity"><?php echo i18n('Activity');?></option>
-              <option value="Milestone"><?php echo i18n('Milestone');?></option>
-              <option value="Risk"><?php echo i18n('Risk');?></option>
-              <option value="Action"><?php echo i18n('Action');?></option>
-              <option value="Issue"><?php echo i18n('Issue');?></option>
-              <option value="Meeting"><?php echo i18n('Meeting');?></option>
-              <option value="Decision"><?php echo i18n('Decision');?></option>
-              <option value="Question"><?php echo i18n('Question');?></option>
-              <option value="IndividualExpense"><?php echo i18n('IndividualExpense');?></option>
-              <option value="ProjectExpense"><?php echo i18n('ProjectExpense');?></option> 
-              <option value="Client"><?php echo i18n('Client');?></option>
-               <option value="Contact"><?php echo i18n('Contact');?></option>
-              <option value="Project"><?php echo i18n('Project');?></option>
-              <option value="User"><?php echo i18n('User');?></option>
-              <option value="Team"><?php echo i18n('Team');?></option>
-              <option value="Resource"><?php echo i18n('Resource');?></option>
-              <option value="Affectation"><?php echo i18n('Affectation');?></option>
-              <option value="Assignment"><?php echo i18n('Assignment');?></option>
-              <option value="Product"><?php echo i18n('Product');?></option>
-              <option value="Version"><?php echo i18n('Version');?></option>
-              <option value="Document"><?php echo i18n('Document');?></option>
+            <?php htmlDrawOptionForReference('idImportable', null, null, true);?>
            </select> 
         </td>
         <td  align="left"> 
