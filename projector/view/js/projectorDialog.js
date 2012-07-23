@@ -2386,26 +2386,27 @@ function checkAlertRetour(data) {
 	var reminderDiv=dojo.byId('reminderDiv');
 	var dialogReminder=dojo.byId('dialogReminder');
 	reminderDiv.innerHTML=data;
-	//dojo.parser.parse(reminderDiv);
-	dojo.style(dialogReminder, {visibility:'visible', display:'inline', bottom: '-200px'});
-	//alertDisplayed=true;
-	var toColor='#FFCCCC';
-    if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
-		toColor='#FFFFCC';
-	}
-	if (dojo.byId('alertType') && dojo.byId('alertType').value=='INFO') {
-		toColor='#CCCCFF';
-	}
-	dojo.animateProperty({
-        node: dialogReminder,
-        properties: {
-            bottom: { start: -200, end: 0 },
-            right: 0,
-            backgroundColor: { start: '#FFFFFF', end: toColor }
-        },
-        duration: 2000
-    }).play();
-	
+	if (dojo.byId('alertType')) {}
+		//dojo.parser.parse(reminderDiv);
+		dojo.style(dialogReminder, {visibility:'visible', display:'inline', bottom: '-200px'});
+		//alertDisplayed=true;
+		var toColor='#FFCCCC';
+	    if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
+			toColor='#FFFFCC';
+		}
+		if (dojo.byId('alertType') && dojo.byId('alertType').value=='INFO') {
+			toColor='#CCCCFF';
+		}
+		dojo.animateProperty({
+	        node: dialogReminder,
+	        properties: {
+	            bottom: { start: -200, end: 0 },
+	            right: 0,
+	            backgroundColor: { start: '#FFFFFF', end: toColor }
+	        },
+	        duration: 2000
+	    }).play();
+     }
   } else {
 	setTimeout('checkAlert();',alertCheckTime*1000);  
   }
