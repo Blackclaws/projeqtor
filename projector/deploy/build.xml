@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Project'Or RIA" default="buildQuick">
 
-	<property name="drive"       value="G:" />
+	<property name="drive"       value="D:" />
   <property name="version"       value="V2.4.1" />
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="${drive}/ProjectOr/setup" />
@@ -157,7 +157,7 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="G:/ProjectOr/External/dojo-release-1.7.3-src"/>
+	<property name="dojo.release.dir" value ="D:/ProjectOr/External/dojo-release-1.7.3-src"/>
 	<property name="dojo.version" value="1.7.3"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
@@ -194,7 +194,6 @@
 	</target>
 	    
 	<target name="_dojoOptimisation" description="optimisation de la release">	        
-		<delete dir="${release.dir}/dojo/_firebug"/> 
 		<delete>
 		  <fileset dir="${release.dir}" includes="**/*.uncompressed.js"/>
 		</delete>

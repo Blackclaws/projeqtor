@@ -51,7 +51,7 @@ class Link extends SqlElement {
     } 
     $result=parent::save();
     
-    if ($this->ref1Type=='Requirement' and $this->ref2Type=='TestCase') {
+    if ($this->ref1Type=='Requirement' and ($this->ref2Type=='TestCase' or $this->ref2Type=='Ticket')) {
     	$req=new Requirement($this->ref1Id);
       $req->updateDependencies();
     }
@@ -67,7 +67,7 @@ class Link extends SqlElement {
   	
   	$result=parent::delete();
   	
-    if ($this->ref1Type=='Requirement' and $this->ref2Type=='TestCase') {
+    if ($this->ref1Type=='Requirement' and ($this->ref2Type=='TestCase' or $this->ref2Type=='Ticket')) {
       $req=new Requirement($this->ref1Id);
       $req->updateDependencies();
     }

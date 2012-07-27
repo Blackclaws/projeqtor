@@ -55,4 +55,5 @@ INSERT INTO `${prefix}importable` (`id`, `name`, `idle`) VALUES
 (21, 'Document', 0),
 (22, 'Requirement', 0),
 (23, 'TestCase', 0),
-(24, 'TestSession', 0);                    
+(24, 'TestSession', 0),
+(25, 'TestCaseRun', 0);                    

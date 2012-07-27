@@ -528,6 +528,7 @@ function saveDetailItem() {
 	}
 	// validate form Data
 	if(formVar.validate()){
+		showWait();
 		frames['comboDetailFrame'].dojo.xhrPost({
 		      url: "../tool/saveObject.php?comboDetail=true",
 		      form: "objectForm",
@@ -543,7 +544,9 @@ function saveDetailItem() {
 				        if (lastOperationStatus.value=="OK") {
 				        	selectDetailItem(lastSaveId.value);
 				        }
-                    }
+				        hideWait();
+                    },
+               error: function(){hideWait();}
 		});
 
   } else {
