@@ -1165,6 +1165,12 @@ function drawHistoryFromObjects($refresh=false) {
       } else if ($colName=="color") {
         $oldValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$oldValue);
         $newValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$newValue);
+      /*} else if ($dataType=='date') {
+      	$oldValue=htmlFormatDate($oldValue);
+        $newValue=htmlFormatDate($newValue);
+      } else if ($dataType=='datetime') {
+        $oldValue=htmlFormatDateTime($oldValue);
+        $newValue=htmlFormatDateTime($newValue);*/
       } else {
         $oldValue=htmlEncode($oldValue,'print');
         $newValue=htmlEncode($newValue,'print');

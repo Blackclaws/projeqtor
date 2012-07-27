@@ -22,7 +22,7 @@ $dateFormat='dd/mm/yyyy';
 if (! array_key_exists('elementType',$_REQUEST)) {
   throwError('elementType parameter not found in REQUEST');
 }
-$class=$_REQUEST['elementType'];
+$class=SqlList::getNameFromId('Importable',$_REQUEST['elementType'],false);
 ///
 /// Upload file
 $error=false;

@@ -21,7 +21,7 @@ $class='';
 if (! array_key_exists('elementType',$_REQUEST)) {
   throwError('elementType parameter not found in REQUEST');
 }
-$class=$_REQUEST['elementType'];
+$class=SqlList::getNameFromId('Importable',$_REQUEST['elementType'],false);
 
 if (! array_key_exists('fileType',$_REQUEST)) {
   throwError('fileType parameter not found in REQUEST');
@@ -66,7 +66,7 @@ function getFields($obj, $included=false) {
                             //or $threeCars=='wbs'
                             )) {
       // don't display
-    } else if ( strpos($obj->getFieldAttributes($fld),'hidden')!==false) {
+    } else if ( strpos($obj->getFieldAttributes($fld),'hidden')!==false or strpos($obj->getFieldAttributes($fld),'calculated')!==false) {
       // don't display
     } else if ($firstCar==ucfirst($firstCar)) {
       //echo $fld . '<br/>';

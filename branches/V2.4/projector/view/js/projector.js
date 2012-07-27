@@ -1856,10 +1856,12 @@ function saveExpanded(scope){
 
 function togglePane(pane) {
   titlepane=dijit.byId(pane);
-  if (titlepane.get('open')) {
-    saveExpanded(pane);
-  } else {
-	saveCollapsed(pane);
+  if (titlepane) {
+	  if (titlepane.get('open')) {
+	    saveExpanded(pane);
+	  } else {
+		saveCollapsed(pane);
+	  }
   }
   
 }

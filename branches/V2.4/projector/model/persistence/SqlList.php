@@ -182,20 +182,20 @@ class SqlList {
     return $res;
   }
   
-  public static function getNameFromId($listType, $id) {
-    return self::getFieldFromId($listType, $id, 'name');
+  public static function getNameFromId($listType, $id, $translate=true) {
+    return self::getFieldFromId($listType, $id, 'name', $translate);
   }
   
-  public static function getFieldFromId($listType, $id, $field) {
+  public static function getFieldFromId($listType, $id, $field, $translate=true) {
     if ($id==null or $id=='') {
       return '';
     }
     $name=$id;
-    $list=self::getList($listType,$field, null, true);
+    $list=self::getListNotTranslated($listType,$field, null, true);
     if (array_key_exists($id,$list)) {
       $name=$list[$id];
       $obj=new $listType();
-      if ($obj->isFieldTranslatable('_isNameTranslatable')) {
+      if ($translate and $obj->isFieldTranslatable('_isNameTranslatable')) {
         $name=i18n(strtolower($listType) . ucfirst($name));
       }
     }

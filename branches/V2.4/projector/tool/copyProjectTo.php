@@ -4,6 +4,7 @@
  */
 
 require_once "../tool/projector.php";
+set_time_limit(300);
 
 // Get the object from session(last status before change)
 if (! array_key_exists('currentObject',$_SESSION)) {
