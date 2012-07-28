@@ -310,7 +310,7 @@ class Project extends SqlElement {
       }
       $result .="</td></tr></table>";
       return $result;
-   /* } else if ($item=='affectations') {
+    /*} else if ($item=='affectations') {
       $aff=new Affectation();
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('resources') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";

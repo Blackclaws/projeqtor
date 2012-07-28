@@ -326,7 +326,7 @@ abstract class SqlElement {
       // indicators
       if (SqlList::getIdFromTranslatableName('Indicatorable',get_class($this))) {
         $indDef=new IndicatorDefinition();
-      	$crit=array('nameIndicatorable'=>get_class($this));
+      	$crit=array('nameIndicatorable'=>get_class($this),'idle'=>'0');
         $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
       	foreach ($lstInd as $ind) {
       		$fldType='id'.get_class($this).'Type';
