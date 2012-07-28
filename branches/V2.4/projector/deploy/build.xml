@@ -157,7 +157,7 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="D:/ProjectOr/External/dojo-release-1.7.3-src"/>
+	<property name="dojo.release.dir" value ="D:/ProjectOr/External/dojo-release-1.7.4-src"/>
 	<property name="dojo.version" value="1.7.3"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
@@ -173,7 +173,7 @@
 	        dir="${buildscripts.dir}"
 	        fork="true"
 	        failonerror="true"
-	        maxmemory="128m">
+	        maxmemory="256m" >
 	  	  <arg value="../../dojo/dojo.js"/>
 	  	  <arg value="baseUrl=../../dojo"/>
 	  	  <arg value="load=build"/>
