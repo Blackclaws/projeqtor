@@ -446,6 +446,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           } else {
             echo $currency . ' ' . htmlEncode($val,'print');
           }
+        } else if ($dataType=='decimal' and substr($col, -4,4)=='Work') {
+           echo Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
         } else {
           if ($obj->isFieldTranslatable($col))  {
               $val=i18n($val);
