@@ -173,14 +173,13 @@ if (array_key_exists('Directory', $_REQUEST)) {
                dojoType="dijit.form.DropDownButton" 
                id="listFilterFilter" name="listFilterFilter"
                iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter16" showLabel="false">
-       
                 <script type="dojo/connect" event="onClick" args="evt">
                   showFilterDialog();
                 </script>
-                <script type="dojo/connect" event="onMouseEnter" args="evt">
+                <script type="dojo/method" event="onMouseEnter" args="evt">
                   this.openDropDown();
                 </script>
-                <script type="dojo/connect" event="onMouseLeave" args="evt">
+                <script type="dojo/method" event="onMouseLeave" args="evt">
                   closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",2000);
                 </script>
                 <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;display:none; position: absolute;">
@@ -188,10 +187,10 @@ if (array_key_exists('Directory', $_REQUEST)) {
                      //$_REQUEST['filterObjectClass']=$objectClass;
                      //$_REQUEST['context']="directFilterList";
                      include "../tool/displayFilterList.php";?>
-                 <script type="dojo/connect" event="onMouseEnter" args="evt">
+                 <script type="dojo/method" event="onMouseEnter" args="evt">
                     clearTimeout(closeFilterListTimeout);
                 </script>
-                <script type="dojo/connect" event="onMouseLeave" args="evt">
+                <script type="dojo/method" event="onMouseLeave" args="evt">
                   dijit.byId('listFilterFilter').closeDropDown();
                 </script>
                 </div> 
