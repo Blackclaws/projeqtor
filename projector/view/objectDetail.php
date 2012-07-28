@@ -1995,6 +1995,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     $canCreate=false;
     $canDelete=false;
   }
+  echo '<table style="width:100%">';
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (get_class($obj)=='Project') {
@@ -2071,6 +2072,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     }
   }
   echo '</table></td></tr>';
+  echo '</table>';
 }
 
 function drawTestCaseRunFromObject($list, $obj, $refresh=false) {

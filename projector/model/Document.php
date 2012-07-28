@@ -130,8 +130,9 @@ class Document extends SqlElement {
   }
   
   public function drawSpecificItem($item){
+  	global $print;
     $result="";
-    if ($item=='lockButton') {
+    if ($item=='lockButton' and !$print) {
     	if ($this->locked) {
         $canUnlock=false;
         $user=$_SESSION['user'];
