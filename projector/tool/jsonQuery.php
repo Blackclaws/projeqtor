@@ -171,18 +171,22 @@
 	        if (substr($crit['sql']['attribute'],0,2)=='id' and strlen($crit['sql']['attribute'])>2 ) {
 	          $externalClass = substr($crit['sql']['attribute'],2);
 	          $externalObj=new $externalClass();
-	          $externalTable = $externalObj->getDatabaseTableName();          
+	          $externalTable = $externalObj->getDatabaseTableName();
+	          $sortColumn='id';          
 	          if (property_exists($externalObj,'sortOrder')) {
-	            $idTab+=1;
-	            $externalTableAlias = 'T' . $idTab;
-	            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-	            $queryOrderBy .= " " . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder')
-	               . " " . str_replace("'","",$crit['sql']['value']);
-	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
-	            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
-	            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-	            $doneSort=true;
+	          	$sortColumn=$externalObj->getDatabaseColumnName('sortOrder');
+	          } else {
+	          	$sortColumn=$externalObj->getDatabaseColumnName('name');
 	          }
+            $idTab+=1;
+            $externalTableAlias = 'T' . $idTab;
+            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+            $queryOrderBy .= " " . $externalTableAlias . '.' . $sortColumn
+               . " " . str_replace("'","",$crit['sql']['value']);
+            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
+            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
+            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
+            $doneSort=true;
 	        }
 	        if (! $doneSort) {
 	          $queryOrderBy .= ($queryOrderBy=='')?'':', ';
