@@ -17,13 +17,13 @@
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
         echo '<td class="menuBarItem" title="' .i18n($menu->name) . '">';
-        echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . i18n($menu->name) . '\');" />';
+        echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\');" />';
         echo '</td><td>&nbsp;</td>';    	
     } else if ($menu->type=='object') { 
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
       	echo '<td class="menuBarItem" title="' .i18n('menu'.$class) . '">';
-      	echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . i18n($menu->name) . '\');" />';
+      	echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\');" />';
       	echo '</td><td>&nbsp;</td>';
       }
     }
