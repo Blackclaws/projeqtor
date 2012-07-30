@@ -257,7 +257,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
   queryOptions="{ignoreCase:true}" 
   rowPerPage="<?php echo $paramRowPerPage;?>"
   columnReordering="false"
-  selectionMode="single" >
+  selectionMode="<?php echo ($comboDetail)?'extended':'single';?>" >
   <thead>
     <tr>
       <?php echo $obj->getLayout();?>

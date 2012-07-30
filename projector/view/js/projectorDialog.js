@@ -420,16 +420,27 @@ function selectDetailItem(selectedValue) {
 		idFldVal=selectedValue;
 	} else {
 		var idFld=frames['comboDetailFrame'].dojo.byId('comboDetailId');
-		if (! idFld) {
-			showError('error : comboDetailId not defined');
-			return;
+		var comboGrid=frames['comboDetailFrame'].dijit.byId('objectGrid');
+		if (comboGrid) {
+			idFldVal="";
+			var selected=comboGrid.selection.getSelected();
+			for (i=0;i<selected.length;i++) {
+				idFldVal+=(idFldVal!="")?',':'';
+				idFldVal+=paresInt(selected[i].id)+'';
+			}
+		} else {	
+			if (! idFld) {
+				showError('error : comboDetailId not defined');
+				return;
+			}
+			idFldVal=idFld.value;
 		}
-		idFldVal=idFld.value;
 		if (! idFldVal) {
 			showAlert(i18n('noItemSelected'));
 			return;
 		}
 	}
+	alert (idFldVal);
 	var comboName=dojo.byId('comboName').value;
 	var combo=dijit.byId(comboName);
 	var comboClass=dojo.byId('comboClass').value;
