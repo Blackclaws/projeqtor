@@ -51,7 +51,7 @@ if ($paramProject) {
   $lstProject=array($paramProject=>SqlList::getNameFromId('Project',$paramProject));
   $where.=" and idProject=".$paramProject;
 } else {
-  $lstProject=SqlList::getList('Project');
+  $lstProject=SqlList::getList('Project','name',null,true);
   $lstProject[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
@@ -59,7 +59,7 @@ if ($paramProduct) {
   $lstProduct=array($paramProduct=>SqlList::getNameFromId('Product',$paramProduct));
   $where.=" and idProduct=".$paramProduct;
 } else {
-  $lstProduct=SqlList::getList('Product');
+  $lstProduct=SqlList::getList('Product','name',null,true);
   $lstProduct[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
@@ -75,11 +75,11 @@ if ($paramVersion) {
   $lstVersion=array($paramVersion=>SqlList::getNameFromId('Version',$paramVersion));
   $where.=" and idVersion=".$paramVersion;
 } else {
-  $lstVersion=SqlList::getList('Version');
+  $lstVersion=SqlList::getList('Version','name',null,true);
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
-$lstType=SqlList::getList('TestSessionType');
+$lstType=SqlList::getList('TestSessionType','name',null,true);
 
 $ts=new TestSession();
 $lst=$ts->getSqlElementsFromCriteria(null, false, $where,'idProject, idProduct, idVersion, id');
@@ -88,6 +88,11 @@ if (checkNoData($lst)) exit;
 
 foreach ($lst as $ts) {
 	$tcr=new TestCaseRun();
+  if ($ts->idTestSessionType and ! isset($lstType[$ts->idTestSessionType])) {
+    $tstype=new TestCaseType($ts->idTestSessionType);
+    $lstType[$ts->idTestSessionType]=$tstype->name;
+  }
+	
   $crit=array('idTestSession'=>$ts->id);
   $lstTcr=$tcr->getSqlElementsFromCriteria($crit,true, false, 'idTestCase');
   echo '<table style="width:' . ((isset($outMode) and $outMode=='pdf')?'90':'95') . '%" align="center">';

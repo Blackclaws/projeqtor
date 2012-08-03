@@ -44,7 +44,7 @@ if ($paramProject) {
   $lstProject=array($paramProject=>SqlList::getNameFromId('Project',$paramProject));
   $where.=" and idProject=".$paramProject;
 } else {
-  $lstProject=SqlList::getList('Project');
+  $lstProject=SqlList::getList('Project','name',null,true);
   $lstProject[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
@@ -52,7 +52,7 @@ if ($paramProduct) {
   $lstProduct=array($paramProduct=>SqlList::getNameFromId('Product',$paramProduct));
   $where.=" and idProduct=".$paramProduct;
 } else {
-  $lstProduct=SqlList::getList('Product');
+  $lstProduct=SqlList::getList('Product','name',null,true);
   $lstProduct[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
@@ -60,11 +60,11 @@ if ($paramVersion) {
   $lstVersion=array($paramVersion=>SqlList::getNameFromId('Version',$paramVersion));
   $where.=" and idVersion=".$paramVersion;
 } else {
-  $lstVersion=SqlList::getList('Version');
+  $lstVersion=SqlList::getList('Version','name',null,true);
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
-$lstType=SqlList::getList('TestCaseType');
+$lstType=SqlList::getList('TestCaseType','name',null,true);
 
 $tc=new TestCase();
 $lst=$tc->getSqlElementsFromCriteria(null, false, $where,'idProject, idProduct, idVersion, id');
@@ -114,6 +114,10 @@ foreach ($lst as $tc) {
   	if ($tcr->idRunStatus==2) $countPassed+=1;
   	if ($tcr->idRunStatus==3) $countFailed+=1;
   	if ($tcr->idRunStatus==4) $countBlocked+=1;
+  }
+  if ($tc->idTestCaseType and ! isset($lstType[$tc->idTestCaseType])) {
+  	$tctype=new TestCaseType($tc->idTestCaseType);
+  	$lstType[$tc->idTestCaseType]=$tctype->name;
   }
   echo '<tr>';
   echo '<td class="reportTableData" style="width:8%">' . (($tc->idProject)?$lstProject[$tc->idProject]:'') . '</td>';
