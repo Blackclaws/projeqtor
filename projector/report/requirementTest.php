@@ -44,7 +44,7 @@ if ($paramProject) {
   $lstProject=array($paramProject=>SqlList::getNameFromId('Project',$paramProject));
   $where.=" and idProject=".$paramProject;
 } else {
-  $lstProject=SqlList::getList('Project');
+  $lstProject=SqlList::getList('Project','name',null,true);
   $lstProject[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
@@ -52,7 +52,7 @@ if ($paramProduct) {
   $lstProduct=array($paramProduct=>SqlList::getNameFromId('Product',$paramProduct));
   $where.=" and idProduct=".$paramProduct;
 } else {
-  $lstProduct=SqlList::getList('Product');
+  $lstProduct=SqlList::getList('Product','name',null,true);
   $lstProduct[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
@@ -60,11 +60,11 @@ if ($paramVersion) {
   $lstVersion=array($paramVersion=>SqlList::getNameFromId('Version',$paramVersion));
   $where.=" and idTargetVersion=".$paramVersion;
 } else {
-  $lstVersion=SqlList::getList('Version');
+  $lstVersion=SqlList::getList('Version','name',null,true);
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 
-$lstType=SqlList::getList('RequirementType');
+$lstType=SqlList::getList('RequirementType','name',null,true);
 
 $req=new Requirement();
 $lst=$req->getSqlElementsFromCriteria(null, false, $where,'idProject, idProduct, idVersion, id');
@@ -101,6 +101,10 @@ if ($paramDetail) {
   echo '<tr><td colspan="10" style="font-size:3px;">&nbsp;</td></tr>';
 }
 foreach ($lst as $req) {
+ if ($req->idRequirementType and ! isset($lstType[$req->idRequirementType])) {
+    $rtype=new RequirementType($req->idRequirementType);
+    $lstType[$req->idRequirementType]=$rtype->name;
+  }
   echo '<tr>';
   echo '<td class="reportTableData" style="width:8%">' . (($req->idProject)?$lstProject[$req->idProject]:'') . '</td>';
   echo '<td class="reportTableData" style="width:8%">' . (($req->idProduct)?$lstProduct[$req->idProduct]:'') . '</td>';
