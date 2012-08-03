@@ -224,6 +224,7 @@ class TestSession extends SqlElement {
   	$this->countFailed=0;
   	$this->countIssues=0;
   	$this->countPassed=0;
+  	$this->countPlanned=0;
   	$this->countTotal=0;
   	foreach($this->_TestCaseRun as $tcr) {
   		$this->countTotal+=1;

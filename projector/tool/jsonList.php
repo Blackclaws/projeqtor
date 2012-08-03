@@ -248,7 +248,8 @@ function listFieldsForFilter ($obj,$nbRows, $included=false) {
   foreach ($obj as $col=>$val) {
     if (substr($col, 0,1) <> "_" 
     and substr($col, 0,1) <> ucfirst(substr($col, 0,1))
-    and $obj->getFieldAttributes($col)!='hidden'
+    and ! $obj->isAttributeSetToField($col,'hidden')
+    and ! $obj->isAttributeSetToField($col,'calculated')
     and (!$included or ($col!='id' and $col!='refType' and $col!='refId' and $col!='idle')  )) { 
       if ($nbRows>0) echo ', ';
       $dataType = $obj->getDataType($col);

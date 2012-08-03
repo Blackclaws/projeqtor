@@ -258,6 +258,15 @@ class Requirement extends SqlElement {
   	$this->_noHistory=true;
   	$listCrit='idTestCase in (0';
   	$this->countLinked=0;
+    foreach ($this->_Link as $link) {
+      if ($link->ref2Type=='TestCase') {
+        $listCrit.=','.$link->ref2Id;
+        $this->countLinked+=1;
+      }
+      if ($link->ref2Type=='Ticket') {
+        $this->countIssues+=1;
+      }
+    }
     $listCrit.=")";
     $tcr=new TestCaseRun();
     $listTcr=$tcr->getSqlElementsFromCriteria(null, false, $listCrit);
@@ -282,16 +291,6 @@ class Requirement extends SqlElement {
         $this->countBlocked+=1;
       }
     }
-    foreach ($this->_Link as $link) {
-      if ($link->ref2Type=='TestCase') {
-        $listCrit.=','.$link->ref2Id;
-        $this->countLinked+=1;
-      }
-      if ($link->ref2Type=='Ticket') {
-        $this->countIssues+=1;
-      }
-    }
-    
     $this->save();
   }
 }
