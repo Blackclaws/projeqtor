@@ -42,9 +42,9 @@ $resources=array();
 $aff=new Affectation();
 $affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
 foreach($affLst as $aff){
-	$name=SqlList::getNameFromId('Resource', $aff->idResource);
-	if ($name!=$aff->idResource  ) {
-    $resources[$aff->idResource]=$name;
+	$ress=new Resource($aff->idResource);
+	if ($ress->id and !$ress->idle) {
+    $resources[$ress->id]=$ress->name;
 	}
 }
 

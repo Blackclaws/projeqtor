@@ -123,12 +123,25 @@ class TestCaseRun extends SqlElement {
   	$session=new TestSession($this->idTestSession);
     $session->updateDependencies();
     
+    // List all Resquirements linked to the test case
     $link=new Link();
     $crit=array('ref1Type'=>'Requirement', 'ref2Type'=>'TestCase', 'ref2Id'=>$this->idTestCase);
     $listLink=$link->getSqlElementsFromCriteria($crit);
     foreach ($listLink as $link) {
       $req=new Requirement($link->ref1Id);
       $req->updateDependencies();
+	    // Store link to ticket (on requirement) if idTicket is set
+	    if (trim($this->idTicket)) {      
+	      if ($this->idTicket!=$old->idTicket) {
+	        $linkR=new Link();
+	        $linkR->ref1Type='Requirement';
+	        $linkR->ref1Id=$req->id;
+	        $linkR->ref2Type='Ticket';
+	        $linkR->ref2Id=$this->idTicket;
+	        $linkR->comment=i18n('TestCase') . ' #' . $this->idTestCase;
+	        $linkR->save();
+	      }
+	    }
     }
     // Store history for TestSession
   	return $result;
