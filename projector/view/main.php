@@ -128,7 +128,10 @@ checkVersion(); ?>
       };
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
       <?php 
-      $firstPage="today.php";
+      $firstPage="welcome.php";
+      if ( securityCheckDisplayMenu(1) ) {
+      	$firstPage="today.php";
+      }
       if (array_key_exists("directAccessPage",$_REQUEST)) {
         $firstPage=$_REQUEST['directAccessPage'];
         if (array_key_exists("menuActualStatus",$_REQUEST)) {
@@ -455,7 +458,7 @@ checkVersion(); ?>
   </table>
 </div>
 
-<div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="window.document.title=i18n('applicationTitle');dojo.byId('printFrame').src='../view/preparePreview.php';" onClose="alert('close');">
+<div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="window.document.title=i18n('applicationTitle');dojo.byId('printFrame').src='../view/preparePreview.php';" >
   <?php 
     $printHeight=600;
     $printWidth=1000;
@@ -508,11 +511,15 @@ checkVersion(); ?>
       $detailHeight=round($_SESSION['screenHeight']*0.65);
     }
   ?> 
-  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="white">
+  <div id="detailView" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden" class="background">
     <table>
+      <tr style="height:10px;"><td></td></tr>
       <tr>
         <td width="300px" align="left">
           <input type="hidden" name="canCreateDetail" id="canCreateDetail" />
+          <input type="hidden" id='comboName' name='comboName' value='' />
+          <input type="hidden" id='comboClass' name='comboClass' value='' />
+          <input type="hidden" id='comboMultipleSelect' name='comboMultipleSelect' value='' />
           <button id="comboSearchButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboSearchButton');?>" 
             iconClass="iconSearch" >
@@ -548,8 +555,6 @@ checkVersion(); ?>
               hideDetail();
             </script>
           </button>
-          <input type="hidden" id='comboName' name='comboName' value='' />
-          <input type="hidden" id='comboClass' name='comboClass' value='' />
         </td>
         <td align="left" style="width:<?php echo ($detailWidth - 400);?>px">
           <div style="width:100%;font-size:8pt" dojoType="dijit.layout.ContentPane" region="center" name="comboDetailResult" id="comboDetailResult"></div>
@@ -2027,7 +2032,7 @@ checkVersion(); ?>
 	                 iconClass="iconView">
                    <?php $createRight=(securityGetAccessRightYesNo('menuTestCase', 'create')=='YES')?'1':'0';?>
 	                 <script type="dojo/connect" event="onClick" args="evt">
-                    showDetail("testCaseRunTestCaseList", "<?php echo $createRight;?>","TestCase"); 
+                    showDetail("testCaseRunTestCaseList", "<?php echo $createRight;?>","TestCase",true); 
                    </script>
 	               </button>
 	             </td>
@@ -2092,8 +2097,7 @@ checkVersion(); ?>
 	                   $createRight=(securityGetAccessRightYesNo('menuTicket', 'create')=='YES')?'1':'0';?>
                    <button id="testCaseRunTicketDetailButton" dojoType="dijit.form.Button" showlabel="false"
 	                   title="<?php echo i18n('showDetail');?>"
-	                   iconClass="iconView">
-	                   
+	                   iconClass="iconView">	                   
 	                   <script type="dojo/connect" event="onClick" args="evt">
                       showDetail("testCaseRunTicket", "<?php echo $createRight;?>","Ticket"); 
                    </script>
@@ -2296,9 +2300,11 @@ checkVersion(); ?>
     </tr>
     <tr>
       <td align="center">
-        <button dojoType="dijit.form.Button" onclick="defaultFilter();">
-          <?php echo i18n("buttonDefault");?>
-        </button>
+        <span id="filterDefaultButtonDiv">
+          <button dojoType="dijit.form.Button" onclick="defaultFilter();">
+            <?php echo i18n("buttonDefault");?>
+          </button>
+        </span>
         <button dojoType="dijit.form.Button" onclick="clearFilter();">
           <?php echo i18n("buttonClear");?>
         </button>

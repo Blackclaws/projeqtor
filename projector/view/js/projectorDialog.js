@@ -328,7 +328,7 @@ function showDetailDependency() {
 		if (canCreateArray[dependable]=="YES") {
 			canCreate=1;
 	    }
-		showDetail('dependencyRefIdDep',canCreate, dependable);
+		showDetail('dependencyRefIdDep',canCreate, dependable,true);
 		
 	} else {
 		showInfo(i18n('messageMandatory', new Array(i18n('linkType'))));
@@ -343,7 +343,7 @@ function showDetailLink() {
 		if (canCreateArray[linkable]=="YES") {
 			canCreate=1;
 	    }
-		showDetail('linkRef2Id',canCreate, linkable);
+		showDetail('linkRef2Id',canCreate, linkable, true);
 		
 	} else {
 		showInfo(i18n('messageMandatory', new Array(i18n('linkType'))));
@@ -355,7 +355,7 @@ function showDetailApprover() {
   if (canCreateArray['Resource']=="YES") {
     canCreate=1;
   }
-  showDetail('approverId',canCreate, 'Resource');
+  showDetail('approverId',canCreate, 'Resource', true);
 }
 
 function showDetailOrigin() {
@@ -373,7 +373,7 @@ function showDetailOrigin() {
 	}
 }
 
-function showDetail (comboName, canCreate, objectClass) {
+function showDetail (comboName, canCreate, objectClass, multiSelect) {
 	var contentWidget = dijit.byId("comboDetailResult");
 	dojo.byId("canCreateDetail").value=canCreate;
     if (contentWidget) {
@@ -384,6 +384,7 @@ function showDetail (comboName, canCreate, objectClass) {
     }
 	dojo.byId('comboName').value=comboName;
 	dojo.byId('comboClass').value=objectClass;
+	dojo.byId('comboMultipleSelect').value=(multiSelect)?'true':'false';
 	var val=null;
 	if (dijit.byId(comboName)) {
 	  val=dijit.byId(comboName).get('value');
@@ -423,11 +424,13 @@ function selectDetailItem(selectedValue) {
 		var comboGrid=frames['comboDetailFrame'].dijit.byId('objectGrid');
 		if (comboGrid) {
 			idFldVal="";
-			var selected=comboGrid.selection.getSelected();
-			for (i=0;i<selected.length;i++) {
-				idFldVal+=(idFldVal!="")?',':'';
-				idFldVal+=paresInt(selected[i].id)+'';
-			}
+			var items=comboGrid.selection.getSelected();
+			dojo.forEach(items, function(selectedItem){
+			  if(selectedItem !== null){
+				idFldVal+=(idFldVal!="")?'_':'';
+				idFldVal+=parseInt(selectedItem.id,10)+'';
+			  }
+			});
 		} else {	
 			if (! idFld) {
 				showError('error : comboDetailId not defined');
@@ -440,7 +443,6 @@ function selectDetailItem(selectedValue) {
 			return;
 		}
 	}
-	alert (idFldVal);
 	var comboName=dojo.byId('comboName').value;
 	var combo=dijit.byId(comboName);
 	var comboClass=dojo.byId('comboClass').value;
@@ -501,9 +503,10 @@ function displaySearch(objClass) {
       hideField('comboNewButton');	
 	}
 	hideField('comboSaveButton');
-	showField('comboCloseButton');	
-    top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search";
-    setTimeout(dijit.byId("dialogDetail").show(),10);
+	showField('comboCloseButton');
+	var multipleSelect=(dojo.byId('comboMultipleSelect').value=='true')?'&multipleSelect=true':'';
+    top.frames['comboDetailFrame'].location.href="comboSearch.php?objectClass="+objClass+"&mode=search"+multipleSelect;
+    setTimeout('dijit.byId("dialogDetail").show()',10);
 }
 
 function newDetailItem() {
@@ -527,7 +530,7 @@ function newDetailItem() {
 	page+="&mode=new";
     page+="&destinationWidth="+destinationWidth;
 	top.frames['comboDetailFrame'].location.href=page;
-	setTimeout(dijit.byId("dialogDetail").show(),10);
+	setTimeout('dijit.byId("dialogDetail").show()',10);
 }
 
 function saveDetailItem() {
@@ -772,6 +775,7 @@ function selectLinkItem() {
   var nbSelected=0;
   list=dojo.byId('linkRef2Id');
   if (dojo.byId("linkRef2Type").value=="Document") {
+	if (list.options) {
 	  selected = new Array(); 
 	  for (var i = 0; i < list.options.length; i++) {
 		  if (list.options[i].selected) {
@@ -787,7 +791,7 @@ function selectLinkItem() {
 		  dojo.style(dojo.byId('linkDocumentVersionDiv'), {display:'none'});
 		  dijit.byId("linkDocumentVersion").reset();
 	  }
-	  
+    }  
   } else {
     if (list.options) {
       for (var i = 0; i < list.options.length; i++) {
@@ -1999,34 +2003,44 @@ function plan() {
  * 
  */
 var filterStartInput=false;
+var filterFromDetail=false;
 function showFilterDialog () {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
 	filterStartInput=false;
-	dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
-	dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-	dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-	dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-	dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
-	dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
-	dijit.byId('idFilterAttribute').reset();
-	dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
+	top.filterFromDetail=false;
+	if (top.dijit.byId('dialogDetail').open) {
+	  top.filterFromDetail=true;
+	  top.dojo.byId('filterDefaultButtonDiv').style.display='none';
+	} else {
+	  top.dojo.byId('filterDefaultButtonDiv').style.display='block';
+	}
+	dojo.style(top.dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
+	dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+	dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+	dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+	dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
+	dojo.style(top.dijit.byId('filterSortValueList').domNode, {display:'none'});
+	top.dijit.byId('idFilterAttribute').reset();
+	top.dojo.byId('filterObjectClass').value= dojo.byId('objectClass').value;
 	filterType="";
-	dojo.xhrPost({
-		url: "../tool/backupFilter.php?filterObjectClass=" + dojo.byId('filterObjectClass').value,
+	var compUrl=(top.dijit.byId("dialogDetail").open)?'&comboDetail=true':'';
+	top.dojo.xhrPost({
+		url: "../tool/backupFilter.php?filterObjectClass=" + top.dojo.byId('filterObjectClass').value + compUrl,
 		handleAs: "text",
 		load: function(data,args) { }
 		});
-	loadContent("../tool/displayFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
-	loadContent("../tool/displayFilterList.php", "listStoredFilters", "dialogFilterForm", false);
+	compUrl=(top.dijit.byId("dialogDetail").open)?'?comboDetail=true':'';
+	top.loadContent("../tool/displayFilterClause.php"+compUrl, "listFilterClauses", "dialogFilterForm", false);
+	top.loadContent("../tool/displayFilterList.php"+compUrl, "listStoredFilters", "dialogFilterForm", false);
 	/*var datastore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=object&objectClass=' + dojo.byId("objectClass").value});
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
 	dijit.byId('idFilterAttribute').set('store',store);*/
-	refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
-	dijit.byId("dialogFilter").show();
+	top.refreshListSpecific('object', 'idFilterAttribute', 'objectClass', dojo.byId("objectClass").value);
+	top.dijit.byId("dialogFilter").show();
 }
 
 /**
@@ -2036,37 +2050,37 @@ function showFilterDialog () {
 function filterSelectAtribute(value) {
 	if (value) {
 	  filterStartInput=true;	
-	  dijit.byId('idFilterAttribute').store.store.fetchItemByIdentity({
+	  top.dijit.byId('idFilterAttribute').store.store.fetchItemByIdentity({
 	    identity : value, 
 	    onItem : function(item) { 
-	  	  var dataType = dijit.byId('idFilterAttribute').store.store.getValue(item, "dataType", "inconnu");
+	  	  var dataType = top.dijit.byId('idFilterAttribute').store.store.getValue(item, "dataType", "inconnu");
 	  	  var datastoreOperator = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=operator&dataType=' + dataType});	  		
 	  	  var storeOperator = new dojo.store.DataStore({store: datastoreOperator});
 	  	  storeOperator.query({id:"*"});
-	  	  dijit.byId('idFilterOperator').set('store',storeOperator);
+	  	  top.dijit.byId('idFilterOperator').set('store',storeOperator);
 	  	  datastoreOperator.fetch({
 	  	  	query : {id : "*"},
 	  	  	count : 1,
 	  	  	onItem : function(item) { 
-	  	  		dijit.byId('idFilterOperator').set("value",dijit.byId('idFilterOperator').store.getValue(item,"id",""));
+	  	  		top.dijit.byId('idFilterOperator').set("value",top.dijit.byId('idFilterOperator').store.getValue(item,"id",""));
 	  	  	},  
             onError : function(err) { 
               console.info(err.message) ;  
             }
 	  	  });	      
-	  	  dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'visible'});
-	  		dojo.byId('filterDataType').value=dataType;
+	  	  dojo.style(top.dijit.byId('idFilterOperator').domNode, {visibility:'visible'});
+	  		top.dojo.byId('filterDataType').value=dataType;
 	  		if (dataType=="bool") {
 	  			filterType="bool";
-	  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'block'});
-	  			dijit.byId('filterValueCheckbox').set('checked','');
-	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'block'});
+	  			top.dijit.byId('filterValueCheckbox').set('checked','');
+	  			dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		} else if (dataType=="list") {
 	  			filterType="list";
 	  			var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=list&dataType=' + value});
-	  			var mySelect=dojo.byId("filterValueList");
+	  			var mySelect=top.dojo.byId("filterValueList");
 	  			mySelect.options.length=0;
 	  			var nbVal=0;
 	  			tmpStore.fetch({
@@ -2080,46 +2094,46 @@ function filterSelectAtribute(value) {
 	              }
 		  	    });
 	  			mySelect.size=(nbVal>0)?10:nbVal;
-	  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'block'});
-	  			dijit.byId('filterValueList').reset();
-	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueList').domNode, {display:'block'});
+	  			top.dijit.byId('filterValueList').reset();
+	  			dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		} else if (dataType=="date") {
 	  			filterType="date";
-	  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'block'});
-	  			dijit.byId('filterValueDate').reset();
+	  			dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+	  			dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'block'});
+	  			top.dijit.byId('filterValueDate').reset();
 	  		} else {
-	  	  	filterType="text";
-	  			dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
-	  			dijit.byId('filterValue').reset();
-	  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-	  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+	  	  	    filterType="text";
+	  	  	    dojo.style(top.dijit.byId('filterValue').domNode, {display:'block'});
+	  	  	    top.dijit.byId('filterValue').reset();
+	  	        dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+	  	        dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+	  	        dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		}
 	  	},
 	    onError : function(err) {
-	  		dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
-  			dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-  			dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-  			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-  			dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+	    	dojo.style(top.dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
+	    	dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+	    	dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+	    	dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+	    	dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		//hideWait();
 	    }
     }) ;
-	  dijit.byId('filterValue').reset();
-		dijit.byId('filterValueList').reset();
-		dijit.byId('filterValueCheckbox').reset();
-		dijit.byId('filterValueDate').reset();
+	    top.dijit.byId('filterValue').reset();
+	    top.dijit.byId('filterValueList').reset();
+	    top.dijit.byId('filterValueCheckbox').reset();
+	    top.dijit.byId('filterValueDate').reset();
 	} else {
-		dojo.style(dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
-		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
+		dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	}
 }
 
@@ -2127,41 +2141,41 @@ function filterSelectOperator(operator) {
 	filterStartInput=true;
 	if (operator=="SORT") {
 		filterType="SORT";
-		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'block'});
+		dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterSortValueList').domNode, {display:'block'});
 	} else if (operator=="<=now+" || operator==">=now+") {
 		filterType="text";
-		dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
-		dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
-		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValue').domNode, {display:'block'});
+		dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterSortValueList').domNode, {display:'none'});
     } else if (operator=="isEmpty" || operator=="isNotEmpty") {
         filterType="null";
-        dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-        dojo.style(dijit.byId('filterValueList').domNode, {display:'none'});
-        dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'none'});
-        dojo.style(dijit.byId('filterValueDate').domNode, {display:'none'});
-        dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
+        dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+        dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
+        dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
+        dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
+        dojo.style(top.dijit.byId('filterSortValueList').domNode, {display:'none'});
 	} else {
-		dojo.style(dijit.byId('filterValue').domNode, {display:'none'});
-		dataType=dojo.byId('filterDataType').value;
-		dojo.style(dijit.byId('filterSortValueList').domNode, {display:'none'});
+		dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
+		dataType=top.dojo.byId('filterDataType').value;
+		dojo.style(top.dijit.byId('filterSortValueList').domNode, {display:'none'});
 		if (dataType=="bool") {
 			filterType="bool";
-			dojo.style(dijit.byId('filterValueCheckbox').domNode, {display:'block'});
+			dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'block'});
 		} else if (dataType=="list") {
 			filterType="list";
-			dojo.style(dijit.byId('filterValueList').domNode, {display:'block'});
+			dojo.style(top.dijit.byId('filterValueList').domNode, {display:'block'});
 		} else if (dataType=="date") {
 			filterType="date";
-			dojo.style(dijit.byId('filterValueDate').domNode, {display:'block'});
+			dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'block'});
 		} else {
-	  	filterType="text";
-			dojo.style(dijit.byId('filterValue').domNode, {display:'block'});
+	  	    filterType="text";
+			dojo.style(top.dijit.byId('filterValue').domNode, {display:'block'});
 		}
 	}
 }
@@ -2172,27 +2186,28 @@ function filterSelectOperator(operator) {
  */
 function addfilterClause(silent) {
 	filterStartInput=false;
-	if (dijit.byId('filterNameDisplay')) {
-		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+	if (top.dijit.byId('filterNameDisplay')) {
+		top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
 	}
 	if (filterType=="") { 
 		if (!silent) showAlert(i18n('attributeNotSelected')); 
 		return;
 	}
-    if (filterType=="list" && dijit.byId('filterValueList').get('value')=='') {
+    if (filterType=="list" && top.dijit.byId('filterValueList').get('value')=='') {
         if (!silent) showAlert(i18n('valueNotSelected'));
         return;
     }
-    if (filterType=="date" && ! dijit.byId('filterValueDate').get('value')) {
+    if (filterType=="date" && ! top.dijit.byId('filterValueDate').get('value')) {
         if (!silent) showAlert(i18n('valueNotSelected'));
         return;
     }
-    if (filterType=="text" && ! dijit.byId('filterValue').get('value')) {
+    if (filterType=="text" && ! top.dijit.byId('filterValue').get('value')) {
         if (!silent) showAlert(i18n('valueNotSelected'));
         return;
     }
 	// Add controls on operator and value
-	loadContent("../tool/addFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+    var compUrl=(top.dijit.byId("dialogDetail").open)?'?comboDetail=true':'';
+    top.loadContent("../tool/addFilterClause.php"+compUrl, "listFilterClauses", "dialogFilterForm", false);
 	//dijit.byId('filterNameDisplay').set('value',null);
 	//dojo.byId('filterName').value=null;
 }
@@ -2202,12 +2217,13 @@ function addfilterClause(silent) {
  * 
  */
 function removefilterClause(id) {
-	if (dijit.byId('filterNameDisplay')) {
-		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+	if (top.dijit.byId('filterNameDisplay')) {
+		top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
 	}
 	// Add controls on operator and value
-	dojo.byId("filterClauseId").value=id;
-	loadContent("../tool/removeFilterClause.php", "listFilterClauses", "dialogFilterForm", false);
+	top.dojo.byId("filterClauseId").value=id;
+	var compUrl=(top.dijit.byId("dialogDetail").open)?'?comboDetail=true':'';
+	top.loadContent("../tool/removeFilterClause.php"+compUrl, "listFilterClauses", "dialogFilterForm", false);
 	//dijit.byId('filterNameDisplay').set('value',null);
 	//dojo.byId('filterName').value=null;
 }
@@ -2225,23 +2241,29 @@ function selectFilter() {
 	}
 }
 function selectFilterContinue() {
-	if (dijit.byId('filterNameDisplay')) {
-		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+	if (top.dijit.byId('dialogDetail').open) { 
+		var doc=window.frames['comboDetailFrame'];
+    } else { 
+    	var doc=top;
+    }
+	if (top.dijit.byId('filterNameDisplay')) {
+		top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
 	}
+	var compUrl=(top.dijit.byId("dialogDetail").open)?'&comboDetail=true':'';
 	dojo.xhrPost({
-		url: "../tool/backupFilter.php?valid=true",
-		form: dojo.byId('dialogFilterForm'),
+		url: "../tool/backupFilter.php?valid=true"+compUrl,
+		form: top.dojo.byId('dialogFilterForm'),
 		handleAs: "text",
 		load: function(data,args) { }
 	});
-	if (dojo.byId("nbFilterCriteria").value>0) {
-		dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
+	if (top.dojo.byId("nbFilterCriteria").value>0) {
+		doc.dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
 	} else {
-		dijit.byId("listFilterFilter").set("iconClass","iconFilter16");
+		doc.dijit.byId("listFilterFilter").set("iconClass","iconFilter16");
 	}
-	loadContent("../tool/displayFilterList.php?context=directFilterList&filterObjectClass="+dojo.byId('objectClass').value, "directFilterList", null, false,'returnFromFilter', false);
-	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
-	dijit.byId("dialogFilter").hide();
+	doc.loadContent("../tool/displayFilterList.php?context=directFilterList&filterObjectClass="+dojo.byId('objectClass').value+compUrl, "directFilterList", null, false,'returnFromFilter', false);
+	doc.refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+	top.dijit.byId("dialogFilter").hide();
 	filterStartInput=false;
 }
 
@@ -2251,12 +2273,13 @@ function selectFilterContinue() {
  */
 function cancelFilter() {
 	filterStartInput=true;
-	dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true",
+	var compUrl=(top.dijit.byId("dialogDetail").open)?'&comboDetail=true':'';
+	top.dojo.xhrPost({url: "../tool/backupFilter.php?cancel=true"+compUrl,
 		form: dojo.byId('dialogFilterForm'),
 		handleAs: "text",
 		load: function(data,args) { }
 	});
-		dijit.byId('dialogFilter').hide();
+		top.dijit.byId('dialogFilter').hide();
 }
 
 /**
@@ -2264,15 +2287,15 @@ function cancelFilter() {
  * 
  */
 function clearFilter() {
-	if (dijit.byId('filterNameDisplay')) {
-		dijit.byId('filterNameDisplay').reset();
+	if (top.dijit.byId('filterNameDisplay')) {
+		top.dijit.byId('filterNameDisplay').reset();
 	}
-	dojo.byId('filterName').value="";
-	removefilterClause('all');	
+	top.dojo.byId('filterName').value="";
+	top.removefilterClause('all');	
 	//setTimeout("selectFilter();dijit.byId('listFilterFilter').set('iconClass','iconFilter16');",100);
 	dijit.byId('listFilterFilter').set('iconClass','iconFilter16');
-	dijit.byId('filterNameDisplay').set('value',null);
-	dojo.byId('filterName').value=null;
+	top.dijit.byId('filterNameDisplay').set('value',null);
+	top.dojo.byId('filterName').value=null;
 }
 
 /**
@@ -2280,14 +2303,15 @@ function clearFilter() {
  * 
  */
 function defaultFilter() {
-	if (dijit.byId('filterNameDisplay')) {
+	if (top.dijit.byId('filterNameDisplay')) {
 		//if (dijit.byId('filterNameDisplay').get('value')=="") {
 		//	showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
 		//	exit;
 		//}
-		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+		top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
 	}
-	loadContent("../tool/defaultFilter.php", "listStoredFilters", "dialogFilterForm", false);
+	var compUrl=(top.dijit.byId("dialogDetail").open)?'?comboDetail=true':'';
+	top.loadContent("../tool/defaultFilter.php"+compUrl, "listStoredFilters", "dialogFilterForm", false);
 }
 
 /**
@@ -2295,14 +2319,15 @@ function defaultFilter() {
  * 
  */
 function saveFilter() {
-	if (dijit.byId('filterNameDisplay')) {
-		if (dijit.byId('filterNameDisplay').get('value')=="") {
+	if (top.dijit.byId('filterNameDisplay')) {
+		if (top.dijit.byId('filterNameDisplay').get('value')=="") {
 			showAlert(i18n("messageMandatory", new Array(i18n("filterName")) ));
 			return;
 		}
-		dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
+		top.dojo.byId('filterName').value=top.dijit.byId('filterNameDisplay').get('value');
 	}
-	loadContent("../tool/saveFilter.php", "listStoredFilters", "dialogFilterForm", false);
+	var compUrl=(top.dijit.byId("dialogDetail").open)?'?comboDetail=true':'';
+	top.loadContent("../tool/saveFilter.php"+compUrl, "listStoredFilters", "dialogFilterForm", false);
 }
 
 /**
@@ -2310,19 +2335,17 @@ function saveFilter() {
  * 
  */
 function selectStoredFilter(idFilter,context) {
+  var compUrl=(top.dijit.byId("dialogDetail").open)?'&comboDetail=true':'';
   if (context=='directFilterList') {
 	  if (idFilter=='0') {
-			dojo.byId('noFilterSelected').value='true';
+			top.dojo.byId('noFilterSelected').value='true';
 	  } else {
-			dojo.byId('noFilterSelected').value='false';
+			top.dojo.byId('noFilterSelected').value='false';
 	  }
 	  loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter+"&context=" + context 
-			+ "&filterObjectClass="+dojo.byId('objectClass').value, "directFilterList", null, false);
-	
-	//loadContent("../tool/displayFilterList.php?", "directFilterList",  "dialogFilterForm", false);
-	
+			+ "&filterObjectClass="+dojo.byId('objectClass').value+compUrl, "directFilterList", null, false);	
   } else {
-	loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter, "listFilterClauses", "dialogFilterForm", false);
+	loadContent("../tool/selectStoredFilter.php?idFilter="+idFilter+compUrl, "listFilterClauses", "dialogFilterForm", false);
   }
 }
 
@@ -2331,8 +2354,9 @@ function selectStoredFilter(idFilter,context) {
  * 
  */
 function removeStoredFilter(idFilter, nameFilter) {
+  var compUrl=(top.dijit.byId("dialogDetail").open)?'&comboDetail=true':'';
   var action=function() {
-  	loadContent("../tool/removeFilter.php?idFilter="+idFilter, "listStoredFilters", "dialogFilterForm", false);
+  	top.loadContent("../tool/removeFilter.php?idFilter="+idFilter+compUrl, "listStoredFilters", "dialogFilterForm", false);
   };
   showConfirm(i18n("confirmRemoveFilter",new Array(nameFilter)),action);
 }

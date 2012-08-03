@@ -23,7 +23,9 @@ class User extends SqlElement {
   public $_col_2_2_Affectations;
   public $_spe_affectations;
   public $_arrayFilters=array();
-  public $_arrayFiltersId=array();
+  //public $_arrayFiltersId=array();
+  public $_arrayFiltersDetail=array();
+  //public $_arrayFiltersDetailId=array();
   
   
   private static $_layout='
