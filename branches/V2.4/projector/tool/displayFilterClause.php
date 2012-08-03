@@ -8,9 +8,17 @@ require_once "../tool/projector.php";
 
 $user=$_SESSION['user'];
 
-if (! $user->_arrayFilters) {
-  $user->_arrayFilters=array();
+$comboDetail=false;
+if (array_key_exists('comboDetail',$_REQUEST)) {
+  $comboDetail=true;
 }
+
+if (! $comboDetail and ! $user->_arrayFilters) {
+  $user->_arrayFilters=array();
+} else if ($comboDetail and ! $user->_arrayFiltersDetail) {
+  $user->_arrayFiltersDetail=array();
+}
+
 
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
@@ -18,15 +26,19 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
 $filterObjectClass=$_REQUEST['filterObjectClass'];
 
 // Get existing filter info
-if (array_key_exists($filterObjectClass,$user->_arrayFilters)) {
+if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {
   $filterArray=$user->_arrayFilters[$filterObjectClass];
+} else if ($comboDetail and array_key_exists($filterObjectClass,$user->_arrayFiltersDetail)) {
+  $filterArray=$user->_arrayFiltersDetail[$filterObjectClass];
 } else {
   $filterArray=array();
 }
 
 $name="";
-if (array_key_exists($filterObjectClass . "FilterName", $user->_arrayFilters)) {
+if (! $comboDetail and array_key_exists($filterObjectClass . "FilterName", $user->_arrayFilters)) {
   $name=$user->_arrayFilters[$filterObjectClass . "FilterName"];
+} else if ($comboDetail and array_key_exists($filterObjectClass . "FilterName", $user->_arrayFiltersDetail)) {
+  $name=$user->_arrayFiltersDetail[$filterObjectClass . "FilterName"];
 }
 
 htmlDisplayFilterCriteria($filterArray,$name); 

@@ -11,6 +11,7 @@ $selected="";
 if (array_key_exists('selected', $_REQUEST)) {
 	$selected=$_REQUEST['selected'];
 }
+$selectedArray=explode('_',$selected);
 $obj=new TestCase();
 
 $crit = array ( 'idle'=>'0');
@@ -22,8 +23,10 @@ if (trim($idProduct)) {
 }
 
 $list=$obj->getSqlElementsFromCriteria($crit,false,null, 'id desc',true);
-if ($selected and ! array_key_exists("#" . $selected, $list)) {
-	$list["#".$selected]=new TestCase($selected);
+foreach ($selectedArray as $selected) {
+  if ($selected and ! array_key_exists("#" . $selected, $list)) {
+	  $list["#".$selected]=new TestCase($selected);
+  }
 }
 
 ?>
@@ -34,7 +37,7 @@ if ($selected and ! array_key_exists("#" . $selected, $list)) {
   ondblclick="saveTestCaseRun();" >
  <?php
  foreach ($list as $lstObj) {
-   echo "<option value='$lstObj->id'" . (($lstObj->id==$selected)?' selected ':'') . ">#$lstObj->id - $lstObj->name</option>";
+   echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#$lstObj->id - $lstObj->name</option>";
  }
  ?>
 </select>

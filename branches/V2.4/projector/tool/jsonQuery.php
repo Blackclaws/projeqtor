@@ -120,10 +120,14 @@
     }
     
     $arrayFilter=array();
-    if (! $comboDetail  and ! $quickSearch) {
-      if (is_array( $_SESSION['user']->_arrayFilters)) {
+    if (! $quickSearch) {
+      if (! $comboDetail and is_array( $_SESSION['user']->_arrayFilters)) {
         if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-          $arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+        	$arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+        }
+      } else if ($comboDetail and is_array( $_SESSION['user']->_arrayFiltersDetail)) {
+        if (array_key_exists($objectClass, $_SESSION['user']->_arrayFiltersDetail)) {
+          $arrayFilter=$_SESSION['user']->_arrayFiltersDetail[$objectClass];
         }
       }
     }
