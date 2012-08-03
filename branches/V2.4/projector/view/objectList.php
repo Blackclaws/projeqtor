@@ -21,6 +21,12 @@ if (array_key_exists('Directory', $_REQUEST)) {
 } else {
 	unset($_SESSION['Directory']);
 }
+$multipleSelect=false;
+if (array_key_exists('multipleSelect', $_REQUEST)) {
+	if ($_REQUEST['multipleSelect']) {
+		$multipleSelect=true;
+	}
+}
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?>" >
@@ -74,9 +80,6 @@ if (array_key_exists('Directory', $_REQUEST)) {
             </script>
           </button>
         </td>    
-
-    
-    
       </tr>
     </table>
   </div>
@@ -105,7 +108,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
               <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
-				  setTimeout("filterJsonList()",10);
+				          setTimeout("filterJsonList()",10);
                 </script>
               </div>
             </td>
@@ -141,9 +144,15 @@ if (array_key_exists('Directory', $_REQUEST)) {
               </td>
               <?php }?>              
               <?php $activeFilter=false;
-                 if (is_array($_SESSION['user']->_arrayFilters)) {
+                 if (! $comboDetail and is_array($_SESSION['user']->_arrayFilters)) {
                    if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
                      if (count($_SESSION['user']->_arrayFilters[$objectClass])>0) {
+                       $activeFilter=true;
+                     }
+                   }
+                 } else if ($comboDetail and is_array($_SESSION['user']->_arrayFiltersDetail)) {
+                   if (array_key_exists($objectClass, $_SESSION['user']->_arrayFiltersDetail)) {
+                     if (count($_SESSION['user']->_arrayFiltersDetail[$objectClass])>0) {
                        $activeFilter=true;
                      }
                    }
@@ -151,7 +160,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
                  ?>
             <td >&nbsp;</td>
             <td width="5px"><NOBR>&nbsp;</NOBR></td>
-<?php if (! $comboDetail) {?>            
+<?php if (! $comboDetail or 1) {?>            
             <td width="32px">
               <button title="<?php echo i18n('quickSearch')?>"  
                dojoType="dijit.form.Button" 
@@ -166,6 +175,8 @@ if (array_key_exists('Directory', $_REQUEST)) {
               <span id="gridRowCount" class="gridRowCount"></span>             
               <input type="hidden" id="listFilterClause" name="listFilterClause" value="" style="width: 50px;" />
             </td>
+<?php }
+      if (! $comboDetail or 1) {?>            
             <td width="32px">
               <button 
               title="<?php echo i18n('advancedFilter')?>"  
@@ -186,6 +197,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
                   <?php 
                      //$_REQUEST['filterObjectClass']=$objectClass;
                      //$_REQUEST['context']="directFilterList";
+                     if ($comboDetail) $_REQUEST['comboDetail']=true;
                      include "../tool/displayFilterList.php";?>
                  <script type="dojo/method" event="onMouseEnter" args="evt">
                     clearTimeout(closeFilterListTimeout);
@@ -257,7 +269,7 @@ if (array_key_exists('Directory', $_REQUEST)) {
   queryOptions="{ignoreCase:true}" 
   rowPerPage="<?php echo $paramRowPerPage;?>"
   columnReordering="false"
-  selectionMode="<?php echo ($comboDetail)?'extended':'single';?>" >
+  selectionMode="<?php echo ($multipleSelect)?'extended':'single';?>" >
   <thead>
     <tr>
       <?php echo $obj->getLayout();?>

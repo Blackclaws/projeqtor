@@ -434,7 +434,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   showWait();
   // Direct mode, without fading effect =====
   // IE Issue : must not fade load
-  if ( (dojo.isIE) || ! fadeLoading) {
+  if ( (top.dojo.isIE) || ! top.fadeLoading) {
     // send Ajax request
     dojo.xhrPost({
       url: page,
@@ -458,14 +458,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         }
         if (destination=="directFilterList") {
         	if (validationType!='returnFromFilter') {
-	        	if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
+        	  if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
 	              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
 	        	} else {
 	        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
 	            }
 	        	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+        	  }
         	}
-          }
       if (destination=="expenseDetailDiv") {
           expenseDetailRecalculate();
       }
@@ -545,14 +545,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         	  selectLinkItem();
           }
           if (destination=="directFilterList") {
-        	  if (!validationType && validationType!='returnFromFilter') {
-  	        	if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
+            if (!validationType && validationType!='returnFromFilter') {    
+  	        	if (top.dojo.byId('noFilterSelected') && top.dojo.byId('noFilterSelected').value=='true') {
   	              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
   	        	} else {
   	        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
   	            }
   	        	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
-          	}
+        	  }
           }
           if (destination=="expenseDetailDiv") {
               expenseDetailRecalculate();

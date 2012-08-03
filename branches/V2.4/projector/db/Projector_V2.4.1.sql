@@ -1,4 +1,3 @@
-
 -- ///////////////////////////////////////////////////////////
 -- // PROJECTOR                                             //
 -- //-------------------------------------------------------//
@@ -7,11 +6,9 @@
 -- ///////////////////////////////////////////////////////////
 --
 --
-ALTER TABLE `${prefix}requirement` 
-ADD COLUMN `countTotal` int(5) default 0;
+ALTER TABLE `${prefix}requirement` ADD COLUMN `countTotal` int(5) default 0;
 
-ALTER TABLE `${prefix}testsession` 
-ADD COLUMN `countPlanned` int(5) default 0;
+ALTER TABLE `${prefix}testsession` ADD COLUMN `countPlanned` int(5) default 0;
 
 INSERT INTO `${prefix}mailable` (`id`, `name`, `idle`) VALUES
 (10, 'Requirement', 0),
@@ -57,3 +54,4 @@ INSERT INTO `${prefix}importable` (`id`, `name`, `idle`) VALUES
 (23, 'TestCase', 0),
 (24, 'TestSession', 0),
 (25, 'TestCaseRun', 0);                    
+

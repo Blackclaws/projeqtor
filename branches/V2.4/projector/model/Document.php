@@ -41,7 +41,7 @@ class Document extends SqlElement {
     <th field="nameProduct" width="10%">${idProduct}</th>
     <th field="nameDocumentType" width="10%">${type}</th>
     <th field="name" width="25%">${name}</th>
-    <th field="nameStatus" width="10%">${idStatus}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameDocumentVersion" width="10%">${currentDocumentVersion}</th>
     <th field="nameDocumentVersionRef" width="10%">${reference}</th>
     <th field="locked" width="5%" formatter="booleanFormatter">${locked}</th>
