@@ -579,11 +579,12 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $mail->save();  
   // Send then mail
   if (!$headers) {
-    $headers  = 'MIME-Version: 1.0' . "\r\n";
-    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-    $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . "\r\n";
-    $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . "\r\n";
-    $headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
+    $eol=(isset($paramMailEol))?$paramMailEol:"\r\n";
+  	$headers  = 'MIME-Version: 1.0' . $eol;
+    $headers .= 'Content-type: text/html; charset=utf-8' . $eol;
+    $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;
+    $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . $eol;
+    $headers .= 'Content-Transfer-Encoding: 8bit' . $eol;
     $headers .= 'X-Mailer: PHP/' . phpversion();
   }
   if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
