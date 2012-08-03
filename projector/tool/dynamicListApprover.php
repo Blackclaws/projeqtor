@@ -12,6 +12,7 @@ $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {
   $selected=$_REQUEST['selected'];
 }
+$selectedArray=explode('_',$selected);
 
 $obj=new $refType($refId);
 
@@ -22,25 +23,28 @@ $critWhere .= " where aff.idResource=" . $objList->getDatabaseTableName() . ".id
 $critWhere .= ($obj->idProject)?" and aff.idProject='" . $obj->idProject . "'":"";
 $critWhere .= ")";
 $list=$objList->getSqlElementsFromCriteria(null,false,$critWhere, 'name asc');
+
 ?>
 <select id="approverId" size="14"" name="approverId[]" multiple
 onchange="selectApproverItem();"  ondblclick="saveApprover();"
 class="selectList" >
  <?php
- $found=false;
+ $found=array();
  foreach ($list as $lstObj) {
    $sel="";
-   if ($lstObj->id==$selected) {
+   if (in_array($lstObj->id,$selectedArray)) {
     $sel=" selected='selected' ";
-    $found=true;
+    $found[$lstObj->id]=true;
    }
    $name=($lstObj->name)?$lstObj->name:$lstObj->userName;
    echo "<option value='$lstObj->id'" . $sel . ">#$lstObj->id - $name</option>";
  }
- if ($selected and ! $found) {
-   $lstObj=new Affectable($selected);
-   $name=($lstObj->name)?$lstObj->name:$lstObj->userName;
-   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $name</option>";
+ foreach ($selectedArray as $selected) {
+	 if ($selected and ! isset($found[$selected]) ) {
+	   $lstObj=new Affectable($selected);
+	   $name=($lstObj->name)?$lstObj->name:$lstObj->userName;
+	   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $name</option>";
+	 }
  }
  ?>
 </select>

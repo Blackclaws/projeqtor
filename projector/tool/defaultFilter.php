@@ -7,7 +7,7 @@
  */
 
 require_once "../tool/projector.php";
-//traceLog("backupFilter.php");
+//traceLog("defaultFilter.php");
 
 $user=$_SESSION['user'];
 

@@ -15,6 +15,7 @@ $selected=null;
 if (array_key_exists('selected',$_REQUEST)) {
   $selected=$_REQUEST['selected'];
 }
+$selectedArray=explode('_',$selected);
 
 $obj=new $ref1Type($ref1Id);
 if ($ref2Type) {
@@ -30,7 +31,6 @@ if ($ref2Type) {
   	$crit = array ( 'idle'=>'0');
   	$list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
   }
-  
 } else {
   $list=array();
 }
@@ -40,18 +40,20 @@ if ($ref2Type) {
 onchange="selectLinkItem();"  ondblclick="saveLink();"
 class="selectList" >
  <?php
- $found=false;
+ $found=array();
  foreach ($list as $lstObj) {
    $sel="";
-   if ($lstObj->id==$selected) {
+   if (in_array($lstObj->id,$selectedArray)) {
     $sel=" selected='selected' ";
-    $found=true;
+    $found[$lstObj->id]=true;
    }
    echo "<option value='$lstObj->id'" . $sel . ">#$lstObj->id - $lstObj->name</option>";
  }
- if ($selected and ! $found) {
-   $lstObj=new $ref2Type($selected);
-   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
+ foreach ($selectedArray as $selected) {
+	 if ($selected and ! isset($found[$selected]) ) {
+	   $lstObj=new $ref2Type($selected);
+	   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
+	 }
  }
  ?>
 </select>
