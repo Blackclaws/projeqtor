@@ -35,21 +35,24 @@ class Requirement extends SqlElement {
   public $idTargetVersion;
   public $result;
   public $_col_1_1_Progress;
-  public $_tab_7_2 = array('countLinked', 'countTotal', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests', '');
+  public $_tab_8_2 = array('testSummary','countLinked', 'countTotal', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests', '');
+  public $runStatusName;
   public $countLinked;
   public $countTotal;
   public $countPlanned;
   public $countPassed;
   public $countBlocked;
   public $countFailed;
-  public $countIssues;
+  public $countIssues; 
+  public $runStatusIcon;
   public $noDisplay1;
   public $noDisplay2;
   public $pctPlanned;
   public $pctPassed;
   public $pctBlocked;
   public $pctFailed;
-  public $noDisplay3;
+  public $noDisplay3;  
+  public $idRunStatus;
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
@@ -62,10 +65,11 @@ class Requirement extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameProduct" width="10%" >${idProduct}</th>
-    <th field="nameRequirementType" width="10%" >${type}</th>
+    <th field="nameProject" width="8%" >${idProject}</th>
+    <th field="nameProduct" width="8%" >${idProduct}</th>
+    <th field="nameRequirementType" width="8%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
+    <th field="colorNameRunStatus" width="6%" formatter="colorNameFormatter">${testSummary}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="10%" >${responsible}</th>
     <th field="nameTargetVersion" width="10%" >${idVersion}</th>
@@ -96,7 +100,11 @@ class Requirement extends SqlElement {
                                   "pctPassed"=>"calculated,display,html",
                                   "pctBlocked"=>"calculated,display,html",
                                   "pctFailed"=>"calculated,display,html",
-                                  "noDisplay3"=>"calculated,hidden"
+                                  "noDisplay3"=>"calculated,hidden",
+                                  "noDisplay4"=>"calculated,hidden",
+                                  "idRunStatus"=>"display,html,hidden",
+                                  "runStatusIcon"=>"calculated,display,html",
+                                  "runStatusName"=>"calculated,display,html"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
@@ -227,6 +235,7 @@ class Requirement extends SqlElement {
   
   public function save() {
 
+  	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
   	$result=parent::save();
     return $result;
   }
@@ -251,6 +260,11 @@ class Requirement extends SqlElement {
      	$this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
       $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
       $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
+     }
+     if ($this->id) {
+       $name=SqlList::getNameFromId('RunStatus', $this->idRunStatus,false);
+       $this->runStatusName=i18n($name);
+       $this->runStatusIcon='<img src="../view/css/images/icon'.ucfirst($name).'22.png" />';
      }
   }
   
@@ -291,6 +305,17 @@ class Requirement extends SqlElement {
         $this->countBlocked+=1;
       }
     }
+    if ($this->countFailed>0) {
+      $this->idRunStatus=3; // failed
+    } else if ($this->countBlocked>0) {
+      $this->idRunStatus=4; // blocked
+    } else if ($this->countPlanned>0) {
+      $this->idRunStatus=1; // planned
+    } else if ($this->countTotal==0) {
+      $this->idRunStatus=5; // empty
+    } else {
+      $this->idRunStatus=2; // passed
+    }  
     $this->save();
   }
 }

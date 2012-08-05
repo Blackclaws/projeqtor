@@ -716,6 +716,7 @@ function finalizeMessageDisplay(destination, validationType) {
     // add the message in the message Div (left part) and prepares form to new
     // changes
     addMessage(msg);
+    //alert('validationType='+validationType);
     if (validationType) {
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
@@ -729,6 +730,7 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
+    	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo') {
@@ -741,6 +743,10 @@ function finalizeMessageDisplay(destination, validationType) {
           }
       } else if (validationType=='admin'){
     	  hideWait();
+      } else if (validationType=='link' && 
+    		  (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
+    	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	  refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
       } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  //hideWait();
