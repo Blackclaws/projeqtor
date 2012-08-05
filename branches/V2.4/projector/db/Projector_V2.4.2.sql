@@ -25,4 +25,4 @@ UPDATE `${prefix}runstatus` set sortOrder=400 WHERE id=4;
 INSERT INTO `${prefix}runstatus` (id, name, color, sortOrder, idle) VALUES
 (5, 'void', '#BB64BB', 100, 1);
 
-ALTER TABLE `${prefix}Requirement` ADD COLUMN `idContact` int(12) unsigned default null;
+ALTER TABLE `${prefix}requirement` ADD COLUMN `idContact` int(12) unsigned default null;
