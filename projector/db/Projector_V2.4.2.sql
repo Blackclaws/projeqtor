@@ -15,7 +15,7 @@ INSERT INTO `${prefix}originable` (`id`, `name`, `idle`) VALUES
 
 ALTER TABLE `${prefix}requirement` ADD COLUMN `idRunStatus` int(12) unsigned default null;
 ALTER TABLE `${prefix}testsession` ADD COLUMN `idRunStatus` int(12) unsigned default null;
-ALTER TABLE `${prefix}testcase` ADD COLUMN `idRunStatus` int(12) unsigned default null;
+-- ALTER TABLE `${prefix}testcase` ADD COLUMN `idRunStatus` int(12) unsigned default null;
 
 UPDATE `${prefix}runstatus` set sortOrder=200 WHERE id=1;
 UPDATE `${prefix}runstatus` set sortOrder=300 WHERE id=2;
