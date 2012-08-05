@@ -447,6 +447,18 @@
           foreach ($line as $id => $val) {
             echo (++$nbFields>1)?',':'';
             $numericLength=($id=='id')?6:0;
+            if ($id=='colorNameRunStatus') {
+            	$split=explode('#',$val);
+            	foreach ($split as $ix=>$sp) {
+            	  if ($ix==0) {
+            	  	$val=$sp;
+            	  } else if ($ix==2) {
+            		  $val.='#'.i18n($sp);	
+            	  } else {
+            	  	$val.='#'.$sp;
+            	  }
+            	} 
+            }
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
           echo '}';       

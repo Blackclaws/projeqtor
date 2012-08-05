@@ -150,8 +150,8 @@ if ($currVersion<"V2.1.1") {
   }
 }
 
-// For V2.4.1
-if ($currVersion<"V2.4.1") {
+// For V2.4.1 & V2.4.2
+if ($currVersion<"V2.4.2") {
   $req=new Requirement();
   $reqList=$req->getSqlElementsFromCriteria(null, false);
   foreach ($reqList as $req) {
@@ -163,6 +163,13 @@ if ($currVersion<"V2.4.1") {
   foreach ($sesList as $ses) {
   	$ss=new TestSession($ses->id);
     $ss->updateDependencies();
+  }
+  $tst=new TestCase();
+  $tstList=$tst->getSqlElementsFromCriteria(null, false);
+  //debugLog('test='.count($tstList));
+  foreach ($tstList as $tst) {
+    $tc=new TestCase($tst->id);
+    $tc->updateDependencies();
   }
 }
 

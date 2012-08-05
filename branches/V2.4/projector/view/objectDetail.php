@@ -2145,7 +2145,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       }
       echo '</td><td style="width:50%">';
       if ($tcr->idRunStatus==1 or $tcr->idRunStatus==3 or $tcr->idRunStatus==4) {
-        echo '  <img src="css/images/ok.png" ' 
+        echo '  <img src="css/images/iconPassed16.png" ' 
           . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'"
           . ",'" . $tcr->idTestCase . "'" 
           . ",'" . $tcr->idRunStatus . "'" 
@@ -2154,7 +2154,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
           . 'title="' . i18n('passedTestCaseRun') . '" class="smallButton"/> ';
       }
       if ($tcr->idRunStatus==1 or $tcr->idRunStatus==4) {
-        echo '  <img src="css/images/ko.png" ' 
+        echo '  <img src="css/images/iconFailed16.png" ' 
           . 'onClick="failedTestCaseRun(' . "'" . $tcr->id . "'"
           . ",'" . $tcr->idTestCase . "'" 
           . ",'" . $tcr->idRunStatus . "'" 
@@ -2163,7 +2163,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
           . 'title="' . i18n('failedTestCaseRun') . '" class="smallButton"/> ';
       }  
       if ($tcr->idRunStatus==1 or $tcr->idRunStatus==3) {
-        echo '  <img src="css/images/stop.png" ' 
+        echo '  <img src="css/images/iconBlocked16.png" ' 
           . 'onClick="blockedTestCaseRun(' . "'" . $tcr->id . "'"
           . ",'" . $tcr->idTestCase . "'" 
           . ",'" . $tcr->idRunStatus . "'" 

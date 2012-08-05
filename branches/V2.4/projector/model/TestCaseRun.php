@@ -122,6 +122,8 @@ class TestCaseRun extends SqlElement {
   	
   	$session=new TestSession($this->idTestSession);
     $session->updateDependencies();
+    $test=new TestCase($this->idTestCase);
+    $test->updateDependencies();
     
     // List all Resquirements linked to the test case
     $link=new Link();

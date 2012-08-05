@@ -33,6 +33,8 @@ class TestCase extends SqlElement {
   public $idleDate;
   public $prerequisite;
   public $result;
+  public $_calc_runStatus;
+  public $idRunStatus;
   public $_col_1_1_TestCaseRun;
   public $_TestCaseRun=array();
   public $_col_1_2_predecessor;
@@ -47,11 +49,12 @@ class TestCase extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameProduct" width="10%" >${idProduct}</th>
-    <th field="nameVersion" width="10%" >${idVersion}</th>
+    <th field="nameProject" width="8%" >${idProject}</th>
+    <th field="nameProduct" width="8%" >${idProduct}</th>
+    <th field="nameVersion" width="8%" >${idVersion}</th>
     <th field="nameTestCaseType" width="10%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
+    <th field="colorNameRunStatus" width="6%" formatter="colorNameFormatter">${testSummary}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="10%" >${responsible}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
@@ -70,12 +73,17 @@ class TestCase extends SqlElement {
                                   "idUser"=>"hidden",
                                   "idContext1"=>"nobr,size1/3,title",
                                   "idContext2"=>"nobr,title", 
-                                  "idContext3"=>"title"
+                                  "idContext3"=>"title",
+                                  "idRunStatus"=>"display,html,hidden",
+                                  "runStatusIcon"=>"calculated,display,html",
+                                  "runStatusName"=>"calculated,display"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
                                                    'result'=>'expectedResult',
-                                                   'idVersion'=>'productVersion'
+                                                   'idVersion'=>'productVersion',
+                                                   'runStatusName'=>'testSummary',
+                                                   'runStatusIcon'=>'testSummary',
                                                    );
   
   private static $_databaseColumnName = array();
@@ -197,12 +205,86 @@ class TestCase extends SqlElement {
   
   public function save() {
 
+  	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
   	if (! $this->prerequisite and $this->idTestCase) {
   		$parent=new TestCase($this->idTestCase);
   		$this->prerequisite=$parent->prerequisite;
   	}
   	$result=parent::save();
     return $result;
+  }
+  
+  public function getCalculatedItem(){
+     if ($this->id) {
+       $name=SqlList::getNameFromId('RunStatus', $this->idRunStatus,false);
+       $this->runStatusName=i18n($name);
+       $this->runStatusIcon='<img src="../view/css/images/icon'.ucfirst($name).'22.png" />';
+     }
+  }
+  
+  public function drawCalculatedItem($item){
+    $result="&nbsp;";
+    if ($item=='runStatus') {
+    	 $name=SqlList::getNameFromId('RunStatus', $this->idRunStatus,false);
+    	 $result='<tr>';
+    	 $result.='<td class="label" style="display:table-cell; vertical-align:middle">' . i18n('colTestSummary') . '&nbsp;:&nbsp;</td>';
+    	 $result.='<td>';
+    	 if ($this->idRunStatus) {
+	    	 $result.='<table><tr>';
+	    	 $result.='<td style="width:5px;">&nbsp;</td>';
+	    	 $result.='<td><img src="../view/css/images/icon'.ucfirst($name).'22.png" /></td>';
+	    	 $result.='<td style="width:5px;">&nbsp;</td>';
+	    	 $result.='<td style="vertical-align:top">'.(i18n($name)).'</td>';
+	    	 $result.='</tr></table>';
+    	 }
+    	 $result.='</td>';
+    	 $result.='</tr>';
+    	 return $result;
+       
+     } else {
+      return "&nbsp;"; 
+     }
+     return $result;
+   }
+   
+  public function updateDependencies() {
+    $this->_noHistory=true;
+    $tcr=new TestCaseRun();
+    $listTcr=$tcr->getSqlElementsFromCriteria(array('idTestCase'=>$this->id), false);
+    $countBlocked=0;
+    $countFailed=0;
+    $countIssues=0;
+    $countPassed=0;
+    $countPlanned=0;
+    $countTotal=0;
+    foreach($listTcr as $tcr) {
+      $countTotal+=1;
+      if ($tcr->idRunStatus==1) {
+        $countPlanned+=1;
+      }
+      if ($tcr->idRunStatus==2) {
+        $countPassed+=1;
+      }
+      if ($tcr->idRunStatus==3) {
+        $countFailed+=1;
+      }
+      if ($tcr->idRunStatus==4) {
+        $countBlocked+=1;
+      }
+    }
+    if ($countFailed>0) {
+      $this->idRunStatus=3; // failed
+    } else if ($countBlocked>0) {
+      $this->idRunStatus=4; // blocked
+    } else if ($countPlanned>0) {
+      $this->idRunStatus=1; // planned
+    } else if ($countTotal==0) {
+      $this->idRunStatus=5; // empty
+    } else {
+      $this->idRunStatus=2; // passed
+    }  
+    //debugLog($this->id.'=>'.$this->idRunStatus);
+    $this->save();
   }
   
 }

@@ -15,6 +15,12 @@ INSERT INTO `${prefix}originable` (`id`, `name`, `idle`) VALUES
 
 ALTER TABLE `${prefix}requirement` ADD COLUMN `idRunStatus` int(12) unsigned default null;
 ALTER TABLE `${prefix}testsession` ADD COLUMN `idRunStatus` int(12) unsigned default null;
+ALTER TABLE `${prefix}testcase` ADD COLUMN `idRunStatus` int(12) unsigned default null;
+
+UPDATE `${prefix}runstatus` set sortOrder=200 WHERE id=1;
+UPDATE `${prefix}runstatus` set sortOrder=300 WHERE id=2;
+UPDATE `${prefix}runstatus` set sortOrder=500 WHERE id=3;
+UPDATE `${prefix}runstatus` set sortOrder=400 WHERE id=4;
 
 INSERT INTO `${prefix}runstatus` (id, name, color, sortOrder, idle) VALUES
-(5, 'empty', '#FF00A5', 500, 0);
+(5, 'void', '#BB64BB', 100, 1);
