@@ -16,6 +16,7 @@ class Requirement extends SqlElement {
   public $externalReference;
   public $creationDateTime;
   public $idUser;
+  public $idContact;
   public $idUrgency;
   public $description;
   public $_col_2_2_treatment;
@@ -111,6 +112,7 @@ class Requirement extends SqlElement {
                                                    'idTargetVersion'=>'targetVersion',
                                                    'idRiskLevel'=>'technicalRisk',
                                                    'plannedWork'=>'estimatedEffort',
+                                                   'idContact' => 'requestor',
                                                    );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
