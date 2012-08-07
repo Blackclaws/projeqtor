@@ -1336,7 +1336,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         $query .= " where refId ='" . Sql::str($curId) . "'"
         . " and refType ='" . get_class($this) . "'";
       } 
-      $query .= " order by id asc ";
+      $query .= " order by id desc ";
       $result = Sql::query($query);
       // if no element in database, will return empty array
       if (Sql::$lastQueryNbRows > 0) {
@@ -1421,6 +1421,14 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       return '';
     }
   }  
+  
+  public function isAttributeSetToField($fieldName, $attribute) {
+    if (strpos($this->getFieldAttributes($fieldName), $attribute)!==false) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   
   /** ========================================================================
    * Return the name of the table in the database
