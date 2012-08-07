@@ -428,6 +428,27 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php 
+  } else {
+    $defaultValue='';
+    if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+    //$class=(substr($param->paramType,-4,4)=='List')?substr($param->paramType,0,strlen($param->paramType)-4):$param->paramType;
+    //$class=ucfirst($class);
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+       style="width: 200px;"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+     >
+       <?php htmlDrawOptionForReference($param->name, $defaultValue, null, false); ?>
+     </select>    
+    </td>
+    </tr>
+
+<?php 
   }
 }
 ?>

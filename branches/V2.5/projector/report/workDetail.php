@@ -6,7 +6,10 @@ $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
 }
-
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -32,7 +35,9 @@ $headerParameters="";
 if ($paramProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
 }
-
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
   
@@ -116,27 +121,32 @@ echo '</tr>';
 
 $sum=0;
 foreach ($resources as $idR=>$nameR) {
-  $sumRes=0;
-  echo '<tr>';
-  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
-  foreach ($activities as $key=>$nameA) {
-    if (array_key_exists($idR, $result)) {
-      if (array_key_exists($key, $result[$idR])) {
-        $val=$result[$idR][$key];
-        $sumRes+=$val; 
-        $sum+=$val;
-        echo '<td class="reportTableData" style="width:10%">' . Work::displayWorkWithUnit($val). '</td>';
-        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $project[$key] . '</td>';
-        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
-//        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
-        echo '<td class="reportTableData" style="width:25%; text-align:left;" >' . htmlEncode($parent[$key]) . '</td>'; 
-        echo '</tr><tr>';
-      } 
-    }
+	if ($paramTeam) {
+    $res=new Resource($idR);
   }
-  echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
-  echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="4">' . i18n('sum') . " " . $nameR . '</td>';
-  echo '</tr>';
+  if (!$paramTeam or $res->idTeam==$paramTeam) {
+	  $sumRes=0;
+	  echo '<tr>';
+	  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
+	  foreach ($activities as $key=>$nameA) {
+	    if (array_key_exists($idR, $result)) {
+	      if (array_key_exists($key, $result[$idR])) {
+	        $val=$result[$idR][$key];
+	        $sumRes+=$val; 
+	        $sum+=$val;
+	        echo '<td class="reportTableData" style="width:10%">' . Work::displayWorkWithUnit($val). '</td>';
+	        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $project[$key] . '</td>';
+	        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
+	//        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
+	        echo '<td class="reportTableData" style="width:25%; text-align:left;" >' . htmlEncode($parent[$key]) . '</td>'; 
+	        echo '</tr><tr>';
+	      } 
+	    }
+	  }
+    echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
+    echo '<td class="reportTableColumnHeader" style="text-align:left;" colspan="4">' . i18n('sum') . " " . $nameR . '</td>';
+    echo '</tr>';
+  }
 }
 echo '<tr>';
 echo '<td class="reportTableHeader">' . i18n('sum') . '</td>';

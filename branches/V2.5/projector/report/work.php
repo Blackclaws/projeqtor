@@ -6,7 +6,10 @@ $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
 }
-  
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -32,7 +35,9 @@ $headerParameters="";
 if ($paramProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
 }
-  
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
   
@@ -96,23 +101,28 @@ echo '</tr>';
 
 $sum=0;
 foreach ($resources as $idR=>$nameR) {
-  $sumRes=0;
-  echo '<tr><td style="width:10%" class="reportTableLineHeader">' . $nameR . '</td>';
-  foreach ($projects as $idP=>$nameP) {
-    echo '<td style="width:' . $colWidth . '%" class="reportTableData">';
-    if (array_key_exists($idR, $result)) {
-      if (array_key_exists($idP, $result[$idR])) {
-        $val=$result[$idR][$idP];
-        echo Work::displayWorkWithUnit($val);
-        $sumProj[$idP]+=$val; 
-        $sumRes+=$val; 
-        $sum+=$val;
-      } 
-    }
-    echo '</td>';
+	if ($paramTeam) {
+		$res=new Resource($idR);
+	}
+  if (!$paramTeam or $res->idTeam==$paramTeam) {
+		$sumRes=0;
+	  echo '<tr><td style="width:10%" class="reportTableLineHeader">' . $nameR . '</td>';
+	  foreach ($projects as $idP=>$nameP) {
+	    echo '<td style="width:' . $colWidth . '%" class="reportTableData">';
+	    if (array_key_exists($idR, $result)) {
+	      if (array_key_exists($idP, $result[$idR])) {
+	        $val=$result[$idR][$idP];
+	        echo Work::displayWorkWithUnit($val);
+	        $sumProj[$idP]+=$val; 
+	        $sumRes+=$val; 
+	        $sum+=$val;
+	      } 
+	    }
+	    echo '</td>';
+	  }
+	  echo '<td style="width:10%" class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
+	  echo '</tr>';
   }
-  echo '<td style="width:10%" class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
-  echo '</tr>';
 }
 echo '<tr><td class="reportTableHeader">' . i18n('sum') . '</td>';
 foreach ($projects as $id=>$name) {
