@@ -558,7 +558,7 @@ function getTheme() {
  * @return unknown_type
  */ 
 function sendMail($to, $title, $message, $object=null, $headers=null, $sender=null)  {
-  global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath;
+  global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath, $paramMailEol;
   // Save data of the mail
   $mail=new Mail();
   if (array_key_exists('user',$_SESSION)) {
@@ -580,6 +580,7 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   // Send then mail
   if (!$headers) {
     $eol=(isset($paramMailEol))?$paramMailEol:"\r\n";
+debugLog("NewLine=".strlen($eol).":".bin2hex($eol));
   	$headers  = 'MIME-Version: 1.0' . $eol;
     $headers .= 'Content-type: text/html; charset=utf-8' . $eol;
     $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;

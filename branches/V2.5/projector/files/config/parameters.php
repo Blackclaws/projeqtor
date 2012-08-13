@@ -56,6 +56,6 @@ $paramMemoryLimitForPDF = '512';
 $logFile = '../files/logs/projector_${date}.log';
 $logLevel = '3';
 $paramDebugMode = 'false';
-
+//$paramMailEol="\n\r";
 //======= END
 
