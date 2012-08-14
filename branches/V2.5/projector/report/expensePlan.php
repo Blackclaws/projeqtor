@@ -94,13 +94,16 @@ for ($i=1;$i<=2;$i++) {
     }
   }
 }
+if (! $start and $end) {$start=$end;}
 if (! $start and ! $end) {$tab=array();}
 if (checkNoData($tab)) exit;
 
 $arrDates=array();
 $arrYear=array();
 $date=$start;
+echo $start . "|".$end;
 while ($date<=$end) {
+	echo "|".$date."|";
   $arrDates[]=$date;
   $year=substr($date,0,4);
   if (! array_key_exists($year,$arrYear)) {

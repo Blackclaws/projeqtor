@@ -6,7 +6,10 @@ $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
 }
-
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -32,7 +35,9 @@ $headerParameters="";
 if ($paramProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
 }
-
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
   
@@ -167,36 +172,41 @@ for($i=1; $i<=$nbDays;$i++) {
 echo '</tr>';
 
 foreach ($resources as $idR=>$nameR) {
-  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:30%">' . $nameR . '</td>';
-  for ($i=1; $i<=$nbDays;$i++) {
-    $day=$startDate+$i-1;
-    $style="";
-    if ($days[$day]=="off") {
-      $style=$weekendStyle;
-    }
-    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
-    
-    if (array_key_exists($day,$result[$idR])) {
-      echo "<div style='position:relative;'>";
-      $real=false;
-      foreach ($result[$idR][$day] as $idP=>$val) {
-        if ($idP=='real') {
-          $real=true;
-        } else {
-          $height=20*$val;
-          echo "<div style='position:relative;height:" . $height . "px; background-color:" . $projectsColor[$idP] . ";' ></div>";
-        }
-      }
-      if ($real) {
-        echo "<div style='position:absolute;top:3px;left:5px;color:#000000;'>R</div>";
-        echo "<div style='position:absolute;top:2px;left:6px;color:#FFFFFF;'>R</div>";
-      }
-      echo "</div>";
-    
-    }
-    echo '</td>';
+	if ($paramTeam) {
+    $res=new Resource($idR);
   }
-  echo '</tr>';
+  if (!$paramTeam or $res->idTeam==$paramTeam) {
+	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:30%">' . $nameR . '</td>';
+	  for ($i=1; $i<=$nbDays;$i++) {
+	    $day=$startDate+$i-1;
+	    $style="";
+	    if ($days[$day]=="off") {
+	      $style=$weekendStyle;
+	    }
+	    echo '<td class="reportTableDataFull" ' . $style . ' valign="top">';
+	    
+	    if (array_key_exists($day,$result[$idR])) {
+	      echo "<div style='position:relative;'>";
+	      $real=false;
+	      foreach ($result[$idR][$day] as $idP=>$val) {
+	        if ($idP=='real') {
+	          $real=true;
+	        } else {
+	          $height=20*$val;
+	          echo "<div style='position:relative;height:" . $height . "px; background-color:" . $projectsColor[$idP] . ";' ></div>";
+	        }
+	      }
+	      if ($real) {
+	        echo "<div style='position:absolute;top:3px;left:5px;color:#000000;'>R</div>";
+	        echo "<div style='position:absolute;top:2px;left:6px;color:#FFFFFF;'>R</div>";
+	      }
+	      echo "</div>";
+	    
+	    }
+	    echo '</td>';
+	  }
+	  echo '</tr>';
+  }
 }
 echo '</table>';
 echo '</td></tr></table>';

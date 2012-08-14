@@ -6,7 +6,10 @@ $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
 }
-
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
@@ -32,7 +35,9 @@ $headerParameters="";
 if ($paramProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
 }
-
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
   
@@ -159,6 +164,27 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 echo '<td class="reportTableHeader" >' . i18n('sum'). '</td>';
 echo '</tr>';
+
+
+if ($paramTeam) {
+	foreach ($resources as $idR=>$ress) {
+		$res=new Resource($idR);
+		if ($res->idTeam!=$paramTeam) {
+			unset($resources[$idR]);
+		}
+	}
+  foreach ($projects as $idP=>$nameP) {
+  	foreach ($result[$idP] as $idR=>$ress) {
+  	  if (! isset($resources[$idR]) ) {
+        unset  ($result[$idP][$idR]);
+        if (count($result[$idP])==0 ) {
+        	unset ($result[$idP]);
+        	unset($projects[$idP]);
+        }
+      }
+	  }	 
+  }
+}
 
 $globalSum=array();
 for ($i=1; $i<=$nbDays;$i++) {

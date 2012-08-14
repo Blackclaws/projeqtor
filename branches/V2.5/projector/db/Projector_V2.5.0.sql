@@ -31,7 +31,7 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 (128,6,'idTeam','teamList',5,0,null);
 -- activityPlan.php Report => add Team Parameter
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
-(129,42,'idTeam','teamList',5,0,null);
+(129,42,'idTeam','teamList',15,0,null);
 -- detailPlan.php Report => add Team Parameter
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
-(130,31,'idTeam','teamList',5,0,null);
+(130,31,'idTeam','teamList',15,0,null);
