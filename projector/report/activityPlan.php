@@ -6,7 +6,10 @@ $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
 };
-
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
   $paramMonth=$_REQUEST['monthSpinner'];
@@ -24,9 +27,14 @@ $periodValue=$_REQUEST['periodValue'];
 
 // Header
 $headerParameters="";
+if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
+  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+}
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
-  
 }
 if ($periodType=='month') {
   $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
@@ -34,9 +42,7 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
-if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
-}
+
 include "header.php";
 
 $where=getAccesResctictionClause('Activity',false);
@@ -166,6 +172,31 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 echo '<td class="reportTableHeader" >' . i18n('sum'). '</td>';
 echo '</tr>';
+
+if ($paramTeam) {
+  foreach ($resources as $idR=>$ress) {
+    $res=new Resource($idR);
+    if ($res->idTeam!=$paramTeam) {
+      unset($resources[$idR]);
+    }
+  }
+  foreach ($projects as $idP=>$nameP) {
+  	foreach($result[$idP] as $idA=>$acti) {
+	    foreach ($result[$idP][$idA] as $idR=>$ress) {
+	      if (! isset($resources[$idR]) ) {
+	        unset  ($result[$idP][$idA][$idR]);
+	        if (count($result[$idP][$idA])==0 ) {
+	          unset ($result[$idP][$idA]);
+	          if (count($result[$idP])==0 ) {
+	          	 unset ($result[$idP]);
+	          	 unset($projects[$idP]);
+	          }          
+	        }
+	      }
+	    }
+  	}
+  }
+}
 
 $globalSum=array();
 for ($i=1; $i<=$nbDays;$i++) {

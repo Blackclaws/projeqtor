@@ -1,12 +1,10 @@
 <?php
 include_once '../tool/projector.php';
 //echo "detailPlan.php";
-
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];
 };
-
 $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
   $paramMonth=$_REQUEST['monthSpinner'];
@@ -16,6 +14,10 @@ $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
   $paramWeek=$_REQUEST['weekSpinner'];
 };
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 
 $user=$_SESSION['user'];
 
@@ -24,9 +26,14 @@ $periodValue=$_REQUEST['periodValue'];
 
 // Header
 $headerParameters="";
+if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
+  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+}
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
-  
 }
 if ($periodType=='month') {
   $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
@@ -34,9 +41,7 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
-if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
-}
+
 include "header.php";
 
 $where=getAccesResctictionClause('Activity',false);
@@ -171,67 +176,71 @@ for ($i=1; $i<=$nbDays;$i++) {
   $globalSum[$startDate+$i-1]='';
 }
 foreach ($resources as $idR=>$nameR) {
-  $sum=array();
-  for ($i=1; $i<=$nbDays;$i++) {
-    $sum[$startDate+$i-1]='';
+	 if ($paramTeam) {
+    $res=new Resource($idR);
   }
-  echo '<tr height="20px">';
-  $cpt=0;
-  foreach ($result[$idR] as $res) { 
-    $cpt+=count($res);
-  }
-  $cpt+=1;
-  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . $nameR . '</td>';
-  foreach ($result[$idR] as $idP=>$proj) {
-    foreach ($result[$idR][$idP] as $idA=>$acti) { 
-	    if (array_key_exists($idP, $projects)) {
-	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $projects[$idP] . '</td>';
-	      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($activities[$idA]) . '</td>';
-        
-	      $lineSum='';
-	      for ($i=1; $i<=$nbDays;$i++) {
-	        $day=$startDate+$i-1;
-	        $style="";
-	        $ital=false;
-	        if ($days[$day]=="off") {
-	          $style=$weekendStyle;
-	        } else {
-	          if (! array_key_exists($day, $realDays[$idR]) 
-	          and array_key_exists($day,$result[$idR][$idP][$idA])) {
-	            $style=$plannedStyle;
-	            $ital=true;
-	          }
-	        }
-	        echo '<td class="reportTableData" ' . $style . ' valign="top">';
-	        if (array_key_exists($day,$result[$idR][$idP][$idA])) {
-	          echo ($ital)?'<i>':'';
-	          echo Work::displayWork($result[$idR][$idP][$idA][$day]);
-	          echo ($ital)?'</i>':'';
-	          $sum[$day]+=$result[$idR][$idP][$idA][$day];
-	          $globalSum[$day]+=$result[$idR][$idP][$idA][$day];
-	          $lineSum+=$result[$idR][$idP][$idA][$day];
-	        }
-	        echo '</td>';
-	      }
-	      echo '<td class="reportTableColumnHeader">' . Work::displayWork($lineSum) . '</td>';
-	      echo '</tr><tr>';
+  if (!$paramTeam or $res->idTeam==$paramTeam) {
+	  $sum=array();
+	  for ($i=1; $i<=$nbDays;$i++) {
+	    $sum[$startDate+$i-1]='';
+	  }
+	  echo '<tr height="20px">';
+	  $cpt=0;
+	  foreach ($result[$idR] as $res) { 
+	    $cpt+=count($res);
+	  }
+	  $cpt+=1;
+	  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . $nameR . '</td>';
+	  foreach ($result[$idR] as $idP=>$proj) {
+	    foreach ($result[$idR][$idP] as $idA=>$acti) { 
+		    if (array_key_exists($idP, $projects)) {
+		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $projects[$idP] . '</td>';
+		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($activities[$idA]) . '</td>';
+	        
+		      $lineSum='';
+		      for ($i=1; $i<=$nbDays;$i++) {
+		        $day=$startDate+$i-1;
+		        $style="";
+		        $ital=false;
+		        if ($days[$day]=="off") {
+		          $style=$weekendStyle;
+		        } else {
+		          if (! array_key_exists($day, $realDays[$idR]) 
+		          and array_key_exists($day,$result[$idR][$idP][$idA])) {
+		            $style=$plannedStyle;
+		            $ital=true;
+		          }
+		        }
+		        echo '<td class="reportTableData" ' . $style . ' valign="top">';
+		        if (array_key_exists($day,$result[$idR][$idP][$idA])) {
+		          echo ($ital)?'<i>':'';
+		          echo Work::displayWork($result[$idR][$idP][$idA][$day]);
+		          echo ($ital)?'</i>':'';
+		          $sum[$day]+=$result[$idR][$idP][$idA][$day];
+		          $globalSum[$day]+=$result[$idR][$idP][$idA][$day];
+		          $lineSum+=$result[$idR][$idP][$idA][$day];
+		        }
+		        echo '</td>';
+		      }
+		      echo '<td class="reportTableColumnHeader">' . Work::displayWork($lineSum) . '</td>';
+		      echo '</tr><tr>';
+		    }
 	    }
-    }
+	  }
+	  echo '<td class="reportTableLineHeader" colspan="2">' . i18n('sum') . '</td>';
+	  $lineSum='';
+	  for ($i=1; $i<=$nbDays;$i++) {
+	    $style='';
+	    $day=$startDate+$i-1;
+	    if ($days[$day]=="off") {
+	          $style=$weekendStyle;
+	    }
+	    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . Work::displayWork($sum[$startDate+$i-1]) . '</td>';
+	    $lineSum+=$sum[$startDate+$i-1];
+	  }
+	  echo '<td class="reportTableHeader" >' . Work::displayWork($lineSum) . '</td>';
+	  echo '</tr>';
   }
-  echo '<td class="reportTableLineHeader" colspan="2">' . i18n('sum') . '</td>';
-  $lineSum='';
-  for ($i=1; $i<=$nbDays;$i++) {
-    $style='';
-    $day=$startDate+$i-1;
-    if ($days[$day]=="off") {
-          $style=$weekendStyle;
-    }
-    echo '<td class="reportTableColumnHeader" ' . $style . ' >' . Work::displayWork($sum[$startDate+$i-1]) . '</td>';
-    $lineSum+=$sum[$startDate+$i-1];
-  }
-  echo '<td class="reportTableHeader" >' . Work::displayWork($lineSum) . '</td>';
-  echo '</tr>';
-  
 }
 
 echo '<tr><td colspan="' . ($nbDays+3) . '">&nbsp;</td></tr>';
