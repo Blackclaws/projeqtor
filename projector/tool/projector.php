@@ -580,7 +580,6 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   // Send then mail
   if (!$headers) {
     $eol=(isset($paramMailEol))?$paramMailEol:"\r\n";
-debugLog("NewLine=".strlen($eol).":".bin2hex($eol));
   	$headers  = 'MIME-Version: 1.0' . $eol;
     $headers .= 'Content-type: text/html; charset=utf-8' . $eol;
     $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;
