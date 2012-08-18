@@ -1421,13 +1421,12 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       return '';
     }
   }  
-  
   public function isAttributeSetToField($fieldName, $attribute) {
-    if (strpos($this->getFieldAttributes($fieldName), $attribute)!==false) {
-      return true;
-    } else {
-      return false;
-    }
+  	if (strpos($this->getFieldAttributes($fieldName), $attribute)!==false) {
+  		return true;
+  	} else {
+  		return false;
+  	}
   }
   
   /** ========================================================================
