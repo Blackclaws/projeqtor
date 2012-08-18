@@ -14,7 +14,9 @@ if (! array_key_exists('startDatePlan',$_REQUEST)) {
 $startDatePlan=$_REQUEST['startDatePlan'];
 
 set_time_limit(600);
+Sql::beginTransaction();
 $result=PlannedWork::plan($idProjectPlan, $startDatePlan);
+Sql::commitTransaction();
 
 // Message of correct saving
 if (stripos($result,'id="lastPlanStatus" value="ERROR"')>0 ) {
