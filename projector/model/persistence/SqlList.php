@@ -22,7 +22,6 @@ class SqlList {
    * @return an array containing the list of references
    */
   public static function getList($listType, $displayCol='name', $selectedValue=null, $showIdle=false) {
-//traceLog("       =>getList($listType, $displayCol, $selectedValue, $showIdle)");
     $listName=$listType . "_" . $displayCol;
     if ($showIdle) { $listName .= '_all'; }
     if (array_key_exists($listName, self::$list)) {
@@ -63,11 +62,11 @@ class SqlList {
     }
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
-      $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+      $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
     }
     $query .=')';
     if ($selectedValue) {
-      $query .= " or " . $obj->getDatabaseColumnName('id') . "='" . $selectedValue . "'";
+      $query .= " or " . $obj->getDatabaseColumnName('id') .'= ' . Sql::str($selectedValue) ;
     }
     if (property_exists($obj,'sortOrder')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';
@@ -133,12 +132,12 @@ class SqlList {
       	      . " where ii.idIndicatorable='" . $val . "' and ii.idIndicator=" . $i->getDatabaseTableName() . ".id)"; 
       } else if ( (strtolower($listType)=='warningdelayunit' or strtolower($listType)=='alertdelayunit') and $col=='idIndicator' ) {
         $ind=new Indicator($val);
-        $query .= " and " . $obj->getDatabaseTableName() . ".type='" . $ind->type . "'";
+        $query .= " and " . $obj->getDatabaseTableName() . '.type='. $ind->type;
       } else {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
         } else {
-          $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+          $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
         }
       }
     }
@@ -154,7 +153,7 @@ class SqlList {
       $query .= ' and id in (' . $lstIn . ')' ;
     } 
     if ($selectedValue) {
-      $query .= " or " . $obj->getDatabaseColumnName('id') . "='" . $selectedValue . "'";
+      $query .= " or " . $obj->getDatabaseColumnName('id') . '='. $selectedValue;
     }
     if (property_exists($obj,'sortOrder')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';

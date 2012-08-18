@@ -33,15 +33,14 @@ class Sql {
    */
   private function __construct() {
   }
-
-
+	
   /** =========================================================================
    * Execute a query on database and return the result
    * @param $sqlRequest the resquest to be executed. Can be SELECT, UPDATE, INSERT, DELETE or else
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
-scriptLog('Sql::query('.$sqlRequest.')');
+	scriptLog('Sql::query('.$sqlRequest.')');
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       return FALSE;
@@ -51,26 +50,51 @@ scriptLog('Sql::query('.$sqlRequest.')');
     self::$lastQueryErrorMessage=NULL;
     self::$lastQueryErrorCode=NULL;
     enableCatchErrors();
+    $result = new PDOStatement();
     try { 
-      $result = mysql_query($sqlRequest,$cnx);
+      $result = $cnx->query($sqlRequest);  
+      //traceLog($sqlRequest);
       if (! $result) {
-        self::$lastQueryErrorMessage=i18n('sqlError'). ' : ' . mysql_error($cnx) . "<br/><br/>" . $sqlRequest;
-        self::$lastQueryErrorCode=mysql_errno($cnx); 
-        errorLog('[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);       
+        self::$lastQueryErrorMessage=i18n('sqlError'). ' : ' .$cnx->errorCode() . "<br/><br/>" . $sqlRequest;
+        self::$lastQueryErrorCode=$cnx->errorInfo(); 
+        errorLog('Error-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);       
       }
-    } catch (Exception $e) {
-      self::$lastQueryErrorMessage=mysql_error($cnx);
-      self::$lastQueryErrorCode=mysql_errno($cnx);
-      $result=false;
-      errorLog('[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
+    } catch (PDOException $e) {
+      self::$lastQueryErrorMessage=$e->getMessage();
+      self::$lastQueryErrorCode=$e->getCode();
+      errorLog('Exception-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
+      errorLog('*******************************');
+      $traces = debug_backtrace();
+      if (isset($traces[0])){
+      	errorLog('Fonction appelante 0: '.$traces[0]['function'].' en ligne '.$traces[0]['line'].' class '.$traces[0]['class']);
+      }
+      if (isset($traces[1])){
+      	errorLog('Fonction appelante 1 : '.$traces[1]['function'].' en ligne '.$traces[1]['line'].' class '.$traces[1]['class']);
+      }
+      if (isset($traces[2])){
+      	errorLog('Fonction appelante 2 : '.$traces[2]['function'].' en ligne '.$traces[2]['line'].' class '.$traces[2]['class']);
+      }
+      if (isset($traces[3])){
+      	errorLog('Fonction appelante 3 : '.$traces[3]['function'].' en ligne '.$traces[3]['line'].' class '.$traces[3]['class']);
+      }
+      if (isset($traces[4])){
+      	errorLog('Fonction appelante 4 : '.$traces[4]['function'].' en ligne '.$traces[4]['line'].' class '.$traces[4]['class']);
+      }
+      if (isset($traces[5])){
+      	errorLog('Fonction appelante 5 : '.$traces[5]['function'].' en ligne '.$traces[5]['line'].' class '.$traces[5]['class']);
+      }
+      if (isset($traces[6])){
+      	errorLog('Fonction appelante 6 : '.$traces[6]['function'].' en ligne '.$traces[6]['line'].' class '.$traces[6]['class']);
+      }
+      errorLog('Query : '.$sqlRequest);
     }
     disableCatchErrors();
     // store informations about last query
     self::$lastQuery=$sqlRequest;
     self::$lastQueryResult=$result;
     self::$lastQueryType= (is_resource($result)) ? "SELECT" : "UPDATE";
-    self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? mysql_num_rows($result) : mysql_affected_rows($cnx);
-    self::$lastQueryNewid = (mysql_insert_id($cnx)) ? mysql_insert_id($cnx) : NULL ;
+    self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? $result->rowCount() : $result->rowCount();
+    self::$lastQueryNewid = ($cnx->lastInsertId()) ? $cnx->lastInsertId() : NULL ;
     // return result
     return $result;
   }
@@ -82,7 +106,7 @@ scriptLog('Sql::query('.$sqlRequest.')');
    */
   static function fetchLine($result) {
     if ($result) {
-      return mysql_fetch_array($result, MYSQL_ASSOC);
+      return $result->fetch(PDO::FETCH_ASSOC);
     } else {
       return false;
     }
@@ -96,10 +120,10 @@ scriptLog('Sql::query('.$sqlRequest.')');
     $cnx=self::getConnection();
     if ( $cnx != NULL ) {
       error_reporting(E_ALL ^ E_WARNING);
-      if (! mysql_query("BEGIN",$cnx)) {      
+      if (!$cnx->beginTransaction()) {      
         echo htmlGetErrorMessage("SQL ERROR : Error on Begin Transaction");
         errorLog("SQL ERROR : Error on Begin Transaction");
-        errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
+        //errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
         exit; 
       }
       error_reporting(E_ALL ^ E_WARNING);
@@ -115,10 +139,10 @@ scriptLog('Sql::query('.$sqlRequest.')');
     $cnx=self::getConnection();
     if ( $cnx != NULL ) {
       error_reporting(E_ALL ^ E_WARNING);
-      if (! mysql_query("COMMIT",$cnx)) {      
+      if (! $cnx->commit()) {      
         echo htmlGetErrorMessage("SQL ERROR : Error on Commit Transaction");
         errorLog("SQL ERROR : Error on Commit Transaction");
-        errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
+        //errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
         exit; 
       }
       error_reporting(E_ALL ^ E_WARNING);
@@ -134,10 +158,10 @@ scriptLog('Sql::query('.$sqlRequest.')');
     $cnx=self::getConnection();
     if ( $cnx != NULL ) {
       error_reporting(E_ALL ^ E_WARNING);
-      if (! mysql_query("ROLLBACK",$cnx) ) {      
+      if (! $cnx->rollBack() ) {      
         echo htmlGetErrorMessage("SQL ERROR : Error on Rollback Transaction");
         errorLog("SQL ERROR : Error on Rollback Transaction");
-        errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
+        //errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
         exit; 
       }
     }
@@ -150,17 +174,19 @@ scriptLog('Sql::query('.$sqlRequest.')');
    * @return the string, protected to ensure a correct sql query
    */
   public static function str($string, $objectClass=null) {
-    if ($objectClass and $objectClass=="History") {
-      return $string; // for history saving, value have just been escaped yet, don't do it twice !
-    }
-    $str=$string;
-    if (get_magic_quotes_gpc()) {
+    // OK, validated, values are not escaped any more on check, but just while writing the query 
+    /*if ($objectClass and $objectClass=="History") {
+    	return $string; // for history saving, value have just been escaped yet, don't do it twice !
+    }*/
+  	$str=$string;
+    // To be kept : if magic_quote_gpc is on, it would insert \' instead of ' and so on
+  	if (get_magic_quotes_gpc()) {
       $str=str_replace('\"','"',$str);
       $str=str_replace("\'","'",$str);
       $str=str_replace('\\\\','\\',$str);
-    }
+    }   
     $cnx=self::getConnection();
-    return mysql_real_escape_string($str,$cnx);
+    return $cnx->quote($str);
   }
    
   
@@ -199,6 +225,17 @@ scriptLog('Sql::query('.$sqlRequest.')');
     enableCatchErrors();
     // defines the connection to MySql Database
     ini_set('mysql.connect_timeout', 10);
+    try {
+    	$dsn = 'mysql:host='.self::$dbHost.';dbname='.self::$dbName;
+    	    
+    	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword);
+    	self::$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    catch (PDOException $e) {
+    	echo htmlGetErrorMessage($e->getMessage( )).'<br />';
+    }
+    
+    /*
     if ( ! self::$connexion = mysql_connect(self::$dbHost, self::$dbUser, self::$dbPassword) ) { 
       if ($logLevel>=3) {
         echo htmlGetErrorMessage(i18n("errorConnectionCNX",array(self::$dbHost, self::$dbUser))) ;
@@ -222,6 +259,8 @@ scriptLog('Sql::query('.$sqlRequest.')');
       self::$lastConnectError="BASE";
       exit;
     }
+    */
+    
     ini_set('mysql.connect_timeout', 60);
     //set_error_handler('errorHandler');
     //error_reporting(E_ALL);
