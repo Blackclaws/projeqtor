@@ -208,7 +208,7 @@ abstract class SqlElement {
                                   "MilestoneType"=>"control", 
                                   "RiskType"=>"control", 
                                   "ActionType"=>"control", 
-                                  "IssueType"=>"control",)
+                                  "IssueType"=>"control")
   );
 
 
@@ -284,7 +284,7 @@ abstract class SqlElement {
    * @return void
    */
   private function saveSqlElement() {
-//scriptLog("saveSqlElement(" . get_class($this) . "#$this->id)");
+//traceLog("saveSqlElement(" . get_class($this) . "#$this->id)");
   	// #305
     $this->recalculateCheckboxes();    
     // select operation to be executed
@@ -380,7 +380,7 @@ abstract class SqlElement {
 	          $queryValues.=", ";
 	        }
 	        $queryColumns .= $this->getDatabaseColumnName($col_name);
-	        $queryValues .= "'" . Sql::str($col_value, $objectClass) . "'";
+	        $queryValues .= Sql::str($col_value, $objectClass);
 	      }
       }    
     }
@@ -409,7 +409,7 @@ abstract class SqlElement {
 	            $queryValues.=", ";
 	          }
 	          $queryColumns .= ' ' . $this->getDatabaseColumnName($col_name) . ' ';
-	          $queryValues .= "'" . Sql::str($col_value, $objectClass) . "'";
+	          $queryValues .=  Sql::str($col_value, $objectClass);
 	        }
 	      }
       }
@@ -491,19 +491,20 @@ abstract class SqlElement {
         }
         $col_old_value=$oldObject->$col_name;
         // special null treatment (new value)
-        $col_new_value=SQL::str(trim($col_new_value));
+        //$col_new_value=Sql::str(trim($col_new_value));
+        $col_new_value=trim($col_new_value);
         if ($col_new_value=='') {$col_new_value=NULL;};
         // special null treatment (old value)
-        $col_old_value=SQL::str(trim($col_old_value));
+        //$col_old_value=SQL::str(trim($col_old_value));
         if ($col_old_value=='') {$col_old_value=NULL;};
         // if changed
         if ($col_new_value != $col_old_value) {
           if ($col_name=='idle') {$idleChange=true;}
           $query .= ($nbChanged==0)?" set ":", ";
-          if ($col_new_value==NULL or $col_new_value=='') {
+          if ($col_new_value==NULL or $col_new_value=='' or $col_new_value=="''") {
             $query .= $this->getDatabaseColumnName($col_name) . " = NULL";
           } else {
-            $query .= $this->getDatabaseColumnName($col_name) . " = '" . $col_new_value ."' ";
+            $query .= $this->getDatabaseColumnName($col_name) . '=' . Sql::str($col_new_value) .' ';
           }
           $nbChanged+=1;
           // Save change history
@@ -517,7 +518,7 @@ abstract class SqlElement {
         }
       }
     }
-    $query .= " where id='" . Sql::str($this->id) . "'";
+    $query .= ' where id=' . Sql::str($this->id);
     // If changed, execute the query
     if ($nbChanged > 0 and $returnStatus!="ERROR") {
       // Catch errors, and return error message
@@ -1003,7 +1004,7 @@ abstract class SqlElement {
         if ($valCrit==null) {
           $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' is null';
         } else { 
-          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = '" . Sql::str($valCrit) . "' ";
+          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' ='.Sql::str($valCrit);
         }
         $defaultObj->$colCrit=$valCrit;
       }
@@ -1014,17 +1015,18 @@ abstract class SqlElement {
     if (count($objectCrit)>0) {
     	foreach ($objectCrit as $colCrit => $valCrit) {
     		$whereClause.=($whereClause=='')?' where ':' and ';
-    		$whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = '" . Sql::str($valCrit) . "' ";
+    		$whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = " . Sql::str($valCrit) . " ";
     	}
     }
     // If $whereClause is set, get the element from Database
-    $query = "select * from " . $this->getDatabaseTableName() . $whereClause;
+    $query = 'select * from ' . $this->getDatabaseTableName() . $whereClause;
     if ($clauseOrderBy) {
       $query .= ' order by ' . $clauseOrderBy;
     } else if (isset($this->sortOrder)) {
       $query .= ' order by ' . $this->getDatabaseTableName() . '.sortOrder';
     }
     $result = Sql::query($query); 
+    
     if (Sql::$lastQueryNbRows > 0) {
       $line = Sql::fetchLine($result);
       while ($line) {
@@ -1086,7 +1088,7 @@ abstract class SqlElement {
         if ($valCrit==null) {
           $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' is null';
         } else { 
-          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = '" . Sql::str($valCrit) . "' ";
+          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . '= ' . Sql::str($valCrit);
         }
         $defaultObj->$colCrit=$valCrit;
       }
@@ -1120,7 +1122,7 @@ abstract class SqlElement {
     } else {
       $obj->singleElementNotFound=true;
       if (count($objList)>1) {
-traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned more than 1 element");
+		//traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned more than 1 element");
         $obj->tooManyRows=true;
       }
       return $obj;
@@ -1207,7 +1209,7 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
     $empty=true;
     // If id is set, get the element from Database
     if ($curId != NULL) {
-      $query = "select * from " . $this->getDatabaseTableName() . " where id ='" . Sql::str($curId) ."'" ;
+      $query = "select * from " . $this->getDatabaseTableName() . ' where id =' . Sql::str($curId) ;
       $result = Sql::query($query); 
       if (Sql::$lastQueryNbRows > 0) {
         $empty=false;
@@ -1299,8 +1301,8 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       // set the reference data
       // build query
       $query = "select id from " . $obj->getDatabaseTableName()
-      . " where refId ='" . Sql::str($curId) . "'"
-      . " and refType ='" . get_class($this) . "'" ;      
+      . ' where refId =' . Sql::str($curId).
+       " and refType ='" . get_class($this) . "'" ;      
       $result = Sql::query($query);
       // if no element in database, will return empty object
       if (Sql::$lastQueryNbRows > 0) {
@@ -1331,9 +1333,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
       // build query
       $query = "select id from " . $obj->getDatabaseTableName();
       if (property_exists($objClass, 'id'.get_class($this))) {
-        $query .= " where " . $obj->getDatabaseColumnName('id' . get_class($this)) . "='" . Sql::str($curId) . "'";	
+        $query .= " where " . $obj->getDatabaseColumnName('id' . get_class($this)) . "= " . Sql::str($curId) . " ";	
       } else {
-        $query .= " where refId ='" . Sql::str($curId) . "'"
+        $query .= " where refId =" . Sql::str($curId) . " "
         . " and refType ='" . get_class($this) . "'";
       } 
       $query .= " order by id desc ";
@@ -1449,9 +1451,10 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   public function getDatabaseColumnName($field) {
     $databaseColumnName=$this->getStaticDatabaseColumnName();
     if (array_key_exists($field,$databaseColumnName)) {
-      return Sql::str($databaseColumnName[$field]);
+      return $databaseColumnName[$field];
     } else {
-      return Sql::str($field);
+      //return Sql::str($field); // Must not be quoted : would return 'name' (with quotes)
+      return $field;
     }
   }
 
@@ -1466,10 +1469,13 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
   public function getDatabaseColumnNameReversed($field) {
     $databaseColumnName=$this->getStaticDatabaseColumnName();
     $databaseColumnNameReversed=array_flip($databaseColumnName);
+    //I deleted Sql::str because it's add ' '
     if (array_key_exists($field,$databaseColumnNameReversed)) {
-      return Sql::str($databaseColumnNameReversed[$field]);
+    	return $databaseColumnNameReversed[$field];
+      //return Sql::str($databaseColumnNameReversed[$field]);
     } else {
-      return Sql::str($field);
+      //return Sql::str($field);
+    	return $field;
     }
   }
     
@@ -1546,7 +1552,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
    */  
   protected function getStaticDatabaseTableName() {
     global $paramDbPrefix;
-    return Sql::str(strtolower($paramDbPrefix . get_class($this)));
+    // Rajoute des quotes au nom de la table
+    //return Sql::str(strtolower($paramDbPrefix . get_class($this)));
+    return strtolower($paramDbPrefix . get_class($this));
   }
 
   /** ========================================================================
@@ -1666,61 +1674,6 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
         }
         if ($colName=='idProject' and property_exists($this,'idUser')) {
           $colScript .= '   refreshList("idUser","idProject", this.value);';
-        }
-      }
-      if ($colName=='idProduct' and property_exists($this,'idVersion')) {
-      	if (property_exists($this,'idProject')) {
-      		$colScript .= '   if (trim(this.value)) {';
-      		$colScript .= '     refreshList("idVersion","idProduct", this.value);';
-      		$colScript .= '   } else {';
-      		$colScript .= '     refreshList("idVersion","idProject", dijit.byId("idProject").get("value"));';
-      		$colScript .= '   }';
-      	} else {
-      		$colScript .= '   refreshList("idVersion","idProduct", this.value);';
-      	}
-      }
-      if ($colName=='idProduct' and property_exists($this,'idTargetVersion')) {
-        if (property_exists($this,'idProject')) {
-          $colScript .= '   if (trim(this.value)) {';
-          $colScript .= '     refreshList("idTargetVersion","idProduct", this.value);';
-          $colScript .= '   } else {';
-          $colScript .= '     refreshList("idTargetVersion","idProject", dijit.byId("idProject").get("value"));';
-          $colScript .= '   }';
-        } else {
-          $colScript .= '   refreshList("idTargetVersion","idProduct", this.value);';
-        }
-      }
-      if ($colName=='idProduct' and property_exists($this,'idOriginalVersion')) {
-        if (property_exists($this,'idProject')) {
-          $colScript .= '   if (trim(this.value)) {';
-          $colScript .= '     refreshList("idOriginalVersion","idProduct", this.value);';
-          $colScript .= '   } else {';
-          $colScript .= '     refreshList("idOriginalVersion","idProject", dijit.byId("idProject").get("value"));';
-          $colScript .= '   }';
-        } else {
-          $colScript .= '   refreshList("idOriginalVersion","idProduct", this.value);';
-        }
-      }
-      if ($colName=='idProduct' and property_exists($this,'idTestCase')) {
-        if (property_exists($this,'idProject')) {
-          $colScript .= '   if (trim(this.value)) {';
-          $colScript .= '     refreshList("idTestCase","idProduct", this.value);';
-          $colScript .= '   } else {';
-          $colScript .= '     refreshList("idTestCase","idProject", dijit.byId("idProject").get("value"));';
-          $colScript .= '   }';
-        } else {
-          $colScript .= '   refreshList("idTestCase","idProduct", this.value);';
-        }
-      }
-      if ($colName=='idProduct' and property_exists($this,'idRequirement')) {
-        if (property_exists($this,'idProject')) {
-          $colScript .= '   if (trim(this.value)) {';
-          $colScript .= '     refreshList("idRequirement","idProduct", this.value);';
-          $colScript .= '   } else {';
-          $colScript .= '     refreshList("idRequirement","idProject", dijit.byId("idProject").get("value"));';
-          $colScript .= '   }';
-        } else {
-          $colScript .= '   refreshList("idRequirement","idProduct", this.value);';
         }
       }
       $colScript .= '</script>';
@@ -1903,9 +1856,9 @@ traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned m
    * @return a message to draw (to echo) : always an error in this class, 
    *  must be redefined in the inherited class
    */
-   public function drawSpecificItem($item){
-   	 return "No calculated item " . $item . " for object " . get_class($this); 
-   }
+  public function drawSpecificItem($item){
+    return "No specific item " . $item . " for object " . get_class($this);  
+  }
   
    public function drawCalculatedItem($item){
      return "No calculated item " . $item . " for object " . get_class($this); 
