@@ -48,6 +48,8 @@ class History extends SqlElement {
   public static function store ($obj, $refType, $refId, $operation, $colName=null, $oldValue=null, $newValue=null) {
     $user=(array_key_exists('user',$_SESSION))?$_SESSION['user']:new User();
     $hist=new History();
+    // Attention : History fields are not to be escaped by Sql::str because $olValue and $newValue have already been escaped
+    // So other fiels (names) must be manually "quoted"
     $hist->refType=$refType;
     $hist->refId=$refId;
     $hist->operation=$operation;
