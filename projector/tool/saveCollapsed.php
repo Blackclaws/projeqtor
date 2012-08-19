@@ -4,6 +4,7 @@
  */
 require_once "../tool/projector.php";
 
+Sql::beginTransaction();
 $scope=$_REQUEST['scope'];
 $value=$_REQUEST['value'];
 if ($value=='true') {
@@ -11,5 +12,5 @@ if ($value=='true') {
 } else {
   Collapsed::expand($scope);
 }
-
+Sql::commitTransaction();
 ?>
