@@ -4,6 +4,7 @@
  */
 require_once "../tool/projector.php";
 
+Sql::beginTransaction();
 $user=$_SESSION['user'];
 $action=$_REQUEST['action'];
 if ($action=='status') {
@@ -29,4 +30,5 @@ if ($action=='status') {
   	}
   }
 }  
+Sql::commitTransaction();
 ?>

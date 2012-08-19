@@ -7,6 +7,7 @@ require_once "../tool/projector.php";
 $status="NO_CHANGE";
 $errors="";
 $type=$_REQUEST['parameterType'];
+Sql::beginTransaction();
 if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable('menu', 'profile', 'habilitation') ;
   foreach($crosTable as $lineId => $line) {
@@ -159,10 +160,13 @@ if ($type=='habilitation') {
    $status='ERROR';
 }
 if ($status=='ERROR') {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $errors . '</span>';
 } else if ($status=='OK'){ 
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . i18n('messageParametersSaved') . '</span>';
 } else {
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . i18n('messageParametersNoChangeSaved') . '</span>';
 }
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';

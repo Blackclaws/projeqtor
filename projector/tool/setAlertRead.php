@@ -11,7 +11,7 @@ $remind=0;
 if (array_key_exists('remind',$_REQUEST)) {
   $remind=$_REQUEST['remind'];
 }
-
+Sql::beginTransaction();
 $idAlert=$_REQUEST['idAlert'];
 $alert=new Alert($idAlert);
 if ($remind) {
@@ -22,3 +22,4 @@ if ($remind) {
   $alert->alertReadDateTime=date('Y-m-d H:i:s');
 }
 $alert->save();
+Sql::commitTransaction();

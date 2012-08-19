@@ -24,14 +24,18 @@ if ($mode!='before' and $mode!='after') {
 
 $idFrom=substr($from, 6);
 $idTo=substr($to, 6);
+Sql::beginTransaction();
 $task=new PlanningElement($idFrom);
 $result=$task->moveTo($idTo,$mode);
 //$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

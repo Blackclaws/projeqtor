@@ -28,6 +28,7 @@ $originRefId=$_REQUEST['originRefId'];
 
 $originId=null;
 
+Sql::beginTransaction();
 // get the modifications (from request)
 $critArray=array('refType'=>$originRefType,'refId'=>$originRefId);
 $origin=SqlElement::getSingleSqlElementFromCriteria('Origin', $critArray);
@@ -41,10 +42,13 @@ $result=$origin->save();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

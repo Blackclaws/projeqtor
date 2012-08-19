@@ -28,6 +28,7 @@ if ($className!=get_class($obj)) {
   throwError('last save object (' . get_class($obj) . ') is not of the expected class (' . $className . ').');
 }
 
+Sql::beginTransaction();
 // get the modifications (from request)
 $newObj=new $className();
 $newObj->fillFromRequest();
@@ -53,11 +54,14 @@ if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0
 }
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . formatResult($result,'') . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . formatResult($result, $action) . '</span>';
   // save the new object to session (modified status)
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . formatResult($result,'') . '</span>';
 }
 

@@ -29,7 +29,7 @@ if (is_array($approverId)) {
 } else {
 	$arrayId[]=$approverId;
 }
-
+Sql::beginTransaction();
 $result="";
 // get the modifications (from request)
 foreach ($arrayId as $approverId) {
@@ -56,10 +56,13 @@ foreach ($arrayId as $approverId) {
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

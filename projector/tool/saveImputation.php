@@ -19,7 +19,7 @@ if ($rangeType=='week') {
 ini_set('max_input_vars', 25*$nbLines+20);
 ini_set('suhosin.post.max_vars', 25*$nbLines+20);
 ini_set('suhosin.request.max_vars', 25*$nbLines+20);
-
+Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
   $imputable=$_REQUEST['imputable'][$i];
   if ($imputable) {
@@ -83,10 +83,13 @@ for ($i=0; $i<$nbLines; $i++) {
 }
 
 if ($status=='ERROR') {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $finalResult . '</span>';
 } else if ($status=='OK'){ 
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . i18n('messageImputationSaved') . '</span>';
 } else {
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . i18n('messageNoImputationChange') . '</span>';
 }
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';

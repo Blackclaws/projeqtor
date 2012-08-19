@@ -51,7 +51,7 @@ if ($valid or $cancel) {
   $_SESSION['user']=$user;
 }
 */
-
+Sql::beginTransaction();
 echo '<table width="100%"><tr><td align="center">';
 $crit=array();
 $crit['idUser']=$user->id;
@@ -73,7 +73,7 @@ if ($name) {
   echo '<span class="messageOK">' . i18n('defaultFilterCleared') . '</span>';
 }
 echo '</td></tr></table>';
-
+Sql::commitTransaction();
 $flt=new Filter();
 $crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);

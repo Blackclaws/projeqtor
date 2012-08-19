@@ -35,7 +35,7 @@ $idle=false;
 if (array_key_exists('versionProjectIdle',$_REQUEST)) {
   $idle=true;
 }
-
+Sql::rollbackTransaction();
 $versionProject=new VersionProject($id);
 
 $versionProject->idProject=$project;
@@ -48,10 +48,13 @@ $result=$versionProject->save();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 require_once "../tool/projector.php";
 
+Sql::beginTransaction();
  $crit=array();
  $user=$_SESSION['user'];
  $crit['idUser']=$user->id;
@@ -10,4 +11,5 @@ require_once "../tool/projector.php";
  $obj->parameterValue=$_REQUEST['value'];;
  $result=$obj->save();
 echo "OK";
+Sql::commitTransaction();
  ?>
