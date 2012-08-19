@@ -8,6 +8,7 @@ if (! isset($adminFunctionality)) {
 	echo "ERROR - functionality not defined";
 	return;
 }
+Sql::beginTransaction();
 $nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
 if ($adminFunctionality=='sendAlert') {
 	$result=sendAlert();
@@ -33,10 +34,13 @@ if ($adminFunctionality=='sendAlert') {
 
 // Message for result
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 

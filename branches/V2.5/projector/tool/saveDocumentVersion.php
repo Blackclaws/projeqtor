@@ -98,6 +98,8 @@ if (! array_key_exists('documentId',$_REQUEST)) {
     $error=true;
 }
 $documentId=$_REQUEST['documentId'];
+
+Sql::beginTransaction();
 // Verify that user has rights to update the document
 $doc= new Document($documentId);
 if (securityGetAccessRightYesNo('menuDocument', 'update', $doc)!="YES" or $doc->locked) {
@@ -189,13 +191,17 @@ if (! $documentVersionId) {
 if (! $error) {
   // Message of correct saving
   if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+  	Sql::rollbackTransaction();
     echo '<span class="messageERROR" >' . $result . '</span>';
   } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+  	Sql::commitTransaction();
     echo '<span class="messageOK" >' . $result . '</span>';
   } else { 
+  	Sql::commitTransaction();
     echo '<span class="messageWARNING" >' . $result . '</span>';
   }
 } else {
+	Sql::rollbackTransaction();
    echo '<input type="hidden" id="lastSaveId" value="" />';
    echo '<input type="hidden" id="lastOperation" value="file upload" />';
    echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';

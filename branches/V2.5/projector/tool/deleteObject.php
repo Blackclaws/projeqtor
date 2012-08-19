@@ -25,6 +25,7 @@ if ($className!=get_class($obj)) {
   throwError('last save object (' . get_class($obj) . ') is not of the expected class (' . $className . ').'); 
 }
 
+Sql::beginTransaction();
 $obj=new $className($obj->id); // Get the last saved version, to fetch last version for array of objects
 // delete from database
 $result=$obj->delete();
@@ -32,11 +33,14 @@ $result=$obj->delete();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
   unset($_SESSION['currentObject']);
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

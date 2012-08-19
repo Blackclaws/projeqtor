@@ -16,6 +16,7 @@ if ($documentVersionId=='') {
 if ($documentVersionId==null) {
   throwError('documentVersionId parameter not found in REQUEST');
 }
+Sql::beginTransaction();
 $obj=new DocumentVersion($documentVersionId);
 $file=$obj->getUploadFileName();
 if (file_exists($file)) {
@@ -25,10 +26,13 @@ $result=$obj->delete();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

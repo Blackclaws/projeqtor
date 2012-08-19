@@ -38,6 +38,7 @@ $name="";
 if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
 }
+Sql::beginTransaction();
 trim($name);
 if (! $name) {
   echo htmlGetErrorMessage((i18n("messageMandatory", array(i18n("filterName")))));
@@ -80,5 +81,5 @@ $flt=new Filter();
 $crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );
 $filterList=$flt->getSqlElementsFromCriteria($crit, false);
 htmlDisplayStoredFilter($filterList,$filterObjectClass);
-
+Sql::commitTransaction();
 ?>

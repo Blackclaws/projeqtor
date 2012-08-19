@@ -76,7 +76,7 @@ $lineId=trim($lineId);
 if ($lineId=='') {
   $lineId=null;
 } 
-
+Sql::beginTransaction();
 $line=new BillLine($lineId);
 $line->refType=$refType;
 $line->refId=$refId;
@@ -94,10 +94,13 @@ $result=$line->save();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

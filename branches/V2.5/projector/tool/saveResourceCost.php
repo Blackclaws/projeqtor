@@ -40,7 +40,7 @@ if ($startDate=='') {
   $startDate=null;
 }
 
-
+Sql::rollbackTransaction();
 // get the modifications (from request)
 $rc=new ResourceCost($id);
 
@@ -59,10 +59,13 @@ $rcb = new ResourceCost($id);
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

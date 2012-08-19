@@ -37,7 +37,7 @@ if (! array_key_exists('comboDetail', $_REQUEST)) {
 } else {
 	$ext="_detail";
 }
-
+Sql::beginTransaction();
 // get the modifications (from request)
 $newObj=new $className();
 $newObj->fillFromRequest($ext);
@@ -47,14 +47,17 @@ $result=$newObj->save();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . formatResult($result) . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . formatResult($result) . '</span>';
   // save the new object to session (modified status)
   if (! array_key_exists('comboDetail', $_REQUEST)) {
     $_SESSION['currentObject']=new $className($newObj->id);
   }
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . formatResult($result) . '</span>';
 }
 

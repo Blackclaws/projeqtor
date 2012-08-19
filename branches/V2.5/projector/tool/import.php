@@ -87,6 +87,7 @@ foreach ($obj as $fld=>$val) {
 	$captionArray[$obj->getColCaption($fld)]=$fld;
 }
 echo '<TABLE WIDTH="100%" style="border: 1px solid black">';
+Sql::beginTransaction();
 foreach ($lines as $nbl=>$line) {
 	if (! mb_detect_encoding($line, 'UTF-8', true) ) {
 		$line=utf8_encode($line);
@@ -204,6 +205,7 @@ foreach ($lines as $nbl=>$line) {
     echo '<th class="messageHeader" style="color:#208020">' . i18n('colResultImport') . '</th></TR>';
   }
 }
+Sql::commitTransaction();
 echo "</TABLE>";
 ?>
 </body>

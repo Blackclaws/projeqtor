@@ -67,6 +67,7 @@ if (array_key_exists('expenseDetailUnit03',$_REQUEST)) {
   $expenseDetailUnit03=$_REQUEST['expenseDetailUnit03'];
 }
 
+Sql::beginTransaction();
 // get the modifications (from request)
 $expenseDetail=new ExpenseDetail($expenseDetailId);
 
@@ -91,10 +92,13 @@ $result=$expenseDetail->save();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>
