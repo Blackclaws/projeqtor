@@ -42,6 +42,7 @@ if (! array_key_exists('copyToType',$_REQUEST)) {
 }
 $toType=$_REQUEST['copyToType'];
 
+Sql::beginTransaction();
 // copy from existing object
 $newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin);
 // save the new object to session (modified status)
@@ -51,10 +52,13 @@ $_SESSION['currentObject']=$newObj;
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

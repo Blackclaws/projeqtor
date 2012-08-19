@@ -67,6 +67,7 @@ function sendAlert(){
   } else {
  	  $lstUser[$alertSendTo]='';
   }
+  Sql::beginTransaction();
   foreach ($lstUser as $id=>$name) {
  	  $alert=new Alert();
  	  $alert->idUser=$id;
@@ -80,6 +81,7 @@ function sendAlert(){
   $returnValue= i18n('sentAlertTo',array(count($lstUser)));
   $returnValue .= '<input type="hidden" id="lastOperation" value="insert" />';
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
+  Sql::commitTransaction();
   return $returnValue;
 }
 

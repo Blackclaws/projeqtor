@@ -26,7 +26,9 @@ if (! array_key_exists('copyProjectToType',$_REQUEST)) {
 $toType=$_REQUEST['copyProjectToType'];
 
 // copy from existing object
+Sql::beginTransaction();
 $newProj=$proj->copyTo('Project',$toType, $toName, false);
+
 // save the new object to session (modified status)
 $result=$newProj->_copyResult;
 unset($newProj->_copyResult);
@@ -131,10 +133,13 @@ if ($nbErrors>0) {
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 

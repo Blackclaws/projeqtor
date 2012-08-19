@@ -52,6 +52,7 @@
    * @return void
    */
   function changePassword ($user, $newPassword) {
+  	Sql::beginTransaction();
     $user->password=md5($newPassword);
     $user->save();
     echo '<span class="messageOK">';
@@ -60,6 +61,7 @@
     echo '</div>';
     echo '</span>';
     $_SESSION['user']=$user;
+    Sql::commitTransaction();
   }
   
 ?>
