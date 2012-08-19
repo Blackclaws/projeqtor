@@ -25,7 +25,7 @@ $className=$_REQUEST['className'];
 if ($className!=get_class($obj)) {
   throwError('last saved object (' . get_class($obj) . ') is not of the expected class (' . $className . ').'); 
 }
-
+Sql::beginTransaction();
 // copy from existing object
 $newObj=$obj->copy();
 // save the new object to session (modified status)
@@ -34,10 +34,13 @@ unset($newObj->_copyResult);
 $_SESSION['currentObject']=$newObj;
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
-} else { 
+} else {
+	Sql::commitTransaction(); 
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>
