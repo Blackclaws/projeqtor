@@ -428,7 +428,8 @@ function htmlEncodeJson($val, $numericLength=0) {
   $val = str_replace("&lt;","<",$val);
   $val = str_replace("&gt;",">",$val);*/
   $val = str_replace("\\","\\\\",$val);
-  $val = str_replace("\"","\\\"",$val);	       
+  $val = str_replace("\"","\\\"",$val);
+  $val = str_replace("\n"," ",$val);	     
   
   if ($numericLength>0) {
     $val=str_pad($val,$numericLength,'0', STR_PAD_LEFT);

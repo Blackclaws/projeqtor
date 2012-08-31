@@ -16,7 +16,10 @@ $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
   $paramWeek=$_REQUEST['weekSpinner'];
 };
-
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $user=$_SESSION['user'];
 
 $periodType=$_REQUEST['periodType'];
@@ -33,6 +36,9 @@ if ($periodType=='month') {
 }
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
+}
+if ($paramTeam!="") {
+  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
 }
 include "header.php";
 
@@ -158,51 +164,56 @@ echo '<td class="reportTableHeader" style="width:5%">' . i18n('sum') . '</td>';
 echo '</tr>';
 
 foreach ($resources as $idR=>$nameR) {
-	$sum=0;
-  echo '<tr height="20px">';
-  echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
-  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
-  for ($i=1; $i<=$nbDays;$i++) {
-    $day=$startDate+$i-1;
-    $style="";
-    $italic=false;
-    if ($days[$day]=="off") {
-      $style=$weekendStyle;
-    } else {
-      if (array_key_exists($day,$result[$idR])) {
-        $val=$capacity[$idR]-$result[$idR][$day];
-      } else {
-        $val=$capacity[$idR]*1;
-      }
-      $style=' style="text-align:center;';
-      //if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {
-      if (array_key_exists($idR,$real) and ! array_key_exists($day,$real[$idR]) and array_key_exists($day,$result[$idR])) {
-        $style.='background-color:' . $plannedBGColor . ';';
-        $italic=true;
-      }
-      if ($val>0) {
-        $style.='color: #00AA00;';      	
-      } else if ($val < 0) {
-      	$style.='color: #FF0000;';
-      } else {
-      	$style.='color: ' . $plannedFrontColor . ';';
-      }
-      $style.='"';  
-    }
-    if ($style==$weekendStyle) {$val="";}
-    echo '<td class="reportTableDataFull" ' . $style . ' valign="middle">';    
-     if ($italic) {
-     	 echo '<i>' . Work::displayWork($val) . '</i>';
-     } else { 
-     	 echo Work::displayWork($val);
-     }
-  	echo '</td>';
-  	if ($val>0) {
-  		$sum+=$val;
-  	}
+	if ($paramTeam) {
+    $res=new Resource($idR);
   }
-  echo '<td class="reportTableColumnHeader" style="width:5%">' . Work::displayWork($sum) . '</td>';
-  echo '</tr>';
+  if (!$paramTeam or $res->idTeam==$paramTeam) {
+		$sum=0;
+	  echo '<tr height="20px">';
+	  echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
+	  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
+	  for ($i=1; $i<=$nbDays;$i++) {
+	    $day=$startDate+$i-1;
+	    $style="";
+	    $italic=false;
+	    if ($days[$day]=="off") {
+	      $style=$weekendStyle;
+	    } else {
+	      if (array_key_exists($day,$result[$idR])) {
+	        $val=$capacity[$idR]-$result[$idR][$day];
+	      } else {
+	        $val=$capacity[$idR]*1;
+	      }
+	      $style=' style="text-align:center;';
+	      //if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {
+	      if (array_key_exists($idR,$real) and ! array_key_exists($day,$real[$idR]) and array_key_exists($day,$result[$idR])) {
+	        $style.='background-color:' . $plannedBGColor . ';';
+	        $italic=true;
+	      }
+	      if ($val>0) {
+	        $style.='color: #00AA00;';      	
+	      } else if ($val < 0) {
+	      	$style.='color: #FF0000;';
+	      } else {
+	      	$style.='color: ' . $plannedFrontColor . ';';
+	      }
+	      $style.='"';  
+	    }
+	    if ($style==$weekendStyle) {$val="";}
+	    echo '<td class="reportTableDataFull" ' . $style . ' valign="middle">';    
+	     if ($italic) {
+	     	 echo '<i>' . Work::displayWork($val) . '</i>';
+	     } else { 
+	     	 echo Work::displayWork($val);
+	     }
+	  	echo '</td>';
+	  	if ($val>0) {
+	  		$sum+=$val;
+	  	}
+	  }
+	  echo '<td class="reportTableColumnHeader" style="width:5%">' . Work::displayWork($sum) . '</td>';
+	  echo '</tr>';
+  }
 }
 
 echo '</table>';

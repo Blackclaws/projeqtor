@@ -56,7 +56,7 @@
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+      $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "=" . Sql::str($val) . " ";
     }
     
     // Build select clause, and eventualy extended From clause and Where clause

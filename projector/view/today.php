@@ -177,8 +177,13 @@
         }
         $subPrj=$prj->getSqlElementsFromCriteria(array('idProject'=>$prj->id), false);
         if ($show or count($subPrj)>0) {
-        echo '<tr >' .
-             '  <td class="messageData" '.($show?'':'style="color:#AAAAAA;"') . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . $name . '</div></td>' .
+        	$goto="";
+          if ($show and securityCheckDisplayMenu(null,'Project') 
+          and securityGetAccessRightYesNo('menuProject', 'read', $prj)=="YES") {
+            $goto=' onClick="gotoElement(' . "'Project','" . $prj->id . "'" . ');" style="cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
+          }
+          echo '<tr >' .
+             '  <td class="messageData" '. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . $name . '</div></td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .

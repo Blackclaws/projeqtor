@@ -434,7 +434,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   showWait();
   // Direct mode, without fading effect =====
   // IE Issue : must not fade load
-  if ( (top.dojo.isIE) || ! top.fadeLoading) {
+  if ( (top.dojo.isIE && 0) || ! top.fadeLoading) {
     // send Ajax request
     dojo.xhrPost({
       url: page,

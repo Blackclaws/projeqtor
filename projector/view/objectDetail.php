@@ -1173,6 +1173,9 @@ function drawHistoryFromObjects($refresh=false) {
       } else if ($dataType=='datetime') {
         $oldValue=htmlFormatDateTime($oldValue);
         $newValue=htmlFormatDateTime($newValue);
+      } elseif ($dataType=='decimal' and substr($colName, -4,4)=='Work') {
+        $oldValue = Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
+        $newValue = Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
       } else {
         $oldValue=htmlEncode($oldValue,'print');
         $newValue=htmlEncode($newValue,'print');
