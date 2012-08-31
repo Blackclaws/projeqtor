@@ -109,7 +109,7 @@
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "='" . Sql::str($val) . "'";
+      $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "=" . Sql::str($val) . " ";
     }
 
     if ($objectClass=='Document') {

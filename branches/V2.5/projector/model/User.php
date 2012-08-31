@@ -359,18 +359,19 @@ class User extends SqlElement {
     } else {
       $prj=new Project($projId);
     }
-    $lst=$prj->getSubProjects();
-    foreach ($lst as $prj) {
-      if (array_key_exists( $prj->id , $visibleProjectsList)) {
+    $lst=$prj->getSubProjectsList();
+    foreach ($lst as $idPrj=>$namePrj) {
+      if (array_key_exists( $idPrj, $visibleProjectsList)) {
+      	$prj=new Project($idPrj);
         $subList=$prj->getRecursiveSubProjectsFlatList(false);
-        $result['#' . $prj->id]=$prj->name;
+        $result['#' . $idPrj]=$namePrj;
         foreach($subList as $id=>$name) {
           $result['#' . $id]=$name;
         }
       } else {
-        $recursList=$this->getHierarchicalViewOfVisibleProjects($prj->id);
+        $recursList=$this->getHierarchicalViewOfVisibleProjects($idPrj);
         if (count($recursList)>0) {
-          $result['#' . $prj->id]=$prj->name;
+          $result['#' . $idPrj]=$namePrj;
           $result=array_merge($result,$recursList);
         }  
       }

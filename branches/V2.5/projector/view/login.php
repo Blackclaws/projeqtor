@@ -110,7 +110,7 @@
 			                  <button tabindex="3" type="submit" id="loginButton" 
 			                   dojoType="dijit.form.Button" showlabel="true">OK
 			                    <script type="dojo/connect" event="onClick" args="evt">              	  
-                            return false;
+                            return true;
                           </script>
 			                  </button>
 			                </td>

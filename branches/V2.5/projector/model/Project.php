@@ -229,7 +229,27 @@ class Project extends SqlElement {
     return $subProjects;
   }
 
-
+  /** ==========================================================================
+   * Retrieves the hierarchic sub-projects of the current project
+   * @return an array of Projects as sub-projects
+   */
+  public function getSubProjectsList($limitToActiveProjects=false) {
+    if ($this->id==null or $this->id=='') {
+      return array();
+    }
+    $crit=array();
+    if ($this->id=='*') {
+      $crit['idProject']='';
+    } else {
+      $crit['idProject']=$this->id;
+    }
+    if ($limitToActiveProjects) {
+      $crit['idle']='0';
+    }
+    $sorted=SqlList::getListWithCrit('Project',$crit,'name');
+    return $sorted;
+  }
+  
   /** ==========================================================================
    * Recusively retrieves all the hierarchic sub-projects of the current project
    * @return an array containing id, name, subprojects (recursive array)
@@ -342,7 +362,7 @@ class Project extends SqlElement {
    *  must be redefined in the inherited class
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
-    if ($limitToUserProjects) {
+  	if ($limitToUserProjects) {
       $user=$_SESSION['user'];
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
@@ -355,7 +375,7 @@ class Project extends SqlElement {
     }
     $result="";
     $clickEvent=' onClick=""';
-    $subList=$this->getSubProjects($limitToActiveProjects);
+    $subList=$this->getSubProjectsList($limitToActiveProjects);
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
       $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';
@@ -365,20 +385,21 @@ class Project extends SqlElement {
     }
     $result .='<table >';
     if (count($subList)>0) {
-      foreach ($subList as $prj) {
+      foreach ($subList as $idPrj=>$namePrj) {
         $showLine=true;
         $reachLine=true;
         if ($limitToUserProjects) {
           if ($user->_accessControlVisibility != 'ALL') {
-            if (! array_key_exists('#' . $prj->id,$visibleProjectsList)) {
+            if (! array_key_exists('#' . $idPrj,$visibleProjectsList)) {
               $showLine=false;
             }
-            if (! array_key_exists($prj->id,$reachableProjectsList)) {
+            if (! array_key_exists($idPrj,$reachableProjectsList)) {
               $reachLine=false;
             }
           }  
         }
         if ($showLine) {
+        	$prj=new Project($idPrj);
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
             $result .= '<td class="display" style="width: 100%;" NOWRAP>' . htmlDrawLink($prj);
@@ -398,30 +419,7 @@ class Project extends SqlElement {
     $result .='</table>';
     return $result;
   }
-
-  public function countMenuProjectsList() {
-    $user=$_SESSION['user'];
-    if (! $user->_accessControlVisibility) {
-      $user->getAccessControlRights(); // Force setup of accessControlVisibility
-    }      
-    $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
-    $result=0;
-    $subList=$this->getSubProjects(true);
-    foreach ($subList as $prj) {
-      $showLine=true;
-      if ($user->_accessControlVisibility != 'ALL') {
-        if (! array_key_exists('#' . $prj->id,$visibleProjectsList)) {
-          $showLine=false;
-        }
-      }
-      if ($showLine) {
-        $result+=1;
-      	$result+=$prj->countMenuProjectsList(true);
-      }
-    }
-    return $result;
-  }
-  
+ 
   /**=========================================================================
    * Overrides SqlElement::save() function to add specific treatments
    * @see persistence/SqlElement#save()

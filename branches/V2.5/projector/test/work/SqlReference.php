@@ -58,10 +58,12 @@ class SqlReference {
       
       $list = array();
       
-      $query = "select id, name from " . Sql::str(strtolower($elementClass));
-      $query .= ($criteria != NULL) ? " where " . Sql::str($criteria) : " where idle = 0";
-      $query .= ($order != NULL) ? " order by " . Sql::str($order) : " order by name";
-      
+      // $query = "select id, name from " . Sql::str(strtolower($elementClass));
+      // $query .= ($criteria != NULL) ? " where " . Sql::str($criteria) : " where idle = 0";
+      // $query .= ($order != NULL) ? " order by " . Sql::str($order) : " order by name";
+      $query = "select id, name from " . strtolower($elementClass);
+      $query .= ($criteria != NULL) ? " where " . $criteria : " where idle = 0";
+      $query .= ($order != NULL) ? " order by " . $order : " order by name";      
       print $query;
       $result = Sql::query($query) or die("Error on request : " . mysql_error() . "\n");
       // result must return only 1 line

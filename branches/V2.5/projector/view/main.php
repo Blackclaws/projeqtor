@@ -205,11 +205,13 @@ checkVersion(); ?>
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
 </head>
-
 <body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
 <div id="loadingDiv" class="<?php echo getTheme();?> background" 
  style="position:relative; visibility: visible; display:block; width:100%; height:100%; ">
- <table style="width:100%; height:100%; text-align:center; vertical-align:middle;"><tr><td>Loading ...</td></tr></table>
+ <table style="width:100%; height:100%; text-align:center; vertical-align:middle;">
+   <tr><td><div id="waitLogin" ></div></td></tr>
+   <tr><td><br/><br/><br/>Loading ...</td></tr>
+ </table>
 </div>
 <div id="mainDiv" style="visibility: hidden;">
   <div id="wait" >
@@ -572,7 +574,6 @@ checkVersion(); ?>
     </table>
   </div>
 </div>
- 
 <div id="dialogNote" dojoType="dijit.Dialog" title="<?php echo i18n("dialogNote");?>">
   <table>
     <tr>
@@ -787,7 +788,6 @@ checkVersion(); ?>
   </table>
 </div>
 
-
 <div id="dialogLink" dojoType="dijit.Dialog" title="<?php echo i18n("dialogLink");?>">
   <table>
     <tr>
@@ -933,7 +933,6 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
-
 <div id="dialogOrigin" dojoType="dijit.Dialog" title="<?php echo i18n("dialogOrigin");?>">
   <table>
     <tr>
@@ -1139,7 +1138,6 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
-
 <div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>">
   <form id='attachementForm' name='attachementForm' 
   ENCTYPE="multipart/form-data" method=POST
@@ -1581,7 +1579,6 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
-
 <div id="dialogExpenseDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogExpenseDetail");?>">
   <table>
     <tr>
@@ -1844,7 +1841,6 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
-
 <div id="dialogResourceCost" dojoType="dijit.Dialog" title="<?php echo i18n("dialogResourceCost");?>">
   <table>
     <tr>
@@ -2139,7 +2135,6 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
-
 <div id="dialogAffectation" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAffectation");?>">
   <table>
     <tr>
@@ -2319,5 +2314,4 @@ checkVersion(); ?>
   </table>
 </div>
 </body>
-
 </html>
