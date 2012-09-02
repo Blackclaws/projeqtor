@@ -12,7 +12,7 @@ class Note extends SqlElement {
   public $updateDate;
   public $note;
   
-  public $_noHistory=true; // Will never save history for this object
+  //public $_noHistory=true; // Will never save history for this object
   
   /** ==========================================================================
    * Constructor

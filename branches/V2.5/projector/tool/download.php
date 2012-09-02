@@ -14,7 +14,7 @@ $id=$_REQUEST['id'];
 $obj=new $class($id);
 
 if ($class=='Attachement') {
-  $path = $obj->subDirectory;
+  $path = str_replace('${attachementDirectory}', $paramAttachementDirectory, $obj->subDirectory);
   $name = $obj->fileName;
   $size = $obj->fileSize;
   $type = $obj->mimeType;
