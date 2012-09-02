@@ -18,7 +18,7 @@ class Attachement extends SqlElement {
   public $type;
   public $link;
   
-  public $_noHistory=true; // Will never save history for this object
+  //public $_noHistory=true; // Will never save history for this object
   
   /** ==========================================================================
    * Constructor
@@ -51,17 +51,18 @@ class Attachement extends SqlElement {
   }
   
   public function delete() {
-  	global $paramPathSeparator;
+  	global $paramPathSeparator,$paramAttachementDirectory;
   	return parent::delete();
+  	$subDirectory=str_replace('${attachementDirectory}', $paramAttachementDirectory, $this->subDirectory);
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
   	enableCatchErrors();
-  	if (file_exists($this->subDirectory . $paramPathSeparator . $this->fileName)) {
-  	  unlink($this->subDirectory . $paramPathSeparator . $this->fileName);
+  	if (file_exists($subDirectory . $paramPathSeparator . $this->fileName)) {
+  	  unlink($subDirectory . $paramPathSeparator . $this->fileName);
   	}
-  	if (file_exists($this->subDirectory)) {
-  	  rmdir($this->subDirectory);
+  	if (file_exists($subDirectory)) {
+  	  rmdir($subDirectory);
   	}
   	disableCatchErrors();
   }

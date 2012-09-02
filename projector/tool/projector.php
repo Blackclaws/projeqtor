@@ -1449,8 +1449,8 @@ function checkVersion() {
 	if ($getYesNo=='NO') {
 		return;
 	}
-	$checkUrl='http://projectorria.toolware.fr/getVersion.php';
-	//$checkUrl='http://localhost/projectorriaV1.8/deploy/getVersion.php';
+	//$checkUrl='http://projectorria.toolware.fr/getVersion.php';
+	$checkUrl='http://projectorria.org/admin/getVersion.php';
   $currentVersion=null;
   enableCatchErrors();
 	$currentVersion=file_get_contents($checkUrl);

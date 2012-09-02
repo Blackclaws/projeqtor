@@ -135,7 +135,7 @@ if (! $error and $type=='file') {
      $error=true;
      $attachement->delete(); 
   } else {
-    $attachement->subDirectory=$uploaddir;
+    $attachement->subDirectory=str_replace($paramAttachementDirectory,'${attachementDirectory}',$uploaddir);
     $otherResult=$attachement->save();
   }
 }

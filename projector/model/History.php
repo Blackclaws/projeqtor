@@ -60,7 +60,7 @@ class History extends SqlElement {
     $returnValue=$hist->save();
     // For TestCaseRun : store history for TestSession 
     if ($refType=='TestCaseRun') {
-    	if ($operation=="insert") {
+    	/*if ($operation=="insert") {
     		$colName="TestCase";
     		$newValue="#".$obj->idTestCase;
     	}
@@ -71,7 +71,33 @@ class History extends SqlElement {
       if ($operation=='update') {
       	$colName.= '|' . 'TestCase' . '|' .$refId;
       }
-    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName, $oldValue, $newValue);
+    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName, $oldValue, $newValue);*/
+    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName. '|' . 'TestCase' . '|' .$refId, $oldValue, $newValue);
+    }
+    // For link : store History for both referenced items
+    if ($refType=='Link') {    
+      self::store ($obj, $obj->ref1Type, $obj->ref1Id, $operation , 'Link' . '|' . $colName. '|' . $obj->ref2Type . '|' . $obj->ref2Id, $oldValue, $newValue);
+      self::store ($obj, $obj->ref2Type, $obj->ref2Id, $operation , 'Link' . '|' . $colName. '|' . $obj->ref1Type . '|' . $obj->ref1Id, $oldValue, $newValue);
+    }
+    if ($refType=='Note') {
+    	if ($operation=='insert') {
+    		$newValue=$obj->note;
+    	} else if ($operation=='delete') {
+        $oldValue=$obj->note;
+      }
+    	if ($colName!="updateDate") {    
+        self::store ($obj, $obj->refType, $obj->refId, $operation , $colName. '|' . $refType . '|' . $obj->id, $oldValue, $newValue);
+    	}
+    }
+    if ($refType=='Attachement') {
+      if ($operation=='insert') {
+        $newValue=$obj->fileName;
+      } else if ($operation=='delete') {
+        $oldValue=$obj->fileName;
+      }
+      if ($colName!="updateDate") {    
+        self::store ($obj, $obj->refType, $obj->refId, $operation , $colName. '|' . $refType . '|' . $obj->id, $oldValue, $newValue);
+      }
     }
     if (strpos($returnValue,'<input type="hidden" id="lastOperationStatus" value="OK"')) {
       return true;

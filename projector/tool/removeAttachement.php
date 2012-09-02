@@ -17,9 +17,10 @@ if ($attachementId==null) {
   throwError('attachementId parameter not found in REQUEST');
 }
 $obj=new Attachement($attachementId);
-if (file_exists($obj->subDirectory . $obj->fileName)) {
-  unlink($obj->subDirectory . $obj->fileName);
-  rmdir($obj->subDirectory);
+$subDirectory=str_replace('${attachementDirectory}', $paramAttachementDirectory, $obj->subDirectory);
+if (file_exists($subDirectory . $obj->fileName)) {
+  unlink($subDirectory . $obj->fileName);
+  rmdir($subDirectory);
 }
 Sql::beginTransaction();
 $result=$obj->delete();

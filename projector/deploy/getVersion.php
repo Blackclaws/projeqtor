@@ -1,5 +1,5 @@
 <?php 
-$parametersLocation = "../../_private/track/parametersTrack.php";
+$parametersLocation = "/var/wwwFiles/projectorria/track/config/parameters.php";
 include_once $parametersLocation;
 $version="";
 

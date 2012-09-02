@@ -1095,9 +1095,16 @@ function drawHistoryFromObjects($refresh=false) {
     	$colName=$split[0];
     	$refType=$split[1];
     	$refId=$split[2];
+    	$refObject='';
+    } else if (count($split)==4) {
+    	$refObject=$split[0];
+      $colName=$split[1];
+      $refType=$split[2];
+      $refId=$split[3];
     } else {
     	$refType='';
     	$refId='';
+    	$refObject='';
     }
     $curObj=null; $dataType=""; $dataLength=0;
     $hide=false;
@@ -1114,7 +1121,7 @@ function drawHistoryFromObjects($refresh=false) {
       $date="";
       $class="ContinueOperation";
     }
-    if ($colName!='') {
+    if ($colName!='' or $refType!="") {
     	if ($refType) {
     		if ($refType=="TestCase") {
     			$curObj=new TestCaseRun();
@@ -1127,6 +1134,9 @@ function drawHistoryFromObjects($refresh=false) {
       if ($curObj) {
         if ($refType) {
         	$colCaption=i18n($refType). ' #' . $refId . ' ' . $curObj->getColCaption($colName);
+        	if ($refObject) {
+        		$colCaption=i18n($refObject) . ' - ' . $colCaption;
+        	}
         } else {
       	  $colCaption=$curObj->getColCaption($colName);
         }
