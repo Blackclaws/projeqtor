@@ -1372,6 +1372,7 @@ function drawGantt() {
   if( g && jsonData) {
     var store=eval('('+jsonData.innerHTML+')');
     var items=store.items;
+    var arrayKeys=new Array();
     for (var i=0; i< items.length; i++) {
       var item=items[i];
       //var topId=(i==0)?'':item.topId;
@@ -1456,7 +1457,10 @@ function drawGantt() {
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
-//console.log('item.id='+item.id+'   pname='+pName+'   pGroup='+pGroup+'   topId='+topId);      
+      if (arrayKeys.indexOf(topId)==-1) {
+    	  topId='';
+      }
+      arrayKeys[item.id]=item.id;
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, 
     		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
     		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
