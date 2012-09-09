@@ -46,7 +46,6 @@
     $showIdle=false;
     $showDone=false;
     $countScope='todo';
-
     if (array_key_exists('todayCountScope',$_SESSION)) {
       $countScope=$_SESSION['todayCountScope'];
     }
@@ -91,7 +90,10 @@
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuIssue') . '</div></td>' .
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuQuestion') . '</div></td>' . 
            '</tr>';   
-      foreach($prjLst as $sharpid=>$name) {
+      foreach($prjLst as $sharpid=>$sharpName) {
+      	$split=explode('#',$sharpName);
+      	$wbs=$split[0];
+      	$name=$split[1];
         $id=substr($sharpid,1);
         $crit=array('idProject'=>$id);
         $critAll=array('idProject'=>$id);
@@ -164,8 +166,9 @@
           $late.=" " . i18n("shortDay");         
           $late.='</div>';
         }
-        $wbs=$prj->ProjectPlanningElement->wbsSortable;
-        $level=(strlen($wbs)+1)/4;
+        //$wbs=$prj->ProjectPlanningElement->wbsSortable;
+        $split=explode('.',$wbs);
+        $level=count($split);
         $tab="";
         for ($i=1;$i<$level;$i++) {
           $tab.='&nbsp;&nbsp;&nbsp;';

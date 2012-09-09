@@ -342,38 +342,63 @@ class User extends SqlElement {
    * and their sub projects
    * @return a list of projects id
    */
-/*  public function getHierarchicalViewOfVisibleProjects($projId='*') {
-  	if ($this->_hierarchicalViewOfVisibleProjects and $projId=='*') {
-  		return $this->_hierarchicalViewOfVisibleProjects;
-  	} */
-  	
-  public function getHierarchicalViewOfVisibleProjects($projId='*') {
+
+  public function getHierarchicalViewOfVisibleProjects() {
     if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
       return $this->_hierarchicalViewOfVisibleProjects;
-    }	
+    } 
+    $result=array();
+    $wbsArray=array();
+    $currentTop='0';
+    $visibleProjectsList=$this->getVisibleProjects();
+    $critList="refType='Project' and refId in (0";
+    foreach ($visibleProjectsList as $idPrj=>$namePrj) {
+    	$critList.=','.$idPrj;
+    }
+    $critList.=')';  
+    $ppe=new ProjectPlanningElement();
+    $projList=$ppe->getSqlElementsFromCriteria(null, false, $critList, 'wbsSortable', false);
+    foreach ($projList as $projPe) {
+    	$wbsTest=$projPe->wbsSortable;
+    	$wbsParent='';
+    	$wbsArray[$projPe->wbsSortable]=array();
+    	$wbsArray[$projPe->wbsSortable]['cpt']=0;
+    	while (strlen($wbsTest)>3) {
+    		$wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
+    		if (array_key_exists($wbsTest,$wbsArray)) {
+    			$wbsParent=$wbsTest;
+    		}
+    	}
+    	if (! $wbsParent) {
+    		$currentTop+=1;
+    		$wbsArray[$projPe->wbsSortable]['wbs']=$currentTop;    		
+    	} else {
+    		$wbsArray[$wbsParent]['cpt']+=1;
+    		$wbsArray[$projPe->wbsSortable]['wbs']=$wbsArray[$wbsParent]['wbs'].'.'.$wbsArray[$wbsParent]['cpt'];
+    	}
+    	$result['#'.$projPe->refId]=$wbsArray[$projPe->wbsSortable]['wbs'].'#'.$projPe->refName;
+    }
+    $this->_hierarchicalViewOfVisibleProjects=$result;
+    return $result;
+  }
+  public function getHierarchicalViewOfVisibleProjectsWithTop() {
+    if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
+      return $this->_hierarchicalViewOfVisibleProjects;
+    } 
     $result=array();
     $visibleProjectsList=$this->getVisibleProjects();
-    if ($projId=='*') {
-      $prj=new Project();
-      $prj->id='*';
-    } else {
-      $prj=new Project($projId);
-    }
-    $lst=$prj->getSubProjectsList();
-    foreach ($lst as $idPrj=>$namePrj) {
-      if (array_key_exists( $idPrj, $visibleProjectsList)) {
-      	$prj=new Project($idPrj);
-        $subList=$prj->getRecursiveSubProjectsFlatList(false);
-        $result['#' . $idPrj]=$namePrj;
-        foreach($subList as $id=>$name) {
-          $result['#' . $id]=$name;
+    foreach ($visibleProjectsList as $idPrj=>$namePrj) {
+      if (! array_key_exists("#".$idPrj, $result)) {
+        $result["#".$idPrj]=$namePrj; 
+        $prj=new Project($idPrj);
+        while ($prj->idProject) {
+          if (array_key_exists("#".$prj->idProject, $result)) {
+            $prj->idProject=null;
+          } else {
+            $prj=new Project($prj->idProject);
+            $result["#".$prj->id]=$prj->name;
+          }
         }
-      } else {
-        $recursList=$this->getHierarchicalViewOfVisibleProjects($idPrj);
-        if (count($recursList)>0) {
-          $result['#' . $idPrj]=$namePrj;
-          $result=array_merge($result,$recursList);
-        }  
       }
     }
     $this->_hierarchicalViewOfVisibleProjects=$result;
