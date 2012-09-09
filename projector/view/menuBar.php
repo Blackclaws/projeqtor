@@ -91,7 +91,7 @@
         $prj=new Project();
         $prj->id='*';
         //$cpt=$prj->countMenuProjectsList();
-        $subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, true);
+        $subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, true);     
         $cpt=substr_count($subProjectsToDraw,'<tr>');
         ?>
       </div>
