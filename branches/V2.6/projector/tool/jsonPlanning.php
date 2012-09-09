@@ -377,6 +377,8 @@
       $width=round($colWidth/$colUnit) . "px;";
       $collapsedList=Collapsed::getCollaspedList();
       $closedWbs='';
+      $level=1;
+      $wbsLevelArray=array();
       foreach ($resultArray as $line) {
         $pEnd=$line['pEnd'];
         $pStart=$line['pStart'];
@@ -409,7 +411,17 @@
           $rowType  = "row";
         }
         $wbs=$line['wbsSortable'];
-        $level=(strlen($wbs)+1)/4;
+        $wbsTest=$wbs;
+        $level=1;
+        while (strlen($wbsTest)>3) {
+        	$wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
+        	if (array_key_exists($wbsTest, $wbsLevelArray)) {
+        		$level=$wbsLevelArray[$wbsTest]+1;
+        		$wbsTest="";
+        	}
+        }
+        $wbsLevelArray[$wbs]=$level;
+        //$level=(strlen($wbs)+1)/4;
         $tab=""; 
         for ($i=1;$i<$level;$i++) {
           $tab.='<span class="ganttSep" >&nbsp;&nbsp;&nbsp;&nbsp;</span>';
