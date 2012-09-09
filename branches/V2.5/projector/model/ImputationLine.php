@@ -269,14 +269,17 @@ class ImputationLine {
 	}
 
 	// Get the parent line for hierarchc display purpose
-	private static function getParent($elt, $result){
+	private static function getParent($elt, $result, $direct=true){
 		$plan=null;
+		$user=$_SESSION['user'];
+		$visibleProjectList=$user->getVisibleProjects();
 		if ($elt->topId) {
 			$plan=new PlanningElement($elt->topId);
 		}
 		if ($plan) {
 			$key=$plan->wbsSortable . ' ' . $plan->refType . '#' . $plan->refId;
-			if (! array_key_exists($key,$result)) {
+			if (! array_key_exists($key,$result) 
+			and ($plan->refType!='Project' or $direct or array_key_exists($plan->refId,$visibleProjectList))) {
 				$top=new ImputationLine();
 				$top->idle=$plan->idle;
 				$top->imputable=false;
@@ -291,7 +294,7 @@ class ImputationLine {
 				//$top->realWork=$plan->realWork;
 				//$top->leftWork=$plan->leftWork;
 				$result[$key]=$top;
-				$result=self::getParent($top, $result);
+				$result=self::getParent($top, $result, $direct=false);
 			}
 		}
 		return $result;
@@ -381,6 +384,7 @@ class ImputationLine {
 		$nbLine=0;
 		$collapsedList=Collapsed::getCollaspedList();
 		$closedWbs='';
+		$wbsLevelArray=array();
 		foreach ($tab as $key=>$line) {
 			$nbLine++;
 			if ($line->elementary) {
@@ -432,7 +436,18 @@ class ImputationLine {
 			}
 			// tab the name depending on level
 			echo '<table><tr><td>';
-			$level=(strlen($line->wbsSortable)+1)/4;
+		  $wbs=$line->wbsSortable;
+      $wbsTest=$wbs;
+      $level=1;
+      while (strlen($wbsTest)>3) {
+        $wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
+        if (array_key_exists($wbsTest, $wbsLevelArray)) {
+          $level=$wbsLevelArray[$wbsTest]+1;
+          $wbsTest="";
+        }
+      }
+      $wbsLevelArray[$wbs]=$level;
+			//$level=(strlen($line->wbsSortable)+1)/4;
 			$levelWidth = ($level-1) * 16;
 			echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';
 			echo '</td>';
