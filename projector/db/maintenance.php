@@ -167,7 +167,6 @@ if ($currVersion<"V2.4.2") {
   }
   $tst=new TestCase();
   $tstList=$tst->getSqlElementsFromCriteria(null, false);
-  //debugLog('test='.count($tstList));
   foreach ($tstList as $tst) {
     $tc=new TestCase($tst->id);
     $tc->updateDependencies();

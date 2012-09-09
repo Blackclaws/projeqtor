@@ -102,7 +102,28 @@ class ImputationLine {
 				}
 				if (! $found) {
 					$ass=new Assignment($work->idAssignment);
-					$assList[]=$ass;
+					if ($ass->id) {
+						$assList[$ass->id]=$ass;
+					} else {
+						$id=$work->refType.'#'.$work->refId;
+						if (! isset($assList[$id])) {
+						  $ass->id=null;
+						  $ass->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
+						  if ($work->refType and $work->refId) {
+						    $ass->comment=i18n($work->refType) . ' #' . $work->refId;
+						  } else {
+						    $ass->comment='unexpected case : assignment #' . $work->idAssignment . ' not found';
+						  }
+						  $ass->realWork=$work->work;
+						  $ass->refType=$work->refType;
+              $ass->refId=$work->refId;
+						} else {
+						  $ass=$assList[$id];
+						  $ass->realWork+=$work->work;
+						}
+						$assList[$id]=$ass;
+					}
+					
 				}
 			} else {
 				$id=$work->refType.'#'.$work->refId;
@@ -115,7 +136,10 @@ class ImputationLine {
 					$obj=new $work->refType($work->refId);
 				} else {
 					$obj=new Ticket();
-					$obj->name=i18n('notAssignedWork');
+          $obj->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
+          if (! $ass->comment) {
+            $ass->comment='unexpected case : no reference object';
+          }
 				}
 				//$ass->name=$id . " " . $obj->name;
 				$ass->name=$obj->name;
@@ -130,7 +154,7 @@ class ImputationLine {
 				$assList[$id]=$ass;
 			}
 		}
-
+		
 		$cptNotAssigned=0;
 		foreach ($assList as $idAss=>$ass) {
 			$elt=new ImputationLine();
@@ -148,7 +172,9 @@ class ImputationLine {
 			$elt->arrayPlannedWork=array();
 			$crit=array('refType'=>$elt->refType, 'refId'=>$elt->refId);
 			$plan=null;
-			$plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+			if ($ass->id) {
+			  $plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+			}
 			if ($plan and $plan->id) {
 				$elt->name=$plan->refName;
 				$elt->wbs=$plan->wbs;
@@ -163,7 +189,8 @@ class ImputationLine {
 				if (isset($ass->name)) {
 					$elt->name=$ass->name;
 				} else {
-					$elt->name=i18n('notAssignedWork');
+          $elt->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
+          $elt->comment='unexpected case : no assignment name';
 				}
 				$elt->wbs='0.'.$cptNotAssigned;
 				$elt->wbsSortable='000.'. str_pad($cptNotAssigned, 3, "0", STR_PAD_LEFT);
@@ -392,6 +419,8 @@ class ImputationLine {
 				. ' value="' . $line->idAssignment . '"/>';
 				echo '<input type="hidden" id="imputable_' . $nbLine . '" name="imputable[]"'
 				. ' value="' . $line->imputable . '"/>';
+				echo '<input type="hidden" id="locked_' . $nbLine . '" name="locked[]"'
+        . ' value="' . $line->locked . '"/>';
 			}
 			if (! $line->refType) {$line->refType='Imputation';};
 			echo '<img src="css/images/icon' . $line->refType . '16.png" />';

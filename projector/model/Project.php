@@ -366,16 +366,30 @@ class Project extends SqlElement {
       $user=$_SESSION['user'];
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
-      }      
-      $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
+      }
+      if ($user->_accessControlVisibility != 'ALL') {      
+        $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
+      } else {
+      	$visibleProjectsList=array();
+      }
       $reachableProjectsList=$user->getVisibleProjects();
     } else {  
       $visibleProjectsList=array();
       $reachableProjectsList=array();
-    }
+    }  
     $result="";
     $clickEvent=' onClick=""';
-    $subList=$this->getSubProjectsList($limitToActiveProjects);
+    if ($limitToUserProjects and $user->_accessControlVisibility != 'ALL' and ! $recursiveCall) {
+    	$subList=array();
+    	foreach($visibleProjectsList as $idP=>$nameP) {
+    		$split=explode('#',$nameP);
+    		if (strpos($split[0],'.')==0) {
+    			$subList[substr($idP,1)]=$split[1];
+    		}
+    	}
+    } else {
+  	  $subList=$this->getSubProjectsList($limitToActiveProjects);
+    }
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
       $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';
@@ -383,7 +397,7 @@ class Project extends SqlElement {
       $result .= '<i>' . i18n('allProjects') . '</i>';
       $result .= '</div></td></tr></table>';
     }
-    $result .='<table >';
+    $result .='<table style="width: 100%;" >';
     if (count($subList)>0) {
       foreach ($subList as $idPrj=>$namePrj) {
         $showLine=true;
@@ -402,9 +416,9 @@ class Project extends SqlElement {
         	$prj=new Project($idPrj);
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
-            $result .= '<td class="display" style="width: 100%;" NOWRAP>' . htmlDrawLink($prj);
+            $result .= '<td class="display"  NOWRAP>' . htmlDrawLink($prj);
           } else if (! $reachLine) {
-            $result .= '<td class="display" style="width: 100%; color: #AAAAAA;" NOWRAP>' . $prj->name;
+            $result .= '<td style="#AAAAAA;" NOWRAP><div class="display" style="width: 100%;">' . $prj->name . '</div>';
           } else {
             $clickEvent=' onClick=\'setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name) . '", "' . $selectField . '");\' ';
             $result .= '<td><div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
@@ -562,6 +576,7 @@ class Project extends SqlElement {
     }
     return $color;
   }
+
   
 }
 ?>

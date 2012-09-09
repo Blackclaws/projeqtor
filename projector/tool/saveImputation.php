@@ -22,7 +22,8 @@ ini_set('suhosin.request.max_vars', 25*$nbLines+20);
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
   $imputable=$_REQUEST['imputable'][$i];
-  if ($imputable) {
+  $locked=$_REQUEST['locked'][$i];
+  if ($imputable and ! $locked) {
     $line=new ImputationLine();
     $line->idAssignment=$_REQUEST['idAssignment'][$i];
     $ass=new Assignment($line->idAssignment);

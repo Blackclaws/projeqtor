@@ -146,7 +146,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
          <?php 
            $prj=new Project();
            $prj->id='*';
-           echo $prj->drawSubProjects('selectedProject', false, true, true); 
+           //echo $prj->drawSubProjects('selectedProject', false, true, true); 
          ?>       
       </span>
     </span>
