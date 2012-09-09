@@ -283,7 +283,6 @@ class TestCase extends SqlElement {
     } else {
       $this->idRunStatus=2; // passed
     }  
-    //debugLog($this->id.'=>'.$this->idRunStatus);
     $this->save();
   }
   

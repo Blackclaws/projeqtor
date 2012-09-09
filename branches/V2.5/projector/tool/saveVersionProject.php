@@ -35,7 +35,7 @@ $idle=false;
 if (array_key_exists('versionProjectIdle',$_REQUEST)) {
   $idle=true;
 }
-Sql::rollbackTransaction();
+Sql::beginTransaction();
 $versionProject=new VersionProject($id);
 
 $versionProject->idProject=$project;
