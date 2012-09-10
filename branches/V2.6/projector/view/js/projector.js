@@ -1363,7 +1363,7 @@ function drawGantt() {
   }
   jsonData=dojo.byId('planningJsonData');
   if ( jsonData.innerHTML.indexOf('{"identifier"')<0) {
-      showAlert(jsonData.innerHTML);
+      //showAlert(jsonData.innerHTML);
       hideWait();
       return;
   }
