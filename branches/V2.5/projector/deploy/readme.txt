@@ -21,6 +21,7 @@ Notice :
   - At first run, configuration screen will be displayed.
   - To run again configuration screen, just delete "/tool/parametersLocation.php" file.
   - On first connection, database will be automatically updated.
+  - login : admin/admin
   
 Support :
   - you may request support in the Forum of Project'Or RIA web site : http://projectorria.toolware.fr
