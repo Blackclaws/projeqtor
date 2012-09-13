@@ -17,6 +17,8 @@ class Attachement extends SqlElement {
   public $fileSize;
   public $type;
   public $link;
+  public $idPrivacy;
+  public $idTeam;
   
   //public $_noHistory=true; // Will never save history for this object
   

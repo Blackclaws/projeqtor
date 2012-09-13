@@ -1349,5 +1349,12 @@ workStartedSince: "commencé depuis ${1} jour(s)",
 workStopped: "travail terminé",
 wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se connecter",
 year: "année",
+colPredefinedNote: "note prédéfinie",
+colText: "texte",
+menuPredefinedNote: "Notes prédéfinies",
+PredefinedNote: "Note prédéfinie",
+private: "privé",
+public: "public",
+team: "équipe",
 currentLocaleOfFile: "fr"
 }

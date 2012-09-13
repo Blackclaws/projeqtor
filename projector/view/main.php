@@ -169,6 +169,7 @@ checkVersion(); ?>
     var originableArray=new Array();
     var copyableArray=new Array();
     var indicatorableArray=new Array();
+    var textableArray=new Array();
     var planningColumnOrder=new Array();
     <?php 
       $list=SqlList::getListNotTranslated('Dependable');
@@ -196,7 +197,11 @@ checkVersion(); ?>
       $list=SqlList::getListNotTranslated('Indicatorable');
       foreach ($list as $id=>$name) {
         echo "indicatorableArray['" . $id . "']='" . $name . "';";
-      }        
+      }
+      $list=SqlList::getListNotTranslated('Textable');
+      foreach ($list as $id=>$name) {
+        echo "textableArray['" . $id . "']='" . $name . "';";
+      }            
       $list=Parameter::getPlanningColumnOrder();
       foreach ($list as $order=>$name) {
         echo "planningColumnOrder[" . ($order-1) . "]='" . $name . "';";
@@ -206,12 +211,33 @@ checkVersion(); ?>
   </script>
 </head>
 <body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
-<div id="loadingDiv" class="<?php echo getTheme();?> background" 
- style="position:relative; visibility: visible; display:block; width:100%; height:100%; ">
- <table style="width:100%; height:100%; text-align:center; vertical-align:middle;">
-   <tr><td><div id="waitLogin" ></div></td></tr>
-   <tr><td><br/><br/><br/>Loading ...</td></tr>
- </table>
+<div id="loadingDiv" class="<?php echo getTheme();?> loginFrame" 
+ style="position:relative; visibility: visible; display:block; width:100%; height:100%; margin:0; padding:0; border:0">  
+  <table align="center" width="100%" height="100%" class="loginBackground">
+    <tr height="100%">
+      <td width="100%" align="center">
+        <div class="background loginFrame" >
+        <table  align="center" >
+          <tr style="height:10px;" >
+            <td align="left" style="height: 1%;" valign="top">
+              <div style="width: 300px; height: 50px; background-size: contain; background-repeat: no-repeat;
+              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/title.gif';?>);">
+              </div>
+            </td>
+          </tr>
+          <tr style="height:100%" height="100%">
+            <td style="height:99%" align="left" valign="middle">
+              <div dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;text-align:center;">
+              <br/><br/>Loading ...
+              <div id="waitLogin"></div>               
+              </div>
+            </td>
+          </tr>
+        </table>
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>
 <div id="mainDiv" style="visibility: hidden;">
   <div id="wait" >
@@ -576,6 +602,7 @@ checkVersion(); ?>
 </div>
 <div id="dialogNote" dojoType="dijit.Dialog" title="<?php echo i18n("dialogNote");?>">
   <table>
+    <tr><td><div id="dialogNotePredefinedDiv" dojoType="dijit.layout.ContentPane" region="center"></div></td></tr>
     <tr>
       <td>
        <form id='noteForm' name='noteForm' onSubmit="return false;">
@@ -589,7 +616,21 @@ checkVersion(); ?>
           class="input"
           onClick="dijit.byId('noteNote').setAttribute('class','');">  
           </textarea>
-        </form>
+          <table width="100%"><tr height="25px">
+            <td width="33%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="notePrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyPublic" value="1" />
+            </td>
+            <td width="34%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="notePrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyTeam" value="2" />
+            </td>
+            <td width="33%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="notePrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="notePrivacy" id="notePrivacyPrivate" value="3" />
+            </td>
+          </tr></table>
+       </form>
       </td>
     </tr>
     <tr>

@@ -596,14 +596,34 @@ function addNote () {
 	dojo.byId("noteRefId").value=dojo.byId("objectId").value;
 	dijit.byId("noteNote").set("value",null);
 	dijit.byId("dialogNote").set('title',i18n("dialogNote"));
+	dojo.xhrGet({
+		url: '../tool/dynamicListPredefinedText.php?objectClass='+dojo.byId("noteRefType").value
+		      + '&objectType='+dijit.byId('id'+dojo.byId("noteRefType").value+'Type'),
+		handleAs: "text",
+		load: function (data) {
+			var contentWidget = dijit.byId('dialogNotePredefinedDiv');
+	        if (! contentWidget) {return;}
+	        	contentWidget.set('content',data);
+			}
+	});
+	dijit.byId('notePrivacyPublic').set('checked','true');
 	dijit.byId("dialogNote").show();
 }
 
+function noteSelectPredefinedText(idPrefefinedText) {
+	dojo.xhrGet({
+		url: '../tool/getPredefinedText.php?id='+idPrefefinedText,
+		handleAs: "text",
+		load: function (data) {
+			dijit.byId('noteNote').set('value',data);
+		  }
+	});
+}
 /**
  * Display a edit note Box
  * 
  */
-function editNote (noteId) {
+function editNote (noteId, privacy) {
 	if (dijit.byId("noteToolTip")) {
 		dijit.byId("noteToolTip").destroy();
 		dijit.byId("noteNote").set("class","");
@@ -613,6 +633,13 @@ function editNote (noteId) {
 	dojo.byId("noteRefId").value=dojo.byId("objectId").value;
 	dijit.byId("noteNote").set("value",dojo.byId("note_"+noteId).value);
 	dijit.byId("dialogNote").set('title',i18n("dialogNote") + " #" + noteId);
+	if (privacy==1) {
+		dijit.byId('notePrivacyPublic').set('checked','true');	
+	} else if (privacy==2) {
+		dijit.byId('notePrivacyTeam').set('checked','true');
+	} else if (privacy==3) {
+		dijit.byId('notePrivacyPrivate').set('checked','true');
+	}
 	dijit.byId("dialogNote").show();
 }
 

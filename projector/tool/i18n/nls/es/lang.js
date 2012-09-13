@@ -1349,5 +1349,12 @@ workStartedSince: "[workStartedSince]",
 workStopped: "[workStopped]",
 wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se puede conectar.",
 year: "año",
+colPredefinedNote: "[colPredefinedNote]",
+colText: "[colText]",
+menuPredefinedNote: "[menuPredefinedNote]",
+PredefinedNote: "[PredefinedNote]",
+private: "[private]",
+public: "[public]",
+team: "[team]",
 currentLocaleOfFile: "es"
 }

@@ -1349,5 +1349,12 @@ workStartedSince: "iniciado à ${1} dia(s)",
 workStopped: "trabalho parado",
 wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin se pode ligar.",
 year: "ano",
+colPredefinedNote: "[colPredefinedNote]",
+colText: "[colText]",
+menuPredefinedNote: "[menuPredefinedNote]",
+PredefinedNote: "[PredefinedNote]",
+private: "[private]",
+public: "[public]",
+team: "[team]",
 currentLocaleOfFile: "pt"
 }

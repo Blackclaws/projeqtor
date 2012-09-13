@@ -45,57 +45,63 @@
 <body class="<?php echo getTheme();?>" >
   <div id="wait" >
   </div> 
-  <table width="100%" height="100%" class="background"><tr height="100%"><td width="100%">
-  <table  align="center" >
-    <tr >
-      <td  rowspan="2" width="140px" valign="top">
-        <img src="img/logoFull.gif" />
-      </td>
-      <td  width="500px">
-        <img src="img/titleFull.gif" />
-      </td>
-    <tr  height="200px">
-      <td align="left">
-        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >
-          <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
+  <table align="center" width="100%" height="100%" class="loginBackground">
+    <tr height="100%">
+      <td width="100%" align="center">
+        <div class="background loginFrame" >
+        <table  align="center" >
+          <tr style="height:10px;" >
+            <td align="left" style="height: 1%;" valign="top">
+              <div style="width: 300px; height: 50px; background-size: contain; background-repeat: no-repeat;
+              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/title.gif';?>);">
+              </div>
+            </td>
+          </tr>
+          <tr style="height:100%" height="100%">
+            <td style="height:99%" align="left" valign="middle">
+              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
+                <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
              <script type="dojo/method" event="onSubmit" >
               dojo.byId('goButton').focus();
               loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
-    		  return false;       
-            </script>     
+              return false;       
+            </script><br/><br/>     
             <div dojoType="dojox.form.PasswordValidator" name="password">
-                <label class="label" style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
-                <input type="password" pwType="new" /><br/>
-                <br/>
-                <label class="label" style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
-                <input type="password" pwType="verify" /><br/>
+              <label class="label" style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
+              <input type="password" pwType="new" /><br/>
+              <br/>
+              <label class="label" style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
+              <input type="password" pwType="verify" /><br/>
             </div>            
             <br/>
             <label class="label" style="width:200px;">&nbsp;</label>
             <button type="submit" style="width:200px" id="goButton" dojoType="dijit.form.Button" showlabel="true">OK
               <script type="dojo/connect" event="onClick" args="evt">
-                loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
+              loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
               </script>
             </button>
-            <br/><br/>
+            <br/>
             <?php if ( $user->password != md5($paramDefaultPassword) ) {?>
             <label class="label" style="width:200px;">&nbsp;</label>
             <button style="width:200px" id="cancelButton" dojoType="dijit.form.Button" showlabel="true"><?php echo i18n('buttonCancel');?>
               <script type="dojo/connect" event="onClick" args="evt">
-                showWait(); 
-                window.location=".";
+              showWait(); 
+              window.location=".";
               </script>
             </button>  
             <?php }?>  
-          </form>
-        </div>
-        <br/>
-        <label class="label">&nbsp;</label>
-        <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="bottom" >
+            <br/><br/>
+            <label class="label" style="width:200px" >&nbsp;</label>
+            <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="bottom" >
+            </div>
+            </form>
+              </div>
+            </td>
+          </tr>
+        </table>
         </div>
       </td>
     </tr>
   </table>
-  </td></tr></table>
 </body>
 </html>

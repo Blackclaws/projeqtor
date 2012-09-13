@@ -23,25 +23,33 @@
   <div id="wait">
   &nbsp;
   </div> 
-    <table width="100%" height="100%" class="background"><tr height="100%"><td width="100%">
-  <table align="center">
-    <tr>
-      <td rowspan="2" width="140px" valign="top">
-        <img src="view/img/logoFull.gif" />
-      </td>
-      <td  width="550px">
-        <img src="view/img/titleFull.gif" />
-      </td>
-    <tr height="200px">
-      <td align="left">
-        <p>Loading...</p>
-      </td>
-    </tr>
-  </table>
-  </td></tr></table>
+  <table align="center" width="100%" height="100%" class="loginBackground">
+    <tr height="100%">
+      <td width="100%" align="center">
+        <div class="background loginFrame" >
+        <table  align="center" >
+          <tr style="height:10px;" >
+            <td align="left" style="height: 1%;" valign="top">
+              <div style="width: 300px; height: 50px; background-size: contain; background-repeat: no-repeat;
+              background-image: url(<?php echo (file_exists("logo.gif"))?'logo.gif':'view/img/title.gif';?>);">
+              </div>
+            </td>
+          </tr>
+          <tr style="height:100%" height="100%">
+            <td style="height:99%" align="left" valign="middle">
+              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
   <form id="indexForm" name="indexForm" action="view" method="post">
     <input type="hidden" id="xcurrentLocale" name="xcurrentLocale" value="en" />
   </form>
+              </div>
+            </td>
+          </tr>
+        </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
 </body>
 
 </html>

@@ -1349,5 +1349,12 @@ workStartedSince: "started since ${1} day(s)",
 workStopped: "work stopped",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 year: "year",
+colPredefinedNote: "predefined note",
+colText: "text",
+menuPredefinedNote: "Predefined notes",
+PredefinedNote: "Predefined note",
+private: "private",
+public: "public",
+team: "team",
 currentLocaleOfFile: "default"
 }

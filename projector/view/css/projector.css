@@ -32,6 +32,17 @@ html, body {
 
 /* DIV styles presented as included in pages ================================== */
 
+.loginFrame {
+ border: 2px solid #FFFFFF;
+ -moz-border-radius: 30px;
+ border-radius: 20px;
+ width: 500px; text-align: center;
+ text-align:center;
+ box-shadow: 10px 10px 5px #333; 
+ -moz-box-shadow: 10px 10px 5px #333;
+ -webkit-box-shadow: 10px 10px 5px #333;
+}
+
 #toolBarDiv {
   height: 25px;
   border-bottom: 1px solid #eeeeee;
@@ -410,6 +421,16 @@ label, .label {
   border: none; padding: 0px; spacing: 0px;
   width: 90px;
 }
+.smallTabLabel, .smallTabLabelRight {
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  text-align: left;
+  border: none; padding: 0px; spacing: 0px;
+  width: 90px;
+}
+.smallTabLabelRight {
+	text-align: right;
+}
 
 .messageOK {
   color : green; 
@@ -747,7 +768,8 @@ label, .label {
 .blue .dijitSplitterH, .blue .dijitGutterH, .blue .dijitSplitterV, .blue .dijitGutterV,
 .blue .dijitMenuItemHover,
 .blue .dijitMenuPassive .dijitMenuItemHover,
-.blue .dijitMenuItemSelected   {
+.blue .dijitMenuItemSelected,
+.blue .loginBackground    {
   background-color: #545281;
 }
 
@@ -793,7 +815,8 @@ label, .label {
 .red .dijitSplitterH, .red .dijitGutterH, .red .dijitSplitterV, .red .dijitGutterV,
 .red .dijitMenuItemHover,
 .red .dijitMenuPassive .dijitMenuItemHover,
-.red .dijitMenuItemSelected   {
+.red .dijitMenuItemSelected,
+.red .loginBackground    {
   background-color: #9B5353;
 }
 
@@ -838,7 +861,8 @@ label, .label {
 .green .dijitSplitterH, .green .dijitGutterH, .green .dijitSplitterV, .green .dijitGutterV,
 .green .dijitMenuItemHover,
 .green .dijitMenuPassive .dijitMenuItemHover,
-.green .dijitMenuItemSelected   {
+.green .dijitMenuItemSelected,
+.green .loginBackground    {
   background-color: #539B53;
 }
 
@@ -884,7 +908,8 @@ label, .label {
 .grey .dijitSplitterH, .grey .dijitGutterH, .grey .dijitSplitterV, .grey .dijitGutterV,
 .grey .dijitMenuItemHover,
 .grey .dijitMenuPassive .dijitMenuItemHover,
-.grey .dijitMenuItemSelected   {
+.grey .dijitMenuItemSelected,
+.grey .loginBackground    {
   background-color: #9B9B9B;
 }
 
@@ -930,7 +955,8 @@ label, .label {
 .orange .dijitSplitterH, .orange .dijitGutterH, .orange .dijitSplitterV, .orange .dijitGutterV,
 .orange .dijitMenuItemHover,
 .orange .dijitMenuPassive .dijitMenuItemHover,
-.orange .dijitMenuItemSelected   {
+.orange .dijitMenuItemSelected,
+.orange .loginBackground    {
   background-color: #D98F0E;
 }
 
@@ -975,7 +1001,8 @@ label, .label {
 .white .dijitSplitterH, .white .dijitGutterH , .white .dijitSplitterV, .white .dijitGutterV,
 .white .dijitMenuItemHover, .white #buttonDiv, .white #logoDiv,
 .white .dijitMenuPassive .dijitMenuItemHover,
-.white .dijitMenuItemSelected  {
+.white .dijitMenuItemSelected,
+.white .loginBackground   {
   background-color: #000000;
 }
 
@@ -1022,7 +1049,8 @@ label, .label {
 .blueLight .dijitSplitterH, .blueLight .dijitGutterH, .blueLight .dijitSplitterV, .blueLight .dijitGutterV,
 .blueLight .dijitMenuItemHover,
 .blueLight .dijitMenuPassive .dijitMenuItemHover,
-.blueLight .dijitMenuItemSelected   {
+.blueLight .dijitMenuItemSelected,
+.blueLight .loginBackground    {
   background-color: #C3C3EB;
 }
 
@@ -1067,7 +1095,8 @@ label, .label {
 .blueContrast .dijitSplitterH, .blueContrast .dijitGutterH, .blueContrast .dijitSplitterV, .blueContrast .dijitGutterV,
 .blueContrast .dijitMenuItemHover,
 .blueContrast .dijitMenuPassive .dijitMenuItemHover,
-.blueContrast .dijitMenuItemSelected   {
+.blueContrast .dijitMenuItemSelected,
+.blueContrast .loginBackground    {
   background-color: #545281;
 }
 
@@ -1115,7 +1144,8 @@ label, .label {
 .redLight .dijitSplitterH, .redLight .dijitGutterH, .redLight .dijitSplitterV, .redLight .dijitGutterV,
 .redLight .dijitMenuItemHover,
 .redLight .dijitMenuPassive .dijitMenuItemHover,
-.redLight .dijitMenuItemSelected   {
+.redLight .dijitMenuItemSelected,
+.redLight .loginBackground    {
   background-color: #EBC3C3;
 }
 
@@ -1161,7 +1191,8 @@ label, .label {
 .redContrast .dijitSplitterH, .redContrast .dijitGutterH, .redContrast .dijitSplitterV, .redContrast .dijitGutterV,
 .redContrast .dijitMenuItemHover,
 .redContrast .dijitMenuPassive .dijitMenuItemHover,
-.redContrast .dijitMenuItemSelected   {
+.redContrast .dijitMenuItemSelected ,
+.redContrast .loginBackground   {
   background-color: #9B5353;
 }
 
@@ -1209,7 +1240,8 @@ label, .label {
 .greenLight .dijitSplitterH, .greenLight .dijitGutterH, .greenLight .dijitSplitterV, .greenLight .dijitGutterV,
 .greenLight .dijitMenuItemHover,
 .greenLight .dijitMenuPassive .dijitMenuItemHover,
-.greenLight .dijitMenuItemSelected   {
+.greenLight .dijitMenuItemSelected,
+.greenLight .loginBackground    {
   background-color: #C3EBC3;
 }
 
@@ -1254,7 +1286,8 @@ label, .label {
 .greenContrast .dijitSplitterH, .greenContrast .dijitGutterH, .greenContrast .dijitSplitterV, .greenContrast .dijitGutterV,
 .greenContrast .dijitMenuItemHover,
 .greenContrast .dijitMenuPassive .dijitMenuItemHover,
-.greenContrast .dijitMenuItemSelected   {
+.greenContrast .dijitMenuItemSelected,
+.greenContrast .loginBackground    {
   background-color: #539B53;
 }
 
@@ -1302,7 +1335,8 @@ label, .label {
 .orangeLight .dijitSplitterH, .orangeLight .dijitGutterH, .orangeLight .dijitSplitterV, .orangeLight .dijitGutterV,
 .orangeLight .dijitMenuItemHover,
 .orangeLight .dijitMenuPassive .dijitMenuItemHover,
-.orangeLight .dijitMenuItemSelected   {
+.orangeLight .dijitMenuItemSelected  ,
+.orangeLight .loginBackground  {
   background-color: #F6C672;
 }
 
@@ -1347,7 +1381,8 @@ label, .label {
 .orangeContrast .dijitSplitterH, .orangeContrast .dijitGutterH, .orangeContrast .dijitSplitterV, .orangeContrast .dijitGutterV,
 .orangeContrast .dijitMenuItemHover,
 .orangeContrast .dijitMenuPassive .dijitMenuItemHover,
-.orangeContrast .dijitMenuItemSelected   {
+.orangeContrast .dijitMenuItemSelected ,
+.orangeContrast .loginBackground   {
   background-color: #D98F0E;
 }
 
@@ -1395,7 +1430,8 @@ label, .label {
 .greyLight .dijitSplitterH, .greyLight .dijitGutterH, .greyLight .dijitSplitterV, .greyLight .dijitGutterV,
 .greyLight .dijitMenuItemHover,
 .greyLight .dijitMenuPassive .dijitMenuItemHover,
-.greyLight .dijitMenuItemSelected   {
+.greyLight .dijitMenuItemSelected ,
+.greyLight .loginBackground   {
   background-color: #C3C3C3;
 }
 
@@ -1441,7 +1477,8 @@ label, .label {
 .greyContrast .dijitSplitterH, .greyContrast .dijitGutterH, .greyContrast .dijitSplitterV, .greyContrast .dijitGutterV,
 .greyContrast .dijitMenuItemHover,
 .greyContrast .dijitMenuPassive .dijitMenuItemHover,
-.greyContrast .dijitMenuItemSelected   {
+.greyContrast .dijitMenuItemSelected ,
+.greyContrast .loginBackground   {
   background-color: #9B9B9B;
 }
 
@@ -1489,7 +1526,8 @@ label, .label {
 .ProjectOrRiaContrasted .dijitSplitterH, .ProjectOrRiaContrasted .dijitGutterH, .ProjectOrRiaContrasted .dijitSplitterV, .ProjectOrRiaContrasted .dijitGutterV,
 .ProjectOrRiaContrasted .dijitMenuItemHover,
 .ProjectOrRiaContrasted .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRiaContrasted .dijitMenuItemSelected   {
+.ProjectOrRiaContrasted .dijitMenuItemSelected,
+.ProjectOrRiaContrasted .loginBackground    {
   background-color: #545281;
 }
 
@@ -1540,7 +1578,8 @@ label, .label {
 .ProjectOrRiaLight .dijitSplitterH, .ProjectOrRiaLight .dijitGutterH, .ProjectOrRiaLight .dijitSplitterV, .ProjectOrRiaLight .dijitGutterV,
 .ProjectOrRiaLight .dijitMenuItemHover,
 .ProjectOrRiaLight .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRiaLight .dijitMenuItemSelected   {
+.ProjectOrRiaLight .dijitMenuItemSelected,
+.ProjectOrRiaLight .loginBackground    {
   background-color: #d4d5da;
 }
 
@@ -1582,14 +1621,15 @@ label, .label {
 /* =============================================================================== */
 
 .ProjectOrRia html, .ProjectOrRia body, .ProjectOrRia #leftDiv, .ProjectOrRia #logoDiv,
-.ProjectOrRia .dijitSplitterH, .ProjectOrRia .dijitGutterH, .ProjectOrRia .dijitSplitterV, .ProjectOrRia .dijitGutterV {
+.ProjectOrRia .dijitSplitterH, .ProjectOrRia .dijitGutterH, .ProjectOrRia .dijitSplitterV, .ProjectOrRia .dijitGutterV,
+.ProjectOrRia .loginBackground {
   background-color: #545281; 
   /* background-color: #d4d5da; */
 }
 
 .ProjectOrRia .dijitMenuItemHover,
 .ProjectOrRia .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRia .dijitMenuItemSelected   {
+.ProjectOrRia .dijitMenuItemSelected  {
   background-color: #545281;  color: #EEEEEE; 
 	/* background-color: #d4d5da; color: #545281; */  
 }
