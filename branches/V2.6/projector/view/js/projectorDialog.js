@@ -606,7 +606,7 @@ function addNote () {
 	        	contentWidget.set('content',data);
 			}
 	});
-	dijit.byId('notePrivacyPublic').set('checked','true');
+	dijit.byId('notePrivacyPublic').set('checked','true');	
 	dijit.byId("dialogNote").show();
 }
 
@@ -705,6 +705,7 @@ function addAttachement (attachmentType) {
     }
 	dijit.byId("attachementDescription").set('value',null);
 	dijit.byId("dialogAttachement").set('title',i18n("dialogAttachement"));
+	dijit.byId('attachmentPrivacyPublic').set('checked','true');
 	dijit.byId("dialogAttachement").show();
 }
 

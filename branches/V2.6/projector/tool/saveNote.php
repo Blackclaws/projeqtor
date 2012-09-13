@@ -20,10 +20,10 @@ if (! array_key_exists('noteNote',$_REQUEST)) {
 }
 $noteNote=$_REQUEST['noteNote'];
 
-if (! array_key_exists('notePrivacy',$_REQUEST)) {
-  throwError('notePrivacy parameter not found in REQUEST');
+$notePrivacy=null;
+if (array_key_exists('notePrivacy',$_REQUEST)) {
+  $notePrivacy=$_REQUEST['notePrivacy'];
 }
-$notePrivacy=$_REQUEST['notePrivacy'];
 
 $noteId=null;
 if (array_key_exists('noteId',$_REQUEST)) {
@@ -37,9 +37,13 @@ Sql::beginTransaction();
 // get the modifications (from request)
 $note=new Note($noteId);
 
-if ($note->idUser==null) {
+$user=$_SESSION['user'];
+if (! $note->id) {
   $note->idUser=$user->id;
+  $ress=new Resource($user->id);
+  $note->idTeam=$ress->idTeam;
 }
+
 $note->refId=$refId;
 $note->refType=$refType;
 if ($note->creationDate==null) {
@@ -48,9 +52,12 @@ if ($note->creationDate==null) {
     $note->updateDate=date("Y-m-d H:i:s");
 }
 $note->note=$noteNote;
-$note->idPrivacy=$notePrivacy;
+if ($notePrivacy) {
+  $note->idPrivacy=$notePrivacy;
+} else if (! $note->idPrivacy) {
+	$note->idPrivacy=1;
+}
 $result=$note->save();
-
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();

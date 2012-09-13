@@ -1404,42 +1404,50 @@ function drawAttachementsFromObject($obj, $refresh=false) {
   echo '</tr>';
   foreach($attachements as $attachement) {
     $userId=$attachement->idUser;
-    $userName=SqlList::getNameFromId('User',$userId);
-    $creationDate=$attachement->creationDate;
-    echo '<tr>';
-    if (! $print) {
-      echo '<td class="attachementData" style="text-align:center;width:5%"">';
-      if ($attachement->fileName and $attachement->subDirectory and ! $print) {
-        echo '<a href="../tool/download.php?class=Attachement&id='. $attachement->id . '"'; 
-        echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
-      }
-      if ($attachement->link and ! $print) {
-        echo '<a href="' . $attachement->link .'"';
-        echo ' target="#" title="' . urldecode($attachement->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
-      }
-      if ($attachement->idUser==$user->id and ! $print and $canUpdate) {
-        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachement(' . $attachement->id . ');" title="' . i18n('removeAttachement') . '" class="smallButton"/>';
-      }
-      echo '</td>';
+    $ress=new Resource($user->id);
+    if ($user->id==$attachement->idUser or $attachement->idPrivacy==1 or ($attachement->idPrivacy==2 and $ress->idTeam==$attachement->idTeam)) {
+	    $userName=SqlList::getNameFromId('User',$userId);
+	    $creationDate=$attachement->creationDate;
+	    echo '<tr>';
+	    if (! $print) {
+	      echo '<td class="attachementData" style="text-align:center;width:5%"">';
+	      if ($attachement->fileName and $attachement->subDirectory and ! $print) {
+	        echo '<a href="../tool/download.php?class=Attachement&id='. $attachement->id . '"'; 
+	        echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
+	      }
+	      if ($attachement->link and ! $print) {
+	        echo '<a href="' . $attachement->link .'"';
+	        echo ' target="#" title="' . urldecode($attachement->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
+	      }
+	      if ($attachement->idUser==$user->id and ! $print and $canUpdate) {
+	        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachement(' . $attachement->id . ');" title="' . i18n('removeAttachement') . '" class="smallButton"/>';
+	      }
+	      echo '</td>';
+	    }
+	    echo '<td class="attachementData" style="width:5%;">#' . $attachement->id  . '</td>';
+	    echo '<td class="attachementData" style="width:10%;text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
+	    echo '<td class="attachementData" style="width:5%;text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName);
+	    echo  '</td>';
+	    echo '<td class="attachementData" style="width:' . ( ($print)?'50':'45' ) . '%" title="' . $attachement->description . '">';
+	    echo '<table style="width:100%"><tr >';
+	    echo ' <td>';
+	    echo htmlEncode($attachement->fileName,'print'); 
+	    echo ' </td>';
+	    if ($attachement->description and ! $print) {
+	      echo '<td style="width:18px; vertical-align: top;"><img src="img/note.png" /></td>';
+	    }
+	    if ($attachement->idPrivacy==3) {
+	        echo '<td style="width:18px;vertical-align: top;" title="' . i18n('private') .'"><img src="img/private.png" /></td>';
+	    } else if ($attachement->idPrivacy==2) {
+	        echo '<td style="width:18px;vertical-align: top;" title="' . i18n('team') . " : " . SqlList::getNameFromId('Team', $attachement->idTeam) .'"><img src="img/team.png" /></td>';
+	    }
+	    echo '</tr></table>';
+	    echo '</td>';
+	    
+	    echo '<td class="attachementData" style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
+	    echo '<td class="attachementData" style="width:15%">' . $userName . '</td>';
+	    echo '</tr>';
     }
-    echo '<td class="attachementData" style="width:5%;">#' . $attachement->id  . '</td>';
-    echo '<td class="attachementData" style="width:10%;text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
-    echo '<td class="attachementData" style="width:5%;text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName);
-    echo  '</td>';
-    echo '<td class="attachementData" style="width:' . ( ($print)?'50':'45' ) . '%" title="' . $attachement->description . '">';
-    echo '<table><tr >';
-    echo ' <td>';
-    echo htmlEncode($attachement->fileName,'print'); 
-    echo ' </td>';
-    if ($attachement->description and ! $print) {
-      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
-    }
-    echo '</tr></table>';
-    echo '</td>';
-    
-    echo '<td class="attachementData" style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
-    echo '<td class="attachementData" style="width:15%">' . $userName . '</td>';
-    echo '</tr>';
   }
   echo '<tr>';
   if (! $print) {

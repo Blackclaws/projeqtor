@@ -103,12 +103,25 @@ if (! $error) {
     $attachementDescription=$_REQUEST['attachementDescription'];
   }
 }
+if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
+  throwError('attachmentPrivacy parameter not found in REQUEST');
+}
+$idPrivacy=$_REQUEST['attachmentPrivacy'];
+
+$user=$_SESSION['user'];
 Sql::beginTransaction();
 if (! $error) {
   $attachement=new Attachement();
   $attachement->refId=$refId;
   $attachement->refType=$refType;
   $attachement->idUser=$user->id;
+  $ress=new Resource($user->id);
+  $attachement->idTeam=$ress->idTeam;
+	if ($idPrivacy) {
+	  $attachement->idPrivacy=$idPrivacy;
+	} else if (! $attachement->idPrivacy) {
+	  $attachement->idPrivacy=1;
+	}
   $attachement->creationDate=date("Y-m-d H:i:s");
   if ($type=='file') {
     $attachement->fileName=basename($uploadedFile['name']);
