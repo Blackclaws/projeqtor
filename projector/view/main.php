@@ -1238,6 +1238,22 @@ checkVersion(); ?>
          <textarea style="display:none" id="resultAck" name="resultAck"></textarea>      
         </td>
       </tr>
+      <tr><td colspan="2">
+       <table width="100%"><tr height="25px">
+            <td width="33%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="attachmentPrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyPublic" value="1" />
+            </td>
+            <td width="34%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="attachmentPrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyTeam" value="2" />
+            </td>
+            <td width="33%" class="smallTabLabel" >
+              <label class="smallTabLabelRight" for="attachmentPrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyPrivate" value="3" />
+            </td>
+          </tr></table>
+      </td></tr>
       <tr>
         <td colspan="2" align="center">
           <input type="hidden" id="dialogAttachementAction">
