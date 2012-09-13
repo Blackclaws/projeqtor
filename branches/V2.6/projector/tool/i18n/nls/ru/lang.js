@@ -1349,5 +1349,12 @@ workStartedSince: "Прошло ${1} дн.",
 workStopped: "Работа остановлена",
 wrongMaintenanceUser: "Обновление продолжается<br/>Только администратор может подключиться к системе.",
 year: "год",
+colPredefinedNote: "[colPredefinedNote]",
+colText: "[colText]",
+menuPredefinedNote: "[menuPredefinedNote]",
+PredefinedNote: "[PredefinedNote]",
+private: "[private]",
+public: "[public]",
+team: "[team]",
 currentLocaleOfFile: "ru"
 }

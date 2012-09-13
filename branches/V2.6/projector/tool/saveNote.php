@@ -20,6 +20,11 @@ if (! array_key_exists('noteNote',$_REQUEST)) {
 }
 $noteNote=$_REQUEST['noteNote'];
 
+if (! array_key_exists('notePrivacy',$_REQUEST)) {
+  throwError('notePrivacy parameter not found in REQUEST');
+}
+$notePrivacy=$_REQUEST['notePrivacy'];
+
 $noteId=null;
 if (array_key_exists('noteId',$_REQUEST)) {
   $noteId=$_REQUEST['noteId'];
@@ -43,7 +48,7 @@ if ($note->creationDate==null) {
     $note->updateDate=date("Y-m-d H:i:s");
 }
 $note->note=$noteNote;
-
+$note->idPrivacy=$notePrivacy;
 $result=$note->save();
 
 // Message of correct saving

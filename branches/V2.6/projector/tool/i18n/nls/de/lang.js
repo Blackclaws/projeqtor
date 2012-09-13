@@ -1349,5 +1349,12 @@ workStartedSince: "gestartet seit ${1} Tag(en)",
 workStopped: "Arbeit gestoppt",
 wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administrator kann sich verbinden.",
 year: "Jahr",
+colPredefinedNote: "[colPredefinedNote]",
+colText: "[colText]",
+menuPredefinedNote: "[menuPredefinedNote]",
+PredefinedNote: "[PredefinedNote]",
+private: "[private]",
+public: "[public]",
+team: "[team]",
 currentLocaleOfFile: "de"
 }

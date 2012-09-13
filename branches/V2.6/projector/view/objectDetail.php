@@ -766,6 +766,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           }
           
         }
+        if ( get_class($obj)=='PredefinedNote'  ) {
+          if ($col=='idType') {
+            $critFld='scope';
+            $critVal=SqlList::getNameFromId('Textable', $obj->idTextable, false);
+          }
+        }
         if ($displayComboButtonCol) {
           $fieldWidth -= 20;
         }
@@ -1239,30 +1245,40 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '<td class="noteHeader" style="width:15%">' . i18n('colUser'). '</td>';
   echo '</tr>';
   foreach($notes as $note) {
-    $userId=$note->idUser;
-    $userName=SqlList::getNameFromId('User',$userId);
-    $creationDate=$note->creationDate;
-    $updateDate=$note->updateDate;
-    if ($updateDate==null) {$updateDate='';}
-    echo '<tr>';
-    if (! $print) {
-      echo '<td class="noteData" style="text-align:center;">';
-      if ($note->idUser==$user->id and ! $print and $canUpdate) {
-        echo ' <img src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ');" title="' . i18n('editNote') . '" class="smallButton"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" class="smallButton"/> ';
-      }
-      echo '</td>';
-    }
-    echo '<td class="noteData">#' . $note->id  . '</td>';
-    echo '<td class="noteData">';
-    if (! $print) {
-      echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
-    }
-    echo htmlEncode($note->note,'print'); 
-    echo '</td>';
-    echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
-    echo '<td class="noteData">' . $userName . '</td>';
-    echo '</tr>';
+  	$ress=new Resource($user->id);
+  	if ($user->id==$note->idUser or $note->idPrivacy==1 or ($note->idPrivacy==2 and $ress->idTeam==$note->idTeam)) {
+	    $userId=$note->idUser;
+	    $userName=SqlList::getNameFromId('User',$userId);
+	    $creationDate=$note->creationDate;
+	    $updateDate=$note->updateDate;
+	    if ($updateDate==null) {$updateDate='';}
+	    echo '<tr>';
+	    if (! $print) {
+	      echo '<td class="noteData" style="text-align:center;">';
+	      if ($note->idUser==$user->id and ! $print and $canUpdate) {
+	        echo ' <img src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy. ');" title="' . i18n('editNote') . '" class="smallButton"/> ';
+	        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" class="smallButton"/> ';
+	      }
+	      echo '</td>';
+	    }
+	    echo '<td class="noteData">#' . $note->id  . '</td>';
+	    echo '<td class="noteData"><table style="width:100%"><tr><td>';
+	    if (! $print) {
+	      echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
+	    }
+	    echo htmlEncode($note->note,'print'); 
+	    echo "</td>";
+	    if ($note->idPrivacy==3) {
+	      echo '<td style="width:16px;vertical-align: top;" title="' . i18n('private') .'"><img src="img/private.png" /></td>';
+	    } else if ($note->idPrivacy==2) {
+	      echo '<td style="width:16px;vertical-align: top;" title="' . i18n('team') . " : " . SqlList::getNameFromId('Team', $note->idTeam) .'"><img src="img/team.png" /></td>';
+	    }
+	    echo '</tr></table>';
+	    echo '</div></td>';
+	    echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
+	    echo '<td class="noteData">' . $userName . '</td>';
+	    echo '</tr>';
+  	}
   }
   echo '<tr>';
   if (! $print) {

@@ -11,6 +11,8 @@ class Note extends SqlElement {
   public $creationDate;
   public $updateDate;
   public $note;
+  public $idPrivacy;
+  public $idTeam;
   
   //public $_noHistory=true; // Will never save history for this object
   

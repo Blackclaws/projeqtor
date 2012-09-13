@@ -56,25 +56,21 @@
 <body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
   <div id="waitLogin" >
   </div> 
-  <table align="center" width="100%" height="100%" class="background">
+  <table align="center" width="100%" height="100%" class="loginBackground">
     <tr height="100%">
-	    <td width="100%">
+	    <td width="100%" align="center">
+	      <div class="background loginFrame" >
 			  <table  align="center" >
-			    <tr style="height:10px">
-			      <td rowspan="2" width="140px" valign="top">
-			        <?php if (file_exists("../logo.gif")) {?>
-			        <img src="../logo.gif">
-			        <?php } else {?> 
-			        <img src="img/logoFull.gif">
-			        <?php }?>
-			      </td>
-			      <td  style="height: 1%" width="560px">
-			        <img src="img/titleFull.gif">
+			    <tr style="height:10px;" >
+			      <td align="left" style="height: 1%;" valign="top">
+			        <div style="width: 300px; height: 50px; background-size: contain; background-repeat: no-repeat;
+			        background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/title.gif';?>);">
+			        </div>
 			      </td>
 			    </tr>
 			    <tr style="height:100%" height="100%">
 			      <td style="height:99%" align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:300px;">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
                     dojo.byId('login').focus();
@@ -142,7 +138,7 @@
 			              <tr>
 			                <td class="label"><label>&nbsp;</label></td>
 			                <td>
-			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="200px" style="overflow: auto;" >
+			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="50px" style="overflow: auto;" >
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
 			                    <?php if (array_key_exists('lostConnection',$_REQUEST)) {
 			                            echo i18n("disconnectMessage");
@@ -159,6 +155,7 @@
 		        </td>
 		      </tr>
 	      </table>
+	      </div>
       </td>
     </tr>
   </table>

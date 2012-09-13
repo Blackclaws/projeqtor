@@ -28,7 +28,8 @@ $versionHistory = array(
   "V2.4.0",
   "V2.4.1",
   "V2.4.2",
-  "V2.5.0");
+  "V2.5.0",
+  "V2.6.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -222,7 +223,7 @@ function runScript($vers) {
         }
         if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
           $result=Sql::query($query);
-          if ( ! $result ) {
+          if ( ! $result or !$result->queryString ) {
             traceLog( "<br/>***** SQL ERROR WHILE EXECUTING SQL REQUEST *****");
             traceLog("");
             traceLog(Sql::$lastQueryErrorMessage);
