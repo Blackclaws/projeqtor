@@ -36,11 +36,13 @@ html, body {
  border: 2px solid #FFFFFF;
  -moz-border-radius: 30px;
  border-radius: 20px;
+ height: 275px;
  width: 500px; text-align: center;
  text-align:center;
  box-shadow: 10px 10px 5px #333; 
  -moz-box-shadow: 10px 10px 5px #333;
  -webkit-box-shadow: 10px 10px 5px #333;
+ margin:0; padding:0;
 }
 
 #toolBarDiv {
