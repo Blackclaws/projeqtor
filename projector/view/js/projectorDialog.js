@@ -111,6 +111,7 @@ function showInfo (msg) {
  * @return void
  */
 function showAlert (msg) {
+	top.hideWait();
 	top.dojo.byId("dialogAlertMessage").innerHTML=msg ;
 	top.dijit.byId("dialogAlert").show();
 }

@@ -82,3 +82,17 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 116, 0),
 (6, 116, 0),
 (7, 116, 0);
+
+ALTER TABLE `${prefix}statusmail` ADD COLUMN `idEvent` int(12) unsigned default null;
+
+CREATE TABLE `${prefix}event` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) default NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `${prefix}event` (`id`,`name`,`idle`) VALUES 
+(1,'responsibleChange',0),
+(2,'noteAdd',0),
+(3,'attachmentAdd',0);
