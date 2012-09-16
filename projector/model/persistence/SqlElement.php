@@ -2034,99 +2034,104 @@ abstract class SqlElement {
     }
     $crit=array();
     $crit['idStatus']=$this->idStatus;
-    $crit="idle='0' and idMailable='" . $mailable->id . "' ";
+    $crit="idle='0' and idMailable='" . $mailable->id . "' and ( 1 ";
     if ($statusChange) {
-    	$crit=" and idStatus='" . $this->idStatus . "' ";
+    	$crit.="  or idStatus='" . $this->idStatus . "' ";
     }
     if ($responsibleChange) {
-      $crit=" and idStatus='" . $this->idStatus . "' ";
+      $crit.=" or idEvent='1' ";
     }
+    if ($noteAdd) {
+      $crit.=" or idEvent='2' ";
+    }
+    if ($attachmentAdd) {
+      $crit.=" or idEvent='3' ";
+    }
+    $crit.=")";
     $statusMail=new StatusMail();
-    $statusMail=$statusMail->getSqlElementsFromCriteria(null,false, $crit);
-    if (! $statusMail or ! $statusMail->id) {
-      if (property_exists($statusMail,"tooManyRows") and $statusMail->tooManyRows==true) {
-        errorLog("Too many rows on StatusMail for element '" . get_class($this) . "' "
-        . " and status '" . SqlList::getNameFromId('Status', $this->idStatus) . "'" );
-      }
-      return false; // exit not a status for mail sending (or disabled) 
-    }
-    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
-    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0) {
+    $statusMailList=$statusMail->getSqlElementsFromCriteria(null,false, $crit);
+    if (count($statusMailList)==0) {
       return false; // exit not a status for mail sending (or disabled) 
     }
     $dest="";
-    if ($statusMail->mailToUser) {
-      if (property_exists($this,'idUser')) {
-        $user=new User($this->idUser);
-        $newDest = "###" . $user->email . "###";
-        if ($user->email and strpos($dest,$newDest)===false) {
-          $dest.=($dest)?', ':'';
-          $dest.= $newDest;
-        }
-      }
-    }
-    if ($statusMail->mailToResource) {
-      if (property_exists($this, 'idResource')) {
-        $resource=new Resource($this->idResource);
-        $newDest = "###" . $resource->email . "###";
-        if ($resource->email and strpos($dest,$newDest)===false) {
-          $dest.=($dest)?', ':'';
-          $dest.= $newDest;
-        }
-      }    
-    }
-    if ($statusMail->mailToProject or $statusMail->mailToLeader) {
-      $aff=new Affectation();
-      $crit=array('idProject'=>$this->idProject, 'idle'=>'0');
-      $affList=$aff->getSqlElementsFromCriteria($crit, false);
-      if ($affList and count($affList)>0) {
-        foreach ($affList as $aff) {
-          $resource=new Resource($aff->idResource);
-          if ($statusMail->mailToProject) {
-            $newDest = "###" . $resource->email . "###";
-            if ($resource->email and strpos($dest,$newDest)===false) {
-              $dest.=($dest)?', ':'';
-              $dest.= $newDest;
-            }
-          }
-          if ($statusMail->mailToLeader and $resource->idProfile) {
-            $prf=new Profile($resource->idProfile);
-            if ($prf->profileCode=='PL') {
-              $newDest = "###" . $resource->email . "###";
-              if ($resource->email and strpos($dest,$newDest)===false) {
-                $dest.=($dest)?', ':'';
-                $dest.= $newDest;
-              }
-            }
-          }
-        }
-      }
-    }
-    if ($statusMail->mailToContact) {
-      if (property_exists($this,'idContact')) {
-        $contact=new Contact($this->idContact);
-        $newDest = "###" . $contact->email . "###";
-        if ($contact->email and strpos($dest,$newDest)===false) {
-          $dest.=($dest)?', ':'';
-          $dest.= $newDest;
-        }
-      }
-    }
-    if ($statusMail->mailToOther) {
-      if ($statusMail->otherMail) {
-        $otherMail=str_replace(';',',', $statusMail->otherMail);
-        $otherMail=str_replace(' ',',', $otherMail);
-        $split=explode(',',$otherMail);
-        foreach ($split as $adr) {
-          if ($adr and $adr!='') {
-            $newDest = "###" . $adr . "###";
-            if (strpos($dest,$newDest)===false) {
-              $dest.=($dest)?', ':'';
-              $dest.= $newDest;
-            }
-          }
-        }
-      }
+    foreach ($statusMailList as $statusMail) {
+	    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
+	    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0) {
+	      continue; // exit not a status for mail sending (or disabled) 
+	    }
+	    if ($statusMail->mailToUser) {
+	      if (property_exists($this,'idUser')) {
+	        $user=new User($this->idUser);
+	        $newDest = "###" . $user->email . "###";
+	        if ($user->email and strpos($dest,$newDest)===false) {
+	          $dest.=($dest)?', ':'';
+	          $dest.= $newDest;
+	        }
+	      }
+	    }
+	    if ($statusMail->mailToResource) {
+	      if (property_exists($this, 'idResource')) {
+	        $resource=new Resource($this->idResource);
+	        $newDest = "###" . $resource->email . "###";
+	        if ($resource->email and strpos($dest,$newDest)===false) {
+	          $dest.=($dest)?', ':'';
+	          $dest.= $newDest;
+	        }
+	      }    
+	    }
+	    if ($statusMail->mailToProject or $statusMail->mailToLeader) {
+	      $aff=new Affectation();
+	      $crit=array('idProject'=>$this->idProject, 'idle'=>'0');
+	      $affList=$aff->getSqlElementsFromCriteria($crit, false);
+	      if ($affList and count($affList)>0) {
+	        foreach ($affList as $aff) {
+	          $resource=new Resource($aff->idResource);
+	          if ($statusMail->mailToProject) {
+	            $newDest = "###" . $resource->email . "###";
+	            if ($resource->email and strpos($dest,$newDest)===false) {
+	              $dest.=($dest)?', ':'';
+	              $dest.= $newDest;
+	            }
+	          }
+	          if ($statusMail->mailToLeader and $resource->idProfile) {
+	            $prf=new Profile($resource->idProfile);
+	            if ($prf->profileCode=='PL') {
+	              $newDest = "###" . $resource->email . "###";
+	              if ($resource->email and strpos($dest,$newDest)===false) {
+	                $dest.=($dest)?', ':'';
+	                $dest.= $newDest;
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+	    if ($statusMail->mailToContact) {
+	      if (property_exists($this,'idContact')) {
+	        $contact=new Contact($this->idContact);
+	        $newDest = "###" . $contact->email . "###";
+	        if ($contact->email and strpos($dest,$newDest)===false) {
+	          $dest.=($dest)?', ':'';
+	          $dest.= $newDest;
+	        }
+	      }
+	    }
+	    if ($statusMail->mailToOther) {
+	      if ($statusMail->otherMail) {
+	        $otherMail=str_replace(';',',', $statusMail->otherMail);
+	        $otherMail=str_replace(' ',',', $otherMail);
+	        $split=explode(',',$otherMail);
+	        foreach ($split as $adr) {
+	          if ($adr and $adr!='') {
+	            $newDest = "###" . $adr . "###";
+	            if (strpos($dest,$newDest)===false) {
+	              $dest.=($dest)?', ':'';
+	              $dest.= $newDest;
+	            }
+	          }
+	        }
+	      }
+	    }
     }
     if ($dest=="") {
       return false; // exit no addressees 

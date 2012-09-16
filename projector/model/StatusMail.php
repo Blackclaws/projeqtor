@@ -142,6 +142,20 @@ class StatusMail extends SqlElement {
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+    } else if ($colName=="idStatus") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.value!=" ") { ';
+      $colScript .= '    dijit.byId("idEvent").set("value"," ");';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } else if ($colName=="idEvent") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.value!=" ") { ';
+      $colScript .= '    dijit.byId("idStatus").set("value"," ");';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     return $colScript;
   }

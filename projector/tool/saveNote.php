@@ -58,6 +58,10 @@ if ($notePrivacy) {
 	$note->idPrivacy=1;
 }
 $result=$note->save();
+
+$elt=new $refType($refId);
+$elt->sendMailIfMailable(false,false,true,false);
+
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();

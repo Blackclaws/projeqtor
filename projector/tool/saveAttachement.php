@@ -152,6 +152,10 @@ if (! $error and $type=='file') {
     $otherResult=$attachement->save();
   }
 }
+
+$elt=new $refType($refId);
+$elt->sendMailIfMailable(false,false,false,true);
+
 if (! $error) {
   // Message of correct saving
   if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
