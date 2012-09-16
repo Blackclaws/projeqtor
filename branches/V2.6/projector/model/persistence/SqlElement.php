@@ -290,11 +290,12 @@ abstract class SqlElement {
     // select operation to be executed
     $control=$this->control();
     if ($control=="OK") {
-      if (property_exists($this, 'idStatus') or property_exists($this,'reference') ) {
+      if (property_exists($this, 'idStatus') or property_exists($this,'reference') or property_exists($this,'idResource')) {
         $class=get_class($this);
         $old=new $class($this->id);
       }
       $statusChanged=false;
+      $responsibleChanged=false;
       if (property_exists($this,'reference')) {
         $this->setReference(false, $old);
       }
@@ -313,8 +314,13 @@ abstract class SqlElement {
         }
         $returnValue=$this->insertSqlElement();
       }
-      if ($statusChanged and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
-        $mailResult=$this->sendMailIfMailable();
+      if (property_exists($this,'idResource')) {
+      	if ($this->idResource and $this->idResource!=$old->idResource) {
+      		$responsibleChanged=true;
+      	}
+      }
+      if (($statusChanged or $responsibleChanged) and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
+        $mailResult=$this->sendMailIfMailable($statusChanged, $responsibleChanged);
         if ($mailResult) {
           $returnValue=str_replace('${mailMsg}',' - ' . i18n('mailSent'),$returnValue);
         } else {
@@ -2012,7 +2018,7 @@ abstract class SqlElement {
    * @param void
    * @return status of mail, if sent
    */
-  public function sendMailIfMailable() {
+  public function sendMailIfMailable($statusChange=false, $responsibleChange=false, $noteAdd=false, $attachmentAdd=false) {
     if (get_class($this)=='History') {
       return false; // exit : not for History
     }
@@ -2027,16 +2033,22 @@ abstract class SqlElement {
       return false; // exit if status not set
     }
     $crit=array();
-    $crit['idMailable']=$mailable->id;
     $crit['idStatus']=$this->idStatus;
-    $crit['idle']='0';
-    $statusMail=SqlElement::getSingleSqlElementFromCriteria('StatusMail', $crit);
+    $crit="idle='0' and idMailable='" . $mailable->id . "' ";
+    if ($statusChange) {
+    	$crit=" and idStatus='" . $this->idStatus . "' ";
+    }
+    if ($responsibleChange) {
+      $crit=" and idStatus='" . $this->idStatus . "' ";
+    }
+    $statusMail=new StatusMail();
+    $statusMail=$statusMail->getSqlElementsFromCriteria(null,false, $crit);
     if (! $statusMail or ! $statusMail->id) {
       if (property_exists($statusMail,"tooManyRows") and $statusMail->tooManyRows==true) {
         errorLog("Too many rows on StatusMail for element '" . get_class($this) . "' "
         . " and status '" . SqlList::getNameFromId('Status', $this->idStatus) . "'" );
       }
-      return false; // exit not a status for mail sending (on disabled) 
+      return false; // exit not a status for mail sending (or disabled) 
     }
     if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
     and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0) {

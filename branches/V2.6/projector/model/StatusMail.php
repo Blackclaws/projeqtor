@@ -9,6 +9,7 @@ class StatusMail extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $idMailable;
   public $idStatus;
+  public $idEvent;
   public $idle;
   public $_col_2_2_SendMail;
   public $mailToContact;
@@ -36,12 +37,11 @@ class StatusMail extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("idMailable"=>"required", 
-                                  "idStatus"=>"required",
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>""
   );  
   
-  private static $_colCaptionTransposition = array('idStatus'=>'newStatus','otherMail'=>'email');
+  private static $_colCaptionTransposition = array('idStatus'=>'newStatus','otherMail'=>'email','idEvent'=>'orOtherEvent');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -69,6 +69,9 @@ class StatusMail extends SqlElement {
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);
     if (count($list)>0) {
       $result.="<br/>" . i18n('errorDuplicateStatusMail',null);
+    }
+    if (!trim($this->idStatus) and !trim($this->idEvent)) {
+    	$result.="<br/>" . i18n('messageMandatory',array(i18n('colNewStatus')." ".i18n('colOrOtherEvent')));
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
