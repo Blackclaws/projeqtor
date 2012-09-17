@@ -342,6 +342,9 @@ $ctrls['billCode'] = '>=0';
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
     dojo.require("dojo.i18n");
+    dojo.require("dojo.date");
+    dojo.require("dojo.date.locale");
+    dojo.require("dojo.number");
     dojo.require("dijit.Dialog"); 
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.form.TextBox");
@@ -434,7 +437,7 @@ $ctrls['billCode'] = '>=0';
                 <td colspan="3">
                   <button tabindex="4" type="submit" id="configButton" dojoType="dijit.form.Button" showlabel="true">OK
                     <script type="dojo/connect" event="onClick" args="evt">
-                    return false;
+                    return true;
                     </script>
                   </button>
                 </td>
