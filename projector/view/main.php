@@ -41,6 +41,7 @@ checkVersion(); ?>
     dojo.require("dojo.store.DataStore");
     dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojo.date");
+    dojo.require("dojo.date.locale");
     dojo.require("dojo.i18n");
     dojo.require("dojo.parser");
     dojo.require("dijit.Dialog"); 
