@@ -25,14 +25,15 @@ class StatusMail extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameMailable" formatter="translateFormatter" width="15%" >${idMailable}</th>
-    <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${newStatus}</th>
-    <th field="mailToContact" width="10%" formatter="booleanFormatter" >${mailToContact}</th>    
-    <th field="mailToUser" width="10%" formatter="booleanFormatter" >${mailToUser}</th>
-    <th field="mailToResource" width="10%" formatter="booleanFormatter" >${mailToResource}</th>
-    <th field="mailToProject" width="10%" formatter="booleanFormatter" >${mailToProject}</th>
-    <th field="mailToLeader" width="10%" formatter="booleanFormatter" >${mailToLeader}</th>
-    <th field="mailToOther" width="10%" formatter="booleanFormatter" >${mailToOther}</th>
+    <th field="nameMailable" formatter="translateFormatter" width="14%" >${idMailable}</th>
+    <th field="colorNameStatus" width="14%" formatter="colorNameFormatter">${newStatus}</th>
+    <th field="nameEvent" formatter="translateFormatter" width="14%" >${idMailable}</th>
+    <th field="mailToContact" width="8%" formatter="booleanFormatter" >${mailToContact}</th>    
+    <th field="mailToUser" width="8%" formatter="booleanFormatter" >${mailToUser}</th>
+    <th field="mailToResource" width="8%" formatter="booleanFormatter" >${mailToResource}</th>
+    <th field="mailToProject" width="8%" formatter="booleanFormatter" >${mailToProject}</th>
+    <th field="mailToLeader" width="8%" formatter="booleanFormatter" >${mailToLeader}</th>
+    <th field="mailToOther" width="8%" formatter="booleanFormatter" >${mailToOther}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
