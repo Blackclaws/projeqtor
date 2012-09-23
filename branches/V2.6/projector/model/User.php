@@ -67,7 +67,8 @@ class User extends SqlElement {
    * @return void
    */ 
   function __construct($id = NULL) {
-    global $objClass, $paramDefaultPassword;
+    global $objClass;
+    $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
   	parent::__construct($id);
     
   	if (! $this->id) {
@@ -510,9 +511,16 @@ class User extends SqlElement {
    */
 	public function authenticate( $paramlogin, $parampassword) {
 //scriptLog("UserClass->authenticate ('" . $paramlogin . "', '*****')" );	
-	
-	  global $paramLdap_allow_login, $paramLdap_base_dn, $paramLdap_host, $paramLdap_port, $paramLdap_version, $paramLdap_search_user, $paramLdap_search_pass, $paramLdap_user_filter, $paramLdap_defaultprofile;
-	
+	  $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
+	  $paramLdap_base_dn=Parameter::getGlobalParameter('paramLdap_base_dn');
+	  $paramLdap_host=Parameter::getGlobalParameter('paramLdap_host');
+	  $paramLdap_port=Parameter::getGlobalParameter('paramLdap_port');
+	  $paramLdap_version=Parameter::getGlobalParameter('paramLdap_version');
+	  $paramLdap_search_user=Parameter::getGlobalParameter('paramLdap_search_user');
+	  $paramLdap_search_pass=Parameter::getGlobalParameter('paramLdap_search_pass');
+	  $paramLdap_user_filter=Parameter::getGlobalParameter('paramLdap_user_filter');
+	  $paramLdap_defaultprofile=Parameter::getGlobalParameter('paramLdap_defaultprofile');
+	  
 	 	if ( ! $this->id ) {
 			if (isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
 		  	$this->name=strtolower($paramlogin);
@@ -605,7 +613,7 @@ class User extends SqlElement {
 						$title="Project'Or RIA - " . i18n('newUser');
 						$message=i18n("newUserMessage",array($paramlogin));
 						if ($sendAlert=='MAIL' or $sendAlert=='ALERT&MAIL') {
-							global $paramAdminMail;
+							$paramAdminMail=Parameter::getGlobalParameter('paramAdminMail');
 						  sendMail($paramAdminMail, $title, $message);
 						}
 						if ($sendAlert=='ALERT' or $sendAlert=='ALERT&MAIL') {
@@ -635,8 +643,7 @@ class User extends SqlElement {
   }
 
   public function disconnect() {
-    global $paramReportTempDirectory;
-    purgeFiles($paramReportTempDirectory,"user" . $this->id . "_");
+    purgeFiles(Parameter::getGlobalParameter('paramReportTempDirectory'),"user" . $this->id . "_");
     $this->stopAllWork();
     traceLog("DISCONNECTED USER '" . $this->name . "'");
   }

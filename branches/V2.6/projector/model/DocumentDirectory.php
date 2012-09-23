@@ -118,7 +118,7 @@ class DocumentDirectory extends SqlElement {
   }
   
   public function save() {
-  	global $paramPathSeparator;
+  	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$old=new DocumentDirectory($this->id);
   	$this->location="";
   	if ($this->idDocumentDirectory) {
@@ -147,7 +147,7 @@ class DocumentDirectory extends SqlElement {
   }
   
   function createDirectory() {
-  	global $paramPathSeparator;
+  	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$split=explode($paramPathSeparator,$this->getLocation());
   	$rep="";
   	foreach ($split as $sp) {
@@ -160,7 +160,7 @@ class DocumentDirectory extends SqlElement {
   }
   
   public function getLocation() {
-  	global $paramPathSeparator;
+  	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$root=Parameter::getGlobalParameter('documentRoot');
   	if (substr($root,-1,1)!=$paramPathSeparator) {
   		$root.=$paramPathSeparator;

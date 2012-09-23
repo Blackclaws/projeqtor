@@ -288,7 +288,8 @@ class Meeting extends SqlElement {
   }
 
   function sendMail() {
-    global $paramMailSender, $paramMailReplyTo;
+    $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
+    $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
     $lstDest=explode(',',$this->attendees);
     $lstMail=array();
     foreach ($lstDest as $dest) {

@@ -167,7 +167,7 @@ class DocumentVersion extends SqlElement {
   }
   
   function getUploadFileName() {
-  	global $paramPathSeparator;
+  	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$doc=New Document($this->idDocument);
     $dir=New DocumentDirectory($doc->idDocumentDirectory);
     $uploaddir = $dir->getLocation();

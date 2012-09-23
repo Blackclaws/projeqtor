@@ -24,13 +24,13 @@ if (! array_key_exists('attachementType',$_REQUEST)) {
 } else {
   $type=$_REQUEST['attachementType'];
 }
-
+$attachementMaxSize=Parameter::getGlobalParameter('paramAttachementMaxSize');
 if ($type=='file') {
   if (array_key_exists('attachementFile',$_FILES)) {
     $uploadedFile=$_FILES['attachementFile'];
   } else {
-    echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-    errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+    echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+    errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
     $error=true;
   }
   if (! $error) {
@@ -41,8 +41,8 @@ if ($type=='file') {
           errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
           break;
         case 2:
-          echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-          errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+          echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+          errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
           break;
         case 4:
           echo htmlGetWarningMessage(i18n('errorNoFile'));
@@ -136,8 +136,10 @@ if (! $error) {
   $result=$attachement->save();
   $newId= $attachement->id;
 }
+$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+$attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
 if (! $error and $type=='file') {
-  $uploaddir = $paramAttachementDirectory . $paramPathSeparator . "attachement_" . $newId . $paramPathSeparator;
+  $uploaddir = $attachementDirectory . $pathSeparator . "attachement_" . $newId . $pathSeparator;
   if (! file_exists($uploaddir)) {
     mkdir($uploaddir);
   }
@@ -148,14 +150,18 @@ if (! $error and $type=='file') {
      $error=true;
      $attachement->delete(); 
   } else {
-    $attachement->subDirectory=str_replace($paramAttachementDirectory,'${attachementDirectory}',$uploaddir);
+    $attachement->subDirectory=str_replace(Parameter::getGlobalParameter('paramAttachementDirectory'),'${attachementDirectory}',$uploaddir);
     $otherResult=$attachement->save();
   }
 }
 
-$elt=new $refType($refId);
-$elt->sendMailIfMailable(false,false,false,true);
-
+if ($attachement->idPrivacy==1) { // send mail if new attachment is public
+  $elt=new $refType($refId);
+	$mailResult=$elt->sendMailIfMailable(false,false,false,false,true);
+	if ($mailResult) {
+	  $result.=' - ' . i18n('mailSent');
+	}
+}
 if (! $error) {
   // Message of correct saving
   if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {

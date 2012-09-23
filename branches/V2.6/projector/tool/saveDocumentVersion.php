@@ -22,7 +22,7 @@ $documentVersionId=null;
 if (array_key_exists('documentVersionId',$_REQUEST)) {
     $documentVersionId=$_REQUEST['documentVersionId'];
 }
-
+$attachementMaxSize=Parameter::getGlobalParameter('paramAttachementMaxSize');
 if (! $documentVersionId) { // Get file only on insert
 	if (array_key_exists('documentVersionLink',$_REQUEST)) {
 		$documentVersionLink=$_REQUEST['documentVersionLink'];
@@ -32,8 +32,8 @@ if (! $documentVersionId) { // Get file only on insert
 	} else if ($documentVersionLink!='') {
 		// OK Link instead of file
 	} else {
-	  echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-	  errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+	  echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+	  errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
 	  $error=true; 
 	}
 	if ($uploadedFile and $documentVersionLink and $uploadedFile['name']) {
@@ -48,8 +48,8 @@ if (! $documentVersionId) { // Get file only on insert
 	        errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	        break; 
 	      case 2:
-	        echo htmlGetErrorMessage(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
-	        errorLog(i18n('errorTooBigFile',array($paramAttachementMaxSize,'$paramAttachementMaxSize')));
+	        echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+	        errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
 	        break;  
 	      case 4:
 	        echo htmlGetWarningMessage(i18n('errorNoFile'));
@@ -165,14 +165,15 @@ if (! $error) {
   $newId= $dv->id;
 }
 
+$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 if (! $documentVersionId) {
 	if (! $error and !$documentVersionLink ) {
 		$uploadfile = $dv->getUploadFileName();
-		$split=explode($paramPathSeparator,$uploadfile);
+		$split=explode($pathSeparator,$uploadfile);
 		unset($split[count($split)-1]);
 		$dir='';
 		foreach ($split as $dirElt) { 
-			$dir.=$dirElt.$paramPathSeparator;
+			$dir.=$dirElt.$pathSeparator;
 	    if (! file_exists($dir)) {
 	      mkdir($dir);
 	    }

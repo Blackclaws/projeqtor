@@ -267,7 +267,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 <table id="objectGrid" jsId="objectGrid" dojoType="dojox.grid.DataGrid"
   query="{ id: '*' }" store="objectStore"
   queryOptions="{ignoreCase:true}" 
-  rowPerPage="<?php echo $paramRowPerPage;?>"
+  rowPerPage="<?php echo Parameter::getGlobalParameter('paramRowPerPage');?>"
   columnReordering="false"
   selectionMode="<?php echo ($multipleSelect)?'extended':'single';?>" >
   <thead>

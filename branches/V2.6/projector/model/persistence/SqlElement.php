@@ -307,11 +307,13 @@ abstract class SqlElement {
             }            
           }
         }
+        $newItem=false;
         $returnValue=$this->updateSqlElement();
       } else {
         if (property_exists($this, 'idStatus')) {
           $statusChanged=true;
         }
+        $newItem=true;
         $returnValue=$this->insertSqlElement();
       }
       if (property_exists($this,'idResource')) {
@@ -320,7 +322,7 @@ abstract class SqlElement {
       	}
       }
       if (($statusChanged or $responsibleChanged) and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
-        $mailResult=$this->sendMailIfMailable($statusChanged, $responsibleChanged);
+        $mailResult=$this->sendMailIfMailable($newItem, $statusChanged, $responsibleChanged);
         if ($mailResult) {
           $returnValue=str_replace('${mailMsg}',' - ' . i18n('mailSent'),$returnValue);
         } else {
@@ -1216,6 +1218,9 @@ abstract class SqlElement {
     // If id is set, get the element from Database
     if ($curId != NULL) {
       $query = "select * from " . $this->getDatabaseTableName() . ' where id =' . Sql::str($curId) ;
+      foreach ($this->getDatabaseCriteria() as $critFld=>$critVal) {
+      	$query .= ' and ' . $critFld . ' = ' . Sql::str($critVal);
+      }
       $result = Sql::query($query); 
       if (Sql::$lastQueryNbRows > 0) {
         $empty=false;
@@ -1557,9 +1562,7 @@ abstract class SqlElement {
    * @return the layout
    */  
   protected function getStaticDatabaseTableName() {
-    global $paramDbPrefix;
-    // Rajoute des quotes au nom de la table
-    //return Sql::str(strtolower($paramDbPrefix . get_class($this)));
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     return strtolower($paramDbPrefix . get_class($this));
   }
 
@@ -2018,7 +2021,7 @@ abstract class SqlElement {
    * @param void
    * @return status of mail, if sent
    */
-  public function sendMailIfMailable($statusChange=false, $responsibleChange=false, $noteAdd=false, $attachmentAdd=false) {
+  public function sendMailIfMailable($newItem=false, $statusChange=false, $responsibleChange=false, $noteAdd=false, $attachmentAdd=false) {
     if (get_class($this)=='History') {
       return false; // exit : not for History
     }
@@ -2137,7 +2140,20 @@ abstract class SqlElement {
       return false; // exit no addressees 
     }
     $dest=str_replace('###','',$dest);
-    global $paramMailTitle, $paramMailMessage, $paramMailShowDetail;
+    if ($newItem) {
+    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNew');
+    } else if ($statusChange) {
+    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleStatus');
+    } else if ($responsibleChange) {
+    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleResponsible');
+    } else if ($noteAdd) {
+    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNote');
+    } else if ($attachmentAdd) {
+    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAttachment');
+    } else {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitle'); // default
+    }
+    $paramMailMessage=Parameter::getGlobalParameter('paramMailMessage');
     // substituable items
     $arrayFrom=array();
     $arrayTo=array();
@@ -2173,7 +2189,8 @@ abstract class SqlElement {
     // responsible
     $arrayFrom[]='${responsible}';
     $arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
-    
+    $arrayFrom[]='${dbName}';
+    $arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
     /*foreach ($this as $col=>$val) {
     	if (substr($col, 0,1) != "_" 
     	and substr($col, 0,1)!=strtoupper(substr($col, 0,1)) 
@@ -2195,7 +2212,7 @@ abstract class SqlElement {
     $xh=' :</div>' . "\n";
     $tx='';
     $xt='<br/><br/>' . "\n";
-    if (getBooleanValue($paramMailShowDetail)) {
+    if (getBooleanValue(Parameter::getGlobalParameter('paramMailShowDetail'))) {
     	/*ob_start();
     	$print=true;
     	$_REQUEST['objectClass']=get_class($this);

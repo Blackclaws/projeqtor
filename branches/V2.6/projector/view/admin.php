@@ -43,11 +43,23 @@
              title="<?php echo i18n('cronTasks');?>">
             <table style="width:100%;">            
               <tr>
-                <td class="label"><?php echo i18n("alertCronStatus"). "&nbsp;:&nbsp;";?></td>
+                <td class="label"><?php echo i18n("cronStatus"). "&nbsp;:&nbsp;";?></td>
                 <td class="display">
                   <?php 
                     $cronStatus=Cron::check();
                     echo i18n($cronStatus);
+                    if ($cronStatus=='running') {
+                    	$arrayTimes=Cron::getActualTimes();
+                    	if (isset($arrayTimes['SleepTime'])) {
+                    	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronSleepTime', array($arrayTimes['SleepTime'])) . '</i>';
+                    	}
+                    	if (isset($arrayTimes['CheckDates'])) {
+                    	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckDates', array($arrayTimes['CheckDates'])) . '</i>';
+                    	}
+                    	if (isset($arrayTimes['CheckImport'])) {
+                    	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckImport', array($arrayTimes['CheckImport'])) . '</i>';
+                    	}
+                    }
                   ?>
                 </td>
               </tr>

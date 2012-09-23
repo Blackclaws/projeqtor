@@ -1363,7 +1363,9 @@ function drawGantt() {
   }
   jsonData=dojo.byId('planningJsonData');
   if ( jsonData.innerHTML.indexOf('{"identifier"')<0) {
-      //showAlert(jsonData.innerHTML);
+      if (jsonData.innerHTML.length>10) {
+	    showAlert(jsonData.innerHTML);
+      }
       hideWait();
       return;
   }
