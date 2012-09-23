@@ -40,10 +40,10 @@ if (! function_exists('imageftbbox')) {
 }
 
 function getGraphImgName($root) {
-  global $reportCount, $paramReportTempDirectory;
+  global $reportCount;
   //$user=$_SESSION['user'];
   $reportCount+=1;
-  $name=$paramReportTempDirectory;
+  $name=Parameter::getGlobalParameter('paramReportTempDirectory');
   $name.="/user" . getCurrentUserId() . "_";
   $name.=$root . "_";
   $name.=date("Ymd_His") . "_";

@@ -17,7 +17,7 @@ if ($attachementId==null) {
   throwError('attachementId parameter not found in REQUEST');
 }
 $obj=new Attachement($attachementId);
-$subDirectory=str_replace('${attachementDirectory}', $paramAttachementDirectory, $obj->subDirectory);
+$subDirectory=str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $obj->subDirectory);
 if (file_exists($subDirectory . $obj->fileName)) {
   unlink($subDirectory . $obj->fileName);
   rmdir($subDirectory);

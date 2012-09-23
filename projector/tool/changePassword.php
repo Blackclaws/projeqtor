@@ -12,7 +12,7 @@
   if ($password=="") {
     passwordError();
   }
-  if ($password==$paramDefaultPassword) {
+  if ($password==Parameter::getGlobalParameter('paramDefaultPassword')) {
     passwordError();
   }
   
@@ -29,7 +29,7 @@
     passwordError();
   } 
 
-  if (strlen($password)<5) {
+  if (strlen($password)<Parameter::getGlobalParameter('paramPasswordMinLength')) {
     passwordError();
   }
   
@@ -41,7 +41,7 @@
    */
   function passwordError() {
     echo '<span class="messageERROR">';
-    echo i18n('invalidPasswordChange');
+    echo i18n('invalidPasswordChange', array(Parameter::getGlobalParameter('paramPasswordMinLength')));
     echo '</span>';
     exit;
   }

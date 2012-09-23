@@ -121,7 +121,7 @@ class BillLine extends SqlElement {
    */  
   public function delete()
   {  	
-  	global $paramDbPrefix;
+  	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   		
 	  $bill=new Bill($this->refId);
     $billingType=$bill->billingType;

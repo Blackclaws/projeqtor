@@ -15,8 +15,9 @@
    }
    if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
-     if (isset($paramMemoryLimitForPDF)) {
-       $limit=$paramMemoryLimitForPDF;	
+     $memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
+     if (isset($memoryLimitForPDF)) {
+       $limit=$memoryLimitForPDF;	
      } else {
      	 $limit='';
      }
@@ -74,7 +75,7 @@
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true,
-              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
+              isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");

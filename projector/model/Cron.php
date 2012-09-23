@@ -8,7 +8,9 @@ class Cron {
     
   private static $sleepTime;
   private static $checkDates;
+  private static $checkImport;
   private static $runningFile='../files/cron/RUNNING';
+  private static $timesFile='../files/cron/DELAYS';
   private static $stopFile='../files/cron/STOP';
   private static $errorFile='../files/cron/ERROR';
   
@@ -34,7 +36,30 @@ class Cron {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
+  public static function getActualTimes() {
+  	if (! is_file(self::$timesFile)) {
+  		return array();
+  	}
+  	$handle=fopen(self::$timesFile, 'r');
+    $line=fgets($handle);
+    fclose($handle);
+    $result=array();
+    $arr=explode('|',$line);
+    foreach ($arr as $val) {
+    	$split=explode('=',$val);
+    	if (count($split)==2) {
+    	  $result[$split[0]]=$split[1];
+    	}
+    }
+  	return $result;
+  }
 
+  public static function setActualTimes() {
+    $handle=fopen(self::$timesFile, 'w');
+    fwrite($handle,'SleepTime='.self::getSleepTime().'|CheckDates='.self::getCheckDates().'|CheckImport='.self::getCheckImport() );
+    fclose($handle);
+  }
+  
   public static function getSleepTime() {
     if (self::$sleepTime) {
     	return self::$sleepTime;
@@ -54,6 +79,16 @@ class Cron {
     self::$checkDates=$checkDates;
     return self::$checkDates;
   }
+
+  public static function getCheckImport() {
+    if (self::$checkImport) {
+      return self::$checkImport;
+    }
+    $checkImport=Parameter::getGlobalParameter('cronCheckImport'); 
+    if (! $checkImport) {$checkImport=30;}
+    self::$checkImport=$checkImport;
+    return self::$checkImport;
+  }  
   
   public static function check() {
     if (file_exists(self::$runningFile)) {
@@ -114,19 +149,6 @@ class Cron {
     }
   }
   
-	public static function checkDates() {
-	  $indVal=new IndicatorValue();
-	  $where="idle='0' and (";
-	  $where.=" ( warningTargetDateTime<='" . date('Y-m-d H:i:s') . "' and warningSent='0')" ;
-	  $where.=" or ( alertTargetDateTime<='" . date('Y-m-d H:i:s') . "' and alertSent='0')" ;
-	  $where.=")";
-	  $lst=$indVal->getSqlElementsFromCriteria(null, null, $where);
-
-	  foreach ($lst as $indVal) {
-	    $indVal->checkDates();
-	  }
-	}
-	
 	// If running flag exists and cron is not really running, relaunch
 	public static function relaunch() {
 		if (file_exists(self::$runningFile)) {
@@ -151,9 +173,10 @@ scriptLog('Cron::run()');
     set_time_limit(0);
     ignore_user_abort(1);
     session_write_close();
-
     $cronCheckDates=self::getCheckDates();
+    $cronCheckImport=self::getCheckImport();
     $cronSleepTime=self::getSleepTime();
+    self::setActualTimes();
     self::removeStopFlag();
     self::setRunningFlag();
     traceLog('cron started at '.date('d/m/Y H:i:s')); 
@@ -164,10 +187,90 @@ scriptLog('Cron::run()');
       self::setRunningFlag();
       $cronCheckDates-=$cronSleepTime;
       if ($cronCheckDates<=0) {
-        self::checkDates();
+      	try { 
+          self::checkDates();
+      	} catch (Exception $e) {
+      		debugLog("Cron::run() - Error on checkDates()");
+      	}
         $cronCheckDates=Cron::getCheckDates();
       }
+      $cronCheckImport-=$cronSleepTime;
+      if ($cronCheckImport<=0) {
+      	try { 
+          self::checkImport();
+      	} catch (Exception $e) {
+          debugLog("Cron::run() - Error on checkImport()");
+        }
+        $cronCheckImport=Cron::getCheckImport();
+      }
       sleep($cronSleepTime);
+    }
+  }
+  
+  public static function checkDates() {
+  	global $globalCronMode;
+scriptLog('Cron::checkDates()');
+    $globalCronMode=true;  
+    $indVal=new IndicatorValue();
+    $where="idle='0' and (";
+    $where.=" ( warningTargetDateTime<='" . date('Y-m-d H:i:s') . "' and warningSent='0')" ;
+    $where.=" or ( alertTargetDateTime<='" . date('Y-m-d H:i:s') . "' and alertSent='0')" ;
+    $where.=")";
+    $lst=$indVal->getSqlElementsFromCriteria(null, null, $where);
+
+    foreach ($lst as $indVal) {
+      $indVal->checkDates();
+    }
+  }
+  
+  public static function checkImport() {
+scriptLog('Cron::checkImport()');
+  	global $globalCronMode, $globalCatchErrors;
+    $globalCronMode=true;   	
+    $globalCatchErrors=true;
+  	$importDir=Parameter::getGlobalParameter('cronImportDirectory');
+  	$cpt=0;
+  	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+  	if (is_dir($importDir)) {
+      if ($dirHandler = opendir($importDir)) {
+        while (($file = readdir($dirHandler)) !== false) {
+        	if ($file!="." and $file!=".." and filetype($importDir . $pathSeparator . $file)=="file") {
+            $importFile=$importDir . $pathSeparator . $file;      
+            $split=explode('_',$file);
+            $class=$split[0];
+            $result=Importable::import($importFile, $class);
+            if ($result=="OK") {
+              traceLog("Import OK : file $file imported with no error [ Number of '$class' imported : " . Importable::$importCptOK . " ]");
+              if (! is_dir($importDir . $pathSeparator . "done")) {
+              	mkdir($importDir . $pathSeparator . "done",777,true);
+              }
+              rename($importFile,$importDir . $pathSeparator . "done" . $pathSeparator . $file);
+            } else {
+            	traceLog("Import ERROR : file $file imported with " . Importable::$importCptError . " errors [ Number of '$class' imported : " . Importable::$importCptOK . " ]");
+              if (! is_dir($importDir . $pathSeparator . "error")) {
+                mkdir($importDir . $pathSeparator . "error",777,true);
+              }
+            	rename($importFile,$importDir . $pathSeparator . "error" . $pathSeparator . $file);
+            }
+            $logFile=$importDir . $pathSeparator . 'logs' . $pathSeparator . substr($file, 0, strlen($file)-4) . ".log.htm";
+        	  if (! is_dir($importDir . $pathSeparator . "logs")) {
+              mkdir($importDir . $pathSeparator . "logs",777,true);
+            }
+            if (file_exists($logFile)) {
+            	kill($logFile);
+            }
+            $fileHandler = fopen($logFile, 'w');
+            fwrite($fileHandler, Importable::getLogHeader());
+            fwrite($fileHandler, Importable::$importResult);
+            fwrite($fileHandler, Importable::getLogFooter());
+            fclose($fileHandler);
+            $cpt+=1;
+        	}
+        }
+        closedir($dirHandler);
+      }
+    } else {
+    	debugLog ("ERROR - check Cron::Import() - ". $importDir . " is not a directory");
     }
   }
   

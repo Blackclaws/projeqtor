@@ -21,7 +21,7 @@
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
-              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
+              isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
@@ -36,7 +36,7 @@
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
-    var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
+    var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();
@@ -113,6 +113,7 @@
 			              </tr>
 	<?php 
 	$showPassword=true;
+	$lockPassword=Parameter::getGlobalParameter('lockPassword');
 	if (isset($lockPassword)) {
 	  if (getBooleanValue($lockPassword)) {
 	    $showPassword=false;

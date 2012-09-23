@@ -1,4 +1,4 @@
-<?PHP
+<?PHP 
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
@@ -120,7 +120,9 @@ $arrayProject=array();
 $nbRows=0;
 // return result in json format
 $d=new Dependency();
-if (Sql::$lastQueryNbRows > 0) {
+if (Sql::$lastQueryNbRows == 0) {
+	echo i18n('noDataToDisplay');
+} else {
 	$collapsedList=Collapsed::getCollaspedList();
 	$list=array();
 	$idResource="";
@@ -706,7 +708,9 @@ function displayGantt($list) {
 }
 
 function exportGantt($list) {
-	global $paramDbDisplayName, $currency, $currencyPosition;
+	$paramDbDisplayName=Parameter::getGlobalParameter('paramDbDisplayName');
+  $currency=Parameter::getGlobalParameter('currency');
+  $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
 	$nl="\n";
 	$hoursPerDay=Parameter::getGlobalParameter('dayTime');
 	$startDate=date('Y-m-d');
@@ -1098,7 +1102,7 @@ function exportGantt($list) {
 	}
 	echo "</Assignments>" . $nl;
 	echo '</Project>' . $nl;
-}
+} 
 
 function formatDuration($duration, $hoursPerDay) {
 	$hourDuration=$duration*$hoursPerDay;

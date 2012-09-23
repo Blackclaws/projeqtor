@@ -20,7 +20,7 @@
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
-              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
+              isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
@@ -32,7 +32,7 @@
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
     dojo.require("dojox.form.PasswordValidator");
-    var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
+    var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       hideWait();
@@ -81,7 +81,7 @@
               </script>
             </button>
             <br/>
-            <?php if ( $user->password != md5($paramDefaultPassword) ) {?>
+            <?php if ( $user->password != md5(Parameter::getGlobalParameter('paramDefaultPassword')) ) {?>
             <label class="label" style="width:200px;">&nbsp;</label>
             <button style="width:200px" id="cancelButton" dojoType="dijit.form.Button" showlabel="true"><?php echo i18n('buttonCancel');?>
               <script type="dojo/connect" event="onClick" args="evt">

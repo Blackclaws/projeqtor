@@ -150,7 +150,8 @@ function htmlDisplayInfos() {
  * @return void
  */
 function htmlDisplayDatabaseInfos() {
-  global $paramDbName, $paramDbDisplayName;
+  $paramDbName=Parameter::getGlobalParameter('paramDbName');
+  $paramDbDisplayName=Parameter::getGlobalParameter('paramDbDisplayName');
   if (! $paramDbDisplayName) {
     $paramDbDisplayName=$paramDbName;
   }
@@ -668,7 +669,9 @@ function htmlDisplayColored($value,$color) {
 
 function htmlDisplayCurrency($val,$noDecimal=false) {
   if (! $val and $val!='0') return '';
-  global $currency, $currencyPosition, $browserLocale;
+  global $browserLocale;
+  $currency=Parameter::getGlobalParameter('currency');
+  $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   if ($noDecimal) {
     $fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
   } else {

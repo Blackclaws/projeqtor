@@ -195,18 +195,17 @@ class Sql {
    * @return resource connexion to database
    */
   private static function getConnection() {
-    global $logLevel;
+    $logLevel=Parameter::getGlobalParameter('logLevel');
     if (self::$connexion != NULL) {
       return self::$connexion;
     }
 
     if (self::$dbType == null) {
-      global $paramDbType, $paramDbHost, $paramDbUser, $paramDbPassword, $paramDbName; 
-      self::$dbType=$paramDbType;
-      self::$dbHost=$paramDbHost;
-      self::$dbUser=$paramDbUser;
-      self::$dbPassword=$paramDbPassword;
-      self::$dbName=$paramDbName;     
+      self::$dbType=Parameter::getGlobalParameter('paramDbType');
+      self::$dbHost=Parameter::getGlobalParameter('paramDbHost');
+      self::$dbUser=Parameter::getGlobalParameter('paramDbUser');
+      self::$dbPassword=Parameter::getGlobalParameter('paramDbPassword');
+      self::$dbName=Parameter::getGlobalParameter('paramDbName');     
     }
     
     if (self::$dbType != "mysql") {

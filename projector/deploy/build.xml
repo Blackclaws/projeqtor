@@ -58,6 +58,7 @@
     <mkdir dir="${deploy.dir}/files/logs"/>
     <mkdir dir="${deploy.dir}/files/report"/>
   	<mkdir dir="${deploy.dir}/files/cron"/>
+  	<mkdir dir="${deploy.dir}/files/import"/>
     <copy todir="${deploy.dir}/files" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/attach" file="${src.dir}/files/index.php" />
     <copy todir="${deploy.dir}/files/config" file="${src.dir}/files/index.php" />

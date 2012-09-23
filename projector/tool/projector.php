@@ -39,7 +39,7 @@ if (is_file("../tool/parametersLocation.php")) {
   } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
-date_default_timezone_set($paramDefaultTimezone);
+date_default_timezone_set(Parameter::getGlobalParameter('paramDefaultTimezone'));
 if (! isset($noScriptLog)) {
   scriptLog($_SERVER["SCRIPT_NAME"]);
 }
@@ -48,7 +48,7 @@ $i18nMessages=null;           // Array containing messages depending on local (i
    
 setupLocale();                // Set up the locale : must be called before any call to i18n()
 
-setupIconSize();              // 
+$paramIconSize=setupIconSize();              // 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
@@ -61,7 +61,7 @@ $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
 $aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a href=\'' . $website . '\'>' . $website . '</a></div><br/>';
 
 $isAttachementEnabled=true;   // allow attachement
-if (! $paramAttachementDirectory or ! $paramAttachementMaxSize) {
+if (! Parameter::getGlobalParameter('paramAttachementDirectory') or ! Parameter::getGlobalParameter('paramAttachementMaxSize')) {
   $isAttachementEnabled=false;
 } 
 
@@ -129,7 +129,7 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
 		    if (array_key_exists('changePassword',$_REQUEST)) {
 		      $changePassword=true;
 		    }
-		    if ( $user->password==md5($paramDefaultPassword)) {
+		    if ( $user->password==md5(Parameter::getGlobalParameter('paramDefaultPassword'))) {
 		      $changePassword=true;
 		    }
 		    if ( $changePassword ) {
@@ -157,7 +157,8 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
  * @return void 
  */
 function setupLocale () {
-  global $currentLocale, $paramDefaultLocale, $browserLocale, $browserLocaleDateFormat;
+  global $currentLocale, $browserLocale, $browserLocaleDateFormat;
+  $paramDefaultLocale=Parameter::getGlobalParameter('paramDefaultLocale');
   if (isset($_SESSION['currentLocale'])) {
     // First fetch in Session (filled in at login depending on user parameter)
     $currentLocale=$_SESSION['currentLocale'];
@@ -190,6 +191,7 @@ function setupLocale () {
  */
 function setupIconSize() {
   global $iconSizeMode;
+  $paramIconSize=Parameter::getGlobalParameter('paramIconSize');; //default
   // Search in Session, if found, convert from text to int corresponding value
   if (isset($_SESSION['iconSize'])) {
     $iconSizeMode = $_SESSION['iconSize'];
@@ -205,6 +207,7 @@ function setupIconSize() {
         break;
     }
   }
+  return $paramIconSize;
 }
 //echo "SESSION=<br/>";var_dump ($_SESSION);echo "<br/><br/>";
 
@@ -278,7 +281,7 @@ function layoutTranslation($layout) {
  * @return void
  */
 function exceptionHandler($exception) {
-  global $logLevel;
+  $logLevel=Parameter::getGlobalParameter('logLevel');
   errorLog("EXCEPTION *****");
   errorLog("on file '" . $exception->getFile() . "' at line (" . $exception->getLine() . ")");
   errorLog("cause = " . $exception->getMessage());
@@ -303,7 +306,8 @@ function exceptionHandler($exception) {
  * @return void
  */
 function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
-  global $logLevel, $globalCatchErrors;
+  global $globalCatchErrors;
+  $logLevel=Parameter::getGlobalParameter('logLevel');
   if ( ! strpos($errorMessage, "getVersion.php") and ! strpos($errorMessage, "file-get-contents") ) {
     errorLog("ERROR *****");
     errorLog("on file '" . $errorFile . "' at line (" . $errorLine . ")");
@@ -338,14 +342,18 @@ function disableCatchErrors() {
  * @return void
  */
 function throwError($message, $code=null) {
-	global $globalCatchErrors;
-  echo '<span class="messageERROR" >ERROR : ' . $message . '</span>';
-  echo '<input type="hidden" id="lastSaveId" value="" />';
-  echo '<input type="hidden" id="lastOperation" value="ERROR" />';
-  echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
-  if (! $globalCatchErrors) {
-    exit();
-  }  
+	global $globalCatchErrors, $globalCronMode;
+	if (isset($globalCronMode)) {
+		debugLog("Cron error : " . $message);
+	} else {
+	  echo '<span class="messageERROR" >ERROR : ' . $message . '</span>';
+	  echo '<input type="hidden" id="lastSaveId" value="" />';
+	  echo '<input type="hidden" id="lastOperation" value="ERROR" />';
+	  echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
+	  if (! $globalCatchErrors) {
+	    exit();
+	  }  
+	}
 }
 
 /** ============================================================================
@@ -534,7 +542,7 @@ function getAccesResctictionClause($objectClass,$alias=null) {
  * Return the name of the theme : defaut of selected by user
  */
 function getTheme() {
-  global $defaultTheme;
+  $defaultTheme=Parameter::getGlobalParameter('defaultTheme');
   $theme='ProjectOrRia'; // default if never  set
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
@@ -558,7 +566,12 @@ function getTheme() {
  * @return unknown_type
  */ 
 function sendMail($to, $title, $message, $object=null, $headers=null, $sender=null)  {
-  global $paramMailSender, $paramMailReplyTo, $paramMailSmtpServer, $paramMailSmtpPort, $paramMailSendmailPath, $paramMailEol;
+  $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
+  $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
+  $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
+  $paramMailSmtpPort=Parameter::getGlobalParameter('paramMailSmtpPort');
+  $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
+  $paramMailEol=Parameter::getGlobalParameter('paramMailEol');
   // Save data of the mail
   $mail=new Mail();
   if (array_key_exists('user',$_SESSION)) {
@@ -631,7 +644,8 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
  * @return void
  */
 function logTracing($message, $level=9) {
-  global $logLevel, $logFile;
+  $logLevel=Parameter::getGlobalParameter('logLevel');
+  $logFile=Parameter::getGlobalParameter('logFile');
   if ( ! $logFile or $logFile=='' or $level==9) {
     exit;
   }
@@ -1314,7 +1328,8 @@ function isOffDay ($dateValue) {
 $bankHolidays=array();
 $bankWorkdays=array();
 function isOpenDay ($dateValue) {
-  global $paramDefaultLocale, $bankHolidays,$bankWorkdays;
+  global $bankHolidays,$bankWorkdays;
+  $paramDefaultLocale=Parameter::getGlobalParameter('paramDefaultLocale');
   $iDate=strtotime($dateValue);
   $year=date('Y',$iDate);
   if (array_key_exists($year,$bankWorkdays)) {

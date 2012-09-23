@@ -41,7 +41,7 @@ class TargetVersion extends Version {
    * @return the databaseTableName
    */
   protected function getStaticDatabaseTableName() {
-    global $paramDbPrefix;
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     return $paramDbPrefix . self::$_databaseTableName;
   }
   

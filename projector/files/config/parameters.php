@@ -7,10 +7,8 @@ $paramDbHost = '127.0.0.1';
 $paramDbUser = 'root';
 $paramDbPassword = 'mysql';
 $paramDbName = 'projectorria_V26';
-//$paramDbName = 'hosted';
 $paramDbDisplayName = 'My Own Project\'Or RIA';
 $paramDbPrefix = '';
-//$paramDbPrefix = 'galaxysemi_';
 $paramLdap_allow_login = 'false';
 $paramLdap_base_dn = 'dc=mydomain,dc=com';
 $paramLdap_host = 'localhost';
@@ -22,10 +20,10 @@ $paramLdap_user_filter = 'uid=%USERNAME%';
 $paramMailSender = 'support@toolware.fr';
 $paramMailReplyTo = 'support@toolware.fr';
 $paramAdminMail = 'support@toolware.fr';
-$paramMailSmtpServer = null;
+$paramMailSmtpServer = 'smtp.free.fr';
 $paramMailSmtpPort = '25';
 $paramMailSendmailPath = ''; 
-$paramMailTitle = '[Project\'Or RIA DEV] ${item} #${id} moved to status ${status}';
+$paramMailTitle = '[Project\'Or RIA DEV] ${item} #${id} moved to status \'${status}\' : "${name}" ';
 $paramMailMessage = 'The status of ${item} #${id} [${name}] has changed to ${status}<br/>
 id=${id}<br/>
 name=${name}<br/>
@@ -38,11 +36,11 @@ issuer=${issuer}<br/>
 responsible=${responsible}<br/>';
 $paramMailShowDetail = 'true';
 $paramDefaultPassword = 'projector';
-$paramPasswordMinLength = '5';
+$paramPasswordMinLength = '4';
 $lockPassword = 'false';
 $paramDefaultLocale = 'en';
 $paramDefaultTimezone = 'Europe/Paris';
-$currency = '$';
+$currency = '€';
 $currencyPosition = 'after';
 $paramFadeLoadingMode = 'true';
 $paramRowPerPage = '50';
@@ -56,6 +54,5 @@ $paramMemoryLimitForPDF = '512';
 $logFile = '../files/logs/projector_${date}.log';
 $logLevel = '3';
 $paramDebugMode = 'false';
-//$paramMailEol="\n\r";
+$paramMailEol="\n\r";
 //======= END
-

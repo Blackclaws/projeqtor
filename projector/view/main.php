@@ -16,7 +16,8 @@ if (Sql::getDbVersion()!=$version) {
 	include_once 'login.php';
 	exit;
 }
-
+$currency=Parameter::getGlobalParameter('currency');
+$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
 checkVersion(); ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -35,7 +36,7 @@ checkVersion(); ?>
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {"i18n":"../../tool/i18n"},
               parseOnLoad: true, 
-              isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
+              isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.store.DataStore");
@@ -86,7 +87,7 @@ checkVersion(); ?>
     });
     var historyTable=new Array();
     var historyPosition=-1;    
-    var fadeLoading=<?php echo getBooleanValueAsString($paramFadeLoadingMode);?>;
+    var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
     var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
@@ -1197,8 +1198,8 @@ checkVersion(); ?>
            <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
           </td>
           <td>
-           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $paramAttachementMaxSize;?>" />
-           <input MAX_FILE_SIZE="<?php echo $paramAttachementMaxSize;?>"
+           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />
+           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
             dojoType="dojox.form.FileInput" type="file"
             name="attachementFile" id="attachementFile"
             cancelText="<?php echo i18n("buttonReset");?>"
@@ -1301,8 +1302,8 @@ checkVersion(); ?>
          <label for="documentVersionFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
         </td>
         <td>
-         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $paramAttachementMaxSize;?>" />     
-         <input MAX_FILE_SIZE="<?php echo $paramAttachementMaxSize;?>"
+         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />     
+         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
           dojoType="dojox.form.FileInput" type="file" 
           name="documentVersionFile" id="documentVersionFile" 
           cancelText="<?php echo i18n("buttonReset");?>"

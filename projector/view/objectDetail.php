@@ -20,7 +20,9 @@
  */
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $currency, $currencyPosition, $outMode, $comboDetail, $collapsedList;
+  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList;
+  $currency=Parameter::getGlobalParameter('currency');
+  $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   $treatedObjects[]=$obj;
   $dateWidth='75';
   $verySmallWidth='44';
@@ -498,7 +500,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' readonly tabindex="-1" style="width: ' . ($largeWidth - $smallWidth -20) . 'px;" ' ;
         echo ' value="' . htmlEncode($val) . '" ></span>';        
       } else if ($col=='password') {
-        global $paramDefaultPassword;       
+        $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');       
         // Password specificity  ============================================= PASSWORD
         echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"'; 
         echo $attributes;

@@ -67,7 +67,7 @@ class Delay extends SqlElement {
   }
   
   protected function getStaticDatabaseTableName() {
-    global $paramDbPrefix;
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     return $paramDbPrefix . self::$_databaseTableName;
   }
   

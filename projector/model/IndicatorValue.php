@@ -284,7 +284,8 @@ scriptLog("addIndicatorValue($def->name)");
   }
   
   public function send($type) {
-  	global $currency, $currencyPosition;
+  	$currency=Parameter::getGlobalParameter('currency');
+  	$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
     $def=new IndicatorDefinition($this->idIndicatorDefinition);
     $obj=new $this->refType($this->refId);
     $arrayAlertDest=array();

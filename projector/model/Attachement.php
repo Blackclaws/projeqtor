@@ -53,7 +53,8 @@ class Attachement extends SqlElement {
   }
   
   public function delete() {
-  	global $paramPathSeparator,$paramAttachementDirectory;
+  	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+  	$paramAttachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
   	return parent::delete();
   	$subDirectory=str_replace('${attachementDirectory}', $paramAttachementDirectory, $this->subDirectory);
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {

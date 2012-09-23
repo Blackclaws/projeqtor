@@ -109,9 +109,10 @@ if (! $tst->id) {
 	$nbErrors+=runScript('V1.6.1');
 }
 
+$memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
 // For V1.7.0
-if (! isset($paramMemoryLimitForPDF) ) {
-	writeFile('$paramMemoryLimitForPDF = \'512\';',$parametersLocation);
+if (! isset($memoryLimitForPDF) ) {
+	writeFile('$memoryLimitForPDF = \'512\';',$parametersLocation);
   writeFile("\n",$parametersLocation);
   traceLog('Parameter $paramMemoryLimitForPDF added');
 }
@@ -174,6 +175,24 @@ if ($currVersion<"V2.4.2") {
   }
 }
 
+// For V2.6.0 : migration of parameters to database
+//if ($currVersion!='0.0.0') {
+  include $parametersLocation;
+  $arrayParamsToMigrate=array('paramMailTitle');
+  foreach ($arrayParamsToMigrate as $param) {
+  	$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
+  	$parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+  	if (!$parameter or !$parameter->id) { 
+  	  $parameter=new Parameter();
+  	}
+  	$parameter->idUser=null;
+  	$parameter->idProject=null;
+  	$parameter->parameterCode=$param;  
+  	$parameter->parameterValue=Parameter::getGlobalParameter($param);
+  	$parameter->save();
+  }
+//}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
@@ -200,7 +219,9 @@ echo "<br/>____________________________________________";
 
 
 function runScript($vers) {
-  global $paramDbName, $paramDbPrefix, $versionParameters, $parametersLocation;
+  global $versionParameters, $parametersLocation;
+  $paramDbName=Parameter::getGlobalParameter('paramDbName');
+  $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   set_time_limit(300);
   traceLog("=====================================");
   traceLog("");

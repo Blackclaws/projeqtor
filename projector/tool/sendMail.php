@@ -18,11 +18,11 @@
     $login=$_REQUEST['name'];
     $dest=$_REQUEST['email'];
     $pwdMsg="";
-    if ($_REQUEST['password']==md5($paramDefaultPassword)) {
-      $pwdMsg=i18n('passwordResetMessage', array($paramDefaultPassword));
+    if ($_REQUEST['password']==md5(Parameter::getGlobalParameter('paramDefaultPassword'))) {
+      $pwdMsg=i18n('passwordResetMessage', array(Parameter::getGlobalParameter('paramDefaultPassword')));
     }
     $title=i18n('userMailTitle');  
-    $msg=i18n('userMailMessage',array($login,$pwdMsg,$paramAdminMail));
+    $msg=i18n('userMailMessage',array($login,$pwdMsg,Parameter::getGlobalParameter('paramAdminMail')));
     $result=(sendMail($dest,$title,$msg))?'OK':'';
   } else if ($typeSendMail=="Meeting") {
     if (array_key_exists('id',$_REQUEST)) {

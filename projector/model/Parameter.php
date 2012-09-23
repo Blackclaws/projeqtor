@@ -244,6 +244,11 @@ class Parameter extends SqlElement {
                     'initials'=>i18n('colInitials'),
                     'NO'=>i18n('displayNo'));
         break;  
+      case 'cronImportLogDestination';
+        $list=array('file'=>i18n('cronLogAsFile'),
+                    'mail'=>i18n('cronLogAsMail'),
+                    'both'=>i18n('cronLogAsBoth'));
+        break;  
     } 
     return $list;
   }
@@ -282,8 +287,14 @@ class Parameter extends SqlElement {
       	                     'imputationUnit'=>'list',
       	                     'workUnit'=>'list',
       	                     'dayTime'=>'number',
-      	                     'sectionAlerts'=>'section',  
+      	                     'sectionCron'=>'section',
+      	                     'cronSleepTime'=>'number',      	                     
+      	                     'cronCheckDates'=>'number',  
       	                     'alertCheckTime'=>'number',
+      	                     'cronCheckImport'=>'number',
+      	                     'cronImportDirectory'=>'text',
+      	                     'cronImportLogDestination'=>'list',
+      	                     'cronImportMailList'=>'text',
       	                     'sectionLdap'=>'section', 
       	                     'ldapDefaultProfile'=>'list',
       	                     'ldapMsgOnUserCreation'=>'list',
@@ -311,6 +322,10 @@ class Parameter extends SqlElement {
   }
   
   static public function getGlobalParameter($code) {
+  	global $$code;
+  	if (isset($$code)) {
+  		return $$code;
+  	}
   	$paramCode='globalParameter_'.$code;
   	if (array_key_exists($paramCode,$_SESSION)) {
   		return $_SESSION[$paramCode];
