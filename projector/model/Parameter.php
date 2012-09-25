@@ -341,6 +341,7 @@ class Parameter extends SqlElement {
   	  return $val;
     }
   }
+  
   static public function getUserParameter($code) {
     $p=new Parameter();
     $user=$_SESSION['user'];
@@ -378,6 +379,94 @@ class Parameter extends SqlElement {
     $res[$i++]=($all or !strpos($hidden,'EndDate')>0)?'EndDate':'';
   	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'';
   	return $res;
+  }
+  /** 
+   * Regenerate pamareter.php file depending on new param location : 
+   *  if param exists in database : do not write param to file
+   *  else : write param to file 
+   */
+  static public function regenerateParamFile($echoResult=false) {
+  	global $parametersLocation;
+  	$fileHandler = fopen($parametersLocation,"r");
+    if (!$fileHandler) {
+    	throwError("Error opening file $parameterLocation");
+    	exit;
+    }
+    $cptLine=0;
+    $cptVar=0;
+    $cptVarDb=0;
+    $cptVarFile=0;
+    $var="";
+    $arrayParams=array();
+    while (!feof($fileHandler)) {
+      $line = fgets($fileHandler);
+      $cptLine++;
+      if (substr($line,0,2)!='//' and strpos(strtolower($line),'<?php')===false) { // exclude comments
+        $var.=$line;
+        $posSemi=strrpos($var,';');
+        if ($posSemi>0) {
+        	$command=trim(substr($var,0,$posSemi));
+        	$posEq=strpos($command,'=');
+	        if ($posEq>0) {
+	        	$paramCode=trim(substr($command,0,$posEq));
+	        	$paramValue=trim(substr($command,$posEq+1));	          
+
+	          $arrayParam[$paramCode]=$paramValue;
+	          $cptVar+=1;
+	        }
+	        $var="";
+        }
+      }       
+    }
+    fclose($fileHandler);  
+    $nl="\n";
+    traceLog("=== REWRITE PARAMTERS.PHP FILE = START ====================");    
+    $fileHandler = fopen($parametersLocation,"w");
+    fwrite($fileHandler,'<?php'.$nl); 
+    fwrite($fileHandler,'// ======================================================================================='.$nl);
+    fwrite($fileHandler,'// Automatically generated parameter file'.$nl);
+    fwrite($fileHandler,'// on '.date('Y-m-d H:i:s').$nl);
+    fwrite($fileHandler,'// ======================================================================================='.$nl);
+    if ($echoResult) echo "<table style=\"border: 1px solid black;\"><tr><th class=\"messageHeader\">Code</th><th class=\"messageHeader\">Value</th><th class=\"messageHeader\">Result</th></tr>";
+    foreach ($arrayParam as $paramCode=>$paramValue) {
+      $result='';
+      $resultHtml='&nbsp;';
+      $code=substr($paramCode,1);
+      if (self::isGlobalParameterInDB($code)) {
+        $result="moved to database";
+        $resultHtml="<span style=\"color:red\">$result</span>";   
+        $cptVarDb+=1;     
+      } else {
+      	fwrite($fileHandler,$paramCode.'='.$paramValue.';'.$nl);
+      	$result="kept in parameter file";
+        $resultHtml="<span style=\"color:green\">$result</span>";
+        $cptVarFile+=1;           
+      }
+      if ($echoResult) echo "<tr><td class=\"messageData\">$code</td><td class=\"messageData\">$paramValue</td><td class=\"messageData\">$resultHtml</td></tr>";
+      traceLog("$paramCode $result");
+    }
+    if ($echoResult) echo "</table>";
+    if ($echoResult) echo "<br/>lines read from file = $cptLine<br/>parameters found = $cptVar";
+    if ($echoResult) echo "<br/>parameters moved to database = $cptVarDb<br/>parameters kept in parameter file = $cptVarFile";
+    traceLog("---> lines read from file = $cptLine");
+    traceLog("---> parameters found = $cptVar");
+    traceLog("---> parameters moved to database = $cptVarDb");
+    traceLog("---> parameters kept in parameter file = $cptVarFile");
+    fwrite($fileHandler,'//======= END');
+    fclose($fileHandler);
+    
+    traceLog("REWRITE PARAMTERS.PHP FILE = END ======================");
+  }
+  
+  static public function isGlobalParameterInDB($code) {
+    $p=new Parameter();
+    $crit=" idUser is null and idProject is null and parameterCode='" . $code . "'";
+    $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
+    if (count($lst)==1) {
+      return true;
+    } else {
+    	return false;
+    }
   }
 }
 ?>
