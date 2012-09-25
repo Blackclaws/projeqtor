@@ -178,7 +178,9 @@ if ($currVersion<"V2.4.2") {
 // For V2.6.0 : migration of parameters to database
 //if ($currVersion!='0.0.0') {
   include $parametersLocation;
-  $arrayParamsToMigrate=array('paramMailTitle');
+  $arrayParamsToMigrate=array('paramDbDisplayName',
+                              'paramMailTitle','paramMailMessage','paramMailSender','paramMailReplyTo','paramAdminMail',
+                              'paramMailSmtpServer','paramMailSmtpPort','paramMailSendmailPath','paramMailShowDetail');
   foreach ($arrayParamsToMigrate as $param) {
   	$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
   	$parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
@@ -191,6 +193,7 @@ if ($currVersion<"V2.4.2") {
   	$parameter->parameterValue=Parameter::getGlobalParameter($param);
   	$parameter->save();
   }
+  Parameter::regenerateParamFile();
 //}
 
 // To be sure, after habilitations updates ...

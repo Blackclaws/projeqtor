@@ -604,8 +604,8 @@ function addNote () {
 		load: function (data) {
 			var contentWidget = dijit.byId('dialogNotePredefinedDiv');
 	        if (! contentWidget) {return;}
-	        	contentWidget.set('content',data);
-			}
+	        contentWidget.set('content',data);
+		}
 	});
 	dijit.byId('notePrivacyPublic').set('checked','true');	
 	dijit.byId("dialogNote").show();
