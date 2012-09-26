@@ -137,6 +137,7 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
+debugLog($plan->wbs . ' - ' . $plan->refName);
       if (! $plan->id) {
         continue;
       }
@@ -420,6 +421,7 @@ class PlannedWork extends GeneralWork {
         } 
       }
       $fullListPlan=self::storeListPlan($fullListPlan,$plan);
+debugLog('       end date' . $plan->plannedEndDate);
     }
     $cpt=0;
     $query='';
@@ -464,8 +466,9 @@ class PlannedWork extends GeneralWork {
        . ' WHERE id=' . $ass->id . ';';
        SqlDirectElement::execute($query);*/
     }
-    
+debugLog('=> UPDATE ==========================================');
     foreach ($fullListPlan as $pe) {
+debugLog($pe->wbs . ' - ' . $pe->refName . ' - '. $pe->plannedEndDate);
    	  $pe->simpleSave();
    	  /*$query='UPDATE ' . $pe->getDatabaseTableName() 
        . ' SET plannedEndDate=\'' . $pe->plannedEndDate . '\''
@@ -488,14 +491,16 @@ class PlannedWork extends GeneralWork {
   private static function storeListPlan($listPlan,$plan) {
 //traceLog("storeListPlan(listPlan,$plan->id)");
     $listPlan['#'.$plan->id]=$plan;
-    if ($plan->plannedStartDate and $plan->plannedEndDate) {
+    if (($plan->plannedStartDate or $plan->realStartDate) and ($plan->plannedEndDate or $plan->realEndDate) ) {
 	  	foreach ($plan->_parentList as $topId=>$topVal) {
 	  		$top=$listPlan[$topId];
-	  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
-	  			$top->plannedStartDate=$plan->plannedStartDate;
+	  		$startDate=($plan->realStartDate)?$plan->realStartDate:$plan->plannedStartDate;
+	  		if (!$top->plannedStartDate or $top->plannedStartDate>$startDate) {
+	  			$top->plannedStartDate=$startDate;
 	  		}
-	  	  if (!$top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
-	        $top->plannedEndDate=$plan->plannedEndDate;
+	  		$endDate=($plan->realEndDate)?$plan->realEndDate:$plan->plannedEndDate;
+	  	  if (!$top->plannedEndDate or $top->plannedEndDate<$endDate) {
+	        $top->plannedEndDate=$endDate;
 	      }
 	      $listPlan[$topId]=$top;
 	  	}
