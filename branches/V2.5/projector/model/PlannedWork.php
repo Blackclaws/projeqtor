@@ -137,7 +137,6 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
-debugLog($plan->wbs . ' - ' . $plan->refName);
       if (! $plan->id) {
         continue;
       }
@@ -421,7 +420,6 @@ debugLog($plan->wbs . ' - ' . $plan->refName);
         } 
       }
       $fullListPlan=self::storeListPlan($fullListPlan,$plan);
-debugLog('       end date' . $plan->plannedEndDate);
     }
     $cpt=0;
     $query='';
@@ -466,9 +464,7 @@ debugLog('       end date' . $plan->plannedEndDate);
        . ' WHERE id=' . $ass->id . ';';
        SqlDirectElement::execute($query);*/
     }
-debugLog('=> UPDATE ==========================================');
     foreach ($fullListPlan as $pe) {
-debugLog($pe->wbs . ' - ' . $pe->refName . ' - '. $pe->plannedEndDate);
    	  $pe->simpleSave();
    	  /*$query='UPDATE ' . $pe->getDatabaseTableName() 
        . ' SET plannedEndDate=\'' . $pe->plannedEndDate . '\''
