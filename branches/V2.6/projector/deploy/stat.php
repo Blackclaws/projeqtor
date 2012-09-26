@@ -28,7 +28,7 @@
 </head>
 <body>
 <?php 
-$parametersLocation = "../../_private/track/parametersTrack.php";
+$parametersLocation = "/var/wwwFiles/projectorria/track/config/parameters.php";
 if (! file_exists($parametersLocation)) {
   $parametersLocation = "../files/config/parameters.php";
 }
