@@ -488,19 +488,21 @@ class PlannedWork extends GeneralWork {
   private static function storeListPlan($listPlan,$plan) {
 //traceLog("storeListPlan(listPlan,$plan->id)");
     $listPlan['#'.$plan->id]=$plan;
-    if ($plan->plannedStartDate and $plan->plannedEndDate) {
-	  	foreach ($plan->_parentList as $topId=>$topVal) {
-	  		$top=$listPlan[$topId];
-	  		if (!$top->plannedStartDate or $top->plannedStartDate>$plan->plannedStartDate) {
-	  			$top->plannedStartDate=$plan->plannedStartDate;
-	  		}
-	  	  if (!$top->plannedEndDate or $top->plannedEndDate<$plan->plannedEndDate) {
-	        $top->plannedEndDate=$plan->plannedEndDate;
-	      }
-	      $listPlan[$topId]=$top;
-	  	}
+    if (($plan->plannedStartDate or $plan->realStartDate) and ($plan->plannedEndDate or $plan->realEndDate) ) {
+      foreach ($plan->_parentList as $topId=>$topVal) {
+        $top=$listPlan[$topId];
+        $startDate=($plan->realStartDate)?$plan->realStartDate:$plan->plannedStartDate;
+        if (!$top->plannedStartDate or $top->plannedStartDate>$startDate) {
+          $top->plannedStartDate=$startDate;
+        }
+        $endDate=($plan->realEndDate)?$plan->realEndDate:$plan->plannedEndDate;
+        if (!$top->plannedEndDate or $top->plannedEndDate<$endDate) {
+          $top->plannedEndDate=$endDate;
+        }
+        $listPlan[$topId]=$top;
+      }
     }
-  	return $listPlan;
+    return $listPlan;
   }
   
   /*private static function sortPlanningElements($planList) {

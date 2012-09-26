@@ -287,14 +287,9 @@ class Parameter extends SqlElement {
       	                     'imputationUnit'=>'list',
       	                     'workUnit'=>'list',
       	                     'dayTime'=>'number',
-      	                     'sectionCron'=>'section',
-      	                     'cronSleepTime'=>'number',      	                     
-      	                     'cronCheckDates'=>'number',  
-      	                     'alertCheckTime'=>'number',
-      	                     'cronCheckImport'=>'number',
-      	                     'cronImportDirectory'=>'text',
-      	                     'cronImportLogDestination'=>'list',
-      	                     'cronImportMailList'=>'text',
+      	                     'sectionPlanning'=>'section',
+                             'displayResourcePlan'=>'list',
+      	                     'maxProjectsToDisplay'=>'number',
       	                     'sectionLdap'=>'section', 
       	                     'ldapDefaultProfile'=>'list',
       	                     'ldapMsgOnUserCreation'=>'list',
@@ -314,8 +309,27 @@ class Parameter extends SqlElement {
       	                     'billSuffix'=>'text',
       	                     'billNumSize'=>'number',
       	                     'billNumStart'=>'number',
-      	                     'sectionPlanning'=>'section',
-      	                     'displayResourcePlan'=>'list',
+      	                     'sectionMail'=>'section',
+      	                     'paramAdminMail'=>'text',
+      	                     'paramMailSender'=>'text',
+                             'paramMailReplyTo'=>'text',
+                             'paramMailSmtpServer'=>'text',
+                             'paramMailSmtpPort'=>'number',
+                             'paramMailSendmailPath'=> 'text', 
+                             'paramMailTitleNew'=>'text',
+      	                     'paramMailTitleStatus'=>'text',
+      	                     'paramMailTitleResponsible'=>'text',
+      	                     'paramMailTitleNote'=>'text',
+      	                     'paramMailTitleAttachment'=>'text',      	
+      	                     'sectionCron'=>'section',
+                             'cronSleepTime'=>'number',                            
+                             'cronCheckDates'=>'number',  
+                             'alertCheckTime'=>'number',
+                             'cronCheckImport'=>'number',
+                             'cronImportDirectory'=>'text',
+                             'cronImportLogDestination'=>'list',
+                             'cronImportMailList'=>'text',
+      	                    
       	);
     }
     return $parameterList;
@@ -341,7 +355,7 @@ class Parameter extends SqlElement {
   	  return $val;
     }
   }
-  
+
   static public function getUserParameter($code) {
     $p=new Parameter();
     $user=$_SESSION['user'];
@@ -380,6 +394,7 @@ class Parameter extends SqlElement {
   	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'';
   	return $res;
   }
+  
   /** 
    * Regenerate pamareter.php file depending on new param location : 
    *  if param exists in database : do not write param to file
