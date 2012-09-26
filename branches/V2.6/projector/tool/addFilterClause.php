@@ -94,8 +94,13 @@ if ($idFilterAttribute and $idFilterOperator) {
   	$externalClass=$split[0];
     $externalObj=new $externalClass();
     $arrayDisp["attribute"]=$externalObj->getColCaption($split[1]);
-  } else { 
-    $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
+  } else {
+  	echo  $idFilterAttribute . "=>" . $obj->getColCaption($idFilterAttribute);
+    if (substr($idFilterAttribute,0,9)=='idContext') {
+      $arrayDisp["attribute"]=SqlList::getNameFromId('ContextType',substr($idFilterAttribute,9));
+    } else {
+      $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
+    }
   }
   $arraySql["attribute"]=$obj->getDatabaseColumnName($idFilterAttribute);
   if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<=") {
