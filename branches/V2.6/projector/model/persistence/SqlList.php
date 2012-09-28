@@ -69,9 +69,9 @@ class SqlList {
       $query .= " or " . $obj->getDatabaseColumnName('id') .'= ' . Sql::str($selectedValue) ;
     }
     if (property_exists($obj,'sortOrder')) {
-      $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder';
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     } else if (property_exists($obj,'order')) {
-      $query .= ' order by ' . $obj->getDatabaseTableName() . '.order';
+      $query .= ' order by ' . $obj->getDatabaseTableName() . '.order, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     } else {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     }

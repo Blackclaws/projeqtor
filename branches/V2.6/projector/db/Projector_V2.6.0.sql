@@ -109,3 +109,5 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'cronImportDirectory', '../files/import'),
 (null,null, 'cronImportLogDestination', 'file'),
 (null,null, 'cronImportMailList', '');
+
+ALTER TABLE `${prefix}ticket` ADD COLUMN `idProduct` int(12) unsigned default null;

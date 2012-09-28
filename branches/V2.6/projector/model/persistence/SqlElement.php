@@ -1633,7 +1633,7 @@ abstract class SqlElement {
 	        } else {
 	        	foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", this.value);':'';}
 	        }
-	      }
+	      }	      
         if ($colName=='idProduct' and $versionExists) {
           if (property_exists($this,'idProject')) {
             $colScript .= '   if (trim(this.value)) {';
@@ -1646,7 +1646,12 @@ abstract class SqlElement {
             foreach ($arrVers as $vers) {$colScript.=(property_exists($this,$vers))?'refreshList("'.$vers.'","idProject", idProject);':'';}
           }
         }
-        
+        if (($colName=='idVersion' or $colName=='idOriginalVersion' or $colName=='idTargetVersion') 
+             and property_exists($this,'idProduct')) {
+           $colScript .= 'if (! trim(dijit.byId("idProduct").get("value")) ) {';
+           $colScript .= '   setProductValueFromVersion("idProduct",this.value);';
+           $colScript .= '}';
+        }
         if ($colName=='idProject' and property_exists($this,'idContact')) {
           $colScript .= '   refreshList("idContact","idProject", this.value);';
         }

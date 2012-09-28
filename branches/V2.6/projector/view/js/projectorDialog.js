@@ -2896,7 +2896,20 @@ function refreshListSpecific(listType, destination, param, paramVal, selected, r
 	var mySelect=dijit.byId(destination);	
 	mySelect.set('store',store);
 }
-
+function setProductValueFromVersion(field,versionId) {
+  //alert("Call : "+field+"/"+versionId);
+  dojo.xhrGet({
+		url: "../tool/getProductValueFromVersion.php?idVersion="+versionId,
+		handleAs: "text",
+		load: function(data,args) { 
+			prd=dijit.byId(field);
+			if (prd) {
+			   prd.set("value",data);	
+			}
+		},
+	    error: function() {   }
+	  });
+}
 var menuHidden=false;
 var menuActualStatus='visible';
 var menuDivSize=0; 
