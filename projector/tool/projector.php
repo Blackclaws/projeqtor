@@ -613,7 +613,6 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   if (isset($paramMailSendmailPath) and $paramMailSendmailPath) {
     ini_set('sendmail_path',$paramMailSendmailPath);
   }
-  
   //error_reporting(E_ERROR);  
   //restore_error_handler();
   enableCatchErrors();
