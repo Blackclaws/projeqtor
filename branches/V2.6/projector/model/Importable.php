@@ -68,7 +68,7 @@ scriptLog("import($fileName, $class)");
 		foreach ($obj as $fld=>$val) {
 		  $captionArray[$obj->getColCaption($fld)]=$fld;
 		}
-		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black">';
+		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black; border-collapse:collapse;">';
 		Sql::beginTransaction();
 		foreach ($lines as $nbl=>$line) {
 		  if (! mb_detect_encoding($line, 'UTF-8', true) ) {
@@ -76,13 +76,20 @@ scriptLog("import($fileName, $class)");
 		  }
 		  if ($title) {
 		    $htmlResult.= '<TR>';
-		    $fields=explode($csvSep,$line);     
+		    $fields=explode($csvSep,$line);  
+		    if (count($fields)!=count($title)) {
+		    	self::$cptError+=1;
+		    	$htmlResult.= '<td colspan="'.count($title).'" style="border:1px solid black;">';
+		      $htmlResult.= '<span class="messageWARNING" >' . $result . '</span>';
+		      $htmlResult.= '</td>';
+		      continue;
+		    }   
 		    $id=($idxId>=0)?$fields[$idxId]:null;
 		    $obj=new $class($id);
 		    self::$cptTotal+=1;
 		    foreach ($fields as $idx=>$field) { 
 		      if ($field=='') {
-		        $htmlResult.= '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+		        $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		        continue; 
 		      }
 		      if ( strtolower($field)=='null') {
@@ -94,13 +101,13 @@ scriptLog("import($fileName, $class)");
 		      $field=str_replace('""','"',$field);     
 		      if (property_exists($obj,$title[$idx])) {
 		        $obj->$title[$idx]=$field;
-		        $htmlResult.= '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+		        $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		        continue; 
 		      } 
 		      $idTitle='id' . ucfirst($title[$idx]);
 		      if (property_exists($obj,$idTitle)) {
 		        $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);
-		        $htmlResult.= '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . "/" . htmlEncode($val) . '</td>';
+		        $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . "/" . htmlEncode($val) . '</td>';
 		        //$htmlResult.= " => " . htmlEncode($idTitle);
 		        //$htmlResult.= "=" . htmlEncode($val);
 		        $obj->$idTitle=$val;
@@ -114,21 +121,21 @@ scriptLog("import($fileName, $class)");
 		        $pe=$obj->$peClass;
 		        if (property_exists($pe,$title[$idx])) {
 		          $obj->$peClass->$title[$idx]=$field;
-		          $htmlResult.= '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+		          $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		          continue; 
 		        }
 		        $idTitle='id' . ucfirst($title[$idx]);
 		        if (property_exists($pe,$idTitle)) {   
-		          $htmlResult.= '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
+		          $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		          $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);   
 		          $obj->$peClass->$idTitle=$val;
 		          continue; 
 		        } 
 		      }
-		      $htmlResult.= '<td class="messageData" style="color:#A0A0A0;">' . htmlEncode($field) . '</td>';
+		      $htmlResult.= '<td class="messageData" style="color:#A0A0A0;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		      continue; 
 		    }
-		    $htmlResult.= '<TD class="messageData" width="20%">';
+		    $htmlResult.= '<TD class="messageData" width="20%" style="border:1px solid black;">';
 		    //$obj->id=null;
 		    $result=$obj->save();	    
 		    if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
@@ -199,9 +206,9 @@ scriptLog("import($fileName, $class)");
 		          }
 		        }
 		      }
-		      $htmlResult.= '<TH class="messageHeader" style="color:' . $color . ';">' . $colCaption . "</TH>";
+		      $htmlResult.= '<TH class="messageHeader" style="color:' . $color . ';border:1px solid black;background-color: #DDDDDD">' . $colCaption . "</TH>";
 		    }
-		    $htmlResult.= '<th class="messageHeader" style="color:#208020">' . i18n('colResultImport') . '</th></TR>';
+		    $htmlResult.= '<th class="messageHeader" style="color:#208020;border:1px solid black;;background-color: #DDDDDD">' . i18n('colResultImport') . '</th></TR>';
 		  }
 		}
 		Sql::commitTransaction();
