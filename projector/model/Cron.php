@@ -190,7 +190,7 @@ scriptLog('Cron::run()');
       	try { 
           self::checkDates();
       	} catch (Exception $e) {
-      		debugLog("Cron::run() - Error on checkDates()");
+      		traceLog("Cron::run() - Error on checkDates()");
       	}
         $cronCheckDates=Cron::getCheckDates();
       }
@@ -199,7 +199,7 @@ scriptLog('Cron::run()');
       	try { 
           self::checkImport();
       	} catch (Exception $e) {
-          debugLog("Cron::run() - Error on checkImport()");
+          traceLog("Cron::run() - Error on checkImport()");
         }
         $cronCheckImport=Cron::getCheckImport();
       }
@@ -231,6 +231,7 @@ scriptLog('Cron::checkImport()');
   	$importDir=Parameter::getGlobalParameter('cronImportDirectory');
   	$cpt=0;
   	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+  	$importSummary;
   	if (is_dir($importDir)) {
       if ($dirHandler = opendir($importDir)) {
         while (($file = readdir($dirHandler)) !== false) {
@@ -239,19 +240,44 @@ scriptLog('Cron::checkImport()');
             $split=explode('_',$file);
             $class=$split[0];
             $result=Importable::import($importFile, $class);
-            if ($result=="OK") {
-              traceLog("Import OK : file $file imported with no error [ Number of '$class' imported : " . Importable::$importCptOK . " ]");
-              if (! is_dir($importDir . $pathSeparator . "done")) {
-              	mkdir($importDir . $pathSeparator . "done",777,true);
-              }
-              rename($importFile,$importDir . $pathSeparator . "done" . $pathSeparator . $file);
-            } else {
-            	traceLog("Import ERROR : file $file imported with " . Importable::$importCptError . " errors [ Number of '$class' imported : " . Importable::$importCptOK . " ]");
-              if (! is_dir($importDir . $pathSeparator . "error")) {
-                mkdir($importDir . $pathSeparator . "error",777,true);
-              }
-            	rename($importFile,$importDir . $pathSeparator . "error" . $pathSeparator . $file);
+            $globalCronMode=false; // VOLOUNTARILY STOP THE CRON. Actions are requested !
+            try {
+	            if ($result=="OK") {	            	
+	              $msg="Import OK : file $file imported with no error [ Number of '$class' imported : " . Importable::$cptDone . " ]";
+	              traceLog($msg);
+	              $importSummary.=$msg."\n";
+	              if (! is_dir($importDir . $pathSeparator . "done")) {
+	              	mkdir($importDir . $pathSeparator . "done",777,true);
+	              }
+	              rename($importFile,$importDir . $pathSeparator . "done" . $pathSeparator . $file);
+	            } else {
+	            	if ($result=="INVALID") {
+	               	$msg="Import INVALID : file $file imported with " . Importable::$cptInvalid . " control errors [ Number of '$class' imported : " . Importable::$cptOK . " ]";
+	               	traceLog($msg);
+                  $importSummary.=$msg."\n";
+	              } else {
+	            	  $msg="Import ERROR : file $file imported with " . Importable::$cptRejected . " errors [ Number of '$class' imported : " . Importable::$cptOK . " ]";
+	            	  traceLog($msg);
+                  $importSummary.=$msg."\n";
+	              }
+	              if (! is_dir($importDir . $pathSeparator . "error")) {
+	                mkdir($importDir . $pathSeparator . "error",777,true);
+	              }
+	            	rename($importFile,$importDir . $pathSeparator . "error" . $pathSeparator . $file);
+	            }
+            } catch (Exception $e) {
+            	$msg="CRON : Impossible to move file '$importFile'";
+            	traceLog($msg);
+              $importSummary.=$msg."\n";
+            	$msg="CRON IS STOPPED TO AVOID MULTIPLE-TREATMENT OF SAME FILES";
+            	traceLog($msg);
+              $importSummary.=$msg."\n";
+            	$msg="Check access rights to folder '$importDir', subfolders 'done' and 'error' and file '$importFile'";
+            	traceLog($msg);
+              $importSummary.=$msg."\n";
+            	exit; // VOLOUNTARILY STOP THE CRON. Actions are requested !
             }
+            $globalCronMode=true; // If cannot write log file, do not exit CRON (not blocking)
             $logFile=$importDir . $pathSeparator . 'logs' . $pathSeparator . substr($file, 0, strlen($file)-4) . ".log.htm";
         	  if (! is_dir($importDir . $pathSeparator . "logs")) {
               mkdir($importDir . $pathSeparator . "logs",777,true);
@@ -270,7 +296,24 @@ scriptLog('Cron::checkImport()');
         closedir($dirHandler);
       }
     } else {
-    	debugLog ("ERROR - check Cron::Import() - ". $importDir . " is not a directory");
+    	$msg="ERROR - check Cron::Import() - ". $importDir . " is not a directory";
+    	traceLog($msg);
+      $importSummary.=$msg."\n";
+    }
+    $logDest=Parameter::getGlobalParameter('cronImportLogDestination');
+    if (substr($logDest,0,13)=='cronLogAsMail') {
+    	$baseName=Parameter::getGlobalParameter('paramDbDisplayName');
+    	$to=Parameter::getGlobalParameter('paramDbDisplayName');
+    	if (! $to) {
+    		traceLog("Cron : email requested, but no email address defined");
+    	} else {
+	      $message=$importSummary;
+	      if ($logDest=='') {
+          
+	      }
+	      $title="[$baseName] Import summary ". date('Y-m-d H:i:s');
+	      sendMail($to, $title, $message);
+    	}
     }
   }
   

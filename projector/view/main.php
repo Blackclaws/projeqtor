@@ -2354,20 +2354,25 @@ checkVersion(); ?>
     </tr>
     <tr>
       <td align="center">
+        <table><tr><td>
         <span id="filterDefaultButtonDiv">
           <button dojoType="dijit.form.Button" onclick="defaultFilter();">
             <?php echo i18n("buttonDefault");?>
           </button>
         </span>
+        </td><td>
         <button dojoType="dijit.form.Button" onclick="clearFilter();">
           <?php echo i18n("buttonClear");?>
         </button>
+        </td><td>
         <button dojoType="dijit.form.Button" onclick="cancelFilter();">
           <?php echo i18n("buttonCancel");?>
         </button>
+        </td><td>
         <button dojoType="dijit.form.Button" type="submit" id="dialogFilterSubmit" onclick="selectFilter();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
+        </td></tr></table>
       </td>
     </tr>
   </table>

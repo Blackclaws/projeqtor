@@ -192,7 +192,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $titlePane=$classObj."_".$section; 
           echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
           echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
-          echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');">';
+          echo ' id="' . $titlePane . '" ';
+          echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+          echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
           echo '<table class="detail" style="width:' . $widthPct . ';" >';
         } else {
           echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
@@ -218,7 +220,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       	$titlePane=$classObj."_".$section; 
         echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
         echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
-        echo ' id="' . $titlePane . '" onclick="togglePane(\'' . $titlePane . '\');">';
+        echo ' id="' . $titlePane . '" ';
+        echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+        echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
         echo '<table class="detail" style="width:' . $widthPct . ';" >';
       } else {
         echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
@@ -2426,7 +2430,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionAttachements');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
+     id="<?php echo $titlePane;?>" 
+     onHide="saveCollapsed('<?php echo $titlePane;?>');"
+     onShow="saveExpanded('<?php echo $titlePane;?>');" >       
      <?php drawAttachementsFromObject($obj); ?>
     </div>
     <?php }?>
@@ -2446,7 +2452,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionBillLines');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
+     id="<?php echo $titlePane;?>"       
+     onHide="saveCollapsed('<?php echo $titlePane;?>');"
+     onShow="saveExpanded('<?php echo $titlePane;?>');" >
      <?php drawBillLinesFromObject($obj); ?>
     </div>
     <?php }?>
@@ -2466,7 +2474,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
     <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionNotes');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
+     id="<?php echo $titlePane;?>" 
+     onHide="saveCollapsed('<?php echo $titlePane;?>');"
+     onShow="saveExpanded('<?php echo $titlePane;?>');" >
      <?php drawNotesFromObject($obj); ?>
     </div>
     <?php }?>
@@ -2495,7 +2505,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
       <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
        open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-       id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');">
+       id="<?php echo $titlePane;?>"         
+       onHide="saveCollapsed('<?php echo $titlePane;?>');"
+       onShow="saveExpanded('<?php echo $titlePane;?>');" >
         <?php drawHistoryFromObjects();?>
       </div>
       <br/>

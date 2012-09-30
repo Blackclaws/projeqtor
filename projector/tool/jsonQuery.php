@@ -312,10 +312,25 @@
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
     
-    // Check for an advanced filter (stored in User
+    // Check for an advanced filter (stored in User)
     foreach ($arrayFilter as $crit) {
       if ($crit['sql']['operator']!='SORT') {
       	$split=explode('_', $crit['sql']['attribute']);
+      	$critSqlValue=$crit['sql']['value'];
+      	if ($crit['sql']['operator']=='IN' and $crit['sql']['attribute']=='idProduct') {
+          $critSqlValue=str_replace(array(' ','(',')'), '', $critSqlValue);
+      		$splitVal=explode(',',$critSqlValue);
+      		$critSqlValue='(0';
+      		foreach ($splitVal as $idP) {
+      			$prod=new Product($idP);
+      			$critSqlValue.=', '.$idP;
+      	    $list=$prod->getRecursiveSubProductsFlatList(false, false);
+      	    foreach ($list as $idPrd=>$namePrd) {
+      	    	$critSqlValue.=', '.$idPrd;
+      	    }
+      		}      		
+      		$critSqlValue.=')';
+      	}
         if (count($split)>1 ) {
           $externalClass=$split[0];
           $externalObj=new $externalClass();
@@ -327,12 +342,12 @@
           $queryWhere.=($queryWhere=='')?'':' and ';
           $queryWhere.=$externalTableAlias . "." . $split[1] . ' ' 
                  . $crit['sql']['operator'] . ' '
-                 . $crit['sql']['value'];
+                 . $critSqlValue;
         } else {
           $queryWhere.=($queryWhere=='')?'':' and ';
           $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
 		                 . $crit['sql']['operator'] . ' '
-		                 . $crit['sql']['value'];
+		                 . $critSqlValue;
         }
       }
     }

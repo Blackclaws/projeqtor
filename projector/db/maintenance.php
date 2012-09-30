@@ -176,7 +176,7 @@ if ($currVersion<"V2.4.2") {
 }
 
 // For V2.6.0 : migration of parameters to database
-//if ($currVersion!='0.0.0') {
+if ($currVersion<"V2.6.0") {
   include $parametersLocation;
   $arrayParamsToMigrate=array('paramDbDisplayName',
                               'paramMailTitle','paramMailMessage','paramMailSender','paramMailReplyTo','paramAdminMail',
@@ -194,7 +194,7 @@ if ($currVersion<"V2.4.2") {
   	$parameter->save();
   }
   Parameter::regenerateParamFile();
-//}
+}
 
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();

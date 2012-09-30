@@ -220,7 +220,8 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
         $divName='CrossTable_'.$lineObj.'_'.$breakCode;
         echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
         echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
-        echo ' onclick="togglePane(\'' . $divName . '\');"';
+        echo ' onHide="saveCollapsed(\'' . $divName . '\');"';
+        echo ' onShow="saveExpanded(\'' . $divName . '\');"';
         echo ' title="' .$breakName . '"';
         echo ' style="width:98%; overflow-x:auto;  overflow-y:hidden;"';
         echo '>';

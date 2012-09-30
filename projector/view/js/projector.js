@@ -614,6 +614,7 @@ function checkDestination(destination){
       noDisconnect=true;
       window.location="main.php?lostConnection=true";
     } else {
+      hideWait();
       showAlert(i18n("errorConnection"));
     }
   }
@@ -1851,6 +1852,8 @@ function moveTask(source,destination) {
 }
 
 function saveCollapsed(scope){
+  if (waitingForReply==true) return;
+  if (! dijit.byId(scope)) return;
   dojo.xhrPost({
 	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
 	handleAs: "text",
@@ -1859,6 +1862,8 @@ function saveCollapsed(scope){
 }
 
 function saveExpanded(scope){
+  if (waitingForReply==true) return;	
+  if (! dijit.byId(scope)) return;
   dojo.xhrPost({
 	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
 	handleAs: "text",
@@ -1867,6 +1872,7 @@ function saveExpanded(scope){
 }
 
 function togglePane(pane) {
+  if (waitingForReply==true) return;
   titlepane=dijit.byId(pane);
   if (titlepane) {
 	  if (titlepane.get('open')) {
@@ -1916,7 +1922,9 @@ function ibanConvertLetters(text) {
 }
 
 function trim (myString) {
-  return myString.replace(/^\s+/g,'').replace(/\s+$/g,'');
+  if (! myString) {return myString};
+  myStringAsTring=myString+"";
+  return myStringAsTring.replace(/^\s+/g,'').replace(/\s+$/g,'');
 } 
 
 function moveMenuBar(way) {
