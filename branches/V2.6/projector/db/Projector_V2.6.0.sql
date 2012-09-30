@@ -111,3 +111,23 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'cronImportMailList', '');
 
 ALTER TABLE `${prefix}ticket` ADD COLUMN `idProduct` int(12) unsigned default null;
+
+CREATE TABLE `${prefix}importlog` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) default NULL,
+  `mode` varchar(10) default 'manual',
+  `importDateTime` datetime default NULL,
+  `importFile` varchar(1000),
+  `importClass` varchar(100),
+  `importStatus` varchar(10),
+  `importTodo` int(6),
+  `importDone` int(6),
+  `importDoneCreated` int(6),
+  `importDoneModified` int(6),
+  `importDoneUnchanged` int(6),
+  `importRejected` int(6),
+  `importRejectedInvalid` int(6),
+  `importRejectedError` int(6),
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

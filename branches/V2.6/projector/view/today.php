@@ -308,7 +308,8 @@
     $cptDisplayId=0;
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
     echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
-    echo ' onclick="togglePane(\'' . $divName . '\');"';
+    echo ' onHide="saveCollapsed(\'' . $divName . '\');"';
+    echo ' onShow="saveExpanded(\'' . $divName . '\');"';
     echo ' title="' . ucfirst(i18n($title)) . '"';
     echo '>';
     echo '<table align="center" style="width:95%">';
@@ -386,14 +387,18 @@
     <?php $titlePane="Today_message"; ?>  
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-      id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');" 
+      id="<?php echo $titlePane;?>" 
+      onHide="saveCollapsed('<?php echo $titlePane;?>');"
+      onShow="saveExpanded('<?php echo $titlePane;?>');"
       title="<?php echo i18n('menuMessage');?>">  
 <?php showMessages();?>
     </div><br/>
     <?php $titlePane="Today_project"; ?> 
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-      id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+      id="<?php echo $titlePane;?>" 
+      onHide="saveCollapsed('<?php echo $titlePane;?>');"
+      onShow="saveExpanded('<?php echo $titlePane;?>');"
       title="<?php echo i18n('menuProject');?>">
     <?php showProjects();?>
     </div><br/>

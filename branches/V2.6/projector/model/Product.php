@@ -150,6 +150,78 @@ class Product extends SqlElement {
     return $result;
   }
   
+  public function getSubProducts($limitToActiveProducts=false) {
+  	// TODO : not tested !!!
+    if ($this->id==null or $this->id=='') {
+      return array();
+    }
+    $crit=array();
+  	$crit['idProduct']=$this->id;
+    if ($limitToActiveProducts) {$crit['idle']='0';}
+    $sorted=SqlList::getListWithCrit('Product',$crit,'name');
+  	$subProducts=array();
+    foreach($sorted as $prodId=>$prodName) {
+      $subProducts[$prodId]=new Product($prodId);
+    }
+    return $subProducts;
+  }
+  public function getSubProductsList($limitToActiveProducts=false) {
+    if ($this->id==null or $this->id=='') {
+      return array();
+    }
+    $crit=array();
+    $crit['idProduct']=$this->id;
+    if ($limitToActiveProducts) {$crit['idle']='0';}
+    $sorted=SqlList::getListWithCrit('Product',$crit,'name');
+    return $sorted;
+  }
+  
+  /** ==========================================================================
+   * Recusively retrieves all the hierarchic sub-products of the current product
+   * @return an array containing id, name, subproducts (recursive array)
+   */
+  public function getRecursiveSubProducts($limitToActiveProducts=false) {
+  	// TODO : not tested !!!
+    $crit=array('idProduct'=>$this->id);
+    if ($limitToActiveProducts) {
+      $crit['idle']='0';
+    }
+    $obj=new Product();
+    $subProducts=$obj->getSqlElementsFromCriteria($crit, false) ;
+    $subProductList=null;
+    foreach ($subProducts as $subProd) {
+      $recursiveList=null;
+      $recursiveList=$subProd->getRecursiveSubProducts($limitToActiveProducts);
+      $arrayProd=array('id'=>$subProd->id, 'name'=>$subProd->name, 'subItems'=>$recursiveList);
+      $subProductList[]=$arrayProd;
+    }
+    return $subProductList;
+  }
+  
+  /** ==========================================================================
+   * Recusively retrieves all the sub-Products of the current Product
+   * and presents it as a flat array list of id=>name
+   * @return an array containing the list of subProducts as id=>name 
+   */
+  public function getRecursiveSubProductsFlatList($limitToActiveProducts=false, $includeSelf=false) {
+  	$tab=$this->getSubProductsList($limitToActiveProducts);
+    $list=array();
+    if ($includeSelf) {
+      $list[$this->id]=$this->name;
+    }
+    if ($tab) {
+      foreach($tab as $id=>$name) {
+        $list[$id]=$name;
+        $subobj=new Product();
+        $subobj->id=$id;
+        $sublist=$subobj->getRecursiveSubProductsFlatList($limitToActiveProducts);
+        if ($sublist) {
+          $list=array_merge_preserve_keys($list,$sublist);
+        }
+      }
+    }
+    return $list;
+  }
 
 }
 ?>

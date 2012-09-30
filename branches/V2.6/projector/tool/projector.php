@@ -344,7 +344,11 @@ function disableCatchErrors() {
 function throwError($message, $code=null) {
 	global $globalCatchErrors, $globalCronMode;
 	if (isset($globalCronMode)) {
-		debugLog("Cron error : " . $message);
+		traceLog("Cron error : " . $message);
+		if ($globalCronMode==false) {
+			traceLog("CRON IS STOPPED TO AVOID MULTIPLE-TREATMENT OF SAME FILES");
+			exit();
+		}
 	} else {
 	  echo '<span class="messageERROR" >ERROR : ' . $message . '</span>';
 	  echo '<input type="hidden" id="lastSaveId" value="" />';
@@ -1048,6 +1052,7 @@ function addDaysToDate($date, $days) {
 	//if (strlen($date)>10) $date=substr($date,0,10);
 	if (! trim($date)) return null;
   $tDate = explode("-", $date);
+  if (count($tDate)<3) return null;
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]));
 }
 /** ============================================================================

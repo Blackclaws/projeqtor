@@ -51,42 +51,33 @@ class Sql {
     self::$lastQueryErrorCode=NULL;
     enableCatchErrors();
     $result = new PDOStatement();
+    $checkResult="OK";
     try { 
       $result = $cnx->query($sqlRequest);  
       //traceLog($sqlRequest);
       if (! $result) {
         self::$lastQueryErrorMessage=i18n('sqlError'). ' : ' .$cnx->errorCode() . "<br/><br/>" . $sqlRequest;
         self::$lastQueryErrorCode=$cnx->errorInfo(); 
-        errorLog('Error-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);       
+        errorLog('Error-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
+        $checkResult="ERROR";       
       }
     } catch (PDOException $e) {
+      $checkResult="EXCEPTION";
       self::$lastQueryErrorMessage=$e->getMessage();
       self::$lastQueryErrorCode=$e->getCode();
       errorLog('Exception-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
-      errorLog('*******************************');
+      errorLog('   For query : '.$sqlRequest);
+      errorLog('   Strack trace :');
       $traces = debug_backtrace();
-      if (isset($traces[0])){
-      	errorLog('Fonction appelante 0: '.$traces[0]['function'].' en ligne '.$traces[0]['line'].' class '.$traces[0]['class']);
+      foreach ($traces as $idTrace=>$arrayTrace) {
+      	errorLog("   #$idTrace "
+      	  . ((isset($arrayTrace['class']))?$arrayTrace['class'].'->':'')
+      	  . ((isset($arrayTrace['function']))?$arrayTrace['function'].' called at ':'')
+      	  . ((isset($arrayTrace['file']))?'['.$arrayTrace['file']:'')
+      	  . ((isset($arrayTrace['line']))?':'.$arrayTrace['line']:'')
+      	  . ((isset($arrayTrace['file']))?']':'')
+      	  );
       }
-      if (isset($traces[1])){
-      	errorLog('Fonction appelante 1 : '.$traces[1]['function'].' en ligne '.$traces[1]['line'].' class '.$traces[1]['class']);
-      }
-      if (isset($traces[2])){
-      	errorLog('Fonction appelante 2 : '.$traces[2]['function'].' en ligne '.$traces[2]['line'].' class '.$traces[2]['class']);
-      }
-      if (isset($traces[3])){
-      	errorLog('Fonction appelante 3 : '.$traces[3]['function'].' en ligne '.$traces[3]['line'].' class '.$traces[3]['class']);
-      }
-      if (isset($traces[4])){
-      	errorLog('Fonction appelante 4 : '.$traces[4]['function'].' en ligne '.$traces[4]['line'].' class '.$traces[4]['class']);
-      }
-      if (isset($traces[5])){
-      	errorLog('Fonction appelante 5 : '.$traces[5]['function'].' en ligne '.$traces[5]['line'].' class '.$traces[5]['class']);
-      }
-      if (isset($traces[6])){
-      	errorLog('Fonction appelante 6 : '.$traces[6]['function'].' en ligne '.$traces[6]['line'].' class '.$traces[6]['class']);
-      }
-      errorLog('Query : '.$sqlRequest);
     }
     disableCatchErrors();
     // store informations about last query
@@ -96,6 +87,9 @@ class Sql {
     self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? $result->rowCount() : $result->rowCount();
     self::$lastQueryNewid = ($cnx->lastInsertId()) ? $cnx->lastInsertId() : NULL ;
     // return result
+    if ($checkResult!='OK') {
+    	return false;
+    }
     return $result;
   }
 

@@ -247,7 +247,7 @@ class Parameter extends SqlElement {
       case 'cronImportLogDestination';
         $list=array('file'=>i18n('cronLogAsFile'),
                     'mail'=>i18n('cronLogAsMail'),
-                    'both'=>i18n('cronLogAsBoth'));
+                    'mail+log'=>i18n('cronLogAsMailWithFile'));
         break;  
     } 
     return $list;

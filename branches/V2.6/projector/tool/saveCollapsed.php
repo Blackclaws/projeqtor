@@ -10,7 +10,7 @@ $value=$_REQUEST['value'];
 if ($value=='true') {
   Collapsed::collapse($scope);
 } else {
-  Collapsed::expand($scope);
+	Collapsed::expand($scope);
 }
 Sql::commitTransaction();
 ?>

@@ -33,8 +33,8 @@ function showWait() {
  */
 function hideWait() {
   waitingForReply=false;
-	hideField("wait");
-	hideField("waitLogin");
+  hideField("wait");
+  hideField("waitLogin");
   if (top.dijit.byId("dialogInfo")) {
     top.dijit.byId("dialogInfo").hide();
   }
@@ -2091,7 +2091,7 @@ function filterSelectAtribute(value) {
 	  	  	query : {id : "*"},
 	  	  	count : 1,
 	  	  	onItem : function(item) { 
-	  	  		top.dijit.byId('idFilterOperator').set("value",top.dijit.byId('idFilterOperator').store.getValue(item,"id",""));
+	  	  		top.dijit.byId('idFilterOperator').set("value",item.id);
 	  	  	},  
             onError : function(err) { 
               console.info(err.message) ;  
@@ -2108,7 +2108,7 @@ function filterSelectAtribute(value) {
 	  			dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		} else if (dataType=="list") {
 	  			filterType="list";
-	  			var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?listType=list&dataType=' + value});
+	  			var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?required=true&listType=list&dataType=' + value});
 	  			var mySelect=top.dojo.byId("filterValueList");
 	  			mySelect.options.length=0;
 	  			var nbVal=0;
@@ -2122,7 +2122,7 @@ function filterSelectAtribute(value) {
 	                console.info(err.message) ;  
 	              }
 		  	    });
-	  			mySelect.size=(nbVal>0)?10:nbVal;
+	  			mySelect.size=(nbVal>10)?10:nbVal;
 	  			dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
 	  			dojo.style(top.dijit.byId('filterValueList').domNode, {display:'block'});
 	  			top.dijit.byId('filterValueList').reset();
@@ -2153,10 +2153,10 @@ function filterSelectAtribute(value) {
 	  		//hideWait();
 	    }
     }) ;
-	    top.dijit.byId('filterValue').reset();
-	    top.dijit.byId('filterValueList').reset();
-	    top.dijit.byId('filterValueCheckbox').reset();
-	    top.dijit.byId('filterValueDate').reset();
+    top.dijit.byId('filterValue').reset();
+    top.dijit.byId('filterValueList').reset();
+    top.dijit.byId('filterValueCheckbox').reset();
+    top.dijit.byId('filterValueDate').reset();
 	} else {
 		dojo.style(top.dijit.byId('idFilterOperator').domNode, {visibility:'hidden'});
 		dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
@@ -2222,7 +2222,11 @@ function addfilterClause(silent) {
 		if (!silent) showAlert(i18n('attributeNotSelected')); 
 		return;
 	}
-    if (filterType=="list" && top.dijit.byId('filterValueList').get('value')=='') {
+	if (trim(top.dijit.byId('idFilterOperator').get('value'))=='') { 
+		if (!silent) showAlert(i18n('operatorNotSelected')); 
+		return;
+	}
+    if (filterType=="list" && trim(top.dijit.byId('filterValueList').get('value'))=='') {
         if (!silent) showAlert(i18n('valueNotSelected'));
         return;
     }

@@ -39,7 +39,9 @@
             <?php $titlePane="Admin_cronTasks"; ?> 
             <div dojoType="dijit.TitlePane" 
              open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-             id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+             id="<?php echo $titlePane;?>" 
+             onHide="saveCollapsed('<?php echo $titlePane;?>');"
+             onShow="saveExpanded('<?php echo $titlePane;?>');"       
              title="<?php echo i18n('cronTasks');?>">
             <table style="width:100%;">            
               <tr>
@@ -86,7 +88,9 @@
             <?php $titlePane="Admin_sendAlert"; ?> 
             <div dojoType="dijit.TitlePane"
              open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-             id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+             id="<?php echo $titlePane;?>" 
+             onHide="saveCollapsed('<?php echo $titlePane;?>');"
+             onShow="saveExpanded('<?php echo $titlePane;?>');"
              title="<?php echo i18n('sendAlert');?>">
             <table style="width:100%;">
               <tr>
@@ -166,7 +170,9 @@
             <?php $titlePane="Admin_dbMaintenance"; ?> 
             <div dojoType="dijit.TitlePane"
              open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-             id="<?php echo $titlePane;?>" onclick="togglePane('<?php echo $titlePane;?>');"
+             id="<?php echo $titlePane;?>" 
+             onHide="saveCollapsed('<?php echo $titlePane;?>');"
+             onShow="saveExpanded('<?php echo $titlePane;?>');"
              title="<?php echo i18n('dbMaintenance');?>">
             <table style="width:100%;">
               <tr>

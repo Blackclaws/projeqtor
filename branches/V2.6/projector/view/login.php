@@ -54,7 +54,7 @@
 </head>
 
 <body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
-  <div id="waitLogin" >
+  <div id="waitLogin" style="display:none" >
   </div> 
   <table align="center" width="100%" height="100%" class="loginBackground">
     <tr height="100%">

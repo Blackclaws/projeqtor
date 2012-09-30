@@ -11,8 +11,17 @@ class Importable extends SqlElement {
   public $_isNameTranslatable = true;
   
   public static $importResult;
-  public static $importCptOK;
-  public static $importCptError;
+  public static $cptTotal;
+  public static $cptDone;
+  public static $cptUnchanged;
+  public static $cptCreated;
+  public static $cptModified;
+  public static $cptRejected;
+  public static $cptInvalid;
+  public static $cptError;
+  //
+  public static $cptOK;
+  public static $cptWarning;
   
    /** ==========================================================================
    * Constructor
@@ -37,10 +46,19 @@ class Importable extends SqlElement {
 // ============================================================================**********
   
   public static function import($fileName, $class) {
+scriptLog("import($fileName, $class)");
   	set_time_limit(3600);
   	$htmlResult="";
-  	$cptOK=0;
-  	$cptError=0;
+    self::$cptTotal=0;
+    self::$cptDone=0;
+    self::$cptUnchanged=0;
+    self::$cptCreated=0;
+    self::$cptModified=0;
+    self::$cptRejected=0;
+    self::$cptInvalid=0;
+    self::$cptError=0;
+    self::$cptOK=0;
+    self::$cptWarning=0;
 		$lines=file($fileName);
 		$title=null;
 		$idxId=-1;
@@ -61,7 +79,7 @@ class Importable extends SqlElement {
 		    $fields=explode($csvSep,$line);     
 		    $id=($idxId>=0)?$fields[$idxId]:null;
 		    $obj=new $class($id);
-		//$htmlResult $id . "/" . $obj->id . "<br/>";
+		    self::$cptTotal+=1;
 		    foreach ($fields as $idx=>$field) { 
 		      if ($field=='') {
 		        $htmlResult.= '<td class="messageData" style="color:#000000;">' . htmlEncode($field) . '</td>';
@@ -112,17 +130,30 @@ class Importable extends SqlElement {
 		    }
 		    $htmlResult.= '<TD class="messageData" width="20%">';
 		    //$obj->id=null;
-		    $result=$obj->save();
+		    $result=$obj->save();	    
 		    if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 		      $htmlResult.= '<span class="messageERROR" >' . $result . '</span>';
-		      $cptError+=1;
+		      self::$cptError+=1;
 		    } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 		      $htmlResult.= '<span class="messageOK" >' . $result . '</span>';
-		      $cptOK+=1;
+		      self::$cptOK+=1;
+		      if (stripos($result,'id="lastOperation" value="insert"')>0) {
+            self::$cptCreated+=1;
+		      } else  if (stripos($result,'id="lastOperation" value="update"')>0) {
+            self::$cptModified+=1;
+		      } else {
+            // ???
+		      }
 		    } else { 
-		    	debugLog($result);
 		      $htmlResult.= '<span class="messageWARNING" >' . $result . '</span>';
-		      $cptError+=1;
+		      self::$cptWarning+=1;
+		      if (stripos($result,'id="lastOperationStatus" value="INVALID"')>0) {
+            self::$cptInvalid+=1;
+          } else if (stripos($result,'id="lastOperationStatus" value="NO_CHANGE"')>0) {
+            self::$cptUnchanged+=1;
+          } else {
+            // ???       	
+          }
 		    }
 		    $htmlResult.= '</TD></TR>';
 		  } else {
@@ -176,13 +207,34 @@ class Importable extends SqlElement {
 		Sql::commitTransaction();
 		$htmlResult.= "</TABLE>";
 		self::$importResult=$htmlResult;
-		self::$importCptOK=$cptOK;
-		self::$importCptError=$cptError;
-		if ($cptError==0) {
-			return "OK";
-		} else {
-			return "Error";
-		}
+		self::$cptDone=self::$cptCreated+self::$cptModified+self::$cptUnchanged;
+		self::$cptRejected=self::$cptInvalid+self::$cptError;
+    if (self::$cptError==0) {
+    	if (self::$cptInvalid==0) {
+        $globalResult="OK";
+    	} else {
+    		$globalResult="INVALID";
+    	}
+    } else {   	
+      $globalResult="ERROR";
+    }
+		$log=new ImportLog();
+		$log->name=basename($fileName);
+	  $log->mode="automatic";
+    $log->importDateTime=date('Y-m-d H:i:s');
+    $log->importFile=$fileName;
+    $log->importClass=$class;
+    $log->importStatus=$globalResult;
+    $log->importTodo=self::$cptTotal;
+    $log->importDone=self::$cptDone;
+    $log->importDoneCreated=self::$cptCreated;
+    $log->importDoneModified=self::$cptModified;
+    $log->importDoneUnchanged=self::$cptUnchanged;
+    $log->importRejected=self::$cptRejected;
+    $log->importRejectedInvalid=self::$cptInvalid;
+    $log->importRejectedError=self::$cptError;
+		$log->save();
+		return $globalResult;
   }
   
   public static function getLogHeader() {
@@ -212,6 +264,7 @@ class Importable extends SqlElement {
     $result="";
     $result.='</body>'.$nl;
     $result.='</html>';
+    return $result;
   }
 }
 ?>
