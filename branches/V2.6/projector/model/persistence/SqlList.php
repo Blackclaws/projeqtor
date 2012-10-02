@@ -132,7 +132,7 @@ class SqlList {
       	      . " where ii.idIndicatorable='" . $val . "' and ii.idIndicator=" . $i->getDatabaseTableName() . ".id)"; 
       } else if ( (strtolower($listType)=='warningdelayunit' or strtolower($listType)=='alertdelayunit') and $col=='idIndicator' ) {
         $ind=new Indicator($val);
-        $query .= " and " . $obj->getDatabaseTableName() . '.type='. $ind->type;
+        $query .= " and " . $obj->getDatabaseTableName() . '.type='. Sql::str($ind->type);
       } else {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
