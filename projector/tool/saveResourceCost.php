@@ -40,7 +40,7 @@ if ($startDate=='') {
   $startDate=null;
 }
 
-Sql::rollbackTransaction();
+Sql::beginTransaction();
 // get the modifications (from request)
 $rc=new ResourceCost($id);
 
