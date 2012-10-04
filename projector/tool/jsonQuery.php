@@ -461,7 +461,7 @@
           $nbFields=0;
           foreach ($line as $id => $val) {
             echo (++$nbFields>1)?',':'';
-            $numericLength=($id=='id')?6:0;
+            $numericLength=($id=='id')?6:($id=='progress')?3:0;
             if ($id=='colorNameRunStatus') {
             	$split=explode('#',$val);
             	foreach ($split as $ix=>$sp) {

@@ -569,7 +569,7 @@ function getTheme() {
  * @param $message the main body of the message
  * @return unknown_type
  */ 
-function sendMail($to, $title, $message, $object=null, $headers=null, $sender=null)  {
+function sendMail($to, $title, $message, $object=null, $headers=null, $sender=null, $boundary=null)  {
   $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
   $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
   $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
@@ -595,10 +595,20 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $mail->idle='0';
   $mail->save();  
   // Send then mail
-  if (!$headers) {
+  if (!$headers) {	
     $eol=(isset($paramMailEol))?$paramMailEol:"\r\n";
   	$headers  = 'MIME-Version: 1.0' . $eol;
-    $headers .= 'Content-type: text/html; charset=utf-8' . $eol;
+  	if ($boundary) {
+  	  $headers .= 'Content-Type: multipart/mixed;boundary='.$boundary.$eol;
+  	  $headers .= $eol;
+  	  $message = 'Your email client does not support MIME type.'.$eol 
+  	           . 'Your may have difficulties to read this mail or have access to linked files.'.$eol
+               . '--'.$boundary.$eol
+               . 'Content-Type: text/html; charset=utf-8'.$eol
+               . $message;
+  	} else {
+      $headers .= 'Content-Type: text/html; charset=utf-8'.$eol;
+  	}
     $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;
     $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . $eol;
     $headers .= 'Content-Transfer-Encoding: 8bit' . $eol;

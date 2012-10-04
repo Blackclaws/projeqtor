@@ -7,7 +7,7 @@ require_once "../tool/projector.php";
 scriptLog('   ->/view/reportsList.php');
 ?>
 <form id='reportForm' name='reportForm' onSubmit="return false;">
-<table>
+<table style="width:100%;">
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
