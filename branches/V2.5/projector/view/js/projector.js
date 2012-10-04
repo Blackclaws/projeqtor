@@ -1363,7 +1363,9 @@ function drawGantt() {
   }
   jsonData=dojo.byId('planningJsonData');
   if ( jsonData.innerHTML.indexOf('{"identifier"')<0) {
-      //showAlert(jsonData.innerHTML);
+      if (jsonData.innerHTML.length>10) {
+  	    showAlert(jsonData.innerHTML);
+      }
       hideWait();
       return;
   }
@@ -1372,7 +1374,8 @@ function drawGantt() {
   if( g && jsonData) {
     var store=eval('('+jsonData.innerHTML+')');
     var items=store.items;
-    var arrayKeys=new Array();
+    //var arrayKeys=new Array();
+    var keys="";
     for (var i=0; i< items.length; i++) {
       var item=items[i];
       //var topId=(i==0)?'':item.topId;
@@ -1457,10 +1460,18 @@ function drawGantt() {
       // console.log(item.id + " - " + pName + "=>" + pDepend);
       // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
     // pGroup, pParent, pOpen, pDepend, Caption)
-      if (arrayKeys.indexOf(topId)==-1) {
+      /*if (dojo.indexOf(arrayKeys,topId)==-1) { // Issue with FireFox : array.indexOf is 1s for 2 lines array
     	  topId='';
-      }
-      arrayKeys[item.id]=item.id;
+      }*/      
+      //arrayKeys[item.id]=item.id;
+      topKey="#"+topId+"#";
+      curKey="#"+item.id+"#";
+//console.log(newKey+" "+keys.indexOf(newKey)+" "+keys);
+      if (keys.indexOf(topKey)==-1) {
+	     topId='';
+      } 
+      keys+="#"+curKey+"#";
+
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, 
     		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
     		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
