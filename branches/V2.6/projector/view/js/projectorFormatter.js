@@ -114,9 +114,9 @@ function translateFormatter(value, prefix) {
  * @return the formatted value as an image (html code)
  */
 function percentFormatter(value) {
-	if (value) { 
-	  return value + ' %';
-	} else { 
+  if (value) { 
+   return parseInt(value) + ' %';
+  } else { 
   	return ''; 
   }
 }

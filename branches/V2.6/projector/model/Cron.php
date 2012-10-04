@@ -233,14 +233,21 @@ scriptLog('Cron::checkImport()');
   	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$importSummary="";
   	$importFullLog="";
+  	$boundary = null;
   	if (is_dir($importDir)) {
       if ($dirHandler = opendir($importDir)) {
         while (($file = readdir($dirHandler)) !== false) {
         	if ($file!="." and $file!=".." and filetype($importDir . $pathSeparator . $file)=="file") {
+        		$globalCronMode=true; // Cron should not be stopped on error or exception
             $importFile=$importDir . $pathSeparator . $file;      
             $split=explode('_',$file);
             $class=$split[0];
-            $result=Importable::import($importFile, $class);
+            try {
+              $result=Importable::import($importFile, $class);
+            } catch (Exception $e) {
+            	$msg="CRON : Exception on import of file '$importFile'";
+            	$result=="ERROR";
+            }
             $globalCronMode=false; // VOLOUNTARILY STOP THE CRON. Actions are requested !
             try {
 	            if ($result=="OK") {	            	
@@ -286,14 +293,31 @@ scriptLog('Cron::checkImport()');
             if (file_exists($logFile)) {
             	kill($logFile);
             }
+            // Write log file
             $fileHandler = fopen($logFile, 'w');
             fwrite($fileHandler, Importable::getLogHeader());
             fwrite($fileHandler, Importable::$importResult);
             fwrite($fileHandler, Importable::getLogFooter());
             fclose($fileHandler);
-            $importFullLog.="<br/><br/>";
-            $importFullLog.="$file<br/>";
-            $importFullLog.=Importable::$importResult;
+            // Prepare joined file on email
+        	  if (Parameter::getGlobalParameter('cronImportLogDestination')=='mail+log') {
+        	  	if (! $boundary) {
+        	  	  $boundary = md5(uniqid(microtime(), TRUE));
+        	  	}
+        	  	$eol=Parameter::getGlobalParameter('paramMailEol');
+						  $file_type = 'text/html';
+              $content = Importable::getLogHeader();
+						  $content .= Importable::$importResult;
+						  $content .= Importable::getLogFooter();
+						  $content = chunk_split(base64_encode($content));       
+              $importFullLog .= $eol.'--'.$boundary.$eol;
+              $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
+              $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
+              $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
+              $importFullLog .= 'Content-disposition: attachment; filename="'.basename($logFile).'"'.$eol; 
+              $importFullLog .= $content.$eol;
+              $importFullLog .= '--'.$boundary.$eol;
+            }
             $cpt+=1;
         	}
         }
@@ -320,7 +344,7 @@ scriptLog('Cron::checkImport()');
 		      	         Importable::getLogFooter();
 		      }
 	        $title="[$baseName] Import summary ". date('Y-m-d H:i:s');
-	        $resultMail=sendMail($to, $title, $message);	        
+	        $resultMail=sendMail($to, $title, $message, null, null, null, $boundary);	        
 	    	}
 	    }
     }

@@ -63,6 +63,12 @@ scriptLog("import($fileName, $class)");
 		$title=null;
 		$idxId=-1;
 		$csvSep=Parameter::getGlobalParameter('csvSeparator');
+	  if (! class_exists($class)) {
+	  	self::$importResult="Cron error : class '$class' is unknown";
+	  	self::$cptError=1; 
+	  	self::$cptRejected=1;
+	  	return "ERROR";
+	  }
 		$obj=new $class();
 		$captionArray=array();
 		foreach ($obj as $fld=>$val) {
@@ -263,7 +269,7 @@ scriptLog("import($fileName, $class)");
     $result.='.messageWARNING{color:black;}';
     $result.='</style>'.$nl;
     $result.='</head>'.$nl;
-    $result.='<body class="white" onLoad="top.hideWait();" style="overflow: auto; ">'.$nl;
+    $result.='<body class="white" onLoad="top.hideWait();" style="overflow: auto; ont-family:Verdana,Arial,Tahoma,sans-serif;font-size:8pt;">'.$nl;
     return $result;
   }
   public static function getLogFooter() {
