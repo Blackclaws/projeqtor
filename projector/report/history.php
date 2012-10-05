@@ -76,8 +76,8 @@ foreach($historyList as $hist) {
     $curObj=new $hist->refType();
     if ($curObj) {
       $colCaption=$curObj->getColCaption($hist->colName);
-      $dataType=$obj->getDataType($colName);
-      $dataLength=$obj->getDataLength($colName);
+      $dataType=$curObj->getDataType($colName);
+      $dataLength=$curObj->getDataLength($colName);
       if (strpos($curObj->getFieldAttributes($colName), 'hidden')!==false) {
         $hide=true;
       }
