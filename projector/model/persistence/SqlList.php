@@ -21,6 +21,10 @@ class SqlList {
    * *@param $displayCol the name of the value column (defaut is name)
    * @return an array containing the list of references
    */
+  public static function cleanAllLists() {
+  	self::$list=array();
+  }
+  
   public static function getList($listType, $displayCol='name', $selectedValue=null, $showIdle=false) {
     $listName=$listType . "_" . $displayCol;
     if ($showIdle) { $listName .= '_all'; }
@@ -194,8 +198,12 @@ class SqlList {
     if (array_key_exists($id,$list)) {
       $name=$list[$id];
       $obj=new $listType();
-      if ($translate and $obj->isFieldTranslatable('_isNameTranslatable')) {
-        $name=i18n(strtolower($listType) . ucfirst($name));
+      if ($translate and $obj->isFieldTranslatable('name')) {
+      	$trans=i18n(strtolower($listType) . ucfirst($name));
+      	if ($trans=='['.strtolower($listType) . ucfirst($name).']') {
+      		$trans=i18n($name);
+      	}
+        $name=$trans;
       }
     }
     return $name;
