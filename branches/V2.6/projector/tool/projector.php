@@ -716,6 +716,7 @@ function logTracing($message, $level=9) {
  * @param $message message to store on log
  * @return void
  */
+// debugLog to keep
 function debugLog($message) {
   logTracing($message,3);
 }
@@ -1564,6 +1565,7 @@ function traceExecutionTime($step='', $reset=false) {
 		$startMicroTime=microtime(true);
 		return;
 	}
+	// debugLog to keep
   debugLog(round((microtime(true) - $startMicroTime)*1000)/1000 . (($step)?" ms for step " . $step:'') );
   $startMicroTime=microtime(true);
 }

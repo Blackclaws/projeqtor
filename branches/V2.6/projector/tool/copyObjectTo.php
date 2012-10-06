@@ -48,13 +48,13 @@ $newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin);
 // save the new object to session (modified status)
 $result=$newObj->_copyResult;
 unset($newObj->_copyResult);
-$_SESSION['currentObject']=$newObj;
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	$_SESSION['currentObject']=$newObj;
 	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 

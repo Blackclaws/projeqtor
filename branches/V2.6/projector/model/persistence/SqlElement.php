@@ -238,12 +238,17 @@ abstract class SqlElement {
   
   /** =========================================================================
    * Give public visibility to the saveSqlElement action
+   * @param force to avoid controls and force saving even if controls are false
    * @return message including definition of html hiddenfields to be used 
    */
   public function save() {
     return $this->saveSqlElement();
   }
 
+  public function saveForced($withoutDependencies=false) {
+    return $this->saveSqlElement(true,$withoutDependencies);
+  }
+  
   /** =========================================================================
    * Give public visibility to the purgeSqlElement action
    * @return message including definition of html hiddenfields to be used 
@@ -283,12 +288,16 @@ abstract class SqlElement {
    * Save an object to the database
    * @return void
    */
-  private function saveSqlElement() {
+  private function saveSqlElement($force=false,$withoutDependencies=false) {
 //traceLog("saveSqlElement(" . get_class($this) . "#$this->id)");
   	// #305
     $this->recalculateCheckboxes();    
     // select operation to be executed
-    $control=$this->control();
+    if ($force) {
+    	$control="OK";
+    } else {
+      $control=$this->control();
+    }
     if ($control=="OK") {
       if (property_exists($this, 'idStatus') or property_exists($this,'reference') or property_exists($this,'idResource')) {
         $class=get_class($this);
@@ -308,7 +317,7 @@ abstract class SqlElement {
           }
         }
         $newItem=false;
-        $returnValue=$this->updateSqlElement();
+        $returnValue=$this->updateSqlElement($force,$withoutDependencies);
       } else {
         if (property_exists($this, 'idStatus')) {
           $statusChanged=true;
@@ -458,7 +467,7 @@ abstract class SqlElement {
    * save an object to the database : existing object
    * @return void
    */
-  private function updateSqlElement() {
+  private function updateSqlElement($force=false,$withoutDependencies=false) {
 //traceLog('updateSqlElement (for ' . get_class($this) . ' #' . $this->id . ')');
     $returnValue = i18n('messageNoChange') . ' ' . i18n(get_class($this)) . ' #' . $this->id;
     $returnStatus = 'NO_CHANGE';
@@ -469,7 +478,7 @@ abstract class SqlElement {
     $oldObject = null;
     if (array_key_exists('currentObject',$_SESSION)) {
       $testObject = $_SESSION['currentObject'];
-      if ($testObject) {
+      if ($testObject and ! $force) {
         if (get_class($testObject)==$objectClass) {
           $oldObject=$testObject;
         }
@@ -567,7 +576,7 @@ abstract class SqlElement {
     }
     
     // save depedant elements (properties that are objects)
-    if ($returnStatus!="ERROR") { 
+    if ($returnStatus!="ERROR" and ! $withoutDependencies) { 
       $returnStatus=$this->saveDependantObjects($depedantObjects,$returnStatus);
       if ($returnStatus=="ERROR") {
         $returnValue=Sql::$lastQueryErrorMessage;

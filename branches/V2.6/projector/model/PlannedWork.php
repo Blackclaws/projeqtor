@@ -606,11 +606,14 @@ class PlannedWork extends GeneralWork {
     }
   }
   private static function traceArray($list) {
+  	// debugLog to keep
   	debugLog('*****traceArray()*****');
   	foreach($list as $id=>$pe) {
+  		// debugLog to keep
   		debugLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority . ' - '.$pe->_sortCriteria);
   		if (count($pe->_predecessorListWithParent)>0) {
   			foreach($pe->_predecessorListWithParent as $idPrec=>$prec) {
+  				// debugLog to keep
   			  debugLog('   ' . $idPrec.'=>'.$prec);
   			}
   		}

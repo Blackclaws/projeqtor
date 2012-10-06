@@ -3218,7 +3218,6 @@ function copyObjectToSubmit(objectClass) {
   unselectAllRows('objectGrid');
   loadContent("../tool/copyObjectTo.php", "resultDiv", 'copyForm', true, 'copyTo');
   dijit.byId('dialogCopy').hide();
-  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
 }
 
 function copyProjectToSubmit(objectClass) {
