@@ -735,7 +735,8 @@ function finalizeMessageDisplay(destination, validationType) {
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo') {
-          var lastSaveId=dojo.byId('lastSaveId');
+    	  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
+    	  var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');
           if (lastSaveClass && lastSaveId) {
         	 waitingForReply=false;

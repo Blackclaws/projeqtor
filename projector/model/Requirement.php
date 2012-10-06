@@ -17,6 +17,7 @@ class Requirement extends SqlElement {
   public $creationDateTime;
   public $idUser;
   public $idContact;
+  public $Origin;
   public $idUrgency;
   public $description;
   public $_col_2_2_treatment;

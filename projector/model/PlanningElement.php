@@ -195,7 +195,7 @@ class PlanningElement extends SqlElement {
    * @return the result of parent::save() function
    */
   public function save() {
-    // Get old element (stored in database) : must be fetched before saving
+  	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
    
     // If done and no work, set up end date
@@ -318,7 +318,7 @@ class PlanningElement extends SqlElement {
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
         $refObj->sortOrder=$this->wbsSortable;
-        $refObj->save();
+        $subRes=$refObj->saveForced(true);
       }
     }
     return $result;

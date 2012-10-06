@@ -131,3 +131,10 @@ CREATE TABLE `${prefix}importlog` (
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
+(12, 'Requirement', 0, 35);
+
+UPDATE `${prefix}copyable` SET sortOrder=32 WHERE id=7;
+
+UPDATE ``${prefix}project` set sortOrder=(select wbsSortable from `${prefix}planningelement` where refType='Project' and refId=`${prefix}project`.id);
