@@ -47,6 +47,7 @@ class Importable extends SqlElement {
   
   public static function import($fileName, $class) {
 scriptLog("import($fileName, $class)");
+    SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never Stated List must be freshened
   	set_time_limit(3600);
   	$htmlResult="";
     self::$cptTotal=0;

@@ -229,6 +229,8 @@ scriptLog('Cron::checkImport()');
     $globalCronMode=true;   	
     $globalCatchErrors=true;
   	$importDir=Parameter::getGlobalParameter('cronImportDirectory');
+  	$eol=Parameter::getGlobalParameter('paramMailEol');
+    $eol=(isset($eol) and $eol)?$eol:"\r\n";
   	$cpt=0;
   	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$importSummary="";
@@ -242,11 +244,12 @@ scriptLog('Cron::checkImport()');
             $importFile=$importDir . $pathSeparator . $file;      
             $split=explode('_',$file);
             $class=$split[0];
+            $result="";
             try {
               $result=Importable::import($importFile, $class);
             } catch (Exception $e) {
             	$msg="CRON : Exception on import of file '$importFile'";
-            	$result=="ERROR";
+            	$result="ERROR";
             }
             $globalCronMode=false; // VOLOUNTARILY STOP THE CRON. Actions are requested !
             try {
@@ -304,13 +307,12 @@ scriptLog('Cron::checkImport()');
         	  	if (! $boundary) {
         	  	  $boundary = md5(uniqid(microtime(), TRUE));
         	  	}
-        	  	$eol=Parameter::getGlobalParameter('paramMailEol');
 						  $file_type = 'text/html';
               $content = Importable::getLogHeader();
 						  $content .= Importable::$importResult;
 						  $content .= Importable::getLogFooter();
 						  $content = chunk_split(base64_encode($content));       
-              $importFullLog .= $eol.'--'.$boundary.$eol;
+              $importFullLog .= '--'.$boundary.$eol;
               $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
               $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
               $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
@@ -340,8 +342,9 @@ scriptLog('Cron::checkImport()');
 		      if (stripos($logDest,'log')!==false) {
 		      	$message=Importable::getLogHeader()
 		      	         .$message
-		      	         .$importFullLog;
+		      	         .$eol.$importFullLog;
 		      	         Importable::getLogFooter();
+		      	//$message.=$eol.$importFullLog;
 		      }
 	        $title="[$baseName] Import summary ". date('Y-m-d H:i:s');
 	        $resultMail=sendMail($to, $title, $message, null, null, null, $boundary);	        

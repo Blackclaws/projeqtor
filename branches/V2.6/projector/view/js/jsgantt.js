@@ -401,6 +401,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     }
   };
   this.Draw = function(){
+	top.showWait();
     var vMaxDate = new Date();
     var vMinDate = new Date();
     var vDefaultMinDate = new Date();
@@ -1017,6 +1018,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
       dojo.byId('ganttScale').style.left=(dojo.byId('leftGanttChartDIV').scrollLeft)+'px';
     }
+    top.hideWait();
   }; // this.draw
    
 }; // GanttChart
@@ -1253,6 +1255,7 @@ JSGantt.findObj = function (theObj, theDoc) {
  */
 JSGantt.changeFormat = function(pFormat,ganttObj) {
   if(ganttObj) {
+	top.showWait();  
     if (ganttObj.getFormat()=='month' && ganttObj.getEndDateView() ) {
       ganttObj.setFormat(pFormat);
 	  refreshJsonPlanning();
@@ -1262,9 +1265,11 @@ JSGantt.changeFormat = function(pFormat,ganttObj) {
       ganttObj.setFormat(pFormat);
       ganttObj.DrawDependencies();
 	}
+    top.hideWait();
   } else {
     alert('Chart undefined');
   };
+  
 };
 
 
@@ -1832,7 +1837,7 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer;">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
     	+' name="radFormat' + vPos + '"' 
-        +' onclick=JSGantt.changeFormat("day",'+vGanttVar+'); value="day">' 
+        +' onChange=JSGantt.changeFormat("day",'+vGanttVar+'); value="day">' 
         + JSGantt.i18n('day')
         + '</label>';
     }
@@ -1849,7 +1854,7 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
         +' name="radFormat' + vPos + '"' 
-        +' onclick=JSGantt.changeFormat("week",'+vGanttVar+') value="week">'
+        +' onChange=JSGantt.changeFormat("week",'+vGanttVar+') value="week">'
         + JSGantt.i18n('week') 
         +'</label>';
     }
@@ -1866,7 +1871,7 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
     	+' name="radFormat' + vPos + '"' 
-        + ' onclick=JSGantt.changeFormat("month",'+vGanttVar+') value="month">' 
+        + ' onChange=JSGantt.changeFormat("month",'+vGanttVar+') value="month">' 
         +JSGantt.i18n('month')
         +'</label>';
     }

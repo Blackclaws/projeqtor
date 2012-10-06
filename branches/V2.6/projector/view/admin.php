@@ -147,7 +147,7 @@
                 <td>
                   <textarea dojoType="dijit.form.Textarea"
                     name="alertSendMessage" id="alertSendMessage"
-                    style="width:99%;" required="true"
+                    style="width:99%;"
                     maxlength="4000"
                     class="input"></textarea>
                 </td>
