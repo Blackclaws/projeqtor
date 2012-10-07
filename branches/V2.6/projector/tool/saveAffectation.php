@@ -83,7 +83,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
-	Sql::commitTransaction();
+	Sql::rollbackTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 ?>

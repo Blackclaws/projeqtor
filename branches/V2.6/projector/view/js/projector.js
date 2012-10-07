@@ -1889,7 +1889,13 @@ function saveCollapsed(scope){
 
 function saveExpanded(scope){
   if (waitingForReply==true) return;	
-  if (! dijit.byId(scope)) return;
+  if (! scope) {
+	if (dijit.byId(scope)) {
+	  scope=dijit.byId(scope);
+	} else {
+	  return;
+	}  
+  }
   dojo.xhrPost({
 	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=false",
 	handleAs: "text",

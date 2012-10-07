@@ -198,7 +198,7 @@ if (! $error) {
   	Sql::commitTransaction();
     echo '<span class="messageOK" >' . $result . '</span>';
   } else { 
-  	Sql::commitTransaction();
+  	Sql::rollbackTransaction();
     echo '<span class="messageWARNING" >' . $result . '</span>';
   }
 } else {

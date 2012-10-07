@@ -57,7 +57,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
     $_SESSION['currentObject']=new $className($newObj->id);
   }
 } else { 
-	Sql::commitTransaction();
+	Sql::rollbackTransaction();
   echo '<span class="messageWARNING" >' . formatResult($result) . '</span>';
 }
 

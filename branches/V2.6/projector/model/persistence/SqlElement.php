@@ -281,8 +281,8 @@ abstract class SqlElement {
     return $this->copySqlElement();
   }
 
-  public function copyTo ($newClass, $newType, $newName, $setOrigin) {
-  	return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin);
+  public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks) {
+  	return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks);
   }
   /** =========================================================================
    * Save an object to the database
@@ -877,7 +877,7 @@ abstract class SqlElement {
     return $newObj;
   }
   
-  private function copySqlElementTo($newClass, $newType, $newName, $setOrigin) {
+  private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks) {
     $newObj=new $newClass();
     $newObj->id=null;
     $typeName='id' . $newClass . 'Type';
@@ -981,6 +981,58 @@ abstract class SqlElement {
       $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
     } else {
       $returnValue=$result;
+    }
+    if ($withNotes) {
+	    $crit=array('refType'=>get_class($this),'refId'=>$this->id);
+	    $note=new Note();
+	    $notes=$note->getSqlElementsFromCriteria($crit);
+	    foreach ($notes as $note) {
+	    	$note->id=null;
+	    	$note->refType=get_class($newObj);
+	    	$note->refId=$newObj->id;
+	    	$note->save();
+	    }
+    }
+    if ($withLinks) {
+      $crit=array('ref1Type'=>get_class($this),'ref1Id'=>$this->id);
+      $link=new Link();
+      $links=$link->getSqlElementsFromCriteria($crit);
+      foreach ($links as $link) {
+        $link->id=null;
+        $link->ref1Type=get_class($newObj);
+        $link->ref1Id=$newObj->id;
+        $link->save();
+      }
+      $crit=array('ref2Type'=>get_class($this),'ref2Id'=>$this->id);
+      $link=new Link();
+      $links=$link->getSqlElementsFromCriteria($crit);
+      foreach ($links as $link) {
+        $link->id=null;
+        $link->ref2Type=get_class($newObj);
+        $link->ref2Id=$newObj->id;
+        $link->save();
+      }
+    }
+    if ($withAttachments) {
+      $crit=array('refType'=>get_class($this),'refId'=>$this->id);
+      $attachement=new Attachement();
+      $attachements=$attachement->getSqlElementsFromCriteria($crit);
+      $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+      $attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
+      foreach ($attachements as $attachement) {
+      	$fromdir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
+        $attachement->id=null;
+        $attachement->refType=get_class($newObj);
+        $attachement->refId=$newObj->id;
+        $attachement->save();
+        $todir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
+        if (! file_exists($todir)) {
+          mkdir($todir);
+        }
+        copy($fromdir.$attachement->fileName, $todir.$attachement->fileName);
+        $attachement->subDirectory=str_replace($attachementDirectory,'${attachementDirectory}',$todir);
+        $attachement->save();
+      }
     }
     $newObj->_copyResult=$returnValue; 
     return $newObj;
