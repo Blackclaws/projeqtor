@@ -138,3 +138,12 @@ INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
 UPDATE `${prefix}copyable` SET sortOrder=32 WHERE id=7;
 
 UPDATE ``${prefix}project` set sortOrder=(select wbsSortable from `${prefix}planningelement` where refType='Project' and refId=`${prefix}project`.id);
+
+ALTER TABLE `${prefix}status` ADD COLUMN `isCopyStatus` int(1) unsigned default 0;
+
+INSERT INTO `${prefix}status` (`name`, `setDoneStatus`, `setIdleStatus`, `color`, `sortOrder`, `idle`, `isCopyStatus`) VALUES
+('copied', 0, 0, '#ffffff', 999, 1, 1);
+
+ALTER TABLE `${prefix}workelement` CHANGE plannedWork plannedWork DECIMAL(9,5) UNSIGNED DEFAULT '0',
+ CHANGE realWork realWork DECIMAL(9,5) UNSIGNED DEFAULT '0',
+ CHANGE leftWork leftWork DECIMAL(9,5) UNSIGNED DEFAULT '0';

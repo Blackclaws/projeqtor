@@ -11,7 +11,7 @@ class Parameter extends SqlElement {
   public $idProject;
   public $parameterCode;
   public $parameterValue;
-  
+   
   public $_noHistory=true; // Will never save history for this object
   
   /** ==========================================================================
@@ -331,6 +331,19 @@ class Parameter extends SqlElement {
                              'cronImportMailList'=>'text',
       	                    
       	);
+    }
+    global $hosted;
+    if (isset($hosted) and $hosted) {
+    	if ($typeParameter=='globalParameter') {
+    	  unset($parameterList['documentRoot']);
+    	  unset($parameterList['paramMailSender']);
+    	  unset($parameterList['paramMailReplyTo']);
+    	  unset($parameterList['paramMailSmtpServer']);
+    	  unset($parameterList['paramMailSmtpPort']);
+    	  unset($parameterList['paramMailSmtpPort']);
+    	  unset($parameterList['paramMailSendmailPath']);
+    	  unset($parameterList['cronImportDirectory']);
+    	}
     }
     return $parameterList;
   }

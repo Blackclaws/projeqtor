@@ -797,7 +797,8 @@ abstract class SqlElement {
         $revert=array_keys($list);
         $newObj->idStatus=$revert[0];
     	} else {
-        $newObj->idStatus=' 0';
+    		$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
+        $newObj->idStatus=$st->id;
     	}
     	// TODO : define a new status "copied"
     	//$newObj->idStatus='1';
@@ -881,7 +882,8 @@ abstract class SqlElement {
     $newObj->id=null;
     $typeName='id' . $newClass . 'Type';
     if (property_exists($newObj,"idStatus")) {
-      $newObj->idStatus=' 0';
+    	$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
+      $newObj->idStatus=$st->id;
     }
     if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
       $newObj->idUser=$_SESSION['user']->id;
