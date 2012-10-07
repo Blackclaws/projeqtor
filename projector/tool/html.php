@@ -88,6 +88,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $idType='id' . $class . 'Type';
       $typeClass=$class . 'Type';
       if (property_exists($obj,$idType) ) {
+      	reset($table);
+        $fisrtKey=key($table);
+        $firstName=current($table);
         if ($obj->$idType and $obj->idStatus) {
           $profile="";
           if (array_key_exists('user', $_SESSION)) {
@@ -105,8 +108,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
             $table=array_intersect_key($table,$compTable);
           }
         } else {
-          reset($table);
-          $table=array(key($table)=>current($table));
+           $table=array($fisrtKey=>$firstName);
+        }
+      }
+      if ($selection) {
+        $selStatus=new Status($selection);
+        if ($selStatus->isCopyStatus) {
+        	$table[$fisrtKey]=$firstName;
         }
       }
     }

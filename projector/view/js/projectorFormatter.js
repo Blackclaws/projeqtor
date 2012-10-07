@@ -25,7 +25,7 @@ function formatDate(date) {
 }
 function getDate(dateString) {
 	if (dateString.length!=10) return null;
-	return new Date(dateString.substring(0,4), parseInt(dateString.substring(5,7))-1, dateString.substring(8));
+	return new Date(dateString.substring(0,4), parseInt(dateString.substring(5,7),10)-1, dateString.substring(8));
 }
 
 // ============================================================================

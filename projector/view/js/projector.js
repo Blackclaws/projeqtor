@@ -734,8 +734,12 @@ function finalizeMessageDisplay(destination, validationType) {
     	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
-      } else if (validationType=='copyTo') {
-    	  dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];
+      } else if (validationType=='copyTo' || validationType=='copyProject') {
+    	  if (validationType=='copyProject') {
+    		dojo.byId('objectClass').value="Project";
+    	  } else {
+    		dojo.byId('objectClass').value=copyableArray[dijit.byId('copyToClass').get('value')];  
+    	  }
     	  var lastSaveId=dojo.byId('lastSaveId');
           var lastSaveClass=dojo.byId('objectClass');
           if (lastSaveClass && lastSaveId) {
@@ -1166,7 +1170,7 @@ function selectRowById(gridName, id) {
   }
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
   //De-activate this function for IE8 : grid.getItem does not work
-  if (dojo.isIE && parseInt(dojo.isIE)<='8') { 
+  if (dojo.isIE && parseInt(dojo.isIE,10)<='8') { 
 	return;
   }
   var nbRow=grid.rowCount;
@@ -1211,7 +1215,7 @@ function i18n(str, vars) {
     ret = i18nMessages[str];
     if (vars) {
       for (i=0; i<vars.length; i++) {
-        rep='${' + (parseInt(i)+1) +'}';
+        rep='${' + (parseInt(i,10)+1) +'}';
         pos=ret.indexOf(rep);
         if (pos>=0) {
           ret=ret.substring(0,pos) + vars[i] + ret.substring(pos+rep.length);
@@ -1710,9 +1714,16 @@ function gotoElement(eltClass, eltId, noHistory) {
   if (checkFormChangeInProgress() ) {
     return false;
   }
-  cleanContent("detailDiv");
   formChangeInProgress=false;
-  loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
+  if ( dojo.byId("GanttChartDIV") && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone') ) {
+	refreshJsonPlanning();
+	dojo.byId('objectClass').value=eltClass;
+	dojo.byId('objectId').value=eltId;
+    loadContent('objectDetail.php','detailDiv','listForm');
+  } else {
+	cleanContent("detailDiv");
+    loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
+  }
   if (! noHistory) {
     stockHistory(eltClass,eltId);
   }
@@ -1862,7 +1873,13 @@ function moveTask(source,destination) {
 
 function saveCollapsed(scope){
   if (waitingForReply==true) return;
-  if (! dijit.byId(scope)) return;
+  if (! scope) {
+	if (dijit.byId(scope)) {
+	  scope=dijit.byId(scope);
+	} else {
+	  return;
+	}  
+  }
   dojo.xhrPost({
 	url: "../tool/saveCollapsed.php?scope=" + scope + "&value=true",
 	handleAs: "text",
@@ -1938,7 +1955,7 @@ function trim (myString) {
 
 function moveMenuBar(way) {
 	var bar=dojo.byId('menubarContainer');
-	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2));
+	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
 	var step=50;
 	if (way=='left')  {pos=left+step;}
 	if (way=='right') {pos=left-step;}

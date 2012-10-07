@@ -576,6 +576,9 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $paramMailSmtpPort=Parameter::getGlobalParameter('paramMailSmtpPort');
   $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
   $paramMailEol=Parameter::getGlobalParameter('paramMailEol');
+  if ($paramMailSmtpServer==null or strtolower($paramMailSmtpServer)=='null') {
+    return "NO";
+  }
   // Save data of the mail
   $mail=new Mail();
   if (array_key_exists('user',$_SESSION)) {

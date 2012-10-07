@@ -1583,9 +1583,9 @@ function calculateNewVersion(update) {
   revision=dojo.byId('documentVersionRevision').value;
   draft=dojo.byId('documentVersionDraft').value;
   isDraft=dijit.byId('documentVersionUpdateDraft').get('checked');
-  version=(version=='')?0:parseInt(version);
-  revision=(revision=='')?0:parseInt(revision);
-  draft=(draft=='')?0:parseInt(draft);
+  version=(version=='')?0:parseInt(version,10);
+  revision=(revision=='')?0:parseInt(revision,10);
+  draft=(draft=='')?0:parseInt(draft,10);
   if (type=="major") {
 	dojo.byId('documentVersionNewVersion').value=version+1;
 	dojo.byId('documentVersionNewRevision').value=0;
@@ -1608,7 +1608,7 @@ function calculateNewVersion(update) {
   numVers=nameVers;
   if (typeEvo=="SEQ" && dojo.byId('documentVersionMode').value=="add") {
 	  if (! nameVers) {nameVers=0;}
-	  numVers=parseInt(nameVers)+1;
+	  numVers=parseInt(nameVers,10)+1;
   }
   dijit.byId("documentVersionNewVersionDisplay").set('readOnly','readOnly');
   if (typeEvo=="EXT" ) {
@@ -3227,7 +3227,7 @@ function copyProjectToSubmit(objectClass) {
 	return;
   }
   unselectAllRows('objectGrid');
-  loadContent("../tool/copyProjectTo.php", "resultDiv", 'copyProjectForm', true, 'copyTo');
+  loadContent("../tool/copyProjectTo.php", "resultDiv", 'copyProjectForm', true, 'copyProject');
   dijit.byId('dialogCopyProject').hide();
   //dojo.byId('objectClass').value='Project';
 }

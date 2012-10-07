@@ -15,6 +15,7 @@ class Status extends SqlElement {
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;
+  public $isCopyStatus;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -28,7 +29,7 @@ class Status extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  
+  private static $_fieldsAttributes=array("isCopyStatus"=>"hidden");
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -50,7 +51,13 @@ class Status extends SqlElement {
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
-  
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
   /** ==========================================================================
    * Return the specific layout
    * @return the layout
@@ -85,6 +92,17 @@ class Status extends SqlElement {
       $colScript .= '</script>';
     }*/
     return $colScript;
+  }
+  
+  public function deleteControl() {
+    $result="";
+    if ($this->isCopyStatus==1) {    
+      $result="<br/>" . i18n("msgCannotDeleteStatus");
+    }
+    if (! $result) {  
+      $result=parent::deleteControl();
+    }
+    return $result;
   }
 }
 ?>
