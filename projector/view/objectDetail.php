@@ -27,6 +27,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ($collapsedList===null) {
   	$collapsedList=Collapsed::getCollaspedList();
   } 
+  $callFromMail=false;
+  if (array_key_exists('callFromMail', $_REQUEST)) {
+    $callFromMail=true;
+  }
   $currency=Parameter::getGlobalParameter('currency');
   $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   $treatedObjects[]=$obj;

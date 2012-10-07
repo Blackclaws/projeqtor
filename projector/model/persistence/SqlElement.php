@@ -2305,6 +2305,7 @@ abstract class SqlElement {
     $message='<html>' . "\n" .
       '<head>'  . "\n" .
       '<title>' . $title . '</title>' . "\n" .
+      '<link rel="stylesheet" type="text/css" href="http://track.projectorria.org/view/css/projector.css" />' .
       '</head>' . "\n" .
       '<body>' . "\n" .
       $message . "\n" .
