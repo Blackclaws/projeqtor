@@ -2245,14 +2245,25 @@ abstract class SqlElement {
     	}
     }*/
     $title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
-    $message=str_replace($arrayFrom, $arrayTo, $paramMailMessage);
+    $message=str_replace($arrayFrom, $arrayTo, $paramMailMessage);    
+    
+    ob_start();
+    $_REQUEST['objectClass']=get_class($this);
+    $_REQUEST['objectId']=$this->id;
+    $_REQUEST['print']='true';
+    $print=true;
+    $callFromMail=true;
+    include '../view/objectDetail.php';
+    $message=ob_get_contents();
+    ob_end_clean();
+    
     $nx='<br/>' . "\n" . '<br/>' . "\n" . '<div style="font-weight: bold;">';
     $xn='</div><br/>' . "\n";
     $hx='<div style="text-decoration:underline;font-weight: bold;">';
     $xh=' :</div>' . "\n";
     $tx='';
     $xt='<br/><br/>' . "\n";
-    if (getBooleanValue(Parameter::getGlobalParameter('paramMailShowDetail'))) {
+    if (0 and getBooleanValue(Parameter::getGlobalParameter('paramMailShowDetail'))) {
     	/*ob_start();
     	$print=true;
     	$_REQUEST['objectClass']=get_class($this);

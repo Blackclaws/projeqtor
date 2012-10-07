@@ -20,7 +20,13 @@
  */
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList;
+	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList;
+  if ($print===null) {
+	  $print=$_REQUEST['print'];
+  }
+  if ($collapsedList===null) {
+  	$collapsedList=Collapsed::getCollaspedList();
+  } 
   $currency=Parameter::getGlobalParameter('currency');
   $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   $treatedObjects[]=$obj;
@@ -2415,6 +2421,12 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   $displayAttachement='YES_OPENED';
   if (array_key_exists('displayAttachement',$_SESSION)) {
     $displayAttachement=$_SESSION['displayAttachement'];
+  }
+  if (! isset($isAttachementEnabled)) {
+    $isAttachementEnabled=true;   // allow attachement
+    if (! Parameter::getGlobalParameter('paramAttachementDirectory') or ! Parameter::getGlobalParameter('paramAttachementMaxSize')) {
+      $isAttachementEnabled=false;
+    }
   }
   if (! $noselect and isset($obj->_Attachement) and $isAttachementEnabled and ! $comboDetail ) { ?>
     <br/>
