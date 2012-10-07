@@ -3185,7 +3185,7 @@ function copyObjectTo(objectClass) {
   dijit.byId('copyToClass').set('displayedValue',i18n(objectClass));
   dijit.byId('copyToName').set('value',dijit.byId('name').get('value'));
   dijit.byId('copyToOrigin').set('checked','checked');
-
+  copyObjectToShowStructure();
   dijit.byId('copyToType').reset();
   //if (dojo.byId('copyClass').value==class) {
     var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objectClass+"Type').get('value'))";
@@ -3193,6 +3193,13 @@ function copyObjectTo(objectClass) {
   //}  
   
   dijit.byId('dialogCopy').show();	
+}
+function copyObjectToShowStructure() {
+	if (dojo.byId('copyClass').value=='Activity' && copyableArray[dijit.byId('copyToClass').get('value')]=='Activity') {
+	  dojo.byId('copyWithStructureDiv').style.display='block';
+	} else {
+	  dojo.byId('copyWithStructureDiv').style.display='none';
+	}
 }
 
 function copyProject() {

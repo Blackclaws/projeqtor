@@ -1063,6 +1063,7 @@ checkVersion(); ?>
                      var runModif="dijit.byId('copyToType').set('value',dijit.byId('id"+objclass+"Type').get('value'))";
                      setTimeout(runModif,1);
                    }
+                   copyObjectToShowStructure();
                  </script> 
                </select>
              </td>
@@ -1096,12 +1097,46 @@ checkVersion(); ?>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <div id="copyWithStructureDiv" style="display:none;">
+	               <label for="copyWithStructure" style="width:90%;text-align: right;"><?php echo i18n("copyWithStructure") ?>&nbsp;:&nbsp;</label>
+	               <div id="copyWithStructure" name="copyWithStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
+	                checked >
+	               </div>
+               </div>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToOrigin" style="width:90%;text-align: right;"><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
                <div id="copyToOrigin" name="copyToOrigin" dojoType="dijit.form.CheckBox" type="checkbox" 
                 checked >
                </div>
              </td>
            </tr>
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToWithLinks" style="width:90%;text-align: right;"><?php echo i18n("copyToWithLinks") ?>&nbsp;:&nbsp;</label>
+               <div id="copyToWithLinks" name="copyToWithLinks" dojoType="dijit.form.CheckBox" type="checkbox" 
+                checked >
+               </div>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToWithAttachments" style="width:90%;text-align: right;"><?php echo i18n("copyToWithAttachments") ?>&nbsp;:&nbsp;</label>
+               <div id="copyToWithAttachments" name="copyToWithAttachments" dojoType="dijit.form.CheckBox" type="checkbox" 
+                checked >
+               </div>
+             </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToWithNotes" style="width:90%;text-align: right;"><?php echo i18n("copyToWithNotes") ?>&nbsp;:&nbsp;</label>
+               <div id="copyToWithNotes" name="copyToWithNotes" dojoType="dijit.form.CheckBox" type="checkbox" 
+                checked >
+               </div>
+             </td>
+           </tr>       
            <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
          </table>
         </form>

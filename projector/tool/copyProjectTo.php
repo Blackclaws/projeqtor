@@ -48,16 +48,37 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
-  Sql::commitTransaction();
+  Sql::rollbackTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 
 function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $newTop=null) {
-  $newProj=$proj->copyTo('Project',$toType, $toName, false);
+  $newProj=$proj->copyTo('Project',$toType, $toName, false, false,false,false);
   $result=$newProj->_copyResult;
 	$nbErrors=0;
+	$errorFullMessage="";
 	// Save Structure
-	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and $copyStructure) {
+  if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and $copySubProjects) {
+ 	// copy subProjects
+    $crit=array('idProject'=>$proj->id);
+    $project=New Project();
+    $projects=$project->getSqlElementsFromCriteria($crit, false, null, null, true);
+    foreach ($projects as $project) {
+      $newSubProject=copyProject($project, $project->name, $project->idProjectType , $copyStructure, $copySubProjects, $proj->id);
+      $subResult=$newSubProject->_copyResult;
+      unset($newSubProject->_copyResult);
+      if (stripos($subResult,'id="lastOperationStatus" value="OK"')>0 ) {
+        $newSubProject->idProject=$newProj->id;
+        $newSubProject->ProjectPlanningElement->wbs="";
+        $newSubProject->save();        
+      } else {
+      	errorLog($subResult);  
+      	$errorFullMessage.='<br/>'.i18n('Project').' #'.$project->id." : ".$subResult;
+        $nbErrors++;
+      }
+    }
+  }
+	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and $copyStructure and $nbErrors==0) {
 		$milArray=array();
 	  $milArrayObj=array();
 	  $actArray=array();
@@ -83,8 +104,15 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	  $itemArray=array();
 	  foreach ($items as $id=>$item) {
 	  	$new=$item->copy();
-	  	$itemArrayObj[get_class($new) . '_' . $new->id]=$new;
-	    $itemArray[$id]=get_class($new) . '_' . $new->id;
+	  	$tmpRes=$new->_copyResult;
+	  	if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
+        errorLog($tmpRes);
+        $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
+        $nbErrors++;
+      } else {
+	  	  $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
+	      $itemArray[$id]=get_class($new) . '_' . $new->id;
+      }
 	  }
 	  foreach ($itemArrayObj as $new) {
 			$new->idProject=$newProj->id;
@@ -97,8 +125,9 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 			$pe=get_class($new).'PlanningElement';
 			$new->$pe->wbs=null;
 			$tmpRes=$new->save();
-			if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+			if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
 				errorLog($tmpRes);
+				$errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
 				$nbErrors++;
 			} 
 		}
@@ -138,32 +167,17 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	    $tmpRes=$dep->save();
 	    if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	      errorLog($tmpRes);
+        $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.$dep->id." : ".$tmpRes;
 	      $nbErrors++;
 	    } 
 	  }	
   }
 	
-	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and $copySubProjects) {
-	  $crit=array('idProject'=>$proj->id);
-    $project=New Project();
-    $projects=$project->getSqlElementsFromCriteria($crit, false, null, null, true);
-    foreach ($projects as $project) {
-      $newSubProject=copyProject($project, $project->name, $project->type , $copyStructure, $copySubProjects, $proj->id);
-      $subResult=$newSubProject->_copyResult;
-      unset($newSubProject->_copyResult);
-      if (stripos($subResult,'id="lastOperationStatus" value="OK"')>0 ) {
-        $newSubProject->idProject=$newProj->id;
-        $newSubProject->save();
-      } else {	
-      	$nbErrors++;
-      }
-    }
-	}
 	if ($nbErrors>0) {
-    $newProj->_copyResult.= '<br/><span class="messageWARNING" >' 
-           . i18n('errorMessage',array(i18n('copyProjectStructure'),' x ' . $nbErrors))
-           . '<br/>' . i18n('contactAdministrator')
-           . '</span>';
+    $result='<span class="messageERROR" >' 
+           . i18n('errorMessageCopy',array($nbErrors))
+           . '</span><br/>'
+           . str_replace('<br/><br/>','<br/>',$errorFullMessage);
     $newProj->_copyResult=str_replace('id="lastOperationStatus" value="OK"','id="lastOperationStatus" value="ERROR"',$result);
   }
   return $newProj;

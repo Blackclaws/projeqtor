@@ -166,7 +166,7 @@ if ($status=='ERROR') {
 	Sql::commitTransaction();
   echo '<span class="messageOK" >' . i18n('messageParametersSaved') . '</span>';
 } else {
-	Sql::commitTransaction();
+	Sql::rollbackTransaction();
   echo '<span class="messageWARNING" >' . i18n('messageParametersNoChangeSaved') . '</span>';
 }
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
