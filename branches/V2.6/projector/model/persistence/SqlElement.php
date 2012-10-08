@@ -2247,7 +2247,7 @@ abstract class SqlElement {
     $title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
     $message=str_replace($arrayFrom, $arrayTo, $paramMailMessage);    
     
-    ob_start();
+    /*ob_start();
     $_REQUEST['objectClass']=get_class($this);
     $_REQUEST['objectId']=$this->id;
     $_REQUEST['print']='true';
@@ -2255,7 +2255,9 @@ abstract class SqlElement {
     $callFromMail=true;
     include '../view/objectDetail.php';
     $message=ob_get_contents();
-    ob_end_clean();
+    ob_end_clean();*/
+    
+    $message=$this->getMailDetail();
     
     $nx='<br/>' . "\n" . '<br/>' . "\n" . '<div style="font-weight: bold;">';
     $xn='</div><br/>' . "\n";
@@ -2263,17 +2265,8 @@ abstract class SqlElement {
     $xh=' :</div>' . "\n";
     $tx='';
     $xt='<br/><br/>' . "\n";
-    if (0 and getBooleanValue(Parameter::getGlobalParameter('paramMailShowDetail'))) {
-    	/*ob_start();
-    	$print=true;
-    	$_REQUEST['objectClass']=get_class($this);
-    	$_REQUEST['objectId']=$this->id;
-    	$_REQUEST['print']='true';
-    	$callFromMail=true;
-    	include '../view/objectDetail.php';
-    	$message.=ob_get_clean();
-    	ob_clean();*/
-      $message.= $nx . $item . " #" . $this->id . $xn;
+    /*if (0 and getBooleanValue(Parameter::getGlobalParameter('paramMailShowDetail'))) {
+    	$message.= $nx . $item . " #" . $this->id . $xn;
 
       $message.=$hx . $this->getColCaption('idProject') . $xh;
       $message.=$tx . SqlList::getNameFromId('Project', $this->idProject) . $xt;
@@ -2301,7 +2294,7 @@ abstract class SqlElement {
         $message.=$hx . $this->getColCaption('result') . $xh;
         $message.=$tx . htmlEncode($this->result,'mail') . $xt;
       }
-    }
+    }*/
     $message='<html>' . "\n" .
       '<head>'  . "\n" .
       '<title>' . $title . '</title>' . "\n" .
@@ -2316,7 +2309,148 @@ abstract class SqlElement {
  
     return $resultMail;
   }
-  
+
+  /**
+   * 
+   * Get the detail of object, to be send by mail
+   * This is a simplified copy of objectDetail.php, in print mode
+   */
+  public function getMailDetail () {
+  	$msg="";
+  	$rowStart='<tr>';
+  	$rowEnd='</tr>'. "\n";
+  	$labelStart='<td style="background:#AAAAAA;">';
+  	$labelEnd='</td>'. "\n";
+  	$fieldStart='<td style="background:#AAAAAA;">';
+  	$fieldEnd='</td>'. "\n";
+    $sectionStart='<td colspan="2" style="background:#555555;color: #FFFFFF; text-align: center;">';
+    $sectionEnd='</td>'. "\n";
+    $tableStart='<table style="font-size:8px;">';
+    $tableEnd='</table>';
+    $msg=$tableStart;
+    $nobr=false;
+  	foreach ($obj as $col => $val) {
+  		$hide=false;
+      $nobr_before=$nobr;
+      $nobr=false; 
+  		if (substr($col,0,4)=='_tab') {
+  			// Nothing
+  		} else if (substr($col,0,5)=='_col_') { 
+  			// Nothing
+  	  } else if (substr($col,0,5)=='_sec_') {
+	  	  if (strlen($col)>8) {
+	        $section=substr($col,5);
+	      } else {
+	        $section='';
+	      }
+  	  	$msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
+  	  } else if (substr($col,0,5)=='_spe_') {
+  	  	// Nothing
+  	  } else if (substr($col,0,6)=='_calc_') { 
+        $item=substr($col,6);
+        $msg.= $obj->drawCalculatedItem($item);
+      } else if (substr($col,0,5)=='_lib_') {
+	      $item=substr($col,5);
+	      if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) {$nobr=true;}
+	      if ($obj->getFieldAttributes($col)!='hidden') { $msg.= (($nobr)?'&nbsp;':'').i18n($item).'&nbsp;'; }
+	      if (!$nobr) { $msg.=$fieldEnd.$rowEnd; }
+	    } else if (substr($col,0,5)=='_Link') { 
+  	    // Nothing
+  	  } else if (substr($col,0,11)=='_Assignment') {
+  	  	// Nothing
+  	  } else if (substr($col,0,11)=='_Approver') {
+  	  	// Nothing
+  	  } else if (substr($col,0,15)=='_VersionProject') {
+  	  	// Nothing
+  	  } else if (substr($col,0,11)=='_Dependency') {
+  	  	// Nothing
+  	  } else if ($col=='_ResourceCost') { 
+  	  	// Nothing
+  	  } else if ($col=='_DocumentVersion') { 
+  	  	// Nothing
+  	  } else if ($col=='_ExpenseDetail') { 
+  	  	// Nothing
+  	  } else if (substr($col,0,12)=='_TestCaseRun') { 
+  	    // Nothing	
+  	  } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' and substr($col,0,7)!='_label_') {
+  	  	// Nothing  
+  	  } else {
+  			$attributes=''; $isRequired=false; $readOnly=false;$specificStyle='';
+  	    if (strpos($obj->getFieldAttributes($col), 'hidden')!==false) { $hide=true; }
+        if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) { $nobr=true; }
+  	    if (strpos($obj->getFieldAttributes($col), 'invisible')!==false) { $specificStyle.=' visibility:hidden'; }
+  	    $dataType = $obj->getDataType($col); $dataLength = $obj->getDataLength($col);
+  	    if (is_object($val)) {
+  	    	// Nothing
+  	    } else if (is_array($val)) {
+  	      // Nothing
+  	    } else if (substr($col,0,6)=='_void_') {
+  	    	// Nothing
+  	    } else if (substr($col,0,7)=='_label_') { 
+  	    	//$captionName=substr($col,7);
+          //$msg.='<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
+  	    } else if ($hide) {
+  	    	// Nothing
+  	    } else  if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
+          $msg.=  $val;
+        } else if ($col=='id') { // id
+          $msg.= '<span style="color:grey;">#</span>' . $val;
+        } else if ($col=='password') {
+          $msg.=  "..."; // nothing
+        } else if ($dataType=='date' and $val!=null and $val != '') {
+          $msg.= htmlFormatDate($val);
+        } else if ($dataType=='datetime' and $val!=null and $val != '') {
+          $msg.= htmlFormatDateTime($val,false);
+        } else if ($dataType=='time' and $val!=null and $val != '') {
+          $msg.= htmlFormatTime($val,false);
+        } else if ($col=='color' and $dataLength == 7 ) { // color
+          /*echo '<table><tr><td style="width: 100px;">';
+          echo '<div class="colorDisplay" readonly tabindex="-1" ';
+          echo '  value="' . htmlEncode($val) . '" ';
+          echo '  style="width: ' . $smallWidth / 2 . 'px; ';
+          echo ' color: ' . $val . '; ';
+          echo ' background-color: ' . $val . ';"';
+          echo ' >';
+          echo '</div>';
+          echo '</td>';
+          if ($val!=null and $val!='') {
+            //echo '<td  class="detail">&nbsp;(' . htmlEncode($val) . ')</td>';
+          }
+          echo '</tr></table>';*/
+        } else if ($dataType=='int' and $dataLength==1) { // boolean
+          /*$checkImg="checkedKO.png";
+          if ($val!='0' and ! $val==null) { 
+            $checkImg= 'checkedOK.png';
+          } 
+          echo '<img src="img/' . $checkImg . '" />';*/
+        } else if (substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 
+               and substr($col,2,1)==strtoupper(substr($col,2,1)) ) { // Idxxx
+          $msg.= SqlList::getNameFromId(substr($col,2),$val);
+        } else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
+          echo htmlEncode($val,'print');
+        } else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount' or $col=='amount') ) {
+          if ($currencyPosition=='after') {
+            $msg.=  htmlEncode($val,'print') . ' ' . $currency;
+          } else {
+            $msg.=  $currency . ' ' . htmlEncode($val,'print');
+          }
+        } else if ($dataType=='decimal' and substr($col, -4,4)=='Work') {
+           //$msg.=  Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
+        } else {
+          if ($obj->isFieldTranslatable($col))  {
+              $val=i18n($val);
+          }
+          if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
+           $msg.=  $val;
+          } else {
+            $msg.=  htmlEncode($val,'print');
+          } 
+        }
+  		}
+  	}
+  	$msg.=$tableEnd;
+  	return $msg;
+  }
   /** ========================================================================= 
    * Specific function added to setup a workaround for bug #305
    * waiting for Dojo fixing (Dojo V1.6 ?)
