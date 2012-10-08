@@ -21,7 +21,7 @@
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList;
-  if ($print===null) {
+  /*if ($print===null) {
 	  $print=$_REQUEST['print'];
   }
   if ($collapsedList===null) {
@@ -30,7 +30,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $callFromMail=false;
   if (array_key_exists('callFromMail', $_REQUEST)) {
     $callFromMail=true;
-  }
+  }*/
   $currency=Parameter::getGlobalParameter('currency');
   $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   $treatedObjects[]=$obj;
