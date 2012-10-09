@@ -44,7 +44,6 @@
 	        submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
         </script>
       </button>
-
       <button id="printButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonPrint', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -99,8 +98,6 @@
           formChangeInProgress=false;
         </script>
       </button>    
-
-
       <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -120,7 +117,6 @@
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
         </script>
       </button>    
-      
      <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonRefresh', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
@@ -131,6 +127,14 @@
         </script>
       </button>    
     <?php } ?>
+     <button id="mailButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('buttonMail', array(i18n($_REQUEST['objectClass'])));?>"
+       <?php if ($noselect) {echo "disabled";} ?>
+       iconClass="dijitEditorIcon dijitEditorIconMail" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          showMailOptions();  
+        </script>
+      </button>
       <?php 
         $id=null;
         $class=$_REQUEST['objectClass'];
