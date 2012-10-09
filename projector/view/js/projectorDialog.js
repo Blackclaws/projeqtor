@@ -3499,3 +3499,27 @@ function changePlanningColumn(col,status,order) {
 function sortPlanningColumn() {
 	//alert("sortPlanningColumn");
 }
+
+
+function showMailOptions() {
+	dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
+	dojo.byId('mailRefId').value=dojo.byId('objectId').value;
+	title=i18n('buttonMail', new Array(i18n(dojo.byId('objectClass').value)));
+	dijit.byId("dialogMail").set('title',title);
+	dijit.byId("dialogMail").show();
+	
+}
+
+function dialogMailToOtherChange() {
+  var show=dijit.byId('dialogMailToOther').get('checked');
+  if (show) {
+	  showField('dialogOtherMail');
+  } else {
+	  hideField('dialogOtherMail');
+  }
+}
+
+function sendMail() {
+  alert('Not implemented');
+  dijit.byId("dialogMail").hide();
+}

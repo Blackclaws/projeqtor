@@ -621,8 +621,7 @@ checkVersion(); ?>
           style="width: 500px;"
           maxlength="4000"
           class="input"
-          onClick="dijit.byId('noteNote').setAttribute('class','');">  
-          </textarea>
+          onClick="dijit.byId('noteNote').setAttribute('class','');"></textarea>
           <table width="100%"><tr height="25px">
             <td width="33%" class="smallTabLabel" >
               <label class="smallTabLabelRight" for="notePrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>
@@ -674,8 +673,7 @@ checkVersion(); ?>
 			          id="billLineLine" name="billLineLine"
 			          style="width: 50px;"
 			          class="input"
-			          onClick="dijit.byId('billLineLine').setAttribute('class','');">  
-		           </textarea>
+			          onClick="dijit.byId('billLineLine').setAttribute('class','');"></textarea>
 		         </td>
 		       </tr>
 		       <tr>
@@ -785,8 +783,7 @@ checkVersion(); ?>
 	          style="width: 500px;"
 	          maxlength="200"
 	          class="input"
-	          onClick="dijit.byId('billLineDescription').setAttribute('class','');">  
-	          </textarea>
+	          onClick="dijit.byId('billLineDescription').setAttribute('class','');"></textarea>
 	         </td>
 	        </tr>
             <tr>
@@ -798,8 +795,7 @@ checkVersion(); ?>
 	          id="billLineDetail" name="billLineDetail"
 	          style="width: 500px;"
 	          maxlength="200"
-	          class="input">
-	          </textarea>  
+	          class="input"></textarea>  
 	         </td>
 	        </tr>
           </table>
@@ -814,8 +810,7 @@ checkVersion(); ?>
 	          id="billLinePrice" name="billLinePrice"
 	          style="width: 100px;"
 	          class="input"
-	          onClick="dijit.byId('billLinePrice').setAttribute('class','');">  
-	          </textarea> 
+	          onClick="dijit.byId('billLinePrice').setAttribute('class','');"></textarea> 
 	         </td>
 	        </tr>
 	      </table>     
@@ -1283,8 +1278,7 @@ checkVersion(); ?>
           id="attachementDescription" name="attachementDescription"
           style="width: 350px;"
           maxlength="4000"
-          class="input">  
-         </textarea>
+          class="input"></textarea>
          <textarea style="display:none" id="resultAck" name="resultAck"></textarea>      
         </td>
       </tr>
@@ -1500,8 +1494,8 @@ checkVersion(); ?>
           id="documentVersionDescription" name="documentVersionDescription"
           style="width: 450px;"
           maxlength="4000"
-          class="input">  
-         </textarea><textarea style="display:none" id="documentVersionAck" name="documentVersionAck"></textarea>      
+          class="input"></textarea>
+          <textarea style="display:none" id="documentVersionAck" name="documentVersionAck"></textarea>      
         </td>
       </tr>
       <tr>
@@ -1948,6 +1942,113 @@ checkVersion(); ?>
     </tr>
   </table>
 </div>
+
+<div id="dialogMail" dojoType="dijit.Dialog" title="">
+  <table>
+    <tr>
+      <td>
+        <form dojoType="dijit.form.Form" id='mailForm' name='mailForm' onSubmit="return false;">
+          <input id="mailRefType" name="mailRefType" type="hidden" value="" />
+          <input id="mailRefId" name="mailRefId" type="hidden" value="" />
+          <table>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToContact"><?php echo i18n("colMailToContact") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToContact" name="dialogMailToContact" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToUser"><?php echo i18n("colMailToUser") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToUser" name="dialogMailToUser" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToResource"><?php echo i18n("colMailToResource") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToResource" name="dialogMailToResource" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToProject"><?php echo i18n("colMailToProject") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToProject" name="dialogMailToProject" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToLeader"><?php echo i18n("colMailToLeader") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToLeader" name="dialogMailToLeader" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToManager"><?php echo i18n("colMailToManager") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToManager" name="dialogMailToManager" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToOther"><?php echo i18n("colMailToOther") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToOther" name="dialogMailToOther" dojoType="dijit.form.CheckBox" 
+                 type="checkbox" onChange="dialogMailToOtherChange();">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+              </td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" 
+					          id="dialogOtherMail" name="dialogOtherMail"
+					          style="width: 500px; display:none"
+					          maxlength="4000"
+					          class="input" ></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailMessage"><?php echo i18n("colMailMessage") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                 <textarea dojoType="dijit.form.Textarea" 
+                    id="dialogMailMessage" name="dialogMailMessage"
+                    style="width: 500px; "
+                    maxlength="4000"
+                    class="input" ></textarea>
+              </td>
+            </tr>
+          </table>
+       </form>
+     </td>
+   </tr>
+    <tr>
+      <td align="center">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogMail').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="sendMail();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <div id="dialogResourceCost" dojoType="dijit.Dialog" title="<?php echo i18n("dialogResourceCost");?>">
   <table>
     <tr>

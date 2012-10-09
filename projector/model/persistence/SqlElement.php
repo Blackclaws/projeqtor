@@ -2100,9 +2100,7 @@ abstract class SqlElement {
     	$statusMailList=array($directStatusMail->id => $directStatusMail);
     }
     $dest="";
-debugLog($crit);
     foreach ($statusMailList as $statusMail) {
-debugLog("   #".$statusMail->id);
 	    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
 	    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0
 	    and $statusMail->mailToManager==0) {
@@ -2491,29 +2489,31 @@ debugLog("   #".$statusMail->id);
         	$msg.=$fieldEnd.$rowEnd;
         }
   		}
-  		if (isset($this->Note) and is_array($this->Note)) {
-  			$msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
-  			foreach ($this->Note as $note) {
-  				if ($note->idPrivacy==1) {
-  				  $userId=$note->idUser;
-            $userName=SqlList::getNameFromId('User',$userId);
-            $creationDate=$note->creationDate;
-            $updateDate=$note->updateDate;
-            if ($updateDate==null) {$updateDate='';}
-  				  $msg.=$rowStart.$labelStart;
-  				  $msg.=$userName;
-  				  $msg.= '<br/>';
-  				  if ($updateDate) {
-  				    $msg.= '<i>' . htmlFormatDateTime($updateDate) . '</i>';
-  				  } else {
-  				  	$msg.= htmlFormatDateTime($creationDate);
-  				  }
-  				  $msg.=$labelEnd.$fieldStart;
-  				  $msg.=htmlEncode($note->note,'print');
-  				  $msg.=$fieldEnd.$rowEnd;
-  				}
+  	}
+  	if (isset($this->_Note) and is_array($this->_Note)) {
+  		$msg.=$rowStart.$sectionStart.i18n('sectionNotes').$sectionEnd.$rowEnd;
+  		$note = new Note();
+  		$notes=$note->getSqlElementsFromCriteria(array('refType'=>get_class($this),'refId'=>$this->id));
+  		foreach ($notes as $note) {
+  			if ($note->idPrivacy==1) {
+  			  $userId=$note->idUser;
+          $userName=SqlList::getNameFromId('User',$userId);
+          $creationDate=$note->creationDate;
+          $updateDate=$note->updateDate;
+          if ($updateDate==null) {$updateDate='';}
+  			  $msg.=$rowStart.$labelStart;
+  			  $msg.=$userName;
+  			  $msg.= '<br/>';
+  			  if ($updateDate) {
+  			    $msg.= '<i>' . htmlFormatDateTime($updateDate) . '</i>';
+  			  } else {
+  			  	$msg.= htmlFormatDateTime($creationDate);
+  			  }
+  			  $msg.=$labelEnd.$fieldStart;
+  			  $msg.=htmlEncode($note->note,'print');
+  			  $msg.=$fieldEnd.$rowEnd;
   			}
-  		} 
+  		}
   	}
   	$msg.=$tableEnd;
   	return $msg;
