@@ -946,6 +946,7 @@ function formChanged() {
   enableWidget('undoButton');
   disableWidget('deleteButton');
   disableWidget('refreshButton');
+  disableWidget('mailButton');
   formChangeInProgress=true;
   grid=dijit.byId("objectGrid");
   if (grid) {
@@ -974,6 +975,7 @@ function formInitialize() {
   disableWidget('undoButton');
   enableWidget('deleteButton');
   enableWidget('refreshButton');
+  enableWidget('mailButton');
   formChangeInProgress=false;
   buttonRightLock();
 }

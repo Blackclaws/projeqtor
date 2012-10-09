@@ -126,7 +126,10 @@
           loadContent("objectDetail.php", "detailDiv", 'listForm');
         </script>
       </button>    
-    <?php } ?>
+    <?php } 
+    $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>get_class($obj)));
+    if ($mailable and $mailable->id) {
+    ?>
      <button id="mailButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonMail', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
@@ -135,7 +138,8 @@
           showMailOptions();  
         </script>
       </button>
-      <?php 
+      <?php
+      } 
         $id=null;
         $class=$_REQUEST['objectClass'];
         if (array_key_exists('objectId',$_REQUEST)) {
