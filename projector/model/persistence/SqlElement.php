@@ -2061,7 +2061,7 @@ abstract class SqlElement {
    * @param void
    * @return status of mail, if sent
    */
-  public function sendMailIfMailable($newItem=false, $statusChange=false, $responsibleChange=false, $noteAdd=false, $attachmentAdd=false) {
+  public function sendMailIfMailable($newItem=false, $statusChange=false, $responsibleChange=false, $noteAdd=false, $attachmentAdd=false, $directStatusMail=null) {
     if (get_class($this)=='History') {
       return false; // exit : not for History
     }
@@ -2077,7 +2077,7 @@ abstract class SqlElement {
     }
     $crit=array();
     $crit['idStatus']=$this->idStatus;
-    $crit="idle='0' and idMailable='" . $mailable->id . "' and ( 1 ";
+    $crit="idle='0' and idMailable='" . $mailable->id . "' and ( 0 ";
     if ($statusChange) {
     	$crit.="  or idStatus='" . $this->idStatus . "' ";
     }
@@ -2096,10 +2096,16 @@ abstract class SqlElement {
     if (count($statusMailList)==0) {
       return false; // exit not a status for mail sending (or disabled) 
     }
+    if ($directStatusMail) { // Direct Send Mail
+    	$statusMailList=array($directStatusMail->id => $directStatusMail);
+    }
     $dest="";
+debugLog($crit);
     foreach ($statusMailList as $statusMail) {
+debugLog("   #".$statusMail->id);
 	    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
-	    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0) {
+	    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0
+	    and $statusMail->mailToManager==0) {
 	      continue; // exit not a status for mail sending (or disabled) 
 	    }
 	    if ($statusMail->mailToUser) {
@@ -2149,6 +2155,17 @@ abstract class SqlElement {
 	        }
 	      }
 	    }
+      if ($statusMail->mailToManager) {
+        if (property_exists($this,'idProject')) {
+          $project=new Project($this->idProject);
+          $manager=new Affectable($project->idUser);
+          $newDest = "###" . $manager->email . "###";
+          if ($manager->email and strpos($dest,$newDest)===false) {
+            $dest.=($dest)?', ':'';
+            $dest.= $newDest;
+          }
+        }
+      }
 	    if ($statusMail->mailToContact) {
 	      if (property_exists($this,'idContact')) {
 	        $contact=new Contact($this->idContact);
@@ -2319,40 +2336,50 @@ abstract class SqlElement {
   	$msg="";
   	$rowStart='<tr>';
   	$rowEnd='</tr>'. "\n";
-  	$labelStart='<td style="background:#AAAAAA;">';
-  	$labelEnd='</td>'. "\n";
-  	$fieldStart='<td style="background:#AAAAAA;">';
+  	$labelStart='<td style="background:#DDDDDD;font-weight:bold;text-align: right;width:25%;vertical-align: middle;">&nbsp;&nbsp;';
+  	$labelEnd='&nbsp;</td>'. "\n";
+  	$fieldStart='<td style="background:#FFFFFF;text-align: left;">&nbsp;';
   	$fieldEnd='</td>'. "\n";
-    $sectionStart='<td colspan="2" style="background:#555555;color: #FFFFFF; text-align: center;">';
+    $sectionStart='<td colspan="2" style="background:#555555;color: #FFFFFF; text-align: center;font-size:10pt;font-weight:bold;">';
     $sectionEnd='</td>'. "\n";
-    $tableStart='<table style="font-size:8px;">';
+    $tableStart='<table style="font-size:9pt; width: 95%">';
     $tableEnd='</table>';
     $msg=$tableStart;
+    $msg.='<tr><td colspan="2" style="font-size:18pt;color:#AAAAAA">'.i18n(get_class($this)).' #'.$this->id.'</td></tr>';
     $nobr=false;
-  	foreach ($obj as $col => $val) {
+  	foreach ($this as $col => $val) {
   		$hide=false;
       $nobr_before=$nobr;
       $nobr=false; 
   		if (substr($col,0,4)=='_tab') {
   			// Nothing
   		} else if (substr($col,0,5)=='_col_') { 
-  			// Nothing
+  		  if (strlen($col)>8) {
+          $section=substr($col,9);
+          if ($section=='description' or $section=='treatment') {
+            $msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
+          }
+        } else {
+          $section='';
+        }
   	  } else if (substr($col,0,5)=='_sec_') {
 	  	  if (strlen($col)>8) {
 	        $section=substr($col,5);
+	        if ($section=='description' or $section=='treatment') {
+	          $msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
+	        }
 	      } else {
 	        $section='';
 	      }
-  	  	$msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
   	  } else if (substr($col,0,5)=='_spe_') {
   	  	// Nothing
   	  } else if (substr($col,0,6)=='_calc_') { 
         $item=substr($col,6);
-        $msg.= $obj->drawCalculatedItem($item);
+        $msg.= $this->drawCalculatedItem($item);
       } else if (substr($col,0,5)=='_lib_') {
 	      $item=substr($col,5);
-	      if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) {$nobr=true;}
-	      if ($obj->getFieldAttributes($col)!='hidden') { $msg.= (($nobr)?'&nbsp;':'').i18n($item).'&nbsp;'; }
+	      if (strpos($this->getFieldAttributes($col), 'nobr')!==false) {$nobr=true;}
+	      if ($this->getFieldAttributes($col)!='hidden') { $msg.= (($nobr)?'&nbsp;':'').i18n($item).'&nbsp;'; }
 	      if (!$nobr) { $msg.=$fieldEnd.$rowEnd; }
 	    } else if (substr($col,0,5)=='_Link') { 
   	    // Nothing
@@ -2375,14 +2402,27 @@ abstract class SqlElement {
   	  } else if (substr($col,0,1)=='_' and substr($col,0,6)!='_void_' and substr($col,0,7)!='_label_') {
   	  	// Nothing  
   	  } else {
-  			$attributes=''; $isRequired=false; $readOnly=false;$specificStyle='';
-  	    if (strpos($obj->getFieldAttributes($col), 'hidden')!==false) { $hide=true; }
-        if (strpos($obj->getFieldAttributes($col), 'nobr')!==false) { $nobr=true; }
-  	    if (strpos($obj->getFieldAttributes($col), 'invisible')!==false) { $specificStyle.=' visibility:hidden'; }
-  	    $dataType = $obj->getDataType($col); $dataLength = $obj->getDataLength($col);
+  	  	$attributes=''; $isRequired=false; $readOnly=false;$specificStyle='';
+  	  	$dataType = $this->getDataType($col); $dataLength = $this->getDataLength($col);
+  	  	if ($dataType=='decimal' and substr($col, -4,4)=='Work') { $hide=true; }
+  	    if (strpos($this->getFieldAttributes($col), 'hidden')!==false) { $hide=true; }
+        if (strpos($this->getFieldAttributes($col), 'nobr')!==false) { $nobr=true; }
+  	    if (strpos($this->getFieldAttributes($col), 'invisible')!==false) { $specificStyle.=' visibility:hidden'; }
   	    if (is_object($val)) {
-  	    	// Nothing
-  	    } else if (is_array($val)) {
+          if (get_class($val)=='Origin') {
+            $val=i18n($val->refType) . ' #'.$val->id.' : '. SqlList::getNameFromId($val->refType, $val->refId);
+            $dataType='varchar';$dataLength=4000;
+          } else {
+          	$hide=true;
+          }
+        }
+  	    if ($hide) { continue; }
+  	    if (! $nobr_before) {
+          $msg.=$rowStart.$labelStart.$this->getColCaption($col).$labelEnd.$fieldStart;
+        } else {
+          $msg.="&nbsp;&nbsp;&nbsp;";
+        }
+  	    if (is_array($val)) {
   	      // Nothing
   	    } else if (substr($col,0,6)=='_void_') {
   	    	// Nothing
@@ -2391,7 +2431,7 @@ abstract class SqlElement {
           //$msg.='<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
   	    } else if ($hide) {
   	    	// Nothing
-  	    } else  if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
+  	    } else  if (strpos($this->getFieldAttributes($col), 'displayHtml')!==false) {
           $msg.=  $val;
         } else if ($col=='id') { // id
           $msg.= '<span style="color:grey;">#</span>' . $val;
@@ -2418,16 +2458,17 @@ abstract class SqlElement {
           }
           echo '</tr></table>';*/
         } else if ($dataType=='int' and $dataLength==1) { // boolean
-          /*$checkImg="checkedKO.png";
-          if ($val!='0' and ! $val==null) { 
-            $checkImg= 'checkedOK.png';
-          } 
-          echo '<img src="img/' . $checkImg . '" />';*/
+          $msg.='<input type="checkbox" disabled="disabled" ';
+        	if ($val!='0' and ! $val==null) { 
+            $msg.=' checked />';
+          } else {
+          	$msg.=' />';
+          }
         } else if (substr($col,0,2)=='id' and $dataType=='int' and strlen($col)>2 
                and substr($col,2,1)==strtoupper(substr($col,2,1)) ) { // Idxxx
           $msg.= SqlList::getNameFromId(substr($col,2),$val);
         } else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
-          echo htmlEncode($val,'print');
+          $msg.= htmlEncode($val,'print');
         } else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount' or $col=='amount') ) {
           if ($currencyPosition=='after') {
             $msg.=  htmlEncode($val,'print') . ' ' . $currency;
@@ -2437,16 +2478,42 @@ abstract class SqlElement {
         } else if ($dataType=='decimal' and substr($col, -4,4)=='Work') {
            //$msg.=  Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
         } else {
-          if ($obj->isFieldTranslatable($col))  {
+          if ($this->isFieldTranslatable($col))  {
               $val=i18n($val);
           }
-          if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
+          if (strpos($this->getFieldAttributes($col), 'html')!==false) {
            $msg.=  $val;
           } else {
             $msg.=  htmlEncode($val,'print');
           } 
         }
+        if (! $nobr) {
+        	$msg.=$fieldEnd.$rowEnd;
+        }
   		}
+  		if (isset($this->Note) and is_array($this->Note)) {
+  			$msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
+  			foreach ($this->Note as $note) {
+  				if ($note->idPrivacy==1) {
+  				  $userId=$note->idUser;
+            $userName=SqlList::getNameFromId('User',$userId);
+            $creationDate=$note->creationDate;
+            $updateDate=$note->updateDate;
+            if ($updateDate==null) {$updateDate='';}
+  				  $msg.=$rowStart.$labelStart;
+  				  $msg.=$userName;
+  				  $msg.= '<br/>';
+  				  if ($updateDate) {
+  				    $msg.= '<i>' . htmlFormatDateTime($updateDate) . '</i>';
+  				  } else {
+  				  	$msg.= htmlFormatDateTime($creationDate);
+  				  }
+  				  $msg.=$labelEnd.$fieldStart;
+  				  $msg.=htmlEncode($note->note,'print');
+  				  $msg.=$fieldEnd.$rowEnd;
+  				}
+  			}
+  		} 
   	}
   	$msg.=$tableEnd;
   	return $msg;

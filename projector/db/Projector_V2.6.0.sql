@@ -147,3 +147,5 @@ INSERT INTO `${prefix}status` (`name`, `setDoneStatus`, `setIdleStatus`, `color`
 ALTER TABLE `${prefix}workelement` CHANGE plannedWork plannedWork DECIMAL(9,5) UNSIGNED DEFAULT '0',
  CHANGE realWork realWork DECIMAL(9,5) UNSIGNED DEFAULT '0',
  CHANGE leftWork leftWork DECIMAL(9,5) UNSIGNED DEFAULT '0';
+ 
+ALTER TABLE `${prefix}statusmail` ADD COLUMN `mailToManager` int(1) unsigned default 0;

@@ -152,17 +152,22 @@ checkVersion(); ?>
             break;
           }
         }
-      }
+      } else if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST) ) {
+        $class=$_REQUEST['objectClass'];
+        $id=$_REQUEST['objectId'];
+        echo 'gotoElement("' . $class . '","' . $id . '");';
+      } else {
       ?>
-      dojo.byId("loadingDiv").style.visibility="hidden";
-      dojo.byId("loadingDiv").style.display="none";
-      dojo.byId("mainDiv").style.visibility="visible";        
       loadContent("<?php echo $firstPage;?>","centerDiv");
       <?php if (! $showTopMenu) {
           echo "dijit.byId('toolBarDiv').resize({h: 0});;";
           echo "dijit.byId('globalContainer').resize();";
-       } ?>
-       setTimeout('checkAlert();',5000); //first check at 5 seco 
+        } 
+      }?>
+      dojo.byId("loadingDiv").style.visibility="hidden";
+      dojo.byId("loadingDiv").style.display="none";
+      dojo.byId("mainDiv").style.visibility="visible"; 
+      setTimeout('checkAlert();',5000); //first check at 5 seco 
     }); 
     var cronSleepTime=<?php echo Cron::getSleepTime();?>;
     var canCreateArray=new Array();

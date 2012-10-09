@@ -910,6 +910,7 @@ function finaliseButtonDisplay() {
       enableWidget('newButton');
       enableWidget('saveButton');
       disableWidget('undoButton');
+      disableWidget('mailButton');
     }
   } else {
     // id does not exist => not selected, only new button possible
@@ -992,6 +993,7 @@ function formLock() {
   disableWidget('undoButton');
   disableWidget('deleteButton');
   disableWidget('refreshButton');
+  disableWidget('mailButton');
 }
 
 /**
@@ -1721,7 +1723,9 @@ function gotoElement(eltClass, eltId, noHistory) {
 	dojo.byId('objectId').value=eltId;
     loadContent('objectDetail.php','detailDiv','listForm');
   } else {
-	cleanContent("detailDiv");
+	if (dojo.byId("detailDiv")) {
+	  cleanContent("detailDiv");
+	}
     loadContent("objectMain.php?objectClass="+eltClass,"centerDiv", false, false, false, eltId);
   }
   if (! noHistory) {
