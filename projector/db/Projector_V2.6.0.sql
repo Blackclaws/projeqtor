@@ -98,11 +98,11 @@ INSERT INTO `${prefix}event` (`id`,`name`,`idle`) VALUES
 (3,'attachmentAdd',0);
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
-(null,null, 'paramMailTitleStatus', '[${dbName}] \'${item} #${id}\' moved to status \'${status}\' : "${name}"'),
-(null,null, 'paramMailTitleResponsible', '[${dbName}] \'${responsible}\' is now responsible of \'${item} #${id}\' : "${name}"'),
-(null,null, 'paramMailTitleNote', '[${dbName}] New note has been posted on \'${item} #${id}\' : "${name}"'), 
-(null,null, 'paramMailTitleAttachment', '[${dbName}] New attachment has been posted on \'${item} #${id}\' : "${name}"'),
-(null,null, 'paramMailTitleNew', '[${dbName}] \'${item} #${id}\' has been created : "${name}"');
+(null,null, 'paramMailTitleStatus', '[${dbName}] ${item} #${id} moved to status \'${status}\' : "${name}"'),
+(null,null, 'paramMailTitleResponsible', '[${dbName}] ${responsible} is now responsible of ${item} #${id} : "${name}"'),
+(null,null, 'paramMailTitleNote', '[${dbName}] New note has been posted on ${item} #${id} : "${name}"'), 
+(null,null, 'paramMailTitleAttachment', '[${dbName}] New attachment has been posted on ${item} #${id} : "${name}"'),
+(null,null, 'paramMailTitleNew', '[${dbName}] ${item} #${id} has been created : "${name}"');
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null,null, 'cronCheckImport', '60'),
