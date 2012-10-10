@@ -2093,12 +2093,13 @@ abstract class SqlElement {
     $crit.=")";
     $statusMail=new StatusMail();
     $statusMailList=$statusMail->getSqlElementsFromCriteria(null,false, $crit);
+    if ($directStatusMail) { // Direct Send Mail
+      $statusMailList=array($directStatusMail->id => $directStatusMail);
+    }
     if (count($statusMailList)==0) {
       return false; // exit not a status for mail sending (or disabled) 
     }
-    if ($directStatusMail) { // Direct Send Mail
-    	$statusMailList=array($directStatusMail->id => $directStatusMail);
-    }
+
     $dest="";
     foreach ($statusMailList as $statusMail) {
 	    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
@@ -2208,8 +2209,6 @@ abstract class SqlElement {
     } else {
       $paramMailTitle=Parameter::getGlobalParameter('paramMailTitle'); // default
     }
-    $paramMailMessage=Parameter::getGlobalParameter('paramMailMessage');
-    // substituable items
     $arrayFrom=array();
     $arrayTo=array();
     // Class of item
@@ -2246,74 +2245,20 @@ abstract class SqlElement {
     $arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
     $arrayFrom[]='${dbName}';
     $arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
-    /*foreach ($this as $col=>$val) {
-    	if (substr($col, 0,1) != "_" 
-    	and substr($col, 0,1)!=strtoupper(substr($col, 0,1)) 
-    	and ! is_array($val) and ! is_object($val)) {
-    		$arrayFrom[]='${' . $col . '}';
-    		$arrayTo[]=$val;
-    		if (substr($col, 0,1)=='id' and strlen($col)>2) {
-    			$cl=substr($col, 2);
-    			$arrayFrom[]='${' . $cl . '}';
-    			$arrayTo[]=SqlList::getNameFromId($cl, $val);
-    		}
-    	}
-    }*/
     $title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
-    $message=str_replace($arrayFrom, $arrayTo, $paramMailMessage);    
-    
-    /*ob_start();
-    $_REQUEST['objectClass']=get_class($this);
-    $_REQUEST['objectId']=$this->id;
-    $_REQUEST['print']='true';
-    $print=true;
-    $callFromMail=true;
-    include '../view/objectDetail.php';
-    $message=ob_get_contents();
-    ob_end_clean();*/
     
     $message=$this->getMailDetail();
-    
-    $nx='<br/>' . "\n" . '<br/>' . "\n" . '<div style="font-weight: bold;">';
-    $xn='</div><br/>' . "\n";
-    $hx='<div style="text-decoration:underline;font-weight: bold;">';
-    $xh=' :</div>' . "\n";
-    $tx='';
-    $xt='<br/><br/>' . "\n";
-    /*if (0 and getBooleanValue(Parameter::getGlobalParameter('paramMailShowDetail'))) {
-    	$message.= $nx . $item . " #" . $this->id . $xn;
+    if ($directStatusMail and isset($directStatusMail->message)) {
+    	$message=$directStatusMail->message.'<br/><br/>'.$message;  	
+    	$arrayFrom[]='${sender}';
+      $user=$_SESSION['user'];
+      $arrayTo[]=($user->resourceName)?$user->resourceName:$user->$name;
+    	$title=str_replace($arrayFrom, $arrayTo, '[${dbName}] '. i18n("from") . ' ${sender} : ${item} #${id}' );
+    }
 
-      $message.=$hx . $this->getColCaption('idProject') . $xh;
-      $message.=$tx . SqlList::getNameFromId('Project', $this->idProject) . $xt;
-
-      $message.=$hx . $this->getColCaption('id' . get_class($this) . 'Type') . $xh;
-      $message.=$tx . SqlList::getNameFromId(get_class($this) . 'Type', $this->{'id' . get_class($this) . 'Type'}) . $xt;
-
-      $message.=$hx . $this->getColCaption('name') . $xh;
-      $message.=$tx . htmlEncode($this->name,'mail') . $xt;
-
-      if (property_exists($this,'description')) {
-        $message.=$hx . $this->getColCaption('description') . $xh;
-        $message.=$tx . htmlEncode($this->description,'mail') . $xt;
-      }
-      $message.=$hx . $this->getColCaption('idUser') . $xh;
-      $message.=$tx . SqlList::getNameFromId('User', $this->idUser) . $xt;
-
-      $message.=$hx . $this->getColCaption('idStatus') . $xh;
-      $message.=$tx . SqlList::getNameFromId('Status', $this->idStatus) . $xt;
-
-      $message.=$hx . $this->getColCaption('idResource') . $xh;
-      $message.=$tx . SqlList::getNameFromId('Resource', $this->idResource) . $xt;
-
-      if (property_exists($this,'result')) {
-        $message.=$hx . $this->getColCaption('result') . $xh;
-        $message.=$tx . htmlEncode($this->result,'mail') . $xt;
-      }
-    }*/
     $message='<html>' . "\n" .
       '<head>'  . "\n" .
       '<title>' . $title . '</title>' . "\n" .
-      '<link rel="stylesheet" type="text/css" href="http://track.projectorria.org/view/css/projector.css" />' .
       '</head>' . "\n" .
       '<body>' . "\n" .
       $message . "\n" .
@@ -2321,7 +2266,14 @@ abstract class SqlElement {
       '</html>';
     $message = wordwrap($message, 70); // wrapt text so that line do not exceed 70 cars per line
     $resultMail=sendMail($dest, $title, $message, $this);
- 
+    if ($directStatusMail) {
+debugLog("resultMail=$resultMail  for dest=$dest");
+    	if ($resultMail) {
+    		return array('result'=>'OK', 'dest'=>$dest);
+    	} else {
+    		return array('result'=>'', 'dest'=>$dest);
+    	}
+    }
     return $resultMail;
   }
 

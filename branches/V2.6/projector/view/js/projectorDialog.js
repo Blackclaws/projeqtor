@@ -3520,6 +3520,6 @@ function dialogMailToOtherChange() {
 }
 
 function sendMail() {
-  alert('Not implemented');
+  loadContent("../tool/sendMail.php?className=Mailable", "resultDiv", "mailForm", true, 'mail');
   dijit.byId("dialogMail").hide();
 }
