@@ -227,7 +227,7 @@ checkVersion(); ?>
         <table align="center" >
           <tr style="height:10px;" >
             <td align="left" style="height: 1%;" valign="top">
-              <div style="position: relative; left: -5px;width: 300px; height: 50px; background-size: contain; background-repeat: no-repeat;
+              <div style="position: relative; left: -5px;width: 300px; height: 54px; background-size: contain; background-repeat: no-repeat;
               background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/title.gif';?>);">
               </div>
             </td>
