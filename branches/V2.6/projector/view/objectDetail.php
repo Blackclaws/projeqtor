@@ -534,7 +534,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col=='color' and $dataLength == 7 ){
         // Draw a color selector ============================================== COLOR
-        echo "<table ><tr><td class='detail'>";
+        echo "<table><tr><td class='detail'>";
         echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly tabindex="-1" ';
         echo $name;
         echo $attributes;
@@ -567,7 +567,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</div>';
         }
         echo '</td><td>';
-        echo '&nbsp;';
         echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
         echo ' title="' . i18n('helpResetColor') . '" >';
         echo '<span>' . i18n('resetColor') . '</span>';
