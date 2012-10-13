@@ -2267,7 +2267,7 @@ abstract class SqlElement {
     $message = wordwrap($message, 70); // wrapt text so that line do not exceed 70 cars per line
     $resultMail=sendMail($dest, $title, $message, $this);
     if ($directStatusMail) {
-debugLog("resultMail=$resultMail  for dest=$dest");
+//debugLog("resultMail=$resultMail  for dest=$dest");
     	if ($resultMail) {
     		return array('result'=>'OK', 'dest'=>$dest);
     	} else {
@@ -2295,7 +2295,9 @@ debugLog("resultMail=$resultMail  for dest=$dest");
     $tableStart='<table style="font-size:9pt; width: 95%">';
     $tableEnd='</table>';
     $msg=$tableStart;
-    $msg.='<tr><td colspan="2" style="font-size:18pt;color:#AAAAAA">'.i18n(get_class($this)).' #'.$this->id.'</td></tr>';
+    $url=$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $ref=substr($url,0,strpos($url,'/tool/')).'/view/main.php?directAccess=true&objectClass='.get_class($this).'&objectId='.$this->id;
+    $msg.='<tr><td colspan="2" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.$this->id.'</a></td></tr>';
     $nobr=false;
   	foreach ($this as $col => $val) {
   		$hide=false;

@@ -200,5 +200,29 @@ class Document extends SqlElement {
       
     }
   }
+  
+  public function save() {
+  	$old=new Document($this->id);
+  	$sep=Parameter::getGlobalParameter('paramPathSeparator');
+  	$result=parent::save();
+  	if ($old->idDocumentDirectory!=$this->idDocumentDirectory) {
+  		// directory changed, must must files !
+  		$oldDir=New DocumentDirectory($old->idDocumentDirectory);
+  		$oldLoc=$oldDir->getLocation();
+  		$newDir=New DocumentDirectory($this->idDocumentDirectory);
+  		$newLoc=$newDir->getLocation();
+  		if ($oldLoc!=$newLoc) {
+  			if (! is_dir($newLoc)) {
+  				mkdir($newLoc,'0777',true);
+  			}
+  			$vers=new DocumentVersion();
+  			$versList=$vers->getSqlElementsFromCriteria(array('idDocument'=>$this->id));
+	  		foreach ($versList as $vers) {
+	  		  rename($oldLoc.$sep.$vers->fileName.'.'.$vers->id,$newLoc.$sep.$vers->fileName.'.'.$vers->id);
+	  		}
+  		}
+  	}
+  	return $result;
+  }
 }
 ?>

@@ -638,7 +638,11 @@ function checkLogin() {
     } else {
       quitConfirmed=true;
       noDisconnect=true;
-      window.location="main.php";
+      url="main.php";
+      if (dojo.byId("objectClass") && dojo.byId("objectId")) {
+    	  url+="?objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
+      }
+      window.location=url;
     }
   } else {
     hideWait();

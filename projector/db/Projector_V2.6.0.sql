@@ -137,7 +137,7 @@ INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
 
 UPDATE `${prefix}copyable` SET sortOrder=32 WHERE id=7;
 
-UPDATE ``${prefix}project` set sortOrder=(select wbsSortable from `${prefix}planningelement` where refType='Project' and refId=`${prefix}project`.id);
+UPDATE `${prefix}project` set sortOrder=(select wbsSortable from `${prefix}planningelement` where refType='Project' and refId=`${prefix}project`.id);
 
 ALTER TABLE `${prefix}status` ADD COLUMN `isCopyStatus` int(1) unsigned default 0;
 
@@ -151,3 +151,6 @@ ALTER TABLE `${prefix}workelement` CHANGE plannedWork plannedWork DECIMAL(9,5) U
 ALTER TABLE `${prefix}statusmail` ADD COLUMN `mailToManager` int(1) unsigned default 0;
 
 UPDATE `${prefix}runstatus` set name='notPlanned' WHERE name='void';
+
+INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`, idDefaultLinkable) VALUES
+(14,'Project',0,14);

@@ -9,6 +9,7 @@
 function workOpenCloseLine(line, scope) {
 	var nbLines=dojo.byId('nbLines').value;
 	var wbsLine=dojo.byId('wbs_'+line).value;
+	var wbsLineTop=wbsLine.substr(0,wbsLine.lastIndexOf("."));
 	var action=(dojo.byId('status_'+line).value=='opened')?"close":"open";
 	if (action=="close") {
 		dojo.byId('group_' + line).className="ganttExpandClosed";
@@ -21,9 +22,13 @@ function workOpenCloseLine(line, scope) {
 	}
 	for (i=line+1; i<=nbLines; i++) {
 		var wbs=dojo.byId('wbs_'+i).value;
+		var wbsTop=wbs.substr(0,wbs.lastIndexOf("."));
 		if (wbs.length <= wbsLine.length ) {
 			break;
 		} 
+		if (wbsTop.substr(0,wbsLineTop.length)!=wbsLineTop) {
+		  break;
+		}
 		if (action=="close") {
 		  dojo.byId('line_' + i).style.display = "none";
 		} else {
