@@ -3,7 +3,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
   require_once "../tool/projector.php";  
-  scriptLog('   ->/tool/jsonPlanning.php');
+  scriptLog('   ->/tool/jsonPlanning_pdf.php');
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
@@ -181,6 +181,12 @@
     echo ' ] }'; 
   }
 
+  /**
+  *
+  * displayGantt
+  *
+  **/
+  
   function displayGantt($result) {
   	global $displayResource, $outMode;;
     $showWbs=false;
@@ -196,6 +202,7 @@
     if (array_key_exists('startDate',$_REQUEST)) {
       $startDate=$_REQUEST['startDate'];
     }
+	
     $endDate='';
     if (array_key_exists('endDate',$_REQUEST)) {
       $endDate=$_REQUEST['endDate'];
@@ -266,8 +273,8 @@
         //}
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
-        //if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
-        if ($minDate=='' or ($minDate>$pStart and trim($pStart))) { $minDate=$pStart;}
+        if ($minDate=='' or ($minDate>$pStart and trim($pStart))) {$minDate=$pStart;}
+		
       }
       if ($minDate<$startDate) {
         $minDate=$startDate;
@@ -301,13 +308,47 @@
         $day=addDaysToDate($day,1);
       }
       //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;     
+	  $table_witdh = "97%";
+	  //Init tab sizes
+	  if($format == "day"){
+		  if($topUnits < 11){
+			$left_size = 0.4;
+		  } else if($topUnits < 21){
+			$left_size = 0.3;
+		  } else {
+			$left_size = 0.2;
+		  }
+	  } else if($format=='week') {
+		  if($topUnits < 24){
+			$left_size = 0.4;
+		  } else if($topUnits < 34){
+			$left_size = 0.3;
+		  } else if($topUnits < 44){
+			$left_size = 0.25;
+		  } else {
+			$left_size = 0.2;
+		  }
+	  } else if($format=='month') {
+		  if($topUnits < 21){
+			$left_size = 0.4;
+		  } else if($topUnits < 31){
+			$left_size = 0.35;
+		  } else {
+			$left_size = 0.3;
+		  }
+		  $table_witdh = "96%";
+	  }
+	  $right_size = 1 - $left_size;
+	  $fontsize_global = $left_size * 1.5;
+	  
       // Header
       $sortArray=Parameter::getPlanningColumnOrder();
       $cptSort=0;
       foreach ($sortArray as $name) {	if ($name) $cptSort++; }
       //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<table style="font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
-      echo '<tr style="height: 20px;"><td colspan="' . (2+$cptSort) . '">&nbsp;</td>';
+      echo '<table style="font-size:'.($fontsize_global*100).'%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;height: 100%;width:'.$table_witdh.'">';
+      echo '<tr style="height: 2%;width:100%;padding:0px;margin:0px;">
+			<td colspan="' . (2+$cptSort) . '" style="width:'.($left_size*100).'%;padding:0px;margin:0px;">&nbsp;</td>';
       $day=$minDate;
       for ($i=0;$i<$topUnits;$i++) {
         $span=$topUnit;
@@ -323,7 +364,7 @@
           $title=substr($day,0,4) . " #" . weekNumber($day);
           $title.=' (' . substr(i18n(date('F', $date)),0,4) . ')';
         }
-        echo '<td class="reportTableHeader" colspan="' . $span . '">';
+        echo '<td class="reportTableHeader" colspan="' . $span . '" style="width:'.(($right_size*100)/$topUnits).'%;padding:0px;margin:0px;">';
         echo $title;
         echo '</td>';
         if ($format=='month') {
@@ -333,20 +374,20 @@
         }
       }
       echo '</tr>';
-      echo '<TR style="height: 20px;">';
-      echo '  <TD class="reportTableHeader" style="width:15px; border-right:0px;"></TD>';
-      echo '  <TD class="reportTableHeader" style="width:150px; border-left:0px; text-align: left;">' . i18n('colTask') . '</TD>';
+      echo '<TR style="height: 2%;width:100%;padding:0px;margin:0px;">';
+      echo '  <TD class="reportTableHeader" style="border-right:0px;width:'.(5*$left_size).'%padding:0px;margin:0px;"></TD>';
+      echo '  <TD class="reportTableHeader" style=" border-left:0px; text-align: left;width:'.(20*$left_size).'%;padding:0px;margin:0px;">' . i18n('colTask') . '</TD>';
       foreach ($sortArray as $col) {
-        if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colValidated') . '</TD>' ;
-      	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colAssigned') . '</TD>' ;
-        if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colReal') . '</TD>' ;
-        if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colLeft') . '</TD>' ;
-        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colPlanned') . '</TD>' ;
-        if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:30px">' . i18n('colDuration') . '</TD>' ;
-        if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
-        if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
-        if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
-        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colResource') . '</TD>' ;
+        if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colValidated') . '</TD>' ;
+      	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssigned') . '</TD>' ;
+        if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReal') . '</TD>' ;
+        if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colLeft') . '</TD>' ;
+        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colPlanned') . '</TD>' ;
+        if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colDuration') . '</TD>' ;
+        if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPct') . '</TD>' ;
+        if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colStart') . '</TD>' ;
+        if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colEnd') . '</TD>' ;
+        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:'.(11*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colResource') . '</TD>' ;
       }
       $weekendColor="#cfcfcf";
       $day=$minDate;
@@ -358,13 +399,26 @@
           $date= mktime(0, 0, 0, $tDate[1], $tDate[2]+1, $tDate[0]);
           $title=i18n(date('F', $date));
           $span=numberOfDaysOfMonth($day);
+		  $font_size_header = "90%";
         } else if($format=='week') {
           $title=substr(htmlFormatDate($day),0,5);
+		  $font_size_header = "100%";
         } else if ($format=='day') {
           $color=($openDays[$i]==1)?'':'background-color:' . $weekendColor . ';';
           $title=substr($days[$i],-2);
+		  if($topUnits < 10){
+			$font_size_header = "100%";
+		  } else if(($topUnits <16) or (($topUnits > 20) and ($topUnits < 26))){
+			$font_size_header = "90%";
+		  } else if(($topUnits <18) or (($topUnits > 25) and ($topUnits < 30))){
+			$font_size_header = "80%";
+		  } else if(($topUnits <21) or (($topUnits > 29) and ($topUnits < 36))){
+			$font_size_header = "70%";
+		  } else {
+			$font_size_header = "60%";
+		  }
         }
-        echo '<td class="reportTableColumnHeader" colspan="' . $span . '" style="width:' . $colWidth . 'px;magin:0px;padding:0px;' . $color . '">';
+        echo '<td class="reportTableColumnHeader" colspan="' . $span . '" style="font-size:'.$font_size_header.';magin:0px;padding:0px;width:'.(($right_size*100)/$numUnits).'%;' . $color . '">';
         echo $title . '</td>';
         if ($format=='month') {
           $day=addMonthsToDate($day,1);
@@ -378,8 +432,6 @@
       $width=round($colWidth/$colUnit) . "px;";
       $collapsedList=Collapsed::getCollaspedList();
       $closedWbs='';
-      $level=1;
-      $wbsLevelArray=array();
       foreach ($resultArray as $line) {
         $pEnd=$line['pEnd'];
         $pStart=$line['pStart'];
@@ -404,7 +456,7 @@
         $bgColor="";
         if( $pGroup) {
           $rowType = "group";
-          $compStyle="font-weight: bold; background: #E8E8E8;";
+          $compStyle="font-weight: bold; background: #E8E8E8;padding:0px;margin:0px;";
           $bgColor="background: #E8E8E8;";
         } else if( $line['refType']=='Milestone'){
           $rowType  = "mile";
@@ -412,21 +464,11 @@
           $rowType  = "row";
         }
         $wbs=$line['wbsSortable'];
-        $wbsTest=$wbs;
-        $level=1;
-        while (strlen($wbsTest)>3) {
-        	$wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
-        	if (array_key_exists($wbsTest, $wbsLevelArray)) {
-        		$level=$wbsLevelArray[$wbsTest]+1;
-        		$wbsTest="";
-        	}
-        }
-        $wbsLevelArray[$wbs]=$level;
-        //$level=(strlen($wbs)+1)/4;
+        $level=(strlen($wbs)+1)/4;
         $tab=""; 
-        for ($i=1;$i<$level;$i++) {
+        /*for ($i=1;$i<$level;$i++) {
           $tab.='<span class="ganttSep" >&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-        }       
+        }     */  
         $pName=($showWbs)?$line['wbs']." ":"";
         $pName.= htmlEncode($line['refName']);
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
@@ -436,39 +478,39 @@
           //echo ' display:none;';
           continue;
         }
-        echo '<TR style="height:18px;' ;
-        
+        echo '<TR style="height:2%;width:100%;padding:0px;margin:0px;' ;  
         echo '">';
-        echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
-        echo '<span style="width: 16px;height:100%;vertical-align:middle;">';
+        echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">
+		<img style="height:80%" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
+        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(30*$left_size).'%;"><NOBR>' . $tab ;
+        echo '<span style="height:100%;vertical-align:middle;">';
         if ($pGroup) {
           if ($collapsed) {
-            echo '<img style="width:12px" src="../view/css/images/plus.gif" />';
+            echo '<img style="height:50%" src="../view/css/images/plus.gif" />';
           } else {
-            echo '<img style="width:12px" src="../view/css/images/minus.gif" />';
+            echo '<img style="height:50%" src="../view/css/images/minus.gif" />';
           }         
         } else {
         	if ($line['refType']=='Milestone') {
-        		echo '<img style="width:12px" src="../view/css/images/mile.gif" />';
+        		echo '<img style="height:50%" src="../view/css/images/mile.gif" />';
         	} else {
-            echo '<img style="width:12px" src="../view/css/images/none.gif" />';
+            echo '<img style="height:50%" src="../view/css/images/none.gif" />';
         	}
         }
         //<div style="float: left;width:16px;">&nbsp;</div></span>';
         echo '</span>&nbsp;';
         echo $pName . '</NOBR></TD>';
         foreach ($sortArray as $col) {
-          if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
-          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
-          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;
-          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["leftWork"])  . '</TD>' ;
-          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["plannedWork"])  . '</TD>' ;
-          if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
-          if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter($progress) . '</TD>' ;
-          if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
-          if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
-          if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
+          if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
+          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
+          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;
+          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["leftWork"])  . '</TD>' ;
+          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["plannedWork"])  . '</TD>' ;
+          if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $duration  . '</TD>' ;
+          if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . percentFormatter($progress) . '</TD>' ;
+          if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(10*$left_size).'%;">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
+          if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(10*$left_size).'%;">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
+          if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(10*$left_size).'%;" >' . $line["resource"]  . '</TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';
@@ -506,7 +548,7 @@
           $height=($pGroup)?'8':'12';      
           if ($days[$i]>=$pStart and $days[$i]<=$pEnd) {
             if ($rowType=="mile") {
-              echo '<td class="reportTableData" style="font-size: ' . $fontSize . ';' . $color . $noBorder . ';color:' . $pColor . ';">';
+              echo '<td class="reportTableData" style="' . $color . $noBorder . ';color:' . $pColor . ';width:'.(($right_size*100)/$numDays).'%;">';
               if($progress < 100) {
                 echo '&loz;' ;
               } else { 
@@ -514,13 +556,13 @@
               }
             } else {
               $subHeight=round((18-$height)/2);
-              echo '<td class="reportTableData" style="width:' . $width .';padding:0px;' . $color . '; vertical-align: middle;' . $noBorder . '">';
+              echo '<td class="reportTableData" style="padding:0px;margin:0px;font-size:'.$fontSize.';' . $color . '; vertical-align: middle;' . $noBorder . ';width:'.(($right_size*100)/$numDays).'%;">';
               if ($pGroup and ($days[$i]==$pStart or $days[$i]==$pEnd) and $outMode!='pdf') {
                 echo '<div class="ganttTaskgroupBarExtInvisible" style="float:left; height:4px"></div>';
               }
-              echo '<table width="100%" >';
+              echo '<table width="100%" height="100%" >';
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';              
-              echo '<tr height="' . $height . 'px"><td style="width:100%; ' . $pBackground . 'height:' .  $height . 'px;"></td></tr>';              
+              echo '<tr height="100%" width="100%"><td style="' . $pBackground . 'height:' .  $height . 'px;width:100%;padding:0px;margin:0px;"></td></tr>';              
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
               if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
@@ -538,13 +580,13 @@
               $dispCaption=($showResource)?true:false;
             } 
           } else { 
-            echo '<td class="reportTableData" width="' . $width .'" style="width: ' . $width . $color . $noBorder . '">';
+            echo '<td class="reportTableData" style="'. $color . $noBorder . 'padding:0px;margin:0px;width:'.(($right_size*100)/$numDays).'%;">';
             //if($format=='week') {
               //echo '&nbsp;&nbsp;';
             //}
             if ($days[$i]>$pEnd and $dispCaption) {
             	echo '<div style="position: relative; top: 0px; height: 12px;">';
-            	echo '<div style="position: absolute; top: -1px; left: 1px; height:12px; width:200px;">';
+            	echo '<div style="position: absolute; top: -1px; left: 1px; height:12px;">';
             	echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">' . $line['resource'] . '</div>';
             	echo '</div>';
             	echo '</div>';
@@ -560,9 +602,7 @@
   }
   
   function exportGantt($result) {
-  	$paramDbDisplayName=Parameter::getGlobalParameter('paramDbDisplayName');
-  	$currency=Parameter::getGlobalParameter('currency');
-  	$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
+  	global $paramDbDisplayName, $currency, $currencyPosition;
   	$nl="\n";
   	$hoursPerDay=Parameter::getGlobalParameter('dayTime');
     $startDate=date('Y-m-d');

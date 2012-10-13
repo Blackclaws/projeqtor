@@ -123,7 +123,8 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
                          id="listPrintPdf" name="listPrintPdf"
                          iconClass="iconPdf" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
+                          //showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
+                           showPrint("../tool/jsonPlanning_pdf.php", 'planning', null, 'pdf');
                           </script>
                         </button>
                       </td>
