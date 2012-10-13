@@ -482,7 +482,14 @@ foreach ($listParam as $param) {
           <script type="dojo/connect" event="onClick" args="evt">
             dojo.byId('outMode').value='pdf';
             var fileName=dojo.byId('reportFile').value;
-            showPrint("../report/"+ fileName, 'report', null, 'pdf');
+            //showPrint("../report/"+ fileName, 'report', null, 'pdf');
+            if(fileName.lastIndexOf("jsonPlanning.php") != -1){
+              showPrint("../report/"+ fileName.substring(0,fileName.indexOf("php")-1) +"_pdf" + fileName.substring(fileName.indexOf("php")-1,fileName.length), 'report', null, 'pdf');
+            }else if(fileName.lastIndexOf("jsonResourcePlanning.php") != -1){
+              showPrint("../report/"+ fileName.substring(0,fileName.indexOf("php")-1) +"_pdf"+ fileName.substring(fileName.indexOf("php")-1,fileName.length), 'report', null, 'pdf');
+            }else{
+              showPrint("../report/"+ fileName, 'report', null, 'pdf');
+            }
           </script>
       </button>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>

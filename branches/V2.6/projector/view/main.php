@@ -501,7 +501,7 @@ checkVersion(); ?>
     //   $printWidth = $_SESSION['screenWidth'] * 0.8;
     //}
     if (array_key_exists('screenHeight',$_SESSION)) {
-      $printHeight=round($_SESSION['screenHeight']*0.65);
+      $printHeight=round($_SESSION['screenHeight']*0.50);
     }
   ?> 
   <div id="printPreview" dojoType="dijit.layout.ContentPane" region="center">

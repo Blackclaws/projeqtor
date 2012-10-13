@@ -125,7 +125,7 @@ $saveShowProject=$saveShowProjectObj->parameterValue;
                          id="listPrintPdf" name="listPrintPdf"
                          iconClass="iconPdf" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          showPrint("../tool/jsonResourcePlanning.php", 'planning', null, 'pdf');
+                          showPrint("../tool/jsonResourcePlanning_pdf.php", 'planning', null, 'pdf');
                           </script>
                         </button>
                       </td>

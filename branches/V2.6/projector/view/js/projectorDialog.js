@@ -249,6 +249,7 @@ function showPrint (page, context, comboName, outMode) {
 		var frm=dojo.byId('reportForm');
 		frm.action="../view/print.php";
 		if (outMode) {
+			frm.page.value = page;
 			dojo.byId('outMode').value=outMode;
 		} else {
 			dojo.byId('outMode').value='';
