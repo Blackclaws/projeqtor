@@ -41,6 +41,8 @@ class Project extends SqlElement {
   public $_col_2_2_successor;
   public $_Dependency_Successor=array();
   public $sortOrder;
+  public $_col_1_1_Link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();
 

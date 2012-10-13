@@ -1,7 +1,7 @@
 <?php
 // =======================================================================================
 // Automatically generated parameter file
-// on 2012-10-10 18:40:55
+// on 2012-10-13 20:41:17
 // =======================================================================================
 $paramDbType='mysql';
 $paramDbHost='127.0.0.1';
@@ -18,7 +18,7 @@ $paramLdap_search_user='cn=Manager,dc=mydomain,dc=com';
 $paramLdap_search_pass='secret';
 $paramLdap_user_filter='uid=%USERNAME%';
 $paramDefaultPassword='projector';
-$paramPasswordMinLength='4';
+$paramPasswordMinLength='2';
 $lockPassword='false';
 $paramDefaultLocale='en';
 $paramDefaultTimezone='Europe/Paris';

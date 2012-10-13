@@ -7,7 +7,7 @@
 //session_start();session_destroy();
   require_once "../tool/projector.php";
   require_once "../tool/formatter.php";
-  scriptLog('   ->/view/objectDetail.php');
+scriptLog('   ->/view/objectDetail.php');
   if (! isset($comboDetail)) {
     $comboDetail=false;
   }
@@ -290,9 +290,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     } else {
       $attributes=''; $isRequired=false; $readOnly=false;
       $specificStyle=''; 
-      if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType) {
+      if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType ) {
         $lock='lock' . ucfirst($col);
-        if (property_exists($objType,$lock) and $objType->$lock) {
+        if ( ! $obj->id or (property_exists($objType,$lock) and $objType->$lock) ) {
           $attributes.=' readonly tabindex="-1"';
           $readOnly=true;
         }
@@ -1431,8 +1431,8 @@ function drawAttachementsFromObject($obj, $refresh=false) {
 	        echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
 	      }
 	      if ($attachement->link and ! $print) {
-	        echo '<a href="' . $attachement->link .'"';
-	        echo ' target="#" title="' . urldecode($attachement->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
+	          echo '<a href="' . $attachement->link .'"';
+	          echo ' target="#" title="' . urldecode($attachement->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
 	      }
 	      if ($attachement->idUser==$user->id and ! $print and $canUpdate) {
 	        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachement(' . $attachement->id . ');" title="' . i18n('removeAttachement') . '" class="smallButton"/>';

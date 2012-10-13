@@ -340,7 +340,12 @@ class PlannedWork extends GeneralWork {
                       $plannedProj=$ress[$projectKey][$week];
                     }
                     $rateProj=$ress[$projectKey]['rate'] / 100;
-                    $leftProj=round(5*$capacity*$rateProj,2)-$plannedProj; // capacity for a week
+                    if ($rateProj==1) {
+                    	$leftProj=round(7*$capacity*$rateProj,2)-$plannedProj; // capacity for a full week
+                    	// => to be able to plan weekends
+                    } else {
+                      $leftProj=round(5*$capacity*$rateProj,2)-$plannedProj; // capacity for a week
+                    }
                     if ($value>$leftProj) {
                       $value=$leftProj;
                     }

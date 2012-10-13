@@ -54,6 +54,11 @@
 </head>
 
 <body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
+<?php if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST) ) {
+echo '<input type="hidden" id="objectClass" value="' . $_REQUEST['objectClass'] . '" />';
+echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" />';
+}
+?>
   <div id="waitLogin" style="display:none" >
   </div> 
   <table align="center" width="100%" height="100%" class="loginBackground">

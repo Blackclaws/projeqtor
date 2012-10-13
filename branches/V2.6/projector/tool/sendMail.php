@@ -56,13 +56,13 @@
     $directStatusMail->message=$message; // Attention, do not save this status mail
     $resultMail=$obj->sendMailIfMailable(false, false, false, false, false, $directStatusMail);
     if (! $resultMail or ! is_array($resultMail)) {
-debugLog("sendMail without result");
+//debugLog("sendMail without result");
     	$result="";
     	$dest="";
     } else {
     	$result=$resultMail['result'];
       $dest=$resultMail['dest'];
-debugLog("sendMail with result: result=$result, dest=$dest");
+//debugLog("sendMail with result: result=$result, dest=$dest");
     }
   }
   

@@ -415,6 +415,8 @@ class Parameter extends SqlElement {
    */
   static public function regenerateParamFile($echoResult=false) {
   	global $parametersLocation;
+  	// Security : copy file 
+  	copy($parametersLocation, $parametersLocation.'.'.date('YmdHis'));
   	$fileHandler = fopen($parametersLocation,"r");
     if (!$fileHandler) {
     	throwError("Error opening file $parameterLocation");
