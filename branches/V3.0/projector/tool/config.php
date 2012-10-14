@@ -11,15 +11,21 @@ $param=array();
 
 $param['DbType'] = 'mysql';                           
 $label['DbType'] = "Database type";
-$value['DbType'] = "leave 'mysql' (only possible value)";
+$value['DbType'] = "'mysql' or 'pgsql' (for PostgreSql)";
 $pname['DbType'] = 'paramDbType';
-$ctrls['DbType'] = '=mysql=';
+$ctrls['DbType'] = '=mysql=pgsql=';
 
 $param['DbHost'] = 'localhost';                       
 $label['DbHost'] = "Database host";
-$value['DbHost'] = "MySql Server name (default is 'localhost')";
+$value['DbHost'] = "Database Server name (default is 'localhost')";
 $pname['DbHost'] = 'paramDbHost';
 $ctrls['DbHost'] = 'mandatory';
+
+$param['DbPort'] = '3306';                       
+$label['DbPort'] = "Database port";
+$value['DbPort'] = "Database Server Port (default is '', 3306 for MySql, 5432 for PostgreSql)";
+$pname['DbPort'] = 'paramDbPort';
+$ctrls['DbPort'] = '';
 
 $param['DbUser'] = 'root';                            
 $label['DbUser'] = "Database user to connect";
@@ -160,7 +166,7 @@ $value['MailMessage'] = 'message of automatic mails, may content ${item}, ${id},
 $pname['MailMessage'] = 'paramMailMessage';
 $ctrls['MailMessage'] = '';
 
-$param['MailShowDetail'] = 'true"';                              
+$param['MailShowDetail'] = 'true';                              
 $label['MailShowDetail'] = "Automatic mail show detail";
 $value['MailShowDetail'] = "'true' or 'false', set to true to add detail of item in automatic mail message";
 $pname['MailShowDetail'] = 'paramMailShowDetail';
@@ -346,6 +352,7 @@ $ctrls['billCode'] = '>=0';
     dojo.require("dojo.date.locale");
     dojo.require("dojo.number");
     dojo.require("dijit.Dialog"); 
+    dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.Button");
@@ -400,9 +407,27 @@ $ctrls['billCode'] = '>=0';
               <?php } else {?>
               <tr>     
                 <td class="label" style="width:300px"><label style="width:300px"><?php echo $label[$par]?>&nbsp;:&nbsp;</label></td>
-                <td><input id="param[<?php echo $par;?>]" name="param[<?php echo $par;?>]" 
+                <td>
+                <?php if (substr($ctrls[$par],0,1)=='=') {?>
+                <select id="param[<?php echo $par;?>]" class="input" name="param[<?php echo $par;?>]" 
+                   style="width:300px" xdojoType="dijit.form.FilterigSelect" 
+                   value="<?php echo $val;?>" >
+                 <?php $split=explode('=',$ctrls[$par]);
+                 foreach($split as $val) {
+                   if ($val!='=' and $val) {
+                   	 echo '<option value="'.$val.'"';
+                   	 if ($val==$param[$par]) {echo ' selected="selected" ';}
+                   	 echo '>';
+                   	 echo $val;
+                   	 echo '</option>';
+                   }
+                 }?>
+                </select>                    
+                <?php } else {?>
+                <input id="param[<?php echo $par;?>]" name="param[<?php echo $par;?>]" 
                    style="width:300px" type="text"  dojoType="dijit.form.TextBox" 
                    value="<?php echo $val;?>" />
+                <?php }?>
                 </td>
                 <td>
                 &nbsp;&nbsp;
@@ -446,7 +471,7 @@ $ctrls['billCode'] = '>=0';
               <tr>
                 <td>&nbsp;</td>
                 <td colspan="3">
-                  <div id="configResultDiv" dojoType="dijit.layout.ContentPane" region="center" 
+                  <div id="configResultDiv" name="configResultDiv" dojoType="dijit.layout.ContentPane" region="center" 
                     style="width:100%; border: 0px solid black; overflow: auto;">
 					<br/><br/><br/><br/><br/>
                   </div>

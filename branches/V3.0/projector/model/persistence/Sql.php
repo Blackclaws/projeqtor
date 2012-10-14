@@ -217,7 +217,9 @@ class Sql {
     //error_reporting(0);
     enableCatchErrors();
     // defines the connection to MySql Database
-    ini_set('mysql.connect_timeout', 10);
+    if (self::$dbType == "mysql") {
+      ini_set('mysql.connect_timeout', 10);
+    }
     try {
     	$dsn = 'mysql:host='.self::$dbHost.';dbname='.self::$dbName;
     	    

@@ -2,7 +2,6 @@
 /** =========================================================================== 
  * Chek login/password entered in connection screen
  */
-
   include_once("../tool/file.php");
   restore_error_handler();
   error_reporting(0);
@@ -36,10 +35,28 @@
   }
   // check database connexion
   //error_reporting();
-  ini_set('mysql.connect_timeout', 10);
-  if ( ! $connexion = mysql_connect($param['DbHost'], $param['DbUser'], $param['DbPassword']) ) {
+  if ($param['DbType']=='mysql' and $param['DbType']=='pgsql') {
+    ini_set('mysql.connect_timeout', 10);
+  }
+  //$dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'].';dbname='.$param['DbName'];
+  $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'];
+  try {
+    $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword']);
+    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  } catch (PDOException $e) {
+    showError($e->getMessage( ));
+    showMsg('for dsn = '.$dsn);
+    exit;
+  }
+  if ( ! $connexion ) {
     showError("incorrect database parameters : wrong host or user or password");
   } 
+  try {
+    $connexion->exec('USE '.$param['DbName']);
+  } catch (PDOException $e) {
+  	showError($e->getMessage( ));
+  	exit;
+  }
   if ( ! mysql_select_db($param['DbName'], $connexion) ) {
     $query='CREATE DATABASE ' . $param['DbName'] . ' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;';
     $result = mysql_query($query,$connexion);  
