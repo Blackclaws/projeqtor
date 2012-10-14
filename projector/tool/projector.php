@@ -575,7 +575,8 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
   $paramMailSmtpPort=Parameter::getGlobalParameter('paramMailSmtpPort');
   $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
-  $paramMailEol=Parameter::getGlobalParameter('paramMailEol');
+  $eol=Parameter::getGlobalParameter('paramMailEol');
+  $eol=(isset($eol) and $eol)?$eol:"\r\n";
   if ($paramMailSmtpServer==null or strtolower($paramMailSmtpServer)=='null') {
     return "NO";
   }
@@ -599,7 +600,6 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $mail->save();  
   // Send then mail
   if (!$headers) {	
-    $eol=(isset($paramMailEol))?$paramMailEol:"\r\n";
   	$headers  = 'MIME-Version: 1.0' . $eol;
   	if ($boundary) {
   	  $headers .= 'Content-Type: multipart/mixed;boundary='.$boundary.$eol;
