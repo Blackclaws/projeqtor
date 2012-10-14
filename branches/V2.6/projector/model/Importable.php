@@ -252,10 +252,10 @@ scriptLog("import($fileName, $class)");
   }
   
   public static function getLogHeader() {
-  	$nl="\n";
+  	$nl=Parameter::getGlobalParameter('paramMailEol');
+    $nl=(isset($nl) and $nl)?$nl:"\r\n";
   	$result="";
-  	$result.='<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"'.$nl; 
-    $result.='"http://www.w3.org/TR/html4/strict.dtd">'.$nl;
+  	$result.='<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'.$nl;
     $result.='<html>'.$nl;
     $result.='<head>'.$nl;
     $result.='<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.$nl;
@@ -270,11 +270,12 @@ scriptLog("import($fileName, $class)");
     $result.='.messageWARNING{color:black;}';
     $result.='</style>'.$nl;
     $result.='</head>'.$nl;
-    $result.='<body class="white" onLoad="top.hideWait();" style="overflow: auto; ont-family:Verdana,Arial,Tahoma,sans-serif;font-size:8pt;">'.$nl;
+    $result.='<body style="font-family:Verdana,Arial,Tahoma,sans-serif;font-size:8pt;">'.$nl;
     return $result;
   }
   public static function getLogFooter() {
-  	$nl="\n";
+  	$nl=Parameter::getGlobalParameter('paramMailEol');
+    $nl=(isset($nl) and $nl)?$nl:"\r\n";
     $result="";
     $result.='</body>'.$nl;
     $result.='</html>';

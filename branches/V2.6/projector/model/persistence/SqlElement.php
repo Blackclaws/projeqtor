@@ -2252,7 +2252,7 @@ abstract class SqlElement {
     	$message=$directStatusMail->message.'<br/><br/>'.$message;  	
     	$arrayFrom[]='${sender}';
       $user=$_SESSION['user'];
-      $arrayTo[]=($user->resourceName)?$user->resourceName:$user->$name;
+      $arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
     	$title=str_replace($arrayFrom, $arrayTo, '[${dbName}] '. i18n("from") . ' ${sender} : ${item} #${id}' );
     }
 

@@ -110,7 +110,9 @@ class Cron {
   
   public static function abort() {
     errorLog('cron abnormally stopped');
-  	unlink(self::$runningFile);
+    if (file_exists(self::$runningFile)) {
+  	  unlink(self::$runningFile);
+    }
     $errorFile=fopen(self::$errorFile.'_'.date('Ymd_His'), 'w');
     fclose($errorFile);  
   } 
@@ -141,8 +143,12 @@ class Cron {
   public static function checkStopFlag() {
     if (file_exists(self::$stopFile)) { 
       traceLog('cron normally stopped at '.date('d/m/Y H:i:s'));
-      unlink(self::$runningFile);
-      unlink(self::$stopFile);
+      if (file_exists(self::$runningFile)) {
+        unlink(self::$runningFile);
+      }
+      if (file_exists(self::$stopFile)) {
+        unlink(self::$stopFile);
+      }
       return true; 
     } else {
     	return false;
@@ -258,7 +264,8 @@ scriptLog('Cron::checkImport()');
 	              traceLog($msg);
 	              $importSummary.="<span style='color:green;'>$msg</span><br/>";
 	              if (! is_dir($importDir . $pathSeparator . "done")) {
-	              	mkdir($importDir . $pathSeparator . "done",777,true);
+	              	mkdir($importDir . $pathSeparator . "done",0777,true);
+	              	
 	              }
 	              rename($importFile,$importDir . $pathSeparator . "done" . $pathSeparator . $file);
 	            } else {
@@ -272,7 +279,7 @@ scriptLog('Cron::checkImport()');
                   $importSummary.="<span style='color:red;'>$msg</span><br/>";
 	              }
 	              if (! is_dir($importDir . $pathSeparator . "error")) {
-	                mkdir($importDir . $pathSeparator . "error",777,true);
+	                mkdir($importDir . $pathSeparator . "error",0777,true);
 	              }
 	            	rename($importFile,$importDir . $pathSeparator . "error" . $pathSeparator . $file);
 	            }
@@ -291,7 +298,7 @@ scriptLog('Cron::checkImport()');
             $globalCronMode=true; // If cannot write log file, do not exit CRON (not blocking)
             $logFile=$importDir . $pathSeparator . 'logs' . $pathSeparator . substr($file, 0, strlen($file)-4) . ".log.htm";
         	  if (! is_dir($importDir . $pathSeparator . "logs")) {
-              mkdir($importDir . $pathSeparator . "logs",777,true);
+              mkdir($importDir . $pathSeparator . "logs",0777,true);
             }
             if (file_exists($logFile)) {
             	kill($logFile);
@@ -312,12 +319,12 @@ scriptLog('Cron::checkImport()');
 						  $content .= Importable::$importResult;
 						  $content .= Importable::getLogFooter();
 						  $content = chunk_split(base64_encode($content));       
-              $importFullLog .= '--'.$boundary.$eol;
+              $importFullLog .= $eol.'--'.$boundary.$eol;
               $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
               $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
               $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
               $importFullLog .= 'Content-disposition: attachment; filename="'.basename($logFile).'"'.$eol; 
-              $importFullLog .= $content.$eol;
+              $importFullLog .= $eol.$content.$eol;
               $importFullLog .= '--'.$boundary.$eol;
             }
             $cpt+=1;
