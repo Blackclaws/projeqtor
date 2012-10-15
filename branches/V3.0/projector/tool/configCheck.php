@@ -45,21 +45,26 @@
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   } catch (PDOException $e) {
     showError($e->getMessage( ));
-    showMsg('for dsn = '.$dsn);
+    showError('(1) for dsn = '.$dsn);
     exit;
   }
   if ( ! $connexion ) {
     showError("incorrect database parameters : wrong host or user or password");
   } 
+  $baseExists=true;
   try {
-    $connexion->exec('USE '.$param['DbName']);
+  	if ($param['DbType']=='mysql') {
+      $connexion->exec('USE '.$param['DbName']);
+    } else if ($param['DbType']=='pgsql') {
+    	$connexion->exec('\c '.$param['DbName']);
+    }
   } catch (PDOException $e) {
-  	showError($e->getMessage( ));
-  	exit;
+  	//showError($e->getMessage( ));
+  	$baseExists=false;
   }
-  if ( ! mysql_select_db($param['DbName'], $connexion) ) {
+  if ( ! $baseExists ) {
     $query='CREATE DATABASE ' . $param['DbName'] . ' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;';
-    $result = mysql_query($query,$connexion);  
+    $result = $connexion->exec($query);  
     if ($result) {
       showMsg('Database \'' . $param['DbName'] . '\' created.');
     } else {
