@@ -445,7 +445,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       + ( (1+vWorkWidth) * this.getShowRealWork() )
       + ( (1+vWorkWidth) * this.getShowValidatedWork() );
     var vRightWidth = vWidth - vLeftWidth - 18;
-    var ffSpecificHeight=(dojo.isFF)?' class="ganttHeight"':'';
+    var ffSpecificHeight=(dojo.isFF<16)?' class="ganttHeight"':'';
     var vLeftTable="";
     var vRightTable="";
     var vTopRightTable="";
