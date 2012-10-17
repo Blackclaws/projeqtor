@@ -41,7 +41,7 @@ ADD COLUMN `ongoingStartDateTime` datetime default null,
 ADD COLUMN `idUser` int(12) unsigned default null,
 ADD COLUMN `idActivity` int(12) unsigned default null;
 
-ALTER TABLE `${prefix}workelement` ADD INDEX workelementUser (idUser);
+CREATE INDEX workelementUser ON `${prefix}workelement` (idUser);
 
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`)
 VALUES (39,'reportVersionDetail',4,'versionDetail.php',450,0);
@@ -77,7 +77,7 @@ CREATE TABLE `${prefix}approver` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}approver` ADD INDEX approverRef (refType, refId),
-ADD INDEX approverAffectable (idAffectable);
+CREATE INDEX approverRef ON `${prefix}approver` (refType, refId);
+CREATE INDEX approverAffectable ON `${prefix}approver` (idAffectable);
 
 ALTER TABLE `${prefix}documentversion` ADD COLUMN `approved` int(1) unsigned default '0';

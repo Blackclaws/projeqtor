@@ -32,7 +32,7 @@ CREATE TABLE `${prefix}workelement` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}workelement` ADD INDEX workelementReference (refType, refId);
+CREATE INDEX workelementReference ON `${prefix}workelement` (refType, refId);
 
 UPDATE `${prefix}report` set sortOrder=150 where name='reportWorkDetailMonthly';
 UPDATE `${prefix}report` set sortOrder=160 where name='reportWorkDetailYearly';
@@ -88,7 +88,7 @@ CREATE TABLE `${prefix}context` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}context` ADD INDEX contextContextType (idContextType);
+CREATE INDEX contextContextType ON `${prefix}context` (idContextType);
 
 INSERT INTO  `${prefix}context` (idContextType, name, sortOrder) VALUES 
 (1,'Production', 100),
@@ -119,7 +119,7 @@ ADD COLUMN `idContext2` int(12) unsigned DEFAULT NULL,
 ADD COLUMN `idContext3` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}project` ADD COLUMN `idStatus` int(12) unsigned DEFAULT NULL;
-ALTER TABLE `${prefix}project` ADD INDEX projectStatus (idStatus);
+CREATE INDEX projectStatus ON `${prefix}project` (idStatus);
 
 UPDATE `${prefix}project` SET idStatus=1;
 UPDATE `${prefix}type` SET idWorkflow=1 WHERE scope='Project';

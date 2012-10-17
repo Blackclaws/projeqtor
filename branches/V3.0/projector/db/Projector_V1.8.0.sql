@@ -60,8 +60,8 @@ CREATE TABLE `${prefix}indicatorableindicator` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}indicatorableindicator` ADD INDEX indicatorableindicatorIndicatorable (idIndicatorable),
-ADD INDEX indicatorableindicatorIndicator (idIndicator);
+CREATE INDEX indicatorableindicatorIndicatorable ON `${prefix}indicatorableindicator` (idIndicatorable);
+CREATE INDEX indicatorableindicatorIndicator ON `${prefix}indicatorableindicator` (idIndicator);
 
 INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`, `nameIndicatorable`, `idle`) VALUES
 (1, 1, 'Ticket', 0),
@@ -128,9 +128,9 @@ CREATE TABLE `${prefix}indicatordefinition` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}indicatordefinition` ADD INDEX indicatordefinitionIndicatorable (idIndicatorable),
-ADD INDEX indicatordefinitionIndicator (idIndicator), 
-ADD INDEX indicatordefinitionType (idType);
+CREATE INDEX indicatordefinitionIndicatorable ON `${prefix}indicatordefinition` (idIndicatorable);
+CREATE INDEX indicatordefinitionIndicator ON `${prefix}indicatordefinition` (idIndicator);
+CREATE INDEX indicatordefinitionType ON `${prefix}indicatordefinition` (idType);
 
 CREATE TABLE `${prefix}indicatorvalue` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -154,8 +154,8 @@ CREATE TABLE `${prefix}indicatorvalue` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}indicatorvalue` ADD INDEX indicatorvalueIndicatordefinition (idIndicatorDefinition),
-ADD INDEX indicatorvalueReference (refType, refId);
+CREATE INDEX indicatorvalueIndicatordefinition ON `${prefix}indicatorvalue` (idIndicatorDefinition);
+CREATE INDEX indicatorvalueReference ON `${prefix}indicatorvalue` (refType, refId);
 
 CREATE TABLE `${prefix}alert` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

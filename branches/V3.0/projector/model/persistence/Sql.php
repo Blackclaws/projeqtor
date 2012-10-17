@@ -1,7 +1,6 @@
 <?php
 /** ===========================================================================
  * Static method defining all persistance methods
- * TODO : extend to other than MySql Database
  */
 class Sql {
 
@@ -117,7 +116,6 @@ class Sql {
       if (!$cnx->beginTransaction()) {      
         echo htmlGetErrorMessage("SQL ERROR : Error on Begin Transaction");
         errorLog("SQL ERROR : Error on Begin Transaction");
-        //errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
         exit; 
       }
       error_reporting(E_ALL ^ E_WARNING);
@@ -136,7 +134,6 @@ class Sql {
       if (! $cnx->commit()) {      
         echo htmlGetErrorMessage("SQL ERROR : Error on Commit Transaction");
         errorLog("SQL ERROR : Error on Commit Transaction");
-        //errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
         exit; 
       }
       error_reporting(E_ALL ^ E_WARNING);
@@ -155,7 +152,6 @@ class Sql {
       if (! $cnx->rollBack() ) {      
         echo htmlGetErrorMessage("SQL ERROR : Error on Rollback Transaction");
         errorLog("SQL ERROR : Error on Rollback Transaction");
-        //errorLog("[" . mysql_errno($cnx) . "] " . mysql_error($cnx));
         exit; 
       }
     }
@@ -202,7 +198,7 @@ class Sql {
       self::$dbName=Parameter::getGlobalParameter('paramDbName');     
     }
     
-    if (self::$dbType != "mysql") {
+    if (self::$dbType != "mysql" and self::$dbType != "pgsql") {
       if ($logLevel>=3) {
         echo htmlGetErrorMessage("SQL ERROR : Database type unknown '" . self::$dbType . "' \n");
       } else {
@@ -216,49 +212,20 @@ class Sql {
     //restore_error_handler();
     //error_reporting(0);
     enableCatchErrors();
-    // defines the connection to MySql Database
     if (self::$dbType == "mysql") {
       ini_set('mysql.connect_timeout', 10);
     }
     try {
-    	$dsn = 'mysql:host='.self::$dbHost.';dbname='.self::$dbName;
-    	    
+    	$dsn = self::$dbType.':host='.self::$dbHost.';dbname='.self::$dbName; 	    
     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword);
     	self::$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch (PDOException $e) {
     	echo htmlGetErrorMessage($e->getMessage( )).'<br />';
     }
-    
-    /*
-    if ( ! self::$connexion = mysql_connect(self::$dbHost, self::$dbUser, self::$dbPassword) ) { 
-      if ($logLevel>=3) {
-        echo htmlGetErrorMessage(i18n("errorConnectionCNX",array(self::$dbHost, self::$dbUser))) ;
-      } else {
-        echo htmlGetErrorMessage(i18n("errorConnectionCNX",array('*****', '*****'))) ;
-      }     
-      errorLog("SQL ERROR : Connexion error, on '" . self::$dbHost . "' for user '" . self::$dbUser . "' ");
-      errorLog("[" . mysql_errno() . "] " . mysql_error());
-      self::$lastConnectError="USER";
-      exit;
-    }
-    // defines de database name
-    if ( ! mysql_select_db(self::$dbName, self::$connexion) ) {
-      if ($logLevel>=3) {
-        echo htmlGetErrorMessage(i18n("errorConnectionDB",array(self::$dbName))) ;
-      } else {
-        echo htmlGetErrorMessage(i18n("errorConnectionDB",array('*****'))) ;
-      }     
-      errorLog("SQL ERROR : Connexion error, Database unknown '" . self::$dbName . "' ");
-      errorLog("[" . mysql_errno() . "] " . mysql_error());
-      self::$lastConnectError="BASE";
-      exit;
-    }
-    */
-    
-    ini_set('mysql.connect_timeout', 60);
-    //set_error_handler('errorHandler');
-    //error_reporting(E_ALL);
+    if (self::$dbType == "mysql") {
+      ini_set('mysql.connect_timeout', 60);
+    }        
     disableCatchErrors();
     self::$lastConnectError=NULL;
     return self::$connexion;

@@ -35,41 +35,44 @@
   }
   // check database connexion
   //error_reporting();
-  if ($param['DbType']=='mysql' and $param['DbType']=='pgsql') {
+  $dbType=$param['DbType'];
+  if ($dbType=='mysql') {
     ini_set('mysql.connect_timeout', 10);
   }
-  //$dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'].';dbname='.$param['DbName'];
+  // dsn without database
   $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'];
   try {
     $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword']);
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   } catch (PDOException $e) {
-    showError($e->getMessage( ));
-    showError('(1) for dsn = '.$dsn);
+    showError(utf8_encode($e->getMessage()));
+    showError('dsn = '.$dsn);
     exit;
   }
-  if ( ! $connexion ) {
-    showError("incorrect database parameters : wrong host or user or password");
-  } 
-  $baseExists=true;
+  $baseExists=false;
+  $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'].';dbname='.$param['DbName'];
   try {
-  	if ($param['DbType']=='mysql') {
-      $connexion->exec('USE '.$param['DbName']);
-    } else if ($param['DbType']=='pgsql') {
-    	$connexion->exec('\c '.$param['DbName']);
-    }
+  	$cnxDb = new PDO($dsn, $param['DbUser'], $param['DbPassword']);
+    $cnxDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $baseExists=true;
   } catch (PDOException $e) {
-  	//showError($e->getMessage( ));
-  	$baseExists=false;
+    $baseExists=false;
   }
   if ( ! $baseExists ) {
-    $query='CREATE DATABASE ' . $param['DbName'] . ' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;';
-    $result = $connexion->exec($query);  
-    if ($result) {
-      showMsg('Database \'' . $param['DbName'] . '\' created.');
-    } else {
-      showError('Error while trying to create Database \'' . $param['DbName'] . '\' .');
-    } 
+  	try {
+      $query='CREATE DATABASE ' . $param['DbName'];
+      if ($dbType=='mysql') {
+        $query.=' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;';
+      } else if ($dbType=='pgsql') {
+      	$query.=' ENCODING \'UNICODE\';';
+      }
+      $result=$connexion->exec($query);
+  	} catch (PDOException $e) {
+      showError($e->getMessage());
+      showError('dsn = '.$dsn);
+      exit;
+    }  
+    showMsg('Database \'' . $param['DbName'] . '\' created.');
   }
   
   // Check attachement directory (may be empty)

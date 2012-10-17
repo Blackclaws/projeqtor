@@ -194,19 +194,19 @@ CREATE TABLE `${prefix}requirement` (
   `countIssues` int(5) default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-ALTER TABLE `${prefix}requirement` ADD INDEX requirementProject (idProject),
-ADD INDEX requirementProduct (idProduct),
-ADD INDEX requirementVersion (idVersion),
-ADD INDEX requirementType (idRequirementType),
-ADD INDEX requirementUser (idUser),
-ADD INDEX requirementRequirement (idRequirement),
-ADD INDEX requirementStatus (idStatus),
-ADD INDEX requirementResource (idResource),
-ADD INDEX requirementTargetVersion (idTargetVersion),
-ADD INDEX requirementUrgency (idUrgency),
-ADD INDEX requirementCriticality (idCriticality),
-ADD INDEX requirementFeasibility (idFeasibility),
-ADD INDEX requiremenRiskLevel (idRiskLevel);
+CREATE INDEX requirementProject ON `${prefix}requirement` (idProject);
+CREATE INDEX requirementProduct ON `${prefix}requirement` (idProduct);
+CREATE INDEX requirementVersion ON `${prefix}requirement` (idVersion);
+CREATE INDEX requirementType ON `${prefix}requirement` (idRequirementType);
+CREATE INDEX requirementUser ON `${prefix}requirement` (idUser);
+CREATE INDEX requirementRequirement ON `${prefix}requirement` (idRequirement);
+CREATE INDEX requirementStatus ON `${prefix}requirement` (idStatus);
+CREATE INDEX requirementResource ON `${prefix}requirement` (idResource);
+CREATE INDEX requirementTargetVersion ON `${prefix}requirement` (idTargetVersion);
+CREATE INDEX requirementUrgency ON `${prefix}requirement` (idUrgency);
+CREATE INDEX requirementCriticality ON `${prefix}requirement` (idCriticality);
+CREATE INDEX requirementFeasibility ON `${prefix}requirement` (idFeasibility);
+CREATE INDEX requiremenRiskLevel ON `${prefix}requirement` (idRiskLevel);
 
 CREATE TABLE `${prefix}testcase` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -241,16 +241,16 @@ CREATE TABLE `${prefix}testcase` (
   `idRunStatus` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-ALTER TABLE `${prefix}testcase` ADD INDEX testcaseProject (idProject),
-ADD INDEX testcaseProduct (idProduct),
-ADD INDEX testcaseVersion (idVersion),
-ADD INDEX testcaseType (idTestCaseType),
-ADD INDEX testcaseUser (idUser),
-ADD INDEX testcaseTestCase (idTestCase),
-ADD INDEX testcaseStatus (idStatus),
-ADD INDEX testcaseResource (idResource),
-ADD INDEX testcasePriority (idPriority),
-ADD INDEX testcaseRunStatus (idRunStatus);
+CREATE INDEX testcaseProject ON `${prefix}testcase` (idProject);
+CREATE INDEX testcaseProduct ON `${prefix}testcase` (idProduct);
+CREATE INDEX testcaseVersion ON `${prefix}testcase` (idVersion);
+CREATE INDEX testcaseType ON `${prefix}testcase` (idTestCaseType);
+CREATE INDEX testcaseUser ON `${prefix}testcase` (idUser);
+CREATE INDEX testcaseTestCase ON `${prefix}testcase` (idTestCase);
+CREATE INDEX testcaseStatus ON `${prefix}testcase` (idStatus);
+CREATE INDEX testcaseResource ON `${prefix}testcase` (idResource);
+CREATE INDEX testcasePriority ON `${prefix}testcase` (idPriority);
+CREATE INDEX testcaseRunStatus ON `${prefix}testcase` (idRunStatus);
 
 CREATE TABLE `${prefix}testsession` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -282,13 +282,13 @@ CREATE TABLE `${prefix}testsession` (
   `countIssues` int(5) default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-ALTER TABLE `${prefix}testsession` ADD INDEX testsessionProject (idProject),
-ADD INDEX testsessionProduct (idProduct),
-ADD INDEX testsessionVersion (idVersion),
-ADD INDEX testsessionType (idTestSessionType),
-ADD INDEX testsessionUser (idUser),
-ADD INDEX testsessionStatus (idStatus),
-ADD INDEX testsessionResource (idResource);
+CREATE INDEX testsessionProject ON `${prefix}testsession` (idProject);
+CREATE INDEX testsessionProduct ON `${prefix}testsession` (idProduct);
+CREATE INDEX testsessionVersion ON `${prefix}testsession` (idVersion);
+CREATE INDEX testsessionType ON `${prefix}testsession` (idTestSessionType);
+CREATE INDEX testsessionUser ON `${prefix}testsession` (idUser);
+CREATE INDEX testsessionStatus ON `${prefix}testsession` (idStatus);
+CREATE INDEX testsessionResource ON `${prefix}testsession` (idResource);
 
 INSERT INTO `${prefix}referencable` (`id`, `name`, `idle`) VALUES
 (13, 'Requirement', 0),
@@ -321,10 +321,10 @@ CREATE TABLE `${prefix}testcaserun` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `${prefix}testcaserun` ADD INDEX testcaserunTestCase (idTestCase),
-ADD INDEX testcaserunTestSession (idTestSession),
-ADD INDEX testcaserunRunStatus (idRunStatus),
-ADD INDEX testcaserunTicket (idTicket);
+CREATE INDEX testcaserunTestCase ON `${prefix}testcaserun` (idTestCase);
+CREATE INDEX testcaserunTestSession ON `${prefix}testcaserun` (idTestSession);
+CREATE INDEX testcaserunRunStatus ON `${prefix}testcaserun` (idRunStatus);
+CREATE INDEX testcaserunTicket ON `${prefix}testcaserun` (idTicket);
 
 UPDATE `${prefix}priority` set name='High priority'
 WHERE name='Hight priority';

@@ -6,7 +6,7 @@ class Locker extends User {
 
   // Define the layout that will be used for lists
     
-  private static $_databaseTableName = 'user';
+  private static $_databaseTableName = 'resource';
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

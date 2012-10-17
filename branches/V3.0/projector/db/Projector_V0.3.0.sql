@@ -953,12 +953,13 @@ CREATE TABLE `${prefix}planningelement` (
   `priority` int(3) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT NULL,
   `elementary` int(1) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `planningelementTopId` (`topId`),
-  KEY `planningelementRef` (`refType`,`refId`),
-  KEY `planningelementTopRef` (`topRefType`,`topRefId`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
+CREATE INDEX planningelementTopId ON `${prefix}planningelement` (topId);
+CREATE INDEX planningelementRef ON `${prefix}planningelement` (refType,refId);
+CREATE INDEX planningelementTopRef ON `${prefix}planningelement` (topRefType,topRefId);
+  
 --
 -- Contenu de la TABLE `${prefix}planningelement`
 --
@@ -1289,10 +1290,10 @@ INSERT INTO `${prefix}urgency` (`id`, `name`, `value`, `color`, `sortOrder`, `id
 -- --------------------------------------------------------
 
 --
--- Structure de la TABLE `${prefix}user`
+-- Structure de la TABLE `${prefix}resource` (old name = user)
 --
 
-CREATE TABLE `${prefix}user` (
+CREATE TABLE `${prefix}resource` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `fullName` varchar(100) DEFAULT NULL,
@@ -1311,6 +1312,6 @@ CREATE TABLE `${prefix}user` (
 -- Contenu de la TABLE `${prefix}user`
 --
 
-INSERT INTO `${prefix}user` (`id`, `name`, `fullName`, `email`, `description`, `password`, `idProfile`, `isResource`, `isUser`, `locked`, `idle`) VALUES
+INSERT INTO `${prefix}resource` (`id`, `name`, `fullName`, `email`, `description`, `password`, `idProfile`, `isResource`, `isUser`, `locked`, `idle`) VALUES
 (1, 'admin', NULL, NULL, NULL, '21232f297a57a5a743894a0e4a801fc3', 1, 0, 1, 0, 0),
 (2, 'guest', NULL, NULL, NULL, '084e0343a0486ff05530df6c705c8bb4', 5, 0, 1, 0, 0);

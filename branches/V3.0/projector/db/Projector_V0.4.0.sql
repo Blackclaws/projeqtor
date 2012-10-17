@@ -7,10 +7,10 @@
 -- ///////////////////////////////////////////////////////////
 
 --
--- Structure de la table `${prefix}user`
+-- Structure de la table `${prefix}resource`
 --
 
-ALTER TABLE `${prefix}user` ADD phone VARCHAR(20),
+ALTER TABLE `${prefix}resource` ADD phone VARCHAR(20),
  ADD mobile VARCHAR(20),
  ADD fax VARCHAR(20),
  ADD idTeam INT(12) UNSIGNED;
