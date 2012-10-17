@@ -7,6 +7,9 @@ header ('Content-Type: text/html; charset=UTF-8');
 restore_error_handler();
 // Database parameters (connection information)
 // BE SURE THIS DATA WAY NOT BE READABLE FROM WEB (see above important notice)
+$paramFadeLoadingMode='false';
+$paramDebugMode='false';
+$defaultBillCode = '0';
 $param=array();
 
 $param['DbType'] = 'mysql';                           
@@ -23,25 +26,25 @@ $ctrls['DbHost'] = 'mandatory';
 
 $param['DbPort'] = '3306';                       
 $label['DbPort'] = "Database port";
-$value['DbPort'] = "Database Server Port (default is '', 3306 for MySql, 5432 for PostgreSql)";
+$value['DbPort'] = "Database Server Port (default is '3306' for MySql, '5432' for PostgreSql)";
 $pname['DbPort'] = 'paramDbPort';
 $ctrls['DbPort'] = '';
 
 $param['DbUser'] = 'root';                            
 $label['DbUser'] = "Database user to connect";
-$value['DbUser'] = "MySql valid user (defaul is 'root')";
+$value['DbUser'] = "valid user (default is 'root' for MySql, 'postgres' for PostgreSql)";
 $pname['DbUser'] = 'paramDbUser';
 $ctrls['DbUser'] = 'mandatory';
 
 $param['DbPassword'] = 'mysql';                       
 $label['DbPassword'] = "Database password for user";
-$value['DbPassword'] = "MySql password for user (defaul is 'mysql')";
+$value['DbPassword'] = "password for user (default is 'mysql' or '' for MySql)";
 $pname['DbPassword'] = 'paramDbPassword';
 $ctrls['DbPassword'] = '';
 
 $param['DbName'] = 'projectorria';                       
 $label['DbName'] = "Database schema name";  
-$value['DbName'] = "MySql database instance name";  
+$value['DbName'] = "database instance name";  
 $pname['DbName'] = 'paramDbName';
 $ctrls['DbName'] = 'mandatory';
 
@@ -223,8 +226,6 @@ $ctrls['CurrencyPosition'] = '=after=before=none=';
 $param['crlf05']='';
 $label['crlf05']='crlf';
 
-// === display
-$paramFadeLoadingMode='false';
 $param['FadeLoadingMode'] = 'true';                              
 $label['FadeLoadingMode'] = "Use fading mode for frames refresh";
 $value['FadeLoadingMode'] = "'true' or 'false', if set to 'true' screens will appear in a fading motion";
@@ -314,14 +315,12 @@ $value['logLevel'] = "'4' for script tracing, '3' for debug, '2' for general tra
 $pname['logLevel'] = 'logLevel';
 $ctrls['logLevel'] = '=4=3=2=1=0=';
 
-$paramDebugMode='false';
 $param['DebugMode'] = 'false';                              
 $label['DebugMode'] = "Setup Dojo debugging mode ";
 $value['DebugMode'] = "'true' or 'false'";
 $pname['DebugMode'] = 'paramDebugMode';
 $ctrls['DebugMode'] = '=true=false=';
 
-$defaultBillCode = '0';
 $param['billCode'] = '0';                              
 $label['billCode'] = "initial bill code";
 $value['billCode'] = "a number";
@@ -410,7 +409,7 @@ $ctrls['billCode'] = '>=0';
                 <td>
                 <?php if (substr($ctrls[$par],0,1)=='=') {?>
                 <select id="param[<?php echo $par;?>]" class="input" name="param[<?php echo $par;?>]" 
-                   style="width:300px" xdojoType="dijit.form.FilterigSelect" 
+                   style="width:300px" dojoType="dijit.form.FilteringSelect" 
                    value="<?php echo $val;?>" >
                  <?php $split=explode('=',$ctrls[$par]);
                  foreach($split as $val) {

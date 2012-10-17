@@ -52,6 +52,8 @@ class User extends SqlElement {
   private static $_colCaptionTransposition = array('resourceName'=>'name',
    'name'=> 'userName');
   
+  private static $_databaseTableName = 'resource';
+  
   private $_accessControlRights;
   
   public $_accessControlVisibility; // ALL if user should have all projects listed
@@ -122,6 +124,14 @@ class User extends SqlElement {
     return self::$_colCaptionTransposition;
   }  
   
+  /** ========================================================================
+   * Return the specific databaseTableName
+   * @return the databaseTableName
+   */
+  protected function getStaticDatabaseTableName() {
+    $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+    return $paramDbPrefix . self::$_databaseTableName;
+  }
   /** ========================================================================
    * Return the specific databaseTableName
    * @return the databaseTableName

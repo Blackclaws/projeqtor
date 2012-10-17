@@ -23,7 +23,7 @@ class Affectable extends SqlElement {
                                           "isResource"=>"readonly" 
   );    
   
-  private static $_databaseTableName = 'user';
+  private static $_databaseTableName = 'resource';
 
   private static $_databaseColumnName = array('name'=>'fullName',
                                               'userName'=>'name');

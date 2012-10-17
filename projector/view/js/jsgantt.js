@@ -446,7 +446,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       + ( (1+vWorkWidth) * this.getShowRealWork() )
       + ( (1+vWorkWidth) * this.getShowValidatedWork() );
     var vRightWidth = vWidth - vLeftWidth - 18;
-    var ffSpecificHeight=(dojo.isFF)?' class="ganttHeight"':'';
+    var ffSpecificHeight=(dojo.isFF<16)?' class="ganttHeight"':'';
     var vLeftTable="";
     var vRightTable="";
     var vTopRightTable="";
@@ -1813,14 +1813,14 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
   vLeftTable+='<span>';
   vLeftTable+='<button dojoType="dijit.form.Button" showlabel="false"'
 	     +' title="' + i18n('buttonCollapse') + '"'
-	     +' style="font-size:7px; text-align: center; vertical-align: middle"'
+	     +' style="font-size:5px; text-align: center; position: relative; top: -1px;vertical-align: middle; height:16px; width:16px;"'
 	     +' onclick=JSGantt.collapse('+vGanttVar+')'
 	     +' iconClass="iconCollapse">'
 	     +'</button>&nbsp;';
   vLeftTable+='</span><span >';
   vLeftTable+='<button dojoType="dijit.form.Button" showlabel="false"'
 	     +' title="' + i18n('buttonExpand') + '"'
-	     +' style="font-size:7px;"'
+	     +' style="font-size:5px;position: relative; top: -1px;vertical-align: middle; height:16px; width:16px;"'
 	     +' onclick=JSGantt.expand('+vGanttVar+')'
 	     +' iconClass="iconExpand" >'
 	     +'</button>&nbsp;';

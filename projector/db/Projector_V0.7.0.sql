@@ -24,13 +24,13 @@ CREATE TABLE `${prefix}plannedwork` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}plannedwork` ADD INDEX workDay (day),
-  ADD INDEX plannedworkWeek (week),
-  ADD INDEX plannedworkMonth (month),
-  ADD INDEX plannedworkYear (year),
-  ADD INDEX plannedworkRef (refType, refId),
-  ADD INDEX plannedworkResource (idResource),
-  ADD INDEX plannedworkAssignment (idAssignment);        
+CREATE INDEX plannedworkDay ON `${prefix}plannedwork` (day);
+CREATE INDEX plannedworkWeek ON `${prefix}plannedwork` (week);
+CREATE INDEX plannedworkMonth ON `${prefix}plannedwork` (month);
+CREATE INDEX plannedworkYear ON `${prefix}plannedwork` (year);
+CREATE INDEX plannedworkRef ON `${prefix}plannedwork` (refType, refId);
+CREATE INDEX plannedworkResource ON `${prefix}plannedwork` (idResource);
+CREATE INDEX plannedworkAssignment ON `${prefix}plannedwork` (idAssignment);        
   
 ALTER TABLE `${prefix}assignment` ADD realStartDate date DEFAULT NULL,
 ADD realEndDate date DEFAULT NULL;
@@ -48,10 +48,10 @@ CREATE TABLE `${prefix}dependency` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}dependency` ADD INDEX dependencyPredecessorRef (predecessorRefType, predecessorRefId),
-  ADD INDEX dependencyPredecessorId (predecessorId), 
-  ADD INDEX dependencySuccessorRef (successorRefType, successorRefId),
-  ADD INDEX dependencySuccessorId (successorId);        
+CREATE INDEX dependencyPredecessorRef ON `${prefix}dependency` (predecessorRefType, predecessorRefId);
+CREATE INDEX dependencyPredecessorId ON `${prefix}dependency` (predecessorId);
+CREATE INDEX dependencySuccessorRef ON `${prefix}dependency` (successorRefType, successorRefId);
+CREATE INDEX dependencySuccessorId ON `${prefix}dependency` (successorId);        
 
 --
 -- Structure de la TABLE `${prefix}dependable`
@@ -75,7 +75,7 @@ INSERT INTO `${prefix}dependable` (`id`, `name`, `idle`) VALUES (1, 'Activity', 
 -- Contenu de la table `${prefix}PlanningElement`
 --
 ALTER TABLE `${prefix}planningelement` ADD dependencyLevel NUMERIC(3) UNSIGNED;
-ALTER TABLE `${prefix}planningelement` ADD INDEX planningElementDependencyLevel (dependencyLevel);
+CREATE INDEX planningElementDependencyLevel ON `${prefix}planningelement` (dependencyLevel);
  
 --
 -- Contenu de la table `${prefix}PlanningElement`

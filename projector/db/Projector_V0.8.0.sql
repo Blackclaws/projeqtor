@@ -31,7 +31,7 @@ INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder
 (5, 'Milestone', 'PlanningModeFLOAT', 'FLOAT', 100, 0 , 0, 0),
 (6, 'Milestone', 'PlanningModeFIXED', 'FIXED', 200, 0 , 0, 1);
 
-ALTER TABLE `${prefix}user` ADD capacity NUMERIC(5,2) UNSIGNED DEFAULT 1;
+ALTER TABLE `${prefix}resource` ADD capacity NUMERIC(5,2) UNSIGNED DEFAULT 1;
 
 ALTER TABLE `${prefix}ticket` ADD done int(1) unsigned DEFAULT '0',
   ADD `doneDateTime` datetime DEFAULT NULL,

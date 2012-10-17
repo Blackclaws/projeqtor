@@ -14,65 +14,65 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
 (11, 8, 'idProject', 'projectList', 10, 'currentProject');
 
-ALTER TABLE `${prefix}action` ADD INDEX actionType (idActionType);
+CREATE INDEX actionType ON `${prefix}action` (idActionType);
 
-ALTER TABLE `${prefix}decision` ADD INDEX decisionProject (idProject),
-ADD INDEX decisionType (idDecisionType),
-ADD INDEX decisionUser (idUser),
-ADD INDEX decisionResource (idResource),
-ADD INDEX decisionStatus (idStatus);
+CREATE INDEX decisionProject ON `${prefix}decision` (idProject);
+CREATE INDEX decisionType ON `${prefix}decision` (idDecisionType);
+CREATE INDEX decisionUser ON `${prefix}decision` (idUser);
+CREATE INDEX decisionResource ON `${prefix}decision` (idResource);
+CREATE INDEX decisionStatus ON `${prefix}decision` (idStatus);
 
-ALTER TABLE `${prefix}filter` ADD INDEX filterUser (idUser);
+CREATE INDEX filterUser ON `${prefix}filter` (idUser);
 
-ALTER TABLE `${prefix}filtercriteria` ADD INDEX filtercriteriaFilter (idFilter);
+CREATE INDEX filtercriteriaFilter ON `${prefix}filtercriteria` (idFilter);
 
-ALTER TABLE `${prefix}issue` ADD INDEX issuePriority (idPriority);
+CREATE INDEX issuePriority ON `${prefix}issue` (idPriority);
 
-ALTER TABLE `${prefix}mail` ADD INDEX mailProject (idProject),
-ADD INDEX mailUser (idUser),
-ADD INDEX mailRef (refType, refId),
-ADD INDEX mailStatus (idStatus);
+CREATE INDEX mailProject ON `${prefix}mail` (idProject);
+CREATE INDEX mailUser ON `${prefix}mail` (idUser);
+CREATE INDEX mailRef (ON `${prefix}mail` refType, refId);
+CREATE INDEX mailStatus ON `${prefix}mail` (idStatus);
 
-ALTER TABLE `${prefix}meeting` ADD INDEX meetingProject (idProject),
-ADD INDEX meetingType (idMeetingType),
-ADD INDEX meetingUser (idUser),
-ADD INDEX meetingResource (idResource),
-ADD INDEX meetingStatus (idStatus);
+CREATE INDEX meetingProject ON `${prefix}meeting` (idProject);
+CREATE INDEX meetingType ON `${prefix}meeting` (idMeetingType);
+CREATE INDEX meetingUser ON `${prefix}meeting` (idUser);
+CREATE INDEX meetingResource v(idResource);
+CREATE INDEX meetingStatus ON `${prefix}meeting` (idStatus);
 
-ALTER TABLE `${prefix}planningelement` ADD INDEX planningelementPlanningMode (idPlanningMode);
+CREATE INDEX planningelementPlanningMode ON `${prefix}planningelement` (idPlanningMode);
 
-ALTER TABLE `${prefix}project` ADD INDEX projectUser (idUser);
+CREATE INDEX projectUser ON `${prefix}project` (idUser);
 
-ALTER TABLE `${prefix}question` ADD INDEX questionProject (idProject),
-ADD INDEX questionType (idQuestionType),
-ADD INDEX questionUser (idUser),
-ADD INDEX questionResource (idResource),
-ADD INDEX questionStatus (idStatus);
+CREATE INDEX questionProject ON `${prefix}question` (idProject);
+CREATE INDEX questionType ON `${prefix}question` (idQuestionType);
+CREATE INDEX questionUser ON `${prefix}question` (idUser);
+CREATE INDEX questionResource ON `${prefix}question` (idResource);
+CREATE INDEX questionStatus ON `${prefix}question` (idStatus);
 
-ALTER TABLE `${prefix}report` ADD INDEX reportCategory (idReportCategory);
+CREATE INDEX reportCategory ON `${prefix}report` (idReportCategory);
 
-ALTER TABLE `${prefix}reportparameter` ADD INDEX reportparameterReport (idReport);
+CREATE INDEX reportparameterReport ON `${prefix}reportparameter` (idReport);
 
-ALTER TABLE `${prefix}risk` ADD INDEX riskSeverity (idSeverity),
-ADD INDEX riskLikelihood (idLikelihood),
-ADD INDEX riskCriticality (idCriticality);
+CREATE INDEX riskSeverity ON `${prefix}risk` (idSeverity);
+CREATE INDEX riskLikelihood ON `${prefix}risk` (idLikelihood);
+CREATE INDEX riskCriticality ON `${prefix}risk` (idCriticality);
 
-ALTER TABLE `${prefix}statusmail` ADD INDEX statusmailStatus (idStatus),
-ADD INDEX statusmailMailable (idMailable);
+CREATE INDEX statusmailStatus ON `${prefix}statusmail` (idStatus);
+CREATE INDEX statusmailMailable ON `${prefix}statusmail` (idMailable);
 
-ALTER TABLE `${prefix}ticket` ADD INDEX ticketUrgency (idUrgency),
-ADD INDEX ticketPriority (idPriority),
-ADD INDEX ticketCriticality (idCriticality);
+CREATE INDEX ticketUrgency ON `${prefix}ticket` (idUrgency);
+CREATE INDEX ticketPriority ON `${prefix}ticket` (idPriority);
+CREATE INDEX ticketCriticality ON `${prefix}ticket` (idCriticality);
 
-ALTER TABLE `${prefix}type` ADD INDEX typeScope (scope);
+CREATE INDEX typeScope ON `${prefix}type` (scope);
 
-ALTER TABLE `${prefix}user` ADD INDEX userProfile (idProfile),
-ADD INDEX userTeam (idTeam);
+CREATE INDEX userProfile ON `${prefix}user` (idProfile);
+CREATE INDEX userTeam ON `${prefix}user` (idTeam);
 
-ALTER TABLE `${prefix}workflowstatus` ADD INDEX workflowstatusProfile (idProfile),
-ADD INDEX workflowstatusWorkflow (idWorkflow),
-ADD INDEX workflowstatusStatusFrom (idStatusFrom),
-ADD INDEX workflowstatusStatusTo (idStatusTo);
+CREATE INDEX workflowstatusProfile ON `${prefix}workflowstatus` (idProfile);
+CREATE INDEX workflowstatusWorkflow ON `${prefix}workflowstatus` (idWorkflow);
+CREATE INDEX workflowstatusStatusFrom ON `${prefix}workflowstatus` (idStatusFrom);
+CREATE INDEX workflowstatusStatusTo ON `${prefix}workflowstatus` (idStatusTo);
 
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
 (3, 'reportCategoryTicket', 30);
@@ -266,8 +266,8 @@ CREATE TABLE `${prefix}habilitationreport` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}habilitationreport` ADD INDEX habilitationReportProfile (idProfile),
-  ADD INDEX habilitationReportReport (idReport); 
+ALTER TABLE CREATE INDEX habilitationReportProfile ON `${prefix}habilitationreport` (idProfile),
+  CREATE INDEX habilitationReportReport ON `${prefix}habilitationreport` (idReport); 
   
 CREATE TABLE `${prefix}habilitationother` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

@@ -45,7 +45,7 @@ class Resource extends SqlElement {
                                           "isContact"=>"readonly"
   );    
   
-  private static $_databaseTableName = 'user';
+  private static $_databaseTableName = 'resource';
 
   private static $_databaseColumnName = array('name'=>'fullName',
                                               'userName'=>'name');

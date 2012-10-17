@@ -51,86 +51,86 @@ INSERT INTO `${prefix}type` (`id`, `scope`, `name`, `sortOrder`, `idle`, `color`
 ALTER TABLE `${prefix}project` ADD idUser int(12) UNSIGNED;
 
 --
--- Add indexes to forreign keys
+-- CREATE INDEXes to forreign keys
 --
-ALTER TABLE `${prefix}accessright` ADD INDEX accessrightProfile (idProfile),
-  ADD INDEX accessrightMenu (idMenu);
+CREATE INDEX accessrightProfile ON `${prefix}accessright` (idProfile);
+CREATE INDEX  accessrightMenu ON `${prefix}accessright` (idMenu);
 
-ALTER TABLE `${prefix}action` ADD INDEX actionProject (idProject),
-  ADD INDEX actionUser (idUser),
-  ADD INDEX actionResource (idResource),
-  ADD INDEX actionStatus (idStatus);
+CREATE INDEX actionProject ON `${prefix}action (idProject);
+CREATE INDEX actionUser ON `${prefix}action (idUser);
+CREATE INDEX actionResource ON `${prefix}action (idResource);
+CREATE INDEX actionStatus ON `${prefix}action (idStatus);
   
-ALTER TABLE `${prefix}activity` ADD INDEX activityProject (idProject),
-  ADD INDEX activityUser (idUser),
-  ADD INDEX activityResource (idResource),
-  ADD INDEX activityStatus (idStatus),
-  ADD INDEX activityType (idActivityType),
-  ADD INDEX activityActivity (idActivity); 
+CREATE INDEX activityProject ON `${prefix}activity` (idProject);
+CREATE INDEX activityUser ON `${prefix}activity` (idUser);
+CREATE INDEX activityResource ON `${prefix}activity` (idResource);
+CREATE INDEX activityStatus ON `${prefix}activity` (idStatus);
+CREATE INDEX activityType ON `${prefix}activity` (idActivityType);
+CREATE INDEX activityActivity ON `${prefix}activity` (idActivity); 
   
-ALTER TABLE `${prefix}affectation` ADD INDEX affectationProject (idProject),
-  ADD INDEX affectationResource (idResource);   
+CREATE INDEX affectationProject ON `${prefix}affectation` (idProject);
+CREATE INDEX affectationResource ON `${prefix}affectation` (idResource);   
   
-ALTER TABLE `${prefix}assignment` ADD INDEX assignmentProject (idProject),
-  ADD INDEX assignmentResource (idResource),
-  ADD INDEX assignmentRef (refType, refId);
+CREATE INDEX assignmentProject ON `${prefix}assignment` (idProject);
+CREATE INDEX assignmentResource ON `${prefix}assignment` (idResource);
+CREATE INDEX assignmentRef ON `${prefix}assignment` (refType, refId);
 
-ALTER TABLE `${prefix}attachement` ADD INDEX attachementUser (idUser),
-  ADD INDEX attachementRef (refType, refId);        
+CREATE INDEX attachementUser ON `${prefix}attachement` (idUser);
+CREATE INDEX attachementRef ON `${prefix}attachement` (refType, refId);        
 
-ALTER TABLE `${prefix}habilitation` ADD INDEX habilitationProfile (idProfile),
-  ADD INDEX habilitationMenu (idMenu);  
+CREATE INDEX habilitationProfile ON `${prefix}habilitation` (idProfile);
+CREATE INDEX habilitationMenu ON `${prefix}habilitation` (idMenu);  
   
-ALTER TABLE `${prefix}history` ADD INDEX historyUser (idUser),
-  ADD INDEX historyRef (refType, refId); 
+CREATE INDEX historyUser ON `${prefix}history` (idUser);
+CREATE INDEX historyRef ON `${prefix}history` (refType, refId); 
 
-ALTER TABLE `${prefix}issue` ADD INDEX issueProject (idProject),
-  ADD INDEX issueUser (idUser),
-  ADD INDEX issueResource (idResource),
-  ADD INDEX issueStatus (idStatus),
-  ADD INDEX issueType (idIssueType);  
+CREATE INDEX issueProject ON `${prefix}issue` (idProject);
+CREATE INDEX issueUser ON `${prefix}issue` (idUser);
+CREATE INDEX issueResource ON `${prefix}issue` (idResource);
+CREATE INDEX issueStatus ON `${prefix}issue` (idStatus);
+CREATE INDEX issueType ON `${prefix}issue` (idIssueType);  
   
-ALTER TABLE `${prefix}link` ADD INDEX linkRef1 (ref1Type, ref1Id),
-  ADD INDEX linkRef2 (ref2Type, ref2Id);
+CREATE INDEX linkRef1 ON `${prefix}link` (ref1Type, ref1Id);
+CREATE INDEX linkRef2 ON `${prefix}link` (ref2Type, ref2Id);
   
-ALTER TABLE `${prefix}menu` ADD INDEX menuMenu (idMenu);
+CREATE INDEX menuMenu ON `${prefix}menu` (idMenu);
 
-ALTER TABLE `${prefix}message` ADD INDEX messageProject (idProject),
-  ADD INDEX messageUser (idUser),
-  ADD INDEX messageType (idMessageType),
-  ADD INDEX messageProfile (idProfile);           
+CREATE INDEX messageProject ON `${prefix}message` (idProject);
+CREATE INDEX messageUser ON `${prefix}message` (idUser);
+CREATE INDEX messageType ON `${prefix}message` (idMessageType);
+CREATE INDEX messageProfile ON `${prefix}message` (idProfile);           
   
-ALTER TABLE `${prefix}milestone` ADD INDEX milestoneProject (idProject),
-  ADD INDEX milestoneUser (idUser),
-  ADD INDEX milestoneResource (idResource),
-  ADD INDEX milestoneStatus (idStatus),
-  ADD INDEX milestoneType (idMilestoneType),
-  ADD INDEX milestoneActivity (idActivity);
+CREATE INDEX milestoneProject ON `${prefix}milestone` (idProject);
+CREATE INDEX milestoneUser ON `${prefix}milestone` (idUser);
+CREATE INDEX milestoneResource ON `${prefix}milestone` (idResource);
+CREATE INDEX milestoneStatus ON `${prefix}milestone` (idStatus);
+CREATE INDEX milestoneType ON `${prefix}milestone` (idMilestoneType);
+CREATE INDEX milestoneActivity ON `${prefix}milestone` (idActivity);
   
-ALTER TABLE `${prefix}note` ADD INDEX noteUser (idUser),
-  ADD INDEX noteRef (refType, refId);        
+CREATE INDEX noteUser ON `${prefix}note` (idUser);
+CREATE INDEX noteRef ON `${prefix}note` (refType, refId);        
 
-ALTER TABLE `${prefix}parameter` ADD INDEX parameterProject (idProject),
-  ADD INDEX parameterUser (idUser);
+CREATE INDEX parameterProject ON `${prefix}parameter` (idProject);
+CREATE INDEX parameterUser ON `${prefix}parameter` (idUser);
   
-ALTER TABLE `${prefix}planningelement` ADD INDEX planningelementProject (idProject),
-  ADD INDEX planningelementWbsSortable (wbsSortable);  
+CREATE INDEX planningelementProject ON `${prefix}planningelement` (idProject);
+CREATE INDEX planningelementWbsSortable ON `${prefix}planningelement` (wbsSortable);  
 
-ALTER TABLE `${prefix}project` ADD INDEX projectProject (idProject),
-  ADD INDEX projectClient (idClient);
+CREATE INDEX projectProject ON `${prefix}project` (idProject);
+CREATE INDEX projectClient ON `${prefix}project` (idClient);
 
-ALTER TABLE `${prefix}risk` ADD INDEX riskProject (idProject),
-  ADD INDEX riskUser (idUser),
-  ADD INDEX riskResource (idResource),
-  ADD INDEX riskStatus (idStatus),
-  ADD INDEX riskType (idRiskType);  
+CREATE INDEX riskProject ON `${prefix}risk` (idProject);
+CREATE INDEX riskUser ON `${prefix}risk` (idUser);
+CREATE INDEX riskResource ON `${prefix}risk` (idResource);
+CREATE INDEX riskStatus ON `${prefix}risk` (idStatus);
+CREATE INDEX riskType ON `${prefix}risk` (idRiskType);  
 
-ALTER TABLE `${prefix}ticket` ADD INDEX ticketProject (idProject),
-  ADD INDEX ticketUser (idUser),
-  ADD INDEX ticketResource (idResource),
-  ADD INDEX ticketStatus (idStatus),
-  ADD INDEX ticketType (idTicketType),
-  ADD INDEX ticketActivity (idActivity); 
+CREATE INDEX ticketProject ON `${prefix}ticket` (idProject);
+CREATE INDEX ticketUser ON `${prefix}ticket` (idUser);
+CREATE INDEX ticketResource ON `${prefix}ticket` (idResource);
+CREATE INDEX ticketStatus ON `${prefix}ticket` (idStatus);
+CREATE INDEX ticketType ON `${prefix}ticket` (idTicketType);
+CREATE INDEX ticketActivity ON `${prefix}ticket` (idActivity); 
   
 --
 -- Structure de la TABLE `${prefix}work`
@@ -151,13 +151,13 @@ CREATE TABLE `${prefix}work` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}work` ADD INDEX workDay (day),
-  ADD INDEX workWeek (week),
-  ADD INDEX workMonth (month),
-  ADD INDEX workYear (year),
-  ADD INDEX workRef (refType, refId),
-  ADD INDEX workResource (idResource),
-  ADD INDEX workAssignment (idAssignment);        
+CREATE INDEX workDay ON `${prefix}work` (day);
+CREATE INDEX workWeek ON `${prefix}work` (week);
+CREATE INDEX workMonth ON `${prefix}work` (month);
+CREATE INDEX workYear ON `${prefix}work` (year);
+CREATE INDEX workRef ON `${prefix}work` (refType, refId);
+CREATE INDEX workResource ON `${prefix}work` (idResource);
+CREATE INDEX workAssignment ON `${prefix}work` (idAssignment);        
 
 UPDATE `${prefix}menu` SET idle=0 where id=8;
 UPDATE `${prefix}habilitation` SET allowAccess=1 where idMenu=8;
