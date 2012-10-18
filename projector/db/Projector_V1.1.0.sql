@@ -13,7 +13,7 @@ CREATE TABLE `${prefix}report` (
   `name` varchar(100),
   `idReportCategory` int(12) unsigned NOT NULL,
   `file` varchar(100),
-  `order` int(5),
+  `sortOrder` int(5),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -23,7 +23,7 @@ CREATE TABLE `${prefix}reportparameter` (
   `idReport` int(12) unsigned NOT NULL,
   `name` varchar(100),
   `paramType` varchar(100),
-  `order` int(5),
+  `sortOrder` int(5),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -31,7 +31,7 @@ CREATE TABLE `${prefix}reportparameter` (
 CREATE TABLE `${prefix}reportcategory` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
-  `order` int(5),
+  `sortOrder` int(5),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -45,11 +45,11 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 61, 1),
 (3, 61, 1);
 
-INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES
 (1, 'reportCategoryWork', 10),
 (2, 'reportCategoryPlan', 20);
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (1, 'reportWorkWeekly', 1, 'work.php', 10),
 (2, 'reportWorkMonthly', 1, 'work.php', 20),
 (3, 'reportWorkYearly', 1, 'work.php', 30),
@@ -57,7 +57,7 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`
 (5, 'reportPlanResourceMonthly', 2, 'resourcePlan.php', 20),
 (6, 'reportPlanProjectMonthly', 2, 'projectPlan.php', 30);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`) VALUES 
 (1, 1, 'week', 'week', 10),
 (2, 2, 'month', 'month', 10),
 (3, 3, 'year', 'year', 10),

@@ -229,6 +229,7 @@ function runScript($vers) {
   //Sql::beginTransaction();
   $paramDbName=Parameter::getGlobalParameter('paramDbName');
   $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+  $dbType=Parameter::getGlobalParameter('paramDbType');
   set_time_limit(300);
   traceLog("=====================================");
   traceLog("");
@@ -319,16 +320,19 @@ function runScript($vers) {
 	                traceLog(" Table \"" . $tableName . "\" renamed."); 
 	                break;
 	              case "TRUNCATE TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" truncated."); 
+	                traceLog(" Table \"" . $tableName . "\" truncated.");
+	                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
 	                break;                
-	              case "INSERT INTO":
-	                traceLog(" " . Sql::$lastQueryNbRows . " lines inserted into table \"" . $tableName . "\"."); 
+	              case "INSERT INTO":         	
+	              	traceLog(" " . Sql::$lastQueryNbRows . " lines inserted into table \"" . $tableName . "\".");
+	                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
 	                break;
 	              case "UPDATE":
 	                traceLog(" " . Sql::$lastQueryNbRows . " lines updated into table \"" . $tableName . "\"."); 
 	                break;
 	              case "DELETE FROM":
-	                traceLog(" " . Sql::$lastQueryNbRows . " lines deleted from table \"" . $tableName . "\"."); 
+	                traceLog(" " . Sql::$lastQueryNbRows . " lines deleted from table \"" . $tableName . "\".");
+	                if ($dbType=='pgsql') {Sql::updatePgSeq($tableName);} 
 	                break;              
 	              case "CREATE INDEX" :
                   traceLog(" Index \"" . $tableName . "\" created."); 
@@ -464,7 +468,7 @@ function formatForDbType($query) {
     $from[]='ENGINE=InnoDB';                              $to[]='';
     $from[]='DEFAULT CHARSET=utf8';                       $to[]='';
     $res=str_ireplace($from, $to, $query);
-    // ALTER TABLE : complex !!!
+    // ALTER TABLE : very different from MySql !!!
     if (substr($res,0,11)=='ALTER TABLE') {
     	$posChange=strpos($res,'CHANGE');
     	while ($posChange) {
@@ -474,8 +478,10 @@ function formatForDbType($query) {
     		if (!$colPos3) {$colPos3=strlen($res)-1;}
     		$col1=substr($res,$colPos1+1,$colPos2-$colPos1-1);
     		$col2=substr($res,$colPos2+1,$colPos3-$colPos2-1);
-        if ($col1=$col2) {
+        if ($col1==$col2) {
           $res=substr($res,0,$posChange-1). ' ALTER '.$col2.' TYPE '.substr($res,$colPos3+1);
+        } else {
+        	$res=substr($res,0,$posChange-1). ' RENAME '.$col1.' TO '.$col2.';';
         }
     		$posChange=strpos($res,'CHANGE', $posChange+5);
     	}

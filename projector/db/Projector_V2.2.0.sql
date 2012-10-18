@@ -46,7 +46,7 @@ CREATE INDEX workelementUser ON `${prefix}workelement` (idUser);
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`)
 VALUES (39,'reportVersionDetail',4,'versionDetail.php',450,0);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
 (101,39,'idProject','projectList',10,0,'currentProject'),
 (102,39,'idVersion','versionList',20,0,NULL),
 (103,39,'responsible','resourceList',30,0,NULL);

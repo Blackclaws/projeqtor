@@ -245,7 +245,7 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (35, 'reportExpenseTotal', 6, 'expensePlan.php?scale=month', 680),
 (36, 'reportExpenseCostTotal', 6, 'expenseCostTotalPlan.php?scale=month', 690);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (68, 31, 'idProject', 'projectList', 10, 'currentProject'),
 (69, 31, 'month', 'month', 20, 'currentMonth'),
 (70, 32, 'month', 'month', 10, 'currentMonth'),
@@ -277,7 +277,7 @@ INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAcces
 
 ALTER TABLE `${prefix}meeting` ADD description VARCHAR(4000);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (76, 9, 'requestor', 'requestorList', 35, null),
 (77, 10, 'requestor', 'requestorList', 35, null),
 (78, 11, 'requestor', 'requestorList', 25, null),

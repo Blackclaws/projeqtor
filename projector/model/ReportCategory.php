@@ -7,7 +7,7 @@ class ReportCategory extends SqlElement {
   // extends SqlElement, so has $id
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $order;
+  public $sortOrder;
   public $idle; 
   // Define the layout that will be used for lists
   public $_isNameTranslatable = true;

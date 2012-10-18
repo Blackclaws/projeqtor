@@ -9,7 +9,7 @@
 --
 ALTER TABLE `${prefix}reportparameter` ADD `defaultValue` varchar(100);
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (7, 'reportPlanGantt', 2, '../tool/jsonPlanning.php?print=true', 5);
 
 UPDATE `${prefix}reportparameter` SET defaultValue='currentWeek'
@@ -19,7 +19,7 @@ WHERE paramType='month';
 UPDATE `${prefix}reportparameter` SET defaultValue='currentYear'
 WHERE paramType='year';
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (7, 7, 'startDate', 'date', 20, 'today'),
 (8, 7, 'endDate', 'date', 40, null),
 (9, 7, 'format', 'periodScale', 40, 'day'),
