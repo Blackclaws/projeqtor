@@ -61,22 +61,24 @@ class Sql {
         $checkResult="ERROR";       
       }
     } catch (PDOException $e) {
-      $checkResult="EXCEPTION";
-      self::$lastQueryErrorMessage=$e->getMessage();
-      self::$lastQueryErrorCode=$e->getCode();
-      errorLog('Exception-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
-      errorLog('   For query : '.$sqlRequest);
-      errorLog('   Strack trace :');
-      $traces = debug_backtrace();
-      foreach ($traces as $idTrace=>$arrayTrace) {
-      	errorLog("   #$idTrace "
-      	  . ((isset($arrayTrace['class']))?$arrayTrace['class'].'->':'')
-      	  . ((isset($arrayTrace['function']))?$arrayTrace['function'].' called at ':'')
-      	  . ((isset($arrayTrace['file']))?'['.$arrayTrace['file']:'')
-      	  . ((isset($arrayTrace['line']))?':'.$arrayTrace['line']:'')
-      	  . ((isset($arrayTrace['file']))?']':'')
-      	  );
-      }
+    	if (self::$dbVersion!='0.0.0') { // we get the version, if not set, may be normal : initial configuration. Must not log error
+        $checkResult="EXCEPTION";
+	      self::$lastQueryErrorMessage=$e->getMessage();
+	      self::$lastQueryErrorCode=$e->getCode();
+	      errorLog('Exception-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
+	      errorLog('   For query : '.$sqlRequest);
+	      errorLog('   Strack trace :');
+	      $traces = debug_backtrace();
+	      foreach ($traces as $idTrace=>$arrayTrace) {
+	      	errorLog("   #$idTrace "
+	      	  . ((isset($arrayTrace['class']))?$arrayTrace['class'].'->':'')
+	      	  . ((isset($arrayTrace['function']))?$arrayTrace['function'].' called at ':'')
+	      	  . ((isset($arrayTrace['file']))?'['.$arrayTrace['file']:'')
+	      	  . ((isset($arrayTrace['line']))?':'.$arrayTrace['line']:'')
+	      	  . ((isset($arrayTrace['file']))?']':'')
+	      	  );
+	      }
+    	}
     }
     disableCatchErrors();
     // store informations about last query
@@ -239,13 +241,16 @@ class Sql {
     if (self::$dbVersion!=NULL) {
       return self::$dbVersion;
     }
+    self::$dbVersion='0.0.0';
     $crit['idUser']=null;
     $crit['idProject']=null;
     $crit['parameterCode']='dbVersion';
     $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+    self::$dbVersion=NULL;
     if (! $obj or $obj->id==null) {
       return "";
     } else {
+    	self::$dbVersion=$obj->parameterValue;
       return $obj->parameterValue;
     }
   }
