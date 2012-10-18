@@ -337,7 +337,7 @@ INSERT INTO `${prefix}dependable` (`id`,`name`,`idle`, `scope`, `idDefaultDepend
 (4,'Requirement',0,'R', '4'),
 (5,'TestCase',0,'TC', '5');
 
-INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES
 (8, 'reportCategoryRequirementTest', 70);
 
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
@@ -346,7 +346,7 @@ INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrd
 (42,'reportPlanActivityMonthly',2,'activityPlan.php',252,0),
 (43,'reportTestSession',8,'testSession.php',830,0);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
 (119,44,'idProject','projectList',10,0,null),
 (105,44,'idProduct','productList',20,0,null),
 (106,44,'idVersion','versionList',30,0,null),

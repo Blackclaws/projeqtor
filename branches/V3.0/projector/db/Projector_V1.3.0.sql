@@ -8,10 +8,10 @@
 --
 --
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (8, 'reportWorkPlan', 2, 'workPlan.php', 6);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (11, 8, 'idProject', 'projectList', 10, 'currentProject');
 
 CREATE INDEX actionType ON `${prefix}action` (idActionType);
@@ -30,13 +30,13 @@ CREATE INDEX issuePriority ON `${prefix}issue` (idPriority);
 
 CREATE INDEX mailProject ON `${prefix}mail` (idProject);
 CREATE INDEX mailUser ON `${prefix}mail` (idUser);
-CREATE INDEX mailRef (ON `${prefix}mail` refType, refId);
+CREATE INDEX mailRef ON `${prefix}mail` (refType, refId);
 CREATE INDEX mailStatus ON `${prefix}mail` (idStatus);
 
 CREATE INDEX meetingProject ON `${prefix}meeting` (idProject);
 CREATE INDEX meetingType ON `${prefix}meeting` (idMeetingType);
 CREATE INDEX meetingUser ON `${prefix}meeting` (idUser);
-CREATE INDEX meetingResource v(idResource);
+CREATE INDEX meetingResource ON `${prefix}meeting` (idResource);
 CREATE INDEX meetingStatus ON `${prefix}meeting` (idStatus);
 
 CREATE INDEX planningelementPlanningMode ON `${prefix}planningelement` (idPlanningMode);
@@ -49,7 +49,7 @@ CREATE INDEX questionUser ON `${prefix}question` (idUser);
 CREATE INDEX questionResource ON `${prefix}question` (idResource);
 CREATE INDEX questionStatus ON `${prefix}question` (idStatus);
 
-CREATE INDEX reportCategory ON `${prefix}report` (idReportCategory);
+CREATE INDEX reportReportCategory ON `${prefix}report` (idReportCategory);
 
 CREATE INDEX reportparameterReport ON `${prefix}reportparameter` (idReport);
 
@@ -74,29 +74,29 @@ CREATE INDEX workflowstatusWorkflow ON `${prefix}workflowstatus` (idWorkflow);
 CREATE INDEX workflowstatusStatusFrom ON `${prefix}workflowstatus` (idStatusFrom);
 CREATE INDEX workflowstatusStatusTo ON `${prefix}workflowstatus` (idStatusTo);
 
-INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES
 (3, 'reportCategoryTicket', 30);
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (9, 'reportTicketYearly', 3, 'ticketYearlyReport.php', 10);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (12, 9, 'idProject', 'projectList', 10, 'currentProject'),
 (13, 9, 'year', 'year', 20, 'currentYear'),
 (14, 9, 'idTicketType', 'ticketType', 30, null),
 (15, 9, 'issuer', 'userList', 40, null),
 (16, 9, 'responsible', 'resourceList', 50, null);
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (10, 'reportTicketYearlyByType', 3, 'ticketYearlyReportByType.php', 20);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (17, 10, 'idProject', 'projectList', 10, 'currentProject'),
 (18, 10, 'year', 'year', 20, 'currentYear'),
 (19, 10, 'issuer', 'userList', 40, null),
 (20, 10, 'responsible', 'resourceList', 50, null);
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (11, 'reportTicketWeeklyCrossReport', 3, 'ticketReport.php', 30),
 (12, 'reportTicketMonthlyCrossReport', 3, 'ticketReport.php', 40),
 (13, 'reportTicketYearlyCrossReport', 3, 'ticketReport.php', 50),
@@ -104,7 +104,7 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`
 (15, 'reportTicketMonthlySynthesis', 3, 'ticketSynthesis.php', 70),
 (16, 'reportTicketYearlySynthesis', 3, 'ticketSynthesis.php', 80);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (21, 11, 'idProject', 'projectList', 10, 'currentProject'),
 (22, 11, 'week', 'week', 20, 'currentWeek'),
 (23, 11, 'issuer', 'userList', 30, null),
@@ -133,11 +133,11 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 UPDATE `${prefix}priority` set name='Critical priority'
 where id=4 and name='Critical priority (immediate action required)';
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (17, 'reportTicketGlobalCrossReport', 3, 'ticketReport.php', 55),
 (18, 'reportTicketGlobalSynthesis', 3, 'ticketSynthesis.php', 85);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (45, 17, 'idProject', 'projectList', 10, 'currentProject'),
 (46, 17, 'issuer', 'userList', 20, null),
 (47, 17, 'responsible', 'resourceList', 30, null),
@@ -145,21 +145,21 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 (49, 18, 'issuer', 'userList', 20, null),
 (50, 18, 'responsible', 'resourceList', 30, null);
 
-UPDATE `${prefix}report` set `order`=10 where `id`=7;
+UPDATE `${prefix}report` set `sortOrder`=10 where `id`=7;
 
-UPDATE `${prefix}report` set `order`=20 where `id`=8;
+UPDATE `${prefix}report` set `sortOrder`=20 where `id`=8;
 
-UPDATE `${prefix}report` set `order`=30 where `id`=4;
+UPDATE `${prefix}report` set `sortOrder`=30 where `id`=4;
 
-UPDATE `${prefix}report` set `order`=40 where `id`=5;
+UPDATE `${prefix}report` set `sortOrder`=40 where `id`=5;
 
-UPDATE `${prefix}report` set `order`=50 where `id`=6;
+UPDATE `${prefix}report` set `sortOrder`=50 where `id`=6;
 
-INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`) VALUES
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES
 (4, 'reportCategoryStatus', 40),
 (5, 'reportCategoryHistory', 90);
 
-INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`) VALUES
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
 (19, 'reportGlobalWorkPlanningWeekly', 2, 'globalWorkPlanning.php?scale=week', 60),
 (20, 'reportGlobalWorkPlanningMonthly', 2, 'globalWorkPlanning.php?scale=month', 70),
 (21, 'reportStatusOngoing', 4, 'status.php', 10),
@@ -168,7 +168,7 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `order`
 (24, 'reportHistoryDeteled', 5, 'history.php?scope=deleted', 20),
 (25, 'reportHistoryDetail', 5, 'history.php?scope=item', 20);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `defaultValue`) VALUES 
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (51, 19, 'idProject', 'projectList', 10, 'currentProject'),
 (52, 20, 'idProject', 'projectList', 10, 'currentProject'),
 (53, 21, 'idProject', 'projectList', 10, 'currentProject'),
@@ -266,8 +266,8 @@ CREATE TABLE `${prefix}habilitationreport` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE CREATE INDEX habilitationReportProfile ON `${prefix}habilitationreport` (idProfile),
-  CREATE INDEX habilitationReportReport ON `${prefix}habilitationreport` (idReport); 
+CREATE INDEX habilitationReportProfile ON `${prefix}habilitationreport` (idProfile);
+CREATE INDEX habilitationReportReport ON `${prefix}habilitationreport` (idReport); 
   
 CREATE TABLE `${prefix}habilitationother` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -368,7 +368,7 @@ INSERT INTO `${prefix}habilitationreport` (`idReport`, `idProfile`,  `allowAcces
 (22, 3, 1),
 (23, 3, 1);
 
-ALTER TABLE `${prefix}report` CHANGE `order` `sortOrder` INT(5);
+--ALTER TABLE `${prefix}report` CHANGE `order` `sortOrder` INT(5);
 UPDATE `${prefix}report` set `sortOrder`= 100 * `idReportCategory` + `sortOrder`;
 
 INSERT INTO `${prefix}habilitationother` (id,idProfile,scope,rightAccess) VALUES (1,1,'imputation','4'),

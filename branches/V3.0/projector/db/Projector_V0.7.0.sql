@@ -97,26 +97,26 @@ INSERT INTO `${prefix}criticality` (id,name,value,color,sortOrder,idle) VALUES
 (4,'Critical',8,'#000000',40,0);
 
 TRUNCATE TABLE `${prefix}likelihood` ;
-INSERT INTO `${prefix}likelihood`(id,name,value,color,sortOrder,idle) VALUES 
+INSERT INTO `${prefix}likelihood` (id,name,value,color,sortOrder,idle) VALUES 
 (1,'Low (10%)',1,'#32cd32',10,0),
 (2,'Medium (50%)',2,'#ffd700',20,0),
 (3,'High (90%)',4,'#ff0000',30,0);
 
 TRUNCATE TABLE `${prefix}priority` ;
-INSERT INTO `${prefix}priority`(id,name,value,color,sortOrder,idle) VALUES 
+INSERT INTO `${prefix}priority` (id,name,value,color,sortOrder,idle) VALUES 
 (1,'Low priority',1,'#32cd32',40,0),
 (2,'Medium priority',2,'#ffd700',30,0),
 (3,'Hight priority',4,'#ff0000',20,0),
 (4,'Critical priority (immediate action required)',8,'#000000',10,0);
 
 TRUNCATE TABLE `${prefix}severity` ;
-INSERT INTO `${prefix}severity`(id,name,value,color,sortOrder,idle) VALUES 
+INSERT INTO `${prefix}severity` (id,name,value,color,sortOrder,idle) VALUES 
 (1,'Low',1,'#32cd32',10,0),
 (2,'Medium',2,'#ffd700',20,0),
 (3,'High',4,'#ff0000',30,0);
 
 TRUNCATE TABLE `${prefix}urgency` ;
-INSERT INTO `${prefix}urgency`(id,name,value,color,sortOrder,idle) VALUES 
+INSERT INTO `${prefix}urgency` (id,name,value,color,sortOrder,idle) VALUES 
 (1,'Blocking',4,'#ff0000',30,0),
 (2,'Urgent',2,'#ffd700',20,0),
 (3,'Not urgent',1,'#32cd32',10,0);

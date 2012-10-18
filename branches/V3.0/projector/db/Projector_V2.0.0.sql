@@ -201,13 +201,13 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (1, 99, 1),
 (1, 100, 1);
 
-INSERT INTO `${prefix}reportcategory` (`id`, `name`, `order`, `idle`) VALUES 
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`, `idle`) VALUES 
 (7,'reportCategoryBill',60,0);
 	
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 VALUES (37,'reportBill',7,'bill.php',1,0);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
 (86,37,'idBill','billList',10,0,NULL),
 (87,37,'idProject','projectList',20,0,'currentProject'),
 (88,37,'idClient','clientList',30,0,NULL);

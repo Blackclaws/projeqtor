@@ -34,8 +34,8 @@ INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder
 ALTER TABLE `${prefix}resource` ADD capacity NUMERIC(5,2) UNSIGNED DEFAULT 1;
 
 ALTER TABLE `${prefix}ticket` ADD done int(1) unsigned DEFAULT '0',
-  ADD `doneDateTime` datetime DEFAULT NULL,
-  CHANGE `closureDateTime` `idleDateTime` datetime DEFAULT NULL;
+  ADD `doneDateTime` datetime DEFAULT NULL;
+ALTER TABLE `${prefix}ticket` CHANGE `closureDateTime` `idleDateTime` datetime DEFAULT NULL;
   
 ALTER TABLE `${prefix}activity` ADD done int(1) unsigned DEFAULT '0',
   ADD `idleDate` date DEFAULT NULL,
@@ -46,20 +46,20 @@ ALTER TABLE `${prefix}milestone` ADD done int(1) unsigned DEFAULT '0',
   ADD `doneDate` date DEFAULT NULL;
   
 ALTER TABLE `${prefix}risk` ADD done int(1) unsigned DEFAULT '0',
-  CHANGE `closureDate` `idleDate` date DEFAULT NULL,
   ADD `doneDate` date DEFAULT NULL;
+ALTER TABLE `${prefix}risk` CHANGE `closureDate` `idleDate` date DEFAULT NULL;
   
 ALTER TABLE `${prefix}action` ADD done int(1) unsigned DEFAULT '0',
-  CHANGE `closureDate` `idleDate` date DEFAULT NULL,
   ADD `doneDate` date DEFAULT NULL;
+ALTER TABLE `${prefix}action` CHANGE `closureDate` `idleDate` date DEFAULT NULL,
   
 ALTER TABLE `${prefix}project` ADD done int(1) unsigned DEFAULT '0',
   ADD `idleDate` date DEFAULT NULL,
   ADD `doneDate` date DEFAULT NULL;
 
 ALTER TABLE `${prefix}issue` ADD done int(1) unsigned DEFAULT '0',
-  CHANGE `closureDate` `idleDate` date DEFAULT NULL,
   ADD `doneDate` date DEFAULT NULL;
+ALTER TABLE `${prefix}issue` CHANGE `closureDate` `idleDate` date DEFAULT NULL;
   
 ALTER TABLE `${prefix}status` CHANGE `setEndStatus` `setDoneStatus` int(1) unsigned DEFAULT '0';
 

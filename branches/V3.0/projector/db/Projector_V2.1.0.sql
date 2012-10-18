@@ -56,7 +56,7 @@ UPDATE `${prefix}report` set sortOrder=680 where name='reportExpenseTotal';
 UPDATE `${prefix}report` set sortOrder=690 where name='reportExpenseCostTotal';
 UPDATE `${prefix}report` set sortOrder=710 where name='reportBill';
 
-INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `order`, defaultValue) VALUES 
+INSERT INTO `${prefix}reportparameter` (id, idReport, name, paramType, `sortOrder`, defaultValue) VALUES 
 (89,1,'idProject', 'projectList', 1, 'currentProject'),
 (90,2,'idProject', 'projectList', 1, 'currentProject'),
 (91,3,'idProject', 'projectList', 1, 'currentProject'),
@@ -137,7 +137,7 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 VALUES (38,'reportVersionStatus',4,'versionReport.php',440,0);
 
-INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `order`, `idle`, `defaultValue`) VALUES
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
 (98,38,'idProject','projectList',10,0,'currentProject'),
 (99,38,'idTicketType','ticketType',20,0,NULL),
 (100,38,'responsible','resourceList',30,0,NULL);
