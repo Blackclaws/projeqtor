@@ -226,6 +226,7 @@ echo "<br/>____________________________________________";
 
 function runScript($vers) {
   global $versionParameters, $parametersLocation;
+  //Sql::beginTransaction();
   $paramDbName=Parameter::getGlobalParameter('paramDbName');
   $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   set_time_limit(300);
@@ -251,6 +252,7 @@ function runScript($vers) {
         if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
         	$query=formatForDbType($query);
         	if ($query) {
+//debugLog("|$query|");
 	          $result=Sql::query($query);
 	          if ( ! $result or !$result->queryString ) {
 	            traceLog( "<br/>***** SQL ERROR WHILE EXECUTING SQL REQUEST *****");
@@ -293,8 +295,12 @@ function runScript($vers) {
 	            $end=strpos($query,' ', $deb+1);
 	            $len=$end-$deb;
 	            $tableName=substr($query, $deb, $len );
-	            if ($action=="DROP TABLE") {
-	            	$tableName=substr($query,strpos($query,' ', -1)+1);
+	            if ($action=="DROP TABLE") {            
+                $q=trim($query,"\n");
+                $q=trim($q,"\r");
+	            	$q=trim($q,' ;');
+                $q=trim($q,' ');
+	            	$tableName=substr($q,strrpos($q,' ',-2)+1);
 	            }
 	            $tableName=trim($tableName);
 	            $tableName=trim($tableName,'`');
@@ -357,6 +363,7 @@ function runScript($vers) {
     }
   }
   traceLog("");
+  //Sql::commitTransaction();
   return $nbError;
 }
 
@@ -456,8 +463,29 @@ function formatForDbType($query) {
     $from[]=' unsigned';                                  $to[]='';
     $from[]='ENGINE=InnoDB';                              $to[]='';
     $from[]='DEFAULT CHARSET=utf8';                       $to[]='';
+    $res=str_ireplace($from, $to, $query);
+    // ALTER TABLE : complex !!!
+    if (substr($res,0,11)=='ALTER TABLE') {
+    	$posChange=strpos($res,'CHANGE');
+    	while ($posChange) {
+    		$colPos1=strpos($res,' ',$posChange+1);
+    		$colPos2=strpos($res,' ',$colPos1+1);
+    		$colPos3=strpos($res,' ',$colPos2+1);
+    		if (!$colPos3) {$colPos3=strlen($res)-1;}
+    		$col1=substr($res,$colPos1+1,$colPos2-$colPos1-1);
+    		$col2=substr($res,$colPos2+1,$colPos3-$colPos2-1);
+        if ($col1=$col2) {
+          $res=substr($res,0,$posChange-1). ' ALTER '.$col2.' TYPE '.substr($res,$colPos3+1);
+        }
+    		$posChange=strpos($res,'CHANGE', $posChange+5);
+    	}
+    }
+  } else {
+  	// not mysql, not pgsql, so WHAT ?
+    echo "unknown database type '$dbType'";
+    return '';
   }
-  $res=str_ireplace($from, $to, $query);
+  
   return $res;
 }
 
