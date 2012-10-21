@@ -295,7 +295,7 @@ abstract class SqlElement {
   private function saveSqlElement($force=false,$withoutDependencies=false,$forceInsert=false) {
 //traceLog("saveSqlElement(" . get_class($this) . "#$this->id)");
   	// #305
-    $this->recalculateCheckboxes();    
+    $this->recalculateCheckboxes();
     // select operation to be executed
     if ($force) {
     	$control="OK";
