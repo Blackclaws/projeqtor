@@ -68,14 +68,14 @@ class StatusMail extends SqlElement {
 
   public function control() {
     $result="";
-    $crit="idMailable='" . $this->idMailable . "'";
+    $crit="idMailable='" . Sql::fmtId($this->idMailable) . "'";
     if (trim($this->idStatus)) {
-    	$crit.=" and idStatus='" . $this->idStatus . "'";
+    	$crit.=" and idStatus='" . Sql::fmtId($this->idStatus) . "'";
     }
     if (trim($this->idEvent)) {
-      $crit.=" and idEvent='" . $this->idEvent . "'";
+      $crit.=" and idEvent='" . Sql::fmtId($this->idEvent) . "'";
     }
-    $crit.=" and id!='" . $this->id . "'";
+    $crit.=" and id<>'" . Sql::fmtId($this->id) . "'";
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);
     if (count($list)>0) {
       $result.="<br/>" . i18n('errorDuplicateStatusMail',null);

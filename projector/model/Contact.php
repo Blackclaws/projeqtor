@@ -171,7 +171,7 @@ class Contact extends SqlElement {
     $result=array();
     $startDay=str_replace('-','',$startDate);
     $where="day >= '" . $startDay . "'";
-    $where.=" and idResource='" . $this->id . "'"; 
+    $where.=" and idResource='" . Sql::fmtId($this->id) . "'"; 
     $pw=new PlannedWork();
     $pwList=$pw->getSqlElementsFromCriteria(null,false,$where);
     $listTopProjectsArray=array();

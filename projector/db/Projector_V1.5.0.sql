@@ -25,7 +25,7 @@ ADD `cost` NUMERIC(11,2) DEFAULT null;
 ALTER TABLE `${prefix}plannedwork` ADD  `dailyCost` NUMERIC(7,2) DEFAULT null,
 ADD `cost` NUMERIC(11,2) DEFAULT null;
 
-ALTER TABLE `${prefix}user` ADD  `idRole` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}resource` ADD  `idRole` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}planningelement` ADD `initialCost` NUMERIC(11,2) DEFAULT null,
 ADD `validatedCost` NUMERIC(11,2) DEFAULT null,

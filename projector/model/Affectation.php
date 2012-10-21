@@ -232,7 +232,9 @@ public $_noCopy;
     	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdProject')));
     }
     if ($result=='') {
-      $clauseWhere=" idResource='$this->idResource' and idProject='$this->idProject' and id!='$this->id' ";
+      $clauseWhere=" idResource=".Sql::fmtId($this->idResource)
+         ." and idProject=".Sql::fmtId($this->idProject)
+         ." and id<>".Sql::fmtId($this->id);
       $search=$this->getSqlElementsFromCriteria(null, false, $clauseWhere);
       if (count($search)>0) { 
       	$result.='<br/>' . i18n('errorDuplicateAffectation');

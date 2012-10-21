@@ -136,7 +136,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	  foreach ($itemArray as $id=>$new) {
 	  	$split=explode('_',$id);
 	  	$critWhere.=($critWhere)?', ':'';
-	  	$critWhere.="('" . $split[0] . "','" . $split[1] . "')";
+	  	$critWhere.="('" . $split[0] . "','" . Sql::fmtId($split[1]) . "')";
 	  }
 	  if ($critWhere) {
 	    $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"

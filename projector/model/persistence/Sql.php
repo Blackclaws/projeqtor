@@ -24,6 +24,7 @@ class Sql {
   public static $lastQueryErrorMessage=NULL;
   public static $lastQueryErrorCode=NULL;
   public static $lastConnectError=NULL;  
+  public static $maintenanceMode=false;
 
   /** ========================================================================
    * Constructor (private, because static access only) 
@@ -42,6 +43,7 @@ class Sql {
 	scriptLog('Sql::query('.$sqlRequest.')');
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
+      traceLog("SQL WARNING : empty query");
       return FALSE;
     }
     // Execute query
@@ -86,8 +88,20 @@ class Sql {
     self::$lastQueryResult=$result;
     self::$lastQueryType= (is_resource($result)) ? "SELECT" : "UPDATE";
     self::$lastQueryNbRows = (self::$lastQueryType=="SELECT") ? $result->rowCount() : $result->rowCount();
-    self::$lastQueryNewid = ($cnx->lastInsertId()) ? $cnx->lastInsertId() : NULL ;
-    // return result
+    self::$lastQueryNewid=null;
+    // Specific update of sequence in pgsql mode.
+    if (self::$lastQueryType=="UPDATE") {
+      if (self::isPgsql() and ! self::$maintenanceMode) {
+      	if (strtolower(substr($sqlRequest,0,11))=='insert into') {
+      		$table=substr($sqlRequest,12,strpos($sqlRequest,'(')-13);
+      		$seq=trim(strtolower($table)).'_id_seq';
+      		$lastId=$cnx->lastInsertId($seq);
+      		self::$lastQueryNewid =($lastId.'id_seq')?$lastId:NULL;
+      	}
+      } else {   	
+        self::$lastQueryNewid = ($cnx->lastInsertId()) ? $cnx->lastInsertId() : NULL ;
+      }
+    }
     if ($checkResult!='OK') {
     	return false;
     }
@@ -192,7 +206,7 @@ class Sql {
       return self::$connexion;
     }
 
-    if (self::$dbType == null) {
+    if (!self::$dbType or !self::$dbHost or !self::$dbName) {
       self::$dbType=Parameter::getGlobalParameter('paramDbType');
       self::$dbHost=Parameter::getGlobalParameter('paramDbHost');
       self::$dbUser=Parameter::getGlobalParameter('paramDbUser');
@@ -271,6 +285,36 @@ class Sql {
   // Retores thes Sequence for PgSql
   public static function updatePgSeq($table) {
     $updateSeq=Sql::query("SELECT setval('".$table."_id_seq', (SELECT MAX(id) FROM $table));");
+  }
+  
+  public static function isPgsql() {
+  	if (! self::$dbType) {
+  		self::$dbType=Parameter::getGlobalParameter('paramDbType');
+  	}
+  	if (self::$dbType=='pgsql') {
+  		return true;
+  	} else {
+  		return false;
+  	}
+  } 
+
+  public static function isMysql() {
+    if (! self::$dbType) {
+      self::$dbType=Parameter::getGlobalParameter('paramDbType');
+    }
+    if (self::$dbType=='mysql') {
+      return true;
+    } else {
+      return false;
+    }
+  } 
+  
+  public static function fmtId($id) {
+  	if ($id==null or $id=='*' or $id=='' or $id==' ') {
+  		return -1;
+  	} else {
+  	  return $id;
+    }
   }
   
 }

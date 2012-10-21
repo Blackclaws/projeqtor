@@ -66,9 +66,9 @@ class DocumentVersion extends SqlElement {
    */
   public function control(){
     $result="";
-    $critWhere="idDocument='". $this->idDocument . "' and name='" . $this->name . "'";
+    $critWhere="idDocument='". Sql::fmtId($this->idDocument) . "' and name='" . $this->name . "'";
     if ($this->id) {
-    	$critWhere .= " and id!='" . $this->id . "'";
+    	$critWhere .= " and id<>'" . Sql::fmtId($this->id) . "'";
     }
     $lst=$this->getSqlElementsFromCriteria(null, false, $critWhere);
     if (count($lst)>0) {
@@ -113,7 +113,7 @@ class DocumentVersion extends SqlElement {
     if ($this->isRef) {
       $doc->idDocumentVersionRef=$this->id;
       $saveDoc=true;
-      $critWhere="idDocument='" . $this->idDocument . "' and isRef='1' and id!='" . $this->id . "'";
+      $critWhere="idDocument='" . Sql::fmtId($this->idDocument) . "' and isRef='1' and id<>'" . Sql::fmtId($this->id) . "'";
       $list=$this->getSqlElementsFromCriteria(null, false, $critWhere);
       foreach ($list as $elt) {
       	$elt->isRef='0';

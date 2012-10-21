@@ -1,5 +1,6 @@
 <?php
 $maintenance=true;
+Sql::$maintenanceMode=true;
 // Version History : starts at 0.3.0 with clean database (before scripts are empty)
 $versionHistory = array(
   "V0.3.0",
@@ -30,6 +31,7 @@ $versionHistory = array(
   "V2.4.2",
   "V2.5.0",
   "V2.6.0",
+  "V3.0.-",
   "V3.0.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
@@ -83,7 +85,7 @@ foreach ($versionHistory as $vers) {
   if ( $histVer > $currVer 
   or ( $histVer == $currVer and $histMaj > $currMaj)
   or ( $histVer == $currVer and $histMaj == $currMaj and $histRel > $currRel) ) {
-  	if ($vers!='V3.0.0' or $currVersion!='0.0.0') {// Script 3.0.0 must be run only on existing Database to adapt table changes done on prio scripts
+  	if ($vers!='V3.0.-' or $currVersion!='0.0.0') {// Script 3.0.0 must be run only on existing Database to adapt table changes done on prio scripts
       $nbErrors+=runScript($vers);
     }
   }
@@ -100,12 +102,15 @@ if ($currVersion=='0.0.0') {
                      'For example use only.' . "\n" .
                      'Remove or rename this project when initializing your own data.';
   $proj->name='Default project';
-  $proj->idProjectType=$type->id;
+  if ($type) {
+    $proj->idProjectType=$type->id;
+  }
   $result=$proj->save();
   $split=explode("<", $result);
   traceLog($split[0]);
 }
 
+//echo "for V1.6.1<br/>";
 // For V1.6.1
 $tst=new ExpenseDetailType('1');
 if (! $tst->id) {
@@ -204,7 +209,6 @@ Habilitation::correctUpdates();
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
 deleteDuplicate();
-
 Sql::saveDbVersion($version);
 traceLog('=====================================');
 traceLog("");
@@ -253,7 +257,6 @@ function runScript($vers) {
         if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
         	$query=formatForDbType($query);
         	if ($query) {
-//debugLog("|$query|");
 	          $result=Sql::query($query);
 	          if ( ! $result or !$result->queryString ) {
 	            traceLog( "<br/>***** SQL ERROR WHILE EXECUTING SQL REQUEST *****");
@@ -349,10 +352,13 @@ function runScript($vers) {
       $nbParam=0;
       writeFile('// New parameters ' . $vers . "\n", $parametersLocation);
       foreach($versionParameters[$vers] as $id=>$val) {
-        $nbParam++;
-        writeFile('$' . $id . ' = \'' . addslashes($val) . '\';',$parametersLocation);
-        writeFile("\n",$parametersLocation);
-        traceLog('Parameter $' . $id . ' added');
+      	$param=Parameter::getGlobalParameter($id);
+      	if (! $param) {
+          $nbParam++;
+          writeFile('$' . $id . ' = \'' . addslashes($val) . '\';',$parametersLocation);
+          writeFile("\n",$parametersLocation);
+          traceLog('Parameter $' . $id . ' added');
+      	}
       }
       echo i18n('newParameters', array($nbParam, $vers));
       echo '<br/>' . "\n";
@@ -465,6 +471,7 @@ function formatForDbType($query) {
     $from[]=' datetime';                                  $to[]=' timestamp';
     $from[]=' double';                                    $to[]=' double precision';
     $from[]=' unsigned';                                  $to[]='';
+    $from[]='\\\'';                                       $to[]='\'\'';
     $from[]='ENGINE=InnoDB';                              $to[]='';
     $from[]='DEFAULT CHARSET=utf8';                       $to[]='';
     $res=str_ireplace($from, $to, $query);

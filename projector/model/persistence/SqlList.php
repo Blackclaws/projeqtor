@@ -66,11 +66,14 @@ class SqlList {
     }
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
+    	if ($obj->getDatabaseColumnName($col)=='idProject' and ($val=='*' or !$val)) {$val=0;}
       $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
     }
     $query .=')';
     if ($selectedValue) {
-      $query .= " or " . $obj->getDatabaseColumnName('id') .'= ' . Sql::str($selectedValue) ;
+    	if ($selectedValue!='*') {
+        $query .= " or " . $obj->getDatabaseColumnName('id') .'= ' . Sql::str($selectedValue) ;
+    	}
     }
     if (property_exists($obj,'sortOrder')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
@@ -114,7 +117,8 @@ class SqlList {
       if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact' or strtolower($listType)=='user') and $col=='idProject') {
         $aff=new Affectation();
         $user=new Resource();
-        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject='" . $val . "' and a.idResource=" . $user->getDatabaseTableName() . ".id)";
+        if ($val=='*' or ! $val) {$val=0;}
+        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject=" . $val . " and a.idResource=" . $user->getDatabaseTableName() . ".id)";
       } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion' or strtolower($listType)=='targetversion') and $col=='idProject') {
       	$vp=new VersionProject();
         $ver=new Version();
@@ -141,6 +145,7 @@ class SqlList {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
         } else {
+          if ($col=='idProject' and ($val=='*' or ! $val)) {$val=0;}
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . '=' . Sql::str($val);
         }
       }

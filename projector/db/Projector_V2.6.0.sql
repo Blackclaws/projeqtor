@@ -11,12 +11,12 @@
 ALTER TABLE `${prefix}note` ADD COLUMN `idPrivacy` int(12) unsigned default 1,
 ADD COLUMN `idTeam` int(12) unsigned default 1;
 
-UPDATE `${prefix}note` SET idTeam = (select idTeam from ${prefix}user USR where USR.id=idUser);
+UPDATE `${prefix}note` SET idTeam = (select idTeam from ${prefix}resource USR where USR.id=idUser);
 
 ALTER TABLE `${prefix}attachement` ADD COLUMN `idPrivacy` int(12) unsigned default 1,
 ADD COLUMN `idTeam` int(12) unsigned default 1;
 
-UPDATE `${prefix}attachement` SET idTeam = (select idTeam from ${prefix}user USR where USR.id=idUser);
+UPDATE `${prefix}attachement` SET idTeam = (select idTeam from ${prefix}resource USR where USR.id=idUser);
 
 CREATE TABLE `${prefix}privacy` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE `${prefix}privacy` (
   `sortOrder` int(3) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}privacy` (`id`, `name`, `color`, `sortOrder`, `idle`) VALUES
 (1,'public','#003399',100,0),
@@ -41,14 +41,14 @@ CREATE TABLE `${prefix}predefinedtext` (
   `text` varchar(4000) default NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE `${prefix}textable` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) default NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}textable` (`id`,`name`,`idle`) VALUES 
 (1,'Action',0),
@@ -90,7 +90,7 @@ CREATE TABLE `${prefix}event` (
   `name` varchar(100) default NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}event` (`id`,`name`,`idle`) VALUES 
 (1,'responsibleChange',0),
@@ -130,7 +130,7 @@ CREATE TABLE `${prefix}importlog` (
   `importRejectedError` int(6),
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}copyable` (`id`, `name`, `idle`, `sortOrder`) VALUES
 (12, 'Requirement', 0, 35);
@@ -144,9 +144,17 @@ ALTER TABLE `${prefix}status` ADD COLUMN `isCopyStatus` int(1) unsigned default 
 INSERT INTO `${prefix}status` (`name`, `setDoneStatus`, `setIdleStatus`, `color`, `sortOrder`, `idle`, `isCopyStatus`) VALUES
 ('copied', 0, 0, '#ffffff', 999, 1, 1);
 
-ALTER TABLE `${prefix}workelement` CHANGE plannedWork plannedWork DECIMAL(9,5) UNSIGNED DEFAULT '0',
- CHANGE realWork realWork DECIMAL(9,5) UNSIGNED DEFAULT '0',
- CHANGE leftWork leftWork DECIMAL(9,5) UNSIGNED DEFAULT '0';
+ALTER TABLE `${prefix}workelement` CHANGE plannedWork plannedWork DECIMAL(9,5) UNSIGNED,
+ CHANGE realWork realWork DECIMAL(9,5) UNSIGNED,
+ CHANGE leftWork leftWork DECIMAL(9,5) UNSIGNED;
+ALTER TABLE `${prefix}workelement` ALTER plannedWork DROP DEFAULT,
+ ALTER realWork DROP DEFAULT,
+ ALTER leftWork DROP DEFAULT;
+ALTER TABLE `${prefix}workelement` ALTER plannedWork SET DEFAULT 0,
+ ALTER realWork SET DEFAULT 0,
+ ALTER leftWork SET DEFAULT 0;
+
+
  
 ALTER TABLE `${prefix}statusmail` ADD COLUMN `mailToManager` int(1) unsigned default 0;
 

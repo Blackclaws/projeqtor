@@ -25,7 +25,7 @@ if ($ref2Type) {
     $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
   } else if ($ref2Type=='DocumentVersionFull' or $ref2Type=='DocumentVersion') {
     $doc=new Document();
-  	$critWhere = "idle='0' and exists(select 'x' from " . $doc->getDatabaseTableName() . " doc where doc.id=idDocument and doc.idProject='" . $obj->idProject . "')";
+  	$critWhere = "idle='0' and exists(select 'x' from " . $doc->getDatabaseTableName() . " doc where doc.id=idDocument and doc.idProject='" . Sql::fmtId($obj->idProject) . "')";
     $list=$objList->getSqlElementsFromCriteria(null,false,$critWhere, 'id desc');
   } else {
   	$crit = array ( 'idle'=>'0');

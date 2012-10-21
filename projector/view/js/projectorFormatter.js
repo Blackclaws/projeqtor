@@ -162,6 +162,9 @@ function dateTimeFormatter(value) {
 }
 
 function sortableFormatter(value) {
+	if (! value) {
+		return '';
+	}
 	var tab=value.split('.');
 	var result='';
 	for (i=0; i<tab.length; i++) {

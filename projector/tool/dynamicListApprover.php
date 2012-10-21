@@ -20,7 +20,7 @@ $objList=new Affectable();
 $aff=new Affectation();
 $critWhere = "idle='0' and exists(select 'x' from " . $aff->getDatabaseTableName() . " aff ";
 $critWhere .= " where aff.idResource=" . $objList->getDatabaseTableName() . ".id ";
-$critWhere .= ($obj->idProject)?" and aff.idProject='" . $obj->idProject . "'":"";
+$critWhere .= ($obj->idProject)?" and aff.idProject='" . Sql::fmtId($obj->idProject) . "'":"";
 $critWhere .= ")";
 $list=$objList->getSqlElementsFromCriteria(null,false,$critWhere, 'name asc');
 

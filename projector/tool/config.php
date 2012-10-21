@@ -246,21 +246,15 @@ $ctrls['IconSize'] = '=16=22=32=';
 
 $param['DefaultTheme'] = 'ProjectOrRia';                              
 $label['DefaultTheme'] = "Default color theme, proposed while login";
-$value['DefaultTheme'] = "'ProjectOrRia, 'ProjectOrRiaContrasted', 'ProjectOrRiaLight', "
-                       + "'blue', 'blueLight', 'blueContrast', "
-                       + "'red', 'redLight', 'redContrast', "
-                       + "'green', 'greenLight', 'greenContrast', "
-                       + "'orange', 'orangeLight', 'orangeContrast', "
-                       + "'grey', 'greyLight', 'greyContrast', "
-                       + "'white', 'random'";
+$value['DefaultTheme'] = "select a theme in the list";
 $pname['DefaultTheme'] = 'defaultTheme';
 $ctrls['DefaultTheme'] = '=ProjectOrRia=ProjectOrRiaContrasted=ProjectOrRiaLight'
-                       + '=blue=blueLight=blueContrast'
-                       + '=red=redLight=redContrast'
-                       + '=green=greenLight=greenContrast'
-                       + '=orange=orangeLight=orangeContrast'
-                       + '=grey=greyLight=greyContrast'
-                       + '=white=random=';
+                       . '=blue=blueLight=blueContrast'
+                       . '=red=redLight=redContrast'
+                       . '=green=greenLight=greenContrast'
+                       . '=orange=orangeLight=orangeContrast'
+                       . '=grey=greyLight=greyContrast'
+                       . '=white=random=';
 $param['crlf06']='';
 $label['crlf06']='crlf';
 

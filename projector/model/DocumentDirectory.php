@@ -87,7 +87,7 @@ class DocumentDirectory extends SqlElement {
     if (! preg_match($pattern, $this->name) ) {
       $result.="<br/>" . i18n('invalidDirectoryName',null);
     }
-    $crit="location='" . $this->location . "' and id!='" . $this->id . "'";
+    $crit="location='" . $this->location . "' and id<>'" . Sql::fmtId($this->id) . "'";
     $dirList=$this->getSqlElementsFromCriteria(null, false, $crit);
     if (count($dirList)>0) {
     	$result.="<br/>" . i18n('existingDirectoryName',null);

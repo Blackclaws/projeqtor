@@ -247,7 +247,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 ALTER TABLE `${prefix}affectation` ADD idResourceSelect int(12) unsigned;
 
 UPDATE `${prefix}affectation` SET idResourceSelect=idResource where
-exists (select 'x' from `${prefix}user` user where user.id=idResource and user.isResource='1');
+exists (select 'x' from `${prefix}resource` resource where resource.id=idResource and resource.isResource='1');
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'alertCheckTime','60');
@@ -324,7 +324,7 @@ ALTER TABLE `${prefix}assignment` CHANGE `assignedWork` `assignedWork` DECIMAL(1
  CHANGE `leftWork` `leftWork` DECIMAL(12,5) UNSIGNED,
  CHANGE `plannedWork` `plannedWork` DECIMAL(12,5) UNSIGNED;
 
-ALTER TABLE `${prefix}user` ADD `isLdap` int(1) unsigned DEFAULT '0';
+ALTER TABLE `${prefix}resource` ADD `isLdap` int(1) unsigned DEFAULT '0';
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'ldapDefaultProfile','5'),

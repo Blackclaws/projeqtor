@@ -51,7 +51,7 @@ ALTER TABLE `${prefix}risk` CHANGE `closureDate` `idleDate` date DEFAULT NULL;
   
 ALTER TABLE `${prefix}action` ADD done int(1) unsigned DEFAULT '0',
   ADD `doneDate` date DEFAULT NULL;
-ALTER TABLE `${prefix}action` CHANGE `closureDate` `idleDate` date DEFAULT NULL,
+ALTER TABLE `${prefix}action` CHANGE `closureDate` `idleDate` date DEFAULT NULL;
   
 ALTER TABLE `${prefix}project` ADD done int(1) unsigned DEFAULT '0',
   ADD `idleDate` date DEFAULT NULL,

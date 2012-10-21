@@ -40,16 +40,16 @@
     	$noteTable=$note->getDatabaseTableName();
     	foreach($obj as $fld=>$val) {
     		if ($obj->getDataType($fld)=='varchar') {    				
-            $queryWhere.= ' or ' . $table . "." . $fld . " like '%" . $quickSearch . "%'";
+            $queryWhere.=' or '.$table.".".$fld." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$quickSearch."%'";
     		}
     	}
     	if (is_numeric($quickSearch)) {
-    		$queryWhere.= ' or ' . $table . ".id='" . $quickSearch . "'";
+    		$queryWhere.= ' or ' . $table . ".id=" . $quickSearch . "";
     	}
     	$queryWhere.=" or exists ( select 'x' from $noteTable " 
     	                           . " where $noteTable.refType='$objectClass' "
     	                           . " and $noteTable.refId=$table.id " 
-    	                           . " and $noteTable.note like '%" . $quickSearch . "%' ) ";
+    	                           . " and $noteTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $quickSearch . "%' ) ";
     	$queryWhere.=" )";
     }
     $showIdle=false;
@@ -63,13 +63,13 @@
       $param=$_REQUEST['listIdFilter'];
       $param=strtr($param,"*?","%_");
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id') . " like '%" . $param . "%'";
+      $queryWhere.=$table.".".$obj->getDatabaseColumnName('id')." like '%".$param."%'";
     }
     if (array_key_exists('listNameFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listNameFilter'];
       $param=strtr($param,"*?","%_");
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.= $table . "." . $obj->getDatabaseColumnName('name') . " like '%" . $param . "%'";
+      $queryWhere.=$table.".".$obj->getDatabaseColumnName('name')." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$param."%'";
     }
     if ( array_key_exists('objectType',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectType'])!='') {
@@ -231,7 +231,11 @@
 	          $externalObj=new $externalClass();
 	          $externalTable = $externalObj->getDatabaseTableName();
 	          $externalTableAlias = 'T' . $idTab;
-	          $querySelect .= 'convert(concat(';
+	          if (Sql::isPgsql()) {
+	          	$querySelect .= 'concat(';
+	          } else {
+	            $querySelect .= 'convert(concat(';
+	          }
 	          if (property_exists($externalObj,'sortOrder')) {
 	            $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
 	            $querySelect .=  ",'#split#',";
@@ -239,7 +243,11 @@
 	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
 	          $querySelect .=  ",'#split#',";
 	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color');
-	          $querySelect .= ') using utf8) as ' . $fld;
+	          if (Sql::isPgsql()) {
+	            $querySelect .= ') as "' . $fld .'"';	
+	          } else {
+	            $querySelect .= ') using utf8) as ' . $fld;
+	          }
 	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
 	            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
@@ -250,7 +258,7 @@
 	          $externalObj=new $externalClass();
 	          $externalTable = $externalObj->getDatabaseTableName();
 	          $externalTableAlias = 'T' . $idTab;
-	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . $fld;
+	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
 	          //if (! stripos($queryFrom,$externalTable)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
@@ -263,7 +271,7 @@
 	          $externalObj=new $externalClass();
 	          $externalTable = $externalObj->getDatabaseTableName();
 	          $externalTableAlias = 'T' . $idTab;
-	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color') . ' as ' . $fld;
+	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('color') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
 	          //if (! stripos($queryFrom,$externalTable)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias . 
 	              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
@@ -278,7 +286,7 @@
 	          //$externalTableAlias = $externalClass;
 	          //$externalTableAlias = $externalObj->getDatabaseTableName();          
 	          $externalTableAlias = strtolower($externalClass);
-	          $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . $fld;
+	          $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
 	          if (! stripos($queryFrom,$externalTableAlias)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	              ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
@@ -292,7 +300,7 @@
 	        } else {      
 	        //var_dump($fld); echo '<br/>';
 	          // Simple field to add to request 
-	          $querySelect .= $table . '.' . $obj->getDatabaseColumnName($fld) . ' as ' . strtr($fld,'.','_');
+	          $querySelect .= $table . '.' . $obj->getDatabaseColumnName($fld) . ' as ' . ((Sql::isPgsql())?'"'.strtr($fld,'.','_').'"':strtr($fld,'.','_'));
 	        }
 	      }
 	    }

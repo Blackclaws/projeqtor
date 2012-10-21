@@ -26,7 +26,7 @@ if ($scope=="deleted") {
   $where.= " operation='delete' ";
   $where.= " and refType in ('Ticket','Activity','Milestone', 'Risk', 'Action', 'Issue', 'Meeting', 'Decision', 'Question', 'Project' )";
 } else {
-  $where = " refType='$refType' and refId='$refId'";
+  $where = " refType='$refType' and refId=".Sql::fmtId($refId);
   $obj=new $refType($refId);
 }
 

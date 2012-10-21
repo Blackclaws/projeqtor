@@ -16,7 +16,7 @@ INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder
 UPDATE `${prefix}planningelement` SET idPlanningMode='5' 
 WHERE refType='Milestone';
 
-ALTER TABLE `${prefix}user` ADD `address` varchar(4000),
+ALTER TABLE `${prefix}resource` ADD `address` varchar(4000),
 ADD isContact int(1) unsigned DEFAULT '0',
 ADD idClient int(12) unsigned DEFAULT Null;
 

@@ -53,7 +53,7 @@ class Habilitation extends SqlElement {
     
     
     // Set Main menu to accessible if one of sub-menu is available
-    $query="select distinct h.idProfile, m.idMenu from " . $habiObj->getDatabaseTableName() . " h," .  $menuObj->getDatabaseTableName() . " m";
+    $query="select distinct h.idProfile profile, m.idMenu menu from " . $habiObj->getDatabaseTableName() . " h," .  $menuObj->getDatabaseTableName() . " m";
     $query.=" where h.idMenu = m.id and h.allowAccess=1 and m.idMenu<>0 and m.idle=0";
     $result=Sql::query($query);
     $critList="";
@@ -63,8 +63,8 @@ class Habilitation extends SqlElement {
       while ($line) {
         $critList.=($critList=='')?'(':',';
         $critListInsert.=($critListInsert=='')?'(':',';
-        $critList.="('" . $line['idMenu'] . "', '" . $line['idProfile'] . "')";
-        $critListInsert.="('" . $line['idMenu'] . "', '" . $line['idProfile'] . "')";
+        $critList.="('" . $line['menu'] . "', '" . $line['profile'] . "')";
+        $critListInsert.="('" . $line['menu'] . "', '" . $line['profile'] . "')";
         $line = Sql::fetchLine($result);
       }
       $critList.=')';
@@ -73,7 +73,7 @@ class Habilitation extends SqlElement {
     }
     
     // Set Main menu to not accessible if none of sub-menu is available
-    $query="SELECT h.idProfile, m.idMenu ";
+    $query="SELECT h.idProfile as profile, m.idMenu as menu";
     $query.=" FROM " . $habiObj->getDatabaseTableName(). " h , " . $menuObj->getDatabaseTableName() . " m ";
     $query.=" WHERE h.idMenu = m.id and m.idle=0";
     $query.=" GROUP BY h.idProfile, m.idMenu";
@@ -84,7 +84,7 @@ class Habilitation extends SqlElement {
       $line = Sql::fetchLine($result);
       while ($line) {
         $critList.=($critList=='')?'(':',';
-        $critList.="('" . $line['idMenu'] . "', '" . $line['idProfile'] . "')";
+        $critList.="('" . $line['menu'] . "', '" . $line['profile'] . "')";
         $line = Sql::fetchLine($result);
       }
       $critList.=')';

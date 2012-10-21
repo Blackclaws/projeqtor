@@ -8,12 +8,27 @@
 --
 --
 
-ALTER TABLE `${prefix}planningelement` CHANGE initialWork initialWork DECIMAL(14,5) UNSIGNED DEFAULT '0',
- CHANGE validatedWork validatedWork DECIMAL(14,5) UNSIGNED DEFAULT '0',
- CHANGE plannedWork plannedWork DECIMAL(14,5) UNSIGNED DEFAULT '0',
- CHANGE realWork realWork DECIMAL(14,5) UNSIGNED DEFAULT '0',
- CHANGE assignedWork assignedWork DECIMAL(14,5) UNSIGNED DEFAULT '0',
- CHANGE leftWork leftWork DECIMAL(14,5) UNSIGNED DEFAULT '0';
+ALTER TABLE `${prefix}planningelement` CHANGE initialWork initialWork DECIMAL(14,5) UNSIGNED,
+ CHANGE validatedWork validatedWork DECIMAL(14,5) UNSIGNED,
+ CHANGE plannedWork plannedWork DECIMAL(14,5) UNSIGNED,
+ CHANGE realWork realWork DECIMAL(14,5) UNSIGNED,
+ CHANGE assignedWork assignedWork DECIMAL(14,5) UNSIGNED,
+ CHANGE leftWork leftWork DECIMAL(14,5) UNSIGNED;
+
+ALTER TABLE `${prefix}planningelement` ALTER initialWork DROP DEFAULT,
+ ALTER validatedWork DROP DEFAULT,
+ ALTER plannedWork DROP DEFAULT,
+ ALTER realWork DROP DEFAULT,
+ ALTER assignedWork DROP DEFAULT,
+ ALTER leftWork DROP DEFAULT;
+ 
+ALTER TABLE `${prefix}planningelement` ALTER initialWork SET DEFAULT 0,
+ ALTER validatedWork SET DEFAULT 0,
+ ALTER plannedWork SET DEFAULT 0,
+ ALTER realWork SET DEFAULT 0,
+ ALTER assignedWork SET DEFAULT 0,
+ ALTER leftWork SET DEFAULT 0;
+
  
 ALTER TABLE `${prefix}product` ADD COLUMN `idProduct`  int(12) unsigned DEFAULT NULL;
 
@@ -30,7 +45,7 @@ CREATE TABLE `${prefix}workelement` (
   `done` int(1) unsigned DEFAULT '0',
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX workelementReference ON `${prefix}workelement` (refType, refId);
 
@@ -72,7 +87,7 @@ CREATE TABLE `${prefix}contexttype` (
   `name` varchar(100) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}contexttype` (id, name) VALUES
 (1,'colIdContext1'),
@@ -86,7 +101,7 @@ CREATE TABLE `${prefix}context` (
   `sortOrder` int(3) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX contextContextType ON `${prefix}context` (idContextType);
 
@@ -134,7 +149,7 @@ ALTER TABLE `${prefix}planningelement` ADD COLUMN `progress` int(3) unsigned DEF
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null, null, 'displayResourcePlan','initials');
 
-INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 VALUES (38,'reportVersionStatus',4,'versionReport.php',440,0);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES

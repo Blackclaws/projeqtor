@@ -89,7 +89,8 @@ class Project extends SqlElement {
    * @return void
    */ 
   function __construct($id = NULL) {
-    parent::__construct($id);
+    if ($id=='*') {$id='';}
+  	parent::__construct($id);
   }
 
    /** ==========================================================================
@@ -468,7 +469,7 @@ class Project extends SqlElement {
     if ($this->idProject and trim($this->idProject)!='') {
       $this->ProjectPlanningElement->topRefType='Project';
       $this->ProjectPlanningElement->topRefId=$this->idProject;
-      $this->ProjectPlanningElement->topId='';
+      $this->ProjectPlanningElement->topId=null;
     } else {
       $this->ProjectPlanningElement->topId=null;
       $this->ProjectPlanningElement->topRefType=null;

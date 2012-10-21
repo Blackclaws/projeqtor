@@ -238,11 +238,13 @@ class PlanningElement extends SqlElement {
       if ($topElt) {
         //$elt=new PlanningElement($this->topId);
         $wbs=$topElt->wbs . ".";
-        $crit=" topId='" . $this->topId . "' ";
+        $crit=" topId=" . Sql::fmtId($this->id);
       } else {
-        $crit=" (topId is null or topId='') ";
+        $crit=" (topId is null) ";
       }
-      $crit.=" and id!='" . $this->id . "' ";
+      if ($this->id) {
+        $crit.=" and id<>" . Sql::fmtId($this->id);
+      }
       $lst=$this->getSqlElementsFromCriteria(null, null, $crit, 'wbsSortable desc');
       if (count($lst)==0) {
         $localSort=1;
@@ -263,7 +265,7 @@ class PlanningElement extends SqlElement {
     }
     $this->wbsSortable=$wbsSortable;
     // search for dependant elements
-    $crit=" topId='" . $this->id . "'";
+    $crit=" topId=" . Sql::fmtId($this->id);
     $this->elementary=1;
     $lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
     if ($lstElt and count($lstElt)>0) {
@@ -617,7 +619,7 @@ class PlanningElement extends SqlElement {
       $returnValue=i18n('moveCancelled');
     } else {
       if ($this->topRefType) {
-        $where="topRefType='" . $this->topRefType . "' and topRefId='" . $this->topRefId . "'";
+        $where="topRefType='" . $this->topRefType . "' and topRefId=" . Sql::fmtId($this->topRefId) ;
       } else {
         $where="topRefType is null and topRefId is null";
       }

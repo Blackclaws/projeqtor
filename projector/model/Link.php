@@ -91,13 +91,13 @@ class Link extends SqlElement {
     $class=get_class($obj);
     if ($classLink) {
       if ($class<$classLink) {
-        $where=" ref1Type='" . $class . "' and ref1Id='" . $obj->id . "' and ref2Type='" . $classLink . "' ";
+        $where=" ref1Type='" . $class . "' and ref1Id=" . Sql::fmtId($obj->id) . " and ref2Type=" . $classLink . "' ";
       } else {
-        $where=" ref2Type='" . $class . "' and ref2Id='" . $obj->id . "' and ref1Type='" . $classLink . "' ";
+        $where=" ref2Type='" . $class . "' and ref2Id=" . Sql::fmtId($obj->id) . " and ref1Type='" . $classLink . "' ";
       }
     } else {
-      $where=" ( ref1Type='" . $class . "' and ref1Id='" . $obj->id . "') ";
-      $where.=" or ( ref2Type='" . $class . "' and ref2Id='" . $obj->id . "' ) ";
+      $where=" ( ref1Type='" . $class . "' and ref1Id=" . Sql::fmtId($obj->id) . ") ";
+      $where.=" or ( ref2Type='" . $class . "' and ref2Id=" . Sql::fmtId($obj->id) . " ) ";
     }
     //echo $where . "\n";
     $list=$link->getSqlElementsFromCriteria(null,false,$where,$orderBy);
