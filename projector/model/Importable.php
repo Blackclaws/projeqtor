@@ -106,6 +106,10 @@ scriptLog("import($fileName, $class)");
 		      if (substr(trim($field),0,1)=='"' and substr(trim($field),-1,1)=='"') {
 		        $field=substr(trim($field),1,strlen(trim($field))-2);
 		      }
+		      if ($idx==count($fields)-1) {
+            $field=trim($field,"\r");
+            $field=trim($field,"\r\n");
+          }
 		      $field=str_replace('""','"',$field);     
 		      if (property_exists($obj,$title[$idx])) {
 		        $obj->$title[$idx]=$field;
@@ -145,6 +149,14 @@ scriptLog("import($fileName, $class)");
 		    }
 		    $htmlResult.= '<TD class="messageData" width="20%" style="border:1px solid black;">';
 		    //$obj->id=null;
+		    if ($forceInsert or !$obj->id) {
+          if (property_exists($obj,"creationDate") and ! trim($obj->creationDate)) {
+            $obj->creationDate=date('Y-m-d');
+          }
+          if (property_exists($obj,"creationDateTime") and ! trim($obj->creationDateTime)) {
+            $obj->creationDateTime=date('Y-m-d H:i');
+          }
+        }  
 		    if ($forceInsert) { // object with defined id was not found : force insert
           $result=$obj->insert();
         } else {
