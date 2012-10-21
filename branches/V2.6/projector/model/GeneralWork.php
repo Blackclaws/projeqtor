@@ -111,6 +111,7 @@ class GeneralWork extends SqlElement {
     $this->day=$year . $month . $day;
     $this->month=$year . $month; 
     $this->year=$year;
+    if (weekNumber($workDate)=='01' and $month=='12') {$year+=1;}
     $this->week=$year . weekNumber($workDate);
   }
   
