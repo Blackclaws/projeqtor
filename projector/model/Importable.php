@@ -93,6 +93,7 @@ scriptLog("import($fileName, $class)");
 		    }   
 		    $id=($idxId>=0)?$fields[$idxId]:null;
 		    $obj=new $class($id);
+		    $forceInsert=(!$obj->id and $id)?true:false;
 		    self::$cptTotal+=1;
 		    foreach ($fields as $idx=>$field) { 
 		      if ($field=='') {
@@ -144,7 +145,11 @@ scriptLog("import($fileName, $class)");
 		    }
 		    $htmlResult.= '<TD class="messageData" width="20%" style="border:1px solid black;">';
 		    //$obj->id=null;
-		    $result=$obj->save();	    
+		    if ($forceInsert) { // object with defined id was not found : force insert
+          $result=$obj->insert();
+        } else {
+          $result=$obj->save();
+        }     
 		    if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 		      $htmlResult.= '<span class="messageERROR" >' . $result . '</span>';
 		      self::$cptError+=1;
