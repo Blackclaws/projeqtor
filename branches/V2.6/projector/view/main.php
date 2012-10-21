@@ -159,10 +159,14 @@ checkVersion(); ?>
         	echo "noDisconnect=true;";
         }
         echo 'gotoElement("' . $class . '","' . $id . '");';
+        $firstPage="";
       }
+      if ($firstPage) {
       ?>
-      loadContent("<?php echo $firstPage;?>","centerDiv");
-      <?php if (! $showTopMenu) {
+        loadContent("<?php echo $firstPage;?>","centerDiv");
+      <?php 
+      }
+      if (! $showTopMenu) {
           echo "dijit.byId('toolBarDiv').resize({h: 0});;";
           echo "dijit.byId('globalContainer').resize();";
         } 

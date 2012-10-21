@@ -149,6 +149,14 @@ scriptLog("import($fileName, $class)");
 		    }
 		    $htmlResult.= '<TD class="messageData" width="20%" style="border:1px solid black;">';
 		    //$obj->id=null;
+		    if ($forceInsert or !$obj->id) {
+		      if (property_exists($obj,"creationDate") and ! trim($obj->creationDate)) {
+            $obj->creationDate=date('Y-m-d');
+          }
+          if (property_exists($obj,"creationDateTime") and ! trim($obj->creationDateTime)) {
+            $obj->creationDateTime=date('Y-m-d H:i');
+          }
+		    }  
 		    if ($forceInsert) { // object with defined id was not found : force insert
 		    	$result=$obj->insert();
 		    } else {
