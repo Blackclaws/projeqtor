@@ -245,6 +245,10 @@ abstract class SqlElement {
     return $this->saveSqlElement();
   }
 
+  public function insert() { // Specific function to force insert with a defined id - Reserved to Import fonction
+    return $this->saveSqlElement(false, false, true);
+  }
+  
   public function saveForced($withoutDependencies=false) {
     return $this->saveSqlElement(true,$withoutDependencies);
   }
@@ -288,7 +292,7 @@ abstract class SqlElement {
    * Save an object to the database
    * @return void
    */
-  private function saveSqlElement($force=false,$withoutDependencies=false) {
+  private function saveSqlElement($force=false,$withoutDependencies=false,$forceInsert=false) {
 //traceLog("saveSqlElement(" . get_class($this) . "#$this->id)");
   	// #305
     $this->recalculateCheckboxes();    
@@ -308,7 +312,7 @@ abstract class SqlElement {
       if (property_exists($this,'reference')) {
         $this->setReference(false, $old);
       }
-      if ($this->id != null) {
+      if ($this->id != null  and !$forceInsert) {
         if (property_exists($this, 'idStatus')) {
           if ($this->idStatus) {
             if ($old->idStatus!=$this->idStatus) {
