@@ -106,6 +106,10 @@ scriptLog("import($fileName, $class)");
 		      if (substr(trim($field),0,1)=='"' and substr(trim($field),-1,1)=='"') {
 		        $field=substr(trim($field),1,strlen(trim($field))-2);
 		      }
+		      if ($idx==count($fields)-1) {
+		      	$field=trim($field,"\r");
+		      	$field=trim($field,"\r\n");
+		      }
 		      $field=str_replace('""','"',$field);     
 		      if (property_exists($obj,$title[$idx])) {
 		        $obj->$title[$idx]=$field;
