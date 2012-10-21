@@ -327,7 +327,7 @@ abstract class SqlElement {
           $statusChanged=true;
         }
         $newItem=true;
-        $returnValue=$this->insertSqlElement();
+        $returnValue=$this->insertSqlElement($forceInsert);
       }
       if (property_exists($this,'idResource')) {
       	if ($this->idResource and $this->idResource!=$old->idResource) {
@@ -371,7 +371,7 @@ abstract class SqlElement {
    * Save an object to the database : new object
    * @return void
    */
-  private function insertSqlElement() {
+  private function insertSqlElement($forceInsert=false) {
    	if (get_class($this)=='Origin') {
   	  if (! $this->originId or ! $this->originType) {
   	  	return;
@@ -395,7 +395,7 @@ abstract class SqlElement {
 	          $col_value='0';
 	        }
 	      }
-	      if ($col_value != NULL and $col_value != '' and $col_value != ' ' and $col_name != 'id') {
+	      if ($col_value != NULL and $col_value != '' and $col_value != ' ' and ($col_name != 'id' or $forceInsert)) {
 	        if ($queryColumns != "") {
 	          $queryColumns.=", ";
 	          $queryValues.=", ";
@@ -423,7 +423,7 @@ abstract class SqlElement {
 	          }
 	        }
 	        if ($col_value != NULL and $col_value != '' and $col_value != ' ' 
-	            and $col_name != 'id' 
+	            and ($col_name != 'id' or $forceInsert) 
 	            and strpos($queryColumns, ' '. $this->getDatabaseColumnName($col_name) . ' ')===false ) {
 	          if ($queryColumns != "") {
 	            $queryColumns.=",";
