@@ -159,14 +159,14 @@ checkVersion(); ?>
         	echo "noDisconnect=true;";
         }
         echo 'gotoElement("' . $class . '","' . $id . '");';
-      } else {
+      }
       ?>
       loadContent("<?php echo $firstPage;?>","centerDiv");
       <?php if (! $showTopMenu) {
           echo "dijit.byId('toolBarDiv').resize({h: 0});;";
           echo "dijit.byId('globalContainer').resize();";
         } 
-      }?>
+      ?>
       dojo.byId("loadingDiv").style.visibility="hidden";
       dojo.byId("loadingDiv").style.display="none";
       dojo.byId("mainDiv").style.visibility="visible"; 
