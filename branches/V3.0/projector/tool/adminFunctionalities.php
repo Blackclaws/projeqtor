@@ -124,22 +124,6 @@ function maintenance() {
   if ($operation=="delete") {
     return $obj->purge($clauseWhere);
   }
-  /*$nb=0;
-  $lst=$obj->getSqlElementsFromCriteria(null, false, $clauseWhere);
-  foreach($lst as $obj) {
-  	if ($operation=="close") {
-  		$obj->idle="1";
-  		$obj->save();
-  		$nb++;
-  	} else if ($operation=="delete") {
-  		$obj->delete();
-  		$nb++;
-  	} 
-  }
-  $returnValue= i18n('maintenanceDone',array($nb,i18n('menu'.$item),i18n('doneoperation'.$operation)));
-  $returnValue .= '<input type="hidden" id="lastOperation" value="' . $operation .'" />';
-  $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
-  return $returnValue;*/
 }
 
 function updateReference($element) {

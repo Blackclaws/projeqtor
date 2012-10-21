@@ -14,7 +14,7 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 
 ALTER TABLE `${prefix}type` ADD `code` varchar(10);
 
-ALTER TABLE `${prefix}type` ADD COLUMN `internalData` varchar(100) NULL after `lockIdle`;
+ALTER TABLE `${prefix}type` ADD COLUMN `internalData` varchar(100) DEFAULT NULL;
 
 DELETE FROM `${prefix}type` WHERE scope='Project';
 INSERT INTO `${prefix}type` (`scope`, `code`, `name`, `sortOrder`, `internalData` ) VALUES
@@ -36,7 +36,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 93, 1),
 (3, 93, 1);
 
-ALTER TABLE `${prefix}user` ADD initials varchar(10);
+ALTER TABLE `${prefix}resource` ADD initials varchar(10);
 
 ALTER TABLE `${prefix}ticket` ADD reference varchar(100),
 ADD externalReference varchar(100);

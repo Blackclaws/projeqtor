@@ -118,7 +118,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     }
   } else if ($idFilterOperator=="LIKE") {
     $arrayDisp["operator"]=i18n("contains");
-    $arraySql["operator"]=$idFilterOperator;
+    $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';
     $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
     $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
   } else if ($idFilterOperator=="IN") {

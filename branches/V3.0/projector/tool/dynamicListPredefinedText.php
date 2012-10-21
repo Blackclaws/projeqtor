@@ -11,8 +11,8 @@ $refId=$_REQUEST['objectType'];
 $refTypeId=SqlList::getIdFromName('Textable', $refType);
 //echo $refType.'/'.$refId;
 
-$crit="scope='Note' and (idTextable is null or idTextable='" . $refTypeId ."')";
-$crit.=" and (idType is null or idType='" . $refTypeId ."') and idle=0";
+$crit="scope='Note' and (idTextable is null or idTextable='" . Sql::fmtId($refTypeId) ."')";
+$crit.=" and (idType is null or idType='" . Sql::fmtId($refTypeId) ."') and idle=0";
 
 $txt=new PredefinedNote();
 $list=$txt->getSqlElementsFromCriteria(null, false, $crit, 'name asc');

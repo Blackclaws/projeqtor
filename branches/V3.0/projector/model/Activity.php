@@ -224,11 +224,11 @@ class Activity extends SqlElement {
     if ($this->idActivity and trim($this->idActivity)!='') {
       $this->ActivityPlanningElement->topRefType='Activity';
       $this->ActivityPlanningElement->topRefId=$this->idActivity;
-      $this->ActivityPlanningElement->topId='';
+      $this->ActivityPlanningElement->topId=null;
     } else {
       $this->ActivityPlanningElement->topRefType='Project';
       $this->ActivityPlanningElement->topRefId=$this->idProject;
-      $this->ActivityPlanningElement->topId='';
+      $this->ActivityPlanningElement->topId=null;
     } 
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {

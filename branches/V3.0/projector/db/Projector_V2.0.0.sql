@@ -22,7 +22,7 @@ CREATE TABLE `${prefix}activityprice` (
   `isRef` int(1) NOT NULL DEFAULT '0',
   `pct` int(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX activitypriceProject ON `${prefix}activityprice` (idProject);
 CREATE INDEX activitypriceActivityType ON `${prefix}activityprice` (idActivityType);
@@ -47,7 +47,7 @@ CREATE TABLE `${prefix}bill` (
   `untaxedAmount` decimal(12,2) DEFAULT NULL,
   `fullAmount` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX billBillType ON `${prefix}bill` (idBillType);
 CREATE INDEX billProject ON `${prefix}bill` (idProject);
@@ -55,8 +55,8 @@ CREATE INDEX billClient ON `${prefix}bill` (idClient);
 CREATE INDEX billRecipient ON `${prefix}bill` (idRecipient);
 CREATE INDEX billStatus ON `${prefix}bill` (idStatus);
  
-ALTER TABLE `${prefix}client` ADD COLUMN `paymentDelay` int(3) NULL after `clientCode`, 
- ADD COLUMN `tax` decimal(5,2) DEFAULT NULL after `paymentDelay`;
+ALTER TABLE `${prefix}client` ADD COLUMN `paymentDelay` int(3) NULL, 
+ ADD COLUMN `tax` decimal(5,2) DEFAULT NULL;
 	
 CREATE TABLE `${prefix}billline` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -74,19 +74,19 @@ CREATE TABLE `${prefix}billline` (
 	`startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX billlineReference ON `${prefix}billline` (refType, refId);
-CREATE INDEX billlineTerm (idTerm);
-CREATE INDEX billlineResource (idResource);
-CREATE INDEX billlineActivityPrice (idActivityPrice);
+CREATE INDEX billlineTerm ON `${prefix}billline` (idTerm);
+CREATE INDEX billlineResource ON `${prefix}billline` (idResource);
+CREATE INDEX billlineActivityPrice ON `${prefix}billline` (idActivityPrice);
 
-ALTER TABLE `${prefix}project` ADD COLUMN `idRecipient` int(12) unsigned   NULL after `idClient`, 
-	ADD COLUMN `paymentDelay` int(3) NULL after `doneDate`,
-	ADD COLUMN `longitude` float(15,12) NULL after `paymentDelay`,
-	ADD COLUMN `latitude` float(15,12) NULL after `longitude`;
+ALTER TABLE `${prefix}project` ADD COLUMN `idRecipient` int(12) unsigned DEFAULT NULL, 
+	ADD COLUMN `paymentDelay` int(3) DEFAULT NULL ,
+	ADD COLUMN `longitude` NUMERIC(15,12) DEFAULT NULL ,
+	ADD COLUMN `latitude` NUMERIC(15,12) DEFAULT NULL ;
 
-CREATE INDEX projectRecipient ON (idRecipient);
+CREATE INDEX projectRecipient ON `${prefix}project` (idRecipient);
 
 CREATE TABLE `${prefix}recipient` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -107,7 +107,7 @@ CREATE TABLE `${prefix}recipient` (
   `taxFree` int(1) unsigned DEFAULT 0,
   `idle` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE `${prefix}term` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -122,31 +122,31 @@ CREATE TABLE `${prefix}term` (
   `idle` int(1) unsigned DEFAULT NULL,
   `idBill` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX termProject ON ${prefix}term` (idProject);
-CREATE INDEX termBill ON ${prefix}term` (idBill);
+CREATE INDEX termProject ON `${prefix}term` (idProject);
+CREATE INDEX termBill ON `${prefix}term` (idBill);
 
-ALTER TABLE `${prefix}user` ADD COLUMN `designation` varchar(50) after `isContact`, 
-	ADD COLUMN `street` varchar(50) after `designation`, 
-	ADD COLUMN `complement` varchar(50) after `street`, 
-	ADD COLUMN `zip` varchar(50) after `complement`, 
-	ADD COLUMN `city` varchar(50) after `zip`, 
-	ADD COLUMN `state` varchar(50) after `city`, 
-	ADD COLUMN `country` varchar(50) after `state`, 
-	ADD COLUMN `idRecipient` int(12)  unsigned NULL after `idRole`;
+ALTER TABLE `${prefix}resource` ADD COLUMN `designation` varchar(50), 
+	ADD COLUMN `street` varchar(50), 
+	ADD COLUMN `complement` varchar(50), 
+	ADD COLUMN `zip` varchar(50), 
+	ADD COLUMN `city` varchar(50), 
+	ADD COLUMN `state` varchar(50), 
+	ADD COLUMN `country` varchar(50), 
+	ADD COLUMN `idRecipient` int(12)  unsigned NULL;
 
-CREATE INDEX userRecipient ON `${prefix}user` (idRecipient);
+CREATE INDEX userRecipient ON `${prefix}resource` (idRecipient);
 
-ALTER TABLE `${prefix}work` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `cost`;
+ALTER TABLE `${prefix}work` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL;
 
 CREATE INDEX workBill ON `${prefix}work` (idBill);
 
-ALTER TABLE `${prefix}planningelement` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL after `plannedCost`;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `idBill` int(12) unsigned DEFAULT NULL;
 
 CREATE INDEX planningelementBill ON `${prefix}planningelement` (idBill);
 
-ALTER TABLE `${prefix}assignment` ADD COLUMN `billedWork` decimal(10,2) NOT NULL DEFAULT '0' after `plannedCost`;
+ALTER TABLE `${prefix}assignment` ADD COLUMN `billedWork` decimal(10,2) NOT NULL DEFAULT '0';
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
 	(94,'menuActivityPrice',74,'object',280,NULL,0),
@@ -204,7 +204,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`, `idle`) VALUES 
 (7,'reportCategoryBill',60,0);
 	
-INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) 
 VALUES (37,'reportBill',7,'bill.php',1,0);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
@@ -232,7 +232,7 @@ CREATE TABLE `${prefix}documentdirectory` (
   `idDocumentType` int(12) unsigned,
   `idle` int(1) unsigned default '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX documentdirectoryProject ON `${prefix}documentdirectory` (idProject);
 CREATE INDEX documentdirectoryProduct ON `${prefix}documentdirectory` (idProduct);
@@ -277,7 +277,7 @@ CREATE TABLE `${prefix}document` (
   `description` varchar(4000),
   `idle` int(1) unsigned default '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX documentProject ON `${prefix}document` (idProject);
 CREATE INDEX documentProduct ON `${prefix}document` (idProduct);
@@ -312,7 +312,7 @@ CREATE TABLE `${prefix}documentversion` (
   `isRef` int(1) unsigned default '0',
   `idle` int(1) unsigned default '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX documentversionDocument ON `${prefix}documentversion` (idDocument);
 CREATE INDEX documentversionAuthor ON `${prefix}documentversion` (idAuthor);
@@ -437,11 +437,11 @@ CREATE TABLE `${prefix}collapsed` (
   `scope` varchar(200) NOT NULL,
   `idUser` int(12) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX collapsedUser ON `${prefix}collapsed` (idUser);
 
-INSERT INTO `${prefix}collapsed` (`idUser`, `scope` ) select user.id, concat(copyable.name,'_history') from `${prefix}user` user, `${prefix}copyable` copyable;
+INSERT INTO `${prefix}collapsed` (`idUser`, `scope` ) select resource.id, concat(copyable.name,'_history') from `${prefix}resource` resource, `${prefix}copyable` copyable;
  
 UPDATE `${prefix}parameter` SET parameterValue='YES'
 WHERE parameterCode='displayHistory' and parameterValue<>'NO';

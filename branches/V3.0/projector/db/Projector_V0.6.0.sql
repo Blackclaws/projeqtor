@@ -56,10 +56,10 @@ ALTER TABLE `${prefix}project` ADD idUser int(12) UNSIGNED;
 CREATE INDEX accessrightProfile ON `${prefix}accessright` (idProfile);
 CREATE INDEX  accessrightMenu ON `${prefix}accessright` (idMenu);
 
-CREATE INDEX actionProject ON `${prefix}action (idProject);
-CREATE INDEX actionUser ON `${prefix}action (idUser);
-CREATE INDEX actionResource ON `${prefix}action (idResource);
-CREATE INDEX actionStatus ON `${prefix}action (idStatus);
+CREATE INDEX actionProject ON `${prefix}action` (idProject);
+CREATE INDEX actionUser ON `${prefix}action` (idUser);
+CREATE INDEX actionResource ON `${prefix}action` (idResource);
+CREATE INDEX actionStatus ON `${prefix}action` (idStatus);
   
 CREATE INDEX activityProject ON `${prefix}activity` (idProject);
 CREATE INDEX activityUser ON `${prefix}activity` (idUser);

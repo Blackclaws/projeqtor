@@ -57,7 +57,7 @@ class TicketDelay extends Delay {
 
   public function control() {
     $result="";
-    $crit="scope='Ticket' and idType='" . $this->idTicketType . "' and idUrgency='" . $this->idUrgency . "' and id!='" . $this->id . "'";
+    $crit="scope='Ticket' and idType='" . Sql::fmtId($this->idTicketType) . "' and idUrgency='" . Sql::fmtId($this->idUrgency) . "' and id<>'" . Sql::fmtId($this->id) . "'";
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);
     if (count($list)>0) {
       $result.="<br/>" . i18n('errorDuplicateTicketDelay',null);

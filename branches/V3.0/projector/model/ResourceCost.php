@@ -65,9 +65,9 @@ class ResourceCost extends SqlElement {
     }
     $id=($this->id)?$this->id:SQL::$lastQueryNewid;
     if ($this->startDate and $new) {
-      $where="idResource='" . $this->idResource . "' and idRole='" . $this->idRole . "' ";
+      $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($this->idRole) . "' ";
       $where.=" and endDate is null";
-      $where.=" and id<>'" . $id . "'";
+      $where.=" and id<>'" . Sql::fmtId($id) . "'";
       $rc=new ResourceCost();
       $precs=$rc->getSqlElementsFromCriteria(null, false, $where);
       if (count($precs)==1) {
@@ -78,7 +78,7 @@ class ResourceCost extends SqlElement {
     }
     if ($newCost) {
       $wk=new Work();
-      $where="idResource='" . $this->idResource . "'";
+      $where="idResource='" . Sql::fmtId($this->idResource) . "'";
       if ($this->startDate) {
         $where.= " and workDate>='" . $this->startDate . "'";
       }
@@ -90,7 +90,7 @@ class ResourceCost extends SqlElement {
           $wk->save();
         }
       }     
-      $where="idResource='" . $this->idResource . "' and idRole='" . $this->idRole . "' and leftWork>0";
+      $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" .Sql::fmtId($this->idRole) . "' and leftWork>0";
       $ass=new Assignment();
       $assList=$ass->getSqlElementsFromCriteria(null, false, $where);
       foreach ($assList as $ass) {
@@ -109,10 +109,10 @@ class ResourceCost extends SqlElement {
     $precStartDate=null;
     $precCost=0;
     if ($this->startDate) {
-      $where="idResource='" . $this->idResource . "' and idRole='" . $this->idRole 
+      $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($this->idRole)
         . "' and (endDate is not null and endDate<>'0000-00-00')";
       if ($this->id) {
-        $where.=" and id<>'" . $this->id . "'";
+        $where.=" and id<>'" . Sql::fmtId($this->id) . "'";
       }
       $order="endDate desc";
       $rc=new ResourceCost();
@@ -127,7 +127,7 @@ class ResourceCost extends SqlElement {
     }
 
     $wk=new Work();
-    $where="idResource='" . $this->idResource . "'";
+    $where="idResource='" . Sql::fmtId($this->idResource) . "'";
     if ($this->startDate) {
       $where.= " and workDate>='" . $this->startDate . "'";
     }
@@ -140,7 +140,7 @@ class ResourceCost extends SqlElement {
       }
     }     
   
-    $where="idResource='" . $this->idResource . "' and idRole='" . $this->idRole . "' and leftWork>0";
+    $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($this->idRole) . "' and leftWork>0";
     $ass=new Assignment();
     $assList=$ass->getSqlElementsFromCriteria(null, false, $where);
     foreach ($assList as $ass) {
@@ -173,8 +173,8 @@ class ResourceCost extends SqlElement {
   public function control() {
     $result="";
     if ($this->startDate and !$this->id) {
-      $where="idResource='" . $this->idResource . "' ";
-      $where.=" and idRole='" . $this->idRole . "' ";
+      $where="idResource='" . Sql::fmtId($this->idResource) . "' ";
+      $where.=" and idRole='" . Sql::fmtId($this->idRole) . "' ";
       $where.=" and (endDate is null or endDate='0000-00-00')";
       if ($this->id) {
         $where.=" and id<>'" . $this->id . "'";

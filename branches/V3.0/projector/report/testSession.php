@@ -49,7 +49,7 @@ $order="";
 
 if ($paramProject) {
   $lstProject=array($paramProject=>SqlList::getNameFromId('Project',$paramProject));
-  $where.=" and idProject=".$paramProject;
+  $where.=" and idProject=".Sql::fmtId($paramProject);
 } else {
   $lstProject=SqlList::getList('Project','name',null,true);
   $lstProject[0]='<i>'.i18n('undefinedValue').'</i>';
@@ -57,7 +57,7 @@ if ($paramProject) {
 
 if ($paramProduct) {
   $lstProduct=array($paramProduct=>SqlList::getNameFromId('Product',$paramProduct));
-  $where.=" and idProduct=".$paramProduct;
+  $where.=" and idProduct=".Sql::fmtId($paramProduct);
 } else {
   $lstProduct=SqlList::getList('Product','name',null,true);
   $lstProduct[0]='<i>'.i18n('undefinedValue').'</i>';
@@ -65,7 +65,7 @@ if ($paramProduct) {
 
 if ($paramSession) {
   $lstSession=array($paramSession=>SqlList::getNameFromId('TestSession',$paramSession));
-  $where.=" and id=".$paramSession;
+  $where.=" and id=".Sql::fmtId($paramSession);
 } else {
   $lstSession=SqlList::getList('TestSession');
   $lstSession[0]='<i>'.i18n('undefinedValue').'</i>';
@@ -73,7 +73,7 @@ if ($paramSession) {
 
 if ($paramVersion) {
   $lstVersion=array($paramVersion=>SqlList::getNameFromId('Version',$paramVersion));
-  $where.=" and idVersion=".$paramVersion;
+  $where.=" and idVersion=".Sql::fmtId($paramVersion);
 } else {
   $lstVersion=SqlList::getList('Version','name',null,true);
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';

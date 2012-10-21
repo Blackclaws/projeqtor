@@ -248,9 +248,6 @@ CREATE TABLE `${prefix}attachement` (
 -- Contenu de la TABLE `${prefix}attachement`
 --
 
-INSERT INTO `${prefix}attachement` (`id`, `refType`, `refId`, `idUser`, `creationDate`, `fileName`, `description`, `subDirectory`, `mimeType`, `fileSize`) VALUES
-(1, 'Anomaly', 3, 1, '2009-09-08 17:26:45', 'vlc.exe.manifest', 'Test fichier', 'D:\\TEMP\\attachement_1\\', 'application/octet-stream', 606);
-
 -- --------------------------------------------------------
 
 --
@@ -674,7 +671,7 @@ CREATE TABLE `${prefix}history` (
   `colName` varchar(100) DEFAULT NULL,
   `oldValue` varchar(4000) DEFAULT NULL,
   `newValue` varchar(4000) DEFAULT NULL,
-  `operationDate` timestamp NOT NULL,
+  `operationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idUser` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

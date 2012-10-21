@@ -117,7 +117,7 @@ class GeneralWork extends SqlElement {
   public function save() {
     if ($this->dailyCost==null) {
       $ass=new Assignment($this->idAssignment);
-      $where="idResource='" . $this->idResource . "' and idRole='" . $ass->idRole . "'"
+      $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($ass->idRole) . "'"
        . " and (startDate is null or startDate<='" . $this->workDate . "')"
        . " and (endDate is null or endDate>='" . $this->workDate . "')";
       $order="startDate asc";

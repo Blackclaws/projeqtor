@@ -277,7 +277,7 @@ class Requirement extends SqlElement {
   	$this->countLinked=0;
     foreach ($this->_Link as $link) {
       if ($link->ref2Type=='TestCase') {
-        $listCrit.=','.$link->ref2Id;
+        $listCrit.=','.Sql::fmtId($link->ref2Id);
         $this->countLinked+=1;
       }
       if ($link->ref2Type=='Ticket') {

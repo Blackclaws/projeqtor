@@ -175,7 +175,7 @@ class Resource extends SqlElement {
     $result=array();
     $startDay=str_replace('-','',$startDate);
     $where="day >= '" . $startDay . "'";
-    $where.=" and idResource='" . $this->id . "'"; 
+    $where.=" and idResource='" . Sql::fmtId($this->id) . "'"; 
     $pw=new PlannedWork();
     $pwList=$pw->getSqlElementsFromCriteria(null,false,$where);
     $listTopProjectsArray=array();
@@ -334,9 +334,9 @@ class Resource extends SqlElement {
   public function getActualResourceCost($idRole=null) {
     if (! $this->id) return null;
     if (! $idRole) $idRole=$this->idRole;
-    $where="idResource='" . $this->id . "'";
+    $where="idResource='" . Sql::fmtId($this->id) . "'";
     if ($idRole) {
-      $where.= " and idRole='" . $idRole . "'";
+      $where.= " and idRole='" . Sql::fmtId($idRole) . "'";
     }
     $where.= " and endDate is null";
     $rc=new ResourceCost();

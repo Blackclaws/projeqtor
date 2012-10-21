@@ -66,8 +66,8 @@ CREATE INDEX ticketCriticality ON `${prefix}ticket` (idCriticality);
 
 CREATE INDEX typeScope ON `${prefix}type` (scope);
 
-CREATE INDEX userProfile ON `${prefix}user` (idProfile);
-CREATE INDEX userTeam ON `${prefix}user` (idTeam);
+CREATE INDEX userProfile ON `${prefix}resource` (idProfile);
+CREATE INDEX userTeam ON `${prefix}resource` (idTeam);
 
 CREATE INDEX workflowstatusProfile ON `${prefix}workflowstatus` (idProfile);
 CREATE INDEX workflowstatusWorkflow ON `${prefix}workflowstatus` (idWorkflow);

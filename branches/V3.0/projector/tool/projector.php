@@ -498,9 +498,9 @@ function getAccesResctictionClause($objectClass,$alias=null) {
     if (property_exists($obj,"idUser")) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       if ($alias===false) {
-        $queryWhere.=  "idUser = '" . $_SESSION['user']->id . "'";   
+        $queryWhere.=  "idUser = '" . Sql::fmtId($_SESSION['user']->id) . "'";   
       } else {
-        $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";   
+        $queryWhere.=  $table . ".idUser = '" . Sql::fmtId($_SESSION['user']->id) . "'";   
       }
     } else {
       $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -875,10 +875,17 @@ function transformValueListIntoInClause($list) {
   if (count($list)==0) return '(0)';
   $result='(' ;
   foreach ($list as $id=>$name) {
-    $result .= ($result=='(')?'':', ';
-    $result .= "'" . $name . "'";
+  	if ($name) {
+  	  $result .= ($result=='(')?'':', ';
+  	  if (is_numeric($name)) {
+        $result .= $name ;
+  	  } else {
+  	  	$result .= "'".$name."'";
+  	  }
+  	}
   }
   $result .= ')'; 
+  if ($result=='()') {$result='(0)';}
   return $result;
 }
 

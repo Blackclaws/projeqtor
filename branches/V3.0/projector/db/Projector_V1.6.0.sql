@@ -7,7 +7,7 @@
 -- ///////////////////////////////////////////////////////////
 --
 --
-ALTER TABLE `${prefix}work` CHANGE `work` `work` DECIMAL( 5, 2 ) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `${prefix}work` CHANGE `work` `work` DECIMAL(5,2) UNSIGNED;
 
 CREATE TABLE `${prefix}list` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

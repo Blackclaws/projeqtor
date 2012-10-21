@@ -42,9 +42,9 @@
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else if ($dataType=='varchar') {
         echo ' {id:"LIKE", name:"' . i18n("contains") . '"}';
-          echo ',{id:"isEmpty", name:"' . i18n('isEmpty') . '"}';
-          echo ',{id:"isNotEmpty", name:"' . i18n('isNotEmpty') . '"}';
-          echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
+        echo ',{id:"isEmpty", name:"' . i18n('isEmpty') . '"}';
+        echo ',{id:"isNotEmpty", name:"' . i18n('isNotEmpty') . '"}';
+        echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
       } else if ($dataType=='bool') {
         echo ' {id:"=", name:"="}';
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
@@ -200,8 +200,8 @@
         $ctrl.='#' . $resource->idRole . '#';
       }
 
-      $where="idResource='" . $idR . "' and endDate is null";
-      $where.=" and idRole <>'" . $resource->idRole . "'";
+      $where="idResource='" . Sql::fmtId($idR) . "' and endDate is null";
+      $where.=" and idRole <>'" . Sql::fmtId($resource->idRole) . "'";
       $rc=new ResourceCost();
       $lstRoles=$rc->getSqlElementsFromCriteria(null, false, $where);
       // return result in json format

@@ -1090,7 +1090,9 @@ function drawHistoryFromObjects($refresh=false) {
   $inList="( ('x',0)"; // initialize with non existing element, to avoid error if 1 only object involved
   foreach($treatedObjects as $obj) {
     //$inList.=($inList=='')?'(':', ';
-    $inList.=", ('" . get_class($obj) . "', '" . $obj->id . "')";
+    if ($obj->id) {
+      $inList.=", ('" . get_class($obj) . "', " . Sql::fmtId($obj->id) . ")";
+    }
   }
   $inList.=')';
   $where = ' (refType, refId) in ' . $inList;

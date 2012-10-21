@@ -152,12 +152,12 @@ class BillLine extends SqlElement {
         foreach ($assList as $ass) {
           $selectedAss=false;
           $work = new Work();
-          $crit = "idProject='".$bill->idProject . "'";
-          $crit.=" and idResource='".$this->idResource. "'";    
+          $crit = "idProject='".Sql::fmtId($bill->idProject) . "'";
+          $crit.=" and idResource='".Sql::fmtId($this->idResource). "'";    
           $crit.=" and workDate>=\"".$this->startDate."\"";
           $crit.=" and workDate<=\"".$this->endDate."\"";
-          $crit.=" and idAssignment='".$ass->id."'";
-          $crit.=" and idBill='" . $bill->id . "'";   
+          $crit.=" and idAssignment='".Sql::fmtId($ass->id)."'";
+          $crit.=" and idBill='" . Sql::fmtId($bill->id) . "'";   
           $workList = $work->getSqlElementsFromCriteria(null,false,$crit, "idAssignment asc");
           foreach ($workList as $work) {
             $work->idBill=null;
@@ -244,10 +244,10 @@ class BillLine extends SqlElement {
       			$actPlanned+=$ass->plannedWork;
       			$work = new Work();
             $crit = "idProject='".$bill->idProject . "'";
-            $crit.=" and idResource='".$this->idResource. "'";    
+            $crit.=" and idResource='".Sql::fmtId($this->idResource). "'";    
             $crit.=" and workDate>=\"".$this->startDate."\"";
             $crit.=" and workDate<=\"".$this->endDate."\"";
-            $crit.=" and idAssignment='".$ass->id."'";
+            $crit.=" and idAssignment='".Sql::fmtId($ass->id)."'";
             $crit.=" and idBill is null";   
             $workList = $work->getSqlElementsFromCriteria(null,false,$crit, "idAssignment asc");
             foreach ($workList as $work) {

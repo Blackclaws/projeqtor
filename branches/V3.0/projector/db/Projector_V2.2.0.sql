@@ -43,7 +43,7 @@ ADD COLUMN `idActivity` int(12) unsigned default null;
 
 CREATE INDEX workelementUser ON `${prefix}workelement` (idUser);
 
-INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`)
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`)
 VALUES (39,'reportVersionDetail',4,'versionDetail.php',450,0);
 
 INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
@@ -75,7 +75,7 @@ CREATE TABLE `${prefix}approver` (
   `approvedDate` datetime default NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX approverRef ON `${prefix}approver` (refType, refId);
 CREATE INDEX approverAffectable ON `${prefix}approver` (idAffectable);

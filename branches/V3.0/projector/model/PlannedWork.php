@@ -463,20 +463,10 @@ class PlannedWork extends GeneralWork {
     // save Assignment
     foreach ($arrayAssignment as $ass) {
       $ass->simpleSave();
-      /*$query='UPDATE ' . $ass->getDatabaseTableName() 
-       . ' SET plannedEndDate=\'' . $ass->plannedEndDate . '\''
-       . ', plannedStartDate=\'' .  $ass->plannedStartDate . '\''
-       . ' WHERE id=' . $ass->id . ';';
-       SqlDirectElement::execute($query);*/
     }
     
     foreach ($fullListPlan as $pe) {
    	  $pe->simpleSave();
-   	  /*$query='UPDATE ' . $pe->getDatabaseTableName() 
-       . ' SET plannedEndDate=\'' . $pe->plannedEndDate . '\''
-       . ', plannedStartDate=\'' .  $pe->plannedStartDate . '\''
-      . ' WHERE id=' . $pe->id . ';';
-      SqlDirectElement::execute($query);*/  
     }
     
     

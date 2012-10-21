@@ -535,7 +535,7 @@ abstract class SqlElement {
         }
       }
     }
-    $query .= ' where id=' . Sql::str($this->id);
+    $query .= ' where id=' . $this->id;
     // If changed, execute the query
     if ($nbChanged > 0 and $returnStatus!="ERROR") {
       // Catch errors, and return error message
@@ -567,7 +567,7 @@ abstract class SqlElement {
       $query="update " . $ass->getDatabaseTableName();
       $query.=" set idle='" . $this->idle . "'";
       $query.=" where refType='" . get_class($this) . "' ";
-      $query.=" and refId='" . $this->id . "'";
+      $query.=" and refId=" . $this->id;
       $result = Sql::query($query);
       if ($returnStatus=="ERROR") {
         $returnValue=Sql::$lastQueryErrorMessage;
@@ -677,13 +677,13 @@ abstract class SqlElement {
           }
           if ($object=="Dependency") {
             $crit=null;
-            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId='" . $this->id ."')"
-             . " or (successorRefType='" . get_class($this) . "' and successorRefId='" . $this->id ."')"; 
+            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . $this->id .")"
+             . " or (successorRefType='" . get_class($this) . "' and successorRefId=" . $this->id .")"; 
           }
           if ($object=="Link") {
             $crit=null;
-            $where="(ref1Type='" . get_class($this) . "' and ref1Id='" . $this->id ."')"
-             . " or (ref2Type='" . get_class($this) . "' and ref2Id='" . $this->id ."')"; 
+            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . $this->id .")"
+             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . $this->id .")"; 
           }
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           foreach ($list as $subObj) {
@@ -692,7 +692,7 @@ abstract class SqlElement {
         }
       }
     }
-    $query="delete from " .  $this->getDatabaseTableName() . " where id='" . $this->id . "'";
+    $query="delete from " .  $this->getDatabaseTableName() . " where id=" . $this->id . "";
     // execute request
     $returnStatus="OK";
     $result = Sql::query($query);
@@ -1072,10 +1072,14 @@ abstract class SqlElement {
     if ($critArray) {
       foreach ($critArray as $colCrit => $valCrit) {
         $whereClause.=($whereClause=='')?' where ':' and ';
-        if ($valCrit==null) {
+        if ($valCrit==null or $valCrit==' ') {
           $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' is null';
         } else { 
-          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' ='.Sql::str($valCrit);
+        	if ($this->getDataType($colCrit)=='int' and is_numeric($valCrit)) {
+            $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . '='.$valCrit;
+        	} else {
+        		$whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . '='.Sql::str($valCrit);
+        	}
         }
         $defaultObj->$colCrit=$valCrit;
       }
@@ -1114,7 +1118,9 @@ abstract class SqlElement {
           } else {
             $dbColName=$obj->getDatabaseColumnName($col_name);
             if (array_key_exists($dbColName,$line)) {
-              $obj->{$col_name}=$line[$obj->getDatabaseColumnName($col_name)];
+              $obj->{$col_name}=$line[$dbColName];
+            } else if (array_key_exists(strtolower($dbColName),$line)) {
+              $obj->{$col_name}=$line[strtolower($dbColName)];
             } else {
               errorLog("Error on SqlElement to get '" . $col_name . "' for Class '".get_class($obj) . "' "
                 . " : field '" . $dbColName . "' not found in Database.");
@@ -1277,10 +1283,11 @@ abstract class SqlElement {
    */
   private function getSqlElement() {
     $curId=$this->id;
+    if (! trim($curId)) {$curId='0';}
     $empty=true;
     // If id is set, get the element from Database
     if ($curId != NULL) {
-      $query = "select * from " . $this->getDatabaseTableName() . ' where id =' . Sql::str($curId) ;
+      $query = "select * from " . $this->getDatabaseTableName() . ' where id =' . $curId ;
       foreach ($this->getDatabaseCriteria() as $critFld=>$critVal) {
       	$query .= ' and ' . $critFld . ' = ' . Sql::str($critVal);
       }
@@ -1336,7 +1343,16 @@ abstract class SqlElement {
            
           } else {
             //$test=$line[$this->getDatabaseColumnName($col_name)];
-            $this->{$col_name}=$line[$this->getDatabaseColumnName($col_name)];
+            $dbColName=$this->getDatabaseColumnName($col_name);
+            if (array_key_exists($dbColName,$line)) {
+              //OK
+            } else if (array_key_exists(strtolower($dbColName),$line)) {
+              $dbColName=strtolower($dbColName);
+            } else {
+              errorLog("Error on SqlElement to get '" . $col_name . "' for Class '".get_class($obj) . "' "
+                . " : field '" . $dbColName . "' not found in Database.");
+            }
+            $this->{$col_name}=$line[$dbColName];
           }
         }
       } else {
@@ -1375,7 +1391,7 @@ abstract class SqlElement {
       // set the reference data
       // build query
       $query = "select id from " . $obj->getDatabaseTableName()
-      . ' where refId =' . Sql::str($curId).
+      . ' where refId =' . $curId.
        " and refType ='" . get_class($this) . "'" ;      
       $result = Sql::query($query);
       // if no element in database, will return empty object
@@ -1438,6 +1454,7 @@ abstract class SqlElement {
    * @return the type of the data
    */  
   public function getDataType($colName) {
+  	$colName=strtolower($colName);
     $formatList=self::getFormatList(get_class($this));
     if ( ! array_key_exists($colName, $formatList) ) {
       return 'undefined';
@@ -1453,6 +1470,7 @@ abstract class SqlElement {
    * @return the type of the data
    */  
   public function getDataLength($colName) {
+  	$colName=strtolower($colName);
     $formatList=self::getFormatList(get_class($this));
     if ( ! array_key_exists($colName, $formatList) ) {
       return '';
@@ -1523,13 +1541,18 @@ abstract class SqlElement {
    * @return string the name of the data column
    */
   public function getDatabaseColumnName($field) {
+  	$colName=$field;
     $databaseColumnName=$this->getStaticDatabaseColumnName();
     if (array_key_exists($field,$databaseColumnName)) {
-      return $databaseColumnName[$field];
-    } else {
+      $colName=$databaseColumnName[$field];
+    } //else {
       //return Sql::str($field); // Must not be quoted : would return 'name' (with quotes)
-      return $field;
-    }
+      //return $field;
+    //}
+    //if (Sql::isPgsql() ) {
+    //	$colName=strtolower($colName);
+    //}
+    return $colName;
   }
 
   /** ========================================================================
@@ -1542,9 +1565,9 @@ abstract class SqlElement {
    */
   public function getDatabaseColumnNameReversed($field) {
     $databaseColumnName=$this->getStaticDatabaseColumnName();
-    $databaseColumnNameReversed=array_flip($databaseColumnName);
+    $databaseColumnNameReversed=array_flip(array_map('strtolower',$databaseColumnName));
     //I deleted Sql::str because it's add ' '
-    if (array_key_exists($field,$databaseColumnNameReversed)) {
+    if (array_key_exists(strtolower($field),$databaseColumnNameReversed)) {
     	return $databaseColumnNameReversed[$field];
       //return Sql::str($databaseColumnNameReversed[$field]);
     } else {
@@ -1594,11 +1617,33 @@ abstract class SqlElement {
     }
     $obj=new $class();
     $formatList= array();
-    $result=Sql::query("desc " . $obj->getDatabaseTableName());
+    $query="desc " . $obj->getDatabaseTableName();
+    if (Sql::isPgsql()) {
+	    $query="SELECT a.attname as field, pg_catalog.format_type(a.atttypid, a.atttypmod) as type"
+	      . " FROM pg_catalog.pg_attribute a " 
+	      . " WHERE a.attrelid = (SELECT oid FROM pg_catalog.pg_class WHERE relname='".$obj->getDatabaseTableName()."')"
+	      . " AND a.attnum > 0 AND NOT a.attisdropped"
+	      . " ORDER BY a.attnum";
+    }
+    $result=Sql::query($query);
     while ( $line = Sql::fetchLine($result) ) {
-      $fieldName=$line['Field'];
+      $fieldName=(isset($line['Field']))?$line['Field']:$line['field'];
       $fieldName=$obj->getDatabaseColumnNameReversed($fieldName);
-      $formatList[$fieldName] = $line['Type'];
+      $type=(isset($line['Type']))?$line['Type']:$line['type'];
+      if (Sql::isPgsql()) {
+      	$from=array();                               $to=array();
+      	$from[]='integer';                           $to[]='int(12)';
+      	$from[]='numeric(12,0)';                     $to[]='int(12)';
+      	$from[]='numeric(5,0)';                      $to[]='int(5)';
+      	$from[]='numeric(3,0)';                      $to[]='int(3)';
+      	$from[]='numeric(1,0)';                      $to[]='int(1)';
+      	$from[]=' without time zone';                $to[]='';
+      	$from[]='character varying';                 $to[]='varchar';
+      	$from[]='numeric';                           $to[]='decimal';
+      	$from[]='timestamp';                         $to[]='datetime';
+      	$type=str_ireplace($from, $to, $type);
+      }
+      $formatList[strtolower($fieldName)] = $type;
     }
     self::$_tablesFormatList[$class]=$formatList;
     return $formatList;
@@ -2021,13 +2066,13 @@ abstract class SqlElement {
           }
           if ($object=="Dependency") {
             $crit=null;
-            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId='" . $this->id ."')"
-             . " or (successorRefType='" . get_class($this) . "' and successorRefId='" . $this->id ."')"; 
+            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . $this->id .")"
+             . " or (successorRefType='" . get_class($this) . "' and successorRefId=" . $this->id .")"; 
           }
           if ($object=="Link") {
             $crit=null;
-            $where="(ref1Type='" . get_class($this) . "' and ref1Id='" . $this->id ."')"
-             . " or (ref2Type='" . get_class($this) . "' and ref2Id='" . $this->id ."')"; 
+            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . $this->id .")"
+             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . $this->id .")"; 
           }
 
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
@@ -2077,7 +2122,7 @@ abstract class SqlElement {
     }
     $crit=array();
     $crit['idStatus']=$this->idStatus;
-    $crit="idle='0' and idMailable='" . $mailable->id . "' and ( 0 ";
+    $crit="idle='0' and idMailable='" . $mailable->id . "' and ( false ";
     if ($statusChange) {
     	$crit.="  or idStatus='" . $this->idStatus . "' ";
     }
@@ -2267,7 +2312,6 @@ abstract class SqlElement {
     $message = wordwrap($message, 70); // wrapt text so that line do not exceed 70 cars per line
     $resultMail=sendMail($dest, $title, $message, $this);
     if ($directStatusMail) {
-//debugLog("resultMail=$resultMail  for dest=$dest");
     	if ($resultMail) {
     		return array('result'=>'OK', 'dest'=>$dest);
     	} else {

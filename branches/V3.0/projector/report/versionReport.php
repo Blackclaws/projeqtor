@@ -39,13 +39,13 @@ if (! isset($includedReport)) {
 
 $where=getAccesResctictionClause('Ticket',false);
 if ($paramProject!="") {
-  $where.=" and idProject='" . $paramProject . "'";
+  $where.=" and idProject='" . Sql::fmtId($paramProject) . "'";
 }
 if ($paramTicketType!="") {
-  $where.=" and idTicketType='" . $paramTicketType . "'";
+  $where.=" and idTicketType='" . Sql::fmtId($paramTicketType) . "'";
 }
 if ($paramResponsible!="") {
-  $where.=" and idResource='" . $paramResponsible . "'";
+  $where.=" and idResource='" . Sql::fmtId($paramResponsible) . "'";
 }
 
 $order="";

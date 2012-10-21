@@ -7,8 +7,8 @@
 -- ///////////////////////////////////////////////////////////
 --
 --
-RENAME TABLE `${prefix}user` TO `${prefix}resource`;
-
---ALTER TABLE `${prefix}report` CHANGE `order``sortOrder` int(5);
-ALTER TABLE `${prefix}reportparameter` CHANGE `order``sortOrder` int(5);
-ALTER TABLE `${prefix}reportcategory` CHANGE `order``sortOrder` int(5);
+CREATE TABLE `${prefix}mutex` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

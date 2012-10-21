@@ -122,7 +122,7 @@ CREATE TABLE `${prefix}risklevel` (
   `sortOrder` int(3) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}risklevel` (id, name, color, sortOrder, idle) VALUES
 (1, 'Very Low', '#00FF00', 100, 0),
@@ -138,7 +138,7 @@ CREATE TABLE `${prefix}feasibility` (
   `sortOrder` int(3) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 INSERT INTO `${prefix}feasibility` (id, name, color, sortOrder, idle) VALUES
 (1, 'Yes', '#00FF00', 100, 0),
 (2, 'Investigate', '#AAAA00', 200,0),
@@ -151,7 +151,7 @@ CREATE TABLE `${prefix}runstatus` (
   `sortOrder` int(3) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 INSERT INTO `${prefix}runstatus` (id, name, color, sortOrder, idle) VALUES
 (1, 'planned', '#FFFFFF', 100, 0),
 (2, 'passed', '#32CD32', 200,0),
@@ -193,7 +193,7 @@ CREATE TABLE `${prefix}requirement` (
   `countLinked` int(5) default 0,
   `countIssues` int(5) default 0,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 CREATE INDEX requirementProject ON `${prefix}requirement` (idProject);
 CREATE INDEX requirementProduct ON `${prefix}requirement` (idProduct);
 CREATE INDEX requirementVersion ON `${prefix}requirement` (idVersion);
@@ -240,7 +240,7 @@ CREATE TABLE `${prefix}testcase` (
   `lastRunDate` date DEFAULT NULL,
   `idRunStatus` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 CREATE INDEX testcaseProject ON `${prefix}testcase` (idProject);
 CREATE INDEX testcaseProduct ON `${prefix}testcase` (idProduct);
 CREATE INDEX testcaseVersion ON `${prefix}testcase` (idVersion);
@@ -281,7 +281,7 @@ CREATE TABLE `${prefix}testsession` (
   `countTotal` int(5) default 0,
   `countIssues` int(5) default 0,
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 CREATE INDEX testsessionProject ON `${prefix}testsession` (idProject);
 CREATE INDEX testsessionProduct ON `${prefix}testsession` (idProduct);
 CREATE INDEX testsessionVersion ON `${prefix}testsession` (idVersion);
@@ -319,7 +319,7 @@ CREATE TABLE `${prefix}testcaserun` (
   `comment` varchar(4000) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX testcaserunTestCase ON `${prefix}testcaserun` (idTestCase);
 CREATE INDEX testcaserunTestSession ON `${prefix}testcaserun` (idTestSession);
@@ -340,7 +340,7 @@ INSERT INTO `${prefix}dependable` (`id`,`name`,`idle`, `scope`, `idDefaultDepend
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`) VALUES
 (8, 'reportCategoryRequirementTest', 70);
 
-INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
 (44,'reportRequirementTest',8,'requirementTest.php',810,0),
 (41,'reportProductTest',8,'productTest.php',820,0),
 (42,'reportPlanActivityMonthly',2,'activityPlan.php',252,0),
@@ -393,5 +393,8 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (6,43,0),
 (7,43,0);
 
-ALTER TABLE `${prefix}dependency` CHANGE dependencyDelay dependencyDelay INT(3) DEFAULT '0';
+ALTER TABLE `${prefix}dependency` CHANGE dependencyDelay dependencyDelay INT(3);
+ALTER TABLE `${prefix}dependency` ALTER dependencyDelay DROP DEFAULT;
+ALTER TABLE `${prefix}dependency` ALTER dependencyDelay SET DEFAULT 0;
+
 UPDATE `${prefix}dependency` set dependencyDelay=0;

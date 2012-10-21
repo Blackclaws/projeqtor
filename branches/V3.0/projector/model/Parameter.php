@@ -385,7 +385,7 @@ class Parameter extends SqlElement {
   	$res=array();
   	// Default Values
   	$user=$_SESSION['user'];
-  	$crit="idUser='" . $user->id . "' and idProject is null and parameterCode like 'planningHideColumn%'";
+  	$crit="idUser='" . Sql::fmtId($user->id) . "' and idProject is null and parameterCode like 'planningHideColumn%'";
   	$param=new Parameter();
   	$hiddenList=$param->getSqlElementsFromCriteria(null, false, $crit);
   	$hidden="|";

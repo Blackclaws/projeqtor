@@ -107,19 +107,19 @@ if ($periodType) {
   //$where.="        and idleDateTime<='" . $end . "') )";
 }
 if ($paramProject!="") {
-  $where.=" and idProject='" . $paramProject . "'";
+  $where.=" and idProject='" . Sql::fmtId($paramProject) . "'";
 }
 if ($paramTicketType!="") {
-  $where.=" and idTicketType='" . $paramTicketType . "'";
+  $where.=" and idTicketType='" . Sql::fmtId($paramTicketType) . "'";
 }
 if ($paramRequestor!="") {
-  $where.=" and idContact='" . $paramRequestor . "'";
+  $where.=" and idContact='" . Sql::fmtId($paramRequestor) . "'";
 }
 if ($paramIssuer!="") {
-  $where.=" and idUser='" . $paramIssuer . "'";
+  $where.=" and idUser='" . Sql::fmtId($paramIssuer) . "'";
 }
 if ($paramResponsible!="") {
-  $where.=" and idResource='" . $paramResponsible . "'";
+  $where.=" and idResource='" . Sql::fmtId($paramResponsible) . "'";
 }
 $order="";
 //echo $where;

@@ -18,7 +18,7 @@ CREATE INDEX expenseMonth ON `${prefix}expense` (month);
 CREATE INDEX expenseYear ON `${prefix}expense` (year);
 
 CREATE INDEX expensedetailProject ON `${prefix}expensedetail` (idProject);
-CREATE INDEX expensedetailType ON `${prefix}expensedetail` (idExpenseDetailType);
+CREATE INDEX expensedetailExpenseDetailType ON `${prefix}expensedetail` (idExpenseDetailType);
 CREATE INDEX expensedetailExpense ON `${prefix}expensedetail` (idExpense);
 
 CREATE INDEX habilitationotherProfile ON `${prefix}habilitationother` (idProfile);
@@ -29,9 +29,9 @@ CREATE INDEX planningmodeApplyTo ON `${prefix}planningmode` (applyTo);
 
 CREATE INDEX resourcecostResource ON `${prefix}resourcecost` (idResource);
 
-CREATE INDEX userIsResource ON `${prefix}user` (isResource);
-CREATE INDEX userIsUser ON `${prefix}user` (isUser);
-CREATE INDEX userIsContact ON `${prefix}user` (isContact);
+CREATE INDEX userIsResource ON `${prefix}resource` (isResource);
+CREATE INDEX userIsUser ON `${prefix}resource` (isUser);
+CREATE INDEX userIsContact ON `${prefix}resource` (isContact);
 
 CREATE TABLE `${prefix}calendar` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -139,8 +139,8 @@ CREATE TABLE `${prefix}version` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX versionProduct ON `${prefix}version` (idProduct),
-CREATE INDEX versionContact ON `${prefix}version` (idContact),
+CREATE INDEX versionProduct ON `${prefix}version` (idProduct);
+CREATE INDEX versionContact ON `${prefix}version` (idContact);
 CREATE INDEX versionResource ON `${prefix}version` (idResource);
 
 CREATE TABLE `${prefix}versionproject` (
@@ -168,7 +168,7 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (2, 87, 1),
 (3, 87, 1);
 
-ALTER TABLE ADD `idContact` int(12) unsigned DEFAULT NULL;
+ALTER TABLE `${prefix}project` ADD `idContact` int(12) unsigned DEFAULT NULL;
 CREATE INDEX projectContact ON `${prefix}project` (idContact);
 
 ALTER TABLE `${prefix}plannedwork` CHANGE `work` `work` DECIMAL(5,2) UNSIGNED;

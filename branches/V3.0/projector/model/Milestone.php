@@ -168,11 +168,11 @@ class Milestone extends SqlElement {
     if ($this->idActivity and trim($this->idActivity)!='') {
       $this->MilestonePlanningElement->topRefType='Activity';
       $this->MilestonePlanningElement->topRefId=$this->idActivity;
-      $this->MilestonePlanningElement->topId='';
+      $this->MilestonePlanningElement->topId=null;
     } else {
       $this->MilestonePlanningElement->topRefType='Project';
       $this->MilestonePlanningElement->topRefId=$this->idProject;
-      $this->MilestonePlanningElement->topId='';
+      $this->MilestonePlanningElement->topId=null;;
     } 
     return parent::save();
   }

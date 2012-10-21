@@ -21,8 +21,8 @@
     $user=$_SESSION['user'];
     $msg=new Message();
     $where="idle=0";
-    $where.=" and (idUser is null or idUser='" . $user->id . "')";
-    $where.=" and (idProfile is null or idProfile='" . $user->idProfile . "')";
+    $where.=" and (idUser is null or idUser='" .Sql::fmtId( $user->id) . "')";
+    $where.=" and (idProfile is null or idProfile='" . Sql::fmtId($user->idProfile) . "')";
     $where.=" and (idProject is null or idProject in " . transformListIntoInClause($prjLst=$user->getVisibleProjects()) . ")";
     
     $sort="id desc";
@@ -245,7 +245,7 @@
   	$where="1=0";
   	$whereTicket=$where;
     $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
-      "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . $user->id . "')" .
+      "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . Sql::fmtId($user->id) . "')" .
       ") and idle=0 and done=0";
     showActivitiesList($where, $whereActivity, $whereTicket, 'Today_WorkDiv', 'todayAssignedTasks');
   }
@@ -254,7 +254,7 @@
     $user=$_SESSION['user'];
     $ass=new Assignment();
     $act=new Activity();
-    $where="(idResource='" . $user->id . "'" .
+    $where="(idResource='" . Sql::fmtId($user->id) . "'" .
       ") and idle=0 and done=0";
     $whereTicket=$where;
     $whereActivity=$where;
@@ -263,10 +263,10 @@
   
   function showIssuerRequestorTasks() {
   	$user=$_SESSION['user'];
-  	$where="(idUser='" . $user->id . "'" . 
+  	$where="(idUser='" . Sql::fmtId($user->id) . "'" . 
        ") and idle=0 and done=0";
-  	$whereTicket="(idUser='" . $user->id . "'" . 
-       " or idContact='" . $user->id . "'" .
+  	$whereTicket="(idUser='" . Sql::fmtId($user->id) . "'" . 
+       " or idContact='" . Sql::fmtId($user->id) . "'" .
        ") and idle=0 and done=0";
     $whereActivity=$whereTicket;
     showActivitiesList($where, $whereActivity, $whereTicket, 'Today_FollowDiv', 'todayIssuerRequestorTasks');

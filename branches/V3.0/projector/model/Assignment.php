@@ -77,7 +77,7 @@ class Assignment extends SqlElement {
       $this->dailyCost=$newCost;
       if (! $this->idRole) {
         // search idRole found for newDailyCost
-        $where="idResource='" . $this->idResource . "'";
+        $where="idResource=" . Sql::fmtId($this->idResource);
         $where.= " and endDate is null";
         $where.= " and cost=" . ($newCost)?$newCost:'0';
         $rc=new ResourceCost();
