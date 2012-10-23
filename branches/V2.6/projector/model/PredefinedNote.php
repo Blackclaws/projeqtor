@@ -17,7 +17,7 @@ class PredefinedNote extends SqlElement {
 	// Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
-    <th field="nameTextable" width="15%">${element}</th>
+    <th field="nameTextable" width="15%" formatter="translateFormatter">${element}</th>
     <th field="nameType" width="15%">${type}</th>
     <th field="name" width="55%">${name}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
