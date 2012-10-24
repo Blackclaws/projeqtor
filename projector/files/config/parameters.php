@@ -1,14 +1,14 @@
 <?php
 // =======================================================================================
 // Automatically generated parameter file
-// on 2012-10-21 14:55:56
+// on 2012-10-24 22:08:26
 // =======================================================================================
-$paramDbType='pgsql';
+$paramDbType='mysql';
 $paramDbHost='localhost';
-$paramDbPort='5432';
-$paramDbUser='postgres';
-$paramDbPassword='admin';
-$paramDbName='projectorria';
+$paramDbPort='3306';
+$paramDbUser='root';
+$paramDbPassword='mysql';
+$paramDbName='projectorria_V30';
 $paramDbPrefix='';
 $paramLdap_allow_login='false';
 $paramLdap_base_dn='dc=mydomain,dc=com';
