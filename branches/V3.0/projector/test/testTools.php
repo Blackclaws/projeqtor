@@ -31,7 +31,17 @@ function testResult($msg,$type){
 	global $last,$cptTest, $cptOK, $cptKO;
 	$cptTest+=1;
 	if ($type=='OK') {$cptOK+=1;} else {$cptKO+=1;}
-  echo '<td style="width:200px;background-color:'.(($type=='OK')?'#AAFFAA':'#FFAAAA').'">'.$msg.'</td></tr>';
+  echo '<td style="width:300px;background-color:'.(($type=='OK')?'#AAFFAA':'#FFAAAA').'">'.$msg.'</td></tr>';
   $last='result';
 }
 
+function testCheck($result,$test) {
+	//$cptTest+=1;
+	  if (stripos($result,$test)>0 and stripos($result,'id="lastOperationStatus" value="OK"')>0) {
+			//$ctpOK+=1;
+			return 'OK';
+		} else {
+			//$cptOK+=1;
+			return 'KO';
+		}
+}

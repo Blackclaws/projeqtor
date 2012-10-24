@@ -681,13 +681,13 @@ abstract class SqlElement {
           }
           if ($object=="Dependency") {
             $crit=null;
-            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . $this->id .")"
-             . " or (successorRefType='" . get_class($this) . "' and successorRefId=" . $this->id .")"; 
+            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . Sql::fmtId($this->id) .")"
+             . " or (successorRefType='" . get_class($this) . "' and successorRefId=" . Sql::fmtId($this->id) .")"; 
           }
           if ($object=="Link") {
             $crit=null;
-            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . $this->id .")"
-             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . $this->id .")"; 
+            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . Sql::fmtId($this->id) .")"
+             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) .")"; 
           }
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           foreach ($list as $subObj) {
@@ -696,7 +696,7 @@ abstract class SqlElement {
         }
       }
     }
-    $query="delete from " .  $this->getDatabaseTableName() . " where id=" . $this->id . "";
+    $query="delete from " .  $this->getDatabaseTableName() . " where id=" . Sql::fmtId($this->id) . "";
     // execute request
     $returnStatus="OK";
     $result = Sql::query($query);
@@ -1569,7 +1569,12 @@ abstract class SqlElement {
    */
   public function getDatabaseColumnNameReversed($field) {
     $databaseColumnName=$this->getStaticDatabaseColumnName();
-    $databaseColumnNameReversed=array_flip(array_map('strtolower',$databaseColumnName));
+    //if (1 or Sql::isPgsql()) {
+      $databaseColumnNameReversed=array_flip(array_map('strtolower',$databaseColumnName));
+      $field=strtolower($field);
+    //} else {
+    //	$databaseColumnNameReversed=array_flip($databaseColumnName);
+    //}
     //I deleted Sql::str because it's add ' '
     if (array_key_exists(strtolower($field),$databaseColumnNameReversed)) {
     	return $databaseColumnNameReversed[$field];
@@ -1650,6 +1655,8 @@ abstract class SqlElement {
       $formatList[strtolower($fieldName)] = $type;
     }
     self::$_tablesFormatList[$class]=$formatList;
+//debugLog($class."==========================================");
+//debugLog($formatList);
     return $formatList;
   }
   
@@ -2075,8 +2082,8 @@ abstract class SqlElement {
           }
           if ($object=="Link") {
             $crit=null;
-            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . $this->id .")"
-             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . $this->id .")"; 
+            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . Sql::fmtId($this->id) .")"
+             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) .")"; 
           }
 
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
