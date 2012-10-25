@@ -78,7 +78,10 @@ scriptLog("import($fileName, $class)");
 		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black; border-collapse:collapse;">';
 		Sql::beginTransaction();
 		foreach ($lines as $nbl=>$line) {
-		  if (! mb_detect_encoding($line, 'UTF-8', true) ) {
+		  if (trim($line)=='') {
+		  	continue;
+		  }
+			if (! mb_detect_encoding($line, 'UTF-8', true) ) {
 		    $line=utf8_encode($line);
 		  }
 		  if ($title) {
