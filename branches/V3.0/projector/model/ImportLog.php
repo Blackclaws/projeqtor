@@ -12,14 +12,14 @@ class ImportLog extends SqlElement {
   public $importFile;
   public $importClass;
   public $importStatus;
-  public $importedTodo;
-  public $importedDone;
-  public $importedDoneCreated;
-  public $importedDoneModified;
-  public $importedDoneUnchanged;
-  public $importedRejected;
-  public $importedRejectedInvalid;
-  public $importedRejectedError;
+  public $importTodo;
+  public $importDone;
+  public $importDoneCreated;
+  public $importDoneModified;
+  public $importDoneUnchanged;
+  public $importRejected;
+  public $importRejectedInvalid;
+  public $importRejectedError;
   public $idle;
   
    /** ==========================================================================
