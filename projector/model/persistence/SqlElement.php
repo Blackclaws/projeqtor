@@ -1349,14 +1349,14 @@ abstract class SqlElement {
             //$test=$line[$this->getDatabaseColumnName($col_name)];
             $dbColName=$this->getDatabaseColumnName($col_name);
             if (array_key_exists($dbColName,$line)) {
-              //OK
+              $this->{$col_name}=$line[$dbColName];
             } else if (array_key_exists(strtolower($dbColName),$line)) {
               $dbColName=strtolower($dbColName);
+              $this->{$col_name}=$line[$dbColName];
             } else {
-              errorLog("Error on SqlElement to get '" . $col_name . "' for Class '".get_class($obj) . "' "
+              errorLog("Error on SqlElement to get '" . $col_name . "' for Class '".get_class($this) . "' "
                 . " : field '" . $dbColName . "' not found in Database.");
-            }
-            $this->{$col_name}=$line[$dbColName];
+            }          
           }
         }
       } else {
@@ -2350,7 +2350,10 @@ abstract class SqlElement {
     $tableStart='<table style="font-size:9pt; width: 95%">';
     $tableEnd='</table>';
     $msg=$tableStart;
-    $url=$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
+       .$_SERVER['SERVER_NAME']
+       .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
+       .$_SERVER['REQUEST_URI'];
     $ref=substr($url,0,strpos($url,'/tool/')).'/view/main.php?directAccess=true&objectClass='.get_class($this).'&objectId='.$this->id;
     $msg.='<tr><td colspan="2" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.$this->id.'</a></td></tr>';
     $nobr=false;
