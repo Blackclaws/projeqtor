@@ -2,25 +2,29 @@
 $cptTest=0;
 $cptOK=0;
 $cptKO=0;
+$startTime=microtime(true);
 $last='';
-$microtime=microtime();
+$microtime=microtime(true);
+$debugTrace=false;
 function testHeader($title){
 	echo '<table style="font-size: 12px;font-family:arial;border:1px solid #000000;border-collapse:collapse;">';
-	echo '<tr style="background-color:#ffffff;fonct-weight:bold" colspan="5">'.$title.'</tr>';  
+	echo '<tr><td style="background-color:#EEEEEE;font-weight:bold; font-size:15px; text-align:center;" colspan="5">'.$title.'</td></tr>';  
 }
 function testFooter(){
 	echo '</table>';
 }
 function testTitle($title){
-	global $last, $microtime;
+	global $last, $microtime, $debugTrace;
+	if ($debugTrace)debugLog("=>$title"); 
   echo '<tr style="border:1px solid #000000;">';
   echo '<td style="width:100px">'.date('H:i:s').'</td>';
   echo '<td style="width:200px">'.$title.'</td>';
   $last='title';
   //$microtime=microtime();
 }
-function testSubTitle($title){
-	global $last, $microtime;
+function testSubTitle($title){	
+	global $last, $microtime, $debugTrace;
+  if ($debugTrace)debugLog("   =>$title");
 	if ($last=='sublevel') {
 		echo '<td></td></tr><tr style="border:1px solid #000000;"><td></td>';
 	} else {
@@ -54,4 +58,15 @@ function testCheck($result,$test) {
 			//$cptOK+=1;
 			return 'KO';
 		}
+}
+
+function testSummary() {
+	global $startTime, $cptOK, $cptKO, $cptTest;
+	echo '<div style="position:fixed; right: 10px; top: 10px; width: 150px; font-family:arial;';
+	echo 'background-color:'.(($cptKO==0)?'#AAFFAA':'#FFAAAA').'; border: 1px solid #000000">';
+	echo '<b>Tests run : </b>'.$cptTest.'<br/>';
+	echo '<b>Tests OK : </b>'.$cptOK.'<br/>';
+	echo '<b>Tests KO : </b>'.$cptKO.'<br/>';
+	echo '<b>Duration : </b>'. (round(microtime(true)-$startTime)). ' s'.'<br/>';
+	echo '</div>';
 }

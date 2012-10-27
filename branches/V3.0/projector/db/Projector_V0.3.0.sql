@@ -668,7 +668,7 @@ CREATE TABLE `${prefix}history` (
   `refType` varchar(100) NOT NULL,
   `refId` int(12) unsigned NOT NULL,
   `operation` varchar(10) DEFAULT NULL,
-  `colName` varchar(100) DEFAULT NULL,
+  `colName` varchar(200) DEFAULT NULL,
   `oldValue` varchar(4000) DEFAULT NULL,
   `newValue` varchar(4000) DEFAULT NULL,
   `operationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

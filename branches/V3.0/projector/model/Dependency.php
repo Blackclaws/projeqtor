@@ -93,7 +93,7 @@ class Dependency extends SqlElement {
       }
     } 
     if ($this->predecessorRefType==$this->successorRefType and $this->predecessorRefId==$this->successorRefId) {
-      $result.='<br/>' . i18n('errorDependencyLoop');
+      $result.='<br/>7' . i18n('errorDependencyLoop');
     }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

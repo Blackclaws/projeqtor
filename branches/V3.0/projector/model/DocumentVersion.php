@@ -95,7 +95,7 @@ class DocumentVersion extends SqlElement {
   	}
   	$doc=new Document($this->idDocument);
   	$saveDoc=false;
-  	$this->fullName=$doc->name."_".$this->name;
+  	$this->fullName=substr($doc->name."_".$this->name,0,$this->getDataLength('fullName'));
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
