@@ -110,7 +110,7 @@ class ResourceCost extends SqlElement {
     $precCost=0;
     if ($this->startDate) {
       $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($this->idRole)
-        . "' and (endDate is not null and endDate<>'0000-00-00')";
+        . "' and (endDate is not null ".((Sql::isMysql())?"and endDate<>'0000-00-00'":""). ")";
       if ($this->id) {
         $where.=" and id<>'" . Sql::fmtId($this->id) . "'";
       }
@@ -175,7 +175,7 @@ class ResourceCost extends SqlElement {
     if ($this->startDate and !$this->id) {
       $where="idResource='" . Sql::fmtId($this->idResource) . "' ";
       $where.=" and idRole='" . Sql::fmtId($this->idRole) . "' ";
-      $where.=" and (endDate is null or endDate='0000-00-00')";
+      $where.=" and (endDate is null " .((Sql::isMysql())?"or endDate='0000-00-00'":"") .")";
       if ($this->id) {
         $where.=" and id<>'" . $this->id . "'";
       }

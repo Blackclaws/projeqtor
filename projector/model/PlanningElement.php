@@ -297,14 +297,18 @@ class PlanningElement extends SqlElement {
       foreach ($lstElt as $elt) {
         $cpt++;
         $elt->wbs=$this->wbs . '.' . $cpt;
-        $elt->save();
+        if ($elt->refType) { // just security for unit testing 
+          $elt->save();
+        }
         // TODO : check result to return error message in case of error
       }
     }
     
     // update topObject
     if ($topElt) {
-        $topElt->save();    
+    	if ($topElt->refId) {
+        $topElt->save();   
+    	} 
     }
     
     if ($this->topId!=$old->topId)
@@ -484,7 +488,9 @@ class PlanningElement extends SqlElement {
       $crit=array("refType"=>$refType, "refId"=>$refId);
       $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
       if ($topElt) {
-        $topElt->save();
+      	if ($topElt->refId) {
+          $topElt->save();
+      	}
         self::updateSynthesis($refType, $refId);          
       }
     }
@@ -638,7 +644,9 @@ class PlanningElement extends SqlElement {
           $idx++;
           $root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
           $pe->wbs=($root=='')?$idx:$root.'.'.$idx;
-          $pe->save();
+          if ($pe->refType) {
+            $pe->save();
+          }
           if ($pe->id==$destId and $mode=="after") {
             $idx++;
             $currentIdx=$idx;

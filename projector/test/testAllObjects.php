@@ -1,7 +1,7 @@
 <?php
 include_once "../tool/projector.php";
 include_once "testTools.php";
-
+header ('Content-Type: text/html; charset=UTF-8');
 set_time_limit(3600);
 
 // PREPARE TESTS
@@ -30,6 +30,7 @@ if (is_dir($classDir)) {
   }
 }
 testFooter();
+testSummary();
 
 function testObject($obj) {
 	testTitle(get_class($obj));
@@ -48,7 +49,8 @@ function testObject($obj) {
 	
 	testSubTitle('Delete');
 	if (get_class($obj)=='Activity') {
-		Sql::query("DELETE FROM assignment where refType='Activity' and refId=".$obj->id);
+		$ass=new Assignment();
+		Sql::query("DELETE FROM ".$ass->getDatabaseTableName()." where refType='Activity' and refId=".$obj->id);
 	}
 	$res=$obj->delete();
   testResult($res, testCheck($res,'delete'));
@@ -67,13 +69,22 @@ function fillObj($obj) {
 		for ($i=1;$i<=4;$i++) {$var.=$var;}
 		$dbType=$obj->getDataType($fld);
 		$dbLength=$obj->getDataLength($fld);		
-		if ($fld=='idActivity') {
+		if ($fld=='idActivity' or $fld=='idRequirement' or $fld=='idTestCase') {
 			// Nothing => would lead to invalid controls
 		} else if (isset($dbCrit[$fld])) {
 			// Nothing : field is a database criteria : will be set automatically	
 		} else if (substr($fld,0,1)=='_') {
 			// Nothing
-		} else if ($fld=='id' or $fld=='refType' or $fld=='refId' or $fld=='topRefType' or $fld=='topRefType' or $fld=='topId') {
+		} else if ($fld=='refType') {
+			$pos=strpos(get_class($obj),'PlanningElement');
+			if ($pos>0) {
+				$obj->$fld=substr(get_class($obj),0,$pos);
+			} else {
+			  $obj->$fld='Project';
+			}
+		} else if ($fld=='refId') {
+			$obj->$fld='9999999999';
+		} else if ($fld=='id' or $fld=='topRefType' or $fld=='topRefType' or $fld=='topId') {
 			// Nothing
 		} else if (substr($fld,0,1)==strtoupper(substr($fld,0,1))) {
 			if (is_object($obj->$fld)) {
@@ -82,8 +93,12 @@ function fillObj($obj) {
 				$obj->$fld=fillObj($obj->$fld);
 //debugLog($obj->$fld);
 			}
+		} else if ($obj->id and $fld=='idBill') {
+			$obj->$fld=null;
 		} else if ($fld=='wbs' or $fld=='wbsSortable') {
 			$obj->$fld=null;
+		} else if ($fld=='predecessorRefType' or $fld=='successorRefType') {
+			$obj->$fld=$fld;
 		} else if ($dbType=='varchar') {			
 	    $obj->$fld=substr($var,0,$dbLength);
 		} else if ($dbType=='int' and $dbLength==1) {

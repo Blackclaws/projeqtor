@@ -384,8 +384,8 @@ abstract class SqlElement {
     $queryColumns="";
     $queryValues="";
     // initialize object definition criteria
-    $crit=$this->getDatabaseCriteria();
-    foreach ($crit as $col_name => $col_value) {
+    $databaseCriteriaList=$this->getDatabaseCriteria();
+    foreach ($databaseCriteriaList as $col_name => $col_value) {
       $dataType = $this->getDataType($col_name);
       $dataLength = $this->getDataLength($col_name);
       $attribute= $this->getFieldAttributes($col_name);
@@ -405,6 +405,7 @@ abstract class SqlElement {
 	      }
       }    
     }
+    if (Sql::isPgsql()) {$queryColumns=strtolower($queryColumns);}
     // get all data
     foreach($this as $col_name => $col_value) {
     	$attribute= $this->getFieldAttributes($col_name);
@@ -414,6 +415,8 @@ abstract class SqlElement {
 	      } else if (ucfirst($col_name) == $col_name) {
 	        // if property is an object, store it to save it at the end of script
 	        $depedantObjects[$col_name]=($this->$col_name);
+	      } else if (array_key_exists($col_name, $databaseCriteriaList) ) {
+	      	// Do not overwrite the default value from databaseCriteria, and do not double-set in insert clause
 	      } else {
 	        $dataType = $this->getDataType($col_name);
 	        $dataLength = $this->getDataLength($col_name);
@@ -477,6 +480,7 @@ abstract class SqlElement {
     $returnStatus = 'NO_CHANGE';
     $depedantObjects=array();
     $objectClass = get_class($this);
+    $arrayCols=array();
     $idleChange=false;
     // Get old values (stored) to : 1) build the smallest query 2) save change history
     $oldObject = null;
@@ -494,7 +498,7 @@ abstract class SqlElement {
     $nbChanged=0;
     $query="update " . $this->getDatabaseTableName();
     // get all data, and identify if changes
-    foreach($this as $col_name => $col_new_value) {     
+    foreach($this as $col_name => $col_new_value) {   
     	$attribute= $this->getFieldAttributes($col_name);
       if (strpos($attribute,'calculated')!==false) {
       	// calculated field, not to be save
@@ -521,20 +525,25 @@ abstract class SqlElement {
         // if changed
         if ($col_new_value != $col_old_value) {
           if ($col_name=='idle') {$idleChange=true;}
-          $query .= ($nbChanged==0)?" set ":", ";
-          if ($col_new_value==NULL or $col_new_value=='' or $col_new_value=="''") {
-            $query .= $this->getDatabaseColumnName($col_name) . " = NULL";
-          } else {
-            $query .= $this->getDatabaseColumnName($col_name) . '=' . Sql::str($col_new_value) .' ';
-          }
-          $nbChanged+=1;
-          // Save change history
-          if ($objectClass!='History' and ! property_exists($this,'_noHistory') ) {      
-            $result = History::store($this, $objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
-            if (!$result) {
-              $returnStatus="ERROR";
-              $returnValue=Sql::$lastQueryErrorMessage;
-            }
+          $insertableColName= $this->getDatabaseColumnName($col_name);
+          if (Sql::isPgsql()) {$insertableColName=strtolower($insertableColName);} 
+          if (!array_key_exists($insertableColName, $arrayCols)) {
+          	$arrayCols[$insertableColName]=$col_name;
+	          $query .= ($nbChanged==0)?" set ":", ";
+	          if ($col_new_value==NULL or $col_new_value=='' or $col_new_value=="''") {
+	            $query .= $insertableColName . " = NULL";
+	          } else {
+	            $query .= $insertableColName . '=' . Sql::str($col_new_value) .' ';
+	          }
+	          $nbChanged+=1;
+	          // Save change history
+	          if ($objectClass!='History' and ! property_exists($this,'_noHistory') ) {      
+	            $result = History::store($this, $objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
+	            if (!$result) {
+	              $returnStatus="ERROR";
+	              $returnValue=Sql::$lastQueryErrorMessage;
+	            }
+	          }
           }
         }
       }
@@ -1201,10 +1210,10 @@ abstract class SqlElement {
     if (count($objList)==1) {
       return $objList[0];
     } else {
-      $obj->singleElementNotFound=true;
+      $obj->_singleElementNotFound=true;
       if (count($objList)>1) {
 		//traceLog("getSingleSqlElementFromCriteria for object '" . $class . "' returned more than 1 element");
-        $obj->tooManyRows=true;
+        $obj->_tooManyRows=true;
       }
       return $obj;
     }
@@ -1313,9 +1322,11 @@ abstract class SqlElement {
               } else if ($colName=="ResourceCost") {
                 $this->{$col_name}=$this->getResourceCost();
               }  else if ($colName=="VersionProject") {
-              	$vp=new VersionProject();
-              	$crit=array('id'.get_class($this)=>$this->id);
-                $this->{$col_name}=$vp->getSqlElementsFromCriteria($crit,false);
+              	if (get_class($this)!='OriginalVersion' and get_class($this)!='TargetVersion') {
+              	  $vp=new VersionProject();
+              	  $crit=array('id'.get_class($this)=>$this->id);
+                  $this->{$col_name}=$vp->getSqlElementsFromCriteria($crit,false);
+              	}
               }  else if ($colName=="DocumentVersion") {
                 $dv=new DocumentVersion();
                 $crit=array('idDocument'=>$this->id);

@@ -21,7 +21,7 @@ class Mutex
         $this->locked = $line['mutex'];
         //mysqli_free_result($rs);
     	} else if (Sql::isPgsql()) {
-    		$prefix=Parameter::getGlobalParameter('dbPrefix');
+    		$prefix=Parameter::getGlobalParameter('paramDbPrefix');
     		$rs=Sql::query("LOCK TABLE ".$prefix."mutex IN ACCESS EXCLUSIVE MODE");
     		$rs=Sql::query("SELECT * FROM ".$prefix."mutex WHERE name='".$this->lockname."'");
     		if (count($rs)==0) {
@@ -38,7 +38,7 @@ class Mutex
         $this->locked = !$line['mutex'];
         //mysqli_free_result($rs);
     	} else if (Sql::isPgsql() and 0) {
-    		$prefix=Parameter::getGlobalParameter('dbPrefix');
+    		$prefix=Parameter::getGlobalParameter('paramDbPrefix');
     		$rs=Sql::query("LOCK TABLE ".$prefix."mutex IN ACCESS SHARE MODE");
     	}
     }
