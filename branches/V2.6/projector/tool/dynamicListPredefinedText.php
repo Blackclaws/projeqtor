@@ -12,7 +12,7 @@ $refTypeId=SqlList::getIdFromTranslatableName('Textable', $refType);
 //echo $refType.'/'.$refId.'/'.$refTypeId;
 
 $crit="scope='Note' and (idTextable is null or idTextable='" . $refTypeId ."')";
-$crit.=" and (idType is null or idType='" . $refTypeId ."') and idle=0";
+$crit.=" and (idType is null or idType='" . $refId ."') and idle=0";
 
 $txt=new PredefinedNote();
 $list=$txt->getSqlElementsFromCriteria(null, false, $crit, 'name asc');

@@ -219,7 +219,7 @@ abstract class SqlElement {
    */
   protected function __construct($id = NULL) {
     $this->id=$id;
-    if ($this->id=='') {
+    if ($this->id=='' or $this->id=='0') {
       $this->id=null;
     }
     $this->getSqlElement();

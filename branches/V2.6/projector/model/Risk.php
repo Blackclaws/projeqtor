@@ -8,7 +8,7 @@ class Risk extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
-  public $idProject="\0" ;
+  public $idProject;
   public $idRiskType;
   public $name;
   public $creationDate;
