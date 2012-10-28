@@ -28,7 +28,7 @@ echo "<input type='hidden' id='reportFile' name='reportFile' value='" . $report-
 echo "<input type='hidden' id='reportId' name='reportId' value='" . $report->id . "' />";
 $param=new ReportParameter();
 $crit=array('idReport'=>$idReport);
-$listParam=$param->getSqlElementsFromCriteria($crit,false,null,'`order`');
+$listParam=$param->getSqlElementsFromCriteria($crit,false,null,'sortOrder');
 foreach ($listParam as $param) {
   if ($param->paramType=='week') {
     $defaultWeek='';

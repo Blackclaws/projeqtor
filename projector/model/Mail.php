@@ -98,5 +98,9 @@ class Mail extends SqlElement {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
+  public function save() {
+  	$this->mailBody=substr($this->mailBody,0,4000);
+  	return parent::save();
+  }
 }
 ?>

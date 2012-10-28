@@ -824,7 +824,7 @@ CREATE TABLE `${prefix}message` (
 --
 -- Contenu de la TABLE `${prefix}message`
 --
-INSERT INTO `${prefix}message` (idProject, name, idMessageType, description, idProfile, idUser, idle) VALUES 
+INSERT INTO `${prefix}message` (`idProject`, `name`, `idMessageType`, `description`, `idProfile`, `idUser`, `idle`) VALUES 
 (null, 'Welcome', '15', 'Welcome to ProjectOr web application', null, null, 0);
 
 
@@ -953,9 +953,9 @@ CREATE TABLE `${prefix}planningelement` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX planningelementTopId ON `${prefix}planningelement` (topId);
-CREATE INDEX planningelementRef ON `${prefix}planningelement` (refType,refId);
-CREATE INDEX planningelementTopRef ON `${prefix}planningelement` (topRefType,topRefId);
+CREATE INDEX planningelementTopId ON `${prefix}planningelement` (`topId`);
+CREATE INDEX planningelementRef ON `${prefix}planningelement` (`refType`,`refId`);
+CREATE INDEX planningelementTopRef ON `${prefix}planningelement` (`topRefType`,`topRefId`);
   
 --
 -- Contenu de la TABLE `${prefix}planningelement`

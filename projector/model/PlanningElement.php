@@ -214,7 +214,7 @@ class PlanningElement extends SqlElement {
         }
       }
     } else {
-    	$this->progress = $this->realWork / ($this->realWork + $this->leftWork) * 100;
+    	$this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
     }
     
     // update topId if needed

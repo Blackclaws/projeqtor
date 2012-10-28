@@ -308,6 +308,7 @@ function runScript($vers) {
 	            }
 	            $tableName=trim($tableName);
 	            $tableName=trim($tableName,'`');
+	            $tableName=trim($tableName,'"');
 	            $tableName=trim($tableName,';');
 	            switch ($action) {
 	              case "CREATE TABLE" :
