@@ -674,7 +674,7 @@ CREATE TABLE `${prefix}history` (
   `colName` varchar(100) DEFAULT NULL,
   `oldValue` varchar(4000) DEFAULT NULL,
   `newValue` varchar(4000) DEFAULT NULL,
-  `operationDate` timestamp NOT NULL,
+  `operationDate` timestamp,
   `idUser` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
