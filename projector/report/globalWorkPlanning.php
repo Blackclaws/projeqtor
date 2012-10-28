@@ -45,9 +45,10 @@ for ($i=1;$i<=2;$i++) {
      . ' group by ' . $queryGroupBy; 
   $result=Sql::query($query);
   while ($line = Sql::fetchLine($result)) {
+  	$line=array_change_key_case($line,CASE_LOWER);
     $date=$line['scale'];
-    $proj=$line['idProject'];
-    $work=round($line['sumWork'],2);
+    $proj=$line['idproject'];
+    $work=round($line['sumwork'],2);
     if (! array_key_exists($proj, $tab) ) {
       $tab[$proj]=array("name"=>SqlList::getNameFromId('Project', $proj), "real"=>array(),"plan"=>array());
     }

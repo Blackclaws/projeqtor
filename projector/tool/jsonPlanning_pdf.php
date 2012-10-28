@@ -2,7 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-  require_once "../tool/projector.php";  
+  require_once "../tool/projector.php";
   scriptLog('   ->/tool/jsonPlanning_pdf.php');
   $objectClass='PlanningElement';
   $obj=new $objectClass();
@@ -59,7 +59,7 @@
   if (! isset($outMode)) { $outMode=""; }
 
   $accessRightRead=securityGetAccessRight('menuActivity', 'read');
-  if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*')) 
+  if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*'))
    and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
       $listProj=explode(',',getVisibleProjectsList());
       if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
@@ -86,21 +86,21 @@
   	$queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
   }
-  
+
   // Remove administrative projects :
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
 
   $querySelect .= $table . ".* ";
   $queryFrom .= $table;
-  
+
   $queryOrderBy .= $table . ".wbsSortable ";
 
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
-  $query='select ' . $querySelect 
+  $query='select ' . $querySelect
        . ' from ' . $queryFrom
-       . ' where ' . $queryWhere 
+       . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
   $nbRows=0;
@@ -123,41 +123,42 @@
     if (Sql::$lastQueryNbRows > 0) {
     	$collapsedList=Collapsed::getCollaspedList();
       while ($line = Sql::fetchLine($result)) {
+        $line=array_change_key_case($line,CASE_LOWER);
         echo (++$nbRows>1)?',':'';
         echo  '{';
         $nbFields=0;
         $idPe="";
-        if ($line["plannedWork"]>0 and $line["leftWork"]==0) {
-        	$line["plannedStartDate"]='';
-        	$line["plannedEndDate"]='';
+        if ($line["plannedwork"]>0 and $line["leftwork"]==0) {
+        	$line["plannedstartdate"]='';
+        	$line["plannedenddate"]='';
         }
-        $line["validatedWorkDisplay"]=Work::displayWorkWithUnit($line["validatedWork"]);
-        $line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
-        $line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
-        $line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
-        $line["plannedWorkDisplay"]=Work::displayWorkWithUnit($line["plannedWork"]);
+        $line["validatedworkdisplay"]=Work::displayWorkWithUnit($line["validatedwork"]);
+        $line["assignedworkdisplay"]=Work::displayWorkWithUnit($line["assignedwork"]);
+        $line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
+        $line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
+        $line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
         foreach ($line as $id => $val) {
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
           echo (++$nbFields>1)?',':'';
           echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val) . '"';
           if ($id=='id') {$idPe=$val;}
-        } 
+        }
         //add expanded status
-        if (array_key_exists('Planning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
+        if (array_key_exists('Planning_'.$line['reftype'].'_'.$line['refid'], $collapsedList)) {
         	echo ',"collapsed":"1"';
         } else {
         	echo ',"collapsed":"0"';
         }
         //if ($displayResource and strtoupper($displayResource)!='NO') {
-        	$crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
+        	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
 	        $arrayResource=array();
-	        $objElt=new $line['refType']($line['refId']);
+	        $objElt=new $line['reftype']($line['refid']);
 	        foreach ($assList as $ass) {
 	        	$res=new Resource($ass->idResource);
-	        	if ($res->$displayResource)	{        	
+	        	if ($res->$displayResource)	{
 	        	  $arrayResource[$res->id]=$res->$displayResource;
 	        	  if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
 	        		  $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
@@ -175,10 +176,10 @@
           $listPred.=$dep->predecessorId;
         }
         echo ', "depend":"' . $listPred . '"';
-        echo '}';       
+        echo '}';
       }
     }
-    echo ' ] }'; 
+    echo ' ] }';
   }
 
   /**
@@ -186,7 +187,7 @@
   * displayGantt
   *
   **/
-  
+
   function displayGantt($result) {
   	global $displayResource, $outMode;;
     $showWbs=false;
@@ -202,7 +203,7 @@
     if (array_key_exists('startDate',$_REQUEST)) {
       $startDate=$_REQUEST['startDate'];
     }
-	
+
     $endDate='';
     if (array_key_exists('endDate',$_REQUEST)) {
       $endDate=$_REQUEST['endDate'];
@@ -229,40 +230,41 @@
     if (Sql::$lastQueryNbRows > 0) {
       $resultArray=array();
       while ($line = Sql::fetchLine($result)) {
-        if ($line["plannedWork"]>0 and $line["leftWork"]==0) {
-          $line["plannedStartDate"]='';
-          $line["plannedEndDate"]='';
+      	$line=array_change_key_case($line,CASE_LOWER);
+        if ($line["plannedwork"]>0 and $line["leftwork"]==0) {
+          $line["plannedstartdate"]='';
+          $line["plannedenddate"]='';
         }
         $pStart="";
-        $pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
-        $pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
-        $pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
-        $pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
-        if (trim($line['plannedStartDate'])!=""
-        and trim($line['realStartDate'])!=""
-        and $line['plannedStartDate']<$line['realStartDate'] ) {
-          $pStart=$line['plannedStartDate'];
+        $pStart=(trim($line['initialstartdate'])!="")?$line['initialstartdate']:$pStart;
+        $pStart=(trim($line['validatedstartdate'])!="")?$line['validatedstartdate']:$pStart;
+        $pStart=(trim($line['plannedstartdate'])!="")?$line['plannedstartdate']:$pStart;
+        $pStart=(trim($line['realstartdate'])!="")?$line['realstartdate']:$pStart;
+        if (trim($line['plannedstartdate'])!=""
+        and trim($line['realstartdate'])!=""
+        and $line['plannedstartdate']<$line['realstartdate'] ) {
+          $pStart=$line['plannedstartdate'];
         }
         $pEnd="";
-        $pEnd=(trim($line['initialEndDate'])!="")?$line['initialEndDate']:$pEnd;
-        $pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
-        $pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
-        $pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
+        $pEnd=(trim($line['initialenddate'])!="")?$line['initialenddate']:$pEnd;
+        $pEnd=(trim($line['validatedenddate'])!="")?$line['validatedenddate']:$pEnd;
+        $pEnd=(trim($line['plannedenddate'])!="")?$line['plannedenddate']:$pEnd;
+        $pEnd=(trim($line['realenddate'])!="")?$line['realenddate']:$pEnd;
         //if ($pEnd=="") {$pEnd=date('Y-m-d');}
-        if ($line['refType']=='Milestone') {
+        if ($line['reftype']=='Milestone') {
           $pStart=$pEnd;
         }
-        $line['pStart']=$pStart;
-        $line['pEnd']=$pEnd;
+        $line['pstart']=$pStart;
+        $line['pend']=$pEnd;
         //if ($showResource) {
-          $crit=array('refType'=>$line['refType'], 'refId'=>$line['refId']);
+          $crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
           $arrayResource=array();
-          $objElt=new $line['refType']($line['refId']);
+          $objElt=new $line['reftype']($line['refid']);
           foreach ($assList as $ass) {
             $res=new Resource($ass->idResource);
-            if ($res->$displayResource) {         
+            if ($res->$displayResource) {
               $arrayResource[$res->id]=$res->$displayResource;
               if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
                 $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
@@ -274,7 +276,7 @@
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or ($minDate>$pStart and trim($pStart))) {$minDate=$pStart;}
-		
+
       }
       if ($minDate<$startDate) {
         $minDate=$startDate;
@@ -282,7 +284,7 @@
       if ($endDate and $maxDate>$endDate) {
         $maxDate=$endDate;
       }
-      if ($format=='day' or $format=='week') {   
+      if ($format=='day' or $format=='week') {
         //$minDate=addDaysToDate($minDate,-1);
         $minDate=date('Y-m-d',firstDayofWeek(weekNumber($minDate),substr($minDate,0,4)));
         //$maxDate=addDaysToDate($maxDate,+1);
@@ -307,7 +309,7 @@
         $openDays[$i]=isOpenDay($day);
         $day=addDaysToDate($day,1);
       }
-      //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;     
+      //echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;
 	  $table_witdh = "97%";
 	  //Init tab sizes
 	  if($format == "day"){
@@ -340,7 +342,7 @@
 	  }
 	  $right_size = 1 - $left_size;
 	  $fontsize_global = $left_size * 1.5;
-	  
+
       // Header
       $sortArray=Parameter::getPlanningColumnOrder();
       $cptSort=0;
@@ -425,31 +427,31 @@
         } else {
           $day=addDaysToDate($day,$topUnit);
         }
-      }      
-      echo '</TR>';       
-      
+      }
+      echo '</TR>';
+
       // lines
       $width=round($colWidth/$colUnit) . "px;";
       $collapsedList=Collapsed::getCollaspedList();
       $closedWbs='';
       foreach ($resultArray as $line) {
-        $pEnd=$line['pEnd'];
-        $pStart=$line['pStart'];
-        $realWork=$line['realWork'];
-        $plannedWork=$line['plannedWork'];
+        $pEnd=$line['pend'];
+        $pStart=$line['pstart'];
+        $realWork=$line['realwork'];
+        $plannedWork=$line['plannedwork'];
         $progress=$line['progress'];
-        
+
         // pGroup : is the tack a group one ?
         $pGroup=($line['elementary']=='0')?1:0;
-        if ($closedWbs and strlen($line['wbsSortable'])<=strlen($closedWbs)) {
+        if ($closedWbs and strlen($line['wbssortable'])<=strlen($closedWbs)) {
           $closedWbs="";
         }
-        $scope='Planning_'.$line['refType'].'_'.$line['refId'];
+        $scope='Planning_'.$line['reftype'].'_'.$line['refid'];
         $collapsed=false;
         if ($pGroup and array_key_exists($scope, $collapsedList)) {
           $collapsed=true;
           if (! $closedWbs) {
-            $closedWbs=$line['wbsSortable'];
+            $closedWbs=$line['wbssortable'];
           }
         }
         $compStyle="";
@@ -458,30 +460,30 @@
           $rowType = "group";
           $compStyle="font-weight: bold; background: #E8E8E8;padding:0px;margin:0px;";
           $bgColor="background: #E8E8E8;";
-        } else if( $line['refType']=='Milestone'){
+        } else if( $line['reftype']=='Milestone'){
           $rowType  = "mile";
         } else {
           $rowType  = "row";
         }
-        $wbs=$line['wbsSortable'];
+        $wbs=$line['wbssortable'];
         $level=(strlen($wbs)+1)/4;
-        $tab=""; 
+        $tab="";
         /*for ($i=1;$i<$level;$i++) {
           $tab.='<span class="ganttSep" >&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-        }     */  
+        }     */
         $pName=($showWbs)?$line['wbs']." ":"";
-        $pName.= htmlEncode($line['refName']);
+        $pName.= htmlEncode($line['refname']);
         $duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
         //echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
-        
-        if ($closedWbs and $closedWbs!=$line['wbsSortable']) {
+
+        if ($closedWbs and $closedWbs!=$line['wbssortable']) {
           //echo ' display:none;';
           continue;
         }
-        echo '<TR style="height:2%;width:100%;padding:0px;margin:0px;' ;  
+        echo '<TR style="height:2%;width:100%;padding:0px;margin:0px;' ;
         echo '">';
         echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">
-		<img style="height:80%" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
+		<img style="height:80%" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
         echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(30*$left_size).'%;"><NOBR>' . $tab ;
         echo '<span style="height:100%;vertical-align:middle;">';
         if ($pGroup) {
@@ -489,9 +491,9 @@
             echo '<img style="height:50%" src="../view/css/images/plus.gif" />';
           } else {
             echo '<img style="height:50%" src="../view/css/images/minus.gif" />';
-          }         
+          }
         } else {
-        	if ($line['refType']=='Milestone') {
+        	if ($line['reftype']=='Milestone') {
         		echo '<img style="height:50%" src="../view/css/images/mile.gif" />';
         	} else {
             echo '<img style="height:50%" src="../view/css/images/none.gif" />';
@@ -501,11 +503,11 @@
         echo '</span>&nbsp;';
         echo $pName . '</NOBR></TD>';
         foreach ($sortArray as $col) {
-          if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
-          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
-          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;
-          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["leftWork"])  . '</TD>' ;
-          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["plannedWork"])  . '</TD>' ;
+          if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
+          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;
+          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["realwork"])  . '</TD>' ;
+          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["leftwork"])  . '</TD>' ;
+          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["plannedwork"])  . '</TD>' ;
           if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $duration  . '</TD>' ;
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . percentFormatter($progress) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(10*$left_size).'%;">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
@@ -516,8 +518,8 @@
           $pColor='#505050;';
           //$pBackground='background:#505050 url(../view/img/grey.png) repeat-x;';
           $pBackground='background-color:#505050;';
-        } else {         
-          if (trim($line['validatedEndDate'])!="" && $line['validatedEndDate'] < $pEnd) {
+        } else {
+          if (trim($line['validatedenddate'])!="" && $line['validatedenddate'] < $pEnd) {
             $pColor='#BB5050';
             //$pBackground='background:#BB5050 url(../view/img/red.png) repeat-x;';
             $pBackground='background-color:#BB5050;';
@@ -545,13 +547,13 @@
             $fontSize='150%';
             $color=($openDays[$i]==1)?$bgColor:'background-color:' . $weekendColor . ';';
           }
-          $height=($pGroup)?'8':'12';      
+          $height=($pGroup)?'8':'12';
           if ($days[$i]>=$pStart and $days[$i]<=$pEnd) {
             if ($rowType=="mile") {
               echo '<td class="reportTableData" style="' . $color . $noBorder . ';color:' . $pColor . ';width:'.(($right_size*100)/$numDays).'%;">';
               if($progress < 100) {
                 echo '&loz;' ;
-              } else { 
+              } else {
                 echo '&diams;' ;
               }
             } else {
@@ -561,25 +563,25 @@
                 echo '<div class="ganttTaskgroupBarExtInvisible" style="float:left; height:4px"></div>';
               }
               echo '<table width="100%" height="100%" >';
-              //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';              
-              echo '<tr height="100%" width="100%"><td style="' . $pBackground . 'height:' .  $height . 'px;width:100%;padding:0px;margin:0px;"></td></tr>';              
+              //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
+              echo '<tr height="100%" width="100%"><td style="' . $pBackground . 'height:' .  $height . 'px;width:100%;padding:0px;margin:0px;"></td></tr>';
               //echo '<tr style="height:' . $subHeight . 'px;"><td style="' . $noBorder . '"></td></tr>';
               echo '</table>';
               if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
-                echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
-                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
-                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
+                echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'
+                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'
+                  . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'
                   . '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>';
               }
               if ($pGroup and $days[$i]==$pEnd and $outMode!='pdf') {
-	              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'               
-	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'                 
-	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'              
+	              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'
+	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
+	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'
 	                . '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';
-	            }  
+	            }
               $dispCaption=($showResource)?true:false;
-            } 
-          } else { 
+            }
+          } else {
             echo '<td class="reportTableData" style="'. $color . $noBorder . 'padding:0px;margin:0px;width:'.(($right_size*100)/$numDays).'%;">';
             //if($format=='week') {
               //echo '&nbsp;&nbsp;';
@@ -595,12 +597,12 @@
           }
           echo '</td>';
         }
-        echo '</TR>';        
+        echo '</TR>';
       }
     }
-    echo "</table>"; 
+    echo "</table>";
   }
-  
+
   function exportGantt($result) {
   	global $paramDbDisplayName, $currency, $currencyPosition;
   	$nl="\n";
@@ -624,27 +626,28 @@
     $resultArray=array();
     if (Sql::$lastQueryNbRows > 0) {
       while ($line = Sql::fetchLine($result)) {
+      	$line=array_change_key_case($line,CASE_LOWER);
         $pStart="";
-        $pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
-        $pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
-        $pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
-        $pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
-        if (trim($line['plannedStartDate'])!=""
-        and trim($line['realStartDate'])!=""
-        and $line['plannedStartDate']<$line['realStartDate'] ) {
-          $pStart=$line['plannedStartDate'];
+        $pStart=(trim($line['initialstartdate'])!="")?$line['initialstartdate']:$pStart;
+        $pStart=(trim($line['validatedstartdate'])!="")?$line['validatedstartdate']:$pStart;
+        $pStart=(trim($line['plannedstartdate'])!="")?$line['plannedstartdate']:$pStart;
+        $pStart=(trim($line['realstartdate'])!="")?$line['realstartdate']:$pStart;
+        if (trim($line['plannedstartdate'])!=""
+        and trim($line['realstartdate'])!=""
+        and $line['plannedstartdate']<$line['realstartdate'] ) {
+          $pStart=$line['plannedstartdate'];
         }
         $pEnd="";
-        $pEnd=(trim($line['initialEndDate'])!="")?$line['initialEndDate']:$pEnd;
-        $pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
-        $pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
-        $pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
-        if ($line['refType']=='Milestone') {
+        $pEnd=(trim($line['initialenddate'])!="")?$line['initialenddate']:$pEnd;
+        $pEnd=(trim($line['validatedenddate'])!="")?$line['validatedenddate']:$pEnd;
+        $pEnd=(trim($line['plannedenddate'])!="")?$line['plannedenddate']:$pEnd;
+        $pEnd=(trim($line['realenddate'])!="")?$line['realenddate']:$pEnd;
+        if ($line['reftype']=='Milestone') {
           $pStart=$pEnd;
         }
-        $line['pStart']=$pStart;
-        $line['pEnd']=$pEnd;
-        $line['pDuration']=workDayDiffDates($pStart,$pEnd);
+        $line['pstart']=$pStart;
+        $line['pend']=$pEnd;
+        $line['pduration']=workDayDiffDates($pStart,$pEnd);
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
@@ -655,7 +658,7 @@
     }
     $res=New Resource();
     $resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
-  	
+
     echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
     echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
     echo '<Name>' . $name . '</Name>' . $nl;
@@ -756,47 +759,47 @@
       echo "<IsBaseCalendar>0</IsBaseCalendar>" . $nl;
       echo "<BaseCalendarUID>0</BaseCalendarUID>" . $nl;
       echo "</Calendar>" . $nl;
-    } 
+    }
     echo '</Calendars>' . $nl;
     echo '<Tasks>' . $nl;
     $cpt=0;
     $arrayTask=array();
     foreach ($resultArray as $line) {
     	$cpt++;
-    	$arrayTask[$line['refType'].'#'.$line['refId']]=$line['id'];
-    	$pct=($line['plannedWork']>0)?round(100*$line['realWork']/$line['plannedWork'],0):'';
+    	$arrayTask[$line['reftype'].'#'.$line['refid']]=$line['id'];
+    	$pct=($line['plannedwork']>0)?round(100*$line['realwork']/$line['plannedwork'],0):'';
       echo '<Task>' . $nl;
       echo '<UID>' . $line['id'] . '</UID>' . $nl;
       echo '<ID>' . $cpt . '</ID>' . $nl;  // TODO : should be order of the tack in the list
-      echo '<Name>' . htmlEncode($line['refName']) . '</Name>' . $nl;
+      echo '<Name>' . htmlEncode($line['refname']) . '</Name>' . $nl;
       echo '<Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
       echo '<IsNull>0</IsNull>' . $nl;
       echo '<WBS>' . $line['wbs'] . '</WBS>' . $nl;
       echo '<OutlineNumber>' . $line['wbs'] . '</OutlineNumber>' . $nl;
       echo '<OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
       echo '<Priority>' . $line['priority'] . '</Priority>' . $nl;
-      echo '<Start>' . $line['pStart'] . 'T' . $startAM . '</Start>' . $nl;
-      echo '<Finish>' . $line['pEnd'] . 'T' . $endPM . '</Finish>' . $nl;
-      echo '<Duration>' . formatDuration($line['pDuration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
+      echo '<Start>' . $line['pstart'] . 'T' . $startAM . '</Start>' . $nl;
+      echo '<Finish>' . $line['pend'] . 'T' . $endPM . '</Finish>' . $nl;
+      echo '<Duration>' . formatDuration($line['pduration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
       echo '<DurationFormat>7</DurationFormat>' . $nl;
-      echo '<Work>PT' . round($line['plannedWork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
-      echo '<Stop>' . $line['pStart'] . 'T' . $startAM . '</Stop>' . $nl;
-      echo '<Resume>' . $line['pStart'] . 'T' . $startAM . '</Resume>' . $nl;
+      echo '<Work>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
+      echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;
+      echo '<Resume>' . $line['pstart'] . 'T' . $startAM . '</Resume>' . $nl;
       echo '<ResumeValid>0</ResumeValid>' . $nl;
       echo '<EffortDriven>0</EffortDriven>' . $nl;
       echo '<Recurring>0</Recurring>' . $nl;
       echo '<OverAllocated>0</OverAllocated>' . $nl;
       echo '<Estimated>0</Estimated>' . $nl;
-      echo '<Milestone>' . (($line['refType']=='Milestone')?'1':'0') . '</Milestone>' . $nl;
+      echo '<Milestone>' . (($line['reftype']=='Milestone')?'1':'0') . '</Milestone>' . $nl;
       echo '<Summary>' . (($line['elementary'])?'0':'1') . '</Summary>' . $nl;
       echo '<Critical>0</Critical>' . $nl;
       echo '<IsSubproject>0</IsSubproject>' . $nl;
       echo '<IsSubprojectReadOnly>0</IsSubprojectReadOnly>' . $nl;
       echo '<ExternalTask>0</ExternalTask>' . $nl;
-      echo '<EarlyStart>' . $line['pStart'] . 'T' . $startAM . '</EarlyStart>' . $nl;
-      echo '<EarlyFinish>' . $line['pEnd'] . 'T' . $endPM . '</EarlyFinish>' . $nl;
-      echo '<LateStart>' . $line['pStart'] . 'T' . $startAM . '</LateStart>' . $nl;
-      echo '<LateFinish>' . $line['pEnd'] . 'T' . $endPM . '</LateFinish>' . $nl;
+      echo '<EarlyStart>' . $line['pstart'] . 'T' . $startAM . '</EarlyStart>' . $nl;
+      echo '<EarlyFinish>' . $line['pend'] . 'T' . $endPM . '</EarlyFinish>' . $nl;
+      echo '<LateStart>' . $line['pstart'] . 'T' . $startAM . '</LateStart>' . $nl;
+      echo '<LateFinish>' . $line['pend'] . 'T' . $endPM . '</LateFinish>' . $nl;
       echo '<StartVariance>0</StartVariance>' . $nl;
       echo '<FinishVariance>0</FinishVariance>' . $nl;
       echo '<WorkVariance>0</WorkVariance>' . $nl;
@@ -809,23 +812,23 @@
       echo '<Cost>0</Cost>' . $nl;
       echo '<OvertimeCost>0</OvertimeCost>' . $nl;
       echo '<OvertimeWork>PT0H0M0S</OvertimeWork>' . $nl;
-      echo '<ActualStart>' .  $line['pStart'] . 'T' . $startAM . '</ActualStart>' . $nl;
+      echo '<ActualStart>' .  $line['pstart'] . 'T' . $startAM . '</ActualStart>' . $nl;
       echo '<ActualDuration>PT0H0M0S</ActualDuration>' . $nl;
       echo '<ActualCost>0</ActualCost>' . $nl;
       echo '<ActualOvertimeCost>0</ActualOvertimeCost>' . $nl;
-      echo '<ActualWork>PT' . round($line['realWork']*$hoursPerDay,0) . 'H0M0S</ActualWork>' . $nl;
+      echo '<ActualWork>PT' . round($line['realwork']*$hoursPerDay,0) . 'H0M0S</ActualWork>' . $nl;
       echo '<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>' . $nl;
-      echo '<RegularWork>PT' . round($line['plannedWork']*$hoursPerDay,0) . 'H0M0S</RegularWork>' . $nl; 
-      echo '<RemainingDuration>PT' .  round($line['plannedDuration']*$hoursPerDay,0) . 'H0M0S</RemainingDuration>' . $nl;
+      echo '<RegularWork>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</RegularWork>' . $nl;
+      echo '<RemainingDuration>PT' .  round($line['plannedduration']*$hoursPerDay,0) . 'H0M0S</RemainingDuration>' . $nl;
       echo '<RemainingCost>0</RemainingCost>' . $nl;
-      echo '<RemainingWork>PT' . round($line['leftWork']*$hoursPerDay,0) . 'H0M0S</RemainingWork>' . $nl;
+      echo '<RemainingWork>PT' . round($line['leftwork']*$hoursPerDay,0) . 'H0M0S</RemainingWork>' . $nl;
       echo '<RemainingOvertimeCost>0</RemainingOvertimeCost>' . $nl;
       echo '<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>' . $nl;
       echo '<ACWP>0</ACWP>' . $nl;
       echo '<CV>0</CV>' . $nl;
       echo '<ConstraintType>' . (($line['elementary'])?'0':'0') . '</ConstraintType>' . $nl;
       echo '<CalendarUID>-1</CalendarUID>' . $nl;
-      if ($line['elementary']) { echo '<ConstraintDate>' . $line['pStart'] . 'T' . $startAM . '</ConstraintDate>' . $nl;}
+      if ($line['elementary']) { echo '<ConstraintDate>' . $line['pstart'] . 'T' . $startAM . '</ConstraintDate>' . $nl;}
       echo '<LevelAssignments>0</LevelAssignments>' . $nl;
       echo '<LevelingCanSplit>1</LevelingCanSplit>' . $nl;
       echo '<LevelingDelay>0</LevelingDelay>' . $nl;
@@ -856,7 +859,7 @@
         echo '<LinkLag>0</LinkLag>' . $nl;
         echo '<LagFormat>7</LagFormat>' . $nl;
         echo '</PredecessorLink>' . $nl;
-      }      
+      }
       echo '</Task>' . $nl;
     }
     echo '</Tasks>' . $nl;
@@ -893,7 +896,7 @@
       $rcList=$rc->getSqlElementsFromCriteria($critCost, false, null, ' startDate desc');
       if (count($rcList)>0) {
       	$rate=($hoursPerDay)?round($rcList[0]->cost / $hoursPerDay,2):0;
-      	
+
       }
       echo "<StandardRate>" . $rate . "</StandardRate>" . $nl;
       echo "<StandardRateFormat>3</StandardRateFormat>" . $nl;
@@ -922,7 +925,7 @@
       echo "<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>" . $nl;
       echo "<CreationDate></CreationDate>" . $nl;
       echo "</Resource>" . $nl;
-    } 
+    }
     echo "</Resources>" . $nl;
     $ass=new Assignment();
     $clauseWhere="";
@@ -991,14 +994,14 @@
 	      //echo "</TimephasedData>" . $nl;
 	      echo "</Assignment>" . $nl;
     	}
-    }  
+    }
     echo "</Assignments>" . $nl;
     echo '</Project>' . $nl;
   }
-  
+
   function formatDuration($duration, $hoursPerDay) {
     $hourDuration=$duration*$hoursPerDay;
-  	$res = 'PT' . $hourDuration . 'H0M0S'; 
+  	$res = 'PT' . $hourDuration . 'H0M0S';
   	return $res;
   }
 ?>

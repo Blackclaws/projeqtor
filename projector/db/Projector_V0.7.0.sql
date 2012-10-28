@@ -37,10 +37,10 @@ ADD realEndDate date DEFAULT NULL;
 
 CREATE TABLE `${prefix}dependency` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `predecessorId` int(12) unsigned NOT NULL,
+  `predecessorId` int(12) unsigned DEFAULT NULL,
   `predecessorRefType`  varchar(100) DEFAULT NULL,
   `predecessorRefId` int(12) unsigned NOT NULL,
-  `successorId` int(12) unsigned NOT NULL,
+  `successorId` int(12) unsigned DEFAULT NULL,
   `successorRefType`  varchar(100) DEFAULT NULL,
   `successorRefId` int(12) unsigned NOT NULL,
   `dependencyType`  varchar(12),

@@ -238,7 +238,7 @@ class PlanningElement extends SqlElement {
       if ($topElt) {
         //$elt=new PlanningElement($this->topId);
         $wbs=$topElt->wbs . ".";
-        $crit=" topId=" . Sql::fmtId($this->id);
+        $crit=" topId=" . Sql::fmtId($this->topId);
       } else {
         $crit=" (topId is null) ";
       }

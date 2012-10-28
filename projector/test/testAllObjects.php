@@ -59,7 +59,6 @@ function testObject($obj) {
 }
 
 function fillObj($obj) {
-//debugLog(get_class($obj).' #'.$obj->id . "==================================");
   $dbCrit=$obj->getDatabaseCriteria();
 	foreach($obj as $fld=>$val){
 		$var=($obj->id)?'zzzzzzzzzzzzzzzzzzzzzzzzz':'abcdfeghijklmnopqrstuvwxy';
@@ -91,7 +90,6 @@ function fillObj($obj) {
 				//$subObj=new $fld($obj->$fld->id);
 				//$obj->$fld=fillObj($subObj);
 				$obj->$fld=fillObj($obj->$fld);
-//debugLog($obj->$fld);
 			}
 		} else if ($obj->id and $fld=='idBill') {
 			$obj->$fld=null;

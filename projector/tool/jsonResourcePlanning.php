@@ -1,4 +1,4 @@
-<?PHP 
+<?PHP
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
@@ -80,7 +80,7 @@ $showProject=(isset($saveShowProject) and $saveShowProject==1)?true:false;
 if ( array_key_exists('showProject',$_REQUEST) ) {
   $showProject=true;
 }
-  
+
 $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=' ass.plannedWork>0 ';
 
@@ -141,27 +141,28 @@ if (Sql::$lastQueryNbRows == 0) {
   $keyRes="";
   $idRes='';
 	while ($line = Sql::fetchLine($result)) {
-		if ($line['idResource']!=$idResource) {
-			$idResource=$line['idResource'];
+		$line=array_change_key_case($line,CASE_LOWER);
+		if ($line['idresource']!=$idResource) {
+			$idResource=$line['idresource'];
 			$arrayResource[$idResource]=array();;
 			$resAr=array();
-			$resAr["refName"]=$line['name'];
-			$resAr["refType"]='Resource';
-			$resAr["refId"]=$idResource;
+			$resAr["refname"]=$line['name'];
+			$resAr["reftype"]='Resource';
+			$resAr["refid"]=$idResource;
 			$resAr["elementary"]='0';
 			$idRes=$idResource*1000000;
 			$resAr["id"]=$idRes;
 			$resAr["idle"]='0';
 			$resAr["wbs"]='';
-			$resAr["wbsSortable"]='';
-			$resAr["realStartDate"]='';
-			$resAr["realEndDate"]='';
-			$resAr["plannedStartDate"]='';
-			$resAr["plannedEndDate"]='';
-			$resAr["idResource"]=$idResource;
+			$resAr["wbssortable"]='';
+			$resAr["realstartdate"]='';
+			$resAr["realenddate"]='';
+			$resAr["plannedstartdate"]='';
+			$resAr["plannedenddate"]='';
+			$resAr["idresource"]=$idResource;
 			$resAr["progress"]=0;
-			$resAr["topId"]=0;
-			$resAr["leftWork"]=0;
+			$resAr["topid"]=0;
+			$resAr["leftwork"]=0;
 			$keyRes='Resource#'.$idResource;
 			$list[$keyRes]=$resAr;
 			//$sumValidated=0;
@@ -171,8 +172,8 @@ if (Sql::$lastQueryNbRows == 0) {
 		  $sumPlanned=0;
 		  $idProject="";
 		}
-	  if ($showProject and $line['idProject']!=$idProject) {
-      $idProject=$line['idProject'];
+	  if ($showProject and $line['idproject']!=$idProject) {
+      $idProject=$line['idproject'];
       if (array_key_exists($idProject, $arrayProject)) {
       	$prj=$arrayProject[$idProject];
       } else {
@@ -180,23 +181,23 @@ if (Sql::$lastQueryNbRows == 0) {
         $arrayProject[$idProject]=$prj;
       }
       $resPr=array();
-      $resPr["refName"]=$prj->name;
-      $resPr["refType"]='Project';
-      $resPr["refId"]=$idProject;
+      $resPr["refname"]=$prj->name;
+      $resPr["reftype"]='Project';
+      $resPr["refid"]=$idProject;
       $resPr["elementary"]='0';
       $idProj=$idRes+$idProject;
       $resPr["id"]=$idProj;
       $resPr["idle"]='0';
       $resPr["wbs"]=$prj->ProjectPlanningElement->wbs;
-      $resPr["wbsSortable"]=$prj->ProjectPlanningElement->wbsSortable;
-      $resPr["realStartDate"]='';
-      $resPr["realEndDate"]='';
-      $resPr["plannedStartDate"]='';
-      $resPr["plannedEndDate"]='';
-      $resPr["idResource"]=$idResource;
+      $resPr["wbssortable"]=$prj->ProjectPlanningElement->wbsSortable;
+      $resPr["realstartdate"]='';
+      $resPr["realenddate"]='';
+      $resPr["plannedstartdate"]='';
+      $resPr["plannedenddate"]='';
+      $resPr["idresource"]=$idResource;
       $resPr["progress"]=0;
-      $resPr["topId"]=$idRes;
-      $resPr["leftWork"]=0;
+      $resPr["topid"]=$idRes;
+      $resPr["leftwork"]=0;
       $keyProj=$keyRes.'_Project#'.$idProject;
       $list[$keyProj]=$resPr;
       //$sumValidated=0;
@@ -206,102 +207,102 @@ if (Sql::$lastQueryNbRows == 0) {
       $sumProjPlanned=0;
     }
 		$line["elementary"]='1';
-		$line["topRefType"]=($showProject)?'Project':'Resource';
-		$line["topRefId"]=($showProject)?$idProject:$idResource;
-		$line["validatedWorkDisplay"]='';
-		$line["assignedWorkDisplay"]=Work::displayWorkWithUnit($line["assignedWork"]);
-		$line["realWorkDisplay"]=Work::displayWorkWithUnit($line["realWork"]);
-		$line["leftWorkDisplay"]=Work::displayWorkWithUnit($line["leftWork"]);
-		$line["plannedWorkDisplay"]=Work::displayWorkWithUnit($line["plannedWork"]);
-		$line["topId"]=($showProject)?$idProj:$idRes;
-		if ($line["leftWork"]>0) {
-			//$line['realEndDate']='';
+		$line["topreftype"]=($showProject)?'Project':'Resource';
+		$line["toprefid"]=($showProject)?$idProject:$idResource;
+		$line["validatedworkdisplay"]='';
+		$line["assignedworkdisplay"]=Work::displayWorkWithUnit($line["assignedwork"]);
+		$line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
+		$line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
+		$line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
+		$line["topid"]=($showProject)?$idProj:$idRes;
+		if ($line["leftwork"]>0) {
+			//$line['realenddate']='';
 		}
-		if (trim($line["realStartDate"]) and !trim($line["plannedStartDate"])) {
-			$line['plannedStartDate']=$line['realStartDate'];
+		if (trim($line["realstartdate"]) and !trim($line["plannedstartdate"])) {
+			$line['plannedstartdate']=$line['realstartdate'];
 		}
-		$line['progress']=($line["plannedWork"]>0)?round($line["realWork"]/$line["plannedWork"],2):'';
+		$line['progress']=($line["plannedwork"]>0)?round($line["realwork"]/$line["plannedwork"],2):'';
 		$list[]=$line;
 		//$sumValidated=0;
-    $sumAssigned+=$line["assignedWork"];
-    $sumReal+=$line["realWork"];
-    $sumLeft+=$line["leftWork"];
-		$sumPlanned+=$line["plannedWork"];
-		if (! $list[$keyRes]["realStartDate"] or $line['realStartDate'] < $list[$keyRes]["realStartDate"]) {
-			if ($line['realStartDate'] and $line['realStartDate']<$line['plannedStartDate']) {
-			  $list[$keyRes]["realStartDate"]=$line['realStartDate'];
+    $sumAssigned+=$line["assignedwork"];
+    $sumReal+=$line["realwork"];
+    $sumLeft+=$line["leftwork"];
+		$sumPlanned+=$line["plannedwork"];
+		if (! $list[$keyRes]["realstartdate"] or $line['realstartdate'] < $list[$keyRes]["realstartdate"]) {
+			if ($line['realstartdate'] and $line['realstartdate']<$line['plannedstartdate']) {
+			  $list[$keyRes]["realstartdate"]=$line['realstartdate'];
 			}
 		}
-		if (! $list[$keyRes]["realEndDate"] or $line['realEndDate'] > $list[$keyRes]["realEndDate"]) {
-			if ($line['realEndDate'] and $line['realEndDate']>$line['plannedEndDate']) {
-			  $list[$keyRes]["realEndDate"]=$line['realEndDate'];
+		if (! $list[$keyRes]["realenddate"] or $line['realenddate'] > $list[$keyRes]["realenddate"]) {
+			if ($line['realenddate'] and $line['realenddate']>$line['plannedenddate']) {
+			  $list[$keyRes]["realenddate"]=$line['realenddate'];
 			}
 		}
-		if (! $list[$keyRes]["plannedStartDate"] or $line['plannedStartDate'] < $list[$keyRes]["plannedStartDate"]) {
-      if ($line['plannedStartDate'] ) {
-			  $list[$keyRes]["plannedStartDate"]=$line['plannedStartDate'];
+		if (! $list[$keyRes]["plannedstartdate"] or $line['plannedstartdate'] < $list[$keyRes]["plannedstartdate"]) {
+      if ($line['plannedstartdate'] ) {
+			  $list[$keyRes]["plannedstartdate"]=$line['plannedstartdate'];
       }
 		}
-		if (! $list[$keyRes]["plannedEndDate"] or $line['plannedEndDate'] > $list[$keyRes]["plannedEndDate"]) {
-			if ($line['plannedEndDate']) {
-			  $list[$keyRes]["plannedEndDate"]=$line['plannedEndDate'];
-			  if ($list[$keyRes]["plannedEndDate"]>$list[$keyRes]["realEndDate"]) {
-			  	$list[$keyRes]["realEndDate"]="";
+		if (! $list[$keyRes]["plannedenddate"] or $line['plannedenddate'] > $list[$keyRes]["plannedenddate"]) {
+			if ($line['plannedenddate']) {
+			  $list[$keyRes]["plannedenddate"]=$line['plannedenddate'];
+			  if ($list[$keyRes]["plannedenddate"]>$list[$keyRes]["realenddate"]) {
+			  	$list[$keyRes]["realenddate"]="";
 			  }
 			}
 		}
-		$list[$keyRes]["assignedWork"]=$sumAssigned;
-		$list[$keyRes]["realWork"]=$sumReal;
-		$list[$keyRes]["leftWork"]=$sumLeft;
-		$list[$keyRes]["plannedWork"]=$sumPlanned;
-		$list[$keyRes]["validatedWorkDisplay"]='';
-		$list[$keyRes]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumAssigned);
-		$list[$keyRes]["realWorkDisplay"]=Work::displayWorkWithUnit($sumReal);
-		$list[$keyRes]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumLeft);
-		$list[$keyRes]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumPlanned);
+		$list[$keyRes]["assignedwork"]=$sumAssigned;
+		$list[$keyRes]["realwork"]=$sumReal;
+		$list[$keyRes]["leftwork"]=$sumLeft;
+		$list[$keyRes]["plannedwork"]=$sumPlanned;
+		$list[$keyRes]["validatedworkdisplay"]='';
+		$list[$keyRes]["assignedworkdisplay"]=Work::displayWorkWithUnit($sumAssigned);
+		$list[$keyRes]["realworkdisplay"]=Work::displayWorkWithUnit($sumReal);
+		$list[$keyRes]["leftworkdisplay"]=Work::displayWorkWithUnit($sumLeft);
+		$list[$keyRes]["plannedworkdisplay"]=Work::displayWorkWithUnit($sumPlanned);
 		$list[$keyRes]["progress"]=($sumPlanned>0)?round($sumReal/$sumPlanned,2):0;
-		if ($showProject) {	
-			$sumProjAssigned+=$line["assignedWork"];
-	    $sumProjReal+=$line["realWork"];
-	    $sumProjLeft+=$line["leftWork"];
-	    $sumProjPlanned+=$line["plannedWork"];	    
-	    $list[$keyProj]["assignedWork"]=$sumProjAssigned;
-	    $list[$keyProj]["realWork"]=$sumProjReal;
-	    $list[$keyProj]["leftWork"]=$sumProjLeft;
-	    $list[$keyProj]["plannedWork"]=$sumProjPlanned;
-	    $list[$keyProj]["assignedWorkDisplay"]=Work::displayWorkWithUnit($sumProjAssigned);
-	    $list[$keyProj]["realWorkDisplay"]=Work::displayWorkWithUnit($sumProjReal);
-	    $list[$keyProj]["leftWorkDisplay"]=Work::displayWorkWithUnit($sumProjLeft);
-	    $list[$keyProj]["plannedWorkDisplay"]=Work::displayWorkWithUnit($sumProjPlanned);
+		if ($showProject) {
+			$sumProjAssigned+=$line["assignedwork"];
+	    $sumProjReal+=$line["realwork"];
+	    $sumProjLeft+=$line["leftwork"];
+	    $sumProjPlanned+=$line["plannedwork"];
+	    $list[$keyProj]["assignedwork"]=$sumProjAssigned;
+	    $list[$keyProj]["realwork"]=$sumProjReal;
+	    $list[$keyProj]["leftwork"]=$sumProjLeft;
+	    $list[$keyProj]["plannedwork"]=$sumProjPlanned;
+	    $list[$keyProj]["assignedworkdisplay"]=Work::displayWorkWithUnit($sumProjAssigned);
+	    $list[$keyProj]["realworkdisplay"]=Work::displayWorkWithUnit($sumProjReal);
+	    $list[$keyProj]["leftworkdisplay"]=Work::displayWorkWithUnit($sumProjLeft);
+	    $list[$keyProj]["plannedworkdisplay"]=Work::displayWorkWithUnit($sumProjPlanned);
 	    $list[$keyProj]["progress"]=($sumProjPlanned)?round($sumProjReal/$sumProjPlanned,2):0;
-			if (! $list[$keyProj]["realStartDate"] or $line['realStartDate'] < $list[$keyProj]["realStartDate"]) {
-	      if ($line['realStartDate'] and $line['realStartDate']<$line['plannedStartDate']) {
-	        $list[$keyProj]["realStartDate"]=$line['realStartDate'];
+			if (! $list[$keyProj]["realstartdate"] or $line['realstartdate'] < $list[$keyProj]["realstartdate"]) {
+	      if ($line['realstartdate'] and $line['realstartdate']<$line['plannedstartdate']) {
+	        $list[$keyProj]["realstartdate"]=$line['realstartdate'];
 	      }
 	    }
-	    if (! $list[$keyProj]["realEndDate"] or $line['realEndDate'] > $list[$keyProj]["realEndDate"]) {
-	      if ($line['realEndDate'] and $line['realEndDate']>$line['plannedEndDate']) {
-	        $list[$keyProj]["realEndDate"]=$line['realEndDate'];
+	    if (! $list[$keyProj]["realenddate"] or $line['realenddate'] > $list[$keyProj]["realenddate"]) {
+	      if ($line['realenddate'] and $line['realenddate']>$line['plannedenddate']) {
+	        $list[$keyProj]["realenddate"]=$line['realenddate'];
 	      }
 	    }
-	    if (! $list[$keyProj]["plannedStartDate"] or $line['plannedStartDate'] < $list[$keyProj]["plannedStartDate"]) {
-	      if ($line['plannedStartDate'] ) {
-	        $list[$keyProj]["plannedStartDate"]=$line['plannedStartDate'];
+	    if (! $list[$keyProj]["plannedstartdate"] or $line['plannedstartdate'] < $list[$keyProj]["plannedstartdate"]) {
+	      if ($line['plannedstartdate'] ) {
+	        $list[$keyProj]["plannedstartdate"]=$line['plannedstartdate'];
 	      }
 	    }
-	    if (! $list[$keyProj]["plannedEndDate"] or $line['plannedEndDate'] > $list[$keyProj]["plannedEndDate"]) {
-	      if ($line['plannedEndDate']) {
-	        $list[$keyProj]["plannedEndDate"]=$line['plannedEndDate'];
-	        if ($list[$keyProj]["plannedEndDate"]>$list[$keyProj]["realEndDate"]) {
-	          $list[$keyProj]["realEndDate"]="";
+	    if (! $list[$keyProj]["plannedenddate"] or $line['plannedenddate'] > $list[$keyProj]["plannedenddate"]) {
+	      if ($line['plannedenddate']) {
+	        $list[$keyProj]["plannedenddate"]=$line['plannedenddate'];
+	        if ($list[$keyProj]["plannedenddate"]>$list[$keyProj]["realenddate"]) {
+	          $list[$keyProj]["realenddate"]="";
 	        }
 	      }
 	    }
 		}
-		if (! isset($arrayPeAss[$line['idPe']])) {
-			$arrayPeAss[$line['idPe']]=array();
+		if (! isset($arrayPeAss[$line['idpe']])) {
+			$arrayPeAss[$line['idpe']]=array();
 		}
-		$arrayPeAss[$line['idPe']][$line['id']]=$line['id'];
+		$arrayPeAss[$line['idpe']][$line['id']]=$line['id'];
 		$arrayResource[$idResource][$line['id']]=$line['id'];
 	}
 	if ($print) {
@@ -320,8 +321,8 @@ if (Sql::$lastQueryNbRows == 0) {
     echo ' "items":[';
 		$idResource="";
 		foreach ($list as $line) {
-			if ($line['idResource']!=$idResource) {
-				$idResource=$line['idResource'];
+			if ($line['idresource']!=$idResource) {
+				$idResource=$line['idresource'];
 			}
 			echo (++$nbRows>1)?',':'';
 			echo  '{';
@@ -335,7 +336,7 @@ if (Sql::$lastQueryNbRows == 0) {
 				if ($id=='idPe') {$idPe=$val;}
 			}
 			//add expanded status
-			if (($line['refType']=='Resource' or $line['refType']=='Project') and array_key_exists('Planning_'.$line['refType'].'_'.$line['refId'], $collapsedList)) {
+			if (($line['reftype']=='Resource' or $line['reftype']=='Project') and array_key_exists('Planning_'.$line['reftype'].'_'.$line['refid'], $collapsedList)) {
 				echo ',"collapsed":"1"';
 			} else {
 				echo ',"collapsed":"0"';
@@ -376,7 +377,7 @@ function displayGantt($list) {
 	if (array_key_exists('startDate',$_REQUEST)) {
 		$startDate=$_REQUEST['startDate'];
 	}
-	
+
 	$endDate='';
 	if (array_key_exists('endDate',$_REQUEST)) {
 		$endDate=$_REQUEST['endDate'];
@@ -404,27 +405,27 @@ function displayGantt($list) {
 		$resultArray=array();
 		foreach ($list as $line) {
 			$pStart="";
-			$pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
-			$pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
-			if (trim($line['plannedStartDate'])!=""
-			and trim($line['realStartDate'])!=""
-			and $line['plannedStartDate']<$line['realStartDate'] ) {
-				$pStart=$line['plannedStartDate'];
+			$pStart=(trim($line['plannedstartdate'])!="")?$line['plannedstartdate']:$pStart;
+			$pStart=(trim($line['realstartdate'])!="")?$line['realstartdate']:$pStart;
+			if (trim($line['plannedstartdate'])!=""
+			and trim($line['realstartdate'])!=""
+			and $line['plannedstartdate']<$line['realstartdate'] ) {
+				$pStart=$line['plannedstartdate'];
 			}
 			$pEnd="";
-			$pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$line['realEndDate'];
-			//$pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
-			if ($line['refType']=='Milestone') {
+			$pEnd=(trim($line['plannedenddate'])!="")?$line['plannedenddate']:$line['realenddate'];
+			//$pEnd=(trim($line['realenddate'])!="")?$line['realenddate']:$pEnd;
+			if ($line['reftype']=='Milestone') {
 				$pStart=$pEnd;
 			}
-			$line['pStart']=$pStart;
-			$line['pEnd']=$pEnd;
-			$line['pRealEnd']=$line['realEndDate'];
-			$line['pPlanStart']=$line['plannedStartDate'];
+			$line['pstart']=$pStart;
+			$line['pend']=$pEnd;
+			$line['prealend']=$line['realenddate'];
+			$line['pplanstart']=$line['plannedstartdate'];
 			$resultArray[]=$line;
 			if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
 			if ($minDate=='' or ($minDate>$pStart and trim($pStart))) {$minDate=$pStart;}
-			
+
 		}
 		if ($minDate<$startDate) {
 			$minDate=$startDate;
@@ -537,36 +538,36 @@ function displayGantt($list) {
 		$levelCollpased=0;
 		$collapsed=false;
 		foreach ($resultArray as $line) {
-			$pEnd=$line['pEnd'];
-			$pStart=$line['pStart'];
-			$pRealEnd=$line['pRealEnd'];
-			$pPlanStart=$line['pPlanStart'];
-			$realWork=$line['realWork'];
-			$plannedWork=$line['plannedWork'];
+			$pEnd=$line['pend'];
+			$pStart=$line['pstart'];
+			$pRealEnd=$line['prealend'];
+			$pPlanStart=$line['pplanstart'];
+			$realWork=$line['realwork'];
+			$plannedWork=$line['plannedwork'];
 			$progress=$line['progress'];
 			// pGroup : is the tack a group one ?
-			$pGroup=($line['refType']=='Resource' or $line['refType']=='Project')?1:0;
-			$scope='Planning_'.$line['refType'].'_'.$line['refId'];
+			$pGroup=($line['reftype']=='Resource' or $line['reftype']=='Project')?1:0;
+			$scope='Planning_'.$line['reftype'].'_'.$line['refid'];
 			$compStyle="";
 			$bgColor="";
 			if( $pGroup) {
 				$rowType = "group";
 				$compStyle="font-weight: bold; background: #E8E8E8;";
 				$bgColor="background: #E8E8E8;";
-			} else if( $line['refType']=='Milestone'){
+			} else if( $line['reftype']=='Milestone'){
 				$rowType  = "mile";
 			} else {
 				$rowType  = "row";
 			}
-			$wbs=$line['wbsSortable'];
-			if ($line['refType']=='Resource') {
+			$wbs=$line['wbssortable'];
+			if ($line['reftype']=='Resource') {
 				$level=1;
-			} else if ($line['refType']=='Project') {
+			} else if ($line['reftype']=='Project') {
 				$level=2;
 			} else if ($showProject) {
 				$level=3;
 			} else {
-				$level=2;	
+				$level=2;
 			}
 			if ($collapsed and $collapsedLevel<$level) {
 				continue;
@@ -586,13 +587,13 @@ function displayGantt($list) {
 				$tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
 			}
 			$pName=($showWbs)?$line['wbs']." ":"";
-			$pName.=htmlEncode($line['refName']);
+			$pName.=htmlEncode($line['refname']);
 			$duration=($rowType=='mile' or $pStart=="" or $pEnd=="")?'-':workDayDiffDates($pStart, $pEnd) . "&nbsp;" . i18n("shortDay");
 			//echo '<TR class="dojoDndItem ganttTask' . $rowType . '" style="margin: 0px; padding: 0px;">';
 
 			echo '<TR style="height:18px;' ;
 			echo '">';
-			echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
+			echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
 			echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '"><NOBR>' . $tab ;
 		  echo '<span style="width: 16px;height:100%;vertical-align:middle;">';
 			if ($pGroup) {
@@ -600,18 +601,18 @@ function displayGantt($list) {
           echo '<img style="width:12px" src="../view/css/images/plus.gif" />';
         } else {
           echo '<img style="width:12px" src="../view/css/images/minus.gif" />';
-        }         
+        }
       } else {
         echo '<img style="width:12px" src="../view/css/images/none.gif" />';
       }
       echo '</span>&nbsp;';
       echo $pName . '</NOBR></TD>';
 		  foreach ($sortArray as $col) {
-          //if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedWork"])  . '</TD>' ;
-          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedWork"])  . '</TD>' ;
-          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realWork"])  . '</TD>' ;
-          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["leftWork"])  . '</TD>' ;
-          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["plannedWork"])  . '</TD>' ;
+          //if ($col=='ValidatedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . Work::displayWorkWithUnit($line["validatedwork"])  . '</TD>' ;
+          if ($col=='AssignedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["assignedwork"])  . '</TD>' ;
+          if ($col=='RealWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["realwork"])  . '</TD>' ;
+          if ($col=='LeftWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["leftwork"])  . '</TD>' ;
+          if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' .  Work::displayWorkWithUnit($line["plannedwork"])  . '</TD>' ;
           if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $duration  . '</TD>' ;
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter(round($progress*100)) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
@@ -674,17 +675,17 @@ function displayGantt($list) {
 						echo '<tr height="' . $pHeight . 'px"><td style="' . $border . ' width:100%; ' . $pBgColor . 'height:' .  $pHeight . 'px;"></td></tr>';
 						echo '</table>';
             if ($pGroup and $days[$i]==$pStart and $outMode!='pdf') {
-						  echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
-                . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'                 
-                . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'              
+						  echo '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'
+                . '<div class="ganttTaskgroupBarExt" style="float:left; height:3px"></div>'
+                . '<div class="ganttTaskgroupBarExt" style="float:left; height:2px"></div>'
                 . '<div class="ganttTaskgroupBarExt" style="float:left; height:1px"></div>';
 					  }
 					  if ($pGroup and $days[$i]==$pEnd and $outMode!='pdf') {
-              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'               
-                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'                 
-                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'              
+              echo '<div class="ganttTaskgroupBarExt" style="float:right; height:4px"></div>'
+                . '<div class="ganttTaskgroupBarExt" style="float:right; height:3px"></div>'
+                . '<div class="ganttTaskgroupBarExt" style="float:right; height:2px"></div>'
                 . '<div class="ganttTaskgroupBarExt" style="float:right; height:1px"></div>';
-            }  
+            }
 						$dispCaption=($showWork)?true:false;
 					}
 				} else {
@@ -692,8 +693,8 @@ function displayGantt($list) {
 				  if ($days[$i]>$pEnd and $dispCaption) {
               echo '<div style="position: relative; top: 0px; height: 12px;">';
               echo '<div style="position: absolute; top: -1px; left: 1px; height:12px; width:200px;">';
-              echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">' 
-                 . Work::displayWorkWithUnit($line['leftWork']) . '</div>'; 
+              echo '<div style="clip:rect(-10px,100px,100px,0px); text-align: left">'
+                 . Work::displayWorkWithUnit($line['leftwork']) . '</div>';
               echo '</div>';
               echo '</div>';
               $dispCaption=false;
@@ -733,26 +734,26 @@ function exportGantt($list) {
 	if (count($list) > 0) {
 		foreach ($list as $line) {
 			$pStart="";
-			$pStart=(trim($line['initialStartDate'])!="")?$line['initialStartDate']:$pStart;
-			$pStart=(trim($line['validatedStartDate'])!="")?$line['validatedStartDate']:$pStart;
-			$pStart=(trim($line['plannedStartDate'])!="")?$line['plannedStartDate']:$pStart;
-			$pStart=(trim($line['realStartDate'])!="")?$line['realStartDate']:$pStart;
-			if (trim($line['plannedStartDate'])!=""
-			and trim($line['realStartDate'])!=""
-			and $line['plannedStartDate']<$line['realStartDate'] ) {
-				$pStart=$line['plannedStartDate'];
+			$pStart=(trim($line['initialstartdate'])!="")?$line['initialstartdate']:$pStart;
+			$pStart=(trim($line['validatedstartdate'])!="")?$line['validatedstartdate']:$pStart;
+			$pStart=(trim($line['plannedstartdate'])!="")?$line['plannedstartdate']:$pStart;
+			$pStart=(trim($line['realstartdate'])!="")?$line['realstartdate']:$pStart;
+			if (trim($line['plannedstartdate'])!=""
+			and trim($line['realstartdate'])!=""
+			and $line['plannedstartdate']<$line['realstartdate'] ) {
+				$pStart=$line['plannedstartdate'];
 			}
 			$pEnd="";
-			$pEnd=(trim($line['initialEndDate'])!="")?$line['initialEndDate']:$pEnd;
-			$pEnd=(trim($line['validatedEndDate'])!="")?$line['validatedEndDate']:$pEnd;
-			$pEnd=(trim($line['plannedEndDate'])!="")?$line['plannedEndDate']:$pEnd;
-			$pEnd=(trim($line['realEndDate'])!="")?$line['realEndDate']:$pEnd;
-			if ($line['refType']=='Milestone') {
+			$pEnd=(trim($line['initialenddate'])!="")?$line['initialenddate']:$pEnd;
+			$pEnd=(trim($line['validatedenddate'])!="")?$line['validatedenddate']:$pEnd;
+			$pEnd=(trim($line['plannedenddate'])!="")?$line['plannedenddate']:$pEnd;
+			$pEnd=(trim($line['realenddate'])!="")?$line['realenddate']:$pEnd;
+			if ($line['reftype']=='Milestone') {
 				$pStart=$pEnd;
 			}
-			$line['pStart']=$pStart;
-			$line['pEnd']=$pEnd;
-			$line['pDuration']=workDayDiffDates($pStart,$pEnd);
+			$line['pstart']=$pStart;
+			$line['pend']=$pEnd;
+			$line['pduration']=workDayDiffDates($pStart,$pEnd);
 			$resultArray[]=$line;
 			if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
 			if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
@@ -763,7 +764,7 @@ function exportGantt($list) {
 	}
 	$res=New Resource();
 	$resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
-	 
+
 	echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
 	echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
 	echo '<Name>' . $name . '</Name>' . $nl;
@@ -871,40 +872,40 @@ function exportGantt($list) {
 	$arrayTask=array();
 	foreach ($resultArray as $line) {
 		$cpt++;
-		$arrayTask[$line['refType'].'#'.$line['refId']]=$line['id'];
-		$pct=($line['plannedWork']>0)?round(100*$line['realWork']/$line['plannedWork'],0):'';
+		$arrayTask[$line['reftype'].'#'.$line['refid']]=$line['id'];
+		$pct=($line['plannedwork']>0)?round(100*$line['realwork']/$line['plannedwork'],0):'';
 		echo '<Task>' . $nl;
 		echo '<UID>' . $line['id'] . '</UID>' . $nl;
 		echo '<ID>' . $cpt . '</ID>' . $nl;  // TODO : should be order of the tack in the list
-		echo '<Name>' . htmlEncode($line['refName']) . '</Name>' . $nl;
+		echo '<Name>' . htmlEncode($line['refname']) . '</Name>' . $nl;
 		echo '<Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
 		echo '<IsNull>0</IsNull>' . $nl;
 		echo '<WBS>' . $line['wbs'] . '</WBS>' . $nl;
 		echo '<OutlineNumber>' . $line['wbs'] . '</OutlineNumber>' . $nl;
 		echo '<OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
 		echo '<Priority>' . $line['priority'] . '</Priority>' . $nl;
-		echo '<Start>' . $line['pStart'] . 'T' . $startAM . '</Start>' . $nl;
-		echo '<Finish>' . $line['pEnd'] . 'T' . $endPM . '</Finish>' . $nl;
-		echo '<Duration>' . formatDuration($line['pDuration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
+		echo '<Start>' . $line['pstart'] . 'T' . $startAM . '</Start>' . $nl;
+		echo '<Finish>' . $line['pend'] . 'T' . $endPM . '</Finish>' . $nl;
+		echo '<Duration>' . formatDuration($line['pduration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
 		echo '<DurationFormat>7</DurationFormat>' . $nl;
-		echo '<Work>PT' . round($line['plannedWork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
-		echo '<Stop>' . $line['pStart'] . 'T' . $startAM . '</Stop>' . $nl;
-		echo '<Resume>' . $line['pStart'] . 'T' . $startAM . '</Resume>' . $nl;
+		echo '<Work>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
+		echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;
+		echo '<Resume>' . $line['pstart'] . 'T' . $startAM . '</Resume>' . $nl;
 		echo '<ResumeValid>0</ResumeValid>' . $nl;
 		echo '<EffortDriven>0</EffortDriven>' . $nl;
 		echo '<Recurring>0</Recurring>' . $nl;
 		echo '<OverAllocated>0</OverAllocated>' . $nl;
 		echo '<Estimated>0</Estimated>' . $nl;
-		echo '<Milestone>' . (($line['refType']=='Milestone')?'1':'0') . '</Milestone>' . $nl;
+		echo '<Milestone>' . (($line['reftype']=='Milestone')?'1':'0') . '</Milestone>' . $nl;
 		echo '<Summary>' . (($line['elementary'])?'0':'1') . '</Summary>' . $nl;
 		echo '<Critical>0</Critical>' . $nl;
 		echo '<IsSubproject>0</IsSubproject>' . $nl;
 		echo '<IsSubprojectReadOnly>0</IsSubprojectReadOnly>' . $nl;
 		echo '<ExternalTask>0</ExternalTask>' . $nl;
-		echo '<EarlyStart>' . $line['pStart'] . 'T' . $startAM . '</EarlyStart>' . $nl;
-		echo '<EarlyFinish>' . $line['pEnd'] . 'T' . $endPM . '</EarlyFinish>' . $nl;
-		echo '<LateStart>' . $line['pStart'] . 'T' . $startAM . '</LateStart>' . $nl;
-		echo '<LateFinish>' . $line['pEnd'] . 'T' . $endPM . '</LateFinish>' . $nl;
+		echo '<EarlyStart>' . $line['pstart'] . 'T' . $startAM . '</EarlyStart>' . $nl;
+		echo '<EarlyFinish>' . $line['pend'] . 'T' . $endPM . '</EarlyFinish>' . $nl;
+		echo '<LateStart>' . $line['pstart'] . 'T' . $startAM . '</LateStart>' . $nl;
+		echo '<LateFinish>' . $line['pend'] . 'T' . $endPM . '</LateFinish>' . $nl;
 		echo '<StartVariance>0</StartVariance>' . $nl;
 		echo '<FinishVariance>0</FinishVariance>' . $nl;
 		echo '<WorkVariance>0</WorkVariance>' . $nl;
@@ -917,23 +918,23 @@ function exportGantt($list) {
 		echo '<Cost>0</Cost>' . $nl;
 		echo '<OvertimeCost>0</OvertimeCost>' . $nl;
 		echo '<OvertimeWork>PT0H0M0S</OvertimeWork>' . $nl;
-		echo '<ActualStart>' .  $line['pStart'] . 'T' . $startAM . '</ActualStart>' . $nl;
+		echo '<ActualStart>' .  $line['pstart'] . 'T' . $startAM . '</ActualStart>' . $nl;
 		echo '<ActualDuration>PT0H0M0S</ActualDuration>' . $nl;
 		echo '<ActualCost>0</ActualCost>' . $nl;
 		echo '<ActualOvertimeCost>0</ActualOvertimeCost>' . $nl;
-		echo '<ActualWork>PT' . round($line['realWork']*$hoursPerDay,0) . 'H0M0S</ActualWork>' . $nl;
+		echo '<ActualWork>PT' . round($line['realwork']*$hoursPerDay,0) . 'H0M0S</ActualWork>' . $nl;
 		echo '<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>' . $nl;
-		echo '<RegularWork>PT' . round($line['plannedWork']*$hoursPerDay,0) . 'H0M0S</RegularWork>' . $nl;
-		echo '<RemainingDuration>PT' .  round($line['plannedDuration']*$hoursPerDay,0) . 'H0M0S</RemainingDuration>' . $nl;
+		echo '<RegularWork>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</RegularWork>' . $nl;
+		echo '<RemainingDuration>PT' .  round($line['plannedduration']*$hoursPerDay,0) . 'H0M0S</RemainingDuration>' . $nl;
 		echo '<RemainingCost>0</RemainingCost>' . $nl;
-		echo '<RemainingWork>PT' . round($line['leftWork']*$hoursPerDay,0) . 'H0M0S</RemainingWork>' . $nl;
+		echo '<RemainingWork>PT' . round($line['leftwork']*$hoursPerDay,0) . 'H0M0S</RemainingWork>' . $nl;
 		echo '<RemainingOvertimeCost>0</RemainingOvertimeCost>' . $nl;
 		echo '<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>' . $nl;
 		echo '<ACWP>0</ACWP>' . $nl;
 		echo '<CV>0</CV>' . $nl;
 		echo '<ConstraintType>' . (($line['elementary'])?'0':'0') . '</ConstraintType>' . $nl;
 		echo '<CalendarUID>-1</CalendarUID>' . $nl;
-		if ($line['elementary']) { echo '<ConstraintDate>' . $line['pStart'] . 'T' . $startAM . '</ConstraintDate>' . $nl;}
+		if ($line['elementary']) { echo '<ConstraintDate>' . $line['pstart'] . 'T' . $startAM . '</ConstraintDate>' . $nl;}
 		echo '<LevelAssignments>0</LevelAssignments>' . $nl;
 		echo '<LevelingCanSplit>1</LevelingCanSplit>' . $nl;
 		echo '<LevelingDelay>0</LevelingDelay>' . $nl;
@@ -1001,7 +1002,7 @@ function exportGantt($list) {
 		$rcList=$rc->getSqlElementsFromCriteria($critCost, false, null, ' startDate desc');
 		if (count($rcList)>0) {
 			$rate=($hoursPerDay)?round($rcList[0]->cost / $hoursPerDay,2):0;
-			 
+
 		}
 		echo "<StandardRate>" . $rate . "</StandardRate>" . $nl;
 		echo "<StandardRateFormat>3</StandardRateFormat>" . $nl;
@@ -1102,7 +1103,7 @@ function exportGantt($list) {
 	}
 	echo "</Assignments>" . $nl;
 	echo '</Project>' . $nl;
-} 
+}
 
 function formatDuration($duration, $hoursPerDay) {
 	$hourDuration=$duration*$hoursPerDay;

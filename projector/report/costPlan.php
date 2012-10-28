@@ -2,7 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-  require_once "../tool/projector.php";  
+  require_once "../tool/projector.php";
 //echo "costPlan.php";
   $objectClass='PlanningElement';
   $obj=new $objectClass();
@@ -12,7 +12,7 @@
     $print=true;
     include_once('../tool/formatter.php');
   }
-  
+
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -21,7 +21,7 @@
   include "header.php";
 
   $accessRightRead=securityGetAccessRight('menuProject', 'read');
-  
+
   $querySelect = '';
   $queryFrom='';
   $queryWhere='';
@@ -36,23 +36,23 @@
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
-  
+
   $querySelect .= $table . ".* ";
-  $queryFrom .= $table;  
+  $queryFrom .= $table;
   $queryOrderBy .= $table . ".wbsSortable ";
 
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
-  $query='select ' . $querySelect 
+  $query='select ' . $querySelect
        . ' from ' . $queryFrom
-       . ' where ' . $queryWhere 
+       . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
 //echo $query;
   $test=array();
   if (Sql::$lastQueryNbRows > 0) $test[]="OK";
   if (checkNoData($test))  exit;
-    
+
   if (Sql::$lastQueryNbRows > 0) {
     // Header
     echo '<table>';
@@ -65,14 +65,15 @@
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colReal') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:60px" nowrap>' . i18n('colLeft') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
-    echo '</TR>';       
+    echo '</TR>';
     // Treat each line
     while ($line = Sql::fetchLine($result)) {
-      $validatedCost=$line['validatedCost'];
-      $assignedCost=$line['assignedCost'];
-      $plannedCost=$line['plannedCost'];
-      $realCost=$line['realCost'];
-      $leftCost=$line['leftCost'];
+    	$line=array_change_key_case($line,CASE_LOWER);
+      $validatedCost=$line['validatedcost'];
+      $assignedCost=$line['assignedcost'];
+      $plannedCost=$line['plannedcost'];
+      $realCost=$line['realcost'];
+      $leftCost=$line['leftcost'];
       $progress=' 0';
       if ($plannedCost>0) {
         $progress=round(100*$realCost/$plannedCost);
@@ -87,29 +88,29 @@
       if( $pGroup) {
         $rowType = "group";
         $compStyle="font-weight: bold; background: #E8E8E8 ;";
-      } else if( $line['refType']=='Milestone'){
+      } else if( $line['reftype']=='Milestone'){
         $rowType  = "mile";
         $compStyle="font-weight: light; font-style:italic;";
       } else {
         $rowType  = "row";
       }
-      $wbs=$line['wbsSortable'];
+      $wbs=$line['wbssortable'];
       $level=(strlen($wbs)+1)/4;
       $tab="";
       for ($i=1;$i<$level;$i++) {
         $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
       }
       echo '<TR>';
-      echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . $line['refName'] . '</TD>';
+      echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
+      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . $line['refname'] . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($validatedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($assignedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($plannedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($realCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($leftCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
-      echo '</TR>';        
+      echo '</TR>';
     }
   }
-  echo "</table>"; 
+  echo "</table>";
 ?>

@@ -1392,37 +1392,37 @@ function drawGantt() {
     var keys="";
     for (var i=0; i< items.length; i++) {
       var item=items[i];
-      //var topId=(i==0)?'':item.topId;
-      var topId=item.topId;
+      //var topId=(i==0)?'':item.topid;
+      var topId=item.topid;
       // pStart : start date of task
       var pStart="";
-      pStart=(item.initialStartDate!=" ")?item.initialStartDate:pStart;
-      pStart=(item.validatedStartDate!=" ")?item.validatedStartDate:pStart;
-      pStart=(item.plannedStartDate!=" ")?item.plannedStartDate:pStart;
-      pStart=(item.realStartDate!=" ")?item.realStartDate:pStart;
-      if (item.plannedStartDate!=" " 
-       && item.realStartDate!=" " 
-       && item.plannedStartDate<item.realStartDate) {
-        pStart=item.plannedStartDate;
+      pStart=(item.initialstartdate!=" ")?item.initialstartdate:pStart;
+      pStart=(item.validatedstartdate!=" ")?item.validatedstartdate:pStart;
+      pStart=(item.plannedstartdate!=" ")?item.plannedstartdate:pStart;
+      pStart=(item.realstartdate!=" ")?item.realstartdate:pStart;
+      if (item.plannedstartdate!=" " 
+       && item.realstartdate!=" " 
+       && item.plannedstartdate<item.realstartdate) {
+        pStart=item.plannedstartdate;
       }
       // pEnd : end date of task
       var pEnd="";
-      pEnd=(item.initialEndDate!=" ")?item.initialEndDate:pEnd;
-      pEnd=(item.validatedEndDate!=" ")?item.validatedEndDate:pEnd;
-      pEnd=(item.plannedEndDate!=" ")?item.plannedEndDate:pEnd;
+      pEnd=(item.initialenddate!=" ")?item.initialenddate:pEnd;
+      pEnd=(item.validatedenddate!=" ")?item.validatedenddate:pEnd;
+      pEnd=(item.plannedenddate!=" ")?item.plannedenddate:pEnd;
       pRealEnd="";
       pPlannedStart="";
       pWork="";
       if (dojo.byId('resourcePlanning')) {
-    	pRealEnd=item.realEndDate;
-    	pPlannedStart=item.plannedStartDate;
-        pWork=item.leftWorkDisplay;
+    	pRealEnd=item.realenddate;
+    	pPlannedStart=item.plannedstartdate;
+        pWork=item.leftworkdisplay;
         g.setSplitted(true);
       } else {
-    	pEnd=(item.realEndDate!=" ")?item.realEndDate:pEnd;
+    	pEnd=(item.realenddate!=" ")?item.realenddate:pEnd;
       }
-      var realWork=parseFloat(item.realWork);
-      var plannedWork=parseFloat(item.plannedWork);
+      var realWork=parseFloat(item.realwork);
+      var plannedWork=parseFloat(item.plannedwork);
       var progress=0;
       if (plannedWork>0) {
         progress=Math.round(100*realWork/plannedWork);
@@ -1435,25 +1435,25 @@ function drawGantt() {
       var pGroup=(item.elementary=='0')?1:0;
       // runScript : JavaScript to run when click on tack (to display the
     // detail of the task)
-      var runScript="dojo.byId('objectClass').value='" + item.refType + "';";
-      runScript+="dojo.byId('objectId').value='" + item.refId + "';";
+      var runScript="dojo.byId('objectClass').value='" + item.reftype + "';";
+      runScript+="dojo.byId('objectId').value='" + item.refid + "';";
       runScript+="hideList();loadContent('objectDetail.php','detailDiv','listForm');";
       // display Name of the task
-      var pName=( (showWBS)?item.wbs:'') + " " + item.refName; // for testeing
+      var pName=( (showWBS)?item.wbs:'') + " " + item.refname; // for testeing
                                 // purpose, add
                                 // wbs code
-      // var pName=item.refName;
+      // var pName=item.refname;
       // display color of the task bar
       var pColor='50BB50';
       // show in red not respected constraints
-      if (item.validatedEndDate!=" " && item.validatedEndDate < pEnd) {
+      if (item.validatedenddate!=" " && item.validatedenddate < pEnd) {
         pColor='BB5050';  
       }
       // pMile : is it a milestone ?
-      var pMile=(item.refType=='Milestone')?1:0;
+      var pMile=(item.reftype=='Milestone')?1:0;
       if (pMile) { pStart=pEnd; }
-      pClass=item.refType;
-      pId=item.refId;
+      pClass=item.reftype;
+      pId=item.refid;
       pScope="Planning_"+pClass+"_"+pId;
       pOpen=(item.collapsed=='1')?'0':'1';
       var pResource=item.resource;
@@ -1464,8 +1464,8 @@ function drawGantt() {
 	    }
 	  }
       if ( dojo.byId('listShowLeftWork') && dojo.byId('listShowLeftWork').checked ) {
-  	    if (item.leftWork>0) { 
-  	    	pCaption=item.leftWorkDisplay;
+  	    if (item.leftwork>0) { 
+  	    	pCaption=item.leftworkdisplay;
   	    } else {
   	    	pCaption="";
   	    }
@@ -1488,8 +1488,8 @@ function drawGantt() {
       g.AddTaskItem(new JSGantt.TaskItem(item.id, pName, pStart, pEnd, pColor, runScript, pMile, 
     		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
     		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
-    		                             item.validatedWorkDisplay, item.assignedWorkDisplay, 
-    		                             item.realWorkDisplay, item.leftWorkDisplay, item.plannedWorkDisplay));
+    		                             item.validatedworkdisplay, item.assignedworkdisplay, 
+    		                             item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay));
     }
     g.Draw();  
     g.DrawDependencies();

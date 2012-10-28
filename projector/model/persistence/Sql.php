@@ -282,7 +282,7 @@ class Sql {
     $obj->save();
   }
   
-  // Retores thes Sequence for PgSql
+  // Retores the Sequence for PgSql
   public static function updatePgSeq($table) {
     $updateSeq=Sql::query("SELECT setval('".$table."_id_seq', (SELECT MAX(id) FROM $table));");
   }

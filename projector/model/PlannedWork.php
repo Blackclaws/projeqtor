@@ -437,11 +437,11 @@ class PlannedWork extends GeneralWork {
         $query.=', ';
       }
       $query.='(' 
-        . "'" . $pw->idResource . "',"
-        . "'" . $pw->idProject . "',"
+        . "'" . Sql::fmtId($pw->idResource) . "',"
+        . "'" . Sql::fmtId($pw->idProject) . "',"
         . "'" . $pw->refType . "',"
-        . "'" . $pw->refId . "',"
-        . "'" . $pw->idAssignment . "',"
+        . "'" . Sql::fmtId($pw->refId) . "',"
+        . "'" . Sql::fmtId($pw->idAssignment) . "',"
         . "'" . $pw->work . "',"
         . "'" . $pw->workDate . "',"
         . "'" . $pw->day . "',"

@@ -215,7 +215,7 @@ INSERT INTO `${prefix}delay` (`id`, `scope`, `idType`, `idUrgency`, `value`, `id
 (1,'Ticket',16,1,2,2,0),
 (2,'Ticket',16,2,1,4,0),
 (3,'Ticket',17,1,1,4,0),
-(4,'Ticket',17,1,4,4,0),
+(4,'Ticket',17,2,4,4,0),
 (5,'Ticket',18,1,4,2,0),
 (6,'Ticket',18,2,2,4,0);
 
