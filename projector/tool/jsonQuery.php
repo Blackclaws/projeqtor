@@ -375,10 +375,18 @@
     		$csvQuotedText=true;
     		$obj=new $objectClass();
     		$first=true;
+    		$arrayFields=array();
+    	  if (Sql::isPgsql()) {
+    	  	$arrayFields=$obj->getLowercaseFieldsArray();        
+        }
     		while ($line = Sql::fetchLine($result)) {
     			if ($first) {
 	    			foreach ($line as $id => $val) {
-	    				$val=utf8_decode($obj->getColCaption($id));
+	    				$colId=$id;
+	    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
+	    					$colId=$arrayFields[$id];
+	    				}
+	    				$val=utf8_decode($obj->getColCaption($colId));
 	    				//$val=utf8_decode($id);
 	    				$val=str_replace($csvSep,' ',$val);
 	            if ($id!='id') { echo $csvSep ;}

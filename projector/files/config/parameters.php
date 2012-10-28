@@ -1,13 +1,13 @@
 <?php
 // =======================================================================================
 // Automatically generated parameter file
-// on 2012-10-28 18:45:27
+// on 2012-10-28 21:52:35
 // =======================================================================================
 $paramDbType='pgsql';
-$paramDbHost='localhost';
+$paramDbHost='127.0.0.1';
 $paramDbPort='5432';
 $paramDbUser='postgres';
-$paramDbPassword='admin';
+$paramDbPassword='admin31!';
 /*$paramDbType='mysql';
 $paramDbHost='127.0.0.1';
 $paramDbUser='root';
