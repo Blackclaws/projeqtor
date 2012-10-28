@@ -32,12 +32,12 @@ DROP TABLE `${prefix}task` ;
 --
 -- Structure de la TABLE `${prefix}planningelement`
 --
-ALTER TABLE `${prefix}planningelement` CHANGE initialWork initialWork NUMERIC(6,2) UNSIGNED,
- CHANGE validatedWork validatedWork NUMERIC(6,2) UNSIGNED,
- CHANGE plannedWork plannedWork NUMERIC(6,2) UNSIGNED,
- CHANGE realWork realWork NUMERIC(6,2) UNSIGNED,
- ADD leftWork NUMERIC(6,2) UNSIGNED,
- ADD assignedWork NUMERIC(6,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` CHANGE `initialWork` `initialWork` NUMERIC(6,2) UNSIGNED,
+ CHANGE `validatedWork` `validatedWork` NUMERIC(6,2) UNSIGNED,
+ CHANGE `plannedWork` `plannedWork` NUMERIC(6,2) UNSIGNED,
+ CHANGE `realWork` `realWork` NUMERIC(6,2) UNSIGNED,
+ ADD `leftWork` NUMERIC(6,2) UNSIGNED,
+ ADD `assignedWork` NUMERIC(6,2) UNSIGNED;
 
 --
 -- Add a type of activity : Task
@@ -53,84 +53,84 @@ ALTER TABLE `${prefix}project` ADD idUser int(12) UNSIGNED;
 --
 -- CREATE INDEXes to forreign keys
 --
-CREATE INDEX accessrightProfile ON `${prefix}accessright` (idProfile);
-CREATE INDEX  accessrightMenu ON `${prefix}accessright` (idMenu);
+CREATE INDEX accessrightProfile ON `${prefix}accessright` (`idProfile`);
+CREATE INDEX  accessrightMenu ON `${prefix}accessright` (`idMenu`);
 
-CREATE INDEX actionProject ON `${prefix}action` (idProject);
-CREATE INDEX actionUser ON `${prefix}action` (idUser);
-CREATE INDEX actionResource ON `${prefix}action` (idResource);
-CREATE INDEX actionStatus ON `${prefix}action` (idStatus);
+CREATE INDEX actionProject ON `${prefix}action` (`idProject`);
+CREATE INDEX actionUser ON `${prefix}action` (`idUser`);
+CREATE INDEX actionResource ON `${prefix}action` (`idResource`);
+CREATE INDEX actionStatus ON `${prefix}action` (`idStatus`);
   
-CREATE INDEX activityProject ON `${prefix}activity` (idProject);
-CREATE INDEX activityUser ON `${prefix}activity` (idUser);
-CREATE INDEX activityResource ON `${prefix}activity` (idResource);
-CREATE INDEX activityStatus ON `${prefix}activity` (idStatus);
-CREATE INDEX activityType ON `${prefix}activity` (idActivityType);
-CREATE INDEX activityActivity ON `${prefix}activity` (idActivity); 
+CREATE INDEX activityProject ON `${prefix}activity` (`idProject`);
+CREATE INDEX activityUser ON `${prefix}activity` (`idUser`);
+CREATE INDEX activityResource ON `${prefix}activity` (`idResource`);
+CREATE INDEX activityStatus ON `${prefix}activity` (`idStatus`);
+CREATE INDEX activityType ON `${prefix}activity` (`idActivityType`);
+CREATE INDEX activityActivity ON `${prefix}activity` (`idActivity`); 
   
-CREATE INDEX affectationProject ON `${prefix}affectation` (idProject);
-CREATE INDEX affectationResource ON `${prefix}affectation` (idResource);   
+CREATE INDEX affectationProject ON `${prefix}affectation` (`idProject`);
+CREATE INDEX affectationResource ON `${prefix}affectation` (`idResource`);   
   
-CREATE INDEX assignmentProject ON `${prefix}assignment` (idProject);
-CREATE INDEX assignmentResource ON `${prefix}assignment` (idResource);
-CREATE INDEX assignmentRef ON `${prefix}assignment` (refType, refId);
+CREATE INDEX assignmentProject ON `${prefix}assignment` (`idProject`);
+CREATE INDEX assignmentResource ON `${prefix}assignment` (`idResource`);
+CREATE INDEX assignmentRef ON `${prefix}assignment` (`refType`, `refId`);
 
-CREATE INDEX attachementUser ON `${prefix}attachement` (idUser);
-CREATE INDEX attachementRef ON `${prefix}attachement` (refType, refId);        
+CREATE INDEX attachementUser ON `${prefix}attachement` (`idUser`);
+CREATE INDEX attachementRef ON `${prefix}attachement` (`refType`, `refId`);        
 
-CREATE INDEX habilitationProfile ON `${prefix}habilitation` (idProfile);
-CREATE INDEX habilitationMenu ON `${prefix}habilitation` (idMenu);  
+CREATE INDEX habilitationProfile ON `${prefix}habilitation` (`idProfile`);
+CREATE INDEX habilitationMenu ON `${prefix}habilitation` (`idMenu`);  
   
-CREATE INDEX historyUser ON `${prefix}history` (idUser);
-CREATE INDEX historyRef ON `${prefix}history` (refType, refId); 
+CREATE INDEX historyUser ON `${prefix}history` (`idUser`);
+CREATE INDEX historyRef ON `${prefix}history` (`refType`, `refId`); 
 
-CREATE INDEX issueProject ON `${prefix}issue` (idProject);
-CREATE INDEX issueUser ON `${prefix}issue` (idUser);
-CREATE INDEX issueResource ON `${prefix}issue` (idResource);
-CREATE INDEX issueStatus ON `${prefix}issue` (idStatus);
-CREATE INDEX issueType ON `${prefix}issue` (idIssueType);  
+CREATE INDEX issueProject ON `${prefix}issue` (`idProject`);
+CREATE INDEX issueUser ON `${prefix}issue` (`idUser`);
+CREATE INDEX issueResource ON `${prefix}issue` (`idResource`);
+CREATE INDEX issueStatus ON `${prefix}issue` (`idStatus`);
+CREATE INDEX issueType ON `${prefix}issue` (`idIssueType`);  
   
-CREATE INDEX linkRef1 ON `${prefix}link` (ref1Type, ref1Id);
-CREATE INDEX linkRef2 ON `${prefix}link` (ref2Type, ref2Id);
+CREATE INDEX linkRef1 ON `${prefix}link` (`ref1Type`, `ref1Id`);
+CREATE INDEX linkRef2 ON `${prefix}link` (`ref2Type`, `ref2Id`);
   
-CREATE INDEX menuMenu ON `${prefix}menu` (idMenu);
+CREATE INDEX menuMenu ON `${prefix}menu` (`idMenu`);
 
-CREATE INDEX messageProject ON `${prefix}message` (idProject);
-CREATE INDEX messageUser ON `${prefix}message` (idUser);
-CREATE INDEX messageType ON `${prefix}message` (idMessageType);
-CREATE INDEX messageProfile ON `${prefix}message` (idProfile);           
+CREATE INDEX messageProject ON `${prefix}message` (`idProject`);
+CREATE INDEX messageUser ON `${prefix}message` (`idUser`);
+CREATE INDEX messageType ON `${prefix}message` (`idMessageType`);
+CREATE INDEX messageProfile ON `${prefix}message` (`idProfile`);           
   
-CREATE INDEX milestoneProject ON `${prefix}milestone` (idProject);
-CREATE INDEX milestoneUser ON `${prefix}milestone` (idUser);
-CREATE INDEX milestoneResource ON `${prefix}milestone` (idResource);
-CREATE INDEX milestoneStatus ON `${prefix}milestone` (idStatus);
-CREATE INDEX milestoneType ON `${prefix}milestone` (idMilestoneType);
-CREATE INDEX milestoneActivity ON `${prefix}milestone` (idActivity);
+CREATE INDEX milestoneProject ON `${prefix}milestone` (`idProject`);
+CREATE INDEX milestoneUser ON `${prefix}milestone` (`idUser`);
+CREATE INDEX milestoneResource ON `${prefix}milestone` (`idResource`);
+CREATE INDEX milestoneStatus ON `${prefix}milestone` (`idStatus`);
+CREATE INDEX milestoneType ON `${prefix}milestone` (`idMilestoneType`);
+CREATE INDEX milestoneActivity ON `${prefix}milestone` (`idActivity`);
   
-CREATE INDEX noteUser ON `${prefix}note` (idUser);
-CREATE INDEX noteRef ON `${prefix}note` (refType, refId);        
+CREATE INDEX noteUser ON `${prefix}note` (`idUser`);
+CREATE INDEX noteRef ON `${prefix}note` (`refType`, `refId`);        
 
-CREATE INDEX parameterProject ON `${prefix}parameter` (idProject);
-CREATE INDEX parameterUser ON `${prefix}parameter` (idUser);
+CREATE INDEX parameterProject ON `${prefix}parameter` (`idProject`);
+CREATE INDEX parameterUser ON `${prefix}parameter` (`idUser`);
   
-CREATE INDEX planningelementProject ON `${prefix}planningelement` (idProject);
-CREATE INDEX planningelementWbsSortable ON `${prefix}planningelement` (wbsSortable);  
+CREATE INDEX planningelementProject ON `${prefix}planningelement` (`idProject`);
+CREATE INDEX planningelementWbsSortable ON `${prefix}planningelement` (`wbsSortable`);  
 
-CREATE INDEX projectProject ON `${prefix}project` (idProject);
-CREATE INDEX projectClient ON `${prefix}project` (idClient);
+CREATE INDEX projectProject ON `${prefix}project` (`idProject`);
+CREATE INDEX projectClient ON `${prefix}project` (`idClient`);
 
-CREATE INDEX riskProject ON `${prefix}risk` (idProject);
-CREATE INDEX riskUser ON `${prefix}risk` (idUser);
-CREATE INDEX riskResource ON `${prefix}risk` (idResource);
-CREATE INDEX riskStatus ON `${prefix}risk` (idStatus);
-CREATE INDEX riskType ON `${prefix}risk` (idRiskType);  
+CREATE INDEX riskProject ON `${prefix}risk` (`idProject`);
+CREATE INDEX riskUser ON `${prefix}risk` (`idUser`);
+CREATE INDEX riskResource ON `${prefix}risk` (`idResource`);
+CREATE INDEX riskStatus ON `${prefix}risk` (`idStatus`);
+CREATE INDEX riskType ON `${prefix}risk` (`idRiskType`);  
 
-CREATE INDEX ticketProject ON `${prefix}ticket` (idProject);
-CREATE INDEX ticketUser ON `${prefix}ticket` (idUser);
-CREATE INDEX ticketResource ON `${prefix}ticket` (idResource);
-CREATE INDEX ticketStatus ON `${prefix}ticket` (idStatus);
-CREATE INDEX ticketType ON `${prefix}ticket` (idTicketType);
-CREATE INDEX ticketActivity ON `${prefix}ticket` (idActivity); 
+CREATE INDEX ticketProject ON `${prefix}ticket` (`idProject`);
+CREATE INDEX ticketUser ON `${prefix}ticket` (`idUser`);
+CREATE INDEX ticketResource ON `${prefix}ticket` (`idResource`);
+CREATE INDEX ticketStatus ON `${prefix}ticket` (`idStatus`);
+CREATE INDEX ticketType ON `${prefix}ticket` (`idTicketType`);
+CREATE INDEX ticketActivity ON `${prefix}ticket` (`idActivity`); 
   
 --
 -- Structure de la TABLE `${prefix}work`

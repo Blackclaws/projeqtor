@@ -431,7 +431,7 @@ class PlannedWork extends GeneralWork {
     foreach ($arrayPlannedWork as $pw) {
       if ($cpt==0) {
         $query='INSERT into ' . $pw->getDatabaseTableName() 
-          . ' (`idResource`,`idProject`,`refType`,`refId`,`idAssignment`,`work`,`workDate`,`day`,`week`,`month`,`year`)'
+          . ' (idResource,idProject,refType,refId,idAssignment,work,workDate,day,week,month,year)'
           . ' VALUES ';
       } else {
         $query.=', ';
