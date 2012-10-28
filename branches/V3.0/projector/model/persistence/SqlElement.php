@@ -1626,6 +1626,17 @@ abstract class SqlElement {
     return i18n('col' . ucfirst($fldName));
   }
 
+  public function getLowercaseFieldsArray() {
+  	$arrayFields=array();
+  	foreach ($this as $fld=>$fldVal) {
+  		if (is_object($this->$fld)) {
+  			$arrayFields=array_merge($arrayFields,$this->$fld->getLowercaseFieldsArray());
+  		} else {
+        $arrayFields[strtolower($fld)]=$fld;
+  		}
+    }
+    return $arrayFields;
+  }
   /** =========================================================================
    * Return the list of fields format and store it in static array of formats
    * to be able to fetch it again without requesting it from database

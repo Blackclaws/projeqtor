@@ -96,7 +96,7 @@ scriptLog("import($fileName, $class)");
 		    }   
 		    $id=($idxId>=0)?$fields[$idxId]:null;
 		    $obj=new $class($id);
-		    $forceInsert=(!$obj->id and $id)?true:false;
+		    $forceInsert=(!$obj->id and $id and !Sql::isPgsql())?true:false;
 		    self::$cptTotal+=1;
 		    foreach ($fields as $idx=>$field) { 
 		      if ($field=='') {
