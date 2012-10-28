@@ -70,8 +70,9 @@ $result=Sql::query($query);
 $arr=array();
 $arrStatus=array();
 while ($line = Sql::fetchLine($result)) {
-  $type=$line['idType'];
-  $status=$line['idStatus'];
+	$line=array_change_key_case($line,CASE_LOWER);
+  $type=$line['idtype'];
+  $status=$line['idstatus'];
   $val=$line['nb'];
   if (! array_key_exists($type, $arr)) {
     $arr[$type]=array();

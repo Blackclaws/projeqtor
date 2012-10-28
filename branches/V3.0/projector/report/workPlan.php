@@ -1,10 +1,10 @@
 <?PHP
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
- */ 
-  require_once "../tool/projector.php";  
+ */
+  require_once "../tool/projector.php";
 //echo "workPlan.php";
-  
+
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
@@ -13,7 +13,7 @@
     $print=true;
     include_once('../tool/formatter.php');
   }
-  
+
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -22,7 +22,7 @@
   include "header.php";
 
   $accessRightRead=securityGetAccessRight('menuProject', 'read');
-  
+
   $querySelect = '';
   $queryFrom='';
   $queryWhere='';
@@ -37,15 +37,15 @@
     $queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
   }
-    
+
   $querySelect .= $table . ".* ";
-  $queryFrom .= $table;  
+  $queryFrom .= $table;
   $queryOrderBy .= $table . ".wbsSortable ";
 
   // constitute query and execute
   $query='select ' . $querySelect
        . ' from ' . $queryFrom
-       . ' where ' . $queryWhere 
+       . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
   $test=array();
@@ -64,14 +64,15 @@
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colReal') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colLeft') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
-    echo '</TR>';       
+    echo '</TR>';
     // Treat each line
     while ($line = Sql::fetchLine($result)) {
-      $validatedWork=$line['validatedWork'];
-      $assignedWork=$line['assignedWork'];
-      $plannedWork=$line['plannedWork'];
-      $realWork=$line['realWork'];
-      $leftWork=$line['leftWork'];
+    	$line=array_change_key_case($line,CASE_LOWER);
+      $validatedWork=$line['validatedwork'];
+      $assignedWork=$line['assignedwork'];
+      $plannedWork=$line['plannedwork'];
+      $realWork=$line['realwork'];
+      $leftWork=$line['leftwork'];
       $progress=' 0';
       if ($plannedWork>0) {
         $progress=round(100*$realWork/$plannedWork);
@@ -86,30 +87,30 @@
       if( $pGroup) {
         $rowType = "group";
         $compStyle="font-weight: bold; background: #E8E8E8 ;";
-      } else if( $line['refType']=='Milestone'){
+      } else if( $line['reftype']=='Milestone'){
         $rowType  = "mile";
         $compStyle="font-weight: light; font-style:italic;";
       } else {
         $rowType  = "row";
       }
-      $wbs=$line['wbsSortable'];
+      $wbs=$line['wbssortable'];
       $level=(strlen($wbs)+1)/4;
       $tab="";
       for ($i=1;$i<$level;$i++) {
         $tab.='<span class="ganttSep">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
       }
-      
+
       echo '<TR>';
-      echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['refType'] . '16.png" /></TD>';
-      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refName']) . '</TD>';
+      echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
+      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refname']) . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($validatedWork)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($assignedWork)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($plannedWork)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($realWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($leftWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
-      echo '</TR>';        
+      echo '</TR>';
     }
   }
-  echo "</table>"; 
+  echo "</table>";
 ?>

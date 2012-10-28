@@ -1296,7 +1296,7 @@ abstract class SqlElement {
    */
   private function getSqlElement() {
     $curId=$this->id;
-    if (! trim($curId)) {$curId='0';}
+    if (! trim($curId)) {$curId=null;}
     $empty=true;
     // If id is set, get the element from Database
     if ($curId != NULL) {
@@ -1304,7 +1304,7 @@ abstract class SqlElement {
       foreach ($this->getDatabaseCriteria() as $critFld=>$critVal) {
       	$query .= ' and ' . $critFld . ' = ' . Sql::str($critVal);
       }
-      $result = Sql::query($query); 
+      $result = Sql::query($query);
       if (Sql::$lastQueryNbRows > 0) {
         $empty=false;
         $line = Sql::fetchLine($result);
@@ -1398,6 +1398,7 @@ abstract class SqlElement {
    */
   private function getDependantSqlElement($objClass) {
     $curId=$this->id;
+    if (! trim($curId)) {$curId=null;}
     $obj = new $objClass;
     $obj->refId=$this->id;
     $obj->refType=get_class($this);
@@ -1666,8 +1667,6 @@ abstract class SqlElement {
       $formatList[strtolower($fieldName)] = $type;
     }
     self::$_tablesFormatList[$class]=$formatList;
-//debugLog($class."==========================================");
-//debugLog($formatList);
     return $formatList;
   }
   

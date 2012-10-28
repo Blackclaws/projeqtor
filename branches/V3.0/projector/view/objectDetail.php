@@ -74,6 +74,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $internalTableCurrentRow=0;
   $internalTableRowsCaptions=array();
   $classObj=get_class($obj);
+  if ($obj->id=='0') {$obj->id=null;}
   $type=$classObj . 'Type';
   $idType='id' . $type;
   $objType=null;

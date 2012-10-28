@@ -54,7 +54,7 @@
 		    showPrint("objectDetail.php");
         </script>
       </button>  
-<?php if ($_REQUEST['objectClass']!='Workflow') {?>    
+<?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('reportPrintPdf');?>"
        <?php if ($noselect) {echo "disabled";} ?> 

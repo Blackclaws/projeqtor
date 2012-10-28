@@ -118,7 +118,7 @@ class SqlList {
         $aff=new Affectation();
         $user=new Resource();
         if ($val=='*' or ! $val) {$val=0;}
-        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject=" . $val . " and a.idResource=" . $user->getDatabaseTableName() . ".id)";
+        $query .= " and exists (select 'x' from " . $aff->getDatabaseTableName() . " a where a.idProject=" . Sql::fmtId($val) . " and a.idResource=" . $user->getDatabaseTableName() . ".id)";
       } else if ((strtolower($listType)=='version' or strtolower($listType)=='originalversion' or strtolower($listType)=='targetversion') and $col=='idProject') {
       	$vp=new VersionProject();
         $ver=new Version();
@@ -137,7 +137,7 @@ class SqlList {
       	$ii=new IndicatorableIndicator();
       	$i=new Indicator();
       	$query.=" and exists ( select 'x' from " . $ii->getDatabaseTableName() . " ii " 
-      	      . " where ii.idIndicatorable='" . $val . "' and ii.idIndicator=" . $i->getDatabaseTableName() . ".id)"; 
+      	      . " where ii.idIndicatorable='" . Sql::fmtId($val) . "' and ii.idIndicator=" . $i->getDatabaseTableName() . ".id)"; 
       } else if ( (strtolower($listType)=='warningdelayunit' or strtolower($listType)=='alertdelayunit') and $col=='idIndicator' ) {
         $ind=new Indicator($val);
         $query .= " and " . $obj->getDatabaseTableName() . '.type='. Sql::str($ind->type);

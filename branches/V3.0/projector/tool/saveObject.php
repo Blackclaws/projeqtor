@@ -41,7 +41,7 @@ Sql::beginTransaction();
 // get the modifications (from request)
 $newObj=new $className();
 $newObj->fillFromRequest($ext);
-
+if ($newObj->id=='0') {$newObj->id=null;}
 // save to database
 $result=$newObj->save();
 
