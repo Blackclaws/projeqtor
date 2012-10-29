@@ -1462,7 +1462,7 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 * 
 */
 //var documentVersionLoad=false;
-function editDocumentVersion (id,version,revision,draft,versionDate, status, isRef, description, typeEvo, numVers, dateVers, nameVers) {
+function editDocumentVersion (id,version,revision,draft,versionDate, status, isRef, typeEvo, numVers, dateVers, nameVers) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1495,7 +1495,8 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 	}
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();
-	dijit.byId("documentVersionDescription").set('value',description);
+	//dijit.byId("documentVersionDescription").set('value',description);
+	dijit.byId("documentVersionDescription").set("value",dojo.byId("documentVersion_"+id).value);
 	dijit.byId("documentVersionUpdateMajor").set('readOnly','readOnly');
 	dijit.byId("documentVersionUpdateMinor").set('readOnly','readOnly');
 	dijit.byId("documentVersionUpdateNo").set('readonly','readonly');

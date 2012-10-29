@@ -1014,7 +1014,6 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ",'" . $version->versionDate . "'"
         . ",'" . $version->idStatus . "'"
         . ",'" . $version->isRef . "'"
-        . ",'" . htmlEncodeJson($version->description) . "'"
         . ",'" . $typeEvo . "'"
         . ",'" . $version->name . "'"
         . ",'" . $version->name . "'"
@@ -1028,6 +1027,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
         . ', \'' . $version->name . '\');" '
         . 'title="' . i18n('removeDocumentVersion') . '" class="smallButton"/> ';
       }
+      echo '<input type="hidden" id="documentVersion_'.$version->id.'" name="documentVersion_'.$version->id.'" value="'.$version->description.'"/>';
       echo '</td>';
     }
     echo '<td class="assignData">' . (($version->isRef)?'<b>':'') . $version->name  . (($version->isRef)?'</b>':'');
