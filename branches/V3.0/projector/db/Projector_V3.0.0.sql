@@ -12,3 +12,6 @@ CREATE TABLE `${prefix}mutex` (
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'cronDirectory', '../files/cron');
