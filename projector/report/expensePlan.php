@@ -48,12 +48,12 @@ $queryGroupBy2 = 'exp.'.$scale . ', exp.idProject';
 $queryWhere2 = $queryWhere . ' and exp.expenseRealDate is null ';
 
 if ($scope) {
-	$scopeWhere = ' and scope="' . $scope . 'Expense" ';
+	$scopeWhere = " and scope='" . $scope . "Expense' ";
 	$queryWhere1 .= $scopeWhere;
 	$queryWhere2 .= $scopeWhere;
 }
 if ($idResource) {
-	$resWhere = ' and idResource="' . $idResource .'" ';
+	$resWhere = " and idResource='" . $idResource . "' ";
   $queryWhere1 .= $resWhere;
   $queryWhere2 .= $resWhere;
 }
@@ -102,9 +102,8 @@ if (checkNoData($tab)) exit;
 $arrDates=array();
 $arrYear=array();
 $date=$start;
-echo $start . "|".$end;
+
 while ($date<=$end) {
-	echo "|".$date."|";
   $arrDates[]=$date;
   $year=substr($date,0,4);
   if (! array_key_exists($year,$arrYear)) {

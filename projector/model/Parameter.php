@@ -323,6 +323,7 @@ class Parameter extends SqlElement {
       	                     'paramMailTitleNote'=>'text',
       	                     'paramMailTitleAttachment'=>'text',      	
       	                     'sectionCron'=>'section',
+      	                     'cronDirectory'=>'text',
                              'cronSleepTime'=>'number',                            
                              'cronCheckDates'=>'number',  
                              'alertCheckTime'=>'number',

@@ -20,7 +20,7 @@ scriptLog('   ->/view/objectDetail.php');
  */
   
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList;
+	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList,$printWidth;
   /*if ($print===null) {
 	  $print=$_REQUEST['print'];
   }
@@ -162,7 +162,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $widthPct=round( ($val/$nbCol) - 2 * ($nbCol-1) ) . "px";
       }
       if ($print) {
-        $widthPct= round( ( 900 / $nbCol) - 2 * ($nbCol-1) ) . "px";
+        $widthPct= round( ( $printWidth / $nbCol) - 2 * ($nbCol-1) ) . "px";
       }
       $prevSection=$section;
       if (strlen($col)>8) {
@@ -2349,15 +2349,12 @@ $refresh=false;
 if ( array_key_exists('refresh',$_REQUEST) ) {
   $refresh=true;
 }
-if ($print) {
-  echo '<br/>';
-  echo '<div class="reportTableHeader" style="width:100%; font-size:150%;border: 0px solid #000000;">' . i18n($objClass) . ' #' . ($objId+0) . '</div>';
-  echo '<br/>';
-}
+
 
 $treatedObjects=array();
 
 $displayWidth='98%';
+$printWidth=980;
 if (array_key_exists('destinationWidth',$_REQUEST)) {
   $width=$_REQUEST['destinationWidth'];
   $width-=30;
@@ -2370,7 +2367,13 @@ if (array_key_exists('destinationWidth',$_REQUEST)) {
   } 
 }
 if ($print) {
-  $displayWidth='800px'; // must match iFrmae size (see main.php)
+  $displayWidth=$printWidth.'px'; // must match iFrmae size (see main.php)
+}
+
+if ($print) {
+  echo '<br/>';
+  echo '<div class="reportTableHeader" style="width:'.($printWidth-10).'px;font-size:150%;border: 0px solid #000000;">' . i18n($objClass) . ' #' . ($objId+0) . '</div>';
+  echo '<br/>';
 }
 
 // New refresh method
@@ -2437,7 +2440,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (! $noselect and isset($obj->_Attachement) and $isAttachementEnabled and ! $comboDetail ) { ?>
     <br/>
     <?php if ($print) {?>
-    <table width="100%">
+    <table width="<?php echo $printWidth;?>px;">
       <tr><td class="section"> <?php echo i18n('sectionAttachements');?> </td></tr>
       <tr><td>
       <?php drawAttachementsFromObject($obj); ?>
@@ -2459,7 +2462,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (isset($obj->_BillLine)) { ?>
     <br/>
     <?php if ($print) {?>
-    <table width="100%">
+    <table width="<?php echo $printWidth;?>px;">
       <tr><td class="section"> <?php echo i18n('sectionBillLines');?> </td></tr>
       <tr><td>
       <?php drawBillLinesFromObject($obj);?>
@@ -2481,7 +2484,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (! $noselect and isset($obj->_Note) and ! $comboDetail) { ?>
     <br/>
     <?php if ($print) {?>
-    <table width="100%">
+    <table width="<?php echo $printWidth;?>px;">
       <tr><td class="section"> <?php echo i18n('sectionNotes');?> </td></tr>
       <tr><td>
       <?php drawNotesFromObject($obj); ?>
@@ -2514,7 +2517,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   echo '<br/>';
   if (  ( ! $noselect) and $displayHistory != 'NO' and ! $comboDetail) { 
     if ($print) {?>
-    <table width="100%">
+    <table width="<?php echo $printWidth;?>px;">
       <tr><td class="section"> <?php echo i18n('elementHistoty');?> </td></tr>
     </table>
       <?php drawHistoryFromObjects();?>

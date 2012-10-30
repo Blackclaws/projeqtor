@@ -9,10 +9,11 @@ class Cron {
   private static $sleepTime;
   private static $checkDates;
   private static $checkImport;
-  private static $runningFile='../files/cron/RUNNING';
-  private static $timesFile='../files/cron/DELAYS';
-  private static $stopFile='../files/cron/STOP';
-  private static $errorFile='../files/cron/ERROR';
+  private static $runningFile;
+  private static $timesFile;
+  private static $stopFile;
+  private static $errorFile;
+  private static $deployFile;
   
    /** ==========================================================================
    * Constructor
@@ -20,7 +21,12 @@ class Cron {
    * @return void
    */ 
   function __construct($id = NULL) {
-    
+  	$cronDir=Parameter::getGlobalParameter('paramCronDirectory');
+    self::$runningFile=$cronDir.'/RUNNING';
+    self::$timesFile=$cronDir.'/DELAYS';
+    self::$stopFile=$cronDir.'/STOP';
+    self::$errorFile=$cronDir.'/ERROR';
+    self::$deployFile=$cronDir.'/DEPLOY';
   }
 
   

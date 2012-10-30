@@ -2402,7 +2402,9 @@ function removeStoredFilter(idFilter, nameFilter) {
 
 function reportSelectCategory(idCateg) {
 	loadContent("../view/reportsParameters.php?idReport=", "reportParametersDiv", null, false);
-	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?required=true&listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});	
+	var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?required=true&listType=list&dataType=idReport&critField=idReportCategory&critValue='+idCateg});
+	var mySelectWidget=dijit.byId("reportsList");
+	mySelectWidget.reset();
 	var mySelect=dojo.byId("reportsList");
 	mySelect.options.length=0;
 	var nbVal=0;

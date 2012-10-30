@@ -501,9 +501,10 @@
       }
      else
       $Divisions = $this->Divisions;
+      if ( $Divisions == 0 ) { $Divisions = 1; }
 
      $this->DivisionCount = $Divisions;
-
+     
      $DataRange = $this->VMax - $this->VMin;
      if ( $DataRange == 0 ) { $DataRange = .1; }
 

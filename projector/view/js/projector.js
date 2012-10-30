@@ -1784,6 +1784,8 @@ function globalSave() {
 		var button=dijit.byId('dialogFilterSubmit');
   } else if (dijit.byId('dialogBillLine') && dijit.byId('dialogBillLine').open) {
 		var button=dijit.byId('dialogBillLineSubmit');
+  } else if (dijit.byId('dialogMail') && dijit.byId('dialogMail').open) {
+		var button=dijit.byId('dialogMailSubmit');
   } else {
     var button=dijit.byId('saveButton');
   }
