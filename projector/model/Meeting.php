@@ -234,37 +234,37 @@ class Meeting extends SqlElement {
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
   	}
-    $listTeam=SqlList::getList('Team','name');
-    $listName=SqlList::getList('Affectable');
-    $listUserName=SqlList::getList('Affectable','userName');
-    $listInitials=SqlList::getList('Affectable','initials');
+    $listTeam=array_map('strtolower',SqlList::getList('Team','name'));
+    $listName=array_map('strtolower',SqlList::getList('Affectable'));
+    $listUserName=array_map('strtolower',SqlList::getList('Affectable','userName'));
+    $listInitials=array_map('strtolower',SqlList::getList('Affectable','initials'));
     if ($this->attendees) {
       $listAttendees=explode(',',$this->attendees);
       $this->attendees="";
       foreach ($listAttendees as $attendee) {
         $attendee=trim($attendee);
-        if (in_array($attendee,$listName)) {
+        if (in_array(strtolower($attendee),$listName)) {
           $this->attendees.=($this->attendees)?', ':'';
           $this->attendees.='"' . $attendee . '"';
           $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('name'=>$attendee));
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
-        } else if (in_array($attendee,$listUserName)) {
+        } else if (in_array(strtolower($attendee),$listUserName)) {
           $this->attendees.=($this->attendees)?', ':'';
           $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('userName'=>$attendee));
           $this->attendees.='"' . (($aff->name)?$aff->name:$attendee) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
-        } else if (in_array($attendee,$listInitials)) {
+        } else if (in_array(strtolower($attendee),$listInitials)) {
           $this->attendees.=($this->attendees)?', ':'';
           $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('initials'=>$attendee));
           $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$attendee)) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
-        } else if (in_array($attendee,$listTeam)) {
+        } else if (in_array(strtolower($attendee),$listTeam)) {
           $this->attendees.=($this->attendees)?', ':'';
           $id=array_search($attendee,$listTeam);
           $aff=new Affectable();

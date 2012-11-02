@@ -2283,6 +2283,8 @@ abstract class SqlElement {
     	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNote');
     } else if ($attachmentAdd) {
     	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAttachment');
+    } else if ($directStatusMail) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleDirect');
     } else {
       $paramMailTitle=Parameter::getGlobalParameter('paramMailTitle'); // default
     }
@@ -2320,17 +2322,19 @@ abstract class SqlElement {
     // responsible
     $arrayFrom[]='${responsible}';
     $arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
+    // db display name
     $arrayFrom[]='${dbName}';
     $arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
+    // sender 
+    $arrayFrom[]='${sender}';
+    $user=$_SESSION['user'];
+    $arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
+    // Format title
     $title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
     
     $message=$this->getMailDetail();
     if ($directStatusMail and isset($directStatusMail->message)) {
-    	$message=$directStatusMail->message.'<br/><br/>'.$message;  	
-    	$arrayFrom[]='${sender}';
-      $user=$_SESSION['user'];
-      $arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
-    	$title=str_replace($arrayFrom, $arrayTo, '[${dbName}] '. i18n("from") . ' ${sender} : ${item} #${id}' );
+    	$message=$directStatusMail->message.'<br/><br/>'.$message;
     }
 
     $message='<html>' . "\n" .
@@ -2359,6 +2363,8 @@ abstract class SqlElement {
    * This is a simplified copy of objectDetail.php, in print mode
    */
   public function getMailDetail () {
+  	$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
+  	$currency=Parameter::getGlobalParameter('currency');
   	$msg="";
   	$rowStart='<tr>';
   	$rowEnd='</tr>'. "\n";

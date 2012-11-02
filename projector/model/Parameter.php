@@ -223,6 +223,14 @@ class Parameter extends SqlElement {
       	$list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
       	break;
+      case 'paramLdap_allow_login':
+        $list=array('true'=>i18n('displayYes'),
+                    'false'=>i18n('displayNo'));
+        break;
+      case 'paramLdap_version':
+        $list=array('2'=>'2',
+                    '3'=>'3');
+        break;
       case 'ldapDefaultProfile':
       	$list=SqlList::getList('Profile');
       	break;
@@ -248,6 +256,18 @@ class Parameter extends SqlElement {
         $list=array('file'=>i18n('cronLogAsFile'),
                     'mail'=>i18n('cronLogAsMail'),
                     'mail+log'=>i18n('cronLogAsMailWithFile'));
+        break; 
+      case 'paramDefaultLocale';
+        $list=array('en'=>i18n('langEn'), 
+                    'fr'=>i18n('langFr'), 
+                    'de'=>i18n('langDe'),
+                    'es'=>i18n('langEs'),
+                    'pt'=>i18n('langPt'),
+                    'ru'=>i18n('langRu'));
+        break;
+      case 'currencyPosition';
+        $list=array('before'=>i18n('before'), 
+                    'after'=>i18n('after'));
         break;  
     } 
     return $list;
@@ -290,13 +310,29 @@ class Parameter extends SqlElement {
       	                     'sectionPlanning'=>'section',
                              'displayResourcePlan'=>'list',
       	                     'maxProjectsToDisplay'=>'number',
+      	                     'sectionPassword'=>'section',
+      	                     'paramDefaultPassword'=>'text',
+      	                     'paramPasswordMinLength'=>'number', 
       	                     'sectionLdap'=>'section', 
+      	                     'paramLdap_allow_login'=>'list',
+											       'paramLdap_base_dn'=>'text',
+											       'paramLdap_host'=>'text',
+											       'paramLdap_port'=>'text',
+											       'paramLdap_version'=>'list',
+											       'paramLdap_search_user'=>'text',
+											       'paramLdap_search_pass'=>'text',
+											       'paramLdap_user_filter'=>'text',
       	                     'ldapDefaultProfile'=>'list',
       	                     'ldapMsgOnUserCreation'=>'list',
       	                     'sectionReferenceFormat'=>'section',
       	                     'referenceFormatPrefix'=>'text',
       	                     'referenceFormatNumber'=>'number',
                              'changeReferenceOnTypeChange'=>'list',
+      	                     'sectionLocalization'=>'section',
+      	                     'paramDefaultLocale'=>'list',
+      	                     'paramDefaultTimezone'=>'text',
+      	                     'currency'=>'text',
+      	                     'currencyPosition'=>'list',
       	                     'sectionMiscellaneous'=>'section',
       	                     'paramDbDisplayName'=>'text',  
       	                     'getVersion'=>'list',
@@ -317,11 +353,12 @@ class Parameter extends SqlElement {
                              'paramMailSmtpServer'=>'text',
                              'paramMailSmtpPort'=>'number',
                              'paramMailSendmailPath'=> 'text', 
-                             'paramMailTitleNew'=>'text',
-      	                     'paramMailTitleStatus'=>'text',
-      	                     'paramMailTitleResponsible'=>'text',
-      	                     'paramMailTitleNote'=>'text',
-      	                     'paramMailTitleAttachment'=>'text',      	
+                             'paramMailTitleNew'=>'longtext',
+      	                     'paramMailTitleStatus'=>'longtext',
+      	                     'paramMailTitleResponsible'=>'longtext',
+      	                     'paramMailTitleNote'=>'longtext',
+      	                     'paramMailTitleAttachment'=>'longtext',
+      	      	             'paramMailTitleDirect'=>'longtext',
       	                     'sectionCron'=>'section',
       	                     'cronDirectory'=>'text',
                              'cronSleepTime'=>'number',                            
@@ -355,19 +392,34 @@ class Parameter extends SqlElement {
   	if (isset($$code)) {
   		return $$code;
   	}
-  	$paramCode='globalParameter_'.$code;
-  	if (array_key_exists($paramCode,$_SESSION)) {
-  		return $_SESSION[$paramCode];
+  	if (!array_key_exists('globalParamatersArray',$_SESSION)) {
+      $_SESSION['globalParamatersArray']=array();
+  	}
+  	if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
+  		return $_SESSION['globalParamatersArray'][$code];
   	} else {
-  		$p=new Parameter();
-  	  $crit=" idUser is null and idProject is null and parameterCode='" . $code . "'";
-  	  $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
-  	  $val='';
-  	  if (count($lst)==1) {
-  	  	$val=$lst[0]->parameterValue;
-  	  }
-  	  $_SESSION[$paramCode]=$val;
-  	  return $val;
+  		if ($code=='logLevel' or $code=='logFile') {
+  		  $crit=" (idUser is null and idProject is null)";
+        $lst=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('parameterCode'=>$code));
+        if ($lst and $lstId) {
+        	$_SESSION['globalParamatersArray'][$code]=$lst->parameterValue;
+        	return $lst->parameterValue;
+        } else {
+        	return null;
+        }
+  		} else {
+	  		$p=new Parameter();
+	  		$crit=" (idUser is null and idProject is null)";
+	  	  $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
+	  	  foreach ($lst as $param) {
+	  	    $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
+	  	  }
+  		}
+      if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
+  	    return $_SESSION['globalParamatersArray'][$code];;
+      } else {
+      	return '';
+      }
     }
   }
 
