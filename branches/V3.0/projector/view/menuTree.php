@@ -56,7 +56,7 @@
   */
   function drawMenuItemClass($idMenu, $menuName) {
     $class=substr($menuName,4);
-    global  $paramIconSize, $menuTree;
+    global  $menuTree;
     if (securityCheckDisplayMenu($idMenu, $class)) {
      drawMenuItem($idMenu,$class, 'menu', true);
      drawMenuItem($idMenu, 'All' . $class, 'class', false, true, $class); 

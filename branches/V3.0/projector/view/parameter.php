@@ -113,7 +113,16 @@
         echo ' >';
         echo $obj->getValidationScript($code);
         echo '</div>';
-      }
+      } else if ($format=='longtext') {
+        echo '<textarea dojoType="dijit.form.Textarea" ';
+        echo ' name="' . $code . '" id="' . $code . '"';
+        echo ' title="' . i18n('help' . ucfirst($code)) . '"';
+        echo ' style="width: 200px;" ';
+        echo ' class="input" ';
+        echo ' >';
+        echo $obj->parameterValue;
+        //echo $obj->getValidationScript($code);
+        echo '</textarea>';      }
       echo '</td></tr>';
       } 
     }

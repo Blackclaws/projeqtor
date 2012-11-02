@@ -15,3 +15,6 @@ CREATE TABLE `${prefix}mutex` (
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null,null, 'cronDirectory', '../files/cron');
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'paramMailTitleDirect', '[${dbName}] message from ${sender} : ${item} #${id}');

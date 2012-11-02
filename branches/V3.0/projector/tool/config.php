@@ -10,6 +10,7 @@ restore_error_handler();
 $paramFadeLoadingMode='false';
 $paramDebugMode='false';
 $defaultBillCode = '0';
+
 $param=array();
 
 $param['DbType'] = 'mysql';                           

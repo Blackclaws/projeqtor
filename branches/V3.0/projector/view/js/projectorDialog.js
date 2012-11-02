@@ -1680,7 +1680,11 @@ function addDependency (depType) {
 	  } else {
 	    dijit.byId("dependencyRefTypeDep").set('value','1');
 	  }
-	  dojo.byId("dependencyDelayDiv").style.display="block";
+	  if (objectClass=='Term') {
+		dojo.byId("dependencyDelayDiv").style.display="none";
+	  } else {
+	    dojo.byId("dependencyDelayDiv").style.display="block";
+	  }
 	}
 	refreshDependencyList();
 	refreshList('idActivity', 'idProject', '0', null, 'dependencyRefIdDepEdit', false);

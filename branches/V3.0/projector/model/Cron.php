@@ -14,6 +14,8 @@ class Cron {
   private static $stopFile;
   private static $errorFile;
   private static $deployFile;
+  private static $restartFile;
+  private static $cronWorkDir;
   
    /** ==========================================================================
    * Constructor
@@ -21,12 +23,7 @@ class Cron {
    * @return void
    */ 
   function __construct($id = NULL) {
-  	$cronDir=Parameter::getGlobalParameter('paramCronDirectory');
-    self::$runningFile=$cronDir.'/RUNNING';
-    self::$timesFile=$cronDir.'/DELAYS';
-    self::$stopFile=$cronDir.'/STOP';
-    self::$errorFile=$cronDir.'/ERROR';
-    self::$deployFile=$cronDir.'/DEPLOY';
+  	
   }
 
   
@@ -42,7 +39,19 @@ class Cron {
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
   
+  public static function init() {
+  	if (self::$cronWorkDir) return;
+  	self::$cronWorkDir=Parameter::getGlobalParameter('cronDirectory');
+    self::$runningFile=self::$cronWorkDir.'/RUNNING';
+    self::$timesFile=self::$cronWorkDir.'/DELAYS';
+    self::$stopFile=self::$cronWorkDir.'/STOP';
+    self::$errorFile=self::$cronWorkDir.'/ERROR';
+    self::$deployFile=self::$cronWorkDir.'/DEPLOY';
+    self::$restartFile=self::$cronWorkDir.'/RESTART';
+  }
+  
   public static function getActualTimes() {
+  	self::init();
   	if (! is_file(self::$timesFile)) {
   		return array();
   	}
@@ -61,12 +70,14 @@ class Cron {
   }
 
   public static function setActualTimes() {
+  	self::init();
     $handle=fopen(self::$timesFile, 'w');
     fwrite($handle,'SleepTime='.self::getSleepTime().'|CheckDates='.self::getCheckDates().'|CheckImport='.self::getCheckImport() );
     fclose($handle);
   }
   
   public static function getSleepTime() {
+  	self::init();
     if (self::$sleepTime) {
     	return self::$sleepTime;
     }
@@ -77,6 +88,7 @@ class Cron {
   }
 
   public static function getCheckDates() {
+  	self::init();
     if (self::$checkDates) {
       return self::$checkDates;
     }
@@ -87,6 +99,7 @@ class Cron {
   }
 
   public static function getCheckImport() {
+  	self::init();
     if (self::$checkImport) {
       return self::$checkImport;
     }
@@ -97,6 +110,7 @@ class Cron {
   }  
   
   public static function check() {
+  	self::init();
     if (file_exists(self::$runningFile)) {
       $handle=fopen(self::$runningFile, 'r');
       $last=fgets($handle);
@@ -115,6 +129,7 @@ class Cron {
   }
   
   public static function abort() {
+  	self::init();
     errorLog('cron abnormally stopped');
     if (file_exists(self::$runningFile)) {
   	  unlink(self::$runningFile);
@@ -124,36 +139,58 @@ class Cron {
   } 
   
   public static function removeStopFlag() {
+  	self::init();
     if (file_exists(self::$stopFile)) {
       unlink(self::$stopFile);
     }
   }
   
   public static function removeRunningFlag() {
+  	self::init();
     if (file_exists(self::$runningFile)) {
       unlink(self::$runningFile);
     }
   }
-  
+  public static function removeDeployFlag() {
+    if (file_exists(self::$deployFile)) {
+      unlink(self::$deployFile);
+    }
+  }
+  public static function removeRestartFlag() {
+    if (file_exists(self::$restartFile)) {
+      unlink(self::$restartFile);
+    }
+  }
   public static function setRunningFlag() {
+  	self::init();
   	$handle=fopen(self::$runningFile, 'w');
     fwrite($handle,time());
     fclose($handle);
   }
   
+  public static function setRestartFlag() {
+    self::init();
+    $handle=fopen(self::$restartFile, 'w');
+    fwrite($handle,time());
+    fclose($handle);
+  }
+  
   public static function setStopFlag() {
+  	self::init();
     $handle=fopen(self::$stopFile, 'w');
     fclose($handle);
   }
   
   public static function checkStopFlag() {
-    if (file_exists(self::$stopFile)) { 
-      traceLog('cron normally stopped at '.date('d/m/Y H:i:s'));
-      if (file_exists(self::$runningFile)) {
-        unlink(self::$runningFile);
-      }
-      if (file_exists(self::$stopFile)) {
-        unlink(self::$stopFile);
+  	self::init();
+    if (file_exists(self::$stopFile) or file_exists(self::$deployFile)) { 
+      traceLog('Cron normally stopped at '.date('d/m/Y H:i:s'));
+      self::removeRunningFlag();
+      self::removeStopFlag();
+      if (file_exists(self::$deployFile)) {
+      	traceLog('Cron stopped for deployment. Will be restarted');
+      	self::setRestartFlag();
+        self::removeDeployFlag();
       }
       return true; 
     } else {
@@ -163,7 +200,11 @@ class Cron {
   
 	// If running flag exists and cron is not really running, relaunch
 	public static function relaunch() {
-		if (file_exists(self::$runningFile)) {
+		self::init();
+		if (file_exists(self::$restartFile)) {
+			self::removeRestartFlag();
+			self::run();
+		} else if (file_exists(self::$runningFile)) {
       $handle=fopen(self::$runningFile, 'r');
       $last=fgets($handle);
       $now=time();
@@ -173,15 +214,20 @@ class Cron {
         self::removeRunningFlag();
         self::run();
       }
+		} else {
+		  
 		}
 	}
 	
 	public static function run() {
-scriptLog('Cron::run()');		
+scriptLog('Cron::run()');	
+    self::init();  
 		if (self::check()=='running') {
-      errorLog('try to run cron already running');
+      errorLog('Try to run cron already running');
       return;
     }
+    self::removeDeployFlag();
+    self::removeRestartFlag();
     set_time_limit(0);
     ignore_user_abort(1);
     session_write_close();
@@ -191,7 +237,7 @@ scriptLog('Cron::run()');
     self::setActualTimes();
     self::removeStopFlag();
     self::setRunningFlag();
-    traceLog('cron started at '.date('d/m/Y H:i:s')); 
+    traceLog('Cron started at '.date('d/m/Y H:i:s')); 
     while(1) {
       if (self::checkStopFlag()) {
         return; 
@@ -220,8 +266,9 @@ scriptLog('Cron::run()');
   }
   
   public static function checkDates() {
-  	global $globalCronMode;
 scriptLog('Cron::checkDates()');
+  	global $globalCronMode;
+    self::init();
     $globalCronMode=true;  
     $indVal=new IndicatorValue();
     $where="idle='0' and (";
@@ -237,6 +284,7 @@ scriptLog('Cron::checkDates()');
   
   public static function checkImport() {
 scriptLog('Cron::checkImport()');
+    self::init();
   	global $globalCronMode, $globalCatchErrors;
     $globalCronMode=true;   	
     $globalCatchErrors=true;

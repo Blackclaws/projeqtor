@@ -604,7 +604,9 @@
   }
 
   function exportGantt($result) {
-  	global $paramDbDisplayName, $currency, $currencyPosition;
+  	$paramDbDisplayName=Parameter::getGlobalParameter('paramDbDisplayName');
+  	$currency=Parameter::getGlobalParameter('currency');
+    $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   	$nl="\n";
   	$hoursPerDay=Parameter::getGlobalParameter('dayTime');
     $startDate=date('Y-m-d');

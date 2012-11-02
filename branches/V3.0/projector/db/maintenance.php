@@ -185,25 +185,22 @@ if ($currVersion<"V2.4.2") {
 
 // For V2.6.0 : migration of parameters to database
 if ($currVersion<"V2.6.0") {
-  include $parametersLocation;
   $arrayParamsToMigrate=array('paramDbDisplayName',
                               'paramMailTitle','paramMailMessage','paramMailSender','paramMailReplyTo','paramAdminMail',
                               'paramMailSmtpServer','paramMailSmtpPort','paramMailSendmailPath','paramMailShowDetail');
-  foreach ($arrayParamsToMigrate as $param) {
-  	$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
-  	$parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
-  	if (!$parameter or !$parameter->id) { 
-  	  $parameter=new Parameter();
-  	}
-  	$parameter->idUser=null;
-  	$parameter->idProject=null;
-  	$parameter->parameterCode=$param;  
-  	$parameter->parameterValue=Parameter::getGlobalParameter($param);
-  	$parameter->save();
-  }
-  Parameter::regenerateParamFile();
+  migrateParameters($arrayParamsToMigrate); 
 }
-
+if ($currVersion<"V3.0.0") {
+  $arrayParamsToMigrate=array('paramLdap_allow_login', 'paramLdap_base_dn', 'paramLdap_host', 'paramLdap_port',
+    'paramLdap_version', 'paramLdap_search_user', 'paramLdap_search_pass', 'paramLdap_user_filter',
+    'paramDefaultPassword','paramPasswordMinLength', 'lockPassword',
+    'paramDefaultLocale', 'paramDefaultTimezone', 'currency', 'currencyPosition',
+    'paramFadeLoadingMode', 'paramRowPerPage', 'paramIconSize',
+    'defaultTheme', 'paramPathSeparator', 'paramAttachementDirectory', 'paramAttachementMaxSize',
+    'paramReportTempDirectory', 'paramMemoryLimitForPDF', 'logFile', 'logLevel', 'paramDebugMode',
+    'defaultBillCode');
+  migrateParameters($arrayParamsToMigrate); 
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
@@ -215,11 +212,11 @@ traceLog("");
 echo "____________________________________________";
 echo "<br/><br/>";
 if ($nbErrors==0) {
-  traceLog("DATABASE UPDATE COMPLETED TO VERSION " . Sql::getDbVersion() );
-  echo "DATABASE UPDATE COMPLETED TO VERSION " . Sql::getDbVersion();
+  traceLog("DATABASE UPDATE COMPLETED TO VERSION " . $version);
+  echo "DATABASE UPDATE COMPLETED TO VERSION " . $version;
 } else {
-  traceLog($nbErrors . " ERRORS DURING UPDATE TO VERSION " . Sql::getDbVersion() );
-  echo $nbErrors . " ERRORS DURING UPDATE TO VERSION " . Sql::getDbVersion() . "<br/>";
+  traceLog($nbErrors . " ERRORS DURING UPDATE TO VERSION " . $version );
+  echo $nbErrors . " ERRORS DURING UPDATE TO VERSION " . $version . "<br/>";
   echo "DETAILS CAN BE FOUND IN LOG FILE.";
 }
 traceLog("");
@@ -501,6 +498,24 @@ function formatForDbType($query) {
   }
   
   return $res;
+}
+
+function migrateParameters($arrayParamsToMigrate) {
+	global $parametersLocation;
+	include $parametersLocation;
+	foreach ($arrayParamsToMigrate as $param) {
+    $crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
+    $parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+    if (!$parameter or !$parameter->id) { 
+      $parameter=new Parameter();
+    }
+    $parameter->idUser=null;
+    $parameter->idProject=null;
+    $parameter->parameterCode=$param;  
+    $parameter->parameterValue=Parameter::getGlobalParameter($param);
+    $parameter->save();
+  }
+  Parameter::regenerateParamFile();
 }
 
 ?>
