@@ -197,7 +197,8 @@ if ($currVersion<"V3.0.0") {
     'paramDefaultLocale', 'paramDefaultTimezone', 'currency', 'currencyPosition',
     'paramFadeLoadingMode', 'paramRowPerPage', 'paramIconSize',
     'defaultTheme', 'paramPathSeparator', 'paramAttachementDirectory', 'paramAttachementMaxSize',
-    'paramReportTempDirectory', 'paramMemoryLimitForPDF', 'logFile', 'logLevel', 'paramDebugMode',
+    'paramReportTempDirectory', 'paramMemoryLimitForPDF', 
+    //'logFile', 'logLevel', 'paramDebugMode',
     'defaultBillCode','paramMailEol');
   migrateParameters($arrayParamsToMigrate); 
 }

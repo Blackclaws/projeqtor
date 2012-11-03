@@ -13,7 +13,6 @@ class Parameter extends SqlElement {
   public $parameterValue;
   
   public $_noHistory=true; // Will never save history for this object
-  public static $_fetchingParam;
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -224,8 +223,8 @@ class Parameter extends SqlElement {
                     'NO'=>i18n('displayNo'));
       	break;
       case 'paramLdap_allow_login':case 'paramFadeLoadingMode';
-        $list=array('true'=>i18n('displayYes'),
-                    'false'=>i18n('displayNo'));
+        $list=array('false'=>i18n('displayNo'),
+                    'true'=>i18n('displayYes'));
         break;
       case 'paramLdap_version':
         $list=array('2'=>'2',
@@ -409,22 +408,11 @@ class Parameter extends SqlElement {
   }
   
   static public function getGlobalParameter($code) {
-echo "getGlobalParameter($code)<br/>";
-var_dump ($_SESSION['globalParamatersArray']);
-    if (self::$_fetchingParam) {
-    	if ($code=='logLevel') {
-    		self::$_fetchingParam=false;
-        return 3;
-    	}
-    }
-    self::$_fetchingParam=true;
   	global $$code;
   	if (isset($$code)) {
-  		self::$_fetchingParam=false;
   		return $$code;
   	}
   	if ($code=='paramPathSeparator') {
-  		self::$_fetchingParam=false;
   		return DIRECTORY_SEPARATOR;
   	}
     if ($code=='mailEol') {
@@ -440,45 +428,27 @@ var_dump ($_SESSION['globalParamatersArray']);
       } else {
       	$nl="\r\n";
       }
-      self::$_fetchingParam=false;
       return $nl;
     }
-    self::$_fetchingParam=true;
   	if (!array_key_exists('globalParamatersArray',$_SESSION)) {
       $_SESSION['globalParamatersArray']=array();
   	}
   	if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
-  		self::$_fetchingParam=false;
   		return $_SESSION['globalParamatersArray'][$code];
-  	} else {
-  		if ($code=='logLevel' or $code=='logFile') {
-  		  $crit=" (idUser is null and idProject is null)";
-        $lst=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('parameterCode'=>$code));
-        if ($lst and $lstId) {
-        	$_SESSION['globalParamatersArray'][$code]=$lst->parameterValue;
-        	self::$_fetchingParam=false;
-        	return $lst->parameterValue;
-        } else {
-        	self::$_fetchingParam=false;
-        	return null;
-        }
-  		} else {
+  	} 
+  	else {
 	  		$p=new Parameter();
 	  		$crit=" (idUser is null and idProject is null)";
 	  	  $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
 	  	  foreach ($lst as $param) {
 	  	    $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
 	  	  }
-  		}
       if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
-      	self::$_fetchingParam=false;
   	    return $_SESSION['globalParamatersArray'][$code];;
       } else {
-      	self::$_fetchingParam=false;
       	return '';
       }
     }
-    self::$_fetchingParam=false;
   }
 
   static public function getUserParameter($code) {

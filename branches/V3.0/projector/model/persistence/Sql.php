@@ -40,7 +40,7 @@ class Sql {
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
-	scriptLog('Sql::query('.$sqlRequest.')');
+ //scriptLog('Sql::query('.$sqlRequest.')');
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       traceLog("SQL WARNING : empty query");
@@ -201,15 +201,9 @@ class Sql {
    * @return resource connexion to database
    */
   private static function getConnection() {
-  	if (Parameter::$_fetchingParam) {
-  	  $logLevel=3;
-  	} else { 	
-  	  $logLevel=Parameter::getGlobalParameter('logLevel');
-  	}
     if (self::$connexion != NULL) {
       return self::$connexion;
     }
-
     if (!self::$dbType or !self::$dbHost or !self::$dbName) {
       self::$dbType=Parameter::getGlobalParameter('paramDbType');
       self::$dbHost=Parameter::getGlobalParameter('paramDbHost');
@@ -217,8 +211,8 @@ class Sql {
       self::$dbPassword=Parameter::getGlobalParameter('paramDbPassword');
       self::$dbName=Parameter::getGlobalParameter('paramDbName');     
     }
-    
     if (self::$dbType != "mysql" and self::$dbType != "pgsql") {
+    	$logLevel=Parameter::getGlobalParameter('logLevel');
       if ($logLevel>=3) {
         echo htmlGetErrorMessage("SQL ERROR : Database type unknown '" . self::$dbType . "' \n");
       } else {
