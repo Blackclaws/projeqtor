@@ -575,8 +575,7 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
   $paramMailSmtpPort=Parameter::getGlobalParameter('paramMailSmtpPort');
   $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
-  $eol=Parameter::getGlobalParameter('paramMailEol');
-  $eol=(isset($eol) and $eol)?$eol:"\r\n";
+  $eol=Parameter::getGlobalParameter('mailEol');
   if ($paramMailSmtpServer==null or strtolower($paramMailSmtpServer)=='null') {
     return "NO";
   }
@@ -660,6 +659,11 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
  * @return void
  */
 function logTracing($message, $level=9) {
+	if (Parameter::$_fetchingParam=false) { 
+		// if retreiving params, possibly it is logLevel or logFile => avoid recursive loop
+		echo $message;
+		return;
+	}
   $logLevel=Parameter::getGlobalParameter('logLevel');
   $logFile=Parameter::getGlobalParameter('logFile');
   if ( ! $logFile or $logFile=='' or $level==9) {

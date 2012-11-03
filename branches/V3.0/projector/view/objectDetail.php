@@ -794,6 +794,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3')!==false) {
         	$fieldWidth=$fieldWidth/3-3;
         }
+        $hasOtherVersion=false;
+        $versionType='';
+        $otherVersion='';
+        if ( substr($col,7)=='Version' 
+          or ($col=='idOriginalVersion' and isset($obj->_OtherOriginalVersion))
+          or ($col=='idTargetVersion' and isset($obj->_OtherTargetVersion))) {
+          	$versionType=substr($col,2);
+          	$otherVersion='_Other'.$versionType;
+          	if (isset($obj->$otherVersion)) {
+          		$hasOtherVersion=true;
+          		$fieldWidth -= 20;
+          	}
+        }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" '; 
         //echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
@@ -813,6 +826,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '  showDetail("' . $col . '",' . (($canCreateCol)?1:0) . ');';
           echo ' </script>';
           echo '</button>';
+        }
+        if ($hasOtherVersion) {
+        	echo '<span style="text-align:center; vertical-align:middle;">';
+        	echo '<img src="css/images/smallButtonAdd.png" style="position:relative; top:2px; left:2px;"' 
+             . 'onClick="addOtherVersion(' . "'" . $versionType . "'" 
+             . ');" ';
+          echo ' title="' . i18n('otherVersionAdd') . '" class="smallButton"/> ';
+          echo '</span>';
+          if (count($obj->$otherVersion)>0) {
+          	drawOtherVersionFromObject($obj->$otherVersion, $obj, $versionType);
+          }
         }    
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
@@ -2271,6 +2295,12 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   }
   echo '</table>';
   echo '</td></tr>';
+}
+
+function drawOtherVersionFromObject($otherVersion, $obj, $type) {
+	foreach($otherVersion as $vers) {
+		echo $vers->id.'<br/>';
+	}
 }
 
 // ********************************************************************************************************

@@ -201,7 +201,11 @@ class Sql {
    * @return resource connexion to database
    */
   private static function getConnection() {
-    $logLevel=Parameter::getGlobalParameter('logLevel');
+  	if (Parameter::$_fetchingParam) {
+  	  $logLevel=3;
+  	} else { 	
+  	  $logLevel=Parameter::getGlobalParameter('logLevel');
+  	}
     if (self::$connexion != NULL) {
       return self::$connexion;
     }

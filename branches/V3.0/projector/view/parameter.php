@@ -93,11 +93,11 @@
         echo ' >';
         echo $obj->getValidationScript($code);
         echo '</div>';
-      } else if ($format=='number') {
+      } else if ($format=='number' or $format=='longnumber') {
       	echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo ' name="' . $code . '" id="' . $code . '"';
         echo ' title="' . i18n('help' . ucfirst($code)) . '"';
-        echo ' style="width: 50px;" ';
+        echo ($format=='longnumber')?' style="width: 100px;" ':' style="width: 50px;" ';
         echo ' class="input" ';
         echo ' value="' .  $obj->parameterValue  . '" ';
         echo ' >';

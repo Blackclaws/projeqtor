@@ -889,6 +889,62 @@ function removeLink (linkId, refType, refId, refTypeName) {
 }
 
 //=============================================================================
+//= OtherVersions
+//=============================================================================
+function addOtherVersion(versionType) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	dojo.byId("otherVersionRefType").value=objectClass;
+	dojo.byId("otherVersionRefId").value=objectId;
+	dojo.byId("otherVersionType").value=versionType;
+  	refreshOtherVersionList();
+	//dojo.byId("linkRef2Id").value='';
+	dijit.byId("dialogOtherVersion").show();
+	disableWidget('dialogOtherVersionSubmit');
+}
+
+/**
+ * Refresh the link list (after update)
+ */
+function refreshOtherVersionList(selected) {
+	disableWidget('dialogOtherVersionSubmit');
+	var url='../tool/dynamicListOtherVersion.php';
+	if (selected) {
+	  url+='?selected='+selected;	
+	}
+	if (! selected) {
+	  selectOtherVersionItem();
+	}
+	loadContent(url, 'dialogOtherVersionList', 'otherVersionForm', false);
+}
+
+function selectOtherVersionItem() {
+  var nbSelected=0;
+  list=dojo.byId('otherVersionRefId');
+  if (list.options) {
+    for (var i = 0; i < list.options.length; i++) {
+      if (list.options[i].selected) {
+        nbSelected++;
+      }
+    }
+  }
+  if (nbSelected>0) {
+    enableWidget('dialogLinkSubmit');
+  } else {
+    disableWidget('dialogLinkSubmit');
+  }
+}
+
+function saveOtherVersion() {
+  if (dojo.byId("otherVersionRefId").value=="") return;
+  loadContent("../tool/saveOtherVersion.php", "resultDiv", "otherVersionForm", true,'otherVersion');
+  dijit.byId('dialogOtherVersion').hide();
+}
+//=============================================================================
 //= Approvers
 //=============================================================================
 

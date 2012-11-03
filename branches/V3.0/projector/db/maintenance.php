@@ -198,7 +198,7 @@ if ($currVersion<"V3.0.0") {
     'paramFadeLoadingMode', 'paramRowPerPage', 'paramIconSize',
     'defaultTheme', 'paramPathSeparator', 'paramAttachementDirectory', 'paramAttachementMaxSize',
     'paramReportTempDirectory', 'paramMemoryLimitForPDF', 'logFile', 'logLevel', 'paramDebugMode',
-    'defaultBillCode');
+    'defaultBillCode','paramMailEol');
   migrateParameters($arrayParamsToMigrate); 
 }
 // To be sure, after habilitations updates ...
@@ -513,6 +513,13 @@ function migrateParameters($arrayParamsToMigrate) {
     $parameter->idProject=null;
     $parameter->parameterCode=$param;  
     $parameter->parameterValue=Parameter::getGlobalParameter($param);
+    if ($param=='paramMailEol') {
+    	if ($parameter->parameterValue=='\n') {
+    		$parameter->parameterValue='LF';
+    	} else  {
+    		$parameter->parameterValue='CRLF';
+    	}
+    }
     $parameter->save();
   }
   Parameter::regenerateParamFile();

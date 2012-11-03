@@ -24,6 +24,7 @@ class Ticket extends SqlElement {
   public $idContext3;
   public $idProduct;
   public $idOriginalVersion;
+  public $_OtherOriginalVersion=array();
   public $description;
   public $_col_2_2_treatment;
   public $idActivity;

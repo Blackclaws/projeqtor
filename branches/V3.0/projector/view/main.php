@@ -936,6 +936,55 @@ checkVersion(); ?>
   </table>
 </div>
 
+<div id="dialogOtherVersion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogOtherVersion");?>">
+  <table>
+    <tr>
+      <td>
+       <form id='otherVersionForm' name='otherVersionForm' onSubmit="return false;">
+         <input id="otherVersionRefType" name="otherVersionRefType" type="hidden" value="" />
+         <input id="otherVersionRefId" name="otherVersionRefId" type="hidden" value="" />
+         <input id="otherVersionType" name="otherVersionType" type="hidden" value="" />
+         <table>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="otherVersionId" ><?php echo i18n("otherVersions") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <table><tr><td>
+               <div id="dialogOtherVersionList" dojoType="dijit.layout.ContentPane" region="center">
+                 <input id="otherVersionId" name="otherVersionId" type="hidden" value="" />
+               </div>
+               </td><td style="vertical-align: top">
+               <button id="otherVersionDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                   showInfo("Not designed"); 
+                   //showDetailOtherVersion();
+                 </script>
+               </button>
+               </td></tr></table>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+         </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="hidden" id="dialogOtherVersionAction">
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogOtherVersion').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button dojoType="dijit.form.Button" type="submit" id="dialogOtherVersionSubmit" onclick="saveOtherVersion();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
 <div id="dialogApprover" dojoType="dijit.Dialog" title="<?php echo i18n("dialogApprover");?>">
   <table>
     <tr>
