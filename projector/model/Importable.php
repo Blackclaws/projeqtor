@@ -272,8 +272,7 @@ scriptLog("import($fileName, $class)");
   }
   
   public static function getLogHeader() {
-  	$nl=Parameter::getGlobalParameter('paramMailEol');
-    $nl=(isset($nl) and $nl)?$nl:"\r\n";
+  	$nl=Parameter::getGlobalParameter('mailEol');
   	$result="";
   	$result.='<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'.$nl;
     $result.='<html>'.$nl;
@@ -294,7 +293,7 @@ scriptLog("import($fileName, $class)");
     return $result;
   }
   public static function getLogFooter() {
-  	$nl=Parameter::getGlobalParameter('paramMailEol');
+  	$nl=Parameter::getGlobalParameter('mailEol');
     $nl=(isset($nl) and $nl)?$nl:"\r\n";
     $result="";
     $result.='</body>'.$nl;

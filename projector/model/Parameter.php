@@ -11,9 +11,9 @@ class Parameter extends SqlElement {
   public $idProject;
   public $parameterCode;
   public $parameterValue;
-   
-  public $_noHistory=true; // Will never save history for this object
   
+  public $_noHistory=true; // Will never save history for this object
+  public static $_fetchingParam;
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -127,7 +127,7 @@ class Parameter extends SqlElement {
     global $isAttachementEnabled;
     $list=array();
     switch ($parameter) {
-      case 'theme':
+      case 'theme': case 'defaultTheme':
         $list=array('ProjectOrRia'=>i18n('themeProjectOrRia'),
                     'ProjectOrRiaContrasted'=>i18n('themeProjectOrRiaContrasted'),
                     'ProjectOrRiaLight'=>i18n('themeProjectOrRiaLight'),
@@ -149,7 +149,7 @@ class Parameter extends SqlElement {
                     'white'=>i18n('themeWhite'),
                     'random'=>i18n('themeRandom')); // keep 'random' as last value to assure it is not selected via getTheme()
         break;
-      case 'lang':
+      case 'lang':case 'paramDefaultLocale':
         $list=array('en'=>i18n('langEn'), 
                     'fr'=>i18n('langFr'), 
                     'de'=>i18n('langDe'),
@@ -223,7 +223,7 @@ class Parameter extends SqlElement {
       	$list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
       	break;
-      case 'paramLdap_allow_login':
+      case 'paramLdap_allow_login':case 'paramFadeLoadingMode';
         $list=array('true'=>i18n('displayYes'),
                     'false'=>i18n('displayNo'));
         break;
@@ -234,41 +234,49 @@ class Parameter extends SqlElement {
       case 'ldapDefaultProfile':
       	$list=SqlList::getList('Profile');
       	break;
-      case 'ldapMsgOnUserCreation';
+      case 'ldapMsgOnUserCreation':
         $list=array('NO'=>i18n('displayNo'),
                     'ALERT'=>i18n('displayAlert'),
                     'MAIL'=>i18n('displayMail'),
                     'ALERT&MAIL'=>i18n('displayAlertAndMail'));
         break;
-      case 'csvSeparator';
+      case 'csvSeparator':
         $list=array(';'=>';',','=>',');
         break;
-      case 'changeReferenceOnTypeChange';
+      case 'changeReferenceOnTypeChange':
         $list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
         break;
-      case 'displayResourcePlan';
+      case 'displayResourcePlan':
         $list=array('name'=>i18n('colName'),
                     'initials'=>i18n('colInitials'),
                     'NO'=>i18n('displayNo'));
         break;  
-      case 'cronImportLogDestination';
+      case 'cronImportLogDestination':
         $list=array('file'=>i18n('cronLogAsFile'),
                     'mail'=>i18n('cronLogAsMail'),
                     'mail+log'=>i18n('cronLogAsMailWithFile'));
         break; 
-      case 'paramDefaultLocale';
-        $list=array('en'=>i18n('langEn'), 
-                    'fr'=>i18n('langFr'), 
-                    'de'=>i18n('langDe'),
-                    'es'=>i18n('langEs'),
-                    'pt'=>i18n('langPt'),
-                    'ru'=>i18n('langRu'));
-        break;
-      case 'currencyPosition';
+      case 'currencyPosition':
         $list=array('before'=>i18n('before'), 
                     'after'=>i18n('after'));
-        break;  
+        break; 
+      case 'paramIconSize':
+        $list=array('16'=>i18n('iconSizeSmall'), 
+                    '22'=>i18n('iconSizeMedium'), 
+                    '32'=>i18n('iconSizeBig'));
+        break; 
+      case 'paramMailEol':
+      	 $list=array('CRLF'=>i18n('eolDefault'), 
+                     'LF'=>i18n('eolPostfix'));
+        break; 
+      case 'logLevel':
+         $list=array('0'=>i18n('debugLevel0'),
+                     '1'=>i18n('debugLevel1'), 
+                     '2'=>i18n('debugLevel2'),
+                     '3'=>i18n('debugLevel3'),
+                     '4'=>i18n('debugLevel4'));
+        break; 
     } 
     return $list;
   }
@@ -277,7 +285,7 @@ class Parameter extends SqlElement {
     $parameterList=array();
     switch ($typeParameter) {
       case ('userParameter'):
-        $parameterList=array('sectionDisplayPerameter'=>"section",
+        $parameterList=array('sectionDisplayParameter'=>"section",
                            "theme"=>"list", 
                            "lang"=>"list",
                            //'sectionObjectDetail'=>'section', 
@@ -333,11 +341,23 @@ class Parameter extends SqlElement {
       	                     'paramDefaultTimezone'=>'text',
       	                     'currency'=>'text',
       	                     'currencyPosition'=>'list',
+      	                     'sectionDebug'=>'section',
+      	                     'logFile'=>'text',
+      	                     'logLevel'=>'list',
       	                     'sectionMiscellaneous'=>'section',
-      	                     'paramDbDisplayName'=>'text',  
       	                     'getVersion'=>'list',
       	                     'csvSeparator'=>'list',
+      	                     'paramMemoryLimitForPDF'=>'number',
       	                     'newColumn'=>'newColumn',
+      	                     'sectionDisplay'=>'section',
+      	                     'paramDbDisplayName'=>'text',  
+      	                     'paramFadeLoadingMode'=>'list',
+      	                     'paramIconSize'=>'list',
+      	                     'defaultTheme'=>'list',
+      	                     'sectionFiles'=>'section',
+      	                     'paramAttachementDirectory'=>'text',
+      	                     'paramAttachementMaxSize'=>'longnumber',
+      	                     'paramReportTempDirectory'=>'text',
       	                     'sectionDocument'=>'section',
       	                     'documentRoot'=>'text',
       	                     'draftSeparator'=>'text',
@@ -352,6 +372,7 @@ class Parameter extends SqlElement {
                              'paramMailReplyTo'=>'text',
                              'paramMailSmtpServer'=>'text',
                              'paramMailSmtpPort'=>'number',
+      	                     'paramMailEol'=>'list',
                              'paramMailSendmailPath'=> 'text', 
                              'paramMailTitleNew'=>'longtext',
       	                     'paramMailTitleStatus'=>'longtext',
@@ -388,14 +409,46 @@ class Parameter extends SqlElement {
   }
   
   static public function getGlobalParameter($code) {
+echo "getGlobalParameter($code)<br/>";
+var_dump ($_SESSION['globalParamatersArray']);
+    if (self::$_fetchingParam) {
+    	if ($code=='logLevel') {
+    		self::$_fetchingParam=false;
+        return 3;
+    	}
+    }
+    self::$_fetchingParam=true;
   	global $$code;
   	if (isset($$code)) {
+  		self::$_fetchingParam=false;
   		return $$code;
   	}
+  	if ($code=='paramPathSeparator') {
+  		self::$_fetchingParam=false;
+  		return DIRECTORY_SEPARATOR;
+  	}
+    if ($code=='mailEol') {
+    	$nl=Parameter::getGlobalParameter('paramMailEol');
+      if (isset($nl) and $nl) {
+      	if ($nl=='LF') {
+      		$nl="\n";
+      	} else if ($nl=='CRLF') {
+      		$nl="\r\n";
+      	} else {
+      		//$nl=$nl; 
+      	}
+      } else {
+      	$nl="\r\n";
+      }
+      self::$_fetchingParam=false;
+      return $nl;
+    }
+    self::$_fetchingParam=true;
   	if (!array_key_exists('globalParamatersArray',$_SESSION)) {
       $_SESSION['globalParamatersArray']=array();
   	}
   	if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
+  		self::$_fetchingParam=false;
   		return $_SESSION['globalParamatersArray'][$code];
   	} else {
   		if ($code=='logLevel' or $code=='logFile') {
@@ -403,8 +456,10 @@ class Parameter extends SqlElement {
         $lst=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('parameterCode'=>$code));
         if ($lst and $lstId) {
         	$_SESSION['globalParamatersArray'][$code]=$lst->parameterValue;
+        	self::$_fetchingParam=false;
         	return $lst->parameterValue;
         } else {
+        	self::$_fetchingParam=false;
         	return null;
         }
   		} else {
@@ -416,11 +471,14 @@ class Parameter extends SqlElement {
 	  	  }
   		}
       if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
+      	self::$_fetchingParam=false;
   	    return $_SESSION['globalParamatersArray'][$code];;
       } else {
+      	self::$_fetchingParam=false;
       	return '';
       }
     }
+    self::$_fetchingParam=false;
   }
 
   static public function getUserParameter($code) {
