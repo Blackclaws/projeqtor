@@ -20,19 +20,25 @@ Sql::beginTransaction();
 $vers=new OtherVersion($id);
 $refType=$vers->refType;
 $refId=$vers->refId;
+$scope=$vers->scope;
 $fld='id'.$vers->scope;
 $fldArray='_Other'.$vers->scope;
 $obj=new $refType($refId);
 $mainVers=$obj->$fld;
 $otherVers=$vers->idVersion;
-foreach ($obj->$fldArray as $vers) {
-	if ($vers->id==$id) {
-		$vers->idVersion=$mainVers;
-	}
-}
+// save new main
 $obj->$fld=$otherVers;
 $result=$obj->save();
-
+// save new other
+$vers=new OtherVersion();
+$vers->refType=$refType;
+$vers->refId=$refId;
+$vers->scope=$scope;
+$vers->creationDate=date('Y-m-d H:i:s');
+$user=$_SESSION['user'];
+$vers->idUser=$user->id;
+$vers->idVersion=$mainVers;
+$res=$vers->save();
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();

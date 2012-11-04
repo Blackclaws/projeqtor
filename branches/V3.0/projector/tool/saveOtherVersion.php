@@ -39,12 +39,14 @@ $result="";
 // get the modifications (from request)
 $obj=new $refType($refId);
 $objVersionFld='id'.$scope;
+$updatedMain=false;
 foreach ($arrayId as $versId) {
 	$crit=array('refType'=>$refType, 'refId'=>$refId, 'idVersion'=>$versId, 'scope'=>$scope);
 	$otherVersion=SqlElement::getSingleSqlElementFromCriteria('OtherVersion', $crit);
 	if (! $obj->$objVersionFld) {
 		$obj->$objVersionFld=$versId;
 		$result=$obj->save();
+		$updatedMain=true;
 		if ($otherVersion and $otherVersion->id) {
 			$otherVersion->delete();
 		}
@@ -61,7 +63,7 @@ foreach ($arrayId as $versId) {
 		  $res=$otherVersion->save();
 		  if (!$result) {
 		    $result=$res;
-		  } else if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
+		  } else if (stripos($res,'id="lastOperationStatus" value="OK"')>0 and !$updatedMain) {
 		  	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 		  		$deb=stripos($res,'#');
 		  		$fin=stripos($res,' ',$deb);
