@@ -340,9 +340,9 @@ class Parameter extends SqlElement {
       	                     'paramDefaultTimezone'=>'text',
       	                     'currency'=>'text',
       	                     'currencyPosition'=>'list',
-      	                     'sectionDebug'=>'section',
-      	                     'logFile'=>'text',
-      	                     'logLevel'=>'list',
+      	                     //'sectionDebug'=>'section',
+      	                     //'logFile'=>'text',
+      	                     //'logLevel'=>'list',
       	                     'sectionMiscellaneous'=>'section',
       	                     'getVersion'=>'list',
       	                     'csvSeparator'=>'list',
@@ -579,6 +579,10 @@ class Parameter extends SqlElement {
     } else {
     	return false;
     }
+  }
+  
+  static public function clearGlobalParameters() {
+  	unset($_SESSION['globalParamatersArray']);
   }
 }
 ?>

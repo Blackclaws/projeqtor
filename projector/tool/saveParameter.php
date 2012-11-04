@@ -155,6 +155,7 @@ if ($type=='habilitation') {
       }
     }
   }
+  Parameter::clearGlobalParameters();// force refresh 
 } else {
    $errors="Save not implemented";
    $status='ERROR';

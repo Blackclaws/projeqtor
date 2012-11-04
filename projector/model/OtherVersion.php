@@ -35,7 +35,9 @@ class OtherVersion extends SqlElement {
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  
 
+  public static function sort($a,$b) {
+  return ($a->idVersion < $b->idVersion) ? -1 : 1;
+}
 }
 ?>

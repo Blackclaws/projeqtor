@@ -330,7 +330,7 @@ abstract class SqlElement {
         $returnValue=$this->insertSqlElement($forceInsert);
       }
       if (property_exists($this,'idResource')) {
-      	if ($this->idResource and $this->idResource!=$old->idResource) {
+      	if (trim($this->idResource) and trim($this->idResource)!=trim($old->idResource)) {
       		$responsibleChanged=true;
       	}
       }
@@ -494,6 +494,23 @@ abstract class SqlElement {
     }
     if (! $oldObject) {
       $oldObject = new $objectClass($this->id);
+    }
+    // Specific treatment for other versions
+    $versionTypes=array('Version', 'OriginalVersion', 'TargetVersion');
+    foreach ($versionTypes as $versType) {
+      $otherFld='_Other'.$versType;
+      $versFld='id'.$versType;
+      if ( property_exists($this, $versFld) and property_exists($this, $otherFld)) {
+      	usort($oldObject->$otherFld,"OtherVersion::sort");
+        foreach ($oldObject->$otherFld as $otherVers) {
+        	if (! trim($this->$versFld)) {
+        		$this->$versFld=$otherVers->idVersion;
+        	}
+          if ($otherVers->idVersion==$this->$versFld) {
+            $otherVers->delete();
+          }
+        }
+      }
     }
     $nbChanged=0;
     $query="update " . $this->getDatabaseTableName();

@@ -26,7 +26,11 @@ function kill($file) {
 }
 
 function purgeFiles($dir, $pattern) {
-  $handle = opendir($dir); 
+  $handle = opendir($dir);
+  if (! is_resource($handle)) {
+  	traceLog ("purgeFiles('$dir', '$pattern') - Unable to open directory '$dir' ");
+  	return;
+  } 
   while (($file = readdir($handle)) !== false) {
     if ($file == '.' || $file == '..') { 
       continue; 
