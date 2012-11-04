@@ -924,7 +924,7 @@ function refreshOtherVersionList(selected) {
 
 function selectOtherVersionItem() {
   var nbSelected=0;
-  list=dojo.byId('otherVersionRefId');
+  list=dojo.byId('otherVersionIdVersion');
   if (list.options) {
     for (var i = 0; i < list.options.length; i++) {
       if (list.options[i].selected) {
@@ -933,16 +933,39 @@ function selectOtherVersionItem() {
     }
   }
   if (nbSelected>0) {
-    enableWidget('dialogLinkSubmit');
+    enableWidget('dialogOtherVersionSubmit');
   } else {
-    disableWidget('dialogLinkSubmit');
+    disableWidget('dialogOtherVersionSubmit');
   }
 }
 
 function saveOtherVersion() {
-  if (dojo.byId("otherVersionRefId").value=="") return;
+  if (dojo.byId("otherVersionIdVersion").value=="") return;
   loadContent("../tool/saveOtherVersion.php", "resultDiv", "otherVersionForm", true,'otherVersion');
   dijit.byId('dialogOtherVersion').hide();
+}
+
+function removeOtherVersion(id, name, type) {
+  if (formChangeInProgress) {
+	showAlert(i18n('alertOngoingChange'));
+	return;
+  }	
+  dojo.byId("otherVersionId").value=id;
+  actionOK=function() {loadContent("../tool/removeOtherVersion.php", "resultDiv", "otherVersionForm", true,'otherVersion');};
+  msg=i18n('confirmDeleteOtherVersion',new Array(name, i18n('col'+type)));
+  showConfirm (msg, actionOK);	
+}
+
+function swicthOtherVersionToMain(id, name, type) {
+  if (formChangeInProgress) {
+	showAlert(i18n('alertOngoingChange'));
+	return;
+  }		
+  dojo.byId("otherVersionId").value=id;
+  //actionOK=function() {loadContent("../tool/switchOtherVersion.php", "resultDiv", "otherVersionForm", true,'otherVersion');};
+  //msg=i18n('confirmSwitchOtherVersion',new Array(name, i18n('col'+type)));
+  //showConfirm (msg, actionOK);
+  loadContent("../tool/switchOtherVersion.php", "resultDiv", "otherVersionForm", true,'otherVersion');
 }
 //=============================================================================
 //= Approvers

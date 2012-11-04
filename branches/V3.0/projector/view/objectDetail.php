@@ -2298,9 +2298,34 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
 }
 
 function drawOtherVersionFromObject($otherVersion, $obj, $type) {
-	foreach($otherVersion as $vers) {
-		echo $vers->id.'<br/>';
-	}
+	usort($otherVersion,"OtherVersion::sort");
+  global $canUpdate, $print;
+  if (!$otherVersion or count($otherVersion)==0) return;
+  echo '<table>';
+  foreach($otherVersion as $vers) {
+    echo '<tr>';
+    if (1 or $canUpdate and ! $print ) {
+      echo '<td style="width:20px">';
+      echo '<img src="css/images/smallButtonRemove.png" ' 
+        . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" 
+        . ', \'' . SqlList::getNameFromId('Version',$vers->idVersion) . '\''
+        . ', \'' . $vers->scope . '\''
+        .');" '
+        . 'title="' . i18n('otherVersionDelete') . '" class="smallButton"/> ';
+      echo '</td>';
+      echo '<td style="width:20px">';
+      echo '<img src="css/images/smallButtonSwitch.png" ' 
+        . ' onClick="swicthOtherVersionToMain(' . "'" . $vers->id . "'" 
+        . ', \'' . SqlList::getNameFromId('Version',$vers->idVersion) . '\''
+        . ', \'' . $vers->scope . '\''
+        .');" '
+        . 'title="' . i18n('otherVersionSetMain') . '" class="smallButton"/> ';
+      echo '</td>';
+    }
+    echo '<td>' .SqlList::getNameFromId('Version', $vers->idVersion).'</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
 }
 
 // ********************************************************************************************************

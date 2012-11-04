@@ -656,6 +656,8 @@ class User extends SqlElement {
     purgeFiles(Parameter::getGlobalParameter('paramReportTempDirectory'),"user" . $this->id . "_");
     $this->stopAllWork();
     traceLog("DISCONNECTED USER '" . $this->name . "'");
+    Parameter::clearGlobalParameters();
+    unset($_SESSION['user']);
   }
 
   public function stopAllWork() {

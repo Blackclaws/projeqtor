@@ -197,9 +197,10 @@ if ($currVersion<"V3.0.0") {
     'paramDefaultLocale', 'paramDefaultTimezone', 'currency', 'currencyPosition',
     'paramFadeLoadingMode', 'paramRowPerPage', 'paramIconSize',
     'defaultTheme', 'paramPathSeparator', 'paramAttachementDirectory', 'paramAttachementMaxSize',
-    'paramReportTempDirectory', 'paramMemoryLimitForPDF', 
+    'paramReportTempDirectory', 'paramMemoryLimitForPDF',
+    'defaultBillCode','paramMailEol' 
     //'logFile', 'logLevel', 'paramDebugMode',
-    'defaultBillCode','paramMailEol');
+    );
   migrateParameters($arrayParamsToMigrate); 
 }
 // To be sure, after habilitations updates ...
@@ -505,11 +506,11 @@ function migrateParameters($arrayParamsToMigrate) {
 	global $parametersLocation;
 	include $parametersLocation;
 	foreach ($arrayParamsToMigrate as $param) {
-    $crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
-    $parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
-    if (!$parameter or !$parameter->id) { 
-      $parameter=new Parameter();
-    }
+    //$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>$param);
+    //$parameter=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+    //if (!$parameter or !$parameter->id) { 
+    $parameter=new Parameter();
+    //}
     $parameter->idUser=null;
     $parameter->idProject=null;
     $parameter->parameterCode=$param;  

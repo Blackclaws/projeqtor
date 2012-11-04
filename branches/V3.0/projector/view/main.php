@@ -944,6 +944,7 @@ checkVersion(); ?>
          <input id="otherVersionRefType" name="otherVersionRefType" type="hidden" value="" />
          <input id="otherVersionRefId" name="otherVersionRefId" type="hidden" value="" />
          <input id="otherVersionType" name="otherVersionType" type="hidden" value="" />
+         <input id="otherVersionId" name="otherVersionId" type="hidden" value="" />
          <table>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
@@ -953,7 +954,7 @@ checkVersion(); ?>
              <td>
                <table><tr><td>
                <div id="dialogOtherVersionList" dojoType="dijit.layout.ContentPane" region="center">
-                 <input id="otherVersionId" name="otherVersionId" type="hidden" value="" />
+                 <input id="otherVersionIdVersion" name="otherVersionIdVersion" type="hidden" value="" />
                </div>
                </td><td style="vertical-align: top">
                <button id="otherVersionDetailButton" dojoType="dijit.form.Button" showlabel="false"
