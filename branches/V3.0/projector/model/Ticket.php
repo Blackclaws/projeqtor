@@ -42,6 +42,7 @@ class Ticket extends SqlElement {
   public $idle;
   public $idleDateTime;
   public $idTargetVersion;
+  public $_OtherTargetVersion=array();
   public $result;
   public $_col_1_1_Link;
   public $_Link=array();

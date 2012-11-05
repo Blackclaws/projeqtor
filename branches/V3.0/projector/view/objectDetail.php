@@ -2309,27 +2309,29 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
   if (!$otherVersion or count($otherVersion)==0) return;
   echo '<table>';
   foreach($otherVersion as $vers) {
-    echo '<tr>';
-    if ($obj->id and $canUpdate and ! $print ) {
-      echo '<td style="width:20px">';
-      echo '<img src="css/images/smallButtonRemove.png" ' 
-        . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" 
-        . ', \'' . SqlList::getNameFromId('Version',$vers->idVersion) . '\''
-        . ', \'' . $vers->scope . '\''
-        .');" '
-        . 'title="' . i18n('otherVersionDelete') . '" class="smallButton"/> ';
-      echo '</td>';
-      echo '<td style="width:20px">';
-      echo '<img src="css/images/smallButtonSwitch.png" ' 
-        . ' onClick="swicthOtherVersionToMain(' . "'" . $vers->id . "'" 
-        . ', \'' . SqlList::getNameFromId('Version',$vers->idVersion) . '\''
-        . ', \'' . $vers->scope . '\''
-        .');" '
-        . 'title="' . i18n('otherVersionSetMain') . '" class="smallButton"/> ';
-      echo '</td>';
-    }
-    echo '<td>' .SqlList::getNameFromId('Version', $vers->idVersion).'</td>';
-    echo '</tr>';
+  	if ($vers->id) {
+	    echo '<tr>';
+	    if ($obj->id and $canUpdate and ! $print ) {
+	      echo '<td style="width:20px">';
+	      echo '<img src="css/images/smallButtonRemove.png" ' 
+	        . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" 
+	        . ', \'' . SqlList::getNameFromId('Version',$vers->idVersion) . '\''
+	        . ', \'' . $vers->scope . '\''
+	        .');" '
+	        . 'title="' . i18n('otherVersionDelete') . '" class="smallButton"/> ';
+	      echo '</td>';
+	      echo '<td style="width:20px">';
+	      echo '<img src="css/images/smallButtonSwitch.png" ' 
+	        . ' onClick="swicthOtherVersionToMain(' . "'" . $vers->id . "'" 
+	        . ', \'' . SqlList::getNameFromId('Version',$vers->idVersion) . '\''
+	        . ', \'' . $vers->scope . '\''
+	        .');" '
+	        . 'title="' . i18n('otherVersionSetMain') . '" class="smallButton"/> ';
+	      echo '</td>';
+	    }
+	    echo '<td>' .SqlList::getNameFromId('Version', $vers->idVersion).'</td>';
+	    echo '</tr>';
+  	}
   }
   echo '</table>';
 }
