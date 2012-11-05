@@ -25,8 +25,13 @@
     }
   }
   
+  if (Sql::getDbVersion()!=$version and Sql::getDbVersion()<'V3.0.0') {
+debugLog('OldUserStyle');
+  	User::setOldUserStyle();
+  }
   $obj=new User();
-	$crit=array('name'=>$login);
+debugLog($obj->getDatabaseTableName());  
+  $crit=array('name'=>$login);
   $users=$obj->getSqlElementsFromCriteria($crit,true);
   if ( ! $users ) {
   	loginError();

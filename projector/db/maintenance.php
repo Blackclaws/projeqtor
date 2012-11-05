@@ -31,7 +31,6 @@ $versionHistory = array(
   "V2.4.2",
   "V2.5.0",
   "V2.6.0",
-  "V3.0.-",
   "V3.0.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
@@ -67,7 +66,7 @@ traceLog("DataBase actual Version = " . $currVersion );
 traceLog("ProjectOR actual Version = " . $version );
 traceLog("");
 if ($currVersion=="") {
-  $currVersion='0.0.0';
+  $currVersion='V0.0.0';
   // if no current version, parameters are set through config.php
   $versionParameters=array(); // Clear $versionParameter to avoid dupplication of parameters
 }
@@ -76,6 +75,9 @@ $currVer=$arrVers[0];
 $currMaj=$arrVers[1];
 $currRel=$arrVers[2];
 
+if ($currVersion!='V0.0.0' and $currVersion<'V3.0.0') {
+	$nbErrors+=runScript('V3.0.-');
+}
 
 foreach ($versionHistory as $vers) {
   $arrVers=explode('.',substr($vers,1));
@@ -85,13 +87,11 @@ foreach ($versionHistory as $vers) {
   if ( $histVer > $currVer 
   or ( $histVer == $currVer and $histMaj > $currMaj)
   or ( $histVer == $currVer and $histMaj == $currMaj and $histRel > $currRel) ) {
-  	if ($vers!='V3.0.-' or $currVersion!='0.0.0') {// Script 3.0.0 must be run only on existing Database to adapt table changes done on prio scripts
-      $nbErrors+=runScript($vers);
-    }
+    $nbErrors+=runScript($vers);
   }
 }
 
-if ($currVersion=='0.0.0') {
+if ($currVersion=='V0.0.0') {
   traceLog ("create default project");
   $type=new ProjectType();
   $lst=$type->getSqlElementsFromCriteria(array('name'=>'Fixed Price'));
@@ -126,7 +126,7 @@ if (! isset($memoryLimitForPDF) ) {
 }
 
 // For V1.9.0
-if ($currVersion<"V1.9.0" and $currVersion!='0.0.0') {
+if ($currVersion<"V1.9.0" and $currVersion!='V0.0.0') {
 	$adminFunctionality='updateReference';
 	include('../tool/adminFunctionalities.php');
 	echo "<br/>";

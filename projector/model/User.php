@@ -667,5 +667,9 @@ class User extends SqlElement {
       $we->stop();
     }
   }
+  
+  public static function setOldUserStyle() {
+    self::$_databaseTableName = 'user';
+  }  
 }
 ?>
