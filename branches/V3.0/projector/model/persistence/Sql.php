@@ -95,8 +95,12 @@ class Sql {
       	if (strtolower(substr($sqlRequest,0,11))=='insert into') {
       		$table=substr($sqlRequest,12,strpos($sqlRequest,'(')-13);
       		$seq=trim(strtolower($table)).'_id_seq';
+      		//try {
       		$lastId=$cnx->lastInsertId($seq);
-      		self::$lastQueryNewid =($lastId.'id_seq')?$lastId:NULL;
+      		//} catch (PDOException $e) {
+      		//	$lastId=null;
+      		//}
+      		self::$lastQueryNewid =($lastId)?$lastId:NULL;
       	}
       } else {   	
         self::$lastQueryNewid = ($cnx->lastInsertId()) ? $cnx->lastInsertId() : NULL ;

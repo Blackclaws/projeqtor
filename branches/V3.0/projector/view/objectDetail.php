@@ -92,6 +92,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $costVisibility=$obj->_costVisibility;
   }
   $nobr=false;
+  $canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj)=='YES');
   foreach ($obj as $col => $val) {
     if ($detailWidth) {
       $colWidth = ( $detailWidth) / $nbCol;        // 2 columns should be displayable
@@ -314,7 +315,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if (strpos($obj->getFieldAttributes($col), 'title')!==false) {
       	$attributes.=' title="' . $obj->getTitle($col) . '"';
       }
-      if ( (securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == "NO") 
+      
+      if ( ! $canUpdate 
       or (strpos($obj->getFieldAttributes($col), 'readonly')!==false)
       or $parentReadOnly 
       or ($obj->idle==1 and $col!='idle' and $col!='idStatus') ) {
@@ -828,12 +830,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '</button>';
         }
         if ($hasOtherVersion) {
-        	echo '<span style="text-align:center; vertical-align:middle;">';
-        	echo '<img src="css/images/smallButtonAdd.png" style="position:relative; top:2px; left:2px;"' 
-             . 'onClick="addOtherVersion(' . "'" . $versionType . "'" 
-             . ');" ';
-          echo ' title="' . i18n('otherVersionAdd') . '" class="smallButton"/> ';
-          echo '</span>';
+        	if ($obj->id and $canUpdate) {
+	        	echo '<span style="text-align:center; vertical-align:middle;">';
+	        	echo '<img src="css/images/smallButtonAdd.png" style="position:relative; top:2px; left:2px;"' 
+	             . 'onClick="addOtherVersion(' . "'" . $versionType . "'" 
+	             . ');" ';
+	          echo ' title="' . i18n('otherVersionAdd') . '" class="smallButton"/> ';
+	          echo '</span>';
+        	}
           if (count($obj->$otherVersion)>0) {
           	drawOtherVersionFromObject($obj->$otherVersion, $obj, $versionType);
           }
@@ -2298,13 +2302,15 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
 }
 
 function drawOtherVersionFromObject($otherVersion, $obj, $type) {
-	usort($otherVersion,"OtherVersion::sort");
-  global $canUpdate, $print;
+  global $print;
+  usort($otherVersion,"OtherVersion::sort");
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {$canUpdate=false;}
   if (!$otherVersion or count($otherVersion)==0) return;
   echo '<table>';
   foreach($otherVersion as $vers) {
     echo '<tr>';
-    if (1 or $canUpdate and ! $print ) {
+    if ($obj->id and $canUpdate and ! $print ) {
       echo '<td style="width:20px">';
       echo '<img src="css/images/smallButtonRemove.png" ' 
         . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" 
