@@ -44,14 +44,13 @@ class Habilitation extends SqlElement {
     $menuObj=new Menu();
     $profObj=new Profile();
     
+    Sql::$maintenanceMode=true;
   	$query="insert into " . $habiObj->getDatabaseTableName() . " (idProfile, idMenu, allowAccess)";
     $query.=" SELECT profile.id, menu.id, 0";
     $query.=" FROM " . $profObj->getDatabaseTableName() . " profile, " . $menuObj->getDatabaseTableName() . " menu";
     $query.=" WHERE (profile.id, menu.id) not in (select idProfile, idMenu from " . $habiObj->getDatabaseTableName() . ")";
   	$result=Sql::query($query);
-  	
-    
-    
+ 
     // Set Main menu to accessible if one of sub-menu is available
     $query="select distinct h.idProfile profile, m.idMenu menu from " . $habiObj->getDatabaseTableName() . " h," .  $menuObj->getDatabaseTableName() . " m";
     $query.=" where h.idMenu = m.id and h.allowAccess=1 and m.idMenu<>0 and m.idle=0";
@@ -91,7 +90,7 @@ class Habilitation extends SqlElement {
       $query='update ' . $habiObj->getDatabaseTableName() . ' set allowAccess=0 where (idMenu,idProfile) in ' . $critList;
       Sql::query($query);
     }    
-        
+    Sql::$maintenanceMode=false;    
   }
 
 }

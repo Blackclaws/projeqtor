@@ -33,6 +33,16 @@
       }
     }
   }
+  // Check that PDO is enabled
+  if (! extension_loaded('pdo')) {
+    showError('PDO module is not available - check your php configuration (php.ini)');
+    exit;
+  }
+  if ( ! extension_loaded('pdo_'.$param['DbType']) ) {
+  	showError('Module PDO for ' . strtoupper($param['DbType']).' is not available - check your php configuration (php.ini)');
+  	exit; 	
+  }
+  
   // check database connexion
   //error_reporting();
   $dbType=$param['DbType'];
