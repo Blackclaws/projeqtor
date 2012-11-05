@@ -95,7 +95,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     $externalObj=new $externalClass();
     $arrayDisp["attribute"]=$externalObj->getColCaption($split[1]);
   } else {
-  	echo  $idFilterAttribute . "=>" . $obj->getColCaption($idFilterAttribute);
+  	//echo  $idFilterAttribute . "=>" . $obj->getColCaption($idFilterAttribute);
     if (substr($idFilterAttribute,0,9)=='idContext') {
       $arrayDisp["attribute"]=SqlList::getNameFromId('ContextType',substr($idFilterAttribute,9));
     } else {

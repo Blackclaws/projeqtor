@@ -353,9 +353,21 @@
                  . $critSqlValue;
         } else {
           $queryWhere.=($queryWhere=='')?'':' and ';
-          $queryWhere.=$table . "." . $crit['sql']['attribute'] . ' ' 
+          $queryWhere.="(".$table . "." . $crit['sql']['attribute'] . ' ' 
 		                 . $crit['sql']['operator'] . ' '
 		                 . $critSqlValue;
+		      if (strlen($crit['sql']['attribute'])>=9 
+		      and substr($crit['sql']['attribute'],0,2)=='id'
+		      and substr($crit['sql']['attribute'],-7)=='Version'
+		      and $crit['sql']['operator']=='IN') {
+		      	$scope=substr($crit['sql']['attribute'],2);
+		      	$vers=new OtherVersion();
+		      	$queryWhere.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
+		      	  ." where VERS.refType='".$objectClass."' and VERS.refId=".$table.".id and scope='".$scope."'"
+		      	  ." and VERS.idVersion IN ".$critSqlValue
+		      	  .")";
+		      }
+		      $queryWhere.=")";
         }
       }
     }
