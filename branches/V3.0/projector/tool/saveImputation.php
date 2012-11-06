@@ -16,9 +16,9 @@ $nbLines=$_REQUEST['nbLines'];
 if ($rangeType=='week') {
   $nbDays=7;
 }
-ini_set('max_input_vars', 25*$nbLines+20);
-ini_set('suhosin.post.max_vars', 25*$nbLines+20);
-ini_set('suhosin.request.max_vars', 25*$nbLines+20);
+ini_set('max_input_vars', 50*$nbLines+20);
+ini_set('suhosin.post.max_vars', 50*$nbLines+20);
+ini_set('suhosin.request.max_vars', 50*$nbLines+20);
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
   $imputable=$_REQUEST['imputable'][$i];
@@ -32,6 +32,10 @@ for ($i=0; $i<$nbLines; $i++) {
     $line->idResource=$userId;
     if (isset($_REQUEST['leftWork'][$i])) {
       $line->leftWork=Work::convertImputation($_REQUEST['leftWork'][$i]);
+    } else {
+    	traceLog('WARNING - Left work not retrieved from screen');
+    	traceLog('        - Maybe max_input_vars is too small in php.ini');
+    	traceLog('        - Assignment #'.$ass->id.' on '.$ass->refType.' #'.$ass->refId.' for resource #'.$ass->idResource. ' - '.SqlList::getNameFromId('Resource',$ass->idResource));
     }
     $line->imputable=$imputable;
     $arrayWork=array();
