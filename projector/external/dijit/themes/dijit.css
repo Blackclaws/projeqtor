@@ -1014,9 +1014,10 @@ body .dijitAlignClient { position: absolute; }
 	cursor:default;
 }
 .dj_ie .dj_a11y .dijitMenuItemDisabled,
-.dj_ie .dj_a11y .dijitMenuItemDisabled *,
-.dj_ie .dijitMenuItemDisabled * {
-	color: gray;
+.dj_ie .dj_a11y .dijitMenuItemDisabled td,
+.dj_ie .dijitMenuItemDisabled *,
+.dj_ie .dijitMenuItemDisabled td {
+	color:gray !important;
 	filter: alpha(opacity=35);
 }
 .dijitMenuItemLabel {
