@@ -78,6 +78,7 @@
                   	echo 'showWait();adminLaunchScript("cronStop");';
                   	echo 'disableWidget("alertRunStop");';  
                   }
+                    echo 'return false;';
                   ?> 
                    </script>
                  </button>
@@ -159,6 +160,7 @@
                     <?php echo i18n('send'); ?>
                    <script type="dojo/connect" event="onClick" args="evt">                 
                      adminSendAlert();
+                     return false;
                    </script>
                  </button>
                 </td>
@@ -196,6 +198,7 @@
                     <?php echo i18n('close'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('close','Mail');
+                       return false;
                      </script>
                  </button>
                 </td>
@@ -222,6 +225,7 @@
                     <?php echo i18n('deleteButton'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('delete','Mail');
+                       return false;
                      </script>
                  </button>
                 </td>
@@ -248,6 +252,7 @@
                     <?php echo i18n('close'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('close','Alert');
+                       return false;
                      </script>
                  </button>
                 </td>
@@ -274,6 +279,7 @@
                     <?php echo i18n('deleteButton'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('delete','Alert');
+                       return false;
                      </script>
                  </button>
                 </td>
@@ -299,6 +305,7 @@
                      <script type="dojo/connect" event="onClick" args="evt">
                        item=dijit.byId('updateReferenceItem').get('value');
                        maintenance('updateReference',item);
+                       return false;
                      </script>
                  </button>
                 </td>

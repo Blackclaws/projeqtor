@@ -1014,9 +1014,10 @@ body .dijitAlignClient { position: absolute; }
 	cursor:default;
 }
 .dj_ie .dj_a11y .dijitMenuItemDisabled,
-.dj_ie .dj_a11y .dijitMenuItemDisabled *,
-.dj_ie .dijitMenuItemDisabled * {
-	color: gray;
+.dj_ie .dj_a11y .dijitMenuItemDisabled td,
+.dj_ie .dijitMenuItemDisabled *,
+.dj_ie .dijitMenuItemDisabled td {
+	color:gray !important;
 	filter: alpha(opacity=35);
 }
 .dijitMenuItemLabel {
@@ -1878,7 +1879,7 @@ div.dijitTabDisabled, .dj_ie div.dijitTabDisabled {
 .dijitIconEdit { background-position: -112px; }
 .dijitIconNewTask { background-position: -128px; }
 .dijitIconEditTask { background-position: -144px; }
-.dijitIconEditProperty { background-position: -160px; }
+.dijitIconEditProperty { background-position: -166px; }
 .dijitIconTask { background-position: -176px; }
 .dijitIconFilter { background-position: -192px; }
 .dijitIconConfigure { background-position: -208px; }
