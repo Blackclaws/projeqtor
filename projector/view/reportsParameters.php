@@ -180,6 +180,19 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php    
+  } else if ($param->paramType=='boolean') {
+    $defaultValue=($param->defaultValue=='true')?true:false;
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <div dojoType="dijit.form.CheckBox" type="checkbox" 
+      id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+      style=""
+      <?php echo ($defaultValue)?' checked ':'';?> >
+    </div>
+    </td>
+    </tr><?php    
   } else if ($param->paramType=='projectList') {
     $defaultValue='';
     if ($param->defaultValue=='currentProject') {

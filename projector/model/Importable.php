@@ -47,8 +47,8 @@ class Importable extends SqlElement {
   
   public static function import($fileName, $class) {
 scriptLog("import($fileName, $class)");
-    SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never Stated List must be freshened
-  	set_time_limit(3600);
+    SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never stopped, Static Lists must be freshened
+  	set_time_limit(3600); // 60mn
   	$htmlResult="";
     self::$cptTotal=0;
     self::$cptDone=0;
@@ -72,8 +72,26 @@ scriptLog("import($fileName, $class)");
 	  }
 		$obj=new $class();
 		$captionArray=array();
+		$captionObjectArray=array();		
+		$objectArray=array();
+		$titleObject=array();
+		$idArray=array();
 		foreach ($obj as $fld=>$val) {
-		  $captionArray[$obj->getColCaption($fld)]=$fld;
+			if (is_object($val)) {
+				$objectArray[$fld]=$val;
+				foreach ($val as $subfld=>$subval) {
+					$capt=$val->getColCaption($subfld);
+					if ($subfld!='id' and substr($capt,0,1)!='[') {
+					  $captionArray[$capt]=$subfld;
+					  $captionObjectArray[$capt]=$fld;
+					}
+				} 
+			} else {
+				$capt=$obj->getColCaption($fld);
+				if (substr($capt,0,1)!='[') {
+					$captionArray[$capt]=$fld;
+				}
+			}
 		}
 		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black; border-collapse:collapse;">';
 		Sql::beginTransaction();
@@ -115,37 +133,29 @@ scriptLog("import($fileName, $class)");
           }
 		      $field=str_replace('""','"',$field);     
 		      if (property_exists($obj,$title[$idx])) {
-		        $obj->$title[$idx]=$field;
+		      	if (substr($title[$idx],0,2)=='id' and strlen($title[$idx])>2 and ! is_numeric($field)) {
+		      		$obj->$title[$idx]=SqlList::getIdFromName(substr($title[$idx],2), $field); 		
+		      	} else {
+		          $obj->$title[$idx]=$field;
+		      	}
 		        $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		        continue; 
-		      } 
-		      $idTitle='id' . ucfirst($title[$idx]);
-		      if (property_exists($obj,$idTitle)) {
-		        $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);
-		        $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . "/" . htmlEncode($val) . '</td>';
-		        //$htmlResult.= " => " . htmlEncode($idTitle);
-		        //$htmlResult.= "=" . htmlEncode($val);
-		        $obj->$idTitle=$val;
-		        continue; 
-		      } 
-		      if (property_exists($obj,get_class($obj).'PlanningElement')) {
-		        $peClass=get_class($obj).'PlanningElement';
-		        if (! is_object($obj->$peClass)) {
-		          $obj->$peClass=new $peClass();
+		      }
+		      if (isset($titleObject[$idx])) {
+		        $subClass=$titleObject[$idx];
+		        if (! is_object($obj->$subClass)) {
+		          $obj->$subClass=new $subClass();
 		        }
-		        $pe=$obj->$peClass;
-		        if (property_exists($pe,$title[$idx])) {
-		          $obj->$peClass->$title[$idx]=$field;
+		        $sub=$obj->$subClass;
+		        if (property_exists($subClass,$title[$idx])) {
+		        	if (substr($title[$idx],0,2)=='id' and strlen($title[$idx])>2 and ! is_numeric($field)) {
+		        		$obj->$subClass->$title[$idx]=SqlList::getIdFromName(substr($title[$idx],2), $field);
+		        	} else {
+		            $obj->$subClass->$title[$idx]=$field;
+		        	}
 		          $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		          continue; 
 		        }
-		        $idTitle='id' . ucfirst($title[$idx]);
-		        if (property_exists($pe,$idTitle)) {   
-		          $htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
-		          $val=SqlList::getIdFromName(ucfirst($title[$idx]),$field);   
-		          $obj->$peClass->$idTitle=$val;
-		          continue; 
-		        } 
 		      }
 		      $htmlResult.= '<td class="messageData" style="color:#A0A0A0;border:1px solid black;">' . htmlEncode($field) . '</td>';
 		      continue; 
@@ -195,43 +205,48 @@ scriptLog("import($fileName, $class)");
 		    $htmlResult.= "<TR>";
 		    $obj=new $class();
 		    foreach ($title as $idx=>$caption) {
-		      $title[$idx]=str_replace(' ','',strtolower(substr($caption,0,1)) . substr($caption,1));
+		      $title[$idx]=trim($caption);
 		      $title[$idx]=str_replace(chr(13),'',$title[$idx]);
 		      $title[$idx]=str_replace(chr(10),'',$title[$idx]);
 		      $color="#A0A0A0";
-		      $colCaption=$caption;
-		      if (property_exists($obj,$title[$idx])) {
+		      $colCaption=$title[$idx];
+		      $testTitle=str_replace(' ', '', $title[$idx]);
+		      $testIdTitle='id'.ucfirst($testTitle);
+		      $testCaption=$title[$idx];
+		      if (property_exists($obj,$testTitle)) { // Title is directly field id
+		      	$title[$idx]=$testTitle;
 		        $color="#000000";
 		        $colCaption=$obj->getColCaption($title[$idx]);
 		        if ($title[$idx]=='id') {
 		          $idxId=$idx;
 		        }
-		      } else { 
-		        $idTitle='id' . ucfirst($title[$idx]);
-		        if (property_exists($obj,$idTitle)) {   
-		          $color="#000000";
-		          $colCaption=$obj->getColCaption($idTitle);
-		        } else if (array_key_exists($caption,$captionArray) and property_exists($obj,$captionArray[$caption]) ) {
-		          $color="#000000";
-		          $colCaption=$caption;
-		          $title[$idx]=$captionArray[$caption];
-		          if (substr($title[$idx],0,2)=="id" and strlen($title[$idx])>2) {
-		            $title[$idx]=substr($title[$idx],2);
-		          }
-		        } else if (property_exists($obj,get_class($obj).'PlanningElement')) {
-		          $peClass=get_class($obj).'PlanningElement';
-		          $pe=$obj->$peClass;
-		          if (property_exists($pe,$title[$idx])) {
-		            $color="#000000";
-		            $colCaption=$pe->getColCaption($title[$idx]);
-		          } else {
-		            $idTitle='id' . ucfirst($title[$idx]);
-		            if (property_exists($pe,$idTitle)) {   
-		              $color="#000000";
-		              $colCaption=$pe->getColCaption($idTitle);
-		            }
-		          }
+		      } else if (property_exists($obj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
+            $title[$idx]=$testIdTitle;
+            $idArray[$idx]=true;
+            $color="#000000";
+            $colCaption=$obj->getColCaption($title[$idx]);
+          } else if (array_key_exists($testCaption,$captionArray)) {
+		        $color="#000000";
+		        $colCaption=$testCaption;
+		        $title[$idx]=$captionArray[$testCaption];
+		        if (isset($captionObjectArray[$testCaption])) {
+		        	$titleObject[$idx]=$captionObjectArray[$testCaption];
 		        }
+		      } else {
+		      	foreach ($objectArray as $fld=>$subObj) {
+			      	if (property_exists($subObj,$testTitle)) { // Title is directly field id
+		            $title[$idx]=$testTitle;
+		            $color="#000000";
+		            $titleObject[$idx]=$fld;
+		            $colCaption=$obj->getColCaption($title[$idx]);
+		          } else if (property_exists($subObj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
+		            $title[$idx]=$testIdTitle;
+		            $idArray[$idx]=true;
+		            $color="#000000";
+		            $titleObject[$idx]=$fld;
+		            $colCaption=$obj->getColCaption($title[$idx]);
+		          }
+		      	}
 		      }
 		      $htmlResult.= '<TH class="messageHeader" style="color:' . $color . ';border:1px solid black;background-color: #DDDDDD">' . $colCaption . "</TH>";
 		    }
