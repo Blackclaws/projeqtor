@@ -949,7 +949,7 @@ checkVersion(); ?>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel" >
-               <label for="otherVersionId" ><?php echo i18n("otherVersions") ?>&nbsp;:&nbsp;</label>
+               <label for="otherVersionId" ><?php echo i18n("colOtherVersions") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <table><tr><td>
@@ -961,8 +961,7 @@ checkVersion(); ?>
                  title="<?php echo i18n('showDetail')?>"
                  iconClass="iconView">
                  <script type="dojo/connect" event="onClick" args="evt">
-                   showInfo("Not designed"); 
-                   //showDetailOtherVersion();
+                   showDetailOtherVersion();
                  </script>
                </button>
                </td></tr></table>

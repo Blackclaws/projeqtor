@@ -34,3 +34,7 @@ CREATE TABLE `${prefix}otherversion` (
 CREATE INDEX otherversionRef ON `${prefix}otherversion` (refType, refId);
 CREATE INDEX otherversionVersion ON `${prefix}otherversion` (idVersion);
 CREATE INDEX otherversionUser ON `${prefix}otherversion` (idUser);
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
+(132,38,'otherVersions','boolean',900,0,null),
+(133,39,'otherVersions','boolean',900,0,null);

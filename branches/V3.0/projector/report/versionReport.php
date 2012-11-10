@@ -21,6 +21,11 @@ if (! isset($includedReport)) {
     $paramResponsible=trim($_REQUEST['responsible']);
   };
   
+  $paramOtherVersion=false;
+  if (array_key_exists('otherVersions',$_REQUEST)) {
+    $paramOtherVersion=true;
+  };
+  
   $user=$_SESSION['user'];
   
   // Header
@@ -33,6 +38,9 @@ if (! isset($includedReport)) {
   }
   if ($paramResponsible!="") {
     $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
+  }
+  if ($paramOtherVersion!="") {
+    $headerParameters.= i18n("colOtherVersions") . ' : ' . i18n('displayYes') . '<br/>';
   }
   include "header.php";
 }
@@ -80,11 +88,27 @@ if (count($lstType)) {
 foreach ($lstTicket as $t) {
 	$ticket=new Ticket($t->id);
 	$vers=($t->idTargetVersion)?$t->idTargetVersion:'0';
-  if (! isset($version[$vers][$t->idTicketType])) {continue;}
-	$version[$vers][$t->idTicketType]['count']+=1;
-  $version[$vers][$t->idTicketType]['estimated']+=$ticket->WorkElement->plannedWork;
-  $version[$vers][$t->idTicketType]['real']+=$ticket->WorkElement->realWork;
-  $version[$vers][$t->idTicketType]['left']+=$ticket->WorkElement->leftWork;
+  if (isset($version[$vers][$t->idTicketType])) {
+	  $version[$vers][$t->idTicketType]['count']+=1;
+    $version[$vers][$t->idTicketType]['estimated']+=$ticket->WorkElement->plannedWork;
+    $version[$vers][$t->idTicketType]['real']+=$ticket->WorkElement->realWork;
+    $version[$vers][$t->idTicketType]['left']+=$ticket->WorkElement->leftWork;
+  }
+  if ($paramOtherVersion) {
+  	//$ot=new OtherVersion();
+  	//$crit=array('refType'=>'Ticket', 'refId'=>$t->id, 'scope'=>'TargetVersion');
+  	//$otList=$ot->getSqlElementsFromCriteria($crit);
+  	foreach ($ticket->_OtherTargetVersion as $ot) {
+  		$vers=($ot->idVersion)?$ot->idVersion:'0';
+  	  if (isset($version[$vers][$t->idTicketType])) {
+		    $version[$vers][$t->idTicketType]['count']+=1;
+		    $version[$vers][$t->idTicketType]['estimated']+=$ticket->WorkElement->plannedWork;
+		    $version[$vers][$t->idTicketType]['real']+=$ticket->WorkElement->realWork;
+		    $version[$vers][$t->idTicketType]['left']+=$ticket->WorkElement->leftWork;
+		  }  		
+  	}
+  }
+  
 }
 
 if (checkNoData($lstTicket)) exit;

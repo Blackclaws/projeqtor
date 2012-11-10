@@ -470,6 +470,10 @@ function selectDetailItem(selectedValue) {
 				refreshLinkList(idFldVal);
 				setTimeout("dojo.byId('linkRef2Id').focus()",1000);
 				enableWidget('dialogLinkSubmit');
+			} else if (comboName=='otherVersionIdVersion') {
+				refreshOtherVersionList(idFldVal);
+				setTimeout("dojo.byId('otherVersionIdVersion').focus()",1000);
+				enableWidget('dialogOtherVersionSubmit');
 		    } else if (comboName=='approverId') {
 		        refreshApproverList(idFldVal);
 		        setTimeout("dojo.byId('approverId').focus()",1000);
@@ -966,6 +970,14 @@ function swicthOtherVersionToMain(id, name, type) {
   //msg=i18n('confirmSwitchOtherVersion',new Array(name, i18n('col'+type)));
   //showConfirm (msg, actionOK);
   loadContent("../tool/switchOtherVersion.php", "resultDiv", "otherVersionForm", true,'otherVersion');
+}
+
+function showDetailOtherVersion() {
+  var canCreate=0;
+  if (canCreateArray['Version']=="YES") {
+	canCreate=1;
+  }
+  showDetail('otherVersionIdVersion',canCreate, 'Version', true);
 }
 //=============================================================================
 //= Approvers
@@ -3586,7 +3598,6 @@ function changePlanningColumn(col,status,order) {
 function sortPlanningColumn() {
 	//alert("sortPlanningColumn");
 }
-
 
 function showMailOptions() {
 	dojo.byId('mailRefType').value=dojo.byId('objectClass').value;

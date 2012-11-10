@@ -15,7 +15,11 @@ $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
 };
-
+$paramOtherVersion=false;
+  if (array_key_exists('otherVersions',$_REQUEST)) {
+    $paramOtherVersion=true;
+  };
+  
 $user=$_SESSION['user'];
   
   // Header
@@ -29,6 +33,9 @@ if ($paramResponsible!="") {
 if ($paramVersion!="") {
   $headerParameters.= i18n("colVersion") . ' : ' . SqlList::getNameFromId('Version', $paramVersion) . '<br/>';
 }
+if ($paramOtherVersion!="") {
+    $headerParameters.= i18n("colOtherVersions") . ' : ' . i18n('displayYes') . '<br/>';
+  }
 include "header.php";
 
 $where=getAccesResctictionClause('Ticket',false);
@@ -49,7 +56,7 @@ $lstObj=array(new Ticket(), new Activity());
 foreach ($lstVersion as $versId=>$versName) {
   echo '<table width="95%" align="center">';
   echo '<tr>';
-  $version=new TargetVersion($versId);
+  $version=new Version($versId);
   //$versDate = ' (' . htmlFormatDate(SqlList::getFieldFromId('Version', $versId, 'plannedEisDate')) . ')';
   //if ($versDate=='')
   echo '<td class="reportTableHeader" style="width:40%" colspan="3">' . $version->name . '</td>';
@@ -76,15 +83,24 @@ foreach ($lstVersion as $versId=>$versName) {
   $sumHandled='';
   $sumDone='';
   $cpt=0;
-  $crit=array('idTargetVersion'=>$versId);
-  if ($paramResponsible) {
-    $crit['idResource']=$paramResponsible;
-  }
-  if ($paramProject) {
-    $crit['idProject']=$paramProject;
-  }
 	foreach ($lstObj as $obj) {
-    $lst=$obj->getSqlElementsFromCriteria($crit);
+		$crit="(".$obj->getDatabaseColumnName('idTargetVersion')."=$versId";
+		if ($paramOtherVersion) {
+			$scope='TargetVersion';
+      $vers=new OtherVersion();
+      $crit.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
+        ." where VERS.refType='".get_class($obj)."' and VERS.refId=".$obj->getDatabaseTableName().".id and scope='".$scope."'"
+        ." and VERS.idVersion=".$versId
+        .")";
+		}
+	  $crit.=')';
+	  if ($paramResponsible) {
+	    $crit.=" and ".$obj->getDatabaseColumnName('idResource')."=$paramResponsible";
+	  }
+	  if ($paramProject) {
+	    $crit.=" and ".$obj->getDatabaseColumnName('idProject')."=$paramProject";
+	  }
+    $lst=$obj->getSqlElementsFromCriteria(null,null,$crit);
     $type='id'.get_class($obj).'Type';
     foreach ($lst as $item) {
       $class=get_class($item);
