@@ -213,6 +213,7 @@ class Document extends SqlElement {
   		$newLoc=$newDir->getLocation();
   		if ($oldLoc!=$newLoc) {
   			if (! is_dir($newLoc)) {
+  				debugLog($newLoc);
   				mkdir($newLoc,'0777',true);
   			}
   			$vers=new DocumentVersion();

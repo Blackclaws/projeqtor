@@ -1320,7 +1320,7 @@ function drawNotesFromObject($obj, $refresh=false) {
 	      echo '<td style="width:16px;vertical-align: top;" title="' . i18n('team') . " : " . SqlList::getNameFromId('Team', $note->idTeam) .'"><img src="img/team.png" /></td>';
 	    }
 	    echo '</tr></table>';
-	    echo '</div></td>';
+	    echo '</td>';
 	    echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
 	    echo '<td class="noteData">' . $userName . '</td>';
 	    echo '</tr>';
