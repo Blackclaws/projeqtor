@@ -1654,6 +1654,18 @@ abstract class SqlElement {
     }
     return $arrayFields;
   }
+  
+  public function getFieldsArray() {
+    $arrayFields=array();
+    foreach ($this as $fld=>$fldVal) {
+      if (is_object($this->$fld)) {
+        $arrayFields=array_merge($arrayFields,$this->$fld->getFieldsArray());
+      } else {
+        $arrayFields[$fld]=$fld;
+      }
+    }
+    return $arrayFields;
+  }
   /** =========================================================================
    * Return the list of fields format and store it in static array of formats
    * to be able to fetch it again without requesting it from database

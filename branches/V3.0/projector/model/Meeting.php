@@ -239,27 +239,27 @@ class Meeting extends SqlElement {
     $listUserName=array_map('strtolower',SqlList::getList('Affectable','userName'));
     $listInitials=array_map('strtolower',SqlList::getList('Affectable','initials'));
     if ($this->attendees) {
-      $listAttendees=explode(',',$this->attendees);
+      $listAttendees=explode(',',str_replace(';',',',$this->attendees));
       $this->attendees="";
       foreach ($listAttendees as $attendee) {
         $attendee=trim($attendee);
         if (in_array(strtolower($attendee),$listName)) {
           $this->attendees.=($this->attendees)?', ':'';
-          $this->attendees.='"' . $attendee . '"';
-          $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('name'=>$attendee));
+          $aff=new Affectable(array_search($attendee,$listName));
+          $this->attendees.='"' . $aff->name . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
         } else if (in_array(strtolower($attendee),$listUserName)) {
           $this->attendees.=($this->attendees)?', ':'';
-          $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('userName'=>$attendee));
+          $aff=new Affectable(array_search($attendee,$listUserName));
           $this->attendees.='"' . (($aff->name)?$aff->name:$attendee) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
         } else if (in_array(strtolower($attendee),$listInitials)) {
           $this->attendees.=($this->attendees)?', ':'';
-          $aff=SqlElement::getSingleSqlElementFromCriteria('Affectable',array('initials'=>$attendee));
+          $aff=new Affectable(array_search($attendee,$listInitials));         
           $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$attendee)) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
@@ -284,7 +284,6 @@ class Meeting extends SqlElement {
 
     }
     return parent::save();
-
   }
 
   function sendMail() {
@@ -327,7 +326,7 @@ class Meeting extends SqlElement {
     $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-domain.com\r\n";
     $vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
     $vcal .= "DTSTART:" . str_replace('-','',$this->meetingDate) . 'T' . str_replace(':','',$this->meetingStartTime) . "\r\n";
-    $vcal .= "DTEND:" . str_replace('-','',$this->meetingDate) . 'T' .str_replace('','',$this->meetingEndTime) . "\r\n";
+    $vcal .= "DTEND:" . str_replace('-','',$this->meetingDate) . 'T' .str_replace(':','',$this->meetingEndTime) . "\r\n";
     if ($this->location != "") $vcal .= "LOCATION:$this->location\r\n";
     $vcal .= "SUMMARY:$this->name\r\n";
     $vcal .= "DESCRIPTION:$this->description\r\n";

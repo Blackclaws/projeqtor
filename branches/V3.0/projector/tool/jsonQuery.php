@@ -389,7 +389,8 @@
     		$first=true;
     		$arrayFields=array();
     	  if (Sql::isPgsql()) {
-    	  	$arrayFields=$obj->getLowercaseFieldsArray();        
+    	  	$arrayFields=$obj->getLowercaseFieldsArray();
+    	  	//$arrayFieldsWithCase=$obj->getFieldsArray();        
         }
     		while ($line = Sql::fetchLine($result)) {
     			if ($first) {
@@ -410,7 +411,7 @@
     			foreach ($line as $id => $val) {
     				$foreign=false;
     				if (substr($id, 0,2)=='id' and strlen($id)>2) {
-    					$class=substr($id, 2);
+    					$class=substr($arrayFields[strtolower($id)], 2);
     					if (ucfirst($class)==$class) {
     						$foreign=true;
     					  $val=SqlList::getNameFromId($class, $val);

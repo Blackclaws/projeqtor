@@ -122,6 +122,8 @@ class DocumentVersion extends SqlElement {
     }
     if ($doc->idDocumentVersion==$this->id) {
     	$doc->idStatus=$this->idStatus;
+    	$st=new Status($this->idStatus);
+    	$doc->idle=$st->setIdleStatus;
       $saveDoc=true;
     }
     if ($saveDoc) {
