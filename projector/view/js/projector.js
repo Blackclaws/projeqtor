@@ -1309,7 +1309,7 @@ function quit() {
           hideWait();
           }
     });
-    window.location="../index.php";
+    setTimeout("window.location='../index.php'",100);
   }
 }
 
