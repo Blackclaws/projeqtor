@@ -151,6 +151,7 @@ $value['MailSendmailPath'] = "to set only on issue to send mails, or not using d
 $pname['MailSendmailPath'] = 'paramMailSendmailPath';
 $ctrls['MailSendmailPath'] = '';
 
+/*
 $param['crlf02']='';
 $label['crlf02']='crlf';
 
@@ -175,6 +176,7 @@ $label['MailShowDetail'] = "Automatic mail show detail";
 $value['MailShowDetail'] = "'true' or 'false', set to true to add detail of item in automatic mail message";
 $pname['MailShowDetail'] = 'paramMailShowDetail';
 $ctrls['MailShowDetail'] = '=false=true=';
+*/
 
 $param['crlf03']='';
 $label['crlf03']='crlf';
@@ -191,11 +193,13 @@ $value['PasswordMinLength'] = "any integer, to force a long password (keep is re
 $pname['PasswordMinLength'] = 'paramPasswordMinLength';
 $ctrls['PasswordMinLength'] = 'integer';
 
+/*
 $param['lockPassword'] = 'false';                              
 $label['lockPassword'] = "Disable password change functionality";
 $value['lockPassword'] = "'true' or 'false', if set to true, only admin can reset password)";
 $pname['lockPassword'] = 'lockPassword';
 $ctrls['lockPassword'] = '=false=true=';
+*/
 
 $param['crlf04']='';
 $label['crlf04']='crlf';
@@ -233,11 +237,13 @@ $value['FadeLoadingMode'] = "'true' or 'false', if set to 'true' screens will ap
 $pname['FadeLoadingMode'] = 'paramFadeLoadingMode';
 $ctrls['FadeLoadingMode'] = '=true=false=';
 
+/*
 $param['RowPerPage'] = '50';                              
 $label['RowPerPage'] = "Number of row per page on main Grid view";
 $value['RowPerPage'] = "any integer to define number on rows rendering at a time (see Dojo ...)";
 $pname['RowPerPage'] = 'paramRowPerPage';
 $ctrls['RowPerPage'] = 'integer';
+*/
 
 $param['IconSize'] = '22';                              
 $label['IconSize'] = "Icon size on menu tree";
@@ -256,6 +262,8 @@ $ctrls['DefaultTheme'] = '=ProjectOrRia=ProjectOrRiaContrasted=ProjectOrRiaLight
                        . '=orange=orangeLight=orangeContrast'
                        . '=grey=greyLight=greyContrast'
                        . '=white=random=';
+
+/*                       
 $param['crlf06']='';
 $label['crlf06']='crlf';
 
@@ -264,6 +272,7 @@ $label['PathSeparator'] = "Path separator";
 $value['PathSeparator'] = "depending on system, '\\' for Windows, '/' for Unix";
 $pname['PathSeparator'] = 'paramPathSeparator';
 $ctrls['PathSeparator'] = '=/=\\=';
+*/
 
 $param['crlf07']='';
 $label['crlf07']='crlf';
@@ -310,18 +319,20 @@ $value['logLevel'] = "'4' for script tracing, '3' for debug, '2' for general tra
 $pname['logLevel'] = 'logLevel';
 $ctrls['logLevel'] = '=4=3=2=1=0=';
 
+/*
 $param['DebugMode'] = 'false';                              
 $label['DebugMode'] = "Setup Dojo debugging mode ";
 $value['DebugMode'] = "'true' or 'false'";
 $pname['DebugMode'] = 'paramDebugMode';
 $ctrls['DebugMode'] = '=true=false=';
-
+*/
+/*
 $param['billCode'] = '0';                              
 $label['billCode'] = "initial bill code";
 $value['billCode'] = "a number";
 $pname['billCode'] = 'defaultBillCode';
 $ctrls['billCode'] = '>=0';
-
+*/
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
