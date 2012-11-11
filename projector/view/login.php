@@ -135,6 +135,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                             dojo.byId('login').focus();
                             changePassword=true;
                             loadContent("../tool/loginCheck.php?resetPassword=true","loginResultDiv","loginForm");
+                            return false;
                           </script>
 			                  </button>  
 			                </td>
