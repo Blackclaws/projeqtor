@@ -3440,6 +3440,10 @@ function setAlertReadMessage() {
     setAlertRead(dojo.byId('idAlert').value);
   }
 }
+function setAlertReadMessageInForm() {
+  dijit.byId('readFlag').set('checked','checked');
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+}
 function setAlertRemindMessage() {
   closeAlertBox();
   setAlertRead(dojo.byId('idAlert').value, dijit.byId('remindAlertTime').get('value'));
