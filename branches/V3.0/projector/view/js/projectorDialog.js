@@ -214,7 +214,7 @@ function showPrint (page, context, comboName, outMode) {
 			}
 		}
 		if (dijit.byId("listTypeFilter")) {		
-			if (dijit.byId("listTypeFilter").get('value')) {
+			if (trim(dijit.byId("listTypeFilter").get('value'))) {
 				params+="&objectType="+encodeURIComponent(dijit.byId("listTypeFilter").get('value'));
 			}
 		}
@@ -292,7 +292,10 @@ function showPrint (page, context, comboName, outMode) {
 			params+="&sortWay="+sortWay;
 		}
 	}
-	if (printInNewWin) {
+	if (outMode=="csv") {
+	  dojo.byId("printFrame").src = "print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params;
+	  hideWait();
+	} else if (printInNewWin) {
 		var newWin=window.open("print.php?print=true&page="+page+"&objectClass="+cl+"&objectId="+id+params);
 		hideWait();
 	} else {
