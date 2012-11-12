@@ -1141,6 +1141,10 @@ function drawHistoryFromObjects($refresh=false) {
   $stockUser=null;
   $stockOper=null;
   foreach($historyList as $hist) {
+    if (substr($hist->colName,0,25)=='subDirectory|Attachement|' 
+     or substr($hist->colName,0,19)=='idTeam|Attachement|') {
+      continue;
+    }
     $colName=($hist->colName==null)?'':$hist->colName;
     $split=explode('|', $colName);
     if (count($split)==3) {

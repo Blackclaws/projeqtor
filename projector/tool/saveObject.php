@@ -42,6 +42,9 @@ Sql::beginTransaction();
 $newObj=new $className();
 $newObj->fillFromRequest($ext);
 if ($newObj->id=='0') {$newObj->id=null;}
+if ($newObj->id and $obj->id and $newObj->id!=$obj->id) {
+	throwError('last save object (' . get_class($obj) . ' #'.$obj->id.') is not the expected object (' . $className . ' #'.$newObj->id.').');
+}
 // save to database
 $result=$newObj->save();
 
