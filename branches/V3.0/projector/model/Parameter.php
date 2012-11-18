@@ -154,7 +154,8 @@ class Parameter extends SqlElement {
                     'de'=>i18n('langDe'),
                     'es'=>i18n('langEs'),
                     'pt'=>i18n('langPt'),
-                    'ru'=>i18n('langRu'));
+                    'ru'=>i18n('langRu'),
+                    'zh'=>i18n('langZh'));        
         break;
       case 'defaultProject':
         if (array_key_exists('user',$_SESSION)) {
