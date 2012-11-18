@@ -1245,8 +1245,7 @@ function drawHistoryFromObjects($refresh=false) {
       } else {
         $oldValue=htmlEncode($oldValue,'print');
         $newValue=htmlEncode($newValue,'print');
-      }
-      
+      }     
       echo '<td class="historyData" width="23%">' . $oldValue . '</td>';
       echo '<td class="historyData" width="23%">' . $newValue . '</td>';
       echo '<td class="historyData'. $class .'" width="15%">' . $date . '</td>';
@@ -2462,7 +2461,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
         </div>
         <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="center" >       
         </div> 
-        <div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');"><div id="detailBarIcon" align="center"></div></div>
+        <div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');">
+          <div id="detailBarIcon" align="center"></div>
+        </div>
       </div>
     </div>
     <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center" >
@@ -2600,9 +2601,20 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
       </div>
       <br/>
       <?php }?>
+  <?php } else {
+      $titlePane=$objClass."_history";?>
+      <div style="display:none; width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
+       title="<?php echo i18n('elementHistoty');?>"
+       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+       id="<?php echo $titlePane;?>"         
+       onHide="saveCollapsed('<?php echo $titlePane;?>');"
+       onShow="saveExpanded('<?php echo $titlePane;?>');" >
+       
+      </div>
   <?php 
-  } 
-  if ( ! $refresh and  ! $print) { ?>
+  } ?>
+  
+  <?php if ( ! $refresh and  ! $print) { ?>
     </div>
   <?php 
   }?>   

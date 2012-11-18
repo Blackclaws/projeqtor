@@ -115,7 +115,7 @@ class Workflow extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-    global $_REQUEST;
+    global $_REQUEST, $print;
     if (array_key_exists('destinationWidth', $_REQUEST)) {
       $detailWidth=$_REQUEST['destinationWidth'];
       $detailWidth-=30;
@@ -305,8 +305,11 @@ class Workflow extends SqlElement {
           }
         } 
       }
-      $result.='<div style="width:'.$detailWidth.'; height:100%; overflow: auto; border: 1px solid #A0A0A0;">';
-      $result.='<table style="zoom:90%;margin:0; spacing:0; padding:0; background-color:#FFFFFF">';
+      if (!$print) {
+        $result.='<div style="width:'.$detailWidth.'; height:auto; overflow-x: auto; overflow-y: hidden; border: 1px solid #A0A0A0;">';
+        //$result.='<div>';
+      }
+      $result.='<table style="zoom:90%;margin:0; spacing:0; padding:0; background-color:#FFFFFF;">';
       $result.='<tr><td colspan="' . (count($statusList)*2+1) .'"><div style="height: ' . $sepHeight . 'px;"></div></td></tr>';
       $i=0;
       foreach($statusList as $idL=>$nameL) {
@@ -401,9 +404,11 @@ class Workflow extends SqlElement {
       }
 
       $result.='</table>';
-      $result.='</div>';
-    }
-    
+      if (! $print) {
+      	//$result.='</div>';
+        $result.='</div>';
+      }
+    }  
     return $result;
   }
   
