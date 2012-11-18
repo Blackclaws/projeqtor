@@ -99,12 +99,18 @@
         }
     }
 
-    $queryWhere.= ($queryWhere=='')?'(':' and (';
-    $queryWhere.= getAccesResctictionClause($objectClass,$table);
-    if ($objectClass=='Project') {
-    	$queryWhere.= " or codeType='TMP' ";
+    if ($objectClass=='Version' and $comboDetail) {
+    	// No limit 
+    } else {
+      $queryWhere.= ($queryWhere=='')?'(':' and (';
+      $queryWhere.= getAccesResctictionClause($objectClass,$table);
+      if ($objectClass=='Project') {
+        $queryWhere.= " or codeType='TMP' ";
+      }
+      $queryWhere.= ')';
     }
-    $queryWhere.= ')';
+    
+    
     
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
@@ -378,6 +384,7 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
+
     $result=Sql::query($query);
     $nbRows=0;
     $dataType=array();
