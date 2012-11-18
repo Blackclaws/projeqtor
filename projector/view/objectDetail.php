@@ -2608,8 +2608,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
        open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
        id="<?php echo $titlePane;?>"         
        onHide="saveCollapsed('<?php echo $titlePane;?>');"
-       onShow="saveExpanded('<?php echo $titlePane;?>');" >
-       
+       onShow="saveExpanded('<?php echo $titlePane;?>');" >       
       </div>
   <?php 
   } ?>
