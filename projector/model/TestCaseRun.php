@@ -74,7 +74,7 @@ class TestCaseRun extends SqlElement {
     return $result;
   }
   
-  public function save() {
+  public function save($allowDupplicate=false) {
 
   	$new=($this->id)?false:true;
   	$old=new TestCaseRun($this->id);
@@ -100,23 +100,27 @@ class TestCaseRun extends SqlElement {
   	  $crit=array('idTestCase'=>$this->idTestCase);
   	  $list=$tc->getSqlElementsFromCriteria($crit);
   	  foreach ($list as $tc) {
-  	  	$tcr=new TestCaseRun();
-  	  	$tcr->idTestCase=$tc->id;
-        $tcr->idTestSession=$this->idTestSession;
-        $tcr->comment=$this->comment;
-        $tcr->idRunStatus=$this->idRunStatus;
-        $tcr->statusDateTime=$this->statusDateTime;
-        $tcr->idTicket=$this->idTicket;
-        $tcr->idle=$this->idle;
-        $res=$tcr->save();
-  	    if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
-	        $deb=stripos($res,'#');
-	        $fin=stripos($res,' ',$deb);
-	        $resId=substr($res,$deb, $fin-$deb);
-	        $deb=stripos($result,'#');
-	        $fin=stripos($result,' ',$deb);
-	        $result=substr($result, 0, $fin).','.$resId.substr($result,$fin);
-		    }
+  	  	$crit=array('idTestCase'=>$tc->id,'idTestSession'=>$this->idTestSession);
+		    $lst=$this->getSqlElementsFromCriteria($crit);
+		    if (count($lst)==0 or $allowDupplicate) {
+		    	$tcr=new TestCaseRun();
+	  	  	$tcr->idTestCase=$tc->id;
+	        $tcr->idTestSession=$this->idTestSession;
+	        $tcr->comment=$this->comment;
+	        $tcr->idRunStatus=$this->idRunStatus;
+	        $tcr->statusDateTime=$this->statusDateTime;
+	        $tcr->idTicket=$this->idTicket;
+	        $tcr->idle=$this->idle;
+	        $res=$tcr->save();
+	  	    if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
+		        $deb=stripos($res,'#');
+		        $fin=stripos($res,' ',$deb);
+		        $resId=substr($res,$deb, $fin-$deb);
+		        $deb=stripos($result,'#');
+		        $fin=stripos($result,' ',$deb);
+		        $result=substr($result, 0, $fin).','.$resId.substr($result,$fin);
+			    }
+        }
   	  }	
   	}
   	

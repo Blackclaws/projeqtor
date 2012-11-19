@@ -64,6 +64,9 @@ if ($mode=='add') {
 } else {
 	$arrayTestCase[]=$testCase;
 }
+if (count($arrayTestCase)>10) {
+	set_time_limit(300);
+}
 Sql::beginTransaction();
 $result="";
 foreach($arrayTestCase as $testCaseId) {
@@ -93,7 +96,7 @@ foreach($arrayTestCase as $testCaseId) {
   	}
   }    
   if ($save) {
-    $res=$testCaseRun->save();
+    $res=$testCaseRun->save($allowDuplicate);
 	  if (!$result) {
 	    $result=$res;
 	  } else if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
