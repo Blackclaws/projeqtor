@@ -1100,7 +1100,7 @@ function drawOrigin ($refType, $refId, $obj, $col, $print) {
     echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
     echo '</td><td xclass="noteData" style="height: 15px">';
     $orig=new $refType($refId);
-    echo $orig->name;
+    echo htmlEncode($orig->name);
     echo '</td></tr></table>';    
   } else {
   	echo '<table><tr height="20px"><td>';
@@ -1587,7 +1587,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
         }
         echo '<td class="linkData" ' . $goto . ' style="width:' . ( ($classLink)?'45':'35' ) . '%" title="' . $link->comment . '">';
-        echo (get_class($linkObj)=='DocumentVersion')?$linkObj->fullName:$linkObj->name;
+        echo (get_class($linkObj)=='DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);
         if ($link->comment and ! $print) {
           echo '&nbsp;&nbsp;<img src="img/note.png" />';
         } 
