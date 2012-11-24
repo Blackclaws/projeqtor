@@ -50,7 +50,7 @@ class="selectList" >
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {
 	 	 $lstObj=new $refTypeDep($selected);
-	 	 echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
+	 	 echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
 	 }
  }
  ?>

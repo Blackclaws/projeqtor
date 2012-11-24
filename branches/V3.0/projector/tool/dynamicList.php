@@ -24,7 +24,7 @@ onchange="enableWidget('dialogLinkSubmit');"
 class="selectList" >
  <?php
  foreach ($list as $lstObj) {
-   echo "<option value='$lstObj->id'>#$lstObj->id - $lstObj->name</option>";
+   echo "<option value='$lstObj->id'>#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
  }
  ?>
 </select>

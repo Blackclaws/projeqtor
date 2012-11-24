@@ -47,12 +47,12 @@ class="selectList" >
     $sel=" selected='selected' ";
     $found[$lstObj->id]=true;
    }
-   echo "<option value='$lstObj->id'" . $sel . ">#$lstObj->id - $lstObj->name</option>";
+   echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
  }
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {
 	   $lstObj=new $ref2Type($selected);
-	   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
+	   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
 	 }
  }
  ?>

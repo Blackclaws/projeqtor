@@ -139,7 +139,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
       echo '<OPTION value="' . $key . '"';
       if ( $selection and $key==$selection ) { echo ' SELECTED '; } 
-      echo '>' . $val . '</OPTION>';
+      echo '>' . htmlEncode($val) . '</OPTION>';
     }
   }
 }
