@@ -38,7 +38,7 @@ function getDate(dateString) {
  * @return the formatted value as an image (html code)
  */
 function booleanFormatter(value) {
-  if (value==1) { 
+  if (value!=0) { 
   	return '<img src="img/checkedOK.png" width="12" height="12" />'; 
   } else { 
   	return '<img src="img/checkedKO.png" width="12" height="12" />'; 
