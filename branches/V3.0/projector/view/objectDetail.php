@@ -2171,7 +2171,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
 	$class=get_class($obj);
 	$otherClass=($class=='TestCase')?'TestSession':'TestCase';
 	$nameWidth=67;
-	$canCreate=securityGetAccessRightYesNo('menu'.$class, 'update')=="YES";
+	$canCreate=securityGetAccessRightYesNo('menu'.$class, 'update', $obj)=="YES";
 	$canUpdate=$canCreate;
 	$canDelete=$canCreate;
 	if ($obj->idle==1) {

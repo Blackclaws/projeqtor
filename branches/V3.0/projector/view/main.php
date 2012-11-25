@@ -2352,7 +2352,7 @@ checkVersion(); ?>
 		             </td>
                  <td style="vertical-align: top">
 	                 <?php
-	                 $readRight=(securityGetAccessRightYesNo('menuTicket', 'read')=='YES')?'1':'0'; 
+	                 $readRight=(securityGetAccessRightYesNo('menuTicket', 'create')=='YES')?'1':'0'; 
 	                 if ($readRight) {
 	                   $createRight=(securityGetAccessRightYesNo('menuTicket', 'create')=='YES')?'1':'0';?>
                    <button id="testCaseRunTicketDetailButton" dojoType="dijit.form.Button" showlabel="false"
