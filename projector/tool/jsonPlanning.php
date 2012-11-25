@@ -142,7 +142,7 @@
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
           echo (++$nbFields>1)?',':'';
-          echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val) . '"';
+          echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(htmlEncode($val)) . '"';
           if ($id=='id') {$idPe=$val;}
         }
         //add expanded status
