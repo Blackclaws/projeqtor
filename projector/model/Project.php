@@ -458,8 +458,14 @@ class Project extends SqlElement {
   public function save() {
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
-
+    //$old=new Project($this->id);
+    //$oldtype=new ProjectType($old->idProjectType);
     $type=new ProjectType($this->idProjectType);
+    
+    $noMoreAdministrative=false;
+    if ($this->codeType=='ADM' and $type->code!='ADM') {
+    	$noMoreAdministrative=true;
+    }
     $this->codeType=$type->code;
     
     $this->ProjectPlanningElement->refName=$this->name;
@@ -512,6 +518,15 @@ class Project extends SqlElement {
 
     if ($this->idle) {
       VersionProject::updateIdle('Version', $this->id);
+    }
+    if ($noMoreAdministrative) {
+    	 $ass=new Assignment();
+    	 $lstAss=$ass->getSqlElementsFromCriteria(array('idProject'=>$this->id));
+    	 foreach ($lstAss as $ass) {
+    	 	 if ($ass->realWork==0 and $ass->leftWork==0) {
+    	 	 	 $ass->delete();
+    	 	 }
+    	 }
     }
     
     return $result;
