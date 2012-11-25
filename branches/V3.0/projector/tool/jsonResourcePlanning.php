@@ -332,7 +332,7 @@ if (Sql::$lastQueryNbRows == 0) {
 				if ($val==null) {$val=" ";}
 				if ($val=="") {$val=" ";}
 				echo (++$nbFields>1)?',':'';
-				echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val) . '"';
+				echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(htmlEncode($val)) . '"';
 				if ($id=='idPe') {$idPe=$val;}
 			}
 			//add expanded status

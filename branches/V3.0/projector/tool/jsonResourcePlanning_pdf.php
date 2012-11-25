@@ -139,6 +139,7 @@ if (Sql::$lastQueryNbRows > 0) {
   $keyRes="";
   $idRes='';
 	while ($line = Sql::fetchLine($result)) {
+		$line=array_change_key_case($line,CASE_LOWER);
 		if ($line['idresource']!=$idResource) {
 			$idResource=$line['idresource'];
 			$arrayResource[$idResource]=array();;

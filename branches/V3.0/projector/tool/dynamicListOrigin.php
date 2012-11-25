@@ -35,11 +35,11 @@ class="selectList" >
     $sel=" selected='selected' ";
     $found=true;
    }
-   echo "<option value='$lstObj->id'" . $sel . ">#$lstObj->id - $lstObj->name</option>";
+   echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
  }
  if ($selected and ! $found) {
    $lstObj=new $originType($selected);
-   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
+   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
  }
  ?>
 </select>

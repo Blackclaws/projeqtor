@@ -27,7 +27,7 @@ class="input" style="width:345px">
  <option value=""></option>
  <?php
  foreach ($list as $lstObj) {
-   echo '<option value="' . $lstObj->id .'" >'.$lstObj->name.'</option>';
+   echo '<option value="' . $lstObj->id .'" >'.htmlEncode($lstObj->name).'</option>';
  }
  
  ?>

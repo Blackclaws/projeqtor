@@ -49,12 +49,12 @@ class="selectList" >
     $sel=" selected='selected' ";
     $found[$id]=true;
    }
-   echo "<option value='$id'" . $sel . ">#$id - $lst</option>";
+   echo "<option value='$id'" . $sel . ">#$id - ".htmlEncode($lst)."</option>";
  }
  foreach ($selectedArray as $selected) {
 	 if ($selected and ! isset($found[$selected]) ) {
 	   $lstObj=new $versionType($selected);
-	   echo "<option value='$lstObj->id' selected='selected' >#$lstObj->id - $lstObj->name</option>";
+	   echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
 	 }
  }
  ?>

@@ -37,7 +37,7 @@ foreach ($selectedArray as $selected) {
   ondblclick="saveTestCaseRun();" >
  <?php
  foreach ($list as $lstObj) {
-   echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#$lstObj->id - $lstObj->name</option>";
+   echo "<option value='$lstObj->id'" . ((in_array($lstObj->id,$selectedArray))?' selected ':'') . ">#".$lstObj->id." - ".htmlEncode($lstObj->name)."</option>";
  }
  ?>
 </select>

@@ -633,7 +633,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
            //. ($filter->name==$currentFilter)?'':'onClick="selectStoredFilter('. "'" . $filter->id . "'" . ');" ')
            . 'onClick="selectStoredFilter(\'' . $filter->id . '\',\'' . $context . '\');" ' 
            . ' title="' . i18n("selectStoredFilter") . '" >'
-           . $filter->name
+           . htmlEncode($filter->name)
            . ( ($defaultFilter==$filter->id and $context!='directFilterList')?' (' . i18n('defaultValue') . ')':'')
            . "</td>";
       if ($context!='directFilterList') {
