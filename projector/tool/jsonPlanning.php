@@ -142,7 +142,9 @@
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
           echo (++$nbFields>1)?',':'';
-          echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(htmlEncode($val)) . '"';
+          //echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(htmlEncode($val)) . '"';
+          if ($id=='refname' or $id=='resource') $val=htmlEncode($val);
+          echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val) . '"';
           if ($id=='id') {$idPe=$val;}
         }
         //add expanded status
