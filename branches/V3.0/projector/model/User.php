@@ -378,6 +378,7 @@ class User extends SqlElement {
     		$wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
     		if (array_key_exists($wbsTest,$wbsArray)) {
     			$wbsParent=$wbsTest;
+    			$wbsTest="";
     		}
     	}
     	if (! $wbsParent) {

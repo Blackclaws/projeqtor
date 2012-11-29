@@ -88,12 +88,12 @@ if (checkNoData($result)) exit;
 $colWidth=round(80/count($projects));
 echo '<table style="width:95%;" align="center">';
 echo '<tr>';
-echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
-echo '<td colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';
-echo '<td class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
+echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+echo '<td style="width:80%" colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';
+echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
 echo '</tr><tr>';
 foreach ($projects as $id=>$name) {
-  echo '<td class="reportTableColumnHeader">' . $name . '</td>';
+  echo '<td style="width:'.$colWidth.'%" class="reportTableColumnHeader">' . $name . '</td>';
   $sumProj[$id]=0;  
 }
 

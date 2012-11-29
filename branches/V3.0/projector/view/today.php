@@ -32,7 +32,7 @@
       foreach($listMsg as $msg) {
         //echo'<br />';
         $type=new MessageType($msg->idMessageType);
-        echo '<tr><td class="messageHeader" style="color:' . $type->color . ';">' . $msg->name . '</td></tr>';
+        echo '<tr><td class="messageHeader" style="color:' . $type->color . ';">' . htmlEncode($msg->name) . '</td></tr>';
         echo '<tr><td class="messageData" style="color:' . $type->color . ';">' . htmlEncode($msg->description, 'print') . '</td></tr>';
       }
       echo'</table>';
@@ -186,7 +186,7 @@
             $goto=' onClick="gotoElement(' . "'Project','" . $prj->id . "'" . ');" style="cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
           }
           echo '<tr >' .
-             '  <td class="messageData" '. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . $name . '</div></td>' .
+             '  <td class="messageData" '. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
@@ -368,9 +368,9 @@
       echo '  <td class="messageData" style="'.$color.'">' . 
                    '<table><tr><td><img src="css/images/icon' . $class . '16.png" width="16" height="16" title="' . i18n($class). '"/>' .
                    '</td><td>&nbsp;</td><td>#' . $elt->id. '</td></tr></table></td>' .
-             '  <td class="messageData" style="'.$color.'">' . SqlList::getNameFromId('Project', $elt->idProject) . '</td>' .
+             '  <td class="messageData" style="'.$color.'">' . htmlEncode(SqlList::getNameFromId('Project', $elt->idProject)) . '</td>' .
              '  <td class="messageData" style="'.$color.'">' . SqlList::getNameFromId($class .'Type', $elt->$idType) . '</td>' .
-             '  <td class="messageData" style="'.$color.'">' . $elt->name . '</td>' .
+             '  <td class="messageData" style="'.$color.'">' . htmlEncode($elt->name) . '</td>' .
              '  <td class="messageDataValue" style="'.$color.'" NOWRAP>' . htmlFormatDate($echeance) . '</td>' .
              '  <td class="messageData" style="'.$color.'">' . htmlDisplayColored($status,$statusColor) . '</td>' .
              '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' .
