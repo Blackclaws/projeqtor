@@ -143,8 +143,12 @@
           if ($val=="") {$val=" ";}
           echo (++$nbFields>1)?',':'';
           //echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson(htmlEncode($val)) . '"';
-          if ($id=='refname' or $id=='resource') $val=htmlEncode($val);
-          echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val) . '"';
+          if ($id=='refname' or $id=='resource') {
+          	$val=htmlEncode(htmlEncodeJson($val));
+          } else {
+          	$val=htmlEncodeJson($val);
+          }
+          echo '"' . htmlEncode($id) . '":"' . $val . '"';
           if ($id=='id') {$idPe=$val;}
         }
         //add expanded status
