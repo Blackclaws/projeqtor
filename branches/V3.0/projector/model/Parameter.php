@@ -341,9 +341,6 @@ class Parameter extends SqlElement {
       	                     'paramDefaultTimezone'=>'text',
       	                     'currency'=>'text',
       	                     'currencyPosition'=>'list',
-      	                     //'sectionDebug'=>'section',
-      	                     //'logFile'=>'text',
-      	                     //'logLevel'=>'list',
       	                     'sectionMiscellaneous'=>'section',
       	                     'getVersion'=>'list',
       	                     'csvSeparator'=>'list',
@@ -403,6 +400,13 @@ class Parameter extends SqlElement {
     	  unset($parameterList['paramMailSmtpPort']);
     	  unset($parameterList['paramMailSendmailPath']);
     	  unset($parameterList['cronImportDirectory']);
+    	  unset($parameterList['paramMemoryLimitForPDF']);
+    	  unset($parameterList['sectionFiles']);
+    	  unset($parameterList['paramAttachementDirectory']);
+    	  unset($parameterList['paramAttachementMaxSize']);    	  
+    	  unset($parameterList['paramReportTempDirectory']);
+    	  unset($parameterList['paramMailEol']);
+    	  unset($parameterList['cronDirectory']);
     	}
     }
     return $parameterList;
