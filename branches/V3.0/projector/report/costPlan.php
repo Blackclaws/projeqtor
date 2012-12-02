@@ -16,7 +16,7 @@
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-    $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+    $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
   }
   include "header.php";
 
@@ -102,7 +102,7 @@
       }
       echo '<TR>';
       echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . $line['refname'] . '</TD>';
+      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refname']) . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($validatedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($assignedCost,true)  . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . htmlDisplayCurrency($plannedCost,true)  . '</TD>' ;

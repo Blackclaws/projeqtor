@@ -16,7 +16,7 @@ echo "workPerActivity.php";
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-    $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+    $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
   }
   include "header.php";
 

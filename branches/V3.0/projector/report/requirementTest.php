@@ -26,13 +26,13 @@ $user=$_SESSION['user'];
   // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramProduct!="") {
-  $headerParameters.= i18n("colIdProduct") . ' : ' . SqlList::getNameFromId('Product', $paramProduct) . '<br/>';
+  $headerParameters.= i18n("colIdProduct") . ' : ' . htmlEncode(SqlList::getNameFromId('Product', $paramProduct)) . '<br/>';
 }
 if ($paramVersion!="") {
-  $headerParameters.= i18n("colVersion") . ' : ' . SqlList::getNameFromId('Version', $paramVersion) . '<br/>';
+  $headerParameters.= i18n("colVersion") . ' : ' . htmlEncode(SqlList::getNameFromId('Version', $paramVersion)) . '<br/>';
 }
 include "header.php";
 
@@ -111,7 +111,7 @@ foreach ($lst as $req) {
   echo '<td class="reportTableData" style="width:12%">' . (($req->idTargetVersion)?$lstVersion[$req->idTargetVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:8%">' . (($req->idRequirementType)?$lstType[$req->idRequirementType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . $req->id . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;width:35%;">' . $req->name . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:35%;">' . htmlEncode($req->name) . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . $req->countLinked . '</td>';
   echo '<td class="reportTableData" style="width:5%;">' . $req->countPlanned . '</td>';
   echo '<td class="reportTableData" style="width:5%;' . (($req->countPassed and $req->countPassed==$req->countPlanned)?'color:green;':'') . '">' . $req->countPassed . '</td>';

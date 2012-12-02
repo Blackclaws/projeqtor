@@ -26,13 +26,13 @@ $user=$_SESSION['user'];
   // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramProduct!="") {
-  $headerParameters.= i18n("colIdProduct") . ' : ' . SqlList::getNameFromId('Product', $paramProduct) . '<br/>';
+  $headerParameters.= i18n("colIdProduct") . ' : ' . htmlEncode(SqlList::getNameFromId('Product', $paramProduct)) . '<br/>';
 }
 if ($paramVersion!="") {
-  $headerParameters.= i18n("colVersion") . ' : ' . SqlList::getNameFromId('Version', $paramVersion) . '<br/>';
+  $headerParameters.= i18n("colVersion") . ' : ' . htmlEncode(SqlList::getNameFromId('Version', $paramVersion)) . '<br/>';
 }
 include "header.php";
 
@@ -125,7 +125,7 @@ foreach ($lst as $tc) {
   echo '<td class="reportTableData" style="width:10%">' . (($tc->idVersion)?$lstVersion[$tc->idVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:9%">' . (($tc->idTestCaseType)?$lstType[$tc->idTestCaseType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . $tc->id . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;width:35%">' . $tc->name . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:35%">' . htmlEncode($tc->name) . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . $countTotal . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . $countPlanned . '</td>';
   echo '<td class="reportTableData" style="width:5%;' . (($countPassed and $countPassed==$countTotal)?'color:green;':'') . '">' . $countPassed . '</td>';

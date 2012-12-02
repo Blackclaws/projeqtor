@@ -33,10 +33,10 @@ $periodValue=$_REQUEST['periodValue'];
 // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramTeam!="") {
-  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+  $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -127,7 +127,7 @@ foreach ($resources as $idR=>$nameR) {
   if (!$paramTeam or $res->idTeam==$paramTeam) {
 	  $sumRes=0;
 	  echo '<tr>';
-	  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . $nameR . '</td>';
+	  echo '<td class="reportTableLineHeader" style="width:20%" rowspan="' . (count($result[$idR]) +1) . '">' . htmlEncode($nameR) . '</td>';
 	  foreach ($activities as $key=>$nameA) {
 	    if (array_key_exists($idR, $result)) {
 	      if (array_key_exists($key, $result[$idR])) {
@@ -135,7 +135,7 @@ foreach ($resources as $idR=>$nameR) {
 	        $sumRes+=$val; 
 	        $sum+=$val;
 	        echo '<td class="reportTableData" style="width:10%">' . Work::displayWorkWithUnit($val). '</td>';
-	        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . $project[$key] . '</td>';
+	        echo '<td class="reportTableData" style="width:20%; text-align:left;">' . htmlEncode($project[$key]) . '</td>';
 	        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($nameA) . '</td>'; 
 	//        echo '<td class="reportTableData" style="width:25%; text-align:left;">' . htmlEncode($description[$key]) . '</td>'; 
 	        echo '<td class="reportTableData" style="width:25%; text-align:left;" >' . htmlEncode($parent[$key]) . '</td>'; 

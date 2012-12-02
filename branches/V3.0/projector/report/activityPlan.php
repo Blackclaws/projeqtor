@@ -28,10 +28,10 @@ $periodValue=$_REQUEST['periodValue'];
 // Header
 $headerParameters="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
 }
 if ($paramTeam!="") {
-  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+  $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -88,7 +88,7 @@ foreach ($lstWork as $work) {
   } 
   $result[$work->idProject][$ref][$work->idResource][$work->day]+=$work->work;
 }
-echo "OK";
+
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
@@ -213,7 +213,7 @@ foreach ($projects as $idP=>$nameP) {
     $cpt+=count($res);
   }
   $cpt+=1;
-  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . $nameP . '</td>';
+  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . htmlEncode($nameP) . '</td>';
   foreach ($result[$idP] as $idA=>$acti) {
     foreach ($result[$idP][$idA] as $idR=>$ress) { 
 	    if (array_key_exists($idA, $activities)) {

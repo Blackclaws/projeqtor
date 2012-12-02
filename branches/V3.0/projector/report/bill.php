@@ -100,8 +100,8 @@ foreach ($billList as $bill)
 	// NAME
 	echo '<table width="100%"><tr><td width="70%">';
 	echo '<div style="position: relative; top: 1em; left: 1em; width: 100%; height: 3em; ">';
-    echo " " . $bill->name . '<br/>';
-    echo " " . i18n('Project') . " : " . $project->name;
+    echo " " . htmlEncode($bill->name) . '<br/>';
+    echo " " . i18n('Project') . " : " . htmlEncode($project->name);
   echo '</div>';  
   echo '</td><td style="width:30%; text-align: right;">';
   // DATE
@@ -201,8 +201,8 @@ foreach ($billList as $bill)
 
 	
 	$client = new Client($bill->idClient);
-	echo $client->name."<br/>";
-	echo $client->description."<br/>";
+	echo htmlEncode($client->name)."<br/>";
+	echo htmlEncode($client->description)."<br/>";
 	echo "Delai : ".$client->paymentDelay."<br/>";
 	
 	if ($client->id)
@@ -212,7 +212,7 @@ foreach ($billList as $bill)
 		$userList = $user->getSqlElementsFromCriteria($critb,false);
 		if (count($userList)!=0)
 		{
-			echo "Contact : ".$userList[0]->name."<br/>";
+			echo "Contact : ".htmlEncode($userList[0]->name)."<br/>";
 			echo "Portable : ".$userList[0]->mobile."<br/>";
 			echo "Fixe : ".$userList[0]->phone."<br/>";
 			echo "Fax : ".$userList[0]->fax."<br/><br/>";

@@ -52,7 +52,7 @@ if ( array_key_exists('report',$_REQUEST) ) {
 		$headerParameters.= i18n("colFormat") . ' : ' . i18n($_REQUEST['format']) . '<br/>';
 	}
 	if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-		$headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+		$headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
 	}
 	include "../report/header.php";
 }

@@ -30,16 +30,16 @@ $user=$_SESSION['user'];
   // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramProduct!="") {
-  $headerParameters.= i18n("colIdProduct") . ' : ' . SqlList::getNameFromId('Product', $paramProduct) . '<br/>';
+  $headerParameters.= i18n("colIdProduct") . ' : ' . htmlEncode(SqlList::getNameFromId('Product', $paramProduct)) . '<br/>';
 }
 if ($paramSession!="") {
-  $headerParameters.= i18n("colIdTestSession") . ' : ' . SqlList::getNameFromId('TestSession', $paramSession) . '<br/>';
+  $headerParameters.= i18n("colIdTestSession") . ' : ' . htmlEncode(SqlList::getNameFromId('TestSession', $paramSession)) . '<br/>';
 }
 if ($paramVersion!="") {
-  $headerParameters.= i18n("colVersion") . ' : ' . SqlList::getNameFromId('Version', $paramVersion) . '<br/>';
+  $headerParameters.= i18n("colVersion") . ' : ' . htmlEncode(SqlList::getNameFromId('Version', $paramVersion)) . '<br/>';
 }
 include "header.php";
 
@@ -117,7 +117,7 @@ foreach ($lst as $ts) {
   echo '<td class="reportTableData" style="width:10%">' . (($ts->idVersion)?$lstVersion[$ts->idVersion]:'') . '</td>';
   echo '<td class="reportTableData" style="width:9%">' . (($ts->idTestSessionType)?$lstType[$ts->idTestSessionType]:'') . '</td>';
   echo '<td class="reportTableData" style="width:5%">#' . $ts->id . '</td>';
-  echo '<td class="reportTableData" style="text-align:left;width:35%;">' . $ts->name . '</td>';
+  echo '<td class="reportTableData" style="text-align:left;width:35%;">' . htmlEncode($ts->name) . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . $ts->countTotal . '</td>';
   echo '<td class="reportTableData" style="width:5%">' . ($ts->countTotal-$ts->countPassed-$ts->countBlocked-$ts->countFailed) . '</td>';
   echo '<td class="reportTableData" style=""width:5%;' . (($ts->countPassed and $ts->countPassed==$ts->countTotal)?'color:green;':'') . '">' . $ts->countPassed . '</td>';
@@ -142,7 +142,7 @@ foreach ($lst as $ts) {
       $tc=new TestCase($tcr->idTestCase);
     	echo '<tr>';
       echo '<td class="largeReportData" style="text-align: center;width:5%">' . (($tc->id)?'#':'') . $tc->id . '</td>';
-      echo '<td class="largeReportData" style="width:' . (($paramDetail)?'20':'80') . '%" >' . $tc->name . '</td>';
+      echo '<td class="largeReportData" style="width:' . (($paramDetail)?'20':'80') . '%" >' . htmlEncode($tc->name) . '</td>';
       $st=new RunStatus($tcr->idRunStatus);
       echo '<td class="largeReportData" style="text-align: left;width:7%" >' . (($tcr->id)?colorNameFormatter(i18n($st->name) . '#split#' . $st->color):'') . '</td>';
       echo '<td class="largeReportData" style="text-align: center;font-size:75%;width:8%" >' . htmlFormatDate($tcr->statusDateTime, true) . '</td>';

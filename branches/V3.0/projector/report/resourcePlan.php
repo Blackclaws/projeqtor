@@ -1,6 +1,6 @@
 <?php
-//echo "resourcePlan.php";
 include_once '../tool/projector.php';
+//echo "resourcePlan.php";
 
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
@@ -33,10 +33,10 @@ $periodValue=$_REQUEST['periodValue'];
 // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramTeam!="") {
-  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+  $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -178,10 +178,10 @@ foreach ($resources as $idR=>$nameR) {
 	    $sum[$startDate+$i-1]='';
 	  }
 	  echo '<tr height="20px">';
-	  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. (count($result[$idR])+1) . '">' . $nameR . '</td>';
+	  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. (count($result[$idR])+1) . '">' . htmlEncode($nameR) . '</td>';
 	  foreach ($result[$idR] as $idP=>$proj) {
 	    if (array_key_exists($idP, $projects)) {
-	      echo '<td class="reportTableData" style="width:150px;text-align: left;">' . $projects[$idP] . '</td>';
+	      echo '<td class="reportTableData" style="width:150px;text-align: left;">' . htmlEncode($projects[$idP]) . '</td>';
 	      $lineSum='';
 	      for ($i=1; $i<=$nbDays;$i++) {
 	        $day=$startDate+$i-1;

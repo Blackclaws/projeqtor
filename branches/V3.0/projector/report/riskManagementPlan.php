@@ -2,6 +2,7 @@
 // Header
 include_once '../tool/projector.php';
 include_once('../tool/formatter.php');
+
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {
   $paramProject=trim($_REQUEST['idProject']);
@@ -9,7 +10,7 @@ if (array_key_exists('idProject',$_REQUEST)) {
   // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }  
 include "header.php";
 

@@ -31,13 +31,13 @@ if (! isset($includedReport)) {
   // Header
   $headerParameters="";
   if ($paramProject!="") {
-    $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+    $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
   }
   if ($paramTicketType!="") {
-    $headerParameters.= i18n("colIdTicketType") . ' : ' . SqlList::getNameFromId('TicketType', $paramTicketType) . '<br/>';
+    $headerParameters.= i18n("colIdTicketType") . ' : ' . htmlEncode(SqlList::getNameFromId('TicketType', $paramTicketType)) . '<br/>';
   }
   if ($paramResponsible!="") {
-    $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
+    $headerParameters.= i18n("colResponsible") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource', $paramResponsible)) . '<br/>';
   }
   if ($paramOtherVersion!="") {
     $headerParameters.= i18n("colOtherVersions") . ' : ' . i18n('displayYes') . '<br/>';

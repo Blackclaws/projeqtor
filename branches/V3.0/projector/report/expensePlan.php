@@ -20,10 +20,10 @@ if (array_key_exists('scope',$_REQUEST)) {
 
 $headerParameters="";
 if ($idProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project',$idProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project',$idProject)) . '<br/>';
 }
 if ($idResource!="") {
-  $headerParameters.= i18n("colIdResource") . ' : ' . SqlList::getNameFromId('Resource',$idResource) . '<br/>';
+  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$idResource)) . '<br/>';
 }
 include "header.php";
 
@@ -160,7 +160,7 @@ foreach($tab as $proj=>$lists) {
   $sumProj[$proj]=array();
   for ($i=1; $i<=2; $i++) {
     if ($i==1) {
-      echo '<tr><td class="reportTableLineHeader" rowspan="2">' . $lists['name'] . '</td>';
+      echo '<tr><td class="reportTableLineHeader" rowspan="2">' . htmlEncode($lists['name']) . '</td>';
       $style='';
       $mode='real';
       $ital=false;
