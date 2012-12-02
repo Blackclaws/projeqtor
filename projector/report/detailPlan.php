@@ -27,10 +27,10 @@ $periodValue=$_REQUEST['periodValue'];
 // Header
 $headerParameters="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $_REQUEST['idProject']) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $_REQUEST['idProject'])) . '<br/>';
 }
 if ($paramTeam!="") {
-  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+  $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -190,11 +190,11 @@ foreach ($resources as $idR=>$nameR) {
 	    $cpt+=count($res);
 	  }
 	  $cpt+=1;
-	  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . $nameR . '</td>';
+	  echo '<td class="reportTableLineHeader" style="width:100px;" rowspan="'. ($cpt) . '">' . htmlEncode($nameR) . '</td>';
 	  foreach ($result[$idR] as $idP=>$proj) {
 	    foreach ($result[$idR][$idP] as $idA=>$acti) { 
 		    if (array_key_exists($idP, $projects)) {
-		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . $projects[$idP] . '</td>';
+		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($projects[$idP]) . '</td>';
 		      echo '<td class="reportTableData" style="width:100px;text-align: left;">' . htmlEncode($activities[$idA]) . '</td>';
 	        
 		      $lineSum='';

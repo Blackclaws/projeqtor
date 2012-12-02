@@ -50,7 +50,7 @@ $affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
 foreach($affLst as $aff){
 	$ress=new Resource($aff->idResource);
 	if ($ress->id and !$ress->idle) {
-    $resources[$ress->id]=$ress->name;
+    $resources[$ress->id]=htmlEncode($ress->name);
 	}
 }
 

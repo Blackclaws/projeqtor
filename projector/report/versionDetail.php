@@ -25,13 +25,13 @@ $user=$_SESSION['user'];
   // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramResponsible!="") {
-  $headerParameters.= i18n("colResponsible") . ' : ' . SqlList::getNameFromId('Resource', $paramResponsible) . '<br/>';
+  $headerParameters.= i18n("colResponsible") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource', $paramResponsible)) . '<br/>';
 }
 if ($paramVersion!="") {
-  $headerParameters.= i18n("colVersion") . ' : ' . SqlList::getNameFromId('Version', $paramVersion) . '<br/>';
+  $headerParameters.= i18n("colVersion") . ' : ' . htmlEncode(SqlList::getNameFromId('Version', $paramVersion)) . '<br/>';
 }
 if ($paramOtherVersion!="") {
     $headerParameters.= i18n("colOtherVersions") . ' : ' . i18n('displayYes') . '<br/>';
@@ -59,7 +59,7 @@ foreach ($lstVersion as $versId=>$versName) {
   $version=new Version($versId);
   //$versDate = ' (' . htmlFormatDate(SqlList::getFieldFromId('Version', $versId, 'plannedEisDate')) . ')';
   //if ($versDate=='')
-  echo '<td class="reportTableHeader" style="width:40%" colspan="3">' . $version->name . '</td>';
+  echo '<td class="reportTableHeader" style="width:40%" colspan="3">' . htmlEncode($version->name) . '</td>';
   echo '<td class="largeReportHeader" style="width:10%;text-align:center;" rowspan="2">' . i18n('colIdStatus') . '</td>';
   echo '<td class="largeReportHeader" style="width:10%;text-align:center;" rowspan="2">' . i18n('colResponsible') . '</td>';
   echo '<td class="largeReportHeader" style="width:10%;text-align:center;" rowspan="2">' . i18n('colIdPriority') . '</td>';
@@ -125,7 +125,7 @@ foreach ($lstVersion as $versId=>$versName) {
       echo '<tr>';
       echo '<td class="largeReportData" style="text-align: center;width:10%">' . i18n(get_class($item)) . ' #' . $item->id . '</td>';
       echo '<td class="largeReportData" style="text-align: center;width:10%">' . SqlList::getNameFromId('Type',$item->$type) . '</td>';
-      echo '<td class="largeReportData" style="width:20%;text-align:left;">' . $item->name . '</td>';
+      echo '<td class="largeReportData" style="width:20%;text-align:left;">' . htmlEncode($item->name) . '</td>';
       echo '<td class="largeReportData" style="width:10%">' . (($item->idStatus)?formatColor('Status', $item->idStatus):'') . '</td>';
       echo '<td class="largeReportData" style="text-align:left;text-align: center;width:10%">' . SqlList::getNameFromId('Resource',$item->idResource) . '</td>';
       echo '<td class="largeReportData" style="width:100px">' . ((isset($item->idPriority))?formatColor('Priority', $item->idPriority):'') . '</td>';

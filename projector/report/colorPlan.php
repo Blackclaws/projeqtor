@@ -33,10 +33,10 @@ $periodValue=$_REQUEST['periodValue'];
 // Header
 $headerParameters="";
 if ($paramProject!="") {
-  $headerParameters.= i18n("colIdProject") . ' : ' . SqlList::getNameFromId('Project', $paramProject) . '<br/>';
+  $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project', $paramProject)) . '<br/>';
 }
 if ($paramTeam!="") {
-  $headerParameters.= i18n("colIdTeam") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+  $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -144,7 +144,7 @@ foreach($projects as $idP=>$nameP) {
   echo '<td width="20px">';
   echo '<div style="border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:' . $projectsColor[$idP] . ';">&nbsp;';
   echo '</div>';
-  echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . $nameP . '</td>';
+  echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . htmlEncode($nameP) . '</td>';
   echo '<td width="5px">&nbsp;&nbsp;&nbsp;</td>';
 }
 echo '<td>&nbsp;</td></tr></table>';
