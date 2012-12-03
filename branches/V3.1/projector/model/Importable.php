@@ -47,6 +47,13 @@ class Importable extends SqlElement {
 
 	public static function import($fileName, $class) {
 		scriptLog("import($fileName, $class)");
+		// Control that mbsting is available
+    if (! function_exists('mb_detect_encoding')) {
+      debugLog ("ERROR - mbstring not enabled - Import cancelled");
+      $msg='<b>Error - mbstring is not enabled</b><br/>Import aborted<br/>Contact your administrator';
+      self::$importResult=$msg;
+      return $msg;
+    }
 		SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never stopped, Static Lists must be freshened
   	set_time_limit(3600); // 60mn
 		$htmlResult="";
