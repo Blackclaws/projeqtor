@@ -1338,7 +1338,14 @@ function weekNumber($dateValue) {
 } 
 
 function weekFormat($dateValue) { 
-    return date('Y-W', strtotime ($dateValue) );       
+  //return date('Y-W', strtotime ($dateValue) );  
+  $w = (date('W', strtotime ($dateValue)));
+  $m = (date('m', strtotime ($dateValue)));
+  if($w == 1 && $m == 12) {
+    return date("Y-W", strtotime("+1 year", strtotime($dateValue."-01" )));
+  } else {
+  	return date('Y-W', strtotime ($dateValue));      
+  }
 } 
 
 /*
