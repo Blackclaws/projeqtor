@@ -36,6 +36,11 @@ class Requirement extends SqlElement {
   public $idleDate;
   public $idTargetVersion;
   public $result;
+  //public $_sec_Lock;
+  public $_spe_lockButton;
+  public $locked;
+  public $idLocker;
+  public $lockedDate;
   public $_col_1_1_Progress;
   public $_tab_8_2 = array('testSummary','countLinked', 'countTotal', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests', '');
   public $runStatusName;
@@ -106,7 +111,10 @@ class Requirement extends SqlElement {
                                   "noDisplay4"=>"calculated,hidden",
                                   "idRunStatus"=>"display,html,hidden",
                                   "runStatusIcon"=>"calculated,display,html",
-                                  "runStatusName"=>"calculated,display,html"
+                                  "runStatusName"=>"calculated,display,html",
+                                  "locked"=>"readonly",
+                                  "idLocker"=>"readonly",
+                                  "lockedDate"=>"readonly",
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
@@ -243,19 +251,51 @@ class Requirement extends SqlElement {
     return $result;
   }
   
-   /*public function drawCalculatedItem($item){
-     $result="&nbsp;";
-     if ($item=='pctPassed') {
-       return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countPassed/$this->countPlanned*100)).')</i>';
-     } else if ($item=='pctFailed') {
-       return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countFailed/$this->countPlanned*100)).')</i>';
-     } else if ($item=='pctBlocked') {
-       return ($this->countPlanned==0)?'&nbsp;':'<i>('.htmlDisplayPct(round($this->countBlocked/$this->countPlanned*100)).')</i>';
-     } else {
-      return "&nbsp;"; 
-     }
-     return $result;
-   }*/
+  public function drawSpecificItem($item){
+    global $print;
+    $result="";
+    if ($item=='lockButton' and !$print) {
+      if ($this->locked) {
+        $canUnlock=false;
+        $user=$_SESSION['user'];
+        if ($user->id==$this->idLocker) {
+          $canUnlock=true;
+        } else {
+          $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'requirement'));        
+          if ($right) {
+            $list=new ListYesNo($right->rightAccess);
+            if ($list->code=='YES') {
+              $canUnlock=true;
+            }
+          }  
+        }
+        if ($canUnlock) {
+          $result .= '<tr><td></td><td>';
+          $result .= '<button id="unlockRequirement" dojoType="dijit.form.Button" showlabel="true"'; 
+          $result .= ' title="' . i18n('unlockRequirement') . '" >';
+          $result .= '<span>' . i18n('unlockRequirement') . '</span>';
+          $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+          $result .=  '  unlockRequirement();';
+          $result .= '</script>';
+          $result .= '</button>';
+          $result .= '</td></tr>';
+        }
+      } else {
+        $result .= '<tr><td></td><td>';
+        $result .= '<button id="lockRequirement" dojoType="dijit.form.Button" showlabel="true"'; 
+        $result .= ' title="' . i18n('lockRequirement') . '" >';
+        $result .= '<span>' . i18n('lockRequirement') . '</span>';
+        $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+        $result .=  '  lockRequirement();';
+        $result .= '</script>';
+        $result .= '</button>';
+        $result .= '</td></tr>';
+      }
+      $result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . $_SESSION['user']->id . '" />';
+      return $result;
+    }
+  }
+  
    
   public function getCalculatedItem(){
      if ($this->countTotal!=0) {
