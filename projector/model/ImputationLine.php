@@ -310,6 +310,8 @@ class ImputationLine {
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
+		$crit=array($rangeType=>$rangeValue); 
+		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);		
 		$oldValues="";
 		$nameWidth=220;
 		$dateWidth=80;
@@ -333,7 +335,19 @@ class ImputationLine {
 		echo '<table class="imputationTable">';
 		echo '<TR class="ganttHeight">';
 		echo '  <TD class="ganttLeftTopLine" ></TD>';
-		echo '  <TD class="ganttLeftTopLine" colspan="5">' . $resource->name . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay . '</TD>';
+		echo '  <TD class="ganttLeftTopLine" colspan="5">';
+		echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
+		echo '</td>';
+		echo '<td style="width:1%"></td>';
+		echo '<td style="width:1%">';
+		echo '<button id="validateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
+    //    <script type="dojo/connect" event="onClick" args="evt">
+    //  dojo.byId("newButton").blur();
+    //    </script>
+    echo i18n('validate');
+    echo '</button>';
+		echo '</td></tr></table>';
+		echo '</TD>';
 		echo '  <TD class="ganttLeftTitle" colspan="' . $nbDays . '" '
 		. 'style="border-right: 1px solid #ffffff;border-bottom: 1px solid #DDDDDD;">'
 		. htmlFormatDate($startDate)
@@ -491,7 +505,7 @@ class ImputationLine {
 					$line->description=$descriptionActivity->description;
 				}
 			}
-			echo '<td>' . $line->name . '</td>';
+			echo '<td>' . htmlEncode($line->name) . '</td>';
 			if ($line->comment and !$print) {
 				echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
 			}

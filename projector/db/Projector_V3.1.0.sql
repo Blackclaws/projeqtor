@@ -22,3 +22,21 @@ INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) V
 (6, 'requirement', 2),
 (7, 'requirement', 2),
 (5, 'requirement', 2);  
+
+CREATE TABLE `${prefix}workPeriod` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idResource` int(12) unsigned,
+  `periodRange` varchar(10),
+  `periodValue` varchar(10),
+  `submitted` int(1) unsigned default '0',
+  `submittedDate` datetime,
+  `validated` int(1) unsigned default '0',
+  `validatedDate` datetime,
+  `idLocker` int(12) unsigned,
+  `comment` varchar(4000),
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX weekResource ON `${prefix}week` (idResource);
+CREATE INDEX weekWeek ON `${prefix}week` (week);
