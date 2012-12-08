@@ -13,12 +13,12 @@ foreach ($lstProj as $prjId=>$prjName) {
   //* $lstAtt Attachment[]
   if (count($lstAtt)>0) {
     echo '<tr><th class="linkHeader">';
-    echo $prjName;
+    echo htmlEncode($prjName);
     echo '</th></tr>';
     foreach ($lstAtt as $att) {
       echo '<tr><td class="linkData">';
         echo '<a href="' . $att->link . '" target="#" class="hyperlink" title="' . $att->link . '">';
-        echo ($att->description)?$att->description:$att->link;
+        echo ($att->description)?htmlEncode($att->description):htmlEncode($att->link);
         echo '</a>';
       echo '</td></tr>';
     }
