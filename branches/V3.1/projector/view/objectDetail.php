@@ -93,6 +93,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	}
 	$nobr=false;
 	$canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj)=='YES');
+  if (isset($obj->locked) and $obj->locked) {
+    $canUpdate=false;
+  }
 	foreach ($obj as $col => $val) {
 		if ($detailWidth) {
 			$colWidth = ( $detailWidth) / $nbCol;        // 2 columns should be displayable

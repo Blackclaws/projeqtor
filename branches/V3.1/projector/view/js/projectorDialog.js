@@ -3628,3 +3628,30 @@ function sendMail() {
   loadContent("../tool/sendMail.php?className=Mailable", "resultDiv", "mailForm", true, 'mail');
   dijit.byId("dialogMail").hide();
 }
+
+function lockRequirement() {
+  if (checkFormChangeInProgress()) {
+	return false;
+  }
+  dijit.byId('locked').set('checked',true);
+  dijit.byId('idLocker').set('value',dojo.byId('idCurrentUser').value);
+  var curDate = new Date();
+  dijit.byId('lockedDate').set('value',curDate);
+  dijit.byId('lockedDateBis').set('value',curDate);
+  formChanged();
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+  return true;
+}
+
+function unlockRequirement() {
+  if (checkFormChangeInProgress()) {
+	return false;
+  }
+  dijit.byId('locked').set('checked',false);
+  dijit.byId('idLocker').set('value',null);
+  dijit.byId('lockedDate').set('value',null);
+  dijit.byId('lockedDateBis').set('value',null);
+  formChanged();
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+  return true;
+}
