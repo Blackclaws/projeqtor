@@ -1511,7 +1511,10 @@ workStartedSince: "commencé depuis ${1} jour(s)",
 workStopped: "travail terminé",
 wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se connecter",
 year: "année",
-sectionRequirementUnlock: "Déverrouillage d'exigences",
+sectionUnlock: "Déverrouillage d'éléments",
+submitWorkPeriod: "soumettre",
 unlockRequirement: "Déverrouiller l'exigence",
+validateWorkPeriod: "valider",
+workValidate: "Validation du travail réel",
 currentLocaleOfFile: "fr"
 }

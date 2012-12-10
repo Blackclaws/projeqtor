@@ -1511,7 +1511,10 @@ workStartedSince: "Прошло ${1} дн.",
 workStopped: "Работа остановлена",
 wrongMaintenanceUser: "Обновление продолжается<br/>Только администратор может подключиться к системе.",
 year: "год",
-sectionRequirementUnlock: "[sectionRequirementUnlock]",
+sectionUnlock: "[sectionUnlock]",
+submitWorkPeriod: "[submitWorkPeriod]",
 unlockRequirement: "[unlockRequirement]",
+validateWorkPeriod: "[validateWorkPeriod]",
+workValidate: "[workValidate]",
 currentLocaleOfFile: "ru"
 }

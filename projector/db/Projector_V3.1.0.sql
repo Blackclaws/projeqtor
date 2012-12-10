@@ -23,6 +23,15 @@ INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) V
 (7, 'requirement', 2),
 (5, 'requirement', 2);  
 
+INSERT INTO `${prefix}habilitationother` (id,idProfile,scope,rightAccess) VALUES 
+(1,1,'workValid','4'),
+(2,2,'workValid','2'),
+(3,3,'workValid','3'),
+(4,4,'workValid','2'),
+(5,6,'workValid','1'),
+(6,7,'workValid','1'),
+(7,5,'workValid','1');
+
 CREATE TABLE `${prefix}workPeriod` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idResource` int(12) unsigned,

@@ -1511,7 +1511,10 @@ workStartedSince: "iniciado à ${1} dia(s)",
 workStopped: "trabalho parado",
 wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin se pode ligar.",
 year: "ano",
-sectionRequirementUnlock: "[sectionRequirementUnlock]",
+sectionUnlock: "[sectionUnlock]",
+submitWorkPeriod: "[submitWorkPeriod]",
 unlockRequirement: "[unlockRequirement]",
+validateWorkPeriod: "[validateWorkPeriod]",
+workValidate: "[workValidate]",
 currentLocaleOfFile: "pt"
 }

@@ -56,11 +56,13 @@ if ($type=='habilitation') {
   }
 } else if ($type=='habilitationOther') {
   $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess'),
+                                     'workValid'=>i18n('workValidate'),
                                      'work'=>i18n('workAccess'),
                                      'cost'=>i18n('costAccess'),
                                      'combo'=>i18n('comboDetailAccess'),
-                                     'planning'=>i18n('comboDetailAccess'),
-                                     'document'=>i18n('comboDetailAccess')), 
+                                     'planning'=>i18n('planningRight'),
+                                     'document'=>i18n('documentUnlockRight'),
+                                     'requirement'=>i18n('requirementUnlockRight')), 
                                'profile', 
                                'habilitationOther') ;
   foreach($crosTable as $lineId => $line) {
