@@ -1511,7 +1511,10 @@ workStartedSince: "开始自 ${1} day(s)",
 workStopped: "已停止的工作",
 wrongMaintenanceUser: "升级中<br/>只允许管理员连接.",
 year: "年份",
-sectionRequirementUnlock: "[sectionRequirementUnlock]",
+sectionUnlock: "[sectionUnlock]",
+submitWorkPeriod: "[submitWorkPeriod]",
 unlockRequirement: "[unlockRequirement]",
+validateWorkPeriod: "[validateWorkPeriod]",
+workValidate: "[workValidate]",
 currentLocaleOfFile: "zh"
 }

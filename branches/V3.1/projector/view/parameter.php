@@ -184,7 +184,7 @@
           echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
           echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
           echo ' title="' . i18n('sectionImputation') . '">';
-          htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
+          htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess'), 'workValid'=>i18n('workValidate')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
           echo '</div><br/>';
           $titlePane="habilitationOther_WorkCost"; 
           echo '<div dojoType="dijit.TitlePane"'; 
@@ -213,23 +213,14 @@
           echo ' title="' . i18n('sectionPlanningRight') . '">';
           htmlDrawCrossTable(array('planning'=>i18n('planningRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
           echo '</div><br/>';
-          $titlePane="habilitationOther_DocumentUnlock"; 
+          $titlePane="habilitationOther_Unlock"; 
           echo '<div dojoType="dijit.TitlePane"'; 
           echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
           echo ' id="' . $titlePane . '" ';
           echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
           echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
-          echo ' title="' . i18n('sectionDocumentUnlock') . '">';
-          htmlDrawCrossTable(array('document'=>i18n('documentUnlockRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
-          echo '</div><br/>';
-          $titlePane="habilitationOther_RequirementUnlock"; 
-          echo '<div dojoType="dijit.TitlePane"'; 
-          echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
-          echo ' id="' . $titlePane . '" ';
-          echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
-          echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
-          echo ' title="' . i18n('sectionRequirementUnlock') . '">';
-          htmlDrawCrossTable(array('requirement'=>i18n('requirementUnlockRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+          echo ' title="' . i18n('sectionUnlock') . '">';
+          htmlDrawCrossTable(array('document'=>i18n('documentUnlockRight'),'requirement'=>i18n('requirementUnlockRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
           echo '</div><br/>';
         } else {
           drawTableFromObjectList($parameterList);

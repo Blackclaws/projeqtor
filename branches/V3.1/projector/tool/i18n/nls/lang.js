@@ -1511,7 +1511,10 @@ workStartedSince: "started since ${1} day(s)",
 workStopped: "work stopped",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 year: "year",
-sectionRequirementUnlock: "Unlock requirements",
+sectionUnlock: "Unlock items",
+submitWorkPeriod: "submit work",
 unlockRequirement: "Unlock requirement",
+validateWorkPeriod: "validate work",
+workValidate: "Validate real work",
 currentLocaleOfFile: "default"
 }

@@ -1511,7 +1511,10 @@ workStartedSince: "gestartet seit ${1} Tag(en)",
 workStopped: "Arbeit gestoppt",
 wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administrator kann sich verbinden.",
 year: "Jahr",
-sectionRequirementUnlock: "[sectionRequirementUnlock]",
+sectionUnlock: "[sectionUnlock]",
+submitWorkPeriod: "[submitWorkPeriod]",
 unlockRequirement: "[unlockRequirement]",
+validateWorkPeriod: "[validateWorkPeriod]",
+workValidate: "[workValidate]",
 currentLocaleOfFile: "de"
 }

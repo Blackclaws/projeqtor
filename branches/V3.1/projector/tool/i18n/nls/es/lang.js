@@ -1511,7 +1511,10 @@ workStartedSince: "[workStartedSince]",
 workStopped: "[workStopped]",
 wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se puede conectar.",
 year: "año",
-sectionRequirementUnlock: "[sectionRequirementUnlock]",
+sectionUnlock: "[sectionUnlock]",
+submitWorkPeriod: "[submitWorkPeriod]",
 unlockRequirement: "[unlockRequirement]",
+validateWorkPeriod: "[validateWorkPeriod]",
+workValidate: "[workValidate]",
 currentLocaleOfFile: "es"
 }
