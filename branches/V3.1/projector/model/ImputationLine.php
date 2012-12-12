@@ -317,11 +317,11 @@ class ImputationLine {
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
-		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue); 
+		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
 		$user=$_SESSION['user'];
 		$canValidate=false;
-		$crit=array('scope'=>'imputation', 'idProfile'=>$user->idProfile);
+		$crit=array('scope'=>'workValid', 'idProfile'=>$user->idProfile);
     $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
     $scope=new AccessScope($habilitation->rightAccess);
     if ($scope->accessCode=='NO') {
@@ -371,13 +371,16 @@ class ImputationLine {
 		echo '</td>';
 		echo '<td style="width:1%">';
 		if ($period->submitted) {
-			echo '<nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr>';		
+			$msg='<div class="imputationSubmitted"><nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr></div>';		
 			if (! $period->validated and ($resourceId==$user->id or $canValidate)) {
-			  echo '<button id="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
+			  echo '<button id="unsubmitButton" jsid="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
         echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unsubmit");</script>';
         echo i18n('unSubmitWorkPeriod');
         echo '</button>';
+        echo '<div dojoType="dijit.Tooltip" connectId="unsubmitButton" position="above" >'.$msg.'</div>';
         $locked=true;
+			} else {
+				echo $msg;
 			}
 		} else if ($resourceId==$user->id and ! $period->validated) {
 	    echo '<button id="submitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
@@ -386,15 +389,20 @@ class ImputationLine {
 	    echo '</button>';
 		}
 		echo '</td>';
+		echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';
 		echo '<td style="width:1%">';
 		if ($period->validated) {
 			$locked=true;
-		  echo '<nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate))).'</nobr>';
+			$res=SqlList::getNameFromId('User', $period->idLocker);
+			$msg='<div class="imputationvalidated"><nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</nobr></div>';
 		  if ($canValidate) {
-		  	echo '<button id="unvalidateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
+		  	echo '<button id="unvalidateButton" jsid="unvalidateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
         echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unvalidate");</script>';
         echo i18n('unValidateWorkPeriod');
         echo '</button>';
+        echo '<div dojoType="dijit.Tooltip" connectId="unvalidateButton" position="above" >'.$msg.'</div>';
+		  } else {
+		  	echo $msg;
 		  }
 		} else if ($canValidate) {
 		  echo '<button id="validateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
