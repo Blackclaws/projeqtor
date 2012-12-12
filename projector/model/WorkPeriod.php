@@ -2,7 +2,7 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
-class WorkPeriod extends GeneralWork {
+class WorkPeriod extends SqlElement {
 
 	 public $id;
 	 public $idResource;

@@ -208,3 +208,22 @@ function startMove(id) {
 function endMove(id) {
 	document.body.style.cursor='normal';
 }
+
+//==========================================================
+//Work Period Locking
+//==========================================================
+
+function submitWorkPeriod(action) {
+  if (checkFormChangeInProgress()) {
+	return false;
+  }
+  var rangeValue=dojo.byId('rangeValue').value;
+  var rangeType='week';
+  var resource=dijit.byId('userName').get('value');
+  dojo.xhrGet({
+	url: '../tool/submitWorkPeriod.php?action='+action+'&rangeType='+rangeType+'&rangeValue='+rangeValue+'&resource='+resource,
+	  handleAs: "text",
+	  load: function(data,args) { refreshImputationList();},
+	  error: function() { }
+  });		
+}
