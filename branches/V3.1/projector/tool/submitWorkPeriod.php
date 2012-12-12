@@ -10,38 +10,43 @@ if (! array_key_exists('action',$_REQUEST)) {
   throwError('action parameter not found in REQUEST');
 }
 $action=$_REQUEST['action'];
-echo $action;
+
+if (! array_key_exists('rangeType',$_REQUEST)) {
+  throwError('rangeType parameter not found in REQUEST');
+}
+$rangeType=$_REQUEST['rangeType'];
+
+if (! array_key_exists('rangeValue',$_REQUEST)) {
+  throwError('rangeValue parameter not found in REQUEST');
+}
+$rangeValue=$_REQUEST['rangeValue'];
+
+if (! array_key_exists('resource',$_REQUEST)) {
+  throwError('resource parameter not found in REQUEST');
+}
+$resource=$_REQUEST['resource'];
 
 Sql::beginTransaction();
 // get the modifications (from request)
-$note=new Note($noteId);
-
-$user=$_SESSION['user'];
-if (! $note->id) {
-  $note->idUser=$user->id;
-  $ress=new Resource($user->id);
-  $note->idTeam=$ress->idTeam;
+$period=new WorkPeriod();
+$crit=array('idResource'=>$resource, 'periodRange'=>$rangeType,'periodValue'=>$rangeValue);
+$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
+if ($action=='submit') {
+	$period->submitted=1;
+	$period->submittedDate=date('Y-m-d H:i:s');
+} if ($action=='unsubmit') {
+  $period->submitted=0;
+  $period->submittedDate=null;
+} if ($action=='validate') {
+  $period->validated=1;
+  $period->validatedDate=date('Y-m-d H:i:s');
+  $user=$_SESSION['user'];
+  $period->idLocker=$user->id;
+} if ($action=='unvalidate') {
+	$period->validated=0;		
+  $period->validatedDate=null;
 }
-
-$note->refId=$refId;
-$note->refType=$refType;
-if ($note->creationDate==null) {
-  $note->creationDate=date("Y-m-d H:i:s");
-} else if ($note->note!=$noteNote) {
-    $note->updateDate=date("Y-m-d H:i:s");
-}
-$note->note=$noteNote;
-if ($notePrivacy) {
-  $note->idPrivacy=$notePrivacy;
-} else if (! $note->idPrivacy) {
-	$note->idPrivacy=1;
-}
-$result=$note->save();
-
-if ($note->idPrivacy==1) { // send mail if new note is public
-  $elt=new $refType($refId);
-	$elt->sendMailIfMailable(false,false,false,true,false);
-}
+$result=$period->save();
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {

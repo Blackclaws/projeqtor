@@ -3656,18 +3656,3 @@ function unlockRequirement() {
   return true;
 }
 
-// ==========================================================
-// Work Period Locking
-// ==========================================================
-
-function submitWorkPeriod(action) {
-  if (checkFormChangeInProgress()) {
-	return false;
-  }
-  dojo.xhrGet({
-	url: '../tool/submitWorkPeriod.php?action='+action,
- 	  handleAs: "text",
-	  load: function(data,args) { refreshImputationList();},
-	  error: function() { }
-  });		
-}

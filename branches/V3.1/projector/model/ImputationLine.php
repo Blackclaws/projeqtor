@@ -134,6 +134,9 @@ class ImputationLine {
 				}
 				if ($work->refType) {
 					$obj=new $work->refType($work->refId);
+					if ($obj->name) {
+					  $obj->name=htmlEncode($obj->name);
+					}
 				} else {
 					$obj=new Ticket();
           $obj->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
@@ -176,7 +179,7 @@ class ImputationLine {
 			  $plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
 			}
 			if ($plan and $plan->id) {
-				$elt->name=$plan->refName;
+				$elt->name=htmlEncode($plan->refName);
 				$elt->wbs=$plan->wbs;
 				$elt->wbsSortable=$plan->wbsSortable;
 				$elt->topId=$plan->topId;
@@ -190,7 +193,11 @@ class ImputationLine {
 					$elt->name=$ass->name;
 				} else {
           $elt->name='<span style="color:red;"><i>' . i18n('notAssignedWork') . '</i></span>';
-          $elt->comment='unexpected case : no assignment name';
+          if ($ass->refType and $ass->refId) {
+          	$elt->comment=i18n($ass->refType) . ' #' . $ass->refId;
+          } else {
+            $elt->comment='unexpected case : no assignment name';
+          }
 				}
 				$elt->wbs='0.'.$cptNotAssigned;
 				$elt->wbsSortable='000.'. str_pad($cptNotAssigned, 3, "0", STR_PAD_LEFT);
@@ -283,7 +290,7 @@ class ImputationLine {
 				$top=new ImputationLine();
 				$top->idle=$plan->idle;
 				$top->imputable=false;
-				$top->name=$plan->refName;
+				$top->name=htmlEncode($plan->refName);
 				$top->wbs=$plan->wbs;
 				$top->wbsSortable=$plan->wbsSortable;
 				$top->topId=$plan->topId;
@@ -310,7 +317,7 @@ class ImputationLine {
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
-		$crit=array($rangeType=>$rangeValue); 
+		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
 		$user=$_SESSION['user'];
 		$canValidate=false;
@@ -365,12 +372,12 @@ class ImputationLine {
 		echo '<td style="width:1%">';
 		if ($period->submitted) {
 			echo '<nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr>';		
-			$locked=tue;
 			if (! $period->validated and ($resourceId==$user->id or $canValidate)) {
 			  echo '<button id="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
         echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unsubmit");</script>';
         echo i18n('unSubmitWorkPeriod');
         echo '</button>';
+        $locked=true;
 			}
 		} else if ($resourceId==$user->id and ! $period->validated) {
 	    echo '<button id="submitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
@@ -381,6 +388,7 @@ class ImputationLine {
 		echo '</td>';
 		echo '<td style="width:1%">';
 		if ($period->validated) {
+			$locked=true;
 		  echo '<nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate))).'</nobr>';
 		  if ($canValidate) {
 		  	echo '<button id="unvalidateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
@@ -448,6 +456,7 @@ class ImputationLine {
 		$closedWbs='';
 		$wbsLevelArray=array();
 		foreach ($tab as $key=>$line) {
+			if ($locked) $line->locked=true;
 			$nbLine++;
 			if ($line->elementary) {
 				$rowType="row";
@@ -553,7 +562,7 @@ class ImputationLine {
 					$line->description=$descriptionActivity->description;
 				}
 			}
-			echo '<td>' . htmlEncode($line->name) . '</td>';
+			echo '<td>' . $line->name . '</td>';
 			if ($line->comment and !$print) {
 				echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
 			}
