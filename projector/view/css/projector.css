@@ -761,6 +761,18 @@ label, .label {
   background: url(images/grid_sort_down.gif) no-repeat;
   position:absolute; left:-4px; bottom:0px;
 }
+
+.imputationSubmitted {
+  font-size:8px;
+  background-color: #dAe5d4;
+  border: 1px solid grey;
+}
+.imputationvalidated {
+  font-size:8px;
+  background-color: #dAe5d4;;
+  border: 1px solid grey;
+}
+
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */
@@ -1697,4 +1709,3 @@ label, .label {
     scrollbar-track-color: #ececec;
     scrollbar-arrow-color: #545281;
 }
-
