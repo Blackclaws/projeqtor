@@ -319,7 +319,7 @@ class ImputationLine {
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
-		$user=$_SESSION['user'];
+		$user=$_SESSION['user'];		
 		$canValidate=false;
 		$crit=array('scope'=>'workValid', 'idProfile'=>$user->idProfile);
     $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
@@ -349,6 +349,7 @@ class ImputationLine {
 		$workWidth=60;
 		$inputWidth=30;
 		$resource=new Resource($resourceId);
+		$capacity=$resource->capacity;
 		$weekendColor="cfcfcf";
 		$currentdayColor="ffffaa";
 		$today=date('Y-m-d');
@@ -363,54 +364,73 @@ class ImputationLine {
 		for ($i=1; $i<=$nbDays; $i++) {
 			$colSum[$i]=0;
 		}
+		$width=600;
+		if (isset($_REQUEST['destinationWidth'])) {
+		  $width=($_REQUEST['destinationWidth'])-155;
+		} 
+		echo '<table class="imputationTable">';
+		echo '<TR class="ganttHeight">';
+		echo '<td class="label" ><label for="imputationComment" >'.i18n("colComment").'&nbsp;:&nbsp;</label></td>';
+		echo '<td><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
+		           .' onChange="formChanged();"'
+               .' style="width: '.$width.'px;" maxlength="4000" class="input">'.$period->comment.'</textarea></td>';
+		echo ' </TR>';
+		echo '</table>';
+		echo '<input type="hidden" id="resourceCapacity" value="'.$capacity.'" />';
 		echo '<table class="imputationTable">';
 		echo '<TR class="ganttHeight">';
 		echo '  <TD class="ganttLeftTopLine" ></TD>';
 		echo '  <TD class="ganttLeftTopLine" colspan="5">';
 		echo '<table style="width:98%"><tr><td style="width:99%">' . htmlEncode($resource->name) . ' - ' . i18n($rangeType) . ' ' . $rangeValueDisplay;
 		echo '</td>';
-		echo '<td style="width:1%">';
-		if ($period->submitted) {
-			$msg='<div class="imputationSubmitted"><nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr></div>';		
+		if ($period->submitted) {		
+			$msg='<div class="imputationSubmitted"><nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr></div>';	
 			if (! $period->validated and ($resourceId==$user->id or $canValidate)) {
+				echo '<td style="width:1%">'.$msg.'</td>'; 
+				echo '<td style="width:1%">';
 			  echo '<button id="unsubmitButton" jsid="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
         echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unsubmit");</script>';
         echo i18n('unSubmitWorkPeriod');
         echo '</button>';
-        echo '<div dojoType="dijit.Tooltip" connectId="unsubmitButton" position="above" >'.$msg.'</div>';
+        echo '</td>';
         $locked=true;
 			} else {
-				echo $msg;
+				echo '<td style="width:1%">'.$msg.'</td>'; 
 			}
 		} else if ($resourceId==$user->id and ! $period->validated) {
+			echo '<td style="width:1%">';
 	    echo '<button id="submitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
 	    echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("submit");</script>';
 	    echo i18n('submitWorkPeriod');
 	    echo '</button>';
+	    echo '</td>'; 
 		}
-		echo '</td>';
-		echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';
-		echo '<td style="width:1%">';
+		echo '<td style="width:10px">&nbsp;&nbsp;&nbsp;</td>';		
 		if ($period->validated) {
 			$locked=true;
 			$res=SqlList::getNameFromId('User', $period->idLocker);
-			$msg='<div class="imputationvalidated"><nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</nobr></div>';
+			$msg='<div class="imputationValidated"><nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</nobr></div>';
 		  if ($canValidate) {
+		  	echo '<td style="width:1%">'.$msg.'</td>';
+		  	//echo '<div xdojoType="dijit.Tooltip" xconnectId="unvalidateButton" xposition="above" >'.$msg.'</div>';
+		  	echo '<td style="width:1%">';
 		  	echo '<button id="unvalidateButton" jsid="unvalidateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
         echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("unvalidate");</script>';
         echo i18n('unValidateWorkPeriod');
         echo '</button>';
-        echo '<div dojoType="dijit.Tooltip" connectId="unvalidateButton" position="above" >'.$msg.'</div>';
+        echo '</td>'; 
 		  } else {
-		  	echo $msg;
+		  	echo '<td style="width:1%">'.$msg.'</td>';
 		  }
 		} else if ($canValidate) {
+			echo '<td style="width:1%">';
 		  echo '<button id="validateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
       echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("validate");</script>';
       echo i18n('validateWorkPeriod');
       echo '</button>';
+      echo '</td>';
 		}
-		echo '</td></tr></table>';
+		echo '</tr></table>';
 		echo '</TD>';
 		echo '  <TD class="ganttLeftTitle" colspan="' . $nbDays . '" '
 		. 'style="border-right: 1px solid #ffffff;border-bottom: 1px solid #DDDDDD;">'
@@ -726,7 +746,8 @@ class ImputationLine {
 			if (!$print) {
 				echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
 				echo ' constraints="{pattern:\'###0.0#\'}"';
-				echo ' trim="true" class="displayTransparent" disabled="true" ';
+				echo ' trim="true" disabled="true" ';
+				echo ($colSum[$i]>$capacity)?' class="imputationInvalidCapacity"':' class="displayTransparent"'; 
 				echo '  style="width: 45px; text-align: center; color: #000000 !important;" ';
 				echo ' id="colSumWork_' . $i . '"';
 				echo ' value="' . $colSum[$i] . '" ';

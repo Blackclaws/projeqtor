@@ -163,6 +163,7 @@ function dispatchWorkValueChange(rowId, colId) {
 	// store new value for next calculation...
 	dojo.byId('workOldValue_' + rowId + '_' + colId).value=newWorkValue;
 	formChanged();
+	checkCapacity();
 }
 
 function isOffDay(vDate) {
@@ -226,4 +227,18 @@ function submitWorkPeriod(action) {
 	  load: function(data,args) { refreshImputationList();},
 	  error: function() { }
   });		
+}
+
+function checkCapacity() {
+  var capacity=dojo.byId('resourceCapacity').value;
+  for (colId=1; colId<=7; colId++) {
+	valSum=dijit.byId('colSumWork_' + colId).get("value");  
+	if (valSum > capacity) {
+		//dojo.style('colSumWork_' + colId, "backgroung","red");
+		dijit.byId('colSumWork_' + colId).set("class","imputationInvalidCapacity");
+	} else {
+		dijit.byId('colSumWork_' + colId).set("class","displayTransparent");
+		//domClass.remove('colSumWork_' + colId, "imputationInvalidCapacity");
+	}  
+  }
 }

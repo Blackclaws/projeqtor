@@ -16,6 +16,26 @@ $nbLines=$_REQUEST['nbLines'];
 if ($rangeType=='week') {
   $nbDays=7;
 }
+
+if (isset($_REQUEST['imputationComment'])) {
+	$comment=$_REQUEST['imputationComment'];
+	$period=new WorkPeriod();
+  $crit=array('idResource'=>$userId, 'periodRange'=>$rangeType,'periodValue'=>$rangeValue);
+  $period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
+  $period->comment=$comment;
+  $result=$period->save();
+  if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+    $status='ERROR';
+    $finalResult=$result;
+  } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+    $status='OK';
+  } else { 
+    if ($finalResult=="") {
+      $finalResult=$result;
+    }
+  }
+}
+
 ini_set('max_input_vars', 50*$nbLines+20);
 ini_set('suhosin.post.max_vars', 50*$nbLines+20);
 ini_set('suhosin.request.max_vars', 50*$nbLines+20);
