@@ -764,15 +764,19 @@ label, .label {
 
 .imputationSubmitted {
   font-size:8px;
-  background-color: #dAe5d4;
+  background-color: #dAd5e4;
   border: 1px solid grey;
 }
-.imputationvalidated {
+.imputationValidated {
   font-size:8px;
   background-color: #dAe5d4;;
   border: 1px solid grey;
 }
-
+.imputationInvalidCapacity {
+	background-color : #ff7777;
+	color : #ff0000;
+	font-weight: normal;
+}
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */

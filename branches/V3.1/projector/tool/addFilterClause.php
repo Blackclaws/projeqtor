@@ -103,7 +103,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     }
   }
   $arraySql["attribute"]=$obj->getDatabaseColumnName($idFilterAttribute);
-  if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<=") {
+  if ($idFilterOperator=="=" or $idFilterOperator==">=" or $idFilterOperator=="<="  or $idFilterOperator=="<>") {
     $arrayDisp["operator"]=$idFilterOperator;
     $arraySql["operator"]=$idFilterOperator;
     if ($filterDataType=='date') {
@@ -121,8 +121,13 @@ if ($idFilterAttribute and $idFilterOperator) {
     $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';
     $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
     $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
-  } else if ($idFilterOperator=="IN") {
-    $arrayDisp["operator"]=i18n("amongst");
+  } else if ($idFilterOperator=="NOT LIKE") {
+    $arrayDisp["operator"]=i18n("notContains");
+    $arraySql["operator"]=(Sql::isMysql())?'NOT LIKE':'NOT ILIKE';
+    $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
+    $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
+  } else if ($idFilterOperator=="IN" or $idFilterOperator=="NOT IN") {
+    $arrayDisp["operator"]=($idFilterOperator=="IN")?i18n("amongst"):i18n("notAmongst");
     $arraySql["operator"]=$idFilterOperator;
     $arrayDisp["value"]="";
     $arraySql["value"]="(";

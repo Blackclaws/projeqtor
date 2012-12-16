@@ -26,6 +26,7 @@ class Action extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $idEfficiency;
   public $result;
   //public $_sec_linkRisk;
   //public $_Link_Risk=array();
@@ -41,10 +42,11 @@ class Action extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="name" width="40%" >${name}</th>
+    <th field="name" width="30%" >${name}</th>
     <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
     <th field="actualDueDate" width="10%" formatter="dateFormatter">${actualDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="colorNameEfficiency" width="10%" formatter="colorNameFormatter">${idEfficiency}</th>
     <th field="nameResource" width="9%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
