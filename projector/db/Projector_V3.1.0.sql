@@ -48,7 +48,7 @@ CREATE TABLE `${prefix}workPeriod` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX workPeriodResource ON `${prefix}workPeriod` (idResource);
-CREATE INDEX workPeriodWeek ON `${prefix}week` (workPeriod);
+CREATE INDEX workPeriodPeriod ON `${prefix}workPeriod` (periodRange, periodValue);
 
 CREATE TABLE `${prefix}efficiency` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -88,11 +88,11 @@ UPDATE `${prefix}menu` SET sortOrder=735 WHERE name='menuRiskLevel';
 UPDATE `${prefix}menu` SET sortOrder=740 WHERE name='menuFeasibility';
 UPDATE `${prefix}menu` SET sortOrder=760 WHERE name='menuPredefinedNote'; 
 
-insert into `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
-(45, 'reportTermMonthly', 7, 'term.php', 720, 0);
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
+(45, 'reportTermMonthly', 7, 'term.php', 720, 0),
 (46, 'reportTermWeekly', '7', 'term.php', '730', '0');
 
-INSERT INTO `${prefix}reportparameter` (`idReport`,`name`,`paramType`,`order`,`idle`,`defaultValue`) VALUES
+INSERT INTO `${prefix}reportparameter` (`idReport`,`name`,`paramType`,`sortOrder`,`idle`,`defaultValue`) VALUES
 (45,'idProject','projectList',10,0,'currentProject'),
 (45,'month','month',20,0,'currentMonth'),
 (46,'idProject','projectList',10,0,'currentProject'),
