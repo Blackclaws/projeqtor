@@ -87,3 +87,23 @@ UPDATE `${prefix}menu` SET sortOrder=730 WHERE name='menuPriority';
 UPDATE `${prefix}menu` SET sortOrder=735 WHERE name='menuRiskLevel';
 UPDATE `${prefix}menu` SET sortOrder=740 WHERE name='menuFeasibility';
 UPDATE `${prefix}menu` SET sortOrder=760 WHERE name='menuPredefinedNote'; 
+
+insert into `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
+(45, 'reportTermMonthly', 7, 'term.php', 720, 0);
+(46, 'reportTermWeekly', '7', 'term.php', '730', '0');
+
+INSERT INTO `${prefix}reportparameter` (`idReport`,`name`,`paramType`,`order`,`idle`,`defaultValue`) VALUES
+(45,'idProject','projectList',10,0,'currentProject'),
+(45,'month','month',20,0,'currentMonth'),
+(46,'idProject','projectList',10,0,'currentProject'),
+(46,'week','week',20,0,'currentWeek');
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
+(1,45,1),
+(2,45,1),
+(3,45,0),
+(4,45,0),
+(1,46,1),
+(2,46,1),
+(3,46,0),
+(4,46,0);
