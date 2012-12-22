@@ -112,7 +112,7 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
   if ($pos) {
     $page=substr($page,$pos+1);
   }
-  //scriptLog("Page=" . $page);
+  scriptLog("Page=" . $page);
   if ( ! $user and $page != 'loginCheck.php') {
     if (is_file("login.php")) {
       include "login.php";
