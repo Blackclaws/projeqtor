@@ -608,6 +608,7 @@ class User extends SqlElement {
 			}
 			if (! $this->id and $this->isLdap) {
 				if (!count($first_user) == 0) {
+					Sql::beginTransaction();
 					// Contact information based on the inetOrgPerson class schema
 					if (isset( $first_user['mail'][0] )) {
 				  		$this->email=$first_user['mail'][0];						
@@ -618,7 +619,7 @@ class User extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
-				  $this->save();
+				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
 						$title="Project'Or RIA - " . i18n('newUser');
@@ -646,7 +647,12 @@ class User extends SqlElement {
 								}
 							}
 						}
-					}	
+					}
+					if (stripos($resultSaveUser,'id="lastOperationStatus" value="OK"')>0 ) {
+            Sql::commitTransaction();
+					} else {
+						Sql::rollbackTransaction();
+					}									
 				}					
 			}
 	  }
