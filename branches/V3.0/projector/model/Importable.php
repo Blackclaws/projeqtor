@@ -47,6 +47,13 @@ class Importable extends SqlElement {
 
 	public static function import($fileName, $class) {
 		scriptLog("import($fileName, $class)");
+		// Control that mbsting is available
+    if (! function_exists('mb_detect_encoding')) {
+      debugLog ("ERROR - mbstring not enabled - Import cancelled");
+      $msg='<b>Error - mbstring is not enabled</b><br/>Import aborted<br/>Contact your administrator';
+      self::$importResult=$msg;
+      return $msg;
+    }
 		SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never stopped, Static Lists must be freshened
   	set_time_limit(3600); // 60mn
 		$htmlResult="";
@@ -95,22 +102,32 @@ class Importable extends SqlElement {
 		}
 		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black; border-collapse:collapse;">';
 		Sql::beginTransaction();
-		foreach ($lines as $nbl=>$line) {
+		$continuedLine="";
+		foreach ($lines as $nbl=>$line) {			
 			if (trim($line)=='') {
 				continue;
-			}
+			}			
 			if (! mb_detect_encoding($line, 'UTF-8', true) ) {
 				$line=utf8_encode($line);
+			}
+			if ($continuedLine) {
+				$line=$continuedLine.$line;
+				$continuedLine="";
 			}
 			if ($title) {
 				$htmlResult.= '<TR>';
 				$fields=explode($csvSep,$line);
 				if (count($fields)!=count($title)) {
-					self::$cptError+=1;
-					$htmlResult.= '<td colspan="'.count($title).'" style="border:1px solid black;">';
-					$htmlResult.= '<span class="messageWARNING" >' . $result . '</span>';
-					$htmlResult.= '</td>';
-					continue;
+					if (count($fields)<count($title)) {
+						$continuedLine=$line;
+						continue;
+					} else {
+					  self::$cptError+=1;
+					  $htmlResult.= '<td colspan="'.count($title).'" style="border:1px solid black;">';
+					  $htmlResult.= '<span class="messageERROR" >ERROR : column count is incorrect</span>';
+					  $htmlResult.= '</td>';
+					  continue;
+					}
 				}
 				$id=($idxId>=0)?$fields[$idxId]:null;
 				$obj=new $class($id);
