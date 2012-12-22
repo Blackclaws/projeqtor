@@ -33,10 +33,16 @@ foreach ($listPrj as $id=>$name) {
 			
 		} else {
 			// level 3
-			if ($x and $y) {
-			  $prj=new Project($id);
-        $prj->idProject=$x.$y.'0';
-        $prj->save();
+			if ($x!=0) {
+				if ($y!=0) {
+			    $prj=new Project($id);
+          $prj->idProject=$x.$y.'0';
+          $prj->save();
+				} else {
+					$prj=new Project($id);
+          $prj->idProject=$x.'00';
+          $prj->save();
+				}
 			} else {
 				$prj=new Project($id);
         $prj->idProject=1000;

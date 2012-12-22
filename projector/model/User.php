@@ -330,18 +330,21 @@ class User extends SqlElement {
    * @return a list of projects id
    */
   public function getVisibleProjects() {
+scriptLog("getVisibleProjects()");
     if ($this->_visibleProjects) {
       return $this->_visibleProjects;
     }
     $result=array();
     $affPrjList=$this->getAffectedProjects();
     foreach($affPrjList as $idPrj=>$namePrj) {
-      $result[$idPrj]=$namePrj;
-      $prj=new Project($idPrj);
-      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList(true);
-      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
-        $result[$idSubPrj]=$nameSubPrj;
-      }  
+    	if (! isset($result[$idPrj])) {
+	      $result[$idPrj]=$namePrj;
+	      $prj=new Project($idPrj);
+	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList(true);
+	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+	        $result[$idSubPrj]=$nameSubPrj;
+	      }
+    	}  
     }
     $this->_visibleProjects=$result;
     return $result;

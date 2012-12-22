@@ -209,6 +209,7 @@ class Project extends SqlElement {
    * @return an array of Projects as sub-projects
    */
   public function getSubProjects($limitToActiveProjects=false) {
+scriptLog("getSubProjects($limitToActiveProjects)");  	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -237,6 +238,7 @@ class Project extends SqlElement {
    * @return an array of Projects as sub-projects
    */
   public function getSubProjectsList($limitToActiveProjects=false) {
+scriptLog("getSubProjectsList($limitToActiveProjects)");    	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -258,6 +260,7 @@ class Project extends SqlElement {
    * @return an array containing id, name, subprojects (recursive array)
    */
   public function getRecursiveSubProjects($limitToActiveProjects=false) {
+scriptLog("getRecursiveSubProjects($limitToActiveProjects)");    	
     $crit=array('idProject'=>$this->id);
     if ($limitToActiveProjects) {
       $crit['idle']='0';
@@ -281,6 +284,7 @@ class Project extends SqlElement {
    * 
    */
   public function getRecursiveSubProjectsFlatList($limitToActiveProjects=false, $includeSelf=false) {
+scriptLog("getRecursiveSubProjects($limitToActiveProjects,$includeSelf)");   	
     $tab=$this->getRecursiveSubProjects($limitToActiveProjects);
     $list=array();
     if ($includeSelf) {
@@ -304,6 +308,7 @@ class Project extends SqlElement {
 
   
   public function getTopProjectList($includeSelf=false) {
+scriptLog("getTopProjectList($includeSelf)");    	
     if ($includeSelf) {
       return array_merge(array($this->id),$this->getTopProjectList(false));
     }
@@ -324,6 +329,7 @@ class Project extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
+scriptLog("drawSpecificItem($item)");  	
     $result="";
     if ($item=='subprojects') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('subProjects') . "&nbsp;:&nbsp;</label>";
@@ -365,6 +371,7 @@ class Project extends SqlElement {
    *  must be redefined in the inherited class
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
+scriptLog("drawSubProjects($selectField, $recursiveCall, $limitToUserProjects, $limitToActiveProjects)");  	
   	if ($limitToUserProjects) {
       $user=$_SESSION['user'];
       if (! $user->_accessControlVisibility) {
@@ -444,6 +451,7 @@ class Project extends SqlElement {
    */
 
   public function drawProjectsList($critArray) {
+scriptLog("drawProjectsList($critArray)");  	
     $result="<table>";
     $prjList=$this->getSqlElementsFromCriteria($critArray, false);
     foreach ($prjList as $prj) {
