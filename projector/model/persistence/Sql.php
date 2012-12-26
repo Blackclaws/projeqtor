@@ -40,7 +40,7 @@ class Sql {
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
-//scriptLog('Sql::query('.$sqlRequest.')');
+scriptLog('Sql::query('.$sqlRequest.')');
     global $debugQuery;
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
@@ -85,6 +85,7 @@ class Sql {
 	      	  . ((isset($arrayTrace['file']))?']':'')
 	      	  );
 	      }
+	      return false;
     	}
     }
     disableCatchErrors();
