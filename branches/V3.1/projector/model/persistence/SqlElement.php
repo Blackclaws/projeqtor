@@ -2042,8 +2042,10 @@ abstract class SqlElement {
    */
   public function control(){
 //traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
-    $result="";
+  	$result="";
     foreach ($this as $col => $val) {
+    	$dataType=$this->getDataType($col);
+      $dataLength=$this->getDataLength($col);
       if (substr($col,0,1)!='_') {
         if (ucfirst($col) == $col and is_object($val)) {
           $subResult=$val->control();
@@ -2059,7 +2061,6 @@ abstract class SqlElement {
               $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption($col)));
             }
           }
-          $dataType=$this->getDataType($col);
           if ($dataType=='datetime') {
             if (strlen($val)==9) {              
               $result.='<br/>' . i18n('messageDateMandatoryWithTime',array(i18n('col' . ucfirst($col))));
@@ -2071,7 +2072,19 @@ abstract class SqlElement {
             }
           }
         }
-      } 
+      }
+      /** TODO impement format control */
+      if ($val and $col!='colRefName') {
+	      if ($dataType=='varchar') {
+	      	if (strlen($val)>$dataLength) {
+	          $result.='<br/>' . i18n('messageTextTooLong',array(i18n('col' . ucfirst($col)),$dataLength));
+	      	}
+	      } else if ($dataType=="int" or $dataType=="decimal") {
+	        if (! is_numeric($val)) {
+	        	$result.='<br/>' . i18n('messageInvalidNumeric',array(i18n('col' . ucfirst($col))));
+	        }
+	      }
+      }
     }
     $idType='id'.ucfirst(get_class($this)).'Type';
     if (property_exists($this, $idType)) {
