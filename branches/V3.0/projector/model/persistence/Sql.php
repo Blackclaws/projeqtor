@@ -40,7 +40,8 @@ class Sql {
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
- //scriptLog('Sql::query('.$sqlRequest.')');
+scriptLog('Sql::query('.$sqlRequest.')');
+    global $debugQuery;
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       traceLog("SQL WARNING : empty query");
@@ -54,7 +55,11 @@ class Sql {
     $result = new PDOStatement();
     $checkResult="OK";
     try { 
+    	$startMicroTime=microtime(true);
       $result = $cnx->query($sqlRequest);  
+      if (isset($debugQuery) and $debugQuery) {
+        debugLog(round((microtime(true) - $startMicroTime)*1000)/1000 . ";" . $sqlRequest);
+      }
       //traceLog($sqlRequest);
       if (! $result) {
         self::$lastQueryErrorMessage=i18n('sqlError'). ' : ' .$cnx->errorCode() . "<br/><br/>" . $sqlRequest;
@@ -80,6 +85,7 @@ class Sql {
 	      	  . ((isset($arrayTrace['file']))?']':'')
 	      	  );
 	      }
+	      return false;
     	}
     }
     disableCatchErrors();
