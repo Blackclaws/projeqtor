@@ -1511,6 +1511,7 @@ wrongMaintenanceUser: "Обновление продолжается<br/>Тол�
 year: "год",
 colIdEfficiency: "[colIdEfficiency]",
 Efficiency: "[Efficiency]",
+limitedDisplay: "[limitedDisplay]",
 lockRequirement: "[lockRequirement]",
 menuEfficiency: "[menuEfficiency]",
 messageInvalidNumeric: "[messageInvalidNumeric]",

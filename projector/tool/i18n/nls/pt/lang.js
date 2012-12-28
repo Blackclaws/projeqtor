@@ -1511,6 +1511,7 @@ wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin s
 year: "ano",
 colIdEfficiency: "[colIdEfficiency]",
 Efficiency: "[Efficiency]",
+limitedDisplay: "[limitedDisplay]",
 lockRequirement: "[lockRequirement]",
 menuEfficiency: "[menuEfficiency]",
 messageInvalidNumeric: "[messageInvalidNumeric]",
