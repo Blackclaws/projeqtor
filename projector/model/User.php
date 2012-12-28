@@ -358,6 +358,7 @@ scriptLog("getVisibleProjects()");
    */
 
   public function getHierarchicalViewOfVisibleProjects() {
+scriptLog("getHierarchicalViewOfVisibleProjects()");
     if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
       return $this->_hierarchicalViewOfVisibleProjects;
     } 
