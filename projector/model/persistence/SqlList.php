@@ -46,7 +46,7 @@ class SqlList {
   }
 
    public static function getListWithCrit($listType, $crit, $displayCol='name', $selectedValue=null) {
-//traceLog("       =>getListWithCrit($listType, $crit, $displayCol, $selectedValue)");
+scriptLog("       =>getListWithCrit($listType, $crit, $displayCol, $selectedValue)");
      return self::fetchListWithCrit($listType, $crit, $displayCol, $selectedValue);
    }
   /** ==========================================================================

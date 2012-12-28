@@ -1094,6 +1094,7 @@ abstract class SqlElement {
      */
   public function getSqlElementsFromCriteria($critArray, $initializeIfEmpty=false, 
   $clauseWhere=null, $clauseOrderBy=null, $getIdInKey=false ) {
+scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWhere, $clauseOrderBy, $getIdInKey)");
     // Build where clause from criteria
     $whereClause='';
     $objects=array();
@@ -1212,7 +1213,42 @@ abstract class SqlElement {
     }
     return 0;  
   }
-  
+
+  public function countGroupedSqlElementsFromCriteria($critArray, $critGroup, $critwhere) {
+    // Build where clause from criteria
+    $whereClause='';
+    $className=get_class($this);
+    if ($critArray) {
+      foreach ($critArray as $colCrit => $valCrit) {
+        $whereClause.=($whereClause=='')?' where ':' and ';
+        if ($valCrit==null) {
+          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . ' is null';
+        } else { 
+          $whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . '= ' . Sql::str($valCrit);
+        }
+      }
+    } else {
+    	$whereClause=$critwhere;
+    }
+    $groupList='';
+    foreach ($critGroup as $group) {
+    	$groupList.=($groupList=='')?'':', ';
+    	$groupList.=$group;
+    }
+    $query = "select $groupList, count(*) as cpt from " . $this->getDatabaseTableName() . ' where ' . $whereClause . " group by $groupList";
+    $result = Sql::query($query); 
+    $groupRes=array();
+    if (Sql::$lastQueryNbRows > 0) {
+    	while ($line = Sql::fetchLine($result)) {
+    		$grp='';
+    		foreach ($critGroup as $group) {
+    			$grp.=(($grp=='')?'':'|').$line[$group];
+    		}
+    		$groupRes[$grp]=$line['cpt'];
+    	}
+    }
+    return $groupRes;  
+  }
   
     /**  ==========================================================================
    * Retrieve a single object from the Database
@@ -2080,7 +2116,7 @@ abstract class SqlElement {
 	          $result.='<br/>' . i18n('messageTextTooLong',array(i18n('col' . ucfirst($col)),$dataLength));
 	      	}
 	      } else if ($dataType=="int" or $dataType=="decimal") {
-	        if (! is_numeric($val)) {
+	        if (trim($val) and ! is_numeric($val)) {
 	        	$result.='<br/>' . i18n('messageInvalidNumeric',array(i18n('col' . ucfirst($col))));
 	        }
 	      }
