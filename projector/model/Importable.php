@@ -68,6 +68,7 @@ class Importable extends SqlElement {
 		self::$cptOK=0;
 		self::$cptWarning=0;
 		$lines=file($fileName);
+		//$fic=fopen($fileName, 'rb');
 		$title=null;
 		$idxId=-1;
 		$csvSep=Parameter::getGlobalParameter('csvSeparator');
@@ -101,12 +102,14 @@ class Importable extends SqlElement {
 			}
 		}
 		$htmlResult.='<TABLE WIDTH="100%" style="border: 1px solid black; border-collapse:collapse;">';
-		Sql::beginTransaction();
 		$continuedLine="";
-		foreach ($lines as $nbl=>$line) {			
+		foreach ($lines as $nbl=>$line) {
+		//for ($line = fgetcsv($fic, 0, $csvSep); !feof($fic); $line = fgetcsv($fic, 0, $csvSep)) {
+			
 			if (trim($line)=='') {
 				continue;
-			}			
+			}
+			$line = str_replace(chr(146) , "'", $line); // replace Word special quote			
 			if (! mb_detect_encoding($line, 'UTF-8', true) ) {
 				$line=utf8_encode($line);
 			}
@@ -116,15 +119,22 @@ class Importable extends SqlElement {
 			}
 			if ($title) {
 				$htmlResult.= '<TR>';
-				$fields=explode($csvSep,$line);
+				if (function_exists('str_getcsv')) {
+					$fields=str_getcsv($line,$csvSep);
+				} else {
+				  $fields=explode($csvSep,$line);
+				}
 				if (count($fields)!=count($title)) {
 					if (count($fields)<count($title)) {
 						$continuedLine=$line;
 						continue;
 					} else {
 					  self::$cptError+=1;
-					  $htmlResult.= '<td colspan="'.count($title).'" style="border:1px solid black;">';
-					  $htmlResult.= '<span class="messageERROR" >ERROR : column count is incorrect</span>';
+					  $htmlResult.= '<td colspan="'.count($title).'" class="messageData" style="border:1px solid black;">';
+					  $htmlResult.= $line;
+					  $htmlResult.= '</td>';
+					  $htmlResult.= '<td class="messageData" style="border:1px solid black;">';
+					  $htmlResult.= '<div class="messageERROR" >ERROR : column count is incorrect</div>';
 					  $htmlResult.= '</td>';
 					  continue;
 					}
@@ -134,6 +144,22 @@ class Importable extends SqlElement {
 				$forceInsert=(!$obj->id and $id and !Sql::isPgsql())?true:false;
 				self::$cptTotal+=1;
 				foreach ($fields as $idx=>$field) {
+          if (isset($titleObject[$idx])) {
+            $subClass=$titleObject[$idx];
+            $subobj=new $subClass();
+            $dataType=$subobj->getDataType($title[$idx]);
+            $dataLength=$subobj->getDataLength($title[$idx]);
+          } else {
+          	$dataType=$obj->getDataType($title[$idx]);
+            $dataLength=$obj->getDataLength($title[$idx]);
+          }
+          if ($dataType=='varchar') {
+            if (strlen($field)>$dataLength) {
+              $field=substr($field,0,$dataLength);
+            }
+          } else if ($dataType=='int' or $dataType=='decimal') {
+            $field=str_replace(' ', '', $field);
+          }
 					if ($field=='') {
 						$htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
 						continue;
@@ -187,15 +213,18 @@ class Importable extends SqlElement {
 						$obj->creationDateTime=date('Y-m-d H:i');
 					}
 				}
+				Sql::beginTransaction();
 				if ($forceInsert) { // object with defined id was not found : force insert
 					$result=$obj->insert();
 				} else {
 					$result=$obj->save();
 				}
 				if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+					Sql::rollbackTransaction();
 					$htmlResult.= '<span class="messageERROR" >' . $result . '</span>';
 					self::$cptError+=1;
 				} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+					Sql::commitTransaction();
 					$htmlResult.= '<span class="messageOK" >' . $result . '</span>';
 					self::$cptOK+=1;
 					if (stripos($result,'id="lastOperation" value="insert"')>0) {
@@ -206,6 +235,7 @@ class Importable extends SqlElement {
 						// ???
 					}
 				} else {
+					Sql::commitTransaction();
 					$htmlResult.= '<span class="messageWARNING" >' . $result . '</span>';
 					self::$cptWarning+=1;
 					if (stripos($result,'id="lastOperationStatus" value="INVALID"')>0) {
@@ -270,7 +300,6 @@ class Importable extends SqlElement {
 				$htmlResult.= '<th class="messageHeader" style="color:#208020;border:1px solid black;;background-color: #DDDDDD">' . i18n('colResultImport') . '</th></TR>';
 			}
 		}
-		Sql::commitTransaction();
 		$htmlResult.= "</TABLE>";
 		self::$importResult=$htmlResult;
 		self::$cptDone=self::$cptCreated+self::$cptModified+self::$cptUnchanged;
