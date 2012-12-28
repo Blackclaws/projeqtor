@@ -1511,6 +1511,7 @@ wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administra
 year: "Jahr",
 colIdEfficiency: "[colIdEfficiency]",
 Efficiency: "[Efficiency]",
+limitedDisplay: "[limitedDisplay]",
 lockRequirement: "[lockRequirement]",
 menuEfficiency: "[menuEfficiency]",
 messageInvalidNumeric: "[messageInvalidNumeric]",

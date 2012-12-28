@@ -1511,6 +1511,7 @@ wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se 
 year: "año",
 colIdEfficiency: "[colIdEfficiency]",
 Efficiency: "[Efficiency]",
+limitedDisplay: "[limitedDisplay]",
 lockRequirement: "[lockRequirement]",
 menuEfficiency: "[menuEfficiency]",
 messageInvalidNumeric: "[messageInvalidNumeric]",

@@ -1511,6 +1511,7 @@ wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se 
 year: "année",
 colIdEfficiency: "efficacité",
 Efficiency: "Efficacité",
+limitedDisplay: "la liste est tronquée aux ${1} premiers éléments",
 lockRequirement: "Verrouiller l'exigence",
 menuEfficiency: "Efficacités",
 messageInvalidNumeric: "la valeur du champ ${1} n'est pas numérique",
