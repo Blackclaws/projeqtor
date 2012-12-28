@@ -16,8 +16,11 @@
     showProjects();
     exit;
   } 
+  $cptMax=Parameter::getGlobalParameter('maxItemsInTodayLists');
+  if (! $cptMax) {$cptMax=100;}
   
   function showMessages() {
+  	global $cptMax;
     $user=$_SESSION['user'];
     $msg=new Message();
     $where="idle=0";
@@ -28,8 +31,14 @@
     $sort="id desc";
     $listMsg=$msg->getSqlElementsFromCriteria(null,false,$where,$sort);
     if (count($listMsg)>0) {
+    	$cpt=0;
       echo '<table align="center" style="width:95%">';
       foreach($listMsg as $msg) {
+      	$cpt++;
+      	if ($cpt>$cptMax) {
+      		echo '<tr><td colspan="2" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';
+      		break;
+      	}
         //echo'<br />';
         $type=new MessageType($msg->idMessageType);
         echo '<tr><td class="messageHeader" style="color:' . $type->color . ';">' . htmlEncode($msg->name) . '</td></tr>';
@@ -40,9 +49,26 @@
   }
   
   function showProjects() {
+  	global $cptMax;
     $user=$_SESSION['user'];
     $prjVisLst=$user->getVisibleProjects();
     $prjLst=$user->getHierarchicalViewOfVisibleProjects();
+    $obj=new Action();
+    $cptAction=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
+    $obj=new Risk();
+    $cptRisk=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));    
+    $obj=new Issue();
+    $cptIssue=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
+    $obj=new Milestone();
+    $cptMilestone=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
+    $obj=new Ticket();
+    $cptTicket=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
+    $obj=new Activity();
+    $cptActivity=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
+    $obj=new Question();
+    $cptQuestion=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
+    $obj=new Project();
+    $cptsubProject=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject'),'idProject in '.transformListIntoInClause($prjVisLst)); 
     $showIdle=false;
     $showDone=false;
     $countScope='todo';
@@ -90,83 +116,76 @@
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuIssue') . '</div></td>' .
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuQuestion') . '</div></td>' . 
            '</tr>';   
+      $cpt=0;
       foreach($prjLst as $sharpid=>$sharpName) {
+        $cpt++;
+        if ($cpt>$cptMax) {
+          echo '<tr><td colspan="12" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';
+          break;
+        }
       	$split=explode('#',$sharpName);
       	$wbs=$split[0];
       	$name=$split[1];
         $id=substr($sharpid,1);
-        $crit=array('idProject'=>$id);
-        $critAll=array('idProject'=>$id);
-        $critTodo=array('idProject'=>$id, 'done'=>'0', 'idle'=>'0');
-        $critDone=array('idProject'=>$id, 'done'=>'1', 'idle'=>'0');
-        if ( $countScope=='todo') {
-          $crit['idle']='0';
-          $crit['done']='0';
-        }
-        if ( $countScope=='notClosed') {
-          $crit['idle']='0';
-        }
-        $obj=new Action();
-        $nbActions=$obj->countSqlElementsFromCriteria($crit);        
-        $nbActionsAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbActionsTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbActionsDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbActions=countFrom($cptAction,$id,'',$countScope);        
+        $nbActionsAll=countFrom($cptAction,$id,'All',$countScope);  
+        $nbActionsTodo=countFrom($cptAction,$id,'Todo',$countScope);  
+        $nbActionsDone=countFrom($cptAction,$id,'Done',$countScope);  
         $nbActions=($nbActionsAll==0)?'':$nbActions;
-        $obj=new Risk();
-        $nbRisks=$obj->countSqlElementsFromCriteria($crit);
-        $nbRisksAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbRisksTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbRisksDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbRisks=countFrom($cptRisk,$id,'',$countScope);
+        $nbRisksAll=countFrom($cptRisk,$id,'All',$countScope);
+        $nbRisksTodo=countFrom($cptRisk,$id,'Todo',$countScope);
+        $nbRisksDone=countFrom($cptRisk,$id,'Done',$countScope);
         $nbRisks=($nbRisksAll==0)?'':$nbRisks;
         $obj=new Issue();
-        $nbIssues=$obj->countSqlElementsFromCriteria($crit);
-        $nbIssuesAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbIssuesTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbIssuesDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbIssues=countFrom($cptIssue,$id,'',$countScope);
+        $nbIssuesAll=countFrom($cptIssue,$id,'All',$countScope);
+        $nbIssuesTodo=countFrom($cptIssue,$id,'Todo',$countScope);
+        $nbIssuesDone=countFrom($cptIssue,$id,'Done',$countScope);
         $nbIssues=($nbIssuesAll==0)?'':$nbIssues;
         $obj=new Milestone();
-        $nbMilestones=$obj->countSqlElementsFromCriteria($crit);
-        $nbMilestonesAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbMilestonesTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbMilestonesDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbMilestones=countFrom($cptMilestone,$id,'',$countScope);
+        $nbMilestonesAll=countFrom($cptMilestone,$id,'All',$countScope);
+        $nbMilestonesTodo=countFrom($cptMilestone,$id,'Todo',$countScope);
+        $nbMilestonesDone=countFrom($cptMilestone,$id,'Done',$countScope);
         $nbMilestones=($nbMilestonesAll==0)?'':$nbMilestones;
         $obj=new Ticket();
-        $nbTickets=$obj->countSqlElementsFromCriteria($crit);
-        $nbTicketsAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbTicketsTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbTicketsDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbTickets=countFrom($cptTicket,$id,'',$countScope);
+        $nbTicketsAll=countFrom($cptTicket,$id,'All',$countScope);
+        $nbTicketsTodo=countFrom($cptTicket,$id,'Todo',$countScope);
+        $nbTicketsDone=countFrom($cptTicket,$id,'Done',$countScope);
         $nbTickets=($nbTicketsAll==0)?'':$nbTickets;
         $obj=new Activity();
-        $nbActivities=$obj->countSqlElementsFromCriteria($crit);
-        $nbActivitiesAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbActivitiesTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbActivitiesDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbActivities=countFrom($cptActivity,$id,'',$countScope);
+        $nbActivitiesAll=countFrom($cptActivity,$id,'All',$countScope);
+        $nbActivitiesTodo=countFrom($cptActivity,$id,'Todo',$countScope);
+        $nbActivitiesDone=countFrom($cptActivity,$id,'Done',$countScope);
         $nbActivities=($nbActivitiesAll==0)?'':$nbActivities;
         $obj=new Question();
-        $nbQuestions=$obj->countSqlElementsFromCriteria($crit);
-        $nbQuestionsAll=$obj->countSqlElementsFromCriteria($critAll);
-        $nbQuestionsTodo=$obj->countSqlElementsFromCriteria($critTodo);
-        $nbQuestionsDone=$obj->countSqlElementsFromCriteria($critDone);
+        $nbQuestions=countFrom($cptQuestion,$id,'',$countScope);
+        $nbQuestionsAll=countFrom($cptQuestion,$id,'All',$countScope);
+        $nbQuestionsTodo=countFrom($cptQuestion,$id,'Todo',$countScope);
+        $nbQuestionsDone=countFrom($cptQuestion,$id,'Done',$countScope);
         $nbQuestions=($nbQuestionsAll==0)?'':$nbQuestions;
-        $prj=new Project($id);
-        $endDate=$prj->ProjectPlanningElement->plannedEndDate;
-        $endDate=($endDate=='')?$prj->ProjectPlanningElement->validatedEndDate:$endDate;
-        $endDate=($endDate=='')?$prj->ProjectPlanningElement->initialEndDate:$endDate;
+        $prjPE=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement', array('refType'=>'Project', 'refId'=>$id));
+        $endDate=$prjPE->plannedEndDate;
+        $endDate=($endDate=='')?$prjPE->validatedEndDate:$endDate;
+        $endDate=($endDate=='')?$prjPE->initialEndDate:$endDate;
         $progress='0';
-        if ($prj->ProjectPlanningElement->realWork!='' and $prj->ProjectPlanningElement->plannedWork!='' and $prj->ProjectPlanningElement->plannedWork!='0') {
-          $progress=$prj->ProjectPlanningElement->progress;
+        if ($prjPE->realWork!='' and $prjPE->plannedWork!='' and $prjPE->plannedWork!='0') {
+          $progress=$prjPE->progress;
         }
-        $real=$prj->ProjectPlanningElement->realWork;
-        $left=$prj->ProjectPlanningElement->leftWork;
-        $planned=$prj->ProjectPlanningElement->plannedWork;
+        $real=$prjPE->realWork;
+        $left=$prjPE->leftWork;
+        $planned=$prjPE->plannedWork;
         $late='';
-        if ($prj->ProjectPlanningElement->plannedEndDate!='' and $prj->ProjectPlanningElement->validatedEndDate!='') {
-          $late=dayDiffDates($prj->ProjectPlanningElement->validatedEndDate, $prj->ProjectPlanningElement->plannedEndDate);
+        if ($prjPE->plannedEndDate!='' and $prjPE->validatedEndDate!='') {
+          $late=dayDiffDates($prjPE->validatedEndDate, $prjPE->plannedEndDate);
           $late='<div style="color:' .(($late>0)?'#DD0000':'#00AA00') . ';">' . $late;
           $late.=" " . i18n("shortDay");         
           $late.='</div>';
         }
-        //$wbs=$prj->ProjectPlanningElement->wbsSortable;
+        //$wbs=$prjPE->wbsSortable;
         $split=explode('.',$wbs);
         $level=count($split);
         $tab="";
@@ -175,15 +194,17 @@
           //$tab.='...';
         }
         $show=false;
-        if (array_key_exists($prj->id, $prjVisLst)) {
+        if (array_key_exists($id, $prjVisLst)) {
           $show=true;
         }
-        $subPrj=$prj->getSqlElementsFromCriteria(array('idProject'=>$prj->id), false);
-        if ($show or count($subPrj)>0) {
+        $cptSubPrj=(isset($cptsubProject[$id]))?$cptsubProject[$id]:0;
+        if ($show or $cptSubPrj>0) {
         	$goto="";
           if ($show and securityCheckDisplayMenu(null,'Project') 
-          and securityGetAccessRightYesNo('menuProject', 'read', $prj)=="YES") {
-            $goto=' onClick="gotoElement(' . "'Project','" . $prj->id . "'" . ');" style="cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
+          //and securityGetAccessRightYesNo('menuProject', 'read', $prj)=="YES"
+          and array_key_exists($id,$prjVisLst)
+          ) {
+            $goto=' onClick="gotoElement(' . "'Project','" . $id . "'" . ');" style="cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
           }
           echo '<tr >' .
              '  <td class="messageData" '. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
@@ -205,6 +226,28 @@
     }
   }
 
+  function countFrom($list,$idProj,$type, $scope) {
+  	$cpt00=(isset($list[$idProj.'|0|0']))?$list[$idProj.'|0|0']:0;
+  	$cpt01=(isset($list[$idProj.'|0|1']))?$list[$idProj.'|0|1']:0;
+  	$cpt10=(isset($list[$idProj.'|1|0']))?$list[$idProj.'|1|0']:0;
+  	$cpt11=(isset($list[$idProj.'|1|1']))?$list[$idProj.'|1|1']:0;
+  	if ($type=='All') {
+  		return $cpt00+$cpt01+$cpt10+$cpt11;
+  	} else if ($type=='Todo') {
+  		return $cpt00;
+  	} else if ($type=='Done') {
+  		return $cpt10;
+  	} else {
+  		if ( $scope=='todo') {
+  			return $cpt00;
+  		} else if ( $scope=='notClosed') {
+  			return $cpt00+$cpt10;
+  		} else {
+  			return $cpt00+$cpt01+$cpt10+$cpt11;
+  		}
+  	}
+  }
+  
   $cptDisplayId=0;
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
     global $cptDisplayId;
@@ -281,6 +324,7 @@
   }
   
   function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
+  	global $cptMax;
   	global $collapsedList;
     $user=$_SESSION['user'];
     $ass=new Assignment();
@@ -323,7 +367,13 @@
            '  <td class="messageHeader" width="5%" title="'. i18n('isIssuerOf') . '">' . ucfirst(i18n('colIssuerShort')) . '</td>' . 
            '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
            '</tr>';     
+    $cpt=0;
     foreach($list as $elt) {
+      $cpt++;
+      if ($cpt>$cptMax) {
+        echo '<tr><td colspan="8" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';
+        break;
+      }
     	$cptDisplayId++;
       $idType='id' . get_class($elt) . 'Type';
       $echeance="";
@@ -376,9 +426,9 @@
              '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idUser) . '</td>' .
              '  <td class="messageDataValue" style="'.$color.'">' . htmlDisplayCheckbox($user->id==$elt->idResource) . '</td>' .
             '</tr>';
-      }
-      echo "</table>";
-      echo "</div><br/>";
+    }
+    echo "</table>";
+    echo "</div><br/>";
   }  
 ?>      
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
