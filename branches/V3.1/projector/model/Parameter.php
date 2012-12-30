@@ -351,6 +351,7 @@ class Parameter extends SqlElement {
       	                     'paramFadeLoadingMode'=>'list',
       	                     'paramIconSize'=>'list',
       	                     'defaultTheme'=>'list',
+      	                     'maxItemsInTodayLists'=>'number',
       	                     'sectionFiles'=>'section',
       	                     'paramAttachementDirectory'=>'text',
       	                     'paramAttachementMaxSize'=>'longnumber',

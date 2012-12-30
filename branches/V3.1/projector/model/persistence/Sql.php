@@ -40,8 +40,10 @@ class Sql {
    * @return resource of result if query is SELECT, false either
    */
   static function query($sqlRequest=NULL) {
-scriptLog('Sql::query('.$sqlRequest.')');
     global $debugQuery;
+    if (!(isset($debugQuery) and $debugQuery) ) {
+	    scriptLog('Sql::query('.$sqlRequest.')');
+    }
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       traceLog("SQL WARNING : empty query");
@@ -58,7 +60,7 @@ scriptLog('Sql::query('.$sqlRequest.')');
     	$startMicroTime=microtime(true);
       $result = $cnx->query($sqlRequest);  
       if (isset($debugQuery) and $debugQuery) {
-        debugLog(round((microtime(true) - $startMicroTime)*1000)/1000 . ";" . $sqlRequest);
+        debugLog(round((microtime(true) - $startMicroTime)*1000000)/1000000 . ";" . $sqlRequest);
       }
       //traceLog($sqlRequest);
       if (! $result) {

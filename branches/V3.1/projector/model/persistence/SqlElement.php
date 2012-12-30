@@ -21,7 +21,10 @@ abstract class SqlElement {
 
   // Define the specific field attributes
   private static $_fieldsAttributes=array("name"=>"required");
-
+  
+  // Management of cache for queries : cache is only valid during current script
+  public static $_cachedQuery=array('Habilitation'=>array());
+  
   // All dependencies between objects :
   //    control => sub-object must not exist to allow deletion
   //    cascade => sub-objects are automaticaly deleted
@@ -217,12 +220,12 @@ abstract class SqlElement {
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */
-  protected function __construct($id = NULL) {
+  protected function __construct($id = NULL, $withoutDependentObjects=false) {
     $this->id=$id;
     if ($this->id=='') {
       $this->id=null;
     }
-    $this->getSqlElement();
+    $this->getSqlElement($withoutDependentObjects);
   }
 
   /** =========================================================================
@@ -863,6 +866,9 @@ abstract class SqlElement {
     if (property_exists($newObj,"doneDateTime")) {
       $newObj->doneDateTime=null;
     }
+    if (property_exists($newObj,"reference")) {
+      $newObj->reference=null;
+    }
     foreach($newObj as $col_name => $col_value) {
       if (ucfirst($col_name) == $col_name) {
         // if property is an object, delete it
@@ -911,23 +917,6 @@ abstract class SqlElement {
     $newObj=new $newClass();
     $newObj->id=null;
     $typeName='id' . $newClass . 'Type';
-    if (property_exists($newObj,"idStatus")) {
-    	$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
-      $newObj->idStatus=$st->id;
-    }
-    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
-      $newObj->idUser=$_SESSION['user']->id;
-    }
-    if (property_exists($newObj,"creationDate")) {
-      $newObj->creationDate=date('Y-m-d');
-    }
-    if (property_exists($newObj,"creationDateTime")) {
-      $newObj->creationDateTime=date('Y-m-d H:i');
-    }
-    if (property_exists($newObj,"meetingDate")) {
-      $newObj->meetingDate=date('Y-m-d');
-    }
-    $newObj->name=$newName;
     $newObj->$typeName=$newType;
     if ($setOrigin and property_exists($newObj, 'Origin')) {
       $newObj->Origin->originType=get_class($this);
@@ -984,11 +973,31 @@ abstract class SqlElement {
                  and $col_name!="handled" and $col_name!="handledDate" and $col_name!="handledDateTime" 
                  and $col_name!="done" and $col_name!="doneDate" and $col_name!="doneDateTime"
                  and $col_name!="idle" and $col_name!="idleDate" and $col_name!="idelDateTime"
-                 and $col_name!="idStatus"){ //topId ?
+                 and $col_name!="idStatus" and $col_name!="reference"){ //topId ?
     	    $newObj->$col_name=$this->$col_name;
     	  }
       }
-    } 
+    }
+    if (property_exists($newObj,"idStatus")) {
+      $st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
+      $newObj->idStatus=$st->id;
+    }
+    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
+      $newObj->idUser=$_SESSION['user']->id;
+    }
+    if (property_exists($newObj,"creationDate")) {
+      $newObj->creationDate=date('Y-m-d');
+    }
+    if (property_exists($newObj,"creationDateTime")) {
+      $newObj->creationDateTime=date('Y-m-d H:i');
+    }
+    if (property_exists($newObj,"meetingDate")) {
+      $newObj->meetingDate=date('Y-m-d');
+    }
+    if (property_exists($newObj,"reference")) {
+      $newObj->reference=null;
+    }
+    $newObj->name=$newName;
     // check description
     if (property_exists($newObj,'description') and ! $newObj->description ) {
       $idType='id'.$newClass.'Type';
@@ -1093,7 +1102,7 @@ abstract class SqlElement {
      * @return SqlElement[] an array of objects
      */
   public function getSqlElementsFromCriteria($critArray, $initializeIfEmpty=false, 
-  $clauseWhere=null, $clauseOrderBy=null, $getIdInKey=false ) {
+  $clauseWhere=null, $clauseOrderBy=null, $getIdInKey=false, $withoutDependentObjects=false, $maxElements=null ) {
 scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWhere, $clauseOrderBy, $getIdInKey)");
     // Build where clause from criteria
     $whereClause='';
@@ -1124,12 +1133,23 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
     		$whereClause.=$this->getDatabaseTableName() . '.' . $this->getDatabaseColumnName($colCrit) . " = " . Sql::str($valCrit) . " ";
     	}
     }
+    if (array_key_exists($className,self::$_cachedQuery)) {
+    	if (array_key_exists($whereClause,self::$_cachedQuery[$className])) {
+//debugLog('');
+//debugLog('getSqlElementsFromCriteria=>'.$className.'=>'.$whereClause);
+//debugLog(self::$_cachedQuery[$className][$whereClause]);
+    		return self::$_cachedQuery[$className][$whereClause];
+    	}
+    }
     // If $whereClause is set, get the element from Database
     $query = 'select * from ' . $this->getDatabaseTableName() . $whereClause;
     if ($clauseOrderBy) {
       $query .= ' order by ' . $clauseOrderBy;
     } else if (isset($this->sortOrder)) {
       $query .= ' order by ' . $this->getDatabaseTableName() . '.sortOrder';
+    }
+    if ($maxElements) {
+    	$query.=' LIMIT '.$maxElements;
     }
     $result = Sql::query($query); 
     
@@ -1145,7 +1165,9 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
           } else if (strpos($this->getFieldAttributes($col_name),'calculated')!==false) {
           	// calculated field : not to be fetched
           } else if (ucfirst($col_name) == $col_name) {
-            $obj->getDependantSqlElement($col_name);
+          	if (! $withoutDependentObjects) {
+              $obj->getDependantSqlElement($col_name);
+            }
           } else {
             $dbColName=$obj->getDatabaseColumnName($col_name);
             if (array_key_exists($dbColName,$line)) {
@@ -1172,6 +1194,9 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
         $objects[]=$defaultObj; // return at least 1 element, initialized with criteria
       }
     }
+    if (array_key_exists($className,self::$_cachedQuery)) {
+      self::$_cachedQuery[$className][$whereClause]=$objects;
+    }    
     return $objects;
   }
 
@@ -1347,13 +1372,29 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
    * Retrieve an object from the Database
    * @return void
    */
-  private function getSqlElement() {
+  private function getSqlElement($withoutDependentObjects=false) {
     $curId=$this->id;
     if (! trim($curId)) {$curId=null;}
+    if ($curId and array_key_exists(get_class($this),self::$_cachedQuery)) {
+    	$whereClause='#id=' . $curId;
+      $class=get_class($this);
+    	if (array_key_exists($whereClause,self::$_cachedQuery[$class])) {
+//debugLog('');      	
+//debugLog('getSqlElement=>'.get_class($this).'=>'.$whereClause);
+//debugLog(self::$_cachedQuery[get_class($this)][$whereClause]);
+//debugLog ("   => return $class cached : $whereClause");
+        $obj=self::$_cachedQuery[$class][$whereClause];
+//debugLog('      '.$obj->id.((property_exists($this, 'name'))?' - '.$obj->name:''));
+        foreach($obj as $fld=>$val) {
+        	$this->$fld=$obj->$fld;
+        }
+        return;
+      }
+    }    
     $empty=true;
     // If id is set, get the element from Database
     if ($curId != NULL) {
-      $query = "select * from " . $this->getDatabaseTableName() . ' where id =' . $curId ;
+      $query = "select * from " . $this->getDatabaseTableName() . ' where id=' . $curId ;
       foreach ($this->getDatabaseCriteria() as $critFld=>$critVal) {
       	$query .= ' and ' . $critFld . ' = ' . Sql::str($critVal);
       }
@@ -1405,7 +1446,7 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
                 $this->{$col_name}=$this->getDependantSqlElements($colName);
               }
             }
-          } else if (ucfirst($col_name) == $col_name) {
+          } else if (ucfirst($col_name) == $col_name and ! $withoutDependentObjects) {
             $this->{$col_name}=$this->getDependantSqlElement($col_name);
           } else if (strpos($this->getFieldAttributes($col_name),'calculated')!==false) {
            
@@ -1427,7 +1468,7 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
         $this->id=null;
       }
     } 
-    if ($empty) {
+    if ($empty and ! $withoutDependentObjects) {
       // Get all the elements that are objects (first letter is uppercase in object properties)
       foreach($this as $key => $value) {
         //echo substr($key,0,1) . "<br/>";
@@ -1435,13 +1476,20 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
           $this->{$key}=$this->getDependantSqlElement($key);
         }
       }
-      // set default idUser if exists
-      if (property_exists($this, 'idUser') and get_class($this)!='Affectation') {
-        if (array_key_exists('user', $_SESSION)) {
-          $this->idUser=$_SESSION['user']->id;
-        }
+    }
+    // set default idUser if exists
+    if (property_exists($this, 'idUser') and get_class($this)!='Affectation') {
+      if (array_key_exists('user', $_SESSION)) {
+        $this->idUser=$_SESSION['user']->id;
       }
     }
+    if ($curId and array_key_exists(get_class($this),self::$_cachedQuery)) {
+      $whereClause='#id=' . $curId;
+      $class=get_class($this);
+//debugLog ("   => caching : $whereClause - $class - $this->id - ".((property_exists($this,'name'))?$this->name:''));
+      self::$_cachedQuery[get_class($this)][$whereClause]=clone($this);
+    }    
+    
   }
 
   /** ==========================================================================

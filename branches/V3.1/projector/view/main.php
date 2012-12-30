@@ -18,7 +18,12 @@ if (Sql::getDbVersion()!=$version) {
 }
 $currency=Parameter::getGlobalParameter('currency');
 $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
-checkVersion(); ?> 
+checkVersion(); 
+// Set Project & Planning element as cachable : will not change during operation
+SqlElement::$_cachedQuery['Project']=array();
+SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
+SqlElement::$_cachedQuery['PlanningElement']=array();
+?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>

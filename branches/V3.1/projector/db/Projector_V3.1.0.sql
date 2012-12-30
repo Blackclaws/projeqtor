@@ -107,3 +107,24 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (2,46,1),
 (3,46,0),
 (4,46,0);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'maxItemsInTodayLists', '100');
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(118,'menuTicketSimple',2,'object',125,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 118, 0),
+(2, 118, 0),
+(3, 118, 0),
+(4, 118, 0),
+(5, 118, 0),
+(6, 118, 0),
+(7, 118, 1);
+
+UPDATE `${prefix}habilitation` SET allowAccess='0' WHERE idProfile=7 and idMenu='22';
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
+SELECT `idProfile`, 118, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=22;  
+
