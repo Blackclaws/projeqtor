@@ -82,6 +82,10 @@ class Project extends SqlElement {
    'idProject'=> 'isSubProject',
    'idProjectType'=>'type',
    'idContact'=>'billContact');
+
+  private static $_subProjectList=array();
+  private static $_subProjectFlatList=array();
+  private static $_drawSubProjectsDone=array();
   
    /** ==========================================================================
    * Constructor
@@ -260,13 +264,16 @@ scriptLog("Project($this->id)->getSubProjectsList($limitToActiveProjects)");
    * @return an array containing id, name, subprojects (recursive array)
    */
   public function getRecursiveSubProjects($limitToActiveProjects=false) {
-scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");    	
+scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");
+    if (isset(self::$_subProjectList[$this->id])) {
+    	//return self::$_subProjectList[$this->id];
+    }    	
     $crit=array('idProject'=>$this->id);
     if ($limitToActiveProjects) {
       $crit['idle']='0';
     }
-    $obj=new Project();
-    $subProjects=$obj->getSqlElementsFromCriteria($crit, false) ;
+    //$obj=new Project();
+    $subProjects=$this->getSqlElementsFromCriteria($crit, false,null,null,null,true) ;
     $subProjectList=null;
     foreach ($subProjects as $subProj) {
       $recursiveList=null;
@@ -274,6 +281,7 @@ scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)")
       $arrayProj=array('id'=>$subProj->id, 'name'=>$subProj->name, 'subItems'=>$recursiveList);
       $subProjectList[]=$arrayProj;
     }
+    self::$_subProjectList[$this->id]=$subProjectList;
     return $subProjectList;
   }
   
@@ -285,6 +293,9 @@ scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)")
    */
   public function getRecursiveSubProjectsFlatList($limitToActiveProjects=false, $includeSelf=false) {
 scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActiveProjects,$includeSelf)");   	
+    if (isset(self::$_subProjectFlatList[$this->id])) {
+      //return self::$_subProjectFlatList[$this->id];
+    }
     $tab=$this->getRecursiveSubProjects($limitToActiveProjects);
     $list=array();
     if ($includeSelf) {
@@ -303,6 +314,7 @@ scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActivePro
         }
       }
     }
+    self::$_subProjectFlatList[$this->id]=$list;
     return $list;
   }
 
@@ -372,7 +384,8 @@ scriptLog("Project($this->id)->drawSpecificItem($item)");
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
 scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $limitToUserProjects, $limitToActiveProjects)");  	
-  	if ($limitToUserProjects) {
+  	self::$_drawSubProjectsDone[$this->id]=$this->name;
+    if ($limitToUserProjects) {
       $user=$_SESSION['user'];
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
@@ -412,6 +425,9 @@ scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $li
       foreach ($subList as $idPrj=>$namePrj) {
         $showLine=true;
         $reachLine=true;
+        if (array_key_exists($idPrj,self::$_drawSubProjectsDone)) {
+        	$showLine=false;
+        }
         if ($limitToUserProjects) {
           if ($user->_accessControlVisibility != 'ALL') {
             if (! array_key_exists('#' . $idPrj,$visibleProjectsList)) {
@@ -424,6 +440,7 @@ scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $li
         }
         if ($showLine) {
         	$prj=new Project($idPrj);
+//debugLog("$idPrj=>$prj->id=>$prj->name");
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
             $result .= '<td class="display"  NOWRAP>' . htmlDrawLink($prj);

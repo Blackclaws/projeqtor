@@ -4,10 +4,13 @@
  * Every user may change these parameters (for his own user only !).
  */
   require_once "../tool/projector.php";
-  scriptLog('   ->/view/today.php');
-  
+  scriptLog('   ->/view/today.php');  
   $user=$_SESSION['user'];
   $profile=new Profile($user->idProfile);
+
+SqlElement::$_cachedQuery['Project']=array();
+SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
+SqlElement::$_cachedQuery['PlanningElement']=array();
 
   $collapsedList=Collapsed::getCollaspedList();
   
@@ -332,22 +335,22 @@
     $order="";
     $list=array();
     $ticket=new Ticket();
-    $listTicket=$ticket->getSqlElementsFromCriteria(null, null, $whereTicket, $order);
+    $listTicket=$ticket->getSqlElementsFromCriteria(null, null, $whereTicket, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listTicket);
     $activity= new Activity();
-    $listActivity=$activity->getSqlElementsFromCriteria(null, null, $whereActivity, $order);
+    $listActivity=$activity->getSqlElementsFromCriteria(null, null, $whereActivity, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listActivity);
     $milestone= new Milestone();
-    $listMilestone=$milestone->getSqlElementsFromCriteria(null, null, $where, $order);
+    $listMilestone=$milestone->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listMilestone);
     $risk= new Risk();
-    $listRisk=$risk->getSqlElementsFromCriteria(null, null, $where, $order);
+    $listRisk=$risk->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listRisk);
     $action= new Action();
-    $listAction=$action->getSqlElementsFromCriteria(null, null, $where, $order);
+    $listAction=$action->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listAction);   
     $issue= new Issue();
-    $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order);
+    $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listIssue);   
     $cptDisplayId=0;
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
@@ -371,7 +374,7 @@
     foreach($list as $elt) {
       $cpt++;
       if ($cpt>$cptMax) {
-        echo '<tr><td colspan="8" class="messageData">'.i18n('limitedDisplay',array($cptMax)).'</td></tr>';
+        echo '<tr><td colspan="8" class="messageData" style="text-align:center;"><b>'.i18n('limitedDisplay',array($cptMax)).'</b></td></tr>';
         break;
       }
     	$cptDisplayId++;

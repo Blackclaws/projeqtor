@@ -80,7 +80,9 @@ class PlanningElement extends SqlElement {
   );   
   
   private static $predecessorItemsArray = array();
-  
+
+  private static $staticCostVisibility=null;
+  private static $staticWorkVisibility=null;
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -666,11 +668,11 @@ class PlanningElement extends SqlElement {
   }
 
   public function setVisibility() {
-    //if ($this->_costVisibility and $this->_workVisibility) {
-      //$this->_costVisibility='ALL';
-      //$this->_workVisibility='ALL';
-      //return;
-    //}
+    if (self::$staticCostVisibility and self::$staticWorkVisibility) {
+      $this->_costVisibility=self::$staticCostVisibility ;
+      $this->_workVisibility=self::$staticWorkVisibility;
+      return;
+    }
     if (! array_key_exists('user',$_SESSION)) {
       return;
     }
@@ -688,6 +690,8 @@ class PlanningElement extends SqlElement {
     } else {
       $this->_workVisibility='ALL';
     }
+    self::$staticCostVisibility=$this->_costVisibility='ALL';
+    self::$staticWorkVisibility=$this->_workVisibility;
   }
   
   public function getFieldAttributes($fieldName) {

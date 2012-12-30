@@ -10,7 +10,6 @@ class Habilitation extends SqlElement {
   public $idMenu;
   public $allowAccess;
   
-  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
