@@ -260,6 +260,14 @@
 .iconMilestoneType22 { background-image: url(images/iconMilestoneType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconMilestoneType16 { background-image: url(images/iconMilestoneType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconOpportunity32 { background-image: url(images/iconOpportunity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconOpportunity22 { background-image: url(images/iconOpportunity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconOpportunity16 { background-image: url(images/iconOpportunity16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconOpportunityType32 { background-image: url(images/iconOpportunityType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconOpportunityType22 { background-image: url(images/iconOpportunityType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconOpportunityType16 { background-image: url(images/iconOpportunityType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconParameter32 { background-image: url(images/iconParameter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconParameter22 { background-image: url(images/iconParameter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconParameter16 { background-image: url(images/iconParameter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -422,6 +430,10 @@
 .iconTicket32 { background-image: url(images/iconTicket32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicket22 { background-image: url(images/iconTicket22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTicket16 { background-image: url(images/iconTicket16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTicketSimple32 { background-image: url(images/iconTicketSimple32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTicketSimple22 { background-image: url(images/iconTicketSimple22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTicketSimple16 { background-image: url(images/iconTicketSimple16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconTicketDelay32 { background-image: url(images/iconTicketDelay32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTicketDelay22 { background-image: url(images/iconTicketDelay22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
