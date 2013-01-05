@@ -112,19 +112,87 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'maxItemsInTodayLists', '100');
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
-(118,'menuTicketSimple',2,'object',125,NULL,0);
+(118,'menuTicketSimple',2,'object',125,'Project',0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 118, 0),
 (2, 118, 0),
 (3, 118, 0),
 (4, 118, 0),
-(5, 118, 0),
+(5, 118, 1),
 (6, 118, 0),
-(7, 118, 1);
+(7, 118, 0);
 
-UPDATE `${prefix}habilitation` SET allowAccess='0' WHERE idProfile=7 and idMenu='22';
+UPDATE `${prefix}habilitation` SET allowAccess='0' WHERE idProfile=5 and idMenu='22';
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
 SELECT `idProfile`, 118, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=22;  
 
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES 
+(119, 'menuOpportunity', '43', 'object', '420', 'Project', '0'), 
+(120, 'menuOpportunityType', '79', 'object', '885', NULL, '0');
+
+CREATE TABLE `${prefix}opportunity` ( 
+ `id` int( 12 ) unsigned NOT NULL AUTO_INCREMENT ,
+ `idProject` int( 12 ) unsigned DEFAULT NULL ,
+ `name` varchar( 100 ) DEFAULT NULL ,
+ `description` varchar( 4000 ) DEFAULT NULL ,
+ `idOpportunityType` int( 12 ) unsigned DEFAULT NULL ,
+ `cause` varchar( 4000 ) DEFAULT NULL ,
+ `impact` varchar( 4000 ) DEFAULT NULL ,
+ `idSeverity` int( 12 ) unsigned DEFAULT NULL ,
+ `idLikelihood` int( 12 ) unsigned DEFAULT NULL ,
+ `idCriticality` int( 12 ) unsigned DEFAULT NULL ,
+ `creationDate` date DEFAULT NULL ,
+ `idUser` int( 12 ) unsigned DEFAULT NULL ,
+ `idStatus` int( 12 ) unsigned DEFAULT NULL ,
+ `idResource` int( 12 ) unsigned DEFAULT NULL ,
+ `initialEndDate` date DEFAULT NULL ,
+ `actualEndDate` date DEFAULT NULL ,
+ `idleDate` date DEFAULT NULL ,
+ `result` varchar( 4000 ) DEFAULT NULL ,
+ `comment` varchar( 4000 ) DEFAULT NULL ,
+ `idle` int( 1 ) unsigned DEFAULT '0',
+ `done` int( 1 ) unsigned DEFAULT '0',
+ `doneDate` date DEFAULT NULL ,
+ `handled` int( 1 ) unsigned DEFAULT '0',
+ `handledDate` date DEFAULT NULL ,
+ `reference` varchar( 100 ) DEFAULT NULL ,
+ `externalReference` varchar( 100 ) DEFAULT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX opportunityProject ON `${prefix}opportunity` (idProject);
+CREATE INDEX opportunityUser ON `${prefix}opportunity` (idUser);
+CREATE INDEX opportunityResource ON `${prefix}opportunity` (idResource);
+CREATE INDEX opportunityStatus ON `${prefix}opportunity` (idStatus);
+CREATE INDEX opportunityType ON `${prefix}opportunity` (idOpportunityType);
+CREATE INDEX opportunitySeverity ON `${prefix}opportunity` (idSeverity);
+CREATE INDEX opportunityLikelihood ON `${prefix}opportunity` (idLikelihood);
+CREATE INDEX opportunityCriticality ON `${prefix}opportunity` (idCriticality);
+
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`) VALUES
+('Opportunity', 'Contractual', 10, 0, NULL),
+('Opportunity', 'Operational', 20, 0, NULL),
+('Opportunity', 'Technical', 30, 0, NULL);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 119, 1),
+(2, 119, 1),
+(3, 119, 1),
+(4, 119, 0),
+(6, 119, 1),
+(7, 119, 0),
+(5, 119, 0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 120, 1),
+(2, 120, 0),
+(3, 120, 0),
+(4, 120, 0),
+(6, 120, 0),
+(7, 120, 0),
+(5, 120, 0);
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
+SELECT `idProfile`, 119, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=3;  
