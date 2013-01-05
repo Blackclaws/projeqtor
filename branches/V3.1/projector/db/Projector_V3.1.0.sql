@@ -171,10 +171,10 @@ CREATE INDEX opportunitySeverity ON `${prefix}opportunity` (idSeverity);
 CREATE INDEX opportunityLikelihood ON `${prefix}opportunity` (idLikelihood);
 CREATE INDEX opportunityCriticality ON `${prefix}opportunity` (idCriticality);
 
-INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`) VALUES
-('Opportunity', 'Contractual', 10, 0, NULL),
-('Opportunity', 'Operational', 20, 0, NULL),
-('Opportunity', 'Technical', 30, 0, NULL);
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, `idWorkflow`) VALUES
+('Opportunity', 'Contractual', 10, 0, NULL, 1),
+('Opportunity', 'Operational', 20, 0, NULL, 1),
+('Opportunity', 'Technical', 30, 0, NULL, 1);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 119, 1),

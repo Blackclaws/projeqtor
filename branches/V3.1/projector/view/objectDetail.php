@@ -396,13 +396,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			//  $colScript=str_replace($col,$col . $extName,$colScript);
 			//  $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
 			//}
-			if (is_object($val)) {
-				if ($col=='Origin') {
-					drawOrigin($val->originType, $val->originId, $obj, $col, $print);
-				} else {
-					// Draw an included object (recursive call) =========================== Type Object
-					drawTableFromObject($val, true, $readOnly);
-					$hide=true; // to avoid display of an extra field for the object and an additional carriage return
+			if (is_object($val) ) {
+				if (! $obj->isAttributeSetToField($col,'hidden')) {
+					if ($col=='Origin') {
+						  drawOrigin($val->originType, $val->originId, $obj, $col, $print);
+					} else {
+						// Draw an included object (recursive call) =========================== Type Object
+						drawTableFromObject($val, true, $readOnly);
+						$hide=true; // to avoid display of an extra field for the object and an additional carriage return
+					}
 				}
 			} else if (is_array($val)) {
 				// Draw an array ====================================================== Type Array
