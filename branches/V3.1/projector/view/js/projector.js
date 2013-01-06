@@ -40,7 +40,7 @@ var forceRefreshMenu=false;
  *            the idle filter parameter
  * @return void
  */
-function refreshJsonList(className) {
+function refreshJsonList(className, keepUrl) {
   var grid = dijit.byId("objectGrid");
   if (grid) {
 	var sortIndex=grid.getSortIndex();
@@ -71,11 +71,14 @@ function refreshJsonList(className) {
     }
 
     // store.fetch();
-    grid.setStore(new dojo.data.ItemFileReadStore({
-      url: url, 
-      clearOnClose: 'true'
-    }));
+    if (! keepUrl) {
+	    grid.setStore(new dojo.data.ItemFileReadStore({
+	      url: url, 
+	      clearOnClose: 'true'
+	    }));
+    }
     store = grid.store;
+    store.close();
     store.fetch({onComplete: function(){
     	grid._refresh();
     	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
@@ -169,6 +172,13 @@ function filterJsonList() {
   refreshGridCount();
 }
 
+function refreshGrid() {
+  if (dijit.byId("objectGrid")) {
+    setTimeout("refreshJsonList(dojo.byId('objectClass').value, true);",200);
+  } else {
+	setTimeout("refreshJsonPlanning();",200);  
+  }
+}
 /**
  * Refresh de display of number of items in the grid
  * 
@@ -473,7 +483,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	        	} else {
 	        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
 	            }
-	        	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+	        	refreshJsonList(dojo.byId('objectClass').value);
         	  }
         	}
       if (destination=="expenseDetailDiv") {
@@ -561,7 +571,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   	        	} else {
   	        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
   	            }
-  	        	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+  	        	refreshJsonList(dojo.byId('objectClass').value);
         	  }
           }
           if (destination=="expenseDetailDiv") {
@@ -745,7 +755,7 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
-    	setTimeout("refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked)",200);
+    	
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
@@ -766,11 +776,11 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='link' && 
     		  (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	  setTimeout("refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked)",200);
+    	  refreshGrid();
       } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
           if (validationType=='assignment') {
-            setTimeout("refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked)",200);
+        	refreshGrid();
           }
     	  //hideWait();
       }
@@ -1277,7 +1287,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
             loadContent("planningList.php", "listDiv", 'listForm');
           }
         } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
-          refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+          refreshJsonList(dojo.byId('objectClass').value);
         }
       }
     });

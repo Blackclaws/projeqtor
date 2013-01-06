@@ -2395,7 +2395,7 @@ function selectFilterContinue() {
 		doc.dijit.byId("listFilterFilter").set("iconClass","iconFilter16");
 	}
 	doc.loadContent("../tool/displayFilterList.php?context=directFilterList&filterObjectClass="+dojo.byId('objectClass').value+compUrl, "directFilterList", null, false,'returnFromFilter', false);
-	doc.refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+	doc.refreshJsonList(dojo.byId('objectClass').value);
 	top.dijit.byId("dialogFilter").hide();
 	filterStartInput=false;
 }
