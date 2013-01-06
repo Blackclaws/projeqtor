@@ -463,7 +463,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					echo htmlEncode(SqlList::getNameFromId(substr($col,2),$val));
 				} else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
 					//echo '<div style="width: ' . $fieldWidth . 'px;"> ' . htmlEncode($val,'print') . '</div>';
-					echo htmlEncode($val,'print');
+					//echo '<div style="width:120px;border: 1px solid green">';
+					echo htmlEncode($val,'xprint');
+					//echo '</div>';
+          
 				} else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount' or $col=='amount') ) {
 					if ($currencyPosition=='after') {
 						echo htmlEncode($val,'print') . ' ' . $currency;
@@ -1524,6 +1527,26 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
 	global $cr, $print, $user, $comboDetail;
 	if ($comboDetail) {
 		return;
+	}
+	if (get_class($obj)=='Document') {
+		$dv=new DocumentVersion();
+		$lstVers=$dv->getSqlElementsFromCriteria(array('idDocument'=>$obj->id));
+		foreach ($lstVers as $dv) {
+			$crit="(ref1Type='DocumentVersion' and ref1Id=".$dv->id.")";
+			$crit.="or (ref2Type='DocumentVersion' and ref2Id=".$dv->id.")";
+			$lnk=new Link();
+			$lstLnk=$lnk->getSqlElementsFromCriteria(null, null, $crit);
+			foreach ($lstLnk as $lnk) {
+        if ($lnk->ref1Type=='DocumentVersion') {
+        	$lnk->ref1Type='Document';
+        	$lnk->ref1Id=$obj->id;
+        } else {
+        	$lnk->ref2Type='Document';
+        	$lnk->ref2Id=$obj->id;
+        }
+				$list[]=$lnk;
+			}
+		}
 	}
 	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
 	if ($obj->idle==1) {$canUpdate=false;}
