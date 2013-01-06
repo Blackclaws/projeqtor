@@ -33,16 +33,16 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <link rel="stylesheet" type="text/css" href="css/projector.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <script type="text/javascript" src="js/projector.js" ></script>
-  <script type="text/javascript" src="js/jsgantt.js"></script>
-  <script type="text/javascript" src="js/projectorWork.js" ></script>
-  <script type="text/javascript" src="js/projectorDialog.js" ></script>
-  <script type="text/javascript" src="js/projectorFormatter.js" ></script>
-  <script type="text/javascript" src="../external/dojo/dojo.js"
+  <script type="text/javascript" src="js/projector.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/jsgantt.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <script type="text/javascript" src="js/projectorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projectorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projectorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
     djConfig='modulePaths: {"i18n":"../../tool/i18n"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
-  <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
+  <script type="text/javascript" src="../external/dojo/projectorDojo.js?version=<?php echo $version;?>"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.store.DataStore");
     dojo.require("dojo.data.ItemFileWriteStore");
