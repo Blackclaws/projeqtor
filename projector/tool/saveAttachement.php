@@ -85,6 +85,9 @@ if (! $error) {
     $refType=$_REQUEST['attachementRefType'];
   }
 }
+if ($refType=='TicketSimple') {
+  $refType='Ticket';    
+}
 if (! $error) {  
   if (! array_key_exists('attachementRefId',$_REQUEST)) {
     echo htmlGetErrorMessage('attachementRefId parameter not found in REQUEST');

@@ -32,9 +32,9 @@ class ProjectPlanningElement extends PlanningElement {
   public $plannedDuration;
   public $realDuration;
   public $_void_35;
+  public $_label_expected;
+  public $expectedProgress;
   public $_void_36;
-  public $_void_37;
-  public $_void_41;
   public $validatedWork;
   public $assignedWork;
   public $plannedWork;

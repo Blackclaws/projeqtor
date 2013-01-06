@@ -11,6 +11,9 @@ if (! array_key_exists('noteRefType',$_REQUEST)) {
   throwError('noteRefType parameter not found in REQUEST');
 }
 $refType=$_REQUEST['noteRefType'];
+if ($refType=='TicketSimple') {
+  $refType='Ticket';    
+}
 if (! array_key_exists('noteRefId',$_REQUEST)) {
   throwError('noteRefId parameter not found in REQUEST');
 }

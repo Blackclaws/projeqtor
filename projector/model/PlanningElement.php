@@ -33,6 +33,7 @@ class PlanningElement extends SqlElement {
   public $plannedCost;
   public $leftCost;
   public $realCost;
+  public $expectedProgress;
   public $wbs;
   public $wbsSortable;
   public $topId;
@@ -55,6 +56,7 @@ class PlanningElement extends SqlElement {
                                   "wbs"=>"display", 
                                   "wbsSortable"=>"hidden",
                                   "progress"=>"display",
+                                  "expectedProgress"=>"display",
                                   "topType"=>"hidden",
                                   "topId"=>"hidden",
                                   "topRefType"=>"hidden",
@@ -217,6 +219,11 @@ class PlanningElement extends SqlElement {
       }
     } else {
     	$this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
+    }
+    if ($this->validatedWork!=0) {
+      $this->expectedProgress=round($this->realWork / ($this->validatedWork) *100);
+    } else {
+    	$this->expectedProgress=null;
     }
     
     // update topId if needed

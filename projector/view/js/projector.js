@@ -43,6 +43,9 @@ var forceRefreshMenu=false;
 function refreshJsonList(className) {
   var grid = dijit.byId("objectGrid");
   if (grid) {
+	var sortIndex=grid.getSortIndex();
+  	var sortAsc=grid.getSortAsc();
+  	var scrollTop=grid.scrollTop;
     // store = grid.store;
     // store.close();
     unselectAllRows("objectGrid");
@@ -73,7 +76,14 @@ function refreshJsonList(className) {
       clearOnClose: 'true'
     }));
     store = grid.store;
-    store.fetch({onComplete: function(){filterJsonList();}});
+    store.fetch({onComplete: function(){
+    	grid._refresh();
+    	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
+        setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
+        setTimeout('selectRowById("objectGrid", '+objectId.value+');',30);
+        filterJsonList();
+    	}
+    });
   }
 
 }
@@ -735,7 +745,7 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
-    	refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+    	setTimeout("refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked)",200);
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
@@ -756,9 +766,12 @@ function finalizeMessageDisplay(destination, validationType) {
       } else if (validationType=='link' && 
     		  (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	  refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked);
+    	  setTimeout("refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked)",200);
       } else {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+          if (validationType=='assignment') {
+            setTimeout("refreshJsonList(dojo.byId('objectClass').value, dojo.byId('listShowIdle').checked)",200);
+          }
     	  //hideWait();
       }
     } else {

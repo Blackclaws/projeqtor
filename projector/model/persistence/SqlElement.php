@@ -1347,7 +1347,9 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
               $this->$key = $_REQUEST[$formField] . " " . substr($_REQUEST[$formFieldBis],1);
             } else {
               //hidden field
-              $this->$key = $_REQUEST[$formField];
+              if (isset($_REQUEST[$formField])) {
+                $this->$key = $_REQUEST[$formField];
+              }
             }
           } else if ($dataType=='decimal' and (substr($key, -4,4)=='Work')) {
           	if (array_key_exists($formField,$_REQUEST)) {
@@ -1542,8 +1544,12 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
       if (property_exists($objClass, 'id'.get_class($this))) {
         $query .= " where " . $obj->getDatabaseColumnName('id' . get_class($this)) . "= " . Sql::str($curId) . " ";	
       } else {
+      	$refType=get_class($this);
+      	if ($refType=='TicketSimple') {
+      		$refType='Ticket';
+      	}
         $query .= " where refId =" . Sql::str($curId) . " "
-        . " and refType ='" . get_class($this) . "'";
+        . " and refType ='" . $refType . "'";
       } 
       $query .= " order by id desc ";
       $result = Sql::query($query);

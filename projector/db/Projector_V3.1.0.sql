@@ -196,3 +196,6 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
 SELECT `idProfile`, 119, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=3;  
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `expectedProgress` int(3) unsigned default '0';
+UPDATE `${prefix}planningelement` SET expectedProgress=round(realWork/validatedWork*100) where validatedCost>0;
