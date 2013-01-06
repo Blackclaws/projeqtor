@@ -4,13 +4,15 @@
  */ 
 class TicketSimple extends Ticket {
 
+	public $_noDisplayHistory=true;
+	
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
     <th field="name" width="50%" >${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="actualDueDateTime" width="10%" formatter="dateTimeFormatter">${actualDueDateTime}</th>
+    <th field="actualDueDateTime" width="10%" formatter="dateTimeFormatter">${dueDate}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
@@ -19,11 +21,14 @@ class TicketSimple extends Ticket {
   private static $_fieldsAttributes=array(
     "actualDueDateTime"=>"readonly",
     "creationDateTime"=>"readonly",
-    "done"=>"nobr",
+    "done"=>"hidden",
+    "doneDateTime"=>"hidden",
     "externalReference"=>"hidden",
-    "handled"=>"nobr",  
+    "handled"=>"hidden",
+    "handledDateTime"=>"hidden",
     "id"=>"nobr", 
-    "idle"=>"nobr",                            
+    "idle"=>"hidden",  
+    "idleDateTime"=>"hidden",                             
     "idActivity"=>"hidden",
     "idContact"=>"hidden",
     "idContext1"=>"nobr,size1/3,title",
@@ -41,6 +46,8 @@ class TicketSimple extends Ticket {
     "name"=>"required",                               
     "Origin"=>"hidden",
     "reference"=>"readonly",
+    "result"=>"readonly",
+    "idTargetVersion"=>"readonly",
     "WorkElement"=>"hidden"
   );  
     
@@ -51,7 +58,8 @@ class TicketSimple extends Ticket {
                                                    'idTargetVersion'=>'targetVersion',
                                                    'idOriginalVersion'=>'version',
                                                    'idTicket'=>'duplicateTicket',
-                                                   'idContext1'=>'idContext');
+                                                   'idContext1'=>'idContext',
+                                                   'actualDueDateTime'=>'dueDate');
   
   private static $_databaseColumnName = array('idTargetVersion'=>'idVersion');
 
@@ -64,9 +72,9 @@ class TicketSimple extends Ticket {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
-    if ($this->idActivity and $this->WorkElement->realWork>0) {
-      self::$_fieldsAttributes['idActivity']='readonly';
-    }
+    unset($this->_Link);
+    unset($this->WorkElement);
+    unset($this->_col_1_1_Link);
   }
 
    /** ==========================================================================
@@ -125,10 +133,18 @@ class TicketSimple extends Ticket {
   public function save() {
   	//$old=new Ticket($this->id);
   	$user=$_SESSION['user'];
-  	if (! trim($this->idContact) and $user->isContact) {
-  		$this->idContact=$user->id;
+  	if (! $this->id) {
+  	  if (! trim($this->idContact) and $user->isContact) {
+  		  $this->idContact=$user->id;
+  	  }
+  	  $this->idUser=$user->id;
+  	  $lst=SqlList::getList('TicketType');
+  	  foreach ($lst as $id=>$val) {
+echo "$id=>$val";
+  	    $this->idTicketType=$id;
+  	    break;
+  	  }
   	}
-  	$this->idUser=$user->id;
   	$result=parent::save();
   	return $result;
   }

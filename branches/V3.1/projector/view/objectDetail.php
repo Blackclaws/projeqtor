@@ -809,7 +809,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				or ($col=='idTargetVersion' and isset($obj->_OtherTargetVersion))) {
 					$versionType=substr($col,2);
 					$otherVersion='_Other'.$versionType;
-					if (isset($obj->$otherVersion)) {
+					if (isset($obj->$otherVersion) and ! $obj->isAttributeSetToField($col,'hidden') 
+					    and ! $obj->isAttributeSetToField($col,'readonly') and $canUpdate) {
 						$hasOtherVersion=true;
 						$fieldWidth -= 20;
 					}
@@ -2579,7 +2580,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if (array_key_exists('displayHistory',$_SESSION)) {
   	$displayHistory=$_SESSION['displayHistory'];
   }
-  if ($obj and property_exists($obj, '_noHistory')) {
+  if ($obj and (property_exists($obj, '_noHistory') or property_exists($obj, '_noDisplayHistory') ) ) {
   	$displayHistory='NO';
   }
   if ($print and Parameter::getUserParameter('printHistory')!='YES') {

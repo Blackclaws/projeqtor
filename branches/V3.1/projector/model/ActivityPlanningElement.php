@@ -48,6 +48,8 @@ class ActivityPlanningElement extends PlanningElement {
   public $plannedCost;
   public $realCost;
   public $leftCost;
+  public $_label_expected;
+  public $expectedProgress;
   public $wbsSortable;
   public $topId;
   public $topRefType;

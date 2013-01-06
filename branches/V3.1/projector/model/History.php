@@ -51,6 +51,9 @@ class History extends SqlElement {
     // Attention : History fields are not to be escaped by Sql::str because $olValue and $newValue have already been escaped
     // So other fiels (names) must be manually "quoted"
     $hist->refType=$refType;
+    if ($refType=='TicketSimple') {
+      $hist->refType='Ticket';
+    }
     $hist->refId=$refId;
     $hist->operation=$operation;
     $hist->colName=$colName;
@@ -73,13 +76,11 @@ class History extends SqlElement {
       }
     	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName, $oldValue, $newValue);*/
     	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName. '|' . 'TestCase' . '|' .$refId, $oldValue, $newValue);
-    }
+    } else if ($refType=='Link') {       
     // For link : store History for both referenced items
-    if ($refType=='Link') {    
       self::store ($obj, $obj->ref1Type, $obj->ref1Id, $operation , 'Link' . '|' . $colName. '|' . $obj->ref2Type . '|' . $obj->ref2Id, $oldValue, $newValue);
       self::store ($obj, $obj->ref2Type, $obj->ref2Id, $operation , 'Link' . '|' . $colName. '|' . $obj->ref1Type . '|' . $obj->ref1Id, $oldValue, $newValue);
-    }
-    if ($refType=='Note') {
+    } else if ($refType=='Note') {
     	if ($operation=='insert') {
     		$newValue=$obj->note;
     	} else if ($operation=='delete') {
@@ -88,8 +89,7 @@ class History extends SqlElement {
     	if ($colName!="updateDate") {    
         self::store ($obj, $obj->refType, $obj->refId, $operation , $colName. '|' . $refType . '|' . $obj->id, $oldValue, $newValue);
     	}
-    }
-    if ($refType=='Attachement') {
+    } else if ($refType=='Attachement') {
       if ($operation=='insert') {
         $newValue=$obj->fileName;
       } else if ($operation=='delete') {
@@ -98,7 +98,7 @@ class History extends SqlElement {
       if ($colName!="updateDate") {    
         self::store ($obj, $obj->refType, $obj->refId, $operation , $colName. '|' . $refType . '|' . $obj->id, $oldValue, $newValue);
       }
-    }
+    } 
     if (strpos($returnValue,'<input type="hidden" id="lastOperationStatus" value="OK"')) {
       return true;
     } else {
