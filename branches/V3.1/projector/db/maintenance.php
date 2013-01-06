@@ -231,7 +231,6 @@ echo "<br/>____________________________________________";
 
 function runScript($vers) {
   global $versionParameters, $parametersLocation;
-  //Sql::beginTransaction();
   $paramDbName=Parameter::getGlobalParameter('paramDbName');
   $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   $dbType=Parameter::getGlobalParameter('paramDbType');
@@ -258,8 +257,10 @@ function runScript($vers) {
         if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
         	$query=formatForDbType($query);
         	if ($query) {
+        		Sql::beginTransaction();
 	          $result=Sql::query($query);
 	          if ( ! $result or !$result->queryString ) {
+	          	Sql::rollbackTransaction();
 	            traceLog( "<br/>***** SQL ERROR WHILE EXECUTING SQL REQUEST *****");
 	            traceLog("");
 	            traceLog(Sql::$lastQueryErrorMessage);
@@ -268,6 +269,7 @@ function runScript($vers) {
 	            traceLog("");
 	            $nbError++;
 	          } else {
+	          	Sql::commitTransaction();
 	            $action="";
 	            if (substr($query,0,12)=='CREATE TABLE') {
 	              $action="CREATE TABLE";
@@ -375,7 +377,6 @@ function runScript($vers) {
     }
   }
   traceLog("");
-  //Sql::commitTransaction();
   return $nbError;
 }
 
