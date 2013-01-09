@@ -130,6 +130,13 @@ foreach($historyList as $hist) {
   if (substr($hist->refType,-15)=='PlanningElement' and $hist->operation=='insert') {
     $hide=true;
   }
+  if ($scope=='deleted') {
+  	if (trim($colCaption)) {
+  		$colCaption=i18n($hist->refType). ' #' . $hist->refId." => ".$colCaption;
+  	} else {
+  		$colCaption=i18n($hist->refType). ' #' . $hist->refId;
+  	}
+  }
   if (! $hide) {
     echo '<tr>';
     echo '<td class="historyData'. $class .'" width="10%">' . $oper . '</td>';      

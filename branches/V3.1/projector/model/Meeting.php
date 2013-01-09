@@ -242,43 +242,44 @@ class Meeting extends SqlElement {
       $listAttendees=explode(',',str_replace(';',',',$this->attendees));
       $this->attendees="";
       foreach ($listAttendees as $attendee) {
-        $attendee=trim($attendee);
-        if (in_array(strtolower($attendee),$listName)) {
+      	$stockAttendee=$attendee;
+        $attendee=strtolower(trim($attendee));
+        if (in_array($attendee,$listName)) {
           $this->attendees.=($this->attendees)?', ':'';
           $aff=new Affectable(array_search($attendee,$listName));
           $this->attendees.='"' . $aff->name . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
-        } else if (in_array(strtolower($attendee),$listUserName)) {
+        } else if (in_array($attendee,$listUserName)) {
           $this->attendees.=($this->attendees)?', ':'';
           $aff=new Affectable(array_search($attendee,$listUserName));
-          $this->attendees.='"' . (($aff->name)?$aff->name:$attendee) . '"';
+          $this->attendees.='"' . (($aff->name)?$aff->name:$stockAttendee) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
-        } else if (in_array(strtolower($attendee),$listInitials)) {
+        } else if (in_array($attendee,$listInitials)) {
           $this->attendees.=($this->attendees)?', ':'';
           $aff=new Affectable(array_search($attendee,$listInitials));         
-          $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$attendee)) . '"';
+          $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$stockAttendee)) . '"';
           if ($aff->email) {
             $this->attendees.=' <' . $aff->email . '>';
           }
-        } else if (in_array(strtolower($attendee),$listTeam)) {
+        } else if (in_array($attendee,$listTeam)) {
           $this->attendees.=($this->attendees)?', ':'';
           $id=array_search($attendee,$listTeam);
           $aff=new Affectable();
           $lst=$aff->getSqlElementsFromCriteria(array('idTeam'=>$id));
           foreach ($lst as $aff) {
             $this->attendees.=($this->attendees)?', ':'';
-            $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$attendee)) . '"';
+            $this->attendees.='"' . ( ($aff->name)?$aff->name:(($aff->userName)?$aff->userName:$stockAttendee)) . '"';
             if ($aff->email) {
               $this->attendees.=' <' . $aff->email . '>';
             }
           }
         } else {
           $this->attendees.=($this->attendees)?', ':'';
-          $this->attendees.=$attendee;
+          $this->attendees.=$stockAttendee;
         }
       }
 

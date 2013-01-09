@@ -9,4 +9,5 @@ $paramDbName='projectorria_v31';
 $paramDbPrefix='';
 $logFile='../files/logs/projector_${date}.log';
 $logLevel='3';
+//$debugQuery=true;
 //======= END

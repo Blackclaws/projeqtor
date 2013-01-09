@@ -464,7 +464,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				} else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
 					//echo '<div style="width: ' . $fieldWidth . 'px;"> ' . htmlEncode($val,'print') . '</div>';
 					//echo '<div style="width:120px;border: 1px solid green">';
-					echo htmlEncode($val,'xprint');
+					//echo '<table style="width:120px;border: 1px solid red"><tr><td style="width:120px; border: 1px solid blue">';
+					echo htmlEncode($val,'print');
+					//echo '</td></tr></table>';
 					//echo '</div>';
           
 				} else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount' or $col=='amount') ) {
