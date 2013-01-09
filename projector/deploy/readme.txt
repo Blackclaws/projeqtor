@@ -17,7 +17,7 @@ Set-up :
   - Run application in your favorite browser, using http://yourserver/projectorria
   - Enjoy !
   
-Notice : 
+Configuration : 
   - At first run, configuration screen will be displayed.
   - To run again configuration screen, just delete "/tool/parametersLocation.php" file.
   - On first connection, database will be automatically updated.

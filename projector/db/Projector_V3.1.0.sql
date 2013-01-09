@@ -199,3 +199,13 @@ SELECT `idProfile`, 119, `idAccessProfile` FROM `${prefix}accessright` WHERE `id
 
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `expectedProgress` int(3) unsigned default '0';
 UPDATE `${prefix}planningelement` SET expectedProgress=round(realWork/validatedWork*100) where validatedCost>0;
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(19, 'idTeam', 'teamList', 20, null),
+(19, 'week', 'week', 30, 'currentYear'),
+(20, 'idTeam', 'teamList', 20, null),
+(20, 'month', 'month', 30, 'currentYear');
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
+(27, 'idTeam', 'teamList', 20, null),
+(27, 'month', 'month', 30, 'currentYear');

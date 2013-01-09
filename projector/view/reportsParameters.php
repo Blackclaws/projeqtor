@@ -36,6 +36,8 @@ foreach ($listParam as $param) {
     if ($param->defaultValue=='currentWeek') {
       $defaultWeek=$currentWeek;
       $defaultYear=$currentYear;
+    } else if ($param->defaultValue=='currentYear') {
+      $defaultYear=$currentYear;
     }
     ?>
     <input type="hidden" id='periodValue' name='periodValue' value='<?php echo $currentYear . $currentWeek;?>' />
@@ -81,6 +83,8 @@ foreach ($listParam as $param) {
     if ($param->defaultValue=='currentMonth') {
       $defaultMonth=$currentMonth;
       $defaultYear=$currentYear;
+    } else if ($param->defaultValue=='currentYear') {
+    	$defaultYear=$currentYear;
     }
 ?>
     <input type="hidden" id='periodValue' name='periodValue' value='<?php echo $currentYear . $currentMonth;?>' />

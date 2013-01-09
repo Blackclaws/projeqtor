@@ -3615,6 +3615,11 @@ function showMailOptions() {
 	dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
 	dojo.byId('mailRefId').value=dojo.byId('objectId').value;
 	title=i18n('buttonMail', new Array(i18n(dojo.byId('objectClass').value)));
+	if (dijit.byId('attendees')) {
+		dijit.byId('dialogMailToOther').set('checked','checked');
+		dijit.byId('dialogOtherMail').set('value',dijit.byId('attendees').get('value'));
+		dialogMailToOtherChange();
+	}
 	dijit.byId("dialogMail").set('title',title);
 	dijit.byId("dialogMail").show();
 	

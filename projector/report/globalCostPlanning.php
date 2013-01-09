@@ -1,19 +1,53 @@
 <?php 
 //echo "globalCostPlanning.php";
 include_once '../tool/projector.php';
+echo "globalCostPlanning.php";
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
 }
+$paramYear='';
+if (array_key_exists('yearSpinner',$_REQUEST)) {
+  $paramYear=$_REQUEST['yearSpinner'];
+}
+$paramMonth='';
+if (array_key_exists('monthSpinner',$_REQUEST)) {
+  $paramMonth=$_REQUEST['monthSpinner'];
+}
+$paramWeek='';
+if (array_key_exists('weekSpinner',$_REQUEST)) {
+  $paramWeek=$_REQUEST['weekSpinner'];
+}
+$paramTeam='';
+if (array_key_exists('idTeam',$_REQUEST)) {
+  $paramTeam=trim($_REQUEST['idTeam']);
+}
 $scale='month';
 if (array_key_exists('scale',$_REQUEST)) {
   $scale=$_REQUEST['scale'];
+}
+$periodValue='';
+if (array_key_exists('periodValue',$_REQUEST)) {
+  $periodValue=$_REQUEST['periodValue'];
 }
 
 $headerParameters="";
 if ($idProject!="") {
   $headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project',$idProject)) . '<br/>';
 }
+if ( $paramTeam) {
+  $headerParameters.= i18n("team") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
+}
+if ($paramYear) {
+  $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
+}
+if ($paramMonth) {
+  $headerParameters.= i18n("month") . ' : ' . $paramMonth . '<br/>';
+}
+if ( $paramWeek) {
+  $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
+}
+
 include "header.php";
 
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
@@ -26,7 +60,26 @@ if ($idProject!='') {
 } else {
   //
 }
-  
+if ($paramYear) {
+  $queryWhere.=  " and year=".Sql::str($paramYear);
+}
+if ($paramMonth) {
+  $queryWhere.=  " and month=".Sql::str($periodValue);
+}
+if ( $paramWeek) {
+  $queryWhere.=  " and week=".Sql::str($periodValue);
+}
+if ($paramTeam) {
+  $res=new Resource();
+  $lstRes=$res->getSqlElementsFromCriteria(array('idTeam'=>$paramTeam));
+  $inClause='(0';
+  foreach ($lstRes as $res) {
+    $inClause.=','.$res->id;
+  }
+  $inClause.=')';
+  $queryWhere.= " and idResource in ".$inClause;
+}
+
 $querySelect1= 'select sum(w.cost) as sumCost, w.' . $scale . ' as scale , w.idProject'; 
 $queryGroupBy1 = 'w.'.$scale . ', w.idProject';
 $queryWhere1 = $queryWhere;
