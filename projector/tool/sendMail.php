@@ -41,7 +41,8 @@
     $mailToLeader=(array_key_exists('dialogMailToLeader', $_REQUEST))?true:false;
     $mailToManager=(array_key_exists('dialogMailToManager', $_REQUEST))?true:false;
     $mailToOther=(array_key_exists('dialogMailToOther', $_REQUEST))?true:false;
-    $otherMail=(array_key_exists('dialogOtherMail', $_REQUEST))?$_REQUEST['dialogOtherMail']:'';  
+    $otherMail=(array_key_exists('dialogOtherMail', $_REQUEST))?$_REQUEST['dialogOtherMail']:'';
+    $otherMail=str_replace('"','',$otherMail);
     $message=(array_key_exists('dialogMailMessage', $_REQUEST))?$_REQUEST['dialogMailMessage']:'';  
     $obj=new $class($id);
     $directStatusMail=new StatusMail();

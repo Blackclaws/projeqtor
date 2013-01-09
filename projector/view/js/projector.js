@@ -1988,10 +1988,15 @@ function ibanConvertLetters(text) {
 	return convertedText;
 }
 
-function trim (myString) {
-  if (! myString) {return myString};
+function trim (myString, car) {
+  if (! myString) {return myString;};
   myStringAsTring=myString+"";
   return myStringAsTring.replace(/^\s+/g,'').replace(/\s+$/g,'');
+} 
+function trimTag (myString, car) {
+  if (! myString) {return myString;};
+  myStringAsTring=myString+"";
+  return myStringAsTring.replace(/^</g,'').replace(/>$/g,'');  
 } 
 
 function moveMenuBar(way) {
