@@ -3617,7 +3617,7 @@ function showMailOptions() {
 	title=i18n('buttonMail', new Array(i18n(dojo.byId('objectClass').value)));
 	if (dijit.byId('attendees')) {
 		dijit.byId('dialogMailToOther').set('checked','checked');
-		dijit.byId('dialogOtherMail').set('value',dijit.byId('attendees').get('value'));
+		dijit.byId('dialogOtherMail').set('value',extractEmails(dijit.byId('attendees').get('value')));
 		dialogMailToOtherChange();
 	}
 	dijit.byId("dialogMail").set('title',title);
@@ -3632,6 +3632,49 @@ function dialogMailToOtherChange() {
   } else {
 	  hideField('dialogOtherMail');
   }
+}
+
+function extractEmails(str) {
+  var current='';
+  var result='';
+  var name=false;
+  for (i=0; i<str.length; i++) {
+    car=str.charAt(i);
+    if (car=='"') {
+      if (name==true) {
+        name=false;
+        current="";
+      } else {
+        if (current!='') {
+          if ($result!='') {
+            result+=', ';
+          }
+          result+=trimTag(current);
+          current='';
+        }
+        name=true;
+      }
+    } else if (name==false) {		  
+      if (car==',' || car==';' || car==' ') {
+        if (current!='') {
+          if (result!='') {
+        	result+=', ';
+          }
+          result+=trimTag(current);
+          current='';
+        }
+      } else {
+        current+=car;
+	  }
+	}
+  }
+  if (current!="") {
+	if (result!='') {
+      result+=', ';
+    }
+    result+=trimTag(current);
+  }
+  return result;
 }
 
 function sendMail() {
