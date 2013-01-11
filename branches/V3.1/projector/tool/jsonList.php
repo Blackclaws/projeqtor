@@ -80,6 +80,7 @@
       if ($selected) {
         $list[$selected]=SqlList::getNameFromId($class, $selected);
       }
+      if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected);} 
       $nbRows=0;
       // return result in json format
       if (! array_key_exists('required', $_REQUEST)) {
@@ -87,6 +88,22 @@
         $nbRows+=1;
       }
       foreach ($list as $id=>$name) {
+        if ($dataType=="idProject") {
+          $wbs=$wbsList[$id];
+          $wbsTest=$wbs;
+          $level=1;
+          while (strlen($wbsTest)>3) {
+            $wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
+            if (array_key_exists($wbsTest, $wbsLevelArray)) {
+              $level=$wbsLevelArray[$wbsTest]+1;
+              $wbsTest="";
+            }
+          }
+          $wbsLevelArray[$wbs]=$level;
+          $levelWidth = ($level-1) * 2;
+          $sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
+          $name = $sep.$name;
+        }
         if ($nbRows>0) echo ', ';
         echo '{id:"' . $id . '", name:"'. str_replace('"', "''",htmlEncodeJson($name)) . '"}';
         $nbRows+=1;
