@@ -45,10 +45,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($critFld) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
+    if ($col=="idProject") { $wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);;}  
   } else {
     $table=SqlList::getList($listType,$column,$selection);
+    if ($col=="idProject") { $wbsList=SqlList::getList($listType,'sortOrder',$selection);}  
   }
-  
   $restrictArray=array();
   $excludeArray=array();
   if ($obj) {
@@ -135,8 +136,25 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if ($listType=='Linkable') {
     asort($table);
   }
+  $wbsLevelArray=array();
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
+      if ($col=="idProject") {
+        $wbs=$wbsList[$key];
+        $wbsTest=$wbs;
+        $level=1;
+        while (strlen($wbsTest)>3) {
+          $wbsTest=substr($wbsTest,0,strlen($wbsTest)-4);
+          if (array_key_exists($wbsTest, $wbsLevelArray)) {
+            $level=$wbsLevelArray[$wbsTest]+1;
+            $wbsTest="";
+          }
+        }
+        $wbsLevelArray[$wbs]=$level;
+        $levelWidth = ($level-1) * 2;
+        $sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
+        $val = $sep.$val;
+      }
       echo '<OPTION value="' . $key . '"';
       if ( $selection and $key==$selection ) { echo ' SELECTED '; } 
       echo '>' . htmlEncode($val) . '</OPTION>';
