@@ -46,7 +46,8 @@ abstract class SqlElement {
                                   "Note"=>"cascade",
                                   "Attachement"=>"cascade",
                                   "Link"=>"cascade",
-                                  "Dependency"=>"cascade"),
+                                  "Dependency"=>"cascade",
+                                  "PlannedWork"=>"cascade"),
     "ActivityType" =>       array("Activity"=>"control"),
     "Bill" =>               array("BillLine"=>"control"),
     "BillType" =>           array("Bill"=>"control"),
@@ -705,7 +706,7 @@ abstract class SqlElement {
           $where=null;
           $obj=new $object();
           $crit=array('id' . get_class($this) => $this->id);
-          if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+          if (! property_exists($obj, 'id' . get_class($this)) and property_exists($obj, 'refType') and property_exists($obj,'refId')) {
             $crit=array("refType"=>get_class($this), "refId"=>$this->id);
           }
           if ($object=="Dependency") {
@@ -1135,9 +1136,6 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
     }
     if (array_key_exists($className,self::$_cachedQuery)) {
     	if (array_key_exists($whereClause,self::$_cachedQuery[$className])) {
-//debugLog('');
-//debugLog('getSqlElementsFromCriteria=>'.$className.'=>'.$whereClause);
-//debugLog(self::$_cachedQuery[$className][$whereClause]);
     		return self::$_cachedQuery[$className][$whereClause];
     	}
     }
@@ -1381,12 +1379,7 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
     	$whereClause='#id=' . $curId;
       $class=get_class($this);
     	if (array_key_exists($whereClause,self::$_cachedQuery[$class])) {
-//debugLog('');      	
-//debugLog('getSqlElement=>'.get_class($this).'=>'.$whereClause);
-//debugLog(self::$_cachedQuery[get_class($this)][$whereClause]);
-//debugLog ("   => return $class cached : $whereClause");
         $obj=self::$_cachedQuery[$class][$whereClause];
-//debugLog('      '.$obj->id.((property_exists($this, 'name'))?' - '.$obj->name:''));
         foreach($obj as $fld=>$val) {
         	$this->$fld=$obj->$fld;
         }
@@ -1488,7 +1481,6 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
     if ($curId and array_key_exists(get_class($this),self::$_cachedQuery)) {
       $whereClause='#id=' . $curId;
       $class=get_class($this);
-//debugLog ("   => caching : $whereClause - $class - $this->id - ".((property_exists($this,'name'))?$this->name:''));
       self::$_cachedQuery[get_class($this)][$whereClause]=clone($this);
     }    
     

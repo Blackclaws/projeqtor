@@ -277,6 +277,13 @@ class Parameter extends SqlElement {
                      '3'=>i18n('debugLevel3'),
                      '4'=>i18n('debugLevel4'));
         break; 
+      case 'projectIndentChar':
+         $list=array('_'=>'_','__'=>'__','___'=>'___',
+                     '-'=>'-','--'=>'--','---'=>'---', 
+                     '>'=>'>','>>'=>'>>','>>>'=>'>>>',
+                     '|'=>'|', '|_'=>'|_','|__'=>'|__',
+                     'no'=>i18n('paramNone'));
+        break; 
     } 
     return $list;
   }
@@ -301,6 +308,7 @@ class Parameter extends SqlElement {
                            "pdfInNewWindow"=>"list", 
                            'sectionMiscellaneous'=>'section',      
                            "defaultProject"=>"list",
+                           'projectIndentChar'=>'list',
                            'newColumn'=>'newColumn'
         
         );
@@ -458,6 +466,12 @@ class Parameter extends SqlElement {
   }
 
   static public function getUserParameter($code) {
+  	if (!array_key_exists('userParamatersArray',$_SESSION)) {
+      $_SESSION['userParamatersArray']=array();
+    }
+    if (array_key_exists($code,$_SESSION['userParamatersArray'])) {
+      return $_SESSION['userParamatersArray'][$code];
+    } 
     $p=new Parameter();
     $user=$_SESSION['user'];
     $crit=" idUser ='" . $user->id . "' and idProject is null and parameterCode='" . $code . "'";
@@ -466,6 +480,7 @@ class Parameter extends SqlElement {
     if (count($lst)==1) {
       $val=$lst[0]->parameterValue;
     }
+    $_SESSION['userParamatersArray'][$code]=$val;
     return $val;
   }
   

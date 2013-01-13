@@ -87,8 +87,13 @@
       	echo '{id:" ", name:""}';
         $nbRows+=1;
       }
+      if ($dataType=="idProject") {
+        $sepChar=Parameter::getUserParameter('projectIndentChar');
+        if (!$sepChar) $sepChar='__';
+        $wbsLevelArray=array();
+      }
       foreach ($list as $id=>$name) {
-        if ($dataType=="idProject") {
+        if ($dataType=="idProject" and $sepChar!='no') {
           $wbs=$wbsList[$id];
           $wbsTest=$wbs;
           $level=1;
@@ -100,8 +105,9 @@
             }
           }
           $wbsLevelArray[$wbs]=$level;
-          $levelWidth = ($level-1) * 2;
-          $sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
+          $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
+          //$levelWidth = ($level-1) * 2;
+          //$sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
           $name = $sep.$name;
         }
         if ($nbRows>0) echo ', ';

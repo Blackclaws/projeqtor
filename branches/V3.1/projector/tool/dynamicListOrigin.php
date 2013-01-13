@@ -18,7 +18,7 @@ if ($originType) {
   $obj=new $refType($refId);
   $crit = array ( 'idle'=>'0', 'idProject'=>$obj->idProject);
 	$objList=new $originType();
-  $list=$objList->getSqlElementsFromCriteria($crit,false,null, 'id desc');
+  $list=$objList->getSqlElementsFromCriteria($crit,false,null);
 } else {
 	$list=array();
 }

@@ -49,7 +49,7 @@ class Importable extends SqlElement {
 		scriptLog("import($fileName, $class)");
 		// Control that mbsting is available
     if (! function_exists('mb_detect_encoding')) {
-      debugLog ("ERROR - mbstring not enabled - Import cancelled");
+      errorLog("ERROR - mbstring not enabled - Import cancelled");
       $msg='<b>Error - mbstring is not enabled</b><br/>Import aborted<br/>Contact your administrator';
       self::$importResult=$msg;
       return $msg;

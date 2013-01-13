@@ -440,7 +440,6 @@ scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $li
         }
         if ($showLine) {
         	$prj=new Project($idPrj);
-//debugLog("$idPrj=>$prj->id=>$prj->name");
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
             $result .= '<td class="display"  NOWRAP>' . htmlDrawLink($prj);

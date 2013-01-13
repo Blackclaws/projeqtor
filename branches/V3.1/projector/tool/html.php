@@ -136,10 +136,14 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   if ($listType=='Linkable') {
     asort($table);
   }
-  $wbsLevelArray=array();
+  if ($col=="idProject") {
+    $sepChar=Parameter::getUserParameter('projectIndentChar');
+    if (!$sepChar) $sepChar='__';
+    $wbsLevelArray=array();
+  }
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
-      if ($col=="idProject") {
+      if ($col=="idProject" and $sepChar!='no') {
         $wbs=$wbsList[$key];
         $wbsTest=$wbs;
         $level=1;
@@ -151,8 +155,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           }
         }
         $wbsLevelArray[$wbs]=$level;
-        $levelWidth = ($level-1) * 2;
-        $sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
+        $sep='';for ($i=1; $i<$level;$i++) {$sep.=$sepChar;}
+        //$levelWidth = ($level-1) * 2;
+        //$sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
         $val = $sep.$val;
       }
       echo '<OPTION value="' . $key . '"';
