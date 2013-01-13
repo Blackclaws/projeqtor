@@ -137,6 +137,7 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
+debugLog("PlanningElement #$plan->id => $plan->refType #$plan->refId - $plan->refName");
       if (! $plan->id) {
         continue;
       }
@@ -194,6 +195,7 @@ class PlannedWork extends GeneralWork {
         $endPlan=null;
         $step=1;
       }
+debugLog("  startPlan=$startPlan endPlan=$endPlan step=$step startDate=$startDate");
       $precList=$plan->_predecessorListWithParent;
       foreach ($precList as $precId=>$precVal) { // #77 : $precVal = dependency delay
       	$prec=$fullListPlan[$precId];
@@ -263,6 +265,8 @@ class PlannedWork extends GeneralWork {
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
         $listAss=$a->getSqlElementsFromCriteria($crit,false);        
         foreach ($listAss as $ass) {
+debugLog("  Assignement #$ass->id ress=$ass->idResource left=$ass->leftWork");
+debugLog("    startPlan=$startPlan endPlan=$endPlan step=$step startDate=$startDate");
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -304,10 +308,11 @@ class PlannedWork extends GeneralWork {
           if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile="FDUR") {
             $delai=workDayDiffDates($currentDate,$endPlan);
             if ($delai and $delai>0) { 
-              $regul=$plan->leftWork/$delai;
+              $regul=$ass->leftWork/$delai;
               $regulDone=0;
               $interval=0;
             }
+debugLog("      delai=$delai regul=$regul");
           }
           while (1) {            
             if ($left<0.01) {
