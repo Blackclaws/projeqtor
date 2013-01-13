@@ -16,4 +16,10 @@ $value=$_REQUEST['value'];
 
 $_SESSION[$id]=$value;
 
+if (array_key_exists('userParamatersArray',$_SESSION)) {
+	if (array_key_exists($id,$_SESSION['userParamatersArray'])) {
+		$_SESSION['userParamatersArray'][$id]=$value;
+	}
+}
+
 ?>

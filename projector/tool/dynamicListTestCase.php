@@ -22,7 +22,7 @@ if (trim($idProduct)) {
   $crit['idProduct']=$idProduct;
 }
 
-$list=$obj->getSqlElementsFromCriteria($crit,false,null, 'id desc',true);
+$list=$obj->getSqlElementsFromCriteria($crit,false,null, null,true);
 foreach ($selectedArray as $selected) {
   if ($selected and ! array_key_exists("#" . $selected, $list)) {
 	  $list["#".$selected]=new TestCase($selected);
