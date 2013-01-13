@@ -1460,7 +1460,8 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
   var onejan = new Date(pDate.getFullYear(),0,1);
   // var vWeekNum = Math.ceil((((pDate - onejan) / 86400000) +
   // onejan.getDay()+1)/7) + '';
-  var vWeekNum = dojo.date.locale.format(pDate, {datePattern: "w", selector: "date"});
+  //var vWeekNum = dojo.date.locale.format(pDate, {datePattern: "w", selector: "date"});
+  var vWeekNum = dateGetWeek(pDate,1);
   var vDateStr = "";  
   switch(pFormatStr) {
     case 'default':
@@ -1802,6 +1803,13 @@ JSGantt.ganttMouseOut = function(pID, pPos, pType) {
   if (vRowObj1) vRowObj1.className = "ganttTask" + pType;
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
   if (vRowObj2) vRowObj2.className = "ganttTask" + pType;
+};
+
+JSGantt.setSelected = function(pID) {
+  var vRowObj1 = JSGantt.findObj('child_' + pID);
+  if (vRowObj1) vRowObj1.className = "selectedrow" + pType;
+  var vRowObj2 = JSGantt.findObj('childrow_' + pID);
+  if (vRowObj2) vRowObj2.className = "selectedrow" + pType;
 };
 
 JSGantt.i18n = function (message) {
