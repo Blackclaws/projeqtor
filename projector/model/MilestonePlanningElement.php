@@ -51,7 +51,9 @@ class MilestonePlanningElement extends PlanningElement {
     "assignedCost"=>"hidden",
     "leftCost"=>"hidden",
     "realEndDate"=>"readonly",
-    "idMilestonePlanningMode"=>"required,mediumWidth"
+    "idMilestonePlanningMode"=>"required,mediumWidth",
+    "progress"=>"hidden",
+    "expectedProgress"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';
