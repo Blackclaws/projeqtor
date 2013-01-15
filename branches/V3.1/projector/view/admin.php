@@ -4,7 +4,7 @@
  * Every user may change these parameters (for his own user only !).
  */
   require_once "../tool/projector.php";
-  scriptLog('   ->/view/parameter.php');
+  scriptLog('   ->/view/admin.php');
   
   $user=$_SESSION['user'];
   $collapsedList=Collapsed::getCollaspedList();      

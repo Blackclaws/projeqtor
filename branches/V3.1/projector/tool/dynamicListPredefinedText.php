@@ -4,7 +4,7 @@
  */
 
 require_once "../tool/projector.php";
-scriptLog('   ->/tool/dynamicListDependency.php');
+scriptLog('   ->/tool/dynamicListPredefinedText.php');
 $refType=$_REQUEST['objectClass'];
 $refId=$_REQUEST['objectType'];
 

@@ -220,7 +220,7 @@ class Cron {
 	}
 	
 	public static function run() {
-scriptLog('Cron::run()');	
+//scriptLog('Cron::run()');	
     self::init();  
 		if (self::check()=='running') {
       errorLog('Try to run cron already running');
@@ -266,7 +266,7 @@ scriptLog('Cron::run()');
   }
   
   public static function checkDates() {
-scriptLog('Cron::checkDates()');
+//scriptLog('Cron::checkDates()');
   	global $globalCronMode;
     self::init();
     $globalCronMode=true;  
@@ -283,7 +283,7 @@ scriptLog('Cron::checkDates()');
   }
   
   public static function checkImport() {
-scriptLog('Cron::checkImport()');
+//scriptLog('Cron::checkImport()');
     self::init();
   	global $globalCronMode, $globalCatchErrors;
     $globalCronMode=true;   	

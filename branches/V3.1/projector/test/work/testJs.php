@@ -4,7 +4,7 @@
  */
    require_once "../tool/projector.php";
    header ('Content-Type: text/html; charset=UTF-8');
-   scriptLog('   ->/test/testJs.php'); 
+   //scriptLog('   ->/test/testJs.php'); 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">

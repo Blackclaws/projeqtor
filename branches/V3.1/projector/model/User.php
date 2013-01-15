@@ -330,7 +330,7 @@ class User extends SqlElement {
    * @return a list of projects id
    */
   public function getVisibleProjects() {
-scriptLog("getVisibleProjects()");
+//scriptLog("getVisibleProjects()");
     if ($this->_visibleProjects) {
       return $this->_visibleProjects;
     }
@@ -358,7 +358,7 @@ scriptLog("getVisibleProjects()");
    */
 
   public function getHierarchicalViewOfVisibleProjects() {
-scriptLog("getHierarchicalViewOfVisibleProjects()");
+//scriptLog("getHierarchicalViewOfVisibleProjects()");
     if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
       return $this->_hierarchicalViewOfVisibleProjects;
     } 

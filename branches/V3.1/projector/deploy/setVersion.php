@@ -1,6 +1,6 @@
 <?php
 require_once "../tool/projector.php"; 
-scriptLog('   ->/deploy/setVersion.php');
+//scriptLog('   ->/deploy/setVersion.php');
 
 $crit = array('parameterCode'=>'dbVersion');
 $vers=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);

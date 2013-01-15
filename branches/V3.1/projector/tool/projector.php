@@ -39,6 +39,7 @@ if (is_file("../tool/parametersLocation.php")) {
   } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
+
 $tz=Parameter::getGlobalParameter('paramDefaultTimezone');
 if ($tz) date_default_timezone_set($tz);
 if (! isset($noScriptLog)) {

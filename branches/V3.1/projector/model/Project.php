@@ -213,7 +213,7 @@ class Project extends SqlElement {
    * @return an array of Projects as sub-projects
    */
   public function getSubProjects($limitToActiveProjects=false) {
-scriptLog("Project($this->id)->getSubProjects($limitToActiveProjects)");  	
+//scriptLog("Project($this->id)->getSubProjects($limitToActiveProjects)");  	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -242,7 +242,7 @@ scriptLog("Project($this->id)->getSubProjects($limitToActiveProjects)");
    * @return an array of Projects as sub-projects
    */
   public function getSubProjectsList($limitToActiveProjects=false) {
-scriptLog("Project($this->id)->getSubProjectsList($limitToActiveProjects)");    	
+//scriptLog("Project($this->id)->getSubProjectsList($limitToActiveProjects)");    	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -264,7 +264,7 @@ scriptLog("Project($this->id)->getSubProjectsList($limitToActiveProjects)");
    * @return an array containing id, name, subprojects (recursive array)
    */
   public function getRecursiveSubProjects($limitToActiveProjects=false) {
-scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");
+//scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");
     if (isset(self::$_subProjectList[$this->id])) {
     	//return self::$_subProjectList[$this->id];
     }    	
@@ -292,7 +292,7 @@ scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)")
    * 
    */
   public function getRecursiveSubProjectsFlatList($limitToActiveProjects=false, $includeSelf=false) {
-scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActiveProjects,$includeSelf)");   	
+//scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActiveProjects,$includeSelf)");   	
     if (isset(self::$_subProjectFlatList[$this->id])) {
       //return self::$_subProjectFlatList[$this->id];
     }
@@ -320,7 +320,7 @@ scriptLog("Project($this->id)->getRecursiveSubProjectsFlatList($limitToActivePro
 
   
   public function getTopProjectList($includeSelf=false) {
-scriptLog("Project($this->id)->getTopProjectList($includeSelf)");    	
+//scriptLog("Project($this->id)->getTopProjectList($includeSelf)");    	
     if ($includeSelf) {
       return array_merge(array($this->id),$this->getTopProjectList(false));
     }
@@ -341,7 +341,7 @@ scriptLog("Project($this->id)->getTopProjectList($includeSelf)");
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-scriptLog("Project($this->id)->drawSpecificItem($item)");  	
+//scriptLog("Project($this->id)->drawSpecificItem($item)");  	
     $result="";
     if ($item=='subprojects') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('subProjects') . "&nbsp;:&nbsp;</label>";
@@ -383,7 +383,7 @@ scriptLog("Project($this->id)->drawSpecificItem($item)");
    *  must be redefined in the inherited class
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
-scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $limitToUserProjects, $limitToActiveProjects)");  	
+//scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $limitToUserProjects, $limitToActiveProjects)");  	
   	self::$_drawSubProjectsDone[$this->id]=$this->name;
     if ($limitToUserProjects) {
       $user=$_SESSION['user'];
@@ -467,7 +467,7 @@ scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $li
    */
 
   public function drawProjectsList($critArray) {
-scriptLog("Project($this->id)->drawProjectsList($critArray)");  	
+//scriptLog("Project($this->id)->drawProjectsList(implode('|',$critArray))");  	
     $result="<table>";
     $prjList=$this->getSqlElementsFromCriteria($critArray, false);
     foreach ($prjList as $prj) {
