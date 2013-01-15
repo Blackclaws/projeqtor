@@ -1104,7 +1104,7 @@ abstract class SqlElement {
      */
   public function getSqlElementsFromCriteria($critArray, $initializeIfEmpty=false, 
   $clauseWhere=null, $clauseOrderBy=null, $getIdInKey=false, $withoutDependentObjects=false, $maxElements=null ) {
-scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWhere, $clauseOrderBy, $getIdInKey)");
+//scriptLog("getSqlElementsFromCriteria(implode('|',$critArray), $initializeIfEmpty,$clauseWhere, $clauseOrderBy, $getIdInKey)");
     // Build where clause from criteria
     $whereClause='';
     $objects=array();
@@ -2781,7 +2781,7 @@ scriptLog("getSqlElementsFromCriteria($critArray, $initializeIfEmpty,$clauseWher
   }
   
   public function setReference($force=false, $old=null) {
-scriptLog('SqlElement::setReference');
+//scriptLog('SqlElement::setReference');
     if (! property_exists($this,'reference')) {
       return;
     }

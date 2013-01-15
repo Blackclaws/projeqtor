@@ -76,7 +76,6 @@ class IndicatorValue extends SqlElement {
   }
     
   static public function addIndicatorValue($def, $obj) {
-scriptLog("addIndicatorValue($def->name)");
   	$class=get_class($obj);
   	if ($def->nameIndicatorable!=$class) {
   		errorLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");

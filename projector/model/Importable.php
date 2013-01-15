@@ -46,7 +46,7 @@ class Importable extends SqlElement {
 	// ============================================================================**********
 
 	public static function import($fileName, $class) {
-		scriptLog("import($fileName, $class)");
+//scriptLog("import($fileName, $class)");
 		// Control that mbsting is available
     if (! function_exists('mb_detect_encoding')) {
       errorLog("ERROR - mbstring not enabled - Import cancelled");

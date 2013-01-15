@@ -59,7 +59,6 @@
    if (array_key_exists('detail', $_REQUEST)) {
    	$detail=true;
    }
-   scriptLog('   ->/view/print.php'); 
   if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp') {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">

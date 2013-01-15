@@ -3,7 +3,7 @@
  * Presents an object. 
  */
   require_once "../tool/projector.php";
-  scriptLog('   ->/view/importFile.php');  
+  scriptLog('   ->/view/importData.php');  
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Import" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
