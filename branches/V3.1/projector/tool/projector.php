@@ -6,6 +6,7 @@ session_start();              // Setup session. Must be first command.
  * $Revision$
  * $Date$
  */
+date_default_timezone_set('Europe/Paris');
 $globalCatchErrors=false;
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
@@ -55,8 +56,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V3.1.0";            // Version of application : Major / Minor / Release
-$build="0068";                // Build number. To be increased on each release
+$version="V3.1.1";            // Version of application : Major / Minor / Release
+$build="0069";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
