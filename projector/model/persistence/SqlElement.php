@@ -1473,7 +1473,7 @@ abstract class SqlElement {
       }
     }
     // set default idUser if exists
-    if (property_exists($this, 'idUser') and get_class($this)!='Affectation') {
+    if ($empty and property_exists($this, 'idUser') and get_class($this)!='Affectation') {
       if (array_key_exists('user', $_SESSION)) {
         $this->idUser=$_SESSION['user']->id;
       }
