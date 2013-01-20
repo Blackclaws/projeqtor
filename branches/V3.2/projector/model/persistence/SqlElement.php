@@ -2125,6 +2125,7 @@ abstract class SqlElement {
   public function control(){
 //traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
   	$result="";
+  	$user=$_SESSION['user'];
     foreach ($this as $col => $val) {
     	$dataType=$this->getDataType($col);
       $dataLength=$this->getDataLength($col);
@@ -2182,7 +2183,11 @@ abstract class SqlElement {
       and property_exists($this, 'idResource')
       and property_exists($this, 'handled')) {
         if ($this->handled and ! trim($this->idResource)) {
-          $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('idResource')));
+        	if ($user->isResource) {
+        		$this->idResource=$user->id;
+        	} else {
+            $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('idResource')));
+        	}
         }        
       }
       if (property_exists($objType, 'mandatoryResultOnDone') and $objType->mandatoryResultOnDone 
