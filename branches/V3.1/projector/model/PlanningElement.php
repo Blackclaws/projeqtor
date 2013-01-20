@@ -212,9 +212,11 @@ class PlanningElement extends SqlElement {
         if ($this->done and property_exists($refObj, 'doneDate')) {
           $this->realEndDate=$refObj->doneDate;
           $this->progress=100;
+          $this->expectedProgress=100;
         } else {
           $this->realEndDate=null;
           $this->progress=0;
+          $this->expectedProgress=0;
         }
       }
     } else {
@@ -223,7 +225,9 @@ class PlanningElement extends SqlElement {
     if ($this->validatedWork!=0) {
       $this->expectedProgress=round($this->realWork / ($this->validatedWork) *100);
     } else {
-    	$this->expectedProgress=null;
+    	if (!$this->expectedProgress) {
+    	  $this->expectedProgress=0;
+    	}  
     }
     
     // update topId if needed

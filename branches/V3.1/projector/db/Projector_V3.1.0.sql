@@ -12,7 +12,7 @@ ADD COLUMN `idLocker` int(12) unsigned,
 ADD COLUMN `lockedDate` datetime;
 
 ALTER TABLE  `${prefix}habilitationother` 
-CHANGE scope scope varchar(20) DEFAULT NULL;
+CHANGE scope scope varchar(20);
 
 INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
 (1, 'requirement', 1),
@@ -133,32 +133,32 @@ INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level
 (120, 'menuOpportunityType', '79', 'object', '885', NULL, '0');
 
 CREATE TABLE `${prefix}opportunity` ( 
- `id` int( 12 ) unsigned NOT NULL AUTO_INCREMENT ,
- `idProject` int( 12 ) unsigned DEFAULT NULL ,
- `name` varchar( 100 ) DEFAULT NULL ,
- `description` varchar( 4000 ) DEFAULT NULL ,
- `idOpportunityType` int( 12 ) unsigned DEFAULT NULL ,
- `cause` varchar( 4000 ) DEFAULT NULL ,
- `impact` varchar( 4000 ) DEFAULT NULL ,
- `idSeverity` int( 12 ) unsigned DEFAULT NULL ,
- `idLikelihood` int( 12 ) unsigned DEFAULT NULL ,
- `idCriticality` int( 12 ) unsigned DEFAULT NULL ,
+ `id` int(12) unsigned NOT NULL AUTO_INCREMENT ,
+ `idProject` int(12) unsigned DEFAULT NULL ,
+ `name` varchar(100) DEFAULT NULL ,
+ `description` varchar(4000) DEFAULT NULL ,
+ `idOpportunityType` int(12) unsigned DEFAULT NULL ,
+ `cause` varchar(4000) DEFAULT NULL ,
+ `impact` varchar(4000) DEFAULT NULL ,
+ `idSeverity` int(12) unsigned DEFAULT NULL ,
+ `idLikelihood` int(12) unsigned DEFAULT NULL ,
+ `idCriticality` int(12) unsigned DEFAULT NULL ,
  `creationDate` date DEFAULT NULL ,
- `idUser` int( 12 ) unsigned DEFAULT NULL ,
- `idStatus` int( 12 ) unsigned DEFAULT NULL ,
- `idResource` int( 12 ) unsigned DEFAULT NULL ,
+ `idUser` int(12) unsigned DEFAULT NULL ,
+ `idStatus` int(12) unsigned DEFAULT NULL ,
+ `idResource` int(12) unsigned DEFAULT NULL ,
  `initialEndDate` date DEFAULT NULL ,
  `actualEndDate` date DEFAULT NULL ,
  `idleDate` date DEFAULT NULL ,
- `result` varchar( 4000 ) DEFAULT NULL ,
- `comment` varchar( 4000 ) DEFAULT NULL ,
- `idle` int( 1 ) unsigned DEFAULT '0',
- `done` int( 1 ) unsigned DEFAULT '0',
+ `result` varchar(4000) DEFAULT NULL ,
+ `comment` varchar(4000) DEFAULT NULL ,
+ `idle` int(1) unsigned DEFAULT '0',
+ `done` int(1) unsigned DEFAULT '0',
  `doneDate` date DEFAULT NULL ,
- `handled` int( 1 ) unsigned DEFAULT '0',
+ `handled` int(1) unsigned DEFAULT '0',
  `handledDate` date DEFAULT NULL ,
- `reference` varchar( 100 ) DEFAULT NULL ,
- `externalReference` varchar( 100 ) DEFAULT NULL,
+ `reference` varchar(100) DEFAULT NULL ,
+ `externalReference` varchar(100) DEFAULT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
@@ -198,7 +198,7 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`)
 SELECT `idProfile`, 119, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=3;  
 
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `expectedProgress` int(3) unsigned default '0';
-UPDATE `${prefix}planningelement` SET expectedProgress=round(realWork/validatedWork*100) where validatedCost>0;
+UPDATE `${prefix}planningelement` SET expectedProgress=round(realWork/validatedWork*100) where validatedWork>0;
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES 
 (19, 'idTeam', 'teamList', 20, null),

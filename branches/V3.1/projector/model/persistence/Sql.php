@@ -41,9 +41,6 @@ class Sql {
    */
   static function query($sqlRequest=NULL) {
     global $debugQuery;
-    if (!(isset($debugQuery) and $debugQuery) ) {
-	    traceLog('Sql::query('.$sqlRequest.')');
-    }
     if ($sqlRequest==NULL) {
       echo "SQL WARNING : empty query";
       traceLog("SQL WARNING : empty query");
