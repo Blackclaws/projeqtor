@@ -137,7 +137,6 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
-debugLog("PlanningElement #$plan->id => $plan->refType #$plan->refId - $plan->refName");
       if (! $plan->id) {
         continue;
       }
@@ -195,7 +194,6 @@ debugLog("PlanningElement #$plan->id => $plan->refType #$plan->refId - $plan->re
         $endPlan=null;
         $step=1;
       }
-debugLog("  startPlan=$startPlan endPlan=$endPlan step=$step startDate=$startDate");
       $precList=$plan->_predecessorListWithParent;
       foreach ($precList as $precId=>$precVal) { // #77 : $precVal = dependency delay
       	$prec=$fullListPlan[$precId];
@@ -265,8 +263,6 @@ debugLog("  startPlan=$startPlan endPlan=$endPlan step=$step startDate=$startDat
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
         $listAss=$a->getSqlElementsFromCriteria($crit,false);        
         foreach ($listAss as $ass) {
-debugLog("  Assignement #$ass->id ress=$ass->idResource left=$ass->leftWork");
-debugLog("    startPlan=$startPlan endPlan=$endPlan step=$step startDate=$startDate");
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -312,7 +308,6 @@ debugLog("    startPlan=$startPlan endPlan=$endPlan step=$step startDate=$startD
               $regulDone=0;
               $interval=0;
             }
-debugLog("      delai=$delai regul=$regul");
           }
           while (1) {            
             if ($left<0.01) {
