@@ -31,12 +31,13 @@ class Version extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="name" width="25%" >${versionName}</th>
+    <th field="name" width="20%" >${versionName}</th>
     <th field="nameProduct" width="25%" >${productName}</th>
     <th field="plannedEisDate" width="10%" formatter="dateFormatter">${plannedEis}</th>
     <th field="realEisDate" width="10%" formatter="dateFormatter">${realEis}</th>
     <th field="plannedEndDate" width="10%" formatter="dateFormatter">${plannedEnd}</th>
     <th field="realEndDate" width="10%" formatter="dateFormatter">${realEnd}</th>
+    <th field="isEis" width="5%" formatter="booleanFormatter" >${isEis}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
