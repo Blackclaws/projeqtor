@@ -10,6 +10,6 @@ $paramDbName='projectorria_v31';
 $paramDbHost='127.0.0.1';
 $paramDbPrefix='';
 $logFile='../files/logs/projector_${date}.log';
-$logLevel='4';
+$logLevel='3';
 //$debugQuery=true;
 //======= END
