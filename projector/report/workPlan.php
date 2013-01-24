@@ -64,6 +64,7 @@
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colReal') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:50px" nowrap>' . i18n('colLeft') . '</TD>' ;
     echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('progress') . '</TD>' ;
+    echo '  <TD class="reportTableHeader" style="width:70px" nowrap>' . i18n('colExpectedProgress') . '</TD>' ;
     echo '</TR>';
     // Treat each line
     while ($line = Sql::fetchLine($result)) {
@@ -73,14 +74,16 @@
       $plannedWork=$line['plannedwork'];
       $realWork=$line['realwork'];
       $leftWork=$line['leftwork'];
-      $progress=' 0';
+      /*$progress=' 0';
       if ($plannedWork>0) {
         $progress=round(100*$realWork/$plannedWork);
       } else {
         if ($line['done']) {
           $progress=100;
         }
-      }
+      }*/
+      $progress=$line['progress'];
+      $expectedProgress=$line['expectedprogress'];
       // pGroup : is the tack a group one ?
       $pGroup=($line['elementary']=='0')?1:0;
       $compStyle="";
@@ -109,6 +112,7 @@
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($realWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($leftWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($progress) . '</TD>' ;
+      echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . percentFormatter($expectedProgress) . '</TD>' ;
       echo '</TR>';
     }
   }
