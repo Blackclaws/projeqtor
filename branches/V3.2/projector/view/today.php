@@ -7,7 +7,9 @@
   scriptLog('   ->/view/today.php');  
   $user=$_SESSION['user'];
   $profile=new Profile($user->idProfile);
-
+  $cptMax=Parameter::getGlobalParameter('maxItemsInTodayLists');
+  if (! $cptMax) {$cptMax=100;}
+  
 SqlElement::$_cachedQuery['Project']=array();
 SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
 SqlElement::$_cachedQuery['PlanningElement']=array();
@@ -19,8 +21,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     showProjects();
     exit;
   } 
-  $cptMax=Parameter::getGlobalParameter('maxItemsInTodayLists');
-  if (! $cptMax) {$cptMax=100;}
   
   function showMessages() {
   	global $cptMax;

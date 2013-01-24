@@ -279,7 +279,8 @@ class ImputationLine {
 	private static function getParent($elt, $result, $direct=true){
 		$plan=null;
 		$user=$_SESSION['user'];
-		$visibleProjectList=$user->getVisibleProjects();
+		//$visibleProjectList=$user->getVisibleProjects();
+		$visibleProjectList=explode(', ', getVisibleProjectsList());
 		if ($elt->topId) {
 			$plan=new PlanningElement($elt->topId);
 		}
