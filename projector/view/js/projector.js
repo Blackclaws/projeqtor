@@ -239,7 +239,7 @@ function addMessage(msg) {
  */
 function changeTheme(newTheme) {
   if (newTheme!="") {
-    dojo.byId('body').className=newTheme;
+    dojo.byId('body').className='tundra '+newTheme;
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=theme&value=" + newTheme,
       handleAs: "text"

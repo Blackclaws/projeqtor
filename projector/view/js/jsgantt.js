@@ -35,6 +35,7 @@ var JSGantt; if (!JSGantt) JSGantt = {};
 var vTimeout = 0;
 var vBenchTime = new Date().getTime();
 var arrayClosed=new Array();
+var linkInProgress=false;
 
 JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp, pGroup, 
                             pParent, pOpen, pDepend, pCaption, pClass, pScope, pRealEnd, pPlanStart,
@@ -126,7 +127,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.getEndY     = function(){ return y2; };
   this.getVisible  = function(){ return vVisible; };
   this.getScope    = function(){ return vScope; };
-  this.getClass  = function(){ return vClass; };
+  this.getClass    = function(){ return vClass; };
   this.setDepend   = function(pDepend){ vDepend = pDepend;};
   this.setStart    = function(pStart){ vStart = pStart;};
   this.setEnd      = function(pEnd)  { vEnd   = pEnd;  };
@@ -425,6 +426,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vDayWidth = 0;
     var vStr = "";
     var vRowType="";
+    var vIconWidth=24;
     var vNameWidth = 300;  
     var vStatusWidth = 70;
     var vResourceWidth = 90;
@@ -433,7 +435,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vDurationWidth = 60;
     var vProgressWidth = 50;
     var vWidth=this.getWidth();
-    var vLeftWidth = 16 
+    var vLeftWidth = vIconWidth
       +   vNameWidth 
       + ( (1+vResourceWidth) * this.getShowRes() )
       + ( (1+vDurationWidth) * this.getShowDur() )
@@ -490,7 +492,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable = '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' 
         +'<TABLE jsId="topSourceTable" id="topSourceTable" class="ganttTable"><TBODY>'
         +'<TR class="ganttHeight">'
-        +'<TD class="ganttLeftTopLine" style="width:16px;"></TD>'
+        +'<TD class="ganttLeftTopLine" style="width:'+vIconWidth+'px;"></TD>'
         +'<TD class="ganttLeftTopLine" style="width: ' + vNameWidth + 'px;"><NOBR>';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
       vLeftTable+= '</NOBR></TD>'; 
@@ -528,7 +530,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      }
       }
       vLeftTable += '</TR><TR class="ganttHeight">'
-        +'<TD class="ganttLeftTitle" style="width:16px;"></TD>'
+        +'<TD class="ganttLeftTitle" style="width:'+vIconWidth+'px;"></TD>'
         +'<TD class="ganttLeftTitle ganttAlignLeft ganntNoLeftBorder" style="width: ' + vNameWidth + 'px;">'
         +JSGantt.i18n('colTask') +'</TD>' ;     
       for (iSort=0;iSort<sortArray.length;iSort++) {
@@ -577,7 +579,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable += '</TBODY></TABLE></DIV>'
         +'<DIV class="scrollLeft" id="leftside" style="z-index:-1;position:relative;width:' + vLeftWidth + 'px;">'
         + ( (dojo.ifFF)?'<div style="height:1px"></div>':'')
-        +'<TABLE dojoType="dojo.dnd.Source" withHandles="false" jsId="dndSourceTable" id="dndSourceTable" '
+        +'<TABLE dojoType="dojo.dnd.Source" withHandles="true" jsId="dndSourceTable" id="dndSourceTable" '
         +'class="ganttTable"  ><TBODY>';
       for(i = 0; i < vTaskList.length; i++) {
         if( vTaskList[i].getGroup()) {
@@ -593,10 +595,17 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           + invisibleDisplay
           + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
           + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
-        vLeftTable += '  <TD class="ganttName" style="width:16px">'
+        vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">'
+          +'<span class="dojoDndHandle handleCursor">' 
+          +'<img style="width:8px" src="css/images/iconDrag.gif" />' 
           +'<img style="width:16px" src="css/images/icon' 
-          + vTaskList[i].getClass() + '16.png" /></TD>'
-          +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap>';
+          + vTaskList[i].getClass() + '16.png" />'
+          +'</span>'
+          +'</TD>'
+          +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap '
+          + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
+          + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
+          +'>';
         vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
         var levl=vTaskList[i].getLevel();
         var levlWidth = (levl-1) * 16;
@@ -864,7 +873,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;">' 
             + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
             + ' style="overflow:hidden; cursor: pointer; font-size:18px;" '
-            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>';
+            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
+            + ' >';
           if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getEnd())) {
             if(vTaskList[i].getCompVal() < 100) {
               vRightTable += '&loz;</div>' ;
@@ -981,6 +991,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
 	            + ' class="ganttTaskrowBar" style="background-color:#' + tmpColor +'; '
 	            + ' width:' + vBarWidth + 'px; " ' 
+      		    + ' onmousedown=JSGantt.startLink('+i+'); '
+                + ' onmouseup=JSGantt.endLink('+i+'); '
 	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
 	            vRightTable += ' </div>';
 	        	
@@ -1031,7 +1043,7 @@ JSGantt.isIE = function () {
     return false;
   }
 };
-  
+
 /**
  * Recursively process task tree ... set min, max dates of parent tasks and
  * identfy task level.
@@ -1928,4 +1940,36 @@ function setGanttVisibility(g) {
 	  g.setShowValidatedWork(0);
 	}
 	g.setSortArray(planningColumnOrder);
+}
+
+JSGantt.startLink = function (idRow) {
+	console.log('startLink');
+	vTaskList=g.getList();
+	console.log(vTaskList[idRow].getName());
+	dojo.byId('rightside').style.cursor='crosshair';
+	
+}
+JSGantt.endLink = function (idRow) {
+	console.log('endLink');
+	vTaskList=g.getList();
+	console.log(vTaskList[idRow].getName());
+	dojo.byId('rightside').style.cursor='progress';
+}
+JSGantt.cancelLink = function (idRow) {
+	console.log('cancelLink');
+	vTaskList=g.getList();
+	console.log(vTaskList[idRow].getName());
+	dojo.byId('rightside').style.cursor='default';
+}
+
+function leftMouseWheel(evt) {
+	var oldTop=parseInt(dojo.byId('leftside').style.top);
+	var newTop=oldTop+(100*evt.wheelDelta/120);
+	var visibleHeight=parseInt(dojo.byId('rightGanttChartDIV').style.height);
+	var totalHeight=parseInt(dojo.byId('leftside').style.height);
+	if (newTop>0) newTop=0;
+	//alert('oldTop='+oldTop+" newTop="+newTop+' visibleHeight='+visibleHeight+' totalHeight='+totalHeight);
+    dojo.byId('rightGanttChartDIV').scrollTop +=oldTop-newTop;
+    //dojo.byId('leftside').style.top=newTop+'px';
+    dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
 }

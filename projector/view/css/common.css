@@ -521,12 +521,12 @@ table.dojoDndAvatar {
 .dijitInputContainer INPUT {
   margin: 0em 0.1em;
 }
-.tundra .dijitInputContainer INPUT,
-.tundra .dijitTextBox {
+.dijitInputContainer INPUT,
+.dijitTextBox {
   margin: 0em 0.1em;
 }
 
-.tundra .dijitTextArea {
+.dijitTextArea {
   padding: 3px;
 }
 .dijitTextBox,.dijitComboBox,.dijitSpinner,.dijitTextArea {
@@ -720,14 +720,14 @@ table.dojoDndAvatar {
   margin: 0px 0px 0px 5px;
 }
 
-.dijitArrowButtonInner {
+.dijitArrowButtonInner, .tundra .dijitArrowButtonInner {
   background:url("../images/spriteArrows.png") no-repeat scroll 0px center;
   width: 7px;
   height: 7px;
   margin: 0px 4px 0px 4px;
 }
 
-.dj_ie6 .dijitArrowButtonInner {
+.dj_ie6 .dijitArrowButtonInner, .dj_ie6 .tundra .dijitArrowButtonInner {
   background-image: url(images/spriteArrows.gif);
 }
 
@@ -735,7 +735,7 @@ table.dojoDndAvatar {
   background-position: -28px center;;
 }
 
-.dijitUpArrowButton .dijitArrowButtonInner {
+.dijitUpArrowButton .dijitArrowButtonInner, .tundra .dijitUpArrowButton .dijitArrowButtonInner {
   background-position: -21px center;;
 }
 
@@ -2170,10 +2170,10 @@ table.dijitCalendarContainer {
 	text-align: center;
 	background-color: white;
 }
-.dojoxGridView {
+/*.dojoxGridView { Remove to fix bog in dojo 1.8.3 : Grid not displayed on IE
 	position: absolute;
-	overflow: hidden;
-}
+	overflow: hidden;*/
+}*/
 .dojoxGridHeader {
 	position: absolute;
 	overflow: hidden;
@@ -2553,4 +2553,18 @@ table.dijitCalendarContainer {
 .dijitTextBox .dijitTextArea .dijitExpandingTextArea .input .dijitTextBoxReadOnly .dijitTextAreaReadOnly .dijitExpandingTextAreaReadOnly .dijitReadOnly {
 	color:grey;
   cursor: default !important;
+}
+
+
+.tundra .dijitArrowButtonInner {
+  background:url("images/spriteArrows.png") no-repeat scroll 0 center;
+  width: 7px;
+  height: 7px;
+  margin: 0 4px 0 4px;
+}
+.tundra .dijitTextBox .dijitArrowButtonInner {
+  background-position: 0 center;
+}
+.dj_ie6 .tundra .dijitArrowButtonInner {
+  background-image:url("images/spriteArrows.gif");
 }

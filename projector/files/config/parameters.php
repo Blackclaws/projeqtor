@@ -6,7 +6,7 @@
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin31!';
 //$paramDbName='sante';
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
-$paramDbName='projectorria_v31';
+$paramDbName='projectorria_v32';
 $paramDbHost='127.0.0.1';
 $paramDbPrefix='';
 $logFile='../files/logs/projector_${date}.log';

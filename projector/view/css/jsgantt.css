@@ -217,6 +217,9 @@ div .scrollRightTop {
   cursor: pointer;
 }
 
+.handleCursor {
+	cursor: move;
+}
 .ganttDetail {
   border-top: #c0c0c0 1px solid;
   font-size: 90%;  
