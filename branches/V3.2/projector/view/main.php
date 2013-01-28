@@ -229,7 +229,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     //window.onbeforeunload = function (evt){ return beforequit();};
   </script>
 </head>
-<body id="body" class="<?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
+<body id="body" class="tundra <?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
 <div id="loadingDiv" class="<?php echo getTheme();?> loginFrame" 
  style="position:relative; visibility: visible; display:block; width:100%; height:100%; margin:0; padding:0; border:0">  
   <table align="center" width="100%" height="100%" class="loginBackground">

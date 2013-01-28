@@ -238,7 +238,7 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
 	   <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" 
       style="width:425px; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
       id="leftGanttChartDIV" name="leftGanttChartDIV"
-      onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px';">
+      onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px';" onmousewheel="leftMouseWheel(event);">
      </div>
      <div dojoType="dijit.layout.ContentPane" region="center" 
       style="height:100%; overflow:hidden;" class="ganttDiv" 
