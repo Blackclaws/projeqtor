@@ -174,9 +174,9 @@ function filterJsonList() {
 
 function refreshGrid() {
   if (dijit.byId("objectGrid")) {
-    setTimeout("refreshJsonList(dojo.byId('objectClass').value, true);",200);
+    showWait();refreshJsonList(dojo.byId('objectClass').value, true);
   } else {
-	setTimeout("refreshJsonPlanning();",200);  
+	showWait();refreshJsonPlanning();  
   }
 }
 /**
@@ -754,8 +754,7 @@ function finalizeMessageDisplay(destination, validationType) {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
-    	
+    	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');    	
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
@@ -777,7 +776,7 @@ function finalizeMessageDisplay(destination, validationType) {
     		  (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  refreshGrid();
-      } else {
+      } else if (lastOperation!='plan'){
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
           if (validationType=='assignment') {
         	refreshGrid();
@@ -789,8 +788,8 @@ function finalizeMessageDisplay(destination, validationType) {
       // refresh the grid to reflect changes
       var lastSaveId=dojo.byId('lastSaveId');
       var objectId=dojo.byId('objectId');
-      if (objectId && lastSaveId) {
-        objectId.value=lastSaveId.value;
+      if (objectId && lastSaveId && destination!="planResultDiv") {
+    	objectId.value=lastSaveId.value;
       }
       // Refresh the Grid list (if visible)
       var grid = dijit.byId("objectGrid");  
@@ -843,7 +842,7 @@ function finalizeMessageDisplay(destination, validationType) {
         if (lastOperation.value=="copy") {
           loadContent("objectDetail.php?", "detailDiv", 'listForm');
         } else {
-          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+          loadContent('objectDetail.php?refresh=true', 'detailFormDiv', 'listForm');
           // Need also to refresh History
           if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
             loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
@@ -1458,9 +1457,7 @@ function drawGantt() {
       var pGroup=(item.elementary=='0')?1:0;
       // runScript : JavaScript to run when click on tack (to display the
     // detail of the task)
-      var runScript="dojo.byId('objectClass').value='" + item.reftype + "';";
-      runScript+="dojo.byId('objectId').value='" + item.refid + "';";
-      runScript+="hideList();loadContent('objectDetail.php','detailDiv','listForm');";
+      var runScript="runScript('"+item.reftype + "','"+item.refid+"');";
       // display Name of the task
       var pName=( (showWBS)?item.wbs:'') + " " + item.refname; // for testeing
                                 // purpose, add
@@ -1522,17 +1519,30 @@ function drawGantt() {
     // showAlert("Gantt chart not defined");
     return;
   }
+/* Issue 985 : removed this update 
+ * seems no use and generate issue moving assignments from one activity to another
   // Refresh class and id
   var listId=dojo.byId('objectId');
-  var objId=dojo.byId('id');
   var listClass=dojo.byId('objectClass');
+  var objId=dojo.byId('id');
   var objClass=dojo.byId('className');
   if (listId && listClass && objId && objClass) {
     listClass.value=objClass.value;
     listId.value=objId.value;
   }
+*/
 }
 
+function runScript(refType, refId) {
+  if (waitingForReply)  {
+	showInfo(i18n("alertOngoingQuery"));
+    return;
+  }
+  dojo.byId('objectClass').value=refType;
+  dojo.byId('objectId').value=refId;
+  hideList();
+  loadContent('objectDetail.php','detailDiv','listForm');
+}
 /**
  * calculate diffence (in work days) between dates
  */ 
