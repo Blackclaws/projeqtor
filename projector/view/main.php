@@ -351,7 +351,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   } else {
                     echo i18n("buttonSwitchedMode");
                   }?>
-              </button>                
+              </button>             
             </div>
           </td>
           <td width="30%" >
