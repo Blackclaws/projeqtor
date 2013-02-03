@@ -2851,5 +2851,9 @@ abstract class SqlElement {
   public function getTitle($col) {
     return i18n('col'.$col);
   }
+  
+  public static function unsetRelationShip($rel1, $rel2) {
+  	unset(self::$_relationShip[$rel1][$rel2]);
+  }
 }
 ?>

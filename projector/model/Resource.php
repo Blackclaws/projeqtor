@@ -396,6 +396,9 @@ class Resource extends SqlElement {
 	        }
 	    }
     }
+    if ($nested) {
+    	SqlElement::unsetRelationShip('Resource','Affectation');
+    }
     if (! $result) {	
       $result=parent::deleteControl();
     }

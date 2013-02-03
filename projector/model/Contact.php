@@ -360,6 +360,9 @@ class Contact extends SqlElement {
 	        }
 	    }
     }
+    if ($nested) {
+      SqlElement::unsetRelationShip('Contact','Affectation');
+    }
     if (! $result) {  
       $result=parent::deleteControl();
     }

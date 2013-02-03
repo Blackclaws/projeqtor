@@ -495,6 +495,9 @@ class User extends SqlElement {
 	        }
       }
     }
+    if ($nested) {
+      SqlElement::unsetRelationShip('User','Affectation');
+    }
     if (! $result) {  
       $result=parent::deleteControl();
     }
