@@ -700,10 +700,12 @@ function addAttachement (attachmentType) {
 	dojo.byId("attachementId").value="";
 	dojo.byId("attachementRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("attachementRefId").value=dojo.byId("objectId").value;
-  dojo.byId("attachementType").value=attachmentType;
+    dojo.byId("attachementType").value=attachmentType;
+    dojo.byId('attachementFileName').innerHTML="";
     if (attachmentType=='file') {
       if (dijit.byId("attachementFile")) {
         dijit.byId("attachementFile").reset();
+        disableWidget('dialogAttachementSubmit');
       }
       dojo.style(dojo.byId('dialogAttachementFileDiv'), {display:'block'});
       dojo.style(dojo.byId('dialogAttachementLinkDiv'), {display:'none'});
@@ -718,11 +720,23 @@ function addAttachement (attachmentType) {
 	dijit.byId("dialogAttachement").show();
 }
 
+function changeAttachment(list) {
+  if (list.length>0) {
+    dojo.byId('attachementFileName').innerHTML=list[0]['name'];
+    enableWidget('dialogAttachementSubmit');
+  } else {
+	dojo.byId('attachementFileName').innerHTML="";
+	disableWidget('dialogAttachementSubmit');
+  }
+}
 /**
  * save an Attachement
  * 
  */
 function saveAttachement() {
+	if (dojo.byId('attachementFileName').innerHTML=="") {
+		return;
+	} 
 	dojo.byId('attachementForm').submit();
 	showWait();
 	dijit.byId('dialogAttachement').hide();
@@ -1204,13 +1218,11 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dijit.byId('assignmentIdResource').set('store',store);*/
 	refreshListSpecific('listResourceProject', 'assignmentIdResource', 'idProject', prj, idResource);
 	dijit.byId("assignmentIdResource").reset();
-	dijit.byId("assignmentIdResource").set("value",idResource);	
-	
+	dijit.byId("assignmentIdResource").set("value",idResource);
 	dijit.byId("assignmentIdRole").set("value",idRole);
-
 	dojo.byId("assignmentId").value=assignmentId;
 	dojo.byId("assignmentRefType").value=dojo.byId("objectClass").value;
-	dojo.byId("assignmentRefId").value=dojo.byId("objectId").value;
+	dojo.byId("assignmentRefId").value=dojo.byId("id").value;
 	dijit.byId("assignmentDailyCost").set('value',dojo.number.format(cost/100));
 	dojo.byId("assignmentRate").value=rate;
 	dijit.byId("assignmentAssignedWork").set('value',dojo.number.format(assignedWork/100));

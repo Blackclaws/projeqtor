@@ -1805,14 +1805,14 @@ JSGantt.benchMark = function(pItem){
 
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {
   var vRowObj1 = JSGantt.findObj('child_' + pID);
-  if (vRowObj1) vRowObj1.className = "ganttTask" + pType + " ganttRowHover";
+  if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType + " ganttRowHover";
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
   if (vRowObj2) vRowObj2.className = "ganttTask" + pType + " ganttRowHover";
 };
 
 JSGantt.ganttMouseOut = function(pID, pPos, pType) {
   var vRowObj1 = JSGantt.findObj('child_' + pID);
-  if (vRowObj1) vRowObj1.className = "ganttTask" + pType;
+  if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType;
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
   if (vRowObj2) vRowObj2.className = "ganttTask" + pType;
 };
