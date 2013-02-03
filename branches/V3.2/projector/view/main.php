@@ -79,6 +79,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dijit.TitlePane");
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.form.FileInput");
+    dojo.require("dojox.form.Uploader");
+    dojo.require("dojox.form.uploader.FileList");
     dojo.require("dojo.dnd.Container");
     dojo.require("dojo.dnd.Manager");
     dojo.require("dojo.dnd.Source");
@@ -1287,7 +1289,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 </div>
 <div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>">
   <form id='attachementForm' name='attachementForm' 
-  ENCTYPE="multipart/form-data" method=POST
+  ENCTYPE="multipart/form-data" method="POST"
   action="../tool/saveAttachement.php"
   target="resultPost"
   onSubmit="return saveAttachement();" >
@@ -1303,12 +1305,24 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           </td>
           <td>
            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />
+          <?php  if (0) {?>
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
             dojoType="dojox.form.FileInput" type="file"
             name="attachementFile" id="attachementFile"
             cancelText="<?php echo i18n("buttonReset");?>"
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>" />
+          <?php } else {?>  
+           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+            dojoType="dojox.form.Uploader" type="file" 
+            name="attachementFile" id="attachementFile" 
+            cancelText="<?php echo i18n("buttonReset");?>"
+            multiple="false" 
+            onChange="changeAttachment(this.getFileList());"
+            label="<?php echo i18n("buttonBrowse");?>"
+            title="<?php echo i18n("helpSelectFile");?>"  />
+            <i><span name="attachementFileName" id="attachementFileName"></span></i>           
+           <?php }?>  
           </td>
         </tr>
       </table>

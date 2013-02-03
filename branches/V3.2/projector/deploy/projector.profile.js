@@ -38,6 +38,8 @@ dependencies = {
 			    "dijit.TitlePane",
 			    "dojox.grid.DataGrid",
 			    "dojox.form.FileInput",
+				"dojox.form.Uploader",
+				"dojox.form.uploader.FileList",
 			    "dojox.form.PasswordValidator",
 			    "dojo.store.DataStore",
 			    "dojo.dnd.Container",

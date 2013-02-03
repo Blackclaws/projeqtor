@@ -56,8 +56,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V3.1.1";            // Version of application : Major / Minor / Release
-$build="0069";                // Build number. To be increased on each release
+$version="V3.2.0";            // Version of application : Major / Minor / Release
+$build="0071";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -580,7 +580,7 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
   $eol=Parameter::getGlobalParameter('mailEol');
   if ($paramMailSmtpServer==null or strtolower($paramMailSmtpServer)=='null') {
-    return "NO";
+    return "";
   }
   // Save data of the mail
   $mail=new Mail();
@@ -634,6 +634,8 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $resultMail="NO";
   if ($paramMailSmtpServer!==null) {
     $resultMail=mail($to,$title,$message,$headers);
+  } else {
+  	 errorLog("   SMTP Server not set. Not able to send mail.");
   }
   disableCatchErrors();
   //error_reporting(E_ALL);

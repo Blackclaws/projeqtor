@@ -2125,7 +2125,6 @@ abstract class SqlElement {
   public function control(){
 //traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
   	$result="";
-  	$user=$_SESSION['user'];
     foreach ($this as $col => $val) {
     	$dataType=$this->getDataType($col);
       $dataLength=$this->getDataLength($col);
@@ -2183,6 +2182,7 @@ abstract class SqlElement {
       and property_exists($this, 'idResource')
       and property_exists($this, 'handled')) {
         if ($this->handled and ! trim($this->idResource)) {
+        	$user=$_SESSION['user'];
         	if ($user->isResource) {
         		$this->idResource=$user->id;
         	} else {
