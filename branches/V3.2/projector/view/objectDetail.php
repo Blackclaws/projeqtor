@@ -815,7 +815,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					$versionType=substr($col,2);
 					$otherVersion='_Other'.$versionType;
 					if (isset($obj->$otherVersion) and ! $obj->isAttributeSetToField($col,'hidden') 
-					    and ! $obj->isAttributeSetToField($col,'readonly') and $canUpdate) {
+					    and ! $obj->isAttributeSetToField($col,'readonly') and $canUpdate and !$obj->idle) {
 						$hasOtherVersion=true;
 						$fieldWidth -= 20;
 					}
