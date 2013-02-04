@@ -56,8 +56,8 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V3.1.2";            // Version of application : Major / Minor / Release
-$build="0070";                // Build number. To be increased on each release
+$version="V3.1.3";            // Version of application : Major / Minor / Release
+$build="0071";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
