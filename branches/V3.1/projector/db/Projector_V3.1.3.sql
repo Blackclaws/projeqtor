@@ -7,6 +7,7 @@
 -- ///////////////////////////////////////////////////////////
 --
 -- // Specific part for database MySql on Unix 
---
-RENAME TABLE `${prefix}workPeriod` TO `${prefix}workperiod`;
+-- // Move to temp : Windows would raise an error as workperiod exists ...
+RENAME TABLE `${prefix}workPeriod` TO `${prefix}workperiodtemp`;
+RENAME TABLE `${prefix}workperiodtemp` TO `${prefix}workperiod`;
 
