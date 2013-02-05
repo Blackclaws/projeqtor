@@ -367,7 +367,7 @@ class ImputationLine {
 		}
 		$width=600;
 		if (isset($_REQUEST['destinationWidth'])) {
-		  $width=($_REQUEST['destinationWidth'])-155;
+		  $width=($_REQUEST['destinationWidth'])-155-30;
 		} 
 		echo '<table class="imputationTable">';
 		echo '<TR class="ganttHeight">';
