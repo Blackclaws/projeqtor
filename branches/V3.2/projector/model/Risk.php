@@ -13,6 +13,7 @@ class Risk extends SqlElement {
   public $name;
   public $creationDate;
   public $idUser;
+  public $Origin;
   public $cause;
   public $impact;
   public $idSeverity;
@@ -22,6 +23,7 @@ class Risk extends SqlElement {
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
+  public $idPriority;
   public $initialEndDate; // is an object
   public $actualEndDate;
   public $handled;

@@ -7,6 +7,7 @@
 //$paramDbName='sante';
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
 $paramDbName='projectorria_v32';
+$paramDbName='test';
 $paramDbHost='127.0.0.1';
 $paramDbPrefix='';
 $logFile='../files/logs/projector_${date}.log';
