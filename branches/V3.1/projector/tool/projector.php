@@ -870,8 +870,10 @@ function transformListIntoInClause($list) {
   if (count($list)==0) return '(0)';
   $result='(' ;
   foreach ($list as $id=>$name) {
-    $result .= ($result=='(')?'':', ';
-    $result .= $id;
+    if (trim($id)) {
+      $result .= ($result=='(')?'':', ';
+      $result .= $id;
+    }
   }
   $result .= ')'; 
   return $result;
