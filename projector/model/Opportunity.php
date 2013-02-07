@@ -13,6 +13,7 @@ class Opportunity extends SqlElement {
   public $name;
   public $creationDate;
   public $idUser;
+  public $Origin;  
   public $cause;
   public $impact;
   public $idSeverity;
@@ -22,6 +23,7 @@ class Opportunity extends SqlElement {
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
+  public $idPriority;
   public $initialEndDate; // is an object
   public $actualEndDate;
   public $handled;
@@ -70,7 +72,9 @@ class Opportunity extends SqlElement {
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer',
                                                    'idResource'=> 'responsible',
-                                                   'idOpportunityType'=>'type');
+                                                   'idOpportunityType'=>'type',
+                                                   'idLikelihood'=>'opportunityImprovement',
+                                                   'cause'=>'opportunitySource');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();

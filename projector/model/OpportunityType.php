@@ -2,7 +2,7 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
-class OpportunityType extends ShortType {
+class OpportunityType extends Type {
 
   // Define the layout that will be used for lists
     
