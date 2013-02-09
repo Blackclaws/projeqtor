@@ -31,6 +31,7 @@ class Contact extends SqlElement {
   public $country;  
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $password;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -48,7 +49,8 @@ class Contact extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
-                                          "isResource"=>"readonly" 
+                                          "isResource"=>"readonly",
+                                          "password"=>"hidden" 
   );    
   
   private static $_databaseTableName = 'resource';
@@ -314,7 +316,11 @@ class Contact extends SqlElement {
   }
 
   public function save() {
-    $result=parent::save();
+    if ($this->isUser and !$this->password and Parameter::getGlobalParameter('initializePassword')=="YES") {
+      $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
+      $this->password=md5($paramDefaultPassword);
+    }
+  	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }

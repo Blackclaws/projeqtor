@@ -26,6 +26,7 @@ class Resource extends SqlElement {
   public $_ResourceCost=array();
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $password;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -42,7 +43,8 @@ class Resource extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
-                                          "isContact"=>"readonly"
+                                          "isContact"=>"readonly",
+                                          "password"=>"hidden" 
   );    
   
   private static $_databaseTableName = 'resource';
@@ -316,6 +318,10 @@ class Resource extends SqlElement {
   }
   
   public function save() {
+    if ($this->isUser and !$this->password and Parameter::getGlobalParameter('initializePassword')=="YES") {
+      $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
+      $this->password=md5($paramDefaultPassword);
+    }
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     

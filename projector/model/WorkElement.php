@@ -78,6 +78,9 @@ class WorkElement extends SqlElement {
   	} else {
   		$top=new Project();
   	}
+  	if ($top and isset($top->done) and $top->done==1) {
+  	  $this->leftWork=0;	
+  	}
     if ($top and isset($top->idActivity)) {
       $this->idActivity=$top->idActivity;
       // Check if changed Planning Activity

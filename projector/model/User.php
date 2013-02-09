@@ -73,9 +73,12 @@ class User extends SqlElement {
     $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
   	parent::__construct($id);
     
-  	if (! $this->id) {
+  	if (! $this->id and Parameter::getGlobalParameter('initializePassword')=="YES") {
   		$this->password=md5($paramDefaultPassword);
   	}
+    if (! $this->id) {
+      $this->idProfile=Parameter::getGlobalParameter('defaultProfile');
+    }
   	// Fetch data to set attributes only to display user. Other access to User (for History) don't need these attributes.
   	if (isset($objClass) and $objClass and $objClass=='User') {
 	    $crit=array("name"=>"menuContact");

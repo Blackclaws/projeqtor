@@ -713,6 +713,7 @@ function addAttachement (attachmentType) {
       dijit.byId("attachementLink").set('value', null);
       dojo.style(dojo.byId('dialogAttachementFileDiv'), {display:'none'});
       dojo.style(dojo.byId('dialogAttachementLinkDiv'), {display:'block'});
+      //disableWidget('dialogAttachementSubmit');
     }
 	dijit.byId("attachementDescription").set('value',null);
 	dijit.byId("dialogAttachement").set('title',i18n("dialogAttachement"));
@@ -729,14 +730,15 @@ function changeAttachment(list) {
 	disableWidget('dialogAttachementSubmit');
   }
 }
+
 /**
  * save an Attachement
  * 
  */
 function saveAttachement() {
-	if (dojo.byId('attachementFileName').innerHTML=="") {
+	if (dojo.byId("attachementType").value=='file' && dojo.byId('attachementFileName').innerHTML=="") {
 		return;
-	} 
+	}
 	dojo.byId('attachementForm').submit();
 	showWait();
 	dijit.byId('dialogAttachement').hide();

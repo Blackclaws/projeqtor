@@ -23,6 +23,8 @@ class IndividualExpense extends Expense {
   public $idle;
   public $_col_1_1_Detail;
   public $_ExpenseDetail=array();
+  public $_col_1_1_Link;
+  public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();
 

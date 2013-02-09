@@ -49,11 +49,12 @@ class Opportunity extends SqlElement {
     <th field="nameOpportunityType" width="10%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="colorNameSeverity" width="5%" formatter="colorNameFormatter" >${idSeverity}</th>
-    <th field="colorNameLikelihood" width="5%" formatter="colorNameFormatter" >${idLikelihood}</th>
+    <th field="colorNameLikelihood" width="5%" formatter="colorNameFormatter" >${opportunityImprovement}</th>
     <th field="colorNameCriticality" width="5%" formatter="colorNameFormatter" >${idCriticality}</th>
-    <th field="actualEndDate" width="10%" formatter="dateFormatter">${actualEndDate}</th>
-    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="9%" >${responsible}</th>
+    <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="nameResource" width="8%" >${responsible}</th>
+    <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
+    <th field="actualEndDate" width="8%" formatter="dateFormatter">${actualEndDate}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
