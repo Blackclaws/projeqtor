@@ -1,6 +1,6 @@
 <?PHP
   require_once "../tool/projector.php";
-echo "workPerActivity.php";
+//echo "workPerActivity.php";
 // Creation of object "table"
   $objectClass='PlanningElement';
   $obj=new $objectClass();
@@ -155,7 +155,7 @@ echo "workPerActivity.php";
       }
       echo '<TR>';
       echo '  <TD class="reportTableData" style="border-right:0px;' . $compStyle . '"><img style="width:16px" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . $line['refname'] . '</TD>';
+      echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . '" nowrap>' . $tab . htmlEncode($line['refname']) . '</TD>';
       echo '  <TD class="reportTableData" style="' . $compStyle . '">' . Work::displayWorkWithUnit($validatedWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle."".$compStyleWarning . '">' . Work::displayWorkWithUnit($assignedWork) . '</TD>' ;
       echo '  <TD class="reportTableData" style="' . $compStyle."".$compStyleWarning  . '">' . Work::displayWorkWithUnit($plannedWork) . '</TD>' ;

@@ -153,10 +153,15 @@ function dispatchWorkValueChange(rowId, colId) {
 	var newReal=oldReal + diff;
 	dijit.byId('realWork_' + rowId).set("value",newReal);
   //Update left work
+	var assigned=dijit.byId('assignedWork_' + rowId).get("value");
 	var oldLeft=dijit.byId('leftWork_' + rowId).get("value");
-	var newLeft=oldLeft - diff;
-	newLeft=(newLeft<0)?0:newLeft;
-	dijit.byId('leftWork_' + rowId).set("value",newLeft);
+	if (assigned>0 || diff>0 || oldLeft>0) {
+	  var newLeft=oldLeft - diff;
+	  newLeft=(newLeft<0)?0:newLeft;
+      dijit.byId('leftWork_' + rowId).set("value",newLeft);
+	} else {
+      var newLeft=oldLeft;	
+	}
   //Update planned work
 	var newPlanned=newReal+newLeft;
 	dijit.byId('plannedWork_' + rowId).set("value",newPlanned);

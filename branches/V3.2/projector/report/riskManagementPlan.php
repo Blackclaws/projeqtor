@@ -41,12 +41,13 @@ echo '<table  width="95%" align="center">';
 echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';
 echo '<td class="largeReportHeader" style="width:7%">' . i18n('colType') . '</td>';
-echo '<td class="largeReportHeader" style="width:15%">' . i18n('Risk') . '</td>';
+echo '<td class="largeReportHeader" style="width:10%">' . i18n('Risk') . '</td>';
 echo '<td class="largeReportHeader" style="width:15%">' . i18n('colCause') . '</td>';
 echo '<td class="largeReportHeader" style="width:15%">' . i18n('colImpact') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colSeverityShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colLikelihoodShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colCriticalityShort') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%">' . i18n('colPriorityShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:6%">' . i18n('colResponsible') . '</td>';
 echo '<td class="largeReportHeader" style="width:6%">' . i18n('colDueDate') . '<br/><span style="font-size:75%">' . i18n('commentDueDates') . '</span></td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colIdStatus') . '</td>';
@@ -67,6 +68,7 @@ foreach ($lst as $risk) {
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Severity', $risk->idSeverity) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Likelihood', $risk->idLikelihood) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Criticality', $risk->idCriticality) . '</td>';
+    echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Priority', $risk->idPriority) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:6%">' . SqlList::getNameFromId('Resource', $risk->idResource) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:6%"><table width="100%">';
   if ($risk->initialEndDate!=$risk->actualEndDate) {
@@ -100,12 +102,13 @@ echo '<table  width="95%" align="center">';
 echo '<tr>';
 echo '<td class="largeReportHeader" style="width:3%">' . i18n('colId') . '</td>';
 echo '<td class="largeReportHeader" style="width:7%">' . i18n('colType') . '</td>';
-echo '<td class="largeReportHeader" style="width:15%">' . i18n('Opportunity') . '</td>';
+echo '<td class="largeReportHeader" style="width:10%">' . i18n('Opportunity') . '</td>';
 echo '<td class="largeReportHeader" style="width:15%">' . i18n('colCause') . '</td>';
 echo '<td class="largeReportHeader" style="width:15%">' . i18n('colImpact') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colSeverityShort') . '</td>';
-echo '<td class="largeReportHeader" style="width:5%">' . i18n('colLikelihoodShort') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%">' . i18n('colOpportunityImprovementShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colCriticalityShort') . '</td>';
+echo '<td class="largeReportHeader" style="width:5%">' . i18n('colPriorityShort') . '</td>';
 echo '<td class="largeReportHeader" style="width:6%">' . i18n('colResponsible') . '</td>';
 echo '<td class="largeReportHeader" style="width:6%">' . i18n('colDueDate') . '<br/><span style="font-size:75%">' . i18n('commentDueDates') . '</span></td>';
 echo '<td class="largeReportHeader" style="width:5%">' . i18n('colIdStatus') . '</td>';
@@ -126,6 +129,7 @@ foreach ($lst as $opportunity) {
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Severity', $opportunity->idSeverity) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Likelihood', $opportunity->idLikelihood) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Criticality', $opportunity->idCriticality) . '</td>';
+  echo '<td align="center" class="largeReportData' . $done . '" style="width:5%">' . formatColor('Priority', $opportunity->idPriority) . '</td>';
   echo '<td align="center" class="largeReportData' . $done . '" style="width:6%">' . SqlList::getNameFromId('Resource', $opportunity->idResource) . '</td>';
   echo '<td class="largeReportData' . $done . '" style="width:6%"><table width="100%">';
   if ($opportunity->initialEndDate!=$opportunity->actualEndDate) {
