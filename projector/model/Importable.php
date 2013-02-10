@@ -105,7 +105,6 @@ class Importable extends SqlElement {
 		$continuedLine="";
 		foreach ($lines as $nbl=>$line) {
 		//for ($line = fgetcsv($fic, 0, $csvSep); !feof($fic); $line = fgetcsv($fic, 0, $csvSep)) {
-			
 			if (trim($line)=='') {
 				continue;
 			}
@@ -157,7 +156,7 @@ class Importable extends SqlElement {
             if (strlen($field)>$dataLength) {
               $field=substr($field,0,$dataLength);
             }
-          } else if ($dataType=='int' or $dataType=='decimal') {
+          } else if ( ($dataType=='int' and substr($title[$idx],0,2)!='id') or $dataType=='decimal') {
             $field=str_replace(' ', '', $field);
           }
 					if ($field=='') {
@@ -272,9 +271,10 @@ class Importable extends SqlElement {
 						$idArray[$idx]=true;
 						$color="#000000";
 						$colCaption=$obj->getColCaption($title[$idx]);
-					} else if (array_key_exists($testCaption,$captionArray)) {
+					} else if (array_key_exists($testCaption,$captionArray) or array_key_exists(strtolower($testCaption),$captionArray)) {
 						$color="#000000";
 						$colCaption=$testCaption;
+						if (array_key_exists(strtolower($testCaption),$captionArray)) {$testCaption=strtolower($testCaption);}
 						$title[$idx]=$captionArray[$testCaption];
 						if (isset($captionObjectArray[$testCaption])) {
 							$titleObject[$idx]=$captionObjectArray[$testCaption];
