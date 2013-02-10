@@ -333,7 +333,7 @@ abstract class SqlElement {
         $newItem=true;
         $returnValue=$this->insertSqlElement($forceInsert);
       }
-      if (property_exists($this,'idResource')) {
+      if (property_exists($this,'idResource') and ! $newItem) {
       	if (trim($this->idResource) and trim($this->idResource)!=trim($old->idResource)) {
       		$responsibleChanged=true;
       	}
