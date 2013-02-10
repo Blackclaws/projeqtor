@@ -316,6 +316,9 @@ abstract class SqlElement {
       if (property_exists($this,'reference')) {
         $this->setReference(false, $old);
       }
+      if (property_exists($this, 'idResource') and ! trim($this->idResource)) {
+        $this->setDefaultResponsible();
+      }
       if ($this->id != null  and !$forceInsert) {
         if (property_exists($this, 'idStatus')) {
           if ($this->idStatus) {
@@ -2183,7 +2186,7 @@ abstract class SqlElement {
       and property_exists($this, 'handled')) {
         if ($this->handled and ! trim($this->idResource)) {
         	$user=$_SESSION['user'];
-        	if ($user->isResource) {
+        	if ($user->isResource and Parameter::getGlobalParameter('setResponsibleIfNeeded')!='NO') { 
         		$this->idResource=$user->id;
         	} else {
             $result.='<br/>' . i18n('messageMandatory',array($this->getColCaption('idResource')));
@@ -2846,6 +2849,24 @@ abstract class SqlElement {
   	}
   	$mutex->release();
   	
+  }
+  
+  public function setDefaultResponsible() {
+  	if (get_class($this)!='Project' and property_exists($this,'idResource') and property_exists($this,'idProject') 
+  	and ! trim($this->idResource) and trim($this->idProject)) {
+  		if (Parameter::getGlobalParameter('setResponsibleIfSingle')=="YES") {
+  			$aff=new Affectation();
+  			$crit=array('idProject'=>$this->idProject);
+  			$cpt=$aff->countSqlElementsFromCriteria($crit);
+  			if ($cpt==1) {
+  				$aff=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
+  				$res=new Resource($aff->idResource);
+  				if ($res and $res->id) {
+  					$this->idResource=$res->id;
+  				}
+  			}
+  		}
+  	}
   }
   
   public function getTitle($col) {
