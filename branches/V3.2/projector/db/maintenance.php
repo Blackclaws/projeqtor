@@ -257,19 +257,21 @@ function runScript($vers) {
           $query.=$buffer . "\n";
         }
         if ( substr($buffer,strlen($buffer)-1,1)==';' ) {
-        	$query=formatForDbType($query);
+        	$query=trim(formatForDbType($query));
         	if ($query) {
         		Sql::beginTransaction();
 	          $result=Sql::query($query);
 	          if ( ! $result or !$result->queryString ) {
 	          	Sql::rollbackTransaction();
-	            traceLog( "<br/>***** SQL ERROR WHILE EXECUTING SQL REQUEST *****");
+	          	$nbError++;
+	          	traceLog("");
+	            traceLog( "Error # $nbError => SQL error while executing maintenance query for version $vers (see above message)");
 	            traceLog("");
-	            traceLog(Sql::$lastQueryErrorMessage);
-	            traceLog("");
+	            //traceLog(Sql::$lastQueryErrorMessage);
+	            //traceLog("");
 	            traceLog("*************************************************");
 	            traceLog("");
-	            $nbError++;
+	            $query="";
 	          } else {
 	          	Sql::commitTransaction();
 	            $action="";

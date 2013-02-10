@@ -26,14 +26,14 @@ CREATE TABLE `${prefix}health` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `${prefix}health` (`id`, `name`, `color`, `sortOrder`, `idle`) VALUES
-(1,'secured','#99FF99',100,0),
-(2,'surveyed','#87ceeb',200,0),
+(1,'secured','#32CD32',100,0),
+(2,'surveyed','#ffd700',200,0),
 (3,'in danger','#FF0000',300,0),
 (4,'crashed','#000000',400,0),
-(5,'paused','#AAAAAA',500,0);
+(5,'paused','#E0E0E0',500,0);
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
-(121,'menuEfficiency',36,'object',707,NULL,0);
+(121,'menuHealth',36,'object',707,NULL,0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 121, 1),
