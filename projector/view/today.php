@@ -105,8 +105,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       echo '</table></form>';          
       $width=70;
       echo '<table align="center" style="width:95%">';
-      echo '<tr>' . 
-           '  <td class="messageHeader">' . i18n('menuProject') . '</td>' . 
+      echo '<tr>' .
+           '  <td class="messageHeader" colspan="2">' . i18n('menuProject') . '</td>' . 
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>' .
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLeft')) . '</div></td>' .
            '  <td class="messageHeader" width="5%"><div xstyle="width:80px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' .
@@ -209,8 +209,12 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           ) {
             $goto=' onClick="gotoElement(' . "'Project','" . $id . "'" . ');" style="cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
           }
+          $proj=new Project($id);
+          $healthColor=SqlList::getFieldFromId("Health", $proj->idHealth, "color");
+          $healthName=SqlList::getNameFromId("Health", $proj->idHealth);
           echo '<tr >' .
-             '  <td class="messageData" '. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
+             '  <td class="messageData" style="border-right:0px;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
+             '  <td class="messageData" style="width:14px;margin:0;padding:0;spacing:0;border-left:0px;" '. $goto . ' ><div class="colorHealth" style="background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div></td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .

@@ -464,6 +464,14 @@ label, .label {
   text-align: center;
 }
 
+.colorHealth {
+	width:10px;
+	height:10px;
+	margin:1px;padding:0;
+	-moz-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #AAAAAA;
+}
 .checkBox {
   background-image: url(images/checkmark.png);
   background-repeat: no-repeat;
