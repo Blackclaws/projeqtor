@@ -15,3 +15,33 @@ INSERT INTO `${prefix}importable` (`id`, `name`, `idle`) VALUES
 
 INSERT INTO `${prefix}linkable` (`id`,`name`,`idle`, idDefaultLinkable) VALUES
 (15,'IndividualExpense',0,4);
+
+CREATE TABLE `${prefix}health` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `color` varchar(7) DEFAULT NULL,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}health` (`id`, `name`, `color`, `sortOrder`, `idle`) VALUES
+(1,'secured','#99FF99',100,0),
+(2,'surveyed','#87ceeb',200,0),
+(3,'in danger','#FF0000',300,0),
+(4,'crashed','#000000',400,0),
+(5,'paused','#AAAAAA',500,0);
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(121,'menuEfficiency',36,'object',707,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 121, 1),
+(2, 121, 0),
+(3, 121, 0),
+(4, 121, 0),
+(5, 121, 0),
+(6, 121, 0),
+(7, 121, 0);
+
+ALTER TABLE `${prefix}project` ADD COLUMN `idHealth` int(12) unsigned;

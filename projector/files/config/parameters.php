@@ -3,14 +3,20 @@
 // Automatically generated parameter file
 // on 2013-01-06 21:58:16
 // =======================================================================================
-//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin31!';
-//$paramDbName='sante';
+//
+// MySql or PostgresSql
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
-$paramDbName='projectorria_v32';
-//$paramDbName='test';
-$paramDbHost='127.0.0.1';
-$paramDbPrefix='';
+//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin31!';
+//
+// Database
+$paramDbName='projector_v32';$paramDbPrefix='';
+//$paramDbName='sante'; $paramDbPrefix='';
+//$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
+//
+// Fixed
+$paramDbHost='127.0.0.1'; 
 $logFile='../files/logs/projector_${date}.log';
 $logLevel='3';
+$paramDebugMode='false';
 //$debugQuery=true;
 //======= END
