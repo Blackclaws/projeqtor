@@ -50,4 +50,4 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 (47, 'reportOpportunityPlan', 4, 'opportunityPlan.php', 440);
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES
-(22, 'idProject', 'projectList', 10, 'currentProject');
+(47, 'idProject', 'projectList', 10, 'currentProject');
