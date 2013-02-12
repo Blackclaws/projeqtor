@@ -1557,6 +1557,7 @@ paramDefaultProfile: "profil par défaut pour les utilisateurs",
 paramInitializePassword: "initialiser le mot de passe pour les nouveaux utilisateurs",
 paramSetResponsibleIfNeeded: "renseigner le responsable quand c'est nécessaire",
 paramSetResponsibleIfSingle: "renseigner le responsalbe sur les projets mono-affectés",
+reportOpportunityPlan: "plan d'opportunités",
 sectionResponsible: "Repsonsable",
 sectionUserAndPassword: "Utilisateur et mot de passe",
 currentLocaleOfFile: "fr"
