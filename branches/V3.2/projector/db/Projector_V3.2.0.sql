@@ -45,3 +45,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (7, 121, 0);
 
 ALTER TABLE `${prefix}project` ADD COLUMN `idHealth` int(12) unsigned;
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
+(47, 'reportOpportunityPlan', 4, 'opportunityPlan.php', 440);
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES
+(22, 'idProject', 'projectList', 10, 'currentProject');

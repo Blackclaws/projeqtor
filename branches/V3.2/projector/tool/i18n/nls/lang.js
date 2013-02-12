@@ -1557,6 +1557,7 @@ paramDefaultProfile: "default profile on user creation",
 paramInitializePassword: "initialize password on user creation",
 paramSetResponsibleIfNeeded: "auto set responsible if needed",
 paramSetResponsibleIfSingle: "auto set responsible if single resource",
+reportOpportunityPlan: "opportunity plan",
 sectionResponsible: "Responsible",
 sectionUserAndPassword: "User and password",
 currentLocaleOfFile: "default"

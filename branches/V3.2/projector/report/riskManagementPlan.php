@@ -14,9 +14,6 @@ if ($paramProject!="") {
 }  
 include "header.php";
 
-if ($paramProject!="") {
-  
-}
 $queryWhereAction=getAccesResctictionClause('Action',false);
 $queryWhereRisk=getAccesResctictionClause('Risk',false);
 $queryWhereIssue=getAccesResctictionClause('Issue',false);

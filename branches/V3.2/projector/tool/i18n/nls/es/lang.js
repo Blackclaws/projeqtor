@@ -1557,6 +1557,7 @@ paramDefaultProfile: "[paramDefaultProfile]",
 paramInitializePassword: "[paramInitializePassword]",
 paramSetResponsibleIfNeeded: "[paramSetResponsibleIfNeeded]",
 paramSetResponsibleIfSingle: "[paramSetResponsibleIfSingle]",
+reportOpportunityPlan: "[reportOpportunityPlan]",
 sectionResponsible: "[sectionResponsible]",
 sectionUserAndPassword: "[sectionUserAndPassword]",
 currentLocaleOfFile: "es"
