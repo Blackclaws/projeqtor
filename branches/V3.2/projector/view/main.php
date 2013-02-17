@@ -85,11 +85,20 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dojo.dnd.Manager");
     dojo.require("dojo.dnd.Source");
     dojo.subscribe("/dnd/drop", function(source, nodes, copy, target){
+       if (source.id!=target.id) { return;}
        if (nodes.length>0 && nodes[0] && target) {
          var idFrom = nodes[0].id;
-         var idTo = target.current.id; 
-         showWait();
-         setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100); 
+         var idTo = target.current.id;                   
+         //console.log("move from "+source.id+" to "+target.id);
+         //console.log("   item "+idFrom+" to "+idTo);
+         //console.log("   copy="+copy);
+         if (target.id=='dndSourceTable') {
+        	 showWait();  
+           setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);
+         } else  if (target.id=='dndPlanningColumnSelector') {
+        	 showWait();
+        	 setTimeout('movePlanningColumn("' + idFrom + '", "' + idTo + '")',100);
+         }
        }
     });
     var historyTable=new Array();

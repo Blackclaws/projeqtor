@@ -29,20 +29,22 @@ if ($type=='file') {
   if (array_key_exists('attachementFile',$_FILES)) {
     $uploadedFile=$_FILES['attachementFile'];
   } else {
-    echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
-    errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+    echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
+    errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
     $error=true;
   }
   if (! $error) {
     if ( $uploadedFile['error']!=0 ) {
+      echo "[".$uploadedFile['error']."] ";
+      errorLog("[".$uploadedFile['error']."] saveAttachement.php");
       switch ($uploadedFile['error']) {
         case 1:
           echo htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
           errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
           break;
         case 2:
-          echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
-          errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+          echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
+          errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
           break;
         case 4:
           echo htmlGetWarningMessage(i18n('errorNoFile'));
@@ -76,6 +78,7 @@ if ($type=='file') {
   errorLog(i18n('error : unknown type '.$type));
   $error=true;
 }
+$refType="";
 if (! $error) {
   if (! array_key_exists('attachementRefType',$_REQUEST)) {
     echo htmlGetErrorMessage('attachementRefType parameter not found in REQUEST');
@@ -158,7 +161,7 @@ if (! $error and $type=='file') {
   }
 }
 
-if ($attachement->idPrivacy==1) { // send mail if new attachment is public
+if (! $error and $attachement->idPrivacy==1) { // send mail if new attachment is public
   $elt=new $refType($refId);
 	$mailResult=$elt->sendMailIfMailable(false,false,false,false,true);
 	if ($mailResult) {

@@ -34,7 +34,7 @@ if (! $documentVersionId) { // Get file only on insert
 		// OK Link instead of file
 	} else {
 	  echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
-	  errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')).' [1]');
+	  errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
 	  $error=true; 
 	}
 	if ($uploadedFile and $documentVersionLink and $uploadedFile['name']) {
@@ -43,14 +43,16 @@ if (! $documentVersionId) { // Get file only on insert
 	}
 	if (! $error and $uploadedFile and $uploadedFile['name']) {
 	  if ( $uploadedFile['error']!=0 ) {
+	  	echo "[".$uploadedFile['error']."] ";
+      errorLog("[".$uploadedFile['error']."] saveDocumentVersion.php");
 	    switch ($uploadedFile['error']) {
 	      case 1:
 	        echo htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-	        errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')).' [2]');
+	        errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	        break; 
 	      case 2:
 	        echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
-	        errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')).' [3]');
+	        errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
 	        break;  
 	      case 4:
 	        echo htmlGetWarningMessage(i18n('errorNoFile'));

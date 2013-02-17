@@ -509,18 +509,18 @@ class Parameter extends SqlElement {
   		}
   	}
   	$i=1;
-  	$res[$i++]=($all or !strpos($hidden,'ValidatedWork')>0)?'ValidatedWork':'';
-    $res[$i++]=($all or !strpos($hidden,'AssignedWork')>0)?'AssignedWork':'';
-    $res[$i++]=($all or !strpos($hidden,'RealWork')>0)?'RealWork':'';
-    $res[$i++]=($all or !strpos($hidden,'LeftWork')>0)?'LeftWork':'';
-    $res[$i++]=($all or !strpos($hidden,'PlannedWork')>0)?'PlannedWork':'';
-    $res[$i++]=($all or !strpos($hidden,'Duration')>0)?'Duration':'';
-    $res[$i++]=($all or !strpos($hidden,'Progress')>0)?'Progress':'';
-    $res[$i++]=($all or !strpos($hidden,'StartDate')>0)?'StartDate':'';
-    $res[$i++]=($all or !strpos($hidden,'EndDate')>0)?'EndDate':'';
-  	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'';
-  	$res[$i++]=($all or !strpos($hidden,'Priority')>0)?'Priority':'';
-  	$res[$i++]=($all or !strpos($hidden,'IdPlanningMode')>0)?'IdPlanningMode':'';
+  	$res[$i++]=($all or !strpos($hidden,'ValidatedWork')>0)?'ValidatedWork':'HiddenValidatedWork';
+    $res[$i++]=($all or !strpos($hidden,'AssignedWork')>0)?'AssignedWork':'HiddenAssignedWork';
+    $res[$i++]=($all or !strpos($hidden,'RealWork')>0)?'RealWork':'HiddenRealWork';
+    $res[$i++]=($all or !strpos($hidden,'LeftWork')>0)?'LeftWork':'HiddenLeftWork';
+    $res[$i++]=($all or !strpos($hidden,'PlannedWork')>0)?'PlannedWork':'HiddenPlannedWork';
+    $res[$i++]=($all or !strpos($hidden,'Duration')>0)?'Duration':'HiddenDuration';
+    $res[$i++]=($all or !strpos($hidden,'Progress')>0)?'Progress':'HiddenProgress';
+    $res[$i++]=($all or !strpos($hidden,'StartDate')>0)?'StartDate':'HiddenStartDate';
+    $res[$i++]=($all or !strpos($hidden,'EndDate')>0)?'EndDate':'HiddenEndDate';
+  	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'HiddenResource';
+  	$res[$i++]=($all or !strpos($hidden,'Priority')>0)?'Priority':'HiddenPriority';
+  	$res[$i++]=($all or !strpos($hidden,'IdPlanningMode')>0)?'IdPlanningMode':'HiddenIdPlanningMode';
   	return $res;
   }
   

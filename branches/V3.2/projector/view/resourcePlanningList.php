@@ -138,7 +138,9 @@ $saveShowProject=$saveShowProjectObj->parameterValue;
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
                           <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
-									          <div id="menuPlanningColumn">    
+									          <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" 
+                             dndType="column" dojotype="dojo.dnd.Source" 
+                             withhandles="true" class="container">    
 									             <?php 
 									               $resourcePlanning=true; 
 									               include('../tool/planningColumnSelector.php')?>
