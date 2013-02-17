@@ -13,6 +13,10 @@ class Parameter extends SqlElement {
   public $parameterValue;
   
   public $_noHistory=true; // Will never save history for this object
+  
+  private static $planningColumnOrder=array();
+  private static $planningColumnOrderAll=array();
+  
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -496,32 +500,46 @@ class Parameter extends SqlElement {
   }
   
   static public function getPlanningColumnOrder($all=false) {
+  	if ($all) {
+  		if (count(self::$planningColumnOrderAll)) return self::$planningColumnOrderAll;
+  	} else {
+  		if (count(self::$planningColumnOrder)) return self::$planningColumnOrder;
+  	}
   	$res=array();
   	// Default Values
   	$user=$_SESSION['user'];
-  	$crit="idUser='" . Sql::fmtId($user->id) . "' and idProject is null and parameterCode like 'planningHideColumn%'";
+  	$critHidden="idUser='" . Sql::fmtId($user->id) . "' and idProject is null and parameterCode like 'planningHideColumn%'";
+  	$critOrder="idUser='" . Sql::fmtId($user->id) . "' and idProject is null and parameterCode like 'planningColumnOrder%'";
   	$param=new Parameter();
-  	$hiddenList=$param->getSqlElementsFromCriteria(null, false, $crit);
+  	$hiddenList=$param->getSqlElementsFromCriteria(null, false, $critHidden);
+  	$orderList=$param->getSqlElementsFromCriteria(null, false, $critOrder);
   	$hidden="|";
   	foreach($hiddenList as $param) {
   		if ($param->parameterValue=='1') {
   		  $hidden.=substr($param->parameterCode,18).'|';
   		}
   	}
-  	$i=1;
-  	$res[$i++]=($all or !strpos($hidden,'ValidatedWork')>0)?'ValidatedWork':'HiddenValidatedWork';
-    $res[$i++]=($all or !strpos($hidden,'AssignedWork')>0)?'AssignedWork':'HiddenAssignedWork';
-    $res[$i++]=($all or !strpos($hidden,'RealWork')>0)?'RealWork':'HiddenRealWork';
-    $res[$i++]=($all or !strpos($hidden,'LeftWork')>0)?'LeftWork':'HiddenLeftWork';
-    $res[$i++]=($all or !strpos($hidden,'PlannedWork')>0)?'PlannedWork':'HiddenPlannedWork';
-    $res[$i++]=($all or !strpos($hidden,'Duration')>0)?'Duration':'HiddenDuration';
-    $res[$i++]=($all or !strpos($hidden,'Progress')>0)?'Progress':'HiddenProgress';
-    $res[$i++]=($all or !strpos($hidden,'StartDate')>0)?'StartDate':'HiddenStartDate';
-    $res[$i++]=($all or !strpos($hidden,'EndDate')>0)?'EndDate':'HiddenEndDate';
-  	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'HiddenResource';
-  	$res[$i++]=($all or !strpos($hidden,'Priority')>0)?'Priority':'HiddenPriority';
-  	$res[$i++]=($all or !strpos($hidden,'IdPlanningMode')>0)?'IdPlanningMode':'HiddenIdPlanningMode';
-  	return $res;
+  	$arrayFiledsSorted=array();
+  	foreach ($orderList as $param) {
+  	  $arrayFiledsSorted[$param->parameterValue]=substr($param->parameterCode,19);	
+  	}
+  	$arrayFields=array('ValidatedWork','AssignedWork','RealWork','LeftWork','PlannedWork','Duration',
+  	                   'Progress','StartDate','EndDate','Resource','Priority','IdPlanningMode');
+  	foreach($arrayFields as $order=>$column) {
+  	  if (! in_array($column,$arrayFiledsSorted)) {
+  	  	$arrayFiledsSorted[]=$column;
+  	  }
+  	}
+  	$i=1;  	
+  	foreach($arrayFiledsSorted as $order=>$column) {
+  		$res[$i++]=($all or !strpos($hidden,$column)>0)?$column:'Hidden'.$column;
+  	}
+  	if ($all) {
+      self::$planningColumnOrderAll=$res;
+    } else {
+      self::$planningColumnOrder=$res;
+    }
+    return $res;
   }
   
   /** 
