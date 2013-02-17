@@ -147,7 +147,7 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
                           <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
-                            <div id="menuPlanningColumn">    
+                            <div id="menuPlanningColumn" dojotype="dojo.dnd.Source"  withhandles="true" id="columnSelectorList" class="container">    
                                <?php 
                                  include('../tool/planningColumnSelector.php')?>
                             </div>       

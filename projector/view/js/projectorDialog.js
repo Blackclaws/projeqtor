@@ -417,7 +417,7 @@ function displayDetail(objClass, objId) {
 	hideField('comboNewButton');
 	hideField('comboSaveButton');
 	showField('comboCloseButton');	
-  frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId+"&detail=true";
+    frames['comboDetailFrame'].location.href="print.php?print=true&page=objectDetail.php&objectClass="+objClass+"&objectId="+objId+"&detail=true";
 }
 
 function selectDetailItem(selectedValue) {

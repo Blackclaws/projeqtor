@@ -378,18 +378,20 @@
       echo '</tr>';
       echo '<TR style="height: 2%;width:100%;padding:0px;margin:0px;">';
       echo '  <TD class="reportTableHeader" style="border-right:0px;width:'.(5*$left_size).'%padding:0px;margin:0px;"></TD>';
-      echo '  <TD class="reportTableHeader" style=" border-left:0px; text-align: left;width:'.(20*$left_size).'%;padding:0px;margin:0px;">' . i18n('colTask') . '</TD>';
+      echo '  <TD class="reportTableHeader" style=" border-left:0px; text-align: left;width:'.(19*$left_size).'%;padding:0px;margin:0px;">' . i18n('colTask') . '</TD>';
       foreach ($sortArray as $col) {
-        if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colValidated') . '</TD>' ;
-      	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssigned') . '</TD>' ;
-        if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReal') . '</TD>' ;
-        if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colLeft') . '</TD>' ;
-        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:'.(7*$left_size).'%;padding:0px;margin:0px;">' . i18n('colPlanned') . '</TD>' ;
-        if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">' . i18n('colDuration') . '</TD>' ;
-        if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:'.(6*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPct') . '</TD>' ;
-        if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colStart') . '</TD>' ;
-        if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colEnd') . '</TD>' ;
-        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:'.(11*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colResource') . '</TD>' ;
+        if ($col=='ValidatedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colValidated') . '</TD>' ;
+      	if ($col=='AssignedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colAssigned') . '</TD>' ;
+        if ($col=='RealWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colReal') . '</TD>' ;
+        if ($col=='LeftWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colLeft') . '</TD>' ;
+        if ($col=='PlannedWork') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colPlanned') . '</TD>' ;
+        if ($col=='Duration') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">' . i18n('colDuration') . '</TD>' ;
+        if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPct') . '</TD>' ;
+        if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:'.(8*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colStart') . '</TD>' ;
+        if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:'.(8*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colEnd') . '</TD>' ;
+        if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colResource') . '</TD>' ;
+        if ($col=='Priority') echo '  <TD class="reportTableHeader" style="width:'.(5*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colPriority') . '</TD>' ;
+        if ($col=='IdPlanningMode') echo '  <TD class="reportTableHeader" style="width:'.(10*$left_size).'%;padding:0px;margin:0px;">'  . i18n('colIdPlanningMode') . '</TD>' ;
       }
       $weekendColor="#cfcfcf";
       $day=$minDate;
@@ -484,7 +486,7 @@
         echo '">';
         echo '  <TD class="reportTableData" style="height:100%;border-right:0px;' . $compStyle . 'width:'.(5*$left_size).'%;">
 		<img style="height:80%" src="../view/css/images/icon' . $line['reftype'] . '16.png" /></TD>';
-        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(30*$left_size).'%;"><NOBR>' . $tab ;
+        echo '  <TD class="reportTableData" style="border-left:0px; text-align: left;' . $compStyle . 'width:'.(19*$left_size).'%;"><NOBR>' . $tab ;
         echo '<span style="height:100%;vertical-align:middle;">';
         if ($pGroup) {
           if ($collapsed) {
@@ -510,9 +512,11 @@
           if ($col=='PlannedWork') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' .  Work::displayWorkWithUnit($line["plannedwork"])  . '</TD>' ;
           if ($col=='Duration') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $duration  . '</TD>' ;
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(5*$left_size).'%;" >' . percentFormatter($progress) . '</TD>' ;
-          if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(10*$left_size).'%;">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
-          if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(10*$left_size).'%;">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
+          if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(8*$left_size).'%;">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
+          if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . 'width:'.(8*$left_size).'%;">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
           if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(10*$left_size).'%;" >' . $line["resource"]  . '</TD>' ;
+          if ($col=='Priority') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(5*$left_size).'%;" >' . $line["priority"]  . '</TD>' ;
+          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . 'width:'.(10*$left_size).'%;" >' . SqlList::getNameFromId('PlanningMode',$line["idplanningmode"])  . '</TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';

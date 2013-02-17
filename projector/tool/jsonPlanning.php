@@ -138,6 +138,7 @@
         $line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
         $line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
         $line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
+        $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
         foreach ($line as $id => $val) {
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
@@ -356,6 +357,8 @@
         if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
         if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
         if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colResource') . '</TD>' ;
+        if ($col=='Priority') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colPriorityShort') . '</TD>' ;
+        if ($col=='IdPlanningMode') echo '  <TD class="reportTableHeader" style="width:150px">'  . i18n('colIdPlanningMode') . '</TD>' ;
       }
       $weekendColor="#cfcfcf";
       $day=$minDate;
@@ -478,6 +481,8 @@
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
           if ($col=='Resource') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
+          if ($col=='Priority') echo '  <TD class="reportTableData" style="text-align:center;' . $compStyle . '" >' . $line["priority"]  . '</TD>' ;
+          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="text-align:left;' . $compStyle . '" ><NOBR>' . SqlList::getNameFromId('PlanningMode', $line["idplanningmode"])  . '<NOBR></TD>' ;
         }
         if ($pGroup) {
           $pColor='#505050;';

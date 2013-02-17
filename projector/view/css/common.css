@@ -720,14 +720,14 @@ table.dojoDndAvatar {
   margin: 0px 0px 0px 5px;
 }
 
-.dijitArrowButtonInner, .tundra .dijitArrowButtonInner {
+.dijitArrowButtonInner {
   background:url("../images/spriteArrows.png") no-repeat scroll 0px center;
   width: 7px;
   height: 7px;
   margin: 0px 4px 0px 4px;
 }
 
-.dj_ie6 .dijitArrowButtonInner, .dj_ie6 .tundra .dijitArrowButtonInner {
+.dj_ie6 .dijitArrowButtonInner {
   background-image: url(images/spriteArrows.gif);
 }
 
@@ -735,7 +735,7 @@ table.dojoDndAvatar {
   background-position: -28px center;;
 }
 
-.dijitUpArrowButton .dijitArrowButtonInner, .tundra .dijitUpArrowButton .dijitArrowButtonInner {
+.dijitUpArrowButton .dijitArrowButtonInner {
   background-position: -21px center;;
 }
 
@@ -2556,18 +2556,56 @@ table.dijitCalendarContainer {
 }
 
 
-.tundra .dijitArrowButtonInner {
+/*.tundrax .dijitArrowButtonInner {
   background:url("images/spriteArrows.png") no-repeat scroll 0 center;
   width: 7px;
   height: 7px;
-  margin: 0 4px 0 4px;
+  margin: 0 0px 0 0px;
+}*/
+.tundra .dijitArrowButtonInner {
+  background:url("images/spriteArrows.png") no-repeat;
+  width: 7px;
 }
+
 .tundra .dijitTextBox .dijitArrowButtonInner {
   background-position: 0 center;
 }
 .dj_ie6 .tundra .dijitArrowButtonInner {
   background-image:url("images/spriteArrows.gif");
 }
+
+.tundra .dijitSpinner .dijitSpinnerButtonContainer .dijitDownArrowButton {
+	top: 50%;
+	border-top-width: 1px !important;
+}
+.tundra .dijitSpinner .dijitSpinnerButtonContainer .dijitUpArrowButton {
+	#bottom: 50%;	
+	top: 0;
+}
+.tundra .dijitUpArrowButton .dijitArrowButtonInner {
+	background-position: -21px center;
+}
+
+.tundra .dijitSpinner .dijitSpinnerButtonContainer .dijitArrowButton {
+	padding: 0;
+	position: absolute !important;
+	right: 0;
+	float: none;
+	height: 50%;
+	width: 100%;
+	bottom: auto;
+	left: 0;
+	right: auto;
+}
+
+
+
+
+
+
+
+
+
 
 /*  ULOADER FILE LIST  */
 .dojoxUploaderFileList{

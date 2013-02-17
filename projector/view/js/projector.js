@@ -1509,7 +1509,8 @@ function drawGantt() {
     		                             pResource,   progress, pGroup, topId,   pOpen,     pDepend  , 
     		                             pCaption, pClass, pScope, pRealEnd, pPlannedStart, 
     		                             item.validatedworkdisplay, item.assignedworkdisplay, 
-    		                             item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay));
+    		                             item.realworkdisplay, item.leftworkdisplay, item.plannedworkdisplay,
+    		                             item.priority, item.planningmode));
     }
     g.Draw();  
     g.DrawDependencies();

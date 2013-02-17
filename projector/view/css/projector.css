@@ -348,7 +348,15 @@ label, .label {
 .shortlabel {
   width: 87px;
 }
-
+.checkLabel {
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  text-align: left; vertical-align: top;
+  padding: 0px 0px 0px 0px;
+  float:none;
+  border: 0px;
+  cursor: pointer;
+  }
 /* Specific classes =========================================================== */
 
 .title {
