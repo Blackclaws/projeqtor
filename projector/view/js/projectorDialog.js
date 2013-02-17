@@ -3605,7 +3605,7 @@ function changePlanningColumn(col,status,order) {
 	if (status) {
 	  planningColumnOrder[order-1]=col;
 	} else {
-	  planningColumnOrder[order-1]='';
+	  planningColumnOrder[order-1]='Hidden'+col;
 	} 
 	dojo.xhrGet({
 		url: '../tool/savePlanningColumn.php?action=status&status='

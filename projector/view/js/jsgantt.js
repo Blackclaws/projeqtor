@@ -599,7 +599,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable += '</TBODY></TABLE></DIV>'
         +'<DIV class="scrollLeft" id="leftside" style="z-index:-1;position:relative;width:' + vLeftWidth + 'px;">'
         + ( (dojo.ifFF)?'<div style="height:1px"></div>':'')
-        +'<TABLE dojoType="dojo.dnd.Source" withHandles="true" jsId="dndSourceTable" id="dndSourceTable" '
+        +'<TABLE dojoType="dojo.dnd.Source" withHandles="true" jsId="dndSourceTable" id="dndSourceTable" type="xxx"'
         +'class="ganttTable"  ><TBODY>';
       for(i = 0; i < vTaskList.length; i++) {
         if( vTaskList[i].getGroup()) {
@@ -611,7 +611,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vID = vTaskList[i].getID();
         var invisibleDisplay=(vTaskList[i].getVisible() == 0)?'style="display:none"':'';
-        vLeftTable += '<TR id=child_' + vID + ' class="dojoDndItem ganttTask' + vRowType + '" ' 
+        vLeftTable += '<TR id=child_' + vID + ' dndType="planningTask" class="dojoDndItem ganttTask' + vRowType + '" ' 
           + invisibleDisplay
           + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
           + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
@@ -734,9 +734,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vLeftTable += '</TR>';
       }
-      vLeftTable += '<TR><TD style="width:16px;"></TD>';
-      vLeftTable += '<TD colspan="' + sortArray.length +'"><NOBR>';
-      vLeftTable += '</NOBR></TD></TR></TBODY></TABLE></DIV>';
+      //vLeftTable += '<TR><TD style="width:16px;"></TD>';
+      //vLeftTable += '<TD colspan="' + sortArray.length +'"><NOBR>';
+      //vLeftTable += '</NOBR></TD></TR>';
+      vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop" '
     	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
@@ -1054,8 +1055,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
       dojo.parser.parse('leftGanttChartDIV');
-      dojo.parser.parse('rightGanttChartDIV');
-      dojo.parser.parse('topGanttChartDIV');
+      //dojo.parser.parse('rightGanttChartDIV');
+      //dojo.parser.parse('topGanttChartDIV');
       dojo.byId('rightside').style.left='-'+(dojo.byId('rightGanttChartDIV').scrollLeft+1)+'px';
       dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
       dojo.byId('ganttScale').style.left=(dojo.byId('leftGanttChartDIV').scrollLeft)+'px';
