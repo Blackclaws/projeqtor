@@ -20,48 +20,57 @@
   <link rel="stylesheet" type="text/css" href="css/projector.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <script type="text/javascript" src="js/projector.js" ></script>
-  <script type="text/javascript" src="js/projectorWork.js" ></script>
-  <script type="text/javascript" src="js/projectorDialog.js" ></script>
-  <script type="text/javascript" src="js/projectorFormatter.js" ></script>
-  <script type="text/javascript" src="../external/dojo/dojo.js"
+  <script type="text/javascript" src="js/projector.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projectorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projectorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projectorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
   <script type="text/javascript"> 
-    dojo.require("dojo.data.ItemFileWriteStore");
-    dojo.require("dojo.date");
-    dojo.require("dojo.i18n");
-    dojo.require("dojo.parser");
-    dojo.require("dijit.Dialog"); 
-    dojo.require("dijit.Tooltip");
-    dojo.require("dijit.layout.BorderContainer");
-    dojo.require("dijit.layout.ContentPane");
-    dojo.require("dijit.Menu"); 
-    dojo.require("dijit.form.ValidationTextBox");
-    dojo.require("dijit.form.Textarea");
-    dojo.require("dijit.form.ComboBox");
-    dojo.require("dijit.form.CheckBox");
-    dojo.require("dijit.form.RadioButton");
-    dojo.require("dijit.form.DateTextBox");
-    dojo.require("dijit.form.TimeTextBox");
-    dojo.require("dijit.form.TextBox");
-    dojo.require("dijit.form.NumberTextBox");
-    dojo.require("dijit.form.Button");
-    dojo.require("dijit.ColorPalette");
-    dojo.require("dijit.form.Form");
-    dojo.require("dijit.form.FilteringSelect");
-    dojo.require("dijit.form.MultiSelect");
-    dojo.require("dijit.form.NumberSpinner");
-    dojo.require("dijit.Tree"); 
-    dojo.require("dijit.TitlePane");
-    dojo.require("dojox.grid.DataGrid");
-    dojo.require("dojox.form.FileInput");
-    dojo.require("dojo.dnd.Container");
-    dojo.require("dojo.dnd.Manager");
-    dojo.require("dojo.dnd.Source");
-    dojo.addOnLoad(function(){
+  dojo.require("dojo.store.DataStore");
+  dojo.require("dojo.data.ItemFileWriteStore");
+  dojo.require("dojo.date");
+  dojo.require("dojo.date.locale");
+  dojo.require("dojo.i18n");
+  dojo.require("dojo.parser");
+  dojo.require("dijit.Dialog"); 
+  dojo.require("dijit.Tooltip");
+  dojo.require("dijit.layout.BorderContainer");
+  dojo.require("dijit.layout.ContentPane");
+  dojo.require("dijit.layout.AccordionContainer");
+  dojo.require("dijit.Menu"); 
+  dojo.require("dijit.MenuBar"); 
+  dojo.require("dijit.MenuBarItem");
+  dojo.require("dijit.Toolbar") 
+  dojo.require("dijit.PopupMenuBarItem");
+  dojo.require("dijit.form.ValidationTextBox");
+  dojo.require("dijit.form.Textarea");
+  dojo.require("dijit.form.ComboBox");
+  dojo.require("dijit.form.CheckBox");
+  dojo.require("dijit.form.RadioButton");
+  dojo.require("dijit.form.DateTextBox");
+  dojo.require("dijit.form.TimeTextBox");
+  dojo.require("dijit.form.TextBox");
+  dojo.require("dijit.form.NumberTextBox");
+  dojo.require("dijit.form.Button");
+  dojo.require("dijit.ColorPalette");
+  dojo.require("dijit.form.Form");
+  dojo.require("dijit.form.FilteringSelect");
+  dojo.require("dijit.form.MultiSelect");
+  dojo.require("dijit.form.NumberSpinner");
+  dojo.require("dijit.Tree"); 
+  dojo.require("dijit.TitlePane");
+  dojo.require("dojox.grid.DataGrid");
+  dojo.require("dojox.form.FileInput");
+  dojo.require("dojox.form.Uploader");
+  dojo.require("dojox.form.uploader.FileList");
+  dojo.require("dojo.dnd.Container");
+  dojo.require("dojo.dnd.Manager");
+  dojo.require("dojo.dnd.Source");
+  dojo.addOnLoad(function(){
       var onKeyPressFunc = function(event) {
             if(event.ctrlKey && event.keyChar == 's'){
               event.preventDefault();
