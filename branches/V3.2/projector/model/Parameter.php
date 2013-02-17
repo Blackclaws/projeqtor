@@ -519,6 +519,8 @@ class Parameter extends SqlElement {
     $res[$i++]=($all or !strpos($hidden,'StartDate')>0)?'StartDate':'';
     $res[$i++]=($all or !strpos($hidden,'EndDate')>0)?'EndDate':'';
   	$res[$i++]=($all or !strpos($hidden,'Resource')>0)?'Resource':'';
+  	$res[$i++]=($all or !strpos($hidden,'Priority')>0)?'Priority':'';
+  	$res[$i++]=($all or !strpos($hidden,'IdPlanningMode')>0)?'IdPlanningMode':'';
   	return $res;
   }
   

@@ -39,7 +39,7 @@ var linkInProgress=false;
 
 JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp, pGroup, 
                             pParent, pOpen, pDepend, pCaption, pClass, pScope, pRealEnd, pPlanStart,
-                            pValidatedWork, pAssignedWork, pRealWork, pLeftWork, pPlannedWork) {
+                            pValidatedWork, pAssignedWork, pRealWork, pLeftWork, pPlannedWork, pPriority, pPlanningMode) {
   var vID    = pID;
   var vName  = pName;
   var vStart = new Date();  
@@ -68,6 +68,8 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   var vRealWork=pRealWork;
   var vLeftWork=pLeftWork;
   var vPlannedWork=pPlannedWork;
+  var vPriority=pPriority;
+  var vPlanningMode=pPlanningMode;
   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
   vRealEnd = JSGantt.parseDateStr(pRealEnd,g.getDateInputFormat());
@@ -83,6 +85,8 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.getRealWork     = function(){ return vRealWork;  };
   this.getLeftWork     = function(){ return vLeftWork;  };
   this.getPlannedWork     = function(){ return vPlannedWork;  };
+  this.getPriority     = function(){ return vPriority;  };
+  this.getPlanningMode     = function(){ return vPlanningMode;  };
   this.getColor    = function(){ return vColor;};
   this.getLink     = function(){ return vLink; };
   this.getMile     = function(){ return vMile; };
@@ -111,7 +115,6 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
       } else {
         tmpPer =  workDayDiffDates(this.getStart(), this.getEnd());
         vDuration = tmpPer + ' ' + i18n('shortDay');
-//console.log(this.getID()+" = "+this.getEnd()+" - "+this.getStart()+" = "+vDuration);    	  
       }
     }
     return( vDuration );
@@ -145,6 +148,8 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
   this.setVisible  = function(pVisible) {vVisible = pVisible; };
   this.setClass  = function(pClass) {vClass = pClass; };
   this.setScope  = function(pScope) {vScope = pScope; };
+  this.setPriority     = function(pPriority)  { vPriority   = pPriority;  };
+  this.setPlanningMode     = function(pPlanningMode)  { vPlanningMode   = pPlanningMode;  };
 };  
   
 /**
@@ -164,6 +169,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   var vShowRealWork = 0;
   var vShowLeftWork = 0;
   var vShowPlannedWork = 0;
+  var vShowPriority = 0;
+  var vShowPlanningMode = 0;
   var vSortArray=new Array();
   var vSplitted = false;
   var vDateInputFormat = "yyyy-mm-dd";
@@ -190,11 +197,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.setShowRes  = function(pShow) { vShowRes  = pShow; };
   this.setShowDur  = function(pShow) { vShowDur  = pShow; };
   this.setShowComp = function(pShow) { vShowComp = pShow; };
-  this.setShowValidatedWork = function(pValidatedWork) { vShowValidatedWork = pValidatedWork; };
-  this.setShowAssignedWork = function(pAssignedWork) { vShowAssignedWork = pAssignedWork; };
-  this.setShowRealWork = function(pRealWork) { vShowRealWork = pRealWork; };
-  this.setShowLeftWork = function(pLeftWork) { vShowLeftWork = pLeftWork; };
-  this.setShowPlannedWork = function(pPlannedWork) { vShowPlannedWork = pPlannedWork; };
+  this.setShowValidatedWork = function(pShow) { vShowValidatedWork = pShow; };
+  this.setShowAssignedWork = function(pShow) { vShowAssignedWork = pShow; };
+  this.setShowRealWork = function(pShow) { vShowRealWork = pShow; };
+  this.setShowLeftWork = function(pShow) { vShowLeftWork = pShow; };
+  this.setShowPlannedWork = function(pShow) { vShowPlannedWork = pShow; };
+  this.setShowPlanningMode = function(pShow) { vShowPlanningMode = pShow; };
+  this.setShowPriority = function(pShow) { vShowPriority = pShow; };
   this.setSortArray = function(pSortArray) { vSortArray = pSortArray; };
   this.setSplitted = function(pSplitted) { vSplitted = pSplitted; };
   this.setShowStartDate = function(pShow) { vShowStartDate = pShow; };
@@ -230,6 +239,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   this.getShowRealWork = function(){ return vShowRealWork; };
   this.getShowLeftWork = function(){ return vShowLeftWork; };
   this.getShowPlannedWork = function(){ return vShowPlannedWork; };
+  this.getShowPlanningMode = function(){ return vShowPlanningMode; };
+  this.getShowPriority = function(){ return vShowPriority; };
   this.getSplitted = function(){ return vSplitted; };
   this.getShowStartDate = function(){ return vShowStartDate; };
   this.getShowEndDate = function(){ return vShowEndDate; };
@@ -434,6 +445,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     var vDateWidth = 80;
     var vDurationWidth = 60;
     var vProgressWidth = 50;
+    var vPriorityWidth=50;
+    var vPlanningModeWidth=150;
     var vWidth=this.getWidth();
     var vLeftWidth = vIconWidth
       +   vNameWidth 
@@ -446,7 +459,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       + ( (1+vWorkWidth) * this.getShowAssignedWork() )
       + ( (1+vWorkWidth) * this.getShowPlannedWork() )
       + ( (1+vWorkWidth) * this.getShowRealWork() )
-      + ( (1+vWorkWidth) * this.getShowValidatedWork() );
+      + ( (1+vWorkWidth) * this.getShowValidatedWork() )
+      + ( (1+vPriorityWidth) * this.getShowPriority() )
+      + ( (1+vPlanningModeWidth) * this.getShowPlanningMode() );
     var vRightWidth = vWidth - vLeftWidth - 18;
     var ffSpecificHeight=(dojo.isFF<16)?' class="ganttHeight"':'';
     var vLeftTable="";
@@ -479,15 +494,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vNumUnits=Math.round(vNumUnits);
       vChartWidth = vNumUnits * (vColWidth + 1);
       vDayWidth = (vColWidth / vColUnit) + (1/vColUnit);
-      /*if(vShowRes !=1) vNameWidth+=vResourceWidth;
-      if(vShowDur !=1) vNameWidth+=vDurationWidth;
-      if(vShowComp!=1) vNameWidth+=vProgressWidth;
-      if(vShowStartDate!=1) vNameWidth+=vDateWidth;
-      if(vShowEndDate!=1) vNameWidth+=vDateWidth;  
-      if(vShowLeftWork!=1) vNameWidth+=vWorkWidth;
-      if(vShowPlannedWork!=1) vNameWidth+=vWorkWidth;
-      if(vShowRealWork!=1) vNameWidth+=vWorkWidth;
-      if(vShowValidatedWork!=1) vNameWidth+=vWorkWidth;*/
 // LEFT ===========================================================
       vLeftTable = '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' 
         +'<TABLE jsId="topSourceTable" id="topSourceTable" class="ganttTable"><TBODY>'
@@ -528,6 +534,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	      if(vShowRes ==1 && sortArray[iSort]=='Resource') {
 	        vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vResourceWidth + 'px;"></TD>' ;
 	      }
+	      if(vShowPriority ==1 && sortArray[iSort]=='Priority') {
+		    vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vPriorityWidth + 'px;"></TD>' ;
+		  }
+	      if(vShowPlanningMode ==1 && sortArray[iSort]=='IdPlanningMode') {
+			vLeftTable += '<TD class="ganttLeftTopLine" style="width: ' + vPlanningModeWidth + 'px;"></TD>' ;
+		  }
       }
       vLeftTable += '</TR><TR class="ganttHeight">'
         +'<TD class="ganttLeftTitle" style="width:'+vIconWidth+'px;"></TD>'
@@ -574,6 +586,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vResourceWidth + 'px;" nowrap>' 
 	          + JSGantt.i18n('colResource') + '</TD>' ;
 	      }
+	      if(vShowPriority ==1 && sortArray[iSort]=='Priority') {
+			vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vPriorityWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colPriorityShort') + '</TD>' ;
+		  }
+		  if(vShowPlanningMode ==1 && sortArray[iSort]=='IdPlanningMode') {
+			vLeftTable += '<TD class="ganttLeftTitle" style="width: ' + vPlanningModeWidth + 'px;" nowrap>' 
+	          + JSGantt.i18n('colIdPlanningMode') + '</TD>' ;
+		  }
       }
       vLeftTable += '</TR>';
       vLeftTable += '</TBODY></TABLE></DIV>'
@@ -700,6 +720,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vLeftTable += '<TD class="ganttDetail" style="text-align:left;">' 
               +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;">' 
               + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
+          }
+          if(vShowPriority==1 && sortArray[iSort]=='Priority') {
+            vLeftTable += '<TD class="ganttDetail" style="text-align:center;">' 
+              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vPriorityWidth + 'px;">' 
+              + vTaskList[i].getPriority() + '</span></NOBR></TD>' ;
+          }
+          if(vShowPlanningMode==1 && sortArray[iSort]=='IdPlanningMode') {
+            vLeftTable += '<TD class="ganttDetail" style="text-align:left;">' 
+              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vPlanningModeWidth + 'px;">' 
+              + vTaskList[i].getPlanningMode() + '</span></NOBR></TD>' ;
           }
         }
         vLeftTable += '</TR>';
@@ -1921,6 +1951,8 @@ function setGanttVisibility(g) {
 	g.setShowRealWork(0);
 	g.setShowLeftWork(0);
 	g.setShowPlannedWork(0);
+	g.setShowPriority(0);
+	g.setShowPlanningMode(0);
 	for (iSort=0;iSort<planningColumnOrder.length; iSort++) {
 		switch (planningColumnOrder[iSort]) {
 		  case 'Resource' : g.setShowRes(1);break;                       
@@ -1933,6 +1965,8 @@ function setGanttVisibility(g) {
 		  case 'RealWork' : g.setShowRealWork(1);break;
 		  case 'LeftWork' : g.setShowLeftWork(1);break;
 		  case 'PlannedWork' : g.setShowPlannedWork(1);break;
+		  case 'Priority' : g.setShowPriority(1);break;
+		  case 'IdPlanningMode' : g.setShowPlanningMode(1);break;
 		}
 	}
 	if (dojo.byId('resourcePlanning')) {

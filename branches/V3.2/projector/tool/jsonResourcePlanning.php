@@ -101,7 +101,7 @@ $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
 $ass=new Assignment();
 $res=new Resource();
-$querySelect .= "pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, ass.* , usr.fullName as name, pe.refName refName";
+$querySelect .= "pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, pe.priority priority, pe.idplanningmode idplanningmode, ass.* , usr.fullName as name, pe.refName refName";
 $queryFrom .= $table . ' pe, ' . $ass->getDatabaseTableName() . ' ass, ' . $res->getDatabaseTableName() . ' usr';
 $queryWhere= ' pe.refType=ass.refType and pe.RefId=ass.refId and usr.id=ass.idResource and ' . str_replace($table, 'pe', $queryWhere);
 $queryOrderBy .= ' name, pe.wbsSortable ';
@@ -163,6 +163,8 @@ if (Sql::$lastQueryNbRows == 0) {
 			$resAr["progress"]=0;
 			$resAr["topid"]=0;
 			$resAr["leftwork"]=0;
+			$resAr["priority"]="";
+			$resAr["planningmode"]="";
 			$keyRes='Resource#'.$idResource;
 			$list[$keyRes]=$resAr;
 			//$sumValidated=0;
@@ -198,6 +200,8 @@ if (Sql::$lastQueryNbRows == 0) {
       $resPr["progress"]=0;
       $resPr["topid"]=$idRes;
       $resPr["leftwork"]=0;
+      $resPr["priority"]="";
+      $resPr["planningmode"]="";
       $keyProj=$keyRes.'_Project#'.$idProject;
       $list[$keyProj]=$resPr;
       //$sumValidated=0;
@@ -222,6 +226,7 @@ if (Sql::$lastQueryNbRows == 0) {
 			$line['plannedstartdate']=$line['realstartdate'];
 		}
 		$line['progress']=($line["plannedwork"]>0)?round($line["realwork"]/$line["plannedwork"],2):'';
+		$line['planningmode']=SqlList::getNameFromId('PlanningMode', $line['idplanningmode']);
 		$list[]=$line;
 		//$sumValidated=0;
     $sumAssigned+=$line["assignedwork"];
@@ -510,6 +515,8 @@ function displayGantt($list) {
         if ($col=='Progress') echo '  <TD class="reportTableHeader" style="width:30px">'  . i18n('colPct') . '</TD>' ;
         if ($col=='StartDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colStart') . '</TD>' ;
         if ($col=='EndDate') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colEnd') . '</TD>' ;
+        if ($col=='Priority') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colPriority') . '</TD>' ;
+        if ($col=='IdPlanningMode') echo '  <TD class="reportTableHeader" style="width:80px">'  . i18n('colIdPlanningMode') . '</TD>' ;
         //if ($col=='Resource') echo '  <TD class="reportTableHeader" style="width:50px">'  . i18n('colResource') . '</TD>' ;
     }
 		$weekendColor="#cfcfcf";
@@ -623,6 +630,8 @@ function displayGantt($list) {
           if ($col=='Progress') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . percentFormatter(round($progress*100)) . '</TD>' ;
           if ($col=='StartDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pStart)?dateFormatter($pStart):'-') . '</TD>' ;
           if ($col=='EndDate') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . (($pEnd)?dateFormatter($pEnd):'-') . '</TD>' ;
+          if ($col=='Priority') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . $line["priority"] . '</TD>' ;
+          if ($col=='IdPlanningMode') echo '  <TD class="reportTableData" style="' . $compStyle . '">'  . $line["planningmode"] . '</TD>' ;
           //if ($col=='Resource') echo '  <TD class="reportTableData" style="' . $compStyle . '" >' . $line["resource"]  . '</TD>' ;
       }
       if ($pGroup) {
