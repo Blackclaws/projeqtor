@@ -346,7 +346,7 @@
       // Header
       $sortArray=Parameter::getPlanningColumnOrder();
       $cptSort=0;
-      foreach ($sortArray as $name) {	if ($name) $cptSort++; }
+      foreach ($sortArray as $name) { if (substr($name,0,6)!='Hidden') $cptSort++; }
       //echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
       echo '<table style="font-size:'.($fontsize_global*100).'%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;height: 100%;width:'.$table_witdh.'">';
       echo '<tr style="height: 2%;width:100%;padding:0px;margin:0px;">

@@ -3600,12 +3600,15 @@ function openPlanningColumnMgt() {
 }
 
 function changePlanningColumn(col,status,order) {
-    showWait();
+	showWait();
 	dijit.byId('planningColumnSelector').closeDropDown();
 	if (status) {
-	  planningColumnOrder[order-1]=col;
+	  order=planningColumnOrder.indexOf('Hidden'+col);
+	  planningColumnOrder[order]=col;
+	  movePlanningColumn(col,col);
 	} else {
-	  planningColumnOrder[order-1]='Hidden'+col;
+	  order=planningColumnOrder.indexOf(col);
+	  planningColumnOrder[order]='Hidden'+col;
 	} 
 	dojo.xhrGet({
 		url: '../tool/savePlanningColumn.php?action=status&status='
@@ -3617,7 +3620,6 @@ function changePlanningColumn(col,status,order) {
 			hideWait(); },
 		error: function() { }
 	  });	
-	
 }
 
 function movePlanningColumn(source,destination) {
@@ -3625,19 +3627,13 @@ function movePlanningColumn(source,destination) {
   var mode='';
   var list='';
   var nodeList=dndPlanningColumnSelector.getAllNodes();
+  planningColumnOrder=new Array();
   for (i=0; i<nodeList.length; i++) {
-//console.log(nodeList[i].id);
-    // console.log(nodeList[i].id);
-    //if (! mode && nodeList[i].id==source) {
-    //  mode='before';
-      //break;
-    //} else if (! mode && nodeList[i].id==destination) {
-    //  mode='after';
-      //break;
-    //}
 	item=nodeList[i].id.substr(14);
+	check=(dijit.byId('checkColumnSelector'+item).get('checked'))?'':'hidden';
+console.log(item+'=>'+check);
     list+=item+"|";
-    planningColumnOrder[i]=item;
+    planningColumnOrder[i]=check+item;
   }
   dijit.byId('planningColumnSelector').closeDropDown();
   var url='../tool/movePlanningColumn.php?orderedList='+list;
