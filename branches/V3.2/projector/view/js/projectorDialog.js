@@ -3620,10 +3620,38 @@ function changePlanningColumn(col,status,order) {
 	
 }
 
-
-function sortPlanningColumn() {
-	//alert("sortPlanningColumn");
+function movePlanningColumn(source,destination) {
+//console.log("movePlanningColumn("+source+","+destination+")");
+  var mode='';
+  var list='';
+  var nodeList=dndPlanningColumnSelector.getAllNodes();
+  for (i=0; i<nodeList.length; i++) {
+//console.log(nodeList[i].id);
+    // console.log(nodeList[i].id);
+    //if (! mode && nodeList[i].id==source) {
+    //  mode='before';
+      //break;
+    //} else if (! mode && nodeList[i].id==destination) {
+    //  mode='after';
+      //break;
+    //}
+	item=nodeList[i].id.substr(14);
+    list+=item+"|";
+    planningColumnOrder[i]=item;
+  }
+  dijit.byId('planningColumnSelector').closeDropDown();
+  var url='../tool/movePlanningColumn.php?orderedList='+list;
+  dojo.xhrPost({
+	url: url,
+	handleAs: "text",
+	load: function(data,args) { }
+  });  
+  //loadContent(url, "planResultDiv");
+  setGanttVisibility(g);
+  JSGantt.changeFormat(g.getFormat(),g);
+  hideWait();
 }
+
 
 function showMailOptions() {
 	dojo.byId('mailRefType').value=dojo.byId('objectClass').value;

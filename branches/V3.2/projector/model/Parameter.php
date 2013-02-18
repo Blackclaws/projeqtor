@@ -508,8 +508,8 @@ class Parameter extends SqlElement {
   	$res=array();
   	// Default Values
   	$user=$_SESSION['user'];
-  	$critHidden="idUser='" . Sql::fmtId($user->id) . "' and idProject is null and parameterCode like 'planningHideColumn%'";
-  	$critOrder="idUser='" . Sql::fmtId($user->id) . "' and idProject is null and parameterCode like 'planningColumnOrder%'";
+  	$critHidden="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningHideColumn%'";
+  	$critOrder="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningColumnOrder%'";
   	$param=new Parameter();
   	$hiddenList=$param->getSqlElementsFromCriteria(null, false, $critHidden);
   	$orderList=$param->getSqlElementsFromCriteria(null, false, $critOrder);
@@ -523,6 +523,7 @@ class Parameter extends SqlElement {
   	foreach ($orderList as $param) {
   	  $arrayFiledsSorted[$param->parameterValue]=substr($param->parameterCode,19);	
   	}
+  	ksort($arrayFiledsSorted);
   	$arrayFields=array('ValidatedWork','AssignedWork','RealWork','LeftWork','PlannedWork','Duration',
   	                   'Progress','StartDate','EndDate','Resource','Priority','IdPlanningMode');
   	foreach($arrayFields as $order=>$column) {

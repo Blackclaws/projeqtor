@@ -4,39 +4,33 @@
  */
 require_once "../tool/projector.php";
 scriptLog('   ->/tool/movePlanningColumn.php');
-if (! array_key_exists('from',$_REQUEST)) {
-  throwError('from parameter not found in REQUEST');
+if (! array_key_exists('orderedList',$_REQUEST)) {
+  throwError('orderedList parameter not found in REQUEST');
 }
-$from=$_REQUEST['from'];
+$list=$_REQUEST['orderedList'];
 
-if (! array_key_exists('to',$_REQUEST)) {
-  throwError('to parameter not found in REQUEST');
-}
-$to=$_REQUEST['to'];
+$arrayList=explode("|", $list);
+$user=$_SESSION['user'];
 
-if (! array_key_exists('mode',$_REQUEST)) {
-  throwError('mode parameter not found in REQUEST');
-}
-$mode=$_REQUEST['mode'];
-if ($mode!='before' and $mode!='after') {
-  $mode='before';
-}
-
-$idFrom=substr($from, 6);
-$idTo=substr($to, 6);
 Sql::beginTransaction();
-//$task=new PlanningElement($idFrom);
-//$result=$task->moveTo($idTo,$mode);
-$result="ERROR";
+foreach ($arrayList as $order=>$col) {
+	if (trim($col)) {
+		$critArray=array('idUser'=>$user->id, 'parameterCode'=>'planningColumnOrder'.$col);
+		$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', $critArray);
+		$param->parameterValue=$order+1;
+		$result=$param->save();
+	}
+}
+//$result="ERROR";
 //$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . $result . '</span>';
+  echo '<span class="messageOK" >' . '</span>';
 } else { 
 	Sql::commitTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
+  echo '<span class="messageWARNING" >' . '</span>';
 }
 ?>
