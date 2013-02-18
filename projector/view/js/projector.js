@@ -1917,24 +1917,6 @@ function moveTask(source,destination) {
   var url='../tool/moveTask.php?from='+source+'&to='+destination+'&mode='+mode;
   loadContent(url, "planResultDiv", null, true,null);
 }
-function movePlanningColumn(source,destination) {
-  var mode='';
-  var nodeList=dndPlanningColumnSelector.getAllNodes();
-  for (i=0; i<nodeList.length; i++) {
-    // console.log(nodeList[i].id);
-    if (nodeList[i].id==source) {
-      mode='before';
-      break;
-    } else if (nodeList[i].id==destination) {
-      mode='after';
-      break;
-    }      
-  }
-  console.log(planningColumnOrder);
-  //var url='../tool/movePlanningColumn.php?from='+source+'&to='+destination+'&mode='+mode;
-  //loadContent(url, "planResultDiv", null, true,null);
-  hideWait();
-}
 
 function saveCollapsed(scope){
   if (waitingForReply==true) return;
