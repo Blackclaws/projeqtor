@@ -356,8 +356,8 @@ abstract class SqlElement {
         $indDef=new IndicatorDefinition();
       	$crit=array('nameIndicatorable'=>get_class($this),'idle'=>'0');
         $lstInd=$indDef->getSqlElementsFromCriteria($crit, false);
-      	foreach ($lstInd as $ind) {
-      		$fldType='id'.get_class($this).'Type';
+      	foreach ($lstInd as $ind) {      		
+      		$fldType='id'.((get_class($this)=='TicketSimple')?'Ticket':get_class($this)).'Type';
       		if (! $ind->idType or $ind->idType==$this->$fldType) {
       		  IndicatorValue::addIndicatorValue($ind,$this);
       	  }
@@ -2171,9 +2171,9 @@ abstract class SqlElement {
 	      }
       }
     }
-    $idType='id'.ucfirst(get_class($this)).'Type';
+    $idType='id'.((get_class($this)=='TicketSimple')?'Ticket':get_class($this)).'Type';
     if (property_exists($this, $idType)) {
-      $type=get_class($this).'Type';
+      $type=((get_class($this)=='TicketSimple')?'Ticket':get_class($this)).'Type';
       $objType=new $type($this->$idType);
       if (property_exists($objType, 'mandatoryDescription') and $objType->mandatoryDescription 
       and property_exists($this, 'description')) {
