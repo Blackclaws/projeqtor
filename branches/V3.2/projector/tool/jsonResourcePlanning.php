@@ -473,7 +473,7 @@ function displayGantt($list) {
 		// Header
 	  $sortArray=Parameter::getPlanningColumnOrder();
     $cptSort=0;
-    foreach ($sortArray as $name) { if ($name and $name!='ValidatedWork' and $name!='Resource') $cptSort++; }
+    foreach ($sortArray as $name) { if (substr($name,0,6)!='Hidden' and $name!='ValidatedWork' and $name!='Resource') $cptSort++; }
 		//echo '<table dojoType="dojo.dnd.Source" id="wishlistNode" class="container ganttTable" style="border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
 		echo '<table style="-webkit-print-color-adjust: exact;font-size:80%; border: 1px solid #AAAAAA; margin: 0px; padding: 0px;">';
 		echo '<tr style="height: 20px;"><td colspan="' . (2+$cptSort) . '">&nbsp;</td>';
