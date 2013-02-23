@@ -739,7 +739,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       //vLeftTable += '</NOBR></TD></TR>';
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
-      vTopRightTable = '<DIV id="rightside" class="scrollRightTop" '
+      vTopRightTable = '<DIV id="rightside" class="scrollRightTop unselectable" '
+    	+' onmouseout="JSGantt.cancelLink();" unselectable="ON" '   
     	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
       // if (dojo.isFF) {vTopRightTable += '<DIV
       // '+((dojo.isFF)?'style="height:39px':'')+'">';}
@@ -874,9 +875,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vID = vTaskList[i].getID();
         vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (24 * 60 * 60 * 1000) + 1;
         if(vTaskList[i].getVisible() == 0) {
-          vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative; display:none;">';
+          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="unselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative; display:none;">';
         } else {
-          vRightTable += '<DIV id=childgrid_' + vID + ' style="position:relative;">';
+          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="unselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative;">';
         }
         if( vTaskList[i].getMile() ) {
           vRightTable += '<DIV ' + ffSpecificHeight+ '>'
@@ -1024,6 +1025,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	            + ' width:' + vBarWidth + 'px; " ' 
       		    + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
+                + ' onMouseover=JSGantt.enterBarLink('+i+'); '
 	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
 	            vRightTable += ' </div>';
 	        	
@@ -1977,25 +1979,32 @@ function setGanttVisibility(g) {
 	g.setSortArray(planningColumnOrder);
 }
 
+ongoingJsLink=false;
 JSGantt.startLink = function (idRow) {
 	console.log('startLink');
 	vTaskList=g.getList();
 	console.log(vTaskList[idRow].getName());
-	dojo.byId('rightside').style.cursor='crosshair';
-	
-}
+	document.body.style.cursor='crosshair';
+	ongoingJsLink=idRow;
+};
 JSGantt.endLink = function (idRow) {
 	console.log('endLink');
 	vTaskList=g.getList();
 	console.log(vTaskList[idRow].getName());
 	dojo.byId('rightside').style.cursor='progress';
-}
+};
 JSGantt.cancelLink = function (idRow) {
 	console.log('cancelLink');
 	vTaskList=g.getList();
+	//console.log(vTaskList[idRow].getName());
+	document.body.style.cursor='default';
+};
+JSGantt.enterBarLink = function (idRow) {
+	console.log('enterLink');
+	vTaskList=g.getList();
 	console.log(vTaskList[idRow].getName());
-	dojo.byId('rightside').style.cursor='default';
-}
+	//dojo.byId('rightside').style.cursor='default';
+};
 
 function leftMouseWheel(evt) {
 	var oldTop=parseInt(dojo.byId('leftside').style.top);
