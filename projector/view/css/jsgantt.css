@@ -276,7 +276,7 @@ div .scrollRightTop {
 	test-align: left;
 }
 	
-.unselectable {
+.ganttUnselectable {
     user-select: none; 
     -o-user-select: none; 
     -moz-user-select: none; 
