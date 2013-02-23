@@ -294,18 +294,18 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vTaskList.push(value);
   };
   this.getList   = function() { return vTaskList; };
-  this.clearDependencies = function() {
+  this.clearDependencies = function(temp) {
     //var parent = JSGantt.findObj('rightside');
-	  var parent = JSGantt.findObj('rightGanttChartDIV');
+	var parent = JSGantt.findObj('rightGanttChartDIV');
 	var depLine;
     var vMaxId = vDepId;
     for ( i=1; i<vMaxId; i++ ) {
-      depLine = JSGantt.findObj("line"+i);
+      depLine = JSGantt.findObj( ((temp)?"temp":"")+"line"+i);
       if (depLine) { parent.removeChild(depLine); }
     };
     vDepId = 1;
   };
-  this.sLine = function(x1,y1,x2,y2,color) {
+  this.sLine = function(x1,y1,x2,y2,color,temp) {
     vLeft = Math.min(x1,x2);
     vTop  = Math.min(y1,y2);
     vWid  = Math.abs(x2-x1) + 1;
@@ -313,7 +313,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     vDoc = JSGantt.findObj('rightGanttChartDIV');
     //vDoc = JSGantt.findObj('rightside');
     var oDiv = document.createElement('div');
-    oDiv.id = "line"+vDepId++;
+    oDiv.id = ((temp)?"temp":"")+"line"+vDepId++;
     oDiv.style.position = "absolute";
     oDiv.style.margin = "0px";
     oDiv.style.padding = "0px";
@@ -347,40 +347,40 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       y += dy;
     };
   };
-  this.drawDependency =function(x1,y1,x2,y2,color) {
+  this.drawDependency =function(x1,y1,x2,y2,color,temp) {
     if (x1 <= x2+4) {
       if (y1 <= y2) {
-        this.sLine(x1,y1,x2+4,y1,color);
+        this.sLine(x1,y1,x2+4,y1,color,temp);
         this.sLine(x2+4,y1,x2+4,y2-6,color);
-        this.sLine(x2+1, y2-9, x2+7, y2-9,color);
-        this.sLine(x2+2, y2-8, x2+6, y2-8,color);
-        this.sLine(x2+3, y2-7, x2+5, y2-7,color);
+        this.sLine(x2+1, y2-9, x2+7, y2-9,color,temp);
+        this.sLine(x2+2, y2-8, x2+6, y2-8,color,temp);
+        this.sLine(x2+3, y2-7, x2+5, y2-7,color,temp);
       } else {
-        this.sLine(x1,y1,x2+4,y1,color);
-        this.sLine(x2+4,y1,x2+4,y2+6,color);
-        this.sLine(x2+1, y2+9, x2+7, y2+9,color);
-        this.sLine(x2+2, y2+8, x2+6, y2+8,color);
-        this.sLine(x2+3, y2+7, x2+5, y2+7,color);
+        this.sLine(x1,y1,x2+4,y1,color,temp);
+        this.sLine(x2+4,y1,x2+4,y2+6,color,temp);
+        this.sLine(x2+1, y2+9, x2+7, y2+9,color,temp);
+        this.sLine(x2+2, y2+8, x2+6, y2+8,color,temp);
+        this.sLine(x2+3, y2+7, x2+5, y2+7,color,temp);
       }
     } else {
       if (y1 <= y2) {
-        this.sLine(x1,y1,x1+4,y1,color);
-        this.sLine(x1+4,y1,x1+4,y2-8,color);
-        this.sLine(x1+4,y2-8,x2-8,y2-8,color);
-        this.sLine(x2-8,y2-8,x2-8,y2,color);
-        this.sLine(x2-8,y2,x2,y2,color);
-        this.sLine(x2-3,y2+3,x2-3,y2-3,color);
-        this.sLine(x2-2,y2+2,x2-2,y2-2,color);
-        this.sLine(x2-1,y2+1,x2-1,y2-1,color);
+        this.sLine(x1,y1,x1+4,y1,color,temp);
+        this.sLine(x1+4,y1,x1+4,y2-8,color,temp);
+        this.sLine(x1+4,y2-8,x2-8,y2-8,color,temp);
+        this.sLine(x2-8,y2-8,x2-8,y2,color,temp);
+        this.sLine(x2-8,y2,x2,y2,color,temp);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp);
       } else {
-    	this.sLine(x1,y1,x1+4,y1,color);
-        this.sLine(x1+4,y1,x1+4,y2+8,color);
-        this.sLine(x1+4,y2+8,x2-8,y2+8,color);
-        this.sLine(x2-8,y2+8,x2-8,y2,color);
-        this.sLine(x2-8,y2,x2,y2,color);
-        this.sLine(x2-3,y2+3,x2-3,y2-3,color);
-        this.sLine(x2-2,y2+2,x2-2,y2-2,color);
-        this.sLine(x2-1,y2+1,x2-1,y2-1,color);
+    	this.sLine(x1,y1,x1+4,y1,color,temp);
+        this.sLine(x1+4,y1,x1+4,y2+8,color,temp);
+        this.sLine(x1+4,y2+8,x2-8,y2+8,color,temp);
+        this.sLine(x2-8,y2+8,x2-8,y2,color,temp);
+        this.sLine(x2-8,y2,x2,y2,color,temp);
+        this.sLine(x2-3,y2+3,x2-3,y2-3,color,temp);
+        this.sLine(x2-2,y2+2,x2-2,y2-2,color,temp);
+        this.sLine(x2-1,y2+1,x2-1,y2-1,color,temp);
       }
     }
   };
@@ -739,7 +739,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       //vLeftTable += '</NOBR></TD></TR>';
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
-      vTopRightTable = '<DIV id="rightside" class="scrollRightTop unselectable" '
+      vTopRightTable = '<DIV id="rightside" class="scrollRightTop ganttUnselectable" '
     	+' onmouseout="JSGantt.cancelLink();" unselectable="ON" '   
     	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
       // if (dojo.isFF) {vTopRightTable += '<DIV
@@ -875,9 +875,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vID = vTaskList[i].getID();
         vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (24 * 60 * 60 * 1000) + 1;
         if(vTaskList[i].getVisible() == 0) {
-          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="unselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative; display:none;">';
+          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="ganttUnselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative; display:none;">';
         } else {
-          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="unselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative;">';
+          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="ganttUnselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative;">';
         }
         if( vTaskList[i].getMile() ) {
           vRightTable += '<DIV ' + ffSpecificHeight+ '>'
@@ -1026,6 +1026,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       		    + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+                + ' onMouseout=JSGantt.exitBarLink('+i+'); '
 	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
 	            vRightTable += ' </div>';
 	        	
@@ -1991,18 +1992,41 @@ JSGantt.endLink = function (idRow) {
 	console.log('endLink');
 	vTaskList=g.getList();
 	console.log(vTaskList[idRow].getName());
-	dojo.byId('rightside').style.cursor='progress';
+	//dojo.byId('rightside').style.cursor='progress';
+	document.body.style.cursor='default';
+	ongoingJsLink=false;
 };
 JSGantt.cancelLink = function (idRow) {
 	console.log('cancelLink');
 	vTaskList=g.getList();
 	//console.log(vTaskList[idRow].getName());
 	document.body.style.cursor='default';
+	ongoingJsLink=false;
 };
 JSGantt.enterBarLink = function (idRow) {
 	console.log('enterLink');
 	vTaskList=g.getList();
 	console.log(vTaskList[idRow].getName());
+	if (ongoingJsLink) {
+		g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
+			              vTaskList[idRow].getStartX()-1,vTaskList[idRow].getStartY(),
+			              "#"+vTaskList[ongoingJsLink].getColor(),true);
+	
+	  document.body.style.cursor='crosshair';
+	}
+	//dojo.byId('rightside').style.cursor='default';
+};
+JSGantt.exitBarLink = function (idRow) {
+	console.log('exitLink');
+	vTaskList=g.getList();
+	console.log(vTaskList[idRow].getName());
+	if (ongoingJsLink) {
+	  document.body.style.cursor='crosshair';
+	}
+	if (ongoingJsLink) {
+	  g.clearDependencies(true);
+	  //g.DrawDependencies();
+	}
 	//dojo.byId('rightside').style.cursor='default';
 };
 
