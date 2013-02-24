@@ -30,6 +30,7 @@ class ImputationLine {
 	public $idle;
 	public $locked;
 	public $description;
+	public $functionName;
 
 	/** ==========================================================================
 	 * Constructor
@@ -48,6 +49,7 @@ class ImputationLine {
 	}
 
 	static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true) {
+scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned)");		
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
 
@@ -173,6 +175,9 @@ class ImputationLine {
 			$elt->leftWork=$ass->leftWork;
 			$elt->arrayWork=array();
 			$elt->arrayPlannedWork=array();
+			if ($ass->idRole) {
+			  $elt->functionName=SqlList::getNameFromId('Role', $ass->idRole);
+			}
 			$crit=array('refType'=>$elt->refType, 'refId'=>$elt->refId);
 			$plan=null;
 			if ($ass->id) {
@@ -277,9 +282,10 @@ class ImputationLine {
 
 	// Get the parent line for hierarchc display purpose
 	private static function getParent($elt, $result, $direct=true){
+scriptLog("      => ImputationLine->getParent($elt->refType#$elt->refId, $result, $direct)");		
 		$plan=null;
 		$user=$_SESSION['user'];
-		//$visibleProjectList=$user->getVisibleProjects();
+//		$visibleProjectList=$user->getVisibleProjects();
 		$visibleProjectList=explode(', ', getVisibleProjectsList());
 		if ($elt->topId) {
 			$plan=new PlanningElement($elt->topId);
@@ -305,6 +311,7 @@ class ImputationLine {
 				$result=self::getParent($top, $result, $direct=false);
 			}
 		}
+scriptLog("      => ImputationLine->getParent()-exit");
 		return $result;
 	}
 
@@ -318,6 +325,7 @@ class ImputationLine {
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
+scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $print)");		
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
 		$user=$_SESSION['user'];		
@@ -592,15 +600,18 @@ class ImputationLine {
 				}
 			}
 			echo '<td>' . $line->name . '</td>';
+			if (isset($line->functionName) and $line->functionName) {
+				echo '<div style="float:right; color:#8080DD; font-size:80%;;font-weight:normal;">' . $line->functionName . '</div>';
+			}
 			if ($line->comment and !$print) {
 				echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
 			}
 			echo '</tr></table>';
 			echo '</td>';
 			//echo '<td class="ganttDetail" align="center">' . $line->description . '</td>';
-			echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->startDate) . '</td>';
-			echo '<td class="ganttDetail" align="center">' . htmlFormatDate($line->endDate) . '</td>';
-			echo '<td class="ganttDetail" align="center">';
+			echo '<td class="ganttDetail" align="center" width="5%">' . htmlFormatDate($line->startDate) . '</td>';
+			echo '<td class="ganttDetail" align="center" width="5%">' . htmlFormatDate($line->endDate) . '</td>';
+			echo '<td class="ganttDetail" align="center" width="5%">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -616,7 +627,7 @@ class ImputationLine {
 				}
 			}
 			echo '</td>';
-			echo '<td class="ganttDetail" align="center">';
+			echo '<td class="ganttDetail" align="center" width="5%">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -634,7 +645,7 @@ class ImputationLine {
 			echo '</td>';
 			$curDate=$startDate;
 			for ($i=1; $i<=$nbDays; $i++) {
-				echo '<td class="ganttDetail" align="center"';
+				echo '<td class="ganttDetail" align="center" width="5%"';
 				if ($today==$curDate) {
 					echo ' style="background-color:#' . $currentdayColor . ';"';
 				} else if (isOffDay($curDate)) {
@@ -687,7 +698,7 @@ class ImputationLine {
 				echo '</td>';
 				$curDate=date('Y-m-d',strtotime("+1 days", strtotime($curDate)));
 			}
-			echo '<td class="ganttDetail" align="center">';
+			echo '<td class="ganttDetail" align="center" width="5%">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -712,7 +723,7 @@ class ImputationLine {
 				  echo '<input type="hidden" id="leftWork_' . $nbLine . '" name="leftWork[]" />';
 			}
 			echo '</td>';
-			echo '<td class="ganttDetail" align="center">';
+			echo '<td class="ganttDetail" align="center" width="5%">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';

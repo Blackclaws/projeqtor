@@ -499,6 +499,9 @@ function formatForDbType($query) {
         }
     		$posChange=strpos($res,'CHANGE', $posChange+5);
     	}
+    } else if (substr($res,0,12)=='RENAME TABLE') {
+    	 $res=str_replace('RENAME TABLE','ALTER TABLE',$res);
+    	 $res=str_replace(' TO ',' RENAME TO ',$res);
     }
   } else {
   	// not mysql, not pgsql, so WHAT ?

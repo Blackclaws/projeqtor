@@ -406,7 +406,7 @@ foreach ($listParam as $param) {
     if ($param->defaultValue) {
       $defaultValue=$param->defaultValue; 
     }
-    $arr=array('Ticket','Activity','Milestone', 'Risk', 'Action', 'Issue', 'Meeting', 'Decision', 'Question', 'Project' );
+    $arr=SqlList::getListNotTranslated('Importable');
 ?>
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>

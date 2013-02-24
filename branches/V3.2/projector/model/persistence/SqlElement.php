@@ -1257,6 +1257,7 @@ abstract class SqlElement {
     	$whereClause=$critwhere;
     }
     $groupList='';
+    $critGroup=array_map('strtolower',$critGroup);
     foreach ($critGroup as $group) {
     	$groupList.=($groupList=='')?'':', ';
     	$groupList.=$group;
