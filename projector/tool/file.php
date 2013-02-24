@@ -26,6 +26,10 @@ function kill($file) {
 }
 
 function purgeFiles($dir, $pattern) {
+	if (! is_dir($dir)) {
+		traceLog ("purgeFiles('$dir', '$pattern') - directory '$dir' does not exist");
+		return;
+	}
   $handle = opendir($dir);
   if (! is_resource($handle)) {
   	traceLog ("purgeFiles('$dir', '$pattern') - Unable to open directory '$dir' ");
