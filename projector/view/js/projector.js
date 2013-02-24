@@ -713,7 +713,7 @@ function finalizeMessageDisplay(destination, validationType) {
   var lastOperationStatus = dojo.byId('lastOperationStatus');
   var lastOperation = dojo.byId('lastOperation');
   // scpecific Plan return
-  if (destination=="planResultDiv") {
+  if (destination=="planResultDiv" && ! validationType) {
     lastOperationStatus = dojo.byId('lastPlanStatus');
     lastOperation = "plan";
   }
@@ -780,6 +780,10 @@ function finalizeMessageDisplay(destination, validationType) {
           loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
           if (validationType=='assignment' || validationType=='documentVersion') {
         	refreshGrid();
+          } else if (validationType=='dependency' && 
+        		  (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV")) ) {
+              noHideWait=true;
+              refreshJsonPlanning();  
           }
     	  //hideWait();
       }
@@ -808,7 +812,7 @@ function finalizeMessageDisplay(destination, validationType) {
         });
       }
       // Refresh the planning Gantt (if visible)
-      if (dojo.byId(destination=="planResultDiv" || dojo.byId("GanttChartDIV"))) {
+      if (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV") ) {
         noHideWait=true;
         refreshJsonPlanning();
         // loadContent("planningList.php", "listDiv", 'listForm');
