@@ -351,7 +351,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     if (x1 <= x2+4) {
       if (y1 <= y2) {
         this.sLine(x1,y1,x2+4,y1,color,temp);
-        this.sLine(x2+4,y1,x2+4,y2-6,color);
+        this.sLine(x2+4,y1,x2+4,y2-6,color,temp);
         this.sLine(x2+1, y2-9, x2+7, y2-9,color,temp);
         this.sLine(x2+2, y2-8, x2+6, y2-8,color,temp);
         this.sLine(x2+3, y2-7, x2+5, y2-7,color,temp);
@@ -905,6 +905,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;">' 
             + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
             + ' style="overflow:hidden; cursor: pointer; font-size:18px;" '
+            + ' onmousedown=JSGantt.startLink('+i+'); '
+            + ' onmouseup=JSGantt.endLink('+i+'); '
+            + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+            + ' onMouseout=JSGantt.exitBarLink('+i+'); '
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
             + ' >';
           if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getEnd())) {
@@ -965,9 +969,15 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + ' width:' + vBarWidth + 'px">';
             if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskStart) ) {
               vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
+              + ' onmousedown=JSGantt.startLink('+i+'); '
+              + ' onmouseup=JSGantt.endLink('+i+'); '
+              + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+              + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+              + '  onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
                 + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
                 + '<div style="width:' + vTaskList[i].getCompStr() + ';"' 
-                + ' class="ganttGrouprowBarComplete" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>' 
+                
+                + ' class="ganttGrouprowBarComplete">' 
                 + '</div>' 
                 + '</div>' 
                 + '<div class="ganttTaskgroupBarExt" style="float:left; height:4px"></div>'               
@@ -1034,6 +1044,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        		vRightTable +='<div class="ganttTaskrowBar"  title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
 		        		  + 'style="position: absolute; background-color:#' + vTaskList[i].getColor() +';'
 		        		  + 'top: 0px; width:' + vBarWidthPlan + 'px; left: ' + vBarLeftPlan + 'px; "'
+		        		  + ' onmousedown=JSGantt.startLink('+i+'); '
+		                  + ' onmouseup=JSGantt.endLink('+i+'); '
+		                  + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+		                  + ' onMouseout=JSGantt.exitBarLink('+i+'); '
 		        		  + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");></div>';
 		        	}
               if( g.getCaptionType() ) {
@@ -1982,52 +1996,54 @@ function setGanttVisibility(g) {
 
 ongoingJsLink=false;
 JSGantt.startLink = function (idRow) {
-	console.log('startLink');
+//	console.log('startLink');
 	vTaskList=g.getList();
-	console.log(vTaskList[idRow].getName());
-	document.body.style.cursor='crosshair';
+	document.body.style.cursor="url('css/images/dndLink.png'),help";
 	ongoingJsLink=idRow;
 };
 JSGantt.endLink = function (idRow) {
-	console.log('endLink');
+//	console.log('endLink');
 	vTaskList=g.getList();
-	console.log(vTaskList[idRow].getName());
-	//dojo.byId('rightside').style.cursor='progress';
 	document.body.style.cursor='default';
+	if (ongoingJsLink && idRow!=ongoingJsLink) {
+		//pscope="Planning_"+pClass+"_"+pId;
+		var ref1Type=vTaskList[ongoingJsLink].getClass();
+		scope1="Planning_"+ref1Type+"_";
+		var ref1Id=vTaskList[ongoingJsLink].getScope().substr(scope1.length);
+		var ref2Type=vTaskList[idRow].getClass();
+		scope2="Planning_"+ref2Type+"_";
+		var ref2Id=vTaskList[idRow].getScope().substr(scope2.length);;
+		saveDependencyFromDndLink(ref1Type,ref1Id,ref2Type, ref2Id);
+	}
 	ongoingJsLink=false;
 };
 JSGantt.cancelLink = function (idRow) {
-	console.log('cancelLink');
+//	console.log('cancelLink');
 	vTaskList=g.getList();
-	//console.log(vTaskList[idRow].getName());
 	document.body.style.cursor='default';
 	ongoingJsLink=false;
 };
 JSGantt.enterBarLink = function (idRow) {
-	console.log('enterLink');
+//	console.log('enterLink');
 	vTaskList=g.getList();
-	console.log(vTaskList[idRow].getName());
-	if (ongoingJsLink) {
+	if (ongoingJsLink && idRow!=ongoingJsLink) {
 		g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
 			              vTaskList[idRow].getStartX()-1,vTaskList[idRow].getStartY(),
 			              "#"+vTaskList[ongoingJsLink].getColor(),true);
 	
-	  document.body.style.cursor='crosshair';
+		document.body.style.cursor="url('css/images/dndLink.png'),help";
+	} else {
+		document.body.style.cursor='pointer';
 	}
-	//dojo.byId('rightside').style.cursor='default';
 };
 JSGantt.exitBarLink = function (idRow) {
-	console.log('exitLink');
+//	console.log('exitLink');
 	vTaskList=g.getList();
-	console.log(vTaskList[idRow].getName());
 	if (ongoingJsLink) {
-	  document.body.style.cursor='crosshair';
-	}
-	if (ongoingJsLink) {
+	  document.body.style.cursor="url('css/images/dndLink.png'),help";;
 	  g.clearDependencies(true);
-	  //g.DrawDependencies();
 	}
-	//dojo.byId('rightside').style.cursor='default';
+	document.body.style.cursor='default';
 };
 
 function leftMouseWheel(evt) {

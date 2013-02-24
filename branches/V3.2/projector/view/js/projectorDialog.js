@@ -1877,6 +1877,14 @@ function saveDependency() {
 	dijit.byId('dialogDependency').hide();
 }
 
+function saveDependencyFromDndLink(ref1Type,ref1Id, ref2Type, ref2Id) {
+//alert("saveDependencyFromDndLink("+ref1Type+","+ref1Id+","+ref2Type+","+ref2Id+")");
+	param="ref1Type="+ref1Type;
+	param+="&ref1Id="+ref1Id;
+	param+="&ref2Type="+ref2Type;
+	param+="&ref2Id="+ref2Id;
+	loadContent("../tool/saveDependencyDnd.php?"+param, "planResultDiv", null, true,'dependency');
+}
 /**
 * Display a delete Dependency Box
 * 
