@@ -1,2 +1,2 @@
 //>>built
-define("dojo/cldr/nls/zh-tw/number",{"currencyFormat":"¤#,##0.00","decimalFormat-short":"000T","nan":"非數值"});
+define("dojo/cldr/nls/zh-tw/number",{"nan":"非數值"});
