@@ -297,7 +297,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
    	}
     actionNo = function () {
 	    //unselectAllRows("objectGrid");
-      selectRowById('objectGrid', dojo.byId('objectId').value);
+      selectRowById('objectGrid', parseInt(dojo.byId('objectId').value));
     }
     if (checkFormChangeInProgress(actionYes, actionNo)) {
       return true;

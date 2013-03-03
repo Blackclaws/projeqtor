@@ -3387,8 +3387,10 @@ function loadMenuBarItem(item,itemName) {
   if (item=='Today') {
     loadContent("today.php","centerDiv");
   } else if (item=='Planning') {
+	vGanttCurrentLine=-1;
     loadContent("planningMain.php","centerDiv");
   } else if (item=='ResourcePlanning') {
+	vGanttCurrentLine=-1;
 	loadContent("resourcePlanningMain.php","centerDiv");
   } else if (item=='Imputation') {
     loadContent("imputationMain.php","centerDiv");
@@ -3631,7 +3633,6 @@ function changePlanningColumn(col,status,order) {
 }
 
 function movePlanningColumn(source,destination) {
-//console.log("movePlanningColumn("+source+","+destination+")");
   var mode='';
   var list='';
   var nodeList=dndPlanningColumnSelector.getAllNodes();
@@ -3639,7 +3640,6 @@ function movePlanningColumn(source,destination) {
   for (i=0; i<nodeList.length; i++) {
 	item=nodeList[i].id.substr(14);
 	check=(dijit.byId('checkColumnSelector'+item).get('checked'))?'':'hidden';
-console.log(item+'=>'+check);
     list+=item+"|";
     planningColumnOrder[i]=check+item;
   }
