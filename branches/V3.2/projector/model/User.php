@@ -430,6 +430,7 @@ class User extends SqlElement {
   public function resetVisibleProjects() {
     $this->_visibleProjects=null;
     $this->_affectedProjects=null;
+    unset($_SESSION['visibleProjectsList']);
   }
 
 /** =========================================================================

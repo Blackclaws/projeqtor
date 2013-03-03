@@ -875,9 +875,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vID = vTaskList[i].getID();
         vNumUnits = (vTaskList[i].getEnd() - vTaskList[i].getStart()) / (24 * 60 * 60 * 1000) + 1;
         if(vTaskList[i].getVisible() == 0) {
-          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="ganttUnselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative; display:none;">';
+          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="ganttUnselectable" onMouseup="JSGantt.cancelLink('+i+');" id=childgrid_' + vID + ' style="position:relative; display:none;">';
         } else {
-          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="ganttUnselectable" onMouseup="JSGantt.cancelLink();" id=childgrid_' + vID + ' style="position:relative;">';
+          vRightTable += '<DIV onselectstart="event.preventDefault();return false;" class="ganttUnselectable" onMouseup="JSGantt.cancelLink('+i+');" id=childgrid_' + vID + ' style="position:relative;">';
         }
         if( vTaskList[i].getMile() ) {
           vRightTable += '<DIV ' + ffSpecificHeight+ '>'
@@ -902,9 +902,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           }	  
           vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:-2px; ' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
-            + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;">' 
+            + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;"'
+            + ' onmousedown=JSGantt.startLink('+i+'); '
+            + ' onmouseup=JSGantt.endLink('+i+'); '
+            + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+            + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+            +'>' 
             + ' <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" '
-            + ' style="overflow:hidden; cursor: pointer; font-size:18px;" '
+            + ' style="overflow:hidden; font-size:18px;" '
             + ' onmousedown=JSGantt.startLink('+i+'); '
             + ' onmouseup=JSGantt.endLink('+i+'); '
             + ' onMouseover=JSGantt.enterBarLink('+i+'); '
@@ -976,7 +981,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '  onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
                 + ' class="ganttTaskgroupBar" style="width:' + vBarWidth + 'px;">'
                 + '<div style="width:' + vTaskList[i].getCompStr() + ';"' 
-                
+                + ' onmousedown=JSGantt.startLink('+i+'); '
+                + ' onmouseup=JSGantt.endLink('+i+'); '
+                + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+                + ' onMouseout=JSGantt.exitBarLink('+i+'); '                
                 + ' class="ganttGrouprowBarComplete">' 
                 + '</div>' 
                 + '</div>' 
@@ -1022,6 +1030,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	            + ' width:' + vBarWidth + 'px">';         
             vRightTable += ' <div class="ganttTaskrowBarComplete"  '
             	+ ' style="width:' + vTaskList[i].getCompStr() + '; cursor: pointer;"'
+      		    + ' onmousedown=JSGantt.startLink('+i+'); '
+                + ' onmouseup=JSGantt.endLink('+i+'); '
+                + ' onMouseover=JSGantt.enterBarLink('+i+'); '
+                + ' onMouseout=JSGantt.exitBarLink('+i+'); '
             	+ ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>'
                 + ' </div>'; 
 	        if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
@@ -1851,20 +1863,6 @@ JSGantt.benchMark = function(pItem){
   vBenchTime=new Date().getTime();
 };
 
-JSGantt.ganttMouseOver = function( pID, pPos, pType) {
-  var vRowObj1 = JSGantt.findObj('child_' + pID);
-  if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType + " ganttRowHover";
-  var vRowObj2 = JSGantt.findObj('childrow_' + pID);
-  if (vRowObj2) vRowObj2.className = "ganttTask" + pType + " ganttRowHover";
-};
-
-JSGantt.ganttMouseOut = function(pID, pPos, pType) {
-  var vRowObj1 = JSGantt.findObj('child_' + pID);
-  if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType;
-  var vRowObj2 = JSGantt.findObj('childrow_' + pID);
-  if (vRowObj2) vRowObj2.className = "ganttTask" + pType;
-};
-
 JSGantt.setSelected = function(pID) {
   var vRowObj1 = JSGantt.findObj('child_' + pID);
   if (vRowObj1) vRowObj1.className = "selectedrow" + pType;
@@ -1993,57 +1991,123 @@ function setGanttVisibility(g) {
 	}
 	g.setSortArray(planningColumnOrder);
 }
+JSGantt.ganttMouseOver = function( pID, pPos, pType) {
+//  console.log('ganttMouseOver - pID='+pID+' - pType='+pType);	
+  if (! pType) {
+	vTaskList=g.getList();	
+	if( vTaskList[pID].getGroup()) {	
+		pType = "group";
+    } else if( vTaskList[pID].getMile()){
+    	pType  = "mile";
+    } else {
+    	pType  = "row";
+    }
+	pID=vTaskList[pID].getID();
+  } else if (ongoingJsLink>=0) {  
+	document.body.style.cursor="url('css/images/dndLink.png'),help";
+  }
+  var vRowObj1 = JSGantt.findObj('child_' + pID);
+  if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType + " ganttRowHover";
+  var vRowObj2 = JSGantt.findObj('childrow_' + pID);
+  if (vRowObj2) vRowObj2.className = "ganttTask" + pType + " ganttRowHover"+ ((ongoingJsLink>=0)?" ganttDndLink":"");
+  if (pType && ongoingJsLink>=0) {  
+	document.body.style.cursor="url('css/images/dndLink.png'),help";
+  }
+};
 
-ongoingJsLink=false;
+JSGantt.ganttMouseOut = function(pID, pPos, pType) {
+//  console.log('ganttMouseOut - pID='+pID+' - pType='+pType);
+  if (! pType) {
+	vTaskList=g.getList();	
+	if( vTaskList[pID].getGroup()) {	
+		pType = "group";
+    } else if( vTaskList[pID].getMile()){
+    	pType  = "mile";
+    } else {
+    	pType  = "row";
+    }
+	pID=vTaskList[pID].getID();
+  }	
+  var vRowObj1 = JSGantt.findObj('child_' + pID);
+  if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType;
+  var vRowObj2 = JSGantt.findObj('childrow_' + pID);
+  if (vRowObj2) vRowObj2.className = "ganttTask" + pType + ((ongoingJsLink>=0)?" ganttDndLink":"");
+};
+
+ongoingJsLink=-1;
 JSGantt.startLink = function (idRow) {
-//	console.log('startLink');
+//	console.log('startLink - '+ongoingJsLink);
 	vTaskList=g.getList();
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
 	ongoingJsLink=idRow;
 };
 JSGantt.endLink = function (idRow) {
-//	console.log('endLink');
+//	console.log('endLink - '+ongoingJsLink);
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
-	if (ongoingJsLink && idRow!=ongoingJsLink) {
+	if (ongoingJsLink>=0 && idRow!=ongoingJsLink) {
 		//pscope="Planning_"+pClass+"_"+pId;
 		var ref1Type=vTaskList[ongoingJsLink].getClass();
 		scope1="Planning_"+ref1Type+"_";
 		var ref1Id=vTaskList[ongoingJsLink].getScope().substr(scope1.length);
 		var ref2Type=vTaskList[idRow].getClass();
 		scope2="Planning_"+ref2Type+"_";
-		var ref2Id=vTaskList[idRow].getScope().substr(scope2.length);;
+		var ref2Id=vTaskList[idRow].getScope().substr(scope2.length);
+		var vRowObj2 = JSGantt.findObj('childrow_' + vTaskList[idRow].getID());
+		if( vTaskList[idRow].getGroup()) {
+	      vRowType = "group";
+	    } else if( vTaskList[idRow].getMile()){
+	      vRowType  = "mile";
+	    } else {
+	      vRowType  = "row";
+	    }
+		if (vRowObj2) vRowObj2.className = "ganttTask" + vRowType;
 		saveDependencyFromDndLink(ref1Type,ref1Id,ref2Type, ref2Id);
 	}
-	ongoingJsLink=false;
+	ongoingJsLink=-1;
 };
 JSGantt.cancelLink = function (idRow) {
-//	console.log('cancelLink');
+//	console.log('cancelLink - ongoingLink='+ongoingJsLink+' - idRow='+idRow);
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
-	ongoingJsLink=false;
+	if (idRow) {
+		var vRowObj2 = JSGantt.findObj('childrow_' + vTaskList[idRow].getID());
+		if( vTaskList[idRow].getGroup()) {
+	      vRowType = "group";
+	    } else if( vTaskList[idRow].getMile()){
+	      vRowType  = "mile";
+	    } else {
+	      vRowType  = "row";
+	    }
+	}
+	if (vRowObj2) vRowObj2.className = "ganttTask" + vRowType;
+	ongoingJsLink=-1;
 };
 JSGantt.enterBarLink = function (idRow) {
-//	console.log('enterLink');
+//	console.log('enterLink - '+ongoingJsLink);
+	JSGantt.ganttMouseOver(idRow);
 	vTaskList=g.getList();
-	if (ongoingJsLink && idRow!=ongoingJsLink) {
-		g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
+	if (ongoingJsLink>=0) {
+		if (idRow!=ongoingJsLink) {
+			g.drawDependency(vTaskList[ongoingJsLink].getEndX(),vTaskList[ongoingJsLink].getEndY(),
 			              vTaskList[idRow].getStartX()-1,vTaskList[idRow].getStartY(),
 			              "#"+vTaskList[ongoingJsLink].getColor(),true);
-	
+		}
 		document.body.style.cursor="url('css/images/dndLink.png'),help";
 	} else {
 		document.body.style.cursor='pointer';
 	}
 };
 JSGantt.exitBarLink = function (idRow) {
-//	console.log('exitLink');
+//	console.log('exitBarLink - '+ongoingJsLink);
+	JSGantt.ganttMouseOut(idRow);
 	vTaskList=g.getList();
-	if (ongoingJsLink) {
-	  document.body.style.cursor="url('css/images/dndLink.png'),help";;
+	if (ongoingJsLink>=0) {
+	  document.body.style.cursor="url('css/images/dndLink.png'),help";
 	  g.clearDependencies(true);
+	} else {
+	  document.body.style.cursor='default';
 	}
-	document.body.style.cursor='default';
 };
 
 function leftMouseWheel(evt) {

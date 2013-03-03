@@ -71,7 +71,9 @@ function refreshImputationList() {
  * @return
  */
 var noRefreshImputationPeriod=false;
-function refreshImputationPeriod() {
+function refreshImputationPeriod(directDate) {
+console.log("refreshImputationPeriod("+directDate+")");
+console.log("  noRefreshImputationPeriod="+noRefreshImputationPeriod);
 	if (noRefreshImputationPeriod) {
 		return;
 	}
@@ -83,12 +85,23 @@ function refreshImputationPeriod() {
         dijit.byId('yearSpinner').set('value',year);
         var week=period.substr(4,2);
         dijit.byId('weekSpinner').set('value',week);
-		var week=dijit.byId('weekSpinner').get('value') + '';
+		//var week=dijit.byId('weekSpinner').get('value') + '';
+		var day=getFirstDayOfWeek(week,year);
+		dijit.byId('dateSelector').set('value',day);
 		noRefreshImputationPeriod=false;
 		return false;
 	}
-	var year=dijit.byId('yearSpinner').get('value');
-	var week=dijit.byId('weekSpinner').get('value') + '';
+	noRefreshImputationPeriod=true;
+	if (directDate) {
+		var year=directDate.getFullYear();
+		var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear());
+		dijit.byId('yearSpinner').set('value',year);
+		dijit.byId('weekSpinner').set('value',week);
+	} else {
+		var year=dijit.byId('yearSpinner').get('value');
+		var week=dijit.byId('weekSpinner').get('value') + '';
+	}
+console.log(year+'-'+week);	
 	if (week.length==1) {
 		week='0' + week;
 	}
@@ -121,11 +134,13 @@ function refreshImputationPeriod() {
 			dijit.byId('weekSpinner').set('value', '1');
 		}
 	}
-	
+	var day=getFirstDayOfWeek(week,year);
+	dijit.byId('dateSelector').set('value',day);
 	dojo.byId('rangeValue').value='' + year + week;
 	if ((year+'').length==4) {
 		refreshImputationList();
 	}
+	setTimeout("noRefreshImputationPeriod=false",100);
 	return true;
 }
 

@@ -526,16 +526,19 @@ class PlannedWork extends GeneralWork {
   	// first sort on simple criterias
     foreach ($list as $id=>$elt) {
       $crit=($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7')?'0':'1';
-      $crit.=str_pad($elt->priority,5,'0',STR_PAD_LEFT).$elt->wbsSortable;
+      $crit.='.';
+      $prio=$elt->priority;
+      if (! $elt->leftWork or $elt->leftWork==0) {$prio=0;}
+      $crit.=str_pad($prio,5,'0',STR_PAD_LEFT).'.'.$elt->wbsSortable;
       $elt->_sortCriteria=$crit;
       $list[$id]=$elt;
     }
-    //self::traceArray($list);
+    self::traceArray($list);
     $bool = uasort($list,array(new PlanningElement(), "comparePlanningElementSimple"));
-    //self::traceArray($list);
+    self::traceArray($list);
     // then sort on predecessors
     $result=self::specificSort($list);
-    //self::traceArray($result);
+    self::traceArray($result);
     return $result;
   }
   
@@ -605,7 +608,7 @@ class PlannedWork extends GeneralWork {
   	debugLog('*****traceArray()*****');
   	foreach($list as $id=>$pe) {
   		// debugLog to keep
-  		debugLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority . ' - '.$pe->_sortCriteria);
+  		debugLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority . ' - Left='.$pe->leftWork.' - '.$pe->_sortCriteria);
   		if (count($pe->_predecessorListWithParent)>0) {
   			foreach($pe->_predecessorListWithParent as $idPrec=>$prec) {
   				// debugLog to keep
