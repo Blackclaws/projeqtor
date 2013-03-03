@@ -58,7 +58,7 @@ scriptLog('   ->/view/reportsList.php');
     <tr>
       <td>
         <select id="reportsCategory" name="reportsCategory" value=""  
-                dojoType="dijit.form.MultiSelect" multiple
+                dojoType="dijit.form.MultiSelect" multiple="false"
                  style="width:200px" size="10" class="input" >
            <?php htmlDrawOptionForReference('idReportCategory',null,null, true); ?>
           <script type="dojo/connect" event="onChange" args="value">
@@ -71,7 +71,7 @@ scriptLog('   ->/view/reportsList.php');
         <div dojoType="dojo.data.ItemFileReadStore" jsId="reportStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
         </div>
         <select id="reportsList" name="reportsList" value=""  
-                dojoType="dijit.form.MultiSelect" multiple
+                dojoType="dijit.form.MultiSelect"  multiple="false"
                 style="width:300px" size="10" class="input" store="reportStore">
         <script type="dojo/connect" event="onChange" args="value">
              reportSelectReport(value);       
