@@ -51,14 +51,14 @@ class Ticket extends SqlElement {
   
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" formatter="numericFormatter" width="3%" ># ${id}</th>
+    <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="7%" >${idProject}</th>
     <th field="nameticketType" width="7%" >${idTicketType}</th>
     <th field="name" width="16%" >${name}</th>
     <th field="nameUser" width="7%" >${issuer}</th>
     <th field="colorNameUrgency" width="7%" formatter="colorNameFormatter">${idUrgency}</th>
     <th field="colorNamePriority" width="7%" formatter="colorNameFormatter">${idPriority}</th>
-    <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="colorNameStatus" width="7%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="actualDueDateTime" width="7%" formatter="dateTimeFormatter">${actualDueDateTime}</th>
     <th field="nameProduct" width="7%" >${idProduct}</th>
     <th field="nameVersion" width="7%" >${idVersion}</th>
