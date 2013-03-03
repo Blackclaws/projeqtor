@@ -430,6 +430,7 @@ function cleanContent(destination) {
  * @return void
  */
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
+console.log("loadcontent("+page+", "+destination+", "+formName+", "+isResultMessage+", "+validationType+", "+directAccess+")");
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
@@ -454,7 +455,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   showWait();
   // Direct mode, without fading effect =====
   // IE Issue : must not fade load
-  if ( (top.dojo.isIE && 0) || ! top.fadeLoading) {
+  if ( (top.dojo.isIE < 8) || ! top.fadeLoading) {
     // send Ajax request
     dojo.xhrPost({
       url: page,
@@ -708,6 +709,7 @@ function submitForm(page, destination, formName) {
  * @return void
  */
 function finalizeMessageDisplay(destination, validationType) {
+console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var lastOperationStatus = dojo.byId('lastOperationStatus');
@@ -777,7 +779,9 @@ function finalizeMessageDisplay(destination, validationType) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  refreshGrid();
       } else if (lastOperation!='plan') {
-          loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	  if (dijit.byId('detailFormDiv')) { // only refresh is detail is show (possible when DndLing on planning
+            loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	  }
           if (validationType=='assignment' || validationType=='documentVersion') {
         	refreshGrid();
           } else if (validationType=='dependency' && 
@@ -1361,6 +1365,13 @@ function beforequit() {
  * @return
  */
 function drawGantt() {
+  // first, if detail is displayed, reload class
+  if (dojo.byId("objectClass") && !dojo.byId("objectClass").value && dojo.byId("className") && dojo.byId("className").value) {
+	  dojo.byId("objectClass").value=dojo.byId("className").value;
+  } 
+  if (dojo.byId("objectId") && ! dojo.byId("objectId").value && dijit.byId("id") && dijit.byId("id").get("value")) {
+	  dojo.byId("objectId").value=dijit.byId("id").get("value");
+  } 
   if (dijit.byId('startDatePlanView')) {
     var startDateView=dijit.byId('startDatePlanView').get('value');
   } else {

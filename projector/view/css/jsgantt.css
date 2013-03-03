@@ -283,3 +283,7 @@ div .scrollRightTop {
     -khtml-user-select: none; 
     -webkit-user-select: none; 
 }
+
+.ganttDndLink {
+	cursor: url('images/dndLink.png'),help;
+}	
