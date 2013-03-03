@@ -65,15 +65,12 @@ function refreshImputationList() {
 	return true;
 }
 
-
 /**
  * Refresh the imputation list after period update (check format first)
  * @return
  */
 var noRefreshImputationPeriod=false;
 function refreshImputationPeriod(directDate) {
-console.log("refreshImputationPeriod("+directDate+")");
-console.log("  noRefreshImputationPeriod="+noRefreshImputationPeriod);
 	if (noRefreshImputationPeriod) {
 		return;
 	}
@@ -101,7 +98,6 @@ console.log("  noRefreshImputationPeriod="+noRefreshImputationPeriod);
 		var year=dijit.byId('yearSpinner').get('value');
 		var week=dijit.byId('weekSpinner').get('value') + '';
 	}
-console.log(year+'-'+week);	
 	if (week.length==1) {
 		week='0' + week;
 	}

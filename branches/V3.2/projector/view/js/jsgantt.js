@@ -35,6 +35,7 @@ var JSGantt; if (!JSGantt) JSGantt = {};
 var vTimeout = 0;
 var vBenchTime = new Date().getTime();
 var arrayClosed=new Array();
+var vGanttCurrentLine=-1;
 var linkInProgress=false;
 
 JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp, pGroup, 
@@ -1079,7 +1080,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         vRightTable += '</DIV>';
       }
-// console.log(vRightTable);
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
       dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
       dojo.byId("topGanttChartDIV").innerHTML=vTopRightTable;
@@ -1341,7 +1341,7 @@ JSGantt.changeFormat = function(pFormat,ganttObj) {
   } else {
     alert('Chart undefined');
   };
-  
+  highlightPlanningLine();
 };
 
 
@@ -1992,7 +1992,6 @@ function setGanttVisibility(g) {
 	g.setSortArray(planningColumnOrder);
 }
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {
-//  console.log('ganttMouseOver - pID='+pID+' - pType='+pType);	
   if (! pType) {
 	vTaskList=g.getList();	
 	if( vTaskList[pID].getGroup()) {	
@@ -2006,6 +2005,7 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
   } else if (ongoingJsLink>=0) {  
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
   }
+  if (pID==vGanttCurrentLine) return;
   var vRowObj1 = JSGantt.findObj('child_' + pID);
   if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType + " ganttRowHover";
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
@@ -2016,7 +2016,6 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
 };
 
 JSGantt.ganttMouseOut = function(pID, pPos, pType) {
-//  console.log('ganttMouseOut - pID='+pID+' - pType='+pType);
   if (! pType) {
 	vTaskList=g.getList();	
 	if( vTaskList[pID].getGroup()) {	
@@ -2028,6 +2027,7 @@ JSGantt.ganttMouseOut = function(pID, pPos, pType) {
     }
 	pID=vTaskList[pID].getID();
   }	
+  if (pID==vGanttCurrentLine) return;	
   var vRowObj1 = JSGantt.findObj('child_' + pID);
   if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType;
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
@@ -2036,17 +2036,14 @@ JSGantt.ganttMouseOut = function(pID, pPos, pType) {
 
 ongoingJsLink=-1;
 JSGantt.startLink = function (idRow) {
-//	console.log('startLink - '+ongoingJsLink);
 	vTaskList=g.getList();
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
 	ongoingJsLink=idRow;
 };
 JSGantt.endLink = function (idRow) {
-//	console.log('endLink - '+ongoingJsLink);
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
 	if (ongoingJsLink>=0 && idRow!=ongoingJsLink) {
-		//pscope="Planning_"+pClass+"_"+pId;
 		var ref1Type=vTaskList[ongoingJsLink].getClass();
 		scope1="Planning_"+ref1Type+"_";
 		var ref1Id=vTaskList[ongoingJsLink].getScope().substr(scope1.length);
@@ -2067,7 +2064,6 @@ JSGantt.endLink = function (idRow) {
 	ongoingJsLink=-1;
 };
 JSGantt.cancelLink = function (idRow) {
-//	console.log('cancelLink - ongoingLink='+ongoingJsLink+' - idRow='+idRow);
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
 	if (idRow) {
@@ -2084,7 +2080,6 @@ JSGantt.cancelLink = function (idRow) {
 	ongoingJsLink=-1;
 };
 JSGantt.enterBarLink = function (idRow) {
-//	console.log('enterLink - '+ongoingJsLink);
 	JSGantt.ganttMouseOver(idRow);
 	vTaskList=g.getList();
 	if (ongoingJsLink>=0) {
@@ -2099,7 +2094,6 @@ JSGantt.enterBarLink = function (idRow) {
 	}
 };
 JSGantt.exitBarLink = function (idRow) {
-//	console.log('exitBarLink - '+ongoingJsLink);
 	JSGantt.ganttMouseOut(idRow);
 	vTaskList=g.getList();
 	if (ongoingJsLink>=0) {

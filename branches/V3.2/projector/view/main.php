@@ -89,9 +89,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
        if (nodes.length>0 && nodes[0] && target) {
          var idFrom = nodes[0].id;
          var idTo = target.current.id;                   
-         //console.log("move from "+source.id+" to "+target.id);
-         //console.log("   item "+idFrom+" to "+idTo);
-         //console.log("   copy="+copy);
          if (target.id=='dndSourceTable') {
         	 showWait();  
            setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);

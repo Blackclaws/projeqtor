@@ -81,11 +81,12 @@ function refreshJsonList(className, keepUrl) {
     store.close();
     store.fetch({onComplete: function(){
     	grid._refresh();
+    	var objectId=dojo.byId('objectId');
     	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
         setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
-        setTimeout('selectRowById("objectGrid", '+objectId.value+');',30);
+        setTimeout('selectRowById("objectGrid", '+parseInt(objectId.value)+');',30);
         filterJsonList();
-    	}
+      }
     });
   }
 
@@ -430,7 +431,7 @@ function cleanContent(destination) {
  * @return void
  */
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
-console.log("loadcontent("+page+", "+destination+", "+formName+", "+isResultMessage+", "+validationType+", "+directAccess+")");
+//console.log("loadcontent("+page+", "+destination+", "+formName+", "+isResultMessage+", "+validationType+", "+directAccess+")");
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
@@ -548,7 +549,6 @@ console.log("loadcontent("+page+", "+destination+", "+formName+", "+isResultMess
         form: dojo.byId(formName),
         handleAs: "text",
         load: function(data,args){
-//console.log(data);
           // update the destination when ajax request is received
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
@@ -709,7 +709,7 @@ function submitForm(page, destination, formName) {
  * @return void
  */
 function finalizeMessageDisplay(destination, validationType) {
-console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
+//console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var lastOperationStatus = dojo.byId('lastOperationStatus');
@@ -811,7 +811,7 @@ console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
         	grid._refresh();
         	setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
             setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
-            setTimeout('selectRowById("objectGrid", '+objectId.value+');',30);
+            setTimeout('selectRowById("objectGrid", '+parseInt(objectId.value)+');',30);
         	}
         });
       }
@@ -915,13 +915,17 @@ console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
     hideWait();
   }
   // If operation is correct (not an error) slowly fade the result message
-  if (lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID") {
+  if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID")) {
     dojo.fadeOut({node: contentNode, duration: 3000}).play();
   } else {
     if (lastOperationStatus.value=="ERROR") {
       showError(message);
     } else {
       showAlert(message);
+      if (destination=="planResultDiv") {
+    	  dojo.fadeOut({node: contentNode, duration: 1000}).play();
+    	  setTimeout("dijit.byId('planResultDiv').set('content','');",1000);    	  
+      }
     }
     hideWait();
   }
@@ -1470,9 +1474,9 @@ function drawGantt() {
       }
       // pGroup : is the tack a group one ?
       var pGroup=(item.elementary=='0')?1:0;
-      // runScript : JavaScript to run when click on tack (to display the
-    // detail of the task)
-      var runScript="runScript('"+item.reftype + "','"+item.refid+"');";
+      // runScript : JavaScript to run when click on task (to display the
+      // detail of the task)
+      var runScript="runScript('"+item.reftype + "','"+item.refid+"','"+item.id+"');";
       // display Name of the task
       var pName=( (showWBS)?item.wbs:'') + " " + item.refname; // for testeing
                                 // purpose, add
@@ -1506,16 +1510,8 @@ function drawGantt() {
   	    }
   	  }
       var pDepend=item.depend;
-      // console.log(item.id + " - " + pName + "=>" + pDepend);
-      // TaskItem(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes, pComp,
-    // pGroup, pParent, pOpen, pDepend, Caption)
-      /*if (dojo.indexOf(arrayKeys,topId)==-1) { // Issue with FireFox : array.indexOf is 1s for 2 lines array
-	  	topId='';
-	  }*/      
-	  //arrayKeys[item.id]=item.id;
       topKey="#"+topId+"#";
       curKey="#"+item.id+"#";
-//console.log(newKey+" "+keys.indexOf(newKey)+" "+keys);
       if (keys.indexOf(topKey)==-1) {
 	     topId='';
       } 
@@ -1547,10 +1543,12 @@ function drawGantt() {
       listId.value=objId.value;
     }
   */
+  highlightPlanningLine();
 }
 
-function runScript(refType, refId) {
-  if (waitingForReply)  {
+function runScript(refType, refId, id) {
+//console.log("runScript("+refType+", "+refId+", "+id+")");
+	if (waitingForReply)  {
 	showInfo(i18n("alertOngoingQuery"));
     return;
   }
@@ -1558,8 +1556,21 @@ function runScript(refType, refId) {
   dojo.byId('objectId').value=refId;
   hideList();
   loadContent('objectDetail.php','detailDiv','listForm');
+  highlightPlanningLine(id);
 }
-
+function highlightPlanningLine(id) {
+  if (id==null) id=vGanttCurrentLine;
+  if (id<0) return;
+  vGanttCurrentLine=id;
+  vTaskList=g.getList();
+  for (i=0;i<vTaskList.length;i++) {
+	JSGantt.ganttMouseOut(i); 	
+  }	
+  var vRowObj1 = JSGantt.findObj('child_' + id);
+  if (vRowObj1) vRowObj1.className = "dojoxGridRowSelected dojoDndItem";// ganttTask" + pType;
+  var vRowObj2 = JSGantt.findObj('childrow_' + id);
+  if (vRowObj2) vRowObj2.className = "dojoxGridRowSelected";
+}
 /**
  * calculate diffence (in work days) between dates
  */ 
@@ -1920,7 +1931,6 @@ function moveTask(source,destination) {
   var mode='';
   var nodeList=dndSourceTable.getAllNodes();
   for (i=0; i<nodeList.length; i++) {
-    // console.log(nodeList[i].id);
     if (nodeList[i].id==source) {
       mode='before';
       break;
