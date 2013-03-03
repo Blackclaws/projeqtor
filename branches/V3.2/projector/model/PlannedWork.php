@@ -302,11 +302,30 @@ class PlannedWork extends GeneralWork {
           $left=$ass->leftWork;
           $regul=false;
           if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile="FDUR") {
-            $delai=workDayDiffDates($currentDate,$endPlan);
+          	$delaiTh=workDayDiffDates($currentDate,$endPlan);
+          	if ($delaiTh and $delaiTh>0) { 
+              $regulTh=round($ass->leftWork/$delaiTh,10);
+          	}
+          	$delai=0;          	
+          	for($tmpDate=$currentDate; $tmpDate<=$endPlan;$tmpDate=addDaysToDate($tmpDate, 1)) {
+          		if (isOffDay($tmpDate)) continue;
+          		$tempCapacity=$capacityRate;
+          		if (isset($ress[$tmpDate])) {
+          			$tempCapacity-=$ress[$tmpDate];
+          		}
+          		if ($tempCapacity<0) $tempCapacity=0;
+          		if ($tempCapacity>=$regulTh or $regulTh==0) {
+          			$delai+=1;
+          		} else {
+          			$delai+=round($tempCapacity/$regulTh,2);
+          		}
+          	}
+            
             if ($delai and $delai>0) { 
-              $regul=$ass->leftWork/$delai;
+              $regul=round(($ass->leftWork/$delai)+0.001,2);
               $regulDone=0;
               $interval=0;
+              $regulTarget=0;
             }
           }
           while (1) {            
@@ -324,7 +343,9 @@ class PlannedWork extends GeneralWork {
                 $planned=$ress[$currentDate];
               }
               if ($regul) {
-                  $interval+=$step;
+              	  $tmpStep=$step;
+              	  if (isset($res[$currentDate])) { $tmpStep;}
+                  $interval+=$tmpStep;
               }
               if ($planned < $capacity)  {
                 $value=$capacity-$planned; 
@@ -353,11 +374,21 @@ class PlannedWork extends GeneralWork {
                 }
                 $value=($value>$left)?$left:$value; 
                 if ($regul) {
-                  $regulTarget=round( ($interval*$regul) ,1);
+                	$tmpTarget=$regul;
+                  $tempCapacity=$capacityRate;
+                  if (isset($ress[$currentDate])) {
+                    $tempCapacity-=$ress[$currentDate];
+                  }
+                  if ($tempCapacity<0) $tempCapacity=0;
+                  if ($tempCapacity<$regulTh and $regulTh!=0) {
+                    $tmpTarget=round($tmpTarget*$tempCapacity/$regulTh,10);
+                  }                                    
+                	$regulTarget=round($regulTarget+$tmpTarget,10);              
                   $toPlan=$regulTarget-$regulDone;
                   if ($value>$toPlan) {
                     $value=$toPlan;
                   }
+                  $value=round($value,1);
                   if ($profile=="FULL" and $toPlan<1 and $interval<$delai) {
                     $value=0;
                   }
@@ -533,12 +564,12 @@ class PlannedWork extends GeneralWork {
       $elt->_sortCriteria=$crit;
       $list[$id]=$elt;
     }
-    self::traceArray($list);
+    //self::traceArray($list);
     $bool = uasort($list,array(new PlanningElement(), "comparePlanningElementSimple"));
-    self::traceArray($list);
+    //self::traceArray($list);
     // then sort on predecessors
     $result=self::specificSort($list);
-    self::traceArray($result);
+    //self::traceArray($result);
     return $result;
   }
   
