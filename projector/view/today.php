@@ -55,7 +55,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   	global $cptMax;
     $user=$_SESSION['user'];
     $prjVisLst=$user->getVisibleProjects();
-    $prjLst=$user->getHierarchicalViewOfVisibleProjects();
+    $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
     $obj=new Action();
     $cptAction=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
     $obj=new Risk();
