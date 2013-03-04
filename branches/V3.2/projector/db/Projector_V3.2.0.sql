@@ -51,3 +51,27 @@ INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOr
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES
 (47, 'idProject', 'projectList', 10, 'currentProject');
+
+CREATE TABLE `${prefix}audit` (
+  `id` varchar(100),
+  `firstAccess` datetime,
+  `lastAccess` datetime,
+  `idUser` int(12) unsigned,
+  `userName` varchar(100),
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX auditUser ON `${prefix}audit` (idUser);
+
+CREATE TABLE `${prefix}auditsummary` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `auditDay` date,
+  `firstAccess` datetime,
+  `lastAccess` datetime,
+  `numberSessions` int(10),
+  `minDuration` int(10),
+  `maxDuration` int(10),
+  `meanDuration` int(10),
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 
+CREATE INDEX auditsummaryAuditDay ON `${prefix}auditsummary` (auditDay);

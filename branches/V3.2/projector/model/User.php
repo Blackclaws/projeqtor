@@ -61,6 +61,7 @@ class User extends SqlElement {
   private $_affectedProjects;  // Array listing all affected projects
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_hierarchicalViewOfVisibleProjects;
+  private $_hierarchicalViewOfVisibleProjectsNotClosed;
   
   
    /** ==========================================================================
@@ -360,10 +361,13 @@ class User extends SqlElement {
    * @return a list of projects id
    */
 
-  public function getHierarchicalViewOfVisibleProjects() {
+  public function getHierarchicalViewOfVisibleProjects($hideClosed=false) {
 //scriptLog("getHierarchicalViewOfVisibleProjects()");
-    if (is_array($this->_hierarchicalViewOfVisibleProjects)) {
+    if (!$hideClosed and is_array($this->_hierarchicalViewOfVisibleProjects)) {
       return $this->_hierarchicalViewOfVisibleProjects;
+    } 
+    if ($hideClosed and is_array($this->_hierarchicalViewOfVisibleProjectsNotClosed)) {
+      return $this->_hierarchicalViewOfVisibleProjectsNotClosed;
     } 
     $result=array();
     $wbsArray=array();
@@ -374,6 +378,9 @@ class User extends SqlElement {
     	$critList.=','.$idPrj;
     }
     $critList.=')';  
+    if ($hideClosed) {
+    	$critList.=' and idle=0';  
+    }
     $ppe=new ProjectPlanningElement();
     $projList=$ppe->getSqlElementsFromCriteria(null, false, $critList, 'wbsSortable', false);
     foreach ($projList as $projPe) {
@@ -397,7 +404,11 @@ class User extends SqlElement {
     	}
     	$result['#'.$projPe->refId]=$wbsArray[$projPe->wbsSortable]['wbs'].'#'.$projPe->refName;
     }
-    $this->_hierarchicalViewOfVisibleProjects=$result;
+    if (! $hideClosed) {
+      $this->_hierarchicalViewOfVisibleProjects=$result;
+    } else {
+    	$this->_hierarchicalViewOfVisibleProjectsNotClosed=$result;
+    }
     return $result;
   }
   public function getHierarchicalViewOfVisibleProjectsWithTop() {
