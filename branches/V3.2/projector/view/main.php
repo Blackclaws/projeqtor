@@ -12,7 +12,8 @@ header ('Content-Type: text/html; charset=UTF-8');
 scriptLog('   ->/view/main.php');
 if (Sql::getDbVersion()!=$version) {
 	//Here difference of version is an important issue => disconnect and get back to login page.
-	session_destroy();
+	//session_destroy();
+	Audit::finishSession();
 	include_once 'login.php';
 	exit;
 }
