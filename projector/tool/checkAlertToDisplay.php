@@ -2,6 +2,9 @@
 // Artefact to avoid scriptLog display even if debug level = 4. Comment the line to have it displayed again.
 $noScriptLog=true;
 require_once "../tool/projector.php";
+// Save Audit
+Audit::updateAudit();
+
 //scriptLog('   ->/tool/checkAlertToDisplay.php');
 if (! array_key_exists('user',$_SESSION)) {
 	echo "noUser";

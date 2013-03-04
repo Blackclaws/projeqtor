@@ -6,9 +6,10 @@ require_once "../tool/projector.php";
 
 $id=$_REQUEST['id'];
 if ($id=='disconnect') {
-  $user=$_SESSION['user'];
-  $user->disconnect();
-  session_destroy();
+  //$user=$_SESSION['user'];
+  //$user->disconnect();
+  //session_destroy();
+  Audit::finishSession();
   exit;
 }
 

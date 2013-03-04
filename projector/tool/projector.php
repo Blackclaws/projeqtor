@@ -104,7 +104,8 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
     if ($oldRoot!="" and $oldRoot!=getAppRoot()) {
       $appRoot=getAppRoot();
       traceLog("Application root changed (from $oldRoot to $appRoot). New Login requested for user '" . $user->name . "' from IP " . $_SERVER['REMOTE_ADDR']);
-      session_destroy();
+      //session_destroy();
+      Audit::finishSession();
       $user = null;
     }
   } else {
@@ -1132,6 +1133,7 @@ function workTimeDiffDateTime($start, $end) {
   $delay=$days+($mnStop-$mnStart)/(60*Parameter::getGlobalParameter('dayTime'));
   return $delay;
 }
+
 function addDelayToDatetime($dateTime, $delay, $unit) {
 	$date=substr($dateTime, 0,10);
 	$time=substr($dateTime, 11,5);
@@ -1601,7 +1603,7 @@ function traceExecutionTime($step='', $reset=false) {
 		return;
 	}
 	// debugLog to keep
-  debugLog(round((microtime(true) - $startMicroTime)*1000)/1000 . (($step)?" ms for step " . $step:'') );
+  debugLog(round((microtime(true) - $startMicroTime)*1000)/1000 . (($step)?" s for step " . $step:'') );
   $startMicroTime=microtime(true);
 }
 

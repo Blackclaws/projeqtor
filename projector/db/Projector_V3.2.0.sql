@@ -53,25 +53,37 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (47, 'idProject', 'projectList', 10, 'currentProject');
 
 CREATE TABLE `${prefix}audit` (
-  `id` varchar(100),
-  `firstAccess` datetime,
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `sessionId` varchar(100),
+  `auditDay` varchar(8),
+  `connexion` datetime,
+  `disconnexion` datetime,
   `lastAccess` datetime,
+  `duration` time,
   `idUser` int(12) unsigned,
   `userName` varchar(100),
+  `userAgent` varchar(400),
+  `platform` varchar(100),
+  `browser` varchar(100),
+  `browserVersion` varchar(100),
+  `requestRefreshParam` int(1) default 0,
+  `requestDisconnection` int(1) default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX auditUser ON `${prefix}audit` (idUser);
+CREATE INDEX auditSessionId ON `${prefix}audit` (sessionId);
 
 CREATE TABLE `${prefix}auditsummary` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `auditDay` date,
-  `firstAccess` datetime,
-  `lastAccess` datetime,
+  `auditDay` varchar(8),
+  `firstConnexion` datetime,
+  `lastConnexion` datetime,
   `numberSessions` int(10),
   `minDuration` int(10),
   `maxDuration` int(10),
   `meanDuration` int(10),
   PRIMARY KEY (`id`)
-) ENGINE=innoDB DEFAULT CHARSET=utf8 
+) ENGINE=innoDB DEFAULT CHARSET=utf8;
+ 
 CREATE INDEX auditsummaryAuditDay ON `${prefix}auditsummary` (auditDay);

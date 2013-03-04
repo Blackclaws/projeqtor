@@ -4,7 +4,6 @@
  *
  * TODO : modify visibility depending on profile
  */
-//session_start();session_destroy();
 require_once "../tool/projector.php";
 require_once "../tool/formatter.php";
 scriptLog('   ->/view/objectDetail.php');
