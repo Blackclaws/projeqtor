@@ -21,13 +21,19 @@ class Audit extends SqlElement {
   public $browserVersion;
   public $requestRefreshParam;
   public $requestDisconnection;
+  public $idle;
 
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" width="4%" ># ${id}</th>
-    <th field="userName" width="10%" >${idUser}</th>
-    <th field="$firstAccess" formatter="dateFormatter" width="30%" >${firstAccess}</th>
-    <th field="$firstAccess"  formatter="dateFormatter"width="5%"  >${lastAccess}</th>
+    <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
+    <th field="sessionId" width="15%" ># ${session}</th>
+    <th field="userName" width="15%" >${idUser}</th>
+    <th field="connexion" formatter="dateFormatter" width="12%" >${connexion}</th>
+    <th field="lastAccess" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
+    <th field="duration" formatter="timeFormatter" width="8%"  >${duration}</th>
+    <th field="platform" width="8%" >${platform}</th>
+    <th field="browser" formatter="timeFormatter" width="10%" >${browser}</th>
+    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
   
    /** ==========================================================================
@@ -87,16 +93,17 @@ class Audit extends SqlElement {
      	 $audit->lastAccess=date('Y-m-d H:i:s');
      	 $audit->disconnexion=$audit->lastAccess;
        $audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connexion);
+       $audit->idle=1;
     	 $audit->save();
      }
      $user=$_SESSION['user'];
      $user->disconnect();
      // terminate the session
      if (ini_get("session.use_cookies")) {
-     $params = session_get_cookie_params();
-     setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]);
+	     $params = session_get_cookie_params();
+	     setcookie(session_name(), '', time() - 42000,
+	        $params["path"], $params["domain"],
+	        $params["secure"], $params["httponly"]);
      }
      session_destroy();
    }  
@@ -109,13 +116,13 @@ class Audit extends SqlElement {
   
     //First get the platform?
     if (preg_match('/linux/i', $u_agent)) {
-        $platform = 'linux';
+        $platform = 'Linux';
     }
     elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
-        $platform = 'mac';
+        $platform = 'Mac';
     }
     elseif (preg_match('/windows|win32/i', $u_agent)) {
-        $platform = 'windows';
+        $platform = 'Windows';
     }
     
     // Next get the name of the useragent yes seperately and for good reason

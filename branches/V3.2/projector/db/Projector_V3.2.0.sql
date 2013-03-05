@@ -68,11 +68,24 @@ CREATE TABLE `${prefix}audit` (
   `browserVersion` varchar(100),
   `requestRefreshParam` int(1) default 0,
   `requestDisconnection` int(1) default 0,
+  `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX auditUser ON `${prefix}audit` (idUser);
 CREATE INDEX auditSessionId ON `${prefix}audit` (sessionId);
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(122,'menuAudit',13,'object',977,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 122, 1),
+(2, 122, 0),
+(3, 122, 0),
+(4, 122, 0),
+(5, 122, 0),
+(6, 122, 0),
+(7, 122, 0);
 
 CREATE TABLE `${prefix}auditsummary` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

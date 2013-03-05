@@ -160,6 +160,14 @@ function dateTimeFormatter(value) {
   	return value;
   }
 }
+function timeFormatter(value) {
+  if (value.length==19) {
+  	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss"});
+    return dojo.date.locale.format(vDate, {formatLength: "time"});
+  } else {
+  	return value;
+  }
+}
 
 function sortableFormatter(value) {
 	if (! value) {
