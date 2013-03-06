@@ -9,23 +9,24 @@ class Audit extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $sessionId;
   public $auditDay;
-
   public $idUser;
   public $userName;
   public $platform;
   public $browser;
   public $browserVersion;
   public $userAgent;
-  public $_col_2_2_treatment;
+  public $_col_2_2_connectionStatus;
   public $connexion;
   public $lastAccess;
   public $disconnexion;
   public $duration;
   public $idle;
+  public $_spe_disconnectButton;
   public $requestRefreshParam;
   public $requestDisconnection;
   
-  public $_READONLY=true;
+  public $_noHistory;
+  public $_readOnly=true;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -34,9 +35,10 @@ class Audit extends SqlElement {
     <th field="userName" width="15%" >${idUser}</th>
     <th field="connexion" formatter="dateFormatter" width="12%" >${connexion}</th>
     <th field="lastAccess" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
-    <th field="duration" formatter="timeFormatter" width="8%"  >${duration}</th>
-    <th field="platform" width="8%" >${platform}</th>
+    <th field="duration" formatter="timeFormatter" width="10%"  >${duration}</th>
+    <th field="platform" width="10%" >${platform}</th>
     <th field="browser" formatter="timeFormatter" width="10%" >${browser}</th>
+    <th field="requestDisconnection" width="6%" formatter="booleanFormatter" >${requestDisconnection}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
   
@@ -83,6 +85,8 @@ class Audit extends SqlElement {
   }
   
   static function updateAudit() {
+  	// $source can be "main" (from projector.php), "login" (from loginCheck.php) or "alert" (from checkAlertToDisplay.php)
+  	if (! isset($_SESSION['user'])) return;
   	$audit=SqlElement::getSingleSqlElementFromCriteria('Audit', array('sessionId'=>session_id()));
     if (! $audit->id) {
       $audit->sessionId=session_id();
@@ -97,9 +101,23 @@ class Audit extends SqlElement {
       $audit->browser=$browser['browser'];
       $audit->browserVersion=$browser['version'];
       $audit->disconnexion=null;
+    } else if ($audit->requestDisconnection) {
+    	$script=basename($_SERVER['SCRIPT_NAME']); 
+    	if ($script=='checkAlertToDisplay.php') {
+	    	echo '<b>' .  i18n('disconnect') . '</b>';
+	      echo '<br/>'.'<br/>';
+	      echo  i18n('disconnected');
+	      echo '<input type="hidden" id="idAlert" name="idAlert" value="" ./>';
+	      echo '<input type="hidden" id="alertType" name="alertType" value="INFO" ./>';
+	      Audit::finishSession();
+	      exit;
+    	}
     }
     $audit->lastAccess=date('Y-m-d H:i:s');
-    $audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connexion);
+    $duration=date_diff(date_create($audit->connexion), date_create($audit->lastAccess)) ;
+    $audit->duration=$duration->format('%H%I%S');
+    //$audit->duration=date('H:I:S',strtotime($audit->lastAccess)-strtotime($audit->connexion));
+    
   	$result=$audit->save();
   }
   
@@ -108,7 +126,9 @@ class Audit extends SqlElement {
      if ($audit->id) {
      	 $audit->lastAccess=date('Y-m-d H:i:s');
      	 $audit->disconnexion=$audit->lastAccess;
-       $audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connexion);
+     	 $duration=date_diff(date_create($audit->connexion), date_create($audit->lastAccess)) ;
+       $audit->duration=$duration->format('%H%I%S');
+       //$audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connexion);
        $audit->idle=1;
     	 $audit->save();
      }
@@ -206,6 +226,28 @@ class Audit extends SqlElement {
         'pattern'    => $pattern
     );
   } 
+  
+   public function drawSpecificItem($item){
+     global $print, $comboDetail;
+     $result="";
+     if ($item=='disconnectButton') {
+     	 $result .="<table><tr><td class='label' valign='top'><label>&nbsp;</label>";
+       $result .="</td><td>";
+     	 $result .= '<button id="disconnectSession" dojoType="dijit.form.Button" showlabel="true"';
+       if ( $this->sessionId==session_id()) {
+         $result .= ' disabled="disabled" ';
+       }
+       $result .= ' title="' . i18n('disconnectSession') . '" style="vertical-align: middle;">';
+       $result .= '<span>' . i18n('disconnect') . '</span>';
+       $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+       $result .=  '    loadContent("../tool/disconnectSession.php?idAudit=' . $this->id .'","resultDiv","objectForm",true);';
+       $result .= '</script>';
+       $result .= '</button>';
+       $result .="</td></tr></table>";
+     }
+     return $result;
+     
+   }
    
 }
 ?>

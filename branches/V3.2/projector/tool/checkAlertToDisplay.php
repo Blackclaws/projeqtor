@@ -3,7 +3,7 @@
 $noScriptLog=true;
 require_once "../tool/projector.php";
 // Save Audit
-Audit::updateAudit();
+//Audit::updateAudit(); done on projector.php
 
 //scriptLog('   ->/tool/checkAlertToDisplay.php');
 if (! array_key_exists('user',$_SESSION)) {

@@ -212,5 +212,6 @@
     echo '</div>';
     echo '</span>';
     traceLog("NEW CONNECTED USER '" . $login . "'");
+    Audit::updateAudit();
   }
 ?>

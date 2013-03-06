@@ -149,6 +149,9 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
 		  }
   	}
   }
+  if (isset($user)) {
+  	Audit::updateAudit();
+  }
 }
 
 /* ============================================================================
@@ -834,6 +837,9 @@ function securityGetAccessRight($menuName, $accessType, $obj=null) {
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   // ATTENTION, NOT FOR READ ACCESS
   if (property_exists(substr($menuName,4),'_no'.ucfirst($accessType))) {
+  	return 'NO';
+  }
+  if (property_exists(substr($menuName,4),'_readOnly')) {
   	return 'NO';
   }
   $user=$_SESSION['user'];
