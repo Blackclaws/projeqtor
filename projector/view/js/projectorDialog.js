@@ -3468,7 +3468,7 @@ function checkAlertRetour(data) {
 function setAlertReadMessage() {
   //alertDisplayed=false;
   closeAlertBox();
-  if (dojo.byId('idAlert')) {
+  if (dojo.byId('idAlert') && dojo.byId('idAlert').value) {
     setAlertRead(dojo.byId('idAlert').value);
   }
 }
@@ -3478,7 +3478,9 @@ function setAlertReadMessageInForm() {
 }
 function setAlertRemindMessage() {
   closeAlertBox();
-  setAlertRead(dojo.byId('idAlert').value, dijit.byId('remindAlertTime').get('value'));
+  if (dojo.byId('idAlert') && dojo.byId('idAlert').value) {
+    setAlertRead(dojo.byId('idAlert').value, dijit.byId('remindAlertTime').get('value'));
+  }
 }
 
 function setAlertRead(id, remind) {

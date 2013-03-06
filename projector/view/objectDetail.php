@@ -92,7 +92,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	}
 	$nobr=false;
 	$canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj)=='YES');
-  if ( (isset($obj->locked) and $obj->locked) or isset($obj->_READONLY)) {
+  if ( (isset($obj->locked) and $obj->locked) or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
 	foreach ($obj as $col => $val) {
