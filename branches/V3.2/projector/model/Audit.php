@@ -9,24 +9,28 @@ class Audit extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $sessionId;
   public $auditDay;
-  public $connexion;
-  public $disconnexion;
-  public $lastAccess;
-  public $duration;
+
   public $idUser;
   public $userName;
-  public $userAgent;
   public $platform;
   public $browser;
   public $browserVersion;
+  public $userAgent;
+  public $_col_2_2_treatment;
+  public $connexion;
+  public $lastAccess;
+  public $disconnexion;
+  public $duration;
+  public $idle;
   public $requestRefreshParam;
   public $requestDisconnection;
-  public $idle;
-
+  
+  public $_READONLY=true;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="sessionId" width="15%" ># ${session}</th>
+    <th field="sessionId" width="15%" ># ${sessionId}</th>
     <th field="userName" width="15%" >${idUser}</th>
     <th field="connexion" formatter="dateFormatter" width="12%" >${connexion}</th>
     <th field="lastAccess" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
@@ -36,6 +40,10 @@ class Audit extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
   
+  private static $_fieldsAttributes=array("auditDay"=>"hidden", 
+     "disconnexion"=>"hidden",
+     "idUser"=>"hidden",
+     "requestRefreshParam"=>"hidden" );
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -64,6 +72,14 @@ class Audit extends SqlElement {
    */
   protected function getStaticLayout() {
     return self::$_layout;
+  }
+  
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
   }
   
   static function updateAudit() {
