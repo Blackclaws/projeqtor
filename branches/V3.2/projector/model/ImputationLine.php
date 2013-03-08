@@ -162,6 +162,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 		
 		$cptNotAssigned=0;
 		foreach ($assList as $idAss=>$ass) {
+debugLog($ass);
 			$elt=new ImputationLine();
 			$elt->idle=$ass->idle;
 			$elt->refType=$ass->refType;
@@ -221,7 +222,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 			}
 			// fetch all work stored in database for this assignment
 			foreach ($workList as $work) {
-				if ( ($work->idAssignment and $work->idAssignment==$elt->idAssignment) or ($work->refType==$elt->refType and $work->refId==$elt->refId) ) {
+				if ( ($work->idAssignment and $work->idAssignment==$elt->idAssignment) or (!$work->idAssignment and $work->refType==$elt->refType and $work->refId==$elt->refId) ) {
 					$workDate=$work->workDate;
 					$offset=dayDiffDates($startDate, $workDate)+1;
 					if (isset($elt->arrayWork[$offset])) {
