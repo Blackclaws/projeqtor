@@ -132,6 +132,7 @@ class Audit extends SqlElement {
        $audit->idle=1;
     	 $audit->save();
      }
+     AuditSummary::updateAuditSummary($audit->auditDay);
      $user=$_SESSION['user'];
      $user->disconnect();
      // terminate the session

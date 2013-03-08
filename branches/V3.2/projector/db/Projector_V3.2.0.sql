@@ -93,9 +93,9 @@ CREATE TABLE `${prefix}auditsummary` (
   `firstConnexion` datetime,
   `lastConnexion` datetime,
   `numberSessions` int(10),
-  `minDuration` int(10),
-  `maxDuration` int(10),
-  `meanDuration` int(10),
+  `minDuration` time,
+  `maxDuration` time,
+  `meanDuration` time,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8;
  
