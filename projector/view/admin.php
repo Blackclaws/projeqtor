@@ -165,7 +165,40 @@
                  </button>
                 </td>
               </tr>
-            </table> 
+            </table></div><br/>
+            
+            <?php $titlePane="Admin_manageConnections"; ?> 
+            <div dojoType="dijit.TitlePane"
+             open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+             id="<?php echo $titlePane;?>" 
+             onHide="saveCollapsed('<?php echo $titlePane;?>');"
+             onShow="saveExpanded('<?php echo $titlePane;?>');"
+             title="<?php echo i18n('manageConnections');?>">
+            <table style="width:100%;">
+              <tr>
+                <td width="200px;" class="label"><?php echo i18n("activeConnections"). "&nbsp;:&nbsp;";?></td>
+                <td width="90%">
+                  <?php $audit=New Audit();
+                  $cpt=$audit->countSqlElementsFromCriteria(array('idle'=>'0'));
+                  echo $cpt;?>
+                </td>
+              </tr>
+              <tr>
+                <td class="label"></td>
+                <td>
+                  <button id="disconnectAll" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('disconnectAll'); ?>
+                   <script type="dojo/connect" event="onClick" args="evt">                 
+                     adminDisconnectAll();
+                     return false;
+                   </script>
+                 </button>
+                </td>
+              </tr>
+            </table></div><br/> 
+            
+            
+             
           </td>
           <td width="10px">&nbsp;</td>
           <td style="width:49%;vertical-align:top;">
@@ -310,7 +343,7 @@
                  </button>
                 </td>
               </tr>
-            </table> 
+            </table></div>
           </td>
         </tr>
       </table>

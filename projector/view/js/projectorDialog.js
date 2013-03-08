@@ -3567,6 +3567,14 @@ function adminSendAlert() {
   }
 }
 
+function adminDisconnectAll() {
+  actionOK=function() {
+	  loadContent("../tool/adminFunctionalities.php?adminFunctionality=disconnectAll&element=Audit", "resultDiv", "adminForm", true, 'admin');
+  };
+  msg=i18n('confirmDisconnectAll');
+  showConfirm (msg, actionOK);
+}
+
 function maintenance(operation,item) {
   if (operation=="updateReference")	{
 	loadContent("../tool/adminFunctionalities.php?adminFunctionality="+operation+"&element="+item, "resultDiv", "adminForm", true, 'admin');  
