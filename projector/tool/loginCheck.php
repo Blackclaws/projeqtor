@@ -81,6 +81,13 @@
     include "../db/maintenance.php";
     exit;
   }
+  if (Parameter::getGlobalParameter('applicationStatus')=='Closed') {
+  	$prf=new Profile($user->idProfile);
+    if ($prf->profileCode!='ADM') { 
+      loginErrorClosedApplication();
+      exit;
+    }                     
+  }
   loginOk ($user);
   
   /** ========================================================================
@@ -145,11 +152,24 @@
    */
   function loginErrorMaintenance() {
     global $login;
+    echo '<div style="position:absolute;float: left;left:10px;top : 100px;">';
+    echo '<img src="../view/img/closedApplication.gif" />';
+    echo '</div>';
     echo '<span class="messageERROR">';
     echo i18n('wrongMaintenanceUser');
     echo '</span>';
     unset($_SESSION['user']);
     traceLog("Login of non admin user during upgrade. User '" . $login . "'");
+    exit;
+  }
+  
+  function loginErrorClosedApplication() {
+    echo '<div style="position:absolute;float: left;left:10px;top : 100px;">';
+    echo '<img src="../view/img/closedApplication.gif" />';
+    echo '</div>';
+    echo '<span class="messageERROR" >';
+    echo htmlEncode(Parameter::getGlobalParameter('msgClosedApplication'),'withBR');
+    echo '</span>';
     exit;
   }
   

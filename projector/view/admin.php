@@ -195,6 +195,41 @@
                  </button>
                 </td>
               </tr>
+                <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td width="200px;" class="label"><?php echo i18n("applicationStatus"). "&nbsp;:&nbsp;";?></td>
+                <td width="90%">
+                  <?php $statusApp=Parameter::getGlobalParameter('applicationStatus');
+                  if (!trim($statusApp)) {$statusApp='Open';}
+                  echo i18n('applicationStatus'.$statusApp);
+                  ?>
+                </td>
+              </tr>
+              <tr>
+                <td class="label"></td>
+                <td>
+                  <button id="openCloseApp" dojoType="dijit.form.Button" showlabel="true">
+                    <?php $operation="Closed";
+                    if ($statusApp!='Open') {$operation='Open';}
+                    echo i18n('setApplicationTo'.$operation); ?>
+                   <script type="dojo/connect" event="onClick" args="evt">                 
+                     adminSetApplicationTo('<?php echo $operation;?>');
+                     return false;
+                   </script>
+                 </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="label"><?php echo i18n("closedMessage"). "&nbsp;:&nbsp;";?></td>
+                <td>
+                  <textarea dojoType="dijit.form.Textarea"
+                    name="msgClosedApplication" id="msgClosedApplication"
+                    style="width:99%;"
+                    maxlength="4000"
+                    class="input"><?php echo Parameter::getGlobalParameter('msgClosedApplication');?></textarea>
+                </td>
+              </tr>  
+              
             </table></div><br/> 
             
             
@@ -312,6 +347,33 @@
                     <?php echo i18n('deleteButton'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
                        maintenance('delete','Alert');
+                       return false;
+                     </script>
+                 </button>
+                </td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+              <td class="label" style="width:200px">
+                <?php echo i18n("deleteAudit"). "&nbsp;:&nbsp;";?>
+                </td>
+                <td class="display">
+                  <?php echo i18n('closedSinceMore');?>&nbsp;
+                   <div dojoType="dijit.form.NumberTextBox" constraints="{min:0,max:999}"
+                    style="width:30px;"
+                    value="30"
+                    name="deleteAuditDays" id="deleteAuditDays">
+                  </div>
+                  &nbsp;<?php echo i18n('days');?>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <button id="deleteAudit" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('deleteButton'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                       maintenance('delete','Audit');
                        return false;
                      </script>
                  </button>

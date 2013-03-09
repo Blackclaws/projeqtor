@@ -56,8 +56,8 @@ CREATE TABLE `${prefix}audit` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `sessionId` varchar(100),
   `auditDay` varchar(8),
-  `connexion` datetime,
-  `disconnexion` datetime,
+  `connection` datetime,
+  `disconnection` datetime,
   `lastAccess` datetime,
   `duration` time,
   `idUser` int(12) unsigned,
@@ -90,8 +90,8 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 CREATE TABLE `${prefix}auditsummary` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `auditDay` varchar(8),
-  `firstConnexion` datetime,
-  `lastConnexion` datetime,
+  `firstConnection` datetime,
+  `lastConnection` datetime,
   `numberSessions` int(10),
   `minDuration` time,
   `maxDuration` time,
@@ -100,3 +100,6 @@ CREATE TABLE `${prefix}auditsummary` (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8;
  
 CREATE INDEX auditsummaryAuditDay ON `${prefix}auditsummary` (auditDay);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue ) values 
+(null, null, 'msgClosedApplication', 'Application is closed. \nOnly admin user can connect. \nPlease come back later.');

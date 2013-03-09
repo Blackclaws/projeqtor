@@ -41,7 +41,16 @@ if ($adminFunctionality=='sendAlert') {
       $result=i18n('colRequestDisconnection').substr($res,$msgEnd);
   	}
   }
-  
+} else if ($adminFunctionality=='setApplicationStatusTo') { 
+	$newStatus=$_REQUEST['newStatus'];
+	$crit=array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'applicationStatus');
+  $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
+  $obj->parameterValue=$newStatus;
+  $result=$obj->save();
+  $param=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>null, 'idProject'=>null, 'parameterCode'=>'msgClosedApplication'));
+  $param->parameterValue=$_REQUEST['msgClosedApplication'];
+  $param->save();
+  Parameter::clearGlobalParameters();
 } else {
 	$result="ERROR - functionality '$adminFunctionality' not defined";
 }
@@ -111,7 +120,7 @@ function maintenance() {
   if (! trim($operation) or ($operation!='delete' and $operation!='close')) {
     $ctrl.='ERROR<br/>';
   }
-  if (! trim($item) or ($item!='Alert' and$item!='Mail')) {
+  if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit')) {
     $ctrl.='ERROR<br/>';
   }
   if ( trim($nbDays)=='' or (intval($nbDays)=='0' and $nbDays!='0')) {
@@ -130,7 +139,10 @@ function maintenance() {
   if ($item=="Alert") {
   	$clauseWhere="alertInitialDateTime<'" . $targetDate . "'"; 
   } else if ($item=="Mail") {
-  	$clauseWhere="mailDateTime<'" . $targetDate . "'"; 
+  	$clauseWhere="mailDateTime<'" . $targetDate . "'";
+  } else if ($item=="Audit") {
+    $clauseWhere="disconnection<'" . $targetDate . "'";
+   
   }
   if ($operation=="close") {
   	return $obj->close($clauseWhere);

@@ -543,7 +543,7 @@ class Project extends SqlElement {
     }
 
     if ($this->idle) {
-      VersionProject::updateIdle('Version', $this->id);
+      Affectation::updateIdle($this->id, null);
     }
     if ($noMoreAdministrative) {
     	 $ass=new Assignment();

@@ -8,8 +8,8 @@ class AuditSummary extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $auditDay;
-  public $firstConnexion;
-  public $lastConnexion;
+  public $firstConnection;
+  public $lastConnection;
   public $numberSessions;
   public $minDuration;
   public $maxDuration;
@@ -41,21 +41,22 @@ class AuditSummary extends SqlElement {
 // ============================================================================**********
   
   static function updateAuditSummary($day) {
+  	AuditSummary::finishOldSessions($day);
   	$audit=new Audit();
   	$crit=array('auditDay'=>$day);
   	$summary=SqlElement::getSingleSqlElementFromCriteria('AuditSummary', $crit);
   	$summary->numberSessions=0;
   	$summary->auditDay=$day;
-  	$summary->firstConnexion=null;
+  	$summary->firstConnection=null;
   	$summary->minDuration=null;
   	$totDuration=0;
   	$list=$audit->getSqlElementsFromCriteria($crit);
   	foreach($list as $audit) {
-      if (! $summary->firstConnexion or $audit->connexion<$summary->firstConnexion) {
-  		  $summary->firstConnexion=$audit->connexion;
+      if (! $summary->firstConnection or $audit->connection<$summary->firstConnection) {
+  		  $summary->firstConnection=$audit->connection;
       }  
-      if ($audit->disconnexion>$summary->lastConnexion) {
-        $summary->lastConnexion=$audit->disconnexion;
+      if ($audit->disconnection>$summary->lastConnection) {
+        $summary->lastConnection=$audit->disconnection;
       }
       $summary->numberSessions++;
       if (! $summary->minDuration or $audit->duration<$summary->minDuration) {
@@ -64,12 +65,40 @@ class AuditSummary extends SqlElement {
       if ($audit->duration>$summary->maxDuration) {
         $summary->maxDuration=$audit->duration;
       }
-      $totDuration+=$audit->duration;
-      $summary->meanDuration=$totDuration/$summary->numberSessions;
+      $totDuration+=strtotime($audit->lastAccess)-strtotime($audit->connection);
   	}
+    //$duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
+    //$audit->duration=$duration->format('%H%I%S');
+    if ($summary->numberSessions>0) {
+  	  $meanDuration=round($totDuration/$summary->numberSessions,0);
+  	  debugLog("duration=".$meanDuration);    
+	    $hh=floor($meanDuration/3600);
+	    $meanDuration-=$hh*3600;
+	    $mm=floor($meanDuration/60);
+	    $meanDuration-=$mm*60;  
+	    $ss=$meanDuration;
+	    $summary->meanDuration=$hh.':'.$mm.':'.$ss;   
+    } else {
+    	$summary->meanDuration='00:00:00';
+    }
   	$result=$summary->save();
   	return $result;
   }
   
+   static function finishOldSessions($day) {
+   	 $crit="auditDay < '" . $day . "' and idle=0";
+   	 $audit=new Audit();
+   	 $list=$audit->getSqlElementsFromCriteria(null, false, $crit);
+   	 $delay=Parameter::getGlobalParameter('alertCheckTime');
+   	 foreach ($list as $audit) {
+   	 	 $duration=strtotime(date('Y-m-d'))-strtotime($audit->lastAccess);
+       if ($duration>5*$delay) { // Very old connection, idle now, must be closed
+   	 	   $audit->requestDisconnection=1;
+         $audit->idle=1;
+   	 	   $audit->disconnection=$audit->lastAccess;
+         $res=$audit->save();
+   	   } 
+   	 }    	 
+   }    
 }
 ?>

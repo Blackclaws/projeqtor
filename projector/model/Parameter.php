@@ -635,6 +635,19 @@ class Parameter extends SqlElement {
   }
   
   static public function clearGlobalParameters() {
+  	// This function is call on most of admin functionalities or global parameters update, to force refresh of parameters
+  	unset($_SESSION['globalParamatersArray']);
+    $aut=new Audit();
+    $table=$aut->getDatabaseTableName();
+    $sessionId=session_id();
+    $query="update $table set requestRefreshParam=1 where idle=0 and sessionid!='$sessionId'";
+    Sql::query($query);
+  }
+  
+  static public function refreshParameters() {
+scriptLog('refreshParameters()');
+  	// This function is call when refresh of parameters is requested
+debugLog($_SESSION);
   	unset($_SESSION['globalParamatersArray']);
   }
 }
