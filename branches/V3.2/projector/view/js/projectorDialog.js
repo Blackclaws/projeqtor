@@ -3583,6 +3583,19 @@ function maintenance(operation,item) {
     loadContent("../tool/adminFunctionalities.php?adminFunctionality=maintenance&operation="+operation+"&item="+item+"&nbDays="+nb,"resultDiv", "adminForm", true, 'admin');
   }
 }
+function adminSetApplicationTo(newStatus) {
+  var url="../tool/adminFunctionalities.php?adminFunctionality=setApplicationStatusTo&newStatus="+newStatus;
+  showWait();
+  dojo.xhrPost({
+	url: url,
+	form: "adminForm",
+	handleAs: "text",
+	load: function(data,args) {
+	  loadContent("../view/admin.php","centerDiv")
+    },
+	error: function() { }
+  });		
+}
 
 function lockDocument() {
   if (checkFormChangeInProgress()) {

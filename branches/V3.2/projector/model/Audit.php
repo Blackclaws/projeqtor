@@ -16,9 +16,9 @@ class Audit extends SqlElement {
   public $browserVersion;
   public $userAgent;
   public $_col_2_2_connectionStatus;
-  public $connexion;
+  public $connection;
   public $lastAccess;
-  public $disconnexion;
+  public $disconnection;
   public $duration;
   public $idle;
   public $_spe_disconnectButton;
@@ -33,7 +33,7 @@ class Audit extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="sessionId" width="15%" ># ${sessionId}</th>
     <th field="userName" width="15%" >${idUser}</th>
-    <th field="connexion" formatter="dateFormatter" width="12%" >${connexion}</th>
+    <th field="connection" formatter="dateFormatter" width="12%" >${connection}</th>
     <th field="lastAccess" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
     <th field="duration" formatter="timeFormatter" width="10%"  >${duration}</th>
     <th field="platform" width="10%" >${platform}</th>
@@ -43,7 +43,7 @@ class Audit extends SqlElement {
     ';
   
   private static $_fieldsAttributes=array("auditDay"=>"hidden", 
-     "disconnexion"=>"hidden",
+     "disconnection"=>"hidden",
      "idUser"=>"hidden",
      "requestRefreshParam"=>"hidden" );
    /** ==========================================================================
@@ -91,7 +91,7 @@ class Audit extends SqlElement {
     if (! $audit->id) {
       $audit->sessionId=session_id();
       $audit->auditDay=date('Ymd');
-      $audit->connexion=date('Y-m-d H:i:s');
+      $audit->connection=date('Y-m-d H:i:s');
       $user=$_SESSION['user'];
       $audit->idUser=$user->id;
       $audit->userName=$user->name;
@@ -100,7 +100,7 @@ class Audit extends SqlElement {
       $audit->platform=$browser['platform'];
       $audit->browser=$browser['browser'];
       $audit->browserVersion=$browser['version'];
-      $audit->disconnexion=null;
+      $audit->disconnection=null;
     } else if ($audit->requestDisconnection) {
     	$script=basename($_SERVER['SCRIPT_NAME']); 
     	if ($script=='checkAlertToDisplay.php') {
@@ -112,11 +112,14 @@ class Audit extends SqlElement {
 	      Audit::finishSession();
 	      exit;
     	}
+    } else if ($audit->requestRefreshParam) {
+    	$audit->requestRefreshParam=0;
+    	Parameter::refreshParameters();
     }
     $audit->lastAccess=date('Y-m-d H:i:s');
-    $duration=date_diff(date_create($audit->connexion), date_create($audit->lastAccess)) ;
+    $duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
     $audit->duration=$duration->format('%H%I%S');
-    //$audit->duration=date('H:I:S',strtotime($audit->lastAccess)-strtotime($audit->connexion));
+    //$audit->duration=date('H:I:S',strtotime($audit->lastAccess)-strtotime($audit->connection));
     
   	$result=$audit->save();
   }
@@ -125,10 +128,11 @@ class Audit extends SqlElement {
      $audit=SqlElement::getSingleSqlElementFromCriteria('Audit', array('sessionId'=>session_id()));
      if ($audit->id) {
      	 $audit->lastAccess=date('Y-m-d H:i:s');
-     	 $audit->disconnexion=$audit->lastAccess;
-     	 $duration=date_diff(date_create($audit->connexion), date_create($audit->lastAccess)) ;
+     	 $audit->requestRefreshParam=0;
+     	 $audit->disconnection=$audit->lastAccess;
+     	 $duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
        $audit->duration=$duration->format('%H%I%S');
-       //$audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connexion);
+       //$audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connection);
        $audit->idle=1;
     	 $audit->save();
      }

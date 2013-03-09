@@ -270,5 +270,17 @@ public $_noCopy;
   	}
   }
   
+  public static function updateIdle($idProject,$idResource) {
+    $aff=new Affectation();
+    $crit=array("idle"=>'0');
+    if ($idProject) {$crit['idProject']=$idProject;}
+    if ($idResource) {$crit['idResource']=$idResource;}
+    $affList=$aff->getSqlElementsFromCriteria($crit, false);
+    foreach ($affList as $aff) {
+      $aff->idle=1;
+      $aff->save();
+    }
+  }
+  
 }
 ?>

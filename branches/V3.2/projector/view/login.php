@@ -75,7 +75,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			    </tr>
 			    <tr style="height:100%" height="100%">
 			      <td style="height:99%" align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;position: relative;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
                     dojo.byId('login').focus();
@@ -147,11 +147,23 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                <td>
 			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="50px" style="overflow: auto;" >
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
-			                    <?php if (array_key_exists('lostConnection',$_REQUEST)) {
+			                    <?php if (Parameter::getGlobalParameter('applicationStatus')=='Closed'
+			                          or Sql::getDbVersion()!=$version) {
+			                    	      echo '<div style="position:absolute;float: left;left:10px;top : 100px;">';
+			                    	      echo '<img src="../view/img/closedApplication.gif" />';
+			                    	      echo '</div>';
+			                    	      echo '<span class="messageERROR" >';
+			                    	      if (Parameter::getGlobalParameter('applicationStatus')=='Closed') {
+			                    	        echo htmlEncode(Parameter::getGlobalParameter('msgClosedApplication'),'withBR');
+			                    	      } else {
+			                    	      	echo i18n('wrongMaintenanceUser');
+			                    	      }
+			                    	      echo '</span>';
+			                          } else if (array_key_exists('lostConnection',$_REQUEST)) {
 			                            echo i18n("disconnectMessage");
 			                            echo '<br/>';
 			                            echo i18n("errorConnection");
-			                          }
+			                          } 
 			                     ?>
 			                  </div>
 			                </td>
