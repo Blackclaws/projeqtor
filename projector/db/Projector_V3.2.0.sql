@@ -103,3 +103,7 @@ CREATE INDEX auditsummaryAuditDay ON `${prefix}auditsummary` (auditDay);
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue ) values 
 (null, null, 'msgClosedApplication', 'Application is closed. \nOnly admin user can connect. \nPlease come back later.');
+
+-- Purge PlanningElement for closed activities and projets
+DELETE FROM `${prefix}plannedwork`
+WHERE (refType, refId) IN (SELECT refType, refId FROM `${prefix}planningelement` WHERE idle=1);

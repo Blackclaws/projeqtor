@@ -342,6 +342,13 @@ class PlanningElement extends SqlElement {
         $subRes=$refObj->saveForced(true);
       }
     }
+    // remove existing planningelement (if any)
+    if ($this->idle) {
+       $pw=new PlannedWork();
+       $crit="refType=".Sql::str($this->refType)." and refId=".$this->refId;
+       $pw->purge($crit);
+    }
+  
     return $result;
   }
   
