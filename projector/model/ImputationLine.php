@@ -162,7 +162,6 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 		
 		$cptNotAssigned=0;
 		foreach ($assList as $idAss=>$ass) {
-debugLog($ass);
 			$elt=new ImputationLine();
 			$elt->idle=$ass->idle;
 			$elt->refType=$ass->refType;

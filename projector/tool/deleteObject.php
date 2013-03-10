@@ -6,10 +6,17 @@
 require_once "../tool/projector.php";
 
 // Get the object from session(last status before change)
-if (! array_key_exists('currentObject',$_SESSION)) {
-  throwError('currentObject parameter not found in SESSION');
+if (isset($_REQUEST['directAccessIndex'])) {
+  if (! isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+    throwError('currentObject parameter not found in SESSION');
+  }
+  $obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+} else {
+  if (! array_key_exists('currentObject',$_SESSION)) {
+    throwError('currentObject parameter not found in SESSION');
+  }
+  $obj=$_SESSION['currentObject'];
 }
-$obj=$_SESSION['currentObject'];
 if (! is_object($obj)) {
   throwError('last saved object is not a real object');
 }
@@ -38,7 +45,11 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
-  unset($_SESSION['currentObject']);
+  if (isset($_REQUEST['directAccessIndex'])) {
+  	unset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]);
+  } else {
+    unset($_SESSION['currentObject']);
+  }
 } else { 
 	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';

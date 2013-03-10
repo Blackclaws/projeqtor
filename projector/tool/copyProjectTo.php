@@ -7,10 +7,17 @@ require_once "../tool/projector.php";
 set_time_limit(300);
 
 // Get the object from session(last status before change)
-if (! array_key_exists('currentObject',$_SESSION)) {
-  throwError('currentObject parameter not found in SESSION');
+if (isset($_REQUEST['directAccessIndex'])) {
+  if (! isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+    throwError('currentObject parameter not found in SESSION');
+  }
+  $proj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+} else {
+  if (! array_key_exists('currentObject',$_SESSION)) {
+    throwError('currentObject parameter not found in SESSION');
+  }
+  $proj=$_SESSION['currentObject'];
 }
-$proj=$_SESSION['currentObject'];
 if (! is_object($proj)) {
   throwError('last saved object is not a real object');
 }
@@ -44,7 +51,13 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-	$_SESSION['currentObject']=new Project($newProj->id);
+  if (! array_key_exists('comboDetail', $_REQUEST)) {
+    if (isset($_REQUEST['directAccessIndex'])) {
+      $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=new Project($newProj->id);
+    } else {
+      $_SESSION['currentObject']=new Project($newProj->id);
+    }
+  }
   Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 

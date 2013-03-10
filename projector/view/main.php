@@ -171,6 +171,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         $id=$_REQUEST['objectId'];
         if (array_key_exists('directAccess', $_REQUEST)) {
         	echo "noDisconnect=true;";
+        	if (isset($_SESSION['directAccessIndex'])) {
+        		$directAccessIndex=$_SESSION['directAccessIndex'];
+        	}	else { 
+        	  $directAccessIndex=array();
+          }
+          $index=count($directAccessIndex)+1;
+          $directAccessIndex[$index]=new $class($id);
+          $_SESSION['directAccessIndex']=$directAccessIndex;
+        	echo "directAccessIndex=$index;";
         }
         echo 'gotoElement("' . $class . '","' . $id . '");';
         $firstPage="";
