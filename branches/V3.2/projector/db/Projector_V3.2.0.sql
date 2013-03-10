@@ -107,3 +107,22 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 -- Purge PlanningElement for closed activities and projets
 DELETE FROM `${prefix}plannedwork`
 WHERE (refType, refId) IN (SELECT refType, refId FROM `${prefix}planningelement` WHERE idle=1);
+
+INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`, `idle`) VALUES 
+(9, 'reportCategoryMisc', 80, 0);
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
+(48, 'reportAudit', 9, 'audit.php', 910, 0);
+
+INSERT INTO `${prefix}reportparameter` (`idReport`,`name`,`paramType`,`sortOrder`,`idle`,`defaultValue`) VALUES
+(48,'month','month',10,0,'currentMonth');
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
+(1,48,1),
+(2,48,0),
+(3,48,0),
+(4,48,0),
+(1,48,0),
+(2,48,0),
+(3,48,0),
+(4,48,0);

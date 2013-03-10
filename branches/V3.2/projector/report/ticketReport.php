@@ -161,9 +161,10 @@ foreach ($lstTicket as $t) {
   $urgency=($t->idUrgency==null or trim($t->idUrgency)=='')?'0':$t->idUrgency;
   $criticality=($t->idCriticality==null or trim($t->idCriticality)=='')?'0':$t->idCriticality;
   $priority=($t->idPriority==null or trim($t->idPriority)=='')?'0':$t->idPriority;
-  $type=$t->idTicketType;
+  $type=($t->idTicketType==null or trim($t->idTicketType)=='')?'0':$t->idTicketType;
   if ( (! $periodType and $t->creationDateTime) 
   or ($periodType and $t->creationDateTime>=$start and $t->creationDateTime<=$end) ) {
+  	echo "|$urgency.$type|";
     $created['Urgency'][$urgency][$type]+=1;
     $created['Criticality'][$criticality][$type]+=1;
     $created['Priority'][$priority][$type]+=1;

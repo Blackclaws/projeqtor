@@ -647,7 +647,6 @@ class Parameter extends SqlElement {
   static public function refreshParameters() {
 scriptLog('refreshParameters()');
   	// This function is call when refresh of parameters is requested
-debugLog($_SESSION);
   	unset($_SESSION['globalParamatersArray']);
   }
 }

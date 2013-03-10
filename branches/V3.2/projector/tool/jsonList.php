@@ -151,7 +151,11 @@
 	      }
 	    } else if ($type=='listTermProject') {
 	    	if(!isset($_REQUEST['selected']))	{
-	        $obj=$_SESSION['currentObject'];
+	    	  if (isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+            $obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+          } else {
+          	$obj=$_SESSION['currentObject'];
+          }
 	        $idPrj=$_REQUEST['idProject'];
 	        $prj=new Project($obj->idProject);
 	        $lstTopPrj=$prj->getTopProjectList(true);
@@ -241,7 +245,11 @@
         }
       }
     } else if ($type=='listStatusDocumentVersion') {
-    	$doc=$_SESSION['currentObject'];
+      if (isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+        $doc=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+      } else {
+        $doc=$_SESSION['currentObject'];
+      }
     	$idDocumentVersion=$_REQUEST['idDocumentVersion'];
       $docVers=new documentVersion($idDocumentVersion);
     	$table=SqlList::getList('Status','name',$docVers->idStatus);

@@ -25,6 +25,7 @@ var g;                                 // Gant chart for JsGantt : must be
 var quitConfirmed=false;
 var noDisconnect=false;
 var forceRefreshMenu=false;
+var directAccessIndex=null;
 
 // =============================================================================
 // = Functions
@@ -453,6 +454,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       page+="?destinationWidth="+destinationWidth;
     }
   }
+  if (directAccessIndex) {
+    if ( page.indexOf("?")>0) {
+	   page+="&directAccessIndex="+directAccessIndex;  
+    } else {
+	   page+="?directAccessIndex="+directAccessIndex;
+    }	   
+//console.log(page);
+  } 
   showWait();
   // Direct mode, without fading effect =====
   // IE Issue : must not fade load

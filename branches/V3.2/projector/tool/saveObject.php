@@ -23,10 +23,17 @@ if ($className=="Workflow") {
 $ext="";
 if (! array_key_exists('comboDetail', $_REQUEST)) {
 	// Get the object from session(last status before change)
-	if (! array_key_exists('currentObject',$_SESSION)) {
-	  throwError('currentObject parameter not found in SESSION');
+	if (isset($_REQUEST['directAccessIndex'])) {
+		if (! isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']])) {
+			throwError('currentObject parameter not found in SESSION');
+		}
+		$obj=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+	} else {
+	  if (! array_key_exists('currentObject',$_SESSION)) {
+	    throwError('currentObject parameter not found in SESSION');
+	  }
+	  $obj=$_SESSION['currentObject'];
 	}
-	$obj=$_SESSION['currentObject'];
 	if (! is_object($obj)) {
 	  throwError('last saved object is not a real object');
 	}
@@ -57,7 +64,11 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   echo '<span class="messageOK" >' . formatResult($result) . '</span>';
   // save the new object to session (modified status)
   if (! array_key_exists('comboDetail', $_REQUEST)) {
-    $_SESSION['currentObject']=new $className($newObj->id);
+  	if (isset($_REQUEST['directAccessIndex'])) {
+      $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=new $className($newObj->id);
+    } else {
+      $_SESSION['currentObject']=new $className($newObj->id);
+    }
   }
 } else { 
 	Sql::rollbackTransaction();

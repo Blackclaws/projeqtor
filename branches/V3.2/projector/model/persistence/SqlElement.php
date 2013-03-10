@@ -491,7 +491,15 @@ abstract class SqlElement {
     $idleChange=false;
     // Get old values (stored) to : 1) build the smallest query 2) save change history
     $oldObject = null;
-    if (array_key_exists('currentObject',$_SESSION)) {
+    if ( isset($_REQUEST['directAccessIndex']) 
+     and isset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]) ) {
+    	$testObject=$_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']];
+      if ($testObject and ! $force) {
+        if (get_class($testObject)==$objectClass) {
+          $oldObject=$testObject;
+        }
+      }
+    } else if (array_key_exists('currentObject',$_SESSION)) {
       $testObject = $_SESSION['currentObject'];
       if ($testObject and ! $force) {
         if (get_class($testObject)==$objectClass) {
