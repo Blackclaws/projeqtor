@@ -31,12 +31,13 @@ if ($adminFunctionality=='sendAlert') {
 } else if ($adminFunctionality=='disconnectAll') {
   $audit=new Audit();
   $list=$audit->getSqlElementsFromCriteria(array("idle"=>"0"));
+  $result="";
   foreach($list as $audit) {
   	if ($audit->sessionId!=session_id()) {
       $audit->requestDisconnection=1;     
   	} 
   	$res=$audit->save();
-  	if ($result="" or stripos($res,'id="lastOperationStatus" value="OK"')>0) {
+  	if ($result=="" or stripos($res,'id="lastOperationStatus" value="OK"')>0) {
   		$msgEnd=strpos($res,'<');
       $result=i18n('colRequestDisconnection').substr($res,$msgEnd);
   	}

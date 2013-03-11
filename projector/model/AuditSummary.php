@@ -67,8 +67,6 @@ class AuditSummary extends SqlElement {
       }
       $totDuration+=strtotime($audit->lastAccess)-strtotime($audit->connection);
   	}
-    //$duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
-    //$audit->duration=$duration->format('%H%I%S');
     if ($summary->numberSessions>0) {
   	  $meanDuration=round($totDuration/$summary->numberSessions,0);   
 	    $hh=floor($meanDuration/3600);
