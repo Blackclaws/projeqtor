@@ -117,9 +117,10 @@ class Audit extends SqlElement {
     	Parameter::refreshParameters();
     }
     $audit->lastAccess=date('Y-m-d H:i:s');
-    $duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
-    $audit->duration=$duration->format('%H%I%S');
-    //$audit->duration=date('H:I:S',strtotime($audit->lastAccess)-strtotime($audit->connection));
+    // date_diff is only supported from PHP 5.3
+    $audit->duration=date('H:i:s',strtotime($audit->lastAccess)-strtotime($audit->connection)-3600);
+    //$duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
+    //$audit->duration=$duration->format('%H%I%S');
     
   	$result=$audit->save();
   }
@@ -130,9 +131,10 @@ class Audit extends SqlElement {
      	 $audit->lastAccess=date('Y-m-d H:i:s');
      	 $audit->requestRefreshParam=0;
      	 $audit->disconnection=$audit->lastAccess;
-     	 $duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
-       $audit->duration=$duration->format('%H%I%S');
-       //$audit->duration=strtotime($audit->lastAccess)-strtotime($audit->connection);
+     	 // date_diff is only supported from PHP 5.3
+     	 $audit->duration=date('H:i:s',strtotime($audit->lastAccess)-strtotime($audit->connection)-3600);
+     	 //$duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
+       //$audit->duration=$duration->format('%H%I%S');
        $audit->idle=1;
     	 $audit->save();
      }
