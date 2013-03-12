@@ -2588,7 +2588,11 @@ abstract class SqlElement {
   	    if (strpos($this->getFieldAttributes($col), 'invisible')!==false) { $specificStyle.=' visibility:hidden'; }
   	    if (is_object($val)) {
           if (get_class($val)=='Origin') {
-            $val=i18n($val->refType) . ' #'.$val->id.' : '. SqlList::getNameFromId($val->refType, $val->refId);
+            if ($val->originType and $val->originId) {
+          	  $val=i18n($val->originType) . ' #'.$val->originId.' : '. SqlList::getNameFromId($val->originType, $val->originId);
+            } else {
+            	$val="";
+            }
             $dataType='varchar';$dataLength=4000;
           } else {
           	$hide=true;
