@@ -6,6 +6,7 @@
 class OriginalVersion extends Version {
 
     private static $_databaseTableName = 'version';
+    public $_constructForName;
   
    /** ==========================================================================
    * Constructor
@@ -16,9 +17,9 @@ class OriginalVersion extends Version {
     parent::__construct($id);
     if ($this->name) {
       if ($this->realEisDate){
-        $this->name.=" - " . htmlFormatDate($this->realEisDate);
+        $this->name.=" [" . htmlFormatDate($this->realEisDate) . "]";
       } else if ($this->plannedEisDate){
-        $this->name.=" - " . htmlFormatDate($this->plannedEisDate);
+        $this->name.=" (" . htmlFormatDate($this->plannedEisDate) . ")";
       }
     }
   }
