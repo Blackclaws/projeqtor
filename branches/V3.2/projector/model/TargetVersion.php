@@ -20,9 +20,9 @@ class TargetVersion extends Version {
   	unset($this->_VersionProject);
     parent::__construct($id);
     if ($this->name) {
-    	if ($this->realEisDate){
-    	  $this->name.=" (" . htmlFormatDate($this->realEisDate) . ")";
-    	} else if ($this->plannedEisDate){
+    	if (trim($this->realEisDate)){
+    	  $this->name.=" [" . htmlFormatDate($this->realEisDate) . "]";
+    	} else if (trim($this->plannedEisDate)){
         $this->name.=" (" . htmlFormatDate($this->plannedEisDate) . ")";
       }
     }

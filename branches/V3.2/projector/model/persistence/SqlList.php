@@ -56,6 +56,7 @@ class SqlList {
    * @return an array containing the list of references
    */
   private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false, $translate=true) {
+scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translate)");
     $res=array();
     $obj=new $listType();
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() ;
@@ -109,6 +110,7 @@ class SqlList {
   }
  
   private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue) {
+scriptLog("fetchListWithCrit($listType,".implode('|',$criteria).",$displayCol, $selectedValue)");
     $res=array();
     $obj=new $listType();
     $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (idle=0 ";
@@ -178,9 +180,12 @@ class SqlList {
         if ($obj->isFieldTranslatable($displayCol)){
           $name=i18n($name);
         }
-        if (property_exists($obj,'_constructForName')) {
+        if (property_exists($obj,'_constructForName') ) {
+        	if ($listType=='TargetVersion') $listType='OriginalVersion';
           $nameObj=new $listType($line['id']);
-          $name=$nameObj->name;
+          if ($nameObj->id) {
+            $name=$nameObj->name;
+          }
         }
         $res[($line['id'])]=$name;
       }
