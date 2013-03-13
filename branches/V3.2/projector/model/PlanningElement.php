@@ -707,7 +707,7 @@ class PlanningElement extends SqlElement {
     } else {
       $this->_workVisibility='ALL';
     }
-    self::$staticCostVisibility=$this->_costVisibility='ALL';
+    self::$staticCostVisibility=$this->_costVisibility;
     self::$staticWorkVisibility=$this->_workVisibility;
   }
   

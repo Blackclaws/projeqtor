@@ -401,8 +401,20 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						  drawOrigin($val->originType, $val->originId, $obj, $col, $print);
 					} else {
 						// Draw an included object (recursive call) =========================== Type Object
-						drawTableFromObject($val, true, $readOnly);
-						$hide=true; // to avoid display of an extra field for the object and an additional carriage return
+						$visibileSubObject=true;
+						if (get_class($val)=='WorkElement') {
+							$hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'work'));
+							if ($hWork and $hWork->id) {
+								$visibility=SqlList::getFieldFromId('VisibilityScope', $hWork->rightAccess, 'accessCode', false);				
+								if ($visibility!='ALL') {
+									$visibileSubObject=false;
+								}
+							}
+						}
+						if ($visibileSubObject) {
+						  drawTableFromObject($val, true, $readOnly);
+						  $hide=true; // to avoid display of an extra field for the object and an additional carriage return
+						}
 					}
 				}
 			} else if (is_array($val)) {
