@@ -175,7 +175,7 @@ class Importable extends SqlElement {
 					}
 					$field=str_replace('""','"',$field);
 					if (property_exists($obj,$title[$idx])) {
-						if (substr($title[$idx],0,2)=='id' and strlen($title[$idx])>2 and ! is_numeric($field)) {
+						if (substr($title[$idx],0,2)=='id' and substr($title[$idx],0,4)!='idle' and strlen($title[$idx])>2 and ! is_numeric($field)) {
 							$obj->$title[$idx]=SqlList::getIdFromName(substr($title[$idx],2), $field);
 						} else {
 							$obj->$title[$idx]=$field;
@@ -190,7 +190,7 @@ class Importable extends SqlElement {
 						}
 						$sub=$obj->$subClass;
 						if (property_exists($subClass,$title[$idx])) {
-							if (substr($title[$idx],0,2)=='id' and strlen($title[$idx])>2 and ! is_numeric($field)) {
+							if (substr($title[$idx],0,2)=='id' and substr($title[$idx],0,4)!='idle' and strlen($title[$idx])>2 and ! is_numeric($field)) {
 								$obj->$subClass->$title[$idx]=SqlList::getIdFromName(substr($title[$idx],2), $field);
 							} else {
 								$obj->$subClass->$title[$idx]=$field;
