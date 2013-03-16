@@ -34,7 +34,6 @@ $versionHistory = array(
   "V3.0.0",
   "V3.0.1",
   "V3.1.0",
-  "V3.1.3",
   "V3.2.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
@@ -207,6 +206,16 @@ if ($currVersion<"V3.0.0") {
     );
   migrateParameters($arrayParamsToMigrate); 
 }
+if ($currVersion>="V3.0.0" and $version<"V3.1.3" 
+and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') { 
+	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
+	$query="RENAME TABLE `".$paramDbPrefix."workPeriod` TO `".$paramDbPrefix."workperiod`;";
+	$query=trim(formatForDbType($query));
+  //Sql::beginTransaction();
+  $result=Sql::query($query);
+  //Sql::commitTransaction();
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

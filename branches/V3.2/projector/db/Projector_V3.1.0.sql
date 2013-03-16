@@ -32,7 +32,7 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 (7,'workValid','1'),
 (5,'workValid','1');
 
-CREATE TABLE `${prefix}workPeriod` (
+CREATE TABLE `${prefix}workperiod` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idResource` int(12) unsigned,
   `periodRange` varchar(10),
