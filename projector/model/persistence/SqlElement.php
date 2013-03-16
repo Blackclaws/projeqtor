@@ -2889,5 +2889,19 @@ abstract class SqlElement {
   public static function unsetRelationShip($rel1, $rel2) {
   	unset(self::$_relationShip[$rel1][$rel2]);
   }
+  
+  public function splitLongFields() {
+  	$maxLenth=500;
+  	foreach ($this as $fld=>$val) {
+  		if ($this->getDataLength($fld)>100 and strlen($val)>$maxLenth) {
+  			//$secFull="_col_1_1_".$fld;
+  			//$this->$secFull=$val;
+        $fldFull="_".$fld."_full";
+        $this->$fldFull=$val;
+  			$this->$fld=substr($val,0,$maxLenth).' (...)';
+  		}
+  		
+  	}
+  }
 }
 ?>
