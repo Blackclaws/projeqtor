@@ -140,7 +140,6 @@ class TicketSimple extends Ticket {
   	  $this->idUser=$user->id;
   	  $lst=SqlList::getList('TicketType');
   	  foreach ($lst as $id=>$val) {
-echo "$id=>$val";
   	    $this->idTicketType=$id;
   	    break;
   	  }
