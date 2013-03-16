@@ -258,7 +258,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   $cptDisplayId=0;
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
     global $cptDisplayId;
-    if ($value=='') {return $value;}
+    if ($value==='') {return $value;}
     $width=70;
     $green=($allValue!=0 and $allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;
     $red=$width-$green;
