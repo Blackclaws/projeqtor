@@ -30,6 +30,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	 if (array_key_exists('callFromMail', $_REQUEST)) {
 	 $callFromMail=true;
 	 }*/
+	if ($outMode=='pdf') {
+		$obj->splitLongFields();
+	}
+	
 	$currency=Parameter::getGlobalParameter('currency');
 	$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
 	$treatedObjects[]=$obj;
@@ -38,7 +42,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	$smallWidth='75';
 	$mediumWidth='200';
 	$largeWidth='406';
-	$labelWidth=175; // To be changed if changes in css file (label and .label)
+	$labelWidth=150; // To be changed if changes in css file (label and .label)
+	if ($outMode=='pdf') $labelWidth=50;
 	$fieldWidth=$smallWidth;
 	$currentCol=0;
 	$nbCol=1;
@@ -136,7 +141,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				}
 			}
 			echo '</table><table id="' . $col .'" class="detail"><tr class="detail">';
-			echo '<td class="detail"><label></label></td>' . $cr; // Empty label, to have column header in front of columns
+			echo '<td class="detail"><label style="width:'.$labelWidth.'px;"></label></td>' . $cr; // Empty label, to have column header in front of columns
 			for ($i=0 ; $i<$internalTableCols ; $i++) { // draw table headers
 				echo '<td class="detail">';
 				if ($val[$i]) {
@@ -327,8 +332,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			}
 			if ($internalTable==0) {
 				if (! is_object($val) and ! is_array($val) and ! $hide and !$nobr_before) {
-					echo '<tr class="detail"><td class="label" style="width:10%;">';
-					echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>' . $cr;
+					echo '<tr class="detail"><td class="label" style="width:'.$labelWidth.'px;">';
+					echo '<label style="width:'.$labelWidth.'px;" for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>' . $cr;
 					echo '</td>';
 					if ($print and $outMode=="pdf") {
 						echo '<td style="width: 120px">';
@@ -340,9 +345,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				if ($internalTable % $internalTableCols == 0) {
 					echo '</td></tr>' . $cr;
 					echo '<tr class="detail">';
-					echo '<td class="label" style="width:10%">';
+					echo '<td class="label" style="width:'.$labelWidth.'px;">';
 					if ($internalTableRowsCaptions[$internalTableCurrentRow]) {
-						echo '<label>' . htmlEncode($obj->getColCaption($internalTableRowsCaptions[$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
+						echo '<label style="width:'.$labelWidth.'px;">' . htmlEncode($obj->getColCaption($internalTableRowsCaptions[$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
 					}
 					echo '</td><td style="width:90%">';
 					$internalTableCurrentRow++;
@@ -473,13 +478,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				and substr($col,2,1)==strtoupper(substr($col,2,1)) ) { // Idxxx
 					echo htmlEncode(SqlList::getNameFromId(substr($col,2),$val));
 				} else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
-					//echo '<div style="width: ' . $fieldWidth . 'px;"> ' . htmlEncode($val,'print') . '</div>';
-					//echo '<div style="width:120px;border: 1px solid green">';
-					//echo '<table style="width:120px;border: 1px solid red"><tr><td style="width:120px; border: 1px solid blue">';
 					echo htmlEncode($val,'print');
-					//echo '</td></tr></table>';
-					//echo '</div>';
-          
+					$fldFull='_'.$col.'_full';
+					if ($outMode='pdf' and isset($obj->$fldFull)) {
+						echo '<img src="../view/css/images/doubleArrowDown.png" />';
+					}
 				} else if ($dataType=='decimal' and (substr($col, -4,4)=='Cost' or substr($col,-6,6)=='Amount' or $col=='amount') ) {
 					if ($currencyPosition=='after') {
 						echo htmlEncode($val,'print') . ' ' . $currency;
@@ -1004,6 +1007,21 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			}
 			echo '</td></tr></table>';
 		}
+	}
+	if ($outMode=='pdf') {
+	  $cpt=0;
+		foreach ($obj as $col => $val) {
+		  if (substr($col,0,1)=='_' and substr($col,-5)=='_full') {
+		  	$cpt++;
+			  $section=substr($col,1,strlen($col)-6);
+			  //echo '</page><page>';
+			  if ($cpt==1) echo '<page><br/>';
+			  echo '<table style="width:'.$printWidth.'px;"><tr><td class="section">' . $obj->getColCaption($section) .'</td></tr></table>';
+			  echo htmlEncode($val,'print');
+			  echo '<br/><br/>';
+		  }
+	  } 
+	  if ($cpt>0) echo '</page>';  
 	}
 }
 
@@ -2467,7 +2485,11 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
 $treatedObjects=array();
 
 $displayWidth='98%';
-$printWidth=980;
+if ($outMode=='pdf') {
+	$printWidth=1080;
+} else {
+  $printWidth=980;
+}
 if (array_key_exists('destinationWidth',$_REQUEST)) {
 	$width=$_REQUEST['destinationWidth'];
 	$width-=30;

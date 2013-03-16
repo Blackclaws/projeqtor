@@ -282,7 +282,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 
 	// Get the parent line for hierarchc display purpose
 	private static function getParent($elt, $result, $direct=true){
-scriptLog("      => ImputationLine->getParent($elt->refType#$elt->refId, $result, $direct)");		
+//scriptLog("      => ImputationLine->getParent($elt->refType#$elt->refId, result[], $direct)");		
 		$plan=null;
 		$user=$_SESSION['user'];
 //		$visibleProjectList=$user->getVisibleProjects();
