@@ -47,8 +47,8 @@ CREATE TABLE `${prefix}workperiod` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX workPeriodResource ON `${prefix}workPeriod` (idResource);
-CREATE INDEX workPeriodPeriod ON `${prefix}workPeriod` (periodRange, periodValue);
+CREATE INDEX workperiodResource ON `${prefix}workperiod` (idResource);
+CREATE INDEX workperiodPeriod ON `${prefix}workperiod` (periodRange, periodValue);
 
 CREATE TABLE `${prefix}efficiency` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
