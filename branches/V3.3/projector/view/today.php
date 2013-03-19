@@ -437,6 +437,17 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     echo "</table>";
     echo "</div><br/>";
   }  
+
+  $showProjectParam=Parameter::getUserParameter('todayShowProject');
+  if (!$showProjectParam) $showProjectParam='YES';
+  $showAssignedTasksParam=Parameter::getUserParameter('todayShowAssignedTasks');
+  if (!$showAssignedTasksParam) $showAssignedTasksParam='YES';
+  $showResponsibleTasks=Parameter::getUserParameter('todayShowResponsibleTasks');
+  if (!$showResponsibleTasks) $showResponsibleTasks='YES';
+  $showIssuerRequestorTasks=Parameter::getUserParameter('todayShowIssuerRequestorTasks');
+  if (!$showIssuerRequestorTasks) $showIssuerRequestorTasks='YES';
+  $showProjectsTasks=Parameter::getUserParameter('todayShowProjectsTasks');
+  if (!$showIssuerRequestorTasks) $showIssuerRequestorTasks='YES';
 ?>      
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
