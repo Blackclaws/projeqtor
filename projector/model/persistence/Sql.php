@@ -216,8 +216,8 @@ class Sql {
     }
     if (!self::$dbType or !self::$dbHost or !self::$dbName) {
       self::$dbType=Parameter::getGlobalParameter('paramDbType');
-      //self::$dbHost=Parameter::getGlobalParameter('paramDbHost');
-      self::$dbHost=Parameter::getGlobalParameter('paramDbHost').':'.Parameter::getGlobalParameter('paramDbPort');
+      self::$dbHost=Parameter::getGlobalParameter('paramDbHost');
+      if (isset($paramDbPort) and $paramDbPort) { self::$dbHost.=':'.$paramDbPort; }
       self::$dbUser=Parameter::getGlobalParameter('paramDbUser');
       self::$dbPassword=Parameter::getGlobalParameter('paramDbPassword');
       self::$dbName=Parameter::getGlobalParameter('paramDbName');     
