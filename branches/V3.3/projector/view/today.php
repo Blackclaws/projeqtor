@@ -438,20 +438,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     echo "</div><br/>";
   }  
 
-  $showProjectParam=Parameter::getUserParameter('todayShowProject');
-  if (!$showProjectParam) $showProjectParam='YES';
-  $showAssignedTasksParam=Parameter::getUserParameter('todayShowAssignedTasks');
-  if (!$showAssignedTasksParam) $showAssignedTasksParam='YES';
-  $showResponsibleTasks=Parameter::getUserParameter('todayShowResponsibleTasks');
-  if (!$showResponsibleTasks) $showResponsibleTasks='YES';
-  $showIssuerRequestorTasks=Parameter::getUserParameter('todayShowIssuerRequestorTasks');
-  if (!$showIssuerRequestorTasks) $showIssuerRequestorTasks='YES';
-  $showProjectsTasks=Parameter::getUserParameter('todayShowProjectsTasks');
-  if (!$showIssuerRequestorTasks) $showIssuerRequestorTasks='YES';
+  $today=new Today();
+  $crit=array('idUser'=>$user->id, 'idle'=>'0');
+  $todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
 ?>      
+
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
   <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+  <div class="parametersButton"><img src="../view/css/images/iconParameter32.png" onClick="loadDialog('dialogTodayParameters');"/></div>
     <?php $titlePane="Today_message"; ?>  
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -460,8 +455,12 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       onShow="saveExpanded('<?php echo $titlePane;?>');"
       title="<?php echo i18n('menuMessage');?>">  
 <?php showMessages();?>
-    </div><br/>
-    <?php $titlePane="Today_project"; ?> 
+    </div>
+   <br/>
+<?php 
+foreach ($todayList as $todayItem) {
+  if ($todayItem->scope=='static' and $todayItem->staticSection=='Projects') {
+    $titlePane="Today_project"; ?> 
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
       id="<?php echo $titlePane;?>" 
@@ -469,14 +468,18 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       onShow="saveExpanded('<?php echo $titlePane;?>');"
       title="<?php echo i18n('menuProject');?>">
     <?php showProjects();?>
-    </div><br/>
-    <?php 
+    </div><br/><?php 
+  } else if ($todayItem->scope=='static' and $todayItem->staticSection=='AssignedTasks') {
     showAssignedTasks();
+  } else if ($todayItem->scope=='static' and $todayItem->staticSection=='ResponsibleTasks') {
     showResponsibleTasks();
+  } else if ($todayItem->scope=='static' and $todayItem->staticSection=='IssuerRequestorTasks') {
     showIssuerRequestorTasks();
-    if ($profile->profileCode=='PL') {
-      showProjectsTasks();
-    }
-?>
+  } else if ($todayItem->scope=='static' and $todayItem->staticSection=='ProjectsTasks') {
+	  if ($profile->profileCode=='PL') {
+	    showProjectsTasks();
+	  }
+  }
+} ?>
   </div>
 </div>

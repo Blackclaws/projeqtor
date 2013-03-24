@@ -3778,3 +3778,33 @@ function unlockRequirement() {
   return true;
 }
 
+function loadDialog(dialogDiv,callBack) {
+  if (! dijit.byId(dialogDiv) ) {
+    dialogTodayParameters = new dijit.Dialog({
+	  id: dialogDiv,
+      title: i18n(dialogDiv),
+	  content: i18n("loading")
+    });
+  } else {
+	dialog=dijit.byId(dialogDiv);
+  }
+  showWait();
+  dojo.xhrGet({
+	url: '../tool/dynamicDialog.php?dialog='+dialogDiv,
+	handleAs: "text",
+	load: function (data) {
+	  var contentWidget = dijit.byId(dialogDiv);
+	  if (! contentWidget) {return;}
+	  contentWidget.set('content',data);
+	  contentWidget.show();
+	  hideWait();
+	  if (callBack) {
+	    setTimeout(callBack,10);
+	  }
+	},
+    error: function () {
+		console.log("error loading dialog "+dialogDiv);
+		hideWait();
+	}	
+  });
+}

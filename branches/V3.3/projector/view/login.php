@@ -149,8 +149,8 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
 			                    <?php if (Parameter::getGlobalParameter('applicationStatus')=='Closed'
 			                          or Sql::getDbVersion()!=$version) {
-			                    	      echo '<div style="position:absolute;float: left;left:10px;top : 100px;">';
-			                    	      echo '<img src="../view/img/closedApplication.gif" />';
+			                    	      echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
+			                    	      echo '<img src="../view/img/closedApplication.gif" width="60px"/>';
 			                    	      echo '</div>';
 			                    	      echo '<span class="messageERROR" >';
 			                    	      if (Parameter::getGlobalParameter('applicationStatus')=='Closed') {
