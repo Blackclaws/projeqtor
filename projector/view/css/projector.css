@@ -794,6 +794,16 @@ label, .label {
 	color : #ff0000;
 	font-weight: normal;
 }
+
+.parametersButton {
+	width:35px; 
+	float: right;
+	border: 2px solid #AAAAAA;
+	-moz-border-radius: 5px;
+  border-radius: 5px;
+  icon: selector;
+  cursor: pointer;
+}
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */

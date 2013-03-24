@@ -152,8 +152,8 @@
    */
   function loginErrorMaintenance() {
     global $login;
-    echo '<div style="position:absolute;float: left;left:10px;top : 100px;">';
-    echo '<img src="../view/img/closedApplication.gif" />';
+    echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
+    echo '<img src="../view/img/closedApplication.gif"  width="60px"/>';
     echo '</div>';
     echo '<span class="messageERROR">';
     echo i18n('wrongMaintenanceUser');
@@ -164,8 +164,8 @@
   }
   
   function loginErrorClosedApplication() {
-    echo '<div style="position:absolute;float: left;left:10px;top : 100px;">';
-    echo '<img src="../view/img/closedApplication.gif" />';
+    echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
+    echo '<img src="../view/img/closedApplication.gif"  width="60px" />';
     echo '</div>';
     echo '<span class="messageERROR" >';
     echo htmlEncode(Parameter::getGlobalParameter('msgClosedApplication'),'withBR');
