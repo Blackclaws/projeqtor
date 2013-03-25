@@ -7,19 +7,28 @@ $dialog=$_REQUEST['dialog'];
 //echo "<br/>".$dialog."<br/>";
 if ($dialog=="dialogTodayParameters") {
 	$today=new Today();
-  $crit=array('idUser'=>$user->id, 'idle'=>'0');
+  $crit=array('idUser'=>$user->id);
   $todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
+  $cptStatic=0;
+  foreach ($todayList as $todayItem) {
+  	if ($todayItem->scope=='static') {$cptStatic+=1;}
+  }
+  if ($cptStatic!=count(Today::$staticList)) {
+  	Today::insertStaticItems();
+  	$todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
+  }
   $user=$_SESSION['user'];
   $profile=SqlList::getFieldFromId('Profile', $user->idProfile, 'profileCode');
   echo '<form dojoType="dijit.form.Form" id="todayParametersForm" name="todayParametersForm" onSubmit="return false;">';
 	echo '<table>';
 	foreach ($todayList as $todayItem) {
 		if ($todayItem->scope!="static" or $todayItem->staticSection!="ProjectsTasks" or $profile=='PL') {
-			echo '<tr>';
+			echo '<tr id="dialogTodayParametersRow' . $todayItem->id. '">';
 			echo '<td style="width:16px">';
 			if ($todayItem->scope!='static') {
-				echo '<img src="../view/css/images/smallButtonRemove.png" onClick="" />';
+				echo '<img src="../view/css/images/smallButtonRemove.png" onClick="setTodayParameterDeleted(' . $todayItem->id. ');" />';
 			}
+			echo '<input type="hidden" name="dialogTodayParametersDelete' . $todayItem->id. '" id="dialogTodayParametersDelete' . $todayItem->id. '" value="0" />';
 			echo '</td>';
 			echo '<td style="width:16px"><div name="dialogTodayParametersIdle' . $todayItem->id. '" 
 			           dojoType="dijit.form.CheckBox" type="checkbox" '.(($todayItem->idle=='0')?' checked="checked"':'').'>
