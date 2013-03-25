@@ -57,7 +57,9 @@
   } catch (PDOException $e) {
     showError(utf8_encode($e->getMessage()));
     showError('dsn = '.$dsn);
-    exit;
+    if ($dbType=='mysql') {
+      exit;
+    }
   }
   $baseExists=false;
   $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'].';dbname='.$param['DbName'];
