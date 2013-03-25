@@ -14,7 +14,7 @@ class Today extends SqlElement {
   public $sortOrder;
   public $idle;
   
-  
+  public static $staticList=array('Projects','AssignedTasks','ResponsibleTasks','IssuerRequestorTasks','ProjectsTasks');
   public $_noHistory=true; // Will never save history for this object
   
   /** ==========================================================================
@@ -43,5 +43,20 @@ class Today extends SqlElement {
    * Return the validation sript for some fields
    * @return the validation javascript (for dojo frameword)
    */
+  
+  public static function insertStaticItems() {
+  	$user=$_SESSION['user'];
+  	$sort=0;
+  	foreach (self::$staticList as $static) {
+  		$crit=array('idUser'=>$user->id, 'scope'=>'static', 'staticSection'=>$static);
+  		$sort+=1;
+  		$item=SqlElement::getSingleSqlElementFromCriteria('Today', $crit);
+  		if (!$item->id) {
+  			$item->sortOrder=$sort;
+  			$item->idle=0;
+  			$item->save();
+  		}
+  	}
+  }
 }
 ?>

@@ -39,8 +39,8 @@ SELECT id, 'static','Projects',null,1,0 FROM `${prefix}resource` where isUser=1 
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','AssignedTasks',null,2,0 FROM `${prefix}resource` where isUser=1 and idle=0;
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
-SELECT id, 'static','ResponsibleTasks',null,2,0 FROM `${prefix}resource` where isUser=1 and idle=0;
+SELECT id, 'static','ResponsibleTasks',null,3,0 FROM `${prefix}resource` where isUser=1 and idle=0;
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
-SELECT id, 'static','IssuerRequestorTasks',null,2,0 FROM `${prefix}resource` where isUser=1 and idle=0;
+SELECT id, 'static','IssuerRequestorTasks',null,4,0 FROM `${prefix}resource` where isUser=1 and idle=0;
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
-SELECT id, 'static','ProjectsTasks',null,2,0 FROM `${prefix}resource` where isUser=1 and idle=0;
+SELECT id, 'static','ProjectsTasks',null,5,0 FROM `${prefix}resource` where isUser=1 and idle=0;

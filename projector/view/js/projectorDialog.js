@@ -3808,3 +3808,16 @@ function loadDialog(dialogDiv,callBack) {
 	}	
   });
 }
+/* ========================================================================
+ * Today management
+ * ========================================================================
+ */
+function saveTodayParameters() {
+  loadContent('../tool/saveTodayParameters.php','centerDiv','todayParametersForm');
+  dijit.byId('dialogTodayParameters').hide();
+}
+
+function setTodayParameterDeleted(id) {
+  dojo.byId('dialogTodayParametersDelete'+id).value=1;
+  dojo.byId('dialogTodayParametersRow'+id).style.display='none';
+}
