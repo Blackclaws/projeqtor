@@ -441,6 +441,10 @@ class Parameter extends SqlElement {
   	if (isset($$code)) {
   		return $$code;
   	}
+  	if ($code=='paramDbHost' or $code=='paramDbPort' or $code=='paramDbType'
+  	 or $code=='paramDbName' or $code=='paramDbUser' or $code=='paramDbPassword') {
+  		return '';
+  	}
   	if ($code=='paramPathSeparator') {
   		return DIRECTORY_SEPARATOR;
   	}
