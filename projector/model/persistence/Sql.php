@@ -9,6 +9,7 @@ class Sql {
   // Database informations
   private static $dbType;
   private static $dbHost;
+  private static $dbPort;
   private static $dbUser;
   private static $dbPassword;
   private static $dbName;
@@ -214,10 +215,10 @@ class Sql {
     if (self::$connexion != NULL) {
       return self::$connexion;
     }
-    if (!self::$dbType or !self::$dbHost or !self::$dbName) {
+    if (!self::$dbType or !self::$dbHost or !self::$dbName or ! self::$dbPort) {
       self::$dbType=Parameter::getGlobalParameter('paramDbType');
       self::$dbHost=Parameter::getGlobalParameter('paramDbHost');
-      if (isset($paramDbPort) and $paramDbPort) { self::$dbHost.=':'.$paramDbPort; }
+      self::$dbPort=Parameter::getGlobalParameter('paramDbPort');
       self::$dbUser=Parameter::getGlobalParameter('paramDbUser');
       self::$dbPassword=Parameter::getGlobalParameter('paramDbPassword');
       self::$dbName=Parameter::getGlobalParameter('paramDbName');     
@@ -241,7 +242,7 @@ class Sql {
       ini_set('mysql.connect_timeout', 10);
     }
     try {
-    	$dsn = self::$dbType.':host='.self::$dbHost.';dbname='.self::$dbName; 	    
+    	$dsn = self::$dbType.':host='.self::$dbHost.';port='.self::$dbPort.';dbname='.self::$dbName; 	  
     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword);
     	self::$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
