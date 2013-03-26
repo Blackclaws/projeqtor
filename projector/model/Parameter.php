@@ -653,5 +653,6 @@ scriptLog('refreshParameters()');
   	// This function is call when refresh of parameters is requested
   	unset($_SESSION['globalParamatersArray']);
   }
+  
 }
 ?>

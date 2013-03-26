@@ -787,6 +787,8 @@ function finalizeMessageDisplay(destination, validationType) {
     		  (dojo.byId('objectClass').value=='Requirement' || dojo.byId('objectClass').value=='TestSession')) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  refreshGrid();
+      } else  if (validationType=='report'){
+    	  hideWait();  
       } else if (lastOperation!='plan') {
     	  if (dijit.byId('detailFormDiv')) { // only refresh is detail is show (possible when DndLing on planning
             loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -1812,6 +1814,10 @@ function gotoElement(eltClass, eltId, noHistory) {
 function runReport() {
   var fileName=dojo.byId('reportFile').value;
   loadContent("../report/"+ fileName , "detailReportDiv", "reportForm", false);  
+}
+function saveReportInToday() {
+  var fileName=dojo.byId('reportFile').value;
+  loadContent("../tool/saveReportInToday.php" , "resultDiv", "reportForm", true, 'report');  
 }
 
 /**

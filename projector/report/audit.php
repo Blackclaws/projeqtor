@@ -2,7 +2,6 @@
 include_once '../tool/projector.php';
 //echo "detailPlan.php";
 AuditSummary::updateAuditSummary(date('Ymd'));
-
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];

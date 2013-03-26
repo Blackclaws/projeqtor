@@ -34,6 +34,12 @@ class Today extends SqlElement {
   function __destruct() {
     parent::__destruct();
   }
+  
+  function delete() {
+  	$p=new TodayParameter();
+  	$res=$p->purge("idToday=".$this->id);
+  	return parent::delete();
+  }
 
 // ============================================================================**********
 // GET VALIDATION SCRIPT

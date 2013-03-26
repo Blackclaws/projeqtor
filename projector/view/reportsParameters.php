@@ -7,6 +7,7 @@ require_once "../tool/projector.php";
 scriptLog('   ->/view/reportsList.php');
 ?>
 <form id='reportForm' name='reportForm' onSubmit="return false;">
+<table><tr><td>
 <table style="width:100%;">
   <tr>
     <td>&nbsp;</td>
@@ -509,6 +510,12 @@ foreach ($listParam as $param) {
             }
           </script>
       </button>
+      <button title="<?php echo i18n('showInToday')?>"   
+         dojoType="dijit.form.Button" type="button" 
+         id="reportShowInToday" name="reportShowInToday" 
+         iconClass="iconToday16" showLabel="false"
+         onclick="saveReportInToday();">
+      </button>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />
@@ -516,5 +523,11 @@ foreach ($listParam as $param) {
         <input type="hidden" id="reportName" name="reportName" value="<?php echo i18n($report->name);?>" />
       </NOBR></td>
   </tr>
+  <tr><td colspan="2">
+    </td>
+  </tr>
 </table>
+</td><td>&nbsp;
+<div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" style="width:100px;"></div>
+</td></tr></table>
 </form>

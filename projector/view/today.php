@@ -479,6 +479,35 @@ foreach ($todayList as $todayItem) {
 	  if ($profile->profileCode=='PL') {
 	    showProjectsTasks();
 	  }
+  } else if ($todayItem->scope=='report') {
+  	$rpt=new Report($todayItem->idReport);
+  	$titlePane="Today_report_".$todayItem->id;  
+  	//echo '<div id="'.$titlePane.'_wait">... loading...</div>';
+    echo '<div dojoType="dijit.TitlePane" '; 
+    echo ' open="'.( array_key_exists($titlePane, $collapsedList)?'false':'true').'"';
+    echo ' id="'.$titlePane.'"'; 
+    echo ' title="'.i18n('colReport').' &quot;'.i18n($rpt->name).'&quot;" >';  
+    echo ' <script type="dojo/connect" event="onHide" args="evt">';
+    echo ' saveCollapsed("'.$titlePane.'");';
+    echo ' </script>';
+    //echo ' onHide="saveCollapsed(\''.$titlePane.'\');"';
+  	echo ' <script type="dojo/connect" event="onShow" args="evt">';
+  	echo '   saveExpanded("'.$titlePane.'");';
+  	$params=TodayParameter::returnReportParameters($rpt);
+  	$urlParam="";
+  	foreach ($params as $paramName=>$paramValue) {
+  		$tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter', array('idToday'=>$todayItem->id,'parameterName'=>$paramName));
+  		if ($tp->id) {
+  			$paramValue=$tp->parameterValue;
+  		}
+  		$urlParam.=($urlParam)?'&':'?';
+  		$urlParam.=$paramName.'='.$paramValue;
+  	}
+    echo '   loadReport("../report/'. $rpt->file.$urlParam.'","'.$titlePane.'");';
+    echo ' </script>';
+    echo '<img src="../view/css/images/treeExpand_loading.gif" />'; 
+  	echo '</div>';
+  	echo '<br/>';
   }
 } ?>
   </div>
