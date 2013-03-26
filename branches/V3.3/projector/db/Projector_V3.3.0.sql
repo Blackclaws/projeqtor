@@ -24,15 +24,15 @@ CREATE TABLE `${prefix}todayParameter` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idUser` int(12) unsigned DEFAULT NULL,
   `idReport` int(12) unsigned DEFAULT NULL,
+  `idToday` int(12) unsigned DEFAULT NULL,
   `parameterName` varchar(100) DEFAULT NULL,
   `parameterValue` varchar(100) DEFAULT NULL,
-  `sortOrder` int(3) unsigned DEFAULT NULL,
-  `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX todayParameterUser ON `${prefix}todayParameter` (idUser);
 CREATE INDEX todayParameterReport ON `${prefix}todayParameter` (idReport);
+CREATE INDEX todayParameterToiday ON `${prefix}todayParameter` (idToday);
 
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','Projects',null,1,0 FROM `${prefix}resource` where isUser=1 and idle=0;

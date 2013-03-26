@@ -3821,3 +3821,20 @@ function setTodayParameterDeleted(id) {
   dojo.byId('dialogTodayParametersDelete'+id).value=1;
   dojo.byId('dialogTodayParametersRow'+id).style.display='none';
 }
+
+function loadReport(url,dialogDiv) {
+  var contentWidget = dijit.byId(dialogDiv);
+  contentWidget.set('content','<img src="../view/css/images/treeExpand_loading.gif" />');
+  dojo.xhrGet({
+	url: url,
+	handleAs: "text",
+	load: function (data) {
+	  var contentWidget = dijit.byId(dialogDiv);
+	  if (! contentWidget) {return;}
+	  contentWidget.set('content',data);
+	},
+    error: function () {
+		console.log("error loading report "+url+" into "+dialogDiv);
+	}	
+  });
+}

@@ -1593,6 +1593,8 @@ min: "min",
 max: "max",
 mean: "mean",
 dialogTodayParameters: "Today parameters",
+showInToday: "include this report in Today page",
+Today: "Item of Today page",
 todayProjects: "Projects",
 currentLocaleOfFile: "default"
 }

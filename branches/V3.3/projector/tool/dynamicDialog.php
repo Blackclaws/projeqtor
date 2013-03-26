@@ -36,8 +36,11 @@ if ($dialog=="dialogTodayParameters") {
 			echo '<td>';
 			if ($todayItem->scope=="static") {
 				echo i18n('today'.$todayItem->staticSection);
+			} else if ($todayItem->scope=="report"){
+				$rpt=new Report($todayItem->idReport);
+				echo i18n('colReport').' "'.i18n($rpt->name).'"';
 			} else {
-				echo $todayItem->scope."|".$todayItem->staticSection;
+				echo "unknown today scope";
 			}
 			echo '</td>';
 			echo '</tr>';

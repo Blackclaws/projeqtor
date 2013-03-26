@@ -1592,7 +1592,9 @@ connectionsDurationPerDay: "Durée de connexions par jour",
 min: "min.",
 max: "max.",
 mean: "moy.",
-dialogTodayParameters: "Paramètres de l'écran Aujourd'hui",
+dialogTodayParameters: "Paramètres de la page Aujourd'hui",
+showInToday: "ajouter ce rapport à la page Aujourd'hui",
+Today: "Elément de la page Aujourd'hui",
 todayProjects: "Projets",
 currentLocaleOfFile: "fr"
 }

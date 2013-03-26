@@ -1593,6 +1593,8 @@ min: "min",
 max: "max",
 mean: "mean",
 dialogTodayParameters: "[dialogTodayParameters]",
+showInToday: "[showInToday]",
+Today: "[Today]",
 todayProjects: "项目",
 currentLocaleOfFile: "zh"
 }
