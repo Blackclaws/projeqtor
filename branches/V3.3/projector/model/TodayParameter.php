@@ -74,7 +74,9 @@ class TodayParameter extends SqlElement {
       } else if ($param->paramType=='periodScale') {
         $result[$param->name]=$param->defaultValue;
       } else if ($param->paramType=='boolean') {
-        $result[$param->name]=($param->defaultValue=='true')?true:false;
+        if ($param->defaultValue=='true') {
+        	$result[$param->name]=true;
+        }
       } else if ($param->paramType=='projectList') {
         $defaultValue='';
         if ($param->defaultValue=='currentProject') {       
