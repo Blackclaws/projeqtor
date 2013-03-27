@@ -43,7 +43,7 @@ class TodayParameter extends SqlElement {
    * @return the validation javascript (for dojo frameword)
    */
   
-  static public function returnReportParameters($report) {
+  static public function returnReportParameters($report, $includeAllBooleans=false) {
     $result=array();
     $currentWeek=weekNumber(date('Y-m-d'));
     if (strlen($currentWeek)==1) {
@@ -76,6 +76,8 @@ class TodayParameter extends SqlElement {
       } else if ($param->paramType=='boolean') {
         if ($param->defaultValue=='true') {
         	$result[$param->name]=true;
+        } else if ($includeAllBooleans) {
+        	$result[$param->name]=$param->defaultValue;
         }
       } else if ($param->paramType=='projectList') {
         $defaultValue='';
@@ -154,6 +156,16 @@ class TodayParameter extends SqlElement {
         }
         $result[$param->name]=$defaultValue;
       }
+    }
+    return $result;
+  }
+  
+  static public function returnTodayReportParameters($today) {
+  	$tp=new TodayParameter();
+    $tpList=$tp->getSqlElementsFromCriteria(array('idToday'=>$today->id));
+    $result=array();
+    foreach ($tpList as $tp) {
+    	$result[$tp->parameterName]=$tp->parameterValue;
     }
     return $result;
   }

@@ -22,7 +22,7 @@ $item->staticSection=null;
 $item->idle=0;
 $result=$item->save();
 $rpt=new Report($reportId);
-$params=TodayParameter::returnReportParameters($rpt);
+$params=TodayParameter::returnReportParameters($rpt,true);
 foreach ($params as $pName=>$pValue) {
 	$reqValue='';
 	if (isset($_REQUEST[$pName])) {

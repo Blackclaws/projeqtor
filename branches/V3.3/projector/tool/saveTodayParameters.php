@@ -1,6 +1,6 @@
 <?php
 /** ============================================================================
- * Save some information to session (remotely).
+ * Save Today displayed info list
  */
 require_once "../tool/projector.php";
 
