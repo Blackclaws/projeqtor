@@ -489,17 +489,17 @@ foreach ($todayList as $todayItem) {
     echo ' title="'.i18n('colReport').' &quot;'.i18n($rpt->name).'&quot;" >';  
     echo ' <script type="dojo/connect" event="onHide" args="evt">';
     echo ' saveCollapsed("'.$titlePane.'");';
+    echo ' setTimeout(\'dijit.byId("'.$titlePane.'").set("content","");\',100);';
     echo ' </script>';
-    //echo ' onHide="saveCollapsed(\''.$titlePane.'\');"';
   	echo ' <script type="dojo/connect" event="onShow" args="evt">';
   	echo '   saveExpanded("'.$titlePane.'");';
   	$params=TodayParameter::returnReportParameters($rpt);
+  	$paramsToday=TodayParameter::returnTodayReportParameters($todayItem);
+  	foreach ($paramsToday as $pName=>$pValue) {
+  		$params[$pName]=$pValue;
+  	}	
   	$urlParam="";
   	foreach ($params as $paramName=>$paramValue) {
-  		$tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter', array('idToday'=>$todayItem->id,'parameterName'=>$paramName));
-  		if ($tp->id) {
-  			$paramValue=$tp->parameterValue;
-  		}
   		$urlParam.=($urlParam)?'&':'?';
   		$urlParam.=$paramName.'='.$paramValue;
   	}
