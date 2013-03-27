@@ -1786,7 +1786,7 @@ function workflowChange(line, column, profileList) {
 /**
  * refresh Projects List on Today screen
  */
-function refreshTodayProjectsList() {
+function refreshTodayProjectsList(value) {
   loadContent("../view/today.php?refreshProjects=true", "Today_project", "todayProjectsForm", false);  
 }
 

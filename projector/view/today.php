@@ -87,19 +87,25 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       echo '<td style="text-align:right; width:5%" class="tabLabel">';
       echo '<label for="countScopeTodo">' . i18n('titleCountTodo') . '&nbsp;</label>';
       echo '</td><td style="text-align:left;" class="tabLabel">';
-      echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeTodo" ' 
+      echo '<input '
+          . (($countScope=='todo')?'':'onChange="refreshTodayProjectsList();"')
+          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeTodo" ' 
           . (($countScope=='todo')?'checked':'') . ' value="todo" />';         
       echo '</td>';
       echo '<td style="text-align:right; width:5%" class="tabLabel">';
       echo '<label for="countScopeNotClosed">' . i18n('titleCountNotClosed') . '&nbsp;</label>';
       echo '</td><td style="text-align:left;" class="tabLabel">';      
-      echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeNotClosed" ' 
+      echo '<input '
+          . (($countScope=='notClosed')?'':'onChange="refreshTodayProjectsList();"') 
+          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeNotClosed" ' 
           . (($countScope=='notClosed')?'checked':'') . ' value="notClosed" />';
       echo '</td>';
       echo '<td style="text-align:right; width:5%" class="tabLabel">';
       echo '<label for="countScopeAll">' . i18n('titleCountAll') . '&nbsp;</label>';
       echo '</td><td style="text-align:left;" class="tabLabel">';
-      echo '<input onChange="refreshTodayProjectsList();" type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
+      echo '<input '
+          . (($countScope=='all')?'':'onChange="refreshTodayProjectsList();"') 
+          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
           . (($countScope=='all')?'checked':'') . ' value="all" />';
       echo '</td></tr>';
       echo '</table></form>';          
