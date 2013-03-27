@@ -1310,6 +1310,8 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           }
         } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
           refreshJsonList(dojo.byId('objectClass').value);
+        } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Today') {
+          loadContent("../view/today.php", "centerDiv");  
         }
       }
     });
