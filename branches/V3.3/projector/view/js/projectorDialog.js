@@ -3838,3 +3838,14 @@ function loadReport(url,dialogDiv) {
 	}	
   });
 }
+
+function reorderTodayItems() { 
+  var nodeList=dndTodayParameters.getAllNodes();
+  for (i=0; i<nodeList.length; i++) {
+	item=nodeList[i].id.substr(24);
+	var order=dojo.byId("dialogTodayParametersOrder"+item);
+	if (order) {
+	  order.value=i+1;
+	}
+  }
+}

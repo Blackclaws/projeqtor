@@ -446,7 +446,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 
   $today=new Today();
   $crit=array('idUser'=>$user->id, 'idle'=>'0');
-  $todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
+  $todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
 ?>      
 
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
@@ -489,7 +489,7 @@ foreach ($todayList as $todayItem) {
   	$rpt=new Report($todayItem->idReport);
   	$titlePane="Today_report_".$todayItem->id;  
   	//echo '<div id="'.$titlePane.'_wait">... loading...</div>';
-    echo '<div dojoType="dijit.TitlePane" '; 
+    echo '<div dojoType="dijit.TitlePane" style="overflow-x:auto"'; 
     echo ' open="'.( array_key_exists($titlePane, $collapsedList)?'false':'true').'"';
     echo ' id="'.$titlePane.'"'; 
     echo ' title="'.i18n('colReport').' &quot;'.i18n($rpt->name).'&quot;" >';  

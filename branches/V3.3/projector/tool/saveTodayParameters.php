@@ -18,6 +18,9 @@ foreach ($todayList as $item) {
 		} else {
 			$item->idle=1;
 		}
+		if (isset($_REQUEST['dialogTodayParametersOrder' . $item->id])) {
+			$item->sortOrder=$_REQUEST['dialogTodayParametersOrder' . $item->id];
+		}
 		$item->save();
 	}
 }

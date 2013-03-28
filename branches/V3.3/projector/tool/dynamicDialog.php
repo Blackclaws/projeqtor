@@ -8,22 +8,25 @@ $dialog=$_REQUEST['dialog'];
 if ($dialog=="dialogTodayParameters") {
 	$today=new Today();
   $crit=array('idUser'=>$user->id);
-  $todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
+  $todayList=$today->getSqlElementsFromCriteria($crit, false,null, 'sortOrder asc');
   $cptStatic=0;
   foreach ($todayList as $todayItem) {
   	if ($todayItem->scope=='static') {$cptStatic+=1;}
   }
   if ($cptStatic!=count(Today::$staticList)) {
   	Today::insertStaticItems();
-  	$todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');
+  	$todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
   }
   $user=$_SESSION['user'];
   $profile=SqlList::getFieldFromId('Profile', $user->idProfile, 'profileCode');
   echo '<form dojoType="dijit.form.Form" id="todayParametersForm" name="todayParametersForm" onSubmit="return false;">';
-	echo '<table>';
+	echo '<table id="dndTodayParameters" jsId="dndTodayParameters" dojotype="dojo.dnd.Source"  dndType="today"
+               withhandles="true" class="container">';
 	foreach ($todayList as $todayItem) {
 		if ($todayItem->scope!="static" or $todayItem->staticSection!="ProjectsTasks" or $profile=='PL') {
-			echo '<tr id="dialogTodayParametersRow' . $todayItem->id. '">';
+			echo '<tr id="dialogTodayParametersRow' . $todayItem->id. '"
+			          class="dojoDndItem" dndType="today">';
+			echo '<td class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</td>';
 			echo '<td style="width:16px">';
 			if ($todayItem->scope!='static') {
 				echo '<img src="../view/css/images/smallButtonRemove.png" onClick="setTodayParameterDeleted(' . $todayItem->id. ');" />';
@@ -42,6 +45,9 @@ if ($dialog=="dialogTodayParameters") {
 			} else {
 				echo "unknown today scope";
 			}
+			echo '<input type="hidden" style="width:100px" 
+			 id="dialogTodayParametersOrder' . $todayItem->id. '" name="dialogTodayParametersOrder' . $todayItem->id. '" 
+			 value="' . $todayItem->sortOrder. '"/>';
 			echo '</td>';
 			echo '</tr>';
 		}

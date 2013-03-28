@@ -20,6 +20,8 @@ $item->scope='report';
 $item->idReport=$reportId;
 $item->staticSection=null;
 $item->idle=0;
+$lst=$item->getSqlElementsFromCriteria(array('idUser'=>$user->id));
+$item->sortOrder=count($lst)+1;
 $result=$item->save();
 $rpt=new Report($reportId);
 $params=TodayParameter::returnReportParameters($rpt,true);

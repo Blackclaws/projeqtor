@@ -96,6 +96,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
          } else  if (target.id=='dndPlanningColumnSelector') {
         	 showWait();
         	 setTimeout('movePlanningColumn("' + idFrom + '", "' + idTo + '")',100);
+         } else if (target.id=='dndTodayParameters') {
+        	 setTimeout('reorderTodayItems()',100);  
          }
        }
     });
