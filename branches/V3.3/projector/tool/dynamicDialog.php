@@ -20,8 +20,36 @@ if ($dialog=="dialogTodayParameters") {
   $user=$_SESSION['user'];
   $profile=SqlList::getFieldFromId('Profile', $user->idProfile, 'profileCode');
   echo '<form dojoType="dijit.form.Form" id="todayParametersForm" name="todayParametersForm" onSubmit="return false;">';
+  echo '<table style="width:100%">';
+  echo '<tr><td class="dialogSection" colspan="2">'.i18n('periodForTasks').'</td>';
+  echo '<tr><td></td><td>&nbsp;</td></tr>';
+  echo '  <tr>';
+  echo '  <td class="dialogLabel" width="10px;"><label>'.i18n('colDueDate').'&nbsp;:&nbsp;</label></td>';
+  echo '  <td>';
+  $crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
+  $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
+  echo '     <input id="todayPeriodDays" name="todayPeriodDays" dojoType="dijit.form.NumberTextBox" type="text"';    
+  echo '         maxlength="4"  style="width:30px; text-align: center;" class="input" value="'.$tp->parameterValue.'"/>';
+  echo '&nbsp;'.i18n('nextDays');
+  echo '  </td>';
+  echo '  </tr>';
+  echo '  <tr>';
+  echo '  <td class="dialogLabel" width="10px;"><label>'.i18n('colOrNotSet').'&nbsp;:&nbsp;</label></td>';
+  echo '  <td>';
+  $crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodNotSet');
+  $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
+  echo '     <div name="todayPeriodNotSet" id="todayPeriodNotSet" dojoType="dijit.form.CheckBox" type="checkbox" '; 
+  echo ($tp->parameterValue=='1')?' checked="checked"':'';
+  echo '></div>';
+  echo '  </td>';
+  echo '  </tr>';
+  echo '<tr style="border-bottom:2px solid #F0F0F0;"><td></td><td>&nbsp;</td></tr>';
+  echo '<tr><td></td><td>&nbsp;</td></tr>';
+  echo '</table>';
 	echo '<table id="dndTodayParameters" jsId="dndTodayParameters" dojotype="dojo.dnd.Source"  dndType="today"
                withhandles="true" class="container">';
+	echo '<tr><td class="dialogSection" colspan="4">'.i18n('listTodayItems').'</td>';
+  echo '<tr><td></td><td>&nbsp;</td></tr>';
 	foreach ($todayList as $todayItem) {
 		if ($todayItem->scope!="static" or $todayItem->staticSection!="ProjectsTasks" or $profile=='PL') {
 			echo '<tr id="dialogTodayParametersRow' . $todayItem->id. '"
@@ -53,7 +81,10 @@ if ($dialog=="dialogTodayParameters") {
 		}
 	}
 	echo '</table>'; 
-	echo '<br/>';
+	echo '<table style="width:100%">';
+	 echo '<tr style="border-bottom:2px solid #F0F0F0;"><td></td><td>&nbsp;</td></tr>';
+  echo '<tr><td></td><td>&nbsp;</td></tr>';
+  echo '</table>';
 	echo '<table width="100%">';
 	echo '  <tr>';
   echo '    <td align="center">';

@@ -24,6 +24,26 @@ foreach ($todayList as $item) {
 		$item->save();
 	}
 }
+// PeriodDays
+$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
+$tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
+if (isset($_REQUEST['todayPeriodDays'])) {
+	$tp->parameterValue=$_REQUEST['todayPeriodDays'];
+} else {
+	$tp->parameterValue='';
+}
+$tp->save();
+
+//PeriodNotSet
+$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodNotSet');
+$tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
+if (isset($_REQUEST['todayPeriodNotSet'])) {
+  $tp->parameterValue=1;
+} else {
+  $tp->parameterValue=0;
+}
+$tp->save();
+
 Sql::commitTransaction();
 
 include "../view/today.php";

@@ -183,9 +183,11 @@ function showPrint (page, context, comboName, outMode) {
 		//frames['printFrame'].location.href='../view/preparePreview.php';
 		dijit.byId("dialogPrint").show();
 	}
+	cl='';
 	if (dojo.byId('objectClass')) {
 		cl=dojo.byId('objectClass').value;
-	}
+	} 
+	id='';
 	if (dojo.byId('objectId')) {
 		id=dojo.byId('objectId').value;
 	}

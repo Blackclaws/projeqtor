@@ -761,7 +761,12 @@ label, .label {
  padding: 0px 0px 0px 5px; 
 }
 
-
+.dialogSection {
+  text-align:center;
+  font-weight: bold;
+  background-color: #F0F0F0;
+  color: #505050;
+}
 .ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover {
   background-color: #ffffaa;
 }
@@ -797,10 +802,8 @@ label, .label {
 
 .parametersButton {
 	width:35px; 
+	text-align: center;
 	float: right;
-	border: 2px solid #AAAAAA;
-	-moz-border-radius: 5px;
-  border-radius: 5px;
   icon: selector;
   cursor: pointer;
 }

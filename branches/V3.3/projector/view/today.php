@@ -339,7 +339,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
   	global $cptMax;
   	global $collapsedList;
-    $user=$_SESSION['user'];
+  	$user=$_SESSION['user'];
+  	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
+    $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
+    $periodDays=$tp->parameterValue;
+    $crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodNotSet');
+    $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);    
+    $periodNotSet=$tp->parameterValue;
     $ass=new Assignment();
     $act=new Activity();
     $order="";
@@ -382,11 +388,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
            '</tr>';     
     $cpt=0;
     foreach($list as $elt) {
-      $cpt++;
-      if ($cpt>$cptMax) {
-        echo '<tr><td colspan="8" class="messageData" style="text-align:center;"><b>'.i18n('limitedDisplay',array($cptMax)).'</b></td></tr>';
-        break;
-      }
     	$cptDisplayId++;
       $idType='id' . get_class($elt) . 'Type';
       $echeance="";
@@ -405,7 +406,22 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       } else if ($class=="Action" ) {
         $echeance=($elt->actualDueDate)?$elt->actualDueDate:$elt->initialDueDate;
       } 
-
+      if ($periodDays) {
+      	if (! $echeance) {
+      		if (! $periodNotSet) {
+      			continue;
+      		}
+      	} else {
+      	  if ($echeance>addDaysToDate(date("Y-m-d"), $periodDays)) {
+      	    continue;
+      	  }
+      	}
+      }
+      $cpt++;
+      if ($cpt>$cptMax) {
+        echo '<tr><td colspan="8" class="messageData" style="text-align:center;"><b>'.i18n('limitedDisplay',array($cptMax)).'</b></td></tr>';
+        break;
+      }
       $statusColor=SqlList::getFieldFromId('Status', $elt->idStatus, 'color');
       $status=SqlList::getNameFromId('Status',$elt->idStatus);
       $status=($status=='0')?'':$status;
@@ -452,7 +468,22 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
   <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
-  <div class="parametersButton"><img src="../view/css/images/iconParameter32.png" onClick="loadDialog('dialogTodayParameters');"/></div>
+    <div class="parametersButton">
+	    <button id="todayParametersButton" dojoType="dijit.form.Button" showlabel="false"
+	       title="<?php echo i18n('menuParameter');?>"
+	       iconClass="iconParameter16" >
+	        <script type="dojo/connect" event="onClick" args="evt">
+          loadDialog('dialogTodayParameters');
+        </script>
+	    </button>
+      <button id="todayPrintButton" dojoType="dijit.form.Button" showlabel="false"
+         title="<?php echo i18n('print');?>"
+         iconClass="dijitEditorIcon dijitEditorIconPrint" >
+          <script type="dojo/connect" event="onClick" args="evt">
+          showPrint('../view/today.php');
+        </script>
+      </button>
+    </div>    
     <?php $titlePane="Today_message"; ?>  
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
