@@ -52,7 +52,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showProjects() {
-  	global $cptMax;
+  	global $cptMax, $print;
     $user=$_SESSION['user'];
     $prjVisLst=$user->getVisibleProjects();
     $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
@@ -81,35 +81,43 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     if (count($prjLst)>0) {
       echo '<form id="todayProjectsForm" name="todayProjectsForm">';
       echo '<table align="center" style="width:95%">'; 
-      echo '<tr><td style="text-align:left;width:40%" class="tabLabel" >';
-      echo i18n('titleCountScope') . " : ";
+      echo '<tr><td style="text-align:left;width:10%" class="tabLabel" >';
+      echo '<nobr>'. i18n('titleCountScope') . ' : </nobr>';
       echo '</td>';
-      echo '<td style="text-align:right; width:5%" class="tabLabel">';
-      echo '<label for="countScopeTodo">' . i18n('titleCountTodo') . '&nbsp;</label>';
-      echo '</td><td style="text-align:left;" class="tabLabel">';
-      echo '<input '
-          . (($countScope=='todo')?'':'onChange="refreshTodayProjectsList();"')
-          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeTodo" ' 
-          . (($countScope=='todo')?'checked':'') . ' value="todo" />';         
-      echo '</td>';
-      echo '<td style="text-align:right; width:5%" class="tabLabel">';
-      echo '<label for="countScopeNotClosed">' . i18n('titleCountNotClosed') . '&nbsp;</label>';
-      echo '</td><td style="text-align:left;" class="tabLabel">';      
-      echo '<input '
-          . (($countScope=='notClosed')?'':'onChange="refreshTodayProjectsList();"') 
-          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeNotClosed" ' 
-          . (($countScope=='notClosed')?'checked':'') . ' value="notClosed" />';
-      echo '</td>';
-      echo '<td style="text-align:right; width:5%" class="tabLabel">';
-      echo '<label for="countScopeAll">' . i18n('titleCountAll') . '&nbsp;</label>';
-      echo '</td><td style="text-align:left;" class="tabLabel">';
-      echo '<input '
-          . (($countScope=='all')?'':'onChange="refreshTodayProjectsList();"') 
-          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
-          . (($countScope=='all')?'checked':'') . ' value="all" />';
-      echo '</td></tr>';
+      if ($print) {
+      	echo '<td style="text-align:left;" class="tabLabel">';
+        echo '<label>' . i18n('titleCount'.ucfirst($countScope)) . '&nbsp;</label>';
+        echo '</td>';
+      } else {
+      
+	      echo '<td style="text-align:right; width:5%" class="tabLabel">';
+	      echo '<label for="countScopeTodo">' . i18n('titleCountTodo') . '&nbsp;</label>';
+	      echo '</td><td style="text-align:left;" class="tabLabel">';
+	      echo '<input '
+	          . (($countScope=='todo')?'':'onChange="refreshTodayProjectsList();"')
+	          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeTodo" ' 
+	          . (($countScope=='todo')?'checked':'') . ' value="todo" />';         
+	      echo '</td>';
+	      echo '<td style="text-align:right; width:5%" class="tabLabel">';
+	      echo '<label for="countScopeNotClosed">' . i18n('titleCountNotClosed') . '&nbsp;</label>';
+	      echo '</td><td style="text-align:left;" class="tabLabel">';      
+	      echo '<input '
+	          . (($countScope=='notClosed')?'':'onChange="refreshTodayProjectsList();"') 
+	          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeNotClosed" ' 
+	          . (($countScope=='notClosed')?'checked':'') . ' value="notClosed" />';
+	      echo '</td>';
+	      echo '<td style="text-align:right; width:5%" class="tabLabel">';
+	      echo '<label for="countScopeAll">' . i18n('titleCountAll') . '&nbsp;</label>';
+	      echo '</td><td style="text-align:left;" class="tabLabel">';
+	      echo '<input '
+	          . (($countScope=='all')?'':'onChange="refreshTodayProjectsList();"') 
+	          .' type="radio" dojoType="dijit.form.RadioButton" name="countScope" id="countScopeAll" ' 
+	          . (($countScope=='all')?'checked':'') . ' value="all" />';
+        echo '</td>';
+      }
+      echo '</tr>';
       echo '</table></form>';          
-      $width=70;
+      $width=($print)?'50':'70';
       echo '<table align="center" style="width:95%">';
       echo '<tr>' .
            '  <td class="messageHeader" colspan="2">' . i18n('menuProject') . '</td>' . 
@@ -209,7 +217,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         $cptSubPrj=(isset($cptsubProject[$id]))?$cptsubProject[$id]:0;
         if ($show or $cptSubPrj>0) {
         	$goto="";
-          if ($show and securityCheckDisplayMenu(null,'Project') 
+          if (! $print and $show and securityCheckDisplayMenu(null,'Project') 
           //and securityGetAccessRightYesNo('menuProject', 'read', $prj)=="YES"
           and array_key_exists($id,$prjVisLst)
           ) {
@@ -218,9 +226,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           $proj=new Project($id);
           $healthColor=SqlList::getFieldFromId("Health", $proj->idHealth, "color");
           $healthName=SqlList::getNameFromId("Health", $proj->idHealth);
-          echo '<tr >' .
-             '  <td class="messageData" style="border-right:0px;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
-             '  <td class="messageData" style="width:14px;margin:0;padding:0;spacing:0;border-left:0px;" '. $goto . ' ><div class="colorHealth" style="background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div></td>' .
+          $styleHealth=($print)?'width:10px;height:10px;margin:1px;padding:0;-moz-border-radius:6px;border-radius:6px;border:1px solid #AAAAAA;':'';
+          echo '<tr style="text-align: center">' .
+             '  <td class="messageData" style="border-right:0px;text-align: left;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
+             '  <td class="messageData" style="width:14px;margin:0;padding:0;spacing:0;border-left:0px;" '. $goto . ' ><div class="colorHealth" style="'.$styleHealth.'background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div></td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
@@ -263,9 +272,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   
   $cptDisplayId=0;
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
-    global $cptDisplayId;
+    global $cptDisplayId, $print;
     if ($value==='') {return $value;}
-    $width=70;
+    $width=($print)?'60':'70';;
     $green=($allValue!=0 and $allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;
     $red=$width-$green;
 
@@ -275,7 +284,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $result.='<div style="position:absolute; width:' . $red . 'px;left:' . $green . 'px;background: #FFAAAA;">&nbsp;</div>';
     $result.='<div style="position:relative;">' . $value . '</div>';
     $result.='</div>';
-    if ($showTitle) {
+    if ($showTitle and !$print) {
       $result.='<div dojoType="dijit.Tooltip" connectId="displayProgress_' . $cptDisplayId . '" position="below">';
       $result.="<table>";
       if ($isWork) {
@@ -337,7 +346,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
-  	global $cptMax;
+  	global $cptMax, $print;
   	global $collapsedList;
   	$user=$_SESSION['user'];
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
@@ -369,12 +378,17 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listIssue);   
     $cptDisplayId=0;
+    if (! $print or !array_key_exists($divName, $collapsedList)) {
+    if (! $print) {
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
     echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
     echo ' onHide="saveCollapsed(\'' . $divName . '\');"';
     echo ' onShow="saveExpanded(\'' . $divName . '\');"';
     echo ' title="' . ucfirst(i18n($title)) . '"';
     echo '>';
+    } else {
+      echo '<div class="section">'.ucfirst(i18n($title)).'</div><br/><div>';
+    }    
     echo '<table align="center" style="width:95%">';
     echo '<tr>' . 
            ' <td class="messageHeader" width="6%">' . ucfirst(i18n('colId')) . '</td>' .  
@@ -426,7 +440,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $status=SqlList::getNameFromId('Status',$elt->idStatus);
       $status=($status=='0')?'':$status;
       $goto="";
-      if (securityCheckDisplayMenu(null,$class) 
+      if (! $print and securityCheckDisplayMenu(null,$class) 
       and securityGetAccessRightYesNo('menu' . $class, 'read', $elt)=="YES") {
         $goto=' onClick="gotoElement(' . "'" . $class . "','" . $elt->id . "'" . ');" style="cursor: pointer;" ';  
       }
@@ -439,7 +453,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       	$color='background-color:#FFFFAA;';         
       }
       echo '<tr ' . $goto . ' id="displayWork_' . $cptDisplayId . '" >';
-      if ($alertLevel!='NONE') {
+      if (!$print and $alertLevel!='NONE') {
         echo '<div dojoType="dijit.Tooltip" connectId="displayWork_' . $cptDisplayId . '" position="below">';
         echo $alertLevelArray['description'];
         echo '</div>';
@@ -458,16 +472,22 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     }
     echo "</table>";
     echo "</div><br/>";
+    }
   }  
 
   $today=new Today();
   $crit=array('idUser'=>$user->id, 'idle'=>'0');
   $todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
+  $print=false;
+  if (isset($_REQUEST['print'])) {
+  	$print=true;
+  }
 ?>      
 
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Today" />
 <div  class="container" dojoType="dijit.layout.BorderContainer">
-  <div style="overflow: auto;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+  <div style="overflow: <?php echo(!$print)?'auto':'hidden';?>;" id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
+    <?php if (!$print) {?>
     <div class="parametersButton">
 	    <button id="todayParametersButton" dojoType="dijit.form.Button" showlabel="false"
 	       title="<?php echo i18n('menuParameter');?>"
@@ -484,28 +504,40 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         </script>
       </button>
     </div>    
-    <?php $titlePane="Today_message"; ?>  
+    <?php }?>
+    <?php $titlePane="Today_message"; 
+    if (! $print or !array_key_exists($titlePane, $collapsedList)) {
+    if (! $print) {?>   
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
       id="<?php echo $titlePane;?>" 
       onHide="saveCollapsed('<?php echo $titlePane;?>');"
       onShow="saveExpanded('<?php echo $titlePane;?>');"
       title="<?php echo i18n('menuMessage');?>">  
-<?php showMessages();?>
+    <?php } else {?>
+      <div class="section"><?php echo i18n('menuMessage');?></div><br/><div>    
+    <?php }  
+      showMessages();?>
     </div>
-   <br/>
-<?php 
+   <br/><?php 
+    }
 foreach ($todayList as $todayItem) {
   if ($todayItem->scope=='static' and $todayItem->staticSection=='Projects') {
-    $titlePane="Today_project"; ?> 
+    $titlePane="Today_project"; 
+    if (! $print or !array_key_exists($titlePane, $collapsedList)) {
+    if (! $print) {?> 
     <div dojoType="dijit.TitlePane" 
       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
       id="<?php echo $titlePane;?>" 
       onHide="saveCollapsed('<?php echo $titlePane;?>');"
       onShow="saveExpanded('<?php echo $titlePane;?>');"
       title="<?php echo i18n('menuProject');?>">
-    <?php showProjects();?>
-    </div><br/><?php 
+    <?php } else {?>
+      <div class="section"><?php echo i18n('menuProject');?></div><br/><div>    
+    <?php } 
+      showProjects();?>
+    </div><br/><?php
+    }
   } else if ($todayItem->scope=='static' and $todayItem->staticSection=='AssignedTasks') {
     showAssignedTasks();
   } else if ($todayItem->scope=='static' and $todayItem->staticSection=='ResponsibleTasks') {
@@ -519,32 +551,49 @@ foreach ($todayList as $todayItem) {
   } else if ($todayItem->scope=='report') {
   	$rpt=new Report($todayItem->idReport);
   	$titlePane="Today_report_".$todayItem->id;  
-  	//echo '<div id="'.$titlePane.'_wait">... loading...</div>';
-    echo '<div dojoType="dijit.TitlePane" style="overflow-x:auto"'; 
-    echo ' open="'.( array_key_exists($titlePane, $collapsedList)?'false':'true').'"';
-    echo ' id="'.$titlePane.'"'; 
-    echo ' title="'.i18n('colReport').' &quot;'.i18n($rpt->name).'&quot;" >';  
-    echo ' <script type="dojo/connect" event="onHide" args="evt">';
-    echo ' saveCollapsed("'.$titlePane.'");';
-    echo ' setTimeout(\'dijit.byId("'.$titlePane.'").set("content","");\',100);';
-    echo ' </script>';
-  	echo ' <script type="dojo/connect" event="onShow" args="evt">';
-  	echo '   saveExpanded("'.$titlePane.'");';
-  	$params=TodayParameter::returnReportParameters($rpt);
-  	$paramsToday=TodayParameter::returnTodayReportParameters($todayItem);
-  	foreach ($paramsToday as $pName=>$pValue) {
-  		$params[$pName]=$pValue;
-  	}	
-  	$urlParam="";
-  	foreach ($params as $paramName=>$paramValue) {
-  		$urlParam.=($urlParam)?'&':'?';
-  		$urlParam.=$paramName.'='.$paramValue;
-  	}
-    echo '   loadReport("../report/'. $rpt->file.$urlParam.'","'.$titlePane.'");';
-    echo ' </script>';
-    echo '<img src="../view/css/images/treeExpand_loading.gif" />'; 
-  	echo '</div>';
-  	echo '<br/>';
+  	if (! $print or !array_key_exists($titlePane, $collapsedList)) {
+	    if (! $print) {
+		  	//echo '<div id="'.$titlePane.'_wait">... loading...</div>';
+		    echo '<div dojoType="dijit.TitlePane" style="overflow-x:auto"'; 
+		    echo ' open="'.( array_key_exists($titlePane, $collapsedList)?'false':'true').'"';
+		    echo ' id="'.$titlePane.'"'; 
+		    echo ' title="'.i18n('colReport').' &quot;'.i18n($rpt->name).'&quot;" >';  
+		    echo ' <script type="dojo/connect" event="onHide" args="evt">';
+		    echo ' saveCollapsed("'.$titlePane.'");';
+		    echo ' setTimeout(\'dijit.byId("'.$titlePane.'").set("content","");\',100);';
+		    echo ' </script>';
+		  	echo ' <script type="dojo/connect" event="onShow" args="evt">';
+		  	echo '   saveExpanded("'.$titlePane.'");';
+		  	$params=TodayParameter::returnReportParameters($rpt);
+		  	$paramsToday=TodayParameter::returnTodayReportParameters($todayItem);
+		  	foreach ($paramsToday as $pName=>$pValue) {
+		  		$params[$pName]=$pValue;
+		  	}	
+		  	$urlParam="";
+		  	foreach ($params as $paramName=>$paramValue) {
+		  		$urlParam.=($urlParam)?'&':'?';
+		  		$urlParam.=$paramName.'='.$paramValue;
+		  	}
+		    echo '   loadReport("../report/'. $rpt->file.$urlParam.'","'.$titlePane.'");';
+		    echo ' </script>';
+		    echo '<img src="../view/css/images/treeExpand_loading.gif" />';
+	    } else {
+	    	echo '<div class="section">'.i18n('colReport').' &quot;'.i18n($rpt->name).'&quot;</div><br/><div>';
+	      $params=TodayParameter::returnReportParameters($rpt);
+        $paramsToday=TodayParameter::returnTodayReportParameters($todayItem);
+        foreach ($paramsToday as $pName=>$pValue) {
+          $params[$pName]=$pValue;
+        } 
+        $urlParam="";
+        foreach ($params as $paramName=>$paramValue) {
+          $_REQUEST[$paramName]=$paramValue;
+        }    
+        $reportFile=explode('?',$rpt->file);
+        include '../report/'. $reportFile[0];
+	    }
+	  	echo '</div>';
+	  	echo '<br/>';
+	  }
   }
 } ?>
   </div>

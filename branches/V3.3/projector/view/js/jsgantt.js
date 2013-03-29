@@ -1326,7 +1326,6 @@ JSGantt.findObj = function (theObj, theDoc) {
  * @return {void}
  */
 JSGantt.changeFormat = function(pFormat,ganttObj) {
-alert("changeFormat("+pFormat+")");
   if(ganttObj) {
 	top.showWait();  
     if (ganttObj.getFormat()=='month' && ganttObj.getEndDateView() ) {
