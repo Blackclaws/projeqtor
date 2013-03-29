@@ -401,6 +401,8 @@ class Parameter extends SqlElement {
       	                       'paramMailTitleNote'=>'longtext',
       	                       'paramMailTitleAttachment'=>'longtext',
       	      	               'paramMailTitleDirect'=>'longtext',
+      	                       'paramMailTitleUser'=>'longtext',
+      	                       'paramMailBodyUser'=>'longtext',
       	                     'sectionCron'=>'section',
       	                       'cronDirectory'=>'text',
                                'cronSleepTime'=>'number',                            

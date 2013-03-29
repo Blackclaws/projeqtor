@@ -44,3 +44,10 @@ INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortO
 SELECT id, 'static','IssuerRequestorTasks',null,4,0 FROM `${prefix}resource` where isUser=1 and idle=0;
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','ProjectsTasks',null,5,0 FROM `${prefix}resource` where isUser=1 and idle=0;
+
+ALTER TABLE  `${prefix}parameter` 
+CHANGE parameterValue parameterValue varchar(4000);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'paramMailBodyUser', 'You are welcome to ${dbName} at <a href="${url}">${url}</a>.<br>Your login is <b>${login}</b>.<br/>Your password is initialized to <b>${password}</b><br/>You will have to change it on first connection.<br/><br/>In case of an issue contact your administrator at <b>${adminMail}</b>.'),
+(null,null, 'paramMailTitleUser', '[${dbName}] message from ${sender} : Your account information');
