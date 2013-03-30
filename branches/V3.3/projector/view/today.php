@@ -377,6 +377,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $issue= new Issue();
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listIssue);   
+    $session= new TestSession();
+    $listSession=$session->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listSession);   
     $cptDisplayId=0;
     if (! $print or !array_key_exists($divName, $collapsedList)) {
     if (! $print) {
@@ -419,7 +422,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         $echeance=($elt->actualEndDate)?$elt->actualEndDate:$elt->initialEndDate;
       } else if ($class=="Action" ) {
         $echeance=($elt->actualDueDate)?$elt->actualDueDate:$elt->initialDueDate;
-      } 
+      } else if ($class=="TestSession") {
+      	$echeance=$elt->startDate;
+      }
       if ($periodDays) {
       	if (! $echeance) {
       		if (! $periodNotSet) {
