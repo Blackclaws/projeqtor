@@ -390,9 +390,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			if ($included) {
 				$name=' id="' . $classObj . '_' . $col . '" name="' . $classObj . '_' . $col . $extName . '" ';
 				$nameBis=' id="' . $classObj . '_' . $col . 'Bis" name="' . $classObj . '_' . $col . 'Bis' . $extName . '" ';
+				$fieldId=$classObj . '_' . $col;
 			} else {
 				$name=' id="' . $col . '" name="' . $col . $extName . '" ';
 				$nameBis=' id="' . $col . 'Bis" name="' . $col . 'Bis' . $extName . '" ';
+				$fieldId=$col;
 			}
 			// prepare the javascript code to be executed
 			$colScript = $obj->getValidationScript($col);
@@ -720,14 +722,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			and substr($col,2,1)==strtoupper(substr($col,2,1))) {
 				// Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox
 				$displayComboButtonCol=$displayComboButton;
+				$displayDirectAccessButton=true;
 				$canCreateCol=false;
 				if ($comboDetail or strpos($attributes, 'readonly')!==false) {
 					$displayComboButtonCol=false;
 				}
 				if (strpos($obj->getFieldAttributes($col), 'nocombo')!==false) {
 					$displayComboButtonCol=false;
+					$displayDirectAccessButton=false;
 				}
-				if ($displayComboButtonCol) {
+				if ($displayComboButtonCol or $displayDirectAccessButton) {
 					$idMenu=($col=="idResourceSelect")?'menuResource':'menu' . substr($col,2);
 					$menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>$idMenu));
 					$crit=array();
@@ -747,6 +751,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						}
 					} else {
 						$displayComboButtonCol=false;
+						$displayDirectAccessButton=false;
 					}
 				}
 				if ($col=='idProject') {
@@ -818,7 +823,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						$critVal=SqlList::getNameFromId('Textable', $obj->idTextable, false);
 					}
 				}
-				if ($displayComboButtonCol) {
+				if ($displayComboButtonCol or $displayDirectAccessButton) {
 					$fieldWidth -= 20;
 				}
 				if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3')!==false) {
@@ -848,15 +853,37 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				htmlDrawOptionForReference($col, $val, $obj, $isRequired,$critFld, $critVal);
 				echo $colScript;
 				echo '</select>';
-				// TODO : Add rights management
 				if ($displayComboButtonCol) {
 					echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"';
 					echo ' title="' . i18n('showDetail') . '" ';
 					echo ' iconClass="iconView">';
 					echo ' <script type="dojo/connect" event="onClick" args="evt">';
-					echo '  showDetail("' . $col . '",' . (($canCreateCol)?1:0) . ');';
+				  echo '   if (clickTimer) clearTimeout(clickTimer);';
+          echo '   clickTimer = setTimeout(function() { showDetail("' . $col . '",' . (($canCreateCol)?1:0) . '); }, 300);';
 					echo ' </script>';
+					echo ' <script type="dojo/method" event="onDblClick" args="evt">';
+					echo '  clearTimeout(clickTimer);';
+					echo '  var linkedSelect=dijit.byId("'.$fieldId.'");';
+					echo '  if (linkedSelect && trim(linkedSelect.get("value")) ) {';
+					echo '    gotoElement("' . substr($col,2) . '","' .$val. '");';
+					echo '  } else {';
+					echo '  showAlert("'.i18n('cannotGoto').'");';
+          echo '  }';
+          echo ' </script>';
 					echo '</button>';
+				} else if ($displayDirectAccessButton) {
+					echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"';
+          echo ' title="' . i18n('showDirectAccess') . '" ';
+          echo ' iconClass="iconDirectAccess" >';
+          echo ' <script type="dojo/connect" event="onClick" args="evt">';
+          echo '  var linkedSelect=dijit.byId("'.$fieldId.'");';
+          echo '  if (linkedSelect && trim(linkedSelect.get("value")) ) {';
+          echo '    gotoElement("' . substr($col,2) . '","' .$val. '");';
+          echo '  } else {';
+          echo '  showAlert("'.i18n('cannotGoto').'");';
+          echo '  }';
+          echo ' </script>';
+          echo '</button>';
 				}
 				if ($hasOtherVersion) {
 					if ($obj->id and $canUpdate) {
