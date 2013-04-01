@@ -17,6 +17,12 @@
   if ( array_key_exists('listSaveDates',$_REQUEST) ) {
     $saveDates=true;
   }
+  if (! isset($portfolio)) {
+    $portfolio=false;
+  }
+  if ( array_key_exists('portfolio',$_REQUEST) ) {
+    $portfolio=true;
+  }
   $starDate="";
   $endDate="";
   if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
@@ -96,6 +102,11 @@
 
   $queryOrderBy .= $table . ".wbsSortable ";
 
+  if ($portfolio) {
+  	$queryWhere.=' and ( refType="Project" ';
+  	$queryWhere.=' or refType="Milestone" ';
+  	$queryWhere.=')';
+  }
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect

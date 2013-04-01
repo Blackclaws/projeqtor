@@ -36,6 +36,9 @@ $saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('
 $saveShowWork=$saveShowWorkObj->parameterValue;
 $saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
 $saveShowClosed=$saveShowClosedObj->parameterValue;
+if ($saveShowClosed) {
+	$_REQUEST['idle']=true;
+}
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>

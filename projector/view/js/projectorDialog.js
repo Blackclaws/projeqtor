@@ -3391,6 +3391,9 @@ function loadMenuBarItem(item,itemName) {
   } else if (item=='Planning') {
 	vGanttCurrentLine=-1;
     loadContent("planningMain.php","centerDiv");
+  } else if (item=='PortfolioPlanning') {
+	vGanttCurrentLine=-1;
+	loadContent("portfolioPlanningMain.php","centerDiv");
   } else if (item=='ResourcePlanning') {
 	vGanttCurrentLine=-1;
 	loadContent("resourcePlanningMain.php","centerDiv");
