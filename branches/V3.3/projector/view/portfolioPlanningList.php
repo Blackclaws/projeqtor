@@ -4,7 +4,7 @@
  *
  */
 require_once "../tool/projector.php";
-scriptLog('   ->/view/resourcePlanningList.php');
+scriptLog('   ->/view/portfolioPlanningList.php');
 
 $canPlan=false;
 $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'planning'));
@@ -36,25 +36,23 @@ $saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('
 $saveShowWork=$saveShowWorkObj->parameterValue;
 $saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
 $saveShowClosed=$saveShowClosedObj->parameterValue;
-$saveShowProjectObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowProject'));
-$saveShowProject=$saveShowProjectObj->parameterValue;
 if ($saveShowClosed) {
-  $_REQUEST['idle']=true;
+	$_REQUEST['idle']=true;
 }
 //$objectClass='Task';
 //$obj=new $objectClass;
 ?>
-   
+  
 <div id="mainPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
 	<div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv" height="27px">
 		<table width="100%" height="27px" class="listTitle" >
 		  <tr height="27px">
 		    <td width="50px" align="center">
 		      <span style="position:absolute; left:10px; top:7px">
-            <img src="css/images/iconResourcePlanning32.png" width="32" height="32" />
+            <img src="css/images/iconPortfolioPlanning32.png" width="32" height="32" />
           </span>
 		    </td>
-		    <td  width="120px"><span class="title"><?php echo i18n('menuResourcePlanning');?></span></td>
+		    <td><span class="title"><?php echo i18n('menuPortfolioPlanning');?></span></td>
 		    <td>   
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">
@@ -62,11 +60,12 @@ if ($saveShowClosed) {
 		            <td>
 		              <input type="hidden" id="objectClass" name="objectClass" value="" /> 
 		              <input type="hidden" id="objectId" name="objectId" value="" />
+                  <input type="hidden" id="portfolio" name="portfolio" value="true" />
 		              &nbsp;&nbsp;&nbsp;
 <?php if ($canPlan) { ?>
 		              <button id="planButton" dojoType="dijit.form.Button" showlabel="false"
 		                title="<?php echo i18n('buttonPlan');?>"
-		                iconClass="iconPlan" >
+		                iconClass="iconPlan" style="display:none">
 		                <script type="dojo/connect" event="onClick" args="evt">
                      showPlanParam();
                      return false;
@@ -118,7 +117,7 @@ if ($saveShowClosed) {
                          id="listPrint" name="listPrint"
                          iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          showPrint("../tool/jsonResourcePlanning.php", 'planning');
+                          showPrint("../tool/jsonPlanning.php?portfolio=true", 'planning');
                           </script>
                         </button>
                       </td>
@@ -128,32 +127,43 @@ if ($saveShowClosed) {
                          id="listPrintPdf" name="listPrintPdf"
                          iconClass="iconPdf" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          showPrint("../tool/jsonResourcePlanning_pdf.php", 'planning', null, 'pdf');
+                          //showPrint("../tool/jsonPlanning.php", 'planning', null, 'pdf');
+                           showPrint("../tool/jsonPlanning_pdf.php?portfolio=true", 'planning', null, 'pdf');
                           </script>
                         </button>
                       </td>
                       <td width="32px">
+                        <button title="<?php echo i18n('reportExportMSProject')?>"
+                         dojoType="dijit.form.Button"
+                         id="listPrintMpp" name="listPrintMpp"
+                         iconClass="iconMpp" showLabel="false" style="display:none">
+                          <script type="dojo/connect" event="onClick" args="evt">
+                          showPrint("../tool/jsonPlanning.php", 'planning', null, 'mpp');
+                          </script>
+                        </button>
                         <input type="hidden" id="outMode" name="outMode" value="" />
-                        <div dojoType="dijit.form.DropDownButton"
+                      </td>
+                      <td>
+                       <div dojoType="dijit.form.DropDownButton"
                              style="height: 20px; color:#202020;"  
                              id="planningColumnSelector" jsId="planningColumnSelector" name="planningColumnSelector" 
                              showlabel="false" class="" iconClass="iconColumnSelector"
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
                           <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
-									          <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" 
-                             dndType="column" dojotype="dojo.dnd.Source" 
+                            <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" dojotype="dojo.dnd.Source"  
+                             dndType="column"
                              withhandles="true" class="container">    
-									             <?php 
-									               $resourcePlanning=true; 
-									               include('../tool/planningColumnSelector.php')?>
-									          </div>       
-									        </div>
-									      </div>
+                               <?php 
+                                 $portfolioPlanning=true; 
+                                 include('../tool/planningColumnSelector.php')?>
+                            </div>       
+                          </div>
+                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="3" style="white-space:nowrap;">
+                      <td colspan="4" style="white-space:nowrap;">
                         <span title="<?php echo i18n('saveDates')?>" dojoType="dijit.form.CheckBox"
                            type="checkbox" id="listSaveDates" name="listSaveDates" class=""
                            <?php if ( $saveDates) {echo 'checked="checked"'; } ?>  >
@@ -177,7 +187,7 @@ if ($saveShowClosed) {
                   <?php echo i18n("labelShowWbs");?>
                   </td><td >
 		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="showWBS" name="showWBS" 
+                    type="checkbox" id="showWBS" name="showWBS"
                     <?php if ($saveShowWbs=='1') { echo ' checked="checked" '; }?> >
 		                <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowWbs',((this.checked)?'1':'0'));
@@ -195,29 +205,21 @@ if ($saveShowClosed) {
                       refreshJsonPlanning();
                     </script>
 		              </div>&nbsp;
-                  </td></tr><tr><td>
-                  <?php echo i18n("labelShowLeftWork");?>
+                  </td></tr>
+                  <?php if (strtoupper(Parameter::getGlobalParameter('displayResourcePlan'))!='NO') {?>
+                  <tr><td>
+                  <?php echo i18n("labelShowResource");?>
                   </td><td>
-                  <div title="<?php echo i18n('showWork')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowLeftWork" name="listShowLeftWork"
-                    <?php if ($saveShowWork=='1') { echo ' checked="checked" '; }?> >
+                  <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="listShowResource" name="listShowResource"
+                    <?php if ($saveShowResource=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
-                      saveUserParameter('planningShowWork',((this.checked)?'1':'0'));
-                      refreshJsonPlanning();
-                    </script>
-                  </div>&nbsp;
-                  </td></tr><tr><td>
-                  <?php echo i18n("labelShowProjectLevel");?>
-                  </td><td >
-                  <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowProject" name="listShowProject" 
-                    <?php if ($saveShowProject=='1') { echo ' checked="checked" '; }?> >
-                    <script type="dojo/method" event="onChange" >
-                      saveUserParameter('planningShowProject',((this.checked)?'1':'0'));
+                      saveUserParameter('planningShowResource',((this.checked)?'1':'0'));
                       refreshJsonPlanning();
                     </script>
                   </div>&nbsp;
                   </td></tr>
+                  <?php }?>
                   </table>
 		            </td>
 		          </tr>
@@ -233,7 +235,8 @@ if ($saveShowClosed) {
 		<div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" 
      style="display: none">
 		  <?php
-            include '../tool/jsonResourcePlanning.php';
+		        $portfolio=true;
+            include '../tool/jsonPlanning.php';
           ?>
 		</div>
 	</div>
@@ -243,7 +246,7 @@ if ($saveShowClosed) {
 	   <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" 
       style="width:425px; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
       id="leftGanttChartDIV" name="leftGanttChartDIV"
-      onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px';">
+      onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px';" onmousewheel="leftMouseWheel(event);">
      </div>
      <div dojoType="dijit.layout.ContentPane" region="center" 
       style="height:100%; overflow:hidden;" class="ganttDiv" 

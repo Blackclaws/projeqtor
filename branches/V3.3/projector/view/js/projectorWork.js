@@ -91,14 +91,14 @@ function refreshImputationPeriod(directDate) {
 	noRefreshImputationPeriod=true;
 	if (directDate) {
 		var year=directDate.getFullYear();
-		var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear());
+		var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
 		dijit.byId('yearSpinner').set('value',year);
 		dijit.byId('weekSpinner').set('value',week);
 	} else {
 		var year=dijit.byId('yearSpinner').get('value');
 		var week=dijit.byId('weekSpinner').get('value') + '';
 	}
-	if (week.length==1) {
+	if (week.length==1 || parseInt(week,10)<10) {
 		week='0' + week;
 	}
 	if (week=='00') {

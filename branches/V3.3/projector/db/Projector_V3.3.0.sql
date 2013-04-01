@@ -51,3 +51,25 @@ CHANGE parameterValue parameterValue varchar(4000);
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null,null, 'paramMailBodyUser', 'You are welcome to ${dbName} at <a href="${url}">${url}</a>.<br>Your login is <b>${login}</b>.<br/>Your password is initialized to <b>${password}</b><br/>You will have to change it on first connection.<br/><br/>In case of an issue contact your administrator at <b>${adminMail}</b>.'),
 (null,null, 'paramMailTitleUser', '[${dbName}] message from ${sender} : Your account information');
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(123,'menuPortfolioPlanning',7,'item',222,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 123, 1),
+(2, 123, 1),
+(3, 123, 1),
+(4, 123, 0),
+(5, 123, 0),
+(6, 123, 0),
+(7, 123, 0);
+
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`) VALUES
+(49, 'reportPortfolioGantt', 2, '../tool/jsonPlanning.php?print=true&portfolio=true', 215);
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `defaultValue`) VALUES
+(49, 'idProject', 'projectList', 10, 'currentProject'),
+(49, 'startDate', 'date', 20, 'today'),
+(49, 'endDate', 'date', 30, null),
+(49, 'format', 'periodScale', 40, 'week'),
+(49, 'milstoneType', 'milestoneTypeList', 50, '');
