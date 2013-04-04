@@ -109,7 +109,7 @@ if ($saveShowClosed) {
                   </table>
 		            </td>
                 <td>
-                  <table>
+                  <table >
                     <tr>
                       <td width="32px">
                         <button title="<?php echo i18n('printPlanning')?>"
@@ -178,48 +178,55 @@ if ($saveShowClosed) {
                   </table>
                 </td>
 		            <td>
-                  <div id="planResultDiv" style=" width: 260px;height: 10px;" 
+                  <div id="planResultDiv" style=" width: 200px;height: 10px;" 
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
                 </td>
 		            <td style="text-align: right; align: right;">
-		              <table width="100%"><tr><td>
-                  <?php echo i18n("labelShowWbs");?>
-                  </td><td >
-		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="showWBS" name="showWBS"
-                    <?php if ($saveShowWbs=='1') { echo ' checked="checked" '; }?> >
-		                <script type="dojo/method" event="onChange" >
-                      saveUserParameter('planningShowWbs',((this.checked)?'1':'0'));
-                      refreshJsonPlanning();
-                    </script>
-		              </div>&nbsp;
-		              </td></tr><tr><td>
-		              <?php echo i18n("labelShowIdle");?>
-                  </td><td>
-		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowIdle" name="listShowIdle"
-                    <?php if ($saveShowClosed=='1') { echo ' checked="checked" '; }?> >
-		                <script type="dojo/method" event="onChange" >
-                      saveUserParameter('planningShowClosed',((this.checked)?'1':'0'));
-                      refreshJsonPlanning();
-                    </script>
-		              </div>&nbsp;
-                  </td></tr>
-                  <?php if (strtoupper(Parameter::getGlobalParameter('displayResourcePlan'))!='NO') {?>
-                  <tr><td>
-                  <?php echo i18n("labelShowResource");?>
-                  </td><td>
-                  <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowResource" name="listShowResource"
-                    <?php if ($saveShowResource=='1') { echo ' checked="checked" '; }?> >
-                    <script type="dojo/method" event="onChange" >
-                      saveUserParameter('planningShowResource',((this.checked)?'1':'0'));
-                      refreshJsonPlanning();
-                    </script>
-                  </div>&nbsp;
-                  </td></tr>
-                  <?php }?>
+		              <table width="100%">
+                    <tr style="height:10px">
+                      <td><?php echo i18n("labelShowWbs");?></td>
+                      <td style="width:25px">
+					              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
+			                    type="checkbox" id="showWBS" name="showWBS"
+			                    <?php if ($saveShowWbs=='1') { echo ' checked="checked" '; }?> >
+					                <script type="dojo/method" event="onChange" >
+                            saveUserParameter('planningShowWbs',((this.checked)?'1':'0'));
+                            refreshJsonPlanning();
+                          </script>
+					              </div>&nbsp;
+		                  </td>
+                    </tr>
+                    <tr>
+                      <td><?php echo i18n("labelShowIdle");?></td>
+                      <td>
+					              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+			                    type="checkbox" id="listShowIdle" name="listShowIdle"
+			                    <?php if ($saveShowClosed=='1') { echo ' checked="checked" '; }?> >
+					                <script type="dojo/method" event="onChange" >
+                            saveUserParameter('planningShowClosed',((this.checked)?'1':'0'));
+                            refreshJsonPlanning();
+                          </script>
+					              </div>&nbsp;
+                      </td>
+                    </tr>                 
+                    <tr>
+                    <td colspan="2">
+                      <?php echo i18n("labelShowMilestone");?>                  
+				                <select dojoType="dijit.form.FilteringSelect" class="input" 
+				                  style="width: 150px;"
+				                  name="userName" id="userName"
+				                  value="" >
+				                  <script type="dojo/method" event="onChange" >
+                            saveUserParameter('planningShowMilstonee',this.value);
+                            refreshJsonPlanning();
+                          </script>                            
+                            <?php htmlDrawOptionForReference('idMilestoneType', '?');?>
+                            <option value="none"><?php echo i18n("none");?></option>
+                            <option value="all"><?php echo i18n("all");?></option>
+			                  </select>
+                      </td>
+                    </tr>
                   </table>
 		            </td>
 		          </tr>
