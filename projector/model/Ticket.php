@@ -241,6 +241,8 @@ class Ticket extends SqlElement {
     	  }
     	}
     }
+   
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -251,6 +253,16 @@ class Ticket extends SqlElement {
     return $result;
   }
   
+  public function deleteControl() { 
+    $result='';
+    if ($this->WorkElement and $this->WorkElement->realWork>0) {
+      $result.='<br/>' . i18n('msgUnableToDeleteRealWork');
+    }
+    if ($result=='') {
+      $result .= parent::deleteControl();
+    }
+    return $result;
+  }
   public function save() {
   	$old=new Ticket($this->id);
   	if (! trim($this->creationDateTime)) {
