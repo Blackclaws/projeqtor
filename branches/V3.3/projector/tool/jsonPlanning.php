@@ -102,9 +102,18 @@
 
   $queryOrderBy .= $table . ".wbsSortable ";
 
+  $showMilestone=false;
   if ($portfolio) {
   	$queryWhere.=' and ( refType="Project" ';
-  	$queryWhere.=' or refType="Milestone" ';
+    if (array_key_exists('showMilestone',$_REQUEST) ) {
+      $showMilestone=trim($_REQUEST['showMilestone']);
+    } else {
+  	  $showMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
+      $showMilestone=trim($showMilestoneObj->parameterValue);
+    }
+    if ($showMilestone) {
+  	  $queryWhere.=' or refType="Milestone" ';
+    }
   	$queryWhere.=')';
   }
   // constitute query and execute
@@ -136,6 +145,12 @@
     	$collapsedList=Collapsed::getCollaspedList();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
+        if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
+          $mile=new Milestone($line['refid']);
+          if ($mile->idMilestoneType!=$showMilestone) {
+          	continue;
+          }
+        }
         echo (++$nbRows>1)?',':'';
         echo  '{';
         $nbFields=0;
@@ -202,7 +217,7 @@
   }
 
   function displayGantt($result) {
-  	global $displayResource, $outMode;;
+  	global $displayResource, $outMode, $showMilestone, $portfolio;
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
       $showWbs=true;
@@ -243,6 +258,12 @@
       $resultArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
+        if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
+          $mile=new Milestone($line['refid']);
+          if ($mile->idMilestoneType!=$showMilestone) {
+            continue;
+          }
+        }
         if ($line["plannedwork"]>0 and $line["leftwork"]==0) {
           $line["plannedstartdate"]='';
           $line["plannedenddate"]='';
