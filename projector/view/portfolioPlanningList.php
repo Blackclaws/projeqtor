@@ -36,6 +36,9 @@ $saveShowWorkObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('
 $saveShowWork=$saveShowWorkObj->parameterValue;
 $saveShowClosedObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowClosed'));
 $saveShowClosed=$saveShowClosedObj->parameterValue;
+$saveShowMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
+$saveShowMilestone=$saveShowMilestoneObj->parameterValue;
+
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
 }
@@ -215,15 +218,14 @@ if ($saveShowClosed) {
                       <?php echo i18n("labelShowMilestone");?>                  
 				                <select dojoType="dijit.form.FilteringSelect" class="input" 
 				                  style="width: 150px;"
-				                  name="userName" id="userName"
-				                  value="" >
+				                  name="listShowMilestone" id="listShowMilestone">
 				                  <script type="dojo/method" event="onChange" >
-                            saveUserParameter('planningShowMilstonee',this.value);
+                            saveUserParameter('planningShowMilestone',this.value);
                             refreshJsonPlanning();
-                          </script>                            
-                            <?php htmlDrawOptionForReference('idMilestoneType', '?');?>
-                            <option value="none"><?php echo i18n("none");?></option>
-                            <option value="all"><?php echo i18n("all");?></option>
+                          </script>
+                            <OPTION value=" " <?php echo (! $saveShowMilestone)?'SELECTED':'';?>><?php echo i18n("paramNone");?></OPTION>                            
+                            <?php htmlDrawOptionForReference('idMilestoneType', $saveShowMilestone,null, true);?>
+                            <OPTION value="all" <?php echo ($saveShowMilestone=='all')?'SELECTED':'';?>><?php echo i18n("all");?></OPTION>
 			                  </select>
                       </td>
                     </tr>

@@ -141,6 +141,11 @@ function refreshJsonPlanning() {
       param=true;
     }
   }
+  if ( dijit.byId('listShowMilestone') ) {
+    url += (param)?"&":"?";
+    url += "showMilestone="+dijit.byId('listShowMilestone').get("value");
+    param=true;
+  }
   loadContent(url, "planningJsonData",'listForm',false);
 }
 
