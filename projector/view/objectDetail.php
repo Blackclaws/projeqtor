@@ -1898,10 +1898,10 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
 				. ",'" . Work::displayWork($assignment->assignedWork)*100 . "'"
 				. ",'" . Work::displayWork($assignment->realWork)*100 . "'"
 				. ",'" . Work::displayWork($assignment->leftWork)*100 . "'"
-				. ",'" . htmlEncodeJson($assignment->comment) . "'"
 				. ",'" . Work::displayShortWorkUnit() . "'"
 				. ');" '
 				. 'title="' . i18n('editAssignment') . '" class="smallButton"/> ';
+				echo '<input type="hidden" id="comment_assignment_'.$assignment->id.'" value="'.$assignment->comment.'" />';
 			}
 			if ($assignment->realWork==0 and $canUpdate and ! $print and $workVisible )  {
 				echo '  <img src="css/images/smallButtonRemove.png" '
