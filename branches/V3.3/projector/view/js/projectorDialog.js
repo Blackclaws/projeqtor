@@ -1205,7 +1205,7 @@ function addAssignment (unit) {
  */
 
 var editAssignmentLoading=false;
-function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, comment, unit) {
+function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, unit) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1233,7 +1233,12 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dojo.byId("assignmentAssignedWorkInit").value=assignedWork/100;
 	dijit.byId("assignmentRealWork").set('value',dojo.number.format(realWork/100));
 	dijit.byId("assignmentLeftWork").set('value',dojo.number.format(leftWork/100));
-	dijit.byId("assignmentComment").set('value',comment);
+	var comment=dojo.byId('comment_assignment_'+assignmentId);
+	if (comment) {
+	  dijit.byId("assignmentComment").set('value',comment.value);
+	} else {
+		dijit.byId("assignmentComment").set('value','');	
+	} 
 	dojo.byId("assignmentPlannedUnit").value=unit;
 	dojo.byId("assignmentLeftUnit").value=unit;
 	dojo.byId("assignmentRealUnit").value=unit;

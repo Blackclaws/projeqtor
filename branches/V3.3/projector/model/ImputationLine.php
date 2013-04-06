@@ -80,7 +80,10 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 		$work=new Work();
 		$workList=$work->getSqlElementsFromCriteria($crit,false);
 		$plannedWork=new PlannedWork();
-
+	  if ($showPlanned) {
+      $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
+    }
+		
 		// visibility security : hide line depending on access rights
 		if ($user->id != $resourceId and $scopeCode!='ALL') {
 			foreach ($assList as $id=>$ass) {
@@ -89,9 +92,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 				}
 			}
 		}
-		if ($showPlanned) {
-			$plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
-		}
+		
 		// Check if assignment exists for each work (may be closed, so make it appear)
 		foreach ($workList as $work) {
 			if ($work->idAssignment) {
@@ -285,8 +286,8 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 //scriptLog("      => ImputationLine->getParent($elt->refType#$elt->refId, result[], $direct)");		
 		$plan=null;
 		$user=$_SESSION['user'];
-//		$visibleProjectList=$user->getVisibleProjects();
-		$visibleProjectList=explode(', ', getVisibleProjectsList());
+		$visibleProjectList=$user->getVisibleProjects();
+		//$visibleProjectList=explode(', ', getVisibleProjectsList());
 		if ($elt->topId) {
 			$plan=new PlanningElement($elt->topId);
 		}
