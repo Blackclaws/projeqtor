@@ -72,4 +72,9 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (49, 'startDate', 'date', 20, 'today'),
 (49, 'endDate', 'date', 30, null),
 (49, 'format', 'periodScale', 40, 'week'),
-(49, 'milstoneType', 'milestoneTypeList', 50, '');
+(49, 'listShowMilestone', 'milestoneTypeList', 50, '');
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`) VALUES
+(1,49,1),
+(2,49,1),
+(3,49,1);

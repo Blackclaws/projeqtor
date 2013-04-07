@@ -1312,8 +1312,10 @@ function setSelectedProject(idProject, nameProject, selectionField) {
       load: function(data,args) { 
         addMessage(i18n("Project")+ "=" + nameProject );
         if (dojo.byId("GanttChartDIV")) {
-          if (dojo.byId("resourcePlanning")) {
+          if (dojo.byId("resourcePlanning") ) {
         	loadContent("resourcePlanningList.php", "listDiv", 'listForm');  
+          } else if (dojo.byId("portfolioPlanning") ) {
+          	loadContent("portfolioPlanningList.php", "listDiv", 'listForm');
           } else {
             loadContent("planningList.php", "listDiv", 'listForm');
           }

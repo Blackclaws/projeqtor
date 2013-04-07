@@ -143,6 +143,7 @@
     echo ' "items":[';
     if (Sql::$lastQueryNbRows > 0) {
     	$collapsedList=Collapsed::getCollaspedList();
+    	$topProjectArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
         if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
@@ -165,6 +166,12 @@
         $line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
         $line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
         $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
+        if ($line["reftype"]=="Project") {
+        	$topProjectArray[$line['refid']]=$line['id'];
+        } else if ($portfolio and $line["reftype"]=="Milestone" and $line["topreftype"]!='Project') {
+//debugLog("refname=".$line["refname"]." topid=".$line["topid"]." ".$line["topreftype"]."#".$line["toprefid"]." project=".$line["idproject"]);
+          $line["topid"]=$topProjectArray[$line['idproject']];
+        }
         foreach ($line as $id => $val) {
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
