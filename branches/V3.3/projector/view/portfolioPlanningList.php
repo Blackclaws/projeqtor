@@ -215,7 +215,7 @@ if ($saveShowClosed) {
                     </tr>                 
                     <tr>
                     <td colspan="2">
-                      <?php echo i18n("labelShowMilestone");?>                  
+                      <?php echo i18n("colListShowMilestone");?>                  
 				                <select dojoType="dijit.form.FilteringSelect" class="input" 
 				                  style="width: 150px;"
 				                  name="listShowMilestone" id="listShowMilestone">

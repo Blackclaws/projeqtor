@@ -374,6 +374,23 @@ foreach ($listParam as $param) {
     </td>
     </tr>    
 <?php 
+  } else if ($param->paramType=='milestoneTypeList') {
+    $defaultValue='';
+    $saveShowMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
+    $defaultValue=$saveShowMilestoneObj->parameterValue;
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td>
+    <select dojoType="dijit.form.FilteringSelect" class="input" 
+      style="width: 150px;"
+      name="<?php echo $param->name;?>" id="<?php echo $param->name;?>">
+      <OPTION value=" " <?php echo (! $defaultValue)?'SELECTED':'';?>><?php echo i18n("paramNone");?></OPTION>                            
+      <?php htmlDrawOptionForReference('idMilestoneType', $defaultValue,null, true);?>
+      <OPTION value="all" <?php echo ($defaultValue=='all')?'SELECTED':'';?>><?php echo i18n("all");?></OPTION>
+    </select>
+    </td></tr>
+<?php 
   } else if ($param->paramType=='showDetail') {
     $defaultValue='';
 ?>

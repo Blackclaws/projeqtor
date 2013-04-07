@@ -17,6 +17,12 @@
   if ( array_key_exists('listSaveDates',$_REQUEST) ) {
     $saveDates=true;
   }
+  if (! isset($portfolio)) {
+    $portfolio=false;
+  }
+  if ( array_key_exists('portfolio',$_REQUEST) ) {
+    $portfolio=true;
+  }
   $starDate="";
   $endDate="";
   if (array_key_exists('startDatePlanView',$_REQUEST) and array_key_exists('endDatePlanView',$_REQUEST)) {
@@ -95,7 +101,22 @@
   $queryFrom .= $table;
 
   $queryOrderBy .= $table . ".wbsSortable ";
-
+  
+  $showMilestone=false;
+  if ($portfolio) {
+    $queryWhere.=' and ( refType="Project" ';
+    if (array_key_exists('showMilestone',$_REQUEST) ) {
+      $showMilestone=trim($_REQUEST['showMilestone']);
+    } else {
+      $showMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
+      $showMilestone=trim($showMilestoneObj->parameterValue);
+    }
+    if ($showMilestone) {
+      $queryWhere.=' or refType="Milestone" ';
+    }
+    $queryWhere.=')';
+  }
+  
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
   $query='select ' . $querySelect
@@ -122,8 +143,15 @@
     echo ' "items":[';
     if (Sql::$lastQueryNbRows > 0) {
     	$collapsedList=Collapsed::getCollaspedList();
+    	$topProjectArray=array();
       while ($line = Sql::fetchLine($result)) {
         $line=array_change_key_case($line,CASE_LOWER);
+        if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
+          $mile=new Milestone($line['refid']);
+          if ($mile->idMilestoneType!=$showMilestone) {
+            continue;
+          }
+        }
         echo (++$nbRows>1)?',':'';
         echo  '{';
         $nbFields=0;
@@ -137,6 +165,12 @@
         $line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
         $line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
         $line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
+        $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
+        if ($line["reftype"]=="Project") {
+          $topProjectArray[$line['refid']]=$line['id'];
+        } else if ($portfolio and $line["reftype"]=="Milestone" and $line["topreftype"]!='Project') {
+          $line["topid"]=$topProjectArray[$line['idproject']];
+        }
         foreach ($line as $id => $val) {
           if ($val==null) {$val=" ";}
           if ($val=="") {$val=" ";}
@@ -189,7 +223,7 @@
   **/
 
   function displayGantt($result) {
-  	global $displayResource, $outMode;;
+  	global $displayResource, $outMode, $showMilestone, $portfolio;
     $showWbs=false;
     if (array_key_exists('showWBS',$_REQUEST) ) {
       $showWbs=true;
@@ -231,6 +265,12 @@
       $resultArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
+        if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
+          $mile=new Milestone($line['refid']);
+          if ($mile->idMilestoneType!=$showMilestone) {
+            continue;
+          }
+        }
         if ($line["plannedwork"]>0 and $line["leftwork"]==0) {
           $line["plannedstartdate"]='';
           $line["plannedenddate"]='';
