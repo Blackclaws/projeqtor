@@ -3699,6 +3699,12 @@ function showMailOptions() {
 		dijit.byId('dialogOtherMail').set('value',extractEmails(dijit.byId('attendees').get('value')));
 		dialogMailToOtherChange();
 	}
+	if (dojo.byId('objectClass').value=='Activity') {
+	  enableWidget('dialogMailToAssigned');
+	} else {
+	  disableWidget('dialogMailToAssigned');
+	  dijit.byId('dialogMailToAssigned').set('checked','');
+	}
 	dijit.byId("dialogMail").set('title',title);
 	dijit.byId("dialogMail").show();
 	

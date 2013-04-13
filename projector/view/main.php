@@ -2092,6 +2092,14 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                 <div id="dialogMailToManager" name="dialogMailToManager" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
               </td>
             </tr>
+             <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailToAssigned"><?php echo i18n("colMailToAssigned") ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <div id="dialogMailToAssigned" name="dialogMailToAssigned" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+              </td>
+            </tr>
             <tr>
               <td class="dialogLabel">
                 <label for="dialogMailToOther"><?php echo i18n("colMailToOther") ?>&nbsp;:&nbsp;</label>
