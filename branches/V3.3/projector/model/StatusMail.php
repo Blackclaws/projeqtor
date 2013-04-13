@@ -18,6 +18,7 @@ class StatusMail extends SqlElement {
   public $mailToProject;
   public $mailToLeader;
   public $mailToManager;
+  public $mailToAssigned;
   public $mailToOther;
   public $otherMail;
   
@@ -35,6 +36,7 @@ class StatusMail extends SqlElement {
     <th field="mailToProject" width="7%" formatter="booleanFormatter" >${mailToProject}</th>
     <th field="mailToLeader" width="7%" formatter="booleanFormatter" >${mailToLeader}</th>
     <th field="mailToManager" width="7%" formatter="booleanFormatter" >${mailToManager}</th>
+    <th field="mailToAssigned" width="7%" formatter="booleanFormatter" >${mailToAssigned}</th>
     <th field="mailToOther" width="7%" formatter="booleanFormatter" >${mailToOther}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
@@ -166,6 +168,16 @@ class StatusMail extends SqlElement {
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+    } else if ($colName=="mailToAssigned") {
+    	$colScript .= '<script type="dojo/connect" event="onClick" >';
+    	$colScript .= ' mailable=dijit.byId("idMailable");';
+    	//$colScript .= ' alert(mailable.get("value")+" => "+mailable.get("displayedValue"));';
+    	$colScript .= ' mVal=mailable.get("displayedValue");';
+    	$colScript .= ' if (this.checked && mVal!=i18n("Activity")) { ';
+    	$colScript .= '   showAlert(i18n("msgIncorrectReceiver"));';
+    	$colScript .= '   this.checked=false;';
+    	$colScript .= ' }'; 
+    	$colScript .= '</script>';
     }
     return $colScript;
   }

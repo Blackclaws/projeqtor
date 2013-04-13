@@ -64,6 +64,7 @@
     $mailToProject=(array_key_exists('dialogMailToProject', $_REQUEST))?true:false;
     $mailToLeader=(array_key_exists('dialogMailToLeader', $_REQUEST))?true:false;
     $mailToManager=(array_key_exists('dialogMailToManager', $_REQUEST))?true:false;
+    $mailToAssigned=(array_key_exists('dialogMailToAssigned', $_REQUEST))?true:false;
     $mailToOther=(array_key_exists('dialogMailToOther', $_REQUEST))?true:false;
     $otherMail=(array_key_exists('dialogOtherMail', $_REQUEST))?$_REQUEST['dialogOtherMail']:'';
     $otherMail=str_replace('"','',$otherMail);
@@ -77,6 +78,7 @@
     $directStatusMail->mailToLeader=$mailToLeader;
     $directStatusMail->mailToManager=$mailToManager;
     $directStatusMail->mailToOther=$mailToOther;
+    $directStatusMail->mailToAssigned=$mailToAssigned;
     $directStatusMail->otherMail=$otherMail;
     $directStatusMail->message=$message; // Attention, do not save this status mail
     $resultMail=$obj->sendMailIfMailable(false, false, false, false, false, $directStatusMail);

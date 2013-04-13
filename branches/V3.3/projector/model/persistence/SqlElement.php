@@ -2323,7 +2323,7 @@ abstract class SqlElement {
     foreach ($statusMailList as $statusMail) {
 	    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
 	    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0
-	    and $statusMail->mailToManager==0) {
+	    and $statusMail->mailToManager==0 and $statusMail->mailToAssigned==0) {
 	      continue; // exit not a status for mail sending (or disabled) 
 	    }
 	    if ($statusMail->mailToUser) {
@@ -2379,6 +2379,19 @@ abstract class SqlElement {
           $manager=new Affectable($project->idUser);
           $newDest = "###" . $manager->email . "###";
           if ($manager->email and strpos($dest,$newDest)===false) {
+            $dest.=($dest)?', ':'';
+            $dest.= $newDest;
+          }
+        }
+      }
+      if ($statusMail->mailToAssigned) {
+        $ass=new Assignment();
+        $crit=array('refType'=>get_class($this),'refId'=>$this->id);
+        $assList=$ass->getSqlElementsFromCriteria($crit);
+      	foreach ($assList as $ass) {
+          $res=new Resource($ass->idResource);
+          $newDest = "###" . $res->email . "###";
+          if ($res->email and strpos($dest,$newDest)===false) {
             $dest.=($dest)?', ':'';
             $dest.= $newDest;
           }

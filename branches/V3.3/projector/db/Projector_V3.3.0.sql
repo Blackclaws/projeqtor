@@ -78,3 +78,5 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (1,49,1),
 (2,49,1),
 (3,49,1);
+
+ALTER TABLE `${prefix}statusmail` ADD COLUMN `mailToAssigned` int(1) unsigned default 0;
