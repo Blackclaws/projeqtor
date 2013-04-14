@@ -64,7 +64,11 @@ $result=$note->save();
 
 if ($note->idPrivacy==1) { // send mail if new note is public
   $elt=new $refType($refId);
-	$elt->sendMailIfMailable(false,false,false,true,false);
+  if ($noteId) {
+  	$elt->sendMailIfMailable(false,false,false,false,false,false,true,false,false,false,false,true);
+  } else {
+	  $elt->sendMailIfMailable(false,false,false,false,true,false,false,false,false,false,false,true);
+  }
 }
 
 // Message of correct saving

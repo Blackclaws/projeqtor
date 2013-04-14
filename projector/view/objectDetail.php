@@ -2205,6 +2205,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 	foreach($list as $aff) {
 		$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
 		$canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
+		$idleClass=($aff->idle)?' idleClass':'';
 		if ($type=='Project') {
 			$name=SqlList::getNameFromId($type, $aff->idProject);
 		} else {
@@ -2213,7 +2214,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 		if ($aff->idResource!=$name) {
 			echo '<tr>';
 			if (! $print) {
-				echo '<td class="assignData" style="text-align:center;">';
+				echo '<td class="assignData'.$idleClass.'" style="text-align:center;">';
 				if ($canUpdate and ! $print) {
 					echo '  <img src="css/images/smallButtonEdit.png" '
 					. 'onClick="editAffectation(' . "'" . $aff->id . "'"
@@ -2232,6 +2233,10 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 					. ');" '
 					. 'title="' . i18n('removeAffectation') . '" class="smallButton"/> ';
 				}
+				if ($aff->idle) {
+					echo '  <img src="css/images/tabClose.gif" '
+          . 'title="' . i18n('colIdle') . '" class="smallButton"/> ';
+				}
 				echo '</td>';
 			}
 			$goto="";
@@ -2239,13 +2244,13 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 			and securityGetAccessRightYesNo('menuAffectation', 'read', '')=="YES") {
 				$goto=' onClick="gotoElement(\'Affectation\',\'' . $aff->id . '\');" style="cursor: pointer;" ';
 			}
-			echo '<td class="assignData" align="center">' . $aff->id . '</td>';
+			echo '<td class="assignData'.$idleClass.'" align="center">' . $aff->id . '</td>';
 			if ($idProj) {
-				echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId($type, $aff->idResource)) . '</td>';
+				echo '<td class="assignData'.$idleClass.'" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId($type, $aff->idResource)) . '</td>';
 			} else {
-				echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Project', $aff->idProject)) . '</td>';
+				echo '<td class="assignData'.$idleClass.'" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Project', $aff->idProject)) . '</td>';
 			}
-			echo '<td class="assignData" align="center">' . $aff->rate . '</td>';
+			echo '<td class="assignData'.$idleClass.'" align="center">' . $aff->rate . '</td>';
 			//echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
 			echo '</tr>';
 		}

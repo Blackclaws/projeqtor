@@ -314,6 +314,8 @@ abstract class SqlElement {
       }
       $statusChanged=false;
       $responsibleChanged=false;
+      $descriptionChange=false;
+      $resultChange=false;
       if (property_exists($this,'reference')) {
         $this->setReference(false, $old);
       }
@@ -342,8 +344,19 @@ abstract class SqlElement {
       		$responsibleChanged=true;
       	}
       }
-      if (($statusChanged or $responsibleChanged) and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
-        $mailResult=$this->sendMailIfMailable($newItem, $statusChanged, $responsibleChanged);
+      if (property_exists($this,'description') and ! $newItem) {
+        if ($this->description!=$old->description) {
+          $descriptionChange=true;
+        }
+      }
+     if (property_exists($this,'result') and ! $newItem) {
+        if ($this->result!=$old->result) {
+          $resultChange=true;
+        }
+      }
+      //if (($statusChanged or $responsibleChanged) and stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
+      if ( stripos($returnValue,'id="lastOperationStatus" value="OK"')>0 ) {
+        $mailResult=$this->sendMailIfMailable($newItem, $statusChanged, false, $responsibleChanged,false,false,false,$descriptionChange, $resultChange,false,false,true);
         if ($mailResult) {
           $returnValue=str_replace('${mailMsg}',' - ' . i18n('mailSent'),$returnValue);
         } else {
@@ -2280,7 +2293,10 @@ abstract class SqlElement {
    * @param void
    * @return status of mail, if sent
    */
-  public function sendMailIfMailable($newItem=false, $statusChange=false, $responsibleChange=false, $noteAdd=false, $attachmentAdd=false, $directStatusMail=null) {
+  public function sendMailIfMailable($newItem=false, $statusChange=false, $directStatusMail=null, 
+  $responsibleChange=false, $noteAdd=false, $attachmentAdd=false,
+  $noteChange=false, $descriptionChange=false, $resultChange=false, $assignmentAdd=false, $assignmentChange=false, 
+  $anyChange=false) {
     if (get_class($this)=='History') {
       return false; // exit : not for History
     }
@@ -2308,6 +2324,24 @@ abstract class SqlElement {
     }
     if ($attachmentAdd) {
       $crit.=" or idEvent='3' ";
+    }
+    if ($noteChange) {
+      $crit.=" or idEvent='4' ";
+    }
+    if ($descriptionChange) {
+      $crit.=" or idEvent='5' ";
+    }
+    if ($resultChange) {
+      $crit.=" or idEvent='6' ";
+    }
+    if ($assignmentAdd) {
+      $crit.=" or idEvent='7' ";
+    }
+    if ($assignmentChange) {
+      $crit.=" or idEvent='8' ";
+    }
+    if ($anyChange) {
+      $crit.=" or idEvent='9' ";
     }
     $crit.=")";
     $statusMail=new StatusMail();
@@ -2430,16 +2464,28 @@ abstract class SqlElement {
     $dest=str_replace('###','',$dest);
     if ($newItem) {
     	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNew');
+    } else if ($noteAdd) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNote');
+    } else if ($noteChange) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNoteChange');  
+    } else if ($assignmentAdd) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAssignment');
+    } else if ($assignmentChange) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAssignmentChange'); 
+    } else if ($attachmentAdd) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAttachment');
     } else if ($statusChange) {
     	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleStatus');
     } else if ($responsibleChange) {
     	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleResponsible');
-    } else if ($noteAdd) {
-    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleNote');
-    } else if ($attachmentAdd) {
-    	$paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAttachment');
+    } else if ($descriptionChange) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleDescription');
+    } else if ($resultChange) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleResult');
     } else if ($directStatusMail) {
       $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleDirect');
+    } else if ($anyChange) {
+      $paramMailTitle=Parameter::getGlobalParameter('paramMailTitleAnyChange');
     } else {
       $paramMailTitle=Parameter::getGlobalParameter('paramMailTitle'); // default
     }

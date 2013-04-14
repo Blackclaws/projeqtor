@@ -80,3 +80,24 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (3,49,1);
 
 ALTER TABLE `${prefix}statusmail` ADD COLUMN `mailToAssigned` int(1) unsigned default 0;
+
+ALTER TABLE `${prefix}event` ADD COLUMN `sortOrder` int(3) unsigned DEFAULT NULL;
+
+UPDATE `${prefix}event` SET `sortOrder`=10 WHERE id=3;
+UPDATE `${prefix}event` SET `sortOrder`=20 WHERE id=2;
+UPDATE `${prefix}event` SET `sortOrder`=60 WHERE id=1;
+INSERT INTO `${prefix}event` (`id`,`name`,`idle`, `sortOrder`) VALUES 
+(4,'noteChange',0,30),
+(5,'descriptionChange',0,70),
+(6,'resultChange',0,80),
+(7,'assignmentAdd',0,40),
+(8,'assignmentChange',0,50),
+(9,'anyChange',0,90);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'paramMailTitleNoteChange', '[${dbName}] A note has been modified on ${item} #${id} : "${name}"'),
+(null,null, 'paramMailTitleDescription', '[${dbName}] Description has been modified on ${item} #${id} : "${name}"'),
+(null,null, 'paramMailTitleResult', '[${dbName}] Result has been modified on ${item} #${id} : "${name}'), 
+(null,null, 'paramMailTitleAssignment', '[${dbName}] New assignment has been added on ${item} #${id} : "${name}"'),
+(null,null, 'paramMailTitleAssignmentChange', '[${dbName}] An assignment has been modified on ${item} #${id} : "${name}"'),
+(null,null, 'paramMailTitleAnyChange', '[${dbName}] ${item} #${id} has been modified : "${name}"');

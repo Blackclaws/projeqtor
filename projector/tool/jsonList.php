@@ -80,7 +80,7 @@
       if ($selected) {
         $list[$selected]=SqlList::getNameFromId($class, $selected);
       }
-      if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected);} 
+      if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
       $nbRows=0;
       // return result in json format
       if (! array_key_exists('required', $_REQUEST)) {
@@ -94,7 +94,12 @@
       }
       foreach ($list as $id=>$name) {
         if ($dataType=="idProject" and $sepChar!='no') {
-          $wbs=$wbsList[$id];
+          if (isset($wbsList[$id])) {
+        	  $wbs=$wbsList[$id];
+          } else {
+          	$wbsProj=new Project($id);
+          	$wbs=$wbsProj->sortOrder;
+          }
           $wbsTest=$wbs;
           $level=1;
           while (strlen($wbsTest)>3) {

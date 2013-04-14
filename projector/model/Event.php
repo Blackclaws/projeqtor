@@ -7,6 +7,7 @@ class Event extends SqlElement {
   // extends SqlElement, so has $id
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $sortOrder;
   public $idle;
   public $_isNameTranslatable = true;
    /** ==========================================================================
