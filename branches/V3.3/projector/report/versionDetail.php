@@ -51,7 +51,7 @@ if ($paramVersion) {
 
 if (checkNoData($lstVersion)) exit;
 
-$lstObj=array(new Ticket(), new Activity());
+$lstObj=array(new Ticket(), new Activity(), new Milestone(), new Requirement(), new TestSession());
 
 foreach ($lstVersion as $versId=>$versName) {
   echo '<table width="95%" align="center">';
@@ -84,9 +84,16 @@ foreach ($lstVersion as $versId=>$versName) {
   $sumDone='';
   $cpt=0;
 	foreach ($lstObj as $obj) {
-		$crit="(".$obj->getDatabaseColumnName('idTargetVersion')."=$versId";
-		if ($paramOtherVersion) {
+		if (property_exists($obj, 'idTargetVersion')) {
+			$crit="(".$obj->getDatabaseColumnName('idTargetVersion')."=$versId";
 			$scope='TargetVersion';
+		} else if (property_exists($obj, 'idVersion')) {
+      $crit="(".$obj->getDatabaseColumnName('idVersion')."=$versId";
+      $scope='Version';
+			
+		}
+		if ($paramOtherVersion) {
+			
       $vers=new OtherVersion();
       $crit.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
         ." where VERS.refType='".get_class($obj)."' and VERS.refId=".$obj->getDatabaseTableName().".id and scope='".$scope."'"

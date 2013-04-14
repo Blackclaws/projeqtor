@@ -408,7 +408,10 @@ label, .label {
   width: 1px;
   height: 1px;
 }
-
+ .idleClass {
+  background-color: #EEEEEE !important; 
+  /*text-decoration: line-through;*/
+}
 .menuTree {
   background-image: url(images/noimage.png);
   background-repeat: no-repeat;

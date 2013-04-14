@@ -29,7 +29,7 @@ class StatusMail extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameMailable" formatter="translateFormatter" width="15%" >${idMailable}</th>
     <th field="colorNameStatus" width="13%" formatter="colorNameFormatter">${newStatus}</th>
-    <th field="nameEvent" formatter="translateFormatter" width="13%" >${idMailable}</th>
+    <th field="nameEvent" formatter="translateFormatter" width="13%" >${orOtherEvent}</th>
     <th field="mailToContact" width="7%" formatter="booleanFormatter" >${mailToContact}</th>    
     <th field="mailToUser" width="7%" formatter="booleanFormatter" >${mailToUser}</th>
     <th field="mailToResource" width="7%" formatter="booleanFormatter" >${mailToResource}</th>

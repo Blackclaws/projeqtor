@@ -163,7 +163,7 @@ if (! $error and $type=='file') {
 
 if (! $error and $attachement->idPrivacy==1) { // send mail if new attachment is public
   $elt=new $refType($refId);
-	$mailResult=$elt->sendMailIfMailable(false,false,false,false,true);
+	$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,true,false,false,false,false,false,true);
 	if ($mailResult) {
 	  $result.=' - ' . i18n('mailSent');
 	}

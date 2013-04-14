@@ -33,7 +33,7 @@ $rate=($_REQUEST['affectationRate']);
 
 $idle=false;
 if (array_key_exists('affectationIdle',$_REQUEST)) {
-  $idle=true;
+  $idle=1;
 }
 Sql::beginTransaction();
 if (! $idTeam) {

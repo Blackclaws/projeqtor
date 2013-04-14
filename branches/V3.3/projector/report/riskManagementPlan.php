@@ -254,9 +254,15 @@ function listLinks($obj) {
   $lst=Link::getLinksAsListForObject($obj);
   $res='<table style="width:100%; margin:0 ; spacing:0 ; padding: 0">';
   foreach ($lst as $link) {
-  $obj=new $link['type']($link['id']);
-  $style=(isset($obj->done) and $obj->done)?'style="text-decoration: line-through;"':'';
-    $res.='<tr><td '. $style . '>' . substr($link['type'],0,1) . $link['id'] . '</td></tr>';
+    $obj=new $link['type']($link['id']);
+    $style=(isset($obj->done) and $obj->done)?'style="text-decoration: line-through;"':'';
+    if ($link['type']=='Action' or $link['type']=='Issue' or $link['type']=='Risk' or $link['type']=='Opportunity') {
+      $type=substr($link['type'],0,1);
+    } else {
+      //$type=substr(i18n($link['type']),0,10);
+      $type=substr($link['type'],0,10);
+    }
+    $res.='<tr><td '. $style . '>' . $type . $link['id'] . '</td></tr>';
   }
   $res.='</table>';
   return $res;

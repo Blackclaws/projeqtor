@@ -99,6 +99,13 @@ if (! $assignment->idProject) {
 
 $result=$assignment->save();
 
+$elt=new $assignment->refType($assignment->refId);
+if ($assignmentId) {
+  $elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,false,true,false);
+} else {
+  $elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,true,false,false);
+}
+  
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();

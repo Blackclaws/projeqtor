@@ -232,7 +232,7 @@ class User extends SqlElement {
     } 
     if ($item=='affectations') {
       $aff=new Affectation();
-      $critArray=array('idUser'=>(($this->id)?$this->id:'0'),'idle'=>'0');
+      $critArray=array('idUser'=>(($this->id)?$this->id:'0'));
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
