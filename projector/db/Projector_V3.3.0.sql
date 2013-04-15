@@ -101,3 +101,5 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'paramMailTitleAssignment', '[${dbName}] New assignment has been added on ${item} #${id} : "${name}"'),
 (null,null, 'paramMailTitleAssignmentChange', '[${dbName}] An assignment has been modified on ${item} #${id} : "${name}"'),
 (null,null, 'paramMailTitleAnyChange', '[${dbName}] ${item} #${id} has been modified : "${name}"');
+
+ALTER TABLE `${prefix}project` ADD COLUMN `fixPlanning` int(1) unsigned default 0;

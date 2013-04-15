@@ -22,6 +22,7 @@ class Project extends SqlElement {
   //public $paymentDelay;
   public $idStatus;
   public $idHealth;
+  public $fixPlanning;
   public $done;
   public $doneDate;
   public $idle;
@@ -610,6 +611,17 @@ class Project extends SqlElement {
   	return '(' . implode(', ',$arrayProj) . ')';
   }
 
+  public static function getFixedProjectList() {
+    $arrayProj=array();
+    $proj=new Project(); 
+    $critProj=array('fixPlanning'=>'1', 'idle'=>'0');
+    $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
+    foreach ($listProj as $proj) {
+        $arrayProj[]=$proj->id;
+    }
+    return '(' . implode(', ',$arrayProj) . ')';
+  }
+  
   public function getColor() {
     $color=null;
     if ($this->color) {
