@@ -613,6 +613,7 @@ class Project extends SqlElement {
 
   public static function getFixedProjectList() {
     $arrayProj=array();
+    $arrayProj[]=0;
     $proj=new Project(); 
     $critProj=array('fixPlanning'=>'1', 'idle'=>'0');
     $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
