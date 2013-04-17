@@ -618,7 +618,13 @@ class Project extends SqlElement {
     $critProj=array('fixPlanning'=>'1', 'idle'=>'0');
     $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
     foreach ($listProj as $proj) {
-        $arrayProj[]=$proj->id;
+      $arrayProj[]=$proj->id;
+      $sublist=$proj->getRecursiveSubProjectsFlatList(true);
+      if ($sublist and count($sublist)>0) {
+        foreach($sublist as $subId=>$subName) {
+          $arrayProj[]=$subId;
+        }
+      }
     }
     return '(' . implode(', ',$arrayProj) . ')';
   }
