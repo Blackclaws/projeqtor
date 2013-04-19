@@ -1572,9 +1572,12 @@ function drawGantt() {
 
 function runScript(refType, refId, id) {
 //console.log("runScript("+refType+", "+refId+", "+id+")");
-	if (waitingForReply)  {
+  if (waitingForReply)  {
 	showInfo(i18n("alertOngoingQuery"));
     return;
+  }
+  if (checkFormChangeInProgress() ) {
+	return false;
   }
   dojo.byId('objectClass').value=refType;
   dojo.byId('objectId').value=refId;

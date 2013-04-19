@@ -79,6 +79,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $countScope=$_SESSION['todayCountScope'];
     }
     if (count($prjLst)>0) {
+    	echo '<div style="border:1px solid red; width:100%; overflow-x:auto">';
       echo '<form id="todayProjectsForm" name="todayProjectsForm">';
       echo '<table align="center" style="width:95%">'; 
       echo '<tr><td style="text-align:left;width:10%" class="tabLabel" >';
@@ -244,7 +245,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              '</tr>';   
         }
       }
-      echo'</table>';
+      echo '</table>';
+      echo '</div>';
     }
   }
 
