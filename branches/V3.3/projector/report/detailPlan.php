@@ -73,6 +73,7 @@ foreach ($lstWork as $work) {
   }
   if (! array_key_exists($work->idProject,$result[$work->idResource])) {
     $result[$work->idResource][$work->idProject]=array();
+    $realDays[$work->idResource][$work->idProject]=array();
   }
   $ref=$work->refType . "#" . $work->refId;
   if (! array_key_exists($ref,$activities)) {
@@ -80,10 +81,11 @@ foreach ($lstWork as $work) {
   }
   if (! array_key_exists($ref,$result[$work->idResource][$work->idProject])) {
     $result[$work->idResource][$work->idProject][$ref]=array();
+    $realDays[$work->idResource][$work->idProject][$ref]=array();
   }  
   if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject][$ref])) {
     $result[$work->idResource][$work->idProject][$ref][$work->day]=0;
-    $realDays[$work->idResource][$work->day]='real';
+    $realDays[$work->idResource][$work->idProject][$ref][$work->day]='real';
   } 
   $result[$work->idResource][$work->idProject][$ref][$work->day]+=$work->work;
 }
@@ -100,6 +102,7 @@ foreach ($lstPlanWork as $work) {
   }
   if (! array_key_exists($work->idProject,$result[$work->idResource])) {
     $result[$work->idResource][$work->idProject]=array();
+    $realDays[$work->idResource][$work->idProject]=array();
   }
   $ref=$work->refType . "#" . $work->refId;
   if (! array_key_exists($ref,$activities)) {
@@ -107,11 +110,12 @@ foreach ($lstPlanWork as $work) {
   }
   if (! array_key_exists($ref,$result[$work->idResource][$work->idProject])) {
     $result[$work->idResource][$work->idProject][$ref]=array();
+    $realDays[$work->idResource][$work->idProject][$ref]=array();
   }
   if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject][$ref])) {
     $result[$work->idResource][$work->idProject][$ref][$work->day]=0;
   }
-  if (! array_key_exists($work->day,$realDays[$work->idResource])) { // Do not add planned if real exists 
+  if (! array_key_exists($work->day,$realDays[$work->idResource][$work->idProject][$ref])) { // Do not add planned if real exists 
     $result[$work->idResource][$work->idProject][$ref][$work->day]+=$work->work;
   }
 }
@@ -205,7 +209,7 @@ foreach ($resources as $idR=>$nameR) {
 		        if ($days[$day]=="off") {
 		          $style=$weekendStyle;
 		        } else {
-		          if (! array_key_exists($day, $realDays[$idR]) 
+		          if (! array_key_exists($day, $realDays[$idR][$idP][$idA]) 
 		          and array_key_exists($day,$result[$idR][$idP][$idA])) {
 		            $style=$plannedStyle;
 		            $ital=true;

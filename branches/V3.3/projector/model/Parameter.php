@@ -359,6 +359,8 @@ class Parameter extends SqlElement {
       	                       'referenceFormatPrefix'=>'text',
       	                       'referenceFormatNumber'=>'number',
                                'changeReferenceOnTypeChange'=>'list',
+      	                       'documentReferenceFormat'=>'text',
+      	                       'versionReferenceSuffix'=>'text',
       	                     'sectionLocalization'=>'section',
       	                       'paramDefaultLocale'=>'list',
       	                       'paramDefaultTimezone'=>'text',

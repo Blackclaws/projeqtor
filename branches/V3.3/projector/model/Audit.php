@@ -121,7 +121,9 @@ class Audit extends SqlElement {
     $audit->duration=date('H:i:s',strtotime($audit->lastAccess)-strtotime($audit->connection)-3600);
     //$duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
     //$audit->duration=$duration->format('%H%I%S');
-    
+    $audit->requestDisconnection=0;
+    $audit->idle=0;
+    $audit->auditDay=date('Ymd');
   	$result=$audit->save();
   }
   
@@ -148,7 +150,7 @@ class Audit extends SqlElement {
 	        $params["path"], $params["domain"],
 	        $params["secure"], $params["httponly"]);
      }
-     session_destroy();
+     @session_destroy();
    }  
    
   static function getBrowser() { 
