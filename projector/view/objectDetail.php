@@ -1103,7 +1103,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 			echo '<td class="assignData" style="text-align:center; white-space: nowrap;">';
 			if (! $print) {
 				echo '<a href="../tool/download.php?class=DocumentVersion&id='. $version->id . '"';
-				echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
+				echo ' target="printFrame" title="' . i18n('helpDownload') . "\n". $version->fullName. '"><img src="css/images/smallButtonDownload.png" /></a>';
 			}
 			if ($canUpdate and ! $print) {
 				echo '  <img src="css/images/smallButtonEdit.png" '

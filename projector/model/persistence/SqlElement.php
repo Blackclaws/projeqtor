@@ -2863,6 +2863,7 @@ abstract class SqlElement {
   
   public function setReference($force=false, $old=null) {
 //scriptLog('SqlElement::setReference');
+//debugLog(get_class($this).' #'.$this->id);
     if (! property_exists($this,'reference')) {
       return;
     }
@@ -2917,13 +2918,23 @@ abstract class SqlElement {
   		$num=$numMax;
   	}  	
   	$this->reference=$prefix.$num;
-  	if ($force) {
-  	  $this->updateSqlElement();
+//debugLog('  => ref='.$this->reference);
+  	if (get_class($this)=='Document' and property_exists($this, 'documentReference')) {
+  		$fmtDocument=Parameter::getGlobalParameter('documentReferenceFormat');
+  		$docRef=str_replace(array('{PROJ}',              '{TYPE}',      '{NUM}', '{NAME}'), 
+  		                    array($projObj->projectCode, $typeObj->code, $num,   $this->name),
+  		                    $fmtDocument);
+  	  $this->documentReference=$docRef;
   	}
-  	$mutex->release();
-  	
+  	if ($force) {
+      $this->updateSqlElement();
+//debugLog('  => update');
+    }
+    $mutex->release();
+    
   }
   
+
   public function setDefaultResponsible() {
   	if (get_class($this)!='Project' and property_exists($this,'idResource') and property_exists($this,'idProject') 
   	and ! trim($this->idResource) and trim($this->idProject)) {

@@ -81,16 +81,17 @@ class AuditSummary extends SqlElement {
   	$result=$summary->save();
   	return $result;
   }
-  
+    
    static function finishOldSessions($day) {
    	 $crit="auditDay < '" . $day . "' and idle=0";
    	 $audit=new Audit();
    	 $list=$audit->getSqlElementsFromCriteria(null, false, $crit);
    	 $delay=Parameter::getGlobalParameter('alertCheckTime');
+   	 if (! $delay or $delay < 30) { $delay==30 ;}
    	 foreach ($list as $audit) {
    	 	 $duration=strtotime(date('Y-m-d'))-strtotime($audit->lastAccess);
        if ($duration>5*$delay) { // Very old connection, idle now, must be closed
-   	 	   $audit->requestDisconnection=1;
+    	 	 //$audit->requestDisconnection=1;
          $audit->idle=1;
    	 	   $audit->disconnection=$audit->lastAccess;
          $res=$audit->save();

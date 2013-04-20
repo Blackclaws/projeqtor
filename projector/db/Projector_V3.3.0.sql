@@ -103,3 +103,9 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null,null, 'paramMailTitleAnyChange', '[${dbName}] ${item} #${id} has been modified : "${name}"');
 
 ALTER TABLE `${prefix}project` ADD COLUMN `fixPlanning` int(1) unsigned default 0;
+
+ALTER TABLE `${prefix}document` ADD COLUMN `documentReference` varchar(400);
+
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'documentReferenceFormat', '{PROJ}-{TYPE}-{NUM}-{NAME}'),
+(null,null, 'versionReferenceSuffix', '-{VERS}');

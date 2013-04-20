@@ -67,12 +67,16 @@ $result=array();
 $projects=array();
 $projectsColor=array();
 $resources=array();
+$capacity=array();
+$workDayResource=array();
 $realDays=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
     $realDays[$work->idResource]=array();
+    $workDayResource[$work->idResource]=array();
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
@@ -81,19 +85,29 @@ foreach ($lstWork as $work) {
   if (! array_key_exists($work->idProject,$result[$work->idResource])) {
     $result[$work->idResource][$work->idProject]=array();
   }
+  if (! array_key_exists($work->idProject,$realDays[$work->idResource])) {
+    $realDays[$work->idResource][$work->idProject]=array();
+  }
   if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject])) {
     $result[$work->idResource][$work->idProject][$work->day]=0;
-    $realDays[$work->idResource][$work->day]='real';
+    $realDays[$work->idResource][$work->idProject][$work->day]='real';
   } 
+  if (! array_key_exists($work->day,$workDayResource[$work->idResource])) {
+    $workDayResource[$work->idResource][$work->day]=0;
+  }
   $result[$work->idResource][$work->idProject][$work->day]+=$work->work;
+  $workDayResource[$work->idResource][$work->day]+=$work->work;
 }
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
+$today=date('Ymd');
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
     $realDays[$work->idResource]=array();
+    $workDayResource[$work->idResource]=array();
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
@@ -102,11 +116,18 @@ foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idProject,$result[$work->idResource])) {
     $result[$work->idResource][$work->idProject]=array();
   }
+  if (! array_key_exists($work->idProject,$realDays[$work->idResource])) {
+    $realDays[$work->idResource][$work->idProject]=array();
+  }
   if (! array_key_exists($work->day,$result[$work->idResource][$work->idProject])) {
     $result[$work->idResource][$work->idProject][$work->day]=0;
   }
-  if (! array_key_exists($work->day,$realDays[$work->idResource])) { // Do not add planned if real exists 
+  if (! array_key_exists($work->day,$workDayResource[$work->idResource])) {
+    $workDayResource[$work->idResource][$work->day]=0;
+  }
+  if (! array_key_exists($work->day,$realDays[$work->idResource][$work->idProject]) or ($work->day>$today and $workDayResource[$work->idResource][$work->day]+$work->work<=$capacity[$work->idResource]) ) { // Do not add planned if real exists 
     $result[$work->idResource][$work->idProject][$work->day]+=$work->work;
+    $workDayResource[$work->idResource][$work->day]+=$work->work;
   }
 }
 
@@ -190,7 +211,7 @@ foreach ($resources as $idR=>$nameR) {
 	        if ($days[$day]=="off") {
 	          $style=$weekendStyle;
 	        } else {
-	          if (! array_key_exists($day, $realDays[$idR]) 
+	          if (! isset($realDays[$idR][$idP][$day]) 
 	          and array_key_exists($day,$result[$idR][$idP])) {
 	            $style=$plannedStyle;
 	            $ital=true;

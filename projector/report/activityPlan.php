@@ -1,6 +1,6 @@
 <?php
 include_once '../tool/projector.php';
-//echo "detailPlan.php";
+//echo "activityPlan.php";
 
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
@@ -75,16 +75,18 @@ foreach ($lstWork as $work) {
   }
   if (! array_key_exists($ref,$result[$work->idProject])) {
     $result[$work->idProject][$ref]=array();
+    $realDays[$work->idProject][$ref]=array();
   }
   if (! array_key_exists($ref,$activities)) {
     $activities[$ref]=SqlList::getNameFromId($work->refType,  $work->refId);
   }
   if (! array_key_exists($work->idResource,$result[$work->idProject][$ref])) {
     $result[$work->idProject][$ref][$work->idResource]=array();
+    $realDays[$work->idProject][$ref][$work->idResource]=array();
   }  
   if (! array_key_exists($work->day,$result[$work->idProject][$ref][$work->idResource])) {
     $result[$work->idProject][$ref][$work->idResource][$work->day]=0;
-    $realDays[$work->idResource][$work->day]='real';
+    $realDays[$work->idProject][$ref][$work->idResource][$work->day]='real';
   } 
   $result[$work->idProject][$ref][$work->idResource][$work->day]+=$work->work;
 }
@@ -106,14 +108,16 @@ foreach ($lstPlanWork as $work) {
   }
   if (! array_key_exists($ref,$result[$work->idProject])) {
     $result[$work->idProject][$ref]=array();
+    $realDays[$work->idProject][$ref]=array();
   }
   if (! array_key_exists($work->idResource,$result[$work->idProject][$ref])) {
     $result[$work->idProject][$ref][$work->idResource]=array();
+    $realDays[$work->idProject][$ref][$work->idResource]=array();
   }
   if (! array_key_exists($work->day,$result[$work->idProject][$ref][$work->idResource])) {
     $result[$work->idProject][$ref][$work->idResource][$work->day]=0;
   }
-  if (! array_key_exists($work->day,$realDays[$work->idProject])) { // Do not add planned if real exists 
+  if (! array_key_exists($work->day,$realDays[$work->idProject][$ref][$work->idResource])) { // Do not add planned if real exists 
   	 $result[$work->idProject][$ref][$work->idResource][$work->day]+=$work->work;
   }
 }
@@ -228,7 +232,7 @@ foreach ($projects as $idP=>$nameP) {
 	        if ($days[$day]=="off") {
 	          $style=$weekendStyle;
 	        } else {
-	          if ( ( ! isset($realDays[$idR]) or ! array_key_exists($day, $realDays[$idR]) ) 
+	          if (  ! array_key_exists($day, $realDays[$idP][$idA][$idR])  
 	          and array_key_exists($day,$result[$idP][$idA][$idR])) {
 	            $style=$plannedStyle;
 	            $ital=true;

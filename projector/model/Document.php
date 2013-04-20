@@ -8,6 +8,7 @@ class Document extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
+  public $documentReference;
   public $idProject;
   public $idProduct;
   public $idDocumentDirectory;
@@ -65,6 +66,7 @@ class Document extends SqlElement {
     "revision"=>"hidden",
     "draft"=>"hidden",
     "idStatus"=>"readonly",
+    "documentReference"=>"readonly"
    );
    
    private static $_colCaptionTransposition = array('idDocumentType' => 'type',
@@ -204,6 +206,9 @@ class Document extends SqlElement {
   public function save() {
   	$old=new Document($this->id);
   	$sep=Parameter::getGlobalParameter('paramPathSeparator');
+  	if ($old->name!=$this->name) {
+  		$this->documentReference=str_replace($old->name, $this->name, $this->documentReference);
+  	}
   	$result=parent::save();
   	if ($old->idDocumentDirectory!=$this->idDocumentDirectory) {
   		// directory changed, must must files !
@@ -221,6 +226,13 @@ class Document extends SqlElement {
 	  		  rename($oldLoc.$sep.$vers->fileName.'.'.$vers->id,$newLoc.$sep.$vers->fileName.'.'.$vers->id);
 	  		}
   		}
+  	}
+  	if ($old->documentReference!=$this->documentReference) {
+  	  $vers=new DocumentVersion();
+      $versList=$vers->getSqlElementsFromCriteria(array('idDocument'=>$this->id));
+      foreach ($versList as $vers) {
+        $vers->save(true);
+      }
   	}
   	return $result;
   }

@@ -84,7 +84,7 @@ class DocumentVersion extends SqlElement {
   }
   
   
-  function save() {
+  function save($fromDoc=false) {
     $mode="";
   	if ($this->id) {
   		$this->updateDateTime=Date('Y-m-d H:i:s');
@@ -95,7 +95,14 @@ class DocumentVersion extends SqlElement {
   	}
   	$doc=new Document($this->idDocument);
   	$saveDoc=false;
-  	$this->fullName=substr($doc->name."_".$this->name,0,$this->getDataLength('fullName'));
+  	$suffix=Parameter::getGlobalParameter('versionReferenceSuffix');
+  	$this->fullName=$doc->documentReference.str_replace('{VERS}',$this->name,$suffix);
+  	$pos=strrpos($this->fileName,'.');
+  	if ($pos) {
+  	  $this->fullName.=substr($this->fileName,$pos);
+  	}
+  	$this->fullName=substr($this->fullName,0,$this->getDataLength('fullName'));
+  	
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -126,9 +133,10 @@ class DocumentVersion extends SqlElement {
     	$doc->idle=$st->setIdleStatus;
       $saveDoc=true;
     }
-    if ($saveDoc) {
+    if ($saveDoc and !$fromDoc) {
       $doc->save();
     }
+    
     // Inset approvers from document if not existing (on creation)
     if ($mode=='insert') {
       $approver=new Approver();
