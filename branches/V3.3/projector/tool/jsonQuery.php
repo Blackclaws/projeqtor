@@ -99,7 +99,7 @@
         }
     }
 
-    if ($objectClass=='Version' and $comboDetail) {
+    if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {
     	// No limit 
     } else {
       $queryWhere.= ($queryWhere=='')?'(':' and (';

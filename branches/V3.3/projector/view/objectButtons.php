@@ -127,11 +127,13 @@
         </script>
       </button>    
     <?php } 
-    $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>get_class($obj)));
+    $clsObj=get_class($obj);
+    if ($clsObj=='TicketSimple') {$clsObj='Ticket';}
+    $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>$clsObj));
     if ($mailable and $mailable->id) {
     ?>
      <button id="mailButton" dojoType="dijit.form.Button" showlabel="false"
-       title="<?php echo i18n('buttonMail', array(i18n($_REQUEST['objectClass'])));?>"
+       title="<?php echo i18n('buttonMail', array(i18n($clsObj)));?>"
        <?php if ($noselect) {echo "disabled";} ?>
        iconClass="dijitEditorIcon dijitEditorIconMail" >
         <script type="dojo/connect" event="onClick" args="evt">

@@ -215,7 +215,64 @@ abstract class SqlElement {
                                   "ActionType"=>"control", 
                                   "IssueType"=>"control")
   );
-
+  private static $_closeRelationShip=array(
+    "AccessScopeRead" =>    array("AccessProfile"=>"control"),
+    "AccessScopeCreate" =>  array("AccessProfile"=>"control"),
+    "AccessScopeUpdate" =>  array("AccessProfile"=>"control"),
+    "AccessScopeDelete" =>  array("AccessProfile"=>"control"),
+    "Activity" =>           array("Milestone"=>"control", 
+                                  "Activity"=>"control", 
+                                  "Ticket"=>"control",
+                                  "Assignment"=>"cascade"),
+    "Document" =>           array("DocumentVersion"=>"cascade"),
+    "DocumentDirectory" =>  array("Document"=>"control",
+                                  "DocumentDirectory"=>"control"),
+    "Product" =>            array("Version"=>"control",
+                                  "Requirement"=>"cascade",
+                                  "TestCase"=>"cascade",
+                                  "TestSession"=>"control"),
+    "Project" =>            array("Action"=>"control",
+                                  "Activity"=>"control",
+                                  "Affectation"=>"cascade",
+                                  "Document"=>"cascade",
+                                  "Issue"=>"control",
+                                  "IndividualExpense"=>"cascade",
+                                  "ProjectExpense"=>"cascade",
+                                  "Term"=>"control",
+                                  "Bill"=>"control",
+                                  "Milestone"=>"control",
+                                  "Project"=>"control", 
+                                  "Risk"=>"control", 
+                                  "Ticket"=>"control",
+                                  "Decision"=>"cascade",
+                                  "Meeting"=>"cascade",
+                                  "VersionProject"=>"cascade",
+                                  "Question"=>"cascade",
+                                  "Requirement"=>"cascade",
+                                  "TestCase"=>"cascade",
+                                  "TestSession"=>"control"),
+    "Requirement" =>        array("Requirement"=>"control"),
+    "Resource" =>           array("Action"=>"control", 
+                                  "Activity"=>"control",
+                                  "Affectation"=>"cascade",
+                                  "Assignment"=>"cascade",
+                                  "Issue"=>"control",
+                                  "Milestone"=>"control", 
+                                  "Risk"=>"control", 
+                                  "Ticket"=>"control",
+                                  "Decision"=>"cascade",
+                                  "Meeting"=>"cascade",
+                                  "Question"=>"cascade",
+                                  "Requirement"=>"cascade",
+                                  "TestCase"=>"cascade",
+                                  "TestSession"=>"control"),
+    "TestCase" =>           array("TestCase"=>"cascade",
+                                  "TestCaseRun"=>"cascade" ),
+    "TestSession" =>        array("TestCaseRun"=>"cascade" ),
+    "User" =>               array("Affectation"=>"cascade"),
+    "Version" =>            array("VersionProject"=>"cascade",
+                                  "TestSession"=>"control")
+  );
 
   /** =========================================================================
    * Constructor. Protected because this class must be extended.
@@ -2224,6 +2281,41 @@ abstract class SqlElement {
         }
       }
     }
+    // Control for Closed item that all items are closed
+    if (property_exists($this,'idle') and $this->idle) {
+      $relationShip=self::$_closeRelationShip;
+      if (array_key_exists(get_class($this),$relationShip)) {
+      	$objects='';
+      	foreach ( $relationShip[get_class($this)] as $object=>$mode) {
+      		if ($mode=='control' and property_exists($object,'idle')) {
+            $where=null;
+            $obj=new $object();
+            $crit=array('id' . get_class($this) => $this->id, 'idle'=>'0');
+            if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+	            $crit=array("refType"=>get_class($this), "refId"=>$this->id);
+	          }
+	          if ($object=="Dependency") {
+	            $crit=null;
+	            $where="idle=0 and ((predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . $this->id .")"
+	             . " or (successorRefType='" . get_class($this) . "' and successorRefId=" . $this->id ."))"; 
+	          }
+	          if ($object=="Link") {
+	            $crit=null;
+	            $where="idle=0 and ((ref1Type='" . get_class($this) . "' and ref1Id=" . Sql::fmtId($this->id) .")"
+	             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) ."))"; 
+	          }
+	          $nb=$obj->countSqlElementsFromCriteria($crit,$where);
+	      		if ($nb>0) {
+	            $objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
+	          }
+      		}
+      	}
+      if ($objects!="") {
+        $result.="<br/>" . i18n("errorControlClose") . $objects;
+      }
+      }  
+    }
+    
     if ($result=="") {
       $result='OK';
     }
@@ -2262,8 +2354,7 @@ abstract class SqlElement {
              . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) .")"; 
           }
 
-          $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
-          $nb=count($list);
+          $nb=$obj->countSqlElementsFromCriteria($crit,$where);
           if ($nb>0) {
             $objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
           }

@@ -18,6 +18,8 @@ class TestSession extends SqlElement {
   public $idUser;
   public $description;
   public $_col_2_2_treatment;
+  public $idActivity;
+  public $idTestSession;
   public $idStatus;
   public $idResource;
   public $startDate;
@@ -30,6 +32,8 @@ class TestSession extends SqlElement {
   public $idleDate;
   public $result;
   public $_col_1_1_Progress;
+  public $TestSessionPlanningElement;
+  public $_spe_separator_progress;
   public $_tab_7_2 = array('testSummary','countTotal', 'countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'countIssues', 'countTests','');
   public $runStatusName;
   public $countTotal;
@@ -96,7 +100,9 @@ class TestSession extends SqlElement {
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
-                                                   'idVersion'=>'productVersion'
+                                                   'idVersion'=>'productVersion',
+                                                   'idActivity'=>'parentActivity',
+                                                   'idTestSession'=>'parentTestSession'
                                                    );
   
   private static $_databaseColumnName = array();
@@ -166,6 +172,12 @@ class TestSession extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
+    if ($colName=="idProject" or $colName=="idActivity" or $colName=="idTestSession" ) {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
     return $colScript;
   }
 
@@ -181,7 +193,21 @@ class TestSession extends SqlElement {
     if (!trim($this->idProject) and !trim($this->idProduct)) {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
-    
+    if ($this->id and $this->id==$this->idTestSession) {
+      $result.='<br/>' . i18n('errorHierarchicLoop');
+    } else if ($this->TestSessionPlanningElement and $this->TestSessionPlanningElement->id){
+      $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'TestSession','refId'=>$this->idTestSession));
+      $parentList=$parent->getParentItemsArray();
+      if (array_key_exists('#' . $this->TestSessionPlanningElement->id,$parentList)) {
+        $result.='<br/>' . i18n('errorHierarchicLoop');
+      }
+    }
+    if (trim($this->idActivity)) {
+      $parentActivity=new Activity($this->idActivity);
+      if ($parentActivity->idProject!=$this->idProject) {
+        $result.='<br/>' . i18n('msgParentActivityInSameProject');
+      }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -195,6 +221,25 @@ class TestSession extends SqlElement {
   public function save() {
 
   	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
+  	
+  	$this->recalculateCheckboxes();
+    $this->TestSessionPlanningElement->refName=$this->name;
+    $this->TestSessionPlanningElement->idProject=$this->idProject;
+    $this->TestSessionPlanningElement->idle=$this->idle;
+    $this->TestSessionPlanningElement->done=$this->done;
+    if ($this->idActivity and trim($this->idActivity)!='') {
+      $this->TestSessionPlanningElement->topRefType='Activity';
+      $this->TestSessionPlanningElement->topRefId=$this->idActivity;
+      $this->TestSessionPlanningElement->topId=null;
+    } else if ($this->idTestSession and trim($this->idTestSession)!=''){
+    	$this->TestSessionPlanningElement->topRefType='TestSession';
+      $this->TestSessionPlanningElement->topRefId=$this->idTestSession;
+      $this->TestSessionPlanningElement->topId=null;
+    } else {
+      $this->TestSessionPlanningElement->topRefType='Project';
+      $this->TestSessionPlanningElement->topRefId=$this->idProject;
+      $this->TestSessionPlanningElement->topId=null;
+    } 
   	$result=parent::save();
     return $result;
   }
@@ -282,5 +327,17 @@ class TestSession extends SqlElement {
        $this->runStatusIcon='<img src="../view/css/images/icon'.ucfirst($name).'22.png" />';
      }
   }
+  
+  public function drawSpecificItem($item){
+//scriptLog("Project($this->id)->drawSpecificItem($item)");   
+    $result="";
+    if ($item=='separator_progress') {
+    	$result .='<div style="height:5px;">&nbsp;</div>';
+      $result .='<div class="section" style="height:14px;">';
+      $result .="&nbsp;".i18n('menuTestCase')."&nbsp;";
+      $result .='</div>';
+      return $result;
+    }
+  }  
 }
 ?>

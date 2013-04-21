@@ -109,3 +109,26 @@ ALTER TABLE `${prefix}document` ADD COLUMN `documentReference` varchar(400);
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null,null, 'documentReferenceFormat', '{PROJ}-{TYPE}-{NUM}-{NAME}'),
 (null,null, 'versionReferenceSuffix', '-{VERS}');
+
+INSERT INTO `${prefix}planningmode` (name, code, sortOrder, mandatoryStartDate, mandatoryEndDate, applyTo, idle, mandatoryDuration) 
+(SELECT name, code, sortOrder, mandatoryStartDate, mandatoryEndDate, 'TestSession', idle, mandatoryDuration 
+FROM `${prefix}planningmode` 
+WHERE applyTo='Activity');
+
+INSERT INTO `${prefix}planningmode` (name, code, sortOrder, mandatoryStartDate, mandatoryEndDate, applyTo, idle, mandatoryDuration) VALUES 
+('PlanningModeFIXED', 'REGUL', 100, 1, 0, 'Meeting', 0, 0);
+
+INSERT INTO `${prefix}mailable` (id, name, idle) VALUES 
+(13, 'Project', 0),
+(14, 'Document', 0),
+(15, 'IndividualExpense', 0),
+(16, 'ProjectExpense', 0),
+(17, 'Term', 0),
+(18, 'Bill', 0),
+(19, 'ActivityPrice', 0),
+(20, 'Opportunity', 0);
+
+ALTER TABLE `${prefix}testsession` ADD COLUMN `idTestSession` int(12) unsigned DEFAULT NULL,
+ADD COLUMN `idActivity` int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}meeting` ADD COLUMN `idActivity` int(12) unsigned DEFAULT NULL;
