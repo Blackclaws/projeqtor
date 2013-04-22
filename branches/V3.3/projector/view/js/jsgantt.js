@@ -2003,6 +2003,11 @@ function setGanttVisibility(g) {
 	  g.setShowRes(0); 
 	  g.setShowValidatedWork(0);
 	}
+	if (dojo.byId('portfolio')) {
+	  g.setShowRes(0); 
+	  g.setShowPriority(0);
+	  g.setShowPlanningMode(0);
+    }
 	g.setSortArray(planningColumnOrder);
 }
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {

@@ -258,6 +258,10 @@
       $colWidth = 60;
       $colUnit = 30;
       $topUnit=30;
+    } else if($format == 'quarter') {
+      $colWidth = 20;
+      $colUnit = 30;
+      $topUnit=90;
     }
     $maxDate = '';
     $minDate = '';
@@ -337,6 +341,23 @@
         $maxDate=addMonthsToDate($maxDate,+1);
         $maxDate=substr($maxDate,0,8).'01';
         $maxDate=addDaysToDate($maxDate,-1);
+      } else if ($format=='month') {
+        $arrayMin=array("0101"=>"0101","0201"=>"0101","0301"=>"0101",
+                        "0401"=>"0401","0501"=>"0401","0601"=>"0401",
+                        "0701"=>"0701","0801"=>"0701","0901"=>"0701",
+                        "1001"=>"1001","1101"=>"1001","1201"=>"1001");
+      	$arrayMin=array("0131"=>"0331","0228"=>"0331","0229"=>"0331","0331"=>"0301",
+                        "0430"=>"0630","0531"=>"0630","0630"=>"0630",
+                        "0731"=>"0930","0831"=>"0930","0930"=>"0930",
+                        "1031"=>"1231","1130"=>"1231","1231"=>"1231");
+        //$minDate=addDaysToDate($minDate,-1);
+        $minDate=substr($minDate,0,8).'01';
+        $minDate=substr($minDate,0,4).$arrayMin[substr($minDate,4)];
+        //$maxDate=addDaysToDate($maxDate,+1);
+        $maxDate=addMonthsToDate($maxDate,+1);
+        $maxDate=substr($maxDate,0,8).'01';
+        $maxDate=addDaysToDate($maxDate,-1);
+        $maxDate=substr($maxDate,0,4).$arrayMax[substr($maxDate,4)];
       }
       $numDays = (dayDiffDates($minDate, $maxDate) +1);
       $numUnits = round($numDays / $colUnit);
@@ -371,11 +392,15 @@
           $date= mktime(0, 0, 0, $tDate[1], $tDate[2]+1, $tDate[0]);
           $title=substr($day,0,4) . " #" . weekNumber($day);
           $title.=' (' . substr(i18n(date('F', $date)),0,4) . ')';
+        } else if ($format=='quarter') {
+        	//$title="Q";
+        	$title=substr($day,0,4);
+        	$span=3*numberOfDaysOfMonth($day);
         }
         echo '<td class="reportTableHeader" colspan="' . $span . '">';
         echo $title;
         echo '</td>';
-        if ($format=='month') {
+        if ($format=='month' or $format=='quarter') {
           $day=addMonthsToDate($day,1);
         } else {
           $day=addDaysToDate($day,$topUnit);
@@ -414,10 +439,15 @@
         } else if ($format=='day') {
           $color=($openDays[$i]==1)?'':'background-color:' . $weekendColor . ';';
           $title=substr($days[$i],-2);
+        } else if ($format=='quarter') {
+          $tDate = explode("-", $day);
+          $date= mktime(0, 0, 0, $tDate[1], $tDate[2]+1, $tDate[0]);
+          $title=substr($day,5,2);
+          $span=numberOfDaysOfMonth($day);
         }
         echo '<td class="reportTableColumnHeader" colspan="' . $span . '" style="width:' . $colWidth . 'px;magin:0px;padding:0px;' . $color . '">';
         echo $title . '</td>';
-        if ($format=='month') {
+        if ($format=='month'  or $format=='quarter') {
           $day=addMonthsToDate($day,1);
         } else {
           $day=addDaysToDate($day,$topUnit);
@@ -542,7 +572,7 @@
         for ($i=0;$i<$numDays;$i++) {
           $color=$bgColor;
           $noBorder="border-left: 0px;";
-          if ($format=='month') {
+          if ($format=='month'  or $format=='quarter') {
             $fontSize='90%';
             if ( $i<($numDays-1) and substr($days[($i+1)],-2)!='01' ) {
               $noBorder="border-left: 0px;border-right: 0px;";

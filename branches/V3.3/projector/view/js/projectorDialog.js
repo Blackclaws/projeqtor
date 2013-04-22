@@ -3395,12 +3395,15 @@ function loadMenuBarItem(item,itemName) {
     loadContent("today.php","centerDiv");
   } else if (item=='Planning') {
 	vGanttCurrentLine=-1;
+	cleanContent("centerDiv");
     loadContent("planningMain.php","centerDiv");
   } else if (item=='PortfolioPlanning') {
 	vGanttCurrentLine=-1;
+	cleanContent("centerDiv");
 	loadContent("portfolioPlanningMain.php","centerDiv");
   } else if (item=='ResourcePlanning') {
 	vGanttCurrentLine=-1;
+	cleanContent("centerDiv");
 	loadContent("resourcePlanningMain.php","centerDiv");
   } else if (item=='Imputation') {
     loadContent("imputationMain.php","centerDiv");
