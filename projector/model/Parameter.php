@@ -495,12 +495,10 @@ class Parameter extends SqlElement {
   }
 
   static public function getUserParameter($code) {
-debugLog("getUserParameter($code)");
   	if (!array_key_exists('userParamatersArray',$_SESSION)) {
       $_SESSION['userParamatersArray']=array();
     }
     if (array_key_exists($code,$_SESSION['userParamatersArray'])) {
-debugLog(" => from SESSION : ".$_SESSION['userParamatersArray'][$code]);
       return $_SESSION['userParamatersArray'][$code];
     } 
     $p=new Parameter();
@@ -512,7 +510,6 @@ debugLog(" => from SESSION : ".$_SESSION['userParamatersArray'][$code]);
       $val=$lst[0]->parameterValue;
     }
     $_SESSION['userParamatersArray'][$code]=$val;
-debugLog(" => from DATABASE : ".$val);
     return $val;
   }
   
