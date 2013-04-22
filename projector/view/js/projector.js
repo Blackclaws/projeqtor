@@ -258,7 +258,8 @@ function changeTheme(newTheme) {
 function saveUserParameter(parameter, value) {
   dojo.xhrPost({
     url: "../tool/saveUserParameter.php?parameter="+parameter+"&value=" + value,
-    handleAs: "text"
+    handleAs: "text",
+    load: function(data,args) {}
   });	 
 }
 /**
@@ -1432,8 +1433,10 @@ function drawGantt() {
   g.setDateDisplayFormat('default'); // Set format to display dates
                     // ('mm/dd/yyyy', 'dd/mm/yyyy',
                     // 'yyyy-mm-dd')
-  g.setFormatArr("day","week","month"); // Set format options (up to 4 :
+  g.setFormatArr("day","week","month","quarter"); // Set format options (up to 4 :
                     // "minute","hour","day","week","month","quarter")
+  if (ganttPlanningScale) {g.setFormat(ganttPlanningScale);}
+  if (ganttPlanningLeftSize) {g.setLeftSize(ganttPlanningLeftSize);}
   g.setStartDateView(startDateView);
   g.setEndDateView(endDateView);
   var contentNode = dojo.byId('gridContainerDiv');

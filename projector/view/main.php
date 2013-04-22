@@ -201,6 +201,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       dojo.byId("mainDiv").style.visibility="visible"; 
       setTimeout('checkAlert();',5000); //first check at 5 seco 
     }); 
+    var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
+    var ganttPlanningLeftSize="<?php echo Parameter::getUserParameter('planningLeftSize');?>";
     var cronSleepTime=<?php echo Cron::getSleepTime();?>;
     var canCreateArray=new Array();
     var dependableArray=new Array();
