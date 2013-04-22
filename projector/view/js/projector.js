@@ -1436,7 +1436,6 @@ function drawGantt() {
   g.setFormatArr("day","week","month","quarter"); // Set format options (up to 4 :
                     // "minute","hour","day","week","month","quarter")
   if (ganttPlanningScale) {g.setFormat(ganttPlanningScale);}
-  if (ganttPlanningLeftSize) {g.setLeftSize(ganttPlanningLeftSize);}
   g.setStartDateView(startDateView);
   g.setEndDateView(endDateView);
   var contentNode = dojo.byId('gridContainerDiv');

@@ -8,8 +8,11 @@ Sql::beginTransaction();
  $crit['idProject']=null;
  $crit['parameterCode']=$_REQUEST['parameter'];
  $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $crit);
- $obj->parameterValue=$_REQUEST['value'];;
+ $obj->parameterValue=$_REQUEST['value'];
  $result=$obj->save();
-echo "OK";
+ if (!array_key_exists('userParamatersArray',$_SESSION)) {
+   $_SESSION['userParamatersArray']=array();
+ }
+ $_SESSION['userParamatersArray'][$_REQUEST['parameter']]=$_REQUEST['value'];
 Sql::commitTransaction();
  ?>
