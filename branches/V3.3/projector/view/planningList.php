@@ -240,10 +240,19 @@ if ($saveShowClosed) {
 	<div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
    <div id="submainPlanningDivContainer" dojoType="dijit.layout.BorderContainer"
     style="border-top:1px solid #ffffff;">
+    <?php $leftPartSize=Parameter::getUserParameter('planningLeftSize');
+          if (! $leftPartSize) {$leftPartSize='325px';}
+          debugLog($leftPartSize);
+          ?>
 	   <div dojoType="dijit.layout.ContentPane" region="left" splitter="true" 
-      style="width:425px; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
+      style="width:<?php echo $leftPartSize;?>; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
       id="leftGanttChartDIV" name="leftGanttChartDIV"
       onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px';" onmousewheel="leftMouseWheel(event);">
+      <script type="dojo/method" event="onUnload" >
+         var width=this.domNode.style.width;
+         setTimeout("saveUserParameter('planningLeftSize','"+width+"');",10);
+         return true;
+      </script>
      </div>
      <div dojoType="dijit.layout.ContentPane" region="center" 
       style="height:100%; overflow:hidden;" class="ganttDiv" 

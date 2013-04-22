@@ -484,8 +484,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vColWidth = 90;
         vColUnit = 30.5;
       } else if(vFormat == 'quarter') {
-        vColWidth = 100;
-        vColUnit = 90;
+        vColWidth = 20;
+        vColUnit = 30.5;
       }
       vMinDate.setHours(0, 0, 0, 0);
       vMaxDate.setHours(23, 59, 59, 0);
@@ -767,7 +767,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         } else if (vFormat == 'quarter') {
-          vTopRightTable += '<td class="ganttRightTitle" width='+vColWidth+'px>'+ vStr + '</td>';
+          vTopRightTable += '<td colspan="3" class="ganttRightTitle" width='+vColWidth+'px>Q'+ vQuarterArr[vTmpDate.getMonth()]+" "+vStr + '</td>';
           vTmpDate.setDate(vTmpDate.getDate() + 81);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
@@ -848,16 +848,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           }
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '" >'
-              +'<div style="width: '+vColWidth+'px">Qtr. ' + vQuarterArr[vTmpDate.getMonth()] + '</div></td>';
+              +'<div style="width: '+vColWidth+'px">' + JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr) + '</div></td>';
             vItemRowStr += '<td class="ganttDetail" style="background-color:#' + vCurrentdayColor + '">'
               + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
           } else {
             vDateRowStr += '<td class="ganttRightSubTitle" >'
-              +'<div style="width: '+vColWidth+'px">Qtr. ' + vQuarterArr[vTmpDate.getMonth()] + '</div></td>';
+              +'<div style="width: '+vColWidth+'px">' + JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr) + '</div></td>';
             vItemRowStr += '<td class="ganttDetail" >'
               + '<div style="width: '+vColWidth+'px">&nbsp;&nbsp;</div></td>';
           }        
-          vTmpDate.setDate(vTmpDate.getDate() + 81);
+          vTmpDate.setDate(vTmpDate.getDate() + 1);
           while(vTmpDate.getDate() > 1) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
@@ -1341,6 +1341,8 @@ JSGantt.changeFormat = function(pFormat,ganttObj) {
   } else {
     alert('Chart undefined');
   };
+  saveUserParameter('planningScale',pFormat);
+  ganttPlanningScale=pFormat;
   highlightPlanningLine();
 };
 
@@ -1554,6 +1556,10 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
       return( vMonthStr + '/' + vDayStr );
     case 'dd/mm':
       return( vDayStr + '/' + vMonthStr );
+    case 'mm':
+        return(vMonthStr );
+    case 'yy':
+        return( vYear2Str );
     case 'week-long':
       return ( '' + vYear4Str + " #" + vWeekNum + ' ('  + vMonthArray[pDate.getMonth()].substr(0,4) + ') ');
     case 'week-short':
@@ -1945,10 +1951,18 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
   }
   if (vFormatArr.join().indexOf("quarter")!=-1) { 
     if (vFormat=='quarter') {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '" VALUE="quarter" checked>' + JSGantt.i18n('quarter');
+	  vLeftTable += '<label class="ganttScale">'
+        +'<input type="RADIO" dojoType="dijit.form.RadioButton" '
+        +'name="radFormat' + vPos + '" value="quarter" checked>' 
+        +JSGantt.i18n('quarter')
+        +'</label>';
     } else {
-      vLeftTable += '<INPUT TYPE="RADIO" dojoType="dijit.form.RadioButton" NAME="radFormat' + vPos + '"' 
-      + ' onclick=JSGantt.changeFormat("quarter",'+vGanttVar+') VALUE="quarter">' + JSGantt.i18n('quarter');
+      vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
+    	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
+    	+' name="radFormat' + vPos + '"' 
+        + ' onChange=JSGantt.changeFormat("quarter",'+vGanttVar+') value="quarter">' 
+        +JSGantt.i18n('quarter')
+        +'</label>';
     }
     vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
   }
