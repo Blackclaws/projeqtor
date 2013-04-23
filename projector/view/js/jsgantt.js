@@ -315,14 +315,15 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     //vDoc = JSGantt.findObj('rightside');
     var oDiv = document.createElement('div');
     oDiv.id = ((temp)?"temp":"")+"line"+vDepId++;
+    //oDiv.className="ganttTaskrowBar";
     oDiv.style.position = "absolute";
     oDiv.style.margin = "0px";
     oDiv.style.padding = "0px";
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
-    oDiv.style.zIndex = 0;
+    oDiv.style.zIndex = 20;
     if (!color) color="#000000";
-    color="#000000";
+    color="#505050";
     oDiv.style.backgroundColor = color;
     oDiv.style.left = vLeft + "px";
     oDiv.style.top = vTop + "px";
@@ -740,6 +741,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       //vLeftTable += '</NOBR></TD></TR>';
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
+      var vPerf=1;
+      var vOutDays="";
+      var vCurrentDay="";
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop ganttUnselectable" '
     	+' onmouseout="JSGantt.cancelLink();" unselectable="ON" '   
     	+' style="width: ' + vChartWidth + 'px; position:absolute; left:-1px;">';
@@ -778,10 +782,24 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
       vNxtDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
       vNumCols = 0;
+      var vHighlightSpecificDays="";
+      var vTotalHeight=21*vTaskList.length;
       var vWeekendColor="dfdfdf";
       var vCurrentdayColor="ffffaa";
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         if(vFormat == 'day' ) {
+          if (isOffDayNotWeekEnd(vTmpDate))	{
+        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+        	vDayLeft=Math.ceil( (vTaskLeft-0.95) * (vDayWidth))
+        	vHighlightSpecificDays+='<DIV class="specificDayWeekEnd" '
+        		+'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:18px"></DIV>'  
+          }
+          if( JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
+        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
+          	vDayLeft=Math.ceil( (vTaskLeft-0.95) * (vDayWidth))
+          	vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
+          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:18px"></DIV>'   
+          } 
           if(isOffDay(vTmpDate)) {
             vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; " >'
               + '<div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '</div></td>';
@@ -863,8 +881,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           }
         }
       }
+      
+      if (vPerf) {
+    	vItemRowStr='<td><div class="ganttDetail '+vFormat+'Background" style="width: ' + vChartWidth + 'px;"></div></td>';  
+      }
       vTopRightTable += vDateRowStr + '</TR>';
       vTopRightTable += '</TBODY></TABLE></DIV>';
+            
       for(i = 0; i < vTaskList.length; i++) {
         vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
         vTaskStart = vTaskList[i].getStart();
@@ -882,7 +905,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         }
         if( vTaskList[i].getMile() ) {
           vRightTable += '<DIV ' + ffSpecificHeight+ '>'
-            + '<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px; " >' 
+            + '<TABLE class="rightTableLine" style="width: ' + vChartWidth + 'px; " >' 
             + '<TR id=childrow_' + vID + ' class="ganttTaskmile" '
             + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","mile") ' 
             + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","mile")>' + vItemRowStr + '</TR></TABLE></DIV>';
@@ -901,7 +924,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           } else {
         	  vBardivName='outbardiv_' + vID;
           }	  
-          vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:-2px; ' 
+          vRightTable += '<div id=' + vBardivName + ' style="z-index: 10;position:absolute; top:-2px; ' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
             + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;"'
             + ' onmousedown=JSGantt.startLink('+i+'); '
@@ -932,7 +955,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                 case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
               }
-              vRightTable += '<div position:absolute; top:2px; width:120px; left:12px">' + vCaptionStr + '</div>';
+              vRightTable += '<div position:absolute; width:120px; left:12px">' + vCaptionStr + '</div>';
             }
           } else {
         	  vRightTable += '</div>' ;  
@@ -961,7 +984,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           }
           if( vTaskList[i].getGroup()) {            
             vRightTable += '<DIV ' + ffSpecificHeight+ '>'
-              + '<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;">' 
+              + '<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;">' 
               + '<TR id=childrow_' + vID + ' class="ganttTaskgroup" '
               + ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","group") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
@@ -970,7 +993,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        } else {
 	          vBardivName='outbardiv_' + vID;
 	        }	 
-            vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:5px; '
+            vRightTable += '<div id=' + vBardivName + ' style="z-index: 10;position:absolute; top:5px; '
                 + ' left:' + vBarLeft + 'px; height: 7px; '
                 + ' width:' + vBarWidth + 'px">';
             if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskStart) ) {
@@ -1008,14 +1031,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                   case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
                 }
-                vRightTable += '<div class="ganttTaskgroupBarText" '
-                  + 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
+                vRightTable += '<div style="font-size:9px; position:absolute; top:-5px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
             }
             vRightTable += '</div>';
           } else { // task (not a milestone, not a group)
             vDivStr = '<DIV ' + ffSpecificHeight+ '>'
-              +'<TABLE style="position:relative; top:0px; width: ' + vChartWidth + 'px;" >' 
+              +'<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;" >' 
               +'<TR id=childrow_' + vID + ' class="ganttTaskrow" '
               +'  onMouseover=JSGantt.ganttMouseOver(' + vID + ',"right","row") '
               + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"right","row")>' + vItemRowStr + '</TR></TABLE></DIV>';
@@ -1025,7 +1047,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	          vBardivName='outbardiv_' + vID;
   	        }
             vRightTable += vDivStr;               
-            vRightTable += '<div id=' + vBardivName + ' style="position:absolute; top:4px;'
+            vRightTable += '<div id=' + vBardivName + ' style="z-index: 10;position:absolute; top:4px;'
                 + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
 	            + ' left:' + vBarLeft + 'px; height:11px; '
 	            + ' width:' + vBarWidth + 'px">';         
@@ -1072,13 +1094,17 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                   case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
                 }
-                vRightTable += '<div style="font-size:10px; position:absolute; top:0px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px">' + vCaptionStr + '</div>';
+                vRightTable += '<div style="font-size:9px; position:absolute; top:-5px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
 	        }
             vRightTable += '</div>' ;
           }
         }
         vRightTable += '</DIV>';
+      }
+      if (vPerf) {
+        vRightTable+=vHighlightSpecificDays;
+        //vRightTable+='<div class="ganttUnselectable" style="position: absolute; z-index:25; opacity:0.1; filter: alpha(opacity=10); width: 200px; height: 200px; left: 0px; top:0px; background-color: red"></div>';
       }
       dojo.byId("leftGanttChartDIV").innerHTML=vLeftTable;
       dojo.byId("rightGanttChartDIV").innerHTML=vRightTable;
@@ -2029,6 +2055,8 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
   if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType + " ganttRowHover";
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
   if (vRowObj2) vRowObj2.className = "ganttTask" + pType + " ganttRowHover"+ ((ongoingJsLink>=0)?" ganttDndLink":"");
+  var vRowObj3 = JSGantt.findObj('child_row_' + pID);
+  if (vRowObj3) vRowObj3.className = "ganttTask" + pType + " ganttRowHover"
   if (pType && ongoingJsLink>=0) {  
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
   }
