@@ -200,7 +200,24 @@ function isOffDay(vDate) {
   }
 	
 }
-
+function isOffDayNotWeekEnd(vDate) {
+  /*if ( vDate.getDay() % 6 == 0) {
+	  var day=(vDate.getFullYear()*10000)+((vDate.getMonth()+1)*100)+vDate.getDate();
+	  if (workDayList.lastIndexOf('#'+day+'#')>=0) {
+		return false; 
+	  } else {
+	    return true;
+	  }
+  } else {*/
+	  var day=(vDate.getFullYear()*10000)+((vDate.getMonth()+1)*100)+vDate.getDate();
+	  if (offDayList.lastIndexOf('#'+day+'#')>=0) {
+		return true; 
+	  } else {
+	    return false;
+	  }
+  /*}*/
+	
+}
 /**
  * Dispatch updates for left work : re-calculate planned work 
  */
