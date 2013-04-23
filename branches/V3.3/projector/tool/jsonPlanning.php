@@ -169,7 +169,6 @@
         if ($line["reftype"]=="Project") {
         	$topProjectArray[$line['refid']]=$line['id'];
         } else if ($portfolio and $line["reftype"]=="Milestone" and $line["topreftype"]!='Project') {
-//debugLog("refname=".$line["refname"]." topid=".$line["topid"]." ".$line["topreftype"]."#".$line["toprefid"]." project=".$line["idproject"]);
           $line["topid"]=$topProjectArray[$line['idproject']];
         }
         foreach ($line as $id => $val) {
@@ -259,7 +258,7 @@
       $colUnit = 30;
       $topUnit=30;
     } else if($format == 'quarter') {
-      $colWidth = 20;
+      $colWidth = 30;
       $colUnit = 30;
       $topUnit=90;
     }
@@ -341,23 +340,23 @@
         $maxDate=addMonthsToDate($maxDate,+1);
         $maxDate=substr($maxDate,0,8).'01';
         $maxDate=addDaysToDate($maxDate,-1);
-      } else if ($format=='month') {
-        $arrayMin=array("0101"=>"0101","0201"=>"0101","0301"=>"0101",
-                        "0401"=>"0401","0501"=>"0401","0601"=>"0401",
-                        "0701"=>"0701","0801"=>"0701","0901"=>"0701",
-                        "1001"=>"1001","1101"=>"1001","1201"=>"1001");
-      	$arrayMin=array("0131"=>"0331","0228"=>"0331","0229"=>"0331","0331"=>"0301",
-                        "0430"=>"0630","0531"=>"0630","0630"=>"0630",
-                        "0731"=>"0930","0831"=>"0930","0930"=>"0930",
-                        "1031"=>"1231","1130"=>"1231","1231"=>"1231");
+      } else if ($format=='quarter') {
+        $arrayMin=array("01-01"=>"01-01","02-01"=>"01-01","03-01"=>"01-01",
+                        "04-01"=>"04-01","05-01"=>"04-01","06-01"=>"04-01",
+                        "07-01"=>"07-01","08-01"=>"07-01","09-01"=>"07-01",
+                        "10-01"=>"10-01","11-01"=>"10-01","12-01"=>"10-01");
+      	$arrayMax=array("01-31"=>"03-31","02-28"=>"03-31","02-29"=>"03-31","03-31"=>"03-01",
+                        "04-30"=>"06-30","05-31"=>"06-30","06-30"=>"06-30",
+                        "07-31"=>"09-30","08-31"=>"09-30","09-30"=>"09-30",
+                        "10-31"=>"12-31","11-30"=>"12-31","12-31"=>"12-31");
         //$minDate=addDaysToDate($minDate,-1);
         $minDate=substr($minDate,0,8).'01';
-        $minDate=substr($minDate,0,4).$arrayMin[substr($minDate,4)];
+        $minDate=substr($minDate,0,5).$arrayMin[substr($minDate,5)];
         //$maxDate=addDaysToDate($maxDate,+1);
         $maxDate=addMonthsToDate($maxDate,+1);
         $maxDate=substr($maxDate,0,8).'01';
         $maxDate=addDaysToDate($maxDate,-1);
-        $maxDate=substr($maxDate,0,4).$arrayMax[substr($maxDate,4)];
+        $maxDate=substr($maxDate,0,5).$arrayMax[substr($maxDate,5)];
       }
       $numDays = (dayDiffDates($minDate, $maxDate) +1);
       $numUnits = round($numDays / $colUnit);
@@ -393,15 +392,23 @@
           $title=substr($day,0,4) . " #" . weekNumber($day);
           $title.=' (' . substr(i18n(date('F', $date)),0,4) . ')';
         } else if ($format=='quarter') {
-        	//$title="Q";
-        	$title=substr($day,0,4);
+          $arrayQuarter=array("01"=>"1","02"=>"1","03"=>"1",
+                        "04"=>"2","05"=>"2","06"=>"2",
+                        "07"=>"3","08"=>"3","09"=>"3",
+                        "10"=>"4","11"=>"4","12"=>"4");
+        
+        	$title="Q";
+        	$title.=$arrayQuarter[substr($day,5,2)];
+        	$title.=" ".substr($day,0,4);
         	$span=3*numberOfDaysOfMonth($day);
         }
         echo '<td class="reportTableHeader" colspan="' . $span . '">';
         echo $title;
         echo '</td>';
-        if ($format=='month' or $format=='quarter') {
+        if ($format=='month') {
           $day=addMonthsToDate($day,1);
+        } else if ($format=='quarter') {
+        	$day=addMonthsToDate($day,3);
         } else {
           $day=addDaysToDate($day,$topUnit);
         }
@@ -447,7 +454,9 @@
         }
         echo '<td class="reportTableColumnHeader" colspan="' . $span . '" style="width:' . $colWidth . 'px;magin:0px;padding:0px;' . $color . '">';
         echo $title . '</td>';
-        if ($format=='month'  or $format=='quarter') {
+        if ($format=='month') {
+          $day=addMonthsToDate($day,1);
+        } else if ($format=='quarter') {
           $day=addMonthsToDate($day,1);
         } else {
           $day=addDaysToDate($day,$topUnit);
@@ -572,10 +581,15 @@
         for ($i=0;$i<$numDays;$i++) {
           $color=$bgColor;
           $noBorder="border-left: 0px;";
-          if ($format=='month'  or $format=='quarter') {
+          if ($format=='month') {
             $fontSize='90%';
             if ( $i<($numDays-1) and substr($days[($i+1)],-2)!='01' ) {
               $noBorder="border-left: 0px;border-right: 0px;";
+            }
+          } else  if ($format=='quarter') {
+            $fontSize='10%';
+            if ( $i<($numDays-1) and substr($days[($i+1)],-2)!='01' ) {
+               $noBorder="border-left: 0px;border-right: 0px;";
             }
           } else if($format=='week') {
             $fontSize='90%';
