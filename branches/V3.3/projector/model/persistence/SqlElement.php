@@ -365,7 +365,9 @@ abstract class SqlElement {
       $control=$this->control();
     }
     if ($control=="OK") {
-      if (property_exists($this, 'idStatus') or property_exists($this,'reference') or property_exists($this,'idResource')) {
+    	//$old=new Project();
+      if (property_exists($this, 'idStatus') or property_exists($this,'reference') or property_exists($this,'idResource')
+          or property_exists($this, 'description') or property_exists($this, 'result')) {
         $class=get_class($this);
         $old=new $class($this->id);
       }
@@ -373,7 +375,7 @@ abstract class SqlElement {
       $responsibleChanged=false;
       $descriptionChange=false;
       $resultChange=false;
-      if (property_exists($this,'reference')) {
+      if (property_exists($this,'reference') and isset($old)) {
         $this->setReference(false, $old);
       }
       if (property_exists($this, 'idResource') and ! trim($this->idResource)) {
@@ -381,7 +383,7 @@ abstract class SqlElement {
       }
       if ($this->id != null  and !$forceInsert) {
         if (property_exists($this, 'idStatus')) {
-          if ($this->idStatus) {
+          if ($this->idStatus and isset($old)) {
             if ($old->idStatus!=$this->idStatus) {
               $statusChanged=true;
             }            
@@ -396,17 +398,17 @@ abstract class SqlElement {
         $newItem=true;
         $returnValue=$this->insertSqlElement($forceInsert);
       }
-      if (property_exists($this,'idResource') and ! $newItem) {
+      if (property_exists($this,'idResource') and ! $newItem and isset($old)) {
       	if (trim($this->idResource) and trim($this->idResource)!=trim($old->idResource)) {
       		$responsibleChanged=true;
       	}
       }
-      if (property_exists($this,'description') and ! $newItem) {
+      if (property_exists($this,'description') and ! $newItem and isset($old)) {
         if ($this->description!=$old->description) {
           $descriptionChange=true;
         }
       }
-     if (property_exists($this,'result') and ! $newItem) {
+     if (property_exists($this,'result') and ! $newItem and isset($old)) {
         if ($this->result!=$old->result) {
           $resultChange=true;
         }
