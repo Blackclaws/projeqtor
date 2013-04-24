@@ -202,6 +202,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       setTimeout('checkAlert();',5000); //first check at 5 seco 
     }); 
     var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
+    var ganttPlanningOldStyle=<?php echo ((isset($ganttPlanningOldStyle) and $ganttPlanningOldStyle)?1:0);?>;
+    //if (dojo.isIE<=8) {ganttPlanningOldStyle=1;}
     var cronSleepTime=<?php echo Cron::getSleepTime();?>;
     var canCreateArray=new Array();
     var dependableArray=new Array();
@@ -2108,7 +2110,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               <td>
                 <div id="dialogMailToOther" name="dialogMailToOther" dojoType="dijit.form.CheckBox" 
                  type="checkbox" onChange="dialogMailToOtherChange();">
-                </div>
+                </div> <?php echo i18n('helpOtherEmail');?>
               </td>
             </tr>
             <tr>

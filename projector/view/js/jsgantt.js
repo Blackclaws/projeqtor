@@ -321,9 +321,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     oDiv.style.padding = "0px";
     oDiv.style.overflow = "hidden";
     oDiv.style.border = "0px";
-    oDiv.style.zIndex = 20;
+    oDiv.style.zIndex = 0;
     if (!color) color="#000000";
-    color="#505050";
+    color="#000000";
     oDiv.style.backgroundColor = color;
     oDiv.style.left = vLeft + "px";
     oDiv.style.top = vTop + "px";
@@ -741,7 +741,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       //vLeftTable += '</NOBR></TD></TR>';
       vLeftTable += '</TBODY></TABLE></DIV>';
 // RIGHT ======================================================================
-      var vPerf=1;
+      var vPerf=(ganttPlanningOldStyle)?0:1;
       var vOutDays="";
       var vCurrentDay="";
       vTopRightTable = '<DIV id="rightside" class="scrollRightTop ganttUnselectable" '
@@ -788,13 +788,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       var vCurrentdayColor="ffffaa";
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         if(vFormat == 'day' ) {
-          if (isOffDayNotWeekEnd(vTmpDate))	{
+          if (vPerf && isOffDayNotWeekEnd(vTmpDate))	{
         	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
         	vDayLeft=Math.ceil( (vTaskLeft-0.95) * (vDayWidth))
         	vHighlightSpecificDays+='<DIV class="specificDayWeekEnd" '
         		+'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:18px"></DIV>'  
           }
-          if( JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
+          if(vPerf && JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
         	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
           	vDayLeft=Math.ceil( (vTaskLeft-0.95) * (vDayWidth))
           	vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
@@ -924,9 +924,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           } else {
         	  vBardivName='outbardiv_' + vID;
           }	  
-          vRightTable += '<div id=' + vBardivName + ' style="z-index: 10;position:absolute; top:-2px; ' 
+          vRightTable += '<div id=' + vBardivName + ' class="barDivMilestone" style="' 
             + 'color:#' + vTaskList[i].getColor() + ';' 
-            + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px; overflow:hidden;"'
+            + 'left:' + Math.ceil(vTaskLeft * (vDayWidth)) + 'px;"'
             + ' onmousedown=JSGantt.startLink('+i+'); '
             + ' onmouseup=JSGantt.endLink('+i+'); '
             + ' onMouseover=JSGantt.enterBarLink('+i+'); '
@@ -955,7 +955,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                 case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
               }
-              vRightTable += '<div position:absolute; width:120px; left:12px">' + vCaptionStr + '</div>';
+              vRightTable += '<div class="labelBarDiv">' + vCaptionStr + '</div>';
             }
           } else {
         	  vRightTable += '</div>' ;  
@@ -993,7 +993,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
 	        } else {
 	          vBardivName='outbardiv_' + vID;
 	        }	 
-            vRightTable += '<div id=' + vBardivName + ' style="z-index: 10;position:absolute; top:5px; '
+            vRightTable += '<div id=' + vBardivName + ' class="barDivGoup" style="'
                 + ' left:' + vBarLeft + 'px; height: 7px; '
                 + ' width:' + vBarWidth + 'px">';
             if (vTaskStart && vTaskEnd && Date.parse(vMaxDate)>=Date.parse(vTaskStart) ) {
@@ -1031,7 +1031,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                   case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
                 }
-                vRightTable += '<div style="font-size:9px; position:absolute; top:-5px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
+                vRightTable += '<div class="labelBarDiv" style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
             }
             vRightTable += '</div>';
@@ -1047,7 +1047,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	          vBardivName='outbardiv_' + vID;
   	        }
             vRightTable += vDivStr;               
-            vRightTable += '<div id=' + vBardivName + ' style="z-index: 10;position:absolute; top:4px;'
+            vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="'
                 + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
 	            + ' left:' + vBarLeft + 'px; height:11px; '
 	            + ' width:' + vBarWidth + 'px">';         
@@ -1094,7 +1094,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                   case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
                 }
-                vRightTable += '<div style="font-size:9px; position:absolute; top:-5px; width:120px; left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
+                vRightTable += '<div class="labelBarDiv" style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
 	        }
             vRightTable += '</div>' ;
@@ -2055,8 +2055,8 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
   if (vRowObj1) vRowObj1.className = "dojoDndItem ganttTask" + pType + " ganttRowHover";
   var vRowObj2 = JSGantt.findObj('childrow_' + pID);
   if (vRowObj2) vRowObj2.className = "ganttTask" + pType + " ganttRowHover"+ ((ongoingJsLink>=0)?" ganttDndLink":"");
-  var vRowObj3 = JSGantt.findObj('child_row_' + pID);
-  if (vRowObj3) vRowObj3.className = "ganttTask" + pType + " ganttRowHover"
+  //var vRowObj3 = JSGantt.findObj('child_row_' + pID);
+  //if (vRowObj3) vRowObj3.className = "ganttTask" + pType + " ganttRowHover"
   if (pType && ongoingJsLink>=0) {  
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
   }

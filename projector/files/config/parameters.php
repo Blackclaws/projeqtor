@@ -19,4 +19,5 @@ $logFile='../files/logs/projector_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
 //$debugQuery=true;
+//$ganttPlanningOldStyle=true;
 //======= END
