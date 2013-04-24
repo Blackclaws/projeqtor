@@ -65,7 +65,7 @@ div .scrollRightTop {
   font-weight: normal;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   vertical-align: top;
-  z-index:5;
+  /*z-index:5;*/
 }
 
 .ganttLeftTitle, .ganttRightTitle {
@@ -104,13 +104,13 @@ div .scrollRightTop {
   padding: 0px; margin: 0px;
   background-color: #ffffff;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
-  z-index:50;
+  /*z-index:50;*/
 }
 .selectedrow {
   padding: 0px; margin: 0px;
   background-color: #AAAAFF;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
-  z-index:50;
+  /*z-index:50;*/
 }
 
 
@@ -119,7 +119,7 @@ div .scrollRightTop {
    /*cursor: pointer;*/
    opacity:0.9;
    filter: alpha(opacity=90);
-   z-index:90;
+   /*z-index:90;*/
 }
 
 .ganttTaskrowBarComplete { 
@@ -130,16 +130,18 @@ div .scrollRightTop {
   opacity:0.4; 
   filter: alpha(opacity=40);
   position: absolute; top: 0px; left: 0px;
-  z-index:100;
+  z-index: 14; 
+  /*z-index:100;*/
 }
 .ganttGrouprowBarComplete { 
+  z-index: -4; 
   float:left; 
   background-color:#FFFFFF; 
   height:2px;
   overflow: hidden; 
   margin-top:2px; margin-left:1px; margin-right:1px;
   filter: alpha(opacity=70); opacity:0.7;
-  z-index:100;
+  /*z-index:100;*/
   /*cursor: pointer;*/
 }
 
@@ -162,13 +164,13 @@ div .scrollRightTop {
 }
 
 .ganttTaskgroupBarExt { 
-  Z-INDEX: -4; 
+  z-index: -4; 
   background-color:#505050; 
   overflow: hidden; 
   width:1px
 }
 .ganttTaskgroupBarExtInvisible { 
-  Z-INDEX: -4; 
+  z-index: -4; 
   overflow: hidden; 
   width:1px
 }
@@ -229,6 +231,7 @@ div .scrollRightTop {
   font-size: 90%;  
   padding: 0px; margin: 0px;
   z-index: 10;   
+  /*z-index: 15;*/
   text-align: center;
 }
 
@@ -237,6 +240,7 @@ div .scrollRightTop {
   font-size: 90%;  
   padding: 0px; margin: 0px;
   z-index: 10;   
+  /*z-index: 15;*/
 }
 .ganttDetail, .ganttDetailBoderleft {
   border-left: #dddddd 1px solid;
@@ -295,6 +299,7 @@ div .scrollRightTop {
 .dayBackground {
 	background-image: url(images/ganttDay.png);  
 	background-repeat: repeat-x;
+	background-color: #FFFFFF;
 	opacity:0.15;
   filter: alpha(opacity=15);
   border-top: #000000 1px solid;
@@ -331,22 +336,46 @@ div .scrollRightTop {
 
 .specificDayWeekEnd {
 	opacity:0.5;
-	filter: alpha(opacity=50);
-	z-index:5; 
-	background-color: #000000;
+	filter: alpha(opacity=40);
+	z-index:0; 
+	background-color: #D0D0D0;
 	position:absolute; 
 }
 .specificDayCurrent {
-  opacity:1;
-  filter: alpha(opacity=10);
-  z-index:5; 
+  opacity:0.5;
+  filter: alpha(opacity=40);
+  z-index:0; 
   background-color: #FFFF00;
   position:absolute; 
 }
 .rightTableLine {
-  z-index: 8;
-  opacity:0.9;
-  filter: alpha(opacity=90);
+  /*z-index: 8;*/
+  /*opacity:0.9;
+  filter: alpha(opacity=90);*/
   position:relative; 
   top:0px;
+}
+
+.barDivMilestone {
+	z-index: 10;
+	position:absolute; 
+	top:-2px; 
+	overflow:hidden;
+}
+.barDivGoup {
+  z-index: 10;
+  position:absolute; 
+  top:5px;
+}
+.barDivTask {
+  z-index: 10;
+  position:absolute; 
+  top:4px;
+}
+.labelBarDiv {
+	/*z-index:10;*/
+	font-size:9px; 
+	position:absolute; 
+	top:-5px; 
+	width:120px; 
 }
