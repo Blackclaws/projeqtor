@@ -150,7 +150,10 @@ class Audit extends SqlElement {
 	        $params["path"], $params["domain"],
 	        $params["secure"], $params["httponly"]);
      }
-     @session_destroy();
+     try { @session_destroy(); }
+     catch (Exception $e) {
+     	 // tried twice : OK let's give up.
+     }
    }  
    
   static function getBrowser() { 

@@ -342,8 +342,8 @@ div .scrollRightTop {
 	position:absolute; 
 }
 .specificDayCurrent {
-  opacity:0.5;
-  filter: alpha(opacity=40);
+  opacity:0.4;
+  filter: alpha(opacity=30);
   z-index:0; 
   background-color: #FFFF00;
   position:absolute; 

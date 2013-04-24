@@ -217,6 +217,16 @@ and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') {
   //Sql::commitTransaction();
 }
 
+if ($currVersion<"V3.3.0" and $currVersion!='V0.0.0') {
+  $ses=new TestSession();
+  $sesList=$ses->getSqlElementsFromCriteria(null, false);
+  foreach ($sesList as $ses) {
+    $ss=new TestSession($ses->id);
+    $ss->TestSessionPlanningElement->validatedStartDate=$ss->startDate;
+    $ss->TestSessionPlanningElement->validatedEndDate=$ss->endDate;
+    $ss->save();
+  }
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
