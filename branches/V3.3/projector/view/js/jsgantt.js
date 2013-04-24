@@ -780,7 +780,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vTopRightTable += '</TR><TR>';
       vTmpDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
+      vTmpDate.setHours(0);
+      vTmpDate.setMinutes(0);
       vNxtDate.setFullYear(vMinDate.getFullYear(), vMinDate.getMonth(), vMinDate.getDate());
+      vNxtDate.setHours(0);
+      vNxtDate.setMinutes(0);
       vNumCols = 0;
       var vHighlightSpecificDays="";
       var vTotalHeight=21*vTaskList.length;
@@ -789,16 +793,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       while(Date.parse(vTmpDate) <= Date.parse(vMaxDate)) {  
         if(vFormat == 'day' ) {
           if (vPerf && isOffDayNotWeekEnd(vTmpDate))	{
-        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
-        	vDayLeft=Math.ceil( (vTaskLeft-0.95) * (vDayWidth))
-        	vHighlightSpecificDays+='<DIV class="specificDayWeekEnd" '
+        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
+            vDayLeft=Math.ceil( (vTaskLeft-1) * vDayWidth)
+            vHighlightSpecificDays+='<DIV class="specificDayWeekEnd" '
         		+'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:18px"></DIV>'  
           }
           if(vPerf && JSGantt.formatDateStr(vCurrDate,'mm/dd/yyyy') == JSGantt.formatDateStr(vTmpDate,'mm/dd/yyyy')) {
-        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate)) / (24 * 60 * 60 * 1000) );
-          	vDayLeft=Math.ceil( (vTaskLeft-0.95) * (vDayWidth))
+        	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
+          	vDayLeft=Math.ceil( (vTaskLeft- 1) * (vDayWidth))
           	vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
-          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:18px"></DIV>'   
+          		+'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+vColWidth+'px"></DIV>'   
           } 
           if(isOffDay(vTmpDate)) {
             vDateRowStr  += '<td class="ganttRightSubTitle" style="background-color:#' + vWeekendColor + '; " >'
@@ -820,6 +824,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           vTmpDate.setDate(vTmpDate.getDate() + 1);
         } else if (vFormat == 'week') {
           vNxtDate.setDate(vNxtDate.getDate() + 7);
+          if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
+          	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
+            vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth))
+            vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
+            +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+vColWidth+'px"></DIV>'   
+          } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) { 
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '">'
               + '<div style="width: '+vColWidth+'px">' 
@@ -836,6 +846,14 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           vTmpDate.setDate(vTmpDate.getDate() + 7);
         } else if (vFormat == 'month') {
           vNxtDate.setFullYear(vTmpDate.getFullYear(), vTmpDate.getMonth(), vMonthDaysArr[vTmpDate.getMonth()]);
+          vNxtDate.setHours(0);
+          vNxtDate.setMinutes(0);
+          if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
+        	  vTaskLeft=vTmpDate.getMonth()-vMinDate.getMonth()+12*(vTmpDate.getFullYear()-vMinDate.getFullYear());
+        	  vDayLeft=Math.ceil(vTaskLeft*(vColWidth+1));
+              vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
+              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>'   
+          } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '"> '
               + '<div style="width: '+vColWidth+'px">' 
@@ -854,8 +872,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vTmpDate.setDate(vTmpDate.getDate() + 1);
           }
         } else if (vFormat == 'quarter') {
-          vNxtDate.setDate(vNxtDate.getDate() + 122);
-          if( vTmpDate.getMonth()==0 || vTmpDate.getMonth()==1 || vTmpDate.getMonth()==2 ) {
+          //vNxtDate.setDate(vNxtDate.getDate() + 122);
+          vNxtDate.setFullYear(vTmpDate.getFullYear(), vTmpDate.getMonth(), vMonthDaysArr[vTmpDate.getMonth()]);
+          /*if( vTmpDate.getMonth()==0 || vTmpDate.getMonth()==1 || vTmpDate.getMonth()==2 ) {
             vNxtDate.setFullYear(vTmpDate.getFullYear(), 2, 31);
           } else if( vTmpDate.getMonth()==3 || vTmpDate.getMonth()==4 || vTmpDate.getMonth()==5 ) {
             vNxtDate.setFullYear(vTmpDate.getFullYear(), 5, 30);
@@ -863,7 +882,13 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vNxtDate.setFullYear(vTmpDate.getFullYear(), 8, 30);
           } else if( vTmpDate.getMonth()==9 || vTmpDate.getMonth()==10 || vTmpDate.getMonth()==11 ) {
             vNxtDate.setFullYear(vTmpDate.getFullYear(), 11, 31);
-          }
+          }*/
+          if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
+        	  vTaskLeft=vTmpDate.getMonth()-vMinDate.getMonth()+12*(vTmpDate.getFullYear()-vMinDate.getFullYear());
+        	  vDayLeft=Math.ceil(vTaskLeft*(vColWidth+1));
+              vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
+              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>'   
+          } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '" >'
               +'<div style="width: '+vColWidth+'px">' + JSGantt.formatDateStr(vTmpDate,"mm",vMonthArr) + '</div></td>';
@@ -1031,7 +1056,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                   case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
                 }
-                vRightTable += '<div class="labelBarDiv" style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
+                vRightTable += '<div class="labelBarDiv"  '
+                	+ ' onMouseover=JSGantt.enterBarLink('+i+'); '
+	                + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+              	+ 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
             }
             vRightTable += '</div>';
@@ -1094,7 +1122,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                   case 'Complete':   vCaptionStr = vTaskList[i].getCompStr();  break;
                   case 'Work':       vCaptionStr = vTaskList[i].getWork();  break;
                 }
-                vRightTable += '<div class="labelBarDiv" style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
+                vRightTable += '<div class="labelBarDiv" '
+                	+ ' onMouseover=JSGantt.enterBarLink('+i+'); '
+	                  + ' onMouseout=JSGantt.exitBarLink('+i+'); '
+                	+ 'style="left:' + (Math.ceil((vTaskRight) * (vDayWidth) - 1) + 6) + 'px;">' + vCaptionStr + '</div>';
               }
 	        }
             vRightTable += '</div>' ;

@@ -31,6 +31,8 @@ class TestSession extends SqlElement {
   public $idle;
   public $idleDate;
   public $result;
+  public $_sec_Assignment;
+  public $_Assignment=array();
   public $_col_1_1_Progress;
   public $TestSessionPlanningElement;
   public $_spe_separator_progress;
@@ -50,6 +52,10 @@ class TestSession extends SqlElement {
   public $pctFailed;
   public $noDisplay3;
   public $idRunStatus;
+  public $_col_1_2_predecessor;
+  public $_Dependency_Predecessor=array();
+  public $_col_2_2_successor;
+  public $_Dependency_Successor=array();
   public $_col_1_1_TestCaseRun;
   public $_TestCaseRun=array();
   public $_col_1_1_Link;
@@ -96,7 +102,9 @@ class TestSession extends SqlElement {
                                   "noDisplay3"=>"calculated,hidden",
                                   "idRunStatus"=>"display,html,hidden",
                                   "runStatusIcon"=>"calculated,display,html",
-                                  "runStatusName"=>"calculated,display,html"
+                                  "runStatusName"=>"calculated,display,html",
+                                  "startDate"=>"hidden", 
+                                  "endDate"=>"hidden"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
@@ -172,9 +180,23 @@ class TestSession extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="idProject" or $colName=="idActivity" or $colName=="idTestSession" ) {   
+    if ($colName=="idProject" ) {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
+     if ($colName=="idActivity") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
+      $colScript .= '  if (trim(this.value)) dijit.byId("idTestSession").set("value",null); ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
+     if ($colName=="idTestSession" ) {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
+      $colScript .= '  if (trim(this.value)) dijit.byId("idActivity").set("value",null); ';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } 
@@ -235,11 +257,15 @@ class TestSession extends SqlElement {
     	$this->TestSessionPlanningElement->topRefType='TestSession';
       $this->TestSessionPlanningElement->topRefId=$this->idTestSession;
       $this->TestSessionPlanningElement->topId=null;
-    } else {
+    } else  if ($this->idProject and trim($this->idProject)!=''){
       $this->TestSessionPlanningElement->topRefType='Project';
       $this->TestSessionPlanningElement->topRefId=$this->idProject;
       $this->TestSessionPlanningElement->topId=null;
-    } 
+    } else {
+    	$this->TestSessionPlanningElement->topRefType=null;
+      $this->TestSessionPlanningElement->topRefId=null;
+      $this->TestSessionPlanningElement->topId=null;
+    }
   	$result=parent::save();
     return $result;
   }

@@ -848,13 +848,13 @@ label, .label {
 }
 
 .blue #mainDiv {
-    scrollbar-face-color: #C3C3EB;
+    /*scrollbar-face-color: #C3C3EB;
     scrollbar-shadow-color: #C3C3EB;
     scrollbar-highlight-color: #C3C3EB;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3C3EB;
-    scrollbar-arrow-color: #545281;
+    scrollbar-arrow-color: #545281;*/
 }
 
 /* =============================================================================== */
@@ -895,13 +895,13 @@ label, .label {
 }
 
 .red #mainDiv {
-    scrollbar-face-color: #EBC3C3;
+    /*scrollbar-face-color: #EBC3C3;
     scrollbar-shadow-color: #EBC3C3;
     scrollbar-highlight-color: #EBC3C3;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EBC3C3;
-    scrollbar-arrow-color: #9B5353;
+    scrollbar-arrow-color: #9B5353;*/
 }
 
 /* =============================================================================== */
@@ -941,13 +941,13 @@ label, .label {
 }
 
 .green #mainDiv {
-    scrollbar-face-color: #C3EBC3;
+    /*scrollbar-face-color: #C3EBC3;
     scrollbar-shadow-color: #C3EBC3;
     scrollbar-highlight-color: #C3EBC3;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3EBC3;
-    scrollbar-arrow-color: #539B53;
+    scrollbar-arrow-color: #539B53;*/
 }
 
 /* =============================================================================== */
@@ -988,13 +988,13 @@ label, .label {
 }
 
 .grey #mainDiv {
-    scrollbar-face-color: #C3C3C3;
+    /*scrollbar-face-color: #C3C3C3;
     scrollbar-shadow-color: #C3C3C3;
     scrollbar-highlight-color: #C3C3C3;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3C3C3;
-    scrollbar-arrow-color: #535353;
+    scrollbar-arrow-color: #535353;*/
 }
 
 /* =============================================================================== */
@@ -1035,13 +1035,13 @@ label, .label {
 }
 
 .orange #mainDiv {
-    scrollbar-face-color: #F6C672;
+    /*scrollbar-face-color: #F6C672;
     scrollbar-shadow-color: #F6C672;
     scrollbar-highlight-color: #F6C672;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F6C672;
-    scrollbar-arrow-color: #D98F0E;
+    scrollbar-arrow-color: #D98F0E;*/
 }
 
 /* =============================================================================== */
@@ -1082,13 +1082,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .white #mainDiv {
-    scrollbar-face-color: #FFFFFF;
+    /*scrollbar-face-color: #FFFFFF;
     scrollbar-shadow-color: #FFFFFF;
     scrollbar-highlight-color: #FFFFFF;
     scrollbar-3dlight-color: #CCCCCC;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFFF;
-    scrollbar-arrow-color: #000000;
+    scrollbar-arrow-color: #000000;*/
 }
 
 /* =============================================================================== */
@@ -1128,13 +1128,13 @@ label, .label {
  color: #EEEEFF;  
 }
 .blueLight #mainDiv {
-    scrollbar-face-color: #EEEEFF;
+    /*scrollbar-face-color: #EEEEFF;
     scrollbar-shadow-color: #EEEEFF;
     scrollbar-highlight-color: #EEEEFF;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEEEFF;
-    scrollbar-arrow-color: #C3C3EB;
+    scrollbar-arrow-color: #C3C3EB;*/
 }
 
 /* =============================================================================== */
@@ -1177,13 +1177,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .blueContrast #mainDiv {
-    scrollbar-face-color: #EEEEFF;
+    /*scrollbar-face-color: #EEEEFF;
     scrollbar-shadow-color: #EEEEFF;
     scrollbar-highcontrasted-color: #EEEEFF;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEEEFF;
-    scrollbar-arrow-color: #C3C3EB;
+    scrollbar-arrow-color: #C3C3EB;*/
 }
 
 /* =============================================================================== */
@@ -1224,13 +1224,13 @@ label, .label {
 }
 
 .redLight #mainDiv {
-    scrollbar-face-color: #FFEEEE;
+    /*scrollbar-face-color: #FFEEEE;
     scrollbar-shadow-color: #FFEEEE;
     scrollbar-highlight-color: #FFEEEE;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFEEEE;
-    scrollbar-arrow-color: #EBC3C3;
+    scrollbar-arrow-color: #EBC3C3;*/
 }
 
 /* =============================================================================== */
@@ -1273,13 +1273,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .redContrast #mainDiv {
-    scrollbar-face-color: #FFEEEE;
+    /*scrollbar-face-color: #FFEEEE;
     scrollbar-shadow-color: #FFEEEE;
     scrollbar-highcontrasted-color: #FFEEEE;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFEEEE;
-    scrollbar-arrow-color: #EBC3C3;
+    scrollbar-arrow-color: #EBC3C3;*/
 }
 
 /* =============================================================================== */
@@ -1319,13 +1319,13 @@ label, .label {
  color: #EEFFEE;  
 }
 .greenLight #mainDiv {
-    scrollbar-face-color: #EEFFEE;
+    /*scrollbar-face-color: #EEFFEE;
     scrollbar-shadow-color: #EEFFEE;
     scrollbar-highlight-color: #EEFFEE;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEFFEE;
-    scrollbar-arrow-color: #C3EBC3;
+    scrollbar-arrow-color: #C3EBC3;*/
 }
 
 /* =============================================================================== */
@@ -1368,13 +1368,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .greenContrast #mainDiv {
-    scrollbar-face-color: #EEFFEE;
+    /*scrollbar-face-color: #EEFFEE;
     scrollbar-shadow-color: #EEFFEE;
     scrollbar-highcontrasted-color: #EEFFEE;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEFFEE;
-    scrollbar-arrow-color: #C3EBC3;
+    scrollbar-arrow-color: #C3EBC3;*/
 }
 
 /* =============================================================================== */
@@ -1414,13 +1414,13 @@ label, .label {
  color: #FFFFDD;  
 }
 .orangeLight #mainDiv {
-    scrollbar-face-color: #FFFFDD;
+    /*scrollbar-face-color: #FFFFDD;
     scrollbar-shadow-color: #FFFFDD;
     scrollbar-highlight-color: #FFFFDD;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFDD;
-    scrollbar-arrow-color: #F6C672;
+    scrollbar-arrow-color: #F6C672;*/
 }
 
 /* =============================================================================== */
@@ -1463,13 +1463,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .orangeContrast #mainDiv {
-    scrollbar-face-color: #FFFFDD;
+    /*scrollbar-face-color: #FFFFDD;
     scrollbar-shadow-color: #FFFFDD;
     scrollbar-highcontrasted-color: #FFFFDD;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFDD;
-    scrollbar-arrow-color: #F6C672;
+    scrollbar-arrow-color: #F6C672;*/
 }
 
 /* =============================================================================== */
@@ -1510,13 +1510,13 @@ label, .label {
 }
 
 .greyLight #mainDiv {
-    scrollbar-face-color: #F0F0F0;
+    /*scrollbar-face-color: #F0F0F0;
     scrollbar-shadow-color: #F0F0F0;
     scrollbar-highlight-color: #F0F0F0;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F0F0F0;
-    scrollbar-arrow-color: #C3C3C3;
+    scrollbar-arrow-color: #C3C3C3;*/
 }
 
 /* =============================================================================== */
@@ -1559,13 +1559,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .greyContrast #mainDiv {
-    scrollbar-face-color: #F0F0F0;
+    /*scrollbar-face-color: #F0F0F0;
     scrollbar-shadow-color: #F0F0F0;
     scrollbar-highcontrasted-color: #F0F0F0;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F0F0F0;
-    scrollbar-arrow-color: #C3C3C3;
+    scrollbar-arrow-color: #C3C3C3;*/
 }
 
 /* =============================================================================== */
@@ -1610,13 +1610,13 @@ label, .label {
 }
 
 .ProjectOrRiaContrasted #mainDiv {
-    scrollbar-face-color: #ececec;
+    /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #545281;
+    scrollbar-arrow-color: #545281;*/
 }
 
 
@@ -1659,13 +1659,13 @@ label, .label {
  color: #545281;  
 }
 .ProjectOrRiaLight #mainDiv {
-    scrollbar-face-color: #ececec;
+    /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #d4d5da;
+    scrollbar-arrow-color: #d4d5da;*/
 }
 /* =============================================================================== */
 /* SPECIFIC PROJECTORRIA CONTRASTED THEME                                                             */
@@ -1738,11 +1738,11 @@ label, .label {
 }
 
 .ProjectOrRia #mainDiv {
-    scrollbar-face-color: #ececec;
+    /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #545281;
+    scrollbar-arrow-color: #545281;*/
 }

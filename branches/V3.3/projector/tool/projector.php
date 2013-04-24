@@ -315,7 +315,8 @@ function exceptionHandler($exception) {
 function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
   global $globalCatchErrors;
   $logLevel=Parameter::getGlobalParameter('logLevel');
-  if ( ! strpos($errorMessage, "getVersion.php") and ! strpos($errorMessage, "file-get-contents") ) {
+  if ( ! strpos($errorMessage, "getVersion.php") and ! strpos($errorMessage, "file-get-contents") 
+    and ! strpos($errorMessage,"function.session-destroy") ) {
     errorLog("ERROR *****");
     errorLog("on file '" . $errorFile . "' at line (" . $errorLine . ")");
     errorLog("cause = " . $errorMessage);
