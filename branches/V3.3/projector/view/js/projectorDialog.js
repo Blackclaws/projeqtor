@@ -1886,6 +1886,7 @@ function saveDependency() {
 
 function saveDependencyFromDndLink(ref1Type,ref1Id, ref2Type, ref2Id) {
 //alert("saveDependencyFromDndLink("+ref1Type+","+ref1Id+","+ref2Type+","+ref2Id+")");
+	if (ref1Type==ref2Type && ref1Id==ref2Id) return;
 	param="ref1Type="+ref1Type;
 	param+="&ref1Id="+ref1Id;
 	param+="&ref2Type="+ref2Type;

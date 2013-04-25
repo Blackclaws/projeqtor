@@ -628,6 +628,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           + ' xonMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
           + ' xonMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>' ;
           +'>';
+        vLeftTable+='<div class="ganttLeftHover" style="width:'+(vLeftWidth-25)+'px;" '
+            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
+        	+ ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
+            + ' onMouseout=JSGantt.ganttMouseOut(' + vID + ',"left","' + vRowType + '")>&nbsp;</div>';
         vLeftTable += '<div style="width: ' + vNameWidth + 'px;">';
         var levl=vTaskList[i].getLevel();
         var levlWidth = (levl-1) * 16;
@@ -637,12 +641,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         if( vTaskList[i].getGroup()) {
           if( vTaskList[i].getOpen() == 1) {
             vLeftTable += '<div id="group_' + vID + '" class="ganttExpandOpened"' 
-              + 'style="width:16px; height:13px;"'
+              + 'style="position: relative; z-index: 999; width:16px; height:13px;"'
               +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">'           
               +'</div>' ;
           } else {
             vLeftTable += '<div id="group_' + vID + '" class="ganttExpandClosed"' 
-              + 'style="width:16px; height:13px;"'
+              + 'style="position: relative; z-index: 999; width:16px; height:13px;"'
               +' onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">' 
               +'&nbsp;&nbsp;&nbsp;&nbsp;</div>' ;
           } 

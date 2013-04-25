@@ -196,6 +196,16 @@ div .scrollRightTop {
   padding: 0px; margin: 0px;
   z-index: 0;
 }
+.ganttLeftHover {
+	position: absolute;
+	margin-top: -3px;
+	left: 25px;
+	height: 20px;
+	background-color: #FFFFFF;
+	opacity:0.1;
+  filter: alpha(opacity=10);
+	z-index: 998;
+}
 
 .hideLeftPartrow, .hideLeftPartmile {
   z-index: 999;
