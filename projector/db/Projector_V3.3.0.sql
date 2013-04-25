@@ -132,3 +132,19 @@ ALTER TABLE `${prefix}testsession` ADD COLUMN `idTestSession` int(12) unsigned D
 ADD COLUMN `idActivity` int(12) unsigned DEFAULT NULL;
 
 ALTER TABLE `${prefix}meeting` ADD COLUMN `idActivity` int(12) unsigned DEFAULT NULL;
+
+INSERT INTO `${prefix}indicatorable` (`id`, `name`, `idle`) VALUES
+(9, 'TestSession', 0);
+  
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicator`, `idIndicatorable`, `nameIndicatorable`, `idle`) VALUES
+(6, 9, 'TestSession',0),
+(7, 9, 'TestSession',0),
+(8, 9, 'TestSession',0),
+(9, 9, 'TestSession',0),
+(10, 9, 'TestSession',0),
+(11, 9, 'TestSession',0),
+(12, 9, 'TestSession',0),
+(13, 9, 'TestSession',0),
+(14, 9, 'TestSession',0),
+(15, 9, 'TestSession',0),
+(16, 9, 'TestSession',0);

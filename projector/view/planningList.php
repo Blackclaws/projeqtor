@@ -255,13 +255,13 @@ if ($saveShowClosed) {
      <div dojoType="dijit.layout.ContentPane" region="center" 
       style="height:100%; overflow:hidden;" class="ganttDiv" 
       id="GanttChartDIV" name="GanttChartDIV" >
-       <div id="mainRightPlanningDivContainer" dojoType="dijit.layout.BorderContainer">
+       <div id="mainRightPlanningDivContainer" dojoType="dijit.layout.BorderContainer" style="z-index:-4;">
          <div dojoType="dijit.layout.ContentPane" region="top" 
           style="width:100%; height:43px; overflow:hidden;" class="ganttDiv"
           id="topGanttChartDIV" name="topGanttChartDIV">
          </div>
          <div dojoType="dijit.layout.ContentPane" region="center" 
-          style="width:100%; overflow-x:scroll; overflow-y:scroll; position: relative; top:-10px;" class="ganttDiv"
+          style="z-index:-4; width:100%; overflow-x:scroll; overflow-y:scroll; position: relative; top:-10px;" class="ganttDiv"
           id="rightGanttChartDIV" name="rightGanttChartDIV"
           onScroll="dojo.byId('rightside').style.left='-'+(this.scrollLeft+1)+'px';
                     dojo.byId('leftside').style.top='-'+(this.scrollTop)+'px';"
