@@ -205,6 +205,7 @@ div .scrollRightTop {
 	opacity:0.1;
   filter: alpha(opacity=10);
 	z-index: 998;
+	cursor: pointer;
 }
 
 .hideLeftPartrow, .hideLeftPartmile {
