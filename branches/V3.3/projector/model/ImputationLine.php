@@ -83,7 +83,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 	  if ($showPlanned) {
       $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit,false);
     }
-		
+		//echo "scopeCode='$scopeCode'";
 		// visibility security : hide line depending on access rights
 		if ($user->id != $resourceId and $scopeCode!='ALL') {
 			foreach ($assList as $id=>$ass) {
@@ -274,19 +274,22 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 			}
 			$result['#']=$elt;
 		}
+		$act=new Activity();
+		$accessRight=securityGetAccessRight($act->getMenuClass(), 'read');
 		foreach ($result as $key=>$elt) {
-			$result=self::getParent($elt, $result);
+			$result=self::getParent($elt, $result, true, $accessRight);
 		}
 		ksort($result);
 		return $result;
 	}
 
 	// Get the parent line for hierarchc display purpose
-	private static function getParent($elt, $result, $direct=true){
+	private static function getParent($elt, $result, $direct=true, $accessRight){
 //scriptLog("      => ImputationLine->getParent($elt->refType#$elt->refId, result[], $direct)");		
 		$plan=null;
 		$user=$_SESSION['user'];
 		$visibleProjectList=$user->getVisibleProjects();
+		
 		//$visibleProjectList=explode(', ', getVisibleProjectsList());
 		if ($elt->topId) {
 			$plan=new PlanningElement($elt->topId);
@@ -294,7 +297,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 		if ($plan) {
 			$key=$plan->wbsSortable . ' ' . $plan->refType . '#' . $plan->refId;
 			if (! array_key_exists($key,$result) 
-			and ($plan->refType!='Project' or $direct or array_key_exists($plan->refId,$visibleProjectList))) {
+			and ($plan->refType!='Project' or $direct or $accessRight=='ALL' or array_key_exists($plan->refId,$visibleProjectList))) {
 				$top=new ImputationLine();
 				$top->idle=$plan->idle;
 				$top->imputable=false;
@@ -309,7 +312,7 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 				//$top->realWork=$plan->realWork;
 				//$top->leftWork=$plan->leftWork;
 				$result[$key]=$top;
-				$result=self::getParent($top, $result, $direct=false);
+				$result=self::getParent($top, $result, $direct=false, $accessRight);
 			}
 		}
 scriptLog("      => ImputationLine->getParent()-exit");
