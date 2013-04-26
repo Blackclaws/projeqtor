@@ -500,8 +500,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       vLeftTable = '<DIV class="scrollLeftTop" id="leftsideTop" style="width:' + vLeftWidth + 'px;">' 
         +'<TABLE jsId="topSourceTable" id="topSourceTable" class="ganttTable"><TBODY>'
         +'<TR class="ganttHeight">'
-        +'<TD class="ganttLeftTopLine" style="width:'+vIconWidth+'px;"></TD>'
-        +'<TD class="ganttLeftTopLine" style="width: ' + vNameWidth + 'px;"><NOBR>';
+        //+'<TD class="ganttLeftTopLine" style="width:'+vIconWidth+'px;"></TD>'
+        +'<TD class="ganttLeftTopLine" colspan="2" style="width: ' + (vNameWidth+vIconWidth) + 'px;"><NOBR>';
       vLeftTable+=JSGantt.drawFormat(vFormatArr, vFormat, vGanttVar,'top');
       vLeftTable+= '</NOBR></TD>'; 
       sortArray=this.getSortArray();
@@ -819,9 +819,10 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           vNxtDate.setDate(vNxtDate.getDate() + 7);
           if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
           	vTaskLeft = Math.ceil((Date.parse(vTmpDate) - Date.parse(vMinDate) + (1000*60*60)) / (24 * 60 * 60 * 1000) );
-            vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth))
-            vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
-            +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>'   
+            vDayLeft=Math.ceil( (vTaskLeft-1) * (vDayWidth));
+            vScpecificDayCount++;
+            vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayCurrent" '
+            +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>';   
           } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) { 
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '">'
@@ -844,8 +845,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
         	  vTaskLeft=vTmpDate.getMonth()-vMinDate.getMonth()+12*(vTmpDate.getFullYear()-vMinDate.getFullYear());
         	  vDayLeft=Math.ceil(vTaskLeft*(vColWidth+1));
-              vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
-              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>'   
+        	  vScpecificDayCount++;
+              vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayCurrent" '
+              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>';   
           } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '"> '
@@ -879,8 +881,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           if(vPerf && vCurrDate >= vTmpDate && vCurrDate < vNxtDate) {
         	  vTaskLeft=vTmpDate.getMonth()-vMinDate.getMonth()+12*(vTmpDate.getFullYear()-vMinDate.getFullYear());
         	  vDayLeft=Math.ceil(vTaskLeft*(vColWidth+1));
-              vHighlightSpecificDays+='<DIV class="specificDayCurrent" '
-              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>'   
+        	  vScpecificDayCount++;
+              vHighlightSpecificDays+='<DIV id="vScpecificDay_'+vScpecificDayCount+'" class="specificDayCurrent" '
+              +'style="top: 0px; left:'+vDayLeft+'px; height:'+vTotalHeight+'px; width:'+(vColWidth+1)+'px"></DIV>';   
           } 
           if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) {
             vDateRowStr += '<td class="ganttRightSubTitle" style="background-color:#' + vCurrentdayColor + '" >'
@@ -1954,69 +1957,69 @@ JSGantt.drawFormat = function(vFormatArr, vFormat, vGanttVar, vPos) {
     if (vFormat=='day') {
       vLeftTable += '<label class="ganttScale">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
-    	+' name="radFormat' + vPos + '" value="day" checked>' 
-    	+JSGantt.i18n('day')
+    	+' name="radFormat' + vPos + '" value="day" checked />' 
+    	+'<span class="ganttScaleText">'+JSGantt.i18n('day')+'</span>'
     	+'</label>';
     } else {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer;">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
     	+' name="radFormat' + vPos + '"' 
-        +' onChange=JSGantt.changeFormat("day",'+vGanttVar+'); value="day">' 
-        + JSGantt.i18n('day')
+        +' onChange=JSGantt.changeFormat("day",'+vGanttVar+'); value="day" />' 
+        +'<span class="ganttScaleText">'+JSGantt.i18n('day')+'</span>'
         + '</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;';
   }
   if (vFormatArr.join().indexOf("week")!=-1) { 
     if (vFormat=='week') {
       vLeftTable += '<label class="ganttScale">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton" '
-    	+' name="radFormat' + vPos + '" value="week" checked>' 
-    	+JSGantt.i18n('week') 
+    	+' name="radFormat' + vPos + '" value="week" checked />' 
+    	+'<span class="ganttScaleText">'+JSGantt.i18n('week')+'</span>'
     	+'</label>';
     } else {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
         +' name="radFormat' + vPos + '"' 
-        +' onChange=JSGantt.changeFormat("week",'+vGanttVar+') value="week">'
-        + JSGantt.i18n('week') 
+        +' onChange=JSGantt.changeFormat("week",'+vGanttVar+') value="week" />'
+        +'<span class="ganttScaleText">'+JSGantt.i18n('week')+'</span>'
         +'</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;';
   }
   if (vFormatArr.join().indexOf("month")!=-1) { 
     if (vFormat=='month') { 
       vLeftTable += '<label class="ganttScale">'
         +'<input type="RADIO" dojoType="dijit.form.RadioButton" '
         +'name="radFormat' + vPos + '" value="month" checked>' 
-        +JSGantt.i18n('month')
+        +'<span class="ganttScaleText">'+JSGantt.i18n('month')+'</span>'
         +'</label>';
     } else {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
     	+' name="radFormat' + vPos + '"' 
         + ' onChange=JSGantt.changeFormat("month",'+vGanttVar+') value="month">' 
-        +JSGantt.i18n('month')
+        +'<span class="ganttScaleText">'+JSGantt.i18n('month')+'</span>'
         +'</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;';
   }
   if (vFormatArr.join().indexOf("quarter")!=-1) { 
     if (vFormat=='quarter') {
 	  vLeftTable += '<label class="ganttScale">'
         +'<input type="RADIO" dojoType="dijit.form.RadioButton" '
         +'name="radFormat' + vPos + '" value="quarter" checked>' 
-        +JSGantt.i18n('quarter')
+        +'<span class="ganttScaleText">'+JSGantt.i18n('quarter')+'</span>'
         +'</label>';
     } else {
       vLeftTable += '<label class="ganttScale" style="cursor:pointer">'
     	+'<input type="RADIO" dojoType="dijit.form.RadioButton"'
     	+' name="radFormat' + vPos + '"' 
         + ' onChange=JSGantt.changeFormat("quarter",'+vGanttVar+') value="quarter">' 
-        +JSGantt.i18n('quarter')
+        +'<span class="ganttScaleText">'+JSGantt.i18n('quarter')+'</span>'
         +'</label>';
     }
-    vLeftTable += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    vLeftTable += '&nbsp;&nbsp;';
   }
   vLeftTable+='</div>';
   return vLeftTable;

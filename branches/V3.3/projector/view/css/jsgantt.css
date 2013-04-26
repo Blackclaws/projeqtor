@@ -294,6 +294,15 @@ div .scrollRightTop {
 	float:none;
 	test-align: left;
 }
+.ganttScaleText {
+  width:100px;
+  font-size: 80%;
+  float:none;
+  position: relative;
+  top: 0px;
+  test-align: left;
+  font-weight: normal;
+}
 	
 .ganttUnselectable {
     user-select: none; 
