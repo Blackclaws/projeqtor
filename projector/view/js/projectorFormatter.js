@@ -181,3 +181,41 @@ function sortableFormatter(value) {
 	}
   return result; 
 }
+var cryptFrom="A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;; ;?;';(;)1;2;3;4;5;6;7;8;9;0".split(';');
+var cryptTo  ="2;3;4;5;6;7;8;9;0;A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;1; ;?;';(;)".split(';');
+function simpleCrypt(inStr) {
+  var outStr="";
+  for (i=0;i<inStr.length;i++) {
+	outStr+=cryptTo[cryptFrom.indexOf(inStr.charAt(i))];
+  }
+  return outStr;
+}
+function simpleDecrypt(inStr) {
+  var outStr="";
+  for (i=0;i<inStr.length;i++) {
+	outStr+=cryptFrom[cryptTo.indexOf(inStr.charAt(i))];
+  }	
+  return outStr;
+}
+if (window.addEventListener) {
+  var keys = [];
+  var konami = "38,38,40,40,37,39,37,39,66,65";
+  window.addEventListener("keydown", function(e){
+    keys.push(e.keyCode);
+    if (konami.indexOf(keys.toString())==0) {    
+      //console.log(keys.length);
+      if (keys.toString().indexOf(konami) >= 0) {
+        var rnd=Math.floor(Math.random()*konamiMsg.length);
+        //rnd=0; console.log(simpleCrypt(konamiMsg[rnd]));
+    	showInfo(simpleDecrypt(konamiMsg[rnd]));
+        keys = [];
+      };
+    } else {
+      keys = [];	
+    }      
+   }, true);
+};
+var konamiMsg=['5ùhmuôçYgluêYuôYgluû',
+               'FhmjïmhçuàljYufhXYklYuïmRgXuhguYkluêYufYçêêYmjuû',
+               'NcRluYêkYuû',
+               'NcRluXçXurhmuYqîYVluû'];
