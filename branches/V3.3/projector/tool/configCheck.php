@@ -55,11 +55,21 @@
     $connexion = new PDO($dsn, $param['DbUser'], $param['DbPassword']);
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   } catch (PDOException $e) {
-    showError(utf8_encode($e->getMessage()));
-    showError('dsn = '.$dsn);
-    if ($dbType=='mysql') {
-      exit;
-    }
+  	if ($dbType=='pgsql' and strpos($e->getMessage(), $param['DbUser'])>0 
+  	    and (strpos($e->getMessage(), "does not exist")>0 or strpos($e->getMessage(), "n'existe pas")>0)) {
+  	   //FATAL: database "pj_integ" does not exist
+  	   //FATAL: la base de données « pj_integ » n'existe pas
+  	   // => not an error, pgsql expect an existing database with user name
+  	   $pgError="User  '" . $param['DbUser'] . "' is valid but no database named '". $param['DbUser'] ."' exists."
+  	     . "<br/>You have to create database '".$param['DbName']."' on your own "
+  	     . "<br/>or create default database '".$param['DbUser']."' in order to allow connection of user '".$param['DbUser']."'";
+  	} else {
+      showError(utf8_encode($e->getMessage()));
+      showError('dsn = '.$dsn);
+      if ($dbType=='mysql') {
+        exit;
+      }
+  	}
   }
   $baseExists=false;
   $dsn = $param['DbType'].':host='.$param['DbHost'].';port='.$param['DbPort'].';dbname='.$param['DbName'];
@@ -69,6 +79,10 @@
     $baseExists=true;
   } catch (PDOException $e) {
     $baseExists=false;
+  }
+  if ( ! $baseExists and $dbType=='pgsql' and isset($pgError)) {
+    showError($pgError);
+    exit;
   }
   if ( ! $baseExists ) {
   	try {
