@@ -1,5 +1,6 @@
 <?PHP
   require_once "../tool/projector.php";
+  include_once('../tool/formatter.php');
 //echo "workPerActivity.php";
 // Creation of object "table"
   $objectClass='PlanningElement';
@@ -10,9 +11,8 @@
   $print=false;
   if ( array_key_exists('print',$_REQUEST) ) {
     $print=true;
-    include_once('../tool/formatter.php');
   }
-
+    
   // Header
   $headerParameters="";
   if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
