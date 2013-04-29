@@ -181,6 +181,7 @@ foreach ($listParam as $param) {
        <option value="day" <?php echo ($defaultValue=='day')?'SELECTED':'';?> ><?php echo i18n('day'); ?> </option>
        <option value="week" <?php echo ($defaultValue=='week')?'SELECTED':'';?> ><?php echo i18n('week'); ?> </option>
        <option value="month" <?php echo ($defaultValue=='month')?'SELECTED':'';?> ><?php echo i18n('month'); ?> </option>
+       <option value="quarter" <?php echo ($defaultValue=='quarter')?'SELECTED':'';?> ><?php echo i18n('quarter'); ?> </option>
      </select>
     </td>
     </tr>
