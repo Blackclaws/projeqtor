@@ -35,7 +35,8 @@ $versionHistory = array(
   "V3.0.1",
   "V3.1.0",
   "V3.2.0",
-  "V3.3.0");
+  "V3.3.0",
+  "V3.3.1");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -227,6 +228,13 @@ if ($currVersion<"V3.3.0" and $currVersion!='V0.0.0') {
     $ss->save();
   }
 }
+
+$tstTable=new TodayParameter();
+$tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
+if (! $tst or count($tst)==0) {
+  $nbErrors+=runScript('V3.3.1.linux');
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
