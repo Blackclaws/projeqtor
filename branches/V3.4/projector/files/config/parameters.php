@@ -20,4 +20,5 @@ $logLevel='3';
 $paramDebugMode='false';
 //$debugQuery=true;
 //$ganttPlanningOldStyle=true;
+$preserveUploadedFileName=true;
 //======= END
