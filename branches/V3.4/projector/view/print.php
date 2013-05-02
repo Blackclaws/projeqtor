@@ -76,6 +76,7 @@
               parseOnLoad: true,
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
+  <script type="text/javascript" src="../view/js/jsGantt.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
     dojo.require("dojo.i18n");
@@ -90,7 +91,17 @@
       top.hideWait();
       top.window.document.title="<?php echo getPrintTitle();?>";
       window.document.title="<?php echo getPrintTitle();?>";
+      <?php if ($_REQUEST['page']=='planningPrint.php') {?>
+      alert("OK Planning");
+      dojo.byId("leftGanttChartDIV_print").innerHTML=top.dojo.byId("leftGanttChartDIV").innerHTML;
+      dojo.byId("rightGanttChartDIV_print").innerHTML=top.dojo.byId("rightGanttChartDIV").innerHTML;
+      dojo.byId("rightGanttChartDIV_print").innerHTML=top.dojo.byId("rightGanttChartDIV").innerHTML;
+      dojo.byId("leftGanttChartDIV_print").innerHTML=parent.dojo.byId("leftGanttChartDIV").innerHTML;
+      dojo.byId("rightGanttChartDIV_print").innerHTML=parent.dojo.byId("rightGanttChartDIV").innerHTML;
+      dojo.byId("rightGanttChartDIV_print").innerHTML=parent.dojo.byId("rightGanttChartDIV").innerHTML;
+      <?php }?>
     }); 
+    
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">

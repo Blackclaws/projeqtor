@@ -116,7 +116,7 @@ if ($saveShowClosed) {
                          id="listPrint" name="listPrint"
                          iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
-                          showPrint("../tool/jsonPlanning.php", 'planning');
+                          showPrint("planningPrint.php", 'planning');
                           </script>
                         </button>
                       </td>
