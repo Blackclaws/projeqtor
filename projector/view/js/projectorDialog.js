@@ -163,6 +163,7 @@ function showAbout (msg) {
  * @return void 
  */
 function showPrint (page, context, comboName, outMode) {
+//console.log("showPrint ("+page+", "+context+", "+comboName+", "+outMode+")");
 	//dojo.byId('printFrame').style.width= 1000 + 'px';
 	showWait();
 	quitConfirmed=true;
