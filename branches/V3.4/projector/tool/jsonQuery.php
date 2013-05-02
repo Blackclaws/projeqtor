@@ -503,7 +503,8 @@
           $nbFields=0;
           foreach ($line as $id => $val) {
             echo (++$nbFields>1)?',':'';
-            $numericLength=($id=='id')?6:($id=='progress')?3:0;
+            $numericLength=0;
+            if ($id=='id') {$numericLength=6;} else if ($id=='progress') {$numericLength=3;}
             if ($id=='colorNameRunStatus') {
             	$split=explode('#',$val);
             	foreach ($split as $ix=>$sp) {
@@ -516,6 +517,7 @@
             	  }
             	} 
             }
+            debugLog ("$id=$val | numericLength=$numericLength | ".htmlEncodeJson($val, $numericLength));
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
           echo '}';       
