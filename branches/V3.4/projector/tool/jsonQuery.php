@@ -517,7 +517,6 @@
             	  }
             	} 
             }
-            debugLog ("$id=$val | numericLength=$numericLength | ".htmlEncodeJson($val, $numericLength));
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
           echo '}';       
