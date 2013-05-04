@@ -88,17 +88,29 @@
           //echo "window.close();";
         }
       ?>
-      top.hideWait();
-      top.window.document.title="<?php echo getPrintTitle();?>";
+      var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
+      if (printInNewWindow) {
+        objTop=window.opener;
+      } else {
+    	  objTop=top;
+      }
+      objTop.hideWait();
+      objTop.window.document.title="<?php echo getPrintTitle();?>";
       window.document.title="<?php echo getPrintTitle();?>";
       <?php if ($_REQUEST['page']=='planningPrint.php') {?>
-      alert("OK Planning");
-      dojo.byId("leftGanttChartDIV_print").innerHTML=top.dojo.byId("leftGanttChartDIV").innerHTML;
-      dojo.byId("rightGanttChartDIV_print").innerHTML=top.dojo.byId("rightGanttChartDIV").innerHTML;
-      dojo.byId("rightGanttChartDIV_print").innerHTML=top.dojo.byId("rightGanttChartDIV").innerHTML;
-      dojo.byId("leftGanttChartDIV_print").innerHTML=parent.dojo.byId("leftGanttChartDIV").innerHTML;
-      dojo.byId("rightGanttChartDIV_print").innerHTML=parent.dojo.byId("rightGanttChartDIV").innerHTML;
-      dojo.byId("rightGanttChartDIV_print").innerHTML=parent.dojo.byId("rightGanttChartDIV").innerHTML;
+        
+        dojo.byId("leftGanttChartDIV_print").innerHTML=objTop.dojo.byId("leftGanttChartDIV").innerHTML;
+        dojo.byId("leftGanttChartDIV_print").style.width=objTop.dojo.byId("leftGanttChartDIV").style.width;
+        dojo.byId("leftside").style.top=0;
+        dojo.byId("ganttScale").innerHTML="";
+        dojo.byId("GanttChartDIV_print").style.left=dojo.byId("leftGanttChartDIV_print").offsetWidth+"px";
+        dojo.byId("rightGanttChartDIV_print").innerHTML=objTop.dojo.byId("rightGanttChartDIV").innerHTML;
+        dojo.byId("topGanttChartDIV_print").innerHTML=objTop.dojo.byId("topGanttChartDIV").innerHTML;
+        dojo.byId("rightside").style.left='-1px';
+        var height=dojo.byId("leftside").offsetHeight;
+        height+=43;
+        dojo.byId("GanttChartDIV_print").style.height=height+'px';
+        //var g = new JSGantt.GanttChart('g',dojo.byId('ganttDiv'), top.g.getFormat()); 
       <?php }?>
     }); 
     
