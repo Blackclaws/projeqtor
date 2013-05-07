@@ -104,6 +104,11 @@ class Ticket extends SqlElement {
     if ($this->idActivity and $this->WorkElement->realWork>0) {
       self::$_fieldsAttributes['idActivity']='readonly';
     }
+    if (Parameter::getGlobalParameter('realWorkOnlyForResponsible')=='YES') {
+      if ($this->id and $this->idResource != $_SESSION['user']->id) {
+        WorkElement::lockRealWork();
+      }
+    }
   }
 
    /** ==========================================================================
