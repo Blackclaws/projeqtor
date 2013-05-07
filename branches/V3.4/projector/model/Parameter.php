@@ -288,7 +288,8 @@ class Parameter extends SqlElement {
                      '|'=>'|', '|_'=>'|_','|__'=>'|__',
                      'no'=>i18n('paramNone'));
         break; 
-      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle':
+      case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': 
+      case 'realWorkOnlyForResponsible':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
@@ -338,6 +339,7 @@ class Parameter extends SqlElement {
       	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  
+      	                       'realWorkOnlyForResponsible'=>'list',
       	                     'sectionUserAndPassword'=>'section',
       	                       'defaultProfile'=>'list', 
       	                     //'sectionPassword'=>'section',
