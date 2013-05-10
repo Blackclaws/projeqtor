@@ -269,6 +269,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
   queryOptions="{ignoreCase:true}" 
   rowPerPage="<?php echo Parameter::getGlobalParameter('paramRowPerPage');?>"
   columnReordering="false"
+  rowSelector="false"
   selectionMode="<?php echo ($multipleSelect)?'extended':'single';?>" >
   <thead>
     <tr>
@@ -277,6 +278,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
   </thead>
   <script type="dojo/connect" event="onSelected" args="evt">
     if (gridReposition) {return;}
+    if (multiSelection) {updateSelectedCountMultiple();return;}
 	  if ( dojo.byId('comboDetail') ) {
       rows=objectGrid.selection.getSelected();
       row=rows[0]; 
@@ -302,6 +304,9 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
     if (checkFormChangeInProgress(actionYes, actionNo)) {
       return true;
     }
+  </script>
+  <script type="dojo/connect" event="onDeselected" args="evt">
+    if (multiSelection) {updateSelectedCountMultiple();return;}
   </script>
   <script type="dojo/method" event="onRowDblClick" args="row">
     if ( dojo.byId('comboDetail') ) {
