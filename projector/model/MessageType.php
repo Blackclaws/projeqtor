@@ -8,12 +8,14 @@ class MessageType extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $mandatoryDescription;
-  public $_lib_mandatoryField;
   public $color;
   public $sortOrder=0;
   public $idle;
-  public $_col_2_2;
+  public $description;
+  public $_col_2_2_Behavior;
+  public $mandatoryDescription;
+  public $_lib_mandatoryField;
+
   //public $_isNameTranslatable = true;
   
   // Define the layout that will be used for lists

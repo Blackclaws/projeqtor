@@ -10,6 +10,10 @@ class Type extends SqlElement {
   public $name;
   public $code;
   public $idWorkflow;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_col_2_2_Behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $mandatoryResourceOnHandled;
@@ -22,9 +26,6 @@ class Type extends SqlElement {
   public $_lib_statusMustChangeDone;
   public $lockIdle;
   public $_lib_statusMustChangedIdle;
-  public $sortOrder=0;
-  public $idle;
-  public $_col_2_2;
   public $internalData;
   
   // Define the layout that will be used for lists

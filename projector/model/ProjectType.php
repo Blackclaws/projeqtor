@@ -12,17 +12,18 @@ class ProjectType extends SqlElement {
   public $code;
   public $internalData;
   public $idWorkflow;
+  public $sortOrder=0; 
   public $_spe_billingType;
+  public $idle;
+  public $description;
+  public $_col_2_2_Behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $lockDone;
   public $_lib_statusMustChangeDone;
   public $lockIdle;
   public $_lib_statusMustChangedIdle;
-  public $sortOrder=0;
-  public $idle;
-  public $_col_2_2;
-	
+  
    private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="50%">${name}</th>

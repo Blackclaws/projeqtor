@@ -9,13 +9,14 @@ class ShortType extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idWorkflow;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_col_2_2_Behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $lockIdle;
   public $_lib_statusMustChangedIdle;
-  public $sortOrder=0;
-  public $idle;
-  public $_col_2_2;
   
   // Define the layout that will be used for lists
   private static $_layout='
