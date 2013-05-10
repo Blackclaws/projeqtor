@@ -16,6 +16,7 @@ class ExpenseDetailType extends SqlElement {
   public $value03;
   public $unit03;
   public $idle;
+  public $description;
   
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
