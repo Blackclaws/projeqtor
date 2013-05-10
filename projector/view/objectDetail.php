@@ -2440,6 +2440,9 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
 // ********************************************************************************************************
 // fetch information depending on, request
 $objClass=$_REQUEST['objectClass'];
+if (isset($_REQUEST['noselect'])) {
+	$noselect=true;
+}
 if (! isset($noselect)) {
 	$noselect=false;
 }
