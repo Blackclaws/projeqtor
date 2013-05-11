@@ -3870,3 +3870,76 @@ function reorderTodayItems() {
 	}
   }
 }
+
+var multiSelection=false;
+var switchedModeBeforeMultiSelection=false;
+function startMultipleUpdateMode(objectClass) {
+	if (formChangeInProgress) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	grid = dijit.byId("objectGrid"); // if the element is not a widget, exit.
+	if ( ! grid) { 
+	  return;
+	}
+	formChangeInProgress=true;
+	switchedModeBeforeMultiSelection=switchedMode;
+	if (switchedModeBeforeMultiSelection) {
+	  switchMode();
+	}
+	unselectAllRows("objectGrid");
+	dijit.byId('objectGrid').selection.setMode('multiple');	
+	multiSelection=true;
+	loadContent('../view/objectMultipleUpdate.php?objectClass='+objectClass,'detailDiv')
+}  
+
+function saveMultipleUpdateMode(objectClass) {
+	//submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+  grid = dijit.byId("objectGrid"); // if the element is not a widget, exit.
+  if ( ! grid) { 
+    return;
+  }
+  dojo.byId("selection").value=""
+  var items=grid.selection.getSelected();
+  if (items.length) {
+    dojo.forEach(items, function(selectedItem) {
+      if (selectedItem !== null) {
+        dojo.byId("selection").value+=parseInt(selectedItem.id)+";";
+      }
+    });
+  }
+  loadContent('../tool/saveObjectMultiple.php?objectClass='+objectClass,'resultDivMultiple','objectFormMultiple');
+}  
+
+function endMultipleUpdateMode(objectClass) {
+	dijit.byId('objectGrid').selection.setMode('single');
+	multiSelection=false;
+	formChangeInProgress=false;
+	unselectAllRows("objectGrid");
+	if (switchedModeBeforeMultiSelection) {
+	  switchMode();
+    }
+	loadContent('../view/objectDetail.php?noselect=true&objectClass='+objectClass,'detailDiv');
+}  
+
+function deleteMultipleUpdateMode(objectClass) {
+	showError("delete is no designed yet");
+}
+function updateSelectedCountMultiple() {
+  dijit.byId('selectedCount').set('value',countSelectedItem('objectGrid'));
+}
+
+function showImage(objectClass, objectId, imageName) {
+  imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId;
+  var dialogShowImage = dijit.byId("dialogShowImage");
+  if (! dialogShowImage) {
+	dialogShowImage = new dojox.image.LightboxDialog({});
+	dialogShowImage.startup();
+  }
+  if(dialogShowImage && dialogShowImage.show){
+	dialogShowImage.show({ title:imageName, href:imageUrl });
+  }	else {
+	showError ("Error loading image "+imageName);
+  }
+  dijit.byId('formDiv').resize();
+}
