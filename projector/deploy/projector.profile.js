@@ -37,6 +37,8 @@ dependencies = {
 			    "dijit.Tree", 
 			    "dijit.TitlePane",
 			    "dojox.grid.DataGrid",
+				"dojox.fx",
+			    "dojox.image.Lightbox",
 			    "dojox.form.FileInput",
 				"dojox.form.Uploader",
 				"dojox.form.uploader.FileList",
