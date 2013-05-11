@@ -1367,6 +1367,13 @@ abstract class SqlElement {
    */
   public static function getSingleSqlElementFromCriteria($class, $critArray) {
     $obj=new $class();
+    if ($class=='Attachement') {
+    	if (array_key_exists('refType',$critArray) ) {
+    		if ($critArray['refType']=='User' or $critArray['refType']=='Contact') {
+    			$critArray['refType']='Resource';
+    		} 
+    	}
+    }
     $objList=$obj->getSqlElementsFromCriteria($critArray, true);
     if (count($objList)==1) {
       return $objList[0];
@@ -2210,6 +2217,12 @@ abstract class SqlElement {
   public function control(){
 //traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
   	$result="";
+  	// 
+    $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
+    if ($right!='YES') {
+      $result.='<br/>' . i18n('error'.(($this->id)?'Update':'Create').'Rights');
+      return $result;
+    }
     foreach ($this as $col => $val) {
     	$dataType=$this->getDataType($col);
       $dataLength=$this->getDataLength($col);
@@ -2312,12 +2325,27 @@ abstract class SqlElement {
 	          }
       		}
       	}
-      if ($objects!="") {
-        $result.="<br/>" . i18n("errorControlClose") . $objects;
-      }
+	      if ($objects!="") {
+	        $result.="<br/>" . i18n("errorControlClose") . $objects;
+	      }
       }  
     }
-    
+    // control Workflow 
+    $class=get_class($this);
+    $old=new $class($this->id);
+    $fldType='id'.$class.'Type';
+    if ( ( property_exists($class, 'idStatus') and $old->idStatus!=$this->idStatus ) 
+      or ( property_exists($class, $fldType) and $old->$fldType!=$this->$fldType ) ) {
+    	$type=new Type($this->$fldType);
+    	$crit=array('idWorkflow'=>$type->idWorkflow,
+    	            'idStatusFrom'=>$old->idStatus,
+    	            'idStatusTo'=>$this->idStatus,
+    	            'idProfile'=>$_SESSION['user']->idProfile);
+    	$ws=SqlElement::getSingleSqlElementFromCriteria('WorkflowStatus', $crit);
+    	if (!$ws or !$ws->id or $ws->allowed!=1) {
+    	  $result.="<br/>" . i18n("errorWorflow");
+    	}
+    }
     if ($result=="") {
       $result='OK';
     }
@@ -2333,6 +2361,11 @@ abstract class SqlElement {
   public function deleteControl(){
     $result="";
     $objects="";
+    $right=securityGetAccessRightYesNo('menu' . get_class($this), 'delete', $this);
+    if ($right!='YES') {
+      $result.='<br/>' . i18n('errorDeleteRights');
+      return $result;
+    }
     $relationShip=self::$_relationShip;
     if (array_key_exists(get_class($this),$relationShip)) {
       $relations=$relationShip[get_class($this)];
