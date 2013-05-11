@@ -82,6 +82,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dojox.form.FileInput");
     dojo.require("dojox.form.Uploader");
     dojo.require("dojox.form.uploader.FileList");
+    dojo.require("dojox.image.Lightbox");
     dojo.require("dojo.dnd.Container");
     dojo.require("dojo.dnd.Manager");
     dojo.require("dojo.dnd.Source");
@@ -2630,7 +2631,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </tr>
   </table>
 </div>
-
+<div id="xdialogShowImage" dojoType="dojox.image.LightboxDialog" >
+</div>
 
 </body>
 </html>
