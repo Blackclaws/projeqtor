@@ -20,6 +20,7 @@ $obj=new Attachement($attachementId);
 $subDirectory=str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $obj->subDirectory);
 if (file_exists($subDirectory . $obj->fileName)) {
   unlink($subDirectory . $obj->fileName);
+  purgeFiles($subDirectory, null);
   rmdir($subDirectory);
 }
 Sql::beginTransaction();

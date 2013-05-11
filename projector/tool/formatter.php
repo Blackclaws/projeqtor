@@ -86,3 +86,12 @@ function sortableFormatter($value) {
   }
   return $result; 
 }
+
+function thumbFormatter($objectClass,$id,$size) {
+	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>$objectClass, 'refId'=>$id));
+  if ($image->id and $image->isThumbable()) {
+    return '<img src="'.getImageThumb($image->getFullPathFileName(),$size).'" />';
+  } else {
+  	return "";
+  }
+}
