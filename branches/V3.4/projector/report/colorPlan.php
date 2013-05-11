@@ -66,9 +66,14 @@ $result=array();
 $projects=array();
 $projectsColor=array();
 $resources=array();
+$resourcesTeam=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    if ($paramTeam) {
+      $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
+      if ($team!=$paramTeam) continue;
+    }
+  	$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
     $result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idProject,$projects)) {
@@ -90,7 +95,14 @@ $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
+    if ($paramTeam) {
+      $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
+      if ($team!=$paramTeam) continue;
+    }
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    if ($paramTeam) {
+      $resourcesTeam[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
+    }
     $result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idProject,$projects)) {
@@ -140,9 +152,12 @@ echo '<td>&nbsp;</td>';
 echo "</tr></table>";
 //echo "<br/>";
 echo '<table width="100%" align="left"><tr>';
+$cptProj=0;
 foreach($projects as $idP=>$nameP) {
+	if ((($cptProj) % 8)==0) { echo '</tr><tr>';}
+	$cptProj++;
   echo '<td width="20px">';
-  echo '<div style="border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:' . $projectsColor[$idP] . ';">&nbsp;';
+  echo '<div style="border:1px solid #AAAAAA ;height:20px;width:20px;position:relative;background-color:' . (($projectsColor[$idP])?$projectsColor[$idP]:"#FFFFFF") . ';">&nbsp;';
   echo '</div>';
   echo '</td><td style="width:100px; padding-left:5px;" class="legend">' . htmlEncode($nameP) . '</td>';
   echo '<td width="5px">&nbsp;&nbsp;&nbsp;</td>';
@@ -150,7 +165,7 @@ foreach($projects as $idP=>$nameP) {
 echo '<td>&nbsp;</td></tr></table>';
 //echo '<br/>';
 // title
-echo '<table width="100%" align="left"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+echo '<table align="center"><tr><td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td colspan="' . $nbDays . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr><tr>';
 $days=array();
@@ -170,13 +185,13 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 
 echo '</tr>';
-
+natcasesort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);
   }
   if (!$paramTeam or $res->idTeam==$paramTeam) {
-	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:30%">' . $nameR . '</td>';
+	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR . '</td>';
 	  for ($i=1; $i<=$nbDays;$i++) {
 	    $day=$startDate+$i-1;
 	    $style="";
