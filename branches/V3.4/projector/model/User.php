@@ -6,18 +6,19 @@ class User extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_col_1_2_Description;
-  public $id;    // redefine $id to specify its visiblez place 
+  public $id;    // redefine $id to specify its visible place 
   public $name;
   public $email;
   public $password;
   public $_spe_buttonSendMail;
   public $idProfile;
+  public $locked;
+  public $isLdap;
+  public $_spe_image;
   public $isContact;
   public $isResource=0;
-  public $resourceName;
   public $initials;
-  public $isLdap;
-  public $locked;
+  public $resourceName;
   public $idle;
   public $description;
   public $_col_2_2_Affectations;
@@ -30,7 +31,8 @@ class User extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="25%">${userName}</th>
+    <th field="name" width="20%">${userName}</th>
+    <th field="photo" formatter="thumb48" width="5%">${photo}</th>
     <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
     <th field="resourceName" width="25%">${name}</th>
     <th field="initials" width="10%">${initials}</th> 
@@ -206,7 +208,7 @@ class User extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-    global $print;
+    global $print, $outMode;
     $result="";
     if ($item=='buttonSendMail') {
       if ($print) {
@@ -235,6 +237,50 @@ class User extends SqlElement {
       $critArray=array('idUser'=>(($this->id)?$this->id:'0'));
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
+      return $result;
+    }
+    if ($item=='image'){
+      $result="";
+      $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
+      $left=250;
+      $top=149;
+      if ($image->id and $image->isThumbable()) {
+        if (!$print) {
+          $result.='<tr>';
+          $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+          $result.='<td>&nbsp;&nbsp;';
+          $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
+        } else {
+          if ($outMode=='pdf') {
+            $left=450;
+            $top=90;
+          } else {
+            $left=400;
+            $top=64;
+          }
+        }
+        $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
+           . ' title="'.$image->fileName.'" style="cursor:pointer"'
+           . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
+        if (!$print) {
+          $result.='</td></tr>';
+        }
+      } else {
+        if ($image->id) {
+          $image->delete();
+        }
+        if (!$print) {
+          $result.='<tr>';
+          $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+          $result.='<td>&nbsp;&nbsp;';
+          $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+          $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
+              .' onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'">'
+              . i18n('addPhoto').'</div>';
+          $result.='</td>';
+          $result.='</tr>';
+        }
+      }
       return $result;
     }
   }
@@ -700,5 +746,18 @@ class User extends SqlElement {
   public static function setOldUserStyle() {
     self::$_databaseTableName = 'user';
   }  
+  
+  public function getPhotoThumb($size) {
+    $result="";
+    $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
+    if ($image->id and $image->isThumbable()) {
+      $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
+             . ' title="'.$image->fileName.'" style="cursor:pointer"'
+             . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
+    } else {
+      $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
+    }
+    return $result;
+  }
 }
 ?>
