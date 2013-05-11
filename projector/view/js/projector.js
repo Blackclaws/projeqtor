@@ -90,7 +90,6 @@ function refreshJsonList(className, keepUrl) {
       }
     });
   }
-
 }
 
 /**
@@ -503,9 +502,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	        	refreshJsonList(dojo.byId('objectClass').value);
         	  }
         	}
-      if (destination=="expenseDetailDiv") {
+        if (destination=="expenseDetailDiv") {
           expenseDetailRecalculate();
-      }
+        }
         if (directAccess) {
           if (dijit.byId('listIdFilter')) {
             // dijit.byId('listIdFilter').set('value',directAccess);
@@ -544,6 +543,8 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
              || page.indexOf("jsonPortfolioPlanning.php")>=0) {                
           drawGantt();
           hideWait();
+        } else if (destination=="resultDivMultiple") {
+          finalizeMultipleSave();
         } else {
           hideWait();
         }
@@ -628,7 +629,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
                        || (page.indexOf("jsonPortfolioPlanning.php")>=0 && dijit.byId("startDatePlanView"))) {                
                  drawGantt();
                  hideWait();
-              } else {
+               } else if (destination=="resultDivMultiple") {
+                   finalizeMultipleSave();
+               } else {
                 hideWait();
               }
             }
@@ -767,7 +770,13 @@ function finalizeMessageDisplay(destination, validationType) {
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
       } else if (validationType=='attachement') {
-        loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
+    	if (dojo.byId('objectClass') 
+    	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' || dojo.byId('objectClass').value=='Contact') ) {
+    	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+    	  refreshGrid();
+    	} else {
+          loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
+    	}
       } else if (validationType=='billLine') {
         loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -970,11 +979,21 @@ function finaliseButtonDisplay() {
       enableWidget('saveButton');
       disableWidget('undoButton');
       disableWidget('mailButton');
+      if (dijit.byId("objectGrid")) {
+        enableWidget('multiUpdateButton');
+      } else {
+    	disableWidget('multiUpdateButton');
+      }
     }
   } else {
     // id does not exist => not selected, only new button possible
     formLock();
     enableWidget('newButton');
+    if (dijit.byId("objectGrid")) {
+      enableWidget('multiUpdateButton');
+    } else {
+	  disableWidget('multiUpdateButton');
+    }
     // but show print buttons if not in objectDetail (buttonDiv exists)
     if (! dojo.byId("buttonDiv")) {
       enableWidget('printButton');
@@ -983,7 +1002,53 @@ function finaliseButtonDisplay() {
   }
   buttonRightLock();
 }
-
+function finalizeMultipleSave() {
+  //refreshGrid();
+  var grid = dijit.byId("objectGrid");  
+  if (grid) {
+	//unselectAllRows("objectGrid");
+    var sortIndex=grid.getSortIndex();
+	var sortAsc=grid.getSortAsc();
+	var scrollTop=grid.scrollTop;
+	store = grid.store;
+	store.close();
+	store.fetch({
+	  onComplete: function(items){
+	    grid._refresh();
+  	    setTimeout('dijit.byId("objectGrid").setSortIndex('+sortIndex+','+sortAsc+');',10);
+        setTimeout('dijit.byId("objectGrid").scrollTo('+scrollTop+');',20);
+        selection=';'+dojo.byId('selection').value;
+        dojo.forEach(items, function (item, index) {
+          if (selection.indexOf(";"+parseInt(item.id)+";")>=0) {
+  		    grid.selection.setSelected(index,true);
+          } else {
+        	grid.selection.setSelected(index,false);  
+          }
+  	    }) 
+  	  }
+    });
+  }
+  if (dojo.byId('summaryResult')) {
+    contentNode=dojo.byId('resultDiv');
+	contentNode.innerHTML=dojo.byId('summaryResult').value;
+	msg=dojo.byId('summaryResult').value;
+	msg=msg.replace(" class='messageERROR' ","");
+	msg=msg.replace(" class='messageOK' ","");
+	msg=msg.replace(" class='messageWARNING' ","");
+	msg=msg.replace("</div><div>",", ");
+	msg=msg.replace("<div>","");
+	msg=msg.replace("</div>","");
+	addMessage(msg);
+	dojo.fadeIn({
+      node: contentNode, 
+      duration: 10,
+      onEnd: function() {
+	    dojo.fadeOut({node: contentNode, duration: 3000}).play();
+	  }
+	}).play();
+  }
+  hideWait();  
+}
 /**
  * ============================================================================
  * Operates locking, hide and show correct buttons when a change is done on form
@@ -1006,6 +1071,7 @@ function formChanged() {
   disableWidget('deleteButton');
   disableWidget('refreshButton');
   disableWidget('mailButton');
+  disableWidget('multiUpdateButton');
   formChangeInProgress=true;
   grid=dijit.byId("objectGrid");
   if (grid) {
@@ -1035,6 +1101,11 @@ function formInitialize() {
   enableWidget('deleteButton');
   enableWidget('refreshButton');
   enableWidget('mailButton');
+  if (dijit.byId("objectGrid")) {
+    enableWidget('multiUpdateButton');
+  } else {
+    disableWidget('multiUpdateButton');
+  }
   formChangeInProgress=false;
   buttonRightLock();
 }
@@ -1055,6 +1126,7 @@ function formLock() {
   disableWidget('deleteButton');
   disableWidget('refreshButton');
   disableWidget('mailButton');
+  disableWidget('multiUpdateButton');
 }
 
 /**
@@ -1075,6 +1147,7 @@ function buttonRightLock() {
     if (updateRight.value!='YES') {
       disableWidget('saveButton');
       disableWidget('undoButton');
+      disableWidget('multiUpdateButton');
     }
   }
   if (deleteRight) {
@@ -1205,16 +1278,37 @@ function unselectAllRows(gridName) {
   if ( ! grid) { 
     return;
   }
-  var items=grid.selection.getSelected();
-  if (items.length) {
-    dojo.forEach(items, function(selectedItem) {
-      if (selectedItem !== null) {
-        grid.selection.setSelected(grid.getItemIndex(selectedItem),false);
-      }
-    });
-  }
+  grid.store.fetch({ 
+	onComplete: function (items) { 
+	  dojo.forEach(items, function (item, index) { 
+		  grid.selection.setSelected(index,false);
+	  }) 
+	} 
+  }); 
 }
 
+function selectAllRows(gridName) {
+  grid = dijit.byId(gridName); // if the element is not a widget, exit.
+  if ( ! grid) { 
+    return;
+  }
+  grid.store.fetch({ 
+	onComplete: function (items) { 
+	  dojo.forEach(items, function (item, index) { 
+		  grid.selection.setSelected(index,true);
+	  }) 
+	} 
+  }); 
+}
+
+
+function countSelectedItem(gridName) {
+  grid = dijit.byId(gridName); // if the element is not a widget, exit.
+  if ( ! grid) { 
+    return 0;
+  }
+  return grid.selection.getSelectedCount();
+}
 /**
  * ============================================================================
  * Select a given line of the grid, corresponding to the given id
@@ -1584,7 +1678,7 @@ function runScript(refType, refId, id) {
   dojo.byId('objectClass').value=refType;
   dojo.byId('objectId').value=refId;
   hideList();
-  loadContent('objectDetail.php','detailDiv','listForm');
+  loadContent('objectDetail.php?planning=true','detailDiv','listForm');
   highlightPlanningLine(id);
 }
 function highlightPlanningLine(id) {
@@ -1886,6 +1980,9 @@ function globalSave() {
   }
   if (! button) {
     button=dijit.byId('saveParameterButton');
+  }
+  if (! button) {
+	button=dijit.byId('saveButtonMultiple');
   }
   if ( button && button.isFocusable() ) {
     button.focus();

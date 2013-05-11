@@ -181,6 +181,33 @@ function sortableFormatter(value) {
 	}
   return result; 
 }
+
+function thumb16(value) {
+	return thumb(value);
+}
+function thumb22(value) {
+	return thumb(value);
+}
+function thumb32(value) {
+	return thumb(value);
+}
+function thumb48(value) {
+	return thumb(value);
+}
+function thumb64(value) {
+	return thumb(value);
+}
+function thumb(value) {
+	if (value=="##") return "";
+	var tab=value.split('#');
+	filePath=tab[0];
+	attachId=tab[1];
+	fileName=tab[2];
+	var result='<img src="'+filePath+'" style="cursor:pointer" '
+      +' onClick="showImage(\'Attachement\',\''+attachId+'\',\''+fileName+'\');" />';
+	return result;
+}
+
 var cryptFrom="A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;; ;?;';(;)1;2;3;4;5;6;7;8;9;0".split(';');
 var cryptTo  ="2;3;4;5;6;7;8;9;0;A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;1; ;?;';(;)".split(';');
 function simpleCrypt(inStr) {
