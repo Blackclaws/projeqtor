@@ -8,13 +8,14 @@ class Resource extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $_spe_image;
   public $initials;
   public $capacity;
-  public $idTeam;
-  public $isUser;
-  public $idProfile;
-  public $userName;
   public $isContact;
+  public $isUser;
+  public $userName;
+  public $idProfile;
+  public $idTeam;
   public $email;
   public $phone;
   public $mobile;
@@ -30,7 +31,8 @@ class Resource extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="25%">${name}</th>
+    <th field="name" width="20%">${name}</th>
+    <th field="photo" formatter="thumb48" width="5%">${photo}</th>
     <th field="initials" width="10%">${initials}</th>  
     <th field="nameTeam" width="15%">${team}</th>
     <th field="capacity" width="10%" >${capacity}</th>
@@ -361,6 +363,7 @@ class Resource extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
+  	global $comboDetail, $print, $outMode;
     $result="";
     if ($item=='affectations') {
       $aff=new Affectation();
@@ -368,6 +371,49 @@ class Resource extends SqlElement {
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
+    } else if ($item=='image'){
+    	$result="";
+    	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
+    	if ($image->id and $image->isThumbable()) {
+    		if (!$print) {
+    		  $result.='<tr>';
+    		  $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+    	    $result.='<td>&nbsp;&nbsp;';
+    	    $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
+    	    $left=250;
+    	    $top=64;
+    	  } else {
+    	  	if ($outMode=='pdf') {
+    	  		$left=450;
+            $top=90;
+    	  	} else {
+    	  	  $left=400;
+    	  	  $top=64;
+    	  	}
+    	  }
+    	  $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
+           . ' title="'.$image->fileName.'" style="cursor:pointer"'
+           . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
+        if (!$print) {
+          $result.='</td></tr>';
+        }
+      } else {
+      	if ($image->id) {
+      		$image->delete();
+      	}
+      	if (!$print) {
+	    		$result.='<tr>';
+	        $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+	        $result.='<td>&nbsp;&nbsp;';
+	        $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+	        $result.='<div style="position: absolute; top:64px;left:250px; width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
+	            .' onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'">'
+	            . i18n('addPhoto').'</div>';
+	        $result.='</td>';
+	        $result.='</tr>';
+      	}
+    	}
+    	return $result;
     }
   }
   
@@ -416,12 +462,26 @@ class Resource extends SqlElement {
     $crit=array('idTeam'=>$team);
     $resList=$this->getSqlElementsFromCriteria($crit, false);
     foreach ($resList as $res) {
-      $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+      $result.= '<tr><td valign="middle" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
+      $result.=''.$res->getPhotoThumb(32).'&nbsp;</td><td>';
       $result.=htmlDrawLink($res);
       $result.='</td></tr>';
     }
     $result .="</table>";
     return $result; 
+  }
+  
+  public function getPhotoThumb($size) {
+  	$result="";
+  	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
+    if ($image->id and $image->isThumbable()) {
+  	  $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
+             . ' title="'.$image->fileName.'" style="cursor:pointer"'
+             . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
+    } else {
+    	$result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
+    }
+    return $result;
   }
   
 }

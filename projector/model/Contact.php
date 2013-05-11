@@ -8,13 +8,15 @@ class Contact extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $initials;
   public $idClient;
+  public $_spe_image;
   //public $idRecipient;
+  public $isResource;
+  public $initials;
   public $isUser;
   public $idProfile;
   public $userName;
-  public $isResource;
+  
   public $email;
   public $phone;
   public $mobile;
@@ -36,7 +38,8 @@ class Contact extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="name" width="20%">${name}</th>
-    <th field="initials" width="10%">${initials}</th>  
+    <th field="photo" formatter="thumb16" width="5%">${photo}</th>
+    <th field="initials" width="5%">${initials}</th>  
     <th field="nameClient" width="15%">${client}</th>
     <th field="nameRecipient" width="10%">${recipient}</th> 
     <th field="nameProfile" width="10%" formatter="translateFormatter">${idProfile}</th>
@@ -388,6 +391,7 @@ class Contact extends SqlElement {
   }
   
   public function drawSpecificItem($item){
+  	global $print, $outMode;
     $result="";
     if ($item=='affectations') {
       $aff=new Affectation();
@@ -396,6 +400,63 @@ class Contact extends SqlElement {
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
     }
+    if ($item=='image'){
+      $result="";
+      $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
+      $left=250;
+      $top=86;
+      if ($image->id and $image->isThumbable()) {
+        if (!$print) {
+          $result.='<tr>';
+          $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+          $result.='<td>&nbsp;&nbsp;';
+          $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
+        } else {
+          if ($outMode=='pdf') {
+            $left=450;
+            $top=90;
+          } else {
+            $left=400;
+            $top=64;
+          }
+        }
+        $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:60px;height:60px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),60).'" '
+           . ' title="'.$image->fileName.'" style="cursor:pointer"'
+           . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
+        if (!$print) {
+          $result.='</td></tr>';
+        }
+      } else {
+        if ($image->id) {
+          $image->delete();
+        }
+        if (!$print) {
+          $result.='<tr>';
+          $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+          $result.='<td>&nbsp;&nbsp;';
+          $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+          $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:60px;height:60px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
+              .' onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'">'
+              . i18n('addPhoto').'</div>';
+          $result.='</td>';
+          $result.='</tr>';
+        }
+      }
+      return $result;
+    }
+  }
+  
+  public function getPhotoThumb($size) {
+    $result="";
+    $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
+    if ($image->id and $image->isThumbable()) {
+      $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
+             . ' title="'.$image->fileName.'" style="cursor:pointer"'
+             . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
+    } else {
+      $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
+    }
+    return $result;
   }
 }
 ?>

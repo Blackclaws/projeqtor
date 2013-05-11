@@ -65,10 +65,21 @@ class Attachement extends SqlElement {
   	  unlink($subDirectory . $paramPathSeparator . $this->fileName);
   	}
   	if (file_exists($subDirectory)) {
+  		purgeFiles($subDirectory, null);
   	  rmdir($subDirectory);
   	}
   	disableCatchErrors();
   }
-    
+   
+  public function getFullPathFileName() {
+  	$path = str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $this->subDirectory);
+  	$name = $this->fileName;
+  	$file = $path . $name;
+  	return $file;
+  }
+  
+  public function isThumbable() {
+    return isThumbable($this->fileName);
+  }
 }
 ?>
