@@ -148,7 +148,7 @@
         $numField=0;
         foreach ($array as $val) {
           $fld=htmlExtractArgument($val, 'field');      
-          if ($fld) {            
+          if ($fld and $fld!="photo") {            
             $numField+=1;
             if ($sortIndex and $sortIndex==$numField) {
               $queryOrderBy .= ($queryOrderBy=='')?'':', ';
@@ -226,11 +226,15 @@
 	      //$sp=explode('field=', $val);
 	      $fld=htmlExtractArgument($val, 'field');      
 	      if ($fld) {
-	        $numField+=1;        
+	        $numField+=1;    
 	        $formatter[$numField]=htmlExtractArgument($val, 'formatter');
 	        $from=htmlExtractArgument($val, 'from');
 	        $arrayWidth[$numField]=htmlExtractArgument($val, 'width');
 	        $querySelect .= ($querySelect=='')?'':', ';
+	        if (substr($formatter[$numField],0,5)=='thumb') {
+            $querySelect.=substr($formatter[$numField],5).' as ' . $fld;;
+            continue;
+          }    
 	        if (strlen($fld)>9 and substr($fld,0,9)=="colorName") {
 	          $idTab+=1;
 	          // requested field are colorXXX and nameXXX => must fetch the from external table, using idXXX
@@ -481,6 +485,8 @@
 	              $disp=numericFormatter($val);
 	            } else if ($formatter[$numField]=="sortableFormatter") {
 	              $disp=sortableFormatter($val);
+	            } else if (substr($formatter[$numField],0,5)=='thumb') {
+	            	$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
 	            } else {
 	              $disp=htmlEncode($val);
 	            }
@@ -517,6 +523,14 @@
             	  }
             	} 
             }
+            if (substr($formatter[$nbFields],0,5)=='thumb') {          	
+            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>$objectClass, 'refId'=>$line['id']));
+              if ($image->id and $image->isThumbable()) {
+            	  $val=getImageThumb($image->getFullPathFileName(),$val).'#'.$image->id.'#'.$image->fileName; 
+              } else {
+              	$val="##";
+              }
+            } 
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
           echo '}';       
