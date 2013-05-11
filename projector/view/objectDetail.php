@@ -1546,7 +1546,14 @@ function drawAttachementsFromObject($obj, $refresh=false) {
 			}
 			echo '<td class="attachementData" style="width:5%;">#' . $attachement->id  . '</td>';
 			echo '<td class="attachementData" style="width:10%;text-align:center;">' . htmlGetFileSize($attachement->fileSize) . '</td>';
-			echo '<td class="attachementData" style="width:5%;text-align:center;">' . htmlGetMimeType($attachement->mimeType,$attachement->fileName);
+			echo '<td class="attachementData" style="width:5%;text-align:center;">';
+		  if ($attachement->isThumbable()) {
+        echo '<img src="'. getImageThumb($attachement->getFullPathFileName(),32).'" '
+           . ' title="'.$attachement->fileName.'" style="cursor:pointer"'
+           . ' onClick="showImage(\'Attachement\',\''.$attachement->id.'\',\''.$attachement->fileName.'\');" />';
+      } else {
+			  echo htmlGetMimeType($attachement->mimeType,$attachement->fileName);
+      }
 			echo  '</td>';
 			echo '<td class="attachementData" style="width:' . ( ($print)?'50':'45' ) . '%" title="' . $attachement->description . '">';
 			echo '<table style="width:100%"><tr >';
