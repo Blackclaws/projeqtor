@@ -30,6 +30,24 @@
   text-align: center;
   cursor: pointer;
 }
+.iconSelectAll {
+  background-image: url(images/checkmark.gif);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-position: -0px
+}
+.iconUnselectAll {
+  background-image: url(images/checkmark.gif);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-position: -16px; 
+}
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */

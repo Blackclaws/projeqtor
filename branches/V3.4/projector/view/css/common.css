@@ -1852,6 +1852,10 @@ table.dijitCalendarContainer {
   background-position: -594px;
 }
 
+.dijitEditorIconMultipleUpdate {
+  background-position: -612px;
+}
+
 .dijitEditorIconSpace {
   background-position: -576px;
 }
@@ -2662,5 +2666,84 @@ table.dijitCalendarContainer {
   background:#bfe1fd;
 }
 
+/* Lightbox */
+.tundra .dijitDialogUnderlay {
+  background-color:#000; 
+}
+
+.tundra .dojoxLightbox .dijitDialogCloseIconHover, .tundra .dojoxLightbox .dijitDialogCloseIconActive {
+    background:url('images/close.png') no-repeat 0 0;
+}
+
+.tundra .dojoxLightbox {
+  position:absolute;
+  z-index:999;
+  overflow:hidden;
+  width:100px;
+  height:100px; 
+  border:11px solid #fff !important; 
+  background:#fff url('images/loading.gif') no-repeat center center;
+  -webkit-box-shadow: 0px 6px 10px #636363; /* #adadad; */
+  -webkit-border-radius: 3px;
+  -moz-border-radius:4px;
+  border-radius: 4px;
+}
+
+.dojoxLightboxContainer {
+  position:absolute;
+  top:0; left:0;
+  background-color:#fff;
+}
+
+.dojoxLightboxFooter {
+  padding-bottom:5px;
+  position:relative;
+  bottom:0;
+  left:0;
+  margin-top:8px;
+  color:#333;
+  z-index:1000;
+  font-size:10pt;
+}
+
+.dojoxLightboxGroupText {
+  color:#666; 
+  font-size:8pt;
+}
+
+.LightboxNext, .LightboxPrev, .LightboxClose {
+  float:right;
+  width:16px;
+  height:16px;
+  cursor:pointer;
+}
+
+.tundra .LightboxClose {
+  background:url('images/close.png') no-repeat center center;
+}
+
+.dj_ie6 .tundra .LightboxClose {
+  background:url('images/close.gif') no-repeat center center;
+}
+
+.tundra .LightboxNext {
+  background:url('images/right.png') no-repeat center center;
+}
+
+.dj_ie6 .tundra .LightboxNext {
+  background:url('images/right.gif') no-repeat center center;
+}
+
+.tundra .LightboxPrev {
+  background:url('images/left.png') no-repeat center center;
+}
+
+.dj_ie6 .tundra .LightboxPrev {
+  background:url('images/left.gif') no-repeat center center;
+}
+
+.dojoxLightboxText {
+  margin:0; padding:0; 
+}
 
 
