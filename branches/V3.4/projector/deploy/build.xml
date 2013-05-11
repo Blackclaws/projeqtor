@@ -2,7 +2,7 @@
 <project name="Project'Or RIA" default="buildQuick">
 
 	<property name="drive"       value="G:" />
-  <property name="version"       value="V3.3.0" />
+  <property name="version"       value="V3.4.0" />
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="${drive}/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -159,15 +159,15 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="G:/ProjectOr/External/dojo-release-1.8.0-src"/>
-	<property name="dojo.version" value="1.8.0"/>
+	<property name="dojo.release.dir" value ="G:/ProjectOr/External/dojo-release-1.9.0-src"/>
+	<property name="dojo.version" value="1.9.0"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>
 
   <target name="_dojoBuild">
-    <antcall target="_dojoPackaging"/>
-    <antcall target="_dojoOptimisation"/>
+      <antcall target="_dojoPackaging"/>
+      <antcall target="_dojoOptimisation"/>
   </target>
   	
 	<target name="_dojoPackaging" depends="" description="Build du projet">        
@@ -207,6 +207,8 @@
 		  	<exclude name="data/*.js"/>
 		  	<exclude name="form/*.js"/>
 		    <exclude name="grid/*.js"/>
+		  	<exclude name="fx/*.js"/>
+		  	<exclude name="image/*.js"/>
 		  </fileset>
 		</delete>  
 	</target>
