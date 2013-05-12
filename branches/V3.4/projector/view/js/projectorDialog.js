@@ -704,7 +704,8 @@ function addAttachement (attachmentType) {
 	dojo.byId("attachementRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("attachementRefId").value=dojo.byId("objectId").value;
     dojo.byId("attachementType").value=attachmentType;
-    dojo.byId('attachementFileName').innerHTML="";
+    dojo.byId('attachementFileName').innerHTML="";   
+    dojo.style(dojo.byId('downloadProgress'), {display:'none'});
     if (attachmentType=='file') {
       if (dijit.byId("attachementFile")) {
         dijit.byId("attachementFile").reset();
@@ -716,7 +717,7 @@ function addAttachement (attachmentType) {
       dijit.byId("attachementLink").set('value', null);
       dojo.style(dojo.byId('dialogAttachementFileDiv'), {display:'none'});
       dojo.style(dojo.byId('dialogAttachementLinkDiv'), {display:'block'});
-      //disableWidget('dialogAttachementSubmit');
+      enableWidget('dialogAttachementSubmit');
     }
 	dijit.byId("attachementDescription").set('value',null);
 	dijit.byId("dialogAttachement").set('title',i18n("dialogAttachement"));
@@ -740,9 +741,11 @@ function changeAttachment(list) {
  */
 function saveAttachement() {
 	if (dojo.byId("attachementType").value=='file' && dojo.byId('attachementFileName').innerHTML=="") {
-		return;
+		return false;
 	}
-	dojo.byId('attachementForm').submit();
+	//disableWidget('dialogAttachementSubmit');
+	//dojo.byId('attachementForm').submit();
+	dojo.style(dojo.byId('downloadProgress'), {display:'block'});
 	showWait();
 	dijit.byId('dialogAttachement').hide();
 	return true;
@@ -752,13 +755,27 @@ function saveAttachement() {
  * Acknowledge the attachment save
  * @return void
  */
-function saveAttachementAck() {
-	resultFrame=document.getElementById("resultPost");
-	resultText=resultPost.document.body.innerHTML;
-	dojo.byId('resultAck').value=resultText;
-	loadContent("../tool/ack.php", "resultDiv", "attachementForm", true, 'attachement');
+function saveAttachementAck(dataArray) {
+	dijit.byId('dialogAttachement').hide();
+    if (dojo.isArray(dataArray)) {
+      result=dataArray[0];
+    } else {
+      result=dataArray;
+    }
+    dojo.style(dojo.byId('downloadProgress'), {display:'none'});
+  	dojo.byId('resultAck').value=result.message;
+	loadContent("../tool/ack.php", "resultDiv", "attachementAckForm", true, 'attachement');
 }
 
+function saveAttachementProgress(data) {
+	done=data.bytesLoaded;
+	total=data.bytesTotal;
+	if (total) {
+		progress=done/total;
+	}
+	//dojo.style(dojo.byId('downloadProgress'), {display:'block'});
+	dijit.byId('downloadProgress').set('value',progress);
+}
 /**
  * Display a delete Attachement Box
  * 
@@ -2165,10 +2182,10 @@ function plan() {
 var filterStartInput=false;
 var filterFromDetail=false;
 function showFilterDialog () {
-	if (formChangeInProgress) {
+	/*if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
-	}
+	}*/
 	filterStartInput=false;
 	top.filterFromDetail=false;
 	if (top.dijit.byId('dialogDetail').open) {

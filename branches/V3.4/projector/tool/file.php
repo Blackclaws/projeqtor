@@ -66,7 +66,7 @@ function purgeFiles($dir, $pattern) {
  */
 function createThumb($imageFile,$size) {
 	if (!$size) $size=32;
-	if (!$imageFile) {
+	if (!$imageFile or ! is_file($imageFile)) {
 		return false;
 	}
 	$ext=strtolower(pathinfo($imageFile, PATHINFO_EXTENSION));
