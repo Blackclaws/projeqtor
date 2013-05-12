@@ -267,6 +267,17 @@ html, body {
   vertical-align: middle;
   opacity:0.5;filter:alpha(opacity=50);
 }
+#downloadProgress{
+	position: absolute;
+  margin: -25px -25px;
+  width: 20%;
+  bottom: 30px; right: 30px; 
+  z-index: 9999;
+  display: none;
+  text-align: center;
+  vertical-align: middle;
+  /*opacity:0.9;filter:alpha(opacity=90);*/
+}
 
 #loginResultDiv {
   overflow: auto !important;

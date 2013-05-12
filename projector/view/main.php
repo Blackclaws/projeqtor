@@ -77,6 +77,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dijit.form.MultiSelect");
     dojo.require("dijit.form.NumberSpinner");
     dojo.require("dijit.Tree"); 
+    dojo.require("dijit.ProgressBar");
     dojo.require("dijit.TitlePane");
     dojo.require("dojox.grid.DataGrid");
     dojo.require("dojox.form.FileInput");
@@ -146,6 +147,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         }  
       };
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      dojo.connect(dijit.byId("attachementFile"), "onComplete", function(dataArray){saveAttachementAck(dataArray);});
+      dojo.connect(dijit.byId("attachementFile"), "onProgress", function(data){saveAttachementProgress(data);});
       <?php 
       $firstPage="welcome.php";
       if ( securityCheckDisplayMenu(1) ) {
@@ -285,6 +288,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <div id="mainDiv" style="visibility: hidden;">
   <div id="wait" >
   </div>
+  <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
+  </div>
+  
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
     <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
      <div id="menuBarShow" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');"><div id="menuBarIcon" valign="middle"></div></div>       
@@ -1312,9 +1318,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>">
   <form id='attachementForm' name='attachementForm' 
   ENCTYPE="multipart/form-data" method="POST"
-  action="../tool/saveAttachement.php"
-  target="resultPost"
-  onSubmit="return saveAttachement();" >
+  xaction="../tool/saveAttachement.php"
+  xtarget="resultPost"
+  xonSubmit="return saveAttachement();" >
     <input id="attachementId" name="attachementId" type="hidden" value="" />
     <input id="attachementRefType" name="attachementRefType" type="hidden" value="" />
     <input id="attachementRefId" name="attachementRefId" type="hidden" value="" />
@@ -1337,10 +1343,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <?php } else {?>  
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
             dojoType="dojox.form.Uploader" type="file" 
+            url="../tool/saveAttachement.php"
             name="attachementFile" id="attachementFile" 
             cancelText="<?php echo i18n("buttonReset");?>"
             multiple="false" 
+            onBegin="saveAttachement();"
             onChange="changeAttachment(this.getFileList());"
+            onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>"  />
             <i><span name="attachementFileName" id="attachementFileName"></span></i>           
@@ -1375,8 +1384,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           id="attachementDescription" name="attachementDescription"
           style="width: 350px;"
           maxlength="4000"
-          class="input"></textarea>
-         <textarea style="display:none" id="resultAck" name="resultAck"></textarea>      
+          class="input"></textarea>   
         </td>
       </tr>
       <tr><td colspan="2">
@@ -1398,24 +1406,28 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       <tr>
         <td colspan="2" align="center">
           <input type="hidden" id="dialogAttachementAction">
-          <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAttachement').hide();">
+          <button dojoType="dijit.form.Button" id="dialogAttachementCancel" onclick="dijit.byId('dialogAttachement').hide();">
             <?php echo i18n("buttonCancel");?>
           </button>
           <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit"
-           onclick="saveAttachement();">
+           xonclick="saveAttachement();">
             <?php echo i18n("buttonOK");?>
           </button>
         </td>
       </tr>
       <tr>
         <td colspan="2" align="center">
+    
          <div style="display:none">
            <iframe name="resultPost" id="resultPost"></iframe>
          </div>
         </td>
       </tr>
     </table>
-  </form>
+    </form>
+    <form id='attachementAckForm' name='attachementAckForm'> 
+      <input type='hidden' id="resultAck" name="resultAck" />
+    </form>   
 </div>
 
 <div id="dialogDocumentVersion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDocumentVersion");?>">

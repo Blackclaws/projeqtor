@@ -777,6 +777,7 @@ function finalizeMessageDisplay(destination, validationType) {
     	} else {
           loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
     	}
+    	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
       } else if (validationType=='billLine') {
         loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
