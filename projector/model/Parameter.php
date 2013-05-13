@@ -289,11 +289,10 @@ class Parameter extends SqlElement {
                      'no'=>i18n('paramNone'));
         break; 
       case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': 
-      case 'realWorkOnlyForResponsible':
+      case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
-        
     } 
     return $list;
   }
@@ -336,6 +335,7 @@ class Parameter extends SqlElement {
       	                     'sectionPlanning'=>'section',
                                'displayResourcePlan'=>'list',
       	                       'maxProjectsToDisplay'=>'number',
+      	                       'ganttPlanningPrintOldStyle'=>'list',
       	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  
@@ -363,6 +363,7 @@ class Parameter extends SqlElement {
                                'changeReferenceOnTypeChange'=>'list',
       	                       'documentReferenceFormat'=>'text',
       	                       'versionReferenceSuffix'=>'text',
+      	                       'preserveUploadedFileName'=>'list',
       	                     'sectionLocalization'=>'section',
       	                       'paramDefaultLocale'=>'list',
       	                       'paramDefaultTimezone'=>'text',

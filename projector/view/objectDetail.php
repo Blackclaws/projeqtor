@@ -101,7 +101,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	}
 	$nobr=false;
 	$canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj)=='YES');
-  if ( (isset($obj->locked) and $obj->locked) or isset($obj->_readOnly)) {
+  if ( (isset($obj->locked) and $obj->locked and $classObj!='User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
 	foreach ($obj as $col => $val) {
@@ -1097,13 +1097,15 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 	echo '<td class="assignHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
 	echo '<td class="assignHeader" style="width:' . ( ($print)?'55':'45' ) . '%">' . i18n('colFile') . '</td>';
 	echo '</tr>';
+	$preserveFileName=Parameter::getGlobalParameter('preserveUploadedFileName');
+	if (!$preserveFileName) {$preserveFileName="NO";}
 	foreach($list as $version) {
 		echo '<tr>';
 		if (! $print) {
 			echo '<td class="assignData" style="text-align:center; white-space: nowrap;">';
 			if (! $print) {
 				echo '<a href="../tool/download.php?class=DocumentVersion&id='. $version->id . '"';
-				echo ' target="printFrame" title="' . i18n('helpDownload') . "\n". $version->fullName. '"><img src="css/images/smallButtonDownload.png" /></a>';
+				echo ' target="printFrame" title="' . i18n('helpDownload') . "\n". (($preserveFileName=='YES')?$version->fileName:$version->fullName). '"><img src="css/images/smallButtonDownload.png" /></a>';
 			}
 			if ($canUpdate and ! $print) {
 				echo '  <img src="css/images/smallButtonEdit.png" '
