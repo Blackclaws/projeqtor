@@ -14,6 +14,7 @@ $id=$_REQUEST['id'];
 $obj=new $class($id);
 
 $preserveFileName=Parameter::getGlobalParameter('preserveUploadedFileName');
+if (!$preserveFileName) $preserveFileName="NO";
 
 if ($class=='Attachement') {
   $path = str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $obj->subDirectory);
@@ -25,14 +26,14 @@ if ($class=='Attachement') {
     $file=addslashes($file);
   }
 } else if ($class=='DocumentVersion') {
-  $name = (!$preserveFileName and $obj->fullName and  pathinfo($obj->fullName, PATHINFO_EXTENSION)==pathinfo($obj->fileName, PATHINFO_EXTENSION))?$obj->fullName:$obj->fileName;
+  $name = ($preserveFileName!="YES" and $obj->fullName and  pathinfo($obj->fullName, PATHINFO_EXTENSION)==pathinfo($obj->fileName, PATHINFO_EXTENSION))?$obj->fullName:$obj->fileName;
   $size = $obj->fileSize;
   $type = $obj->mimeType;
   $file = $obj->getUploadFileName();
 } else if ($class=='Document') {
 	if (!$obj->idDocumentVersion) return;
 	$obj=new DocumentVersion($obj->idDocumentVersion);
-	$name = (!$preserveFileName and $obj->fullName and  pathinfo($obj->fullName, PATHINFO_EXTENSION)==pathinfo($obj->fileName, PATHINFO_EXTENSION))?$obj->fullName:$obj->fileName;
+	$name = ($preserveFileName!="YES" and $obj->fullName and  pathinfo($obj->fullName, PATHINFO_EXTENSION)==pathinfo($obj->fileName, PATHINFO_EXTENSION))?$obj->fullName:$obj->fileName;
   $size = $obj->fileSize;
   $type = $obj->mimeType;
   $file = $obj->getUploadFileName();
