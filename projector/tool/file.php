@@ -64,8 +64,11 @@ function purgeFiles($dir, $pattern) {
  * @param unknown_type $image
  * @param unknown_type $size
  */
-function createThumb($imageFile,$size) {
-	if (!$size) $size=32;
+function createThumb($imageFile,$size,$thumb=null) {
+	if (!$size) {
+		copy($imageFile, $thumb);
+		return;
+	}
 	if (!$imageFile or ! is_file($imageFile)) {
 		return false;
 	}
@@ -106,11 +109,30 @@ function createThumb($imageFile,$size) {
     imagesavealpha($nimg, true); 
   } 
 	imagecopyresampled($nimg,$img,0,0,0,0,$nx,$ny,$x,$y);
-	$imagesave($nimg,getThumbFileName($imageFile,$size));
+	if (! $thumb) {
+	  $thumb=getThumbFileName($imageFile,$size);
+	}
+	$dir=pathinfo($thumb, PATHINFO_DIRNAME);
+	if (! file_exists($dir)) {
+	  mkdir($dir,0777,true);
+	}
+	$imagesave($nimg,$thumb);
 	return true;
 }
 
 function getThumbFileName($imageFile,$size) {
+	$thumbLocation='../files/thumbs';
+	$attLoc=Parameter::getGlobalParameter('paramAttachementDirectory');
+	$docLoc=Parameter::getGlobalParameter('documentRoot');
+	$root='../files';
+	if (substr($imageFile,0,strlen($attLoc))==$attLoc) {
+		$root=$attLoc;
+	} else if (substr($imageFile,0,strlen($attLoc))==$docLoc)  {
+		$root=$docLoc;
+	}
+	$imageFile=str_replace($root, '../files/thumbs', $imageFile);
+	$imageFile=str_replace('\\', '/', $imageFile); 
+	if (!$size) return $imageFile;
 	$ext=strtolower(pathinfo($imageFile, PATHINFO_EXTENSION));
 	return substr($imageFile,0,strlen($imageFile)-(strlen($ext)+1)).'_thumb'.$size.'.'.$ext;
 }
@@ -118,7 +140,7 @@ function getThumbFileName($imageFile,$size) {
 function getImageThumb($imageFile,$size) {
 	$thumb=getThumbFileName($imageFile,$size);
 	if (! file_exists($thumb)) {
-		if (! createThumb($imageFile,$size)) {
+		if (! createThumb($imageFile,$size,$thumb)) {
 			errorLog("Cannot create image thumb of size $size for $imageFile");
 			return "";
 		}

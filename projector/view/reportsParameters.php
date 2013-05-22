@@ -502,7 +502,7 @@ foreach ($listParam as $param) {
          onclick="dojo.byId('outMode').value='';runReport();return false;">
       </button>
       <button title="<?php echo i18n('reportPrint')?>"  
-         dojoType="dijit.form.Button" 
+         dojoType="dijit.form.Button" type="button"
          id="reportPrint" name="reportPrint"
          iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
           <script type="dojo/connect" event="onClick" args="evt">

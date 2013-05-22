@@ -147,8 +147,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         }  
       };
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
-      dojo.connect(dijit.byId("attachementFile"), "onComplete", function(dataArray){saveAttachementAck(dataArray);});
-      dojo.connect(dijit.byId("attachementFile"), "onProgress", function(data){saveAttachementProgress(data);});
       <?php 
       $firstPage="welcome.php";
       if ( securityCheckDisplayMenu(1) ) {
@@ -499,7 +497,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr><td colspan="2" align="center">&nbsp;</td></tr>
     <tr>
       <td colspan="2" align="center">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogQuestion').acceptCallbackNo();dijit.byId('dialogQuestion').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogQuestion').acceptCallbackNo();dijit.byId('dialogQuestion').hide();">
           <?php echo i18n("buttonNo");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogQuestion').acceptCallbackYes();dijit.byId('dialogQuestion').hide();">
@@ -524,7 +522,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td colspan="2" align="center">
         <input type="hidden" id="dialogConfirmAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogConfirm').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogConfirm').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogConfirm').acceptCallback();dijit.byId('dialogConfirm').hide();">
@@ -684,7 +682,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogNoteAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogNote').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogNote').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button id="dialogNoteSubmit" dojoType="dijit.form.Button" type="submit" onclick="saveNote();return false;">
@@ -862,7 +860,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogBillLineAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogBillLine').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogBillLine').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" id="dialogBillLineSubmit" type="submit" onclick="saveBillLine();return false;">
@@ -960,7 +958,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogLinkAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogLink').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogLink').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogLinkSubmit" onclick="saveLink();return false;">
@@ -1010,7 +1008,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogOtherVersionAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogOtherVersion').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogOtherVersion').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogOtherVersionSubmit" onclick="saveOtherVersion();return false;">
@@ -1057,7 +1055,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="approverAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogApprover').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogApprover').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogApproverSubmit" onclick="saveApprover();return false;">
@@ -1118,7 +1116,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogOriginAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogOrigin').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogOrigin').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogOriginSubmit" onclick="saveOrigin();return false;">
@@ -1236,7 +1234,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="copyAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogCopy').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCopy').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="copyObjectToSubmit();return false;">
@@ -1305,7 +1303,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="copyProjectAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogCopyProject').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCopyProject').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="copyProjectToSubmit();return false;">
@@ -1315,120 +1313,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </tr>
   </table>
 </div>
-<div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>">
-  <form id='attachementForm' name='attachementForm' 
-  ENCTYPE="multipart/form-data" method="POST"
-  xaction="../tool/saveAttachement.php"
-  xtarget="resultPost"
-  xonSubmit="return saveAttachement();" >
-    <input id="attachementId" name="attachementId" type="hidden" value="" />
-    <input id="attachementRefType" name="attachementRefType" type="hidden" value="" />
-    <input id="attachementRefId" name="attachementRefId" type="hidden" value="" />
-    <input id="attachementType" name="attachementType" type="hidden" value="" />
-    <div id="dialogAttachementFileDiv">
-      <table>
-        <tr height="30px">
-          <td class="dialogLabel" >
-           <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
-          </td>
-          <td>
-           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />
-          <?php  if (0) {?>
-           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
-            dojoType="dojox.form.FileInput" type="file"
-            name="attachementFile" id="attachementFile"
-            cancelText="<?php echo i18n("buttonReset");?>"
-            label="<?php echo i18n("buttonBrowse");?>"
-            title="<?php echo i18n("helpSelectFile");?>" />
-          <?php } else {?>  
-           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
-            dojoType="dojox.form.Uploader" type="file" 
-            url="../tool/saveAttachement.php"
-            name="attachementFile" id="attachementFile" 
-            cancelText="<?php echo i18n("buttonReset");?>"
-            multiple="false" 
-            onBegin="saveAttachement();"
-            onChange="changeAttachment(this.getFileList());"
-            onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
-            label="<?php echo i18n("buttonBrowse");?>"
-            title="<?php echo i18n("helpSelectFile");?>"  />
-            <i><span name="attachementFileName" id="attachementFileName"></span></i>           
-           <?php }?>  
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div id="dialogAttachementLinkDiv">
-      <table>
-        <tr height="30px">
-          <td class="dialogLabel" >
-            <label for="attachementLink" ><?php echo i18n("colHyperlink");?>&nbsp;:&nbsp;</label>
-          </td>
-          <td>
-            <div id="attachementLink" name="attachementLink" dojoType="dijit.form.ValidationTextBox"
-               style="width: 350px;"
-               trim="true" maxlength="400" class="input"
-               value="">
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <table>
-      <tr>
-        <td class="dialogLabel" >
-         <label for="attachementDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
-        </td>
-        <td> 
-         <textarea dojoType="dijit.form.Textarea" 
-          id="attachementDescription" name="attachementDescription"
-          style="width: 350px;"
-          maxlength="4000"
-          class="input"></textarea>   
-        </td>
-      </tr>
-      <tr><td colspan="2">
-       <table width="100%"><tr height="25px">
-            <td width="33%" class="smallTabLabel" >
-              <label class="smallTabLabelRight" for="attachmentPrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyPublic" value="1" />
-            </td>
-            <td width="34%" class="smallTabLabel" >
-              <label class="smallTabLabelRight" for="attachmentPrivacyTeam"><?php echo i18n('team');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyTeam" value="2" />
-            </td>
-            <td width="33%" class="smallTabLabel" >
-              <label class="smallTabLabelRight" for="attachmentPrivacyPrivate"><?php echo i18n('private');?>&nbsp;</label>
-              <input type="radio" data-dojo-type="dijit/form/RadioButton" name="attachmentPrivacy" id="attachmentPrivacyPrivate" value="3" />
-            </td>
-          </tr></table>
-      </td></tr>
-      <tr>
-        <td colspan="2" align="center">
-          <input type="hidden" id="dialogAttachementAction">
-          <button dojoType="dijit.form.Button" id="dialogAttachementCancel" onclick="dijit.byId('dialogAttachement').hide();">
-            <?php echo i18n("buttonCancel");?>
-          </button>
-          <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit"
-           xonclick="saveAttachement();">
-            <?php echo i18n("buttonOK");?>
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center">
-    
-         <div style="display:none">
-           <iframe name="resultPost" id="resultPost"></iframe>
-         </div>
-        </td>
-      </tr>
-    </table>
-    </form>
-    <form id='attachementAckForm' name='attachementAckForm'> 
-      <input type='hidden' id="resultAck" name="resultAck" />
-    </form>   
-</div>
+
+<div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>"></div>
 
 <div id="dialogDocumentVersion" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDocumentVersion");?>">
   <form id='documentVersionForm' name='documentVersionForm' jsId='documentVersionForm' 
@@ -1610,7 +1496,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       <tr>
         <td colspan="2" align="center">
           <input type="hidden" id="dialogDocumentVersionAction">
-          <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogDocumentVersion').hide();">
+          <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogDocumentVersion').hide();">
             <?php echo i18n("buttonCancel");?>
           </button>
           <button id="submitDocumentVersionUpload" dojoType="dijit.form.Button" type="submit" 
@@ -1779,7 +1665,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogAssignmentAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAssignment').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAssignment').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" id="dialogAssignmentSubmit" type="submit" onclick="saveAssignment();return false;">
@@ -1873,7 +1759,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogExpenseDetailAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogExpenseDetail').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogExpenseDetail').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogExpenseDetailSubmit" onclick="saveExpenseDetail();return false;">
@@ -1935,7 +1821,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogPlanAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogPlan').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogPlan').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogPlanSubmit" onclick="plan();return false;">
@@ -2041,7 +1927,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogDependencyAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogDependency').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogDependency').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogDependencySubmit" onclick="saveDependency();return false;">
@@ -2155,7 +2041,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
    </tr>
     <tr>
       <td align="center">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogMail').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMail').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="sendMail();return false;">
@@ -2227,7 +2113,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogResourceCostAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogResourceCost').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogResourceCost').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogResourceCostSubmit" onclick="saveResourceCost();return false;">
@@ -2316,7 +2202,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="versionProjectAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogVersionProject').hide();">
+        <button dojoType="dijit.form.Button" type="button"  onclick="dijit.byId('dialogVersionProject').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogVersionProjectSubmit" onclick="saveVersionProject();return false;">
@@ -2450,7 +2336,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="testCaseRunAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogTestCaseRun').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogTestCaseRun').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogTestCaseRunSubmit" onclick="saveTestCaseRun();return false;">
@@ -2525,7 +2411,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="affectationAction">
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogAffectation').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAffectation').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogAffectationSubmit" onclick="saveAffectation();return false;">
@@ -2631,7 +2517,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <?php echo i18n("buttonClear");?>
         </button>
         </td><td>
-        <button dojoType="dijit.form.Button" onclick="cancelFilter();">
+        <button dojoType="dijit.form.Button" type="button" onclick="cancelFilter();">
           <?php echo i18n("buttonCancel");?>
         </button>
         </td><td>

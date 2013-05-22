@@ -404,10 +404,10 @@ class Contact extends SqlElement {
       $result="";
       $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
       $left=250;
-      $top=86;
+      $top=88;
       if ($image->id and $image->isThumbable()) {
         if (!$print) {
-          $result.='<tr>';
+          $result.='<tr style="height:20px;">';
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
@@ -431,7 +431,7 @@ class Contact extends SqlElement {
           $image->delete();
         }
         if (!$print) {
-          $result.='<tr>';
+          $result.='<tr style="height:20px;">';
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';

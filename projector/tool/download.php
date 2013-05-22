@@ -39,17 +39,20 @@ if ($class=='Attachement') {
   $file = $obj->getUploadFileName();
 }
 $contentType="application/force-download";
+if ($type) {$contentType=$type;}
 //if (array_key_exists('display',$_REQUEST)) {
 //  $contentType=$type;
 //}
 
 if (($file != "") && (file_exists($file))) { 
+	header("Pragma: public"); 
   header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
   header("Content-Transfer-Encoding: binary"); 
   header("Content-Length: $size"); 
   header("Content-Disposition: attachment; filename=\"" .$name . "\""); 
   header("Expires: 0"); 
   header("Cache-Control: no-cache, must-revalidate");
+  header("Cache-Control: private",false);
   header("Pragma: no-cache");
   if (ob_get_length()){   
     ob_clean();
