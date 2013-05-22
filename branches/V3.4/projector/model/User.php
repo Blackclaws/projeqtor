@@ -243,10 +243,10 @@ class User extends SqlElement {
       $result="";
       $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
       $left=250;
-      $top=149;
+      $top=152;
       if ($image->id and $image->isThumbable()) {
         if (!$print) {
-          $result.='<tr>';
+          $result.='<tr style="height:20px;">';
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
@@ -259,8 +259,9 @@ class User extends SqlElement {
             $top=64;
           }
         }
-        $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
-           . ' title="'.$image->fileName.'" style="cursor:pointer"'
+        $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;">'
+           . ' <img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
+           . ' title="'.$image->fileName.'" style="cursor:pointer;"'
            . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
         if (!$print) {
           $result.='</td></tr>';
@@ -270,7 +271,7 @@ class User extends SqlElement {
           $image->delete();
         }
         if (!$print) {
-          $result.='<tr>';
+          $result.='<tr style="height:20px;">';
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';

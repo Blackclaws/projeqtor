@@ -88,7 +88,7 @@ if ($dialog=="dialogTodayParameters") {
 	echo '<table width="100%">';
 	echo '  <tr>';
   echo '    <td align="center">';
-  echo '      <button dojoType="dijit.form.Button" onclick="dijit.byId(\'dialogTodayParameters\').hide();">';
+  echo '      <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId(\'dialogTodayParameters\').hide();">';
   echo          i18n("buttonCancel");
   echo '      </button>';
   echo '      <button dojoType="dijit.form.Button" type="submit" id=dialogTodayParametersSubmit" onclick="saveTodayParameters();return false;">';
@@ -98,6 +98,8 @@ if ($dialog=="dialogTodayParameters") {
   echo '  </tr>';
   echo '</table>';
 	echo '</form>';
+} else if ($dialog=="dialogAttachement") {
+	include('../tool/dynamicDialogAttachement.php');
 } else {
 	echo "ERROR dialog=".$dialog." is not an expected dialog";
 }

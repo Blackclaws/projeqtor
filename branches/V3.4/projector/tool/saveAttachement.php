@@ -1,6 +1,6 @@
 <?php 
 include_once "../tool/projector.php";
-debugLog("saveAttachement.php");
+scriptLog("saveAttachement.php");
 header ('Content-Type: text/html; charset=UTF-8');
 /** ===========================================================================
  * Save an attachement (file) : call corresponding method in SqlElement Class
@@ -9,8 +9,16 @@ header ('Content-Type: text/html; charset=UTF-8');
 
 // ATTENTION, this PHP script returns its result into an iframe (the only way to submit a file)
 // then the iframe returns the result to resultDiv to reproduce expected behaviour
-?>
-
+$isIE=false;
+if (array_key_exists('isIE',$_REQUEST)) {
+  $isIE=$_REQUEST['isIE'];
+} 
+if ($isIE and $isIE<=8) {?>
+<html>
+<head>   
+</head>
+<body onload="parent.saveAttachementAck();">
+<?php } ?>
 <?php 
 $error=false;
 
@@ -157,9 +165,9 @@ if (! $error and $type=='file') {
   }
   $uploadfile = $uploaddir . basename($uploadedFile['name']);
   if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-     echo htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
+     $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
      errorLog(i18n('errorUploadFile','hacking ?'));
-     $error=true;
+     //$error=true;
      $attachement->delete(); 
   } else {
     $attachement->subDirectory=str_replace(Parameter::getGlobalParameter('paramAttachementDirectory'),'${attachementDirectory}',$uploaddir);
@@ -198,6 +206,12 @@ $jsonReturn='{"file":"'.$attachement->fileName.'",'
  .'"type":"'.$type.'",'
  .'"size":"'.$attachement->fileSize.'"  ,'
  .'"message":"'.str_replace('"',"'",$message).'"}';
-echo $jsonReturn;
 
-?>
+
+if ($isIE and $isIE<=8) {
+	echo $message;
+  echo '</body>';
+  echo '</html>';
+} else {
+  echo $jsonReturn;
+}?>

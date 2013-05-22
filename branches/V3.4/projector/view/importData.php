@@ -34,7 +34,7 @@
            </select> 
         </td>
         <td  align="left"> 
-          <button id="helpImportData" iconClass="iconHelp" dojoType="dijit.form.Button" showlabel="false"
+          <button id="helpImportData" iconClass="iconHelp" dojoType="dijit.form.Button" type="button" showlabel="false"
           title="<?php echo i18n('helpImport');?>">
              <script type="dojo/connect" event="onClick" args="evt">
                showHelpImportData();

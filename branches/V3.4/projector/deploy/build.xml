@@ -6,7 +6,7 @@
   <property name="projName"       value="projectorria" />
   <property name="setup.dir"     value="${drive}/ProjectOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
-  <property name="src.dir"       value="${drive}/www/projectorriaV3.3" />
+  <property name="src.dir"       value="${drive}/www/projectorriaV3.4" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
@@ -54,6 +54,7 @@
   
   <target name="copyFiles">
     <mkdir dir="${deploy.dir}/files/attach"/>
+    <mkdir dir="${deploy.dir}/files/thumbs"/>
     <mkdir dir="${deploy.dir}/files/config"/>
     <mkdir dir="${deploy.dir}/files/logs"/>
     <mkdir dir="${deploy.dir}/files/report"/>
@@ -159,8 +160,8 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="G:/ProjectOr/External/dojo-release-1.8.4-src"/>
-	<property name="dojo.version" value="1.8.4"/>
+	<property name="dojo.release.dir" value ="G:/ProjectOr/External/dojo-release-1.9.0-src"/>
+	<property name="dojo.version" value="1.9.0"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>

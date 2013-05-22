@@ -700,6 +700,15 @@ function removeNote (noteId) {
  * 
  */
 function addAttachement (attachmentType) {
+	content=dijit.byId('dialogAttachement').get('content');
+	if (content=="") {
+	  callBack=function() {
+		  dojo.connect(dijit.byId("attachementFile"), "onComplete", function(dataArray){saveAttachementAck(dataArray);});
+	      dojo.connect(dijit.byId("attachementFile"), "onProgress", function(data){saveAttachementProgress(data);});
+		  addAttachement (attachmentType);};	
+	  loadDialog('dialogAttachement',callBack);
+	  return;
+	}
 	dojo.byId("attachementId").value="";
 	dojo.byId("attachementRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("attachementRefId").value=dojo.byId("objectId").value;
@@ -709,7 +718,11 @@ function addAttachement (attachmentType) {
     if (attachmentType=='file') {
       if (dijit.byId("attachementFile")) {
         dijit.byId("attachementFile").reset();
-        disableWidget('dialogAttachementSubmit');
+        if (dojo.isIE && dojo.isIE<=8) {
+          enableWidget('dialogAttachementSubmit');
+        } else {
+          disableWidget('dialogAttachementSubmit');
+        }
       }
       dojo.style(dojo.byId('dialogAttachementFileDiv'), {display:'block'});
       dojo.style(dojo.byId('dialogAttachementLinkDiv'), {display:'none'});
@@ -740,11 +753,16 @@ function changeAttachment(list) {
  * 
  */
 function saveAttachement() {
-	if (dojo.byId("attachementType").value=='file' && dojo.byId('attachementFileName').innerHTML=="") {
-		return false;
-	}
 	//disableWidget('dialogAttachementSubmit');
-	//dojo.byId('attachementForm').submit();
+	if (dojo.isIE && dojo.isIE<=8) {
+	  dojo.byId('attachementForm').submit();
+	  showWait();
+	  dijit.byId('dialogAttachement').hide();
+	  return true;
+	}
+	if (dojo.byId("attachementType").value=='file' && dojo.byId('attachementFileName').innerHTML=="") {
+	  return false;
+	}
 	dojo.style(dojo.byId('downloadProgress'), {display:'block'});
 	showWait();
 	dijit.byId('dialogAttachement').hide();
@@ -756,6 +774,13 @@ function saveAttachement() {
  * @return void
  */
 function saveAttachementAck(dataArray) {
+	if (dojo.isIE && dojo.isIE<=8) {
+		resultFrame=document.getElementById("resultPost");
+		resultText=resultPost.document.body.innerHTML;
+		dojo.byId('resultAck').value=resultText;
+		loadContent("../tool/ack.php", "resultDiv", "attachementAckForm", true, 'attachement');
+		return;
+	}
 	dijit.byId('dialogAttachement').hide();
     if (dojo.isArray(dataArray)) {
       result=dataArray[0];
@@ -781,6 +806,17 @@ function saveAttachementProgress(data) {
  * 
  */
 function removeAttachement (attachementId) {
+	content=dijit.byId('dialogAttachement').get('content');
+	if (content=="") {
+	  callBack=function() {
+		  dojo.connect(dijit.byId("attachementFile"), "onComplete", function(dataArray){saveAttachementAck(dataArray);});
+	      dojo.connect(dijit.byId("attachementFile"), "onProgress", function(data){saveAttachementProgress(data);});
+		  dijit.byId('dialogAttachement').hide();
+		  removeAttachement (attachementId);
+	  };	
+	  loadDialog('dialogAttachement',callBack);
+	  return;
+	}
 	dojo.byId("attachementId").value=attachementId;
 	dojo.byId("attachementRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("attachementRefId").value=dojo.byId("objectId").value;
@@ -3818,7 +3854,7 @@ function unlockRequirement() {
 
 function loadDialog(dialogDiv,callBack) {
   if (! dijit.byId(dialogDiv) ) {
-    dialogTodayParameters = new dijit.Dialog({
+	  dialog = new dijit.Dialog({
 	  id: dialogDiv,
       title: i18n(dialogDiv),
 	  content: i18n("loading")
@@ -3828,7 +3864,7 @@ function loadDialog(dialogDiv,callBack) {
   }
   showWait();
   dojo.xhrGet({
-	url: '../tool/dynamicDialog.php?dialog='+dialogDiv,
+	url: '../tool/dynamicDialog.php?dialog='+dialogDiv+'&isIE='+((dojo.isIE)?dojo.isIE:''),
 	handleAs: "text",
 	load: function (data) {
 	  var contentWidget = dijit.byId(dialogDiv);
@@ -3947,16 +3983,29 @@ function updateSelectedCountMultiple() {
 }
 
 function showImage(objectClass, objectId, imageName) {
-  imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId;
+  imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId; 
   var dialogShowImage = dijit.byId("dialogShowImage");
   if (! dialogShowImage) {
 	dialogShowImage = new dojox.image.LightboxDialog({});
 	dialogShowImage.startup();
   }
   if(dialogShowImage && dialogShowImage.show){
-	dialogShowImage.show({ title:imageName, href:imageUrl });
+	  if (dojo.isFF) {
+		  dojo.xhrGet({
+				url: imageUrl,
+				handleAs: "text",
+				load: function (data) {
+			        dialogShowImage.show({ title:imageName, href:imageUrl });
+			  		dijit.byId('formDiv').resize();
+				}
+			});
+	  } else {
+        dialogShowImage.show({ title:imageName, href:imageUrl });
+  		dijit.byId('formDiv').resize();
+	  }
+	//dialogShowImage.show({ title:imageName, href:imageUrl });
   }	else {
 	showError ("Error loading image "+imageName);
   }
-  dijit.byId('formDiv').resize();
+  //dijit.byId('formDiv').resize();
 }
