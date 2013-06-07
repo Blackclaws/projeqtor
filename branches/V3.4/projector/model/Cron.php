@@ -9,6 +9,7 @@ class Cron {
   private static $sleepTime;
   private static $checkDates;
   private static $checkImport;
+  private static $checkEmails;
   private static $runningFile;
   private static $timesFile;
   private static $stopFile;
@@ -72,7 +73,10 @@ class Cron {
   public static function setActualTimes() {
   	self::init();
     $handle=fopen(self::$timesFile, 'w');
-    fwrite($handle,'SleepTime='.self::getSleepTime().'|CheckDates='.self::getCheckDates().'|CheckImport='.self::getCheckImport() );
+    fwrite($handle,'SleepTime='.self::getSleepTime()
+                 .'|CheckDates='.self::getCheckDates()
+                 .'|CheckImport='.self::getCheckImport()
+                 .'|CheckEmails='.self::getCheckEmails() );
     fclose($handle);
   }
   
@@ -107,6 +111,17 @@ class Cron {
     if (! $checkImport) {$checkImport=30;}
     self::$checkImport=$checkImport;
     return self::$checkImport;
+  }  
+  
+  public static function getCheckEmails() {
+    self::init();
+    if (self::$checkEmails) {
+      return self::$checkEmails;
+    }
+    $checkEmails=Parameter::getGlobalParameter('cronCheckEmails'); 
+    if (! $checkEmails) {$checkImport=30*60;} // Default=every 30 mn
+    self::$checkEmails=$checkEmails;
+    return self::$checkEmails;
   }  
   
   public static function check() {
@@ -233,6 +248,7 @@ class Cron {
     session_write_close();
     $cronCheckDates=self::getCheckDates();
     $cronCheckImport=self::getCheckImport();
+    $cronCheckEmails=self::getCheckEmails();
     $cronSleepTime=self::getSleepTime();
     self::setActualTimes();
     self::removeStopFlag();
@@ -243,6 +259,7 @@ class Cron {
         return; 
       }
       self::setRunningFlag();
+      // CheckDates : automatically raise alerts based on dates
       $cronCheckDates-=$cronSleepTime;
       if ($cronCheckDates<=0) {
       	try { 
@@ -252,6 +269,7 @@ class Cron {
       	}
         $cronCheckDates=Cron::getCheckDates();
       }
+      // CheckImport : automatically import some files in import directory
       $cronCheckImport-=$cronSleepTime;
       if ($cronCheckImport<=0) {
       	try { 
@@ -261,6 +279,17 @@ class Cron {
         }
         $cronCheckImport=Cron::getCheckImport();
       }
+      // CheckEmails : automatically import notes from Reply to mails
+      $cronCheckEmails-=$cronSleepTime;
+      if ($cronCheckEmails<=0) {
+        try { 
+          self::checkEmails();
+        } catch (Exception $e) {
+          traceLog("Cron::run() - Error on checkEmails()");
+        }
+        $cronCheckEmails=Cron::getCheckEmails();
+      }
+      // Sleep to next check
       sleep($cronSleepTime);
     }
   }
@@ -413,5 +442,83 @@ class Cron {
     }
   }
   
+  
+  public static function checkImport() {
+  	self::init();
+    global $globalCronMode, $globalCatchErrors;
+    $globalCronMode=true;     
+    $globalCatchErrors=true;
+    require_once("../model/ImapMailbox.php"); // Imap management Class
+		
+		// IMAP must be enabled in Google Mail Settings
+		define('EMAIL_EMAIL', 'pascal.bernard.muret@gmail.com');
+		define('EMAIL_PASSWORD', 'Looping31!');
+		define('EMAIL_ATTACHMENTS_DIR', dirname(__FILE__) . '/../files/attach');
+		define('EMAIL_HOST','{imap.gmail.com:993/imap/ssl}INBOX');
+		$mailbox = new ImapMailbox(EMAIL_HOST, EMAIL_EMAIL, EMAIL_PASSWORD, EMAIL_ATTACHMENTS_DIR, 'utf-8');
+		$mails = array();
+		
+		// Get some mail
+		$mailsIds = $mailbox->searchMailBox('UNSEEN UNDELETED');
+		if(!$mailsIds) {
+		        die('Mailbox is empty');
+		}
+		echo "Nombre de mails = ".count($mailsIds);
+		
+		$mailId = reset($mailsIds);
+		$mail = $mailbox->getMail($mailId);
+		$mailbox->markMailAsUnread($mailId);
+		
+		$body=$mail->textPlain;
+		$bodyHtml=$mail->textHtml;
+		
+		$class=null;
+		$id=null;
+		$msg=null;
+		$senderId=null;
+		
+		// Class and Id of object
+		$posClass=strpos($body,'directAccess=true&objectClass=');
+		if ($posClass) { // It is a ProjeQtor mail
+		  $posId=strpos($body,'&objectId=',$posClass);
+		  $posEnd=strpos($body,'>',$posId);
+		  $class=substr($body,$posClass+30,$posId-$posClass-30);
+		  $id=substr($body,$posId+10,$posEnd-$posId-10);
+		  echo "<br/>***** $class #$id *****";
+		}
+		// Message
+		$posEndMsg=strpos($body,"\r\n\r\n\r\n");
+		if ($posEndMsg) {
+		  $msg=substr($body,0,$posEndMsg);
+		  echo "<br/>***** $msg *****";
+		}
+		// Sender
+		$sender=$mail->fromAddress;
+		$crit=array('email'=>$sender);
+		$usr=new Affectable();
+		$usrList=$usr->getSqlElementsFromCriteria($crit,false,null,'idle asc, isUser desc, isResource desc');
+		var_dump($usrList);
+		if (count($usrList)) {
+		  $senderId=$usrList[0]->id;
+		}
+		
+		$obj=new $class($id);
+		if ($obj->id) {
+		  $note=new Note();
+		  $note->refType=$class;
+		  $note->refId=$id;
+		  $note->idPrivacy=1;
+		  $note->note=$msg;
+		  $note->idUser=$senderId;
+		  $note->creationDate=date('Y-m-d H:i:s');
+		  $note->save();
+		  $mailbox->markMailAsRead($mailId);
+		} else {
+		  $mailbox->markMailAsUnread($mailId);
+		}
+		
+		echo "===========================================================================";
+		var_dump($mail);
+  }
 }
 ?>

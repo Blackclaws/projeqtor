@@ -75,7 +75,7 @@ class History extends SqlElement {
       	$colName.= '|' . 'TestCase' . '|' .$refId;
       }
     	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName, $oldValue, $newValue);*/
-    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName. '|' . 'TestCase' . '|' .$refId, $oldValue, $newValue);
+    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName. '|' . 'TestCase' . '|' .$obj->idTestCase, $oldValue, $newValue);
     } else if ($refType=='Link') {       
     // For link : store History for both referenced items
       self::store ($obj, $obj->ref1Type, $obj->ref1Id, $operation , 'Link' . '|' . $colName. '|' . $obj->ref2Type . '|' . $obj->ref2Id, $oldValue, $newValue);

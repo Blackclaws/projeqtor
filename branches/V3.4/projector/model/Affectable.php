@@ -14,13 +14,15 @@ class Affectable extends SqlElement {
   public $isContact;
   public $email;
   public $idTeam;
+  public $idle;
   
   public $_constructForName=true;
   
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "isContact"=>"readonly",
                                           "isUser"=>"readonly",
-                                          "isResource"=>"readonly" 
+                                          "isResource"=>"readonly",
+                                          "idle"=>"hidden" 
   );    
   
   private static $_databaseTableName = 'resource';
