@@ -469,5 +469,15 @@ class IndicatorValue extends SqlElement {
     return $result;
   }
   
+  public function save() {
+  	$this->targetDateTime=trim($this->alertTargetDateTime);
+  	if ($this->targetDateTime=='00:00' or $this->targetDateTime=='00:00:00') $this->targetDateTime='';
+  	$this->warningTargetDateTime=trim($this->warningTargetDateTime);
+  	if ($this->warningTargetDateTime=='00:00' or $this->warningTargetDateTime=='00:00:00') $this->warningTargetDateTime='';
+  	$this->alertTargetDateTime=trim($this->warningTargetDateTime);
+  	if ($this->alertTargetDateTime=='00:00' or $this->alertTargetDateTime=='00:00:00') $this->alertTargetDateTime='';
+  	return parent::save();
+  }
+  
 }
 ?>
