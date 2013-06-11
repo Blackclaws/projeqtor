@@ -504,7 +504,8 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 			} else {
 				$rowType="group";
 			}
-			if ($closedWbs and strlen($line->wbsSortable)<=strlen($closedWbs)) {
+			//if ($closedWbs and strlen($line->wbsSortable)<=strlen($closedWbs)) {
+			if ($closedWbs and (strlen($line->wbsSortable)<=strlen($closedWbs) or $closedWbs!=substr($line->wbsSortable,0,strlen($closedWbs)) ) ) {
 				$closedWbs="";
 			}
 			$scope='Imputation_'.$resourceId.'_'.$line->refType.'_'.$line->refId;
