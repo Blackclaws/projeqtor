@@ -443,7 +443,7 @@ class Cron {
   }
   
   
-  public static function checkImport() {
+  public static function checkEmails() {
   	self::init();
     global $globalCronMode, $globalCatchErrors;
     $globalCronMode=true;     
