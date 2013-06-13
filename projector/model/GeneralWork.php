@@ -167,6 +167,15 @@ class GeneralWork extends SqlElement {
     return $res;
   }
   
+  public static function getConvertedCapacity($capacity) {
+    self::setImputationUnit();
+    if (self::$imputationUnit=="hours" and self::$hoursPerDay) {
+      return $capacity * self::$hoursPerDay ;
+    } else {
+      return $capacity;
+    }
+  }
+  
   private static function setWorkUnit() {
     if (self::$workUnit) return;
     $unit=Parameter::getGlobalParameter('workUnit');
