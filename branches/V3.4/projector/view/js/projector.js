@@ -63,11 +63,13 @@ function refreshJsonList(className, keepUrl) {
     if ( dijit.byId('listTypeFilter') ) {
       if (dijit.byId('listTypeFilter').get("value")!='') {
         url = url + "&objectType=" + dijit.byId('listTypeFilter').get("value"); 
+        //url = url + "&objectType=" + encodeURIComponent(dijit.byId('listTypeFilter').get("value"));
       }
     }
     if ( dijit.byId('quickSearchValue') ) {
       if (dijit.byId('quickSearchValue').get("value")!='') {
-        url = url + "&quickSearch=" + dijit.byId('quickSearchValue').get("value"); 
+        //url = url + "&quickSearch=" + dijit.byId('quickSearchValue').get("value"); 
+        url = url + "&quickSearch=" + encodeURIComponent(dijit.byId('quickSearchValue').get("value"));
       }
     }
 

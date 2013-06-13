@@ -843,7 +843,15 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   if (property_exists(substr($menuName,4),'_readOnly')) {
   	return 'NO';
   }
-  $user=$_SESSION['user'];
+  if (! array_key_exists('user', $_SESSION)) {
+  	global $maintenance;
+  	if ($maintenance) {
+  		return 'YES';
+  	}
+  } else {
+    $user=$_SESSION['user'];
+  }
+  
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj);
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN')?'NO':'YES';
