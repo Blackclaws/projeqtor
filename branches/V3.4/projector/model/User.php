@@ -725,6 +725,7 @@ class User extends SqlElement {
 				}					
 			}
 	  }
+	  $_SESSION['user']=$this;
 	  return "OK";     
   }
 
