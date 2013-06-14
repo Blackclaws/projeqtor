@@ -60,7 +60,7 @@
           <tr style="height:100%" height="100%">
             <td style="height:99%" align="left" valign="middle">
               <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
-                <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
+             <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
              <script type="dojo/method" event="onSubmit" >
               dojo.byId('goButton').focus();
               loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
@@ -77,7 +77,7 @@
             <label class="label" style="width:200px;">&nbsp;</label>
             <button type="submit" style="width:200px" id="goButton" dojoType="dijit.form.Button" showlabel="true">OK
               <script type="dojo/connect" event="onClick" args="evt">
-              loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
+                //loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
               </script>
             </button>
             <br/>

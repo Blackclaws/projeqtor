@@ -3,7 +3,7 @@
  * Chek login/password entered in connection screen
  */
   require_once "../tool/projector.php"; 
-  
+scriptLog("changePassword.php");  
   $password="";
 
   if (array_key_exists('password',$_POST)) {
@@ -54,14 +54,22 @@
   function changePassword ($user, $newPassword) {
   	Sql::beginTransaction();
     $user->password=md5($newPassword);
-    $user->save();
-    echo '<span class="messageOK">';
-    echo i18n('passwordChanged');
-    echo '<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
-    echo '</div>';
-    echo '</span>';
-    $_SESSION['user']=$user;
-    Sql::commitTransaction();
+    $result=$user->save();
+		if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+		  Sql::rollbackTransaction();
+		  echo '<span class="messageERROR" >' . $result . '</span>';
+		} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+		  Sql::commitTransaction();
+		  $_SESSION['user']=$user;
+		  echo '<span class="messageOK">';
+	    echo i18n('passwordChanged');
+	    echo '<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
+	    echo '</div>';
+	    echo '</span>';
+		} else { 
+		  Sql::rollbackTransaction();
+		  echo '<span class="messageWARNING" >' . $result . '</span>';
+		}
   }
   
 ?>

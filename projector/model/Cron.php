@@ -236,6 +236,8 @@ class Cron {
 	
 	public static function run() {
 //scriptLog('Cron::run()');	
+    global $cronnedScript;
+    $cronnedScript=true; // Defined and set to be able to force rights on Control() : Cron has all rights.
     self::init();  
 		if (self::check()=='running') {
       errorLog('Try to run cron already running');

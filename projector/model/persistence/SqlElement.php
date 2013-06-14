@@ -2216,9 +2216,21 @@ abstract class SqlElement {
    */
   public function control(){
 //traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
+    global $cronnedScript;
   	$result="";
   	// 
     $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
+    if ($right!='YES') { // Manage Exceptions
+	    if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
+	    	$right='YES';
+	    }
+	    if (get_class($this)=='User') { // User can change his own data (to be able to change password)
+	    	$usr=$_SESSION['user'];
+	    	if ($this->id==$usr->id) {
+	    		$right='YES';
+	    	}
+	    }
+    }
     if ($right!='YES') {
       $result.='<br/>' . i18n('error'.(($this->id)?'Update':'Create').'Rights');
       return $result;
