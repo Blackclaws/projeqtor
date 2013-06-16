@@ -118,7 +118,13 @@ if ($saveShowClosed) {
                          id="listPrint" name="listPrint"
                          iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
+<?php $ganttPlanningPrintOldStyle=Parameter::getGlobalParameter('ganttPlanningPrintOldStyle');
+      if (!$ganttPlanningPrintOldStyle) {$ganttPlanningPrintOldStyle="NO";}
+      if ($ganttPlanningPrintOldStyle=='YES') {?>
                           showPrint("../tool/jsonResourcePlanning.php", 'planning');
+<?php } else { ?>
+                          showPrint("planningPrint.php", 'planning');
+<?php }?>            
                           </script>
                         </button>
                       </td>

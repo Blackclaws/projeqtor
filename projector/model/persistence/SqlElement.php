@@ -2348,7 +2348,7 @@ abstract class SqlElement {
     $fldType='id'.$class.'Type';
     if ( property_exists($class, 'idStatus') and property_exists($class, $fldType) 
       and ($old->idStatus!=$this->idStatus or $old->$fldType!=$this->$fldType ) 
-      and $this->id and $class!='Document') {
+      and $old->id and $class!='Document') {
     	$type=new Type($this->$fldType);
     	$crit=array('idWorkflow'=>$type->idWorkflow,
     	            'idStatusFrom'=>$old->idStatus,

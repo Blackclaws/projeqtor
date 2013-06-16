@@ -1,5 +1,5 @@
 <?php
-scriptLog('dynamicDialog.php');
+scriptLog('dynamicDialogAttachement.php');
 $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
 	$isIE=$_REQUEST['isIE'];
@@ -8,7 +8,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
   <form id='attachementForm' name='attachementForm' 
   ENCTYPE="multipart/form-data" method="POST"
 <?php if ($isIE and $isIE<9) {?>
-  action="../tool/saveAttachement.php?isIE=<?echo $isIE;?>"
+  action="../tool/saveAttachement.php?isIE=<?php echo $isIE;?>"
   target="resultPost"
   onSubmit="return saveAttachement();"
 <?php }?> 
@@ -108,8 +108,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="center">
-    
+        <td colspan="2" align="center">  
          <div style="display:none">
            <iframe name="resultPost" id="resultPost"></iframe>
          </div>

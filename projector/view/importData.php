@@ -54,6 +54,7 @@
             id="fileType" name="fileType" 
             class="input" value="csv" style="width: 200px;">
               <option value="csv"><?php echo i18n('csvFile')?></option>
+              <option value="xlsx"><?php echo i18n('xlsxFile')?></option>
            </select> 
         </td>
         <td></td>

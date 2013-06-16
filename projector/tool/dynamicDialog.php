@@ -100,6 +100,8 @@ if ($dialog=="dialogTodayParameters") {
 	echo '</form>';
 } else if ($dialog=="dialogAttachement") {
 	include('../tool/dynamicDialogAttachement.php');
+} else if ($dialog=="dialogDocumentVersion") {
+  include('../tool/dynamicDialogDocumentVersion.php');
 } else {
 	echo "ERROR dialog=".$dialog." is not an expected dialog";
 }

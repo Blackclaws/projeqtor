@@ -755,7 +755,7 @@ function changeAttachment(list) {
 function saveAttachement() {
 	//disableWidget('dialogAttachementSubmit');
 	if (dojo.isIE && dojo.isIE<=8) {
-	  dojo.byId('attachementForm').submit();
+	  //dojo.byId('attachementForm').submit();
 	  showWait();
 	  dijit.byId('dialogAttachement').hide();
 	  return true;
@@ -1585,14 +1585,26 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	content=dijit.byId('dialogDocumentVersion').get('content');
+	if (content=="") {
+	  callBack=function() {
+		  dojo.connect(dijit.byId("documentVersionFile"), "onComplete", function(dataArray){saveDocumentVersionAck(dataArray);});
+	      dojo.connect(dijit.byId("documentVersionFile"), "onProgress", function(data){saveDocumentVersionProgress(data);});
+	      addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers);};	
+	  loadDialog('dialogDocumentVersion',callBack);
+	  return;
+	}
+	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
+      if (dijit.byId("documentVersionFile")) {
+        dijit.byId("documentVersionFile").reset();
+        if (dojo.isIE && dojo.isIE<=8) {
+          enableWidget('dialogDocumentVersionSubmit');
+        } else {
+          disableWidget('dialogDocumentVersionSubmit');
+        }
+      }
 	dojo.byId("documentVersionId").value="";
-	/*var datastore =new dojo.data.ItemFileReadStore({
-	       query: {id:'*'},
-	       url: '../tool/jsonList.php?listType=listStatusDocumentVersion&idDocumentVersion=',
-           clearOnClose: true });
-	var store = new dojo.store.DataStore({store: datastore});
-	store.query({id:"*"});
-	dijit.byId('documentVersionIdStatus').set('store',store);*/
+	dojo.byId('documentVersionFileName').innerHTML=""; 
 	refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus','idDocumentVersion', '');
 	dijit.byId('documentVersionIdStatus').set('value',defaultStatus);
 	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'block'});
@@ -1636,13 +1648,16 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	content=dijit.byId('dialogDocumentVersion').get('content');
+	if (content=="") {
+	  callBack=function() {
+		  dojo.connect(dijit.byId("documentVersionFile"), "onComplete", function(dataArray){saveDocumentVersionAck(dataArray);});
+	      dojo.connect(dijit.byId("documentVersionFile"), "onProgress", function(data){saveDocumentVersionProgress(data);});
+	      editDocumentVersion (id,version,revision,draft,versionDate, status, isRef, typeEvo, numVers, dateVers, nameVers);};	
+	  loadDialog('dialogDocumentVersion',callBack);
+	  return;
+	}
 	dijit.byId('documentVersionIdStatus').store;
-	/*var datastore = new dojo.data.ItemFileReadStore({
-	       url: '../tool/jsonList.php?listType=listStatusDocumentVersion&idDocumentVersion='+id,
-           clearOnClose: true });
-	var store = new dojo.store.DataStore({store: datastore});
-	store.query({id:"*"});
-	dijit.byId('documentVersionIdStatus').set('store',store);*/
 	refreshListSpecific('listStatusDocumentVersion', 'documentVersionIdStatus','idDocumentVersion', id);
     dijit.byId('documentVersionIdStatus').set('value',status);
 	dojo.style(dojo.byId('inputFileDocumentVersion'), {display:'none'});
@@ -1664,7 +1679,6 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 	}
 	dijit.byId("documentVersionLink").set('value','');
 	dijit.byId("documentVersionFile").reset();
-	//dijit.byId("documentVersionDescription").set('value',description);
 	dijit.byId("documentVersionDescription").set("value",dojo.byId("documentVersion_"+id).value);
 	dijit.byId("documentVersionUpdateMajor").set('readOnly','readOnly');
 	dijit.byId("documentVersionUpdateMinor").set('readOnly','readOnly');
@@ -1679,12 +1693,32 @@ function editDocumentVersion (id,version,revision,draft,versionDate, status, isR
 	dijit.byId("dialogDocumentVersion").show();
 }
 
+function changeDocumentVersion(list) {
+  if (list.length>0) {
+    dojo.byId('documentVersionFileName').innerHTML=list[0]['name'];
+    enableWidget('dialogDocumentVersionSubmit');
+  } else {
+	dojo.byId('documentVersionFileName').innerHTML="";
+	disableWidget('dialogDocumentVersionSubmit');
+  }
+}
+
 /**
 * save an Assignment (after addAssignment or editAssignment)
 * 
 */
 function saveDocumentVersion() {
-	dojo.byId('documentVersionForm').submit();
+	//dojo.byId('documentVersionForm').submit();
+	if (dojo.isIE && dojo.isIE<=8) {
+	  //dojo.byId('documentVersionForm').submit();
+	  showWait();
+	  dijit.byId('dialogDocumentVersion').hide();
+	  return true;
+	}
+	if (dojo.byId('documentVersionFileName').innerHTML=="") {
+	  return false;
+	}
+	dojo.style(dojo.byId('downloadProgress'), {display:'block'});
     showWait();
 	dijit.byId('dialogDocumentVersion').hide();
 	return true;
@@ -1694,14 +1728,33 @@ function saveDocumentVersion() {
  * Acknoledge the attachment save
  * @return void
  */
-function saveDocumentVersionAck() {
-	resultFrame=document.getElementById("documentVersionPost");
-	resultText=documentVersionPost.document.body.innerHTML;
-	dojo.byId('documentVersionAck').value=resultText;
-	loadContent("../tool/ack.php", "resultDiv", "documentVersionForm", true, 'documentVersion');
+function saveDocumentVersionAck(dataArray) {
+	if (dojo.isIE && dojo.isIE<=8) {
+	  resultFrame=document.getElementById("documentVersionPost");
+	  resultText=documentVersionPost.document.body.innerHTML;
+	  dojo.byId('resultAckDocumentVersion').value=resultText;
+	  loadContent("../tool/ack.php", "resultDiv", "documentVersionAckForm", true, 'documentVersion');
+	  return;
+	}
+	dijit.byId('dialogDocumentVersion').hide();
+    if (dojo.isArray(dataArray)) {
+      result=dataArray[0];
+    } else {
+      result=dataArray;
+    }
+    dojo.style(dojo.byId('downloadProgress'), {display:'none'});
+  	dojo.byId('resultAckDocumentVersion').value=result.message;
+	loadContent("../tool/ack.php", "resultDiv", "documentVersionAckForm", true, 'documentVersion');	
 }
 
-
+function saveDocumentVersionProgress(data) {
+	done=data.bytesLoaded;
+	total=data.bytesTotal;
+	if (total) {
+		progress=done/total;
+	}
+	dijit.byId('downloadProgress').set('value',progress);
+}
 /**
 * Display a delete Assignment Box
 * 
@@ -1710,6 +1763,15 @@ function removeDocumentVersion (documentVersionId, documentVersionName) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
+	}
+	content=dijit.byId('dialogDocumentVersion').get('content');
+	if (content=="") {
+	  callBack=function() {
+		  dojo.connect(dijit.byId("documentVersionFile"), "onComplete", function(dataArray){saveDocumentVersionAck(dataArray);});
+	      dojo.connect(dijit.byId("documentVersionFile"), "onProgress", function(data){saveDocumentVersionProgress(data);});
+	      removeDocumentVersion (documentVersionId, documentVersionName);};	
+	  loadDialog('dialogDocumentVersion',callBack);
+	  return;
 	}
 	dojo.byId("documentVersionId").value=documentVersionId;
 	actionOK=function() {loadContent("../tool/removeDocumentVersion.php", "resultDiv", "documentVersionForm", true, 'documentVersion');};
@@ -3870,7 +3932,7 @@ function loadDialog(dialogDiv,callBack) {
 	  var contentWidget = dijit.byId(dialogDiv);
 	  if (! contentWidget) {return;}
 	  contentWidget.set('content',data);
-	  contentWidget.show();
+	  //contentWidget.show();
 	  hideWait();
 	  if (callBack) {
 	    setTimeout(callBack,10);
