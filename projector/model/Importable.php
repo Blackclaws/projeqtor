@@ -52,7 +52,7 @@ class Importable extends SqlElement {
                 errorLog("ERROR - Type : File Type and Type selected are not consistent");
                 errorLog("File Name : ".$fileName);
                 errorLog("Type Selected : ".$fileType);
-                $msg='<b>ERROR - Type: File Type and Type selected are not consistent</b><br/>Import aborted<br/>Contact your administrator';
+                $msg=i18n('errorImportFormat');
                 self::$importResult=$msg;
                 return $msg;                                       
             }
