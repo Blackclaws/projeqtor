@@ -61,6 +61,9 @@
                     	if (isset($arrayTimes['CheckImport'])) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckImport', array($arrayTimes['CheckImport'])) . '</i>';
                     	}
+                      if (isset($arrayTimes['CheckEmails'])) {
+                        echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckEmails', array($arrayTimes['CheckEmails'])) . '</i>';
+                      }
                     }
                   ?>
                 </td>

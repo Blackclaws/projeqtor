@@ -119,7 +119,7 @@ class Cron {
       return self::$checkEmails;
     }
     $checkEmails=Parameter::getGlobalParameter('cronCheckEmails'); 
-    if (! $checkEmails) {$checkImport=30*60;} // Default=every 30 mn
+    if (! $checkEmails) {$checkEmails=5*60;} // Default=every 5 mn
     self::$checkEmails=$checkEmails;
     return self::$checkEmails;
   }  
@@ -446,6 +446,7 @@ class Cron {
   
   
   public static function checkEmails() {
+debugLog("checkEmails");
   	self::init();
     global $globalCronMode, $globalCatchErrors;
     $globalCronMode=true;     
@@ -453,19 +454,23 @@ class Cron {
     require_once("../model/ImapMailbox.php"); // Imap management Class
 		
 		// IMAP must be enabled in Google Mail Settings
-		define('EMAIL_EMAIL', 'pascal.bernard.muret@gmail.com');
-		define('EMAIL_PASSWORD', 'Looping31!');
+		define('EMAIL_EMAIL', Parameter::getGlobalParameter('cronCheckEmailsUser'));
+		define('EMAIL_PASSWORD', Parameter::getGlobalParameter('cronCheckEmailsPassword'));
 		define('EMAIL_ATTACHMENTS_DIR', dirname(__FILE__) . '/../files/attach');
 		define('EMAIL_HOST','{imap.gmail.com:993/imap/ssl}INBOX');
+		if (! EMAIL_HOST) {
+			debugLog("IMAP connction string not defined");
+			return;
+		}
 		$mailbox = new ImapMailbox(EMAIL_HOST, EMAIL_EMAIL, EMAIL_PASSWORD, EMAIL_ATTACHMENTS_DIR, 'utf-8');
 		$mails = array();
 		
 		// Get some mail
 		$mailsIds = $mailbox->searchMailBox('UNSEEN UNDELETED');
 		if(!$mailsIds) {
-		        die('Mailbox is empty');
+		  die('Mailbox is empty');
 		}
-		echo "Nombre de mails = ".count($mailsIds);
+		debugLog("Number of unread mails = ".count($mailsIds));
 		
 		$mailId = reset($mailsIds);
 		$mail = $mailbox->getMail($mailId);
@@ -478,7 +483,7 @@ class Cron {
 		$id=null;
 		$msg=null;
 		$senderId=null;
-		
+debugLog('look for class');		
 		// Class and Id of object
 		$posClass=strpos($body,'directAccess=true&objectClass=');
 		if ($posClass) { // It is a ProjeQtor mail
@@ -486,13 +491,16 @@ class Cron {
 		  $posEnd=strpos($body,'>',$posId);
 		  $class=substr($body,$posClass+30,$posId-$posClass-30);
 		  $id=substr($body,$posId+10,$posEnd-$posId-10);
-		  echo "<br/>***** $class #$id *****";
+		  debugLog("<br/>***** $class #$id *****");
+		} else {
+debugLog('not a projectorria mail');   			
+			return;
 		}
 		// Message
 		$posEndMsg=strpos($body,"\r\n\r\n\r\n");
 		if ($posEndMsg) {
 		  $msg=substr($body,0,$posEndMsg);
-		  echo "<br/>***** $msg *****";
+		  debugLog("<br/>***** $msg *****");
 		}
 		// Sender
 		$sender=$mail->fromAddress;
@@ -518,9 +526,7 @@ class Cron {
 		} else {
 		  $mailbox->markMailAsUnread($mailId);
 		}
-		
-		echo "===========================================================================";
-		var_dump($mail);
+		debugLog("===========================================================================");
   }
 }
 ?>

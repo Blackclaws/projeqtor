@@ -20,6 +20,9 @@ if ($remind) {
 } else {
   $alert->readFlag='1';
   $alert->alertReadDateTime=date('Y-m-d H:i:s');
+debugLog("alert $idAlert is read");
 }
-$alert->save();
+$result=$alert->save();
+debugLog($result);
 Sql::commitTransaction();
+debugLog("flag=".$alert->readFlag);

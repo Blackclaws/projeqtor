@@ -2221,10 +2221,11 @@ abstract class SqlElement {
   	// 
     $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
     if ($right!='YES') { // Manage Exceptions
-	    if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
+	    if (get_class($this)=='Alert') {
 	    	$right='YES';
-	    }
-	    if (get_class($this)=='User') { // User can change his own data (to be able to change password)
+	    } else if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
+	    	$right='YES';
+	    } else if (get_class($this)=='User') { // User can change his own data (to be able to change password)
 	    	$usr=$_SESSION['user'];
 	    	if ($this->id==$usr->id) {
 	    		$right='YES';
