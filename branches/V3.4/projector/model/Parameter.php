@@ -423,7 +423,10 @@ class Parameter extends SqlElement {
                                'cronImportDirectory'=>'text',
                                'cronImportLogDestination'=>'list',
                                'cronImportMailList'=>'text',
-      	                    
+      	                       'cronCheckEmails'=>'number',
+      	                       'cronCheckEmailsHost'=>'text',
+      	                       'cronCheckEmailsUser'=>'text',
+      	                       'cronCheckEmailsPassword'=>'text'
       	);
     }
     global $hosted;
