@@ -276,7 +276,7 @@ class Ticket extends SqlElement {
   	if ($this->idTicketType != $old->idTicketType 
   	 or $this->idUrgency != $old->idUrgency
   	 or $this->creationDateTime != $old->creationDateTime) {
-  	 	$crit=array('idTicketType'=>$this->idTicketType, 'idUrgency'=>$this->idUrgency);
+  	 	$crit=array('idTicketType'=>$this->idTicketType, 'idUrgency'=>$this->idUrgency, 'idle'=>'0');
   		$delay=SqlElement::getSingleSqlElementFromCriteria('TicketDelay', $crit);
   		if ($delay and $delay->id) {
   			$unit=new DelayUnit($delay->idDelayUnit);
