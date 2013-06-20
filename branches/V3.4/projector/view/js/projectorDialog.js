@@ -2354,6 +2354,7 @@ function filterSelectAtribute(value) {
 	  			dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 	  		} else if (dataType=="list") {
 	  			filterType="list";
+	  			if (value=='idTargetVersion' || value=='idOriginalValue') {value='idVersion';}
 	  			var tmpStore = new dojo.data.ItemFileReadStore({url: '../tool/jsonList.php?required=true&listType=list&dataType=' + value});
 	  			var mySelect=top.dojo.byId("filterValueList");
 	  			mySelect.options.length=0;

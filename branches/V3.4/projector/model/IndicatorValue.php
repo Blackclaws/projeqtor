@@ -77,6 +77,12 @@ class IndicatorValue extends SqlElement {
     
   static public function addIndicatorValue($def, $obj) {
   	$class=get_class($obj);
+  	if (property_exists($obj, 'idStatus')) {
+  	  $stat=new Status($obj->idStatus);
+  	  if ($stat->isCopyStatus) { // Status "copied" : do not generate indicator alerts
+  	  	return;
+  	  }
+  	}
   	if ($def->nameIndicatorable!=$class) {
   		errorLog("ERROR in IndicatorValue::addIndicatorValue() => incoherent class between def ($def->nameIndicatorable) and obj ($class) ");
   		return;

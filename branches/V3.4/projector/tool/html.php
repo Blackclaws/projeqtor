@@ -163,7 +163,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }
       echo '<OPTION value="' . $key . '"';
       if ( $selection and $key==$selection ) { echo ' SELECTED '; } 
-      echo '>' . htmlEncode($val) . '</OPTION>';
+      echo '><span >'. htmlEncode($val) . '</span></OPTION>';
     }
   }
 }

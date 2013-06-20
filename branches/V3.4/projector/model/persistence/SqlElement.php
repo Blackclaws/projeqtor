@@ -2351,13 +2351,17 @@ abstract class SqlElement {
       and ($old->idStatus!=$this->idStatus or $old->$fldType!=$this->$fldType ) 
       and $old->id and $class!='Document') {
     	$type=new Type($this->$fldType);
+    	
     	$crit=array('idWorkflow'=>$type->idWorkflow,
     	            'idStatusFrom'=>$old->idStatus,
     	            'idStatusTo'=>$this->idStatus,
     	            'idProfile'=>$_SESSION['user']->idProfile);
     	$ws=SqlElement::getSingleSqlElementFromCriteria('WorkflowStatus', $crit);
     	if (!$ws or !$ws->id or $ws->allowed!=1) {
-    	  $result.="<br/>" . i18n("errorWorflow");
+    		$oldStat=new Status($old->idStatus);
+    		if (! $oldStat->isCopyStatus) {
+    	    $result.="<br/>" . i18n("errorWorflow");
+    		}
     	}
     }
     if ($result=="") {
