@@ -478,7 +478,11 @@ debugLog("checkEmails");
 		
 		$body=$mail->textPlain;
 		$bodyHtml=$mail->textHtml;
-		
+debugLog("***************************************************");		
+debugLog($body);
+debugLog("***************************************************");
+debugLog($bodyHtml);
+debugLog("***************************************************");
 		$class=null;
 		$id=null;
 		$msg=null;
@@ -500,7 +504,6 @@ debugLog('not a projectorria mail');
 		$posEndMsg=strpos($body,"\r\n\r\n\r\n");
 		if ($posEndMsg) {
 		  $msg=substr($body,0,$posEndMsg);
-		  debugLog("<br/>***** $msg *****");
 		}
 		// Sender
 		$sender=$mail->fromAddress;
