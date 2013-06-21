@@ -65,10 +65,11 @@ class ProjectPlanningElement extends PlanningElement {
     "plannedDuration"=>"readonly",
     "realDuration"=>"readonly",
     "initialWork"=>"hidden",
-    "plannedWork"=>"readonly",
-    "realWork"=>"readonly",
-    "leftWork"=>"readonly",
-    "assignedWork"=>"readonly"
+    "plannedWork"=>"readonly,noImport",
+    "realWork"=>"readonly,noImport",
+    "leftWork"=>"readonly,noImport",
+    "assignedWork"=>"readonly,noImport",
+    "idPlanningMode"=>"replaced"
   );   
   
   private static $_databaseTableName = 'planningelement';

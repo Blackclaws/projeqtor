@@ -99,7 +99,7 @@ class Mail extends SqlElement {
 // ============================================================================**********
   
   public function save() {
-  	$this->mailBody=substr($this->mailBody,0,4000);
+  	$this->mailBody=substr($this->mailBody,0,65536); // Limit for MySql Text field
   	return parent::save();
   }
 }
