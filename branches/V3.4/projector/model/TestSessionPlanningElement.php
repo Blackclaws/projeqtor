@@ -64,11 +64,12 @@ class TestSessionPlanningElement extends PlanningElement {
     "plannedDuration"=>"readonly",
     "realDuration"=>"readonly",
     "initialWork"=>"hidden",
-    "plannedWork"=>"readonly",
-    "realWork"=>"readonly",
-    "leftWork"=>"readonly",
-    "assignedWork"=>"readonly",
-    "idTestSessionPlanningMode"=>"required,mediumWidth"
+    "plannedWork"=>"readonly,noImport",
+    "realWork"=>"readonly,noImport",
+    "leftWork"=>"readonly,noImport",
+    "assignedWork"=>"readonly,noImport",
+    "idTestSessionPlanningMode"=>"required,mediumWidth",
+    "idPlanningMode"=>"noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';

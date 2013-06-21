@@ -64,11 +64,13 @@ class ActivityPlanningElement extends PlanningElement {
     "plannedDuration"=>"readonly",
     "realDuration"=>"readonly",
     "initialWork"=>"hidden",
-    "plannedWork"=>"readonly",
-    "realWork"=>"readonly",
-    "leftWork"=>"readonly",
-    "assignedWork"=>"readonly",
-    "idActivityPlanningMode"=>"required,mediumWidth"
+    "plannedWork"=>"readonly,noImport",
+    "realWork"=>"readonly,noImport",
+    "leftWork"=>"readonly,noImport",
+    "assignedWork"=>"readonly,noImport",
+    "idActivityPlanningMode"=>"required,mediumWidth",
+    "idPlanningMode"=>"noImport",
+
   );   
   
   private static $_databaseTableName = 'planningelement';

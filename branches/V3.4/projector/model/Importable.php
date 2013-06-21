@@ -44,7 +44,7 @@ class Importable extends SqlElement {
   // ============================================================================**********
   // MISCELLANOUS FUNCTIONS
   // ============================================================================**********
-        public static function import($fileName, $class){
+  public static function import($fileName, $class){
             require_once '../external/XLSXReader.php';
             $fileType=$_REQUEST['fileType'];              
             $extension=substr(strrchr($fileName,'.'),1) ;
@@ -103,25 +103,25 @@ class Importable extends SqlElement {
             $captionObjectArray=array();
             $objectArray=array();
             $titleObject=array();
+            $noImport=array();
             $idArray=array();
             foreach ($obj as $fld=>$val) {
                     if (is_object($val)) {
                             $objectArray[$fld]=$val;
                             foreach ($val as $subfld=>$subval){
                                     $capt=$val->getColCaption($subfld);
-                                    if ($subfld!='id' and substr($capt,0,1)!='[') {
+                                    if ($subfld!='id' and substr($capt,0,1)!='[' and ! $val->isAttributeSetToField($subfld, 'noImport')) {
                                             $captionArray[$capt]=$subfld;
                                             $captionObjectArray[$capt]=$fld;
                                     }
                             }
                     } else {
                             $capt=$obj->getColCaption($fld);
-                            if (substr($capt,0,1)!='[') {
+                            if (substr($capt,0,1)!='[' and ! $obj->isAttributeSetToField($fld, 'noImport') ) {
                                     $captionArray[$capt]=$fld;
                             }
                     }
             }
- 
             switch($extension){
                 case "csv":
                     $data=Importable::importCSV($fileName);
@@ -151,10 +151,12 @@ class Importable extends SqlElement {
                             $title[$idx]=str_replace(chr(13),'',$title[$idx]);
                             $title[$idx]=str_replace(chr(10),'',$title[$idx]);
                             $color="#A0A0A0";
+                            $colorNoImport="#A0A0FF";
                             $colCaption=$title[$idx];
                             $testTitle=str_replace(' ', '', $title[$idx]);
                             $testIdTitle='id'.ucfirst($testTitle);
                             $testCaption=$title[$idx];
+                            $testIdClassTitle='id'.$class.ucfirst($testTitle);
                             if (property_exists($obj,$testTitle)) { // Title is directly field id
                                     $title[$idx]=$testTitle;
                                     $color="#000000";
@@ -177,19 +179,41 @@ class Importable extends SqlElement {
                                     }
                             } else {
                                     foreach ($objectArray as $fld=>$subObj) {
-                                            if (property_exists($subObj,$testTitle)) { // Title is directly field id
-                                                    $title[$idx]=$testTitle;
-                                                    $color="#000000";
-                                                    $titleObject[$idx]=$fld;
-                                                    $colCaption=$obj->getColCaption($title[$idx]);
-                                            } else if (property_exists($subObj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
-                                                    $title[$idx]=$testIdTitle;
-                                                    $idArray[$idx]=true;
-                                                    $color="#000000";
-                                                    $titleObject[$idx]=$fld;
-                                                    $colCaption=$obj->getColCaption($title[$idx]);
-                                            }
+                                      if (property_exists($subObj,$testTitle)) { // Title is directly field id
+                                        $title[$idx]=$testTitle;
+                                        $color="#000000";
+                                        $titleObject[$idx]=$fld;
+                                        $colCaption=$subObj->getColCaption($title[$idx]);                                       
+                                      } else if (property_exists($subObj,$testIdTitle)) { // Title is field id withoud the 'id' (for external reference)
+                                        $title[$idx]=$testIdTitle;
+                                        $idArray[$idx]=true;
+                                        $color="#000000";
+                                        $titleObject[$idx]=$fld;
+                                        $colCaption=$subObj->getColCaption($title[$idx]);
+                                      } else if (array_key_exists($testCaption,$captionArray) or array_key_exists(strtolower($testCaption),$captionArray)) {                                   	
+		                                    $color="#000000";
+		                                    $colCaption=$testCaption;
+		                                    if (array_key_exists(strtolower($testCaption),$captionArray)) {
+		                                    	$testCaption=strtolower($testCaption);
+		                                    }
+		                                    $title[$idx]=$captionArray[$testCaption];
+		                                    if (isset($captionObjectArray[$testCaption])) {
+		                                      $titleObject[$idx]=$captionObjectArray[$testCaption];
+		                                    }
+                                      } 
                                     }
+                            }
+                            if (isset($titleObject[$idx]) and class_exists($titleObject[$idx]) ) {
+                            	$subObj=new $titleObject[$idx];
+                              if ($subObj->isAttributeSetToField($title[$idx], 'noImport')) { 
+                              	$color=$colorNoImport;
+                                $noImport[$idx]=true;
+                              }
+                            } else {
+                              if ($obj->isAttributeSetToField($testIdTitle, 'noImport')) { 
+                              	$color=$colorNoImport;
+                                $noImport[$idx]=true;
+                              }
                             }
                             $htmlResult.= '<TH class="messageHeader" style="color:' . $color . ';border:1px solid black;background-color: #DDDDDD">' . $colCaption . "</TH>";
                     }
@@ -216,6 +240,10 @@ class Importable extends SqlElement {
                     $forceInsert = (!$obj->id and $id and !Sql::isPgsql()) ? true : false;
                     self::$cptTotal+=1;
                     foreach ($fields as $idx => $field) {
+                    	  if (isset($noImport[$idx])) {
+                    	    $htmlResult.= '<td class="messageData" style="color:'.$colorNoImport.';border:1px solid black;">' . htmlEncode($field) . '</td>';
+                          continue;
+                    	  }
                         if (isset($titleObject[$idx])) {
                             $subClass = $titleObject[$idx];
                             $subobj = new $subClass();
