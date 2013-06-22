@@ -1397,7 +1397,9 @@ function drawNotesFromObject($obj, $refresh=false) {
 			}
 			echo '</tr></table>';
 			echo '</td>';
-			echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/><i>' . htmlFormatDateTime($updateDate) . '</i></td>';
+			echo '<td class="noteData">' . htmlFormatDateTime($creationDate) . '<br/>';
+			if ($note->fromEmail) {echo '<b>'.i18n('noteFromEmail').'</b>';}
+			echo '<i>' . htmlFormatDateTime($updateDate) . '</i></td>';
 			echo '<td class="noteData">' . $userName . '</td>';
 			echo '</tr>';
 		}

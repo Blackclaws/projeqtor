@@ -916,6 +916,9 @@ abstract class SqlElement {
         $newObj->idStatus=$revert[0];
     	} else {
     		$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
+    		if (! $st or ! $st->id) {
+    			errorLog("Error : several on no status exist with isCopyStatus=1");
+    		}
         $newObj->idStatus=$st->id;
     	}
     	// TODO : define a new status "copied"
@@ -984,6 +987,9 @@ abstract class SqlElement {
     }
     if (get_class($this)=='User') {
     	$newObj->name=i18n('copiedFrom') . ' ' . $newObj->name;
+    }
+    if (property_exists($newObj,"isCopyStatus")) {
+      $newObj->isCopyStatus=0;
     }
     $result=$newObj->saveSqlElement();
     if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) { 
@@ -1065,6 +1071,9 @@ abstract class SqlElement {
     }
     if (property_exists($newObj,"idStatus")) {
       $st=SqlElement::getSingleSqlElementFromCriteria('Status', array('isCopyStatus'=>'1'));
+      if (! $st or ! $st->id) {
+          errorLog("Error : several on no status exist with isCopyStatus=1");
+      }      
       $newObj->idStatus=$st->id;
     }
     if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
@@ -1145,17 +1154,19 @@ abstract class SqlElement {
       $attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
       foreach ($attachements as $attachement) {
       	$fromdir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
-        $attachement->id=null;
-        $attachement->refType=get_class($newObj);
-        $attachement->refId=$newObj->id;
-        $attachement->save();
-        $todir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
-        if (! file_exists($todir)) {
-          mkdir($todir);
-        }
-        copy($fromdir.$attachement->fileName, $todir.$attachement->fileName);
-        $attachement->subDirectory=str_replace($attachementDirectory,'${attachementDirectory}',$todir);
-        $attachement->save();
+      	if (file_exists($fromdir.$attachement->fileName)) {
+	        $attachement->id=null;
+	        $attachement->refType=get_class($newObj);
+	        $attachement->refId=$newObj->id;
+	        $attachement->save();
+	        $todir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
+	        if (! file_exists($todir)) {
+	          mkdir($todir);
+	        }
+	        copy($fromdir.$attachement->fileName, $todir.$attachement->fileName);
+	        $attachement->subDirectory=str_replace($attachementDirectory,'${attachementDirectory}',$todir);
+	        $attachement->save();
+      	}
       }
     }
     $newObj->_copyResult=$returnValue; 
@@ -2221,7 +2232,7 @@ abstract class SqlElement {
   	// 
     $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
     if ($right!='YES') { // Manage Exceptions
-	    if (get_class($this)=='Alert') {
+	    if (get_class($this)=='Alert' or get_class($this)=='Mail') {
 	    	$right='YES';
 	    } else if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
 	    	$right='YES';

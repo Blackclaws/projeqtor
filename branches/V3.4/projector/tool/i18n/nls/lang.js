@@ -1666,6 +1666,7 @@ helpGanttPlanningPrintOldStyle: "print Gantt in old style if you face errors in 
 helpPreserveUploadedFileName: "during dowload is the file provided with uploaded file name (Yes) or with formatter version name (No) ?",
 helpRealWorkOnlyForResponsible: "only responsible can enter some real work on ticket",
 labelMultipleMode: "Multiple mode",
+noteFromEmail: "Note received from email",
 paramCronCheckEmails: "email input check cron delay (in seconds)",
 paramCronCheckEmailsHost: "IMAP host to check email input",
 paramCronCheckEmailsPassword: "IMAP password to check email input",

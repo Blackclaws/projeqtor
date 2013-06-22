@@ -445,8 +445,7 @@ class Cron {
   }
   
   
-  public static function checkEmails() {
-debugLog("checkEmails");
+  public static function checkEmails() {	
   	self::init();
     global $globalCronMode, $globalCatchErrors;
     $globalCronMode=true;     
@@ -454,23 +453,22 @@ debugLog("checkEmails");
     require_once("../model/ImapMailbox.php"); // Imap management Class
 		
 		// IMAP must be enabled in Google Mail Settings
-		define('EMAIL_EMAIL', Parameter::getGlobalParameter('cronCheckEmailsUser'));
-		define('EMAIL_PASSWORD', Parameter::getGlobalParameter('cronCheckEmailsPassword'));
-		define('EMAIL_ATTACHMENTS_DIR', dirname(__FILE__) . '/../files/attach');
-		define('EMAIL_HOST','{imap.gmail.com:993/imap/ssl}INBOX');
-		if (! EMAIL_HOST) {
-			debugLog("IMAP connction string not defined");
+		$emailEmail=Parameter::getGlobalParameter('cronCheckEmailsUser');
+		$emailPassword=Parameter::getGlobalParameter('cronCheckEmailsPassword');
+		$emailAttachmentsDir=dirname(__FILE__) . '/../files/attach';
+		$emailHost='{imap.gmail.com:993/imap/ssl}INBOX';
+		if (! $emailHost) {
+			traceLog("IMAP connection string not defined");
 			return;
 		}
-		$mailbox = new ImapMailbox(EMAIL_HOST, EMAIL_EMAIL, EMAIL_PASSWORD, EMAIL_ATTACHMENTS_DIR, 'utf-8');
+		$mailbox = new ImapMailbox($emailHost, $emailEmail, $emailPassword, $emailAttachmentsDir, 'utf-8');
 		$mails = array();
 		
 		// Get some mail
 		$mailsIds = $mailbox->searchMailBox('UNSEEN UNDELETED');
 		if(!$mailsIds) {
-		  die('Mailbox is empty');
+		  traceLog('Mailbox is empty');
 		}
-		debugLog("Number of unread mails = ".count($mailsIds));
 		
 		$mailId = reset($mailsIds);
 		$mail = $mailbox->getMail($mailId);
@@ -478,16 +476,10 @@ debugLog("checkEmails");
 		
 		$body=$mail->textPlain;
 		$bodyHtml=$mail->textHtml;
-debugLog("***************************************************");		
-debugLog($body);
-debugLog("***************************************************");
-debugLog($bodyHtml);
-debugLog("***************************************************");
 		$class=null;
 		$id=null;
 		$msg=null;
-		$senderId=null;
-debugLog('look for class');		
+		$senderId=null;	
 		// Class and Id of object
 		$posClass=strpos($body,'directAccess=true&objectClass=');
 		if ($posClass) { // It is a ProjeQtor mail
@@ -496,8 +488,7 @@ debugLog('look for class');
 		  $class=substr($body,$posClass+30,$posId-$posClass-30);
 		  $id=substr($body,$posId+10,$posEnd-$posId-10);
 		  debugLog("<br/>***** $class #$id *****");
-		} else {
-debugLog('not a projectorria mail');   			
+		} else {		
 			return;
 		}
 		// Message
@@ -515,6 +506,9 @@ debugLog('not a projectorria mail');
 		  $senderId=$usrList[0]->id;
 		}
 		
+		if (! $senderId) {
+			errorLog("Email message received from '$sender', not recognized as resource or user or contact : message not stored as note to avoid spamming");
+		}
 		$obj=new $class($id);
 		if ($obj->id) {
 		  $note=new Note();
@@ -524,12 +518,12 @@ debugLog('not a projectorria mail');
 		  $note->note=$msg;
 		  $note->idUser=$senderId;
 		  $note->creationDate=date('Y-m-d H:i:s');
+		  $note->fromEmail=1;
 		  $note->save();
 		  $mailbox->markMailAsRead($mailId);
 		} else {
 		  $mailbox->markMailAsUnread($mailId);
 		}
-		debugLog("===========================================================================");
   }
 }
 ?>

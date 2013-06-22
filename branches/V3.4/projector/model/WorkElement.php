@@ -252,9 +252,10 @@ class WorkElement extends SqlElement {
 			}
 			if ($this->ongoing) {
 				if ($this->idUser == $user->id) {
-					$days = workDayDiffDates($this->ongoingStartDateTime, date('Y-m-d H:i'));
-					if ($days > 0) {
-						$result .= i18n('workStartedSince', array($days));
+					//$days = workDayDiffDates($this->ongoingStartDateTime, date('Y-m-d H:i'));
+					if (substr($this->ongoingStartDateTime,0,10) != date('Y-m-d') ) {
+						//$result .= i18n('workStartedSince', array($days));
+						$result .= i18n('workStartedAt', array(substr($this->ongoingStartDateTime, 11, 5).' ('.htmlFormatDate(substr($this->ongoingStartDateTime,0,10)).')'));
 					} else {
 						$result .= i18n('workStartedAt', array(substr($this->ongoingStartDateTime, 11, 5)));
 					}

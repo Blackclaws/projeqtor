@@ -612,7 +612,10 @@ function sendMail($to, $title, $message, $object=null, $headers=null, $sender=nu
   $mail->mailBody=$message;
   $mail->mailStatus='WAIT';
   $mail->idle='0';
-  $mail->save();  
+  $resMail=$mail->save();
+  if (stripos($resMail,'id="lastOperationStatus" value="ERROR"')>0 )  {
+  	errorLog("Error storing email in table : ".$resMail);
+  }
   // Send then mail
   if (!$headers) {	
   	$headers  = 'MIME-Version: 1.0' . $eol;

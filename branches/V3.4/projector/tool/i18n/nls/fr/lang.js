@@ -1666,6 +1666,7 @@ helpGanttPlanningPrintOldStyle: "imprimer le Gantt avec l'ancien format d'impres
 helpPreserveUploadedFileName: "lors du téléchargement le fichier est-il restitué avec son nom initial (Oui) ou avec le nom de version formatté (Non) ?",
 helpRealWorkOnlyForResponsible: "seul le responsable peut saisir du travail réel sur un ticket",
 labelMultipleMode: "Mode multiple",
+noteFromEmail: "Note reçue par email",
 paramCronCheckEmails: "temporisation des emails entrants",
 paramCronCheckEmailsHost: "serveur IMAP des emails entrants",
 paramCronCheckEmailsPassword: "mot de passe IMAP des emails entrants",
