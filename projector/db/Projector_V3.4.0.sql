@@ -18,3 +18,5 @@ ALTER TABLE `${prefix}expensedetailtype` ADD COLUMN `description` varchar(4000);
 ALTER TABLE `${prefix}contexttype` ADD COLUMN `description` varchar(4000);
 
 ALTER TABLE `${prefix}mail` CHANGE mailBody mailBody text;
+
+ALTER TABLE `${prefix}note` ADD COLUMN `fromEmail` int(1) unsigned DEFAULT '0';

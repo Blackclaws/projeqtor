@@ -69,7 +69,7 @@ class ActivityPlanningElement extends PlanningElement {
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idActivityPlanningMode"=>"required,mediumWidth",
-    "idPlanningMode"=>"noImport",
+    "idPlanningMode"=>"hidden,noIxmport",
 
   );   
   

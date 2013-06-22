@@ -13,6 +13,7 @@ class Note extends SqlElement {
   public $note;
   public $idPrivacy;
   public $idTeam;
+  public $fromEmail;
   
   //public $_noHistory=true; // Will never save history for this object
   
