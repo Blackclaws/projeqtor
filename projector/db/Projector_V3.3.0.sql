@@ -18,7 +18,7 @@ CREATE TABLE `${prefix}today` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX todayUSer ON `${prefix}today` (idUser);
+CREATE INDEX todayUser ON `${prefix}today` (idUser);
 
 CREATE TABLE `${prefix}todayParameter` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
