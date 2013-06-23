@@ -3915,7 +3915,7 @@ function unlockRequirement() {
   return true;
 }
 
-function loadDialog(dialogDiv,callBack) {
+function loadDialog(dialogDiv,callBack, autoShow) {
   if (! dijit.byId(dialogDiv) ) {
 	  dialog = new dijit.Dialog({
 	  id: dialogDiv,
@@ -3933,7 +3933,7 @@ function loadDialog(dialogDiv,callBack) {
 	  var contentWidget = dijit.byId(dialogDiv);
 	  if (! contentWidget) {return;}
 	  contentWidget.set('content',data);
-	  //contentWidget.show();
+	  if (autoShow) { contentWidget.show();}
 	  hideWait();
 	  if (callBack) {
 	    setTimeout(callBack,10);

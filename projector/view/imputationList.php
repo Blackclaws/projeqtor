@@ -134,8 +134,8 @@ $rangeValue=$currentYear . $currentWeek;
           title="<?php echo i18n('buttonSaveImputation');?>"
           iconClass="dijitEditorIcon dijitEditorIconSave" >
             <script type="dojo/connect" event="onClick" args="evt">
-              formChangeInProgress=false; 
-              submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
+              this.focus();
+              setTimeout('saveImputation()',10);;
             </script>
         </button>
         <button title="<?php echo i18n('print')?>"  

@@ -754,6 +754,10 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 		echo '</NOBR></TD>';
 
 		$curDate=$startDate;
+		$nbFutureDays=Parameter::getGlobalParameter('maxDaysToBookWork');
+		$maxDateFuture=date('Y-m-d',strtotime("+".$nbFutureDays." days", strtotime($today)));
+		echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
+		echo '<input type="hidden" value="'.$maxDateFuture.'" />';
 		for ($i=1; $i<=$nbDays; $i++) {
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
 			if ($today==$curDate) {
@@ -770,6 +774,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 				echo ' value="' . $colSum[$i] . '" ';
 				echo ' >';
 				echo '</div>';
+				echo '<input type="hidden" id="colIsFuture_' . $i . '" value="'.(($curDate>$maxDateFuture)?1:0).'" />';
 			} else {
 				echo $colSum[$i];
 			}

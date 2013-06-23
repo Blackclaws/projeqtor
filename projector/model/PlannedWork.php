@@ -177,7 +177,7 @@ class PlannedWork extends GeneralWork {
       } else if ($profile=="ALAP") { // As late as possible (before end date)
           $startPlan=$plan->validatedEndDate;
           $endPlan=$startDate;
-          $step=-1;
+          $step=-1;         
       } else if ($profile=="FLOAT") { // Floating milestone
         $startPlan=$startDate;
         $endPlan=null;
@@ -239,10 +239,28 @@ class PlannedWork extends GeneralWork {
         }
       } else {        
         if (! $plan->realStartDate) {
-          $plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
+          //$plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
+        	if ($plan->plannedWork==0) {
+	        	if ($plan->validatedStartDate) {
+	            $plan->plannedStartDate=$plan->validatedStartDate;
+	          } else if ($plan->initialStartDate) {
+	            $plan->plannedStartDate=$plan->initialStartDate;
+	          } else {
+	            $plan->plannedStartDate=date('Y-m-d');
+	          }
+        	}
         }
         if (! $plan->realEndDate) {
-          $plan->plannedEndDate=($plan->plannedWork==0)?$plan->validatedEndDate:$plan->plannedEndDate;
+          //$plan->plannedEndDate=($plan->plannedWork==0)?$plan->validatedEndDate:$plan->plannedEndDate;
+        	if ($plan->plannedWork==0) {
+	          if ($plan->validatedEndDate) {
+	            $plan->plannedEndDate=$plan->validatedEndDate;
+	          } else if ($plan->initialEndDate) {
+	            $plan->plannedEndDate=$plan->initialEndDate;
+	          } else {
+	            $plan->plannedEndDate=date('Y-m-d');
+	          }
+          }        	
         }
         if ($profile=="FDUR") {
           if (! $plan->realStartDate) {

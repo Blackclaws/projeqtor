@@ -238,9 +238,9 @@ class ImapMailbox {
          */
         public function getMail($mailId) {
                 $head = imap_rfc822_parse_headers(imap_fetchheader($this->getImapStream(), $mailId, FT_UID));
-
                 $mail = new IncomingMail();
                 $mail->id = $mailId;
+                if (! $head) return $mail;
                 $mail->date = date('Y-m-d H:i:s', isset($head->date) ? strtotime($head->date) : time());
                 $mail->subject = $this->decodeMimeStr($head->subject);
                 $mail->fromName = isset($head->from[0]->personal) ? $this->decodeMimeStr($head->from[0]->personal) : null;

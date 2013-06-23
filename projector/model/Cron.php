@@ -262,34 +262,40 @@ class Cron {
       }
       self::setRunningFlag();
       // CheckDates : automatically raise alerts based on dates
-      $cronCheckDates-=$cronSleepTime;
-      if ($cronCheckDates<=0) {
-      	try { 
-          self::checkDates();
-      	} catch (Exception $e) {
-      		traceLog("Cron::run() - Error on checkDates()");
-      	}
-        $cronCheckDates=Cron::getCheckDates();
+      if ($cronCheckDates>0) {
+	      $cronCheckDates-=$cronSleepTime;
+	      if ($cronCheckDates<=0) {
+	      	try { 
+	          self::checkDates();
+	      	} catch (Exception $e) {
+	      		traceLog("Cron::run() - Error on checkDates()");
+	      	}
+	        $cronCheckDates=Cron::getCheckDates();
+	      }
       }
       // CheckImport : automatically import some files in import directory
-      $cronCheckImport-=$cronSleepTime;
-      if ($cronCheckImport<=0) {
-      	try { 
-          self::checkImport();
-      	} catch (Exception $e) {
-          traceLog("Cron::run() - Error on checkImport()");
-        }
-        $cronCheckImport=Cron::getCheckImport();
+      if ($cronCheckImport>0) {
+	      $cronCheckImport-=$cronSleepTime;
+	      if ($cronCheckImport<=0) {
+	      	try { 
+	          self::checkImport();
+	      	} catch (Exception $e) {
+	          traceLog("Cron::run() - Error on checkImport()");
+	        }
+	        $cronCheckImport=Cron::getCheckImport();
+	      }
       }
       // CheckEmails : automatically import notes from Reply to mails
-      $cronCheckEmails-=$cronSleepTime;
-      if ($cronCheckEmails<=0) {
-        try { 
-          self::checkEmails();
-        } catch (Exception $e) {
-          traceLog("Cron::run() - Error on checkEmails()");
-        }
-        $cronCheckEmails=Cron::getCheckEmails();
+      if ($cronCheckEmails>0) {
+	      $cronCheckEmails-=$cronSleepTime;
+	      if ($cronCheckEmails<=0) {
+	        try { 
+	          self::checkEmails();
+	        } catch (Exception $e) {
+	          traceLog("Cron::run() - Error on checkEmails()");
+	        }
+	        $cronCheckEmails=Cron::getCheckEmails();
+	      }
       }
       // Sleep to next check
       sleep($cronSleepTime);
@@ -468,6 +474,7 @@ class Cron {
 		$mailsIds = $mailbox->searchMailBox('UNSEEN UNDELETED');
 		if(!$mailsIds) {
 		  traceLog('Mailbox is empty');
+		  return;
 		}
 		
 		$mailId = reset($mailsIds);
@@ -487,7 +494,6 @@ class Cron {
 		  $posEnd=strpos($body,'>',$posId);
 		  $class=substr($body,$posClass+30,$posId-$posClass-30);
 		  $id=substr($body,$posId+10,$posEnd-$posId-10);
-		  debugLog("<br/>***** $class #$id *****");
 		} else {		
 			return;
 		}

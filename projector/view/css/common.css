@@ -546,13 +546,13 @@ table.dojoDndAvatar {
 .dijitTextBoxDisabled,.dijitComboBoxDisabled,.dijitSpinnerDisabled,.dijitTextAreaDisabled
   {
   color: grey;
-  background: #555 url(images/noimage.gif) no-repeat;
+  background: #555 url(images/noimage.png) no-repeat;
   border:0px solid red;
 }
 .dj_safari .dijitTextBoxDisabled,.dj_safari .dijitComboBoxDisabled,.dj_safari .dijitSpinnerDisabled,.dj_safari .dijitTextAreaDisabled
   {
   color: #eee;
-  background: #555 url(images/noimage.gif) no-repeat;
+  background: #555 url(images/noimage.png) no-repeat;
   border:0px solid red;
 }
 .dijitComboBox .dijitInputField {

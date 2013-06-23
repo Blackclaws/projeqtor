@@ -275,3 +275,26 @@ function checkCapacity() {
 	}  
   }
 }
+
+function saveImputation() {
+  var futureInput=false;	
+  for (colId=1; colId<=7; colId++) {
+	valSum=dijit.byId('colSumWork_' + colId).get("value");
+	isFuture=dojo.byId('colIsFuture_' + colId).value;
+	if (isFuture=='1' && valSum>0) {
+	  futureInput=true;
+	}
+  }	
+  if (futureInput) {
+	valid=function() {
+      formChangeInProgress=false; 
+      submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
+    };
+    nbDays=dojo.byId('nbFutureDays').value;
+    var msg=i18n('msgRealWorkInTheFuture',new Array(nbDays));
+	showConfirm(msg,valid);
+  } else {
+    formChangeInProgress=false; 
+    submitForm("../tool/saveImputation.php","resultDiv", "listForm", true);
+  }
+}
