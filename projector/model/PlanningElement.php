@@ -218,6 +218,13 @@ class PlanningElement extends SqlElement {
           $this->progress=0;
           $this->expectedProgress=0;
         }
+        if (property_exists($refObj, 'handled') and property_exists($refObj, 'handledDate')) {
+        	if ($refObj->handled) {
+        		$this->realStartDate=$refObj->handledDate;
+        	} else {
+        		$this->realStartDate=null;
+        	}
+        }
       }
     } else {
     	$this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
