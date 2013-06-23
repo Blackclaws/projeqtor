@@ -12,7 +12,6 @@ $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
   $isIE=$_REQUEST['isIE'];
 } 
-debugLog("isIE=$isIE");
 if ($isIE and $isIE<=8) {?>
 <html>
 <head>   

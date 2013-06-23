@@ -3017,8 +3017,7 @@ abstract class SqlElement {
   }
   
   public function setReference($force=false, $old=null) {
-//scriptLog('SqlElement::setReference');
-//debugLog(get_class($this).' #'.$this->id);
+scriptLog('SqlElement::setReference');
     if (! property_exists($this,'reference')) {
       return;
     }
@@ -3073,7 +3072,6 @@ abstract class SqlElement {
   		$num=$numMax;
   	}  	
   	$this->reference=$prefix.$num;
-//debugLog('  => ref='.$this->reference);
   	if (get_class($this)=='Document' and property_exists($this, 'documentReference')) {
   		$fmtDocument=Parameter::getGlobalParameter('documentReferenceFormat');
   		$docRef=str_replace(array('{PROJ}',              '{TYPE}',      '{NUM}', '{NAME}'), 
@@ -3083,7 +3081,6 @@ abstract class SqlElement {
   	}
   	if ($force) {
       $this->updateSqlElement();
-//debugLog('  => update');
     }
     $mutex->release();
     

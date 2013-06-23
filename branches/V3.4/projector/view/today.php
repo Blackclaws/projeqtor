@@ -348,8 +348,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
-  	global $cptMax, $print;
-  	global $collapsedList;
+  	global $cptMax, $print, $cptDisplayId, $collapsedList;
   	$user=$_SESSION['user'];
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
     $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
@@ -382,7 +381,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $session= new TestSession();
     $listSession=$session->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listSession);   
-    $cptDisplayId=0;
     if (! $print or !array_key_exists($divName, $collapsedList)) {
     if (! $print) {
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
@@ -500,7 +498,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 	       title="<?php echo i18n('menuParameter');?>"
 	       iconClass="iconParameter16" >
 	        <script type="dojo/connect" event="onClick" args="evt">
-          loadDialog('dialogTodayParameters');
+          loadDialog('dialogTodayParameters', null, true);
         </script>
 	    </button>
       <button id="todayPrintButton" dojoType="dijit.form.Button" showlabel="false"

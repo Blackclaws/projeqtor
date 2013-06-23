@@ -625,11 +625,11 @@ class User extends SqlElement {
 			try { 
 	    	$ldapCnx=ldap_connect($paramLdap_host, $paramLdap_port);
 			} catch (Exception $e) {
-          traceLog("authenticate - LDAP error : " . $e->getMessage() );
+          traceLog("authenticate - LDAP connection error : " . $e->getMessage() );
           return "ldap";
 	    }
 	    if (! $ldapCnx) {
-        traceLog("authenticate - Mode LDAP - LdapConnectError");        
+        traceLog("authenticate - LDAP connection error : not identified error");        
         return "ldap";
       }
 			@ldap_set_option($ldapCnx, LDAP_OPT_PROTOCOL_VERSION, $paramLdap_version);
@@ -646,7 +646,7 @@ class User extends SqlElement {
         return "ldap";
       } 
 			if (! $bind) {
-	      traceLog("authenticate - LdapBind Error" );
+	      traceLog("authenticate - LdapBind Error : not identified error" );
 				return "ldap";
 			}
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');

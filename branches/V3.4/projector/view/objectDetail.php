@@ -538,6 +538,26 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo ' class="display" ';
 				echo ' readonly tabindex="-1" style="width: ' . $smallWidth . 'px;" ' ;
 				echo ' value="' . htmlEncode($val) . '" ></span>';
+			  $alertLevelArray=$obj->getAlertLevel(true);
+        $alertLevel=$alertLevelArray['level'];
+        $colorAlert="background-color:#FFFFFF";
+        if ($alertLevel!='NONE') {
+          if ($alertLevel=='ALERT') {
+            $colorAlert='background-color:#FFAAAA;';
+          }   else if ($alertLevel=='WARNING') {
+            $colorAlert='background-color:#FFFFAA;';         
+          }
+          echo '<span style="width:20px; position: absolute; left: 5px;" id="alertId" >';
+          if ($alertLevel=='ALERT') {
+            echo '<image src="../view/css/images/iconAlert32.png" />';
+          } else {
+          	echo '<image src="../view/css/images/iconDecision32.png" />';
+          }
+          echo '</span>';
+          echo '<div dojoType="dijit.Tooltip" connectId="alertId" position="below">';
+          echo $alertLevelArray['description'];
+          echo '</div>';
+        }
 			} else if ($col=='reference') {
 				// Draw reference (only visible) ============================================= ID
 				// id is only visible

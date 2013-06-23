@@ -332,6 +332,7 @@ class Parameter extends SqlElement {
       	                       'imputationUnit'=>'list',
       	                       'workUnit'=>'list',
       	                       'dayTime'=>'number',
+      	                       'maxDaysToBookWork'=>'number',
       	                     'sectionPlanning'=>'section',
                                'displayResourcePlan'=>'list',
       	                       'maxProjectsToDisplay'=>'number',

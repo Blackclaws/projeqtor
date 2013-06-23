@@ -342,13 +342,42 @@ class PlanningElement extends SqlElement {
         $subRes=$refObj->saveForced(true);
       }
     }
-    // remove existing planningelement (if any)
+    // remove existing planned work (if any)
     if ($this->idle) {
        $pw=new PlannedWork();
        $crit="refType=".Sql::str($this->refType)." and refId=".$this->refId;
        $pw->purge($crit);
     }
-  
+    
+    //
+    if ($old->realWork==0 and $this->realWork!=0) {
+      $refType=$this->refType;
+      $refObj=new $refType($this->refId);
+      if (property_exists($refObj, 'idStatus')) {
+    	  $st=new Status($refObj->idStatus);
+    	  if (!$st->setHandledStatus) { // if current stauts is not handled, move to first allowed handled status (fitting workflow)
+    	 	  $typeClass=$refType.'Type';
+    	 	  $typeField='id'.$typeClass;
+    	  	$type=new $typeClass($refObj->$typeField);
+    	  	$user=$_SESSION['user'];
+    	 	  $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->idProfile, 'allowed'=>'1');
+    	 	  $ws=new WorkflowStatus();
+    	 	  $possibleStatus=$ws->getSqlElementsFromCriteria($crit);
+    	 	  $in="(0";
+    	 	  foreach ($possibleStatus as $ws) {
+    	 	  	$in.=",".$ws->idStatusTo;
+    	 	  }
+    	 	  $in.=")";
+    	 	  $st=new Status();
+    	 	  $stList=$st->getSqlElementsFromCriteria(null, null, " setHandledStatus=1 and id in ".$in, 'sortOrder asc');
+    	 	  if (count($stList)>0) {
+    	 	  	$refObj->idStatus=$stList[0]->id;
+    	 	  	$refObj->save();
+    	 	  }
+    	  }
+      }
+    }
+    
     return $result;
   }
   
