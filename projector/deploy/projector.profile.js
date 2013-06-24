@@ -41,6 +41,8 @@ dependencies = {
 			    "dojox.image.Lightbox",
 			    "dojox.form.FileInput",
 				"dojox.form.Uploader",
+				"dojox.form.uploader.plugins.IFrame",
+				"dojox.form.uploader.plugins.Flash",
 				"dojox.form.uploader.FileList",
 			    "dojox.form.PasswordValidator",
 			    "dojo.store.DataStore",
