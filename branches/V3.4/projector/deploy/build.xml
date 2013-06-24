@@ -207,6 +207,10 @@
 		  	<exclude name="LICENSE/*.*"/>
 		  	<exclude name="data/*.js"/>
 		  	<exclude name="form/*.js"/>
+		  	<exclude name="form/nls/*.js"/>
+		  	<exclude name="form/nls/*/*.js"/>
+		  	<exclude name="form/uploader/*.js"/>
+		  	<exclude name="form/uploader/plugin/*.js"/>
 		    <exclude name="grid/*.js"/>
 		  	<exclude name="fx/*.js"/>
 		  	<exclude name="image/*.js"/>
