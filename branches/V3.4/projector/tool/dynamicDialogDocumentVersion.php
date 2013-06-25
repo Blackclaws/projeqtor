@@ -7,7 +7,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
 ?>
   <form id='documentVersionForm' name='documentVersionForm' jsId='documentVersionForm' 
   ENCTYPE="multipart/form-data" method=POST
-  <?php if ($isIE and $isIE<9) {?>
+  <?php if ($isIE and $isIE<=9) {?>
     action="../tool/saveDocumentVersion.php?isIE=<?php echo $isIE;?>"
     target="documentVersionPost"
     onSubmit="return saveDocumentVersion();"
@@ -31,7 +31,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
         </td>
         <td>
          <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />     
-         <?php  if ($isIE and $isIE<9) {?>
+         <?php  if ($isIE and $isIE<=9) {?>
          <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
           dojoType="dojox.form.FileInput" type="file" 
           name="documentVersionFile" id="documentVersionFile" 
@@ -206,7 +206,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
             <?php echo i18n("buttonCancel");?>
           </button>
           <button id="submitDocumentVersionUpload" dojoType="dijit.form.Button" type="submit" 
-           <?php if ($isIE and $isIE<9) {?>onclick="saveDocumentVersion();"<?php }?> >
+           <?php if ($isIE and $isIE<=9) {?>onclick="saveDocumentVersion();"<?php }?> >
             <?php echo i18n("buttonOK");?>
           </button>
         </td>
