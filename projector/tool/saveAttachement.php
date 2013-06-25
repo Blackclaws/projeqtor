@@ -13,7 +13,7 @@ $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
   $isIE=$_REQUEST['isIE'];
 } 
-if ($isIE and $isIE<=8) {?>
+if ($isIE and $isIE<=9) {?>
 <html>
 <head>   
 </head>
@@ -132,6 +132,10 @@ $user=$_SESSION['user'];
 Sql::beginTransaction();
 $attachement=new Attachement();
 if (! $error) {
+	if ($refType=="Resource") {
+		// To avoid dupplicate image (if 2 users save picture on same time)
+    $attachement->purge("refType='Resource' and refId=".$refId);
+  }
   $attachement->refId=$refId;
   $attachement->refType=$refType;
   $attachement->idUser=$user->id;
@@ -208,7 +212,7 @@ $jsonReturn='{"file":"'.$attachement->fileName.'",'
  .'"message":"'.str_replace('"',"'",$message).'"}';
 
 
-if ($isIE and $isIE<=8) {
+if ($isIE and $isIE<=9) {
 	echo $message;
   echo '</body>';
   echo '</html>';

@@ -7,7 +7,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
 ?>
   <form id='attachementForm' name='attachementForm' 
   ENCTYPE="multipart/form-data" method="POST"
-<?php if ($isIE and $isIE<9) {?>
+<?php if ($isIE and $isIE<=9) {?>
   action="../tool/saveAttachement.php?isIE=<?php echo $isIE;?>"
   target="resultPost"
   onSubmit="return saveAttachement();"
@@ -25,7 +25,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
           </td>
           <td>
            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />
-          <?php  if ($isIE and $isIE<9) {?>
+          <?php  if ($isIE and $isIE<=9) {?>
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
             dojoType="dojox.form.FileInput" type="file"
             name="attachementFile" id="attachementFile"
@@ -102,7 +102,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
             <?php echo i18n("buttonCancel");?>
           </button>
           <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit"
-          <?php if ($isIE and $isIE<9) {?>onclick="saveAttachement();"<?php }?> >
+          <?php if ($isIE and $isIE<=9) {?>onclick="saveAttachement();"<?php }?> >
             <?php echo i18n("buttonOK");?>
           </button>
         </td>

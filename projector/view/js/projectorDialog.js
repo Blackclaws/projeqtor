@@ -718,7 +718,7 @@ function addAttachement (attachmentType) {
     if (attachmentType=='file') {
       if (dijit.byId("attachementFile")) {
         dijit.byId("attachementFile").reset();
-        if (dojo.isIE && dojo.isIE<=8) {
+        if (dojo.isIE && dojo.isIE<=9) {
           enableWidget('dialogAttachementSubmit');
         } else {
           disableWidget('dialogAttachementSubmit');
@@ -754,7 +754,7 @@ function changeAttachment(list) {
  */
 function saveAttachement() {
 	//disableWidget('dialogAttachementSubmit');
-	if (dojo.isIE && dojo.isIE<=8) {
+	if (dojo.isIE && dojo.isIE<=9) {
 	  //dojo.byId('attachementForm').submit();
 	  showWait();
 	  dijit.byId('dialogAttachement').hide();
@@ -774,7 +774,7 @@ function saveAttachement() {
  * @return void
  */
 function saveAttachementAck(dataArray) {
-	if (dojo.isIE && dojo.isIE<=8) {
+	if (dojo.isIE && dojo.isIE<=9) {
 		resultFrame=document.getElementById("resultPost");
 		resultText=resultPost.document.body.innerHTML;
 		dojo.byId('resultAck').value=resultText;
@@ -1597,7 +1597,7 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
       if (dijit.byId("documentVersionFile")) {
         dijit.byId("documentVersionFile").reset();
-        if (dojo.isIE && dojo.isIE<=8) {
+        if (dojo.isIE && dojo.isIE<=9) {
           enableWidget('dialogDocumentVersionSubmit');
         } else {
           disableWidget('dialogDocumentVersionSubmit');
@@ -1709,7 +1709,7 @@ function changeDocumentVersion(list) {
 */
 function saveDocumentVersion() {
 	//dojo.byId('documentVersionForm').submit();
-	if (dojo.isIE && dojo.isIE<=8) {
+	if (dojo.isIE && dojo.isIE<=9) {
 	  //dojo.byId('documentVersionForm').submit();
 	  showWait();
 	  dijit.byId('dialogDocumentVersion').hide();
@@ -1729,7 +1729,7 @@ function saveDocumentVersion() {
  * @return void
  */
 function saveDocumentVersionAck(dataArray) {
-	if (dojo.isIE && dojo.isIE<=8) {
+	if (dojo.isIE && dojo.isIE<=9) {
 	  resultFrame=document.getElementById("documentVersionPost");
 	  resultText=documentVersionPost.document.body.innerHTML;
 	  dojo.byId('resultAckDocumentVersion').value=resultText;

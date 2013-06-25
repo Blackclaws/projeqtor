@@ -12,7 +12,7 @@ $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
   $isIE=$_REQUEST['isIE'];
 } 
-if ($isIE and $isIE<=8) {?>
+if ($isIE and $isIE<=9) {?>
 <html>
 <head>   
 </head>
@@ -247,7 +247,7 @@ $jsonReturn='{"file":"'.$dv->fileName.'",'
  .'"size":"'.$dv->fileSize.'"  ,'
  .'"message":"'.str_replace('"',"'",$message).'"}';
 
-if ($isIE and $isIE<=8) {
+if ($isIE and $isIE<=9) {
   echo $message;
   echo '</body>';
   echo '</html>';
