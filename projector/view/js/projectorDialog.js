@@ -3920,6 +3920,7 @@ function loadDialog(dialogDiv,callBack, autoShow) {
 	  dialog = new dijit.Dialog({
 	  id: dialogDiv,
       title: i18n(dialogDiv),
+      width: '500px',
 	  content: i18n("loading")
     });
   } else {
@@ -3933,7 +3934,7 @@ function loadDialog(dialogDiv,callBack, autoShow) {
 	  var contentWidget = dijit.byId(dialogDiv);
 	  if (! contentWidget) {return;}
 	  contentWidget.set('content',data);
-	  if (autoShow) { contentWidget.show();}
+	  if (autoShow) { setTimeout("dijit.byId('"+dialogDiv+"').show();",100);}
 	  hideWait();
 	  if (callBack) {
 	    setTimeout(callBack,10);
