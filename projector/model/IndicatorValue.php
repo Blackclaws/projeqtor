@@ -295,9 +295,11 @@ class IndicatorValue extends SqlElement {
     $obj=new $this->refType($this->refId);
     $arrayAlertDest=array();
   	if ($def->mailToUser==0 and $def->mailToResource==0 and $def->mailToProject==0
-    and $def->mailToLeader==0  and $def->mailToContact==0
+    and $def->mailToLeader==0  and $def->mailToContact==0 and $def->mailToAssigned==0
+    and $def->mailToManager==0 and $def->mailToOther
     and $def->alertToUser==0 and $def->alertToResource==0 and $def->alertToProject==0
-    and $def->alertToLeader==0  and $def->alertToContact==0) {
+    and $def->alertToLeader==0  and $def->alertToContact==0 and $def->alertToAssigned==0
+    and $def->alertToManager==0 ) {
       return false; // exit not a status for mail sending (or disabled) 
     }
     $dest="";

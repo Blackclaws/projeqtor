@@ -22,17 +22,26 @@ class IndicatorDefinition extends SqlElement {
   public $codeAlertDelayUnit;
   public $idle;
   public $_col_2_2_SendMail;
+  
+  public $mailToContact;
   public $mailToUser;
   public $mailToResource;
   public $mailToProject;
-  public $mailToContact;
   public $mailToLeader;
+  public $mailToManager;
+  public $mailToAssigned;
+  public $mailToOther;
+  public $otherMail;
+  
   public $_sec_InternalAlert;
   public $alertToUser;
   public $alertToResource;
   public $alertToProject;
   public $alertToContact;
   public $alertToLeader;
+  public $alertToManager;
+  public $alertToAssigned;
+  
   public $_isNameTranslatable = true;
 
   public $_noCopy;
@@ -57,7 +66,9 @@ class IndicatorDefinition extends SqlElement {
                                   "codeIndicator"=>"hidden",
                                   "typeIndicator"=>"hidden",
                                   "codeWarningDelayUnit"=>"hidden",
-                                  "codeAlertDelayUnit"=>"hidden"
+                                  "codeAlertDelayUnit"=>"hidden",
+                                  "mailToOther"=>"nobr",
+                                  "otherMail"=>""
   );  
   
     private static $_colCaptionTransposition = array('idIndicatorable'=>'element',
@@ -68,7 +79,10 @@ class IndicatorDefinition extends SqlElement {
                                                      'alertToResource'=>'mailToResource',
                                                      'alertToProject'=>'mailToProject',
                                                      'alertToContact'=>'mailToContact',
-                                                     'alertToLeader'=>'mailToLeader');
+                                                     'alertToLeader'=>'mailToLeader',
+                                                     'alertToManager'=>'mailToManager',
+                                                     'alertToAssigned'=>'mailToAssigned',
+                                                     'otherMail'=>'email');
   
    /** ==========================================================================
    * Constructor
@@ -141,7 +155,26 @@ class IndicatorDefinition extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-    if ($colName=='idIndicatorable') { 
+        if ($this->mailToOther=='1') {
+      self::$_fieldsAttributes['otherMail']='';
+    } else {
+      self::$_fieldsAttributes['otherMail']='invisible';
+    } 
+    
+    $colScript = parent::getValidationScript($colName);
+
+    if ($colName=="mailToOther") {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= ' var fld = dijit.byId("otherMail").domNode;';
+      $colScript .= '  if (this.checked) { ';
+      $colScript .= '    dojo.style(fld, {visibility:"visible"});';
+      $colScript .= '  } else {';
+      $colScript .= '    dojo.style(fld, {visibility:"hidden"});';
+      $colScript .= '    fld.set("value","");';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } else if ($colName=='idIndicatorable') { 
       $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
       $colScript .= '  dijit.byId("idIndicator").set("value",null);';
       $colScript .= '  dijit.byId("idType").set("value",null);';

@@ -59,3 +59,10 @@ CREATE INDEX periodicmeetingResource ON `${prefix}periodicmeeting` (idResource);
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
 (null,null, 'maxDaysToBookWork', '7');
+
+ALTER TABLE `${prefix}indicatordefinition` ADD COLUMN `mailToAssigned` int(1) unsigned default 0,
+ADD COLUMN `mailToManager` int(1) unsigned default 0,
+ADD COLUMN `otherMail` varchar(4000) DEFAULT NULL,
+ADD COLUMN `alertToAssigned` int(1) unsigned default 0,
+ADD COLUMN `alertToManager` int(1) unsigned default 0;
+  
