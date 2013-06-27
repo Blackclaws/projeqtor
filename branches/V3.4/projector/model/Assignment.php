@@ -30,6 +30,11 @@ class Assignment extends SqlElement {
   public $idle;
   public $billedWork;
   
+  private static $_fieldsAttributes=array("idProject"=>"required", 
+    "idResource"=>"required", 
+    "refType"=>"required", 
+    "refId"=>"required");
+  
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -51,6 +56,14 @@ class Assignment extends SqlElement {
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
+  
+  /** ==========================================================================
+   * Return the specific fieldsAttributes
+   * @return the fieldsAttributes
+   */
+  protected function getStaticFieldsAttributes() {
+    return self::$_fieldsAttributes;
+  }
   
   /**
    * Save object 
