@@ -899,8 +899,28 @@ function finalizeMessageDisplay(destination, validationType) {
           }
           if (dojo.byId(dojo.byId('objectClass').value+'_billLine')) {
               loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
-            }
-          if (lastOperation.value=="insert" && ! validationType) {
+          }
+          var refreshDetailElse=false;
+          if (lastOperation.value=="insert") {
+        	  refreshDetailElse=true;
+          } else {
+        	  if (dijit.byId('idle') && dojo.byId('attachementIdle')) {
+        		  if (dijit.byId('idle').get("value")!=dojo.byId('attachementIdle').value) {
+        			  refreshDetailElse=true;
+        		  }
+        	  }
+        	  if (dijit.byId('idle') && dojo.byId('noteIdle')) {
+        		  if (dijit.byId('idle').get("value")!=dojo.byId('noteIdle').value) {
+        			  refreshDetailElse=true;
+        		  }
+        	  }
+        	  if (dijit.byId('idle') && dojo.byId('billLineIdle')) {
+        		  if (dijit.byId('idle').get("value")!=dojo.byId('billLineIdle').value) {
+        			  refreshDetailElse=true;
+        		  }
+        	  }
+          }
+          if (refreshDetailElse && ! validationType) {
             if (dojo.byId(dojo.byId('objectClass').value+'_attachment')) {
               loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
             }

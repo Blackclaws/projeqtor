@@ -1372,6 +1372,7 @@ function drawNotesFromObject($obj, $refresh=false) {
 	} else {
 		$notes=array();
 	}
+	echo '<input type="hidden" id="noteIdle" value="'.$obj->idle.'" />';
 	echo '<table width="100%">';
 	echo '<tr>';
 	if (! $print) {
@@ -1449,6 +1450,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
 	} else {
 		$lines=array();
 	}
+	echo '<input type="hidden" id="billLineIdle" value="'.$obj->idle.'" />';
 	echo '<table width="100%">';
 	echo '<tr>';
 	if (! $print) {
@@ -1522,6 +1524,7 @@ function drawAttachementsFromObject($obj, $refresh=false) {
 	if ($comboDetail) {
 		return;
 	}
+	echo '<input type="hidden" id="attachementIdle" value="'.$obj->idle.'" />';
 	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
 	if ($obj->idle==1) {$canUpdate=false;}
 	if (isset($obj->_Attachement)) {
