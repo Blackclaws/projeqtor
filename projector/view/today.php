@@ -21,7 +21,12 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     showProjects();
     exit;
   } 
-  
+
+  $pe=new ProjectPlanningElement();
+  $pe->setVisibility();
+  $workVisibility=$pe->_workVisibility;
+  $costVisibility=$pe->_costVisibility;    
+    
   function showMessages() {
   	global $cptMax;
     $user=$_SESSION['user'];
@@ -52,7 +57,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showProjects() {
-  	global $cptMax, $print;
+  	global $cptMax, $print, $workVisibility;
     $user=$_SESSION['user'];
     $prjVisLst=$user->getVisibleProjects();
     $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
@@ -122,9 +127,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       echo '<table align="center" style="width:95%">';
       echo '<tr>' .
            '  <td class="messageHeader" colspan="2">' . i18n('menuProject') . '</td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>' .
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLeft')) . '</div></td>' .
-           '  <td class="messageHeader" width="5%"><div xstyle="width:80px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' .
+           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
+      if ($workVisibility=='ALL') {
+        echo '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLeft')) . '</div></td>' ;
+      }
+      echo '  <td class="messageHeader" width="5%"><div xstyle="width:80px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' .
            '  <td class="messageHeader" width="5%"><div xstyle="width:60px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLate')) . '</div></td>' . 
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuTicket') . '</div></td>' . 
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . i18n('menuActivity') . '</div></td>' . 
@@ -231,9 +238,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           echo '<tr style="text-align: center">' .
              '  <td class="messageData" style="border-right:0px;text-align: left;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
              '  <td class="messageData" style="width:14px;margin:0;padding:0;spacing:0;border-left:0px;" '. $goto . ' ><div class="colorHealth" style="'.$styleHealth.'background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div></td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
+             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>';
+          if ($workVisibility=='ALL') {
+            echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>';
+          }
+          echo '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbTickets,$nbTicketsAll,$nbTicketsTodo, $nbTicketsDone):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress($nbActivities,$nbActivitiesAll,$nbActivitiesTodo,$nbActivitiesDone):'') . '</td>' .
@@ -274,7 +283,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   
   $cptDisplayId=0;
   function displayProgress($value,$allValue,$todoValue, $doneValue, $showTitle=true, $isWork=false) {
-    global $cptDisplayId, $print;
+    global $cptDisplayId, $print, $workVisibility;
     if ($value==='') {return $value;}
     $width=($print)?'60':'70';;
     $green=($allValue!=0 and $allValue)?round( $width*($allValue-$todoValue)/$allValue,0):$width;
@@ -286,7 +295,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $result.='<div style="position:absolute; width:' . $red . 'px;left:' . $green . 'px;background: #FFAAAA;">&nbsp;</div>';
     $result.='<div style="position:relative;">' . $value . '</div>';
     $result.='</div>';
-    if ($showTitle and !$print) {
+    if ($showTitle and !$print and (!$isWork or $workVisibility=='ALL')) {
       $result.='<div dojoType="dijit.Tooltip" connectId="displayProgress_' . $cptDisplayId . '" position="below">';
       $result.="<table>";
       if ($isWork) {
