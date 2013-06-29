@@ -9,10 +9,17 @@ scriptLog('   ->/tool/planningColumnSelector');
 $columns=Parameter::getPlanningColumnOrder();
 $columnsAll=Parameter::getPlanningColumnOrder(true);
 //asort($columns);
+$pe=new ProjectPlanningElement();
+$pe->setVisibility();
+$workVisibility=$pe->_workVisibility;
+$costVisibility=$pe->_costVisibility;    
 foreach ($columnsAll as $order=>$col) {
 	if ( (isset($resourcePlanning) and ($col=='ValidatedWork' or $col=='Resource' ) )
 	  or (isset($portfolioPlanning) and ($col=='Priority' or $col=='Resource' or $col=='IdPlanningMode') )	) {
 	  // noting	
+	} else if ( ($workVisibility=='NO' and $col=='ValidatedWork') or 
+	    ($workVisibility!='ALL' and ($col=='AssignedWork' or $col=='RealWork' or $col=='LeftWork' or $col=='PlannedWork') ) ) {
+		// noting 
 	} else {
 		echo '<div class="dojoDndItem" id="columnSelector'.$col.'" dndType="planningColumn">';
 		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
