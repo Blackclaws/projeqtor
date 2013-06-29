@@ -296,7 +296,7 @@ class IndicatorValue extends SqlElement {
     $arrayAlertDest=array();
   	if ($def->mailToUser==0 and $def->mailToResource==0 and $def->mailToProject==0
     and $def->mailToLeader==0  and $def->mailToContact==0 and $def->mailToAssigned==0
-    and $def->mailToManager==0 and $def->mailToOther
+    and $def->mailToManager==0 and $def->mailToOther==0
     and $def->alertToUser==0 and $def->alertToResource==0 and $def->alertToProject==0
     and $def->alertToLeader==0  and $def->alertToContact==0 and $def->alertToAssigned==0
     and $def->alertToManager==0 ) {
@@ -362,6 +362,36 @@ class IndicatorValue extends SqlElement {
         }
       }
     }
+    if ($def->mailToManager or $def->alertToManager) {
+      if (property_exists($obj,'idProject')) {
+        $project=new Project($obj->idProject);
+        $manager=new Affectable($project->idUser);
+        if ($def->alertToManager) {
+          $arrayAlertDest[$manager->id]=$manager->name;
+        }
+        $newDest = "###" . $manager->email . "###";
+        if ($manager->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
+    }
+    if ($def->mailToAssigned or $def->alertToAssigned) {
+      $ass=new Assignment();
+      $crit=array('refType'=>get_class($obj),'refId'=>$obj->id);
+      $assList=$ass->getSqlElementsFromCriteria($crit);
+      foreach ($assList as $ass) {
+        $res=new Resource($ass->idResource);
+        if ($def->alertToAssigned) {
+          $arrayAlertDest[$res->id]=$res->name;
+        }
+        $newDest = "###" . $res->email . "###";
+        if ($res->email and strpos($dest,$newDest)===false) {
+          $dest.=($dest)?', ':'';
+          $dest.= $newDest;
+        }
+      }
+    }
     if ($def->mailToContact or $def->alertToContact) {
       if (property_exists($obj,'idContact')) {
         $contact=new Contact($obj->idContact);
@@ -372,6 +402,22 @@ class IndicatorValue extends SqlElement {
         if ($def->mailToContact and $contact->email and strpos($dest,$newDest)===false) {
           $dest.=($dest)?', ':'';
           $dest.= $newDest;
+        }
+      }
+    }
+    if ($def->mailToOther) {
+      if ($def->otherMail) {
+        $otherMail=str_replace(';',',', $def->otherMail);
+        $otherMail=str_replace(' ',',', $otherMail);
+        $split=explode(',',$otherMail);
+        foreach ($split as $adr) {
+          if ($adr and $adr!='') {
+            $newDest = "###" . $adr . "###";
+            if (strpos($dest,$newDest)===false) {
+              $dest.=($dest)?', ':'';
+              $dest.= $newDest;
+            }
+          }
         }
       }
     }
