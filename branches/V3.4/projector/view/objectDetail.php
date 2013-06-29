@@ -98,6 +98,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 		$obj->setVisibility();
 		$workVisibility=$obj->_workVisibility;
 		$costVisibility=$obj->_costVisibility;
+		if (get_class($obj)=="MeetingPlanningElement") {
+      $obj->setAttributes($workVisibility,$costVisibility);
+		}
+	} else 	if (method_exists($obj, 'setAttributes')) {
+		$obj->setAttributes();
 	}
 	$nobr=false;
 	$canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj)=='YES');

@@ -462,7 +462,7 @@ class Cron {
 		$emailEmail=Parameter::getGlobalParameter('cronCheckEmailsUser');
 		$emailPassword=Parameter::getGlobalParameter('cronCheckEmailsPassword');
 		$emailAttachmentsDir=dirname(__FILE__) . '/../files/attach';
-		$emailHost='{imap.gmail.com:993/imap/ssl}INBOX';
+		$emailHost=Parameter::getGlobalParameter('cronCheckEmailsHost'); // {imap.gmail.com:993/imap/ssl}INBOX';
 		if (! $emailHost) {
 			traceLog("IMAP connection string not defined");
 			return;

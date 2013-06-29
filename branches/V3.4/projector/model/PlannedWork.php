@@ -240,7 +240,7 @@ class PlannedWork extends GeneralWork {
       } else {        
         if (! $plan->realStartDate) {
           //$plan->plannedStartDate=($plan->leftWork>0)?$plan->plannedStartDate:$startPlan;
-        	if ($plan->plannedWork==0) {
+        	if ($plan->plannedWork==0 and $plan->elementary==1) {
 	        	if ($plan->validatedStartDate) {
 	            $plan->plannedStartDate=$plan->validatedStartDate;
 	          } else if ($plan->initialStartDate) {
@@ -252,7 +252,7 @@ class PlannedWork extends GeneralWork {
         }
         if (! $plan->realEndDate) {
           //$plan->plannedEndDate=($plan->plannedWork==0)?$plan->validatedEndDate:$plan->plannedEndDate;
-        	if ($plan->plannedWork==0) {
+        	if ($plan->plannedWork==0 and $plan->elementary==1) {
 	          if ($plan->validatedEndDate) {
 	            $plan->plannedEndDate=$plan->validatedEndDate;
 	          } else if ($plan->initialEndDate) {
@@ -576,7 +576,13 @@ class PlannedWork extends GeneralWork {
   private static function sortPlanningElements($list) {
   	// first sort on simple criterias
     foreach ($list as $id=>$elt) {
-      $crit=($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7')?'0':'1';
+    	if ($elt->idPlanningMode=='16') {
+    		$crit='1';
+    	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7') {
+    	  $crit='2';	
+    	} else {
+        $crit='3';
+    	}
       $crit.='.';
       $prio=$elt->priority;
       if (! $elt->leftWork or $elt->leftWork==0) {$prio=0;}
