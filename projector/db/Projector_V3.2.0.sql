@@ -105,8 +105,7 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 (null, null, 'msgClosedApplication', 'Application is closed. \nOnly admin user can connect. \nPlease come back later.');
 
 -- Purge PlanningElement for closed activities and projets
-DELETE FROM `${prefix}plannedwork`
-WHERE (refType, refId) IN (SELECT refType, refId FROM `${prefix}planningelement` WHERE idle=1);
+DELETE FROM `${prefix}plannedwork` WHERE (refType, refId) IN (SELECT refType, refId FROM `${prefix}planningelement` WHERE idle=1);
 
 INSERT INTO `${prefix}reportcategory` (`id`, `name`, `sortOrder`, `idle`) VALUES 
 (9, 'reportCategoryMisc', 80, 0);

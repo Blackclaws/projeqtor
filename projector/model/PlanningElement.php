@@ -951,6 +951,12 @@ class PlanningElement extends SqlElement {
   }*/
   
   static function comparePlanningElementSimpleOld($a, $b) {
+    if ($a->idPlanningMode=='16' and $b->idPlanningMode!='16') { 	
+      return -1;
+    }
+    if ($b->idPlanningMode=='16' and $a->idPlanningMode!='16') {
+      return +1;
+    }
     // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
   	if ( ($a->idPlanningMode=='2' or  $a->idPlanningMode=='3' or  $a->idPlanningMode=='7') and 
          ($b->idPlanningMode!='2' and $a->idPlanningMode!='3' and $a->idPlanningMode!='7') ) {

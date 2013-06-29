@@ -2,73 +2,51 @@
 /* ============================================================================
  * Planning element is an object included in all objects that can be planned.
  */ 
-class MeetinglanningElement extends PlanningElement {
+class MeetingPlanningElement extends PlanningElement {
 
   public $id;
   public $idProject;
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_8_5 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', 'startDate', 'endDate', 'duration', 'work', 'cost');
-  public $initialStartDate;
-  public $validatedStartDate;
-  public $_void_13;
-  public $plannedStartDate;
-  public $realStartDate;
-  public $_void_15;
-  public $_label_priority;
-  public $priority;
-  public $initialEndDate;
-  public $validatedEndDate;
-  public $_void_23;
-  public $plannedEndDate;
-  public $realEndDate;
-  public $_void_25;
-  public $_label_planning;
-  public $idMeetingPlanningMode;
-  public $initialDuration;
-  public $validatedDuration;
-  public $_void_33;
-  public $plannedDuration;
-  public $realDuration;
-  public $_void_35;
-  public $_label_wbs;
-  public $wbs;
-  public $_void_41;
-  public $validatedWork;
+  public $_tab_3_2=array('assigned', 'real', 'left', 'work', 'cost');
   public $assignedWork;
-  public $plannedWork;
   public $realWork;
   public $leftWork;
-  public $_label_progress;
-  public $progress;
-  public $_void_51;
-  public $validatedCost;
   public $assignedCost;
-  public $plannedCost;
   public $realCost;
   public $leftCost;
-  public $_label_expected;
-  public $expectedProgress;
-  public $wbsSortable;
-  public $topId;
-  public $topRefType;
-  public $topRefId;
-  public $idle;
+  public $idMeetingPlanningMode;
   
   private static $_fieldsAttributes=array(
-    "plannedStartDate"=>"readonly",
-    "realStartDate"=>"readonly",
-    "plannedEndDate"=>"readonly",
-    "realEndDate"=>"readonly",
-    "plannedDuration"=>"readonly",
-    "realDuration"=>"readonly",
+    "initialStartDate"=>"hidden",
+    "plannedStartDate"=>"hidden",
+    "validatedStartDate"=>"hidden",
+    "realStartDate"=>"hidden",
+    "plannedEndDate"=>"hidden",
+    "realEndDate"=>"hidden",
+    "initialEndDate"=>"hidden",
+    "validatedEndDate"=>"hidden",
+    "plannedDuration"=>"hidden",
+    "realDuration"=>"hidden",
+    "initialDuration"=>"hidden",
+    "validatedDuration"=>"hidden",
     "initialWork"=>"hidden",
-    "plannedWork"=>"readonly",
+    "plannedWork"=>"hidden",
     "realWork"=>"readonly",
     "leftWork"=>"readonly",
     "assignedWork"=>"readonly",
-    "idMeetingPlanningMode"=>"required,mediumWidth"
+    "validatedWork"=>"hidden",
+    "validatedCost"=>"hidden",
+    "assignedCost"=>"readonly",
+    "plannedCost"=>"hidden",
+    "realCost"=>"readonly",
+    "leftCost"=>"readonly",
+    "progress"=>"hidden",
+    "expectedProgress"=>"hidden",
+    "priority"=>"hidden",
+    "wbs"=>"hidden",
+    "idMeetingPlanningMode"=>"hidden,required"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -83,10 +61,51 @@ class MeetinglanningElement extends PlanningElement {
    * @return void
    */ 
   function __construct($id = NULL) {
+  	$this->idMeetingPlanningMode=16;
     parent::__construct($id);
   }
   
+  private function hideWorkCost() {
+  	unset($this->_tab_3_2);
+  	self::$_fieldsAttributes['validatedWork']='hidden';
+    self::$_fieldsAttributes['assignedWork']='hidden';
+    self::$_fieldsAttributes['realWork']='hidden';
+    self::$_fieldsAttributes['leftWork']='hidden';
+    self::$_fieldsAttributes['validatedCost']='hidden';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
+  }
+  private function showWorkCost() {
+  	$this->_tab_3_2 = array('assigned', 'real', 'left', 'work', 'cost');
+    self::$_fieldsAttributes['validatedWork']='hidden';
+    self::$_fieldsAttributes['assignedWork']='readonly';
+    self::$_fieldsAttributes['realWork']='readonly';
+    self::$_fieldsAttributes['leftWork']='readonly';
+    self::$_fieldsAttributes['validatedCost']='hidden';
+    self::$_fieldsAttributes['assignedCost']='readonly';
+    self::$_fieldsAttributes['realCost']='readonly';
+    self::$_fieldsAttributes['leftCost']='readonly';
+  }
   
+  public function setAttributes() {
+  	global $workVisibility,$costVisibility;
+    if (! $this->id) {
+      $this->hideWorkCost();
+    } else {
+      if ($workVisibility=='NO' and $costVisibility=='NO') {
+        $this->hideWorkCost();
+      } else {
+        $ass=new Assignment();
+        $cptAss=$ass->countSqlElementsFromCriteria(array('refType'=>$this->refType, 'refId'=>$this->refId));
+        if ($cptAss>0) {
+          $this->showWorkCost();
+        } else {
+          $this->hideWorkCost();
+        } 
+      }
+    }
+  }
   /** ==========================================================================
    * Destructor
    * @return void
@@ -126,6 +145,33 @@ class MeetinglanningElement extends PlanningElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+  	$meeting=new Meeting($this->refId);
+  	$old=new MeetingPlanningElement($this->id);
+  	if (!$this->id) {
+  		$this->priority=1; // very high priority
+  		$this->idMeetingPlanningMode=16; // fixed planning  		
+  	}
+  	if ($meeting->idPeriodicMeeting) {
+  		$this->topRefType='PeriodicMeeting';
+  		$this->topRefId=$meeting->idPeriodicMeeting;
+  	} else if ($meeting->idActivity) {
+  		$this->topRefType='Activity';
+      $this->topRefId=$meeting->idActivity;
+  	} else {
+  		$this->topRefType='Project';
+  		$this->topRefId=$meeting->idProject;
+  	}
+  	$this->validatedStartDate=$meeting->meetingDate;
+  	$this->validatedEndDate=$meeting->meetingDate;
+  	$this->validatedDuration=1; // TODO : Could be improved : duration is less than one.
+  	//$this->validatedWork=0; // TODO : To be calculated from Number of assignements x meeting duration
+    $this->idProject=$meeting->idProject;
+    $this->refName=$meeting->name;
+    if ($old->idProject!=$this->idProject or $old->topId!=$this->topId 
+    or $old->topRefType!=$this->topRefType or $old->topRefId!=$this->topRefId) {
+    	$this->wbs=null; // Force recalculation
+    	$this->topId=null;
+    }
     return parent::save();
   }
   

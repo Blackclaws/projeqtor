@@ -22,14 +22,15 @@ ALTER TABLE `${prefix}mail` CHANGE mailBody mailBody text;
 ALTER TABLE `${prefix}note` ADD COLUMN `fromEmail` int(1) unsigned DEFAULT '0';
 
 ALTER TABLE `${prefix}meeting` ADD COLUMN `idPeriodicMeeting` int(12) unsigned DEFAULT NULL,
-ADD COMUMN `isPeriodic` int(1) unsigned DEFAULT '0',
-ADD COMUMN `periodicOccurence` int(3) unsigned DEFAULT NULL;
+ADD COLUMN `isPeriodic` int(1) unsigned DEFAULT '0',
+ADD COLUMN `periodicOccurence` int(3) unsigned DEFAULT NULL;
 CREATE INDEX meetingPeriodicMeeting ON `${prefix}meeting` (idPeriodicMeeting);
 
 CREATE TABLE `${prefix}periodicmeeting` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idMeetingType` int(12) unsigned DEFAULT NULL,
+  `idActivity` int(12) unsigned DEFAULT NULL,
   `periodicityStartDate` date DEFAULT NULL,
   `periodicityEndDate` date DEFAULT NULL,
   `periodicityTimes` date DEFAULT NULL,
@@ -45,7 +46,7 @@ CREATE TABLE `${prefix}periodicmeeting` (
   `weeklyPeriodicitySaturday` int(1) unsigned default NULL,
   `weeklyPeriodicitySunday` int(1) unsigned default NULL,  
   `name` varchar(100) DEFAULT NULL,
-  `description` VARCHAR(4000);
+  `description` VARCHAR(4000),
   `attendees` varchar(4000) DEFAULT NULL,
   `idUser` int(12) unsigned DEFAULT NULL,
   `idResource` int(12) unsigned DEFAULT NULL,
@@ -66,3 +67,5 @@ ADD COLUMN `otherMail` varchar(4000) DEFAULT NULL,
 ADD COLUMN `alertToAssigned` int(1) unsigned default 0,
 ADD COLUMN `alertToManager` int(1) unsigned default 0;
   
+INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
+(null,null, 'cronCheckEmails', '-1');  

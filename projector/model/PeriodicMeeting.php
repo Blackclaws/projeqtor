@@ -2,7 +2,7 @@
 /** ============================================================================
  * Action is establised during meeting, to define an action to be followed.
  */ 
-class Meeting extends SqlElement {
+class PeriodicMeeting extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
@@ -11,13 +11,14 @@ class Meeting extends SqlElement {
   public $idProject;
   public $idMeetingType;
   public $idPeriodicMeeting;
-  public $isPeriodic;
+  //public $isPeriodic;
   public $periodicOccurence;
   public $meetingDate;
   public $_lib_from;
   public $meetingStartTime;
   public $_lib_to;
   public $meetingEndTime;
+  public $MeetingPlanningElement;
   public $name;
   public $location;
   public $_sec_Assignment;
@@ -27,7 +28,6 @@ class Meeting extends SqlElement {
   public $idUser;
   public $description;
   public $_col_2_2_treatment;
-  public $MeetingPlanningElement;
   public $idActivity;
   public $idStatus;
   public $idResource;
@@ -69,17 +69,14 @@ class Meeting extends SqlElement {
                                   "_lib_to"=>'nobr',
                                   "meetingStartTime"=>'nobr',
                                   "idUser"=>"hidden",
-                                  //"idResource"=>"idden",
+                                  "idResource"=>"idden",
                                   "idStatus"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr",
-																  "idPeriodicMeeting"=>"hidden",
-																  "isPeriodic"=>"readonly",
-																  "periodicOccurence"=>"hidden"
+                                  "idle"=>"nobr"
   );  
   
-  private static $_colCaptionTransposition = array('result'=>'minutes', 'idResource'=>'responsible', 'idActivity'=>'parentActivity');
+  private static $_colCaptionTransposition = array('result'=>'minutes', 'idResource'=>'responsible');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -101,17 +98,7 @@ class Meeting extends SqlElement {
     parent::__destruct();
   }
 
-  public function setAttributes() {
-    if ($this->isPeriodic) {
-      $this->idActivity=null;
-      self::$_fieldsAttributes['idActivity']='hidden';
-      self::$_fieldsAttributes['isPeriodic']='readonly';
-      self::$_fieldsAttributes['periodicOccurence']='display';
-    } else {
-    	self::$_fieldsAttributes['isPeriodic']="readonly";
-    	unset($this->isPeriodic);
-    }  	
-  }
+
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS
 // ============================================================================**********
