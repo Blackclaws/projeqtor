@@ -526,6 +526,10 @@ class Parameter extends SqlElement {
   	} else {
   		if (count(self::$planningColumnOrder)) return self::$planningColumnOrder;
   	}
+  	$pe=new ProjectPlanningElement();
+    $pe->setVisibility();
+    $workVisibility=$pe->_workVisibility;
+    $costVisibility=$pe->_costVisibility;    
   	$res=array();
   	// Default Values
   	$user=$_SESSION['user'];
@@ -539,6 +543,12 @@ class Parameter extends SqlElement {
   		if ($param->parameterValue=='1') {
   		  $hidden.=substr($param->parameterCode,18).'|';
   		}
+  	}
+  	if ($workVisibility!='ALL') {
+  		if ($workVisibility!='VAL') {
+  			$hidden.='ValidatedWork|';
+  		}
+  		$hidden.='AssignedWork|RealWork|LeftWork|PlannedWork|';
   	}
   	$arrayFiledsSorted=array();
   	foreach ($orderList as $param) {
