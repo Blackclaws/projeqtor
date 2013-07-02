@@ -68,4 +68,7 @@ ADD COLUMN `alertToAssigned` int(1) unsigned default 0,
 ADD COLUMN `alertToManager` int(1) unsigned default 0;
   
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
-(null,null, 'cronCheckEmails', '-1');  
+(null,null, 'cronCheckEmails', '-1');
+
+INSERT INTO `${prefix}linkable` (`id`, `name`, `idDefaultLinkable`, `idle`) VALUES
+(16, 'ProjectExpense', 8, 0); 
