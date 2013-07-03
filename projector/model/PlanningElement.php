@@ -231,6 +231,7 @@ class PlanningElement extends SqlElement {
     }
     if ($this->validatedWork!=0) {
       $this->expectedProgress=round($this->realWork / ($this->validatedWork) *100);
+      if ($this->expectedProgress>999999) { $this->expectedProgress=999999; }
     } else {
     	if (!$this->expectedProgress) {
     	  $this->expectedProgress=0;
