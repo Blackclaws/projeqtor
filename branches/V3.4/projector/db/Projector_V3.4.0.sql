@@ -72,3 +72,5 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 
 INSERT INTO `${prefix}linkable` (`id`, `name`, `idDefaultLinkable`, `idle`) VALUES
 (16, 'ProjectExpense', 8, 0); 
+
+ALTER TABLE `${prefix}planningelement` CHANGE  `expectedProgress` `expectedProgress` int(6) unsigned default '0';
