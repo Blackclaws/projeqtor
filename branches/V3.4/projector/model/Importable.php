@@ -237,6 +237,16 @@ class Importable extends SqlElement {
 					continue;
 				}
 				$id = ($idxId >= 0) ? $fields[$idxId] : null;
+				if ($id and ! is_numeric($id)) {
+					self::$cptError+=1;
+          $htmlResult.= '<td colspan="' . count($title) . '" class="messageData" style="border:1px solid black;">';
+          $htmlResult.= $line;
+          $htmlResult.= '</td>';
+          $htmlResult.= '<td class="messageData" style="border:1px solid black;">';
+          $htmlResult.= '<div class="messageERROR" >ERROR : id provided is not a number</div>';
+          $htmlResult.= '</td>';
+          continue;
+				}
 				$obj = new $class($id);
 				$forceInsert = (!$obj->id and $id and !Sql::isPgsql()) ? true : false;
 				self::$cptTotal+=1;
