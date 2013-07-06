@@ -1414,7 +1414,11 @@ function drawNotesFromObject($obj, $refresh=false) {
 			if (! $print) {
 				echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
 			}
-			echo htmlEncode($note->note,'print');
+			// ADDED BRW
+      $strDataHTML = htmlEncode($note->note,'print');
+      $strDataHTML = preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
+      echo $strDataHTML;
+      // END ADDED BRW
 			echo "</td>";
 			if ($note->idPrivacy==3) {
 				echo '<td style="width:16px;vertical-align: top;" title="' . i18n('private') .'"><img src="img/private.png" /></td>';

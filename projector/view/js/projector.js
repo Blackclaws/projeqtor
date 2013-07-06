@@ -2202,9 +2202,10 @@ function trimTag (myString, car) {
 function moveMenuBar(way) {
 	var bar=dojo.byId('menubarContainer');
 	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
-	var step=50;
+	var step=80;
 	if (way=='left')  {pos=left+step;}
 	if (way=='right') {pos=left-step;}
 	if (pos>0) pos=0;
-	bar.style.left=pos+'px';
+	dojo.fx.slideTo({ node: bar, left: pos}).play();
+	//bar.style.left=pos+'px';
 }
