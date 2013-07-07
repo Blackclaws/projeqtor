@@ -1213,7 +1213,7 @@ function removeOrigin (id, origType, origId) {
  * Display a add Assignment Box
  * 
  */
-function addAssignment (unit) {
+function addAssignment (unit, rawUnit, hoursPerDay) {
 	if (formChangeInProgress) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1250,6 +1250,21 @@ function addAssignment (unit) {
 	dojo.byId("assignmentLeftUnit").value=unit;
 	dojo.byId("assignmentRealUnit").value=unit;
 	dojo.byId("assignmentAssignedUnit").value=unit;
+	if (dojo.byId('objectClass').value=='Meeting') {
+	  if (dijit.byId('meetingEndTime') && dijit.byId('meetingEndTime').get('value') 
+	   && dijit.byId('meetingStartTime') && dijit.byId('meetingStartTime').get('value') ) {
+		delay=(dijit.byId('meetingEndTime').get('value')-dijit.byId('meetingStartTime').get('value'))/1000/60/60;
+		if (rawUnit=='hours') {
+		  // OK
+		} else { 
+		  delay=Math.round(delay/hoursPerDay*100)/100;
+		}
+		dijit.byId("assignmentAssignedWork").set('value',delay);
+		dijit.byId("assignmentPlannedWork").set('value',delay);
+		dijit.byId("assignmentLeftWork").set('value',delay);
+	  }
+	  
+	}
 	dijit.byId("dialogAssignment").show();
 }
 
@@ -3180,6 +3195,9 @@ function hideShowMenu() {
 			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
 		}
 		dojo.byId('leftDiv_splitter').style.display='none';
+		leftDiv=dijit.byId("leftDiv");
+		//dojox.fx.wipeTo({node: "leftDiv",duration: 300, width: 20}).play();
+		//dojox.fx.wipeTo({node: leftDiv,duration: 300, width: 20}).play();
 		dijit.byId("leftDiv").resize({w: 20});
 		dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
 		setTimeout("dojo.byId('menuBarShow').style.display='block'",10);

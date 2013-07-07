@@ -79,7 +79,10 @@ class Meeting extends SqlElement {
 																  "periodicOccurence"=>"hidden"
   );  
   
-  private static $_colCaptionTransposition = array('result'=>'minutes', 'idResource'=>'responsible', 'idActivity'=>'parentActivity');
+  private static $_colCaptionTransposition = array('result'=>'minutes', 
+  'idResource'=>'responsible', 
+  'idActivity'=>'parentActivity',
+  'attendees'=>'otherAttendees');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -309,9 +312,18 @@ class Meeting extends SqlElement {
   }
 
   function sendMail() {
-    $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
+  	$paramMailSender=Parameter::getGlobalParameter('paramMailSender');
     $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
     $lstDest=explode(',',$this->attendees);
+    if (count($this->_Assignment)>0) {
+    	foreach ($this->_Assignment as $ass) {
+    		$res=new Affectable($ass->idResource);
+    		$resMail=(($res->name)?$res->name:$res->userName);
+    		$resMail.=(($res->email)?' <'.$res->email.'>':'');
+    		$lstDest[]=$resMail;
+    	}
+    }
+    
     $lstMail=array();
     foreach ($lstDest as $dest) {
       $to="";
@@ -374,9 +386,11 @@ class Meeting extends SqlElement {
     }
 
     $result=sendMail($destList, $this->name, $vcal, $this, $headers,$sender);
-    if (! $result) {$sent=0;}
-    return $sent;
-
+    if (! $result) {
+    	$sent=0;
+    	$destList="";
+    } 
+    return str_replace(',', ', ', $destList);
   }
 }
 ?>

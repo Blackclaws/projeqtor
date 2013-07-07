@@ -589,9 +589,9 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
 	$paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
 	if (! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
-	  return sendMailAnonymous($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null);	
+	  return sendMailAnonymous($to, $subject, $messageBody, $object, $headers, $sender, $boundary);	
 	} else {
-	  return sendMailAuthentified($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null);
+	  return sendMailAuthentified($to, $subject, $messageBody, $object, $headers, $sender, $boundary);
 	}
 }
 function sendMailAuthentified($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {

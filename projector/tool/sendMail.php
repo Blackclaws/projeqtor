@@ -52,8 +52,8 @@
     if (array_key_exists('id',$_REQUEST)) {
       $id=$_REQUEST['id'];
       $meeting=new Meeting($id);
-      $dest=str_replace('"','',$meeting->attendees);
-      $result=($meeting->sendMail()>0)?'OK':'';
+      $dest=$meeting->sendMail();
+      $result=($dest!='')?'OK':'';
     }
   } else if ($typeSendMail=="Mailable") {
   	$class=$_REQUEST['mailRefType'];
