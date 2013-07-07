@@ -213,6 +213,14 @@ class GeneralWork extends SqlElement {
     $res=substr(i18n(self::$workUnit),0,1);
     return $res;
   }
+  public static function getWorkUnit() {
+  	self::setWorkUnit();
+  	return self::$workUnit;
+  }  
+  public static function getHoursPerDay() {
+  	self::setWorkUnit();
+    return self::$hoursPerDay;
+  }
   public static function displayWorkUnit() {
     self::setWorkUnit();
     $res='<b>' . i18n('paramWorkUnit') . " = " . i18n(self::$workUnit) . '</b>';

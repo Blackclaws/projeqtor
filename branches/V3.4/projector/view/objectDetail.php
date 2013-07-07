@@ -1913,7 +1913,8 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
 	if (! $print) {
 		echo '<td class="assignHeader" style="width:10%">';
 		if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
-			echo '<img src="css/images/smallButtonAdd.png" onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\');" ';
+			echo '<img src="css/images/smallButtonAdd.png" ';
+			echo ' onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\',\''. Work::getWorkUnit() . '\',\''.Work::getHoursPerDay().'\');" ';
 			echo ' title="' . i18n('addAssignment') . '" class="smallButton"/> ';
 		}
 		echo '</td>';
