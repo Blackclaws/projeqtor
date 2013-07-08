@@ -74,3 +74,12 @@ INSERT INTO `${prefix}linkable` (`id`, `name`, `idDefaultLinkable`, `idle`) VALU
 (16, 'ProjectExpense', 8, 0); 
 
 ALTER TABLE `${prefix}planningelement` CHANGE  `expectedProgress` `expectedProgress` int(6) unsigned default '0';
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(124,'menuPeriodicMeeting',6,'object',465,'Project',0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) 
+SELECT `idProfile`, 124, `allowAccess` FROM `${prefix}habilitation` WHERE `idMenu`=62;  
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
+SELECT `idProfile`, 124, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=62;  
