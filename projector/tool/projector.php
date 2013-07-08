@@ -595,7 +595,7 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
 	}
 }
 function sendMailAuthentified($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {
-debugLog('sendMailAuthentified');
+traceLog('sendMailAuthentified');
   $paramMailSender = Parameter::getGlobalParameter('paramMailSender');
   $paramMailReplyTo = Parameter::getGlobalParameter('paramMailReplyTo');
   error_reporting(E_ERROR);
@@ -810,7 +810,7 @@ function quit($sock) {
 }
 
 function sendMailAnonymous($to, $title, $message, $object=null, $headers=null, $sender=null, $boundary=null)  {
-debugLog('sendMailAnonymous');
+traceLog  ('sendMailAnonymous');
   $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
   $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
   $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');

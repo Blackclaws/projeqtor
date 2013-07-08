@@ -10,9 +10,9 @@ class PeriodicMeeting extends SqlElement {
   public $reference;
   public $idProject;
   public $idMeetingType;
-  public $idPeriodicMeeting;
+  //public $idPeriodicMeeting;
   //public $isPeriodic;
-  public $periodicOccurence;
+  //public $periodicOccurence;
   public $meetingDate;
   public $_lib_from;
   public $meetingStartTime;
