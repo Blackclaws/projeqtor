@@ -7,44 +7,30 @@ class PeriodicMeeting extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
-  public $reference;
   public $idProject;
   public $idMeetingType;
-  //public $idPeriodicMeeting;
-  //public $isPeriodic;
-  //public $periodicOccurence;
-  public $meetingDate;
-  public $_lib_from;
-  public $meetingStartTime;
-  public $_lib_to;
-  public $meetingEndTime;
-  public $MeetingPlanningElement;
   public $name;
   public $location;
   public $_sec_Assignment;
   public $_Assignment=array();
   public $attendees;
-  public $_spe_buttonSendMail;
   public $idUser;
   public $description;
   public $_col_2_2_treatment;
   public $idActivity;
-  public $idStatus;
   public $idResource;
-  public $handled;
-  public $handledDate;
-  public $done;
-  public $doneDate;
   public $idle;
-  public $idleDate;
-  public $result;
-  //public $_sec_linkDecision;
-  //public $_Link_Decision=array();
-  //public $_sec_linkQuestion;
-  //public $_Link_Question=array();
-  public $_col_1_1_link;
-  public $_Link=array();
-  public $_Attachement=array();
+  public $_sec_periodicity;
+  public $periodicityStartDate;
+  public $_lib_until;
+  public $periodicityEndDate;
+  public $_lib_for;
+  public $periodicityTimes;
+  public $_lib_times;
+  public $meetingStartTime;
+  public $_lib_to;
+  public $meetingEndTime;
+  public $MeetingPlanningElement;
   public $_Note=array();
 
 
@@ -53,21 +39,24 @@ class PeriodicMeeting extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="15%" >${idProject}</th>
     <th field="nameMeetingType" width="15%" >${idMeetingType}</th>
-    <th field="meetingDate" formatter="dateFormatter" width="15%" >${meetingDate}</th>
     <th field="name" width="25%" >${name}</th>
-    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
-    <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
+    <th field="periodicityStartDate" formatter="dateFormatter" width="15%" >${startDate}</th>
+    <th field="periodicityEndDate" formatter="dateFormatter" width="15%" >${endDate}</th>
+    <th field="$meetingStartTime" width="15%" >${startTime}</th>
+    <th field="$meetingEndTime" width="15%" >${endTime}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
-                                  "idProject"=>"required",
+  private static $_fieldsAttributes=array("idProject"=>"required",
                                   "idMeetingType"=>"required",
-                                  "meetingDate"=>"required, nobr",
-                                  "_lib_from"=>'nobr',
-                                  "_lib_to"=>'nobr',
+                                  "periodicityStartDate"=>"required, nobr",
+                                  "_lib_until"=>'nobr',
+                                  "periodicityEndDate"=>"required, nobr",
+                                  "_lib_for"=>'nobr',      
+                                  "periodicityTimes"=>'nobr,smallWidth',                            
                                   "meetingStartTime"=>'nobr',
+                                  "_lib_to"=>'nobr',
+                                  "meetingEndTime"=>'nobr',
                                   "idUser"=>"hidden",
                                   "idResource"=>"idden",
                                   "idStatus"=>"required",
@@ -76,7 +65,12 @@ class PeriodicMeeting extends SqlElement {
                                   "idle"=>"nobr"
   );  
   
-  private static $_colCaptionTransposition = array('result'=>'minutes', 'idResource'=>'responsible');
+  private static $_colCaptionTransposition = array(
+    'idResource'=>'responsible',
+    'idActivity'=>'parentActivity',
+    'periodicityStartDate'=>'period',
+    'meetingStartTime'=>'time',
+    'attendees'=>'otherAttendees' );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -239,7 +233,7 @@ class PeriodicMeeting extends SqlElement {
 
   public function save() {
   	if (! $this->name) {
-      $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
+      $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType);
   	}
     $listTeam=array_map('strtolower',SqlList::getList('Team','name'));
     $listName=array_map('strtolower',SqlList::getList('Affectable'));
@@ -295,75 +289,6 @@ class PeriodicMeeting extends SqlElement {
     return parent::save();
   }
 
-  function sendMail() {
-    $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
-    $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
-    $lstDest=explode(',',$this->attendees);
-    $lstMail=array();
-    foreach ($lstDest as $dest) {
-      $to="";
-      $name="";
-      $start=strpos($dest,'<');
-      if ($start>0) {
-        $end=strpos($dest,'>');
-        $to=substr( $dest, $start+1, $end-$start-1);
-      } else if (strpos($dest,'@')>0){
-        $to=$dest;
-      }
-      $nameExplode=explode('"',$dest);
-      if (count($nameExplode)>=2){
-        $name=$nameExplode[1];
-      }
-      if ($to) {
-        if (!$name) {
-          $name=$to;
-        }
-        $lstMail[$name]=$to;
-      }
-    }
-    $sent=0;
-    $vcal = "BEGIN:VCALENDAR\r\n";
-    $vcal .= "VERSION:2.0\r\n";
-    $vcal .= "PRODID:-//CompanyName//ProductName//EN\r\n";
-    $vcal .= "METHOD:REQUEST\r\n";
-    $vcal .= "BEGIN:VEVENT\r\n";
-    $user=$_SESSION['user'];
-    $vcal .= "ORGANIZER;CN=" . (($user->resourceName)?$user->resourceName:$user->name). ":MAILTO:$user->email\r\n";
-    foreach($lstMail as $name=>$to) {
-      $vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
-    }
-    $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-domain.com\r\n";
-    $vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
-    $vcal .= "DTSTART:" . str_replace('-','',$this->meetingDate) . 'T' . str_replace(':','',$this->meetingStartTime) . "\r\n";
-    $vcal .= "DTEND:" . str_replace('-','',$this->meetingDate) . 'T' .str_replace(':','',$this->meetingEndTime) . "\r\n";
-    if ($this->location != "") $vcal .= "LOCATION:$this->location\r\n";
-    $vcal .= "SUMMARY:$this->name\r\n";
-    $vcal .= "DESCRIPTION:$this->description\r\n";
-    $vcal .= "BEGIN:VALARM\r\n";
-    $vcal .= "TRIGGER:-PT15M\r\n";
-    $vcal .= "ACTION:DISPLAY\r\n";
-    $vcal .= "DESCRIPTION:Reminder\r\n";
-    $vcal .= "END:VALARM\r\n";
-    $vcal .= "END:VEVENT\r\n";
-    $vcal .= "END:VCALENDAR\r\n";
-
-    $sender=($user->email)?$user->email:$paramMailSender;
-    $replyTo=($user->email)?$user->email:$paramMailReplyTo;
-    $headers = "From: $sender\r\nReply-To: $replyTo";
-    $headers .= "\r\nMIME-version: 1.0\r\nContent-Type: text/calendar; method=REQUEST; charset=\"utf-8\"";
-    $headers .= "\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 12.0";
-    //mail($to, $this->description, $vcal, $headers);
-    $destList="";
-    foreach($lstMail as $name=>$to) {
-      $destList.=($destList)?',':'';
-      $destList.=$to;
-      $sent++;
-    }
-
-    $result=sendMail($destList, $this->name, $vcal, $this, $headers,$sender);
-    if (! $result) {$sent=0;}
-    return $sent;
-
-  }
+  
 }
 ?>

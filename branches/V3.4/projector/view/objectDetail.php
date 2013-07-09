@@ -391,7 +391,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				}
 			}
 			//echo $dataType . '(' . $dataLength . ') ';
-
 			if ($included) {
 				$name=' id="' . $classObj . '_' . $col . '" name="' . $classObj . '_' . $col . $extName . '" ';
 				$nameBis=' id="' . $classObj . '_' . $col . 'Bis" name="' . $classObj . '_' . $col . 'Bis' . $extName . '" ';
