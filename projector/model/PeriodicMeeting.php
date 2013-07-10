@@ -37,13 +37,14 @@ class PeriodicMeeting extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameProject" width="15%" >${idProject}</th>
-    <th field="nameMeetingType" width="15%" >${idMeetingType}</th>
-    <th field="name" width="25%" >${name}</th>
-    <th field="periodicityStartDate" formatter="dateFormatter" width="15%" >${startDate}</th>
-    <th field="periodicityEndDate" formatter="dateFormatter" width="15%" >${endDate}</th>
-    <th field="meetingStartTime" width="15%" >${startTime}</th>
-    <th field="meetingEndTime" width="15%" >${endTime}</th>
+    <th field="nameProject" width="14%" >${idProject}</th>
+    <th field="nameMeetingType" width="14%" >${idMeetingType}</th>
+    <th field="name" width="22%" >${name}</th>
+    <th field="periodicityStartDate" formatter="dateFormatter" width="10%" >${startDate}</th>
+    <th field="periodicityEndDate" formatter="dateFormatter" width="10%" >${endDate}</th>
+    <th field="periodicityTimes" width="6%" >${periodicityTimes}</th>
+    <th field="meetingStartTime" width="8%" >${startTime}</th>
+    <th field="meetingEndTime" width="8%" >${endTime}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -140,72 +141,20 @@ class PeriodicMeeting extends SqlElement {
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
 
-    if ($colName=="idStatus") {
+    if ($colName=="periodicityEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= htmlGetJsTable('Status', 'setIdleStatus', 'tabStatusIdle');
-      $colScript .= htmlGetJsTable('Status', 'setDoneStatus', 'tabStatusDone');
-      $colScript .= '  var setIdle=0;';
-      $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
-      $colScript .= '  if (setIdle==1) {';
-      $colScript .= '    dijit.byId("idle").set("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idle").set("checked", false);';
-      $colScript .= '  }';
-      $colScript .= '  var setDone=0;';
-      $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
-      $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
-      $colScript .= '  if (setDone==1) {';
-      $colScript .= '    dijit.byId("done").set("checked", true);';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("done").set("checked", false);';
-      $colScript .= '  }';
+      $colScript .= 'if (this.value) {';
+      $colScript .= '  dijit.byId("periodicityTimes").set("value", null); ';
       $colScript .= '  formChanged();';
+      $colScript .= '}';
       $colScript .= '</script>';     
-    } else if ($colName=="initialDueDate") {
+    } else if ($colName=="periodicityTimes") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("actualDueDate").get("value")==null) { ';
-      $colScript .= '    dijit.byId("actualDueDate").set("value", this.value); ';
-      $colScript .= '  } ';
+      $colScript .= 'if (this.value) {';
+      $colScript .= '  dijit.byId("periodicityEndDate").set("value", null); ';
       $colScript .= '  formChanged();';
-      $colScript .= '</script>';     
-    } else if ($colName=="actualDueDate") {
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("initialDueDate").get("value")==null) { ';
-      $colScript .= '    dijit.byId("initialDueDate").set("value", this.value); ';
-      $colScript .= '  } ';
-      $colScript .= '  formChanged();';
+      $colScript .= '}';
       $colScript .= '</script>';           
-    } else     if ($colName=="idle") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("idleDate").get("value")==null) {';
-      $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
-      $colScript .= '    }';
-      $colScript .= '    if (! dijit.byId("done").get("checked")) {';
-      $colScript .= '      dijit.byId("done").set("checked", true);';
-      $colScript .= '    }';  
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("idleDate").set("value", null); ';
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
-    } else if ($colName=="done") {   
-      $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (this.checked) { ';
-      $colScript .= '    if (dijit.byId("doneDate").get("value")==null) {';
-      $colScript .= '      var curDate = new Date();';
-      $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
-      $colScript .= '    }';
-      $colScript .= '  } else {';
-      $colScript .= '    dijit.byId("doneDate").set("value", null); ';
-      $colScript .= '    if (dijit.byId("idle").get("checked")) {';
-      $colScript .= '      dijit.byId("idle").set("checked", false);';
-      $colScript .= '    }'; 
-      $colScript .= '  } '; 
-      $colScript .= '  formChanged();';
-      $colScript .= '</script>';
     }
     return $colScript;
   }
@@ -213,22 +162,7 @@ class PeriodicMeeting extends SqlElement {
   public function drawSpecificItem($item){
     global $print;
     $result="";
-    if ($item=='buttonSendMail') {
-      if ($print) {
-        return "";
-      }
-      $result .= '<tr><td valign="top" class="label"><label></label></td><td>';
-      $result .= '<button id="sendMailToAttendees" dojoType="dijit.form.Button" showlabel="true"';
-      $result .= ' title="' . i18n('sendMailToAttendees') . '" >';
-      $result .= '<span>' . i18n('sendMailToAttendees') . '</span>';
-      $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-      $result .= '   if (checkFormChangeInProgress()) {return false;}';
-      $result .=  '  loadContent("../tool/sendMail.php","resultDiv","objectForm",true);';
-      $result .= '</script>';
-      $result .= '</button>';
-      $result .= '</td></tr>';
-      return $result;
-    }
+    return $result;
   }
 
   public function save() {

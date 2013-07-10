@@ -2452,10 +2452,12 @@ abstract class SqlElement {
   $responsibleChange=false, $noteAdd=false, $attachmentAdd=false,
   $noteChange=false, $descriptionChange=false, $resultChange=false, $assignmentAdd=false, $assignmentChange=false, 
   $anyChange=false) {
-    if (get_class($this)=='History') {
+  	$objectClass=get_class($this);
+  	if ($objectClass=='TicketSimple') {$objectClass='Ticket';}
+    if ($objectClass=='History') {
       return false; // exit : not for History
     }
-    $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>get_class($this)));
+    $mailable=SqlElement::getSingleSqlElementFromCriteria('Mailable', array('name'=>$objectClass));
     if (! $mailable or ! $mailable->id) {
       return false; // exit if not mailable object
     }
@@ -2575,7 +2577,7 @@ abstract class SqlElement {
       }
       if ($statusMail->mailToAssigned) {
         $ass=new Assignment();
-        $crit=array('refType'=>get_class($this),'refId'=>$this->id);
+        $crit=array('refType'=>$objectClass,'refId'=>$this->id);
         $assList=$ass->getSqlElementsFromCriteria($crit);
       	foreach ($assList as $ass) {
           $res=new Resource($ass->idResource);
@@ -2648,7 +2650,7 @@ abstract class SqlElement {
     $arrayTo=array();
     // Class of item
     $arrayFrom[]='${item}';
-    $item=i18n(get_class($this));
+    $item=i18n($objectClass);
     $arrayTo[]=$item;
     // id
     $arrayFrom[]='${id}';
@@ -2663,9 +2665,9 @@ abstract class SqlElement {
     $arrayFrom[]='${project}';
     $arrayTo[]=(property_exists($this, 'idProject'))?SqlList::getNameFromId('Project', $this->idProject):'';
     // type
-    $typeName='id' . get_class($this) . 'Type';
+    $typeName='id' . $objectClass . 'Type';
     $arrayFrom[]='${type}';
-    $arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId(get_class($this) . 'Type', $this->$typeName):'';
+    $arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId($objectClass . 'Type', $this->$typeName):'';
     // reference
     $arrayFrom[]='${reference}';
     $arrayTo[]=(property_exists($this, 'reference'))?$this->reference:'';
