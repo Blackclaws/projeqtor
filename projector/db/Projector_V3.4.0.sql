@@ -48,6 +48,7 @@ CREATE TABLE `${prefix}periodicmeeting` (
   `weeklyPeriodicitySaturday` int(1) unsigned default NULL,
   `weeklyPeriodicitySunday` int(1) unsigned default NULL,  
   `name` varchar(100) DEFAULT NULL,
+  `location` varchar(100) DEFAULT NULL,
   `description` VARCHAR(4000),
   `attendees` varchar(4000) DEFAULT NULL,
   `idUser` int(12) unsigned DEFAULT NULL,
@@ -85,3 +86,6 @@ SELECT `idProfile`, 124, `allowAccess` FROM `${prefix}habilitation` WHERE `idMen
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
 SELECT `idProfile`, 124, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=62;  
+
+INSERT INTO `${prefix}linkable` (`id`, `name`, `idDefaultLinkable`, `idle`) VALUES
+(17, 'Opportunity', 1, 0); 
