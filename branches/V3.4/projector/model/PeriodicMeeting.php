@@ -42,8 +42,8 @@ class PeriodicMeeting extends SqlElement {
     <th field="name" width="25%" >${name}</th>
     <th field="periodicityStartDate" formatter="dateFormatter" width="15%" >${startDate}</th>
     <th field="periodicityEndDate" formatter="dateFormatter" width="15%" >${endDate}</th>
-    <th field="$meetingStartTime" width="15%" >${startTime}</th>
-    <th field="$meetingEndTime" width="15%" >${endTime}</th>
+    <th field="meetingStartTime" width="15%" >${startTime}</th>
+    <th field="meetingEndTime" width="15%" >${endTime}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -51,7 +51,7 @@ class PeriodicMeeting extends SqlElement {
                                   "idMeetingType"=>"required",
                                   "periodicityStartDate"=>"required, nobr",
                                   "_lib_until"=>'nobr',
-                                  "periodicityEndDate"=>"required, nobr",
+                                  "periodicityEndDate"=>"nobr",
                                   "_lib_for"=>'nobr',      
                                   "periodicityTimes"=>'nobr,smallWidth',                            
                                   "meetingStartTime"=>'nobr',
