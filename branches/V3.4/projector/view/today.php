@@ -492,6 +492,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   $today=new Today();
   $crit=array('idUser'=>$user->id, 'idle'=>'0');
   $todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
+  // initialize if empty
+  if (count($todayList)==0) {
+    Today::insertStaticItems();
+    $todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
+  }
   $print=false;
   if (isset($_REQUEST['print'])) {
   	$print=true;
