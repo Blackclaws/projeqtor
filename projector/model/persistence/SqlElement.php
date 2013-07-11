@@ -927,7 +927,7 @@ abstract class SqlElement {
       //if ($st->id) $newObj->idStatus=$st->id;
       
     }
-    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
+    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation' and get_class($newObj)!='Message') {
       $newObj->idUser=$_SESSION['user']->id;
     }
     if (property_exists($newObj,"creationDate")) {
@@ -1076,7 +1076,7 @@ abstract class SqlElement {
       }      
       $newObj->idStatus=$st->id;
     }
-    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation') {
+    if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation' and get_class($newObj)!='Message') {
       $newObj->idUser=$_SESSION['user']->id;
     }
     if (property_exists($newObj,"creationDate")) {
@@ -1103,9 +1103,6 @@ abstract class SqlElement {
         }
       }
     }
-    if (property_exists($newObj,'idUser')) {
-    	$newObj->idUser=$_SESSION['user']->id;
-    } 
     $result=$newObj->save();
     if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) { 
       $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultCopied') . ' #' . $newObj->id;    
@@ -1576,7 +1573,7 @@ abstract class SqlElement {
       }
     }
     // set default idUser if exists
-    if ($empty and property_exists($this, 'idUser') and get_class($this)!='Affectation') {
+    if ($empty and property_exists($this, 'idUser') and get_class($this)!='Affectation' and get_class($this)!='Message') {
       if (array_key_exists('user', $_SESSION)) {
         $this->idUser=$_SESSION['user']->id;
       }
