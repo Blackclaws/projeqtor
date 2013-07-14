@@ -105,4 +105,4 @@ INSERT INTO `${prefix}periodicity` (`id`, `name`, `periodicityCode`, `sortOrder`
 (2, 'periodicityWeekly', 'WEEK', 200, 0),
 (3, 'periodicityMonthlyDay', 'MONTHDAY', 300, 0),
 (4, 'periodicityMonthlyWeek', 'MONTHWEEK', 400, 0),
-(5, 'periodicityYearly', 'YEAR', 500, 0);
+(5, 'periodicityYearly', 'YEAR', 500, 1);

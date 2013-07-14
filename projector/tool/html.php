@@ -782,4 +782,11 @@ function htmlDrawLink($obj, $display=null) {
 	 
 	return $result;
 }
+
+function htmlFixLengthNumeric($val, $numericLength=0) {  
+  if ($numericLength>0) {
+    $val=str_pad($val,$numericLength,'0', STR_PAD_LEFT);
+  }
+  return $val;
+}
 ?>

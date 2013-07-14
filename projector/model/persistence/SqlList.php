@@ -59,7 +59,13 @@ class SqlList {
 scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translate)");
     $res=array();
     $obj=new $listType();
-    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() ;
+    $calculated=false;
+    $field=$obj->getDatabaseColumnName($displayCol);
+    if (property_exists($obj, '_calculateForColumn') and isset($obj->_calculateForColumn[$displayCol])) {
+    	$field=$obj->_calculateForColumn[$displayCol];
+    	$calculated=true;
+    }
+    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() ;
     if ($showIdle) {
       $query.= " where (1=1 ";
     } else {
@@ -94,7 +100,7 @@ scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translat
             $name=i18n($name);
         	}
         }
-        if ($displayCol=='name' and property_exists($obj,'_constructForName')) {
+        if ($displayCol=='name' and property_exists($obj,'_constructForName') and !$calculated) {
         	$nameObj=new $listType($line['id']);
         	$name=$nameObj->name;
         }
@@ -105,7 +111,7 @@ scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translat
       self::$list[$listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
     } else {
     	self::$list['no_tr_' . $listType . "_" . $displayCol .(($showIdle)?'_all':'')]=$res;
-    }
+    } 
     return $res;
   }
  

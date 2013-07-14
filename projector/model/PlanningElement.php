@@ -422,6 +422,9 @@ class PlanningElement extends SqlElement {
     $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
     $assignment=new Assignment();
     $assList=$assignment->getSqlElementsFromCriteria($critAss, false);
+    if ($this->refType=='PeriodicMeeting') {
+    	$assList=array();
+    }
     $realStartDate=null;
     $realEndDate=null;
     $plannedStartDate=null;

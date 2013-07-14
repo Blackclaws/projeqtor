@@ -803,7 +803,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						if ($obj->id) {
 							$critFld='idProject';
 							$critVal=$obj->idProject;
-						} else if (array_key_exists('project',$_SESSION)) {
+						} else if (array_key_exists('project',$_SESSION) and $_SESSION['project']!='*') {
 							$critFld='idProject';
 							$critVal=$_SESSION['project'];
 						} else {
@@ -816,7 +816,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 								$critFld='idProject';
 								$critVal=$firstId;
 							}
-						}
+						}			
 					}
 				}
 				// if version and idProduct exists and is set : criteria is product
