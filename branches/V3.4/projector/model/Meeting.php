@@ -252,7 +252,35 @@ class Meeting extends SqlElement {
       return $result;
     }
   }
+  
+  public function deleteControl() { 
+    $result='';
+    if ($this->MeetingPlanningElement and $this->MeetingPlanningElement->realWork>0) {
+      $result.='<br/>' . i18n('msgUnableToDeleteRealWork');
+    }
+    if ($result=='') {
+      $result .= parent::deleteControl();
+    }
+    return $result;
+  }
 
+  public function control(){
+    $result="";
+    if (trim($this->idActivity)) {
+      $parentActivity=new Activity($this->idActivity);
+      if ($parentActivity->idProject!=$this->idProject) {
+        $result.='<br/>' . i18n('msgParentActivityInSameProject');
+      }
+    }
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
+  
   public function save() {
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
@@ -307,6 +335,12 @@ class Meeting extends SqlElement {
       }
       $this->attendees=str_ireplace(',  ', ', ', $this->attendees);
       $this->attendees=str_ireplace(',  ', ', ', $this->attendees);
+    }
+    $this->MeetingPlanningElement->validatedStartDate=$this->meetingDate;
+    $this->MeetingPlanningElement->validatedEndDate=$this->meetingDate;
+    if (! $this->MeetingPlanningElement->assignedWork) {
+    	$this->MeetingPlanningElement->plannedStartDate=$this->meetingDate;
+      $this->MeetingPlanningElement->plannedEndDate=$this->meetingDate;
     }
     return parent::save();
   }

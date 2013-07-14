@@ -23,7 +23,7 @@ abstract class SqlElement {
   private static $_fieldsAttributes=array("name"=>"required");
   
   // Management of cache for queries : cache is only valid during current script
-  public static $_cachedQuery=array('Habilitation'=>array());
+  public static $_cachedQuery=array('Habilitation'=>array(),'Menu'=>array());
   
   // All dependencies between objects :
   //    control => sub-object must not exist to allow deletion
@@ -77,7 +77,7 @@ abstract class SqlElement {
                                   "Link"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
-    "Meeting" =>            array("Link"=>"cascade"),
+    "Meeting" =>            array("Link"=>"cascade", "Assignment"=>"cascade"),
     "MeetingType" =>        array("Meeting"=>"control","PeriodicMeeting"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
@@ -86,7 +86,7 @@ abstract class SqlElement {
                                   "Link"=>"cascade",
                                   "Dependency"=>"cascade"),
     "MilestoneType" =>      array("Milestone"=>"control"),
-    "PeriodicMeeting" =>    array("Meeting"=>"cascade"),
+    "PeriodicMeeting" =>    array("Meeting"=>"cascade","Assignment"=>"cascade"),
     "Priority" =>           array("Issue"=>"control", 
                                   "Ticket"=>"control"),
     "Profile" =>            array("AccessRight"=>"cascade",
@@ -811,7 +811,8 @@ abstract class SqlElement {
           }
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           foreach ($list as $subObj) {
-            $subObj->delete();
+          	$subObjDel=new $object($subObj->id);
+            $subObjDel->delete();
           }
         }
       }
@@ -850,7 +851,6 @@ abstract class SqlElement {
    * @return void
    */ 
   private function purgeSqlElement($clause) {
-debugLog(get_class($this)."->purgeSqlElement($clause)");
     $objectClass = get_class($this);
     // purge depending Planning Element if any
     if (property_exists($this, $objectClass.'PlanningElement')) {
@@ -2383,12 +2383,10 @@ debugLog(get_class($this)."->purgeSqlElement($clause)");
       and (trim($old->idStatus)!=trim($this->idStatus) or trim($old->$fldType)!=trim($this->$fldType) ) 
       and $old->id and $class!='Document' and trim($old->idStatus) and trim($old->$fldType)) {
     	$type=new Type($this->$fldType);
-debugLog($old->idStatus.'!='.$this->idStatus.' or '.$old->$fldType.'!='.$this->$fldType);    	
     	$crit=array('idWorkflow'=>$type->idWorkflow,
     	            'idStatusFrom'=>$old->idStatus,
     	            'idStatusTo'=>$this->idStatus,
     	            'idProfile'=>$_SESSION['user']->idProfile);
- debugLog($crit);    	
     	$ws=SqlElement::getSingleSqlElementFromCriteria('WorkflowStatus', $crit);
     	if (!$ws or !$ws->id or $ws->allowed!=1) {
     		$oldStat=new Status($old->idStatus);

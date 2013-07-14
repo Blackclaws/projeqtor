@@ -101,6 +101,10 @@ class Assignment extends SqlElement {
       }      
     }
     
+    if ($this->refType=='PeriodicMeeting') {
+    	$this->idle=1;
+    }
+    
     // Dispatch value
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
