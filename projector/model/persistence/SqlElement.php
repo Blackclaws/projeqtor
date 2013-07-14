@@ -78,7 +78,7 @@ abstract class SqlElement {
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
     "Meeting" =>            array("Link"=>"cascade"),
-    "MeetingType" =>        array("Meeting"=>"control"),
+    "MeetingType" =>        array("Meeting"=>"control","PeriodicMeeting"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
     "Milestone" =>          array("Attachement"=>"cascade",
@@ -86,6 +86,7 @@ abstract class SqlElement {
                                   "Link"=>"cascade",
                                   "Dependency"=>"cascade"),
     "MilestoneType" =>      array("Milestone"=>"control"),
+    "PeriodicMeeting" =>    array("Meeting"=>"cascade"),
     "Priority" =>           array("Issue"=>"control", 
                                   "Ticket"=>"control"),
     "Profile" =>            array("AccessRight"=>"cascade",
@@ -380,6 +381,11 @@ abstract class SqlElement {
       }
       if (property_exists($this, 'idResource') and ! trim($this->idResource)) {
         $this->setDefaultResponsible();
+      }
+      if (! $this->id and $this instanceof PlanningElement) { // For planning element , check that not existing yet
+      	$critPe=array('refType'=>$this->refType, 'refId'=>$this->refId);
+      	$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $critPe);
+        if ($pe->id) {$this->id=$pe->id;}
       }
       if ($this->id != null  and !$forceInsert) {
         if (property_exists($this, 'idStatus')) {
@@ -844,7 +850,25 @@ abstract class SqlElement {
    * @return void
    */ 
   private function purgeSqlElement($clause) {
+debugLog(get_class($this)."->purgeSqlElement($clause)");
     $objectClass = get_class($this);
+    // purge depending Planning Element if any
+    if (property_exists($this, $objectClass.'PlanningElement')) {
+      $query="select id from " .  $this->getDatabaseTableName() . " where " . $clause;
+      $resultId = Sql::query($query);
+      if (Sql::$lastQueryNbRows > 0) {
+	      $line = Sql::fetchLine($resultId);
+	      $peCrit='(0';
+	      while ($line) {
+	      	$peCrit.=','.$line['id'];
+	      	$line = Sql::fetchLine($resultId);
+	      }
+	      $peCrit.=')';
+	      $pe=new PlanningElement();
+	      $query="delete from " .  $pe->getDatabaseTableName() . " where refType='$objectClass' and refId in $peCrit";
+	      Sql::query($query);
+      }
+    }
     // get all data, and identify if changes
     $query="delete from " .  $this->getDatabaseTableName() . " where " . $clause;
     // execute request
@@ -2355,15 +2379,16 @@ abstract class SqlElement {
     $class=get_class($this);
     $old=new $class($this->id);
     $fldType='id'.$class.'Type';
-    if ( property_exists($class, 'idStatus') and property_exists($class, $fldType) 
-      and ($old->idStatus!=$this->idStatus or $old->$fldType!=$this->$fldType ) 
-      and $old->id and $class!='Document') {
+    if ( property_exists($class, 'idStatus') and property_exists($class, $fldType) and $old->idStatus
+      and (trim($old->idStatus)!=trim($this->idStatus) or trim($old->$fldType)!=trim($this->$fldType) ) 
+      and $old->id and $class!='Document' and trim($old->idStatus) and trim($old->$fldType)) {
     	$type=new Type($this->$fldType);
-    	
+debugLog($old->idStatus.'!='.$this->idStatus.' or '.$old->$fldType.'!='.$this->$fldType);    	
     	$crit=array('idWorkflow'=>$type->idWorkflow,
     	            'idStatusFrom'=>$old->idStatus,
     	            'idStatusTo'=>$this->idStatus,
     	            'idProfile'=>$_SESSION['user']->idProfile);
+ debugLog($crit);    	
     	$ws=SqlElement::getSingleSqlElementFromCriteria('WorkflowStatus', $crit);
     	if (!$ws or !$ws->id or $ws->allowed!=1) {
     		$oldStat=new Status($old->idStatus);

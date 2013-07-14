@@ -69,7 +69,7 @@ class ProjectPlanningElement extends PlanningElement {
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
-    "idPlanningMode"=>"replaced"
+    "idPlanningMode"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

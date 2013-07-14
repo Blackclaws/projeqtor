@@ -37,16 +37,17 @@ CREATE TABLE `${prefix}periodicmeeting` (
   `meetingEndTime` time DEFAULT NULL,
   `periodicityTimes` int(3) DEFAULT NULL,
   `idPeriodicity` int(12) unsigned DEFAULT NULL,
-  `periodicityFrequency` int(2) default NULL,
+  `periodicityDailyFrequency` int(2) default NULL,
+  `periodicityWeeklyFrequency` int(2) default NULL,
+  `periodicityWeeklyDay` int(1) default NULL,
+  `periodicityMonthlyDayFrequency` int(2) default NULL,
+  `periodicityMonthlyDayDay` int(2) default NULL,
+  `periodicityMonthlyWeekFrequency` int(2) default NULL,
+  `periodicityMonthlyWeekNumber` int(1) default NULL,
+  `periodicityMonthlyWeekDay` int(2) default NULL,
+  `periodicityYearlyDay` int(2) default NULL,
+  `periodicityYearlyMonth` int(2) default NULL,
   `periodicityOpenDays` int(1) unsigned default NULL,
-  `periodicityMonthlyWeeklyNumber` int(1) unsigned default NULL,
-  `weeklyPeriodicityMonday` int(1) unsigned default NULL,
-  `weeklyPeriodicityTuesday` int(1) unsigned default NULL,
-  `weeklyPeriodicityWednesday` int(1) unsigned default NULL,
-  `weeklyPeriodicityThursday` int(1) unsigned default NULL,
-  `weeklyPeriodicityFriday` int(1) unsigned default NULL,
-  `weeklyPeriodicitySaturday` int(1) unsigned default NULL,
-  `weeklyPeriodicitySunday` int(1) unsigned default NULL,  
   `name` varchar(100) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   `description` VARCHAR(4000),
@@ -89,3 +90,19 @@ SELECT `idProfile`, 124, `idAccessProfile` FROM `${prefix}accessright` WHERE `id
 
 INSERT INTO `${prefix}linkable` (`id`, `name`, `idDefaultLinkable`, `idle`) VALUES
 (17, 'Opportunity', 1, 0); 
+
+CREATE TABLE `${prefix}periodicity` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `periodicityCode` varchar(10),
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}periodicity` (`id`, `name`, `periodicityCode`, `sortOrder`, `idle`) VALUES
+(1, 'periodicityDaily', 'DAY', 100, 0),
+(2, 'periodicityWeekly', 'WEEK', 200, 0),
+(3, 'periodicityMonthlyDay', 'MONTHDAY', 300, 0),
+(4, 'periodicityMonthlyWeek', 'MONTHWEEK', 400, 0),
+(5, 'periodicityYearly', 'YEAR', 500, 0);

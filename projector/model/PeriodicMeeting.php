@@ -22,16 +22,30 @@ class PeriodicMeeting extends SqlElement {
   public $idle;
   public $_sec_periodicity;
   public $periodicityStartDate;
-  public $_lib_until;
+  public $_lib_periodicUntil;
   public $periodicityEndDate;
-  public $_lib_for;
+  public $_lib_periodicFor;
   public $periodicityTimes;
-  public $_lib_times;
+  public $_lib_periodicTimes;
   public $meetingStartTime;
   public $_lib_to;
   public $meetingEndTime;
+  public $idPeriodicity;
+  public $_spe_periodicity;
+  public $periodicityOpenDays;
   public $MeetingPlanningElement;
+  public $periodicityDailyFrequency;
+  public $periodicityWeeklyFrequency;
+  public $periodicityWeeklyDay;
+  public $periodicityMonthlyDayFrequency;
+  public $periodicityMonthlyDayDay;
+  public $periodicityMonthlyWeekFrequency;
+  public $periodicityMonthlyWeekNumber;
+  public $periodicityMonthlyWeekDay;
+  public $periodicityYearlyDay;
+  public $periodicityYearlyMonth;
   public $_Note=array();
+  public $idPeriodicMeeting;
 
 
   // Define the layout that will be used for lists
@@ -51,19 +65,30 @@ class PeriodicMeeting extends SqlElement {
   private static $_fieldsAttributes=array("idProject"=>"required",
                                   "idMeetingType"=>"required",
                                   "periodicityStartDate"=>"required, nobr",
-                                  "_lib_until"=>'nobr',
+                                  "_lib_periodicUntil"=>'nobr',
                                   "periodicityEndDate"=>"nobr",
-                                  "_lib_for"=>'nobr',      
+                                  "_lib_periodicFor"=>'nobr',      
                                   "periodicityTimes"=>'nobr,smallWidth',                            
                                   "meetingStartTime"=>'nobr',
                                   "_lib_to"=>'nobr',
-                                  "meetingEndTime"=>'nobr',
+                                  "meetingEndTime"=>'',
                                   "idUser"=>"hidden",
                                   "idResource"=>"idden",
                                   "idStatus"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+  'periodicityDailyFrequency'=>'hidden',
+  'periodicityWeeklyFrequency'=>'hidden',
+  'periodicityWeeklyDay'=>'hidden',
+  'periodicityMonthlyDayFrequency'=>'hidden',
+  'periodicityMonthlyDayDay'=>'hidden',
+  'periodicityMonthlyWeekFrequency'=>'hidden',
+  'periodicityMonthlyWeekNumber'=>'hidden',
+  'periodicityMonthlyWeekDay'=>'hidden',
+  'periodicityYearlyDay'=>'hidden',
+  'periodicityYearlyMonth'=>'hidden',
+  'idPeriodicMeeting'=>'hidden,calculated'
   );  
   
   private static $_colCaptionTransposition = array(
@@ -155,6 +180,32 @@ class PeriodicMeeting extends SqlElement {
       $colScript .= '  formChanged();';
       $colScript .= '}';
       $colScript .= '</script>';           
+    } else if ($colName=="idPeriodicity") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= 'var arrPer=new Array();';
+    	$colScript .= 'arrPer[1]="DAY";';
+    	$colScript .= 'arrPer[2]="WEEK";';
+    	$colScript .= 'arrPer[3]="MONTHDAY";';
+    	$colScript .= 'arrPer[4]="MONTHWEEK";';
+    	$colScript .= 'arrPer[5]="YEAR";';
+    	$colScript .= 'for (i=1;i<=5; i++) {';
+    	$colScript .= '  if (i==this.value) {';
+    	$colScript .= '    dojo.byId(arrPer[i]).style.display="block";';
+    	$colScript .= '  } else {';
+    	$colScript .= '    dojo.byId(arrPer[i]).style.display="none";';
+    	$colScript .= '  }';
+    	$colScript .= '}';
+    	$colScript .= 'formChanged();';
+    	$colScript .= '</script>';      
+    } else if ($colName=="periodicityStartDate") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= ' weekday=new Date(this.value).getDay();';
+      $colScript .= ' if (weekday==0) weekday=7;';
+      $colScript .= '  dijit.byId("periodicityWeeklyDayId").set("value",weekday);';
+      $colScript .= '  day=new Date(this.value).getDate();';
+      $colScript .= '  dijit.byId("periodicityMonthlyDayDayId").set("value",day);';
+      $colScript .= ' formChanged();';
+      $colScript .= '</script>';   
     }
     return $colScript;
   }
@@ -162,6 +213,82 @@ class PeriodicMeeting extends SqlElement {
   public function drawSpecificItem($item){
     global $print;
     $result="";
+    if ($item=='periodicity') {
+    	
+    	$result.='<div style="display:'.(($this->idPeriodicity==1)?'block':'none').'" id="DAY">';
+    	$result.='<table><tr><td class="label"></td><td>';
+    	$result.=i18n('periodicEvery').'&nbsp;';
+    	$result.='<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+    	$result.='   constraints="{min:0,max:99}" name="periodicityDailyFrequency" ';
+    	$result.='   value="'.(($this->periodicityDailyFrequency)?$this->periodicityDailyFrequency:1).'" class="input"></div>';
+    	$result.='&nbsp;'.i18n('days');
+    	$result.='</td></tr></table>';
+    	$result.='</div>';
+    	
+    	$result.='<div style="display:'.(($this->idPeriodicity==2)?'block':'none').'" id="WEEK">';
+      $result.='<table><tr><td class="label"></td><td>';
+      $result.=i18n('periodicOn');
+      $result.='&nbsp;<select dojoType="dijit.form.FilteringSelect" style="width: 120px;"  ';
+      $result.='   name="periodicityWeeklyDay" id="periodicityWeeklyDayId" class="input" labelType="html">';
+      $result.=htmlReturnOptionForWeekdays($this->periodicityWeeklyDay, true);
+      $result.='</select>';
+      $result.='&nbsp;'.i18n('periodicEvery').'&nbsp;';
+      $result.='<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+      $result.='   constraints="{min:0,max:99}" name="periodicityWeeklyFrequency" ';
+      $result.='   value="'.(($this->periodicityWeeklyFrequency)?$this->periodicityWeeklyFrequency:1).'" class="input"></div>';
+      $result.='&nbsp;'.i18n('periodicWeeks');   
+      $result.='</td></tr></table>';     
+    	$result.='</div>';
+      
+    	$result.='<div style="display:'.(($this->idPeriodicity==4)?'block':'none').'" id="MONTHDAY">';
+      $result.='<table><tr><td class="label"></td><td>';
+      $result.=i18n('day').'&nbsp;';
+      $result.='<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+      $result.='   constraints="{min:0,max:31}" name="periodicityMonthlyDayDay" id="periodicityMonthlyDayDayId"';
+      $result.='   value="'.(($this->periodicityMonthlyDayDay)?$this->periodicityMonthlyDayDay:1).'" class="input"></div>';
+      $result.='&nbsp;'.i18n('periodicEvery');
+      $result.='&nbsp;<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+      $result.='   constraints="{min:0,max:9}" name="periodicityMonthlyDayFrequency" ';
+      $result.='   value="'.(($this->periodicityMonthlyDayFrequency)?$this->periodicityMonthlyDayFrequency:1).'" class="input"></div>';
+      $result.='&nbsp;'.i18n('periodicMonths');
+      $result.='</td></tr></table>';
+      $result.='</div>';
+      
+    	$result.='<div style="display:'.(($this->idPeriodicity==3)?'block':'none').'" id="MONTHWEEK">';
+      $result.='<table><tr><td class="label"></td><td>';
+      $result.=i18n('periodicOn').'&nbsp;';
+      $result.='<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+      $result.='   constraints="{min:0,max:31}" name="periodicityMonthlyWeekNumber" ';
+      $result.='   value="'.(($this->periodicityMonthlyWeekNumber)?$this->periodicityMonthlyWeekNumber:1).'" class="input"></div>';
+      $result.=i18n('periodicTh');
+      $result.='&nbsp;<select dojoType="dijit.form.FilteringSelect" style="width: 120px;"  ';
+      $result.='   name="periodicityMonthlyWeekDay" class="input" labelType="html">';
+      $result.=htmlReturnOptionForWeekdays($this->periodicityMonthlyWeekDay, true);
+      $result.='</select>';
+      $result.='&nbsp;'.i18n('periodicEvery');
+      $result.='&nbsp;<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+      $result.='   constraints="{min:0,max:9}" name="periodicityMonthlyWeekFrequency" ';
+      $result.='   value="'.(($this->periodicityMonthlyWeekFrequency)?$this->periodicityMonthlyWeekFrequency:1).'" class="input"></div>';
+      $result.='&nbsp;'.i18n('periodicMonths');
+      $result.='</td></tr></table>';
+    	$result.='</div>';
+    	
+      
+      
+    	$result.='<div style="display:'.(($this->idPeriodicity==5)?'block':'none').'" id="YEAR">';
+    	$result.='<table><tr><td class="label"></td><td>';
+    	$result.=i18n('periodicOn').'&nbsp;';
+    	$result.='<div dojoType="dijit.form.NumberTextBox" style="width: 20px;"  ';
+      $result.='   constraints="{min:0,max:31}" name="periodicityYearlyDay" ';
+      $result.='   value="'.(($this->periodicityYearlyDay)?$this->periodicityYearlyDay:1).'" class="input"></div>';
+      //$result.=i18n('periodicTh');
+      $result.='&nbsp;<select dojoType="dijit.form.FilteringSelect" style="width: 120px;"  ';
+      $result.='   name="periodicityYearlyMonth" class="input" labelType="html">';
+      $result.=htmlReturnOptionForMonths($this->periodicityYearlyMonth, true);
+      $result.='</select>';
+      $result.='</td></tr></table>';
+      $result.='</div>';
+    }
     return $result;
   }
 
@@ -220,9 +347,101 @@ class PeriodicMeeting extends SqlElement {
       $this->attendees=str_ireplace(',  ', ', ', $this->attendees);
       $this->attendees=str_ireplace(',  ', ', ', $this->attendees);
     }
-    return parent::save();
+    $result=parent::save();
+debugLog($result);
+    if (stripos($result,'id="lastOperationStatus" value="OK"')==0 ) {
+    	return $result;
+    }    
+    // Create / Update meetings
+    $nb=0;
+    $currentDate=$this->periodicityStartDate;
+    $lastDate=$currentDate;
+    if ($this->periodicityEndDate) {$this->periodicityTimes=null;}
+    if (! $this->periodicityDailyFrequency) $this->periodicityDailyFrequency=1;
+    if (! $this->periodicityWeeklyFrequency) $this->periodicityWeeklyFrequency=1;
+    if (! $this->periodicityWeeklyDay) $this->periodicityWeeklyDay=1;
+    if ($this->periodicityOpenDays and $this->periodicityWeeklyDay>=6) $this->periodicityOpenDays=0;  
+    if (! $this->periodicityMonthlyDayDay) $this->periodicityMonthlyDayDay=1;
+    if (! $this->periodicityMonthlyDayFrequency) $this->periodicityMonthlyDayFrequency=1;
+    while ( ($this->periodicityEndDate and $currentDate<=$this->periodicityEndDate) 
+         or ($this->periodicityTimes and $nb<$this->periodicityTimes)) {
+         	
+    	if ($this->idPeriodicity==1) { // DAILY
+    		if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {
+    			$nb++;
+    			$this->saveMeeting($currentDate, $nb);
+    			$lastDate=$currentDate;
+    		}
+    		$currentDate=addDaysToDate($currentDate, $this->periodicityDailyFrequency);
+    	}
+    	
+      if ($this->idPeriodicity==2) { // WEEKLY
+        if ($this->periodicityWeeklyDay==date('N', strtotime($currentDate)) ) {
+          if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {       	
+	          $nb++;
+	          $this->saveMeeting($currentDate, $nb);
+	          $lastDate=$currentDate;
+          }
+          $currentDate=addDaysToDate($currentDate, 7*$this->periodicityWeeklyFrequency);
+        } else {
+        	$currentDate=addDaysToDate($currentDate, 1);
+        }
+      }
+      
+      if ($this->idPeriodicity==3) { // MONTHLY DAY
+        if ($this->periodicityWeeklyDay==date('N', strtotime($currentDate)) ) {
+          if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {        
+            $nb++;
+            $this->saveMeeting($currentDate, $nb);
+            $lastDate=$currentDate;
+          }
+          $currentDate=addDaysToDate($currentDate, 7*$this->periodicityWeeklyFrequency);
+        } else {
+          $currentDate=addDaysToDate($currentDate, 1);
+        }
+      }
+      
+    }
+    // Purge old meeting (if number of meeting is less that previous one
+    $meet=new Meeting;
+    $meet->purge("idPeriodicMeeting=".$this->id." and isPeriodic=1 and periodicOccurence>".$nb);
+    if (!$this->periodicityTimes) {
+      $this->periodicityTimes=$nb;
+    } 
+    if (! $this->periodicityEndDate) {
+    	$this->periodicityEndDate=$lastDate;
+    }
+    parent::save();
+    return $result;
   }
-
+  private function saveMeeting($currentDate, $nb) {
+debugLog ("saveMeeting($currentDate, $nb)");
+  	$critArray=array("idPeriodicMeeting"=>$this->id, "isPeriodic"=>'1',"periodicOccurence"=>$nb);
+  	$meeting=SqlElement::getSingleSqlElementFromCriteria('Meeting', $critArray);
+  	$meeting->idProject=$this->idProject;
+    $meeting->idMeetingType=$this->idMeetingType;
+    $meeting->idPeriodicMeeting=$this->id;
+    $meeting->isPeriodic=1;
+    $meeting->periodicOccurence=$nb;
+    $meeting->meetingDate=$currentDate;
+    $meeting->meetingStartTime=$this->meetingStartTime;
+    $meeting->meetingEndTime=$this->meetingEndTime;
+    $meeting->name=$this->name . " #".$nb;
+    $meeting->location=$this->location;
+    $meeting->attendees=$this->attendees;
+    $meeting->idUser=$this->idUser;
+    $meeting->description=$this->description;
+    $meeting->idActivity=null;
+    if (! $meeting->idStatus) {
+      $table=SqlList::getList('Status');
+      reset($table);
+      $meeting->idStatus=key($table);
+    }
+    $meeting->idResource=$this->idResource;
+    // Assignments => dispatch ========================== TODO
+    $resultMeetingSave=$meeting->save();
+debugLog($resultMeetingSave);
+  }
   
 }
 ?>
