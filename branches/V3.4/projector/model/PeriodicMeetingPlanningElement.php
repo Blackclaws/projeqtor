@@ -2,7 +2,7 @@
 /* ============================================================================
  * Planning element is an object included in all objects that can be planned.
  */ 
-class MeetingPlanningElement extends PlanningElement {
+class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
 
   public $id;
   public $idProject;
@@ -61,51 +61,10 @@ class MeetingPlanningElement extends PlanningElement {
    * @return void
    */ 
   function __construct($id = NULL) {
-  	$this->idMeetingPlanningMode=16;
     parent::__construct($id);
   }
   
-  private function hideWorkCost() {
-  	unset($this->_tab_3_2);
-  	self::$_fieldsAttributes['validatedWork']='hidden';
-    self::$_fieldsAttributes['assignedWork']='hidden';
-    self::$_fieldsAttributes['realWork']='hidden';
-    self::$_fieldsAttributes['leftWork']='hidden';
-    self::$_fieldsAttributes['validatedCost']='hidden';
-    self::$_fieldsAttributes['assignedCost']='hidden';
-    self::$_fieldsAttributes['realCost']='hidden';
-    self::$_fieldsAttributes['leftCost']='hidden';
-  }
-  private function showWorkCost() {
-  	$this->_tab_3_2 = array('assigned', 'real', 'left', 'work', 'cost');
-    self::$_fieldsAttributes['validatedWork']='hidden';
-    self::$_fieldsAttributes['assignedWork']='readonly';
-    self::$_fieldsAttributes['realWork']='readonly';
-    self::$_fieldsAttributes['leftWork']='readonly';
-    self::$_fieldsAttributes['validatedCost']='hidden';
-    self::$_fieldsAttributes['assignedCost']='readonly';
-    self::$_fieldsAttributes['realCost']='readonly';
-    self::$_fieldsAttributes['leftCost']='readonly';
-  }
   
-  public function setAttributes() {
-  	global $workVisibility,$costVisibility;
-    if (! $this->id) {
-      $this->hideWorkCost();
-    } else {
-      if ($workVisibility=='NO' and $costVisibility=='NO') {
-        $this->hideWorkCost();
-      } else {
-        $ass=new Assignment();
-        $cptAss=$ass->countSqlElementsFromCriteria(array('refType'=>$this->refType, 'refId'=>$this->refId));
-        if ($cptAss>0) {
-          $this->showWorkCost();
-        } else {
-          $this->hideWorkCost();
-        } 
-      }
-    }
-  }
   /** ==========================================================================
    * Destructor
    * @return void
@@ -145,13 +104,13 @@ class MeetingPlanningElement extends PlanningElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-  	$meeting=new $this->refType($this->refId);
-  	$old=new MeetingPlanningElement($this->id);
+  	$meeting=new PeriodicMeeting($this->refId);
+  	$old=new PeriodicMeetingPlanningElement($this->id);
   	if (!$this->id) {
   		$this->priority=1; // very high priority
   		$this->idMeetingPlanningMode=16; // fixed planning  		
   	}
-  	if ($this->refType=='Meeting' and $meeting->idPeriodicMeeting) {
+  	if ($meeting->idPeriodicMeeting) {
   		$this->topRefType='PeriodicMeeting';
   		$this->topRefId=$meeting->idPeriodicMeeting;
   	} else if ($meeting->idActivity) {
@@ -161,10 +120,8 @@ class MeetingPlanningElement extends PlanningElement {
   		$this->topRefType='Project';
   		$this->topRefId=$meeting->idProject;
   	}
-  	if ($this->refType=='Meeting') {
-  	  $this->validatedStartDate=$meeting->meetingDate;
-  	  $this->validatedEndDate=$meeting->meetingDate;
-  	}
+  	$this->validatedStartDate=$meeting->meetingDate;
+  	$this->validatedEndDate=$meeting->meetingDate;
   	$this->validatedDuration=1; // TODO : Could be improved : duration is less than one.
   	//$this->validatedWork=0; // TODO : To be calculated from Number of assignements x meeting duration
     $this->idProject=$meeting->idProject;
@@ -186,9 +143,22 @@ class MeetingPlanningElement extends PlanningElement {
   public function control(){
     $result="";
     $mode=null;
-    if (! $this->idMeetingPlanningMode) {
-      $this->idMeetingPlanningMode=16;
+    if ($this->idMeetingPlanningMode) {
+      $mode=new ActivityPlanningMode($this->idMeetingPlanningMode);
     }   
+    if ($mode) {
+      if ($mode->mandatoryStartDate and ! $this->validatedStartDate) {
+        $result.='<br/>' . i18n('errorMandatoryValidatedStartDate');
+      }
+      if ($mode->mandatoryEndDate and ! $this->validatedEndDate) {
+        $result.='<br/>' . i18n('errorMandatoryValidatedEndDate');
+      }
+      if ($mode->mandatoryDuration and ! $this->validatedDuration) {
+        $result.='<br/>' . i18n('errorMandatoryValidatedDuration');
+      }
+   
+    }
+   
     
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {

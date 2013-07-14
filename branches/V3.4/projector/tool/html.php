@@ -168,6 +168,36 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   }
 }
 
+function htmlReturnOptionForWeekdays($selection, $required=false) {
+	$arrayWeekDay=array('1'=>'Monday', '2'=>'Tuesday', '3'=>'Wednesday', '4'=>'Thursday',
+	                    '5'=>'Friday', '6'=>'Saturday', '7'=>'Sunday');
+  $result="";
+	if (! $required) {
+    $result.='<OPTION value=" " ></OPTION>';
+  }
+  for ($key=1; $key<=7; $key++) {
+    $result.= '<OPTION value="' . $key . '"';
+    if ( $selection and $key==$selection ) { $result.= ' SELECTED '; } 
+    $result.= '>'. i18n($arrayWeekDay[$key]) . '</OPTION>';
+  }
+  return $result;
+}
+
+function htmlReturnOptionForMonths($selection, $required=false) {
+  $arrayMonth=array('1'=>'January', '2'=>'February', '3'=>'March', '4'=>'April',
+                      '5'=>'May', '6'=>'June', '7'=>'July','8'=>'August',
+                      '9'=>'September', '10'=>'October', '11'=>'November','12'=>'December');
+  $result="";
+  if (! $required) {
+    $result.='<OPTION value=" " ></OPTION>';
+  }
+  for ($key=1; $key<=12; $key++) {
+    $result.= '<OPTION value="' . $key . '"';
+    if ( $selection and $key==$selection ) { $result.= ' SELECTED '; } 
+    $result.= '>'. i18n($arrayMonth[$key]) . '</OPTION>';
+  }
+  return $result;
+}
 /** ===========================================================================
  * Display the info of the aplication (name, version) with link to website
  * @return void
