@@ -317,8 +317,7 @@ class PeriodicMeeting extends SqlElement {
   		if (stripos($resDel,'id="lastOperationStatus" value="OK"')==0 ) {
         return $resDel;
       }    
-  	}
-debugLog("DELETE");  	
+  	}	
   	$result=parent::delete();
   	/*$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'PeriodicMeeting','refId'=>$this->id));
   	if ($pe and $pe->id) {
