@@ -1250,7 +1250,7 @@ function addAssignment (unit, rawUnit, hoursPerDay) {
 	dojo.byId("assignmentLeftUnit").value=unit;
 	dojo.byId("assignmentRealUnit").value=unit;
 	dojo.byId("assignmentAssignedUnit").value=unit;
-	if (dojo.byId('objectClass').value=='Meeting') {
+	if (dojo.byId('objectClass').value=='Meeting' || dojo.byId('objectClass').value=='PeriodicMeeting') {
 	  if (dijit.byId('meetingEndTime') && dijit.byId('meetingEndTime').get('value') 
 	   && dijit.byId('meetingStartTime') && dijit.byId('meetingStartTime').get('value') ) {
 		delay=(dijit.byId('meetingEndTime').get('value')-dijit.byId('meetingStartTime').get('value'))/1000/60/60;
