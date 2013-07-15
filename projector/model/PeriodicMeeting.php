@@ -307,12 +307,23 @@ class PeriodicMeeting extends SqlElement {
     return $result;
   }
   public function delete() {
-  	$result=parent::delete();
+  	
   	// The delete cascades delete of meetings, so PlanningElement will not correctly be destroyed.
-  	$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'PeriodicMeeting','refId'=>$this->id));
+  	$meet=new Meeting();
+  	$lstMeet=$meet->getSqlElementsFromCriteria(array('idPeriodicMeeting'=>$this->id));
+  	foreach ($lstMeet as $meet) {
+  		$meeting=new Meeting($meet->id);
+  		$resDel=$meeting->delete();
+  		if (stripos($resDel,'id="lastOperationStatus" value="OK"')==0 ) {
+        return $resDel;
+      }    
+  	}
+debugLog("DELETE");  	
+  	$result=parent::delete();
+  	/*$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'PeriodicMeeting','refId'=>$this->id));
   	if ($pe and $pe->id) {
   		$pe->delete();
-  	}
+  	}*/
   	return $result;
   }
   
