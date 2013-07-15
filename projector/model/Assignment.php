@@ -71,6 +71,8 @@ class Assignment extends SqlElement {
    */
   public function save() {
     
+  	$creation=($this->id)?false:true;
+  	
     if (! $this->realWork) { $this->realWork=0; }
     // if cost has changed, update work 
     
@@ -103,12 +105,43 @@ class Assignment extends SqlElement {
     
     if ($this->refType=='PeriodicMeeting') {
     	$this->idle=1;
+    	$this->leftWork=0;
     }
     
     // Dispatch value
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
+    }
+    
+    if ($this->refType=='PeriodicMeeting') {
+      $meet=new Meeting();
+      $lstMeet=$meet->getSqlElementsFromCriteria(array('idPeriodicMeeting'=>$this->refId));
+      foreach ($lstMeet as $meet) {
+        $critArray=array('refType'=>'Meeting', 'refId'=>$meet->id, 'idResource'=>$this->idResource, 'idRole'=>$this->idRole);
+        $ass=SqlElement::getSingleSqlElementFromCriteria('Assignment', $critArray);
+        if (!$ass or !$ass->id) {
+        	$ass->realWork=0;
+            $ass->realCost=0;
+        }
+      	$ass->refType='Meeting';
+      	$ass->refId=$meet->id;
+      	$ass->idResource=$this->idResource;
+      	$ass->idRole=$this->idRole;
+      	$ass->idProject=$this->idProject;
+        $ass->comment=$this->comment;
+        $ass->assignedWork=$this->assignedWork;
+        $ass->leftWork=$ass->assignedWork-$ass->realWork;
+        $ass->plannedWork=$ass->assignedWork;
+        $ass->rate=$this->rate;
+        $ass->dailyCost=$this->dailyCost;
+        $ass->assignedCost=$this->assignedCost;
+        $ass->leftCost=$ass->assignedCost-$ass->realCost;
+        $ass->plannedCost=$ass->assignedCost;
+        $ass->idle=0;      	
+        $resAss=$ass->save();
+debugLog($resAss);
+      }
     }
     
     PlanningElement::updateSynthesis($this->refType, $this->refId);
@@ -144,6 +177,17 @@ class Assignment extends SqlElement {
    * @see persistence/SqlElement#save()
    */
   public function delete() {    
+    if ($this->refType=='PeriodicMeeting') {
+      $meet=new Meeting();
+      $lstMeet=$meet->getSqlElementsFromCriteria(array('idPeriodicMeeting'=>$this->refId));
+      foreach ($lstMeet as $meet) {
+        $critArray=array('refType'=>'Meeting', 'refId'=>$meet->id, 'idResource'=>$this->idResource, 'idRole'=>$this->idRole);
+        $ass=SqlElement::getSingleSqlElementFromCriteria('Assignment', $critArray);
+        if ($ass and $ass->id and ! $ass->realWork) {
+        	$ass->delete();
+        }
+      }
+    }
     $result = parent::delete();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
