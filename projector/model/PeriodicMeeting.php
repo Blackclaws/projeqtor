@@ -47,7 +47,7 @@ class PeriodicMeeting extends SqlElement {
   public $periodicityYearlyMonth;
   public $_Note=array();
   public $idPeriodicMeeting;
-
+  public $_old;
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -319,10 +319,22 @@ class PeriodicMeeting extends SqlElement {
       }    
   	}	
   	$result=parent::delete();
-  	/*$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'PeriodicMeeting','refId'=>$this->id));
-  	if ($pe and $pe->id) {
-  		$pe->delete();
-  	}*/
+  	
+  	// If delete is successfull, check if some meeting could not be deleted (because of real work existing)
+  	// then remove reference to periodic for this meeting
+  	if (stripos($result,'id="lastOperationStatus" value="OK"')>=0 ) {
+  		$meet=new Meeting();
+	    $lstMeet=$meet->getSqlElementsFromCriteria(array('idPeriodicMeeting'=>$this->id));
+	    foreach ($lstMeet as $meet) {
+	      $meeting=new Meeting($meet->id);
+	      $meeting->idPeriodicMeeting=null;
+	      $meeting->isPeriodic=false;
+	      $resMaj=$meeting->save();
+	      if (stripos($resMaj,'id="lastOperationStatus" value="OK"')==0 ) {
+	        return $resMaj;
+	      }    
+	    } 
+  	}
   	return $result;
   }
   
@@ -345,6 +357,7 @@ class PeriodicMeeting extends SqlElement {
   
 
   public function save() {
+    $this->_old=new PeriodicMeeting($this->id);
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType);
   	}
@@ -540,20 +553,20 @@ class PeriodicMeeting extends SqlElement {
     $meeting->isPeriodic=1;
     $meeting->periodicOccurence=$nb;
     $meeting->meetingDate=$currentDate;
-    $meeting->meetingStartTime=$this->meetingStartTime;
-    $meeting->meetingEndTime=$this->meetingEndTime;
+    if ($this->_old->meetingStartTime!=$this->meetingStartTime) $meeting->meetingStartTime=$this->meetingStartTime;
+    if ($this->_old->meetingEndTime!=$this->meetingEndTime) $meeting->meetingEndTime=$this->meetingEndTime;
     $meeting->name=$this->name . " #".$nb;
-    $meeting->location=$this->location;
-    $meeting->attendees=$this->attendees;
+    if ($this->_old->location!=$this->location) $meeting->location=$this->location;
+    if ($this->_old->attendees!=$this->attendees) $meeting->attendees=$this->attendees;
     $meeting->idUser=$this->idUser;
-    $meeting->description=$this->description;
+    if ($this->_old->description!=$this->description) $meeting->description=$this->description;
     $meeting->idActivity=null;
     if (! $meeting->idStatus) {
       $table=SqlList::getList('Status');
       reset($table);
       $meeting->idStatus=key($table);
     }
-    $meeting->idResource=$this->idResource;
+    if ($this->_old->location!=$this->idResource) $meeting->idResource=$this->idResource;
     // Assignments => dispatch ========================== TODO
     $resultMeetingSave=$meeting->save();
   }
