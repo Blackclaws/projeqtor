@@ -867,7 +867,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						$fieldWidth -= 20;
 					}
 				}
-				echo '<select dojoType="dijit.form.FilteringSelect" class="input" labelType="html" ';
+				echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
 				//echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
 				echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
 				echo $name;
