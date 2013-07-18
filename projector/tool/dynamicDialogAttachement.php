@@ -36,6 +36,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
             dojoType="dojox.form.Uploader" type="file" 
             url="../tool/saveAttachement.php"
+            style="width:300px; border: 3px dotted #EEEEEE; overflow: hidden; z-index: 50;"
             name="attachementFile" id="attachementFile" 
             cancelText="<?php echo i18n("buttonReset");?>"
             multiple="false" 
@@ -45,7 +46,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>"  />
           <?php }?>
-          <i><span name="attachementFileName" id="attachementFileName"></span></i> 
+          <i><span style="position: relative; left:-200px; z-index: 49; " name="attachementFileName" id="attachementFileName"><?php i18n("drapAndDrop");?></span></i> 
           </td>
         </tr>
       </table>
