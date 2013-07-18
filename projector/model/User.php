@@ -619,7 +619,7 @@ class User extends SqlElement {
 	  } else {
 	  	// check passsword on LDAP
 	    if (! function_exists('ldap_connect')) {
-	    	errorLog('Ldap non installed on your PHP server, you should not set $paramLdap_allow_login to "true"');        
+	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        
         return "ldap";
 	    }
 			try { 
@@ -688,6 +688,7 @@ class User extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
+				  $_SESSION['user']=$this;
 				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
