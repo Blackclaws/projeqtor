@@ -2209,3 +2209,11 @@ function moveMenuBar(way) {
 	dojo.fx.slideTo({ node: bar, left: pos}).play();
 	//bar.style.left=pos+'px';
 }
+
+function isHtml5() {
+	if (dojo.isIE && dojo.isIE<=9) {
+		return false;
+	} else {
+		return true;
+	}
+}
