@@ -2,7 +2,7 @@
 /* ============================================================================
  * Presents left menu of application. 
  */
-  require_once "../tool/projector.php";
+  require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/menuTree.php');
   $menuNextIsFirst=true; // is next element fisrt of a group
   $level=0;

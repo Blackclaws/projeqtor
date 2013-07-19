@@ -1,5 +1,5 @@
 <?php
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 $proj='';
 if (array_key_exists('project',$_SESSION)) {
   $proj=$_SESSION['project'];

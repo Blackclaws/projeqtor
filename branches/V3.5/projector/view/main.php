@@ -7,7 +7,7 @@
  *  Remarks for deployment :
  *    - set isDebug:false in djConfig
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 header ('Content-Type: text/html; charset=UTF-8');
 scriptLog('   ->/view/main.php');
 if (Sql::getDbVersion()!=$version) {

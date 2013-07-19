@@ -3,7 +3,7 @@
  * Presents the action buttons of an object.
  * 
  */ 
-  require_once "../tool/projector.php";
+  require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/objectButton.php'); 
   if (! isset($comboDetail)) {
     $comboDetail=false;

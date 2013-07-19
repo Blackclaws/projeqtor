@@ -4,7 +4,7 @@
  *
  * TODO : modify visibility depending on profile
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
 scriptLog('   ->/view/objectDetail.php');
 if (! isset($comboDetail)) {
@@ -19,7 +19,7 @@ $collapsedList=Collapsed::getCollaspedList();
  */
 
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList,$printWidth;
+	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList,$printWidth, $detailWidth;
 	/*if ($print===null) {
 	 $print=$_REQUEST['print'];
 	 }
@@ -2619,7 +2619,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
 </div>
 <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"><?php 
   }
-  if ( ! $print) { ?>
+  if ( ! $print) { ?>  
 <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm"
   name="objectForm" encType="multipart/form-data" action="" method=""><script
   type="dojo/method" event="onSubmit">
@@ -2668,6 +2668,11 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
 </table>
   <?php } else {
   	$titlePane=$objClass."_attachment"; ?>
+
+<div id="dragDiv" onDragEnter="this.style.height='200px';" onDragLeave="this.style.height='14px';"
+style="position: absolute; left: 300px; width: <?php echo ($detailWidth - 340);?>px; height: 14px; 
+ border: 3px dashed #EEEEEE; text-align: center; color: #ffffff">
+<?php echo i18n("dragAndDrop");?></div>  	
 <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionAttachements');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -2675,6 +2680,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
      onHide="saveCollapsed('<?php echo $titlePane;?>');"
      onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawAttachementsFromObject($obj); ?>
 </div>
+
 <?php }?> <?php
   }
   if (isset($obj->_BillLine)) { ?> <br />

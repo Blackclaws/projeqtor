@@ -2,7 +2,7 @@
 /* ============================================================================
  * Presents left menu of application. 
  */
-  require_once "../tool/projector.php";
+  require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/menuBar.php');
  
   if ( ! $showTopMenu) {return;}
