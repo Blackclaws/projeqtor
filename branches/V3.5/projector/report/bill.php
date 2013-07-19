@@ -4,7 +4,7 @@
 // USE IT AS A TEMPLATE (GO TO "BILL TEMPLATE" COMMENT) 
 // INSERT YOUR OWN LOGO, CHANGE DISPLAY TO EDIT YOUR OWN BILL FORMAT
 //
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 $idProject = "";
 if (array_key_exists('idProject', $_REQUEST)){
 	$idProject=trim($_REQUEST['idProject']);

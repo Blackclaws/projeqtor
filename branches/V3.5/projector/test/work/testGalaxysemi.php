@@ -1,6 +1,6 @@
 <?php 
 $batchMode=true;
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">

@@ -9,7 +9,7 @@ $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin31!';
 //
 // Database
-$paramDbName='projectorria_v34';$paramDbPrefix='';
+$paramDbName='projeqtor_v35';$paramDbPrefix='';
 //$paramDbName='sante'; $paramDbPrefix='';
 //$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
 //

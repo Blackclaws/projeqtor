@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 include("../external/pChart/pData.class");  
 include("../external/pChart/pChart.class");  

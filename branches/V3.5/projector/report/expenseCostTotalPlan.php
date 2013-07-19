@@ -1,6 +1,6 @@
 <?php 
 //echo "expenseCostTotalPlan.php";
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);

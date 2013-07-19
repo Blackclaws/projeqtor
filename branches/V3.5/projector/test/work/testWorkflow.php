@@ -9,7 +9,7 @@
 
 <?php 
 
-include_once("../tool/projector.php");
+include_once("../tool/projeqtor.php");
 $w = new Workflow(1);
 
 $test=$w->drawSpecificItem('workflowstatus');

@@ -3,7 +3,7 @@
  * Error page.
  * TODO : implement this page and redirect ot it on any error
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 

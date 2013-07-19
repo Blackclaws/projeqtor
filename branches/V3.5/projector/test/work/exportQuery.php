@@ -2,7 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-    require_once "../tool/projector.php"; 
+    require_once "../tool/projeqtor.php"; 
     $objectClass=$_REQUEST['objectClass'];
     $obj=new $objectClass();
     $table=$obj->getDatabaseTableName();

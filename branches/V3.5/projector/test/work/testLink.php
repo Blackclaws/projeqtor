@@ -7,7 +7,7 @@
 <body class="blue">
 <pre>
 <?php 
-include_once('../tool/projector.php');
+include_once('../tool/projeqtor.php');
 
 $obj = new Risk('1');
 $link=Link::getLinksForObject($obj,null);

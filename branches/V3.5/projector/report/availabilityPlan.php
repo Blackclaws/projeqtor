@@ -1,7 +1,7 @@
 <?php
 //echo "availabilityPlan.php";
 
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
   $paramYear=$_REQUEST['yearSpinner'];

@@ -8,7 +8,7 @@
 <pre>
 
 <?php 
-include_once("../tool/projector.php");
+include_once("../tool/projeqtor.php");
 $user = new User(9);
 
 var_dump($user->getVisibleProjects());

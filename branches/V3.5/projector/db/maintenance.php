@@ -61,7 +61,7 @@ $versionParameters =array(
 $SqlEndOfCommand=";";
 $SqlComment="--";
    
-require_once (dirname(__FILE__) . '/../tool/projector.php');
+require_once (dirname(__FILE__) . '/../tool/projeqtor.php');
 
 $nbErrors=0;
 $currVersion=Sql::getDbVersion();

@@ -8,7 +8,7 @@
 <pre>
 <textArea style="width:1000px; height:500px;">
 <?php 
-//require_once "../tool/projector.php";
+//require_once "../tool/projeqtor.php";
 require_once "../view/main.php";
 
 ?>

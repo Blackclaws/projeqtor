@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 include_once '../tool/formatter.php';
 //echo 'versionReport.php';
 
