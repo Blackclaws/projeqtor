@@ -1,6 +1,6 @@
 <?php 
 // Header
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 $refType="";
 if (array_key_exists('refType',$_REQUEST) and trim($_REQUEST['refType'])!="") {

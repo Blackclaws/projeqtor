@@ -1,6 +1,6 @@
 <?php
 require_once("../model/ImapMailbox.php");
-require_once("../tool/projector.php");
+require_once("../tool/projeqtor.php");
 
 // IMAP must be enabled in Google Mail Settings
 define('GMAIL_EMAIL', 'pascal.bernard.muret@gmail.com');

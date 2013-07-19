@@ -1,6 +1,6 @@
 <?php
 //echo "tichetSyntesis.php";
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 if (! isset($includedReport)) {
   include("../external/pChart/pData.class");  

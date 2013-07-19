@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 //echo "detailPlan.php";
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {

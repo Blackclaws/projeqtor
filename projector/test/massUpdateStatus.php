@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 $class=$_REQUEST['class'];
 $from=$_REQUEST['statusFrom'];
 $to=$_REQUEST['statusTo'];

@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 //Si l'idProject est défini dans les paramètres du rapport
 $idProject = "";

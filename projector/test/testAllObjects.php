@@ -1,5 +1,5 @@
 <?php
-include_once "../tool/projector.php";
+include_once "../tool/projeqtor.php";
 include_once "testTools.php";
 header ('Content-Type: text/html; charset=UTF-8');
 set_time_limit(3600);

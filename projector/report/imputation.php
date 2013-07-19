@@ -1,6 +1,6 @@
 <?php
 //echo "imputation.php";
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 $userId=$_REQUEST['userId'];
 $rangeType=$_REQUEST['rangeType'];

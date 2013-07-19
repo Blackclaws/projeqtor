@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 //echo 'ticketReport.php';
 
 if (! isset($includedReport)) {

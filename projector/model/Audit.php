@@ -85,7 +85,7 @@ class Audit extends SqlElement {
   }
   
   static function updateAudit() {
-  	// $source can be "main" (from projector.php), "login" (from loginCheck.php) or "alert" (from checkAlertToDisplay.php)
+  	// $source can be "main" (from projeqtor.php), "login" (from loginCheck.php) or "alert" (from checkAlertToDisplay.php)
   	if (! isset($_SESSION['user'])) return;
   	$audit=SqlElement::getSingleSqlElementFromCriteria('Audit', array('sessionId'=>session_id()));
     if (! $audit->id) {

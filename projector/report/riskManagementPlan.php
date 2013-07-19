@@ -1,6 +1,6 @@
 <?php 
 // Header
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 include_once('../tool/formatter.php');
 
 $paramProject='';

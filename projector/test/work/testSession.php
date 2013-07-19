@@ -8,7 +8,7 @@
 <pre>
 
 <?php 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 $user=new User('1');
 $rights=$user->getAccessControlRights();
 var_dump($rights);

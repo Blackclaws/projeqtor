@@ -1,6 +1,6 @@
 <?php
 //echo "colorPlan.php";
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 $paramProject='';
 if (array_key_exists('idProject',$_REQUEST)) {

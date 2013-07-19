@@ -18,7 +18,7 @@ $_REQUEST['objectId']='1';
 
 
 $_REQUEST['testingMode']=true;
-//require_once "../tool/projector.php";
+//require_once "../tool/projeqtor.php";
 require "../view/objectDetail.php";
 
 ?>

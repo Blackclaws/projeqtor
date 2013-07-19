@@ -1,5 +1,5 @@
 <?php
-require_once "../tool/projector.php"; 
+require_once "../tool/projeqtor.php"; 
 //scriptLog('   ->/deploy/setVersion.php');
 
 $crit = array('parameterCode'=>'dbVersion');
