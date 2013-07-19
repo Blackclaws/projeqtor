@@ -3189,32 +3189,50 @@ function hideShowMenu() {
 	if (! dijit.byId("leftDiv")) {
 		return;
 	}
+	duration=500;
 	if (menuActualStatus=='visible' || ! menuHidden) {		
 		menuDivSize=dojo.byId("leftDiv").offsetWidth;
+		fullWidth=dojo.byId("mainDiv").offsetWidth;
 		if (menuDivSize<2) {
 			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
 		}
-		dojo.byId('leftDiv_splitter').style.display='none';
-		leftDiv=dijit.byId("leftDiv");
-		//dojox.fx.wipeTo({node: "leftDiv",duration: 300, width: 20}).play();
-		//dojox.fx.wipeTo({node: leftDiv,duration: 300, width: 20}).play();
-		dijit.byId("leftDiv").resize({w: 20});
-		dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
-		setTimeout("dojo.byId('menuBarShow').style.display='block'",10);
+		if (dojo.isIE && dojo.isIE<=9) {
+		  duration=0;
+		  dijit.byId("leftDiv").resize({w: 20});
+		  dojo.byId('menuBarShow').style.display='block';
+		  dojo.byId('leftDiv_splitter').style.display='none';		
+		} else {
+		  dojox.fx.combine([
+			dojox.fx.animateProperty({  node:"leftDiv", properties: { width: 20 }, duration: duration }),
+			dojox.fx.animateProperty({  node:"centerDiv", properties: { left: 20, width: fullWidth}, duration: duration }),
+			dojox.fx.animateProperty({  node:"leftDiv_splitter", properties: { left: 20}, duration: duration })
+		  ]).play();
+		  setTimeout("dojo.byId('menuBarShow').style.display='block'",duration);
+		  setTimeout("dojo.byId('leftDiv_splitter').style.display='none';",duration);
+		}
+	    dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
 		menuHidden=true;
-		menuActualStatus='hidden';
+		menuActualStatus='hidden';		
 	} else {
 		dojo.byId('menuBarShow').style.display='none';
+		dojo.byId('leftDiv_splitter').style.left='20px';
 		dojo.byId('leftDiv_splitter').style.display='block';
 		if (menuDivSize<20) {
 			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
 		}
-		dijit.byId("leftDiv").resize({w: menuDivSize});
+		if (dojo.isIE && dojo.isIE<=9) {
+		  duration=0;
+		  dijit.byId("leftDiv").resize({w: menuDivSize});
+		} else {
+		  dojox.fx.animateProperty({ node:"leftDiv",  properties: { width: menuDivSize } }).play();
+			dojox.fx.animateProperty({  node:"centerDiv", properties: { left: menuDivSize+5} }).play();
+			dojox.fx.animateProperty({  node:"leftDiv_splitter", properties: { left: menuDivSize} }).play();
+		}
 		dijit.byId("buttonHideMenu").set('label',i18n('buttonHideMenu'));
 		menuHidden=false;
 		menuActualStatus='visible';
 	}
-	dijit.byId("globalContainer").resize();	
+	setTimeout('dijit.byId("globalContainer").resize();',duration+10);
 	//dojo.byId('menuBarShow').style.top='50px';
 }
 function tempShowMenu(mode) {
