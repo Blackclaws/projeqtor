@@ -3,7 +3,7 @@
  * Save some information to session (remotely).
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListApprover.php');
 $refType=$_REQUEST['approverRefType'];
 $refId=$_REQUEST['approverRefId'];

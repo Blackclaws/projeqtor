@@ -3,7 +3,7 @@
  * Display the column selector div
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/planningColumnSelector');
 
 $columns=Parameter::getPlanningColumnOrder();

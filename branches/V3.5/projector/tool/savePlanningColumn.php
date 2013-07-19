@@ -2,7 +2,7 @@
 /** ============================================================================
  * Save some information about planning columns status.
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
 $user=$_SESSION['user'];

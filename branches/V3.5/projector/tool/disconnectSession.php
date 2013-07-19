@@ -1,5 +1,5 @@
 <?php
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 if (! array_key_exists('idAudit',$_REQUEST)) {
 	throwError('idAudit parameter not found in SESSION');

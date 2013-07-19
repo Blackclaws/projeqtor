@@ -1,5 +1,5 @@
 <?php
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog("adminFunctionalities.php");
 if (array_key_exists('adminFunctionality', $_REQUEST)) {
 	$adminFunctionality=$_REQUEST['adminFunctionality'];

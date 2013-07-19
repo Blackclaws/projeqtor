@@ -3,7 +3,7 @@
  * Delete the current object : call corresponding method in SqlElement Class
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 // Get the object from session(last status before change)
 if (isset($_REQUEST['directAccessIndex'])) {

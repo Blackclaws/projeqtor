@@ -2,8 +2,8 @@
 /** ===========================================================================
  * Html specific functions
  */
-require_once "../tool/projector.php";
-//DO NOT SCRIPT LOG : html.php is included in projector.php, so for each script 
+require_once "../tool/projeqtor.php";
+//DO NOT SCRIPT LOG : html.php is included in projeqtor.php, so for each script 
 //scriptLog('   ->/tool/html.php');
 /** ===========================================================================
  * Draw the options list for a select  

@@ -3,7 +3,7 @@
  * 
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListDependency.php');
 $refType=$_REQUEST['dependencyRefType'];
 $refId=$_REQUEST['dependencyRefId'];

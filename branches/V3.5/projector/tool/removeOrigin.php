@@ -3,7 +3,7 @@
  * Delete the current object : call corresponding method in SqlElement Class
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 $originId=null;
 if (array_key_exists('originId',$_REQUEST)) {

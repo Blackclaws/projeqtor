@@ -1,5 +1,5 @@
 <?php
-include_once "../tool/projector.php";
+include_once "../tool/projeqtor.php";
 header ('Content-Type: text/html; charset=UTF-8');
 scriptLog('   ->/tool/importHelp.php');
 ?>

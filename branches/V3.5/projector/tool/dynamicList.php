@@ -3,7 +3,7 @@
  * Save some information to session (remotely).
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicList.php');
 $ref1Type=$_REQUEST['linkRef1Type'];
 $ref1Id=$_REQUEST['linkRef1Id'];

@@ -3,7 +3,7 @@
  * Delete the current object : call corresponding method in SqlElement Class
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 $lineId=null;
 if (array_key_exists('billLineId',$_REQUEST)) {

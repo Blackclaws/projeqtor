@@ -1,3 +1,3 @@
 <?php
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 return Cron::check();

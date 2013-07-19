@@ -4,7 +4,7 @@
  * The new values are fetched in $_REQUEST
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 if (! array_key_exists('action',$_REQUEST)) {
   throwError('action parameter not found in REQUEST');

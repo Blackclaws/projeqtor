@@ -6,7 +6,7 @@
  * @param display = bolean (existence is enough) to enable display, either download is forced
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/download.php');
 $class=$_REQUEST['class'];
 $id=$_REQUEST['id'];

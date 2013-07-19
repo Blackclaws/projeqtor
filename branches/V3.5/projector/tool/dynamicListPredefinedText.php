@@ -3,7 +3,7 @@
  * 
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/dynamicListPredefinedText.php');
 $refType=$_REQUEST['objectClass'];
 $refId=$_REQUEST['objectType'];
