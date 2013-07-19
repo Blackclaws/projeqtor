@@ -3,7 +3,7 @@
  * Presents the list of objects of a given class.
  *
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/planningPrint.php');
 ?>
   <div style="border-right: 2px solid grey; z-index:30; position:relative; overflow:hidden;" class="ganttDiv" 

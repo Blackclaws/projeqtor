@@ -3,7 +3,7 @@
  * Presents the list of objects of a given class.
  *
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/refrehImputationList.php'); 
 $rangeType=$_REQUEST['rangeType'];
 $rangeValue=$_REQUEST['rangeValue'];

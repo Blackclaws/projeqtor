@@ -2,7 +2,7 @@
 /* ============================================================================
  * Presents an object. 
  */
-  require_once "../tool/projector.php";
+  require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/imputationMain.php');  
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Imputation" />

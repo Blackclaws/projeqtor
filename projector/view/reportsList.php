@@ -3,7 +3,7 @@
  * Presents the list of objects of a given class.
  *
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/reportsList.php');
 
 //$objectClass='Task';

@@ -3,7 +3,7 @@
  * Print page of application.
  */
 /* @var string $paramDebugMode */
-   require_once "../tool/projector.php";
+   require_once "../tool/projeqtor.php";
    ob_start();
    scriptLog('   ->/view/comboSearch.php'); 
    $comboDetail=true;

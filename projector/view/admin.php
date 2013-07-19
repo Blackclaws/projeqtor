@@ -3,7 +3,7 @@
  * List of parameter specific to a user.
  * Every user may change these parameters (for his own user only !).
  */
-  require_once "../tool/projector.php";
+  require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/admin.php');
   
   $user=$_SESSION['user'];
