@@ -2,7 +2,7 @@
 /** =========================================================================== 
  * Chek login/password entered in connection screen
  */
-  require_once "../tool/projector.php"; 
+  require_once "../tool/projeqtor.php"; 
   scriptLog('   ->/tool/sendMail.php');  
   $title="";
   $msg="";

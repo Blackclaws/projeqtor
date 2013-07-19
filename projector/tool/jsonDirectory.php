@@ -2,7 +2,7 @@
 /** ===========================================================================
  * Get the list of objects, in Json format, to display the grid list
  */
-    require_once "../tool/projector.php"; 
+    require_once "../tool/projeqtor.php"; 
     scriptLog('   ->/tool/jsonList.php');
     echo '{"identifier":"id",' ;
     echo 'label: "name",';

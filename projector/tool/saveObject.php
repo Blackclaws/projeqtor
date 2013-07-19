@@ -7,7 +7,7 @@
  * This way, 2 users updating the same object don't mess.
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 // Get the object class from request
 if (! array_key_exists('className',$_REQUEST)) {

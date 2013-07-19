@@ -3,7 +3,7 @@
  * Save a note : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 // Get the link info
 if (! array_key_exists('originOriginType',$_REQUEST)) {

@@ -1,5 +1,5 @@
 <?php
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
  $crit=array();

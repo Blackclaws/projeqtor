@@ -1,5 +1,5 @@
 <?php
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 if (! array_key_exists('dialog', $_REQUEST)) {
 	throwError('dialog parameter not found in REQUEST');
 }

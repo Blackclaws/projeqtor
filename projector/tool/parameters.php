@@ -8,7 +8,7 @@
 //
 // As this file contains connection information to Database, you may want to add a security level
 // => just move this file to a non-web-accessed directory on the server
-// => change the include directive in projector.php file to locate this file 
+// => change the include directive in projeqtor.php file to locate this file 
 // For instance change, on windows based OS server, if you move parameter.php to "c:\myOwnParameters.txt",
 // change  :
 //     include_once "parameters.php";

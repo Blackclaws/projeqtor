@@ -4,7 +4,7 @@
  * The new values are fetched in $_REQUEST
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 // Get the bill line info
 $lineId=null;

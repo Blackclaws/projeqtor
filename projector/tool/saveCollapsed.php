@@ -2,7 +2,7 @@
 /** ============================================================================
  * Save some information to session (remotely).
  */
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
 $scope=$_REQUEST['scope'];

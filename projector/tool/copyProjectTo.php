@@ -3,7 +3,7 @@
  * Copy an object as a new one (of the same class) : call corresponding method in SqlElement Class
  */
 
-require_once "../tool/projector.php";
+require_once "../tool/projeqtor.php";
 set_time_limit(300);
 
 // Get the object from session(last status before change)
