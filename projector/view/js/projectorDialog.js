@@ -740,11 +740,17 @@ function addAttachement (attachmentType) {
 
 function changeAttachment(list) {
   if (list.length>0) {
-    dojo.byId('attachementFileName').innerHTML=list[0]['name'];
+	htmlList="";
+	for (i=0;i<list.length;i++) {
+	  htmlList+=list[i]['name']+'<br/>';
+    }
+	dojo.byId('attachementFileName').innerHTML=htmlList;
     enableWidget('dialogAttachementSubmit');
+    dojo.byId('attachementFile').height="200px";
   } else {
 	dojo.byId('attachementFileName').innerHTML="";
 	disableWidget('dialogAttachementSubmit');
+	dojo.byId('attachementFile').height="20px";
   }
 }
 
