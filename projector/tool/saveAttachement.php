@@ -1,6 +1,8 @@
 <?php 
 include_once "../tool/projeqtor.php";
 scriptLog("saveAttachement.php");
+debugLog("saveAttachement.php");
+debugLog($_REQUEST);
 header ('Content-Type: text/html; charset=UTF-8');
 /** ===========================================================================
  * Save an attachement (file) : call corresponding method in SqlElement Class
@@ -21,11 +23,10 @@ if ($isIE and $isIE<=9) {?>
 <?php } ?>
 <?php 
 $error=false;
-debugLog($_FILES);
 $type='file';
 if (! array_key_exists('attachementType',$_REQUEST)) {
-    $error=htmlGetErrorMessage('attachementType parameter not found in REQUEST');
-    errorLog('attachementType parameter not found in REQUEST');
+    //$error=htmlGetErrorMessage('attachementType parameter not found in REQUEST');
+    //errorLog('attachementType parameter not found in REQUEST');
     //$error=true;
 } else {
   $type=$_REQUEST['attachementType'];
@@ -49,7 +50,7 @@ if ($type=='file') {
     	$uf['error']=$_FILES['attachementFiles']['error'][$i];
     	$uf['size']=$_FILES['attachementFiles']['size'][$i];
       $uploadedFileArray[$i]=$uf;
-      debugLog("=====");debugLog($uploadedFileArray);
+      debugLog("=====".$uf['name']);
     }
   } else {
     $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
@@ -105,12 +106,23 @@ if ($type=='file') {
   errorLog(i18n('error : unknown type '.$type));
   //$error=true;
 }
+$obj=null;
 $refType="";
+if (! array_key_exists('currentObject',$_SESSION)) {
+  //$error=htmlGetErrorMessage('unkown current object in SESSION');
+  //errorLog('unkown current object in SESSION');
+} else { 
+  $obj=$_SESSION['currentObject'];
+}
 if (! $error) {
   if (! array_key_exists('attachementRefType',$_REQUEST)) {
-    $error=htmlGetErrorMessage('attachementRefType parameter not found in REQUEST');
-    errorLog('attachementRefType parameter not found in REQUEST');
-    //$error=true; 
+  	if (!$obj) {
+      $error=htmlGetErrorMessage('attachementRefType parameter not found in REQUEST');
+      errorLog('attachementRefType parameter not found in REQUEST');
+      //$error=true;
+  	} else {
+  		$refType=get_class($obj);
+  	} 
   } else {
     $refType=$_REQUEST['attachementRefType'];
   }
@@ -123,35 +135,40 @@ if ($refType=='User' or $refType=='Contact') {
 }
 if (! $error) {  
   if (! array_key_exists('attachementRefId',$_REQUEST)) {
-    $error=htmlGetErrorMessage('attachementRefId parameter not found in REQUEST');
-    errorLog('attachementRefId parameter not found in REQUEST');
-    //$error=true; 
+  	if (!$obj) {
+      $error=htmlGetErrorMessage('attachementRefId parameter not found in REQUEST');
+      errorLog('attachementRefId parameter not found in REQUEST');
+      //$error=true;
+  	} else {
+  		$refId=$obj->id;
+  	} 
   } else {
     $refId=$_REQUEST['attachementRefId'];
   }
 }
 if (! $error) {    
   if (! array_key_exists('attachementDescription',$_REQUEST)) {
-    $error= htmlGetErrorMessage('attachementDescrition parameter not found in REQUEST');
-    errorLog('attachementDescrition parameter not found in REQUEST');
+  	//$error= htmlGetErrorMessage('attachementDescrition parameter not found in REQUEST');
+    //errorLog('attachementDescrition parameter not found in REQUEST');
     //$error=true;
+    $attachementDescription="";
   } else {
     $attachementDescription=$_REQUEST['attachementDescription'];
   }
 }
 if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
-	$error='attachmentPrivacy parameter not found in REQUEST';
-	$error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
-  errorLog('attachmentPrivacy parameter not found in REQUEST');
-  $idPrivacy=null;
+	//$error='attachmentPrivacy parameter not found in REQUEST';
+	//$error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
+  //errorLog('attachmentPrivacy parameter not found in REQUEST');
+  $idPrivacy=1;
 } else  {
   $idPrivacy=$_REQUEST['attachmentPrivacy'];
 }
 
+$result="";
 $user=$_SESSION['user'];
 Sql::beginTransaction();
 foreach ($uploadedFileArray as $uploadedFile) {
-	debugLog("*****");debugLog($uploadedFile);
   $attachement=new Attachement();
 	if (! $error) {
 		if ($refType=="Resource") {
@@ -179,8 +196,16 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	  }
 	  $attachement->type=$type;
 	  $attachement->description=$attachementDescription;
-	  $result=$attachement->save();
-	  $newId= $attachement->id;
+	  $subResult=$attachement->save();
+	  $newId=$attachement->id;
+	  if (! $result) {
+	  	$result=$subResult;
+	  } else {
+	  	$pos=strpos($result, '#');
+	  	if ($pos) {
+	  	  $result=substr_replace($result, '#'.$newId.', #', $pos,1);
+	  	} 
+	  } 
 	} 
 	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 	$attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');

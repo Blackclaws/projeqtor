@@ -766,7 +766,8 @@ function saveAttachement() {
 	  dijit.byId('dialogAttachement').hide();
 	  return true;
 	}
-	if (dojo.byId("attachementType").value=='file' && dojo.byId('attachementFileName').innerHTML=="") {
+	if (dojo.byId("attachementType") && dojo.byId("attachementType").value=='file' 
+     && dojo.byId('attachementFileName') && dojo.byId('attachementFileName').innerHTML=="") {
 	  return false;
 	}
 	dojo.style(dojo.byId('downloadProgress'), {display:'block'});
