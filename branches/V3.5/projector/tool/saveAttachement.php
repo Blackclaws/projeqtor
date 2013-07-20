@@ -21,7 +21,7 @@ if ($isIE and $isIE<=9) {?>
 <?php } ?>
 <?php 
 $error=false;
-
+debugLog($_FILES);
 $type='file';
 if (! array_key_exists('attachementType',$_REQUEST)) {
     $error=htmlGetErrorMessage('attachementType parameter not found in REQUEST');
@@ -31,46 +31,65 @@ if (! array_key_exists('attachementType',$_REQUEST)) {
   $type=$_REQUEST['attachementType'];
 }
 $attachementMaxSize=Parameter::getGlobalParameter('paramAttachementMaxSize');
+$uploadedFileArray=array();
 if ($type=='file') {
   if (array_key_exists('attachementFile',$_FILES)) {
-    $uploadedFile=$_FILES['attachementFile'];
+    $uploadedFileArray[]=$_FILES['attachementFile'];
+  } else if (array_key_exists('uploadedfile0',$_FILES)) {
+  	$cnt = 0;
+  	while(isset($_FILES['uploadedfile'.$cnt])){
+  		$uploadedFileArray[]=$_FILES['uploadedfile'.$cnt];
+  	}
+  } else if (array_key_exists('attachementFiles',$_FILES) and array_key_exists('name',$_FILES['attachementFiles'])) {
+    for ($i=0;$i<count($_FILES['attachementFiles']['name']);$i++) {
+    	$uf=array();
+    	$uf['name']=$_FILES['attachementFiles']['name'][$i];
+    	$uf['type']=$_FILES['attachementFiles']['type'][$i];
+    	$uf['tmp_name']=$_FILES['attachementFiles']['tmp_name'][$i];
+    	$uf['error']=$_FILES['attachementFiles']['error'][$i];
+    	$uf['size']=$_FILES['attachementFiles']['size'][$i];
+      $uploadedFileArray[$i]=$uf;
+      debugLog("=====");debugLog($uploadedFileArray);
+    }
   } else {
     $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
     errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
     //$error=true;
   }
-  if (! $error) {
-    if ( $uploadedFile['error']!=0) {
-      $error="[".$uploadedFile['error']."] ";
-      errorLog("[".$uploadedFile['error']."] saveAttachement.php");
-      //$error=true;
-      switch ($uploadedFile['error']) {
-        case 1:
-          $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-          errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-          break;
-        case 2:
-          $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
-          errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
-          break;
-        case 4:
-          $error.=htmlGetWarningMessage(i18n('errorNoFile'));
-          errorLog(i18n('errorNoFile'));
-          break;
-        default:
-          $error.=htmlGetErrorMessage(i18n('errorUploadFile',array($uploadedFile['error'])));
-          errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
-          break;
-      }
-      
-    }
-  }
-  if (! $error) {
-    if (! $uploadedFile['name']) {
-      $error=htmlGetWarningMessage(i18n('errorNoFile'));
-      errorLog(i18n('errorNoFile'));
-      //$error=true;
-    }
+  foreach ($uploadedFileArray as $uploadedFile) {
+	  if (! $error) {
+	    if ( $uploadedFile['error']!=0) {
+	      $error="[".$uploadedFile['error']."] ";
+	      errorLog("[".$uploadedFile['error']."] saveAttachement.php");
+	      //$error=true;
+	      switch ($uploadedFile['error']) {
+	        case 1:
+	          $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+	          errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+	          break;
+	        case 2:
+	          $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
+	          errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
+	          break;
+	        case 4:
+	          $error.=htmlGetWarningMessage(i18n('errorNoFile'));
+	          errorLog(i18n('errorNoFile'));
+	          break;
+	        default:
+	          $error.=htmlGetErrorMessage(i18n('errorUploadFile',array($uploadedFile['error'])));
+	          errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
+	          break;
+	      }
+	      
+	    }
+	  }
+	  if (! $error) {
+	    if (! $uploadedFile['name']) {
+	      $error=htmlGetWarningMessage(i18n('errorNoFile'));
+	      errorLog(i18n('errorNoFile'));
+	      //$error=true;
+	    }
+	  }
   }
 } else if ($type=='link') {
   if (! array_key_exists('attachementLink',$_REQUEST)) {
@@ -80,6 +99,7 @@ if ($type=='file') {
   } else {
     $link=$_REQUEST['attachementLink'];
   }
+  $uploadedFileArray[]="link";
 } else {
   $error=htmlGetWarningMessage(i18n('error : unknown type '));
   errorLog(i18n('error : unknown type '.$type));
@@ -130,63 +150,65 @@ if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
 
 $user=$_SESSION['user'];
 Sql::beginTransaction();
-$attachement=new Attachement();
-if (! $error) {
-	if ($refType=="Resource") {
-		// To avoid dupplicate image (if 2 users save picture on same time)
-    $attachement->purge("refType='Resource' and refId=".$refId);
-  }
-  $attachement->refId=$refId;
-  $attachement->refType=$refType;
-  $attachement->idUser=$user->id;
-  $ress=new Resource($user->id);
-  $attachement->idTeam=$ress->idTeam;
-	if ($idPrivacy) {
-	  $attachement->idPrivacy=$idPrivacy;
-	} else if (! $attachement->idPrivacy) {
-	  $attachement->idPrivacy=1;
+foreach ($uploadedFileArray as $uploadedFile) {
+	debugLog("*****");debugLog($uploadedFile);
+  $attachement=new Attachement();
+	if (! $error) {
+		if ($refType=="Resource") {
+			// To avoid dupplicate image (if 2 users save picture on same time)
+	    $attachement->purge("refType='Resource' and refId=".$refId);
+	  }
+	  $attachement->refId=$refId;
+	  $attachement->refType=$refType;
+	  $attachement->idUser=$user->id;
+	  $ress=new Resource($user->id);
+	  $attachement->idTeam=$ress->idTeam;
+		if ($idPrivacy) {
+		  $attachement->idPrivacy=$idPrivacy;
+		} else if (! $attachement->idPrivacy) {
+		  $attachement->idPrivacy=1;
+		}
+	  $attachement->creationDate=date("Y-m-d H:i:s");
+	  if ($type=='file') {
+	    $attachement->fileName=basename($uploadedFile['name']);
+	    $attachement->mimeType=$uploadedFile['type'];
+	    $attachement->fileSize=$uploadedFile['size'];
+	  } else if ($type=='link') {
+	    $attachement->link=$link;
+	    $attachement->fileName=urldecode(basename($link));
+	  }
+	  $attachement->type=$type;
+	  $attachement->description=$attachementDescription;
+	  $result=$attachement->save();
+	  $newId= $attachement->id;
+	} 
+	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+	$attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
+	if (! $error and $type=='file') {
+	  $uploaddir = $attachementDirectory . $pathSeparator . "attachement_" . $newId . $pathSeparator;
+	  if (! file_exists($uploaddir)) {
+	    mkdir($uploaddir);
+	  }
+	  $uploadfile = $uploaddir . basename($uploadedFile['name']);
+	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
+	     $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
+	     errorLog(i18n('errorUploadFile','hacking ?'));
+	     //$error=true;
+	     $attachement->delete(); 
+	  } else {
+	    $attachement->subDirectory=str_replace(Parameter::getGlobalParameter('paramAttachementDirectory'),'${attachementDirectory}',$uploaddir);
+	    $otherResult=$attachement->save();
+	  }
 	}
-  $attachement->creationDate=date("Y-m-d H:i:s");
-  if ($type=='file') {
-    $attachement->fileName=basename($uploadedFile['name']);
-    $attachement->mimeType=$uploadedFile['type'];
-    $attachement->fileSize=$uploadedFile['size'];
-  } else if ($type=='link') {
-    $attachement->link=$link;
-    $attachement->fileName=urldecode(basename($link));
-  }
-  $attachement->type=$type;
-  $attachement->description=$attachementDescription;
-  $result=$attachement->save();
-  $newId= $attachement->id;
-} 
-$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
-$attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
-if (! $error and $type=='file') {
-  $uploaddir = $attachementDirectory . $pathSeparator . "attachement_" . $newId . $pathSeparator;
-  if (! file_exists($uploaddir)) {
-    mkdir($uploaddir);
-  }
-  $uploadfile = $uploaddir . basename($uploadedFile['name']);
-  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-     $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-     errorLog(i18n('errorUploadFile','hacking ?'));
-     //$error=true;
-     $attachement->delete(); 
-  } else {
-    $attachement->subDirectory=str_replace(Parameter::getGlobalParameter('paramAttachementDirectory'),'${attachementDirectory}',$uploaddir);
-    $otherResult=$attachement->save();
-  }
-}
-
-if (! $error and $attachement->idPrivacy==1) { // send mail if new attachment is public
-  $elt=new $refType($refId);
-	$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,true,false,false,false,false,false,true);
-	if ($mailResult) {
-	  $result.=' - ' . i18n('mailSent');
+	
+	if (! $error and $attachement->idPrivacy==1) { // send mail if new attachment is public
+	  $elt=new $refType($refId);
+		$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,true,false,false,false,false,false,true);
+		if ($mailResult) {
+		  $result.=' - ' . i18n('mailSent');
+		}
 	}
 }
-
 if (! $error) {
   // Message of correct saving
   if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
