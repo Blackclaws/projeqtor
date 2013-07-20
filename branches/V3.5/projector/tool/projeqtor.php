@@ -1852,4 +1852,22 @@ function traceExecutionTime($step='', $reset=false) {
   $startMicroTime=microtime(true);
 }
 
+function isHtml5() {
+	$browser=Audit::getBrowser();
+	if ($browser['browser']=='Internet Explorer') {
+		if ($browser['version']<'10') {
+			return false;
+		}
+	}
+	return true;
+}
+function isIE() {
+	$browser=Audit::getBrowser();
+  if ($browser['browser']=='Internet Explorer') {
+  	return true;
+  }
+  return false;
+}
+
+
 ?>

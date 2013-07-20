@@ -1721,6 +1721,7 @@ sectionBehavior: "[sectionBehavior]",
 sectionPeriodicity: "[sectionPeriodicity]",
 selectedItemsCount: "[selectedItemsCount]",
 xlsxFile: "[xlsxFile]",
+buttonSelectFiles: "[buttonSelectFiles]",
 dragAndDrop: "[dragAndDrop]",
 currentLocaleOfFile: "ru"
 }

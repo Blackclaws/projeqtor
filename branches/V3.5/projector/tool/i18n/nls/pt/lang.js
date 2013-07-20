@@ -1721,6 +1721,7 @@ sectionBehavior: "Comportamento",
 sectionPeriodicity: "periodicidade",
 selectedItemsCount: "Número de itens selecionados",
 xlsxFile: "ficheiro xlsx (Excel 2010)",
+buttonSelectFiles: "[buttonSelectFiles]",
 dragAndDrop: "[dragAndDrop]",
 currentLocaleOfFile: "pt"
 }

@@ -23,7 +23,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
           <td class="dialogLabel" >
            <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
           </td>
-          <td>
+          <td style="position:relative">
            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />
           <?php  if ($isIE and $isIE<=9) {?>
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
@@ -36,7 +36,11 @@ if (array_key_exists('isIE',$_REQUEST)) {
            <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
             dojoType="dojox.form.Uploader" type="file" 
             url="../tool/saveAttachement.php"
+            <?php if (! $isIE) {?>
             style="overflow: hidden; z-index: 50;width:340px; border: 3px dotted #EEEEEE;"
+            <?php } else {?>
+            style="overflow: hidden; border: 0px"
+            <?php }?>
             name="attachementFile" id="attachementFile" 
             cancelText="<?php echo i18n("buttonReset");?>"
             multiple="true" 
@@ -48,9 +52,10 @@ if (array_key_exists('isIE',$_REQUEST)) {
             title="<?php echo i18n("helpSelectFile");?>"  />
           <?php }?>
           <i>
-          <span style="position: relative; z-index: 49; left: -250px; color: #AAAAAA"><?php echo i18n("dragAndDrop");?></span></i>
-          <div style="position: relative; z-index: 49; " name="attachementFileName" id="attachementFileName"></div></i>
-           
+          <?php if (! $isIE) {?>
+          <span style="position: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span></i>
+          <?php }?>
+          <div style="position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachementFileName" id="attachementFileName"></div></i>     
           </td>
         </tr>
       </table>
@@ -121,7 +126,4 @@ if (array_key_exists('isIE',$_REQUEST)) {
       </tr>
     </table>
     </form>
-    <form id='attachementAckForm' name='attachementAckForm'> 
-      <input type='hidden' id="resultAck" name="resultAck" />
-    </form>   
     

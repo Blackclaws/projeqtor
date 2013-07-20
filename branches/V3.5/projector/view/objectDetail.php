@@ -2669,10 +2669,26 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   <?php } else {
   	$titlePane=$objClass."_attachment"; ?>
 
-<div id="dragDiv" onDragEnter="this.style.height='200px';" onDragLeave="this.style.height='14px';"
-style="position: absolute; left: 300px; width: <?php echo ($detailWidth - 340);?>px; height: 14px; 
- border: 3px dashed #EEEEEE; text-align: center; color: #ffffff">
-<?php echo i18n("dragAndDrop");?></div>  	
+<?php if (! isIE()) {?>
+<div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
+MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+url="../tool/saveAttachement.php"
+multiple="true"
+label="<?php echo i18n("dragAndDrop");?>"
+uploadOnSelect="true"
+target="resultPost"
+onBegin="saveAttachement();"
+onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
+style="position: absolute; left: <?php echo ($detailWidth/2);?>px; width: <?php echo ($detailWidth/2 - 28);?>px; height: 17px; 
+ border: 1px dashed #EEEEEE; margin:0; padding:0; text-align: center; font-size: 7pt; background-color: #FFFFFF; opacity: 0.7;">
+<script type="dojo/connect" event="onComplete" args="dataArray">
+saveAttachementAck(dataArray);
+</script>
+<script type="dojo/connect" event="onProgress" args="data">
+  saveAttachementProgress(data);
+</script>
+ </div>
+<?php }?>
 <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionAttachements');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
