@@ -3195,9 +3195,6 @@ function hideShowMenu() {
 			menuDivSize=dojo.byId("mainDiv").offsetWidth*.2;
 		}
 		dojo.byId('leftDiv_splitter').style.display='none';
-		leftDiv=dijit.byId("leftDiv");
-		//dojox.fx.wipeTo({node: "leftDiv",duration: 300, width: 20}).play();
-		//dojox.fx.wipeTo({node: leftDiv,duration: 300, width: 20}).play();
 		dijit.byId("leftDiv").resize({w: 20});
 		dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
 		setTimeout("dojo.byId('menuBarShow').style.display='block'",10);
