@@ -94,7 +94,7 @@
           <input type="hidden" id="selection" name="selection" value=""/>
           <table>
             <tr><td></td><td>&nbsp;</td></tr>
-            <?php if (property_exists($obj,'description')) {?>
+            <?php if (isDisplayable($obj, 'description') ) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddToDescription');?>&nbsp;:&nbsp;</td>
               <td>
@@ -103,7 +103,7 @@
               </td>
             </tr>
             <?php }
-             if (property_exists($obj,'idStatus')) {?>
+             if (isDisplayable($obj,'idStatus')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeStatus');?>&nbsp;:&nbsp;</td>
               <td>
@@ -120,7 +120,7 @@
               </td>
             </tr>
             <?php }
-            if (property_exists($obj,'idResource')) {?>
+            if (isDisplayable($obj,'idResource')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeResponsible');?>&nbsp;:&nbsp;</td>
               <td>
@@ -137,7 +137,7 @@
               </td>
             </tr>
             <?php }
-            if (property_exists($obj,'result')) {?>
+            if (isDisplayable($obj,'result')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddToResult');?>&nbsp;:&nbsp;</td>
               <td>
@@ -146,7 +146,7 @@
               </td>
             </tr>
             <?php }
-            if (property_exists($obj,'_Note')) {?>
+            if (isDisplayable($obj,'_Note')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
               <td>
@@ -163,4 +163,15 @@
   </div> 
 </div>
 
- 
+<?php 
+function isDisplayable($obj, $field) {
+	debugLog($field . " " . $obj->getFieldAttributes($field));
+  if ( property_exists($obj,$field) 
+  and ! $obj->isAttributeSetToField($field,'readonly') 
+  and ! $obj->isAttributeSetToField($field,'hidden') ) {
+    return true;
+  } else {
+  	return false;
+  }         
+}
+?>
