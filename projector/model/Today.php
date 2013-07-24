@@ -60,6 +60,7 @@ class Today extends SqlElement {
   		if (!$item->id) {
   			$item->sortOrder=$sort;
   			$item->idle=0;
+  			$item->scope='static';
   			$item->save();
   		}
   	}
