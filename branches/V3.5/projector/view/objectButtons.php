@@ -145,7 +145,7 @@
        title="<?php echo i18n('buttonMultiUpdate');?>"
        iconClass="dijitEditorIcon dijitEditorIconMultipleUpdate" >
         <script type="dojo/connect" event="onClick" args="evt">
-          startMultipleUpdateMode('<?php echo $clsObj;?>');  
+          startMultipleUpdateMode('<?php echo get_class($obj);?>');  
         </script>
     </button>  
       <?php

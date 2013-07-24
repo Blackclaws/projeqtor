@@ -7,29 +7,29 @@
   scriptLog('   ->/view/objectMultipleUpdate.php');
 
   $displayWidth='98%';
-	if (array_key_exists('destinationWidth',$_REQUEST)) {
-	  $width=$_REQUEST['destinationWidth'];
-	  $displayWidth=floor($width*0.6);
-	  $labelWidth=250;
-	  $fieldWidth=$displayWidth-$labelWidth-15;
-	} 
-	$objectClass=$_REQUEST['objectClass'];
-	$obj=new $objectClass();
+  if (array_key_exists('destinationWidth',$_REQUEST)) {
+    $width=$_REQUEST['destinationWidth'];
+    $displayWidth=floor($width*0.6);
+    $labelWidth=250;
+    $fieldWidth=$displayWidth-$labelWidth-15;
+  } 
+  $objectClass=$_REQUEST['objectClass'];
+  $obj=new $objectClass();
 ?>
 <div dojoType="dijit.layout.BorderContainer" class="background">
-	<div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
-		<div dojoType="dijit.layout.BorderContainer">
-			<div id="buttonDivContainer" dojoType="dijit.layout.ContentPane" region="left">
-				<table width="100%" class="listTitle" >
-				  <tr valign="middle" height="32px"> 
-				    <td width="50px" align="center" >
-				      <img style="position: absolute; top: 0px; left: 0px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
+  <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
+    <div dojoType="dijit.layout.BorderContainer">
+      <div id="buttonDivContainer" dojoType="dijit.layout.ContentPane" region="left">
+        <table width="100%" class="listTitle" >
+          <tr valign="middle" height="32px"> 
+            <td width="50px" align="center" >
+              <img style="position: absolute; top: 0px; left: 0px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
               <img style="position: absolute; top: 5px; left: 5px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
               <img style="position: absolute; top: 10px; left: 10px" src="css/images/icon<?php echo $objectClass;?>22.png" width="22" height="22" />
-				    </td>
-				    <td valign="middle"><span class="title"><?php echo i18n('labelMultipleMode');?></span></td>
-				    <td width="15px">&nbsp;</td>
-				    <td><nobr>
+            </td>
+            <td valign="middle"><span class="title"><?php echo i18n('labelMultipleMode');?></span></td>
+            <td width="15px">&nbsp;</td>
+            <td><nobr>
              <button id="selectAllButton" dojoType="dijit.form.Button" showlabel="false" 
                title="<?php echo i18n('buttonSelectAll');?>"
                iconClass="iconSelectAll" >
@@ -46,37 +46,37 @@
                    updateSelectedCountMultiple();
                 </script>
               </button>    
-				      <button id="saveButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
-				       title="<?php echo i18n('buttonSaveMultiple');?>"
-				       iconClass="dijitEditorIcon dijitEditorIconSave" >
-				        <script type="dojo/connect" event="onClick" args="evt">
-		              saveMultipleUpdateMode("<?php echo $objectClass;?>");  
+              <button id="saveButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
+               title="<?php echo i18n('buttonSaveMultiple');?>"
+               iconClass="dijitEditorIcon dijitEditorIconSave" >
+                <script type="dojo/connect" event="onClick" args="evt">
+                  saveMultipleUpdateMode("<?php echo $objectClass;?>");  
                 </script>
-				      </button>
-				      <button id="undoButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
-				       title="<?php echo i18n('buttonQuitMultiple');?>"
-				       iconClass="dijitEditorIcon dijitEditorIconUndo" >
-				        <script type="dojo/connect" event="onClick" args="evt">
+              </button>
+              <button id="undoButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
+               title="<?php echo i18n('buttonQuitMultiple');?>"
+               iconClass="dijitEditorIcon dijitEditorIconUndo" >
+                <script type="dojo/connect" event="onClick" args="evt">
                   dojo.byId("undoButtonMultiple").blur();
                   endMultipleUpdateMode("<?php echo $objectClass;?>");
                 </script>
-				      </button>    
-				      <button id="deleteButtonMultiple" dojoType="dijit.form.Button" showlabel="false" 
-				       title="<?php echo i18n('buttonDeleteMultiple');?>" style="display:none"
-				       iconClass="dijitEditorIcon dijitEditorIconDelete" >
-				        <script type="dojo/connect" event="onClick" args="evt">
+              </button>    
+              <button id="deleteButtonMultiple" dojoType="dijit.form.Button" showlabel="false" 
+               title="<?php echo i18n('buttonDeleteMultiple');?>" style="display:none"
+               iconClass="dijitEditorIcon dijitEditorIconDelete" >
+                <script type="dojo/connect" event="onClick" args="evt">
                    deleteMultipleUpdateMode("<?php echo $objectClass;?>");  
                 </script>
-				      </button>    
-				    </nobr></td>
+              </button>    
+            </nobr></td>
             <td>&nbsp;&nbsp;&nbsp;</td>
             <td>
               <?php echo i18n("selectedItemsCount");?> :
               <input dojoType="dijit.form.TextBox" type="text" id="selectedCount" style="width: 40px" value="0" readonly />
             </td>
-				  </tr>
-				</table>
-	    </div>
+          </tr>
+        </table>
+      </div>
       <div dojoType="dijit.layout.ContentPane" region="center" >
         <div id="resultDiv">
         </div>
@@ -94,7 +94,7 @@
           <input type="hidden" id="selection" name="selection" value=""/>
           <table>
             <tr><td></td><td>&nbsp;</td></tr>
-            <?php if (property_exists($obj,'description')) {?>
+            <?php if (isDisplayable($obj, 'description') ) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddToDescription');?>&nbsp;:&nbsp;</td>
               <td>
@@ -103,7 +103,7 @@
               </td>
             </tr>
             <?php }
-             if (property_exists($obj,'idStatus')) {?>
+             if (isDisplayable($obj,'idStatus')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeStatus');?>&nbsp;:&nbsp;</td>
               <td>
@@ -120,7 +120,7 @@
               </td>
             </tr>
             <?php }
-            if (property_exists($obj,'idResource')) {?>
+            if (isDisplayable($obj,'idResource')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeResponsible');?>&nbsp;:&nbsp;</td>
               <td>
@@ -137,7 +137,7 @@
               </td>
             </tr>
             <?php }
-            if (property_exists($obj,'result')) {?>
+            if (isDisplayable($obj,'result')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddToResult');?>&nbsp;:&nbsp;</td>
               <td>
@@ -146,7 +146,7 @@
               </td>
             </tr>
             <?php }
-            if (property_exists($obj,'_Note')) {?>
+            if (isDisplayable($obj,'_Note')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
               <td>
@@ -163,4 +163,15 @@
   </div> 
 </div>
 
- 
+<?php 
+function isDisplayable($obj, $field) {
+  debugLog($field . " " . $obj->getFieldAttributes($field));
+  if ( property_exists($obj,$field) 
+  and ! $obj->isAttributeSetToField($field,'readonly') 
+  and ! $obj->isAttributeSetToField($field,'hidden') ) {
+    return true;
+  } else {
+    return false;
+  }         
+}
+?>
