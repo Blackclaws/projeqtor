@@ -152,9 +152,20 @@ function dateFormatter(value) {
  * @param value the value 
  * @return the formatted value 
  */
+/** ============================================================================
+ * Format date & time value (depends on locale)
+ * @param value the value 
+ * @return the formatted value 
+ */
 function dateTimeFormatter(value) {
-  if (value.length==19) {
-  	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss"});
+  if (value && value.length==19) {
+  	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss", selector: 'date and time'});
+  	if (! vDate) {
+  	  vDate=new Date(value.substr(0,4),value.substr(5,2),value.substr(8,2),value.substr(11,2),value.substr(14,2),value.substr(17,2),0);	
+  	  if (! vDate) {
+  	    return dateFormatter(value.substr(0,10))+":"+value.substr(11,5);
+  	  }
+  	}
     return dojo.date.locale.format(vDate, {formatLength: "short", fullYear: true});
   } else {
   	return value;
@@ -162,7 +173,13 @@ function dateTimeFormatter(value) {
 }
 function timeFormatter(value) {
   if (value.length==19) {
-  	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss"});
+  	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss", selector: 'date and time'});
+  	if (! vDate) {
+  		vDate=new Date(value.substr(0,4),value.substr(5,2),value.substr(8,2),value.substr(11,2),value.substr(14,2),value.substr(17,2),0);	
+    	if (! vDate) {
+    	  return value.substr(11,5);
+    	}
+    }
     return dojo.date.locale.format(vDate, {formatLength: "time"});
   } else {
   	return value;
