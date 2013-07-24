@@ -51,18 +51,19 @@ class Today extends SqlElement {
    */
   
   public static function insertStaticItems() {
-  	$user=$_SESSION['user'];
-  	$sort=0;
-  	foreach (self::$staticList as $static) {
-  		$crit=array('idUser'=>$user->id, 'scope'=>'static', 'staticSection'=>$static);
-  		$sort+=1;
-  		$item=SqlElement::getSingleSqlElementFromCriteria('Today', $crit);
-  		if (!$item->id) {
-  			$item->sortOrder=$sort;
-  			$item->idle=0;
-  			$item->save();
-  		}
-  	}
+    $user=$_SESSION['user'];
+    $sort=0;
+    foreach (self::$staticList as $static) {
+      $crit=array('idUser'=>$user->id, 'scope'=>'static', 'staticSection'=>$static);
+      $sort+=1;
+      $item=SqlElement::getSingleSqlElementFromCriteria('Today', $crit);
+      if (!$item->id) {
+        $item->sortOrder=$sort;
+        $item->idle=0;
+        $item->scope='static';
+        $item->save();
+      }
+    }
   }
 }
 ?>

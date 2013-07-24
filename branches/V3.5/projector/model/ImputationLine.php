@@ -149,8 +149,10 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 				}
 				//$ass->name=$id . " " . $obj->name;
 				$ass->name=$obj->name;
-				$ass->realWork=$obj->WorkElement->realWork;
-				$ass->leftWork=$obj->WorkElement->leftWork;
+			  if (isset($obj->WorkElement)) {
+          $ass->realWork=$obj->WorkElement->realWork;
+          $ass->leftWork=$obj->WorkElement->leftWork;
+        }
 				$ass->id=null;
 				$ass->refType=$work->refType;
 				$ass->refId=$work->refId;
