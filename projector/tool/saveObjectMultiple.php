@@ -57,6 +57,12 @@ foreach ($selectList as $id) {
 	echo '<tr>';
 	echo '<td valign="top"><b>#'.$id.'&nbsp:&nbsp;</b></td>';
 	$item=new $className($id);
+	if (property_exists($item, 'locked') and $item->locked) {
+		Sql::rollbackTransaction();
+    $cptWarning++;
+    echo '<td><span class="messageWARNING" >' . i18n($className) . " #" . $item->id . ' '.i18n('colLocked'). '</span></td>';
+		continue;
+	}
 	if ($description and property_exists($item,'description')) {
 		$item->description.=(($item->description)?"\n":"").$description;
 	}
