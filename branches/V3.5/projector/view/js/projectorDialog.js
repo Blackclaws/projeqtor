@@ -3206,7 +3206,8 @@ function hideShowMenu() {
 		if (! isHtml5()) {
 		  duration=0;
 		  dijit.byId("leftDiv").resize({w: 20});
-		  dojo.byId('menuBarShow').style.display='block';
+		  setTimeout("dojo.byId('menuBarShow').style.display='block'",10);
+		  //dojo.byId('menuBarShow').style.display='block';
 		  dojo.byId('leftDiv_splitter').style.display='none';		
 		} else {
 		  dojox.fx.combine([
