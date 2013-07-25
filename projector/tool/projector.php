@@ -40,15 +40,14 @@ if (is_file("../tool/parametersLocation.php")) {
   } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
-
-$tz=Parameter::getGlobalParameter('paramDefaultTimezone');
+$tz=Parameter::getGlobalParameter('paramDefaultTimezone');  
 if ($tz) date_default_timezone_set($tz);
 if (! isset($noScriptLog)) {
   scriptLog($_SERVER["SCRIPT_NAME"]);
 }
 $testMode=false;              // Setup a variable for testing purpose test.php changes this value to true
 $i18nMessages=null;           // Array containing messages depending on local (initialized at first need)
-   
+
 setupLocale();                // Set up the locale : must be called before any call to i18n()
 
 $paramIconSize=setupIconSize();              // 
@@ -67,7 +66,6 @@ $isAttachementEnabled=true;   // allow attachement
 if (! Parameter::getGlobalParameter('paramAttachementDirectory') or ! Parameter::getGlobalParameter('paramAttachementMaxSize')) {
   $isAttachementEnabled=false;
 } 
-
 /* ============================================================================
  * main controls
  * ============================================================================ */
@@ -595,7 +593,7 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
 	}
 }
 function sendMailAuthentified($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {
-traceLog('sendMailAuthentified');
+scriptLog('sendMailAuthentified');
   $paramMailSender = Parameter::getGlobalParameter('paramMailSender');
   $paramMailReplyTo = Parameter::getGlobalParameter('paramMailReplyTo');
   error_reporting(E_ERROR);
@@ -810,7 +808,7 @@ function quit($sock) {
 }
 
 function sendMailAnonymous($to, $title, $message, $object=null, $headers=null, $sender=null, $boundary=null)  {
-traceLog  ('sendMailAnonymous');
+scriptLog('sendMailAnonymous');
   $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
   $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
   $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
