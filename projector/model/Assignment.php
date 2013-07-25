@@ -108,6 +108,10 @@ class Assignment extends SqlElement {
     	$this->leftWork=0;
     }
     
+    if (! $this->idProject) {
+    	$refObj=$this->refType($this->refId);
+    	$this->idProject=$refObj->idProject;
+    }
     // Dispatch value
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
@@ -140,7 +144,6 @@ class Assignment extends SqlElement {
         $ass->plannedCost=$ass->assignedCost;
         $ass->idle=0;      	
         $resAss=$ass->save();
-debugLog($resAss);
       }
     }
     
