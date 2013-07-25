@@ -80,8 +80,10 @@ class WorkElement extends SqlElement {
 		}
 		if ($this->refType) {
 			$top = new $this->refType($this->refId);
+			$topProject=$top->idProject;
 		} else {
 			$top = new Project();
+			$topProject=$this->idProject;
 		}
 		if ($top and isset($top->done) and $top->done == 1) {
 			$this->leftWork = 0;
@@ -120,7 +122,7 @@ class WorkElement extends SqlElement {
 						}
 						$newWork->work+=$work->work;
 						$newWork->setDates($work->workDate);
-						$newWork->idProject = $top->idProject;
+						$newWork->idProject = $topProject;
 						$newWork->save();
 						$work->delete();
 					}
@@ -148,7 +150,7 @@ class WorkElement extends SqlElement {
           $work->refType='Activity';
           $work->refId=$top->idActivity;
           $work->idResource=$user->id;
-          $work->idProject=$ass->idProject;
+          $work->idProject=$topProject;
           $work->idAssignment=$ass->id;
           $work->setDates(date('Y-m-d'));
 				}
@@ -164,7 +166,7 @@ class WorkElement extends SqlElement {
         }
         $work->save();
 			} else {
-        $crit=array('refType'=>$this->refType, 'refId'=>$this->refId, 'idResource'=>$user->id, 'idProject'=>$top->idProject);
+        $crit=array('refType'=>$this->refType, 'refId'=>$this->refId, 'idResource'=>$user->id, 'idProject'=>$topProject);
         $crit['workDate']=date('Y-m-d');
         $work=new Work();
         $workList=$work->getSqlElementsFromCriteria($crit,true);
@@ -175,7 +177,7 @@ class WorkElement extends SqlElement {
           $work->refType=$this->refType;
           $work->refId=$this->refId;
           $work->idResource=$user->id;
-          $work->idProject=$top->idProject;
+          $work->idProject=$topProject;
         }
         $work->work+=$diff;
         $work->setDates(date('Y-m-d'));
