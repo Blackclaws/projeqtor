@@ -609,14 +609,18 @@ scriptLog('sendMailAuthentified');
   if (! $replyToEmailName) {$replyToEmailName=$replyToEmailAddress;}
 	$key = 'default';
 	$smtpHost=Parameter::getGlobalParameter('paramMailSmtpServer');
+	if (! $smtpHost) {
+		$resultMail='NO';
+		$to="";
+	}
 	if (! strpos($smtpHost, '://')) {
 		$smtpHost='ssl://'.$smtpHost;
 	}
 	$smtpServers['default']['server']     = $smtpHost;
   $smtpServers['default']['userName']   = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$smtpServers['default']['passWord']   = Parameter::getGlobalParameter('paramMailSmtpPassword');
-	$smtpServers['default']['smtpPort']   = Parameter::getGlobalParameter('paramMailSmtpPort'); 
-	// Save data of the mail
+	$smtpServers['default']['smtpPort']   = Parameter::getGlobalParameter('paramMailSmtpPort');
+		// Save data of the mail
 	$mail=new Mail();
 	if (array_key_exists('user',$_SESSION)) {
 	  $mail->idUser=$_SESSION['user']->id;
@@ -636,147 +640,117 @@ scriptLog('sendMailAuthentified');
 	$mail->save();  
 	//
 	// start smtp
-	//
 	enableCatchErrors();
-	$resultMail="NO";
-	$sock = fsockopen($smtpServers[$key]['server'], $smtpServers[$key]['smtpPort'], $errno, $errstr, $timeout);
-	if (!$sock) return ;     // or loop over more smtp servers
-	$res = fgets($sock, 515);
-	if ($debug) errorLog($res . "\n");
-	if (!empty($res)) {
-    // send "HELO"
-    $cmd ="HELO YOURSUBDOMAIN.YOURDOMAIN.com" . $newLine;  // you can change this into more relevant uri
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"250")) { quit($sock); }
-    // send "AUTH LOGIN"
-    $cmd = "AUTH LOGIN" . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"334 VXNlcm5hbWU6")) { quit($sock);  }
-    // SEND USERNAME base64 encoded
-    $cmd = base64_encode($smtpServers[$key]['userName']) . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"334 UGFzc3dvcmQ6")) { quit($sock); }
-    // SEND PASSWORD base64 encoded
-    $cmd = base64_encode($smtpServers[$key]['passWord']) . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"235")) { quit($sock);}
-    // send SMTP command "MAIL FROM"
-    $cmd = "MAIL FROM: <" . $paramMailSender . ">" . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"250")) { quit($sock);}
-    // tell the SMTP server who are the recipients
-    $cmd = "RCPT TO: " . " <" . $to . ">" . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"250")) { quit($sock); }
-    // if more recipients add a line for each recipient
-    // send SMTP command "DATA"
-    $cmd = "DATA" . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"354")) { quit($sock); }
-    // send SMTP command containing whole message
-    // comment out if not relevant
-    $headers  = "TO: "       . $to    . " <" . $to           . ">"  . $newLine;
-    $headers .= "From: "     . $replyToEmailName  . " <" . $paramMailSender          . ">"  . $newLine ;
-    $headers .= "Reply-To: " . $replyToEmailName . " <" . $replyToEmailAddress . ">"  . $newLine ;
-    $headers .= "Subject: " . $subject  . $newLine ;
-    // Generate a mime boundary string
-    $rnd_str = md5(time());
-    $mime_boundary = "==Multipart_Boundary_x{$rnd_str}x";
-    $mime_alternative = "==Multipart_Boundary_x{$rnd_str}altx";
-    $altcontent = "MIME-Version: 1.0" . $newLine .
-            "Content-Type: multipart/alternative;" . 
-            " boundary=\"{$mime_alternative}\" " . $newLine. $newLine;
-    $altcontent .= "This is a multi-part message in MIME format"  . $newLine . $newLine .
-        "--{$mime_alternative}". $newLine ;
-    $altcontent .= "Content-Type: text/plain; charset=\"iso-8859-1\"". $newLine .
-      "Content-Disposition: inline". $newLine .
-        "Content-Transfer-Encoding: 7bit" . $newLine. $newLine .
-      strip_tags(preg_replace('#<[Bb][Rr]/?>#',PHP_EOL,$messageBody)). $newLine. $newLine .        
-      "--{$mime_alternative}". $newLine ;
-    $altcontent .= "Content-Type: text/html; charset=\"iso-8859-1\"". $newLine .
-      "Content-Disposition: inline". $newLine .
-        "Content-Transfer-Encoding: 7bit" . $newLine. $newLine .
-      '<html><body>'.$messageBody.'</body></html>'.$newLine. $newLine .        
-      "--{$mime_alternative}--". $newLine ;
-    //
-    // Add headers for file attachment
-    $headers .=  $altcontent;/*"MIME-Version: 1.0" . $newLine .
-            "Content-Type: multipart/mixed;" . 
-            " boundary=\"{$mime_boundary}\" " . $newLine. $newLine;
-    //
-    // Add a multipart boundary above the plain message
-    //
-    $headers .= "This is a multi-part message in MIME format"  . $newLine . $newLine .
-        "--{$mime_boundary}". $newLine ;
-    //
-    // add the plaintext message body
-    //
-    $headers .= "Content-Type: text/plain; charset=\"iso-8859-1\"". $newLine .
-        "Content-Transfer-Encoding: 7bit" .*/ /*$newLine. $newLine .
-                                                $messageBody . $newLine. $newLine; */
-    //errorLog('Email content: '.PHP_EOL.$altcontent);
-    //
-    // Add file attachment to the message
-//    //
-//    $headers .= "--{$mime_boundary}". $newLine .
-//        "Content-Type: {$mimeType1};". $newLine  .
-//        " name=\"{$attachmentShortFileName1}\" ". $newLine .
-//        "Content-Disposition: attachment;" . $newLine .
-//        " filename=\"{$attachmentShortFileName1}\"  " . $newLine .
-//        "Content-Transfer-Encoding: base64". $newLine . $newLine  .
-//        $b64Attachment1 . $newLine. $newLine .
-    //
-    // comment out one of the two following lines
-    // dependent on number of attached files
-    // last mime boundary must end in "--"
-    //
-    //        "--{$mime_boundary}". $newLine;
-    /*$headers .= "--{$mime_boundary}--". $newLine;*/
-
-    // we are done
-    $headers .= $newLine. "." .$newLine;
-    $cmd      = $headers;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
-    if (!isValidReturn($res,"250")) { quit($sock);}
-    $resultMail = true; // ASSUME correct return for now
-    // tell SMTP we are done
-    $cmd = "QUIT" . $newLine;
-    fputs($sock, $cmd);
-    $res = fgets($sock, 515);
-    if ($debug) errorLog("+ $cmd- $res\n");
- }
-  disableCatchErrors();
-  error_reporting(E_ALL);
-  if (! $resultMail) {
+	// Fix $To Formatting for SMTP clients
+  $toArray = explode(",", $to);
+  forEach ($toArray as &$to) { 
+    $to=trim($to);
+  	$resultMail=false;
+		$sock = fsockopen($smtpServers[$key]['server'], $smtpServers[$key]['smtpPort'], $errno, $errstr, $timeout);
+		if (!$sock) break ;     // or loop over more smtp servers
+		$res = fgets($sock, 515);
+		if ($debug) errorLog($res . "\n");
+		if (!empty($res)) {
+	    // send "HELO"
+	    $cmd ="HELO YOURSUBDOMAIN.YOURDOMAIN.com" . $newLine;  // you can change this into more relevant uri
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"250")) { quit($sock); break; }
+	    // send "AUTH LOGIN"
+	    $cmd = "AUTH LOGIN" . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"334 VXNlcm5hbWU6")) { quit($sock); break;  }
+	    // SEND USERNAME base64 encoded
+	    $cmd = base64_encode($smtpServers[$key]['userName']) . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"334 UGFzc3dvcmQ6")) { quit($sock); break;}
+	    // SEND PASSWORD base64 encoded
+	    $cmd = base64_encode($smtpServers[$key]['passWord']) . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"235")) { quit($sock); break;}
+	    // send SMTP command "MAIL FROM"
+	    $cmd = "MAIL FROM: <" . $paramMailSender . ">" . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"250")) { quit($sock); break;}
+	    // tell the SMTP server who are the recipients
+	    $cmd = "RCPT TO: " . " <" . $to . ">" . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"250")) { quit($sock); break;}
+	    // if more recipients add a line for each recipient
+	    // send SMTP command "DATA"
+	    $cmd = "DATA" . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"354")) { quit($sock); break;}
+	    // send SMTP command containing whole message
+	    // comment out if not relevant
+	    $headers  = "TO: "       . $to    . " <" . $to           . ">"  . $newLine;
+	    $headers .= "From: "     . $replyToEmailName  . " <" . $paramMailSender          . ">"  . $newLine ;
+	    $headers .= "Reply-To: " . $replyToEmailName . " <" . $replyToEmailAddress . ">"  . $newLine ;
+	    $headers .= "Subject: " . $subject  . $newLine ;
+	    // Generate a mime boundary string
+	    $rnd_str = md5(time());
+	    $mime_boundary = "==Multipart_Boundary_x{$rnd_str}x";
+	    $mime_alternative = "==Multipart_Boundary_x{$rnd_str}altx";
+	    $altcontent = "MIME-Version: 1.0" . $newLine .
+	            "Content-Type: multipart/alternative;" . 
+	            " boundary=\"{$mime_alternative}\" " . $newLine. $newLine;
+	    $altcontent .= "This is a multi-part message in MIME format"  . $newLine . $newLine .
+	        "--{$mime_alternative}". $newLine ;
+	    $altcontent .= "Content-Type: text/plain; charset=\"iso-8859-1\"". $newLine .
+	      "Content-Disposition: inline". $newLine .
+	        "Content-Transfer-Encoding: 7bit" . $newLine. $newLine .
+	      strip_tags(preg_replace('#<[Bb][Rr]/?>#',PHP_EOL,$messageBody)). $newLine. $newLine .        
+	      "--{$mime_alternative}". $newLine ;
+	    $altcontent .= "Content-Type: text/html; charset=\"iso-8859-1\"". $newLine .
+	      "Content-Disposition: inline". $newLine .
+	        "Content-Transfer-Encoding: 7bit" . $newLine. $newLine .
+	      '<html><body>'.$messageBody.'</body></html>'.$newLine. $newLine .        
+	      "--{$mime_alternative}--". $newLine ;
+	    // Add headers for file attachment
+	    $headers .=  $altcontent;
+	    $headers .= $newLine. "." .$newLine;
+	    $cmd      = $headers;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	    if (!isValidReturn($res,"250")) { quit($sock); break;}
+	    $resultMail = true; // ASSUME correct return for now
+	    // tell SMTP we are done
+	    $cmd = "QUIT" . $newLine;
+	    fputs($sock, $cmd);
+	    $res = fgets($sock, 515);
+	    if ($debug) errorLog("+ $cmd- $res\n");
+	  }
+	} //ENDING FOR EACH STATEMENT
+	disableCatchErrors();
+	error_reporting(E_ALL);
+	if (! $resultMail) {
     errorLog("Error sending mail");
-    $smtp=ini_get('SMTP');
+    $smtp=$smtpServers['default']['server'] ;
     errorLog("   SMTP Server : " . $smtp);
-    $port=ini_get('smtp_port');
+    $port=$smtpServers['default']['smtpPort'];
     errorLog("   SMTP Port : " . $port);
-    $path=ini_get('sendmail_path');
-    errorLog("   Sendmail path : " . $path);
+    $path=$smtpServers['default']['userName'];
+    errorLog("   SMTP User : " . $path);
     errorLog("   Mail stored in Database : #" . $mail->id);
   }
   if ( $resultMail==="NO" ) {$resultMail="";}
   // save the status of the sending
   $mail->mailStatus=($resultMail)?'OK':'ERROR';
-  $mail->save(); 
+  $mail->save();
   return $resultMail;
 }
 
