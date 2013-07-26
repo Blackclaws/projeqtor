@@ -109,7 +109,7 @@ class Assignment extends SqlElement {
     }
     
     if (! $this->idProject) {
-    	$refObj=$this->refType($this->refId);
+    	$refObj=new $this->refType($this->refId);
     	$this->idProject=$refObj->idProject;
     }
     // Dispatch value
