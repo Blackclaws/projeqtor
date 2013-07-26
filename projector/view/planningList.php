@@ -214,7 +214,7 @@ if ($saveShowClosed) {
                   <tr><td>
                   <?php echo i18n("labelShowResource");?>
                   </td><td>
-                  <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+                  <div title="<?php echo i18n('showResources')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="listShowResource" name="listShowResource"
                     <?php if ($saveShowResource=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
