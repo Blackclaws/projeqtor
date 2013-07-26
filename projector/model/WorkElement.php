@@ -74,124 +74,140 @@ class WorkElement extends SqlElement {
     $old = new WorkElement($this->id);
     if (!array_key_exists('user', $_SESSION)) return parent::save();
     $user = $_SESSION['user'];
+    // Update left work
     $this->leftWork = $this->plannedWork - $this->realWork;
     if ($this->leftWork < 0 or $this->done) {
       $this->leftWork = 0;
     }
+    
     if ($this->refType) {
       $top = new $this->refType($this->refId);
       $topProject=$top->idProject;
+      if (isset($top->idActivity)) {
+        $this->idActivity=$top->idActivity;
+      }
     } else {
-      $top = new Project();
+      //$top = new Project();
       $topProject=$this->idProject;
     }
     if ($top and isset($top->done) and $top->done == 1) {
       $this->leftWork = 0;
+      $this->done=1;
     }
-    if ($top and isset($top->idActivity)) {
+    if ($top and property_exists($top, 'idActivity')) {
       $this->idActivity = $top->idActivity;
       // Check if changed Planning Activity
-      if ($old->idActivity != $this->idActivity) {
-        if (!$old->idActivity) {
-          $crit = array('idResource' => $user->id, 'refType' => $this->refType, 'refId' => $this->refId);
-          $work = new Work();
-          $workList = $work->getSqlElementsFromCriteria($crit);
-          foreach ($workList as $work) {
-            $crit = array('idResource' => $user->id, 'refType' => 'Activity', 'refId' => $this->idActivity, 'workDate' => $work->workDate);
-            $newWork = SqlElement::getSingleSqlElementFromCriteria('Work', $crit);
-            if (!$newWork->id) {
-              $ass = new Assignment();
-              $crit = array('refType' => 'Activity', 'refId' => $top->idActivity, 'idResource' => $user->id);
-              $lstAss = $ass->getSqlElementsFromCriteria($crit);
-              if (count($lstAss) > 0) {
-                $ass = $lstAss[count($lstAss) - 1];
-              } else {
-                $ass = new Assignment();
-                $ass->refType = 'Activity';
-                $ass->refId = $top->idActivity;
-                $ass->idResource = $user->id;
-              }
-              $ass->leftWork-=$work->work;
-              if ($ass->leftWork<0) {$ass->leftWork=0;}
-              $ass->save();
-              $newWork->idAssignment = $ass->id;
-              if (!$newWork->refType) {
-                $newWork->refType = 'Activity';
-                $newWork->refId = $this->idActivity;
-              }
-            }
-            $newWork->work+=$work->work;
-            $newWork->setDates($work->workDate);
-            $newWork->idProject = $topProject;
-            $newWork->save();
-            $work->delete();
-          }
+      if (! trim($old->idActivity) and $old->idActivity != $this->idActivity) {
+        $crit = array('refType' => $this->refType, 'refId' => $this->refId);
+        $work = new Work();
+        $workList = $work->getSqlElementsFromCriteria($crit);
+        foreach ($workList as $work) {
+          $work->refType = 'Activity';
+          $work->refId = $this->idActivity;
+        	$work->idAssignment=$this->updateAssignment($work,$work->work);
+        	$work->save();
         }
       }
     }
     $result = parent::save();
     $diff = $this->realWork - $old->realWork;
     if ($diff != 0) {
-      $ass = new Assignment();
-      if (isset($top->idActivity) and $top->idActivity) {
-        $crit = array('refType' => 'Activity', 'refId' => $top->idActivity, 'idResource' => $user->id);
-        $lstAss = $ass->getSqlElementsFromCriteria($crit);
-        if (count($lstAss) > 0) {
-          $ass = $lstAss[count($lstAss) - 1];
-        } else {
-          $ass = new Assignment();
-          $ass->refType = 'Activity';
-          $ass->refId = $top->idActivity;
-          $ass->idResource = $user->id;
-        }
-        $crit['workDate']=date('Y-m-d');
-        $work=SqlElement::getSingleSqlElementFromCriteria('Work',$crit);
-        if (! $work or ! $work->id) {
-          $work->refType='Activity';
-          $work->refId=$top->idActivity;
-          $work->idResource=$user->id;
-          $work->idProject=$topProject;
-          $work->idAssignment=$ass->id;
-          $work->setDates(date('Y-m-d'));
-        }
-        $ass->leftWork-=$diff;
-        if ($ass->leftWork<0) {$ass->leftWork=0;}
-        $ass->save();
-        $work->idAssignment=$ass->id;
-        $work->work+=$diff;
-        if ($work->work<0) {$work->work=0;}
-        if (! $work->refType) {
-          $work->refType='Activity';
-          $work->refId=$top->idActivity;
-        }
-        $work->save();
+      // Set work to Ticket
+      $idx=-1;
+      if ($this->idActivity) {
+      	$crit=array('refType'=>'Activity', 'refId'=>$this->idActivity, 'idResource'=>$user->id, 'idProject'=>$topProject);
       } else {
         $crit=array('refType'=>$this->refType, 'refId'=>$this->refId, 'idResource'=>$user->id, 'idProject'=>$topProject);
+      }
+      if ($diff>0) {
         $crit['workDate']=date('Y-m-d');
+      }
+      $work=new Work();
+      $workList=$work->getSqlElementsFromCriteria($crit,true,null,'day asc');
+      if (count($workList)>0) {
+      	$idx=count($workList)-1;
+        $work=$workList[$idx];       
+      } else {
         $work=new Work();
-        $workList=$work->getSqlElementsFromCriteria($crit,true);
-        if (count($workList)>0) {
-          $work=$workList[count($workList)-1];
-        } else {
-          $work=new Work();
-          $work->refType=$this->refType;
-          $work->refId=$this->refId;
-          $work->idResource=$user->id;
-          $work->idProject=$topProject;
-        }
-        $work->work+=$diff;
-        $work->setDates(date('Y-m-d'));
-        if ($work->work<0) {$work->work=0;}
+        $work->refType=$this->refType;
+        $work->refId=$this->refId;
+        $work->idResource=$user->id;
+        $work->idProject=$topProject;
+        $work->dailyCost=0;
+        $work->cost=0;
+      }
+      if ($diff>0) {
+	      $work->work+=$diff;
+	      $work->setDates(date('Y-m-d'));
+	      if ($work->work<0) {$work->work=0;}
         if (! $work->refType) {
           $work->refType=$this->refType;
           $work->refId=$this->refId;
-      }
+        }
+        $work->idProject=$topProject;
+        $work->idAssignment=$this->updateAssignment($work,$diff);
         $work->save();
-    }
+      } else {
+      	while ($diff<0 and $idx>=0) {
+      		$valDiff=0;
+      		if ($work->work + $diff >= 0) {
+      			$valDiff=$diff;
+      			$work->work += $diff;
+      			$diff=0;
+      		} else {
+      			$valDiff=(-1)*$work->work;
+       			$diff+=$work->work;
+       			$work->work=0;
+       		}
+       		$work->idAssignment=$this->updateAssignment($work,$valDiff);
+       	  if ($work->work==0) {
+            if ($work->id) {
+            	$work->delete();
+            }
+          } else {
+            $work->save();
+          }       
+       		$idx--;
+       		if ($idx>=0) { 
+       			$work=$workList[$idx];
+       		} else if (array_key_exists('idResource', $crit)) {
+       			unset($crit['idResource']);
+       			$work=new Work();
+            $workList=$work->getSqlElementsFromCriteria($crit,true,null,'day asc');
+            if (count($workList)>0) {
+              $idx=count($workList)-1;
+              $work=$workList[$idx]; 
+            } 
+       	  }
+       	}
+      }
     }
     return $result;
   }
 
+  private function updateAssignment($work, $diff) {
+  	if ($work->refType!='Activity') {
+  		return null;
+  	}
+  	$ass =new Assignment();
+    $crit = array('refType' => $work->refType, 'refId' => $work->refId, 'idResource' => $work->idResource);
+    $lstAss = $ass->getSqlElementsFromCriteria($crit);
+    if (count($lstAss) > 0) {
+      $ass = $lstAss[count($lstAss) - 1];
+    } else {
+      $ass = new Assignment();
+      $ass->refType = $work->refType;
+      $ass->refId = $work->refId;
+      $ass->idResource = $work->idResource;
+    }
+    $ass->leftWork-=$diff;
+    $ass->realWork+=$diff;
+    if ($ass->leftWork<0 or $ass->leftWork==null) {$ass->leftWork=0;}
+    if ($ass->realWork<0) {$ass->realWork=0;}
+    $ass->save();
+    return $ass->id;
+  }
+  
   public function start() {
     // First, stop all ongoing work
     $_SESSION['user']->stopAllWork();

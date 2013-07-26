@@ -455,7 +455,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						echo $val;
 					}
 				} else if ($col=='id') { // id
-					echo '<span style="color:grey;">#</span>' . $val;
+					echo '<span style="color:grey;">#' . $val."&nbsp;&nbsp;&nbsp;</span>";
 				} else if ($col=='password') {
 					echo "..."; // nothing
 				} else if ($dataType=='date' and $val!=null and $val != '') {

@@ -116,6 +116,14 @@ class GeneralWork extends SqlElement {
   }
   
   public function save() {
+    if (! $this->idProject) {
+      if ($this->refType=='Project') {
+        $this->idProject=$this->refId;
+      } else if ($this->refType) {
+        $refObj=new $this->refType($this->refId);
+        $this->idProject=$refObj->idProject;
+      }
+    }
     if ($this->dailyCost==null) {
       $ass=new Assignment($this->idAssignment);
       $where="idResource='" . Sql::fmtId($this->idResource) . "' and idRole='" . Sql::fmtId($ass->idRole) . "'"
