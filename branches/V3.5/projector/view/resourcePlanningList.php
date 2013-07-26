@@ -204,7 +204,7 @@ if ($saveShowClosed) {
                   </td></tr><tr><td>
                   <?php echo i18n("labelShowLeftWork");?>
                   </td><td>
-                  <div title="<?php echo i18n('showWork')?>" dojoType="dijit.form.CheckBox" 
+                  <div title="<?php echo i18n('showLeftWork')?>" dojoType="dijit.form.CheckBox" 
                     type="checkbox" id="listShowLeftWork" name="listShowLeftWork"
                     <?php if ($saveShowWork=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
