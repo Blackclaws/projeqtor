@@ -586,6 +586,7 @@ function getTheme() {
 function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {
 	$paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
+	$messageBody = wordwrap($messageBody, 70);
 	if (! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
 	  return sendMailAnonymous($to, $subject, $messageBody, $object, $headers, $sender, $boundary);	
 	} else {
@@ -598,7 +599,7 @@ scriptLog('sendMailAuthentified');
   $paramMailReplyTo = Parameter::getGlobalParameter('paramMailReplyTo');
   error_reporting(E_ERROR);
   $debug      = false;  // set to FALSE in production code
-  $newLine     = "\r\n";
+  $newLine     = Parameter::getGlobalParameter('mailEol'); // "\r\n";
   $timeout     = 30;
   // find location of script
   $path_info = pathinfo(__FILE__);
