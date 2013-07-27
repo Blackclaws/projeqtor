@@ -2715,13 +2715,13 @@ abstract class SqlElement {
     	$message=$directStatusMail->message.'<br/><br/>'.$message;
     }
 
-    $message='<html>' . "\n" .
-      '<head>'  . "\n" .
-      '<title>' . $title . '</title>' . "\n" .
-      '</head>' . "\n" .
-      '<body>' . "\n" .
-      $message . "\n" .
-      '<body>' . "\n" .
+    $message='<html>' .
+      '<head>'  . 
+      '<title>' . $title . '</title>' .
+      '</head>' . 
+      '<body>' . 
+      $message . 
+      '<body>' . 
       '</html>';
     $message = wordwrap($message, 70); // wrapt text so that line do not exceed 70 cars per line
     $resultMail=sendMail($dest, $title, $message, $this);
@@ -2745,13 +2745,13 @@ abstract class SqlElement {
   	$currency=Parameter::getGlobalParameter('currency');
   	$msg="";
   	$rowStart='<tr>';
-  	$rowEnd='</tr>'. "\n";
+  	$rowEnd='</tr>';
   	$labelStart='<td style="background:#DDDDDD;font-weight:bold;text-align: right;width:25%;vertical-align: middle;">&nbsp;&nbsp;';
-  	$labelEnd='&nbsp;</td>'. "\n";
+  	$labelEnd='&nbsp;</td>';
   	$fieldStart='<td style="background:#FFFFFF;text-align: left;">&nbsp;';
-  	$fieldEnd='</td>'. "\n";
+  	$fieldEnd='</td>';
     $sectionStart='<td colspan="2" style="background:#555555;color: #FFFFFF; text-align: center;font-size:10pt;font-weight:bold;">';
-    $sectionEnd='</td>'. "\n";
+    $sectionEnd='</td>';
     $tableStart='<table style="font-size:9pt; width: 95%">';
     $tableEnd='</table>';
     $msg=$tableStart;
