@@ -161,7 +161,7 @@ function dateTimeFormatter(value) {
   if (value && value.length==19) {
   	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss", selector: 'date and time'});
   	if (! vDate) {
-  	  vDate=new Date(value.substr(0,4),value.substr(5,2),value.substr(8,2),value.substr(11,2),value.substr(14,2),value.substr(17,2),0);	
+  	  vDate=new Date(value.substr(0,4),(parseInt(value.substr(5,2),10))-1,value.substr(8,2),value.substr(11,2),value.substr(14,2),value.substr(17,2),0);	
   	  if (! vDate) {
   	    return dateFormatter(value.substr(0,10))+":"+value.substr(11,5);
   	  }
@@ -175,7 +175,7 @@ function timeFormatter(value) {
   if (value.length==19) {
   	vDate=dojo.date.locale.parse(value, {datePattern: "yyyy-MM-dd", timePattern: "HH:mm:ss", selector: 'date and time'});
   	if (! vDate) {
-  		vDate=new Date(value.substr(0,4),value.substr(5,2),value.substr(8,2),value.substr(11,2),value.substr(14,2),value.substr(17,2),0);	
+  		vDate=new Date(value.substr(0,4),(parseInt(value.substr(5,2),10))-1,value.substr(8,2),value.substr(11,2),value.substr(14,2),value.substr(17,2),0);	
     	if (! vDate) {
     	  return value.substr(11,5);
     	}
