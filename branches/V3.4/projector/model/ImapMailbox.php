@@ -25,6 +25,14 @@ class ImapMailbox {
                         $this->attachmentsDir = rtrim(realpath($attachmentsDir), '\\/');
                 }
         }
+        
+        public static function checkImapEnabled() {
+        	if (function_exists('imap_search')) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
 
         /**
          * Get IMAP mailbox connection stream
