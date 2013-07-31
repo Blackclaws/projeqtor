@@ -65,59 +65,82 @@ function purgeFiles($dir, $pattern) {
  * @param unknown_type $size
  */
 function createThumb($imageFile,$size,$thumb=null) {
-	if (!$size) {
-		copy($imageFile, $thumb);
-		return;
-	}
-	if (!$imageFile or ! is_file($imageFile)) {
-		return false;
-	}
-	$ext=strtolower(pathinfo($imageFile, PATHINFO_EXTENSION));
-	$imgFmt="";
-	switch ($ext) {
-		case 'jpg': case 'jpeg':
-			$imgFmt='jpeg'; break;   
-		case 'gif': 
-			$imgFmt='gif'; $blending = true; break;
-		case 'png':
-			$imgFmt='png'; $blending = false; break;		
-	}
-	$imagecreate = "imagecreatefrom$imgFmt"; 
-	$imagesave = "image$imgFmt";
-	
-	$img=$imagecreate($imageFile);
-	$x = imagesx($img);
-	$y = imagesy($img);
-	if($x>$size or $y>$size) {
-		if($x>$y)	{
-			$nx = $size;
-			$ny = floor($y/($x/$size));
-		}	else {
-			$nx = floor($x/($y/$size));
-			$ny = $size;
-		}
-	} else {
-		$nx=$x;
-		$ny=$y;
-	}
-	$nimg = imagecreatetruecolor($nx,$ny);
-	// preserve transparency for PNG and GIF images 
-  if ($imgFmt == 'png' or $imgFmt == 'gif'){ 
-    $background = imagecolorallocate($nimg, 0, 0, 0); 
-    imagecolortransparent($nimg, $background); 
-    imagealphablending($nimg, $blending); 
-    imagesavealpha($nimg, true); 
-  } 
-	imagecopyresampled($nimg,$img,0,0,0,0,$nx,$ny,$x,$y);
-	if (! $thumb) {
-	  $thumb=getThumbFileName($imageFile,$size);
-	}
-	$dir=pathinfo($thumb, PATHINFO_DIRNAME);
-	if (! file_exists($dir)) {
-	  mkdir($dir,0777,true);
-	}
-	$imagesave($nimg,$thumb);
-	return true;
+  if (!$size) {
+    copy($imageFile, $thumb);
+    return;
+  }
+  if (!$imageFile or ! is_file($imageFile)) {
+    return false;
+  }
+  $ext=strtolower(pathinfo($imageFile, PATHINFO_EXTENSION));
+  $imgFmt="";
+  // EDIT START BRW 2013-07-31
+  $bSupported = true;
+  if(1){
+    $arr = getimagesize($imageFile);
+    switch ($arr['mime']) {
+    case 'image/tiff':
+      $bSupported = false; break;    
+    case 'image/jpeg':    case 'image/jpg':
+      $imgFmt='jpeg'; break;   
+    case 'image/gif': 
+      $imgFmt='gif'; $blending = true; break;
+    case 'image/png':
+      $imgFmt='png'; $blending = false; break;
+    default:
+      $bSupported = false; break;  
+    }
+  }
+  else{
+    switch ($ext) {
+    case 'jpg': case 'jpeg':
+      $imgFmt='jpeg'; break;   
+    case 'gif': 
+      $imgFmt='gif'; $blending = true; break;
+    case 'png':
+      $imgFmt='png'; $blending = false; break;    
+    }
+  }
+  if($bSupported){
+    $imagecreate = "imagecreatefrom$imgFmt"; 
+    $imagesave = "image$imgFmt";
+ 
+    $img=$imagecreate($imageFile);
+    $x = imagesx($img);
+    $y = imagesy($img);
+    if($x>$size or $y>$size) {
+      if($x>$y) {
+        $nx = $size;
+        $ny = floor($y/($x/$size));
+      } else {
+        $nx = floor($x/($y/$size));
+        $ny = $size;
+      }
+    } else {
+      $nx=$x;
+      $ny=$y;
+    }
+    $nimg = imagecreatetruecolor($nx,$ny);
+    // preserve transparency for PNG and GIF images 
+    if ($imgFmt == 'png' or $imgFmt == 'gif'){ 
+      $background = imagecolorallocate($nimg, 0, 0, 0); 
+      imagecolortransparent($nimg, $background); 
+      imagealphablending($nimg, $blending); 
+      imagesavealpha($nimg, true); 
+    } 
+    imagecopyresampled($nimg,$img,0,0,0,0,$nx,$ny,$x,$y);
+    if (! $thumb) {
+      $thumb=getThumbFileName($imageFile,$size);
+    }
+    $dir=pathinfo($thumb, PATHINFO_DIRNAME);
+    if (! file_exists($dir)) {
+      mkdir($dir,0777,true);
+    }
+    $imagesave($nimg,$thumb);
+    return true;
+  }
+  return false;
+  // EDIT END BRW 2013-07-31
 }
 
 function getThumbFileName($imageFile,$size) {
