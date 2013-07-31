@@ -458,6 +458,11 @@ class Cron {
     $globalCatchErrors=true;
     require_once("../model/ImapMailbox.php"); // Imap management Class
 		
+    if (! ImapMailbox::checkImapEnabled()) {
+      traceLog("ERROR - Cron::checkEmails() - IMAP extension not enabled in your PHP config. Cannot connect to IMAP Mailbox.");
+      return;
+    }
+    
 		// IMAP must be enabled in Google Mail Settings
 		$emailEmail=Parameter::getGlobalParameter('cronCheckEmailsUser');
 		$emailPassword=Parameter::getGlobalParameter('cronCheckEmailsPassword');
