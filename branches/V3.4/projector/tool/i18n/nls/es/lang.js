@@ -1721,5 +1721,6 @@ sectionBehavior: "Comportamiento",
 sectionPeriodicity: "Periodicidad",
 selectedItemsCount: "Número de elementos seleccionados",
 xlsxFile: "fichero xlsx (Excel 2010)",
+dragAndDrop: "[dragAndDrop]",
 currentLocaleOfFile: "es"
 }
