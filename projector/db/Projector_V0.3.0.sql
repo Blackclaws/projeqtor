@@ -7,7 +7,7 @@
 -- ///////////////////////////////////////////////////////////
 
 -- -----------------------------------------------------------
--- Database is expedted to exist. If not, these lines may help
+-- Database is expected to exist. If not, these lines may help
 -- -----------------------------------------------------------
 --SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --CREATE DATABASE ${database} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
