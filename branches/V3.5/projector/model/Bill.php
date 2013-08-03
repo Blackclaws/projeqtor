@@ -229,7 +229,7 @@ class Bill extends SqlElement {
    */  
 
 	public function save() {
-		$oldBill = new Bill($this->id);
+		$oldBill = $this->getOld();
 	
 		// billingType
 		$proj=new Project($this->idProject);

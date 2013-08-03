@@ -418,7 +418,7 @@ class Workflow extends SqlElement {
     set_time_limit(300);
     
     if ($this->workflowUpdate and $this->workflowUpdate!="[     ]" and $this->workflowUpdate!="[      ]") {
-      $old = new Workflow($this->id);
+      $old=$this->getOld();
       if (! $old->workflowUpdate or $old->workflowUpdate=="[      ]") {
         $this->workflowUpdate="[     ]";
       } else {

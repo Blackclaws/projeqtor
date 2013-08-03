@@ -200,7 +200,7 @@ class PlanningElement extends SqlElement {
    */
   public function save() {
   	// Get old element (stored in database) : must be fetched before saving
-    $old=new PlanningElement($this->id);
+    $old=$this->getOld();
     if (! $this->idProject) {
       if ($this->refType=='Project') {
         $this->idProject=$this->refId;

@@ -269,7 +269,7 @@ class Ticket extends SqlElement {
     return $result;
   }
   public function save() {
-  	$old=new Ticket($this->id);
+  	$old=$this->getOld();
   	if (! trim($this->creationDateTime)) {
   	  $this->creationDateTime=date('Y-m-d H:i');
   	}

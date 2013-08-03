@@ -3127,6 +3127,15 @@ scriptLog('SqlElement::setReference');
   	}
   }
   
+  public function getOld() {
+  	if (property_exists($this, '_old') and $this->old) {
+  		return $this->_old;
+  	}
+  	$class=get_class($this);
+  	$this->_old=new $class($this->id);
+  	return $this->_old;
+  }
+  
   public function getTitle($col) {
     return i18n('col'.$col);
   }

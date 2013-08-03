@@ -77,7 +77,7 @@ class TestCaseRun extends SqlElement {
   public function save($allowDupplicate=false) {
 
   	$new=($this->id)?false:true;
-  	$old=new TestCaseRun($this->id);
+  	$old=$this->getOld();
   	
   	$result=parent::save();
   	

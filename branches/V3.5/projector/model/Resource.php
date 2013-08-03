@@ -293,7 +293,7 @@ class Resource extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
-    $old=new Resource($this->id);
+    $old=$this->getOld();
     // if uncheck isUser must check user for deletion
     if ($old->isUser and ! $this->isUser and $this->id) {
         $obj=new User($this->id);

@@ -210,7 +210,7 @@ class Activity extends SqlElement {
     $oldIdle=null;
     $oldIdProject=null;
     if ($this->id) {
-      $old=new Activity($this->id);
+      $old=$this->getOld();
       $oldResource=$old->idResource;
       $oldIdle=$old->idle;
       $oldIdProject=$old->idProject;

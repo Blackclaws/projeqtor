@@ -71,7 +71,7 @@ class WorkElement extends SqlElement {
   }
 
   public function save() {
-    $old = new WorkElement($this->id);
+    $old=$this->getOld();
     if (!array_key_exists('user', $_SESSION)) return parent::save();
     $user = $_SESSION['user'];
     // Update left work

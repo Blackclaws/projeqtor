@@ -509,7 +509,7 @@ class User extends SqlElement {
     		$result.='<br/>' . i18n('errorDuplicateUser');
     	}
     }
-    $old=new User($this->id);
+    $old=$this->getOld();
     // if uncheck isResource must check resource for deletion
     if ($old->isResource and ! $this->isResource and $this->id) {
     		$obj=new Resource($this->id);

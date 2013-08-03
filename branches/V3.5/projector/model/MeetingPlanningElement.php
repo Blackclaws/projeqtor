@@ -146,7 +146,7 @@ class MeetingPlanningElement extends PlanningElement {
    */
   public function save() {
   	$meeting=new $this->refType($this->refId);
-  	$old=new MeetingPlanningElement($this->id);
+  	$old=$this->getOld();
   	if (!$this->id) {
   		$this->priority=1; // very high priority
   		$this->idMeetingPlanningMode=16; // fixed planning  		
