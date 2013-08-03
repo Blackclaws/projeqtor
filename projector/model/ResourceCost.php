@@ -56,7 +56,7 @@ class ResourceCost extends SqlElement {
     $new=($this->id)?false:true;
     $newCost=true;
     if (! $new) {
-      $old=new ResourceCost($this->id);
+      $old=$this->getOld();
       $newCost=($old->cost==$this->cost)?false:true;
     }
     $result=parent::save();

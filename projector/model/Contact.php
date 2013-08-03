@@ -292,7 +292,7 @@ class Contact extends SqlElement {
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
-    $old=new Contact($this->id);
+    $old=$this->getOld();
     // if uncheck isResource must check resource for deletion
     if ($old->isResource and ! $this->isResource and $this->id) {
         $obj=new Resource($this->id);

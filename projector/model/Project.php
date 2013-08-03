@@ -485,7 +485,7 @@ class Project extends SqlElement {
   public function save() {
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
-    //$old=new Project($this->id);
+    //$old=$this->getOld();
     //$oldtype=new ProjectType($old->idProjectType);
     $type=new ProjectType($this->idProjectType);
     

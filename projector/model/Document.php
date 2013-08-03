@@ -204,7 +204,7 @@ class Document extends SqlElement {
   }
   
   public function save() {
-  	$old=new Document($this->id);
+  	$old=$this->getOld();
   	$sep=Parameter::getGlobalParameter('paramPathSeparator');
   	if ($old->name!=$this->name) {
   		$this->documentReference=str_replace($old->name, $this->name, $this->documentReference);

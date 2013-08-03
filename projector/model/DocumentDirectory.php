@@ -120,7 +120,7 @@ class DocumentDirectory extends SqlElement {
   public function save() {
   	//$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$paramPathSeparator="/"; // Save with Linux format (windows interprets it correctly)
-  	$old=new DocumentDirectory($this->id);
+  	$old=$this->getOld();
   	$this->location="";
   	if ($this->idDocumentDirectory) {
   		$dir=new DocumentDirectory($this->idDocumentDirectory);
