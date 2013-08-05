@@ -49,6 +49,9 @@
 		     <include name="../*.version"/>
 		     <include name="../*.php"/>
 		   </fileset>
+       <fileset dir="${src.dir}/external">
+         <include name="*.php"/>
+       </fileset>
 		 </copy>
   </target>
   
