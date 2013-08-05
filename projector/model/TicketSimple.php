@@ -72,8 +72,8 @@ class TicketSimple extends Ticket {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
-    //unset($this->_Link);
-    //unset($this->WorkElement);
+    unset($this->_Link);
+    unset($this->WorkElement);
     unset($this->_col_1_1_Link);
   }
 
@@ -148,6 +148,19 @@ class TicketSimple extends Ticket {
   	return $result;
   }
 
+  public function deleteControl() { 
+    $result='';
+    $crit=array('refType'=>'Ticket', 'refId'=>$this->id);
+    $this->WorkElement=SqlElement::getSingleSqlElementFromCriteria('WorkElement', $crit);
+    if ($this->WorkElement and $this->WorkElement->realWork>0) {
+      $result.='<br/>' . i18n('msgUnableToDeleteRealWork');
+    }
+    if ($result=='') {
+      $result .= parent::deleteControl();
+    }
+    return $result;
+  }
+  
   public function getTitle($col) {
   	if (substr($col,0,9)=='idContext') {
   	  return SqlList::getNameFromId('ContextType', substr($col, 9));

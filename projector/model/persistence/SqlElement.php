@@ -758,7 +758,7 @@ abstract class SqlElement {
    * @return void
    */
   private function deleteSqlElement() {
-    $objectClass = get_class($this);
+    $class = get_class($this);
     $control=$this->deleteControl();
     if ($control!="OK") {
       // errors on control => don't save, display error message
@@ -789,25 +789,26 @@ abstract class SqlElement {
     }
     // check relartionship : if "cascade", then auto delete
     $relationShip=self::$_relationShip;
-    if (array_key_exists(get_class($this),$relationShip)) {
-      $relations=$relationShip[get_class($this)];
+    if ($class=='TicketSimple') {$class='Ticket';}
+    if (array_key_exists($class,$relationShip)) {
+      $relations=$relationShip[$class];
       foreach ($relations as $object=>$mode) {
         if ($mode=="cascade") {      
           $where=null;
           $obj=new $object();
-          $crit=array('id' . get_class($this) => $this->id);
-          if (! property_exists($obj, 'id' . get_class($this)) and property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-            $crit=array("refType"=>get_class($this), "refId"=>$this->id);
+          $crit=array('id' . $class => $this->id);
+          if (! property_exists($obj, 'id' . $class) and property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+            $crit=array("refType"=>$class, "refId"=>$this->id);
           }
           if ($object=="Dependency") {
             $crit=null;
-            $where="(predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . Sql::fmtId($this->id) .")"
-             . " or (successorRefType='" . get_class($this) . "' and successorRefId=" . Sql::fmtId($this->id) .")"; 
+            $where="(predecessorRefType='" . $class . "' and predecessorRefId=" . Sql::fmtId($this->id) .")"
+             . " or (successorRefType='" . $class . "' and successorRefId=" . Sql::fmtId($this->id) .")"; 
           }
           if ($object=="Link") {
             $crit=null;
-            $where="(ref1Type='" . get_class($this) . "' and ref1Id=" . Sql::fmtId($this->id) .")"
-             . " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) .")"; 
+            $where="(ref1Type='" . $class . "' and ref1Id=" . Sql::fmtId($this->id) .")"
+             . " or (ref2Type='" . $class . "' and ref2Id=" . Sql::fmtId($this->id) .")"; 
           }
           $list=$obj->getSqlElementsFromCriteria($crit,false,$where);
           foreach ($list as $subObj) {
@@ -826,11 +827,11 @@ abstract class SqlElement {
     }    
     // save history
     if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {      
-      $result = History::store($this, $objectClass,$this->id,'delete');
+      $result = History::store($this, $class,$this->id,'delete');
       if (!$result) {$returnStatus="ERROR";}
     }
     if ($returnStatus!="ERROR") {
-      $returnValue=i18n(get_class($this)) . ' #' . $this->id . ' ' . i18n('resultDeleted');   
+      $returnValue=i18n($class) . ' #' . $this->id . ' ' . i18n('resultDeleted');   
     } else {
       $returnValue=Sql::$lastQueryErrorMessage;
     } 
