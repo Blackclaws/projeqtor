@@ -37,6 +37,8 @@ if (! $documentVersionId) { // Get file only on insert
 	  $uploadedFile=$_FILES['documentVersionFile'];
 	} else if ($documentVersionLink!='') {
 		// OK Link instead of file
+	} else if (isset($_REQUEST['MAX_FILE_SIZE']) ) {
+		// OK : no file
 	} else {
 	  $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
 	  errorLog("[1] ".i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
@@ -71,7 +73,7 @@ if (! $documentVersionId) { // Get file only on insert
 	    //$error=true; 
 	  }
 	}
-	if (! $error and $uploadedFile and !$documentVersionLink) {
+	if (! $error and ! $uploadedFile and !$documentVersionLink) {
 	  if (! $uploadedFile['name']) {
 	    $error=htmlGetWarningMessage(i18n('errorNoFile'));
 	    errorLog(i18n('errorNoFile'));
