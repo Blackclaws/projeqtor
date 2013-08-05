@@ -1183,7 +1183,7 @@ abstract class SqlElement {
 	        $attachement->save();
 	        $todir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
 	        if (! file_exists($todir)) {
-	          mkdir($todir);
+	          mkdir($todir,0777,true);
 	        }
 	        copy($fromdir.$attachement->fileName, $todir.$attachement->fileName);
 	        $attachement->subDirectory=str_replace($attachementDirectory,'${attachementDirectory}',$todir);

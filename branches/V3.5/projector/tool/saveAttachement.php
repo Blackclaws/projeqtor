@@ -212,7 +212,7 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	if (! $error and $type=='file') {
 	  $uploaddir = $attachementDirectory . $pathSeparator . "attachement_" . $newId . $pathSeparator;
 	  if (! file_exists($uploaddir)) {
-	    mkdir($uploaddir);
+	    mkdir($uploaddir,0777,true);
 	  }
 	  $uploadfile = $uploaddir . basename($uploadedFile['name']);
 	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
