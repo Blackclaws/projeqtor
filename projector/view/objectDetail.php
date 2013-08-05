@@ -1628,6 +1628,7 @@ function drawAttachementsFromObject($obj, $refresh=false) {
 }
 
 function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
+  if ($obj->isAttributeSetToField("_Link", "hidden")) { return; }
 	global $cr, $print, $user, $comboDetail;
 	if ($comboDetail) {
 		return;
