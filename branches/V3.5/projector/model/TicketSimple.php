@@ -4,8 +4,8 @@
  */ 
 class TicketSimple extends Ticket {
 
-  public $_noDisplayHistory=true;
-  
+	public $_noDisplayHistory=true;
+	
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
@@ -72,8 +72,8 @@ class TicketSimple extends Ticket {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
-    //unset($this->_Link);
-    //unset($this->WorkElement);
+    unset($this->_Link);
+    unset($this->WorkElement);
     unset($this->_col_1_1_Link);
   }
 
@@ -131,30 +131,43 @@ class TicketSimple extends Ticket {
   }
 
   public function save() {
-    //$old=new Ticket($this->id);
-    $user=$_SESSION['user'];
-    if (! $this->id) {
-      if (! trim($this->idContact) and $user->isContact) {
-        $this->idContact=$user->id;
-      }
-      $this->idUser=$user->id;
-      $lst=SqlList::getList('TicketType');
-      foreach ($lst as $id=>$val) {
-        $this->idTicketType=$id;
-        break;
-      }
-    }
-    $result=parent::save();
-    return $result;
+  	//$old=new Ticket($this->id);
+  	$user=$_SESSION['user'];
+  	if (! $this->id) {
+  	  if (! trim($this->idContact) and $user->isContact) {
+  		  $this->idContact=$user->id;
+  	  }
+  	  $this->idUser=$user->id;
+  	  $lst=SqlList::getList('TicketType');
+  	  foreach ($lst as $id=>$val) {
+  	    $this->idTicketType=$id;
+  	    break;
+  	  }
+  	}
+  	$result=parent::save();
+  	return $result;
   }
 
+  public function deleteControl() { 
+    $result='';
+    $crit=array('refType'=>'Ticket', 'refId'=>$this->id);
+    $this->WorkElement=SqlElement::getSingleSqlElementFromCriteria('WorkElement', $crit);
+    if ($this->WorkElement and $this->WorkElement->realWork>0) {
+      $result.='<br/>' . i18n('msgUnableToDeleteRealWork');
+    }
+    if ($result=='') {
+      $result .= parent::deleteControl();
+    }
+    return $result;
+  }
+  
   public function getTitle($col) {
-    if (substr($col,0,9)=='idContext') {
-      return SqlList::getNameFromId('ContextType', substr($col, 9));
-    } else {
-      return parent::getTitle($col);
-    } 
-    
+  	if (substr($col,0,9)=='idContext') {
+  	  return SqlList::getNameFromId('ContextType', substr($col, 9));
+  	} else {
+  		return parent::getTitle($col);
+  	} 
+  	
   }
   
 }
