@@ -68,7 +68,7 @@ $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
 $attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
 $uploaddir = $attachementDirectory . $pathSeparator . "import" . $pathSeparator;
 if (! file_exists($uploaddir)) {
-  mkdir($uploaddir);
+  mkdir($uploaddir,0777,true);
 }
 $uploadfile = $uploaddir . basename($uploadedFile['name']);
 if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
