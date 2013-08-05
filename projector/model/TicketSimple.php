@@ -48,7 +48,7 @@ class TicketSimple extends Ticket {
     "reference"=>"readonly",
     "result"=>"readonly",
     "idTargetVersion"=>"readonly",
-    "WorkElement"=>"hidden"
+    "WorkElement"=>"hidden", "_Link"=>"hidden"
   );  
     
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -72,8 +72,8 @@ class TicketSimple extends Ticket {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
-    unset($this->_Link);
-    unset($this->WorkElement);
+    //unset($this->_Link);
+    //unset($this->WorkElement);
     unset($this->_col_1_1_Link);
   }
 
