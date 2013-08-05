@@ -154,7 +154,7 @@ class DocumentDirectory extends SqlElement {
   	foreach ($split as $sp) {
   	  $rep.= $sp . $paramPathSeparator;
   		if (! file_exists($rep)) {
-  			mkdir($rep);
+  			mkdir($rep, 0777 , true);
   		}	
   	}
   	

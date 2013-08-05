@@ -206,7 +206,7 @@ if (! $documentVersionId) {
 		foreach ($split as $dirElt) { 
 			$dir.=$dirElt.$pathSeparator;
 	    if (! file_exists($dir)) {
-	      mkdir($dir);
+	      mkdir($dir, 0777 , true);
 	    }
 		}
 	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
