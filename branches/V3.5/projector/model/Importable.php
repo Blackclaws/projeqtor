@@ -272,12 +272,20 @@ class Importable extends SqlElement {
 					// 4.1.0 : Adaptation des formats de date
 					else if ($dataType == 'date') {
 						if (!$field == '') {
-							if ($extension=="xlsx") {
-								$field=date('Y-m-d',XLSXReader::toUnixTimeStamp($field));
+							if ($extension=="xlsx") {								
+							  $field=date('Y-m-d',XLSXReader::toUnixTimeStamp($field));
+							} else {
+							  $field=formatBrowserDateToDate($field); // Detect if format is correct
 							}
-							if (substr($field, 2, 1) == "/") {
-								list($jour, $mois, $annee) = explode('/', $field);
-								$field = date('Y-m-d', mktime(0, 0, 0, $mois, $jour, $annee));
+						}
+					}
+					// 4.1.0 : Adaptation des formats de date
+					else if ($dataType=='datetime') {
+						if (!$field == '') {
+							if ($extension=="xlsx") {								
+								$field=gmdate ('Y-m-d H:i:s',XLSXReader::toUnixTimeStamp($field));
+							} else {
+								$field=formatBrowserDateToDate($field); // Detect if format is correct
 							}
 						}
 					}
