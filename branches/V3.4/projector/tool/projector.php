@@ -1825,4 +1825,35 @@ function traceExecutionTime($step='', $reset=false) {
   $startMicroTime=microtime(true);
 }
 
+function formatBrowserDateToDate($dateTime) {
+	global $browserLocaleDateFormat;
+	if (substr($dateTime,4,1)=='-' and substr($dateTime,7,1)=='-') {
+		return $dateTime;
+	}
+	if (substr_count($dateTime,':')>0) {
+	  list($date, $time)=explode(' ', $dateTime);
+	} else {
+		$date=$dateTime;
+		$time="";
+	}
+	if ($browserLocaleDateFormat=='DD/MM/YYYY') {
+	  list($day, $month, $year) = explode('/', $date);
+	} else if ($browserLocaleDateFormat=='MM/DD/YYYY') {
+	  list($month, $day, $year) = explode('/', $date);	
+	} else {
+	  return $dateTime;
+	}
+	if (trim($time)) {
+		if (substr_count($time,':')==2) {
+		  list($hour, $minute, $second) = explode(':', $time);
+		} else {
+		  list($hour, $minute) = explode(':', $time);
+		  $second=0;
+		} 
+		return date('Y-m-d H:i:s', mktime($hour, $minute, $second, $month, $day, $year));
+	} else {
+		return date('Y-m-d', mktime(0, 0, 0, $month, $day, $year));
+	}
+}
+
 ?>
