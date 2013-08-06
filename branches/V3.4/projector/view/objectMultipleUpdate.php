@@ -165,7 +165,6 @@
 
 <?php 
 function isDisplayable($obj, $field) {
-	debugLog($field . " " . $obj->getFieldAttributes($field));
   if ( property_exists($obj,$field) 
   and ! $obj->isAttributeSetToField($field,'readonly') 
   and ! $obj->isAttributeSetToField($field,'hidden') ) {
