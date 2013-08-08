@@ -2380,21 +2380,35 @@ abstract class SqlElement {
     $class=get_class($this);
     $old=new $class($this->id);
     $fldType='id'.$class.'Type';
-    if ( property_exists($class, 'idStatus') and property_exists($class, $fldType) and $old->idStatus
+    
+    if ( property_exists($class, 'idStatus') and property_exists($class, $fldType) 
+      and trim($old->idStatus) and trim($old->$fldType)
       and (trim($old->idStatus)!=trim($this->idStatus) or trim($old->$fldType)!=trim($this->$fldType) ) 
-      and $old->id and $class!='Document' and trim($old->idStatus) and trim($old->$fldType)) {
-    	$type=new Type($this->$fldType);
-    	$crit=array('idWorkflow'=>$type->idWorkflow,
-    	            'idStatusFrom'=>$old->idStatus,
-    	            'idStatusTo'=>$this->idStatus,
-    	            'idProfile'=>$_SESSION['user']->idProfile);
-    	$ws=SqlElement::getSingleSqlElementFromCriteria('WorkflowStatus', $crit);
-    	if (!$ws or !$ws->id or $ws->allowed!=1) {
-    		$oldStat=new Status($old->idStatus);
-    		if (! $oldStat->isCopyStatus) {
-    	    $result.="<br/>" . i18n("errorWorflow");
-    		}
-    	}
+      and $old->id and $class!='Document') {
+      $oldStat=new Status($old->idStatus);
+      $statList=SqlList::getList('Status');
+      $firstStat=key($statList);
+      if (! $oldStat->isCopyStatus and ($this->idStatus!=$old->idStatus or $this->idStatus!=$firstStat) ) {
+	    	$type=new Type($this->$fldType);
+	    	$crit=array('idWorkflow'=>$type->idWorkflow,	    	            
+	    	            'idStatusTo'=>$this->idStatus,
+	    	            'idProfile'=>$_SESSION['user']->idProfile);
+	    	if (trim($old->idStatus)!=trim($this->idStatus)) {
+	    		$crit['idStatusFrom']=$old->idStatus;
+	    	}	
+	    	$ws=new WorkflowStatus();
+	      $wsList=$ws->getSqlElementsFromCriteria($crit);
+	      $allowed=false;
+	      foreach ($wsList as $ws) {
+	        if ($ws->allowed) {
+	          $allowed=true;
+	          break;
+	        }
+	      }
+	    	if (! $allowed) {
+	    	    $result.="<br/>" . i18n("errorWorflow");
+	    	}
+      }
     }
     if ($result=="") {
       $result='OK';
