@@ -1357,7 +1357,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                </select>  
              </td>
            </tr>
-           <tr>
+           <?php $pe=new PlanningElement();
+           $pe->setVisibility(); ?>
+           <tr <?php echo ($pe->_costVisibility=='ALL')?'':'style="display:none;"'?>>
              <td class="dialogLabel" >
                <label for="assignmentDailyCost" ><?php echo i18n("colCost");?>&nbsp;:&nbsp;</label>
              </td>
