@@ -50,7 +50,7 @@ class MilestonePlanningElement extends PlanningElement {
     "realCost"=>"hidden,noImport",
     "assignedCost"=>"hidden,noImport",
     "leftCost"=>"hidden,noImport",
-    "realEndDate"=>"readonly",
+    "realEndDate"=>"readonly,noImport",
     "idMilestonePlanningMode"=>"required,mediumWidth",
     "progress"=>"hidden,noImport",
     "expectedProgress"=>"hidden,noImport"

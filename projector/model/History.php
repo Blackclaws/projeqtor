@@ -46,7 +46,7 @@ class History extends SqlElement {
    * @return boolean true if save is OK, false either
    */
   public static function store ($obj, $refType, $refId, $operation, $colName=null, $oldValue=null, $newValue=null) {
-    $user=(array_key_exists('user',$_SESSION))?$_SESSION['user']:new User();
+  	$user=(array_key_exists('user',$_SESSION))?$_SESSION['user']:new User();
     $hist=new History();
     // Attention : History fields are not to be escaped by Sql::str because $olValue and $newValue have already been escaped
     // So other fiels (names) must be manually "quoted"
@@ -63,18 +63,6 @@ class History extends SqlElement {
     $returnValue=$hist->save();
     // For TestCaseRun : store history for TestSession 
     if ($refType=='TestCaseRun') {
-    	/*if ($operation=="insert") {
-    		$colName="TestCase";
-    		$newValue="#".$obj->idTestCase;
-    	}
-      if ($operation=="insert" or $operation=="delete") {
-        $colName="TestCase";
-        $oldValue="#".$obj->idTestCase;
-      }
-      if ($operation=='update') {
-      	$colName.= '|' . 'TestCase' . '|' .$refId;
-      }
-    	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName, $oldValue, $newValue);*/
     	self::store ($obj, 'TestSession', $obj->idTestSession, $operation , $colName. '|' . 'TestCase' . '|' .$obj->idTestCase, $oldValue, $newValue);
     } else if ($refType=='Link') {       
     // For link : store History for both referenced items
