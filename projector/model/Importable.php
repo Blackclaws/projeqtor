@@ -110,7 +110,7 @@ class Importable extends SqlElement {
 				$objectArray[$fld]=$val;
 				foreach ($val as $subfld=>$subval){
 					$capt=$val->getColCaption($subfld);
-					if ($subfld!='id' and substr($capt,0,1)!='[') {
+					if ($subfld!='id' and substr($capt,0,1)!='[' and ! isset($captionArray[$capt]) ) {
 						$captionArray[$capt]=$subfld;
 						$captionObjectArray[$capt]=$fld;
 					}

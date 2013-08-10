@@ -57,7 +57,7 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 $applicationName="Project'Or RIA"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
 $version="V3.5.0";            // Version of application : Major / Minor / Release
-$build="0083";                // Build number. To be increased on each release
+$build="0084";                // Build number. To be increased on each release
 $website="http://projectorria.toolware.fr"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
@@ -882,11 +882,12 @@ scriptLog('sendMailAnonymous');
  * @param $level level of trace : 1=error, 2=trace, 3=debug, 4=script
  * @return void
  */
-function logTracing($message, $level=9) {
+function logTracing($message, $level=9, $increment=0) {
   $logLevel=Parameter::getGlobalParameter('logLevel');
+  $tabcar='                        ';
   if ($logLevel==5) {
-  	if ($level<=3) echo $message;
-  	return;
+    if ($level<=3) echo $message;
+    return;
   }
   $logFile=Parameter::getGlobalParameter('logFile');
   if ( ! $logFile or $logFile=='' or $level==9) {
@@ -895,18 +896,19 @@ function logTracing($message, $level=9) {
   if ($level<=$logLevel) {
     $file=str_replace('${date}',date('Ymd'),$logFile);
     if (is_array($message)or is_object($message)) {
-      $txt=is_array($message)?'Array':'Object';
-      $txt.='[' . count($message) . ')';
-      logTracing($txt,$level);
+      $tab=($increment==0)?'':substr($tabcar,0,($increment*3-1));
+      $txt=$tab.(is_array($message)?'Array[' . count($message) . ']':'Object['.get_class($message).']');
+      logTracing($txt,$level, $increment);
       foreach ($message as $ind => $val) {
+        $tab=substr($tabcar,0,(($increment+1)*3-1));
         if (is_array($val)or is_object($val)) {
-          $txt = $ind . ' => ';
+          $txt = $tab.$ind . ' => ';
           $txt .= is_array($val)?'Array ':'Object ';
-          logTracing($txt, $level); 
-          logTracing($val, $level); 
+          logTracing($txt, $level,$increment+1); 
+          logTracing($val, $level,$increment+1); 
         } else {
-          $txt=$ind . ' => ' . $val;
-          logTracing($txt, $level); 
+          $txt=$tab.$ind . ' => ' . $val;
+          logTracing($txt, $level,$increment+1); 
         }
       }
       $level=999;

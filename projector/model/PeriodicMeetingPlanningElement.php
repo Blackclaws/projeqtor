@@ -19,34 +19,34 @@ class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
   public $idMeetingPlanningMode;
   
   private static $_fieldsAttributes=array(
-    "initialStartDate"=>"hidden",
-    "plannedStartDate"=>"hidden",
-    "validatedStartDate"=>"hidden",
-    "realStartDate"=>"hidden",
-    "plannedEndDate"=>"hidden",
-    "realEndDate"=>"hidden",
-    "initialEndDate"=>"hidden",
-    "validatedEndDate"=>"hidden",
-    "plannedDuration"=>"hidden",
-    "realDuration"=>"hidden",
-    "initialDuration"=>"hidden",
-    "validatedDuration"=>"hidden",
-    "initialWork"=>"hidden",
-    "plannedWork"=>"hidden",
-    "realWork"=>"readonly",
-    "leftWork"=>"readonly",
-    "assignedWork"=>"readonly",
-    "validatedWork"=>"hidden",
-    "validatedCost"=>"hidden",
-    "assignedCost"=>"readonly",
-    "plannedCost"=>"hidden",
-    "realCost"=>"readonly",
-    "leftCost"=>"readonly",
-    "progress"=>"hidden",
-    "expectedProgress"=>"hidden",
-    "priority"=>"hidden",
-    "wbs"=>"hidden",
-    "idMeetingPlanningMode"=>"hidden,required"
+    "initialStartDate"=>"hidden,noImport",
+    "plannedStartDate"=>"hidden,noImport",
+    "validatedStartDate"=>"hidden,noImport",
+    "realStartDate"=>"hidden,noImport",
+    "plannedEndDate"=>"hidden,noImport",
+    "realEndDate"=>"hidden,noImport",
+    "initialEndDate"=>"hidden,noImport",
+    "validatedEndDate"=>"hidden,noImport",
+    "plannedDuration"=>"hidden,noImport",
+    "realDuration"=>"hidden,noImport",
+    "initialDuration"=>"hidden,noImport",
+    "validatedDuration"=>"hidden,noImport",
+    "initialWork"=>"hidden,noImport",
+    "plannedWork"=>"hidden,noImport",
+    "realWork"=>"readonly,noImport",
+    "leftWork"=>"readonly,noImport",
+    "assignedWork"=>"readonly,noImport",
+    "validatedWork"=>"hidden,noImport",
+    "validatedCost"=>"hidden,noImport",
+    "assignedCost"=>"readonly,noImport",
+    "plannedCost"=>"hidden,noImport",
+    "realCost"=>"readonly,noImport",
+    "leftCost"=>"readonly,noImport",
+    "progress"=>"hidden,noImport",
+    "expectedProgress"=>"hidden,noImport",
+    "priority"=>"hidden,noImport",
+    "wbs"=>"hidden,noImport",
+    "idMeetingPlanningMode"=>"hidden,required,noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -105,7 +105,7 @@ class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
    */
   public function save() {
   	$meeting=new PeriodicMeeting($this->refId);
-  	$old=$this->getOld();
+  	$old=new PeriodicMeetingPlanningElement($this->id);
   	if (!$this->id) {
   		$this->priority=1; // very high priority
   		$this->idMeetingPlanningMode=16; // fixed planning  		

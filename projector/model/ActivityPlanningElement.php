@@ -57,20 +57,19 @@ class ActivityPlanningElement extends PlanningElement {
   public $idle;
   
   private static $_fieldsAttributes=array(
-    "plannedStartDate"=>"readonly",
-    "realStartDate"=>"readonly",
-    "plannedEndDate"=>"readonly",
-    "realEndDate"=>"readonly",
-    "plannedDuration"=>"readonly",
-    "realDuration"=>"readonly",
+    "plannedStartDate"=>"readonly,noImport",
+    "realStartDate"=>"readonly,noImport",
+    "plannedEndDate"=>"readonly,noImport",
+    "realEndDate"=>"readonly,noImport",
+    "plannedDuration"=>"readonly,noImport",
+    "realDuration"=>"readonly,noImport",
     "initialWork"=>"hidden",
     "plannedWork"=>"readonly,noImport",
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idActivityPlanningMode"=>"required,mediumWidth",
-    "idPlanningMode"=>"hidden,noIxmport",
-
+    "idPlanningMode"=>"hidden,noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';

@@ -57,19 +57,19 @@ class ProjectPlanningElement extends PlanningElement {
   public $priority;
   public $idle;
   private static $_fieldsAttributes=array(
-    "priority"=>"hidden",
-    "plannedStartDate"=>"readonly",
-    "realStartDate"=>"readonly",
-    "plannedEndDate"=>"readonly",
-    "realEndDate"=>"readonly",
-    "plannedDuration"=>"readonly",
-    "realDuration"=>"readonly",
-    "initialWork"=>"hidden",
+    "priority"=>"hidden,noImport",
+    "plannedStartDate"=>"readonly,noImport",
+    "realStartDate"=>"readonly,noImport",
+    "plannedEndDate"=>"readonly,noImport",
+    "realEndDate"=>"readonly,noImport",
+    "plannedDuration"=>"readonly,noImport",
+    "realDuration"=>"readonly,noImport",
+    "initialWork"=>"hidden,noImport",
     "plannedWork"=>"readonly,noImport",
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
-    "idPlanningMode"=>"hidden"
+    "idPlanningMode"=>"hidden,noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';
