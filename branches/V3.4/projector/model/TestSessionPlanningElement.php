@@ -57,19 +57,19 @@ class TestSessionPlanningElement extends PlanningElement {
   public $idle;
   
   private static $_fieldsAttributes=array(
-    "plannedStartDate"=>"readonly",
-    "realStartDate"=>"readonly",
-    "plannedEndDate"=>"readonly",
-    "realEndDate"=>"readonly",
-    "plannedDuration"=>"readonly",
-    "realDuration"=>"readonly",
-    "initialWork"=>"hidden",
+    "plannedStartDate"=>"readonly,noImport",
+    "realStartDate"=>"readonly,noImport",
+    "plannedEndDate"=>"readonly,noImport",
+    "realEndDate"=>"readonly,noImport",
+    "plannedDuration"=>"readonly,noImport",
+    "realDuration"=>"readonly,noImport",
+    "initialWork"=>"hidden,noImport",
     "plannedWork"=>"readonly,noImport",
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idTestSessionPlanningMode"=>"required,mediumWidth",
-    "idPlanningMode"=>"noImport"
+    "idPlanningMode"=>"noImport,noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';
