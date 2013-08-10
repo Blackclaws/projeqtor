@@ -28,7 +28,7 @@ class Status extends SqlElement {
     <th field="sortOrder" width="5%">${sortOrderShort}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
-
+public $_isNameTranslatable = true;
   private static $_fieldsAttributes=array("isCopyStatus"=>"hidden");
    /** ==========================================================================
    * Constructor
