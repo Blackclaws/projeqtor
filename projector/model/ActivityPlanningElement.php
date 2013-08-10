@@ -69,8 +69,7 @@ class ActivityPlanningElement extends PlanningElement {
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idActivityPlanningMode"=>"required,mediumWidth",
-    "idPlanningMode"=>"hidden,noImport",
-
+    "idPlanningMode"=>"hidden,noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';
