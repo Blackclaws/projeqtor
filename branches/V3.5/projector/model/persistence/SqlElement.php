@@ -648,7 +648,7 @@ abstract class SqlElement {
 	          }
 	          $nbChanged+=1;
 	          // Save change history
-	          if ($objectClass!='History' and ! property_exists($this,'_noHistory') ) {      
+	          if ($objectClass!='History' and ! property_exists($this,'_noHistory') and $col_name!='id') {      
 	            $result = History::store($this, $objectClass,$this->id,'update', $col_name, $col_old_value, $col_new_value);
 	            if (!$result) {
 	              $returnStatus="ERROR";

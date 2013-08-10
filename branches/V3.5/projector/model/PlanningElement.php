@@ -55,8 +55,8 @@ class PlanningElement extends SqlElement {
                                   "refName"=>"hidden",
                                   "wbs"=>"display,noImport", 
                                   "wbsSortable"=>"hidden,noImport",
-                                  "progress"=>"display",
-                                  "expectedProgress"=>"display",
+                                  "progress"=>"display,noImport",
+                                  "expectedProgress"=>"display,noImport",
                                   "topType"=>"hidden",
                                   "topId"=>"hidden",
                                   "topRefType"=>"hidden",
@@ -64,13 +64,13 @@ class PlanningElement extends SqlElement {
                                   "idProject"=>"hidden",
                                   "idle"=>"hidden",
                                   "done"=>"hidden",
-                                  "plannedStartDate"=>"readonly",
-                                  "plannedEndDate"=>"readonly",
-                                  "plannedDuration"=>"readonly",
+                                  "plannedStartDate"=>"readonly,noImport",
+                                  "plannedEndDate"=>"readonly,noImport",
+                                  "plannedDuration"=>"readonly,noImport",
                                   "plannedWork"=>"readonly,noImport",
-                                  "realStartDate"=>"readonly",
-                                  "realEndDate"=>"readonly",
-                                  "realDuration"=>"readonly",
+                                  "realStartDate"=>"readonly,noImport",
+                                  "realEndDate"=>"readonly,noImport",
+                                  "realDuration"=>"readonly,noImport",
                                   "realWork"=>"readonly,noImport",
                                   "assignedCost"=>"readonly,noImport",
                                   "realCost"=>"readonly,noImport",
@@ -200,7 +200,7 @@ class PlanningElement extends SqlElement {
    */
   public function save() {
   	// Get old element (stored in database) : must be fetched before saving
-    $old=$this->getOld();
+    $old=new PlanningElement($this->id);
     if (! $this->idProject) {
       if ($this->refType=='Project') {
         $this->idProject=$this->refId;
@@ -848,7 +848,7 @@ class PlanningElement extends SqlElement {
       }
     }
     // Predecessors
-    $crit='successorId in (0' . (($idList and count($idList)>0)?',' . implode(',',$idList):'') . ')';
+    $crit='successorId in (0,' . implode(',',$idList) . ')';
     $dep=new Dependency();
     
     $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);
@@ -873,6 +873,7 @@ class PlanningElement extends SqlElement {
       foreach ($parentChilds as $tmpIdChild=>$tempValChild) {
       	$parentChilds[$tmpIdChild]=$dep->dependencyDelay;
       }
+      if (isset($parentChilds["#".$dep->successorId])) { unset($parentChilds["#".$dep->successorId]); } // Self cannot be it own predecessor
       $directPredecessors["#".$dep->successorId]=array_merge_preserve_keys($lstPrec,$parentChilds);
     }
     foreach ($result as $id=>$pe) {
@@ -882,10 +883,10 @@ class PlanningElement extends SqlElement {
       } else {
         $pe->_directPredecessorList=array();
       } 
-      $pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result);
+      $pe->_predecessorList=self::getRecursivePredecessor($directPredecessors,$id,$result,'main');
       $pe->_predecessorListWithParent=$pe->_predecessorList;
       foreach ($pe->_parentList as $idParent=>$parent) {
-        $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result));
+        $pe->_predecessorListWithParent=array_merge($pe->_predecessorListWithParent,self::getRecursivePredecessor($directPredecessors,$idParent,$result,'parent'));
       }
       if (! $pe->realStartDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
         $pe->plannedStartDate=null;
@@ -899,18 +900,18 @@ class PlanningElement extends SqlElement {
   }
   
   
-  private static function getRecursivePredecessor($directFullList, $id, $result) {
+  private static function getRecursivePredecessor($directFullList, $id, $result,$scope) {
   	if (isset($result[$id]->_predecessorList)) {
   		return $result[$id]->_predecessorList;
   	}
   	if (array_key_exists($id, $directFullList)) {
       $result=$directFullList[$id];
   	  foreach ($directFullList[$id] as $idPrec=>$prec) {
-        $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result));
+        $result=array_merge($result,self::getRecursivePredecessor($directFullList,$idPrec,$result,$scope));
       }
     } else {
       $result=array();
-    } 
+    }
   	return $result;
   }
   
