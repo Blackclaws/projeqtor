@@ -590,7 +590,7 @@ foreach ($todayList as $todayItem) {
 		  	}	
 		  	$urlParam="";
 		  	foreach ($params as $paramName=>$paramValue) {
-		  		$urlParam.=($urlParam)?'&':'?';
+		  		$urlParam.=($urlParam or strpos($rpt->file,'?')>0)?'&':'?';
 		  		$urlParam.=$paramName.'='.$paramValue;
 		  	}
 		    echo '   loadReport("../report/'. $rpt->file.$urlParam.'","'.$titlePane.'");';
