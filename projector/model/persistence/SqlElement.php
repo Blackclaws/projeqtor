@@ -305,10 +305,14 @@ abstract class SqlElement {
    * @return message including definition of html hiddenfields to be used 
    */
   public function save() {
+  	if (isset($this->_onlyCallSpecificSaveFunction) and $this->_onlyCallSpecificSaveFunction==true) return;
     return $this->saveSqlElement();
   }
 
   public function insert() { // Specific function to force insert with a defined id - Reserved to Import fonction
+  	$this->_onlyCallSpecificSaveFunction=true;
+  	$this->save(); // To force the update of fields calculated in the save function ...
+  	$this->_onlyCallSpecificSaveFunction=false;
     return $this->saveSqlElement(false, false, true);
   }
   
