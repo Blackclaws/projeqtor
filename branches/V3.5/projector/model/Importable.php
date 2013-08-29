@@ -269,7 +269,7 @@ class Importable extends SqlElement {
 							$field = substr($field, 0, $dataLength);
 						}
 					}
-					// 4.1.0 : Adaptation des formats de date
+					// 4.1.0 : Adaptation of date formats
 					else if ($dataType == 'date') {
 						if (!$field == '') {
 							if ($extension=="xlsx") {								
@@ -279,7 +279,7 @@ class Importable extends SqlElement {
 							}
 						}
 					}
-					// 4.1.0 : Adaptation des formats de date
+					// 4.1.0 : Adaptation of date formats
 					else if ($dataType=='datetime') {
 						if (!$field == '') {
 							if ($extension=="xlsx") {								

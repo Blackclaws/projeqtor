@@ -482,7 +482,7 @@ class Project extends SqlElement {
     return $result; 
   }
   
-  public function save() {
+  public function save() {	
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
     //$old=$this->getOld();
