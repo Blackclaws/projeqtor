@@ -62,6 +62,7 @@ class User extends SqlElement {
 
   private $_affectedProjects;  // Array listing all affected projects
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
+  private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;
   private $_hierarchicalViewOfVisibleProjectsNotClosed;
   
@@ -380,10 +381,13 @@ class User extends SqlElement {
    * and their sub projects
    * @return a list of projects id
    */
-  public function getVisibleProjects() {
+  public function getVisibleProjects($limitToActiveProjects=true) {
 //scriptLog("getVisibleProjects()");
-    if ($this->_visibleProjects) {
+    if ($limitToActiveProjects and $this->_visibleProjects) {
       return $this->_visibleProjects;
+    }
+    if (! $limitToActiveProjects and $this->_visibleProjectsIncludingClosed) {
+      return $this->_visibleProjectsIncludingClosed;
     }
     $result=array();
     $affPrjList=$this->getAffectedProjects();
@@ -391,13 +395,17 @@ class User extends SqlElement {
     	if (! isset($result[$idPrj])) {
 	      $result[$idPrj]=$namePrj;
 	      $prj=new Project($idPrj);
-	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList(true);
+	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
 	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
 	        $result[$idSubPrj]=$nameSubPrj;
 	      }
     	}  
     }
-    $this->_visibleProjects=$result;
+    if ($limitToActiveProjects) {
+      $this->_visibleProjects=$result;
+    } else {
+      $this->_visibleProjectsIncludingClosed=$result;
+    }
     return $result;
   }
   
@@ -487,6 +495,7 @@ class User extends SqlElement {
    */  
   public function resetVisibleProjects() {
     $this->_visibleProjects=null;
+    $this->_visibleProjectsIncludingClosed=null;
     $this->_affectedProjects=null;
     unset($_SESSION['visibleProjectsList']);
   }
@@ -579,6 +588,7 @@ class User extends SqlElement {
     $this->_accessControlRights=null;
     $this->_accessControlVisibility=null;
     $this->_visibleProjects=null;
+    $this->_visibleProjectsIncludingClosed=null;
     $this->_hierarchicalViewOfVisibleProjects=null;
   }
   

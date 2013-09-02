@@ -80,7 +80,7 @@
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
         if ($objectClass=='Project') {
           $queryWhere.= " or codeType='TMP' ";
         }

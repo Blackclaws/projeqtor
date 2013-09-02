@@ -3154,6 +3154,11 @@ scriptLog('SqlElement::setReference');
   	unset(self::$_relationShip[$rel1][$rel2]);
   }
   
+  public function getOld() {
+  	$class=get_class($this);
+  	return new $class($this->id); 
+  }
+  
   public function splitLongFields() {
   	$maxLenth=500;
   	foreach ($this as $fld=>$val) {
