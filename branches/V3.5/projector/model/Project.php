@@ -555,10 +555,41 @@ class Project extends SqlElement {
     	 	 }
     	 }
     }
-    
-    return $result;
-    
+
+    return $result; 
+
   }
+  
+  // Ticket #1175
+  public function updateValidatedWork() {
+	$lst=null;
+  	$sumValidatedWork=0;
+  	$order=new Command();
+  	$queryWhere='idStatus<>9';
+  	$lst=$order->getSqlElementsFromCriteria(array('idProject'=>$this->id), false, $queryWhere);
+  	foreach ($lst as $item) {
+  		$sumValidatedWork+=$item->validatedWork;
+  	}
+  	
+  	$lst=null;
+  	$prj=new Project();
+  	$queryWhere='refType="Project" and idProject in (SELECT id FROM ' . $prj->getDatabaseTableName() . ' WHERE idProject=' . $this->id . ' and idStatus<>9)';
+  	
+  	$prj=new ProjectPlanningElement();
+  	$lst=$prj->getSqlElementsFromCriteria(array(), false, $queryWhere);
+  	foreach ($lst as $item) {
+  		$sumValidatedWork+=$item->validatedWork;
+  	}
+
+  	$this->ProjectPlanningElement->validatedWork=$sumValidatedWork;
+  	$this->save();
+  	
+  	if (trim($this->idProject)!='') {
+  		$prj=new Project($this->idProject);
+  		$prj->updateValidatedWork();
+  	}
+  }
+  // Ticket END
   
 /** =========================================================================
    * control data corresponding to Model constraints
