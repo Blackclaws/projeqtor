@@ -36,6 +36,7 @@ CREATE TABLE `${prefix}command` (
   `comment` varchar(4000) DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   `done` int(1) unsigned DEFAULT '0',
+  `cancelled` int(1) unsigned DEFAULT '0',
   `idleDate` date DEFAULT NULL,
   `doneDate` date DEFAULT NULL,
   `handled` int(1) unsigned DEFAULT '0',
@@ -108,3 +109,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (1,50,1),
 (2,50,1),
 (3,50,1);
+
+ALTER TABLE `${prefix}project` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+
+ALTER TABLE `${prefix}status` ADD COLUMN `isCancelledStatus` int(1) unsigned DEFAULT '0';

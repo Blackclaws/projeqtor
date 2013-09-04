@@ -34,7 +34,7 @@ class Command extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
-
+  public $cancelled;
   public $_tab_3_3 = array('initial', 'add', 'validated', 'Work', 'PricePerDay', 'Amount');
   public $initialWork;
   public $addWork;
@@ -149,19 +149,6 @@ class Command extends SqlElement {
     return self::$_databaseColumnName;
   }
   */
-  // ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
-  
-  /** ==========================================================================
-   * Return the validation sript for some fields
-   * @return the validation javascript (for dojo framework)
-   */
-  public function getValidationScript($colName) {
-    $colScript = parent::getValidationScript($colName);
-	
-    return $colScript;
-  }
 
 /** =========================================================================
    * control data corresponding to Model constraints
@@ -211,9 +198,9 @@ class Command extends SqlElement {
 	} else {
 		$old=$this->getOld();
 		$oldIdProject=$old->idProject;
-		$oldInitialAmount=$old->initialAmount;
-		$oldAddAmount=$old->addAmount;
-		$oldValidatedWork=$old->validatedWork;
+		//$oldInitialAmount=$old->initialAmount;
+		//$oldAddAmount=$old->addAmount;
+		//$oldValidatedWork=$old->validatedWork;
 	}
 
 	if (!$this->initialAmount) $this->initialAmount=0;
@@ -224,6 +211,7 @@ class Command extends SqlElement {
 	if (!$this->addWork) $this->addWork=0;
 	if (!$this->addPricePerDayAmount) $this->addPricePerDayAmount=0;
 	
+	/* Skip these updates : done in JS
   	if ($this->initialAmount!=$oldInitialAmount && $this->initialWork!=0) {
 		$this->initialPricePerDayAmount=round($this->initialAmount/$this->initialWork, 2);
 	} else if ($this->initialWork==0) {
@@ -246,9 +234,9 @@ class Command extends SqlElement {
 		$this->validatedPricePerDayAmount=round($this->validatedAmount/$this->validatedWork, 2);
 	} else {
 		$this->validatedPricePerDayAmount=0;
-	}
+	}*/
 	
-	$this->externalReference=strtoupper(trim($this->externalReference));
+	//$this->externalReference=strtoupper(trim($this->externalReference));
     $this->name=trim($this->name);
     
     // #305 : need to recalculate before dispatching to PE
@@ -275,6 +263,65 @@ class Command extends SqlElement {
     return $resultClass;
   }
   
+    /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo frameword)
+   */
+  public function getValidationScript($colName) {
+    
+    $colScript = parent::getValidationScript($colName);
+    if ($colName=="initialWork") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
+      $colScript .= '  var initialWork=this.value;';
+      $colScript .= '  var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");';
+      $colScript .= '  var initialAmount=dijit.byId("initialAmount").get("value");';
+      $colScript .= '  if (initialPricePerDayAmount) {';
+      $colScript .= '    initialAmount=Math.round(initialPricePerDayAmount*initialWork*100)/100;';
+      $colScript .= '    dijit.byId("initialAmount").set("value",initialAmount)';
+      $colScript .= '  } else if (initialWork){';
+      $colScript .= '    initialPricePerDayAmount=Math.round(initialAmount/initialWork*100)/100; ';
+      $colScript .= '    dijit.byId("initialPricePerDayAmount").set("value",initialPricePerDayAmount)';
+      $colScript .= '  }';
+      $colScript .= '  updateCommandTotal();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } else if ($colName=="initialPricePerDayAmount") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
+      $colScript .= '  var initialWork=dijit.byId("initialWork").get("value");';
+      $colScript .= '  var initialPricePerDayAmount=this.value;';
+      $colScript .= '  var initialAmount=dijit.byId("initialAmount").get("value");';
+      $colScript .= '  if (initialWork) {';
+      $colScript .= '    initialAmount=Math.round(initialPricePerDayAmount*initialWork*100)/100;';
+      $colScript .= '    dijit.byId("initialAmount").set("value",initialAmount)';
+      $colScript .= '  } else if (initialAmount){';
+      $colScript .= '    initialWork=Math.round(initialAmount/initialPricePerDayAmount*10)/10; ';
+      $colScript .= '    dijit.byId("initialWork").set("value",initialWork)';
+      $colScript .= '  }';
+      $colScript .= '  updateCommandTotal();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';    	
+    } else if ($colName=="initialAmount") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if ( ! testAllowedChange(this.value) ) return;';
+      $colScript .= '  var initialWork=dijit.byId("initialWork").get("value");';
+      $colScript .= '  var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");';
+      $colScript .= '  var initialAmount=this.value;';
+      $colScript .= '  if (initialWork) {';
+      $colScript .= '    initialPricePerDayAmount=Math.round(initialAmount/initialWork*100)/100;';
+      $colScript .= '    dijit.byId("initialPricePerDayAmount").set("value",initialPricePerDayAmount)';
+      $colScript .= '  } else if (initialPricePerDayAmount){';
+      $colScript .= '    initialWork=Math.round(initialAmount/initialPricePerDayAmount*10)/10; ';
+      $colScript .= '    dijit.byId("initialWork").set("value",initialWork)';
+      $colScript .= '  }';
+      $colScript .= '  updateCommandTotal();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }    
+    return $colScript;
+  }
+    
   private function zeroIfNull($value) {
   	$val = $value;
   	if (!$val || $val=='' || !is_numeric($val)) {
