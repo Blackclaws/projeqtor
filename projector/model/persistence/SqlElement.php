@@ -2991,6 +2991,9 @@ abstract class SqlElement {
     and $type->lockIdle) {
       $this->idle=($status->setIdleStatus)?1:0;
     }  
+    if (property_exists($this,'cancelled') ) {
+      $this->idle=($status->isCancelledStatus)?1:0;
+    }
   }
   
   public function getAlertLevel($withIndicator=false) {

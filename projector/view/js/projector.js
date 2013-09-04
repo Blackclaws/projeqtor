@@ -2217,3 +2217,26 @@ function isHtml5() {
 		return true;
 	}
 }
+
+function updateCommandTotal() {
+	var initialWork=dijit.byId("initialWork").get("value");
+	var initialAmount=dijit.byId("initialAmount").get("value");
+	var initialPricePerDayAmount=dijit.byId("initialPricePerDayAmount").get("value");
+	if (!initialWork) initialWork=0;
+	if (!initialAmount) initialAmount=0;
+	if (!initialPricePerDayAmount) initialPricePerDayAmount=0;
+	var addWork=dijit.byId("addWork").get("value");
+	var addAmount=dijit.byId("addAmount").get("value");
+	var addPricePerDayAmount=dijit.byId("addPricePerDayAmount").get("value");
+	if (!addWork) addWork=0;
+	if (!addAmount) addAmount=0;
+	if (!addPricePerDayAmount) addPricePerDayAmount=0;
+	dijit.byId("validatedWork").set("value", initialWork+addWork);
+	dijit.byId("validatedAmount").set("value", initialAmount+addAmount);
+	validatedPricePerDayAmount=null;
+	if ( (initialWork+addWork)>0) {
+	  validatedPricePerDayAmount=Math.round((initialAmount+addAmount)/(initialWork+addWork)*100)/100;
+	}
+	dijit.byId("validatedPricePerDayAmount").set("value", validatedPricePerDayAmount);	
+	terminateChange();
+}

@@ -16,6 +16,7 @@ class Status extends SqlElement {
   public $idle;
   public $_col_2_2;
   public $isCopyStatus;
+  public $isCancelledStatus;
   
   // Define the layout that will be used for lists
   private static $_layout='

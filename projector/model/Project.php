@@ -27,6 +27,7 @@ class Project extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
   public $longitude;
   public $latitude;
   public $description;
@@ -564,21 +565,23 @@ class Project extends SqlElement {
   public function updateValidatedWork() {
 	$lst=null;
   	$sumValidatedWork=0;
+  	$sumValidatedCost=0;
   	$order=new Command();
-  	$queryWhere='idStatus<>9';
-  	$lst=$order->getSqlElementsFromCriteria(array('idProject'=>$this->id), false, $queryWhere);
+  	$lst=$order->getSqlElementsFromCriteria(array('idProject'=>$this->id, 'cancelled'=>'0'));
   	foreach ($lst as $item) {
   		$sumValidatedWork+=$item->validatedWork;
+  		$sumValidatedCost+=$item->validatedAmount;
   	}
   	
   	$lst=null;
   	$prj=new Project();
-  	$queryWhere='refType="Project" and idProject in (SELECT id FROM ' . $prj->getDatabaseTableName() . ' WHERE idProject=' . $this->id . ' and idStatus<>9)';
+  	$queryWhere='refType="Project" and refId in (SELECT id FROM ' . $prj->getDatabaseTableName() . ' WHERE idProject=' . $this->id . ' and cancelled=0)';
   	
   	$prj=new ProjectPlanningElement();
   	$lst=$prj->getSqlElementsFromCriteria(array(), false, $queryWhere);
   	foreach ($lst as $item) {
   		$sumValidatedWork+=$item->validatedWork;
+  		$sumValidatedCost+=$item->validatedCost;
   	}
 
   	$this->ProjectPlanningElement->validatedWork=$sumValidatedWork;
