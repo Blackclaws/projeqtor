@@ -240,7 +240,7 @@ class User extends SqlElement {
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
     }
-    if ($item=='image'){
+    if ($item=='image' and $this->id){
       $result="";
       $image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
       $left=250;

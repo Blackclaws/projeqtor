@@ -11,12 +11,12 @@ class Status extends SqlElement {
   public $setHandledStatus;
   public $setDoneStatus;
   public $setIdleStatus;
+  public $setCancelledStatus;
   public $color;
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;
   public $isCopyStatus;
-  public $isCancelledStatus;
   
   // Define the layout that will be used for lists
   private static $_layout='

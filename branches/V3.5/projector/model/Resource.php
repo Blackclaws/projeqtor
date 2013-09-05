@@ -371,7 +371,7 @@ class Resource extends SqlElement {
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
-    } else if ($item=='image'){
+    } else if ($item=='image' and $this->id){
     	$result="";
     	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));
     	if ($image->id and $image->isThumbable()) {
