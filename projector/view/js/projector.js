@@ -204,14 +204,14 @@ function refreshGridCount(repeat) {
   dojo.byId('gridRowCountShadow1').innerHTML=grid.rowCount;
   dojo.byId('gridRowCountShadow2').innerHTML=grid.rowCount;
   }
-  objClass=dojo.byId("objectClass").value;
+  /*objClass=dojo.byId("objectClass").value;
   if (avoidRecursiveRefresh==false && (objClass=='Resource' || objClass=='User' || objClass=='Contact') ) {
 	// If list may contain image, refresh once to fix issue : list not complete on Chrome
 	avoidRecursiveRefresh=true;
     setTimeout('dijit.byId("objectGrid")._refresh();',100);
   } else {
 	avoidRecursiveRefresh=false;
-  }
+  }*/
 }
 
 /**

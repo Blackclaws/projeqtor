@@ -2992,7 +2992,7 @@ abstract class SqlElement {
       $this->idle=($status->setIdleStatus)?1:0;
     }  
     if (property_exists($this,'cancelled') ) {
-      $this->idle=($status->isCancelledStatus)?1:0;
+      $this->idle=($status->setCancelledStatus)?1:0;
     }
   }
   

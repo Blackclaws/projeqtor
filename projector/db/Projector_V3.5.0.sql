@@ -112,4 +112,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 
 ALTER TABLE `${prefix}project` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 
-ALTER TABLE `${prefix}status` ADD COLUMN `isCancelledStatus` int(1) unsigned DEFAULT '0';
+ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
+
+UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;
+UPDATE `${prefix}project` SET cancelled=1 WHERE idStatus=9;
