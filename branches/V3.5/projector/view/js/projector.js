@@ -2213,6 +2213,8 @@ function moveMenuBar(way) {
 function isHtml5() {
 	if (dojo.isIE && dojo.isIE<=9) {
 		return false;
+	} else if (dojo.isFF && dojo.isFF<4) {
+		return false;
 	} else {
 		return true;
 	}
