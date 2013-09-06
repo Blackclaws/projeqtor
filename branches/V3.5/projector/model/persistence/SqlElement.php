@@ -3066,6 +3066,7 @@ scriptLog('SqlElement::setReference');
       return;
     }
   	$class=get_class($this);
+  	if ($class=='TicketSimple') $class='Ticket';
   	$fmtPrefix=Parameter::getGlobalParameter('referenceFormatPrefix');
   	$fmtNumber=Parameter::getGlobalParameter('referenceFormatNumber');
     $change=Parameter::getGlobalParameter('changeReferenceOnTypeChange');
