@@ -1,5 +1,5 @@
 <?php 
-include_once '../tool/projector.php';
+include_once '../tool/projeqtor.php';
 
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
@@ -8,9 +8,12 @@ if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!=""
 
 $headerParameters="";
 if ($idProject!="") {
-  	$headerParameters.= i18n("colId") . ' : ' . htmlEncode($idProject) . '<br/>';
+  $headerParameters.= i18n("colId") . ' : ' . htmlEncode($idProject) . '<br/>';
 	$headerParameters.= i18n("colIdProject") . ' : ' . htmlEncode(SqlList::getNameFromId('Project',$idProject)) . '<br/>';
+} else {
+	$headerParameters.= i18n("noDataToDisplay"). '<br/>';
 }
+
 
 include "header.php";
   
@@ -20,7 +23,7 @@ if($idProject=='') exit;
 
 $tab=array();
 
-// Récupère les projets
+// gets projects
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$queryWhere=getAccesResctictionClause('Project',false);
 	$queryWhere.=' and idStatus<>9 and ((idProject=' . $idProject . ') or id=' . $idProject . ')';
@@ -39,19 +42,19 @@ $tab=array();
 			
 		$tab[$item->id]['prj']['id']=$item->id;
 		$tab[$item->id]['prj']['name']=$item->name;
-		$tab[$item->id]['prj']['manager']=SqlList::getNameFromId('Resource', $item->idUser);
+		$tab[$item->id]['prj']['manager']=SqlList::getNameFromId('Affectable', $item->idUser);
 		$tab[$item->id]['prj']['color']=SqlList::getFieldFromId('Health', $item->idHealth, 'color');
 	
 	}
 	$sqlPrj='in ( ' . $idProject . $sqlPrj . ')';
 	
-// Récupère les BC des projets
+// gets orders of projects
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$queryWhere='idStatus<>9 and idProject ' . $sqlPrj; // on retire les ANNULE
 	$stt=new Status();
 	$queryOrder='(SELECT sortOrder FROM ' . $stt->getDatabaseTableName() . ' WHERE id=idStatus) asc';
 	$stt=null;
-	$bc=new Order();
+	$bc=new Command();
 	$lstBC=$bc->getSqlElementsFromCriteria(array(), false, $queryWhere, $queryOrder);
 	$item=null;
 	

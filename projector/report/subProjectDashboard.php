@@ -34,7 +34,7 @@ ini_set('memory_limit', '512M');
 		echo '<td class="reportTableHeader" rowspan=2 style="width:150px;">' . i18n('Project') . '</td>';
 	}
 	
-	echo '<td class="reportTableHeader" style="xwidth:620px;" colspan=2>' . htmlEncode($tabPrj['prj']['manager']) . '</td>';
+	echo '<td class="reportTableHeader" style="xwidth:620px;" colspan=2>' . i18n('colManager').' : '.htmlEncode($tabPrj['prj']['manager']) . '</td>';
 	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colValidated') . '</td>';
 	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colAssigned') . '</td>';
 	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colReal') . '</td>';
@@ -61,7 +61,7 @@ ini_set('memory_limit', '512M');
 		$item=null;
 		
 		echo '<tr rowspan=' . $nb . '>';
-		echo '<td class="reportTableHeader" rowspan=' . $nb . ' style="width:150px;">' . i18n('Order') . '</td>';
+		echo '<td class="reportTableHeader" rowspan=' . $nb . ' style="width:150px;">' . i18n('Command') . '</td>';
 		echo '<td class="reportTableHeader" colspan=2>' . i18n('colName') . '</td>';
 		echo '<td class="reportTableHeader" >' . i18n('colValidatedWork2') . '</td>';
 		echo '<td class="reportTableHeader" >' . i18n('colValidatedPricePerDayAmount2') . '</td>';

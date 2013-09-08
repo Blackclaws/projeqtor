@@ -585,6 +585,7 @@ class Project extends SqlElement {
   	}
 
   	$this->ProjectPlanningElement->validatedWork=$sumValidatedWork;
+  	$this->ProjectPlanningElement->validatedCost=$sumValidatedCost;
   	$this->save();
   	
   	if (trim($this->idProject)!='') {
