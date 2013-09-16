@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<extension version="2.5" type="template" client="site" method="upgrade">
+	<name>avatar_simple</name>
+	<creationDate>4 April 2012</creationDate>
+	<author>Chameron</author>
+	<authorEmail>trung3388@joomavatar.com</authorEmail>
+	<authorUrl>http://joomavatar.com</authorUrl>
+	<copyright>Copyright (C) 2005 - 2012 JoomAvatar All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<version>2.1.6</version>
+	<edition>free</edition>
+	<description>AVATAR_DREAM_DESCRIPTION</description>
+
+	<files>
+		<folder>core</folder>
+		<folder>html</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>showcases</folder>
+		<folder>backgrounds</folder>
+		<folder>images</folder>
+		<folder>css</folder>
+		<filename>index.html</filename>
+		<filename>index.php</filename>
+		<filename>component.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_preview.png</filename>
+		<filename>template_thumbnail.png</filename>
+	</files>
+
+	<positions>
+		<position>top</position>
+		<position>top-left</position>
+		<position>top-middle</position>
+		<position>top-right</position>
+		<position>tool</position>
+		<position>promo-top-left</position>
+		<position>promo-top-middle</position>
+		<position>promo-top-right</position>
+		<position>promo-bottom-left</position>
+		<position>promo-bottom-middle</position>
+		<position>promo-bottom-right</position>
+		<position>content-top</position>
+		<position>left-top</position>
+		<position>left-middle-2</position>
+		<position>left-middle-1</position>
+		<position>left-bottom</position>
+		<position>right-top</position>
+		<position>right-middle-1</position>
+		<position>right-middle-2</position>
+		<position>right-bottom</position>
+		<position>inner-left</position>
+		<position>inner-right</position>
+		<position>breadcrumbs</position>
+		<position>user-top</position>
+		<position>mainbody-top</position>
+		<position>mainbody-bottom</position>
+		<position>user-1</position>
+		<position>user-2</position>
+		<position>user-3</position>
+		<position>user-4</position>
+		<position>user-5</position>
+		<position>user-6</position>
+		<position>user-7</position>
+		<position>user-8</position>
+		<position>user-9</position>
+		<position>user-10</position>
+		<position>user-11</position>
+		<position>user-12</position>
+		<position>user-13</position>
+		<position>user-14</position>
+		<position>user-15</position>
+		<position>user-16</position>
+		<position>user-17</position>
+		<position>user-18</position>
+		<position>user-bottom</position>
+		<position>banner-top</position>
+		<position>banner-bottom</position>
+		<position>content-bottom</position>
+		<position>footer</position>
+		<position>footer-left</position>
+		<position>footer-middle</position>
+		<position>footer-right</position>
+		<position>bottom</position>
+		<position>stick-left-top</position>
+		<position>stick-left-middle</position>
+		<position>stick-left-bottom</position>
+		<position>stick-right-top</position>
+		<position>stick-right-middle</position>
+		<position>stick-right-bottom</position>
+		<position>fixed-1</position>
+		<position>fixed-2</position>
+	</positions>
+
+	<!-- 	For core templates, we also install/uninstall the language files in the core language folders. -->
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.tpl_avatar_simple.ini</language>
+		<language tag="en-GB">en-GB/en-GB.tpl_avatar_simple.sys.ini</language>
+	</languages>
+	
+	<config>
+		<fields name="params" addfieldpath="/templates/avatar_simple/core/elements/">
+			<fieldset name="GLOBAL">
+				<field name="about"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_ABOUT"
+					description="AVATAR_TEMPLATE_CORE_ABOUT_DESC"
+					/>	
+				<field name="about_infor"  
+					type="avatarabout"
+					class="avatar-space"
+					template="avatar_simple"
+					fullname="Avatar Framework"
+					version="2.0.1"
+					edition="Pro"
+					facebook="http://www.facebook.com/pages/JoomAvatar/120705031368683"
+					twitter="https://twitter.com/#!/JoomAvatar"
+					support="http://joomavatar.com/forum"
+					homepage="http://joomavatar.com"
+					/>	
+				<field name="global"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_GLOBAL"
+					description="AVATAR_TEMPLATE_CORE_GLOBAL_DESC"
+					/>	
+				<field name="content"  
+					type="avatarassets"
+					template="avatar_simple"
+					/>	
+				<field name="google_analytics"  type="text" default=""
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_ANALYTICS"
+					description="AVATAR_TEMPLATE_CORE_GOOGLE_ANALYTICS_DESC"
+					filter="string" />
+				<field name="template_panel_setting" type="radio" default="1"
+					label="AVATAR_TEMPLATE_CORE_PANEL_SETTING"
+					description="AVATAR_TEMPLATE_CORE_PANEL_SETTING_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="active_mobile" type="radio" default="0"
+					label="AVATAR_TEMPLATE_CORE_MOBILE_ACTIVE"
+					description="AVATAR_TEMPLATE_CORE_MOBILE_ACTIVE_DESC"
+				>
+					<option disabled="true" value="1">JYES</option>
+					<option disabled="true" value="0">JNO</option>
+				</field>
+				<field name="active_responsive" type="radio" default="0"
+					label="AVATAR_TEMPLATE_CORE_RESPONISVE_ACTIVE"
+					description="AVATAR_TEMPLATE_CORE_RESPONSIVE_ACTIVE_DESC"
+				>
+					<option disabled="true" value="0">JNO</option>
+				</field>
+				<field name="load_jquery" type="radio" default="1"
+					label="AVATAR_TEMPLATE_CORE_LOAD_JQUERY"
+					description="AVATAR_TEMPLATE_CORE_LOAD_JQUERY_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="template_showcase" type="folderlist" onchange="AvatarTemplateAdmin.changeShowcase();"
+					default="" label="AVATAR_TEMPLATE_CORE_SELECT_SHOWCASE"  description="AVATAR_TEMPLATE_CORE_SELECT_SHOWCASE_DESC"
+					directory="templates/avatar_simple/showcases"  hide_default="true"/>
+				<field name="template_background" type="avatarbackground" 
+					default="" label="AVATAR_TEMPLATE_CORE_SELECT_BACKGROUND"  description="AVATAR_TEMPLATE_CORE_SELECT_BACKGROUND_DESC"
+					template="avatar_simple"/>
+				<field name="doctype" type="list" default="5"
+					label="AVATAR_TEMPLATE_CORE_DOCTYPE"
+					description="AVATAR_TEMPLATE_CORE_DOCTYPE_DESC"
+				>
+					<option value="1">HTML5</option>
+					<option value="2">HTML 4.01 Strict</option>
+					<option value="3">HTML 4.01 Transitional</option>
+					<option value="4">HTML 4.01 Frameset</option>
+					<option value="5">HTML 1.0 Strict</option>
+					<option value="6">XHTML 1.0 Transitional</option>
+					<option value="7">XHTML 1.0 Frameset</option>
+					<option value="8">XHTML 1.1</option>
+				</field>
+				<field name="load_exts" type="avatarexts" default="unload"
+					disabled="true"
+					label="AVATAR_TEMPLATE_CORE_LOAD_EXTS" multiple="true" size="5"
+					description="AVATAR_TEMPLATE_CORE_LOAD_EXTS_DESC" template="avatar_simple">
+					<option value="unload">Unload</option>
+				</field>
+			</fieldset>
+			<fieldset name="Content">
+				<field name="content"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_CONTENT"
+					description="AVATAR_TEMPLATE_CORE_CONTENT_DESC"
+					/>	
+				
+				<field name="show_main_body" type="list" default="1"
+					label="AVATAR_TEMPLATE_CORE_SHOW_MAIN_BODY"
+					description="AVATAR_TEMPLATE_CORE_SHOW_MAIN_BODY_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="hide_menu_items" type="menuitem" 
+					multiple="multiple" 
+					size="20" 
+					default="0" 
+					label="AVATAR_TEMPLATE_CORE_HIDE_MENU_ITEMS" description="AVATAR_TEMPLATE_CORE_HIDE_MENU_ITEMS_DESC" />
+				
+				<field name="show_message" type="list" default="1"
+					label="AVATAR_TEMPLATE_CORE_SHOW_MESSAGE"
+					description="AVATAR_TEMPLATE_CORE_SHOW_MESSAGE_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+			<fieldset name="Dimensions">
+				<field name="dimensions"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_DIMENSIONS"
+					description="AVATAR_TEMPLATE_CORE_DIMENSIONS_DESC"
+					/>	
+				<field name="template_width" 
+					type="text" size="6" default="960px" 
+					label="AVATAR_TEMPLATE_CORE_TEMPLATE_WIDTH" description="AVATAR_TEMPLATE_CORE_TEMPLATE_WIDTH_DESC" />
+				
+				<field name="cols_width"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_POSITION_WIDTH"
+					description="AVATAR_TEMPLATE_CORE_POSITION_WIDTH_DESC" />		
+				
+				<field name="top_left" 
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_TOP_LEFT" description="AVATAR_TEMPLATE_CORE_TOP_LEFT_DESC" 
+					filter="float" />
+					
+				<field name="top_right" 
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_TOP_RIGHT" description="AVATAR_TEMPLATE_CORE_TOP_RIGHT_DESC" 
+					filter="float" />
+						
+				<field name="promo_top_left" 
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_PROMO_TOP_LEFT" description="AVATAR_TEMPLATE_CORE_PROMO_TOP_LEFT_DESC" 
+					filter="float" />
+					
+				<field name="promo_top_right"
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_PROMO_TOP_RIGHT" description="AVATAR_TEMPLATE_CORE_PROMO_TOP_RIGHT_DESC" 
+					filter="float" />
+					
+				<field name="promo_bottom_left" 
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_PROMO_BOTTOM_LEFT" description="AVATAR_TEMPLATE_CORE_PROMO_BOTTOM_LEFT_DESC" 
+					filter="float" />
+					
+				<field name="promo_bottom_right"
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_PROMO_BOTTOM_RIGHT" description="AVATAR_TEMPLATE_CORE_PROMO_BOTTOM_RIGHT_DESC" 
+					filter="float" />
+				
+				<field name="left"
+					type="text" size="6" default="23" 
+					label="AVATAR_TEMPLATE_CORE_POS_LEFT" description="AVATAR_TEMPLATE_CORE_POS_LEFT_DESC" 
+					filter="float" />
+					
+				<field name="right"
+					type="text" size="6" default="23" 
+					label="AVATAR_TEMPLATE_CORE_POS_RIGHT" description="AVATAR_TEMPLATE_CORE_POS_RIGHT_DESC" 
+					filter="float" />
+					
+				<field name="inner_left"
+					type="text" size="6" default="23" 
+					label="AVATAR_TEMPLATE_CORE_POS_INNER_LEFT" description="AVATAR_TEMPLATE_CORE_POS_INNER_LEFT_DESC" 
+					filter="float" />
+					
+				<field name="inner_right"
+					type="text" size="6" default="23" 
+					label="AVATAR_TEMPLATE_CORE_POS_INNER_RIGHT" description="AVATAR_TEMPLATE_CORE_POS_INNER_RIGHT_DESC" 
+					filter="float" />
+				
+				<field name="footer_left" 
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_FOOTER_LEFT" description="AVATAR_TEMPLATE_CORE_FOOTER_LEFT_DESC" 
+					filter="float" />
+				
+				<field name="footer_right" 
+					type="text" size="6" default="33.33" 
+					label="AVATAR_TEMPLATE_CORE_FOOTER_RIGHT" description="AVATAR_TEMPLATE_CORE_FOOTER_RIGHT_DESC" 
+					filter="float" />
+					
+				<field name="position_fixed"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_POSITION_FIXED"
+					description="AVATAR_TEMPLATE_CORE_POSITION_FIXED_DESC" />	
+					
+				<field name="fixed_1"
+					type="textarea"
+					cols="30"
+					rows="5" 
+					label="AVATAR_TEMPLATE_CORE_POS_FIXED_1" description="AVATAR_TEMPLATE_CORE_POS_FIXED_1_DESC" 
+					filter="string" />
+				
+				<field name="fixed_2"
+					type="textarea"
+					cols="30"
+					rows="5" 
+					label="AVATAR_TEMPLATE_CORE_POS_FIXED_2" description="AVATAR_TEMPLATE_CORE_POS_FIXED_2_DESC" 
+					filter="string" />
+			</fieldset>
+			<fieldset name="Font_Color">
+				<field name="color_style"
+					disabled="true"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_STYLE_AND_COLOR"
+					description="AVATAR_TEMPLATE_CORE_STYLE_AND_COLOR_DESC" />		
+				
+				<field name="link_color"
+					disabled="true" 
+					type="avatarcolorpicker" size="10"  template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_LINK_COLOR" description="AVATAR_TEMPLATE_CORE_LINK_COLOR_DESC"
+					filter="string"/>
+					
+				<field name="hover_color"
+					disabled="true" 
+					type="avatarcolorpicker" size="10" template="avatar_simple" 
+					label="AVATAR_TEMPLATE_CORE_HOVER_COLOR" description="AVATAR_TEMPLATE_CORE_HOVER_COLOR_DESC"
+					filter="string"/>
+					
+				<field name="body_font"
+					disabled="true" 
+					type="avatarfont" 
+					label="AVATAR_TEMPLATE_CORE_BODY_FONT" description="AVATAR_TEMPLATE_CORE_BODY_FONT_DESC"
+					/>
+				<field name="menu_font" 
+					disabled="true"
+					type="avatarfont" 
+					label="AVATAR_TEMPLATE_CORE_MENU_FONT" description="AVATAR_TEMPLATE_CORE_MENU_FONT_DESC"
+					/>
+					
+				<field name="google_font"
+					disabled="true"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT"
+					description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_DESC"
+					/>
+				
+				<field name="google_font_api" type="radio" default="0"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_API"
+					description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_API_DESC" >
+					<option disabled="true" value="1">JYES</option>
+					<option disabled="true" value="0">JNO</option>
+				</field>
+				
+				<field name="google_font_api_key"
+					disabled="true"
+					type="text" size="50" 
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_API_KEY" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_API_KEY_DES" 
+				/>
+				
+				<field name="google_font_main_menu" 
+					disabled="true"
+					type="avatargooglefont" 
+					onchange="changeFont(this);"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_MAIN_MENU" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_MAIN_MENU_DESC"
+					filter="string"/>
+				
+				<field name="google_font_submenu" 
+					disabled="true"
+					type="avatargooglefont" 
+					onchange="changeFont(this);"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_SUBMENU" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_SUBMENU_DESC"
+					filter="string"/>
+				
+				<field name="google_font_content" 
+					disabled="true"
+					type="avatargooglefont"
+					onchange="changeFont(this);"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_CONTENT" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_CONTENT_DESC"
+					filter="string"/>
+					
+				<field name="google_font_content_heading" 
+					disabled="true"
+					type="avatargooglefont"
+					onchange="changeFont(this);"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_CONTENT_HEADING" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_CONTENT_HEADING_DESC"
+					filter="string"/>
+				
+				<field name="google_font_page_heading" 
+					disabled="true"
+					type="avatargooglefont" 
+					onchange="changeFont(this);"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_PAGE_HEADING" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_PAGE_HEADING_DESC"
+					filter="string"/>
+				
+				<field name="google_font_module_heading" 
+					disabled="true"
+					type="avatargooglefont" 
+					onchange="changeFont(this);"
+					label="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_MODULE_HEADING" description="AVATAR_TEMPLATE_CORE_GOOGLE_FONT_MODULE_HEADING_DESC"
+					filter="string"/>
+				
+				<field name="Heading Style"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_HEADING_STYLE"
+					description="AVATAR_TEMPLATE_CORE_HEADING_STYLE_DESC" />	
+					
+				<field name="heading_1" 
+					disabled="true"
+					type="textarea" 
+					cols="30"
+					rows="5"
+					label="AVATAR_TEMPLATE_CORE_HEADING_1" description="AVATAR_TEMPLATE_CORE_HEADING_1_DESC"
+					filter="string"/>
+					
+				<field name="heading_2" 
+					disabled="true"
+					type="textarea" 
+					cols="30"
+					rows="5"
+					label="AVATAR_TEMPLATE_CORE_HEADING_2" description="AVATAR_TEMPLATE_CORE_HEADING_2_DESC"
+					filter="string"/>
+					
+				<field name="heading_3" 
+					disabled="true"
+					type="textarea"
+					cols="30"
+					rows="5" 
+					label="AVATAR_TEMPLATE_CORE_HEADING_3" description="AVATAR_TEMPLATE_CORE_HEADING_3_DESC"
+					filter="string"/>
+					
+				<field name="heading_4"
+					disabled="true" 
+					type="textarea"
+					cols="30"
+					rows="5" 
+					label="AVATAR_TEMPLATE_CORE_HEADING_4" description="AVATAR_TEMPLATE_CORE_HEADING_4_DESC"
+					filter="string"/>
+					
+				<field name="heading_5" 
+					disabled="true"
+					type="textarea"
+					cols="30"
+					rows="5" 
+					label="AVATAR_TEMPLATE_CORE_HEADING_5" description="AVATAR_TEMPLATE_CORE_HEADING_5_DESC"
+					filter="string"/>
+					
+				<field name="heading_6" 
+					disabled="true"
+					type="textarea" 
+					cols="30"
+					rows="5"
+					label="AVATAR_TEMPLATE_CORE_HEADING_6" description="AVATAR_TEMPLATE_CORE_HEADING_6_DESC"
+					filter="string"/>
+			</fieldset>
+			<fieldset name="Utilities">
+				<field name="Customize Files"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_CUSTOMIZE_FILES"
+					description="AVATAR_TEMPLATE_CORE_CUSTOMIZE_FILES_DESC" />		
+				<field name="customize_css" 
+					disabled="true"
+					type="textarea"
+					cols="30"
+					rows="5" 
+					label="AVATAR_TEMPLATE_CORE_CUSTOMIZE_CSS" description="AVATAR_TEMPLATE_CORE_CUSTOMIZE_CSS_DESC"
+					filter="string"/>
+				<field name="utilities"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_UTILITIES"
+					description="AVATAR_TEMPLATE_CORE_UTILITIES_DESC" />
+				<field name="go_to_top" type="radio" default="0"
+					label="AVATAR_TEMPLATE_CORE_GO_TO_TOP_BUTTON"
+					description="AVATAR_TEMPLATE_CORE_GO_TO_TOP_BUTTON_DESC"
+				>
+					<option disabled="true" value="1">JYES</option>
+					<option disabled="true" value="0">JNO</option>
+				</field>
+				
+				<field name="go_to_top_css" 
+					disabled="true"
+					type="textarea" 
+					cols="30"
+					rows="5"
+					label="AVATAR_TEMPLATE_CORE_GO_TO_TOP_CSS" description="AVATAR_TEMPLATE_CORE_GO_TO_TOP_CSS_DESC"
+					filter="string"/>
+				<field name="optimize" type="list" default="0"
+					label="AVATAR_TEMPLATE_CORE_OPTIMIZE"
+					description="AVATAR_TEMPLATE_CORE_OPTIMIZE_DESC"
+				>
+					<option value="0">AVATAR_TEMPLATE_CORE_NO_OPTIMIZE</option>
+					<option value="1">AVATAR_TEMPLATE_CORE_OPTIMIZE_CSS</option>
+					<option value="2">AVATAR_TEMPLATE_CORE_OPTIMIZE_JAVASCRIPT</option>
+					<option value="3">AVATAR_TEMPLATE_CORE_OPTIMIZE_CSS_AND_JAVASCRIPT</option>
+					<option value="4">AVATAR_TEMPLATE_CORE_OPTIMIZE_CSS_AND_JAVASCRIPT_AND_GZIP</option>
+				</field>
+			</fieldset>
+			<fieldset name="MOBILE">
+				<field name="Mobile"  
+					type="avatarspace"
+					class="avatar-space"
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_MOBILE"
+					description="AVATAR_TEMPLATE_CORE_MOBILE_DESC"
+					/>	
+				<field name="mobile_pos_header" 
+					disabled="true"
+					type="avatarmobileposition" 
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_MOBILE_POS_HEADER" description="AVATAR_TEMPLATE_CORE_MOBILE_POS_HEADER_DESC"
+					filter="string"/>
+					
+				<field name="mobile_pos_content_top" 
+					disabled="true"
+					type="avatarmobileposition" 
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_MOBILE_POS_CONTENT_TOP" description="AVATAR_TEMPLATE_CORE_MOBILE_POS_CONTENT_TOP_DESC"
+					filter="string"/>
+					
+				<field name="mobile_pos_content" 
+					disabled="true"
+					type="avatarmobileposition" 
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_MOBILE_POS_CONTENT" description="AVATAR_TEMPLATE_CORE_MOBILE_POS_CONTENT_DESC"
+					filter="string"/>
+					
+				<field name="mobile_pos_content_bottom" 
+					disabled="true"
+					type="avatarmobileposition" 
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_MOBILE_POS_CONTENT_BOTTOM" description="AVATAR_TEMPLATE_CORE_MOBILE_POS_CONTENT_BOTTOM_DESC"
+					filter="string"/>
+					
+				<field name="mobile_pos_footer" 
+					disabled="true"
+					type="avatarmobileposition" 
+					template="avatar_simple"
+					label="AVATAR_TEMPLATE_CORE_MOBILE_POS_FOOTER" description="AVATAR_TEMPLATE_CORE_MOBILE_POS_FOOTER_DESC"
+					filter="string"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
