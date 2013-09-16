@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<extension
+	version="2.5"
+	type="template"
+	client="site">
+<name>bizglobal</name>
+<version>r1.0-j2.5</version>
+<creationDate>07/01/2012</creationDate>
+<author>mambasana.ru</author>
+<authorEmail>rsvet@yandex.ru</authorEmail>
+<authorUrl>http://mambasana.ru</authorUrl>
+<copyright></copyright>
+<license>GNU/GPL</license>
+<description>TPL_BIZGLOBAL_XML_DESCRIPTION</description>
+<files>
+		<folder>html</folder>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>language</folder>
+		<filename>index.php</filename>
+            <filename>template_thumbnail.png</filename>
+            <filename>favicon.ico</filename>
+            <filename>params.ini</filename>
+            <filename>component.php</filename>
+		<filename>index.html</filename>
+		<filename>error.php</filename>
+            <filename>protect.js</filename>
+		<filename>template_preview.png</filename>
+		<filename>templateDetails.xml</filename>
+            <filename>ie_suckerfish.js</filename>
+</files>
+
+<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.tpl_bizglobal.ini</language>
+		<language tag="en-GB">en-GB/en-GB.tpl_bizglobal.sys.ini</language>
+</languages>
+
+<positions>
+		<position>left</position>
+		<position>right</position>
+		<position>top</position>
+		<position>user1</position>
+		<position>user2</position>
+		<position>user3</position>
+	      <position>top1</position>
+		<position>top2</position>
+            <position>top3</position>
+	      <position>bottom1</position>
+		<position>bottom2</position>
+            <position>bottom3</position>
+		<position>bottom</position>
+            <position>footertext</position>
+		<position>breadcrumb</position>
+            <position>bannersload</position>
+            <position>position-1</position>
+		<position>position-2</position>
+		<position>position-3</position>
+		<position>position-4</position>
+		<position>position-7</position>
+            <position>headerinfo</position>
+		
+</positions>
+
+
+       <config>
+       <fields name="params">
+            <fieldset name="basic">
+
+	<field name="width" type="list" default="fluid" label="TPL_BIZGLOBAL_FIELD_WIDTH_LABEL" description="TPL_BIZGLOBAL_FIELD_WIDTH_DESC">
+			<option value="1000px">1000px</option>
+			<option value="fluid">fluid</option>
+	</field>
+
+	<field name="color" type="list" default="orange" label="TPL_BIZGLOBAL_FIELD_COLOR_LABEL" description="TPL_BIZGLOBAL_FIELD_COLOR_DESC">
+			<option value="green">black/green</option>
+			<option value="orange">black/orange</option>
+			<option value="red">black/red</option>
+	</field>
+
+
+      <field name="showLOGO" type="radio" default="1" label="TPL_BIZGLOBAL_FIELD_SHOW_LOGO_LABEL" description="TPL_BIZGLOBAL_FIELD_SHOW_LOGO_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+	</field>
+
+      <field name="showSEARCH" type="radio" default="1" label="TPL_BIZGLOBAL_FIELD_SHOW_SEARCH_LABEL" description="TPL_BIZGLOBAL_FIELD_SHOW_SEARCH_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+	</field>
+
+	<field name="showComponent" type="radio" default="1" label="TPL_BIZGLOBAL_FIELD_SHOW_COMPONENT_LABEL" description="TPL_BIZGLOBAL_FIELD_SHOW_COMPONENT_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+	</field>
+      <field name="protect" type="radio" default="0" label="TPL_BIZGLOBAL_FIELD_PROTECT_LABEL" description="TPL_BIZGLOBAL_FIELD_PROTECT_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+	</field>
+      </fieldset>
+      </fields>
+      </config>
+
+</extension>

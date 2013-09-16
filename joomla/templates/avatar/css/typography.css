@@ -1,0 +1,108 @@
+.componentheading,h1 {
+    font-size: 20px;
+}
+h2 {
+    font-size: 18px;
+}
+h3 {
+    font-size: 16px;
+}
+h4 {
+	font-size: 14px;
+}
+h5, h6 {
+	font-weight: bold;
+}
+h1, h2, h3, h4, h5, h6, .componentheading {
+	font-weight: normal;
+	margin: 5px 0 10px;
+}
+.intro-image,
+.img-style {
+	border: 2px solid white;
+	margin-bottom: 12px;
+	box-shadow: 0px 0px 1px 1px #E1E1E1;
+}
+.img-style-grey {
+	border: 1px solid #e3e3e3;
+}
+.blockquote, q, blockquote {
+	font-family: "Times New Roman", Helvetica,Times,serif;
+	font-style: italic;
+	color: #989898;
+}
+.text-drop-cap::first-letter {
+	float: left;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 46px;
+    margin: 8px 5px 0 0;
+    text-transform: uppercase;
+}
+.box-content {
+	margin: 10px 0 15px 0;
+	padding: 15px;
+	background: #FAFAFA;
+	border: 1px solid #ddd;
+}
+.box-note {
+	margin: 10px 0 15px 0;
+	padding: 15px;
+	background: #FAFAFA;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.box-info {
+	background: url("../images/icons/typo/icon-typo.png") no-repeat scroll 0 -3px transparent;
+    min-height: 24px;
+    padding: 0 0 0 30px;
+}
+.box-warning {
+	background: url("../images/icons/typo/icon-typo.png") no-repeat scroll 0 -28px transparent;
+    min-height: 24px;
+    padding: 0 0 0 30px;
+}
+.box-download {
+	background: url("../images/icons/typo/icon-typo.png") no-repeat scroll 0 -73px transparent;
+    min-height: 24px;
+    padding: 0 0 0 30px;
+}
+.box-hint {
+	background: url("../images/icons/typo/icon-typo.png") no-repeat scroll 0 -51px transparent;
+    min-height: 22px;
+    padding: 0 0 0 30px;
+}
+.the-icons {
+	margin: 0;
+	list-style: none;
+}
+.icon-arrow {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -4px -9px transparent;
+    height: 9px;
+    margin: 4px;
+    width: 10px;
+}
+.icon-article {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -2px -18px transparent;
+    margin: 0 6px 0 0;
+}
+.icon-folder {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -2px 3px transparent;
+    margin: 0 6px 0 0;
+}
+.icon-image {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -2px -75px transparent;
+    margin: 0 6px 0 0;
+}
+.icon-online {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -2px -31px transparent;
+    margin: 0 6px 0 0;
+}
+.icon-star {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -2px -46px transparent;
+    margin: 0 6px 0 0;
+}
+.icon-user {
+	background: url("../images/icons/typo/icon-list.png") no-repeat scroll -2px -60px transparent;
+    margin: 0 6px 0 0;
+}

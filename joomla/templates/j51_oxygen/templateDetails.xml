@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<install version="1.6" type="template">
+	<name>J51_Oxygen</name>
+	<version>1.0</version>
+	<creationDate>May 2011</creationDate>
+	<author>Joomla 51</author>
+	<authorEmail>info@joomla51.com</authorEmail>
+	<authorUrl>http://www.joomla51.com</authorUrl>
+	<copyright>Joomla 51</copyright>
+	<description><![CDATA[<link href="../templates/j51_digitalempire/css/admin.css" rel="stylesheet" type="text/css" media="all" />
+                  <!--
+                  #wrap1 {padding:0px 0px 4px 0px;}
+                  h1 {clear:both;font-family: Arial Narrow,sans-serif;font-size:18px;margin:0px 0px 12px 0px;padding:0px 0px 1px 10px;color:#C64934; a:}
+                  .wrap2 {background:#fff;border:1px solid #8F8F8F;padding:10px; color:#403d6a;}
+                  -->
+                  </style>
+<h3><strong>Oxygen - A Joomla51 Template </strong></h3>
+<p>Introducing our Oxygen Joomla template, a bright and clean template solution for your website. Compatible with Joomla 1.5, 1.6 and 1.7 this tmeplate comes with a wide array of features including 22 module positions, 3 colour styles to choose from and multiple layout option to name but a few.
+</p>
+<p>
+This Joomla template is released under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 license</a>.. This means that it can be used for private and commercial purposes, edited freely or redistributed as long as you keep the link back to Joomla51.
+</p>
+<p>If you would like to remove this link, please purchase a license. The license price for this template is 14 US Dollars or 10 Euro made payable via Paypal to info@joomla51.com</p>
+<p>Please state the intended URL of your website in the comment section of your payment.</p>
+<p>The license may be used for a single website only.</p>
+
+  
+  ]]></description>
+  
+  	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.tpl_j51_oxygen.ini</language>
+		<language tag="en-GB">en-GB/en-GB.tpl_j51_oxygen.sys.ini</language>
+	</languages>
+	
+
+	<files>
+		<filename>index.php</filename>
+		<filename>config.php</filename>
+		<filename>params.ini</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_thumbnail.png</filename>
+		<folder>css/</folder>
+		<folder>html/</folder>
+		<folder>images/</folder>
+		<folder>js/</folder>
+		<folder>language/</folder>
+	</files>
+
+	<positions>
+		<position>banner</position>
+		<position>breadcrumb</position>
+		<position>hornav</position>
+		<position>footer</position>
+		<position>sidecolumn</position>
+		<position>showcase</position>
+		<position>user1</position>
+		<position>user2</position>
+		<position>user3</position>
+		<position>user4</position>
+		<position>user5</position>
+		<position>user6</position>
+		<position>user7</position>
+		<position>user8</position>
+		<position>user9</position>
+		<position>user10</position>
+		<position>user11</position>
+		<position>user12</position>
+		<position>user13</position>
+		<position>user14</position>
+		<position>user15</position>
+		<position>user16</position>
+		<position>user17</position>
+		<position>user18</position>
+
+	</positions>
+
+
+<config>
+	<fields name="params">
+	<fieldset name="Advanced">
+	
+			<field label="H4_STYLE" type="spacer" default="H4_STYLE"/>
+						<field name="colorStyle" type="list" default="style1" label="Template Syle" description="Color Style">
+			<option value="style1">Style1 - Blue</option>
+			<option value="style2">Style2 - Green</option>
+			<option value="style3">Style3 - Bronze</option>
+						</field>
+
+		<field label="STYLE_INFO" type="spacer" default="STYLE_INFO"/>
+
+		<field label="H4_LOGO" type="spacer" default="H4_LOGO"/>
+						<field name="logoType" type="list" default="image" label="Logo type" description="Image based (logo.png or Text based logo">
+							<option value="image">Image</option>
+							<option value="text">Text</option>
+						</field>
+						<field name="logoText" type="text" default="oxygen" size="50" label="Logo text" description="Logo Text" />
+						<field name="sloganText" type="text" default="A JOOMLA51 TEMPLATE" size="50" label="Slogan" description="Slogan Text" />
+
+						<field label="LOGO_INFO" type="spacer" default="LOGO_INFO"/>
+
+		<field label="H4_LAYOUT" type="spacer" default="H4_LAYOUT"/>
+
+						<field name="sidecol_width" type="text" default="190" label="Side Column Width" description="Enter the width of the Side Column in pixels." />
+
+						<field name="col_pos" type="list" default="col_l" label="Side Column Position" description="Side Column Position">
+							<option value="col_l"> Left </option>
+							<option value="col_r"> Right </option>
+						</field>
+						
+		<field label="H4_BACKGROUND" type="spacer" default="H4_BACKGROUND"/>
+
+						<field name="bg_state" type="list" default="bg_scroll" label="Background Image" description="Background Image">
+							<option value="bg_scroll"> Scroll </option>
+							<option value="bg_fixed"> Fixed </option>
+						</field>
+
+	</fieldset>
+	</fields>
+	</config>
+
+
+</install>

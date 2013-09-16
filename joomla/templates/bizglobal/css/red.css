@@ -1,0 +1,47 @@
+a:link, a:visited {color: #A4141D;}
+a:hover {color: #999;}
+
+
+h2, h2 a:link {
+  border-bottom    : 1px solid #A4141D;
+  color            : #A4141D;
+  }
+
+#body_bg{
+background		: url(../images/bg_top_red.jpg) #E9E7E8 repeat-x top left;
+}
+
+#imglogo {
+background		: url(../images/logo_red.gif) no-repeat top left;
+}
+
+#headerconteiner {
+background     : url(../images/topright_red.jpg) no-repeat 100% 0;
+}
+
+
+div.date {
+  color            : #A4141D;
+}
+
+table.moduletable_menu ul li a:hover
+{
+  color            : #A4141D;
+
+}
+
+table.moduletable_menu ul li.active a:link, table.moduletable_menu ul li.active  a:visited
+{
+  color            : #A4141D;
+}
+
+
+
+#nav li.active a {background:#A4141D;}
+#nav li a:hover, #nav li:hover a, #nav li.sfHover a {background:#A4141D;}
+#nav li li a, #nav li li.active a{background:#8D1119;}
+#nav li ul {border:1px solid #8D1119;border-top:none;}
+#nav li li a, #nav li li.active a{border-top:1px solid #8D1119;}
+#nav li li.active a{border-top:1px solid #A4141D;}
+
+.lcol table.moduletable th span, .lcol table.moduletable_menu th span, .rcol table.moduletable th span, .rcol table.moduletable_menu th span  { }
