@@ -1,0 +1,261 @@
+/* begin Page */
+
+.cleared {
+   width:1px;
+}
+/* Start Box */
+.td-box, .td-box-body {
+   zoom:1;
+}
+/* End Box */
+/* Start Bar */
+.td-bar{
+   zoom:1;
+}
+/* End Bar */
+/* end Page */
+
+/* begin Menu */
+ul.td-hmenu, ul.td-hmenu ul, ul.td-hmenu li, ul.td-hmenu a {
+   zoom:1;
+}
+.td-hmenu li.td-hmenuhover{
+   z-index: 10000;
+}
+.td-hmenu .td-hmenuhoverUL{
+   visibility: visible;
+   top: 100%;
+   left: 0;
+}
+.td-hmenu .td-hmenuhoverUL .td-hmenuhoverUL{
+   top: 0;
+   left: 100%;
+}
+.td-hmenu ul li {
+   float: left !important;
+   clear: both;
+   width: 100%;
+}
+.td-nav
+{
+   zoom: 1;
+   height: 49px;
+   background:#1D2535;
+}
+
+/* end Menu */
+
+/* begin MenuItem */
+.td-hmenu a 
+{
+   display:inline-block;
+   color: #DBE0EB;
+   background-color:#495F88;
+   padding: 0 22px;
+   line-height: 31px;
+   text-align: center;
+}
+
+.td-hmenu a.active 
+{
+   color: #ADCFF5;
+   background-color:#242E42;
+}
+
+.td-hmenu a:hover, .td-hmenuhoverA,  .td-hmenuhover a 
+{
+   color: #061B32;
+   background-color:#5974A6;
+}
+
+/* end MenuItem */
+
+/* begin MenuSeparator */
+ul.td-hmenu li {
+   margin-left:expression(this.previousSibling==null?'0':'4px');
+}
+ul.td-hmenu li li{
+   margin-left:0;
+}
+
+/* end MenuSeparator */
+
+/* begin MenuSubItem */
+.td-hmenu ul a 
+{
+   color: #121721 !important;
+   float: left;
+}
+
+.td-hmenu ul a:hover, .td-hmenu ul .td-hmenuhover .td-hmenuhoverA 
+{
+   color: #CDE1F9 !important;
+   background-position: left bottom;
+   border-top-width: 0 !important;
+}
+
+/* end MenuSubItem */
+
+/* begin Header */
+.td-header {
+   zoom:expression(runtimeStyle.zoom=1,insertBefore(document.createElement('div'),firstChild).className='td-header-png',insertBefore(document.createElement('div'),firstChild).className='td-header-jpeg');
+}
+.td-header-png
+{
+   position: absolute;
+   z-index:-2;
+   top: 0;
+   width:100%;
+   height: 154px;
+   background-image: url('../images/header.png');
+   background-repeat: no-repeat;
+   background-position:top center;
+}
+
+.td-header-jpeg
+{
+   position: absolute;
+   z-index:-1;
+   top: 0;
+   width:expression(parentNode.clientWidth - 2 * 12 + 'px');
+   left:12px;
+   height: 154px;
+   background-image: url('../images/header.jpg');
+   background-repeat: no-repeat;
+   background-position: center center;
+}
+/* end Header */
+
+/* begin Box, Sheet */
+.td-sheet {
+   background:#2B3850;
+}
+/* end Box, Sheet */
+
+/* begin Layout */
+.td-content-layout, .td-content-layout-row, .td-layout-cell 
+{
+   display: block;
+   zoom: 1;
+}
+.td-layout-cell
+{
+   position:relative;
+   float: left;
+   clear: right;
+}
+/* end Layout */
+
+/* begin Button */
+.td-button-wrapper{
+   zoom: 1;
+}
+.td-button-wrapper .td-button-l, .td-button-wrapper .td-button-r {
+   display: none;
+}
+.td-button-wrapper .td-button {
+   float: left;
+}
+/* end Button */
+
+/* begin Box, Block */
+.td-block {
+   background:#FFFFFF;
+}
+/* end Box, Block */
+
+/* begin BlockHeader */
+.td-blockheader {
+   background:#495F88;
+}
+/* end BlockHeader */
+
+/* begin Box, BlockContent */
+.td-blockcontent {
+   background:#FCFCFD;
+}
+.td-blockcontent-body ul li{
+   height: 1%;
+}
+
+/* end Box, BlockContent */
+
+/* begin Box, Post */
+.td-post {
+   background:#253045;
+}
+/* end Box, Post */
+
+/* begin PostIcons, PostHeaderIcons */
+.td-postheadericons span{
+   zoom: 1;
+}
+/* end PostIcons, PostHeaderIcons */
+
+/* begin PostBullets */
+.td-post ul li, .td-post ol ul li
+{
+   height: 1%;
+   padding-left: 14px;
+   /* makes "ul li" not to align behind the image if they are in the same line */
+  overflow-x: visible;
+   overflow-y: hidden;
+}
+
+.td-post ul ol li
+{
+   background: none;
+   padding-left: 0;
+   /* overrides overflow for "ul li" and sets the default value */
+  overflow: visible;
+}
+/* end PostBullets */
+
+/* begin PostIcons, PostFooterIcons */
+.td-postfootericons span{
+   zoom: 1;
+}
+/* end PostIcons, PostFooterIcons */
+
+/* begin Footer */
+.td-footer-body{
+   padding-right: 0;
+   zoom:1;
+}
+.td-footer{
+   zoom:1;
+   background:#28344A;
+}
+
+.td-footer-text
+{
+   height: 32px;
+}
+
+.td-rss-tag-icon
+{
+   zoom: 1;
+   font-size: 1px;
+}
+
+/* end Footer */
+
+/* begin LayoutCell, content */
+.td-sidebar1 {
+   width: auto;
+}
+/* end LayoutCell, content */
+
+form#form-login ul li
+{
+   behavior: expression(this.runtimeStyle.filter?'':this.runtimeStyle.filter="");
+}
+
+/* Plugin compatilibity. */
+
+/* 150675, googlemap */
+div.map img
+{
+   behavior: none;
+   filter: none;
+}

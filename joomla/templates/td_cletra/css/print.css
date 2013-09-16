@@ -1,0 +1,335 @@
+/* begin Page */
+
+body
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-style: normal;
+   font-weight: normal;
+   font-size: 13px;
+}
+
+h1, h2, h3, h4, h5, h6,
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover,
+h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited,
+.td-postheader, .td-postheader a, .td-postheader a:link, .td-postheader a:visited, .td-postheader a:hover,
+.td-blockheader .t, .td-vmenublockheader .t, .td-logo-text, .td-logo-text a,
+.td-logo-name, .td-logo-name a, .td-logo-name a:link, .td-logo-name a:visited, .td-logo-name a:hover
+{
+   font-family: "Comic Sans MS", Tahoma, Arial, Sans-Serif;
+   font-style: normal;
+   font-weight: bold;
+   font-size: 26px;
+   text-decoration: none;
+}
+
+a
+{
+   text-decoration: underline;
+}
+
+a:link
+{
+   text-decoration: underline;
+}
+
+h1, h1 a, h1 a:link, h1 a:visited, h1 a:hover
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+}
+
+h2, h2 a, h2 a:link, h2 a:visited, h2 a:hover
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 22px;
+}
+
+h3, h3 a, h3 a:link, h3 a:visited, h3 a:hover
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 18px;
+}
+
+h4, h4 a, h4 a:link, h4 a:visited, h4 a:hover
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 16px;
+}
+
+h5, h5 a, h5 a:link, h5 a:visited, h5 a:hover
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 14px;
+}
+
+h6, h6 a, h6 a:link, h6 a:visited, h6 a:hover
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 13px;
+}
+
+#td-main
+{
+   position: relative;
+   width: 100%;
+   left: 0;
+   top: 0;
+   cursor:default;
+}
+
+#td-page-background-glare, #td-page-background-middle-texture, #td-page-background-top-texture
+{
+   display: none;
+}
+
+.cleared
+{
+   float: none;
+   clear: both;
+   margin: 0;
+   padding: 0;
+   border: none;
+   font-size: 1px;
+}
+
+form
+{
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+table.position
+{
+   position: relative;
+   width: 100%;
+   table-layout: fixed;
+}
+/* end Page */
+
+/* begin Box, Post */
+.td-post
+{
+   margin: 5px;
+}
+
+a img
+{
+   border: 0;
+}
+
+.td-article img, img.td-article
+{
+   margin: 7px 7px 7px 7px;
+}
+
+.td-metadata-icons img
+{
+   border: none;
+   vertical-align: middle;
+   margin: 2px;
+}
+
+.td-article table, table.td-article
+{
+   border-collapse: collapse;
+   margin: 1px;
+   width: auto;
+}
+
+.td-article table, table.td-article .td-article tr, .td-article th, .td-article td
+{
+   background-color: Transparent;
+}
+
+.td-article th, .td-article td
+{
+   padding: 2px;
+   border: solid 1px #eeeeee;
+   vertical-align: top;
+   text-align: left;
+}
+
+.td-article th
+{
+   text-align: center;
+   vertical-align: middle;
+   padding: 7px;
+}
+
+pre
+{
+   overflow: auto;
+   padding: 0.1em;
+}
+
+/* end Box, Post */
+
+/* begin PostHeaderIcon */
+.td-postheader
+{
+   margin: 5px 0;
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 24px;
+}
+
+.td-postheader a, 
+.td-postheader a:link, 
+.td-postheader a:visited,
+.td-postheader a.visited,
+.td-postheader a:hover,
+.td-postheader a.hovered
+{
+   font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+   font-size: 24px;
+}
+
+.td-postheader a, .td-postheader a:link
+{
+   text-align: left;
+   text-decoration: none;
+}
+
+/* end PostHeaderIcon */
+
+/* begin PostHeader */
+
+/* end PostHeader */
+
+/* begin PostIcons, PostHeaderIcons */
+.td-postheadericons
+{
+   padding: 1px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-size: 9px;
+}
+
+.td-postheadericons a, .td-postheadericons a:link, .td-postheadericons a:visited, .td-postheadericons a:hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-size: 9px;
+}
+
+.td-postheadericons a, .td-postheadericons a:link, .td-postheadericons a:visited, .td-postheadericons a:hover
+{
+   margin: 0;
+}
+
+.td-postheadericons a:link
+{
+   text-decoration: underline;
+}
+
+.td-postheadericons a:visited, .td-postheadericons a.visited
+{
+   font-style: italic;
+   font-weight: normal;
+}
+
+.td-postheadericons a:hover, .td-postheadericons a.hover
+{
+   text-decoration: none;
+}
+/* end PostIcons, PostHeaderIcons */
+
+/* begin PostContent */
+.td-postcontent p
+{
+   margin: 0.5em 0;
+}
+
+.td-postcontent
+{
+   margin: 0;
+}
+/* end PostContent */
+
+/* begin PostBullets */
+ol, ul
+{
+   margin: 1em 0 1em 2em;
+   padding: 0;
+   font-size: 13px;
+}
+
+li ol, li ul
+{
+   margin: 0.5em 0 0.5em 2em;
+   padding: 0;
+}
+
+li
+{
+   margin: 0.2em 0;
+   padding: 0;
+}
+
+ul
+{
+   list-style-type: none;
+}
+
+ol
+{
+   list-style-position: inside;
+}
+
+.td-post li
+{
+   padding: 0 0 0 14px;
+   line-height: 1em;
+}
+
+.td-post ol li, .td-post ul ol li
+{
+   background: none;
+   padding-left: 0;
+}
+
+.td-post ul li, .td-post ol ul li
+{
+   background-image: url('../images/postbullets.png');
+   background-repeat: no-repeat;
+   padding-left: 14px;
+}
+
+/* end PostBullets */
+
+/* begin PostQuote */
+
+blockquote,
+.td-postcontent blockquote
+{
+   margin: 10px 10px 10px 50px;
+   padding: {QuoteIconPadding}px {QuoteIconPadding}px {QuoteIconPadding}px {QuoteIconLeftPadding}px;
+}
+
+/* end PostQuote */
+
+/* begin PostIcons, PostFooterIcons */
+.td-postfootericons
+{
+   padding: 1px;
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.td-postfootericons a, .td-postfootericons a:link, .td-postfootericons a:visited, .td-postfootericons a:hover
+{
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+}
+
+.td-postfootericons a, .td-postfootericons a:link, .td-postfootericons a:visited, .td-postfootericons a:hover
+{
+   margin: 0;
+}
+
+.td-postfootericons a:link
+{
+   text-decoration: underline;
+}
+
+.td-postfootericons a:hover, .td-postfootericons a.hover
+{
+   text-decoration: none;
+}
+/* end PostIcons, PostFooterIcons */
+
