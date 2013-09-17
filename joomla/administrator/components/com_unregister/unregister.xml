@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<install type="component" version="1.5.0">
+    <name>Unregister++</name>
+    <creationDate>August 15, 2008</creationDate>
+    <author>Max Shinn</author>
+    <copyright>Copyright 2004-2006 Mike Noel and 2008 Max Shinn</copyright>
+    <authorEmail>admin@BernsteinForPresident.com</authorEmail>
+    <authorUrl>http://BernsteinForPresident.com</authorUrl>
+    <version>1.0</version>
+    <license>GPL</license>
+    <description>This component allows users to un-register themselves.  This is a port of Mike Noel's "Unregister" component to Joomla! 1.5.</description>
+    <files>
+         <filename>unregister.php</filename>
+	 <filename>unregister.html.php</filename>
+    </files>
+    <installfile>install.unregister.php</installfile>
+    <uninstallfile>uninstall.unregister.php</uninstallfile>
+    <administration>
+	<menu>Unregister</menu>
+	<files>
+		<filename>admin.unregister.php</filename>
+		<filename>config.xml</filename>
+	</files>
+    </administration>
+    <params group="Translations">
+	    	<param name="warning" default="You are currently registered as a user on this site.  If you would like to be unregistered from this site enter your password (and then enter it again) then click on the 'Unregister' button." />
+		<param name="password" default="Password: " />
+		<param name="done" default="Account sucessfully deleted" />
+		<param name="login" default="Please log in" />
+		<param name="wrong_password" default="Incorrect password" />
+     </params>
+</install>

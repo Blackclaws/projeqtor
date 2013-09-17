@@ -1,0 +1,9 @@
+<root>
+<params>
+	<param type="text" name="warning" label="Delete Warning" description="This is the text that is displayed immediately before a user deletes his/her account." />
+	<param type="text" name="password" label="Password" description="The text to display before the password field." />
+	<param type="text" name="done" label="Account sucessfully deleted" description="The text to display when the account has been deleted." />
+	<param type="text" name="login" label="Please log in" description="The text to display if the user is not logged in and tries to access this component." />
+	<param type="text" name="wrong_password" label="Incorrect password" description="The text to display if the user enters the wrong password." />
+</params>
+</root>
