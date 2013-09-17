@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.6" client="site" method="upgrade">
+	<name>J - Google AdSense</name>
+	<author>tridentsystemsgroup.com</author>
+	<creationDate>2011</creationDate>
+	<copyright>Copyright (C) 2011 tridentsystemsgroup.com All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>tridentsystemsgroup@gmail.com</authorEmail>
+	<authorUrl>http://www.tridentsystemsgroup.com</authorUrl>
+	<version>3.3</version>
+	<description><![CDATA[ 
+	<h1>J - Google AdSense</h1>The EASY, the FAST, the SAFE and the COMPLETE Joomla! Google AdSense extension, Because it is designed SPECIFICALLY for GOOGLE ADSENSE, and not for other Google services or other ad like Yahoo...  <br> No need to create an ad unit and copy & paste the code, all this can be done easily & quickly just from the extension parameters.<br>
+	<br /> <a href="http://www.tridentsystemsgroup.com" target="_blank" >More information on tridentsystemsgroup.com </a>  <br /> __________________________________________
+	]]></description>
+	<files>
+		<filename module="mod_jgoogleadsense">mod_jgoogleadsense.php</filename>
+		<filename>index.html</filename>
+		<folder>elements/</folder>
+		<folder>js/</folder>
+	</files>
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.mod_jgoogleadsense.ini</language>
+		<language tag="en-US">language/en-US/en-US.mod_jgoogleadsense.ini</language>
+		<language tag="it-IT">language/it-IT/it-IT.mod_jgoogleadsense.ini</language>		
+		<language tag="nl-NL">language/nl-NL/nl-NL.mod_jgoogleadsense.ini</language>
+    </languages>
+	<config>
+		<fields name="params" addfieldpath="/modules/mod_jgoogleadsense/elements">
+			<fieldset name="basic">
+				<field name="J - Google AdSense" type="spacer"/>
+		 		<field name="moduleclass_sfx" type="text" default="" label="MOD_JGOOGLEADSENSE_CLASS_SUFFIX" description="MOD_JGOOGLEADSENSE_A_SUFFIX_TO_BE_APPLIED_TO_THE_CSS_CLASS_OF_THE_MODULE"	size="30"/>						
+				<field name="j_ad_format" type="list" default="250x250_as" label="MOD_JGOOGLEADSENSE_AD_LAYOUT" description="MOD_JGOOGLEADSENSE_CHOOSE_THE_AD_FORMAT_AND_SIZE_THAT_YOU_WOULD_LIKE_TO_DISPLAY_ON_YOUR_PAGE">
+					<option value="728x90_as">MOD_JGOOGLEADSENSE_728_X_90_LEADERBOARD</option>
+					<option value=""> ----------------- </option>			
+					<option value="468x60_as">MOD_JGOOGLEADSENSE_468_X_60_BANNER</option> 
+					<option value="234x60_as">MOD_JGOOGLEADSENSE_234_X_60_HALF_BANNER</option> 
+					<option value=""> ----------------- </option> 
+					<option value="120x600_as">MOD_JGOOGLEADSENSE_120_X_600_SKYSCRAPER</option> 
+					<option value="160x600_as">MOD_JGOOGLEADSENSE_160_X_600_WIDE_SKYSCRAPER</option> 
+					<option value="120x240_as">MOD_JGOOGLEADSENSE_120_X_240_VERTICAL_BANNER</option> 
+					<option value=""> ----------------- </option>
+					<option value="336x280_as">MOD_JGOOGLEADSENSE_336_X_280_LARGE_RECTANGLE</option>
+					<option value="300x250_as">MOD_JGOOGLEADSENSE_300_X_250_MEDIUM_RECTANGLE</option> 
+					<option value="250x250_as">MOD_JGOOGLEADSENSE_250_X_250_SQUARE</option> 
+					<option value="200x200_as">MOD_JGOOGLEADSENSE_180_X_150_SMALL_RECTANGLE</option>
+					<option value="180x150_as">MOD_JGOOGLEADSENSE_180_X_150_SMALL_RECTANGLE</option>
+					<option value="125x125_as">MOD_JGOOGLEADSENSE_125_X_125_BUTTON</option>
+					<option value=""> ----------------- </option>			
+					<option value="728x15_0ads_al">MOD_JGOOGLEADSENSE_728_X_15_ADLINK_4_LINKS</option>
+					<option value="468x15_0ads_al">MOD_JGOOGLEADSENSE_468_X_15_ADLINK_4_LINKS</option>
+					<option value="120x90_0ads_al">MOD_JGOOGLEADSENSE_120_X_90_ADLINK_4_LINKS</option>
+					<option value="160x90_0ads_al">MOD_JGOOGLEADSENSE_160_X_90_ADLINK_4_LINKS</option>
+					<option value="180x90_0ads_al">MOD_JGOOGLEADSENSE_180_X_90_ADLINK_4_LINKS</option>
+					<option value="200x90_0ads_al">MOD_JGOOGLEADSENSE_200_X_90_ADLINK_4_LINKS</option>
+					<option value=""> ----------------- </option>
+					<option value="728x15_0ads_al_s">MOD_JGOOGLEADSENSE_728_X_15_ADLINK_5_LINKS</option>
+					<option value="468x15_0ads_al_s">MOD_JGOOGLEADSENSE_468_X_15_ADLINK_5_LINKS</option>
+					<option value="120x90_0ads_al_s">MOD_JGOOGLEADSENSE_120_X_90_ADLINK_5_LINKS</option>
+					<option value="160x90_0ads_al_s">MOD_JGOOGLEADSENSE_160_X_90_ADLINK_5_LINKS</option>
+					<option value="180x90_0ads_al_s">MOD_JGOOGLEADSENSE_180_X_90_ADLINK_5_LINKS</option>
+					<option value="200x90_0ads_al_s">MOD_JGOOGLEADSENSE_200_X_90_ADLINK_5_LINKS</option>
+				</field>					
+				<field name="j_ad_type" type="list" default="text_image" label="MOD_JGOOGLEADSENSE_AD_TYPE" description="MOD_JGOOGLEADSENSE_CHOOSE_THE_AD_TYPES_YOU_WOULD_LIKE_TO_DISPLAY_ON_YOUR_PAGE">
+					<option value="text_image">MOD_JGOOGLEADSENSE_TEXT_AND_IMAGE</option>
+					<option value="text">MOD_JGOOGLEADSENSE_TEXT_ONLY</option>
+					<option value="image">MOD_JGOOGLEADSENSE_IMAGE_ONLY</option>
+				</field>					
+				<field name="j_ad_uifeatures" type="list" default="0" label="MOD_JGOOGLEADSENSE_CORNER_STYLES" description="MOD_JGOOGLEADSENSE_OPTIONALLY_CHOOSE_FROM_ONE_OF_THE_PRE-DESIGNED_CORNER_STYLES">
+					<option value="">MOD_JGOOGLEADSENSE_SELECT_CORNER_STYLE</option> 
+					<option value="0">MOD_JGOOGLEADSENSE_SQUARE_CORNERS</option> 
+					<option value="6">MOD_JGOOGLEADSENSE_SLIGHTLY_ROUNDED_CORNERS</option> 
+					<option value="10">MOD_JGOOGLEADSENSE_VERY_ROUNDED_CORNERS</option>
+				</field>
+		 		<field name="j_color_border" type="tsgcolor" default="FFFFFF" label="MOD_JGOOGLEADSENSE_BORDER_COLOR" description="MOD_JGOOGLEADSENSE_BORDER_COLOR_IN_HEX"	size="30"/>									
+		 		<field name="j_color_link" type="tsgcolor" default="0000FF" label="MOD_JGOOGLEADSENSE_LINK_COLOR" description="MOD_JGOOGLEADSENSE_LINK_COLOR_IN_HEX" size="30"/>	
+				<field name="j_color_bg" type="tsgcolor" default="FFFFFF" label="MOD_JGOOGLEADSENSE_BACKGROUND_COLOR" description="MOD_JGOOGLEADSENSE_BACKGROUND_COLOR_IN_HEX" size="30"/>						
+		 		<field name="j_color_text" type="tsgcolor" default="000000" label="MOD_JGOOGLEADSENSE_TEXT_COLOR" description="MOD_JGOOGLEADSENSE_TEXT_COLOR_IN_HEX" size="30"/>	
+		 		<field name="j_color_url" type="tsgcolor" default="008000" label="MOD_JGOOGLEADSENSE_URL_COLOR" description="MOD_JGOOGLEADSENSE_URL_COLOR_IN_HEX" size="30"/>	
+				<field name="j_ad_css" type="text" default="text-align:center;" label="MOD_JGOOGLEADSENSE_DIV_CSS_CODES" description="MOD_JGOOGLEADSENSE_INPUT_ANY_CSS_CODE_THAT_YOU_WANT_HERE"	size="30"/>	
+				<field name="j_ad_client" type="text" default="" label="MOD_JGOOGLEADSENSE_PUB-ID" description="MOD_JGOOGLEADSENSE_PUB_DES"	size="30"/>
+				<field name="j_ad_channel" type="text" default="" label="MOD_JGOOGLEADSENSE_CHANNEL" description="MOD_JGOOGLEADSENSE_CHANNEL_DES" size="30"/>	
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="j_alternate_ad_url" type="text" default="" label="MOD_JGOOGLEADSENSE_ALTERNATE_AD_URL" description="MOD_JGOOGLEADSENSE_ALTERNATE_AD_URL_TO_SPECIFY_OTHER_ADS_WHEN_NO_ADS_ARE_AVAILABLE" />
+				<field name="@spacer" type="spacer" default=" " label=" " description=" " />
+		 		<field name="j_ip_block1" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_1" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block2" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_2" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block3" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_3" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block4" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_4" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block5" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_5" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block6" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_6" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block7" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_7" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="j_ip_block8" type="text" default="" label="MOD_JGOOGLEADSENSE_IP_BLOCK_8" description="MOD_JGOOGLEADSENSE_ENTER_AN_IP_NUMBER_HERE_THAT_YOU_WISH_TO_BLOCK_GOOGLE_ADS_FROM"/>
+				<field name="ip_block_alt_code" type="textarea" default="" cols="35" rows="6" label="MOD_JGOOGLEADSENSE_ALTERNATE_CODE_IF_IP_BLOCKED" description="MOD_JGOOGLEADSENSE_ENTER_ANYTHING"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
