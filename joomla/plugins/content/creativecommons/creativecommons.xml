@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="content">
+	<name>Content - Creative Commons Tagger</name>
+	<author>Mark A. Taff</author>
+	<creationDate>2009-01-04</creationDate>
+	<copyright>Copyright 2009 Mark A. Taff</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorUrl>www.marktaff.com</authorUrl>
+	<version>0.1</version>
+	<description>Applies a creative commons license to articles.  Simply add a tag like {cc-gpl-3} to an article. Available tags are: cc-by, cc-by-sa, cc-by-nd, cc-by-nc, cc-by-nc-sa, cc-by-nc-nd, cc-pd, cc-gpl-2, cc-gpl-3, cc-lgpl, cc-bsd, and cc-reserved.</description>
+	<files>
+		<filename plugin="creativecommons">creativecommons.php</filename>
+	</files>
+	<params>
+	    <param name="permissions" type="text" size="50" default="http://www.marktaff.com/credits-license.html" label="Permissions URL" description="Set the URL people should use to request premissions beyond what the license gives them.  DO NOT use an email address here if you have Joomla set up to obfuscate email addresses!" />
+	</params>
+</install>
