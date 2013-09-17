@@ -2254,7 +2254,7 @@ abstract class SqlElement {
   	// 
     $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
     if ($right!='YES') { // Manage Exceptions
-	    if (get_class($this)=='Alert' or get_class($this)=='Mail' or get_class($this)=='Audit') {
+    	if (get_class($this)=='Alert' or get_class($this)=='Mail' or get_class($this)=='Audit' or get_class($this)=='AuditSummary') {
 	    	$right='YES';
 	    } else if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
 	    	$right='YES';
