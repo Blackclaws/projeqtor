@@ -1,0 +1,92 @@
+2012-11-17 10:11:27 ===== TRACE ===== NEW CONNECTED USER 'admin'
+2012-11-17 10:13:08 ===== TRACE ===== DISCONNECTED USER 'Admin'
+2012-11-17 10:14:09 ===== TRACE ===== 
+2012-11-17 10:14:09 ===== TRACE ===== =====================================
+2012-11-17 10:14:09 ===== TRACE ===== 
+2012-11-17 10:14:09 ===== TRACE ===== DataBase actual Version = V2.6.3
+2012-11-17 10:14:09 ===== TRACE ===== ProjectOR actual Version = V3.0.0
+2012-11-17 10:14:09 ===== TRACE ===== 
+2012-11-17 10:14:09 ===== TRACE ===== =====================================
+2012-11-17 10:14:09 ===== TRACE ===== 
+2012-11-17 10:14:09 ===== TRACE ===== VERSION V3.0.-
+2012-11-17 10:14:09 ===== TRACE ===== 
+2012-11-17 10:14:09 ===== TRACE =====  Table "user" renamed.
+2012-11-17 10:14:10 ===== TRACE =====  Table "reportparameter" altered.
+2012-11-17 10:14:10 ===== TRACE =====  Table "reportcategory" altered.
+2012-11-17 10:14:10 ===== TRACE ===== 
+2012-11-17 10:14:10 ===== TRACE ===== DATABASE UPDATED
+2012-11-17 10:14:10 ===== TRACE =====  WITH NO ERROR
+2012-11-17 10:14:10 ===== TRACE ===== 
+2012-11-17 10:14:10 ===== TRACE ===== =====================================
+2012-11-17 10:14:10 ===== TRACE ===== 
+2012-11-17 10:14:10 ===== TRACE ===== VERSION V3.0.0
+2012-11-17 10:14:10 ===== TRACE ===== 
+2012-11-17 10:14:10 ===== TRACE =====  Table "mutex" created.
+2012-11-17 10:14:10 ===== TRACE =====  1 lines inserted into table "parameter".
+2012-11-17 10:14:10 ===== TRACE =====  1 lines inserted into table "parameter".
+2012-11-17 10:14:10 ===== TRACE =====  Table "otherversion" created.
+2012-11-17 10:14:10 ===== TRACE =====  Index "otherversionRef" created.
+2012-11-17 10:14:10 ===== TRACE =====  Index "otherversionVersion" created.
+2012-11-17 10:14:11 ===== TRACE =====  Index "otherversionUser" created.
+2012-11-17 10:14:11 ===== TRACE =====  2 lines inserted into table "reportparameter".
+2012-11-17 10:14:11 ===== TRACE ===== 
+2012-11-17 10:14:11 ===== TRACE ===== DATABASE UPDATED
+2012-11-17 10:14:11 ===== TRACE =====  WITH NO ERROR
+2012-11-17 10:14:11 ===== TRACE ===== 
+2012-11-17 10:14:12 ===== TRACE ===== === REWRITE PARAMTERS.PHP FILE = START ====================
+2012-11-17 10:14:12 ===== TRACE ===== $paramDbType kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramDbHost kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramDbUser kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramDbPassword kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramDbName kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramDbPrefix kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_allow_login moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_base_dn moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_host moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_port moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_version moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_search_user moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_search_pass moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramLdap_user_filter moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramDefaultPassword moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramPasswordMinLength moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $lockPassword moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramDefaultLocale moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramDefaultTimezone moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $currency moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $currencyPosition moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramFadeLoadingMode moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramRowPerPage moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramIconSize moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $defaultTheme moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramPathSeparator moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramAttachementDirectory moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramAttachementMaxSize moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramReportTempDirectory moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $paramMemoryLimitForPDF moved to database
+2012-11-17 10:14:12 ===== TRACE ===== $logFile kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $logLevel kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $paramDebugMode kept in parameter file
+2012-11-17 10:14:12 ===== TRACE ===== $defaultBillCode moved to database
+2012-11-17 10:14:12 ===== TRACE ===== ---> lines read from file = 40
+2012-11-17 10:14:12 ===== TRACE ===== ---> parameters found = 34
+2012-11-17 10:14:12 ===== TRACE ===== ---> parameters moved to database = 25
+2012-11-17 10:14:12 ===== TRACE ===== ---> parameters kept in parameter file = 9
+2012-11-17 10:14:12 ===== TRACE ===== REWRITE PARAMTERS.PHP FILE = END ======================
+2012-11-17 10:14:14 ===== TRACE ===== =====================================
+2012-11-17 10:14:14 ===== TRACE ===== 
+2012-11-17 10:14:14 ===== TRACE ===== DATABASE UPDATE COMPLETED TO VERSION V3.0.0
+2012-11-17 10:14:14 ===== TRACE ===== 
+2012-11-17 10:14:14 ===== TRACE ===== =====================================
+2012-11-17 10:14:14 ===== TRACE ===== 
+2012-11-17 10:14:21 ===== TRACE ===== NEW CONNECTED USER 'admin'
+2012-11-17 12:28:58 ===== TRACE ===== DISCONNECTED USER 'Admin'
+2012-11-17 12:29:35 ===== TRACE ===== NEW CONNECTED USER 'admin'
+2012-11-17 12:31:23 ===== TRACE ===== DISCONNECTED USER 'Admin'
+2012-11-17 12:32:37 ===== TRACE ===== NEW CONNECTED USER 'admin'
+2012-11-17 12:40:30 ===== TRACE ===== Cron started at 17/11/2012 12:40:30
+2012-11-17 12:49:29 ===== TRACE ===== DISCONNECTED USER 'Admin'
+2012-11-17 12:49:43 ===== TRACE ===== Login error for user 'xpalan'
+2012-11-17 12:49:47 ===== TRACE ===== NEW CONNECTED USER 'xpalan'
+2012-11-17 13:56:30 ===== TRACE ===== DISCONNECTED USER 'XPalan'
+2012-11-17 13:58:02 ===== TRACE ===== NEW CONNECTED USER 'admin'
