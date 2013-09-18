@@ -1,0 +1,232 @@
+2013-07-30 15:31:12 ===== TRACE ===== Cron started at 30/07/2013 15:31:12
+2013-07-30 15:31:12 ..... SCRIPT .... 90.84.144.9 Cron::checkStopFlag()
+2013-07-30 15:31:12 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:12 ..... SCRIPT .... 90.84.144.9 Cron::setRunningFlag()
+2013-07-30 15:31:12 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/admin.php
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Page=admin.php
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9    ->/view/admin.php
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Cron::check()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Cron::getSleepTime()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Cron::getActualTimes()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , , 1)
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 fetchList(Referencable,name, , , 1)
+2013-07-30 15:31:13 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php
+2013-07-30 15:31:22 ..... SCRIPT .... 90.84.144.9 Cron::checkStopFlag()
+2013-07-30 15:31:22 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:22 ..... SCRIPT .... 90.84.144.9 Cron::setRunningFlag()
+2013-07-30 15:31:22 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::checkStopFlag()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::setRunningFlag()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::checkDates()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::getCheckDates()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::checkEmails()
+2013-07-30 15:31:32 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:31:32 ----- DEBUG ----- Cron::checkEmails() - Step 1
+2013-07-30 15:31:32 ----- DEBUG ----- Cron::checkEmails() - Step 2
+2013-07-30 15:31:32 ----- DEBUG ----- Cron::checkEmails() - Step 3
+2013-07-30 15:32:15 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/admin.php
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Page=admin.php
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9    ->/view/admin.php
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Cron::check()
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Cron::getSleepTime()
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Cron::removeRunningFlag()
+2013-07-30 15:32:23 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:32:24 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , , 1)
+2013-07-30 15:32:24 ..... SCRIPT .... 90.84.144.9 fetchList(Referencable,name, , , 1)
+2013-07-30 15:33:02 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/today.php
+2013-07-30 15:33:02 ..... SCRIPT .... 90.84.144.9 Page=today.php
+2013-07-30 15:33:02 ..... SCRIPT .... 90.84.144.9    ->/view/today.php
+2013-07-30 15:33:02 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , , 1)
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectMain.php
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9 Page=objectMain.php
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9    ->/view/objectMain.php
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9    ->/view/objectList.php
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9 fetchList(TicketType,name, , , 1)
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9    ->/tool/displayFiletrList.php
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:04 ..... SCRIPT .... 90.84.144.9    ->/view/objectButton.php
+2013-07-30 15:33:05 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/tool/jsonQuery.php
+2013-07-30 15:33:05 ..... SCRIPT .... 90.84.144.9 Page=jsonQuery.php
+2013-07-30 15:33:05 ..... SCRIPT .... 90.84.144.9    ->/tool/jsonQuery.php
+2013-07-30 15:33:09 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:09 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:09 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:09 ..... SCRIPT .... 90.84.144.9    ->/view/objectButton.php
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Project,name, *, , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Project,sortOrder, *, , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(TicketType,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,value, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,value, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,value, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(User,17,name, 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Contact,17,name, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Ticket,17,name, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(ContextType,name, , 1, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Context1,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Context2,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Context3,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Product,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(OriginalVersion,17,name, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Activity,17,name, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setIdleStatus, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setDoneStatus, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setHandledStatus, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Status,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Resource,name, , 1, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,name, , , 1)
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , 1, )
+2013-07-30 15:33:10 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(TargetVersion,17,name, )
+2013-07-30 15:33:16 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/tool/saveObject.php
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 Page=saveObject.php
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 SqlElement::setReference
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , , 1)
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Indicatorable,name, , , 1)
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Status,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Project,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(TicketType,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Resource,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Contact,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Ticket,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Context1,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Context2,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Context3,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Product,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(OriginalVersion,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Activity,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(TargetVersion,name, , 1, )
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 sendMailAnonymous
+2013-07-30 15:33:18 ..... SCRIPT .... 90.84.144.9 fetchList(Mailable,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/tool/jsonQuery.php
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 Page=jsonQuery.php
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9    ->/tool/jsonQuery.php
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Project,name, 17, , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Project,sortOrder, 17, , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(TicketType,name, 80, , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,value, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,value, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,value, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(User,17,name, 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Contact,17,name, )
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Ticket,17,name, )
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(ContextType,name, , 1, )
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Context1,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Context2,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Context3,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Product,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(OriginalVersion,17,name, )
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Activity,17,name, )
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setIdleStatus, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setDoneStatus, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setHandledStatus, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Status,name, 1, , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Resource,name, , 1, )
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,name, , , 1)
+2013-07-30 15:33:19 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , 1, )
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(TargetVersion,17,name, )
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , 1, )
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:20 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/tool/saveObject.php
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 Page=saveObject.php
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 SqlElement::setReference
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Indicatorable,name, , , 1)
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Status,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Project,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(TicketType,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Resource,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Contact,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Ticket,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Context1,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Context2,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Context3,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Product,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(OriginalVersion,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Activity,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(TargetVersion,name, , 1, )
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 sendMailAnonymous
+2013-07-30 15:33:27 ..... SCRIPT .... 90.84.144.9 fetchList(Mailable,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/tool/jsonQuery.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 Page=jsonQuery.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9    ->/tool/jsonQuery.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Project,name, 17, , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Project,sortOrder, 17, , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(TicketType,name, 80, , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,value, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,value, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,value, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Urgency,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(User,17,name, 3)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Contact,17,name, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Ticket,17,name, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(ContextType,name, , 1, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Context1,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Context2,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Context3,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Product,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(OriginalVersion,17,name, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(Activity,17,name, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setIdleStatus, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setDoneStatus, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Status,setHandledStatus, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Status,name, 10, , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Resource,name, , 1, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Criticality,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Priority,name, , , 1)
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(VisibilityScope,accessCode, , 1, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchListWithCrit(TargetVersion,17,name, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/objectDetail.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 Page=objectDetail.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9    ->/view/objectDetail.php
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , 1, )
+2013-07-30 15:33:28 ..... SCRIPT .... 90.84.144.9 fetchList(Status,name, , 1, )
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9 /~steve/projectorria/view/admin.php
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9 Page=admin.php
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9    ->/view/admin.php
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9 Cron::check()
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9 Cron::init()
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9 fetchList(User,name, , , 1)
+2013-07-30 15:33:34 ..... SCRIPT .... 90.84.144.9 fetchList(Referencable,name, , , 1)
+2013-07-30 15:34:19 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php
+2013-07-30 15:35:22 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php
+2013-07-30 15:36:24 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php
+2013-07-30 15:37:27 ..... SCRIPT .... 90.84.144.9 Page=checkAlertToDisplay.php

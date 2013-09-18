@@ -1,0 +1,338 @@
+{"identifier":"id", 
+"items":[{"id":"1","idproject":"1","reftype":"Project","refid":"1","refname":"RGV 
+Maroc - Projet","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":"2013-04-17","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":"2013-11-05","realenddate":" 
+","initialduration":" ","validatedduration":" 
+","plannedduration":"145","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"5.00000","realwork":"0.00000","wbs":"1","wbssortable":"001","topid":" 
+","topreftype":" ","toprefid":" 
+","priority":"500","idle":"0","elementary":"0","leftwork":"5.00000","assignedwork":"5.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"5 j","realworkdisplay":"0 j","leftworkdisplay":"5 
+j","plannedworkdisplay":"5 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"2","idproject":"1","reftype":"Activity","refid":"1","refname":"ESSAI 
+DE TYPE BOGIE MOTEUR","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.1","wbssortable":"001.001","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LVE", 
+"depend":""},{"id":"13","idproject":"1","reftype":"Activity","refid":"10","refname":"CAMPAGNE 
+ESSAI BELLEVUE","initialstartdate":"2013-11-04","validatedstartdate":" 
+","plannedstartdate":"2013-11-01","realstartdate":" 
+","initialenddate":"2014-01-31","validatedenddate":" 
+","plannedenddate":"2013-11-05","realenddate":" 
+","initialduration":"65","validatedduration":" 
+","plannedduration":"3","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"3.00000","realwork":"0.00000","wbs":"1.5","wbssortable":"001.005","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"0","leftwork":"3.00000","assignedwork":"3.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"3 j","realworkdisplay":"0 j","leftworkdisplay":"3 
+j","plannedworkdisplay":"3 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"", 
+"depend":""},{"id":"33","idproject":"1","reftype":"Activity","refid":"26","refname":"OT 
+302","initialstartdate":"2013-11-01","validatedstartdate":"2013-11-01","plannedstartdate":"2013-11-01","realstartdate":" 
+","initialenddate":"2013-11-05","validatedenddate":"2013-11-05","plannedenddate":"2013-11-05","realenddate":" 
+","initialduration":"3","validatedduration":"3","plannedduration":"3","realduration":" 
+","initialwork":"0.00000","validatedwork":"3.00000","plannedwork":"3.00000","realwork":"0.00000","wbs":"1.5.12","wbssortable":"001.005.012","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"3.00000","assignedwork":"3.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"3 
+j","assignedworkdisplay":"3 j","realworkdisplay":"0 j","leftworkdisplay":"3 
+j","plannedworkdisplay":"3 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"40","idproject":"1","reftype":"Activity","refid":"27","refname":"OT 
+101","initialstartdate":" ","validatedstartdate":" ","plannedstartdate":" 
+","realstartdate":" ","initialenddate":" ","validatedenddate":" 
+","plannedenddate":" ","realenddate":" ","initialduration":" 
+","validatedduration":" ","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.13","wbssortable":"001.005.013","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"42","idproject":"1","reftype":"Activity","refid":"29","refname":"OT303","initialstartdate":" 
+","validatedstartdate":" ","plannedstartdate":" ","realstartdate":" 
+","initialenddate":" ","validatedenddate":" ","plannedenddate":" 
+","realenddate":" ","initialduration":" ","validatedduration":" 
+","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.14","wbssortable":"001.005.014","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"43","idproject":"1","reftype":"Activity","refid":"30","refname":"OT305","initialstartdate":" 
+","validatedstartdate":" ","plannedstartdate":" ","realstartdate":" 
+","initialenddate":" ","validatedenddate":" ","plannedenddate":" 
+","realenddate":" ","initialduration":" ","validatedduration":" 
+","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.15","wbssortable":"001.005.015","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"44","idproject":"1","reftype":"Activity","refid":"31","refname":"OT309","initialstartdate":" 
+","validatedstartdate":" ","plannedstartdate":" ","realstartdate":" 
+","initialenddate":" ","validatedenddate":" ","plannedenddate":" 
+","realenddate":" ","initialduration":" ","validatedduration":" 
+","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.16","wbssortable":"001.005.016","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"45","idproject":"1","reftype":"Activity","refid":"32","refname":"OT311","initialstartdate":" 
+","validatedstartdate":" ","plannedstartdate":" ","realstartdate":" 
+","initialenddate":" ","validatedenddate":" ","plannedenddate":" 
+","realenddate":" ","initialduration":" ","validatedduration":" 
+","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.17","wbssortable":"001.005.017","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"46","idproject":"1","reftype":"Activity","refid":"33","refname":"OT312","initialstartdate":" 
+","validatedstartdate":" ","plannedstartdate":" ","realstartdate":" 
+","initialenddate":" ","validatedenddate":" ","plannedenddate":" 
+","realenddate":" ","initialduration":" ","validatedduration":" 
+","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.18","wbssortable":"001.005.018","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"47","idproject":"1","reftype":"Activity","refid":"34","refname":"OT320","initialstartdate":" 
+","validatedstartdate":" ","plannedstartdate":" ","realstartdate":" 
+","initialenddate":" ","validatedenddate":" ","plannedenddate":" 
+","realenddate":" ","initialduration":" ","validatedduration":" 
+","plannedduration":" ","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.5.19","wbssortable":"001.005.019","topid":"13","topreftype":"Activity","toprefid":"10","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"JDM", 
+"depend":""},{"id":"23","idproject":"1","reftype":"Activity","refid":"17","refname":"CAMPAGNE 
+TEST REMORQUES","initialstartdate":"2013-04-18","validatedstartdate":" 
+","plannedstartdate":"2013-04-17","realstartdate":" 
+","initialenddate":"2013-09-30","validatedenddate":" 
+","plannedenddate":"2013-05-28","realenddate":" 
+","initialduration":"118","validatedduration":" 
+","plannedduration":"30","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"2.00000","realwork":"0.00000","wbs":"1.11","wbssortable":"001.011","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"0","leftwork":"2.00000","assignedwork":"2.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"2 j","realworkdisplay":"0 j","leftworkdisplay":"2 
+j","plannedworkdisplay":"2 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LVE", 
+"depend":""},{"id":"5","idproject":"1","reftype":"Activity","refid":"3","refname":"SESSION 
+VALIDATION 1R3","initialstartdate":"2013-04-18","validatedstartdate":" 
+","plannedstartdate":"2013-04-17","realstartdate":" 
+","initialenddate":"2013-06-10","validatedenddate":" 
+","plannedenddate":"2013-05-28","realenddate":" 
+","initialduration":"38","validatedduration":" 
+","plannedduration":"30","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"2.00000","realwork":"0.00000","wbs":"1.11.1","wbssortable":"001.011.001","topid":"23","topreftype":"Activity","toprefid":"17","priority":"500","idle":"0","elementary":"0","leftwork":"2.00000","assignedwork":"2.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"2 j","realworkdisplay":"0 j","leftworkdisplay":"2 
+j","plannedworkdisplay":"2 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LVE", 
+"depend":""},{"id":"4","idproject":"1","reftype":"Activity","refid":"2","refname":"ESSAI 
+AERAULIQUE 1R3","initialstartdate":"2013-04-18","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" 
+","initialenddate":"2013-04-29","validatedenddate":" ","plannedenddate":" 
+","realenddate":" 
+","initialduration":"8","validatedduration":"1","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.11.1.1","wbssortable":"001.011.001.001","topid":"5","topreftype":"Activity","toprefid":"3","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"RCA", 
+"depend":""},{"id":"6","idproject":"1","reftype":"Activity","refid":"4","refname":"ESSAIS 
+MISE AU POINT CONFORT 
+1R3","initialstartdate":"2013-04-30","validatedstartdate":"2013-04-30","plannedstartdate":"2013-04-30","realstartdate":" 
+","initialenddate":"2013-05-07","validatedenddate":"2013-05-07","plannedenddate":"2013-05-07","realenddate":" 
+","initialduration":"6","validatedduration":"6","plannedduration":"6","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.11.1.2","wbssortable":"001.011.001.002","topid":"5","topreftype":"Activity","toprefid":"3","priority":"500","idle":"0","elementary":"0","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" 
+","validatedcost":"97000.00","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LAB-LRH", 
+"depend":""},{"id":"11","idproject":"1","reftype":"Activity","refid":"8","refname":"INSTRUMENTATION 
+ESSAIS CONFORT","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.11.1.2.1","wbssortable":"001.011.001.002.001","topid":"6","topreftype":"Activity","toprefid":"4","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"RCA", 
+"depend":""},{"id":"7","idproject":"1","reftype":"Activity","refid":"5","refname":"ESSAIS 
+DE TYPE CONFORT 
+1R3","initialstartdate":"2013-05-07","validatedstartdate":"2013-05-07","plannedstartdate":"2013-05-07","realstartdate":" 
+","initialenddate":"2013-05-14","validatedenddate":"2013-05-14","plannedenddate":"2013-05-14","realenddate":" 
+","initialduration":"6","validatedduration":"6","plannedduration":"6","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.11.1.3","wbssortable":"001.011.001.003","topid":"5","topreftype":"Activity","toprefid":"3","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LAB-LRH", 
+"depend":""},{"id":"8","idproject":"1","reftype":"Activity","refid":"6","refname":"ESSAIS 
+MISE AU POINT DETECTION 
+FLUIDE","initialstartdate":"2013-05-15","validatedstartdate":"2013-05-15","plannedstartdate":"2013-05-15","realstartdate":" 
+","initialenddate":"2013-05-21","validatedenddate":"2013-05-21","plannedenddate":"2013-05-21","realenddate":" 
+","initialduration":"5","validatedduration":"5","plannedduration":"5","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.11.1.4","wbssortable":"001.011.001.004","topid":"5","topreftype":"Activity","toprefid":"3","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LAB-LRH", 
+"depend":""},{"id":"9","idproject":"1","reftype":"Activity","refid":"7","refname":"ESSAI 
+DE TYPE DETECTION DE 
+FLUIDE","initialstartdate":"2013-05-22","validatedstartdate":"2013-05-22","plannedstartdate":"2013-05-22","realstartdate":" 
+","initialenddate":"2013-05-28","validatedenddate":"2013-05-28","plannedenddate":"2013-05-28","realenddate":" 
+","initialduration":"5","validatedduration":"5","plannedduration":"5","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.11.1.5","wbssortable":"001.011.001.005","topid":"5","topreftype":"Activity","toprefid":"3","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"LAB-LRH, RCA", 
+"depend":""},{"id":"32","idproject":"7","reftype":"Project","refid":"7","refname":"RGV 
+Maroc - TRT","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.12","wbssortable":"001.012","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":" ","realcost":" ","leftcost":" ","plannedcost":" ","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"34","idproject":"8","reftype":"Project","refid":"8","refname":"RGV 
+Maroc - FLO","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.13","wbssortable":"001.013","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"0","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"41","idproject":"8","reftype":"Activity","refid":"28","refname":"CAMPAGNE 
+ESSAI BELFORT","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.13.1","wbssortable":"001.013.001","topid":"34","topreftype":"Project","toprefid":"8","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":"1","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":"0.00","realcost":"0.00","leftcost":"0.00","plannedcost":"0.00","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":"dés que 
+possible","collapsed":"0","resource":"PHE", 
+"depend":""},{"id":"35","idproject":"9","reftype":"Project","refid":"9","refname":"RGV 
+Maroc - FBO","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.14","wbssortable":"001.014","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":" ","realcost":" ","leftcost":" ","plannedcost":" ","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"36","idproject":"10","reftype":"Project","refid":"10","refname":"RGV 
+Maroc - CRL","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.15","wbssortable":"001.015","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":" ","realcost":" ","leftcost":" ","plannedcost":" ","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"37","idproject":"11","reftype":"Project","refid":"11","refname":"RGV 
+Maroc - LES","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.16","wbssortable":"001.016","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":" ","realcost":" ","leftcost":" ","plannedcost":" ","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"38","idproject":"12","reftype":"Project","refid":"12","refname":"RGV 
+Maroc - TC-IS","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.17","wbssortable":"001.017","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":" ","realcost":" ","leftcost":" ","plannedcost":" ","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""},{"id":"39","idproject":"13","reftype":"Project","refid":"13","refname":"RGV 
+Maroc - LRH Tronçon","initialstartdate":" ","validatedstartdate":" 
+","plannedstartdate":" ","realstartdate":" ","initialenddate":" 
+","validatedenddate":" ","plannedenddate":" ","realenddate":" 
+","initialduration":" ","validatedduration":" ","plannedduration":" 
+","realduration":" 
+","initialwork":"0.00000","validatedwork":"0.00000","plannedwork":"0.00000","realwork":"0.00000","wbs":"1.18","wbssortable":"001.018","topid":"1","topreftype":"Project","toprefid":"1","priority":"500","idle":"0","elementary":"1","leftwork":"0.00000","assignedwork":"0.00000","dependencylevel":" 
+","idplanningmode":" ","done":"0","initialcost":" ","validatedcost":" 
+","assignedcost":" ","realcost":" ","leftcost":" ","plannedcost":" ","idbill":" 
+","progress":"0","expectedprogress":"0","validatedworkdisplay":"0 
+j","assignedworkdisplay":"0 j","realworkdisplay":"0 j","leftworkdisplay":"0 
+j","plannedworkdisplay":"0 j","planningmode":" ","collapsed":"0","resource":"", 
+"depend":""} ] }
