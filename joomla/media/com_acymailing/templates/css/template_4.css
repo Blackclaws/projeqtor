@@ -1,0 +1,11 @@
+body{background-color:#ececec} 
+h1 { margin-bottom:0;margin-top:0;font-family: Verdana, Arial, Helvetica, sans-serif;font-size:30px;color:#545281;vertical-align:middle; } 
+h2 { color:#8a8a8a !important;font-weight:normal;font-size:16px;margin:0;border-bottom:5px solid #545281 } 
+h3 { color:#8a8a8a !important;font-weight:normal;font-size:100%;margin:0; } 
+.acymailing_unsub {font-weight:bold;color:#000000;} 
+.acymailing_content {clear:both;text-align:justify;font-family: Verdana, Arial, Helvetica, sans-serif;font-size:12px;line-height:14px;margin-top:10px;} 
+.acymailing_title {color:#8a8a8a;font-weight:normal;font-size:14px;margin:0;border-bottom:5px solid #545281} 
+.acymailing_readmore {color:#545281;} 
+.acymailing_online {font-weight:bold;color:#000000;} 
+a img{ border:0px; text-decoration:none;} 
+div,table{font-family: Verdana, Arial, Helvetica, sans-serif; font-size:12px;}
