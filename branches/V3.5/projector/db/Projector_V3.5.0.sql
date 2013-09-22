@@ -116,3 +116,6 @@ ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DE
 
 UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;
 UPDATE `${prefix}project` SET cancelled=1 WHERE idStatus=9;
+
+INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
+(17, 'Activity', 'PlanningModeGROUP', 'GROUP', 150, 0 , 0, 0);
