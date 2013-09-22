@@ -231,7 +231,13 @@ if ($currVersion<"V3.3.0" and $currVersion!='V0.0.0') {
     $ss->save();
   }
 }
-
+if ($currVersion<"V4.0.0") {
+	$files = glob('../db/Projector_*.sql'); // get all file names
+	foreach($files as $file){ // iterate files
+	  if(is_file($file))
+	    unlink($file); // delete file
+	}
+}
 $tstTable=new TodayParameter();
 $tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
 if (! $tst or count($tst)==0) {
