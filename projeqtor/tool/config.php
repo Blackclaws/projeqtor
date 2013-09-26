@@ -386,16 +386,16 @@ $ctrls['billCode'] = '>=0';
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">
     <tr height="10%">
-      <td rowspan="2" width="10px" valign="top">
-        <img src="img/logoFull.gif" />
+      <td rowspan="2" width="80px" valign="top">
       </td>
       <td width="10px" valign="top">
-        <img src="img/titleFull.gif" />
+        <img style="height: 54px" src="img/title.gif" />
       </td>
       <td>
-        <h1>Configuration</h1>
+        <div class="siteH1" >Configuration</div>
         <br/>
-        This screen will help you configure Project'Or RIA at first run.
+        <div class="siteH2">This screen will help you configure Project'Or RIA at first run.</div>
+        <br/>
       </td>
     </tr>
     <tr height="90%">

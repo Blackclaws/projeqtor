@@ -150,7 +150,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       dojo.connect(document, "onkeypress", this, onKeyPressFunc);
       <?php 
       $firstPage="welcome.php";
-      if ( securityCheckDisplayMenu(1) ) {
+      if (securityCheckDisplayMenu(1) ) {
       	$firstPage="today.php";
       }
       if (array_key_exists("directAccessPage",$_REQUEST)) {
@@ -307,7 +307,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             $zoom=round($width/300*100, 0);  
           ?>
           <div id="logoTitleDiv" 
-               <?php if (file_exists("../logo.gif")) echo 'style="background-image: url(../logo.gif);"'; ?> 
+               style="background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleWhite.gif';?>);" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
           <div style="position:absolute; right:0;" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
