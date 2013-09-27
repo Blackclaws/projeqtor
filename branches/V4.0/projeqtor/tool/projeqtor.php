@@ -54,11 +54,11 @@ setupLocale();                // Set up the locale : must be called before any c
 $paramIconSize=setupIconSize();              // 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
 // === Application data : version, dependencies, about message, ...
-$applicationName="Project'Or RIA"; // Name of the application
+$applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
 $version="V3.5.0";            // Version of application : Major / Minor / Release
 $build="0084";                // Build number. To be increased on each release
-$website="http://projectorria.toolware.fr"; // ProjectOr site url
+$website="http://projeqtor.org"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
 $aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a href=\'' . $website . '\'>' . $website . '</a></div><br/>';

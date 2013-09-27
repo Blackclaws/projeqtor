@@ -2700,7 +2700,7 @@ saveAttachementAck(dataArray);
 
 <?php }?> <?php
   }
-  if (isset($obj->_BillLine)) { ?> <br />
+  if ( ! $noselect and isset($obj->_BillLine)) { ?> <br />
   <?php if ($print) {?>
 <table width="<?php echo $printWidth;?>px;">
   <tr>

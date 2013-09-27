@@ -43,8 +43,15 @@ foreach ($billList as $bill)
 	$first=false;
 	echo '<table style="width: 100%;"><tr><td style="width: 50%;">';
   // LOGO
+  $uri=$_SERVER['REQUEST_URI'];
+  $uri=substr($uri,0,strpos($uri,'/report/'));
   echo '<div style="position: relative; top: 0em; left: 1em; width: 20em; height: 5em;">';
-    echo '<img style="width:20em; height:5em" src="http://projectorria.toolware.fr/track/view/img/logo.png" />';
+    if (file_exists("../logo.gif")) {
+      $uri.='/view/logo.gif';	
+    } else {
+      $uri.='/view/img/title.gif';
+    }
+  echo '<img style="height:5em" src="' . $uri . '" />';
   echo '</div>';
 	// RECIPIENT ADDRESS
 	echo '<div style="position: relative; top: 1em; left: 1em; width: 20em; height: 10em;font-size: 12px">';

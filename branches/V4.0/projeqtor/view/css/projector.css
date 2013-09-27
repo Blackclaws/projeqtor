@@ -1633,7 +1633,10 @@ label, .label {
 .ProjectOrRiaContrasted .titleProject {
  color: #ececec;  
 }
-
+.ProjectOrRiaContrasted .dijitTitlePane .dijitTitlePaneTitle {
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
 .ProjectOrRiaContrasted #mainDiv {
     /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
@@ -1682,6 +1685,10 @@ label, .label {
 
 .ProjectOrRiaLight .titleProject {
  color: #545281;  
+}
+.ProjectOrRiaLight .dijitTitlePane .dijitTitlePaneTitle {
+  -moz-border-radius: 7px;
+  border-radius: 7px;
 }
 .ProjectOrRiaLight #mainDiv {
     /*scrollbar-face-color: #ececec;
@@ -1770,4 +1777,9 @@ label, .label {
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
     scrollbar-arrow-color: #545281;*/
+}
+
+.dijitTitlePane .dijitTitlePaneTitle {
+  -moz-border-radius: 7px;
+  border-radius: 7px;
 }
