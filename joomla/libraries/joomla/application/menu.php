@@ -257,7 +257,7 @@ class JMenu extends JObject
 				}
 				else
 				{
-					if ($item->$attributes[$i] != $values[$i])
+					if (isset($item->$attributes[$i]) and $item->$attributes[$i] != $values[$i])
 					{
 						$test = false;
 						break;
