@@ -133,7 +133,9 @@ class PlannedWork extends GeneralWork {
     $order="wbsSortable asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
     $fullListPlan=PlanningElement::initializeFullList($list);
-    $listPlan=self::sortPlanningElements($fullListPlan);
+    $listProjectsPriority=$fullListPlan['_listProjectsPriority'];
+    unset($fullListPlan['_listProjectsPriority']);
+    $listPlan=self::sortPlanningElements($fullListPlan, $listProjectsPriority);
     $resources=array();
     $a=new Assignment();
     $topList=array();
@@ -573,7 +575,7 @@ class PlannedWork extends GeneralWork {
     return $result;
   }*/
   
-  private static function sortPlanningElements($list) {
+  private static function sortPlanningElements($list,$listProjectsPriority) {
   	// first sort on simple criterias
     foreach ($list as $id=>$elt) {
     	if ($elt->idPlanningMode=='16') {
@@ -585,8 +587,13 @@ class PlannedWork extends GeneralWork {
     	}
       $crit.='.';
       $prio=$elt->priority;
+      if (isset($listProjectsPriority[$elt->idProject])) {
+        $projPrio=$listProjectsPriority[$elt->idProject];
+      } else { 
+      	$projPrio=500;
+      }
       if (! $elt->leftWork or $elt->leftWork==0) {$prio=0;}
-      $crit.=str_pad($prio,5,'0',STR_PAD_LEFT).'.'.$elt->wbsSortable;
+      $crit.=str_pad($projPrio,5,'0',STR_PAD_LEFT).'.'.str_pad($prio,5,'0',STR_PAD_LEFT).'.'.$elt->wbsSortable;
       $elt->_sortCriteria=$crit;
       $list[$id]=$elt;
     }
