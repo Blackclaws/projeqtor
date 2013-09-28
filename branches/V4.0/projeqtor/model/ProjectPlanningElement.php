@@ -16,48 +16,46 @@ class ProjectPlanningElement extends PlanningElement {
   public $plannedStartDate;
   public $realStartDate;
   public $_void_15;
-  public $_label_wbs;
-  public $wbs;
+  public $_label_priority;
+  public $priority;
   public $initialEndDate;
   public $validatedEndDate;
   public $_void_23;
   public $plannedEndDate;
   public $realEndDate;
   public $_void_25;
-  public $_label_progress;
-  public $progress;
+  public $_void_26;
+  public $_void_27;
   public $initialDuration;
   public $validatedDuration;
   public $_void_33;
   public $plannedDuration;
   public $realDuration;
   public $_void_35;
-  public $_label_expected;
-  public $expectedProgress;
-  public $_void_36;
+  public $_label_wbs;
+  public $wbs;
+  public $_void_41;
   public $validatedWork;
   public $assignedWork;
   public $plannedWork;
   public $realWork;
   public $leftWork;
-  public $_void_46;
-  public $_void_47;
+  public $_label_progress;
+  public $progress;
   public $_void_51;
   public $validatedCost;
   public $assignedCost;
   public $plannedCost;
   public $realCost;
   public $leftCost;
-  public $_void_56;
-  public $_void_57;
+  public $_label_expected;
+  public $expectedProgress;
   public $wbsSortable;
   public $topId;
   public $topRefType;
   public $topRefId;
-  public $priority;
   public $idle;
   private static $_fieldsAttributes=array(
-    "priority"=>"hidden,noImport",
     "plannedStartDate"=>"readonly,noImport",
     "realStartDate"=>"readonly,noImport",
     "plannedEndDate"=>"readonly,noImport",

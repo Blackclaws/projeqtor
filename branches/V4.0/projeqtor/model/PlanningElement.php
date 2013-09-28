@@ -802,9 +802,12 @@ class PlanningElement extends SqlElement {
     $idList=array();
     // $list must be sorted on WBS !
     $result=$list;
-    
+    $listProjectsPriority=array();
     // Parents
     foreach ($list as $id=>$pe) {
+    	if ($pe->refType=='Project') {		
+    		$listProjectsPriority[$pe->refId]=$pe->priority;
+    	}
       $idList[$pe->id]=$pe->id;
       $pe->_parentList=array();
       $pe->_childList=array();
@@ -896,6 +899,7 @@ class PlanningElement extends SqlElement {
       }
       $result[$id]=$pe;
     }
+    $result['_listProjectsPriority']=$listProjectsPriority;
     return $result;
   }
   
@@ -963,6 +967,7 @@ class PlanningElement extends SqlElement {
     return 0;
   }*/
   
+  /* not used anymore
   static function comparePlanningElementSimpleOld($a, $b) {
     if ($a->idPlanningMode=='16' and $b->idPlanningMode!='16') { 	
       return -1;
@@ -993,10 +998,8 @@ class PlanningElement extends SqlElement {
       return +1;
     }
     return 0;       
-  }
+  }*/
   static function comparePlanningElementSimple($a, $b) {
-    // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
-    
     if ($a->_sortCriteria<$b->_sortCriteria) {
       return -1;
     }
