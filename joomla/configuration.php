@@ -30,7 +30,7 @@ class JConfig {
 	public $mailer = 'mail';
 	public $mailfrom = 'support@toolware.fr';
 	public $fromname = 'Project';
-	public $sendmail = '';
+	public $sendmail = '/usr/sbin/sendmail';
 	public $smtpauth = '0';
 	public $smtpuser = 'babynus';
 	public $smtppass = 'Looping31!';
@@ -49,8 +49,8 @@ class JConfig {
 	public $sef_suffix = '0';
 	public $unicodeslugs = '1';
 	public $feed_limit = '10';
-	public $log_path = 'G:\www\joomla\logs';
-	public $tmp_path = 'G:\www\joomla\tmp';
+	public $log_path = 'G:\\www\\joomla\\logs';
+	public $tmp_path = 'G:\\www\\joomla\\tmp';
 	public $lifetime = '65';
 	public $session_handler = 'database';
 	public $MetaRights = '';
