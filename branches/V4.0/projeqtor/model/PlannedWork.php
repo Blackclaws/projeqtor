@@ -93,6 +93,10 @@ class PlannedWork extends GeneralWork {
   	set_time_limit(300);
   	ini_set('memory_limit', '512M');
 
+  	// Manage cache
+  	SqlElement::$_cachedQuery['Resource']=array();
+  	SqlElement::$_cachedQuery['Project']=array();
+  	
     $withProjectRepartition=true;
     $result="";
     $startTime=time();
@@ -172,7 +176,7 @@ class PlannedWork extends GeneralWork {
       	  $startPlan=$plan->validatedStartDate;
       	}
         $step=1;
-      } else if ($profile=="ASAP") { // As soon as possible
+      } else if ($profile=="ASAP" or $profile=="GROUP") { // As soon as possible
         $startPlan=$plan->validatedStartDate;
         $endPlan=null;
         $step=1;
@@ -283,8 +287,45 @@ class PlannedWork extends GeneralWork {
           $listTopProjects=$proj->getTopProjectList(true);
         }
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
-        $listAss=$a->getSqlElementsFromCriteria($crit,false);        
+        $listAss=$a->getSqlElementsFromCriteria($crit,false);
+        $groupAss=array();
+        $groupMaxLeft=0;
+        $groupMinLeft=99999;
+debugLog($plan->refName."   Profile=$profile");        
+       
+        if ($profile=='GROUP') {
+        	foreach ($listAss as $ass) {
+	        	$r=new Resource($ass->idResource);
+	          $capacity=($r->capacity)?$r->capacity:1;
+	          if (array_key_exists($ass->idResource,$resources)) {
+	            $ress=$resources[$ass->idResource];
+	          } else {
+	            $ress=$r->getWork($startDate, $withProjectRepartition);        
+	            $resources[$ass->idResource]=$ress;
+	          }
+	        	$assRate=1;
+	          if ($ass->rate) {
+	            $assRate=$ass->rate / 100;
+	          }
+	          if ($ass->leftWork>$groupMaxLeft) $groupMaxLeft=$ass->leftWork;
+	          if ($ass->leftWork<$groupMinLeft) $groupMinLeft=$ass->leftWork;
+	          if (! isset($groupAss[$ass->idResource]) ) {
+		          $groupAss[$ass->idResource]=array();
+	            $groupAss[$ass->idResource]['leftWork']=$ass->leftWork;
+	            //$groupAss[$ass->idResource]['TogetherWork']=array();
+		          $groupAss[$ass->idResource]['capacity']=$capacity;
+		          $groupAss[$ass->idResource]['ResourceWork']=$ress;
+	            $groupAss[$ass->idResource]['assRate']=$assRate;	          
+	          } else {
+	          	$groupAss[$ass->idResource]['leftWork']+=$ass->leftWork;
+	          	$assRate=$groupAss[$ass->idResource]['assRate']+$assRate;
+	          	if ($assRate>1) $assRate=1;
+	          	$groupAss[$ass->idResource]['assRate']=$assRate;
+	          }
+        	}
+        }   
         foreach ($listAss as $ass) {
+debugLog("   Ass #$ass->id for Ress #$ass->idResource");
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -323,7 +364,7 @@ class PlannedWork extends GeneralWork {
           $capacityRate=round($assRate*$capacity,2);
           $left=$ass->leftWork;
           $regul=false;
-          if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile="FDUR") {
+          if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile=="FDUR") {
           	$delaiTh=workDayDiffDates($currentDate,$endPlan);
           	if ($delaiTh and $delaiTh>0) { 
               $regulTh=round($ass->leftWork/$delaiTh,10);
@@ -356,9 +397,10 @@ class PlannedWork extends GeneralWork {
             }
             // Set limits to avoid eternal loop
             if ($currentDate==$globalMaxDate) { break; }         
-            if ($currentDate==$globalMinDate) { break; }
+            if ($currentDate==$globalMinDate) { break; } 
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
             if (isOpenDay($currentDate)) {
+debugLog("      $currentDate");                  	
               $planned=0;
               $week=weekFormat($currentDate);
               if (array_key_exists($currentDate, $ress)) {
@@ -394,7 +436,7 @@ class PlannedWork extends GeneralWork {
                     }
                   }
                 }
-                $value=($value>$left)?$left:$value; 
+                $value=($value>$left)?$left:$value;              
                 if ($regul) {
                 	$tmpTarget=$regul;
                   $tempCapacity=$capacityRate;
@@ -423,6 +465,35 @@ class PlannedWork extends GeneralWork {
                   }
                   $regulDone+=$value;
                 }
+debugLog("         value before=$value");
+                if ($profile=='GROUP') {
+                	foreach($groupAss as $id=>$grp) {
+                		$grpCapacity=$grp['capacity']*$grp['assRate'];
+debugLog("         Resource #$id capacity=$grpCapacity");                		
+                		if (isset($grp['ResourceWork'][$currentDate])) {
+                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
+debugLog("           - new capacity=$grpCapacity");                                   			
+                		}
+                		/*if (isset($grp['TogetherWork'][$currentDate])) {
+                			$grpCapacity+=$grp['TogetherWork'][$currentDate];
+debugLog("           + new capacity=$grpCapacity");                    			
+                		}*/
+                		if ($value>$grpCapacity) {
+                			$value=$grpCapacity;
+                		}
+                	}
+                	/*if (isset($groupAss[$ass->idResource]['ResourceWork'][$currentDate])) {
+                	  $groupAss[$ass->idResource]['ResourceWork'][$currentDate]+=$value;
+                	} else {
+                		$groupAss[$ass->idResource]['ResourceWork'][$currentDate]=$value;
+                	}
+                	if (isset($groupAss[$ass->idResource]['TogetherWork'][$currentDate])) {
+                    $groupAss[$ass->idResource]['TogetherWork'][$currentDate]+=$value;
+                  } else {
+                    $groupAss[$ass->idResource][$currentDate]=$value;
+                  }*/
+                }
+debugLog("         value after=$value");                
                 if ($value>=0.01) {             
                   $plannedWork=new PlannedWork();
                   $plannedWork->idResource=$ass->idResource;

@@ -43,13 +43,13 @@ $value['DbPassword'] = "password for user (default is 'mysql' or '' for MySql)";
 $pname['DbPassword'] = 'paramDbPassword';
 $ctrls['DbPassword'] = '';
 
-$param['DbName'] = 'projectorria';                       
+$param['DbName'] = 'projeqtor';                       
 $label['DbName'] = "Database schema name";  
 $value['DbName'] = "database instance name";  
 $pname['DbName'] = 'paramDbName';
 $ctrls['DbName'] = 'mandatory';
 
-$param['DbDisplayName'] = 'My Own Project\'Or RIA';         
+$param['DbDisplayName'] = 'My Own ProjeQtOr';         
 $label['DbDisplayName'] = "Name to be displayed"; 
 $value['DbDisplayName'] = "any value possible to identify connected database"; 
 $pname['DbDisplayName'] = 'paramDbDisplayName';
@@ -66,7 +66,7 @@ $label['crlf00']='crlf';
 
 $param['ldap_allow_login'] = 'false';                              
 $label['ldap_allow_login'] = "Allow login from Ldap";
-$value['ldap_allow_login'] = "'true' or 'false', if set to true, Projectorria can log user from Ldap";
+$value['ldap_allow_login'] = "'true' or 'false', if set to true, ProjeQtO can log user from Ldap";
 $pname['ldap_allow_login'] = 'paramLdap_allow_login';
 $ctrls['ldap_allow_login'] = '=false=true=';
 
@@ -151,37 +151,10 @@ $value['MailSendmailPath'] = "to set only on issue to send mails, or not using d
 $pname['MailSendmailPath'] = 'paramMailSendmailPath';
 $ctrls['MailSendmailPath'] = '';
 
-/*
-$param['crlf02']='';
-$label['crlf02']='crlf';
-
-$param['MailTitle'] = '[Project\'Or RIA] ${item} #${id} moved to status ${status}';                              
-$label['MailTitle'] = "Automatic mail title";
-$value['MailTitle'] = 'title of automatic mails, may content ${item}, ${id}, ${status}, ${name}';
-$pname['MailTitle'] = 'paramMailTitle';
-$ctrls['MailTitle'] = '';
-
-$param['MailMessage'] = 'The status of ${item} #${id} [${name}] has changed to ${status}';                              
-$label['MailMessage'] = "Automatic mail message";
-$value['MailMessage'] = 'message of automatic mails, may content ${item}, ${id}, ${status}, ${name}';
-// ${id} : the id of the element
-// ${item} : the class of the element
-// ${status} : the new status of the element
-// ${name} : the name of the element
-$pname['MailMessage'] = 'paramMailMessage';
-$ctrls['MailMessage'] = '';
-
-$param['MailShowDetail'] = 'true';                              
-$label['MailShowDetail'] = "Automatic mail show detail";
-$value['MailShowDetail'] = "'true' or 'false', set to true to add detail of item in automatic mail message";
-$pname['MailShowDetail'] = 'paramMailShowDetail';
-$ctrls['MailShowDetail'] = '=false=true=';
-*/
-
 $param['crlf03']='';
 $label['crlf03']='crlf';
 
-$param['DefaultPassword'] = 'projector';                              
+$param['DefaultPassword'] = 'projeqtor';                              
 $label['DefaultPassword'] = "Default password for initialization";
 $value['DefaultPassword'] = "any string possible as default password";
 $pname['DefaultPassword'] = 'paramDefaultPassword';
@@ -192,14 +165,6 @@ $label['PasswordMinLength'] = "Min length for password";
 $value['PasswordMinLength'] = "any integer, to force a long password (keep is reasonable)";
 $pname['PasswordMinLength'] = 'paramPasswordMinLength';
 $ctrls['PasswordMinLength'] = 'integer';
-
-/*
-$param['lockPassword'] = 'false';                              
-$label['lockPassword'] = "Disable password change functionality";
-$value['lockPassword'] = "'true' or 'false', if set to true, only admin can reset password)";
-$pname['lockPassword'] = 'lockPassword';
-$ctrls['lockPassword'] = '=false=true=';
-*/
 
 $param['crlf04']='';
 $label['crlf04']='crlf';
@@ -307,7 +272,7 @@ $ctrls['MemoryLimitForPDF'] = '';
 $param['crlf09']='';
 $label['crlf09']='crlf';
 
-$param['logFile'] = '../files/logs/projector_${date}.log';                              
+$param['logFile'] = '../files/logs/projeqtor_${date}.log';                              
 $label['logFile'] = "Log file name";
 $value['logFile'] = 'any valid file name, may contain \'${date}\' to get 1 file a day';
 $pname['logFile'] = 'logFile';
@@ -319,20 +284,6 @@ $value['logLevel'] = "'4' for script tracing, '3' for debug, '2' for general tra
 $pname['logLevel'] = 'logLevel';
 $ctrls['logLevel'] = '=4=3=2=1=0=';
 
-/*
-$param['DebugMode'] = 'false';                              
-$label['DebugMode'] = "Setup Dojo debugging mode ";
-$value['DebugMode'] = "'true' or 'false'";
-$pname['DebugMode'] = 'paramDebugMode';
-$ctrls['DebugMode'] = '=true=false=';
-*/
-/*
-$param['billCode'] = '0';                              
-$label['billCode'] = "initial bill code";
-$value['billCode'] = "a number";
-$pname['billCode'] = 'defaultBillCode';
-$ctrls['billCode'] = '>=0';
-*/
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">

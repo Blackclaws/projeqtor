@@ -9,13 +9,13 @@ $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin31!';
 //
 // Database
-$paramDbName='projeqtor_v35';$paramDbPrefix='';
+$paramDbName='projeqtor_v40';$paramDbPrefix='';
 //$paramDbName='sante'; $paramDbPrefix='';
 //$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
 //
 // Fixed
 $paramDbHost='127.0.0.1'; 
-$logFile='../files/logs/projector_${date}.log';
+$logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
 //$debugQuery=true;

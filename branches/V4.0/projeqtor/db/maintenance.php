@@ -71,7 +71,7 @@ traceLog("");
 traceLog("=====================================");
 traceLog("");
 traceLog("DataBase actual Version = " . $currVersion );
-traceLog("ProjectOR actual Version = " . $version );
+traceLog("ProjeQtOr actual Version = " . $version );
 traceLog("");
 if ($currVersion=="") {
   $currVersion='V0.0.0';
@@ -292,7 +292,7 @@ function runScript($vers) {
   traceLog("");
   traceLog("VERSION " . $vers);
   traceLog("");
-  $handle = @fopen("../db/Projector_" . $vers . ".sql", "r");
+  $handle = @fopen("../db/projeqtor_" . $vers . ".sql", "r");
   $query="";
   $nbError=0;
   if ($handle) {
