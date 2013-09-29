@@ -290,9 +290,7 @@ class PlannedWork extends GeneralWork {
         $listAss=$a->getSqlElementsFromCriteria($crit,false);
         $groupAss=array();
         $groupMaxLeft=0;
-        $groupMinLeft=99999;
-debugLog($plan->refName."   Profile=$profile");        
-       
+        $groupMinLeft=99999;           
         if ($profile=='GROUP') {
         	foreach ($listAss as $ass) {
 	        	$r=new Resource($ass->idResource);
@@ -325,7 +323,6 @@ debugLog($plan->refName."   Profile=$profile");
         	}
         }   
         foreach ($listAss as $ass) {
-debugLog("   Ass #$ass->id for Ress #$ass->idResource");
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -344,6 +341,11 @@ debugLog("   Ass #$ass->id for Ress #$ass->idResource");
               $step=1;
             }
           }
+          if ($profile=='GROUP') {
+            foreach($groupAss as $id=>$grp) {
+              $groupAss[$id]['leftWorkTmp']=$groupAss[$id]['leftWork'];	
+            }
+          }  
           $assRate=1;
           if ($ass->rate) {
             $assRate=$ass->rate / 100;
@@ -400,7 +402,6 @@ debugLog("   Ass #$ass->id for Ress #$ass->idResource");
             if ($currentDate==$globalMinDate) { break; } 
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
             if (isOpenDay($currentDate)) {
-debugLog("      $currentDate");                  	
               $planned=0;
               $week=weekFormat($currentDate);
               if (array_key_exists($currentDate, $ress)) {
@@ -465,35 +466,23 @@ debugLog("      $currentDate");
                   }
                   $regulDone+=$value;
                 }
-debugLog("         value before=$value");
                 if ($profile=='GROUP') {
                 	foreach($groupAss as $id=>$grp) {
-                		$grpCapacity=$grp['capacity']*$grp['assRate'];
-debugLog("         Resource #$id capacity=$grpCapacity");                		
-                		if (isset($grp['ResourceWork'][$currentDate])) {
-                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
-debugLog("           - new capacity=$grpCapacity");                                   			
+                		$grpCapacity=1;
+                		if ($grp['leftWorkTmp']>0) {
+	                		$grpCapacity=$grp['capacity']*$grp['assRate'];
+	                		if (isset($grp['ResourceWork'][$currentDate])) {
+	                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
+	                		}
                 		}
-                		/*if (isset($grp['TogetherWork'][$currentDate])) {
-                			$grpCapacity+=$grp['TogetherWork'][$currentDate];
-debugLog("           + new capacity=$grpCapacity");                    			
-                		}*/
                 		if ($value>$grpCapacity) {
                 			$value=$grpCapacity;
                 		}
                 	}
-                	/*if (isset($groupAss[$ass->idResource]['ResourceWork'][$currentDate])) {
-                	  $groupAss[$ass->idResource]['ResourceWork'][$currentDate]+=$value;
-                	} else {
-                		$groupAss[$ass->idResource]['ResourceWork'][$currentDate]=$value;
+                	foreach($groupAss as $id=>$grp) {
+                		$groupAss[$id]['leftWorkTmp']-=$value;
                 	}
-                	if (isset($groupAss[$ass->idResource]['TogetherWork'][$currentDate])) {
-                    $groupAss[$ass->idResource]['TogetherWork'][$currentDate]+=$value;
-                  } else {
-                    $groupAss[$ass->idResource][$currentDate]=$value;
-                  }*/
                 }
-debugLog("         value after=$value");                
                 if ($value>=0.01) {             
                   $plannedWork=new PlannedWork();
                   $plannedWork->idResource=$ass->idResource;
@@ -504,8 +493,6 @@ debugLog("         value after=$value");
                   $plannedWork->work=$value;
                   $plannedWork->setDates($currentDate);
                   $arrayPlannedWork[]=$plannedWork;
-                  // plannedWork is alway Left + Real, not to be updated
-                  //$ass->plannedWork+=$value;
                   if (! $ass->plannedStartDate or $ass->plannedStartDate>$currentDate) {
                     $ass->plannedStartDate=$currentDate;
                   }
