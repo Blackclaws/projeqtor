@@ -471,6 +471,7 @@ class PlannedWork extends GeneralWork {
                 		$grpCapacity=1;
                 		if ($grp['leftWorkTmp']>0) {
 	                		$grpCapacity=$grp['capacity']*$grp['assRate'];
+	                		
 	                		if (isset($grp['ResourceWork'][$currentDate])) {
 	                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
 	                		}
@@ -481,6 +482,7 @@ class PlannedWork extends GeneralWork {
                 	}
                 	foreach($groupAss as $id=>$grp) {
                 		$groupAss[$id]['leftWorkTmp']-=$value;
+                		//$groupAss[$id]['weekWorkTmp'][$week]+=$value;
                 	}
                 }
                 if ($value>=0.01) {             
