@@ -475,6 +475,10 @@ function htmlEncode($val,$context="default") {
   	$str=str_replace("'"," ",$val);
   	$str=str_replace('"'," ",$str);
   	return $str;
+  } else if ($context=='xml') {
+  	$str=$val;
+  	$str=str_replace("	"," ",$val);
+  	return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
