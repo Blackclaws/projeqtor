@@ -96,6 +96,7 @@ class PlannedWork extends GeneralWork {
   	// Manage cache
   	SqlElement::$_cachedQuery['Resource']=array();
   	SqlElement::$_cachedQuery['Project']=array();
+  	SqlElement::$_cachedQuery['Affectation']=array();
   	
     $withProjectRepartition=true;
     $result="";
@@ -289,8 +290,8 @@ class PlannedWork extends GeneralWork {
         $crit=array("refType"=>$plan->refType, "refId"=>$plan->refId);
         $listAss=$a->getSqlElementsFromCriteria($crit,false);
         $groupAss=array();
-        $groupMaxLeft=0;
-        $groupMinLeft=99999;           
+        //$groupMaxLeft=0;
+        //$groupMinLeft=99999;           
         if ($profile=='GROUP') {
         	foreach ($listAss as $ass) {
 	        	$r=new Resource($ass->idResource);
@@ -305,8 +306,8 @@ class PlannedWork extends GeneralWork {
 	          if ($ass->rate) {
 	            $assRate=$ass->rate / 100;
 	          }
-	          if ($ass->leftWork>$groupMaxLeft) $groupMaxLeft=$ass->leftWork;
-	          if ($ass->leftWork<$groupMinLeft) $groupMinLeft=$ass->leftWork;
+	          //if ($ass->leftWork>$groupMaxLeft) $groupMaxLeft=$ass->leftWork;
+	          //if ($ass->leftWork<$groupMinLeft) $groupMinLeft=$ass->leftWork;
 	          if (! isset($groupAss[$ass->idResource]) ) {
 		          $groupAss[$ass->idResource]=array();
 	            $groupAss[$ass->idResource]['leftWork']=$ass->leftWork;
@@ -320,9 +321,28 @@ class PlannedWork extends GeneralWork {
 	          	if ($assRate>1) $assRate=1;
 	          	$groupAss[$ass->idResource]['assRate']=$assRate;
 	          }
+        	  if ($withProjectRepartition) {
+              foreach ($listTopProjects as $idProject) {
+	              $projKey='Project#' . $idProject;
+	              if (! array_key_exists($projKey,$groupAss[$ass->idResource]['ResourceWork'])) {
+	                $groupAss[$ass->idResource]['ResourceWork'][$projKey]=array();
+	              }
+	              if (! array_key_exists('rate',$groupAss[$ass->idResource]['ResourceWork'][$projKey])) {
+	                $groupAss[$ass->idResource]['ResourceWork'][$projKey]['rate']=$r->getAffectationRate($idProject);
+	              }
+	              $groupAss[$ass->idResource]['ResourceWork']['init'.$projKey]=$groupAss[$ass->idResource]['ResourceWork'][$projKey];
+	            }
+	          }
         	}
         }   
         foreach ($listAss as $ass) {
+          if ($profile=='GROUP' and $withProjectRepartition) {
+            foreach ($listTopProjects as $idProject) {
+              $projKey='Project#' . $idProject;
+              $groupAss[$ass->idResource]['ResourceWork'][$projKey]=$groupAss[$ass->idResource]['ResourceWork']['init'.$projKey];
+            }
+          }
+debugLog("ass#$ass->id resource#$ass->idResource");
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -402,6 +422,7 @@ class PlannedWork extends GeneralWork {
             if ($currentDate==$globalMinDate) { break; } 
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
             if (isOpenDay($currentDate)) {
+debugLog("  $currentDate");
               $planned=0;
               $week=weekFormat($currentDate);
               if (array_key_exists($currentDate, $ress)) {
@@ -470,8 +491,7 @@ class PlannedWork extends GeneralWork {
                 	foreach($groupAss as $id=>$grp) {
                 		$grpCapacity=1;
                 		if ($grp['leftWorkTmp']>0) {
-	                		$grpCapacity=$grp['capacity']*$grp['assRate'];
-	                		
+	                		$grpCapacity=$grp['capacity']*$grp['assRate'];                		
 	                		if (isset($grp['ResourceWork'][$currentDate])) {
 	                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
 	                		}
@@ -480,9 +500,41 @@ class PlannedWork extends GeneralWork {
                 			$value=$grpCapacity;
                 		}
                 	}
+                	// Check Project Affectation Rate
+                	foreach($groupAss as $id=>$grp) {
+	                  foreach ($listTopProjects as $idProject) {
+	                    $projectKey='Project#' . $idProject;
+	                    $plannedProj=0;
+	                    $rateProj=1;
+	                    if (isset($grp['ResourceWork'][$projectKey][$week])) {
+	                      $plannedProj=$grp['ResourceWork'][$projectKey][$week];
+	                    }
+	                    $rateProj=$grp['ResourceWork'][$projectKey]['rate'] / 100;
+	                    if ($rateProj==1) {
+	                      $leftProj=round(7*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a full week
+	                      // => to be able to plan weekends
+	                    } else {
+	                      $leftProj=round(5*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a week
+	                    }
+	                    if ($value>$leftProj) {
+	                      $value=$leftProj;
+	                    }
+	                  }
+                	}
                 	foreach($groupAss as $id=>$grp) {
                 		$groupAss[$id]['leftWorkTmp']-=$value;
                 		//$groupAss[$id]['weekWorkTmp'][$week]+=$value;
+	                	if ($withProjectRepartition and $value >= 0.01) {
+	                    foreach ($listTopProjects as $idProject) {
+	                      $projectKey='Project#' . $idProject;
+	                      $plannedProj=0;
+	                      if (array_key_exists($week,$grp['ResourceWork'][$projectKey])) {
+	                        $plannedProj=$grp['ResourceWork'][$projectKey][$week];
+	                      }
+	                      $groupAss[$id]['ResourceWork'][$projectKey][$week]=$value+$plannedProj;
+debugLog("      value=$value Resource#$id $projectKey $week ".$groupAss[$id]['ResourceWork'][$projectKey][$week]);                                  
+	                    }
+	                  }
                 	}
                 }
                 if ($value>=0.01) {             
