@@ -875,9 +875,9 @@ function exportGantt($list) {
 	$resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
 
 	echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
-	echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
+	echo '<Project>' . $nl;
 	echo '<Name>' . $name . '</Name>' . $nl;
-	echo '<Title>' . $paramDbDisplayName . '</Title>' . $nl;
+	echo '<Title>' . htmlencode($paramDbDisplayName,'xml') . '</Title>' . $nl;
 	echo '<CreationDate>' . $now . '</CreationDate>' . $nl;
 	echo '<LastSaved>' . $now . '</LastSaved>' . $nl;
 	echo '<ScheduleFromStart>1</ScheduleFromStart>' . $nl;
@@ -986,7 +986,7 @@ function exportGantt($list) {
 		echo '<Task>' . $nl;
 		echo '<UID>' . $line['id'] . '</UID>' . $nl;
 		echo '<ID>' . $cpt . '</ID>' . $nl;  // TODO : should be order of the tack in the list
-		echo '<Name>' . htmlEncode($line['refname']) . '</Name>' . $nl;
+		echo '<Name>' . htmlEncode($line['refname'],'xml') . '</Name>' . $nl;
 		echo '<Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
 		echo '<IsNull>0</IsNull>' . $nl;
 		echo '<WBS>' . $line['wbs'] . '</WBS>' . $nl;
