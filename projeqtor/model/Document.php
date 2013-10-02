@@ -34,6 +34,7 @@ class Document extends SqlElement {
   public $draft;
   public $_col_1_1_Link;
   public $_Link=array();
+  public $_Note=array();
     
   // Define the layout that will be used for lists
   private static $_layout='
