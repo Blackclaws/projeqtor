@@ -292,6 +292,9 @@ class PlannedWork extends GeneralWork {
         $groupAss=array();
         //$groupMaxLeft=0;
         //$groupMinLeft=99999;           
+        if ($profile=='GROUP' and count($listAss<2)) {
+        	$profile=='ASAP';
+        }
         if ($profile=='GROUP') {
         	foreach ($listAss as $ass) {
 	        	$r=new Resource($ass->idResource);
