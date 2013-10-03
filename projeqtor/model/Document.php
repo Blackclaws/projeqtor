@@ -9,6 +9,7 @@ class Document extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $documentReference;
+  public $externalReference;
   public $idProject;
   public $idProduct;
   public $idDocumentDirectory;

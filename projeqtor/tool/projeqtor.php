@@ -56,7 +56,7 @@ $cr="\n";                     // Line feed (just for html dynamic building, to e
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V3.5.0";            // Version of application : Major / Minor / Release
+$version="V4.0.0";            // Version of application : Major / Minor / Release
 $build="0084";                // Build number. To be increased on each release
 $website="http://projeqtor.org"; // ProjectOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo

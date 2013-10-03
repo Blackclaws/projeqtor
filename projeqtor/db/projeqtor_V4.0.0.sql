@@ -119,3 +119,39 @@ UPDATE `${prefix}project` SET cancelled=1 WHERE idStatus=9;
 
 INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
 (17, 'Activity', 'PlanningModeGROUP', 'GROUP', 150, 0 , 0, 0);
+
+ALTER TABLE `${prefix}project` ADD COLUMN `clientCode` varchar(25),
+ADD COLUMN `idOverallProgress`  int(12) unsigned DEFAULT NULL;
+
+ALTER TABLE `${prefix}document` ADD COLUMN `externalReference` varchar(100);
+
+ALTER TABLE `${prefix}statusmail` ADD COLUMN `idType` int(12) unsigned DEFAULT NULL;
+
+CREATE TABLE `${prefix}overallProgress` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}overallProgress` (`id`, `name`, `sortOrder`, `idle`) VALUES
+(1, '0%', 100, 0),
+(2, '10%', 200, 0),
+(3, '25%', 300, 0),
+(4, '50%', 400, 0),
+(5, '75%', 500, 0),
+(6, '90%', 600, 0),
+(7, '100%', 700, 0);
+
+INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
+(127,'menuOverallProgress',36,'object',708,NULL,0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 127, 1),
+(2, 127, 0),
+(3, 127, 0),
+(4, 127, 0),
+(5, 127, 0),
+(6, 127, 0),
+(7, 127, 0);
