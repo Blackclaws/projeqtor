@@ -1,5 +1,5 @@
 {
-aboutMessage: "A propos de Projec'Or RIA …",
+aboutMessage: "A propos de ProjeQtOr …",
 aboutMessageLocale: "Locale",
 aboutMessageWebsite: "Site web",
 AccessProfile: "Mode d'accès",
