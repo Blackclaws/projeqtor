@@ -214,6 +214,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var originableArray=new Array();
     var copyableArray=new Array();
     var indicatorableArray=new Array();
+    var mailableArray=new Array();
     var textableArray=new Array();
     var planningColumnOrder=new Array();
     <?php 
@@ -242,6 +243,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $list=SqlList::getListNotTranslated('Indicatorable');
       foreach ($list as $id=>$name) {
         echo "indicatorableArray['" . $id . "']='" . $name . "';";
+      }
+      $list=SqlList::getListNotTranslated('Mailable');
+      foreach ($list as $id=>$name) {
+        echo "mailableArray['" . $id . "']='" . $name . "';";
       }
       $list=SqlList::getListNotTranslated('Textable');
       foreach ($list as $id=>$name) {

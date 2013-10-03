@@ -8,6 +8,7 @@ class StatusMail extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idMailable;
+  public $idType;
   public $idStatus;
   public $idEvent;
   public $idle;
@@ -43,10 +44,14 @@ class StatusMail extends SqlElement {
 
   private static $_fieldsAttributes=array("idMailable"=>"required", 
                                   "mailToOther"=>"nobr",
-                                  "otherMail"=>""
+                                  "otherMail"=>"",
+                                  "idType"=>"nocombo"
   );  
   
-  private static $_colCaptionTransposition = array('idStatus'=>'newStatus','otherMail'=>'email','idEvent'=>'orOtherEvent');
+  private static $_colCaptionTransposition = array('idStatus'=>'newStatus',
+  'otherMail'=>'email',
+  'idEvent'=>'orOtherEvent',
+  'idType'=>'type');
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
@@ -58,6 +63,9 @@ class StatusMail extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    if ($this->id) {
+      self::$_fieldsAttributes["idMailable"]='readonly';
+    }
   }
 
    /** ==========================================================================
@@ -178,6 +186,11 @@ class StatusMail extends SqlElement {
     	$colScript .= '   this.checked=false;';
     	$colScript .= ' }'; 
     	$colScript .= '</script>';
+    } else if ($colName=='idMailable') { 
+      $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+      $colScript .= '  dijit.byId("idType").set("value",null);';
+      $colScript .= '  refreshList("idType","scope", mailableArray[this.value]);';
+      $colScript .= '</script>';
     }
     return $colScript;
   }
