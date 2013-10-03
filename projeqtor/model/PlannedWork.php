@@ -337,12 +337,13 @@ class PlannedWork extends GeneralWork {
         }   
         foreach ($listAss as $ass) {
           if ($profile=='GROUP' and $withProjectRepartition) {
-            foreach ($listTopProjects as $idProject) {
-              $projKey='Project#' . $idProject;
-              $groupAss[$ass->idResource]['ResourceWork'][$projKey]=$groupAss[$ass->idResource]['ResourceWork']['init'.$projKey];
-            }
+          	foreach ($listAss as $asstmp) {
+	            foreach ($listTopProjects as $idProject) {
+	              $projKey='Project#' . $idProject;
+	              $groupAss[$asstmp->idResource]['ResourceWork'][$projKey]=$groupAss[$asstmp->idResource]['ResourceWork']['init'.$projKey];
+	            }
+          	}
           }
-debugLog("ass#$ass->id resource#$ass->idResource");
           $changedAss=true;
           $ass->plannedStartDate=null;
           $ass->plannedEndDate=null;
@@ -422,7 +423,6 @@ debugLog("ass#$ass->id resource#$ass->idResource");
             if ($currentDate==$globalMinDate) { break; } 
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
             if (isOpenDay($currentDate)) {
-debugLog("  $currentDate");
               $planned=0;
               $week=weekFormat($currentDate);
               if (array_key_exists($currentDate, $ress)) {
@@ -532,7 +532,6 @@ debugLog("  $currentDate");
 	                        $plannedProj=$grp['ResourceWork'][$projectKey][$week];
 	                      }
 	                      $groupAss[$id]['ResourceWork'][$projectKey][$week]=$value+$plannedProj;
-debugLog("      value=$value Resource#$id $projectKey $week ".$groupAss[$id]['ResourceWork'][$projectKey][$week]);                                  
 	                    }
 	                  }
                 	}
