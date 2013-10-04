@@ -126,6 +126,8 @@ class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
   	//$this->validatedWork=0; // TODO : To be calculated from Number of assignements x meeting duration
     $this->idProject=$meeting->idProject;
     $this->refName=$meeting->name;
+    $this->idle=$meeting->idle;
+    $this->done=$meeting->done;
     if ($old->idProject!=$this->idProject or $old->topId!=$this->topId 
     or $old->topRefType!=$this->topRefType or $old->topRefId!=$this->topRefId) {
     	$this->wbs=null; // Force recalculation
