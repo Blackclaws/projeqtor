@@ -847,6 +847,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						$critVal=SqlList::getNameFromId('Textable', $obj->idTextable, false);
 					}
 				}
+				if ( get_class($obj)=='StatusMail'  ) {
+					if ($col=='idType') {
+						$critFld='scope';
+						$critVal=SqlList::getNameFromId('Mailable', $obj->idMailable, false);
+					}
+				}
 				if ($displayComboButtonCol or $displayDirectAccessButton) {
 					$fieldWidth -= 20;
 				}
