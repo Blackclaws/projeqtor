@@ -28,9 +28,10 @@ class StatusMail extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameMailable" formatter="translateFormatter" width="15%" >${idMailable}</th>
-    <th field="colorNameStatus" width="13%" formatter="colorNameFormatter">${newStatus}</th>
-    <th field="nameEvent" formatter="translateFormatter" width="13%" >${orOtherEvent}</th>
+    <th field="nameMailable" formatter="translateFormatter" width="12%" >${idMailable}</th>
+    <th field="nameType" formatter="nameFormatter" width="9%" >${type}</th>
+    <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${newStatus}</th>
+    <th field="nameEvent" formatter="translateFormatter" width="10%" >${orOtherEvent}</th>
     <th field="mailToContact" width="7%" formatter="booleanFormatter" >${mailToContact}</th>    
     <th field="mailToUser" width="7%" formatter="booleanFormatter" >${mailToUser}</th>
     <th field="mailToResource" width="7%" formatter="booleanFormatter" >${mailToResource}</th>
@@ -42,7 +43,7 @@ class StatusMail extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("idMailable"=>"required", 
+  private static $_fieldsAttributes=array("idMailable"=>"", 
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>"",
                                   "idType"=>"nocombo"
@@ -78,12 +79,20 @@ class StatusMail extends SqlElement {
 
   public function control() {
     $result="";
+    if (! trim($this->idMailable)) {
+    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colElement')));
+    }
     $crit="idMailable='" . Sql::fmtId($this->idMailable) . "'";
     if (trim($this->idStatus)) {
     	$crit.=" and idStatus='" . Sql::fmtId($this->idStatus) . "'";
     }
     if (trim($this->idEvent)) {
       $crit.=" and idEvent='" . Sql::fmtId($this->idEvent) . "'";
+    }
+    if (trim($this->idType)) {
+      $crit.=" and idType='" . Sql::fmtId($this->idType) . "'";
+    } else {
+      $crit.=" and idType is null'";	
     }
     $crit.=" and id<>'" . Sql::fmtId($this->id) . "'";
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);

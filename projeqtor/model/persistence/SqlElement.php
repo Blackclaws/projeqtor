@@ -2551,6 +2551,18 @@ abstract class SqlElement {
 
     $dest="";
     foreach ($statusMailList as $statusMail) {
+debugLog("StatusMail#$statusMail->id Mailable#$statusMail->idMailable Type#$statusMail->idType Status#$statusMail->idStatus");
+    	if ($statusMail->idType){    		
+	    	if (property_exists($this, 'idType') and $this->idType!=$statusMail->idType) {
+debugLog("  idType does not fit");	    		
+	    		continue; // exist : not corresponding type
+	    	}
+	    	$typeName='id'.$objectClass.'Type';
+	    	if (property_exists($this, $typeName) and $this->$typeName!=$statusMail->idType) {
+debugLog("  $typeName does not fit");	    		    		
+	    		continue; // exist : not corresponding type
+	    	}
+    	}
 	    if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
 	    and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0
 	    and $statusMail->mailToManager==0 and $statusMail->mailToAssigned==0) {
