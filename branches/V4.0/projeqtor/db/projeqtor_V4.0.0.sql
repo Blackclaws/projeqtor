@@ -155,3 +155,11 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 127, 0),
 (6, 127, 0),
 (7, 127, 0);
+
+UPDATE `${prefix}planningelement` SET idle=1
+WHERE refType='Meeting' AND EXISTS (select 'x' FROM `${prefix}meeting` M WHERE M.id=refId and M.idle=1);
+UPDATE `${prefix}planningelement` SET done=1
+WHERE refType='Meeting' AND EXISTS (select 'x' FROM `${prefix}meeting` M WHERE M.id=refId and M.done=1);
+
+UPDATE `${prefix}planningelement` SET idle=1
+WHERE refType='PeriodicMeeting' AND EXISTS (select 'x' FROM `${prefix}periodicmeeting` M WHERE M.id=refId and M.idle=1);
