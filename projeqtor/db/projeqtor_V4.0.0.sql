@@ -163,3 +163,6 @@ WHERE refType='Meeting' AND EXISTS (select 'x' FROM `${prefix}meeting` M WHERE M
 
 UPDATE `${prefix}planningelement` SET idle=1
 WHERE refType='PeriodicMeeting' AND EXISTS (select 'x' FROM `${prefix}periodicmeeting` M WHERE M.id=refId and M.idle=1);
+
+UPDATE `${prefix}document` Doc SET version = (select max(version) from `${prefix}documentversion` Ver where Ver.idDocument=Doc.id)
+WHERE version is null;
