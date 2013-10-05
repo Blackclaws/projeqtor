@@ -67,7 +67,9 @@ foreach ($selectList as $id) {
 		$item->description.=(($item->description)?"\n":"").$description;
 	}
   if ($idStatus and property_exists($item,'idStatus')) {
+  	//$oldStatus=new Status($item->idStatus);
     $item->idStatus=$idStatus;
+    $item->recalculateCheckboxes(true);
   }
   if ($idResource and property_exists($item,'idResource')) {
     $item->idResource=$idResource;

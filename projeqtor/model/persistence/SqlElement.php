@@ -2975,7 +2975,7 @@ debugLog("  $typeName does not fit");
    * waiting for Dojo fixing (Dojo V1.6 ?)
    * @todo : deactivate this function if Dojo fixed.
    */
-  public function recalculateCheckboxes() {
+  public function recalculateCheckboxes($force=false) {
     // if no status => nothing to do
     if (! property_exists($this, 'idStatus')) {
       return;
@@ -2988,23 +2988,21 @@ debugLog("  $typeName does not fit");
       return;
     }
     $type=new $typeClass($this->$fldType);
-    if (property_exists($type,'lockHandled')
+    if ( ( (property_exists($type,'lockHandled') and $type->lockHandled) or $force) 
     and property_exists($this,'handled') 
-    and $type->lockHandled) {
+    ) {
       $this->handled=($status->setHandledStatus)?1:0;
     }
-    if (property_exists($type,'lockDone')
-    and property_exists($this,'done') 
-    and $type->lockDone) {
+    if ( ( (property_exists($type,'lockDone') and $type->lockDone) or $force) 
+    and property_exists($this,'done') ) {
       $this->done=($status->setDoneStatus)?1:0;
     }
-    if (property_exists($type,'lockIdle')
-    and property_exists($this,'idle') 
-    and $type->lockIdle) {
+    if ( ( (property_exists($type,'lockIdle') and $type->lockIdle) or $force) 
+    and property_exists($this,'idle') ) {
       $this->idle=($status->setIdleStatus)?1:0;
     }  
     if (property_exists($this,'cancelled') ) {
-      $this->idle=($status->setCancelledStatus)?1:0;
+      $this->cancelled=($status->setCancelledStatus)?1:0;
     }
   }
   

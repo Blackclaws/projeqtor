@@ -44,6 +44,10 @@ $copyToOrigin=false;
 if (array_key_exists('copyToOrigin',$_REQUEST)) {
   $copyToOrigin=true;
 }
+$copyToLinkOrigin=false;
+if (array_key_exists('copyToLinkOrigin',$_REQUEST)) {
+  $copyToLinkOrigin=true;
+}
 if (! array_key_exists('copyToType',$_REQUEST)) {
   throwError('copyToType parameter not found in REQUEST');
 }
@@ -76,6 +80,18 @@ unset($newObj->_copyResult);
 $res="OK";
 if ($copyWithStructure and get_class($obj)=='Activity' and get_class($newObj)=='Activity') {
 	$res=copyStructure($obj, $newObj);
+}
+if ($copyToLinkOrigin) {
+	$link=new Link();
+  $link->ref1Id=$obj->id;
+  $link->ref1Type=get_class($obj);
+  $link->ref2Id=$newObj->id;
+  $link->ref2Type=get_class($newObj);
+  $link->comment=null;
+  $user=$_SESSION['user'];
+  $link->idUser=$user->id;
+  $link->creationDate=date("Y-m-d H:i:s"); 
+  $resLink=$link->save();
 }
 
 
