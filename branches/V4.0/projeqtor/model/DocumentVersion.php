@@ -85,6 +85,7 @@ class DocumentVersion extends SqlElement {
   
   
   function save($fromDoc=false) {
+debugLog("save DocumentVersion #$this->id version=$this->version revision=$this->revision");
     $mode="";
   	if ($this->id) {
   		$this->updateDateTime=Date('Y-m-d H:i:s');
@@ -116,6 +117,7 @@ class DocumentVersion extends SqlElement {
       $doc->draft=$this->draft;
       $doc->idDocumentVersion=$this->id;
       $saveDoc=true;
+debugLog("   must save document #$doc->id version=$doc->version revision=$doc->revision");
     }
     if ($this->isRef) {
       $doc->idDocumentVersionRef=$this->id;
@@ -135,6 +137,7 @@ class DocumentVersion extends SqlElement {
     }
     if ($saveDoc and !$fromDoc) {
       $doc->save();
+debugLog("   Document #$doc->id saved");
     }
     
     // Inset approvers from document if not existing (on creation)
@@ -158,6 +161,7 @@ class DocumentVersion extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
+    $saveDoc=false;
   	$recalcDoc=false;
   	$crit=array('idDocument'=>$this->idDocument);
   	$doc=new Document($this->idDocument);
@@ -166,12 +170,24 @@ class DocumentVersion extends SqlElement {
       $doc->revision=null;  
       $doc->draft=null;
       $doc->idDocumentVersion=null;
-      $doc->save();
+      if ($this->isRef) {
+      	$doc->idDocumentVersionRef=null;
+      }
+      $saveDoc=true;
+      //$doc->save();
     }
   	$list=$this->getSqlElementsFromCriteria($crit, false, null, 'id desc',false);
   	if (count($list)>0) {
   		$dv=$list[0];
-  		$dv->save();
+  		//$dv->save();
+  		$doc->version=$dv->version;
+      $doc->revision=$dv->revision;  
+      $doc->draft=$dv->draft;
+      $doc->idDocumentVersion=$dv->id;
+      $saveDoc=true;
+  	}
+  	if ($saveDoc==true) {
+      $doc->save();
   	}
   	return $result;
   }
