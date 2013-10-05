@@ -126,7 +126,7 @@
 	      $prj=new Project($idPrj);
 	      $lstTopPrj=$prj->getTopProjectList(true);
 	      $in=transformValueListIntoInClause($lstTopPrj);
-	      $where="idProject in " . $in; 
+	      $where="idle=0 and idProject in " . $in; 
 	      $aff=new Affectation();
 	      $list=$aff->getSqlElementsFromCriteria(null,null, $where);
 	      $nbRows=0;
