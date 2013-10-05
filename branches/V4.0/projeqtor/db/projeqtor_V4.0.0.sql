@@ -110,13 +110,6 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`,`idReport`,`allowAccess`)
 (2,50,1),
 (3,50,1);
 
-ALTER TABLE `${prefix}project` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
-
-ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
-
-UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;
-UPDATE `${prefix}project` SET cancelled=1 WHERE idStatus=9;
-
 INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
 (17, 'Activity', 'PlanningModeGROUP', 'GROUP', 150, 0 , 0, 0);
 
@@ -166,3 +159,42 @@ WHERE refType='PeriodicMeeting' AND EXISTS (select 'x' FROM `${prefix}periodicme
 
 UPDATE `${prefix}document` Doc SET version = (select max(version) from `${prefix}documentversion` Ver where Ver.idDocument=Doc.id)
 WHERE version is null;
+
+-- CANCELLED
+ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;
+
+ALTER TABLE `${prefix}type` ADD COLUMN `lockCancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}type` SET lockCancelled=lockIdle;
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+
+ALTER TABLE `${prefix}project` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}project` SET cancelled=1 WHERE idStatus=9;
+UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}project` XXX where PE.refId=XXX.id)
+where refType='Project');
+
+ALTER TABLE `${prefix}ticket` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}ticket` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}activity` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}activity` SET cancelled=1 WHERE idStatus=9;
+UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}activity` XXX where PE.refId=XXX.id)
+where refType='Activity');
+
+ALTER TABLE `${prefix}milestone` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}milestone` SET cancelled=1 WHERE idStatus=9;
+UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}milestone` XXX where PE.refId=XXX.id)
+where refType='Milestone');
+
+ALTER TABLE `${prefix}action` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}milestone` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}risk` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}risk` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}opportunity` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}opportunity` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}document` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}document` SET cancelled=1 WHERE idStatus=9;
