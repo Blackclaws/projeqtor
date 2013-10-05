@@ -3562,20 +3562,22 @@ function copyProjectToSubmit(objectClass) {
   //dojo.byId('objectClass').value='Project';
 }
 
-function loadMenuBarObject(menuClass, itemName) {
+function loadMenuBarObject(menuClass, itemName, from) {
   	if (checkFormChangeInProgress()) {
   		return false;
   	}
+  	if (from=='bar') { selectTreeNodeById(dijit.byId('menuTree'), menuClass); }
   	cleanContent("detailDiv");
     formChangeInProgress=false;
     loadContent("objectMain.php?objectClass="+menuClass,"centerDiv");
     return true;
 }
 
-function loadMenuBarItem(item,itemName) {
+function loadMenuBarItem(item,itemName, from) {
   if (checkFormChangeInProgress()) {
     return false;
   }
+  if (from=='bar') { selectTreeNodeById(dijit.byId('menuTree'), item); }
   cleanContent("detailDiv");
   formChangeInProgress=false;
   if (item=='Today') {
@@ -4141,4 +4143,30 @@ function showImage(objectClass, objectId, imageName) {
 	showError ("Error loading image "+imageName);
   }
   //dijit.byId('formDiv').resize();
+}
+
+
+//*******************************************************
+// Dojo code to position into a tree
+//*******************************************************
+function recursiveHunt(lookfor, model, buildme, item){
+    var id = model.getIdentity(item);
+    buildme.push(id);
+    if(id == lookfor){
+        return buildme;
+    }
+    for(var idx in item.children){
+        var buildmebranch = buildme.slice(0);
+        var r = recursiveHunt(lookfor, model, buildmebranch, item.children[idx]);
+        if(r){ return r; }
+    }
+    return undefined;
+}
+
+function selectTreeNodeById(tree, lookfor){
+    var buildme = [];
+    var result = recursiveHunt(lookfor, tree.model, buildme, tree.model.root);
+    if(result && result.length > 0){
+        tree.set('path', result);
+    }
 }

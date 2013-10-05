@@ -163,9 +163,9 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
     }
     menuClick();
     if (item.type=='object') {
-        loadMenuBarObject(item.id,item.name);
+        loadMenuBarObject(item.id,item.name,'tree');
     } else if (item.type=='item') {
-        loadMenuBarItem(item.id, item.name);
+        loadMenuBarItem(item.id, item.name,'tree');
     } else if (item.type=='class') {
       cleanContent("detailDiv");
 	    formChangeInProgress=false;

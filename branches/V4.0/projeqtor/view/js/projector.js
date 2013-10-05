@@ -1939,6 +1939,7 @@ function gotoElement(eltClass, eltId, noHistory) {
   if (checkFormChangeInProgress() ) {
     return false;
   }
+  selectTreeNodeById(dijit.byId('menuTree'), eltClass);
   formChangeInProgress=false;
   if ( dojo.byId("GanttChartDIV") && (eltClass=='Project' || eltClass=='Activity' || eltClass=='Milestone') ) {
 	refreshJsonPlanning();
