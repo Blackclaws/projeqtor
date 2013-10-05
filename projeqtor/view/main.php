@@ -322,6 +322,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('menu');?>" style="overflow: hidden !important;" selected="true">
               <?php include "menuTree.php"; ?>
             </div>
+            <?php if (securityCheckDisplayMenu(null,'Document')) {?>
             <div dojoType="dijit.layout.ContentPane" title="<?php echo i18n('document');?>">
               <div dojoType="dojo.data.ItemFileReadStore" id="directoryStore" jsId="directoryStore" url="../tool/jsonDirectory.php">
               <div style="position: absolute; float:right; right: 5px; cursor:pointer;"
@@ -341,6 +342,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                 </script>
               </div>
             </div>
+            <?php }?>
           </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true" style="height: 300px;">
