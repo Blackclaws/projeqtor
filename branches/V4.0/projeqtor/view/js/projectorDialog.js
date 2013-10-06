@@ -3889,14 +3889,6 @@ function movePlanningColumn(source,destination) {
 function changeListColumn(colId,status,order) {
 	showWait();
 	dijit.byId('listColumnSelector').closeDropDown();
-	/*if (status) {
-	  order=planningColumnOrder.indexOf('Hidden'+col);
-	  planningColumnOrder[order]=col;
-	  movePlanningColumn(col,col);
-	} else {
-	  order=planningColumnOrder.indexOf(col);
-	  planningColumnOrder[order]='Hidden'+col;
-	}*/ 
 	dojo.xhrGet({
 		url: '../tool/saveSelectedColumn.php?action=status&status='
 			+ ((status)?'visible':'hidden')+'&item='+colId,
@@ -3904,9 +3896,8 @@ function changeListColumn(colId,status,order) {
 		load: function(data,args) { 
 		    loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
 		    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
-		    //setGanttVisibility(g);
-			//JSGantt.changeFormat(g.getFormat(),g);
-			hideWait(); },
+			//hideWait();
+			},
 		error: function() { }
 	  });	
 }
@@ -3915,19 +3906,22 @@ function moveListColumn(source,destination) {
   var mode='';
   var list='';
   var nodeList=dndListColumnSelector.getAllNodes();
-  planningColumnOrder=new Array();
+  listColumnOrder=new Array();
   for (i=0; i<nodeList.length; i++) {
-	item=nodeList[i].id.substr(14);
-	check=(dijit.byId('checkColumnSelector'+item).get('checked'))?'':'hidden';
+	item=nodeList[i].id.substr(20);
+	//check=(dijit.byId('checkListColumnSelector'+item).get('checked'))?'':'hidden';
     list+=item+"|";
-    planningColumnOrder[i]=check+item;
+    //listColumnOrder[i]=check+item;
   }
   dijit.byId('listColumnSelector').closeDropDown();
   var url='../tool/moveListColumn.php?orderedList='+list;
   dojo.xhrPost({
 	url: url,
 	handleAs: "text",
-	load: function(data,args) { }
+	load: function(data,args) {
+	  loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
+	    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
+    }
   });  
   //loadContent(url, "planResultDiv");
   //setGanttVisibility(g);

@@ -216,6 +216,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 							  id="listColumnSelector" jsId="listColumnSelector" name="listColumnSelector" 
 							  showlabel="false" class="" iconClass="iconColumnSelector"
 							  title="<?php echo i18n('columnSelector');?>">
+                <span>title</span>
 							  <div dojoType="dijit.TooltipDialog" class="white" id="listColumnSelectorDialog"
 							    style="width:200px;position: absolute; top: 50px; right: 40%">   
 							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  

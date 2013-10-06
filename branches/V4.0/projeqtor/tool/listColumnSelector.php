@@ -20,9 +20,9 @@ foreach ($listColumns as $col) {
 	     ($costVisibility!='ALL' and substr($col->_name,-4)=='Cost') ) {
 		// noting 
 	} else {
-		echo '<div class="dojoDndItem" id="columnSelector'.$col->_name.'" dndType="planningColumn">';
+		echo '<div class="dojoDndItem" id="listColumnSelectorId'.$col->id.'" dndType="planningColumn">';
 		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
-	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkColumnSelector'.$col->_name.'" ' 
+	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkListColumnSelectorId'.$col->id.'" ' 
 	    . ((! $col->hidden)?' checked="checked" ':'') 
 	    . ' onChange="changeListColumn(\'' . $col->id . '\',this.checked,\'' . $col->sortOrder . '\')" '
 	    . '></span><label for="checkColumnSelector'.$col->_name.'" class="checkLabel">';
