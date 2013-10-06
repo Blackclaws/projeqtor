@@ -133,6 +133,14 @@ function numericFormatter(value) {
   return result;
 }
 
+function workFormatter(value) {
+	  //result=dojo.number.format(value);
+	  roundedValue=Math.round(value*10)/10;
+	  //var result = roundedValue.replace(/^0+/g,'');
+	  //result = value.replace(/^0+/g,'');
+	  return roundedValue;
+	}
+
 /** ============================================================================
  * Format date value (depends on locale)
  * @param value the value 
