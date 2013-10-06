@@ -160,6 +160,30 @@ WHERE refType='PeriodicMeeting' AND EXISTS (select 'x' FROM `${prefix}periodicme
 UPDATE `${prefix}document` Doc SET version = (select max(version) from `${prefix}documentversion` Ver where Ver.idDocument=Doc.id)
 WHERE version is null;
 
+CREATE TABLE `${prefix}printcheckbox` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `objclass` varchar(50) DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `checkboxes` varchar(500) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE `${prefix}columnselector` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `scope` varchar (10) DEFAULT NULL,
+  `objectClass` varchar(50) DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `field` varchar(100) DEFAULT NULL,
+  `attribute` varchar(100) DEFAULT NULL,
+  `hidden` int(1) unsigned DEFAULT 0,
+  `sortOrder` int(3) unsigned default 0,
+  `widthPct` int(3) unsigned default 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+CREATE INDEX userColumnSelector ON `${prefix}columnselector` (idUser);
+CREATE INDEX objectClassColumnSelector ON `${prefix}columnselector` (objectClass);
+
 -- CANCELLED
 ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;
