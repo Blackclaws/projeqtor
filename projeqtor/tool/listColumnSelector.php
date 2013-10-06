@@ -17,8 +17,8 @@ $workVisibility=$pe->_workVisibility;
 $costVisibility=$pe->_costVisibility;    
 foreach ($listColumns as $col) {
 	if ( ($workVisibility!='ALL' and substr($col->_name,-4)=='Work') or 
-	     ($costVisibility!='ALL' and substr($col->_name,-4)=='Cost') ) {
-		// noting 
+	     ($costVisibility!='ALL' and (substr($col->_name,-4)=='Cost' or substr($col->_name,-6)=='Amount') ) ) {
+		// nothing 
 	} else {
 		echo '<div class="dojoDndItem" id="listColumnSelectorId'.$col->id.'" dndType="planningColumn">';
 		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';

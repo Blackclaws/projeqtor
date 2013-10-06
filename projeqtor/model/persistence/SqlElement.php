@@ -1743,11 +1743,19 @@ abstract class SqlElement {
    * return the generic layout for grit list
    * @return the layout from static data
    */  
-  public function getLayout() {    
+  public function getLayout() {
+  	$pe=new ProjectPlanningElement();
+    $pe->setVisibility();
+    $workVisibility=$pe->_workVisibility;
+    $costVisibility=$pe->_costVisibility;        
     //return layoutTranslation($this->getStaticLayout());
     $result="";
     $columns=ColumnSelector::getColumnsList(get_class($this));
     foreach ($columns as $col) {
+    	if ( ($workVisibility!='ALL' and substr($col->_name,-4)=='Work') or 
+       ($costVisibility!='ALL' and (substr($col->_name,-4)=='Cost' or substr($col->_name,-6)=='Amount') ) ) {
+       	continue;
+       }
     	$result.='<th';
     	$result.=' field="'.$col->field.'"'; 
     	$result.=' width="'.(($col->field=='name')?'auto':$col->widthPct.'%').'"';
