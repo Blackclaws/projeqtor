@@ -85,7 +85,6 @@ class DocumentVersion extends SqlElement {
   
   
   function save($fromDoc=false) {
-debugLog("save DocumentVersion #$this->id version=$this->version revision=$this->revision");
     $mode="";
   	if ($this->id) {
   		$this->updateDateTime=Date('Y-m-d H:i:s');
@@ -117,7 +116,6 @@ debugLog("save DocumentVersion #$this->id version=$this->version revision=$this-
       $doc->draft=$this->draft;
       $doc->idDocumentVersion=$this->id;
       $saveDoc=true;
-debugLog("   must save document #$doc->id version=$doc->version revision=$doc->revision");
     }
     if ($this->isRef) {
       $doc->idDocumentVersionRef=$this->id;
@@ -137,7 +135,6 @@ debugLog("   must save document #$doc->id version=$doc->version revision=$doc->r
     }
     if ($saveDoc and !$fromDoc) {
       $doc->save();
-debugLog("   Document #$doc->id saved");
     }
     
     // Inset approvers from document if not existing (on creation)

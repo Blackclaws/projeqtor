@@ -206,7 +206,6 @@ class Document extends SqlElement {
   }
   
   public function save() {
-debugLog("save Document #$this->id version=$this->version revision=$this->revision");
   	$old=$this->getOld();
   	$sep=Parameter::getGlobalParameter('paramPathSeparator');
   	if ($old->name!=$this->name) {
@@ -237,7 +236,6 @@ debugLog("save Document #$this->id version=$this->version revision=$this->revisi
         $vers->save(true);
       }
   	}
-debugLog(" final value version=$this->version revision=$this->revision");
   	return $result;
   }
 }

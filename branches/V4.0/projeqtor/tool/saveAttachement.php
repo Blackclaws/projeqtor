@@ -1,8 +1,6 @@
 <?php 
 include_once "../tool/projeqtor.php";
 scriptLog("saveAttachement.php");
-debugLog("saveAttachement.php");
-debugLog($_REQUEST);
 header ('Content-Type: text/html; charset=UTF-8');
 /** ===========================================================================
  * Save an attachement (file) : call corresponding method in SqlElement Class
@@ -50,7 +48,6 @@ if ($type=='file') {
     	$uf['error']=$_FILES['attachementFiles']['error'][$i];
     	$uf['size']=$_FILES['attachementFiles']['size'][$i];
       $uploadedFileArray[$i]=$uf;
-      debugLog("=====".$uf['name']);
     }
   } else {
     $error=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
