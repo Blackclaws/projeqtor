@@ -3881,7 +3881,63 @@ function movePlanningColumn(source,destination) {
   hideWait();
 }
 
+/* ========================================================================
+ * List columns management
+ * ========================================================================
+ */
 
+function changeListColumn(colId,status,order) {
+	showWait();
+	dijit.byId('listColumnSelector').closeDropDown();
+	/*if (status) {
+	  order=planningColumnOrder.indexOf('Hidden'+col);
+	  planningColumnOrder[order]=col;
+	  movePlanningColumn(col,col);
+	} else {
+	  order=planningColumnOrder.indexOf(col);
+	  planningColumnOrder[order]='Hidden'+col;
+	}*/ 
+	dojo.xhrGet({
+		url: '../tool/saveSelectedColumn.php?action=status&status='
+			+ ((status)?'visible':'hidden')+'&item='+colId,
+		handleAs: "text",
+		load: function(data,args) { 
+		    loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
+		    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
+		    //setGanttVisibility(g);
+			//JSGantt.changeFormat(g.getFormat(),g);
+			hideWait(); },
+		error: function() { }
+	  });	
+}
+
+function moveListColumn(source,destination) {
+  var mode='';
+  var list='';
+  var nodeList=dndListColumnSelector.getAllNodes();
+  planningColumnOrder=new Array();
+  for (i=0; i<nodeList.length; i++) {
+	item=nodeList[i].id.substr(14);
+	check=(dijit.byId('checkColumnSelector'+item).get('checked'))?'':'hidden';
+    list+=item+"|";
+    planningColumnOrder[i]=check+item;
+  }
+  dijit.byId('listColumnSelector').closeDropDown();
+  var url='../tool/moveListColumn.php?orderedList='+list;
+  dojo.xhrPost({
+	url: url,
+	handleAs: "text",
+	load: function(data,args) { }
+  });  
+  //loadContent(url, "planResultDiv");
+  //setGanttVisibility(g);
+  //JSGantt.changeFormat(g.getFormat(),g);
+  hideWait();
+}
+
+// =========================================================
+// Other
+// =========================================================
 function showMailOptions() {
 	dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
 	dojo.byId('mailRefId').value=dojo.byId('objectId').value;
@@ -4169,4 +4225,169 @@ function selectTreeNodeById(tree, lookfor){
     if(result && result.length > 0){
         tree.set('path', result);
     }
+}
+
+
+// ************************************************************
+// Code to select columns to be exported
+// ************************************************************
+var ReportPrintType ='';
+
+//open the dialog with checkboxes
+function openReportPrint (Type) {
+  ReportPrintType =Type;
+  if (formChangeInProgress) {
+          showAlert(i18n('alertOngoingChange'));
+          return;
+  }
+  top.dijit.byId("dialogReportPrint").show();  
+
+}
+
+//close the dialog with checkboxes 
+function closeReportPrint (obj,idUser) {
+  top.dijit.byId("dialogReportPrint").hide(); 
+  saveCheckboxReportPrint(obj,idUser);
+}
+
+
+//save current state of checkboxes
+function saveCheckboxReportPrint(obj,idUser){
+
+  var val = dojo.byId('column0').value;
+  var toStore=obj+";"+idUser;
+  val = eval(val);
+
+  for(i=1; i<val+1;i++){
+      var checkbox=dojo.byId('column'+i);
+      if(checkbox) {
+          if(checkbox.checked) {
+              var field=checkbox.value.split(';');
+              toStore=toStore + ";" + field[4];
+          }
+      }
+  }
+
+  var xhr = getXMLHttpRequest(); 
+
+  var toSend = encodeURIComponent(toStore);
+
+  xhr.open("GET", "../tool/saveCheckboxes.php?toStore=" + toSend , true);
+  xhr.send(null);
+
+}
+
+//pretty sure you're familiar with this
+function getXMLHttpRequest() {
+  var xhr = null;
+
+  if (window.XMLHttpRequest || window.ActiveXObject) {
+      if (window.ActiveXObject) {
+          try {
+              xhr = new ActiveXObject("Msxml2.XMLHTTP");
+          } catch(e) {
+              xhr = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+      } else {
+          xhr = new XMLHttpRequest(); 
+      }
+  } else {
+      alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+      return null;
+  }
+
+  return xhr;
+}
+
+//computes witch so pdf export takes all page.
+function egalizeWidth(width){
+var SumWidth=0;
+
+for (var i in width){
+SumWidth = parseInt(SumWidth)+parseInt(width[i]);
+}
+
+for (var i in width){
+width[i]=100*width[i]/SumWidth;
+}
+
+return width;
+}
+
+var layoutPrint ='';
+//Executes the report (shows the print/pdf/csv)
+function executeReportPrint(obj,idUser) {  
+  layoutPrint ='';
+  var verif=0;
+  var val = dojo.byId('column0').value;
+  val = eval(val);
+  var width = {};
+  for(i=1; i<val+1;i++){
+      var checkbox=dojo.byId('column'+i);
+      if(checkbox) {
+          if(checkbox.checked) {
+              var field=checkbox.value.split(';');
+              width[field[0]]=field[2];
+          }
+      }
+  }
+
+  width = egalizeWidth(width);
+
+  for(i=1; i<val+1;i++){
+      var checkbox=dojo.byId('column'+i);
+      if(checkbox) {
+          if(checkbox.checked) {
+              var field=checkbox.value.split(';');
+              layoutPrint+='<th field="'+field[0]+'" formatter="'+field[3]+'" width="'+width[field[0]]+'%">'+field[1]+'</th> ';
+              verif=1;        
+          }
+      }
+  }
+  if(verif==1){
+      var grid = dijit.byId("objectGrid");
+      if(grid.rowCount > 200) {
+          actionYes=function() { 
+              if(ReportPrintType=='print') {
+                  showPrint("../tool/jsonQuery.php", 'list');
+              } else if(ReportPrintType=='csv') {
+                  showPrint("../tool/jsonQuery.php", 'list', null, 'csv');  
+              } else if(ReportPrintType=='pdf') {
+                  showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
+              } else {
+                  showPrint("../tool/jsonQuery.php", 'list');
+              }
+              closeReportPrint (obj,idUser);
+          };
+          actionNo=function() { closeReportPrint (obj,idUser); };
+          showQuestion("<b>" + i18n('extracting') + " " + grid.rowCount + " " + i18n('lines')+".</b><br>" + i18n('longTraitment') + ".<br>" + i18n('wantToExtract'),actionYes,actionNo);
+
+      } else {
+          if(ReportPrintType=='print') {
+              showPrint("../tool/jsonQuery.php", 'list');
+          } else if(ReportPrintType=='csv') {
+              showPrint("../tool/jsonQuery.php", 'list', null, 'csv');  
+          } else if(ReportPrintType=='pdf') {
+              showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
+          } else {
+              showPrint("../tool/jsonQuery.php", 'list');
+          }
+          closeReportPrint (obj,idUser);
+      }
+  } else {
+      showAlert(i18n('alertChooseOneAtLeast'));
+  }
+}
+
+//Check or uncheck all boxes
+function checkReportPrint () {
+  var check = dojo.byId('checkUncheck').checked;
+  var val = dojo.byId('column0').value;
+  val = eval(val);
+  for(i=1; i<val+1;i++){
+     var checkbox=dijit.byId('column'+i);
+      if(checkbox) {
+          dijit.byId(checkbox).setValue(check);
+      }
+  }
 }
