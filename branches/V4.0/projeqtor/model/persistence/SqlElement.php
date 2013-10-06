@@ -1744,7 +1744,19 @@ abstract class SqlElement {
    * @return the layout from static data
    */  
   public function getLayout() {    
-    return layoutTranslation($this->getStaticLayout());
+    //return layoutTranslation($this->getStaticLayout());
+    $result="";
+    $columns=ColumnSelector::getColumnsList(get_class($this));
+    foreach ($columns as $col) {
+    	$result.='<th';
+    	$result.=' field="'.$col->field.'"'; 
+    	$result.=' width="'.(($col->field=='name')?'auto':$col->widthPct.'%').'"';
+    	$result.=($col->_formatter)?' formatter="'.$col->_formatter.'"':'';
+    	$result.=($col->_from)?' from="'.$col->_from.'"':'';
+    	$result.=($col->hidden)?' hidden="true"':''; 
+    	$result.='>'.$col->_displayName.'</th>'."\n";
+    }
+    return $result;
   }
       
   /** ========================================================================
@@ -3186,5 +3198,6 @@ scriptLog('SqlElement::setReference');
   		
   	}
   }
+  
 }
 ?>
