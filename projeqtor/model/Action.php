@@ -42,8 +42,8 @@ class Action extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="name" width="30%" >${name}</th>
-    <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
+    <th field="name" width="auto" >${name}</th>
+    <th field="colorNamePriority" width="5%" formatter="colorNameFormatter">${idPriority}</th>
     <th field="actualDueDate" width="10%" formatter="dateFormatter">${actualDueDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="colorNameEfficiency" width="10%" formatter="colorNameFormatter">${idEfficiency}</th>
