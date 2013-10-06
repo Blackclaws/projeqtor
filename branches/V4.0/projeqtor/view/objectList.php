@@ -354,17 +354,14 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
      style="margin-left: 0px;margin-top: 0px;">
     <?php 
         $idUser = $_SESSION['user']->id;
-        $query='SELECT checkboxes FROM '.$paramDbPrefix.'printcheckbox WHERE `objclass`="'.$objectClass.'" AND `idUser`="'.$idUser.'";';
-        $result=Sql::query($query);
-        $line = Sql::fetchLine($result);
-        $checkboxDB=array();
-        while($line) {
-            $checkboxDB[]=$line;
-            $line = Sql::fetchLine($result);
-        }
-        if(count($checkboxDB)>0){
-            $checkboxDB=$checkboxDB[0]['checkboxes'];
-            $checkboxDB=explode(";",$checkboxDB);
+        $cs=new ColumnSelector();
+        $crit=array('scope'=>'export','objectClass'=>$objectClass, 'idUser'=>$user->id);
+        $csList=$cs->getSqlElementsFromCriteria($crit);
+        $hiddenFields=array();
+        foreach ($csList as $cs) {
+            if ($cs->hidden) {
+                $hiddenFields[$cs->field]=true;
+            }
         }
         $htmlresult='<td valign="top">';
         $FieldsArray=$obj->getFieldsArray();
@@ -395,11 +392,9 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                 }
             } else if(substr($key,0,5)=="input"){
             }else {
-                $checked='';
-                foreach($checkboxDB as $valchecked){
-                    if($valchecked==$key){
-                        $checked='checked';
-                    }
+                $checked='checked';
+                if (array_key_exists($key, $hiddenFields)) {
+                   $checked='';
                 }
                 $dataType = $obj->getDataType($key);
                 $dataLength = $obj->getDataLength($key);

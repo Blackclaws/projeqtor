@@ -160,15 +160,6 @@ WHERE refType='PeriodicMeeting' AND EXISTS (select 'x' FROM `${prefix}periodicme
 UPDATE `${prefix}document` Doc SET version = (select max(version) from `${prefix}documentversion` Ver where Ver.idDocument=Doc.id)
 WHERE version is null;
 
-CREATE TABLE `${prefix}printcheckbox` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `objclass` varchar(50) DEFAULT NULL,
-  `idUser` int(12) unsigned DEFAULT NULL,
-  `checkboxes` varchar(500) DEFAULT NULL,
-  `idle` int(1) unsigned DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
 CREATE TABLE `${prefix}columnselector` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `scope` varchar (10) DEFAULT NULL,
@@ -196,7 +187,7 @@ ALTER TABLE `${prefix}planningelement` ADD COLUMN `cancelled` int(1) unsigned DE
 ALTER TABLE `${prefix}project` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}project` SET cancelled=1 WHERE idStatus=9;
 UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}project` XXX where PE.refId=XXX.id)
-where refType='Project');
+where refType='Project';
 
 ALTER TABLE `${prefix}ticket` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}ticket` SET cancelled=1 WHERE idStatus=9;
@@ -204,12 +195,12 @@ UPDATE `${prefix}ticket` SET cancelled=1 WHERE idStatus=9;
 ALTER TABLE `${prefix}activity` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}activity` SET cancelled=1 WHERE idStatus=9;
 UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}activity` XXX where PE.refId=XXX.id)
-where refType='Activity');
+where refType='Activity';
 
 ALTER TABLE `${prefix}milestone` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}milestone` SET cancelled=1 WHERE idStatus=9;
 UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}milestone` XXX where PE.refId=XXX.id)
-where refType='Milestone');
+where refType='Milestone';
 
 ALTER TABLE `${prefix}action` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}milestone` SET cancelled=1 WHERE idStatus=9;

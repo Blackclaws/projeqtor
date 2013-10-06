@@ -4247,65 +4247,35 @@ function closeReportPrint (obj,idUser) {
 
 //save current state of checkboxes
 function saveCheckboxReportPrint(obj,idUser){
-
   var val = dojo.byId('column0').value;
   var toStore=obj+";"+idUser;
   val = eval(val);
-
   for(i=1; i<val+1;i++){
       var checkbox=dojo.byId('column'+i);
       if(checkbox) {
-          if(checkbox.checked) {
+          if(! checkbox.checked) {
               var field=checkbox.value.split(';');
               toStore=toStore + ";" + field[4];
           }
       }
   }
-
-  var xhr = getXMLHttpRequest(); 
-
-  var toSend = encodeURIComponent(toStore);
-
-  xhr.open("GET", "../tool/saveCheckboxes.php?toStore=" + toSend , true);
-  xhr.send(null);
-
-}
-
-//pretty sure you're familiar with this
-function getXMLHttpRequest() {
-  var xhr = null;
-
-  if (window.XMLHttpRequest || window.ActiveXObject) {
-      if (window.ActiveXObject) {
-          try {
-              xhr = new ActiveXObject("Msxml2.XMLHTTP");
-          } catch(e) {
-              xhr = new ActiveXObject("Microsoft.XMLHTTP");
-          }
-      } else {
-          xhr = new XMLHttpRequest(); 
-      }
-  } else {
-      alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-      return null;
-  }
-
-  return xhr;
+  dojo.xhrPost({
+	url: "../tool/saveCheckboxes.php?toStore="+toStore,
+	handleAs: "text",
+	load: function(data,args) { }
+  });
 }
 
 //computes witch so pdf export takes all page.
 function egalizeWidth(width){
-var SumWidth=0;
-
-for (var i in width){
-SumWidth = parseInt(SumWidth)+parseInt(width[i]);
-}
-
-for (var i in width){
-width[i]=100*width[i]/SumWidth;
-}
-
-return width;
+	var SumWidth=0;
+	for (var i in width){
+		SumWidth = parseInt(SumWidth)+parseInt(width[i]);
+	}
+	for (var i in width){
+		width[i]=100*width[i]/SumWidth;
+	}
+	return width;
 }
 
 var layoutPrint ='';
