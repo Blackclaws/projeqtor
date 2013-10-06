@@ -91,8 +91,6 @@ class ColumnSelector extends SqlElement {
         $cpt++;
 			  if (!$cs->id) { $cs->save(); }
 			  $result[$field]=$cs;
-		    //debugLog("$entry->tagName => $entry->nodeValue");
-		    //debugLog("field=$cs->field, name=$cs->_name, displayName=$cs->_displayName, hidden=$cs->hidden, widthPct=$cs->widthPct");
 		}
 		foreach ($result as $id=>$cs) {
 			if (! $cs->_name) {

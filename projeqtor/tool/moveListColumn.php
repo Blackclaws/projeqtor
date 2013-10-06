@@ -8,7 +8,6 @@ if (! array_key_exists('orderedList',$_REQUEST)) {
   throwError('orderedList parameter not found in REQUEST');
 }
 $list=$_REQUEST['orderedList'];
-debugLog($list);
 $arrayList=explode("|", $list);
 $user=$_SESSION['user'];
 
@@ -17,7 +16,6 @@ $cpt=0;
 foreach ($arrayList as $id) {
 	if (trim($id)) {
 		$cpt++;
-debugLog("  $id => order=$cpt");
 	  $cs=new ColumnSelector($id);
 	  $cs->sortOrder=$cpt;
 		$result=$cs->save();

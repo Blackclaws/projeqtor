@@ -25,7 +25,6 @@ if(count($toStore)>1){
 		$cs->field=$store;
 		$cs->hidden=1;
 		$res=$cs->save();
-debugLog($res);
 	}
 }
 Sql::commitTransaction();
