@@ -99,7 +99,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
           <tr>
             <td style="text-align:right;" width="5px">
               <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
-              <input type="hidden" id="objectId" name="objectId" value="" />
+              <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo $_REQUEST['objectId'];}?>" />
               <NOBR>&nbsp;&nbsp;&nbsp;&nbsp;
               <?php echo i18n("colId");?>
               &nbsp;</NOBR> 
@@ -208,7 +208,25 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                 </div> 
               </button>
             </td>
-<?php }?>                            
+<?php }?>   
+<?php if (! $comboDetail) {?>  
+            <td  width="32px">           
+							<div dojoType="dijit.form.DropDownButton"
+							  style="height: 20px; color:#202020;"  
+							  id="listColumnSelector" jsId="listColumnSelector" name="listColumnSelector" 
+							  showlabel="false" class="" iconClass="iconColumnSelector"
+							  title="<?php echo i18n('columnSelector');?>">
+							  <div dojoType="dijit.TooltipDialog" class="white" id="listColumnSelectorDialog"
+							    style="width:200px;position: absolute; top: 50px; right: 40%">   
+							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  
+							      dndType="column"
+							      withhandles="true" class="container">    
+							      <?php include('../tool/listColumnSelector.php')?>
+							    </div>       
+							  </div>
+							</div>   
+             </td>
+<?php }?>                   
 <?php if (! $comboDetail) {?>                
              <td width="32px">
               <button title="<?php echo i18n('printList')?>"  
@@ -216,6 +234,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                id="listPrint" name="listPrint"
                iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
+                  //openReportPrint('print');
                   showPrint("../tool/jsonQuery.php", 'list');
                 </script>
               </button>
@@ -238,6 +257,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                id="listPrintCsv" name="listPrintCsv"
                iconClass="iconCsv" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
+                  //openReportPrint('csv');
                   showPrint("../tool/jsonQuery.php", 'list', null, 'csv');
                 </script>
               </button>              
@@ -261,7 +281,9 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
     </td>
   </tr>
 </table>
-<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');"><div id="listBarIcon" align="center"></div></div>
+<div id="listBarShow" onMouseover="showList('mouse')" onClick="showList('click');">
+  <div id="listBarIcon" align="center"></div>
+</div>
 </div>
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
 <table id="objectGrid" jsId="objectGrid" dojoType="dojox.grid.DataGrid"
@@ -270,6 +292,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
   rowPerPage="<?php echo Parameter::getGlobalParameter('paramRowPerPage');?>"
   columnReordering="false"
   rowSelector="false"
+  onHeaderCellContextMenu="dijit.byId('listColumnSelector').toggleDropDown();"
   selectionMode="<?php echo ($multipleSelect)?'extended':'single';?>" >
   <thead>
     <tr>
@@ -325,3 +348,129 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 </table>
 </div>
 </div>
+
+<div id="dialogReportPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogReportPrint");?>"
+     style="margin-left: 0px;margin-top: 0px;">
+    <?php 
+        $idUser = $_SESSION['user']->id;
+        $query='SELECT checkboxes FROM '.$paramDbPrefix.'printcheckbox WHERE `objclass`="'.$objectClass.'" AND `idUser`="'.$idUser.'";';
+        $result=Sql::query($query);
+        $line = Sql::fetchLine($result);
+        $checkboxDB=array();
+        while($line) {
+            $checkboxDB[]=$line;
+            $line = Sql::fetchLine($result);
+        }
+        if(count($checkboxDB)>0){
+            $checkboxDB=$checkboxDB[0]['checkboxes'];
+            $checkboxDB=explode(";",$checkboxDB);
+        }
+        $htmlresult='<td valign="top">';
+        $FieldsArray=$obj->getFieldsArray();
+        foreach($FieldsArray as $key => $val) {
+            $FieldsArray[$key]=$obj->getColCaption($val);
+            if (substr($val,0,5)=='_col_') {
+                if (strlen($val)>8) {
+                        $section=substr($val,9);
+                        if ($section!='predecessor' and $section!='successor') {
+                          $FieldsArray[$key]=i18n('section' . ucfirst($section));
+                        }
+                }
+            }
+            if(substr($FieldsArray[$key],0,1)=="["){
+                unset($FieldsArray[$key]);
+                continue;
+            }
+        }
+        $countFields=count($FieldsArray);
+        $htmlresult.='<input type="hidden" dojoType="dijit.form.TextBox" id="column0" name="column0" value="'.$countFields.'">';
+        $index=1;
+        $last_key = end($FieldsArray);
+        foreach($FieldsArray as $key => $val){
+            if(substr($key,0,5)=="_col_"){
+                if($val!=$last_key) {
+                    $htmlresult.='</td><td style="vertical-align:top;width: 200px;" valign="top">'
+                    .'<div class="section" style="width:90%"><b>'.$val.'</b></div><br/>';
+                }
+            } else if(substr($key,0,5)=="input"){
+            }else {
+                $checked='';
+                foreach($checkboxDB as $valchecked){
+                    if($valchecked==$key){
+                        $checked='checked';
+                    }
+                }
+                $dataType = $obj->getDataType($key);
+                $dataLength = $obj->getDataLength($key);
+                $width=5;
+                $formatter='';
+                if ($key=='id') { // id
+                        $formatter="numericFormatter"; 
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else if ($key=='password') { // PassWord
+                        // nothing
+                } else if ($dataType=='date' and $val!=null and $val != '') { // Date
+                        $formatter="dateFormatter";
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else if ($dataType=='datetime' and $val!=null and $val != '') { // Date and Time
+                        $formatter="dateFormatter";
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else if ($dataType=='time' and $val!=null and $val != '') { // Time
+                        $formatter="dateFormatter";
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else if ($key=='color' and $dataLength == 7 ) { // color
+                        $formatter="colorFormatter";
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else if ($dataType=='int' and $dataLength==1) { // boolean
+                        $formatter="booleanFormatter";
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
+                        $width=20;
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                } else if (substr($key,0,2)=='id' and $dataType=='int' and strlen($key)>2 and substr($key,2,1)==strtoupper(substr($key,2,1)) ) { // Idxxx
+                        if(substr($key,2,strlen($key))=='Status') {
+                            $formatter="colorNameFormatter";
+                            $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.'colorName'.substr($key,2,strlen($key)).';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                        } else if(substr($key,2,strlen($key))=='Profile') {
+                            $formatter="translateFormatter";
+                            $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.'name'.substr($key,2,strlen($key)).';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                        } else {
+                            $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.'name'.substr($key,2,strlen($key)).';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                        }
+                } else {
+                        $htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
+                }
+                $index++;
+            }
+        }
+        $htmlresult.='</td>';
+        $htmlresult.="<br>";
+        $htmlresult.='<input  type="checkbox" dojoType="dijit.form.CheckBox" id="checkUncheck" name="checkUncheck" value="Check" onclick="checkReportPrint();" '.$checked.'><b>'.i18n("checkUncheckAll").'</b><br><br>';
+        
+       
+    ?>         
+    <form id="dialogPrintForm" name="dialogPrintForm">
+      <table style="width:100%;">
+        <tr><td><b><?php echo i18n("chooseColumnPrint");?></b></td></tr>
+      </table>
+      <table style="width:100%;">            
+        <tr>
+          <?php  echo $htmlresult; ?>
+        </tr>
+      </table>
+      <table style="width:100%;"> 
+        <tr>
+          <td>
+            <button align="left" dojoType="dijit.form.Button" id="dialogePrintSubmit" onclick="executeReportPrint('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
+              <?php echo i18n("buttonOK");?>
+            </button>
+          </td><td>
+            <button align="right"  dojoType="dijit.form.Button" onclick="closeReportPrint('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
+              <?php echo i18n("buttonCancel");?>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+</div>
+
