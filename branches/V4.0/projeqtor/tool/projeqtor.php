@@ -268,7 +268,7 @@ function i18n($str, $vars=null) {
  * @param $layout the layout string
  * @return the translated layout
  */
-function layoutTranslation($layout) {
+/*function layoutTranslation($layout) {
   $deb=strpos($layout,'${');
   while ($deb) {
     $fin=strpos($layout,'}',$deb);
@@ -280,7 +280,7 @@ function layoutTranslation($layout) {
     $deb=strpos($layout,'${');
   }
   return $layout;
-}
+}*/
 
 /** ============================================================================
  * Exception management
