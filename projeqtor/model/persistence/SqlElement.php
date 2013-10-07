@@ -1751,11 +1751,15 @@ abstract class SqlElement {
     //return layoutTranslation($this->getStaticLayout());
     $result="";
     $columns=ColumnSelector::getColumnsList(get_class($this));
+    $totWidth=0;
     foreach ($columns as $col) {
+        if ($col->hidden) {
+        	continue;
+        }
     	if ( ($workVisibility!='ALL' and substr($col->_name,-4)=='Work') or 
-       ($costVisibility!='ALL' and (substr($col->_name,-4)=='Cost' or substr($col->_name,-6)=='Amount') ) ) {
-       	continue;
-       }
+        ($costVisibility!='ALL' and (substr($col->_name,-4)=='Cost' or substr($col->_name,-6)=='Amount') ) ) {
+       	  continue;
+        }
     	$result.='<th';
     	$result.=' field="'.$col->field.'"'; 
     	$result.=' width="'.(($col->field=='name')?'auto':$col->widthPct.'%').'"';
@@ -1763,6 +1767,11 @@ abstract class SqlElement {
     	$result.=($col->_from)?' from="'.$col->_from.'"':'';
     	$result.=($col->hidden)?' hidden="true"':''; 
     	$result.='>'.$col->_displayName.'</th>'."\n";
+    	$totWidth+=($col->field=='name')?0:$col->widthPct;
+    }
+    if ($totWidth<95) {
+    	$autoWidth=100-$totWidth;
+    	$result=str_replace('width="auto"', 'width="'.$autoWidth.'%"', $result);
     }
     return $result;
   }
