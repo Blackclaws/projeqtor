@@ -1769,10 +1769,12 @@ abstract class SqlElement {
     	$result.='>'.$col->_displayName.'</th>'."\n";
     	$totWidth+=($col->field=='name')?0:$col->widthPct;
     }
-    if ($totWidth<95) {
+    if ($totWidth<90) {
     	$autoWidth=100-$totWidth;
-    	$result=str_replace('width="auto"', 'width="'.$autoWidth.'%"', $result);
-    }
+    } else {
+    	$autoWidth=10;
+    } 
+    $result=str_replace('width="auto"', 'width="'.$autoWidth.'%"', $result);
     return $result;
   }
       
