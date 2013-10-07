@@ -164,7 +164,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
             <td width="32px">
               <button title="<?php echo i18n('quickSearch')?>"  
                dojoType="dijit.form.Button" 
-               id="iconSearchOpenButton" name=""iconSearchOpenButton""
+               id="iconSearchOpenButton" name="iconSearchOpenButton"
                iconClass="iconSearch" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
                   quickSearchOpen();
@@ -219,11 +219,23 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                 <span>title</span>
 							  <div dojoType="dijit.TooltipDialog" class="white" id="listColumnSelectorDialog"
 							    style="width:200px;position: absolute; top: 50px; right: 40%">   
+                  <script type="dojo/connect" event="onHide" args="evt">
+                    if (dndMoveInProgress) { this.show(); }
+                  </script>
 							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  
 							      dndType="column"
 							      withhandles="true" class="container">    
 							      <?php include('../tool/listColumnSelector.php')?>
-							    </div>       
+							    </div>
+                  <div style="height:5px;"></div>    
+                  <div style="text-align: center;"> 
+                    <button title="" dojoType="dijit.form.Button" 
+                      id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                      <script type="dojo/connect" event="onClick" args="evt">
+                        validateListColumn();
+                      </script>
+                    </button>
+                  </div>   
 							  </div>
 							</div>   
              </td>

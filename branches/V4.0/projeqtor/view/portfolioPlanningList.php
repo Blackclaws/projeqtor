@@ -159,14 +159,26 @@ if ($saveShowClosed) {
                              showlabel="false" class="" iconClass="iconColumnSelector"
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
-                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
+                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">
+                            <script type="dojo/connect" event="onHide" args="evt">
+                              if (dndMoveInProgress) { this.show(); }
+                            </script>   
                             <div id="dndPlanningColumnSelector" jsId="dndPlanningColumnSelector" dojotype="dojo.dnd.Source"  
                              dndType="column"
                              withhandles="true" class="container">    
                                <?php 
                                  $portfolioPlanning=true; 
                                  include('../tool/planningColumnSelector.php')?>
-                            </div>       
+                            </div> 
+                            <div style="height:5px;"></div>    
+                            <div style="text-align: center;"> 
+                              <button title="" dojoType="dijit.form.Button" 
+                                id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                                <script type="dojo/connect" event="onClick" args="evt">
+                                  validatePlanningColumn();
+                                </script>
+                              </button>
+                            </div>                
                           </div>
                         </div>
                       </td>

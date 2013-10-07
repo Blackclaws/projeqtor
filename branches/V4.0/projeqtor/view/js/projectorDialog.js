@@ -3835,8 +3835,6 @@ function openPlanningColumnMgt() {
 }
 
 function changePlanningColumn(col,status,order) {
-	showWait();
-	dijit.byId('planningColumnSelector').closeDropDown();
 	if (status) {
 	  order=planningColumnOrder.indexOf('Hidden'+col);
 	  planningColumnOrder[order]=col;
@@ -3849,14 +3847,17 @@ function changePlanningColumn(col,status,order) {
 		url: '../tool/savePlanningColumn.php?action=status&status='
 			+ ((status)?'visible':'hidden')+'&item='+col,
 		handleAs: "text",
-		load: function(data,args) { 
-			setGanttVisibility(g);
-			JSGantt.changeFormat(g.getFormat(),g);
-			hideWait(); },
+		load: function(data,args) { },
 		error: function() { }
 	  });	
 }
-
+function validatePlanningColumn() {
+	dijit.byId('planningColumnSelector').closeDropDown();
+	showWait();
+	setGanttVisibility(g);
+	JSGantt.changeFormat(g.getFormat(),g);
+	hideWait(); 
+}
 function movePlanningColumn(source,destination) {
   var mode='';
   var list='';
@@ -3868,7 +3869,6 @@ function movePlanningColumn(source,destination) {
     list+=item+"|";
     planningColumnOrder[i]=check+item;
   }
-  dijit.byId('planningColumnSelector').closeDropDown();
   var url='../tool/movePlanningColumn.php?orderedList='+list;
   dojo.xhrPost({
 	url: url,
@@ -3876,9 +3876,6 @@ function movePlanningColumn(source,destination) {
 	load: function(data,args) { }
   });  
   //loadContent(url, "planResultDiv");
-  setGanttVisibility(g);
-  JSGantt.changeFormat(g.getFormat(),g);
-  hideWait();
 }
 
 /* ========================================================================
@@ -3887,21 +3884,20 @@ function movePlanningColumn(source,destination) {
  */
 
 function changeListColumn(colId,status,order) {
-	showWait();
-	dijit.byId('listColumnSelector').closeDropDown();
 	dojo.xhrGet({
 		url: '../tool/saveSelectedColumn.php?action=status&status='
 			+ ((status)?'visible':'hidden')+'&item='+colId,
 		handleAs: "text",
-		load: function(data,args) { 
-		    loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
-		    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
-			//hideWait();
-			},
+		load: function(data,args) { },
 		error: function() { }
 	  });	
 }
-
+function validateListColumn() {
+	showWait();
+	dijit.byId('listColumnSelector').closeDropDown();
+	loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
+    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
+}
 function moveListColumn(source,destination) {
   var mode='';
   var list='';
@@ -3913,20 +3909,18 @@ function moveListColumn(source,destination) {
     list+=item+"|";
     //listColumnOrder[i]=check+item;
   }
-  dijit.byId('listColumnSelector').closeDropDown();
+  //dijit.byId('listColumnSelector').closeDropDown();
   var url='../tool/moveListColumn.php?orderedList='+list;
   dojo.xhrPost({
 	url: url,
 	handleAs: "text",
-	load: function(data,args) {
-	  loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
-	    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
+	load: function(data,args) {  
     }
   });  
   //loadContent(url, "planResultDiv");
   //setGanttVisibility(g);
   //JSGantt.changeFormat(g.getFormat(),g);
-  hideWait();
+  //hideWait();
 }
 
 // =========================================================

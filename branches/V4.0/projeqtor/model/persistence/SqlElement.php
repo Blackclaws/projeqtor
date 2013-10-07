@@ -9,6 +9,9 @@ abstract class SqlElement {
    // List of fields that will be exposed in general user interface
   public $id; // every SqlElement have an id !!!
   
+  private static $staticCostVisibility=null;
+  private static $staticWorkVisibility=null;
+    
   // Store the layout of the different object classes
   private static $_tablesFormatList=array();
 
@@ -1744,11 +1747,6 @@ abstract class SqlElement {
    * @return the layout from static data
    */  
   public function getLayout() {
-  	$pe=new ProjectPlanningElement();
-    $pe->setVisibility();
-    $workVisibility=$pe->_workVisibility;
-    $costVisibility=$pe->_costVisibility;        
-    //return layoutTranslation($this->getStaticLayout());
     $result="";
     $columns=ColumnSelector::getColumnsList(get_class($this));
     $totWidth=0;
@@ -1756,10 +1754,9 @@ abstract class SqlElement {
         if ($col->hidden) {
         	continue;
         }
-    	if ( ($workVisibility!='ALL' and substr($col->_name,-4)=='Work') or 
-        ($costVisibility!='ALL' and (substr($col->_name,-4)=='Cost' or substr($col->_name,-6)=='Amount') ) ) {
+    	if ( ! self::isVisibleField($col->_name) ) {
        	  continue;
-        }
+      }
     	$result.='<th';
     	$result.=' field="'.$col->field.'"'; 
     	$result.=' width="'.(($col->field=='name')?'auto':$col->widthPct.'%').'"';
@@ -3215,5 +3212,50 @@ scriptLog('SqlElement::setReference');
   	}
   }
   
+  public static function isVisibleField($col) {
+    // Check if cost and work field is visible for profile
+  	$cost=(substr($col,-4)=='Cost' or substr($col,-6)=="Amount")?true:false;
+    $work=(substr($col,-4)=='Work')?true:false;
+    if (!$cost and !$work) {return true;}
+    if (! self::$staticCostVisibility or ! self::$staticWorkVisibility) {
+      $pe=new PlanningElement();
+      $pe->setVisibility();
+      self::$staticCostVisibility=$pe->_costVisibility;
+      self::$staticWorkVisibility=$pe->_workVisibility;
+    }
+    $costVisibility=self::$staticCostVisibility ;
+    $workVisibility=self::$staticWorkVisibility;
+    $validated=(substr($col,0,9)=='validated')?true:false;
+    if ($cost) {
+      if ($costVisibility=='ALL') {
+        return true;
+      } else if ($costVisibility=='NO') {
+        return false;
+      } else if ($costVisibility=='VAL') {
+        if ($validated) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+      	errorLog("ERROR : costVisibility='$costVisibility' is not 'ALL', 'NO' or 'VAL'");
+      }
+    } else if ($work) {
+      if ($workVisibility=='ALL') {
+        return true;
+      } else if ($workVisibility=='NO') {
+        return false;
+      } else if ($workVisibility=='VAL') {
+        if ($validated) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        errorLog("ERROR : workVisibility='$workVisibility' is not 'ALL', 'NO' or 'VAL'");
+      }
+    }
+    return true;
+  }
 }
 ?>
