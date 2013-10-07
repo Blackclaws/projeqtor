@@ -11,19 +11,19 @@ scriptLog('   ->/tool/listColumnSelector');
 $listColumns=ColumnSelector::getColumnsList($objectClass);
 //echo "<textarea>$listColumns</textarea>";
 //asort($columns);
-$pe=new ProjectPlanningElement();
-$pe->setVisibility();
-$workVisibility=$pe->_workVisibility;
-$costVisibility=$pe->_costVisibility;    
+//$pe=new ProjectPlanningElement();
+//$pe->setVisibility();
+//$workVisibility=$pe->_workVisibility;
+//$costVisibility=$pe->_costVisibility;    
 foreach ($listColumns as $col) {
-	if ( ($workVisibility!='ALL' and substr($col->_name,-4)=='Work') or 
-	     ($costVisibility!='ALL' and (substr($col->_name,-4)=='Cost' or substr($col->_name,-6)=='Amount') ) ) {
+	if ( ! SqlElement::isVisibleField($col->_name) ) {
 		// nothing 
 	} else {
 		echo '<div class="dojoDndItem" id="listColumnSelectorId'.$col->id.'" dndType="planningColumn">';
 		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
 	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkListColumnSelectorId'.$col->id.'" ' 
-	    . ((! $col->hidden)?' checked="checked" ':'') 
+	    . ((! $col->hidden)?' checked="checked" ':'')
+	    . (( $col->_name=='id')?' disabled="disabled" ':'') 
 	    . ' onChange="changeListColumn(\'' . $col->id . '\',this.checked,\'' . $col->sortOrder . '\')" '
 	    . '></span><label for="checkColumnSelector'.$col->_name.'" class="checkLabel">';
 	  echo '&nbsp;';

@@ -97,15 +97,18 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         	 showWait();  
            setTimeout('moveTask("' + idFrom + '", "' + idTo + '")',100);
          } else  if (target.id=='dndPlanningColumnSelector') {
-        	 showWait();
         	 setTimeout('movePlanningColumn("' + idFrom + '", "' + idTo + '")',100);
          } else  if (target.id=='dndListColumnSelector') {
-             showWait();
-             setTimeout('moveListColumn("' + idFrom + '", "' + idTo + '")',100);
+           setTimeout('moveListColumn("' + idFrom + '", "' + idTo + '")',100);
          } else if (target.id=='dndTodayParameters') {
         	 setTimeout('reorderTodayItems()',100);  
          }
        }
+    });
+    dndMoveInProgress=false;
+    dojo.subscribe("/dnd/drop/before", function(source, nodes, copy, target){
+    	dndMoveInProgress=true;
+      setTimeout("dndMoveInProgress=false;",50);
     });
     var historyTable=new Array();
     var historyPosition=-1;    

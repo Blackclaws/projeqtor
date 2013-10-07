@@ -93,7 +93,7 @@ class MeetingPlanningElement extends PlanningElement {
     if (! $this->id) {
       $this->hideWorkCost();
     } else {
-      if ($workVisibility=='NO' or $costVisibility=='NO') {
+      if ($workVisibility!='ALL' or $costVisibility!='ALL') {
         $this->hideWorkCost();
       } else {
         $ass=new Assignment();
