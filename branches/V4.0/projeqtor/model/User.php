@@ -391,6 +391,8 @@ class User extends SqlElement {
     }
     $result=array();
     $affPrjList=$this->getAffectedProjects();
+debugLog("***affectedProjects");
+debugLog($affPrjList);
     foreach($affPrjList as $idPrj=>$namePrj) {
     	if (! isset($result[$idPrj])) {
 	      $result[$idPrj]=$namePrj;

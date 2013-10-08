@@ -60,7 +60,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   	global $cptMax, $print, $workVisibility;
     $user=$_SESSION['user'];
     $prjVisLst=$user->getVisibleProjects();
+debugLog("***prjVisLst***");
+debugLog($prjVisLst);
     $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
+debugLog("***prjLst***");    
+debugLog($prjLst);
     $obj=new Action();
     $cptAction=$obj->countGroupedSqlElementsFromCriteria(null,array('idProject','done','idle'),'idProject in '.transformListIntoInClause($prjVisLst));
     $obj=new Risk();
@@ -357,6 +361,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
+debugLog("showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title)");
   	global $cptMax, $print, $cptDisplayId, $collapsedList;
   	$user=$_SESSION['user'];
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');

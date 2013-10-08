@@ -92,7 +92,7 @@
   	$queryWhere.= ($queryWhere=='')?'':' and ';
     $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
   }
-
+debugLog($queryWhere);
   // Remove administrative projects :
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
