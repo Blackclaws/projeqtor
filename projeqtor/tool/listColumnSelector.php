@@ -23,9 +23,9 @@ foreach ($listColumns as $col) {
 		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
 	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkListColumnSelectorId'.$col->id.'" ' 
 	    . ((! $col->hidden)?' checked="checked" ':'')
-	    . (( $col->_name=='id')?' disabled="disabled" ':'') 
+	    . (( $col->_name=='id' or $col->_name=='name')?' disabled="disabled" ':'') 
 	    . ' onChange="changeListColumn(\'' . $col->id . '\',this.checked,\'' . $col->sortOrder . '\')" '
-	    . '></span><label for="checkColumnSelector'.$col->_name.'" class="checkLabel">';
+	    . '></span><label for="checkListColumnSelectorId'.$col->id.'" class="checkLabel">';
 	  echo '&nbsp;';
 	  echo $col->_displayName . "</label>";
 	  echo '</div>';
