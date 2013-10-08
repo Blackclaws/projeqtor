@@ -218,7 +218,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 							  title="<?php echo i18n('columnSelector');?>">
                 <span>title</span>
 							  <div dojoType="dijit.TooltipDialog" class="white" id="listColumnSelectorDialog"
-							    style="width:200px;position: absolute; top: 50px; right: 40%">   
+							    style="position: absolute; top: 50px; right: 40%">   
                   <script type="dojo/connect" event="onHide" args="evt">
                     if (dndMoveInProgress) { this.show(); }
                   </script>
