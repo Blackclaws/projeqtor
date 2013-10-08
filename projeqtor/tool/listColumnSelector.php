@@ -15,6 +15,8 @@ $listColumns=ColumnSelector::getColumnsList($objectClass);
 //$pe->setVisibility();
 //$workVisibility=$pe->_workVisibility;
 //$costVisibility=$pe->_costVisibility;    
+$cpt=0;
+//echo '<table style="width:100%"><tr><td>';
 foreach ($listColumns as $col) {
 	if ( ! SqlElement::isVisibleField($col->_name) ) {
 		// nothing 
@@ -29,7 +31,9 @@ foreach ($listColumns as $col) {
 	  echo '&nbsp;';
 	  echo $col->_displayName . "</label>";
 	  echo '</div>';
+	  $cpt++;
+	  //if ($cpt%10==0) {echo '</td><td>';}
 	}
 }
-
+//echo '</td></tr></table>';
 ?>
