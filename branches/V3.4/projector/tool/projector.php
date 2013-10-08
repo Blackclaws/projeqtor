@@ -482,6 +482,11 @@ function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) {
   if (isset($_SESSION['visibleProjectsList'][$keyVPL])) {
   	return $_SESSION['visibleProjectsList'][$keyVPL];
   }
+  if ($project=="*" or $project=='') {
+  	$user=$_SESSION['user'];
+  	$_SESSION['visibleProjectsList'][$keyVPL]=transformListIntoInClause($user->getVisibleProjects());
+  	return $_SESSION['visibleProjectsList'][$keyVPL];
+  }
   $prj=new Project($project);
   $subProjectsList=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
   $result='(0';
