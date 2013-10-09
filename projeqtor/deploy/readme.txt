@@ -1,5 +1,5 @@
 ================================================================================
-= INSTALL PROJECT'OR RIA                                                       =
+= INSTALL PROJEQTOR                                                            =
 ================================================================================
 
 Pre-requisites :
@@ -31,7 +31,7 @@ Pre-requisites :
     pgsql => if database is PostgreSql
 
 Set-up :
-  - Unzip projectorriaVx.y.z.zip to the web server directory
+  - Unzip projeqtorVx.y.z.zip to the web server directory
   - Run application in your favorite browser, using http://yourserver/projectorria
   - Enjoy !
   
@@ -40,6 +40,11 @@ Configuration :
   - To run again configuration screen, just delete "/tool/parametersLocation.php" file.
   - On first connection, database will be automatically updated.
   - login : admin/admin
+
+Deploy new version ;
+  - Unzip projeqtorVx.y.z.zip to the web server directory
+    (installing from existing version before V4.0.0, please take care than root directory name has changed)
+  - Connect as administrator : database will update automatically.
   
 Support :
-  - you may request support in the Forum of Project'Or RIA web site : http://projectorria.toolware.fr
+  - you may request support in the Forum of ProjeQtOr web site : http://projeqtor.org

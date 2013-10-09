@@ -7,7 +7,7 @@ dependencies = {
 
 	layers: [
 		{
-			name: "projectorDojo.js",
+			name: "projeqtorDojo.js",
 			dependencies: [
 				"dojo.data.ItemFileWriteStore",
 			    "dojo.date",
