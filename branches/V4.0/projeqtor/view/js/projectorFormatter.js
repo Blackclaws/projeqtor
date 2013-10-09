@@ -155,23 +155,23 @@ function numericFormatter(value) {
 
 function workFormatter(value) {
 	  // result=dojo.number.format(value);
-	  roundedValue=Math.round(value*100)/100;
+	  roundedValue=dojo.number.format(Math.round(value*100)/100);
 	  // var result = roundedValue.replace(/^0+/g,'');
 	  // result = value.replace(/^0+/g,'');
 	  var unit=(paramWorkUnit=='days')?i18n('shortDay'):i18n('shortHours');
-	  return roundedValue+" "+unit;
+	  return roundedValue+'&nbsp;'+unit;
 	}
 
 
 function costFormatter(value) {
 	  // result=dojo.number.format(value);
-	  roundedValue=Math.round(value*100)/100;
+	  roundedValue=dojo.number.format(Math.round(value*100)/100);
 	  // var result = roundedValue.replace(/^0+/g,'');
 	  // result = value.replace(/^0+/g,'');
 	  if (paramCurrencyPosition=='before') {
-	    return paramCurrency+" "+roundedValue;
+	    return paramCurrency+'&nbsp;'+roundedValue;
 	  } else {
-	    return roundedValue+" "+paramCurrency;
+	    return roundedValue+'&nbsp;'+paramCurrency;
 	  }
 	}
 /**

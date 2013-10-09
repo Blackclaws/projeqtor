@@ -53,6 +53,10 @@ function dateFormatter($value) {
   return htmlFormatDate($value,false);
 }
 
+function timeFormatter($value) {
+  return htmlFormatTime($value,false);
+}
+
 function dateTimeFormatter($value) {
   return htmlFormatDateTime($value,false);
 }
@@ -102,3 +106,13 @@ function numericFixLengthFormatter($val, $numericLength=0) {
   }
   return $val;
 }
+
+function workFormatter($value) {
+  //$val=ltrim($value,"0");
+  return Work::displayWorkWithUnit(htmlDisplayNumeric($value));
+}
+
+function costFormatter($value) {
+	return htmlDisplayCurrency($value);
+}
+

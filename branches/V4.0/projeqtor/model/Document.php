@@ -43,19 +43,11 @@ class Document extends SqlElement {
     <th field="nameProject" width="10%">${idProject}</th>
     <th field="nameProduct" width="10%">${idProduct}</th>
     <th field="nameDocumentType" width="10%">${type}</th>
-    <th field="nameDocumentDirectory" width="15%">${idDocumentDirectory}</th>
     <th field="name" width="25%">${name}</th>
-    <th field="reference" width="10%" hidden="true">${reference}</th>
-    <th field="documentReference" width="10%" hidden="true">${documentReference}</th>
-    <th field="externalReference" width="10%" hidden="true">${externalReference}</th>
-    <th field="nameAuthor" width="10%" hidden="true">${idAuthor}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameVersioningType" width="10%" hidden="true">${idVersioningType}</th>
     <th field="nameDocumentVersion" width="10%">${currentDocumentVersion}</th>
-    <th field="nameDocumentVersionRef" width="10%">${referenceDocumentVersion}</th>
+    <th field="nameDocumentVersionRef" width="10%">${reference}</th>
     <th field="locked" width="5%" formatter="booleanFormatter">${locked}</th>
-    <th field="nameLocker" width="10%" hidden="true">${idLocker}</th>
-    <th field="lockedDate" width="10%" hidden="true" formatter="dateFormatter">${lockedDate}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 //<th field="nameCurrentVersion" width="10%">${idCurrentVersion}</th>
