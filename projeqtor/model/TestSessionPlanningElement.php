@@ -68,7 +68,7 @@ class TestSessionPlanningElement extends PlanningElement {
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
-    "idTestSessionPlanningMode"=>"required,mediumWidth",
+    "idTestSessionPlanningMode"=>"required,mediumWidth  ",
     "idPlanningMode"=>"hidden,noImport"
   );   
   
