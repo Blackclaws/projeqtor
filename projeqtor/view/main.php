@@ -121,6 +121,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
     var draftSeparator='<?php echo Parameter::getGlobalParameter('draftSeparator');?>';
+    var paramCurrency='<?php echo $currency;?>';
+    var paramCurrencyPosition='<?php echo $currencyPosition;?>';
+    var paramWorkUnit='<?php echo Parameter::getGlobalParameter('workUnit');?>';
+    var paramHoursPerDay='<?php echo Parameter::getGlobalParameter('dayTime');?>';
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
