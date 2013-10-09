@@ -18,14 +18,14 @@ $listColumns=ColumnSelector::getColumnsList($objectClass);
 $cpt=0;
 //echo '<table style="width:100%"><tr><td>';
 foreach ($listColumns as $col) {
-	if ( ! SqlElement::isVisibleField($col->_name) ) {
+	if ( ! SqlElement::isVisibleField($col->attribute) ) {
 		// nothing 
 	} else {
 		echo '<div class="dojoDndItem" id="listColumnSelectorId'.$col->id.'" dndType="planningColumn">';
 		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
 	  echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkListColumnSelectorId'.$col->id.'" ' 
 	    . ((! $col->hidden)?' checked="checked" ':'')
-	    . (( $col->_name=='id' or $col->_name=='name')?' disabled="disabled" ':'') 
+	    . (( $col->field=='id' or $col->field=='name')?' disabled="disabled" ':'') 
 	    . ' onChange="changeListColumn(\'' . $col->id . '\',this.checked,\'' . $col->sortOrder . '\')" '
 	    . '></span><label for="checkListColumnSelectorId'.$col->id.'" class="checkLabel">';
 	  echo '&nbsp;';

@@ -222,13 +222,34 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                   <script type="dojo/connect" event="onHide" args="evt">
                     if (dndMoveInProgress) { this.show(); }
                   </script>
+                  <div style="text-align: center;"> 
+                    <button dojoType="dijit.form.Button" title="<?php echo i18n('titleResetList');?>"
+                        id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
+                        <script type="dojo/connect" event="onClick" args="evt">
+                        resetListColumn();
+                      </script>
+                      </button>
+                    <button title="" dojoType="dijit.form.Button" 
+                      id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                      <script type="dojo/connect" event="onClick" args="evt">
+                        validateListColumn();
+                      </script>
+                    </button>
+                  </div>   
+                  <div style="height:5px;border-bottom:1px solid #AAAAAA"></div>    
 							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  
 							      dndType="column"
 							      withhandles="true" class="container">    
 							      <?php include('../tool/listColumnSelector.php')?>
 							    </div>
-                  <div style="height:5px;"></div>    
+                  <div style="height:5px;border-top:1px solid #AAAAAA"></div>    
                   <div style="text-align: center;"> 
+	                  <button dojoType="dijit.form.Button" title="<?php echo i18n('titleResetList');?>"
+	                      id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
+	                      <script type="dojo/connect" event="onClick" args="evt">
+                        resetListColumn();
+                      </script>
+	                    </button>
                     <button title="" dojoType="dijit.form.Button" 
                       id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
                       <script type="dojo/connect" event="onClick" args="evt">

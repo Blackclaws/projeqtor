@@ -170,10 +170,12 @@ CREATE TABLE `${prefix}columnselector` (
   `hidden` int(1) unsigned DEFAULT 0,
   `sortOrder` int(3) unsigned default 0,
   `widthPct` int(3) unsigned default 0,
+  `name` varchar(100) DEFAULT NULL,
+  `subItem` varchar(100) DEFAULT NULL,
+  `formatter` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-CREATE INDEX userColumnSelector ON `${prefix}columnselector` (idUser);
-CREATE INDEX objectClassColumnSelector ON `${prefix}columnselector` (objectClass);
+CREATE INDEX scopeColumnSelector ON `${prefix}columnselector` (scope, objectClass, idUser);
 
 -- CANCELLED
 ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';

@@ -8,9 +8,11 @@
 //=============================================================================
 
 /**
- * Format a JS date as YYYY-MM-DD 
- * @param value the value 
- * @return the formatted value 
+ * Format a JS date as YYYY-MM-DD
+ * 
+ * @param value
+ *          the value
+ * @return the formatted value
  */
 function formatDate(date) {
 	if (! date) {
@@ -32,9 +34,12 @@ function getDate(dateString) {
 // = FORMATTERS (available for dojox.DataGrid formating)
 // ============================================================================
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format boolean to present a chechbox (checked or not depending on the value)
- * @param value the value of the boolean (true or false)
+ * 
+ * @param value
+ *          the value of the boolean (true or false)
  * @return the formatted value as an image (html code)
  */
 function booleanFormatter(value) {
@@ -45,9 +50,12 @@ function booleanFormatter(value) {
   }
 }
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format value to present a color
- * @param value the value of the boolean (true or false)
+ * 
+ * @param value
+ *          the value of the boolean (true or false)
  * @return the formatted value as an image (html code)
  */
 function colorFormatter(value) {
@@ -58,9 +66,12 @@ function colorFormatter(value) {
   }
 }
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format value to present a name in a colored field
- * @param value the value of the boolean (true or false)
+ * 
+ * @param value
+ *          the value of the boolean (true or false)
  * @return the formatted value as an image (html code)
  */
 function colorNameFormatter(value) {
@@ -95,9 +106,12 @@ function colorNameFormatter(value) {
   }
 }
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format boolean to present a color
- * @param value the value of the boolean (true or false)
+ * 
+ * @param value
+ *          the value of the boolean (true or false)
  * @return the formatted value as an image (html code)
  */
 function translateFormatter(value, prefix) {
@@ -108,9 +122,12 @@ function translateFormatter(value, prefix) {
   }
 }
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format percent value
- * @param value the value of the boolean (true or false)
+ * 
+ * @param value
+ *          the value of the boolean (true or false)
  * @return the formatted value as an image (html code)
  */
 function percentFormatter(value) {
@@ -121,30 +138,44 @@ function percentFormatter(value) {
   }
 }
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format numeric value (removes leading zeros)
- * @param value the value 
- * @return the formatted value 
+ * 
+ * @param value
+ *          the value
+ * @return the formatted value
  */
 function numericFormatter(value) {
-  //result=dojo.number.format(value);
+  // result=dojo.number.format(value);
   var result = value.replace(/^0+/g,'');
-  //result = value.replace(/^0+/g,'');
+  // result = value.replace(/^0+/g,'');
   return result;
 }
 
 function workFormatter(value) {
-	  //result=dojo.number.format(value);
-	  roundedValue=Math.round(value*10)/10;
-	  //var result = roundedValue.replace(/^0+/g,'');
-	  //result = value.replace(/^0+/g,'');
+	  // result=dojo.number.format(value);
+	  roundedValue=Math.round(value*100)/100;
+	  // var result = roundedValue.replace(/^0+/g,'');
+	  // result = value.replace(/^0+/g,'');
 	  return roundedValue;
 	}
 
-/** ============================================================================
+
+function costFormatter(value) {
+	  // result=dojo.number.format(value);
+	  roundedValue=Math.round(value*100)/100;
+	  // var result = roundedValue.replace(/^0+/g,'');
+	  // result = value.replace(/^0+/g,'');
+	  return roundedValue;
+	}
+/**
+ * ============================================================================
  * Format date value (depends on locale)
- * @param value the value 
- * @return the formatted value 
+ * 
+ * @param value
+ *          the value
+ * @return the formatted value
  */
 function dateFormatter(value) {
   if (value.length==10) {
@@ -155,15 +186,21 @@ function dateFormatter(value) {
   }
 }
 
-/** ============================================================================
+/**
+ * ============================================================================
  * Format date & time value (depends on locale)
- * @param value the value 
- * @return the formatted value 
+ * 
+ * @param value
+ *          the value
+ * @return the formatted value
  */
-/** ============================================================================
+/**
+ * ============================================================================
  * Format date & time value (depends on locale)
- * @param value the value 
- * @return the formatted value 
+ * 
+ * @param value
+ *          the value
+ * @return the formatted value
  */
 function dateTimeFormatter(value) {
   if (value && value.length==19) {
@@ -255,10 +292,10 @@ if (window.addEventListener) {
   window.addEventListener("keydown", function(e){
     keys.push(e.keyCode);
     if (konami.indexOf(keys.toString())==0) {    
-      //console.log(keys.length);
+      // console.log(keys.length);
       if (keys.toString().indexOf(konami) >= 0) {
         var rnd=Math.floor(Math.random()*konamiMsg.length);
-        //rnd=0; console.log(simpleCrypt(konamiMsg[rnd]));
+        // rnd=0; console.log(simpleCrypt(konamiMsg[rnd]));
     	showInfo(simpleDecrypt(konamiMsg[rnd]));
         keys = [];
       };

@@ -3898,6 +3898,25 @@ function validateListColumn() {
 	loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
     		+"&objectId="+dojo.byId('objectId').value,"listDiv");
 }
+
+function resetListColumn() {
+	var actionOK=function() {
+	  showWait();
+	  dijit.byId('listColumnSelector').closeDropDown();
+	  dojo.xhrGet({
+		url: '../tool/saveSelectedColumn.php?action=reset&objectClass='+dojo.byId('objectClass').value,
+		handleAs: "text",
+		load: function(data,args) { 
+			loadContent("objectList.php?objectClass="+dojo.byId('objectClass').value
+		    		+"&objectId="+dojo.byId('objectId').value,"listDiv");
+		},
+		error: function() {	
+		}
+	  });	
+	};
+	showConfirm (i18n('confirmResetList'), actionOK);
+}
+
 function moveListColumn(source,destination) {
   var mode='';
   var list='';
