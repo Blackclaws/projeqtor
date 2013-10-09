@@ -56,6 +56,9 @@ class ColumnSelector extends SqlElement {
 		$csList=$cs->getSqlElementsFromCriteria($crit, false, null, 'sortOrder asc');
 		$result=array();
 		foreach ($csList as $cs) {
+		  if (! SqlElement::isVisibleField($cs->attribute)) {
+        continue;
+      }
       $cs->_name=$cs->attribute;
       $dispObj=$obj;
       if ($cs->subItem) {
@@ -143,10 +146,14 @@ class ColumnSelector extends SqlElement {
 			if (substr($col,0,1)=='_') {
 				continue;
 			}
-			if ($obj->isAttributeSetToField($col,'hidden') or $obj->isAttributeSetToField($col,'noList')) {
+			if ($obj->isAttributeSetToField($col,'hidden') or $obj->isAttributeSetToField($col,'noList') 
+			 or $obj->isAttributeSetToField($col,'calculated')) {
 				continue;
 			}
 			if ($col=="password" or $col=="Origin") {
+				continue;
+			}
+			if (! SqlElement::isVisibleField($col)) {
 				continue;
 			}
 			if (is_object($val)) {
