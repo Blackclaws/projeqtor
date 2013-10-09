@@ -158,7 +158,8 @@ function workFormatter(value) {
 	  roundedValue=Math.round(value*100)/100;
 	  // var result = roundedValue.replace(/^0+/g,'');
 	  // result = value.replace(/^0+/g,'');
-	  return roundedValue;
+	  var unit=(paramWorkUnit=='days')?i18n('shortDay'):i18n('shortHours');
+	  return roundedValue+" "+unit;
 	}
 
 
@@ -167,7 +168,11 @@ function costFormatter(value) {
 	  roundedValue=Math.round(value*100)/100;
 	  // var result = roundedValue.replace(/^0+/g,'');
 	  // result = value.replace(/^0+/g,'');
-	  return roundedValue;
+	  if (paramCurrencyPosition=='before') {
+	    return paramCurrency+" "+roundedValue;
+	  } else {
+	    return roundedValue+" "+paramCurrency;
+	  }
 	}
 /**
  * ============================================================================
