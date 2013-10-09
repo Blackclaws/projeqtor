@@ -59,20 +59,12 @@ class Project extends SqlElement {
     <th field="nameProjectType" width="10%" >${type}</th>
     <th field="color" width="4%" formatter="colorFormatter">${color}</th>
     <th field="projectCode" width="6%" >${projectCode}</th>
-    <th field="nameUser" width="8%" hidden="true">${manager}</th>
     <th field="nameClient" width="8%" >${clientName}</th>
     <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="colorNameHealth" width="8%" formatter="colorNameFormatter">${idHealth}</th>
     <th field="progress" from="ProjectPlanningElement" width="5%" formatter="percentFormatter">${progress}</th>
-    <th field="expectedProgress" from="ProjectPlanningElement" width="5%" formatter="percentFormatter" hidden="true">${expectedProgress}</th>
-    <th field="nameOverallProgress" width="5%" hidden="true">${idOverallProgress}</th>
-    <th field="fixPlanning" width="5%" hidden="true" formatter="booleanFormatter">${fixPlanning}</th>
-    <th field="priority" from="ProjectPlanningElement" width="8%" hidden="true">${priority}</th>
     <th field="validatedEndDate" from="ProjectPlanningElement" width="8%" formatter="dateFormatter">${validatedEnd}</th>
-    <th field="plannedEndDate" from="ProjectPlanningElement" width="8%" formatter="dateFormatter">${plannedEnd}</th>
-    <th field="validatedWork" from="ProjectPlanningElement" width="8%" formatter="workFormatter" hidden="true">${validatedWork}</th>
-    <th field="plannedWork" from="ProjectPlanningElement" width="8%" formatter="workFormatter" hidden="true">${plannedWork}</th>
-    <th field="leftWork" from="ProjectPlanningElement" width="8%" formatter="workFormatter" hidden="true">${leftWork}</th>  
+    <th field="plannedEndDate" from="ProjectPlanningElement" width="8%" formatter="dateFormatter">${plannedEnd}</th>  
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';

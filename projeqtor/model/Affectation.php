@@ -35,7 +35,7 @@ public $_noCopy;
                                                    'idContact'=>'orContact',
                                                    'idResourceSelect'=>'idResource');
   
-   private static $_fieldsAttributes=array("idResourceSelect"=>"hidden, forceExport", "idResource"=>"noExport"); 
+   private static $_fieldsAttributes=array("idResourceSelect"=>"hidden, forceExport", "idResource"=>"noExport,noList"); 
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

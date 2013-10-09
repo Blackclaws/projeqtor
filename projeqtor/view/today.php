@@ -357,7 +357,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
-debugLog("showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title)");
   	global $cptMax, $print, $cptDisplayId, $collapsedList;
   	$user=$_SESSION['user'];
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');

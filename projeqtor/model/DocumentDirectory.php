@@ -22,7 +22,8 @@ class DocumentDirectory extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="location" width="60%">${location}</th>
+    <th field="location" width="45%">${location}</th>
+    <th field="name" width="15%">${name}</th>
     <th field="nameProject" width="15%">${idProject}</th>
     <th field="nameProduct" width="15%">${idProduct}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
@@ -33,7 +34,8 @@ class DocumentDirectory extends SqlElement {
                                                     );
    
    private static $_fieldsAttributes=array("name"=>"required",
-                                           "location"=>"readonly");  
+                                           "location"=>"readonly",
+                                           "idDocumentDirectory"=>"noList");  
   
    /** ==========================================================================
    * Constructor

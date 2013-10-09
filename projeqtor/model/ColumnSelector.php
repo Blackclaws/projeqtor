@@ -65,7 +65,11 @@ class ColumnSelector extends SqlElement {
       	}
       	$dispObj=$$fromObj;
       }
-      $cs->_displayName=$dispObj->getColCaption($cs->_name);		
+      $cs->_displayName=$dispObj->getColCaption($cs->_name);
+		  if (substr($cs->attribute,0,9)=='idContext') {
+		  	$ctx=new ContextType(substr($cs->attribute,-1));
+        $cs->_displayName=$ctx->name;
+      }		
       $cs->_from=$cs->subItem;
 			$result[$cs->attribute]=$cs;
 		}
@@ -103,7 +107,6 @@ class ColumnSelector extends SqlElement {
 			$cs->formatter=$entry->getAttribute("formatter");
 			$cs->_from=$entry->getAttribute("from");
 			$cs->subItem=$cs->_from;
-			$cpt++;
 			if (!$cs->id) { $cs->save(); }
 			$result[$attribute]=$cs;
 		}
@@ -140,7 +143,7 @@ class ColumnSelector extends SqlElement {
 			if (substr($col,0,1)=='_') {
 				continue;
 			}
-			if ($obj->isAttributeSetToField($col,'hidden')) {
+			if ($obj->isAttributeSetToField($col,'hidden') or $obj->isAttributeSetToField($col,'noList')) {
 				continue;
 			}
 			if ($col=="password" or $col=="Origin") {
@@ -153,7 +156,7 @@ class ColumnSelector extends SqlElement {
 
 			$dataType = $obj->getDataType($col);
 			$dataLength = $obj->getDataLength($col);
-			if ($dataLength>100) {
+			if ($dataLength>100 or $dataType=='text') {
 				continue;
 			}
 			$cpt++;
@@ -176,13 +179,23 @@ class ColumnSelector extends SqlElement {
 			$cs->widthPct=5;
 			$cs->name=$col;
 			$cs->_displayName=$obj->getColCaption($col);
+			if (substr($cs->attribute,0,9)=='idContext') {
+        $ctx=new ContextType(substr($cs->attribute,-1));
+        $cs->_displayName=$ctx->name;
+      } 
 			$cs->formatter='';
 			$cs->hidden=1;
 			if ($col=='id') {
 				$cs->formatter="numericFormatter";
-			} else if ($dataType=='date' or $dataType=='datetime' or $dataType=='time') {
+			} else if ($dataType=='date') {
 				$cs->formatter="dateFormatter";
 				$cs->widthPct=10;
+			} else if ($dataType=='datetime') {
+        $cs->formatter="dateTimeFormatter";
+        $cs->widthPct=10;
+      } else if ($dataType=='time') {
+        $cs->formatter="timeFormatter";
+        $cs->widthPct=10;
 			} else if ($col=='color' and $dataLength == 7 ) {
 				$cs->formatter="colorFormatter";
 			} else if ($dataType=='int' and $dataLength==1) {
@@ -197,12 +210,12 @@ class ColumnSelector extends SqlElement {
 	        } else if(property_exists($idClass, '_isNameTranslatable')) {
 	          $cs->formatter="translateFormatter";
 	        } else {
-	          $cs->formatter="nameFormatter";
+	          //$cs->formatter="";
 	        }
 	        $cs->widthPct=10;
 				}
 			} else if ($dataType=='int' or $dataType=='decimal') {
-				if (strtolower(substr($col,-8))=='progress') {
+				if (strtolower(substr($col,-8))=='progress' or strpos($col,'Pct')!=false) {
 					 $cs->formatter="percentFormatter";
 				} else if (strtolower(substr($col,-4))=='work') {
 					 $cs->formatter="workFormatter";

@@ -267,7 +267,7 @@
 	          $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	            ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
 	            ' = ' . $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('id');
-	        } else if (strlen($fld)>4 and substr($fld,0,4)=="name") {
+	        } else if (strlen($fld)>4 and substr($fld,0,4)=="name" and !$from) {
 	          $idTab+=1;
 	          // requested field is nameXXX => must fetch it from external table, using idXXX
 	          $externalClass = substr($fld,4);
@@ -297,17 +297,28 @@
 	          // Link to external table
 	          $externalClass = $from;
 	          $externalObj=new $externalClass();
-	          $externalTable = $externalObj->getDatabaseTableName();
-	          // Test for bug #419
-	          //$externalTableAlias = $externalClass;
-	          //$externalTableAlias = $externalObj->getDatabaseTableName();          
+	          $externalTable = $externalObj->getDatabaseTableName();          
 	          $externalTableAlias = strtolower($externalClass);
-	          $querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
 	          if (! stripos($queryFrom,$externalTableAlias)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	              ' on (' . $externalTableAlias . '.refId=' . $table . ".id" . 
 	              ' and ' . $externalTableAlias . ".refType='" . $objectClass . "')";
 	          }
+	          if (strlen($fld)>4 and substr($fld,0,4)=="name") {
+              $idTab+=1;
+              // requested field is nameXXX => must fetch it from external table, using idXXX
+              $externalClassName = substr($fld,4);
+              $externalObjName=new $externalClassName();
+              $externalTableName = $externalObjName->getDatabaseTableName();
+              $externalTableAliasName = 'T' . $idTab;
+              $querySelect .= $externalTableAliasName . '.' . $externalObjName->getDatabaseColumnName('name') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+              $queryFrom .= ' left join ' . $externalTableName . ' as ' . $externalTableAliasName .
+                  ' on ' . $externalTableAlias . "." . $externalObj->getDatabaseColumnName('id' . $externalClassName) . 
+                  ' = ' . $externalTableAliasName . '.' . $externalObjName->getDatabaseColumnName('id');   
+            } else {
+            	$querySelect .=  $externalTableAlias . '.' . $externalObj->getDatabaseColumnName($fld) . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+            } 	
+            
 	          if ( property_exists($externalObj,'wbsSortable') 
 	            and strpos($queryOrderBy,$externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable'))===false) {
 	            $queryOrderBy .= ($queryOrderBy=='')?'':', ';
@@ -477,6 +488,8 @@
 	              $disp=dateTimeFormatter($val);
 	            } else if ($formatter[$numField]=="dateFormatter") {
 	              $disp=dateFormatter($val);
+	            } else if ($formatter[$numField]=="timeFormatter") {
+                $disp=timeFormatter($val);
 	            } else if ($formatter[$numField]=="translateFormatter") {
 	              $disp=translateFormatter($val);
 	            } else if ($formatter[$numField]=="percentFormatter") {
@@ -485,6 +498,10 @@
 	              $disp=numericFormatter($val);
 	            } else if ($formatter[$numField]=="sortableFormatter") {
 	              $disp=sortableFormatter($val);
+	            } else if ($formatter[$numField]=="workFormatter") {
+                $disp=workFormatter($val);
+              } else if ($formatter[$numField]=="costFormatter") {
+                $disp=costFormatter($val);
 	            } else if (substr($formatter[$numField],0,5)=='thumb') {
 	            	$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
 	            } else {
@@ -510,7 +527,15 @@
           foreach ($line as $id => $val) {
             echo (++$nbFields>1)?',':'';
             $numericLength=0;
-            if ($id=='id') {$numericLength=6;} else if ($id=='progress') {$numericLength=3;}
+            if ($id=='id') {
+            	$numericLength=6;
+            } else if ($formatter[$nbFields]=='percentFormatter') {
+            	$numericLength=3;
+            } else if ($formatter[$nbFields]=='workFormatter' or $formatter[$nbFields]=='costFormatter') {
+            	$numericLength=9;
+            } else if ($formatter[$nbFields]=='numericFormatter') {
+            	$numericLength=9;
+            }
             if ($id=='colorNameRunStatus') {
             	$split=explode('#',$val);
             	foreach ($split as $ix=>$sp) {
