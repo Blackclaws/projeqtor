@@ -42,7 +42,7 @@
        break;
      }
    }
-   $defaultTheme="ProjectOrRiaLight";
+   $defaultTheme="ProjeQtOrLight";
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -52,10 +52,10 @@
   <title>Project'Or RIA - Manual</title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <?php if (file_exists("../view/css/projector.css")) {?>
-    <link rel="stylesheet" type="text/css" href="../view/css/projector.css" />
+  <?php if (file_exists("../view/css/projeqtor.css")) {?>
+    <link rel="stylesheet" type="text/css" href="../view/css/projeqtor.css" />
   <?php } else {?>
-    <link rel="stylesheet" type="text/css" href="projector.css" />
+    <link rel="stylesheet" type="text/css" href="projeqtor.css" />
   <?php } ?>
   <?php if (file_exists("../external/dojo/dojo.js")) {?>
   <script type="text/javascript" 
@@ -185,7 +185,7 @@ function displayIndex($page, $tag) {
 
 function getTheme() {
   global $defaultTheme;
-  $theme='ProjectOrRia'; // default if never  set
+  $theme='ProjeQtOr'; // default if never  set
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
   }
