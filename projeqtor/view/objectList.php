@@ -222,6 +222,9 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                   <script type="dojo/connect" event="onHide" args="evt">
                     if (dndMoveInProgress) { this.show(); }
                   </script>
+                  <script type="dojo/connect" event="onShow" args="evt">
+                    recalculateColumnSelectorName();
+                  </script>                 
                   <div style="text-align: center;"> 
                     <button dojoType="dijit.form.Button" title="<?php echo i18n('titleResetList');?>"
                         id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
@@ -235,6 +238,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                         validateListColumn();
                       </script>
                     </button>
+                    <div style="position: absolute;top: 27px; right:10px;" id="columnSelectorTotWidthTop"></div>
                   </div>   
                   <div style="height:5px;border-bottom:1px solid #AAAAAA"></div>    
 							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  
@@ -256,6 +260,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
                         validateListColumn();
                       </script>
                     </button>
+                    <div style="position: absolute;bottom: 15px; right:10px;" id="columnSelectorTotWidthBottom"></div>
                   </div>   
 							  </div>
 							</div>   

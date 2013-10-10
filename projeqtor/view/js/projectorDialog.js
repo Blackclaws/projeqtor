@@ -3883,15 +3883,36 @@ function movePlanningColumn(source,destination) {
  * ========================================================================
  */
 
-function changeListColumn(colId,status,order) {
-	dojo.xhrGet({
+function changeListColumn(tableId,fieldId,status,order) {
+  var spinner=dijit.byId('checkListColumnSelectorWidthId'+fieldId);
+  spinner.set('disabled',! status);
+  dojo.xhrGet({
 		url: '../tool/saveSelectedColumn.php?action=status&status='
-			+ ((status)?'visible':'hidden')+'&item='+colId,
+			+ ((status)?'visible':'hidden')+'&item='+tableId,
 		handleAs: "text",
 		load: function(data,args) { },
 		error: function() { }
 	  });	
+  recalculateColumnSelectorName();
 }
+
+function changeListColumnWidth(tableId,fieldId,width) {
+  if (width<1) {
+    width=1;
+    dijit.byId('checkListColumnSelectorWidthId'+fieldId).set('value',width);
+  } else if (width>50) {
+    width=50;
+    dijit.byId('checkListColumnSelectorWidthId'+fieldId).set('value',width);
+  }
+  dojo.xhrGet({
+    url: '../tool/saveSelectedColumn.php?action=width&item='+tableId+'&width='+width,
+    handleAs: "text",
+    load: function(data,args) { },
+    error: function() { }
+    });
+  recalculateColumnSelectorName();
+}
+
 function validateListColumn() {
 	showWait();
 	dijit.byId('listColumnSelector').closeDropDown();
@@ -3940,6 +3961,44 @@ function moveListColumn(source,destination) {
   //setGanttVisibility(g);
   //JSGantt.changeFormat(g.getFormat(),g);
   //hideWait();
+}
+
+function recalculateColumnSelectorName() {
+  cpt=0;
+  tot=0;
+  while (cpt<999) {
+    item=dijit.byId('checkListColumnSelectorWidthId'+cpt);
+    if (item) {
+      if (! item.get('disabled')) {
+        tot+=item.get('value');
+      }
+    } else {
+      cpt=999;
+    }
+    cpt++;
+  }
+  name="checkListColumnSelectorWidthId"+dojo.byId('columnSelectorNameFieldId').value;
+  nameWidth=100-tot;
+  color="";
+  if (nameWidth<10) {
+    nameWidth=10;
+    color="#FFAAAA";
+  }
+  dijit.byId(name).set('value',nameWidth);
+  totWidth=tot+nameWidth;
+  totWidthDisplay="";
+  if (color) {
+    totWidthDisplay='<div style="background-color:'+color+'">'+totWidth+'&nbsp;%</div>';
+  }
+  dojo.byId('columnSelectorTotWidthTop').innerHTML=totWidthDisplay;
+  dojo.byId('columnSelectorTotWidthBottom').innerHTML=totWidthDisplay;
+  dojo.xhrGet({
+    url: '../tool/saveSelectedColumn.php?action=width&item='
+       +dojo.byId('columnSelectorNameTableId').value+'&width='+nameWidth,
+    handleAs: "text",
+    load: function(data,args) { },
+    error: function() { }
+    });
 }
 
 // =========================================================
