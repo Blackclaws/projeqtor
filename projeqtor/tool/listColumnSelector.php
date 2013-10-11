@@ -43,6 +43,7 @@ foreach ($listColumns as $col) {
 			echo ($col->hidden or $col->attribute=='name')?'disabled="disabled" ':'';
 			if ($col->attribute!='name') {	
 			  echo ' onChange="changeListColumnWidth(\'' . $col->id . '\','.$cpt.',this.value)" ';
+			  echo ' onClick="recalculateColumnSelectorName()" ';
 			}	 
 			echo ' constraints="{ min:1, max:50, places:0 }"';
 			echo ' style="width:35px; text-align: center;" value="'.$col->widthPct.'" >';
