@@ -132,7 +132,7 @@ function translateFormatter(value, prefix) {
  */
 function percentFormatter(value) {
   if (value) { 
-   return parseInt(value,10) + ' %';
+   return parseInt(value,10) + '&nbsp;%';
   } else { 
   	return ''; 
   }
