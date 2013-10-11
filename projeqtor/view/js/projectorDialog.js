@@ -3864,10 +3864,10 @@ function movePlanningColumn(source,destination) {
   var nodeList=dndPlanningColumnSelector.getAllNodes();
   planningColumnOrder=new Array();
   for (i=0; i<nodeList.length; i++) {
-	item=nodeList[i].id.substr(14);
-	check=(dijit.byId('checkColumnSelector'+item).get('checked'))?'':'hidden';
-    list+=item+"|";
-    planningColumnOrder[i]=check+item;
+	var itemSelected=nodeList[i].id.substr(14);
+	check=(dijit.byId('checkColumnSelector'+itemSelected).get('checked'))?'':'hidden';
+    list+=itemSelected+"|";
+    planningColumnOrder[i]=check+itemSelected;
   }
   var url='../tool/movePlanningColumn.php?orderedList='+list;
   dojo.xhrPost({
@@ -3944,10 +3944,10 @@ function moveListColumn(source,destination) {
   var nodeList=dndListColumnSelector.getAllNodes();
   listColumnOrder=new Array();
   for (i=0; i<nodeList.length; i++) {
-	item=nodeList[i].id.substr(20);
-	//check=(dijit.byId('checkListColumnSelector'+item).get('checked'))?'':'hidden';
-    list+=item+"|";
-    //listColumnOrder[i]=check+item;
+	var itemSelected=nodeList[i].id.substr(20);
+	//check=(dijit.byId('checkListColumnSelector'+itemSelected).get('checked'))?'':'hidden';
+    list+=itemSelected+"|";
+    //listColumnOrder[i]=check+itemSelected;
   }
   //dijit.byId('listColumnSelector').closeDropDown();
   var url='../tool/moveListColumn.php?orderedList='+list;
@@ -3967,10 +3967,10 @@ function recalculateColumnSelectorName() {
   cpt=0;
   tot=0;
   while (cpt<999) {
-    item=dijit.byId('checkListColumnSelectorWidthId'+cpt);
-    if (item) {
-      if (! item.get('disabled')) {
-        tot+=item.get('value');
+    var itemSelected=dijit.byId('checkListColumnSelectorWidthId'+cpt);
+    if (itemSelected) {
+      if (! itemSelected.get('disabled')) {
+        tot+=itemSelected.get('value');
       }
     } else {
       cpt=999;
