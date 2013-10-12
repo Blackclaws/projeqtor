@@ -27,6 +27,10 @@
       $criteriaRoot['idUser']=null; 
       $criteriaRoot['idProject']=null;
       break;
+    default:
+    	traceHack();
+    	exit;
+    	
   }
   
   /** =========================================================================

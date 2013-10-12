@@ -176,7 +176,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           $pValue='p'.$i.'value';
           if (array_key_exists($pName,$_REQUEST) and array_key_exists($pValue,$_REQUEST) ) {
             $firstPage.=($i==1)?'?':'&';
-            $firstPage.=$_REQUEST[$pName]."=".$_REQUEST[$pValue];
+            $firstPage.=htmlentities($_REQUEST[$pName])."=".htmlentities($_REQUEST[$pValue]);
           } else {
             break;
           }

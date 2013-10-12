@@ -50,6 +50,7 @@ $testMode=false;              // Setup a variable for testing purpose test.php c
 $i18nMessages=null;           // Array containing messages depending on local (initialized at first need)
    
 setupLocale();                // Set up the locale : must be called before any call to i18n()
+securityCheckRequest();
 
 $paramIconSize=setupIconSize();              // 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
@@ -341,6 +342,17 @@ function disableCatchErrors() {
   $globalCatchErrors=false;
 }
 
+function traceHack() {
+  errorLog ("HACK ================================================================");
+  errorLog ("Try to hack database detected");
+  errorLog (" QUERY_STRING=".$_SERVER['QUERY_STRING']);
+  errorLog (" REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']);
+  errorLog (" SCRIPT_FILENAME=".$_SERVER['SCRIPT_FILENAME']);
+  errorLog (" REQUEST_URI=".$_SERVER['REQUEST_URI']);
+  include "../tool/hackMessage.php";
+  //exit;
+}
+      
 /** ============================================================================
  * Format error message, display it and exit script
  * NB : error messages are not using i18n (because it may be the origin of the error)
@@ -1882,6 +1894,20 @@ function formatBrowserDateToDate($dateTime) {
 		return date('Y-m-d H:i:s', mktime($hour, $minute, $second, $month, $day, $year));
 	} else {
 		return date('Y-m-d', mktime(0, 0, 0, $month, $day, $year));
+	}
+}
+
+function securityCheckRequest() {
+	// parameters to check for non html
+	$parameters=array('objectClass','objectId','directAccess');
+	foreach($parameters as $param) {
+		if (isset($_REQUEST[$param])) {
+			$paramVal=$_REQUEST[$param];
+		  if (htmlEntities($paramVal)!=$paramVal) {
+		    traceHack();
+		    exit;
+		  }
+		}
 	}
 }
 
