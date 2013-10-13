@@ -4427,3 +4427,7 @@ function checkReportPrint () {
       }
   }
 }
+
+function refreshProjectSelectorList() {
+	
+}

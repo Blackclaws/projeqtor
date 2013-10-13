@@ -342,13 +342,14 @@ function disableCatchErrors() {
   $globalCatchErrors=false;
 }
 
-function traceHack() {
+function traceHack($msg="Unidentified source code") {
   errorLog ("HACK ================================================================");
   errorLog ("Try to hack database detected");
-  errorLog (" QUERY_STRING=".$_SERVER['QUERY_STRING']);
-  errorLog (" REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']);
-  errorLog (" SCRIPT_FILENAME=".$_SERVER['SCRIPT_FILENAME']);
-  errorLog (" REQUEST_URI=".$_SERVER['REQUEST_URI']);
+  errorLog (" Source Code = ".$msg);
+  errorLog (" QUERY_STRING = ".$_SERVER['QUERY_STRING']);
+  errorLog (" REMOTE_ADDR = ".$_SERVER['REMOTE_ADDR']);
+  errorLog (" SCRIPT_FILENAME = ".$_SERVER['SCRIPT_FILENAME']);
+  errorLog (" REQUEST_URI = ".$_SERVER['REQUEST_URI']);
   include "../tool/hackMessage.php";
   //exit;
 }
@@ -498,7 +499,7 @@ function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) {
   }
   if ($project=="*" or $project=='') {
   	$user=$_SESSION['user'];
-  	$_SESSION['visibleProjectsList'][$keyVPL]=transformListIntoInClause($user->getVisibleProjects());
+  	$_SESSION['visibleProjectsList'][$keyVPL]=transformListIntoInClause($user->getVisibleProjects($limitToActiveProjects ));
   	return $_SESSION['visibleProjectsList'][$keyVPL];
   }
   $prj=new Project($project);
@@ -1903,8 +1904,8 @@ function securityCheckRequest() {
 	foreach($parameters as $param) {
 		if (isset($_REQUEST[$param])) {
 			$paramVal=$_REQUEST[$param];
-		  if (htmlEntities($paramVal)!=$paramVal) {
-		    traceHack();
+		  if (trim($paramVal) and htmlEntities($paramVal)!=$paramVal) {
+		    traceHack("projeqtor->securityCheckRequest, _REQUST['$param']=$paramVal");
 		    exit;
 		  }
 		}

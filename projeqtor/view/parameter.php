@@ -28,7 +28,7 @@
       $criteriaRoot['idProject']=null;
       break;
     default:
-    	traceHack();
+    	traceHack('parameter : unknown parameter type '.$type);
     	exit;
     	
   }

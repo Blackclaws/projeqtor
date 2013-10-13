@@ -68,44 +68,21 @@
 	  }*/
   }
 ?>
-  <table width="100%"><tr>
-    
+  <table width="100%"><tr>  
     <td width="285px">
-    <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:75px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
-    <span maxsize="180px" style="position: absolute; left:75px; top:1px; height: 20px; width: 160px; color:#202020;" dojoType="dijit.form.DropDownButton" 
-     id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
-      <span style="width:180px; text-align: left;">
-      <div style="width:180px; overflow: hidden; text-align: left;" ><?php
-        $proj='*'; 
-        if (array_key_exists('project',$_SESSION)) {
-          $proj=$_SESSION['project'];
-        } else {
-        	$_SESSION['project']="*";
-        }
-        if ($proj=='*') {
-          echo '<i>' . i18n('allProjects') . '</i>';
-        } else {
-          $projObject=new Project($proj);
-          echo htmlEncode($projObject->name);
-        };
-        $prj=new Project();
-        $prj->id='*';
-        //$cpt=$prj->countMenuProjectsList();
-        $subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, true);     
-        $cpt=substr_count($subProjectsToDraw,'<tr>');
-        ?>
+      <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:75px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
+      <div style="border:0px solid red;" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
+        <?php include "menuProjectSelector.php"?>
       </div>
+      <span style="position: absolute; left:263px; top:1px; height: 20px">
+        <button id="projectSelectorParametersButton" dojoType="dijit.form.Button" showlabel="false"
+         title="<?php echo i18n('menuParameter');?>"
+         iconClass="iconParameter16" >
+          <script type="dojo/connect" event="onClick" args="evt">
+           loadDialog('dialogProjectSelectorParameters', null, true);
+          </script>
+        </button>
       </span>
-      <span dojoType="dijit.TooltipDialog" class="white" <?php echo ($cpt>25)?'style="width:200px;"':'';?>>   
-        <div <?php echo ($cpt>25)?'style="height: 500px; overflow-y: scroll;"':'';?>>    
-         <?php 
-           $prj=new Project();
-           $prj->id='*';
-           echo $subProjectsToDraw;
-         ?>
-        </div>       
-      </span>
-    </span>
     </td>
     <td width="3px"></td>
     <td class="menuBarSeparator" ></td>

@@ -248,7 +248,8 @@ class Project extends SqlElement {
    * @return an array of Projects as sub-projects
    */
   public function getSubProjectsList($limitToActiveProjects=false) {
-//scriptLog("Project($this->id)->getSubProjectsList($limitToActiveProjects)");    	
+//scriptLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToActiveProjects)");
+debugLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToActiveProjects)");    	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -261,7 +262,7 @@ class Project extends SqlElement {
     if ($limitToActiveProjects) {
       $crit['idle']='0';
     }
-    $sorted=SqlList::getListWithCrit('Project',$crit,'name');
+    $sorted=SqlList::getListWithCrit('Project',$crit,'name', null, ! $limitToActiveProjects);
     return $sorted;
   }
   
@@ -389,7 +390,8 @@ class Project extends SqlElement {
    *  must be redefined in the inherited class
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
-//scriptLog("Project($this->id)->drawSubProjects($selectField, $recursiveCall, $limitToUserProjects, $limitToActiveProjects)");  	
+scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserProjects=$limitToUserProjects, limitToActiveProjects=$limitToActiveProjects)");
+debugLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserProjects=$limitToUserProjects, limitToActiveProjects=$limitToActiveProjects)");  	
   	self::$_drawSubProjectsDone[$this->id]=$this->name;
     if ($limitToUserProjects) {
       $user=$_SESSION['user'];
@@ -397,11 +399,13 @@ class Project extends SqlElement {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
       }
       if ($user->_accessControlVisibility != 'ALL') {      
-        $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects();
+        $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects($limitToActiveProjects);
+//debugLog("  visibleProjectsList=>");debugLog($visibleProjectsList);
       } else {
       	$visibleProjectsList=array();
       }
-      $reachableProjectsList=$user->getVisibleProjects();
+      $reachableProjectsList=$user->getVisibleProjects($limitToActiveProjects);
+//debugLog("  reachableProjectsList=>");debugLog($reachableProjectsList);      
     } else {  
       $visibleProjectsList=array();
       $reachableProjectsList=array();
@@ -419,6 +423,7 @@ class Project extends SqlElement {
     } else {
   	  $subList=$this->getSubProjectsList($limitToActiveProjects);
     }
+//debugLog("  subList=>");debugLog($subList);
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
       $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';
