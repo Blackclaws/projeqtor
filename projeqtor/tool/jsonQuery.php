@@ -52,8 +52,8 @@
     	                           . " and $noteTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $quickSearch . "%' ) ";
     	$queryWhere.=" )";
     }
-    $showIdle=false;
-    if (! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
+    if (! isset($showIdle)) $showIdle=false;
+    if (!$showIdle and ! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idle') . "=0";
     } else {
@@ -86,15 +86,16 @@
         }
         $queryWhere.= ')';
     } 
+//debugLog   ($_SESSION['project']); 
     if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
         if ($_SESSION['project']!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
             $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdle) ;
           } else if ($objectClass=='Document') {
-          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList() . " or " . $table . ".idProject is null)";
+          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdle) . " or " . $table . ".idProject is null)";
           } else {
-            $queryWhere.= $table . ".idProject in " . getVisibleProjectsList() ;
+            $queryWhere.= $table . ".idProject in " . getVisibleProjectsList(! $showIdle) ;
           }
         }
     }

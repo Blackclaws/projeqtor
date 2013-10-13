@@ -30,7 +30,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 $showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
-  url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?>" >
+  url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
 </div>
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
@@ -310,7 +310,7 @@ $showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSel
             </td>
               <td style="text-align: right; vertical-align: middle;" width="30px">
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                <?php if ($showIdle) echo ' checked ';?>">
+                <?php if ($showIdle) echo " checked ";?>
                 type="checkbox" id="listShowIdle" name="listShowIdle">
                 <script type="dojo/method" event="onChange" >
                   refreshJsonList('<?php echo $objectClass;?>');
