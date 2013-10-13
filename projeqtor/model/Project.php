@@ -249,7 +249,6 @@ class Project extends SqlElement {
    */
   public function getSubProjectsList($limitToActiveProjects=false) {
 //scriptLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToActiveProjects)");
-debugLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToActiveProjects)");    	
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -391,7 +390,6 @@ debugLog("Project($this->id)->getSubProjectsList(limitToActiveProjects=$limitToA
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
 scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserProjects=$limitToUserProjects, limitToActiveProjects=$limitToActiveProjects)");
-debugLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserProjects=$limitToUserProjects, limitToActiveProjects=$limitToActiveProjects)");  	
   	self::$_drawSubProjectsDone[$this->id]=$this->name;
     if ($limitToUserProjects) {
       $user=$_SESSION['user'];
@@ -400,12 +398,10 @@ debugLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiv
       }
       if ($user->_accessControlVisibility != 'ALL') {      
         $visibleProjectsList=$user->getHierarchicalViewOfVisibleProjects($limitToActiveProjects);
-//debugLog("  visibleProjectsList=>");debugLog($visibleProjectsList);
       } else {
       	$visibleProjectsList=array();
       }
       $reachableProjectsList=$user->getVisibleProjects($limitToActiveProjects);
-//debugLog("  reachableProjectsList=>");debugLog($reachableProjectsList);      
     } else {  
       $visibleProjectsList=array();
       $reachableProjectsList=array();
@@ -423,7 +419,6 @@ debugLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiv
     } else {
   	  $subList=$this->getSubProjectsList($limitToActiveProjects);
     }
-//debugLog("  subList=>");debugLog($subList);
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
       $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';

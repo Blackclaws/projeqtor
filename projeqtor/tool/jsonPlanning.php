@@ -64,10 +64,15 @@
   }
   if (! isset($outMode)) { $outMode=""; }
 
+  $showIdle=true;
+  if (array_key_exists('idle',$_REQUEST)) {
+    $showIdle=true;
+  }
+  
   $accessRightRead=securityGetAccessRight('menuActivity', 'read');
   if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*'))
    and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
-      $listProj=explode(',',getVisibleProjectsList());
+      $listProj=explode(',',getVisibleProjectsList(! $showIdle));
       if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
         echo i18n('selectProjectToPlan');
         return;
@@ -86,11 +91,11 @@
   if ( array_key_exists('report',$_REQUEST) ) {
     if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(true, $_REQUEST['idProject']) ;
+      $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(! $showIdle, $_REQUEST['idProject']) ;
     }
   } else {
   	$queryWhere.= ($queryWhere=='')?'':' and ';
-    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList() ;
+    $queryWhere.=  $table . ".idProject in " . getVisibleProjectsList(! $showIdle) ;
   }
   // Remove administrative projects :
   $queryWhere.= ($queryWhere=='')?'':' and ';

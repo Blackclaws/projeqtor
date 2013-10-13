@@ -27,7 +27,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 		$multipleSelect=true;
 	}
 }
-$showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+$showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
@@ -302,13 +302,14 @@ $showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSel
                 </script>
               </button>              
             </td>
-<?php }?>            
+<?php }?>           
+<?php if (! $comboDetail) {?> 
             <td style="text-align: right; " width="5px">
               <NOBR>&nbsp;&nbsp;&nbsp;
               <?php echo i18n("labelShowIdle");?>
               </NOBR>
             </td>
-              <td style="text-align: right; vertical-align: middle;" width="30px">
+            <td style="text-align: right; vertical-align: middle;" width="30px">
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
                 <?php if ($showIdle) echo " checked ";?>
                 type="checkbox" id="listShowIdle" name="listShowIdle">
@@ -317,6 +318,7 @@ $showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSel
                 </script>
               </div>&nbsp;
             </td>
+<?php }?>           
           </tr>
         </table>    
       </form>
