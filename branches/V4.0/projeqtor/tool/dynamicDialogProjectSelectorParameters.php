@@ -30,7 +30,15 @@ $selectorFormat=(isset($_SESSION['projectSelectorFormat']) and $_SESSION['projec
 	  <td align="center">
 	   <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogProjectSelectorParameters').hide();">
 	     <?php echo i18n("buttonCancel");?>
-	   </button>
-	 </td>
+	   </button>&nbsp;
+     <button dojoType="dijit.form.Button"
+     onclick="loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');
+              dijit.byId('dialogProjectSelectorParameters').hide();">
+       <?php echo i18n("buttonRefreshList");?>
+     </button>
+	  </td>
+    <td align="center">
+     
+    </td>
 	</tr>
 </table>

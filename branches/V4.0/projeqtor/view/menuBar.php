@@ -4,8 +4,6 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/menuBar.php');
- 
-  if ( ! $showTopMenu) {return;}
   
   function drawMenu($menu) {
     $menuName=$menu->name;

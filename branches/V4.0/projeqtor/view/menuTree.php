@@ -123,37 +123,6 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
 </div>
 
 <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
-<?php if (! $showTopMenu) {?>
-  <div dojoType="dijit.layout.ContentPane" region="top" style="height: 30px; overflow: hidden;">
-    <table><tr>
-    <td class="titleProject"><?php echo (i18n("projectSelector"));?></td>
-    <td>
-    <span style="height: 30px; " dojoType="dijit.form.DropDownButton" 
-     id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true">
-      <span width="200px" ><?php
-        $proj='*'; 
-        if (array_key_exists('project',$_SESSION)) {
-          $proj=$_SESSION['project'];
-        }
-        if ($proj=='*') {
-          echo '<i>' . i18n('allProjects') . '</i>';
-        } else {
-          $projObject=new Project($proj);
-          echo htmlEncode($projObject->name);
-        };
-        ?>
-      </span>
-      <span dojoType="dijit.TooltipDialog" class="white" xstyle="height:200px">       
-         <?php 
-           $prj=new Project();
-           $prj->id='*';
-           //echo $prj->drawSubProjects('selectedProject', false, true, true); 
-         ?>       
-      </span>
-    </span>
-    </td></tr></table>
-  </div>
-<?php }?>
   <div dojoType="dijit.layout.ContentPane" region="center" >
     <div dojoType="dijit.Tree" id="menuTree" jsId="menuTree" model="menuModel"
      labelAttr="name" typeAttr="menu" showRoot="false" openOnClick="true">

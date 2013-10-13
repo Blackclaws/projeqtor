@@ -14,7 +14,6 @@ $browserLocale="";
 $reportCount=0;
 include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
-$showTopMenu=true;
 /* ============================================================================
  * global variables
  * ============================================================================ */
@@ -516,7 +515,7 @@ function getVisibleProjectsList($limitToActiveProjects=true, $idProject=null) {
   return $result;
 }
 
-function getAccesResctictionClause($objectClass,$alias=null) {
+function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
   $obj=new $objectClass();
   if ($alias) {
     $table=$alias;
@@ -544,31 +543,31 @@ function getAccesResctictionClause($objectClass,$alias=null) {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     if ($alias===false) {
       if ($objectClass=='Project') {
-        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
       } else if ($objectClass=='Document') {
       	$v=new Version();
       	$vp=new VersionProject();
-        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) 
+        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) 
                     . " or (idProject is null and idProduct in"
                     . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
                     . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
-                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects()) . ") ) )";        
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) . ") ) )";        
       } else {
-       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
       }   
     } else {
     	if ($objectClass=='Project') {
-    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
       } else if ($objectClass=='Document') {
       	$v=new Version();
         $vp=new VersionProject();
-        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) 
+        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) 
                     . " or (" . $table . ".idProject is null and " . $table . ".idProduct in"
                     . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
                     . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
-                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects()) . ") ) )";        
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) . ") ) )";        
     	} else {
-        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
     	}
     }      
   } else if ($accessRightRead=='ALL') {
