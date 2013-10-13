@@ -85,8 +85,7 @@
           $queryWhere.= " or codeType='TMP' ";
         }
         $queryWhere.= ')';
-    } 
-//debugLog   ($_SESSION['project']); 
+    }  
     if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
         if ($_SESSION['project']!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -408,7 +407,6 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-debugLog($query);
     $result=Sql::query($query);
     $nbRows=0;
     $dataType=array();
