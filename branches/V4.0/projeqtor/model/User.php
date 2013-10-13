@@ -61,6 +61,7 @@ class User extends SqlElement {
   public $_accessControlVisibility; // ALL if user should have all projects listed
 
   private $_affectedProjects;  // Array listing all affected projects
+  private $_affectedProjectsIncludingClosed;  // Array listing all affected projects
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;
@@ -349,13 +350,18 @@ class User extends SqlElement {
    * Get the list of all projects the resource corresponding to the user is affected to
    * @return a list of projects (id=>name)
    */
-  public function getAffectedProjects() {
-    if ($this->_affectedProjects) {
+  public function getAffectedProjects($limitToActiveProjects=true) {
+    if ($this->_affectedProjects and $limitToActiveProjects) {
       return $this->_affectedProjects;
+    } else if ($this->_affectedProjectsIncludingClosed and ! $limitToActiveProjects) {
+      return $this->_affectedProjectsIncludingClosed;  	
     }
     $result=array();
     $aff=new Affectation();
-    $crit = array("idResource"=>$this->id, "idle"=>'0');
+    $crit = array("idResource"=>$this->id);
+    if ($limitToActiveProjects) {
+    	$crit["idle"]='0';
+    }
     $affList=$aff->getSqlElementsFromCriteria($crit,false);
     foreach ($affList as $aff) {
       $result[$aff->idProject]=SqlList::getNameFromId('Project',$aff->idProject);
@@ -371,8 +377,12 @@ class User extends SqlElement {
       }
     }
     */
-    $this->_affectedProjects=$result;
-    return $this->_affectedProjects;
+    if ($limitToActiveProjects) {
+      $this->_affectedProjects=$result;
+    } else {
+      $this->_affectedProjectsIncludingClosed=$result;
+    }
+    return $result;
   }
   
   /** =========================================================================
@@ -390,7 +400,7 @@ class User extends SqlElement {
       return $this->_visibleProjectsIncludingClosed;
     }
     $result=array();
-    $affPrjList=$this->getAffectedProjects();
+    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
     foreach($affPrjList as $idPrj=>$namePrj) {
     	if (! isset($result[$idPrj])) {
 	      $result[$idPrj]=$namePrj;
@@ -427,7 +437,7 @@ class User extends SqlElement {
     $result=array();
     $wbsArray=array();
     $currentTop='0';
-    $visibleProjectsList=$this->getVisibleProjects();
+    $visibleProjectsList=$this->getVisibleProjects($hideClosed);
     $critList="refType='Project' and refId in (0";
     foreach ($visibleProjectsList as $idPrj=>$namePrj) {
     	$critList.=','.$idPrj;

@@ -45,9 +45,9 @@ class SqlList {
     }
   }
 
-   public static function getListWithCrit($listType, $crit, $displayCol='name', $selectedValue=null) {
+   public static function getListWithCrit($listType, $crit, $displayCol='name', $selectedValue=null, $showIdle=false) {
 //scriptLog("       =>getListWithCrit($listType, implode('|',$crit), $displayCol, $selectedValue)");
-     return self::fetchListWithCrit($listType, $crit, $displayCol, $selectedValue);
+     return self::fetchListWithCrit($listType, $crit, $displayCol, $selectedValue,$showIdle);
    }
   /** ==========================================================================
    * Private method to get fetch the list from database and store it in a static array
@@ -115,11 +115,14 @@ scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translat
     return $res;
   }
  
-  private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue) {
-scriptLog("fetchListWithCrit($listType,".implode('|',$criteria).",$displayCol, $selectedValue)");
+  private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue, $showIdle) {
+scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
+debugLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
+
     $res=array();
     $obj=new $listType();
-    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (idle=0 ";
+    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
+    $query.=(! $showIdle)?' and idle=0 ':'';
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
       if ( (strtolower($listType)=='resource' or strtolower($listType)=='contact' or strtolower($listType)=='user') and $col=='idProject') {
@@ -179,6 +182,7 @@ scriptLog("fetchListWithCrit($listType,".implode('|',$criteria).",$displayCol, $
     } else{
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol); 
     }
+debugLog($query);
     $result=Sql::query($query);
     if (Sql::$lastQueryNbRows > 0) {
       while ($line = Sql::fetchLine($result)) {

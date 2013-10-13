@@ -11,6 +11,8 @@ if ($dialog=="dialogTodayParameters") {
 	include('../tool/dynamicDialogAttachement.php');
 } else if ($dialog=="dialogDocumentVersion") {
   include('../tool/dynamicDialogDocumentVersion.php');
+} else if ($dialog=="dialogProjectSelectorParameters") {
+	include('../tool/dynamicDialogProjectSelectorParameters.php');
 } else {
 	echo "ERROR dialog=".$dialog." is not an expected dialog";
 }

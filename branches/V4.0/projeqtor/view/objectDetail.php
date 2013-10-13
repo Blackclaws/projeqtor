@@ -11,6 +11,7 @@ if (! isset($comboDetail)) {
 	$comboDetail=false;
 }
 $collapsedList=Collapsed::getCollaspedList();
+$readOnly=false;
 /** ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
  * @param $obj the object to present
@@ -19,7 +20,8 @@ $collapsedList=Collapsed::getCollaspedList();
  */
 
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList,$printWidth, $detailWidth;
+	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, 
+	 $collapsedList,$printWidth, $detailWidth, $readOnly;
 	/*if ($print===null) {
 	 $print=$_REQUEST['print'];
 	 }
@@ -624,17 +626,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					echo '</div>';
 				}
 				echo '</td><td>';
-				echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
-				echo ' title="' . i18n('helpResetColor') . '" >';
-				echo '<span>' . i18n('resetColor') . '</span>';
-				echo '<script type="dojo/connect" event="onClick" args="evt">';
-				echo '      var fld=dojo.byId("color");';
-				echo '      fld.style.color="transparent";';
-				echo '      fld.style.backgroundColor="transparent";';
-				echo '      fld.value="";';
-				echo '      formChanged();';
-				echo '</script>';
-				echo '</button>';
+				if (! $readOnly) {
+					echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
+					echo ' title="' . i18n('helpResetColor') . '" >';
+					echo '<span>' . i18n('resetColor') . '</span>';
+					echo '<script type="dojo/connect" event="onClick" args="evt">';
+					echo '      var fld=dojo.byId("color");';
+					echo '      fld.style.color="transparent";';
+					echo '      fld.style.backgroundColor="transparent";';
+					echo '      fld.value="";';
+					echo '      formChanged();';
+					echo '</script>';
+					echo '</button>';
+				}
 				echo '</td></tr></table>';
 			} else if ($col=='durationSla'){
 				// Draw a color selector ============================================== SLA as a duration
@@ -2676,7 +2680,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   <?php } else {
   	$titlePane=$objClass."_attachment"; ?>
 
-<?php if (! isIE()) {?>
+<?php if (! isIE() and ! $readOnly) {?>
 <div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
 MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
 url="../tool/saveAttachement.php"

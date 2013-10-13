@@ -27,6 +27,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
 		$multipleSelect=true;
 	}
 }
+$showIdle=(isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?>" >
@@ -308,7 +309,9 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
               </NOBR>
             </td>
               <td style="text-align: right; vertical-align: middle;" width="30px">
-              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">
+              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
+                <?php if ($showIdle) echo ' checked ';?>">
+                type="checkbox" id="listShowIdle" name="listShowIdle">
                 <script type="dojo/method" event="onChange" >
                   refreshJsonList('<?php echo $objectClass;?>');
                 </script>

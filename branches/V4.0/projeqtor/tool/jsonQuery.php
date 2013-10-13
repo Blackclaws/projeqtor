@@ -101,9 +101,11 @@
 
     if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {
     	// No limit 
+    } else if ( $objectClass=='Project' ) {
+    	// Restriction already applied
     } else {
       $queryWhere.= ($queryWhere=='')?'(':' and (';
-      $queryWhere.= getAccesResctictionClause($objectClass,$table);
+      $queryWhere.= getAccesResctictionClause($objectClass,$table, $showIdle);
       if ($objectClass=='Project') {
         $queryWhere.= " or codeType='TMP' ";
       }
@@ -405,7 +407,7 @@
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;
-
+debugLog($query);
     $result=Sql::query($query);
     $nbRows=0;
     $dataType=array();
