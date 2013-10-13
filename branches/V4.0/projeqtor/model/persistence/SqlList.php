@@ -117,7 +117,6 @@ scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translat
  
   private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue, $showIdle) {
 scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
-debugLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
 
     $res=array();
     $obj=new $listType();
@@ -182,7 +181,6 @@ debugLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria)
     } else{
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol); 
     }
-debugLog($query);
     $result=Sql::query($query);
     if (Sql::$lastQueryNbRows > 0) {
       while ($line = Sql::fetchLine($result)) {
