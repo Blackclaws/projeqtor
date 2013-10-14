@@ -3042,7 +3042,7 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
-	refreshList('idProject', null, null, null, 'affectationProject', true);
+	refreshList('idProject', null, null, null, 'affectationProject', false);
 	if (objectClass=='Project') {
 	  refreshList('id'+type, null, null, null, 'affectationResource', true);
 	} else { 
@@ -3054,6 +3054,10 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 	if (objectClass=='Project') {
 		dijit.byId("affectationProject").set('readOnly',true);
 		dijit.byId("affectationProject").set('value',idProject);
+		/*alert(dijit.byId("affectationProject").get('value'));
+		if (! dijit.byId("affectationProject").get('value')) {
+			 dijit.byId("affectationProject").set('value','');
+		}*/
 		dijit.byId("affectationResource").set('readOnly',false);
 		dijit.byId("affectationResource").set('value',idResource);
 	} else {

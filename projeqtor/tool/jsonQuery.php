@@ -52,6 +52,9 @@
     	                           . " and $noteTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $quickSearch . "%' ) ";
     	$queryWhere.=" )";
     }
+    
+    $showIdleProjects=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
+    
     if (! isset($showIdle)) $showIdle=false;
     if (!$showIdle and ! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -80,7 +83,7 @@
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdleProjects)) ;
         if ($objectClass=='Project') {
           $queryWhere.= " or codeType='TMP' ";
         }
@@ -90,11 +93,11 @@
         if ($_SESSION['project']!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
-            $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdle) ;
+            $queryWhere.=  $table . '.id in ' . getVisibleProjectsList(! $showIdleProjects) ;
           } else if ($objectClass=='Document') {
-          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdle) . " or " . $table . ".idProject is null)";
+          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null)";
           } else {
-            $queryWhere.= $table . ".idProject in " . getVisibleProjectsList(! $showIdle) ;
+            $queryWhere.= $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) ;
           }
         }
     }
@@ -105,7 +108,7 @@
     	// Restriction already applied
     } else {
       $queryWhere.= ($queryWhere=='')?'(':' and (';
-      $queryWhere.= getAccesResctictionClause($objectClass,$table, $showIdle);
+      $queryWhere.= getAccesResctictionClause($objectClass,$table, $showIdleProjects);
       if ($objectClass=='Project') {
         $queryWhere.= " or codeType='TMP' ";
       }

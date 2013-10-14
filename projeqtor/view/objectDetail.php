@@ -2260,6 +2260,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 	foreach($list as $aff) {
 		$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
 		$canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
+debugLog("canUpdate=$canUpdate");
 		$idleClass=($aff->idle)?' idleClass':'';
 		if ($type=='Project') {
 			$name=SqlList::getNameFromId($type, $aff->idProject);
