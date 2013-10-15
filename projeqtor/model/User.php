@@ -507,7 +507,20 @@ class User extends SqlElement {
     $this->_visibleProjects=null;
     $this->_visibleProjectsIncludingClosed=null;
     $this->_affectedProjects=null;
+    $this->_affectedProjectsIncludingClosed=null;
+  }
+  
+  public static function resetAllVisibleProjects($idProject=null, $isUser=null) {
+  	$user=$_SESSION['user'];
+  	$user->resetVisibleProjects();
+    $_SESSION['user']=$user;
     unset($_SESSION['visibleProjectsList']);
+    if ($idUser) {
+    	
+    }
+    if ($idProject) {
+    	
+    }
   }
 
 /** =========================================================================

@@ -517,6 +517,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
+    User::resetAllVisibleProjects($this->id, null);
     if ($this->idle) {
       $crit=array('idProject'=>$this->id, 'idle'=>'0');
       $vp=new VersionProject();
@@ -537,13 +538,11 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         	$aff->idResource=$this->idUser;
         	$aff->idProject=$id;
         	$aff->save();
-        } 
+        } else if (! $this->idle and $aff->idle) {
+        	$aff->idle=0;
+        	$resAff=$aff->save();
+        }
       }
-    }
-    if (array_key_exists('user',$_SESSION)) {
-      $user=$_SESSION['user'];
-      $user->resetVisibleProjects();
-      $_SESSION['user']=$user;
     }
 
     if ($this->idle) {
@@ -561,6 +560,11 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
 
     return $result; 
 
+  }
+  public function delete() {
+    User::reseAllVisibleProjects($this->id,null);
+  	$result = parent::delete();
+    return $result;
   }
   
   // Ticket #1175
