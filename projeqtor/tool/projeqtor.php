@@ -1078,7 +1078,6 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   }
   
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj);
-debugLog("securityGetAccessRight($menuName, $accessType, ".(($obj)?get_class($obj)." #".$obj->id:'').");");
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN')?'NO':'YES';
   } else if ($accessType=='update' or $accessType=='delete' or $accessType='read') {
@@ -1094,8 +1093,8 @@ debugLog("securityGetAccessRight($menuName, $accessType, ".(($obj)?get_class($ob
             $accessRight='YES';
           }
         } else if (property_exists($obj, 'idProject')) {
-        	$limitToActivePtojects=(get_class($obj)=='Affectation')?false:true;
-          if (array_key_exists($obj->idProject, $user->getVisibleProjects($limitToActivePtojects)) or $obj->id==null) {
+        	$limitToActiveProjects=(get_class($obj)=='Affectation')?false:true;
+          if (array_key_exists($obj->idProject, $user->getVisibleProjects($limitToActiveProjects)) or $obj->id==null) {
             $accessRight='YES';
           }
         }
@@ -1111,8 +1110,6 @@ debugLog("securityGetAccessRight($menuName, $accessType, ".(($obj)?get_class($ob
       }
     }
   }
-  
-  debugLog("menuName=$menuName accessRight=$accessRight");
   return $accessRight;
 }
 
