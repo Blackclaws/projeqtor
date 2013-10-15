@@ -257,7 +257,14 @@ public $_noCopy;
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-   	$result = parent::save();
+  	$result = parent::save();
+   	User::resetAllVisibleProjects(null,$this->idUser);
+    return $result;
+  }
+  
+  public function delete() {
+    $result = parent::delete();
+    User::resetAllVisibleProjects(null,$this->idUser);
     return $result;
   }
   
