@@ -108,7 +108,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	}
 	$nobr=false;
 	$canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj)=='YES');
-debugLog ("classObj=$classObj canUpdate=$canUpdate");
   if ( (isset($obj->locked) and $obj->locked and $classObj!='User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
@@ -2260,6 +2259,11 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 	foreach($list as $aff) {
 		$canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update',$aff)=="YES";
 		$canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete',$aff)=="YES";
+		if ($obj->idle==1) {
+	    $canUpdate=false;
+	    $canCreate=false;
+	    $canDelete=false;
+	  }
 		$idleClass=($aff->idle)?' idleClass':'';
 		if ($type=='Project') {
 			$name=SqlList::getNameFromId($type, $aff->idProject);
