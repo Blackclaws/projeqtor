@@ -221,7 +221,6 @@ class Importable extends SqlElement {
 				$htmlResult.= '<th class="messageHeader" style="color:#208020;border:1px solid black;;background-color: #DDDDDD">' . i18n('colResultImport') . '</th></TR>';
 			} else {
 				$htmlResult.= '<TR>';
-
 				if (count($fields) > count($title)) {
 					$line="";
 					foreach($fields as $field){
@@ -236,8 +235,12 @@ class Importable extends SqlElement {
 					$htmlResult.= '</td>';
 					continue;
 				}
-				$id = ($idxId >= 0) ? $fields[$idxId] : null;
+				$id = ($idxId >= 0) ? trim($fields[$idxId]) : null;
 				if ($id and ! is_numeric($id)) {
+				  $line="";
+          foreach($fields as $field){
+            $line.=$field." ;; ";
+          }
 					self::$cptError+=1;
           $htmlResult.= '<td colspan="' . count($title) . '" class="messageData" style="border:1px solid black;">';
           $htmlResult.= $line;
