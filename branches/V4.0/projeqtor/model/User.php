@@ -508,18 +508,42 @@ class User extends SqlElement {
     $this->_visibleProjectsIncludingClosed=null;
     $this->_affectedProjects=null;
     $this->_affectedProjectsIncludingClosed=null;
+    $this->_hierarchicalViewOfVisibleProjects=null;
+    $this->_hierarchicalViewOfVisibleProjectsNotClosed=null;
   }
   
-  public static function resetAllVisibleProjects($idProject=null, $isUser=null) {
+  public static function resetAllVisibleProjects($idProject=null, $idUser=null) {
   	$user=$_SESSION['user'];
-  	$user->resetVisibleProjects();
-    $_SESSION['user']=$user;
-    unset($_SESSION['visibleProjectsList']);
     if ($idUser) {
-    	
-    }
-    if ($idProject) {
-    	
+      if ($idUser==$user->id) {
+         self::resetAllVisibleProjects(null, null);
+      } else {
+    	  $audit=new Audit();
+    	  $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$idUser, 'idle'=>'0'));
+    	  foreach ($auditList as $audit) {
+    		  $audit->requestRefreshProject=1;
+    		  $res=$audit->save();
+    	  }
+      }
+    } else if ($idProject) {
+      $aff=new Affectation();
+      $affList=$aff->getSqlElementsFromCriteria(array('idProject'=>$idProject));
+      foreach ($affList as $aff) {
+        if ($aff->idUser==$user->id) {
+          self::resetAllVisibleProjects(null, null);
+        } else {
+      	  $audit=new Audit();
+	        $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$aff->idUSer, 'idle'=>'0'));
+	        foreach ($auditList as $audit) {
+	         $audit->$requestRefreshProject=1;
+	         $res=$audit->save();
+	        }
+        }
+      }
+    } else {
+    	$user->resetVisibleProjects();
+      $_SESSION['user']=$user;
+      unset($_SESSION['visibleProjectsList']);
     }
   }
 
