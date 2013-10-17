@@ -1,30 +1,37 @@
-<?php include_once("../tool/projeqtor.php");?>
-<span maxsize="180px" style="position: absolute; left:75px; top:1px; height: 20px; width: 160px; color:#202020;" dojoType="dijit.form.DropDownButton" 
+<?php include_once("../tool/projeqtor.php");
+$proj='*'; 
+if (array_key_exists('project',$_SESSION)) {
+  $proj=$_SESSION['project'];
+} else {
+  $_SESSION['project']="*";
+}
+$prj=new Project();
+$prj->id='*';
+//$cpt=$prj->countMenuProjectsList();
+$limitToActiveProjects=true;
+if (isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1) {
+  $limitToActiveProjects=false;
+}
+$subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, $limitToActiveProjects);     
+$cpt=substr_count($subProjectsToDraw,'<tr>');
+$displayMode="standard";
+if (isset($_SESSION['projectSelectorDisplayMode'])) {
+  $displayMode=$_SESSION['projectSelectorDisplayMode'];
+}
+?>
+<?php if ($displayMode=='standard') {?>
+<span maxsize="180px" style="position: absolute; left:75px; top:1px; height: 20px; width: 160px; color:#202020;" 
+  dojoType="dijit.form.DropDownButton" 
   id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
   <span style="width:160px; text-align: left;">
     <div style="width:160px; overflow: hidden; text-align: left;" >
     <?php
-      $proj='*'; 
-      if (array_key_exists('project',$_SESSION)) {
-        $proj=$_SESSION['project'];
-      } else {
-        $_SESSION['project']="*";
-      }
-      if ($proj=='*') {
-        echo '<i>' . i18n('allProjects') . '</i>';
-      } else {
-        $projObject=new Project($proj);
-        echo htmlEncode($projObject->name);
-      };
-      $prj=new Project();
-      $prj->id='*';
-      //$cpt=$prj->countMenuProjectsList();
-      $limitToActiveProjects=true;
-      if (isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1) {
-      	$limitToActiveProjects=false;
-      }
-      $subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, $limitToActiveProjects);     
-      $cpt=substr_count($subProjectsToDraw,'<tr>');
+if ($proj=='*') {
+  echo '<i>' . i18n('allProjects') . '</i>';
+} else {
+  $projObject=new Project($proj);
+  echo htmlEncode($projObject->name);
+};
     ?>
     </div>
   </span>
@@ -36,3 +43,12 @@
     </div>       
   </span>
 </span>
+<?php } else if ($displayMode=='select') {?>
+<select dojoType="dijit.form.FilteringSelect" class="input"
+   style="position: absolute; left:75px; top:3px; width: 185px;" 
+   name="projectSelectorFiletering" id="projectSelectorFiletering" >
+   <?php htmlDrawOptionForReference("idProject", null, null, true);?>
+</select>
+<?php } else  {?>
+ERROR : Unknown display mode
+<?php }?>

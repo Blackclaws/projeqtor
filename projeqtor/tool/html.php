@@ -46,10 +46,14 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($critFld) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
-    if ($col=="idProject") { $wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);;}  
+    if ($col=="idProject") { 
+    	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
+    }  
   } else {
     $table=SqlList::getList($listType,$column,$selection);
-    if ($col=="idProject") { $wbsList=SqlList::getList($listType,'sortOrder',$selection);}  
+    if ($col=="idProject") { 
+    	$wbsList=SqlList::getList($listType,'sortOrder',$selection);
+    }  
   }
   $restrictArray=array();
   $excludeArray=array();
@@ -142,6 +146,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if (!$sepChar) $sepChar='__';
     $wbsLevelArray=array();
   }
+  if (! $obj) $sepChar='no';
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
       if ($col=="idProject" and $sepChar!='no') {
