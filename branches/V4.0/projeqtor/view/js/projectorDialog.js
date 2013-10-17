@@ -4428,6 +4428,12 @@ function checkReportPrint () {
   }
 }
 
-function refreshProjectSelectorList() {
+function changeProjectSelectorType() {
+alert("click");
+dojo.xhrPost({
+    url: "../tool/saveDataToSession.php?id=projectSelectorShowIdle&value="+((this.checked)?1:0),
+    load: function() {loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');}
+  });
+  dijit.byId('dialogProjectSelectorParameters').hide();
 	
 }

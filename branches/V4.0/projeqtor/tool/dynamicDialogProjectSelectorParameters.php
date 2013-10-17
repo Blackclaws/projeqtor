@@ -7,7 +7,7 @@ $selectorFormat=(isset($_SESSION['projectSelectorFormat']) and $_SESSION['projec
     <td style="text-align: right;width:200px">
 	    <?php echo i18n("labelShowIdle");?>&nbsp;:&nbsp;
 	  </td>
-	  <td style="text-align: left; vertical-align: middle;width:100px">
+	  <td style="text-align: left; vertical-align: middle;width:200px">
 	     <div title="<?php echo i18n('showIdleElements');?>" dojoType="dijit.form.CheckBox" type="checkbox"
          <?php if ($showIdle) echo ' checked ';?>">
 	       <script type="dojo/method" event="onChange" >
@@ -19,6 +19,25 @@ $selectorFormat=(isset($_SESSION['projectSelectorFormat']) and $_SESSION['projec
          </script>
 	     </div>
 	  </td>
+  </tr>
+  <tr><td></td><td>&nbsp;</td></tr>
+  <tr>
+    <td style="text-align: right;width:200px">
+      <?php echo i18n("projectListDisplayMode");?>&nbsp;:&nbsp;
+    </td>
+    <td style="text-align: left; vertical-align: middle;width:200px; word-wrap: none">
+      <table><tr><td>
+	    <input type="radio" data-dojo-type="dijit/form/RadioButton" name="displayModeCkeckbox" 
+        id="displayModeCkeckboxStandard" checked value="standard" onClick="changeProjectSelectorType('standard');" />
+        </td><td>
+        <label class="display" style="background-color: white" for="displayModeCkeckboxStandard"><?php echo i18n("displayModeStandard")?></label>
+        </td></tr><tr><td>
+	    <input type="radio" data-dojo-type="dijit/form/RadioButton" name="displayModeCkeckbox" 
+        id="displayModeCkeckboxSelect" value="select" onClick="changeProjectSelectorType('select');" />
+        </td><td>
+        <label class="display" style="background-color: white" for="displayModeCkeckboxSelect"><?php echo i18n("displayModeSelect")?></label>
+        </td></tr></table>
+    </td>
   </tr>
 </table>  
 <table style="width:100%">
