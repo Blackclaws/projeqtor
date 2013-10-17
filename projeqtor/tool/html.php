@@ -13,7 +13,7 @@ require_once "../tool/projeqtor.php";
  * @param $required optional - indicates wether the list may present an empty value or not
  * @return void
  */
-function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null) {
+function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
 //traceLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
 	$listType=substr($col,2);
 	$column='name';
@@ -50,9 +50,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }  
   } else {
-    $table=SqlList::getList($listType,$column,$selection);
+    $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     if ($col=="idProject") { 
-    	$wbsList=SqlList::getList($listType,'sortOrder',$selection);
+    	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     }  
   }
   $restrictArray=array();
@@ -131,7 +131,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
       }      
       if ($user->_accessControlVisibility != 'ALL') {
-      	$restrictArray=$user->getVisibleProjects();
+      	$restrictArray=$user->getVisibleProjects($limitToActiveProjects);
   	  }
     }
   }

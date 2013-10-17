@@ -487,6 +487,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   
   public function save() {	
     // #305 : need to recalculate before dispatching to PE
+    $old=$this->getOld();
     $this->recalculateCheckboxes();
     //$old=$this->getOld();
     //$oldtype=new ProjectType($old->idProjectType);
@@ -516,8 +517,10 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
+    } 
+    if (! $old->id or $this->idle!=$old->idle) {
+      User::resetAllVisibleProjects($this->id, null);
     }
-    User::resetAllVisibleProjects($this->id, null);
     if ($this->idle) {
       $crit=array('idProject'=>$this->id, 'idle'=>'0');
       $vp=new VersionProject();

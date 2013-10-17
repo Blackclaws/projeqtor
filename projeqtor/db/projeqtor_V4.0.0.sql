@@ -177,6 +177,8 @@ CREATE TABLE `${prefix}columnselector` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 CREATE INDEX scopeColumnSelector ON `${prefix}columnselector` (scope, objectClass, idUser);
 
+ALTER TABLE `${prefix}audit` ADD COLUMN `requestRefreshProject` int(1) unsigned DEFAULT '0';
+
 -- CANCELLED
 ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;

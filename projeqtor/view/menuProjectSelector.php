@@ -53,7 +53,7 @@ if ($proj=='*') {
     }
   </script>
    <option value="*"><i><?php echo i18n("allProjects");?></i></option>
-   <?php htmlDrawOptionForReference("idProject", null, null, true);?>
+   <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
 </select>
 <?php } else  {?>
 ERROR : Unknown display mode

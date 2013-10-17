@@ -56,8 +56,7 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
 	     <?php echo i18n("buttonCancel");?>
 	   </button>&nbsp;
      <button dojoType="dijit.form.Button"
-     onclick="loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');
-              dijit.byId('dialogProjectSelectorParameters').hide();">
+     onclick="refreshProjectSelectorList();">
        <?php echo i18n("buttonRefreshList");?>
      </button>
 	  </td>

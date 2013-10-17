@@ -3644,7 +3644,10 @@ function checkAlertRetour(data) {
 	var reminderDiv=dojo.byId('reminderDiv');
 	var dialogReminder=dojo.byId('dialogReminder');
 	reminderDiv.innerHTML=data;
-	if (dojo.byId('alertType')) {
+	if (dojo.byId("requestRefreshProject") && dojo.byId("requestRefreshProject").value=="true") {
+	  refreshProjectSelectorList();
+	  setTimeout('checkAlert();',alertCheckTime*1000);
+	} else if (dojo.byId('alertType')) {
 		dojo.style(dialogReminder, {visibility:'visible', display:'inline', bottom: '-200px'});
 		var toColor='#FFCCCC';
 	    if (dojo.byId('alertType') && dojo.byId('alertType').value=='WARNING') {
@@ -4428,10 +4431,22 @@ function checkReportPrint () {
   }
 }
 
-function changeProjectSelectorType(displayMode) {;
+function changeProjectSelectorType(displayMode) {
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=projectSelectorDisplayMode&value="+displayMode,
     load: function() {loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');}
   });
-  dijit.byId('dialogProjectSelectorParameters').hide();
+  if (dijit.byId('dialogProjectSelectorParameters')) {
+    dijit.byId('dialogProjectSelectorParameters').hide();
+  }
+}
+
+function refreshProjectSelectorList() {   
+  dojo.xhrPost({
+    url: "../tool/refreshVisibleProjectsList.php",
+    load: function() {loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');}
+  });
+  if (dijit.byId('dialogProjectSelectorParameters')) {
+    dijit.byId('dialogProjectSelectorParameters').hide();
+  }
 }

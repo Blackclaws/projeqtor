@@ -23,6 +23,7 @@ class Audit extends SqlElement {
   public $idle;
   public $_spe_disconnectButton;
   public $requestRefreshParam;
+  public $requestRefreshProject;
   public $requestDisconnection;
   
   public $_noHistory;
@@ -112,9 +113,15 @@ class Audit extends SqlElement {
 	      Audit::finishSession();
 	      exit;
     	}
-    } else if ($audit->requestRefreshParam) {
-    	$audit->requestRefreshParam=0;
-    	Parameter::refreshParameters();
+    } else { 
+    	if ($audit->requestRefreshParam) {
+	    	$audit->requestRefreshParam=0;
+	    	Parameter::refreshParameters();
+    	}
+    	if ($audit->requestRefreshProject and basename($_SERVER['SCRIPT_NAME'])=='checkAlertToDisplay.php') {
+    		$audit->requestRefreshProject=0;
+    		echo '<input type="hidden" id="requestRefreshProject" name="requestRefreshProject" value="true" ./>';
+    	}
     }
     $audit->lastAccess=date('Y-m-d H:i:s');
     // date_diff is only supported from PHP 5.3
