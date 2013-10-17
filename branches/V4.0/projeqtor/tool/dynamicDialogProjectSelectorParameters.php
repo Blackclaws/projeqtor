@@ -7,10 +7,10 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
 ?>
 <table style="width:100%">
   <tr>
-    <td style="text-align: right;width:200px">
+    <td style="text-align: right;width:250px">
 	    <?php echo i18n("labelShowIdle");?>&nbsp;:&nbsp;
 	  </td>
-	  <td style="text-align: left; vertical-align: middle;width:200px">
+	  <td style="text-align: left; vertical-align: middle;width:250px">
 	     <div title="<?php echo i18n('showIdleElements');?>" dojoType="dijit.form.CheckBox" type="checkbox"
          <?php if ($showIdle) echo ' checked ';?>">
 	       <script type="dojo/method" event="onChange" >
@@ -25,10 +25,10 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
   </tr>
   <tr><td></td><td>&nbsp;</td></tr>
   <tr>
-    <td style="text-align: right;width:200px">
+    <td style="text-align: right;width:250px">
       <?php echo i18n("projectListDisplayMode");?>&nbsp;:&nbsp;
     </td>
-    <td style="text-align: left; vertical-align: middle;width:200px; word-wrap: none">
+    <td style="text-align: left; vertical-align: middle;width:250px; word-wrap: none">
       <table><tr><td>
 	    <input type="radio" data-dojo-type="dijit/form/RadioButton" name="displayModeCkeckbox"
 	     <?php echo ($displayMode=='standard')?'checked':'';?> 

@@ -1431,7 +1431,9 @@ function i18n(str, vars) {
  * @return void
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
-  dijit.byId(selectionField).set("label",'<div style="width:180px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
+  if (selectionField) {
+	dijit.byId(selectionField).set("label",'<div style="width:180px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
+  }
   if (idProject!="") {
     dojo.xhrPost({
       url: "../tool/saveDataToSession.php?id=project&value=" + idProject,
@@ -1457,7 +1459,9 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   if (idProject!="" && idProject!="*" && dijit.byId("idProjectPlan")) {
     dijit.byId("idProjectPlan").set("value",idProject);
   }
-  dijit.byId(selectionField).closeDropDown();
+  if (selectionField) {
+    dijit.byId(selectionField).closeDropDown();
+  }
   loadContent('../view/shortcut.php',"projectLinkDiv");
 }
 
