@@ -47,6 +47,12 @@ if ($proj=='*') {
 <select dojoType="dijit.form.FilteringSelect" class="input"
    style="position: absolute; left:75px; top:3px; width: 185px;" 
    name="projectSelectorFiletering" id="projectSelectorFiletering" >
+   <script type="dojo/connect" event="onChange" args="evt">
+    if (this.isValid()) {
+      setSelectedProject(this.value, this.displayedValue, null);
+    }
+  </script>
+   <option value="*"><i><?php echo i18n("allProjects");?></i></option>
    <?php htmlDrawOptionForReference("idProject", null, null, true);?>
 </select>
 <?php } else  {?>
