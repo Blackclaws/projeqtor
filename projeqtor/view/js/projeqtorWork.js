@@ -1,5 +1,5 @@
 // ============================================================================
-// All specific ProjectOr functions for work management
+// All specific ProjeQtOr functions for work management
 // This file is included in the main.php page, to be reachable in every context
 // ============================================================================
 

@@ -28,7 +28,7 @@ if (is_file("../tool/parametersLocation.php")) {
     echo " parameter file not found at '" . $parametersLocation . "'<br/>";
     echo " Check file '/tool/parametersLocation.php' or remove it to use '/tool/parameters.php'.<br/>";
     echo " <br/>";
-    echo " If problem persists, you may get some help at the forum at <a href='http://projector.toolware.fr/'>projectOr web site </a>.";
+    echo " If problem persists, you may get some help at the forum at <a href='http://projeqtor.org/'>ProjeQtOr web site </a>.";
     exit;
   }
   include_once $parametersLocation;
@@ -58,7 +58,7 @@ $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
 $version="V4.0.0";            // Version of application : Major / Minor / Release
 $build="0084";                // Build number. To be increased on each release
-$website="http://projeqtor.org"; // ProjectOr site url
+$website="http://projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
 $aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a href=\'' . $website . '\'>' . $website . '</a></div><br/>';
@@ -580,7 +580,7 @@ function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
  */
 function getTheme() {
   $defaultTheme=Parameter::getGlobalParameter('defaultTheme');
-  $theme='ProjectOrRia'; // default if never  set
+  $theme='ProjeQtOr'; // default if never  set
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
   }
@@ -1758,8 +1758,7 @@ function checkVersion() {
 	if ($getYesNo=='NO') {
 		return;
 	}
-	//$checkUrl='http://projectorria.toolware.fr/getVersion.php';
-	$checkUrl='http://projectorria.org/admin/getVersion.php';
+	$checkUrl='http://projeqtor.org/admin/getVersion.php';
   $currentVersion=null;
   enableCatchErrors();
 	$currentVersion=file_get_contents($checkUrl);

@@ -11,7 +11,7 @@ header ('Content-Type: text/html; charset=UTF-8');
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="shortcut icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="../view/css/projector.css" />
+  <link rel="stylesheet" type="text/css" href="../view/css/projeqtor.css" />
 </head>
 
 <body class="white" onLoad="top.hideWait();" style="overflow: auto; ">

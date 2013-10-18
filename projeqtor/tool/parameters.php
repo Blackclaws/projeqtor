@@ -1,6 +1,6 @@
 <?php
 // ==================================================================================================
-// This file includes all specific parameters for ProjectOr application
+// This file includes all specific parameters for ProjeQtOr application
 //
 // -------------------
 //  I M P O R T A N T
@@ -24,8 +24,8 @@ $paramDbType='mysql';                           // Database type {'mysql'}
 $paramDbHost='localhost';                       // Database host (server name)
 $paramDbUser='root';                            // Database user to connect
 $paramDbPassword='mysql';                       // Database password for user
-$paramDbName='projector';                       // Database schema name    
-$paramDbDisplayName='My Own ProjectOr';         // Name to be displayed    
+$paramDbName='projeqtor';                       // Database schema name    
+$paramDbDisplayName='My Own ProjeQtOr';         // Name to be displayed    
 $paramDbPrefix='';                              // Database prefix for table names
 
 // === mail management
@@ -47,7 +47,7 @@ $paramMailShowDetail='true'; // Should Detail of item (pre-formated) be displaye
 // NEW IN V1.2.0 - End
 
 // === user management
-$paramDefaultPassword='projector';              // default password {any string}
+$paramDefaultPassword='projeqtor';              // default password {any string}
 $paramPasswordMinLength=5;                      // min length for password {any integer}
 $lockPassword='false';                            // disable password change functionality (if set to true, only admin can reset password)
 
@@ -64,18 +64,18 @@ $paramRowPerPage='50';                          // Number of row per page on mai
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
 
 // === attachement
-$paramAttachementDirectory='/home/projector/files'; // Directory to store Attachements. Set to empty string to disable attachement
+$paramAttachementDirectory='/home/projeqtor/files'; // Directory to store Attachements. Set to empty string to disable attachement
 $paramAttachementMaxSize=1024*1024*2;           // Max file size for attachement = 1024 * 1024 * Mo
 $paramPathSeparator='/';                        // Path separator, depending on system
 
 // === log management
-$logFile='/home/projector/logs/projector_${date}.log'; // Log file name. May contain ${date} to get 1 file a day
+$logFile='/home/projeqtor/logs/projeqtor_${date}.log'; // Log file name. May contain ${date} to get 1 file a day
 $logLevel=2;                                    // Log level {'4' for script tracing, '3' for debug, '2' for general trace, '1' for error trace, '0' for none}
 
 // === defaut values
 
 // NEW IN V1.3.0 - Start
-$defaultTheme = 'ProjectOrRia';
+$defaultTheme = 'ProjeQtOr';
 // NEW IN V1.3.0 - End
 
 // NEW IN V1.4.0 - Start

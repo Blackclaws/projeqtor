@@ -1,5 +1,5 @@
 // ============================================================================
-// All specific ProjectOr functions and variables for Dialog Purpose
+// All specific ProjeQtOr functions and variables for Dialog Purpose
 // This file is included in the main.php page, to be reachable in every context
 // ============================================================================
 

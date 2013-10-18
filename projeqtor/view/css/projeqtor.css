@@ -1,5 +1,5 @@
 /* ============================================================================
- * Main css styles for Printing purpose of Projector application.
+ * Main css styles for Printing purpose of ProjeQtOr application.
  * ============================================================================
  */
 
@@ -11,7 +11,7 @@
 @import "../../external/dijit/icons/commonIcons.css";
 @import "FileInput.css";
 @import "common.css";
-@import "projectorIcons.css";
+@import "projeqtorIcons.css";
 
 /* Main structure objects ===================================================== */
 
@@ -1594,50 +1594,50 @@ label, .label {
 }
 
 /* =============================================================================== */
-/* SPECIFIC PROJECTORRIA CONTRASTED THEME                                                             */
+/* SPECIFIC PROJEQTOR CONTRASTED THEME                                                             */
 /* =============================================================================== */
 
-.ProjectOrRiaContrasted html, .ProjectOrRiaContrasted body, .ProjectOrRiaContrasted #leftDiv, .ProjectOrRiaContrasted #logoDiv,
-.ProjectOrRiaContrasted #buttonDiv,
-.ProjectOrRiaContrasted .dijitSplitterH, .ProjectOrRiaContrasted .dijitGutterH, .ProjectOrRiaContrasted .dijitSplitterV, .ProjectOrRiaContrasted .dijitGutterV,
-.ProjectOrRiaContrasted .dijitMenuItemHover,
-.ProjectOrRiaContrasted .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRiaContrasted .dijitMenuItemSelected,
-.ProjectOrRiaContrasted .loginBackground    {
+.ProjeQtOrContrasted html, .ProjeQtOrContrasted body, .ProjeQtOrContrasted #leftDiv, .ProjeQtOrContrasted #logoDiv,
+.ProjeQtOrContrasted #buttonDiv,
+.ProjeQtOrContrasted .dijitSplitterH, .ProjeQtOrContrasted .dijitGutterH, .ProjeQtOrContrasted .dijitSplitterV, .ProjeQtOrContrasted .dijitGutterV,
+.ProjeQtOrContrasted .dijitMenuItemHover,
+.ProjeQtOrContrasted .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrContrasted .dijitMenuItemSelected,
+.ProjeQtOrContrasted .loginBackground    {
   background-color: #545281;
 }
 
-.ProjectOrRiaContrasted #mapDiv, .ProjectOrRiaContrasted #messageDiv, .ProjectOrRiaContrasted #listDiv, .ProjectOrRiaContrasted #detailDiv, .ProjectOrRiaContrasted #formDiv, .ProjectOrRiaContrasted .display, .ProjectOrRiaContrasted .background,
-.ProjectOrRiaContrasted #printPreview, .ProjectOrRiaContrasted .dijitTitlePaneContentInner, 
-.ProjectOrRiaContrasted #mainDiv,  .ProjectOrRiaContrasted #contentDiv, .ProjectOrRiaContrasted #centerDiv {
+.ProjeQtOrContrasted #mapDiv, .ProjeQtOrContrasted #messageDiv, .ProjeQtOrContrasted #listDiv, .ProjeQtOrContrasted #detailDiv, .ProjeQtOrContrasted #formDiv, .ProjeQtOrContrasted .display, .ProjeQtOrContrasted .background,
+.ProjeQtOrContrasted #printPreview, .ProjeQtOrContrasted .dijitTitlePaneContentInner, 
+.ProjeQtOrContrasted #mainDiv,  .ProjeQtOrContrasted #contentDiv, .ProjeQtOrContrasted #centerDiv {
   background-color: #ececec;
 }
 
-.ProjectOrRiaContrasted #statusBarDiv, .ProjectOrRiaContrasted .statusBar, 
-.ProjectOrRiaContrasted .dojoxGridRowSelected, .ProjectOrRiaContrasted .listTitle,	 
-.ProjectOrRiaContrasted .section, .ProjectOrRiaContrasted .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaContrasted .title {
+.ProjeQtOrContrasted #statusBarDiv, .ProjeQtOrContrasted .statusBar, 
+.ProjeQtOrContrasted .dojoxGridRowSelected, .ProjeQtOrContrasted .listTitle,	 
+.ProjeQtOrContrasted .section, .ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrContrasted .title {
   background-color: #545281;  color: #EEEEEE;  
 }
 
-.ProjectOrRiaContrasted .tabLabel, .ProjectOrRiaContrasted .label, .ProjectOrRiaContrasted .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrContrasted .tabLabel, .ProjeQtOrContrasted .label, .ProjeQtOrContrasted .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
 
-.ProjectOrRiaContrasted .display, .ProjectOrRiaContrasted #printPreview {
+.ProjeQtOrContrasted .display, .ProjeQtOrContrasted #printPreview {
   border: 1px solid #ececec;
 }
-.ProjectOrRiaContrasted #toolBarDiv {
+.ProjeQtOrContrasted #toolBarDiv {
 	color: #545281;
 	background-color: #545281; 
 }
-.ProjectOrRiaContrasted .titleProject {
+.ProjeQtOrContrasted .titleProject {
  color: #ececec;  
 }
-.ProjectOrRiaContrasted .dijitTitlePane .dijitTitlePaneTitle {
+.ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle {
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
-.ProjectOrRiaContrasted #mainDiv {
+.ProjeQtOrContrasted #mainDiv {
     /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
@@ -1649,48 +1649,48 @@ label, .label {
 
 
 /* =============================================================================== */
-/* SPECIFIC PROJECTORRIA THEME                                                             */
+/* SPECIFIC ProjeQtOr THEME                                                             */
 /* =============================================================================== */
 
-.ProjectOrRiaLight html, .ProjectOrRiaLight body, .ProjectOrRiaLight #leftDiv, .ProjectOrRiaLight #logoDiv,
-.ProjectOrRiaLight #buttonDiv,
-.ProjectOrRiaLight .dijitSplitterH, .ProjectOrRiaLight .dijitGutterH, .ProjectOrRiaLight .dijitSplitterV, .ProjectOrRiaLight .dijitGutterV,
-.ProjectOrRiaLight .dijitMenuItemHover,
-.ProjectOrRiaLight .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRiaLight .dijitMenuItemSelected,
-.ProjectOrRiaLight .loginBackground    {
+.ProjeQtOrLight html, .ProjeQtOrLight body, .ProjeQtOrLight #leftDiv, .ProjeQtOrLight #logoDiv,
+.ProjeQtOrLight #buttonDiv,
+.ProjeQtOrLight .dijitSplitterH, .ProjeQtOrLight .dijitGutterH, .ProjeQtOrLight .dijitSplitterV, .ProjeQtOrLight .dijitGutterV,
+.ProjeQtOrLight .dijitMenuItemHover,
+.ProjeQtOrLight .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrLight .dijitMenuItemSelected,
+.ProjeQtOrLight .loginBackground    {
   background-color: #d4d5da;
 }
 
-.ProjectOrRiaLight #mapDiv, .ProjectOrRiaLight #messageDiv, .ProjectOrRiaLight #listDiv, .ProjectOrRiaLight .display, .ProjectOrRiaLight .background,
-.ProjectOrRiaLight #printPreview, .ProjectOrRiaLight .dijitTitlePaneContentInner, 
-.ProjectOrRiaLight #detailDiv, .ProjectOrRiaLight #formDiv,
-.ProjectOrRiaLight #mainDiv,  .ProjectOrRiaLight #contentDiv, .ProjectOrRiaLight #centerDiv {
+.ProjeQtOrLight #mapDiv, .ProjeQtOrLight #messageDiv, .ProjeQtOrLight #listDiv, .ProjeQtOrLight .display, .ProjeQtOrLight .background,
+.ProjeQtOrLight #printPreview, .ProjeQtOrLight .dijitTitlePaneContentInner, 
+.ProjeQtOrLight #detailDiv, .ProjeQtOrLight #formDiv,
+.ProjeQtOrLight #mainDiv,  .ProjeQtOrLight #contentDiv, .ProjeQtOrLight #centerDiv {
   background-color: #ececec;
 }
 
-.ProjectOrRiaLight #toolBarDiv, .ProjectOrRiaLight #statusBarDiv, .ProjectOrRiaLight .statusBar, 
-.ProjectOrRiaLight .dojoxGridRowSelected, .ProjectOrRiaLight .listTitle,
-.ProjectOrRiaLight .section, .ProjectOrRiaLight .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaLight .title  {
+.ProjeQtOrLight #toolBarDiv, .ProjeQtOrLight #statusBarDiv, .ProjeQtOrLight .statusBar, 
+.ProjeQtOrLight .dojoxGridRowSelected, .ProjeQtOrLight .listTitle,
+.ProjeQtOrLight .section, .ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrLight .title  {
   background-color: #d4d5da;  color: #545281;  
 }
 
-.ProjectOrRiaLight .tabLabel, .ProjectOrRiaLight .label, .ProjectOrRiaLight .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrLight .tabLabel, .ProjeQtOrLight .label, .ProjeQtOrLight .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
 
-.ProjectOrRiaLight .display, .ProjectOrRiaLight #printPreview {
+.ProjeQtOrLight .display, .ProjeQtOrLight #printPreview {
   border: 1px solid #ececec;
 }
 
-.ProjectOrRiaLight .titleProject {
+.ProjeQtOrLight .titleProject {
  color: #545281;  
 }
-.ProjectOrRiaLight .dijitTitlePane .dijitTitlePaneTitle {
+.ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle {
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
-.ProjectOrRiaLight #mainDiv {
+.ProjeQtOrLight #mainDiv {
     /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
@@ -1700,51 +1700,51 @@ label, .label {
     scrollbar-arrow-color: #d4d5da;*/
 }
 /* =============================================================================== */
-/* SPECIFIC PROJECTORRIA CONTRASTED THEME                                                             */
+/* SPECIFIC ProjeQtOr CONTRASTED THEME                                                             */
 /* =============================================================================== */
 
-.ProjectOrRia html, .ProjectOrRia body, .ProjectOrRia #leftDiv, .ProjectOrRia #logoDiv,
-.ProjectOrRia .dijitSplitterH, .ProjectOrRia .dijitGutterH, .ProjectOrRia .dijitSplitterV, .ProjectOrRia .dijitGutterV,
-.ProjectOrRia .loginBackground {
+.ProjeQtOr html, .ProjeQtOr body, .ProjeQtOr #leftDiv, .ProjeQtOr #logoDiv,
+.ProjeQtOr .dijitSplitterH, .ProjeQtOr .dijitGutterH, .ProjeQtOr .dijitSplitterV, .ProjeQtOr .dijitGutterV,
+.ProjeQtOr .loginBackground {
   background-color: #545281; 
   /* background-color: #d4d5da; */
 }
 
-.ProjectOrRia .dijitMenuItemHover,
-.ProjectOrRia .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRia .dijitMenuItemSelected  {
+.ProjeQtOr .dijitMenuItemHover,
+.ProjeQtOr .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOr .dijitMenuItemSelected  {
   background-color: #545281;  color: #EEEEEE; 
 	/* background-color: #d4d5da; color: #545281; */  
 }
 
-.ProjectOrRia #mapDiv, .ProjectOrRia #messageDiv, .ProjectOrRia #listDiv, .ProjectOrRia #detailDiv, .ProjectOrRia #formDiv, .ProjectOrRia .display, .ProjectOrRia .background,
-.ProjectOrRia #printPreview, .ProjectOrRia .dijitTitlePaneContentInner, 
-.ProjectOrRia #mainDiv,  .ProjectOrRia #contentDiv, .ProjectOrRia #centerDiv {
+.ProjeQtOr #mapDiv, .ProjeQtOr #messageDiv, .ProjeQtOr #listDiv, .ProjeQtOr #detailDiv, .ProjeQtOr #formDiv, .ProjeQtOr .display, .ProjeQtOr .background,
+.ProjeQtOr #printPreview, .ProjeQtOr .dijitTitlePaneContentInner, 
+.ProjeQtOr #mainDiv,  .ProjeQtOr #contentDiv, .ProjeQtOr #centerDiv {
   background-color: #ececec;
 }
-.ProjectOrRia #buttonDiv { /**toolbar**/
+.ProjeQtOr #buttonDiv { /**toolbar**/
   background-color: #d4d5da;  color: #545281;  
 }
-.ProjectOrRia #toolBarDiv, .ProjectOrRia #statusBarDiv, .ProjectOrRia .statusBar { /**toolbar**/
+.ProjeQtOr #toolBarDiv, .ProjeQtOr #statusBarDiv, .ProjeQtOr .statusBar { /**toolbar**/
   /*background-color: #545281;  color: #EEEEEE; */ 
    background-color: #d4d5da;  color: #545281;
 }
 	
-.ProjectOrRia .dojoxGridRowSelected { /**selected lines**/
+.ProjeQtOr .dojoxGridRowSelected { /**selected lines**/
   background-color: #545281;  color: #EEEEEE; 
   /* background-color: #d4d5da;  color: #545281; */   
 } 
 
-.ProjectOrRia .listTitle {
+.ProjeQtOr .listTitle {
   /* background-color: #545281;  color: #EEEEEE; */  
   background-color: #d4d5da;  color: #545281; 
 }
 
-.ProjectOrRia .tabLabel, .ProjectOrRia .label, .ProjectOrRia .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOr .tabLabel, .ProjeQtOr .label, .ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
 	
-.ProjectOrRia .dijitTitlePane .dijitTitlePaneTitle {
+.ProjeQtOr .dijitTitlePane .dijitTitlePaneTitle {
   background-color: #d4d5da;  color: #545281;
   border-top: 1px solid #A0A0A0;
   border-left: 1px solid #A0A0A0;
@@ -1753,7 +1753,7 @@ label, .label {
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
-.ProjectOrRia .section {
+.ProjeQtOr .section {
 	background-color: #d4d5da;  color: #545281;
 	border-top: 1px solid #A0A0A0;
   border-left: 1px solid #A0A0A0;
@@ -1761,15 +1761,15 @@ label, .label {
 	border-right: 1px solid #A0A0A0;
 }
 
-.ProjectOrRia .display, .ProjectOrRia #printPreview {
+.ProjeQtOr .display, .ProjeQtOr #printPreview {
   border: 1px solid #ececec;
 }
 
-.ProjectOrRia .titleProject {
+.ProjeQtOr .titleProject {
  color: #545281;  
 }
 
-.ProjectOrRia #mainDiv {
+.ProjeQtOr #mainDiv {
     /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;

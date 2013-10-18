@@ -1,5 +1,5 @@
 // ============================================================================
-// All specific ProjectOr functions and variables
+// All specific ProjeQtOr functions and variables
 // This file is included in the main.php page, to be reachable in every context
 // ============================================================================
 
@@ -247,7 +247,7 @@ function addMessage(msg) {
 
 /**
  * ============================================================================
- * Change display theme to a new one. Themes must be defined is projector.css.
+ * Change display theme to a new one. Themes must be defined is projeqtor.css.
  * The change is also stored in Session.
  * 
  * @param newTheme
@@ -360,7 +360,7 @@ function changeLocale(locale) {
 
 /**
  * ============================================================================
- * Change display theme to a new one. Themes must be defined is projector.css.
+ * Change display theme to a new one. Themes must be defined is projeqtor.css.
  * The change is also stored in Session.
  * 
  * @param newTheme
