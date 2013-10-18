@@ -11,7 +11,7 @@
     $todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
   }
   $user=$_SESSION['user'];
-  $profile=SqlList::getFieldFromId('Profile', $user->idProfile, 'profileCode');
+  $profile=SqlList::getFieldFromId('Profile', $user->idProfile, 'profileCode',false);
   echo '<form dojoType="dijit.form.Form" id="todayParametersForm" name="todayParametersForm" onSubmit="return false;">';
   echo '<table style="width:100%">';
   echo '<tr><td class="dialogSection" colspan="2">'.i18n('periodForTasks').'</td></tr>';

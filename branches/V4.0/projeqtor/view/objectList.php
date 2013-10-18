@@ -274,7 +274,6 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                id="listPrint" name="listPrint"
                iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
-                  //openReportPrint('print');
                   showPrint("../tool/jsonQuery.php", 'list');
                 </script>
               </button>
@@ -297,8 +296,8 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                id="listPrintCsv" name="listPrintCsv"
                iconClass="iconCsv" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
-                  //openReportPrint('csv');
-                  showPrint("../tool/jsonQuery.php", 'list', null, 'csv');
+                  openExportDialog('csv');
+                  //showPrint("../tool/jsonQuery.php", 'list', null, 'csv');
                 </script>
               </button>              
             </td>
@@ -393,7 +392,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
 </div>
 </div>
 
-<div id="dialogReportPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogReportPrint");?>"
+<div id="dialogExport" dojoType="dijit.Dialog" title="<?php echo i18n("dialogExport");?>"
      style="margin-left: 0px;margin-top: 0px;">
     <?php 
         $idUser = $_SESSION['user']->id;
@@ -486,24 +485,25 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
         $htmlresult.="<br>";
         $htmlresult.='<input  type="checkbox" dojoType="dijit.form.CheckBox" id="checkUncheck" name="checkUncheck" value="Check" onclick="checkReportPrint();" '.$checked.'><b>'.i18n("checkUncheckAll").'</b><br><br>';
     ?>         
-    <form id="dialogPrintForm" name="dialogPrintForm">
+    <form id="dialogExportForm" name="dialogExportForm">
       <table style="width:100%;">
-        <tr><td><b><?php echo i18n("chooseColumnPrint");?></b></td></tr>
+        <tr><td class="reportTableHeader"><?php echo i18n("chooseColumnExport");?></td></tr>
       </table>
       <table style="width:100%;">            
         <tr>
           <?php  echo $htmlresult; ?>
         </tr>
       </table>
-      <table style="width:100%;"> 
-        <tr>
-          <td>
-            <button align="left" dojoType="dijit.form.Button" id="dialogePrintSubmit" onclick="executeReportPrint('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
-              <?php echo i18n("buttonOK");?>
-            </button>
-          </td><td>
-            <button align="right"  dojoType="dijit.form.Button" onclick="closeReportPrint('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
+      <table style="width:100%"> 
+        <tr>  
+          <td style="width:50%; text-align: right;">
+            <button align="right"  dojoType="dijit.form.Button" onclick="closeExportDialog('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
               <?php echo i18n("buttonCancel");?>
+            </button>
+          </td>
+          <td style="width:50%; text-align: left;">
+            <button align="left" dojoType="dijit.form.Button" id="dialogePrintSubmit" onclick="executeExport('<?php echo $objectClass;?>','<?php echo $idUser;?>');">
+              <?php echo i18n("buttonOK");?>
             </button>
           </td>
         </tr>

@@ -4300,28 +4300,28 @@ function selectTreeNodeById(tree, lookfor){
 // ************************************************************
 // Code to select columns to be exported
 // ************************************************************
-var ReportPrintType ='';
+var ExportType ='';
 
 //open the dialog with checkboxes
-function openReportPrint (Type) {
-  ReportPrintType =Type;
+function openExportDialog (Type) {
+  ExportType=Type;
   if (formChangeInProgress) {
           showAlert(i18n('alertOngoingChange'));
           return;
   }
-  top.dijit.byId("dialogReportPrint").show();  
+  top.dijit.byId("dialogExport").show();  
 
 }
 
 //close the dialog with checkboxes 
-function closeReportPrint (obj,idUser) {
-  top.dijit.byId("dialogReportPrint").hide(); 
-  saveCheckboxReportPrint(obj,idUser);
+function closeExportDialog (obj,idUser) {
+  top.dijit.byId("dialogExport").hide(); 
+  saveCheckboxExport(obj,idUser);
 }
 
 
 //save current state of checkboxes
-function saveCheckboxReportPrint(obj,idUser){
+function saveCheckboxExport(obj,idUser){
   var val = dojo.byId('column0').value;
   var toStore=obj+";"+idUser;
   val = eval(val);
@@ -4355,7 +4355,7 @@ function egalizeWidth(width){
 
 var layoutPrint ='';
 //Executes the report (shows the print/pdf/csv)
-function executeReportPrint(obj,idUser) {  
+function executeExport(obj,idUser) {  
   layoutPrint ='';
   var verif=0;
   var val = dojo.byId('column0').value;
@@ -4385,13 +4385,13 @@ function executeReportPrint(obj,idUser) {
   }
   if(verif==1){
       var grid = dijit.byId("objectGrid");
-      if(grid.rowCount > 200) {
+      if(0 && grid.rowCount > 200) {
           actionYes=function() { 
-              if(ReportPrintType=='print') {
+              if(ExportType=='print') {
                   showPrint("../tool/jsonQuery.php", 'list');
-              } else if(ReportPrintType=='csv') {
+              } else if(ExportType=='csv') {
                   showPrint("../tool/jsonQuery.php", 'list', null, 'csv');  
-              } else if(ReportPrintType=='pdf') {
+              } else if(ExportType=='pdf') {
                   showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
               } else {
                   showPrint("../tool/jsonQuery.php", 'list');
@@ -4399,19 +4399,18 @@ function executeReportPrint(obj,idUser) {
               closeReportPrint (obj,idUser);
           };
           actionNo=function() { closeReportPrint (obj,idUser); };
-          showQuestion("<b>" + i18n('extracting') + " " + grid.rowCount + " " + i18n('lines')+".</b><br>" + i18n('longTraitment') + ".<br>" + i18n('wantToExtract'),actionYes,actionNo);
-
+          showQuestion(i18n('bigExportQuestion', new Array(grid.rowCount)),actionYes,actionNo);
       } else {
-          if(ReportPrintType=='print') {
+          if(ExportType=='print') {
               showPrint("../tool/jsonQuery.php", 'list');
-          } else if(ReportPrintType=='csv') {
+          } else if(ExportType=='csv') {
               showPrint("../tool/jsonQuery.php", 'list', null, 'csv');  
-          } else if(ReportPrintType=='pdf') {
+          } else if(ExportType=='pdf') {
               showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
           } else {
               showPrint("../tool/jsonQuery.php", 'list');
           }
-          closeReportPrint (obj,idUser);
+          closeExportDialog(obj,idUser);
       }
   } else {
       showAlert(i18n('alertChooseOneAtLeast'));
