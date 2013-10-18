@@ -255,19 +255,40 @@ if ($currVersion<"V3.4.0") {
 
 if ($currVersion<"V4.0.0") {
 	// Deleting old files referencing projector or projectorria : these files have been renamed
-  $files = glob('../db/Projector_*.sql'); // get all file names
+  $root=$_SERVER['SCRIPT_FILENAME'];
+	$root=substr($root,0,strpos($root, '/tool/'));
+  $files = glob($root.'/db/Projector_*.sql'); // get all file names
+  error_reporting(0);
+  disableCatchErrors();
   foreach($files as $file){ // iterate files
     if(is_file($file))
-      unlink($file); // delete file
+      $perms = fileperms($root.$file);
+      if ($perms & 0x0080) {
+        $do=@unlink($file); // delete file
+      } else {
+      	errorLog("Cannot delete file : ".$root.$file);
+      } 
+  }  
+  $arrayFiles=array('/tool/projector.php',
+    '/view/js/projector.js',
+    '/view/js/projectorDialog.js',
+    '/view/js/projectorFormatter.js',
+    '/view/js/projectorWork.js',
+    '/view/css/projector.css',
+    '/view/css/projectorIcons.css',
+    '/view/css/projectorPrint.css');
+  foreach ($arrayFiles as $file) {
+  	if (file_exists($root.$file)) {
+  		$perms = fileperms($root.$file);
+  		if ($perms & 0x0080) {
+  		  $do=@unlink($root.$file);
+  		} else {
+        errorLog("Cannot delete file : ".$root.$file);
+      } 
+  	}
   }
-  unlink('../tool/projector.php');
-  unlink('../view/js/projector.php');
-  unlink('../view/js/projectorDialog.php');
-  unlink('../view/js/projectorFormatter.php');
-  unlink('../view/js/projectorWork.php');
-  unlink('../view/css/projector.php');
-  unlink('../view/css/projectorIcon.php');
-  unlink('../view/css/projectorPrint.php');
+  error_reporting(E_ALL);
+  enableCatchErrors();
 }
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();

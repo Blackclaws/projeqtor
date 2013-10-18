@@ -580,6 +580,9 @@ function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
  */
 function getTheme() {
   $defaultTheme=Parameter::getGlobalParameter('defaultTheme');
+  if (substr($defaultTheme,0,12)=="ProjectOrRia") {
+  	$defaultTheme="ProjeQtOr".substr($defaultTheme,12);
+  }
   $theme='ProjeQtOr'; // default if never  set
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
