@@ -3,7 +3,7 @@
  * Digest connection
  * NOT USED YET.
  */
-$realm = 'Projector';
+$realm = 'ProjeQtOr';
 
 // users and passwords
 // Must get users in Database !!!
@@ -23,7 +23,7 @@ if (!($data = http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])) ||
     die('1-Invalid login');
 
 
-// Génération de réponse valide
+// Gï¿½nï¿½ration de rï¿½ponse valide
 $A1 = md5($data['username'] . ':' . $realm . ':' . $users[$data['username']]);
 $A2 = md5($_SERVER['REQUEST_METHOD'].':'.$data['uri']);
 $valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
@@ -32,7 +32,7 @@ if ($data['response'] != $valid_response)
     die('2-Invalid login');
 
 // OK, user is identified
-echo 'Vous êtes identifié en tant que : ' . $data['username'];
+echo 'Vous ï¿½tes identifiï¿½ en tant que : ' . $data['username'];
 
 
 // Function to analyse 'PHP_AUTH_DIGEST' 

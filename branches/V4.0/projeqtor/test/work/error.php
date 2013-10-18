@@ -10,9 +10,9 @@ require_once "../tool/projeqtor.php";
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title>ProjectOr</title>
+  <title>ProjeQtOr</title>
 
-  <link rel="stylesheet" type="text/css" href="css/ProjectOr.css" />
+  <link rel="stylesheet" type="text/css" href="css/ProjeQtOr.css" />
 
   <script type="text/javascript" src="../../external/dojo/dojo.js"
     djConfig="parseOnLoad:true, isDebug:false">

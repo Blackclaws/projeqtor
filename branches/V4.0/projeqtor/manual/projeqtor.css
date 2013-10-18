@@ -1,5 +1,5 @@
 /* ============================================================================
- * Main css styles for Printing purpose of Projector application.
+ * Main css styles for Printing purpose of ProjeQtOr application.
  * ============================================================================
  */
 
@@ -7,6 +7,7 @@
 
 @import "../../external/dojo/resources/dojo.css";
 @import "../../external/dijit/themes/dijit.css";
+/* @import "../../external/dijit/themes/tundra/tundra.css"; */
 @import "../../external/dijit/icons/commonIcons.css";
 @import "FileInput.css";
 @import "common.css";
@@ -25,12 +26,40 @@ html, body, #mainDiv,
   text-align: left;
 }
 
+.siteH1 {
+	font-family: Segoe Print, Segoe UI, Brush Script MT, cursive, Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+  font-weight: bold; 
+  font-size: 20pt; 
+  text-decoration: none; 
+  color: #CC3300; 
+  text-shadow: 0.1em 0.1em 0.2em grey;
+}
+.siteH2 {
+  font-family: Segoe Print, Segoe UI, Brush Script MT, cursive, Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+  font-weight: normal; 
+  font-size: 14pt; 
+  text-decoration: none; 
+  color: #CC3300; 
+}
 /* Specific style for debug purpose============================================ */
 html, body { 
   /* overflow: auto; /* default is hidden, possibly set to auto for debug purpose */
 }
 
 /* DIV styles presented as included in pages ================================== */
+
+.loginFrame {
+ border: 2px solid #FFFFFF;
+ -moz-border-radius: 30px;
+ border-radius: 20px;
+ height: 275px;
+ width: 500px; text-align: center;
+ text-align:center;
+ box-shadow: 10px 10px 5px #333; 
+ -moz-box-shadow: 10px 10px 5px #333;
+ -webkit-box-shadow: 10px 10px 5px #333;
+ margin:0; padding:0;
+}
 
 #toolBarDiv {
   height: 25px;
@@ -54,6 +83,8 @@ html, body {
   .menuBarSeparator {
     width: 5px;
     text-align: center;
+    margin:0px; 
+    padding:2px; 
     /* background: url(images/splitV.gif) repeat-y left;*/
     background: url(images/splitContainerSizerV-thumb.png) repeat-y left;
   }
@@ -67,10 +98,9 @@ html, body {
     cursor: pointer;  
   }
     #logoTitleDiv {
-      background-image: url(../img/titleWhite.gif); background-repeat: no-repeat;
       position: absolute; top: 0px; left: 0px; width: 300px; height: 50px;
-      opacity:0.6;filter:alpha(opacity=60);
-      zoom: 80%;
+      background-size: contain;
+      opacity:0.9;filter:alpha(opacity=90);
       overflow: hidden;
     }
   #mapDiv { 
@@ -99,7 +129,7 @@ html, body {
     .dojoxGridScrollbox, .ganttDiv {
       overflow: auto;
     }
-    #gridContainerDiv {
+    #gridContainerDiv, #reportParametersDiv {
       overflow: hidden;
     }
   #detailDiv {
@@ -212,7 +242,26 @@ html, body {
   background: url(images/spriteRoundedIconsSmall.png) no-repeat left top ;
   background-position: -45px top;
 }
-
+.leftBarIcon {
+  display: block;
+  margin: 0px 0px;
+  top: 1px; left: -1px;
+  position: relative;
+  height: 16px;
+  width: 14px;
+  background: url(images/spriteRoundedIconsSmall.png) no-repeat left top ;
+  background-position: -0px top;
+}
+.rightBarIcon {
+  display: block;
+  margin: 0px 0px;
+  top: 1px; left: -1px;
+  position: relative;
+  height: 16px;
+  width: 14px;
+  background: url(images/spriteRoundedIconsSmall.png) no-repeat left top ;
+  background-position: -30px top;
+}
 #printPreview {
       overflow: hidden; 
       border: 1px solid #555555;
@@ -228,9 +277,20 @@ html, body {
   top: 50%; left: 50%; 
   z-index: 999;
   display: block;
-  text-align: middle;
+  text-align: center;
   vertical-align: middle;
   opacity:0.5;filter:alpha(opacity=50);
+}
+#downloadProgress{
+	position: absolute;
+  margin: -25px -25px;
+  width: 20%;
+  bottom: 30px; right: 30px; 
+  z-index: 9999;
+  display: none;
+  text-align: center;
+  vertical-align: middle;
+  /*opacity:0.9;filter:alpha(opacity=90);*/
 }
 
 #loginResultDiv {
@@ -272,14 +332,21 @@ tr {
 
 td {
   margin: 0; padding: 0; cellspacing: 0; cellpadding: 0;
-  border: collapse; border: 0px;
+  border-collapse: collapse; border: 0px;
   /* border: 1px solid yellow; padding: 0px !important; margin: 0px !important;/* for debug purpose */
 }
 
 a {
- text-decoration: none; 
+ text-decoration: none;
 }
+.hyperlink {
+ color: #333333;
 
+}
+.hyperlink:hover {
+  font-weight: bold;
+  color: #000000;
+}
 label, .label {
   font-weight: bold;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -292,6 +359,10 @@ label, .label {
 .largeLabel {
 	width: 300px;
 }
+.smallRadioLabel {
+	width:95px;
+	font-weight: normal;
+}
 .dialogLabel {
   color: #707070; 
 }
@@ -302,7 +373,15 @@ label, .label {
 .shortlabel {
   width: 87px;
 }
-
+.checkLabel {
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  text-align: left; vertical-align: top;
+  padding: 0px 0px 0px 0px;
+  float:none;
+  border: 0px;
+  cursor: pointer;
+  }
 /* Specific classes =========================================================== */
 
 .title {
@@ -340,9 +419,9 @@ label, .label {
   background-image: url(images/noimage.png);
   background-repeat: no-repeat;
   font-weight: normal;
-  color: #000;
-  background-color: transparent;
-  background: none;
+  color: #000 !important;
+  background-color: transparent !important;
+  background: none !important;
   border: 0px;
   text-align: right;
   width: 400px;
@@ -354,7 +433,10 @@ label, .label {
   width: 1px;
   height: 1px;
 }
-
+ .idleClass {
+  background-color: #EEEEEE !important; 
+  /*text-decoration: line-through;*/
+}
 .menuTree {
   background-image: url(images/noimage.png);
   background-repeat: no-repeat;
@@ -377,6 +459,16 @@ label, .label {
   text-align: center;
   border: none; padding: 0px; spacing: 0px;
   width: 90px;
+}
+.smallTabLabel, .smallTabLabelRight {
+  font-weight: normal;
+  font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
+  text-align: left;
+  border: none; padding: 0px; spacing: 0px;
+  width: 90px;
+}
+.smallTabLabelRight {
+	text-align: right;
 }
 
 .messageOK {
@@ -408,6 +500,14 @@ label, .label {
   text-align: center;
 }
 
+.colorHealth {
+	width:10px;
+	height:10px;
+	margin:1px;padding:0;
+	-moz-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #AAAAAA;
+}
 .checkBox {
   background-image: url(images/checkmark.png);
   background-repeat: no-repeat;
@@ -649,10 +749,10 @@ label, .label {
 }
 
 .iconPlan {
-  background-image: url(images/iconPlan.png);
+  background-image: url(images/plan.jpg);
   background-repeat: no-repeat;
   width: 30px;
-  height: 16px;
+  height: 30px;
   text-align: center;
   cursor: pointer;
 }
@@ -689,7 +789,12 @@ label, .label {
  padding: 0px 0px 0px 5px; 
 }
 
-
+.dialogSection {
+  text-align:center;
+  font-weight: bold;
+  background-color: #F0F0F0;
+  color: #505050;
+}
 .ganttTaskgroup:Hover, .ganttTaskrow:hover, .ganttTaskmile:Hover, .ganttRowHover {
   background-color: #ffffaa;
 }
@@ -706,6 +811,30 @@ label, .label {
   background: url(images/grid_sort_down.gif) no-repeat;
   position:absolute; left:-4px; bottom:0px;
 }
+
+.imputationSubmitted {
+  font-size:8px;
+  background-color: #dAd5e4;
+  border: 1px solid grey;
+}
+.imputationValidated {
+  font-size:8px;
+  background-color: #dAe5d4;;
+  border: 1px solid grey;
+}
+.imputationInvalidCapacity {
+	background-color : #ff7777;
+	color : #ff0000;
+	font-weight: normal;
+}
+
+.parametersButton {
+	width:35px; 
+	text-align: center;
+	float: right;
+  icon: selector;
+  cursor: pointer;
+}
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */
@@ -715,7 +844,8 @@ label, .label {
 .blue .dijitSplitterH, .blue .dijitGutterH, .blue .dijitSplitterV, .blue .dijitGutterV,
 .blue .dijitMenuItemHover,
 .blue .dijitMenuPassive .dijitMenuItemHover,
-.blue .dijitMenuItemSelected   {
+.blue .dijitMenuItemSelected,
+.blue .loginBackground    {
   background-color: #545281;
 }
 
@@ -743,13 +873,13 @@ label, .label {
 }
 
 .blue #mainDiv {
-    scrollbar-face-color: #C3C3EB;
+    /*scrollbar-face-color: #C3C3EB;
     scrollbar-shadow-color: #C3C3EB;
     scrollbar-highlight-color: #C3C3EB;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3C3EB;
-    scrollbar-arrow-color: #545281;
+    scrollbar-arrow-color: #545281;*/
 }
 
 /* =============================================================================== */
@@ -761,7 +891,8 @@ label, .label {
 .red .dijitSplitterH, .red .dijitGutterH, .red .dijitSplitterV, .red .dijitGutterV,
 .red .dijitMenuItemHover,
 .red .dijitMenuPassive .dijitMenuItemHover,
-.red .dijitMenuItemSelected   {
+.red .dijitMenuItemSelected,
+.red .loginBackground    {
   background-color: #9B5353;
 }
 
@@ -789,13 +920,13 @@ label, .label {
 }
 
 .red #mainDiv {
-    scrollbar-face-color: #EBC3C3;
+    /*scrollbar-face-color: #EBC3C3;
     scrollbar-shadow-color: #EBC3C3;
     scrollbar-highlight-color: #EBC3C3;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EBC3C3;
-    scrollbar-arrow-color: #9B5353;
+    scrollbar-arrow-color: #9B5353;*/
 }
 
 /* =============================================================================== */
@@ -806,7 +937,8 @@ label, .label {
 .green .dijitSplitterH, .green .dijitGutterH, .green .dijitSplitterV, .green .dijitGutterV,
 .green .dijitMenuItemHover,
 .green .dijitMenuPassive .dijitMenuItemHover,
-.green .dijitMenuItemSelected   {
+.green .dijitMenuItemSelected,
+.green .loginBackground    {
   background-color: #539B53;
 }
 
@@ -834,13 +966,13 @@ label, .label {
 }
 
 .green #mainDiv {
-    scrollbar-face-color: #C3EBC3;
+    /*scrollbar-face-color: #C3EBC3;
     scrollbar-shadow-color: #C3EBC3;
     scrollbar-highlight-color: #C3EBC3;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3EBC3;
-    scrollbar-arrow-color: #539B53;
+    scrollbar-arrow-color: #539B53;*/
 }
 
 /* =============================================================================== */
@@ -852,7 +984,8 @@ label, .label {
 .grey .dijitSplitterH, .grey .dijitGutterH, .grey .dijitSplitterV, .grey .dijitGutterV,
 .grey .dijitMenuItemHover,
 .grey .dijitMenuPassive .dijitMenuItemHover,
-.grey .dijitMenuItemSelected   {
+.grey .dijitMenuItemSelected,
+.grey .loginBackground    {
   background-color: #9B9B9B;
 }
 
@@ -880,13 +1013,13 @@ label, .label {
 }
 
 .grey #mainDiv {
-    scrollbar-face-color: #C3C3C3;
+    /*scrollbar-face-color: #C3C3C3;
     scrollbar-shadow-color: #C3C3C3;
     scrollbar-highlight-color: #C3C3C3;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #C3C3C3;
-    scrollbar-arrow-color: #535353;
+    scrollbar-arrow-color: #535353;*/
 }
 
 /* =============================================================================== */
@@ -898,7 +1031,8 @@ label, .label {
 .orange .dijitSplitterH, .orange .dijitGutterH, .orange .dijitSplitterV, .orange .dijitGutterV,
 .orange .dijitMenuItemHover,
 .orange .dijitMenuPassive .dijitMenuItemHover,
-.orange .dijitMenuItemSelected   {
+.orange .dijitMenuItemSelected,
+.orange .loginBackground    {
   background-color: #D98F0E;
 }
 
@@ -926,13 +1060,13 @@ label, .label {
 }
 
 .orange #mainDiv {
-    scrollbar-face-color: #F6C672;
+    /*scrollbar-face-color: #F6C672;
     scrollbar-shadow-color: #F6C672;
     scrollbar-highlight-color: #F6C672;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F6C672;
-    scrollbar-arrow-color: #D98F0E;
+    scrollbar-arrow-color: #D98F0E;*/
 }
 
 /* =============================================================================== */
@@ -943,7 +1077,8 @@ label, .label {
 .white .dijitSplitterH, .white .dijitGutterH , .white .dijitSplitterV, .white .dijitGutterV,
 .white .dijitMenuItemHover, .white #buttonDiv, .white #logoDiv,
 .white .dijitMenuPassive .dijitMenuItemHover,
-.white .dijitMenuItemSelected  {
+.white .dijitMenuItemSelected,
+.white .loginBackground   {
   background-color: #000000;
 }
 
@@ -972,13 +1107,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .white #mainDiv {
-    scrollbar-face-color: #FFFFFF;
+    /*scrollbar-face-color: #FFFFFF;
     scrollbar-shadow-color: #FFFFFF;
     scrollbar-highlight-color: #FFFFFF;
     scrollbar-3dlight-color: #CCCCCC;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFFF;
-    scrollbar-arrow-color: #000000;
+    scrollbar-arrow-color: #000000;*/
 }
 
 /* =============================================================================== */
@@ -990,7 +1125,8 @@ label, .label {
 .blueLight .dijitSplitterH, .blueLight .dijitGutterH, .blueLight .dijitSplitterV, .blueLight .dijitGutterV,
 .blueLight .dijitMenuItemHover,
 .blueLight .dijitMenuPassive .dijitMenuItemHover,
-.blueLight .dijitMenuItemSelected   {
+.blueLight .dijitMenuItemSelected,
+.blueLight .loginBackground    {
   background-color: #C3C3EB;
 }
 
@@ -1017,13 +1153,13 @@ label, .label {
  color: #EEEEFF;  
 }
 .blueLight #mainDiv {
-    scrollbar-face-color: #EEEEFF;
+    /*scrollbar-face-color: #EEEEFF;
     scrollbar-shadow-color: #EEEEFF;
     scrollbar-highlight-color: #EEEEFF;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEEEFF;
-    scrollbar-arrow-color: #C3C3EB;
+    scrollbar-arrow-color: #C3C3EB;*/
 }
 
 /* =============================================================================== */
@@ -1035,7 +1171,8 @@ label, .label {
 .blueContrast .dijitSplitterH, .blueContrast .dijitGutterH, .blueContrast .dijitSplitterV, .blueContrast .dijitGutterV,
 .blueContrast .dijitMenuItemHover,
 .blueContrast .dijitMenuPassive .dijitMenuItemHover,
-.blueContrast .dijitMenuItemSelected   {
+.blueContrast .dijitMenuItemSelected,
+.blueContrast .loginBackground    {
   background-color: #545281;
 }
 
@@ -1065,13 +1202,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .blueContrast #mainDiv {
-    scrollbar-face-color: #EEEEFF;
+    /*scrollbar-face-color: #EEEEFF;
     scrollbar-shadow-color: #EEEEFF;
     scrollbar-highcontrasted-color: #EEEEFF;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEEEFF;
-    scrollbar-arrow-color: #C3C3EB;
+    scrollbar-arrow-color: #C3C3EB;*/
 }
 
 /* =============================================================================== */
@@ -1083,7 +1220,8 @@ label, .label {
 .redLight .dijitSplitterH, .redLight .dijitGutterH, .redLight .dijitSplitterV, .redLight .dijitGutterV,
 .redLight .dijitMenuItemHover,
 .redLight .dijitMenuPassive .dijitMenuItemHover,
-.redLight .dijitMenuItemSelected   {
+.redLight .dijitMenuItemSelected,
+.redLight .loginBackground    {
   background-color: #EBC3C3;
 }
 
@@ -1111,13 +1249,13 @@ label, .label {
 }
 
 .redLight #mainDiv {
-    scrollbar-face-color: #FFEEEE;
+    /*scrollbar-face-color: #FFEEEE;
     scrollbar-shadow-color: #FFEEEE;
     scrollbar-highlight-color: #FFEEEE;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFEEEE;
-    scrollbar-arrow-color: #EBC3C3;
+    scrollbar-arrow-color: #EBC3C3;*/
 }
 
 /* =============================================================================== */
@@ -1129,7 +1267,8 @@ label, .label {
 .redContrast .dijitSplitterH, .redContrast .dijitGutterH, .redContrast .dijitSplitterV, .redContrast .dijitGutterV,
 .redContrast .dijitMenuItemHover,
 .redContrast .dijitMenuPassive .dijitMenuItemHover,
-.redContrast .dijitMenuItemSelected   {
+.redContrast .dijitMenuItemSelected ,
+.redContrast .loginBackground   {
   background-color: #9B5353;
 }
 
@@ -1159,13 +1298,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .redContrast #mainDiv {
-    scrollbar-face-color: #FFEEEE;
+    /*scrollbar-face-color: #FFEEEE;
     scrollbar-shadow-color: #FFEEEE;
     scrollbar-highcontrasted-color: #FFEEEE;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFEEEE;
-    scrollbar-arrow-color: #EBC3C3;
+    scrollbar-arrow-color: #EBC3C3;*/
 }
 
 /* =============================================================================== */
@@ -1177,7 +1316,8 @@ label, .label {
 .greenLight .dijitSplitterH, .greenLight .dijitGutterH, .greenLight .dijitSplitterV, .greenLight .dijitGutterV,
 .greenLight .dijitMenuItemHover,
 .greenLight .dijitMenuPassive .dijitMenuItemHover,
-.greenLight .dijitMenuItemSelected   {
+.greenLight .dijitMenuItemSelected,
+.greenLight .loginBackground    {
   background-color: #C3EBC3;
 }
 
@@ -1204,13 +1344,13 @@ label, .label {
  color: #EEFFEE;  
 }
 .greenLight #mainDiv {
-    scrollbar-face-color: #EEFFEE;
+    /*scrollbar-face-color: #EEFFEE;
     scrollbar-shadow-color: #EEFFEE;
     scrollbar-highlight-color: #EEFFEE;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEFFEE;
-    scrollbar-arrow-color: #C3EBC3;
+    scrollbar-arrow-color: #C3EBC3;*/
 }
 
 /* =============================================================================== */
@@ -1222,7 +1362,8 @@ label, .label {
 .greenContrast .dijitSplitterH, .greenContrast .dijitGutterH, .greenContrast .dijitSplitterV, .greenContrast .dijitGutterV,
 .greenContrast .dijitMenuItemHover,
 .greenContrast .dijitMenuPassive .dijitMenuItemHover,
-.greenContrast .dijitMenuItemSelected   {
+.greenContrast .dijitMenuItemSelected,
+.greenContrast .loginBackground    {
   background-color: #539B53;
 }
 
@@ -1252,13 +1393,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .greenContrast #mainDiv {
-    scrollbar-face-color: #EEFFEE;
+    /*scrollbar-face-color: #EEFFEE;
     scrollbar-shadow-color: #EEFFEE;
     scrollbar-highcontrasted-color: #EEFFEE;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #EEFFEE;
-    scrollbar-arrow-color: #C3EBC3;
+    scrollbar-arrow-color: #C3EBC3;*/
 }
 
 /* =============================================================================== */
@@ -1270,7 +1411,8 @@ label, .label {
 .orangeLight .dijitSplitterH, .orangeLight .dijitGutterH, .orangeLight .dijitSplitterV, .orangeLight .dijitGutterV,
 .orangeLight .dijitMenuItemHover,
 .orangeLight .dijitMenuPassive .dijitMenuItemHover,
-.orangeLight .dijitMenuItemSelected   {
+.orangeLight .dijitMenuItemSelected  ,
+.orangeLight .loginBackground  {
   background-color: #F6C672;
 }
 
@@ -1297,13 +1439,13 @@ label, .label {
  color: #FFFFDD;  
 }
 .orangeLight #mainDiv {
-    scrollbar-face-color: #FFFFDD;
+    /*scrollbar-face-color: #FFFFDD;
     scrollbar-shadow-color: #FFFFDD;
     scrollbar-highlight-color: #FFFFDD;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFDD;
-    scrollbar-arrow-color: #F6C672;
+    scrollbar-arrow-color: #F6C672;*/
 }
 
 /* =============================================================================== */
@@ -1315,7 +1457,8 @@ label, .label {
 .orangeContrast .dijitSplitterH, .orangeContrast .dijitGutterH, .orangeContrast .dijitSplitterV, .orangeContrast .dijitGutterV,
 .orangeContrast .dijitMenuItemHover,
 .orangeContrast .dijitMenuPassive .dijitMenuItemHover,
-.orangeContrast .dijitMenuItemSelected   {
+.orangeContrast .dijitMenuItemSelected ,
+.orangeContrast .loginBackground   {
   background-color: #D98F0E;
 }
 
@@ -1345,13 +1488,13 @@ label, .label {
  color: #FFFFFF;  
 }
 .orangeContrast #mainDiv {
-    scrollbar-face-color: #FFFFDD;
+    /*scrollbar-face-color: #FFFFDD;
     scrollbar-shadow-color: #FFFFDD;
     scrollbar-highcontrasted-color: #FFFFDD;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #FFFFDD;
-    scrollbar-arrow-color: #F6C672;
+    scrollbar-arrow-color: #F6C672;*/
 }
 
 /* =============================================================================== */
@@ -1363,7 +1506,8 @@ label, .label {
 .greyLight .dijitSplitterH, .greyLight .dijitGutterH, .greyLight .dijitSplitterV, .greyLight .dijitGutterV,
 .greyLight .dijitMenuItemHover,
 .greyLight .dijitMenuPassive .dijitMenuItemHover,
-.greyLight .dijitMenuItemSelected   {
+.greyLight .dijitMenuItemSelected ,
+.greyLight .loginBackground   {
   background-color: #C3C3C3;
 }
 
@@ -1391,13 +1535,13 @@ label, .label {
 }
 
 .greyLight #mainDiv {
-    scrollbar-face-color: #F0F0F0;
+    /*scrollbar-face-color: #F0F0F0;
     scrollbar-shadow-color: #F0F0F0;
     scrollbar-highlight-color: #F0F0F0;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F0F0F0;
-    scrollbar-arrow-color: #C3C3C3;
+    scrollbar-arrow-color: #C3C3C3;*/
 }
 
 /* =============================================================================== */
@@ -1409,7 +1553,8 @@ label, .label {
 .greyContrast .dijitSplitterH, .greyContrast .dijitGutterH, .greyContrast .dijitSplitterV, .greyContrast .dijitGutterV,
 .greyContrast .dijitMenuItemHover,
 .greyContrast .dijitMenuPassive .dijitMenuItemHover,
-.greyContrast .dijitMenuItemSelected   {
+.greyContrast .dijitMenuItemSelected ,
+.greyContrast .loginBackground   {
   background-color: #9B9B9B;
 }
 
@@ -1439,157 +1584,167 @@ label, .label {
  color: #FFFFFF;  
 }
 .greyContrast #mainDiv {
-    scrollbar-face-color: #F0F0F0;
+    /*scrollbar-face-color: #F0F0F0;
     scrollbar-shadow-color: #F0F0F0;
     scrollbar-highcontrasted-color: #F0F0F0;
     scrollbar-3dcontrasted-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #F0F0F0;
-    scrollbar-arrow-color: #C3C3C3;
+    scrollbar-arrow-color: #C3C3C3;*/
 }
 
 /* =============================================================================== */
-/* SPECIFIC PROJECTORRIA CONTRASTED THEME                                                             */
+/* SPECIFIC PROJEQTOR CONTRASTED THEME                                                             */
 /* =============================================================================== */
 
-.ProjectOrRiaContrasted html, .ProjectOrRiaContrasted body, .ProjectOrRiaContrasted #leftDiv, .ProjectOrRiaContrasted #logoDiv,
-.ProjectOrRiaContrasted #buttonDiv,
-.ProjectOrRiaContrasted .dijitSplitterH, .ProjectOrRiaContrasted .dijitGutterH, .ProjectOrRiaContrasted .dijitSplitterV, .ProjectOrRiaContrasted .dijitGutterV,
-.ProjectOrRiaContrasted .dijitMenuItemHover,
-.ProjectOrRiaContrasted .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRiaContrasted .dijitMenuItemSelected   {
+.ProjeQtOrContrasted html, .ProjeQtOrContrasted body, .ProjeQtOrContrasted #leftDiv, .ProjeQtOrContrasted #logoDiv,
+.ProjeQtOrContrasted #buttonDiv,
+.ProjeQtOrContrasted .dijitSplitterH, .ProjeQtOrContrasted .dijitGutterH, .ProjeQtOrContrasted .dijitSplitterV, .ProjeQtOrContrasted .dijitGutterV,
+.ProjeQtOrContrasted .dijitMenuItemHover,
+.ProjeQtOrContrasted .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrContrasted .dijitMenuItemSelected,
+.ProjeQtOrContrasted .loginBackground    {
   background-color: #545281;
 }
 
-.ProjectOrRiaContrasted #mapDiv, .ProjectOrRiaContrasted #messageDiv, .ProjectOrRiaContrasted #listDiv, .ProjectOrRiaContrasted #detailDiv, .ProjectOrRiaContrasted #formDiv, .ProjectOrRiaContrasted .display, .ProjectOrRiaContrasted .background,
-.ProjectOrRiaContrasted #printPreview, .ProjectOrRiaContrasted .dijitTitlePaneContentInner, 
-.ProjectOrRiaContrasted #mainDiv,  .ProjectOrRiaContrasted #contentDiv, .ProjectOrRiaContrasted #centerDiv {
+.ProjeQtOrContrasted #mapDiv, .ProjeQtOrContrasted #messageDiv, .ProjeQtOrContrasted #listDiv, .ProjeQtOrContrasted #detailDiv, .ProjeQtOrContrasted #formDiv, .ProjeQtOrContrasted .display, .ProjeQtOrContrasted .background,
+.ProjeQtOrContrasted #printPreview, .ProjeQtOrContrasted .dijitTitlePaneContentInner, 
+.ProjeQtOrContrasted #mainDiv,  .ProjeQtOrContrasted #contentDiv, .ProjeQtOrContrasted #centerDiv {
   background-color: #ececec;
 }
 
-.ProjectOrRiaContrasted #statusBarDiv, .ProjectOrRiaContrasted .statusBar, 
-.ProjectOrRiaContrasted .dojoxGridRowSelected, .ProjectOrRiaContrasted .listTitle,	 
-.ProjectOrRiaContrasted .section, .ProjectOrRiaContrasted .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaContrasted .title {
+.ProjeQtOrContrasted #statusBarDiv, .ProjeQtOrContrasted .statusBar, 
+.ProjeQtOrContrasted .dojoxGridRowSelected, .ProjeQtOrContrasted .listTitle,	 
+.ProjeQtOrContrasted .section, .ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrContrasted .title {
   background-color: #545281;  color: #EEEEEE;  
 }
 
-.ProjectOrRiaContrasted .tabLabel, .ProjectOrRiaContrasted .label, .ProjectOrRiaContrasted .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrContrasted .tabLabel, .ProjeQtOrContrasted .label, .ProjeQtOrContrasted .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
 
-.ProjectOrRiaContrasted .display, .ProjectOrRiaContrasted #printPreview {
+.ProjeQtOrContrasted .display, .ProjeQtOrContrasted #printPreview {
   border: 1px solid #ececec;
 }
-.ProjectOrRiaContrasted #toolBarDiv {
-	color: ##545281;
+.ProjeQtOrContrasted #toolBarDiv {
+	color: #545281;
 	background-color: #545281; 
 }
-.ProjectOrRiaContrasted .titleProject {
+.ProjeQtOrContrasted .titleProject {
  color: #ececec;  
 }
-
-.ProjectOrRiaContrasted #mainDiv {
-    scrollbar-face-color: #ececec;
+.ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle {
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.ProjeQtOrContrasted #mainDiv {
+    /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #545281;
+    scrollbar-arrow-color: #545281;*/
 }
 
 
 /* =============================================================================== */
-/* SPECIFIC PROJECTORRIA THEME                                                             */
+/* SPECIFIC ProjeQtOr THEME                                                             */
 /* =============================================================================== */
 
-.ProjectOrRiaLight html, .ProjectOrRiaLight body, .ProjectOrRiaLight #leftDiv, .ProjectOrRiaLight #logoDiv,
-.ProjectOrRiaLight #buttonDiv,
-.ProjectOrRiaLight .dijitSplitterH, .ProjectOrRiaLight .dijitGutterH, .ProjectOrRiaLight .dijitSplitterV, .ProjectOrRiaLight .dijitGutterV,
-.ProjectOrRiaLight .dijitMenuItemHover,
-.ProjectOrRiaLight .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRiaLight .dijitMenuItemSelected   {
+.ProjeQtOrLight html, .ProjeQtOrLight body, .ProjeQtOrLight #leftDiv, .ProjeQtOrLight #logoDiv,
+.ProjeQtOrLight #buttonDiv,
+.ProjeQtOrLight .dijitSplitterH, .ProjeQtOrLight .dijitGutterH, .ProjeQtOrLight .dijitSplitterV, .ProjeQtOrLight .dijitGutterV,
+.ProjeQtOrLight .dijitMenuItemHover,
+.ProjeQtOrLight .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrLight .dijitMenuItemSelected,
+.ProjeQtOrLight .loginBackground    {
   background-color: #d4d5da;
 }
 
-.ProjectOrRiaLight #mapDiv, .ProjectOrRiaLight #messageDiv, .ProjectOrRiaLight #listDiv, .ProjectOrRiaLight .display, .ProjectOrRiaLight .background,
-.ProjectOrRiaLight #printPreview, .ProjectOrRiaLight .dijitTitlePaneContentInner, 
-.ProjectOrRiaLight #detailDiv, .ProjectOrRiaLight #formDiv,
-.ProjectOrRiaLight #mainDiv,  .ProjectOrRiaLight #contentDiv, .ProjectOrRiaLight #centerDiv {
+.ProjeQtOrLight #mapDiv, .ProjeQtOrLight #messageDiv, .ProjeQtOrLight #listDiv, .ProjeQtOrLight .display, .ProjeQtOrLight .background,
+.ProjeQtOrLight #printPreview, .ProjeQtOrLight .dijitTitlePaneContentInner, 
+.ProjeQtOrLight #detailDiv, .ProjeQtOrLight #formDiv,
+.ProjeQtOrLight #mainDiv,  .ProjeQtOrLight #contentDiv, .ProjeQtOrLight #centerDiv {
   background-color: #ececec;
 }
 
-.ProjectOrRiaLight #toolBarDiv, .ProjectOrRiaLight #statusBarDiv, .ProjectOrRiaLight .statusBar, 
-.ProjectOrRiaLight .dojoxGridRowSelected, .ProjectOrRiaLight .listTitle,
-.ProjectOrRiaLight .section, .ProjectOrRiaLight .dijitTitlePane .dijitTitlePaneTitle, .ProjectOrRiaLight .title  {
+.ProjeQtOrLight #toolBarDiv, .ProjeQtOrLight #statusBarDiv, .ProjeQtOrLight .statusBar, 
+.ProjeQtOrLight .dojoxGridRowSelected, .ProjeQtOrLight .listTitle,
+.ProjeQtOrLight .section, .ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle, .ProjeQtOrLight .title  {
   background-color: #d4d5da;  color: #545281;  
 }
 
-.ProjectOrRiaLight .tabLabel, .ProjectOrRiaLight .label, .ProjectOrRiaLight .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrLight .tabLabel, .ProjeQtOrLight .label, .ProjeQtOrLight .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
 
-.ProjectOrRiaLight .display, .ProjectOrRiaLight #printPreview {
+.ProjeQtOrLight .display, .ProjeQtOrLight #printPreview {
   border: 1px solid #ececec;
 }
 
-.ProjectOrRiaLight .titleProject {
+.ProjeQtOrLight .titleProject {
  color: #545281;  
 }
-.ProjectOrRiaLight #mainDiv {
-    scrollbar-face-color: #ececec;
+.ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle {
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.ProjeQtOrLight #mainDiv {
+    /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #d4d5da;
+    scrollbar-arrow-color: #d4d5da;*/
 }
 /* =============================================================================== */
-/* SPECIFIC PROJECTORRIA CONTRASTED THEME                                                             */
+/* SPECIFIC ProjeQtOr CONTRASTED THEME                                                             */
 /* =============================================================================== */
 
-.ProjectOrRia html, .ProjectOrRia body, .ProjectOrRia #leftDiv, .ProjectOrRia #logoDiv,
-.ProjectOrRia .dijitSplitterH, .ProjectOrRia .dijitGutterH, .ProjectOrRia .dijitSplitterV, .ProjectOrRia .dijitGutterV {
+.ProjeQtOr html, .ProjeQtOr body, .ProjeQtOr #leftDiv, .ProjeQtOr #logoDiv,
+.ProjeQtOr .dijitSplitterH, .ProjeQtOr .dijitGutterH, .ProjeQtOr .dijitSplitterV, .ProjeQtOr .dijitGutterV,
+.ProjeQtOr .loginBackground {
   background-color: #545281; 
   /* background-color: #d4d5da; */
 }
 
-.ProjectOrRia .dijitMenuItemHover,
-.ProjectOrRia .dijitMenuPassive .dijitMenuItemHover,
-.ProjectOrRia .dijitMenuItemSelected   {
+.ProjeQtOr .dijitMenuItemHover,
+.ProjeQtOr .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOr .dijitMenuItemSelected  {
   background-color: #545281;  color: #EEEEEE; 
 	/* background-color: #d4d5da; color: #545281; */  
 }
 
-.ProjectOrRia #mapDiv, .ProjectOrRia #messageDiv, .ProjectOrRia #listDiv, .ProjectOrRia #detailDiv, .ProjectOrRia #formDiv, .ProjectOrRia .display, .ProjectOrRia .background,
-.ProjectOrRia #printPreview, .ProjectOrRia .dijitTitlePaneContentInner, 
-.ProjectOrRia #mainDiv,  .ProjectOrRia #contentDiv, .ProjectOrRia #centerDiv {
+.ProjeQtOr #mapDiv, .ProjeQtOr #messageDiv, .ProjeQtOr #listDiv, .ProjeQtOr #detailDiv, .ProjeQtOr #formDiv, .ProjeQtOr .display, .ProjeQtOr .background,
+.ProjeQtOr #printPreview, .ProjeQtOr .dijitTitlePaneContentInner, 
+.ProjeQtOr #mainDiv,  .ProjeQtOr #contentDiv, .ProjeQtOr #centerDiv {
   background-color: #ececec;
 }
-.ProjectOrRia #buttonDiv { /**toolbar**/
+.ProjeQtOr #buttonDiv { /**toolbar**/
   background-color: #d4d5da;  color: #545281;  
 }
-.ProjectOrRia #toolBarDiv, .ProjectOrRia #statusBarDiv, .ProjectOrRia .statusBar { /**toolbar**/
+.ProjeQtOr #toolBarDiv, .ProjeQtOr #statusBarDiv, .ProjeQtOr .statusBar { /**toolbar**/
   /*background-color: #545281;  color: #EEEEEE; */ 
    background-color: #d4d5da;  color: #545281;
 }
 	
-.ProjectOrRia .dojoxGridRowSelected { /**selected lines**/
+.ProjeQtOr .dojoxGridRowSelected { /**selected lines**/
   background-color: #545281;  color: #EEEEEE; 
   /* background-color: #d4d5da;  color: #545281; */   
 } 
 
-.ProjectOrRia .listTitle {
+.ProjeQtOr .listTitle {
   /* background-color: #545281;  color: #EEEEEE; */  
   background-color: #d4d5da;  color: #545281; 
 }
 
-.ProjectOrRia .tabLabel, .ProjectOrRia .label, .ProjectOrRia .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOr .tabLabel, .ProjeQtOr .label, .ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
   background-color: #ececec; color: #545281;
 }
 	
-.ProjectOrRia .dijitTitlePane .dijitTitlePaneTitle {
+.ProjeQtOr .dijitTitlePane .dijitTitlePaneTitle {
   background-color: #d4d5da;  color: #545281;
   border-top: 1px solid #A0A0A0;
   border-left: 1px solid #A0A0A0;
@@ -1598,7 +1753,7 @@ label, .label {
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
-.ProjectOrRia .section {
+.ProjeQtOr .section {
 	background-color: #d4d5da;  color: #545281;
 	border-top: 1px solid #A0A0A0;
   border-left: 1px solid #A0A0A0;
@@ -1606,21 +1761,25 @@ label, .label {
 	border-right: 1px solid #A0A0A0;
 }
 
-.ProjectOrRia .display, .ProjectOrRia #printPreview {
+.ProjeQtOr .display, .ProjeQtOr #printPreview {
   border: 1px solid #ececec;
 }
 
-.ProjectOrRia .titleProject {
+.ProjeQtOr .titleProject {
  color: #545281;  
 }
 
-.ProjectOrRia #mainDiv {
-    scrollbar-face-color: #ececec;
+.ProjeQtOr #mainDiv {
+    /*scrollbar-face-color: #ececec;
     scrollbar-shadow-color: #ececec;
     scrollbar-highlight-color: #ececec;
     scrollbar-3dlight-color: #FFFFFF;
     scrollbar-darkshadow-color: #000000; 
     scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #545281;
+    scrollbar-arrow-color: #545281;*/
 }
 
+.dijitTitlePane .dijitTitlePaneTitle {
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
