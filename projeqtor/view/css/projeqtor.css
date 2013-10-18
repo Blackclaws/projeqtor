@@ -595,8 +595,9 @@ label, .label {
 .dependencyHeader, .workflowHeader, .filterHeader, .calendarHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
-  font-weight: bold;
-  background: #DDDDDD;
+  font-weight: 400;
+  text-shadow: 1px 1px #FFFFFF;
+  background: url(images/titleBar.png) #DDDDDD top repeat-x !important;
   color: #505050;
 }
 .workflowHeader {
@@ -606,7 +607,7 @@ label, .label {
   border: 1px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
-  background: #DDDDDD;
+  background: url(images/titleBar.png) #DDDDDD top repeat-x;
   font-size: 80%;
   margin: 0; padding: 0; spacing: 0;
 }
@@ -631,26 +632,27 @@ label, .label {
   border: 0px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
-  background: #DDDDDD;
+  background: url(images/titleBar.png) #DDDDDD top repeat-x;
 }
 .reportTableHeader {
-  border: 1px solid #FFFFFF;
+  border: 1px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
   padding: 3px 5px 3px 5px;
-  background: #AAAAAA;
+  background: url(images/titleBarDark.png) #DDDDDD top repeat-x;
   color: #FFFFFF;
+  text-shadow: 1px 1px #505050;
 }
 .reportTableColumnHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
   padding: 1px 3px 1px 3px;
-  background: #DDDDDD;
+  background: url(images/titleBar.png) #DDDDDD top repeat-x;
 }
 .reportTableLineHeader {
   border: 1px solid #AAAAAA;
   padding: 0px 3px 0px 3px;
-  background: #DDDDDD;
+  background: url(images/titleBar.png) #DDDDDD top repeat-x;
 }
 .reportTableData {
   border: 1px solid #AAAAAA;
@@ -838,23 +840,7 @@ label, .label {
   cursor: pointer;
 }
 
-/* =============================================================================== */
-/* COMMON                                                                          */
-/* =============================================================================== */
 
-.dijitTitlePane .dijitTitlePaneTitle, .section {
-  /* background: url(images/titleBar.png) #dedede top repeat-x !important; */
-  background: url(images/titleBar.png) #dedede bottom repeat-x !important;
-  border-top: 1px solid #A0A0A0;
-  border-left: 1px solid #A0A0A0;
-  border-bottom: 1px solid #FFFFFF; 
-  border-right: 1px solid #FFFFFF;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  color: #606060 !important;
-  font-weight: 600 !important;
-  text-shadow: 1px 1px #FEFEFE;
-}
 
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
@@ -1772,4 +1758,25 @@ label, .label {
 
 .ProjeQtOr .titleProject {
  color: #545281;  
+}
+
+/* =============================================================================== */
+/* COMMON                                                                          */
+/* =============================================================================== */
+
+.dijitTitlePane .dijitTitlePaneTitle, .section {
+  /* background: url(images/titleBar.png) #dedede top repeat-x !important; */
+  background: url(images/titleBar.png) #dedede bottom repeat-x !important;
+  border-top: 1px solid #A0A0A0;
+  border-left: 1px solid #A0A0A0;
+  border-bottom: 1px solid #FFFFFF; 
+  border-right: 1px solid #FFFFFF;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  color: #606060 !important;
+  font-weight: 600 !important;
+  text-shadow: 1px 1px #FEFEFE;
+}
+.dijitTitlePane .dijitTitlePaneTitle {
+  background: url(images/titleBar.png) #dedede top repeat-x !important;
 }
