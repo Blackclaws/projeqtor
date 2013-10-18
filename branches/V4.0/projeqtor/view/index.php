@@ -10,8 +10,8 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="css/projector.css" />
-  <title>ProjectOr</title>
+  <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
+  <title>ProjeQtOr</title>
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='parseOnLoad: false, 
               isDebug: false'></script>
@@ -23,7 +23,7 @@
   </script>
 </head>
 
-<body class="ProjectOrRia" style='background-color: #C3C3EB' >
+<body class="ProjeQtOr" style='background-color: #C3C3EB' >
   <div id="wait">
   &nbsp;
   </div> 

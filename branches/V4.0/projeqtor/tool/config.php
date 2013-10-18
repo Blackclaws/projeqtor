@@ -1,6 +1,6 @@
 <?php
 // ==================================================================================================
-// This file includes all specific parameters for ProjectOr application
+// This file includes all specific parameters for ProjeQtOr application
 // Automatic configuration at first run
 // ==================================================================================================
 header ('Content-Type: text/html; charset=UTF-8');
@@ -216,11 +216,11 @@ $value['IconSize'] = "'16' for small icons, '22' for medium icons, '32' for big 
 $pname['IconSize'] = 'paramIconSize';
 $ctrls['IconSize'] = '=16=22=32=';
 
-$param['DefaultTheme'] = 'ProjectOrRia';                              
+$param['DefaultTheme'] = 'ProjeQtOr';                              
 $label['DefaultTheme'] = "Default color theme, proposed while login";
 $value['DefaultTheme'] = "select a theme in the list";
 $pname['DefaultTheme'] = 'defaultTheme';
-$ctrls['DefaultTheme'] = '=ProjectOrRia=ProjectOrRiaContrasted=ProjectOrRiaLight'
+$ctrls['DefaultTheme'] = '=ProjeQtOr=ProjeQtOrContrasted=ProjeQtOrLight'
                        . '=blue=blueLight=blueContrast'
                        . '=red=redLight=redContrast'
                        . '=green=greenLight=greenContrast'
@@ -293,14 +293,14 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="css/projector.css" />
-  <script type="text/javascript" src="js/projector.js" ></script>
-  <script type="text/javascript" src="js/projectorDialog.js" ></script>
-  <script type="text/javascript" src="../external/dojo/dojo.js"
+  <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
+  <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
-  <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
+  <script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
     dojo.require("dojo.i18n");
@@ -332,7 +332,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
   </script>
 </head>
 
-<body id="body" class="ProjectOrRia" onLoad="hideWait();" style="overflow: auto; ">
+<body id="body" class="ProjeQtOr" onLoad="hideWait();" style="overflow: auto; ">
   <div id="waitLogin" >
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">

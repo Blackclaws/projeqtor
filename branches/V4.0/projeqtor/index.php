@@ -10,8 +10,8 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <link rel="shortcut icon" href="view/img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="view/img/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="view/css/projector.css" />
-  <title>ProjectOr</title>
+  <link rel="stylesheet" type="text/css" href="view/css/projeqtor.css" />
+  <title>ProjeQtOr</title>
   <script language="javascript">
     function autoRedirect() {
       window.setTimeout("document.getElementById('indexForm').submit()",10);
@@ -19,7 +19,7 @@
   </script>
 </head>
 
-<body class="ProjectOrRia"  style='background-color: #C3C3EB' onload="autoRedirect();">
+<body class="ProjeQtOr"  style='background-color: #C3C3EB' onload="autoRedirect();">
   <div id="wait">
   &nbsp;
   </div> 

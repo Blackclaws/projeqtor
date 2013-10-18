@@ -119,7 +119,7 @@ var menuStore = new dojo.data.ItemFileReadStore({data: menuData});
 </script>
 
 <div dojoType="dijit.tree.ForestStoreModel" jsId="menuModel" 
-     store="menuStore" query="{type:'*'}" rootId="Projector" rootLabel="Projector Menu">
+     store="menuStore" query="{type:'*'}" rootId="ProjeQtOr" rootLabel="ProjeQtOr Menu">
 </div>
 
 <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">

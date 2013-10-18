@@ -7,7 +7,7 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>   
-  <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
+  <link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
 </head>
 
 <body id="body" >

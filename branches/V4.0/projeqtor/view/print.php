@@ -68,14 +68,14 @@
 <head>   
   <title><?php echo getPrintTitle();?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
-  <link rel="stylesheet" type="text/css" href="css/projectorPrint.css" />
+  <link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true,
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
-  <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
+  <script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
   <script type="text/javascript" src="../view/js/jsGantt.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");

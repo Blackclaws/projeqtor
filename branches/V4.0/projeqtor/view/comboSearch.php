@@ -17,18 +17,18 @@
 <html>
 <head>   
   <title><?php echo i18n("applicationTitle");?></title>
-  <link rel="stylesheet" type="text/css" href="css/projector.css" />
+  <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
-  <script type="text/javascript" src="js/projector.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="js/projectorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="js/projectorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="js/projectorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projeqtorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
-  <script type="text/javascript" src="../external/dojo/projectorDojo.js"></script>
+  <script type="text/javascript" src="../external/dojo/projeqtorDojo.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript"> 
   dojo.require("dojo.store.DataStore");
   dojo.require("dojo.data.ItemFileWriteStore");
