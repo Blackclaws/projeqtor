@@ -348,7 +348,7 @@ a {
   color: #000000;
 }
 label, .label {
-  font-weight: bold;
+  font-weight: 400;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   text-align: right; vertical-align: top;
   width: 150px;
@@ -569,9 +569,11 @@ label, .label {
 
 .section {
   text-align: center;
-  font-weight: bold;
+  font-weight: 200;
   width: 100%;
   height: 18px;
+  background: url(images/titleBar.png) !important;
+  text-shadow: 1px 1px #FEFEFE;
 }
 .dijitTitlePane .dijitTitlePaneTitle {
 	height: 18px;
@@ -835,6 +837,25 @@ label, .label {
   icon: selector;
   cursor: pointer;
 }
+
+/* =============================================================================== */
+/* COMMON                                                                          */
+/* =============================================================================== */
+
+.dijitTitlePane .dijitTitlePaneTitle, .section {
+  /* background: url(images/titleBar.png) #dedede top repeat-x !important; */
+  background: url(images/titleBar.png) #dedede bottom repeat-x !important;
+  border-top: 1px solid #A0A0A0;
+  border-left: 1px solid #A0A0A0;
+  border-bottom: 1px solid #FFFFFF; 
+  border-right: 1px solid #FFFFFF;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  color: #606060 !important;
+  font-weight: 600 !important;
+  text-shadow: 1px 1px #FEFEFE;
+}
+
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */
@@ -1610,7 +1631,7 @@ label, .label {
 .ProjeQtOrContrasted #mapDiv, .ProjeQtOrContrasted #messageDiv, .ProjeQtOrContrasted #listDiv, .ProjeQtOrContrasted #detailDiv, .ProjeQtOrContrasted #formDiv, .ProjeQtOrContrasted .display, .ProjeQtOrContrasted .background,
 .ProjeQtOrContrasted #printPreview, .ProjeQtOrContrasted .dijitTitlePaneContentInner, 
 .ProjeQtOrContrasted #mainDiv,  .ProjeQtOrContrasted #contentDiv, .ProjeQtOrContrasted #centerDiv {
-  background-color: #ececec;
+  background-color: #fafafa;
 }
 
 .ProjeQtOrContrasted #statusBarDiv, .ProjeQtOrContrasted .statusBar, 
@@ -1620,33 +1641,28 @@ label, .label {
 }
 
 .ProjeQtOrContrasted .tabLabel, .ProjeQtOrContrasted .label, .ProjeQtOrContrasted .dojoxGridRowOver .dojoxGridCell {
-  background-color: #ececec; color: #545281;
+  background-color: #fafafa; color: #545281;
+}
+
+.ProjeQtOrContrasted .title {
+  font-weight: 600;
+  text-shadow: 1px 1px #000000;
 }
 
 .ProjeQtOrContrasted .display, .ProjeQtOrContrasted #printPreview {
-  border: 1px solid #ececec;
+  border: 1px solid #fafafa;
 }
 .ProjeQtOrContrasted #toolBarDiv {
 	color: #545281;
 	background-color: #545281; 
 }
 .ProjeQtOrContrasted .titleProject {
- color: #ececec;  
-}
-.ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle {
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-}
-.ProjeQtOrContrasted #mainDiv {
-    /*scrollbar-face-color: #ececec;
-    scrollbar-shadow-color: #ececec;
-    scrollbar-highlight-color: #ececec;
-    scrollbar-3dlight-color: #FFFFFF;
-    scrollbar-darkshadow-color: #000000; 
-    scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #545281;*/
+ color: #fafafa;  
 }
 
+.ProjeQtOr .dijitTitlePane .dijitTitlePaneTitle {
+  background: url(images/titleBar.png) #dedede top repeat-x !important;
+}
 
 /* =============================================================================== */
 /* SPECIFIC ProjeQtOr THEME                                                             */
@@ -1666,7 +1682,7 @@ label, .label {
 .ProjeQtOrLight #printPreview, .ProjeQtOrLight .dijitTitlePaneContentInner, 
 .ProjeQtOrLight #detailDiv, .ProjeQtOrLight #formDiv,
 .ProjeQtOrLight #mainDiv,  .ProjeQtOrLight #contentDiv, .ProjeQtOrLight #centerDiv {
-  background-color: #ececec;
+  background-color: #fcfcfc;
 }
 
 .ProjeQtOrLight #toolBarDiv, .ProjeQtOrLight #statusBarDiv, .ProjeQtOrLight .statusBar, 
@@ -1676,29 +1692,26 @@ label, .label {
 }
 
 .ProjeQtOrLight .tabLabel, .ProjeQtOrLight .label, .ProjeQtOrLight .dojoxGridRowOver .dojoxGridCell {
-  background-color: #ececec; color: #545281;
+  background-color: #fcfcfc; color: #545281;
+}
+
+.ProjeQtOrLight .title {
+  font-weight: 600;
+  text-shadow: 1px 1px #FEFEFE;
 }
 
 .ProjeQtOrLight .display, .ProjeQtOrLight #printPreview {
-  border: 1px solid #ececec;
+  border: 1px solid #fcfcfc;
 }
 
 .ProjeQtOrLight .titleProject {
  color: #545281;  
 }
+
 .ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle {
-  -moz-border-radius: 7px;
-  border-radius: 7px;
+  background: url(images/titleBar.png) #dedede top repeat-x !important;
 }
-.ProjeQtOrLight #mainDiv {
-    /*scrollbar-face-color: #ececec;
-    scrollbar-shadow-color: #ececec;
-    scrollbar-highlight-color: #ececec;
-    scrollbar-3dlight-color: #FFFFFF;
-    scrollbar-darkshadow-color: #000000; 
-    scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #d4d5da;*/
-}
+
 /* =============================================================================== */
 /* SPECIFIC ProjeQtOr CONTRASTED THEME                                                             */
 /* =============================================================================== */
@@ -1720,7 +1733,7 @@ label, .label {
 .ProjeQtOr #mapDiv, .ProjeQtOr #messageDiv, .ProjeQtOr #listDiv, .ProjeQtOr #detailDiv, .ProjeQtOr #formDiv, .ProjeQtOr .display, .ProjeQtOr .background,
 .ProjeQtOr #printPreview, .ProjeQtOr .dijitTitlePaneContentInner, 
 .ProjeQtOr #mainDiv,  .ProjeQtOr #contentDiv, .ProjeQtOr #centerDiv {
-  background-color: #ececec;
+  background-color: #fafafa;
 }
 .ProjeQtOr #buttonDiv { /**toolbar**/
   background-color: #d4d5da;  color: #545281;  
@@ -1741,45 +1754,22 @@ label, .label {
 }
 
 .ProjeQtOr .tabLabel, .ProjeQtOr .label, .ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
-  background-color: #ececec; color: #545281;
+  background-color: #fafafa; color: #545281;
 }
 	
 .ProjeQtOr .dijitTitlePane .dijitTitlePaneTitle {
-  background-color: #d4d5da;  color: #545281;
-  border-top: 1px solid #A0A0A0;
-  border-left: 1px solid #A0A0A0;
-  border-bottom: 1px solid #FFFFFF; 
-  border-right: 1px solid #FFFFFF;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
+  background: url(images/titleBar.png) #dedede top repeat-x !important;
 }
-.ProjeQtOr .section {
-	background-color: #d4d5da;  color: #545281;
-	border-top: 1px solid #A0A0A0;
-  border-left: 1px solid #A0A0A0;
-	border-bottom: 1px solid #A0A0A0; 
-	border-right: 1px solid #A0A0A0;
+
+.ProjeQtOr .title {
+  font-weight: 600;
+  text-shadow: 1px 1px #FEFEFE;
 }
 
 .ProjeQtOr .display, .ProjeQtOr #printPreview {
-  border: 1px solid #ececec;
+  border: 1px solid #fafafa;
 }
 
 .ProjeQtOr .titleProject {
  color: #545281;  
-}
-
-.ProjeQtOr #mainDiv {
-    /*scrollbar-face-color: #ececec;
-    scrollbar-shadow-color: #ececec;
-    scrollbar-highlight-color: #ececec;
-    scrollbar-3dlight-color: #FFFFFF;
-    scrollbar-darkshadow-color: #000000; 
-    scrollbar-track-color: #ececec;
-    scrollbar-arrow-color: #545281;*/
-}
-
-.dijitTitlePane .dijitTitlePaneTitle {
-  -moz-border-radius: 7px;
-  border-radius: 7px;
 }

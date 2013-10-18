@@ -389,8 +389,10 @@ table.dojoDndAvatar {
   border-bottom: 1px solid #bfbfbf;
   padding: 4px 4px 4px 8px;
   cursor: pointer;
-  font-size: 120%; font-weight: bold;
+  font-size: 120%;
   color: #505050;
+  font-weight: 500;
+  text-shadow: 1px 1px #FEFEFE;
 }
 .dijitAccordionTitle-hover {
   background: #fafafa url(images/accordionItemHover.gif) bottom repeat-x;
@@ -1177,14 +1179,14 @@ table.dojoDndAvatar {
 
 .dijitTitlePane .dijitArrowNode {
   cursor: pointer;
-  background-image: url(images/spriteArrowsWhite.png);
+  background-image: url(images/spriteArrowsGrey.png);
   background-repeat: no-repeat;
   height: 7px;
   width: 7px;
 }
 
 .dj_ie6 .dijitTitlePane .dijitArrowNode {
-  background-image: url(images/spriteArrowsWhite.gif);
+  background-image: url(images/spriteArrowsGrey.gif);
 }
 
 .dijitTitlePane .dijitOpen .dijitArrowNode {
@@ -2162,6 +2164,7 @@ table.dijitCalendarContainer {
 .dojoxGrid td {
 	-moz-outline: none;
 }
+
 .dojoxGridMasterHeader {
 	position: relative;
 }
@@ -2183,20 +2186,25 @@ table.dijitCalendarContainer {
 	overflow: hidden;
 }
 .dojoxGridHeader {
-	background-color: #E8E8E8;
+	background-color: #e8e1cf;
 }
 .dojoxGridHeader table {
 	text-align: center;
 }
+.dojoxGridHeader tr, .dojoxGridHeader th {
+  height:25px;
+}  
+  
 .dojoxGridHeader .dojoxGridCell { 
 	border: 1px solid;
 	border-color: #F6F6F6 #ACACAC #ACACAC #F6F6F6;
-	background: url(images/grid_dx_gradient.gif) #E8E8E8 top repeat-x;
+	background: url(images/titleBar.png) #dedede top repeat-x !important;
 	padding-bottom: 2px;
-	font-weight: bold;
+	font-weight: 500;
+	text-shadow: 1px 1px #FEFEFE;
 }
 .dojoxGridHeader .dojoxGridCellOver {
-	background-image: none;
+	background-image: none !important;
 	background-color: white;
 	border-bottom-color: #FEFEFE;
 	margin-bottom: 0;
