@@ -889,7 +889,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo '</select>';
 				if ($displayComboButtonCol) {
 					echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"';
-					echo ' title="' . i18n('showDetail') . '" ';
+					echo ' title="' . i18n('showDetail') . '" style="position: relative; top:1px"';
 					echo ' iconClass="iconView">';
 					echo ' <script type="dojo/connect" event="onClick" args="evt">';
 				  echo '   if (clickTimer) clearTimeout(clickTimer);';
@@ -907,7 +907,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					echo '</button>';
 				} else if ($displayDirectAccessButton) {
 					echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"';
-          echo ' title="' . i18n('showDirectAccess') . '" ';
+          echo ' title="' . i18n('showDirectAccess') . '" style="position: relative; top:1px"';
           echo ' iconClass="iconDirectAccess" >';
           echo ' <script type="dojo/connect" event="onClick" args="evt">';
           echo '  var linkedSelect=dijit.byId("'.$fieldId.'");';

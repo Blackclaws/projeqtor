@@ -244,7 +244,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                   <div style="height:5px;border-bottom:1px solid #AAAAAA"></div>    
 							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  
 							      dndType="column"
-							      withhandles="true" class="container">    
+							      withhandles="true" class="container">                       
 							      <?php include('../tool/listColumnSelector.php')?>
 							    </div>
                   <div style="height:5px;border-top:1px solid #AAAAAA"></div>    
@@ -266,7 +266,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
 							  </div>
 							</div>   
              </td>
-<?php }?>                   
+<?php }?>                 
 <?php if (! $comboDetail) {?>                
              <td width="32px">
               <button title="<?php echo i18n('printList')?>"  
@@ -279,7 +279,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 </script>
               </button>
               </td>
-<?php }?>              
+<?php }?>            
 <?php if (! $comboDetail) {?>        
              <td width="32px">
               <button title="<?php echo i18n('reportPrintPdf')?>"  
@@ -302,7 +302,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 </script>
               </button>              
             </td>
-<?php }?>           
+<?php }?>       
 <?php if (! $comboDetail) {?> 
             <td style="text-align: right; " width="5px">
               <NOBR>&nbsp;&nbsp;&nbsp;
@@ -485,8 +485,6 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
         $htmlresult.='</td>';
         $htmlresult.="<br>";
         $htmlresult.='<input  type="checkbox" dojoType="dijit.form.CheckBox" id="checkUncheck" name="checkUncheck" value="Check" onclick="checkReportPrint();" '.$checked.'><b>'.i18n("checkUncheckAll").'</b><br><br>';
-        
-       
     ?>         
     <form id="dialogPrintForm" name="dialogPrintForm">
       <table style="width:100%;">
@@ -512,4 +510,3 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
       </table>
     </form>
 </div>
-

@@ -168,22 +168,69 @@ label, .label {
 }
 
 .historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, 
-.dependencyHeader, .workflowHeader, .filterHeader, .calendarHeader {
+.dependencyHeader, .workflowHeader, .filterHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
-  font-weight: 400;
-  text-shadow: 1px 1px #FFFFFF;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x !important;
-  color: #505050;
+  font-weight: bold;
+  background: #DDDDDD;
 }
 .workflowHeader {
+  font-size: 90%; padding: 0; 
+}
+
+.historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
+.dependencyData, .workflowData, .filterData {
   font-size: 90%;
+  padding: 1px 5px 1px 5px;
+  border: 1px solid #AAAAAA;
+  vertical-align: top;
+  background-color: #FFFFFF;
+}
+
+.workflowData {
+  font-size: 80%; padding: 0; margin: 0;
+}
+.workflowDetail {
+  border-top: 1px solid #D0D0D0; 
+}
+
+.messageDataValue {
+  text-align: center;  
+}
+
+.historyDataNewOperation {
+  font-size: 90%;
+  padding: 1px 5px 1px 5px;
+  vertical-align: top;
+  border-top: 1px solid #AAAAAA;
+  border-bottom: 1px solid #AAAAAA;
+  border-left: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
+  background-color: #FFFFFF;
+}
+.historyDataContinueOperation {
+  font-size: 90%;
+  padding: 1px 5px 1px 5px;
+  vertical-align: top;
+  border-top: 1px solid #AAAAAA;
+  border-bottom: 1px solid #AAAAAA;
+  border-left: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
+  background-color: #FFFFFF;
+}
+.historyDataClosetable, .noteDataClosetable, .attachementDataClosetable  {
+  font-size: 1pt;
+  padding: 0px 0px 0px 0px;
+  border-top: 1px solid #AAAAAA;
+  border-bottom: 0px solid #FFFFFF;
+  border-left: 0px solid #FFFFFF;
+  border-right: 0px solid #FFFFFF;
 }
 .largeReportHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x;
+  background: #DDDDDD;
   font-size: 80%;
   margin: 0; padding: 0; spacing: 0;
 }
@@ -198,7 +245,7 @@ label, .label {
 .largeReportDataDone {
   border: 1px solid #AAAAAA;
   font-weight: normal;
-  background: #E0E0E0;
+  background: #F0F0F0;
   color: #505050;
   font-size: 80%;
   margin: 0; padding: 0; spacing: 0;
@@ -208,32 +255,31 @@ label, .label {
   border: 0px solid #AAAAAA;
   text-align: center;
   font-weight: bold;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x;
+  background: #DDDDDD;
 }
 .reportTableHeader {
-  border: 1px solid #AAAAAA;
+  border: 1px solid #FFFFFF;
   text-align: center;
   font-weight: bold;
   padding: 3px 5px 3px 5px;
-  background: url(images/titleBarDark.png) #DDDDDD top repeat-x;
+  background: #AAAAAA;
   color: #FFFFFF;
-  text-shadow: 1px 1px #505050;
 }
 .reportTableColumnHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
   padding: 1px 3px 1px 3px;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x;
+  background: #DDDDDD;
 }
 .reportTableLineHeader {
   border: 1px solid #AAAAAA;
   padding: 0px 3px 0px 3px;
-  background: url(images/titleBar.png) #DDDDDD top repeat-x;
+  background: #DDDDDD;
 }
 .reportTableData {
   border: 1px solid #AAAAAA;
-  vertical-align: middle;
   text-align: center;
+  vertical-align: middle;
   font-weight: normal;
   padding: 0px 1px 0px 1px;
   background: #FFFFFF;

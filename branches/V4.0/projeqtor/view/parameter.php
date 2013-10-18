@@ -27,6 +27,11 @@
       $criteriaRoot['idUser']=null; 
       $criteriaRoot['idProject']=null;
       break;
+    case ('habilitation'): 
+    case ('habilitationReport'): 
+    case ('accessRight'):
+    case ('habilitationOther'):
+    	break;
     default:
     	traceHack('parameter : unknown parameter type '.$type);
     	exit;

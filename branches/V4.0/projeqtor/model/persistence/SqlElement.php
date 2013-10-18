@@ -285,7 +285,8 @@ abstract class SqlElement {
 	 */
 	protected function __construct($id = NULL, $withoutDependentObjects=false) {
 		if (trim($id) and ! is_numeric($id)) {
-			traceHack("SqlElement->_constrcut : id is not numeric");
+			$class=get_class($this);
+			traceHack("SqlElement->_construct : id '$id' is not numeric for class $class");
 			return;
 		} 
 		$this->id=$id;

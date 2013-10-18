@@ -2,7 +2,6 @@
 /** ===========================================================================
  * Display the column selector div
  */
-
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/listColumnSelector');
 //echo "$objectClass<br/>";

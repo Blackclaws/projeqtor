@@ -16,8 +16,9 @@ div .scrollLeftTop {
   padding: 0px; 
   margin: 0px;
   overflow: hidden;
-  background-color:#aaaaaa;
+  background: url(images/titleBarDark.png) #DDDDDD top repeat-x;
   color: #ffffff;
+  text-shadow: 1px 1px #505050;
   font-weight: bold;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
@@ -72,8 +73,9 @@ div .scrollRightTop {
   vertical-align: middle;
   text-align: center;
   font-weight: bold;
-  background-color:#aaaaaa;
+  background: url(images/titleBarDark.png) #DDDDDD top repeat-x;
   color: #ffffff;
+  text-shadow: 1px 1px #505050;
   padding: 0px; margin: 0px;
   border-left: #efefef 1px solid;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
@@ -92,11 +94,11 @@ div .scrollRightTop {
   vertical-align: middle;
   text-align: center;
   font-weight: normal;
-  background-color:#e0e0e0;
+  background: url(images/titleBar.png) #DDDDDD top repeat-x;
   color: #000000;
   padding: 0px; margin: 0px;
-  /*border-top: #c0c0c0 1px solid;*/
-  border-left: #eeeeee 1px solid;
+  /*border-top: #D0D0D0 1px solid;*/
+  border-left: #D0D0D0 1px solid;
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
 }
 

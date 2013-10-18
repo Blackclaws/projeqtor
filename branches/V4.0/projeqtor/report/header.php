@@ -15,7 +15,7 @@ echo "</td>";
 echo "<td align='center' style='width:40%; font-size: 150%; font-weight: bold;'>"; 
 
 if (array_key_exists('reportName', $_REQUEST)) {
-  echo '<table><tr><td style="text-align: center; background-color: #E0E0E0; padding: 3px 10px 3px 10px;">';
+  echo '<table><tr><td class="reportTableHeader" style="text-align: center; padding: 3px 10px 3px 10px;">';
   echo ucfirst($_REQUEST['reportName']);
   echo '</td></tr></table>';
 }

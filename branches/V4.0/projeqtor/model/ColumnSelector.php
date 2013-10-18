@@ -69,7 +69,7 @@ class ColumnSelector extends SqlElement {
       	$dispObj=$$fromObj;
       }
       $cs->_displayName=$dispObj->getColCaption($cs->_name);
-		  if (substr($cs->attribute,0,9)=='idContext') {
+		  if (substr($cs->attribute,0,9)=='idContext' and strlen($cs->attribute)==10) {
 		  	$ctx=new ContextType(substr($cs->attribute,-1));
         $cs->_displayName=$ctx->name;
       }		
