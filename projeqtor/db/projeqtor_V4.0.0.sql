@@ -179,6 +179,15 @@ CREATE INDEX scopeColumnSelector ON `${prefix}columnselector` (scope, objectClas
 
 ALTER TABLE `${prefix}audit` ADD COLUMN `requestRefreshProject` int(1) unsigned DEFAULT '0';
 
+UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOr' 
+where parameterValue='ProjectOrRia' and parameterCode IN ('theme','defaultTheme');
+UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOrLight' 
+where parameterValue='ProjectOrRiaLight' and parameterCode IN ('theme','defaultTheme');
+UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOrContrasted' 
+where parameterValue='ProjectOrRiaContrasted' and parameterCode IN ('theme','defaultTheme');
+UPDATE `${prefix}parameter` SET parameterValue='projeqtor' 
+where parameterValue='projector' and parameterCode='paramDefaultPassword';
+
 -- CANCELLED
 ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}status` SET setCancelledStatus=1 WHERE id=9;
