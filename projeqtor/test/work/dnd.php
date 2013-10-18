@@ -8,7 +8,7 @@
 <html>
 <head>   
   <link rel="stylesheet" type="text/css" href="../../view/css/jsgantt.css" />
-  <link rel="stylesheet" type="text/css" href="../../view/css/projector.css" />
+  <link rel="stylesheet" type="text/css" href="../../view/css/projeqtor.css" />
   <script type="text/javascript" src="../../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 

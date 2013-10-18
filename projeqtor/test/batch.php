@@ -7,7 +7,7 @@ if (php_sapi_name()!='cli') {
 }
 
 
-// set the base root of projectorrria scripts
+// set the base root of projeqtor scripts
 $baseRoot=dirname(__FILE__) . "/.."; // for instance if current script is in a sub-directory of base root
 
 // Position to the tool directory ! Mantdatory

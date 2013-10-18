@@ -12,19 +12,19 @@
 <head>   
   <title><?php echo i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="../../view/css/jsgantt.css" />
-  <link rel="stylesheet" type="text/css" href="../../view/css/projector.css" />
+  <link rel="stylesheet" type="text/css" href="../../view/css/projeqtor.css" />
   <link rel="shortcut icon" href="../../view/img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="../../view/img/logo.ico" type="image/x-icon" />
   <script type="text/javascript" src="../../view/js/jsgantt.js"></script>
-  <script type="text/javascript" src="../../view/js/projector.js" ></script>
-  <script type="text/javascript" src="../../view/js/projectorWork.js" ></script>
-  <script type="text/javascript" src="../../view/js/projectorDialog.js" ></script>
-  <script type="text/javascript" src="../../view/js/projectorFormatter.js" ></script>
+  <script type="text/javascript" src="../../view/js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../../view/js/projeqtorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../../view/js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../../view/js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../../external/dojo/dojo.js"
     djConfig='modulePaths: {i18n: "../../tool/i18n"},
               parseOnLoad: true, 
               isDebug: <?php echo getBooleanValueAsString($paramDebugMode);?>'></script>
-  <script type="text/javascript" src="../../external/dojo/projectorDojo.js"></script>
+  <script type="text/javascript" src="../../external/dojo/projeqtorDojo.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.data.ItemFileWriteStore");
     dojo.require("dojo.date");
