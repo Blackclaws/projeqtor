@@ -231,13 +231,7 @@ if ($currVersion<"V3.3.0" and $currVersion!='V0.0.0') {
     $ss->save();
   }
 }
-if ($currVersion<"V4.0.0") {
-	$files = glob('../db/Projector_*.sql'); // get all file names
-	foreach($files as $file){ // iterate files
-	  if(is_file($file))
-	    unlink($file); // delete file
-	}
-}
+
 $tstTable=new TodayParameter();
 $tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
 if (! $tst or count($tst)==0) {
@@ -257,6 +251,23 @@ if ($currVersion<"V3.4.0") {
 			$param->save();
 		}
 	}
+}
+
+if ($currVersion<"V4.0.0") {
+	// Deleting old files referencing projector or projectorria : these files have been renamed
+  $files = glob('../db/Projector_*.sql'); // get all file names
+  foreach($files as $file){ // iterate files
+    if(is_file($file))
+      unlink($file); // delete file
+  }
+  unlink('../tool/projector.php');
+  unlink('../view/js/projector.php');
+  unlink('../view/js/projectorDialog.php');
+  unlink('../view/js/projectorFormatter.php');
+  unlink('../view/js/projectorWork.php');
+  unlink('../view/css/projector.php');
+  unlink('../view/css/projectorIcon.php');
+  unlink('../view/css/projectorPrint.php');
 }
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
