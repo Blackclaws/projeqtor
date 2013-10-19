@@ -538,12 +538,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			} else if ($col=='id') {
 				// Draw Id (only visible) ============================================= ID
 				// id is only visible
-				echo '<span style="color:grey;vertical-align:middle;">#</span>';
-				echo '<span dojoType="dijit.form.TextBox" type="text"  ';
-				echo $name;
-				echo ' class="display" ';
-				echo ' readonly tabindex="-1" style="width: ' . $smallWidth . 'px;" ' ;
-				echo ' value="' . htmlEncode($val) . '" ></span>';
+				$ref=$obj->getReferenceUrl();
+				echo '<span style="font-size:8pt;color:#AAAAAA">';
+				echo '  <a href="' . $ref . '" onClick="copyDirectLinkUrl();return false;" title="'.i18n("rightClickToCopy").'">';
+				echo '    <span style="color:grey;vertical-align:middle;">#</span>';
+				echo '    <span dojoType="dijit.form.TextBox" type="text"  ';
+				echo       $name;
+				echo '     class="display" ';
+				echo '     readonly tabindex="-1" style="width: ' . $smallWidth . 'px;" ' ;
+				echo '     value="' . htmlEncode($val) . '" >';
+				echo '    </span>';
+        echo '  </a>';
+        echo '</span>';
+        echo '<input disabled=disabled type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:'.$largeWidth.'px;" value="'.$ref.'" />';
 			  $alertLevelArray=$obj->getAlertLevel(true);
         $alertLevel=$alertLevelArray['level'];
         $colorAlert="background-color:#FFFFFF";

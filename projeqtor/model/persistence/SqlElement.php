@@ -2818,11 +2818,7 @@ abstract class SqlElement {
 		$tableStart='<table style="font-size:9pt; width: 95%">';
 		$tableEnd='</table>';
 		$msg=$tableStart;
-		$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
-		.$_SERVER['SERVER_NAME']
-		.(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
-		.$_SERVER['REQUEST_URI'];
-		$ref=substr($url,0,strpos($url,'/tool/')).'/view/main.php?directAccess=true&objectClass='.get_class($this).'&objectId='.$this->id;
+		$ref=$this->getReferenceUrl();
 		$msg.='<tr><td colspan="2" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.$this->id.'</a></td></tr>';
 		$nobr=false;
 		foreach ($this as $col => $val) {
@@ -3002,6 +2998,24 @@ abstract class SqlElement {
 		$msg.=$tableEnd;
 		return $msg;
 	}
+	
+	public function getReferenceUrl() {
+		$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
+    .$_SERVER['SERVER_NAME']
+    .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
+    .$_SERVER['REQUEST_URI'];
+    $ref="";
+    if (strpos($url,'/tool/')) {
+       $ref.=substr($url,0,strpos($url,'/tool/'));
+    } else if (strpos($url,'/view/')) {
+    	$ref.=substr($url,0,strpos($url,'/view/'));
+    } else if (strpos($url,'/report/')) {
+      $ref.=substr($url,0,strpos($url,'/report/'));
+    }   
+    $ref.='/view/main.php?directAccess=true&objectClass='.get_class($this).'&objectId='.$this->id;
+    return $ref;
+	}
+	 
 	/** =========================================================================
 	 * Specific function added to setup a workaround for bug #305
 	 * waiting for Dojo fixing (Dojo V1.6 ?)
