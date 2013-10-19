@@ -5,24 +5,23 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/saveCheckboxes.php');
 header("Content-Type: text/plain"); 
-$toStore = (isset($_GET["toStore"])) ? $_GET["toStore"] : NULL;
+$toStore = (isset($_REQUEST["toStore"])) ? $_REQUEST["toStore"] : NULL;
 $toStore=explode(";",$toStore);
-
+$objClass = (isset($_REQUEST["objectClass"])) ? $_REQUEST["objectClass"] : NULL;
+$user=$_SESSION['user'];
+$idUser = $user->id;
+$obj=new $objClass();
 Sql::beginTransaction();
-if(count($toStore)>1){
-	$objClass = $toStore[0];
-	$user=$_SESSION['user'];
-	$idUser = $user->id;
-	unset($toStore[0]);
-	unset($toStore[1]);
-	$cs=new ColumnSelector();
-	$cs->purge("scope='export' and idUser=$idUser and objectClass='$objClass'");
-    foreach ($toStore as $store) {
-		$cs=new ColumnSelector();
+$cs=new ColumnSelector();
+$cs->purge("scope='export' and idUser=$idUser and objectClass='$objClass'");
+foreach ($toStore as $store) {
+	if (trim($store)) {
+	  $cs=new ColumnSelector();
 		$cs->scope='export';
 		$cs->idUser=$idUser;
 		$cs->objectClass=$objClass;
 		$cs->field=$store;
+		$cs->name=$obj->getColCaption($store);
 		$cs->hidden=1;
 		$res=$cs->save();
 	}

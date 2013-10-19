@@ -4111,7 +4111,7 @@ function unlockRequirement() {
   return true;
 }
 
-function loadDialog(dialogDiv,callBack, autoShow) {
+function loadDialog(dialogDiv,callBack, autoShow, params) {
   if (! dijit.byId(dialogDiv) ) {
 	  dialog = new dijit.Dialog({
 	  id: dialogDiv,
@@ -4124,7 +4124,7 @@ function loadDialog(dialogDiv,callBack, autoShow) {
   }
   showWait();
   dojo.xhrGet({
-	url: '../tool/dynamicDialog.php?dialog='+dialogDiv+'&isIE='+((dojo.isIE)?dojo.isIE:''),
+	url: '../tool/dynamicDialog.php?dialog='+dialogDiv+'&isIE='+((dojo.isIE)?dojo.isIE:'')+params,
 	handleAs: "text",
 	load: function (data) {
 	  var contentWidget = dijit.byId(dialogDiv);
@@ -4301,7 +4301,6 @@ function selectTreeNodeById(tree, lookfor){
 // Code to select columns to be exported
 // ************************************************************
 var ExportType ='';
-
 //open the dialog with checkboxes
 function openExportDialog (Type) {
   ExportType=Type;
@@ -4309,49 +4308,48 @@ function openExportDialog (Type) {
           showAlert(i18n('alertOngoingChange'));
           return;
   }
-  top.dijit.byId("dialogExport").show();  
-
+  loadDialog("dialogExport",null, true,'&objectClass='+dojo.byId('objectClass').value);  
 }
 
 //close the dialog with checkboxes 
-function closeExportDialog (obj,idUser) {
-  top.dijit.byId("dialogExport").hide(); 
-  saveCheckboxExport(obj,idUser);
+function closeExportDialog () {
+  dijit.byId("dialogExport").hide(); 
 }
 
 
 //save current state of checkboxes
 function saveCheckboxExport(obj,idUser){
   var val = dojo.byId('column0').value;
-  var toStore=obj+";"+idUser;
+  var toStore="";
   val = eval(val);
-  for(i=1; i<val+1;i++){
-      var checkbox=dojo.byId('column'+i);
-      if(checkbox) {
-          if(! checkbox.checked) {
-              var field=checkbox.value.split(';');
-              toStore=toStore + ";" + field[4];
-          }
+  for(i=1; i<=val;i++){
+    var checkbox=dijit.byId('column'+i);
+    if(checkbox) {
+      if(! checkbox.get('checked')) {
+        var field=checkbox.value;
+        toStore+=field+";";
       }
+    }
   }
+  console.log('toStore='+toStore);
   dojo.xhrPost({
-	url: "../tool/saveCheckboxes.php?toStore="+toStore,
+	url: "../tool/saveCheckboxes.php?&objectClass="+obj+"&toStore="+toStore,
 	handleAs: "text",
-	load: function(data,args) { }
+	load: function () {}
   });
 }
 
 //computes witch so pdf export takes all page.
-function egalizeWidth(width){
-	var SumWidth=0;
-	for (var i in width){
-		SumWidth = parseInt(SumWidth)+parseInt(width[i]);
-	}
-	for (var i in width){
-		width[i]=100*width[i]/SumWidth;
-	}
-	return width;
-}
+//function egalizeWidth(width){
+//	var SumWidth=0;
+//	for (var i in width){
+//		SumWidth = parseInt(SumWidth)+parseInt(width[i]);
+//	}
+//	for (var i in width){
+//		width[i]=100*width[i]/SumWidth;
+//	}
+//	return width;
+//}
 
 var layoutPrint ='';
 //Executes the report (shows the print/pdf/csv)
@@ -4360,76 +4358,49 @@ function executeExport(obj,idUser) {
   var verif=0;
   var val = dojo.byId('column0').value;
   val = eval(val);
-  var width = {};
-  for(i=1; i<val+1;i++){
-      var checkbox=dojo.byId('column'+i);
-      if(checkbox) {
-          if(checkbox.checked) {
-              var field=checkbox.value.split(';');
-              width[field[0]]=field[2];
-          }
-      }
-  }
-
-  width = egalizeWidth(width);
-
-  for(i=1; i<val+1;i++){
-      var checkbox=dojo.byId('column'+i);
-      if(checkbox) {
-          if(checkbox.checked) {
-              var field=checkbox.value.split(';');
-              layoutPrint+='<th field="'+field[0]+'" formatter="'+field[3]+'" width="'+width[field[0]]+'%">'+field[1]+'</th> ';
-              verif=1;        
-          }
-      }
-  }
-  if(verif==1){
-      var grid = dijit.byId("objectGrid");
-      if(0 && grid.rowCount > 200) {
-          actionYes=function() { 
-              if(ExportType=='print') {
-                  showPrint("../tool/jsonQuery.php", 'list');
-              } else if(ExportType=='csv') {
-                  showPrint("../tool/jsonQuery.php", 'list', null, 'csv');  
-              } else if(ExportType=='pdf') {
-                  showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
-              } else {
-                  showPrint("../tool/jsonQuery.php", 'list');
-              }
-              closeReportPrint (obj,idUser);
-          };
-          actionNo=function() { closeReportPrint (obj,idUser); };
-          showQuestion(i18n('bigExportQuestion', new Array(grid.rowCount)),actionYes,actionNo);
+  var toExport = "";
+  for(i=1; i<=val;i++){
+    var checkbox=dijit.byId('column'+i);
+    if(checkbox) {
+      if (checkbox.get('checked')) {
+        verif=1;
       } else {
-          if(ExportType=='print') {
-              showPrint("../tool/jsonQuery.php", 'list');
-          } else if(ExportType=='csv') {
-              showPrint("../tool/jsonQuery.php", 'list', null, 'csv');  
-          } else if(ExportType=='pdf') {
-              showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
-          } else {
-              showPrint("../tool/jsonQuery.php", 'list');
-          }
-          closeExportDialog(obj,idUser);
+    	var field=checkbox.value;
+        toExport+=field+";";
       }
+    }
+  }
+  console.log("toExport="+toExport);
+  if(verif==1) {
+    if(ExportType=='csv') {
+      showPrint("../tool/jsonQuery.php?hiddenFields="+toExport, 'list', null, 'csv');  
+    }
+    saveCheckboxExport(obj,idUser);
+    closeExportDialog(obj,idUser);
   } else {
-      showAlert(i18n('alertChooseOneAtLeast'));
+    showAlert(i18n('alertChooseOneAtLeast'));
   }
 }
 
 //Check or uncheck all boxes
-function checkReportPrint () {
-  var check = dojo.byId('checkUncheck').checked;
+function checkExportColumns() {
+  console.log("ckeck");
+  var check = dijit.byId('checkUncheck').get('checked');
+  console.log(check);
   var val = dojo.byId('column0').value;
+  console.log(val);
   val = eval(val);
-  for(i=1; i<val+1;i++){
+  for(i=1; i<=val;i++){
      var checkbox=dijit.byId('column'+i);
       if(checkbox) {
-          dijit.byId(checkbox).setValue(check);
+    	  checkbox.set('checked',check);
       }
   }
 }
 
+// ==================================================================
+// Project Selector Functions
+// ==================================================================
 function changeProjectSelectorType(displayMode) {
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=projectSelectorDisplayMode&value="+displayMode,
