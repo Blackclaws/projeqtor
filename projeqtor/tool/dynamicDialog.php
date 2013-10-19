@@ -13,6 +13,8 @@ if ($dialog=="dialogTodayParameters") {
   include('../tool/dynamicDialogDocumentVersion.php');
 } else if ($dialog=="dialogProjectSelectorParameters") {
 	include('../tool/dynamicDialogProjectSelectorParameters.php');
+} else if ($dialog=="dialogExport") {
+  include('../tool/dynamicDialogExport.php');
 } else {
 	echo "ERROR dialog=".$dialog." is not an expected dialog";
 }

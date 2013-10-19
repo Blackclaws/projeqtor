@@ -5,6 +5,16 @@
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
+    
+    $hiddenFields=array();
+    if (isset($_REQUEST['hiddenFields'])) {
+    	$hiddens=explode(';',$_REQUEST['hiddenFields']);
+    	foreach ($hiddens as $hidden) {
+    		if (trim($hidden)) {
+    			$hiddenFields[$hidden]=$hidden;
+    		}
+    	}
+    }
     $print=false;
     if ( array_key_exists('print',$_REQUEST) ) {
       $print=true;
@@ -220,7 +230,7 @@
     $arrayWidth=array();
     if ($outMode=='csv') {
     	$obj=new $objectClass();
-    	$clause=$obj->buildSelectClause();
+    	$clause=$obj->buildSelectClause(false,$hiddenFields);
     	$querySelect .= ($querySelect=='')?'':', ';
     	$querySelect .= $clause['select'];
     	//$queryFrom .= ($queryFrom=='')?'':', ';

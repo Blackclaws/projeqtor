@@ -3,7 +3,6 @@
  * Save some information about planning columns status.
  */
 require_once "../tool/projeqtor.php";
-
 Sql::beginTransaction();
 $user=$_SESSION['user'];
 if (! array_key_exists('action',$_REQUEST)) {
