@@ -672,6 +672,9 @@ function checkDestination(destination){
       showAlert(i18n("errorConnection"));
     }
   }
+  if (! dijit.byId('objectGrid') && dojo.byId('multiUpdateButtonDiv')) {
+	  dojo.byId('multiUpdateButtonDiv').style.display='none';
+  }		  
 }
 /**
  * ============================================================================
@@ -1281,8 +1284,7 @@ function checkFormChangeInProgress(actionYes, actionNo) {
     return true;
   } else if (formChangeInProgress) {
 	if (multiSelection) {
-		multiSelection=false;
-		formChangeInProgress=false;
+		endMultipleUpdateMode();
 		return false;
 	}
     if (actionYes) {

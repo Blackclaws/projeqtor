@@ -3566,7 +3566,6 @@ function loadMenuBarObject(menuClass, itemName, from) {
   	if (checkFormChangeInProgress()) {
   		return false;
   	}
-  	send
   	if (from=='bar') { selectTreeNodeById(dijit.byId('menuTree'), menuClass); }
   	cleanContent("detailDiv");
     formChangeInProgress=false;
@@ -4198,6 +4197,7 @@ function startMultipleUpdateMode(objectClass) {
 	  return;
 	}
 	multiSelection=true;
+	//dojo.xhrPost({url: "../tool/saveDataToSession.php?id=multipleMode&value=true"});
 	formChangeInProgress=true;
 	switchedModeBeforeMultiSelection=switchedMode;
 	if (switchedModeBeforeMultiSelection) {
@@ -4227,21 +4227,28 @@ function saveMultipleUpdateMode(objectClass) {
 }  
 
 function endMultipleUpdateMode(objectClass) {
-	dijit.byId('objectGrid').selection.setMode('single');
+	if (dijit.byId('objectGrid')) {
+	  dijit.byId('objectGrid').selection.setMode('single');
+	  unselectAllRows("objectGrid");
+	}
 	multiSelection=false;
+	//dojo.xhrPost({url: "../tool/saveDataToSession.php?id=multipleMode&value=false"});
 	formChangeInProgress=false;
-	unselectAllRows("objectGrid");
 	if (switchedModeBeforeMultiSelection) {
 	  switchMode();
     }
-	loadContent('../view/objectDetail.php?noselect=true&objectClass='+objectClass,'detailDiv');
+	if (objectClass) {
+	  loadContent('../view/objectDetail.php?noselect=true&objectClass='+objectClass,'detailDiv');
+	}
 }  
 
 function deleteMultipleUpdateMode(objectClass) {
 	showError("delete is no designed yet");
 }
 function updateSelectedCountMultiple() {
-  dijit.byId('selectedCount').set('value',countSelectedItem('objectGrid'));
+  if (dijit.byId('selectedCount')) {
+    dijit.byId('selectedCount').set('value',countSelectedItem('objectGrid'));
+  }
 }
 
 function showImage(objectClass, objectId, imageName) {
