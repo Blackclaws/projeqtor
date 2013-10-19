@@ -843,7 +843,7 @@ function removeAttachement (attachementId) {
 var noRefreshLink=false;
 function addLink (classLink, defaultLink) {
 	noRefreshLink=true;
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -957,7 +957,7 @@ function saveLink() {
  * 
  */
 function removeLink (linkId, refType, refId, refTypeName) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -978,7 +978,7 @@ function removeLink (linkId, refType, refId, refTypeName) {
 //= OtherVersions
 //=============================================================================
 function addOtherVersion(versionType) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1032,7 +1032,7 @@ function saveOtherVersion() {
 }
 
 function removeOtherVersion(id, name, type) {
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
 	showAlert(i18n('alertOngoingChange'));
 	return;
   }	
@@ -1043,7 +1043,7 @@ function removeOtherVersion(id, name, type) {
 }
 
 function swicthOtherVersionToMain(id, name, type) {
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
 	showAlert(i18n('alertOngoingChange'));
 	return;
   }		
@@ -1070,7 +1070,7 @@ function showDetailOtherVersion() {
  *
  */
 function addApprover () {
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
@@ -1128,7 +1128,7 @@ function saveApprover() {
  *
  */
 function removeApprover (approverId, approverName) {
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
@@ -1141,7 +1141,7 @@ function removeApprover (approverId, approverName) {
 }
 
 function approveItem(approverId) {
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
@@ -1156,7 +1156,7 @@ function approveItem(approverId) {
 * 
 */
 function addOrigin () {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1198,7 +1198,7 @@ function saveOrigin() {
 * 
 */
 function removeOrigin (id, origType, origId) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -1221,7 +1221,7 @@ function removeOrigin (id, origType, origId) {
  * 
  */
 function addAssignment (unit, rawUnit, hoursPerDay) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1282,7 +1282,7 @@ function addAssignment (unit, rawUnit, hoursPerDay) {
 
 var editAssignmentLoading=false;
 function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedWork, realWork, leftWork, unit) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1404,7 +1404,7 @@ function saveAssignment() {
  * 
  */
 function removeAssignment (assignmentId, realWork, resource) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1458,7 +1458,7 @@ function assignmentChangeRole() {
 * 
 */
 function addExpenseDetail () {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -1480,7 +1480,7 @@ function addExpenseDetail () {
 var expenseDetailLoad=false;
 function editExpenseDetail (id, idExpense, type, expenseDate, amount) {
 	expenseDetailLoad=true;
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1536,7 +1536,7 @@ function saveExpenseDetail() {
 * 
 */
 function removeExpenseDetail (expenseDetailId) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1603,7 +1603,7 @@ function expenseDetailRecalculate() {
 * 
 */
 function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1666,7 +1666,7 @@ function addDocumentVersion (defaultStatus, typeEvo, numVers, dateVers, nameVers
 */
 //var documentVersionLoad=false;
 function editDocumentVersion (id,version,revision,draft,versionDate, status, isRef, typeEvo, numVers, dateVers, nameVers) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1782,7 +1782,7 @@ function saveDocumentVersionProgress(data) {
 * 
 */
 function removeDocumentVersion (documentVersionId, documentVersionName) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1901,7 +1901,7 @@ function setDisplayIsRefDocumentVersion() {
 * 
 */
 function addDependency (depType) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -1954,7 +1954,7 @@ function addDependency (depType) {
 }
 
 function editDependency (depType, id, refType, refTypeName, refId, delay) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -2036,7 +2036,7 @@ function saveDependencyFromDndLink(ref1Type,ref1Id, ref2Type, ref2Id) {
 * 
 */
 function removeDependency (dependencyId, refType, refId) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2275,7 +2275,7 @@ function controlImportData() {
  * 
  */
 function showPlanParam (selectedProject) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2302,7 +2302,7 @@ function plan() {
 var filterStartInput=false;
 var filterFromDetail=false;
 function showFilterDialog () {
-	/*if (formChangeInProgress) {
+	/*if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}*/
@@ -2696,7 +2696,7 @@ function reportSelectReport(idReport) {
 //=============================================================================
 
 function addResourceCost(idResource, idRole, funcList) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2716,7 +2716,7 @@ function addResourceCost(idResource, idRole, funcList) {
 }
 
 function removeResourceCost(id, idRole, nameRole, startDate) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -2728,7 +2728,7 @@ function removeResourceCost(id, idRole, nameRole, startDate) {
 
 reourceCostLoad=false;
 function editResourceCost(id, idResource,idRole,cost,startDate,endDate) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2775,7 +2775,7 @@ function resourceCostUpdateRole() {
 //=============================================================================
 
 function addVersionProject(idVersion, idProject) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2804,7 +2804,7 @@ function addVersionProject(idVersion, idProject) {
 }
 
 function removeVersionProject(id) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -2816,7 +2816,7 @@ function removeVersionProject(id) {
 
 versionProjectLoad=false;
 function editVersionProject(id, idVersion,idProject,startDate,endDate,idle) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -2870,7 +2870,7 @@ function saveVersionProject() {
 //=============================================================================
 
 function addTestCaseRun() {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2898,7 +2898,7 @@ function refreshTestCaseRunList(selected) {
 }
 
 function editTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket, hide) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -2956,7 +2956,7 @@ function testCaseRunChangeStatus() {
 }
 
 function removeTestCaseRun(id, idTestCase) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -2995,7 +2995,7 @@ function saveTestCaseRun() {
 //=============================================================================
 
 function addAffectation(objectClass, type, idResource, idProject) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -3025,7 +3025,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
 }
 
 function removeAffectation(id) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -3038,7 +3038,7 @@ function removeAffectation(id) {
 
 affectationLoad=false;
 function editAffectation(id, objectClass, type, idResource, idProject, rate,idle) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -3086,7 +3086,7 @@ function saveAffectation() {
 }
 
 function affectTeamMembers(idTeam) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}	
@@ -3566,6 +3566,7 @@ function loadMenuBarObject(menuClass, itemName, from) {
   	if (checkFormChangeInProgress()) {
   		return false;
   	}
+  	send
   	if (from=='bar') { selectTreeNodeById(dijit.byId('menuTree'), menuClass); }
   	cleanContent("detailDiv");
     formChangeInProgress=false;
@@ -4122,6 +4123,7 @@ function loadDialog(dialogDiv,callBack, autoShow, params) {
   } else {
 	dialog=dijit.byId(dialogDiv);
   }
+  if (!params) {params=""};
   showWait();
   dojo.xhrGet({
 	url: '../tool/dynamicDialog.php?dialog='+dialogDiv+'&isIE='+((dojo.isIE)?dojo.isIE:'')+params,
@@ -4187,7 +4189,7 @@ function reorderTodayItems() {
 var multiSelection=false;
 var switchedModeBeforeMultiSelection=false;
 function startMultipleUpdateMode(objectClass) {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
@@ -4195,6 +4197,7 @@ function startMultipleUpdateMode(objectClass) {
 	if ( ! grid) { 
 	  return;
 	}
+	multiSelection=true;
 	formChangeInProgress=true;
 	switchedModeBeforeMultiSelection=switchedMode;
 	if (switchedModeBeforeMultiSelection) {
@@ -4202,7 +4205,6 @@ function startMultipleUpdateMode(objectClass) {
 	}
 	unselectAllRows("objectGrid");
 	dijit.byId('objectGrid').selection.setMode('multiple');	
-	multiSelection=true;
 	loadContent('../view/objectMultipleUpdate.php?objectClass='+objectClass,'detailDiv')
 }  
 
@@ -4304,7 +4306,7 @@ var ExportType ='';
 //open the dialog with checkboxes
 function openExportDialog (Type) {
   ExportType=Type;
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
           showAlert(i18n('alertOngoingChange'));
           return;
   }

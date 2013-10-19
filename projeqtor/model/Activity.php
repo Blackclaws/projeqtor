@@ -209,11 +209,13 @@ class Activity extends SqlElement {
     $oldResource=null;
     $oldIdle=null;
     $oldIdProject=null;
+    $oldIdActivity=null;
     if ($this->id) {
       $old=$this->getOld();
       $oldResource=$old->idResource;
       $oldIdle=$old->idle;
       $oldIdProject=$old->idProject;
+      $oldIdActivity=$old->idActivity;
     }
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
@@ -230,6 +232,10 @@ class Activity extends SqlElement {
       $this->ActivityPlanningElement->topRefId=$this->idProject;
       $this->ActivityPlanningElement->topId=null;
     } 
+    if ($this->idProject!=$oldIdProject or $this->idActivity!=$oldIdActivity) {
+    	$this->ActivityPlanningElement->wbs=null;
+    	$this->ActivityPlanningElement->wbsSortable=null;
+    }
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;    	
@@ -287,7 +293,7 @@ class Activity extends SqlElement {
       }      
     }   
     if ($this->idProject != $oldIdProject ) {
-    	$lstElt=array('Activity','Ticket','Milestone');
+    	$lstElt=array('Activity','Ticket','Milestone','PeriodicMeeting','Meeting','TestSession');
     	foreach ($lstElt as $elt) {
     		$eltObj=new $elt();
     		$crit=array('idActivity'=>$this->id);

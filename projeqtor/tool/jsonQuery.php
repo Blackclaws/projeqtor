@@ -442,6 +442,10 @@
 	    					$colId=$arrayFields[$id];
 	    				}
 	    				$val=utf8_decode($obj->getColCaption($colId));
+	    				if (substr($id,0,9)=='idContext' and strlen($id)==10) {
+                $ctx=new ContextType(substr($id,-1));
+                $val=utf8_decode($ctx->name);
+              } 
 	    				//$val=utf8_decode($id);
 	    				$val=str_replace($csvSep,' ',$val);
 	            if ($id!='id') { echo $csvSep ;}
@@ -479,11 +483,13 @@
     		}
     	} else {
         echo '<br/>';
-        echo '<div class="reportTableHeader" style="width:100%; font-size:150%;border: 0px solid #000000;">' . i18n('menu'.$objectClass) . '</div>';
+        echo '<div class="reportTableHeader" style="width:99%; font-size:150%;border: 0px solid #000000;">' . i18n('menu'.$objectClass) . '</div>';
         echo '<br/>';
 	      echo '<table>';
 	      echo '<tr>';
-	      echo str_ireplace('width="','style="width:',$layout);
+	      $layout=str_ireplace('width="','style="border:1px solid black;width:',$layout);
+	      $layout=str_ireplace('<th ','<th class="reportHeader" ',$layout);
+	      echo $layout;
 	      echo '</tr>';
 	      if (Sql::$lastQueryNbRows > 0) {
 	        while ($line = Sql::fetchLine($result)) {

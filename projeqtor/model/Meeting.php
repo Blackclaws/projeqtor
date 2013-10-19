@@ -282,6 +282,7 @@ class Meeting extends SqlElement {
   }
   
   public function save() {
+  	$old=$this->getOld();
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType) . " " . $this->meetingDate;
   	}
@@ -341,6 +342,11 @@ class Meeting extends SqlElement {
     if (! $this->MeetingPlanningElement->assignedWork) {
     	$this->MeetingPlanningElement->plannedStartDate=$this->meetingDate;
       $this->MeetingPlanningElement->plannedEndDate=$this->meetingDate;
+    }
+    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity 
+    or $this->idPeriodicMeeting!=$old->idPeriodicMeeting) {
+      $this->MeetingPlanningElement->wbs=null;
+      $this->MeetingPlanningElement->wbsSortable=null;
     }
     return parent::save();
   }

@@ -560,8 +560,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $printHeight=round($_SESSION['screenHeight']*0.50);
     }
   ?> 
-  <div id="printPreview" dojoType="dijit.layout.ContentPane" region="center">
-    <table>
+  <div style="widht:100%" id="printPreview" dojoType="dijit.layout.ContentPane" region="center">
+    <table style="widht:100%">
       <tr>
         <td width="<?php echo $printWidth;?>px" align="right">
           <div id="sentToPrinterDiv">

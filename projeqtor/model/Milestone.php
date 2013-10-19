@@ -160,7 +160,7 @@ class Milestone extends SqlElement {
   public function save() {
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
-    
+    $old=$this->getOld();
     $this->MilestonePlanningElement->refName=$this->name;
     $this->MilestonePlanningElement->idProject=$this->idProject;
     $this->MilestonePlanningElement->idle=$this->idle;
@@ -174,6 +174,10 @@ class Milestone extends SqlElement {
       $this->MilestonePlanningElement->topRefId=$this->idProject;
       $this->MilestonePlanningElement->topId=null;;
     } 
+    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity) {
+      $this->MilestonePlanningElement->wbs=null;
+      $this->MilestonePlanningElement->wbsSortable=null;
+    }
     return parent::save();
   }
   

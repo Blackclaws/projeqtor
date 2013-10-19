@@ -1172,16 +1172,16 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 		echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
 		$objStatus=new Status($version->idStatus);
 		echo '<td class="assignData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
-		echo '<td class="assignData" title="' . $version->description . '">';
-		echo '<table><tr >';
-		echo ' <td>';
-		echo htmlEncode($version->fileName,'print');
-		echo ' </td>';
+		echo '<td class="assignData" title="' . htmlencode($version->description) . '">';
+		echo '  <table><tr >';
+		echo '   <td>';
+		echo     htmlEncode($version->fileName,'print');
+		echo '   </td>';
 		if ($version->description and ! $print) {
 			echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
 		}
 		echo '</tr></table>';
-		echo '</tr>';
+		echo '</td></tr>';
 	}
 	echo '</table></td></tr>';
 }

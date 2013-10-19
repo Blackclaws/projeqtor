@@ -242,6 +242,7 @@ class TestSession extends SqlElement {
   
   public function save() {
 
+  	$old=$this->getOld();
   	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
   	
   	$this->recalculateCheckboxes();
@@ -265,6 +266,10 @@ class TestSession extends SqlElement {
     	$this->TestSessionPlanningElement->topRefType=null;
       $this->TestSessionPlanningElement->topRefId=null;
       $this->TestSessionPlanningElement->topId=null;
+    }
+    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity) {
+      $this->TestSessionPlanningElement->wbs=null;
+      $this->TestSessionPlanningElement->wbsSortable=null;
     }
   	$result=parent::save();
     return $result;

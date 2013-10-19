@@ -857,7 +857,7 @@ label, .label {
 }
 
 .blue #mapDiv, .blue #messageDiv, .blue #listDiv, .blue #detailDiv, .blue #formDiv, .blue .display, .blue .background,
-.blue #printPreview, .blue .dijitTitlePaneContentInner, 
+.blue .dijitTitlePaneContentInner, 
 .blue #mainDiv,  .blue #contentDiv, .blue #centerDiv {
   background-color: #C3C3EB;
 }
@@ -904,7 +904,7 @@ label, .label {
 }
 
 .red #mapDiv, .red #messageDiv, .red #listDiv, .red #detailDiv, .red #formDiv, .red .display, .red .background,
-.red #printPreview, .red .dijitTitlePaneContentInner,
+.red .dijitTitlePaneContentInner,
 .red #mainDiv, .red #contentDiv, .red #centerDiv {
   background-color: #EBC3C3;
 }
@@ -950,7 +950,7 @@ label, .label {
 }
 
 .green #mapDiv, .green #messageDiv, .green #listDiv, .green #detailDiv, .green #formDiv, .green .display, .green .background,
-.green #printPreview, .green .dijitTitlePaneContentInner, 
+.green .dijitTitlePaneContentInner, 
 .green #mainDiv,  .green #contentDiv, .green #centerDiv {
   background-color: #C3EBC3;
 }
@@ -997,7 +997,7 @@ label, .label {
 }
 
 .grey #mapDiv, .grey #messageDiv, .grey #listDiv, .grey #detailDiv, .grey #formDiv, .grey .display, .grey .background,
-.grey #printPreview, .grey .dijitTitlePaneContentInner, 
+.grey .dijitTitlePaneContentInner, 
 .grey #mainDiv,  .grey #contentDiv, .grey #centerDiv {
   background-color: #C3C3C3;
 }
@@ -1044,7 +1044,7 @@ label, .label {
 }
 
 .orange #mapDiv, .orange #messageDiv, .orange #listDiv, .orange #detailDiv, .orange #formDiv, .orange .display, .orange .background,
-.orange #printPreview, .orange .dijitTitlePaneContentInner, 
+.orange .dijitTitlePaneContentInner, 
 .orange #mainDiv,  .orange #contentDiv, .orange #centerDiv {
   background-color: #F6C672;
 }
@@ -1100,7 +1100,7 @@ label, .label {
 }
 
 .white .tabLabel, .white .label,
-.white #printPreview, .white .dijitTitlePaneContentInner  {
+.white .dijitTitlePaneContentInner  {
   background-color: #FFFFFF; color: #000000;
 }
 
@@ -1138,7 +1138,7 @@ label, .label {
 }
 
 .blueLight #mapDiv, .blueLight #messageDiv, .blueLight #listDiv, .blueLight #detailDiv, .blueLight #formDiv, .blueLight .display, .blueLight .background,
-.blueLight #printPreview, .blueLight .dijitTitlePaneContentInner, 
+.blueLight .dijitTitlePaneContentInner, 
 .blueLight #mainDiv,  .blueLight #contentDiv, .blueLight #centerDiv {
   background-color: #EEEEFF;
 }
@@ -1184,7 +1184,7 @@ label, .label {
 }
 
 .blueContrast #mapDiv, .blueContrast #messageDiv, .blueContrast #listDiv, .blueContrast #detailDiv, .blueContrast #formDiv, .blueContrast .display, .blueContrast .background,
-.blueContrast #printPreview, .blueContrast .dijitTitlePaneContentInner, 
+.blueContrast .dijitTitlePaneContentInner, 
 .blueContrast #mainDiv,  .blueContrast #contentDiv, .blueContrast #centerDiv {
   background-color: #FFFFFF;
 }
@@ -1233,7 +1233,7 @@ label, .label {
 }
 
 .redLight #mapDiv, .redLight #messageDiv, .redLight #listDiv, .redLight #detailDiv, .redLight #formDiv, .redLight .display, .redLight .background,
-.redLight #printPreview, .redLight .dijitTitlePaneContentInner,
+.redLight .dijitTitlePaneContentInner,
 .redLight #mainDiv, .redLight #contentDiv, .redLight #centerDiv {
   background-color: #FFEEEE;
 }
@@ -1280,7 +1280,7 @@ label, .label {
 }
 
 .redContrast #mapDiv, .redContrast #messageDiv, .redContrast #listDiv, .redContrast #detailDiv, .redContrast #formDiv, .redContrast .display, .redContrast .background,
-.redContrast #printPreview, .redContrast .dijitTitlePaneContentInner, 
+.redContrast .dijitTitlePaneContentInner, 
 .redContrast #mainDiv,  .redContrast #contentDiv, .redContrast #centerDiv {
   background-color: #FFFFFF;
 }
@@ -1329,7 +1329,7 @@ label, .label {
 }
 
 .greenLight #mapDiv, .greenLight #messageDiv, .greenLight #listDiv, .greenLight #detailDiv, .greenLight #formDiv, .greenLight .display, .greenLight .background,
-.greenLight #printPreview, .greenLight .dijitTitlePaneContentInner, 
+.greenLight .dijitTitlePaneContentInner, 
 .greenLight #mainDiv,  .greenLight #contentDiv, .greenLight #centerDiv {
   background-color: #EEFFEE;
 }
@@ -1375,7 +1375,7 @@ label, .label {
 }
 
 .greenContrast #mapDiv, .greenContrast #messageDiv, .greenContrast #listDiv, .greenContrast #detailDiv, .greenContrast #formDiv, .greenContrast .display, .greenContrast .background,
-.greenContrast #printPreview, .greenContrast .dijitTitlePaneContentInner, 
+.greenContrast .dijitTitlePaneContentInner, 
 .greenContrast #mainDiv,  .greenContrast #contentDiv, .greenContrast #centerDiv {
   background-color: #FFFFFF;
 }
@@ -1424,7 +1424,7 @@ label, .label {
 }
 
 .orangeLight #mapDiv, .orangeLight #messageDiv, .orangeLight #listDiv, .orangeLight #detailDiv, .orangeLight #formDiv, .orangeLight .display, .orangeLight .background,
-.orangeLight #printPreview, .orangeLight .dijitTitlePaneContentInner, 
+.orangeLight .dijitTitlePaneContentInner, 
 .orangeLight #mainDiv,  .orangeLight #contentDiv, .orangeLight #centerDiv {
   background-color: #FFFFDD;
 }
@@ -1470,7 +1470,7 @@ label, .label {
 }
 
 .orangeContrast #mapDiv, .orangeContrast #messageDiv, .orangeContrast #listDiv, .orangeContrast #detailDiv, .orangeContrast #formDiv, .orangeContrast .display, .orangeContrast .background,
-.orangeContrast #printPreview, .orangeContrast .dijitTitlePaneContentInner, 
+.orangeContrast .dijitTitlePaneContentInner, 
 .orangeContrast #mainDiv,  .orangeContrast #contentDiv, .orangeContrast #centerDiv {
   background-color: #FFFFFF;
 }
@@ -1519,7 +1519,7 @@ label, .label {
 }
 
 .greyLight #mapDiv, .greyLight #messageDiv, .greyLight #listDiv, .greyLight #detailDiv, .greyLight #formDiv, .greyLight .display, .greyLight .background,
-.greyLight #printPreview, .greyLight .dijitTitlePaneContentInner,
+.greyLight .dijitTitlePaneContentInner,
 .greyLight #mainDiv, .greyLight #contentDiv, .greyLight #centerDiv {
   background-color: #F0F0F0;
 }
@@ -1566,7 +1566,7 @@ label, .label {
 }
 
 .greyContrast #mapDiv, .greyContrast #messageDiv, .greyContrast #listDiv, .greyContrast #detailDiv, .greyContrast #formDiv, .greyContrast .display, .greyContrast .background,
-.greyContrast #printPreview, .greyContrast .dijitTitlePaneContentInner, 
+.greyContrast .dijitTitlePaneContentInner, 
 .greyContrast #mainDiv,  .greyContrast #contentDiv, .greyContrast #centerDiv {
   background-color: #FFFFFF;
 }
@@ -1615,7 +1615,7 @@ label, .label {
 }
 
 .ProjeQtOrContrasted #mapDiv, .ProjeQtOrContrasted #messageDiv, .ProjeQtOrContrasted #listDiv, .ProjeQtOrContrasted #detailDiv, .ProjeQtOrContrasted #formDiv, .ProjeQtOrContrasted .display, .ProjeQtOrContrasted .background,
-.ProjeQtOrContrasted #printPreview, .ProjeQtOrContrasted .dijitTitlePaneContentInner, 
+.ProjeQtOrContrasted .dijitTitlePaneContentInner, 
 .ProjeQtOrContrasted #mainDiv,  .ProjeQtOrContrasted #contentDiv, .ProjeQtOrContrasted #centerDiv {
   background-color: #fafafa;
 }
@@ -1665,7 +1665,7 @@ label, .label {
 }
 
 .ProjeQtOrLight #mapDiv, .ProjeQtOrLight #messageDiv, .ProjeQtOrLight #listDiv, .ProjeQtOrLight .display, .ProjeQtOrLight .background,
-.ProjeQtOrLight #printPreview, .ProjeQtOrLight .dijitTitlePaneContentInner, 
+.ProjeQtOrLight .dijitTitlePaneContentInner, 
 .ProjeQtOrLight #detailDiv, .ProjeQtOrLight #formDiv,
 .ProjeQtOrLight #mainDiv,  .ProjeQtOrLight #contentDiv, .ProjeQtOrLight #centerDiv {
   background-color: #fcfcfc;
@@ -1717,7 +1717,7 @@ label, .label {
 }
 
 .ProjeQtOr #mapDiv, .ProjeQtOr #messageDiv, .ProjeQtOr #listDiv, .ProjeQtOr #detailDiv, .ProjeQtOr #formDiv, .ProjeQtOr .display, .ProjeQtOr .background,
-.ProjeQtOr #printPreview, .ProjeQtOr .dijitTitlePaneContentInner, 
+.ProjeQtOr .dijitTitlePaneContentInner, 
 .ProjeQtOr #mainDiv,  .ProjeQtOr #contentDiv, .ProjeQtOr #centerDiv {
   background-color: #fafafa;
 }
