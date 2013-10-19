@@ -4339,22 +4339,8 @@ function saveCheckboxExport(obj,idUser){
   });
 }
 
-//computes witch so pdf export takes all page.
-//function egalizeWidth(width){
-//	var SumWidth=0;
-//	for (var i in width){
-//		SumWidth = parseInt(SumWidth)+parseInt(width[i]);
-//	}
-//	for (var i in width){
-//		width[i]=100*width[i]/SumWidth;
-//	}
-//	return width;
-//}
-
-var layoutPrint ='';
 //Executes the report (shows the print/pdf/csv)
 function executeExport(obj,idUser) {  
-  layoutPrint ='';
   var verif=0;
   var val = dojo.byId('column0').value;
   val = eval(val);
@@ -4383,18 +4369,43 @@ function executeExport(obj,idUser) {
 }
 
 //Check or uncheck all boxes
-function checkExportColumns() {
-  console.log("ckeck");
-  var check = dijit.byId('checkUncheck').get('checked');
-  console.log(check);
-  var val = dojo.byId('column0').value;
-  console.log(val);
-  val = eval(val);
-  for(i=1; i<=val;i++){
-     var checkbox=dijit.byId('column'+i);
-      if(checkbox) {
-    	  checkbox.set('checked',check);
-      }
+function checkExportColumns(scope) {
+  if (scope=='aslist') {
+	showWait();  
+	dojo.xhrGet({
+	  url: "../tool/getColumnsList.php?objectClass="+dojo.byId('objectClass').value,
+	  load: function(data) {
+		var list=";"+data;
+		var val = dojo.byId('column0').value;
+		val = eval(val);
+		var allChecked=true;
+		for(i=1; i<=val;i++){
+		   var checkbox=dijit.byId('column'+i);
+           if (checkbox) {
+		     var search=";"+checkbox.value+";";
+		     if(list.indexOf(search)>=0) {
+		       checkbox.set('checked',true);
+		     } else {
+			   checkbox.set('checked',false);  
+			   allChecked=false;
+		     }
+           }
+		}	 
+		dijit.byId('checkUncheck').set('checked',allChecked);
+		hideWait();
+	  },
+	  error: function() {hideWait();}
+	});
+  } else {
+	  var check = dijit.byId('checkUncheck').get('checked');
+	  var val = dojo.byId('column0').value;
+	  val = eval(val);
+	  for(i=1; i<=val;i++){
+	     var checkbox=dijit.byId('column'+i);
+	      if(checkbox) {
+	    	  checkbox.set('checked',check);
+	      }
+	  }
   }
 }
 

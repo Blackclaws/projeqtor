@@ -107,16 +107,20 @@ $htmlresult.="<br>";
 <form id="dialogExportForm" name="dialogExportForm">
 <table style="width: 100%;">
   <tr>
-    <td class="reportTableHeader"><?php echo i18n("chooseColumnExport");?></td>
+    <td colspan="2" class="reportTableHeader"><?php echo i18n("chooseColumnExport");?></td>
   </tr>
+  <tr><td colspan="2" >&nbsp;</td></tr>
   <tr>
     <td>
-      <br>
       <input type="checkbox" dojoType="dijit.form.CheckBox" id="checkUncheck" name="checkUncheck" value="Check" onclick="checkExportColumns();" <?php echo $allChecked?> />
       <label for="checkUncheck" class="checkLabel"><b><?php echo i18n("checkUncheckAll")?></b></label>
-      <br>
+    </td>
+    <td>
+      <input type="checkbox" dojoType="dijit.form.Button" id="checkAsList" name="checkAsList" onclick="checkExportColumns('aslist');" 
+       showLabel="true" label="<?php echo i18n("checkAsList")?>" />
     </td>
   </tr>
+  <tr><td colspan="2" >&nbsp;</td></tr>
 </table>
 <table style="width: 100%;">
   <tr>
