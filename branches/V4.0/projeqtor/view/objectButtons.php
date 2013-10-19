@@ -140,14 +140,17 @@
           showMailOptions();  
         </script>
       </button>
-    <?php if (! array_key_exists('planning',$_REQUEST)) {?> 
+    <?php 
+    if (! array_key_exists('planning',$_REQUEST)) {?> 
+    <span id="multiUpdateButtonDiv">
     <button id="multiUpdateButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonMultiUpdate');?>"
        iconClass="dijitEditorIcon dijitEditorIconMultipleUpdate" >
         <script type="dojo/connect" event="onClick" args="evt">
           startMultipleUpdateMode('<?php echo get_class($obj);?>');  
         </script>
-    </button>  
+    </button>
+    </span>  
       <?php
         }
       } 
