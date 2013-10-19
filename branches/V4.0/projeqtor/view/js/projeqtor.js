@@ -1280,6 +1280,11 @@ function checkFormChangeInProgress(actionYes, actionNo) {
     showInfo(i18n("alertOngoingQuery"));
     return true;
   } else if (formChangeInProgress) {
+	if (multiSelection) {
+		multiSelection=false;
+		formChangeInProgress=false;
+		return false;
+	}
     if (actionYes) {
       if (! actionNo) {
         actionNo=function() {  };
@@ -1508,7 +1513,7 @@ function quit() {
  * @return
  */
 function beforequit() {
-  if (formChangeInProgress) {
+  if (checkFormChangeInProgress()) {
       return (i18n("alertQuitOngoingChange"));
   } else {
     if (! quitConfirmed) {

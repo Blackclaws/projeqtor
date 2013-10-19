@@ -55,49 +55,12 @@ foreach($FieldsArray as $key => $val){
 			$checked='';
 			$allChecked='';
 		}
-		//$dataType = $obj->getDataType($key);
-		//$dataLength = $obj->getDataLength($key);
-		//$width=5;
-		//$formatter='';
+    if (substr($key,0,9)=='idContext' and strlen($key)==10) {
+      $ctx=new ContextType(substr($key,-1));
+      $val=$ctx->name;
+    } 
 		$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.'" '.$checked.'>';
 		$htmlresult.='<label for="column'.$index.'" class="checkLabel">'.$val.'</label><br>';
-		//$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		/*if ($key=='id') { // id
-			$formatter="numericFormatter";
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else if ($key=='password') { // PassWord
-			// nothing
-		} else if ($dataType=='date' and $val!=null and $val != '') { // Date
-			$formatter="dateFormatter";
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else if ($dataType=='datetime' and $val!=null and $val != '') { // Date and Time
-			$formatter="dateFormatter";
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else if ($dataType=='time' and $val!=null and $val != '') { // Time
-			$formatter="dateFormatter";
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else if ($key=='color' and $dataLength == 7 ) { // color
-			$formatter="colorFormatter";
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else if ($dataType=='int' and $dataLength==1) { // boolean
-			$formatter="booleanFormatter";
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else  if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
-			$width=20;
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		} else if (substr($key,0,2)=='id' and $dataType=='int' and strlen($key)>2 and substr($key,2,1)==strtoupper(substr($key,2,1)) ) { // Idxxx
-			if(substr($key,2,strlen($key))=='Status') {
-				$formatter="colorNameFormatter";
-				$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.'colorName'.substr($key,2,strlen($key)).';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-			} else if(substr($key,2,strlen($key))=='Profile') {
-				$formatter="translateFormatter";
-				$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.'name'.substr($key,2,strlen($key)).';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-			} else {
-				$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.'name'.substr($key,2,strlen($key)).';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-			}
-		} else {
-			$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.';'.$val.';'.$width.';'.$formatter.';'.$key.'" '.$checked.'>'.$val.'<br>';
-		}*/
 		$index++;
 	}
 }

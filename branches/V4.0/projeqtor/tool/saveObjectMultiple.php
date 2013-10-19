@@ -45,7 +45,14 @@ $note="";
 if (array_key_exists('note',$_REQUEST)) {
   $note=trim($_REQUEST['note']);
 }
-
+$idProject="";
+if (array_key_exists('idProject',$_REQUEST)) {
+  $idProject=trim($_REQUEST['idProject']);
+}
+$idTargetVersion="";
+if (array_key_exists('idTargetVersion',$_REQUEST)) {
+  $idTargetVersion=trim($_REQUEST['idTargetVersion']);
+}
 //var_dump($_REQUEST);
 $cptOk=0;
 $cptError=0;
@@ -77,6 +84,12 @@ foreach ($selectList as $id) {
   if ($result and property_exists($item,'result')) {
     $item->result.=(($item->result)?"\n":"").$result;
   }
+  if ($idProject and property_exists($item,'idProject')) {
+    $item->idProject=$idProject;
+  }
+  if ($idTargetVersion and property_exists($item,'idTargetVersion')) {
+    $item->idTargetVersion=$idTargetVersion;
+  } 
   $resultSave=$item->save();
   if ($note and property_exists($item,'_Note')) {
     $noteObj=new Note();

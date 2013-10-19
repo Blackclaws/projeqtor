@@ -94,7 +94,25 @@
           <input type="hidden" id="selection" name="selection" value=""/>
           <table>
             <tr><td></td><td>&nbsp;</td></tr>
-            <?php if (isDisplayable($obj, 'description') ) {?>
+            <?php
+             if (isDisplayable($obj,'idProject')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeProject');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                 id="idProject" name="idProject">
+                 <?php htmlDrawOptionForReference('idProject', null, null, false);?>
+                </select>
+                <button id="projectButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idProject",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+            <?php }
+             if (isDisplayable($obj, 'description') ) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddToDescription');?>&nbsp;:&nbsp;</td>
               <td>
@@ -132,6 +150,23 @@
                   title="<?php echo i18n('showDetail');?>" iconClass="iconView">
                   <script type="dojo/connect" event="onClick" args="evt">
                     showDetail("idResource",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+            <?php }
+             if (isDisplayable($obj,'idTargetVersion')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetVersion');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                 id="idTargetVersion" name="idTargetVersion">
+                 <?php htmlDrawOptionForReference('idTargetVersion', null, null, false);?>
+                </select>
+                <button id="targetVersionButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idTargetVersion",0); 
                   </script>
                 </button>
               </td>

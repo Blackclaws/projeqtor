@@ -53,7 +53,7 @@ function workOpenCloseLine(line, scope) {
  * @return
  */
 function refreshImputationList() {
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return false;
 	}
@@ -74,7 +74,7 @@ function refreshImputationPeriod(directDate) {
 	if (noRefreshImputationPeriod) {
 		return;
 	}
-	if (formChangeInProgress) {
+	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		noRefreshImputationPeriod=true;
 		var period=dojo.byId('rangeValue').value;

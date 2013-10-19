@@ -465,12 +465,6 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $result .='</table>';
     return $result;
   }
- 
-  /**=========================================================================
-   * Overrides SqlElement::save() function to add specific treatments
-   * @see persistence/SqlElement#save()
-   * @return the return message of persistence/SqlElement#save() method
-   */
 
   public function drawProjectsList($critArray) {
 //scriptLog("Project($this->id)->drawProjectsList(implode('|',$critArray))");  	
@@ -485,6 +479,11 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     return $result; 
   }
   
+   /**=========================================================================
+   * Overrides SqlElement::save() function to add specific treatments
+   * @see persistence/SqlElement#save()
+   * @return the return message of persistence/SqlElement#save() method
+   */
   public function save() {	
     // #305 : need to recalculate before dispatching to PE
     $old=$this->getOld();
@@ -512,7 +511,10 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $this->ProjectPlanningElement->topRefType=null;
       $this->ProjectPlanningElement->topRefId=null;
     }
-
+    if ($this->idProject!=$old->idProject) {
+      $this->ProjectPlanningElement->wbs=null;
+      $this->ProjectPlanningElement->wbsSortable=null;
+    }
     // Initialize user->_visibleProjects, to force recalculate
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
