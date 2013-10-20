@@ -480,7 +480,7 @@ class IndicatorValue extends SqlElement {
       '<body>' . "\n" .
       '<b>' . $title . '</b><br/>' . "\n" .
       $message . "\n" .
-      '<body>' . "\n" .
+      '</body>' . "\n" .
       '</html>';
     $messageAlert=$message;
     $messageMail = wordwrap($messageMail, 70); // wrapt text so that line do not exceed 70 cars per line

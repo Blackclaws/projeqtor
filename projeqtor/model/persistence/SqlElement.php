@@ -2784,7 +2784,7 @@ abstract class SqlElement {
       '</head>' . 
       '<body>' . 
 		$message .
-      '<body>' . 
+      '</body>' . 
       '</html>';
 		$message = wordwrap($message, 70); // wrapt text so that line do not exceed 70 cars per line
 		$resultMail=sendMail($dest, $title, $message, $this);
