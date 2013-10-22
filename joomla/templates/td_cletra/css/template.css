@@ -152,7 +152,7 @@ ul.td-vmenu a
 
 .td-postcontent h2
 {
-   color: #5555AA;
+   color: #545281;
    margin: 10px 0 0;
    font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
    font-size: 22px;
@@ -327,7 +327,7 @@ div.td-header
 {
   margin: 0 auto;
   position: relative;
-  /* background-color: #2f3d58; */
+  /* background-color: #545281; */
   z-index: 0;
   width: 940px;
   height: 250px;
@@ -340,7 +340,7 @@ div.td-header1
   position: relative;
   background-image: url('../images/header.jpg');
   background-repeat: no-repeat;
-  background-color: #2f3d58;
+  background-color: #545281;
   top: 0;
   width: 100%;
   z-index: 0;
@@ -748,7 +748,7 @@ ul.td-hmenu>li>a.active:after {
    background-position: bottom right;
 }
 ul.td-hmenu>li>a.active {
-   color: #222c83;
+   color: #545281;
 font-weight: bold;
 }
 
@@ -892,7 +892,7 @@ div.td-logo
    font-size: 14px;
    padding: 0;
    margin: 0;
-   color: #7BB1EF !important;
+   color: #545281 !important;
 }
 .td-logo-text a,
 .td-logo-text a:link,
@@ -903,7 +903,7 @@ div.td-logo
    font-size: 14px;
    padding: 0;
    margin: 0;
-   color: #7BB1EF !important;
+   color: #545281 !important;
 }
 
 /* end Logo */
@@ -1154,7 +1154,7 @@ div.td-block img
 {
    /* WARNING do NOT collapse this to 'border' - inheritance! */
   border-width: 1px;
-   border-color: #222c83;
+   border-color: #545281;
    border-style: solid;
    margin: 7px;
 }
@@ -1277,7 +1277,7 @@ font-weight: bold;
 .td-blockcontent-body ul li
 {
    line-height: 125%;
-   color: #222c83;
+   color: #545281;
    margin: 5px 0 0 10px;
    padding: 0 0 0 16px;
    background-image: url('../images/blockcontentbullets.png');
@@ -1381,7 +1381,7 @@ pre
 /* begin PostHeaderIcon */
 .td-postheader
 {
-   color: #222c83;
+   color: #545281;
    margin: 5px 0;
    line-height: 1em;
    font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
@@ -1579,7 +1579,7 @@ span.td-postediticon:after
 .td-postcontent li
 {
    font-size: 13px;
-   color: #222c83;
+   color: #545281;
    margin: 5px 0 5px -15px;
    padding: 0 0 0 14px;
     background-image: url('../images/postbullets.png');
