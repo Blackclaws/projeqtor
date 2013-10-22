@@ -175,7 +175,7 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 				</object>-->
 				<!-- LOGO -->
 <?php     if($templateparams->get('logoType')=='image'):?>
-<div style="font-family: Segoe Print, Segoe UI, Brush Script MT, cursive;color:#5555AA; position: absolute; left: 350px; top: 50px;z-index: -10;">
+<div style="font-family: Segoe Print, Segoe UI, Brush Script MT, cursive;color:#545281; position: absolute; left: 350px; top: 50px;z-index: -10;">
 <div style="font-size:500%; font-weight: bold"><i>ProjeQtOr</i></div>
 <div style="font-size:200%;">Enlighten your projects</div>
 <div style="font-size:200%;">with Qality based Project Organizer</div>
