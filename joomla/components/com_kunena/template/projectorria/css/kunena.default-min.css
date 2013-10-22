@@ -12,6 +12,14 @@
 	color: #999999;
 }
 
+/* ADDED PBE */
+#Kunena div.kannouncement div.kheader { background: #555382 !important; }
+#Kunena #ktab ul.menu li.active a,#Kunena #ktab li#current.selected a { background-color: #555382 !important; }	
+#Kunena #ktab a:hover { background-color: #555382 !important; }	
+#Kunena #ktop { border-color: #555382 !important; }	
+#Kunena #ktop span.ktoggler { background-color: #555382 !important; }	
+#Kunena #ktop {border-color: #555382 !important;}
+
 #Kunena a:link,#Kunena a:visited,#Kunena a:active,#Kunena a:focus {
 	color: #555382 !important;
 	background-color: transparent !important;
