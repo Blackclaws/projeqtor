@@ -1,4 +1,5 @@
 <?php
+spl_autoload_register('projeqtorAutoload', true, true);
 session_start();              // Setup session. Must be first command.
 /** ============================================================================
  * Global tool script for the application.
@@ -390,7 +391,8 @@ function throwError($message, $code=null) {
  * @param $className string the name of the class
  * @return void
  */
-function __autoload($className) {
+
+function projeqtorAutoload($className) {
   $localfile=ucfirst($className) . '.php';               // locally
   $modelfile='../model/' . $localfile;                   // in the model directory
   $persistfile='../model/persistence/' . $localfile;     // in the model/persistence directory
@@ -623,7 +625,7 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
   	// Cute method using PHPMailer : should work on all situations / First implementation on V4.0
   	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $boundary);
   } else { 
-		if ($paramMailerType=='mail' or ! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
+		if ((isset($paramMailerType) and $paramMailerType=='mail') or ! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
 			// Standard method using php mail finction : do not take authentication into account
 		  return sendMail_mail($to, $subject, $messageBody, $object, $headers, $sender, $boundary);	
 		} else {
@@ -631,6 +633,135 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
 			return sendMail_socket($to, $subject, $messageBody, $object, $headers, $sender, $boundary);
 		}
   }
+}
+
+function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, $sender=null, $boundary=null)  {
+scriptLog('sendMail_phpmailer');
+  $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
+  $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
+  $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
+  $paramMailSmtpPort=Parameter::getGlobalParameter('paramMailSmtpPort');
+  $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
+  $paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
+  $paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
+  $paramMailSenderName=Parameter::getGlobalParameter('paramMailReplyToName');
+  $eol=Parameter::getGlobalParameter('mailEol');
+  if ($paramMailSmtpServer==null or strtolower($paramMailSmtpServer)=='null' or !$paramMailSmtpServer) {
+    return "";
+  }
+  // Save data of the mail ===========================================================
+  $mail=new Mail();
+  if (array_key_exists('user',$_SESSION)) {
+    $mail->idUser=$_SESSION['user']->id;
+  }
+  if ($object) {
+    $mail->idProject=$object->idProject;
+    $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
+    $mail->refId=$object->id;
+    $mail->idStatus=$object->idStatus;
+  }
+  $mail->mailDateTime=date('Y-m-d H:i');
+  $mail->mailTo=$to;
+  $mail->mailTitle=$title;
+  $mail->mailBody=$message;
+  $mail->mailStatus='WAIT';
+  $mail->idle='0';
+  $resMail=$mail->save();
+  if (stripos($resMail,'id="lastOperationStatus" value="ERROR"')>0 )  {
+    errorLog("Error storing email in table : ".$resMail);
+  }
+  // Send then mail
+  /*if (!$headers) {  
+    $headers  = 'MIME-Version: 1.0' . $eol;
+    if ($boundary) {
+      $headers .= 'Content-Type: multipart/mixed;boundary='.$boundary.$eol;
+      $headers .= $eol;
+      $message = 'Your email client does not support MIME type.'.$eol 
+               . 'Your may have difficulties to read this mail or have access to linked files.'.$eol
+               . '--'.$boundary.$eol
+               . 'Content-Type: text/html; charset=utf-8'.$eol
+               . $message;
+    } else {
+      $headers .= 'Content-Type: text/html; charset=utf-8'.$eol;
+    }
+    $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;
+    $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . $eol;
+    $headers .= 'Content-Transfer-Encoding: 8bit' . $eol;
+    $headers .= 'X-Mailer: PHP/' . phpversion();
+  }*/
+  /*if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
+    ini_set('SMTP',$paramMailSmtpServer);
+  }
+  if (isset($paramMailSmtpPort) and $paramMailSmtpPort) {
+    ini_set('smtp_port',$paramMailSmtpPort);
+  }
+  if (isset($paramMailSendmailPath) and $paramMailSendmailPath) {
+    ini_set('sendmail_path',$paramMailSendmailPath);
+  }*/
+  //error_reporting(E_ERROR);  
+  //restore_error_handler();
+  enableCatchErrors();
+  $resultMail="NO";
+  
+  require_once '../external/PHPMailer/class.phpmailer.php';
+  $phpmailer = new PHPMailer;
+  ob_start();
+  $phpmailer->SMTPDebug=1; 
+  $phpmailer->isSMTP();                                    // Set mailer to use SMTP
+  $phpmailer->Host = $paramMailSmtpServer;                 // Specify main smtp server
+  $phpmailer->Port = $paramMailSmtpPort;
+  if ($paramMailSmtpUsername and $paramMailSmtpPassword) {                    
+    $phpmailer->SMTPAuth = true;                           // Enable SMTP authentication
+    $phpmailer->Username = $paramMailSmtpUsername;         // SMTP username
+    $phpmailer->Password = $paramMailSmtpPassword;         // SMTP password
+    $phpmailer->SMTPSecure = 'tls';
+    if (strpos($phpmailer->Host,'://')) {
+      $phpmailer->SMTPSecure=substr($phpmailer->Host,0,strpos($phpmailer->Host,'://'));
+      $phpmailer->Host=substr($phpmailer->Host,strpos($phpmailer->Host,'://')+3);
+    }
+  }
+  $phpmailer->From = ($sender)?$sender:$paramMailSender;   // Sender of email
+  $phpmailer->FromName = $paramMailSenderName;             // Name of sender
+  $toList=explode(';',str_replace(',',';',$to));
+  foreach($toList as $addrMail) {
+    $addrName=null;
+    if (strpos($addrMail, '<')) {
+      $addrName=substr($addrMail, strpos($addrMail, '<'));
+      $addrName=str_replace(array('<','>'), array('',''), $addrName);
+      $addrMail=substr($addrMail, 0, strpos($addrMail, '<'));
+    }
+    $phpmailer->addAddress($addrMail, $addrName);          // Add a recipient with optional name
+  }
+  $phpmailer->addReplyTo($paramMailReplyTo, $paramMailSenderName);  //
+  //$mail->addCC('cc@example.com');
+  //$mail->addBCC('bcc@example.com');
+  $phpmailer->WordWrap = 70;                               // Set word wrap to 70 characters
+  //$mail->addAttachment('/var/tmp/file.tar.gz');     // Add attachments
+  //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');// Optional name
+  $phpmailer->isHTML(true);                                // Set email format to HTML
+  $phpmailer->Subject = $title;                            //
+  $phpmailer->Body    = $message;                          //
+  //$phpmailer->MsgHTML($message);
+  $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
+  $phpmailer->Encoding="UTF-8";
+  $resultMail=$phpmailer->send();
+  disableCatchErrors();
+  $debugMessages=ob_get_contents();
+  ob_end_clean();
+  if (! $resultMail) {
+    errorLog("Error sending mail");
+    errorLog("   SMTP Server : " . $paramMailSmtpServer);
+    errorLog("   SMTP Port : " . $paramMailSmtpPort);
+    //errorLog("   Sendmail path : " . $path);
+    errorLog("   Mail stored in Database : #" . $mail->id);
+    errorLog("   PHPMail error : ".$phpmailer->ErrorInfo);
+    errorLog("   PHPMAil debug : ".$debugMessages);
+  }
+  if ( $resultMail==="NO" ) {$resultMail="";}
+  // save the status of the sending
+  $mail->mailStatus=($resultMail)?'OK':'ERROR';
+  $mail->save(); 
+  return $resultMail;
 }
 
 function sendMail_socket($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {
@@ -912,134 +1043,7 @@ scriptLog('sendMail_mail');
   return $resultMail;
 }
 
-function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, $sender=null, $boundary=null)  {
-scriptLog('sendMail_phpmailer');
-  $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
-  $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
-  $paramMailSmtpServer=Parameter::getGlobalParameter('paramMailSmtpServer');
-  $paramMailSmtpPort=Parameter::getGlobalParameter('paramMailSmtpPort');
-  $paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
-  $paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
-  $paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
-  $paramMailSenderName=Parameter::getGlobalParameter('paramMailReplyToName');
-  $eol=Parameter::getGlobalParameter('mailEol');
-  if ($paramMailSmtpServer==null or strtolower($paramMailSmtpServer)=='null' or !$paramMailSmtpServer) {
-    return "";
-  }
-  // Save data of the mail ===========================================================
-  $mail=new Mail();
-  if (array_key_exists('user',$_SESSION)) {
-    $mail->idUser=$_SESSION['user']->id;
-  }
-  if ($object) {
-    $mail->idProject=$object->idProject;
-    $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
-    $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
-  }
-  $mail->mailDateTime=date('Y-m-d H:i');
-  $mail->mailTo=$to;
-  $mail->mailTitle=$title;
-  $mail->mailBody=$message;
-  $mail->mailStatus='WAIT';
-  $mail->idle='0';
-  $resMail=$mail->save();
-  if (stripos($resMail,'id="lastOperationStatus" value="ERROR"')>0 )  {
-    errorLog("Error storing email in table : ".$resMail);
-  }
-  // Send then mail
-  /*if (!$headers) {  
-    $headers  = 'MIME-Version: 1.0' . $eol;
-    if ($boundary) {
-      $headers .= 'Content-Type: multipart/mixed;boundary='.$boundary.$eol;
-      $headers .= $eol;
-      $message = 'Your email client does not support MIME type.'.$eol 
-               . 'Your may have difficulties to read this mail or have access to linked files.'.$eol
-               . '--'.$boundary.$eol
-               . 'Content-Type: text/html; charset=utf-8'.$eol
-               . $message;
-    } else {
-      $headers .= 'Content-Type: text/html; charset=utf-8'.$eol;
-    }
-    $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;
-    $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . $eol;
-    $headers .= 'Content-Transfer-Encoding: 8bit' . $eol;
-    $headers .= 'X-Mailer: PHP/' . phpversion();
-  }*/
-  /*if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
-    ini_set('SMTP',$paramMailSmtpServer);
-  }
-  if (isset($paramMailSmtpPort) and $paramMailSmtpPort) {
-    ini_set('smtp_port',$paramMailSmtpPort);
-  }
-  if (isset($paramMailSendmailPath) and $paramMailSendmailPath) {
-    ini_set('sendmail_path',$paramMailSendmailPath);
-  }*/
-  //error_reporting(E_ERROR);  
-  //restore_error_handler();
-  enableCatchErrors();
-  $resultMail="NO";
-  
-  require_once '../external/PHPMailer/PHPMailerAutoload.php';
-  $phpmailer = new PHPMailer;
-  ob_start();
-  $phpmailer->SMTPDebug=1; 
-  $phpmailer->isSMTP();                                    // Set mailer to use SMTP
-  $phpmailer->Host = $paramMailSmtpServer;                 // Specify main smtp server
-  $phpmailer->Port = $paramMailSmtpPort;
-  if ($paramMailSmtpUsername and $paramMailSmtpPassword) {                    
-    $phpmailer->SMTPAuth = true;                           // Enable SMTP authentication
-    $phpmailer->Username = $paramMailSmtpUsername;         // SMTP username
-    $phpmailer->Password = $paramMailSmtpPassword;         // SMTP password
-    $phpmailer->SMTPSecure = 'tls';
-    if (strpos($phpmailer->Host,'://')) {
-    	$phpmailer->SMTPSecure=substr($phpmailer->Host,0,strpos($phpmailer->Host,'://'));
-    	$phpmailer->Host=substr($phpmailer->Host,strpos($phpmailer->Host,'://')+3);
-    }
-  }
-  $phpmailer->From = ($sender)?$sender:$paramMailSender;   // Sender of email
-  $phpmailer->FromName = $paramMailSenderName;             // Name of sender
-  $toList=explode(';',str_replace(',',';',$to));
-  foreach($toList as $addrMail) {
-  	$addrName=null;
-  	if (strpos($addrMail, '<')) {
-  		$addrName=substr($addrMail, strpos($addrMail, '<'));
-  		$addrName=str_replace(array('<','>'), array('',''), $addrName);
-  		$addrMail=substr($addrMail, 0, strpos($addrMail, '<'));
-  	}
-    $phpmailer->addAddress($addrMail, $addrName);          // Add a recipient with optional name
-  }
-  $phpmailer->addReplyTo($paramMailReplyTo, $paramMailSenderName);  //
-  //$mail->addCC('cc@example.com');
-  //$mail->addBCC('bcc@example.com');
-  $phpmailer->WordWrap = 70;                               // Set word wrap to 70 characters
-  //$mail->addAttachment('/var/tmp/file.tar.gz');     // Add attachments
-  //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');// Optional name
-  $phpmailer->isHTML(true);                                // Set email format to HTML
-  $phpmailer->Subject = $title;                            //
-  $phpmailer->Body    = $message;                          //
-  //$phpmailer->MsgHTML($message);
-  $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
-  $phpmailer->Encoding="UTF-8";
-  $resultMail=$phpmailer->send();
-  disableCatchErrors();
-  $debugMessages=ob_get_contents();
-  ob_end_clean();
-  if (! $resultMail) {
-    errorLog("Error sending mail");
-    errorLog("   SMTP Server : " . $paramMailSmtpServer);
-    errorLog("   SMTP Port : " . $paramMailSmtpPort);
-    //errorLog("   Sendmail path : " . $path);
-    errorLog("   Mail stored in Database : #" . $mail->id);
-    errorLog("   PHPMail error : ".$phpmailer->ErrorInfo);
-    errorLog("   PHPMAil debug : ".$debugMessages);
-  }
-  if ( $resultMail==="NO" ) {$resultMail="";}
-  // save the status of the sending
-  $mail->mailStatus=($resultMail)?'OK':'ERROR';
-  $mail->save(); 
-  return $resultMail;
-}
+
 /** ===========================================================================
  * Log tracing. Not to be called directly. Use following functions instead.
  * @param $message message to store on log
@@ -1156,7 +1160,6 @@ function envLog() {
     }
   }
 }
-
 
 /** ===========================================================================
  * Get the IP of the Client
