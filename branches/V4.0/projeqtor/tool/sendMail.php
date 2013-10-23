@@ -81,7 +81,7 @@
     $directStatusMail->mailToOther=$mailToOther;
     $directStatusMail->mailToAssigned=$mailToAssigned;
     $directStatusMail->otherMail=$otherMail;
-    $directStatusMail->message=$message; // Attention, do not save this status mail
+    $directStatusMail->message=htmlEncode($message,'html'); // Attention, do not save this status mail
     $resultMail=$obj->sendMailIfMailable(false,false,$directStatusMail,false,false,false,false,false,false,false,false,false);
     if (! $resultMail or ! is_array($resultMail)) {
     	$result="";

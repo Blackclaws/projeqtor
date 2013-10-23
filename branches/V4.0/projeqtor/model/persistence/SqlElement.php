@@ -2811,15 +2811,15 @@ abstract class SqlElement {
 		$rowEnd='</tr>';
 		$labelStart='<td style="background:#DDDDDD;font-weight:bold;text-align: right;width:25%;vertical-align: middle;">&nbsp;&nbsp;';
 		$labelEnd='&nbsp;</td>';
-		$fieldStart='<td style="background:#FFFFFF;text-align: left;">&nbsp;';
+		$fieldStart='<td style="width:2px;">&nbsp;</td><td style="background:#FFFFFF;text-align: left;">';
 		$fieldEnd='</td>';
-		$sectionStart='<td colspan="2" style="background:#555555;color: #FFFFFF; text-align: center;font-size:10pt;font-weight:bold;">';
+		$sectionStart='<td colspan="3" style="background:#555555;color: #FFFFFF; text-align: center;font-size:10pt;font-weight:bold;">';
 		$sectionEnd='</td>';
 		$tableStart='<table style="font-size:9pt; width: 95%">';
 		$tableEnd='</table>';
 		$msg=$tableStart;
 		$ref=$this->getReferenceUrl();
-		$msg.='<tr><td colspan="2" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.$this->id.'</a></td></tr>';
+		$msg.='<tr><td colspan="3" style="font-size:18pt;color:#AAAAAA"><a href="' . $ref . '">'.i18n(get_class($this)).' #'.$this->id.'</a></td></tr>';
 		$nobr=false;
 		foreach ($this as $col => $val) {
 			$hide=false;

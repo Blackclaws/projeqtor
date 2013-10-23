@@ -464,7 +464,7 @@ function htmlFormatTime($val, $withSecond=true) {
 function htmlEncode($val,$context="default") {
   if ($context=='none') {
     return str_replace('"',"''",$val);
-  } else if ($context=='print') {
+  } else if ($context=='print' or $context=='html') {
     return nl2br(htmlentities($val,ENT_COMPAT,'UTF-8'));
   } else if ($context=='withBR') {
     return nl2br(htmlspecialchars($val,ENT_QUOTES,'UTF-8'));
