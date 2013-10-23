@@ -390,7 +390,9 @@ class Meeting extends SqlElement {
     $vcal = "BEGIN:VCALENDAR\r\n";
     $vcal .= "VERSION:2.0\r\n";
     $vcal .= "PRODID:-//CompanyName//ProductName//EN\r\n";
-    $vcal .= "METHOD:REQUEST\r\n";
+    //$vcal .= "METHOD:REQUEST\r\n";
+    $vcal .= "METHOD:PUBLISH\n";
+    $vcal .= "X-MS-OLK-FORCEINSPECTOROPEN:TRUE\n";
     $vcal .= "BEGIN:VEVENT\r\n";
     $user=$_SESSION['user'];
     $vcal .= "ORGANIZER;CN=" . (($user->resourceName)?$user->resourceName:$user->name). ":MAILTO:$user->email\r\n";
@@ -414,8 +416,10 @@ class Meeting extends SqlElement {
 
     $sender=($user->email)?$user->email:$paramMailSender;
     $replyTo=($user->email)?$user->email:$paramMailReplyTo;
-    $headers = "From: $sender\r\nReply-To: $replyTo";
-    $headers .= "\r\nMIME-version: 1.0\r\nContent-Type: text/calendar; method=REQUEST; charset=\"utf-8\"";
+    $headers = "";
+    //$headers = "From: $sender\r\nReply-To: $replyTo\r\n";
+    $headers .= "MIME-version: 1.0\r\nContent-Type: text/Calendar;";
+    $headers .= "Content-Disposition: inline;";
     $headers .= "\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 12.0";
     //mail($to, $this->description, $vcal, $headers);
     $destList="";

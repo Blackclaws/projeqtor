@@ -609,18 +609,18 @@ function getTheme() {
  */ 
 function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {
 	// Code that caals sendMail :
-	//   SqlElement::sendMailIfMailable() : sendMail($dest, $title, $message, $this) 
+	//   + SqlElement::sendMailIfMailable() : sendMail($dest, $title, $message, $this) 
 	//   Cron::checkImport() : sendMail($to, $title, $message, null, null, null, $boundary); !!! with attachments
-	//   IndicatorValue::send() : sendMail($dest, $title, $messageMail, $obj)
+	//   + IndicatorValue::send() : sendMail($dest, $title, $messageMail, $obj)
 	//   Meeting::sendMail() : sendMail($destList, $this->name, $vcal, $this, $headers,$sender) !!! VCAL Meeting Invite
-	//   User::authenticate : sendMail($paramAdminMail, $title, $message) 
-	//   /tool/sendMail.php : sendMail($dest,$title,$msg)
+	//   + User::authenticate : sendMail($paramAdminMail, $title, $message) 
+	//   + /tool/sendMail.php : sendMail($dest,$title,$msg)
 	$paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
 	$paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
   $messageBody = wordwrap($messageBody, 70);
   
-  if (! $paramMailSendmailPath and ! $boundary and !$headers 
+  if (! $paramMailSendmailPath and ! $boundary 
    and (! isset($paramMailerType) or $paramMailerType=='phpmailer')) {
   	// Cute method using PHPMailer : should work on all situations / First implementation on V4.0
   	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $boundary);
@@ -722,14 +722,17 @@ scriptLog('sendMail_phpmailer');
   }
   $phpmailer->From = ($sender)?$sender:$paramMailSender;   // Sender of email
   $phpmailer->FromName = $paramMailSenderName;             // Name of sender
+debugLog($to);  
   $toList=explode(';',str_replace(',',';',$to));
   foreach($toList as $addrMail) {
     $addrName=null;
     if (strpos($addrMail, '<')) {
-      $addrName=substr($addrMail, strpos($addrMail, '<'));
-      $addrName=str_replace(array('<','>'), array('',''), $addrName);
-      $addrMail=substr($addrMail, 0, strpos($addrMail, '<'));
+      $addrName=substr($addrMail, 0, strpos($addrMail, '<'));
+      $addrName=str_replace('"','',$addrName);
+    	$addrMail=substr($addrMail, strpos($addrMail, '<'));
+      $addrMail=str_replace(array('<','>'), array('',''), $addrName);      
     }
+debugLog("addrMail=$addrMail, addrName=$addrName");
     $phpmailer->addAddress($addrMail, $addrName);          // Add a recipient with optional name
   }
   $phpmailer->addReplyTo($paramMailReplyTo, $paramMailSenderName);  //
@@ -741,8 +744,13 @@ scriptLog('sendMail_phpmailer');
   $phpmailer->isHTML(true);                                // Set email format to HTML
   $phpmailer->Subject = $title;                            //
   $phpmailer->Body    = $message;                          //
-  //$phpmailer->MsgHTML($message);
   $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
+  if ($headers) {
+  	$heads=explode("\r\n", $headers);
+  	foreach ($heads as $head) {
+  		$phpmailer->addCustomHeader($head);
+  	}
+  }
   //$phpmailer->Encoding="UTF-8";
   $resultMail=$phpmailer->send();
   disableCatchErrors();
@@ -755,7 +763,7 @@ scriptLog('sendMail_phpmailer');
     //errorLog("   Sendmail path : " . $path);
     errorLog("   Mail stored in Database : #" . $mail->id);
     errorLog("   PHPMail error : ".$phpmailer->ErrorInfo);
-    errorLog("   PHPMAil debug : ".$debugMessages);
+    errorLog("   PHPMail debug : ".$debugMessages);
   }
   if ( $resultMail==="NO" ) {$resultMail="";}
   // save the status of the sending
