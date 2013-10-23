@@ -743,7 +743,7 @@ scriptLog('sendMail_phpmailer');
   $phpmailer->Body    = $message;                          //
   //$phpmailer->MsgHTML($message);
   $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
-  $phpmailer->Encoding="UTF-8";
+  //$phpmailer->Encoding="UTF-8";
   $resultMail=$phpmailer->send();
   disableCatchErrors();
   $debugMessages=ob_get_contents();
