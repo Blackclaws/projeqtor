@@ -722,7 +722,7 @@ scriptLog('sendMail_phpmailer');
   }
   $phpmailer->From = ($sender)?$sender:$paramMailSender;   // Sender of email
   $phpmailer->FromName = $paramMailSenderName;             // Name of sender
-debugLog($to);  
+//debugLog($to);  
   $toList=explode(';',str_replace(',',';',$to));
   foreach($toList as $addrMail) {
     $addrName=null;
@@ -732,7 +732,7 @@ debugLog($to);
     	$addrMail=substr($addrMail, strpos($addrMail, '<'));
       $addrMail=str_replace(array('<','>'), array('',''), $addrName);      
     }
-debugLog("addrMail=$addrMail, addrName=$addrName");
+//debugLog("addrMail=$addrMail, addrName=$addrName");
     $phpmailer->addAddress($addrMail, $addrName);          // Add a recipient with optional name
   }
   $phpmailer->addReplyTo($paramMailReplyTo, $paramMailSenderName);  //
@@ -744,17 +744,41 @@ debugLog("addrMail=$addrMail, addrName=$addrName");
   $phpmailer->isHTML(true);                                // Set email format to HTML
   $phpmailer->Subject = $title;                            //
   $phpmailer->Body    = $message;                          //
-  $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
+//debugLog($message);
+  //$phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
   if ($headers) {
   	$heads=explode("\r\n", $headers);
   	foreach ($heads as $head) {
-  		$phpmailer->addCustomHeader($head);
-  	}
+  		if (strtolower(substr($head, 0,13))=='content-type:') {
+  			$ct=substr($head, 13);
+  			$ct=str_replace(array(' ',':'), array('',''), $ct);
+  			debugLog("ct=$ct");
+  			$phpmailer->ContentType=$ct;
+  		} else if (strtolower(substr($head, 0,5))=='from:' or strtolower(substr($head, 0,9))=='reply-to:') {
+  			// From & Reply-To
+  		} else if (strtolower(substr($head, 0,26))=='content-transfer-encoding:') {
+  			$cte=substr($head, 26);
+        $cte=str_replace(array(' ',';',':'), array('','',''), $cte);
+        debugLog("cte=$cte");
+        $phpmailer->Encoding=$cte;
+      } else if (strtolower(substr($head, 0,9))=='x-mailer:' ) {
+        // X-Mailee
+      } else if (strtolower(substr($head, 0,13))=='mime-version:' ) {
+        // MIME-Version
+  		} else {
+  			debugLog("customHead=$head");
+  		  $phpmailer->addCustomHeader($head);
+  		}
+  	}  	
+  	$phpmailer->isHTML(false);  
+  	$phpmailer->ContentType="text/Calendar";
+  	//$phpmailer->Encoding="7bit";
   }
-  //$phpmailer->Encoding="UTF-8";
+  $phpmailer->CharSet="UTF-8";
   $resultMail=$phpmailer->send();
   disableCatchErrors();
   $debugMessages=ob_get_contents();
+//debugLog($debugMessages);  
   ob_end_clean();
   if (! $resultMail) {
     errorLog("Error sending mail");
