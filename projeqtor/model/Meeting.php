@@ -363,21 +363,20 @@ class Meeting extends SqlElement {
     		$lstDest[]=$resMail;
     	}
     }
-    
+debugLog($lstDest);
     $lstMail=array();
     foreach ($lstDest as $dest) {
       $to="";
       $name="";
+      $dest=trim($dest);
       $start=strpos($dest,'<');
       if ($start>0) {
         $end=strpos($dest,'>');
-        $to=substr( $dest, $start+1, $end-$start-1);
+        $to=trim(substr( $dest, $start+1, $end-$start-1));
+        $name=trim(substr($dest,0,$start));
       } else if (strpos($dest,'@')>0){
         $to=$dest;
-      }
-      $nameExplode=explode('"',$dest);
-      if (count($nameExplode)>=2){
-        $name=$nameExplode[1];
+        $name=$to;
       }
       if ($to) {
         if (!$name) {
@@ -386,26 +385,30 @@ class Meeting extends SqlElement {
         $lstMail[$name]=$to;
       }
     }
+debugLog($lstMail);    
     $sent=0;
     $vcal = "BEGIN:VCALENDAR\r\n";
     $vcal .= "VERSION:2.0\r\n";
     $vcal .= "PRODID:-//CompanyName//ProductName//EN\r\n";
     //$vcal .= "METHOD:REQUEST\r\n";
-    $vcal .= "METHOD:PUBLISH\n";
-    $vcal .= "X-MS-OLK-FORCEINSPECTOROPEN:TRUE\n";
     $vcal .= "BEGIN:VEVENT\r\n";
     $user=$_SESSION['user'];
     $vcal .= "ORGANIZER;CN=" . (($user->resourceName)?$user->resourceName:$user->name). ":MAILTO:$user->email\r\n";
     foreach($lstMail as $name=>$to) {
-      $vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
+      //$vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
+      //$vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT;CN=\"$name\":MAILTO:$to\r\n";
+      $vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT";
+      //$vcal .= "CN=".str_replace(array("\r\n","\n","\r"),array("","",""),$name);
+      $vcal .= ';CN='.str_replace(array("\r\n","\n","\r"," "),array("","","","_"),$name);
+      $vcal .= ":MAILTO:".str_replace(array("\r\n","\n"," "),array("","",""),$to)."\r\n";
     }
     $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-domain.com\r\n";
     $vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
     $vcal .= "DTSTART:" . str_replace('-','',$this->meetingDate) . 'T' . str_replace(':','',$this->meetingStartTime) . "\r\n";
     $vcal .= "DTEND:" . str_replace('-','',$this->meetingDate) . 'T' .str_replace(':','',$this->meetingEndTime) . "\r\n";
-    if ($this->location != "") $vcal .= "LOCATION:$this->location\r\n";
+    if (trim($this->location) != "") $vcal .= "LOCATION:$this->location\r\n";
     $vcal .= "SUMMARY:$this->name\r\n";
-    $vcal .= "DESCRIPTION:$this->description\r\n";
+    if (trim($this->description) != "") $vcal .= "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$this->description)."\r\n";
     $vcal .= "BEGIN:VALARM\r\n";
     $vcal .= "TRIGGER:-PT15M\r\n";
     $vcal .= "ACTION:DISPLAY\r\n";
@@ -416,10 +419,8 @@ class Meeting extends SqlElement {
 
     $sender=($user->email)?$user->email:$paramMailSender;
     $replyTo=($user->email)?$user->email:$paramMailReplyTo;
-    $headers = "";
-    //$headers = "From: $sender\r\nReply-To: $replyTo\r\n";
-    $headers .= "MIME-version: 1.0\r\nContent-Type: text/Calendar;";
-    $headers .= "Content-Disposition: inline;";
+    $headers = "From: $sender\r\nReply-To: $replyTo";
+    $headers .= "\r\nMIME-version: 1.0\r\nContent-Type: text/calendar; method=REQUEST; charset=\"utf-8\"";
     $headers .= "\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 12.0";
     //mail($to, $this->description, $vcal, $headers);
     $destList="";
