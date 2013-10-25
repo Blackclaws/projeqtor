@@ -205,7 +205,7 @@ where refType='Project';
 ALTER TABLE `${prefix}ticket` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}ticket` SET cancelled=1 WHERE idStatus=9;
 
-ALTER TABLE `${prefix}activity` ADD COLUMN `cancelledTest` int(1) unsigned DEFAULT '0';
+ALTER TABLE `${prefix}activity` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}activity` SET cancelled=1 WHERE idStatus=9;
 UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}activity` XXX where PE.refId=XXX.id)
 where refType='Activity';
