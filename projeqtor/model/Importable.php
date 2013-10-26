@@ -45,9 +45,14 @@ class Importable extends SqlElement {
 	// MISCELLANOUS FUNCTIONS
 	// ============================================================================**********
 	public static function import($fileName, $class){
-		require_once '../external/XLSXReader.php';
-		$fileType=$_REQUEST['fileType'];
+		require_once '../external/XLSXReader/XLSXReader.php';
 		$extension=substr(strrchr($fileName,'.'),1) ;
+		if (isset($_REQUEST['fileType'])) {
+		  $fileType=$_REQUEST['fileType'];
+		} else {
+			$fileType=$extension;
+		}
+		
 		if($extension!=$fileType){
 			errorLog("ERROR - Type : File Type and Type selected are not consistent");
 			errorLog("File Name : ".$fileName);

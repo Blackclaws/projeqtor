@@ -607,35 +607,34 @@ function getTheme() {
  * @param $message the main body of the message
  * @return unknown_type
  */ 
-function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null)  {
+function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $attachmentsArray=null, $boundary=null)  {
 	// Code that caals sendMail :
 	//   + SqlElement::sendMailIfMailable() : sendMail($dest, $title, $message, $this) 
-	//   Cron::checkImport() : sendMail($to, $title, $message, null, null, null, $boundary); !!! with attachments
+	//   + Cron::checkImport() : sendMail($to, $title, $message, null, null, null, $attachmentsArray, $boundary); !!! with attachments
 	//   + IndicatorValue::send() : sendMail($dest, $title, $messageMail, $obj)
-	//   Meeting::sendMail() : sendMail($destList, $this->name, $vcal, $this, $headers,$sender) !!! VCAL Meeting Invite
+	//   + Meeting::sendMail() : sendMail($destList, $this->name, $vcal, $this, $headers,$sender) !!! VCAL Meeting Invite
 	//   + User::authenticate : sendMail($paramAdminMail, $title, $message) 
 	//   + /tool/sendMail.php : sendMail($dest,$title,$msg)
 	$paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
 	$paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
-  $messageBody = wordwrap($messageBody, 70);
-  
-  if (! $paramMailSendmailPath and ! $boundary 
-   and (! isset($paramMailerType) or $paramMailerType=='phpmailer')) {
+  //$paramMailerType='mail';
+  if ( ! isset($paramMailerType) or $paramMailerType=='phpmailer') {
   	// Cute method using PHPMailer : should work on all situations / First implementation on V4.0
-  	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $boundary);
+  	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $attachmentsArray);
   } else { 
+  	$messageBody = wordwrap($messageBody, 70);
 		if ((isset($paramMailerType) and $paramMailerType=='mail') or ! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
-			// Standard method using php mail finction : do not take authentication into account
+			// Standard method using php mail function : do not take authentication into account
 		  return sendMail_mail($to, $subject, $messageBody, $object, $headers, $sender, $boundary);	
 		} else {
-		  // Authentified method using sockets
+		  // Authentified method using sockets : cannot send vCalendar or mails with attachments
 			return sendMail_socket($to, $subject, $messageBody, $object, $headers, $sender, $boundary);
 		}
   }
 }
 
-function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, $sender=null, $boundary=null)  {
+function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, $sender=null, $attachmentsArray=null)  {
 scriptLog('sendMail_phpmailer');
   $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
   $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
@@ -670,43 +669,14 @@ scriptLog('sendMail_phpmailer');
   if (stripos($resMail,'id="lastOperationStatus" value="ERROR"')>0 )  {
     errorLog("Error storing email in table : ".$resMail);
   }
-  // Send then mail
-  /*if (!$headers) {  
-    $headers  = 'MIME-Version: 1.0' . $eol;
-    if ($boundary) {
-      $headers .= 'Content-Type: multipart/mixed;boundary='.$boundary.$eol;
-      $headers .= $eol;
-      $message = 'Your email client does not support MIME type.'.$eol 
-               . 'Your may have difficulties to read this mail or have access to linked files.'.$eol
-               . '--'.$boundary.$eol
-               . 'Content-Type: text/html; charset=utf-8'.$eol
-               . $message;
-    } else {
-      $headers .= 'Content-Type: text/html; charset=utf-8'.$eol;
-    }
-    $headers .= 'From: ' . (($sender)?$sender:$paramMailSender) . $eol;
-    $headers .= 'Reply-To: ' . (($sender)?$sender:$paramMailReplyTo) . $eol;
-    $headers .= 'Content-Transfer-Encoding: 8bit' . $eol;
-    $headers .= 'X-Mailer: PHP/' . phpversion();
-  }*/
-  /*if (isset($paramMailSmtpServer) and $paramMailSmtpServer) {
-    ini_set('SMTP',$paramMailSmtpServer);
-  }
-  if (isset($paramMailSmtpPort) and $paramMailSmtpPort) {
-    ini_set('smtp_port',$paramMailSmtpPort);
-  }
-  if (isset($paramMailSendmailPath) and $paramMailSendmailPath) {
-    ini_set('sendmail_path',$paramMailSendmailPath);
-  }*/
-  //error_reporting(E_ERROR);  
-  //restore_error_handler();
+  
   enableCatchErrors();
   $resultMail="NO";
   
   require_once '../external/PHPMailer/class.phpmailer.php';
   $phpmailer = new PHPMailer;
   ob_start();
-  $phpmailer->SMTPDebug=1; 
+  //$phpmailer->SMTPDebug=1; 
   $phpmailer->isSMTP();                                    // Set mailer to use SMTP
   $phpmailer->Host = $paramMailSmtpServer;                 // Specify main smtp server
   $phpmailer->Port = $paramMailSmtpPort;
@@ -722,7 +692,6 @@ scriptLog('sendMail_phpmailer');
   }
   $phpmailer->From = ($sender)?$sender:$paramMailSender;   // Sender of email
   $phpmailer->FromName = $paramMailSenderName;             // Name of sender
-//debugLog($to);  
   $toList=explode(';',str_replace(',',';',$to));
   foreach($toList as $addrMail) {
     $addrName=null;
@@ -732,19 +701,13 @@ scriptLog('sendMail_phpmailer');
     	$addrMail=substr($addrMail, strpos($addrMail, '<'));
       $addrMail=str_replace(array('<','>'), array('',''), $addrName);      
     }
-//debugLog("addrMail=$addrMail, addrName=$addrName");
     $phpmailer->addAddress($addrMail, $addrName);          // Add a recipient with optional name
   }
   $phpmailer->addReplyTo($paramMailReplyTo, $paramMailSenderName);  //
-  //$mail->addCC('cc@example.com');
-  //$mail->addBCC('bcc@example.com');
   $phpmailer->WordWrap = 70;                               // Set word wrap to 70 characters
-  //$mail->addAttachment('/var/tmp/file.tar.gz');     // Add attachments
-  //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');// Optional name
   $phpmailer->isHTML(true);                                // Set email format to HTML
   $phpmailer->Subject = $title;                            //
   $phpmailer->Body    = $message;                          //
-//debugLog($message);
   //$phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
   if ($headers) {
   	$heads=explode("\r\n", $headers);
@@ -770,27 +733,36 @@ scriptLog('sendMail_phpmailer');
   		  $phpmailer->addCustomHeader($head);
   		}
   	}  	
-  	$phpmailer->isHTML(false);  
+  	$phpmailer->isHTML(false);  // Header is used only for vCalendar mails
   	$phpmailer->ContentType="text/Calendar";
   	//$phpmailer->Encoding="7bit";
   }
   $phpmailer->CharSet="UTF-8";
+  if ($attachmentsArray) { // attachments
+    if (! is_array($attachmentsArray)) {
+      $attachmentsArray=array($attachmentsArray);
+    }
+    foreach ($attachmentsArray as $attachment) {
+      $phpmailer->AddAttachment($attachment);
+    }
+  }
+  if (trim($paramMailSendmailPath)) { 
+  	ini_set('sendmail_path',$paramMailSendmailPath);
+    $phpmailer->IsSendmail();
+  }
   $resultMail=$phpmailer->send();
   disableCatchErrors();
   $debugMessages=ob_get_contents();
-//debugLog($debugMessages);  
   ob_end_clean();
   if (! $resultMail) {
     errorLog("Error sending mail");
     errorLog("   SMTP Server : " . $paramMailSmtpServer);
     errorLog("   SMTP Port : " . $paramMailSmtpPort);
-    //errorLog("   Sendmail path : " . $path);
     errorLog("   Mail stored in Database : #" . $mail->id);
     errorLog("   PHPMail error : ".$phpmailer->ErrorInfo);
     errorLog("   PHPMail debug : ".$debugMessages);
   }
   if ( $resultMail==="NO" ) {$resultMail="";}
-  // save the status of the sending
   $mail->mailStatus=($resultMail)?'OK':'ERROR';
   $mail->save(); 
   return $resultMail;
