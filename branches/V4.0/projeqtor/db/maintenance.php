@@ -262,11 +262,11 @@ if ($currVersion<"V4.0.0") {
   disableCatchErrors();
   foreach($files as $file){ // iterate files
     if(is_file($file))
-      $perms = fileperms($root.$file);
+      $perms = fileperms($file);
       if ($perms & 0x0080) {
         $do=@unlink($file); // delete file
       } else {
-      	errorLog("Cannot delete file : ".$root.$file);
+      	errorLog("Cannot delete file : ".$file);
       } 
   }  
   $arrayFiles=array('/tool/projector.php',

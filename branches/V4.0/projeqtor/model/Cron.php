@@ -331,6 +331,7 @@ class Cron {
   	$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
   	$importSummary="";
   	$importFullLog="";
+  	$attachmentArray=array();
   	$boundary = null;
   	if (is_dir($importDir)) {
       if ($dirHandler = opendir($importDir)) {
@@ -401,21 +402,25 @@ class Cron {
             fclose($fileHandler);
             // Prepare joined file on email
         	  if (Parameter::getGlobalParameter('cronImportLogDestination')=='mail+log') {
-        	  	if (! $boundary) {
-        	  	  $boundary = md5(uniqid(microtime(), TRUE));
+        	  	if (! isset($paramMailerType) or $paramMailerType=='phpmailer') {
+        	  		$attachmentArray[]=$logFile;
+        	  	} else { // old way to send attachments
+	        	  	if (! $boundary) {
+	        	  	  $boundary = md5(uniqid(microtime(), TRUE));
+	        	  	}
+							  $file_type = 'text/html';
+	              $content = Importable::getLogHeader();
+							  $content .= Importable::$importResult;
+							  $content .= Importable::getLogFooter();
+							  $content = chunk_split(base64_encode($content));       
+	              $importFullLog .= $eol.'--'.$boundary.$eol;
+	              $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
+	              $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
+	              $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
+	              $importFullLog .= 'Content-disposition: attachment; filename="'.basename($logFile).'"'.$eol; 
+	              $importFullLog .= $eol.$content.$eol;
+	              $importFullLog .= '--'.$boundary.$eol;
         	  	}
-						  $file_type = 'text/html';
-              $content = Importable::getLogHeader();
-						  $content .= Importable::$importResult;
-						  $content .= Importable::getLogFooter();
-						  $content = chunk_split(base64_encode($content));       
-              $importFullLog .= $eol.'--'.$boundary.$eol;
-              $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
-              $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
-              $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
-              $importFullLog .= 'Content-disposition: attachment; filename="'.basename($logFile).'"'.$eol; 
-              $importFullLog .= $eol.$content.$eol;
-              $importFullLog .= '--'.$boundary.$eol;
             }
             $cpt+=1;
         	}
@@ -437,14 +442,12 @@ class Cron {
 	    	} else {
 		      $message=$importSummary;
 		      if (stripos($logDest,'log')!==false) {
-		      	$message=Importable::getLogHeader()
-		      	         .$message
-		      	         .$eol.$importFullLog;
-		      	         Importable::getLogFooter();
-		      	//$message.=$eol.$importFullLog;
+		      	$message=Importable::getLogHeader().$message;
+		      	if($importFullLog) $message.=$eol.$importFullLog;
+		      	Importable::getLogFooter();
 		      }
 	        $title="[$baseName] Import summary ". date('Y-m-d H:i:s');
-	        $resultMail=sendMail($to, $title, $message, null, null, null, $boundary);	        
+	        $resultMail=sendMail($to, $title, $message, null, null, null, $attachmentArray, $boundary);	        
 	    	}
 	    }
     }

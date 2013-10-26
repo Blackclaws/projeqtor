@@ -354,6 +354,7 @@ class Meeting extends SqlElement {
   function sendMail() {
   	$paramMailSender=Parameter::getGlobalParameter('paramMailSender');
     $paramMailReplyTo=Parameter::getGlobalParameter('paramMailReplyTo');
+    $paramTimezone=Parameter::getGlobalParameter('paramDefaultTimezone');
     $lstDest=explode(',',$this->attendees);
     if (count($this->_Assignment)>0) {
     	foreach ($this->_Assignment as $ass) {
@@ -363,7 +364,6 @@ class Meeting extends SqlElement {
     		$lstDest[]=$resMail;
     	}
     }
-debugLog($lstDest);
     $lstMail=array();
     foreach ($lstDest as $dest) {
       $to="";
@@ -384,13 +384,14 @@ debugLog($lstDest);
         }
         $lstMail[$name]=$to;
       }
-    }
-debugLog($lstMail);    
+    }   
     $sent=0;
     $vcal = "BEGIN:VCALENDAR\r\n";
+    //$vcal .= "PRODID:-//ProjeQtOr//Meeting//EN\r\n";
+    $vcal .= "PRODID:-//Microsoft Corporation//Outlook 12.0 MIMEDIR//EN\r\n";
     $vcal .= "VERSION:2.0\r\n";
-    $vcal .= "PRODID:-//CompanyName//ProductName//EN\r\n";
     //$vcal .= "METHOD:REQUEST\r\n";
+    $vcal .= "METHOD:REQUEST\r\n";
     $vcal .= "BEGIN:VEVENT\r\n";
     $user=$_SESSION['user'];
     $vcal .= "ORGANIZER;CN=" . (($user->resourceName)?$user->resourceName:$user->name). ":MAILTO:$user->email\r\n";
@@ -398,30 +399,36 @@ debugLog($lstMail);
       //$vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
       //$vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT;CN=\"$name\":MAILTO:$to\r\n";
       $vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT";
-      //$vcal .= "CN=".str_replace(array("\r\n","\n","\r"),array("","",""),$name);
       $vcal .= ';CN='.str_replace(array("\r\n","\n","\r"," "),array("","","","_"),$name);
       $vcal .= ":MAILTO:".str_replace(array("\r\n","\n"," "),array("","",""),$to)."\r\n";
     }
-    $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-domain.com\r\n";
-    $vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
-    $vcal .= "DTSTART:" . str_replace('-','',$this->meetingDate) . 'T' . str_replace(':','',$this->meetingStartTime) . "\r\n";
-    $vcal .= "DTEND:" . str_replace('-','',$this->meetingDate) . 'T' .str_replace(':','',$this->meetingEndTime) . "\r\n";
+    $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-projeqtor.org\r\n";
+    //$vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
+    date_default_timezone_set($paramTimezone);
+    $dtStart=strtotime($this->meetingDate.' '.$this->meetingStartTime);
+    $dtEnd=strtotime($this->meetingDate.' '.$this->meetingEndTime);
+    $vcal .= "DTSTART:".gmdate('Ymd',$dtStart).'T'.gmdate('Hi',$dtStart)."00Z\r\n";
+    $vcal .= "DTEND:".gmdate('Ymd',$dtEnd).'T'.gmdate('Hi',$dtEnd)."00Z\r\n";
     if (trim($this->location) != "") $vcal .= "LOCATION:$this->location\r\n";
+    $vcal .= "CATEGORIES:ProjeQtOr\r\n"; 
     $vcal .= "SUMMARY:$this->name\r\n";
+    $vcal .= "PRIORITY:5\r\n";
     if (trim($this->description) != "") $vcal .= "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$this->description)."\r\n";
-    $vcal .= "BEGIN:VALARM\r\n";
+    /*$vcal .= "BEGIN:VALARM\r\n";
     $vcal .= "TRIGGER:-PT15M\r\n";
     $vcal .= "ACTION:DISPLAY\r\n";
     $vcal .= "DESCRIPTION:Reminder\r\n";
-    $vcal .= "END:VALARM\r\n";
+    $vcal .= "END:VALARM\r\n";*/
     $vcal .= "END:VEVENT\r\n";
     $vcal .= "END:VCALENDAR\r\n";
-
     $sender=($user->email)?$user->email:$paramMailSender;
     $replyTo=($user->email)?$user->email:$paramMailReplyTo;
-    $headers = "From: $sender\r\nReply-To: $replyTo";
-    $headers .= "\r\nMIME-version: 1.0\r\nContent-Type: text/calendar; method=REQUEST; charset=\"utf-8\"";
-    $headers .= "\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 12.0";
+    $headers = "From: $sender\r\n";
+    $headers .= "Reply-To: $replyTo\r\n";
+    $headers .= "MIME-version: 1.0\r\n";
+    $headers .= "Content-Type: text/calendar\r\n";
+    //$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+    $headers .= "X-Mailer: Microsoft Office Outlook 12.0";
     //mail($to, $this->description, $vcal, $headers);
     $destList="";
     foreach($lstMail as $name=>$to) {

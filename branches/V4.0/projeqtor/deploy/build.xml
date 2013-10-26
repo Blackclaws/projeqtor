@@ -3,14 +3,14 @@
 
 	<property name="drive"       value="G:" />
   <property name="version"       value="V4.0.0" />
-  <property name="projName"       value="ProjeQtOr" />
+  <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
   <property name="src.dir"       value="${drive}/www/projeqtorV4.0" />
   
   <target name="clean">
      <delete dir="${deploy.dir}"/>
-     <delete file="${setup.dir}/Projeqtor${version}.zip"/>
+     <delete file="${setup.dir}/projeqtor${version}.zip"/>
   </target>
   
   <target name="copyDb">
@@ -43,6 +43,12 @@
          <include name="**/_tcpdf/fonts/freesans.*"/>
          <include name="**/_tcpdf/fonts/helvetica.*"/>
       </fileset>
+  	 </copy>
+  	 <copy todir="${deploy.dir}/external/PHPMailer">
+  	   <fileset dir="${src.dir}/external/PHPMailer"/>
+  	 </copy>
+  	 <copy todir="${deploy.dir}/external/XLSXReader">
+  	    <fileset dir="${src.dir}/external/XLSXReader"/>
   	 </copy>
      <copy todir="${deploy.dir}/external">
 		   <fileset dir="${src.dir}/external">
@@ -163,13 +169,13 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.9.1-src"/>
+	<property name="dojo.release.dir" value ="G:/ProjeQtOr/External/dojo-release-1.9.1-src"/>
 	<property name="dojo.version" value="1.9.1"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>
 
-  <target name="_dojoBuild">
+  <target name="_dojoBuildFull">
       <antcall target="_dojoPackaging"/>
       <antcall target="_dojoOptimisation"/>
   </target>
