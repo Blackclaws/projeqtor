@@ -122,7 +122,11 @@ class Importable extends SqlElement {
 				}
 			} else {
 				$capt=$obj->getColCaption($fld);
-				if (substr($capt,0,1)!='[' ) {
+				if (substr($fld,0,9)=='idContext' and strlen($fld)==10) {
+          $ctx=new ContextType(substr($fld,-1));
+          $val=$ctx->name;
+          $captionArray[$val]=$fld;
+        } else if (substr($capt,0,1)!='[' ) {
 					$captionArray[$capt]=$fld;
 				}
 			}
