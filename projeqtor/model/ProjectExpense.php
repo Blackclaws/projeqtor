@@ -20,6 +20,8 @@ class ProjectExpense extends Expense {
   public $expenseRealDate;
   public $realAmount;
   public $idle;
+  public $cancelled;
+  public $_lib_cancelled;
   //public $_col_1_1_Detail;
   public $_ExpenseDetail=array();
   public $_col_1_1_Link;
@@ -52,7 +54,8 @@ class ProjectExpense extends Expense {
                                   "day"=>"hidden",
                                   "week"=>"hidden",
                                   "month"=>"hidden",
-                                  "year"=>"hidden"
+                                  "year"=>"hidden",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idProjectExpenseType'=>'type',

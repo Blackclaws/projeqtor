@@ -20,6 +20,8 @@ class Bill extends SqlElement {
   public $idStatus;
   public $done;
   public $idle;
+  public $cancelled;
+  public $_lib_cancelled;
   public $untaxedAmount;
   public $tax;
   public $fullAmount;
@@ -52,6 +54,8 @@ class Bill extends SqlElement {
                       'billingType'=>'hidden',
                       'fullAmount'=>'readonly',
                       'untaxedAmount'=>'readonly',
+                      "idle"=>"nobr",
+                      "cancelled"=>"nobr"
                       );  
   
   private static $_colCaptionTransposition = array('description'=>'comment',

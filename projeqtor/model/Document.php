@@ -17,6 +17,8 @@ class Document extends SqlElement {
   public $name;
   public $idAuthor;
   public $idle;
+  public $cancelled;
+  public $_lib_cancelled;
   public $_sec_Lock;
   public $_spe_lockButton;
   public $locked;
@@ -68,7 +70,8 @@ class Document extends SqlElement {
     "revision"=>"hidden",
     "draft"=>"hidden",
     "idStatus"=>"readonly",
-    "documentReference"=>"readonly"
+    "documentReference"=>"readonly",
+    "cancelled"=>"nobr"
    );
    
    private static $_colCaptionTransposition = array('idDocumentType' => 'type',

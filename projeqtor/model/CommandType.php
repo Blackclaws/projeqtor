@@ -22,7 +22,9 @@ class CommandType extends SqlElement {
   public $lockDone;
   public $_lib_statusMustChangeDone;
   public $lockIdle;
-  public $_lib_statusMustChangedIdle;
+  public $_lib_statusMustChangeIdle;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;
@@ -48,6 +50,7 @@ class CommandType extends SqlElement {
                                           "lockHandled"=>"nobr",
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
+                                          "lockCancelled"=>"nobr",
   									      "internalData"=>"hidden");
   
   private static $_databaseTableName = 'type';

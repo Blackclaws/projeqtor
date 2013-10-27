@@ -21,9 +21,7 @@ class Command extends SqlElement {
   public $_void_12;
   public $initialEndDate;
   public $validatedEndDate;
-  
   public $additionalInfo;
-  
   public $_col_2_2_treatment;
   public $idActivity;
   public $idStatus;
@@ -35,6 +33,7 @@ class Command extends SqlElement {
   public $idle;
   public $idleDate;
   public $cancelled;
+  public $_lib_cancelled;
   public $_tab_3_3 = array('initial', 'add', 'validated', 'Work', 'PricePerDay', 'Amount');
   public $initialWork;
   public $addWork;
@@ -74,14 +73,16 @@ class Command extends SqlElement {
                                   "name"=>"required", 
                                   "idCommandType"=>"required",
                                   "idStatus"=>"required",
-  								  "creationDate"=>"hidden",	
+  								                "creationDate"=>"hidden",	
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
-  								  "validatedWork"=>"readonly",
-  							      "validatedPricePerDayAmount"=>"readonly",
-  							      "validatedAmount"=>"readonly",
-  							      "externalReference"=>"required"
+  								                "validatedWork"=>"readonly",
+						  							      "validatedPricePerDayAmount"=>"readonly",
+						  							      "validatedAmount"=>"readonly",
+						  							      "externalReference"=>"required",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 

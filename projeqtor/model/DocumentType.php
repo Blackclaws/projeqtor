@@ -16,7 +16,9 @@ class DocumentType extends Type {
     "lockDone"=>"hidden",
     "_lib_statusMustChangeDone"=>"hidden",
     "lockIdle"=>"hidden",
-    "_lib_statusMustChangedIdle"=>"hidden",
+    "_lib_statusMustChangeIdle"=>"hidden",
+    "lockCancelled"=>"hidden",
+    "_lib_statusMustChangeCancelled"=>"hidden",
     "mandatoryResourceOnHandled"=>"hidden",
     "_lib_mandatoryOnHandledStatus"=>"hidden");
   

@@ -226,3 +226,34 @@ UPDATE `${prefix}opportunity` SET cancelled=1 WHERE idStatus=9;
 
 ALTER TABLE `${prefix}document` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}document` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}issue` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}issue` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}requirement` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}requirement` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}testcase` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}testcase` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}question` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}question` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}decision` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}decision` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}expense` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}expense` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}bill` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}bill` SET cancelled=1 WHERE idStatus=9;
+
+ALTER TABLE `${prefix}testsession` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}testsession` SET cancelled=1 WHERE idStatus=9;
+UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}testsession` XXX where PE.refId=XXX.id)
+where refType='TestSession';
+
+ALTER TABLE `${prefix}meeting` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
+UPDATE `${prefix}meeting` SET cancelled=1 WHERE idStatus=9;
+UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}meeting` XXX where PE.refId=XXX.id)
+where refType='M  eeting';

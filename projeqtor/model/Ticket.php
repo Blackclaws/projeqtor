@@ -41,6 +41,8 @@ class Ticket extends SqlElement {
   public $doneDateTime;
   public $idle;
   public $idleDateTime;
+  public $cancelled;
+  public $_lib_cancelled;
   public $idTargetVersion;
   public $_OtherTargetVersion=array();
   public $result;
@@ -77,6 +79,8 @@ class Ticket extends SqlElement {
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
+                                  "idleDateTime"=>"nobr",
+                                  "cancelled"=>"nobr",
                                   "idContext1"=>"nobr,size1/3,title",
                                   "idContext2"=>"nobr,title", 
                                   "idContext3"=>"title"

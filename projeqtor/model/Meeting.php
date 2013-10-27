@@ -37,6 +37,8 @@ class Meeting extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $result;
   //public $_sec_linkDecision;
   //public $_Link_Decision=array();
@@ -76,7 +78,9 @@ class Meeting extends SqlElement {
                                   "idle"=>"nobr",
 																  "idPeriodicMeeting"=>"hidden",
 																  "isPeriodic"=>"readonly",
-																  "periodicOccurence"=>"hidden"
+																  "periodicOccurence"=>"hidden",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('result'=>'minutes', 
@@ -290,6 +294,9 @@ class Meeting extends SqlElement {
     $listName=array_map('strtolower',SqlList::getList('Affectable'));
     $listUserName=array_map('strtolower',SqlList::getList('Affectable','userName'));
     $listInitials=array_map('strtolower',SqlList::getList('Affectable','initials'));
+    $this->MeetingPlanningElement->idle=$this->idle;
+    $this->MeetingPlanningElement->done=$this->done;
+    $this->MeetingPlanningElement->cancelled=$this->cancelled;
     if ($this->attendees) {
       $listAttendees=explode(',',str_replace(';',',',$this->attendees));
       $this->attendees="";

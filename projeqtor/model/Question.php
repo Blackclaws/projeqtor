@@ -26,6 +26,8 @@ class Question extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $result;    
   //public $_sec_linkMeeting;
   //public $_Link_Meeting=array();
@@ -56,7 +58,9 @@ class Question extends SqlElement {
                                   "creationDate"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 

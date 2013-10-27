@@ -43,6 +43,7 @@ class PlanningElement extends SqlElement {
   public $elementary;
   public $idle;
   public $done;
+  public $cancelled;
   public $idPlanningMode;
   public $_workVisibility;
   public $_costVisibility;
@@ -64,6 +65,7 @@ class PlanningElement extends SqlElement {
                                   "idProject"=>"hidden",
                                   "idle"=>"hidden",
                                   "done"=>"hidden",
+                                  "cancelled"=>"hidden",
                                   "plannedStartDate"=>"readonly,noImport",
                                   "plannedEndDate"=>"readonly,noImport",
                                   "plannedDuration"=>"readonly,noImport",
@@ -347,7 +349,7 @@ class PlanningElement extends SqlElement {
       $this->updateSynthesis($old->topRefType, $old->topRefId);
     }
     // save new parent (for synthesis update) if parent has changed
-    if ($this->topId!='' and $old->topId!=$this->topId) {
+    if ($this->topId!='' and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
     }          
     if ($this->wbsSortable!=$old->wbsSortable) {
@@ -461,7 +463,7 @@ class PlanningElement extends SqlElement {
     }
     // Add data from other planningElements dependant from this one
     if (! $this->elementary) {
-      $critPla=array("topId"=>$this->id);
+      $critPla=array("topId"=>$this->id,"cancelled"=>'0');
       $planningElement=new PlanningElement();
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
       // Add data from other planningElements dependant from this one    

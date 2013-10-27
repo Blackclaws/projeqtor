@@ -26,6 +26,8 @@ class Milestone extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $idVersion;
   public $result;
   public $_col_1_1_Progress;
@@ -62,7 +64,9 @@ class Milestone extends SqlElement {
                                   "creationDate"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -165,6 +169,7 @@ class Milestone extends SqlElement {
     $this->MilestonePlanningElement->idProject=$this->idProject;
     $this->MilestonePlanningElement->idle=$this->idle;
     $this->MilestonePlanningElement->done=$this->done;
+    $this->MilestonePlanningElement->cancelled=$this->cancelled;
     if ($this->idActivity and trim($this->idActivity)!='') {
       $this->MilestonePlanningElement->topRefType='Activity';
       $this->MilestonePlanningElement->topRefId=$this->idActivity;

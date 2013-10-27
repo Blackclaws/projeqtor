@@ -28,6 +28,8 @@ class Activity extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $idTargetVersion;
   public $result;
   public $_sec_Assignment;
@@ -69,7 +71,9 @@ class Activity extends SqlElement {
                                   "creationDate"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -223,6 +227,7 @@ class Activity extends SqlElement {
     $this->ActivityPlanningElement->idProject=$this->idProject;
     $this->ActivityPlanningElement->idle=$this->idle;
     $this->ActivityPlanningElement->done=$this->done;
+    $this->ActivityPlanningElement->cancelled=$this->cancelled;
     if ($this->idActivity and trim($this->idActivity)!='') {
       $this->ActivityPlanningElement->topRefType='Activity';
       $this->ActivityPlanningElement->topRefId=$this->idActivity;

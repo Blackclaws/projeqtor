@@ -715,21 +715,18 @@ scriptLog('sendMail_phpmailer');
   		if (strtolower(substr($head, 0,13))=='content-type:') {
   			$ct=substr($head, 13);
   			$ct=str_replace(array(' ',':'), array('',''), $ct);
-  			debugLog("ct=$ct");
   			$phpmailer->ContentType=$ct;
   		} else if (strtolower(substr($head, 0,5))=='from:' or strtolower(substr($head, 0,9))=='reply-to:') {
   			// From & Reply-To
   		} else if (strtolower(substr($head, 0,26))=='content-transfer-encoding:') {
   			$cte=substr($head, 26);
         $cte=str_replace(array(' ',';',':'), array('','',''), $cte);
-        debugLog("cte=$cte");
         $phpmailer->Encoding=$cte;
       } else if (strtolower(substr($head, 0,9))=='x-mailer:' ) {
         // X-Mailee
       } else if (strtolower(substr($head, 0,13))=='mime-version:' ) {
         // MIME-Version
   		} else {
-  			debugLog("customHead=$head");
   		  $phpmailer->addCustomHeader($head);
   		}
   	}  	
