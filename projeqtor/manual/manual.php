@@ -88,7 +88,7 @@
         <div class="title" style="font-size:11px;text-align:left;cursor: pointer; height:20px;">
           &nbsp;&nbsp;search tag : 
           <select dojoType="dijit.form.FilteringSelect" class="input" 
-           style="width:115px;font-size:10px"
+           style="width:110px;font-size:10px"
            name='manualTag' id='manualTag' value="<?php echo $tag;?>" onchange="searchTag(this.value);">
             <?php foreach ($tags as $id=>$list) {
               if ($list) {
