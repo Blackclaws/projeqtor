@@ -31,6 +31,8 @@ class TestCase extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $prerequisite;
   public $result;
   public $_calc_runStatus;
@@ -76,7 +78,9 @@ class TestCase extends SqlElement {
                                   "idContext3"=>"title",
                                   "idRunStatus"=>"display,html,hidden",
                                   "runStatusIcon"=>"calculated,display,html",
-                                  "runStatusName"=>"calculated,display"
+                                  "runStatusName"=>"calculated,display",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',

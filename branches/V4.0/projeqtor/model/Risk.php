@@ -31,7 +31,9 @@ class Risk extends SqlElement {
   public $done;
   public $doneDate;
   public $idle;
-  public $idleDate;
+  public $idleDate;  
+  public $cancelled;
+  public $_lib_cancelled;
   public $result;
   //public $_sec_linkAction;
   //public $_Link_Action=array();
@@ -68,7 +70,9 @@ class Risk extends SqlElement {
                                   "creationDate"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
-                                  "idle"=>"nobr"
+                                  "idle"=>"nobr",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer',

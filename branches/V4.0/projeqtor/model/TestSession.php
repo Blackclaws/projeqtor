@@ -30,6 +30,8 @@ class TestSession extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $result;
   public $_sec_Assignment;
   public $_Assignment=array();
@@ -104,7 +106,9 @@ class TestSession extends SqlElement {
                                   "runStatusIcon"=>"calculated,display,html",
                                   "runStatusName"=>"calculated,display,html",
                                   "startDate"=>"hidden", 
-                                  "endDate"=>"hidden"
+                                  "endDate"=>"hidden",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
@@ -250,6 +254,7 @@ class TestSession extends SqlElement {
     $this->TestSessionPlanningElement->idProject=$this->idProject;
     $this->TestSessionPlanningElement->idle=$this->idle;
     $this->TestSessionPlanningElement->done=$this->done;
+    $this->TestSessionPlanningElement->cancelled=$this->cancelled;
     if ($this->idActivity and trim($this->idActivity)!='') {
       $this->TestSessionPlanningElement->topRefType='Activity';
       $this->TestSessionPlanningElement->topRefId=$this->idActivity;

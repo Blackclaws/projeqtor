@@ -1459,9 +1459,7 @@ abstract class SqlElement {
 					if ($included) { // if included, then object is called recursively, name is prefixed by className
 						$formField = get_class($this) . '_' . $key . $ext;
 					}
-					//echo get_class($this) . '->' . $key . ' ==> ' . $formField . '=' . $_REQUEST[$formField] . '<br/>';
 					if ($dataType=='int' and $dataLength==1) {
-						//echo "Boolean / key '" . $key . "' ";
 						if (array_key_exists($formField,$_REQUEST)) {
 							//if filed is hidden, must check value, otherwise just check existence
 							if (strpos($this->getFieldAttributes($key), 'hidden')!==false) {
@@ -2126,6 +2124,17 @@ abstract class SqlElement {
 				$colScript .= '    dijit.byId("handled").set("checked", false);';
 				$colScript .= '  }';
 			}
+		  if (property_exists($this, 'cancelled')) {
+        $colScript .= htmlGetJsTable('Status', 'setCancelledStatus', 'tabStatusCancelled');
+        $colScript .= '  var setCancelled=0;';
+        $colScript .= '  var filterStatusCancelled=dojo.filter(tabStatusCancelled, function(item){return item.id==dijit.byId("idStatus").value;});';
+        $colScript .= '  dojo.forEach(filterStatusCancelled, function(item, i) {setCancelled=item.setCancelledStatus;});';
+        $colScript .= '  if (setCancelled==1) {';
+        $colScript .= '    dijit.byId("cancelled").set("checked", true);';
+        $colScript .= '  } else {';
+        $colScript .= '    dijit.byId("cancelled").set("checked", false);';
+        $colScript .= '  }';
+      }
 			$colScript .= '  formChanged();';
 			$colScript .= '</script>';
 		} else if ($colName=="idle") {
@@ -3047,7 +3056,8 @@ abstract class SqlElement {
 		and property_exists($this,'idle') ) {
 			$this->idle=($status->setIdleStatus)?1:0;
 		}
-		if (property_exists($this,'cancelled') ) {
+		if ( ( (property_exists($type,'lockCancelled') and $type->lockCancelled) or $force)
+    and property_exists($this,'cancelled') ) {
 			$this->cancelled=($status->setCancelledStatus)?1:0;
 		}
 	}

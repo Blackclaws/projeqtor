@@ -22,8 +22,10 @@ class ProjectType extends SqlElement {
   public $lockDone;
   public $_lib_statusMustChangeDone;
   public $lockIdle;
-  public $_lib_statusMustChangedIdle;
-  
+  public $_lib_statusMustChangeIdle;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
+
    private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="50%">${name}</th>
@@ -41,6 +43,7 @@ class ProjectType extends SqlElement {
                                           "code"=> "readonly,nobr",
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
+                                          "lockCancelled"=>"nobr",
                                           "internalData"=>"hidden");
    
    private static $_databaseColumnName = array();

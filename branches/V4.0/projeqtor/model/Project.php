@@ -30,6 +30,7 @@ class Project extends SqlElement {
   public $idle;
   public $idleDate;
   public $cancelled;
+  public $_lib_cancelled;
   public $longitude;
   public $latitude;
   public $description;
@@ -81,7 +82,9 @@ class Project extends SqlElement {
                                   "codeType"=>"hidden",
                                   "idProjectType"=>"required",
                                   "longitude"=>"hidden", "latitude"=>"hidden",
-                                  "idStatus"=>"required"
+                                  "idStatus"=>"required",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );   
  
   private static $_colCaptionTransposition = array('idUser'=>'manager',
@@ -502,6 +505,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $this->ProjectPlanningElement->idProject=$this->id;
     $this->ProjectPlanningElement->idle=$this->idle;
     $this->ProjectPlanningElement->done=$this->done;
+    $this->ProjectPlanningElement->cancelled=$this->cancelled;
     if ($this->idProject and trim($this->idProject)!='') {
       $this->ProjectPlanningElement->topRefType='Project';
       $this->ProjectPlanningElement->topRefId=$this->idProject;

@@ -34,6 +34,8 @@ class Requirement extends SqlElement {
   public $doneDate;
   public $idle;
   public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
   public $idTargetVersion;
   public $result;
   //public $_sec_Lock;
@@ -115,6 +117,8 @@ class Requirement extends SqlElement {
                                   "locked"=>"readonly",
                                   "idLocker"=>"readonly",
                                   "lockedDate"=>"readonly",
+                                  "idleDate"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',

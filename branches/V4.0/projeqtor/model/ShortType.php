@@ -16,7 +16,9 @@ class ShortType extends SqlElement {
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $lockIdle;
-  public $_lib_statusMustChangedIdle;
+  public $_lib_statusMustChangeIdle;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -30,7 +32,8 @@ class ShortType extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "idWorkflow"=>"required",
                                           "mandatoryDescription"=>"nobr",
-                                          "lockIdle"=>"nobr"
+                                          "lockIdle"=>"nobr",
+                                          "lockCancelled"=>"nobr"
     );
   
   private static $_databaseTableName = 'type';

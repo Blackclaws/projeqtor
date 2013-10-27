@@ -19,6 +19,8 @@ class Decision extends SqlElement {
   public $origin;
   public $idResource;
   public $idle;
+  public $cancelled;
+  public $_lib_cancelled;
   //public $_sec_linkMeeting;
   //public $_Link_Meeting=array();
   public $_col_1_1_link;
@@ -42,7 +44,9 @@ class Decision extends SqlElement {
                                   "idProject"=>"required",
                                   "idDecisionType"=>"required",
                                   "idUser"=>"hidden",
-                                  "idStatus"=>"required"
+                                  "idStatus"=>"required",
+                                  "idle"=>"nobr",
+                                  "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=>'decisionAccountable'

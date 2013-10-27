@@ -310,7 +310,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 		} else {
 			$attributes=''; $isRequired=false; $readOnly=false;
 			$specificStyle='';
-			if ( ($col=="idle" or $col=="done" or $col=="handled") and $objType ) {
+			if ( ($col=="idle" or $col=="done" or $col=="handled" or $col=="cancelled") and $objType ) {
 				$lock='lock' . ucfirst($col);
 				if ( ! $obj->id or (property_exists($objType,$lock) and $objType->$lock) ) {
 					$attributes.=' readonly tabindex="-1"';
