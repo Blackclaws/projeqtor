@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JText::_('IMPORT_CONFIRMED'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "import_confirmed" , '',JRequest::getInt('import_confirmed',1),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "import_confirmed" , '',in_array('import_confirmed',$this->selectedParams['file']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
 		</td>
 	</tr>
 	<?php } ?>
@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JText::_('GENERATE_NAME'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "generatename" , '',JRequest::getInt('generatename',1),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "generatename" , '',in_array('generatename',$this->selectedParams['file']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
 		</td>
 	</tr>
 	<tr id="trfileblock">
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JText::_('IMPORT_BLOCKED'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "importblocked" , '',JRequest::getInt('importblocked',0),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "importblocked" , '',in_array('importblocked',$this->selectedParams['file']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
 		</td>
 	</tr>
 	<tr id="trfileoverwrite">
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JText::_('OVERWRITE_EXISTING'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "overwriteexisting" , '',JRequest::getInt('overwriteexisting',0),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "overwriteexisting" , '',in_array('overwriteexisting',$this->selectedParams['file']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
 		</td>
 	</tr>
 	<tr id="trfilecharset">

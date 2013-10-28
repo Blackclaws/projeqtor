@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,9 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table>
 		<tr>
 			<td width="100%">
-				<input placeholder="<?php echo JText::_('ACY_SEARCH'); ?>" type="text" name="search" id="search" value="<?php echo $this->escape($this->pageInfo->search);?>" class="text_area" />
-				<button class="btn" onclick="document.adminForm.limitstart.value=0;this.form.submit();"><?php echo JText::_( 'JOOMEXT_GO' ); ?></button>
-				<button class="btn" onclick="document.adminForm.limitstart.value=0;document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JOOMEXT_RESET' ); ?></button>
+				<?php acymailing_listingsearch($this->escape($this->pageInfo->search)); ?>
 			</td>
 			<td nowrap="nowrap">
 				<?php echo $this->filters->creator; ?>
@@ -65,8 +63,9 @@ defined('_JEXEC') or die('Restricted access');
 		<tfoot>
 			<tr>
 				<td colspan="12">
-					<?php echo $this->pagination->getListFooter(); ?>
-					<?php echo $this->pagination->getResultsCounter(); ?>
+					<?php echo $this->pagination->getListFooter();
+					echo $this->pagination->getResultsCounter();
+					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -96,16 +95,16 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 					</td>
 					<td align="center">
-						<a href="<?php echo acymailing_completeLink('subscriber&filter_status=1&filter_lists='.$row->listid); ?>">
+						<a href="<?php echo acymailing_completeLink('subscriber&filter_status=0&filter_statuslist=1&filter_lists='.$row->listid); ?>">
 						<?php echo $row->nbsub; ?>
 						</a>
 						<?php if(!empty($row->nbwait)){ echo '&nbsp;&nbsp;';?>
 							<?php $title = '(+'.$row->nbwait.')';
-							echo acymailing_tooltip(JText::_('NB_PENDING'), ' ', 'tooltip.png', $title, acymailing_completeLink('subscriber&filter_status=2&filter_lists='.$row->listid));?>
+							echo acymailing_tooltip(JText::_('NB_PENDING'), ' ', 'tooltip.png', $title, acymailing_completeLink('subscriber&filter_status=0&filter_statuslist=2&filter_lists='.$row->listid));?>
 						<?php } ?>
 					</td>
 					<td align="center">
-						<a href="<?php echo acymailing_completeLink('subscriber&filter_status=-1&filter_lists='.$row->listid); ?>">
+						<a href="<?php echo acymailing_completeLink('subscriber&filter_status=0&filter_statuslist=-1&filter_lists='.$row->listid); ?>">
 						<?php echo $row->nbunsub; ?>
 						</a>
 					</td>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -148,6 +148,10 @@ class NewsletterViewNewsletter extends acymailingView
 		$this->assignRef('delay',$delay);
 		$this->assignRef('config',$config);
 
+		if($this->type == 'autonews'){
+			$frequency = acymailing_get('type.frequency');
+			$this->assignRef('frequencyType', $frequency);
+		}
 	}
 
 	function form(){
@@ -192,7 +196,7 @@ class NewsletterViewNewsletter extends acymailingView
 			}
 
 			if($this->type == 'autonews'){
-				$mail->frequency = 604800;
+				$mail->frequency = 0;
 			}
 		}
 
@@ -277,7 +281,7 @@ class NewsletterViewNewsletter extends acymailingView
 		var divfile=window.document.getElementById("loadfile");
 		var input = document.createElement(\'input\');
 		input.type = \'file\';
-		input.size = \'30\';
+		input.style.width = \'auto\';
 		input.name = \'attachments[]\';
 		divfile.appendChild(document.createElement(\'br\'));
 		divfile.appendChild(input);}
@@ -324,7 +328,7 @@ class NewsletterViewNewsletter extends acymailingView
 
 		if($this->type == 'autonews'){
 			JHTML::_('behavior.modal','a.modal');
-			$this->assign('delay',acymailing_get('type.delay'));
+			$this->assign('frequencyType',acymailing_get('type.frequency'));
 			$this->assign('generatingMode',acymailing_get('type.generatemode'));
 			$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_autonews';
 			$values->editnotification = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -56,18 +56,7 @@ class FilterViewFilter extends acymailingView
 			$typevaluesActions[] = JHTML::_('select.option', $oneType,$oneName);
 		}
 
-		$js = "function updateFilter(filterNum){
-				currentFilterType =window.document.getElementById('filtertype'+filterNum).value;
-				if(!currentFilterType){
-					window.document.getElementById('filterarea_'+filterNum).innerHTML = '';
-					document.getElementById('countresult_'+filterNum).innerHTML = '';
-					return;
-				}
-				filterArea = 'filter__num__'+currentFilterType;
-				window.document.getElementById('filterarea_'+filterNum).innerHTML = window.document.getElementById(filterArea).innerHTML.replace(/__num__/g,filterNum);
-			}
-
-			function updateAction(actionNum){
+		$js = "function updateAction(actionNum){
 				currentActionType =window.document.getElementById('actiontype'+actionNum).value;
 				if(!currentActionType){
 					window.document.getElementById('actionarea_'+actionNum).innerHTML = '';
@@ -77,19 +66,7 @@ class FilterViewFilter extends acymailingView
 				window.document.getElementById('actionarea_'+actionNum).innerHTML = window.document.getElementById(actionArea).innerHTML.replace(/__num__/g,actionNum);
 			}";
 
-		$js .= "var numFilters = 0;
-				var numActions = 0;
-				function addAcyFilter(){
-					var newdiv = document.createElement('div');
-					newdiv.id = 'filter'+numFilters;
-					newdiv.className = 'plugarea';
-					newdiv.innerHTML = '';
-					if(numFilters > 0) newdiv.innerHTML += '".JText::_('FILTER_AND')."';
-					newdiv.innerHTML += document.getElementById('filters_original').innerHTML.replace(/__num__/g, numFilters);
-					if(document.getElementById('allfilters')){
-						document.getElementById('allfilters').appendChild(newdiv); updateFilter(numFilters); numFilters++;
-					}
-				}
+		$js .= "var numActions = 0;
 				function addAction(){
 					var newdiv = document.createElement('div');
 					newdiv.id = 'action'+numActions;
@@ -97,13 +74,6 @@ class FilterViewFilter extends acymailingView
 					newdiv.innerHTML = document.getElementById('actions_original').innerHTML.replace(/__num__/g, numActions);
 					document.getElementById('allactions').appendChild(newdiv); updateAction(numActions); numActions++;
 				}";
-
-		if(ACYMAILING_J30) {
-			$js .= 'window.addEvent("domready", function(){setTimeout(function(){
-				jQuery("#acybase_filters .chzn-container").remove();
-				jQuery("#acybase_filters .chzn-done").removeClass("chzn-done").show();
-			}, 100);});';
-		}
 
 		$js .= "window.addEvent('domready', function(){ addAcyFilter(); addAction(); });";
 
@@ -138,30 +108,9 @@ class FilterViewFilter extends acymailingView
 			$js .= 	"submitform( pressbutton );} ";
 		}else{ $js .= 	"Joomla.submitform(pressbutton,document.adminForm);}; "; }
 
-		$js .= "function countresults(num){
-					document.getElementById('countresult_'+num).innerHTML = '<span class=\"onload\"></span>';
-					var form = $('adminForm');
-					var data = form.toQueryString();
-					data += '&task=countresults&ctrl=filter';
-					try{
-						new Ajax('index.php?option=com_acymailing&tmpl=component&ctrl=filter&task=countresults&num='+num,{
-							method: 'post',
-							data: data,
-							update: document.getElementById('countresult_'+num)
-						}).request();
-					}catch(err){
-						new Request({
-							method: 'post',
-							data: data,
-							url: 'index.php?option=com_acymailing&tmpl=component&ctrl=filter&task=countresults&num='+num,
-							onSuccess: function(responseText, responseXML) {
-								document.getElementById('countresult_'+num).innerHTML = responseText;
-							}
-						}).send();
-					}
-				}";
-
 		$doc->addScriptDeclaration( $js );
+
+		$filterClass->addJSFilterFunctions();
 
 		$js = '';
 		$data = array('addAction' => 'action','addAcyFilter' => 'filter');

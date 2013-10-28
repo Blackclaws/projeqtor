@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 									<?php echo $fieldName ?>
 								</td>
 								<td align="center">
-									<?php echo JHTML::_('acyselect.booleanlist', "exportdataother[".$fieldName."]",'',in_array($fieldName,$this->selectedfields) ? 1 : 0); ?>
+									<?php echo JHTML::_('acyselect.booleanlist', "exportdataother[".$fieldName."]",'',in_array($fieldName,$this->selectedfields) ? 1 : 0, JText::_('JOOMEXT_YES'), JText::_('JOOMEXT_NO'), str_replace('.', '_', $fieldName)); ?>
 								</td>
 							</tr>
 <?php
@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 									<?php echo JText::_('EXPORT_SUB_LIST'); ?>
 								</td>
 								<td align="center" nowrap="nowrap">
-									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[subscribed]",'onchange="if(this.value == 1){document.getElementById(\'exportlists\').style.display = \'block\'; }else{document.getElementById(\'exportlists\').style.display = \'none\'; }"',1,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
+									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[subscribed]",'onchange="if(this.value == 1){document.getElementById(\'exportlists\').style.display = \'block\'; }else{document.getElementById(\'exportlists\').style.display = \'none\'; }"',in_array('subscribed',$this->selectedFilters) ? 1 : 0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
 								</td>
 							</tr>
 							<tr class="row1">
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 									<?php echo JText::_('EXPORT_REGISTERED'); ?>
 								</td>
 								<td align="center">
-									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[registered]",'',0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
+									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[registered]",'',in_array('registered',$this->selectedFilters) ? 1 : 0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
 								</td>
 							</tr>
 							<tr class="row0">
@@ -112,7 +112,7 @@ defined('_JEXEC') or die('Restricted access');
 									<?php echo JText::_('EXPORT_CONFIRMED'); ?>
 								</td>
 								<td align="center">
-									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[confirmed]",'',0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
+									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[confirmed]",'',in_array('confirmed',$this->selectedFilters) ? 1 : 0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
 								</td>
 							</tr>
 							<tr class="row1">
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access');
 									<?php echo JText::_('EXPORT_ENABLED'); ?>
 								</td>
 								<td align="center">
-									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[enabled]",'',0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
+									<?php echo JHTML::_('acyselect.booleanlist', "exportfilter[enabled]",'',in_array('enabled',$this->selectedFilters) ? 1 : 0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO').' : '.JText::_('ALL_USERS')); ?>
 								</td>
 							</tr>
 
@@ -146,7 +146,7 @@ defined('_JEXEC') or die('Restricted access');
 									?>
 								</td>
 								<td align="center" nowrap="nowrap">
-									<?php  echo JHTML::_('acyselect.booleanlist', "exportlists[".$row->listid."]",'',in_array($row->listid,$this->selectedlists) ? 1 : 0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO'),'exportlists'.$row->listid); ?>
+									<?php  echo JHTML::_('acyselect.booleanlist', "exportlists[".$row->listid."]",'',in_array($row->listid,$this->selectedlists) ? 1 : 0,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO'),'exportlists'.$row->listid.'_'); ?>
 								</td>
 							</tr>
 							<?php
@@ -177,20 +177,20 @@ defined('_JEXEC') or die('Restricted access');
 											{
 												<?php
 												if(ACYMAILING_J30){
-													echo 'jQuery("label[for=exportlists"+selectedLists["all"][i]+"0]").click();';
+													echo 'jQuery("label[for=exportlists"+selectedLists["all"][i]+"_0]").click();';
 												}
 												?>
-												window.document.getElementById('exportlists'+selectedLists['all'][i]+'0').checked = true;
+												window.document.getElementById('exportlists'+selectedLists['all'][i]+'_0').checked = true;
 											}
 											if(!selectedLists[selection]) return;
 											for(var i=0; i < selectedLists[selection].length; i++)
 											{
 												<?php
 												if(ACYMAILING_J30){
-													echo 'jQuery("label[for=exportlists"+selectedLists[selection][i]+"1]").click();';
+													echo 'jQuery("label[for=exportlists"+selectedLists[selection][i]+"_1]").click();';
 												}
 												?>
-												window.document.getElementById('exportlists'+selectedLists[selection][i]+'1').checked = true;
+												window.document.getElementById('exportlists'+selectedLists[selection][i]+'_1').checked = true;
 											}
 										}
 									</script>

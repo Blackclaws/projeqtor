@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?><?php
 
-class importHelper{
+class acyimportHelper{
 
 	var $importUserInLists = array();
 	var $totalInserted = 0;
@@ -32,7 +32,7 @@ class importHelper{
 
 	var $subscribedUsers = array();
 
-	function importHelper(){
+	function acyimportHelper(){
 		acymailing_increasePerf();
 
 		$this->db = JFactory::getDBO();
@@ -121,6 +121,16 @@ class importHelper{
 		$this->importblocked = JRequest::getInt('importblocked_textarea');
 		$content = JRequest::getString('textareaentries');
 
+		$config = acymailing_config();
+		$newConfig = new stdClass();
+		$paramTmp = array();
+		if($this->forceconfirm == 1) $paramTmp[] = 'import_confirmed_textarea';
+		if($this->generatename == 1) $paramTmp[] = 'generatename_textarea';
+		if($this->overwrite == 1) $paramTmp[] = 'overwriteexisting_textarea';
+		if($this->importblocked == 1) $paramTmp[] = 'importblocked_textarea';
+		$newConfig->import_params_textarea = implode(',', $paramTmp);
+		$config->save($newConfig);
+
 		$result = $this->_handleContent($content);
 		$this->_displaySubscribedResult();
 		return $result;
@@ -162,6 +172,16 @@ class importHelper{
 		jimport('joomla.filesystem.file');
 
 		$config =& acymailing_config();
+
+		$newConfig = new stdClass();
+		$newConfig->import_params_file = $this->forceconfirm .','. $this->generatename .','. $this->importblocked .','. $this->overwrite;
+		$paramTmp = array();
+		if($this->forceconfirm == 1) $paramTmp[] = 'import_confirmed';
+		if($this->generatename == 1) $paramTmp[] = 'generatename';
+		if($this->overwrite == 1) $paramTmp[] = 'overwriteexisting';
+		if($this->importblocked == 1) $paramTmp[] = 'importblocked';
+		$newConfig->import_params_file = implode(',', $paramTmp);
+		$config->save($newConfig);
 
 		$uploadFolder = JPath::clean(html_entity_decode($config->get('uploadfolder')));
 		$uploadFolder = trim($uploadFolder,DS.' ').DS;
@@ -368,6 +388,13 @@ class importHelper{
 		if(empty($this->importUserInLists)){
 			$lists = JRequest::getVar('importlists',array());
 
+			$campaignClass = acymailing_get('helper.campaign');
+			$listsOfId = array();
+			foreach($lists as $listid => $val){
+				$listsOfId[] = $listid;
+			}
+			$listCampaign = $listClass->getCampaigns($listsOfId);
+
 			foreach($lists as $listid => $val){
 				if(!empty($val)){
 					$nbsubscribed = 0;
@@ -397,10 +424,8 @@ class importHelper{
 						$this->subscribedUsers[$listid] = $myList;
 						$this->subscribedUsers[$listid]->nbusers = $nbsubscribed;
 					}
-					if($val == 2){
-						$campaignClass = acymailing_get('helper.campaign');
-						$listCampaign = $listClass->getCampaigns($listid);
-						foreach($listCampaign as $campaignId){
+					if($val == 2 && !empty($listCampaign[$listid])){
+						foreach($listCampaign[$listid] as $campaignId){
 							$campaignClass->autoSubCampaign($this->allSubid, $campaignId);
 						}
 					}

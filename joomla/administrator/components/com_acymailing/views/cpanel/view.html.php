@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -82,7 +82,7 @@ class CpanelViewCpanel extends acymailingView
 		$encodingval[] = JHTML::_('select.option', '7bit', '7 Bit');
 		$encodingval[] = JHTML::_('select.option', '8bit', '8 Bit' );
 		$encodingval[] = JHTML::_('select.option', 'base64', 'Base 64' );
-		$elements->encoding_format =  JHTML::_('select.genericlist', $encodingval, "config[encoding_format]" , 'size="1"', 'value', 'text', $config->get('encoding_format','base64'));
+		$elements->encoding_format =  JHTML::_('select.genericlist', $encodingval, "config[encoding_format]" , 'size="1" style="width:150px;"', 'value', 'text', $config->get('encoding_format','base64'));
 
 		$charset = acymailing_get('type.charset');
 		$elements->charset = $charset->display("config[charset]",$config->get('charset','UTF-8'));
@@ -303,6 +303,10 @@ class CpanelViewCpanel extends acymailingView
 		$elements->edit_notification_unsuball = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
 		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_unsub';
 		$elements->edit_notification_unsub = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
+		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_contact';
+		$elements->edit_notification_contact = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
+		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_confirm';
+		$elements->edit_notification_confirm = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
 
 		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=modif';
 		$elements->editModifEmail = '<a class="modal" id="modifemail"  href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';

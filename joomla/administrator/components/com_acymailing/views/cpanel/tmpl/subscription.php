@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -93,6 +93,24 @@ defined('_JEXEC') or die('Restricted access');
 				<td>
 					<input class="inputbox" type="text" name="config[notification_refuse]" style="width:200px" value="<?php echo $this->escape($this->config->get('notification_refuse')); ?>">
 					<?php echo $this->elements->edit_notification_refuse; ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+				<?php echo acymailing_tooltip(JText::_('NOTIF_CONTACT_DESC'), JText::_('NOTIF_CONTACT'), '', JText::_('NOTIF_CONTACT')); ?>
+				</td>
+				<td>
+					<input class="inputbox" type="text" name="config[notification_contact]" style="width:200px" value="<?php echo $this->escape($this->config->get('notification_contact')); ?>">
+					<?php echo $this->elements->edit_notification_contact; ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+				<?php echo acymailing_tooltip(JText::_('NOTIF_CONFIRM_DESC'), JText::_('NOTIF_CONFIRM'), '', JText::_('NOTIF_CONFIRM')); ?>
+				</td>
+				<td>
+					<input class="inputbox" type="text" name="config[notification_confirm]" style="width:200px" value="<?php echo $this->escape($this->config->get('notification_confirm')); ?>">
+					<?php echo $this->elements->edit_notification_confirm; ?>
 				</td>
 			</tr>
 		</table>

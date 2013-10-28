@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -22,7 +22,7 @@ John,john@example.com
 				<?php echo JText::_('IMPORT_CONFIRMED'); ?>
 			</td>
 			<td>
-				<?php echo JHTML::_('acyselect.booleanlist', "import_confirmed_textarea" , '',JRequest::getInt('import_confirmed_textarea',1),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
+				<?php echo JHTML::_('acyselect.booleanlist', "import_confirmed_textarea" , '',in_array('import_confirmed_textarea',$this->selectedParams['textarea']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO') ); ?>
 			</td>
 		</tr>
 <?php } ?>
@@ -31,7 +31,7 @@ John,john@example.com
 			<?php echo JText::_('GENERATE_NAME'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "generatename_textarea" , '',JRequest::getInt('generatename_textarea',1),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO')); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "generatename_textarea" , '',in_array('generatename_textarea',$this->selectedParams['textarea']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO')); ?>
 		</td>
 	</tr>
 	<tr id="trtextareablock" >
@@ -39,7 +39,7 @@ John,john@example.com
 			<?php echo JText::_('IMPORT_BLOCKED'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "importblocked_textarea" , '',JRequest::getInt('importblocked_textarea',0),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO')); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "importblocked_textarea" , '',in_array('importblocked_textarea',$this->selectedParams['textarea']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO')); ?>
 		</td>
 	</tr>
 	<tr id="trtextareaoverwrite">
@@ -47,7 +47,7 @@ John,john@example.com
 			<?php echo JText::_('OVERWRITE_EXISTING'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('acyselect.booleanlist', "overwriteexisting_textarea" , '',JRequest::getInt('overwriteexisting_textarea',0),JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO')); ?>
+			<?php echo JHTML::_('acyselect.booleanlist', "overwriteexisting_textarea" , '',in_array('overwriteexisting_textarea',$this->selectedParams['textarea']) ? 1 : 0,JText::_('JOOMEXT_YES'),JTEXT::_('JOOMEXT_NO')); ?>
 		</td>
 	</tr>
 </table>

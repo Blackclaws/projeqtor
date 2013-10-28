@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -35,8 +35,10 @@ defined('_JEXEC') or die('Restricted access');
 				$i = 0;
 				$selectedLists = explode(',',JRequest::getString('listids'));
 				foreach($this->lists as $row){
+					$checked = (bool) ($row->mailid OR (empty($row->mailid) AND empty($this->mail->mailid) AND $filter_list == $row->listid) OR (empty($this->mail->mailid) AND count($this->lists) == 1) OR (in_array($row->listid,$selectedLists)));
+					$classList = $checked? 'acy_list_checked':'acy_list_unchecked';
 		?>
-				<tr class="<?php echo "row$k"; ?>">
+				<tr class="<?php echo "row$k $classList"; ?>">
 					<td>
 						<?php echo '<div class="roundsubscrib rounddisp" style="background-color:'.$row->color.'"></div>'; ?>
 						<?php
@@ -46,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 					<td align="center" nowrap="nowrap" style="text-align:center">
-						<?php echo JHTML::_('acyselect.booleanlist', "data[listmail][".$row->listid."]" , '',(bool) ($row->mailid OR (empty($row->mailid) AND empty($this->mail->mailid) AND $filter_list == $row->listid) OR (empty($this->mail->mailid) AND count($this->lists) == 1) OR (in_array($row->listid,$selectedLists))),JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO'),$row->listid.'listmail'); ?>
+						<?php echo JHTML::_('acyselect.booleanlist', "data[listmail][".$row->listid."]" , '',$checked,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO'),$row->listid.'listmail'); ?>
 					</td>
 				</tr>
 		<?php
@@ -127,7 +129,7 @@ defined('_JEXEC') or die('Restricted access');
 		</fieldset>
 		<?php } ?>
 		<div id="loadfile">
-			<input type="file" style="width:160px" name="attachments[]" />
+			<input type="file" style="width:auto;" name="attachments[]" />
 		</div>
 		<a href="javascript:void(0);" onclick='addFileLoader()'><?php echo JText::_('ADD_ATTACHMENT'); ?></a>
 			<?php echo JText::sprintf('MAX_UPLOAD',$this->values->maxupload);?>

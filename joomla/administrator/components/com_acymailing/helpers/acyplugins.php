@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -217,6 +217,14 @@ class acypluginsHelper{
 		$this->_lineheightfix($html);
 		$this->_removecontenttags($html);
 		$this->_convertbase64pictures($html);
+		$this->cleanEditorCode($html);
+	}
+
+	private function cleanEditorCode(&$html){
+		if(!strpos($html,'cke_edition_en_cours')) return;
+
+		$html = preg_replace('#<div[^>]*cke_edition_en_cours.*$#Uis','',$html);
+
 	}
 
 	function extractTags(&$email,$tagfamily){

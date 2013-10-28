@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -72,7 +72,7 @@ class EmailViewEmail extends acymailingView
 		var divfile=window.document.getElementById("loadfile");
 		var input = document.createElement(\'input\');
 		input.type = \'file\';
-		input.size = \'30\';
+		input.style.width = \'auto\';
 		input.name = \'attachments[]\';
 		divfile.appendChild(document.createElement(\'br\'));
 		divfile.appendChild(input);}
@@ -99,7 +99,12 @@ class EmailViewEmail extends acymailingView
 
 		$script .= "function insertTag(tag){ try{jInsertEditorText(tag,'editor_body'); document.getElementById('iframetag').style.display = 'none'; displayTags(); return true;} catch(err){alert('Your editor does not enable AcyMailing to automatically insert the tag, please copy/paste it manually in your Newsletter'); return false;}}";
 
-		$iFrame = "'<iframe src=\'index.php?option=com_acymailing&ctrl=tag&task=tag&type=news&tmpl=component\' width=\'100%\' height=\'100%\' scrolling=\'auto\'></iframe>'";
+		$typeMail = 'news';
+		if(strpos($mail->alias, 'notification') !== false){
+			$typeMail = 'notification';
+		}
+
+		$iFrame = "'<iframe src=\'index.php?option=com_acymailing&ctrl=tag&task=tag&type=".$typeMail."&tmpl=component\' width=\'100%\' height=\'100%\' scrolling=\'auto\'></iframe>'";
 		$script .= "var openTag = true;
 					function displayTags(){var box=$('iframetag'); if(openTag){box.innerHTML = ".$iFrame."; box.setStyle('display','block');}
 					try{

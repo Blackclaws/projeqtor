@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -51,7 +51,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 		if(is_numeric($format)) $format = JText::_('DATE_FORMAT_LC'.$format);
 
 		if(ACYMAILING_J16){
-			$format = str_replace(array('%A','%d','%B','%m','%Y','%y','%H','%M','%S','%a'),array('l','d','F','m','Y','y','H','i','s','D'),$format);
+			$format = str_replace(array('%A','%d','%B','%m','%Y','%y','%H','%M','%S','%a','%I','%p'),array('l','d','F','m','Y','y','H','i','s','D','h','a'),$format);
 			try{return JHTML::_('date',$time,$format,false);} catch (Exception $e) {return date($format,$time);}
 		}else{
 			static $timeoffset = null;
@@ -345,6 +345,28 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 		return $configClass;
 	}
 
+	function acymailing_listingsearch($escapedSearch){
+		$app = JFactory::getApplication();
+		if(ACYMAILING_J30 && $app->isAdmin()){
+			?>
+				<div class="filter-search btn-group pull-left">';
+					<label for="search" class="element-invisible"><?php echo JText::_('ACY_SEARCH');?></label>
+					<input type="text" name="search" id="search" value="<?php echo $escapedSearch;?>" class="text_area" placeholder="<?php echo JText::_('ACY_SEARCH'); ?>" title="<?php echo JText::_('ACY_SEARCH'); ?>" />
+				</div>
+				<div class="btn-group pull-left hidden-phone">
+					<button onclick="document.adminForm.limitstart.value=0;this.form.submit();" class="btn tip hasTooltip" type="submit" title="<?php echo JText::_('ACY_SEARCH'); ?>" ><i class="icon-search"></i></button>
+					<button onclick="document.adminForm.limitstart.value=0;document.getElementById('search').value='';this.form.submit();" class="btn tip hasTooltip" type="button" title="<?php echo JText::_( 'JOOMEXT_RESET' ); ?>" ><i class="icon-remove"></i></button>
+				</div>
+			<?php
+		}else{
+			?>
+				<input placeholder="<?php echo JText::_('ACY_SEARCH'); ?>" type="text" name="search" id="search" value="<?php echo $escapedSearch;?>" class="text_area" />
+				<button class="btn" onclick="document.adminForm.limitstart.value=0;this.form.submit();"><?php echo JText::_( 'JOOMEXT_GO' ); ?></button>
+				<button class="btn" onclick="document.adminForm.limitstart.value=0;document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JOOMEXT_RESET' ); ?></button>
+			<?php
+		}
+	}
+
 	function acymailing_level($level){
 		$config =& acymailing_config();
 		if($config->get($config->get('level'),0) >= $level) return true;
@@ -424,6 +446,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 		if($class == 'config') $class = 'cpanel';
 
 		$className = $class.ucfirst($group);
+		if($group == 'helper' && strpos($className,'acy') !== 0) $className = 'acy'.$className;
 		if(!class_exists($className)) include(constant(strtoupper('ACYMAILING_'.$group)).$class.'.php');
 
 		if(!class_exists($className)) return null;
@@ -440,7 +463,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 	}
 
 	function acymailing_tooltip($desc,$title=' ', $image='tooltip.png', $name = '',$href='', $link=1){
-		return JHTML::_('tooltip', str_replace(array("'","::"),array("&#039;",": : "),$desc.' '),str_replace(array("'",'::'),array("&#039;",': : '),$title), $image, str_replace(array("'",'"','::'),array("&#039;","&quot;",': : '),$name.' '),$href, $link);
+		return JHTML::_('tooltip', str_replace(array("'","::"),array("&#039;",": : "),$desc.' '),str_replace(array("'",'::'),array("&#039;",': : '),$title), $image, str_replace(array("'",'"','::'),array("&#039;","&quot;",': : '),$name.' '),$href, $link, 'hasTip');
 	}
 
 	function acymailing_checkRobots(){

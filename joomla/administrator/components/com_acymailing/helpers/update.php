@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -9,12 +9,12 @@
 defined('_JEXEC') or die('Restricted access');
 ?><?php
 
-class updateHelper{
+class acyupdateHelper{
 
 	var $db;
 	var $errors = array();
 
-	function updateHelper(){
+	function acyupdateHelper(){
 		$this->db = JFactory::getDBO();
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
@@ -24,15 +24,17 @@ class updateHelper{
 
 		if(!ACYMAILING_J16) return;
 
-		$this->db->setQuery("SELECT extension_id FROM #__extensions WHERE type='component' AND element = 'com_acymailing' AND extension_id > 0 ORDER BY client_id DESC, extension_id ASC");
+		$this->db->setQuery("SELECT extension_id FROM #__extensions WHERE type='component' AND element = 'com_acymailing' AND extension_id > 0 ORDER BY client_id ASC, extension_id ASC");
 		$results = $this->db->loadObjectList();
 		if(empty($results) || count($results) == 1) return;
 
+		$validExtension = reset($results)->extension_id;
+
 		$toDelete = array();
-		for($i = count($results) -1; $i>0;$i--){
+		for($i = 1; $i < count($results);$i++){
 			$toDelete[] = $results[$i]->extension_id;
 		}
-		$validExtension = reset($results)->extension_id;
+
 
 		$tablesToUpdate = array('#__menu' => 'component_id');
 		foreach($tablesToUpdate as $table => $field){
@@ -121,6 +123,14 @@ class updateHelper{
 
 		if(!in_array('notification_refuse',$notifications)){
 			$data[] = "('A User refuses to receive e-mails from your website : {user:email}', '<p>The User {user:name} : {user:email} refuses to receive any e-mail anymore from your website.</p><p>Subscription : {user:subscription}</p><p>{survey}</p>', '', 1, 'notification',0,'notification_refuse', 1,0)";
+		}
+
+		if(!in_array('notification_contact',$notifications)){
+			$data[] = "('New contact from your website : {user:email}', '<p>Hello {subtag:name},</p><p>A user has contacted you : </p><blockquote><p>Name : {user:name}</p><p>Email : {user:email}</p><p>IP : {user:ip} </p><p>Subscription : {user:subscription}</p></blockquote>', '', 1, 'notification', 0,'notification_contact', 1,0)";
+		}
+
+		if(!in_array('notification_confirm',$notifications)){
+			$data[] = "('A user confirm his subscription : {user:email}', '<p>Hello {subtag:name},</p><p>A user has confirmed his subscription in AcyMailing : </p><blockquote><p>Name : {user:name}</p><p>Email : {user:email}</p><p>IP : {user:ip} </p><p>Subscription : {user:subscription}</p></blockquote>', '', 1, 'notification', 0,'notification_confirm', 1,0)";
 		}
 
 		if(!in_array('confirmation',$notifications)){
@@ -302,11 +312,11 @@ class updateHelper{
 		$query .= '(\'Acknowledgement of receipt - in subject\', 2, \'(out|away).*(of|from)|vacation|holiday|absen|congés|recept|acknowledg|thank you for\', \'a:1:{s:7:"subject";s:1:"1";}\', \'a:1:{s:6:"delete";s:1:"1";}\', \'a:1:{s:3:"min";s:1:"0";}\', 1),';
 		$query .= '(\'Feedback loop\', 3, \'feedback|staff@hotmail.com\', \'a:2:{s:10:"senderinfo";s:1:"1";s:7:"subject";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:2:{s:3:"min";s:1:"0";s:5:"unsub";s:1:"1";}\', 1),';
 		$query .= '(\'Mailbox Full\', 4, \'((mailbox|mailfolder|storage|quota|space|inbox) *(is)? *(over)? *(exceeded|size|storage|allocation|full|quota|maxi))|status(-code)? *(:|=)? *5\.2\.2|((over|exceeded|full|exhausted) *(allowed)? *(mail|storage|quota))\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"3";s:5:"block";s:1:"1";}\', 1),';
-		$query .= '(\'Mailbox does not exist\', 5, \'(Invalid|no such|unknown|bad|des?activated|undelivered|inactive|unrouteable) *(mail|destination|recipient|user|address|person)|RecipNotFound|status(-code)? *(:|=)? *5\.(1\.[1-6]|0\.0|4\.[0123467])|(user|mailbox|address|recipients?|host|account|domain) *(is|has been)? *(error|disabled|failed|unknown|unavailable|not *(found|available)|.{1,30}inactiv)|recipient *address *rejected|does *not *like *recipient|no *mailbox *here|user does.?n.t have.{0,20}account\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
-		$query .= '(\'Message blocked by recipient filters\',6, \'is *(currently)? *blocked *by|block *list|look(ed)? *like *spam|spam *detected|CXBL|CDRBL|IPBL|URLBL|(unacceptable|banned|offensive|filtered|blocked|unsolicited) *(content|message|e-?mail)|status(-code)? *(:|=)? *5\.7\.1|administratively *denied|blacklisted *IP|policy *reasons\', \'a:1:{s:4:"body";s:1:"1";}\', \'a:2:{s:6:"delete";s:1:"1";s:9:"forwardto";s:'.$forwardEmail.';}\', \'a:2:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";}\', 1),';
+		$query .= '(\'Message blocked by recipient filters\',5, \'is *(currently)? *blocked *by|block *list|look(ed)? *like *spam|spam *detected|CXBL|CDRBL|IPBL|URLBL|(unacceptable|banned|offensive|filtered|blocked|unsolicited) *(content|message|e-?mail)|status(-code)? *(:|=)? *5\.7\.1|administratively *denied|blacklisted *IP|policy *reasons|rejected.{1,10}spam\', \'a:1:{s:4:"body";s:1:"1";}\', \'a:2:{s:6:"delete";s:1:"1";s:9:"forwardto";s:'.$forwardEmail.';}\', \'a:2:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";}\', 1),';
+		$query .= '(\'Mailbox does not exist\', 6, \'(Invalid|no such|unknown|bad|des?activated|undelivered|inactive|unrouteable) *(mail|destination|recipient|user|address|person)|RecipNotFound|status(-code)? *(:|=)? *5\.(1\.[1-6]|0\.0|4\.[0123467])|(user|mailbox|address|recipients?|host|account|domain) *(is|has been)? *(error|disabled|failed|unknown|unavailable|not *(found|available)|.{1,30}inactiv)|recipient *address *rejected|does *not *like *recipient|no *mailbox *here|user does.?n.t have.{0,20}account\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
 		$query .= '(\'Domain does not exist\', 7, \'No *MX *record|host *does *not *receive *any *mail|connection.{1,10}mail.{1,20}fail\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
 		$query .= '(\'Temporary failures\', 8, \'has.*been.*delayed|delayed *mail|message *delayed|temporar(il)?y *(failure|unavailable)|deferred|delayed *([0-9]*) *(hour|minut)|possible *mail *loop|too *many *hops|delivery *time *expired|Action: *delayed|status(-code)? *(:|=)? *4\.4\.6|will continue to be attempted\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"3";s:5:"block";s:1:"1";}\', 1),';
-		$query .= '(\'Failed Permanently\', 9, \'failed *permanently|permanent *(fatal)? *(failure|error)|not *accepting *(any)? *mail|does *not *exist\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
+		$query .= '(\'Failed Permanently\', 9, \'failed *permanently|permanent.{1,20}(failure|error)|not *accepting *(any)? *mail|does *not *exist\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
 		$query .= '(\'Acknowledgement of receipt - in body\', 10, \'vacances|holiday|vacation|absen\', \'a:1:{s:4:"body";s:1:"1";}\', \'a:1:{s:6:"delete";s:1:"1";}\', \'a:1:{s:3:"min";s:1:"0";}\', 1),';
 		$query .= '(\'Final Rule\', 11, \'.\', \'a:2:{s:10:"senderinfo";s:1:"1";s:7:"subject";s:1:"1";}\', \'a:2:{s:6:"delete";s:1:"1";s:9:"forwardto";s:'.$forwardEmail.';}\', \'a:1:{s:3:"min";s:1:"0";}\', 1)';
 

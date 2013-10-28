@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -99,10 +99,14 @@ class dataViewdata extends acymailingView
 		$lists = $app->isAdmin() ? $listClass->getLists() : $listClass->getFrontendLists();
 		$campaignValues = array();
 		if(acymailing_level(3)){
+			$listsOfId = array();
+			foreach($lists as $oneList){
+				$listsOfId[] = $oneList->listid;
+			}
+			$listCampaign = $listClass->getCampaigns($listsOfId);
 			foreach($lists as $key => $oneList){
-				$listCampaign = $listClass->getCampaigns($oneList->listid);
-				if(!empty($listCampaign)){
-					$lists[$key]->campaign = implode(',', $listCampaign);
+				if(!empty($listCampaign[$oneList->listid])){
+					$lists[$key]->campaign = implode(',', $listCampaign[$oneList->listid]);
 					$campaignValues[$oneList->listid] = array();
 					$campaignValues[$oneList->listid][] = JHTML::_('select.option', 0, JTEXT::_('JOOMEXT_NO'));
 					$campaignValues[$oneList->listid][] = JHTML::_('select.option', 1, JTEXT::_('JOOMEXT_YES'));
@@ -110,10 +114,15 @@ class dataViewdata extends acymailingView
 				}
 			}
 		}
+
+		$selectedParams = array();
+		$selectedParams['file'] = explode(',', $config->get('import_params_file', 'import_confirmed,generatename'));
+		$selectedParams['textarea'] = explode(',', $config->get('import_params_textarea', 'import_confirmed_textarea,generatename_textarea'));
+
 		$this->assignRef('lists',$lists);
 		$this->assignRef('campaignValues', $campaignValues);
 		$this->assignRef('config',$config);
-
+		$this->assignRef('selectedParams', $selectedParams);
 	}
 
 	function export(){
@@ -124,6 +133,7 @@ class dataViewdata extends acymailingView
 		$config = acymailing_config();
 		$selectedFields = explode(',',$config->get('export_fields','email,name'));
 		$selectedLists = explode(',',$config->get('export_lists'));
+		$selectedFilters = explode(',', $config->get('export_filters', 'subscribed'));
 
 		acymailing_setTitle(JText::_('ACY_EXPORT'),'acyexport','data&task=export');
 
@@ -140,6 +150,7 @@ class dataViewdata extends acymailingView
 		$this->assignRef('fields',$fields);
 		$this->assignRef('selectedfields',$selectedFields);
 		$this->assignRef('selectedlists',$selectedLists);
+		$this->assignRef('selectedFilters', $selectedFilters);
 		$this->assignRef('config',$config);
 
 		$whereSubscribers = '';

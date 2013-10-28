@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -237,6 +237,7 @@ class acymailerHelper extends acymailingPHPMailer {
 			if(!empty($warnings)) $this->reportMessage .= ' | '.$warnings;
 			$this->errorNumber = 1;
 			if($this->report){
+				$this->reportMessage = str_replace('Could not instantiate mail function','<a target="_blank" href="'.ACYMAILING_REDIRECT.'could-not-instantiate-mail-function" title="'.JText::_('TELL_ME_MORE').'">Could not instantiate mail function</a>',$this->reportMessage);
 				$this->app->enqueueMessage(nl2br($this->reportMessage), 'error');
 			}
 		}else{
@@ -399,11 +400,9 @@ class acymailerHelper extends acymailingPHPMailer {
 		$this->AddAddress($this->cleanText($receiver->email),$addedName);
 
 		if(!isset($this->forceVersion)){
-			$this->sendHTML = $receiver->html && $this->defaultMail[$mailid]->html;
-			$this->IsHTML($this->sendHTML);
+			$this->IsHTML($receiver->html && $this->defaultMail[$mailid]->html);
 		}else{
-			$this->sendHTML = (bool) $this->forceVersion;
-			$this->IsHTML($this->sendHTML);
+			$this->IsHTML((bool) $this->forceVersion);
 		}
 
 		$this->Subject = $this->defaultMail[$mailid]->subject;
@@ -685,6 +684,23 @@ class acymailerHelper extends acymailingPHPMailer {
 
 		if(!empty($this->AltBody)) $this->AltBody = $this->WrapText($this->AltBody, $this->WordWrap);
 		$this->Body = $this->WrapText($this->Body, $this->WordWrap);
+	}
+
+	public function IsHTML($ishtml = true) {
+		parent::IsHTML($ishtml);
+		$this->sendHTML = $ishtml;
+	}
+
+	public function GetMailMIME() {
+		$result = parent::GetMailMIME();
+
+		$result = rtrim($result,$this->LE);
+
+		if($this->Mailer != 'mail') {
+			$result .= $this->LE.$this->LE;
+		}
+
+		return $result;
 	}
 
 	public static function ValidateAddress($address) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?><?php
 
-class queueHelper{
+class acyqueueHelper{
 
 	var $mailid = 0;
 	var $report = true;
@@ -27,8 +27,10 @@ class queueHelper{
 	var $config;
  	var $listsubClass;
 	var $subClass;
+	var $mod_security2 = false;
+	var $obend = 0;
 
-	function queueHelper(){
+	public function acyqueueHelper(){
 		$this->config = acymailing_config();
 		$this->subClass = acymailing_get('class.subscriber');
 		$this->listsubClass = acymailing_get('class.listsub');
@@ -54,7 +56,8 @@ class queueHelper{
 
 	}
 
-	function process(){
+	public function process(){
+
 		$queueClass = acymailing_get('class.queue');
 		$queueElements = $queueClass->getReady($this->send_limit,$this->mailid);
 
@@ -67,13 +70,16 @@ class queueHelper{
 		}
 
 		if($this->report){
-
-			if(!headers_sent() AND ob_get_level() > 0){
-				ob_end_flush();
+			if( function_exists('apache_get_modules') ) {
+				$modules = apache_get_modules();
+				$this->mod_security2 = in_array('mod_security2', $modules);
+			}
+			if(!headers_sent()){
+				while(ob_get_level() > 0 && $this->obend++ < 3) { @ob_end_flush(); }
 			}
 
 			$disp = '<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />';
-			$disp .= '<title>'.addslashes(JText::_('SEND_PROCESS')).'</title>';
+			$disp .= '<title>'.JText::_('SEND_PROCESS').'</title>';
 			$disp .= '<style>body{font-size:12px;font-family: Arial,Helvetica,sans-serif;}</style></head><body>';
 			$disp.= "<div style='position:fixed; top:3px;left:3px;background-color : white;border : 1px solid grey; padding : 3px;font-size:14px'>";
 			$disp.= "<span id='divpauseinfo' style='padding:10px;margin:5px;font-size:16px;font-weight:bold;display:none;background-color:black;color:white;'> </span>";
@@ -102,7 +108,7 @@ class queueHelper{
 					</script>';
 			echo $disp;
 			if(function_exists('ob_flush')) @ob_flush();
-			@flush();
+			if(!$this->mod_security2) @flush();
 		}//endifreport
 
 		$mailHelper = acymailing_get('helper.mailer');
@@ -128,7 +134,8 @@ class queueHelper{
 			if($this->report){
 				echo '<script type="text/javascript" language="javascript">setCounter('. $currentMail .')</script>';
 				if(function_exists('ob_flush')) @ob_flush();
-				@flush();
+				if(!$this->mod_security2)
+					@flush();
 			}
 
 			$result = $mailHelper->sendOne($oneQueue->mailid,$oneQueue);
@@ -224,13 +231,17 @@ class queueHelper{
 		}
 
 		if($this->report){
-			echo "</body></html>";exit;
+			echo "</body></html>";
+			while($this->obend-- > 0){
+				ob_start();
+			}
+			exit;
 		}
 
 		return true;
 	}
 
-	function _deleteQueue($queueDelete){
+	private function _deleteQueue($queueDelete){
 		if(empty($queueDelete)) return true;
 		$status = true;
 
@@ -254,7 +265,7 @@ class queueHelper{
 	}
 
 
-	function statsAdd($statsAdd){
+	public function statsAdd($statsAdd){
 
 		$time = time();
 		if(empty($statsAdd)) return true;
@@ -294,7 +305,7 @@ class queueHelper{
 		}
 	}
 
-	function _queueUpdate($queueUpdate){
+	private function _queueUpdate($queueUpdate){
 		if(empty($queueUpdate)) return true;
 
 		$delay = 3600;
@@ -307,7 +318,7 @@ class queueHelper{
 		}
 	}
 
-	function _handleError(){
+	private function _handleError(){
 		$this->finish = true;
 		$message = JText::_('SEND_STOPED');
 		$message .= '<br/>';
@@ -332,7 +343,7 @@ class queueHelper{
 		$this->_display($message);
 	}
 
-	function _display($message,$status = '',$num = ''){
+	private function _display($message,$status = '',$num = ''){
 		$this->messages[] = strip_tags($message);
 
 		if(!$this->report) return;
@@ -344,10 +355,11 @@ class queueHelper{
 			echo '<script type="text/javascript" language="javascript">setInfo(\''. addslashes($message) .'\')</script>';
 		}
 		if(function_exists('ob_flush')) @ob_flush();
-		@flush();
+		if(!$this->mod_security2)
+			@flush();
 	}
 
-	function _subscriberAction($subid){
+	private function _subscriberAction($subid){
 		if($this->config->get('bounce_action_maxtry') == 'delete'){
 			$this->subClass->delete($subid);
 			return ' user '.$subid.' deleted';
