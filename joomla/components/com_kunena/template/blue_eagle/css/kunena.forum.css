@@ -4,7 +4,7 @@
 * Kunena Component
 * @package Kunena.Template.Blue_Eagle
 *
-* @copyright (C) 2008 - 2013 Kunena Team. All rights reserved.
+* @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * @link http://www.kunena.org
 *
@@ -3375,18 +3375,3 @@ ul.autocompleter-choices li.kautocompleter-selected span.kautocompleter-queried 
 /* --------------------------------------------------------------- */
 /* Fix ol li numbers */
 #Kunena ol li {list-style-position:inside;}
-
-/* kunena Poll*/
-#Kunena div.kpolldesc img.jr-forum-stat-bar
-{
-height: 20px !important;
-max-height: 20px !important;
-}
- 
-img.kstats-bar
-{
-height: 20px !important;
-max-height: 20px !important;
-}
-/* Fix avatar on bootstrap templates */
-#Kunena img.kavatar {height:auto !important; max-width:inherit !important;}

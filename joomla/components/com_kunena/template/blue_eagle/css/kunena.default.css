@@ -4,7 +4,7 @@
 * Kunena Component
 * @package Kunena.Template.Blue_Eagle
 *
-* @copyright (C) 2008 - 2013 Kunena Team. All rights reserved.
+* @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * @link http://www.kunena.org
 *
@@ -17,9 +17,9 @@
 
 /* ------------------------- COLOR PALETTE FOR BLUE EAGLE
 
-Dark blue color: 			#5388B4			RGB: 83/136/180
-Medium blue color: 			#609FBF			RGB: 96/159/191
-Light grey color:			#F2F1EE 		RGB: 242/241/238
+Dark blue color: 			#555382			RGB: 83/136/180
+Medium blue color: 			#555382			RGB: 96/159/191
+Light grey color:			#FAFAFA 		RGB: 242/241/238
 Medium grey color:			#999999 		RGB: 153/153/153
 Dark grey color:			#737373 		RGB: 115/115/115
 Border grey color:			#BFC3C6 		RGB: 191/195/198
@@ -62,7 +62,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 #Kunena a:link,
 #Kunena a:visited,
 #Kunena a:active,
-#Kunena a:focus { color: #5388B4 !important; background-color:transparent !important;}
+#Kunena a:focus { color: #555382 !important; background-color:transparent !important;}
 
 #Kunena a:hover { color: #FF0000 !important; background-color:transparent !important; }
 
@@ -79,7 +79,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 	background-color: #FFFFFF;
 }
 #Kunena .kblock div.kheader {
-	background: #5388B4 !important;
+	background: #555382 !important;
 	border-bottom-color:#D9D9D9;
 	color: #FFFFFF;
 }
@@ -89,7 +89,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 }
 
 #Kunena div.kblock div.ktitle {
-	background-color: #5388B4;
+	background-color: #555382;
 	color: #FFFFFF;
 }
 #Kunena div.kblock div.ktitle h1,
@@ -110,7 +110,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 	color: #000000;
 }
 #Kunena div.kblock div.kactions {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	color:#FFF;
 	border-left:1px solid #BFC3C6;
 	border-bottom:1px solid #BFC3C6;
@@ -121,7 +121,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 	background-color:transparent !important;
 }
 #Kunena tr.krow1 td {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 }
 #Kunena tr.krow2 td {
 	background-color: #FFFFFF;
@@ -190,7 +190,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 
 #Kunena .kwho-user,
 #Kunena a.kwho-user {
-	color: #5388B4 !important;
+	color: #555382 !important;
 }
 
 #Kunena .kwho-guest,
@@ -250,7 +250,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 
 #Kunena .button,
 #Kunena .kbutton {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	border-color: #999999;
 	color: #000000;
 }
@@ -263,8 +263,8 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 }
 #Kunena .kbutton:hover,
 #Kunena .kbutton:focus {
-	background-color: #609FBF;
-	border-color: #5388B4;
+	background-color: #555382;
+	border-color: #555382;
 	color: #FFFFFF;
 }
 
@@ -336,27 +336,27 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 /*---------- Pagination ------------- */
 
 #Kunena .kpagination a {
-	border-color:#5388B4;
+	border-color:#555382;
 	background-color: #ffffff !important;
 }
 #Kunena .kpagination .active {
-	border-color:#5388B4;
-	background-color:#5388B4;
+	border-color:#555382;
+	background-color:#555382;
 	color:#FFFFFF;
 }
 #Kunena .kpagination span {
-	border-color:#5388B4;
-	background-color:#5388B4;
+	border-color:#555382;
+	background-color:#555382;
 	color:#FFFFFF;
 }
 #Kunena .kpagination a:link,
 #Kunena .kpagination a:visited {
-	color:#5388B4;
+	color:#555382;
 }
 #Kunena .kpagination a:hover{
-	border-color:#5388B4;
+	border-color:#555382;
 	color: #ffffff;
-	background-color: #609FBF;
+	background-color: #555382;
 }
 #Kunena div.ktopic-title-cover ul.kpagination li.page {
 	color:#999;
@@ -366,9 +366,9 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 	background-color: #ffffff;
 }
 #Kunena div.ktopic-title-cover ul.kpagination a:hover{
-	border-color:#5388B4;
+	border-color:#555382;
 	color: #ffffff;
-	background-color: #609FBF;
+	background-color: #555382;
 }
 #Kunena span.ktopic-views {
 	color:#999999;
@@ -385,7 +385,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 	background-color: transparent;
 }
 #Kunena td.kprofileboxcnt ul.kprofilebox-welcome li input.kbutton:hover {
-	background-color: #609FBF;
+	background-color: #555382;
 }
 #Kunena div#kforum-head {
 	border-left-color: #BFC3C6;
@@ -446,7 +446,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 }
 #Kunena h2 span.kheadbtn a {
 	border-color: #FFF;
-	background-color: #609FBF;
+	background-color: #555382;
 }
 #Kunena h2 span.kheadbtn:hover a {
 	border-color: #FFF;
@@ -508,7 +508,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 
 #Kunena div.kmsg-header {
 	border-bottom-color:#D9D9D9;
-	background-color: #5388B4;
+	background-color: #555382;
 	color: #FFFFFF;
 }
 #Kunena div.kmsg-header h2 {
@@ -547,7 +547,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 }
 
 #Kunena span.kmessage-editmarkup {
-	background-color: #F2F1EE no-repeat left center;
+	background-color: #FAFAFA no-repeat left center;
 	border-left-color: #BFC3C6;
 	border-right-color: #BFC3C6;
 	border-top-color: #BFC3C6;
@@ -555,7 +555,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 }
 
 #Kunena span.kmessage-informmarkup {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	border-left-color: #BFC3C6;
 	border-right-color: #BFC3C6;
 	border-top-color: #BFC3C6;
@@ -585,7 +585,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 #Kunena div.kmsgtext-confidential {
 	border-color: #BFC3C6;
 	font-family: Arial, Helvetica, sans-serif;
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 }
 
 #Kunena div.kmsgtext-article {
@@ -601,7 +601,7 @@ Pink forum dark:			#ffd0ff 		RGB: 255/208/255
 }
 
 #Kunena div.khide {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	border-color: #F2CAB7;
 }
 
@@ -728,7 +728,7 @@ POST PAGE
 
 #Kunena #kbbcode-preview {
 	border-color: #BFC3C6;
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 }
 #Kunena #kpostmessage tr.krow1 .kpostbuttonset td,
 #Kunena #kpostmessage tr.krow2 .kpostbuttonset td	{
@@ -791,19 +791,19 @@ Multi file upload for bbcode editor
 #Kunena .kfile-input-button,
 #Kunena .kfile-input-button:hover,
 #Kunena .kfile-input-button:focus {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	border-color: #999999;
 	color: #000000;
 }
 #Kunena .kfile-input-button:hover,
 #Kunena .kfile-input-button:focus {
-	background-color: #609FBF;
-	border-color: #5388B4;
+	background-color: #555382;
+	border-color: #555382;
 	color: #FFFFFF;
 }
 #Kunena .kattachment-remove,
 #Kunena .kattachment-insert {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	border-color: #999999;
 	color: #000000;
 }
@@ -842,12 +842,12 @@ POLLS
 	border-left-color: #BFC3C6;
 	border-right-color: #BFC3C6;
 	color: #000000;
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 }
 #Kunena .kforum-pathway-bottom {
 	border-color: #BFC3C6;
 	color: #000000;
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 }
 
 /*
@@ -872,7 +872,7 @@ HELP, RULES, UPLOAD AVATAR, ANNOUNCEMENT
 	border-color: #BFC3C6;
 }
 #Kunena .kcredits-more {
-	background-color: #F2F1EE;
+	background-color: #FAFAFA;
 	border-color: #BFC3C6;
 }
 
@@ -950,7 +950,7 @@ HELP, RULES, UPLOAD AVATAR, ANNOUNCEMENT
 
 #Kunena span#kprofilebox-status {
 	color: #fff;
-	background-color: #5388B4;
+	background-color: #555382;
 }
 #Kunena #kprofilebox-toggle {
 	border-color: #fff;
@@ -974,15 +974,6 @@ ul.autocompleter-choices li.kautocompleter-selected {
 }
 ul.autocompleter-choices li.kautocompleter-selected span.kautocompleter-queried {
 	color:					#9FCFFF;
-}
-
-.autocompleter-choices .autocompleter-selected {
-	background: none repeat scroll 0 0 #3366FF;
-	color: #FFFFFF;
-}
-
-ul.autocompleter-choices li {
-	border-bottom: 1px solid #DDDDDD;
 }
 
 /* CSS suffix support for category specific styling (Leave this section at the bottom)
