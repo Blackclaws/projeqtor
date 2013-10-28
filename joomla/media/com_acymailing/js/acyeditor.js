@@ -1,6 +1,6 @@
 /**
  * @package    AcyMailing for Joomla!
- * @version    4.3.4
+ * @version    4.4.1
  * @author     acyba.com
  * @copyright  (C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license    GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -33,6 +33,7 @@ var tooltipShowAreas;
 var templateShown = false;
 var urlAcyeditor;
 var boutonTags = "toolbar-popup-Acytags";
+var acyVersion = "4.4.1";
 
 var initIE = false;
 function Initialisation(id, type, urlBase, urlAdminBase, cssUrl, forceComplet, modeList, modeTemplate, modeArticle, joomla2_5, joomla3, back, tagAllowed, texteSuppression, titleSuppression, titleEdition, titleTemplateDelete, titleTemplateText, titleTemplatePicture, titleShowAreas) {
@@ -348,13 +349,13 @@ function ChargementIframe(iframe, urlBase, code, width, height, id, texteSuppres
 	header.appendChild(base1);
 	var script1 = document.createElement("script");
 	script1.type = "text/javascript";
-	script1.src =  urlBase + urlAcyeditor + "ckeditor/ckeditor.js" + "?time=" + Date.now();
+	script1.src =  urlBase + urlAcyeditor + "ckeditor/ckeditor.js?v=" + acyVersion;
 	header.appendChild(script1);
 	var link1 = document.createElement("link");
 	var link2 = document.createElement("link");
 	link1.type = "text/css"; link2.type = "text/css";
 	link1.rel = "stylesheet"; link2.rel = "stylesheet";
-	link1.href =  urlBase + urlAcyeditor + "css/acyeditor.css" + "?time=" + Date.now();
+	link1.href =  urlBase + urlAcyeditor + "css/acyeditor.css?v=" + acyVersion;
 	if (stylesheetpath != null && stylesheetpath != undefined && stylesheetpath != "")
 	{
 		link2.href =  urlBase + stylesheetpath + "?time=" + Date.now();
@@ -1912,7 +1913,7 @@ function ShowTemplateCss(show){
 			link1.type = "text/css";
 			link1.rel = "stylesheet";
 			link1.id = "AcyTemplateCss";
-			link1.href =  base.href + urlAcyeditor + "css/acyeditor_template.css" + "?time=" + Date.now();
+			link1.href =  base.href + urlAcyeditor + "css/acyeditor_template.css?v=" + acyVersion;
 			headEditor.appendChild(link1);
 			SetTitleTemplate();
 
