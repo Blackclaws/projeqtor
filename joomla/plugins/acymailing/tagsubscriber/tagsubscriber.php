@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -30,6 +30,8 @@ class plgAcymailingTagsubscriber extends JPlugin
 	 }
 
 	 function acymailingtagsubscriber_show(){
+		$db = JFactory::getDBO();
+		$fields = acymailing_getColumns('#__acymailing_subscriber');
 
 	 	$descriptions['subid'] = JText::_('SUBSCRIBER_ID');
 	 	$descriptions['email'] = JText::_('SUBSCRIBER_EMAIL');
@@ -38,12 +40,25 @@ class plgAcymailingTagsubscriber extends JPlugin
 	 	$descriptions['ip'] = JText::_('SUBSCRIBER_IP');
 	 	$descriptions['created'] = JText::_('SUBSCRIBER_CREATED');
 
-		$text = '<table class="adminlist table table-striped table-hover" cellpadding="1">';
-		$db = JFactory::getDBO();
-		$fields = acymailing_getColumns('#__acymailing_subscriber');
+		if(JRequest::getVar('type') == 'notification'){
+			$text = JText::_('CURRENT_USER_INFO') . '<table class="adminlist table table-striped table-hover" cellpadding="1">';
+			$k = 0;
+			foreach($fields as $fieldname => $oneField){
+				if(!isset($descriptions[$fieldname]) AND $oneField == 'tinyint') continue;
+				if(empty($descriptions[$fieldname])) $descriptions[$fieldname] = '';
+
+				$type = '';
+				if(in_array($fieldname,array('created','confirmed_date','lastclick_date','lastopen_date'))) $type = '|type:time';
+				$text .= '<tr style="cursor:pointer" class="row'.$k.'" onclick="setTag(\'{user:'.$fieldname.$type.'}\');insertTag();" ><td class="acytdcheckbox"></td><td>'.$fieldname.'</td><td>'.$descriptions[$fieldname].'</td></tr>';
+				$k = 1-$k;
+			}
+			$text .= '</table><br/><br/>';
+			echo $text;
+		}
+
+		$text = JText::_('RECEIVER_INFORMATION') . '<br/><table class="adminlist table table-striped table-hover" cellpadding="1">';
 
 		$others = array();
-
 		$others['{subtag:name|part:first|ucfirst}'] = array('name'=> JText::_('SUBSCRIBER_FIRSTPART'), 'desc'=>JText::_('SUBSCRIBER_FIRSTPART').' '.JText::_('SUBSCRIBER_FIRSTPART_DESC'));
 		$others['{subtag:name|part:last|ucfirst}'] = array('name'=> JText::_('SUBSCRIBER_LASTPART'), 'desc'=>JText::_('SUBSCRIBER_LASTPART').' '.JText::_('SUBSCRIBER_LASTPART_DESC'));
 
@@ -55,10 +70,11 @@ class plgAcymailingTagsubscriber extends JPlugin
 		}
 		foreach($fields as $fieldname => $oneField){
 			if(!isset($descriptions[$fieldname]) AND $oneField == 'tinyint') continue;
+			if(empty($descriptions[$fieldname])) $descriptions[$fieldname] = '';
 
 			$type = '';
 			if(in_array($fieldname,array('created','confirmed_date','lastclick_date','lastopen_date'))) $type = '|type:time';
-			$text .= '<tr style="cursor:pointer" class="row'.$k.'" onclick="setTag(\'{subtag:'.$fieldname.$type.'}\');insertTag();" ><td class="acytdcheckbox"></td><td>'.$fieldname.'</td><td>'.@$descriptions[$fieldname].'</td></tr>';
+			$text .= '<tr style="cursor:pointer" class="row'.$k.'" onclick="setTag(\'{subtag:'.$fieldname.$type.'}\');insertTag();" ><td class="acytdcheckbox"></td><td>'.$fieldname.'</td><td>'.$descriptions[$fieldname].'</td></tr>';
 			$k = 1-$k;
 		}
 
@@ -121,7 +137,7 @@ class plgAcymailingTagsubscriber extends JPlugin
 		}
 	}
 
-	function replaceSubTag(&$allresults,$i,&$user){
+	private function replaceSubTag(&$allresults,$i,&$user){
 
 		$arguments = explode('|',strip_tags($allresults[1][$i]));
 		$field = $arguments[0];
@@ -130,7 +146,9 @@ class plgAcymailingTagsubscriber extends JPlugin
 		$mytag->default = '';
 		if(!empty($arguments)){
 			foreach($arguments as $onearg){
+				if(empty($onearg)) continue;
 				$args = explode(':',$onearg);
+				if(empty($args[0])) continue;
 				if(isset($args[1])){
 					$mytag->$args[0] = $args[1];
 					if(isset($args[2])) $mytag->$args[0] .= ':'.$args[2];

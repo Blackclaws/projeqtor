@@ -16,11 +16,16 @@
 // you are using session configuration.
 // See http://kcfinder.sunhater.com/install for setting descriptions
 
-$uploadUrl = "../../../../../images";
-if (!is_dir($uploadUrl))
-{
-	$uploadUrl = "../../../../images";
+if(isset($_SERVER["REQUEST_URI"])){
+	$requestUri = $_SERVER["REQUEST_URI"];
+}else{
+	$requestUri = $_SERVER['PHP_SELF'];
 }
+$currentURL = ((empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) != "on" ) ? 'http://' : 'https://').$_SERVER["HTTP_HOST"].trim($requestUri);
+$rootUrl = substr($currentURL, 0, stripos($currentURL, 'plugins/'));
+
+$path = dirname(__FILE__);
+$rootDir = substr($path, 0, stripos($path, 'plugins'.DIRECTORY_SEPARATOR));
 
 $_CONFIG = array(
 
@@ -31,8 +36,8 @@ $_CONFIG = array(
 
 		'theme' => "oxygen",
 
-		'uploadURL' => $uploadUrl."/acyeditor",
-		'uploadDir' => $uploadUrl."/acyeditor",
+		'uploadURL' => $rootUrl.'images/acyeditor',
+		'uploadDir' => $rootDir.'images'.DIRECTORY_SEPARATOR.'acyeditor',
 
 		'dirPerms' => 0755,
 		'filePerms' => 0644,

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -179,19 +179,22 @@ class plgAcymailingTagcontent extends JPlugin
 		<script language="javascript" type="text/javascript">
 		<!--
 			var selectedContents = new Array();
-			function applyContent(contentid,rowClass){
-				if(selectedContents[contentid]){
+			function applyContent(contentid,rowClass)
+			{
+				var tmp = selectedContents.indexOf(contentid)
+				if(tmp != -1)
+				{
 					window.document.getElementById('content'+contentid).className = rowClass;
-					delete selectedContents[contentid];
+					delete selectedContents[tmp];
 				}else{
 					window.document.getElementById('content'+contentid).className = 'selectedrow';
-					selectedContents[contentid] = 'content';
+					selectedContents.push(contentid);
 				}
-
 				updateTag();
 			}
 
-			function updateTag(){
+			function updateTag()
+			{
 				var tag = '';
 				var otherinfo = '';
 				for(var i=0; i < document.adminForm.contenttype.length; i++){
@@ -223,9 +226,11 @@ class plgAcymailingTagcontent extends JPlugin
 					otherinfo += window.document.getElementById('jflang').value;
 				}
 
-				for(var i in selectedContents){
-					if(selectedContents[i] == 'content'){
-						tag = tag + '{joomlacontent:'+i+otherinfo+'}<br/>';
+				for(var i in selectedContents)
+				{
+					if(selectedContents[i] && !isNaN(i))
+					{
+						tag = tag + '{joomlacontent:'+selectedContents[i]+otherinfo+'}<br/>';
 					}
 				}
 				setTag(tag);
@@ -339,7 +344,7 @@ class plgAcymailingTagcontent extends JPlugin
 						?>
 						</td>
 						<td align="center">
-							<?php echo JHTML::_('date',  $row->created, JText::_('DATE_FORMAT_LC4') ); ?>
+							<?php echo JHTML::_('date', strip_tags($row->created), JText::_('DATE_FORMAT_LC4') ); ?>
 						</td>
 						<td align="center">
 							<?php echo $row->id; ?>
@@ -671,7 +676,7 @@ class plgAcymailingTagcontent extends JPlugin
  		$this->_replaceArticles($email);
 	 }
 
-	 function _replaceArticles(&$email){
+	 private function _replaceArticles(&$email){
 
 		$match = '#{joomlacontent:(.*)}#Ui';
 		$variables = array('subject','body','altbody');
@@ -714,7 +719,7 @@ class plgAcymailingTagcontent extends JPlugin
 		$email->subject = str_replace(array_keys($subjectreplace),$subjectreplace,$email->subject);
 	 }
 
-	 function _replaceContent(&$results,$i){
+	 private function _replaceContent(&$results,$i){
 	 	$acypluginsHelper = acymailing_get('helper.acyplugins');
 		$tag = $acypluginsHelper->extractTag($results[1][$i]);
 		$tag->id = intval($tag->id);
@@ -814,6 +819,15 @@ class plgAcymailingTagcontent extends JPlugin
 		if(!empty($tag->lang)) $link.= (strpos($link,'?') ? '&' : '?') . 'lang='.substr($tag->lang, 0,strpos($tag->lang,','));
 		if(!empty($tag->autologin)) $link.= (strpos($link,'?') ? '&' : '?') . 'user={usertag:username|urlencode}&passw={usertag:password|urlencode}';
 
+		if(empty($tag->lang) && !empty($article->language) && $article->language != '*'){
+			if(!isset($this->langcodes[$article->language])){
+				$db->setQuery('SELECT sef FROM #__languages WHERE lang_code = '.$db->Quote($article->language).' ORDER BY `published` DESC LIMIT 1');
+				$this->langcodes[$article->language] = $db->loadResult();
+				if(empty($this->langcodes[$article->language])) $this->langcodes[$article->language] = $article->language;
+				$link.= (strpos($link,'?') ? '&' : '?') . 'lang='.$this->langcodes[$article->language];
+			}
+		}
+
 		$link = acymailing_frontendLink($link);
 
 		$styleTitle = '';
@@ -894,7 +908,7 @@ class plgAcymailingTagcontent extends JPlugin
 			}
 
 			if($tag->type != "intro" AND !empty($article->fulltext)){
-				if( $tag->type != "text" && !empty($article->introtext)){
+				if( $tag->type != "text" && !empty($article->introtext) && !preg_match('#^<[div|p]#i', trim($article->fulltext))){
 					$contentText .= '<br />';
 				}
 				$contentText .= $article->fulltext;
@@ -1060,7 +1074,7 @@ class plgAcymailingTagcontent extends JPlugin
 
 	}
 
-	function _replaceAuto(&$email){
+	private function _replaceAuto(&$email){
 		$this->acymailing_generateautonews($email);
 
 		if(empty($this->tags)) return;

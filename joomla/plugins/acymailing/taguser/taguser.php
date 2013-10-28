@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -81,6 +81,14 @@ class plgAcymailingTaguser extends JPlugin
 				}
 			}
 		}
+		if(ACYMAILING_J30){
+			$link = 'index.php/component/users/?task=registration.activate&token={usertag:activation|info:receiver}';
+		} elseif(ACYMAILING_J16){
+			$link = 'index.php?option=com_users&task=registration.activate&token={usertag:activation|info:receiver}';
+		} else{
+			$link = 'index.php?option=com_user&task=activate&activation={usertag:activation|info:receiver}';
+		}
+		$text .= '<tr style="cursor:pointer" class="row'.$k.'" onclick="setTag(\''.htmlentities('<a target="_blank" href="'.$link.'">'.JText::_('JOOMLA_CONFIRM_ACCOUNT').'</a>').'\'); insertTag();" ><td class="acytdcheckbox"></td><td>confirmJoomla</td><td>'.JText::_('JOOMLA_CONFIRM_LINK').'</td></tr>';
 
 		$text .= '</table>';
 
@@ -151,7 +159,7 @@ class plgAcymailingTaguser extends JPlugin
 
 				if(empty($mytag->type) || $mytag->type != 'extra'){
 					$replaceme = isset($values->$field) ? $values->$field : $mytag->default;
-				}else{
+				} else{
 					$replaceme = isset($values->extraFields[$field]) ? trim($values->extraFields[$field]->profile_value,'"') : $mytag->default;
 				}
 

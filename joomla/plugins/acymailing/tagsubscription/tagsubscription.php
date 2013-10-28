@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -54,7 +54,7 @@ class plgAcymailingTagsubscription extends JPlugin
 	 	return '<div id="action__num__list">'.JHTML::_('select.genericlist',   $status, "action[__num__][list][status]", 'class="inputbox" size="1"', 'value', 'text').' '.JHTML::_('select.genericlist',   $listsdrop, "action[__num__][list][selectedlist]", 'class="inputbox" size="1"', 'value', 'text').'</div>';
 	 }
 
-	 function _getLists(){
+	 private function _getLists(){
 	 	if(!empty($this->allLists)) return $this->allLists;
 	 	$list = acymailing_get('class.list');
 	 	$app = JFactory::getApplication();
@@ -234,10 +234,32 @@ class plgAcymailingTagsubscription extends JPlugin
 
 	function acymailing_replaceusertags(&$email,&$user,$send = true){
 		$this->_replacesubscriptiontags($email,$user);
-		$this->_replacelisttags($email,$user);
+		$this->_replacelisttags($email,$user, $send);
 	}
 
-	function _replacelisttags(&$email,&$user){
+	private function _replacelisttags(&$email,&$user,$send){
+		if(!empty($email->ReplyTo)){
+			$toDelete = 0;
+			foreach($email->ReplyTo as $i => $replyto){
+				if(trim($i) != '{list:members}') continue;
+				$toDelete = $i;
+				break;
+			}
+			if(!empty($toDelete)){
+				unset($email->ReplyTo[$toDelete]);
+				$acyConfig = acymailing_config();
+				$listMembers = $this->loadlistmembers($email, $user);
+				foreach($listMembers as $member){
+					if($acyConfig->get('add_names',true) && !empty($member->name)){
+						$replyToName = $email->cleanText(trim($member->name));
+					} else{
+						$replyToName = '';
+					}
+					$email->AddReplyTo($email->cleanText($member->email), $replyToName);
+				}
+			}
+		}
+
 		$match = '#{list:(.*)}#Ui';
 		$variables = array('subject','body','altbody');
 		$found = false;
@@ -245,6 +267,27 @@ class plgAcymailingTagsubscription extends JPlugin
 			if(empty($email->$var)) continue;
 			$found = preg_match_all($match,$email->$var,$results[$var]) || $found;
 			if(empty($results[$var][0])) unset($results[$var]);
+		}
+
+		$otherVars = array();
+		if($send){
+			if(!empty($email->From)) $otherVars['from'] =& $email->From;
+			if(!empty($email->FromName)) $otherVars['fromname'] =& $email->FromName;
+			if(!empty($email->ReplyName)) $otherVars['replyname'] =& $email->ReplyName;
+			if(!empty($email->ReplyTo)){
+				foreach($email->ReplyTo as $i => $replyto){
+					foreach($replyto as $a => $oneval){
+						$otherVars['replyto'.$i.$a] =& $email->ReplyTo[$i][$a];
+					}
+				}
+			}
+
+			if(!empty($otherVars)){
+				foreach($otherVars as $var => $val){
+					$found = preg_match_all($match,$val,$results[$var]) || $found;
+					if(empty($results[$var][0])) unset($results[$var]);
+				}
+			}
 		}
 
 		if(!$found) return;
@@ -274,13 +317,21 @@ class plgAcymailingTagsubscription extends JPlugin
 			}
 		}
 
-		foreach(array_keys($results) as $var){
+		foreach($variables as $var){
 			$email->$var = str_replace(array_keys($tags),$tags,$email->$var);
+		}
+
+		if(!empty($otherVars)){
+			foreach($otherVars as $var => $val){
+				if(strpos($var, 'reply') === false){
+					$otherVars[$var] = str_replace(array_keys($tags),$tags,$otherVars[$var]);
+				}
+			}
 		}
 
 	}
 
-	function _getattachedlistid($mailid,$subid){
+	private function _getattachedlistid($mailid,$subid){
 		$db = JFactory::getDBO();
 		if(!empty($subid)){
 			$db->setQuery('SELECT a.listid FROM #__acymailing_listsub as a JOIN #__acymailing_listmail as b ON a.listid = b.listid WHERE a.subid = '.$subid.' AND b.mailid = '.$mailid.' ORDER BY a.status DESC LIMIT 1');
@@ -312,7 +363,7 @@ class plgAcymailingTagsubscription extends JPlugin
 
 
 
-	function _listcount(&$email,&$user,&$parameter){
+	private function _listcount(&$email,&$user,&$parameter){
 		if(!isset($parameter->listid)){
 			$listid = $this->_getattachedlistid($email->mailid,$user->subid);
 		}else{
@@ -330,23 +381,32 @@ class plgAcymailingTagsubscription extends JPlugin
 		return $db->loadResult();
 	}
 
-	function _listname(&$email,&$user,&$parameter){
+	private function _listname(&$email,&$user,&$parameter){
 		$listid = $this->_getattachedlistid($email->mailid,$user->subid);
 		if(empty($listid)) return "No list => no name!";
 
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT name FROM #__acymailing_list WHERE listid = '.$listid);
+		$db->setQuery('SELECT name FROM #__acymailing_list WHERE listid = '.intval($listid));
 		return $db->loadResult();
 	}
 
-	function _listid(&$email,&$user,&$parameter){
+	private function _listid(&$email,&$user,&$parameter){
 		$listid = $this->_getattachedlistid($email->mailid,$user->subid);
 		if(empty($listid)) return "No list => no ID!";
 
 		return $listid;
 	}
 
-	function _replacesubscriptiontags(&$email,&$user){
+	private function loadlistmembers(&$email, &$user){
+		$listid = $this->_getattachedlistid($email->mailid,$user->subid);
+		if(empty($listid)) return array();
+
+		$db = JFactory::getDBO();
+		$db->setQuery('SELECT s.email, s.name FROM #__acymailing_listsub AS l JOIN #__acymailing_subscriber AS s ON s.subid=l.subid WHERE l.listid='.intval($listid).' AND l.status=1 AND s.enabled=1 AND s.accept=1');
+		return $db->loadObjectList();
+	}
+
+	private function _replacesubscriptiontags(&$email,&$user){
 		$match = '#(?:{|%7B)(modify|confirm|unsubscribe)(?:}|%7D)(.*)(?:{|%7B)/(modify|confirm|unsubscribe)(?:}|%7D)#Uis';
 		$variables = array('subject','body','altbody');
 		$found = false;

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -82,7 +82,7 @@ class plgAcymailingContentplugin extends JPlugin
 			}else{
 				if($send) $art->text .= '{emailcloak=off}';
 				$resultsPlugin = $this->dispatcherContent->trigger('onContentPrepare', array ($context,&$art, &$this->paramsContent, 0 ));
-				if($send) $art->text = str_replace('{emailcloak=off}','',$art->text);
+				if($send) $art->text = str_replace(array('{emailcloak=off}','{* emailcloak=off}'),'',$art->text);
 			}
 			$email->body = $art->text;
 		}
@@ -93,7 +93,7 @@ class plgAcymailingContentplugin extends JPlugin
 			}else{
 				if($send) $art->text .= '{emailcloak=off}';
 				$resultsPlugin = $this->dispatcherContent->trigger('onContentPrepare', array ($context,&$art, &$this->paramsContent, 0 ));
-				if($send) $art->text = str_replace('{emailcloak=off}','',$art->text);
+				if($send) $art->text = str_replace(array('{emailcloak=off}','{* emailcloak=off}'),'',$art->text);
 			}
 			$email->altbody = $art->text;
 		}
