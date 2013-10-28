@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -33,7 +33,7 @@ class plgAcymailingManagetext extends JPlugin
 		$this->_addbcc($email);
 	}
 
-	function _addbcc(&$email){
+	private function _addbcc(&$email){
 		if(!method_exists($email,'AddBCC') || empty($email->mailid)) return;
 		$possibleVars = array('',1,2);
 
@@ -51,7 +51,7 @@ class plgAcymailingManagetext extends JPlugin
 		}
 	}
 
-	function _replaceConstant(&$email){
+	private function _replaceConstant(&$email){
 		$match = '#(?:{|%7B)(const|trans|config):(.*)(?:}|%7D)#Uis';
 		$variables = array('subject','body','altbody','fromname','fromemail','replyname','replyemail');
 		$found = false;
@@ -89,7 +89,7 @@ class plgAcymailingManagetext extends JPlugin
 	}
 
 
-	function _ifstatement(&$email,$user){
+	private function _ifstatement(&$email,$user){
 		if(isset($this->foundtags[$email->mailid])) return;
 
 		$match = '#{if:(.*)}(.*){/if}#Uis';
@@ -177,7 +177,7 @@ class plgAcymailingManagetext extends JPlugin
 		}
 	}
 
-	function _removetext(&$email){
+	private function _removetext(&$email){
 		$removetext = $this->params->get('removetext','{reg},{/reg},{pub},{/pub}');
 		if(!empty($removetext)){
 			$removeArray = explode(',',$removetext);
@@ -186,7 +186,7 @@ class plgAcymailingManagetext extends JPlugin
 		}
 	}
 
-	function _addfooter(&$email){
+	private function _addfooter(&$email){
 		$footer = $this->params->get('footer');
 		if(!empty($footer)){
 			if(strpos($email->body,'</body>')){

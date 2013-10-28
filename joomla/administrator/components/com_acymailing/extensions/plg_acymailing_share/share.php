@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -50,6 +50,7 @@ class plgAcymailingShare extends JPlugin
 		$networks['twitter'] = 'Twitter';
 		$networks['hyves'] = 'Hyves';
 		$networks['google'] = 'Google+';
+		$networks['print'] = JText::_('ACY_PRINT');
 
 		$pictures = array();
 		$k = 0;
@@ -60,11 +61,18 @@ class plgAcymailingShare extends JPlugin
 		foreach($networks as $name => $desc){
 			$shortName = substr($name,0,4);
 			if(empty($this->pictresults[$shortName])) continue;
-			echo '<fieldset class="adminform"><legend>'.JText::sprintf('SOCIAL_SHARE',$desc).'</legend>';
+
+			if($desc == JText::_('ACY_PRINT')) $legendTxt = $desc;
+			else $legendTxt = JText::sprintf('SOCIAL_SHARE',$desc);
+
+			echo '<fieldset class="adminform"><legend>'. $legendTxt.'</legend>';
 			foreach($this->pictresults[$shortName] as $onePict){
 				$imgPath = preg_replace('#^'.preg_quote(ACYMAILING_ROOT,'#').'#i',ACYMAILING_LIVE,$onePict);
 				$imgPath = str_replace(DS,'/',$imgPath);
-				$insertedtag = '<a target="_blank" href="{sharelink:'.$name.'}" title="'.JText::sprintf('SOCIAL_SHARE',$desc).'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
+
+				if($desc == JText::_('ACY_PRINT')) $insertedtag = '<a target="_blank" href="{print:newsletter}" title="'.JText::_('ACY_PRINT').'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
+				else $insertedtag = '<a target="_blank" href="{sharelink:'.$name.'}" title="'.JText::sprintf('SOCIAL_SHARE',$desc).'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
+
 				echo '<img style="max-width:200px;cursor:pointer;padding:5px;" onclick="setTag(\''.htmlentities($insertedtag).'\');insertTag();" src="'.$imgPath.'" />';
 			}
 			echo '</fieldset>';
@@ -85,7 +93,6 @@ class plgAcymailingShare extends JPlugin
 		}
 
 		if(!$found) return;
-
 
 		$archiveLink = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=view&mailid='.$email->mailid,$this->params->get('template','component') == 'component' ? true : false);
 		$tags = array();
@@ -139,4 +146,19 @@ class plgAcymailingShare extends JPlugin
 		$email->altbody = str_replace(array_keys($tags),'',$email->altbody);
 	}
 
+	function acymailing_replaceusertags(&$email,&$user,$send = true){
+		$variables = array('subject','body','altbody');
+		$acypluginsHelper = acymailing_get('helper.acyplugins');
+		$tags = $acypluginsHelper->extractTags($email, 'print');
+
+		$archiveLink = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=view&mailid='.$email->mailid,$this->params->get('template','component') == 'component' ? true : false);
+		$addkey = (!empty($email->key)) ? '&key='.$email->key : '';
+		$adduserkey = (!empty($user->key)) ? '&subid='.$user->subid.'-'.$user->key : '';
+		$link = $archiveLink . '&print=1' . $addkey . $adduserkey;
+
+		foreach($variables as $var){
+			if(empty($email->$var)) continue;
+			$email->$var = str_replace(array_keys($tags),$link,$email->$var);
+		}
+	}
 }//endclass

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -95,7 +95,7 @@ class UpdateController extends acymailingController{
 		$url .= '&version='.$config->get('version').'&level='.$config->get('level').'&component=acymailing';
 ?>
 				<div id="acymailing_div">
-					<iframe allowtransparency="true" scrolling="auto" height="455px" frameborder="0" width="100%" name="acymailing_frame" id="acymailing_frame" src="<?php echo $url; ?>">
+					<iframe allowtransparency="true" scrolling="auto" height="650px" frameborder="0" width="100%" name="acymailing_frame" id="acymailing_frame" src="<?php echo $url; ?>">
 					</iframe>
 				</div>
 <?php

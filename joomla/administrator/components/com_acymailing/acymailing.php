@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -49,10 +49,13 @@ if($taskGroup != 'update' && !$config->get('installcomplete')){
 }
 
 
-
 $action = JRequest::getCmd('task','listing');
+if(empty($action)){
+	$action = JRequest::getCmd('defaulttask', 'listing');
+	JRequest::setVar('task', $action);
+}
 
-if(JRequest::getString('tmpl') !== 'component' && !JRequest::getInt('hidemainmenu') && $config->get('menu_position','under') == 'above' && !in_array($action,array('add','edit','preview','savepreview','export','import','apply','doexport')) && !in_array($taskGroup,array('filter'))){
+if($taskGroup !== 'toggle' && JRequest::getString('tmpl') !== 'component' && !JRequest::getInt('hidemainmenu') && $config->get('menu_position','under') == 'above' && (!in_array($action,array('add','edit','preview','savepreview','export','import','apply','doexport','continuesend')) || $taskGroup === 'cpanel') && !in_array($taskGroup,array('filter'))){
 	$menuHelper = acymailing_get('helper.acymenu');
 	echo $menuHelper->display($taskGroup);
 }

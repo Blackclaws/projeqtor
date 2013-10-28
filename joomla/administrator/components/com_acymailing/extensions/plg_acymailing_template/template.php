@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -112,8 +112,8 @@ class plgAcymailingTemplate extends JPlugin
 			$email->body = $before.$email->body.'</body>'."\n".'</html>';
 		}
 
-		if(!empty($this->stylesheets[$email->tempid]) AND class_exists('Emogrifier')){
-			$emogrifier = new Emogrifier($email->body,$this->stylesheets[$email->tempid]);
+		if(!empty($this->stylesheets[$email->tempid]) AND class_exists('acymailingEmogrifier')){
+			$emogrifier = new acymailingEmogrifier($email->body,$this->stylesheets[$email->tempid]);
 			$email->body = $emogrifier->emogrify();
 
 			if(!$addbody AND strpos($email->body,'<!DOCTYPE') !== false){
@@ -176,7 +176,7 @@ class plgAcymailingTemplate extends JPlugin
 		foreach($results[0] as $num => $oneResult){
 			$add = array();
 			foreach($widthheight as $whword){
-				if(preg_match('#'.$whword.' *=#i',$oneResult) || !preg_match('#'.$whword.' *:([0-9 ]{1,8})px#i',$oneResult,$resultWH)) continue;
+				if(preg_match('#'.$whword.' *=#i',$oneResult) || !preg_match('#[^a-z_\-]'.$whword.' *:([0-9 ]{1,8})px#i',$oneResult,$resultWH)) continue;
 
 				$add[] = $whword.'="'.trim($resultWH[1]).'" ';
 			}

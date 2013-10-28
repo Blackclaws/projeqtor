@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -30,6 +30,16 @@ class FilterController extends acymailingController{
 		$dispatcher = JDispatcher::getInstance();
 		$messages = $dispatcher->trigger('onAcyProcessFilterCount_'.$currentType,array(&$query,$currentFilterData,$num));
 		echo implode(' | ',$messages);
+		exit;
+	}
+
+	function displayCondFilter(){
+		JPluginHelper::importPlugin('acymailing');
+		$fct = JRequest::getVar('fct');
+
+		$dispatcher = JDispatcher::getInstance();
+		$message = $dispatcher->trigger('onAcyTriggerFct_'.$fct);
+		echo implode(' | ',$message);
 		exit;
 	}
 

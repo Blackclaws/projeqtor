@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -32,7 +32,6 @@ class DataController extends acymailingController{
 	function doimport(){
 		if(!$this->isAllowed('subscriber','import')) return;
 		JRequest::checkToken() or die( 'Invalid Token' );
-
 
 		$function = JRequest::getCmd('importfrom');
 
@@ -98,6 +97,11 @@ class DataController extends acymailingController{
 		$newConfig->export_lists = implode(',',$exportLists);
 		$newConfig->export_separator = JRequest::getString('exportseparator');
 		$newConfig->export_format = $exportFormat;
+		$filterActive = array();
+		foreach($filtersExport as $filterKey => $value){
+			if($value == 1) $filterActive[] = $filterKey;
+		}
+		$newConfig->export_filters = implode(',',$filterActive);
 		$config->save($newConfig);
 
 		$where = array();

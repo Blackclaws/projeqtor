@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -141,9 +141,13 @@ class listClass extends acymailingClass{
 			$list->alias = JFilterOutput::stringURLSafe(trim($list->alias));
 		}
 
+		JPluginHelper::importPlugin('acymailing');
+		$dispatcher = JDispatcher::getInstance();
 		if(empty($list->listid)){
+			$dispatcher->trigger('onAcyBeforeListCreate',array(&$list));
 			$status = $this->database->insertObject(acymailing_table('list'),$list);
 		}else{
+			$dispatcher->trigger('onAcyBeforeListModify',array(&$list));
 			$status = $this->database->updateObject(acymailing_table('list'),$list,'listid');
 		}
 
@@ -178,9 +182,15 @@ class listClass extends acymailingClass{
 	}
 
 	function getCampaigns($listid){
-		$query = 'SELECT b.campaignid FROM '.acymailing_table('list').' as a LEFT JOIN '.acymailing_table('listcampaign').' as b on a.listid = b.listid WHERE a.type = \'list\' AND b.listid = '.intval($listid);
+		if(is_array($listid)) $listid = implode(',', $listid);
+		$query = 'SELECT  b.listid, b.campaignid FROM '.acymailing_table('list').' as a LEFT JOIN '.acymailing_table('listcampaign').' as b on a.listid = b.listid WHERE a.type = \'list\' AND b.listid IN ( '.$listid . ') ORDER BY b.listid';
 		$this->database->setQuery($query);
-		return $this->database->loadResultArray();
+		$resSql = $this->database->loadObjectList();
+		$listCampaigns = array();
+		foreach($resSql as $oneList){
+			$listCampaigns[$oneList->listid][] = $oneList->campaignid;
+		}
+		return $listCampaigns;
 	}
 
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -61,6 +61,10 @@ if($regex != 'all'){
 }
 
 $formName = acymailing_getModuleFormName();
+$overridedesign = preg_replace('#[^a-z_]#i','',JRequest::getCmd('design'));
+if(!empty($overridedesign)){
+	$params->set('includejs','module');
+}
 
 $introText = $params->get('introtext');
 $postText = $params->get('finaltext');
@@ -276,9 +280,28 @@ if($params->get('showterms',false)){
 	}
 }
 
+if(!empty($overridedesign)){
+	ob_start();
+}
+
 if($params->get('displaymode') == 'tableless'){
 	require(JModuleHelper::getLayoutPath('mod_acymailing','tableless'));
 }else{
 	require(JModuleHelper::getLayoutPath('mod_acymailing'));
+}
+
+if(!empty($overridedesign)){
+	$moduleDisplay = ob_get_clean();
+	$file = ACYMAILING_MEDIA.'plugins'.DS.'squeezepage'.DS.$overridedesign.'.php';
+	if(file_exists($file)){
+		ob_start();
+		require($file);
+		$squeezePage = ob_get_clean();
+		$squeezePage = str_replace('{module}',$moduleDisplay,$squeezePage);
+		echo $squeezePage;
+		exit;
+	}else{
+		echo $moduleDisplay;
+	}
 }
 

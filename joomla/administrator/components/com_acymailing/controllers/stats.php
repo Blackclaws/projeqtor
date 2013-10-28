@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -80,10 +80,20 @@ class StatsController extends acymailingController{
 		$this->setRedirect(acymailing_completeLink('data&task=export&sessionquery=1',false,true));
 	}
 
-	function exportUnsub(){
+	public function exportUnsubscribed(){
+		return $this->exportData('unsubscribed');
+	}
+
+
+	public function exportForward(){
+		return $this->exportData('forward');
+	}
+
+	private function exportData($action){
 		$selectedMail = JRequest::getInt('filter_mail',0);
 		$filters = array();
-		$filters[] = "hist.action = 'unsubscribed'";
+		$db = JFactory::getDBO();
+		$filters[] = "hist.action = ".$db->Quote($action);
 		if(!empty($selectedMail)) $filters[] = 'hist.mailid = '.$selectedMail;
 
 		$query = 'FROM #__acymailing_history as hist JOIN #__acymailing_mail as b on hist.mailid = b.mailid JOIN #__acymailing_subscriber as s on hist.subid = s.subid';

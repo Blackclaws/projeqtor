@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -84,11 +84,15 @@ class geolocationClass extends acymailingClass{
 		$geoClass->setKey($apiKey);
 
 		$userHelper = acymailing_get('helper.user');
-		$test = $geoClass->getCity($userHelper->getIP());
-		 if(!empty($test)){
+		$ipUser = $userHelper->getIP();
+		$test = $geoClass->getCity($ipUser);
+		 if(!empty($test)){ // Has a return from the API
 		 	return $test;
-		 }else{
-		 	return false;	
+		 }else{ // No return, we will display the IP used when calling API
+		 	$retourError = new stdClass();
+		 	$retourError->status = 'noReturn';
+		 	$retourError->ip = $ipUser;
+		 	return $retourError;	
 		 }
 	}
 

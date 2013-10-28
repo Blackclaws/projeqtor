@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -105,10 +105,14 @@ class ToggleController extends acymailingController{
 		$classGeoloc = acymailing_get('class.geolocation');
 		$test = $classGeoloc->testApiKey($apiKey);
 
-		if($test != false && $test->statusCode == 'OK'){
+		if(!empty($test) && $test->statusCode == 'OK'){ // Works fine
 			echo '<span style="color:green" >API key OK : ' . $test->countryName . ' - ' . $test->cityName . '</span><br/>';
-		}else{
-			echo '<span style="color:red" >Error: ' .(!empty($test->statusMessage)?$test->statusMessage:'') . '</span><br/>';
+		}else if(!empty($test->status) && $test->status == 'noReturn'){ // No return from the api, just displaying the IP used for test
+			echo '<span style="color:red" >Error calling IPInfoDB API with IP : ' . $test->ip . '</span><br/>';
+		} else if(empty($test)){ // Should not happen, no return from test function
+			echo '<span style="color:red" >Error calling API</span><br/>';
+		} else{ // Return from API has an error, display the content received to identify the pb
+			echo '<span style="color:red" >Error: ' . print_r($test) . '</span><br/>';
 		}
 		exit;
 	}

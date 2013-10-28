@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -398,7 +398,6 @@ class templateClass extends acymailingClass{
 					var myiframe = d.createElement(\"iframe\");
 					myiframe.id = 'iframepreview';
 					myiframe.style.width = '100%';
-
 					myiframe.style.borderWidth = '0px';
 					myiframe.allowtransparency = \"true\";
 					myiframe.frameBorder = '0';
@@ -427,9 +426,8 @@ class templateClass extends acymailingClass{
 					var innerDoc = (myiframe.contentDocument) ? myiframe.contentDocument : myiframe.contentWindow.document;
 					var objToResize = (myiframe.style) ? myiframe.style : myiframe;
 					if(objToResize.width != '100%') return;
-
 					var newHeight = innerDoc.body.scrollHeight;
-					if(!objToResize.height || parseInt(objToResize.height,10)+10 < newHeight) objToResize.height = newHeight+'px';
+					if(!objToResize.height || parseInt(objToResize.height,10)+10 < newHeight || parseInt(objToResize.height,10)-10 > newHeight) objToResize.height = newHeight+'px';
 					setTimeout(function(){resetIframeSize(myiframe);},1000);
 				}
 				function replaceAnchors(myiframe){
@@ -497,8 +495,6 @@ class templateClass extends acymailingClass{
 					myiframebody.style.padding = '0px';
 					myiframebody.innerHTML = content;
 
-					resetIframeSize(myiframe);
-
 					var title1 = d.createElement(\"title\");
 					title1.innerHTML = '".addslashes($newslettersubject)."';
 
@@ -534,6 +530,7 @@ class templateClass extends acymailingClass{
 
 		$js .="
 				head.appendChild(style1);
+				resetIframeSize(myiframe);
 				return true;
 			}
 			window.addEvent('domready', function(){acydisplayPreview();} );";

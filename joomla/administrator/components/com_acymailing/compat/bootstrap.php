@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -44,19 +44,24 @@ class JHtmlAcyselect extends JHTMLSelect {
 if(!window.acyLocal)
 	window.acyLocal = {};
 window.acyLocal.radioEvent = function(el) {
-	var id = $(el).attr("id"), c = $(el).attr("class");
+	var id = $(el).attr("id"), c = $(el).attr("class"), lbl = $("label[for=\"" + id + "\"]");
 	if(c !== undefined && c.length > 0)
-		$("label[for=\"" + id + "\"]").addClass(c);
-	$("label[for=\"" + id + "\"]").addClass("active");
+		lbl.addClass(c);
+	lbl.addClass("active");
 	$("input[name=\"" + $(el).attr("name") + "\"]").each(function() {
-		if(jQuery(this).attr("id") != id) {
-			c = jQuery(this).attr("class");
+		if($(this).attr("id") != id) {
+			c = $(this).attr("class");
+			lbl = $("label[for=\"" + $(this).attr("id") + "\"]");
 			if(c !== undefined && c.length > 0)
-				$("label[for=\"" + jQuery(this).attr("id") + "\"]").removeClass(c);
-			$("label[for=\"" + jQuery(this).attr("id") + "\"]").removeClass("active");
+				lbl.removeClass(c);
+			lbl.removeClass("active");
 		}
 	});
 }
+$(document).ready(function() {
+	setTimeout(function() { $(".acyradios .btn-group label").off("click"); }, 200 );
+});
+
 })(jQuery);');
 			}
 		}
