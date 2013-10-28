@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -40,6 +40,7 @@ class SubscriberViewSubscriber extends acymailingView
 		$pageInfo->filter->order->dir	= $app->getUserStateFromRequest( $paramBase.".filter_order_Dir", 'filter_order_Dir',	'desc',	'word' );
 		$selectedList = $app->getUserStateFromRequest( $paramBase."filter_lists",'filter_lists',0,'int');
 		$selectedStatus = $app->getUserStateFromRequest( $paramBase."filter_status",'filter_status',0,'int');
+		$selectedStatusList = $app->getUserStateFromRequest( $paramBase."filter_statuslist",'filter_statuslist',0,'int');
 		$pageInfo->search = $app->getUserStateFromRequest( $paramBase.".search", 'search', '', 'string' );
 		$pageInfo->search = JString::strtolower( $pageInfo->search );
 
@@ -85,24 +86,15 @@ class SubscriberViewSubscriber extends acymailingView
 		$leftJoinQuery = array();
 		$joinQuery = array();
 
-		if(empty($selectedList) || ($selectedStatus == -2 && $app->isAdmin())){
-			if(empty($selectedList) && $selectedStatus == -2) $selectedStatus = 0;
+		if(empty($selectedList) || ($selectedStatusList == -2 && $app->isAdmin())){
+			if(empty($selectedList) && $selectedStatusList == -2) $selectedStatusList = 0;
 			$fromQuery = ' FROM '.acymailing_table('subscriber').' as a ';
 			$countField = "a.subid";
 			$leftJoinQuery[] = acymailing_table('users',false).' as b ON a.userid = b.id';
-			if($selectedStatus == 1){
-				$filters[] = 'a.accept > 0';
-			}elseif($selectedStatus == -1){
-				$filters[] = 'a.accept < 1';
-			}elseif($selectedStatus == -2){
-				$leftJoinQuery[] = acymailing_table('listsub').' as c on a.subid = c.subid AND listid = '.$selectedList;
+
+			if($selectedStatusList == -2){
+				$leftJoinQuery[] = acymailing_table('listsub').' as c on a.subid = c.subid AND listid = '.intval($selectedList);
 				$filters[] = 'c.listid IS NULL';
-			}elseif($selectedStatus == 2){
-				$filters[] = 'a.confirmed < 1';
-			}elseif($selectedStatus == 3){
-				$filters[] = 'a.enabled > 0';
-			}elseif($selectedStatus == -3){
-				$filters[] = 'a.enabled < 1';
 			}
 		}else{
 			$fromQuery = ' FROM '.acymailing_table('listsub').' as c';
@@ -111,8 +103,20 @@ class SubscriberViewSubscriber extends acymailingView
 			$leftJoinQuery[] = acymailing_table('users',false).' as b ON a.userid = b.id';
 			$filters[] = 'c.listid = '.intval($selectedList);
 
-			if(!in_array($selectedStatus,array(-1,1,2))) $selectedStatus = 1;
-			$filters[] = 'c.status = '.$selectedStatus;
+			if(!in_array($selectedStatusList,array(-1,1,2))) $selectedStatusList = 1;
+			$filters[] = 'c.status = '.intval($selectedStatusList);
+		}
+
+		if($selectedStatus == 1){
+			$filters[] = 'a.accept > 0';
+		}elseif($selectedStatus == -1){
+			$filters[] = 'a.accept < 1';
+		}elseif($selectedStatus == 2){
+			$filters[] = 'a.confirmed < 1';
+		}elseif($selectedStatus == 3){
+			$filters[] = 'a.enabled > 0';
+		}elseif($selectedStatus == -3){
+			$filters[] = 'a.enabled < 1';
 		}
 
 		$query = 'SELECT '.implode(',',$this->selectedFields).$fromQuery;
@@ -135,7 +139,7 @@ class SubscriberViewSubscriber extends acymailingView
 			$pageInfo->elements->total = $pageInfo->limit->start + $pageInfo->elements->page;
 		}else{
 			$queryCount = 'SELECT COUNT('.$countField.') '.$fromQuery;
-			if(!empty($pageInfo->search) || $selectedStatus == -2){
+			if(!empty($pageInfo->search) || $selectedStatusList == -2){
 				if(!empty($joinQuery)) $queryCount .= ' JOIN '.implode(' JOIN ',$joinQuery);
 				if(!empty($leftJoinQuery)) $queryCount .= ' LEFT JOIN '.implode(' LEFT JOIN ',$leftJoinQuery);
 			}
@@ -174,15 +178,17 @@ class SubscriberViewSubscriber extends acymailingView
 		$pagination = new JPagination( $pageInfo->elements->total, $pageInfo->limit->start, $pageInfo->limit->value );
 
 		$filters = new stdClass();
-		if(empty($selectedList)){
-			$statusType = acymailing_get('type.statusfilter');
-		}else{
-			$statusType = acymailing_get('type.statusfilterlist');
+		$statusType = acymailing_get('type.statusfilter');
+		if(!empty($selectedList)){
+			$statusList = acymailing_get('type.statusfilterlist');
+			if(!$app->isAdmin()) array_pop($statusList->values);
+			$filters->statuslist = $statusList->display('filter_statuslist',$selectedStatusList);
 		}
 
 		$listsType = acymailing_get('type.lists');
 		if($app->isAdmin()){
 			$filters->lists = $listsType->display('filter_lists',$selectedList);
+			$filters->status = $statusType->display('filter_status',$selectedStatus);
 		}else{
 			$listClass = acymailing_get('class.list');
 			$allLists = $listClass->getFrontendLists();
@@ -191,13 +197,8 @@ class SubscriberViewSubscriber extends acymailingView
 			}else{
 				$filters->lists = '<input type="hidden" name="filter_lists" value="'.$selectedList.'"/>';
 			}
-
-			array_shift($statusType->values);
+			$filters->status = '<input type="hidden" name="filter_status" value="0"/>';
 		}
-
-		$filters->status = $statusType->display('filter_status',$selectedStatus);
-
-
 
 		if($app->isAdmin()){
 			acymailing_setTitle(JText::_('USERS'),'acyusers','subscriber');
@@ -355,7 +356,7 @@ class SubscriberViewSubscriber extends acymailingView
 			$history = $db->loadObjectList();
 			$this->assignRef('history',$history);
 
-			$query = 'SELECT * FROM #__acymailing_geolocation WHERE geolocation_subid=' . intval($subid) . ' ORDER BY geolocation_created DESC';
+			$query = 'SELECT * FROM #__acymailing_geolocation WHERE geolocation_subid=' . intval($subid) . ' ORDER BY geolocation_created DESC LIMIT 100';
 			$db->setQuery($query);
 			$geoloc = $db->loadObjectList();
 			if(!empty($geoloc)){
@@ -389,7 +390,7 @@ class SubscriberViewSubscriber extends acymailingView
 			}
 
 			if(!empty($subscriber->ip)){
-				$query = 'SELECT * FROM #__acymailing_subscriber WHERE ip=' . $db->Quote($subscriber->ip) . ' AND subid<>' . $subid;
+				$query = 'SELECT * FROM #__acymailing_subscriber WHERE ip=' . $db->Quote($subscriber->ip) . ' AND subid != '.intval($subid).' LIMIT 30';
 				$db->setQuery($query);
 				$neighbours = $db->loadObjectList();
 				if(!empty($neighbours)){

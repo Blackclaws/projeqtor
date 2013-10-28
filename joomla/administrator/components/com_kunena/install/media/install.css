@@ -1,15 +1,16 @@
 /**
-* @version $Id$
-* Kunena Component
-* @package Kunena
-
-**/
+ * Kunena Component
+ * @package Kunena.Installer
+ *
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link http://www.kunena.org
+ **/
 
 @CHARSET "UTF-8";
 
 div.icon-48-kunena {
-	background-image:url("kunena-logo-48.png");
-	padding-left:158px !important;
+	background-image:url("kunena-logo-48-white.png");
 }
 #header-box{display:none}
 
@@ -308,6 +309,7 @@ div#installer div.n {
 div#element-box div.m {
   border: 0;
   padding: 0 !important;
+  background:#FFF;
 }
 
 div#element-box div.t,

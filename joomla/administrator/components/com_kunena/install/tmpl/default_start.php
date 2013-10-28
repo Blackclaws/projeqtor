@@ -1,19 +1,21 @@
 <?php
 /**
- * @version		$Id$
- * @package		Kunena
- * @subpackage	com_kunena
- * @copyright	Copyright (C) 2008 - 2009 Kunena Team. All rights reserved..
- * @license		GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
- * @link		http://www.kunena.org
- */
-defined('_JEXEC') or die;
+ * Kunena Component
+ * @package Kunena.Installer
+ * @subpackage Template
+ *
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link http://www.kunena.org
+ **/
+defined ( '_JEXEC' ) or die ();
+
 $version = reset($this->versions);
 ?>
 <table class="kinstaller">
 	<?php if (!empty($version->state)) : array_shift($this->versions); ?>
 	<tr><th style="font-size: 1.5em; color: #CC0000;"><?php echo JText::_('COM_KUNENA_INSTALL_DETECT_FAILED') ?></th></tr>
-	<tr><td><?php echo JText::sprintf('COM_KUNENA_INSTALL_DETECT_FAILED_DESC',$version->version, $version->build) ?></td></tr>
+	<tr><td><?php echo JText::sprintf('COM_KUNENA_INSTALL_DETECT_FAILED_DESC',$version->version, '') ?></td></tr>
 	<?php else: ?>
 	<tr><th class="klarge"><?php echo JText::_('COM_KUNENA_INSTALL_OFFLINE_WARNING') ?></th></tr>
 	<?php if ($version->action != 'REINSTALL') : ?>

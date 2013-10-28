@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="acyheader icon-48-stats" style="float: left;"><?php echo $this->rows[0]->subject; ?></div>
 			<div class="toolbar" id="toolbar" style="float: right;">
 				<table><tr>
-				<td><a onclick="javascript:submitbutton('exportUnsub')" href="#" ><span class="icon-32-acyexport" title="<?php echo JText::_('ACY_EXPORT',true); ?>"></span><?php echo JText::_('ACY_EXPORT'); ?></a></td>
+				<td><a onclick="javascript:submitbutton('export<?php echo ucfirst(JRequest::getCmd('task')); ?>')" href="#" ><span class="icon-32-acyexport" title="<?php echo JText::_('ACY_EXPORT',true); ?>"></span><?php echo JText::_('ACY_EXPORT'); ?></a></td>
 				</tr></table>
 			</div>
 		</fieldset>
@@ -54,8 +54,9 @@ defined('_JEXEC') or die('Restricted access');
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					<?php echo $this->pagination->getListFooter(); ?>
-					<?php echo $this->pagination->getResultsCounter(); ?>
+					<?php echo $this->pagination->getListFooter();
+					echo $this->pagination->getResultsCounter();
+					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -101,6 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<input type="hidden" name="option" value="<?php echo ACYMAILING_COMPONENT; ?>" />
 	<input type="hidden" name="task" value="<?php echo JRequest::getCmd('task'); ?>" />
+	<input type="hidden" name="defaulttask" value="<?php echo JRequest::getCmd('task'); ?>" />
 	<input type="hidden" name="ctrl" value="<?php echo JRequest::getCmd('ctrl'); ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->pageInfo->filter->order->value; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->pageInfo->filter->order->dir; ?>" />

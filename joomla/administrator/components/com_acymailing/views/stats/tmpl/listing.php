@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,9 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table>
 		<tr>
 			<td width="100%">
-				<input placeholder="<?php echo JText::_('ACY_SEARCH'); ?>" type="text" name="search" id="search" value="<?php echo $this->escape($this->pageInfo->search);?>" class="text_area" />
-				<button class="btn" onclick="document.adminForm.limitstart.value=0;this.form.submit();"><?php echo JText::_( 'JOOMEXT_GO' ); ?></button>
-				<button class="btn" onclick="document.adminForm.limitstart.value=0;document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JOOMEXT_RESET' ); ?></button>
+				<?php acymailing_listingsearch($this->escape($this->pageInfo->search)); ?>
 			</td>
 		</tr>
 	</table>
@@ -78,8 +76,9 @@ defined('_JEXEC') or die('Restricted access');
 		<tfoot>
 			<tr>
 				<td colspan="14">
-					<?php echo $this->pagination->getListFooter(); ?>
-					<?php echo $this->pagination->getResultsCounter(); ?>
+					<?php echo $this->pagination->getListFooter();
+					echo $this->pagination->getResultsCounter();
+					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>

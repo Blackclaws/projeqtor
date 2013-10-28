@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</fieldset>
 	<div id="iframedoc"></div>
-	<div style="text-align:center;padding-top:20px;"><input type="file" style="width:160px" name="uploadedfile" />
+	<div style="text-align:center;padding-top:20px;"><input type="file" style="width:auto" name="uploadedfile" />
 	<?php echo '<br/>'.(JText::sprintf('MAX_UPLOAD',(acymailing_bytes(ini_get('upload_max_filesize')) > acymailing_bytes(ini_get('post_max_size'))) ? ini_get('post_max_size') : ini_get('upload_max_filesize'))); ?></div>
 	<br/><br/><a class="downloadmore" href="http://www.acyba.com/download/templates.html" target="_blank"><?php echo JText::_('MORE_TEMPLATES'); ?></a>
 	<input type="hidden" name="option" value="<?php echo ACYMAILING_COMPONENT; ?>" />

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,13 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 	<table>
 		<tr>
 			<td width="100%" id="subscriberfilter">
-				<input placeholder="<?php echo JText::_('ACY_SEARCH'); ?>" type="text" name="search" id="acymailingsearch" value="<?php echo $this->escape($this->pageInfo->search);?>" class="text_area" />
-				<button class="btn" onclick="document.adminForm.limitstart.value=0;this.form.submit();"><?php echo JText::_( 'JOOMEXT_GO' ); ?></button>
-				<button class="btn" onclick="document.getElementById('acymailingsearch').value='';document.adminForm.limitstart.value=0;this.form.submit();"><?php echo JText::_( 'JOOMEXT_RESET' ); ?></button>
+				<?php acymailing_listingsearch($this->escape($this->pageInfo->search)); ?>
 			</td>
 			<td nowrap="nowrap">
-				<span id="subscriberfilterlists"><?php echo $this->filters->lists; ?></span>
 				<span id="subscriberfilterstatus"><?php echo $this->filters->status; ?></span>
+				<span id="subscriberfilterlists"><?php echo $this->filters->lists; ?></span>
+				<?php if(!empty($this->filters->statuslist)){ ?><span id="subscriberfilterlistsstatus"><?php echo $this->filters->statuslist; ?></span><?php } ?>
+
 			</td>
 		</tr>
 	</table>
@@ -75,8 +75,9 @@ defined('_JEXEC') or die('Restricted access');
 		<tfoot>
 			<tr>
 				<td colspan="<?php echo $app->isAdmin() ? count($this->displayFields)+9 : count($this->displayFields)+2; ?>">
-					<?php echo $this->pagination->getListFooter(); ?>
-					<?php echo $this->pagination->getResultsCounter(); ?>
+					<?php echo $this->pagination->getListFooter();
+					echo $this->pagination->getResultsCounter();
+					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
