@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -326,17 +326,6 @@ class archiveViewArchive extends acymailingView
 		$app = JFactory::getApplication();
 
 		$document = JFactory::getDocument();
-		$currentBase = $document->getBase();
-		if(!empty($currentBase)){
-			if(isset($_SERVER["REQUEST_URI"])){
-				$requestUri = $_SERVER["REQUEST_URI"];
-			}else{
-				$requestUri = $_SERVER['PHP_SELF'];
-				if (!empty($_SERVER['QUERY_STRING'])) $requestUri = rtrim($requestUri,'/').'?'.$_SERVER['QUERY_STRING'];
-			}
-			$currenturl = ((empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) != "on" ) ? 'http://' : 'https://').$_SERVER["HTTP_HOST"].$requestUri;
-			$document->setBase($currenturl);
-		}
 
 		$pathway = $app->getPathway();
 		$my = JFactory::getUser();
@@ -361,7 +350,6 @@ class archiveViewArchive extends acymailingView
 
 			if(!empty($menuparams)){
 				$listid = $menuparams->get('listid');
-				$document	= JFactory::getDocument();
 				if ($menuparams->get('menu-meta_description')) $document->setDescription($menuparams->get('menu-meta_description'));
 				if ($menuparams->get('menu-meta_keywords')) $document->setMetadata('keywords',$menuparams->get('menu-meta_keywords'));
 				if ($menuparams->get('robots')) $document->setMetadata('robots',$menuparams->get('robots'));
@@ -389,7 +377,10 @@ class archiveViewArchive extends acymailingView
 		}
 
 		$mailid = JRequest::getString('mailid','nomailid');
-		if(empty($mailid)) return JError::raiseError( 404, 'You can not preview a Newsletter-template, please create a Newsletter from your template');
+		if(empty($mailid)){
+			die('This is a Newsletter-template... and you can not access the online version of a Newsletter-template!<br/>Please <a href="administrator/index.php?option=com_acymailing&ctrl=newsletter&task=edit" >create a Newsletter</a> using your template and then try again your "view it online" link!');
+			exit;
+		}
 
 		if($mailid == 'nomailid'){
 			$db = JFactory::getDBO();

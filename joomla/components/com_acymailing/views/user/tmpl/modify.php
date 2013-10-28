@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 <?php if(!empty($this->introtext)){ echo '<span class="acymailing_introtext">'.$this->introtext.'</span>'; } ?>
 <form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm" id="adminForm" <?php if(!empty($this->fieldsClass->formoption)) echo $this->fieldsClass->formoption; ?> >
-	<fieldset class="adminform">
+	<fieldset class="adminform acy_user_info">
 		<legend><span><?php echo JText::_( 'USER_INFORMATIONS' ); ?></span></legend>
 		<table cellspacing="1" align="center" width="100%" id="acyuserinfo">
 		<?php if(acymailing_level(3)){
@@ -23,7 +23,8 @@ defined('_JEXEC') or die('Restricted access');
 					else{echo $this->fieldsClass->display($oneExtraField,@$this->subscriber->$fieldName,'data[subscriber]['.$fieldName.']'); }
 					echo '</td></tr>';
 				}
-			}else{ ?>
+			}else{
+				if(!empty($this->fieldsToDisplay) && (strpos($this->fieldsToDisplay, 'name') !== false || strpos($this->fieldsToDisplay, 'default') !== false || strpos($this->fieldsToDisplay, 'all') !== false)){ ?>
 			<tr id="trname">
 				<td width="150" class="key">
 					<label for="field_name">
@@ -40,6 +41,8 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 				</td>
 			</tr>
+				<?php }
+				if(!empty($this->fieldsToDisplay) && (strpos($this->fieldsToDisplay, 'email') !== false || strpos($this->fieldsToDisplay, 'default') !== false || strpos($this->fieldsToDisplay, 'all') !== false)){ ?>
 			<tr id="tremail">
 				<td class="key">
 					<label for="field_email">
@@ -56,6 +59,8 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 				</td>
 			</tr>
+				<?php }
+				if(!empty($this->fieldsToDisplay) && (strpos($this->fieldsToDisplay, 'html') !== false || strpos($this->fieldsToDisplay, 'default') !== false || strpos($this->fieldsToDisplay, 'all') !== false)){ ?>
 			<tr id="trhtml">
 				<td class="key">
 					<?php echo JText::_( 'RECEIVE' ); ?>
@@ -64,12 +69,13 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JHTML::_('acyselect.booleanlist', "data[subscriber][html]" , '',$this->subscriber->html,JText::_('HTML'),JText::_('JOOMEXT_TEXT'),'user_html'); ?>
 				</td>
 			</tr>
-		<?php }
+				<?php }
+			}
 			?>
 		</table>
 	</fieldset>
 	<?php if($this->displayLists){?>
-	<fieldset class="adminform">
+	<fieldset class="adminform acy_subscription_list">
 		<legend><span><?php echo JText::_( 'SUBSCRIPTION' ); ?></span></legend>
 		<table cellspacing="1" align="center" width="100%" id="acyusersubscription">
 			<thead>
@@ -86,8 +92,9 @@ defined('_JEXEC') or die('Restricted access');
 				$k = 0;
 				foreach($this->subscription as $row){
 					if(empty($row->published) OR !$row->visible) continue;
+					$listClass = 'acy_list_status_' . str_replace('-','m',(int) $row->status);
 					?>
-				<tr class="<?php echo "row$k"; ?>">
+				<tr class="<?php echo "row$k $listClass"; ?>">
 					<td align="center" nowrap="nowrap" valign="top" class="acystatus">
 						<span><?php echo $this->status->display("data[listsub][".$row->listid."][status]",@$row->status); ?></span>
 					</td>

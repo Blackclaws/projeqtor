@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -49,6 +49,24 @@ class UserController extends acymailingController{
 		}
 
 		if(!$user->confirmed) $userClass->confirmSubscription($user->subid);
+
+		$notifConfirm = $config->get('notification_confirm');
+		if(!empty($notifConfirm)){
+			$listsubClass = acymailing_get('class.listsub');
+			$userHelper = acymailing_get('helper.user');
+			$mailer = acymailing_get('helper.mailer');
+			$mailer->autoAddUser = true;
+			$mailer->checkConfirmField = false;
+			$mailer->report = false;
+			foreach($user as $field => $value) $mailer->addParam('user:'.$field,$value);
+			$mailer->addParam('user:subscription',$listsubClass->getSubscriptionString($user->subid));
+			$mailer->addParam('user:ip',$userHelper->getIP());
+			$mailer->addParamInfo();
+			$allUsers = explode(',',$notifConfirm);
+			foreach($allUsers as $oneUser){
+				$mailer->sendOne('notification_confirm',$oneUser);
+			}
+		}
 
 		JRequest::setVar( 'layout', 'confirm'  );
 		return parent::display();

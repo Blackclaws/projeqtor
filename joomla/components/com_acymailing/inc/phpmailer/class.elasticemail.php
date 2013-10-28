@@ -71,9 +71,9 @@ class acymailingElasticemail {
 
 		if(!empty($object->Sender)) $data .="&sender=".urlencode($object->Sender);
 
-		if(!empty ($object->sendHTML) || !empty($object->AltBody)){
+		if(!empty($object->sendHTML) || !empty($object->AltBody)){
 			$data .= "&body_html=".urlencode($object->Body);
-			if (!empty ($object->AltBody)) $data .= "&body_text=".urlencode($object->AltBody);
+			if(!empty($object->AltBody)) $data .= "&body_text=".urlencode($object->AltBody);
 		}else{
 			$data .= "&body_text=".urlencode($object->Body);
 		}
@@ -148,7 +148,11 @@ class acymailingElasticemail {
 
 		$res = '';
 		$length = 0;
-		fwrite($this->conn, $info);
+		ob_start();
+		$result = fwrite($this->conn, $info);
+		$errorContent = ob_get_clean();
+		if($result === false) return $errorContent;
+
 		while(!feof($this->conn)){
 			$res .= fread($this->conn, 1024);
 			if(substr($res, 0, 4) == "HTTP") {

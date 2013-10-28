@@ -481,7 +481,7 @@ class acymailingSMTP {
 			// RFC 2104 HMAC implementation for php.
 			// Creates an md5 HMAC.
 			// Eliminates the need to install mhash to compute a HMAC
-			// Hacked by Lance Rushing
+			// Modified by Lance Rushing
 
 			$b = 64; // byte length for md5
 			if (strlen($key) > $b) {
@@ -899,7 +899,7 @@ class acymailingSMTP {
 	}
 
 	/**
-   * Sends the RSET command to abort and transaction that is
+	 * Sends the RSET command to abort and transaction that is
 	 * currently in progress. Returns true if successful false
 	 * otherwise.
 	 *

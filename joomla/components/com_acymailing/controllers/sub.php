@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.3.4
+ * @version	4.4.1
  * @author	acyba.com
  * @copyright	(C) 2009-2013 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -25,7 +25,7 @@ class SubController extends acymailingController{
 		if(JRequest::getInt('interval') > 0) setcookie('acymailingSubscriptionState', true, time() + JRequest::getInt('interval'), '/');
 
 		$db = JFactory::getDBO();
-	 	$db->setQuery('SELECT * FROM #__modules WHERE id = '.$moduleId.' AND `module` LIKE \'%acymailing%\' LIMIT 1');
+	 	$db->setQuery('SELECT * FROM #__modules WHERE id = '.intval($moduleId).' AND `module` LIKE \'%acymailing%\' LIMIT 1');
 	 	$module = $db->loadObject();
 	 	if(empty($module)){ echo 'No module found'; exit; }
 
@@ -271,6 +271,22 @@ class SubController extends acymailingController{
 			}
 		}
 
+		$notifContact = $config->get('notification_contact');
+		if(!empty($notifContact)){
+			$mailer = acymailing_get('helper.mailer');
+			$mailer->autoAddUser = true;
+			$mailer->checkConfirmField = false;
+			$mailer->report = false;
+			foreach($user as $field => $value) $mailer->addParam('user:'.$field,$value);
+			$mailer->addParam('user:subscription',$listsubClass->getSubscriptionString($user->subid));
+			$mailer->addParam('user:ip',$userHelper->getIP());
+			$mailer->addParamInfo();
+			$allUsers = explode(',',$notifContact);
+			foreach($allUsers as $oneUser){
+				$mailer->sendOne('notification_contact',$oneUser);
+			}
+		}
+
 		if ($ajax) exit;
 
 		$this->_closepop($redirectUrl);
@@ -279,7 +295,7 @@ class SubController extends acymailingController{
 		return true;
 	}
 
-	function _closepop($redirectUrl){
+	private function _closepop($redirectUrl){
 		$this->_checkRedirectUrl($redirectUrl);
 
 		if(empty($redirectUrl) OR !JRequest::getInt('closepop')) return;
@@ -403,7 +419,7 @@ class SubController extends acymailingController{
 
 	}
 
-	function _checkRedirectUrl($redirectUrl){
+	private function _checkRedirectUrl($redirectUrl){
 		$config = acymailing_config();
 		$regex = trim(preg_replace('#[^a-z0-9\|\.]#i','',$config->get('module_redirect')),'|');
 		if($regex != 'all' && !empty($redirectUrl)){

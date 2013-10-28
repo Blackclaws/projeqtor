@@ -969,9 +969,9 @@ class acymailingPHPMailer {
 		} else {
 			$params = sprintf("-f%s", $this->Sender);
 		}
-		if (empty($this->Sender) and !(bool)ini_get('safe_mode')) {
+		if(!empty($this->Sender) and !(bool)ini_get('safe_mode')) {
 			$old_from = ini_get('sendmail_from');
-			ini_set('sendmail_from', $this->Sender);
+			@ini_set('sendmail_from', $this->Sender);
 		}
 		$rt = false;
 		if ($this->SingleTo === true && count($toArr) > 1) {
@@ -988,7 +988,7 @@ class acymailingPHPMailer {
 			$this->doCallback($isSent, $to, $this->cc, $this->bcc, $this->Subject, $body);
 		}
 		if (isset($old_from)) {
-			ini_set('sendmail_from', $old_from);
+			@ini_set('sendmail_from', $old_from);
 		}
 		if(!$rt) {
 			throw new acymailingphpmailerException($this->Lang('instantiate'), self::STOP_CRITICAL);
@@ -1064,18 +1064,22 @@ class acymailingPHPMailer {
 			$errorTmp = $this->smtp->getError();
 			$errorLbl = empty($errorTmp) ? $this->Lang('recipients_failed') : implode(', ',$errorTmp);
 			$this->SetError($errorLbl . ' (' . $badaddresses . ') ');
+			//Added by adrien to avoid the nested MAIL command error
+			$this->smtp->Reset();
 			throw new acymailingphpmailerException($this->ErrorInfo);
 		}
 		if(!$this->smtp->Data($header . $body)) {
 			$errorTmp = $this->smtp->getError();
 			$this->SetError(empty($errorTmp) ? $this->Lang('data_not_accepted') : implode(', ',$errorTmp));
+			//Added by adrien to avoid the nested MAIL command error
+			$this->smtp->Reset();
 			throw new acymailingphpmailerException($this->ErrorInfo, self::STOP_CRITICAL);
 		}
 		if($this->SMTPKeepAlive == true) {
 			$this->smtp->Reset();
 		} else {
-				$this->smtp->Quit();
-				$this->smtp->Close();
+			$this->smtp->Quit();
+			$this->smtp->Close();
 		}
 		return true;
 	}
@@ -1515,6 +1519,7 @@ class acymailingPHPMailer {
 	 */
 	public function GetMailMIME() {
 		$result = '';
+
 		switch($this->message_type) {
 			case 'inline':
 				$result .= $this->HeaderLine('Content-Type', 'multipart/related;');
@@ -1537,13 +1542,11 @@ class acymailingPHPMailer {
 				$result .= $this->TextLine('Content-Type: '.$this->ContentType.'; charset='.$this->CharSet);
 				break;
 		}
+
 		//RFC1341 part 5 says 7bit is assumed if not specified
 		if ($this->Encoding != '7bit') {
 			$result .= $this->HeaderLine('Content-Transfer-Encoding', $this->Encoding);
 		}
-
-		//Added by Adrien on 11.02.2011 and then on 06 April 2011 otherwise we have 3 return char on phpMail or other functions (03 July 2013: useless in latest version since they add only one LE after -> adding 2 in old version)
-		//$result = rtrim($result,$this->LE);
 
 		if($this->Mailer != 'mail') {
 			$result .= $this->LE;

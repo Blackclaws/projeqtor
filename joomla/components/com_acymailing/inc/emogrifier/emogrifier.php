@@ -22,7 +22,7 @@ UPDATES
 
 
 */
-class Emogrifier {
+class acymailingEmogrifier {
 
 		private $html = '';
 		private $css = '';
@@ -240,4 +240,9 @@ class Emogrifier {
 		return $body;
 
 	}
+}
+
+//Just in case of... we used to call it Emogrifier so we don't want to break plugins using this class via the AcyMailing files...
+if(!class_exists('Emogrifier')){
+	class Emogrifier extends acymailingEmogrifier{}
 }
