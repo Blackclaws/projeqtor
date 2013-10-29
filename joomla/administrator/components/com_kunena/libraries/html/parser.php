@@ -1,150 +1,137 @@
 <?php
 /**
-* @version $Id$
-* Kunena Component - Kunena Factory
-* @package Kunena
-*
-* @Copyright (C) 2009 www.kunena.org All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* @link http://www.kunena.org
-**/
+ * Kunena Component
+ * @package Kunena.Framework
+ * @subpackage HTML
+ *
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link http://www.kunena.org
+ **/
+defined ( '_JEXEC' ) or die ();
 
-// Dont allow direct linking
-defined( '_JEXEC' ) or die('Restricted access');
-
-require_once(KPATH_SITE.'/lib/kunena.smile.class.php');
-
-abstract class KunenaParser {
+abstract class KunenaHtmlParser {
 	static $emoticons = null;
+	static $relative = true;
 
-	function JSText($txt) {
+	public static function getEmoticons($grayscale = false, $emoticonbar = false) {
+		$db = JFactory::getDBO ();
+		$grayscale == true ? $column = "greylocation" : $column = "location";
+		$sql = "SELECT code, `$column` as file FROM #__kunena_smileys";
+
+		if ($emoticonbar == true)
+			$sql .= " WHERE emoticonbar='1'";
+
+		$db->setQuery ( $sql );
+		$smilies = $db->loadObjectList ();
+		KunenaError::checkDatabaseError();
+
+		$smileyArray = array ();
+		$template = KunenaFactory::getTemplate();
+		foreach ( $smilies as $smiley ) { // We load all smileys in array, so we can sort them
+			$smileyArray [$smiley->code] = JURI::root(true) .'/'. $template->getSmileyPath($smiley->file);
+		}
+
+		if ($emoticonbar == 0) { // don't sort when it's only for use in the emoticonbar
+			array_multisort ( array_keys ( $smileyArray ), SORT_DESC, $smileyArray );
+			reset ( $smileyArray );
+		}
+		return $smileyArray;
+	}
+
+	public static function JSText($txt) {
 		$txt = JText::_($txt);
 		$txt = preg_replace('`\'`','\\\\\'', $txt);
 		return $txt;
 	}
 
-	function parseText($txt, $len=0, $escape = true) {
+	public static function parseText($txt, $len=0) {
 		if (!$txt) return;
+
 		if ($len && JString::strlen($txt) > $len) $txt = JString::substr ( $txt, 0, $len ) . ' ...';
-		if ($escape) $txt = self::escape ( $txt );
+		$txt = self::escape ( $txt );
 		$txt = preg_replace('/(\S{30})/u', '\1&#8203;', $txt);
-		$txt = self::prepareContent ( $txt );
+		$txt = self::prepareContent ( $txt, 'title' );
+
 		return $txt;
 	}
 
-	function parseBBCode($txt, $parent=null, $len=0) {
+	public static function parseBBCode($txt, $parent=null, $len=0) {
 		if (!$txt) return;
-		if (!self::$emoticons) self::$emoticons = smile::getEmoticons ( 0 );
 
-		$config = KunenaFactory::getConfig ();
-		$txt = smile::smileReplace ( $txt, 0, $config->disemoticons, self::$emoticons, $parent );
-		$txt = nl2br ( $txt );
-		$txt = str_replace ( "__KTAB__", "&#009;", $txt ); // For [code]
-		$txt = str_replace ( "__KRN__", "\n", $txt ); // For [code]
+		$bbcode = KunenaBbcode::getInstance(self::$relative);
+		$bbcode->parent = $parent;
+		$bbcode->SetLimit($len);
+		$bbcode->SetPlainMode(false);
+		$txt = $bbcode->Parse($txt);
 		$txt = self::prepareContent ( $txt );
-		$txt = self::truncate($txt, $len);
+
 		return $txt;
 	}
 
-	function stripBBCode($txt, $len=0, $escape = true) {
+	public static function plainBBCode($txt, $len=0) {
 		if (!$txt) return;
-		if (!self::$emoticons) self::$emoticons = smile::getEmoticons ( 0 );
 
-		$txt = smile::purify ( $txt );
-		if ($len && JString::strlen($txt) > $len) $txt = JString::substr ( $txt, 0, $len ) . '...';
-		if ($escape) $txt = self::escape ( $txt );
+		$bbcode = KunenaBbcode::getInstance(self::$relative);
+		$bbcode->SetLimit($len);
+		$bbcode->SetPlainMode(true);
+		$txt = $bbcode->Parse($txt);
 		$txt = self::prepareContent ( $txt );
+
 		return $txt;
 	}
 
-	/**
-	 * Truncates text blocks over the specified character limit and closes
-	 * all open HTML tags. The behavior will not truncate an individual
-	 * word, it will find the first space that is within the limit and
-	 * truncate at that point. This method is UTF-8 safe.
-	 *
-	 * From Joomla 1.6+: JHtmlString
-	 *
-	 * @param   string   $text		The text to truncate.
-	 * @param   integer  $length		The maximum length of the text.
-	 * @return  string   The truncated text.
-	 */
-	public static function truncate($text, $length = 0)
-	{
-		// Truncate the item text if it is too long.
-		if ($length > 0 && JString::strlen($text) > $length)
-		{
-			// Find the first space within the allowed length.
-			$tmp = JString::substr($text, 0, $length);
-			$offset = JString::strrpos($tmp, ' ');
-			if(JString::strrpos($tmp, '<') > JString::strrpos($tmp, '>'))
-			{
-				$offset = JString::strrpos($tmp, '<');
-			}
-			$tmp = JString::substr($tmp, 0, $offset);
+	public static function stripBBCode($txt, $len=0, $html = true) {
+		if (!$txt) return;
 
-			// If we don't have 3 characters of room, go to the second space within the limit.
-			if (JString::strlen($tmp) >= $length - 3) {
-				$tmp = JString::substr($tmp, 0, JString::strrpos($tmp, ' '));
-			}
+		$bbcode = KunenaBbcode::getInstance(self::$relative);
+		$bbcode->SetLimit($len);
+		$bbcode->SetPlainMode(true);
+		$bbcode->SetAllowAmpersand($html);
+		$txt = $bbcode->Parse($txt);
+		$txt = self::prepareContent ( $txt );
+		$txt = strip_tags($txt);
+		if (!$html)
+			$txt = $bbcode->UnHTMLEncode($txt);
 
-			// Put all opened tags into an array
-			preg_match_all ( "#<([a-z][a-z0-9]?)( .*)?(?!/)>#iU", $tmp, $result );
-			$openedtags = $result[1];
-			$openedtags = array_diff($openedtags, array("img", "hr", "br"));
-			$openedtags = array_values($openedtags);
-
-			// Put all closed tags into an array
-			preg_match_all ( "#</([a-z]+)>#iU", $tmp, $result );
-			$closedtags = $result[1];
-			$len_opened = count ( $openedtags );
-			// All tags are closed
-			if( count ( $closedtags ) == $len_opened )
-			{
-				return $tmp.'...';
-			}
-			$openedtags = array_reverse ( $openedtags );
-			// Close tags
-			for( $i = 0; $i < $len_opened; $i++ )
-			{
-				if ( !in_array ( $openedtags[$i], $closedtags ) )
-				{
-					$tmp .= "</" . $openedtags[$i] . ">";
-				} else {
-					unset ( $closedtags[array_search ( $openedtags[$i], $closedtags)] );
-				}
-			}
-			$text = $tmp.'...';
-		}
-
-		return $text;
+		return $txt;
 	}
 
-	function &prepareContent(&$content)
-	{
-		$config = KunenaFactory::getConfig();
 
-		if ($config->jmambot)
-		{
+	public static function &prepareContent(&$content, $target='body')
+	{
+		$config = KunenaFactory::getConfig()->getPlugin('plg_system_kunena');
+		$events			= (int) $config->get('jcontentevents', false);
+		$event_target	= (array) $config->get('jcontentevent_target', array('body'));
+
+		if ($events && in_array($target, $event_target)) {
 			$row = new stdClass();
 			$row->text =& $content;
-			$params = new JParameter( '' );
+			// Run events
+			if (version_compare(JVERSION, '1.6', '>')) {
+				// Joomla 1.6+
+				$params = new JRegistry();
+			} else {
+				// Joomla 1.5
+				$params = new JParameter( '' );
+			}
 			$params->set('ksource', 'kunena');
 
 			$dispatcher = JDispatcher::getInstance();
 			JPluginHelper::importPlugin('content');
-			if (KUNENA_JOOMLA_COMPAT == '1.5') {
-				$results = $dispatcher->trigger('onPrepareContent', array (&$row, &$params, 0));
-			} else {
+			if (version_compare(JVERSION, '1.6', '>')) {
+				// Joomla 1.6+
 				$results = $dispatcher->trigger('onContentPrepare', array ('text', &$row, &$params, 0));
+			} else {
+				// Joomla 1.5
+				$results = $dispatcher->trigger('onPrepareContent', array (&$row, &$params, 0));
 			}
 			$content = $row->text;
 		}
 		return $content;
 	}
 
-
-	function escape($string) {
+	public static function escape($string) {
 		return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 	}
 }

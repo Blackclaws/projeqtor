@@ -1,41 +1,39 @@
 <?php
 /**
- * @version $Id$
  * Kunena Component
- * @package Kunena
+ * @package Kunena.Framework
+ * @subpackage Integration
  *
- * @Copyright (C) 2008 - 2011 Kunena Team. All rights reserved.
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.kunena.org
- *
  **/
-//
-// Dont allow direct linking
-defined( '_JEXEC' ) or die('');
+defined ( '_JEXEC' ) or die ();
 
-kimport('integration.integration');
-
-abstract class KunenaPrivate
+class KunenaPrivate
 {
-	public $priority = 0;
-
 	protected static $instance = false;
-
-	abstract public function __construct();
 
 	static public function getInstance($integration = null) {
 		if (self::$instance === false) {
-			$config = KunenaFactory::getConfig ();
-			if (! $integration)
-				$integration = $config->integration_private;
-			self::$instance = KunenaIntegration::initialize ( 'private', $integration );
+			JPluginHelper::importPlugin('kunena');
+			$dispatcher = JDispatcher::getInstance();
+			$classes = $dispatcher->trigger('onKunenaGetPrivate');
+			foreach ($classes as $class) {
+				if (!is_object($class)) continue;
+				self::$instance = $class;
+				break;
+			}
+			if (!self::$instance) {
+				self::$instance = new KunenaPrivate();
+			}
 		}
 		return self::$instance;
 	}
 
 	protected function getOnClick($userid) {}
 
-	abstract protected function getURL($userid);
+	protected function getURL($userid) {}
 
 	public function showIcon($userid)
 	{
@@ -54,7 +52,7 @@ abstract class KunenaPrivate
 		return '<a href="' . $url . '"' .$onclick. ' title="'.JText::_('COM_KUNENA_VIEW_PMS').'"><span class="kicon-profile kicon-profile-pm" alt="' .JText::_('COM_KUNENA_VIEW_PMS'). '"></span></a>';
 	}
 
-	public function getInboxLink() {}
+	public function getInboxLink($text) {}
 
-	public function getUnreadCount() {}
+	public function getUnreadCount($userid) {}
 }

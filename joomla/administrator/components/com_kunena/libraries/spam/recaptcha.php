@@ -1,14 +1,12 @@
 <?php
 /**
  * Kunena Component
- * @package Kunena
+ * @package Kunena.Framework
  *
- * @Copyright (C) 2008-2011 www.kunena.org All rights reserved.
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.kunena.org
  **/
-
-// Dont allow direct linking
 defined ( '_JEXEC' ) or die ();
 
 /*
@@ -62,6 +60,20 @@ class KunenaSpamRecaptcha {
 		static $instance = null;
 		if (!$instance) $instance = new KunenaSpamRecaptcha();
 		return $instance;
+	}
+
+	public function enabled() {
+		$me = KunenaUserHelper::getMyself();
+		$config = KunenaFactory::getConfig();
+		// Enabled if guest captcha is enabled and user is not logged in
+		if ($config->captcha && !$me->exists())
+			return true;
+		// Enabled if user is moderator or has more posts than the threshold
+		// FIXME: we need a better logic for trusted users
+		if ($me->exists() && !$me->isModerator() && $me->posts < $config->captcha_post_limit)
+			return true;
+		// Captcha is disabled
+		return false;
 	}
 
 	/**
@@ -125,7 +137,7 @@ class KunenaSpamRecaptcha {
 	* @param array $extra_params an array of extra variables to post to the server
 	* @return ReCaptchaResponse
 	*/
-	function checkAnswer ($extra_params = array()) {
+	public function verify($extra_params = array()) {
 		if ( empty($this->privatekey) ) {
 			$this->error =  JText::sprintf ( 'COM_KUNENA_RECAPTCHA_ERROR_INVALID_CONFIGURATION', JText::_ ( 'COM_KUNENA_RECAPTCHA_ERROR_INVALID_CONFIGURATION_NO_PRIVATE_KEY' ) );
 			return false;
@@ -204,7 +216,7 @@ class KunenaSpamRecaptcha {
 		$http_request .= "Host: $host\r\n";
 		$http_request .= "Content-Type: application/x-www-form-urlencoded;\r\n";
 		$http_request .= "Content-Length: " . strlen($req) . "\r\n";
-		$http_request .= "User-Agent: Kunena Forum/".Kunena::version()."\r\n";
+		$http_request .= "User-Agent: Kunena Forum/".KunenaForum::version()."\r\n";
 		$http_request .= "\r\n";
 		$http_request .= $req;
 

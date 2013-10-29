@@ -1,42 +1,41 @@
 <?php
 /**
- * @version $Id$
  * Kunena Component
- * @package Kunena
+ * @package Kunena.Framework
+ * @subpackage Integration
  *
- * @Copyright (C) 2008 - 2011 Kunena Team. All rights reserved.
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.kunena.org
- *
  **/
-//
-// Dont allow direct linking
-defined ( '_JEXEC' ) or die ( '' );
+defined ( '_JEXEC' ) or die ();
 
-kimport ( 'integration.integration' );
-
-abstract class KunenaAvatar {
-	public $priority = 0;
+class KunenaAvatar {
 	public $avatarSizes = null;
+	protected $resize = false;
 
 	protected static $instance = false;
 
-	abstract public function __construct();
-
 	static public function getInstance($integration = null) {
 		if (self::$instance === false) {
-			$config = KunenaFactory::getConfig ();
-			if (! $integration)
-				$integration = $config->integration_avatar;
-			self::$instance = KunenaIntegration::initialize ( 'avatar', $integration );
+			JPluginHelper::importPlugin('kunena');
+			$dispatcher = JDispatcher::getInstance();
+			$classes = $dispatcher->trigger('onKunenaGetAvatar');
+			foreach ($classes as $class) {
+				if (!is_object($class)) continue;
+				self::$instance = $class;
+				break;
+			}
+			if (!self::$instance) {
+				self::$instance = new KunenaAvatar();
+			}
 		}
 		return self::$instance;
 	}
 
 	public function load($userlist) {}
-
-	abstract public function getEditURL();
-	abstract protected function _getURL($user, $sizex, $sizey);
+	public function getEditURL() {}
+	protected function _getURL($user, $sizex, $sizey) {}
 
 	public function getSize($sizex=90, $sizey=90) {
 		$size = new StdClass();
@@ -52,9 +51,12 @@ abstract class KunenaAvatar {
 	}
 
 	public function getURL($user, $sizex=90, $sizey=90) {
+		KUNENA_PROFILER ? KunenaProfiler::instance()->start('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
 		$size = $this->getSize($sizex, $sizey);
 		if (!$size->x || !$size->y) return;
-		return $this->_getURL($user, $size->x, $size->y);
+		$result = $this->_getURL($user, $size->x, $size->y);
+		KUNENA_PROFILER ? KunenaProfiler::instance()->stop('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
+		return $result;
 	}
 
 	public function getLink($user, $class='', $sizex=90, $sizey=90)
@@ -63,13 +65,13 @@ abstract class KunenaAvatar {
 		$avatar = $this->getURL($user, $size->x, $size->y);
 		if (!$avatar) return;
 		if ($class) $class=' class="'.$class.'"';
-		
-		// Why in the world do you need to have CSS here????
-		$link = '<img'.$class.' src="'.$avatar.'" alt="" style="max-width: '.$size->x.'px; max-height: '.$size->y.'px" />';
-		
-		// Correcting that...but leaving that line above just in case...
-		//$link = '<img'.$class.' src="'.$avatar.'" alt="User Avatar" />';
-		
+
+		// Style is needed to resize avatar for JomSocial and other integration that do not have automatic resizing
+		if (!$this->resize) $style = 'style="max-width: '.$size->x.'px; max-height: '.$size->y.'px"';
+		else $style = '';
+
+		$link = '<img'.$class.' src="'.$avatar.'" alt="'.JText::sprintf('COM_KUNENA_LIB_AVATAR_TITLE', $user->getName()).'" '.$style.' />';
+
 		return $link;
 	}
 }

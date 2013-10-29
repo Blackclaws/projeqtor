@@ -1,34 +1,32 @@
 <?php
 /**
- * @version $Id$
  * Kunena Component
- * @package Kunena
+ * @package Kunena.Framework
+ * @subpackage Integration
  *
- * @Copyright (C) 2008 - 2011 Kunena Team. All rights reserved.
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.kunena.org
- *
  **/
-//
-// Dont allow direct linking
-defined( '_JEXEC' ) or die('');
+defined ( '_JEXEC' ) or die ();
 
-kimport ( 'integration.integration' );
-
-abstract class KunenaActivity
+class KunenaActivity
 {
-	public $priority = 0;
-
 	protected static $instance = false;
-
-	abstract public function __construct();
 
 	static public function getInstance($integration = null) {
 		if (self::$instance === false) {
-			$config = KunenaFactory::getConfig ();
-			if (! $integration)
-				$integration = $config->integration_activity;
-			self::$instance = KunenaIntegration::initialize ( 'activity', $integration );
+			JPluginHelper::importPlugin('kunena');
+			$dispatcher = JDispatcher::getInstance();
+			$classes = $dispatcher->trigger('onKunenaGetActivity');
+			foreach ($classes as $class) {
+				if (!is_object($class)) continue;
+				self::$instance = $class;
+				break;
+			}
+			if (!self::$instance) {
+				self::$instance = new KunenaActivity();
+			}
 		}
 		return self::$instance;
 	}
@@ -46,6 +44,8 @@ abstract class KunenaActivity
 	public function onAfterDelete($message) {}
 	public function onAfterUndelete($message) {}
 	public function onAfterThankyou($target, $actor, $message) {}
+	public function onAfterUnThankyou($target, $actor, $message) {}
+	public function onAfterDeleteTopic($message) {}
 
 	public function onAfterSubscribe($topicid, $action) {}
 	public function onAfterFavorite($topicid, $action) {}

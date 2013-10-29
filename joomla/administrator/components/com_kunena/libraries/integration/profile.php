@@ -1,44 +1,43 @@
 <?php
 /**
- * @version $Id$
  * Kunena Component
- * @package Kunena
+ * @package Kunena.Framework
+ * @subpackage Integration
  *
- * @Copyright (C) 2008 - 2011 Kunena Team. All rights reserved.
+ * @copyright (C) 2008 - 2012 Kunena Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link http://www.kunena.org
- *
  **/
-//
-// Dont allow direct linking
-defined( '_JEXEC' ) or die('');
+defined ( '_JEXEC' ) or die ();
 
-kimport('integration.integration');
-
-abstract class KunenaProfile
+class KunenaProfile
 {
-	public $priority = 0;
-
 	protected static $instance = false;
-
-	abstract public function __construct();
 
 	static public function getInstance($integration = null) {
 		if (self::$instance === false) {
-			$config = KunenaFactory::getConfig ();
-			if (! $integration)
-				$integration = $config->integration_profile;
-			self::$instance = KunenaIntegration::initialize ( 'profile', $integration );
+			JPluginHelper::importPlugin('kunena');
+			$dispatcher = JDispatcher::getInstance();
+			$classes = $dispatcher->trigger('onKunenaGetProfile');
+			foreach ($classes as $class) {
+				if (!is_object($class)) continue;
+				self::$instance = $class;
+				break;
+			}
+			if (!self::$instance) {
+				self::$instance = new KunenaProfile();
+			}
 		}
 		return self::$instance;
 	}
 
-	public function open() {}
-	public function close() {}
-	public function trigger($event, &$params) {}
+	public function getTopHits($limit=0) {
+		if (!$limit) $limit = KunenaFactory::getConfig ()->popusercount;
+		return (array) $this->_getTopHits($limit);
+	}
 
-	abstract public function getUserListURL($action='', $xhtml = true);
-	abstract public function getProfileURL($user, $task='', $xhtml = true);
-	abstract public function showProfile($userid, &$msg_params);
-	public function getProfileView($PopUserCount=0) {}
+	public function getUserListURL($action='', $xhtml = true) {}
+	public function getProfileURL($user, $task='', $xhtml = true) {}
+	public function showProfile($view, &$params) {}
+	protected function _getTopHits($limit=0) { return array(); }
 }
