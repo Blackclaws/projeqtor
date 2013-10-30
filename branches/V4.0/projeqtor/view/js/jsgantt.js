@@ -662,37 +662,37 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         for (iSort=0;iSort<sortArray.length;iSort++) {
           if(vShowValidatedWork ==1 && sortArray[iSort]=='ValidatedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getValidatedWork() 
+              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getValidatedWork() 
               +'</span></NOBR></TD>' ;
           }
           if(vShowAssignedWork ==1 && sortArray[iSort]=='AssignedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getAssignedWork() 
+              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getAssignedWork() 
               +'</span></NOBR></TD>' ;
           }
           if(vShowRealWork ==1 && sortArray[iSort]=='RealWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getRealWork() 
+              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getRealWork() 
               +'</span></NOBR></TD>' ;
           }
           if(vShowLeftWork ==1 && sortArray[iSort]=='LeftWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getLeftWork() 
+              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getLeftWork() 
               +'</span></NOBR></TD>' ;
           }
           if(vShowPlannedWork ==1 && sortArray[iSort]=='PlannedWork') { 
             vLeftTable += '<TD class="ganttDetail" style="width: ' + vWorkWidth + 'px;">'
-              +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getPlannedWork() 
+              +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vWorkWidth + 'px;">' + vTaskList[i].getPlannedWork() 
               +'</span></NOBR></TD>' ;
           }
           if(vShowDur ==1 && sortArray[iSort]=='Duration') { 
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vDurationWidth + 'px;">'
-            +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getDuration(vFormat) 
+            +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vDurationWidth + 'px;">' + vTaskList[i].getDuration(vFormat) 
             +'</span></NOBR></TD>' ;
           }
           if(vShowComp==1 && sortArray[iSort]=='Progress') { 
           vLeftTable += '<TD class="ganttDetail" style="width: ' + vProgressWidth + 'px;">'
-            +'<NOBR><span class="hideLeftPart' + vRowType + '">' + vTaskList[i].getCompStr()  
+            +'<NOBR><span class="hideLeftPart' + vRowType + '" style="width: ' + vProgressWidth + 'px;">' + vTaskList[i].getCompStr()  
             +'</span></NOBR></TD>' ;
           }
           if(vShowStartDate==1 && sortArray[iSort]=='StartDate') {
@@ -709,8 +709,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             + '</span></NOBR></TD>' ;
           }
           if(vShowRes==1 && sortArray[iSort]=='Resource') {
-            vLeftTable += '<TD class="ganttDetail" style="text-align:left;">' 
-              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;">' 
+            vLeftTable += '<TD class="ganttDetail" style="text-align:left;width: ' + vResourceWidth + 'px">' 
+              +'<NOBR><span class="namePart' + vRowType + '" style="width: ' + vResourceWidth + 'px;text-overflow:ellipsis;">' 
               + vTaskList[i].getResource() + '</span></NOBR></TD>' ;
           }
           if(vShowPriority==1 && sortArray[iSort]=='Priority') {

@@ -246,6 +246,7 @@ div .scrollRightTop {
   z-index: 10;   
   /*z-index: 15;*/
   text-align: center;
+  overflow: hidden;
 }
 
 .ganttDetailNoborder {

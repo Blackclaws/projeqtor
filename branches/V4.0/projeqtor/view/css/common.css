@@ -1179,14 +1179,14 @@ table.dojoDndAvatar {
 
 .dijitTitlePane .dijitArrowNode {
   cursor: pointer;
-  background-image: url(images/spriteArrowsGrey.png);
+  background-image: url(images/spriteArrowsWhite.png);
   background-repeat: no-repeat;
   height: 7px;
   width: 7px;
 }
 
 .dj_ie6 .dijitTitlePane .dijitArrowNode {
-  background-image: url(images/spriteArrowsGrey.gif);
+  background-image: url(images/spriteArrowsWhite.gif);
 }
 
 .dijitTitlePane .dijitOpen .dijitArrowNode {
