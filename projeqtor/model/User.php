@@ -674,7 +674,7 @@ class User extends SqlElement {
 	  	  return "OK";
 	  	}
 	  } else {
-	  	// check passsword on LDAP
+	  	// check password on LDAP
 	    if (! function_exists('ldap_connect')) {
 	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        
         return "ldap";
