@@ -291,7 +291,7 @@ class Ticket extends SqlElement {
   			}
   		}
   	}
-  	if (isset($this->WorkElemen)) {
+  	if (isset($this->WorkElement)) {
   	  $this->WorkElement->done=$this->done;
   	  $this->WorkElement->idle=$this->idle;
   	}

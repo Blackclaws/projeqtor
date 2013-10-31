@@ -194,7 +194,7 @@ class PlanningElement extends SqlElement {
     }    
     return $colScript;
   }
-    
+  
   /** ==========================================================================
    * Extends save functionality to implement wbs calculation
    * Triggers parent::save() to run defaut functionality in the end.
@@ -593,6 +593,32 @@ class PlanningElement extends SqlElement {
         }
       }
     }
+debugLog("this->topId=$this->topId this->topRefId=$this->topRefId this->topRefType=$this->topRefType");
+    if ($this->topId or ($this->topRefId and $this->topRefType)) {
+	    if ($this->topId) {
+	    	$top=new PlanningElement($this->topId);
+	    } else {
+	    	$topObj=new $this->topRefType($this->topRefId);
+	    	$peTop=$this->topRefType.'PlanningElement';
+	    	$top=$topObj->$peTop;
+	    	debugLog("top->id=$top->id");
+	    }
+    	$precListObj=$this->getPredecessorItemsArray();
+	    $succListObj=$this->getSuccessorItemsArray();
+	    $parentListObj=$top->getParentItemsArray();
+	    $parentListObj['#'.$top->id]=$top;
+	    foreach ($parentListObj as $parentId=>$parentObj) {
+	    	if (array_key_exists($parentId, $precListObj)) {
+	    	  $result.='<br/>' . i18n('errorHierarchicLoop');
+	    	  break;
+	    	}
+	      if (array_key_exists($parentId, $succListObj)) {
+	        $result.='<br/>' . i18n('errorHierarchicLoop');
+	        break;
+	      }
+	    }
+    }
+debugLog($result);    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
