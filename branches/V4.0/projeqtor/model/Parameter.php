@@ -150,6 +150,9 @@ class Parameter extends SqlElement {
                     'grey'=>i18n('themeGrey'),
                     'greyContrast'=>i18n('themeGreyContrast'),
                     'white'=>i18n('themeWhite'),
+                    'ProjectOrRIA'=>i18n('themeProjectOrRIA'),
+                    'ProjectOrRIAContrasted'=>i18n('themeProjectOrRIAContrasted'),
+                    'ProjectOrRIALight'=>i18n('themeProjectOrRIALight'),
                     'random'=>i18n('themeRandom')); // keep 'random' as last value to assure it is not selected via getTheme()
         break;
       case 'lang':case 'paramDefaultLocale':
