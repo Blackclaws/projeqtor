@@ -350,8 +350,8 @@ class Meeting extends SqlElement {
     	$this->MeetingPlanningElement->plannedStartDate=$this->meetingDate;
       $this->MeetingPlanningElement->plannedEndDate=$this->meetingDate;
     }
-    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity 
-    or $this->idPeriodicMeeting!=$old->idPeriodicMeeting) {
+    if (trim($this->idProject)!=trim($old->idProject) or trim($this->idActivity)!=trim($old->idActivity) 
+    or trim($this->idPeriodicMeeting)!=trim($old->idPeriodicMeeting)) {
       $this->MeetingPlanningElement->wbs=null;
       $this->MeetingPlanningElement->wbsSortable=null;
     }

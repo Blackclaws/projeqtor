@@ -1626,10 +1626,13 @@ label, .label {
   background-color: #545281;  color: #EEEEEE;  
 }
 
-.ProjeQtOrContrasted .tabLabel, .ProjeQtOrContrasted .label, .ProjeQtOrContrasted .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrContrasted .tabLabel, .ProjeQtOrContrasted .label {
   background-color: #fafafa; color: #545281;
 }
-
+.ProjeQtOrContrasted .dojoxGridRowOver .dojoxGridCell {
+ /*background-color: #aaaaaa; color: #545281;*/
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
 .ProjeQtOrContrasted .title {
   font-weight: 600;
   text-shadow: 1px 1px #000000;
@@ -1685,9 +1688,13 @@ label, .label {
   background-color: #d4d5da;  color: #545281;  
 }
 
-.ProjeQtOrLight .tabLabel, .ProjeQtOrLight .label, .ProjeQtOrLight .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrLight .tabLabel, .ProjeQtOrLight .label {
   background-color: #fcfcfc; color: #545281;
 }
+.ProjeQtOrLight .dojoxGridRowOver .dojoxGridCell {
+ /*background-color: #aaaaaa; color: #545281;*/
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
 
 .ProjeQtOrLight .title {
   font-weight: 600;
@@ -1737,12 +1744,18 @@ label, .label {
   background-color: #fafafa;
 }
 .ProjeQtOr #toolBarDiv, .ProjeQtOr #statusBarDiv, .ProjeQtOr .statusBar { /**toolbar**/
-  /*background-color: #545281;  color: #EEEEEE; */ 
-   background-color: #d4d5da;  color: #545281;
+   /*background-color: #545281;  color: #EEEEEE;*/ 
+   color: #EEEEEE;
+   background: url(images/titleBarDarkBlue.png) #dedede top repeat-x !important;
 }
-.ProjeQtOr .tabLabel, .ProjeQtOr .label, .ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOr .tabLabel, .ProjeQtOr .label {
   background-color: #fafafa; color: #545281;
 }
+.ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
+ /*background-color: #aaaaaa; color: #545281;*/
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
+
 .ProjeQtOr #buttonDiv { /**toolbar**/
   background-color: #545281;  color: #FFFFFF;  
 }
@@ -1766,7 +1779,9 @@ label, .label {
 }
 
 .ProjeQtOr .titleProject {
- color: #545281;  
+ color: #EEEEEE;
+ text-shadow: 2px 2px 4px #000000;
+   
 }
 
 .ProjeQtOr #logoDiv,.ProjeQtOr .listTitle,

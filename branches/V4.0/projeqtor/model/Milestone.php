@@ -179,7 +179,7 @@ class Milestone extends SqlElement {
       $this->MilestonePlanningElement->topRefId=$this->idProject;
       $this->MilestonePlanningElement->topId=null;;
     } 
-    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity) {
+    if (trim($this->idProject)!=trim($old->idProject) or trim($this->idActivity)!=trim($old->idActivity)) {
       $this->MilestonePlanningElement->wbs=null;
       $this->MilestonePlanningElement->wbsSortable=null;
     }

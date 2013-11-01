@@ -175,12 +175,17 @@ class Activity extends SqlElement {
     if ($this->id and $this->id==$this->idActivity) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
     } else if ($this->ActivityPlanningElement and $this->ActivityPlanningElement->id){
-      $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'Activity','refId'=>$this->idActivity));
-      $parentList=$parent->getParentItemsArray();
-      if (array_key_exists('#' . $this->ActivityPlanningElement->id,$parentList)) {
-        $result.='<br/>' . i18n('errorHierarchicLoop');
-      }
+    	if (trim($this->idActivity)) {
+    		$parentType='Activity';
+    		$parentId=$this->idActivity;
+    	} else {
+    		$parentType='Project';
+    		$parentId=$this->idProject;
+    	}
+    	$result.=$this->ActivityPlanningElement->controlHierarchicLoop($parentType, $parentId);
     }
+//debugLog("result=$result");    
+    
     if (trim($this->idActivity)) {
       $parentActivity=new Activity($this->idActivity);
       if ($parentActivity->idProject!=$this->idProject) {
@@ -190,7 +195,8 @@ class Activity extends SqlElement {
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
-    }if ($result=="") {
+    }
+    if ($result=="") {
       $result='OK';
     }
     return $result;
@@ -237,7 +243,7 @@ class Activity extends SqlElement {
       $this->ActivityPlanningElement->topRefId=$this->idProject;
       $this->ActivityPlanningElement->topId=null;
     } 
-    if ($this->idProject!=$oldIdProject or $this->idActivity!=$oldIdActivity) {
+    if (trim($this->idProject)!=trim($oldIdProject) or trim($this->idActivity)!=trim($oldIdActivity)) {
     	$this->ActivityPlanningElement->wbs=null;
     	$this->ActivityPlanningElement->wbsSortable=null;
     }

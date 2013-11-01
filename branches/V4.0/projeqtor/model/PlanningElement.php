@@ -444,10 +444,10 @@ class PlanningElement extends SqlElement {
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
       $realWork+=$ass->realWork;
-      $assignedCost+=$ass->assignedCost;
-      $leftCost+=$ass->leftCost;
-      $plannedCost+=$ass->plannedCost;
-      $realCost+=$ass->realCost;
+      if ($ass->assignedCost) $assignedCost+=$ass->assignedCost;
+      if ($ass->leftCost) $leftCost+=$ass->leftCost;
+      if ($ass->plannedCost) $plannedCost+=$ass->plannedCost;
+      if ($ass->realCost) $realCost+=$ass->realCost;
       if ( $ass->realStartDate and (! $realStartDate or $ass->realStartDate<$realStartDate )) {
         $realStartDate=$ass->realStartDate;
       }
@@ -472,10 +472,10 @@ class PlanningElement extends SqlElement {
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
-        $assignedCost+=$pla->assignedCost;
-        $leftCost+=$pla->leftCost;
-        $plannedCost+=$pla->plannedCost;
-        $realCost+=$pla->realCost;
+        if ($pla->assignedCost) $assignedCost+=$pla->assignedCost;
+        if ($pla->leftCost) $leftCost+=$pla->leftCost;
+        if ($pla->plannedCost) $plannedCost+=$pla->plannedCost;
+        if ($pla->realCost) $realCost+=$pla->realCost;
         if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
           $realStartDate=$pla->realStartDate;
         }
@@ -593,32 +593,6 @@ class PlanningElement extends SqlElement {
         }
       }
     }
-debugLog("this->topId=$this->topId this->topRefId=$this->topRefId this->topRefType=$this->topRefType");
-    if ($this->topId or ($this->topRefId and $this->topRefType)) {
-	    if ($this->topId) {
-	    	$top=new PlanningElement($this->topId);
-	    } else {
-	    	$topObj=new $this->topRefType($this->topRefId);
-	    	$peTop=$this->topRefType.'PlanningElement';
-	    	$top=$topObj->$peTop;
-	    	debugLog("top->id=$top->id");
-	    }
-    	$precListObj=$this->getPredecessorItemsArray();
-	    $succListObj=$this->getSuccessorItemsArray();
-	    $parentListObj=$top->getParentItemsArray();
-	    $parentListObj['#'.$top->id]=$top;
-	    foreach ($parentListObj as $parentId=>$parentObj) {
-	    	if (array_key_exists($parentId, $precListObj)) {
-	    	  $result.='<br/>' . i18n('errorHierarchicLoop');
-	    	  break;
-	    	}
-	      if (array_key_exists($parentId, $succListObj)) {
-	        $result.='<br/>' . i18n('errorHierarchicLoop');
-	        break;
-	      }
-	    }
-    }
-debugLog($result);    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -627,6 +601,32 @@ debugLog($result);
       $result='OK';
     }
     return $result;
+  }
+  
+  public function controlHierarchicLoop($parentType, $parentId) {
+    $result="";
+    $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>$parentType,'refId'=>$parentId));
+    $parentList=$parent->getParentItemsArray();
+    if (array_key_exists('#' . $this->id,$parentList)) {
+      $result='<br/>' . i18n('errorHierarchicLoop');
+      return $result;
+    }
+      
+    $precListObj=$this->getPredecessorItemsArray();
+    $succListObj=$this->getSuccessorItemsArray();
+    $parentListObj=$parent->getParentItemsArray();
+    $parentListObj['#'.$parent->id]=$parent;
+    foreach ($parentListObj as $parentId=>$parentObj) {
+      if (array_key_exists($parentId, $precListObj)) {
+        $result='<br/>' . i18n('errorHierarchicLoop');
+        return $result;
+      }
+      if (array_key_exists($parentId, $succListObj)) {
+        $result='<br/>' . i18n('errorHierarchicLoop');
+        return $result;
+      }
+    }
+    return $result;    
   }
   
   public function getParentItemsArray() {

@@ -272,7 +272,7 @@ class TestSession extends SqlElement {
       $this->TestSessionPlanningElement->topRefId=null;
       $this->TestSessionPlanningElement->topId=null;
     }
-    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity) {
+    if (trim($this->idProject)!=trim($old->idProject) or trim($this->idActivity)!=trim($old->idActivity)) {
       $this->TestSessionPlanningElement->wbs=null;
       $this->TestSessionPlanningElement->wbsSortable=null;
     }
