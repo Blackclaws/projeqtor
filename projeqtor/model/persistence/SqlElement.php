@@ -377,6 +377,8 @@ abstract class SqlElement {
 		} else {
 			$control=$this->control();
 		}
+//debugLog(get_class($this));
+//debugLog("control=$control");
 		if ($control=="OK") {
 			//$old=new Project();
 			if (property_exists($this, 'idStatus') or property_exists($this,'reference') or property_exists($this,'idResource')

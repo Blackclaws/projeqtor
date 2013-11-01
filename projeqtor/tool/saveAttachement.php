@@ -185,6 +185,9 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	  $attachement->creationDate=date("Y-m-d H:i:s");
 	  if ($type=='file') {
 	    $attachement->fileName=basename($uploadedFile['name']);
+	    if (strtolower(substr($attachement->fileName,-4))=='.php') {
+	    	$attachement->fileName.=".projeqtor";
+	    }
 	    $attachement->mimeType=$uploadedFile['type'];
 	    $attachement->fileSize=$uploadedFile['size'];
 	  } else if ($type=='link') {
@@ -211,7 +214,7 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	  if (! file_exists($uploaddir)) {
 	    mkdir($uploaddir,0777,true);
 	  }
-	  $uploadfile = $uploaddir . basename($uploadedFile['name']);
+	  $uploadfile = $uploaddir . $attachement->fileName;
 	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
 	     $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
 	     errorLog(i18n('errorUploadFile','hacking ?'));

@@ -170,9 +170,14 @@ class MeetingPlanningElement extends PlanningElement {
     $this->idProject=$meeting->idProject;
     $this->refName=$meeting->name;
     $this->idle=$meeting->idle;
-    $this->done=$meeting->done;
-    if ($old->idProject!=$this->idProject or $old->topId!=$this->topId 
-    or $old->topRefType!=$this->topRefType or $old->topRefId!=$this->topRefId) {
+    if (isset($meeting->done)) {
+      $this->done=$meeting->done;
+    }
+    if (! $this->assignedCost) $this->assignedCost=0;
+    if (! $this->realCost) $this->realCost=0;
+    if (! $this->leftCost) $this->leftCost=0;
+    if (trim($old->idProject)!=trim($this->idProject) or trim($old->topId)!=trim($this->topId) 
+    or trim($old->topRefType)!=trim($this->topRefType) or trim($old->topRefId)!=trim($this->topRefId)) {
     	$this->wbs=null; // Force recalculation
     	$this->topId=null;
     }

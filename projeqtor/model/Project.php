@@ -515,7 +515,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $this->ProjectPlanningElement->topRefType=null;
       $this->ProjectPlanningElement->topRefId=null;
     }
-    if ($this->idProject!=$old->idProject) {
+    if (trim($this->idProject)!=trim($old->idProject)) {    	
       $this->ProjectPlanningElement->wbs=null;
       $this->ProjectPlanningElement->wbsSortable=null;
     }

@@ -244,7 +244,7 @@ $label['crlf07']='crlf';
 
 $param['AttachementDirectory'] = '../files/attach/';                              
 $label['AttachementDirectory'] = "Directory to store Attachments";
-$value['AttachementDirectory'] = "any valid directory, set to empty string to disable attachment";
+$value['AttachementDirectory'] = "any valid directory, set to empty string to disable attachment<br/><b>Security hint :</b> move it ouside web access";
 $pname['AttachementDirectory'] = 'paramAttachementDirectory';
 $ctrls['AttachementDirectory'] = '';
 
@@ -274,7 +274,7 @@ $label['crlf09']='crlf';
 
 $param['logFile'] = '../files/logs/projeqtor_${date}.log';                              
 $label['logFile'] = "Log file name";
-$value['logFile'] = 'any valid file name, may contain \'${date}\' to get 1 file a day';
+$value['logFile'] = 'any valid file name, may contain \'${date}\' to get 1 file a day<br/><b>Security hint :</b> move it ouside web access';
 $pname['logFile'] = 'logFile';
 $ctrls['logFile'] = '';
 
@@ -410,7 +410,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
                    value="../files/config/parameters.php" />
                 </td>
                 <td></td>
-                <td>a php file name where to store parameters, use non web access directory for security</td>
+                <td>a php file name where to store parameters<br/><b>Security hint :</b> move it ouside web access</td>
                 <tr><td colspan="4">&nbsp;</td>
               </tr>
               <tr>

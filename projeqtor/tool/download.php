@@ -43,6 +43,9 @@ if ($type) {$contentType=$type;}
 //if (array_key_exists('display',$_REQUEST)) {
 //  $contentType=$type;
 //}
+if (substr($name, -10)=='.projeqtor') {
+	$name=substr($name,0,strlen($name)-10);
+} 
 
 if (($file != "") && (file_exists($file))) { 
 	header("Pragma: public"); 

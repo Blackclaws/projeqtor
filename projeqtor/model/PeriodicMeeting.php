@@ -357,7 +357,8 @@ class PeriodicMeeting extends SqlElement {
   
 
   public function save() {
-    $this->_old=$this->getOld();
+    $old=$this->getOld();
+    $this->_old=$old;
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType);
   	}
@@ -412,7 +413,7 @@ class PeriodicMeeting extends SqlElement {
       $this->attendees=str_ireplace(',  ', ', ', $this->attendees);
       $this->attendees=str_ireplace(',  ', ', ', $this->attendees);
     }
-    if ($this->idProject!=$old->idProject or $this->idActivity!=$old->idActivity) {
+    if (trim($this->idProject)!=trim($old->idProject) or trim($this->idActivity)!=trim($old->idActivity)) {
       $this->MeetingPlanningElement->wbs=null;
       $this->MeetingPlanningElement->wbsSortable=null;
     }
@@ -545,6 +546,9 @@ class PeriodicMeeting extends SqlElement {
     if (! $this->periodicityEndDate) {
     	$this->periodicityEndDate=$lastDate;
     }
+    $this->MeetingPlanningElement->assignedCost=0;
+    $this->MeetingPlanningElement->realCost=0;
+    $this->MeetingPlanningElement->leftCost=0;
     parent::save();
     return $result;
   }
