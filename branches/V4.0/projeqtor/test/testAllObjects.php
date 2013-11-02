@@ -17,10 +17,10 @@ if (is_dir($classDir)) {
         $split=explode('.',$file);
         $class=$split[0];
         if ($class!='GeneralWork' and $class!='index' and $class!='Mutex' and $class!='NumberFormatter52'
-        and $class!='ShortType'
-        //and $class>='A'and $class<'B' 
+        and $class!='ShortType' and $class!='ImapMailbox'
+        //and $class>='Ti' // and $class<'B' 
         ){
-          $obj=new $class;
+          $obj=new $class();
           if (is_subclass_of($obj, "SqlElement")) {
         	 testObject($obj);
           }
@@ -74,7 +74,7 @@ function fillObj($obj) {
 			// Nothing : field is a database criteria : will be set automatically	
 		} else if (substr($fld,0,1)=='_') {
 			// Nothing
-		} else if ($fld=='refType') {
+		} else if ($fld=='refType' or $fld=='originType') {
 			$pos=strpos(get_class($obj),'PlanningElement');
 			if ($pos>0) {
 				$obj->$fld=substr(get_class($obj),0,$pos);
@@ -97,7 +97,7 @@ function fillObj($obj) {
 			$obj->$fld=null;
 		} else if ($fld=='predecessorRefType' or $fld=='successorRefType') {
 			$obj->$fld=$fld;
-		} else if ($dbType=='varchar') {			
+		} else if ($dbType=='varchar') {			 
 	    $obj->$fld=substr($var,0,$dbLength);
 		} else if ($dbType=='int' and $dbLength==1) {
 			$obj->$fld=0;

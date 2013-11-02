@@ -16,6 +16,32 @@
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
+  <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript">
+	  function cryptData(data) {
+		  var arr=data.split(';');
+      var crypto=arr[0];
+      var userSalt=arr[1];
+      var sessionSalt=arr[2];
+      var pwd=dijit.byId('password').get('value');
+      var login=dijit.byId('login').get('value');
+      dojo.byId('hashStringLogin').value=Aes.Ctr.encrypt(login, sessionSalt, 256);
+      if (crypto=='md5') {
+        crypted=CryptoJS.MD5(pwd+userSalt);
+        crypted=CryptoJS.MD5(crypted+sessionSalt);
+        dojo.byId('hashStringPassword').value=crypted;
+      } else if (crypto=='sha256') {
+        crypted=CryptoJS.SHA256(pwd+userSalt);
+        crypted=CryptoJS.SHA256(crypted+sessionSalt);
+        dojo.byId('hashStringPassword').value=crypted;
+      } else {
+        var crypted=Aes.Ctr.encrypt(pwd, sessionSalt, 256);
+        dojo.byId('hashStringPassword').value=crypted;
+      }
+	  }
+  </script>
   <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
@@ -82,7 +108,14 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                     changePassword=false;
                     quitConfirmed=true;
                     noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
-    		            loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
+                    dojo.xhrGet({
+                      url: '../tool/getHash.php?username='+dijit.byId('login').get('value'),
+                      handleAs: "text",
+                      load: function (data) {
+                        cryptData(data);
+                        loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
+                      }
+                    });
     		            return false;        
                   </script>
                   <br/><br/>
@@ -90,8 +123,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>     
 			                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
 			                <td>
-			                  <input tabindex="1" id="login" name="login" style="width:200px" type="text"  
+			                  <input tabindex="1" id="login" style="width:200px" type="text"  
 			                   dojoType="dijit.form.TextBox" />
+                        <input type="hidden" id="hashStringLogin" name="login" style="width:200px" value=""/>  
 			                </td>
 			              </tr>
 			              <tr>
@@ -100,8 +134,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>
 			                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
 			                <td>
-			                  <input tabindex="2" id="password" name="password" style="width:200px" type="password"  
+			                  <input tabindex="2" id="password" style="width:200px" type="password"  
 			                   dojoType="dijit.form.TextBox" />
+                        <input type="hidden" id="hashStringPassword" name="password" style="width:200px" value=""/>
 			                </td>
 			              </tr>
 			              <tr><td colspan="2">&nbsp;</td></tr>
@@ -110,7 +145,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                <td>
 			                  <button tabindex="3" type="submit" id="loginButton" 
 			                   dojoType="dijit.form.Button" showlabel="true">OK
-			                    <script type="dojo/connect" event="onClick" args="evt">            	  
+			                    <script type="dojo/connect" event="onClick" args="evt">
                             return true;
                           </script>
 			                  </button>
@@ -134,7 +169,14 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             dojo.byId('login').focus();
                             changePassword=true;
-                            loadContent("../tool/loginCheck.php?resetPassword=true","loginResultDiv","loginForm");
+                            dojo.xhrGet({
+                              url: '../tool/getHash.php?username='+dijit.byId('login').get('value'),
+                              handleAs: "text",
+                              load: function (data) {
+                                cryptData(data);  
+                                loadContent("../tool/loginCheck.php?resetPassword=true","loginResultDiv","loginForm");
+                              }
+                            });
                             return false;
                           </script>
 			                  </button>  

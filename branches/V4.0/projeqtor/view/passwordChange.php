@@ -15,6 +15,7 @@
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
+  <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
@@ -63,16 +64,26 @@
              <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
              <script type="dojo/method" event="onSubmit" >
               dojo.byId('goButton').focus();
+              var extDate=new Date();
+              var userSalt=CryptoJS.SHA256('projeqtor'+extDate.getTime());
+              dojo.byId('userSalt').value=userSalt;
+              var pwd=dijit.byId('password').get('value')+userSalt;
+              var crypted=CryptoJS.SHA256(pwd);
+              dojo.byId('hashString').value=crypted;
+              dojo.byId('passwordLength').value=dijit.byId('password').get('value').length;
               loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
               return false;       
             </script><br/><br/>     
-            <div dojoType="dojox.form.PasswordValidator" name="password">
+            <div dojoType="dojox.form.PasswordValidator" id="password">
               <label class="label" style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
               <input type="password" pwType="new" /><br/>
               <br/>
               <label class="label" style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
               <input type="password" pwType="verify" /><br/>
             </div>            
+            <input type="hidden" id="hashString" name="password" value=""/>
+            <input type="hidden" id="userSalt" name="userSalt" value=""/>
+            <input type="hidden" id="passwordLength" name="passwordLength" value=""/>
             <br/>
             <label class="label" style="width:200px;">&nbsp;</label>
             <button type="submit" style="width:200px" id="goButton" dojoType="dijit.form.Button" showlabel="true">OK

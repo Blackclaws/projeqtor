@@ -297,10 +297,8 @@ if (window.addEventListener) {
   window.addEventListener("keydown", function(e){
     keys.push(e.keyCode);
     if (konami.indexOf(keys.toString())==0) {    
-      // console.log(keys.length);
       if (keys.toString().indexOf(konami) >= 0) {
         var rnd=Math.floor(Math.random()*konamiMsg.length);
-        // rnd=0; console.log(simpleCrypt(konamiMsg[rnd]));
     	showInfo(simpleDecrypt(konamiMsg[rnd]));
         keys = [];
       };
