@@ -3,11 +3,14 @@
  * Chek login/password entered in connection screen
  */
   require_once "../tool/projeqtor.php"; 
+  require_once "../external/phpAES/aes.class.php";
+  require_once "../external/phpAES/aesctr.class.php";
   scriptLog('   ->/tool/loginCheck.php');
   $login="";
   $password="";
   if (array_key_exists('login',$_POST)) {
     $login=$_POST['login'];
+    $login=AesCtr::decrypt($login, $_SESSION['sessionSalt'], 256);
   }
   if (array_key_exists('password',$_POST)) {
     $password=$_POST['password'];
@@ -56,7 +59,9 @@
 // "ldap"      error connecting to Ldap  
   
   if ( $authResult!="OK") {
-    if ($authResult=="ldap") {
+  	if ($user->locked!=0) {
+      loginErrorLocked();
+  	} else if ($authResult=="ldap") {
     	loginLdapError();
     } else {
   	  loginError();

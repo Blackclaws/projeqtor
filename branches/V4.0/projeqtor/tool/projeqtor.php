@@ -117,7 +117,7 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
     $page=substr($page,$pos+1);
   }
   scriptLog("Page=" . $page);
-  if ( ! $user and $page != 'loginCheck.php') {
+  if ( ! $user and $page != 'loginCheck.php' and $page != 'getHash.php') {
     if (is_file("login.php")) {
       include "login.php";
     } else {
@@ -134,8 +134,18 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
 		    if (array_key_exists('changePassword',$_REQUEST)) {
 		      $changePassword=true;
 		    }
-		    if ( $user->password==md5(Parameter::getGlobalParameter('paramDefaultPassword'))) {
+		    if ( ! $user->crypto)  {
 		      $changePassword=true;
+		    } else {
+		    	$defaultPwd=Parameter::getGlobalParameter('paramDefaultPassword');
+		    	if ($user->crypto=="md5") {
+		    	  $defaultPwd=md5($defaultPwd.$user->salt);
+		    	} else if ($user->crypto=="sha256") {
+		    		$defaultPwd=hash("sha256",$defaultPwd.$user->salt);
+		    	}
+		    	if ($user->password==$defaultPwd) {
+		    		$changePassword=true;
+		    	}
 		    }
 		    if ( $changePassword ) {
 		      if (is_file("passwordChange.php")) {
