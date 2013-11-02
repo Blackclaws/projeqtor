@@ -5,17 +5,17 @@
   require_once "../tool/projeqtor.php"; 
 scriptLog("changePassword.php");  
   $password="";
-
   if (array_key_exists('password',$_POST)) {
     $password=$_POST['password'];
   }    
+  $userSalt=$_POST['userSalt'];
   if ($password=="") {
     passwordError();
   }
-  if ($password==Parameter::getGlobalParameter('paramDefaultPassword')) {
+  if ($password==hash('sha256',Parameter::getGlobalParameter('paramDefaultPassword').$userSalt)) {
     passwordError();
   }
-  
+  $user=$_SESSION['user'];
   if ( ! $user ) {
    passwordError();
   } 
@@ -28,12 +28,11 @@ scriptLog("changePassword.php");
   if ($user->isLdap<>0) {
     passwordError();
   } 
-
-  if (strlen($password)<Parameter::getGlobalParameter('paramPasswordMinLength')) {
+  $passwordLength=$_POST['passwordLength'];
+  if ($passwordLength<Parameter::getGlobalParameter('paramPasswordMinLength')) {
     passwordError();
   }
-  
-  changePassword($user, $password);
+  changePassword($user, $password, $userSalt, 'sha256');
   
   /** ========================================================================
    * Display an error message because of invalid login
@@ -51,9 +50,12 @@ scriptLog("changePassword.php");
    * @param $user the user object containing login information
    * @return void
    */
-  function changePassword ($user, $newPassword) {
+  function changePassword ($user, $newPassword, $salt, $crypto) {
   	Sql::beginTransaction();
-    $user->password=md5($newPassword);
+    //$user->password=md5($newPassword); password is encryted in JS
+    $user->password=$newPassword;
+    $user->salt=$salt;
+    $user->crypto=$crypto;
     $result=$user->save();
 		if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 		  Sql::rollbackTransaction();
