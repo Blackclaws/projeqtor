@@ -368,8 +368,8 @@ class PlanningElement extends SqlElement {
     }
     
     //
-    if ($old->realWork==0 and $this->realWork!=0) {
-      $refType=$this->refType;
+    if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
+      $refType=$this->refType;     
       $refObj=new $refType($this->refId);
       if (property_exists($refObj, 'idStatus')) {
     	  $st=new Status($refObj->idStatus);

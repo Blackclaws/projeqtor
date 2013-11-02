@@ -377,8 +377,6 @@ abstract class SqlElement {
 		} else {
 			$control=$this->control();
 		}
-//debugLog(get_class($this));
-//debugLog("control=$control");
 		if ($control=="OK") {
 			//$old=new Project();
 			if (property_exists($this, 'idStatus') or property_exists($this,'reference') or property_exists($this,'idResource')
@@ -2297,23 +2295,27 @@ abstract class SqlElement {
 	 */
 	public function control(){
 		//traceLog('control (for ' . get_class($this) . ' #' . $this->id . ')');
-		global $cronnedScript;
+		global $cronnedScript, $loginSave;
 		$result="";
 		//
-		$right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
-		if ($right!='YES') { // Manage Exceptions
-			if (get_class($this)=='Alert' or get_class($this)=='Mail' 
-			 or get_class($this)=='Audit' or get_class($this)=='AuditSummary'
-			 or get_class($this)=='ColumnSelector') {
+		$right="";
+	  // Manage Exceptions
+		if (get_class($this)=='Alert' or get_class($this)=='Mail' 
+		 or get_class($this)=='Audit' or get_class($this)=='AuditSummary'
+		 or get_class($this)=='ColumnSelector') {
+			$right='YES';
+		} else if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
+			$right='YES';
+	  } else if (isset($loginSave) and $loginSave==true) { // User->save during autenticate can do everything
+        $right='YES';
+		} else if (get_class($this)=='User') { // User can change his own data (to be able to change password)
+			$usr=$_SESSION['user'];
+			if ($this->id==$usr->id) {
 				$right='YES';
-			} else if (isset($cronnedScript) and $cronnedScript==true) { // Cronned script can do everything
-				$right='YES';
-			} else if (get_class($this)=='User') { // User can change his own data (to be able to change password)
-				$usr=$_SESSION['user'];
-				if ($this->id==$usr->id) {
-					$right='YES';
-				}
 			}
+		}
+		if ($right!='YES') {
+		  $right=securityGetAccessRightYesNo('menu' . get_class($this), (($this->id)?'update':'create'), $this);
 		}
 		if ($right!='YES') {
 			$result.='<br/>' . i18n('error'.(($this->id)?'Update':'Create').'Rights');

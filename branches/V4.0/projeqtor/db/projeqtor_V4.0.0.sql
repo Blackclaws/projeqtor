@@ -183,10 +183,16 @@ UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOr'
 where parameterValue='ProjectOrRia' and parameterCode IN ('theme','defaultTheme');
 UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOrLight' 
 where parameterValue='ProjectOrRiaLight' and parameterCode IN ('theme','defaultTheme');
-UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOrContrasted' 
+UPDATE `${prefix}parameter` SET parameterValue='ProjeQtOrDark' 
 where parameterValue='ProjectOrRiaContrasted' and parameterCode IN ('theme','defaultTheme');
 UPDATE `${prefix}parameter` SET parameterValue='projeqtor' 
 where parameterValue='projector' and parameterCode='paramDefaultPassword';
+
+ALTER TABLE `${prefix}resource` ADD COLUMN `loginTry` int(5) unsigned DEFAULT '0',
+ADD COLUMN `salt` varchar(100) default null,
+ADD COLUMN `crypto` varchar(100) default 'md5';
+
+UPDATE `${prefix}resource` SET crypto='md5' WHERE isLdap=0;
 
 -- CANCELLED
 ALTER TABLE `${prefix}status` ADD COLUMN `setCancelledStatus` int(1) unsigned DEFAULT '0';
