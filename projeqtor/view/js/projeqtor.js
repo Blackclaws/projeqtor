@@ -448,6 +448,7 @@ function cleanContent(destination) {
  * @return void
  */
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
+//console.log to keep
 //console.log("loadcontent("+page+", "+destination+", "+formName+", "+isResultMessage+", "+validationType+", "+directAccess+")");
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
@@ -476,7 +477,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     } else {
 	   page+="?directAccessIndex="+directAccessIndex;
     }	   
-//console.log(page);
   } 
   showWait();
   // Direct mode, without fading effect =====
@@ -582,6 +582,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           // cleanContent(destination);
           var contentWidget = dijit.byId(destination);
           if (! contentWidget) {return;};
+          if (dijit.byId('planResultDiv')) {
+        	  dijit.byId('planResultDiv').set('content',"");
+          }
           contentWidget.set('content',data);
           checkDestination(destination);
           var contentNode = dojo.byId(destination);
@@ -626,7 +629,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             duration: 200,
             onEnd: function() {
         	  if (isResultMessage) {
-                // finalize message is return from treatment
+                // finalize message is return from treatment      		  
         		  finalizeMessageDisplay(destination, validationType);
               } else if (destination=="loginResultDiv") {
                 checkLogin();
@@ -745,6 +748,7 @@ function submitForm(page, destination, formName) {
  * @return void
  */
 function finalizeMessageDisplay(destination, validationType) {
+//console.log to keep
 //console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
@@ -1710,7 +1714,6 @@ function drawGantt() {
 }
 
 function runScript(refType, refId, id) {
-//console.log("runScript("+refType+", "+refId+", "+id+")");
   if (waitingForReply)  {
 	showInfo(i18n("alertOngoingQuery"));
     return;

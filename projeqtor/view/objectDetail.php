@@ -584,10 +584,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				// Password specificity  ============================================= PASSWORD
 				echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
 				echo $attributes;
+				$salt=hash('sha256',"projeqtor".date('YmdHis'));
 				echo ' title="' . i18n('helpResetPassword') . '" >';
 				echo '<span>' . i18n('resetPassword') . '</span>';
 				echo '<script type="dojo/connect" event="onClick" args="evt">';
-				echo '  dojo.byId("password").value="' . md5($paramDefaultPassword) . '";';
+				echo '  dijit.byId("salt").set("value","'.$salt.'");';
+				echo '  dijit.byId("crypto").set("value","sha256");';
+				echo '  dojo.byId("password").value="' . hash('sha256',$paramDefaultPassword.$salt) . '";';
 				echo '  formChanged();';
 				echo '  showInfo("' . i18n('passwordReset',array($paramDefaultPassword)) . '");';
 				echo '</script>';

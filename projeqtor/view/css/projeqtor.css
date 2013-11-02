@@ -1601,68 +1601,74 @@ label, .label {
 }
 
 /* =============================================================================== */
-/* SPECIFIC PROJEQTOR CONTRASTED THEME                                                             */
+/* SPECIFIC ProjeQtOr Contrasted THEME                                                             */
 /* =============================================================================== */
 
-.ProjeQtOrContrasted html, .ProjeQtOrContrasted body, .ProjeQtOrContrasted #leftDiv, .ProjeQtOrContrasted #logoDiv,
-.ProjeQtOrContrasted #buttonDiv,
-.ProjeQtOrContrasted .dijitSplitterH, .ProjeQtOrContrasted .dijitGutterH, .ProjeQtOrContrasted .dijitSplitterV, .ProjeQtOrContrasted .dijitGutterV,
-.ProjeQtOrContrasted .dijitMenuItemHover,
-.ProjeQtOrContrasted .dijitMenuPassive .dijitMenuItemHover,
-.ProjeQtOrContrasted .dijitMenuItemSelected,
-.ProjeQtOrContrasted .loginBackground    {
+.ProjeQtOrDark html, .ProjeQtOrDark body, .ProjeQtOrDark #leftDiv, .ProjeQtOrDark #logoDiv,
+.ProjeQtOrDark #buttonDiv,
+.ProjeQtOrDark .dijitSplitterH, .ProjeQtOrDark .dijitGutterH, .ProjeQtOrDark .dijitSplitterV, .ProjeQtOrDark .dijitGutterV,
+.ProjeQtOrDark .dijitMenuItemHover,
+.ProjeQtOrDark .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrDark .dijitMenuItemSelected,
+.ProjeQtOrDark .loginBackground    {
   background-color: #545281;
 }
 
-.ProjeQtOrContrasted #mapDiv, .ProjeQtOrContrasted #messageDiv, .ProjeQtOrContrasted #listDiv, .ProjeQtOrContrasted #detailDiv, .ProjeQtOrContrasted #formDiv, .ProjeQtOrContrasted .display, .ProjeQtOrContrasted .background,
-.ProjeQtOrContrasted .dijitTitlePaneContentInner, 
-.ProjeQtOrContrasted #mainDiv,  .ProjeQtOrContrasted #contentDiv, .ProjeQtOrContrasted #centerDiv {
+.ProjeQtOrDark #mapDiv, .ProjeQtOrDark #messageDiv, .ProjeQtOrDark #listDiv, .ProjeQtOrDark #detailDiv, .ProjeQtOrDark #formDiv, .ProjeQtOrDark .display, .ProjeQtOrDark .background,
+.ProjeQtOrDark .dijitTitlePaneContentInner, 
+.ProjeQtOrDark #mainDiv,  .ProjeQtOrDark #contentDiv, .ProjeQtOrDark #centerDiv {
   background-color: #fafafa;
 }
 
-.ProjeQtOrContrasted #statusBarDiv, .ProjeQtOrContrasted .statusBar, 
-.ProjeQtOrContrasted .dojoxGridRowSelected, .ProjeQtOrContrasted .listTitle,	 
-.ProjeQtOrContrasted .section, .ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle {
+.ProjeQtOrDark #statusBarDiv, .ProjeQtOrDark .statusBar, 
+.ProjeQtOrDark .dojoxGridRowSelected, .ProjeQtOrDark .listTitle,	 
+.ProjeQtOrDark .section, .ProjeQtOrDark .dijitTitlePane .dijitTitlePaneTitle {
   background-color: #545281;  color: #EEEEEE;  
 }
 
-.ProjeQtOrContrasted .tabLabel, .ProjeQtOrContrasted .label {
+.ProjeQtOrDark .tabLabel, .ProjeQtOrDark .label {
   background-color: #fafafa; color: #545281;
 }
-.ProjeQtOrContrasted .dojoxGridRowOver .dojoxGridCell {
+.ProjeQtOrDark .dojoxGridRowOver .dojoxGridCell {
  /*background-color: #aaaaaa; color: #545281;*/
  background: url(images/titleBar.png) #dedede top repeat-x !important;
 } 
-.ProjeQtOrContrasted .title {
+.ProjeQtOrDark .title {
   font-weight: 600;
   text-shadow: 1px 1px #000000;
 }
 
-.ProjeQtOrContrasted .display, .ProjeQtOrContrasted #printPreview {
+.ProjeQtOrDark .display, .ProjeQtOrDark #printPreview {
   border: 1px solid #fafafa;
 }
-.ProjeQtOrContrasted #toolBarDiv {
+.ProjeQtOrDark #toolBarDiv {
 	color: #545281;
 	background-color: #545281; 
 }
-.ProjeQtOrContrasted .titleProject {
+.ProjeQtOrDark .titleProject {
  color: #fafafa;  
 }
-.ProjeQtOrContrasted .title {
+.ProjeQtOrDark .title {
   font-weight: 600;
   color: #FFFFFF;
   text-shadow: 2px 2px 4px #000000;
 }
-.ProjeQtOrContrasted #logoDiv,
-.ProjeQtOrContrasted .listTitle,
-.ProjeQtOrContrasted .dijitTitlePane .dijitTitlePaneTitle,
-.ProjeQtOrContrasted .dojoxGridRowSelected, 
-.ProjeQtOrContrasted #buttonDiv  {
+
+.ProjeQtOrDark #toolBarDiv, .ProjeQtOrDark #statusBarDiv, .ProjeQtOrDark .statusBar { /**toolbar**/
+   color: #EEEEEE;
+   background: url(images/titleBarDark.png) #919191 top repeat-x !important;
+}
+
+.ProjeQtOrDark #logoDiv,
+.ProjeQtOrDark .listTitle,
+.ProjeQtOrDark .dijitTitlePane .dijitTitlePaneTitle,
+.ProjeQtOrDark .dojoxGridRowSelected, 
+.ProjeQtOrDark #buttonDiv  {
   background: url(images/titleBarDark.png) #919191 top repeat-x !important;
 }
 
 /* =============================================================================== */
-/* SPECIFIC ProjeQtOr THEME                                                             */
+/* SPECIFIC ProjeQtOr Light THEME                                                             */
 /* =============================================================================== */
 
 .ProjeQtOrLight html, .ProjeQtOrLight body, .ProjeQtOrLight #leftDiv, .ProjeQtOrLight #logoDiv,
@@ -1686,6 +1692,10 @@ label, .label {
 .ProjeQtOrLight .dojoxGridRowSelected, .ProjeQtOrLight .listTitle,
 .ProjeQtOrLight .section, .ProjeQtOrLight .dijitTitlePane .dijitTitlePaneTitle  {
   background-color: #d4d5da;  color: #545281;  
+}
+.ProjeQtOrLight #toolBarDiv, .ProjeQtOrLight #statusBarDiv, .ProjeQtOrLight .statusBar { /**toolbar**/
+   color: #505050;
+   background: url(images/titleBar.png) #dedede top repeat-x !important;
 }
 
 .ProjeQtOrLight .tabLabel, .ProjeQtOrLight .label {
@@ -1721,7 +1731,7 @@ label, .label {
   background: url(images/titleBar.png) #dedede top repeat-x !important;
 }
 /* =============================================================================== */
-/* SPECIFIC ProjeQtOr DARK THEME                                                             */
+/* SPECIFIC ProjeQtOr Default (OCEAN) THEME                                                             */
 /* =============================================================================== */
 
 .ProjeQtOr html, .ProjeQtOr body, .ProjeQtOr #leftDiv, .ProjeQtOr #logoDiv,
@@ -1744,15 +1754,13 @@ label, .label {
   background-color: #fafafa;
 }
 .ProjeQtOr #toolBarDiv, .ProjeQtOr #statusBarDiv, .ProjeQtOr .statusBar { /**toolbar**/
-   /*background-color: #545281;  color: #EEEEEE;*/ 
    color: #EEEEEE;
-   background: url(images/titleBarDarkBlue.png) #dedede top repeat-x !important;
+   background: url(images/titleBarDarkBlue.png) #545281 top repeat-x !important;
 }
 .ProjeQtOr .tabLabel, .ProjeQtOr .label {
   background-color: #fafafa; color: #545281;
 }
 .ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
- /*background-color: #aaaaaa; color: #545281;*/
  background: url(images/titleBar.png) #dedede top repeat-x !important;
 } 
 
@@ -1772,7 +1780,6 @@ label, .label {
 }
 .ProjeQtOr .dojoxGridRowSelected { /**selected lines**/
   background-color: #545281;  color: #EEEEEE; 
-  /* background-color: #d4d5da;  color: #545281; */   
 }
 .ProjeQtOr .display, .ProjeQtOr #printPreview {
   border: 1px solid #fafafa;
@@ -1790,6 +1797,325 @@ label, .label {
   background: url(images/titleBarDarkBlue.png) #545281 top repeat-x !important;
 }
 
+/* =============================================================================== */
+/* SPECIFIC ProjeQtOr Fire THEME                                                             */
+/* =============================================================================== */
+
+.ProjeQtOrFire html, .ProjeQtOrFire body, .ProjeQtOrFire #leftDiv, .ProjeQtOrFire #logoDiv,
+.ProjeQtOrFire .dijitSplitterH, .ProjeQtOrFire .dijitGutterH, .ProjeQtOrFire .dijitSplitterV, .ProjeQtOrFire .dijitGutterV,
+.ProjeQtOrFire .loginBackground {
+  background-color: #6f2525; 
+}
+
+.ProjeQtOrFire .dijitMenuItemHover,
+.ProjeQtOrFire .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrFire .dijitMenuItemSelected  {
+  background-color: #6f2525;  color: #EEEEEE; 
+}
+
+.ProjeQtOrFire #mapDiv, .ProjeQtOrFire #messageDiv, .ProjeQtOrFire #listDiv, .ProjeQtOrFire #formDiv, .ProjeQtOrFire .display, .ProjeQtOrFire .background,
+.ProjeQtOrFire .dijitTitlePaneContentInner, 
+.ProjeQtOrFire #mainDiv, .ProjeQtOrFire #centerDiv {
+  background-color: #fafafa;
+}
+.ProjeQtOrFire #toolBarDiv, .ProjeQtOrFire #statusBarDiv, .ProjeQtOrFire .statusBar { /**toolbar**/
+   color: #EEEEEE;
+   background: url(images/titleBarDarkRed.png) #6f2525 top repeat-x !important;
+}
+.ProjeQtOrFire .tabLabel, .ProjeQtOrFire .label {
+  background-color: #fafafa; color: #6f2525;
+}
+.ProjeQtOrFire .dojoxGridRowOver .dojoxGridCell {
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
+
+.ProjeQtOrFire #buttonDiv { /**toolbar**/
+  background-color: #6f2525;  color: #FFFFFF;  
+}
+
+.ProjeQtOrFire .title {
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px #000000;
+}
+.ProjeQtOrFire .listTitle {
+  background-color: #6f2525;  
+  color: #FFFFFF;
+}
+.ProjeQtOrFire .dojoxGridRowSelected { /**selected lines**/
+  background-color: #6f2525;  color: #EEEEEE;   
+}
+.ProjeQtOrFire .display, .ProjeQtOrFire #printPreview {
+  border: 1px solid #fafafa;
+}
+
+.ProjeQtOrFire .titleProject {
+ color: #EEEEEE;
+ text-shadow: 2px 2px 4px #000000;
+   
+}
+
+.ProjeQtOrFire #logoDiv,.ProjeQtOrFire .listTitle,
+.ProjeQtOrFire .dijitTitlePane .dijitTitlePaneTitle,
+.ProjeQtOrFire .dojoxGridRowSelected, .ProjeQtOrFire #buttonDiv  {
+  background: url(images/titleBarDarkRed.png) #6f2525 top repeat-x !important;
+}
+
+/* =============================================================================== */
+/* SPECIFIC ProjeQtOr Forest THEME                                                             */
+/* =============================================================================== */
+
+.ProjeQtOrForest html, .ProjeQtOrForest body, .ProjeQtOrForest #leftDiv, .ProjeQtOrForest #logoDiv,
+.ProjeQtOrForest .dijitSplitterH, .ProjeQtOrForest .dijitGutterH, .ProjeQtOrForest .dijitSplitterV, .ProjeQtOrForest .dijitGutterV,
+.ProjeQtOrForest .loginBackground {
+  background-color: #194C25; 
+}
+
+.ProjeQtOrForest .dijitMenuItemHover,
+.ProjeQtOrForest .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrForest .dijitMenuItemSelected  {
+  background-color: #194C25;  color: #EEEEEE; 
+}
+
+.ProjeQtOrForest #mapDiv, .ProjeQtOrForest #messageDiv, .ProjeQtOrForest #listDiv, .ProjeQtOrForest #formDiv, .ProjeQtOrForest .display, .ProjeQtOrForest .background,
+.ProjeQtOrForest .dijitTitlePaneContentInner, 
+.ProjeQtOrForest #mainDiv, .ProjeQtOrForest #centerDiv {
+  background-color: #fafafa;
+}
+.ProjeQtOrForest #toolBarDiv, .ProjeQtOrForest #statusBarDiv, .ProjeQtOrForest .statusBar { /**toolbar**/
+   color: #EEEEEE;
+   background: url(images/titleBarDarkGreen.png) #194C25 top repeat-x !important;
+}
+.ProjeQtOrForest .tabLabel, .ProjeQtOrForest .label {
+  background-color: #fafafa; color: #194C25;
+}
+.ProjeQtOrForest .dojoxGridRowOver .dojoxGridCell {
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
+
+.ProjeQtOrForest #buttonDiv { /**toolbar**/
+  background-color: #194C25;  color: #FFFFFF;  
+}
+
+.ProjeQtOrForest .title {
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px #000000;
+}
+.ProjeQtOrForest .listTitle {
+  background-color: #194C25;  
+  color: #FFFFFF;
+}
+.ProjeQtOrForest .dojoxGridRowSelected { /**selected lines**/
+  background-color: #194C25;  color: #EEEEEE;   
+}
+.ProjeQtOrForest .display, .ProjeQtOrForest #printPreview {
+  border: 1px solid #fafafa;
+}
+
+.ProjeQtOrForest .titleProject {
+ color: #EEEEEE;
+ text-shadow: 2px 2px 4px #000000;
+   
+}
+
+.ProjeQtOrForest #logoDiv,.ProjeQtOrForest .listTitle,
+.ProjeQtOrForest .dijitTitlePane .dijitTitlePaneTitle,
+.ProjeQtOrForest .dojoxGridRowSelected, .ProjeQtOrForest #buttonDiv  {
+  background: url(images/titleBarDarkGreen.png) #194C25 top repeat-x !important;
+}
+
+/* =============================================================================== */
+/* SPECIFIC ProjeQtOr Earth THEME                                                             */
+/* =============================================================================== */
+
+.ProjeQtOrEarth html, .ProjeQtOrEarth body, .ProjeQtOrEarth #leftDiv, .ProjeQtOrEarth #logoDiv,
+.ProjeQtOrEarth .dijitSplitterH, .ProjeQtOrEarth .dijitGutterH, .ProjeQtOrEarth .dijitSplitterV, .ProjeQtOrEarth .dijitGutterV,
+.ProjeQtOrEarth .loginBackground {
+  background-color: #50371A; 
+}
+
+.ProjeQtOrEarth .dijitMenuItemHover,
+.ProjeQtOrEarth .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrEarth .dijitMenuItemSelected  {
+  background-color: #50371A;  color: #EEEEEE; 
+}
+
+.ProjeQtOrEarth #mapDiv, .ProjeQtOrEarth #messageDiv, .ProjeQtOrEarth #listDiv, .ProjeQtOrEarth #formDiv, .ProjeQtOrEarth .display, .ProjeQtOrEarth .background,
+.ProjeQtOrEarth .dijitTitlePaneContentInner, 
+.ProjeQtOrEarth #mainDiv, .ProjeQtOrEarth #centerDiv {
+  background-color: #fafafa;
+}
+.ProjeQtOrEarth #toolBarDiv, .ProjeQtOrEarth #statusBarDiv, .ProjeQtOrEarth .statusBar { /**toolbar**/
+   color: #EEEEEE;
+   background: url(images/titleBarDarkBrown.png) #50371A top repeat-x !important;
+}
+.ProjeQtOrEarth .tabLabel, .ProjeQtOrEarth .label {
+  background-color: #fafafa; color: #50371A;
+}
+.ProjeQtOrEarth .dojoxGridRowOver .dojoxGridCell {
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
+
+.ProjeQtOrEarth #buttonDiv { /**toolbar**/
+  background-color: #50371A;  color: #FFFFFF;  
+}
+
+.ProjeQtOrEarth .title {
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px #000000;
+}
+.ProjeQtOrEarth .listTitle {
+  background-color: #50371A;  
+  color: #FFFFFF;
+}
+.ProjeQtOrEarth .dojoxGridRowSelected { /**selected lines**/
+  background-color: #50371A;  color: #EEEEEE;   
+}
+.ProjeQtOrEarth .display, .ProjeQtOrEarth #printPreview {
+  border: 1px solid #fafafa;
+}
+
+.ProjeQtOrEarth .titleProject {
+ color: #EEEEEE;
+ text-shadow: 2px 2px 4px #000000;
+   
+}
+
+.ProjeQtOrEarth #logoDiv,.ProjeQtOrEarth .listTitle,
+.ProjeQtOrEarth .dijitTitlePane .dijitTitlePaneTitle,
+.ProjeQtOrEarth .dojoxGridRowSelected, .ProjeQtOrEarth #buttonDiv  {
+  background: url(images/titleBarDarkBrown.png) #50371A top repeat-x !important;
+}
+
+/* =============================================================================== */
+/* SPECIFIC ProjeQtOr Water THEME                                                             */
+/* =============================================================================== */
+
+.ProjeQtOrWater html, .ProjeQtOrWater body, .ProjeQtOrWater #leftDiv, .ProjeQtOrWater #logoDiv,
+.ProjeQtOrWater .dijitSplitterH, .ProjeQtOrWater .dijitGutterH, .ProjeQtOrWater .dijitSplitterV, .ProjeQtOrWater .dijitGutterV,
+.ProjeQtOrWater .loginBackground {
+  background-color: #194C4C; 
+}
+
+.ProjeQtOrWater .dijitMenuItemHover,
+.ProjeQtOrWater .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrWater .dijitMenuItemSelected  {
+  background-color: #194C4C;  color: #EEEEEE; 
+}
+
+.ProjeQtOrWater #mapDiv, .ProjeQtOrWater #messageDiv, .ProjeQtOrWater #listDiv, .ProjeQtOrWater #formDiv, .ProjeQtOrWater .display, .ProjeQtOrWater .background,
+.ProjeQtOrWater .dijitTitlePaneContentInner, 
+.ProjeQtOrWater #mainDiv, .ProjeQtOrWater #centerDiv {
+  background-color: #fafafa;
+}
+.ProjeQtOrWater #toolBarDiv, .ProjeQtOrWater #statusBarDiv, .ProjeQtOrWater .statusBar { /**toolbar**/
+   color: #EEEEEE;
+   background: url(images/titleBarDarkWater.png) #194C4C top repeat-x !important;
+}
+.ProjeQtOrWater .tabLabel, .ProjeQtOrWater .label {
+  background-color: #fafafa; color: #194C4C;
+}
+.ProjeQtOrWater .dojoxGridRowOver .dojoxGridCell {
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
+
+.ProjeQtOrWater #buttonDiv { /**toolbar**/
+  background-color: #194C4C;  color: #FFFFFF;  
+}
+
+.ProjeQtOrWater .title {
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px #000000;
+}
+.ProjeQtOrWater .listTitle {
+  background-color: #194C4C;  
+  color: #FFFFFF;
+}
+.ProjeQtOrWater .dojoxGridRowSelected { /**selected lines**/
+  background-color: #194C4C;  color: #EEEEEE;   
+}
+.ProjeQtOrWater .display, .ProjeQtOrWater #printPreview {
+  border: 1px solid #fafafa;
+}
+
+.ProjeQtOrWater .titleProject {
+ color: #EEEEEE;
+ text-shadow: 2px 2px 4px #000000;
+   
+}
+
+.ProjeQtOrWater #logoDiv,.ProjeQtOrWater .listTitle,
+.ProjeQtOrWater .dijitTitlePane .dijitTitlePaneTitle,
+.ProjeQtOrWater .dojoxGridRowSelected, .ProjeQtOrWater #buttonDiv  {
+  background: url(images/titleBarDarkWater.png) #194C4C top repeat-x !important;
+}
+
+/* =============================================================================== */
+/* SPECIFIC ProjeQtOr Wine THEME                                                             */
+/* =============================================================================== */
+
+.ProjeQtOrWine html, .ProjeQtOrWine body, .ProjeQtOrWine #leftDiv, .ProjeQtOrWine #logoDiv,
+.ProjeQtOrWine .dijitSplitterH, .ProjeQtOrWine .dijitGutterH, .ProjeQtOrWine .dijitSplitterV, .ProjeQtOrWine .dijitGutterV,
+.ProjeQtOrWine .loginBackground {
+  background-color: #501C55; 
+}
+
+.ProjeQtOrWine .dijitMenuItemHover,
+.ProjeQtOrWine .dijitMenuPassive .dijitMenuItemHover,
+.ProjeQtOrWine .dijitMenuItemSelected  {
+  background-color: #501C55;  color: #EEEEEE; 
+}
+
+.ProjeQtOrWine #mapDiv, .ProjeQtOrWine #messageDiv, .ProjeQtOrWine #listDiv, .ProjeQtOrWine #formDiv, .ProjeQtOrWine .display, .ProjeQtOrWine .background,
+.ProjeQtOrWine .dijitTitlePaneContentInner, 
+.ProjeQtOrWine #mainDiv, .ProjeQtOrWine #centerDiv {
+  background-color: #fafafa;
+}
+.ProjeQtOrWine #toolBarDiv, .ProjeQtOrWine #statusBarDiv, .ProjeQtOrWine .statusBar { /**toolbar**/
+   color: #EEEEEE;
+   background: url(images/titleBarDarkPurple.png) #501C55 top repeat-x !important;
+}
+.ProjeQtOrWine .tabLabel, .ProjeQtOrWine .label {
+  background-color: #fafafa; color: #501C55;
+}
+.ProjeQtOrWine .dojoxGridRowOver .dojoxGridCell {
+ background: url(images/titleBar.png) #dedede top repeat-x !important;
+} 
+
+.ProjeQtOrWine #buttonDiv { /**toolbar**/
+  background-color: #501C55;  color: #FFFFFF;  
+}
+
+.ProjeQtOrWine .title {
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px #000000;
+}
+.ProjeQtOrWine .listTitle {
+  background-color: #501C55;  
+  color: #FFFFFF;
+}
+.ProjeQtOrWine .dojoxGridRowSelected { /**selected lines**/
+  background-color: #501C55;  color: #EEEEEE;   
+}
+.ProjeQtOrWine .display, .ProjeQtOrWine #printPreview {
+  border: 1px solid #fafafa;
+}
+
+.ProjeQtOrWine .titleProject {
+ color: #EEEEEE;
+ text-shadow: 2px 2px 4px #000000;
+   
+}
+
+.ProjeQtOrWine #logoDiv,.ProjeQtOrWine .listTitle,
+.ProjeQtOrWine .dijitTitlePane .dijitTitlePaneTitle,
+.ProjeQtOrWine .dojoxGridRowSelected, .ProjeQtOrWine #buttonDiv  {
+  background: url(images/titleBarDarkPurple.png) #501C55 top repeat-x !important;
+}
 
 /* =============================================================================== */
 /* OLD PROJECTORRIA CONTRASTED THEME                                                             */

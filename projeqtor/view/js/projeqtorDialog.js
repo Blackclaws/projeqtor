@@ -163,7 +163,6 @@ function showAbout (msg) {
  * @return void 
  */
 function showPrint (page, context, comboName, outMode) {
-//console.log("showPrint ("+page+", "+context+", "+comboName+", "+outMode+")");
 	//dojo.byId('printFrame').style.width= 1000 + 'px';
 	showWait();
 	quitConfirmed=true;
@@ -4138,6 +4137,7 @@ function loadDialog(dialogDiv,callBack, autoShow, params) {
 	  }
 	},
     error: function () {
+		//console.log to keep
 		console.log("error loading dialog "+dialogDiv);
 		hideWait();
 	}	
@@ -4169,6 +4169,7 @@ function loadReport(url,dialogDiv) {
 	  contentWidget.set('content',data);
 	},
     error: function () {
+		//console.log to keep
 		console.log("error loading report "+url+" into "+dialogDiv);
 	}	
   });
@@ -4340,7 +4341,6 @@ function saveCheckboxExport(obj,idUser){
       }
     }
   }
-  console.log('toStore='+toStore);
   dojo.xhrPost({
 	url: "../tool/saveCheckboxes.php?&objectClass="+obj+"&toStore="+toStore,
 	handleAs: "text",
@@ -4365,7 +4365,6 @@ function executeExport(obj,idUser) {
       }
     }
   }
-  console.log("toExport="+toExport);
   if(verif==1) {
     if(ExportType=='csv') {
       showPrint("../tool/jsonQuery.php?hiddenFields="+toExport, 'list', null, 'csv');  
