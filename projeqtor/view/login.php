@@ -20,7 +20,7 @@
   <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript">
-	  function cryptData(data) {
+	  function cryptData(data) {   
 		  var arr=data.split(';');
       var crypto=arr[0];
       var userSalt=arr[1];
