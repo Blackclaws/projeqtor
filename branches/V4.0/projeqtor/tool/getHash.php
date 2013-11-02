@@ -11,4 +11,8 @@ $crit=array('name'=>$username);
 $user=SqlElement::getSingleSqlElementFromCriteria('User', $crit);
 $sessionSalt=md5("projeqtor".date('YmdHis'));
 $_SESSION['sessionSalt']=$sessionSalt;
-echo $user->crypto.";".$user->salt.";".$sessionSalt;
+if (isset($user->crypto)) {
+  echo $user->crypto.";".$user->salt.";".$sessionSalt;
+} else {
+	echo ";;".$sessionSalt;
+}

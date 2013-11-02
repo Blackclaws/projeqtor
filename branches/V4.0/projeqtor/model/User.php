@@ -684,7 +684,10 @@ class User extends SqlElement {
 	 	}	
  	
 		if ($this->isLdap == 0) {
-			if ($this->crypto=='md5') {
+			if (! isset($this->crypto)) {
+				$expected=$this->password;
+        $parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
+			} else if ($this->crypto=='md5') {
 				$expected=$this->password.$_SESSION['sessionSalt'];
 				$expected=md5($expected);				
 			} else if ($this->crypto=='sha256') {

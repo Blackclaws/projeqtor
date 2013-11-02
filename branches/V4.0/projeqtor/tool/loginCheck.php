@@ -26,8 +26,7 @@
       include "../db/maintenance.php";
       exit;
     }
-  }
-  
+  }   
   if (Sql::getDbVersion()!=$version and Sql::getDbVersion()<'V3.0.0') {
   	User::setOldUserStyle();
   }
@@ -46,12 +45,17 @@
    	exit;
   } else {
   	$user=new User();
-  } 
-  
+  }  
+  if (!$user->crypto) {
+  	$currVersion=Sql::getDbVersion();
+  	if (version_compare(substr($currVersion,1), '4.0.0','<')) {
+  		traceLog("Migrating from version < V4.0.0 : previous errors are expected for Class 'User' on fields 'loginTry', 'salt' and 'crypto'");
+  		$user=SqlElement::getSingleSqlElementFromCriteria('UserOld', $crit);
+  	}
+  }
   enableCatchErrors();
   $authResult=$user->authenticate($login, $password);
-  disableCatchErrors();
-    
+  disableCatchErrors();    
 // possible returns are 
 // "OK"        login OK
 // "login"     unknown login

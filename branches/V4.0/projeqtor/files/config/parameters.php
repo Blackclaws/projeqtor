@@ -1,22 +1,13 @@
 <?php
 // =======================================================================================
 // Automatically generated parameter file
-// on 2013-01-06 21:58:16
+// on 2013-11-02 17:29:47
 // =======================================================================================
-//
-// MySql or PostgresSql
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
-//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin31!';
-//
-// Database
 $paramDbName='projeqtor_v40';$paramDbPrefix='';
-//$paramDbName='sante'; $paramDbPrefix='';
-//$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
-//
-// Fixed
-$paramDbHost='127.0.0.1'; 
+$paramDbHost='127.0.0.1';
 $logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
-//$debugQuery=true;
+$paramMailSendmailPath='';
 //======= END
