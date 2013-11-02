@@ -13,6 +13,7 @@ class User extends SqlElement {
   public $_spe_buttonSendMail;
   public $idProfile;
   public $locked;
+  public $loginTry;
   public $isLdap;
   public $_spe_image;
   public $isContact;
@@ -27,7 +28,8 @@ class User extends SqlElement {
   //public $_arrayFiltersId=array();
   public $_arrayFiltersDetail=array();
   //public $_arrayFiltersDetailId=array();
-  
+  public $salt;
+  public $crypto;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -44,7 +46,10 @@ class User extends SqlElement {
   
   private static $_fieldsAttributes=array("name"=>"required",
   										                    "isLdap"=>"hidden,forceExport",
-                                          "idProfile"=>"required"
+                                          "idProfile"=>"required",
+                                          "loginTry"=>"hidden",
+                                          "salt"=>'hidden', 
+                                          "crypto"=>'hidden'
   );  
   
   private static $_databaseCriteria = array('isUser'=>'1');
@@ -79,7 +84,8 @@ class User extends SqlElement {
   	parent::__construct($id);
     
   	if (! $this->id and Parameter::getGlobalParameter('initializePassword')=="YES") {
-  		$this->password=md5($paramDefaultPassword);
+  		$tmpSalt=hash('sha256',"projeqtor".date('YmdHis'));
+  		$this->password=hash('sha256',$paramDefaultPassword.$tmpSalt);
   	}
     if (! $this->id) {
       $this->idProfile=Parameter::getGlobalParameter('defaultProfile');
@@ -623,6 +629,16 @@ class User extends SqlElement {
   }
   
   public function save() {
+  	$old=$this->getOld();
+  	if ($old->locked and ! $this->locked) {
+  		$this->loginTry=0;
+  	}
+  	$paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
+    if (! $this->id and Parameter::getGlobalParameter('initializePassword')=="YES") {
+      $this->salt=hash('sha256',"projeqtor".date('YmdHis'));
+      $this->password=hash('sha256',$paramDefaultPassword.$this->salt);
+      $this->crypto='sha256';
+    }
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -668,12 +684,26 @@ class User extends SqlElement {
 	 	}	
  	
 		if ($this->isLdap == 0) {
-			if ($this->password <> md5($parampassword)) {
+			if ($this->crypto=='md5') {
+				$expected=$this->password.$_SESSION['sessionSalt'];
+				$expected=md5($expected);				
+			} else if ($this->crypto=='sha256') {
+				$expected=$this->password.$_SESSION['sessionSalt'];
+				$expected=hash("sha256", $expected);
+			} else {
+				$expected=$this->password;
+				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
+			}
+			if ( $expected <> $parampassword) {
+				$this->unsuccessfullLogin();
 	      return "password";
 			} else {
+				$this->successfullLogin();
 	  	  return "OK";
 	  	}
 	  } else {
+	  	// Decode password
+	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
 	  	// check password on LDAP
 	    if (! function_exists('ldap_connect')) {
 	    	errorLog('Ldap not installed on your PHP server. Check php_ldap extension or you should not set $paramLdap_allow_login to "true"');        
@@ -787,6 +817,30 @@ class User extends SqlElement {
 	  return "OK";     
   }
 
+  private function unsuccessfullLogin() {
+  	global $loginSave;
+  	$maxTry=Parameter::getGlobalParameter('paramLockAfterWrongTries');
+  	if ($maxTry) {
+  		$this->loginTry+=1;
+  		if ($this->loginTry>=$maxTry) {
+  			$this->locked=1;
+  			traceLog("user '$this->name' locked - too many tries");
+  		}
+  		$loginSave=true;
+  		$this->save();
+  	}
+  }
+  
+  private function successfullLogin() {
+  	global $loginSave;
+    $maxTry=Parameter::getGlobalParameter('paramLockAfterWrongTries');
+  	if ($maxTry) {
+      $this->loginTry=0;
+      $loginSave=true;
+      $this->save();
+  	}
+  }
+  
   public function disconnect() {
     purgeFiles(Parameter::getGlobalParameter('paramReportTempDirectory'),"user" . $this->id . "_");
     $this->stopAllWork();

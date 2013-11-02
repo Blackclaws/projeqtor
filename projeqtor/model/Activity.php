@@ -184,7 +184,6 @@ class Activity extends SqlElement {
     	}
     	$result.=$this->ActivityPlanningElement->controlHierarchicLoop($parentType, $parentId);
     }
-//debugLog("result=$result");    
     
     if (trim($this->idActivity)) {
       $parentActivity=new Activity($this->idActivity);

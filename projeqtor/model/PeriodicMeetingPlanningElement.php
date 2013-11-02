@@ -120,14 +120,14 @@ class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
   		$this->topRefType='Project';
   		$this->topRefId=$meeting->idProject;
   	}
-  	$this->validatedStartDate=$meeting->meetingDate;
-  	$this->validatedEndDate=$meeting->meetingDate;
+  	//$this->validatedStartDate=$meeting->meetingDate;
+  	//$this->validatedEndDate=$meeting->meetingDate;
   	$this->validatedDuration=1; // TODO : Could be improved : duration is less than one.
   	//$this->validatedWork=0; // TODO : To be calculated from Number of assignements x meeting duration
     $this->idProject=$meeting->idProject;
     $this->refName=$meeting->name;
     $this->idle=$meeting->idle;
-    $this->done=$meeting->done;
+    //$this->done=$meeting->done;
     $this->assignedCost=0;
     $this->realCost=0;
     $this->leftCost=0;

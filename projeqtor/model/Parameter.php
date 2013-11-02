@@ -132,7 +132,12 @@ class Parameter extends SqlElement {
     switch ($parameter) {
       case 'theme': case 'defaultTheme':
         $list=array('ProjeQtOr'=>i18n('themeProjeQtOr'),
-                    'ProjeQtOrContrasted'=>i18n('themeProjeQtOrContrasted'),
+                    'ProjeQtOrFire'=>i18n('themeProjeQtOrFire'),
+                    'ProjeQtOrForest'=>i18n('themeProjeQtOrForest'),
+                    'ProjeQtOrEarth'=>i18n('themeProjeQtOrEarth'),
+                    'ProjeQtOrWater'=>i18n('themeProjeQtOrWater'),
+                    'ProjeQtOrWine'=>i18n('themeProjeQtOrWine'),
+                    'ProjeQtOrDark'=>i18n('themeProjeQtOrDark'),
                     'ProjeQtOrLight'=>i18n('themeProjeQtOrLight'),
                     'blueLight'=>i18n('themeBlueLight'), 
                     'blue'=>i18n('themeBlue'), 
@@ -349,6 +354,7 @@ class Parameter extends SqlElement {
       	                     //'sectionPassword'=>'section',
       	                       'paramDefaultPassword'=>'text',
       	                       'paramPasswordMinLength'=>'number', 
+      	                       'paramLockAfterWrongTries'=>'number',
       	                       'initializePassword'=>'list', 
       	                     'sectionLdap'=>'section', 
       	                       'paramLdap_allow_login'=>'list',

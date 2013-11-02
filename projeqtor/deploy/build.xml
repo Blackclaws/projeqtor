@@ -48,7 +48,13 @@
   	   <fileset dir="${src.dir}/external/PHPMailer"/>
   	 </copy>
   	 <copy todir="${deploy.dir}/external/XLSXReader">
-  	    <fileset dir="${src.dir}/external/XLSXReader"/>
+  	   <fileset dir="${src.dir}/external/XLSXReader"/>
+  	 </copy>
+  	 <copy todir="${deploy.dir}/external/CryptoJS">
+  	   <fileset dir="${src.dir}/external/CryptoJS"/>
+  	 </copy>
+  	 <copy todir="${deploy.dir}/external/phpAES">
+  	   <fileset dir="${src.dir}/external/phpAES"/>
   	 </copy>
      <copy todir="${deploy.dir}/external">
 		   <fileset dir="${src.dir}/external">
