@@ -684,16 +684,17 @@ class User extends SqlElement {
 	 	}	
  	
 		if ($this->isLdap == 0) {
-			if (! isset($this->crypto)) {
-				$expected=$this->password;
-        $parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
-			} else if ($this->crypto=='md5') {
+			if ($this->crypto=='sha256') {
+        $expected=$this->password.$_SESSION['sessionSalt'];
+        $expected=hash("sha256", $expected);
+      } else if ($this->crypto=='md5') {
 				$expected=$this->password.$_SESSION['sessionSalt'];
 				$expected=md5($expected);				
-			} else if ($this->crypto=='sha256') {
-				$expected=$this->password.$_SESSION['sessionSalt'];
-				$expected=hash("sha256", $expected);
-			} else {
+			} else if ($this->crypto=='old') {
+        // Migrating to V4.0.0 : $parampassword is not MD5 unencrypted, but User->password is
+        $expected=$this->password; // is MD5 encrypted
+        $parampassword=md5(AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256));
+      } else { // no crypto
 				$expected=$this->password;
 				$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
 			}

@@ -50,7 +50,8 @@
   	$currVersion=Sql::getDbVersion();
   	if (version_compare(substr($currVersion,1), '4.0.0','<')) {
   		traceLog("Migrating from version < V4.0.0 : previous errors are expected for Class 'User' on fields 'loginTry', 'salt' and 'crypto'");
-  		$user=SqlElement::getSingleSqlElementFromCriteria('UserOld', $crit);
+  		$user->crypto='old';
+  		//$user=SqlElement::getSingleSqlElementFromCriteria('UserOld', $crit);
   	}
   }
   enableCatchErrors();
