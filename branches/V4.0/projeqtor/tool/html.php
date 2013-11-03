@@ -209,7 +209,7 @@ function htmlReturnOptionForMonths($selection, $required=false) {
  */
 function htmlDisplayInfos() {
   global $copyright, $version, $website, $aboutMessage;
-  echo "<a class='statusBar' href='$website' >$copyright $version&nbsp;</a>";
+  echo "<a class='statusBar' target='#' href='$website' >$copyright $version&nbsp;</a>";
 }
 
 /** ===========================================================================
