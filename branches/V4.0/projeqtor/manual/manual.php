@@ -77,15 +77,15 @@
   </script>
 </head>
 
-<body class="<?php echo getTheme();?>">
-<table class="section" valign="top" align="center" width="100%" height="100%" ><tr><td text-align="center" align="center">  
+<body class="<?php echo getTheme();?>" style="background-image: url();">
+<table  valign="top" align="center" width="100%" height="100%" ><tr><td text-align="center" align="center">  
   <table valign="top" align="center" height="100%">
     <tr>
       <td width="210px" valign="top" align="center">
         <div class="title" style="text-align:center; height:20px;">
           INDEX
         </div>
-        <div class="title" style="font-size:11px;text-align:left;cursor: pointer; height:20px;">
+        <div class="title" style="font-size:11px;text-align:left;cursor: pointer; height:20px;" >
           &nbsp;&nbsp;search tag : 
           <select dojoType="dijit.form.FilteringSelect" class="input" 
            style="width:110px;font-size:10px"
@@ -102,7 +102,7 @@
             </script>
           </select>
         </div> 
-        <div style="width:200px; height:600px;overflow: auto;">
+        <div style="width:200px; height:600px;overflow: auto; text-shadow: 0px 0px;">
         <?php displayIndex($page, $tag);?>
         </div>
       </td>
@@ -123,7 +123,7 @@
               <?php }?></nobr>           
             </td>
             <td valign="top">
-              <div style="overflow: auto; width: 100%; height: 40px">
+              <div style="overflow: auto; width: 100%; height: 40px; text-shadow: 0px 0px;">
                 <?php displayTopics($page);?>
               </div>
             </td>
