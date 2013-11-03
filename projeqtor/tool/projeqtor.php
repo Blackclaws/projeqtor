@@ -29,7 +29,7 @@ if (is_file("../tool/parametersLocation.php")) {
     echo " parameter file not found at '" . $parametersLocation . "'<br/>";
     echo " Check file '/tool/parametersLocation.php' or remove it to use '/tool/parameters.php'.<br/>";
     echo " <br/>";
-    echo " If problem persists, you may get some help at the forum at <a href='http://projeqtor.org/'>ProjeQtOr web site </a>.";
+    echo " If problem persists, you may get some help at the forum at <a href='http://www.projeqtor.org/'>ProjeQtOr web site </a>.";
     exit;
   }
   include_once $parametersLocation;
@@ -59,10 +59,10 @@ $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
 $version="V4.0.0";            // Version of application : Major / Minor / Release
 $build="0084";                // Build number. To be increased on each release
-$website="http://projeqtor.org"; // ProjeQtOr site url
+$website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
-$aboutMessage.='<div>' . $applicationName . ' ' . $version . '</div><br/>';
-$aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a href=\'' . $website . '\'>' . $website . '</a></div><br/>';
+$aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
+$aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a target=\'#\' href=\'' . $website . '\'>' . $website . '</a></div><br/>';
 
 $isAttachementEnabled=true;   // allow attachement
 if (! Parameter::getGlobalParameter('paramAttachementDirectory') or ! Parameter::getGlobalParameter('paramAttachementMaxSize')) {
