@@ -290,6 +290,12 @@ if ($currVersion<"V4.0.0") {
   error_reporting(E_ALL);
   enableCatchErrors();
 }
+$tstTable=new OverallProgress();
+$tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
+if (! $tst or count($tst)==0) {
+  $nbErrors+=runScript('V4.0.1.linux');
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

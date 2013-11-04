@@ -134,7 +134,7 @@ class Workflow extends SqlElement {
       }     
       $nbProfiles=count($profileList);
       $result .= '<div style="border: 1px solid #A0A0A0;overflow: auto; width: ' . $detailWidth . '">';
-      $result .= '<table style="zoom:90%;">';
+      $result .= '<table style="zoom:100%;">';
 
       $wsListArray=$this->getWorkflowstatusArray();
       foreach ($statusList as $statLineCode => $statLineValue) {

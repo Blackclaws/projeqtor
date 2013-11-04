@@ -1788,6 +1788,6 @@ themeProjeQtOrForest: "ProjeQtOr Forest",
 themeProjeQtOrLight: "ProjeQtOr Light",
 themeProjeQtOrWater: "ProjeQtOr Water",
 themeProjeQtOrWine: "ProjeQtOr Wine",
-titleResetList: "reset displayto default configuration",
+titleResetList: "reset display to default configuration",
 currentLocaleOfFile: "en"
 }
