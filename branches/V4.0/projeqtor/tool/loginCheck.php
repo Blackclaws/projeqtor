@@ -22,6 +22,7 @@
     loginError();
   }
   if (! Sql::getDbVersion()) {
+	$password=AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256);
     if ($login=="admin" and $password=="admin") {
       include "../db/maintenance.php";
       exit;
