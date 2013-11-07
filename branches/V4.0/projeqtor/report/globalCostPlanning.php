@@ -1,7 +1,6 @@
 <?php 
 //echo "globalCostPlanning.php";
 include_once '../tool/projeqtor.php';
-echo "globalCostPlanning.php";
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
@@ -154,11 +153,11 @@ echo "<table width='95%' align='center'><tr>";
 echo '<td><table width="100%" align="left"><tr>';
 echo "<td class='reportTableDataFull' style='width:20px; text-align:center;'>";
 echo "1";
-echo "</td><td width='100px' class='legend'>" . i18n('colRealWork') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colRealCost') . "</td>";
 echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '>';
 echo "<i>1</i>";
-echo "</td><td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
+echo "</td><td width='100px' class='legend'>" . i18n('colPlannedCost') . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr></table>";
 echo "<br/>";
