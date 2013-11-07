@@ -120,7 +120,7 @@ ALTER TABLE `${prefix}document` ADD COLUMN `externalReference` varchar(100);
 
 ALTER TABLE `${prefix}statusmail` ADD COLUMN `idType` int(12) unsigned DEFAULT NULL;
 
-CREATE TABLE `${prefix}overallProgress` (
+CREATE TABLE `${prefix}overallprogress` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
   `sortOrder` int(3) unsigned DEFAULT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE `${prefix}overallProgress` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `${prefix}overallProgress` (`id`, `name`, `sortOrder`, `idle`) VALUES
+INSERT INTO `${prefix}overallprogress` (`id`, `name`, `sortOrder`, `idle`) VALUES
 (1, '0%', 100, 0),
 (2, '10%', 200, 0),
 (3, '25%', 300, 0),
@@ -262,4 +262,4 @@ where refType='TestSession';
 ALTER TABLE `${prefix}meeting` ADD COLUMN `cancelled` int(1) unsigned DEFAULT '0';
 UPDATE `${prefix}meeting` SET cancelled=1 WHERE idStatus=9;
 UPDATE `${prefix}planningelement` PE SET cancelled=(select cancelled from `${prefix}meeting` XXX where PE.refId=XXX.id)
-where refType='M  eeting';
+where refType='Meeting';
