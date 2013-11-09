@@ -104,6 +104,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;position: relative;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
+                    showWait();
                     dojo.byId('login').focus();
                     changePassword=false;
                     quitConfirmed=true;
@@ -167,6 +168,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                  <button tabindex="4" id="passwordButton" type="button" dojoType="dijit.form.Button" showlabel="true">
 			                    <?php echo i18n('buttonChangePassword') ?>
 			                    <script type="dojo/connect" event="onClick" args="evt">
+                            showWait();
                             dojo.byId('login').focus();
                             changePassword=true;
                             dojo.xhrGet({
