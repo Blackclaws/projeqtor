@@ -11,7 +11,7 @@ ini_set('memory_limit', '512M');
 	$bPrjSheet=($tabPrj['prj']['id']==$idProject && $bMultiPrj);
 
 	$indicator="neutral";
-	$diff=round($tabPrj['prj']['real']+$tabPrj['prj']['left'] - $tabPrj['prj']['send'], 2);
+	$diff=round($tabPrj['prj']['real']+$tabPrj['prj']['left'] - $tabPrj['prj']['validated'], 2);
 	if($diff>0) {
 		$indicator="unhappy";
 	} else if($diff<0) {
@@ -22,7 +22,7 @@ ini_set('memory_limit', '512M');
 	
 	$color1='#32FF32';
 	$color2='#32FF32';
-	if (($tabPrj['prj']['left']+$tabPrj['prj']['real'])>$tabPrj['prj']['send']) $color1='#FF3232';
+	if (($tabPrj['prj']['left']+$tabPrj['prj']['real'])>$tabPrj['prj']['validated']) $color1='#FF3232';
 	if (($tabPrj['prj']['left']+$tabPrj['prj']['real'])>$tabPrj['prj']['assigned']) $color2='#FF3232';
 	
 	echo '<table align="center" style="page-break-inside: avoid;" >';
@@ -39,15 +39,17 @@ ini_set('memory_limit', '512M');
 	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colAssigned') . '</td>';
 	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colReal') . '</td>';
 	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colLeft') . '</td>';
+	echo '<td class="reportTableHeader" style="xwidth:15%;">' . i18n('colPlanned') . '</td>';
 	echo '</tr>';
 	echo '<tr>';
 	echo '<td class="reportTableLineHeader" style="width:45%;background-color:' . $tabPrj['prj']['color'] . '">' . htmlEncode($tabPrj['prj']['name']) . '</td>';
 	echo '<td class="reportTableLineHeader" style="width:20px;" title='. Work::displayWork($diff) .'>
 					<img style="width:16px" src="../view/css/images/indicator_' . $indicator . '.png" /></td>';
-	echo '<td class="reportTableData" style="width:10%;color:' . $color1 . ';"><b>' .  Work::displayWork($tabPrj['prj']['send']) . '</b></td>';
+	echo '<td class="reportTableData" style="width:10%;color:' . $color1 . ';"><b>' .  Work::displayWork($tabPrj['prj']['validated']) . '</b></td>';
 	echo '<td class="reportTableData" style="width:10%;color:' . $color2 . ';"><b>' .  Work::displayWork($tabPrj['prj']['assigned']) . '</b></td>';
 	echo '<td class="reportTableData" style="width:10%;">' .  Work::displayWork($tabPrj['prj']['real']) . '</td>';
 	echo '<td class="reportTableData" style="width:10%;">' .  Work::displayWork($tabPrj['prj']['left']) . '</td>';
+	echo '<td class="reportTableData" style="width:10%;">' .  Work::displayWork($tabPrj['prj']['planned']) . '</td>';
 	echo '</tr>';
 //	echo '<tr><td colspan=8><br/></td></tr>';
 	
@@ -66,7 +68,7 @@ ini_set('memory_limit', '512M');
 		echo '<td class="reportTableHeader" >' . i18n('colValidatedWork2') . '</td>';
 		echo '<td class="reportTableHeader" >' . i18n('colValidatedPricePerDayAmount2') . '</td>';
 		echo '<td class="reportTableHeader" >' . i18n('colValidatedAmount2') . '</td>';
-		echo '<td class="reportTableHeader" >' . i18n('colIdStatus') . '</td>';
+		echo '<td colspan="2" class="reportTableHeader" >' . i18n('colIdStatus') . '</td>';
 		echo '</tr>';
 		
 		foreach ($tabPrj['bc'] as $item) {
@@ -92,14 +94,17 @@ ini_set('memory_limit', '512M');
 	if ($bPrjSheet) {
 		echo '<tr rowspan=2>';
 		echo '<td class="reportTableHeader" rowspan=2 colspan=2>' . i18n('colWork') . '</td>';
+		echo '<td class="reportTableHeader" ></td>';
 	} else {
 		
 		$nb=count($tabPrj['charge'])+2;
 		echo '<tr rowspan=' . $nb . '>';
 		echo '<td class="reportTableHeader" rowspan=' . $nb . ' style="width:150px;">' . i18n('colIdActivityType') . '</td>';
 		echo '<td class="reportTableHeader" colspan=2>' . i18n('colName') . '</td>';
+		echo '<td class="reportTableHeader" >' . i18n('colValidated') . '</td>';
 		
 	}
+	
 	echo '<td class="reportTableHeader" >' . i18n('colAssigned') . '</td>';
 	echo '<td class="reportTableHeader" >' . i18n('colReal') . '</td>';
 	echo '<td class="reportTableHeader" >' . i18n('colLeft') . '</td>';
@@ -113,7 +118,7 @@ ini_set('memory_limit', '512M');
 			$idActType=$actType->id;
 		
 			if (array_key_exists($idActType,$tabPrj['charge'])) {
-					
+				$wValidated=0; // TODO	
 				$wAssign=$tabPrj['charge'][$idActType]['assigned'];
 				$wLeft=$tabPrj['charge'][$idActType]['left'];
 				$wReal=$tabPrj['charge'][$idActType]['real'];
@@ -132,7 +137,7 @@ ini_set('memory_limit', '512M');
 				echo '<td class="reportTableLineHeader">' . htmlEncode($tabPrj['charge'][$idActType]['name']) . '</td>';
 				echo '<td class="reportTableLineHeader" style="width:20px;" title='. Work::displayWork($diff) .'>
 						<img style="width:16px" src="../view/css/images/indicator_' . $indicator . '.png" /></td>';
-					
+				echo '<td class="reportTableData">' . Work::displayWork($wValidated) . '</td>';	
 				echo '<td class="reportTableData">' . Work::displayWork($wAssign) . '</td>';
 				echo '<td class="reportTableData">' . Work::displayWork($wReal) . '</td>';
 				echo '<td class="reportTableData">' . Work::displayWork($wLeft) . '</td>';
@@ -146,7 +151,7 @@ ini_set('memory_limit', '512M');
 	} else {
 		echo '<tr>';
 	}
-	
+	echo '<td class="reportTableHeader"></td>';
 	echo '<td class="reportTableHeader">' . Work::displayWork($tabPrj['prj']['assigned']) . '</td>';
 	echo '<td class="reportTableHeader">' . Work::displayWork($tabPrj['prj']['real']) . '</td>';
 	echo '<td class="reportTableHeader">' . Work::displayWork($tabPrj['prj']['left']) . '</td>';

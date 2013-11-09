@@ -200,7 +200,7 @@ class PlanningElement extends SqlElement {
    * Triggers parent::save() to run defaut functionality in the end.
    * @return the result of parent::save() function
    */
-  public function save() {
+  public function save() {  	
   	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
     if (! $this->idProject) {

@@ -56,7 +56,6 @@ class Activity extends SqlElement {
     <th field="plannedEndDate" from="ActivityPlanningElement" width="8%" formatter="dateFormatter">${plannedDueDate}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="progress" from="ActivityPlanningElement" width="5%" formatter="percentFormatter">${progress}</th>
-    <th field="nameVersion" width="8%" >${targetVersion}</th>
     <th field="nameResource" width="8%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
