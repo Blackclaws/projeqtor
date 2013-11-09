@@ -578,12 +578,12 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   
   // Ticket #1175
   public function updateValidatedWork() {
-	$lst=null;
+	  $lst=null;
   	$sumValidatedWork=0;
   	$sumValidatedCost=0;
   	$order=new Command();
   	$lst=$order->getSqlElementsFromCriteria(array('idProject'=>$this->id, 'cancelled'=>'0'));
-  	foreach ($lst as $item) {
+  	foreach ($lst as $item) { 		
   		$sumValidatedWork+=$item->validatedWork;
   		$sumValidatedCost+=$item->validatedAmount;
   	}
