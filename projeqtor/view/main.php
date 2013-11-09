@@ -124,7 +124,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var paramCurrency='<?php echo $currency;?>';
     var paramCurrencyPosition='<?php echo $currencyPosition;?>';
     var paramWorkUnit='<?php echo Parameter::getGlobalParameter('workUnit');?>';
+    if (! paramWorkUnit) paramWorkUnit='days';
     var paramHoursPerDay='<?php echo Parameter::getGlobalParameter('dayTime');?>';
+    if (! paramHoursPerDay) paramHoursPerDay=8;
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 

@@ -155,10 +155,11 @@ function numericFormatter(value) {
 
 function workFormatter(value) {
 	  // result=dojo.number.format(value);
+	  if (paramWorkUnit!='days') value=value*paramHoursPerDay;
 	  roundedValue=dojo.number.format(Math.round(value*100)/100);
 	  // var result = roundedValue.replace(/^0+/g,'');
 	  // result = value.replace(/^0+/g,'');
-	  var unit=(paramWorkUnit=='days')?i18n('shortDay'):i18n('shortHours');
+	  var unit=(paramWorkUnit=='days')?i18n('shortDay'):i18n('shortHour');
 	  return roundedValue+'&nbsp;'+unit;
 	}
 

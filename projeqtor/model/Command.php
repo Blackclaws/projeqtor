@@ -18,7 +18,7 @@ class Command extends SqlElement {
   public $description;
   public $_tab_2_2 = array('initial', 'validated', 'startDate', 'endDate');
   public $initialStartDate; 
-  public $_void_12;
+  public $validatedStartDate; 
   public $initialEndDate;
   public $validatedEndDate;
   public $additionalInfo;
@@ -60,10 +60,10 @@ class Command extends SqlElement {
     <th field="name" width="12%" >${name}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="8%" >${responsible}</th>
-    <th field="validatedEndDate" width="8%" >${validatedEndDate}</th>
-  	<th field="validatedWork" formatter="numericFormatter" width="4%" >${validatedWork2}</th>
-  	<th field="validatedPricePerDayAmount" formatter="numericFormatter" width="4%" >${validatedPricePerDayAmount2}</th>
-  	<th field="validatedAmount" formatter="numericFormatter" width="4%" >${validatedAmount2}</th>
+    <th field="validatedEndDate" width="8%" formatter="dateFormatter" >${validatedEndDate}</th>
+  	<th field="validatedWork" formatter="workFormatter" width="5%" >${validatedWork}</th>
+  	<th field="validatedPricePerDayAmount" formatter="costFormatter" width="7%" >${validatedPricePerDayAmount}</th>
+  	<th field="validatedAmount" formatter="costFormatter" width="7%" >${validatedAmount}</th>
   	<th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
