@@ -261,14 +261,16 @@ if ($currVersion<"V4.0.0") {
   $files = glob($root.'/db/Projector_*.sql'); // get all file names
   error_reporting(0);
   disableCatchErrors();
-  foreach($files as $file){ // iterate files
-    if(is_file($file))
-      $perms = fileperms($file);
-      if ($perms & 0x0080) {
-        $do=@unlink($file); // delete file
-      } else {
-      	errorLog("Cannot delete file : ".$file);
-      } 
+  if ($files) {
+	  foreach($files as $file){ // iterate files
+	    if(is_file($file))
+	      $perms = fileperms($file);
+	      if ($perms & 0x0080) {
+	        $do=@unlink($file); // delete file
+	      } else {
+	      	errorLog("Cannot delete file : ".$file);
+	      } 
+	  }
   }  
   $arrayFiles=array('/tool/projector.php',
     '/view/js/projector.js',

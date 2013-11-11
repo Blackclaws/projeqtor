@@ -20,7 +20,7 @@ CREATE TABLE `${prefix}today` (
 
 CREATE INDEX todayUser ON `${prefix}today` (idUser);
 
-CREATE TABLE `${prefix}todayParameter` (
+CREATE TABLE `${prefix}todayparameter` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idUser` int(12) unsigned DEFAULT NULL,
   `idReport` int(12) unsigned DEFAULT NULL,
@@ -30,9 +30,9 @@ CREATE TABLE `${prefix}todayParameter` (
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX todayParameterUser ON `${prefix}todayParameter` (idUser);
-CREATE INDEX todayParameterReport ON `${prefix}todayParameter` (idReport);
-CREATE INDEX todayParameterToiday ON `${prefix}todayParameter` (idToday);
+CREATE INDEX todayParameterUser ON `${prefix}todayparameter` (idUser);
+CREATE INDEX todayParameterReport ON `${prefix}todayparameter` (idReport);
+CREATE INDEX todayParameterToiday ON `${prefix}todayparameter` (idToday);
 
 INSERT INTO `${prefix}today` (`idUser`,`scope`,`staticSection`,`idReport`,`sortOrder`,`idle`)
 SELECT id, 'static','Projects',null,1,0 FROM `${prefix}resource` where isUser=1 and idle=0;

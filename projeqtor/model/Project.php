@@ -578,6 +578,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   
   // Ticket #1175
   public function updateValidatedWork() {
+  	if (! $this->id) return;
 	  $lst=null;
   	$sumValidatedWork=0;
   	$sumValidatedCost=0;
