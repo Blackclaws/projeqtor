@@ -351,7 +351,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
     </tr>
     <tr height="90%">
       <td colspan="3" align="left" valign="top">
-          <form  dojoType="dijit.form.Form" id="configForm" jsId="configForm" name="configForm" encType="multipart/form-data" action="" method="" >
+          <form  dojoType="dijit.form.Form" id="configForm" jsId="configForm" name="configForm" encType="multipart/form-data" action="" method="POST" >
             <script type="dojo/method" event="onSubmit" >
               loadContent("../tool/configCheck.php","configResultDiv", "configForm");
               return false;        
@@ -411,7 +411,8 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
                 </td>
                 <td></td>
                 <td>a php file name where to store parameters<br/><b>Security hint :</b> move it ouside web access</td>
-                <tr><td colspan="4">&nbsp;</td>
+              </tr>
+              <tr><td colspan="4">&nbsp;</td>
               </tr>
               <tr>
                 <td></td>

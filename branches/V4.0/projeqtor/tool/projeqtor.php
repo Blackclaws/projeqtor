@@ -1,6 +1,15 @@
 <?php
 spl_autoload_register('projeqtorAutoload', true, true);
 session_start();              // Setup session. Must be first command.
+// === Application data : version, dependencies, about message, ...
+$applicationName="ProjeQtOr"; // Name of the application
+$copyright=$applicationName;  // Copyright to be displayed
+$version="V4.0.1";            // Version of application : Major / Minor / Release
+$build="0085";                // Build number. To be increased on each release
+$website="http://www.projeqtor.org"; // ProjeQtOr site url
+$aboutMessage='';             // About message to be displayed when clicking on application logo
+$aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
+$aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a target=\'#\' href=\'' . $website . '\'>' . $website . '</a></div><br/>';
 /** ============================================================================
  * Global tool script for the application.
  * Must be included (include once) on each script remotely called.
@@ -54,15 +63,6 @@ securityCheckRequest();
 
 $paramIconSize=setupIconSize();              // 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
-// === Application data : version, dependencies, about message, ...
-$applicationName="ProjeQtOr"; // Name of the application
-$copyright=$applicationName;  // Copyright to be displayed
-$version="V4.0.1";            // Version of application : Major / Minor / Release
-$build="0085";                // Build number. To be increased on each release
-$website="http://www.projeqtor.org"; // ProjeQtOr site url
-$aboutMessage='';             // About message to be displayed when clicking on application logo
-$aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
-$aboutMessage.='<div>' . i18n("aboutMessageWebsite") . ' : <a target=\'#\' href=\'' . $website . '\'>' . $website . '</a></div><br/>';
 
 $isAttachementEnabled=true;   // allow attachement
 if (! Parameter::getGlobalParameter('paramAttachementDirectory') or ! Parameter::getGlobalParameter('paramAttachementMaxSize')) {
