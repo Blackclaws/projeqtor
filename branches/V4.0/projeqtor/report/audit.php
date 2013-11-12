@@ -58,11 +58,9 @@ for ($i=1;$i<=$monthDays;$i++) {
 foreach ($result as $as) {
 	$d=intval(substr($as->auditDay,6));
 	$nb[$d]=$as->numberSessions;
-	$min[$d]=$as->minDuration;
-	$max[$d]=$as->maxDuration;
-	$mean[$d]=strtotime(date('Y-m-d ').$as->meanDuration)-strtotime(date('Y-m-d 00:00:00')); 
-	$min[$d]=strtotime(date('Y-m-d ').$as->minDuration)-strtotime(date('Y-m-d 00:00:00'));
-	$max[$d]=strtotime(date('Y-m-d ').$as->maxDuration)-strtotime(date('Y-m-d 00:00:00'));  
+	$mean[$d]=formatDateRpt($as->meanDuration);
+	$min[$d]=formatDateRpt($as->minDuration);
+	$max[$d]=formatDateRpt($as->maxDuration);	  
 }
 
 // Graph
@@ -145,5 +143,20 @@ echo '<img src="' . $imgName . '" />';
 echo '</td></tr></table>';
 echo '<br/>';
 
+function formatDateRpt($dateRpt) {
+	$baseDay=date('Y-m-d');
+	if ($dateRpt>'24:00:00') {
+		$split=explode(':',$dateRpt);
+		$hours=$split[0];
+		while ($hours>=24) {
+			$hours-=24;
+			$baseDay=addDaysToDate($baseDay, 1);
+		}
+		$dateRpt=$hours.':00:00';
+	}
+	
+  return strtotime($baseDay.' '.$dateRpt)-strtotime(date('Y-m-d 00:00:00'));
+}  
+   
 ?>
 
