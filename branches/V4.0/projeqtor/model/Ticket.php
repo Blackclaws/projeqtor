@@ -55,7 +55,7 @@ class Ticket extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="7%" >${idProject}</th>
-    <th field="nameticketType" width="7%" >${idTicketType}</th>
+    <th field="nameTicketType" width="7%" >${idTicketType}</th>
     <th field="name" width="16%" >${name}</th>
     <th field="nameUser" width="7%" >${issuer}</th>
     <th field="colorNameUrgency" width="7%" formatter="colorNameFormatter">${idUrgency}</th>
