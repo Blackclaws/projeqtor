@@ -46,7 +46,8 @@ class Audit extends SqlElement {
   private static $_fieldsAttributes=array("auditDay"=>"hidden", 
      "disconnection"=>"hidden",
      "idUser"=>"hidden",
-     "requestRefreshParam"=>"hidden" );
+     "requestRefreshParam"=>"hidden",
+     "requestRefreshProject"=>"hidden" );
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
