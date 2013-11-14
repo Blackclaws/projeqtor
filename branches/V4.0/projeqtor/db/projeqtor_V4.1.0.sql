@@ -11,3 +11,5 @@ DELETE FROM `${prefix}columnselector` WHERE attribute='idTicketType' and hidden=
 
 UPDATE `${prefix}columnselector` set attribute='idTicketType', field='nameTicketType'
 WHERE attribute='idticketType';
+
+DELETE FROM `${prefix}columnselector` WHERE attribute='requestRefreshProject';
