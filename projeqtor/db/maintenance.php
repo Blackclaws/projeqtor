@@ -550,6 +550,19 @@ function deleteDuplicate() {
       $parameterCode=$par->parameterCode;
     }
   }
+// REPORT PARAMETER
+  $par=new ReportParameter();
+  $parList=$par->getSqlElementsFromCriteria(array(), false, null, 'idReport, name');
+  $idReport='';
+  $name='';
+  foreach ($parList as $par) {
+    if ($par->idReport==$idReport and $par->name==$name) {
+      $par->delete();
+    } else {
+      $idReport=$par->idReport;
+      $name=$par->name;
+    }
+  }
 }
 
 function formatForDbType($query) {

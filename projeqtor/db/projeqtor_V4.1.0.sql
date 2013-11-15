@@ -13,3 +13,7 @@ UPDATE `${prefix}columnselector` set attribute='idTicketType', field='nameTicket
 WHERE attribute='idticketType';
 
 DELETE FROM `${prefix}columnselector` WHERE attribute='requestRefreshProject';
+
+DELETE FROM `${prefix}workelement` where (refType, refId) in 
+(select refType, refId from (select * from `${prefix}workelement` w) ww group by refType, refId having count(*) > 1)
+and plannedWork is null and realWork is null;
