@@ -706,6 +706,7 @@ class User extends SqlElement {
 	  	  return "OK";
 	  	}
 	  } else {
+	  	disableCatchErrors();
 	  	// Decode password
 	  	$parampassword=AesCtr::decrypt($parampassword, $_SESSION['sessionSalt'], 256);
 	  	// check password on LDAP
@@ -756,16 +757,17 @@ class User extends SqlElement {
 			$ldap_user_dn = $first_user['dn'];
 
 			// Bind with the dn of the user that matched our filter (only one user should match filter ..)
-
+      enableCatchErrors();
 			try {
-			  $bind_user = ldap_bind($ldapCnx, $ldap_user_dn, $parampassword);
+				$bind_user = @ldap_bind($ldapCnx, $ldap_user_dn, $parampassword);
 			} catch (Exception $e) {
         traceLog("authenticate - LdapBind Error : " . $e->getMessage() );
-        return "ldap";
-      }   
-			if (! $bind_user) {
+        return "login";
+      }  
+			if (! $bind_user) {			
 				return "login";
 			}
+			disableCatchErrors();
 			if (! $this->id and $this->isLdap) {
 				if (!count($first_user) == 0) {
 					Sql::beginTransaction();
