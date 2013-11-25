@@ -406,16 +406,24 @@ class User extends SqlElement {
       return $this->_visibleProjectsIncludingClosed;
     }
     $result=array();
-    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
-    foreach($affPrjList as $idPrj=>$namePrj) {
-    	if (! isset($result[$idPrj])) {
-	      $result[$idPrj]=$namePrj;
-	      $prj=new Project($idPrj);
-	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
-	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
-	        $result[$idSubPrj]=$nameSubPrj;
-	      }
-    	}  
+    $accessRightRead=securityGetAccessRight('menuProject', 'read');
+    if ($accessRightRead=="ALL") {
+    	$listAllProjects=SqlList::getList('Project');
+    	foreach($listAllProjects as $idPrj=>$namePrj) {
+    		$result[$idPrj]=$namePrj;
+    	}
+    } else {
+	    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
+	    foreach($affPrjList as $idPrj=>$namePrj) {
+	    	if (! isset($result[$idPrj])) {
+		      $result[$idPrj]=$namePrj;
+		      $prj=new Project($idPrj);
+		      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
+		      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+		        $result[$idSubPrj]=$nameSubPrj;
+		      }
+	    	}  
+	    }
     }
     if ($limitToActiveProjects) {
       $this->_visibleProjects=$result;
