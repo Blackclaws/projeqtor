@@ -406,16 +406,24 @@ class User extends SqlElement {
       return $this->_visibleProjectsIncludingClosed;
     }
     $result=array();
-    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
-    foreach($affPrjList as $idPrj=>$namePrj) {
-    	if (! isset($result[$idPrj])) {
-	      $result[$idPrj]=$namePrj;
-	      $prj=new Project($idPrj);
-	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
-	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
-	        $result[$idSubPrj]=$nameSubPrj;
-	      }
-    	}  
+    $accessRightRead=securityGetAccessRight('menuProject', 'read');
+    if ($accessRightRead=="ALL") {
+    	$listAllProjects=SqlList::getList('Project');
+    	foreach($listAllProjects as $idPrj=>$namePrj) {
+    		$result[$idPrj]=$namePrj;
+    	}
+    } else {
+	    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
+	    foreach($affPrjList as $idPrj=>$namePrj) {
+	    	if (! isset($result[$idPrj])) {
+		      $result[$idPrj]=$namePrj;
+		      $prj=new Project($idPrj);
+		      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
+		      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+		        $result[$idSubPrj]=$nameSubPrj;
+		      }
+	    	}  
+	    }
     }
     if ($limitToActiveProjects) {
       $this->_visibleProjects=$result;
@@ -539,7 +547,7 @@ class User extends SqlElement {
           self::resetAllVisibleProjects(null, null);
         } else {
       	  $audit=new Audit();
-	        $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$aff->idUser, 'idle'=>'0'));
+	        $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$aff->idUSer, 'idle'=>'0'));
 	        foreach ($auditList as $audit) {
 	         $audit->$requestRefreshProject=1;
 	         $res=$audit->save();
