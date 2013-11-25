@@ -40,7 +40,8 @@ $versionHistory = array(
   "V3.4.0",
   "V3.4.1",
   "V4.0.0",
-  "V4.0.1");
+  "V4.0.1",
+  "V4.1.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -297,6 +298,12 @@ $tstTable=new OverallProgress();
 $tst=Sql::query("select count(*) from ". $tstTable->getDatabaseTableName()) ;
 if (! $tst or count($tst)==0) {
   $nbErrors+=runScript('V4.0.1.linux');
+}
+
+if ($currVersion<"V4.0.0") {
+	if (isset($flashReport) and ($flashReport=true or $flashReport='true')) {
+		$nbErrors+=runScript('V4.1.0.fr');
+	}
 }
 
 // To be sure, after habilitations updates ...
