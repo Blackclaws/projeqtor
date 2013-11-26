@@ -7,7 +7,8 @@ class Project extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_Description;
-  public $id;    // redefine $id to specify its visible place 
+  public $id;    // redefine $id to specify its visible place
+  public $_spe_rf; 
   public $name;
   public $idProjectType;
   public $codeType;
@@ -382,6 +383,28 @@ class Project extends SqlElement {
       drawAffectationsFromObject($affList, $this, 'Resource', false);  
       drawAffectationsFromObject($affList, $this, 'Contact', false); 
       return $result;
+    } else if ($item=='rf') { 
+    	global $flashReport;
+    	if (isset($flashReport) and ($flashReport=true or $flashReport='true')) {
+    		$top=30;$left=10;
+    		$result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px;">'
+    		  . '<button id="printButtonRf" dojoType="dijit.form.Button" showlabel="false"'
+    		  . ' title="'.i18n('flashReport').'"'
+          . ' iconClass="iconFlash" >'
+          . ' <script type="dojo/connect" event="onClick" args="evt">'
+          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'");'
+          . ' </script>'
+          . '</button>'  
+          . '<button id="printButtonPefRf" dojoType="dijit.form.Button" showlabel="false"'
+          . ' title="'.i18n('flashReport').'"'
+          . ' iconClass="iconFlashPdf" >'
+          . ' <script type="dojo/connect" event="onClick" args="evt">'
+          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'", null, null, "pdf");'
+          . ' </script>'
+          . '</button>'  
+          . '</div>';
+        return $result;
+    	}
     }
   }
   

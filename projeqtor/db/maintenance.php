@@ -300,7 +300,7 @@ if (! $tst or count($tst)==0) {
   $nbErrors+=runScript('V4.0.1.linux');
 }
 
-if ($currVersion<"V4.0.0") {
+if ($currVersion<"V4.1.0") {
 	if (isset($flashReport) and ($flashReport=true or $flashReport='true')) {
 		$nbErrors+=runScript('V4.1.0.fr');
 	}

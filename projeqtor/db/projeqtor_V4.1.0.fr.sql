@@ -9,7 +9,7 @@
 --
 
 INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`) VALUES 
-(51, 'reportProject', '9', 'projectFlashReport.php', '930', '0');
+(51, 'flashReport', '9', 'projectFlashReport.php', '930', '0');
 
 INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
 (51, 'idProject', 'projectList', 10, 0, 'currentProject');
