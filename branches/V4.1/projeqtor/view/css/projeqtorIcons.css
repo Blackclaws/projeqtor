@@ -14,6 +14,12 @@
 .iconColumnSelector { background-image: url(images/iconColumnSelector16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .dijitDisabled .iconColumnSelector { background-image: url(images/iconColumnSelector16Disabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
+.iconFlashPdf { background-image: url(images/flashPdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+.iconFlash { background-image: url(images/flash.png); background-repeat: no-repeat; width: 16px; height: 16px;}
+
+
+
+
 .iconCollapse {
   background-image: url(images/minus.gif);
   background-repeat: no-repeat;
