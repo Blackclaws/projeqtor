@@ -385,7 +385,7 @@ class Project extends SqlElement {
       return $result;
     } else if ($item=='rf') { 
     	global $flashReport;
-    	if (isset($flashReport) and ($flashReport=true or $flashReport='true')) {
+    	if ($this->id and isset($flashReport) and ($flashReport=true or $flashReport='true')) {
     		$top=30;$left=10;
     		$result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px;">'
     		  . '<button id="printButtonRf" dojoType="dijit.form.Button" showlabel="false"'
