@@ -725,6 +725,14 @@ function htmlDisplayCheckbox ($value) {
 
 function htmlDisplayColored($value,$color) {
   $result= "";
+  $foreColor=htmlForeColorForBackgroundColor($color);
+  $result.= '<table><tr><td style="background-color:' . $color . '; color:' . $foreColor . ';">';
+  $result.= $value;
+  $result.= "</td></tr></table>";
+  return $result;
+}
+
+function htmlForeColorForBackgroundColor($color) {
   $foreColor='#000000';
   if (strlen($color)==7) {
     $red=base_convert(substr($color,1,2),16,10);
@@ -733,10 +741,7 @@ function htmlDisplayColored($value,$color) {
     $light=(0.3)*$red + (0.6)*$green + (0.1)*$blue;
     if ($light<128) { $foreColor='#FFFFFF'; }
   }
-  $result.= '<table><tr><td style="background-color:' . $color . '; color:' . $foreColor . ';">';
-  $result.= $value;
-  $result.= "</td></tr></table>";
-  return $result;
+  return $foreColor;
 }
 
 function htmlDisplayCurrency($val,$noDecimal=false) {
