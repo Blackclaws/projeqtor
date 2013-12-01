@@ -143,11 +143,11 @@
   finalizePrint();
 ?>
 <?php function finalizePrint() {
-  global $outMode;
+  global $outMode, $includeFile;
   $pdfLib='html2pdf';
   //$pdfLib='dompdf';
   if ($outMode=='pdf') {
-    $content = ob_get_clean(); 
+    $content = ob_get_clean();   
     if ($pdfLib=='html2pdf') {
       /* HTML2PDF way */
       require_once('../external/html2pdf/html2pdf.class.php');
@@ -155,9 +155,12 @@
       $html2pdf->pdf->SetDisplayMode('fullpage');
       $html2pdf->setDefaultFont('freesans');
       $html2pdf->setTestTdInOnePage(false);
+      //$html2pdf->setModeDebug(); 
       //$html2pdf->setDefaultFont('uni2cid_ag15');
+traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();
+traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */
       require_once("../external/dompdf/dompdf_config.inc.php");
