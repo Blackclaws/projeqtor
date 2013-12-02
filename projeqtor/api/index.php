@@ -12,7 +12,11 @@ echo $uri;
     		if (count($split)==2) {
     			$id=$split[1];
     			$obj=new $class($id);
-    			var_dump($obj);
+    			echo '{"identifier":"id",' ;
+          echo ' "items":[';
+          echo jsonDumpObj($obj);
+          echo ']';
+          echo ' }';
     		}
     		
     	} else {
@@ -34,5 +38,10 @@ function returnError($msg) {
 	echo "ERROR : ".$msg;
 }
 
-
+function jsonDumpObj($obj) {
+	$res="";
+	foreach($obj as $fld=>$val) {
+		if ($res!="") { $res.=", ";}
+	}
+}
 ?>
