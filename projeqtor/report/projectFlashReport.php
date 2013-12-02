@@ -97,13 +97,17 @@ foreach ($riskList as $risk) {
 	$likelihood=new Likelihood($risk->idLikelihood);
 	$order=$severity->value*$criticality->value*$likelihood->value;
 	$order=htmlFixLengthNumeric($order,6).'-'.$risk->id;
-	$arrayRisk[$order]=array('name'=>$risk->name, 
+	$name=$risk->name;
+  if (strlen($name)>90) {
+    $name=substr($name, 0,85).'[...]';
+  }
+	$arrayRisk[$order]=array('name'=>$name, 
 	  'criticality'=>$criticality->name,
-	  'criticalityColor'=>$criticality->color, 
+	  'criticalityColor'=>($criticality->color)?$criticality->color:"#FFFFFF", 
 	  'severity'=>$severity->name,
-	  'severityColor'=>$severity->color, 
+	  'severityColor'=>($severity->color)?$severity->color:"#FFFFFF", 
 	  'likelihood'=>$likelihood->name,
-	  'likelihoodColor'=>$likelihood->color);
+	  'likelihoodColor'=>($likelihood->color)?$likelihood->color:"#FFFFFF");
 }
 krsort($arrayRisk);
 
@@ -363,7 +367,7 @@ $showCost=1;
              <?php echo $risk['likelihood'];
              if ($nb==$max and count($arrayRisk)>$max) {
               echo '<div class="reportTableLineHeader"';
-              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-6':'0').'mm; width:10mm;">';
+              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-5':'0').'mm; width:10mm;">';
               echo '...'.$nb.'/'.count($arrayRisk).'&nbsp;';
               echo '</div>';
              }?>
