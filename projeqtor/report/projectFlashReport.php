@@ -1,5 +1,6 @@
 <?php 
 include_once '../tool/projeqtor.php';
+include_once '../report/headerFunctions.php';
 //echo "flashReport";
 $showWbs=false;
 
@@ -16,6 +17,10 @@ $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
 }
+
+$result=array();
+if ($idProject) { $result[]=$idProject;}
+if (checkNoData($result)) exit;
 
 $headerParameters="";
 if ($idProject) {
@@ -52,6 +57,9 @@ foreach ($peList as $pe) {
 	$act=new Activity($pe->refId);
 	$status=new Status($act->idStatus);
 	$name=$act->name;
+	if (strlen($name)>60) {
+		$name=substr($name, 0,55).'[...]';
+	}
 	if ($showWbs) $name=$pe->wbs.' '.$name;
 	if ($act->done) {
 		$arrayActionDone[]=$name;
@@ -244,16 +252,16 @@ $showCost=1;
       <?php displayHeader("Risque");?></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;<?php echo $border;?>">
-      <img style="vertical-align: middle;" src="../report/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
+      <img src="../view/css/images/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <img src="../report/smiley<?php echo ucfirst($qualityIndicator);?>.png" /></div>
+      <img src="../view/css/images/smiley<?php echo ucfirst($qualityIndicator);?>.png" /></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
-      <img src="../report/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
+      <img src="../view/css/images/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <img src="../files/report/smiley<?php echo ucfirst($riskIndicator);?>.png" /></div>    
+      <img src="../view/css/images/smiley<?php echo ucfirst($riskIndicator);?>.png" /></div>    
   <?php }?>  
   
   </div>  
