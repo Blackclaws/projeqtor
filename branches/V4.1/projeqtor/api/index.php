@@ -38,10 +38,22 @@ function returnError($msg) {
 	echo "ERROR : ".$msg;
 }
 
-function jsonDumpObj($obj) {
+function jsonDumpObj($obj, $included=false) {
 	$res="";
 	foreach($obj as $fld=>$val) {
-		if ($res!="") { $res.=", ";}
+		
+		if (is_object($val)) {
+		  //if ($res!="") { $res.=", ";}
+			//$res.=jsonDumpObj($obj, true);
+		} else if (substr($fld,0,1)=='_') {
+			// Nothing
+		} else if ($obj->isAttributeSetToField($fld, 'hidden')) {
+			// Nothing
+		} else {
+		  if ($res!="") { $res.=", ";}
+		  $res.='"' . htmlEncode($fld) . '":"' . htmlEncodeJson($val) . '"';
+		}  
 	}
+	return $res;
 }
 ?>
