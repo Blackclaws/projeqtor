@@ -90,7 +90,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           }            
         }
       }
-    } else if ($col=='idStatus') {        
+    } else if ($col=='idStatus') {
+    	if ($class=='TicketSimple') $class='Ticket';        
       $idType='id' . $class . 'Type';
       $typeClass=$class . 'Type';
       if (property_exists($obj,$idType) ) {
