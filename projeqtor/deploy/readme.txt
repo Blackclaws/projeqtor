@@ -29,6 +29,7 @@ Pre-requisites :
     pdo_mysql => for default MySql database
     pdo_pqsql => if database is PostgreSql
     pgsql => if database is PostgreSql
+    php-xml => for xml parsing
 
 Set-up :
   - Unzip projeqtorVx.y.z.zip to the web server directory

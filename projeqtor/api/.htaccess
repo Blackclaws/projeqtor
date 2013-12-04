@@ -5,3 +5,9 @@
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)$ index.php?uri=$1
 </IfModule>
+
+
+AuthUserFile "./.htpasswd"
+AuthName "projeqtor" 
+AuthType Basic
+require valid-user
