@@ -404,19 +404,20 @@ function throwError($message, $code=null) {
 
 function projeqtorAutoload($className) {
   $localfile=ucfirst($className) . '.php';               // locally
+  $customfile='../model/custom/' . $localfile;           // Custom directory
   $modelfile='../model/' . $localfile;                   // in the model directory
   $persistfile='../model/persistence/' . $localfile;     // in the model/persistence directory
-  if (is_file($modelfile)) {
+  if (is_file($customfile)) {
+    require_once $customfile;
+  } elseif (is_file($modelfile)) {
     require_once $modelfile;
   } elseif (is_file($persistfile)) {
     require_once $persistfile;  
-  } else if (0 and is_file($localfile)) { // [DISABLED]
-    require_once $localfile;
   } else {
     throwError ("Impossible to load class $className<br/>"
+      . "  => Not found in $customfile <br/>"
       . "  => Not found in $modelfile <br/>"
-      . "  => Not found in $persistfile <br/>")
-      . "  => Not found in $localfile <br/>";
+      . "  => Not found in $persistfile <br/>");
   } 
 }
 

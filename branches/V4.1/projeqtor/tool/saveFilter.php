@@ -74,7 +74,7 @@ if (! $name) {
   }
 }
 echo '<table width="100%"><tr><td align="center">';
-echo '<span class="messageOK" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . '</span>';
+echo '<span class="messageOK" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . ' (#'.$filter->id.')</span>';
 echo '</td></tr></table>';
 
 $flt=new Filter();
