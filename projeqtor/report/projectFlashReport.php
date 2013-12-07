@@ -73,6 +73,11 @@ foreach ($peList as $pe) {
 }
 
 // MILESTONES
+$realDate_JalonJ="";
+$realDate_JalonPrec="";
+$prevDate_JalonJ="";
+$prevDate_JalonPrec="";
+
 $arrayMilestone=array();
 $pe=new MilestonePlanningElement();
 $peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Milestone' and idProject=$idProject", "validatedEndDate asc");
@@ -81,6 +86,12 @@ foreach ($peList as $pe) {
 	   'initial'=>$pe->initialEndDate, 
 	   'validated'=>$pe->validatedEndDate,
 	   'done'=>$pe->done);
+	if ($pe->done) {
+		$prevDate_JalonPrec=$prevDate_JalonJ;
+		$realDate_JalonPrec=$realDate_JalonJ;
+		$realDate_JalonJ=$pe->realEndDate;
+		$prevDate_JalonJ=$pe->validatedEndDate;
+	}
 }
 if (! count($arrayMilestone)) {
 	$arrayMilestone[]=array('name'=>"Aucun jalon n'est défini", 
@@ -89,6 +100,28 @@ if (! count($arrayMilestone)) {
      'done'=>false);
 }
 
+$arrayListValues=array("Severity", "Likelihood", "Criticality");
+foreach ($arrayListValues as $listValue) {
+  $max='max'.$listValue;
+  $min='min'.$listValue;
+  $$max=null;
+  $$min=null;
+	$val=new $listValue();
+	$valList=$val->getSqlElementsFromCriteria(null);
+	foreach ($valList as $val) {
+	  if ($$max===null or $val->value>$$max) {
+	  	$$max=$val->value;
+	  }
+	  if ($$min===null or $val->value<$$min) {
+      $$min=$val->value;
+    }
+	}
+}
+$noteMax=$maxLikelihood*$maxCriticality*$maxSeverity;
+$noteMin=$minLikelihood*$minCriticality*$minSeverity;
+echo 'noteMax=' . $noteMax . '<br/>';
+echo 'noteMin=' . $noteMin . '<br/>';
+$noteRisque=0;
 // RISKS
 $arrayRisk=array();
 $risk=new Risk();
@@ -98,6 +131,9 @@ foreach ($riskList as $risk) {
 	$criticality=new Criticality($risk->idCriticality);
 	$likelihood=new Likelihood($risk->idLikelihood);
 	$order=$severity->value*$criticality->value*$likelihood->value;
+	if ($order>$noteRisque) {
+		$noteRisque=$order;
+	}
 	$order=htmlFixLengthNumeric($order,6).'-'.$risk->id;
 	$name=$risk->name;
   if (strlen($name)>90) {
@@ -114,11 +150,50 @@ foreach ($riskList as $risk) {
 krsort($arrayRisk);
 
 // INDICATORS
-$notStartedCost=0;
-$costIndicator="yellow";
+$AEbudgetes=$proj->ProjectPlanningElement->validatedCost;
+$AEengages=0;
+$CPconsommes=0;
+$exp=new Expense();
+$expList=$exp->getSqlElementsFromCriteria(array("idProject"=>$idProject));
+foreach ($expList as $exp) {
+	$AEengages+=$exp->realAmount;
+	$status=new Status($exp->idStatus);
+	if ($status->setDoneStatus) {
+		$CPconsommes+=$exp->realAmount;
+	}
+}
+
+$CHARGE=$AEengages+$notStartedCost;
+$RESSOUCE=$AEbudgetes;
+if ($CHARGE>$RESSOUCE) {
+  $costIndicator="red";
+} else if ($CHARGE<($RESSOUCE*80/100)) {
+	$costIndicator="yellow";
+} else {
+	$costIndicator="green";
+}
+
+if ($realDate_JalonJ<=$prevDate_JalonJ) {
+	$delayIndicator="green";
+} else {
+	if ($realDate_JalonPrec>$prevDate_JalonPrec) {
+		$delayIndicator="red";
+	} else {
+		$delayIndicator="yellow";
+	}
+}
+
+echo 'noteRisque=' . $noteRisque . '<br/>';
+$etendue=$noteMax-$noteMin;
+if ($noteRisque<=$noteMin+$etendue/3) {
+	$riskIndicator="green";
+} else if ($noteRisque<=$noteMin+2*$etendue/3) {
+	$riskIndicator="yellow";
+} else {
+	$riskIndicator="red";
+}
+
 $qualityIndicator="green";
-$delayIndicator="red";
-$riskIndicator="green";
 
 // FORMATING VALUES
 $height=185;
@@ -263,11 +338,11 @@ $showCost=1;
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;<?php echo $border;?>">
       <img src="../view/css/images/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; background-color: #FFFFFF;
+    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
       [QUALITE]
       </div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; background-color: #FFFFFF;
+    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
       <img src="../view/css/images/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
@@ -409,33 +484,33 @@ $showCost=1;
             <?php displayHeader("TTC");?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            [AE budgété]
+            <?php echo htmlDisplayCurrency($AEbudgetes, true);?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            [AE Engagé]
+            <?php echo htmlDisplayCurrency($AEengages, true);?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            [CP comsommé]
+            <?php echo htmlDisplayCurrency($CPconsommes, true);?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            [Charge consommée]
+            <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->realWork);?>
           </td>
          </tr>
          <tr style="height:7mm">
           <td style="width:15%; border-right:#A0A0A0;">
+            
+          </td>
+          <td style="text-align: center;width:20%;border-right:#A0A0A0;" >
             &nbsp;
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            [AE budgété]%
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            [AE Engagé]%
+            <?php displayProgress($AEengages,$AEbudgetes,25);?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            [CP comsommé]%
+            <?php displayProgress($CPconsommes,$AEengages,25);?>
           </td>
           <td style="text-align: center;width:25%;<?php echo $border;?>" >
-            [Charge consommée]%
+            <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->validatedWork,32);?>
           </td>
          </tr>
       </table>
@@ -501,4 +576,17 @@ function displayheight($heightPct) {
   global $height;
   echo (round($height*$heightPct/100,1)).'mm';
 }
+  
+function displayProgress($value,$max,$width) {
+    if ($value==='') { return; }
+    if (! $max or $max==0) { return; }
+    $green=($max!=0 and $max)?round( $width*$value/$max,1):$width;
+    $red=$width-$green;
+    $result='<div style="position:relative; left:1mm; width:' . $width . 'mm" >';
+    $result.='<div style="position:absolute; left:0mm; width:' . $green . 'mm;background: #AAFFAA;">&nbsp;</div>';
+    $result.='<div style="position:absolute; width:' . $red . 'mm;left:' . $green . 'mm;background: #FFAAAA;">&nbsp;</div>';
+    $result.='<div style="position:relative;">' . htmlDisplayPct(round(100*$value/$max,0)) . '</div>';
+    $result.='</div>';
+    echo $result;
+  }
 ?>
