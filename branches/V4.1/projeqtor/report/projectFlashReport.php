@@ -47,6 +47,7 @@ foreach($decList as $dec) {
 	}
 }
 
+$notStartedCost=0;
 // ACTIVITIES
 $arrayActionDone=array();
 $arrayActionOngoing=array();
@@ -67,6 +68,7 @@ foreach ($peList as $pe) {
 		$arrayActionOngoing[]=$name;
 	} else {
 		$arrayActionTodo[]=$name;
+		$notStartedCost+=$pe->validatedCost;
 	}
 }
 
@@ -111,6 +113,8 @@ foreach ($riskList as $risk) {
 }
 krsort($arrayRisk);
 
+// INDICATORS
+$notStartedCost=0;
 $costIndicator="yellow";
 $qualityIndicator="green";
 $delayIndicator="red";
@@ -232,16 +236,18 @@ $showCost=1;
   <?php if ($showIndicator) {?>
     <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;">
-      <?php displayHeader("Global");?></div>
+      <?php displayHeader("Global");?><br/>
+      <i>"<?php echo htmlEncode(SqlList::getNameFromId('Health',$proj->idHealth));?>"</i></div>
     <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      COLOR</div>
+      <div style="height:7mm; width: 7mm; position: absolute; left:10mm; top:1mm; border: 1px solid black; border-radius: 4mm;
+         background-color:<?php  echo SqlList::getFieldFromId('Health',$proj->idHealth,'color');?>">&nbsp;</div></div>
     <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>; ">
       <?php displayHeader("Tendance");?></div>  
     <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      TENDANCE</div>  
+      [TENDANCE]</div>  
     <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>; ">
       <?php displayHeader("Coût");?></div>  
@@ -259,7 +265,8 @@ $showCost=1;
       <img src="../view/css/images/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <img src="../view/css/images/smiley<?php echo ucfirst($qualityIndicator);?>.png" /></div>
+      [QUALITE]
+      </div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
       <img src="../view/css/images/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
