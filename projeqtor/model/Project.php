@@ -384,25 +384,30 @@ class Project extends SqlElement {
       drawAffectationsFromObject($affList, $this, 'Contact', false); 
       return $result;
     } else if ($item=='rf') { 
-    	global $flashReport;
-    	if ($this->id and isset($flashReport) and ($flashReport=true or $flashReport='true')) {
-    		$top=30;$left=10;
-    		$result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px;">'
-    		  . '<button id="printButtonRf" dojoType="dijit.form.Button" showlabel="false"'
-    		  . ' title="'.i18n('flashReport').'"'
-          . ' iconClass="iconFlash" >'
-          . ' <script type="dojo/connect" event="onClick" args="evt">'
-          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'");'
-          . ' </script>'
-          . '</button>'  
-          . '<button id="printButtonPefRf" dojoType="dijit.form.Button" showlabel="false"'
-          . ' title="'.i18n('flashReport').'"'
-          . ' iconClass="iconFlashPdf" >'
-          . ' <script type="dojo/connect" event="onClick" args="evt">'
-          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'", null, null, "pdf");'
-          . ' </script>'
-          . '</button>'  
-          . '</div>';
+    	global $flashReport, $print;
+    	if (! $print and $this->id and isset($flashReport) and ($flashReport=true or $flashReport='true')) {
+    		$user=$_SESSION['user'];
+    		$crit=array('idProfile'=>$user->idProfile, 'idReport'=>51);
+    		$hr=SqlElement::getSingleSqlElementFromCriteria('HabilitationReport', $crit);
+    		if ($hr and $hr->allowAccess=='1') {
+	    		$top=30;$left=10;
+	    		$result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px;">'
+	    		  . '<button id="printButtonRf" dojoType="dijit.form.Button" showlabel="false"'
+	    		  . ' title="'.i18n('flashReport').'"'
+	          . ' iconClass="iconFlash" >'
+	          . ' <script type="dojo/connect" event="onClick" args="evt">'
+	          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'");'
+	          . ' </script>'
+	          . '</button>'  
+	          . '<button id="printButtonPefRf" dojoType="dijit.form.Button" showlabel="false"'
+	          . ' title="'.i18n('flashReport').'"'
+	          . ' iconClass="iconFlashPdf" >'
+	          . ' <script type="dojo/connect" event="onClick" args="evt">'
+	          . '  showPrint("../report/projectFlashReport.php?idProject='.$this->id.'", null, null, "pdf");'
+	          . ' </script>'
+	          . '</button>'  
+	          . '</div>';
+    		}
         return $result;
     	}
     }
