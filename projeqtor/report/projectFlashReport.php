@@ -81,8 +81,16 @@ $prevDate_JalonPrec="";
 $arrayMilestone=array();
 $pe=new MilestonePlanningElement();
 $peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Milestone' and idProject=$idProject", "validatedEndDate asc");
+$cptMile=count($peList);
+$maxMile=12;
+if ($cptMile>$maxMile) $cptMile=$maxMile;
+$maxCar=100-($cptMile-6)*(15-$cptMile+6);
 foreach ($peList as $pe) {
-	$arrayMilestone[]=array('name'=>$pe->refName, 
+	$name=$pe->refName;
+	if (strlen($name)>$maxCar) {
+    $name=substr($name, 0,$maxCar-5).'[...]';
+  }
+	$arrayMilestone[]=array('name'=>$name, 
 	   'initial'=>$pe->initialEndDate, 
 	   'validated'=>$pe->validatedEndDate,
 	   'done'=>$pe->done);
@@ -119,8 +127,8 @@ foreach ($arrayListValues as $listValue) {
 }
 $noteMax=$maxLikelihood*$maxCriticality*$maxSeverity;
 $noteMin=$minLikelihood*$minCriticality*$minSeverity;
-echo 'noteMax=' . $noteMax . '<br/>';
-echo 'noteMin=' . $noteMin . '<br/>';
+//echo 'noteMax=' . $noteMax . '<br/>';
+//echo 'noteMin=' . $noteMin . '<br/>';
 $noteRisque=0;
 // RISKS
 $arrayRisk=array();
@@ -183,7 +191,7 @@ if ($realDate_JalonJ<=$prevDate_JalonJ) {
 	}
 }
 
-echo 'noteRisque=' . $noteRisque . '<br/>';
+//echo 'noteRisque=' . $noteRisque . '<br/>';
 $etendue=$noteMax-$noteMin;
 if ($noteRisque<=$noteMin+$etendue/3) {
 	$riskIndicator="green";
@@ -371,36 +379,57 @@ $showCost=1;
   </div>
   
   
-  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:30mm;<?php echo $borderMain?>" >
+  <div style="position:relative;top: 1mm; width:<?php displayWidth(100);?>;height:23mm;<?php echo $borderMain?>" >
   <?php if ($showMilestone) {
+  $max=$maxMile;	
   $mileWidth=90;
+  $cptDisp=count($arrayMilestone);
+  if ($cptDisp>$max) $cptDisp=$max;
   if (count($arrayMilestone)) {
-    $mileWidth=round(90/count($arrayMilestone),1);
+    $mileWidth=round(90/$cptDisp,1);
   }
+  $cptMile=count($arrayMilestone);
   //if ($mileWidth>30) $mileWidth=30;?>
 	  <table width="100%">
 	    <tr><td class="reportTableLineHeader" style="width:10%">Jalons</td>
-	    <?php foreach($arrayMilestone as $mile){?>
-	      <td style="padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo $mile['name'];?></td>
+	    <?php $nb=0; 
+	    foreach($arrayMilestone as $mile){
+	      $nb++;
+	      if ($nb > $max) break;?>
+	      <td style="padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>">
+	      <?php displayField($mile['name']);?></td>
 	    <?php }?>
 	    </tr>
 	    <tr><td class="reportTableLineHeader" style="width:10%">Initial</td>
-	    <?php foreach($arrayMilestone as $mile){?>
+	    <?php $nb=0;
+	    foreach($arrayMilestone as $mile){
+        $nb++;
+        if ($nb > $max) break;?>
 	      <td style="padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo htmlFormatDate($mile['initial']);?></td>
 	    <?php }?>
 	    </tr>
 	    <tr><td class="reportTableLineHeader" style="width:10%">Révisé</td>
-	    <?php foreach($arrayMilestone as $mile){
+	    <?php $nb=0;
+	    foreach($arrayMilestone as $mile){
+        $nb++;
+        if ($nb > $max) break;
 	      $color=($mile['done'])?'#32cd32':'#FFFFFF';?>
 	      <td style="background-color:<?php echo $color;?>;padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo htmlFormatDate($mile['validated']);?></td>
 	    <?php }?>
 	    </tr>
 	  </table>
-  <?php }?>
+  <?php 
+    if ($cptMile>$max) {
+      echo '<div class="reportTableLineHeader"';
+      echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'0':'0').'mm; width:10mm;">';
+      echo '...'.$max.'/'.$cptMile.'&nbsp;';
+      echo '</div>';
+    }
+  }?>
   </div> 
   
   
-  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:30mm;<?php echo $borderMain?>" >
+  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:25mm;<?php echo $borderMain?>" >
   <?php if ($showRisk) {?>
     <div style="position:absolute;top:0mm; width:<?php displayWidth(50);?>;height:30mm;<?php echo $borderMain?>" >
 	    <table style="width:95%">
@@ -425,13 +454,13 @@ $showCost=1;
          </tr>
          <?php 
           $nb=0;
-          $max=5;
+          $max=6;
           foreach ($arrayRisk as $risk) {
             $nb++;
             if ($nb>$max) break;?>
           <tr>
            <td  style="position:relative; width:55%; <?php echo $border;?>" >
-             <?php echo $risk['name'];?>
+             <?php displayField($risk['name']);?>
            </td>
            <td  style="background-color:<?php echo $risk['criticalityColor'];?>;
                color:<?php echo htmlForeColorForBackgroundColor($risk['criticalityColor'])?>;
@@ -449,7 +478,7 @@ $showCost=1;
              <?php echo $risk['likelihood'];
              if ($nb==$max and count($arrayRisk)>$max) {
               echo '<div class="reportTableLineHeader"';
-              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-5':'0').'mm; width:10mm;">';
+              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-7':'0').'mm; width:10mm;">';
               echo '...'.$nb.'/'.count($arrayRisk).'&nbsp;';
               echo '</div>';
              }?>
@@ -497,20 +526,20 @@ $showCost=1;
           </td>
          </tr>
          <tr style="height:7mm">
-          <td style="width:15%; border-right:#A0A0A0;">
+          <td style="width:15%;">
             
           </td>
           <td style="text-align: center;width:20%;border-right:#A0A0A0;" >
             &nbsp;
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php displayProgress($AEengages,$AEbudgetes,25);?>
+            <?php displayProgress($AEengages,$AEbudgetes,27);?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php displayProgress($CPconsommes,$AEengages,25);?>
+            <?php displayProgress($CPconsommes,$AEengages,27);?>
           </td>
           <td style="text-align: center;width:25%;<?php echo $border;?>" >
-            <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->validatedWork,32);?>
+            <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->validatedWork,34);?>
           </td>
          </tr>
       </table>
@@ -582,11 +611,17 @@ function displayProgress($value,$max,$width) {
     if (! $max or $max==0) { return; }
     $green=($max!=0 and $max)?round( $width*$value/$max,1):$width;
     $red=$width-$green;
-    $result='<div style="position:relative; left:1mm; width:' . $width . 'mm" >';
-    $result.='<div style="position:absolute; left:0mm; width:' . $green . 'mm;background: #AAFFAA;">&nbsp;</div>';
-    $result.='<div style="position:absolute; width:' . $red . 'mm;left:' . $green . 'mm;background: #FFAAAA;">&nbsp;</div>';
-    $result.='<div style="position:relative;">' . htmlDisplayPct(round(100*$value/$max,0)) . '</div>';
-    $result.='</div>';
+    $result="";
+    $result.=htmlDisplayPct(round(100*$value/$max,0)) . '<br/>';
+    $result.='<table style="text-align:center;width:'.$width.'mm;height:5mm;"><tr style="height:5mm;">';
+    $result.='<td style="background: #AAFFAA;width:'.$green.'mm;height:5mm;"></td>';
+    $result.='<td style="background: #FFAAAA;width:'.$red.'mm;height:5mm;"></td>';
+    $result.='</tr></table>';
+    //$result='<div style="position:relative; left:1mm; width:' . $width . 'mm" >';
+    //$result.='<div style="position:absolute; left:0mm; width:' . $green . 'mm;background: #AAFFAA;">&nbsp;</div>';
+    //$result.='<div style="position:absolute; width:' . $red . 'mm;left:' . $green . 'mm;background: #FFAAAA;">&nbsp;</div>';
+    
+    //$result.='</div>';
     echo $result;
   }
 ?>
