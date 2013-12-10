@@ -691,7 +691,7 @@ scriptLog('sendMail_phpmailer');
   $phpmailer->isSMTP();                                    // Set mailer to use SMTP
   $phpmailer->Host = $paramMailSmtpServer;                 // Specify main smtp server
   $phpmailer->Port = $paramMailSmtpPort;
-  if ($paramMailSmtpUsername and $paramMailSmtpPassword) {                    
+  if ($paramMailSmtpUsername and $paramMailSmtpPassword) {
     $phpmailer->SMTPAuth = true;                           // Enable SMTP authentication
     $phpmailer->Username = $paramMailSmtpUsername;         // SMTP username
     $phpmailer->Password = $paramMailSmtpPassword;         // SMTP password
