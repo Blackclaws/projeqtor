@@ -2705,7 +2705,7 @@ uploadOnSelect="true"
 target="resultPost"
 onBegin="saveAttachement();"
 onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
-style="position: absolute; left: <?php echo ($detailWidth/2);?>px; width: <?php echo ($detailWidth/2 - 28);?>px; height: 17px; 
+style="position: absolute; left: <?php echo round(($detailWidth/2),0);?>px; width: <?php echo round(($detailWidth/2 - 28),0);?>px; height: 17px; 
  border: 1px dashed #EEEEEE; margin:0; padding:0; text-align: center; font-size: 7pt; background-color: #FFFFFF; opacity: 0.7;">
 <script type="dojo/connect" event="onComplete" args="dataArray">
 saveAttachementAck(dataArray);
