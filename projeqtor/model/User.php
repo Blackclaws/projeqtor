@@ -549,7 +549,7 @@ class User extends SqlElement {
       	  $audit=new Audit();
 	        $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$aff->idUser, 'idle'=>'0'));
 	        foreach ($auditList as $audit) {
-	         $audit->$requestRefreshProject=1;
+	         $audit->requestRefreshProject=1;
 	         $res=$audit->save();
 	        }
         }
