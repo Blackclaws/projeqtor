@@ -135,25 +135,28 @@ $arrayRisk=array();
 $risk=new Risk();
 $riskList=$risk->getSqlElementsFromCriteria(null, false, "idProject=$idProject", 'id asc');
 foreach ($riskList as $risk) {
-	$severity=new Severity($risk->idSeverity);
-	$criticality=new Criticality($risk->idCriticality);
-	$likelihood=new Likelihood($risk->idLikelihood);
-	$order=$severity->value*$criticality->value*$likelihood->value;
-	if ($order>$noteRisque) {
-		$noteRisque=$order;
+	$status=new Status($risk->idStatus);
+	if (! $status->setDoneStatus) {
+		$severity=new Severity($risk->idSeverity);
+		$criticality=new Criticality($risk->idCriticality);
+		$likelihood=new Likelihood($risk->idLikelihood);
+		$order=$severity->value*$criticality->value*$likelihood->value;
+		if ($order>$noteRisque) {
+			$noteRisque=$order;
+		}
+		$order=htmlFixLengthNumeric($order,6).'-'.$risk->id;
+		$name=$risk->name;
+	  if (strlen($name)>90) {
+	    $name=substr($name, 0,85).'[...]';
+	  }
+		$arrayRisk[$order]=array('name'=>$name, 
+		  'criticality'=>$criticality->name,
+		  'criticalityColor'=>($criticality->color)?$criticality->color:"#FFFFFF", 
+		  'severity'=>$severity->name,
+		  'severityColor'=>($severity->color)?$severity->color:"#FFFFFF", 
+		  'likelihood'=>$likelihood->name,
+		  'likelihoodColor'=>($likelihood->color)?$likelihood->color:"#FFFFFF");
 	}
-	$order=htmlFixLengthNumeric($order,6).'-'.$risk->id;
-	$name=$risk->name;
-  if (strlen($name)>90) {
-    $name=substr($name, 0,85).'[...]';
-  }
-	$arrayRisk[$order]=array('name'=>$name, 
-	  'criticality'=>$criticality->name,
-	  'criticalityColor'=>($criticality->color)?$criticality->color:"#FFFFFF", 
-	  'severity'=>$severity->name,
-	  'severityColor'=>($severity->color)?$severity->color:"#FFFFFF", 
-	  'likelihood'=>$likelihood->name,
-	  'likelihoodColor'=>($likelihood->color)?$likelihood->color:"#FFFFFF");
 }
 krsort($arrayRisk);
 
@@ -164,7 +167,7 @@ $CPconsommes=0;
 $exp=new Expense();
 $expList=$exp->getSqlElementsFromCriteria(array("idProject"=>$idProject));
 foreach ($expList as $exp) {
-	$AEengages+=$exp->realAmount;
+	$AEengages+=$exp->plannedAmount;
 	$status=new Status($exp->idStatus);
 	if ($status->setDoneStatus) {
 		$CPconsommes+=$exp->realAmount;
@@ -345,17 +348,17 @@ $showCost=1;
       <?php displayHeader("Risque");?></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;<?php echo $border;?>">
-      <img src="../view/css/images/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
+      <img src="../view/icons/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
       [QUALITE]
       </div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
-      <img src="../view/css/images/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
+      <img src="../view/icons/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <img src="../view/css/images/smiley<?php echo ucfirst($riskIndicator);?>.png" /></div>    
+      <img src="../view/icons/smiley<?php echo ucfirst($riskIndicator);?>.png" /></div>    
   <?php }?>  
   
   </div>  
