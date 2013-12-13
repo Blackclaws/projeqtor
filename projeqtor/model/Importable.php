@@ -428,7 +428,7 @@ class Importable extends SqlElement {
 	}
 
 	public static function importXLSX($fileName){
-		require_once '../external/XLSXReader.php';
+		require_once '../external/XLSXReader/XLSXReader.php';
 		$xlsx = new XLSXReader($fileName);
 		$sheet1 = $xlsx->getSheet(1);
 		$data = $sheet1->getData();
