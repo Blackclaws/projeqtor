@@ -17,9 +17,6 @@
 .iconFlashPdf { background-image: url(images/flashPdf.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .iconFlash { background-image: url(images/flash.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 
-
-
-
 .iconCollapse {
   background-image: url(images/minus.gif);
   background-repeat: no-repeat;
@@ -377,6 +374,10 @@
 .iconProjectType22 { background-image: url(images/iconProjectType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProjectType16 { background-image: url(images/iconProjectType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconQuality32 { background-image: url(images/iconQuality32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconQuality22 { background-image: url(images/iconQuality22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconQuality16 { background-image: url(images/iconQuality16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
 .iconQuestion32 { background-image: url(images/iconQuestion32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconQuestion22 { background-image: url(images/iconQuestion22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconQuestion16 { background-image: url(images/iconQuestion16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -503,6 +504,10 @@
 .iconTool32 { background-image: url(images/iconTool32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconTool22 { background-image: url(images/iconTool22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconTool16 { background-image: url(images/iconTool16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+
+.iconTrend32 { background-image: url(images/iconTrend32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
+.iconTrend22 { background-image: url(images/iconTrend22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
+.iconTrend16 { background-image: url(images/iconTrend16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconType32 { background-image: url(images/iconListOfTypes32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconType22 { background-image: url(images/iconListOfTypes22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
