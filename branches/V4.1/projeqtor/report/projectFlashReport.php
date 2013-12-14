@@ -351,7 +351,7 @@ $showCost=1;
       <img src="../view/icons/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      [QUALITE]
+      [QUALITE] 
       </div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
