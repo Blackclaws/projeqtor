@@ -126,7 +126,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $width=($print)?'50':'70';
       echo '<table align="center" style="width:95%">';
       echo '<tr>' .
-           '  <td class="messageHeader" colspan="2">' . i18n('menuProject') . '</td>' . 
+           '  <td class="messageHeader" colspan="3">' . i18n('menuProject') . '</td>' . 
            '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
       if ($workVisibility=='ALL') {
         echo '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLeft')) . '</div></td>' ;
@@ -234,11 +234,25 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           $proj=new Project($id);
           $healthColor=SqlList::getFieldFromId("Health", $proj->idHealth, "color");
           $healthName=SqlList::getNameFromId("Health", $proj->idHealth);
+          $healthIcon=SqlList::getFieldFromId("Health", $proj->idHealth, "icon");
+          $trendIcon=SqlList::getFieldFromId("Trend", $proj->idTrend, "icon");
+          $trendName=SqlList::getNameFromId("Trend", $proj->idTrend);
           $styleHealth=($print)?'width:10px;height:10px;margin:1px;padding:0;-moz-border-radius:6px;border-radius:6px;border:1px solid #AAAAAA;':'';
           echo '<tr style="text-align: center">' .
-             '  <td class="messageData" style="border-right:0px;text-align: left;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>' .
-             '  <td class="messageData" style="width:14px;margin:0;padding:0;spacing:0;border-left:0px;" '. $goto . ' ><div class="colorHealth" style="'.$styleHealth.'background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div></td>' .
-             '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>';
+             '  <td class="messageData" style="border-right:0px;text-align: left;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>';
+          echo ' <td class="messageData" style="vertical-align:middle;width:12px;margin:0;padding:0;spacing:0;border-left:0px;border-right:0px;" '. $goto . ' >'.
+             (($trendIcon)?'    <img height="12px" src="icons/'.$trendIcon.'" title="'.$trendName.'"/>':'').
+             '  </td>';
+          if ($healthIcon) {
+            echo ' <td class="messageData" style="vertical-align:middle;width:12px;margin:0;padding:0;spacing:0;border-left:0px;border-right:0px;" '. $goto . ' >'.
+             ' <img height="12px" src="icons/'.$healthIcon.'" title="'.$healthName.'"/>'.
+             '  </td>';            
+          } else {
+            echo '  <td class="messageData" style="width:14px;margin:0;padding:0;spacing:0;border-left:0px;" '. $goto . ' >' .
+             '    <div class="colorHealth" style="'.$styleHealth.'background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div>'.
+             '  </td>';
+          }
+          echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>';
           if ($workVisibility=='ALL') {
             echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>';
           }

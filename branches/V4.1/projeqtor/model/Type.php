@@ -28,6 +28,7 @@ class Type extends SqlElement {
   public $_lib_statusMustChangeIdle;
   public $lockCancelled;
   public $_lib_statusMustChangeCancelled;
+  public $showInFlash;
   public $internalData;
   
   // Define the layout that will be used for lists
@@ -49,7 +50,8 @@ class Type extends SqlElement {
                                           "lockDone"=>"nobr",
                                           "lockIdle"=>"nobr",
                                           "lockCancelled"=>"nobr",
-  										                    "internalData"=>"hidden");
+  										                    "internalData"=>"hidden",
+                                          "showInFlash"=>"hidden");
   
   private static $_databaseTableName = 'type';
   private static $_databaseCriteria = array();

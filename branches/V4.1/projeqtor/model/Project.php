@@ -388,7 +388,7 @@ class Project extends SqlElement {
       return $result;
     } else if ($item=='rf') { 
     	global $flashReport, $print;
-    	if (! $print and $this->id and isset($flashReport) and ($flashReport=true or $flashReport='true')) {
+    	if (! $print and $this->id and isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
     		$user=$_SESSION['user'];
     		$crit=array('idProfile'=>$user->idProfile, 'idReport'=>51);
     		$hr=SqlElement::getSingleSqlElementFromCriteria('HabilitationReport', $crit);

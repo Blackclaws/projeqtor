@@ -503,6 +503,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					}
 				} else if ($dataType=='decimal' and substr($col, -4,4)=='Work') {
 					echo Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
+				} else if ($col=='icon') {
+					echo '<img src="../view/icons/'.$val.'" />'; 
 				} else {
 					if ($obj->isFieldTranslatable($col))  {
 						$val=i18n($val);
@@ -1032,6 +1034,28 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo htmlEncode($val);
 				//echo $colScript; // => this leads to the display of script in textarea
 				echo '</textarea>';
+			} else if ($col=='icon') {
+				
+        echo '<div dojoType="dijit.form.Select" class="input" ';
+        echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
+        echo $name;
+        echo $attributes;
+        echo ' >';
+        //htmlDrawOptionForReference($col, $val, $obj, $isRequired,$critFld, $critVal);
+        echo '<span value=""> </span>';
+			  if ($handle = opendir(getcwd().'/icons')) {
+          while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+            	$ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
+            	if ($ext=="png" or $ext=="gif" or $ext=="jpg" or $ext=="jpeg") {
+            	  echo '<span value="'.$entry.'" '.(($entry==$val)?'selected="selected"':'').'><img src="../view/icons/'.$entry.'" /></span>';
+            	}
+            }
+          }
+          closedir($handle);
+        }
+        echo $colScript;
+        echo '</div>';
 			} else {
 				// Draw defaut data (text medium size) ================================ TEXT (default)
 				if ($obj->isFieldTranslatable($col)) {

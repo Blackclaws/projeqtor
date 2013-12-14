@@ -75,6 +75,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dijit.ColorPalette");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
+    dojo.require("dijit.form.Select");
     dojo.require("dijit.form.MultiSelect");
     dojo.require("dijit.form.NumberSpinner");
     dojo.require("dijit.Tree"); 

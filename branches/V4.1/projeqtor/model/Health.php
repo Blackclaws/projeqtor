@@ -9,6 +9,7 @@ class Health extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $color;
+  public $icon;
   public $sortOrder=0;
   public $idle;
   public $_col_2_2;

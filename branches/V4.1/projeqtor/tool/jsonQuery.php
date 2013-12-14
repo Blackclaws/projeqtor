@@ -522,6 +522,8 @@
                 $disp=workFormatter($val);
               } else if ($formatter[$numField]=="costFormatter") {
                 $disp=costFormatter($val);
+              } else if ($formatter[$numField]=="iconFormatter") {
+                $disp=iconFormatter($val);
 	            } else if (substr($formatter[$numField],0,5)=='thumb') {
 	            	$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
 	            } else {
