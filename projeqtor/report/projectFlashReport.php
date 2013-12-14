@@ -33,9 +33,19 @@ include "header.php";
 ob_end_clean();
 
 $proj=new Project($idProject);
+$arrayProjects=array($idProject=>$proj);
 
 $user=$_SESSION['user'];
 
+$subProjects=$proj->getSqlElementsFromCriteria(array('idProject'=>$idProject));
+foreach ($subProjects as $p) {
+	$arrayProjects[$p->id]=$p;
+}
+
+// MAIN LOOP OVER SELECTED PROJECT AND ITS SUB6PROJECTS
+$currentProject=0;
+foreach ($arrayProjects as $idProject=>$proj) {
+	$currentProject+=1;
 // DECISIONS
 $arrayDecision=array();
 $dec=new Decision();
@@ -87,13 +97,17 @@ if ($cptMile>$maxMile) $cptMile=$maxMile;
 $maxCar=100-($cptMile-6)*(15-$cptMile+6);
 foreach ($peList as $pe) {
 	$name=$pe->refName;
+	$mile=new Milestone($pe->refId);
+	$type=new MilestoneType($mile->idMilestoneType);
 	if (strlen($name)>$maxCar) {
     $name=substr($name, 0,$maxCar-5).'[...]';
   }
-	$arrayMilestone[]=array('name'=>$name, 
-	   'initial'=>$pe->initialEndDate, 
-	   'validated'=>$pe->validatedEndDate,
-	   'done'=>$pe->done);
+  if ($type->showInFlash) {
+	  $arrayMilestone[]=array('name'=>$name, 
+	    'initial'=>$pe->initialEndDate, 
+	    'validated'=>$pe->validatedEndDate,
+	    'done'=>$pe->done);
+  }
 	if ($pe->done) {
 		$prevDate_JalonPrec=$prevDate_JalonJ;
 		$realDate_JalonPrec=$realDate_JalonJ;
@@ -281,7 +295,7 @@ $showCost=1;
       <?php displayHeader("Sponsor:");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
-      [sponsor]
+      <?php echo SqlList::getNameFromId('Sponsor',$proj->idSponsor);?>
     </div>
  
     <?php $curHeight+=$lineHeight;?>
@@ -319,21 +333,25 @@ $showCost=1;
     <div class="reportTableLineHeader" style="width:<?php displayWidth(48.8);?>; white-space:nowrap;"><?php displayHeader("Décisions attendues");?></div>    
       <?php displayList($arrayDecision,8,49);?>
   <?php }?>  
-  <?php if ($showIndicator) {?>
+  <?php if ($showIndicator) {
+    $health=new Health($proj->idHealth);
+    $trend=new Trend($proj->idTrend);
+    $quality=new Quality($proj->idQuality);?>
     <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;">
       <?php displayHeader("Global");?><br/>
-      <i>"<?php echo htmlEncode(SqlList::getNameFromId('Health',$proj->idHealth));?>"</i></div>
+      <i>"<?php echo htmlEncode($health->name);?>"</i></div>
     <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <div style="height:7mm; width: 7mm; position: absolute; left:10mm; top:1mm; border: 1px solid black; border-radius: 4mm;
-         background-color:<?php  echo SqlList::getFieldFromId('Health',$proj->idHealth,'color');?>">&nbsp;</div></div>
+       <?php displayIndicator($health);?>
+      </div>
     <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>; ">
-      <?php displayHeader("Tendance");?></div>  
+      <?php displayHeader("Tendance");?><br/>
+      <i>"<?php echo htmlEncode($trend->name);?>"</i></div>  
     <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      [TENDANCE]</div>  
+      <?php displayIndicator($trend);?></div>  
     <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>; ">
       <?php displayHeader("Coût");?></div>  
@@ -351,7 +369,7 @@ $showCost=1;
       <img src="../view/icons/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      [QUALITE] 
+      <?php displayIndicator($quality);?>
       </div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
@@ -550,7 +568,16 @@ $showCost=1;
   <?php }?>
   </div> 
 </div>
-<?php 
+<?php
+  if ($currentProject<count($arrayProjects)) {
+    if ($outMode=='pdf') {
+    	echo "</PAGE><PAGE>";
+    } else {
+    	echo '<div style="height:6mm">&nbsp;</div>';
+    }
+  }
+}
+// END OF MAIN LOOP OVER SELECTED PROJECT AND ITS SUB-PROJECTS
 
 function displayField($value,$height=null) {
   $res="";
@@ -627,4 +654,16 @@ function displayProgress($value,$max,$width) {
     //$result.='</div>';
     echo $result;
   }
+  
+function displayIndicator($indObj) {
+	$result='';
+	if (property_exists($indObj, 'icon') and isset($indObj->icon) and $indObj->icon) {
+		$result.='<img src="../view/icons/'.$indObj->icon.'" />';
+	} else {
+    $result.='<div style="height:7mm; width: 7mm; position: absolute; left:10mm; top:1mm; ';
+    $result.='border: 1px solid black; border-radius: 4mm;';
+    $result.='background-color:'.$indObj->color.'">&nbsp;</div>';
+	}
+  echo $result;
+}  
 ?>

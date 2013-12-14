@@ -77,3 +77,5 @@ ADD COLUMN `idTrend` int(12) unsigned,
 ADD COLUMN `idSponsor` int(12) unsigned;
 
 ALTER TABLE `${prefix}health` ADD COLUMN `icon` varchar(100);
+
+ALTER TABLE `${prefix}type` ADD COLUMN `showInFlash` int(1) unsigned default 0;

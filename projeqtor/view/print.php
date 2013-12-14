@@ -157,10 +157,10 @@
       $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setModeDebug(); 
       //$html2pdf->setDefaultFont('uni2cid_ag15');
-traceExecutionTime($includeFile,true);
+//traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();
-traceExecutionTime($includeFile);
+//traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */
       require_once("../external/dompdf/dompdf_config.inc.php");

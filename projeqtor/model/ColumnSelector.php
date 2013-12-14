@@ -194,6 +194,9 @@ class ColumnSelector extends SqlElement {
 			$cs->hidden=1;
 			if ($col=='id') {
 				$cs->formatter="numericFormatter";
+		  } else if ($col=='icon') {
+        $cs->formatter="iconFormatter";
+        $cs->widthPct=5;
 			} else if ($dataType=='date') {
 				$cs->formatter="dateFormatter";
 				$cs->widthPct=10;

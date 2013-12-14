@@ -116,3 +116,7 @@ function costFormatter($value) {
 	return htmlDisplayCurrency($value);
 }
 
+function iconFormatter($value) {
+  if (! $value) return "";
+  return '<img src="icons/'.$value.'" />';
+}
