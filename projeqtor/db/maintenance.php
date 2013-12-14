@@ -41,7 +41,7 @@ $versionHistory = array(
   "V3.4.1",
   "V4.0.0",
   "V4.0.1",
-  "V4.1.0");
+  "V4.1.-");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -300,9 +300,9 @@ if (! $tst or count($tst)==0) {
   $nbErrors+=runScript('V4.0.1.linux');
 }
 
-if ($currVersion<"V4.1.0") {
-	if (isset($flashReport) and ($flashReport=true or $flashReport='true')) {
-		$nbErrors+=runScript('V4.1.0.fr');
+if ($currVersion<"V4.1.-") {
+	if (isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
+		$nbErrors+=runScript('V4.1.-.flash');
 	}
 }
 
