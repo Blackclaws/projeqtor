@@ -19,11 +19,14 @@ class Project extends SqlElement {
   public $contractCode;
   public $clientCode;
   public $idProject;
+  public $idSponsor;
   public $idUser;
   public $color;
   //public $paymentDelay;
   public $idStatus;
   public $idHealth;
+  public $idQuality;
+  public $idTrend;
   public $idOverallProgress;
   public $fixPlanning;
   public $done;
