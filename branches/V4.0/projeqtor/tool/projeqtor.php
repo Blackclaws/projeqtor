@@ -1,5 +1,5 @@
 <?php
-spl_autoload_register('projeqtorAutoload', true, true);
+spl_autoload_register('projeqtorAutoload', true);
 session_start();              // Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
