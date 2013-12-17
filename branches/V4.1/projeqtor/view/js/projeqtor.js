@@ -1519,14 +1519,14 @@ function quit() {
  * @return
  */
 function beforequit() {
-  if (checkFormChangeInProgress()) {
+  if (! quitConfirmed) {
+ 	if (checkFormChangeInProgress()) {
       return (i18n("alertQuitOngoingChange"));
-  } else {
-    if (! quitConfirmed) {
+    } else {
       return(i18n('confirmDisconnection'));
     }
   }
-  // return false;
+  //return false;
 }
 
 /**
