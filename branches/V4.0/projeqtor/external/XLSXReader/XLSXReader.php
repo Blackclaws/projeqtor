@@ -50,6 +50,10 @@ class XLSXReader {
     }
   }
  
+  public function closeFile() {
+    $this->zip->close();
+  }
+  
   // get a file from the zip
   protected function getEntryData($name) {
     $data = $this->zip->getFromName($name);
