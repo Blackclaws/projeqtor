@@ -45,6 +45,8 @@ foreach ($subProjects as $p) {
 // MAIN LOOP OVER SELECTED PROJECT AND ITS SUB6PROJECTS
 $currentProject=0;
 foreach ($arrayProjects as $idProject=>$proj) {
+	$proj=new Project($idProject); // To retrieve PlanningElement
+  $projList=getVisibleProjectsList(true,$idProject);
 	$currentProject+=1;
 // DECISIONS
 $arrayDecision=array();
@@ -175,11 +177,17 @@ foreach ($riskList as $risk) {
 krsort($arrayRisk);
 
 // INDICATORS
-$AEbudgetes=$proj->ProjectPlanningElement->validatedCost;
+$AEbudgetes=0;
+$pe=new ProjectPlanningElement();
+$peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Project' and refId in $projList");
+foreach ($peList as $pe) {
+	$AEbudgetes+=$pe->validatedCost;
+}
+
 $AEengages=0;
 $CPconsommes=0;
 $exp=new Expense();
-$expList=$exp->getSqlElementsFromCriteria(array("idProject"=>$idProject));
+$expList=$exp->getSqlElementsFromCriteria(null,false,"idProject in $projList");
 foreach ($expList as $exp) {
 	$AEengages+=$exp->plannedAmount;
 	$status=new Status($exp->idStatus);
