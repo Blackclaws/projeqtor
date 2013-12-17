@@ -49,6 +49,10 @@ class XLSXReader {
       throw new Exception("Failed to open $filePath with zip error code: $status");
     }
   }
+  
+  public function closeFile() {
+  	$this->zip->close();
+  }
  
   // get a file from the zip
   protected function getEntryData($name) {

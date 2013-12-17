@@ -432,6 +432,7 @@ class Importable extends SqlElement {
 		$xlsx = new XLSXReader($fileName);
 		$sheet1 = $xlsx->getSheet(1);
 		$data = $sheet1->getData();
+		$xlsx->closeFile();
 		return $data;
 	}
 
