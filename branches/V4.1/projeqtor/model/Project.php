@@ -555,8 +555,13 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     } 
-    if (! $old->id or $this->idle!=$old->idle) {
-      User::resetAllVisibleProjects($this->id, null);
+    if (! $old->id or $this->idle!=$old->idle or $this->idProject!=$old->idProject) {
+    	if ($old->idProject) {
+        User::resetAllVisibleProjects($this->id, null);
+    	} else {
+    		User::resetAllVisibleProjects(null, null);
+    	}
+    	
     }
     if ($this->idle) {
       $crit=array('idProject'=>$this->id, 'idle'=>'0');
