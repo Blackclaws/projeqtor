@@ -50,12 +50,11 @@ if (array_key_exists('isIE',$_REQUEST)) {
             onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>"  />
-          <?php }?>
-          <i>
+          <?php }?>        
           <?php if (! $isIE) {?>
-          <span style="position: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span></i>
+          <span style="font-style:italicposition: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span>
           <?php }?>
-          <div style="position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachementFileName" id="attachementFileName"></div></i>     
+          <div style="font-style:italicposition: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachementFileName" id="attachementFileName"></div>     
           </td>
         </tr>
       </table>
