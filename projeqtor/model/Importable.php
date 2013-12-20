@@ -86,7 +86,7 @@ class Importable extends SqlElement {
 			return $msg;
 		}
 		SqlList::cleanAllLists(); // Added for Cron mode : as Cron is never stopped, Static Lists must be freshened
-		set_time_limit(3600); // 60mn
+		projeqtor_set_time_limit(3600); // 60mn
 		self::$cptTotal=0;
 		self::$cptDone=0;
 		self::$cptUnchanged=0;

@@ -245,7 +245,7 @@ class Cron {
     }
     self::removeDeployFlag();
     self::removeRestartFlag();
-    set_time_limit(0);
+    projeqtor_set_time_limit(0);
     ignore_user_abort(1);
     session_write_close();
     $cronCheckDates=self::getCheckDates();

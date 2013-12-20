@@ -90,8 +90,8 @@ class PlannedWork extends GeneralWork {
 //echo "<br/>******************************";
 //echo "<br/>PLANNING - Started at " . date('H:i:s');
 //echo "<br/>******************************";
-  	set_time_limit(300);
-  	ini_set('memory_limit', '512M');
+  	projeqtor_set_time_limit(300);
+  	projeqtor_set_memory_limit('512M');
 
   	// Manage cache
   	SqlElement::$_cachedQuery['Resource']=array();
