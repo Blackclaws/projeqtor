@@ -2,7 +2,7 @@
 include_once "../tool/projeqtor.php";
 include_once "testTools.php";
 header ('Content-Type: text/html; charset=UTF-8');
-set_time_limit(3600);
+projeqtor_set_time_limit(3600);
 
 // PREPARE TESTS
 // => remove mail sending, to avoid spamming

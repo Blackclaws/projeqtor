@@ -4,7 +4,7 @@
  */
 
 require_once "../tool/projeqtor.php";
-set_time_limit(300);
+projeqtor_set_time_limit(300);
 
 // Get the object from session(last status before change)
 if (isset($_REQUEST['directAccessIndex'])) {

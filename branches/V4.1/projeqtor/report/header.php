@@ -1,8 +1,8 @@
 <?php 
 // Header
 //echo "<page_header>";
-set_time_limit(300);
-ini_set('memory_limit', '512M');
+projeqtor_set_time_limit(300);
+projeqtor_set_memory_limit('512M');
 
 echo "<table style='width:100%'><tr>";
 echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";

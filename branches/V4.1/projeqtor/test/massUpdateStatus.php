@@ -6,7 +6,7 @@ $to=$_REQUEST['statusTo'];
 
 $obj=new $class();
 
-set_time_limit(600);
+projeqtor_set_time_limit(600);
 $crit=array('idStatus'=>$from);
 $lst=$obj->getSqlElementsFromCriteria($crit);
 foreach ($lst as $obj) {

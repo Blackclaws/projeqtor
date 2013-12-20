@@ -241,7 +241,7 @@ class SMTP
         if (substr(PHP_OS, 0, 3) != 'WIN') {
             $max = ini_get('max_execution_time');
             if ($max != 0 && $timeout > $max) { // Don't bother if unlimited
-                @set_time_limit($timeout);
+                @projeqtor_set_time_limit($timeout);
             }
             stream_set_timeout($this->smtp_conn, $timeout, 0);
         }

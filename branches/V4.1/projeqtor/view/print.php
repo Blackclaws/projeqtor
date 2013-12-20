@@ -4,7 +4,7 @@
  */
    require_once "../tool/projeqtor.php";
    scriptLog('   ->/view/print.php'); 
-   set_time_limit(300);
+   projeqtor_set_time_limit(300);
    ob_start();
    $outMode='html';
    $printInNewPage=getPrintInNewWindow();
@@ -30,7 +30,7 @@
      } else if ($limit=='') {
        // Keep existing
      } else {
-      ini_set("memory_limit", $limit.'M');
+      projeqtor_set_memory_limit($limit.'M');
      }
    } else if ($outMode=='csv')  {
      $contentType="application/force-download";

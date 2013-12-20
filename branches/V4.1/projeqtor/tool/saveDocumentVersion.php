@@ -22,7 +22,7 @@ if ($isIE and $isIE<=9) {?>
 $error=false;
 $documentVersionLink="";
 $uploadedFile=false;
-set_time_limit(3600); // 60mn
+projeqtor_set_time_limit(3600); // 60mn
 
 $documentVersionId=null;
 if (array_key_exists('documentVersionId',$_REQUEST)) {

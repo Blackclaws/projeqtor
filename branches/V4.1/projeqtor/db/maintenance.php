@@ -335,7 +335,7 @@ function runScript($vers) {
   $paramDbName=Parameter::getGlobalParameter('paramDbName');
   $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
   $dbType=Parameter::getGlobalParameter('paramDbType');
-  set_time_limit(300);
+  projeqtor_set_time_limit(300);
   traceLog("=====================================");
   traceLog("");
   traceLog("VERSION " . $vers);

@@ -65,7 +65,7 @@ if ($mode=='add') {
 	$arrayTestCase[]=$testCase;
 }
 if (count($arrayTestCase)>10) {
-	set_time_limit(300);
+	projeqtor_set_time_limit(300);
 }
 Sql::beginTransaction();
 $result="";
