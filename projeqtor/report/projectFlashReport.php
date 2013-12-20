@@ -13,6 +13,11 @@ if (! isset($outMode)) {
 	$outMode='screen';
 }
 
+if (array_key_exists('version',$_REQUEST)) {
+	echo "Rapport Flash version 1.0 [2013-12-20]";
+	exit;
+}
+
 $idProject="";
 if (array_key_exists('idProject',$_REQUEST) and trim($_REQUEST['idProject'])!="") {
   $idProject=trim($_REQUEST['idProject']);
