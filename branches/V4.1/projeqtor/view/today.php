@@ -427,27 +427,35 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
            '  <td class="messageHeader" width="5%" title="'. i18n('isResponsibleOf') . '">' . ucfirst(i18n('colResponsibleShort')) . '</td>' . 
            '</tr>';     
     $cpt=0;
+    $listEcheance=array();
     foreach($list as $elt) {
+    	$echeance="";
+    	$class=get_class($elt);  	
+    	if ($class=='Ticket') {
+    		$echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;
+    		$echeance=substr($echeance, 0,10);
+    	} else if ($class=='Activity' or $class=='Milestone') {
+    		$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$class,'refId'=>$elt->id));
+    		$echeance=($pe->realEndDate)?$pe->realEndDate
+    		:(($pe->plannedEndDate)?$pe->plannedEndDate
+    				:(($pe->validatedEndDate)?$pe->validatedEndDate
+    						:$pe->initialEndDate));
+    	} else if ($class=="Risk" or $class=="Issue") {
+    		$echeance=($elt->actualEndDate)?$elt->actualEndDate:$elt->initialEndDate;
+    	} else if ($class=="Action" ) {
+    		$echeance=($elt->actualDueDate)?$elt->actualDueDate:$elt->initialDueDate;
+    	} else if ($class=="TestSession") {
+    		$echeance=$elt->startDate;
+    	}
+    	$listEcheance[$echeance.'#'.$class.'#'.$elt->id]=$elt;
+    }
+    ksort($listEcheance);
+    foreach($listEcheance as $idList=>$elt) {
     	$cptDisplayId++;
       $idType='id' . get_class($elt) . 'Type';
-      $echeance="";
       $class=get_class($elt);
-      if ($class=='Ticket') {
-        $echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;
-        $echeance=substr($echeance, 0,10);
-      } else if ($class=='Activity' or $class=='Milestone') {
-        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$class,'refId'=>$elt->id));
-        $echeance=($pe->realEndDate)?$pe->realEndDate
-                 :(($pe->plannedEndDate)?$pe->plannedEndDate
-                 :(($pe->validatedEndDate)?$pe->validatedEndDate
-                 :$pe->initialEndDate));
-      } else if ($class=="Risk" or $class=="Issue") {
-        $echeance=($elt->actualEndDate)?$elt->actualEndDate:$elt->initialEndDate;
-      } else if ($class=="Action" ) {
-        $echeance=($elt->actualDueDate)?$elt->actualDueDate:$elt->initialDueDate;
-      } else if ($class=="TestSession") {
-      	$echeance=$elt->startDate;
-      }
+      $split=explode('#',$idList);
+      $echeance=$split[0];
       if ($periodDays) {
       	if (! $echeance) {
       		if (! $periodNotSet) {
