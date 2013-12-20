@@ -52,9 +52,9 @@ if (array_key_exists('isIE',$_REQUEST)) {
             title="<?php echo i18n("helpSelectFile");?>"  />
           <?php }?>        
           <?php if (! $isIE) {?>
-          <span style="font-style:italicposition: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span>
+          <span style="font-style:italic;position: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span>
           <?php }?>
-          <div style="font-style:italicposition: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachementFileName" id="attachementFileName"></div>     
+          <div style="font-style:italic;position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachementFileName" id="attachementFileName"></div>     
           </td>
         </tr>
       </table>
