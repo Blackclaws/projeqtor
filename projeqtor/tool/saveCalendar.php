@@ -51,7 +51,6 @@ function switchDay ($day,$idCalendarDefinition) {
 }
 
 function copyYear($from, $to, $currentYear) {
-debugLog("copyYear($from, $to, $currentYear)");	
 	if ($from==$to) return;
 	$cal=new Calendar();
 	$calList=$cal->getSqlElementsFromCriteria(array('idCalendarDefinition'=>$from, 'year'=>$currentYear));

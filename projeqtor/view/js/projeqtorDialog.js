@@ -3615,9 +3615,9 @@ function loadMenuBarItem(item,itemName, from) {
     loadContent("parameter.php?type=accessRight","centerDiv");
   } else if(item=='Admin') {
     loadContent("admin.php","centerDiv");
-
   } else if(item=='Calendar') {
-    loadContent("calendar.php","centerDiv");
+    //loadContent("calendar.php","centerDiv");
+    loadContent("objectMain.php?objectClass=CalendarDefinition","centerDiv");
   } else {
 	  showInfo(i18n("messageSelectedNotAvailable", new Array(itemName)));
   }
