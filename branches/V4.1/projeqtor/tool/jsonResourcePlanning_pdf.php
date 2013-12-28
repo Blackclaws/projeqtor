@@ -484,7 +484,7 @@ function displayGantt($list) {
 		$day=$minDate;
 		for ($i=0;$i<$numDays; $i++) {
 			$days[$i]=$day;
-			$openDays[$i]=isOpenDay($day);
+			$openDays[$i]=isOpenDay($day,'1');
 			$day=addDaysToDate($day,1);
 		}
 		//echo "mindate:$minDate maxdate:$maxDate numDays:$numDays numUnits:$numUnits topUnits:$topUnits" ;

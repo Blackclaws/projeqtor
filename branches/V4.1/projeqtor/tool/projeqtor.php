@@ -1770,8 +1770,8 @@ function weekFormat($dateValue) {
 /*
  * Checks if a date is a "off day" (weekend or else)
  */
-function isOffDay ($dateValue) {
-  if (isOpenDay ($dateValue)) {
+function isOffDay ($dateValue,$idCalendarDefinition=null) {
+  if (isOpenDay ($dateValue,$idCalendarDefinition)) {
     return false;
   } else {
     return true;
@@ -1782,35 +1782,36 @@ function isOffDay ($dateValue) {
  */
 $bankHolidays=array();
 $bankWorkdays=array();
-function isOpenDay ($dateValue) {
+function isOpenDay ($dateValue,$idCalendarDefinition='1') {
 //traceLog("isOpenDay ($dateValue)");
   global $bankHolidays,$bankWorkdays;
   $paramDefaultLocale=Parameter::getGlobalParameter('paramDefaultLocale');
   $iDate=strtotime($dateValue);
   $year=date('Y',$iDate);
-  if (array_key_exists($year,$bankWorkdays)) {
-    $aBankWorkdays=$bankWorkdays[$year];
+  if (!$idCalendarDefinition) $idCalendarDefinition=1;
+  if (array_key_exists($year.'#'.$idCalendarDefinition,$bankWorkdays)) {
+    $aBankWorkdays=$bankWorkdays[$year.'#'.$idCalendarDefinition];
   } else {
     $cal=new Calendar();
-    $crit=array('year'=>$year, 'isOffDay'=>'0');
+    $crit=array('year'=>$year, 'isOffDay'=>'0', 'idCalendarDefinition'=>$idCalendarDefinition);
     $aBankWorkdays=array();
     $lstCal=$cal->getSqlElementsFromCriteria($crit);
     foreach ($lstCal as $obj) {
       $aBankWorkdays[]=$obj->day;
     }
-    $bankWorkdays[$year]=$aBankWorkdays;
+    $bankWorkdays[$year.'#'.$idCalendarDefinition]=$aBankWorkdays;
   }
-  if (array_key_exists($year,$bankHolidays)) {
-    $aBankHolidays=$bankHolidays[$year];
+  if (array_key_exists($year.'#'.$idCalendarDefinition,$bankHolidays)) {
+    $aBankHolidays=$bankHolidays[$year.'#'.$idCalendarDefinition];
   } else {
     $cal=new Calendar();
-    $crit=array('year'=>$year, 'isOffDay'=>'1');
+    $crit=array('year'=>$year, 'isOffDay'=>'1', 'idCalendarDefinition'=>$idCalendarDefinition);
     $aBankHolidays=array();
     $lstCal=$cal->getSqlElementsFromCriteria($crit);
     foreach ($lstCal as $obj) {
       $aBankHolidays[]=$obj->day;
     }
-    $bankHolidays[$year]=$aBankHolidays;
+    $bankHolidays[$year.'#'.$idCalendarDefinition]=$aBankHolidays;
   }
   if (in_array (date ('w', $iDate),array (0,6) ) ) {
     if (in_array (date ('Ymd', $iDate), $aBankWorkdays)) {
