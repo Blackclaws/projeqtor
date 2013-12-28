@@ -9,6 +9,7 @@ class Calendar extends SqlElement {
   public $_col_1_2_description;
 	public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $idCalendarDefinition;
   public $calendarDate;
   public $isOffDay;
   public $day;
@@ -159,7 +160,7 @@ class Calendar extends SqlElement {
   
   public static function getOffDayList() {
   	$cal=New Calendar();
-  	$crit=array('isOffDay'=>'1');
+  	$crit=array('isOffDay'=>'1', 'idCalendarDefinition'=>'1');
   	$lst=$cal->getSqlElementsFromCriteria($crit);
   	$res='';
   	foreach ($lst as $obj) {
@@ -169,7 +170,7 @@ class Calendar extends SqlElement {
   }
   public static function getWorkDayList() {
     $cal=New Calendar();
-    $crit=array('isOffDay'=>'0');
+    $crit=array('isOffDay'=>'0', 'idCalendarDefinition'=>'1');
     $lst=$cal->getSqlElementsFromCriteria($crit);
     $res='';
     foreach ($lst as $obj) {
@@ -191,7 +192,8 @@ class Calendar extends SqlElement {
   	}
     $today=date('Y-m-d');
   	global $bankHolidays,$bankWorkdays;
-    $result="<br/>";
+    //$result="<br/>";
+    $result="";
     if ($item=='calendarView') {
       $result .='<table >';
       if ($this->year) {
@@ -210,21 +212,21 @@ class Calendar extends SqlElement {
       		$dx=($d<10)?'0'.$d:''.$d;
       		$day=$y.'-'.$mx.'-'.$dx;
       		$iDay=strtotime($day);
-      		$isOff=isOffDay($day);
+      		$isOff=isOffDay($day,$this->idCalendarDefinition);
       		$style='';
       		if ($day==$today) {
       			$style.='font-weight: bold; font-size: 9pt;';
       		}
-      		if (in_array (date ('Ymd', $iDay), $bankWorkdays[$y])) {
+      		if (in_array (date ('Ymd', $iDay), $bankWorkdays[$y.'#'.$this->idCalendarDefinition])) {
       			$style.='color: #FF0000; background: #FFF0F0;';
-      		} else if (in_array (date ('Ymd', $iDay), $bankHolidays[$y])) {
+      		} else if (in_array (date ('Ymd', $iDay), $bankHolidays[$y.'#'.$this->idCalendarDefinition])) {
             $style.='color: #0000FF; background: #D0D0FF;';
           } else {
             $style.='background: ';
           	$style.=($isOff)?'#DDDDDD;':'#FFFFFF;';
           }
       		$result.= '<td class="calendar" style="'.$style.'">';
-      		$result.= '<div style="cursor: pointer;" onClick="loadContent(\'calendar.php?day=' . $day . '\',\'centerDiv\');">';
+      		$result.= '<div style="cursor: pointer;" onClick="loadContent(\'../tool/saveCalendar.php?idCalendarDefinition='.$this->idCalendarDefinition.'&day='. $day . '\',\'CalendarDefinition_Calendar\');">';
       		$result.=  substr(i18n(date('l',$iDay)),0,1) . $d ;
       		$result.= '</div>';
       		$result.= '</td>';

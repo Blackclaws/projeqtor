@@ -90,7 +90,7 @@ $where.="        and doneDateTime<='" . $paramYear . "-12-31' )";
 $where.="    or (    idleDateTime>= '" . $paramYear . "-01-01'";
 $where.="        and idleDateTime<='" . $paramYear . "-12-31' ) )";
 if ($paramProject!="") {
-  $where.=" and idProject='" . Sql::fmtId($paramProject) . "'";
+  $where.=" and idProject in " .  getVisibleProjectsList(false, $paramProject);
 }
 if ($paramTicketType!="") {
   $where.=" and idTicketType='" . Sql::fmtId($paramTicketType) . "'";

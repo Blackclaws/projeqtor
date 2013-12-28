@@ -16,6 +16,7 @@ class Resource extends SqlElement {
   public $userName;
   public $idProfile;
   public $idTeam;
+  public $idCalendarDefinition;
   public $email;
   public $phone;
   public $mobile;

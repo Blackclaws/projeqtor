@@ -397,7 +397,7 @@ class PlannedWork extends GeneralWork {
           	}
           	$delai=0;          	
           	for($tmpDate=$currentDate; $tmpDate<=$endPlan;$tmpDate=addDaysToDate($tmpDate, 1)) {
-          		if (isOffDay($tmpDate)) continue;
+          		if (isOffDay($tmpDate,$r->idCalendarDefinition)) continue;
           		$tempCapacity=$capacityRate;
           		if (isset($ress[$tmpDate])) {
           			$tempCapacity-=$ress[$tmpDate];
@@ -425,7 +425,7 @@ class PlannedWork extends GeneralWork {
             if ($currentDate==$globalMaxDate) { break; }         
             if ($currentDate==$globalMinDate) { break; } 
             if ($ress['Project#' . $plan->idProject]['rate']==0) { break ; }
-            if (isOpenDay($currentDate)) {
+            if (isOpenDay($currentDate, $r->idCalendarDefinition)) {
               $planned=0;
               $week=weekFormat($currentDate);
               if (array_key_exists($currentDate, $ress)) {

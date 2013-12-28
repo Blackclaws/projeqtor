@@ -105,7 +105,7 @@ if ($periodType) {
   $where.="        and idleDateTime<='" . $end . "') )";
 }
 if ($paramProject!="") {
-  $where.=" and idProject='" . Sql::fmtId($paramProject) . "'";
+   $where.=" and idProject in " .  getVisibleProjectsList(false, $paramProject);
 }
 if ($paramTicketType!="") {
   $where.=" and idTicketType='" . Sql::fmtId($paramTicketType) . "'";
