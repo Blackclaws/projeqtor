@@ -445,7 +445,7 @@ class PeriodicMeeting extends SqlElement {
               or ($this->periodicityTimes and $nb<$this->periodicityTimes) )
            and $currentDate<$maxDate) {
     	if ($this->idPeriodicity==1) { // DAILY
-    		if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {
+    		if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {
     			$nb++;
     			$this->saveMeeting($currentDate, $nb);
     			$lastDate=$currentDate;
@@ -455,7 +455,7 @@ class PeriodicMeeting extends SqlElement {
     	
       if ($this->idPeriodicity==2) { // WEEKLY
         if ($this->periodicityWeeklyDay==date('N', strtotime($currentDate)) ) {
-          if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {       	
+          if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {       	
 	          $nb++;
 	          $this->saveMeeting($currentDate, $nb);
 	          $lastDate=$currentDate;
@@ -468,7 +468,7 @@ class PeriodicMeeting extends SqlElement {
       
       if ($this->idPeriodicity==3) { // MONTHLY DAY
         if ($this->periodicityMonthlyDayDay==substr($currentDate,8,2)) {
-          if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {        
+          if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {        
             $nb++;
             $this->saveMeeting($currentDate, $nb);
             $lastDate=$currentDate;
@@ -480,7 +480,7 @@ class PeriodicMeeting extends SqlElement {
         		$currentDate=addMonthsToDate($currentDate, 1);
         	}          
           $currentDate=substr($currentDate,0,8).htmlFixLengthNumeric($this->periodicityMonthlyDayDay,2);
-          if (! $this->periodicityOpenDays or isOpenDay($currentDate)) {        
+          if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {        
             $nb++;
             $this->saveMeeting($currentDate, $nb);
             $lastDate=$currentDate;
@@ -493,7 +493,7 @@ class PeriodicMeeting extends SqlElement {
       	if ($this->periodicityMonthlyWeekDay==date('N', strtotime($currentDate)) ) {
       		$nbWeekDay+=1;
       		if ($nbWeekDay==$this->periodicityMonthlyWeekNumber) {
-      			if ( (! $this->periodicityOpenDays or isOpenDay($currentDate) )
+      			if ( (! $this->periodicityOpenDays or isOpenDay($currentDate,'1') )
       			  and $currentDate>=$this->periodicityStartDate 
       			  and substr($currentDate,5,2)==$currentMonth ) {  
       				$nb++;
@@ -515,7 +515,7 @@ class PeriodicMeeting extends SqlElement {
       }
       
       if ($this->idPeriodicity==5) { // YEARLY
-        if ( (! $this->periodicityOpenDays or isOpenDay($currentDate) )
+        if ( (! $this->periodicityOpenDays or isOpenDay($currentDate,'1') )
         and $currentDate>=$this->periodicityStartDate ) {  
           $nb++;
           $this->saveMeeting($currentDate, $nb);

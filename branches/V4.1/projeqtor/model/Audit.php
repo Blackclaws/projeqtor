@@ -227,7 +227,7 @@ class Audit extends SqlElement {
     if ($i != 1) {
         //we will have two since we are not using 'other' argument yet
         //see if version is before or after the name
-        if (strripos($u_agent,"Version") < strripos($u_agent,$ub)){
+        if (strripos($u_agent,"Version") < strripos($u_agent,$ub) or ! isset($matches['version'][1] ) ) {
             $version= $matches['version'][0];
         }
         else {

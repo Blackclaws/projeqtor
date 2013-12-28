@@ -54,6 +54,8 @@ abstract class SqlElement {
     "ActivityType" =>       array("Activity"=>"control"),
     "Bill" =>               array("BillLine"=>"control"),
     "BillType" =>           array("Bill"=>"control"),
+    "CalendarDefinition" => array("Calendar"=>"cascade",
+                                  "Resource"=>"control"),
     "Contact" =>            array("Affectation"=>"control",
                                   "Activity"=>"control",
                                   "Bill"=>"control",
