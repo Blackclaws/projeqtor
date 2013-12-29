@@ -629,7 +629,7 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
 	$paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
 	$paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
-  //$paramMailerType='mail';
+  $paramMailerType=Parameter::getGlobalParameter('paramMailerType');
   if ( ! isset($paramMailerType) or $paramMailerType=='phpmailer') {
   	// Cute method using PHPMailer : should work on all situations / First implementation on V4.0
   	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $attachmentsArray);
