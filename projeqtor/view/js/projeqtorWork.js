@@ -92,6 +92,9 @@ function refreshImputationPeriod(directDate) {
 	if (directDate) {
 		var year=directDate.getFullYear();
 		var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
+		if (week==1 && directDate.getMonth()>10) {
+		  year+=1;
+		}
 		dijit.byId('yearSpinner').set('value',year);
 		dijit.byId('weekSpinner').set('value',week);
 	} else {

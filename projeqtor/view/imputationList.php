@@ -10,6 +10,9 @@ $user=$_SESSION['user'];
 $rangeType='week';
 $currentWeek=weekNumber(date('Y-m-d')) ;
 $currentYear=strftime("%Y") ;
+if ($currentWeek==1 and strftime("%Y")>10) {
+	$currentYear+=1;
+}
 $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));
 $rangeValue=$currentYear . $currentWeek;
 
