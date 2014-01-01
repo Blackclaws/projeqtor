@@ -204,15 +204,17 @@ class DocumentVersion extends SqlElement {
     $crit=array('refType'=>'DocumentVersion','refId'=>$this->id);
     $app=new Approver();
     $list=$app->getSqlElementsFromCriteria($crit);
-    $approved=null;
-    foreach ($list as $app) {
-      if ($app->approved) {
-        if ($approved==null) {$approved=1;}
-      } else {
-        $approved=0;
-      }
+    if (count($list)==0) {
+      $approved=0;
+    } else {
+	    $approved=1;
+    	foreach ($list as $app) {
+	      if (! $app->approved) {
+	        $approved=0;
+	      }
+	    }
     }
-    $this->approved=($approved==1)?1:0;
+    $this->approved=$approved;
     $this->save();
   }
 }
