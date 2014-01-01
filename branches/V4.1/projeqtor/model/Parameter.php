@@ -298,6 +298,7 @@ class Parameter extends SqlElement {
         break; 
       case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': 
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
+      case 'displayOnlyHandled': case 'setHandledOnRealWork':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
@@ -345,6 +346,9 @@ class Parameter extends SqlElement {
                                'displayResourcePlan'=>'list',
       	                       'maxProjectsToDisplay'=>'number',
       	                       'ganttPlanningPrintOldStyle'=>'list',
+      	                     'sectionImputation'=>'section',
+      	                       'displayOnlyHandled'=>'list',
+      	                       'setHandledOnRealWork'=>'list',
       	                     'sectionResponsible'=>'section',
       	                       'setResponsibleIfSingle'=>'list',
       	                       'setResponsibleIfNeeded'=>'list',  

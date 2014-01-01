@@ -52,7 +52,8 @@ class ImputationLine {
 scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned)");		
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
-
+    $displayOnlyHandled=Parameter::getGlobalParameter('displayOnlyHandled');
+    
 		$user=$_SESSION['user'];
 		$user=new User($user->id);
 		
@@ -93,6 +94,15 @@ scriptLog("      => ImputationLine->getLines($resourceId, $rangeType, $rangeValu
 			}
 		}
 		
+		if ($displayOnlyHandled=='YES') {
+			foreach ($assList as $id=>$ass) {
+				if ($ass->refType and class_exists($ass->refType))
+				$refObj=new $ass->refType($ass->refId);
+				if (property_exists($refObj,'handled') and ! $refObj->handled) {
+					unset ($assList[$id]);
+				}
+			}
+		}
 		// Check if assignment exists for each work (may be closed, so make it appear)
 		foreach ($workList as $work) {
 			if ($work->idAssignment) {

@@ -371,7 +371,7 @@ class PlanningElement extends SqlElement {
     if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
       $refType=$this->refType;     
       $refObj=new $refType($this->refId);
-      if (property_exists($refObj, 'idStatus')) {
+      if (property_exists($refObj, 'idStatus') and Parameter::getGlobalParameter('setHandledOnRealWork')=='YES') {
     	  $st=new Status($refObj->idStatus);
     	  if (!$st->setHandledStatus) { // if current stauts is not handled, move to first allowed handled status (fitting workflow)
     	 	  $typeClass=$refType.'Type';
@@ -390,7 +390,7 @@ class PlanningElement extends SqlElement {
     	 	  $stList=$st->getSqlElementsFromCriteria(null, null, " setHandledStatus=1 and id in ".$in, 'sortOrder asc');
     	 	  if (count($stList)>0) {
     	 	  	$refObj->idStatus=$stList[0]->id;
-    	 	  	$refObj->save();
+    	 	  	$resSetStatus=$refObj->save();
     	 	  }
     	  }
       }
