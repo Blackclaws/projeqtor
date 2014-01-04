@@ -123,11 +123,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       }
       echo '</tr>';
       echo '</table></form>';          
-      $width=($print)?'50':'70';
+      $width=($print)?'45':'60';
       echo '<table align="center" style="width:95%">';
       echo '<tr>' .
            '  <td class="messageHeader" colspan="3">' . i18n('menuProject') . '</td>' . 
-           '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
+           '  <td class="messageHeader" colspan="2" width="' . ($width) . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
       if ($workVisibility=='ALL') {
         echo '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLeft')) . '</div></td>' ;
       }
@@ -253,6 +253,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              '  </td>';
           }
           echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>';
+          echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?SqlList::getNameFromId('OverallProgress',$proj->idOverallProgress):""). '</td>';
           if ($workVisibility=='ALL') {
             echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>';
           }
