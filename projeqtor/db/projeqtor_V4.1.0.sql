@@ -30,3 +30,10 @@ ALTER TABLE `${prefix}calendar` ADD COLUMN `idCalendarDefinition` int(12) unsign
 
 ALTER TABLE `${prefix}resource` ADD COLUMN `idCalendarDefinition` int(12) unsigned default 1;
 
+ALTER TABLE `${prefix}client` ADD COLUMN `designation` varchar(50), 
+  ADD COLUMN `street` varchar(50), 
+  ADD COLUMN `complement` varchar(50), 
+  ADD COLUMN `zip` varchar(50), 
+  ADD COLUMN `city` varchar(50), 
+  ADD COLUMN `state` varchar(50), 
+  ADD COLUMN `country` varchar(50);

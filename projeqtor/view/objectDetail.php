@@ -272,7 +272,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			}
 			if ($obj->getFieldAttributes($col)!='hidden') {
 				if ($nobr) echo '&nbsp;';
-				echo  i18n($item);
+				echo '<span class="tabLabel" style="font-weight:normal">'. i18n($item) . '</span>';
 				echo '&nbsp;';
 			}
 

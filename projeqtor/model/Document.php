@@ -71,6 +71,7 @@ class Document extends SqlElement {
     "draft"=>"hidden",
     "idStatus"=>"readonly",
     "documentReference"=>"readonly",
+   	"idle"=>"nobr",
     "cancelled"=>"nobr"
    );
    

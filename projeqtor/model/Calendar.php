@@ -194,13 +194,16 @@ class Calendar extends SqlElement {
   	global $bankHolidays,$bankWorkdays;
     //$result="<br/>";
     $result="";
-    if ($item=='calendarView') {
-      $result .='<table >';
+    if ($item=='calendarView') {    	
       if ($this->year) {
         $y=$this->year;
       } else {
       	$y=date('Y');
       }
+      //echo $y.'#'.$this->idCalendarDefinition;
+      //if (! isset($bankWorkdays[$y.'#'.$this->idCalendarDefinition])) {return;	}
+      if (! $this->idCalendarDefinition) { return;}
+      $result .='<table >';
       $result .='<tr><td class="calendarHeader" colspan="32">' .$y . '</td></tr>';
       for ($m=1; $m<=12; $m++) {
       	$mx=($m<10)?'0'.$m:''.$m;
