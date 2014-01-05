@@ -338,7 +338,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
       "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . Sql::fmtId($user->id) . "')" .
       ") and idle=0 and done=0";
-    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_WorkDiv', 'todayAssignedTasks');
+    $whereMeeting=str_ireplace('Activity', 'Meeting', $whereActivity);
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_WorkDiv', 'todayAssignedTasks');
   }
   
   function showResponsibleTasks() {
@@ -349,7 +350,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       ") and idle=0 and done=0";
     $whereTicket=$where;
     $whereActivity=$where;
-    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_RespDiv', 'todayResponsibleTasks');
+    $whereMeeting=$whereActivity;
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_RespDiv', 'todayResponsibleTasks');
   }
   
   function showIssuerRequestorTasks() {
@@ -360,7 +362,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
        " or idContact='" . Sql::fmtId($user->id) . "'" .
        ") and idle=0 and done=0";
     $whereActivity=$whereTicket;
-    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_FollowDiv', 'todayIssuerRequestorTasks');
+    $whereMeeting=$where;
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_FollowDiv', 'todayIssuerRequestorTasks');
   }
   
   function showProjectsTasks() {
@@ -368,10 +371,16 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
        ") and idle=0 and done=0";
     $whereTicket=$where;
     $whereActivity=$where;
-    showActivitiesList($where, $whereActivity, $whereTicket, 'Today_ProjectTasks', 'todayProjectsTasks');
+    $whereMeeting=$where;
+    showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_ProjectTasks', 'todayProjectsTasks');
   }
   
-  function showActivitiesList($where, $whereActivity, $whereTicket, $divName, $title) {
+  function showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, $divName, $title) {
+  	//                   Assign  idRess  idUser  idCont  Items
+  	// $where :          NO      YES     YES     NO      Milestone, Risk, Action, Issue, Opportunity
+  	// $whereActivity :  YES     YES     YES     YES     Activity
+  	// $whereTicket :    NO      YES     YES     YES     Ticket
+  	// $whereMeeting :   YES     YES     YES     NO      Meeting, TestSession
   	global $cptMax, $print, $cptDisplayId, $collapsedList;
   	$user=$_SESSION['user'];
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
@@ -396,6 +405,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $risk= new Risk();
     $listRisk=$risk->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listRisk);
+    $opportunity= new Opportunity();
+    $listOpportunity=$opportunity->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listOpportunity);
     $action= new Action();
     $listAction=$action->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listAction);   
@@ -403,8 +415,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listIssue);   
     $session= new TestSession();
-    $listSession=$session->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $listSession=$session->getSqlElementsFromCriteria(null, null, str_ireplace('Meeting', 'TestSession', $whereMeeting), $order, null, true,$cptMax+1);
     $list=array_merge($list, $listSession);   
+    $meeting= new Meeting();
+    $listMeeting=$meeting->getSqlElementsFromCriteria(null, null, $whereMeeting, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listMeeting);
     if (! $print or !array_key_exists($divName, $collapsedList)) {
     if (! $print) {
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
@@ -435,18 +450,16 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     	if ($class=='Ticket') {
     		$echeance=($elt->actualDueDateTime)?$elt->actualDueDateTime:$elt->initialDueDateTime;
     		$echeance=substr($echeance, 0,10);
-    	} else if ($class=='Activity' or $class=='Milestone') {
+    	} else if ($class=='Activity' or $class=='Milestone' or $class=="TestSession" or $class=="Meeting") {
     		$pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$class,'refId'=>$elt->id));
     		$echeance=($pe->realEndDate)?$pe->realEndDate
     		:(($pe->plannedEndDate)?$pe->plannedEndDate
     				:(($pe->validatedEndDate)?$pe->validatedEndDate
     						:$pe->initialEndDate));
-    	} else if ($class=="Risk" or $class=="Issue") {
+    	} else if ($class=="Risk" or $class=="Issue" or $class=="Opportunity") {
     		$echeance=($elt->actualEndDate)?$elt->actualEndDate:$elt->initialEndDate;
     	} else if ($class=="Action" ) {
     		$echeance=($elt->actualDueDate)?$elt->actualDueDate:$elt->initialDueDate;
-    	} else if ($class=="TestSession") {
-    		$echeance=$elt->startDate;
     	}
     	$listEcheance[$echeance.'#'.$class.'#'.$elt->id]=$elt;
     }

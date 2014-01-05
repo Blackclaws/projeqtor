@@ -13,7 +13,15 @@ class Client extends SqlElement {
   public $tax;
   public $idle;
   public $description;
-  public $_col_2_2_Projects;
+  public $_col_2_2_Address;
+  public $designation;
+  public $street;
+  public $complement;
+  public $zip;
+  public $city;
+  public $state;
+  public $country;
+  public $_sec_Projects;
   public $_spe_projects;
   public $_sec_Contacts;
   public $_spe_contacts;
