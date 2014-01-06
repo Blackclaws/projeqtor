@@ -774,6 +774,11 @@ class User extends SqlElement {
 			$first_user = $result_user[0];
 			$ldap_user_dn = $first_user['dn'];
 //debugLog("dn=$ldap_user_dn");
+      if (strtolower($ldap_user_dn)==strtolower($paramLdap_search_user)) {
+      	traceLog("authenticate - Filter error : filter retrieved admin user (LDAP user in global parameters)" );
+      	return "login";
+      } 
+			
 			// Bind with the dn of the user that matched our filter (only one user should match filter ..)
       enableCatchErrors();
 			try {
