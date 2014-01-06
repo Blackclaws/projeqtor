@@ -116,9 +116,9 @@ Object : <select class="input" name="object" id="object">
 if ($id) {
 	$fullUrl=$service_url.'/'.$object.'/'.$id;
 } else if ($list and $list=='all') {
-	$fullUrl=$service_url.'/'.$object.'/list/all';	
+	$fullUrl=$service_url.'/'.$object.'/all';	
 } else if ($list and $list=='filter'){
-	$fullUrl=$service_url.'/'.$object.'/list/filter/'.$filter; 
+	$fullUrl=$service_url.'/'.$object.'/filter/'.$filter; 
 } else {
 	echo "invalid query";
 	exit;
