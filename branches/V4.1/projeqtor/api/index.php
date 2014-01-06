@@ -102,7 +102,7 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
         foreach ($list as $obj) {
         	if ($cpt) echo ",";
         	$cpt++;
-          echo jsonDumpObj($obj);
+          echo '{'.jsonDumpObj($obj).'}';
         }
         echo ']';
         echo ' }';
