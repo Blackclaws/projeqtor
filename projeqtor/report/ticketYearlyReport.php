@@ -260,7 +260,6 @@ $graph->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_
 $graph->drawBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),true);  
 
 $imgName=getGraphImgName("ticketYearlyReport");
-debugLog($imgName);
 $graph->Render($imgName);
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />'; 
