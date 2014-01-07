@@ -155,14 +155,13 @@ function numericFormatter(value) {
 
 function workFormatter(value) {
 	  // result=dojo.number.format(value);
-	  if (paramWorkUnit!='days') value=value*paramHoursPerDay;
+	  if (top.paramWorkUnit!='days') value=value*top.paramHoursPerDay;
 	  roundedValue=dojo.number.format(Math.round(value*100)/100);
 	  // var result = roundedValue.replace(/^0+/g,'');
 	  // result = value.replace(/^0+/g,'');
-	  var unit=(paramWorkUnit=='days')?i18n('shortDay'):i18n('shortHour');
+	  var unit=(top.paramWorkUnit=='days')?i18n('shortDay'):i18n('shortHour');
 	  return roundedValue+'&nbsp;'+unit;
 	}
-
 
 function costFormatter(value) {
 	  // result=dojo.number.format(value);
