@@ -92,7 +92,7 @@ class StatusMail extends SqlElement {
     if (trim($this->idType)) {
       $crit.=" and idType='" . Sql::fmtId($this->idType) . "'";
     } else {
-      $crit.=" and idType is null'";	
+      $crit.=" and idType is null";	
     }
     $crit.=" and id<>'" . Sql::fmtId($this->id) . "'";
     $list=$this->getSqlElementsFromCriteria(null, false, $crit);

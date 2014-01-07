@@ -111,7 +111,7 @@
   
   $showMilestone=false;
   if ($portfolio) {
-    $queryWhere.=' and ( refType="Project" ';
+    $queryWhere.=' and ( refType=\'Project\' ';
     if (array_key_exists('showMilestone',$_REQUEST) ) {
       $showMilestone=trim($_REQUEST['showMilestone']);
     } else {
