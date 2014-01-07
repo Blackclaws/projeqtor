@@ -212,6 +212,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       dojo.byId("loadingDiv").style.display="none";
       dojo.byId("mainDiv").style.visibility="visible"; 
       setTimeout('checkAlert();',5000); //first check at 5 seco 
+      <?php if ($firstPage=="welcome.php") {?>
+          setTimeout("runWelcomeAnimation();",2000);
+      <?php } ?>
     }); 
     var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
     var ganttPlanningOldStyle=<?php echo ((isset($ganttPlanningOldStyle) and $ganttPlanningOldStyle)?1:0);?>;

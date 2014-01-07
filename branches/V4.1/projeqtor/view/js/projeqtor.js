@@ -2283,3 +2283,27 @@ function copyDirectLinkUrl() {
 	document.getElementById(flashcopier).innerHTML = divinfo;
   }
 }*/
+
+function runWelcomeAnimation() {
+  titleNode=dojo.byId("welcomeTitle");
+  if (titleNode) {
+    dojo.fadeOut({
+      node: titleNode, 
+      duration: 500,
+      onEnd: function() {
+        var newleft=Math.floor((Math.random()*60)-30);
+        var newtop=Math.floor((Math.random()*80)+10);
+        dojo.byId("welcomeTitle").style.top=newtop+"%";
+        dojo.byId("welcomeTitle").style.left=newleft+"%";
+        dojo.fadeIn({
+          node: titleNode, 
+          duration: 500,
+          onEnd: function() {
+            setTimeout("runWelcomeAnimation();",100);
+          }
+        }).play();
+    }
+  }).play();
+    
+  }
+}

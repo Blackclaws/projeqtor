@@ -616,9 +616,12 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vLeftTable += '<TR id=child_' + vID + ' dndType="planningTask" class="dojoDndItem ganttTask' + vRowType + '" ' 
           + invisibleDisplay + '>' ;
         vLeftTable += '  <TD class="ganttName" style="width:'+vIconWidth+'px">'
-          +'<span class="dojoDndHandle handleCursor">' 
-          + '<img style="width:8px" src="css/images/iconDrag.gif" />' 
+          +'<span class="dojoDndHandle handleCursor">'
+          + '<table><tr><td>'
+          + '<img style="width:8px" src="css/images/iconDrag.gif" />'
+          + '</td><td>'
           + '<img style="width:16px" src="css/images/icon'+ vTaskList[i].getClass() + '16.png" />'
+          + '</td></tr></table>'
           +'</span>'
           +'</TD>'
           +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap >';

@@ -627,7 +627,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   	
   	$lst=null;
   	$prj=new Project();
-  	$queryWhere='refType="Project" and refId in (SELECT id FROM ' . $prj->getDatabaseTableName() . ' WHERE idProject=' . $this->id . ' and cancelled=0)';
+  	$queryWhere='refType=\'Project\' and refId in (SELECT id FROM ' . $prj->getDatabaseTableName() . ' WHERE idProject=' . $this->id . ' and cancelled=0)';
   	
   	$prj=new ProjectPlanningElement();
   	$lst=$prj->getSqlElementsFromCriteria(array(), false, $queryWhere);
