@@ -30,6 +30,7 @@ class User extends SqlElement {
   //public $_arrayFiltersDetailId=array();
   public $salt;
   public $crypto;
+  public $cookieHash;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -49,7 +50,8 @@ class User extends SqlElement {
                                           "idProfile"=>"required",
                                           "loginTry"=>"hidden",
                                           "salt"=>'hidden', 
-                                          "crypto"=>'hidden'
+                                          "crypto"=>'hidden',
+  		                                    "cookieHash"=>'hidden'
   );  
   
   private static $_databaseCriteria = array('isUser'=>'1');
@@ -681,7 +683,10 @@ class User extends SqlElement {
 	  $paramLdap_search_pass=Parameter::getGlobalParameter('paramLdap_search_pass');
 	  $paramLdap_user_filter=Parameter::getGlobalParameter('paramLdap_user_filter');
 	  $paramLdap_defaultprofile=Parameter::getGlobalParameter('paramLdap_defaultprofile');
-	  
+	  $rememberMe=false;
+	  if (isset($_REQUEST['rememberMe']) and Parameter::getGlobalParameter('rememberMe')!='NO') {
+	  	$rememberMe=true;
+	  }
 	 	if ( ! $this->id ) {
 			if (isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
 		  	$this->name=strtolower($paramlogin);
@@ -710,7 +715,7 @@ class User extends SqlElement {
 				$this->unsuccessfullLogin();
 	      return "password";
 			} else {
-				$this->successfullLogin();
+				$this->successfullLogin($rememberMe);
 	  	  return "OK";
 	  	}
 	  } else {
@@ -810,6 +815,9 @@ class User extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
+				  if ($rememberMe) {
+				  	$this->setCookieHash();
+				  }
 				  $_SESSION['user']=$this;
 				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
@@ -866,14 +874,21 @@ class User extends SqlElement {
   	}
   }
   
-  private function successfullLogin() {
+  private function successfullLogin($rememberMe) {
   	global $loginSave;
     $maxTry=Parameter::getGlobalParameter('paramLockAfterWrongTries');
   	if ($maxTry) {
       $this->loginTry=0;
       $loginSave=true;
+      if ($rememberMe) {
+      	$this->setCookieHash();
+      }
       $this->save();
-  	}
+  	} else if ($rememberMe) {
+  		$loginSave=true;
+      $this->setCookieHash();
+      $this->save();
+  	}   
   }
   
   public function disconnect() {
@@ -907,6 +922,26 @@ class User extends SqlElement {
       $result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
     }
     return $result;
+  }
+  
+  public function setCookieHash() {
+  	$cookieHash = md5(sha1($this->name . microtime()));
+  	$this->cookieHash=$cookieHash;
+  	$domain=$_SERVER['SERVER_NAME'];
+  	setcookie("projeqtor",$cookieHash,time()+3600*24*7,'/',$domain);
+  }
+  public function cleanCookieHash() {
+  	$cookieHash=$this->cookieHash;
+  	setcookie('projeqtor', $cookieHash, 1);
+  	$this->cookieHash=null;
+  	$this->save();
+  }
+  public static function getRememberMeCookie() {
+  	$cookieHash=null;
+  	if (isset($_COOKIE['projeqtor']) and Parameter::getGlobalParameter('rememberMe')!='NO') {
+  		$cookieHash = $_COOKIE['projeqtor'];
+  	}
+  	return $cookieHash;
   }
 }
 ?>

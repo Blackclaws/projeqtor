@@ -255,10 +255,6 @@ class Parameter extends SqlElement {
       case 'csvSeparator':
         $list=array(';'=>';',','=>',');
         break;
-      case 'changeReferenceOnTypeChange':
-        $list=array('YES'=>i18n('displayYes'),
-                    'NO'=>i18n('displayNo'));
-        break;
       case 'displayResourcePlan':
         $list=array('name'=>i18n('colName'),
                     'initials'=>i18n('colInitials'),
@@ -296,6 +292,10 @@ class Parameter extends SqlElement {
                      '|'=>'|', '|_'=>'|_','|__'=>'|__',
                      'no'=>i18n('paramNone'));
         break; 
+      case 'changeReferenceOnTypeChange': case 'rememberMe':
+        	$list=array('YES'=>i18n('displayYes'),
+        	'NO'=>i18n('displayNo'));
+        	break;
       case 'initializePassword': case 'setResponsibleIfNeeded': case 'setResponsibleIfSingle': 
       case 'realWorkOnlyForResponsible': case 'preserveUploadedFileName': case 'ganttPlanningPrintOldStyle':
       case 'displayOnlyHandled': case 'setHandledOnRealWork':
@@ -359,6 +359,8 @@ class Parameter extends SqlElement {
       	                       'paramDefaultPassword'=>'text',
       	                       'paramPasswordMinLength'=>'number', 
       	                       'paramLockAfterWrongTries'=>'number',
+      	                       'passwordValidityDays'=>'number',
+      	                       'rememberMe'=>'list',
       	                       'initializePassword'=>'list', 
       	                     'sectionLdap'=>'section', 
       	                       'paramLdap_allow_login'=>'list',

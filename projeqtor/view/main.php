@@ -289,7 +289,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           </tr>
           <tr style="height:100%" height="100%">
             <td style="height:99%" align="left" valign="middle">
-              <div dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;text-align:center;">
+              <div dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden;text-align:center;">
               <br/><br/>Loading ...
               <div id="waitLogin"></div>               
               </div>
@@ -377,7 +377,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
       <table width="100%">
         <tr>
-          <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect();" style="vertical-align: middle; text-align: left; cursor: pointer; ">
+          <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: middle; text-align: left; cursor: pointer; ">
             <table>
               <tr>
                 <td>
