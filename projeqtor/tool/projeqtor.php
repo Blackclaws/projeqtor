@@ -118,14 +118,27 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
   }
   scriptLog("Page=" . $page);
   if ( ! $user and $page != 'loginCheck.php' and $page != 'getHash.php') {
-    if (is_file("login.php")) {
-      include "login.php";
-    } else {
-      echo '<input type="hidden" id="lastOperation" name="lastOperation" value="testConnection">';
-      echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="ERROR">';    
-      echo '<span class="messageERROR" >' . i18n('errorConnection') . '</span>';
+  	$cookieHash=User::getRememberMeCookie();
+	  if (!empty($cookieHash)) {
+	  	$cookieUser=SqlElement::getSingleSqlElementFromCriteria('User', array('cookieHash'=>$cookieHash));
+	  	if ($cookieUser and $cookieUser->id) {
+	  	 	$user=$cookieUser;
+	  	 	$loginSave=true;
+        $user->setCookieHash();
+        $user->save();
+	    	$_SESSION['user']=$user;
+	    }
+	  }
+    if (! $user) {
+	    if (is_file("login.php")) {
+	      include "login.php";
+	    } else {
+	      echo '<input type="hidden" id="lastOperation" name="lastOperation" value="testConnection">';
+	      echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="ERROR">';    
+	      echo '<span class="messageERROR" >' . i18n('errorConnection') . '</span>';
+	    }
+      exit;
     }
-    exit;
   }
   if (isset($user)) {
   	if ($user->isLdap==0) {
@@ -2067,7 +2080,7 @@ function securityCheckRequest() {
 		if (isset($_REQUEST[$param])) {
 			$paramVal=$_REQUEST[$param];
 		  if (trim($paramVal) and htmlEntities($paramVal)!=$paramVal) {
-		    traceHack("projeqtor->securityCheckRequest, _REQUST['$param']=$paramVal");
+		    traceHack("projeqtor->securityCheckRequest, _REQUEST['$param']=$paramVal");
 		    exit;
 		  }
 		}

@@ -59,6 +59,7 @@
     dojo.require("dijit.Dialog"); 
     dojo.require("dijit.form.ValidationTextBox");
     dojo.require("dijit.form.TextBox");
+    dojo.require("dijit.form.CheckBox");
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
@@ -101,7 +102,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			    </tr>
 			    <tr style="height:100%" height="100%">
 			      <td style="height:99%" align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;position: relative;">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden;position: relative;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
                     showWait();
@@ -129,9 +130,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                         <input type="hidden" id="hashStringLogin" name="login" style="width:200px" value=""/>  
 			                </td>
 			              </tr>
-			              <tr>
-			                <td colspan="2">&nbsp;</td>
-			              </tr>
+			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
 			                <td>
@@ -140,7 +139,14 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                         <input type="hidden" id="hashStringPassword" name="password" style="width:200px" value=""/>
 			                </td>
 			              </tr>
-			              <tr><td colspan="2">&nbsp;</td></tr>
+			              <?php if (Parameter::getGlobalParameter('rememberMe')!='NO') {?>
+			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
+			              <tr>
+			                <td></td>
+			                <td><div dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></td>
+			              </tr>
+			              <?php }?>
+			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label"><label>&nbsp;</label></td>
 			                <td>
@@ -189,7 +195,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>
 			                <td class="label"><label>&nbsp;</label></td>
 			                <td>
-			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="50px" style="overflow: auto;" >
+			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="55px" style="overflow: auto;" >
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
 			                    <?php if (Parameter::getGlobalParameter('applicationStatus')=='Closed'
 			                          or Sql::getDbVersion()!=$version) {
