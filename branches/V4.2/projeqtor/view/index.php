@@ -41,7 +41,7 @@
           </tr>
           <tr style="height:100%" height="100%">
             <td style="height:99%" align="left" valign="middle">
-              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
+              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden">
   <form id="indexForm" name="indexForm" action="main.php" method="post">
     <input type="hidden" id="xcurrentLocale" name="xcurrentLocale" value="en" />
   </form>

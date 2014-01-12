@@ -9,7 +9,12 @@ if ($id=='disconnect') {
   //$user=$_SESSION['user'];
   //$user->disconnect();
   //session_destroy();
-  Audit::finishSession();
+	if (isset($_REQUEST['cleanCookieHash']) and $_REQUEST['cleanCookieHash']=='true' and isset($_SESSION['user']) ) {
+		 $user=$_SESSION['user'];
+		 $user->cleanCookieHash();
+	}
+	Audit::finishSession();
+
   exit;
 }
 

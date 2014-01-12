@@ -1481,11 +1481,13 @@ function setSelectedProject(idProject, nameProject, selectionField) {
  * 
  * @return
  */
-function disconnect() {
+function disconnect(cleanCookieHash) {
   disconnectFunction = function() {
     quitConfirmed=true;
+    var extUrl="";
+    if (cleanCookieHash) {extUrl="&cleanCookieHash=true"}
     dojo.xhrPost({
-      url: "../tool/saveDataToSession.php?id=disconnect",
+      url: "../tool/saveDataToSession.php?id=disconnect"+extUrl,
       handleAs: "text",
       load: function(data,args) { window.location="../index.php"; }
     });
