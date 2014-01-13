@@ -2311,9 +2311,11 @@ abstract class SqlElement {
 	  } else if (isset($loginSave) and $loginSave==true) { // User->save during autenticate can do everything
         $right='YES';
 		} else if (get_class($this)=='User') { // User can change his own data (to be able to change password)
-			$usr=$_SESSION['user'];
-			if ($this->id==$usr->id) {
-				$right='YES';
+			if (isset($_SESSION['user'])) {
+				$usr=$_SESSION['user'];
+				if ($this->id==$usr->id) {
+					$right='YES';
+				}
 			}
 		}
 		if ($right!='YES') {

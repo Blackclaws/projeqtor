@@ -42,7 +42,8 @@ $versionHistory = array(
   "V4.0.0",
   "V4.0.1",
   "V4.1.-",
-  "V4.1.0",);
+  "V4.1.0",
+  "V4.2.0");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -305,6 +306,18 @@ if ($currVersion<"V4.1.-") {
 	if (isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
 		$nbErrors+=runScript('V4.1.-.flash');
 	}
+}
+
+if ($currVersion<"V4.2.0") {
+	$user=new User();
+	$userList=$user->getSqlElementsFromCriteria(null);
+	foreach ($userList as $user) {
+		if (! $user->passwordChangeDate) {
+	    $user->passwordChangeDate=date('Y-m-d');
+	    $user->save();
+		}
+	}
+	
 }
 
 // To be sure, after habilitations updates ...

@@ -56,6 +56,7 @@ scriptLog("changePassword.php");
     $user->password=$newPassword;
     $user->salt=$salt;
     $user->crypto=$crypto;
+    $user->passwordChangeDate=date('Y-m-d');
     $result=$user->save();
 		if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 		  Sql::rollbackTransaction();

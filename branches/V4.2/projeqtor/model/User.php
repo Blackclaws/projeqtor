@@ -31,6 +31,7 @@ class User extends SqlElement {
   public $salt;
   public $crypto;
   public $cookieHash;
+  public $passwordChangeDate;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -51,7 +52,8 @@ class User extends SqlElement {
                                           "loginTry"=>"hidden",
                                           "salt"=>'hidden', 
                                           "crypto"=>'hidden',
-  		                                    "cookieHash"=>'hidden'
+  		                                    "cookieHash"=>'hidden',
+  		                                    "passwordChangeDate"=>'hidden'
   );  
   
   private static $_databaseCriteria = array('isUser'=>'1');
