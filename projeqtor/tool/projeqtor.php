@@ -4,8 +4,8 @@ session_start();              // Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V4.1.1";            // Version of application : Major / Minor / Release
-$build="0093";                // Build number. To be increased on each release
+$version="V4.2.0";            // Version of application : Major / Minor / Release
+$build="0094";                // Build number. To be increased on each release
 $website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
@@ -159,6 +159,12 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
 		    	if ($user->password==$defaultPwd) {
 		    		$changePassword=true;
 		    	}
+		    	$passwordValidityDays=Parameter::getGlobalParameter('passwordValidityDays');
+          if ($passwordValidityDays and isset($user->passwordChangeDate)) {
+		    		if (addDaysToDate($user->passwordChangeDate, $passwordValidityDays)<date('Y-m-d')) { 
+		    			$changePassword=true;
+            }	
+          }
 		    }
 		    if ( $changePassword ) {
 		      if (is_file("passwordChange.php")) {
