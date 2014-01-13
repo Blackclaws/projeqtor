@@ -77,7 +77,7 @@ INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterVal
 INSERT INTO `${prefix}linkable` (`id`, `name`, `idDefaultLinkable`, `idle`) VALUES
 (16, 'ProjectExpense', 8, 0); 
 
-ALTER TABLE `${prefix}planningelement` CHANGE `expectedProgress` `expectedProgress` int(6) unsigned default 0;
+ALTER TABLE `${prefix}planningelement` CHANGE `expectedProgress` `expectedProgress` int(6) unsigned;
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
 (124,'menuPeriodicMeeting',6,'object',465,'Project',0);
