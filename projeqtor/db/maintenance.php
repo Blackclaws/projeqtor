@@ -607,6 +607,9 @@ function formatForDbType($query) {
     		$col2=substr($res,$colPos2+1,$colPos3-$colPos2-1);
         if ($col1==$col2) {
           $res=substr($res,0,$posChange-1). ' ALTER '.$col2.' TYPE '.substr($res,$colPos3+1);
+          if (strpos($res, 'default')>0) {
+          	$res=substr($res,0,strpos($res, 'default')-1).';';
+          }
         } else {
         	$res=substr($res,0,$posChange-1). ' RENAME '.$col1.' TO '.$col2.';';
         }
