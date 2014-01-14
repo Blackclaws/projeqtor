@@ -491,6 +491,10 @@ class Cron {
 		
 		$body=$mail->textPlain;
 		$bodyHtml=$mail->textHtml;
+		if (! $body and $bodyHtml) {
+			include_once '../external/html2text/html2text.php';
+			$body=convert_html_to_text($bodyHtml);
+		}
 		$class=null;
 		$id=null;
 		$msg=null;
