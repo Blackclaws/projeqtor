@@ -3838,11 +3838,13 @@ function openPlanningColumnMgt() {
 
 function changePlanningColumn(col,status,order) {
 	if (status) {
-	  order=planningColumnOrder.indexOf('Hidden'+col);
+	  //order=planningColumnOrder.indexOf('Hidden'+col);
+	  order=dojo.indexOf(planningColumnOrder,'Hidden'+col);
 	  planningColumnOrder[order]=col;
 	  movePlanningColumn(col,col);
 	} else {
-	  order=planningColumnOrder.indexOf(col);
+	  //order=planningColumnOrder.indexOf(col);
+	  order=dojo.indexOf(planningColumnOrder,col);
 	  planningColumnOrder[order]='Hidden'+col;
 	} 
 	dojo.xhrGet({

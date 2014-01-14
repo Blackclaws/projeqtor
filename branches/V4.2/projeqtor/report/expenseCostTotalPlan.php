@@ -135,19 +135,30 @@ for ($i=1;$i<=2;$i++) {
       $tab[$proj][$var][$date]=0;
     }
     $tab[$proj][$var][$date]+=$cost;
-    if ($start=="" or $start>$date) {
-      $start=$date;
-    }
-    if ($end=="" or $end<$date) {
-      $end=$date;
+    if ($date) {
+	    if ($start=="" or $start>$date) {
+	      $start=$date;
+	    }
+	    if ($end=="" or $end<$date) {
+	      $end=$date;
+	    }
     }
   }
 }
 
 $tabW=$tab;
 
-
-
+if (!$start) {
+	if (!$end) {
+		$tab=array();
+	} else {
+		$start=$end;
+	}
+} else {
+	if (!$end) {
+	  $end=$start;
+	}
+}
 if (checkNoData($tab)) exit;
 
 $arrDates=array();
