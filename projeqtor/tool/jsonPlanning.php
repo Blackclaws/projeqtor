@@ -118,7 +118,7 @@
       $showMilestone=trim($showMilestoneObj->parameterValue);
     }
     if ($showMilestone) {
-  	  $queryWhere.=' or refType="Milestone" ';
+  	  $queryWhere.=' or refType=\'Milestone\' ';
     }
   	$queryWhere.=')';
   }
