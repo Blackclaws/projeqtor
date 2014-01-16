@@ -107,12 +107,16 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
       vDuration = tmpPer + ' ' + i18n('shortMinute');
     } else {
       if (this.getStart()==null || this.getEnd()==null) {
-    	if (this.getStart()==null && this.getRealEnd()==null) {
-    	  vDuration = '-';
-    	} else {
-    	  tmpPer =  workDayDiffDates(this.getStart(), this.getRealEnd());
-          vDuration = tmpPer + ' ' + i18n('shortDay');
-    	}
+      	if (this.getStart()==null && this.getRealEnd()==null) {
+      	  vDuration = '-';
+      	} else {
+      	  if (this.getStart()!=null &&  this.getRealEnd()!=null) {
+        	  tmpPer =  workDayDiffDates(this.getStart(), this.getRealEnd());
+            vDuration = tmpPer + ' ' + i18n('shortDay');
+      	  } else {
+      	    vDuration = '-';
+      	  }
+      	}
       } else {
         tmpPer =  workDayDiffDates(this.getStart(), this.getEnd());
         vDuration = tmpPer + ' ' + i18n('shortDay');
