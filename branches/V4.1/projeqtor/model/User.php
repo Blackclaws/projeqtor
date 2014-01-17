@@ -547,7 +547,7 @@ class User extends SqlElement {
           self::resetAllVisibleProjects(null, null);
         } else {
       	  $audit=new Audit();
-	        $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$aff->idUSer, 'idle'=>'0'));
+	        $auditList=$audit->getSqlElementsFromCriteria(array("idUser"=>$aff->idUser, 'idle'=>'0'));
 	        foreach ($auditList as $audit) {
 	         $audit->requestRefreshProject=1;
 	         $res=$audit->save();
