@@ -3855,6 +3855,7 @@ function changePlanningColumn(col,status,order) {
 		error: function() { }
 	  });	
 }
+
 function validatePlanningColumn() {
 	dijit.byId('planningColumnSelector').closeDropDown();
 	showWait();
