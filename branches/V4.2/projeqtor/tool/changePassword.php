@@ -32,6 +32,7 @@ scriptLog("changePassword.php");
   if ($passwordLength<Parameter::getGlobalParameter('paramPasswordMinLength')) {
     passwordError();
   }
+  
   changePassword($user, $password, $userSalt, 'sha256');
   
   /** ========================================================================

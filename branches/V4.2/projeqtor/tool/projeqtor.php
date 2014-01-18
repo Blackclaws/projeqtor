@@ -163,12 +163,13 @@ if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batc
           if ($passwordValidityDays and isset($user->passwordChangeDate)) {
 		    		if (addDaysToDate($user->passwordChangeDate, $passwordValidityDays)<date('Y-m-d')) { 
 		    			$changePassword=true;
+traceLog("password expired for user '$user->name'");		    			  			
             }	
           }
 		    }
 		    if ( $changePassword ) {
-		      if (is_file("passwordChange.php")) {
-		        include "passwordChange.php";
+		      if (is_file("../view/passwordChange.php")) {
+		        include "../view/passwordChange.php";
 		      } else {
 		        echo '<input type="hidden" id="lastOperation" name="lastOperation" value="testPassword">';
 		        echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="ERROR">';    
