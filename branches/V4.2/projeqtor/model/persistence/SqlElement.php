@@ -370,7 +370,9 @@ abstract class SqlElement {
 	 * @return void
 	 */
 	private function saveSqlElement($force=false,$withoutDependencies=false,$forceInsert=false) {
-		//traceLog("saveSqlElement(" . get_class($this) . "#$this->id)");
+		//traceLog("saveSqlElement(" . get_class($this) . "#$this->id)" 
+		//  . ((is_subclass_of($this,'PlanningElement'))?"  => $this->refType #$this->refId":''));
+		// if (get_class($this)=='History')  traceLog("    => $this->colName : '$this->oldValue'->'$this->newValue'");
 		// #305
 		$this->recalculateCheckboxes();
 		// select operation to be executed
