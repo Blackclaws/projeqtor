@@ -324,12 +324,13 @@ class PlanningElement extends SqlElement {
 
     // Update dependant objects
     if ($dispatchNeeded) {
+    	set_time_limit(600);
       $cpt=0;
       foreach ($lstElt as $elt) {
         $cpt++;
         $elt->wbs=$this->wbs . '.' . $cpt;
         if ($elt->refType) { // just security for unit testing 
-          $elt->save();
+          $elt->wbsSave();
         }
         // TODO : check result to return error message in case of error
       }
@@ -404,6 +405,22 @@ class PlanningElement extends SqlElement {
     $result = parent::save();
   }
 
+  public function wbsSave() {
+  	//
+  	$this->_noHistory=true;
+  	$this->saveForced();
+  	$crit=" topId=" . Sql::fmtId($this->id);
+  	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
+  	$cpt=0;
+  	foreach ($lstElt as $elt) {
+  		$cpt++;
+  		$elt->wbs=$this->wbs . '.' . $cpt;
+  		if ($elt->refType) { // just security for unit testing
+  			$elt->wbsSave();
+  		}
+  	}
+  }
+  
     /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
