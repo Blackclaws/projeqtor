@@ -214,7 +214,12 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	  if (! file_exists($uploaddir)) {
 	    mkdir($uploaddir,0777,true);
 	  }
-	  $uploadfile = $uploaddir . $attachement->fileName;
+	  $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
+	  if ($paramFilenameCharset) {
+	  	$uploadfile = $uploaddir . iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$attachement->fileName);
+	  } else {
+	    $uploadfile = $uploaddir . $attachement->fileName;
+	  }
 	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
 	     $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
 	     errorLog(i18n('errorUploadFile','hacking ?'));

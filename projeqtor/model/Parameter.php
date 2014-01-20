@@ -385,6 +385,7 @@ class Parameter extends SqlElement {
       	                       'paramDefaultTimezone'=>'text',
       	                       'currency'=>'text',
       	                       'currencyPosition'=>'list',
+      	                       'filenameCharset'=>'text',
       	                     'sectionMiscellaneous'=>'section',
       	                       'getVersion'=>'list',
       	                       'csvSeparator'=>'list',

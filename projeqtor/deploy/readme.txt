@@ -16,6 +16,8 @@ Pre-requisites :
     register_globals = Off ; securite advise
     magic_quotes_gpc = off ; security advise
     max_input_vars = 4000 ; must be > 2000 for real work allocation screen
+	suhosin.post.max_vars = 4000 ; like max_input_vars when suhosin module is deployed
+    suhosin.request.max_vars 4000 ; like max_input_vars when suhosin module is deployed
     max_execution_time = 30 ; minimum advised
     memory_limit = 512M ; minimum advised for PDF generation
     file_uploads = On ; to allow attachements and documents management
