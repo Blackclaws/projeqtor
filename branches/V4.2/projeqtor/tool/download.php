@@ -10,6 +10,7 @@ require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/download.php');
 $class=$_REQUEST['class'];
 $id=$_REQUEST['id'];
+$paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
 
 $obj=new $class($id);
 
@@ -19,6 +20,9 @@ if (!$preserveFileName) $preserveFileName="NO";
 if ($class=='Attachement') {
   $path = str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $obj->subDirectory);
   $name = $obj->fileName;
+  if ($paramFilenameCharset) {
+  	$name = iconv("UTF-8",$paramFilenameCharset.'//TRANSLIT//IGNORE',$name);
+  }
   $size = $obj->fileSize;
   $type = $obj->mimeType;
   $file = $path . $name;

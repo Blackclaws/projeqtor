@@ -96,7 +96,11 @@ class DocumentVersion extends SqlElement {
   	$doc=new Document($this->idDocument);
   	$saveDoc=false;
   	$suffix=Parameter::getGlobalParameter('versionReferenceSuffix');
-  	$this->fullName=$doc->documentReference.str_replace('{VERS}',$this->name,$suffix);
+  	if ($doc->documentReference) {
+  	  $this->fullName=$doc->documentReference.str_replace('{VERS}',$this->name,$suffix);
+  	} else {
+  		$this->fullName=$doc->name;
+  	}
   	$pos=strrpos($this->fileName,'.');
   	if ($pos) {
   	  $this->fullName.=substr($this->fileName,$pos);
@@ -197,7 +201,12 @@ class DocumentVersion extends SqlElement {
     if (! file_exists($uploaddir)) {
     	$dir->createDirectory();
     }
-    return $uploaddir . $paramPathSeparator . $this->fileName . '.' . $this->id;
+    $fileName=$this->fileName;
+    $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
+    if ($paramFilenameCharset) {
+    	$fileName=iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$fileName);
+    }
+    return $uploaddir . $paramPathSeparator . $fileName . '.' . $this->id;
   }
 
   function checkApproved() {
