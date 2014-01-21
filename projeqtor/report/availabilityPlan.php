@@ -45,12 +45,14 @@ include "header.php";
 $where=getAccesResctictionClause('Affectation',false);
 
 $resources=array();
+$resourceCalendar=array();
 $aff=new Affectation();
 $affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
 foreach($affLst as $aff){
 	$ress=new Resource($aff->idResource);
 	if ($ress->id and !$ress->idle) {
     $resources[$ress->id]=htmlEncode($ress->name);
+    $resourceCalendar[$ress->id]=$ress->idCalendarDefinition;
 	}
 }
 
@@ -74,6 +76,7 @@ $real=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
     $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
@@ -91,6 +94,7 @@ $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
     $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
@@ -113,7 +117,7 @@ if ($periodType=='month') {
 }
 $weekendBGColor='#cfcfcf';
 $weekendFrontColor='#555555';
-$weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
+$weekendStyle=' style="text-align: center;background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
 $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
@@ -176,7 +180,8 @@ foreach ($resources as $idR=>$nameR) {
 	    $day=$startDate+$i-1;
 	    $style="";
 	    $italic=false;
-	    if ($days[$day]=="off") {
+	    //if ($days[$day]=="off") {
+	    if (isOffDay(substr($day,0,4) . "-" . substr($day,4,2) . "-" . substr($day,6,2), $resourceCalendar[$idR])) {	
 	      $style=$weekendStyle;
 	    } else {
 	      if (array_key_exists($day,$result[$idR])) {
