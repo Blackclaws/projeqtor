@@ -250,34 +250,35 @@ function sortableFormatter(value) {
 }
 
 function thumb16(value) {
-	return thumb(value);
+	return thumb(value,16);
 }
 function thumb22(value) {
-	return thumb(value);
+	return thumb(value,22);
 }
 function thumb32(value) {
-	return thumb(value);
+	return thumb(value,32);
 }
 function thumb48(value) {
-	return thumb(value);
+	return thumb(value,48);
 }
 function thumb64(value) {
-	return thumb(value);
+	return thumb(value,64);
 }
-function thumb(value) {
+function thumb(value,size) {
 	if (value=="##") return "";
+	if (! size) size=32;
 	var tab=value.split('#');
 	filePath=tab[0];
 	attachId=tab[1];
 	fileName=tab[2];
-	var result='<img src="'+filePath+'" style="cursor:pointer" '
+	var result='<img style="height:'+size+'px;" src="'+filePath+'" style="cursor:pointer" '
       +' onClick="showImage(\'Attachement\',\''+attachId+'\',\''+fileName+'\');" />';
 	return result;
 }
 
 function iconFormatter(value) {
 	if (! value) return "";
-	return '<img src="icons/'+value+'" />';
+	return '<img style="height:22px" src="icons/'+value+'" />';
 }
 
 var cryptFrom="A;B;C;D;E;F;G;H;I;J;K;L.M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;a;à;â;b;c;ç;d;e;é;è;ê;f;g;h;i;î;ï;j;k;l;m;n;o;ô;p;q;r;s;t;u;û;ù;v;w;x;y;z;; ;?;';(;)1;2;3;4;5;6;7;8;9;0".split(';');
