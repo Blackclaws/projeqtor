@@ -2309,3 +2309,25 @@ function runWelcomeAnimation() {
     
   }
 }
+
+function cryptData(data) {   
+  var arr=data.split(';');
+  var crypto=arr[0];
+  var userSalt=arr[1];
+  var sessionSalt=arr[2];
+  var pwd=dijit.byId('password').get('value');
+  var login=dijit.byId('login').get('value');
+  dojo.byId('hashStringLogin').value=Aes.Ctr.encrypt(login, sessionSalt, 256);
+  if (crypto=='md5') {
+    crypted=CryptoJS.MD5(pwd+userSalt);
+    crypted=CryptoJS.MD5(crypted+sessionSalt);
+    dojo.byId('hashStringPassword').value=crypted;
+  } else if (crypto=='sha256') {
+    crypted=CryptoJS.SHA256(pwd+userSalt);
+    crypted=CryptoJS.SHA256(crypted+sessionSalt);
+    dojo.byId('hashStringPassword').value=crypted;
+  } else {
+    var crypted=Aes.Ctr.encrypt(pwd, sessionSalt, 256);
+    dojo.byId('hashStringPassword').value=crypted;
+  }
+}

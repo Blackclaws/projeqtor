@@ -2108,6 +2108,15 @@ function projeqtor_set_memory_limit($memory) {
 	@ini_set('memory_limit', $memory); 
 }
 
+function setSessionValue($code,$value) {
+	$_SESSION[$code]=$value;
+}
+function getSessionValue($code, $default=null) {
+	if (! isset($_SESSION[$code])) { 
+		return $default;
+	}
+	return $_SESSION[$code];
+}
 //
 
 ?>

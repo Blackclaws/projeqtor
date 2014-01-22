@@ -12,36 +12,13 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <title><?php echo i18n("applicationTitle");?></title>
+  <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
   <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript">
-	  function cryptData(data) {   
-		  var arr=data.split(';');
-      var crypto=arr[0];
-      var userSalt=arr[1];
-      var sessionSalt=arr[2];
-      var pwd=dijit.byId('password').get('value');
-      var login=dijit.byId('login').get('value');
-      dojo.byId('hashStringLogin').value=Aes.Ctr.encrypt(login, sessionSalt, 256);
-      if (crypto=='md5') {
-        crypted=CryptoJS.MD5(pwd+userSalt);
-        crypted=CryptoJS.MD5(crypted+sessionSalt);
-        dojo.byId('hashStringPassword').value=crypted;
-      } else if (crypto=='sha256') {
-        crypted=CryptoJS.SHA256(pwd+userSalt);
-        crypted=CryptoJS.SHA256(crypted+sessionSalt);
-        dojo.byId('hashStringPassword').value=crypted;
-      } else {
-        var crypted=Aes.Ctr.encrypt(pwd, sessionSalt, 256);
-        dojo.byId('hashStringPassword').value=crypted;
-      }
-	  }
-  </script>
   <script type="text/javascript" src="js/projeqtor.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
