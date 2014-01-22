@@ -15,7 +15,7 @@ CREATE TABLE `${prefix}checklistdefinition` (
   `idType` int(12) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX checklistdefinitionReferencable ON `${prefix}checklistdefinition` (idReferencable);
 
@@ -29,6 +29,35 @@ CREATE TABLE `${prefix}checklistdefinitionline` (
   `check04` varchar(100) DEFAULT NULL,
   `check05` varchar(100) DEFAULT NULL,
   `exclusive` int(1) unsigned DEFAULT '0',
-  `idle` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX checklistdefinitionlineChecklistDefinition ON `${prefix}checklistdefinitionline` (idChecklistDefinition);
+
+CREATE TABLE `${prefix}checklist` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idChecklistDefinition` int(12) unsigned DEFAULT NULL,
+  `refType` varchar(100),
+  `refId` int(12) unsigned DEFAULT NULL,
+  `comment` varchar(4000),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX checklistReference ON `${prefix}checklist` (refType, refId);
+CREATE INDEX checklistChecklistDefinition ON `${prefix}checklist` (ChecklistDefinition);
+
+CREATE TABLE `${prefix}checklistline` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idChecklist` int(12) unsigned DEFAULT NULL,
+  `idChecklistDefinitionLine` int(12) unsigned DEFAULT NULL,
+  `value01` int(1) unsigned DEFAULT '0',
+  `value02` int(1) unsigned DEFAULT '0',
+  `value03` int(1) unsigned DEFAULT '0',
+  `value04` int(1) unsigned DEFAULT '0',
+  `value05` int(1) unsigned DEFAULT '0',
+  `comment` varchar(4000),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX checklistlineChecklist ON `${prefix}checklistline` (idChecklist);
+CREATE INDEX checklistlineChecklistDefinitionLine ON `${prefix}checklistline` (idChecklistDefinitionLine);
