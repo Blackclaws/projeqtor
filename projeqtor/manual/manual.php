@@ -189,9 +189,7 @@ function getTheme() {
   if (isset($defaultTheme)) {
     $theme=$defaultTheme;   
   }
-  if (array_key_exists('theme',$_SESSION) ) {
-    $theme= $_SESSION['theme'] ; 
-  }
+  $theme=getSessionValue('theme',$theme);
   if ($theme=="random") {
     $themes=array_keys(Parameter::getList('theme'));
     $rnd=rand(0, count($themes)-2);

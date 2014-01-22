@@ -3154,10 +3154,13 @@ abstract class SqlElement {
 			if (! property_exists($this,$type)) {
 				return;
 			}
+			if (! property_exists($this,'idProject')) {
+				return;
+			}
 			if (! $old) {
 				$old=new $class($this->id);
 			}
-			if ($this->$type==$old->$type) {
+			if ($this->$type==$old->$type and $this->idProject==$old->idProject) {
 				return;
 			}
 		}
