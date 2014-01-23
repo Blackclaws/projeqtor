@@ -206,6 +206,11 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 	<?php if($templateparams->get('show-header',1)) :?>
 	<!-- ANIMATION -->
 	<?php   if (JRequest::getVar('view') == 'featured') : ?>
+		  <div style="position:absolute; top:40px; left:5px">
+		  <a href="http://project-management-software.findthebest.com/l/167/Project-Or-RIA?utm_source=direct&utm_medium=badge&utm_campaign=projeqtor_projects&utm_term=smart_choice_custom" target="_blank">
+      <img src="http://img3.findthebest.com/sites/default/files/220/media/images/_1375800.png" height="180" style="max-width: 262px" alt="Best of FindTheBest" border="0" />
+      </a>
+    </div> 	
 	<div class="td-header" style="z-index: -1">
 		<div id="imageslider" width="100%" height="200px"
 			style="height: 250px;"></div>
@@ -214,7 +219,7 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 				    <param name="movie" value="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template?>/header/header.swf" />
 				</object>-->
 		<!-- LOGO -->
-			<?php     if($templateparams->get('logoType')=='image'):?>
+			<?php     if($templateparams->get('logoType')=='image'):?> 
 		<div
 			style="font-family: Segoe Print, Segoe UI, Brush Script MT, cursive; color: #545281; position: absolute; left: 350px; top: 50px; z-index: -10;">
 			<div style="font-size: 500%; font-weight: bold">
