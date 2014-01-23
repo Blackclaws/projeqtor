@@ -13,7 +13,8 @@ CREATE TABLE `${prefix}checklistdefinition` (
   `name` varchar(100),
   `idReferencable` int(12) unsigned DEFAULT NULL,
   `idType` int(12) unsigned DEFAULT NULL,
-  `idle` int(1) unsigned DEFAULT '0',
+  `lineCount` int(3) DEFAULT 0,
+  `idle` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -28,7 +29,7 @@ CREATE TABLE `${prefix}checklistdefinitionline` (
   `check03` varchar(100) DEFAULT NULL,
   `check04` varchar(100) DEFAULT NULL,
   `check05` varchar(100) DEFAULT NULL,
-  `exclusive` int(1) unsigned DEFAULT '0',
+  `exclusive` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -39,6 +40,7 @@ CREATE TABLE `${prefix}checklist` (
   `idChecklistDefinition` int(12) unsigned DEFAULT NULL,
   `refType` varchar(100),
   `refId` int(12) unsigned DEFAULT NULL,
+  `checkCount` int(3) DEFAULT 0,
   `comment` varchar(4000),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
