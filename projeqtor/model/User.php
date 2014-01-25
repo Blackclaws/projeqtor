@@ -791,7 +791,7 @@ class User extends SqlElement {
       }
 //debugLog("result bind user:");
 //debugLog($bind_user);  
-			if (! $bind_user) {
+      if (! $bind_user or !$parampassword) {
 //debugLog("incorrect binding");			
 				return "login";
 			}
