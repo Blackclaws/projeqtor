@@ -1571,6 +1571,80 @@ function drawBillLinesFromObject($obj, $refresh=false) {
 	echo '</table>';
 }
 
+function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
+	global $cr, $print, $user, $browserLocale;
+	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+	if ($obj->idle==1) {$canUpdate=false;}
+	if (isset($obj->_ChecklistDefinitionLine)) {
+		$lines=$obj->_ChecklistDefinitionLine;
+	} else {
+		$lines=array();
+	}
+	echo '<input type="hidden" id="ChecklistDefinitionIdle" value="'.$obj->idle.'" />';
+	echo '<table width="100%">';
+	echo '<tr>';
+	if (! $print) {
+		echo '<td class="noteHeader" style="width:5%">';  //changer le header
+		if ($obj->id!=null and ! $print) {
+			echo '<img src="css/images/smallButtonAdd.png" onClick="addChecklistDefinitionLine(' . (count($lines)+1) . ');" title="' . i18n('addLine') . '" class="smallButton"/> ';
+		}
+		echo '</td>';
+	}
+	echo '<td class="noteHeader" style="width:30%">' . i18n('colName') . '</td>';
+	echo '<td class="noteHeader" style="width:60%">' . i18n('colChoices') . '</td>';
+	echo '<td class="noteHeader" style="width:5%">' . i18n('colExclusiveShort') . '</td>';
+	echo '</tr>';
+
+	$fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
+	$fmtd = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+	$lines=array_reverse($lines);
+	foreach($lines as $line) {
+		echo '<tr>';
+		if ( ! $print) {
+			echo '<td class="noteData" style="text-align:center;">';
+			if ($lock==0) {
+				echo ' <img src="css/images/smallButtonEdit.png" onClick="editChecklistDefinitionLine(
+		      ' . "'" . $line->id . "'"
+		      		. ",'" . $line->line . "'"
+		      				. ",'" . $fmtd->format($line->quantity) . "'"
+		      						. ",'" . $line->idTerm . "'"
+		      								. ",'" . $line->idResource . "'"
+		      										. ",'" . $line->idActivityPrice . "'"
+		      												. ",'" . $line->startDate . "'"
+		      														. ",'" . $line->endDate . "'"
+		      																. ",'" . $fmtd->format($line->price) . "'"
+		      																		. ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+				echo ' <img src="css/images/smallButtonRemove.png"'
+						.' onClick="removeChecklistDefinitionLine(' . $line->id . ');"'
+		      .' title="' . i18n('removeLine') . '" class="smallButton"/> ';
+			}
+			echo '</td>';
+		}
+		echo '<td class="noteData">#' . $line->id  . '</td>';
+		echo '<td class="noteData">' . $line->line . '</td>';
+		echo '<td class="noteData">' . $line->quantity . '</td>';
+		echo '<td class="noteData">' . htmlEncode($line->description,'withBR');
+		echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
+		echo '</td>';
+		echo '<td class="noteData">' . htmlEncode($line->detail,'withBR');
+		echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
+		echo '</td>';
+		echo '<td class="noteData">' . $line->price . '</td>';
+		echo '<td class="noteData">' . $line->amount . '</td>';
+		echo '</tr>';
+	}
+	echo '<tr>';
+	if (! $print) {
+		echo '<td class="noteDataClosetable">&nbsp;</td>';
+	}
+	echo '<td class="noteDataClosetable">&nbsp;</td>';
+	echo '<td class="noteDataClosetable">&nbsp;</td>';
+	echo '<td class="noteDataClosetable">&nbsp;</td>';
+	echo '<td class="noteDataClosetable">&nbsp;</td>';
+	echo '</tr>';
+	echo '</table>';
+}
+
 function drawAttachementsFromObject($obj, $refresh=false) {
 	global $cr, $print, $user, $comboDetail;
 	if ($comboDetail) {
@@ -2553,6 +2627,10 @@ if ( $noselect ) {
 		drawBillLinesFromObject($obj, true);
 		exit;
 	}
+	if ( array_key_exists('refreshChecklistDefinitionLines',$_REQUEST) ) {
+		drawChecklistDefinitionLinesFromObject($obj, true);
+		exit;
+	}
 	if ( array_key_exists('refreshAttachements',$_REQUEST) ) {
 		drawAttachementsFromObject($obj, true);
 		exit;
@@ -2767,6 +2845,27 @@ saveAttachementAck(dataArray);
      id="<?php echo $titlePane;?>"       
      onHide="saveCollapsed('<?php echo $titlePane;?>');"
      onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawBillLinesFromObject($obj); ?>
+</div>
+<?php }?> <?php
+}
+if ( ! $noselect and isset($obj->_ChecklistDefinitionLine)) { ?> <br />
+  <?php if ($print) {?>
+<table width="<?php echo $printWidth;?>px;">
+  <tr>
+    <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
+  </tr>
+  <tr>
+    <td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
+  </tr>
+</table>
+  <?php } else {
+  	$titlePane=$objClass."_billLine"; ?>
+<div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+     title="<?php echo i18n('sectionChecklistLines');?>"
+     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+     id="<?php echo $titlePane;?>"       
+     onHide="saveCollapsed('<?php echo $titlePane;?>');"
+     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawChecklistDefinitionLinesFromObject($obj); ?>
 </div>
 <?php }?> <?php
   }
