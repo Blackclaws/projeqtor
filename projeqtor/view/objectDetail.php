@@ -1585,8 +1585,10 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
 	echo '<tr>';
 	if (! $print) {
 		echo '<td class="noteHeader" style="width:5%">';  //changer le header
-		if ($obj->id!=null and ! $print) {
-			echo '<img src="css/images/smallButtonAdd.png" onClick="addChecklistDefinitionLine(' . (count($lines)+1) . ');" title="' . i18n('addLine') . '" class="smallButton"/> ';
+		if ($obj->id!=null and ! $print and $canUpdate) {
+			echo '<img src="css/images/smallButtonAdd.png"'
+					. ' onClick="addChecklistDefinitionLine('.$obj->id.');"'
+					. ' title="' . i18n('addLine') . '" class="smallButton"/> ';
 		}
 		echo '</td>';
 	}
@@ -1595,42 +1597,26 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
 	echo '<td class="noteHeader" style="width:5%">' . i18n('colExclusiveShort') . '</td>';
 	echo '</tr>';
 
-	$fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::INTEGER );
-	$fmtd = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
 	$lines=array_reverse($lines);
 	foreach($lines as $line) {
 		echo '<tr>';
 		if ( ! $print) {
 			echo '<td class="noteData" style="text-align:center;">';
-			if ($lock==0) {
-				echo ' <img src="css/images/smallButtonEdit.png" onClick="editChecklistDefinitionLine(
-		      ' . "'" . $line->id . "'"
-		      		. ",'" . $line->line . "'"
-		      				. ",'" . $fmtd->format($line->quantity) . "'"
-		      						. ",'" . $line->idTerm . "'"
-		      								. ",'" . $line->idResource . "'"
-		      										. ",'" . $line->idActivityPrice . "'"
-		      												. ",'" . $line->startDate . "'"
-		      														. ",'" . $line->endDate . "'"
-		      																. ",'" . $fmtd->format($line->price) . "'"
-		      																		. ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+			if ($canUpdate) {
+				echo ' <img src="css/images/smallButtonEdit.png"'
+						. ' onClick="editChecklistDefinitionLine('.$obj->id.',' . $line->id . ');"'
+		        . ' title="' . i18n('editLine') . '" class="smallButton"/> ';
 				echo ' <img src="css/images/smallButtonRemove.png"'
 						.' onClick="removeChecklistDefinitionLine(' . $line->id . ');"'
-		      .' title="' . i18n('removeLine') . '" class="smallButton"/> ';
+		        .' title="' . i18n('removeLine') . '" class="smallButton"/> ';
 			}
 			echo '</td>';
 		}
-		echo '<td class="noteData">#' . $line->id  . '</td>';
-		echo '<td class="noteData">' . $line->line . '</td>';
-		echo '<td class="noteData">' . $line->quantity . '</td>';
-		echo '<td class="noteData">' . htmlEncode($line->description,'withBR');
-		echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
+		echo '<td class="noteData">' . $line->name  . '</td>';
+		echo '<td class="noteData">';
+		echo 'TO DO'; 
 		echo '</td>';
-		echo '<td class="noteData">' . htmlEncode($line->detail,'withBR');
-		echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
-		echo '</td>';
-		echo '<td class="noteData">' . $line->price . '</td>';
-		echo '<td class="noteData">' . $line->amount . '</td>';
+		echo '<td class="noteData">' . htmlDisplayCheckbox($line->exclusive) . '</td>';
 		echo '</tr>';
 	}
 	echo '<tr>';

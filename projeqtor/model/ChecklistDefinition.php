@@ -16,7 +16,7 @@ class ChecklistDefinition extends SqlElement {
   public $idle;
   public $_col_2_2;
   
-  public $_col_1_1_checklistLines;
+  public $_col_1_1;
   public $_ChecklistDefinitionLine=array();
   public $_noCopy;
     
