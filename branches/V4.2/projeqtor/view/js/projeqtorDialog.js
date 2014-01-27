@@ -2225,7 +2225,49 @@ function removeBillLine (lineId) {
 	showConfirm (msg, actionOK);
 }
 
+//=============================================================================
+//= ChecklistDefinitionLine
+//=============================================================================
 
+/**
+* Display a add line Box
+* 
+*/
+function addChecklistDefinitionLine (checkId) {
+  var params="checkId="+checkId;
+  loadDialog('dialogChecklistDefinitionLine',null, true, params)
+}
+
+
+/**
+* Display a edit line Box
+* 
+*/
+function editChecklistDefinitionLine (checkId, lineId) {
+  var params="checkId="+checkId+"&lineId="+lineId;
+  loadDialog('dialogChecklistDefinitionLine',null, true, params)
+}
+
+
+/**
+* save a line (after addDetail or editDetail)
+* 
+*/
+function saveChecklistDefinitionLine() {
+
+}
+
+
+/**
+* Display a delete line Box
+* 
+*/
+function removeChecklistDefinitionLine (lineId) {
+  dojo.byId("checklistDefinitionLineId").value=lineId;
+  actionOK=function() {loadContent("../tool/removeChecklistDefinitionLine.php", "resultDiv", "checklistDefinitionLineForm", true, 'checklistDefinitionLine');};
+  msg=i18n('confirmDelete',new Array(i18n('ChecklistDefinitionLine'), lineId));
+  showConfirm (msg, actionOK);
+}
 
 //=============================================================================
 //= Import
