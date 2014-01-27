@@ -13,6 +13,7 @@ class ChecklistDefinitionLine extends SqlElement {
   public $check03;
   public $check04;
   public $check05;
+  public $sortOrder;
   public $exclusive;
   
   //public $_noHistory=true; // Will never save history for this object

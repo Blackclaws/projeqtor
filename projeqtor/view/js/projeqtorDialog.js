@@ -2234,7 +2234,7 @@ function removeBillLine (lineId) {
 * 
 */
 function addChecklistDefinitionLine (checkId) {
-  var params="checkId="+checkId;
+  var params="&checkId="+checkId;
   loadDialog('dialogChecklistDefinitionLine',null, true, params)
 }
 
@@ -2244,7 +2244,7 @@ function addChecklistDefinitionLine (checkId) {
 * 
 */
 function editChecklistDefinitionLine (checkId, lineId) {
-  var params="checkId="+checkId+"&lineId="+lineId;
+  var params="&checkId="+checkId+"&lineId="+lineId;
   loadDialog('dialogChecklistDefinitionLine',null, true, params)
 }
 
@@ -2254,7 +2254,11 @@ function editChecklistDefinitionLine (checkId, lineId) {
 * 
 */
 function saveChecklistDefinitionLine() {
-
+  if (! dijit.byId("dialogChecklistDefinitionLineName").get('value')) {
+	showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
+	return false;
+  }
+  
 }
 
 
