@@ -15,6 +15,8 @@ if ($dialog=="dialogTodayParameters") {
 	include('../tool/dynamicDialogProjectSelectorParameters.php');
 } else if ($dialog=="dialogExport") {
   include('../tool/dynamicDialogExport.php');
+} else if ($dialog=="dialogChecklistDefinitionLine") {
+  	include('../tool/dynamicDialogChecklistDefinitionLine.php');
 } else {
 	echo "ERROR dialog=".$dialog." is not an expected dialog";
 }

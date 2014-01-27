@@ -30,6 +30,7 @@ CREATE TABLE `${prefix}checklistdefinitionline` (
   `check03` varchar(100) DEFAULT NULL,
   `check04` varchar(100) DEFAULT NULL,
   `check05` varchar(100) DEFAULT NULL,
+  `sortOrder` int(3) DEFAULT 0,
   `exclusive` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
