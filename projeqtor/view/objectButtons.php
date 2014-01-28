@@ -8,7 +8,12 @@
   if (! isset($comboDetail)) {
     $comboDetail=false;
   }
-  $obj=new $_REQUEST['objectClass']();
+  $id=null;
+  $class=$_REQUEST['objectClass'];
+  if (array_key_exists('objectId',$_REQUEST)) {
+  	$id=$_REQUEST['objectId'];
+  }	
+  $obj=new $class($id);
 ?>
 <table>
   <tr>
@@ -150,16 +155,31 @@
           startMultipleUpdateMode('<?php echo get_class($obj);?>');  
         </script>
     </button>
-    </span>  
-      <?php
+    </span>
+    <?php 
+      $crit="nameReferencable='".get_class($obj)."'";
+      $type='id'.get_class($obj).'Type';
+      if (property_exists($obj,$type) ) {
+        $crit.=' and (idType is null ';
+        if ( $obj->$type) {
+          $crit.=' or idType='.$obj->$type;
         }
-      } 
-        $id=null;
-        $class=$_REQUEST['objectClass'];
-        if (array_key_exists('objectId',$_REQUEST)) {
-          $id=$_REQUEST['objectId'];
-          $obj=new $class($id);
+        $crit.=')';
+  		}
+  		$cd=new ChecklistDefinition();
+  		$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
+      if (count($cdList)>0) {?>
+    <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
+       title="<?php echo i18n('Checklist');?>"
+       iconClass="iconChecklistDefinition16" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          showCheckList();  
+        </script>
+    </button>
+    <?php }?>
+    <?php
         }
+      }
         $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
         $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
         $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
