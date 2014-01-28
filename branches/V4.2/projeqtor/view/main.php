@@ -380,7 +380,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
       <table width="100%">
         <tr>
-          <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: middle; text-align: left; cursor: pointer; ">
+          <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
           <table>
               <tr>
                 <td>
@@ -392,7 +392,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               </tr>
             </table>    
           </td>
-          <td width="30%" >
+          <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
               <button id="buttonHideMenu" style="font-size: 90%;" dojoType="dijit.form.Button" onclick="hideShowMenu();">
                 <?php echo i18n("buttonHideMenu");?>
@@ -407,12 +407,12 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               </button>                
             </div>
           </td>
-          <td width="30%" >
+          <td width="30%" style="vertical-align: top;" >
             <div id="statusBarMessageDiv" style="text-align: left">
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
-          <td width="20%" title="<?php echo i18n('infoMessage');?>" > 
+          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: top;> 
             <div width="100%" id="statusBarInfoDiv" style="text-align: right;">
               <?php htmlDisplayInfos();?>
             </div>

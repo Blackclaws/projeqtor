@@ -11,7 +11,7 @@ class ChecklistDefinition extends SqlElement {
   public $idReferencable;
   public $nameReferencable;
   public $idType;
-  public $lineCount;
+  //public $lineCount;
 
   public $idle;
   public $_col_2_2;
@@ -31,7 +31,7 @@ class ChecklistDefinition extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"hidden",
                                   "idType"=>"nocombo",
                                   "nameReferencable"=>"hidden",
-  		                            "lineCount"=>"readonly"
+  		                            //"lineCount"=>"readonly"
   );  
   
     private static $_colCaptionTransposition = array('idIndicatorable'=>'element',
