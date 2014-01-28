@@ -381,7 +381,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       <table width="100%">
         <tr>
           <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: middle; text-align: left; cursor: pointer; ">
-            <table>
+          <table>
               <tr>
                 <td>
                   <img src="img/disconnect.gif" />
@@ -390,7 +390,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   &nbsp;<?php echo i18n('disconnect') . '&nbsp;[' . $_SESSION["user"]->name . ']'; ?>
                 </td>
               </tr>
-            </table>         
+            </table>    
           </td>
           <td width="30%" >
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
@@ -1623,13 +1623,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="idProjectPlan" name="idProjectPlan" 
-                missingMessage="<?php echo i18n('messageMandatory',array(i18n('colIdProject')));?>" 
                 class="input" value="" >
                  <?php 
                     $proj=null; 
                     if (array_key_exists('project',$_SESSION)) {
                         $proj=$_SESSION['project'];
                     }
+                    if ($proj=="*" or ! $proj) $proj=null;
                     htmlDrawOptionForReference('idProject', $proj, null, false);
                  ?>
                </select>
@@ -1661,7 +1661,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <tr>
       <td align="center">
         <input type="hidden" id="dialogPlanAction">
-        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogPlan').hide();">
+        <button dojoType="dijit.form.Button" type="button" onclick="cancelPlan();">
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogPlanSubmit" onclick="plan();return false;">

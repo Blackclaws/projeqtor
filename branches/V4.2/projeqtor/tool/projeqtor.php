@@ -2118,6 +2118,7 @@ function getSessionValue($code, $default=null) {
 	}
 	return $_SESSION[$code];
 }
+
 //
 
 ?>

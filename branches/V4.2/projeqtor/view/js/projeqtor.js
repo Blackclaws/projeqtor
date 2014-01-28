@@ -801,6 +801,8 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+      } else if (validationType=='checklistDefinitionLine') {
+        loadContent("objectDetail.php?refreshChecklistDefinitionLines=true", dojo.byId('objectClass').value+'_checklistDefinitionLine', 'listForm');
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');    	
@@ -875,6 +877,9 @@ function finalizeMessageDisplay(destination, validationType) {
     // ...)
       if (lastOperation.value=="insert") {
         dojo.byId('id').value=lastSaveId.value;
+        if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
+          refreshProjectSelectorList();
+        }
         // TODO : after insert select the current line in the grid
         // selectRowById("objectGrid", lastSaveId.value); // does not work
       // because grid is refreshing...
@@ -889,6 +894,9 @@ function finalizeMessageDisplay(destination, validationType) {
         msg=dojo.byId("noDataMessage");
         if (zone && msg) {
           zone.set('content',msg.value);
+        }
+        if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
+          refreshProjectSelectorList();
         }
         // unselectAllRows("objectGrid");
         finaliseButtonDisplay();
@@ -2024,6 +2032,8 @@ function globalSave() {
 		var button=dijit.byId('dialogBillLineSubmit');
   } else if (dijit.byId('dialogMail') && dijit.byId('dialogMail').open) {
 		var button=dijit.byId('dialogMailSubmit');
+  } else if (dijit.byId('dialogChecklistDefinitionLine') && dijit.byId('dialogChecklistDefinitionLine').open) {
+    var button=dijit.byId('dialogChecklistDefinitionLineSubmit');
   } else {
     var button=dijit.byId('saveButton');
   }
