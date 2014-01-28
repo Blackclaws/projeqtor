@@ -8,11 +8,17 @@ class ChecklistDefinitionLine extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $idChecklistDefinition;
   public $name;
+  public $title;
   public $check01;
+  public $title01;
   public $check02;
+  public $title02;
   public $check03;
+  public $title03;
   public $check04;
+  public $title04;
   public $check05;
+  public $title05;
   public $sortOrder;
   public $exclusive;
   
@@ -106,6 +112,19 @@ class ChecklistDefinitionLine extends SqlElement {
   	
   	$result=parent::save();
   	return $result;
+  }
+  public static function sort($a, $b) {
+  	if ($a->sortOrder == $b->sortOrder) {
+  		if ($a->id < $b->id) {
+  			return -1;
+  		} else {
+  			return 1;
+  		}
+  	} else if ($a->sortOrder < $b->sortOrder) {
+  		return -1;
+  	} else {
+  		return 1;
+  	}
   }
 }
 ?>

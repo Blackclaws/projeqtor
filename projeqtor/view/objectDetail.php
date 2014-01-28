@@ -1597,7 +1597,7 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
 	echo '<td class="noteHeader" style="width:5%">' . i18n('colExclusiveShort') . '</td>';
 	echo '</tr>';
 
-	$lines=array_reverse($lines);
+	usort($lines,"ChecklistDefinitionline::sort");	
 	foreach($lines as $line) {
 		echo '<tr>';
 		if ( ! $print) {
@@ -1612,11 +1612,29 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
 			}
 			echo '</td>';
 		}
-		echo '<td class="noteData">' . $line->name  . '</td>';
-		echo '<td class="noteData">';
-		echo 'TO DO'; 
-		echo '</td>';
-		echo '<td class="noteData">' . htmlDisplayCheckbox($line->exclusive) . '</td>';
+		if ($line->check01) {
+			echo '<td class="noteData" style="position: relative; border-right:0; text-align:right" title="'.$line->title.'">' 
+					. htmlEncode( $line->name)  
+					. '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">'.$line->sortOrder.'</div>'
+			    . ' : </td>';
+			echo '<td class="noteData" style="border-left:0;">';
+			echo '<table witdh="100%"><tr>';
+			for ($i=1;$i<=5;$i++) {
+				$check='check0'.$i;
+				$title='title0'.$i;
+				echo '<td style="min-width:100px; white-space:nowrap; vertical-align:top; " '.(($line->$title)?'title="'.$line->$title.'"':'').'>';
+				if ($line->$check) {
+				  echo htmlDisplayCheckbox(0)."&nbsp;".$line->$check."&nbsp;&nbsp;";
+			  }
+			  echo '</td>';
+			}
+		  echo '</tr></table>';
+		  echo '</td>';
+		  echo '<td class="noteData">' . htmlDisplayCheckbox($line->exclusive) . '</td>';
+		} else {
+			echo '<td class="reportTableHeader" colspan="3" style="text-align:center" title="'.$line->title.'">'
+					.$line->name.'</td>';
+		}  
 		echo '</tr>';
 	}
 	echo '<tr>';
@@ -2835,7 +2853,7 @@ saveAttachementAck(dataArray);
 <?php }?> <?php
 }
 if ( ! $noselect and isset($obj->_ChecklistDefinitionLine)) { ?> <br />
-  <?php if ($print) {?>
+  <?php if ($print) {?>ChecklistDefinitionLine
 <table width="<?php echo $printWidth;?>px;">
   <tr>
     <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
@@ -2845,7 +2863,7 @@ if ( ! $noselect and isset($obj->_ChecklistDefinitionLine)) { ?> <br />
   </tr>
 </table>
   <?php } else {
-  	$titlePane=$objClass."_billLine"; ?>
+  	$titlePane=$objClass."_checklistDefinitionLine"; ?>
 <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionChecklistLines');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"

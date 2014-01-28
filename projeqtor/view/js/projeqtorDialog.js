@@ -2255,9 +2255,12 @@ function editChecklistDefinitionLine (checkId, lineId) {
 */
 function saveChecklistDefinitionLine() {
   if (! dijit.byId("dialogChecklistDefinitionLineName").get('value')) {
-	showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
-	return false;
+	  showAlert(i18n('messageMandatory', new Array(i18n('colName'))));
+	  return false;
   }
+  loadContent("../tool/saveChecklistDefinitionLine.php", "resultDiv", "dialogChecklistDefinitionLineForm", true, 'checklistDefinitionLine');
+  dijit.byId('dialogChecklistDefinitionLine').hide();
+  
   
 }
 
@@ -2267,8 +2270,10 @@ function saveChecklistDefinitionLine() {
 * 
 */
 function removeChecklistDefinitionLine (lineId) {
-  dojo.byId("checklistDefinitionLineId").value=lineId;
-  actionOK=function() {loadContent("../tool/removeChecklistDefinitionLine.php", "resultDiv", "checklistDefinitionLineForm", true, 'checklistDefinitionLine');};
+  var params="?lineId="+lineId;
+  //loadDialog('dialogChecklistDefinitionLine',null, true, params)
+  //dojo.byId("checklistDefinitionLineId").value=lineId;
+  actionOK=function() {loadContent("../tool/removeChecklistDefinitionLine.php"+params, "resultDiv", null, true, 'checklistDefinitionLine');};
   msg=i18n('confirmDelete',new Array(i18n('ChecklistDefinitionLine'), lineId));
   showConfirm (msg, actionOK);
 }
@@ -2332,8 +2337,17 @@ function showPlanParam (selectedProject) {
  * 
  */
 function plan() {
+  if (!dijit.byId('idProjectPlan').get('value')) {
+    dijit.byId('idProjectPlan').set('value',' ');
+  }
 	loadContent("../tool/plan.php", "planResultDiv", "dialogPlanForm", true,null);
 	dijit.byId("dialogPlan").hide();
+}
+function cancelPlan() {
+  if (!dijit.byId('idProjectPlan').get('value')) {
+    dijit.byId('idProjectPlan').set('value',' ');
+  }
+  dijit.byId('dialogPlan').hide();
 }
 
 //=============================================================================
@@ -4482,7 +4496,12 @@ function changeProjectSelectorType(displayMode) {
 function refreshProjectSelectorList() {   
   dojo.xhrPost({
     url: "../tool/refreshVisibleProjectsList.php",
-    load: function() {loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');}
+    load: function() {
+      loadContent('../view/menuProjectSelector.php', 'projectSelectorDiv');
+      if (dijit.byId('idProjectPlan')) {
+        refreshList('idProject', null, null, dijit.byId('idProjectPlan').get('value'), 'idProjectPlan', false);
+      }
+    }
   });
   if (dijit.byId('dialogProjectSelectorParameters')) {
     dijit.byId('dialogProjectSelectorParameters').hide();
