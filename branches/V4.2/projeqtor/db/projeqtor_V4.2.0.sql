@@ -20,6 +20,8 @@ CREATE TABLE `${prefix}checklistdefinition` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 CREATE INDEX checklistdefinitionReferencable ON `${prefix}checklistdefinition` (idReferencable);
+CREATE INDEX checklistdefinitionNameReferencable ON `${prefix}checklistdefinition` (nameReferencable);
+CREATE INDEX checklistdefinitionType ON `${prefix}checklistdefinition` (idType);
 
 CREATE TABLE `${prefix}checklistdefinitionline` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -65,6 +67,8 @@ CREATE TABLE `${prefix}checklistline` (
   `value03` int(1) unsigned DEFAULT '0',
   `value04` int(1) unsigned DEFAULT '0',
   `value05` int(1) unsigned DEFAULT '0',
+  `idUser`  int(12) unsigned DEFAULT NULL,
+  `checkTime` datetime DEFAULT NULL,
   `comment` varchar(4000),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

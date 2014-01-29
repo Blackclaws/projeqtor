@@ -2279,6 +2279,21 @@ function removeChecklistDefinitionLine (lineId) {
 }
 
 //=============================================================================
+//= Checklist
+//=============================================================================
+
+function showCheckList(objectClass, objectId) {
+  var params="&objectClass="+objectClass+"&objectId="+objectId;
+  loadDialog('dialogChecklist',null, true, params);
+}
+
+function saveCheckList() {
+  var params="&objectClass="+objectClass+"&objectId="+objectId;
+  //loadDialog('dialogChecklist',null, true, params);
+  dijit.byId('dialogChecklist').hide();
+}
+
+//=============================================================================
 //= Import
 //=============================================================================
 

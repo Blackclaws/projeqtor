@@ -2,39 +2,28 @@
 /* ============================================================================
  * Habilitation defines right to the application for a menu and a profile.
  */ 
-class ChecklistDefinition extends SqlElement {
+class Checklist extends SqlElement {
 
   // extends SqlElement, so has $id
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
-  public $name;
-  public $idReferencable;
-  public $nameReferencable;
-  public $idType;
-  //public $lineCount;
-
-  public $idle;
-  public $_col_2_2;
-  
-  public $_col_1_1;
-  public $_ChecklistDefinitionLine=array();
+  public $idChecklistDefinition;
+  public $refType;
+  public $refId;
+  //public $checkCount;
+  public $comment;
+  public $_ChecklistLine=array();
   public $_noCopy;
     
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameReferencable" formatter="translateFormatter" width="20%" >${element}</th>
-    <th field="nameType" width="20%" >${type}</th>
-    <th field="lineCount" formatter="numericFormatter" width="10%" >${lineCount}</th>
-    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
+    <th field="refType" formatter="translateFormatter" width="20%" >${refType}</th>
+    <th field="refId" width="20%" >${refId}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"hidden",
-                                  "idType"=>"nocombo",
-                                  "nameReferencable"=>"hidden",
-  		                            //"lineCount"=>"readonly"
-  );  
+  private static $_fieldsAttributes=array('refType'=>'mandatory', 'refId'=>'mandatory');  
   
-    private static $_colCaptionTransposition = array('idType'=>'type');
+    private static $_colCaptionTransposition = array();
   
    /** ==========================================================================
    * Constructor
@@ -83,8 +72,6 @@ class ChecklistDefinition extends SqlElement {
 // ============================================================================**********
   
   public function save() {
-  	$referencable=new Referencable($this->idReferencable);
-  	$this->nameReferencable=$referencable->name;
   	return parent::save();
   }
   
@@ -99,16 +86,7 @@ class ChecklistDefinition extends SqlElement {
   
   public function control(){
     $result="";
-    if (! trim($this->idReferencable)) {
-    	$result.='<br/>' . i18n('messageMandatory',array(i18n('colElement')));
-    }
-
-    $crit=array('idReferencable'=>trim($this->idReferencable),
-                'idType'=>trim($this->idType));
-    $elt=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);
-    if ($elt and $elt->id and $elt->id!=$this->id) {
-      $result.='<br/>' . i18n('errorDuplicateChecklistDefinition');
-    }
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
