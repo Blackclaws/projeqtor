@@ -47,37 +47,49 @@ $defLines=$cdl->getSqlElementsFromCriteria(array('idChecklistDefinition'=>$check
 $cl=new ChecklistLine();
 $linesTmp=$cl->getSqlElementsFromCriteria(array('idChecklist'=>$checklist->id));
 
-$lines=array();
+$linesVal=array();
 foreach ($linesTmp as $line) {
-	$lines[$line->idChecklistDefinitionLine]=$line;
+	$linesVal[$line->idChecklistDefinitionLine]=$line;
 }
 ?>
-<form id="dialogChecklistDefinitionLineForm" name="dialogChecklistDefinitionLineForm" action="">
+<form id="dialogChecklistForm" name="dialogChecklistForm" action="">
 <input type="hidden" name="checklistId" value="<?php echo $checklist->id;?>" />
 <input type="hidden" name="checklistObjectClass" value="<?php echo $objectClass;?>" />
 <input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
 <table style="width: 100%;">
   <tr><td>
 	  <table width="100%">
-<?php foreach($defLines as $line) {?>	 
+<?php foreach($defLines as $line) {
+	      if (isset($linesVal[$line->id])) {
+          $lineVal=$linesVal[$line->id];
+        } else {
+          $lineVal=new ChecklistLine();
+        }?>	 
 		  <tr>
 <?php if ($line->check01) {?>
-			  <td class="noteData" style="position: relative; border-right:0; text-align:right" title="'.$line->title.'"> 
+			  <td class="noteData" style="position: relative; border-right:0; text-align:right" title="<?php echo $line->title;?>"> 
 				  <?php echo htmlEncode( $line->name);?> :   
 		    </td>
 			  <td class="noteData" style="border-left:0;">
 			    <table witdh="100%"><tr>
 					<?php for ($i=1;$i<=5;$i++) {
 						$check='check0'.$i;
-						$title='title0'.$i;?>
-						<td style="min-width:100px; white-space:nowrap; vertical-align:top;" <?php echo (($line->$title)?'title="'.$line->$title.'"':'')?> ><?php if ($line->$check) {
-						  echo htmlDisplayCheckbox(0)."&nbsp;".$line->$check."&nbsp;&nbsp;";
-					  }?></td>
+						$title='title0'.$i;
+						$value='value0'.$i;?>
+						<td style="min-width:100px; white-space:nowrap; vertical-align:top;" title="<?php echo $line->$title;?>" >
+						<?php if ($line->$check) {
+						  $checkName="check_".$line->id."_".$i;?>
+						  <div dojoType="dijit.form.CheckBox" type="checkbox"
+				        <?php if ($line->exclusive) {?>onClick="checkClick(<?php echo $line->id;?>, <?php echo $i;?>)" <?php }?>
+				        name="<?php echo $checkName;?>" id="<?php echo $checkName;?>"
+		            <?php if ($lineVal->$value) { echo 'checked'; }?> ></div>
+						    <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo $line->$check;?>&nbsp;&nbsp;</span>
+					  <?php }?></td>
 					<?php }?>
 				  </tr></table>
 				</td>
 <?php } else { ?>
-				<td class="reportTableHeader" colspan="2" style="text-align:center" title="'.$line->title.'">
+				<td class="reportTableHeader" colspan="2" style="text-align:center" title="<?php echo $line->title;?>">
 				  <?php echo $line->name;?>
 				</td>
 <?php }?>		

@@ -12,9 +12,10 @@ header ('Content-Type: text/html; charset=UTF-8');
   <link rel="shortcut icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="icon" href="../view/img/logo.ico" type="../view/image/x-icon" />
   <link rel="stylesheet" type="text/css" href="../view/css/projeqtor.css" />
+  <script type="text/javascript" src="../view/js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
 </head>
 
-<body class="white" onLoad="top.hideWait();" style="overflow: auto; ">
+<body class="white" onLoad="top.hideWait();//showInfo('<?php echo i18n('ImportCompleted')?>');" style="overflow: auto; ">
 <?php 
 $class='';
 $dateFormat='dd/mm/yyyy';
@@ -80,6 +81,7 @@ if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
 //// V2.6 : extracted the import function to Importable class to use it from Cron
 $result=Importable::import($uploadfile, $class);
 echo Importable::$importResult;
+//echo $result;
 ?>
 </body>
 </html>
