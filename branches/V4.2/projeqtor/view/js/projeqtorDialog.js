@@ -2282,17 +2282,29 @@ function removeChecklistDefinitionLine (lineId) {
 //= Checklist
 //=============================================================================
 
-function showCheckList(objectClass, objectId) {
+function showChecklist(objectClass, objectId) {
   var params="&objectClass="+objectClass+"&objectId="+objectId;
   loadDialog('dialogChecklist',null, true, params);
 }
 
-function saveCheckList() {
+function saveChecklist() {
   var params="&objectClass="+objectClass+"&objectId="+objectId;
   //loadDialog('dialogChecklist',null, true, params);
+  loadContent('../tool/saveChecklist.php','resultDiv','dialogChecklistForm',true);
   dijit.byId('dialogChecklist').hide();
+  return false;
 }
 
+function checkClick(line, item) {
+  checkName="check_"+line+"_"+item;
+  if (dijit.byId(checkName).get('checked')) {
+    for (i=1;i<=5;i++) {
+      if (i!=item && dijit.byId("check_"+line+"_"+i)) {
+        dijit.byId("check_"+line+"_"+i).set('checked',false);
+      }
+    } 
+  }
+}
 //=============================================================================
 //= Import
 //=============================================================================

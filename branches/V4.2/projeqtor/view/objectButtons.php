@@ -168,12 +168,12 @@
   		}
   		$cd=new ChecklistDefinition();
   		$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
-      if (count($cdList)>0) {?>
+      if (count($cdList)>0 and $obj->id) {?>
     <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('Checklist');?>"
        iconClass="iconChecklistDefinition16" >
         <script type="dojo/connect" event="onClick" args="evt">
-          showCheckList('<?php echo get_class($obj);?>',<?php echo $obj->id;?>);  
+          showChecklist('<?php echo get_class($obj);?>',<?php echo $obj->id;?>);  
         </script>
     </button>
     <?php }?>
