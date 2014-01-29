@@ -173,7 +173,7 @@
        title="<?php echo i18n('Checklist');?>"
        iconClass="iconChecklistDefinition16" >
         <script type="dojo/connect" event="onClick" args="evt">
-          showCheckList();  
+          showCheckList('<?php echo get_class($obj);?>',<?php echo $obj->id;?>);  
         </script>
     </button>
     <?php }?>

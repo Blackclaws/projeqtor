@@ -12,7 +12,7 @@ if (array_key_exists('remind',$_REQUEST)) {
   $remind=$_REQUEST['remind'];
 }
 Sql::beginTransaction();
-$idAlert=$_REQUEST['idAlert'];
+$idAlert=trim($_REQUEST['idAlert']);
 $alert=new Alert($idAlert);
 if ($remind) {
 	$alert->alertDateTime= (addDelayToDatetime(date('Y-m-d H:i'), ($remind/60), 'HH'));

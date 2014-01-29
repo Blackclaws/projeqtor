@@ -2034,7 +2034,8 @@ function globalSave() {
 		var button=dijit.byId('dialogMailSubmit');
   } else if (dijit.byId('dialogChecklistDefinitionLine') && dijit.byId('dialogChecklistDefinitionLine').open) {
     var button=dijit.byId('dialogChecklistDefinitionLineSubmit');
-  } else {
+  } else if (dijit.byId('dialogChecklist') && dijit.byId('dialogChecklist').open) {
+    var button=dijit.byId('dialogChecklistSubmit');  } else {
     var button=dijit.byId('saveButton');
   }
   if (! button) {
