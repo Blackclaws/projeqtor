@@ -8,8 +8,8 @@ class ChecklistDefinition extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $idReferencable;
-  public $nameReferencable;
+  public $idChecklistable;
+  public $nameChecklistable;
   public $idType;
   //public $lineCount;
 
@@ -22,7 +22,7 @@ class ChecklistDefinition extends SqlElement {
     
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameReferencable" formatter="translateFormatter" width="20%" >${element}</th>
+    <th field="nameChecklistable" formatter="translateFormatter" width="20%" >${element}</th>
     <th field="nameType" width="20%" >${type}</th>
     <th field="lineCount" formatter="numericFormatter" width="10%" >${lineCount}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
@@ -30,11 +30,11 @@ class ChecklistDefinition extends SqlElement {
 
   private static $_fieldsAttributes=array("name"=>"hidden",
                                   "idType"=>"nocombo",
-                                  "nameReferencable"=>"hidden",
+                                  "nameChecklistable"=>"hidden",
   		                            //"lineCount"=>"readonly"
   );  
   
-    private static $_colCaptionTransposition = array('idType'=>'type');
+    private static $_colCaptionTransposition = array('idType'=>'type', 'idChecklistable'=>'element');
   
    /** ==========================================================================
    * Constructor
@@ -83,8 +83,8 @@ class ChecklistDefinition extends SqlElement {
 // ============================================================================**********
   
   public function save() {
-  	$referencable=new Referencable($this->idReferencable);
-  	$this->nameReferencable=$referencable->name;
+  	$Checklistable=new Checklistable($this->idChecklistable);
+  	$this->nameChecklistable=$Checklistable->name;
   	return parent::save();
   }
   
@@ -94,16 +94,22 @@ class ChecklistDefinition extends SqlElement {
    */
   public function getValidationScript($colName) {
   	$colScript = parent::getValidationScript($colName);
+  	if ($colName=='idChecklistable') {
+  		$colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
+  		$colScript .= '  dijit.byId("idType").set("value",null);';
+  		$colScript .= '  refreshList("idType","scope", checklistableArray[this.value]);';
+  		$colScript .= '</script>';
+  	}
     return $colScript;
   }
   
   public function control(){
     $result="";
-    if (! trim($this->idReferencable)) {
+    if (! trim($this->idChecklistable)) {
     	$result.='<br/>' . i18n('messageMandatory',array(i18n('colElement')));
     }
 
-    $crit=array('idReferencable'=>trim($this->idReferencable),
+    $crit=array('idChecklistable'=>trim($this->idChecklistable),
                 'idType'=>trim($this->idType));
     $elt=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);
     if ($elt and $elt->id and $elt->id!=$this->id) {

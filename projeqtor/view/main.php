@@ -231,6 +231,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var indicatorableArray=new Array();
     var mailableArray=new Array();
     var textableArray=new Array();
+    var checklistableArray=new Array();
     var planningColumnOrder=new Array();
     <?php 
       $list=SqlList::getListNotTranslated('Dependable');
@@ -266,7 +267,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       $list=SqlList::getListNotTranslated('Textable');
       foreach ($list as $id=>$name) {
         echo "textableArray['" . $id . "']='" . $name . "';";
-      }            
+      }          
+      $list=SqlList::getListNotTranslated('Checklistable');
+      foreach ($list as $id=>$name) {
+      	echo "checklistableArray['" . $id . "']='" . $name . "';";
+      }  
       $list=Parameter::getPlanningColumnOrder();
       foreach ($list as $order=>$name) {
         echo "planningColumnOrder[" . ($order-1) . "]='" . $name . "';";

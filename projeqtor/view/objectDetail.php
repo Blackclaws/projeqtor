@@ -869,6 +869,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						$critVal=SqlList::getNameFromId('Mailable', $obj->idMailable, false);
 					}
 				}
+				if ( get_class($obj)=='ChecklistDefinition'  ) {
+					if ($col=='idType') {
+						$critFld='scope';
+						$critVal=SqlList::getNameFromId('Checklistable', $obj->idChecklistable, false);
+					}
+				}
 				if ($displayComboButtonCol or $displayDirectAccessButton) {
 					$fieldWidth -= 20;
 				}

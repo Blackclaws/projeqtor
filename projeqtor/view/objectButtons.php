@@ -157,7 +157,7 @@
     </button>
     </span>
     <?php 
-      $crit="nameReferencable='".get_class($obj)."'";
+      $crit="nameChecklistable='".get_class($obj)."'";
       $type='id'.get_class($obj).'Type';
       if (property_exists($obj,$type) ) {
         $crit.=' and (idType is null ';
