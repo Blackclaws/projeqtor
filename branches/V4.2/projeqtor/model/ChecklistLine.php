@@ -17,7 +17,7 @@ class ChecklistLine extends SqlElement {
   public $checkTime;
   public $comment;
   
-  //public $_noHistory=true; // Will never save history for this object
+  public $_noHistory=true; // Will never save history for this object
   
    /** ==========================================================================
    * Constructor
@@ -49,9 +49,7 @@ class ChecklistLine extends SqlElement {
    */
   public function control(){
     $result="";    
-    if ( ! $this->name){
-      $result.="<br/>" . i18n('messageMandatory',array(i18n('colName')));
-    }       
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

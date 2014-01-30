@@ -11,16 +11,16 @@ ADD COLUMN `passwordChangeDate` date DEFAULT NULL;
 CREATE TABLE `${prefix}checklistdefinition` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
-  `idReferencable` int(12) unsigned DEFAULT NULL,
-  `nameReferencable` varchar(100),
+  `idChecklistable` int(12) unsigned DEFAULT NULL,
+  `nameChecklistable` varchar(100),
   `idType` int(12) unsigned DEFAULT NULL,
   `lineCount` int(3) DEFAULT 0,
   `idle` int(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX checklistdefinitionReferencable ON `${prefix}checklistdefinition` (idReferencable);
-CREATE INDEX checklistdefinitionNameReferencable ON `${prefix}checklistdefinition` (nameReferencable);
+CREATE INDEX checklistdefinitionChecklistable ON `${prefix}checklistdefinition` (idChecklistable);
+CREATE INDEX checklistdefinitionNameChecklistable ON `${prefix}checklistdefinition` (nameChecklistable);
 CREATE INDEX checklistdefinitionType ON `${prefix}checklistdefinition` (idType);
 
 CREATE TABLE `${prefix}checklistdefinitionline` (
@@ -210,3 +210,31 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (5, 130, 0),
 (6, 130, 0),
 (7, 130, 0);
+
+INSERT INTO `${prefix}referencable` (`name`, `idle`) VALUES
+('Opportunity',0);
+
+CREATE TABLE `${prefix}checklistable` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `idle` int(1) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}checklistable` (`name`, `idle`) VALUES
+('Ticket',0),
+('Activity',0),
+('Milestone',0),
+('Risk',0),
+('Action',0),
+('Issue',0),
+('Meeting',0),
+('Decision',0),
+('Question',0),
+('Document',0),
+('Requirement',0),
+('TestCase',0),
+('TestSession',0),
+('Command',0),
+('Opportunity',0),
+('Project',0);

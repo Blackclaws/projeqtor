@@ -13,9 +13,9 @@ $checklistDefinition=null;
 $obj=new $objectClass($objectId);
 $checklist=SqlElement::getSingleSqlElementFromCriteria('Checklist', array('refType'=>$objectClass, 'refId'=>$objectId));
 if ($checklist and $checklist->id) {
-	$checklistDefinition=new CheckListDefinition($checklist->$idChecklistDefinition);
+	$checklistDefinition=new CheckListDefinition($checklist->idChecklistDefinition);
 	if ($checklistDefinition->id and 
-      ( ( $checklistDefinition->nameReferencable!=$objectClass) 
+      ( ( $checklistDefinition->nameChecklistable!=$objectClass) 
       or( $checklistDefinition->idType and $checklistDefinition->idType!=$obj->type)
       ) ) {
 		$checklist->delete();
@@ -29,11 +29,11 @@ if (!$checklist or !$checklist->id) {
 if (!$checklistDefinition or ! $checklistDefinition->id) {
 	$type='id'.$objectClass.'Type';
 	if (property_exists($obj,$type)) {
-		$crit=array('nameReferencable'=>$objectClass, 'idType'=>$obj->$type);
+		$crit=array('nameChecklistable'=>$objectClass, 'idType'=>$obj->$type);
   	$checklistDefinition=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);
 	}
 	if (!$checklistDefinition or !$checklistDefinition->id) {
-		$crit=array('nameReferencable'=>$objectClass);
+		$crit=array('nameChecklistable'=>$objectClass);
 		$checklistDefinition=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);
 	}
 }
@@ -53,6 +53,7 @@ foreach ($linesTmp as $line) {
 }
 ?>
 <form id="dialogChecklistForm" name="dialogChecklistForm" action="">
+<input type="hidden" name="checklistDefinitionId" value="<?php echo $checklistDefinition->id;?>" />
 <input type="hidden" name="checklistId" value="<?php echo $checklist->id;?>" />
 <input type="hidden" name="checklistObjectClass" value="<?php echo $objectClass;?>" />
 <input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
