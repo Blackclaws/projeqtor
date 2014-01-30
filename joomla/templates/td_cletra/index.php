@@ -226,7 +226,7 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 				<i>ProjeQtOr</i>
 			</div>
 			<div style="font-size: 200%;">Enlighten your projects</div>
-			<div style="font-size: 200%;">with Qality based Project Organizer</div>
+			<div style="font-size: 200%;">with Quality based Project Organizer</div>
 		</div>
 		<div id="logo">
 			<a href="index.php"><img
