@@ -56,7 +56,7 @@ class SqlList {
    * @return an array containing the list of references
    */
   private static function fetchList($listType,$displayCol, $selectedValue, $showIdle=false, $translate=true) {
-scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translate)");
+//scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translate)");
     $res=array();
     $obj=new $listType();
     $calculated=false;
@@ -116,11 +116,17 @@ scriptLog("fetchList($listType,$displayCol, $selectedValue, $showIdle, $translat
   }
  
   private static function fetchListWithCrit($listType,$criteria, $displayCol, $selectedValue, $showIdle) {
-scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
+//scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria).",displayCol=$displayCol, selectedValue=$selectedValue, showIdle=$showIdle)");
 
     $res=array();
     $obj=new $listType();
-    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $obj->getDatabaseColumnName($displayCol) . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
+    $calculated=false;
+    $field=$obj->getDatabaseColumnName($displayCol);
+    if (property_exists($obj, '_calculateForColumn') and isset($obj->_calculateForColumn[$displayCol])) {
+    	$field=$obj->_calculateForColumn[$displayCol];
+    	$calculated=true;
+    }
+    $query="select " . $obj->getDatabaseColumnName('id') . " as id, " . $field . " as name from " . $obj->getDatabaseTableName() . " where (1=1 ";
     $query.=(! $showIdle)?' and idle=0 ':'';
     $crit=array_merge($obj->getDatabaseCriteria(),$criteria);
     foreach ($crit as $col => $val) {
@@ -188,7 +194,7 @@ scriptLog("fetchListWithCrit(listType=$listType,criteria=".implode('|',$criteria
         if ($obj->isFieldTranslatable($displayCol)){
           $name=i18n($name);
         }
-        if (property_exists($obj,'_constructForName') ) {
+        if ($displayCol=='name' and property_exists($obj,'_constructForName') and !$calculated ) {
         	if ($listType=='TargetVersion') $listType='OriginalVersion';
           $nameObj=new $listType($line['id']);
           if ($nameObj->id) {
