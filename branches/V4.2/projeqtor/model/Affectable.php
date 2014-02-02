@@ -17,8 +17,8 @@ class Affectable extends SqlElement {
   public $idle;
   
   public $_constructForName=true;
-  public $_calculateForColumn=array("name"=>"coalesce(fullName,name)",
-                                    "userName"=>"coalesce(name,fullName)");
+  public $_calculateForColumn=array("name"=>"coalesce(fullName,concat(name,' #'))",
+                                    "userName"=>"coalesce(name,concat(fullName,' *'))");
   
   private static $_fieldsAttributes=array("name"=>"required", 
                                           "isContact"=>"readonly",

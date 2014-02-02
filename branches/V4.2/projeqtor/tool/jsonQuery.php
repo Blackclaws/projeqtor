@@ -460,6 +460,7 @@
     					$class=substr($arrayFields[strtolower($id)], 2);
     					if (ucfirst($class)==$class) {
     						$foreign=true;
+    						if ($class=="TargetVersion" or $class=="OriginalVersion") $class='Version';
     					  $val=SqlList::getNameFromId($class, $val);
     					}
     				}

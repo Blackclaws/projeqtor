@@ -828,7 +828,9 @@ function finalizeMessageDisplay(destination, validationType) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  refreshGrid();
       } else  if (validationType=='report'){
-    	  hideWait();  
+    	  hideWait(); 
+      } else  if (validationType=='checklist'){
+    	  hideWait(); 
       } else if (lastOperation!='plan') {
     	  if (dijit.byId('detailFormDiv')) { // only refresh is detail is show (possible when DndLing on planning
             loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -944,6 +946,9 @@ function finalizeMessageDisplay(destination, validationType) {
             }
             if (dojo.byId(dojo.byId('objectClass').value+'_billLine')) {
                 loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
+            }
+            if (dojo.byId(dojo.byId('objectClass').value+'_checklistDefinitionLine')) {
+                loadContent("objectDetail.php?refreshChecklistDefinitionLines=true", dojo.byId('objectClass').value+'_checklistDefinitionLine', 'listForm');
             }
           }
         }

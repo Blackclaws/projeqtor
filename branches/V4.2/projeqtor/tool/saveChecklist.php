@@ -35,40 +35,53 @@ $checklist->refType=$checklistObjectClass;
 $checklist->refId=$checklistObjectId;
 $checklist->idChecklistDefinition=$checklistDefinitionId;
 $result=$checklist->save();
-
-foreach($checklistDefinition->_ChecklistDefinitionLine as $line) {
-	if (isset($linesVal[$line->id])) {
-		$valLine=$linesVal[$line->id];
-	} else {
-		$valLine=new ChecklistLine();
-	}
-	$valLine->idChecklist=$checklist->id;
-	$valLine->idChecklistDefinitionLine=$line->id;
-	$valLine->checkTime=date('Y-m-d H:i:s');
-	$valLine->idChecklistDefinitionLine=$line->id;
-	
-	$checkedCpt=0;
-	for ($i=1; $i<=5; $i++) {
-		$checkName="check_".$line->id."_".$i;
-		$valueName="value0".$i;
-		if (isset($_REQUEST[$checkName])) {
-			$checkedCpt+=1;
-			if (! $valLine->$valueName) {
-				$valLine->idUser=$_SESSION['user']->id;
-			  $valLine->checkTime=date('Y-m-d H:i:s');
+if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
+  foreach($checklistDefinition->_ChecklistDefinitionLine as $line) {
+		if (isset($linesVal[$line->id])) {
+			$valLine=$linesVal[$line->id];
+		} else {
+			$valLine=new ChecklistLine();
+		}
+		$valLine->idChecklist=$checklist->id;
+		$valLine->idChecklistDefinitionLine=$line->id;
+		$valLine->checkTime=date('Y-m-d H:i:s');
+		$valLine->idChecklistDefinitionLine=$line->id;
+		
+		$checkedCpt=0;
+		for ($i=1; $i<=5; $i++) {
+			$checkName="check_".$line->id."_".$i;
+			$valueName="value0".$i;
+			if (isset($_REQUEST[$checkName])) {
+				$checkedCpt+=1;
+				if (! $valLine->$valueName) {
+					$valLine->idUser=$_SESSION['user']->id;
+				  $valLine->checkTime=date('Y-m-d H:i:s');
+				}
+				$valLine->$valueName=1;
+			} else {
+				$valLine->$valueName=0;
 			}
 		}
-	}
-	if ($checkedCpt==0) {
-		if ($valLine->id) {
-			$valLine->delete();
+	  $resultLine="";
+		if ($checkedCpt==0) {
+			if ($valLine->id) {
+				$resultLine=$valLine->delete();
+			}
+		} else {
+			$resultLine=$valLine->save();
 		}
-	} else {
-		$resultLine=$valLine->save();
-	}
+		if (stripos($resultLine,'id="lastOperationStatus" value="ERROR"')>0) {
+		 	$result=$resultLine;
+	  }
+  }
+} 
+if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
+  $result=i18n('Checklist') . ' ' . i18n('resultUpdated');
+  $result .= '<input type="hidden" id="lastSaveId" value="' . $checklist->id . '" />';
+  $result .= '<input type="hidden" id="lastOperation" value="update" />';
+  $result .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
+  $result .= '<input type="hidden" id="checklistUpdated" value="true" />';
 }
-
-
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();

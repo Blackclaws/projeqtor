@@ -56,6 +56,8 @@ class User extends SqlElement {
   		                                    "passwordChangeDate"=>'hidden'
   );  
   
+  public $_calculateForColumn=array("name"=>"coalesce(fullName,concat(name,' #'))");
+  
   private static $_databaseCriteria = array('isUser'=>'1');
   
   private static $_databaseColumnName = array('resourceName'=>'fullName');
