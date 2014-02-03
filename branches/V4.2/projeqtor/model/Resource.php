@@ -57,7 +57,7 @@ class Resource extends SqlElement {
 
   private static $_databaseCriteria = array('isResource'=>'1');
   
-  private static $_colCaptionTransposition = array('idRole'=>'mainRole'
+  private static $_colCaptionTransposition = array('idRole'=>'mainRole', 'name'=>'displayName'
   );
   
   /** ==========================================================================
