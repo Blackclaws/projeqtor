@@ -340,7 +340,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
       <td rowspan="2" width="80px" valign="top">
       </td>
       <td width="10px" valign="top">
-        <img style="height: 54px" src="img/title.gif" />
+        <img style="height: 54px" src="img/titleSmall.gif" />
       </td>
       <td>
         <div class="siteH1" >Configuration</div>
