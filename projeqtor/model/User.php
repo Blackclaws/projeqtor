@@ -38,7 +38,7 @@ class User extends SqlElement {
     <th field="name" width="20%">${userName}</th>
     <th field="photo" formatter="thumb48" width="5%">${photo}</th>
     <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
-    <th field="resourceName" width="25%">${name}</th>
+    <th field="resourceName" width="25%">${realName}</th>
     <th field="initials" width="10%">${initials}</th> 
     <th field="isResource" width="5%" formatter="booleanFormatter">${isResource}</th>
     <th field="isContact" width="5%" formatter="booleanFormatter">${isContact}</th>
@@ -62,7 +62,7 @@ class User extends SqlElement {
   
   private static $_databaseColumnName = array('resourceName'=>'fullName');
   
-  private static $_colCaptionTransposition = array('resourceName'=>'displayName',
+  private static $_colCaptionTransposition = array('resourceName'=>'realName',
    'name'=> 'userName');
   
   private static $_databaseTableName = 'resource';

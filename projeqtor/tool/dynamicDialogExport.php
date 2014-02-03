@@ -27,7 +27,7 @@ foreach($FieldsArray as $key => $val) {
 	if (substr($val,0,5)=='_col_') {
 		if (strlen($val)>8) {
 			$section=substr($val,9);
-			if ($section!='predecessor' and $section!='successor') {
+			if ($section!='predecessor' and $section!='successor' and $section !='TestCaseRun') {
 				$FieldsArray[$key]=i18n('section' . ucfirst($section));
 			}
 		}
