@@ -32,7 +32,7 @@ class Resource extends SqlElement {
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="name" width="20%">${name}</th>
+    <th field="name" width="20%">${realName}</th>
     <th field="photo" formatter="thumb48" width="5%">${photo}</th>
     <th field="initials" width="10%">${initials}</th>  
     <th field="nameTeam" width="15%">${team}</th>
@@ -57,7 +57,7 @@ class Resource extends SqlElement {
 
   private static $_databaseCriteria = array('isResource'=>'1');
   
-  private static $_colCaptionTransposition = array('idRole'=>'mainRole', 'name'=>'displayName'
+  private static $_colCaptionTransposition = array('idRole'=>'mainRole', 'name'=>'realName'
   );
   
   /** ==========================================================================
