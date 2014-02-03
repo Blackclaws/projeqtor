@@ -62,7 +62,7 @@ class User extends SqlElement {
   
   private static $_databaseColumnName = array('resourceName'=>'fullName');
   
-  private static $_colCaptionTransposition = array('resourceName'=>'name',
+  private static $_colCaptionTransposition = array('resourceName'=>'displayName',
    'name'=> 'userName');
   
   private static $_databaseTableName = 'resource';

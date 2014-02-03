@@ -63,6 +63,8 @@ class Contact extends SqlElement {
 
   private static $_databaseCriteria = array('isContact'=>'1');
   
+  private static $_colCaptionTransposition = array('name'=>'displayName');
+  
   /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -143,6 +145,14 @@ class Contact extends SqlElement {
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
+  }
+  
+  /** ============================================================================
+   * Return the specific colCaptionTransposition
+   * @return the colCaptionTransposition
+   */
+  protected function getStaticColCaptionTransposition($fld) {
+  	return self::$_colCaptionTransposition;
   }
   
 // ============================================================================**********
