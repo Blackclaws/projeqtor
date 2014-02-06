@@ -238,3 +238,12 @@ INSERT INTO `${prefix}checklistable` (`name`, `idle`) VALUES
 ('Command',0),
 ('Opportunity',0),
 ('Project',0);
+
+INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
+(1, 'checklist', 1),
+(2, 'checklist', 1),
+(3, 'checklist', 1),
+(4, 'checklist', 1),
+(6, 'checklist', 2),
+(7, 'checklist', 2),
+(5, 'checklist', 2);  

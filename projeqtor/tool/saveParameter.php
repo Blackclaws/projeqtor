@@ -60,6 +60,7 @@ if ($type=='habilitation') {
                                      'work'=>i18n('workAccess'),
                                      'cost'=>i18n('costAccess'),
                                      'combo'=>i18n('comboDetailAccess'),
+  		                               'checklist'=>i18n('checklistAccess'),
                                      'planning'=>i18n('planningRight'),
                                      'document'=>i18n('documentUnlockRight'),
                                      'requirement'=>i18n('requirementUnlockRight')), 

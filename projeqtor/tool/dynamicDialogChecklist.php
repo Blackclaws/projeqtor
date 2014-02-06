@@ -51,6 +51,9 @@ $linesVal=array();
 foreach ($linesTmp as $line) {
 	$linesVal[$line->idChecklistDefinitionLine]=$line;
 }
+
+$canUpdate=(securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj)=='YES');
+if ($obj->idle) $canUpdate=false;
 ?>
 <form id="dialogChecklistForm" name="dialogChecklistForm" action="">
 <input type="hidden" name="checklistDefinitionId" value="<?php echo $checklistDefinition->id;?>" />
@@ -83,6 +86,7 @@ foreach ($linesTmp as $line) {
 						  <div dojoType="dijit.form.CheckBox" type="checkbox"
 				        <?php if ($line->exclusive) {?>onClick="checkClick(<?php echo $line->id;?>, <?php echo $i;?>)" <?php }?>
 				        name="<?php echo $checkName;?>" id="<?php echo $checkName;?>"
+				        <?php if (! $canUpdate) echo 'readonly';?>
 		            <?php if ($lineVal->$value) { echo 'checked'; }?> ></div>
 						    <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo $line->$check;?>&nbsp;&nbsp;</span>
 					  <?php }?></td>
