@@ -168,7 +168,10 @@
   		}
   		$cd=new ChecklistDefinition();
   		$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
-      if (count($cdList)>0 and $obj->id) {?>
+  		$user=$_SESSION['user'];
+  		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
+  		$list=new ListYesNo($habil->rightAccess);
+      if (count($cdList)>0 and $obj->id and $list->code=='YES') {?>
     <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('Checklist');?>"
        iconClass="iconChecklistDefinition16" >

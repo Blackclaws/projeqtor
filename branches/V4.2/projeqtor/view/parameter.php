@@ -222,14 +222,14 @@ function drawTableFromObjectList($objectList) {
   	echo ' title="' . i18n('sectionWorkCost') . '">';
   	htmlDrawCrossTable(array('work'=>i18n('workAccess'),'cost'=>i18n('costAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'visibilityScope') ;
   	echo '</div><br/>';
-  	$titlePane="habilitationOther_ComboDetail";
+  	$titlePane="habilitationOther_Buttons";
   	echo '<div dojoType="dijit.TitlePane"';
   	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
   	echo ' id="' . $titlePane . '" ';
   	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
   	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
-  	echo ' title="' . i18n('sectionComboDetail') . '">';
-  	htmlDrawCrossTable(array('combo'=>i18n('comboDetailAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+  	echo ' title="' . i18n('sectionButtons') . '">';
+  	htmlDrawCrossTable(array('combo'=>i18n('comboDetailAccess'),'checklist'=>i18n('checklistAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
   	echo '</div><br/>';
   	$titlePane="habilitationOther_PlanningRight";
   	echo '<div dojoType="dijit.TitlePane"';

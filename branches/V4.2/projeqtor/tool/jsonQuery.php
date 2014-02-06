@@ -448,8 +448,8 @@
               } 
 	    				//$val=utf8_decode($id);
 	    				$val=str_replace($csvSep,' ',$val);
-	            if ($id!='id') { echo $csvSep ;}
-	    				echo $val;
+	            //if ($id!='id') { echo $csvSep ;}
+	    				echo $val.$csvSep;
 	            $dataType[$id]=$obj->getDataType($id);
 	          }
 	          echo "\r\n";
@@ -469,11 +469,11 @@
     				  $val=str_replace('"','""',$val);	
     				}
             $val=str_replace($csvSep,' ',$val);
-            if ($id!='id') { echo $csvSep ;}
+            //if ($id!='id') { echo $csvSep ;}
             if ( ($dataType[$id]=='varchar' or $foreign) and $csvQuotedText) {
-              echo '"' . $val . '"';
+              echo '"' . $val . '"'.$csvSep;
             } else {
-            	echo $val;
+            	echo $val.$csvSep;
             }
     			}
     			$first=false;

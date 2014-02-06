@@ -10,5 +10,5 @@ $logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
 $paramMailSendmailPath='';
-//$flashReport=true;
+$flashReport=true;
 //======= END
