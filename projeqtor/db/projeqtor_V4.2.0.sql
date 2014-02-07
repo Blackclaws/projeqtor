@@ -287,9 +287,9 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`,
 ('Quotation', 'Per day', '20', '0', '1', '0', '0', '0', '0', '1', '1', '');
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES 
-(131,'menuQuotation', '74', 'object', '351', 'Project', 0);
+(131,'menuQuotation', '74', 'object', '205', 'Project', 0);
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `idle`) VALUES 
-(132, 'menuQuotationType', '79', 'object', '833', 0);
+(132, 'menuQuotationType', '79', 'object', '824', 0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 131, 1),
