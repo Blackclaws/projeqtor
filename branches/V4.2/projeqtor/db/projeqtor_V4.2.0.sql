@@ -247,3 +247,84 @@ INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) V
 (6, 'checklist', 2),
 (7, 'checklist', 2),
 (5, 'checklist', 2);  
+
+CREATE TABLE `${prefix}quotation` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idQuotationType` int(12) unsigned DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(4000) DEFAULT NULL,
+  `creationDate` datetime DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `idStatus` int(12) unsigned DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
+  `additionalInfo` varchar(4000) DEFAULT NULL,
+  `initialEndDate` date DEFAULT NULL,
+  `initialWork` decimal(12,2) DEFAULT '0.00',
+  `initialPricePerDayAmount` decimal(12,2) DEFAULT '0.00',
+  `initialAmount` decimal(12,2) DEFAULT '0.00',
+  `comment` varchar(4000) DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  `done` int(1) unsigned DEFAULT '0',
+  `cancelled` int(1) unsigned DEFAULT '0',
+  `idleDate` date DEFAULT NULL,
+  `doneDate` date DEFAULT NULL,
+  `handled` int(1) unsigned DEFAULT '0',
+  `handledDate` date DEFAULT NULL,
+  `reference` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE INDEX quotationProject ON `${prefix}quotation` (idProject);
+CREATE INDEX quotationUser ON `${prefix}quotation` (idUser);
+CREATE INDEX quotationResource ON `${prefix}quotation` (idResource);
+CREATE INDEX quotationStatus ON `${prefix}quotation` (idStatus);
+CREATE INDEX quotationType ON `${prefix}quotation` (idQuotationType);
+
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
+('Quotation', 'Fixe Price', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
+('Quotation', 'Per day', '20', '0', '1', '0', '0', '0', '0', '1', '1', '');
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES 
+(131,'menuQuotation', '74', 'object', '351', 'Project', 0);
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `idle`) VALUES 
+(132, 'menuQuotationType', '79', 'object', '833', 0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 131, 1),
+(2, 131, 1),
+(3, 131, 1),
+(4, 131, 0),
+(5, 131, 0),
+(6, 131, 0),
+(7, 131, 0);
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 132, 1),
+(2, 132, 0),
+(3, 132, 0),
+(4, 132, 0),
+(5, 132, 0),
+(6, 132, 0),
+(7, 132, 0);
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
+SELECT `idProfile`, 131, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=97;  
+
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) 
+SELECT `idProfile`, 132, `idAccessProfile` FROM `${prefix}accessright` WHERE `idMenu`=100;  
+
+INSERT INTO `${prefix}originable` (`id`,`name`, `idle`) VALUES (18,'Quotation', 0);
+INSERT INTO `${prefix}mailable` (`id`,`name`, `idle`) VALUES (22,'Quotation', '0');
+INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES (19,'Quotation', 0, 18);
+INSERT INTO `${prefix}referencable` (`name`, `idle`) VALUES ('Quotation', 0);
+INSERT INTO `${prefix}indicatorable` (`id`,`name`, `idle`) VALUES (11,'Quotation', '0');
+INSERT INTO `${prefix}importable` (`id`,`name`, `idle`) VALUES (28,'Quotation', '0');
+INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`) VALUES (14,'Quotation', '0', '37');
+
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('11', 'Quotation', '8', '0');
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('11', 'Quotation', '5', '0');
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('11', 'Quotation', '6', '0');
