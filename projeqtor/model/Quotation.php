@@ -9,18 +9,12 @@ class Quotation extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $idProject;
-  public $idCommandType;
+  public $idQuotationType;
   public $name;
-  public $externalReference;  
   public $creationDate;
   public $idUser;
   public $Origin;
   public $description;
-  public $_tab_2_2 = array('initial', 'validated', 'startDate', 'endDate');
-  public $initialStartDate; 
-  public $validatedStartDate; 
-  public $initialEndDate;
-  public $validatedEndDate;
   public $additionalInfo;
   public $_col_2_2_treatment;
   public $idActivity;
@@ -34,6 +28,7 @@ class Quotation extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
+  public $initialEndDate;
   public $_tab_3_3 = array('initial', 'add', 'validated', 'Work', 'PricePerDay', 'Amount');
   public $initialWork;
   public $addWork;

@@ -14,7 +14,7 @@ if (! isset($outMode)) {
 }
 
 if (array_key_exists('version',$_REQUEST)) {
-	echo "Rapport Flash version 1.0 [2013-12-20]";
+	echo "Rapport Flash version 2.0 [2014-02-20]";
 	exit;
 }
 
@@ -64,29 +64,38 @@ foreach($decList as $dec) {
 	}
 }
 
-$notStartedCost=0;
-// ACTIVITIES
+// ACTIONS
 $arrayActionDone=array();
 $arrayActionOngoing=array();
 $arrayActionTodo=array();
-$pe=new ActivityPlanningElement();
-$peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Activity' and idProject=$idProject", "wbsSortable asc");
-foreach ($peList as $pe) {
-	$act=new Activity($pe->refId);
+$act=new Action();
+$actList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject", "actualDueDate asc, initialDueDate asc, creationDate asc");
+foreach ($actList as $act) {
 	$status=new Status($act->idStatus);
 	$name=$act->name;
 	if (strlen($name)>60) {
 		$name=substr($name, 0,55).'[...]';
 	}
-	if ($showWbs) $name=$pe->wbs.' '.$name;
-	if ($act->done) {
+	if ($status->setHandledStatus and $status->setDoneStatus) {
 		$arrayActionDone[]=$name;
 	} else if ($status->setHandledStatus and ! $status->setDoneStatus) {
 		$arrayActionOngoing[]=$name;
 	} else {
 		$arrayActionTodo[]=$name;
+	}
+}
+// ACTIVITIES
+$notStartedCost=0;
+$activitiesCost=0;
+$pe=new ActivityPlanningElement();
+$peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Activity' and idProject=$idProject", "wbsSortable asc");
+foreach ($peList as $pe) {
+	$act=new Activity($pe->refId);
+	$status=new Status($act->idStatus);
+	if (! $status->setHandledStatus and ! $status->setDoneStatus) {
 		$notStartedCost+=$pe->validatedCost;
 	}
+	$activitiesCost+=$pe->validatedCost;
 }
 
 // MILESTONES
@@ -102,25 +111,44 @@ $cptMile=count($peList);
 $maxMile=12;
 if ($cptMile>$maxMile) $cptMile=$maxMile;
 $maxCar=100-($cptMile-6)*(15-$cptMile+6);
+$currentCptMile=0;
 foreach ($peList as $pe) {
+	$currentCptMile+=1;
 	$name=$pe->refName;
 	$mile=new Milestone($pe->refId);
 	$type=new MilestoneType($mile->idMilestoneType);
 	if (strlen($name)>$maxCar) {
     $name=substr($name, 0,$maxCar-5).'[...]';
   }
+  $colorMile="#FFFFFF";
+  if ($pe->done) {
+  	$prevDate_JalonPrec=$prevDate_JalonJ;
+  	$realDate_JalonPrec=$realDate_JalonJ;
+  	$realDate_JalonJ=$pe->realEndDate;
+  	$prevDate_JalonJ=$pe->validatedEndDate;
+  	if ($pe->realEndDate<=$pe->validatedEndDate) {
+  		$colorMile="#32cd32";
+  	} else {
+  		if ($currentCptMile>1) {
+  			if ($arrayMilestone[$currentCptMile-1]['real']<=$arrayMilestone[$currentCptMile-1]['validated']) {
+  			  $colorMile="#ffd700";
+  			} else {
+  				$colorMile="#ff0000";
+  			}
+  		} else {
+  			$colorMile="#ffd700";
+  		}
+  	}
+  }
   if ($type->showInFlash) {
-	  $arrayMilestone[]=array('name'=>$name, 
+	  $arrayMilestone[$currentCptMile]=array('name'=>$name, 
 	    'initial'=>$pe->initialEndDate, 
 	    'validated'=>$pe->validatedEndDate,
+	    'real'=>$pe->realEndDate,
+	  	'display'=>($pe->done)?$pe->realEndDate:$pe->validatedEndDate,
+	  	'color'=>$colorMile,
 	    'done'=>$pe->done);
   }
-	if ($pe->done) {
-		$prevDate_JalonPrec=$prevDate_JalonJ;
-		$realDate_JalonPrec=$realDate_JalonJ;
-		$realDate_JalonJ=$pe->realEndDate;
-		$prevDate_JalonJ=$pe->validatedEndDate;
-	}
 }
 if (! count($arrayMilestone)) {
 	$arrayMilestone[]=array('name'=>"Aucun jalon n'est défini", 
@@ -129,7 +157,7 @@ if (! count($arrayMilestone)) {
      'done'=>false);
 }
 
-$arrayListValues=array("Severity", "Likelihood", "Criticality");
+/*$arrayListValues=array("Severity", "Likelihood", "Criticality");
 foreach ($arrayListValues as $listValue) {
   $max='max'.$listValue;
   $min='min'.$listValue;
@@ -145,25 +173,27 @@ foreach ($arrayListValues as $listValue) {
       $$min=$val->value;
     }
 	}
-}
-$noteMax=$maxLikelihood*$maxCriticality*$maxSeverity;
-$noteMin=$minLikelihood*$minCriticality*$minSeverity;
+}*/
+//$noteMax=$maxLikelihood*$maxCriticality*$maxSeverity;
+//$noteMin=$minLikelihood*$minCriticality*$minSeverity;
 //echo 'noteMax=' . $noteMax . '<br/>';
 //echo 'noteMin=' . $noteMin . '<br/>';
 $noteRisque=0;
+$maxRiskCriticality=new Criticality();
 // RISKS
 $arrayRisk=array();
 $risk=new Risk();
 $riskList=$risk->getSqlElementsFromCriteria(null, false, "idProject=$idProject", 'id asc');
 foreach ($riskList as $risk) {
 	$status=new Status($risk->idStatus);
-	if (! $status->setDoneStatus) {
+	if (! $risk->idle) {
 		$severity=new Severity($risk->idSeverity);
 		$criticality=new Criticality($risk->idCriticality);
 		$likelihood=new Likelihood($risk->idLikelihood);
 		$order=$severity->value*$criticality->value*$likelihood->value;
-		if ($order>$noteRisque) {
-			$noteRisque=$order;
+		if ($criticality->value>$noteRisque) {
+			$noteRisque=$criticality->value;
+			$maxRiskCriticality=$criticality;
 		}
 		$order=htmlFixLengthNumeric($order,6).'-'.$risk->id;
 		$name=$risk->name;
@@ -222,16 +252,16 @@ if ($realDate_JalonJ<=$prevDate_JalonJ) {
 }
 
 //echo 'noteRisque=' . $noteRisque . '<br/>';
-$etendue=$noteMax-$noteMin;
+/*$etendue=$noteMax-$noteMin;
 if ($noteRisque<=$noteMin+$etendue/3) {
 	$riskIndicator="green";
 } else if ($noteRisque<=$noteMin+2*$etendue/3) {
 	$riskIndicator="yellow";
 } else {
 	$riskIndicator="red";
-}
+}*/
 
-$qualityIndicator="green";
+//$qualityIndicator="green";
 
 // FORMATING VALUES
 $height=185;
@@ -347,13 +377,14 @@ $showCost=1;
       <?php displayList($arrayDecision,8,49);?>
   <?php }?>  
   <?php if ($showIndicator) {
+  	$overallProgress=new OverallProgress($proj->idOverallProgress);
     $health=new Health($proj->idHealth);
     $trend=new Trend($proj->idTrend);
     $quality=new Quality($proj->idQuality);?>
     <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;">
       <?php displayHeader("Global");?><br/>
-      <i>"<?php echo htmlEncode($health->name);?>"</i></div>
+      <span style="font-size:150%"><i><?php echo htmlEncode($overallProgress->name);?></i></span></div>
     <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
        <?php displayIndicator($health);?>
@@ -389,7 +420,7 @@ $showCost=1;
       <img src="../view/icons/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
     <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
     width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <img src="../view/icons/smiley<?php echo ucfirst($riskIndicator);?>.png" /></div>    
+     <?php displayIndicator($maxRiskCriticality);?></div>    
   <?php }?>  
   
   </div>  
@@ -447,8 +478,8 @@ $showCost=1;
 	    foreach($arrayMilestone as $mile){
         $nb++;
         if ($nb > $max) break;
-	      $color=($mile['done'])?'#32cd32':'#FFFFFF';?>
-	      <td style="background-color:<?php echo $color;?>;padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo htmlFormatDate($mile['validated']);?></td>
+	      $color=$mile['color'];?>
+	      <td style="background-color:<?php echo $color;?>;padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo htmlFormatDate($mile['display']);?></td>
 	    <?php }?>
 	    </tr>
 	  </table>
@@ -530,7 +561,7 @@ $showCost=1;
 	          <?php displayHeader("Budget\nProjet");?>
 	        </td>
           <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("AE Budgété");?>
+            <?php displayHeader("AE Budgétées / Planifiées");?>
           </td>
           <td style="text-align: center;width:20%" class="reportTableLineHeader" >
             <?php displayHeader("AE Engagé");?>
@@ -560,11 +591,11 @@ $showCost=1;
           </td>
          </tr>
          <tr style="height:7mm">
-          <td style="width:15%;">
+          <td style="width:15%;border-right:#A0A0A0;">
             
           </td>
-          <td style="text-align: center;width:20%;border-right:#A0A0A0;" >
-            &nbsp;
+          <td style="text-align: center;width:20%;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($activitiesCost, true);?>
           </td>
           <td style="text-align: center;width:20%;<?php echo $border;?>" >
             <?php displayProgress($AEengages,$AEbudgetes,27);?>
