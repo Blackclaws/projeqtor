@@ -2,6 +2,7 @@
 /** ===========================================================================
  * Static method defining all persistance methods
  */
+require_once('../model/_securityCheck.php');
 class Sql {
 
   private static $connexion = NULL;

@@ -3,6 +3,7 @@
  * Static class to retrieves data to build a list for reference needs
  * (to be able to build a select html list)  
  */
+require_once('../model/_securityCheck.php');
 class SqlList {
 
   static private $list=array();
