@@ -5,6 +5,7 @@
  * Give public visibility to elementary methods (save, delete, copy, ...)
  * and constructor.
  */
+require_once('../model/_securityCheck.php');
 abstract class SqlElement {
 	// List of fields that will be exposed in general user interface
 	public $id; // every SqlElement have an id !!!
