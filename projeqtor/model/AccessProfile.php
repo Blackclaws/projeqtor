@@ -2,6 +2,7 @@
 /* ============================================================================
  * Profile defines right to the application or to a project.
  */ 
+require_once('_securityCheck.php');
 class AccessProfile extends SqlElement {
 
   // extends SqlElement, so has $id

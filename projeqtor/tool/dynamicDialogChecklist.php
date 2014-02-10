@@ -11,12 +11,13 @@ $objectId=$_REQUEST['objectId'];
 
 $checklistDefinition=null;
 $obj=new $objectClass($objectId);
+$type='id'.$objectClass.'Type';
 $checklist=SqlElement::getSingleSqlElementFromCriteria('Checklist', array('refType'=>$objectClass, 'refId'=>$objectId));
 if ($checklist and $checklist->id) {
 	$checklistDefinition=new CheckListDefinition($checklist->idChecklistDefinition);
 	if ($checklistDefinition->id and 
       ( ( $checklistDefinition->nameChecklistable!=$objectClass) 
-      or( $checklistDefinition->idType and $checklistDefinition->idType!=$obj->type)
+      or( $checklistDefinition->idType and $checklistDefinition->idType!=$obj->$type)
       ) ) {
 		$checklist->delete();
 		unset($checklist);
@@ -27,7 +28,6 @@ if (!$checklist or !$checklist->id) {
 }
 
 if (!$checklistDefinition or ! $checklistDefinition->id) {
-	$type='id'.$objectClass.'Type';
 	if (property_exists($obj,$type)) {
 		$crit=array('nameChecklistable'=>$objectClass, 'idType'=>$obj->$type);
   	$checklistDefinition=SqlElement::getSingleSqlElementFromCriteria('ChecklistDefinition', $crit);

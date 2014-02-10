@@ -3,6 +3,7 @@
  * Attachement is an object that can be included in all objects, 
  * to trace file uploads and link it to objects.
  */ 
+require_once('_securityCheck.php'); 
 class Attachement extends SqlElement {
 
   public $id;

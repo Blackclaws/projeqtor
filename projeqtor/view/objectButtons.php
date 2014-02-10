@@ -14,6 +14,12 @@
   	$id=$_REQUEST['objectId'];
   }	
   $obj=new $class($id);
+  if (isset($_REQUEST['noselect'])) {
+  	$noselect=true;
+  }
+  if (! isset($noselect)) {
+  	$noselect=false;
+  }
 ?>
 <table>
   <tr>
@@ -155,8 +161,7 @@
           startMultipleUpdateMode('<?php echo get_class($obj);?>');  
         </script>
     </button>
-    </span>
-    <?php 
+    </span><?php 
       $crit="nameChecklistable='".get_class($obj)."'";
       $type='id'.get_class($obj).'Type';
       if (property_exists($obj,$type) ) {
@@ -171,15 +176,28 @@
   		$user=$_SESSION['user'];
   		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
   		$list=new ListYesNo($habil->rightAccess);
-      if (count($cdList)>0 and $obj->id and $list->code=='YES') {?>
-    <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
-       title="<?php echo i18n('Checklist');?>"
-       iconClass="iconChecklistDefinition16" >
+  		if ($list->code!='YES') { 
+  		  $buttonCheckListVisible="never";
+  		} else if (count($cdList)>0 and $obj->id) {
+        $buttonCheckListVisible="visible";
+      } else {
+        $buttonCheckListVisible="hidden";
+      }
+      //$displayButton=( $buttonCheckListVisible=="visible")?'void':'none';?>
+    <span id="checkListButtonDiv" style="width:40px;">
+      <?php if ($buttonCheckListVisible=='visible') {?>
+      <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
+        title="<?php echo i18n('Checklist');?>"
+        iconClass="iconChecklistDefinition16" >
         <script type="dojo/connect" event="onClick" args="evt">
           showChecklist('<?php echo get_class($obj);?>',<?php echo $obj->id;?>);  
         </script>
-    </button>
-    <?php }?>
+      </button>
+      <?php } else if ($buttonCheckListVisible != 'never') { 
+      	echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+      }?>
+      <input type="hidden" id="buttonCheckListVisible" value="<?php echo $buttonCheckListVisible;?>" />
+    </span>
     <?php
         }
       }

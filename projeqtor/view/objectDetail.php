@@ -76,6 +76,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			$detailWidth = round(($_SESSION['screenWidth'] * 0.8) - 15) ; // 80% of screen - split barr - padding (x2)
 		}
 	}
+
 	//echo "screenWidth=" . $_SESSION['screenWidth'] . "<br/>detailWidth=" . $detailWidth . "<br/>";
 	// Define internalTable values, to present data as a table
 	$internalTable=0;
