@@ -2942,3 +2942,22 @@ if ( ! $noselect and isset($obj->_ChecklistDefinitionLine)) { ?> <br />
 } ?> <?php if ( ! $refresh and  ! $print) { ?></div>
 <?php
 }?></div>
+<?php if ($print) {
+	$crit="nameChecklistable='".get_class($obj)."'";
+	$type='id'.get_class($obj).'Type';
+	if (property_exists($obj,$type) ) {
+		$crit.=' and (idType is null ';
+		if ( $obj->$type) {
+			$crit.=' or idType='.$obj->$type;
+		}
+		$crit.=')';
+	}
+	$cd=new ChecklistDefinition();
+	$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
+	$user=$_SESSION['user'];
+	$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
+	$list=new ListYesNo($habil->rightAccess);
+	if ($list->code=='YES' and count($cdList)>0 and $obj->id) {
+		include_once "../tool/dynamicDialogChecklist.php";
+	}
+}?>
