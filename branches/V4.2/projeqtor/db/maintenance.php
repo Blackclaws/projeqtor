@@ -1,4 +1,5 @@
 <?php
+require_once('../model/_securityCheck.php');
 $maintenance=true;
 Sql::$maintenanceMode=true;
 // Version History : starts at 0.3.0 with clean database (before scripts are empty)

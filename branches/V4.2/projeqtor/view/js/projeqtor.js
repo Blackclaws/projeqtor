@@ -872,8 +872,7 @@ function finalizeMessageDisplay(destination, validationType) {
       if (dojo.byId(destination)=="planResultDiv" || dojo.byId("GanttChartDIV") ) {
         noHideWait=true;
         refreshJsonPlanning();
-        // loadContent("planningList.php", "listDiv", 'listForm');
-        
+        // loadContent("planningList.php", "listDiv", 'listForm');    
       }
       // last operations depending on the executed operatoin (insert, delete,
     // ...)
@@ -955,6 +954,21 @@ function finalizeMessageDisplay(destination, validationType) {
       } else {
         if ( !noHideWait ) {
           hideWait();
+        }
+      }
+      // Manage checkList button
+      if (dojo.byId('buttonCheckListVisible') && dojo.byId('buttonCheckListVisibleObject')) {
+        var visible=dojo.byId('buttonCheckListVisible').value;
+        var visibleObj=dojo.byId('buttonCheckListVisibleObject').value;
+        //loadContent('objectButtons.php', 'buttonDivContainer','listForm');
+        if ( visible!='never' && visible!=visibleObj) {
+          loadContent('objectButtons.php', 'buttonDivContainer','listForm');
+          /*if (visibleObj=='visible') {
+            dojo.byId("checkListButtonDiv").style.display="void";
+          } else {
+            dojo.byId("checkListButtonDiv").style.display="none";
+          }
+          dojo.byId('buttonCheckListVisible').value=visibleObj;*/
         }
       }
     }
@@ -1054,6 +1068,7 @@ function finaliseButtonDisplay() {
   }
   buttonRightLock();
 }
+
 function finalizeMultipleSave() {
   //refreshGrid();
   var grid = dijit.byId("objectGrid");  
