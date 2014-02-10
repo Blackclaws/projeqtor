@@ -2,6 +2,7 @@
 /* ============================================================================
  * User is a resource that can connect to the application.
  */
+require_once('_securityCheck.php');
 class User extends SqlElement {
 
   // extends SqlElement, so has $id

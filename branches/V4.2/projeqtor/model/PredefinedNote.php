@@ -2,6 +2,7 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
+require_once('_securityCheck.php');
 class PredefinedNote extends SqlElement {
 
   public $_col_1_2_Description;

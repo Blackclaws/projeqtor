@@ -2,6 +2,7 @@
 /* ============================================================================
  * List of orginable items
  */ 
+require_once('_securityCheck.php');
 class Originable extends SqlElement {
 
   // extends SqlElement, so has $id

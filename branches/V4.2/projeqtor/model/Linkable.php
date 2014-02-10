@@ -2,6 +2,7 @@
 /* ============================================================================
  * Habilitation defines right to the application for a menu and a profile.
  */ 
+require_once('_securityCheck.php');
 class Linkable extends SqlElement {
 
   // extends SqlElement, so has $id

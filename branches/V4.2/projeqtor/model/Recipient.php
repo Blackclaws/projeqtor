@@ -2,6 +2,7 @@
 /* ============================================================================
  * defines recipient for a bill
  */ 
+require_once('_securityCheck.php');
 class Recipient extends SqlElement {
 
   // extends SqlElement, so has $id

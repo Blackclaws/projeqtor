@@ -2,6 +2,7 @@
 /* ============================================================================
  * Menu defines list of items to present to users.
  */ 
+require_once('_securityCheck.php');
 class WorkflowStatus extends SqlElement {
 
   // extends SqlElement, so has $id

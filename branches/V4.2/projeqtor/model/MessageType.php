@@ -2,6 +2,7 @@
 /* ============================================================================
  * MessageType defines the type of a risk.
  */ 
+require_once('_securityCheck.php');
 class MessageType extends SqlElement {
 
   // extends SqlElement, so has $id

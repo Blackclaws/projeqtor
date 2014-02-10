@@ -2,6 +2,7 @@
 /* ============================================================================
  * Note is an object that can be included in all objects, as comments.
  */ 
+require_once('_securityCheck.php');
 class Note extends SqlElement {
 
   public $id;

@@ -2,6 +2,7 @@
 /* ============================================================================
  * defines a term for a payment
  */ 
+require_once('_securityCheck.php');
 class Term extends SqlElement {
 
   // extends SqlElement, so has $id

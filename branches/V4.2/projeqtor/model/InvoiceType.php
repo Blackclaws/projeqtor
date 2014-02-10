@@ -2,6 +2,7 @@
 /* ============================================================================
  * ActionType defines the type of an issue.
  */ 
+require_once('_securityCheck.php');
 class InvoiceType extends ShortType {
 
   

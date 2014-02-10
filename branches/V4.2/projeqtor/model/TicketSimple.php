@@ -2,6 +2,7 @@
 /** ============================================================================
  * Light view of ticket, for simple definition.
  */ 
+require_once('_securityCheck.php');
 class TicketSimple extends Ticket {
 
 	public $_noDisplayHistory=true;

@@ -2,6 +2,7 @@
 /* ============================================================================
  * Stauts defines list of Priorities an activity or action can get in (lifecylce).
  */ 
+require_once('_securityCheck.php');
 class Efficiency extends SqlElement {
 
   // extends SqlElement, so has $id

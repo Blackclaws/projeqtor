@@ -3,6 +3,7 @@
  * Project is the main object of the project managmement.
  * Almost all other objects are linked to a given project.
  */ 
+require_once('_securityCheck.php');
 class TargetVersion extends Version {
 
 	public $_constructForName;

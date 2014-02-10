@@ -1,5 +1,6 @@
 <?php
  
+require_once('_securityCheck.php');
 class Mutex
 {
     var $lockname;

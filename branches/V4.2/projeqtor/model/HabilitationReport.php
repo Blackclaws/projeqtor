@@ -2,6 +2,7 @@
 /* ============================================================================
  * HabilitationReport defines right to ech report for a profile.
  */ 
+require_once('_securityCheck.php');
 class HabilitationReport extends SqlElement {
 
   // extends SqlElement, so has $id

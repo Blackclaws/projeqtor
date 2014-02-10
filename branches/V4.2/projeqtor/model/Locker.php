@@ -2,6 +2,7 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
+require_once('_securityCheck.php');
 class Locker extends User {
 
   // Define the layout that will be used for lists

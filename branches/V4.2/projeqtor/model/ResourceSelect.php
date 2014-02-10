@@ -2,6 +2,7 @@
 /* ============================================================================
  * ActionType defines the type of an issue.
  */ 
+require_once('_securityCheck.php');
 class ResourceSelect extends Resource {
 
   // Define the layout that will be used for lists

@@ -3,6 +3,7 @@
  * Parameter is a global kind of object for parametring.
  * It may be on user level, on project level or on global level.
  */ 
+require_once('_securityCheck.php');
 class Parameter extends SqlElement {
 
   // extends SqlElement, so has $id

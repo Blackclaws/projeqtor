@@ -2,6 +2,7 @@
 /* ============================================================================
  * ListYesNo defines a short List .
  */ 
+require_once('_securityCheck.php');
 class ListYesNo extends SqlElement {
 
   // Define the layout that will be used for lists

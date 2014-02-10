@@ -1,7 +1,8 @@
 <?php 
 /* ============================================================================
  * List of orginable items
- */ 
+ */  
+require_once('_securityCheck.php'); 
 class Checklistable extends SqlElement {
 
   // extends SqlElement, so has $id
