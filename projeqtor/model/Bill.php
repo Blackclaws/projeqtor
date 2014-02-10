@@ -1,7 +1,8 @@
 <?php 
 /** ============================================================================
  * creation of the description of the content for a bill.
- */ 
+ */  
+require_once('_securityCheck.php'); 
 class Bill extends SqlElement {
 
   // List of fields that will be exposed in general user interface

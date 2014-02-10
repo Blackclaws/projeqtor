@@ -5,6 +5,7 @@
  * @author Barbushin Sergey http://linkedin.com/in/barbushin
  *
  */
+require_once('_securityCheck.php');
 class ImapMailbox {
 
         protected $imapPath;
@@ -385,6 +386,7 @@ class ImapMailbox {
         }
 }
 
+require_once('_securityCheck.php');
 class IncomingMail {
 
         public $id;
@@ -433,6 +435,7 @@ class IncomingMail {
         }
 }
 
+require_once('_securityCheck.php');
 class IncomingMailAttachment {
 
         public $id;
@@ -440,6 +443,7 @@ class IncomingMailAttachment {
         public $filePath;
 }
 
+require_once('_securityCheck.php');
 class ImapMailboxException extends Exception {
 
 }

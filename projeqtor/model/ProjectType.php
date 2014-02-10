@@ -2,6 +2,7 @@
 /* ============================================================================
  * DecisionType defines the type of a decision.
  */ 
+require_once('_securityCheck.php');
 class ProjectType extends SqlElement {
 
   // Define the layout that will be used for lists

@@ -2,6 +2,7 @@
 /* ============================================================================
  * QuestionType defines the type of a Question.
  */ 
+require_once('_securityCheck.php');
 class TestSessionType extends Type {
 
   // Define the layout that will be used for lists

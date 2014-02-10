@@ -1,7 +1,8 @@
 <?php 
 /* ============================================================================
  * RiskType defines the type of a risk.
- */ 
+ */  
+require_once('_securityCheck.php'); 
 class BillType extends Type {
 
   // Define the layout that will be used for lists

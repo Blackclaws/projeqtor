@@ -2,6 +2,7 @@
 /* ============================================================================
  * HabilitationOther defines specific right access (for impoutation, work, budget)
  */ 
+require_once('_securityCheck.php');
 class HabilitationOther extends SqlElement {
 
   // extends SqlElement, so has $id

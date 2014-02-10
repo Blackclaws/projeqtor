@@ -2,6 +2,7 @@
 /* ============================================================================
  * .
  */ 
+require_once('_securityCheck.php');
 class DocumentVersionRef extends DocumentVersion {
 
   // Define the layout that will be used for lists

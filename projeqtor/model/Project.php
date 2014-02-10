@@ -4,6 +4,7 @@
  * Almost all other objects are linked to a given project.
  */ 
 require_once('_securityCheck.php');
+require_once('_securityCheck.php');
 class Project extends SqlElement {
 
   // List of fields that will be exposed in general user interface

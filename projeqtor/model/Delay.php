@@ -2,6 +2,7 @@
 /* ============================================================================
  * RiskType defines the type of a risk.
  */ 
+require_once('_securityCheck.php');
 class Delay extends SqlElement {
 
   // extends SqlElement, so has $id

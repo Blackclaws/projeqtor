@@ -4,6 +4,7 @@
  * Client is the owner of a project.
  */
 
+require_once('_securityCheck.php');
 class WorkElement extends SqlElement {
 
   // extends SqlElement, so has $id

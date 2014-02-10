@@ -2,6 +2,7 @@
 /* ============================================================================
  * Assignment defines link of resources to an Activity (or else)
  */ 
+require_once('_securityCheck.php');
 class ExpenseDetail extends SqlElement {
 
   // extends SqlElement, so has $id

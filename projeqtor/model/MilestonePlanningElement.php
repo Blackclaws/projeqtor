@@ -2,6 +2,7 @@
 /* ============================================================================
  * Planning element is an object included in all objects that can be planned.
  */ 
+require_once('_securityCheck.php');
 class MilestonePlanningElement extends PlanningElement {
 
     public $id;

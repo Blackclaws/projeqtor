@@ -2,6 +2,7 @@
 /* ============================================================================
  * Stauts defines list stauts an activity or action can get in (lifecylce).
  */ 
+require_once('_securityCheck.php');
 class Likelihood extends SqlElement {
 
   // extends SqlElement, so has $id

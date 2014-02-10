@@ -2,6 +2,7 @@
 /* ============================================================================
  * History reflects all changes to any object.
  */ 
+require_once('_securityCheck.php');
 class History extends SqlElement {
 
   // extends SqlElement, so has $id

@@ -2,6 +2,7 @@
 /* ============================================================================
  * MenuProject defines list of project depedant items to present to users.
  */ 
+require_once('_securityCheck.php');
 class MenuProject extends Menu {
   
   private static $_databaseTableName = 'menu';

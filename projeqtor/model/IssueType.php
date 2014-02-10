@@ -2,6 +2,7 @@
 /* ============================================================================
  * IssueType defines the type of an issue.
  */ 
+require_once('_securityCheck.php');
 class IssueType extends Type {
 
   // Define the layout that will be used for lists

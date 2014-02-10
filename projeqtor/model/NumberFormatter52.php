@@ -2,6 +2,7 @@
 /* ============================================================================
  * Class to replace 5.3 NumberFormatter class in 5.2 version.
  */ 
+require_once('_securityCheck.php');
 class NumberFormatter52  {
 
    public $locale;

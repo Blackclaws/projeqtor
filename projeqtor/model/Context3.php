@@ -2,6 +2,7 @@
 /* ============================================================================
  * Client is the owner of a project.
  */ 
+require_once('_securityCheck.php');
 class Context3 extends Context {
 
   // extends SqlElement, so has $id

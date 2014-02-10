@@ -2,6 +2,7 @@
 /** ============================================================================
  * Action is establised during meeting, to define an action to be followed.
  */ 
+require_once('_securityCheck.php');
 class Risk extends SqlElement {
 
   // List of fields that will be exposed in general user interface
