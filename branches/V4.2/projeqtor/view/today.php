@@ -333,12 +333,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   	$user=$_SESSION['user'];
   	$ass=new Assignment();
     $act=new Activity();
+    $meet=new Meeting();
   	$where="1=0";
   	$whereTicket=$where;
     $whereActivity=" (exists (select 'x' from " . $ass->getDatabaseTableName() . " x " .
       "where x.refType='Activity' and x.refId=" . $act->getDatabaseTableName() . ".id and x.idResource='" . Sql::fmtId($user->id) . "')" .
       ") and idle=0 and done=0";
-    $whereMeeting=str_ireplace('Activity', 'Meeting', $whereActivity);
+    $whereMeeting=str_replace(array('Activity',$act->getDatabaseTableName()), array('Meeting',$meet->getDatabaseTableName()), $whereActivity);
     showActivitiesList($where, $whereActivity, $whereTicket, $whereMeeting, 'Today_WorkDiv', 'todayAssignedTasks');
   }
   
@@ -414,12 +415,13 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     $issue= new Issue();
     $listIssue=$issue->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listIssue);   
-    $session= new TestSession();
-    $listSession=$session->getSqlElementsFromCriteria(null, null, str_ireplace('Meeting', 'TestSession', $whereMeeting), $order, null, true,$cptMax+1);
-    $list=array_merge($list, $listSession);   
     $meeting= new Meeting();
     $listMeeting=$meeting->getSqlElementsFromCriteria(null, null, $whereMeeting, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listMeeting);
+    $session= new TestSession();
+    $listSession=$session->getSqlElementsFromCriteria(null, null, 
+    		str_replace(array('Meeting',$meeting->getDatabaseTableName()), array('TestSession', $session->getDatabaseTableName()), $whereMeeting), $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listSession);   
     if (! $print or !array_key_exists($divName, $collapsedList)) {
     if (! $print) {
     echo '<div id="' . $divName . '" dojoType="dijit.TitlePane"';
