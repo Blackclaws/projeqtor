@@ -10,6 +10,7 @@ class Product extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $designation;
   public $idClient;
   public $idContact;
   public $idProduct;
@@ -24,9 +25,10 @@ class Product extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
-    <th field="name" width="30%" >${productName}</th>
-    <th field="nameProduct" width="30%" >${isSubProductOf}</th>
-    <th field="nameClient" width="20%" >${clientName}</th>
+    <th field="name" width="25%" >${productName}</th>
+  	<th field="designation" width="15%" >${designation}</th>
+    <th field="nameProduct" width="25%" >${isSubProductOf}</th>
+    <th field="nameClient" width="15%" >${clientName}</th>
     <th field="idle" width="10%" formatter="booleanFormatter" >${idle}</th>
     ';
 
