@@ -120,8 +120,10 @@
 <<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;" id="bodyPrint" class="white" onload="top.hideWait();";>
   <?php 
   }
-  $includeFile=$_REQUEST['page'];
-  if (! substr($_REQUEST['page'],0,3)=='../') {
+  $page=$_REQUEST['page'];
+  securityCheckPage($page);
+  $includeFile=$page;
+  if (! substr($page,0,3)=='../') {
     $includeFile.='../view/';
   }
   if (strpos($includeFile,'?')>0) {

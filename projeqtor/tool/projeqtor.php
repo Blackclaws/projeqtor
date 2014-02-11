@@ -376,7 +376,7 @@ function disableCatchErrors() {
 
 function traceHack($msg="Unidentified source code") {
   errorLog ("HACK ================================================================");
-  errorLog ("Try to hack database detected");
+  errorLog ("Try to hack detected");
   errorLog (" Source Code = ".$msg);
   errorLog (" QUERY_STRING = ".$_SERVER['QUERY_STRING']);
   errorLog (" REMOTE_ADDR = ".$_SERVER['REMOTE_ADDR']);
@@ -385,7 +385,21 @@ function traceHack($msg="Unidentified source code") {
   include "../tool/hackMessage.php";
   //exit;
 }
-      
+
+function securityCheckPage($page) {
+	if (substr($page,0,6)=='../../' or substr($page,1,1)==':') {
+		traceHack("securityCheckPage($page)");
+		exit;
+	} else if (substr($page, -4)!='.php') {
+		$pos=strpos($page, '?');
+		if ($pos==0 or substr($page, $pos-4,4)!='.php') {
+			traceHack("securityCheckPage($page)");
+			exit;
+		}
+	}
+	
+}
+
 /** ============================================================================
  * Format error message, display it and exit script
  * NB : error messages are not using i18n (because it may be the origin of the error)

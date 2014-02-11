@@ -2,7 +2,7 @@
 /** ============================================================================
  * abstract class to define a view as a direct Sql resource
  */ 
-require_once('../model/_securityCheck.php');
+if (file_exists('../_securityCheck.php')) include_once('../_securityCheck.php');
 abstract class SqlDirectElement {
 
   public $request;
