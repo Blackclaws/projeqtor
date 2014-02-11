@@ -19,6 +19,7 @@
        }
      }
    }
+   if (! is_numeric($page)) { exit; }
    $tag='';
    if (array_key_exists('tag', $_REQUEST)) {
      $tag=$_REQUEST['tag'];
