@@ -328,3 +328,5 @@ INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicator
 ('11', 'Quotation', '5', '0');
 INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
 ('11', 'Quotation', '6', '0');
+
+ALTER TABLE `${prefix}product` ADD COLUMN `designation` varchar(100) null DEFAULT NULL;
