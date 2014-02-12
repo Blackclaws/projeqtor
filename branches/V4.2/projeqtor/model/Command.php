@@ -104,6 +104,10 @@ class Command extends SqlElement {
     if ($this->id) {
     	self::$_fieldsAttributes["creationDate"]='readonly';
     }
+    /*$status=new Status($this->idStatus);
+    if ($status->isCopyStatus) {
+    	self::$_fieldsAttributes["externalReference"]="";
+    }*/
   }
 
    /** ==========================================================================
@@ -160,7 +164,12 @@ class Command extends SqlElement {
    */
   public function control(){
     $result="";
-   		
+
+    $status=new Status($this->idStatus);
+    if ($status->isCopyStatus) {
+      self::$_fieldsAttributes["externalReference"]="";
+    }
+    
    	$defaultControl=parent::control();
    	
    	if ($defaultControl!='OK') {
@@ -229,14 +238,14 @@ class Command extends SqlElement {
 	} else if ($this->addAmount==$oldAddAmount) {
 		$this->addAmount=round($this->addPricePerDayAmount*$this->addWork, 2);
 	}
-	
+	*/
 	$this->validatedWork=$this->initialWork+$this->addWork;
 	$this->validatedAmount=$this->initialAmount+$this->addAmount;
 	if ($this->validatedWork!=0) {
 		$this->validatedPricePerDayAmount=round($this->validatedAmount/$this->validatedWork, 2);
 	} else {
 		$this->validatedPricePerDayAmount=0;
-	}*/
+	}
 	
 	//$this->externalReference=strtoupper(trim($this->externalReference));
     $this->name=trim($this->name);
