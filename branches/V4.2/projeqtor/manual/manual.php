@@ -5,9 +5,11 @@
    //include_once '../tool/projeqtor.php'; 
    header ('Content-Type: text/html; charset=UTF-8');
    session_start();
+   echo "-1";
    $includeManual=true;
    include_once 'reference.php'; 
    $page=0;
+   echo "-2";
    if (array_key_exists('page', $_REQUEST)) {
      $page=$_REQUEST['page'];
    } else if (array_key_exists('section', $_REQUEST)) {
@@ -19,7 +21,9 @@
        }
      }
    }
-   if (! is_numeric($page)) { exit; }
+   echo "-3";
+   if ($page and ! is_numeric($page)) { echo "xxx";exit; }
+   echo "-4";
    $tag='';
    if (array_key_exists('tag', $_REQUEST)) {
      $tag=$_REQUEST['tag'];
@@ -44,13 +48,14 @@
      }
    }
    $defaultTheme="ProjeQtOrLight";
+   echo "-5";
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html class="<?php echo getTheme();?>">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <title>Project'Or RIA - Manual</title>
+  <title>ProjeQtOr - Manual</title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
   <?php if (file_exists("../view/css/projeqtor.css")) {?>
@@ -79,6 +84,7 @@
 </head>
 
 <body class="<?php echo getTheme();?>" style="background-image: url();">
+<?php echo "-6";?>
 <table  valign="top" align="center" width="100%" height="100%" ><tr><td text-align="center" align="center">  
   <table valign="top" align="center" height="100%">
     <tr>

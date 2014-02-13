@@ -258,6 +258,8 @@ CREATE TABLE `${prefix}quotation` (
   `idUser` int(12) unsigned DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
   `idResource` int(12) unsigned DEFAULT NULL,
+  `idClient` int(12) unsigned DEFAULT NULL,
+  `idContact` int(12) unsigned DEFAULT NULL,
   `additionalInfo` varchar(4000) DEFAULT NULL,
   `initialEndDate` date DEFAULT NULL,
   `initialWork` decimal(12,2) DEFAULT '0.00',
@@ -272,6 +274,8 @@ CREATE TABLE `${prefix}quotation` (
   `handled` int(1) unsigned DEFAULT '0',
   `handledDate` date DEFAULT NULL,
   `reference` varchar(100) DEFAULT NULL,
+  `sendDate` date DEFAULT NULL,
+  `validityEndDate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -280,11 +284,17 @@ CREATE INDEX quotationUser ON `${prefix}quotation` (idUser);
 CREATE INDEX quotationResource ON `${prefix}quotation` (idResource);
 CREATE INDEX quotationStatus ON `${prefix}quotation` (idStatus);
 CREATE INDEX quotationType ON `${prefix}quotation` (idQuotationType);
+CREATE INDEX quotationClient ON `${prefix}quotation` (idClient);
+CREATE INDEX quotationContact ON `${prefix}quotation` (idContact);
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
 ('Quotation', 'Fixe Price', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
 ('Quotation', 'Per day', '20', '0', '1', '0', '0', '0', '0', '1', '1', '');
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
+('Quotation', 'Per month', '30', '0', '1', '0', '0', '0', '0', '1', '1', '');
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
+('Quotation', 'Per year', '40', '0', '1', '0', '0', '0', '0', '1', '1', '');
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES 
 (131,'menuQuotation', '74', 'object', '205', 'Project', 0);

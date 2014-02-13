@@ -15,12 +15,15 @@ class Quotation extends SqlElement {
   public $creationDate;
   public $idUser;
   public $Origin;
+  public $idClient;
+  public $idContact;
   public $description;
-  public $initialEndDate;
   public $additionalInfo;
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;  
+  public $sendDate;
+  public $offerValidityEndDate;
   public $handled;
   public $handledDate;
   public $done;
@@ -32,6 +35,8 @@ class Quotation extends SqlElement {
   public $initialWork;
   public $initialPricePerDayAmount;
   public $initialAmount; 
+  public $initialEndDate;
+  
   public $comment;
   public $_col_1_1_Link;
   public $_Link=array();
@@ -42,13 +47,13 @@ class Quotation extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameQuotationType" width="7%" >${idCommandType}</th>
+    <th field="nameClient" width="7%" >${idClient}</th>
+    <th field="nameQuotationType" width="7%" >${idQuotationType}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" width="8%" >${responsible}</th>
-    <th field="initialEndDate" width="8%" formatter="dateFormatter" >${validatedEndDate}</th>
+    <th field="validityEndDate" width="8%" formatter="dateFormatter" >${offerValidityEndDate}</th>
   	<th field="initialWork" formatter="workFormatter" width="7%" >${validatedWork}</th>
-  	<th field="initialPricePerDayAmount" formatter="costFormatter" width="7%" >${validatedPricePerDayAmount}</th>
   	<th field="initialAmount" formatter="costFormatter" width="7%" >${validatedAmount}</th>
   	<th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
