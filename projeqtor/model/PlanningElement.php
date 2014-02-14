@@ -409,6 +409,7 @@ class PlanningElement extends SqlElement {
   public function wbsSave() {
   	//
   	$this->_noHistory=true;
+  	$this->wbsSortable=formatSortableWbs($this->wbs);
   	$this->saveForced();
   	$crit=" topId=" . Sql::fmtId($this->id);
   	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');

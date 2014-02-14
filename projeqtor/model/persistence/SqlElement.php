@@ -2091,7 +2091,7 @@ abstract class SqlElement {
 			$colScript .= '</script>';
 		}
 		if ( ! (substr($colName,0,2)=='id' and strlen($colName)>2 ) ) { // OTHER => onKeyPress
-			$colScript .= '<script type="dojo/method" event="onKeyPress" args="event">';
+			$colScript .= '<script type="dojo/method" event="onKeyDown" args="event">'; // V4.2 Changed onKeyPress to onKeyDown because was not triggered
 			$colScript .= '  if (isUpdatableKey(event.keyCode)) {';
 			$colScript .= '    formChanged();';
 			$colScript .= '  }';

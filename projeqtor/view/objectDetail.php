@@ -1041,8 +1041,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo htmlEncode($val);
 				//echo $colScript; // => this leads to the display of script in textarea
 				echo '</textarea>';
-			} else if ($col=='icon') {
-				
+			} else if ($col=='icon') {				
         echo '<div dojoType="dijit.form.Select" class="input" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
@@ -1079,6 +1078,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				}
 				echo ' >';
 				echo $colScript;
+				debugLog($col . " => " . $colScript);
 				echo '</div>';
 				if ($obj->isFieldTranslatable($col)) {
 					echo '<div dojoType="dijit.form.TextBox" type="text"  ';
