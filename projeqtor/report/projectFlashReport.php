@@ -154,7 +154,11 @@ if (! count($arrayMilestone)) {
 	$arrayMilestone[]=array('name'=>"Aucun jalon n'est défini", 
      'initial'=>'', 
      'validated'=>'',
-     'done'=>false);
+		 'real'=>'',
+		 'display'=>'',
+     'done'=>false,
+	   'color'=>'#FFFFFF'
+	   );
 }
 
 /*$arrayListValues=array("Severity", "Likelihood", "Criticality");
@@ -280,7 +284,7 @@ $showCost=1;
 ?>
 <div style="font-family: arial;font-size:<?php echo (($outMode=='pdf')?'3':'3');?>mm; width:<?php displayWidth(100);?>; height:<?php displayheight(100);?>;background-color: white; <?php echo $borderMain?>" >
 
-  <div style="position:relative;width:<?php displayWidth(100);?>;height:25mm;<?php echo $borderMain?>">
+  <div style="position:relative;width:<?php displayWidth(100);?>;height:37mm;<?php echo $borderMain?>">
   <?php if ($showHeader) {
     $titleLeft=0;
   	$titleWidth=18;
@@ -363,7 +367,7 @@ $showCost=1;
     width:<?php displayWidth(49.5);?>;white-space:nowrap;" class="reportTableLineHeader">
     <?php displayHeader("Périmètre & objectifs Projet / Process Métier impactés");?>
     </div>
-    <div style="position:absolute; left:<?php displayWidth(50);?>;top:<?php echo $lineHeight;?>mm;height:18mm;
+    <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:<?php displayWidth(50);?>;top:<?php echo $lineHeight;?>mm;height:30.5mm;
     width:<?php displayWidth(50);?>;<?php echo $border;?>">
       <?php displayField($proj->description);?>
     </div> 
@@ -371,10 +375,10 @@ $showCost=1;
   </div>
   
   
-  <div style="position:relative;top:2mm; width:<?php displayWidth(100);?>;height:40mm;<?php echo $borderMain?>" >
+  <div style="position:relative;top:2mm; width:<?php displayWidth(100);?>;height:28mm;<?php echo $borderMain?>" >
   <?php if ($showDecision) {?>
     <div class="reportTableLineHeader" style="width:<?php displayWidth(48.8);?>; white-space:nowrap;"><?php displayHeader("Décisions attendues");?></div>    
-      <?php displayList($arrayDecision,8,49);?>
+      <?php displayList($arrayDecision,5,49);?>
   <?php }?>  
   <?php if ($showIndicator) {
   	$overallProgress=new OverallProgress($proj->idOverallProgress);
