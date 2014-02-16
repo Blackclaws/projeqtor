@@ -20,6 +20,10 @@
   if (! isset($noselect)) {
   	$noselect=false;
   }
+  $printPage="objectDetail.php";
+  if (file_exists('../report/object/'.$class.'.php')) {
+  	$printPage='../report/object/'.$class.'.php';
+  }
 ?>
 <table>
   <tr>
@@ -62,11 +66,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
 		    dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-<?php   if (file_exists('../report/object/'.$class.'.php')) {
-	        echo 'showPrint("../report/object/'.$class.'.php");';
-        } else {
-		      echo 'showPrint("objectDetail.php");';
-		    }?>
+        showPrint("<?php echo $printPage;?>");
         </script>
       </button>  
 <?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
@@ -77,7 +77,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
         dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-        showPrint("objectDetail.php", null, null, 'pdf');
+        showPrint("<?php echo $printPage;?>", null, null, 'pdf');
         </script>
       </button>   
 <?php } 
