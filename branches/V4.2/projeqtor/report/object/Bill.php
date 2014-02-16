@@ -37,15 +37,19 @@ foreach ($billList as $bill)
 	$first=false;
 	echo '<table style="width: 100%;"><tr><td style="width: 50%;">';
   // LOGO
-  $uri=$_SERVER['REQUEST_URI'];
-  $uri=substr($uri,0,strpos($uri,'/report/'));
-  '<div style="position: relative; top: 0em; left: 1em; width: 20em; height: 5em;">';
-    if (file_exists("../logo.gif")) {
-      $uri.='/view/logo.gif';	
-    } else {
-      $uri.='/view/img/title.gif';
-    }
-  //echo '<img style="height:5em" src="' . $uri . '" />';
+  $uri=$_SERVER['REQUEST_URI'];  
+  /*if (strpos($uri,'/report/')) {
+    $uri=substr($uri,0,strpos($uri,'/report/'));
+  } else {
+  	$uri=substr($uri,0,strpos($uri,'/view/'));
+  }*/
+  echo '<div style="position: relative; top: 0em; left: 1em; width: 20em; height: 5em;">';
+  if (file_exists("../logo.gif")) {
+    $uri='../logo.gif';	
+  } else {
+    $uri='../view/img/title.gif';
+  }
+  echo '<img style="height:50px" src="' . $uri . '" />';
   echo '</div>';
 	// RECIPIENT ADDRESS
 	echo '<div style="position: relative; top: 1em; left: 1em; width: 20em; height: 10em;font-size: 12px">';
