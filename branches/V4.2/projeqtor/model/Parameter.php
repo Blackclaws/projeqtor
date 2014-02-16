@@ -64,7 +64,12 @@ class Parameter extends SqlElement {
     	$colScript .= '  newValue=this.value;';
     	$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue,';
       $colScript .= '     load: function(data,args) { showWait(); noDisconnect=true; quitConfirmed=true;';
-      $colScript .= '           window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
+      $colScript .= '     dojo.byId("directAccessPage").value="parameter.php";';
+      $colScript .= '     dojo.byId("menuActualStatus").value=menuActualStatus;';
+      $colScript .= '     dojo.byId("p1name").value="type";';
+      $colScript .= '     dojo.byId("p1value").value="userParameter";';
+      $colScript .= '     dojo.byId("directAccessForm").submit();';
+      //$colScript .= '     window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
       $colScript .= '     }  });';
     	$colScript .= '</script>';
     } else if ($colName=="defaultProject") {

@@ -12,6 +12,8 @@ class Command extends SqlElement {
   public $idProject;
   public $idCommandType;
   public $name;
+  public $idClient;
+  public $idContact;
   public $externalReference;  
   public $creationDate;
   public $idUser;
@@ -45,7 +47,7 @@ class Command extends SqlElement {
   public $initialAmount;
   public $addAmount;
   public $validatedAmount;
-  
+  public $idActivityType;
   public $comment;
   
   public $_col_1_1_Link;
@@ -391,6 +393,16 @@ class Command extends SqlElement {
       $colScript .= '  updateCommandTotal();';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+    } else if ($colName=="idProject") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  setClientValueFromProject("idClient",this.value);';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    } else if ($colName=="idClient") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  refreshList("idContact", "idClient", this.value, null, null, false);';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
     }    
     return $colScript;
   }

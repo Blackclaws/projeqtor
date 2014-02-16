@@ -23,7 +23,7 @@ class Quotation extends SqlElement {
   public $idStatus;
   public $idResource;  
   public $sendDate;
-  public $offerValidityEndDate;
+  public $validityEndDate;
   public $handled;
   public $handledDate;
   public $done;
@@ -36,7 +36,7 @@ class Quotation extends SqlElement {
   public $initialPricePerDayAmount;
   public $initialAmount; 
   public $initialEndDate;
-  
+  public $idActivityType;
   public $comment;
   public $_col_1_1_Link;
   public $_Link=array();
@@ -75,6 +75,7 @@ class Quotation extends SqlElement {
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
+  		                      'validityEndDate'=>'offerValidityEndDate',
   													'idActivity'=>'linkActivity',
   		                      'initialEndDate'=>'plannedEndDate',
   		                      'initialWork'=>'plannedWork',
@@ -244,7 +245,17 @@ class Quotation extends SqlElement {
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    }    
+    } else if ($colName=="idProject") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  setClientValueFromProject("idClient",this.value);';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    } else if ($colName=="idClient") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  refreshList("idContact", "idClient", this.value, null, null, false);';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }   
     return $colScript;
   }
     

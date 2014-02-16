@@ -3271,6 +3271,20 @@ function setProductValueFromVersion(field,versionId) {
 	    error: function() {   }
 	  });
 }
+function setClientValueFromProject(field,projectId) {
+  dojo.xhrGet({
+	url: "../tool/getClientValueFromProject.php?idProject="+projectId,
+	handleAs: "text",
+	load: function(data,args) { 
+		client=dijit.byId(field);
+		if (client && data) {
+			client.set("value",data);	
+		}
+	},
+    error: function() {   }
+  });
+}
+
 var menuHidden=false;
 var menuActualStatus='visible';
 var menuDivSize=0; 

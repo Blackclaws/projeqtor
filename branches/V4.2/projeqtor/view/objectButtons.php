@@ -62,7 +62,11 @@
         <script type="dojo/connect" event="onClick" args="evt">
 		    dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-		    showPrint("objectDetail.php");
+<?php   if (file_exists('../report/object/'.$class.'.php')) {
+	        echo 'showPrint("../report/object/'.$class.'.php");';
+        } else {
+		      echo 'showPrint("objectDetail.php");';
+		    }?>
         </script>
       </button>  
 <?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
