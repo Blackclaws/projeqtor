@@ -340,3 +340,8 @@ INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicator
 ('11', 'Quotation', '6', '0');
 
 ALTER TABLE `${prefix}product` ADD COLUMN `designation` varchar(100) null DEFAULT NULL;
+
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue)
+VALUES (null, null, 'paramTopIconSize', '16'); 
+
+ALTER TABLE `${prefix}filtercriteria` CHANGE `sqlValue` `sqlValue` VARCHAR(4000);

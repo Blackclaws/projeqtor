@@ -1553,7 +1553,9 @@ function beforequit() {
  	if (checkFormChangeInProgress()) {
       return (i18n("alertQuitOngoingChange"));
     } else {
-      return(i18n('confirmDisconnection'));
+      if (paramConfirmQuit!="NO") {
+        return(i18n('confirmDisconnection'));
+      }
     }
   }
   //return false;

@@ -116,11 +116,30 @@ if ($idFilterAttribute and $idFilterOperator) {
       $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
       $arraySql["value"]="'" . htmlEncode($filterValue) . "'";
     }
-  } else if ($idFilterOperator=="LIKE") {
-    $arrayDisp["operator"]=i18n("contains");
-    $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';
-    $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
-    $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
+  } else if ($idFilterOperator=="LIKE" or $idFilterOperator=="hasSome") {
+  	if ($filterDataType=='refObject' or $idFilterOperator=="hasSome") {
+  		$arraySql["operator"]=' exists ';
+  		if ($idFilterOperator=="hasSome") { 
+  			$filterValue="";
+  			$arrayDisp["value"]="";
+  			$arrayDisp["operator"]=i18n("isNotEmpty");
+  		} else {
+  			$arrayDisp["operator"]=i18n("contains");
+  			$arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
+  		}
+  		$refObj=new $idFilterAttribute();
+  		$refObjTable=$refObj->getDatabaseTableName();
+  		$table=$obj->getDatabaseTableName();
+  		$arraySql["value"]=" ( select 'x' from $refObjTable "
+  		. " where $refObjTable.refType='$filterObjectClass' "
+  		. " and $refObjTable.refId=$table.id "
+  		. " and $refObjTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $filterValue . "%' ) ";
+  	} else {
+      $arrayDisp["operator"]=i18n("contains");
+      $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';
+      $arrayDisp["value"]="'" . htmlEncode($filterValue) . "'";
+      $arraySql["value"]="'%" . htmlEncode($filterValue) . "%'";
+  	}
   } else if ($idFilterOperator=="NOT LIKE") {
     $arrayDisp["operator"]=i18n("notContains");
     $arraySql["operator"]=(Sql::isMysql())?'NOT LIKE':'NOT ILIKE';

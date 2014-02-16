@@ -131,6 +131,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     if (! paramWorkUnit) paramWorkUnit='days';
     var paramHoursPerDay='<?php echo Parameter::getGlobalParameter('dayTime');?>';
     if (! paramHoursPerDay) paramHoursPerDay=8;
+    var paramConfirmQuit="<?php echo Parameter::getUserParameter("paramConfirmQuit")?>";
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
@@ -145,7 +146,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           echo "switchedMode=true;";
           echo "switchListMode='" . $_SESSION['switchedMode'] . "';";
         }
-      }
+      }     
       ?>
       dijit.Tooltip.defaultPosition=["below", "right"];
       addMessage("<?php echo i18n('welcomeMessage');?>");
@@ -170,6 +171,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       	$firstPage="today.php";
       }
       if (array_key_exists("directAccessPage",$_REQUEST)) {
+        securityCheckRequest();
         $firstPage=$_REQUEST['directAccessPage'];
         if (array_key_exists("menuActualStatus",$_REQUEST)) {
           $menuActualStatus=$_REQUEST['menuActualStatus'];
@@ -204,6 +206,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         }
         echo 'gotoElement("' . $class . '","' . $id . '");';
         $firstPage="";
+      } else if (Parameter::getUserParameter('hideMenu')!='NO'){
+        echo 'hideShowMenu();';
       }
       if ($firstPage) {
       ?>
@@ -377,7 +381,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         </div>
       </div> 
     </div>
-    <div id="toolBarDiv" dojoType="dijit.layout.ContentPane" region="top"  >
+    <?php $iconSize=Parameter::getUserParameter('paramTopIconSize');
+    if (! $iconSize) $iconSize=16;
+    $iconSize+=9;?>
+    <div id="toolBarDiv" style="height:<?php echo $iconSize;?>px" dojoType="dijit.layout.ContentPane" region="top"  >
       <?php include "menuBar.php";?>
     </div>
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >      
