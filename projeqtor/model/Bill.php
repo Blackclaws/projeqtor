@@ -15,6 +15,7 @@ class Bill extends SqlElement {
   public $idClient;
   public $idContact;
   public $idRecipient;
+  public $Origin;
   public $_spe_billingType;
   public $_col_2_2_treatment;  
   public $billId;
@@ -28,6 +29,8 @@ class Bill extends SqlElement {
   public $fullAmount;
   public $description;
   public $billingType;
+  public $_col_1_1_Link;
+  public $_Link=array();
   public $_BillLine=array();
   public $_Note=array();
 
@@ -290,6 +293,27 @@ class Bill extends SqlElement {
 		return $result;
 	}  
 
+	/** ==========================================================================
+	 * Return the validation sript for some fields
+	 * @return the validation javascript (for dojo frameword)
+	 */
+	public function getValidationScript($colName) {
+	
+		$colScript = parent::getValidationScript($colName);
+		if ($colName=="idProject") {
+			$colScript .= '<script type="dojo/connect" event="onChange" >';
+			$colScript .= '  setClientValueFromProject("idClient",this.value);';
+			$colScript .= '  formChanged();';
+			$colScript .= '</script>';
+		} else if ($colName=="idClient") {
+			$colScript .= '<script type="dojo/connect" event="onChange" >';
+			$colScript .= '  refreshList("idContact", "idClient", this.value, null, null, false);';
+			$colScript .= '  formChanged();';
+			$colScript .= '</script>';
+		}
+		return $colScript;
+	}
+	
   public function drawSpecificItem($item){
   	global $print,$displayWidth;
   	$labelWidth=175; // To be changed if changes in css file (label and .label)

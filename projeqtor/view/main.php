@@ -189,6 +189,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             break;
           }
         }
+        echo "dojo.byId('directAccessPage').value='';";
+        echo "dojo.byId('menuActualStatus').value='';";
       } else if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST) ) {
         $class=$_REQUEST['objectClass'];
         $id=$_REQUEST['objectId'];
@@ -2383,6 +2385,11 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 </div>
 <div id="xdialogShowImage" dojoType="dojox.image.LightboxDialog" >
 </div>
-
+<form  method="POST" style="display:none" id="directAccessForm" action="../view/main.php">
+  <input pe="hidden" name="directAccessPage" id="directAccessPage" value="" />
+  <input pe="hidden" name="menuActualStatus" id="menuActualStatus" value="" />
+  <input pe="hidden" name="p1name" id="p1name" value="" />
+  <input pe="hidden" name="p1value" id="p1value" value="" />
+</form>
 </body>
 </html>

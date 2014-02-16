@@ -69,10 +69,16 @@
   <?php }?>
   <script type="text/javascript">
     function loadPage(page) {
-      window.location='manual.php?page='+page+'&tag=<?php echo $tag;?>';
+      dojo.byId("page").value=page;
+      dojo.byId("tag").value="<?php echo $tag;?>";
+      dojo.byId("manualForm").submit();
+      //window.location='manual.php?page='+page+'&tag=<?php echo $tag;?>';
     }
     function searchTag(tag) {
-    	window.location='manual.php?tag='+tag+'&page=<?php echo $page;?>';
+    	dojo.byId("page").value="<?php echo $page;?>";
+      dojo.byId("tag").value=tag;
+      dojo.byId("manualForm").submit();
+    	//window.location='manual.php?tag='+tag+'&page=<?php echo $page;?>';
     }
     self.focus();
   </script>
@@ -151,6 +157,10 @@
     </tr>
   </table>
 </td></tr></table>
+<form  method="POST" style="display:none" id="manualForm" action="manual.php">
+  <input pe="hidden" name="page" id="page" value="" />
+  <input pe="hidden" name="tag" id="tag" value="" />
+</form>
 </body>
 </html>
 

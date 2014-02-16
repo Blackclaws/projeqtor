@@ -9,7 +9,7 @@ class Copyable extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $_isNameTranslatable = true;
-  public $sortOrder;
+  //public $sortOrder;
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

@@ -348,7 +348,12 @@ function changeLocale(locale) {
     	  showWait();
           noDisconnect=true;
           quitConfirmed=true;
-          window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter"); 
+          //window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");
+          dojo.byId("directAccessPage").value="parameter.php";
+          dojo.byId("menuActualStatus").value=menuActualStatus;
+          dojo.byId("p1name").value="type";
+          dojo.byId("p1value").value="userParameter";
+          dojo.byId("directAccessForm").submit();
         // };
         // showConfirm (i18n('confirmLocaleChange'), action);
         // showInfo(i18n('infoLocaleChange'));
@@ -994,8 +999,13 @@ function finalizeMessageDisplay(destination, validationType) {
     	showWait();
     	noDisconnect=true;
         quitConfirmed=true;        
-    	window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
+    	//window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
     	forceRefreshMenu="";
+    	dojo.byId("directAccessPage").value="parameter.php";
+        dojo.byId("menuActualStatus").value=menuActualStatus;
+        dojo.byId("p1name").value="type";
+        dojo.byId("p1value").value=forceRefreshMenu;
+        dojo.byId("directAccessForm").submit();   	
     }
   } else if (lastOperationStatus.value=="INVALID") {
     if (formChangeInProgress) {
