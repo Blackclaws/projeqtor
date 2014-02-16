@@ -4,9 +4,11 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/menuBar.php');
-  
+  $iconSize=Parameter::getUserParameter('paramTopIconSize');
+  if (! $iconSize) $iconSize=16;
   function drawMenu($menu) {
-    $menuName=$menu->name;
+  	global $iconSize;
+  	$menuName=$menu->name;
     $idMenu=$menu->id;
     if ($menu->type=='menu') {
     	if ($menu->idMenu==0) {
@@ -15,13 +17,13 @@
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
         echo '<td class="menuBarItem" title="' .i18n($menu->name) . '">';
-        echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
+        echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
         echo '</td><td>&nbsp;</td>';    	
     } else if ($menu->type=='object') { 
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
       	echo '<td class="menuBarItem" title="' .i18n('menu'.$class) . '">';
-      	echo '<img src="../view/css/images/icon' . $class . '16.png" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
+      	echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
       	echo '</td><td>&nbsp;</td>';
       }
     }
@@ -31,6 +33,7 @@
   	//echo '<td class="menuBarSeparator"></td>';
     $obj=new Menu();
     $suspend=false;
+    echo '<td>&nbsp;</td>';
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
     $lastType='';
     foreach ($menuList as $menu) { 
@@ -66,7 +69,7 @@
 	  }*/
   }
 ?>
-  <table width="100%"><tr>  
+  <table width="100%"><tr height="<?php echo $iconSize+9; ?>px">  
     <td width="285px">
       <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:75px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
       <div style="border:0px solid red;" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
@@ -88,7 +91,7 @@
       <button id="menuBarMoveLeft" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('menuBarMoveLeft');?>"
        iconClass="leftBarIcon" 
-       style="position:relative; left: -6px; width: 14px;margin:0">
+       style="position:relative; left: -6px; width: 14px;margin:0;vertical-align:middle">
        <script type="dojo/connect" event="onClick" args="evt">
           moveMenuBar('left');
         </script>
@@ -96,16 +99,16 @@
     </td>
     <td class="menuBarSeparator" ></td>
     <td >
-    <div id="menuBarVisibleDiv" style="width: <?php 
+    <div id="menuBarVisibleDiv" style="height:<?php echo $iconSize+9;?>px;width: <?php 
       if (array_key_exists('screenWidth',$_SESSION)) {
-         $width = $_SESSION['screenWidth'] - 400;
+         $width = $_SESSION['screenWidth'] - 395;
          echo $width . 'px';
       } else {
       	echo '100%';
       }
-    ?>; position: absolute; top: 0px; left: 320px; z-index:0">
-      <div style="width: 100%; height:30px; position: absolute; left: 0px; top:0px; overflow:hidden; z-index:0">
-	    <div name="menubarContainer" id="menubarContainer" style="width: 2000px; position: absolute; left:0px; overflow:hidden;z-index:0">
+    ?>; position: absolute; top: 0px; left: 315px; z-index:0">
+      <div style="width: 100%; height:50px; position: absolute; left: 0px; top:0px; overflow:hidden; z-index:0">
+	    <div name="menubarContainer" id="menubarContainer" style="width: 3000px; position: absolute; left:0px; overflow:hidden;z-index:0">
 	      <table><tr>
 	    <?php drawAllMenus();?>
 	    </tr></table>
@@ -114,21 +117,21 @@
     </div>
     </td> 
     <td width="80px" align="center" class="statusBar" style="position:relative;z-index:30;">
-      <div style="height:22px; position: absolute; top : -2px; margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
+      <div style="height:<?php echo $iconSize+9;?>px; position: absolute; top : -2px; margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
       &nbsp;
       <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('menuBarMoveRight');?>"
        iconClass="rightBarIcon" 
-       style="position:absolute; right: 63px; top:2px; width: 14px;margin:0; z-index:35">
+       style="position:absolute; right: 63px; width: 14px;margin:0; margin-top: 2px;z-index:35; vertical-align:middle">
        <script type="dojo/connect" event="onClick" args="evt">
           moveMenuBar('right');
         </script>
       </button>   
-      <div style="height:22px; position: absolute; top : -2px; right: 48px;margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
+      <div style="vertical-align: middle; height:<?php echo $iconSize+9;?>px; position: absolute; top : -2px; right: 48px;margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 12px; z-index:30"
+       style="position:relative;left: 12px; z-index:30;"
        iconClass="dijitEditorIcon dijitEditorIconUndo" >
         <script type="dojo/connect" event="onClick" args="evt">
           undoItemButton();

@@ -1078,7 +1078,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				}
 				echo ' >';
 				echo $colScript;
-				debugLog($col . " => " . $colScript);
 				echo '</div>';
 				if ($obj->isFieldTranslatable($col)) {
 					echo '<div dojoType="dijit.form.TextBox" type="text"  ';

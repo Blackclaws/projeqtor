@@ -2537,7 +2537,7 @@ function filterSelectOperator(operator) {
 		dojo.style(top.dijit.byId('filterValueCheckbox').domNode, {display:'none'});
 		dojo.style(top.dijit.byId('filterValueDate').domNode, {display:'none'});
 		dojo.style(top.dijit.byId('filterSortValueList').domNode, {display:'none'});
-    } else if (operator=="isEmpty" || operator=="isNotEmpty") {
+    } else if (operator=="isEmpty" || operator=="isNotEmpty" || operator=="hasSome") {
         filterType="null";
         dojo.style(top.dijit.byId('filterValue').domNode, {display:'none'});
         dojo.style(top.dijit.byId('filterValueList').domNode, {display:'none'});
@@ -3406,7 +3406,9 @@ function showList(mode) {
 	if (dojo.byId('listBarShow')) {
 	  dojo.byId('listBarShow').style.display='none';
 	}
-    fullSize=dojo.byId("listDiv").offsetHeight+dojo.byId("detailDiv").offsetHeight-20;
+    correction=0;
+    if (dojo.byId("listDiv").offsetHeight>100) correction=5;
+    fullSize=dojo.byId("listDiv").offsetHeight+dojo.byId("detailDiv").offsetHeight-20+correction;
 	if (0 || ! isHtml5() ) {
 	  dijit.byId("listDiv").resize({h: fullSize});
 	  duration=0;

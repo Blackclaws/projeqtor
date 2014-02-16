@@ -67,7 +67,17 @@ function drawTableFromObjectList($objectList) {
 		$criteria=$criteriaRoot;
 		$criteria['parameterCode']=$code;
 		// fetch the parameter saved in Database
-		$obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $criteria);
+		if ($type=='userParameter') {
+			$obj=new Parameter();
+			$obj->parameterCode=$code;
+			$obj->parameterValue=Parameter::getUserParameter($code);
+		} else if ($type=='globalParameter') {
+			$obj=new Parameter();
+			$obj->parameterCode=$code;
+			$obj->parameterValue=Parameter::getGlobalParameter($code);
+		} else {
+		  $obj=SqlElement::getSingleSqlElementFromCriteria('Parameter', $criteria);
+		}
 		if ($type=='userParameter') { // user parameters may be stored in session
 			if (array_key_exists($code,$_SESSION) ) {
 				$obj->parameterValue=$_SESSION[$code];

@@ -55,6 +55,18 @@ class Parameter extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  changeLocale(this.value);';
       $colScript .= '</script>';
+    } else if ($colName=="paramConfirmQuit") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  paramConfirmQuit=this.value;';
+      $colScript .= '</script>';
+    } else if ($colName=="paramTopIconSize" or $colName=="paramIconSize") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  newValue=this.value;';
+    	$colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue,';
+      $colScript .= '     load: function(data,args) { showWait(); noDisconnect=true; quitConfirmed=true;';
+      $colScript .= '           window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");';
+      $colScript .= '     }  });';
+    	$colScript .= '</script>';
     } else if ($colName=="defaultProject") {
       //$colScript .= 'dojo.xhrPost({url: "../tool/saveDataToSession.php?id=defaultProject&value=" + this.value;});';
       $colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -68,7 +80,7 @@ class Parameter extends SqlElement {
       $colScript .= '    menuHidden=false;';
       $colScript .= '  } else {';
       $colScript .= '    menuHidden=true;';
-      $colScript .= '    menuShowMode=this.value;';
+      $colScript .= '    menuShowMode=this.value; hideShowMenu()';
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
       $colScript .= '  dojo.xhrPost({url: "../tool/saveDataToSession.php?id=' . $colName . '&value=" + newValue});';
@@ -182,14 +194,14 @@ class Parameter extends SqlElement {
           $list[$key]=$val;
         }
         break;
-      case 'displayHistory':
+      case 'displayHistory': case 'printHistory':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
-      case 'printHistory':
-        $list=array('NO'=>i18n('displayNo'),
-                    'YES'=>i18n('displayYes'));
-        break;
+      case 'pdfInNewWindow': case "paramConfirmQuit":
+      	$list=array('YES'=>i18n('displayYes'),
+      	            'NO'=>i18n('displayNo'));
+      	break;
       case 'displayNote':
         $list=array('YES_OPENED'=>i18n('displayYesOpened'),
                     'YES_CLOSED'=>i18n('displayYesClosed'));
@@ -219,10 +231,6 @@ class Parameter extends SqlElement {
       case 'printInNewWindow':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
-        break;
-      case 'pdfInNewWindow':
-        $list=array('YES'=>i18n('displayYes'),
-                    'NO'=>i18n('displayNo'));
         break;
       case 'imputationUnit':
       	$list=array('days'=>i18n('days'),
@@ -270,7 +278,7 @@ class Parameter extends SqlElement {
         $list=array('before'=>i18n('before'), 
                     'after'=>i18n('after'));
         break; 
-      case 'paramIconSize':
+      case 'paramIconSize': case 'paramTopIconSize':
         $list=array('16'=>i18n('iconSizeSmall'), 
                     '22'=>i18n('iconSizeMedium'), 
                     '32'=>i18n('iconSizeBig'));
@@ -311,9 +319,12 @@ class Parameter extends SqlElement {
     $parameterList=array();
     switch ($typeParameter) {
       case ('userParameter'):
-        $parameterList=array('sectionDisplayParameter'=>"section",
+        $parameterList=array(
+                         'sectionDisplayParameter'=>"section",
                            "theme"=>"list", 
                            "lang"=>"list",
+                           'paramIconSize'=>'list',
+                           'paramTopIconSize'=>'list',
                            //'sectionObjectDetail'=>'section', 
                            //"displayAttachement"=>"list",
                            //"displayNote"=>"list",
@@ -321,7 +332,8 @@ class Parameter extends SqlElement {
                            "displayHistory"=>"list",  
                            "hideMenu"=>"list",
                            "switchedMode"=>"list",
-                           'sectionPrintExport'=>'section',
+                           "paramConfirmQuit"=>"list",
+                         'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
                            "pdfInNewWindow"=>"list", 
@@ -396,6 +408,7 @@ class Parameter extends SqlElement {
       	                       'paramDbDisplayName'=>'text',  
       	                       'paramFadeLoadingMode'=>'list',
       	                       'paramIconSize'=>'list',
+      	                       'paramTopIconSize'=>'list',
       	                       'defaultTheme'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
       	                     'sectionFiles'=>'section',
@@ -538,8 +551,12 @@ class Parameter extends SqlElement {
     $val='';
     if (count($lst)==1) {
       $val=$lst[0]->parameterValue;
+    } else if ($user->id) {
+    	$val=self::getGlobalParameter($code);
     }
-    $_SESSION['userParamatersArray'][$code]=$val;
+    if ($user->id) {
+      $_SESSION['userParamatersArray'][$code]=$val;
+    }
     return $val;
   }
   

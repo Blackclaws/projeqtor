@@ -56,6 +56,10 @@
         echo ',{id:"isEmpty", name:"' . i18n('isEmpty') . '"}';
         echo ',{id:"isNotEmpty", name:"' . i18n('isNotEmpty') . '"}';
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
+      } else if ($dataType=='refObject') {
+        echo ' {id:"LIKE", name:"' . i18n("contains") . '"},';
+        echo ' {id:"hasSome", name:"' . i18n("isNotEmpty") . '"}';
+        //echo ',{id:"NOT LIKE", name:"' . i18n("notContains") . '"}';
       } else  {
         echo ' {id:"UNK", name:"?"}';
         echo ',{id:"SORT", name:"' . i18n('sortFilter') .'"}';
@@ -311,6 +315,11 @@ function listFieldsForFilter ($obj,$nbRows, $included=false) {
     	$sub=new $col();
       $nbRows=listFieldsForFilter ($sub,$nbRows,true);
     }
+  }
+  if (isset($obj->_Note)) {
+  	if ($nbRows>0) echo ', ';
+  	echo '{id:"Note", name:"'. i18n('colNote') .'", dataType:"refObject"}';
+  	$nbRows++;
   }  
   return $nbRows;
 }

@@ -63,7 +63,7 @@ $i18nMessages=null;           // Array containing messages depending on local (i
 setupLocale();                // Set up the locale : must be called before any call to i18n()
 securityCheckRequest();
 
-$paramIconSize=setupIconSize();              // 
+//$paramIconSize=setupIconSize();              //Not used any more this way - user Parameter::getUserParameter("paramIconSize"); 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
 
 $isAttachementEnabled=true;   // allow attachement
@@ -229,7 +229,8 @@ function setupLocale () {
  * to int corresponding value (16, 22, 32)
  * @return void 
  */
-function setupIconSize() {
+//Not used any more this way - user Parameter::getUserParameter("paramIconSize");
+/*function setupIconSize() {
   global $iconSizeMode;
   $paramIconSize=Parameter::getGlobalParameter('paramIconSize');; //default
   // Search in Session, if found, convert from text to int corresponding value
@@ -248,7 +249,7 @@ function setupIconSize() {
     }
   }
   return $paramIconSize;
-}
+}*/
 //echo "SESSION=<br/>";var_dump ($_SESSION);echo "<br/><br/>";
 
 /** ============================================================================
@@ -2102,13 +2103,17 @@ function formatBrowserDateToDate($dateTime) {
 
 function securityCheckRequest() {
 	// parameters to check for non html
-	$parameters=array('objectClass','objectId','directAccess');
-	foreach($parameters as $param) {
+	$parameters=array('objectClass','objectId','directAccess','page','directAccessPage');
+	$pages=array('page','directAccessPage');
+	foreach($parameters as $param) {		
 		if (isset($_REQUEST[$param])) {
 			$paramVal=$_REQUEST[$param];
 		  if (trim($paramVal) and htmlEntities($paramVal)!=$paramVal) {
 		    traceHack("projeqtor->securityCheckRequest, _REQUEST['$param']=$paramVal");
 		    exit;
+		  }
+		  if (in_array($param,$pages)) {	  	
+		  	securityCheckPage($paramVal);
 		  }
 		}
 	}

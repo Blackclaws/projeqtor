@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="ProjeQtOr V4.2" default="buildQuick">
 
-	<property name="drive"       value="D:" />
+	<property name="drive"       value="G:" />
   <property name="version"       value="V4.2.0" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
@@ -100,6 +100,12 @@
     </copy>
   </target>
 
+	<target name="copyApi">
+	    <copy todir="${deploy.dir}/api">
+	      <fileset dir="${src.dir}/api"/>
+	    </copy>
+	  </target>
+	
   <target name="copyReport">
     <copy todir="${deploy.dir}/report">
       <fileset dir="${src.dir}/report"/>
@@ -150,6 +156,7 @@
     <antcall target="copyView"/>
     <antcall target="copyTop"/>
   	<antcall target="copyMisc"/>
+  	<antcall target="copyApi"/>
     <antcall target="zipVersion"/>                  
   </target>
   
@@ -163,6 +170,7 @@
     <antcall target="copyView"/>
     <antcall target="copyTop"/>
   	<antcall target="copyMisc"/>
+  	<antcall target="copyApi"/>
     <antcall target="zipVersion"/>                             
   </target>
 

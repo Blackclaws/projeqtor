@@ -395,9 +395,10 @@
                  . $critSqlValue;
         } else {
           $queryWhere.=($queryWhere=='')?'':' and ';
-          $queryWhere.="(".$table . "." . $crit['sql']['attribute'] . ' ' 
-		                 . $crit['sql']['operator'] . ' '
-		                 . $critSqlValue;
+          if ($crit['sql']['operator']!=' exists ') {
+            $queryWhere.="(".$table . "." . $crit['sql']['attribute'] . ' ';
+          } 
+		      $queryWhere.= $crit['sql']['operator'] . ' ' . $critSqlValue;
 		      if (strlen($crit['sql']['attribute'])>=9 
 		      and substr($crit['sql']['attribute'],0,2)=='id'
 		      and substr($crit['sql']['attribute'],-7)=='Version'
@@ -409,7 +410,9 @@
 		      	  ." and VERS.idVersion IN ".$critSqlValue
 		      	  .")";
 		      }
-		      $queryWhere.=")";
+		      if ($crit['sql']['operator']!=' exists ') {
+		        $queryWhere.=")";
+		      }
         }
       }
     }

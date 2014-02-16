@@ -55,7 +55,6 @@ if ($newObj->id and $obj->id and $newObj->id!=$obj->id) {
 $result=$newObj->save();
 
 // Check if checklist button must be displayed
-debugLog(get_class($newObj).' #'.$newObj->id);
 $crit="nameChecklistable='".get_class($newObj)."'";
 $type='id'.get_class($newObj).'Type';
 if (property_exists($newObj,$type) ) {
@@ -65,16 +64,13 @@ if (property_exists($newObj,$type) ) {
 	}
 	$crit.=')';
 }
-debugLog($crit);
 $cd=new ChecklistDefinition();
 $cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
-debugLog($cdList);
 if (count($cdList)>0 and $newObj->id) {
 	$buttonCheckListVisible="visible";
 } else {
 	$buttonCheckListVisible="hidden";
 }
-debugLog($buttonCheckListVisible);
 echo '<input type="hidden" id="buttonCheckListVisibleObject" value="'.$buttonCheckListVisible.'" />';
 
 
