@@ -76,12 +76,20 @@ $htmlresult.="<br>";
   <tr>
     <td>
       <input type="checkbox" dojoType="dijit.form.CheckBox" id="checkUncheck" name="checkUncheck" value="Check" onclick="checkExportColumns();" <?php echo $allChecked?> />
-      <label for="checkUncheck" class="checkLabel"><b><?php echo i18n("checkUncheckAll")?></b></label>
+      <label for="checkUncheck" class="checkLabel"><b><?php echo i18n("checkUncheckAll")?></b></label>&nbsp;&nbsp;&nbsp;
     </td>
     <td>
       <input type="checkbox" dojoType="dijit.form.Button" id="checkAsList" name="checkAsList" onclick="checkExportColumns('aslist');" 
        showLabel="true" label="<?php echo i18n("checkAsList")?>" />
     </td>
+  </tr>
+  <tr>
+    <td style="width:100%;text-align:right" class="label"><?php echo i18n("exportReferencesAs")?> :&nbsp;</td>
+    <td > <select dojoType="dijit.form.FilteringSelect" class="input" 
+				   style="width: 150px;" name="exportReferencesAs" id="exportReferencesAs">         
+           <OPTION value="name"><?php echo i18n("colName");?></OPTION>                            
+           <OPTION value="id"><?php echo i18n("colId");?></OPTION>
+			   </select></td>
   </tr>
   <tr><td colspan="2" >&nbsp;</td></tr>
 </table>
