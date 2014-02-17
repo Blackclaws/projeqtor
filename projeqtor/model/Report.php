@@ -12,6 +12,7 @@ class Report extends SqlElement {
   public $file;
   public $sortOrder;
   public $idle; 
+  public $orientation;
   // Define the layout that will be used for lists
   public $_isNameTranslatable = true;
   

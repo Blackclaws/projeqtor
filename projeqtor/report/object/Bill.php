@@ -8,6 +8,7 @@ include_once '../tool/projeqtor.php';
 $idProject = "";
 $idClient = "";
 $idBill = "";
+$orientation="P";
 if (array_key_exists('objectId', $_REQUEST)){
 	$idBill=trim($_REQUEST['objectId']);
 }
