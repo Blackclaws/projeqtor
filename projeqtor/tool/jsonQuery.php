@@ -428,6 +428,10 @@
     $dataType=array();
     if ($print) {
     	if ($outMode=='csv') {
+    		$exportReferencesAs='name';
+    		if (isset($_REQUEST['exportReferencesAs'])) {
+    		  $exportReferencesAs=$_REQUEST['exportReferencesAs'];
+    		}
     		$csvSep=Parameter::getGlobalParameter('csvSeparator');
     		$csvQuotedText=true;
     		$obj=new $objectClass();
@@ -464,7 +468,9 @@
     					if (ucfirst($class)==$class) {
     						$foreign=true;
     						if ($class=="TargetVersion" or $class=="OriginalVersion") $class='Version';
-    					  $val=SqlList::getNameFromId($class, $val);
+    						if ($exportReferencesAs=='name') {
+    					    $val=SqlList::getNameFromId($class, $val);
+    						}
     					}
     				}
     				$val=utf8_decode($val);
