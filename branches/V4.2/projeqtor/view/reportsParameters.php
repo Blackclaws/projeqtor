@@ -508,7 +508,7 @@ foreach ($listParam as $param) {
           <script type="dojo/connect" event="onClick" args="evt">
             dojo.byId('outMode').value='';            
             var fileName=dojo.byId('reportFile').value;
-            showPrint("../report/"+ fileName, 'report');
+            showPrint("../report/"+ fileName, 'report',null,null,'<?php echo $report->orientation;?>');
           </script>
       </button>
       <button title="<?php echo i18n('reportPrintPdf')?>"  
@@ -520,14 +520,15 @@ foreach ($listParam as $param) {
             var fileName=dojo.byId('reportFile').value;
             //showPrint("../report/"+ fileName, 'report', null, 'pdf');
             if(fileName.lastIndexOf("jsonPlanning.php") != -1){
-              showPrint("../report/"+ fileName.substring(0,fileName.indexOf("php")-1) +"_pdf" + fileName.substring(fileName.indexOf("php")-1,fileName.length), 'report', null, 'pdf');
+              showPrint("../report/"+ fileName.substring(0,fileName.indexOf("php")-1) +"_pdf" + fileName.substring(fileName.indexOf("php")-1,fileName.length), 'report', null, 'pdf','<?php echo $report->orientation;?>');
             }else if(fileName.lastIndexOf("jsonResourcePlanning.php") != -1){
-              showPrint("../report/"+ fileName.substring(0,fileName.indexOf("php")-1) +"_pdf"+ fileName.substring(fileName.indexOf("php")-1,fileName.length), 'report', null, 'pdf');
+              showPrint("../report/"+ fileName.substring(0,fileName.indexOf("php")-1) +"_pdf"+ fileName.substring(fileName.indexOf("php")-1,fileName.length), 'report', null, 'pdf','<?php echo $report->orientation;?>');
             }else{
-              showPrint("../report/"+ fileName, 'report', null, 'pdf');
+              showPrint("../report/"+ fileName, 'report', null, 'pdf','<?php echo $report->orientation;?>');
             }
           </script>
       </button>
+      <input type="hidden" name="orientation" value="<?php echo $report->orientation;?>" />
       <button title="<?php echo i18n('showInToday')?>"   
          dojoType="dijit.form.Button" type="button" 
          id="reportShowInToday" name="reportShowInToday" 

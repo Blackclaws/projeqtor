@@ -13,6 +13,12 @@
        $outMode=$_REQUEST['outMode'];
      }
    }
+   $orientation='L';
+   if (array_key_exists('orientation', $_REQUEST)) {
+debugLog("orientation in request");
+   	$orientation=$_REQUEST['orientation'];
+   }
+debugLog("outmode=$outMode orientation=$orientation"); 
    if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
      $memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
@@ -145,7 +151,7 @@
   finalizePrint();
 ?>
 <?php function finalizePrint() {
-  global $outMode, $includeFile;
+  global $outMode, $includeFile, $orientation;
   $pdfLib='html2pdf';
   //$pdfLib='dompdf';
   if ($outMode=='pdf') {
@@ -153,7 +159,7 @@
     if ($pdfLib=='html2pdf') {
       /* HTML2PDF way */
       require_once('../external/html2pdf/html2pdf.class.php');
-      $html2pdf = new HTML2PDF('L','A4','en');
+      $html2pdf = new HTML2PDF($orientation,'A4','en');
       $html2pdf->pdf->SetDisplayMode('fullpage');
       $html2pdf->setDefaultFont('freesans');
       $html2pdf->setTestTdInOnePage(false);

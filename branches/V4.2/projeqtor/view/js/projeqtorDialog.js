@@ -162,11 +162,14 @@ function showAbout (msg) {
  * @param forms the form containing the data to send to the page
  * @return void 
  */
-function showPrint (page, context, comboName, outMode) {
+function showPrint (page, context, comboName, outMode, orientation) {
+
 	//dojo.byId('printFrame').style.width= 1000 + 'px';
 	showWait();
 	quitConfirmed=true;
 	noDisconnect=true;
+	if (! orientation) orientation='L';
+ alert(orientation);
 	if (! outMode) outMode='html';
 	var printInNewWin=printInNewWindow;
 	if (outMode=="pdf") {
@@ -191,7 +194,7 @@ function showPrint (page, context, comboName, outMode) {
 	if (dojo.byId('objectId')) {
 		id=dojo.byId('objectId').value;
 	}
-	var params="";
+	var params="&orientation="+orientation;
 	dojo.byId("sentToPrinterDiv").style.display='block';
 	if (outMode) {
 		params+="&outMode=" + outMode;
@@ -268,7 +271,7 @@ function showPrint (page, context, comboName, outMode) {
 		return;
 	} else if (context=='imputation'){
 		var frm=dojo.byId('listForm');
-		frm.action="../view/print.php";
+		frm.action="../view/print.php?orientation="+orientation;
 		if (printInNewWin) {
 			frm.target='#';
 		} else {
