@@ -169,7 +169,6 @@ function showPrint (page, context, comboName, outMode, orientation) {
 	quitConfirmed=true;
 	noDisconnect=true;
 	if (! orientation) orientation='L';
- alert(orientation);
 	if (! outMode) outMode='html';
 	var printInNewWin=printInNewWindow;
 	if (outMode=="pdf") {
@@ -4461,6 +4460,7 @@ function saveCheckboxExport(obj,idUser){
 function executeExport(obj,idUser) {  
   var verif=0;
   var val = dojo.byId('column0').value;
+  var exportReferencesAs=dijit.byId('exportReferencesAs').get('value');
   val = eval(val);
   var toExport = "";
   for(i=1; i<=val;i++){
@@ -4476,7 +4476,7 @@ function executeExport(obj,idUser) {
   }
   if(verif==1) {
     if(ExportType=='csv') {
-      showPrint("../tool/jsonQuery.php?hiddenFields="+toExport, 'list', null, 'csv');  
+      showPrint("../tool/jsonQuery.php?exportReferencesAs="+exportReferencesAs+"&hiddenFields="+toExport, 'list', null, 'csv');  
     }
     saveCheckboxExport(obj,idUser);
     closeExportDialog(obj,idUser);
