@@ -2260,14 +2260,23 @@ function trimTag (myString, car) {
 } 
 
 function moveMenuBar(way) {
+  if (! menuBarMove) return;
 	var bar=dojo.byId('menubarContainer');
 	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
-	var step=80;
+	var step=200;
 	if (way=='left')  {pos=left+step;}
 	if (way=='right') {pos=left-step;}
 	if (pos>0) pos=0;
-	dojo.fx.slideTo({ node: bar, left: pos}).play();
+	dojo.fx.slideTo({ duration: 500, node: bar, left: pos }).play();
 	//bar.style.left=pos+'px';
+	if (menuBarMove) {
+	  setTimeout("moveMenuBar('"+way+"');",500); 
+	}
+}
+menuBarMove=false;
+function moveMenuBarStop() {
+  menuBarMove=false;  
+  
 }
 
 function isHtml5() {
