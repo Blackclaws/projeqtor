@@ -33,7 +33,7 @@ class Activity extends SqlElement {
   public $_lib_cancelled;
   public $idTargetVersion;
   public $result;
-  public $_sec_Assignment;
+  //public $_sec_Assignment;
   public $_Assignment=array();
   public $_col_1_1_Progress;
   public $ActivityPlanningElement; // is an object

@@ -59,6 +59,8 @@ if ($type=='habilitation') {
                                      'workValid'=>i18n('workValidate'),
                                      'work'=>i18n('workAccess'),
                                      'cost'=>i18n('costAccess'),
+  		                               'assignmentView'=>i18n('assignmentViewRight'),
+  		                               'assignmentEdit'=>i18n('assignmentEditRight'),
                                      'combo'=>i18n('comboDetailAccess'),
   		                               'checklist'=>i18n('checklistAccess'),
                                      'planning'=>i18n('planningRight'),

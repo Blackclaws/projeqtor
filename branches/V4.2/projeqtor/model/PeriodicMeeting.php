@@ -12,7 +12,7 @@ class PeriodicMeeting extends SqlElement {
   public $idMeetingType;
   public $name;
   public $location;
-  public $_sec_Assignment;
+  //public $_sec_Assignment;
   public $_Assignment=array();
   public $attendees;
   public $idUser;
