@@ -90,11 +90,8 @@
     <td width="8px">
       <button id="menuBarMoveLeft" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('menuBarMoveLeft');?>"
-       iconClass="leftBarIcon" 
+       iconClass="leftBarIcon" onMouseDown="menuBarMove=true;moveMenuBar('left');" onMouseUp="moveMenuBarStop();"
        style="position:relative; left: -6px; width: 14px;margin:0;vertical-align:middle">
-       <script type="dojo/connect" event="onClick" args="evt">
-          moveMenuBar('left');
-        </script>
       </button>    
     </td>
     <td class="menuBarSeparator" ></td>
@@ -121,11 +118,8 @@
       &nbsp;
       <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('menuBarMoveRight');?>"
-       iconClass="rightBarIcon" 
+       iconClass="rightBarIcon" onMouseDown="menuBarMove=true;moveMenuBar('right');" onMouseUp="moveMenuBarStop();"
        style="position:absolute; right: 63px; width: 14px;margin:0; margin-top: 2px;z-index:35; vertical-align:middle">
-       <script type="dojo/connect" event="onClick" args="evt">
-          moveMenuBar('right');
-        </script>
       </button>   
       <div style="vertical-align: middle; height:<?php echo $iconSize+9;?>px; position: absolute; top : -2px; right: 48px;margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
