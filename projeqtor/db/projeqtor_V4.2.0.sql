@@ -246,6 +246,23 @@ INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`) VALUES (15,'B
 DELETE FROM   `${prefix}menu` where id=77;
 
 ALTER TABLE `${prefix}report` ADD COLUMN `orientation` VARCHAR(1) DEFAULT 'L';
+
+INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
+(1, 'assignmentView', 1),
+(2, 'assignmentView', 1),
+(3, 'assignmentView', 1),
+(4, 'assignmentView', 1),
+(6, 'assignmentView', 2),
+(7, 'assignmentView', 2),
+(5, 'assignmentView', 2); 
+INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) VALUES
+(1, 'assignmentEdit', 1),
+(2, 'assignmentEdit', 2),
+(3, 'assignmentEdit', 1),
+(4, 'assignmentEdit', 2),
+(6, 'assignmentEdit', 2),
+(7, 'assignmentEdit', 2),
+(5, 'assignmentEdit', 2); 
   
 UPDATE `${prefix}menu` SET sortOrder=10 where id=1;
 UPDATE `${prefix}menu` SET sortOrder=20 where id=16;

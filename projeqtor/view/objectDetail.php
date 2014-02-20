@@ -238,6 +238,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				}
 			}
 		} else if (substr($col,0,5)=='_sec_') { // if field is _col, draw a new main column
+			if ($col=='_sec_Assignment') {
+				
+			}
 			echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr>';
 			if ($section and !$print) {
 				echo '</table></div>';
@@ -2027,18 +2030,43 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
 }
 
 function drawAssignmentsFromObject($list, $obj, $refresh=false) {
-	global $cr, $print, $user, $browserLocale, $comboDetail;
+	global $cr, $print, $user, $browserLocale, $comboDetail,$section, $collapsedList, $widthPct;
 	if ($comboDetail) {
 		return;
 	}
+	$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'assignmentView'));
+	if ($habil and $habil->rightAccess!=1) {
+		return;
+	}
+	echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr>';
+	if (!$print) {
+		echo '</table></div>';
+	}
+	$section='Assignment';
+	if (! $print) {
+		$titlePane=get_class($obj)."_".$section;
+		echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
+		echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
+		echo ' id="' . $titlePane . '" ';
+		echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+		echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
+		echo '<table class="detail" style="width:100%;" >';
+	} else {
+		echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+	}
+
 	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+	$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'assignmentEdit'));
+	if ($habil and $habil->rightAccess!=1) {
+		$canUpdate=false;
+	}
 	$pe=new PlanningElement();
 	$pe->setVisibility();
 	$workVisible=($pe->_workVisibility=='ALL')?true:false;
 	if ($obj->idle==1) {$canUpdate=false;}
 	echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
 	echo '<tr>';
-	if (! $print) {
+	if (! $print and $canUpdate) {
 		echo '<td class="assignHeader" style="width:10%">';
 		if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
 			echo '<img src="css/images/smallButtonAdd.png" ';
@@ -2058,7 +2086,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
 	$fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
 	foreach($list as $assignment) {
 		echo '<tr>';
-		if (! $print) {
+		if (! $print and $canUpdate) {
 			echo '<td class="assignData" style="text-align:center;">';
 			if ($canUpdate and ! $print and $workVisible) {
 				echo '  <img src="css/images/smallButtonEdit.png" '

@@ -34,7 +34,7 @@ class TestSession extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   public $result;
-  public $_sec_Assignment;
+  //public $_sec_Assignment;
   public $_Assignment=array();
   public $_col_1_1_Progress;
   public $TestSessionPlanningElement;
