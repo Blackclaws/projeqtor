@@ -3666,6 +3666,18 @@ function copyProjectToSubmit(objectClass) {
   //dojo.byId('objectClass').value='Project';
 }
 
+function copyProjectStructureChange() {
+  var cpStr=dijit.byId('copyProjectStructure');
+  if (cpStr) {
+    if (! cpStr.get('checked')) {
+      dijit.byId('copyProjectAssignments').set('checked',false);
+      dijit.byId('copyProjectAssignments').set('readOnly','readOnly');
+    } else {
+      dijit.byId('copyProjectAssignments').set('readOnly',false);
+    }
+  }
+}
+
 function loadMenuBarObject(menuClass, itemName, from) {
   	if (checkFormChangeInProgress()) {
   		return false;

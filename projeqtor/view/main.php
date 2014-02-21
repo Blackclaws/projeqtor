@@ -1330,7 +1330,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyProjectStructure" style="width:90%;text-align: right;"><?php echo i18n("copyProjectStructure") ?>&nbsp;:&nbsp;</label>
                <div id="copyProjectStructure" name="copyProjectStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
-                checked >
+                onChange="copyProjectStructureChange()" checked >
                </div>
              </td>
            </tr>
@@ -1339,6 +1339,23 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                <label for="copySubProjects" style="width:90%;text-align: right;"><?php echo i18n("copySubProjects") ?>&nbsp;:&nbsp;</label>
                <div id="copySubProjects" name="copySubProjects" dojoType="dijit.form.CheckBox" type="checkbox" 
                 checked >
+               </div>
+             </td>
+           </tr>
+            <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyProjectAffectations" style="width:90%;text-align: right;"><?php echo i18n("copyProjectAffectations") ?>&nbsp;:&nbsp;</label>
+               <div id="copyProjectAffectations" name="copyProjectAffectations" dojoType="dijit.form.CheckBox" type="checkbox" 
+                 >
+               </div>
+             </td>
+           </tr>
+            </tr>
+            <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyProjectAssignments" style="width:90%;text-align: right;"><?php echo i18n("copyAssignments") ?>&nbsp;:&nbsp;</label>
+               <div id="copyProjectAssignments" name="copyProjectAssignments" dojoType="dijit.form.CheckBox" type="checkbox" 
+                 >
                </div>
              </td>
            </tr>

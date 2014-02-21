@@ -366,8 +366,8 @@ abstract class SqlElement {
 		return $this->copySqlElement();
 	}
 
-	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks) {
-		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks);
+	public function copyTo ($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false) {
+		return $this->copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments);
 	}
 	/** =========================================================================
 	 * Save an object to the database
@@ -1049,7 +1049,7 @@ abstract class SqlElement {
 		return $newObj;
 	}
 
-	private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks) {
+	private function copySqlElementTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks,$withAssignments=false) {
 		$newObj=new $newClass();
 		$newObj->id=null;
 		$typeName='id' . $newClass . 'Type';
@@ -1210,6 +1210,31 @@ abstract class SqlElement {
 					$attachement->save();
 				}
 			}
+		}
+		if ($withAssignments and property_exists($this,"_Assignment") and property_exists($newObj,"_Assignment")) {
+			$ass=new Assignment();
+	  	$crit=array('refType'=>get_class($this), 'refId'=>$this->id);
+	  	$lstAss=$ass->getSqlElementsFromCriteria($crit);
+	  	foreach ($lstAss as $ass) {
+	  		$ass->id=null;
+	  		$ass->idProject=$newObj->idProject;
+	  		$ass->refType=$newClass;
+	  		$ass->refId=$newObj->id;
+	  		$ass->comment=null;
+	  		$ass->realWork=0;
+	  		$ass->leftWork=$ass->assignedWork;
+	  		$ass->plannedWork=$ass->assignedWork;
+	  		$ass->realStartDate=null;
+	  		$ass->realEndDate=null;
+	  		$ass->plannedStartDate=null;
+	  		$ass->plannedEndDate=null;
+	  		$ass->realCost=0;
+	  		$ass->leftCost=$ass->assignedCost;
+	  		$ass->plannedCost=$ass->assignedCost;
+	  		$ass->billedWork=null;
+	  		$ass->idle=0;
+	  		$ass->save();
+	  	}
 		}
 		$newObj->_copyResult=$returnValue;
 		return $newObj;
