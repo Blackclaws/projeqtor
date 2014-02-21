@@ -80,6 +80,7 @@ foreach ($lst as $opportunity) {
   echo '<td class="largeReportData' . $done . '" style="width:15%;">' . htmlEncode($opportunity->result) . '</td>';
   echo '</tr>';
 }
+echo "</table>";
 unset($opportunity);
 
 function listLinks($obj) {
