@@ -123,6 +123,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	  uasort($items, "customSortByWbsSortable");
 	  $itemArrayObj=array();
 	  $itemArray=array();
+	  $itemArrayAssignment=array();
 	  foreach ($items as $id=>$item) {
 	  	$new=$item->copy();
 	  	$tmpRes=$new->_copyResult;
@@ -133,6 +134,9 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
       } else {
 	  	  $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
 	      $itemArray[$id]=get_class($new) . '_' . $new->id;
+	      if ($copyAssignments and property_exists($item, '_Assignment')) {
+	      	$itemArrayAssignment[]=array('class'=>get_class($item),'oldId'=>$item->id,'newId'=>$new->id);
+	      }
       }
 	  }
 	  foreach ($itemArrayObj as $new) {
@@ -151,6 +155,32 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 				$errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
 				$nbErrors++;
 			} 
+		}
+		if ($copyAssignments) {
+			foreach ($itemArrayAssignment as $item) {
+				$ass=new Assignment();
+				$crit=array('refType'=>$item['class'], 'refId'=>$item['oldId']);
+				$lstAss=$ass->getSqlElementsFromCriteria($crit);
+				foreach ($lstAss as $ass) {
+					$ass->id=null;
+					$ass->idProject=$newProj->id;
+					$ass->refId=$item['newId'];
+					$ass->comment=null;
+					$ass->realWork=0;
+					$ass->leftWork=$ass->assignedWork;
+					$ass->plannedWork=$ass->assignedWork;
+					$ass->realStartDate=null;
+					$ass->realEndDate=null;
+					$ass->plannedStartDate=null;
+					$ass->plannedEndDate=null;
+					$ass->realCost=0;
+					$ass->leftCost=$ass->assignedCost;
+					$ass->plannedCost=$ass->assignedCost;
+					$ass->billedWork=null;
+					$ass->idle=0;
+					$ass->save();
+				}
+			}
 		}
 	  // Copy dependencies
 	  $critWhere="";
