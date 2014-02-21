@@ -39,10 +39,18 @@ $copySubProjects=false;
 if (array_key_exists('copySubProjects',$_REQUEST)) {
   $copySubProjects=true;
 }
-
+$copyAffectations=false;
+if (array_key_exists('copyProjectAffectations',$_REQUEST)) {
+  $copyAffectations=true;
+}
+$copyAssignments=false;
+if (array_key_exists('copyProjectAssignments',$_REQUEST)) {
+	$copyAssignments=true;
+}
+		
 // copy from existing object
 Sql::beginTransaction();
-$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects);
+$newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, null);
 // save the new object to session (modified status)
 $result=$newProj->_copyResult;
 unset($newProj->_copyResult);
@@ -65,8 +73,8 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 
-function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $newTop=null) {
-  $newProj=$proj->copyTo('Project',$toType, $toName, false, false,false,false);
+function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $newTop=null) {
+  $newProj=$proj->copyTo('Project',$toType, $toName, false, false,false,false, $copyAssignments);
   $result=$newProj->_copyResult;
 	$nbErrors=0;
 	$errorFullMessage="";
@@ -77,7 +85,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
     $project=New Project();
     $projects=$project->getSqlElementsFromCriteria($crit, false, null, null, true);
     foreach ($projects as $project) {
-      $newSubProject=copyProject($project, $project->name, $project->idProjectType , $copyStructure, $copySubProjects, $proj->id);
+      $newSubProject=copyProject($project, $project->name, $project->idProjectType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $proj->id);
       $subResult=$newSubProject->_copyResult;
       unset($newSubProject->_copyResult);
       if (stripos($subResult,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -185,7 +193,17 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	    } 
 	  }	
   }
-	
+  if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and $copyAffectations and $nbErrors==0) {
+  	$aff=new Affectation();
+  	$crit=array('idProject'=>$proj->id);
+  	$lstAff=$aff->getSqlElementsFromCriteria($crit);
+  	foreach ($lstAff as $aff) {
+  		$aff->id=null;
+  		$aff->idProject=$newProj->id;
+  		$aff->save();
+  	}
+  }
+  
 	if ($nbErrors>0) {
     $result='<span class="messageERROR" >' 
            . i18n('errorMessageCopy',array($nbErrors))
