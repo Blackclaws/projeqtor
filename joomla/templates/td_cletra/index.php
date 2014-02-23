@@ -33,20 +33,16 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 	  <link rel="stylesheet" href="<?php echo $document->baseurl; ?>/templates/system/css/system.css"	type="text/css" />
 	  <link rel="stylesheet" 	href="<?php echo $document->baseurl; ?>/templates/system/css/general.css"	type="text/css" />
 	  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-    <script type="text/javascript">
-			  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-			  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-		</script>
-    <script type="text/javascript">
-			try {
-				var pageTracker = _gat._getTracker("UA-11059781-2");
-				pageTracker._setDomainName(".toolware.fr");
-				<?php $pageTackerPageName=(strlen($_SERVER['REQUEST_URI'])<11)?'menu_home_en':substr($_SERVER['REQUEST_URI'],11);?>
-				pageTracker._trackPageview("<?php echo $pageTackerPageName;?>");
-				//pageTracker._trackPageview();
-			} catch(err) {
-			}
-		</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-11059781-8', 'projeqtor.org');
+  ga('send', 'pageview');
+
+</script>
     <link rel="stylesheet" type="text/css" href="<?php echo $templateUrl; ?>/css/template.css" media="screen" />
     <!--[if IE 6]><link rel="stylesheet" href="<?php echo $templateUrl; ?>/css/template.ie6.css" type="text/css" media="screen" /><![endif]-->
     <!--[if IE 7]><link rel="stylesheet" href="<?php echo $templateUrl; ?>/css/template.ie7.css" type="text/css" media="screen" /><![endif]-->
@@ -219,7 +215,7 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 				    <param name="movie" value="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template?>/header/header.swf" />
 				</object>-->
 		<!-- LOGO -->
-			<?php     if($templateparams->get('logoType')=='image'):?> 
+			<?php     if($templateparams->get('logoType')=='image'):?>
 		<div
 			style="font-family: Segoe Print, Segoe UI, Brush Script MT, cursive; color: #545281; position: absolute; left: 350px; top: 50px; z-index: -10;">
 			<div style="font-size: 500%; font-weight: bold">
