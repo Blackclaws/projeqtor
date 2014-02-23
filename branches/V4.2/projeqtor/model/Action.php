@@ -19,7 +19,7 @@ class Action extends SqlElement {
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
-  public $initialDueDate; // is an object
+  public $initialDueDate;
   public $actualDueDate;
   public $handled;
   public $handledDate;

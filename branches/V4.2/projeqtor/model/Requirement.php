@@ -20,6 +20,8 @@ class Requirement extends SqlElement {
   public $idContact;
   public $Origin;
   public $idUrgency;
+  public $initialDueDate;
+  public $actualDueDate;
   public $description;
   public $_col_2_2_treatment;
   public $idRequirement;
@@ -187,7 +189,8 @@ class Requirement extends SqlElement {
     return self::$_databaseColumnName;
   }
   
-  // ============================================================================**********
+  
+// ============================================================================**********
 // GET VALIDATION SCRIPT
 // ============================================================================**********
   
@@ -197,6 +200,22 @@ class Requirement extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
+
+    if ($colName=="initialDueDate") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (dijit.byId("actualDueDate").get("value")==null) { ';
+      $colScript .= '    dijit.byId("actualDueDate").set("value", this.value); ';
+      $colScript .= '  } ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';     
+    } else if ($colName=="actualDueDate") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (dijit.byId("initialDueDate").get("value")==null) { ';
+      $colScript .= '    dijit.byId("initialDueDate").set("value", this.value); ';
+      $colScript .= '  } ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';           
+    }
     return $colScript;
   }
 
