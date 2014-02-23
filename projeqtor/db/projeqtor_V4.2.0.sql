@@ -264,6 +264,16 @@ INSERT INTO `${prefix}habilitationother` (`idProfile`, `scope`, `rightAccess`) V
 (7, 'assignmentEdit', 2),
 (5, 'assignmentEdit', 2); 
   
+ALTER TABLE `${prefix}requirement` ADD COLUMN `initialDueDate` date DEFAULT NULL,
+ADD COLUMN `actualDueDate` date DEFAULT NULL;  
+  
+INSERT INTO `${prefix}indicatorable` (`id`,`name`, `idle`) VALUES (12,'Requirement', '0');
+
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('12', 'Requirement', '3', '0');
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('12', 'Requirement', '4', '0');
+  
 UPDATE `${prefix}menu` SET sortOrder=10 where id=1;
 UPDATE `${prefix}menu` SET sortOrder=20 where id=16;
 UPDATE `${prefix}menu` SET sortOrder=30 where id=102;
