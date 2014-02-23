@@ -31,7 +31,11 @@ $className=$_REQUEST['className'];
 if ($className!=get_class($obj)) {
   throwError('last save object (' . get_class($obj) . ') is not of the expected class (' . $className . ').'); 
 }
-
+if (array_key_exists('confirmed',$_REQUEST) ) {
+  if ($_REQUEST['confirmed']=='true') {
+  	SqlElement::setDeleteConfirmed();
+  }
+}
 Sql::beginTransaction();
 $obj=new $className($obj->id); // Get the last saved version, to fetch last version for array of objects
 // delete from database

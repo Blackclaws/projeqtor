@@ -12,7 +12,9 @@ abstract class SqlElement {
 
 	private static $staticCostVisibility=null;
 	private static $staticWorkVisibility=null;
-
+  private static $staticDeleteConfirmed=false;
+  private static $staticSaveConfirmed=false;
+  
 	// Store the layout of the different object classes
 	private static $_tablesFormatList=array();
 
@@ -38,64 +40,82 @@ abstract class SqlElement {
     "AccessScopeCreate" =>  array("AccessProfile"=>"control"),
     "AccessScopeUpdate" =>  array("AccessProfile"=>"control"),
     "AccessScopeDelete" =>  array("AccessProfile"=>"control"),
-    "Assignment" =>         array("Work"=>"control",
-                                  "PlannedWork"=>"cascade"),
-    "Action" =>             array("Note"=>"cascade",
-                                  "Link"=>"cascade"),
-    "ActionType" =>         array("Action"=>"control"),
-    "Activity" =>           array("Milestone"=>"control", 
-                                  "Activity"=>"control", 
-                                  "Ticket"=>"control",
-                                  "Assignment"=>"control",
-                                  "Note"=>"cascade",
-                                  "Attachement"=>"cascade",
+    "Assignment" =>         array("PlannedWork"=>"cascade",
+	     				                    "Work"=>"control"),
+    "Action" =>             array("Attachement"=>"cascade",
                                   "Link"=>"cascade",
+                                  "Note"=>"cascade"),
+    "ActionType" =>         array("Action"=>"control"),
+    "Activity" =>           array("Activity"=>"confirm", 
+                                  "Assignment"=>"confirm",
+                                  "Attachement"=>"cascade",
                                   "Dependency"=>"cascade",
-                                  "PlannedWork"=>"cascade"),
+                                  "Link"=>"cascade",
+                                  "Milestone"=>"confirm",
+                                  "Note"=>"cascade",
+                                  "PlannedWork"=>"cascade",
+                                  "Ticket"=>"control",),
     "ActivityType" =>       array("Activity"=>"control"),
-    "Bill" =>               array("BillLine"=>"control"),
+    "Bill" =>               array("BillLine"=>"control",
+                                  "Note"=>"cascade", ),
     "BillType" =>           array("Bill"=>"control"),
     "CalendarDefinition" => array("Calendar"=>"cascade",
                                   "Resource"=>"control"),
     "Checklist" =>	        array("ChecklistLine"=>"cascade"),
-    "ChecklistDefinition"=> array("ChecklistDefinitionLine"=>"cascade",
-                                  "Checklist"=>"control"),
-    "Contact" =>            array("Affectation"=>"control",
-                                  "Activity"=>"control",
+    "ChecklistDefinition"=> array("Checklist"=>"control",
+                                  "ChecklistDefinitionLine"=>"cascade"),
+    "Command"=>             array("Attachement"=>"cascade",
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade"),
+    "CommandType"=>         array("Command"=>"control"),
+    "Contact" =>            array("Activity"=>"control",
+                                  "Affectation"=>"control",
                                   "Bill"=>"control",
                                   "Product"=>"control",
                                   "Project"=>"control",
                                   "Ticket"=>"control",
                                   "Version"=>"control"),
     "Client" =>             array("Project"=>"control"),
-    "Criticality" =>        array("Risk"=>"control", 
-                                  "Ticket"=>"control",
-                                  "Requirement"=>"control"),
-    "Decision" =>           array("Link"=>"cascade"),
-    "DecisionType" =>       array("Decision"=>"control"),
-    "Document" =>           array("DocumentVersion"=>"control",
+    "Criticality" =>        array("Requirement"=>"control",
+                                  "Risk"=>"control",
+                                  "Ticket"=>"control"),
+    "Decision" =>           array("Attachement"=>"cascade",
                                   "Link"=>"cascade",
-                                  "Approver"=>"control"),
+                                  "Note"=>"cascade"),
+    "DecisionType" =>       array("Decision"=>"control"),
+    "Document" =>           array("Approver"=>"control",
+                                  "DocumentVersion"=>"control",
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade"),
     "DocumentVersion" =>    array("Approver"=>"cascade"),
     "DocumentDirectory" =>  array("Document"=>"control",
                                   "DocumentDirectory"=>"control"),
     "Feasibility" =>        array("Requirement"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
     "Issue" =>              array("Attachement"=>"cascade",
-                                  "Note"=>"cascade",
-                                  "Link"=>"cascade"),
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
-    "Meeting" =>            array("Link"=>"cascade", "Assignment"=>"cascade"),
-    "MeetingType" =>        array("Meeting"=>"control","PeriodicMeeting"=>"control"),
+    "Meeting" =>            array("Assignment"=>"cascade",
+                                  "Attachement"=>"cascade",
+                                  "Dependency"=>"cascade",
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade",
+                                  "PlannedWork"=>"cascade"),
+    "MeetingType" =>        array("Meeting"=>"control",
+                                  "PeriodicMeeting"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
     "Milestone" =>          array("Attachement"=>"cascade",
-                                  "Note"=>"cascade",
+                                  "Dependency"=>"cascade",
                                   "Link"=>"cascade",
-                                  "Dependency"=>"cascade"),
+                                  "Note"=>"cascade"),
     "MilestoneType" =>      array("Milestone"=>"control"),
-    "PeriodicMeeting" =>    array("Meeting"=>"cascade","Assignment"=>"cascade"),
+    "OverallProgress" => 	  array("Project"=>"control"),
+    "PeriodicMeeting" =>    array("Assignment"=>"cascade",
+                                  "Meeting"=>"cascade",
+                                  "Note"=>"cascade"),
     "Priority" =>           array("Issue"=>"control", 
                                   "Ticket"=>"control"),
     "Profile" =>            array("AccessRight"=>"cascade",
@@ -104,63 +124,73 @@ abstract class SqlElement {
                                   "Resource"=>"control",
                                   "User"=>"control"),
     "ProjectType" =>        array("Project"=>"control"), 
-    "Product" =>            array("Version"=>"control",
-                                  "Requirement"=>"control",
+    "Product" =>            array("Requirement"=>"control",
                                   "TestCase"=>"control",
-                                  "TestSession"=>"control"),
+                                  "TestSession"=>"control",
+                                  "Version"=>"control"),
     "Project" =>            array("Action"=>"control",
-                                  "Activity"=>"control",
-                                  "Affectation"=>"control",
+                                  "Activity"=>"confirm",
+                                  "Affectation"=>"confirm",
+                                  "Attachement"=>"cascade",
+                                  "Bill"=>"control",
+                                  "Command"=>"control",
+                                  "Decision"=>"control",
+                                  "Dependency"=>"cascade",
                                   "Document"=>"control",
                                   "Issue"=>"control",
                                   "IndividualExpense"=>"control",
-                                  "ProjectExpense"=>"control",
-                                  "Term"=>"control",
-                                  "Bill"=>"control",
-                                  "Message"=>"cascade",
-                                  "Milestone"=>"control",
-                                  "Parameter"=>"cascade", 
-                                  "Project"=>"control", 
-                                  "Risk"=>"control", 
-                                  "Ticket"=>"control",
-                                  "Work"=>"control",
-                                  "Dependency"=>"cascade",
-                                  "Decision"=>"control",
+                                  "Link"=>"cascade",
                                   "Meeting"=>"control",
-                                  "VersionProject"=>"cascade",
-                                  "Question"=>"control",
+                                  "Message"=>"cascade",
+                                  "Milestone"=>"confirm",
+                                  "Note"=>"cascade",
+                                  "Opportunity"=>"control",
+                                  "Parameter"=>"cascade", 
+                                  "Project"=>"confirm", 
+                                  "ProjectExpense"=>"control",
                                   "Requirement"=>"control",
+                                  "Risk"=>"control", 
+                                  "Question"=>"control",
+                                  "Quotation"=>"control",
+                                  "Term"=>"control",
                                   "TestCase"=>"control",
-                                  "TestSession"=>"control"),
+                                  "TestSession"=>"control",
+                                  "Ticket"=>"control",
+                                  "VersionProject"=>"cascade",
+                                  "Work"=>"control"),
     "Question" =>           array("Link"=>"cascade"),
     "QuestionType" =>       array("Question"=>"control"),
+    "Quotation"=>           array("Attachement"=>"cascade",
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade"),
+    "QuotationType"=>       array("Quotation"=>"control"),    
     "Recipient" =>          array("Bill"=>"control",
                                   "Project"=>"control"),
     "RequirementType" =>    array("Requirement"=>"control"),
     "Requirement" =>        array("Attachement"=>"cascade",
-                                  "Note"=>"cascade",
                                   "Link"=>"cascade",
+                                  "Note"=>"cascade",
                                   "Requirement"=>"control"),
     "Resource" =>           array("Action"=>"control", 
                                   "Activity"=>"control",
                                   "Affectation"=>"control",
                                   "Assignment"=>"control",
+                                  "Decision"=>"control",
                                   "Issue"=>"control",
+                                  "Meeting"=>"control",
                                   "Milestone"=>"control", 
+                                  "Question"=>"control",
+                                  "Requirement"=>"control",
+                                  "ResourceCost"=>"cascade",
                                   "Risk"=>"control", 
                                   "Ticket"=>"control",
-                                  "Work"=>"control",
-                                  "Decision"=>"control",
-                                  "Meeting"=>"control",
-                                  "Question"=>"control",
-                                  "ResourceCost"=>"cascade",
-                                  "Requirement"=>"control",
                                   "TestCase"=>"control",
-                                  "TestSession"=>"control"),
+                                  "TestSession"=>"control",
+                                  "Work"=>"control"),
     "Risk" =>               array("Attachement"=>"cascade",
-                                  "Note"=>"cascade",
-                                  "Link"=>"cascade"),
-    "RiskLevel" =>           array("Requirement"=>"control"),
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade"),
+    "RiskLevel" =>          array("Requirement"=>"control"),
     "RiskType" =>           array("Risk"=>"control"),
     "Role" =>               array("Affectation"=>"control", 
                                   "Assignment"=>"control",
@@ -169,61 +199,75 @@ abstract class SqlElement {
     "Severity" =>           array("Risk"=>"control"),
     "Status" =>             array("Action"=>"control", 
                                   "Activity"=>"control",
-                                  "Issue"=>"control",
-                                  "Milestone"=>"control", 
-                                  "Risk"=>"control", 
-                                  "Ticket"=>"control",
+                                  "Command"=>"control",
                                   "Decision"=>"control",
+                                  "Issue"=>"control",
                                   "Meeting"=>"control",
+                                  "Milestone"=>"control", 
+                                  "Opportunity"=>"control",
+                                  "Project"=>"control",
                                   "Question"=>"control",
-                                  "StatusMail"=>"cascade",
+                                  "Quotation"=>"control",
                                   "Requirement"=>"control",
+                                  "Risk"=>"control", 
+                                  "StatusMail"=>"cascade",
                                   "TestCase"=>"control",
-                                  "TestSession"=>"control"),
+                                  "TestSession"=>"control",
+                                  "Ticket"=>"control"),
     "Team" =>               array("Resource"=>"control"),
     "Term" =>               array("Dependency"=>"cascade"),
     "TestCase" =>           array("TestCase"=>"control",
                                   "TestCaseRun"=>"control" ),
     "TestCaseType" =>       array("TestCase"=>"control"),
-    "TestSession" =>        array("TestCaseRun"=>"cascade" ),
-    "TestSessionType" =>    array("TestSession"=>"control"),
-    "Ticket" =>             array("Ticket"=>"control",
+    "TestSession" =>        array("Assignment"=>"confirm",
                                   "Attachement"=>"cascade",
-                                  "Note"=>"cascade",
+                                  "Dependency"=>"cascade",
                                   "Link"=>"cascade",
+                                  "Milestone"=>"confirm",
+                                  "Note"=>"cascade",
+                                  "PlannedWork"=>"cascade",
+                                  "TestCaseRun"=>"cascade",),
+    "TestSessionType" =>    array("TestSession"=>"control"),
+    "Ticket" =>             array("Attachement"=>"cascade",
+                                  "Link"=>"cascade",
+                                  "Note"=>"cascade",
+                                  "Ticket"=>"control",
                                   "Work"=>"cascade"),
     "TicketType" =>         array("Ticket"=>"control"),
-    "Urgency" =>            array("Ticket"=>"control",
-                                  "Requirement"=>"control"),
-    "User" =>               array("Affectation"=>"control", 
-                                  "Action"=>"control", 
+    "Urgency" =>            array("Requirement"=>"control",
+                                  "Ticket"=>"control"),
+    "User" =>               array("Action"=>"control", 
                                   "Activity"=>"control",
+                                  "Affectation"=>"control", 
                                   "Attachement"=>"control",
+                                  "Command"=>"control",
+                                  "Decision"=>"control",
                                   "Issue"=>"control",
+                                  "Meeting"=>"control",
                                   "Message"=>"cascade",
                                   "Milestone"=>"control",
                                   "Note"=>"control",
+                                  "Opportunity"=>"control",
                                   "Parameter"=>"cascade", 
                                   "Project"=>"control", 
-                                  "Risk"=>"control", 
-                                  "Ticket"=>"control",
-                                  "Decision"=>"control",
-                                  "Meeting"=>"control",
                                   "Question"=>"control",
+                                  "Quotation"=>"control",
                                   "Requirement"=>"control",
+                                  "Risk"=>"control", 
                                   "TestCase"=>"control",
-                                  "TestSession"=>"control"),
-    "Version" =>            array("VersionProject"=>"cascade",
-                                  "Requirement"=>"control",
+                                  "TestSession"=>"control",
+                                  "Ticket"=>"control"),
+    "Version" =>            array("Requirement"=>"control",
                                   "TestCase"=>"control",
-                                  "TestSession"=>"control"),
-    "Workflow" =>            array("WorkflowStatus"=>"cascade", 
-                                  "TicketType"=>"control", 
+                                  "TestSession"=>"control",
+                                  "VersionProject"=>"cascade"),
+    "Workflow" =>           array("ActionType"=>"control", 
                                   "ActivityType"=>"control", 
+                                  "IssueType"=>"control",
+                                  "TicketType"=>"control", 
                                   "MilestoneType"=>"control", 
                                   "RiskType"=>"control", 
-                                  "ActionType"=>"control", 
-                                  "IssueType"=>"control")
+                                  "WorkflowStatus"=>"cascade")
 	);
 	private static $_closeRelationShip=array(
     "AccessScopeRead" =>    array("AccessProfile"=>"control"),
@@ -238,29 +282,33 @@ abstract class SqlElement {
     "DocumentDirectory" =>  array("Document"=>"control",
                                   "DocumentDirectory"=>"control"),
     "Product" =>            array("Version"=>"control",
-                                  "Requirement"=>"cascade",
-                                  "TestCase"=>"cascade",
+                                  "Requirement"=>"confirm",
+                                  "TestCase"=>"confirm",
                                   "TestSession"=>"control"),
-    "Project" =>            array("Action"=>"control",
+    "Project" =>            array("Action"=>"confirm",
                                   "Activity"=>"control",
                                   "Affectation"=>"cascade",
-                                  "Document"=>"cascade",
-                                  "Issue"=>"control",
-                                  "IndividualExpense"=>"cascade",
-                                  "ProjectExpense"=>"cascade",
-                                  "Term"=>"control",
-                                  "Bill"=>"control",
-                                  "Milestone"=>"control",
+    		                          "Command"=>"control",
+                                  "Document"=>"confirm",
+                                  "Issue"=>"confirm",
+                                  "IndividualExpense"=>"confirm",
+                                  "ProjectExpense"=>"confirm",
+                                  "Term"=>"confirm",
+                                  "Bill"=>"confirm",
+                                  "Milestone"=>"confirm",
                                   "Project"=>"control", 
-                                  "Risk"=>"control", 
+                                  "Risk"=>"confirm", 
                                   "Ticket"=>"control",
-                                  "Decision"=>"cascade",
-                                  "Meeting"=>"cascade",
+                                  "Decision"=>"confirm",
+                                  "Meeting"=>"confirm",
+    		                          "Opportunity"=>"confirm",
+    		                          "PeriodicMeeting"=>"confirm",
                                   "VersionProject"=>"cascade",
-                                  "Question"=>"cascade",
-                                  "Requirement"=>"cascade",
-                                  "TestCase"=>"cascade",
-                                  "TestSession"=>"control"),
+                                  "Question"=>"confirm",
+    		                          "Quotation"=>"confirm",
+                                  "Requirement"=>"confirm",
+                                  "TestCase"=>"confirm",
+                                  "TestSession"=>"confirm"),
     "Requirement" =>        array("Requirement"=>"control"),
     "Resource" =>           array("Action"=>"control", 
                                   "Activity"=>"control",
@@ -270,18 +318,18 @@ abstract class SqlElement {
                                   "Milestone"=>"control", 
                                   "Risk"=>"control", 
                                   "Ticket"=>"control",
-                                  "Decision"=>"cascade",
-                                  "Meeting"=>"cascade",
-                                  "Question"=>"cascade",
-                                  "Requirement"=>"cascade",
-                                  "TestCase"=>"cascade",
+                                  "Decision"=>"control",
+                                  "Meeting"=>"control",
+                                  "Question"=>"control",
+                                  "Requirement"=>"control",
+                                  "TestCase"=>"control",
                                   "TestSession"=>"control"),
-    "TestCase" =>           array("TestCase"=>"cascade",
+    "TestCase" =>           array("TestCase"=>"confirm",
                                   "TestCaseRun"=>"cascade" ),
     "TestSession" =>        array("TestCaseRun"=>"cascade" ),
     "User" =>               array("Affectation"=>"cascade"),
     "Version" =>            array("VersionProject"=>"cascade",
-                                  "TestSession"=>"control")
+                                  "TestSession"=>"confirm")
 	);
 
 	/** =========================================================================
@@ -383,7 +431,16 @@ abstract class SqlElement {
 		if ($force) {
 			$control="OK";
 		} else {
-			$control=$this->control();
+			$control=$this->control();			
+			$class=get_class($this);
+			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
+			and property_exists($class, $class.'PlanningElement')) {
+				$pe=$class.'PlanningElement';
+				$controlPe=$this->$pe->deleteControl();
+				if ($controlPe!='OK') {
+					$control=$controlPe;
+				}
+			}
 		}
 		if ($control=="OK") {
 			//$old=new Project();
@@ -461,18 +518,76 @@ abstract class SqlElement {
 						IndicatorValue::addIndicatorValue($ind,$this);
 					}
 				}
+			}				
+			if (property_exists($this, 'idle') and $this->idle) {
+				$this->dispatchClose();
 			}
 			return $returnValue;
 		} else {
 			// errors on control => don't save, display error message
-			$returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
+			if ( strpos($control,'id="confirmControl" value="save"')>0 ) {
+				$returnValue='<b>' . i18n('messageConfirmationNeeded') . '</b><br/>' . $control;
+				$returnValue .= '<input type="hidden" id="lastOperationStatus" value="CONFIRM" />';
+			} else {
+				$returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
+				$returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+			}
 			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
 			$returnValue .= '<input type="hidden" id="lastOperation" value="control" />';
-			$returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
 			return $returnValue;
 		}
 	}
 
+	private function dispatchClose() {		
+		if (property_exists($this,'idle') and $this->idle) {
+			$relationShip=self::$_closeRelationShip;
+			if (array_key_exists(get_class($this),$relationShip)) {
+				$objects='';
+				$error=false;
+				foreach ( $relationShip[get_class($this)] as $object=>$mode) {
+					if (($mode=='cascade' or $mode=='confirm') and property_exists($object,'idle')) {
+						$where=null;
+						$obj=new $object();
+						$crit=array('id' . get_class($this) => $this->id, 'idle'=>'0');
+						if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
+							$crit=array("refType"=>get_class($this), "refId"=>$this->id);
+						}
+						if ($object=="Dependency") {
+							$crit=null;
+							$where="idle=0 and ((predecessorRefType='" . get_class($this) . "' and predecessorRefId=" . $this->id .")"
+									. " or (successorRefType='" . get_class($this) . "' and successorRefId=" . $this->id ."))";
+						}
+						if ($object=="Link") {
+							$crit=null;
+							$where="idle=0 and ((ref1Type='" . get_class($this) . "' and ref1Id=" . Sql::fmtId($this->id) .")"
+									. " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) ."))";
+						}				
+						$list=$obj->getSqlElementsFromCriteria($crit, false, $where);
+						foreach ($list as $o) {					
+							$o->idle=1;
+							if (property_exists($o,'idleDate') and ! trim($o->idleDate)) {
+								$o->idleDate=date('Y-m-d');
+							}
+							if (property_exists($o,'idleDateTime') and ! trim($o->idleDateTime)) {
+								$o->idleDateTime=date('Y-m-d H:i:s');
+							}
+							$resO=$o->save();
+						}
+					}
+				}
+				if ($objects!="") {
+					if ($error) {
+						$result.="<br/>" . i18n("errorControlClose") . $objects;
+					} else {
+						$result.='<input type="hidden" id="confirmControl" value="save" /><br/>' . i18n("confirmControlSave") . $objects;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
 	/** =========================================================================
 	 * Save an object to the database : new object
 	 * @return void
@@ -780,12 +895,27 @@ abstract class SqlElement {
 	private function deleteSqlElement() {
 		$class = get_class($this);
 		$control=$this->deleteControl();
+		if ( ($control=='OK' or strpos($control,'id="confirmControl" value="delete"')>0 ) 
+				and property_exists($class, $class.'PlanningElement')) {
+			$pe=$class.'PlanningElement';
+			$controlPe=$this->$pe->deleteControl();
+			if ($controlPe!='OK') {
+				$control=$controlPe;
+			}
+		}
+		
 		if ($control!="OK") {
 			// errors on control => don't save, display error message
-			$returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
+			if ( strpos($control,'id="confirmControl" value="delete"')>0 ) {
+				$returnValue='<b>' . i18n('messageConfirmationNeeded') . '</b><br/>' . $control;
+				$returnValue .= '<input type="hidden" id="lastOperationStatus" value="CONFIRM" />';
+			} else {
+			  $returnValue='<b>' . i18n('messageInvalidControls') . '</b><br/>' . $control;
+			  $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+			}
 			$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
 			$returnValue .= '<input type="hidden" id="lastOperation" value="control" />';
-			$returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+			
 			return $returnValue;
 		}
 		foreach($this as $col_name => $col_value) {
@@ -813,7 +943,7 @@ abstract class SqlElement {
 		if (array_key_exists($class,$relationShip)) {
 			$relations=$relationShip[$class];
 			foreach ($relations as $object=>$mode) {
-				if ($mode=="cascade") {
+				if ($mode=="cascade" or ($mode=="confirm" and self::isDeleteConfirmed())) {
 					$where=null;
 					$obj=new $object();
 					$crit=array('id' . $class => $this->id);
@@ -2434,8 +2564,9 @@ abstract class SqlElement {
 			$relationShip=self::$_closeRelationShip;
 			if (array_key_exists(get_class($this),$relationShip)) {
 				$objects='';
+				$error=false;
 				foreach ( $relationShip[get_class($this)] as $object=>$mode) {
-					if ($mode=='control' and property_exists($object,'idle')) {
+					if (($mode=='control' or $mode=='confirm') and property_exists($object,'idle')) {
 						$where=null;
 						$obj=new $object();
 						$crit=array('id' . get_class($this) => $this->id, 'idle'=>'0');
@@ -2454,12 +2585,21 @@ abstract class SqlElement {
 						}
 						$nb=$obj->countSqlElementsFromCriteria($crit,$where);
 						if ($nb>0) {
-							$objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
+							if ($mode=="control") $error=true;
+							if ($mode=="confirm" and self::isSaveConfirmed()) {
+								// If mode confirm and message of confirmation occured : OK
+							} else {
+								$objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
+							}
 						}
 					}
 				}
 				if ($objects!="") {
-					$result.="<br/>" . i18n("errorControlClose") . $objects;
+					if ($error) {
+						$result.="<br/>" . i18n("errorControlClose") . $objects;
+					} else {
+						$result.='<input type="hidden" id="confirmControl" value="save" /><br/>' . i18n("confirmControlSave") . $objects;
+					}
 				}
 			}
 		}
@@ -2520,8 +2660,9 @@ abstract class SqlElement {
 		$relationShip=self::$_relationShip;
 		if (array_key_exists(get_class($this),$relationShip)) {
 			$relations=$relationShip[get_class($this)];
+			$error=false;
 			foreach ($relations as $object=>$mode) {
-				if ($mode=="control") {
+				if ($mode=="control" or $mode=="confirm") {
 					$where=null;
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
@@ -2539,15 +2680,23 @@ abstract class SqlElement {
 						$where="(ref1Type='" . get_class($this) . "' and ref1Id=" . Sql::fmtId($this->id) .")"
 						. " or (ref2Type='" . get_class($this) . "' and ref2Id=" . Sql::fmtId($this->id) .")";
 					}
-
 					$nb=$obj->countSqlElementsFromCriteria($crit,$where);
 					if ($nb>0) {
-						$objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
+						if ($mode=="control") $error=true;
+						if ($mode=="confirm" and self::isDeleteConfirmed()) {
+							// If mode confirm and message of confirmation occured : OK
+						} else {
+						  $objects.="<br/>&nbsp;-&nbsp;" . i18n($object) . " (" . $nb . ")";
+						}
 					}
 				}
 			}
 			if ($objects!="") {
-				$result.="<br/>" . i18n("errorControlDelete") . $objects;
+				if ($error) {
+					$result.="<br/>" . i18n("errorControlDelete") . $objects;
+				} else {
+					$result.='<input type="hidden" id="confirmControl" value="delete" /><br/>' . i18n("confirmControlDelete") . $objects;
+				}
 			}
 		}
 		if ($result=="") {
@@ -3093,7 +3242,10 @@ abstract class SqlElement {
 		}
 		if ( ( (property_exists($type,'lockIdle') and $type->lockIdle) or $force)
 		and property_exists($this,'idle') ) {
-			$this->idle=($status->setIdleStatus)?1:0;
+			if (! self::isSaveConfirmed()) {
+				// If save confirmed, must not override idle status that is cascaded
+			  $this->idle=($status->setIdleStatus)?1:0;
+			}
 		}
 		if ( ( (property_exists($type,'lockCancelled') and $type->lockCancelled) or $force)
     and property_exists($this,'cancelled') ) {
@@ -3332,5 +3484,19 @@ abstract class SqlElement {
 		}
 		return true;
 	}
+	
+	public static function setDeleteConfirmed() {
+		self::$staticDeleteConfirmed=true;
+	}
+	public static function isDeleteConfirmed() {
+		return self::$staticDeleteConfirmed;
+	}
+	public static function setSaveConfirmed() {
+		self::$staticSaveConfirmed=true;
+	}
+	public static function isSaveConfirmed() {
+		return self::$staticSaveConfirmed;
+	}
+	
 }
 ?>
