@@ -204,9 +204,9 @@ class Activity extends SqlElement {
   
   
   /** =========================================================================
-   * Overrides SqlElement::deleteControl() function to add specific treatments
-   * @see persistence/SqlElement#deleteControl()
-   * @return the return message of persistence/SqlElement#deleteControl() method
+   * Overrides SqlElement::save() function to add specific treatments
+   * @see persistence/SqlElement#save()
+   * @return the return message of persistence/SqlElement#save() method
    */  
   
   /**=========================================================================

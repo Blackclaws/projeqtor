@@ -43,6 +43,11 @@ if (! array_key_exists('comboDetail', $_REQUEST)) {
 } else {
 	$ext="_detail";
 }
+if (array_key_exists('confirmed',$_REQUEST) ) {
+	if ($_REQUEST['confirmed']=='true') {
+		SqlElement::setSaveConfirmed();
+	}
+}
 Sql::beginTransaction();
 // get the modifications (from request)
 $newObj=new $className();

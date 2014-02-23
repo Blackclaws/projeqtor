@@ -1007,7 +1007,7 @@ function finalizeMessageDisplay(destination, validationType) {
         dojo.byId("p1value").value=forceRefreshMenu;
         dojo.byId("directAccessForm").submit();   	
     }
-  } else if (lastOperationStatus.value=="INVALID") {
+  } else if (lastOperationStatus.value=="INVALID" || lastOperationStatus.value=="CONFIRM") {
     if (formChangeInProgress) {
       formInitialize();
       formChanged();
@@ -1021,13 +1021,28 @@ function finalizeMessageDisplay(destination, validationType) {
     hideWait();
   }
   // If operation is correct (not an error) slowly fade the result message
-  if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID")) {
+  if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" && lastOperationStatus.value!="CONFIRM")) {
     dojo.fadeOut({node: contentNode, duration: 3000}).play();
   } else {
     if (lastOperationStatus.value=="ERROR") {
       showError(message);
     } else {
-      showAlert(message);
+      if (lastOperationStatus.value=="CONFIRM") {
+    	if (message.indexOf('id="confirmControl" value="delete"')>0) {
+	    	confirm=function () {
+	    		dojo.byId("deleteButton").blur();
+			    loadContent("../tool/deleteObject.php?confirmed=true", "resultDiv", 'objectForm', true);
+	    	};
+    	} else {
+    		confirm=function () {
+        		dojo.byId("saveButton").blur();
+    		    loadContent("../tool/saveObject.php?confirmed=true", "resultDiv", 'objectForm', true);
+        	  };
+    	}
+    	showConfirm(message,confirm);  
+      } else {
+        showAlert(message);
+      }
       if (destination=="planResultDiv") {
     	  dojo.fadeOut({node: contentNode, duration: 1000}).play();
     	  setTimeout("dijit.byId('planResultDiv').set('content','');",1000);    	  

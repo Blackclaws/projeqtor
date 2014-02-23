@@ -622,6 +622,21 @@ class PlanningElement extends SqlElement {
     return $result;
   }
   
+  public function deleteControl()
+  {
+  	$result="";
+  	 
+  	// Cannot delete item with real work
+  	if ($this->realWork>0)	{
+  		$result .= "<br/>" . i18n("msgUnableToDeleteRealWork");
+  	}
+  	 
+  	if (! $result) {
+  		$result=parent::deleteControl();
+  	}
+  	return $result;
+  }
+  
   public function controlHierarchicLoop($parentType, $parentId) {
     $result="";
     $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>$parentType,'refId'=>$parentId));
