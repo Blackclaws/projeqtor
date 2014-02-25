@@ -58,7 +58,8 @@
   } else if ($typeSendMail=="Document") {
   	$id=$_REQUEST['id'];
   	$doc=new Document($id);
-  	$result=$doc->sendMailToApprovers(true);
+  	$dest=$doc->sendMailToApprovers(true);
+  	$result=($dest!='' and $dest!='0')?'OK':'';
   } else if ($typeSendMail=="Mailable") {
   	$class=$_REQUEST['mailRefType'];
   	if ($class=='TicketSimple') {$class='Ticket';}
