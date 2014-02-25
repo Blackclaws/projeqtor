@@ -467,7 +467,9 @@ class Parameter extends SqlElement {
       	                       'paramMailTitleAttachment'=>'longtext',
       	      	               'paramMailTitleDirect'=>'longtext',
       	                       'paramMailTitleUser'=>'longtext',
-      	                       'paramMailBodyUser'=>'longtext'
+      	                       'paramMailBodyUser'=>'longtext',
+      	                       'paramMailTitleApprover'=>'longtext',
+      	                       'paramMailBodyApprover'=>'longtext'
       	                     
       	);
     }

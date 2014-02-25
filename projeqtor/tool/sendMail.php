@@ -55,6 +55,10 @@
       $dest=$meeting->sendMail();
       $result=($dest!='')?'OK':'';
     }
+  } else if ($typeSendMail=="Document") {
+  	$id=$_REQUEST['id'];
+  	$doc=new Document($id);
+  	$result=$doc->sendMailToApprovers(true);
   } else if ($typeSendMail=="Mailable") {
   	$class=$_REQUEST['mailRefType'];
   	if ($class=='TicketSimple') {$class='Ticket';}
