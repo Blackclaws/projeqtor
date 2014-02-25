@@ -324,10 +324,16 @@ class Document extends SqlElement {
   	$arrayFrom[]='${sender}';
   	$user=$_SESSION['user'];
   	$arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
-  	$title=Parameter::getGlobalParameter('paramMailTitleUser');
-  	$msg=Parameter::getGlobalParameter('paramMailBodyUser');
+  	$title=Parameter::getGlobalParameter('paramMailTitleApprover');
+  	$msg=Parameter::getGlobalParameter('paramMailBodyApprover');
+  	$title=str_replace($arrayFrom, $arrayTo, $title);
+  	$msg=str_replace($arrayFrom, $arrayTo, $msg);
   	$result=(sendMail($dest,$title,$msg))?'OK':'';
-  	return $result;
+  	if ($result) {
+  		return $dest;
+  	} else {
+  		return 0;
+  	}
   }
 }
 ?>
