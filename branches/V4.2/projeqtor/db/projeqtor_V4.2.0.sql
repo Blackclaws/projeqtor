@@ -273,7 +273,11 @@ INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicator
 ('12', 'Requirement', '3', '0');
 INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
 ('12', 'Requirement', '4', '0');
-  
+
+INSERT INTO `${prefix}parameter` (idUser,idProject, parameterCode, parameterValue) VALUES 
+(null, null, 'paramMailTitleApprover', '[${dbName}] message from ${sender} : You need to approve a document'),  
+(null, null, 'paramMailBodyApprover', '[${dbName}] You are approver of <a href="${url}" > Document #${id}</a> : "${name}".<br/>Please access <a href="${url}" >this document</a> and follow approval process.');
+
 UPDATE `${prefix}menu` SET sortOrder=10 where id=1;
 UPDATE `${prefix}menu` SET sortOrder=20 where id=16;
 UPDATE `${prefix}menu` SET sortOrder=30 where id=102;

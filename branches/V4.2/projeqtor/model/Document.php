@@ -33,6 +33,7 @@ class Document extends SqlElement {
   public $_DocumentVersion=array();
   public $_sec_approvers;
   public $_Approver=Array();
+  public $_spe_buttonSendMail;
   public $version;
   public $revision;
   public $draft;
@@ -181,6 +182,24 @@ class Document extends SqlElement {
     	$result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . $_SESSION['user']->id . '" />';
     	return $result;
     }
+    if ($item=='buttonSendMail') {
+    	if ($print) {
+    		return "";
+    	}
+    	$result .= '<tr><td colspan="2">';
+    	$result .= '<button id="sendInfoToApprovers" dojoType="dijit.form.Button" showlabel="true"';
+    	$result .= ' title="' . i18n('sendInfoToApprovers') . '" >';
+    	$result .= '<span>' . i18n('sendInfoToApprovers') . '</span>';
+    	$result .=  '<script type="dojo/connect" event="onClick" args="evt">';
+    	$result .= '   if (checkFormChangeInProgress()) {return false;}';
+    	$result .=  '  var email="";';
+    	$result .=  '  if (dojo.byId("email")) {email = dojo.byId("email").value;}';
+    	$result .=  '  loadContent("../tool/sendMail.php","resultDiv","objectForm",true);';
+    	$result .= '</script>';
+    	$result .= '</button>';
+    	$result .= '</td></tr>';
+    	return $result;
+    }
   }
   
   public function control() {
@@ -241,6 +260,73 @@ class Document extends SqlElement {
         $vers->save(true);
       }
   	}
+  	return $result;
+  }
+  
+  public function sendMailToApprovers($onlyNotApproved=true) {
+  	$crit=array('refType'=>'Document', 'refId'=>$this->id);
+  	if ($onlyNotApproved) {
+  		$crit['approved']='0';
+  	}
+  	$app=new Approver();
+  	$appList=$app->getSqlElementsFromCriteria($crit);
+  	$dest="";
+  	foreach ($appList as $app) {
+  		$res=new Affectable($app->idAffectable);
+  		$resMail=(($res->name)?$res->name:$res->userName);
+  		$resMail.=(($res->email)?' <'.$res->email.'>':'');
+  		$resMail=$res->email;
+  		$dest.=($dest)?', ':'';	
+  		$dest.=$resMail;
+  	}
+  	$arrayFrom=array();
+  	$arrayTo=array();
+  	$arrayFrom[]='${dbName}';
+  	$arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
+  	// url (direct access to item
+  	$arrayFrom[]='${url}';
+  	$arrayTo[]=$this->getReferenceUrl();
+  	// item (class)
+  	$arrayFrom[]='${item}';
+  	$arrayTo[]=i18n('Document');
+    // id
+  	$arrayFrom[]='${id}';
+  	$arrayTo[]=$this->id;
+  	// name
+  	$arrayFrom[]='${name}';
+  	$arrayTo[]=(property_exists($this, 'name'))?$this->name:'';
+  	// status
+  	$arrayFrom[]='${status}';
+  	$arrayTo[]=(property_exists($this, 'idStatus'))?SqlList::getNameFromId('Status', $this->idStatus):'';
+  	// project
+  	$arrayFrom[]='${project}';
+  	$arrayTo[]=(property_exists($this, 'idProject'))?SqlList::getNameFromId('Project', $this->idProject):'';
+  	// type
+  	$typeName='idDocumentType';
+  	$arrayFrom[]='${type}';
+  	$arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId('DocumentType', $this->$typeName):'';
+  	// reference
+  	$arrayFrom[]='${reference}';
+  	$arrayTo[]=(property_exists($this, 'reference'))?$this->reference:'';
+  	// externalReference
+  	$arrayFrom[]='${externalReference}';
+  	$arrayTo[]=(property_exists($this, 'externalReference'))?$this->externalReference:'';
+  	// issuer
+  	$arrayFrom[]='${issuer}';
+  	$arrayTo[]=(property_exists($this, 'idUser'))?SqlList::getNameFromId('User', $this->idUser):'';
+  	// responsible
+  	$arrayFrom[]='${responsible}';
+  	$arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
+  	// db display name
+  	$arrayFrom[]='${dbName}';
+  	$arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
+  	// sender
+  	$arrayFrom[]='${sender}';
+  	$user=$_SESSION['user'];
+  	$arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
+  	$title=Parameter::getGlobalParameter('paramMailTitleUser');
+  	$msg=Parameter::getGlobalParameter('paramMailBodyUser');
+  	$result=(sendMail($dest,$title,$msg))?'OK':'';
   	return $result;
   }
 }
