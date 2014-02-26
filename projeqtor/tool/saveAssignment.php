@@ -105,6 +105,9 @@ if ($assignmentId) {
 } else {
   $elt->sendMailIfMailable(false,false,false,false,false,false,false,false,false,true,false,false);
 }
+if ($refType=='Meeting' or $refType=='PeriodicMeeting') {
+	Meeting::removeDupplicateAttendees($refType, $refId);
+}
   
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
