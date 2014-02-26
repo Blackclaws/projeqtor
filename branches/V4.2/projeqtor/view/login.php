@@ -58,7 +58,7 @@
 </head>
 
 <body class="<?php echo getTheme();?>" onLoad="hideWait();" style="overflow: auto;" onBeforeUnload="">
-<?php if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST) and isset($_SESSION['user']) ) {
+<?php if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST)  ) {
 echo '<input type="hidden" id="objectClass" value="' . $_REQUEST['objectClass'] . '" />';
 echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" />';
 }

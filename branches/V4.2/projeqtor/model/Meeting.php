@@ -452,5 +452,39 @@ class Meeting extends SqlElement {
     } 
     return str_replace(',', ', ', $destList);
   }
+  
+  public Static function removeDupplicateAttendees($refType, $refId) {
+  	$obj=new $refType($refId);
+  	if (! $refId) return;
+  	echo "oldAttendee=".htmlentities($obj->attendees);
+  	$addr=explode(', ',$obj->attendees);
+  	$mails=array();
+  	foreach ($addr as $ind=>$add) {
+  		$mailStart=strpos($add,'<');
+  		$mailEnd=strpos($add,'>');
+  		if ($mailStart and $mailEnd) {
+  			$mails[trim(substr($add,$mailStart+1,$mailEnd-$mailStart-1))]=$ind;
+  		} else {
+  			$mails[trim($add)]=$ind;
+  		}
+  	}
+  	$ass=new Assignment();
+  	$assList=$ass->getSqlElementsFromCriteria(array('refType'=>$refType,'refId'=>$refId));
+  	foreach ($assList as $ass) {
+  		$aff=new Affectable($ass->idResource);
+  		if (array_key_exists($aff->email, $mails)) {
+  			unset ($addr[$mails[$aff->email]]);
+  		}
+  	}
+  	$newAttendee="";
+  	foreach ($addr as $add) {
+  		$newAttendee.=(($newAttendee)?', ':'').$add;
+  	}
+    if ($newAttendee!=$obj->attendees) {
+    	$obj->attendees=$newAttendee;
+    	$obj->save();
+    	echo "saved";
+    }
+  }
 }
 ?>

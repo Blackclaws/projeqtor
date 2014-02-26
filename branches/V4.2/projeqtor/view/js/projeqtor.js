@@ -705,7 +705,7 @@ function checkLogin() {
       noDisconnect=true;
       url="main.php";
       if (dojo.byId("objectClass") && dojo.byId("objectId")) {
-    	  url+="?objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
+    	  url+="?directAccess=true&objectClass="+dojo.byId("objectClass").value+"&objectId="+dojo.byId("objectId").value;
       }
       window.location=url;
     }

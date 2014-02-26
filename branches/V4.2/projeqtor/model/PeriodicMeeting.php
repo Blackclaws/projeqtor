@@ -35,7 +35,6 @@ class PeriodicMeeting extends SqlElement {
   public $idPeriodicity;
   public $_spe_periodicity;
   public $periodicityOpenDays;
-
   public $periodicityDailyFrequency;
   public $periodicityWeeklyFrequency;
   public $periodicityWeeklyDay;
