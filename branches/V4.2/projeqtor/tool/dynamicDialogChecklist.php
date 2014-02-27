@@ -105,11 +105,26 @@ if ($print) $canUpdate=false;
 					  <?php } 
                }?></td>
 					<?php }?>
-				  </tr></table>
+					</td>
+				<td style="text-align:right; color: #A0A0A0;" valign="top"><div style="float: right"><?php 
+				  if ($lineVal->checkTime) {
+            echo '<i>'.SqlList::getNameFromId('User',$lineVal->idUser);
+            echo '<br/>'.htmlFormatDateTime($lineVal->checkTime,false).'</i>';
+            
+         }?></div></td>
+				<td >&nbsp;</td>
+				<td valign="top"> <textarea dojoType="dijit.form.Textarea" 
+          id="checklistComment_<?php echo $line->id;?>" name="checklistComment_<?php echo $line->id;?>"
+          style="width: 150px;min-height: 25px; font-size: 90%"
+          maxlength="4000"
+          class="input"><?php echo $lineVal->comment;?></textarea>
 				</td>
+				  </tr></table>
+				
 <?php } else { ?>
 				<td class="reportTableHeader" colspan="2" style="text-align:center" title="<?php echo $line->title;?>">
 				  <?php echo $line->name;?>
+				  <div style="width: 150px; float:right; font-weight: normal"><?php echo i18n('colComment')?></div>
 				</td>
 <?php }?>		
 	    </tr>
