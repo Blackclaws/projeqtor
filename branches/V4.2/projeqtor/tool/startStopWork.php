@@ -41,9 +41,7 @@ Sql::beginTransaction();
 $newObj=new $className();
 $newObj->fillFromRequest();
 $result=$newObj->save();
-//var_dump($obj);
 
-//$newObj->start();
 $action="";
 if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0
    and ! stripos($result,'id="lastOperationStatus" value="INVALID"')>0

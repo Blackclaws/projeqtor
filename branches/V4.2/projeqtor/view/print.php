@@ -15,10 +15,8 @@
    }
    $orientation='L';
    if (array_key_exists('orientation', $_REQUEST)) {
-debugLog("orientation in request");
    	$orientation=$_REQUEST['orientation'];
    }
-debugLog("outmode=$outMode orientation=$orientation"); 
    if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
      $memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');

@@ -15,10 +15,8 @@ if (! array_key_exists('className',$_REQUEST)) {
 $className=$_REQUEST['className'];
 
 if ($className=="Workflow") {
-//echo ini_get('max_input_vars');
     ini_set('max_input_vars', 5000);
 }
-//var_dump($_REQUEST);
 $ext="";
 if (! array_key_exists('comboDetail', $_REQUEST)) {
 	// Get the object from session(last status before change)

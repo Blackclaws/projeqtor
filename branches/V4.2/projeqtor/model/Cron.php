@@ -520,7 +520,6 @@ class Cron {
 		$crit=array('email'=>$sender);
 		$usr=new Affectable();
 		$usrList=$usr->getSqlElementsFromCriteria($crit,false,null,'idle asc, isUser desc, isResource desc');
-		var_dump($usrList);
 		if (count($usrList)) {
 		  $senderId=$usrList[0]->id;
 		}
