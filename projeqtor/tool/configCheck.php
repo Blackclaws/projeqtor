@@ -11,6 +11,10 @@
   $value=$_REQUEST["value"];
   $ctrl=$_REQUEST["ctrls"];
   
+  if (file_exists('../tool/parametersLocation.php')) {
+  	traceHack("direct access to configCheck.php where parametersLocation.php exists");
+  	exit;
+  }
   // Controls
   $error=false;
   foreach ($param as $id=>$val) {

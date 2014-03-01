@@ -628,7 +628,7 @@ class PlanningElement extends SqlElement {
   	 
   	// Cannot delete item with real work
   	if ($this->realWork>0)	{
-  		$result .= "<br/>" . i18n("msgUnableToDeleteRealWork");
+  		$result .= "XXX<br/>" . i18n("msgUnableToDeleteRealWork");
   	}
   	 
   	if (! $result) {

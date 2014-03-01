@@ -4,6 +4,22 @@
 projeqtor_set_time_limit(300);
 projeqtor_set_memory_limit('512M');
 
+// Security : check that no special car appears in the request
+foreach ($_REQUEST as $reqParam=>$reqValue) {
+	if ($reqParam=='reportName') {
+    // Reort name can have spec car. Will be escaped on display
+	} else if ($reqParam=='refId') {
+		if (! is_numeric($reqValue) ) {
+			$refId='0';
+		}
+	} else {
+		if ($reqValue!=Sql::fmtStr($reqValue)) {
+			traceHack("improper value '$reqValue' for request parameter '$reqParam' while calling a report");
+			exit;
+		}
+	}
+}
+
 echo "<table style='width:100%'><tr>";
 echo "<td style='width:1%' class='reportHeader'>&nbsp;</td>";
 echo "<td style='width:10%' class='reportHeader'>" . i18n('colParameters') . "</td>";
@@ -16,7 +32,7 @@ echo "<td align='center' style='width:40%; font-size: 150%; font-weight: bold;'>
 
 if (array_key_exists('reportName', $_REQUEST)) {
   echo '<table><tr><td class="reportTableHeader" style="text-align: center; padding: 3px 10px 3px 10px;">';
-  echo ucfirst($_REQUEST['reportName']);
+  echo htmlentities(ucfirst($_REQUEST['reportName']));
   echo '</td></tr></table>';
 }
 echo "</td>";

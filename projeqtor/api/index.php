@@ -18,7 +18,7 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
     		$table=$obj->getDatabaseTableName();
     		if (count($split)==2 and is_numeric($split[1]) ) {      // =============== uri = {OblectClass}/{ObjectId}
 	    		$id=$split[1];
-	    		$where="id=$id";   			
+	    		$where="id=".Sql::fmtId($id);   			
     		} else if (count($split)==2 and $split[1]=='all') {     // =============== uri = {OblectClass}/all
     			$where="1=1";
     		} else if (count($split)==4 and $split[1]=='updated') {  // =============== uri = {OblectClass}/update/{YYYYMMDDHHMNSS}/{YYYYMMDDHHMNSS}
@@ -71,7 +71,7 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 			          //$queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 			          // ' on ( ' . $externalTableAlias . ".refType='" . get_class($obj) . "' and " .  $externalTableAlias . '.refId = ' . $table . '.id )';
 			          //$queryWhere.=($queryWhere=='')?'':' and ';
-			          //$queryWhere.=$externalTableAlias . "." . $split[1] . ' ' 
+			          //$queryWhere.=$externalTableAlias . "." . $split[1] . ' '  //// !!! Sql Injection
 			          //       . $crit['sql']['operator'] . ' '
 			          //       . $critSqlValue;
 			        } else {
@@ -86,7 +86,7 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 			            $scope=substr($crit->sqlAttribute,2);
 			            $vers=new OtherVersion();
 			            $where.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
-			              ." where VERS.refType='".$objectClass."' and VERS.refId=".$table.".id and scope='".$scope."'"
+			              ." where VERS.refType=".Sql::str($objectClass)." and VERS.refId=".$table.".id and scope=".Sql::str($scope)
 			              ." and VERS.idVersion IN ".$critSqlValue
 			              .")";
 			          }

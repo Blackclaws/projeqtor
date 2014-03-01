@@ -26,7 +26,7 @@
     }
     $quickSearch=false;
     if ( array_key_exists('quickSearch',$_REQUEST) ) {
-      $quickSearch=$_REQUEST['quickSearch'];
+      $quickSearch=Sql::fmtStr($_REQUEST['quickSearch']);
     }
     if (! isset($outMode)) { $outMode=""; } 
        
@@ -57,7 +57,7 @@
     		$queryWhere.= ' or ' . $table . ".id=" . $quickSearch . "";
     	}
     	$queryWhere.=" or exists ( select 'x' from $noteTable " 
-    	                           . " where $noteTable.refType='$objectClass' "
+    	                           . " where $noteTable.refType=".Sql::str($objectClass)
     	                           . " and $noteTable.refId=$table.id " 
     	                           . " and $noteTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $quickSearch . "%' ) ";
     	$queryWhere.=" )";
@@ -75,19 +75,21 @@
     if (array_key_exists('listIdFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listIdFilter'];
       $param=strtr($param,"*?","%_");
+      $param=Sql::fmtStr($param);
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=$table.".".$obj->getDatabaseColumnName('id')." like '%".$param."%'";
     }
     if (array_key_exists('listNameFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listNameFilter'];
       $param=strtr($param,"*?","%_");
+      $param=Sql::fmtStr($param);
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=$table.".".$obj->getDatabaseColumnName('name')." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$param."%'";
     }
     if ( array_key_exists('objectType',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectType'])!='') {
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "='" . $_REQUEST['objectType'] . "'";
+        $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "=" . Sql::str($_REQUEST['objectType']);
       }
     }
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
@@ -405,7 +407,7 @@
 		      	$scope=substr($crit['sql']['attribute'],2);
 		      	$vers=new OtherVersion();
 		      	$queryWhere.=" or exists (select 'x' from ".$vers->getDatabaseTableName()." VERS "
-		      	  ." where VERS.refType='".$objectClass."' and VERS.refId=".$table.".id and scope='".$scope."'"
+		      	  ." where VERS.refType=".Sql::str($objectClass)." and VERS.refId=".$table.".id and scope=".Sql::str($scope)
 		      	  ." and VERS.idVersion IN ".$critSqlValue
 		      	  .")";
 		      }
