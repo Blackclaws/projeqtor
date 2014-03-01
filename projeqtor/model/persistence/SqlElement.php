@@ -1451,12 +1451,12 @@ abstract class SqlElement {
 				$keyId=null;
 				foreach ($obj as $col_name => $col_value) {
 					if (substr($col_name,0,1)=="_") {
-						// not a fiels, just for presentation purpose
+						// not a field, just for presentation purpose
 					} else if (strpos($this->getFieldAttributes($col_name),'calculated')!==false) {
 						// calculated field : not to be fetched
 					} else if (ucfirst($col_name) == $col_name) {
 						if (! $withoutDependentObjects) {
-							$obj->getDependantSqlElement($col_name);
+							$obj->$col_name=$obj->getDependantSqlElement($col_name);
 						}
 					} else {
 						$dbColName=$obj->getDatabaseColumnName($col_name);
@@ -1789,29 +1789,32 @@ abstract class SqlElement {
 	 * @param $objClass the name of the class of the included object
 	 * @return an object
 	 */
-	private function getDependantSqlElement($objClass) {
+	private function getDependantSqlElement($objClass) {		
 		$curId=$this->id;
 		if (! trim($curId)) {$curId=null;}
 		$obj = new $objClass;
 		$obj->refId=$this->id;
 		$obj->refType=get_class($this);
 		// If id is set, get the elements from Database
-		if ( ($curId != NULL) and ($obj instanceof SqlElement) ) {
+		if ( ($curId!=null) and ($obj instanceof SqlElement) ) {
 			// set the reference data
 			// build query
-			$query = "select id from " . $obj->getDatabaseTableName()
-			. ' where refId =' . $curId.
-       " and refType ='" . get_class($this) . "'" ;      
-			$result = Sql::query($query);
+			//$query = "select id from " . $obj->getDatabaseTableName()
+			//. ' where refId =' . $curId.
+      // " and refType ='" . get_class($this) . "'" ;      
+			//$result = Sql::query($query);
 			// if no element in database, will return empty object
-			if (Sql::$lastQueryNbRows > 0) {
+			//
+			// IMPROVEMENT ON V4.2.0 : attention, this may return results when it did not previously...
+			$obj=SqlElement::getSingleSqlElementFromCriteria($objClass, array('refId'=>$curId, 'refType'=>get_class($this)));
+			/*if (Sql::$lastQueryNbRows > 0) {
 				$line = Sql::fetchLine($result);
 				// get all data fetched for the dependant element
 				$obj->id=$line['id'];
-				$obj->getSqlElement();
-			}
+				$obj->getSqlElement();				
+			}*/
 		}
-		// set the dependant element
+		// set the dependant element	
 		return $obj;
 	}
 

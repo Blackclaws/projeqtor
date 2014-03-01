@@ -250,7 +250,6 @@ function setupLocale () {
   }
   return $paramIconSize;
 }*/
-//echo "SESSION=<br/>";var_dump ($_SESSION);echo "<br/><br/>";
 
 /** ============================================================================
  * Internationalization / same function exists in js exploiting same resources

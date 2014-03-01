@@ -53,7 +53,6 @@ $idTargetVersion="";
 if (array_key_exists('idTargetVersion',$_REQUEST)) {
   $idTargetVersion=trim($_REQUEST['idTargetVersion']);
 }
-//var_dump($_REQUEST);
 $cptOk=0;
 $cptError=0;
 $cptWarning=0;

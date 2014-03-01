@@ -38,7 +38,7 @@ abstract class SqlDirectElement {
           if (substr($col_name,0,1)=="_") {
             // not a fiels, just for presentation purpose
           } else if (ucfirst($col_name) == $col_name) {
-            $obj->getDependantSqlElement($col_name);
+            //$obj->{$col_name}=$obj->getDependantSqlElement($col_name);
           } else {
             $obj->{$col_name}=$line[$obj->getDatabaseColumnName($col_name)];
           }

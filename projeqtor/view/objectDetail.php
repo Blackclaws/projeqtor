@@ -68,7 +68,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	}
 	$detailWidth=null; // Default detail div width
 	// Check screen resolution, to determine max field width (largeWidth)
-	//var_dump($obj);
 	if (array_key_exists('destinationWidth',$_REQUEST)) {
 		$detailWidth=$_REQUEST['destinationWidth'];
 	} else {

@@ -340,7 +340,6 @@
 	            $queryOrderBy .= " " . $externalTableAlias . "." . $externalObj->getDatabaseColumnName('wbsSortable') . " ";
 	          } 
 	        } else {      
-	        //var_dump($fld); echo '<br/>';
 	          // Simple field to add to request 
 	          $querySelect .= $table . '.' . $obj->getDatabaseColumnName($fld) . ' as ' . ((Sql::isPgsql())?'"'.strtr($fld,'.','_').'"':strtr($fld,'.','_'));
 	        }
