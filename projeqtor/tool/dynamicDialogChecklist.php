@@ -67,59 +67,69 @@ if ($print) $canUpdate=false;
 <input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
 <?php }?>
 <table style="width: 100%;">
-  <tr><td style="width: 100%;">
-	  <table width="100%">
+  <tr>
+    <td style="width: 100%;">
+	    <table width="100%;" >
 <?php foreach($defLines as $line) {
 	      if (isset($linesVal[$line->id])) {
           $lineVal=$linesVal[$line->id];
         } else {
           $lineVal=new ChecklistLine();
         }?>	 
-		  <tr>
-<?php if ($line->check01) {?>
-			  <td class="noteData" style="position: relative; border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
+		    <tr>
+<?php   if ($line->check01) {?>
+			    <td class="noteData" style="position: relative; border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
 				  <?php echo htmlEncode( $line->name);?> :   
-		    </td>
-			  <td class="noteData" style="border-left:0;">
-			    <table witdh="100%"><tr>
-					<?php for ($i=1;$i<=5;$i++) {
-						$check='check0'.$i;
-						$title='title0'.$i;
-						$value='value0'.$i;?>
-						<td style="min-width:100px; white-space:nowrap; vertical-align:top;" title="<?php echo ($print)?'':$line->$title;?>" >
-						<?php if ($line->$check) {
-						  $checkName="check_".$line->id."_".$i;
-						  if ($print) {
-                $checkImg="checkedKO.png";
-                if ($lineVal->$value) {
-	               $checkImg= 'checkedOK.png';
-                }
-                echo '<img src="img/' . $checkImg . '" />&nbsp;'.$line->$check.'&nbsp;&nbsp;';
-					    } else {?>
-						  <div dojoType="dijit.form.CheckBox" type="checkbox"
-				        <?php if ($line->exclusive and ! $print) {?>onClick="checkClick(<?php echo $line->id;?>, <?php echo $i;?>)" <?php }?>
-				        name="<?php echo $checkName;?>" id="<?php echo $checkName;?>"
-				        <?php if (! $canUpdate) echo 'readonly';?>
-		            <?php if ($lineVal->$value) { echo 'checked'; }?> ></div>
-						    <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo $line->$check;?>&nbsp;&nbsp;</span>
+		      </td>
+			    <td class="noteData" style="border-left:0;">
+			      <table witdh="100%" style="width:100%;">
+			        <tr>
+				<?php for ($i=1;$i<=5;$i++) {
+								$check='check0'.$i;
+								$title='title0'.$i;
+								$value='value0'.$i;?>
+								<td style="min-width:100px;<?php if ($print) echo 'width:15%;'?>white-space:nowrap; vertical-align:top;" title="<?php echo ($print)?'':$line->$title;?>" >
+					<?php if ($line->$check) {
+								  $checkName="check_".$line->id."_".$i;
+								  if ($print) {
+		                $checkImg="checkedKO.png";
+		                if ($lineVal->$value) {
+			               $checkImg= 'checkedOK.png';
+		                }
+		                echo '<img src="img/' . $checkImg . '" />&nbsp;'.$line->$check.'&nbsp;&nbsp;';
+							    } else {?>
+								  <div dojoType="dijit.form.CheckBox" type="checkbox"
+						        <?php if ($line->exclusive and ! $print) {?>onClick="checkClick(<?php echo $line->id;?>, <?php echo $i;?>)" <?php }?>
+						        name="<?php echo $checkName;?>" id="<?php echo $checkName;?>"
+						        <?php if (! $canUpdate) echo 'readonly';?>
+				            <?php if ($lineVal->$value) { echo 'checked'; }?> ></div>
+								  <span style="cursor:pointer;" onClick="dojo.byId('<?php echo $checkName;?>').click();"><?php echo $line->$check;?>&nbsp;&nbsp;</span>
 					  <?php } 
-               }?></td>
-					<?php }?>
-					</td>
-				<td style="text-align:right; color: #A0A0A0;" valign="top"><div style="float: right"><?php 
-				  if ($lineVal->checkTime) {
-            echo '<i>'.SqlList::getNameFromId('User',$lineVal->idUser);
-            echo '<br/>'.htmlFormatDateTime($lineVal->checkTime,false).'</i>';
-            
-         }?></div></td>
+		            }?>
+		            </td>
+				<?php }?>
+					
+				<td style="text-align:right; width:15px; color: #A0A0A0;" valign="top">				  
+				<?php 
+				  if ($lineVal->checkTime and !$print) {
+            echo '<img src="../view/img/note.png"'; 
+            echo 'title="'.SqlList::getNameFromId('User',$lineVal->idUser)."\n";
+            echo htmlFormatDateTime($lineVal->checkTime,false).'"';
+            echo '/>';
+         }?></td>
 				<td >&nbsp;</td>
-				<td valign="top"> <textarea dojoType="dijit.form.Textarea" 
-          id="checklistComment_<?php echo $line->id;?>" name="checklistComment_<?php echo $line->id;?>"
-          style="width: 150px;min-height: 25px; font-size: 90%"
-          maxlength="4000"
-          class="input"><?php echo $lineVal->comment;?></textarea>
+				<td valign="top" style="width: 150px;"> 
+				  <?php if (! $print) {?>
+				  <textarea dojoType="dijit.form.Textarea" 
+            id="checklistLineComment_<?php echo $line->id;?>" name="checklistLineComment_<?php echo $line->id;?>"
+            style="width: 150px;min-height: 25px; font-size: 90%"
+            maxlength="4000"
+            class="input"><?php echo $lineVal->comment;?></textarea>
+          <?php } else {
+            echo htmlEncode($lineVal->comment); 
+                }?>  
 				</td>
-				  </tr></table>
+				  </tr></table></td>
 				
 <?php } else { ?>
 				<td class="reportTableHeader" colspan="2" style="text-align:center" title="<?php echo $line->title;?>">
@@ -133,6 +143,22 @@ if ($print) $canUpdate=false;
         <td class="noteDataClosetable">&nbsp;</td>
 	      <td class="noteDataClosetable">&nbsp;</td>
 	    </tr>
+	    <?php if (! $print or $checklist->comment) {?>
+	    <tr>
+	      <td ><?php echo i18n('colComment')?> : </td>
+	      <td>
+	      <?php if (! $print) {?>
+				  <textarea dojoType="dijit.form.Textarea" 
+            id="checklistComment" name="checklistComment"
+            style="width: 100%;font-size: 90%"
+            maxlength="4000"
+            class="input"><?php echo $checklist->comment;?></textarea>
+          <?php } else {
+            echo htmlEncode($checklist->comment); 
+                }?>  
+	      </td>
+	    </tr>
+	    <?php }?>
 	  </table>
   </td></tr>
  <tr><td style="width: 100%;">&nbsp;</td></tr>
