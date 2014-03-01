@@ -436,7 +436,7 @@ abstract class SqlElement {
 			if ( ($control=='OK' or strpos($control,'id="confirmControl" value="save"')>0 )
 			and property_exists($class, $class.'PlanningElement')) {
 				$pe=$class.'PlanningElement';
-				$controlPe=$this->$pe->deleteControl();
+				$controlPe=$this->$pe->control();
 				if ($controlPe!='OK') {
 					$control=$controlPe;
 				}

@@ -16,6 +16,8 @@ class Sql {
   private static $dbName;
   private static $dbVersion=NULL;
 
+  private static $isEnsembleAllowed=false;
+   
   // Visible Information
   public static $lastQuery=NULL;           // the string of the last executed query
   public static $lastQueryType=NULL;       // the type of the last executed query : SELECT or UPDATE
@@ -48,6 +50,10 @@ class Sql {
       traceLog("SQL WARNING : empty query");
       return FALSE;
     }
+    // Security check for Sql Injection
+    // Reject ;
+    // Reject UNION, INTERSECT
+    
     // Execute query
     $cnx = self::getConnection();
     self::$lastQueryErrorMessage=NULL;
@@ -326,6 +332,13 @@ class Sql {
   	} else {
   	  return $id;
     }
+  }
+  
+  public static function fmtStr($str) {
+  	// Looks like Sql::str, but without surrounding quotes
+  	$res=self::str($str);
+  	$res=substr($res,1,strlen($res)-2);
+  	return $res; 
   }
   
 }

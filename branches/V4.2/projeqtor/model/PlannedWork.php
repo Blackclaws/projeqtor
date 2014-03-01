@@ -99,6 +99,11 @@ class PlannedWork extends GeneralWork {
   	SqlElement::$_cachedQuery['Project']=array();
   	SqlElement::$_cachedQuery['Affectation']=array();
   	
+  	$workUnit=Work::getWorkUnit();
+  	$hoursPerDay=Work::getHoursPerDay();
+  	$hour=round(1/$hoursPerDay,10);
+  	$halfHour=round(1/$hoursPerDay/2,10);
+  	
     $withProjectRepartition=true;
     $result="";
     $startTime=time();
@@ -412,7 +417,7 @@ class PlannedWork extends GeneralWork {
           	}
             
             if ($delai and $delai>0) { 
-              $regul=round(($ass->leftWork/$delai)+0.001,2);
+              $regul=round(($ass->leftWork/$delai)+0.000005,5);                            
               $regulDone=0;
               $interval=0;
               $regulTarget=0;
@@ -434,7 +439,7 @@ class PlannedWork extends GeneralWork {
               }
               if ($regul) {
               	  $tmpStep=$step;
-              	  if (isset($res[$currentDate])) { $tmpStep;}
+              	  //if (isset($ress[$currentDate])) { $tmpStep;} // ????
                   $interval+=$tmpStep;
               }
               if ($planned < $capacity)  {
@@ -478,7 +483,11 @@ class PlannedWork extends GeneralWork {
                   if ($value>$toPlan) {
                     $value=$toPlan;
                   }
-                  $value=round($value,1);
+                  if ($workUnit=='days') {
+                    $value=round($value,1);
+                  } else {
+                  	$value=round($value/$halfHour,0)*$halfHour;
+                  }
                   if ($profile=="FULL" and $toPlan<1 and $interval<$delai) {
                     $value=0;
                   }

@@ -2106,13 +2106,15 @@ function securityCheckRequest() {
 	$pages=array('page','directAccessPage');
 	foreach($parameters as $param) {		
 		if (isset($_REQUEST[$param])) {
-			$paramVal=$_REQUEST[$param];
-		  if (trim($paramVal) and htmlEntities($paramVal)!=$paramVal) {
-		    traceHack("projeqtor->securityCheckRequest, _REQUEST['$param']=$paramVal");
-		    exit;
-		  }
+			$paramVal=$_REQUEST[$param];		  
 		  if (in_array($param,$pages)) {	  	
 		  	securityCheckPage($paramVal);
+		  	$pos=strpos($paramVal,'?');
+		  	if ($pos) { $paramVal=substr($paramVal,0,$pos);}
+		  }
+		  if (trim($paramVal) and htmlEntities($paramVal)!=$paramVal) {
+		  	traceHack("projeqtor->securityCheckRequest, _REQUEST['$param']=$paramVal");
+		  	exit;
 		  }
 		}
 	}
@@ -2141,7 +2143,6 @@ function getSessionValue($code, $default=null) {
 	}
 	return $_SESSION[$code];
 }
-
 //
 
 ?>

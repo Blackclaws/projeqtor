@@ -131,9 +131,9 @@ if ($idFilterAttribute and $idFilterOperator) {
   		$refObjTable=$refObj->getDatabaseTableName();
   		$table=$obj->getDatabaseTableName();
   		$arraySql["value"]=" ( select 'x' from $refObjTable "
-  		. " where $refObjTable.refType='$filterObjectClass' "
+  		. " where $refObjTable.refType='".Sql::str($filterObjectClass)."' "
   		. " and $refObjTable.refId=$table.id "
-  		. " and $refObjTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $filterValue . "%' ) ";
+  		. " and $refObjTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . Sql::str($filterValue) . "%' ) ";
   	} else {
       $arrayDisp["operator"]=i18n("contains");
       $arraySql["operator"]=(Sql::isMysql())?'LIKE':'ILIKE';

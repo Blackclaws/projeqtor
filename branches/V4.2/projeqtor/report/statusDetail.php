@@ -59,7 +59,7 @@ if (! $showIdle) {
  $query .= " and idle=0 ";
 }
 if ($paramIssuer!="") {
- $query .= " and idUser='" . $paramIssuer;
+ $query .= " and idUser=" . Sql::fmtId($paramIssuer);
 }
 if ($paramResponsible!="") {
  $query .= " and idResource='" . $paramResponsible; 
