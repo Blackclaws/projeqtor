@@ -20,6 +20,11 @@ if (! array_key_exists('checklistObjectId',$_REQUEST)) {
 	throwError('checklistObjectId parameter not found in REQUEST');
 }
 $checklistObjectId=trim($_REQUEST['checklistObjectId']);
+if (! array_key_exists('checklistComment',$_REQUEST)) {
+	throwError('checklistCommentd parameter not found in REQUEST');
+}
+$comment=trim($_REQUEST["checklistComment"]);
+
 
 $checklistDefinition=new ChecklistDefinition($checklistDefinitionId);
 $checklist=new Checklist($checklistId);
@@ -34,6 +39,7 @@ Sql::beginTransaction();
 $checklist->refType=$checklistObjectClass;
 $checklist->refId=$checklistObjectId;
 $checklist->idChecklistDefinition=$checklistDefinitionId;
+$checklist->comment=$comment;
 $result=$checklist->save();
 if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   foreach($checklistDefinition->_ChecklistDefinitionLine as $line) {
@@ -61,6 +67,12 @@ if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
 			} else {
 				$valLine->$valueName=0;
 			}
+		}
+		$cmtName='checklistLineComment_'.$line->id;
+		if (isset($_REQUEST[$cmtName])) {
+			$cmt=$_REQUEST[$cmtName];
+			$valLine->comment=$cmt;
+			if ($cmt) $checkedCpt+=1;
 		}
 	  $resultLine="";
 		if ($checkedCpt==0) {
