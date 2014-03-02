@@ -534,6 +534,7 @@ class User extends SqlElement {
   }
   
   public static function resetAllVisibleProjects($idProject=null, $idUser=null) {
+  	if (! isset($_SESSION['user'])) return;
   	$user=$_SESSION['user'];
     if ($idUser) {
       if ($idUser==$user->id) {
