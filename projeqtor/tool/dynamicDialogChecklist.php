@@ -145,7 +145,7 @@ if ($print) $canUpdate=false;
 	    </tr>
 	    <?php if (! $print or $checklist->comment) {?>
 	    <tr>
-	      <td ><?php echo i18n('colComment')?> : </td>
+	      <td style="text-align: right;"><?php echo i18n('colComment')?>&nbsp;:&nbsp;</td>
 	      <td>
 	      <?php if (! $print) {?>
 				  <textarea dojoType="dijit.form.Textarea" 
