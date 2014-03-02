@@ -11,7 +11,10 @@ class CommandType extends SqlElement {
   public $name;
   public $code;
   public $idWorkflow;
-  public $_spe_CommandType;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_col_2_2_behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $mandatoryResourceOnHandled;
@@ -26,9 +29,6 @@ class CommandType extends SqlElement {
   public $_lib_statusMustChangeIdle;
   public $lockCancelled;
   public $_lib_statusMustChangeCancelled;
-  public $sortOrder=0;
-  public $idle;
-  public $_col_2_2;
   
   // Define the layout that will be used for lists
   private static $_layout='
