@@ -53,7 +53,7 @@ class Importable extends SqlElement {
 		} else {
 			$fileType=$extension;
 		}
-		
+		unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
 		if($extension!=$fileType){
 			errorLog("ERROR - Type : File Type and Type selected are not consistent");
 			errorLog("File Name : ".$fileName);

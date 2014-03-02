@@ -119,6 +119,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
     //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
+    var aesLoginHash="<?php echo md5(session_id());?>";
     var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
     var pdfInNewWindow=<?php echo (getPrintInNewWindow('pdf'))?'true':'false';?>;
     var alertCheckTime='<?php echo Parameter::getGlobalParameter('alertCheckTime');?>';
