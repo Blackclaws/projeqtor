@@ -21,6 +21,8 @@ class ColumnSelector extends SqlElement {
 	public $_from;
 	public $_displayName;
 
+	public $_noHistory=true; // Will never save history for this object
+	
 	private static $cachedLists=array();
 	private static $allFields=true; // Keep it to false as long as addAllFields() is not fiabilized
 	/** ==========================================================================

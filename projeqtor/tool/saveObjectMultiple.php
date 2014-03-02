@@ -53,6 +53,7 @@ $idTargetVersion="";
 if (array_key_exists('idTargetVersion',$_REQUEST)) {
   $idTargetVersion=trim($_REQUEST['idTargetVersion']);
 }
+unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
 $cptOk=0;
 $cptError=0;
 $cptWarning=0;

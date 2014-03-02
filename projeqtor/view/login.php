@@ -41,6 +41,7 @@
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
     var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
+    var aesLoginHash="<?php echo md5(session_id());?>";
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();
@@ -87,8 +88,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                     changePassword=false;
                     quitConfirmed=true;
                     noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
+                    var crypted=Aes.Ctr.encrypt(dijit.byId('login').get('value'), aesLoginHash, 256);
                     dojo.xhrGet({
-                      url: '../tool/getHash.php?username='+dijit.byId('login').get('value'),
+                      url: '../tool/getHash.php?username='+crypted,
                       handleAs: "text",
                       load: function (data) {
                         cryptData(data);
@@ -154,8 +156,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                             showWait();
                             dojo.byId('login').focus();
                             changePassword=true;
-                            dojo.xhrGet({
-                              url: '../tool/getHash.php?username='+dijit.byId('login').get('value'),
+                            var crypted=Aes.Ctr.encrypt(dijit.byId('login').get('value'), aesLoginHash, 256);
+                            dojo.xhrGet({  
+                              url: '../tool/getHash.php?username='+crypted,
                               handleAs: "text",
                               load: function (data) {
                                 cryptData(data);  
