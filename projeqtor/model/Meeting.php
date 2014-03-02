@@ -456,7 +456,6 @@ class Meeting extends SqlElement {
   public Static function removeDupplicateAttendees($refType, $refId) {
   	$obj=new $refType($refId);
   	if (! $refId) return;
-  	echo "oldAttendee=".htmlentities($obj->attendees);
   	$addr=explode(', ',$obj->attendees);
   	$mails=array();
   	foreach ($addr as $ind=>$add) {
