@@ -342,6 +342,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false) {
+		$outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
 scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $print)");		
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
@@ -394,16 +395,22 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 		if (isset($_REQUEST['destinationWidth'])) {
 		  $width=($_REQUEST['destinationWidth'])-155-30;
 		} 
-		echo '<table class="imputationTable">';
+		echo '<table class="imputationTable" style="width:100%">';
 		echo '<TR class="ganttHeight">';
 		echo '<td class="label" ><label for="imputationComment" >'.i18n("colComment").'&nbsp;:&nbsp;</label></td>';
+		if (! $print) {
 		echo '<td><textarea dojoType="dijit.form.Textarea" id="imputationComment" name="imputationComment"'
 		           .' onChange="formChanged();"'
                .' style="width: '.$width.'px;" maxlength="4000" class="input">'.$period->comment.'</textarea></td>';
+		} else {
+			echo htmlEncode($period->comment,'print');
+		}
 		echo ' </TR>';
 		echo '</table>';
-		echo '<input type="hidden" id="resourceCapacity" value="'.$capacity.'" />';
-		echo '<table class="imputationTable">';
+		if (! $print) {
+		  echo '<input type="hidden" id="resourceCapacity" value="'.$capacity.'" />';
+		}
+		echo '<table class="imputationTable" style="width:'.(($outMode=='pdf')?'68':'100').'%">';
 		echo '<TR class="ganttHeight">';
 		echo '  <TD class="ganttLeftTopLine" ></TD>';
 		echo '  <TD class="ganttLeftTopLine" colspan="5">';
@@ -411,7 +418,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 		echo '</td>';
 		if ($period->submitted) {		
 			$msg='<div class="imputationSubmitted"><nobr>'.i18n('submittedWorkPeriod',array(htmlFormatDateTime($period->submittedDate))).'</nobr></div>';	
-			if (! $period->validated and ($resourceId==$user->id or $canValidate)) {
+			if (!$print and ! $period->validated and ($resourceId==$user->id or $canValidate)) {
 				echo '<td style="width:1%">'.$msg.'</td>'; 
 				echo '<td style="width:1%">';
 			  echo '<button id="unsubmitButton" jsid="unsubmitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
@@ -423,7 +430,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 			} else {
 				echo '<td style="width:1%">'.$msg.'</td>'; 
 			}
-		} else if ($resourceId==$user->id and ! $period->validated) {
+		} else if (!$print and $resourceId==$user->id and ! $period->validated) {
 			echo '<td style="width:1%">';
 	    echo '<button id="submitButton" dojoType="dijit.form.Button" showlabel="true" >'; 
 	    echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("submit");</script>';
@@ -436,7 +443,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 			$locked=true;
 			$res=SqlList::getNameFromId('User', $period->idLocker);
 			$msg='<div class="imputationValidated"><nobr>'.i18n('validatedWorkPeriod',array(htmlFormatDateTime($period->validatedDate),$res)).'</nobr></div>';
-		  if ($canValidate) {
+		  if (!$print and $canValidate) {
 		  	echo '<td style="width:1%">'.$msg.'</td>';
 		  	//echo '<div xdojoType="dijit.Tooltip" xconnectId="unvalidateButton" xposition="above" >'.$msg.'</div>';
 		  	echo '<td style="width:1%">';
@@ -448,7 +455,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 		  } else {
 		  	echo '<td style="width:1%">'.$msg.'</td>';
 		  }
-		} else if ($canValidate) {
+		} else if (!$print and $canValidate) {
 			echo '<td style="width:1%">';
 		  echo '<button id="validateButton" dojoType="dijit.form.Button" showlabel="true" >'; 
       echo '<script type="dojo/connect" event="onClick" args="evt">submitWorkPeriod("validate");</script>';
@@ -575,7 +582,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
       $wbsLevelArray[$wbs]=$level;
 			//$level=(strlen($line->wbsSortable)+1)/4;
 			$levelWidth = ($level-1) * 16;
-			echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';
+	    echo '<div style="float: left;width:' . $levelWidth . 'px;">&nbsp;</div>';
 			echo '</td>';
 			if (! $print) {
 				if ($rowType=="group") {
@@ -617,12 +624,13 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 					$line->description=$descriptionActivity->description;
 				}
 			}
-			echo '<td>' . $line->name . '</td>';
-			if (isset($line->functionName) and $line->functionName) {
-				echo '<div style="float:right; color:#8080DD; font-size:80%;;font-weight:normal;">' . $line->functionName . '</div>';
+			echo '<td width="100%">' . $line->name ;
+			if (isset($line->functionName) and $line->functionName and $outMode!="pdf") {
+					echo '<div style="float:right; color:#8080DD; font-size:80%;font-weight:normal;">' . $line->functionName . '</div>';
 			}
+			echo '</td>';
 			if ($line->comment and !$print) {
-				echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+					echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
 			}
 			echo '</tr></table>';
 			echo '</td>';
@@ -769,8 +777,8 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 		$curDate=$startDate;
 		$nbFutureDays=Parameter::getGlobalParameter('maxDaysToBookWork');
 		$maxDateFuture=date('Y-m-d',strtotime("+".$nbFutureDays." days", strtotime($today)));
-		echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
-		echo '<input type="hidden" value="'.$maxDateFuture.'" />';
+		if (! $print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
+		if (! $print) echo '<input type="hidden" value="'.$maxDateFuture.'" />';
 		for ($i=1; $i<=$nbDays; $i++) {
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
 			if ($today==$curDate) {
