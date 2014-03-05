@@ -34,7 +34,7 @@ class WorkElement extends SqlElement {
    * @return void
    */
   function __construct($id = NULL) {
-    parent::__construct($id);
+    parent::__construct($id);   
   }
 
   /** ==========================================================================
@@ -53,9 +53,9 @@ class WorkElement extends SqlElement {
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
-  protected function getStaticFieldsAttributes() {
+  protected function getStaticFieldsAttributes() { 	
     if (! $this->id) {
-      self::lockRealWork();
+      //self::lockRealWork();
     }
     return self::$_fieldsAttributes;
   }
