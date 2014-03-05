@@ -34,8 +34,7 @@ switch ($type) {
 		break;
 	default:
 		traceHack('parameter : unknown parameter type '.$type);
-		exit;
-		 
+		exit;		 
 }
 
 /** =========================================================================
@@ -185,13 +184,10 @@ function drawTableFromObjectList($objectList) {
       title="<?php echo i18n('buttonSaveParameters');?>"
       iconClass="dijitEditorIcon dijitEditorIconSave"><script
       type="dojo/connect" event="onClick" args="evt">
-        	submitForm("../tool/saveParameter.php","resultDiv", "parameterForm", true);
-<?php if ($type=='habilitation') {
-?>
+<?php if ($type=='habilitation') {?>
           forceRefreshMenu="<?php echo $type;?>";
-<?php	
-}
-?>
+<?php	}?>
+        	submitForm("../tool/saveParameter.php","resultDiv", "parameterForm", true);
           </script></button>
     <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveParameter")?></div>
     </td>
