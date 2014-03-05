@@ -209,7 +209,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         }
         echo 'gotoElement("' . $class . '","' . $id . '");';
         $firstPage="";
-      } else if (Parameter::getUserParameter('hideMenu')!='NO'){
+      } else if (Parameter::getUserParameter('hideMenu') and Parameter::getUserParameter('hideMenu')!='NO'){
         echo 'hideShowMenu();';
       }
       if ($firstPage) {
