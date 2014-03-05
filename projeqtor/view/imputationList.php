@@ -188,11 +188,12 @@ $rangeValue=$currentYear . $currentWeek;
        <input type="hidden" name="userId" id="userId" value="<?php echo $user->id;?>"/>
        <input type="hidden" name="rangeType" id="rangeType" value="<?php echo $rangeType;?>"/>
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
-       <input type="checkbox" name="idle" id="idle" style="display: none;">     
-       <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
+       <input type="checkbox" name="idle" id="idle" style="display: none;" />     
+       <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;" />
        <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
        <input type="hidden" id="outMode" name="outMode" value="" />
-      <?php ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, true);?>
+      <?php if (! isset($print) ) {$print=false;}
+      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $print);?>
      </form>
   </div>
 </div>
