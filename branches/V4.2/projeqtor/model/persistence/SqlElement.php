@@ -1797,22 +1797,22 @@ abstract class SqlElement {
 		$obj->refType=get_class($this);
 		// If id is set, get the elements from Database
 		if ( ($curId!=null) and ($obj instanceof SqlElement) ) {
+			$obj->getSqlElement();
 			// set the reference data
 			// build query
-			//$query = "select id from " . $obj->getDatabaseTableName()
-			//. ' where refId =' . $curId.
-      // " and refType ='" . get_class($this) . "'" ;      
-			//$result = Sql::query($query);
+			$query = "select id from " . $obj->getDatabaseTableName()
+			. ' where refId =' . $curId.
+       " and refType ='" . get_class($this) . "'" ;      
+			$result = Sql::query($query);
 			// if no element in database, will return empty object
 			//
 			// IMPROVEMENT ON V4.2.0 : attention, this may return results when it did not previously...
-			$obj=SqlElement::getSingleSqlElementFromCriteria($objClass, array('refId'=>$curId, 'refType'=>get_class($this)));
-			/*if (Sql::$lastQueryNbRows > 0) {
+			if (Sql::$lastQueryNbRows > 0) {
 				$line = Sql::fetchLine($result);
 				// get all data fetched for the dependant element
 				$obj->id=$line['id'];
 				$obj->getSqlElement();				
-			}*/
+			}
 		}
 		// set the dependant element	
 		return $obj;
@@ -3200,6 +3200,11 @@ abstract class SqlElement {
 	}
 	
 	public function getReferenceUrl() {
+		// FIX FOR IIS
+		if (!isset($_SERVER['REQUEST_URI'])) {
+			$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
+			if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
+		}
 		$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
     .$_SERVER['SERVER_NAME']
     .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
