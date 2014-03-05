@@ -1000,11 +1000,11 @@ function finalizeMessageDisplay(destination, validationType) {
     	noDisconnect=true;
         quitConfirmed=true;        
     	//window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
-    	forceRefreshMenu="";
     	dojo.byId("directAccessPage").value="parameter.php";
         dojo.byId("menuActualStatus").value=menuActualStatus;
         dojo.byId("p1name").value="type";
         dojo.byId("p1value").value=forceRefreshMenu;
+        forceRefreshMenu="";
         dojo.byId("directAccessForm").submit();   	
     }
   } else if (lastOperationStatus.value=="INVALID" || lastOperationStatus.value=="CONFIRM") {
