@@ -1605,7 +1605,7 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
 	echo '<td class="noteHeader" style="width:5%">' . i18n('colExclusiveShort') . '</td>';
 	echo '</tr>';
 
-	usort($lines,"ChecklistDefinitionline::sort");	
+	usort($lines,"ChecklistDefinitionLine::sort");	
 	foreach($lines as $line) {
 		echo '<tr>';
 		if ( ! $print) {
@@ -2984,6 +2984,6 @@ if ( ! $noselect and isset($obj->_ChecklistDefinitionLine)) { ?> <br />
 	$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
 	$list=new ListYesNo($habil->rightAccess);
 	if ($list->code=='YES' and count($cdList)>0 and $obj->id) {
-     include_once "../tool/dynamicDialogChecklist.php";
+		include_once "../tool/dynamicDialogChecklist.php";
 	}
 }?>
