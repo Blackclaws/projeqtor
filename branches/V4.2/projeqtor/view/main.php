@@ -179,7 +179,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           if ($menuActualStatus!='visible') {
             echo 'hideShowMenu();';
           }
-        }  
+        }         
         for ($i=1;$i<=9;$i++) {
           $pName='p'.$i.'name';
           $pValue='p'.$i.'value';
