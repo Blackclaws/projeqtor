@@ -1,4 +1,9 @@
 <?php
+// FIX FOR IIS
+if (!isset($_SERVER['REQUEST_URI'])) {
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
+	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
+}
 $url=$_SERVER['REQUEST_URI'];
 $srv=$_SERVER['SERVER_ADDR'];
 $pos=strpos($url,'/test/');
