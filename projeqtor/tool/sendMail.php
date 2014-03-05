@@ -38,6 +38,11 @@
     $arrayFrom[]='${adminMail}';
     $arrayTo[]=Parameter::getGlobalParameter('paramAdminMail');
     // url to application
+    // FIX FOR IIS
+    if (!isset($_SERVER['REQUEST_URI'])) {
+    	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
+    	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
+    }
     $url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
        .$_SERVER['SERVER_NAME']
        .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')

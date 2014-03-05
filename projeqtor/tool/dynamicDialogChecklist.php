@@ -46,7 +46,7 @@ if (!$checklistDefinition or !$checklistDefinition->id) {
 }
 $cdl=new ChecklistDefinitionLine();
 $defLines=$cdl->getSqlElementsFromCriteria(array('idChecklistDefinition'=>$checklistDefinition->id),false, null, 'sortOrder asc');
-//usort($defLines,"ChecklistDefinitionline::sort");
+//usort($defLines,"ChecklistDefinitionLine::sort");
 $cl=new ChecklistLine();
 $linesTmp=$cl->getSqlElementsFromCriteria(array('idChecklist'=>$checklist->id));
 
