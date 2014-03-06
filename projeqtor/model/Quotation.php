@@ -65,7 +65,6 @@ class Quotation extends SqlElement {
                                   "name"=>"required", 
                                   "idOrderType"=>"required",
                                   "idStatus"=>"required",
-  								                "creationDate"=>"hidden",	
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
@@ -80,8 +79,7 @@ class Quotation extends SqlElement {
   		                      'initialEndDate'=>'plannedEndDate',
   		                      'initialWork'=>'plannedWork',
   		                      'initialAmount'=>'plannedAmount',
-  		                      'initialPricePerDayAmount'=>'pricePerDay',
-  													'creationDate'=>'receptionDateTime');
+  		                      'initialPricePerDayAmount'=>'pricePerDay');
   
 //  private static $_databaseColumnName = array('idResource'=>'idUser');
     

@@ -734,15 +734,17 @@ table.dojoDndAvatar {
 }
 
 .dijitDisabled .dijitArrowButtonInner {
-  background-position: -28px center;;
+  background-position: -28px center;
 }
 
 .dijitUpArrowButton .dijitArrowButtonInner {
-  background-position: -21px center;;
+  background-position: 0px !important;
+  background-image: url(images/comboArrowUp.gif) !important;
+  margin-left: -4px ! important;
 }
 
 .dijitDisabled .dijitUpArrowButton .dijitArrowButtonInner {
-  background-position: -49px center;;
+  background-position: -49px center;
 }
 
 .dijitComboBox .dijitArrowButton .dijitArrowButtonInner {

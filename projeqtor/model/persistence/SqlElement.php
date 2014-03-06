@@ -3363,8 +3363,17 @@ abstract class SqlElement {
 		} else {
 			$typeObj=new Type();
 		}
+		$year=date('Y');
+		$month=date('m');
+		if (property_exists($this,'creationDate')) {
+			$year=substr($this->creationDate,0,4);
+			$month=substr($this->creationDate,5,2);
+		} else if (property_exists($this,'creationDateTime')) {
+			$year=substr($this->creationDateTime,0,4);
+			$month=substr($this->creationDateTime,5,2);
+		}
 		$prefix=str_replace(array('{PROJ}', '{TYPE}','{YEAR}','{MONTH}'), 
-				                array($projObj->projectCode,$typeObj->code, date('Y'), date('m')),
+				                array($projObj->projectCode,$typeObj->code, $year, $month),
 				                $fmtPrefix);
 		$query="select max(reference) as ref from " . $this->getDatabaseTableName();
 		$query.=" where reference like '" . $prefix . "%'";
