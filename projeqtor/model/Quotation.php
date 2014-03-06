@@ -12,8 +12,8 @@ class Quotation extends SqlElement {
   public $idProject;
   public $idQuotationType;
   public $name;
-  public $creationDate;
   public $idUser;
+  public $creationDate;
   public $Origin;
   public $idClient;
   public $idContact;

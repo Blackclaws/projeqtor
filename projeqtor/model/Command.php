@@ -15,8 +15,8 @@ class Command extends SqlElement {
   public $idClient;
   public $idContact;
   public $externalReference;  
-  public $creationDate;
   public $idUser;
+  public $creationDate;
   public $Origin;
   public $description;
   public $_tab_2_2 = array('initial', 'validated', 'startDate', 'endDate');
