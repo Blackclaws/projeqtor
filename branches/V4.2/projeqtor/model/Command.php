@@ -76,7 +76,6 @@ class Command extends SqlElement {
                                   "name"=>"required", 
                                   "idCommandType"=>"required",
                                   "idStatus"=>"required",
-  								                "creationDate"=>"hidden",	
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
