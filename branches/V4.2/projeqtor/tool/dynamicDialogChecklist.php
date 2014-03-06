@@ -65,7 +65,9 @@ if ($print) $canUpdate=false;
 <input type="hidden" name="checklistId" value="<?php echo $checklist->id;?>" />
 <input type="hidden" name="checklistObjectClass" value="<?php echo $objectClass;?>" />
 <input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
-<?php }?>
+<?php } else {?>
+<table style="width: 100%;"><tr><td class="section"><?php echo i18n("Checklist");?></td></tr></table>	
+<?php }?> 
 <table style="width: 100%;">
   <tr>
     <td style="width: 100%;">
