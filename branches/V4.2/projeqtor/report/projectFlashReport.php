@@ -320,7 +320,7 @@ $showCost=1;
       <?php displayHeader("Situation à:");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
-      <?php displayField(htmlFormatDate(date("Y-i-d")));?>
+      <?php displayField(htmlFormatDate(date("Y-m-d")));?>
     </div>
     
     <?php $titleLeft=round($width*25/100,0);
@@ -351,7 +351,16 @@ $showCost=1;
       <?php displayHeader("Direction:");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
-      <?php echo SqlList::getNameFromId('Client',$proj->idClient);?>
+      <?php $cli=new Client($proj->idClient);
+      if ($cli->clientCode) {
+        $name=$cli->clientCode;
+      } else {
+        $name=$cli->name;
+      }
+      if (strlen($name)>37) {
+      	$name=substr($name, 0,32).'[...]';
+      }
+      echo $name;?>
     </div>
     
     <?php $curHeight+=$lineHeight;?>
