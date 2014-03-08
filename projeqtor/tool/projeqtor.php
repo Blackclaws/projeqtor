@@ -726,6 +726,7 @@ scriptLog('sendMail_phpmailer');
   $resultMail="NO";
   
   require_once '../external/PHPMailer/class.phpmailer.php';
+  require_once '../external/PHPMailer/class.smtp.php';
   $phpmailer = new PHPMailer;
   ob_start();
   //$phpmailer->SMTPDebug=1; 
@@ -804,7 +805,7 @@ scriptLog('sendMail_phpmailer');
   $debugMessages=ob_get_contents();
   ob_end_clean();
   if (! $resultMail) {
-    errorLog("Error sending mail");
+  	errorLog("Error sending mail");
     errorLog("   SMTP Server : " . $paramMailSmtpServer);
     errorLog("   SMTP Port : " . $paramMailSmtpPort);
     errorLog("   Mail stored in Database : #" . $mail->id);
