@@ -339,7 +339,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             $zoom=round($width/300*100, 0);  
           ?>
           <div id="logoTitleDiv" 
-               style="background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleWhite.gif';?>); 
+               style="background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleWhiteSmall.gif';?>); 
                       background-repeat: no-repeat;" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>

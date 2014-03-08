@@ -2398,3 +2398,28 @@ function cryptData(data) {
     dojo.byId('hashStringPassword').value=crypted;
   }
 }
+
+function connect(resetPassword) {
+	showWait();
+    dojo.byId('login').focus();
+    dojo.byId('password').focus();
+    changePassword=resetPassword;
+    var urlCompl='';
+    if (resetPassword) {
+      urlCompl='?resetPassword=true';
+    }
+    quitConfirmed=true;
+    noDisconnect=true;
+    var login=dijit.byId('login').get('value');  
+    // in cas login is included in main page, to be more fluent to move next
+    var crypted=Aes.Ctr.encrypt(login, aesLoginHash, 256);   
+    dojo.byId('login').focus();
+    dojo.xhrGet({
+      url: '../tool/getHash.php?username='+encodeURIComponent(crypted),
+      handleAs: "text",
+      load: function (data) {
+        cryptData(data);
+        loadContent("../tool/loginCheck.php"+urlCompl,"loginResultDiv", "loginForm");
+      }
+    });
+}
