@@ -2727,6 +2727,7 @@ abstract class SqlElement {
 	$noteChange=false, $descriptionChange=false, $resultChange=false, $assignmentAdd=false, $assignmentChange=false,
 	$anyChange=false) {
 		$objectClass=get_class($this);
+		$idProject=($objectClass=='Project')?$this->id:((property_exists($this,'idProject'))?$this->idProject:null);
 		if ($objectClass=='TicketSimple') {$objectClass='Ticket';}
 		if ($objectClass=='History') {
 			return false; // exit : not for History
@@ -2822,7 +2823,7 @@ abstract class SqlElement {
 			}
 			if ($statusMail->mailToProject or $statusMail->mailToLeader) {
 				$aff=new Affectation();
-				$crit=array('idProject'=>$this->idProject, 'idle'=>'0');
+				$crit=array('idProject'=>$idProject, 'idle'=>'0');
 				$affList=$aff->getSqlElementsFromCriteria($crit, false);
 				if ($affList and count($affList)>0) {
 					foreach ($affList as $aff) {
@@ -2849,7 +2850,7 @@ abstract class SqlElement {
 			}
 			if ($statusMail->mailToManager) {
 				if (property_exists($this,'idProject')) {
-					$project=new Project($this->idProject);
+					$project=new Project($idProject);
 					$manager=new Affectable($project->idUser);
 					$newDest = "###" . $manager->email . "###";
 					if ($manager->email and strpos($dest,$newDest)===false) {
@@ -2946,7 +2947,7 @@ abstract class SqlElement {
 		$arrayTo[]=(property_exists($this, 'idStatus'))?SqlList::getNameFromId('Status', $this->idStatus):'';
 		// project
 		$arrayFrom[]='${project}';
-		$arrayTo[]=(property_exists($this, 'idProject'))?SqlList::getNameFromId('Project', $this->idProject):'';
+		$arrayTo[]=SqlList::getNameFromId('Project', $idProject);
 		// type
 		$typeName='id' . $objectClass . 'Type';
 		$arrayFrom[]='${type}';
@@ -2975,7 +2976,7 @@ abstract class SqlElement {
 
 		$message=$this->getMailDetail();
 		if ($directStatusMail and isset($directStatusMail->message)) {
-			$message=$directStatusMail->message.'<br/><br/>'.$message;
+			$message=str_replace($arrayFrom, $arrayTo, $directStatusMail->message)	.'<br/><br/>'.$message;
 		}
 
 		$message='<html>' .
