@@ -83,20 +83,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden;position: relative;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
-                    showWait();
-                    dojo.byId('login').focus();
-                    changePassword=false;
-                    quitConfirmed=true;
-                    noDisconnect=true;// in cas login is included in main page, to be more fluent to move next.
-                    var crypted=Aes.Ctr.encrypt(dijit.byId('login').get('value'), aesLoginHash, 256);
-                    dojo.xhrGet({
-                      url: '../tool/getHash.php?username='+crypted,
-                      handleAs: "text",
-                      load: function (data) {
-                        cryptData(data);
-                        loadContent("../tool/loginCheck.php","loginResultDiv", "loginForm");
-                      }
-                    });
+                    connect(false);
     		            return false;        
                   </script>
                   <br/><br/>
@@ -153,18 +140,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                  <button tabindex="4" id="passwordButton" type="button" dojoType="dijit.form.Button" showlabel="true">
 			                    <?php echo i18n('buttonChangePassword') ?>
 			                    <script type="dojo/connect" event="onClick" args="evt">
-                            showWait();
-                            dojo.byId('login').focus();
-                            changePassword=true;
-                            var crypted=Aes.Ctr.encrypt(dijit.byId('login').get('value'), aesLoginHash, 256);
-                            dojo.xhrGet({  
-                              url: '../tool/getHash.php?username='+crypted,
-                              handleAs: "text",
-                              load: function (data) {
-                                cryptData(data);  
-                                loadContent("../tool/loginCheck.php?resetPassword=true","loginResultDiv","loginForm");
-                              }
-                            });
+                            connect(true);
                             return false;
                           </script>
 			                  </button>  
