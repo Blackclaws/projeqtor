@@ -442,15 +442,15 @@ $showCost=1;
   <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
   <?php if ($showActivity) {?>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Réalisés");?></div>
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions réalisées");?></div>
       <?php displayList($arrayActionDone,10,32);?>
     </div>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(34);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("En cours");?></div>
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions en cours");?></div>
       <?php displayList($arrayActionOngoing,12,32);?>
     </div>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(67);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("A venir");?></div>
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions à venir");?></div>
       <?php displayList($arrayActionTodo,12,32);?>
     </div>
   <?php }?>   
