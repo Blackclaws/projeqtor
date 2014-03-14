@@ -817,7 +817,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
 				or $col=='idTestCase' or $col=='idRequirement'
 				or $col=='idContact' or $col=='idTicket' or $col=='idUser') {
-					if (property_exists($obj,'idProject')
+					if ($col=='idContact' and property_exists($obj,'idClient') and $obj->idClient) {
+						$critFld='idClient';
+						$critVal=$obj->idClient;
+					} else if (property_exists($obj,'idProject')
 					and get_class($obj)!='Project' and get_class($obj)!='Affectation') {
 						if ($obj->id) {
 							$critFld='idProject';
