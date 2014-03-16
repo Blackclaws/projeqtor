@@ -50,7 +50,7 @@ Security advise :
   
 Deploy new version ;
   - Unzip projeqtorVx.y.z.zip to the web server directory
-    (installing from existing version before V4.0.0, please take care than root directory name has changed)
+    (installing from existing version before V4.0.0, please take care that root directory name has changed)
   - Connect as administrator : database will update automatically.
   
 Support :
