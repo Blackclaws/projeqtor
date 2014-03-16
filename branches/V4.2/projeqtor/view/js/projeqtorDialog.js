@@ -3015,8 +3015,8 @@ function editTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket, hide)
 }
 
 function passedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
-	showWait();
 	editTestCaseRun(idTestCaseRun, idTestCase, '2', idTicket, true);
+	showWait();
 	setTimeout("saveTestCaseRun()",500);
 }
 
@@ -3025,8 +3025,8 @@ function failedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
 }
 
 function blockedTestCaseRun(idTestCaseRun, idTestCase, idRunStatus, idTicket) {
-	showWait();
 	editTestCaseRun(idTestCaseRun, idTestCase, '4', idTicket, true);
+	showWait();
 	setTimeout("saveTestCaseRun()",500);
 }
 
