@@ -220,7 +220,9 @@ class Sql {
    */
   private static function getConnection() {
     if (self::$connexion != NULL) {
-      return self::$connexion;
+    	//if (mysql_ping(self::$connexion)) {
+        return self::$connexion;
+    	//}
     }
     if (!self::$dbType or !self::$dbHost or !self::$dbName or ! self::$dbPort) {
       self::$dbType=Parameter::getGlobalParameter('paramDbType');
