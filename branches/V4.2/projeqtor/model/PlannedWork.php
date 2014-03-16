@@ -152,12 +152,15 @@ class PlannedWork extends GeneralWork {
     $topList=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
+//traceLog("$plan->id $plan->refType #$plan->refId");
       if (! $plan->id) {
         continue;
       }
     	$plan=$fullListPlan['#'.$plan->id];
       // Determine planning profile
       if ($plan->idle) {
+      	$plan->_noPlan=true;
+      	$fullListPlan=self::storeListPlan($fullListPlan,$plan);
       	continue;
       }
       if (isset($plan->_noPlan) and $plan->_noPlan) {
@@ -658,7 +661,7 @@ class PlannedWork extends GeneralWork {
   }
   
   private static function storeListPlan($listPlan,$plan) {
-//traceLog("storeListPlan(listPlan,$plan->id)");
+debugLog("storeListPlan(listPlan,$plan->id)");
     $listPlan['#'.$plan->id]=$plan;
     if (($plan->plannedStartDate or $plan->realStartDate) and ($plan->plannedEndDate or $plan->realEndDate) ) {
       foreach ($plan->_parentList as $topId=>$topVal) {
