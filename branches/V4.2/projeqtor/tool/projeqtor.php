@@ -670,7 +670,7 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
 	$paramMailSendmailPath=Parameter::getGlobalParameter('paramMailSendmailPath');
 	$paramMailSmtpUsername = Parameter::getGlobalParameter('paramMailSmtpUsername');
 	$paramMailSmtpPassword = Parameter::getGlobalParameter('paramMailSmtpPassword');
-  $paramMailerType=Parameter::getGlobalParameter('paramMailerType');
+  $paramMailerType=strtolower(Parameter::getGlobalParameter('paramMailerType'));
   if ( ! isset($paramMailerType) or $paramMailerType=='' or $paramMailerType=='phpmailer') {
   	// Cute method using PHPMailer : should work on all situations / First implementation on V4.0
   	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $attachmentsArray);
@@ -737,7 +737,8 @@ scriptLog('sendMail_phpmailer');
     $phpmailer->SMTPAuth = true;                           // Enable SMTP authentication
     $phpmailer->Username = $paramMailSmtpUsername;         // SMTP username
     $phpmailer->Password = $paramMailSmtpPassword;         // SMTP password
-    $phpmailer->SMTPSecure = 'tls';
+    $phpmailer->SMTPSecure = 'tls'; // default (for ports 25 and 587
+    if ($paramMailSmtpPort=='465') $phpmailer->SMTPSecure = 'ssl'; // 465 is default for ssl
     if (strpos($phpmailer->Host,'://')) {
       $phpmailer->SMTPSecure=substr($phpmailer->Host,0,strpos($phpmailer->Host,'://'));
       $phpmailer->Host=substr($phpmailer->Host,strpos($phpmailer->Host,'://')+3);
