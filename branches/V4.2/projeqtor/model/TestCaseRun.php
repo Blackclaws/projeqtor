@@ -98,7 +98,7 @@ class TestCaseRun extends SqlElement {
   	if ($new) {
   		// on insertion, insert sub-test cases if exists
   	  $tc=new TestCase();
-  	  $crit=array('idTestCase'=>$this->idTestCase);
+  	  $crit=array('idTestCase'=>$this->idTestCase,'idle'=>'0');
   	  $list=$tc->getSqlElementsFromCriteria($crit);
   	  foreach ($list as $tc) {
   	  	$crit=array('idTestCase'=>$tc->id,'idTestSession'=>$this->idTestSession);
