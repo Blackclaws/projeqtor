@@ -721,7 +721,7 @@
     $resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
 
     echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
-    echo '<Project>' . $nl;
+    echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
     echo '<Name>' . htmlEncode($name,'xml') . '</Name>' . $nl;
     echo '<Title>' . htmlencode($paramDbDisplayName,'xml') . '</Title>' . $nl;
     echo '<CreationDate>' . $now . '</CreationDate>' . $nl;
