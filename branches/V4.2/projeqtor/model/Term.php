@@ -27,10 +27,14 @@ class Term extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="nameProject" width="20%">${idProject}</th>
-    <th field="name" width="30%">${name}</th>
-    <th field="amount" width="15%" fomatter="numericFormatter">${amount}</th>
-    <th field="date" width="15%" formatter="dateFormatter">${date}</th>
+    <th field="nameProject" width="12%">${idProject}</th>
+    <th field="name" width="20%">${name}</th>
+    <th field="amount" width="8%" formatter="costFormatter">${realAmount}</th>
+    <th field="date" width="8%" formatter="dateFormatter">${realDate}</th>
+  	<th field="validatedAmount" width="8%" formatter="costFormatter">${validatedAmount3}</th>
+    <th field="validatedDate" width="8%" formatter="dateFormatter">${validatedDate}</th>
+  	<th field="plannedAmount" width="8%" formatter="costFormatter">${plannedAmount2}</th>
+    <th field="plannedDate" width="8%" formatter="dateFormatter">${plannedDate2}</th>
     <th field="idBill" width="10%" formatter="booleanFormatter" >${isBilled}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
@@ -51,30 +55,7 @@ class Term extends SqlElement {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
-    if ($this->id) {
-    	$crit=array('successorRefType'=>'Term', 'successorRefId'=>$this->id);
-    	$dep=new Dependency();
-    	$depList=$dep->getSqlElementsFromCriteria($crit, false);
-    	$valAmount=0;
-    	$valDate=null;
-    	$plaAmount=0;
-      $plaDate=null;
-    	foreach ($depList as $dep) {
-    		$obj=new PlanningElement($dep->predecessorId);
-    		$valAmount+=$obj->validatedCost;
-    		$plaAmount+=$obj->plannedCost;
-    		if ($obj->validatedEndDate and (! $valDate or $valDate<$obj->validatedEndDate)) {
-    		  $valDate=$obj->validatedEndDate;	
-    		}
-    	  if ($obj->plannedEndDate and (! $plaDate or $plaDate<$obj->plannedEndDate)) {
-          $plaDate=$obj->plannedEndDate; 
-        }
-    	}
-    	$this->validatedAmount=$valAmount;
-    	$this->plannedAmount=$plaAmount;
-    	$this->validatedDate=$valDate;
-    	$this->plannedDate=$plaDate;
-    }
+    //$this->setCalculatedFromActivities();
   }
 
   
@@ -138,8 +119,36 @@ class Term extends SqlElement {
    */  
 
 	public function save() {
+		$this->setCalculatedFromActivities();
 		$result = parent::save();		
 		return $result;
+	}
+	
+	public function setCalculatedFromActivities() {
+		if ($this->id) {
+			$crit=array('successorRefType'=>'Term', 'successorRefId'=>$this->id);
+			$dep=new Dependency();
+			$depList=$dep->getSqlElementsFromCriteria($crit, false);
+			$valAmount=0;
+			$valDate=null;
+			$plaAmount=0;
+			$plaDate=null;
+			foreach ($depList as $dep) {
+				$obj=new PlanningElement($dep->predecessorId);
+				$valAmount+=$obj->validatedCost;
+				$plaAmount+=$obj->plannedCost;
+				if ($obj->validatedEndDate and (! $valDate or $valDate<$obj->validatedEndDate)) {
+					$valDate=$obj->validatedEndDate;
+				}
+				if ($obj->plannedEndDate and (! $plaDate or $plaDate<$obj->plannedEndDate)) {
+					$plaDate=$obj->plannedEndDate;
+				}
+			}
+			$this->validatedAmount=$valAmount;
+			$this->plannedAmount=$plaAmount;
+			$this->validatedDate=$valDate;
+			$this->plannedDate=$plaDate;
+		}
 	}
   
 }
