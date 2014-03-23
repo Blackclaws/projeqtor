@@ -376,6 +376,8 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 		$workWidth=60;
 		$inputWidth=30;
 		$resource=new Resource($resourceId);
+		$cal=$resource->idCalendarDefinition;
+		if (!$cal) $cal=1;
 		$capacity=work::getConvertedCapacity($resource->capacity);
 		$weekendColor="cfcfcf";
 		$currentdayColor="ffffaa";
@@ -490,7 +492,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 			echo '  <TD class="ganttLeftTitle" style="width: ' . $inputWidth . 'px;';
 			if ($today==$curDate) {
 				echo ' background-color:#' . $currentdayColor . '; color: #aaaaaa;"';
-			} else if (isOffDay($curDate,'1')) {
+			} else if (isOffDay($curDate,$cal)) {
 				echo ' background-color:#' . $weekendColor . '; color: #aaaaaa;"';
 			}
 			echo '">';
@@ -674,7 +676,7 @@ scriptLog("      => ImputationLine->drawLines($resourceId, $rangeType, $rangeVal
 				echo '<td class="ganttDetail" align="center" width="5%"';
 				if ($today==$curDate) {
 					echo ' style="background-color:#' . $currentdayColor . ';"';
-				} else if (isOffDay($curDate,'1')) {
+				} else if (isOffDay($curDate,$cal)) {
 					echo ' style="background-color:#' . $weekendColor . '; color: #aaaaaa;"';
 				}
 				echo '>';

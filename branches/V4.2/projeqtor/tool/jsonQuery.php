@@ -423,8 +423,7 @@
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
-         . ' order by' . $queryOrderBy;
-debugLog($query);    
+         . ' order by' . $queryOrderBy;   
     $result=Sql::query($query);
     $nbRows=0;
     $dataType=array();
