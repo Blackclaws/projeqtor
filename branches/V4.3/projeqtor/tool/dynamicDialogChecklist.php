@@ -17,7 +17,7 @@ $obj=new $objectClass($objectId);
 $type='id'.$objectClass.'Type';
 $checklist=SqlElement::getSingleSqlElementFromCriteria('Checklist', array('refType'=>$objectClass, 'refId'=>$objectId));
 if ($checklist and $checklist->id) {
-	$checklistDefinition=new CheckListDefinition($checklist->idChecklistDefinition);
+	$checklistDefinition=new ChecklistDefinition($checklist->idChecklistDefinition);
 	if ($checklistDefinition->id and 
       ( ( $checklistDefinition->nameChecklistable!=$objectClass) 
       or( $checklistDefinition->idType and $checklistDefinition->idType!=$obj->$type)
