@@ -5,7 +5,10 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/menuBar.php');
   $iconSize=Parameter::getUserParameter('paramTopIconSize');
-  if (! $iconSize) $iconSize=16;
+  $showMenuBar=Parameter::getUserParameter('paramShowMenuBar');
+  $showMenuBar='NO';
+  if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
+  
   function drawMenu($menu) {
   	global $iconSize;
   	$menuName=$menu->name;
@@ -85,6 +88,7 @@
         </button>
       </span>
     </td>
+<?php if ($showMenuBar!='NO') {?>    
     <td width="3px"></td>
     <td class="menuBarSeparator" ></td>
     <td width="8px">
@@ -113,7 +117,11 @@
       </div>
     </div>
     </td> 
+<?php } else {?>
+    <td style="width:80%"><div id="menuBarVisibleDiv"></div></td>
+<?php }?>
     <td width="80px" align="center" class="statusBar" style="position:relative;z-index:30;">
+<?php if ($showMenuBar!='NO') {?>       
       <div style="height:<?php echo $iconSize+9;?>px; position: absolute; top : -2px; margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
       &nbsp;
       <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false" 
@@ -121,6 +129,7 @@
        iconClass="rightBarIcon" onMouseDown="menuBarMove=true;moveMenuBar('right');" onMouseUp="moveMenuBarStop();"
        style="position:absolute; right: 63px; width: 14px;margin:0; margin-top: 2px;z-index:35; vertical-align:middle">
       </button>   
+<?php }?>
       <div style="vertical-align: middle; height:<?php echo $iconSize+9;?>px; position: absolute; top : -2px; right: 48px;margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndoItem');?>"

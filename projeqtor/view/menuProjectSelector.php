@@ -35,8 +35,8 @@ if ($proj=='*') {
     ?>
     </div>
   </span>
-  <span dojoType="dijit.TooltipDialog" class="white" <?php echo ($cpt>25)?'style="width:200px;"':'';?>>   
-    <div <?php echo ($cpt>25)?'style="height: 500px; overflow-y: scroll;"':'';?>>    
+  <span dojoType="dijit.TooltipDialog" class="white" <?php echo ($cpt>25)?'style="max-width:900px;"':'';?>>   
+    <div <?php echo ($cpt>25)?'style="height: 500px; overflow-x: hidden; overflow-y: scroll;"':'';?>>    
     <?php 
       echo $subProjectsToDraw;
     ?>
