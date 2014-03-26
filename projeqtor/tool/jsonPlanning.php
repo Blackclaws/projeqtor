@@ -706,6 +706,8 @@
         if ($line['reftype']=='Milestone') {
           $pStart=$pEnd;
         }
+        if (! $pStart) $pStart=date('YYYY-MM-DD');
+        if (! $pEnd) $pEnd=date('YYYY-MM-DD');
         $line['pstart']=$pStart;
         $line['pend']=$pEnd;
         $line['pduration']=workDayDiffDates($pStart,$pEnd);
@@ -844,10 +846,10 @@
       echo '<Duration>' . formatDuration($line['pduration'],$hoursPerDay) . '</Duration>' . $nl; // TODO : to update PT112H0M0S
       echo '<DurationFormat>7</DurationFormat>' . $nl;
       echo '<Work>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
-      echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;
-      echo '<Resume>' . $line['pstart'] . 'T' . $startAM . '</Resume>' . $nl;
+      //echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;
+      //echo '<Resume>' . $line['pstart'] . 'T' . $startAM . '</Resume>' . $nl;
       echo '<ResumeValid>0</ResumeValid>' . $nl;
-      echo '<EffortDriven>0</EffortDriven>' . $nl;
+      echo '<EffortDriven>1</EffortDriven>' . $nl;
       echo '<Recurring>0</Recurring>' . $nl;
       echo '<OverAllocated>0</OverAllocated>' . $nl;
       echo '<Estimated>0</Estimated>' . $nl;

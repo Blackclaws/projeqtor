@@ -37,6 +37,14 @@ $idResource="";
 if (array_key_exists('idResource',$_REQUEST)) {
   $idResource=trim($_REQUEST['idResource']);
 }
+$idUser="";
+if (array_key_exists('idUser',$_REQUEST)) {
+	$idUser=trim($_REQUEST['idUser']);
+}
+$idContact="";
+if (array_key_exists('idContact',$_REQUEST)) {
+	$idContact=trim($_REQUEST['idContact']);
+}
 $result="";
 if (array_key_exists('result',$_REQUEST)) {
   $result=trim($_REQUEST['result']);
@@ -80,6 +88,12 @@ foreach ($selectList as $id) {
   }
   if ($idResource and property_exists($item,'idResource')) {
     $item->idResource=$idResource;
+  }
+  if ($idUser and property_exists($item,'idUser')) {
+  	$item->idUser=$idUser;
+  }
+  if ($idContact and property_exists($item,'idContact')) {
+  	$item->idContact=$idContact;
   }
   if ($result and property_exists($item,'result')) {
     $item->result.=(($item->result)?"\n":"").$result;

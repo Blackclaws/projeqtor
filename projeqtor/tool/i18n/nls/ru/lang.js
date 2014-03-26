@@ -1867,5 +1867,7 @@ workValidate: "[workValidate]",
 wrongMaintenanceUser: "Обновление продолжается<br/>Только администратор может подключиться к системе.",
 xlsxFile: "[xlsxFile]",
 year: "год",
+colChangeIssuer: "[colChangeIssuer]",
+colChangeRequestor: "[colChangeRequestor]",
 currentLocaleOfFile: "ru"
 }

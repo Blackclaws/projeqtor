@@ -97,7 +97,7 @@
             <?php
              if (isDisplayable($obj,'idProject')) {?>
             <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeProject');?>&nbsp;:&nbsp;</td>
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeProject',array($obj->getColCaption('idProject')));?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
                  id="idProject" name="idProject">
@@ -140,7 +140,7 @@
             <?php }
             if (isDisplayable($obj,'idResource')) {?>
             <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeResponsible');?>&nbsp;:&nbsp;</td>
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeResponsible',array($obj->getColCaption('idResource')));?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
                  id="idResource" name="idResource">
@@ -150,6 +150,40 @@
                   title="<?php echo i18n('showDetail');?>" iconClass="iconView">
                   <script type="dojo/connect" event="onClick" args="evt">
                     showDetail("idResource",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+            <?php }
+            if (isDisplayable($obj,'idUser')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeIssuer',array($obj->getColCaption('idUser')));?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                 id="idUser" name="idUser">
+                 <?php htmlDrawOptionForReference('idUser', null, null, false);?>
+                </select>
+                <button id="userButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idUser",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+             <?php }
+            if (isDisplayable($obj,'idContact')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeRequestor',array($obj->getColCaption('idContact')));?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                 id="idContact" name="idContact">
+                 <?php htmlDrawOptionForReference('idContact', null, null, false);?>
+                </select>
+                <button id="contactButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idContact",0); 
                   </script>
                 </button>
               </td>

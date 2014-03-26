@@ -1867,5 +1867,7 @@ workValidate: "[workValidate]",
 wrongMaintenanceUser: "升级中<br/>只允许管理员连接.",
 xlsxFile: "[xlsxFile]",
 year: "年份",
+colChangeIssuer: "[colChangeIssuer]",
+colChangeRequestor: "[colChangeRequestor]",
 currentLocaleOfFile: "zh"
 }
