@@ -1867,5 +1867,7 @@ workValidate: "[workValidate]",
 wrongMaintenanceUser: "[wrongMaintenanceUser]",
 xlsxFile: "[xlsxFile]",
 year: "[year]",
+colChangeIssuer: "[colChangeIssuer]",
+colChangeRequestor: "[colChangeRequestor]",
 currentLocaleOfFile: "nl"
 }
