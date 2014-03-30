@@ -70,8 +70,11 @@
   if (array_key_exists('idle',$_REQUEST)) {
     $showIdle=true;
   }
-  
-  $accessRightRead=securityGetAccessRight('menuActivity', 'read');
+  if ($portfolio) {
+  	$accessRightRead=securityGetAccessRight('menuProject', 'read');
+  } else {
+    $accessRightRead=securityGetAccessRight('menuActivity', 'read');
+  }
   if ( ! ( $accessRightRead!='ALL' or (isset($_SESSION['project']) and $_SESSION['project']!='*'))
    and ( ! array_key_exists('idProject',$_REQUEST) or trim($_REQUEST['idProject'])=="")) {
       $listProj=explode(',',getVisibleProjectsList(! $showIdleProjects));
@@ -89,7 +92,11 @@
     $queryWhere= $table . ".idle=0 ";
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=getAccesResctictionClause('Activity',$table);
+  if ($portfolio) {
+  	$queryWhere.=getAccesResctictionClause('Project',$table);
+  } else {
+    $queryWhere.=getAccesResctictionClause('Activity',$table);
+  }
   if ( array_key_exists('report',$_REQUEST) ) {
     if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
