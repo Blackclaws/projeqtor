@@ -47,8 +47,11 @@
       echo '<td class="menuBarSeparator" ></td>';
     }
     $menu=new Menu('20');
-    drawMenu($menu);
-    echo '<td class="menuBarSeparator" ></td>';
+    if (securityCheckDisplayMenu('20',$menu)) {
+    	drawMenu($menu);
+    	echo '<td class="menuBarSeparator" ></td>';
+    }
+   
 	/*	    if ($level>0 and securityCheckDisplayMenu($menu->id,$menu) ) {
 		      while ($level>0 and $menu->idMenu!= $menuLevel[$level]) {
 		        drawMenuCloseChildren();
