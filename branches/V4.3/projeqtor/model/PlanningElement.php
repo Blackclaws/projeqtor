@@ -325,7 +325,7 @@ class PlanningElement extends SqlElement {
 
     // Update dependant objects
     if ($dispatchNeeded) {
-    	set_time_limit(600);
+    	projeqtor_set_time_limit(600);
       $cpt=0;
       foreach ($lstElt as $elt) {
         $cpt++;
