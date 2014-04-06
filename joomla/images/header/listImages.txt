@@ -1,0 +1,10 @@
+"planning.png",
+"today.png",
+"ticket.png",
+"document.png",
+"workflow.png",
+"report.png",
+"email.png",
+"imputation.png",
+"filter.png",
+"setup.png"

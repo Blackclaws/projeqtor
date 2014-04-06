@@ -111,13 +111,13 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 				   setTimeout("slideImage();",slideTimer);					
 				});
 			}
-			slideTimer=3000;
-			fadeTimer=1500;
+			slideTimer=1000;
+			fadeTimer=1000;
 			fadePause=500;
 			slideIndex=0;
-			slideArray=new Array("planning.png","tickets.png","today.png");
+			slideArray=new Array(<?php include 'images/header/listImages.txt'?>);
 			var urlImageStart='<?PHP echo $_SERVER['REQUEST_URI'];?>';
-		    if (urlImageStart.indexOf("/index.php")>0) {urlImageStart=urlImageStart.substring(0,urlImageStart.indexOf("index.php"));}
+		  if (urlImageStart.indexOf("/index.php")>0) {urlImageStart=urlImageStart.substring(0,urlImageStart.indexOf("index.php"));}
 			urlImageStart=urlImageStart+'images/header';
 		</script>
     <script type="text/javascript">
@@ -204,7 +204,7 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 	<?php   if (JRequest::getVar('view') == 'featured') : ?>
 		  <div style="position:absolute; top:40px; left:5px">
 		  <a href="http://project-management-software.findthebest.com/l/167/Project-Or-RIA?utm_source=direct&utm_medium=badge&utm_campaign=projeqtor_projects&utm_term=smart_choice_custom" target="_blank">
-      <img src="http://img3.findthebest.com/sites/default/files/220/media/images/_1375800.png" height="180" style="max-width: 262px" alt="Best of FindTheBest" border="0" />
+      <img src="http://img3.findthebest.com/sites/default/files/220/media/images/_1375800.png" height="120" style="max-width: 262px" alt="Best of FindTheBest" border="0" />
       </a>
     </div> 	
 	<div class="td-header" style="z-index: -1">
