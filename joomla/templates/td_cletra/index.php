@@ -1,4 +1,4 @@
-<?php
+<?php 
 defined('_JEXEC') or die;
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'functions.php';
 $firstTimeAccess=true;
@@ -6,6 +6,9 @@ if (isset($_SESSION['firstTimeAccess'])) {
 	$firstTimeAccess=false;
 } else {
 	$_SESSION['firstTimeAccess']=false;
+}
+if (! isset($_REQUEST['view']) or $_REQUEST['view']!='featured') {
+	$firstTimeAccess=false;
 }
 // Create alias for $this object reference:
 $document = & $this;
@@ -111,7 +114,7 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 				   setTimeout("slideImage();",slideTimer);					
 				});
 			}
-			slideTimer=1000;
+			slideTimer=1500;
 			fadeTimer=1000;
 			fadePause=500;
 			slideIndex=0;
@@ -121,6 +124,12 @@ $sloganText = (trim($this->params->get('textofslogan'))=='') ? $config->sitename
 			urlImageStart=urlImageStart+'images/header';
 		</script>
     <script type="text/javascript">
+      var language = window.navigator.userLanguage || window.navigator.language;
+      <?php if ($firstTimeAccess and substr($_SERVER['PHP_SELF'],-9)=='index.php') {?>
+      if (language.substr(0,2)=='fr') {
+        window.location="./index.php/menu_home_fr";
+      }
+      <?php }?>
 			jq(document).ready(function(){
 			  setTimeout("slideImage();",fadeTimer*2);
 			  setTimeout("jq('#welcomeDiv').fadeOut(fadeTimer, function() { });",fadeTimer);
