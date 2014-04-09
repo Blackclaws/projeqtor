@@ -6,7 +6,7 @@
   scriptLog('   ->/view/menuBar.php');
   $iconSize=Parameter::getUserParameter('paramTopIconSize');
   $showMenuBar=Parameter::getUserParameter('paramShowMenuBar');
-  $showMenuBar='NO';
+  //$showMenuBar='NO';
   if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
   
   function drawMenu($menu) {
