@@ -386,7 +386,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </div>
     <?php $iconSize=Parameter::getUserParameter('paramTopIconSize');
     $showMenuBar=Parameter::getUserParameter('paramShowMenuBar');
-    $showMenuBar='NO';
+    //$showMenuBar='NO';
     if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
     $iconSize+=9;?>
     <div id="toolBarDiv" style="height:<?php echo $iconSize;?>px" dojoType="dijit.layout.ContentPane" region="top"  >

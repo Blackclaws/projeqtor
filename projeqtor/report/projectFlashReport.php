@@ -88,7 +88,10 @@ foreach ($actList as $act) {
 $notStartedCost=0;
 $activitiesCost=0;
 $pe=new ActivityPlanningElement();
-$peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Activity' and idProject=$idProject", "wbsSortable asc");
+// Ticket #1349 - Start
+//$peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Activity' and idProject=$idProject", "wbsSortable asc");
+$peList=$pe->getSqlElementsFromCriteria(null, false, "refType='Activity' and idProject in $projList", "wbsSortable asc");
+// Ticket #1349 - End
 foreach ($peList as $pe) {
 	$act=new Activity($pe->refId);
 	$status=new Status($act->idStatus);

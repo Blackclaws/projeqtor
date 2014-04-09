@@ -3,11 +3,11 @@
  * RiskType defines the type of a risk.
  */ 
 require_once('_securityCheck.php');
-class Sponsor extends Resource {
+class Sponsor extends Contact {
 
   // Define the layout that will be used for lists
     
-  private static $_databaseCriteria = array('scope'=>'Ticket');
+  //private static $_databaseCriteria = array('scope'=>'Ticket');
   
    /** ==========================================================================
    * Constructor
