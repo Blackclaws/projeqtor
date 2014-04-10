@@ -3712,8 +3712,8 @@ function loadMenuBarItem(item,itemName, from) {
 	loadContent("resourcePlanningMain.php","centerDiv");
   } else if (item=='Imputation') {
     loadContent("imputationMain.php","centerDiv");
-  } else if (item=='Agenda') {
-    loadContent("agendaMain.php","centerDiv");
+  } else if (item=='Diary') {
+    loadContent("diaryMain.php","centerDiv");
   } else if (item=='ImportData') {
     loadContent("importData.php","centerDiv");
   } else if (item=='Reports') {

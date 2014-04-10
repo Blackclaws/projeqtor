@@ -1869,5 +1869,7 @@ xlsxFile: "[xlsxFile]",
 year: "[year]",
 colChangeIssuer: "[colChangeIssuer]",
 colChangeRequestor: "[colChangeRequestor]",
+Diary: "[Diary]",
+menuDiary: "[menuDiary]",
 currentLocaleOfFile: "nl"
 }
