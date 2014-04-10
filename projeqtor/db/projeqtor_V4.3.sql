@@ -6,7 +6,7 @@
 -- ///////////////////////////////////////////////////////////
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`) VALUES 
-(133, 'menuAgenda', '7', 'item', '145', null, 0);
+(133, 'menuDiary', '7', 'item', '145', null, 0);
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 133, 1),

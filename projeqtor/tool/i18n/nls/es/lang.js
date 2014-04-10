@@ -1869,5 +1869,7 @@ xlsxFile: "fichero xlsx (Excel 2010)",
 year: "año",
 colChangeIssuer: "cambiar el ${1} en",
 colChangeRequestor: "cambiar el ${1} en",
+Diary: "[Diary]",
+menuDiary: "[menuDiary]",
 currentLocaleOfFile: "es"
 }

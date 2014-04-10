@@ -1869,5 +1869,7 @@ xlsxFile: "[xlsxFile]",
 year: "год",
 colChangeIssuer: "[colChangeIssuer]",
 colChangeRequestor: "[colChangeRequestor]",
+Diary: "[Diary]",
+menuDiary: "[menuDiary]",
 currentLocaleOfFile: "ru"
 }

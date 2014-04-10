@@ -1869,5 +1869,7 @@ xlsxFile: "xlsx Datei (Excel 2010)",
 year: "Jahr",
 colChangeIssuer: "Ändere ${1} zu",
 colChangeRequestor: "Ändere ${1} zu",
+Diary: "[Diary]",
+menuDiary: "[menuDiary]",
 currentLocaleOfFile: "de"
 }
