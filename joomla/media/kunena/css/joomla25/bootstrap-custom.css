@@ -20,7 +20,7 @@
 #kunena.admin .input-block-level {
   display: block;
   width: 100%;
-  min-height: 30px;
+  min-height: ;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -41,6 +41,7 @@
 }
 #kunena.admin [class*="span"] {
   float: left;
+  min-height: 1px;
   margin-left: 20px;
 }
 #kunena.admin .container,
@@ -138,7 +139,7 @@
 #kunena.admin .row-fluid [class*="span"] {
   display: block;
   width: 100%;
-  min-height: 30px;
+  min-height: ;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -154,6 +155,9 @@
 }
 #kunena.admin .row-fluid [class*="span"]:first-child {
   margin-left: 0;
+}
+#kunena.admin .row-fluid .controls-row [class*="span"] + [class*="span"] {
+  margin-left: 2.1276595744681%;
 }
 #kunena.admin .row-fluid .span12 {
   width: 100%;
@@ -847,40 +851,64 @@
 #kunena.admin .controls-row [class*="span"] + [class*="span"] {
   margin-left: 20px;
 }
-#kunena.admin input.span12, textarea.span12, .uneditable-input.span12 {
+#kunena.admin input.span12,
+#kunena.admin textarea.span12,
+#kunena.admin .uneditable-input.span12 {
   width: 926px;
 }
-#kunena.admin input.span11, textarea.span11, .uneditable-input.span11 {
+#kunena.admin input.span11,
+#kunena.admin textarea.span11,
+#kunena.admin .uneditable-input.span11 {
   width: 846px;
 }
-#kunena.admin input.span10, textarea.span10, .uneditable-input.span10 {
+#kunena.admin input.span10,
+#kunena.admin textarea.span10,
+#kunena.admin .uneditable-input.span10 {
   width: 766px;
 }
-#kunena.admin input.span9, textarea.span9, .uneditable-input.span9 {
+#kunena.admin input.span9,
+#kunena.admin textarea.span9,
+#kunena.admin .uneditable-input.span9 {
   width: 686px;
 }
-#kunena.admin input.span8, textarea.span8, .uneditable-input.span8 {
+#kunena.admin input.span8,
+#kunena.admin textarea.span8,
+#kunena.admin .uneditable-input.span8 {
   width: 606px;
 }
-#kunena.admin input.span7, textarea.span7, .uneditable-input.span7 {
+#kunena.admin input.span7,
+#kunena.admin textarea.span7,
+#kunena.admin .uneditable-input.span7 {
   width: 526px;
 }
-#kunena.admin input.span6, textarea.span6, .uneditable-input.span6 {
+#kunena.admin input.span6,
+#kunena.admin textarea.span6,
+#kunena.admin .uneditable-input.span6 {
   width: 446px;
 }
-#kunena.admin input.span5, textarea.span5, .uneditable-input.span5 {
+#kunena.admin input.span5,
+#kunena.admin textarea.span5,
+#kunena.admin .uneditable-input.span5 {
   width: 366px;
 }
-#kunena.admin input.span4, textarea.span4, .uneditable-input.span4 {
+#kunena.admin input.span4,
+#kunena.admin textarea.span4,
+#kunena.admin .uneditable-input.span4 {
   width: 286px;
 }
-#kunena.admin input.span3, textarea.span3, .uneditable-input.span3 {
+#kunena.admin input.span3,
+#kunena.admin textarea.span3,
+#kunena.admin .uneditable-input.span3 {
   width: 206px;
 }
-#kunena.admin input.span2, textarea.span2, .uneditable-input.span2 {
+#kunena.admin input.span2,
+#kunena.admin textarea.span2,
+#kunena.admin .uneditable-input.span2 {
   width: 126px;
 }
-#kunena.admin input.span1, textarea.span1, .uneditable-input.span1 {
+#kunena.admin input.span1,
+#kunena.admin textarea.span1,
+#kunena.admin .uneditable-input.span1 {
   width: 46px;
 }
 #kunena.admin .controls-row {
@@ -914,7 +942,7 @@
 #kunena.admin input[type="checkbox"][readonly] {
   background-color: transparent;
 }
-#kunena.admin .control-group.warning > label,
+#kunena.admin .control-group.warning .control-label,
 #kunena.admin .control-group.warning .help-block,
 #kunena.admin .control-group.warning .help-inline {
   color: #c09853;
@@ -925,13 +953,15 @@
 #kunena.admin .control-group.warning select,
 #kunena.admin .control-group.warning textarea {
   color: #c09853;
+}
+#kunena.admin .control-group.warning input,
+#kunena.admin .control-group.warning select,
+#kunena.admin .control-group.warning textarea {
   border-color: #c09853;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
 }
-#kunena.admin .control-group.warning .checkbox:focus,
-#kunena.admin .control-group.warning .radio:focus,
 #kunena.admin .control-group.warning input:focus,
 #kunena.admin .control-group.warning select:focus,
 #kunena.admin .control-group.warning textarea:focus {
@@ -946,7 +976,7 @@
   background-color: #fcf8e3;
   border-color: #c09853;
 }
-#kunena.admin .control-group.error > label,
+#kunena.admin .control-group.error .control-label,
 #kunena.admin .control-group.error .help-block,
 #kunena.admin .control-group.error .help-inline {
   color: #b94a48;
@@ -957,13 +987,15 @@
 #kunena.admin .control-group.error select,
 #kunena.admin .control-group.error textarea {
   color: #b94a48;
+}
+#kunena.admin .control-group.error input,
+#kunena.admin .control-group.error select,
+#kunena.admin .control-group.error textarea {
   border-color: #b94a48;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
 }
-#kunena.admin .control-group.error .checkbox:focus,
-#kunena.admin .control-group.error .radio:focus,
 #kunena.admin .control-group.error input:focus,
 #kunena.admin .control-group.error select:focus,
 #kunena.admin .control-group.error textarea:focus {
@@ -978,7 +1010,7 @@
   background-color: #f2dede;
   border-color: #b94a48;
 }
-#kunena.admin .control-group.success > label,
+#kunena.admin .control-group.success .control-label,
 #kunena.admin .control-group.success .help-block,
 #kunena.admin .control-group.success .help-inline {
   color: #468847;
@@ -989,13 +1021,15 @@
 #kunena.admin .control-group.success select,
 #kunena.admin .control-group.success textarea {
   color: #468847;
+}
+#kunena.admin .control-group.success input,
+#kunena.admin .control-group.success select,
+#kunena.admin .control-group.success textarea {
   border-color: #468847;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
 }
-#kunena.admin .control-group.success .checkbox:focus,
-#kunena.admin .control-group.success .radio:focus,
 #kunena.admin .control-group.success input:focus,
 #kunena.admin .control-group.success select:focus,
 #kunena.admin .control-group.success textarea:focus {
@@ -1839,6 +1873,7 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
 }
 #kunena.admin .btn:hover,
+#kunena.admin .btn:focus,
 #kunena.admin .btn:active,
 #kunena.admin .btn.active,
 #kunena.admin .btn.disabled,
@@ -1956,6 +1991,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #kunena.admin .btn-primary:hover,
+#kunena.admin .btn-primary:focus,
 #kunena.admin .btn-primary:active,
 #kunena.admin .btn-primary.active,
 #kunena.admin .btn-primary.disabled,
@@ -1985,6 +2021,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #kunena.admin .btn-warning:hover,
+#kunena.admin .btn-warning:focus,
 #kunena.admin .btn-warning:active,
 #kunena.admin .btn-warning.active,
 #kunena.admin .btn-warning.disabled,
@@ -2014,6 +2051,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #kunena.admin .btn-danger:hover,
+#kunena.admin .btn-danger:focus,
 #kunena.admin .btn-danger:active,
 #kunena.admin .btn-danger.active,
 #kunena.admin .btn-danger.disabled,
@@ -2043,6 +2081,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #kunena.admin .btn-success:hover,
+#kunena.admin .btn-success:focus,
 #kunena.admin .btn-success:active,
 #kunena.admin .btn-success.active,
 #kunena.admin .btn-success.disabled,
@@ -2072,6 +2111,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #kunena.admin .btn-info:hover,
+#kunena.admin .btn-info:focus,
 #kunena.admin .btn-info:active,
 #kunena.admin .btn-info.active,
 #kunena.admin .btn-info.disabled,
@@ -2101,6 +2141,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #kunena.admin .btn-inverse:hover,
+#kunena.admin .btn-inverse:focus,
 #kunena.admin .btn-inverse:active,
 #kunena.admin .btn-inverse.active,
 #kunena.admin .btn-inverse.disabled,
