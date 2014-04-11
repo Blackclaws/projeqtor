@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE kinstall>
 <kinstall type="kunena-template" version="2.0">
-	<name>ProjeQtOt</name>
+	<name>ProjeQtOr</name>
 	<creationDate>2013-08-18</creationDate>
-	<version>3.0.2</version>
+	<version>3.0.5</version>
 	<author>Kunena Team</author>
 	<authorEmail>team@kunena.org</authorEmail>
 	<authorUrl>http://www.kunena.org</authorUrl>
