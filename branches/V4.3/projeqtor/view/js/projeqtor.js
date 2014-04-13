@@ -1872,7 +1872,7 @@ function getDay(valDate) {
  * ============================================================================
  * Calculate new date after adding some days
  * 
- * @param $ate
+ * @param paramDate
  *            start date
  * @param days
  *            numbers of days to add (can be < 0 to subtract days)

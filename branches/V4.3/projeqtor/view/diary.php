@@ -5,14 +5,15 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/diary.php');  
   
+  $idRessource=$_SESSION['user']->id;
   if (! isset($period)) {
   	$period=htmlentities($_REQUEST['diaryPeriod']);
     $year=htmlentities($_REQUEST['diaryYear']);
     $month=htmlentities($_REQUEST['diaryMonth']);
     $week=htmlentities($_REQUEST['diaryWeek']);
     $day=htmlentities($_REQUEST['diaryDay']);
+    Parameter::storeUserParameter("diaryPeriod",$period);
   }
-  $idRessource=$_SESSION['user']->id;
   
   $weekDaysCaption=array(
   		1=>i18n("Monday"),
@@ -37,7 +38,7 @@
   	$currentDay=date('Y-m-d',firstDayofWeek($week,$year));
   	$lastDayOfMonth=date('t',strtotime($year.'-'.$month.'-01'));
   	$weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
-  	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, $year));
+  	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, (($lastWeek>$week)?$year:$year+1) ));	
   	$endDay=addDaysToDate($firstDayOfLastWeek, 6);
   	$inScopeDay=false;
   } else if ($period=="week") {
@@ -82,7 +83,7 @@ function drawDay($date,$ress,$inScopeDay,$period) {
 	if ($period!='day') {
 		echo '<tr style="height:10px">';
 		echo '<td class="reportHeader" style="cursor: pointer;'.((!$inScopeDay)?'color:#AAAAAA':'').'"';
-		echo ' onClick="diaryDay(\''.substr($date,8,2).'\',\''.substr($date,5,2).'\',\''.substr($date,0,4).'\');" >';
+		echo ' onClick="diaryDay(\''.$date.'\');" >';
 		//echo $date.'/';
 		echo substr($date,8,2);
 		echo '</td>';
@@ -156,13 +157,22 @@ function drawDiaryLineHeader($currentDay, $trHeight,$period) {
 		echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
 	}	
 	echo '>';
-	echo '<div >'.weekNumber($currentDay).'</div>';
+	if ($period=='week') {
+		$month=substr($currentDay,5,2);
+		$monthArr=array(i18n("January"),i18n("February"),i18n("March"),
+				i18n("April"), i18n("May"),i18n("June"),
+				i18n("July"), i18n("August"), i18n("September"),
+				i18n("October"),i18n("November"),i18n("December"));
+		$dispMonth=(strlen($monthArr[$month-1])>4)?substr($monthArr[$month-1],0,3).'.':$monthArr[$month-1];
+		echo '<div style="font-size:80%">'.$dispMonth.'</div>';
+	} else {
+	  echo '<div >'.weekNumber($currentDay).'</div>';
+	}
 	if ($period=="month") {
 		echo '<img src="../view/css/images/right.png" /></td>';
 	} else {
 		echo '<img src="../view/css/images/left.png" /></td>';
 	}
 }
-
-  ?>
+?>
 

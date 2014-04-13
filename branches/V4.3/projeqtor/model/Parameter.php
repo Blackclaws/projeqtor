@@ -568,6 +568,22 @@ class Parameter extends SqlElement {
     return $val;
   }
   
+  static function storeUserParameter($code,$value) {
+  	$userId=$_SESSION['user']->id;
+  	$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>$userId,'parameterCode'=>$code));
+  	if (! $param->id) {
+  		$param->parameterCode=$code;
+  		$param->idUser=$userId;
+  		$param->idProject=null;
+  	}
+    $param->parameterValue=$value;
+  	$param->save();
+  	if (!array_key_exists('userParamatersArray',$_SESSION)) {
+  		$_SESSION['userParamatersArray']=array();
+  	}
+  	$_SESSION['userParamatersArray'][$code]=$value;
+  }
+  
   static public function getPlanningColumnOrder($all=false) {
   	if ($all) {
   		if (count(self::$planningColumnOrderAll)) return self::$planningColumnOrderAll;

@@ -20,7 +20,6 @@ class Activity extends ActivityMain {
 	public $Origin;
 	public $description;
 	public $_sec_address;
-	public $test;
 	public $_col_2_2_treatment;
 	public $idActivity;
 	public $idStatus;

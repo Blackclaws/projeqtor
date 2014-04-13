@@ -661,7 +661,7 @@ class PlannedWork extends GeneralWork {
   }
   
   private static function storeListPlan($listPlan,$plan) {
-debugLog("storeListPlan(listPlan,$plan->id)");
+scriptLog("storeListPlan(listPlan,$plan->id)");
     $listPlan['#'.$plan->id]=$plan;
     if (($plan->plannedStartDate or $plan->realStartDate) and ($plan->plannedEndDate or $plan->realEndDate) ) {
       foreach ($plan->_parentList as $topId=>$topVal) {
