@@ -840,6 +840,22 @@ label, .label {
   cursor: pointer;
 }
 
+.buttonDiary {
+    background: #ececec url(images/buttonActive.png) repeat-x bottom left;
+    cursor:pointer;
+    margin:0px; 
+    padding:2px; 
+    border: 1px solid #c0c0c0;
+    border-bottom: 1px solid #9b9b9b;
+    vertical-align:middle;
+    text-align: center;
+}
+.buttonDiary:hover {
+    border-color: #a5a5a5;
+    border-bottom-color: #757575;
+    color: #3C3C3C;
+    background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
+}
 
 
 /* =============================================================================== */

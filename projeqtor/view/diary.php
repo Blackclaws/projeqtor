@@ -6,10 +6,11 @@
   scriptLog('   ->/view/diary.php');  
   
   if (! isset($period)) {
-  	$period=htmlentities($_REQUEST['period']);
-    $year=htmlentities($_REQUEST['year']);
-    $month=htmlentities($_REQUEST['month']);
-    $week=htmlentities($_REQUEST['week']);
+  	$period=htmlentities($_REQUEST['diaryPeriod']);
+    $year=htmlentities($_REQUEST['diaryYear']);
+    $month=htmlentities($_REQUEST['diaryMonth']);
+    $week=htmlentities($_REQUEST['diaryWeek']);
+    $day=htmlentities($_REQUEST['diaryDay']);
   }
   $idRessource=$_SESSION['user']->id;
   
@@ -22,64 +23,73 @@
   		6=>i18n("Saturday"),
   		7=>i18n("Sunday"),
   );
-  $weekDay=1;
-  $end=false;
-  $day=0;
   $projectColorArray=array();
-  $maxDay=date('t',strtotime($year.'-'.$month.'-01'));
   if ($period=="month") {
-    $week=weekNumber($year.'-'.$month.'-01');
+  	$trHeight=20;
+  	$week=weekNumber($year.'-'.$month.'-01');
+  	$lastWeek=weekNumber($year.'-'.$month.'-'.date('t', mktime(0, 0, 0, $month, 1, $year)));
+  	$trHeight=round(100/($lastWeek-$week+1))-1;
+  } else {
+  	$trHeight=100;
   }
-  $currentDay=date('Y-m-d',firstDayofWeek($week,$year));
-  echo '<TABLE style="width:100%; height: 100%; border: 1px solid blue;">';
-  echo '<tr height="10px">';
-  for ($i=1; $i<=7;$i++) {
-  	echo '<td class="section" style="width: 14%;">'.$weekDaysCaption[$i].'</td>';
+
+  if ($period=="month") {
+  	$currentDay=date('Y-m-d',firstDayofWeek($week,$year));
+  	$lastDayOfMonth=date('t',strtotime($year.'-'.$month.'-01'));
+  	$weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
+  	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, $year));
+  	$endDay=addDaysToDate($firstDayOfLastWeek, 6);
+  	$inScopeDay=false;
+  } else if ($period=="week") {
+  	$currentDay=date('Y-m-d',firstDayofWeek($week,$year));
+  	$endDay=addDaysToDate($currentDay, 6);
+  	$inScopeDay=true;
+  } else if ($period=="day") {
+  	$currentDay=$day;
+  	$endDay=$currentDay;
+  	$inScopeDay=true;
   }
-  echo '</tr>';
-  echo '<tr height="20%">';
-  while (! $end) {
-  	if (! $day) {
-  		$dTest=mktime(0, 0, 0, $month, '01', $year);
-  		if (date("N",$dTest)==$weekDay) {
-  			$day=1;
+  echo '<TABLE style="width:100%; height: 100%;">';
+  
+  if ($period!='day') {
+    echo '<tr height="10px"><td></td>';
+    for ($i=1; $i<=7;$i++) {
+  	  echo '<td class="section" style="width: 14%;">'.$weekDaysCaption[$i].'</td>';
+    }
+  } else {
+  	echo '<tr height="0px"><td></td>';
+  }
+  drawDiaryLineHeader($currentDay, $trHeight,$period); 
+  while ($currentDay<=$endDay) {
+  	if ($period=="month") {
+  		if (substr($currentDay,5,2)==$month) {
+  			$inScopeDay=true;
+  		} else {
+  			$inScopeDay=false;
   		}
   	}
-  	if (! $day or $day>$maxDay) {
-  		echo '<td style="width: 14%; border: 1px solid white;background-color:transparent">';
-  		drawDay($currentDay,$idRessource,false); 
-  		echo '</td>';
-  	} else {
-  		echo '<td style="width: 14%; border: 1px solid #AAAAAA;background-color:white">';
-  		$dayx=($day>9)?$day:'0'.$day;
-  		drawDay("$year-$month-$dayx",$idRessource,true); 
-  		echo '</td>';
-  		$day++;
-  	}
-  	
-  	$weekDay+=1;
-  	if ($weekDay>7) { 
-  		if ($day>=$maxDay) {
-  		  $end=true;
-  	  } else {
-  	  	echo '</tr><tr height="20%">';
-  	  	$weekDay=1;
-  	  }
-  	}
+  	echo '<td style="width: '.(($period=='day')?'100':'14').'%; border: 1px solid #AAAAAA;background-color:'.(($inScopeDay)?'white':'transparent').'">';
+  	drawDay($currentDay,$idRessource,$inScopeDay,$period); 
   	$currentDay=addDaysToDate($currentDay, 1);
+  	if ($currentDay<=$endDay and date('N', strtotime($currentDay))==1) {
+      drawDiaryLineHeader($currentDay, $trHeight,$period);
+  	}
   }
   echo '</tr></TABLE>';
   
-function drawDay($date,$ress,$inScopeDay) {
+function drawDay($date,$ress,$inScopeDay,$period) {
 	echo '<table style="width:100%; height: 100%">';
-	echo '<tr style="height:10px">';
-	echo '<td class="reportHeader" '.((!$inScopeDay)?' style="color:#AAAAAA"':'').'>';
-	//echo $date.'/';
-	echo substr($date,8,2);
-	echo '</td>';
-	echo '</tr>';
+	if ($period!='day') {
+		echo '<tr style="height:10px">';
+		echo '<td class="reportHeader" style="cursor: pointer;'.((!$inScopeDay)?'color:#AAAAAA':'').'"';
+		echo ' onClick="diaryDay(\''.substr($date,8,2).'\',\''.substr($date,5,2).'\',\''.substr($date,0,4).'\');" >';
+		//echo $date.'/';
+		echo substr($date,8,2);
+		echo '</td>';
+		echo '</tr>';
+	}
 	echo '<tr >';
-	echo '<td style="backgroud-color:red; vertical-align:top">';
+	echo '<td style="vertical-align:top">';
 	echo '<div style="overflow-y: auto; overflow-y:none; height:100%;">';
 	echo '<table style="width:100%">';
 	$lst=getActivity($date,$ress);
@@ -134,5 +144,25 @@ function getActivity($date,$ress) {
 	}
 	return $result;
 }
+
+function drawDiaryLineHeader($currentDay, $trHeight,$period) {
+	echo '</tr>';
+	echo '<tr height="'.$trHeight.'%"><td class="buttonDiary" ';
+	if ($period=="month") {
+	  echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
+	} else if ($period=="week") {
+		echo 'onClick="diaryMonth('.substr($currentDay,5,2).','.substr($currentDay,0,4).');"';
+	} else if ($period=="day") {
+		echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
+	}	
+	echo '>';
+	echo '<div >'.weekNumber($currentDay).'</div>';
+	if ($period=="month") {
+		echo '<img src="../view/css/images/right.png" /></td>';
+	} else {
+		echo '<img src="../view/css/images/left.png" /></td>';
+	}
+}
+
   ?>
 
