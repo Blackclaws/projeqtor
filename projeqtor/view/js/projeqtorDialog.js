@@ -4572,37 +4572,62 @@ function refreshProjectSelectorList() {
 // Diary
 // ********************************************************************************************
 function diaryPrevious() {
+  diaryPreviousNext(-1);
+}
+function diaryNext() {
+  diaryPreviousNext(1);
+}
+
+function diaryPreviousNext(way) {
   period=dojo.byId("diaryPeriod").value;
   year=dojo.byId("diaryYear").value;
   month=dojo.byId("diaryMonth").value;
   week=dojo.byId("diaryWeek").value;
+  day=dojo.byId("diaryDay").value;
   if (period=="month") {
-    month-=1;
+    month=parseInt(month)+parseInt(way);
     if (month<=0) { 
       month=12;
-      year-=1;
-    }
-    dojo.byId("diaryYear").value=year;
-    dojo.byId("diaryMonth").value=(month>=10)?month:"0"+month;
-    diaryDisplayMonth(month, year)
-  }
-  loadContent("../view/diary.php","detailDiv","diaryForm");
-}
-
-function diaryNext() {
-  period=dojo.byId("diaryPeriod").value;
-  year=parseInt(dojo.byId("diaryYear").value);
-  month=parseInt(dojo.byId("diaryMonth").value);
-  week=parseInt(dojo.byId("diaryWeek").value);
-  if (period=="month") {
-    month+=1;
-    if (month>=13) { 
+      year=parseInt(year)-1;
+    } else if (month>=13) { 
       month=1;
-      year+=1;
+      year=parseInt(year)+1;
     }
     dojo.byId("diaryYear").value=year;
     dojo.byId("diaryMonth").value=(month>=10)?month:"0"+month;
     diaryDisplayMonth(month, year)
+  } else if (period=="week") {
+	week=parseInt(week)+parseInt(way);
+	if (parseInt(week)==0) {
+	  week=getWeek(31,12,year-1);
+	  if (week==1) {
+		var day=getFirstDayOfWeek(1,year);
+		week=getWeek(day.getDate()-1,day.getMonth()+1,day.getFullYear());
+	  }
+	  year=parseInt(year)-1;
+	} else if (parseInt(week,10)>53) {
+	  week=1;
+	  year=parseInt(year)+1;
+	} else if (parseInt(week,10)>52) {
+	  lastWeek=getWeek(31,12,year);
+	  if (lastWeek==1) {
+		var day=getFirstDayOfWeek(1,year+1);
+		lastWeek=getWeek(day.getDate()-1,day.getMonth()+1,day.getFullYear());
+ 	  }
+	  if (parseInt(week,10)>parseInt(lastWeek,10)) {
+		week=01;
+		year=parseInt(year)+1;
+      }
+	}
+	dojo.byId("diaryWeek").value=week;
+	dojo.byId("diaryYear").value=year;
+	diaryDisplayWeek(week, year);
+  } else if (period=="day") {	  
+	day=formatDate(addDaysToDate(getDate(day),way));
+	year=day.substring(0,4);
+	dojo.byId("diaryDay").value=day;
+	dojo.byId("diaryYear").value=year;
+	diaryDisplayDay(day);
   }
   loadContent("../view/diary.php","detailDiv","diaryForm");
 }
@@ -4611,6 +4636,7 @@ function diaryWeek(week,year) {
   dojo.byId("diaryPeriod").value="week";
   dojo.byId("diaryYear").value=year;
   dojo.byId("diaryWeek").value=week;
+  diaryDisplayWeek(week, year);
   loadContent("../view/diary.php","detailDiv","diaryForm");
 }
 
@@ -4618,13 +4644,15 @@ function diaryMonth(month,year) {
   dojo.byId("diaryPeriod").value="month";
   dojo.byId("diaryYear").value=year;
   dojo.byId("diaryMonth").value=month;
+  diaryDisplayMonth(month, year);
   loadContent("../view/diary.php","detailDiv","diaryForm");
 }
-function diaryDay(day,month,year) {
+function diaryDay(day) {
   dojo.byId("diaryPeriod").value="day";
-  dojo.byId("diaryYear").value=year;
-  dojo.byId("diaryMonth").value=month;
-  dojo.byId("diaryDay").value=year+'-'+month+'-'+day;
+  dojo.byId("diaryYear").value=day.substring(day,0,4);
+  dojo.byId("diaryMonth").value=day.substring(day,5,2);
+  dojo.byId("diaryDay").value=day;
+  diaryDisplayDay(day);
   loadContent("../view/diary.php","detailDiv","diaryForm");
 }
 
@@ -4634,5 +4662,21 @@ function diaryDisplayMonth(month, year) {
             i18n("July"),  i18n("August"),  i18n("September"),
             i18n("October"),i18n("November"),i18n("December"));
   caption=vMonthArr[month-1]+" "+year;
+  dojo.byId("diaryCaption").innerHTML=caption;
+}
+
+function diaryDisplayWeek(week, year) {
+  var firstday = getFirstDayOfWeek(week, year);
+  var lastday=new Date(firstday);
+  lastday.setDate(firstday.getDate()+6);
+  caption=year+' #'+week+" ("+dateFormatter(formatDate(firstday))+" - "+dateFormatter(formatDate(lastday))+")";
+  dojo.byId("diaryCaption").innerHTML=caption;
+}
+
+function diaryDisplayDay(day) {
+  var vDayArr = new Array(i18n("Sunday"),i18n("Monday"),i18n("Tuesday"),i18n("Wednesday"),
+    i18n("Thursday"), i18n("Friday"),i18n("Saturday"));
+  var d=getDate(day);
+  caption=vDayArr[d.getDay()]+" "+dateFormatter(day);
   dojo.byId("diaryCaption").innerHTML=caption;
 }

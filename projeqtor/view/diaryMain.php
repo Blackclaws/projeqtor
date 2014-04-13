@@ -16,19 +16,33 @@
       <td width="200px" ><span class="title"><?php echo i18n('menuDiary');?></span></td>
       <td style="text-align: center"> 
 		   <?php 
-		   $period="month";
+		   $period=Parameter::getUserParameter("diaryPeriod");
+		   if (!$period) {$period="month";}
 		   $year=date('Y');
 		   $month=date('m');
 		   $week=date('W');
 		   $day=date('Y-m-d');
-		   echo '<div style="font-size:20px" id="diaryCaption">'.i18n(date("F",mktime(0,0,0,$month,1,$year))).' '.$year.'</div>'; ?>
+		   echo '<div style="font-size:20px" id="diaryCaption">';
+		   if ($period=='month') {
+		     echo i18n(date("F",mktime(0,0,0,$month,1,$year))).' '.$year;
+		   } else if ($period=='week') {
+         $firstday=date('Y-m-d',firstDayofWeek($week, $year));
+         $lastday=addDaysToDate($firstday, 6);
+         echo $year.' #'.$week." (".htmlFormatDate($firstday)." - ".htmlFormatDate($lastday).")";
+       } else if ($period=='day') {
+         $vDayArr = array('', i18n("Monday"),i18n("Tuesday"),i18n("Wednesday"),
+		                i18n("Thursday"), i18n("Friday"),i18n("Saturday"),i18n("Sunday"));
+         echo $vDayArr[date("N",mktime(0,0,0,$month,date('d'),$year))]." ".htmlFormatDate($day);
+       }
+       echo "</div>";
+		   ?>
 		   </td><td>
 		   <form id="diaryForm" name="diaryForm">
 		   <input type="hidden" name="diaryPeriod" id="diaryPeriod" value="<?php echo $period;?>" />
 		   <input type="hidden" name="diaryYear" id="diaryYear" value="<?php echo $year;?>" />
 		   <input type="hidden" name="diaryMonth" id="diaryMonth" value="<?php echo $month;?>" />
 		   <input type="hidden" name="diaryWeek" id="diaryWeek" value="<?php echo $week;?>" />
-		   <input type="hidden" name="diaryDay" id="diaryDay" value="<?php echo $week;?>" />
+		   <input type="hidden" name="diaryDay" id="diaryDay" value="<?php echo $day;?>" />
 		   </form> 
 		   </td>
 		   <td width="250px" ></td>

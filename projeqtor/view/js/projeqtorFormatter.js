@@ -191,6 +191,14 @@ function dateFormatter(value) {
   }
 }
 
+function longDateFormatter(value) {
+  if (value.length==10) {
+  	vDate=dojo.date.locale.parse(value, {selector: "date", datePattern: "yyyy-MM-dd"});
+    return dojo.date.locale.format(vDate, {formatLength: "long", fullYear: true, selector: "date"});
+  } else {
+  	return value;
+  }
+}
 /**
  * ============================================================================
  * Format date & time value (depends on locale)
