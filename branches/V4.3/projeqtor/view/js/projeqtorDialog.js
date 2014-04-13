@@ -4567,3 +4567,72 @@ function refreshProjectSelectorList() {
     dijit.byId('dialogProjectSelectorParameters').hide();
   }
 }
+
+// ********************************************************************************************
+// Diary
+// ********************************************************************************************
+function diaryPrevious() {
+  period=dojo.byId("diaryPeriod").value;
+  year=dojo.byId("diaryYear").value;
+  month=dojo.byId("diaryMonth").value;
+  week=dojo.byId("diaryWeek").value;
+  if (period=="month") {
+    month-=1;
+    if (month<=0) { 
+      month=12;
+      year-=1;
+    }
+    dojo.byId("diaryYear").value=year;
+    dojo.byId("diaryMonth").value=(month>=10)?month:"0"+month;
+    diaryDisplayMonth(month, year)
+  }
+  loadContent("../view/diary.php","detailDiv","diaryForm");
+}
+
+function diaryNext() {
+  period=dojo.byId("diaryPeriod").value;
+  year=parseInt(dojo.byId("diaryYear").value);
+  month=parseInt(dojo.byId("diaryMonth").value);
+  week=parseInt(dojo.byId("diaryWeek").value);
+  if (period=="month") {
+    month+=1;
+    if (month>=13) { 
+      month=1;
+      year+=1;
+    }
+    dojo.byId("diaryYear").value=year;
+    dojo.byId("diaryMonth").value=(month>=10)?month:"0"+month;
+    diaryDisplayMonth(month, year)
+  }
+  loadContent("../view/diary.php","detailDiv","diaryForm");
+}
+
+function diaryWeek(week,year) {
+  dojo.byId("diaryPeriod").value="week";
+  dojo.byId("diaryYear").value=year;
+  dojo.byId("diaryWeek").value=week;
+  loadContent("../view/diary.php","detailDiv","diaryForm");
+}
+
+function diaryMonth(month,year) {
+  dojo.byId("diaryPeriod").value="month";
+  dojo.byId("diaryYear").value=year;
+  dojo.byId("diaryMonth").value=month;
+  loadContent("../view/diary.php","detailDiv","diaryForm");
+}
+function diaryDay(day,month,year) {
+  dojo.byId("diaryPeriod").value="day";
+  dojo.byId("diaryYear").value=year;
+  dojo.byId("diaryMonth").value=month;
+  dojo.byId("diaryDay").value=year+'-'+month+'-'+day;
+  loadContent("../view/diary.php","detailDiv","diaryForm");
+}
+
+function diaryDisplayMonth(month, year) {
+  var vMonthArr = new Array(i18n("January"),i18n("February"),i18n("March"),
+            i18n("April"), i18n("May"),i18n("June"),
+            i18n("July"),  i18n("August"),  i18n("September"),
+            i18n("October"),i18n("November"),i18n("December"));
+  caption=vMonthArr[month-1]+" "+year;
+  dojo.byId("diaryCaption").innerHTML=caption;
+}
