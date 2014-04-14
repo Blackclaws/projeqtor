@@ -236,6 +236,11 @@ function htmlGetNoDataMessage($className) {
     return '<br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . i18n('messageNoData',array(i18n($className))) . '</i>';
 }
 
+function htmlGetNoAccessMessage($className) {
+	return '<br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . i18n('messageNoAccess',array(i18n($className))) . '</i>';
+}
+
+
 /** ===========================================================================
  * Draw an html Table as cross reference
  * @param $lineObj the object class containing line data

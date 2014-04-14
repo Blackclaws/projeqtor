@@ -1870,6 +1870,10 @@ year: "ano",
 colChangeIssuer: "alterar ${1} para",
 colChangeRequestor: "alterar ${1} para",
 Diary: "[Diary]",
+diaryAccess: "[diaryAccess]",
 menuDiary: "[menuDiary]",
+messageNoAccess: "[messageNoAccess]",
+resourcePlanningRight: "[resourcePlanningRight]",
+sectionImputationDiary: "Atribuição de trabalho real",
 currentLocaleOfFile: "pt"
 }

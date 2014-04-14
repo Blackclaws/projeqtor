@@ -1870,6 +1870,10 @@ year: "[year]",
 colChangeIssuer: "[colChangeIssuer]",
 colChangeRequestor: "[colChangeRequestor]",
 Diary: "[Diary]",
+diaryAccess: "[diaryAccess]",
 menuDiary: "[menuDiary]",
+messageNoAccess: "[messageNoAccess]",
+resourcePlanningRight: "[resourcePlanningRight]",
+sectionImputationDiary: "[sectionImputationDiary]",
 currentLocaleOfFile: "nl"
 }

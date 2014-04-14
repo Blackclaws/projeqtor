@@ -216,8 +216,8 @@ function drawTableFromObjectList($objectList) {
   	echo ' id="' . $titlePane . '" ';
   	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
   	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
-  	echo ' title="' . i18n('sectionImputation') . '">';
-  	htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess'), 'workValid'=>i18n('workValidate')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
+  	echo ' title="' . i18n('sectionImputationDiary') . '">';
+  	htmlDrawCrossTable(array('imputation'=>i18n('imputationAccess'), 'workValid'=>i18n('workValidate'),'diary'=>i18n('diaryAccess')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'accessScope') ;
   	echo '</div><br/>';
   	$titlePane="habilitationOther_WorkCost";
   	echo '<div dojoType="dijit.TitlePane"';
@@ -253,7 +253,7 @@ function drawTableFromObjectList($objectList) {
   	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
   	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
   	echo ' title="' . i18n('sectionPlanningRight') . '">';
-  	htmlDrawCrossTable(array('planning'=>i18n('planningRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+  	htmlDrawCrossTable(array('planning'=>i18n('planningRight'),'resourcePlanning'=>i18n('resourcePlanningRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
   	echo '</div><br/>';
   	$titlePane="habilitationOther_Unlock";
   	echo '<div dojoType="dijit.TitlePane"';

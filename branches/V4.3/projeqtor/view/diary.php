@@ -13,6 +13,7 @@
     $week=htmlentities($_REQUEST['diaryWeek']);
     $day=htmlentities($_REQUEST['diaryDay']);
     Parameter::storeUserParameter("diaryPeriod",$period);
+    $idRessource=$_REQUEST['diaryResource'];
   }
   
   $weekDaysCaption=array(
@@ -163,7 +164,7 @@ function drawDiaryLineHeader($currentDay, $trHeight,$period) {
 				i18n("April"), i18n("May"),i18n("June"),
 				i18n("July"), i18n("August"), i18n("September"),
 				i18n("October"),i18n("November"),i18n("December"));
-		$dispMonth=(strlen($monthArr[$month-1])>4)?substr($monthArr[$month-1],0,3).'.':$monthArr[$month-1];
+		$dispMonth=(mb_strlen($monthArr[$month-1],'UTF-8')>4)?mb_substr($monthArr[$month-1],0,4,'UTF-8').'.':$monthArr[$month-1];
 		echo '<div style="font-size:80%">'.$dispMonth.'</div>';
 	} else {
 	  echo '<div >'.weekNumber($currentDay).'</div>';

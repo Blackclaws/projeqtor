@@ -1870,6 +1870,10 @@ year: "年份",
 colChangeIssuer: "[colChangeIssuer]",
 colChangeRequestor: "[colChangeRequestor]",
 Diary: "[Diary]",
+diaryAccess: "[diaryAccess]",
 menuDiary: "[menuDiary]",
+messageNoAccess: "[messageNoAccess]",
+resourcePlanningRight: "[resourcePlanningRight]",
+sectionImputationDiary: "实际工作量",
 currentLocaleOfFile: "zh"
 }
