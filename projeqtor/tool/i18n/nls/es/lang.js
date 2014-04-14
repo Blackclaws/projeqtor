@@ -1870,6 +1870,10 @@ year: "año",
 colChangeIssuer: "cambiar el ${1} en",
 colChangeRequestor: "cambiar el ${1} en",
 Diary: "[Diary]",
+diaryAccess: "[diaryAccess]",
 menuDiary: "[menuDiary]",
+messageNoAccess: "[messageNoAccess]",
+resourcePlanningRight: "[resourcePlanningRight]",
+sectionImputationDiary: "Asignación real del trabajo",
 currentLocaleOfFile: "es"
 }

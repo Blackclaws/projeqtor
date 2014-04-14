@@ -2222,8 +2222,8 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
 	$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
 	$pe=new PlanningElement();
 	$pe->setVisibility();
-	$workVisible=($pe->_workVisibility=='ALL')?true:false;
-	if (! $workVisible) return;
+	$costVisible=($pe->_costVisibility=='ALL')?true:false;
+	if (! $costVisible) return;
 	if ($obj->idle==1) {$canUpdate=false;}
 	echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
 	echo '<tr>';
@@ -2713,7 +2713,6 @@ if ( $noselect ) {
 		exit;
 	}
 }
-
 // save the current object in session
 $print=false;
 if ( array_key_exists('print',$_REQUEST) or isset($callFromMail) ) {
@@ -2800,8 +2799,12 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   style="width: 100%; height: 100%;"><?php 
   }
   $noData=htmlGetNoDataMessage($objClass);
+  $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj)=="YES";
+  
   if ( $noselect) {
   	echo $noData;
+  } else if (!$canRead) {
+    echo htmlGetNoAccessMessage($objClass);;
   } else {
   	if (! $print or $comboDetail) {
   		echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;

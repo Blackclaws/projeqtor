@@ -1870,6 +1870,10 @@ year: "Jahr",
 colChangeIssuer: "Ändere ${1} zu",
 colChangeRequestor: "Ändere ${1} zu",
 Diary: "[Diary]",
+diaryAccess: "[diaryAccess]",
 menuDiary: "[menuDiary]",
+messageNoAccess: "[messageNoAccess]",
+resourcePlanningRight: "[resourcePlanningRight]",
+sectionImputationDiary: "Ist-Arbeit-Buchung",
 currentLocaleOfFile: "de"
 }

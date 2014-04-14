@@ -4,6 +4,7 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/diaryMain.php');  
+  $user=$_SESSION['user'];
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Diary" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
@@ -36,16 +37,55 @@
        }
        echo "</div>";
 		   ?>
-		   </td><td>
-		   <form id="diaryForm" name="diaryForm">
+		   </td>
+		   <td nowrap="nowrap" width="250px" ><form id="diaryForm" name="diaryForm">
 		   <input type="hidden" name="diaryPeriod" id="diaryPeriod" value="<?php echo $period;?>" />
 		   <input type="hidden" name="diaryYear" id="diaryYear" value="<?php echo $year;?>" />
 		   <input type="hidden" name="diaryMonth" id="diaryMonth" value="<?php echo $month;?>" />
 		   <input type="hidden" name="diaryWeek" id="diaryWeek" value="<?php echo $week;?>" />
 		   <input type="hidden" name="diaryDay" id="diaryDay" value="<?php echo $day;?>" />
-		   </form> 
-		   </td>
-		   <td width="250px" ></td>
+		   <?php echo i18n("colIdResource");?> 
+		   <select dojoType="dijit.form.FilteringSelect" class="input" style="width: 150px;"
+        name="diaryResource" id="diaryResource"
+        value="<?php echo ($user->isResource)?$user->id:'0';?>" >
+         <script type="dojo/method" event="onChange" >
+           loadContent("../view/diary.php","detailDiv","diaryForm");
+         </script>
+         <?php 
+           $crit=array('scope'=>'diary', 'idProfile'=>$user->idProfile);
+           $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+           $scope=new AccessScope($habilitation->rightAccess);
+           $table=array();
+           if (! $user->isResource) {
+             $table[0]=' ';
+           }
+           if ($scope->accessCode=='NO') {
+             $table[$user->id]=' ';
+           } else if ($scope->accessCode=='ALL') {
+             $table=SqlList::getList('Resource');
+           } else if ($scope->accessCode=='OWN' and $user->isResource ) {
+             $table=array($user->id=>SqlList::getNameFromId('Resource', $user->id));
+           } else if ($scope->accessCode=='PRO') {
+             $crit='idProject in ' . transformListIntoInClause($user->getVisibleProjects());
+             $aff=new Affectation();
+             $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true);
+             $fullTable=SqlList::getList('Resource');
+             foreach ($lstAff as $id=>$aff) {
+               if (array_key_exists($aff->idResource,$fullTable)) {
+                 $table[$aff->idResource]=$fullTable[$aff->idResource];
+               }
+             }
+           }
+           if (count($table)==0) {
+             $table[$user->id]=' ';
+           }
+           foreach($table as $key => $val) {
+             echo '<OPTION value="' . $key . '"';
+             if ( $key==$user->id ) { echo ' SELECTED '; } 
+             echo '>' . $val . '</OPTION>';
+           }?>  
+       </select>
+		   </form> </td>
    	</tr>
    	<tr height="18px" vertical-align="middle">
    	  <td colspan="5">
