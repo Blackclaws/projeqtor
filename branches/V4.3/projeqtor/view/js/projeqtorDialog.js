@@ -2290,7 +2290,7 @@ function showChecklist(objectClass, objectId) {
 }
 
 function saveChecklist() {
-  var params="&objectClass="+objectClass+"&objectId="+objectId;
+  //var params="&objectClass="+objectClass+"&objectId="+objectId;
   //loadDialog('dialogChecklist',null, true, params);
   loadContent('../tool/saveChecklist.php','resultDiv','dialogChecklistForm',true,'checklist');
   dijit.byId('dialogChecklist').hide();
