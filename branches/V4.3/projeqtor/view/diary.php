@@ -119,6 +119,38 @@ function getActivity($date,$ress) {
 	global $projectColorArray;
 	$pw=new PlannedWork();
 	$result=array();
+	// 
+	$arrObj=array(new Action(), new Ticket());
+	foreach ($arrObj as $obj) {
+		$critWhere="done=0 and idResource=".Sql::fmtId($ress);
+		if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
+		  $critWhere.=" and (actualDueDate='$date' or ( actualDueDate is null and initialDueDate='$date') )";
+	  } else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
+		  $critWhere.=" and (actualDueDateTime>'$date 00:00:00' and actualDueDateTime>'$date 23:59:59') ";
+		  $critWhere.=" or ( actualDueDate is null and initialDueDateTime='$date') )";
+	  } else {
+	  	$critWhere.=" and 1=0";
+	  }
+		$lst=$obj->getSqlElementsFromCriteria(null,false,$critWhere);
+		foreach ($lst as $o) {
+			if (array_key_exists($o->idProject,$projectColorArray)) {
+				$color=$projectColorArray[$o->idProject];
+			} else {
+				$pro=new Project($o->idProject);
+				$color=$pro->color;
+				$projectColorArray[$o->idProject]=$color;
+			}
+			$result[get_class($o).'#'.$o->id]=array(
+					'type'=>get_class($o),
+					'id'=>$o->id,
+					'work'=>0,
+					'name'=>$o->name,
+					'color'=>$color,
+					'display'=>$o->name
+					);
+		}
+	}
+	// Planned Activities
 	$crit=array('idResource'=>$ress,'workDate'=>$date);
 	$pwList=$pw->getSqlElementsFromCriteria($crit);
 	foreach ($pwList as $pw) {
