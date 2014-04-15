@@ -5,6 +5,7 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/diary.php');  
   
+  $arrayActivities=array(); // Array of activities to display
   $idRessource=$_SESSION['user']->id;
   if (! isset($period)) {
   	$period=htmlentities($_REQUEST['diaryPeriod']);
@@ -61,6 +62,7 @@
   } else {
   	echo '<tr height="0px"><td></td>';
   }
+  $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource);
   drawDiaryLineHeader($currentDay, $trHeight,$period); 
   while ($currentDay<=$endDay) {
   	if ($period=="month") {
@@ -94,7 +96,7 @@ function drawDay($date,$ress,$inScopeDay,$period) {
 	echo '<td style="vertical-align:top">';
 	echo '<div style="overflow-y: auto; overflow-y:none; height:100%;">';
 	echo '<table style="width:100%">';
-	$lst=getActivity($date,$ress);
+	$lst=getActivity($date);
 	foreach ($lst as $item) {
 		echo '<tr>';
 		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
@@ -115,8 +117,17 @@ function drawDay($date,$ress,$inScopeDay,$period) {
 	echo '</table>';
 }
 
-function getActivity($date,$ress) {
-	global $projectColorArray;
+function getActivity($date) {
+	global $arrayActivities;
+	if (array_key_exists($date, $arrayActivities)) {
+		return $arrayActivities[$date];
+	} else {
+		return array();
+	}
+}
+
+function getAllActivities($startDate, $endDate, $ress) {
+	global $projectColorArray, $allActi;
 	$pw=new PlannedWork();
 	$result=array();
 	// 
@@ -124,10 +135,15 @@ function getActivity($date,$ress) {
 	foreach ($arrObj as $obj) {
 		$critWhere="done=0 and idResource=".Sql::fmtId($ress);
 		if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
-		  $critWhere.=" and (actualDueDate='$date' or ( actualDueDate is null and initialDueDate='$date') )";
+		  $critWhere.=" and ( "
+		   ." (actualDueDate>='$startDate' and actualDueDate<='$endDate') "
+		   ." or ( actualDueDate is null and (initialDueDate>='$startDate' and initialDueDate<='$endDate') )"
+		   ." )";
 	  } else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
-		  $critWhere.=" and (actualDueDateTime>'$date 00:00:00' and actualDueDateTime>'$date 23:59:59') ";
-		  $critWhere.=" or ( actualDueDate is null and initialDueDateTime='$date') )";
+		  $critWhere.=" and ( "
+		   ." (actualDueDateTime>='$startDate 00:00:00' and actualDueDateTime<='$endDate 23:59:59') "
+		   ." or ( actualDueDateTime is null and (initialDueDateTime>='$startDate 00:00:00' and initialDueDateTime<='$endDate 23:59:59') )"
+	     ." )";
 	  } else {
 	  	$critWhere.=" and 1=0";
 	  }
@@ -140,19 +156,39 @@ function getActivity($date,$ress) {
 				$color=$pro->color;
 				$projectColorArray[$o->idProject]=$color;
 			}
-			$result[get_class($o).'#'.$o->id]=array(
-					'type'=>get_class($o),
-					'id'=>$o->id,
-					'work'=>0,
-					'name'=>$o->name,
-					'color'=>$color,
-					'display'=>$o->name
-					);
+			$date=null;
+			if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
+				if ($o->actualDueDate) {
+					$date=$o->actualDueDate;
+				} else {
+					$date=$o->initialDueDate;
+				}
+			} else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
+				if ($o->actualDueDateTime) {
+					$date=$o->actualDueDateTime;
+				} else {
+					$date=$o->initialDueDateTime;
+				}
+			}
+			if ($date) {
+				if (!array_key_exists($date, $result)) {
+					$result[$date]=array();
+				}
+				$result[$date][get_class($o).'#'.$o->id]=array(
+						'type'=>get_class($o),
+						'id'=>$o->id,
+						'work'=>0,
+						'name'=>$o->name,
+						'color'=>$color,
+						'display'=>$o->name
+				);
+			}		
 		}
 	}
 	// Planned Activities
-	$crit=array('idResource'=>$ress,'workDate'=>$date);
-	$pwList=$pw->getSqlElementsFromCriteria($crit);
+	$critWhere="idResource=".Sql::fmtId($ress);
+	$critWhere.=" and workDate>='$startDate' and workDate<='$endDate'";
+	$pwList=$pw->getSqlElementsFromCriteria(null,false,$critWhere);
 	foreach ($pwList as $pw) {
 		$item=new $pw->refType($pw->refId);
 		if ($pw->refType=='Meeting') {
@@ -167,7 +203,11 @@ function getActivity($date,$ress) {
 			$color=$pro->color;
 			$projectColorArray[$item->idProject]=$color;
 		}
-		$result[$pw->refType.'#'.$pw->refId]=array(
+		$date=$pw->workDate;
+		if (!array_key_exists($date, $result)) {
+			$result[$date]=array();
+		}
+		$result[$date][$pw->refType.'#'.$pw->refId]=array(
 				'type'=>$pw->refType,
 		    'id'=>$pw->refId,
 				'work'=>$pw->work,
