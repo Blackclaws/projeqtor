@@ -209,6 +209,7 @@ class Sql {
       $str=str_replace("\'","'",$str);
       $str=str_replace('\\\\','\\',$str);
     }   
+    $str=str_replace(chr(8),'',$str);
     $cnx=self::getConnection();
     return $cnx->quote($str);
   }

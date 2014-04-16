@@ -27,6 +27,7 @@
   		7=>i18n("Sunday"),
   );
   $projectColorArray=array();
+  $projectNameArray=array();
   if ($period=="month") {
   	$trHeight=20;
   	$week=weekNumber($year.'-'.$month.'-01');
@@ -127,11 +128,11 @@ function getActivity($date) {
 }
 
 function getAllActivities($startDate, $endDate, $ress) {
-	global $projectColorArray, $allActi;
+	global $projectColorArray, $projectNameArray, $allActi;
 	$pw=new PlannedWork();
 	$result=array();
 	// 
-	$arrObj=array(new Action(), new Ticket());
+	$arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement());
 	foreach ($arrObj as $obj) {
 		$critWhere="done=0 and idResource=".Sql::fmtId($ress);
 		if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
@@ -144,6 +145,9 @@ function getAllActivities($startDate, $endDate, $ress) {
 		   ." (actualDueDateTime>='$startDate 00:00:00' and actualDueDateTime<='$endDate 23:59:59') "
 		   ." or ( actualDueDateTime is null and (initialDueDateTime>='$startDate 00:00:00' and initialDueDateTime<='$endDate 23:59:59') )"
 	     ." )";
+		} else if (property_exists($obj, 'validatedEndDate') ) {
+			$critWhere=" validatedEndDate>='$startDate' and validatedEndDate<='$endDate'";
+			$critWhere.=" and idProject in ".transformListIntoInClause($_SESSION['user']->getVisibleProjects(true));
 	  } else {
 	  	$critWhere.=" and 1=0";
 	  }
@@ -157,30 +161,40 @@ function getAllActivities($startDate, $endDate, $ress) {
 				$projectColorArray[$o->idProject]=$color;
 			}
 			$date=null;
+			$name="";
+			$id=$o->id;
+			$class=get_class($o);
 			if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
 				if ($o->actualDueDate) {
 					$date=$o->actualDueDate;
 				} else {
 					$date=$o->initialDueDate;
 				}
+				$name=$o->name;
 			} else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
 				if ($o->actualDueDateTime) {
 					$date=substr($o->actualDueDateTime,0,10);
 				} else {
 					$date=substr($o->initialDueDateTime,0,10);
 				}
+				$name=$o->name;
+			} else if (property_exists($obj, 'validatedEndDate')) {
+				$name=$o->refName;
+				$id=$o->refId;
+				$class=$o->refType;
+				$date=$o->validatedEndDate;
 			}
 			if ($date) {
 				if (!array_key_exists($date, $result)) {
 					$result[$date]=array();
-				}
+				}				
 				$result[$date][get_class($o).'#'.$o->id]=array(
-						'type'=>get_class($o),
-						'id'=>$o->id,
+						'type'=>$class,
+						'id'=>$id,
 						'work'=>0,
-						'name'=>$o->name,
+						'name'=>$name,
 						'color'=>$color,
-						'display'=>$o->name
+						'display'=>$name
 				);
 			}		
 		}
