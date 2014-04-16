@@ -7,7 +7,7 @@
 <table style="width:100%;height:100%;">
     <tr style="height:100%; vertical_align: middle;">
       <td style="width:100%;text-align: center;">
-        <div style="position:relative;width:100%;height:100%;left:0px;border:1px solid red;">        
+        <div style="position:relative;width:100%;height:100%;left:0px;;">        
           <div style="position:absolute;width:100%;height:100%; top:25%;">
             <img style="height:50%;top:25%;left:25%;opacity:0.10;filter:alpha(opacity=10);" src="img/logoBig.png" />
           </div>
