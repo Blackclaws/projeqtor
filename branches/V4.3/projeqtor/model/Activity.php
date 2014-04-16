@@ -1,6 +1,6 @@
 <?php 
 /** ============================================================================
- * Action is establised during meeting, to define an action to be followed.
+ * Activity is main planned element
  */  
 require_once('_securityCheck.php');
 class Activity extends ActivityMain {
