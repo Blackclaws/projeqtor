@@ -165,9 +165,9 @@ function getAllActivities($startDate, $endDate, $ress) {
 				}
 			} else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
 				if ($o->actualDueDateTime) {
-					$date=$o->actualDueDateTime;
+					$date=substr($o->actualDueDateTime,0,10);
 				} else {
-					$date=$o->initialDueDateTime;
+					$date=substr($o->initialDueDateTime,0,10);
 				}
 			}
 			if ($date) {
