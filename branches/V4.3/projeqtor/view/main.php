@@ -171,6 +171,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       if (securityCheckDisplayMenu(1) ) {
       	$firstPage="today.php";
       }
+      $paramFirstPage=Parameter::getUserParameter('startPage');
+      if ($paramFirstPage) {
+        $firstPage=$paramFirstPage;
+      }
       if (array_key_exists("directAccessPage",$_REQUEST)) {
         securityCheckRequest();
         $firstPage=$_REQUEST['directAccessPage'];

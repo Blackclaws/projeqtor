@@ -306,7 +306,13 @@ class Parameter extends SqlElement {
                      '>'=>'>','>>'=>'>>','>>>'=>'>>>',
                      '|'=>'|', '|_'=>'|_','|__'=>'|__',
                      'no'=>i18n('paramNone'));
-        break; 
+        break;
+      case 'startPage':
+      	$list=array();
+      	if (securityCheckDisplayMenu(1)) {$list['today.php']=i18n('menuToday');}
+      	if (securityCheckDisplayMenu(133)) {$list['diaryMain.php']=i18n('menuDiary');}
+      	$list['welcome.php']=i18n('paramNone');
+      	break; 
       case 'changeReferenceOnTypeChange': case 'rememberMe':
         	$list=array('YES'=>i18n('displayYes'),
         	'NO'=>i18n('displayNo'));
@@ -334,11 +340,12 @@ class Parameter extends SqlElement {
                            //'sectionObjectDetail'=>'section', 
                            //"displayAttachement"=>"list",
                            //"displayNote"=>"list",
-                           'sectionIHM'=>'section',
+                         'sectionIHM'=>'section',
                            "displayHistory"=>"list",  
                            "hideMenu"=>"list",
                            "switchedMode"=>"list",
                            "paramConfirmQuit"=>"list",
+                           "startPage"=>"list",
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
