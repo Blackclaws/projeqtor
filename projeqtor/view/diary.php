@@ -5,6 +5,7 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/diary.php');  
   
+  $cpt=0;
   $arrayActivities=array(); // Array of activities to display
   $idRessource=$_SESSION['user']->id;
   if (! isset($period)) {
@@ -83,6 +84,7 @@
   echo '</tr></TABLE>';
   
 function drawDay($date,$ress,$inScopeDay,$period) {
+	global $cpt;
 	echo '<table style="width:100%; height: 100%">';
 	if ($period!='day') {
 		echo '<tr style="height:10px">';
@@ -99,14 +101,27 @@ function drawDay($date,$ress,$inScopeDay,$period) {
 	echo '<table style="width:100%">';
 	$lst=getActivity($date);
 	foreach ($lst as $item) {
+		$cpt++;
+		$hint=i18n($item['type']).' #'.$item['id']."\n"
+				.$item['name']."\n"
+				.i18n('colIdProject').": ".$item['project'];
+		$hintHtml=i18n($item['type']).' #'.$item['id']."<br/>"
+				.'<b>'.$item['name']."</b><br/>"
+				.i18n('colIdProject').": <i>".$item['project'].'</i><br/>';
+		if ($item['date']) { $hintHtml.=i18n('colDate').": <i>".$item['date']."</i>"; }
+		if ($item['work']) { $hintHtml.=i18n('colPlannedWork').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
 		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
-		echo '<div style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
+		echo '<div id="item_'.$cpt.'" title="'.$hint.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
 		echo '<table><tr><td>';
 		echo '<img src="../view/css/images/icon'.$item['type'].'16.png"/></td><td style="width:1px">';
 		echo '</td><td style="color:#555555">';
 		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['type'].'\', '.$item['id'].', false);" >'.$item['display'].'</div>';
 		echo '</td></tr></table>';
+		echo '</div>';
+		// To display a tooltip in replacement of Hint
+		echo '<div dojoType="dijit.Tooltip" connectId="item_'.$cpt.'" position="above">';
+		echo $hintHtml;
 		echo '</div>';
 		echo '</td>';
 		echo '</tr>';
@@ -155,27 +170,35 @@ function getAllActivities($startDate, $endDate, $ress) {
 		foreach ($lst as $o) {
 			if (array_key_exists($o->idProject,$projectColorArray)) {
 				$color=$projectColorArray[$o->idProject];
+				$projName=$projectNameArray[$o->idProject];
 			} else {
 				$pro=new Project($o->idProject);
 				$color=$pro->color;
+				$projName=$pro->name;
 				$projectColorArray[$o->idProject]=$color;
+				$projectNameArray[$o->idProject]=$projName;
 			}
 			$date=null;
+			$dateField="";
 			$name="";
 			$id=$o->id;
 			$class=get_class($o);
 			if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
 				if ($o->actualDueDate) {
 					$date=$o->actualDueDate;
+					$dateField=i18n('colActualDueDate');
 				} else {
 					$date=$o->initialDueDate;
+					$dateField=i18n('colInitialDueDate');
 				}
 				$name=$o->name;
 			} else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
 				if ($o->actualDueDateTime) {
 					$date=substr($o->actualDueDateTime,0,10);
+					$dateField=i18n('colActualDueDate');
 				} else {
 					$date=substr($o->initialDueDateTime,0,10);
+					$dateField=i18n('colInitialDueDate');
 				}
 				$name=$o->name;
 			} else if (property_exists($obj, 'validatedEndDate')) {
@@ -183,6 +206,7 @@ function getAllActivities($startDate, $endDate, $ress) {
 				$id=$o->refId;
 				$class=$o->refType;
 				$date=$o->validatedEndDate;
+				$dateField=i18n('colValidatedEndDate');
 			}
 			if ($date) {
 				if (!array_key_exists($date, $result)) {
@@ -194,7 +218,9 @@ function getAllActivities($startDate, $endDate, $ress) {
 						'work'=>0,
 						'name'=>$name,
 						'color'=>$color,
-						'display'=>$name
+						'display'=>$name,
+						'date'=>$dateField,
+						'project'=>$projName
 				);
 			}		
 		}
@@ -212,10 +238,13 @@ function getAllActivities($startDate, $endDate, $ress) {
 		}
 		if (array_key_exists($item->idProject,$projectColorArray)) {
 			$color=$projectColorArray[$item->idProject];
+			$projName=$projectNameArray[$item->idProject];
 		} else {
 			$pro=new Project($item->idProject);
 			$color=$pro->color;
+			$projName=$pro->name;
 			$projectColorArray[$item->idProject]=$color;
+			$projectNameArray[$item->idProject]=$projName;
 		}
 		$date=$pw->workDate;
 		if (!array_key_exists($date, $result)) {
@@ -227,7 +256,9 @@ function getAllActivities($startDate, $endDate, $ress) {
 				'work'=>$pw->work,
 				'name'=>$item->name,
 				'color'=>$color,
-				'display'=>$display
+				'display'=>$display,
+				'project'=>$projName,
+				'date'=>"",
 		);
 	}
 	return $result;
