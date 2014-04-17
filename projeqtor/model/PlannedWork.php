@@ -809,5 +809,58 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   	}
   }
   
+  public static function planSaveDates($projectId, $initial, $validated) {
+  	if ($initial=='NEVER' and $validated=='NEVER') {
+  		$result=i18n('planDatesNotSaved');
+  		$result .= '<input type="hidden" id="lastPlanStatus" value="WARNING" />';
+  		return $result;
+  	}
+  	$cpt=0;
+  	$proj=new Project($projectId);
+  	$inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
+  	$inClause.=" and " . getAccesResctictionClause('Activity',false);
+  	// Remove administrative projects :
+  	$inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
+  	// Remove Projects with Fixed Planning flag
+  	$inClause.=" and idProject not in " . Project::getFixedProjectList() ;
+  	// Get the list of all PlanningElements to plan (includes Activity and/or Projects)
+  	$pe=new PlanningElement();
+  	$order="wbsSortable asc";
+  	$list=$pe->getSqlElementsFromCriteria(null,false,$inClause,$order,true);
+  	foreach ($list as $pe) {
+  		// initial
+  		if ($initial=='ALWAYS' or ($initial=='IFEMPTY' and ! $pe->initialStartDate) ) {
+  			$pe->initialStartDate=$pe->plannedStartDate;
+  			$cpt++;
+  			//debugLog("1-".$pe->refType.' #'.$pe->refId);
+  		}
+  		if ($initial=='ALWAYS' or ($initial=='IFEMPTY' and ! $pe->initialEndDate) ) {
+  			$pe->initialEndDate=$pe->plannedEndDate;
+  			$cpt++;
+  			//debugLog("2-".$pe->refType.' #'.$pe->refId);
+  		}
+  		// validated
+  		if ($validated=='ALWAYS' or ($validated=='IFEMPTY' and ! $pe->validatedStartDate) ) {
+  			$pe->validatedStartDate=$pe->plannedStartDate;
+  			$cpt++;
+  			//debugLog("3-".$pe->refType.' #'.$pe->refId);
+  		}
+  		if ($validated=='ALWAYS' or ($validated=='IFEMPTY' and ! $pe->validatedEndDate) ) {
+  			$pe->validatedEndDate=$pe->plannedEndDate;
+  			$cpt++;
+  			//debugLog("4-".$pe->refType.' #'.$pe->refId);
+  		}
+  		$pe->simpleSave();
+  	}
+  	if ($cpt>0) {
+  		$result=i18n('planDatesSaved');
+  		$result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+  	} else {
+  		$result=i18n('planDatesNotSaved');
+  		$result .= '<input type="hidden" id="lastPlanStatus" value="WARNING" />';
+  	}
+  	return $result;
+  }
+  
 }
 ?>

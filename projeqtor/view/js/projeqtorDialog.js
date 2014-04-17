@@ -2379,6 +2379,32 @@ function cancelPlan() {
   dijit.byId('dialogPlan').hide();
 }
 
+function showPlanSaveDates () {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}	
+	callBack=function() {
+	  var proj=dijit.byId('idProjectPlan');
+	  if (proj) {
+		dijit.byId('idProjectPlanSaveDates').set('value',proj.get('value'));
+	  }
+	};	
+	if (dijit.byId("dialogPlanSaveDates")) {
+		callBack();
+		dijit.byId("dialogPlanSaveDates").show();
+		return;
+	}
+	
+	loadDialog('dialogPlanSaveDates',callBack,true);
+}
+function planSaveDates () {
+  if (!dijit.byId('idProjectPlanSaveDates').get('value')) {
+    dijit.byId('idProjectPlanSaveDates').set('value',' ');
+  }
+  loadContent("../tool/planSaveDates.php", "planResultDiv", "dialogPlanSaveDatesForm", true,null);
+  dijit.byId("dialogPlanSaveDates").hide();
+}
 //=============================================================================
 //= Filter
 //=============================================================================
