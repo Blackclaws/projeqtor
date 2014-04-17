@@ -169,7 +169,7 @@ function getAllActivities($startDate, $endDate, $ress) {
 		   ." or ( actualDueDateTime is null and (initialDueDateTime>='$startDate 00:00:00' and initialDueDateTime<='$endDate 23:59:59') )"
 	     ." )";
 		} else if (property_exists($obj, 'validatedEndDate') ) {
-			$critWhere=" validatedEndDate>='$startDate' and validatedEndDate<='$endDate'";
+			$critWhere=" refType='MileStone' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate'";
 			$critWhere.=" and idProject in ".transformListIntoInClause($_SESSION['user']->getVisibleProjects(true));
 	  } else {
 	  	$critWhere.=" and 1=0";
