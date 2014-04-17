@@ -17,7 +17,8 @@
     Parameter::storeUserParameter("diaryPeriod",$period);
     $idRessource=$_REQUEST['diaryResource'];
   }
-  
+  $ress=new Resource($idRessource);
+  $calendar=$ress->idCalendarDefinition;
   $weekDaysCaption=array(
   		1=>i18n("Monday"),
   		2=>i18n("Tuesday"),
@@ -75,7 +76,7 @@
   		}
   	}
   	echo '<td style="width: '.(($period=='day')?'100':'14').'%; border: 1px solid #AAAAAA;background-color:'.(($inScopeDay)?'white':'transparent').'">';
-  	drawDay($currentDay,$idRessource,$inScopeDay,$period); 
+  	drawDay($currentDay,$idRessource,$inScopeDay,$period,$calendar); 
   	$currentDay=addDaysToDate($currentDay, 1);
   	if ($currentDay<=$endDay and date('N', strtotime($currentDay))==1) {
       drawDiaryLineHeader($currentDay, $trHeight,$period);
@@ -83,12 +84,12 @@
   }
   echo '</tr></TABLE>';
   
-function drawDay($date,$ress,$inScopeDay,$period) {
+function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	global $cpt;
-	echo '<table style="width:100%; height: 100%">';
+	echo '<table style="width:100%; height: 100%;'.(($date==date('Y-m-d'))?'border:0px solid #555555;':'').'">';
 	if ($period!='day') {
 		echo '<tr style="height:10px">';
-		echo '<td class="reportHeader" style="cursor: pointer;'.((!$inScopeDay)?'color:#AAAAAA':'').'"';
+		echo '<td class="report'.(($date==date('Y-m-d'))?'Table':'').'Header" style="padding:0;cursor: pointer;'.((!$inScopeDay)?'color:#AAAAAA':'').'"';
 		echo ' onClick="diaryDay(\''.$date.'\');" >';
 		//echo $date.'/';
 		echo substr($date,8,2);
@@ -96,7 +97,14 @@ function drawDay($date,$ress,$inScopeDay,$period) {
 		echo '</tr>';
 	}
 	echo '<tr >';
-	echo '<td style="vertical-align:top">';
+	$bgColor="#FFFFFF";
+	if ($date==date('Y-m-d')) { 
+		$bgColor="#ffffaa"; 
+	} else if (isOffDay($date,$calendar)) {
+		$bgColor="#eeeeee";
+	}
+	
+	echo '<td style="vertical-align:top;background-color:'.$bgColor.';">';
 	echo '<div style="overflow-y: auto; overflow-y:none; height:100%;">';
 	echo '<table style="width:100%">';
 	$lst=getActivity($date);
