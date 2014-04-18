@@ -7,4 +7,5 @@ session_start();
 //echo "Server=".'<br/>';
 //var_dump($_SERVER);
 phpinfo();
+
 ?>
