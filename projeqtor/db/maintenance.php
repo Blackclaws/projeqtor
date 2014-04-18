@@ -45,7 +45,8 @@ $versionHistory = array(
   "V4.1.-",
   "V4.1.0",
   "V4.2.0",
-  "V4.2.1");
+  "V4.2.1",
+  "V4.3.0.a");
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
                  'paramMailSmtpPort'=>'25',
@@ -84,23 +85,21 @@ if ($currVersion=="") {
   // if no current version, parameters are set through config.php
   $versionParameters=array(); // Clear $versionParameter to avoid dupplication of parameters
 }
-$arrVers=explode('.',substr($currVersion,1));
+/*$arrVers=explode('.',substr($currVersion,1));
 $currVer=$arrVers[0];
 $currMaj=$arrVers[1];
-$currRel=$arrVers[2];
+$currRel=$arrVers[2];*/
 
-if ($currVersion!='V0.0.0' and $currVersion<'V3.0.0') {
+if ($currVersion!='V0.0.0' and beforeVersion($currVersion,'V3.0.0') ) {
 	$nbErrors+=runScript('V3.0.-');
 }
 
 foreach ($versionHistory as $vers) {
-  $arrVers=explode('.',substr($vers,1));
+  /*$arrVers=explode('.',substr($vers,1));
   $histVer=$arrVers[0];
   $histMaj=$arrVers[1];
-  $histRel=$arrVers[2];
-  if ( $histVer > $currVer 
-  or ( $histVer == $currVer and $histMaj > $currMaj)
-  or ( $histVer == $currVer and $histMaj == $currMaj and $histRel > $currRel) ) {
+  $histRel=$arrVers[2];*/
+  if ( beforeVersion($currVersion, $vers) ) {
     $nbErrors+=runScript($vers);
   }
 }
@@ -140,14 +139,14 @@ if (! isset($memoryLimitForPDF) ) {
 }
 
 // For V1.9.0
-if ($currVersion<"V1.9.0" and $currVersion!='V0.0.0') {
+if (beforeVersion($currVersion,"V1.9.0") and $currVersion!='V0.0.0') {
 	$adminFunctionality='updateReference';
 	include('../tool/adminFunctionalities.php');
 	echo "<br/>";
 }
 
 // For V1.9.1
-if ($currVersion<"V1.9.1") {
+if (beforeVersion($currVersion,"V1.9.1")) {
   // update affectations
   $aff=new Affectation();
   $affList=$aff->getSqlElementsFromCriteria(null, false);
@@ -157,7 +156,7 @@ if ($currVersion<"V1.9.1") {
 }
 
 // For V2.1.0
-if ($currVersion<"V2.1.0") {
+if (beforeVersion($currVersion,"V2.1.0")) {
   // update PlanningElements (progress)
   $pe=new PlanningElement();
   $peList=$pe->getSqlElementsFromCriteria(null, false);
@@ -166,7 +165,7 @@ if ($currVersion<"V2.1.0") {
   }
 }
 // For V2.1.1
-if ($currVersion<"V2.1.1") {
+if (beforeVersion($currVersion,"V2.1.1")) {
   // update PlanningElements (progress)
   $ass=new Assignment();
   $assList=$ass->getSqlElementsFromCriteria(null, false);
@@ -176,7 +175,7 @@ if ($currVersion<"V2.1.1") {
 }
 
 // For V2.4.1 & V2.4.2
-if ($currVersion<"V2.4.2") {
+if (beforeVersion($currVersion,"V2.4.2")) {
   $req=new Requirement();
   $reqList=$req->getSqlElementsFromCriteria(null, false);
   foreach ($reqList as $req) {
@@ -198,13 +197,13 @@ if ($currVersion<"V2.4.2") {
 }
 
 // For V2.6.0 : migration of parameters to database
-if ($currVersion<"V2.6.0") {
+if (beforeVersion($currVersion,"V2.6.0")) {
   $arrayParamsToMigrate=array('paramDbDisplayName',
                               'paramMailTitle','paramMailMessage','paramMailSender','paramMailReplyTo','paramAdminMail',
                               'paramMailSmtpServer','paramMailSmtpPort','paramMailSendmailPath','paramMailShowDetail');
   migrateParameters($arrayParamsToMigrate); 
 }
-if ($currVersion<"V3.0.0") {
+if (beforeVersion($currVersion,"V3.0.0")) {
   $arrayParamsToMigrate=array('paramLdap_allow_login', 'paramLdap_base_dn', 'paramLdap_host', 'paramLdap_port',
     'paramLdap_version', 'paramLdap_search_user', 'paramLdap_search_pass', 'paramLdap_user_filter',
     'paramDefaultPassword','paramPasswordMinLength', 'lockPassword',
@@ -217,7 +216,7 @@ if ($currVersion<"V3.0.0") {
     );
   migrateParameters($arrayParamsToMigrate); 
 }
-if ($currVersion>="V3.0.0" and $version<"V3.1.3" 
+if (afterVersion($currVersion,"V3.0.0") and beforeVersion($version,"V3.1.3") 
 and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') { 
 	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
 	$query="RENAME TABLE `".$paramDbPrefix."workPeriod` TO `".$paramDbPrefix."workperiod`;";
@@ -227,7 +226,7 @@ and ! strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' and $paramDbType=='mysql') {
   //Sql::commitTransaction();
 }
 
-if ($currVersion<"V3.3.0" and $currVersion!='V0.0.0') {
+if (beforeVersion($currVersion,"V3.3.0") and $currVersion!='V0.0.0') {
   $ses=new TestSession();
   $sesList=$ses->getSqlElementsFromCriteria(null, false);
   foreach ($sesList as $ses) {
@@ -244,7 +243,7 @@ if (! $tst or count($tst)==0) {
   $nbErrors+=runScript('V3.3.1.linux');
 }
 
-if ($currVersion<"V3.4.0") {
+if (beforeVersion($currVersion,"V3.4.0")) {
 	$defProf=Parameter::getGlobalParameter('defaultProfile');
 	if (! $defProf) {
 		$prf=new Profile('5');
@@ -259,7 +258,7 @@ if ($currVersion<"V3.4.0") {
 	}
 }
 
-if ($currVersion<"V4.0.0") {
+if (beforeVersion($currVersion,"V4.0.0")) {
 	// Deleting old files referencing projector or projectorria : these files have been renamed
   $root=$_SERVER['SCRIPT_FILENAME'];
 	$root=substr($root,0,strpos($root, '/tool/'));
@@ -304,13 +303,13 @@ if (! $tst or count($tst)==0) {
   $nbErrors+=runScript('V4.0.1.linux');
 }
 
-if ($currVersion<"V4.1.-") {
+if (beforeVersion($currVersion,"V4.1.-")) {
 	if (isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
 		$nbErrors+=runScript('V4.1.-.flash');
 	}
 }
 
-if ($currVersion<"V4.2.0") {
+if (beforeVersion($currVersion,"V4.2.0")) {
 	$user=new User();
 	$userList=$user->getSqlElementsFromCriteria(null);
 	foreach ($userList as $user) {
@@ -663,6 +662,18 @@ function migrateParameters($arrayParamsToMigrate) {
     $parameter->save();
   }
   Parameter::regenerateParamFile();
+}
+
+function beforeVersion($V1,$V2) {
+	$V1=ltrim($V1,'V');
+	$V2=ltrim($V2,'V');
+	return(version_compare($V1, $V2,"<"));
+}
+
+function afterVersion($V1,$V2) {
+	$V1=ltrim($V1,'V');
+	$V2=ltrim($V2,'V');
+	return(version_compare($V1, $V2,">="));
 }
 
 ?>
