@@ -34,3 +34,6 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 (6,'resourcePlanning','2'),
 (7,'resourcePlanning','2'),
 (5,'resourcePlanning','2');
+
+UPDATE `${prefix}project` p SET 
+sortOrder=(select wbsSortable from `${prefix}planningelement` pe where refType='Project' and refId=p.id);
