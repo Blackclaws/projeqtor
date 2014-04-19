@@ -9,6 +9,7 @@ class Client extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
+  public $idClientType;
   public $clientCode;
   public $paymentDelay;
   public $tax;
@@ -30,8 +31,9 @@ class Client extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
     <th field="name" width="40%">${clientName}</th>
-    <th field="clientCode" width="20%">${clientCode}</th> 
-    <th field="paymentDelay" width="15%">${paymentDelay}</th>
+  	<th field="nameClientType" width="15%">${idClientType}</th> 
+    <th field="clientCode" width="15%">${clientCode}</th> 
+    <th field="paymentDelay" width="10%">${paymentDelay}</th>
     <th field="tax" width="10%">${tax}</th>
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';

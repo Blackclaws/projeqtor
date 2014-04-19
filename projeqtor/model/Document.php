@@ -264,7 +264,7 @@ class Document extends SqlElement {
   }
   
   public function sendMailToApprovers($onlyNotApproved=true) {
-  	$crit=array('refType'=>'Document', 'refId'=>$this->id);
+  	$crit=array('refType'=>'DocumentVersion', 'refId'=>$this->idDocumentVersion);
   	if ($onlyNotApproved) {
   		$crit['approved']='0';
   	}

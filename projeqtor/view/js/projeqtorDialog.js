@@ -4155,22 +4155,30 @@ function recalculateColumnSelectorName() {
 // Other
 // =========================================================
 function showMailOptions() {
-	dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
-	dojo.byId('mailRefId').value=dojo.byId('objectId').value;
-	title=i18n('buttonMail', new Array(i18n(dojo.byId('objectClass').value)));
-	if (dijit.byId('attendees')) {
-		dijit.byId('dialogMailToOther').set('checked','checked');
-		dijit.byId('dialogOtherMail').set('value',extractEmails(dijit.byId('attendees').get('value')));
-		dialogMailToOtherChange();
+	var callback=function() {
+		dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
+		dojo.byId('mailRefId').value=dojo.byId('objectId').value;
+		title=i18n('buttonMail', new Array(i18n(dojo.byId('objectClass').value)));
+		if (dijit.byId('attendees')) {
+			dijit.byId('dialogMailToOther').set('checked','checked');
+			dijit.byId('dialogOtherMail').set('value',extractEmails(dijit.byId('attendees').get('value')));
+			dialogMailToOtherChange();
+		}
+		//if (dojo.byId('objectClass').value=='Activity') {
+		//  enableWidget('dialogMailToAssigned');
+		//} else {
+		//  disableWidget('dialogMailToAssigned');
+		//  dijit.byId('dialogMailToAssigned').set('checked','');
+		//}
+		dijit.byId("dialogMail").set('title',title);
+		dijit.byId("dialogMail").show();
 	}
-	if (dojo.byId('objectClass').value=='Activity') {
-	  enableWidget('dialogMailToAssigned');
-	} else {
-	  disableWidget('dialogMailToAssigned');
-	  dijit.byId('dialogMailToAssigned').set('checked','');
+	if (dijit.byId("dialogMail") && dojo.byId('dialogMailObjectClass') && dojo.byId('dialogMailObjectClass').value==dojo.byId("objectClass").value) {
+		dijit.byId("dialogMail").show();	
+	} else  {
+		var param="&objectClass="+dojo.byId("objectClass").value;
+		loadDialog("dialogMail",callback, false,param);
 	}
-	dijit.byId("dialogMail").set('title',title);
-	dijit.byId("dialogMail").show();
 	
 }
 
@@ -4428,6 +4436,19 @@ function showImage(objectClass, objectId, imageName) {
   //dijit.byId('formDiv').resize();
 }
 
+function showLink(link) {
+   //window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';
+   dijit.byId("dialogShowHtml").title=link;
+   window.frames['showHtmlFrame'].location.href=link;
+   dijit.byId("dialogShowHtml").show();
+   window.frames['showHtmlFrame'].focus();
+}
+function showHtml(id,file) {
+  dijit.byId("dialogShowHtml").title=file;
+  window.frames['showHtmlFrame'].location.href='../tool/download.php?class=Attachement&id='+id+'&showHtml=true';
+  dijit.byId("dialogShowHtml").show();
+  window.frames['showHtmlFrame'].focus();
+}
 
 //*******************************************************
 // Dojo code to position into a tree

@@ -61,8 +61,18 @@ $order="";
 $ticket=new Ticket();
 $lstTicket=$ticket->getSqlElementsFromCriteria(null,false, $where, $order);
 
-$lstVersion=SqlList::getList('Version');
+if ($paramProject) {
+	$lstVersion=array();
+	$vp=new VersionProject();
+	$tmpList=$vp->getSqlElementsFromCriteria(array('idProject'=>$paramProject));
+	foreach ($tmpList as $vp) {
+		$lstVersion[$vp->idVersion]=SqlList::getNameFromId('Version',$vp->idVersion);
+	}
+} else {
+	$lstVersion=SqlList::getList('Version');
+}
 $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
+
 if ($paramTicketType!="") {
 	$lstType=array($paramTicketType=>SqlList::getNameFromId('TicketType', $paramTicketType));
 } else {

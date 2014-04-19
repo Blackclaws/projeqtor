@@ -56,7 +56,9 @@ if (($file != "") && (file_exists($file))) {
   header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
   header("Content-Transfer-Encoding: binary"); 
   header("Content-Length: $size"); 
-  header("Content-Disposition: attachment; filename=\"" .$name . "\""); 
+  if (!array_key_exists('showHtml', $_REQUEST)) {
+    header("Content-Disposition: attachment; filename=\"" .$name . "\"");
+  }
   header("Expires: 0"); 
   header("Cache-Control: no-cache, must-revalidate");
   header("Cache-Control: private",false);

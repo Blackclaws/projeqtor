@@ -2725,7 +2725,7 @@ abstract class SqlElement {
 	public function sendMailIfMailable($newItem=false, $statusChange=false, $directStatusMail=null,
 	$responsibleChange=false, $noteAdd=false, $attachmentAdd=false,
 	$noteChange=false, $descriptionChange=false, $resultChange=false, $assignmentAdd=false, $assignmentChange=false,
-	$anyChange=false) {
+	$anyChange=false) {	
 		$objectClass=get_class($this);
 		$idProject=($objectClass=='Project')?$this->id:((property_exists($this,'idProject'))?$this->idProject:null);
 		if ($objectClass=='TicketSimple') {$objectClass='Ticket';}
@@ -2784,7 +2784,6 @@ abstract class SqlElement {
 		if (count($statusMailList)==0) {
 			return false; // exit not a status for mail sending (or disabled)
 		}
-
 		$dest="";
 		foreach ($statusMailList as $statusMail) {
 			if ($statusMail->idType){
@@ -2798,7 +2797,7 @@ abstract class SqlElement {
 			}
 			if ($statusMail->mailToUser==0 and $statusMail->mailToResource==0 and $statusMail->mailToProject==0
 			and $statusMail->mailToLeader==0  and $statusMail->mailToContact==0  and $statusMail->mailToOther==0
-			and $statusMail->mailToManager==0 and $statusMail->mailToAssigned==0) {
+			and $statusMail->mailToManager==0 and $statusMail->mailToAssigned==0 and $statusMail->mailToSponsor==0) {
 				continue; // exit not a status for mail sending (or disabled)
 			}
 			if ($statusMail->mailToUser) {
@@ -2816,6 +2815,16 @@ abstract class SqlElement {
 					$resource=new Resource($this->idResource);
 					$newDest = "###" . $resource->email . "###";
 					if ($resource->email and strpos($dest,$newDest)===false) {
+						$dest.=($dest)?', ':'';
+						$dest.= $newDest;
+					}
+				}
+			}			
+			if ($statusMail->mailToSponsor) {
+				if (property_exists($this, 'idSponsor')) {
+					$sponsor=new Sponsor($this->idSponsor);
+					$newDest = "###" . $sponsor->email . "###";
+					if ($sponsor->email and strpos($dest,$newDest)===false) {
 						$dest.=($dest)?', ':'';
 						$dest.= $newDest;
 					}
