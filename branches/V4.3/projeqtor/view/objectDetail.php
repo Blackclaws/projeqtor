@@ -1719,14 +1719,22 @@ function drawAttachementsFromObject($obj, $refresh=false) {
         echo '<img src="'. getImageThumb($attachement->getFullPathFileName(),32).'" '
            . ' title="'.$attachement->fileName.'" style="cursor:pointer"'
            . ' onClick="showImage(\'Attachement\',\''.$attachement->id.'\',\''.$attachement->fileName.'\');" />';
+      } else if ($attachement->link and ! $print) {
+      	echo '<div style="cursor:pointer" onClick="showLink(\''.urldecode($attachement->link).'\');">';
+      	echo '<img src="../view/img/mime/html.png" title="' . $attachement->link . '" />';
+      	echo '</div>';
       } else {
-			  echo htmlGetMimeType($attachement->mimeType,$attachement->fileName);
+			  echo htmlGetMimeType($attachement->mimeType,$attachement->fileName,$attachement->id);
       }
 			echo  '</td>';
 			echo '<td class="attachementData" style="width:' . ( ($print)?'50':'45' ) . '%" title="' . $attachement->description . '">';
 			echo '<table style="width:100%"><tr >';
 			echo ' <td>';
-			echo htmlEncode($attachement->fileName,'print');
+			if ($attachement->link) {
+				echo htmlEncode(urldecode($attachement->link),'print');
+			} else {
+				echo htmlEncode($attachement->fileName,'print');
+			}
 			echo ' </td>';
 			if ($attachement->description and ! $print) {
 				echo '<td style="width:18px; vertical-align: top;"><img src="img/note.png" /></td>';

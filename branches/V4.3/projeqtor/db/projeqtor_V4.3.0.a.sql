@@ -37,3 +37,22 @@ INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES
 
 UPDATE `${prefix}project` p SET 
 sortOrder=(select wbsSortable from `${prefix}planningelement` pe where refType='Project' and refId=p.id);
+
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `idWorkflow`, `mandatoryDescription`, `mandatoryResultOnDone`, `mandatoryResourceOnHandled`, `lockHandled`, `lockDone`, `lockIdle`, `code`) VALUES 
+('Client', 'business prospect', '10', '0', '1', '0', '0', '0', '0', '1', '1', ''),
+('Client', 'customer', '10', '0', '1', '0', '0', '0', '0', '1', '1', '');
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `idle`) VALUES 
+(134, 'menuClientType', '79', 'object', '925', 0);
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 134, 1),
+(2, 134, 0),
+(3, 134, 0),
+(4, 134, 0),
+(5, 134, 0),
+(6, 134, 0),
+(7, 134, 0);
+
+ALTER TABLE `${prefix}client` ADD COLUMN `idClientType` int(12) unsigned DEFAULT NULL;
+CREATE INDEX clientClientType ON `${prefix}client` (idClientType);

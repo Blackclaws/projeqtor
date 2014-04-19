@@ -17,6 +17,7 @@ class StatusMail extends SqlElement {
   public $mailToContact;
   public $mailToUser;
   public $mailToResource;
+  public $mailToSponsor;
   public $mailToProject;
   public $mailToLeader;
   public $mailToManager;
@@ -47,7 +48,8 @@ class StatusMail extends SqlElement {
   private static $_fieldsAttributes=array("idMailable"=>"", 
                                   "mailToOther"=>"nobr",
                                   "otherMail"=>"",
-                                  "idType"=>"nocombo"
+                                  "idType"=>"nocombo", 
+  		                            "mailToSponsor"=>"hidden,calculated"
   );  
   
   private static $_colCaptionTransposition = array('idStatus'=>'newStatus',

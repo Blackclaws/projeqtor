@@ -45,7 +45,16 @@ $order="";
 if ($paramVersion) {
   $lstVersion=array($paramVersion=>SqlList::getNameFromId('Version',$paramVersion));
 } else {
-  $lstVersion=SqlList::getList('Version');
+	if ($paramProject) {
+		$lstVersion=array();
+		$vp=new VersionProject();
+		$tmpList=$vp->getSqlElementsFromCriteria(array('idProject'=>$paramProject));
+		foreach ($tmpList as $vp) {
+		  $lstVersion[$vp->idVersion]=SqlList::getNameFromId('Version',$vp->idVersion);
+		}
+	} else {
+    $lstVersion=SqlList::getList('Version');
+	}
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 }
 

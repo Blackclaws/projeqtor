@@ -72,6 +72,7 @@
   	$mailToContact=(array_key_exists('dialogMailToContact', $_REQUEST))?true:false;
     $mailToUser=(array_key_exists('dialogMailToUser', $_REQUEST))?true:false;
     $mailToResource=(array_key_exists('dialogMailToResource', $_REQUEST))?true:false;
+    $mailToSponsor=(array_key_exists('dialogMailToSponsor', $_REQUEST))?true:false;
     $mailToProject=(array_key_exists('dialogMailToProject', $_REQUEST))?true:false;
     $mailToLeader=(array_key_exists('dialogMailToLeader', $_REQUEST))?true:false;
     $mailToManager=(array_key_exists('dialogMailToManager', $_REQUEST))?true:false;
@@ -85,6 +86,7 @@
     $directStatusMail->mailToContact=$mailToContact;
     $directStatusMail->mailToUser=$mailToUser;
     $directStatusMail->mailToResource=$mailToResource;
+    $directStatusMail->mailToSponsor=$mailToSponsor;
     $directStatusMail->mailToProject=$mailToProject;
     $directStatusMail->mailToLeader=$mailToLeader;
     $directStatusMail->mailToManager=$mailToManager;

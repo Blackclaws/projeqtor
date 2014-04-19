@@ -621,6 +621,27 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   </div>
 </div>
 
+<div id="dialogShowHtml" dojoType="dijit.Dialog" onHide="window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';" title="">
+  <?php 
+    $printHeight=600;
+    $printWidth=1000;
+    if (array_key_exists('screenHeight',$_SESSION)) {
+      $printHeight=round($_SESSION['screenHeight']*0.50);
+    }
+  ?> 
+  <div style="widht:100%" id="showHtmlLink" dojoType="dijit.layout.ContentPane" region="center">
+    <table style="widht:100%">
+      <tr>
+        <td width="<?php echo $printWidth;?>px">   
+          <iframe width="100%" height="<?php echo $printHeight;?>px"
+            scrolling="auto" frameborder="0px" name="showHtmlFrame" id="showHtmlFrame" src="">
+          </iframe>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
 <div id="dialogDetail" dojoType="dijit.Dialog" title="<?php echo i18n("dialogDetailCombo");?>" class="background" >
   <?php 
     $detailHeight=600;
@@ -1809,120 +1830,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <?php echo i18n("buttonCancel");?>
         </button>
         <button dojoType="dijit.form.Button" type="submit" id="dialogDependencySubmit" onclick="saveDependency();return false;">
-          <?php echo i18n("buttonOK");?>
-        </button>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<div id="dialogMail" dojoType="dijit.Dialog" title="">
-  <table>
-    <tr>
-      <td>
-        <form dojoType="dijit.form.Form" id='mailForm' name='mailForm' onSubmit="return false;">
-          <input id="mailRefType" name="mailRefType" type="hidden" value="" />
-          <input id="mailRefId" name="mailRefId" type="hidden" value="" />
-          <table>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToContact"><?php echo i18n("colMailToContact") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToContact" name="dialogMailToContact" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToUser"><?php echo i18n("colMailToUser") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToUser" name="dialogMailToUser" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToResource"><?php echo i18n("colMailToResource") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToResource" name="dialogMailToResource" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToProject"><?php echo i18n("colMailToProject") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToProject" name="dialogMailToProject" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToLeader"><?php echo i18n("colMailToLeader") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToLeader" name="dialogMailToLeader" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToManager"><?php echo i18n("colMailToManager") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToManager" name="dialogMailToManager" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-             <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToAssigned"><?php echo i18n("colMailToAssigned") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToAssigned" name="dialogMailToAssigned" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailToOther"><?php echo i18n("colMailToOther") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                <div id="dialogMailToOther" name="dialogMailToOther" dojoType="dijit.form.CheckBox" 
-                 type="checkbox" onChange="dialogMailToOtherChange();">
-                </div> <?php echo i18n('helpOtherEmail');?>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-              </td>
-              <td>
-                <textarea dojoType="dijit.form.Textarea" 
-					          id="dialogOtherMail" name="dialogOtherMail"
-					          style="width: 500px; display:none"
-					          maxlength="4000"
-					          class="input" ></textarea>
-              </td>
-            </tr>
-            <tr>
-              <td class="dialogLabel">
-                <label for="dialogMailMessage"><?php echo i18n("colMailMessage") ?>&nbsp;:&nbsp;</label>
-              </td>
-              <td>
-                 <textarea dojoType="dijit.form.Textarea" 
-                    id="dialogMailMessage" name="dialogMailMessage"
-                    style="width: 500px; "
-                    maxlength="4000"
-                    class="input" ></textarea>
-              </td>
-            </tr>
-          </table>
-       </form>
-     </td>
-   </tr>
-    <tr>
-      <td align="center">
-        <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMail').hide();">
-          <?php echo i18n("buttonCancel");?>
-        </button>
-        <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="sendMail();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
