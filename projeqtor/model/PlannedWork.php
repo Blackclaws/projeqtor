@@ -129,6 +129,8 @@ class PlannedWork extends GeneralWork {
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     $inClause.=" and " . getAccesResctictionClause('Activity',false);
+    // Remove Projects with Fixed Planning flag
+    $inClause.=" and idProject not in " . Project::getFixedProjectList() ;
     // Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
@@ -136,8 +138,7 @@ class PlannedWork extends GeneralWork {
     // #697 : moved the administrative project clause after the purge
     // Remove administrative projects :
     $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
-    // Remove Projects with Fixed Planning flag 
-    $inClause.=" and idProject not in " . Project::getFixedProjectList() ;
+    
     // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause;
