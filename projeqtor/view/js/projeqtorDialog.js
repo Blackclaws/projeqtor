@@ -1329,7 +1329,11 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 		dijit.byId("assignmentIdRole").set('readOnly',false);
 	} else {
 		dijit.byId("assignmentIdResource").set('readOnly',true);
-		dijit.byId("assignmentIdRole").set('readOnly',true);
+		if (! idRole) {
+		  dijit.byId("assignmentIdRole").set('readOnly',false);
+		} else {
+		  dijit.byId("assignmentIdRole").set('readOnly',true);		
+		}
 	}
 	setTimeout("editAssignmentLoading=false",1000);
 }
