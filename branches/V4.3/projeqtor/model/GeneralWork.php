@@ -133,7 +133,7 @@ class GeneralWork extends SqlElement {
       $order="startDate asc";
       $rc=new ResourceCost();
       $rcList=$rc->getSqlElementsFromCriteria(null, false, $where, $order);
-      $this->dailyCost=(count($rcList)>0)?$rcList[0]->cost:0;
+      $this->dailyCost=((count($rcList)>0)?$rcList[0]->cost:$ass->dailyCost);
     }
     $this->cost=$this->dailyCost*$this->work;
     return parent::save();
