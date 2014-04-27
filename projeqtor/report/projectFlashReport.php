@@ -633,7 +633,7 @@ $showCost=1;
     if ($outMode=='pdf') {
     	echo "</PAGE><PAGE>";
     } else {
-    	echo '<div style="height:6mm">&nbsp;</div>';
+    	echo '<div style="height:0.1mm; page-break-after:always;">&nbsp;</div>';
     }
   }
 }
