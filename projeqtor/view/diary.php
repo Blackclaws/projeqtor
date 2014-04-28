@@ -117,14 +117,22 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 				.'<b>'.$item['name']."</b><br/>"
 				.i18n('colIdProject').": <i>".$item['project'].'</i><br/>';
 		if ($item['date']) { $hintHtml.=i18n('colDate').": <i>".$item['date']."</i>"; }
-		if ($item['work']) { $hintHtml.=i18n('colPlannedWork').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
+		if ($item['work'] and $item['real']) { $hintHtml.=i18n('colRealWork').": ".Work::displayWorkWithUnit($item['work']).""; }
+		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('colPlannedWork').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
 		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
 		echo '<div id="item_'.$cpt.'" title="'.$hint.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
 		echo '<table><tr><td>';
-		echo '<img src="../view/css/images/icon'.$item['type'].'16.png"/></td><td style="width:1px">';
+		$attr=((! $item['real'])?'':' style="opacity:0.5;filter:alpha(opacity=50);"');
+		echo '<img src="../view/css/images/icon'.$item['type'].'16.png"'.$attr.'/></td><td style="width:1px">';
 		echo '</td><td style="color:#555555">';
-		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['type'].'\', '.$item['id'].', false);" >'.$item['display'].'</div>';
+		echo '<div style="cursor:pointer;color:'.getForeColor($item['color']).'" onClick="gotoElement(\''.$item['type'].'\', '.$item['id'].', false);" >';
+		if ($item['real']) {
+		  echo $item['display'];
+		} else {
+			echo '<i>'.$item['display'].'</i>';
+		}
+		echo '</div>';
 		echo '</td></tr></table>';
 		echo '</div>';
 		// To display a tooltip in replacement of Hint
@@ -152,7 +160,6 @@ function getActivity($date) {
 
 function getAllActivities($startDate, $endDate, $ress) {
 	global $projectColorArray, $projectNameArray, $allActi;
-	$pw=new PlannedWork();
 	$result=array();
 	// 
 	$arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement());
@@ -228,19 +235,26 @@ function getAllActivities($startDate, $endDate, $ress) {
 						'color'=>$color,
 						'display'=>$name,
 						'date'=>$dateField,
-						'project'=>$projName
+						'project'=>$projName,
+						'real'=>false
 				);
 			}		
 		}
 	}
-	// Planned Activities
+	// Planned Activities and real work
+	$pw=new PlannedWork();
+	$w=new Work();
 	$critWhere="idResource=".Sql::fmtId($ress);
 	$critWhere.=" and workDate>='$startDate' and workDate<='$endDate'";
 	$pwList=$pw->getSqlElementsFromCriteria(null,false,$critWhere);
-	foreach ($pwList as $pw) {
+	$wList=$w->getSqlElementsFromCriteria(null,false,$critWhere);
+	$workList=array_merge($pwList,$wList);
+	foreach ($workList as $pw) {
 		$item=new $pw->refType($pw->refId);
 		if ($pw->refType=='Meeting') {
 			$display=substr($item->meetingStartTime,0,5).' - '.htmlEncode($item->name);
+		} else if (get_class($pw)=='Work') {
+				$display='['.Work::displayWorkWithUnit($pw->work).'] '.htmlEncode($item->name);
 		} else {
 		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);
 		}
@@ -267,6 +281,7 @@ function getAllActivities($startDate, $endDate, $ress) {
 				'display'=>$display,
 				'project'=>$projName,
 				'date'=>"",
+				'real'=>((get_class($pw)=='Work')?true:false)
 		);
 	}
 	return $result;
