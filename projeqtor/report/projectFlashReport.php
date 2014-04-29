@@ -116,7 +116,6 @@ if ($cptMile>$maxMile) $cptMile=$maxMile;
 $maxCar=100-($cptMile-6)*(15-$cptMile+6);
 $currentCptMile=0;
 foreach ($peList as $pe) {
-	$currentCptMile+=1;
 	$name=$pe->refName;
 	$mile=new Milestone($pe->refId);
 	$type=new MilestoneType($mile->idMilestoneType);
@@ -132,8 +131,8 @@ foreach ($peList as $pe) {
   	if ($pe->realEndDate<=$pe->validatedEndDate) {
   		$colorMile="#32cd32";
   	} else {
-  		if ($currentCptMile>1) {
-  			if ($arrayMilestone[$currentCptMile-1]['real']<=$arrayMilestone[$currentCptMile-1]['validated']) {
+  		if ($currentCptMile>=1) {
+  			if ($arrayMilestone[$currentCptMile]['real']<=$arrayMilestone[$currentCptMile]['validated']) {
   			  $colorMile="#ffd700";
   			} else {
   				$colorMile="#ff0000";
@@ -144,6 +143,7 @@ foreach ($peList as $pe) {
   	}
   }
   if ($type->showInFlash) {
+  	$currentCptMile+=1;
 	  $arrayMilestone[$currentCptMile]=array('name'=>$name, 
 	    'initial'=>$pe->initialEndDate, 
 	    'validated'=>$pe->validatedEndDate,
@@ -284,6 +284,9 @@ $showActivity=1;
 $showMilestone=1;
 $showRisk=1;
 $showCost=1;
+if ($outMode!='pdf') {
+	echo '<div style="height:1mm;">&nbsp;</div>';
+}
 ?>
 <div style="font-family: arial;font-size:<?php echo (($outMode=='pdf')?'3':'3');?>mm; width:<?php displayWidth(100);?>; height:<?php displayheight(100);?>;background-color: white; <?php echo $borderMain?>" >
 
@@ -293,7 +296,8 @@ $showCost=1;
   	$titleWidth=18;
     $colLeft=$titleLeft+$titleWidth+3;
     $lineHeight=4;
-    $curHeight=0;?>
+    $curHeight=0;
+    ?>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
       width:<?php echo $titleWidth;?>mm;font-weight: bold">Situation du <br/>projet</div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm;
@@ -634,6 +638,7 @@ $showCost=1;
     	echo "</PAGE><PAGE>";
     } else {
     	echo '<div style="height:0.1mm; page-break-after:always;">&nbsp;</div>';
+    	//echo '<div style="height:1mm;">&nbsp;</div>';
     }
   }
 }
