@@ -302,7 +302,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <tr style="height:10px;" >
             <td align="left" style="height: 1%;" valign="top">
               <div style="position: relative; left: -5px;width: 300px; height: 54px; background-size: contain; background-repeat: no-repeat;
-              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleSmall.gif';?>);">
+              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleSmall.png';?>);">
               </div>
             </td>
           </tr>
@@ -343,7 +343,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             $zoom=round($width/300*100, 0);  
           ?>
           <div id="logoTitleDiv" 
-               style="background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleWhiteSmall.gif';?>); 
+               style="background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleWhiteSmall.png';?>); 
                       background-repeat: no-repeat; height: 50px;" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>

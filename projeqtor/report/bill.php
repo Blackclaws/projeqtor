@@ -47,7 +47,7 @@ foreach ($billList as $bill)
   if (file_exists("../logo.gif")) {
     $uri='../logo.gif';	
   } else {
-    $uri='../view/img/title.gif';
+    $uri='../view/img/title.png';
   }
   echo '<img style="height:50px" src="' . $uri . '" />';
   echo '</div>';
