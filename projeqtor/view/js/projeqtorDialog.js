@@ -4731,3 +4731,22 @@ function diaryDisplayDay(day) {
   caption=vDayArr[d.getDay()]+" "+dateFormatter(day);
   dojo.byId("diaryCaption").innerHTML=caption;
 }
+
+//******************************************************************************************** 
+// WORKFLOW PARAMETERS (selection of status)
+//********************************************************************************************
+
+function showWorkflowParameter(id) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  callBack=function() {
+  };  
+  var params='&idWorkflow='+id;
+  loadDialog('dialogWorkflowParameter',callBack,true, params);  
+}
+
+function saveWorkflowParameter() {
+  
+}
