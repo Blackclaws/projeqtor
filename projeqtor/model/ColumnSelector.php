@@ -6,7 +6,7 @@ require_once('_securityCheck.php');
 class ColumnSelector extends SqlElement {
 
 	// extends SqlElement, so has $id
-	public $id;    // redefine $id to specify its visiblez place
+	public $id;    // redefine $id to specify its visible place
 	public $scope;
 	public $objectClass;
 	public $idUser;
