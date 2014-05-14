@@ -4748,5 +4748,6 @@ function showWorkflowParameter(id) {
 }
 
 function saveWorkflowParameter() {
-  
+  loadContent("../tool/saveWorkflowParameter.php","resultDiv","dialogWorkflowParameterForm", true);
+  dijit.byId('dialogWorkflowParameter').hide();
 }

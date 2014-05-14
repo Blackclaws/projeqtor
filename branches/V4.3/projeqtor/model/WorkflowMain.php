@@ -20,6 +20,7 @@ class WorkflowMain extends SqlElement {
   public $_col_1_1_WorkflowStatus;
   public $_spe_workflowStatus;
   public $_workflowStatus;
+  public $_statusList;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -90,7 +91,7 @@ class WorkflowMain extends SqlElement {
     $wsList=$this->getWorkflowstatus();
     $result=array();
     // Initialize
-    $statusList=SqlList::getList('Status');
+    $statusList=$this->getStatusList();
     $profileList=SqlList::getList('Profile');
     foreach($statusList as $idFrom => $valFrom) {
       $result[$idFrom]=array();
@@ -108,6 +109,22 @@ class WorkflowMain extends SqlElement {
       $result[$ws->idStatusFrom][$ws->idStatusTo][$ws->idProfile]=$ws->allowed;
     }
     return $result;
+  }
+  
+  private function getStatusList() {
+  	if ($this->_statusList) {
+  		return $this->_statusList;
+  	}
+  	$statusList=SqlList::getList('Status');
+  	foreach ($statusList as $idStatus=>$status) {
+  		$critArray=array('scope'=>'workflow', 'objectClass'=>'workflow#'.$this->id, 'idUser'=>$idStatus);
+  		$cs=SqlElement::getSingleSqlElementFromCriteria("ColumnSelector", $critArray);
+  		if ($cs and $cs->id and $cs->hidden) {
+  			unset ($statusList[$idStatus]);
+  		}
+  	}
+  	$this->_statusList=$statusList;
+  	return $statusList;
   }
   /** =========================================================================
    * Draw a specific item for the current class.
@@ -128,7 +145,7 @@ class WorkflowMain extends SqlElement {
     $result="";
     if ($item=='workflowStatus') {
       $width="100px";
-      $statusList=SqlList::getList('Status');
+      $statusList=$this->getStatusList();
       $profileList=SqlList::getList('Profile');
       $profileIdList="";
       foreach ($profileList as $profileCode => $profileValue) {
@@ -202,7 +219,7 @@ class WorkflowMain extends SqlElement {
       
     // WORKFLOW DIAGRAM  
     } else if ($item=='workflowDiagram') {
-      $statusList=SqlList::getList('Status');
+      $statusList=$this->getStatusList();
       $statusColorList=SqlList::getList('Status', 'color');
       foreach ($statusColorList as $key=>$val) {
         if (strtolower($val)=='#ffffff') {
@@ -442,7 +459,7 @@ class WorkflowMain extends SqlElement {
       return $result;     
     }
     // save detail (workflowstatus)
-    $statusList=SqlList::getList('Status');
+    $statusList=$this->getStatusList();
     $profileList=SqlList::getList('Profile');
     $ws=new WorkflowStatus();
     //$ws->purge("idWorkFlow='" . $this->id . "'");

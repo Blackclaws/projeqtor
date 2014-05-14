@@ -893,6 +893,7 @@ abstract class SqlElement {
 	 * @return void
 	 */
 	private function deleteSqlElement() {
+		if (! $this->id or $this->id<0 ) {return;}
 		$class = get_class($this);
 		$control=$this->deleteControl();
 		if ( ($control=='OK' or strpos($control,'id="confirmControl" value="delete"')>0 ) 
