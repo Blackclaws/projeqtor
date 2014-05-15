@@ -202,6 +202,29 @@ if ($saveShowClosed) {
                         </span>
                         <span for="listSaveDates"><?php echo i18n("saveDates");?></span>
                       </td>
+                      <td>
+                       <div dojoType="dijit.form.DropDownButton"
+                             style="height: 20px; color:#202020;"  
+                             id="planningNewItem" jsId="planningNewItem" name="planningNewItem" 
+                             showlabel="false" class="" iconClass="dijitEditorIcon dijitEditorIconNew"
+                             title="<?php echo i18n('comboNewButton');?>">
+                          <span>title</span>
+                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
+                            <div style="font-weight:bold; height:25px;text-align:center">
+                            <?php echo i18n('comboNewButton');?>
+                            </div>
+                            <?php $arrayItems=array('Project','Activity','Milestone');
+                            foreach($arrayItems as $item) {?>
+                            <div style="vertical-align:top;cursor:pointer;" 
+                             onClick="addNewItem('<?php echo $item;?>');" >
+                              <img src="../view/css/images/icon<?php echo $item;?>22.png" />&nbsp;&nbsp;    
+                             <?php echo i18n($item)?>   
+                            </div>
+                            <div style="height:5px;"></div>
+                            <?php }?>
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   </table>
                 </td>
