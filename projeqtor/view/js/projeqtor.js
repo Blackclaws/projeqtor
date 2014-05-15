@@ -2423,3 +2423,9 @@ function connect(resetPassword) {
       }
     });
 }
+
+function addNewItem(item) {
+	dojo.byId('objectClass').value=item;
+	loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+	dijit.byId('planningNewItem').closeDropDown();
+}
