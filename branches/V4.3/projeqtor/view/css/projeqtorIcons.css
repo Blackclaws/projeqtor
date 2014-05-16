@@ -51,6 +51,29 @@
   cursor: pointer;
   background-position: -16px; 
 }
+
+.iconIndentIncrease, .dijitDisabled .iconIndentIncrease,
+.iconIndentDecrease, .dijitDisabled .iconIndentDecrease {
+ background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  cursor: pointer;
+  /*background-position: -16px;*/
+} 
+.iconIndentIncrease {
+  background-image: url(images/indentIncrease.png);
+}
+.dijitDisabled .iconIndentIncrease {
+	background-image: url(images/indentIncreaseDisabled.png);
+}
+.iconIndentDecrease {
+  background-image: url(images/indentDecrease.png);
+}
+.dijitDisabled .iconIndentDecrease {
+  background-image: url(images/indentDecreaseDisabled.png);
+}
+
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */

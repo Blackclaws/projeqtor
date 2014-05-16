@@ -169,7 +169,7 @@
             $numField+=1;
             if ($sortIndex and $sortIndex==$numField) {
               $queryOrderBy .= ($queryOrderBy=='')?'':', ';
-              if (Sql::isPgsql()) $fld='"'.$fld.'"';
+              //if (Sql::isPgsql()) $fld='"'.$fld.'"';
               $queryOrderBy .= " " . $fld . " " . $sortWay;
             }
           }

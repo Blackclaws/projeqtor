@@ -682,7 +682,14 @@ function checkDestination(destination){
   }
   if (! dijit.byId('objectGrid') && dojo.byId('multiUpdateButtonDiv')) {
 	  dojo.byId('multiUpdateButtonDiv').style.display='none';
-  }		  
+  }	
+  if (dojo.byId('indentButtonDiv')) {
+    if ( dijit.byId('objectGrid')) {
+      dojo.byId('indentButtonDiv').style.display='none';
+    } else  if ( dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value!='Planning') {
+      dojo.byId('indentButtonDiv').style.display='none';
+    }
+  } 
 }
 /**
  * ============================================================================
@@ -1073,7 +1080,9 @@ function finaliseButtonDisplay() {
       if (dijit.byId("objectGrid")) {
         enableWidget('multiUpdateButton');
       } else {
-    	disableWidget('multiUpdateButton');
+    	  disableWidget('multiUpdateButton');
+    	  disableWidget('indentDecreaseButton');
+    	  disableWidget('indentIncreaseButton');
       }
     }
   } else {
@@ -1164,6 +1173,8 @@ function formChanged() {
   disableWidget('refreshButton');
   disableWidget('mailButton');
   disableWidget('multiUpdateButton');
+  disableWidget('indentDecreaseButton');
+  disableWidget('indentIncreaseButton');
   formChangeInProgress=true;
   grid=dijit.byId("objectGrid");
   if (grid) {
@@ -1197,6 +1208,8 @@ function formInitialize() {
     enableWidget('multiUpdateButton');
   } else {
     disableWidget('multiUpdateButton');
+    enableWidget('indentDecreaseButton');
+    enableWidget('indentIncreaseButton');
   }
   formChangeInProgress=false;
   buttonRightLock();
@@ -1219,6 +1232,8 @@ function formLock() {
   disableWidget('refreshButton');
   disableWidget('mailButton');
   disableWidget('multiUpdateButton');
+  disableWidget('indentDecreaseButton');
+  disableWidget('indentIncreaseButton');
 }
 
 /**
@@ -1240,6 +1255,8 @@ function buttonRightLock() {
       disableWidget('saveButton');
       disableWidget('undoButton');
       disableWidget('multiUpdateButton');
+      disableWidget('indentDecreaseButton');
+      disableWidget('indentIncreaseButton');
     }
   }
   if (deleteRight) {
@@ -1781,7 +1798,7 @@ function runScript(refType, refId, id) {
   dojo.byId('objectClass').value=refType;
   dojo.byId('objectId').value=refId;
   hideList();
-  loadContent('objectDetail.php?planning=true','detailDiv','listForm');
+  loadContent('objectDetail.php?planning=true&planningType='+dojo.byId('objectClassManual').value,'detailDiv','listForm');
   highlightPlanningLine(id);
 }
 function highlightPlanningLine(id) {
@@ -2178,6 +2195,20 @@ function moveTask(source,destination) {
     }      
   }
   var url='../tool/moveTask.php?from='+source+'&to='+destination+'&mode='+mode;
+  loadContent(url, "planResultDiv", null, true,null);
+}
+
+function indentTask(way) {
+  if (! dojo.byId("planResultDiv") || ! dojo.byId('objectClass') || ! dojo.byId('objectId')) {
+    return;
+  }
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  objectClass=dojo.byId('objectClass').value;
+  objectId=dojo.byId('objectId').value;
+  var url='../tool/indentTask.php?objectClass='+objectClass+'&objectId='+objectId+'&way='+way;
   loadContent(url, "planResultDiv", null, true,null);
 }
 
