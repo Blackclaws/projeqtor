@@ -165,7 +165,28 @@
           startMultipleUpdateMode('<?php echo get_class($obj);?>');  
         </script>
     </button>
-    </span><?php 
+    </span>
+    <?php }
+    //if (array_key_exists('planning',$_REQUEST) and array_key_exists('planningType',$_REQUEST) and $_REQUEST['planningType']=='Planning') {
+    ?> 
+    <span id="indentButtonDiv">
+     <button id="indentDecreaseButton" dojoType="dijit.form.Button" showlabel="false"
+        title="<?php echo i18n('indentDecreaseButton');?>"
+        iconClass="iconIndentDecrease" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          indentTask("decrease");  
+        </script>
+      </button>
+      <button id="indentIncreaseButton" dojoType="dijit.form.Button" showlabel="false"
+        title="<?php echo i18n('indentIncreaseButton');?>"
+        iconClass="iconIndentIncrease" >
+        <script type="dojo/connect" event="onClick" args="evt">
+          indentTask("increase");  
+        </script>
+      </button>
+    </span>
+    <?php //}?> 
+    <?php 
       $crit="nameChecklistable='".get_class($obj)."'";
       $type='id'.get_class($obj).'Type';
       if (property_exists($obj,$type) ) {
@@ -188,6 +209,7 @@
         $buttonCheckListVisible="hidden";
       }
       //$displayButton=( $buttonCheckListVisible=="visible")?'void':'none';?>
+      
     <span id="checkListButtonDiv" style="width:40px;">
       <?php if ($buttonCheckListVisible=='visible') {?>
       <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
@@ -204,7 +226,6 @@
     </span>
     <?php
         }
-      }
         $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
         $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
         $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);

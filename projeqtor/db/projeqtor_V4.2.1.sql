@@ -5,6 +5,6 @@
 -- // Date : 2014-03-06                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}quotation` CHANGE `creationDate` `creationDate` date DEFAULT NULL;
+ALTER TABLE `${prefix}quotation` CHANGE `creationDate` `creationDate` date;
 
-ALTER TABLE `${prefix}command` CHANGE `creationDate` `creationDate` date DEFAULT NULL;
+ALTER TABLE `${prefix}command` CHANGE `creationDate` `creationDate` date;

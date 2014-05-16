@@ -243,7 +243,7 @@ ALTER TABLE `${prefix}bill` ADD COLUMN `idActivityType` int(12) unsigned DEFAULT
 
 INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`) VALUES (15,'Bill', '0', '38');
 
-DELETE FROM   `${prefix}menu` where id=77;
+DELETE FROM `${prefix}menu` where id=77;
 
 ALTER TABLE `${prefix}report` ADD COLUMN `orientation` VARCHAR(1) DEFAULT 'L';
 
