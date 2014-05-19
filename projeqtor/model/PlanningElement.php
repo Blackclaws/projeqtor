@@ -826,7 +826,7 @@ class PlanningElement extends SqlElement {
     		$pe->moveTo($destId,$mode,true);
     		$returnValue=i18n('moveDone');
       } else {
-      	$returnValue=i18n('moveCancelled');
+      	$returnValue=$resultTask;//i18n('moveCancelled');
       	$status="ERROR";
       }
     }
