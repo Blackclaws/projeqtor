@@ -799,6 +799,69 @@ class PlanningElement extends SqlElement {
     return $returnValue;
   }
 
+  public function indent($way) {
+  	$result=i18n('moveCancelled');
+  	$status="ERROR";
+  	$objectClass=$this->refType;
+  	$objectId=$this->refId;
+  	$task=new $objectClass($objectId);
+  	if ($way=="decrease") {
+  		$top=null;
+  		if (property_exists($task, 'idActivity') and $task->idActivity) {
+  			$top=new Activity($task->idActivity);
+  		} else if (property_exists($task, 'idProject') and $task->idProject) {
+  			$top=new Project($task->idProject);
+  		}
+  		if ($top and property_exists($top, 'idActivity') and $top->idActivity) {
+  			$task->idActivity=$top->idActivity;
+  			$task->save();
+  			$result=i18n('moveDone');
+  			$status="OK";
+  		} else if ($top and property_exists($top, 'idProject') and ($top->idProject or $objectClass=='Project') ) {
+  			if (property_exists($task, 'idActivity') and $task->idActivity) {
+  				$task->idActivity=null;
+  			}
+  			$task->idProject=$top->idProject;
+  			$task->save();
+  			$result=i18n('moveDone');
+  			$status="OK";
+  		}
+  		if ($top and $status=="OK") {
+  			$pe=new PlanningElement($this->id);
+  			$crit=array('refType'=>get_class($top),'refId'=>$top->id);
+  			$peTop=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+  			echo $pe->moveTo($peTop->id,"after");
+  		}
+  	} else { // $way=="increase"
+  		$precs=$this->getSqlElementsFromCriteria(null,false,"wbsSortable<'".$this->wbsSortable."'","wbsSortable desc");
+  		if (count($precs)>0) {
+  			foreach ($precs as $pp) {
+  				if (strlen($pp->wbsSortable)<=strlen($this->wbsSortable)) {
+  					$prec=$pp;
+  					break;
+  				}
+  			}
+  			if ($prec->refType=='Project' and $prec->refId!=$task->idProject) {
+  				$task->idProject=$prec->refId;
+  				$task->save();
+  				$result=i18n('moveDone');
+  				$status="OK";
+  			} else if ($prec->refType=='Activity' and property_exists($task, 'idActivity') and $task->idActivity!=$prec->refId) {
+  				$task->idActivity=$prec->refId;
+  				$task->save();
+  				$result=i18n('moveDone');
+  				$status="OK";
+  			} else {
+  				// Cannot move
+  			}
+  		}
+  	}
+  	$result .= '<input type="hidden" id="lastOperation" value="move" />';
+  	$result .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
+  	$result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+  	return $result;
+  }
+  
   public function setVisibility() {
     if (self::$staticCostVisibility and self::$staticWorkVisibility) {
       $this->_costVisibility=self::$staticCostVisibility ;
