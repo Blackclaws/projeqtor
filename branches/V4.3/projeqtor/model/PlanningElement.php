@@ -751,13 +751,39 @@ class PlanningElement extends SqlElement {
     return $result;
   }
 
-  public function moveTo($destId,$mode) {
+  public function moveTo($destId,$mode,$recursive=false) {
     $status="ERROR";
+    $result="";
+    $returnValue="";
+    $task=null;
     $dest=new PlanningElement($destId);
     if ($dest->topRefType!=$this->topRefType
     or $dest->topRefId!=$this->topRefId) {
-      $returnValue=i18n('moveCancelled');
-    } else {
+      $objectClass=$this->refType;
+      $objectId=$this->refId;
+      $task=new $objectClass($objectId);
+      if ($dest->topRefType=="Project") { 
+      	$task->idProject=$dest->topRefId;
+      	if (property_exists($task, 'idActivity')) {
+      		$task->idActivity=null;
+      	}
+      	$status="OK";
+      } else if ($dest->topRefType=="Activity" and property_exists($task, 'idActivity')) {
+      	$task->idProject=$dest->idProject;
+      	$task->idActivity=$dest->topRefId;
+      	$status="OK";
+      } else if (! $dest->topRefType and $objectClass=='Project') {
+      	$task->idProject=null;
+      	$status="OK";
+      }
+  		if ($status=="OK") {
+  		  //$task->save();
+  		  //$result=i18n('moveDone');
+  		} else {
+  			$returnValue=i18n('moveCancelled');
+  		}
+    } 
+    if (! $returnValue) {
       if ($this->topRefType) {
         $where="topRefType='" . $this->topRefType . "' and topRefId=" . Sql::fmtId($this->topRefId) ;
       } else {
@@ -792,6 +818,12 @@ class PlanningElement extends SqlElement {
       $this->save();
       $returnValue=i18n('moveDone');
       $status="OK";
+    }
+    if ($status=="OK" and $task and !$recursive) {
+    	$task->save();
+    	$pe=new PlanningElement($this->id);
+    	$pe->moveTo($destId,$mode,true);
+    	//$result=i18n('moveDone');
     }
     $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
     $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
