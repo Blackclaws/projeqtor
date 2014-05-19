@@ -820,10 +820,15 @@ class PlanningElement extends SqlElement {
       $status="OK";
     }
     if ($status=="OK" and $task and !$recursive) {
-    	$task->save();
-    	$pe=new PlanningElement($this->id);
-    	$pe->moveTo($destId,$mode,true);
-    	//$result=i18n('moveDone');
+    	$resultTask=$task->save();
+    	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+    		$pe=new PlanningElement($this->id);
+    		$pe->moveTo($destId,$mode,true);
+    		$returnValue=i18n('moveDone');
+      } else {
+      	$returnValue=i18n('moveCancelled');
+      	$status="ERROR";
+      }
     }
     $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
     $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
