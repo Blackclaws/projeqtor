@@ -309,8 +309,16 @@ class Parameter extends SqlElement {
         break;
       case 'startPage':
       	$list=array();
-      	if (securityCheckDisplayMenu(1)) {$list['today.php']=i18n('menuToday');}
-      	if (securityCheckDisplayMenu(133)) {$list['diaryMain.php']=i18n('menuDiary');}
+      	if (securityCheckDisplayMenu(null,'Today')) {$list['today.php']=i18n('menuToday');}
+      	if (securityCheckDisplayMenu(null,'Diary')) {$list['diaryMain.php']=i18n('menuDiary');}
+      	if (securityCheckDisplayMenu(null,'Imputation')) {$list['imputationMain.php']=i18n('menuImputation');}
+      	if (securityCheckDisplayMenu(null,'Planning')) {$list['planningMain.php']=i18n('menuPlanning');}
+      	if (securityCheckDisplayMenu(null,'PortfolioPlanning')) {$list['portfolioPlanningMain.php']=i18n('menuPortfolioPlanning');}
+      	if (securityCheckDisplayMenu(null,'ResourcePlanning')) {$list['resourcePlanningMain.php']=i18n('menuResourcePlanning');}
+      	$arrayItem=array('Project','Document','Ticket','TicketSimple','Activity','Action');
+      	foreach  ($arrayItem as $item) {
+      		if (securityCheckDisplayMenu(null,$item)) {$list['objectMain.php?objectClass='.$item]=i18n('menu'.$item);}
+      	}
       	$list['welcome.php']=i18n('paramNone');
       	break; 
       case 'changeReferenceOnTypeChange': case 'rememberMe':
