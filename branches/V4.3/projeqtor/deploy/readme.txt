@@ -35,7 +35,7 @@ Pre-requisites :
 
 Set-up :
   - Unzip projeqtorVx.y.z.zip to the web server directory
-  - Run application in your favorite browser, using http://yourserver/projectorria
+  - Run application in your favorite browser, using http://yourserver/projeqtor
   - Enjoy !
   
 Configuration : 
