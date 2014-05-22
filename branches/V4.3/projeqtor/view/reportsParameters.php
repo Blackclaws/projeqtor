@@ -464,6 +464,37 @@ foreach ($listParam as $param) {
     </td>
     </tr>
 <?php 
+  } else if ($param->paramType=='nextPeriod') {
+    $defaultValue='10/month';
+    if ($param->defaultValue) {
+      $defaultValue=$param->defaultValue; 
+    }
+    $defList=explode('/',$defaultValue);
+    $defaultPeriodValue=$defList[0];
+    $defaultPeriodScale=$defList[1];
+?>
+    <tr>
+    <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
+    <td >
+	    <div style="width:20px; text-align: left; color: #000000;" 
+	      dojoType="dijit.form.NumberTextBox"
+	      constraints="{min:1,max:99}"  
+	      value="<?php echo $defaultPeriodValue;?>"
+	      id="<?php echo $param->name;?>Value" name="<?php echo $param->name;?>Value" >
+	    </div>
+	    <div style="border: 1px solid #eeeeee; position: relative; top: -20px; left: 35px;">
+		    <input type="radio" data-dojo-type="dijit/form/RadioButton"
+		      <?php if ($defaultPeriodScale=="month") { echo 'checked';} ?>
+		      name="<?php echo $param->name;?>Scale" id="scaleMonth" value="month"/> 
+		    <label for="scaleMonth" class="notLabel"><?php echo i18n('month');?></label> <br />
+		    <input type="radio" data-dojo-type="dijit/form/RadioButton"
+		      <?php if ($defaultPeriodScale=="week") { echo 'checked';} ?>
+		      name="<?php echo $param->name;?>Scale" id="scaleWeek" value="week"/> 
+		    <label for="scaleWeek" class="notLabel"><?php echo i18n('week');?></label>
+	    </div>
+    </td>
+    </tr>
+<?php 
   } else {
     $defaultValue='';
     if ($param->defaultValue) {

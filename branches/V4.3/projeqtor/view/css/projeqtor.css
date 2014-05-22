@@ -359,6 +359,9 @@ label, .label {
 .largeLabel {
 	width: 300px;
 }
+.notLabel {
+	float:none;
+}
 .smallRadioLabel {
 	width:95px;
 	font-weight: normal;
