@@ -29,9 +29,9 @@ $paramDbDisplayName='My Own ProjeQtOr';         // Name to be displayed
 $paramDbPrefix='';                              // Database prefix for table names
 
 // === mail management
-$paramMailSender='default@toolware.fr';         // eMail From addressee {a valid email}
-$paramMailReplyTo='default@toolware.fr';        // eMail address to reply to {a valid email}
-$paramAdminMail='default@ltoolware.fr';         // eMail of administrator {a valid email}
+$paramMailSender='default@projeqtor.org';         // eMail From addressee {a valid email}
+$paramMailReplyTo='default@projeqtor.org';        // eMail address to reply to {a valid email}
+$paramAdminMail='default@projeqtor.org';         // eMail of administrator {a valid email}
 // NEW IN V1.2.0 - Start
 $paramMailSmtpServer='localhost';             // SMTP Server (default is localhost)
 $paramMailSmtpPort='25';                      // SMTP Port (default is 25)
