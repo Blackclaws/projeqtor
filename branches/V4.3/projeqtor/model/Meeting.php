@@ -402,7 +402,10 @@ class Meeting extends SqlElement {
     $vcal .= "METHOD:REQUEST\r\n";
     $vcal .= "BEGIN:VEVENT\r\n";
     $user=$_SESSION['user'];
-    $vcal .= "ORGANIZER;CN=" . (($user->resourceName)?$user->resourceName:$user->name). ":MAILTO:$user->email\r\n";
+    $vcal .= "ORGANIZER;CN=".(($user->resourceName)?$user->resourceName:$user->name);
+    //$vcal .= ';SENT-BY="MAILTO:'.$paramMailSender.'"';
+    //$vcal .= ":MAILTO:$user->email\r\n";
+    $vcal .= ":MAILTO:$paramMailSender\r\n";
     foreach($lstMail as $name=>$to) {
       //$vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
       //$vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT;CN=\"$name\":MAILTO:$to\r\n";
@@ -410,7 +413,9 @@ class Meeting extends SqlElement {
       $vcal .= ';CN='.str_replace(array("\r\n","\n","\r"," "),array("","","","_"),$name);
       $vcal .= ":MAILTO:".str_replace(array("\r\n","\n"," "),array("","",""),$to)."\r\n";
     }
-    $vcal .= "UID:".date('Ymd').'T'.date('His')."-".rand()."-projeqtor.org\r\n";
+    $srv="projeqtor.org";
+    if (isset($_SERVER['SERVER_NAME'])) {$srv=$_SERVER['SERVER_NAME'];}
+    $vcal .= "UID:Meeting-".$this->id."-".$srv."\r\n";
     //$vcal .= "DTSTAMP:".date('Ymd').'T'.date('His')."\r\n";
     date_default_timezone_set($paramTimezone);
     $dtStart=strtotime($this->meetingDate.' '.$this->meetingStartTime);
@@ -429,7 +434,8 @@ class Meeting extends SqlElement {
     $vcal .= "END:VALARM\r\n";*/
     $vcal .= "END:VEVENT\r\n";
     $vcal .= "END:VCALENDAR\r\n";
-    $sender=($user->email)?$user->email:$paramMailSender;
+    //$sender=($user->email)?$user->email:$paramMailSender;
+    $sender=$paramMailSender;
     $replyTo=($user->email)?$user->email:$paramMailReplyTo;
     $headers = "From: $sender\r\n";
     $headers .= "Reply-To: $replyTo\r\n";
