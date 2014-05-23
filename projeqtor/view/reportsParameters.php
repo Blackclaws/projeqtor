@@ -473,7 +473,7 @@ foreach ($listParam as $param) {
     $defaultPeriodValue=$defList[0];
     $defaultPeriodScale=$defList[1];
 ?>
-    <tr>
+    <tr style="height:10px;">
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td >
 	    <div style="width:20px; text-align: left; color: #000000;" 
@@ -482,7 +482,7 @@ foreach ($listParam as $param) {
 	      value="<?php echo $defaultPeriodValue;?>"
 	      id="<?php echo $param->name;?>Value" name="<?php echo $param->name;?>Value" >
 	    </div>
-	    <div style="border: 1px solid #eeeeee; position: relative; top: -20px; left: 35px;">
+	    <div style="border: 1px solid #eeeeee; position: relative; top: -18px; left: 35px;">
 		    <input type="radio" data-dojo-type="dijit/form/RadioButton"
 		      <?php if ($defaultPeriodScale=="month") { echo 'checked';} ?>
 		      name="<?php echo $param->name;?>Scale" id="scaleMonth" value="month"/> 
