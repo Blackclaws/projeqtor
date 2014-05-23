@@ -7,7 +7,7 @@ projeqtor_set_memory_limit('512M');
 // Security : check that no special car appears in the request
 foreach ($_REQUEST as $reqParam=>$reqValue) {
 	if ($reqParam=='reportName') {
-    // Reort name can have spec car. Will be escaped on display
+    // Report name can have spec car. Will be escaped on display
 	} else if ($reqParam=='refId') {
 		if (! is_numeric($reqValue) ) {
 			$refId='0';
@@ -32,7 +32,7 @@ echo "<td align='center' style='width:40%; font-size: 150%; font-weight: bold;'>
 
 if (array_key_exists('reportName', $_REQUEST)) {
   echo '<table><tr><td class="reportTableHeader" style="text-align: center; padding: 3px 10px 3px 10px;">';
-  echo htmlentities(ucfirst($_REQUEST['reportName']));
+  echo htmlEncode(ucfirst($_REQUEST['reportName']),'html');
   echo '</td></tr></table>';
 }
 echo "</td>";

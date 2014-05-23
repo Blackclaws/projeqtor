@@ -1,5 +1,5 @@
 <?php
-echo "availabilitySynthesis.php";
+//echo "availabilitySynthesis.php";
 
 include_once '../tool/projeqtor.php';
 $paramPeriodValue='';
@@ -38,15 +38,34 @@ foreach($affLst as $aff){
 	}
 }
 
-$where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
-$where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
-$where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
+if ($paramPeriodScale=="month") {
+	$start=date('Y-m-').'01';
+	$startYear=substr($start,0,4);
+	$startMonth=substr($start,5,2);
+	$startValue=$startYear.$startMonth;
+	$end=addMonthsToDate($start, $paramPeriodValue);
+	$time=mktime(0, 0, 0, $startMonth, 1, $startYear);
+	$end=substr($end,0,8).date("t", $time);
+	$endYear=substr($end,0,4);
+	$endMonth=substr($end,5,2);
+	$endValue=$endYear.$endMonth;
+	$where.= " and month>='$startValue' and month<='$endValue'";
+} else if ($paramPeriodScale=="week") {
+	$start=date('Y-m-d',firstDayofWeek(date('W'), date('Y')));
+	$startValue=substr($start,0,4).substr($start,5,2).substr($start,8,2);
+	$end=addDaysToDate($start, ($paramPeriodValue*7)-1);
+	$endValue=substr($end,0,4).substr($end,5,2).substr($end,8,2);
+	$where.= " and day>='$startValue' and day<='$endValue'";
+} else {
+	echo "(1) ERROR incorrect Period sScale";
+	exit;
+}
+$header=i18n($paramPeriodScale);
+
 $order="";
-//echo $where;
 $work=new Work();
 $lstWork=$work->getSqlElementsFromCriteria(null,false, $where, $order);
 $result=array();
-//$resources=array();
 
 $capacity=array();
 foreach ($resources as $id=>$name) {
@@ -91,12 +110,6 @@ foreach ($lstPlanWork as $work) {
   //}
 }
 
-if ($periodType=='month') {
-  $startDate=$periodValue. "01";
-  $time=mktime(0, 0, 0, $paramMonth, 1, $paramYear);
-  $header=i18n(strftime("%B", $time)).strftime(" %Y", $time);
-  $nbDays=date("t", $time);
-}
 $weekendBGColor='#cfcfcf';
 $weekendFrontColor='#555555';
 $weekendStyle=' style="text-align: center;background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
@@ -104,8 +117,43 @@ $plannedBGColor='#FFFFDD';
 $plannedFrontColor='#777777';
 $plannedStyle=' style="text-align:center;background-color:' . $plannedBGColor . '; color: ' . $plannedFrontColor . ';" ';
 
-//if (checkNoData($result)) exit;
-
+// Group data corresponding to periodscale
+$resultPeriod=array();
+$resultPeriodFmt=array();
+for($day=$start;$day<=$end;$day=addDaysToDate($day, 1)) {
+	if ($paramPeriodScale=="month") {
+		$period=substr($day,0,7);
+	} else if ($paramPeriodScale=="week") {
+		$period=weekFormat($day);
+	} else {
+		echo "(2) ERROR incorrect Period sScale";
+	  exit; 
+	}
+	if (! isset($resultPeriod[$period])) {
+		$resultPeriod[$period]=array();
+		$resultPeriodFmt[$period]=array();
+	}
+	foreach ($resources as $idR=>$nameR) {
+		$capaDay=0;
+		if (! isOffDay($day, $resourceCalendar[$idR])) {
+			$capaDay=$capacity[$idR];
+		}
+		if (! isset($resultPeriod[$period][$idR])) {
+	    $resultPeriod[$period][$idR]=0;
+	    $resultPeriodFmt[$period][$idR]='none';
+		}
+		$resultPeriod[$period][$idR]+=$capaDay;
+		$dayFmt=str_replace('-', '', $day);
+		if (isset($result[$idR][$dayFmt])) {
+			$resultPeriod[$period][$idR]-=$result[$idR][$dayFmt];
+			if (isset($real[$idR][$dayFmt]) and $real[$idR][$dayFmt]==true) {
+				$resultPeriodFmt[$period][$idR]='real';
+			} else if ($resultPeriodFmt[$period][$idR]=='none') {
+				$resultPeriodFmt[$period][$idR]='plan';
+			}
+		}
+	}
+}
 
 echo '<table width="95%" align="center">';
 echo '<tr><td>';
@@ -117,6 +165,9 @@ echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo '<td class="reportTableDataFull" ' . $plannedStyle . '><i>1</i></td>';
 echo "<td width='100px' class='legend'>" . i18n('colPlannedWork') . "</td>";
 echo "<td>&nbsp;</td>";
+echo "<td class='reportTableDataFull' style='width:20px;text-align:center;color: #00AA00;background-color:#FAFAFA'>1</td>";
+echo "<td width='100px' class='legend'>" . i18n('colNoWork') . "</td>";
+echo "<td width='5px'>&nbsp;&nbsp;&nbsp;</td>";
 echo "<td class='legend'>" . Work::displayWorkUnit() . "</td>";
 echo "<td>&nbsp;</td>";
 echo "</tr>";
@@ -129,22 +180,10 @@ echo '<tr><td>';
 echo '<table width="100%" align="left"><tr>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
 echo '<td class="reportTableHeader" rowspan="2">' . i18n('colCapacity') . '</td>';
-echo '<td colspan="' . ($nbDays+1) . '" class="reportTableHeader">' . $header . '</td>';
+echo '<td colspan="' . (count($resultPeriod)+1) . '" class="reportTableHeader">' . $header . '</td>';
 echo '</tr><tr>';
-$days=array();
-for($i=1; $i<=$nbDays;$i++) {
-  if ($periodType=='month') {
-    $day=(($i<10)?'0':'') . $i;
-    if (isOffDay(substr($periodValue,0,4) . "-" . substr($periodValue,4,2) . "-" . $day)) {
-      $days[$periodValue . $day]="off";
-      $style=$weekendStyle;
-    } else {
-      $days[$periodValue . $day]="open";
-      $style='';
-    }
-    
-    echo '<td class="reportTableColumnHeader" ' . $style . '>' . $day . '</td>';
-  }  
+foreach($resultPeriod as $idP=>$period) {
+  echo '<td class="reportTableColumnHeader">' . $idP . '</td>';
 }
 echo '<td class="reportTableHeader" style="width:5%">' . i18n('sum') . '</td>';
 echo '</tr>';
@@ -158,41 +197,26 @@ foreach ($resources as $idR=>$nameR) {
 	  echo '<tr height="20px">';
 	  echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
 	  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
-	  for ($i=1; $i<=$nbDays;$i++) {
-	    $day=$startDate+$i-1;
+	  foreach($resultPeriod as $idP=>$period) {	    
 	    $style="";
 	    $italic=false;
-	    //if ($days[$day]=="off") {
-	    if (isOffDay(substr($day,0,4) . "-" . substr($day,4,2) . "-" . substr($day,6,2), $resourceCalendar[$idR])) {	
-	      $style=$weekendStyle;
+      $style=' style="text-align:center;';
+      $val=$period[$idR];
+	    if ($resultPeriodFmt[$idP][$idR]=='plan') {
+	      $style.='background-color:' . $plannedBGColor . ';';
+	      $italic=true;
+	    } else if ($resultPeriodFmt[$idP][$idR]=='real') {
+	    	$style.='color: #000000;';
 	    } else {
-	      if (array_key_exists($day,$result[$idR])) {
-	        $val=$capacity[$idR]-$result[$idR][$day];
-	      } else {
-	        $val=$capacity[$idR]*1;
-	      }
-	      $style=' style="text-align:center;';
-	      //if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {
-	      if (array_key_exists($idR,$real) and ! array_key_exists($day,$real[$idR]) and array_key_exists($day,$result[$idR])) {
-	        $style.='background-color:' . $plannedBGColor . ';';
-	        $italic=true;
-	      }
-	      if ($val>0) {
-	        $style.='color: #00AA00;';      	
-	      } else if ($val < 0) {
-	      	$style.='color: #FF0000;';
-	      } else {
-	      	$style.='color: ' . $plannedFrontColor . ';';
-	      }
-	      $style.='"';  
-	    }
-	    if ($style==$weekendStyle) {$val="";}
+	    	$style.='color: #00AA00;color: #00AA00;background-color:#FAFAFA;';
+	    }      	
+	    $style.='"';  
 	    echo '<td class="reportTableDataFull" ' . $style . ' valign="middle">';    
-	     if ($italic) {
-	     	 echo '<i>' . Work::displayWork($val) . '</i>';
-	     } else { 
-	     	 echo Work::displayWork($val);
-	     }
+	    if ($italic) {
+	      echo '<i>' . Work::displayWork($val) . '</i>';
+	    } else { 
+	     	echo Work::displayWork($val);
+	    }
 	  	echo '</td>';
 	  	if ($val>0) {
 	  		$sum+=$val;
