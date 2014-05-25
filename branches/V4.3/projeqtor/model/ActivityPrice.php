@@ -93,9 +93,10 @@ class ActivityPrice extends SqlElement {
     $result="";
     $crit=array("idProject"=>$this->idProject, "idActivityType"=>$this->idActivityType);
     $lst=$this->getSqlElementsFromCriteria($crit,false);
-    if (count($lst)>0) {
+    if (count($lst)>0 and ! SqlElement::isSaveConfirmed()) {
       if (! $this->id or count($lst)>1 or $lst[0]->id!=$this->id) {
         $result.='<br/>' . i18n('errorDuplicateActivityPrice');
+        $result.='<input type="hidden" name="confirmControl" id="confirmControl" value="save" />';
       }
     }
     $defaultControl=parent::control();

@@ -255,7 +255,7 @@ class TestCase extends SqlElement {
   public function updateDependencies() {
     $this->_noHistory=true;
     $tcr=new TestCaseRun();
-    $listTcr=$tcr->getSqlElementsFromCriteria(array('idTestCase'=>$this->id), false);
+    $listTcr=$tcr->getSqlElementsFromCriteria(array('idTestCase'=>$this->id), false, null, "statusDateTime asc");
     $countBlocked=0;
     $countFailed=0;
     $countIssues=0;
@@ -288,6 +288,10 @@ class TestCase extends SqlElement {
     } else {
       $this->idRunStatus=2; // passed
     }  
+    // New behavior : status = last status (= status of current $tcr
+    if ($countTotal>0 and count($listTcr)>0) {
+    	$this->idRunStatus=$tcr->idRunStatus;
+    }
     $this->save();
   }
   
