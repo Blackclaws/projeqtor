@@ -265,7 +265,8 @@ class WorkElement extends SqlElement {
         $result .= ' title="' . $title . '" style="vertical-align: middle;">';
         $result .= '<span>' . $title . '</span>';
         $result .= '<script type="dojo/connect" event="onClick" args="evt">';
-        $result .= '    loadContent("../tool/startStopWork.php?action=' . (($this->ongoing) ? 'stop' : 'start') . '","resultDiv","objectForm",true);';
+        $result .= 'startStopWork("'. (($this->ongoing) ? 'stop' : 'start') .'","'.$this->refType.'",'.$this->refId.');';
+        //$result .= '    loadContent("../tool/startStopWork.php?action=' . (($this->ongoing) ? 'stop' : 'start') . '","resultDiv","objectForm",true);';
         $result .= '</script>';
         $result .= '</button><br/>';
       }

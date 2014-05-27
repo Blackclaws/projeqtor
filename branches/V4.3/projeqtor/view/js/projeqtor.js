@@ -2460,3 +2460,24 @@ function addNewItem(item) {
 	loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
 	dijit.byId('planningNewItem').closeDropDown();
 }
+
+function startStopWork(action, type, id, start) {
+  loadContent("../tool/startStopWork.php?action="+action,"resultDiv","objectForm",true);
+  var now=new Date();
+  var vars=new Array();
+  if (start) {
+    vars[0]=start;
+  } else {
+    vars[0]=now.getHours()+':'+now.getMinutes();
+  }
+  var msg=type+' #'+id+' '+i18n("workStartedAt",vars);
+  if (action=='start') {
+    dojo.byId("currentWorkDiv").innerHTML=msg;
+    dojo.byId("currentWorkDiv").style.display='block';
+    dojo.byId("statusBarInfoDiv").style.display='none';
+  } else {
+    dojo.byId("currentWorkDiv").innerHTML="";
+    dojo.byId("currentWorkDiv").style.display='none';
+    dojo.byId("statusBarInfoDiv").style.display='block';
+  }
+}

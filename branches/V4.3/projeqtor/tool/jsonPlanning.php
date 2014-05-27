@@ -1033,11 +1033,11 @@
 	      //echo "<Overallocated>0</Overallocated>" . $nl;
 	      //echo "<OvertimeCost>0</OvertimeCost>" . $nl;
 	      //echo "<OvertimeWork>PT0H0M0S</OvertimeWork>" . $nl;
-	      echo "<RegularWork>PT" . $ass->plannedWork*$hoursPerDay . "H0M0S</RegularWork>" . $nl;
+	      echo "<RegularWork>PT" . round($ass->plannedWork*$hoursPerDay,0) . "H0M0S</RegularWork>" . $nl;
 	      //echo "<RemainingCost>0</RemainingCost>" . $nl;
 	      //echo "<RemainingOvertimeCost>0</RemainingOvertimeCost>" . $nl;
 	      //echo "<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>" . $nl;
-	      echo "<RemainingWork>PT" . $ass->leftWork*$hoursPerDay ."H0M0S</RemainingWork>" . $nl;
+	      echo "<RemainingWork>PT" . round($ass->leftWork*$hoursPerDay,0) ."H0M0S</RemainingWork>" . $nl;
 	      //echo "<ResponsePending>0</ResponsePending>" . $nl;
 	      //echo "<Start>2011-11-17T08:00:00</Start>" . $nl;
 	      //echo "<Stop>2011-11-17T08:00:00</Stop>" . $nl;
@@ -1046,7 +1046,7 @@
 	      echo "<Units>" . round(($res->capacity * $ass->rate / 100),1) . "</Units>" . $nl;
 	      //echo "<UpdateNeeded>0</UpdateNeeded>" . $nl;
 	      //echo "<VAC>0</VAC>" . $nl;
-	      echo "<Work>PT" . $ass->plannedWork*$hoursPerDay . "H0M0S</Work>" . $nl;
+	      echo "<Work>PT" . round($ass->plannedWork*$hoursPerDay,0) . "H0M0S</Work>" . $nl;
 	      //echo "<WorkContour>0</WorkContour>" . $nl;
 	      //echo "<BCWS>0</BCWS>" . $nl;
 	      //echo "<BCWP>0</BCWP>" . $nl;
@@ -1071,7 +1071,7 @@
 
   function formatDuration($duration, $hoursPerDay) {
     $hourDuration=$duration*$hoursPerDay;
-  	$res = 'PT' . $hourDuration . 'H0M0S';
+  	$res = 'PT' . round($hourDuration,0) . 'H0M0S';
   	return $res;
   }
 ?>

@@ -757,13 +757,13 @@ class User extends SqlElement {
 			  $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
 //debugLog(" binding OK");			  
   		} catch (Exception $e) {
-        traceLog("authenticate - LdapBind Error : " . $e->getMessage() );
+        debugLog("authenticate - LdapBind Error : " . $e->getMessage() );
         return "ldap";
       }  
 //debugLog("result:");
 //debugLog($bind);
 			if (! $bind) {
-	      traceLog("authenticate - LdapBind Error : not identified error" );
+	      debugLog("authenticate - LdapBind Error : not identified error" );
 				return "ldap";
 			}
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');

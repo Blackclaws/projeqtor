@@ -814,4 +814,8 @@ function htmlFixLengthNumeric($val, $numericLength=0) {
   }
   return $val;
 }
+
+function htmlDisplayCurrentWork() {
+	
+}
 ?>
