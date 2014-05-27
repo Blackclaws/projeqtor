@@ -229,6 +229,16 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       <?php if ($firstPage=="welcome.php") {?>
           setTimeout("runWelcomeAnimation();",2000);
       <?php } ?>
+      <?php // check for ongoing work on Ticket 
+      if (isset($_SESSION["user"])) {
+	      $crit=array('ongoing'=>'1','idUser'=>$_SESSION["user"]->id);
+	      $we=SqlElement::getSingleSqlElementFromCriteria('WorkElement', $crit);
+	      if ($we and $we->id) {
+	      	$start=$we->ongoingStartDateTime;
+	      	//echo "startStopWork('start', '$we->refType', $we->refRefId, $start);";
+	      }
+      }
+      ?>
     }); 
     var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
     var ganttPlanningOldStyle=<?php echo ((isset($ganttPlanningOldStyle) and $ganttPlanningOldStyle)?1:0);?>;
@@ -433,16 +443,21 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
-          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: top;> 
+          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: top;"> 
             <div width="100%" id="statusBarInfoDiv" style="text-align: right;">
               <?php htmlDisplayInfos();?>
             </div>
+            <div width="100%" id="currentWorkDiv" style="text-align: right;position:absolute; top: 0px; right:0px;">
+              <?php //htmlDisplayCurrentWork();?>
+            </div>
+            
           </td>
         </tr>
       </table>  
     </div>    
   </div>
 </div>
+
 <div id="dialogReminder" >
  <div id="reminderDiv" style="width:100%;height: 75%"></div>
   <div style="width:100%; height:15%; text-align:right">
