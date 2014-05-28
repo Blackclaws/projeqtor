@@ -2746,7 +2746,7 @@ abstract class SqlElement {
 		$crit=array();
 		$crit['idStatus']=$this->idStatus;
 		$crit="idle='0' and idMailable='" . $mailable->id . "' and ( false ";
-		if ($statusChange) {
+		if ($statusChange and $this->idStatus) {
 			$crit.="  or idStatus='" . $this->idStatus . "' ";
 		}
 		if ($responsibleChange) {
