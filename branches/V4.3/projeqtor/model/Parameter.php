@@ -184,6 +184,7 @@ class Parameter extends SqlElement {
                     'de'=>i18n('langDe'),
                     'es'=>i18n('langEs'),
                     'pt'=>i18n('langPt'),
+                    'pt-br'=>i18n('langPtBr'),
                     'ru'=>i18n('langRu'),
                     'zh'=>i18n('langZh'),
                     'nl'=>i18n('langNl'));        
