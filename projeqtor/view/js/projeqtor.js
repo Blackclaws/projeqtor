@@ -2461,7 +2461,7 @@ function addNewItem(item) {
 	dijit.byId('planningNewItem').closeDropDown();
 }
 
-function startStopWork(action, type, id, start) {
+function startStopWork(action, type, id, start) {	
   loadContent("../tool/startStopWork.php?action="+action,"resultDiv","objectForm",true);
   var now=new Date();
   var vars=new Array();
@@ -2470,7 +2470,7 @@ function startStopWork(action, type, id, start) {
   } else {
     vars[0]=now.getHours()+':'+now.getMinutes();
   }
-  var msg=type+' #'+id+' '+i18n("workStartedAt",vars);
+  var msg='<div style="cursor:pointer" onClick="gotoElement('+"'"+type+"',"+id+');">'+type+' #'+id+' '+i18n("workStartedAt",vars)+'</div>';
   if (action=='start') {
     dojo.byId("currentWorkDiv").innerHTML=msg;
     dojo.byId("currentWorkDiv").style.display='block';
