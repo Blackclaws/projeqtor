@@ -255,7 +255,7 @@ class WorkElement extends SqlElement {
         $title = i18n('stopWork');
       }
       $canUpdate = (securityGetAccessRightYesNo('menu' . $this->refType, 'update', $refObj) == 'YES');
-      if ($user->isResource and $canUpdate) {
+      if ($user->isResource and $canUpdate and $this->id) {
         $result .= '<div style="position: absolute; right: 12px; top : 175px;
                      border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
         $result .= '<button id="startStopWork" dojoType="dijit.form.Button" showlabel="true"';

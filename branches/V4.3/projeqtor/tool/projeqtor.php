@@ -1538,7 +1538,6 @@ function removeWorkDaysToDate($date, $days) {
  * @return new calculated date - format yyyy-mm-dd
  */
 function addDaysToDate($date, $days) {
-	echo ("addDaysToDate($date, $days);");
 	//if (strlen($date)>10) $date=substr($date,0,10);
 	if (! trim($date)) return null;
   $tDate = explode("-", $date);
