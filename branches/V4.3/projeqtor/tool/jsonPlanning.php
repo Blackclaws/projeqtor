@@ -713,8 +713,8 @@
         if ($line['reftype']=='Milestone') {
           $pStart=$pEnd;
         }
-        if (! $pStart) $pStart=date('YYYY-MM-DD');
-        if (! $pEnd) $pEnd=date('YYYY-MM-DD');
+        if (! $pStart) $pStart=date('Y-m-d');
+        if (! $pEnd) $pEnd=date('Y-m-d');
         $line['pstart']=$pStart;
         $line['pend']=$pEnd;
         $line['pduration']=workDayDiffDates($pStart,$pEnd);
