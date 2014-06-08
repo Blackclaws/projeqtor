@@ -197,6 +197,7 @@ div .scrollRightTop {
   font-size: 90%;      
   padding: 0px; margin: 0px;
   z-index: 0;
+  height: 20px;
 }
 .ganttLeftHover {
 	position: absolute;
@@ -328,6 +329,7 @@ div .scrollRightTop {
   border-top: #000000 1px solid;
   z-index:10;
   position:relative;
+  height: 20px !important;
 }
 .weekBackground {
   background-image: url(images/ganttWeek.png);  
@@ -337,6 +339,7 @@ div .scrollRightTop {
   border-top: #000000 1px solid;
   z-index:10;
   position:relative;
+  height: 20px;
 }
 .monthBackground {
   background-image: url(images/ganttMonth.png);  
@@ -346,6 +349,7 @@ div .scrollRightTop {
   border-top: #000000 1px solid;
   z-index:10;
   position:relative;
+  height: 20px;
 }
 .quarterBackground {
   background-image: url(images/ganttQuarter.png);  
@@ -355,6 +359,7 @@ div .scrollRightTop {
   border-top: #000000 1px solid;
   z-index:10;
   position:relative;
+  height: 20px;
 }
 
 .specificDayWeekEnd {
