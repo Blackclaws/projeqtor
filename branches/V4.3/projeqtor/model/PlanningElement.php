@@ -443,14 +443,17 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   private function updateSynthesisObj () {
+  	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
     $realWork=0;
+    $validatedWork=0;
     $assignedCost=0;
     $leftCost=0;
     $plannedCost=0;
     $realCost=0;
+    $validatedCost=0;
     $this->_noHistory=true;
     // Add data from assignments directly linked to this item
     $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
@@ -511,7 +514,9 @@ class PlanningElement extends SqlElement {
         }
         if ( $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
           $plannedEndDate=$pla->plannedEndDate;
-        }                
+        }  
+        if ($pla->validatedWork) $validatedWork+=$pla->validatedWork;
+        if ($pla->validatedCost) $validatedCost+=$pla->validatedCost;
       }
     }
     $this->realStartDate=$realStartDate;
@@ -536,6 +541,13 @@ class PlanningElement extends SqlElement {
     $this->leftCost=$leftCost;
     $this->plannedCost=$plannedCost;
     $this->realCost=$realCost;
+    if ($consolidateValidated=="ALWAYS") {
+    	$this->validatedWork=$validatedWork;
+    	$this->validatedCost=$validatedCost;
+    } else if ($consolidateValidated=="IFSET") {
+    	if ($validatedWork) $this->validatedWork=$validatedWork;
+    	if ($validatedCost) $this->validatedCost=$validatedCost;
+    } 
     $this->save();
     // Dispath to top element
     if ($this->topId) {
