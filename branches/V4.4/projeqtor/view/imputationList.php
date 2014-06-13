@@ -126,9 +126,26 @@ $rangeValue=$currentYear . $currentWeek;
           </table>    
       </td>
     </tr>
-  </table>
-  <table width="100%" height="27px" class="listTitle" >
-    <tr>
+    <tr><td colspan="3">
+      <table width="100%"  >
+      <tr height="27px">
+      	<td></td>
+      	<td style="width: 200px;text-align: right; align: right;">
+      	  <?php echo i18n("labelHideDone");?>
+                <div title="<?php echo i18n('hideDoneElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listHideDone" name="listHideDone">
+                  <script type="dojo/method" event="onChange" >
+                    return refreshImputationList();
+                  </script>
+                </div>&nbsp;
+      	</td>
+      </tr>
+      </table>
+    </td></tr>
+    
+    <tr><td colspan="3">
+
+  <table width="100%"  >
+    <tr height="27px">
       <td width="50px" >
         &nbsp;
       </td>
@@ -181,6 +198,9 @@ $rangeValue=$currentYear . $currentWeek;
         </div>&nbsp;
       </td>
     </tr>
+  </table>
+  </td>
+  </tr>
   </table>
   </div>
   <div style="position:relative;" dojoType="dijit.layout.ContentPane" region="center" id="workDiv" name="workDiv">

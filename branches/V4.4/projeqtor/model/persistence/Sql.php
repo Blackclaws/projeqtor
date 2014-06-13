@@ -256,7 +256,7 @@ class Sql {
     	self::$connexion = new PDO($dsn, self::$dbUser, self::$dbPassword);
     	self::$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     	// Could solve some erroneous default storing in non utf8 format
-    	//self::$connexion->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, "SET NAMES 'utf8'");
+    	// self::$connexion->query("SET NAMES utf8");
     }
     catch (PDOException $e) {
     	echo htmlGetErrorMessage($e->getMessage( )).'<br />';
