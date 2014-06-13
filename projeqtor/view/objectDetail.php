@@ -1039,7 +1039,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				if (strpos($attributes, 'readonly')>0) {
 					$specificStyle.=' color:grey; background:none; background-color: #F0F0F0; ';
 				}
-				echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
+				echo ' rows="2" style="width: ' . $largeWidth . 'px;max-height:195px;' . $specificStyle . '" ';
 				echo ' maxlength="' . $dataLength . '" ';
 				//        echo ' maxSize="4" ';
 				echo ' class="input" ' . '>';

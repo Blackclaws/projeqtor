@@ -5,7 +5,7 @@
 // =======================================================================================
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin';
-$paramDbName='projeqtor_v43';$paramDbPrefix='';
+$paramDbName='projeqtor_v44';$paramDbPrefix='';
 //$paramDbName='sante'; $paramDbPrefix='';
 //$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
 $paramDbHost='127.0.0.1';
