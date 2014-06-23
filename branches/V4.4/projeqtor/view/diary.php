@@ -101,7 +101,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	if ($date==date('Y-m-d')) { 
 		$bgColor="#ffffaa"; 
 	} else if (isOffDay($date,$calendar)) {
-		$bgColor="#eeeeee";
+		$bgColor="#dfdfdf";
 	}
 	
 	echo '<td style="vertical-align:top;background-color:'.$bgColor.';">';

@@ -105,6 +105,37 @@ function colorNameFormatter(value) {
   	return ''; 
   }
 }
+function colorTranslateNameFormatter(value) {
+  if (value) {
+    var tab=value.split("#split#");
+    if (tab.length>1) {
+      if (tab.length==2) { // just found : val #split# color
+        var val=tab[0];
+        var color=tab[1];
+        var order='';
+      } else if (tab.length==3) { // val #split# color #split# order
+          var val=tab[1];
+          var color=tab[2];
+          var order=tab[0];
+      } else { // should not be found
+        return value;
+      }
+      var foreColor='#000000';
+      if (color.length==7) {
+        var red=color.substr(1,2);
+        var green=color.substr(3,2);
+        var blue=color.substr(5,2);
+        var light=(0.3)*parseInt(red,16)+(0.6)*parseInt(green,16)+(0.1)*parseInt(blue,16);
+        if (light<128) { foreColor='#FFFFFF'; }
+      }
+      return '<span style="display:none;">' + order + '</span><table width="100%"><tr><td style="background-color: ' + color + '; color:' +foreColor + ';width: 100%;">' + i18n(val) + '</td></tr></table>'; 
+    } else {
+      return i18n(value);
+    }
+  } else { 
+    return ''; 
+  }
+}
 
 /**
  * ============================================================================
