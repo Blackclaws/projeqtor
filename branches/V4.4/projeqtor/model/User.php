@@ -750,41 +750,30 @@ class User extends SqlElement {
 			$ldap_bind_dn = empty($paramLdap_search_user) ? null : $paramLdap_search_user;
 			$ldap_bind_pw = empty($paramLdap_search_pass) ? null : $paramLdap_search_pass;
 	
-//debugLog("***** trace binding admin *****");
-//debugLog(" user='$paramLdap_search_user'");
-//debugLog(" password='$paramLdap_search_pass'");
   		try {
-			  $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
-//debugLog(" binding OK");			  
+		   $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
   		} catch (Exception $e) {
-        debugLog("authenticate - LdapBind Error : " . $e->getMessage() );
+           debugLog("authenticate - LdapBind Error : " . $e->getMessage() );
         return "ldap";
       }  
-//debugLog("result:");
-//debugLog($bind);
 			if (! $bind) {
-	      debugLog("authenticate - LdapBind Error : not identified error" );
-				return "ldap";
+	          debugLog("authenticate - LdapBind Error : not identified error" );
+			  return "ldap";
 			}
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
-//debugLog("filter=".str_replace('%USERNAME%', $this->name, $paramLdap_user_filter));
 			if (!$result) {
-//debugLog("not found - filter error");
 				return "login";
 			}
 			$result_user = ldap_get_entries($ldapCnx, $result);
 			if ($result_user['count'] == 0) {
-//debugLog("not found - 0 result");				
 				return "login";
 			}
 		  if ($result_user['count'] > 1) {
-//debugLog("not found - more than 1 result");
         return "login";
       }
 			$first_user = $result_user[0];
 			$ldap_user_dn = $first_user['dn'];
-//debugLog("dn=$ldap_user_dn");
       if (strtolower($ldap_user_dn)==strtolower($paramLdap_search_user)) {
       	traceLog("authenticate - Filter error : filter retrieved admin user (LDAP user in global parameters)" );
       	return "login";
@@ -793,20 +782,14 @@ class User extends SqlElement {
 			// Bind with the dn of the user that matched our filter (only one user should match filter ..)
       enableCatchErrors();
 			try {
-//debugLog("ldap_user_dn='$ldap_user_dn'");
-//debugLog("parampassword='$parampassword'");
 				$bind_user = @ldap_bind($ldapCnx, $ldap_user_dn, $parampassword);
 			} catch (Exception $e) {
         traceLog("authenticate - LdapBind Error : " . $e->getMessage() );
         return "login";
       }
-//debugLog("result bind user:");
-//debugLog($bind_user);  
 			if (! $bind_user or !$parampassword) {
-//debugLog("incorrect binding");			
 				return "login";
 			}
-//debugLog("***** end trace binding *****");			
 			disableCatchErrors();
 			if (! $this->id and $this->isLdap) {
 				if (!count($first_user) == 0) {
