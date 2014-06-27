@@ -97,14 +97,12 @@ if (! $assignment->idProject) {
   $assignment->idProject=$refObj->idProject;
 }
 
-//debugLog("oldCost=$oldCost and cost=$cost and realWork=$assignment->realWork");
 if (! $oldCost and $cost and $assignment->realWork) {
 	$wk=new Work();
 	$where="idResource=" . Sql::fmtId($assignment->idResource);
 	$where.=" and idAssignment=" . $assignment->id ;
 	$where.=" and (cost=0 or cost is null) and work>0";
 	$wkList=$wk->getSqlElementsFromCriteria(null, false, $where);
-//debugLog($where." count=".count($wkList));
 	foreach ($wkList as $wk) {
 		$wk->dailyCost=$cost;
 		$wk->dailyCost=$cost*$wk->work;
