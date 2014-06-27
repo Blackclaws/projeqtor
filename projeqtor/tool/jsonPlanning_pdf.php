@@ -640,7 +640,7 @@
               $noBorder="border-left: 0px;border-right: 0px;";
             }
           } else  if ($format=='quarter') {
-            $fontSize='10%';
+            $fontSize='90%';
             if ( $i<($numDays-1) and substr($days[($i+1)],-2)!='01' ) {
                $noBorder="border-left: 0px;border-right: 0px;";
             }
