@@ -933,7 +933,7 @@ abstract class SqlElement {
 				// if property is an object, delete it
 				if ($this->$col_name instanceof SqlElement) {
 					if ($this->$col_name->id and $this->$col_name->id!='') { // object may be a "new" element, so try to delete only if id exists
-						$this->$col_name->delete();
+						$resSub=$this->$col_name->delete();
 					}
 				}
 			}
@@ -964,7 +964,7 @@ abstract class SqlElement {
 					$list=$obj->getSqlElementsFromCriteria($crit,false,$where);
 					foreach ($list as $subObj) {
 						$subObjDel=new $object($subObj->id);
-						$subObjDel->delete();
+						$resSub=$subObjDel->delete();
 					}
 				}
 			}
@@ -1874,6 +1874,15 @@ abstract class SqlElement {
 		$colName=strtolower($colName);
 		$formatList=self::getFormatList(get_class($this));
 		if ( ! array_key_exists($colName, $formatList) ) {
+			foreach ($this as $col=>$val) {
+				if (is_object($val)) {
+					$subObj=new $col();
+					$subType=$subObj->getDataType($colName);
+					if ($subType!='undefined') {
+						return $subType;
+					}
+				}
+			}
 			return 'undefined';
 		}
 		$fmt=$formatList[$colName];
