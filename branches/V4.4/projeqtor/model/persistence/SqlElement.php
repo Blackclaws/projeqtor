@@ -1874,6 +1874,15 @@ abstract class SqlElement {
 		$colName=strtolower($colName);
 		$formatList=self::getFormatList(get_class($this));
 		if ( ! array_key_exists($colName, $formatList) ) {
+			foreach ($this as $col=>$val) {
+				if (is_object($val)) {
+					$subObj=new $col();
+					$subType=$subObj->getDataType($colName);
+					if ($subType!='undefined') {
+						return $subType;
+					}
+				}
+			}
 			return 'undefined';
 		}
 		$fmt=$formatList[$colName];
