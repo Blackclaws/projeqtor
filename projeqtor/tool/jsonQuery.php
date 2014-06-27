@@ -482,8 +482,10 @@
             //if ($id!='id') { echo $csvSep ;}
             if ( ($dataType[$id]=='varchar' or $foreign) and $csvQuotedText) {
               echo '"' . $val . '"'.$csvSep;
+            } else if ( ($dataType[$id]=='decimal')) {
+            	echo htmlDisplayNumeric($val).$csvSep;
             } else {
-            	echo $val.$csvSep;
+            	echo $dataType[$id].$val.$csvSep;
             }
     			}
     			$first=false;
