@@ -933,7 +933,7 @@ abstract class SqlElement {
 				// if property is an object, delete it
 				if ($this->$col_name instanceof SqlElement) {
 					if ($this->$col_name->id and $this->$col_name->id!='') { // object may be a "new" element, so try to delete only if id exists
-						$this->$col_name->delete();
+						$resSub=$this->$col_name->delete();
 					}
 				}
 			}
@@ -964,7 +964,7 @@ abstract class SqlElement {
 					$list=$obj->getSqlElementsFromCriteria($crit,false,$where);
 					foreach ($list as $subObj) {
 						$subObjDel=new $object($subObj->id);
-						$subObjDel->delete();
+						$resSub=$subObjDel->delete();
 					}
 				}
 			}
