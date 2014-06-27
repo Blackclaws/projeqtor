@@ -2275,23 +2275,23 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   </script>        
                </select>
              </td>
-             <td style="width:210px;">
+             <td style="width:410px;">
                <input id="filterValue" name="filterValue" value=""  
                  dojoType="dijit.form.TextBox" 
-                 style="width:200px" />
+                 style="width:400px" />
                <select id="filterValueList" name="filterValueList[]" value=""  
                  dojoType="dijit.form.MultiSelect" multiple
-                 style="width:200px" size="10" class="input"></select>
+                 style="width:400px" size="10" class="input"></select>
                 <input type="checkbox" id="filterValueCheckbox" name="filterValueCheckbox" value=""  
                  dojoType="dijit.form.CheckBox" 
                  /> 
                 <input id="filterValueDate" name="filterValueDate" value=""  
                  dojoType="dijit.form.DateTextBox" 
-                 style="width:200px" />
+                 style="width:400px" />
                  <select id="filterSortValueList" name="filterSortValueList" value="asc"  
                  dojoType="dijit.form.FilteringSelect"
                  missingMessage="<?php echo i18n('valueNotSelected');?>" 
-                 style="width:200px" size="10" class="input">
+                 style="width:400px" size="10" class="input">
                   <option value="asc" SELECTED><?php echo i18n('sortAsc');?></option>
                   <option value="desc"><?php echo i18n('sortDesc');?></option>
                  </select> 
