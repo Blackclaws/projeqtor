@@ -592,7 +592,7 @@ class PlanningElement extends SqlElement {
     if ( $refId and trim($refId)!='') {
       $crit=array("refType"=>$refType, "refId"=>$refId);
       $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
-      if ($topElt) {
+      if ($topElt and $topElt->id) {
       	if ($topElt->refId) {
           $topElt->save();
       	}

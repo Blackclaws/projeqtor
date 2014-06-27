@@ -630,7 +630,7 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   echo '<label for="filterNameDisplay" >' . i18n("filterName") . '&nbsp;:&nbsp;</label>';
   echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
   echo ' name="filterNameDisplay" id="filterNameDisplay"';
-  echo '  style="width: 374px;" ';
+  echo '  style="width: 564px;" ';
   echo ' trim="true" maxlength="100" class="input" ';
   echo ' value="' . htmlEncode($filterName) . '" ';
   echo ' >';
@@ -681,7 +681,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
   echo "<table width='100%'>";
   echo "<tr>";
   if ($context!='directFilterList') {
-  	echo "<td class='filterHeader' style='width:525px;'>" . i18n("storedFilters") . "</td>";
+  	echo "<td class='filterHeader' style='width:730px;'>" . i18n("storedFilters") . "</td>";
     echo "<td class='filterHeader' style='width:25px;'>";
   } else {
   	echo "<td class='filterHeader' style='font-size:8pt;width:300px;'>" . i18n("storedFilters") . "</td>";

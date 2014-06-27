@@ -9,6 +9,7 @@ $paramDbName='projeqtor_v43';$paramDbPrefix='';
 //$paramDbName='sante'; $paramDbPrefix='';
 //$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
 $paramDbHost='127.0.0.1';
+$paramDbHost='localhost';
 $logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
