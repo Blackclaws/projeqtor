@@ -2812,7 +2812,8 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ( $noselect) {
   	echo $noData;
   } else if (!$canRead) {
-    echo htmlGetNoAccessMessage($objClass);;
+    echo htmlGetNoAccessMessage($objClass);
+    exit;
   } else {
   	if (! $print or $comboDetail) {
   		echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
@@ -2848,7 +2849,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   <?php } else {
   	$titlePane=$objClass."_attachment"; ?>
 
-<?php if (! isIE() and ! $readOnly) {?>
+<?php if (! isIE() and ! $readOnly ) {?>
 <div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
 MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
 url="../tool/saveAttachement.php"
