@@ -485,7 +485,7 @@
             } else if ( ($dataType[$id]=='decimal')) {
             	echo htmlDisplayNumeric($val).$csvSep;
             } else {
-            	echo $dataType[$id].$val.$csvSep;
+            	echo $val.$csvSep;
             }
     			}
     			$first=false;
