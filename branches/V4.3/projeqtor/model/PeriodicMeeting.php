@@ -47,7 +47,6 @@ class PeriodicMeeting extends SqlElement {
   public $periodicityYearlyMonth;
   public $_Note=array();
   public $idPeriodicMeeting;
-  public $_old;
 
   // Define the layout that will be used for lists
   private static $_layout='
@@ -358,7 +357,6 @@ class PeriodicMeeting extends SqlElement {
 
   public function save() {
     $old=$this->getOld();
-    $this->_old=$old;
   	if (! $this->name) {
       $this->name=SqlList::getNameFromId('MeetingType',$this->idMeetingType);
   	}
@@ -447,7 +445,7 @@ class PeriodicMeeting extends SqlElement {
     	if ($this->idPeriodicity==1) { // DAILY
     		if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {
     			$nb++;
-    			$this->saveMeeting($currentDate, $nb);
+    			$this->saveMeeting($currentDate, $nb, $old);
     			$lastDate=$currentDate;
     		}
     		$currentDate=addDaysToDate($currentDate, $this->periodicityDailyFrequency);
@@ -457,7 +455,7 @@ class PeriodicMeeting extends SqlElement {
         if ($this->periodicityWeeklyDay==date('N', strtotime($currentDate)) ) {
           if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {       	
 	          $nb++;
-	          $this->saveMeeting($currentDate, $nb);
+	          $this->saveMeeting($currentDate, $nb, $old);
 	          $lastDate=$currentDate;
           }
           $currentDate=addDaysToDate($currentDate, 7*$this->periodicityWeeklyFrequency);
@@ -470,7 +468,7 @@ class PeriodicMeeting extends SqlElement {
         if ($this->periodicityMonthlyDayDay==substr($currentDate,8,2)) {
           if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {        
             $nb++;
-            $this->saveMeeting($currentDate, $nb);
+            $this->saveMeeting($currentDate, $nb, $old);
             $lastDate=$currentDate;
           }
           $currentDate=addMonthsToDate($currentDate, $this->periodicityMonthlyDayFrequency);
@@ -482,7 +480,7 @@ class PeriodicMeeting extends SqlElement {
           $currentDate=substr($currentDate,0,8).htmlFixLengthNumeric($this->periodicityMonthlyDayDay,2);
           if (! $this->periodicityOpenDays or isOpenDay($currentDate,'1')) {        
             $nb++;
-            $this->saveMeeting($currentDate, $nb);
+            $this->saveMeeting($currentDate, $nb, $old);
             $lastDate=$currentDate;
           }
           $currentDate=addMonthsToDate($currentDate, $this->periodicityMonthlyDayFrequency);
@@ -497,7 +495,7 @@ class PeriodicMeeting extends SqlElement {
       			  and $currentDate>=$this->periodicityStartDate 
       			  and substr($currentDate,5,2)==$currentMonth ) {  
       				$nb++;
-              $this->saveMeeting($currentDate, $nb);
+              $this->saveMeeting($currentDate, $nb, $old);
               $lastDate=$currentDate;
       			}
       			$nbWeekDay=0;
@@ -518,7 +516,7 @@ class PeriodicMeeting extends SqlElement {
         if ( (! $this->periodicityOpenDays or isOpenDay($currentDate,'1') )
         and $currentDate>=$this->periodicityStartDate ) {  
           $nb++;
-          $this->saveMeeting($currentDate, $nb);
+          $this->saveMeeting($currentDate, $nb, $old);
           $lastDate=$currentDate;
         }
         $currentDate=addMonthsToDate($currentDate, 12);
@@ -552,7 +550,7 @@ class PeriodicMeeting extends SqlElement {
     parent::save();
     return $result;
   }
-  private function saveMeeting($currentDate, $nb) {
+  private function saveMeeting($currentDate, $nb, $old) {
   	$critArray=array("idPeriodicMeeting"=>$this->id, "isPeriodic"=>'1',"periodicOccurence"=>$nb);
   	$meeting=SqlElement::getSingleSqlElementFromCriteria('Meeting', $critArray);
   	$meeting->idProject=$this->idProject;
@@ -561,20 +559,20 @@ class PeriodicMeeting extends SqlElement {
     $meeting->isPeriodic=1;
     $meeting->periodicOccurence=$nb;
     $meeting->meetingDate=$currentDate;
-    if ($this->_old->meetingStartTime!=$this->meetingStartTime) $meeting->meetingStartTime=$this->meetingStartTime;
-    if ($this->_old->meetingEndTime!=$this->meetingEndTime) $meeting->meetingEndTime=$this->meetingEndTime;
+    if ($old->meetingStartTime!=$this->meetingStartTime) $meeting->meetingStartTime=$this->meetingStartTime;
+    if ($old->meetingEndTime!=$this->meetingEndTime) $meeting->meetingEndTime=$this->meetingEndTime;
     $meeting->name=$this->name . " #".$nb;
-    if ($this->_old->location!=$this->location) $meeting->location=$this->location;
-    if ($this->_old->attendees!=$this->attendees) $meeting->attendees=$this->attendees;
+    if ($old->location!=$this->location) $meeting->location=$this->location;
+    if ($old->attendees!=$this->attendees) $meeting->attendees=$this->attendees;
     $meeting->idUser=$this->idUser;
-    if ($this->_old->description!=$this->description) $meeting->description=$this->description;
+    if ($old->description!=$this->description) $meeting->description=$this->description;
     $meeting->idActivity=null;
     if (! $meeting->idStatus) {
       $table=SqlList::getList('Status');
       reset($table);
       $meeting->idStatus=key($table);
     }
-    if ($this->_old->location!=$this->idResource) $meeting->idResource=$this->idResource;
+    if ($old->location!=$this->idResource) $meeting->idResource=$this->idResource;
     // Assignments => dispatch ========================== TODO
     $resultMeetingSave=$meeting->save();
   }
