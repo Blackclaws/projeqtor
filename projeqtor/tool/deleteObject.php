@@ -41,8 +41,6 @@ $obj=new $className($obj->id); // Get the last saved version, to fetch last vers
 // delete from database
 $result=$obj->delete();
 
-echo '<input type="hidden" id="buttonCheckListVisibleObject" value="hidden" />';
-
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
@@ -59,4 +57,5 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::commitTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
 }
+echo '<input type="hidden" id="buttonCheckListVisibleObject" value="hidden" />';
 ?>
