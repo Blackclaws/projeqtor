@@ -57,6 +57,7 @@ if ($type=='habilitation') {
 } else if ($type=='habilitationOther') {
   $crosTable=htmlGetCrossTable(array('imputation'=>i18n('imputationAccess'),
                                      'workValid'=>i18n('workValidate'),
+  		                               'diary'=>i18n('diaryAccess'),
                                      'work'=>i18n('workAccess'),
                                      'cost'=>i18n('costAccess'),
   		                               'assignmentView'=>i18n('assignmentViewRight'),
