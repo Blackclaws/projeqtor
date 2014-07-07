@@ -1039,7 +1039,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				if (strpos($attributes, 'readonly')>0) {
 					$specificStyle.=' color:grey; background:none; background-color: #F0F0F0; ';
 				}
-				echo ' rows="2" style="width: ' . $largeWidth . 'px;max-height:195px;' . $specificStyle . '" ';
+				echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
 				echo ' maxlength="' . $dataLength . '" ';
 				//        echo ' maxSize="4" ';
 				echo ' class="input" ' . '>';
@@ -1144,7 +1144,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 	if ($obj->locked) {
 		$canUpdate=false;
 	}
-	if ($obj->idle==1) {$canUpdate=false;}
+	//if ($obj->idle==1) {$canUpdate=false;}
 	echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
 	$typeEvo="EVO";
 	$type=new VersioningType($obj->idVersioningType);
@@ -1186,7 +1186,8 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 				echo '<a href="../tool/download.php?class=DocumentVersion&id='. $version->id . '"';
 				echo ' target="printFrame" title="' . i18n('helpDownload') . "\n". (($preserveFileName=='YES')?$version->fileName:$version->fullName). '"><img src="css/images/smallButtonDownload.png" /></a>';
 			}
-			if ($canUpdate and ! $print) {
+			if ( $canUpdate and ! $print and (!$obj->idle or $obj->idDocumentVersion==$version->id) ) {
+				
 				echo '  <img src="css/images/smallButtonEdit.png" '
 				. 'onClick="editDocumentVersion(' . "'" . $version->id . "'"
 				. ",'" . $version->version . "'"
@@ -1202,7 +1203,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 				. ');" '
 				. 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';
 			}
-			if ($canUpdate and ! $print )  {
+			if ($canUpdate and ! $print and !$obj->idle )  {
 				echo '  <img src="css/images/smallButtonRemove.png" '
 				. 'onClick="removeDocumentVersion(' . "'" . $version->id . "'"
 				. ', \'' . $version->name . '\');" '
@@ -2812,8 +2813,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ( $noselect) {
   	echo $noData;
   } else if (!$canRead) {
-    echo htmlGetNoAccessMessage($objClass);
-    exit;
+    echo htmlGetNoAccessMessage($objClass);;
   } else {
   	if (! $print or $comboDetail) {
   		echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
@@ -2849,7 +2849,7 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   <?php } else {
   	$titlePane=$objClass."_attachment"; ?>
 
-<?php if (! isIE() and ! $readOnly ) {?>
+<?php if (! isIE() and ! $readOnly) {?>
 <div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
 MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
 url="../tool/saveAttachement.php"
