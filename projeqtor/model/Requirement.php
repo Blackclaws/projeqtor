@@ -350,14 +350,16 @@ class Requirement extends SqlElement {
     }
     $listCrit.=")";
     $tcr=new TestCaseRun();
-    $listTcr=$tcr->getSqlElementsFromCriteria(null, false, $listCrit);
+    $listTcr=$tcr->getSqlElementsFromCriteria(null, false, $listCrit,  "statusDateTime asc");
     $this->countBlocked=0;
     $this->countFailed=0;
     $this->countIssues=0;
     $this->countPassed=0;
     $this->countPlanned=0;
     $this->countTotal=0;
+    $countTotal=0;
     foreach($listTcr as $tcr) {
+    	$countTotal+=1;
     	$this->countTotal+=1;
       if ($tcr->idRunStatus==1) {
         $this->countPlanned+=1;
@@ -383,6 +385,11 @@ class Requirement extends SqlElement {
     } else {
       $this->idRunStatus=2; // passed
     }  
+    // New behavior : status = last status (= status of current $tcr
+    if ($countTotal>0 and count($listTcr)>0) {
+    	$this->idRunStatus=$tcr->idRunStatus;
+    }
+    
     $this->save();
   }
 }

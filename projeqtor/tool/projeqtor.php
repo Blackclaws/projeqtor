@@ -6,7 +6,7 @@ session_start();              // Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V4.3.3";            // Version of application : Major / Minor / Release
+$version="V4.3.3.a";            // Version of application : Major / Minor / Release
 $build="0103";                // Build number. To be increased on each release
 $website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
