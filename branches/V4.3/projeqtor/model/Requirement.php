@@ -358,8 +358,13 @@ class Requirement extends SqlElement {
     $this->countPlanned=0;
     $this->countTotal=0;
     $countTotal=0;
+    $lstStatus=array();
+    // Fixing : take into account only last test cas run for a test case
     foreach($listTcr as $tcr) {
     	$countTotal+=1;
+    	$lstStatus[$tcr->idTestCase]=$tcr;
+    }
+    foreach ($lstStatus as $tcr) { // thanks to previous treatment, this list includes only last status of test case
     	$this->countTotal+=1;
       if ($tcr->idRunStatus==1) {
         $this->countPlanned+=1;
@@ -385,10 +390,6 @@ class Requirement extends SqlElement {
     } else {
       $this->idRunStatus=2; // passed
     }  
-    // New behavior : status = last status (= status of current $tcr
-    if ($countTotal>0 and count($listTcr)>0) {
-    	$this->idRunStatus=$tcr->idRunStatus;
-    }
     
     $this->save();
   }
