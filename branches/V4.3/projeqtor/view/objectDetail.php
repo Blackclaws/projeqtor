@@ -1144,7 +1144,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 	if ($obj->locked) {
 		$canUpdate=false;
 	}
-	if ($obj->idle==1) {$canUpdate=false;}
+	//if ($obj->idle==1) {$canUpdate=false;}
 	echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
 	$typeEvo="EVO";
 	$type=new VersioningType($obj->idVersioningType);
@@ -1186,7 +1186,8 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 				echo '<a href="../tool/download.php?class=DocumentVersion&id='. $version->id . '"';
 				echo ' target="printFrame" title="' . i18n('helpDownload') . "\n". (($preserveFileName=='YES')?$version->fileName:$version->fullName). '"><img src="css/images/smallButtonDownload.png" /></a>';
 			}
-			if ($canUpdate and ! $print) {
+			if ( $canUpdate and ! $print and (!$obj->idle or $obj->idDocumentVersion==$version->id) ) {
+				
 				echo '  <img src="css/images/smallButtonEdit.png" '
 				. 'onClick="editDocumentVersion(' . "'" . $version->id . "'"
 				. ",'" . $version->version . "'"
@@ -1202,7 +1203,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 				. ');" '
 				. 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';
 			}
-			if ($canUpdate and ! $print )  {
+			if ($canUpdate and ! $print and !$obj->idle )  {
 				echo '  <img src="css/images/smallButtonRemove.png" '
 				. 'onClick="removeDocumentVersion(' . "'" . $version->id . "'"
 				. ', \'' . $version->name . '\');" '
