@@ -74,8 +74,6 @@ if (count($cdList)>0 and $newObj->id) {
 } else {
 	$buttonCheckListVisible="hidden";
 }
-echo '<input type="hidden" id="buttonCheckListVisibleObject" value="'.$buttonCheckListVisible.'" />';
-
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
@@ -96,6 +94,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
   echo '<span class="messageWARNING" >' . formatResult($result) . '</span>';
 }
+echo '<input type="hidden" id="buttonCheckListVisibleObject" value="'.$buttonCheckListVisible.'" />';
 
 function formatResult($result) {
 	if (array_key_exists('comboDetail', $_REQUEST)) {
