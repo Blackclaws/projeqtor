@@ -1187,7 +1187,6 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
 				echo ' target="printFrame" title="' . i18n('helpDownload') . "\n". (($preserveFileName=='YES')?$version->fileName:$version->fullName). '"><img src="css/images/smallButtonDownload.png" /></a>';
 			}
 			if ( $canUpdate and ! $print and (!$obj->idle or $obj->idDocumentVersion==$version->id) ) {
-				
 				echo '  <img src="css/images/smallButtonEdit.png" '
 				. 'onClick="editDocumentVersion(' . "'" . $version->id . "'"
 				. ",'" . $version->version . "'"
