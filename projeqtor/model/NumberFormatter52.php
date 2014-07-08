@@ -60,5 +60,8 @@ class NumberFormatter52  {
   function format($value) {
     return number_format($value,$this->type,$this->decimalSeparator,$this->thouthandSeparator);
   }
+  function formatDecimalPoint($value) {
+  	return number_format($value,$this->type,$this->decimalSeparator,'');
+  }
 }
 ?>
