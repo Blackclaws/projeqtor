@@ -303,8 +303,10 @@ class Importable extends SqlElement {
 						}
 					}
 					// --------------------------------------
-					else if (($dataType == 'int' and substr($title[$idx], 0, 2) != 'id') or $dataType == 'decimal') {
+					 else if ($dataType == 'int' and substr($title[$idx], 0, 2) != 'id') {
 						$field = str_replace(' ', '', $field);
+					} else if ($dataType == 'decimal') {
+						$field=formatNumericInput($field);
 					}
 					if ($field == '') {
 						$htmlResult.= '<td class="messageData" style="color:#000000;border:1px solid black;">' . htmlEncode($field) . '</td>';
