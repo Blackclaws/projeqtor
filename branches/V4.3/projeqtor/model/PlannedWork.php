@@ -231,7 +231,7 @@ class PlannedWork extends GeneralWork {
           	if ($plan->refType=='Milestone') {
           	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
           	} else {
-              $startPlan=addWorkDaysToDate($precEnd,2+$precVal); // #77 
+              $startPlan=addWorkDaysToDate($precEnd,($precVal>=0)?2+$precVal:1+$precVal); // #77 
             }           
           }
         }
