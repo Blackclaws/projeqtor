@@ -291,7 +291,14 @@
 	          $externalObj=new $externalClass();
 	          $externalTable = $externalObj->getDatabaseTableName();
 	          $externalTableAlias = 'T' . $idTab;
-	          $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+	          if (property_exists($externalObj, '_calculateForColumn') and isset($externalObj->_calculateForColumn['name'])) {
+	          	$fieldCalc=$externalObj->_calculateForColumn["name"];
+	          	$fieldCalc=str_replace("(","($externalTableAlias.",$fieldCalc);
+	          	//$calculated=true;
+	          	$querySelect .= $fieldCalc . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+	          } else {
+	          	$querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+	          }
 	          //if (! stripos($queryFrom,$externalTable)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
 	              ' on ' . $table . "." . $obj->getDatabaseColumnName('id' . $externalClass) . 
