@@ -2150,6 +2150,19 @@ function getSessionValue($code, $default=null) {
 	}
 	return $_SESSION[$code];
 }
+
+function formatNumericOutput($val) {
+	global $browserLocale;
+	$fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+	return $fmt->formatDecimalPoint($val) ;
+}
+function formatNumericInput($val) {
+	global $browserLocale;
+	$fmt = new NumberFormatter52( $browserLocale, NumberFormatter52::DECIMAL );
+	$from=array($fmt->decimalSeparator,$fmt->thouthandSeparator,' ');
+	$to=array('.','','');
+	return str_replace($from,$to,$val);
+}
 //
 
 ?>
