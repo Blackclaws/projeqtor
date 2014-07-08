@@ -2813,7 +2813,9 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   if ( $noselect) {
   	echo $noData;
   } else if (!$canRead) {
-    echo htmlGetNoAccessMessage($objClass);;
+    echo htmlGetNoAccessMessage($objClass);
+    echo "</div></form>";
+    exit;
   } else {
   	if (! $print or $comboDetail) {
   		echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
