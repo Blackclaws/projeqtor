@@ -18,7 +18,7 @@
   if ($login=="") {
     loginError();
   }
-  if ($password=="") {
+  if ($password=="" or AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256)) {
     loginError();
   }
   if (! Sql::getDbVersion()) {
