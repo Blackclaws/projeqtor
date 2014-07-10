@@ -18,11 +18,11 @@
   if ($login=="") {
     loginError();
   }
-  if ($password=="" or AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256)) {
+  if ($password=="" or AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256)=="") {
     loginError();
   }
   if (! Sql::getDbVersion()) {
-	$password=AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256);
+	  $password=AesCtr::decrypt($password, $_SESSION['sessionSalt'], 256);
     if ($login=="admin" and $password=="admin") {
       include "../db/maintenance.php";
       exit;
