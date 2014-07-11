@@ -490,7 +490,7 @@ class PlanningElement extends SqlElement {
     }
     // Add data from other planningElements dependant from this one
     if (! $this->elementary) {
-      $critPla=array("topId"=>$this->id,"cancelled"=>'0');
+      $critPla=array("topId"=>$this->id);
       $planningElement=new PlanningElement();
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
       // Add data from other planningElements dependant from this one    
@@ -499,24 +499,24 @@ class PlanningElement extends SqlElement {
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
         $realWork+=$pla->realWork;
-        if ($pla->assignedCost) $assignedCost+=$pla->assignedCost;
-        if ($pla->leftCost) $leftCost+=$pla->leftCost;
+        if (!$pla->cancelled and $pla->assignedCost) $assignedCost+=$pla->assignedCost;
+        if (!$pla->cancelled and $pla->leftCost) $leftCost+=$pla->leftCost;
         if ($pla->plannedCost) $plannedCost+=$pla->plannedCost;
         if ($pla->realCost) $realCost+=$pla->realCost;
-        if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
+        if ( !$pla->cancelled and $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
           $realStartDate=$pla->realStartDate;
         }
-        if ( $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
+        if ( !$pla->cancelled and $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
           $realEndDate=$pla->realEndDate;
         }  
-        if ( $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
+        if ( !$pla->cancelled and $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
           $plannedStartDate=$pla->plannedStartDate;
         }
-        if ( $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
+        if ( !$pla->cancelled and $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
           $plannedEndDate=$pla->plannedEndDate;
         }  
-        if ($pla->validatedWork) $validatedWork+=$pla->validatedWork;
-        if ($pla->validatedCost) $validatedCost+=$pla->validatedCost;
+        if (!$pla->cancelled and $pla->validatedWork) $validatedWork+=$pla->validatedWork;
+        if (!$pla->cancelled and $pla->validatedCost) $validatedCost+=$pla->validatedCost;
       }
     }
     $this->realStartDate=$realStartDate;
@@ -592,7 +592,7 @@ class PlanningElement extends SqlElement {
     if ( $refId and trim($refId)!='') {
       $crit=array("refType"=>$refType, "refId"=>$refId);
       $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
-      if ($topElt and $topElt->id) {
+      if ($topElt  and $topElt->id) {
       	if ($topElt->refId) {
           $topElt->save();
       	}
@@ -763,28 +763,37 @@ class PlanningElement extends SqlElement {
     return $result;
   }
 
-  public function moveTo($destId,$mode,$recursive=false) {	
+  public function moveTo($destId,$mode,$recursive=false) {
+//debugLog("MoveTo($destId,$mode,$recursive)");
+//debugLog("current = $this->id = $this->refType #$this->refId");  	
     $status="ERROR";
     $result="";
     $returnValue="";
     $task=null;
-    $dest=new PlanningElement($destId);   
+    $dest=new PlanningElement($destId);
+//debugLog("dest = $dest->id = $dest->refType #$dest->refId");    
     if ($dest->topRefType!=$this->topRefType
     or $dest->topRefId!=$this->topRefId) {
       $objectClass=$this->refType;
       $objectId=$this->refId;
       $task=new $objectClass($objectId);
       if ($dest->topRefType=="Project") {
+//debugLog("1 - change project"); 
       	$task->idProject=$dest->topRefId;
       	if (property_exists($task, 'idActivity')) {
-      		$task->idActivity=null;     		
+      		$task->idActivity=null;
+//debugLog("2 - reset activity");      		
       	}
       	$status="OK";
       } else if ($dest->topRefType=="Activity" and property_exists($task, 'idActivity')) {
+//debugLog("3 - change project and activity");    
+//debugLog("    project $task->idProject => $dest->idProject");
+//debugLog("    activity $task->idActivity => $dest->topRefId");
       	$task->idProject=$dest->idProject;
       	$task->idActivity=$dest->topRefId;
       	$status="OK";
-      } else if (! $dest->topRefType and $objectClass=='Project') {  	
+      } else if (! $dest->topRefType and $objectClass=='Project') {
+//debugLog("4 - move project to top");     	
       	$task->idProject=null;
       	$status="OK";
       }
@@ -834,6 +843,7 @@ class PlanningElement extends SqlElement {
     }
     if ($status=="OK" and $task and !$recursive) {
     	$resultTask=$task->save();
+//debugLog($resultTask);
     	if (stripos($resultTask,'id="lastOperationStatus" value="OK"')>0 ) {
     		$pe=new PlanningElement($this->id);
     		$pe->moveTo($destId,$mode,true);
