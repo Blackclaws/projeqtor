@@ -769,11 +769,19 @@ class PlanningElement extends SqlElement {
     $status="ERROR";
     $result="";
     $returnValue="";
+    $task=new $this->refType($this->refId);
+    echo get_class($task)." #".$task->id;
+    $right=securityGetAccessRightYesNo('menu' . get_class($task), 'update', $task);
+    echo $right;
+    if ($right!="YES") {
+    	$returnValue=i18n('errorUpdateRights');
+    	$status="KO";
+    }
     $task=null;
     $dest=new PlanningElement($destId);
 //debugLog("dest = $dest->id = $dest->refType #$dest->refId");    
-    if ($dest->topRefType!=$this->topRefType
-    or $dest->topRefId!=$this->topRefId) {
+    if ($status!="KO" and ($dest->topRefType!=$this->topRefType
+    or $dest->topRefId!=$this->topRefId)) {
       $objectClass=$this->refType;
       $objectId=$this->refId;
       $task=new $objectClass($objectId);
