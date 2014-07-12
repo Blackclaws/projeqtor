@@ -60,12 +60,12 @@ foreach($FieldsArray as $key => $val){
       $val=$ctx->name;
     } 
 		$htmlresult.='<input type="checkbox" dojoType="dijit.form.CheckBox" id="column'.$index.'" name="column'.$index.'" value="'.$key.'" '.$checked.'>';
-		$htmlresult.='<label for="column'.$index.'" class="checkLabel">'.$val.'</label><br>';
+		$htmlresult.='<label for="column'.$index.'" class="checkLabel">'.$val.'</label><br/>';
 		$index++;
 	}
 }
 $htmlresult.='</td>';
-$htmlresult.="<br>";
+$htmlresult.="<br/>";
 ?>
 <form id="dialogExportForm" name="dialogExportForm">
 <table style="width: 100%;">

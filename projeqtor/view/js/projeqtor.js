@@ -783,7 +783,7 @@ function finalizeMessageDisplay(destination, validationType) {
   }
   if (! contentWidget) {return;};
   // fetch last message type
-  var message=contentWidget.get('content');
+  var message=contentWidget.get('content'); 
   posdeb=message.indexOf('class="')+7;
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);

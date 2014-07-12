@@ -304,9 +304,7 @@ class User extends SqlElement {
   /** =========================================================================
    * Get the access rights for all the screens
    * For more information, refer to AccessControl.ofp diagram 
-   * @param $item the item. Correct values are : 
-   *    - subprojects => presents sub-projects as a tree
-   * @return an html string able to display a specific item
+   * @return an array containing rights for every screen
    *  must be redefined in the inherited class
    */
   public function getAccessControlRights() {
@@ -377,7 +375,14 @@ class User extends SqlElement {
     }
     $affList=$aff->getSqlElementsFromCriteria($crit,false);
     foreach ($affList as $aff) {
-      $result[$aff->idProject]=SqlList::getNameFromId('Project',$aff->idProject);
+    	$prj=new Project($aff->idProject);
+    	if (! isset($result[$aff->idProject])) {
+	      $result[$aff->idProject]=$prj->name;
+	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
+	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+	      	$result[$idSubPrj]=$nameSubPrj;
+	      }
+    	}
     }
     // Also get Project user have created
     /* V1.7 => removed : it's not because user created the project that he is alowed to see all data about it
@@ -757,13 +762,13 @@ class User extends SqlElement {
 			  $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
 //debugLog(" binding OK");			  
   		} catch (Exception $e) {
-        debugLog("authenticate - LdapBind Error : " . $e->getMessage() );
+//debugLog("authenticate - LdapBind Error : " . $e->getMessage() );
         return "ldap";
       }  
 //debugLog("result:");
 //debugLog($bind);
 			if (! $bind) {
-	      debugLog("authenticate - LdapBind Error : not identified error" );
+//debugLog("authenticate - LdapBind Error : not identified error" );
 				return "ldap";
 			}
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
