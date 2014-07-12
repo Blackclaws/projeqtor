@@ -597,31 +597,31 @@ function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     if ($alias===false) {
       if ($objectClass=='Project') {
-        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
       } else if ($objectClass=='Document') {
       	$v=new Version();
       	$vp=new VersionProject();
-        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) 
+        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) 
                     . " or (idProject is null and idProduct in"
                     . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
                     . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
-                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) . ") ) )";        
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) . ") ) )";        
       } else {
-       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
       }   
     } else {
     	if ($objectClass=='Project') {
-    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
       } else if ($objectClass=='Document') {
       	$v=new Version();
         $vp=new VersionProject();
-        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) 
+        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) 
                     . " or (" . $table . ".idProject is null and " . $table . ".idProduct in"
                     . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
                     . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
-                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) . ") ) )";        
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) . ") ) )";        
     	} else {
-        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
     	}
     }      
   } else if ($accessRightRead=='ALL') {
@@ -1298,12 +1298,12 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
       $accessRight='NO';
       if ($obj != null) {
         if (get_class($obj)=='Project') {
-          if (array_key_exists($obj->id, $user->getVisibleProjects(false)) or !$obj->id ) {
+          if (array_key_exists($obj->id, $user->getAffectedProjects(false)) or !$obj->id ) {
             $accessRight='YES';
           }
         } else if (property_exists($obj, 'idProject')) {
         	$limitToActiveProjects=(get_class($obj)=='Affectation')?false:true;
-          if (array_key_exists($obj->idProject, $user->getVisibleProjects($limitToActiveProjects)) or $obj->id==null) {
+          if (array_key_exists($obj->idProject, $user->getAffectedProjects($limitToActiveProjects)) or $obj->id==null) {
             $accessRight='YES';
           }
         }

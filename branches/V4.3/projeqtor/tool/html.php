@@ -462,7 +462,7 @@ function htmlFormatTime($val, $withSecond=true) {
 /** ============================================================================
  * Transform string to be displays in html, pedending on context 
  * @param $context Printing context : 
- *   'print' : for printing purpose, also converts nl to <br> 
+ *   'print' : for printing purpose, also converts nl to <br/> 
  *   'default' : default for conversion
  *   'none' : no convertion
  * @return string - the formated value 

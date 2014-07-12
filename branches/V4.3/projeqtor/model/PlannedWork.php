@@ -833,23 +833,19 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   		if ($initial=='ALWAYS' or ($initial=='IFEMPTY' and ! $pe->initialStartDate) ) {
   			$pe->initialStartDate=$pe->plannedStartDate;
   			$cpt++;
-  			//debugLog("1-".$pe->refType.' #'.$pe->refId);
   		}
   		if ($initial=='ALWAYS' or ($initial=='IFEMPTY' and ! $pe->initialEndDate) ) {
   			$pe->initialEndDate=$pe->plannedEndDate;
   			$cpt++;
-  			//debugLog("2-".$pe->refType.' #'.$pe->refId);
   		}
   		// validated
   		if ($validated=='ALWAYS' or ($validated=='IFEMPTY' and ! $pe->validatedStartDate) ) {
   			$pe->validatedStartDate=$pe->plannedStartDate;
   			$cpt++;
-  			//debugLog("3-".$pe->refType.' #'.$pe->refId);
   		}
   		if ($validated=='ALWAYS' or ($validated=='IFEMPTY' and ! $pe->validatedEndDate) ) {
   			$pe->validatedEndDate=$pe->plannedEndDate;
   			$cpt++;
-  			//debugLog("4-".$pe->refType.' #'.$pe->refId);
   		}
   		$pe->simpleSave();
   	}
