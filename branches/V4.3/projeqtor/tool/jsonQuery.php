@@ -490,7 +490,7 @@
             if ( ($dataType[$id]=='varchar' or $foreign) and $csvQuotedText) {
               echo '"' . $val . '"'.$csvSep;
             } else if ( ($dataType[$id]=='decimal')) {
-            	echo htmlDisplayNumeric($val).$csvSep;
+            	echo formatNumericOutput($val).$csvSep;
             } else {
             	echo $val.$csvSep;
             }
