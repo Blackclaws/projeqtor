@@ -262,7 +262,7 @@
 	          if (Sql::isPgsql()) {
 	          	//$querySelect .= 'concat(';
 		          if (property_exists($externalObj,'sortOrder')) {
-	              $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
+	              $querySelect .= 'coalesce('.$externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder').',0)';
 	              $querySelect .=  " || '#split#' ||";
 	            }
 	            $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
@@ -273,7 +273,7 @@
 	          } else {
 	            $querySelect .= 'convert(concat(';
 	            if (property_exists($externalObj,'sortOrder')) {
-                $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder');
+                $querySelect .= 'coalesce('. $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('sortOrder').',0)';
                 $querySelect .=  ",'#split#',";
 	            }
 	            $querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name');
