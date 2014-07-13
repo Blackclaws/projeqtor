@@ -490,33 +490,42 @@ class PlanningElement extends SqlElement {
     }
     // Add data from other planningElements dependant from this one
     if (! $this->elementary) {
-      $critPla=array("topId"=>$this->id,"cancelled"=>'0');
+      $critPla=array("topId"=>$this->id);
       $planningElement=new PlanningElement();
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
       // Add data from other planningElements dependant from this one    
       foreach ($plaList as $pla) {
-        $assignedWork+=$pla->assignedWork;
-        $leftWork+=$pla->leftWork;
-        $plannedWork+=$pla->plannedWork;
-        $realWork+=$pla->realWork;
-        if ($pla->assignedCost) $assignedCost+=$pla->assignedCost;
-        if ($pla->leftCost) $leftCost+=$pla->leftCost;
-        if ($pla->plannedCost) $plannedCost+=$pla->plannedCost;
-        if ($pla->realCost) $realCost+=$pla->realCost;
-        if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
-          $realStartDate=$pla->realStartDate;
-        }
-        if ( $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
-          $realEndDate=$pla->realEndDate;
-        }  
-        if ( $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
-          $plannedStartDate=$pla->plannedStartDate;
-        }
-        if ( $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
-          $plannedEndDate=$pla->plannedEndDate;
-        }  
-        if ($pla->validatedWork) $validatedWork+=$pla->validatedWork;
-        if ($pla->validatedCost) $validatedCost+=$pla->validatedCost;
+      	if (!$pla->cancelled) {
+      	  $assignedWork+=$pla->assignedWork;
+          $leftWork+=$pla->leftWork;
+          $plannedWork+=$pla->plannedWork;
+          $realWork+=$pla->realWork;
+	        if ($pla->assignedCost) $assignedCost+=$pla->assignedCost;
+	        if ($pla->leftCost) $leftCost+=$pla->leftCost;
+	        if ($pla->plannedCost) $plannedCost+=$pla->plannedCost;
+	        if ($pla->realCost) $realCost+=$pla->realCost;
+	        if ( $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
+	          $realStartDate=$pla->realStartDate;
+	        }
+	        if ( $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
+	          $realEndDate=$pla->realEndDate;
+	        }  
+	        if ( $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
+	          $plannedStartDate=$pla->plannedStartDate;
+	        }
+	        if ( $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
+	          $plannedEndDate=$pla->plannedEndDate;
+	        }  
+	        if ($pla->validatedWork) $validatedWork+=$pla->validatedWork;
+	        if ($pla->validatedCost) $validatedCost+=$pla->validatedCost;
+      	} else {
+      		$realWork+=$pla->realWork;
+      		$plannedWork+=$pla->realWork;
+      		if ($pla->realCost) {
+      			$realCost+=$pla->realCost;
+      			$plannedCost+=$pla->realCost;
+      		}
+      	}
       }
     }
     $this->realStartDate=$realStartDate;

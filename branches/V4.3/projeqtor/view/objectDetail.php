@@ -2808,7 +2808,6 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj)=="YES";
-  
   if ( $noselect) {
   	echo $noData;
   } else if (!$canRead) {

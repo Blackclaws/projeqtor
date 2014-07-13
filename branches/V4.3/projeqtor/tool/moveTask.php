@@ -36,7 +36,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
-} else { 
+} else { 	
 	//$result=str_replace('id="lastPlanStatus" value="OK"','id="lastPlanStatus" value="KO"',$result);
 	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
