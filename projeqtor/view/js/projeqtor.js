@@ -767,10 +767,13 @@ function finalizeMessageDisplay(destination, validationType) {
   var lastOperationStatus = dojo.byId('lastOperationStatus');
   var lastOperation = dojo.byId('lastOperation');
   // scpecific Plan return
-  if (destination=="planResultDiv" && ! validationType) {
-    lastOperationStatus = dojo.byId('lastPlanStatus');
-    lastOperation = "plan";
-  }
+  if (destination=="planResultDiv" && (! validationType || validationType=='dependency')) {  
+    if (dojo.byId('lastPlanStatus')) {
+	  lastOperationStatus = dojo.byId('lastPlanStatus');
+      lastOperation = "plan";
+      validationType=null;
+    }
+  }  
   var noHideWait=false;
   if ( ! (contentWidget && contentNode && lastOperationStatus && lastOperation) ) {
     returnMessage="";
@@ -784,16 +787,18 @@ function finalizeMessageDisplay(destination, validationType) {
   if (! contentWidget) {return;};
   // fetch last message type
   var message=contentWidget.get('content'); 
+console.log(message);
   posdeb=message.indexOf('class="')+7;
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
-  if (lastOperationStatus.value=="OK") {
+  if (lastOperationStatus.value=="OK") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
     msg=message.substr(posdeb, posfin-posdeb);
     // add the message in the message Div (left part) and prepares form to new
     // changes
+console.log(msg);
     addMessage(msg);
     //alert('validationType='+validationType);
     if (validationType) {

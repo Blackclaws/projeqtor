@@ -50,14 +50,18 @@ $dep->dependencyDelay=$dependencyDelay;
 $result=$dep->save();
 
 // Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {	
+	$result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
   Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   Sql::commitTransaction();
   echo '<span class="messageOK" >' . $result . '</span>';
 } else { 
+	$result=str_replace('<b>'.i18n('messageInvalidControls').'</b><br/><br/>','',$result);
+	$result=str_replace('id="lastOperationStatus" value="INVALID"','id="lastOperationStatus" value="KO"',$result);
+	$result.='<input type="hidden" id="lastPlanStatus" value="OK" />';
   Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
+  echo '<span class="messageERROR" >' . $result . '</span>';
 }
 ?>

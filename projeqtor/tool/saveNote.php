@@ -64,10 +64,17 @@ $result=$note->save();
 
 if ($note->idPrivacy==1) { // send mail if new note is public
   $elt=new $refType($refId);
+  $mailResult="";
   if ($noteId) {
-  	$elt->sendMailIfMailable(false,false,false,false,false,false,true,false,false,false,false,true);
+  	$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,false,true,false,false,false,false,true);
   } else {
-	  $elt->sendMailIfMailable(false,false,false,false,true,false,false,false,false,false,false,true);
+	  $mailResult=$elt->sendMailIfMailable(false,false,false,false,true,false,false,false,false,false,false,true);
+  }
+  if ($mailResult) {
+  	$pos=strpos($result,'<input type="hidden"');
+  	if ($pos) {
+  	  $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+  	}
   }
 }
 

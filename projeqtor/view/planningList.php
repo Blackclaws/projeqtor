@@ -229,7 +229,7 @@ if ($saveShowClosed) {
                   </table>
                 </td>
 		            <td>
-                  <div id="planResultDiv" style=" width: 260px;height: 10px;" 
+                  <div id="planResultDiv" style=" min-width: 260px; width:85%;height: 30px;" 
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
                 </td>

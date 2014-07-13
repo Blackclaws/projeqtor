@@ -1267,14 +1267,13 @@ function securityGetAccessRight($menuName, $accessType, $obj=null) {
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   // ATTENTION, NOT FOR READ ACCESS
-  
 	if (! class_exists(substr($menuName,4))) {
 		errorLog("securityGetAccessRightYesNo : ".substr($menuName,4)." is not an existing object class");
 	}
   if (property_exists(substr($menuName,4),'_no'.ucfirst($accessType))) {
   	return 'NO';
   }
-  if (property_exists(substr($menuName,4),'_readOnly')) {
+  if (property_exists(substr($menuName,4),'_readOnly') and $accessType!='read') {
   	return 'NO';
   }
   if (! array_key_exists('user', $_SESSION)) {
