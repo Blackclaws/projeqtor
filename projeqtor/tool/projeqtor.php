@@ -6,7 +6,7 @@ session_start();              // Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V4.3.3.a";            // Version of application : Major / Minor / Release
+$version="V4.3.3";            // Version of application : Major / Minor / Release
 $build="0103";                // Build number. To be increased on each release
 $website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
@@ -455,10 +455,11 @@ function projeqtorAutoload($className) {
   } elseif (is_file($persistfile)) {
     require_once $persistfile;  
   } else {
-    throwError ("Impossible to load class $className<br/>"
+    errorLog("Impossible to load class $className<br/>"
       . "  => Not found in $customfile <br/>"
       . "  => Not found in $modelfile <br/>"
       . "  => Not found in $persistfile <br/>");
+    return false;
   } 
 }
 

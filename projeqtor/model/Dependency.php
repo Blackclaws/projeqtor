@@ -97,18 +97,21 @@ class Dependency extends SqlElement {
       $result.='<br/>' . i18n('errorDependencyLoop');
     }
     // Must have write access to successor to create link
-    $succ=new $this->successorRefType($this->successorRefId);
-    $canUpdateSucc=(securityGetAccessRightYesNo('menu' . $this->successorRefType, 'update', $succ)=='YES');
-    if (! $canUpdateSucc) {
-    	$result.='<br/>' . i18n('errorUpdateRights');
+    $succClass=$this->successorRefType;
+    if ($succClass and class_exists($succClass)) {  	
+	    $succ=new $succClass($this->successorRefId);
+	    $canUpdateSucc=(securityGetAccessRightYesNo('menu' . $succClass, 'update', $succ)=='YES');
+	    if (! $canUpdateSucc) {
+	    	$result.='<br/>' . i18n('errorUpdateRights');
+	    }
     }
-    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
     }if ($result=="") {
       $result='OK';
     }
+debugLog("controlOK");    
     return $result;
   }
   
