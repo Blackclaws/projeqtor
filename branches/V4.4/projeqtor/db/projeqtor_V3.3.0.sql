@@ -49,7 +49,7 @@ ALTER TABLE  `${prefix}parameter`
 CHANGE parameterValue parameterValue varchar(4000);
 
 INSERT INTO `${prefix}parameter` (idUser, idProject, parameterCode, parameterValue) VALUES
-(null,null, 'paramMailBodyUser', 'You are welcome to ${dbName} at <a href="${url}">${url}</a>.<br>Your login is <b>${login}</b>.<br/>Your password is initialized to <b>${password}</b><br/>You will have to change it on first connection.<br/><br/>In case of an issue contact your administrator at <b>${adminMail}</b>.'),
+(null,null, 'paramMailBodyUser', 'You are welcome to ${dbName} at <a href="${url}">${url}</a>.<br/>Your login is <b>${login}</b>.<br/>Your password is initialized to <b>${password}</b><br/>You will have to change it on first connection.<br/><br/>In case of an issue contact your administrator at <b>${adminMail}</b>.'),
 (null,null, 'paramMailTitleUser', '[${dbName}] message from ${sender} : Your account information');
 
 INSERT INTO `${prefix}menu` (`id`,`name`,`idMenu`,`type`,`sortOrder`,`level`,`idle`) VALUES 
