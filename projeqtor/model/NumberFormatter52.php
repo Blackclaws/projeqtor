@@ -58,9 +58,15 @@ class NumberFormatter52  {
    * Format fonction (simulate)
    */ 
   function format($value) {
+  	if (! is_numeric($value)) {
+  		return $value;
+  	}
     return number_format($value,$this->type,$this->decimalSeparator,$this->thouthandSeparator);
   }
   function formatDecimalPoint($value) {
+  	if (! is_numeric($value)) {
+  		return $value;
+  	}
   	return number_format($value,$this->type,$this->decimalSeparator,'');
   }
 }
