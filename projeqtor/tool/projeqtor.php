@@ -7,7 +7,7 @@ session_start();              // Setup session. Must be first command.
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
 $version="V4.4.0";            // Version of application : Major / Minor / Release
-$build="0103";                // Build number. To be increased on each release
+$build="0104";                // Build number. To be increased on each release
 $website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
@@ -455,10 +455,11 @@ function projeqtorAutoload($className) {
   } elseif (is_file($persistfile)) {
     require_once $persistfile;  
   } else {
-    throwError ("Impossible to load class $className<br/>"
+    errorLog("Impossible to load class $className<br/>"
       . "  => Not found in $customfile <br/>"
       . "  => Not found in $modelfile <br/>"
       . "  => Not found in $persistfile <br/>");
+    return false;
   } 
 }
 
@@ -597,31 +598,31 @@ function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     if ($alias===false) {
       if ($objectClass=='Project') {
-        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+        $queryWhere.= "id in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
       } else if ($objectClass=='Document') {
       	$v=new Version();
       	$vp=new VersionProject();
-        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) 
+        $queryWhere.= "(idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) 
                     . " or (idProject is null and idProduct in"
                     . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
                     . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
-                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) . ") ) )";        
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) . ") ) )";        
       } else {
-       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+       	$queryWhere.= "idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
       }   
     } else {
     	if ($objectClass=='Project') {
-    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+    		$queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
       } else if ($objectClass=='Document') {
       	$v=new Version();
         $vp=new VersionProject();
-        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) 
+        $queryWhere.= "(" . $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) 
                     . " or (" . $table . ".idProject is null and " . $table . ".idProduct in"
                     . " (select idProduct from " . $v->getDatabaseTableName() . " existV, "
                     . $vp->getDatabaseTableName() . " existVP where existV.id=existVP.idVersion "
-                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) . ") ) )";        
+                    . " and existVP.idProject in " .  transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) . ") ) )";        
     	} else {
-        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+        $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getAffectedProjects(! $showIdle)) ;
     	}
     }      
   } else if ($accessRightRead=='ALL') {
@@ -1274,7 +1275,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   if (property_exists(substr($menuName,4),'_no'.ucfirst($accessType))) {
   	return 'NO';
   }
-  if (property_exists(substr($menuName,4),'_readOnly')) {
+  if (property_exists(substr($menuName,4),'_readOnly') and $accessType!='read') {
   	return 'NO';
   }
   if (! array_key_exists('user', $_SESSION)) {
@@ -1298,12 +1299,12 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
       $accessRight='NO';
       if ($obj != null) {
         if (get_class($obj)=='Project') {
-          if (array_key_exists($obj->id, $user->getVisibleProjects(false)) or !$obj->id ) {
+          if (array_key_exists($obj->id, $user->getAffectedProjects(false)) or !$obj->id ) {
             $accessRight='YES';
           }
         } else if (property_exists($obj, 'idProject')) {
         	$limitToActiveProjects=(get_class($obj)=='Affectation')?false:true;
-          if (array_key_exists($obj->idProject, $user->getVisibleProjects($limitToActiveProjects)) or $obj->id==null) {
+          if (array_key_exists($obj->idProject, $user->getAffectedProjects($limitToActiveProjects)) or $obj->id==null) {
             $accessRight='YES';
           }
         }

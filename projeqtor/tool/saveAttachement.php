@@ -235,7 +235,10 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	  $elt=new $refType($refId);
 		$mailResult=$elt->sendMailIfMailable(false,false,false,false,false,true,false,false,false,false,false,true);
 		if ($mailResult) {
-		  $result.=' - ' . i18n('mailSent');
+		  $pos=strpos($result,'<input type="hidden"');
+		  if ($pos) {
+  		  $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
+		  }
 		}
 	}
 }
