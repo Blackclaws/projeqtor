@@ -1,9 +1,37 @@
 <?php 
+echo "1";
 $invalidQuery="query should be ../api/class of object/id of object";
-$cronnedScript=true;
+//$cronnedScript=true;
 $batchMode=true;
 require_once "../tool/projeqtor.php";
-$user=new User(); 
+//debugLog($_SERVER);
+// Look for user : can be found in 
+// $_SERVER['PHP_AUTH_USER']
+// $_SERVER['REMOTE_USER']
+// $_SERVER['REDIRECT_REMOTE_USER']
+// http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])['username']
+$username="";
+if (isset($_SERVER['PHP_AUTH_USER'])) {
+	$username=$_SERVER['PHP_AUTH_USER'];
+} else if (isset($_SERVER['REMOTE_USER'])) {
+	$username=$_SERVER['REMOTE_USER'];
+} else if (isset($_SERVER['REDIRECT_REMOTE_USER'])) {
+	$username=$_SERVER['REDIRECT_REMOTE_USER'];
+} else if (isset($_SERVER['PHP_AUTH_DIGEST'])) {
+	$digest=http_digest_parse($_SERVER['PHP_AUTH_DIGEST']);
+	if ($digest and isset($digest['username'])) {
+		$username=$digest['username'];
+	}
+}
+if ($username) {
+	$user=SqlElement::getSingleSqlElementFromCriteria('User',array('name'=>$username));
+} else {
+	$user=new User(); 
+}
+if (!$user->idProfile) {
+	$batchMode=true;
+}
+debugLog ("API : access with user=$user->name, id=$user->id, profile=$user->idProfile");
 $_SESSION['user']=$user;
 
 IF ($_SERVER['REQUEST_METHOD']=='GET') {
@@ -150,5 +178,21 @@ function jsonDumpObj($obj, $included=false) {
 		}  
 	}
 	return $res;
+}
+function http_digest_parse($txt)
+{
+	// protect against missing data
+	$needed_parts = array('nonce'=>1, 'nc'=>1, 'cnonce'=>1, 'qop'=>1, 'username'=>1, 'uri'=>1, 'response'=>1);
+	$data = array();
+	$keys = implode('|', array_keys($needed_parts));
+
+	preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $txt, $matches, PREG_SET_ORDER);
+
+	foreach ($matches as $m) {
+		$data[$m[1]] = $m[3] ? $m[3] : $m[4];
+		unset($needed_parts[$m[1]]);
+	}
+
+	return $needed_parts ? false : $data;
 }
 ?>

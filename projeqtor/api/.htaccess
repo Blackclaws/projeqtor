@@ -8,6 +8,6 @@
 
 
 AuthUserFile "./.htpasswd"
-AuthName "projeqtor" 
+AuthName "ProjeQtOr" 
 AuthType Basic
 require valid-user
