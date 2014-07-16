@@ -9,7 +9,9 @@ $srv=$_SERVER['SERVER_ADDR'];
 $pos=strpos($url,'/test/');
 $urlRoot=substr($url,0,$pos);
 $service_url = 'http://'.$srv.$urlRoot.'/api';
-
+$userParam="projeqtor";
+$passwordParam="projeqtor";
+$apiKeyParam="?";
 //var_dump($_SERVER);
 $curl_post_data="";
 $cronnedScript=true;
@@ -38,7 +40,19 @@ $filter=null;
 if (isset($_REQUEST['filter'])) {
   $filter=$_REQUEST['filter'];
 }
+if (isset($_REQUEST['user'])) {
+	$userMParam=$_REQUEST['user'];
+}
+if (isset($_REQUEST['password'])) {
+	$passwordParam=$_REQUEST['password'];
+}
+if (isset($_REQUEST['apikey'])) {
+	$apiKeyParam=$_REQUEST['apikey'];
+}
+
+
 if ($action=='display') {
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -85,29 +99,42 @@ if ($action=='display') {
       });
     }
   </script>
+  <style type="text/css">
+    .line {
+      height: 25px;
+    }
+    
+  </style>
 </head>
 
 <body>
 <table>
 <tr>
-<td style="border:1px solid grey">Class of object<br/>
-Object : <select class="input" name="object" id="object">
+<td style="border:1px solid grey">
+  <div class="line">user : <input type="text" name="user" id="user" value="<?php echo $userParam;?>"/></div>
+  <div class="line">password : <input type="text" name="password" id="password" value="<?php echo $passwordParam;?>"/></div>
+  <div class="line">API key : <input type="text" name="apikey" id="apikey" value="<?php echo $apiKeyParam;?>"/></div>
+</td>
+<td style="border:1px solid grey"><div class="line">Class of object</div>
+<div class="line">Object : <select class="input" name="object" id="object">
 <?php htmlDrawOptionForReference('idImportable', null, null, true);?>
-</select>
+</select></div>
+<div class="line"></div>
 </td>
 <td>&nbsp;&nbsp;&nbsp;</td>
-<td style="border:1px solid grey">Get item by id<br/>
-  Id : <input type="text" name="id" id="id" /><br/>
-  <button onClick="runApi('byId');" >Get item</button>
+<td style="border:1px solid grey"><div class="line">Get item by id</div>
+  <div class="line">Id : <input type="text" name="id" id="id" /></div>
+  <div class="line"><button onClick="runApi('byId');" >Get item</button></div>
 </td>
 <td>&nbsp;&nbsp;&nbsp;</td>
-<td style="border:1px solid grey">Get all items<br/>
-  <button onClick="runApi('listAll');" >Get all items</button>
+<td style="border:1px solid grey"><div class="line">Get all items</div>
+  <div class="line"></div>
+  <div class="line"><button onClick="runApi('listAll');" >Get all items</button></div>
 </td>
 <td>&nbsp;&nbsp;&nbsp;</td>
-<td style="border:1px solid grey">Get items from filter<br/>
-  Filter id : <input type="text" name="filterId" id="filterId" /><br/>
-  <button onClick="runApi('listFilter');" >Get items</button>
+<td style="border:1px solid grey"><div class="line">Get items from filter</div>
+  <div class="line">Filter id : <input type="text" name="filterId" id="filterId" /></div>
+  <div class="line"><button onClick="runApi('listFilter');" >Get items</button></div>
 </td>
 </tr>
 </table>
@@ -131,7 +158,7 @@ if ($id) {
 
 $curl = curl_init($fullUrl);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-curl_setopt($curl, CURLOPT_USERPWD, "projeqtor:projeqtor");
+curl_setopt($curl, CURLOPT_USERPWD, "$userParam:$passwordParam");
 //curl_setopt($curl, CURLOPT_USERPWD, "admin:admin");
 //curl_setopt($curl, CURLOPT_USERPWD, "manager:manager");
 //curl_setopt($curl, CURLOPT_USERPWD, "supervisor:supervisor");
