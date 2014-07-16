@@ -187,7 +187,9 @@ class Parameter extends SqlElement {
                     'pt-br'=>i18n('langPtBr'),
                     'ru'=>i18n('langRu'),
                     'zh'=>i18n('langZh'),
-                    'nl'=>i18n('langNl'));        
+                    'nl'=>i18n('langNl'),
+                    'fa'=>i18n('langFa'));
+        //sort($list);  // not a good idea : would push brazialian as defaut (first) language...   
         break;
       case 'defaultProject':
         if (array_key_exists('user',$_SESSION)) {
