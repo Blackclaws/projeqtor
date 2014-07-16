@@ -5,7 +5,7 @@
 -- // Date : 2014-01-11                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}resource` ADD COLUMN `cookieHash` varchar(400) null,
+ALTER TABLE `${prefix}resource` ADD COLUMN `cookieHash` varchar(400) DEFAULT NULL,
 ADD COLUMN `passwordChangeDate` date DEFAULT NULL;
 
 CREATE TABLE `${prefix}checklistdefinition` (

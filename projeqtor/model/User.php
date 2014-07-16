@@ -23,6 +23,7 @@ class User extends SqlElement {
   public $resourceName;
   public $idle;
   public $description;
+  public $apiKey;
   public $_col_2_2_Affectations;
   public $_spe_affectations;
   public $_arrayFilters=array();
@@ -54,7 +55,8 @@ class User extends SqlElement {
                                           "salt"=>'hidden', 
                                           "crypto"=>'hidden',
   		                                    "cookieHash"=>'hidden',
-  		                                    "passwordChangeDate"=>'hidden'
+  		                                    "passwordChangeDate"=>'hidden',
+  		                                    "apiKey"=>"readonly"
   );  
   
   public $_calculateForColumn=array("name"=>"coalesce(fullName,concat(name,' #'))");
@@ -650,6 +652,9 @@ class User extends SqlElement {
   }
   
   public function save() {
+  	if (!$this->apiKey)  {
+  		$this->apiKey=md5($this->id.date('Ymdhis'));
+  	}
   	$old=$this->getOld();
   	if ($old->locked and ! $this->locked) {
   		$this->loginTry=0;
