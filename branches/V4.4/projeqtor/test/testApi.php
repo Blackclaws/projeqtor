@@ -181,14 +181,16 @@ if ($id) {
 
 $curl = curl_init($fullUrl);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-debugLog("user=$userParam passwor=$passwordParam");
+debugLog("user=$userParam password=$passwordParam");
 curl_setopt($curl, CURLOPT_USERPWD, "$userParam:$passwordParam");
 //curl_setopt($curl, CURLOPT_USERPWD, "admin:admin");
 //curl_setopt($curl, CURLOPT_USERPWD, "manager:manager");
 //curl_setopt($curl, CURLOPT_USERPWD, "supervisor:supervisor");
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 //curl_setopt($curl, CURLOPT_POST, true);
-//curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+$data=$_REQUEST['data'];
+$data=AesCtr::encrypt($data, $user->apiKey, 256);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('data'=>$data));
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 $curl_response = curl_exec($curl);
 echo $fullUrl;
