@@ -9,8 +9,8 @@ $srv=$_SERVER['SERVER_ADDR'];
 $pos=strpos($url,'/test/');
 $urlRoot=substr($url,0,$pos);
 $service_url = 'http://'.$srv.$urlRoot.'/api';
-$userParam="projeqtor";
-$passwordParam="projeqtor";
+$userParam="admin";
+$passwordParam="admin";
 $apiKeyParam="?";
 //var_dump($_SERVER);
 $curl_post_data="";
@@ -74,11 +74,15 @@ if ($action=='display') {
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.Form");
     dojo.require("dijit.form.FilteringSelect");
-    function runApi(context) {
-      var url='testApi.php?action=GET&object='+dojo.byId("object").options[dojo.byId("object").selectedIndex].text;
-      if (context=='byId') { url+='&id='+dojo.byId("id").value; }
-      if (context=='listAll') { url+='&list=all'; }
-      if (context=='listFilter') { url+='&list=filter&filter='+dojo.byId("filterId").value; }
+    function runApi(callMode, context) {
+      var url='testApi.php?action='+callMode+'&object='+dojo.byId("object").options[dojo.byId("object").selectedIndex].text;
+			if (callMode=="GET") {
+	      if (context=='byId') { url+='&id='+dojo.byId("id").value; }
+	      if (context=='listAll') { url+='&list=all'; }
+	      if (context=='listFilter') { url+='&list=filter&filter='+dojo.byId("filterId").value; }
+			} else {
+				url+='data='+encodeURI(dojo.byId("result").value);
+			}
       url+='&user='+dojo.byId("user").value+'&password='+dojo.byId("password").value;
       dojo.byId('result').innerHTML="";
       dojo.byId('resultUrl').innerHTML="";
@@ -90,7 +94,7 @@ if ($action=='display') {
           //alert(data);
           var spl=data.split('#$#$#');
           dojo.byId('resultUrl').innerHTML=spl[0];
-          dojo.byId('result').innerHTML=spl[1];
+          dojo.byId('result').value=spl[1];
           document.body.style.cursor = 'default';
         },
         error: function () {
@@ -101,10 +105,21 @@ if ($action=='display') {
     }
   </script>
   <style type="text/css">
+    body {
+      font-family: arial;
+    }
     .line {
       height: 25px;
+      text-align: right;
+      font-family: arial;
     }
-    
+    .title {
+      font-weight: bold;
+      text-align: center !important;
+    }
+    .button {
+      text-align: center !important;
+    }
   </style>
 </head>
 
@@ -116,31 +131,38 @@ if ($action=='display') {
   <div class="line">password : <input type="text" name="password" id="password" value="<?php echo $passwordParam;?>"/></div>
   <div class="line">API key : <input type="text" name="apikey" id="apikey" value="<?php echo $apiKeyParam;?>"/></div>
 </td>
-<td style="border:1px solid grey"><div class="line">Class of object</div>
+<td>&nbsp;&nbsp;&nbsp;</td>
+<td style="border:1px solid grey"><div class="line title">Class of object</div>
 <div class="line">Object : <select class="input" name="object" id="object">
 <?php htmlDrawOptionForReference('idImportable', null, null, true);?>
 </select></div>
 <div class="line"></div>
 </td>
 <td>&nbsp;&nbsp;&nbsp;</td>
-<td style="border:1px solid grey"><div class="line">Get item by id</div>
+<td style="border:1px solid grey"><div class="line title">Get item by id</div>
   <div class="line">Id : <input type="text" name="id" id="id" /></div>
-  <div class="line"><button onClick="runApi('byId');" >Get item</button></div>
+  <div class="line button"><button onClick="runApi('GET','byId');" >Get item</button></div>
 </td>
 <td>&nbsp;&nbsp;&nbsp;</td>
-<td style="border:1px solid grey"><div class="line">Get all items</div>
+<td style="border:1px solid grey"><div class="line title">Get all items</div>
   <div class="line"></div>
-  <div class="line"><button onClick="runApi('listAll');" >Get all items</button></div>
+  <div class="line button"><button onClick="runApi('GET','listAll');" >Get all items</button></div>
 </td>
 <td>&nbsp;&nbsp;&nbsp;</td>
-<td style="border:1px solid grey"><div class="line">Get items from filter</div>
+<td style="border:1px solid grey"><div class="line title">Get items from filter</div>
   <div class="line">Filter id : <input type="text" name="filterId" id="filterId" /></div>
-  <div class="line"><button onClick="runApi('listFilter');" >Get items</button></div>
+  <div class="line button"><button onClick="runApi('GET','listFilter');" >Get items</button></div>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+<td style="border:1px solid grey"><div class="line title">Update Json Item (in result)</div>
+  <div class="line button"><button onClick="runApi('PUT','');" >PUT item</button></div>
+  <div class="line button"><button onClick="runApi('DELETE','');" >DELETE item</button></div>
 </td>
 </tr>
 </table>
 <div id="resultUrl" style="font-weight: bold;width:100%;height:5%;border:1px solid black;"><i>url will come here</i></div>
-<div id="result" style="width:100%;border:1px solid black;"><i>result will come here</i></div>
+<textarea id="result" style="width:100%;border:1px solid black; height: 500px"><i>result will come here</i></textarea>
 </body>
 </html>
 <?php } else {

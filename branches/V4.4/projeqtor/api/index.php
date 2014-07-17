@@ -27,10 +27,11 @@ if ($username) {
 	$user=SqlElement::getSingleSqlElementFromCriteria('User',array('name'=>$username));
 } else {
 	$user=new User(); 
+	$cronnedScript=true;
 }
-if (!$user->id) {
-	$batchMode=true;
-}
+//if (!$user->id) {
+//	$batchMode=true;
+//}
 debugLog ("API : access with user=$user->name, id=$user->id, profile=$user->idProfile");
 $_SESSION['user']=$user;
 
