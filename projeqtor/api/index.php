@@ -1,5 +1,14 @@
 <?php 
-$invalidQuery="query should be ../api/class of object/id of object";
+$querySyntax='Possible values are :  
+GET    ../api/{objectClass}/{objectId}
+		   ../api/{objectClass}/all
+		   ../api/{objectClass}/filter/{filterId}
+		   ../api/{objectClass}/updated/{YYYYMMDDHHMNSS}/{YYYYMMDDHHMNSS}
+PUT    ../api/{objectClass} with data containing json description of items
+POST   ../api/{objectClass} with data containing json description of items
+DELETE ../api/{objectClass} with data containing json id of items';
+$invalidQuery="invalid API query";
+
 //$cronnedScript=true;
 $batchMode=true;
 require_once "../tool/projeqtor.php";
@@ -29,9 +38,9 @@ if ($username) {
 	$user=new User(); 
 	$cronnedScript=true;
 }
-//if (!$user->id) {
-//	$batchMode=true;
-//}
+if (!$user->id) {
+	returnError($invalidQuery, "user '$username' unknown in database");
+}
 debugLog ("API : access with user=$user->name, id=$user->id, profile=$user->idProfile");
 $_SESSION['user']=$user;
 
@@ -123,6 +132,8 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 			        }
 			      }
 			    }
+        } else {
+        	returnError($invalidQuery, $querySyntax);
         }
         // Add access restrictions
         $where.=' and '.getAccesResctictionClause($class,null,true);
@@ -139,22 +150,28 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
         echo ' }';
     		
     	} else {
-    		returnError($invalidQuery);
-    		returnError("<br/>$class is not a known class");
+    		returnError($invalidQuery, "'$class' is not a known object class");
     	}
     } else {
-    	returnError($invalidQuery);
+    	returnError($invalidQuery, $querySyntax);
     }
   } else {
-    returnError($invalidQuery);
+    returnError($invalidQuery, $querySyntax);
   }
+} else IF ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST' or $_SERVER['REQUEST_METHOD']=='DELETE') {
+	if (! isset($_REQUEST['data']) ) {
+		returnError($invalidQuery, "'data' missing for method ".$_SERVER['REQUEST_METHOD']);
+	}
+	$dataEncoded=$_REQUEST['data'];
+	$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);
 } else {
-  returnError ('method '.$_SERVER['REQUEST_METHOD'].' not taken into acocunt in this API');
+  returnError ($invalidQuery, 'method '.$_SERVER['REQUEST_METHOD'].' not taken into acocunt in this API');
 }
 
 
-function returnError($msg) {
-	echo "ERROR : ".$msg;
+function returnError($error, $message) {
+	echo '{"error":"'.$error.'", "message":"'.$message.'"}';
+	exit;
 }
 
 function jsonDumpObj($obj, $included=false) {
