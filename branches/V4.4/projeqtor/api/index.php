@@ -1,9 +1,9 @@
 <?php 
-echo "1";
 $invalidQuery="query should be ../api/class of object/id of object";
 //$cronnedScript=true;
 $batchMode=true;
 require_once "../tool/projeqtor.php";
+$batchMode=false;
 //debugLog($_SERVER);
 // Look for user : can be found in 
 // $_SERVER['PHP_AUTH_USER']
@@ -28,7 +28,7 @@ if ($username) {
 } else {
 	$user=new User(); 
 }
-if (!$user->idProfile) {
+if (!$user->id) {
 	$batchMode=true;
 }
 debugLog ("API : access with user=$user->name, id=$user->id, profile=$user->idProfile");
@@ -123,6 +123,8 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 			      }
 			    }
         }
+        // Add access restrictions
+        $where.=' and '.getAccesResctictionClause($class,null,true);
     		echo '{"identifier":"id",' ;
         echo ' "items":[';        
         $list=$obj->getSqlElementsFromCriteria(null,null,$where);
