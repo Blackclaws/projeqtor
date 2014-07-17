@@ -41,7 +41,7 @@ if (isset($_REQUEST['filter'])) {
   $filter=$_REQUEST['filter'];
 }
 if (isset($_REQUEST['user'])) {
-	$userMParam=$_REQUEST['user'];
+	$userParam=$_REQUEST['user'];
 }
 if (isset($_REQUEST['password'])) {
 	$passwordParam=$_REQUEST['password'];
@@ -79,6 +79,7 @@ if ($action=='display') {
       if (context=='byId') { url+='&id='+dojo.byId("id").value; }
       if (context=='listAll') { url+='&list=all'; }
       if (context=='listFilter') { url+='&list=filter&filter='+dojo.byId("filterId").value; }
+      url+='&user='+dojo.byId("user").value+'&password='+dojo.byId("password").value;
       dojo.byId('result').innerHTML="";
       dojo.byId('resultUrl').innerHTML="";
       document.body.style.cursor = 'wait';
@@ -158,6 +159,7 @@ if ($id) {
 
 $curl = curl_init($fullUrl);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+debugLog("user=$userParam passwor=$passwordParam");
 curl_setopt($curl, CURLOPT_USERPWD, "$userParam:$passwordParam");
 //curl_setopt($curl, CURLOPT_USERPWD, "admin:admin");
 //curl_setopt($curl, CURLOPT_USERPWD, "manager:manager");
