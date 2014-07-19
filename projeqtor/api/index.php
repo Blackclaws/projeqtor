@@ -12,6 +12,8 @@ $invalidQuery="invalid API query";
 //$cronnedScript=true;
 $batchMode=true;
 require_once "../tool/projeqtor.php";
+require_once "../external/phpAES/aes.class.php";
+require_once "../external/phpAES/aesctr.class.php";
 $batchMode=false;
 //debugLog($_SERVER);
 // Look for user : can be found in 
@@ -41,7 +43,7 @@ if ($username) {
 if (!$user->id) {
 	returnError($invalidQuery, "user '$username' unknown in database");
 }
-debugLog ("API : access with user=$user->name, id=$user->id, profile=$user->idProfile");
+debugLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
 $_SESSION['user']=$user;
 
 IF ($_SERVER['REQUEST_METHOD']=='GET') {
@@ -159,14 +161,34 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
     returnError($invalidQuery, $querySyntax);
   }
 } else IF ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST' or $_SERVER['REQUEST_METHOD']=='DELETE') {
-	if (! isset($_REQUEST['data']) ) {
+	if (isset($_REQUEST['data']) ) {
+		$dataEncoded=$_REQUEST['data'];
+		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);
+	} else {
+		$dataEncoded = file_get_contents("php://input");
+		$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);
+	}
+	if (! $data) {
 		returnError($invalidQuery, "'data' missing for method ".$_SERVER['REQUEST_METHOD']);
 	}
-	$dataEncoded=$_REQUEST['data'];
-	$data=AesCtr::decrypt($dataEncoded, $user->apiKey, 256);
+	$uri=$_REQUEST['uri'];
+	$split=explode('/',$uri);
+	if (count($split>1)) {
+		$class=ucfirst($split[0]);
+	}
+	echo $data;
 } else {
   returnError ($invalidQuery, 'method '.$_SERVER['REQUEST_METHOD'].' not taken into acocunt in this API');
 }
+if ($_SERVER['REQUEST_METHOD']=='DELETE') {
+  $uri=$_REQUEST['uri'];
+	$split=explode('/',$uri);
+	if (count($split>2)) {
+		$class=ucfirst($split[0]);
+		$id=$split[1];
+	}
+	echo "DELETE $class #$id";
+} 
 
 
 function returnError($error, $message) {

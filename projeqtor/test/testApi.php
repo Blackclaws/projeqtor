@@ -27,6 +27,7 @@ if (isset($_REQUEST['action'])) {
 $object=null;
 if (isset($_REQUEST['object'])) {
   $object=$_REQUEST['object'];
+  //debugLog($object);
 }
 $id=null;
 if (isset($_REQUEST['id'])) {
@@ -81,12 +82,13 @@ if ($action=='display') {
 	      if (context=='listAll') { url+='&list=all'; }
 	      if (context=='listFilter') { url+='&list=filter&filter='+dojo.byId("filterId").value; }
 			} else {
-				url+='data='+encodeURI(dojo.byId("result").value);
+				url+='&data='+encodeURI(dojo.byId("result").value);
 			}
       url+='&user='+dojo.byId("user").value+'&password='+dojo.byId("password").value;
       dojo.byId('result').innerHTML="";
       dojo.byId('resultUrl').innerHTML="";
       document.body.style.cursor = 'wait';
+      console.log(url);
       dojo.xhrGet({
         url: url,
         handleAs: "text",
@@ -156,13 +158,14 @@ if ($action=='display') {
 
 <td>&nbsp;&nbsp;&nbsp;</td>
 <td style="border:1px solid grey"><div class="line title">Update Json Item (in result)</div>
-  <div class="line button"><button onClick="runApi('PUT','');" >PUT item</button></div>
+  <div class="line button"><button onClick="runApi('PUT','');" >PUT item</button>
+                           <button onClick="runApi('POST','');" >POST item</button></div>
   <div class="line button"><button onClick="runApi('DELETE','');" >DELETE item</button></div>
 </td>
 </tr>
 </table>
 <div id="resultUrl" style="font-weight: bold;width:100%;height:5%;border:1px solid black;"><i>url will come here</i></div>
-<textarea id="result" style="width:100%;border:1px solid black; height: 500px"><i>result will come here</i></textarea>
+<textarea id="result" style="width:100%;border:1px solid black; height: 500px">result will come here</textarea>
 </body>
 </html>
 <?php } else {
@@ -174,28 +177,56 @@ if ($id) {
 	$fullUrl=$service_url.'/'.$object.'/all';	
 } else if ($list and $list=='filter'){
 	$fullUrl=$service_url.'/'.$object.'/filter/'.$filter; 
+} else if ($action=="PUT" or $action=="POST" or $action=="DELETE") {
+  $fullUrl=$service_url.'/'.$object;
+  if (isset($_REQUEST['data'])) {
+    $data=$_REQUEST['data'];
+  } else {
+    $data='{"id":""}';
+  }
+  if ($action=="DELETE") {
+    $dataArray=json_decode($data,true);
+    if (isset($dataArray['items'])) {
+      $id=$dataArray['items'][0]['id'];
+    } else {
+      $id=$dataArray['id'];
+    }
+    $fullUrl.='/'.$id;
+  }
+  require_once "../external/phpAES/aes.class.php";
+  require_once "../external/phpAES/aesctr.class.php";
+  $data=AesCtr::encrypt($data, $user->apiKey, 256);
 } else {
-	echo "invalid query";
+	echo "invalid query - API not called#$#$#";
 	exit;
 }
 
 $curl = curl_init($fullUrl);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-debugLog("user=$userParam password=$passwordParam");
+//debugLog("TEST : user=$userParam password=$passwordParam");
+//debugLog("TEST : $fullUrl");
 curl_setopt($curl, CURLOPT_USERPWD, "$userParam:$passwordParam");
 //curl_setopt($curl, CURLOPT_USERPWD, "admin:admin");
 //curl_setopt($curl, CURLOPT_USERPWD, "manager:manager");
 //curl_setopt($curl, CURLOPT_USERPWD, "supervisor:supervisor");
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//curl_setopt($curl, CURLOPT_POST, true);
 if (isset($_REQUEST['data'])) {
-	$data=$_REQUEST['data'];
-	$data=AesCtr::encrypt($data, $user->apiKey, 256);
-	curl_setopt($curl, CURLOPT_POSTFIELDS, array('data'=>$data));
+  curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $action);
+  if ($action=="POST") { 
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, array('data'=>$data));
+  } else if ($action=="PUT" or $action=="DELETE") {
+	  curl_setopt($curl, CURLOPT_POST, true);
+	  curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+	}
+  
+	//curl_setopt($curl, CURLOPT_POSTFIELDS, array('data'=>$data));
 }
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+debugLog("TEST : action=$action url=$fullUrl");
 $curl_response = curl_exec($curl);
-echo $fullUrl;
+//debugLog("TEST : retour API = $curl_response"	);
+echo $action. " => ". $fullUrl;
 echo "#$#$#";
 echo $curl_response;
 curl_close($curl);
