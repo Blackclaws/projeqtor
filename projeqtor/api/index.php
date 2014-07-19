@@ -171,25 +171,59 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 	if (! $data) {
 		returnError($invalidQuery, "'data' missing for method ".$_SERVER['REQUEST_METHOD']);
 	}
+	$class="";
 	$uri=$_REQUEST['uri'];
 	$split=explode('/',$uri);
 	if (count($split>1)) {
 		$class=ucfirst($split[0]);
 	}
-	echo $data;
+	if (! class_exists($class)) {
+		returnError($invalidQuery, "'$class' is not a known object class");
+	}
+  $dataArray=@json_decode($data,true);
+  if (! $dataArray) {
+  	debugLog($data);
+		returnError($invalidQuery, "'data' is not correctly encoded for method ".$_SERVER['REQUEST_METHOD'].". Request for correct API KEY");
+	} 
+	if (isset($dataArray['items'])) {
+		$arrayData=$dataArray['items'];
+	} else {
+		$arrayData=array($dataArray);
+	}
+	$cpt=0;
+	echo '{"identifier":"id", "items":[';
+	foreach ($arrayData as $objArray) {
+		$id=null;
+		if (isset($objArray['id'])) $id=$objArray['id'];
+		$obj=new $class($id);
+		if ($_SERVER['REQUEST_METHOD']=='PUT' or $_SERVER['REQUEST_METHOD']=='POST') {
+			jsonFillObj($obj, $objArray);
+			$result=$obj->save();
+		} else if ($_SERVER['REQUEST_METHOD']=='DELETE') {
+			$result=$obj->delete();
+		}
+		$resultStatus="KO";
+		$search='id="lastOperationStatus" value="';
+		$pos=strpos($result, $search);
+		if ($pos) {
+			$posDeb=$pos+strlen($search);
+			$posFin=strpos($result, '"', $posDeb);
+			$resultStatus=substr($result, $posDeb, $posFin-$posDeb);
+		}
+		$pos=strpos($result, '<'); // Search first tag
+		if ($pos) {
+		  $result=substr($result,0,$pos);
+		}
+		$obj=new $class($obj->id); // refresh object to display calculated values in return
+		if ($cpt) echo ",";
+		$cpt++;
+		echo '{"apiResult":"'.$resultStatus.'", "apiResultMessage":"'.$result.'", '.jsonDumpObj($obj).'}';
+	}
+	//print_r($arrayData);
+	echo '] }';
 } else {
   returnError ($invalidQuery, 'method '.$_SERVER['REQUEST_METHOD'].' not taken into acocunt in this API');
 }
-if ($_SERVER['REQUEST_METHOD']=='DELETE') {
-  $uri=$_REQUEST['uri'];
-	$split=explode('/',$uri);
-	if (count($split>2)) {
-		$class=ucfirst($split[0]);
-		$id=$split[1];
-	}
-	echo "DELETE $class #$id";
-} 
-
 
 function returnError($error, $message) {
 	echo '{"error":"'.$error.'", "message":"'.$message.'"}';
@@ -221,6 +255,25 @@ function jsonDumpObj($obj, $included=false) {
 	}
 	return $res;
 }
+function jsonFillObj(&$obj, $arrayObj, $included=false) {
+	$res="";
+	foreach($obj as $fld=>$val) {
+		if (is_object($val)) {
+			jsonFillObj($val, $arrayObj, true);
+		} else if (substr($fld,0,1)=='_' 
+				or $obj->isAttributeSetToField($fld, 'hidden')
+				or $included and ($fld=='id' or $fld=='refType' or $fld=='refId' or $fld=='refName'
+						or $fld=='handled' or $fld=='done' or $fld=='idle' or $fld=='cancelled') ) {
+			// Nothing
+		} else {
+			if (isset($arrayObj[$fld])) {
+			  $obj->$fld=$arrayObj[$fld];
+			}
+		}
+	}
+	
+}
+
 function http_digest_parse($txt)
 {
 	// protect against missing data
