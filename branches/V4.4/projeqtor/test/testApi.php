@@ -1,5 +1,8 @@
 <?php
 // FIX FOR IIS
+$cronnedScript=true;
+$batchMode=true;
+require_once "../tool/projeqtor.php";
 if (!isset($_SERVER['REQUEST_URI'])) {
 	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
 	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
@@ -11,12 +14,10 @@ $urlRoot=substr($url,0,$pos);
 $service_url = 'http://'.$srv.$urlRoot.'/api';
 $userParam="admin";
 $passwordParam="admin";
-$apiKeyParam="?";
+$userApi=SqlElement::getSingleSqlElementFromCriteria('User', array('name'=>$userParam));
+$apiKeyParam=$userApi->apiKey;
 //var_dump($_SERVER);
 $curl_post_data="";
-$cronnedScript=true;
-$batchMode=true;
-require_once "../tool/projeqtor.php";
 $user=new User(); 
 $_SESSION['user']=$user;
 
@@ -51,7 +52,6 @@ if (isset($_REQUEST['apikey'])) {
 	$apiKeyParam=$_REQUEST['apikey'];
 }
 
-
 if ($action=='display') {
 
 ?>
@@ -82,9 +82,10 @@ if ($action=='display') {
 	      if (context=='listAll') { url+='&list=all'; }
 	      if (context=='listFilter') { url+='&list=filter&filter='+dojo.byId("filterId").value; }
 			} else {
-				url+='&data='+encodeURI(dojo.byId("result").value);
+				url+='&data='+encodeURIComponent(dojo.byId("result").value);
 			}
       url+='&user='+dojo.byId("user").value+'&password='+dojo.byId("password").value;
+      url+='&apikey='+dojo.byId("apikey").value;
       dojo.byId('result').innerHTML="";
       dojo.byId('resultUrl').innerHTML="";
       document.body.style.cursor = 'wait';
@@ -184,7 +185,7 @@ if ($id) {
   } else {
     $data='{"id":""}';
   }
-  if ($action=="DELETE") {
+  /*if ($action=="DELETE") {
     $dataArray=json_decode($data,true);
     if (isset($dataArray['items'])) {
       $id=$dataArray['items'][0]['id'];
@@ -192,10 +193,10 @@ if ($id) {
       $id=$dataArray['id'];
     }
     $fullUrl.='/'.$id;
-  }
+  }*/
   require_once "../external/phpAES/aes.class.php";
   require_once "../external/phpAES/aesctr.class.php";
-  $data=AesCtr::encrypt($data, $user->apiKey, 256);
+  $data=AesCtr::encrypt($data, $apiKeyParam, 256);
 } else {
 	echo "invalid query - API not called#$#$#";
 	exit;
