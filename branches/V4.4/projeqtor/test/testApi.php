@@ -224,7 +224,7 @@ if (isset($_REQUEST['data'])) {
 	//curl_setopt($curl, CURLOPT_POSTFIELDS, array('data'=>$data));
 }
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-debugLog("TEST : action=$action url=$fullUrl");
+//debugLog("TEST : action=$action url=$fullUrl");
 $curl_response = curl_exec($curl);
 //debugLog("TEST : retour API = $curl_response"	);
 echo $action. " => ". $fullUrl;
