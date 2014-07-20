@@ -182,7 +182,6 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 	}
   $dataArray=@json_decode($data,true);
   if (! $dataArray) {
-  	debugLog($data);
 		returnError($invalidQuery, "'data' is not correctly encoded for method ".$_SERVER['REQUEST_METHOD'].". Request for correct API KEY");
 	} 
 	if (isset($dataArray['items'])) {
@@ -210,10 +209,11 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 			$posFin=strpos($result, '"', $posDeb);
 			$resultStatus=substr($result, $posDeb, $posFin-$posDeb);
 		}
-		$pos=strpos($result, '<'); // Search first tag
+		$pos=strpos($result, '<input type="hidden"'); // Search first tag
 		if ($pos) {
 		  $result=substr($result,0,$pos);
 		}
+		$result=str_ireplace(array('<b>','</b>','<br/>','<br>'),array('','',' ',' '), $result);
 		$obj=new $class($obj->id); // refresh object to display calculated values in return
 		if ($cpt) echo ",";
 		$cpt++;
