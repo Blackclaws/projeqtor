@@ -211,14 +211,16 @@ $slide[199]='UserParameter'; $slideName[199]='User parameters'; $slidePage['User
 $slide[200]='TranslatableName'; $slideName[200]='Translatable name'; $slidePage['translatableName']='200'; $slideTags[200]='translatable translation name profile'; $slideTopics[200]='AccessProfile ConnectionProfile ';
 $slide[201]='AutomaticEmailing'; $slideName[201]='Automatic emailing'; $slidePage['AutomaticEmailing']='201'; $slideTags[201]='automatic email mail'; $slideTopics[201]='Mail SendMail Status GuiGenerality Creation Update Delete';
 $slide[202]='API'; $slideName[202]='api'; $slidePage['api']='202'; $slideTags[202]='api'; $slideTopics[202]='';
-$slide[203]='API'; $slideName[203]='call api'; $slidePage['apiCode']='203'; $slideTags[203]='api'; $slideTopics[203]='';
-$slide[204]='LinkedElements'; $slideName[204]='Linked elements'; $slidePage['LinkedElements']='204'; $slideTags[204]='link linked'; $slideTopics[204]='';
-$slide[205]='Attachments'; $slideName[205]='Attachments'; $slidePage['Attachments']='205'; $slideTags[205]='attach file link privacy'; $slideTopics[205]='Ticket Activity Milestone Risk Issue Meeting Decision Question Parameters4 UserParameters';
-$slide[206]='Notes'; $slideName[206]='Notes'; $slidePage['Notes']='206'; $slideTags[206]='note comment privacy predefined'; $slideTopics[206]='Ticket Activity Milestone Risk Action Issue Meeting Decision Question UserParameters';
-$slide[207]='ChangeHistory'; $slideName[207]='Change history'; $slidePage['ChangeHistory']='207'; $slideTags[207]='change history track update'; $slideTopics[207]='UserParameters';
-$slide[208]='Backup'; $slideName[208]='Backup / Restore'; $slidePage['Backup']='208'; $slideTags[208]='backup restore'; $slideTopics[208]='';
-$slide[209]='Shortcuts'; $slideName[209]='Shortcuts'; $slidePage['Shortcuts']='209'; $slideTags[209]='shortcut key'; $slideTopics[209]='';
-$slide[210]='LastWords'; $slideName[210]='Last words'; $slidePage['LastWords']='210'; $slideTags[210]='murphy hofstader history version'; $slideTopics[210]='';
+$slide[203]='API'; $slideName[203]='call api'; $slidePage['apiUrl']='203'; $slideTags[203]='api url GET POST PUT DELETE'; $slideTopics[203]='';
+$slide[204]='API'; $slideName[204]='api example'; $slidePage['apiCode1']='204'; $slideTags[204]='api example code'; $slideTopics[204]='';
+$slide[205]='API'; $slideName[205]='api example'; $slidePage['apiCode2']='205'; $slideTags[205]='api example code'; $slideTopics[205]='';
+$slide[206]='LinkedElements'; $slideName[206]='Linked elements'; $slidePage['LinkedElements']='206'; $slideTags[206]='link linked'; $slideTopics[206]='';
+$slide[207]='Attachments'; $slideName[207]='Attachments'; $slidePage['Attachments']='207'; $slideTags[207]='attach file link privacy'; $slideTopics[207]='Ticket Activity Milestone Risk Issue Meeting Decision Question Parameters4 UserParameters';
+$slide[208]='Notes'; $slideName[208]='Notes'; $slidePage['Notes']='208'; $slideTags[208]='note comment privacy predefined'; $slideTopics[208]='Ticket Activity Milestone Risk Action Issue Meeting Decision Question UserParameters';
+$slide[209]='ChangeHistory'; $slideName[209]='Change history'; $slidePage['ChangeHistory']='209'; $slideTags[209]='change history track update'; $slideTopics[209]='UserParameters';
+$slide[210]='Backup'; $slideName[210]='Backup / Restore'; $slidePage['Backup']='210'; $slideTags[210]='backup restore'; $slideTopics[210]='';
+$slide[211]='Shortcuts'; $slideName[211]='Shortcuts'; $slidePage['Shortcuts']='211'; $slideTags[211]='shortcut key'; $slideTopics[211]='';
+$slide[212]='LastWords'; $slideName[212]='Last words'; $slidePage['LastWords']='212'; $slideTags[212]='murphy hofstader history version'; $slideTopics[212]='';
 
 if (! isset($includeManual)) {
   foreach ($slide as $id=>$name) {
