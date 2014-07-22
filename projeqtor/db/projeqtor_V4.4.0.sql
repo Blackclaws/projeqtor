@@ -23,3 +23,7 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (5,53,0),
 (6,53,0),
 (7,53,0);
+
+INSERT INTO `${prefix}mailable` (`id`,`name`, `idle`) VALUES 
+(23,'Product', '0'),
+(24,'Version', '0');
