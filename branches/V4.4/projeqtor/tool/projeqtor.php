@@ -945,7 +945,7 @@ scriptLog('sendMail_socket');
       $altcontent .= "Content-Type: text/html; charset=\"iso-8859-1\"". $newLine .
         "Content-Disposition: inline". $newLine .
           "Content-Transfer-Encoding: 7bit" . $newLine. $newLine .
-        '<html><body>'.$messageBody.'</body></html>'.$newLine. $newLine .        
+        '<html><body style="font-family: Verdana, Arial, Helvetica, sans-serif;">'.$messageBody.'</body></html>'.$newLine. $newLine .        
         "--{$mime_alternative}--". $newLine ;
       // Add headers for file attachment
       $headers .=  $altcontent;

@@ -2959,7 +2959,7 @@ abstract class SqlElement {
       '<head>'  . 
       '<title>' . $title . '</title>' .
       '</head>' . 
-      '<body>' . 
+      '<body style="font-family: Verdana, Arial, Helvetica, sans-serif;">' . 
 		$message .
       '</body>' . 
       '</html>';
