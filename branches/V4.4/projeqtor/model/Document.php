@@ -278,56 +278,9 @@ class Document extends SqlElement {
   		$resMail=$res->email;
   		$dest.=($dest)?', ':'';	
   		$dest.=$resMail;
-  	}
-  	$arrayFrom=array();
-  	$arrayTo=array();
-  	$arrayFrom[]='${dbName}';
-  	$arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
-  	// url (direct access to item
-  	$arrayFrom[]='${url}';
-  	$arrayTo[]=$this->getReferenceUrl();
-  	// item (class)
-  	$arrayFrom[]='${item}';
-  	$arrayTo[]=i18n('Document');
-    // id
-  	$arrayFrom[]='${id}';
-  	$arrayTo[]=$this->id;
-  	// name
-  	$arrayFrom[]='${name}';
-  	$arrayTo[]=(property_exists($this, 'name'))?$this->name:'';
-  	// status
-  	$arrayFrom[]='${status}';
-  	$arrayTo[]=(property_exists($this, 'idStatus'))?SqlList::getNameFromId('Status', $this->idStatus):'';
-  	// project
-  	$arrayFrom[]='${project}';
-  	$arrayTo[]=(property_exists($this, 'idProject'))?SqlList::getNameFromId('Project', $this->idProject):'';
-  	// type
-  	$typeName='idDocumentType';
-  	$arrayFrom[]='${type}';
-  	$arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId('DocumentType', $this->$typeName):'';
-  	// reference
-  	$arrayFrom[]='${reference}';
-  	$arrayTo[]=(property_exists($this, 'reference'))?$this->reference:'';
-  	// externalReference
-  	$arrayFrom[]='${externalReference}';
-  	$arrayTo[]=(property_exists($this, 'externalReference'))?$this->externalReference:'';
-  	// issuer
-  	$arrayFrom[]='${issuer}';
-  	$arrayTo[]=(property_exists($this, 'idUser'))?SqlList::getNameFromId('User', $this->idUser):'';
-  	// responsible
-  	$arrayFrom[]='${responsible}';
-  	$arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
-  	// db display name
-  	$arrayFrom[]='${dbName}';
-  	$arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
-  	// sender
-  	$arrayFrom[]='${sender}';
-  	$user=$_SESSION['user'];
-  	$arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
-  	$title=Parameter::getGlobalParameter('paramMailTitleApprover');
-  	$msg=Parameter::getGlobalParameter('paramMailBodyApprover');
-  	$title=str_replace($arrayFrom, $arrayTo, $title);
-  	$msg=str_replace($arrayFrom, $arrayTo, $msg);
+  	}  	
+  	$title=$this->parseMailMessage(Parameter::getGlobalParameter('paramMailTitleApprover'));
+  	$msg=$this->parseMailMessage(Parameter::getGlobalParameter('paramMailBodyApprover'));
   	$result=(sendMail($dest,$title,$msg))?'OK':'';
   	if ($result) {
   		return $dest;

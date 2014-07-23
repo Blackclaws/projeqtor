@@ -2949,53 +2949,10 @@ abstract class SqlElement {
 		} else {
 			$paramMailTitle=Parameter::getGlobalParameter('paramMailTitle'); // default
 		}
-		$arrayFrom=array();
-		$arrayTo=array();
-		// Class of item
-		$arrayFrom[]='${item}';
-		$item=i18n($objectClass);
-		$arrayTo[]=$item;
-		// id
-		$arrayFrom[]='${id}';
-		$arrayTo[]=$this->id;
-		// name
-		$arrayFrom[]='${name}';
-		$arrayTo[]=(property_exists($this, 'name'))?$this->name:'';
-		// status
-		$arrayFrom[]='${status}';
-		$arrayTo[]=(property_exists($this, 'idStatus'))?SqlList::getNameFromId('Status', $this->idStatus):'';
-		// project
-		$arrayFrom[]='${project}';
-		$arrayTo[]=SqlList::getNameFromId('Project', $idProject);
-		// type
-		$typeName='id' . $objectClass . 'Type';
-		$arrayFrom[]='${type}';
-		$arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId($objectClass . 'Type', $this->$typeName):'';
-		// reference
-		$arrayFrom[]='${reference}';
-		$arrayTo[]=(property_exists($this, 'reference'))?$this->reference:'';
-		// externalReference
-		$arrayFrom[]='${externalReference}';
-		$arrayTo[]=(property_exists($this, 'externalReference'))?$this->externalReference:'';
-		// issuer
-		$arrayFrom[]='${issuer}';
-		$arrayTo[]=(property_exists($this, 'idUser'))?SqlList::getNameFromId('User', $this->idUser):'';
-		// responsible
-		$arrayFrom[]='${responsible}';
-		$arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
-		// db display name
-		$arrayFrom[]='${dbName}';
-		$arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
-		// sender
-		$arrayFrom[]='${sender}';
-		$user=$_SESSION['user'];
-		$arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
-		// Format title
-		$title=str_replace($arrayFrom, $arrayTo, $paramMailTitle);
-
+    $title=$this->parseMailMessage($paramMailTitle);
 		$message=$this->getMailDetail();
 		if ($directStatusMail and isset($directStatusMail->message)) {
-			$message=str_replace($arrayFrom, $arrayTo, $directStatusMail->message)	.'<br/><br/>'.$message;
+			$message=$this->parseMailMessage($directStatusMail->message)	.'<br/><br/>'.$message;
 		}
 
 		$message='<html>' .
@@ -3018,6 +2975,125 @@ abstract class SqlElement {
 		return $resultMail;
 	}
 
+	public function parseMailMessage($message) {
+		$arrayFrom=array();
+		$arrayTo=array();
+		$objectClass=get_class($this);
+		$item=i18n($objectClass);
+		if ($objectClass=='Project') {
+			$project=$this;
+		} else if (property_exists($this, 'idProject')) {
+			$project=new Project($this->idProject);
+		} else {
+			$project=new Project();
+		}
+		
+		// db display name
+		$arrayFrom[]='${dbName}';
+		$arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
+		
+		// Class of item
+		$arrayFrom[]='${item}';
+		$arrayTo[]=$item;
+		
+		// id
+		$arrayFrom[]='${id}';
+		$arrayTo[]=$this->id;
+		
+		// name
+		$arrayFrom[]='${name}';
+		$arrayTo[]=(property_exists($this, 'name'))?$this->name:'';
+		
+		// status
+		$arrayFrom[]='${status}';
+		$arrayTo[]=(property_exists($this, 'idStatus'))?SqlList::getNameFromId('Status', $this->idStatus):'';
+		
+		// project
+		$arrayFrom[]='${project}';
+		$arrayTo[]=$project->name;
+		
+		// type
+		$typeName='id' . $objectClass . 'Type';
+		$arrayFrom[]='${type}';
+		$arrayTo[]=(property_exists($this, $typeName))?SqlList::getNameFromId($objectClass . 'Type', $this->$typeName):'';
+		
+		// reference
+		$arrayFrom[]='${reference}';
+		$arrayTo[]=(property_exists($this, 'reference'))?$this->reference:'';
+		
+		// externalReference
+		$arrayFrom[]='${externalReference}';
+		$arrayTo[]=(property_exists($this, 'externalReference'))?$this->externalReference:'';
+		
+		// issuer
+		$arrayFrom[]='${issuer}';
+		$arrayTo[]=(property_exists($this, 'idUser'))?SqlList::getNameFromId('User', $this->idUser):'';
+		
+		// responsible
+		$arrayFrom[]='${responsible}';
+		$arrayTo[]=(property_exists($this, 'idResource'))?SqlList::getNameFromId('Resource', $this->idResource):'';
+		
+		// sender
+		$arrayFrom[]='${sender}';
+		$user=$_SESSION['user'];
+		$arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
+		
+		// context1 to context3
+		$arrayFrom[]='${context1}';
+		$arrayFrom[]='${context2}';
+		$arrayFrom[]='${context3}';
+		$arrayTo[]=(property_exists($this, 'idContext1'))?SqlList::getNameFromId('Context', $this->idContext1):'';
+		$arrayTo[]=(property_exists($this, 'idContext2'))?SqlList::getNameFromId('Context', $this->idContext2):'';
+		$arrayTo[]=(property_exists($this, 'idContext3'))?SqlList::getNameFromId('Context', $this->idContext3):'';
+				
+		// sponsor
+		$arrayFrom[]='${sponsor}';
+		$arrayTo[]=SqlList::getNameFromId('Sponsor', $project->idSponsor);
+		
+		// projectCode
+		$arrayFrom[]='${projectCode}';
+		$arrayTo[]=SqlList::getNameFromId('Sponsor', $project->projectCode);
+		
+		// ContractCode
+		$arrayFrom[]='${contractCode}';
+		$arrayTo[]=$project->contractCode;
+		
+		// Customer
+		$arrayFrom[]='${customer}';
+		$arrayTo[]=SqlList::getNameFromId('Client',$project->idClient);
+		
+		// url (direct access to item)
+		$arrayFrom[]='${url}';
+		if ($objectClass=='User') {
+			// FIX FOR IIS
+			if (!isset($_SERVER['REQUEST_URI'])) {
+				$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
+				if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
+			}
+			$url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
+			.$_SERVER['SERVER_NAME']
+			.(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
+			.$_SERVER['REQUEST_URI'];
+			$arrayTo[]=substr($url,0,strpos($url,'/tool/'));
+		} else {
+			$arrayTo[]=$this->getReferenceUrl();
+		}
+		
+		// login
+		$arrayFrom[]='${login}';
+		$arrayTo[]=($objectClass=='User')?$this->name:$_SESSION['user']->name;
+		
+		// password
+		$arrayFrom[]='${password}';
+		$arrayTo[]=($objectClass=='User')?Parameter::getGlobalParameter('paramDefaultPassword'):'';
+		
+		// admin mail
+		$arrayFrom[]='${adminMail}';
+		$arrayTo[]=Parameter::getGlobalParameter('paramAdminMail');
+		
+		// Format title
+		return str_replace($arrayFrom, $arrayTo, $message);
+	}
 	/**
 	 *
 	 * Get the detail of object, to be send by mail

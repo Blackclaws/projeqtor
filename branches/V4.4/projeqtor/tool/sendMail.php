@@ -17,41 +17,10 @@
   if ($typeSendMail=="User") {
     $login=$_REQUEST['name'];
     $dest=$_REQUEST['email'];
-    $title=Parameter::getGlobalParameter('paramMailTitleUser');  
-    $msg=Parameter::getGlobalParameter('paramMailBodyUser');
-    $arrayFrom=array();
-    $arrayTo=array();
-    // login
-    $arrayFrom[]='${login}';
-    $arrayTo[]=$login;    
-    // password
-    $arrayFrom[]='${password}';
-    $arrayTo[]=Parameter::getGlobalParameter('paramDefaultPassword');
-    // db display name
-    $arrayFrom[]='${dbName}';
-    $arrayTo[]=Parameter::getGlobalParameter('paramDbDisplayName');
-    // sender 
-    $arrayFrom[]='${sender}';
-    $user=$_SESSION['user']; 
-    $arrayTo[]=$user->email;   
-    // admin mail
-    $arrayFrom[]='${adminMail}';
-    $arrayTo[]=Parameter::getGlobalParameter('paramAdminMail');
-    // url to application
-    // FIX FOR IIS
-    if (!isset($_SERVER['REQUEST_URI'])) {
-    	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
-    	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
-    }
-    $url=(((isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS'])=='on') or $_SERVER['SERVER_PORT']=='443')?'https://':'http://')
-       .$_SERVER['SERVER_NAME']
-       .(($_SERVER['SERVER_PORT']!='80' and $_SERVER['SERVER_PORT']!='443')?':'.$_SERVER['SERVER_PORT']:'')
-       .$_SERVER['REQUEST_URI'];
-    $arrayFrom[]='${url}';
-    $arrayTo[]=substr($url,0,strpos($url,'/tool/'));
+    $userMail=SqlElement::getSingleSqlElementFromCriteria('User', array('name'=>$login));
+    $title=$userMail->parseMailMessage(Parameter::getGlobalParameter('paramMailTitleUser'));  
+    $msg=$userMail->parseMailMessage(Parameter::getGlobalParameter('paramMailBodyUser'));
     // Format title and message
-    $title=str_replace($arrayFrom, $arrayTo, $title);
-    $msg=str_replace($arrayFrom, $arrayTo, $msg);
     $result=(sendMail($dest,$title,$msg))?'OK':'';
   } else if ($typeSendMail=="Meeting") {
     if (array_key_exists('id',$_REQUEST)) {
