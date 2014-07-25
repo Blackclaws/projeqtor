@@ -1469,8 +1469,9 @@ function drawNotesFromObject($obj, $refresh=false) {
 				echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note,'none') .'"/>';
 			}
 			// ADDED BRW
-      $strDataHTML = htmlEncode($note->note,'print');
+      $strDataHTML = htmlEncode($note->note,''); // context = '' => only htmlspecialchar, not htmlentities
       $strDataHTML = preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
+      $strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
       // END ADDED BRW
 			echo "</td>";
