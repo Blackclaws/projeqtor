@@ -334,6 +334,11 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
+      case 'consolidateValidated' :
+      	$list=array('NO'=>i18n('consolidateNever'),
+      	             'ALWAYS'=>i18n('consolidateAlways'),
+      	            'IFSET'=>i18n('consolidateIfSet'));
+      	break;
     } 
     return $list;
   }
@@ -383,6 +388,7 @@ class Parameter extends SqlElement {
                                'displayResourcePlan'=>'list',
       	                       'maxProjectsToDisplay'=>'number',
       	                       'ganttPlanningPrintOldStyle'=>'list',
+      	                       'consolidateValidated'=>'list',
       	                     'sectionImputation'=>'section',
       	                       'displayOnlyHandled'=>'list',
       	                       'setHandledOnRealWork'=>'list',

@@ -1898,7 +1898,12 @@ workValidate: "[Validate real work]",
 wrongMaintenanceUser: "升级中<br/>只允许管理员连接.",
 xlsxFile: "[xlsx file (Excel 2010)]",
 year: "年份",
+consolidateAlways: "[alway]",
+consolidateIfSet: "[only if set (don't erase parents)]",
+consolidateNever: "[never]",
+helpConsolidateValidated: "[consolidate validated work & cost on top activities and projects]",
 langFa: "Farsi (Persian) - فارسی",
+paramConsolidateValidated: "[consolidate validated work & cost]",
 reportProductTestDetail: "[test cases detail]",
 currentLocaleOfFile: "zh"
 }

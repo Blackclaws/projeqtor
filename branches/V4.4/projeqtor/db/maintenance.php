@@ -124,6 +124,11 @@ if ($currVersion=='V0.0.0') {
   $result=$proj->save();
   $split=explode("<", $result);
   traceLog($split[0]);
+  // For V4.4.0
+  $prm=new Parameter();
+  $prm->parameterCode='consolidateValidated';
+  $prm->parameterValue='IFSET';
+  $prm->save();
 }
 
 //echo "for V1.6.1<br/>";

@@ -1898,7 +1898,12 @@ workValidate: "[Validate real work]",
 wrongMaintenanceUser: "Обновление продолжается<br/>Только администратор может подключиться к системе.",
 xlsxFile: "[xlsx file (Excel 2010)]",
 year: "год",
+consolidateAlways: "[alway]",
+consolidateIfSet: "[only if set (don't erase parents)]",
+consolidateNever: "[never]",
+helpConsolidateValidated: "[consolidate validated work & cost on top activities and projects]",
 langFa: "Farsi (Persian) - فارسی",
+paramConsolidateValidated: "[consolidate validated work & cost]",
 reportProductTestDetail: "[test cases detail]",
 currentLocaleOfFile: "ru"
 }
