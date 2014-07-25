@@ -1898,7 +1898,12 @@ workValidate: "Validar trabajo real",
 wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se puede conectar.",
 xlsxFile: "fichero xlsx (Excel 2010)",
 year: "año",
+consolidateAlways: "[alway]",
+consolidateIfSet: "[only if set (don't erase parents)]",
+consolidateNever: "[never]",
+helpConsolidateValidated: "[consolidate validated work & cost on top activities and projects]",
 langFa: "Farsi (Persian) - فارسی",
+paramConsolidateValidated: "[consolidate validated work & cost]",
 reportProductTestDetail: "[test cases detail]",
 currentLocaleOfFile: "es"
 }

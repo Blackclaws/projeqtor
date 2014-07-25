@@ -1898,7 +1898,12 @@ workValidate: "Ist-Arbeit gutheißen",
 wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administrator kann sich verbinden.",
 xlsxFile: "xlsx Datei (Excel 2010)",
 year: "Jahr",
+consolidateAlways: "[alway]",
+consolidateIfSet: "[only if set (don't erase parents)]",
+consolidateNever: "[never]",
+helpConsolidateValidated: "[consolidate validated work & cost on top activities and projects]",
 langFa: "Farsi (Persian) - فارسی",
+paramConsolidateValidated: "[consolidate validated work & cost]",
 reportProductTestDetail: "[test cases detail]",
 currentLocaleOfFile: "de"
 }

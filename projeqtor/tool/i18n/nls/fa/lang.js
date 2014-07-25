@@ -1898,7 +1898,12 @@ workValidate: " اعتبار کارهای واقعی",
 wrongMaintenanceUser: "[Upgrade in progress<br/>Only admin user can connect.]",
 xlsxFile: "فایل های اکسل",
 year: "سال",
+consolidateAlways: "[alway]",
+consolidateIfSet: "[only if set (don't erase parents)]",
+consolidateNever: "[never]",
+helpConsolidateValidated: "[consolidate validated work & cost on top activities and projects]",
 langFa: " فارسی",
+paramConsolidateValidated: "[consolidate validated work & cost]",
 reportProductTestDetail: "[test cases detail]",
 currentLocaleOfFile: "fa"
 }

@@ -1898,7 +1898,12 @@ workValidate: "Validate real work",
 wrongMaintenanceUser: "Upgrade in progress<br/>Only admin user can connect.",
 xlsxFile: "xlsx file (Excel 2010)",
 year: "year",
+consolidateAlways: "alway",
+consolidateIfSet: "only if set (don't erase parents)",
+consolidateNever: "never",
+helpConsolidateValidated: "consolidate validated work & cost on top activities and projects",
 langFa: "Farsi (Persian) - فارسی",
+paramConsolidateValidated: "consolidate validated work & cost",
 reportProductTestDetail: "test cases detail",
 currentLocaleOfFile: "default"
 }
