@@ -29,8 +29,6 @@ class ActivityPlanningElement extends PlanningElement {
   public $_void_26;
   public $_label_planning;
   public $idActivityPlanningMode;
-  public $_void_29;
-  public $_void_20;
   public $initialDuration;
   public $validatedDuration;
   public $_void_33;
