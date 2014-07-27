@@ -10,7 +10,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_8_5 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', 'startDate', 'endDate', 'duration', 'work', 'cost');
+  public $_tab_8_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', 'startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
   public $initialStartDate;
   public $validatedStartDate;
   public $_void_13;
@@ -43,19 +43,28 @@ class ActivityPlanningElement extends PlanningElement {
   public $leftWork;
   public $_label_progress;
   public $progress;
+  public $workElementCount;
+  public $_void_62;
+  public $_void_63;
+  public $workElementEstimatedWork;
+  public $workElementRealWork;
+  public $workElementLeftWork;
+  public $_label_expected;
+  public $expectedProgress;
   public $_void_51;
   public $validatedCost;
   public $assignedCost;
   public $plannedCost;
   public $realCost;
   public $leftCost;
-  public $_label_expected;
-  public $expectedProgress;
+  public $_void_74;
+  public $_void_75;
   public $wbsSortable;
   public $topId;
   public $topRefType;
   public $topRefId;
   public $idle;
+
   
   private static $_fieldsAttributes=array(
     "plannedStartDate"=>"readonly,noImport",
@@ -70,7 +79,11 @@ class ActivityPlanningElement extends PlanningElement {
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idActivityPlanningMode"=>"required,mediumWidth",
-    "idPlanningMode"=>"hidden,noImport"
+    "idPlanningMode"=>"hidden,noImport",
+  	"workElementEstimatedWork"=>"readonly,noImport",
+  	"workElementRealWork"=>"readonly,noImport",
+  	"workElementLeftWork"=>"readonly,noImport",
+  	"workElementCount"=>"display,noImport"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -165,6 +178,25 @@ class ActivityPlanningElement extends PlanningElement {
     }
     return $result;
     
+  }
+  
+  /** =========================================================================
+   * Update the synthesis Data (work) from workElement (tipically Tickets)
+   * Called by workElement
+   * @return void
+   */
+  public function updateWorkElementSummary() {
+  	$we=new WorkElement();  	
+  	$weList=$we->getSqlElementsFromCriteria(array('idActivity'=>$this->refId));
+  	$this->workElementEstimatedWork=0;
+  	$this->workElementRealWork=0;
+  	$this->workElementLeftWork=0;
+  	foreach ($weList as $we) {
+  		$this->workElementEstimatedWork+=$we->plannedWork;
+  		$this->workElementRealWork+=$we->realWork;
+  		$this->workElementLeftWork+=$we->leftWork;
+  	}
+  	$this->simpleSave();
   }
 }
 ?>
