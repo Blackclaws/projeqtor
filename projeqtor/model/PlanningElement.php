@@ -49,6 +49,7 @@ class PlanningElement extends SqlElement {
   public $_workVisibility;
   public $_costVisibility;
   public $idBill;
+  public $validatedCalculated;
 
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
@@ -81,7 +82,8 @@ class PlanningElement extends SqlElement {
                                   "plannedCost"=>"readonly,noImport",
                                   "elementary"=>"hidden",
                                   "idPlanningMode"=>"hidden",
-  								                "idBill"=>"hidden"
+  								                "idBill"=>"hidden",
+  		                            "validatedCalculated"=>"hidden"
   );   
   
   private static $predecessorItemsArray = array();
@@ -97,6 +99,12 @@ class PlanningElement extends SqlElement {
     parent::__construct($id);
   }
   
+  public function setDynamicAttributes() {
+  	if ($this->id and $this->validatedCalculated) {
+  		self::$_fieldsAttributes['validatedWork']="readonly";
+  		self::$_fieldsAttributes['validatedCost']="readonly";
+  	}
+  }
   
   /** ==========================================================================
    * Destructor
@@ -318,6 +326,15 @@ class PlanningElement extends SqlElement {
     if ($this->initialStartDate and $this->initialEndDate) {
       $this->initialDuration=workDayDiffDates($this->initialStartDate, $this->initialEndDate);
     }
+    
+    //
+    $consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
+    if ($consolidateValidated=='NO' or ! $consolidateValidated) {
+    	$this->validatedCalculated=0;
+    } else if ($consolidateValidated=='ALWAYS' and ! $this->elementary) {
+    	$this->validatedCalculated=1;
+    } 
+    
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -351,7 +368,7 @@ class PlanningElement extends SqlElement {
       $this->updateSynthesis($old->topRefType, $old->topRefId);
     }
     // save new parent (for synthesis update) if parent has changed
-    if ($this->topId!='' and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
+    if ($this->topId!='') { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
     }          
     if ($this->wbsSortable!=$old->wbsSortable) {
@@ -444,6 +461,7 @@ class PlanningElement extends SqlElement {
    */
   private function updateSynthesisObj () {
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
+  	$this->validatedCalculated=0;
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
@@ -544,9 +562,17 @@ class PlanningElement extends SqlElement {
     if ($consolidateValidated=="ALWAYS") {
     	$this->validatedWork=$validatedWork;
     	$this->validatedCost=$validatedCost;
+    	$this->validatedCalculated=1;
     } else if ($consolidateValidated=="IFSET") {
-    	if ($validatedWork) $this->validatedWork=$validatedWork;
-    	if ($validatedCost) $this->validatedCost=$validatedCost;
+    	if ($validatedWork) {
+    		$this->validatedWork=$validatedWork;
+    		$this->validatedCalculated=1;
+    	}
+    	if ($validatedCost) {
+    		$this->validatedCost=$validatedCost;
+    		$this->validatedCalculated=1;
+    	}
+    	
     } 
     $this->save();
     // Dispath to top element
