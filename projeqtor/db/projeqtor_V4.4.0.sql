@@ -27,3 +27,15 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 INSERT INTO `${prefix}mailable` (`id`,`name`, `idle`) VALUES 
 (23,'Product', '0'),
 (24,'Version', '0');
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `validatedCalculated` int(1) unsigned DEFAULT 0;
+
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `workElementEstimatedWork` DECIMAL(9,5) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `workElementRealWork` DECIMAL(9,5) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `workElementLeftWork` DECIMAL(9,5) UNSIGNED;
+
+UPDATE `${prefix}planningelement` PE SET 
+workElementEstimatedWork = (select sum (plannedWork) from  `${prefix}workelement` WE where WE.idActivity=PE.refId),
+workElementRealWork = (select sum (RealWork) from  `${prefix}workelement` WE where WE.idActivity=PE.refId), 
+workelementLeftWork = (select sum (LeftWork) from  `${prefix}workelement` WE where WE.idActivity=PE.refId)
+WHERE PE.refType='Activity';      

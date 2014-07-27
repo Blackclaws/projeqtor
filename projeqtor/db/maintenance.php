@@ -124,7 +124,7 @@ if ($currVersion=='V0.0.0') {
   $result=$proj->save();
   $split=explode("<", $result);
   traceLog($split[0]);
-  // For V4.4.0
+  // For V4.4.0 initialize consolidateValidated for new installations (for others, keep previous behavior as defaut)
   $prm=new Parameter();
   $prm->parameterCode='consolidateValidated';
   $prm->parameterValue='IFSET';
