@@ -1899,6 +1899,7 @@ wrongMaintenanceUser: "Actualización en progreso<br />Solo el usuario admin se 
 xlsxFile: "fichero xlsx (Excel 2010)",
 year: "año",
 colTicketWork: "[ticket work summary]",
+colWorkElementCount: "[number]",
 consolidateAlways: "[alway]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",

@@ -1899,6 +1899,7 @@ wrongMaintenanceUser: "Actualização em execução<br/>Só o utilizador admin s
 xlsxFile: "ficheiro xlsx (Excel 2010)",
 year: "ano",
 colTicketWork: "[ticket work summary]",
+colWorkElementCount: "[number]",
 consolidateAlways: "[alway]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",

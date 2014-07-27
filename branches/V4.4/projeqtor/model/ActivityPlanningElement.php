@@ -10,31 +10,37 @@ class ActivityPlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_8_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', 'startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
+  public $_tab_10_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '',  '', '','startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
   public $initialStartDate;
   public $validatedStartDate;
   public $_void_13;
   public $plannedStartDate;
   public $realStartDate;
-  public $_void_15;
+  public $_void_16;
   public $_label_priority;
   public $priority;
+  public $_void_19;
+  public $_void_10;
   public $initialEndDate;
   public $validatedEndDate;
   public $_void_23;
   public $plannedEndDate;
   public $realEndDate;
-  public $_void_25;
+  public $_void_26;
   public $_label_planning;
   public $idActivityPlanningMode;
+  public $_void_29;
+  public $_void_20;
   public $initialDuration;
   public $validatedDuration;
   public $_void_33;
   public $plannedDuration;
   public $realDuration;
-  public $_void_35;
+  public $_void_36;
   public $_label_wbs;
   public $wbs;
+  public $_void_39;
+  public $_void_30;
   public $_void_41;
   public $validatedWork;
   public $assignedWork;
@@ -43,22 +49,28 @@ class ActivityPlanningElement extends PlanningElement {
   public $leftWork;
   public $_label_progress;
   public $progress;
-  public $workElementCount;
-  public $_void_62;
-  public $_void_63;
-  public $workElementEstimatedWork;
-  public $workElementRealWork;
-  public $workElementLeftWork;
   public $_label_expected;
   public $expectedProgress;
   public $_void_51;
+  public $_void_52;
+  public $_void_53;
+  public $workElementEstimatedWork;
+  public $workElementRealWork;
+  public $workElementLeftWork;
+  public $_label_workElementCount;
+  public $workElementCount;
+  public $_void_59;
+  public $_void_50;
+  public $_void_61;
   public $validatedCost;
   public $assignedCost;
   public $plannedCost;
   public $realCost;
   public $leftCost;
-  public $_void_74;
-  public $_void_75;
+  public $_void_67;
+  public $_void_68;
+  public $_void_69;
+  public $_void_60;
   public $wbsSortable;
   public $topId;
   public $topRefType;
@@ -78,7 +90,7 @@ class ActivityPlanningElement extends PlanningElement {
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
-    "idActivityPlanningMode"=>"required,mediumWidth",
+    "idActivityPlanningMode"=>"required,mediumWidth,colspan3",
     "idPlanningMode"=>"hidden,noImport",
   	"workElementEstimatedWork"=>"readonly,noImport",
   	"workElementRealWork"=>"readonly,noImport",

@@ -1899,6 +1899,7 @@ wrongMaintenanceUser: "Обновление продолжается<br/>Тол�
 xlsxFile: "[xlsx file (Excel 2010)]",
 year: "год",
 colTicketWork: "[ticket work summary]",
+colWorkElementCount: "[number]",
 consolidateAlways: "[alway]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",

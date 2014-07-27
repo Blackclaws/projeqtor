@@ -1899,6 +1899,7 @@ wrongMaintenanceUser: "Mise à jour en cours<br/>Seul un administrateur peut se 
 xlsxFile: "fichier xlsx (Excel 2010)",
 year: "année",
 colTicketWork: "travail sur les tickets",
+colWorkElementCount: "nombre",
 consolidateAlways: "[alway]",
 consolidateIfSet: "seulement si renseigné (n'efface pas les données parentes)",
 consolidateNever: "jamais",
