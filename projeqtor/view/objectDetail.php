@@ -369,7 +369,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					echo '</td><td style="width:90%">';
 					$internalTableCurrentRow++;
 				} else {
-					echo '</td><td class="detail" '.(($obj->isAttributeSetToField($col,"colspan3"))?'colspan="3"':'').'>';
+					if ($obj->isAttributeSetToField($col,"colspan3")) {
+					  echo '</td><td class="detail" colspan="3">';
+					  $internalTable-=2;
+					} else {
+					echo '</td><td class="detail" >';
+					}
 				}
 			}
 			$dataType = $obj->getDataType($col);
