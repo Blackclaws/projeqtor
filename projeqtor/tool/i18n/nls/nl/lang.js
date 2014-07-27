@@ -1899,6 +1899,7 @@ wrongMaintenanceUser: "Upgrade is aktief<br/>Alleen admin gebruikers hebben toeg
 xlsxFile: "xlsx bestand (Excel 2010)",
 year: "jaar",
 colTicketWork: "[ticket work summary]",
+colWorkElementCount: "[number]",
 consolidateAlways: "[alway]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",

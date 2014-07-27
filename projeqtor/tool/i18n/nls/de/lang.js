@@ -1899,6 +1899,7 @@ wrongMaintenanceUser: "Upgrade wird gerade durchgeführt.<br/>Nur der Administra
 xlsxFile: "xlsx Datei (Excel 2010)",
 year: "Jahr",
 colTicketWork: "[ticket work summary]",
+colWorkElementCount: "[number]",
 consolidateAlways: "[alway]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",
