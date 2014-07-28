@@ -174,7 +174,11 @@ class Expense extends SqlElement {
     } else {
     	$this->setDates($this->expensePlannedDate);
     }
-    return parent::save();
+    $result=parent::save();
+    
+    $pe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement', array('refType'=>'Project','refId'=>$this->idProject));
+    $pe->updateExpense();
+    return $result;
   }
 
   public function getExpenseDetail() {

@@ -10,7 +10,7 @@ class ProjectPlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_10_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', '', '', 'startDate', 'endDate', 'duration', 'work', 'cost', 'expense');
+  public $_tab_10_7 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '', '', '', 'startDate', 'endDate', 'duration', 'work', 'resourceCost', 'expense', 'totalCost');
   public $initialStartDate;
   public $validatedStartDate;
   public $_void_13;
@@ -62,15 +62,25 @@ class ProjectPlanningElement extends PlanningElement {
   public $_void_59;
   public $_void_50;
   public $_void_61;
-  public $_void_62;
-  public $assignedExpense;
-  public $plannedExpense;
-  public $realExpense;
-  public $leftExpense;
+  public $expenseValidatedAmount;
+  public $expenseAssignedAmount;
+  public $expensePlannedAmount;
+  public $expenseRealAmount;
+  public $expenseLeftAmount;
   public $_void_67;
   public $_void_68;
   public $_void_69;
   public $_void_60;
+  public $_void_71;
+  public $totalValidatedCost;
+  public $totalAssignedCost;
+  public $totalPlannedCost;
+  public $totalRealCost;
+  public $totalLeftCost;
+  public $_void_77;
+  public $_void_78;
+  public $_void_79;
+  public $_void_70;
   
   public $wbsSortable;
   public $topId;
@@ -90,10 +100,15 @@ class ProjectPlanningElement extends PlanningElement {
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idPlanningMode"=>"hidden,noImport",
-  	"assignedExpense"=>"readonly,noImport",
-  	"plannedExpense"=>"readonly,noImport",
-  	"realExpense"=>"readonly,noImport",
-  	"leftExpense"=>"readonly,noImport"
+  	"expenseAssignedAmount"=>"readonly,noImport",
+  	"expensePlannedAmount"=>"readonly,noImport",
+  	"expenseRealAmount"=>"readonly,noImport",
+  	"expenseLeftAmount"=>"readonly,noImport",
+  	"totalAssignedCost"=>"readonly,noImport",
+  	"totalPlannedCost"=>"readonly,noImport",
+  	"totalRealCost"=>"readonly,noImport",
+  	"totalLeftCost"=>"readonly,noImport",
+  	"totalValidatedCost"=>"readonly,noImport",
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -125,12 +140,70 @@ class ProjectPlanningElement extends PlanningElement {
     return $paramDbPrefix . self::$_databaseTableName;
   }
     
+  public function save() {
+  	$this->updateTotal();
+  	return parent::save();
+  }
+  
+  public function updateTotal() {
+  	$this->totalAssignedCost=$this->assignedCost+$this->expenseAssignedAmount;
+  	$this->totalLeftCost=$this->leftCost+$this->expenseLeftAmount;
+  	$this->totalPlannedCost=$this->plannedCost+$this->expensePlannedAmount;
+  	$this->totalRealCost=$this->realCost+$this->expenseRealAmount;
+  	$this->totalValidatedCost=$this->validatedCost+$this->expenseValidatedAmount;
+  }
+  
+  public function updateExpense() {
+  	$exp=new Expense();
+  	$lstExp=$exp->getSqlElementsFromCriteria(array('idProject'=>$this->refId));
+  	$assigned=0;
+  	$real=0;
+  	$planned=0;
+  	$left=0;
+  	foreach ($lstExp as $exp) {
+  		if ($exp->plannedAmount) {
+  			$assigned+=$exp->plannedAmount;
+  		}
+  		if ($exp->realAmount) {
+  			$real+=$exp->realAmount;
+  		} else {
+  			if ($exp->plannedAmount) {
+  				$left+=$exp->plannedAmount;
+  			}
+  		}
+  	}
+  	$planned=$real+$left;
+  	$this->expenseAssignedAmount=$assigned;
+  	$this->expenseLeftAmount=$left;
+  	$this->expensePlannedAmount=$planned;
+  	$this->expenseRealAmount=$real;
+  	$this->updateTotal();
+  	$this->simpleSave();
+  }
   /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
     return array_merge(parent::getStaticFieldsAttributes(),self::$_fieldsAttributes);
+  }
+  
+  public function getValidationScript($colName) {
+  	$colScript = parent::getValidationScript($colName);
+  	if ($colName=='validatedCost' or $colName=='expenseValidatedAmount') {
+	  	$colScript .= '<script type="dojo/connect" event="onChange" >';
+	  	$colScript .= '  if (dijit.byId("' . get_class($this) . '_totalValidatedCost")) {';
+	  	$colScript .= '    var cost=dijit.byId("' . get_class($this) . '_validatedCost").get("value");';
+	  	$colScript .= '    var expense=dijit.byId("' . get_class($this) . '_expenseValidatedAmount").get("value");';
+	  	$colScript .= '    if (!cost) cost=0;';
+	  	$colScript .= '    if (!expense) expense=0;';
+	  	$colScript .= '    var total = cost+expense;';
+	  	$colScript .= '    dijit.byId("' . get_class($this) . '_totalValidatedCost").set("value",total);';
+	  	$colScript .= '    formChanged();';
+	  	$colScript .= '  }';
+	  	$colScript .= '</script>';
+  	}
+  	return $colScript;
   }
   
 }

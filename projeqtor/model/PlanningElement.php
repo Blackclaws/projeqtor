@@ -99,13 +99,6 @@ class PlanningElement extends SqlElement {
     parent::__construct($id);
   }
   
-  public function setDynamicAttributes() {
-  	if ($this->id and $this->validatedCalculated) {
-  		self::$_fieldsAttributes['validatedWork']="readonly";
-  		self::$_fieldsAttributes['validatedCost']="readonly";
-  	}
-  }
-  
   /** ==========================================================================
    * Destructor
    * @return void
@@ -1004,6 +997,11 @@ class PlanningElement extends SqlElement {
        or $fieldName=='realWork') {
          return 'hidden';
       }
+    }
+    if ($this->id and $this->validatedCalculated) {
+    	if ($fieldName=='validatedWork' or $fieldName=='validatedCost') {
+    	  return "readonly";
+    	}
     }
     return parent::getFieldAttributes($fieldName);
   }  

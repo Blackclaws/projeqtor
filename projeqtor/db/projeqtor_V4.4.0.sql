@@ -46,9 +46,23 @@ ALTER TABLE `${prefix}planningelement` ADD COLUMN `expenseAssignedAmount` DECIMA
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `expensePlannedAmount` DECIMAL(11,2) UNSIGNED;
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `expenseRealAmount` DECIMAL(11,2) UNSIGNED;
 ALTER TABLE `${prefix}planningelement` ADD COLUMN `expenseLeftAmount` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `expenseValidatedAmount` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `totalAssignedCost` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `totalPlannedCost` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `totalRealCost` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `totalLeftCost` DECIMAL(11,2) UNSIGNED;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `totalValidatedCost` DECIMAL(11,2) UNSIGNED;
 UPDATE `${prefix}planningelement` PE SET 
 expenseAssignedAmount = (select sum(plannedAmount) from `${prefix}expense` EXP where EXP.idProject=PE.refId),
 expenseRealAmount = (select sum(realAmount) from `${prefix}expense` EXP where EXP.idProject=PE.refId), 
 expenseLeftAmount = (select sum(plannedAmount) from `${prefix}expense` EXP where EXP.idProject=PE.refId and EXP.realAmount is null),
 expensePlannedAmount = expenseRealAmount + expenseLeftAmount
 WHERE PE.refType='Project';      
+
+UPDATE `${prefix}planningelement` PE SET 
+totalAssignedCost=expenseAssignedAmount+assignedCost,
+totalPlannedCost=expensePlannedAmount+plannedCost,
+totalRealCost=expenseRealAmount+realCost,
+totalLeftCost=expenseLeftAmount+leftCost,
+totalValidatedCost=expenseValidatedAmount+validatedCost
+WHERE PE.refType='Project';
