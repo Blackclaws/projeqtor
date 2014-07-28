@@ -32,9 +32,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	 if (array_key_exists('callFromMail', $_REQUEST)) {
 	 $callFromMail=true;
 	 }*/
-  if (method_exists($obj, 'setDynamicAttributes')) {
-  	$obj->setDynamicAttributes();
-  }
+
 	if ($outMode=='pdf') {
 		$obj->splitLongFields();
 	}
