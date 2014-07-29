@@ -223,7 +223,99 @@
                  rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
               </td>
             </tr>
+            <?php }
+            if (isDisplayable($obj,'initialDueDate')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDate');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="initialDueDate" id="initialDueDate"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }
+            if (isDisplayable($obj,'actualDueDate')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualDueDate');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="actualDueDate" id="actualDueDate"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php } 
+            if (isDisplayable($obj,'initialDueDateTime')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDateTime');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="initialDueDate" id="initialDueDate"
+                 style="width:100px;" class="input" value="" ></div>
+                <div dojoType="dijit.form.TimeTextBox" name="initialDueTime" id="initialDueTime"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }
+            if (isDisplayable($obj,'actualDueDateTime')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualDueDateTime');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="actualDueDate" id="actualDueDate"
+                 style="width:100px;" class="input" value="" ></div>
+                <div dojoType="dijit.form.TimeTextBox" name="actualDueTime" id="actualDueTime"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }/*?>
+            
+            <?php }
+            if (isDisplayable($obj,'_Note')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
+                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
             <?php }?>
+                        <?php }
+            if (isDisplayable($obj,'_Note')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
+                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php }?>
+                        <?php }
+            if (isDisplayable($obj,'_Note')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
+                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php }?>
+                        <?php }
+            if (isDisplayable($obj,'_Note')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
+                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php }?>
+                        <?php }
+            if (isDisplayable($obj,'_Note')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
+                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php }*/?>
+
           </table>
         </form>
       </div>
@@ -239,6 +331,7 @@ function isDisplayable($obj, $field) {
   and ! $obj->isAttributeSetToField($field,'hidden') ) {
     return true;
   } else {
+
     return false;
   }         
 }
