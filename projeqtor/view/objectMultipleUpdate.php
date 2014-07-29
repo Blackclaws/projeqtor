@@ -242,6 +242,24 @@
               </td>
             </tr>
             <?php } 
+						if (isDisplayable($obj,'initialEndDate')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialEndDate');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="initialEndDate" id="initialEndDate"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }
+            if (isDisplayable($obj,'actualEndDate')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualEndDate');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="actualEndDate" id="actualEndDate"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php } 
             if (isDisplayable($obj,'initialDueDateTime')) {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDateTime');?>&nbsp;:&nbsp;</td>
@@ -263,59 +281,40 @@
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>
-            <?php }/*?>
-            
             <?php }
-            if (isDisplayable($obj,'_Note')) {?>
+            $pe=get_class($obj).'PlanningElement';
+            if (isDisplayable($obj,'validatedStartDate', true)) {?>
             <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedStartDate');?>&nbsp;:&nbsp;</td>
               <td>
-                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
-                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+                <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedStartDate" id="<?php echo $pe;?>_validatedStartDate"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }
+            $pe=get_class($obj).'PlanningElement';
+            if (isDisplayable($obj,'validatedEndDate', true)) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedEndDate');?>&nbsp;:&nbsp;</td>
+              <td>
+                <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedEndDate" id="<?php echo $pe;?>_validatedEndDate"
+                 style="width:100px;" class="input" value="" ></div>
+              </td>
+            </tr>
+            <?php }
+            $pe=get_class($obj).'PlanningElement';
+            $pm='id'.get_class($obj).'PlanningMode';
+            if (isDisplayable($obj,$pm, true)) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changePlanningMode');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth;?>px;" 
+                 id="<?php echo $pe.'_'.$pm;?>" name="<?php echo $pe.'_'.$pm;?>">
+                 <?php htmlDrawOptionForReference($pm, null, null, false);?>
+                </select>
               </td>
             </tr>
             <?php }?>
-                        <?php }
-            if (isDisplayable($obj,'_Note')) {?>
-            <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
-              <td>
-                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
-                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
-              </td>
-            </tr>
-            <?php }?>
-                        <?php }
-            if (isDisplayable($obj,'_Note')) {?>
-            <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
-              <td>
-                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
-                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
-              </td>
-            </tr>
-            <?php }?>
-                        <?php }
-            if (isDisplayable($obj,'_Note')) {?>
-            <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
-              <td>
-                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
-                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
-              </td>
-            </tr>
-            <?php }?>
-                        <?php }
-            if (isDisplayable($obj,'_Note')) {?>
-            <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colAddNote');?>&nbsp;:&nbsp;</td>
-              <td>
-                <textarea dojoType="dijit.form.Textarea" name="note" id="note"
-                 rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
-              </td>
-            </tr>
-            <?php }*/?>
-
           </table>
         </form>
       </div>
@@ -325,14 +324,24 @@
 </div>
 
 <?php 
-function isDisplayable($obj, $field) {
+function isDisplayable($obj, $field, $fromPlanningElement=false) {
   if ( property_exists($obj,$field) 
   and ! $obj->isAttributeSetToField($field,'readonly') 
   and ! $obj->isAttributeSetToField($field,'hidden') ) {
     return true;
   } else {
-
-    return false;
+    $pe=get_class($obj).'PlanningElement';
+    if ($fromPlanningElement and property_exists($obj,$pe) and is_object($obj->$pe)) {
+      $peObj=$obj->$pe;
+      if (! $peObj->isAttributeSetToField($field,'readonly')
+      and ! $peObj->isAttributeSetToField($field,'hidden') ) {
+        return true;
+      } else {
+        return false;
+      }      
+    } else {
+      return false;
+    }
   }         
 }
 ?>
