@@ -22,7 +22,7 @@ class Issue extends SqlElement {
   public $_col_2_2_treatment;
   public $idStatus;
   public $idResource;
-  public $initialEndDate; // is an object
+  public $initialEndDate; 
   public $actualEndDate;
   public $handled;
   public $handledDate;
