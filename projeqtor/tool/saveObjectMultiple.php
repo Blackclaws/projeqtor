@@ -61,6 +61,45 @@ $idTargetVersion="";
 if (array_key_exists('idTargetVersion',$_REQUEST)) {
   $idTargetVersion=trim($_REQUEST['idTargetVersion']);
 }
+$initialDueDate="";
+if (array_key_exists('initialDueDate',$_REQUEST)) {
+	$initialDueDate=trim($_REQUEST['initialDueDate']);
+}
+$actualDueDate="";
+if (array_key_exists('actualDueDate',$_REQUEST)) {
+	$actualDueDate=trim($_REQUEST['actualDueDate']);
+}
+$initialEndDate="";
+if (array_key_exists('initialEndDate',$_REQUEST)) {
+	$initialEndDate=trim($_REQUEST['initialEndDate']);
+}
+$actualEndDate="";
+if (array_key_exists('actualEndDate',$_REQUEST)) {
+	$actualEndDate=trim($_REQUEST['actualEndDate']);
+}
+$initialDueTime="";
+if (array_key_exists('initialDueTime',$_REQUEST)) {
+	$initialDueTime=trim($_REQUEST['initialDueTime']);
+}
+$actualDueTime="";
+if (array_key_exists('actualDueTime',$_REQUEST)) {
+	$actualDueTime=trim($_REQUEST['actualDueTime']);
+}
+$pe=$className.'PlanningElement';
+$pe_validatedStartDate="";
+if (array_key_exists($pe.'_validatedStartDate',$_REQUEST)) {
+	$pe_validatedStartDate=trim($_REQUEST[$pe.'_validatedStartDate']);
+}
+$pe_validatedEndDate="";
+if (array_key_exists($pe.'_validatedEndDate',$_REQUEST)) {
+	$pe_validatedEndDate=trim($_REQUEST[$pe.'_validatedEndDate']);
+}
+$pm='id'.$className.'PlanningMode';
+$pe_pm="";
+if (array_key_exists($pe.'_'.$pm,$_REQUEST)) {
+	$pe_pm=trim($_REQUEST[$pe.'_'.$pm]);
+}
+
 unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
 $cptOk=0;
 $cptError=0;
@@ -104,6 +143,35 @@ foreach ($selectList as $id) {
   if ($idTargetVersion and property_exists($item,'idTargetVersion')) {
     $item->idTargetVersion=$idTargetVersion;
   } 
+  if ($initialDueDate and property_exists($item,'initialDueDate')) {
+  	$item->initialDueDate=$initialDueDate;
+  }
+  if ($actualDueDate and property_exists($item,'actualDueDate')) {
+  	$item->actualDueDate=$actualDueDate;
+  }
+  if ($initialEndDate and property_exists($item,'initialEndDate')) {
+  	$item->initialEndDate=$initialEndDate;
+  }
+  if ($actualEndDate and property_exists($item,'actualEndDate')) {
+  	$item->actualEndDate=$actualEndDate;
+  }
+  if ($initialDueDate and $initialDueTime and property_exists($item,'initialDueDateTime')) {
+  	$item->initialDueDateTime=$initialDueDate.' '.substr($initialDueTime,1);
+  }
+  if ($actualDueDate and $actualDueTime and property_exists($item,'actualDueDateTime')) {
+  	$item->actualDueDateTime=$actualDueDate.' '.substr($actualDueTime,1);
+  }
+  if (property_exists($item,$pe) and is_object($item->$pe)) {
+  	if ($pe_validatedStartDate and property_exists($item->$pe,'validatedStartDate')) {
+  	  $item->$pe->validatedStartDate=$pe_validatedStartDate;
+  	}
+  	if ($pe_validatedEndDate and property_exists($item->$pe,'validatedEndDate')) {
+  		$item->$pe->validatedEndDate=$pe_validatedEndDate;
+  	}
+  	if ($pe_pm and property_exists($item->$pe,$pm)) {
+  		$item->$pe->$pm=$pe_pm;
+  	}
+  }
   $resultSave=$item->save();
   if ($note and property_exists($item,'_Note')) {
     $noteObj=new Note();
