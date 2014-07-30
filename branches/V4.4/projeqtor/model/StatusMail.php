@@ -193,7 +193,7 @@ class StatusMail extends SqlElement {
     	$colScript .= ' mailable=dijit.byId("idMailable");';
     	//$colScript .= ' alert(mailable.get("value")+" => "+mailable.get("displayedValue"));';
     	$colScript .= ' mVal=mailable.get("displayedValue");';
-    	$colScript .= ' if (this.checked && mVal!=i18n("Activity")) { ';
+    	$colScript .= ' if (this.checked && mVal!=i18n("Activity") && mVal!=i18n("Meeting") && mVal!=i18n("TestSesion")) { ';
     	$colScript .= '   showAlert(i18n("msgIncorrectReceiver"));';
     	$colScript .= '   this.checked=false;';
     	$colScript .= ' }'; 
