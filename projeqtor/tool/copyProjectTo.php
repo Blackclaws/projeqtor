@@ -85,7 +85,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
     $project=New Project();
     $projects=$project->getSqlElementsFromCriteria($crit, false, null, null, true);
     foreach ($projects as $project) {
-      $newSubProject=copyProject($project, $project->name, $project->idProjectType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $proj->id);
+      $newSubProject=copyProject($project, $project->name, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $proj->id);
       $subResult=$newSubProject->_copyResult;
       unset($newSubProject->_copyResult);
       if (stripos($subResult,'id="lastOperationStatus" value="OK"')>0 ) {
