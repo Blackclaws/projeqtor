@@ -2848,10 +2848,18 @@ abstract class SqlElement {
 					foreach ($affList as $aff) {
 						$resource=new Resource($aff->idResource);
 						if ($statusMail->mailToProject) {
-							$newDest = "###" . $resource->email . "###";
-							if ($resource->email and strpos($dest,$newDest)===false) {
-								$dest.=($dest)?', ':'';
-								$dest.= $newDest;
+							// Change on V4.4.0 oly send mail if user has read access to item
+							$usr=new User($aff->idResource);
+							$canRead=false;
+							if ($usr and $usr->id) {
+								$canRead=(securityGetAccessRightYesNo('menu' . get_class($this), 'read', $this, $usr)=='YES');
+							}
+							if ($canRead) {
+								$newDest = "###" . $resource->email . "###";
+								if ($resource->email and strpos($dest,$newDest)===false) {
+									$dest.=($dest)?', ':'';
+									$dest.= $newDest;
+								}
 							}
 						}
 						if ($statusMail->mailToLeader and $resource->idProfile) {

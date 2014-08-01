@@ -12,6 +12,9 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="keywork" content="projeqtor, project management" />
+  <meta name="author" content="projeqtor" />
+  <meta name="Copyright" content="Pascal BERNARD" />
   <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />

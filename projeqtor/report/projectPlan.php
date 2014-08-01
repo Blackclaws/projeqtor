@@ -165,7 +165,7 @@ for($i=1; $i<=$nbDays;$i++) {
 echo '<td class="reportTableHeader" >' . i18n('sum'). '</td>';
 echo '</tr>';
 
-
+asort($resources);
 if ($paramTeam) {
 	foreach ($resources as $idR=>$ress) {
 		$res=new Resource($idR);

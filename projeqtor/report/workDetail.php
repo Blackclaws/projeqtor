@@ -120,6 +120,7 @@ echo '<td class="reportTableColumnHeader" style="width:25%">' . i18n('colParentA
 echo '</tr>';
 
 $sum=0;
+asort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);

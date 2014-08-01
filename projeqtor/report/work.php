@@ -100,6 +100,7 @@ foreach ($projects as $id=>$name) {
 echo '</tr>';
 
 $sum=0;
+asort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
 		$res=new Resource($idR);
