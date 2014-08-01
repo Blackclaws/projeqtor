@@ -121,7 +121,7 @@
   </script>
 </head>
 <page backtop="100px" backbottom="20px" footer="page">
-<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;" id="bodyPrint" class="white" onload="top.hideWait();";>
+<<?php echo ($printInNewPage or $outMode=='pdf') ?'body':'div';?> style="-webkit-print-color-adjust: exact;" id="bodyPrint" class="white" onload="top.hideWait();">
   <?php 
   }
   $page=$_REQUEST['page'];

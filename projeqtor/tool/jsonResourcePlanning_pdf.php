@@ -818,8 +818,9 @@ function displayGantt($list) {
 			}
 			echo '</TR>';
 		}
+		echo "</table>";
 	}
-	echo "</table>";
+	
 }
 
 function exportGantt($list) {
