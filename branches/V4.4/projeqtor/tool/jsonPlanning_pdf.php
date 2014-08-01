@@ -705,8 +705,9 @@
         }
         echo '</TR>';
       }
+      echo "</table>";
     }
-    echo "</table>";
+    
   }
 
   function exportGantt($result) {

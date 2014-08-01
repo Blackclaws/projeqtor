@@ -86,7 +86,8 @@ traceLog("");
 if ($currVersion=="") {
   $currVersion='V0.0.0';
   // if no current version, parameters are set through config.php
-  $versionParameters=array(); // Clear $versionParameter to avoid dupplication of parameters
+  //$versionParameters=array(); // Clear $versionParameter to avoid dupplication of parameters
+  $versionParameters=array("V4.4.0"=>array('enforceUTF8'=>true)); // V4.4.0 set enforceUTF8 only for new fresh install
 }
 /*$arrVers=explode('.',substr($currVersion,1));
 $currVer=$arrVers[0];
@@ -490,7 +491,7 @@ function runScript($vers) {
           traceLog('Parameter $' . $id . ' added');
       	}
       }
-      echo i18n('newParameters', array($nbParam, $vers));
+      //echo i18n('newParameters', array($nbParam, $vers));
       echo '<br/>' . "\n";
     }
     fclose($handle);
