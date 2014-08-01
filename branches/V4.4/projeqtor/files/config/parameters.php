@@ -11,7 +11,7 @@ $paramDbName='projeqtor_v44';$paramDbPrefix='';
 //$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
 $paramDbHost='127.0.0.1';
 $logFile='../files/logs/projeqtor_${date}.log';
-$logLevel='3';
+$logLevel='4';
 $paramDebugMode='false';
 $flashReport=true;
 //$debugQuery=true;

@@ -29,6 +29,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>   
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="keywork" content="projeqtor, project management" />
+  <meta name="author" content="projeqtor" />
+  <meta name="Copyright" content="Pascal BERNARD" />
   <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />

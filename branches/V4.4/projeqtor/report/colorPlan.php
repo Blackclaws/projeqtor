@@ -185,7 +185,7 @@ for($i=1; $i<=$nbDays;$i++) {
 }
 
 echo '</tr>';
-natcasesort($resources);
+asort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);

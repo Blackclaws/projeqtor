@@ -1244,8 +1244,10 @@ function getIP(){
  *    'OWN' => only own elements
  *    'ALL' => any element
  */
-function securityGetAccessRight($menuName, $accessType, $obj=null) {
-  $user=$_SESSION['user'];
+function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
+	if (!$user) {
+    $user=$_SESSION['user'];
+	}
   $accessRightList=$user->getAccessControlRights();  
   $accessRight='ALL';
   if ($accessType=='update' and $obj and $obj->id==null) {
@@ -1266,7 +1268,7 @@ function securityGetAccessRight($menuName, $accessType, $obj=null) {
  * @param $accessType requested access type : 'read', 'create', 'update', 'delete'
  * @return the right as Yes or No (depending on object properties) 
  */
-function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
+function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=null) {
   // ATTENTION, NOT FOR READ ACCESS
   
 	if (! class_exists(substr($menuName,4))) {
@@ -1278,16 +1280,17 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null) {
   if (property_exists(substr($menuName,4),'_readOnly') and $accessType!='read') {
   	return 'NO';
   }
-  if (! array_key_exists('user', $_SESSION)) {
-  	global $maintenance;
-  	if ($maintenance) {
-  		return 'YES';
-  	}
-  } else {
-    $user=$_SESSION['user'];
+  if (! $user) {
+	  if (! array_key_exists('user', $_SESSION)) {
+	  	global $maintenance;
+	  	if ($maintenance) {
+	  		return 'YES';
+	  	}
+	  } else {
+	    $user=$_SESSION['user'];
+	  }
   }
- 
-  $accessRight=securityGetAccessRight($menuName, $accessType, $obj);
+  $accessRight=securityGetAccessRight($menuName, $accessType, $obj, $user);
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN')?'NO':'YES';
   } else if ($accessType=='update' or $accessType=='delete' or $accessType='read') {

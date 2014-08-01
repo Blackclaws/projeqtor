@@ -189,6 +189,7 @@ $globalSum=array();
 for ($i=1; $i<=$nbDays;$i++) {
   $globalSum[$startDate+$i-1]='';
 }
+asort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);

@@ -1,6 +1,9 @@
 <?php 
 // Header
 //echo "<page_header>";
+if (Parameter::getGlobalParameter('logLevel')>='4') {
+  echo $_SERVER['SCRIPT_FILENAME'];
+}
 projeqtor_set_time_limit(300);
 projeqtor_set_memory_limit('512M');
 
