@@ -2202,6 +2202,11 @@ abstract class SqlElement {
 				if ($colName=='idProject' and property_exists($this,'idResource')) {
 					$colScript .= '   refreshList("idResource","idProject", this.value, "' . $this->idResource. '");';
 				}
+				if ($colName=='idProject' and property_exists($this,'idProduct')) {
+					//$colScript .= 'alert("1");';
+					$colScript .= '   refreshList("idProduct","idProject", this.value, dijit.byId("idProduct").get("value"));';
+					//$colScript .= 'alert("2");';
+				}
 				$arrVers=array('idVersion','idOriginalVersion','idTargetVersion','idTestCase','idRequirement');
 				$versionExists=false;
 				foreach ($arrVers as $vers) {
@@ -2854,7 +2859,7 @@ abstract class SqlElement {
 							if ($usr and $usr->id) {
 								$canRead=(securityGetAccessRightYesNo('menu' . get_class($this), 'read', $this, $usr)=='YES');
 							}
-							if ($canRead) {
+							if ($canRead and ! $resource->dontReceiveTeamMails) {
 								$newDest = "###" . $resource->email . "###";
 								if ($resource->email and strpos($dest,$newDest)===false) {
 									$dest.=($dest)?', ':'';

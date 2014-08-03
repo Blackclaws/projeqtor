@@ -337,15 +337,22 @@ class IndicatorValue extends SqlElement {
       if ($affList and count($affList)>0) {
         foreach ($affList as $aff) {
           $resource=new Resource($aff->idResource);
-          if ($def->alertToProject and $resource->isUser) {
-          	$arrayAlertDest[$resource->id]=$resource->name;
+          $usr=new User($aff->idResource);
+          $canRead=false;
+          if ($usr and $usr->id) {
+          	$canRead=(securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj, $usr)=='YES');
           }
-          if ($def->mailToProject) {
-            $newDest = "###" . $resource->email . "###";
-            if ($resource->email and strpos($dest,$newDest)===false) {
-              $dest.=($dest)?', ':'';
-              $dest.= $newDest;
-            }
+          if ($canRead and ! $resource->dontReceiveTeamMails) {
+	          if ($def->alertToProject and $resource->isUser) {
+	          	$arrayAlertDest[$resource->id]=$resource->name;
+	          }
+	          if ($def->mailToProject) {
+	            $newDest = "###" . $resource->email . "###";
+	            if ($resource->email and strpos($dest,$newDest)===false) {
+	              $dest.=($dest)?', ':'';
+	              $dest.= $newDest;
+	            }
+	          }
           }
           if (($def->mailToLeader or $def->alertToLeader) and $resource->idProfile) {
             $prf=new Profile($resource->idProfile);

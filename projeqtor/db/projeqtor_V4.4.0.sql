@@ -66,3 +66,5 @@ totalRealCost=expenseRealAmount+realCost,
 totalLeftCost=expenseLeftAmount+leftCost,
 totalValidatedCost=expenseValidatedAmount+validatedCost
 WHERE PE.refType='Project';
+
+ALTER TABLE `${prefix}resource` ADD COLUMN `dontReceiveTeamMails` int(1) unsigned DEFAULT 0;
