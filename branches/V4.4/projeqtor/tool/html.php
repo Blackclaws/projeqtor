@@ -43,7 +43,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }
     }
     asort($table);
-  } else if ($critFld) {
+  } else if ($critFld and ! ($col='idProduct' and $critFld='idProject')) {
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
     if ($col=="idProject") { 
@@ -124,6 +124,14 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         	$table[$fisrtKey]=$firstName;
         }
       }
+    } else if ($col='idProduct' and $critFld='idProject') {
+    	$restrictArray=array();
+    	$versProj=new VersionProject();
+    	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$critVal));
+    	foreach ($versProjList as $versProj) {
+    		$vers=new Version($versProj->idVersion);
+    		$restrictArray[$vers->idProduct]="OK";
+    	}
     }
   } else { // (! $obj)
   	if ($col=="idProject") {
@@ -134,6 +142,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if ($user->_accessControlVisibility != 'ALL') {
       	$restrictArray=$user->getVisibleProjects($limitToActiveProjects);
   	  }
+    }
+    if ($col=="idProduct" and $critFld='idProject') {
+   		echo '<OPTION value=" " ></OPTION>';
+    	return ;
     }
   }
   if (! $required) {

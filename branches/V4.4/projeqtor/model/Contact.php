@@ -34,6 +34,7 @@ class Contact extends SqlElement {
   public $country;  
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $dontReceiveTeamMails;
   public $password;
   
   private static $_layout='

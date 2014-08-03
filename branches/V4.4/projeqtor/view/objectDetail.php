@@ -819,7 +819,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				$critFld=null;
 				$critVal=null;
 				$valStore='';
-				if ($col=='idResource' or $col=='idActivity'
+				if ($col=='idResource' or $col=='idActivity' or $col=='idProduct'
 				or $col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
 				or $col=='idTestCase' or $col=='idRequirement'
 				or $col=='idContact' or $col=='idTicket' or $col=='idUser') {

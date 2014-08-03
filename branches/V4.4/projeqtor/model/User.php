@@ -26,6 +26,7 @@ class User extends SqlElement {
   public $apiKey;
   public $_col_2_2_Affectations;
   public $_spe_affectations;
+  public $dontReceiveTeamMails;
   public $_arrayFilters=array();
   //public $_arrayFiltersId=array();
   public $_arrayFiltersDetail=array();

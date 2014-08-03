@@ -8,7 +8,6 @@
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
     echo ' "items":[';
-    
     // If type = 'list' and $dataType = idResource : execute the listResourceProject type
     $required=true; // when directly requesting 'listResourceProject', required is by default
     if ($type=='list'
@@ -75,9 +74,20 @@
       if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
       	$user=$_SESSION['user'];
       	$list=$user->getVisibleProjects();
+      } else if ($dataType=='idProduct' and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {     	
+      	$listProd=SqlList::getList($class);
+      	$versProj=new VersionProject();
+      	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$_REQUEST['critValue']));
+      	foreach ($versProjList as $versProj) {
+      		$vers=new Version($versProj->idVersion);
+      		if (isset($listProd[$vers->idProduct])) {
+      			$list[$vers->idProduct]=$listProd[$vers->idProduct];
+      		}
+      	}
       } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $crit=array( $_REQUEST['critField'] => $_REQUEST['critValue']);
         $list=SqlList::getListWithCrit($class, $crit);
+      
       } else {
         $list=SqlList::getList($class);
       }
