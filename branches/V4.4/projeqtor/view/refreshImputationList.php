@@ -12,10 +12,30 @@ $idle=false;
 if (array_key_exists('idle',$_REQUEST)) {
     $idle=$_REQUEST['idle'];
 }
-$showPlannedWork=false;
+
+$showPlannedWork=0;
 if (array_key_exists('showPlannedWork',$_REQUEST)) {
-    $showPlannedWork=$_REQUEST['showPlannedWork'];
+    $showPlannedWork=1;
 }
+Parameter::storeUserParameter('imputationShowPlannedWork',$showPlannedWork);
+
+$hideDone=0;
+if (array_key_exists('hideDone',$_REQUEST)) {
+	$hideDone=1;
+}
+Parameter::storeUserParameter('imputationHideDone',$hideDone);
+
+$displayOnlyHandled=0;
+if (array_key_exists('$displayOnlyHandled',$_REQUEST)) {
+	$displayOnlyHandled=1;
+}
+Parameter::storeUserParameter('imputationDisplayOnlyHandled',$displayOnlyHandled);
+
+$displayOnlyCurrentWeekMeetings=0;
+if (array_key_exists('$displayOnlyCurrentWeekMeetings',$_REQUEST)) {
+	$displayOnlyCurrentWeekMeetings=1;
+}
+Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displayOnlyCurrentWeekMeetings);
 ?>
 <form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
   <input type="hidden" name="userId" id="userId" value="<?php echo $userId;?>"/>
@@ -23,9 +43,12 @@ if (array_key_exists('showPlannedWork',$_REQUEST)) {
   <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
+  <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
+  <input type="checkbox" name="displayOnlyHandled" id="displayOnlyHandled" style="display: none;" />
+  <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
   <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
-ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork);
+ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, $hideDone, $displayOnlyHandled, $displayOnlyCurrentWeekMeetings);
 ?>
 </form>

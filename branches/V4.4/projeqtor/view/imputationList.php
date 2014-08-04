@@ -16,6 +16,15 @@ if ($currentWeek==1 and strftime("%m")>10 ) {
 $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));
 $rangeValue=$currentYear . $currentWeek;
 
+$showPlanned=Parameter::getUserParameter('imputationShowPlannedWork');
+$hideDone=Parameter::getUserParameter('imputationHideDone');
+$displayOnlyHandled=Parameter::getUserParameter('imputationDisplayOnlyHandled');
+$displayOnlyHandledGlobal=Parameter::getGlobalParameter('displayOnlyHandled');
+echo "****************************".$displayOnlyHandledGlobal;
+if ($displayOnlyHandledGlobal=="YES") {
+	$displayOnlyHandled=1;
+}
+$displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOnlyCurrentWeekMeetings');
 ?>
 
 <div dojoType="dijit.layout.BorderContainer">
@@ -113,34 +122,19 @@ $rangeValue=$currentYear . $currentWeek;
                   </script>
                 </div>
               </td>
-              <td style="width: 200px;text-align: right; align: right;">
-                <?php echo i18n("labelShowIdle");?>
-                <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowIdle" name="listShowIdle">
-                  <script type="dojo/method" event="onChange" >
+              <td style="width: 10%; text-align: right; align: right;white-space:nowrap;" >
+				        &nbsp;&nbsp;<?php echo i18n("labelShowPlannedWork");?>
+				        <div title="<?php echo i18n('showPlannedWork')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+				         id="listShowPlannedWork" name="listShowPlannedWork" <?php if ($showPlanned) echo 'checked';?>>
+				          <script type="dojo/method" event="onChange" >
                     return refreshImputationList();
                   </script>
-                </div>&nbsp;
-              </td>
+				        </div>&nbsp;
+				      </td>
             </tr>
-
           </table>    
       </td>
     </tr>
-    <tr><td colspan="3">
-      <table width="100%"  >
-      <tr height="27px">
-      	<td></td>
-      	<td style="width: 200px;text-align: right; align: right;">
-      	  <?php echo i18n("labelHideDone");?>
-                <div title="<?php echo i18n('hideDoneElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listHideDone" name="listHideDone">
-                  <script type="dojo/method" event="onChange" >
-                    return refreshImputationList();
-                  </script>
-                </div>&nbsp;
-      	</td>
-      </tr>
-      </table>
-    </td></tr>
     
     <tr><td colspan="3">
 
@@ -186,12 +180,43 @@ $rangeValue=$currentYear . $currentWeek;
         <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveImputation")?></div>
       </td>
       <td >
-        <div style="width: 80%; margin: 0px 8px 4px 8px; padding: 5px;" id="resultDiv" dojoType="dijit.layout.ContentPane" region="center" >
+        <div style="position: absolute; bottom:0px; left: 300px; width: 500px; margin: 0px 8px 4px 8px; padding: 5px;" id="resultDiv" dojoType="dijit.layout.ContentPane" region="center" >
         </div>       
       </td>
-      <td width="10%" style="text-align: right; align: right;" NOWRAP>
-        <?php echo i18n("labelShowPlannedWork");?>
-        <div title="<?php echo i18n('showPlannedWork')?>" dojoType="dijit.form.CheckBox" type="checkbox" id="listShowPlannedWork" name="listShowPlannedWork" checked>
+      <td style="width: 10%;text-align: right; align: right;white-space:nowrap;" >
+      	  &nbsp;&nbsp;<?php echo i18n("labelDisplayOnlyCurrentWeekMeetings");?>
+          <div title="<?php echo i18n('labelDisplayOnlyCurrentWeekMeetings')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+          id="listDisplayOnlyCurrentWeekMeetings" name="listDisplayOnlyCurrentWeekMeetings" <?php if ($displayOnlyCurrentWeekMeetings) echo 'checked';?>>
+            <script type="dojo/method" event="onChange" >
+              return refreshImputationList();
+            </script>
+          </div>&nbsp;
+      </td>
+      <?php if (! $displayOnlyHandledGlobal=="YES") {?>
+      <td style="width: 10%;text-align: right; align: right; white-space:nowrap;">
+      <?php echo $displayOnlyHandledGlobal;?>
+      	  &nbsp;&nbsp;<?php echo i18n("labelDisplayOnlyHandled");?>
+          <div title="<?php echo i18n('labelDisplayOnlyHandled')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+          id="listDisplayOnlyHandled" name="listDisplayOnlyHandled" <?php if ($showPlanned) echo 'checked';?>>
+            <script type="dojo/method" event="onChange" >
+              return refreshImputationList();
+            </script>
+          </div>&nbsp;
+      </td>
+      <?php }?>
+      <td style="width: 10%;text-align: right; align: right; white-space:nowrap;">
+      	  &nbsp;&nbsp;<?php echo i18n("labelHideDone");?>
+          <div title="<?php echo i18n('labelHideDone')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+          id="listHideDone" name="listHideDone" <?php if ($showPlanned) echo 'checked';?>>
+            <script type="dojo/method" event="onChange" >
+              return refreshImputationList();
+            </script>
+          </div>&nbsp;
+      </td>
+      <td style="width: 10%;text-align: right; align: right; white-space:nowrap;" >
+        &nbsp;&nbsp;<?php echo i18n("labelShowIdle");?>
+        <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+          id="listShowIdle" name="listShowIdle">
           <script type="dojo/method" event="onChange" >
             return refreshImputationList();
           </script>
@@ -210,10 +235,13 @@ $rangeValue=$currentYear . $currentWeek;
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
        <input type="checkbox" name="idle" id="idle" style="display: none;" />     
        <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;" />
+       <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
+       <input type="checkbox" name="displayOnlyHandled" id="displayOnlyHandled" style="display: none;" />
+       <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
        <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
        <input type="hidden" id="outMode" name="outMode" value="" />
       <?php if (! isset($print) ) {$print=false;}
-      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $print);?>
+      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $displayOnlyHandled, $displayOnlyCurrentWeekMeetings);?>
      </form>
   </div>
 </div>
