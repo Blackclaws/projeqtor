@@ -364,6 +364,9 @@ class Requirement extends SqlElement {
     	$countTotal+=1;
     	$lstStatus[$tcr->idTestCase]=$tcr;
     }
+    // adding taking into account sub-requirements for top requirement
+    $lstReq=$this->getSqlElementsFromCriteria(array('idRequirement'=>$this->id));
+    $lstStatus=array_merge($lstStatus,$lstReq);
     foreach ($lstStatus as $tcr) { // thanks to previous treatment, this list includes only last status of test case
     	$this->countTotal+=1;
       if ($tcr->idRunStatus==1) {
@@ -390,8 +393,11 @@ class Requirement extends SqlElement {
     } else {
       $this->idRunStatus=2; // passed
     }  
-    
     $this->save();
+    if ($this->idRequirement) {
+    	$top=new Requirement($this->idRequirement);
+    	$top->updateDependencies();
+    }
   }
 }
 ?>
