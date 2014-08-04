@@ -783,36 +783,27 @@ class PlanningElement extends SqlElement {
   }
 
   public function moveTo($destId,$mode,$recursive=false) {
-//debugLog("MoveTo($destId,$mode,$recursive)");
-//debugLog("current = $this->id = $this->refType #$this->refId");  	
     $status="ERROR";
     $result="";
     $returnValue="";
     $task=null;
     $dest=new PlanningElement($destId);
-//debugLog("dest = $dest->id = $dest->refType #$dest->refId");    
     if ($dest->topRefType!=$this->topRefType
     or $dest->topRefId!=$this->topRefId) {
       $objectClass=$this->refType;
       $objectId=$this->refId;
       $task=new $objectClass($objectId);
       if ($dest->topRefType=="Project") {
-//debugLog("1 - change project"); 
       	$task->idProject=$dest->topRefId;
       	if (property_exists($task, 'idActivity')) {
       		$task->idActivity=null;
-//debugLog("2 - reset activity");      		
       	}
       	$status="OK";
       } else if ($dest->topRefType=="Activity" and property_exists($task, 'idActivity')) {
-//debugLog("3 - change project and activity");    
-//debugLog("    project $task->idProject => $dest->idProject");
-//debugLog("    activity $task->idActivity => $dest->topRefId");
       	$task->idProject=$dest->idProject;
       	$task->idActivity=$dest->topRefId;
       	$status="OK";
       } else if (! $dest->topRefType and $objectClass=='Project') {
-//debugLog("4 - move project to top");     	
       	$task->idProject=null;
       	$status="OK";
       }
@@ -862,7 +853,6 @@ class PlanningElement extends SqlElement {
     }
     if ($status=="OK" and $task and !$recursive) {
     	$resultTask=$task->save();
-//debugLog($resultTask);
     	if (stripos($resultTask,'id="lastOperationStatus" value="OK"')>0 ) {
     		$pe=new PlanningElement($this->id);
     		$pe->moveTo($destId,$mode,true);

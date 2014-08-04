@@ -14,7 +14,7 @@ require_once "../tool/projeqtor.php";
  * @return void
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
-	debugLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
+	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
 	$listType=substr($col,2);
 	$column='name';
 	if ($listType=='DocumentDirectory') {
@@ -44,17 +44,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     asort($table);
   } else if ($critFld and ! ($col=='idProduct' and $critFld=='idProject') ) {
-debugLog(" cas 1 ==>>");
     $critArray=array($critFld=>$critVal);
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
-debugLog($table);    
     if ($col=="idProject") { 
     	$wbsList=SqlList::getListWithCrit($listType,$critArray,'sortOrder',$selection);
     }  
   } else {
-debugLog(" cas 2 ==>>");  	
     $table=SqlList::getList($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
-debugLog($table);
     if ($col=="idProject") { 
     	$wbsList=SqlList::getList($listType,'sortOrder',$selection, (! $obj)?!$limitToActiveProjects:false );
     }  

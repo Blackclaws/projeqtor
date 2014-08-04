@@ -28,7 +28,6 @@ if (isset($_REQUEST['action'])) {
 $object=null;
 if (isset($_REQUEST['object'])) {
   $object=$_REQUEST['object'];
-  //debugLog($object);
 }
 $id=null;
 if (isset($_REQUEST['id'])) {
@@ -204,8 +203,6 @@ if ($id) {
 
 $curl = curl_init($fullUrl);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-//debugLog("TEST : user=$userParam password=$passwordParam");
-//debugLog("TEST : $fullUrl");
 curl_setopt($curl, CURLOPT_USERPWD, "$userParam:$passwordParam");
 //curl_setopt($curl, CURLOPT_USERPWD, "admin:admin");
 //curl_setopt($curl, CURLOPT_USERPWD, "manager:manager");
@@ -224,9 +221,7 @@ if (isset($_REQUEST['data'])) {
 	//curl_setopt($curl, CURLOPT_POSTFIELDS, array('data'=>$data));
 }
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-//debugLog("TEST : action=$action url=$fullUrl");
 $curl_response = curl_exec($curl);
-//debugLog("TEST : retour API = $curl_response"	);
 echo $action. " => ". $fullUrl;
 echo "#$#$#";
 echo $curl_response;

@@ -831,18 +831,20 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 						if ($obj->id) {
 							$critFld='idProject';
 							$critVal=$obj->idProject;
-						} else if (array_key_exists('project',$_SESSION) and $_SESSION['project']!='*') {
-							$critFld='idProject';
-							$critVal=$_SESSION['project'];
-						} else {
-							$table=SqlList::getList('Project','name',null);
-							if (count($table)>0) {
-								foreach ($table as $idTable=>$valTable) {
-									$firstId=$idTable;
-									break;
-								}
+						} else if ($obj->isAttributeSetToField('idProject','required')) {
+							if (array_key_exists('project',$_SESSION) and $_SESSION['project']!='*') {
 								$critFld='idProject';
-								$critVal=$firstId;
+								$critVal=$_SESSION['project'];
+							} else {
+								$table=SqlList::getList('Project','name',null);
+								if (count($table)>0) {
+									foreach ($table as $idTable=>$valTable) {
+										$firstId=$idTable;
+										break;
+									}
+									$critFld='idProject';
+									$critVal=$firstId;
+								}
 							}
 						}			
 					}
@@ -850,7 +852,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				// if version and idProduct exists and is set : criteria is product
 				if ( isset($obj->idProduct)
 				and ($col=='idVersion' or $col=='idOriginalVersion' or $col=='idTargetVersion'
-				or $col=='idTestCase' or $col=='idRequirement') ) {
+				or $col=='idTestCase' or ($col=='idRequirement' and $obj->idProduct)) ) {
 					$critFld='idProduct';
 					$critVal=$obj->idProduct;
 				}

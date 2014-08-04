@@ -15,7 +15,6 @@ require_once "../tool/projeqtor.php";
 require_once "../external/phpAES/aes.class.php";
 require_once "../external/phpAES/aesctr.class.php";
 $batchMode=false;
-//debugLog($_SERVER);
 // Look for user : can be found in 
 // $_SERVER['PHP_AUTH_USER']
 // $_SERVER['REMOTE_USER']
@@ -43,7 +42,7 @@ if ($username) {
 if (!$user->id) {
 	returnError($invalidQuery, "user '$username' unknown in database");
 }
-//debugLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
+traceLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
 $_SESSION['user']=$user;
 
 IF ($_SERVER['REQUEST_METHOD']=='GET') {

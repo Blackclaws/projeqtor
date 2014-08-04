@@ -74,15 +74,20 @@
       if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
       	$user=$_SESSION['user'];
       	$list=$user->getVisibleProjects();
-      } else if ($dataType=='idProduct' and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {     	
-      	$listProd=SqlList::getList($class);
-      	$versProj=new VersionProject();
-      	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$_REQUEST['critValue']));
-      	foreach ($versProjList as $versProj) {
-      		$vers=new Version($versProj->idVersion);
-      		if (isset($listProd[$vers->idProduct])) {
-      			$list[$vers->idProduct]=$listProd[$vers->idProduct];
-      		}
+      } else if ($dataType=='idProduct' and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
+      	if (trim($_REQUEST['critValue'])) {    	
+	        $list=array();
+	      	$listProd=SqlList::getList($class);
+	      	$versProj=new VersionProject();
+	      	$versProjList=$versProj->getSqlElementsFromCriteria(array('idProject'=>$_REQUEST['critValue']));
+	      	foreach ($versProjList as $versProj) {
+	      		$vers=new Version($versProj->idVersion);
+	      		if (isset($listProd[$vers->idProduct])) {
+	      			$list[$vers->idProduct]=$listProd[$vers->idProduct];
+	      		}
+	      	}
+      	} else {
+      		$list=SqlList::getList($class);
       	}
       } else if (array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
         $crit=array( $_REQUEST['critField'] => $_REQUEST['critValue']);
