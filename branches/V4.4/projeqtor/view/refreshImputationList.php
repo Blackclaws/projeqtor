@@ -25,14 +25,14 @@ if (array_key_exists('hideDone',$_REQUEST)) {
 }
 Parameter::storeUserParameter('imputationHideDone',$hideDone);
 
-$displayOnlyHandled=0;
-if (array_key_exists('$displayOnlyHandled',$_REQUEST)) {
-	$displayOnlyHandled=1;
+$hideNotHandled=0;
+if (array_key_exists('hideNotHandled',$_REQUEST)) {
+	$hideNotHandled=1;
 }
-Parameter::storeUserParameter('imputationDisplayOnlyHandled',$displayOnlyHandled);
+Parameter::storeUserParameter('imputationHideNotHandled',$hideNotHandled);
 
 $displayOnlyCurrentWeekMeetings=0;
-if (array_key_exists('$displayOnlyCurrentWeekMeetings',$_REQUEST)) {
+if (array_key_exists('displayOnlyCurrentWeekMeetings',$_REQUEST)) {
 	$displayOnlyCurrentWeekMeetings=1;
 }
 Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displayOnlyCurrentWeekMeetings);
@@ -44,11 +44,11 @@ Parameter::storeUserParameter('imputationDisplayOnlyCurrentWeekMeetings',$displa
   <input type="checkbox" name="idle" id="idle" style="display: none;"/>
   <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;">
   <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
-  <input type="checkbox" name="displayOnlyHandled" id="displayOnlyHandled" style="display: none;" />
+  <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
   <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
   <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
   <input type="hidden" id="outMode" name="outMode" value="" />
 <?php 
-ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, $hideDone, $displayOnlyHandled, $displayOnlyCurrentWeekMeetings);
+ImputationLine::drawLines($userId, $rangeType, $rangeValue, $idle, $showPlannedWork, false, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
 ?>
 </form>

@@ -18,11 +18,11 @@ $rangeValue=$currentYear . $currentWeek;
 
 $showPlanned=Parameter::getUserParameter('imputationShowPlannedWork');
 $hideDone=Parameter::getUserParameter('imputationHideDone');
-$displayOnlyHandled=Parameter::getUserParameter('imputationDisplayOnlyHandled');
-$displayOnlyHandledGlobal=Parameter::getGlobalParameter('displayOnlyHandled');
-echo "****************************".$displayOnlyHandledGlobal;
-if ($displayOnlyHandledGlobal=="YES") {
-	$displayOnlyHandled=1;
+$displayHandledGlobal=Parameter::getGlobalParameter('displayOnlyHandled');
+$hideNotHandled=Parameter::getUserParameter('imputationHideNotHandled');
+
+if ($displayHandledGlobal=="YES") {
+	$hideNotHandled=1;
 }
 $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOnlyCurrentWeekMeetings');
 ?>
@@ -36,7 +36,7 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
       </td>
       <td width="200px" ><span class="title"><?php echo i18n('menuImputation');?></span></td>
       <td>   
-          <table style="width: 100%;" class="listTitle" >
+          <table style="width: 100%;" >
             <tr>
               <td nowrap="nowrap">
                 <?php echo i18n("colIdResource");?> 
@@ -192,12 +192,11 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
             </script>
           </div>&nbsp;
       </td>
-      <?php if (! $displayOnlyHandledGlobal=="YES") {?>
+      <?php if ( $displayHandledGlobal!="YES") {?>
       <td style="width: 10%;text-align: right; align: right; white-space:nowrap;">
-      <?php echo $displayOnlyHandledGlobal;?>
-      	  &nbsp;&nbsp;<?php echo i18n("labelDisplayOnlyHandled");?>
-          <div title="<?php echo i18n('labelDisplayOnlyHandled')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
-          id="listDisplayOnlyHandled" name="listDisplayOnlyHandled" <?php if ($showPlanned) echo 'checked';?>>
+      	  &nbsp;&nbsp;<?php echo i18n("labelHideNotHandled");?>
+          <div title="<?php echo i18n('labelHideNotHandled')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
+          id="listHideNotHandled" name="listHideNotHandled" <?php if ($hideNotHandled) echo 'checked';?>>
             <script type="dojo/method" event="onChange" >
               return refreshImputationList();
             </script>
@@ -207,7 +206,7 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
       <td style="width: 10%;text-align: right; align: right; white-space:nowrap;">
       	  &nbsp;&nbsp;<?php echo i18n("labelHideDone");?>
           <div title="<?php echo i18n('labelHideDone')?>" dojoType="dijit.form.CheckBox" type="checkbox" 
-          id="listHideDone" name="listHideDone" <?php if ($showPlanned) echo 'checked';?>>
+          id="listHideDone" name="listHideDone" <?php if ($hideDone) echo 'checked';?>>
             <script type="dojo/method" event="onChange" >
               return refreshImputationList();
             </script>
@@ -236,12 +235,12 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
        <input type="checkbox" name="idle" id="idle" style="display: none;" />     
        <input type="checkbox" name="showPlannedWork" id="showPlannedWork" style="display: none;" />
        <input type="checkbox" name="hideDone" id="hideDone" style="display: none;" />
-       <input type="checkbox" name="displayOnlyHandled" id="displayOnlyHandled" style="display: none;" />
+       <input type="checkbox" name="hideNotHandled" id="hideNotHandled" style="display: none;" />
        <input type="checkbox" name="displayOnlyCurrentWeekMeetings" id="displayOnlyCurrentWeekMeetings" style="display: none;" />
        <input type="hidden" id="page" name="page" value="../report/imputation.php"/>
        <input type="hidden" id="outMode" name="outMode" value="" />
       <?php if (! isset($print) ) {$print=false;}
-      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $displayOnlyHandled, $displayOnlyCurrentWeekMeetings);?>
+      ImputationLine::drawLines($user->id, $rangeType, $rangeValue, false, $showPlanned, $print, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);?>
      </form>
   </div>
 </div>

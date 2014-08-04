@@ -50,12 +50,12 @@ class ImputationLine {
 	}
 
 	static function getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, 
-			$hideDone=false, $displayOnlyHandled=false, $displayOnlyCurrentWeekMeetings=false) {
-scriptLog("      => ImputationLine->getLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, hideDone=$hideDone, displayOnlyHandled=$displayOnlyHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");		
+			$hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
+debugLog("      => ImputationLine->getLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");		
 		// Insert new lines for admin projects
 		Assignment::insertAdministrativeLines($resourceId);
 		if (Parameter::getGlobalParameter('displayOnlyHandled')=="YES") {
-			$displayOnlyHandled=true;
+			$hideNotHandled=1;
 		}
 		$user=$_SESSION['user'];
 		$user=new User($user->id);
@@ -77,6 +77,8 @@ scriptLog("      => ImputationLine->getLines(resourceId=$resourceId, rangeType=$
 		}
 
 		$startDate=self::getFirstDay($rangeType, $rangeValue);
+		$plus=$nbDays-1;
+		$endDate=date('Y-m-d',strtotime("+$plus days", strtotime($startDate)));
 		$ass=new Assignment();
 		$assList=$ass->getSqlElementsFromCriteria($crit,false);
 		$crit=array('idResource' => $resourceId);
@@ -97,15 +99,20 @@ scriptLog("      => ImputationLine->getLines(resourceId=$resourceId, rangeType=$
 			}
 		}
 		
-		if ($displayOnlyHandled or $hideDone) {
+		if ($hideNotHandled or $hideDone or $displayOnlyCurrentWeekMeetings) {
 			foreach ($assList as $id=>$ass) {
 				if ($ass->refType and class_exists($ass->refType))
 				$refObj=new $ass->refType($ass->refId);
-				if ($displayOnlyHandled and property_exists($refObj,'handled') and ! $refObj->handled) {
+				if ($hideNotHandled and property_exists($refObj,'handled') and ! $refObj->handled) {
 					unset ($assList[$id]);
 				}
 				if ($hideDone and property_exists($refObj,'done') and $refObj->done) {
 					unset ($assList[$id]);
+				}
+				if ($displayOnlyCurrentWeekMeetings and get_class($refObj)=='Meeting') {
+					if ($refObj->meetingDate<$startDate or $refObj->meetingDate>$endDate) {
+						unset ($assList[$id]);
+					}
 				}
 			}
 		}
@@ -347,9 +354,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 	}
 
 	static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false, 
-			  $hideDone=false, $displayOnlyHandled=false, $displayOnlyCurrentWeekMeetings=false) {
+			  $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false) {
 		$outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
-debugLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, displayOnlyHandled=$displayOnlyHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");		
+debugLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");		
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
 		$user=$_SESSION['user'];		
@@ -516,7 +523,7 @@ debugLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$
 		echo '  <TD class="ganttLeftTitle" style="width: ' . $workWidth . 'px;">'
 		. i18n('colPlanned') . '</TD>';
 		echo '</TR>';
-		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $displayOnlyHandled, $displayOnlyCurrentWeekMeetings);
+		$tab=ImputationLine::getLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned, $hideDone, $hideNotHandled, $displayOnlyCurrentWeekMeetings);
 		if (! $print) {
 			echo '<input type="hidden" id="nbLines" name="nbLines" value="' . count($tab) . '" />';
 		}
