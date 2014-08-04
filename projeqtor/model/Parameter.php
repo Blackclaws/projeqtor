@@ -561,7 +561,6 @@ class Parameter extends SqlElement {
   	    $_SESSION['globalParamatersArray'][$param->parameterCode]=$param->parameterValue;
   	  }
       if (array_key_exists($code,$_SESSION['globalParamatersArray'])) {
-      	debugLog("$code = ".$_SESSION['globalParamatersArray'][$code]);	
   	    return $_SESSION['globalParamatersArray'][$code];
       } else {
       	return '';
