@@ -66,11 +66,15 @@ if ($paramProject) {
 	$vp=new VersionProject();
 	$tmpList=$vp->getSqlElementsFromCriteria(array('idProject'=>$paramProject));
 	foreach ($tmpList as $vp) {
-		$lstVersion[$vp->idVersion]=SqlList::getNameFromId('Version',$vp->idVersion);
+		$vers=new Version($vp->idVersion);
+		if (! $vers->idle) {
+			$lstVersion[$vp->idVersion]=$vers->name;
+		}
 	}
 } else {
 	$lstVersion=SqlList::getList('Version');
 }
+asort($lstVersion);
 $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 
 if ($paramTicketType!="") {

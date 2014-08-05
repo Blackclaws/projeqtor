@@ -50,14 +50,17 @@ if ($paramVersion) {
 		$vp=new VersionProject();
 		$tmpList=$vp->getSqlElementsFromCriteria(array('idProject'=>$paramProject));
 		foreach ($tmpList as $vp) {
-		  $lstVersion[$vp->idVersion]=SqlList::getNameFromId('Version',$vp->idVersion);
+			$vers=new Version($vp->idVersion);
+			if (! $vers->idle) {
+				$lstVersion[$vp->idVersion]=$vers->name;
+			}
 		}
 	} else {
     $lstVersion=SqlList::getList('Version');
 	}
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 }
-
+asort($lstVersion);
 if (checkNoData($lstVersion)) exit;
 
 $lstObj=array(new Ticket(), new Activity(), new Milestone(), new Requirement(), new TestSession());
