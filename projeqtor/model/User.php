@@ -928,7 +928,8 @@ class User extends SqlElement {
   	$cookieHash = md5(sha1($this->name . microtime()));
   	$this->cookieHash=$cookieHash;
   	$domain=$_SERVER['SERVER_NAME'];
-  	setcookie("projeqtor",$cookieHash,time()+3600*24*7,'/',$domain);
+  	if ($domain=='localhost') {$domain="";}
+  	$result=setcookie("projeqtor",$cookieHash,time()+3600*24*7,'/',$domain);
   }
   public function cleanCookieHash() {
   	$cookieHash=$this->cookieHash;
