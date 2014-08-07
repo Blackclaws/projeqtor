@@ -656,7 +656,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-					echo ' constraints="{pattern:\'###0.0#\'}"';
+					//echo ' constraints="{pattern:\'###0.0#\'}"';
 					echo ' style="width: 60px; text-align: center; " ';
 					echo ' trim="true" class="displayTransparent" readOnly="true" tabindex="-1" ';
 					echo ' id="assignedWork_' . $nbLine . '"';
@@ -672,7 +672,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-					echo ' constraints="{pattern:\'###0.0#\'}"';
+					//echo ' constraints="{pattern:\'###0.0#\'}"';
 					echo ' style="width: 60px; text-align: center;" ';
 					echo ' trim="true" class="displayTransparent" readOnly="true" tabindex="-1" ';
 					echo ' id="realWork_' . $nbLine . '"';
@@ -768,7 +768,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-					echo ' constraints="{pattern:\'###0.0#\'}"';
+					//echo ' constraints="{pattern:\'###0.0#\'}"';
 					echo '  style="width: 60px; text-align: center;" ';
 					echo ' trim="true" class="displayTransparent" readOnly="true" tabindex="-1"';
 					echo ' id="plannedWork_' . $nbLine . '"';
@@ -802,7 +802,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '"><NOBR>';
 			if (!$print) {
 				echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
-				echo ' constraints="{pattern:\'###0.0#\'}"';
+				//echo ' constraints="{pattern:\'###0.0#\'}"';
 				echo ' trim="true" disabled="true" ';
 				echo ($colSum[$i]>$capacity)?' class="imputationInvalidCapacity"':' class="displayTransparent"'; 
 				echo '  style="width: 45px; text-align: center; color: #000000 !important;" ';
