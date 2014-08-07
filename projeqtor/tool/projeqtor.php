@@ -2,7 +2,9 @@
 $projeqtor='loaded';
 spl_autoload_register('projeqtorAutoload', true);
 include_once('../model/User.php');
-session_start();              // Setup session. Must be first command.
+session_start();
+ob_clean();
+// Setup session. Must be first command.
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
@@ -26,6 +28,7 @@ $browserLocale="";
 $reportCount=0;
 include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
+
 /* ============================================================================
  * global variables
  * ============================================================================ */
@@ -51,7 +54,6 @@ if (is_file("../tool/parametersLocation.php")) {
   } 
   include_once "../tool/parameters.php"; // New in 0.6.0 : No more need to change this line if you move this file. See above.
 }
-
 $tz=Parameter::getGlobalParameter('paramDefaultTimezone');
 if ($tz) date_default_timezone_set($tz);
 if (! isset($noScriptLog)) {
@@ -2168,5 +2170,4 @@ function formatNumericInput($val) {
 	return str_replace($from,$to,$val);
 }
 //
-
 ?>

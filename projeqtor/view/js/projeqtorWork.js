@@ -154,31 +154,21 @@ function refreshImputationPeriod(directDate) {
  */
 function dispatchWorkValueChange(rowId, colId) {
 	var oldWorkValue=dojo.byId('workOldValue_' + rowId + '_' + colId).value;
-console.log("oldWorkValue="+oldWorkValue);	
 	if (oldWorkValue==null || oldWorkValue=='') {oldWorkValue=0;}		
 	var newWorkValue=dijit.byId('workValue_' + rowId + '_' + colId).get('value');
-console.log("newWorkValue="+newWorkValue);	
 	if (isNaN(newWorkValue)) {
 		newWorkValue=0;
 	}
 	var diff=newWorkValue-oldWorkValue;
-console.log("diff="+diff);	
 	// Update sum for column
 	var oldSum=dijit.byId('colSumWork_' + colId).get("value");
-console.log("oldSum="+oldSum);
 	var newSum=oldSum + diff;
-console.log("newSum="+newSum);
 	newSum=Math.round(newSum*100)/100;
-console.log("newSum="+newSum);	
 	dijit.byId('colSumWork_' + colId).set("value",newSum);
-console.log("colSumWork_="+dijit.byId('colSumWork_' + colId).get("value"));		
   //Update real work
 	var oldReal=dijit.byId('realWork_' + rowId).get("value");
-console.log("oldReal="+oldReal);	
 	var newReal=oldReal + diff;
-console.log("newReal="+newReal);	
 	dijit.byId('realWork_' + rowId).set("value",newReal);
-console.log("realWork_="+dijit.byId('realWork_' + rowId).get("value"));
   //Update left work
 	var assigned=dijit.byId('assignedWork_' + rowId).get("value");
 	var oldLeft=dijit.byId('leftWork_' + rowId).get("value");

@@ -3296,8 +3296,8 @@ function setProductValueFromVersion(field,versionId) {
 		handleAs: "text",
 		load: function(data,args) { 
 			prd=dijit.byId(field);
-			if (prd) {
-			   prd.set("value",data);	
+			if (prd) {			
+			   prd.set("value",trim(data));	
 			}
 		},
 	    error: function() {   }

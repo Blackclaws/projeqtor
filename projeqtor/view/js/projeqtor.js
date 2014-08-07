@@ -787,7 +787,6 @@ function finalizeMessageDisplay(destination, validationType) {
   if (! contentWidget) {return;};
   // fetch last message type
   var message=contentWidget.get('content'); 
-console.log(message);
   posdeb=message.indexOf('class="')+7;
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
@@ -798,7 +797,6 @@ console.log(message);
     msg=message.substr(posdeb, posfin-posdeb);
     // add the message in the message Div (left part) and prepares form to new
     // changes
-console.log(msg);
     addMessage(msg);
     //alert('validationType='+validationType);
     if (validationType) {
