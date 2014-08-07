@@ -179,3 +179,4 @@ function isThumbable($fileName) {
   	return false;
   }
 }
+?>
