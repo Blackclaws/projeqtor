@@ -474,7 +474,7 @@ class IndicatorValue extends SqlElement {
     
     $title=ucfirst(i18n($type)) .' - '. $item . ' #' . $id; 
     $message='<table>';
-    $message.='<tr><td colspan="3" style="border:1px solid grey">' . htmlEncode($name) . '</td></tr>';
+    $message.='<tr><td colspan="3" style="border:1px solid grey; cursor:pointer;" onClick="gotoElement(\''.get_class($obj).'\','.$obj->id.');">' . htmlEncode($name) . '</td></tr>';
     $message.='<tr><td width="35%" align="right" valign="top">' . i18n('colIdIndicator') . '</td><td valign="top">&nbsp;:&nbsp;</td><td valign="top">' . $indicator . '</td>';
     $message.='<tr><td width="35%" align="right">' . i18n('targetValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $target . '</td>';
     $message.=($warningTarget and $type=="WARNING")?'<tr><td width="35%" align="right">' . i18n('warningValue') . '</td><td>&nbsp;:&nbsp;</td><td>' . $warningTarget . '</td>':'';

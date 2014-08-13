@@ -6,3 +6,4 @@ require_once "../tool/projeqtor.php";
 $idVersion=$_REQUEST['idVersion'];
 $vers=new Version($idVersion);
 echo $vers->idProduct;
+?>

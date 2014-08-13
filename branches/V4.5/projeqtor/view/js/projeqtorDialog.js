@@ -3294,7 +3294,7 @@ function setProductValueFromVersion(field,versionId) {
   dojo.xhrGet({
 		url: "../tool/getProductValueFromVersion.php?idVersion="+versionId,
 		handleAs: "text",
-		load: function(data,args) { 
+		load: function(data,args) {
 			prd=dijit.byId(field);
 			if (prd) {			
 			   prd.set("value",trim(data));	
