@@ -2519,6 +2519,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
 	}
 	echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus'). '</td>';
 	echo '</tr>';
+	asort($list);
 	foreach($list as $tcr) {
 		if ($otherClass=='TestCase') {
 			$tc=new TestCase($tcr->idTestCase);
