@@ -1,5 +1,9 @@
-﻿// Access Profile
-UPDATE `${prefix}accessprofile` SET description='Lecture seule sur les elements de ses projets' WHERE name='accessProfileRestrictedReader';
+-- ///////////////////////////////////////////////////////////
+-- // PROJECTOR TRANSLATION PLUGIN                          //
+-- ///////////////////////////////////////////////////////////
+
+-- Access Profile 
+UPDATE `${prefix}accessprofile` SET description='Lecture seule sur les éléments de ses projets' WHERE name='accessProfileRestrictedReader';
 UPDATE `${prefix}accessprofile` SET description='Lecture seule sur les éléments de tous les projets' WHERE name='accessProfileGlobalReader';
 UPDATE `${prefix}accessprofile` SET description='Lecture et mise à jour sur les éléments de ses projets' WHERE name='accessProfileRestrictedUpdater';
 UPDATE `${prefix}accessprofile` SET description='Lecture  et mise à jour sur les éléments de tous les projets' WHERE name='accessProfileGlobalUpdater';
@@ -19,5 +23,4 @@ UPDATE `${prefix}accessprofile` SET description='Aucun accès autorisé' WHERE n
 UPDATE `${prefix}accessprofile` SET description='Lecture uniquement sur les éléments pour lesquels il est déclaré comme créateur
 Creation impossible' WHERE name='accessReadOwnOnly';
 
-// accessprofile
- 
+-- status

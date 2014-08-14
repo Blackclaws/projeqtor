@@ -38,6 +38,8 @@ function load($plugin) {
   		echo "cannot find Sql file for plugin $plugin";
   		exit;
   	}
+  	//$enforceUTF8=true;
+  	//Sql::query("SET NAMES utf8");
   	runScript(null,$sqlfile);
   }
   // TODO : delete zip file (in the end when all is OK
