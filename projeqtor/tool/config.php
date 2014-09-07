@@ -1,4 +1,29 @@
 <?php
+/*** COPYRIGHT NOTICE *********************************************************
+ *
+ * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Contributors : -
+ *
+ * This file is part of ProjeQtOr.
+ * 
+ * ProjeQtOr is free software: you can redistribute it and/or modify it under 
+ * the terms of the GNU General Public License as published by the Free 
+ * Software Foundation, either version 3 of the License, or (at your option) 
+ * any later version.
+ * 
+ * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can get complete code of ProjeQtOr, other resource, help and information
+ * about contributors at http://www.projeqtor.org 
+ *     
+ *** DO NOT REMOVE THIS NOTICE ************************************************/
+
 // ==================================================================================================
 // This file includes all specific parameters for ProjeQtOr application
 // Automatic configuration at first run
@@ -172,9 +197,9 @@ $label['crlf04']='crlf';
 // === i18n (internationalization)
 $param['DefaultLocale'] = 'en';                              
 $label['DefaultLocale'] = "Default locale to be used on i18n";
-$value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'de' for German (more locales to come next)";
+$value['DefaultLocale'] = "default language, 'en' for English, 'fr' for French, 'de' for German, es for Spanish, pt for Portuguese, pt-br for Portuguese (Brazil), ru for Russian, zh for Chinese, nl for Dutch, fa for Farsi (Persian), ja for Japanese (more locales to come next)";
 $pname['DefaultLocale'] = 'paramDefaultLocale';
-$ctrls['DefaultLocale'] = '=en=fr=de=es=ru=zh=';
+$ctrls['DefaultLocale'] = '=en=fr=de=es=pt=pt-br=ru=zh=nl=fa=ja=';
 
 $param['DefaultTimezone'] = 'Europe/Paris';                              
 $label['DefaultTimezone'] = "Default time zone";
