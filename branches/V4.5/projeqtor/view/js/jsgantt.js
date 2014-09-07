@@ -1,5 +1,6 @@
+/*** COPYRIGHT NOTICE *********************************************************
 /*
-=> Closing Sub 2 or Sub 2.2 or Act 2.2 : OKCopyright (c) 2009, Shlomy Gantz BlueBrick Inc. All rights reserved.
+* Copyright (c) 2009, Shlomy Gantz BlueBrick Inc. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -22,7 +23,29 @@
 * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+* 
+* =============================================================================
+* 
+* This file has bee adapted and is part of ProjeQtOr.
+* 
+* ProjeQtOr is free software: you can redistribute it and/or modify it under 
+* the terms of the GNU General Public License as published by the Free 
+* Software Foundation, either version 3 of the License, or (at your option) 
+* any later version.
+* 
+* ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+* FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+* more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
+*
+* You can get complete code of ProjeQtOr, other resource, help and information
+* about contributors at http://www.projeqtor.org 
+*     
+*** DO NOT REMOVE THIS NOTICE ************************************************/
+
 
 /**
  * JSGantt component is a UI control that displays gantt charts based by using
