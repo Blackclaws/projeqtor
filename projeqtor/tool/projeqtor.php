@@ -709,10 +709,10 @@ scriptLog('sendMail_phpmailer');
     $mail->idUser=$_SESSION['user']->id;
   }
   if ($object) {
-    $mail->idProject=$object->idProject;
+    $mail->idProject=(property_exists($object, 'idProject'))?$object->idProject:null;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
     $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
+    $mail->idStatus=(property_exists($object, 'idStatus'))?$object->idStatus:null;
   }
   $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
@@ -856,10 +856,10 @@ scriptLog('sendMail_socket');
     $mail->idUser=$_SESSION['user']->id;
   }
   if ($object) {
-    $mail->idProject=$object->idProject;
+    $mail->idProject=(property_exists($object, 'idProject'))?$object->idProject:null;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
     $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
+    $mail->idStatus=(property_exists($object, 'idStatus'))?$object->idStatus:null;
   }
   $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
@@ -1029,10 +1029,10 @@ scriptLog('sendMail_mail');
     $mail->idUser=$_SESSION['user']->id;
   }
   if ($object) {
-    $mail->idProject=$object->idProject;
+    $mail->idProject=(property_exists($object, 'idProject'))?$object->idProject:null;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
     $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
+    $mail->idStatus=(property_exists($object, 'idStatus'))?$object->idStatus:null;
   }
   $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
