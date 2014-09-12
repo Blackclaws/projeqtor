@@ -357,7 +357,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
   </script>
 </head>
 
-<body id="body" class="ProjeQtOr" onLoad="hideWait();" style="overflow: auto; ">
+<body id="body" class="tundra ProjeQtOr" onLoad="hideWait();" style="overflow: auto; ">
   <div id="waitLogin" >
   </div> 
   <table align="left" valign="top" width="100%" height="100%" class="background">
@@ -370,7 +370,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
       <td>
         <div class="siteH1" >Configuration</div>
         <br/>
-        <div class="siteH2">This screen will help you configure Project'Or RIA at first run.</div>
+        <div class="siteH2">This screen will help you configure ProjeQtOr at first run.</div>
         <br/>
       </td>
     </tr>
