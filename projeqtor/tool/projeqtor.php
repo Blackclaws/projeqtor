@@ -733,10 +733,10 @@ scriptLog('sendMail_phpmailer');
     $mail->idUser=$_SESSION['user']->id;
   }
   if ($object) {
-    $mail->idProject=$object->idProject;
+    $mail->idProject=(property_exists($object, 'idProject'))?$object->idProject:null;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
     $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
+    $mail->idStatus=(property_exists($object, 'idStatus'))?$object->idStatus:null;
   }
   $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
@@ -880,10 +880,10 @@ scriptLog('sendMail_socket');
     $mail->idUser=$_SESSION['user']->id;
   }
   if ($object) {
-    $mail->idProject=$object->idProject;
+    $mail->idProject=(property_exists($object, 'idProject'))?$object->idProject:null;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
     $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
+    $mail->idStatus=(property_exists($object, 'idStatus'))?$object->idStatus:null;
   }
   $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
@@ -1053,10 +1053,10 @@ scriptLog('sendMail_mail');
     $mail->idUser=$_SESSION['user']->id;
   }
   if ($object) {
-    $mail->idProject=$object->idProject;
+    $mail->idProject=(property_exists($object, 'idProject'))?$object->idProject:null;
     $mail->idMailable=SqlList::getIdFromName('Mailable',get_class($object));
     $mail->refId=$object->id;
-    $mail->idStatus=$object->idStatus;
+    $mail->idStatus=(property_exists($object, 'idStatus'))?$object->idStatus:null;
   }
   $mail->mailDateTime=date('Y-m-d H:i');
   $mail->mailTo=$to;
@@ -2172,13 +2172,23 @@ function projeqtor_set_memory_limit($memory) {
 }
 
 function setSessionValue($code,$value) {
-	$_SESSION[$code]=$value;
+	global $paramDbName, $paramDbPrefix;
+	$projeqtorSession='ProjeQtOr_'.$paramDbName.(($paramDbPrefix)?'_'.$paramDbPrefix:'');
+	if (! isset($_SESSION[$projeqtorSession])) {
+		$_SESSION[$projeqtorSession]=array();
+	}
+	$_SESSION[$projeqtorSession][$code]=$value;
 }
 function getSessionValue($code, $default=null) {
-	if (! isset($_SESSION[$code])) { 
+	global $paramDbName, $paramDbPrefix;
+	$projeqtorSession='ProjeQtOr_'.$paramDbName.(($paramDbPrefix)?'_'.$paramDbPrefix:'');
+	if (! isset($_SESSION[$projeqtorSession])) {
 		return $default;
 	}
-	return $_SESSION[$code];
+	if (! isset($_SESSION[$projeqtorSession][$code])) { 
+		return $default;
+	}
+	return $_SESSION[$projeqtorSession][$code];
 }
 
 function formatNumericOutput($val) {
