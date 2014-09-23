@@ -1949,6 +1949,14 @@ table.dijitCalendarContainer {
   direction: rtl;
 }
 
+.dijitEditorIconBackBtn {
+  background-position: -630px;
+}
+
+.dijitEditorIconNextBtn {
+  background-position: -648px;
+}
+
 .dijitRtl .dijitMenuItem {
   text-align: right;
 }
