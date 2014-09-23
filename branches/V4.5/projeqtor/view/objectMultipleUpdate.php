@@ -356,7 +356,7 @@ function isDisplayable($obj, $field, $fromPlanningElement=false) {
     return true;
   } else {
     $pe=get_class($obj).'PlanningElement';
-    if ($fromPlanningElement and property_exists($obj,$pe) and is_object($obj->$pe)) {
+    if ($fromPlanningElement and property_exists($obj,$pe) and is_object($obj->$pe) and property_exists($obj->$pe,$field)) {
       $peObj=$obj->$pe;
       if (! $peObj->isAttributeSetToField($field,'readonly')
       and ! $peObj->isAttributeSetToField($field,'hidden') ) {

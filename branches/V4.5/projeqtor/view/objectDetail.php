@@ -2318,8 +2318,7 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
 		}
 		echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
 		echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
-		if($rcost->idRole==7) echo " / " . i18n('shortMonth');
-		else echo " / " . i18n('shortDay');
+		echo " / " . i18n('shortDay');
 		echo '</td>';
 		echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
 		echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';

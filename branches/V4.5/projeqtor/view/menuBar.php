@@ -181,7 +181,7 @@
        title="<?php echo i18n('buttonUndoItem');?>"
        disabled="disabled"
        style="position:relative;left: 12px; z-index:30;"
-       iconClass="dijitEditorIcon dijitEditorIconUndo" >
+       iconClass="dijitEditorIcon dijitEditorIconBackBtn" >
         <script type="dojo/connect" event="onClick" args="evt">
           undoItemButton();
         </script>
@@ -190,7 +190,7 @@
        title="<?php echo i18n('buttonRedoItem');?>"
        disabled="disabled"
        style="position:relative;left: 6px; z-index:30"
-       iconClass="dijitEditorIcon dijitEditorIconRedo" >
+       iconClass="dijitEditorIcon dijitEditorIconNextBtn" >
         <script type="dojo/connect" event="onClick" args="evt">
           redoItemButton();
         </script>
