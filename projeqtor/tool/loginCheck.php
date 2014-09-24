@@ -53,7 +53,7 @@
       exit;
     }
   }   
-  if (Sql::getDbVersion()!=$version and Sql::getDbVersion()<'V3.0.0') {
+  if (Sql::getDbVersion() and Sql::getDbVersion()!=$version and version_compare(substr(Sql::getDbVersion(),1), '3.0.0','<')) {
   	User::setOldUserStyle();
   }
   $obj=new User();
