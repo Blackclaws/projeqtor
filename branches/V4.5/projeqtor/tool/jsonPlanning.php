@@ -118,7 +118,8 @@
   }
   $queryWhere.= ($queryWhere=='')?'':' and ';
   if ($portfolio) {
-  	$queryWhere.=getAccesResctictionClause('Project',$table);
+  	//$queryWhere.=getAccesResctictionClause('Project',$table);
+  	$queryWhere.='('.getAccesResctictionClause('Project',$table).' OR '.getAccesResctictionClause('Milestone',$table).')';
   } else {
     $queryWhere.=getAccesResctictionClause('Activity',$table);
   }
