@@ -250,6 +250,7 @@ class WorkElement extends SqlElement {
 		}
 		return $result;
 	}
+	
 	private function updateAssignment($work, $diff) {
 		if ($work->refType != 'Activity') {
 			return null;
