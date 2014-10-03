@@ -865,6 +865,11 @@ label, .label {
 	color : #ff0000;
 	font-weight: normal;
 }
+.imputationValidCapacity {
+	background-color : #77ff77;
+	color : #ff0000;
+	font-weight: normal;
+}
 
 .parametersButton {
 	width:35px; 
