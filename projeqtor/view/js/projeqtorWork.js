@@ -302,10 +302,13 @@ function checkCapacity() {
 	if (valSum > capacity) {
 		//dojo.style('colSumWork_' + colId, "backgroung","red");
 		dijit.byId('colSumWork_' + colId).set("class","imputationInvalidCapacity");
-	} else {
+	} if (valSum < capacity) {
 		dijit.byId('colSumWork_' + colId).set("class","displayTransparent");
 		//domClass.remove('colSumWork_' + colId, "imputationInvalidCapacity");
-	}  
+	} else {
+		//dojo.style('colSumWork_' + colId, "backgroung","red");
+		dijit.byId('colSumWork_' + colId).set("class","imputationValidCapacity");
+	}   
   }
 }
 
