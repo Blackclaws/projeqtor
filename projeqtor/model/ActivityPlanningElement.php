@@ -226,10 +226,12 @@ class ActivityPlanningElement extends PlanningElement {
   	$this->workElementEstimatedWork=0;
   	$this->workElementRealWork=0;
   	$this->workElementLeftWork=0;
+  	$this->workElementCount=0;
   	foreach ($weList as $we) {
   		$this->workElementEstimatedWork+=$we->plannedWork;
   		$this->workElementRealWork+=$we->realWork;
   		$this->workElementLeftWork+=$we->leftWork;
+  		$this->workElementCount+=1;
   	}
   	$this->simpleSave();
   }

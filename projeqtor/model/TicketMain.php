@@ -332,6 +332,16 @@ class TicketMain extends SqlElement {
       	$duplicate->save();
       }
   	}
+  	if ($old->idActivity and $old->idActivity!=$this->idActivity) {
+  		// if top activity changed, must update corresponding Planning element for ticket work summary
+  		$ape = SqlElement::getSingleSqlElementFromCriteria ( 'ActivityPlanningElement', array (
+  				'refType' => 'Activity',
+  				'refId' => $old->idActivity
+  		) );
+  		if ($ape and $ape->id) {
+  			$ape->updateWorkElementSummary ();
+  		} 
+  	}
   	return $result;
   }
 
