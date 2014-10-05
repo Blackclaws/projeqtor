@@ -1302,9 +1302,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 	               <div id="copyWithStructure" name="copyWithStructure" dojoType="dijit.form.CheckBox" type="checkbox" 
 	                checked >
 	               </div>
-               </div>
+	               <br />
+                 <label for="copyWithAssignments" style="width:90%;text-align: right;"><?php echo i18n("copyAssignments") ?>&nbsp;:&nbsp;</label>
+                 <div id="copyWithAssignments" name="copyWithAssignments" dojoType="dijit.form.CheckBox" type="checkbox" 
+                   >
+                 </div>
+              </div>
              </td>
            </tr>
+           
            <tr>
              <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
                <label for="copyToOrigin" style="width:90%;text-align: right;"><?php echo i18n("copyToOrigin") ?>&nbsp;:&nbsp;</label>
