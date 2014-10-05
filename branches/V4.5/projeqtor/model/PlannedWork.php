@@ -213,8 +213,9 @@ class PlannedWork extends GeneralWork {
       	}
         $step=1;
       } else if ($profile=="ASAP" or $profile=="GROUP") { // As soon as possible
-        $startPlan=$plan->validatedStartDate;
-        $endPlan=null;
+        //$startPlan=$plan->validatedStartDate;
+      	$startPlan=$startDate; // V4.5.0 : if validated is fixed, must not be concidered as "Must not start before"
+      	$endPlan=null;
         $step=1;
       } else if ($profile=="ALAP") { // As late as possible (before end date)
           $startPlan=$plan->validatedEndDate;

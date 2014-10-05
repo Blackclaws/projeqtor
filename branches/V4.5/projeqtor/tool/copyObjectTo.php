@@ -95,10 +95,13 @@ if (array_key_exists('copyWithStructure',$_REQUEST)) {
     $copyWithStructure=true; 
 	}
 }
-
+$copyAssignments=false;
+if (array_key_exists('copyWithAssignments',$_REQUEST)) {
+	$copyAssignments=true;
+}
 Sql::beginTransaction();
 // copy from existing object
-$newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, false);
+$newObj=$obj->copyTo($toClassName,$toType, $toName, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
 // save the new object to session (modified status)
 $result=$newObj->_copyResult;
 unset($newObj->_copyResult);
