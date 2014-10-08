@@ -9,11 +9,12 @@ $paramDbName='projeqtor_v45';$paramDbPrefix='';
 //$paramDbName='steria'; $paramDbPrefix='';
 //$paramDbName='sante'; $paramDbPrefix='';
 //$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
-//$paramDbName='ael'; $paramDbPrefix='ael_';
+$paramDbName='ael'; $paramDbPrefix='ael_';
 $paramDbHost='127.0.0.1';
 $logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
 $flashReport=true;
-//$debugQuery=true;
-//======= END
+$debugQuery=true;
+//======= END// New parameters V4.4.0
+$enforceUTF8 = '1';
