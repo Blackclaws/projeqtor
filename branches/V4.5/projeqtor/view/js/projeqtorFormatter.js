@@ -100,7 +100,6 @@ function colorFormatter(value) {
  * @return the formatted value as an image (html code)
  */
 function colorNameFormatter(value) {
-console.log("colorNameFormatter for value="+value);
   if (value) {
   	var tab=value.split("#split#");
   	if (tab.length>1) {
