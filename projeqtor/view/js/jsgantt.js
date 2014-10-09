@@ -517,7 +517,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
       }
       vMinDate.setHours(0, 0, 0, 0);
       vMaxDate.setHours(23, 59, 59, 0);
-      vNumDays = (Date.parse(vMaxDate) - Date.parse(vMinDate)) / ( 24 * 60 * 60 * 1000);
+      //must remove 1 hour in case of Winter / Summer Time Change Ticket #1550
+      vNumDays = (Date.parse(vMaxDate) - Date.parse(vMinDate) - 1000*60*60) / ( 24 * 60 * 60 * 1000); 
       vNumDays = Math.ceil(vNumDays);
       vNumUnits = vNumDays / vColUnit;
       vNumUnits=Math.round(vNumUnits);
