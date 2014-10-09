@@ -677,7 +677,7 @@ confirmResetList: "[this operation will reset list display to its default value.
 connectionsDurationPerDay: "Connections duration per day",
 connectionsNumberPerDay: "[Connections number per day]",
 Console: "消息对话",
-consolidateAlways: "[alway]",
+consolidateAlways: "[always]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",
 Contact: "联系人",

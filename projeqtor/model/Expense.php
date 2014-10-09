@@ -178,11 +178,11 @@ class Expense extends SqlElement {
     //  $result.= '<br/>' . i18n('msgEnterRPDate');
     //}
     if ( ($this->plannedAmount and ! $this->expensePlannedDate ) 
-      or (! $this->plannedAmount and $this->expensePlannedDate ) ){
+      or (! $this->plannedAmount and $this->plannedAmount!=='0'  and $this->expensePlannedDate ) ){
       $result.= '<br/>' . i18n('msgEnterPlannedDA');	
     }
     if ( ($this->realAmount and ! $this->expenseRealDate ) 
-      or (! $this->realAmount and $this->expenseRealDate ) ){
+      or ( ! $this->realAmount and $this->realAmount!=='0' and $this->expenseRealDate ) ){
       $result.= '<br/>' . i18n('msgEnterRealDA');  
     }
     if ($result=="") {

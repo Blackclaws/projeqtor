@@ -677,7 +677,7 @@ confirmResetList: "esta operação irá reinicializar a apresentação da lista 
 connectionsDurationPerDay: "Connections duration per day",
 connectionsNumberPerDay: "Número de ligações por dia",
 Console: "Mensagens de consola",
-consolidateAlways: "[alway]",
+consolidateAlways: "[always]",
 consolidateIfSet: "[only if set (don't erase parents)]",
 consolidateNever: "[never]",
 Contact: "Contacto",

@@ -296,13 +296,13 @@ function submitWorkPeriod(action) {
 }
 
 function checkCapacity() {
-  var capacity=dojo.byId('resourceCapacity').value;
+  var capacity=parseFloat(dojo.byId('resourceCapacity').value);
   for (colId=1; colId<=7; colId++) {
-	valSum=dijit.byId('colSumWork_' + colId).get("value");  
+	valSum=parseFloat(dijit.byId('colSumWork_' + colId).get("value"));
 	if (valSum > capacity) {
 		//dojo.style('colSumWork_' + colId, "backgroung","red");
 		dijit.byId('colSumWork_' + colId).set("class","imputationInvalidCapacity");
-	} if (valSum < capacity) {
+	} else if (valSum < capacity) {
 		dijit.byId('colSumWork_' + colId).set("class","displayTransparent");
 		//domClass.remove('colSumWork_' + colId, "imputationInvalidCapacity");
 	} else {
