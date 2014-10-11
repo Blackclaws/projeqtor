@@ -166,11 +166,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			$internalTableCurrentRow=0;
 			$colWidth = ( $detailWidth) / $nbCol;
 			if (is_subclass_of($obj,'PlanningElement') and $internalTableRows>=3) {
-				if ($workVisibility=='NO') {
-					$internalTableRowsCaptions[$internalTableRows-2]='';
-				}
-				if ($costVisibility=='NO') {
-					$internalTableRowsCaptions[$internalTableRows-1]='';
+				for ($i=0;$i<$internalTableRows;$i++) {
+					$testRowCaption=strtolower($internalTableRowsCaptions[$i]);
+					if ($workVisibility=='NO' and substr($testRowCaption,-4)=='work') {
+						$internalTableRowsCaptions[$i]='';
+					}
+					if ($costVisibility=='NO' and (substr($testRowCaption,-4)=='cost' or substr($testRowCaption,-7)=='expense')) {
+						$internalTableRowsCaptions[$i]='';
+					}
 				}
 				if ($workVisibility!='ALL' and $costVisibility!='ALL') {
 					$val[2]='';
