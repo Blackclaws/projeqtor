@@ -477,7 +477,8 @@ class PlanningElement extends SqlElement {
    * @param $col the nale of the property
    * @return a boolean 
    */
-  private function updateSynthesisObj () {
+  protected function updateSynthesisObj ($doNotSave=false) {
+debugLog("----- updateSynthesisObj for ".get_class($this)." #$this->id $this->refName with doNotSave=$doNotSave");  	
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
   	$this->validatedCalculated=0;
     $assignedWork=0;
@@ -490,6 +491,7 @@ class PlanningElement extends SqlElement {
     $plannedCost=0;
     $realCost=0;
     $validatedCost=0;
+    $validatedExpense=0;
     $this->_noHistory=true;
     // Add data from assignments directly linked to this item
     $critAss=array("refType"=>$this->refType, "refId"=>$this->refId);
@@ -590,14 +592,14 @@ class PlanningElement extends SqlElement {
     		$this->validatedCost=$validatedCost;
     		$this->validatedCalculated=1;
     	}
-    	
     } 
-    $this->save();
-    // Dispath to top element
-    if ($this->topId) {
-        self::updateSynthesis($this->topRefType, $this->topRefId);
+    if (! $doNotSave) {
+	    $this->save();
+	    // Dispath to top element
+	    if ($this->topId) {
+	        self::updateSynthesis($this->topRefType, $this->topRefId);
+	    }
     }
-    
   }
   
    /** =========================================================================
@@ -608,9 +610,17 @@ class PlanningElement extends SqlElement {
    */
   public static function updateSynthesis ($refType, $refId) {
     $crit=array("refType"=>$refType, "refId"=>$refId);
-    $obj=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+    $obj=SqlElement::getSingleSqlElementFromCriteria($refType.'PlanningElement', $crit);
+    if (! $obj or ! $obj->id) {
+      $obj=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+    }
     if ($obj) {
-      return $obj->updateSynthesisObj();
+    	$method='updateSynthesis'.$refType;
+    	if (method_exists($obj,$method )) {
+    		return $obj->$method();
+    	} else {
+        return $obj->updateSynthesisObj();
+    	}
     }
   } 
   
@@ -988,33 +998,30 @@ class PlanningElement extends SqlElement {
       $this->setVisibility();
     }
     if ($this->_costVisibility =='NO') {
-      if ($fieldName=='validatedCost' or $fieldName=='assignedCost'
-       or $fieldName=='plannedCost' or $fieldName=='leftCost' 
-       or $fieldName=='realCost') {
+      if (substr($fieldName,-4)=='Cost'
+       or substr($fieldName,0,7)=='expense'
+       or substr($fieldName,0,5)=='total') {
          return 'hidden';
       }
     } else if ($this->_costVisibility =='VAL') {
-      if ($fieldName=='assignedCost'
-       or $fieldName=='plannedCost' or $fieldName=='leftCost' 
-       or $fieldName=='realCost') {
+      if ( (substr($fieldName,-4)=='Cost' and $fieldName!='validatedCost')
+       or (substr($fieldName,0,7)=='expense' and $fieldName!='expenseValidatedAmount')
+       or (substr($fieldName,0,5)=='total' and $fieldName!='totalValidatedCost')) {
          return 'hidden';
       }
     }
     if ($this->_workVisibility=='NO') {
-      if ($fieldName=='validatedWork' or $fieldName=='assignedWork'
-       or $fieldName=='plannedWork' or $fieldName=='leftWork' 
-       or $fieldName=='realWork') {
+      if (substr($fieldName,-4)=='Work') {
          return 'hidden';
       }
     } else if ($this->_workVisibility=='VAL') {
-      if ($fieldName=='assignedWork'
-       or $fieldName=='plannedWork' or $fieldName=='leftWork' 
-       or $fieldName=='realWork') {
+      if ( substr($fieldName,-4)=='Work' and $fieldName!='validatedWork') {
          return 'hidden';
       }
     }
     if ($this->id and $this->validatedCalculated) {
-    	if ($fieldName=='validatedWork' or $fieldName=='validatedCost') {
+    	if ($fieldName=='validatedWork' or $fieldName=='validatedCost'
+        or ($fieldName=='expenseValidatedAmount' and $this->$fieldName>0)) {
     	  return "readonly";
     	}
     }
