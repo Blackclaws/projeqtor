@@ -15,6 +15,6 @@ $logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
 $flashReport=true;
-$debugQuery=true;
+$debugQuery=false;
 //======= END// New parameters V4.4.0
 $enforceUTF8 = '1';
