@@ -41,7 +41,7 @@ if (! isset($outMode)) {
 }
 
 if (array_key_exists('version',$_REQUEST)) {
-	echo "Rapport Flash version 2.0 [2014-02-20]";
+	echo "Projet V0.1 [2014-10-10]";
 	exit;
 }
 
@@ -412,332 +412,190 @@ if ($outMode!='pdf') {
     </div> 
   <?php }?>   
   </div>
-  
-  
-  <div style="position:relative;top:2mm; width:<?php displayWidth(100);?>;height:28mm;<?php echo $borderMain?>" >
-  <?php if ($showDecision) {?>
-    <div class="reportTableLineHeader" style="width:<?php displayWidth(48.8);?>; white-space:nowrap;"><?php displayHeader("Décisions attendues");?></div>    
-      <?php displayList($arrayDecision,5,49);?>
-  <?php }?>  
-  <?php if ($showIndicator) {
-  	$overallProgress=new OverallProgress($proj->idOverallProgress);
-    $health=new Health($proj->idHealth);
-    $trend=new Trend($proj->idTrend);
-    $quality=new Quality($proj->idQuality);?>
-    <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;">
-      <?php displayHeader("Global");?><br/>
-      <span style="font-size:150%"><i><?php echo htmlEncode($overallProgress->name);?></i></span></div>
-    <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-       <?php displayIndicator($health);?>
-      </div>
-    <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>; ">
-      <?php displayHeader("Tendance");?><br/>
-      <i>"<?php echo htmlEncode($trend->name);?>"</i></div>  
-    <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <?php displayIndicator($trend);?></div>  
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>; ">
-      <?php displayHeader("Coût");?></div>  
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <?php displayHeader("Qualité");?></div>
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
-      <?php displayHeader("Délai");?></div>
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(9.5);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <?php displayHeader("Risque");?></div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;<?php echo $border;?>">
-      <img src="../view/icons/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <?php displayIndicator($quality);?>
-      </div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
-      <img src="../view/icons/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-     <?php displayIndicator($maxRiskCriticality);?></div>    
-  <?php }?>  
-  
-  </div>  
-  
- 
-  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
-  <?php if ($showActivity) {?>
-    <div style="width:<?php displayWidth(32);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions réalisées");?></div>
-      <?php displayList($arrayActionDone,10,32);?>
-    </div>
-    <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(34);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions en cours");?></div>
-      <?php displayList($arrayActionOngoing,12,32);?>
-    </div>
-    <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(67);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions à venir");?></div>
-      <?php displayList($arrayActionTodo,12,32);?>
-    </div>
-  <?php }?>   
-  </div>
-  
-  
-  <div style="position:relative;top: 1mm; width:<?php displayWidth(100);?>;height:23mm;<?php echo $borderMain?>" >
-  <?php if ($showMilestone) {
-  $max=$maxMile;	
-  $mileWidth=90;
-  $cptDisp=count($arrayMilestone);
-  if ($cptDisp>$max) $cptDisp=$max;
-  if (count($arrayMilestone)) {
-    $mileWidth=round(90/$cptDisp,1);
-  }
-  $cptMile=count($arrayMilestone);
-  //if ($mileWidth>30) $mileWidth=30;?>
-	  <table width="100%">
-	    <tr><td class="reportTableLineHeader" style="width:10%">Jalons</td>
-	    <?php $nb=0; 
-	    foreach($arrayMilestone as $mile){
-	      $nb++;
-	      if ($nb > $max) break;?>
-	      <td style="padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>">
-	      <?php displayField($mile['name']);?></td>
-	    <?php }?>
-	    </tr>
-	    <tr><td class="reportTableLineHeader" style="width:10%">Initial</td>
-	    <?php $nb=0;
-	    foreach($arrayMilestone as $mile){
-        $nb++;
-        if ($nb > $max) break;?>
-	      <td style="padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo htmlFormatDate($mile['initial']);?></td>
-	    <?php }?>
-	    </tr>
-	    <tr><td class="reportTableLineHeader" style="width:10%">Révisé</td>
-	    <?php $nb=0;
-	    foreach($arrayMilestone as $mile){
-        $nb++;
-        if ($nb > $max) break;
-	      $color=$mile['color'];?>
-	      <td style="background-color:<?php echo $color;?>;padding-left:1mm; width:<?php echo $mileWidth;?>%;<?php echo $border?>"><?php echo htmlFormatDate($mile['display']);?></td>
-	    <?php }?>
-	    </tr>
-	  </table>
-  <?php 
-    if ($cptMile>$max) {
-      echo '<div class="reportTableLineHeader"';
-      echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'0':'0').'mm; width:10mm;">';
-      echo '...'.$max.'/'.$cptMile.'&nbsp;';
-      echo '</div>';
-    }
-  }?>
-  </div> 
-  
-  
-  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:25mm;<?php echo $borderMain?>" >
-  <?php if ($showRisk) {?>
-    <div style="position:absolute;top:0mm; width:<?php displayWidth(50);?>;height:30mm;<?php echo $borderMain?>" >
-	    <table style="width:95%">
-	       <tr>
-	         <td colspan="4" class="reportTableLineHeader" >
-	           <?php displayHeader("Alertes / Risques détectés sur le chantier et plan d'action");?>
-	         </td>
-	       </tr>
-         <tr>
-           <td  style="width:55%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Risque");?>
-           </td>
-           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Criticité");?>
-           </td>
-           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Sévérité");?>
-           </td>
-           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Probabilité");?>
-           </td>
-         </tr>
-         <?php 
-          $nb=0;
-          $max=6;
-          foreach ($arrayRisk as $risk) {
-            $nb++;
-            if ($nb>$max) break;?>
-          <tr>
-           <td  style="position:relative; width:55%; <?php echo $border;?>" >
-             <?php displayField($risk['name']);?>
-           </td>
-           <td  style="background-color:<?php echo $risk['criticalityColor'];?>;
-               color:<?php echo htmlForeColorForBackgroundColor($risk['criticalityColor'])?>;
-               text-align: center;width:15%; <?php echo $border;?>" >
-             <?php echo $risk['criticality'];?>
-           </td>
-           <td  style="background-color:<?php echo $risk['severityColor'];?>;
-               color:<?php echo htmlForeColorForBackgroundColor($risk['severityColor'])?>;
-               text-align: center;width:15%; <?php echo $border;?>" >
-             <?php echo $risk['severity'];?>
-           </td>
-           <td  style="background-color:<?php echo $risk['likelihoodColor'];?>;
-               color:<?php echo htmlForeColorForBackgroundColor($risk['likelihoodColor'])?>;
-               text-align: center; position:relative; width:15%; <?php echo $border;?>" >
-             <?php echo $risk['likelihood'];
-             if ($nb==$max and count($arrayRisk)>$max) {
-              echo '<div class="reportTableLineHeader"';
-              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-7':'0').'mm; width:10mm;">';
-              echo '...'.$nb.'/'.count($arrayRisk).'&nbsp;';
-              echo '</div>';
-             }?>
-           </td>
-          </tr>
-         <?php }?>
-	     </table>
-    </div>
-  <?php }?>
-  <?php if ($showCost) {?>
-    <div style="position:absolute;top:0mm; left:<?php displayWidth(50);?>;height:30mm;width:<?php displayWidth(50);?>;<?php echo $borderMain?>" >
-      <table style="width:100%">
-	      <tr>
-	        <td style="width:15%" class="reportTableLineHeader" >
-	          <?php displayHeader("Budget\nProjet");?>
-	        </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("AE Budgétées / Planifiées");?>
-          </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("AE Engagé");?>
-          </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("CP consommé");?>
-          </td>
-          <td style="text-align: center;width:25%" class="reportTableLineHeader" >
-            <?php displayHeader("Charge consommée de l'année (Jours Homme)");?>
-          </td>
-	      </tr>
-        <tr style="height:7mm">
-          <td style="width:15%" class="reportTableLineHeader" >
-            <?php displayHeader("TTC");?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($AEbudgetes, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($AEengages, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php echo htmlDisplayCurrency($CPconsommes, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->realWork);?>
-          </td>
-         </tr>
-         <tr style="height:7mm">
-          <td style="width:15%;border-right:#A0A0A0;">
-            
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($activitiesCost, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php displayProgress($AEengages,$AEbudgetes,27);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php displayProgress($CPconsommes,$AEengages,27);?>
-          </td>
-          <td style="text-align: center;width:25%;<?php echo $border;?>" >
-            <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->validatedWork,34);?>
-          </td>
-         </tr>
-      </table>
-    </div>
-  <?php }?>
 
   
-  <?php $fraisGeneraux=0.35;?>
+  
+  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
+
+  <?php $fraisGeneraux=0.35;$coefFG=1+$fraisGeneraux?>
     <div style="position:absolute;top:0mm; left:<?php displayWidth(0);?>;height:60mm;width:<?php displayWidth(100);?>;<?php echo $borderMain?>" >
       <table style="width:100%">
 	      <tr>
-	        <td style="width:15%" class="reportTableLineHeader" >
+	        <td style="width:10%" class="reportTableLineHeader" >
 	          <?php displayHeader("Budget Projet");?>
 	        </td>
-	      <td style="text-align: center;width:20%" class="reportTableLineHeader" >
+	      <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Vendu");?>
           </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Prévu\n(initial)");?>
           </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Réalisé\n(consommé)");?>
           </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Reste thérorique\n(prévu-réalisé)");?>
           </td>
-          <td style="text-align: center;width:25%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Reste réel\n(réévalué)");?>
           </td>
-           <td style="text-align: center;width:25%" class="reportTableLineHeader" >
+           <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Marge initiale");?>
           </td>
-          <td style="text-align: center;width:25%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Marge réelle");?>
           </td>
-          <td style="text-align: center;width:25%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Avancement Théorique");?>
           </td>
-          <td style="text-align: center;width:25%" class="reportTableLineHeader" >
+          <td style="text-align: center;width:10%" class="reportTableLineHeader" >
             <?php displayHeader("Avancement Réel");?>
           </td>
 	      </tr>
         <tr style="height:7mm">
-          <td style="width:15%" class="reportTableLineHeader" >
+          <td class="reportTableLineHeader" >
             <?php displayHeader("Charges");?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
+          <td style="text-align: center;<?php echo $border;?>" >
             <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->validatedWork, true);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
+          <td style="text-align: center;<?php echo $border;?>" >
             <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->assignedWork, true);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
+          <td style="text-align: center;<?php echo $border;?>" >
             <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->realWork, true);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->validatedWork-$proj->ProjectPlanningElement->realWork, true);?>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->assignedWork-$proj->ProjectPlanningElement->realWork, true);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
+          <td style="text-align: center;<?php echo $border;?>" >
             <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->leftWork, true);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
+          <td style="text-align: center;<?php echo $border;?>"  >
             <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->validatedWork-$proj->ProjectPlanningElement->assignedWork, true);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
+          <td style="text-align: center;<?php echo $border;?>"  >
             <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->validatedWork-$proj->ProjectPlanningElement->plannedWork, true);?>
           </td>
-           <td style="text-align: center;width:25%;<?php echo $border;?>" >
+           <td style="text-align: center;<?php echo $border;?>" >
             <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->assignedWork,34);?>
           </td>
-           <td style="text-align: center;width:25%;<?php echo $border;?>" >
+           <td style="text-align: center;<?php echo $border;?>" >
             <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->plannedWork,34);?>
           </td>
          </tr>
          <tr style="height:7mm">
-          <td style="width:15%;border-right:#A0A0A0;">
-            
+          <td class="reportTableLineHeader" >
+            <?php displayHeader("Coûts des ressources");?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($activitiesCost, true);?>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->validatedCost);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php displayProgress($AEengages,$AEbudgetes,27);?>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->assignedCost);?>
           </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php displayProgress($CPconsommes,$AEengages,27);?>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->realCost);?>
           </td>
-          <td style="text-align: center;width:25%;<?php echo $border;?>" >
-            <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->validatedWork,34);?>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->assignedCost-$proj->ProjectPlanningElement->realCost);?>
           </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->leftCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->validatedCost-$proj->ProjectPlanningElement->assignedCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->validatedCost-$proj->ProjectPlanningElement->plannedCost);?>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+         <tr style="height:7mm">
+          <td class="reportTableLineHeader" >
+            <?php displayHeader("Dépenses Matériel");?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseValidatedAmount);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseAssignedAmount);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseRealAmount);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseAssignedAmount-$proj->ProjectPlanningElement->expenseRealAmount);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseLeftAmount);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseValidatedAmount-$proj->ProjectPlanningElement->expenseAssignedAmount);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->expenseValidatedAmount-$proj->ProjectPlanningElement->expensePlannedAmount);?>
+          </td>
+          <td></td>
+          <td></td>
+         </tr>
+         </tr>
+         <tr style="height:7mm">
+          <td class="reportTableLineHeader" >
+            <?php displayHeader("Déboursé sec\n(total)");?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalValidatedCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalAssignedCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalRealCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalAssignedCost-$proj->ProjectPlanningElement->totalRealCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalLeftCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalValidatedCost-$proj->ProjectPlanningElement->totalAssignedCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalValidatedCost-$proj->ProjectPlanningElement->totalPlannedCost);?>
+          </td>
+          <td></td>
+          <td></td>
+         </tr>
+          <tr style="height:7mm">
+          <td class="reportTableLineHeader" >
+            <?php displayHeader("Déboursé/Résultat\n(Frais géné ".($fraisGeneraux*100)."%)");?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalValidatedCost);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalAssignedCost*$coefFG);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalRealCost*$coefFG);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency(($proj->ProjectPlanningElement->totalAssignedCost*$coefFG)-($proj->ProjectPlanningElement->totalRealCost*$coefFG));?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>" >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalLeftCost*$coefFG);?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalValidatedCost-($proj->ProjectPlanningElement->totalAssignedCost*$coefFG));?>
+          </td>
+          <td style="text-align: center;<?php echo $border;?>"  >
+            <?php echo htmlDisplayCurrency($proj->ProjectPlanningElement->totalValidatedCost-($proj->ProjectPlanningElement->totalPlannedCost*$coefFG));?>
+          </td>
+          <td></td>
+          <td></td>
          </tr>
       </table>
     </div>
