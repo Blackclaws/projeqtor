@@ -94,6 +94,7 @@ $projects=array();
 $projectsColor=array();
 $resources=array();
 $resourcesTeam=array();
+$resourceCapacity=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     if ($paramTeam) {
@@ -101,6 +102,7 @@ foreach ($lstWork as $work) {
       if ($team!=$paramTeam) continue;
     }
   	$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+  	$resourceCapacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idProject,$projects)) {
@@ -127,6 +129,7 @@ foreach ($lstPlanWork as $work) {
       if ($team!=$paramTeam) continue;
     }
     $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $resourceCapacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
     if ($paramTeam) {
       $resourcesTeam[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
     }
@@ -218,7 +221,10 @@ foreach ($resources as $idR=>$nameR) {
     $res=new Resource($idR);
   }
   if (!$paramTeam or $res->idTeam==$paramTeam) {
-	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR . '</td>';
+  	$capacity=$resourceCapacity[$idR];
+	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR;
+	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.$capacity.'</div>';
+	  echo '</td>';
 	  for ($i=1; $i<=$nbDays;$i++) {
 	    $day=$startDate+$i-1;
 	    $style="";
@@ -234,7 +240,7 @@ foreach ($resources as $idR=>$nameR) {
 	        if ($idP=='real') {
 	          $real=true;
 	        } else {
-	          $height=20*$val;
+	          $height=floor(20*$val/$capacity);
 	          echo "<div style='position:relative;height:" . $height . "px; background-color:" . $projectsColor[$idP] . ";' ></div>";
 	        }
 	      }
