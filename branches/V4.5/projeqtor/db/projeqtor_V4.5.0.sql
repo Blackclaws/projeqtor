@@ -10,3 +10,5 @@ UPDATE `${prefix}accessprofile` SET name='accessProfileRestrictedCreator' WHERE 
 
 INSERT INTO `${prefix}dependable` (id, `name`, `scope`, `idDefaultDependable`, `idle`) VALUES 
 (7, 'Meeting', 'PE', 1, 0);
+
+UPDATE `${prefix}planningmode` SET mandatoryStartDate=1, mandatoryEndDate=1 WHERE code='HALF';

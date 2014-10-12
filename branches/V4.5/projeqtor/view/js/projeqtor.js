@@ -2485,6 +2485,7 @@ function connect(resetPassword) {
 
 function addNewItem(item) {
 	dojo.byId('objectClass').value=item;
+	dojo.byId('objectId').value=null;
 	loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
 	dijit.byId('planningNewItem').closeDropDown();
 }

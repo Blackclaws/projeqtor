@@ -513,7 +513,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
           } else if (! $reachLine) {
             $result .= '<td style="#AAAAAA;" NOWRAP><div class="display" style="width: 100%;">' . $prj->name . '</div>';
           } else {
-            $clickEvent=' onClick=\'setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name) . '", "' . $selectField . '");\' ';
+            $clickEvent=' onClick=\'setSelectedProject("' . $prj->id . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '");\' ';
             $result .= '<td><div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
             $result .= htmlEncode($prj->name);
             $result .= '</div>';
