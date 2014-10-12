@@ -527,6 +527,9 @@ function htmlEncode($val,$context="default") {
   	$str=$val;
   	$str=str_replace("	"," ",$val);
   	return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
+  } else if ($context="parameter") {
+  	$str=str_replace('"',"''",$val);
+  	return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
