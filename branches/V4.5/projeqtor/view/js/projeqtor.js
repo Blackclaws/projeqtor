@@ -556,6 +556,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             loadContent("objectDetail.php", "detailDiv", 'listForm');
             showWait();
             hideList();
+            setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');',500);
           }
         }
         if (isResultMessage) {
@@ -651,6 +652,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
               loadContent("objectDetail.php", "detailDiv", 'listForm');
               showWait();
               hideList();
+              setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');',500);
             }
           }
           // fade in the destination, to set is visible back
@@ -824,7 +826,7 @@ function finalizeMessageDisplay(destination, validationType) {
     // changes
     addMessage(msg);
     //alert('validationType='+validationType);
-    if (validationType) {
+    if (validationType) {  	
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
       } else if (validationType=='attachement') {
@@ -860,7 +862,7 @@ function finalizeMessageDisplay(destination, validationType) {
         	 waitingForReply=false;
              gotoElement(lastSaveClass.value, lastSaveId.value);
              waitingForReply=true;
-          }
+          }         
       } else if (validationType=='admin'){
     	  hideWait();
       } else if (validationType=='link' && 
@@ -1464,6 +1466,7 @@ var gridReposition=false;
 function selectRowById(gridName, id) {
   var grid = dijit.byId(gridName); // if the element is not a widget, exit.
   if ( ! grid) { 
+	  unselectPlanningLines();
     return;
   }
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
@@ -1838,9 +1841,28 @@ function highlightPlanningLine(id) {
 	JSGantt.ganttMouseOut(i); 	
   }	
   var vRowObj1 = JSGantt.findObj('child_' + id);
-  if (vRowObj1) vRowObj1.className = "dojoxGridRowSelected dojoDndItem";// ganttTask" + pType;
+  if (vRowObj1) {
+	  //vRowObj1.className = "dojoxGridRowSelected dojoDndItem";// ganttTask" + pType;
+	  dojo.addClass(vRowObj1,"dojoxGridRowSelected");
+  }
   var vRowObj2 = JSGantt.findObj('childrow_' + id);
-  if (vRowObj2) vRowObj2.className = "dojoxGridRowSelected";
+  if (vRowObj2) {
+	  //vRowObj2.className = "dojoxGridRowSelected";
+	  dojo.addClass(vRowObj2,"dojoxGridRowSelected");
+  }
+}
+function unselectPlanningLines() {
+	vTaskList=g.getList();
+	for (i=0;i<vTaskList.length;i++) {
+		var vRowObj1 = JSGantt.findObj('child_' + i);
+		if (vRowObj1 && vRowObj1.hasClass("dojoxGridRowSelected")) {
+			dojo.removeClass(vRowObj1,"dojoxGridRowSelected");
+		}
+		var vRowObj2 = JSGantt.findObj('childrow_' + i);
+		if (vRowObj2 && vRowObj2.hasClass("dojoxGridRowSelected")) {
+			dojo.removeClass(vRowObj2,"dojoxGridRowSelected");
+		}	
+	}
 }
 /**
  * calculate diffence (in work days) between dates
