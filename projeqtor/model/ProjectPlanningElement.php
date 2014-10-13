@@ -182,7 +182,6 @@ class ProjectPlanningElement extends PlanningElement {
   	$this->updateSynthesisProject($doNotSave);
   }
   protected function updateSynthesisProject ($doNotSave=false) {
-debugLog("===== updateSynthesisProject for PROJECT #$this->id $this->refName with doNotSave=$doNotSave");  	
   	parent::updateSynthesisObj(true); // Will update work and resource cost, but not save yet ;)
   	$this->updateExpense(true); // Will retrieve expense directly on the project
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');

@@ -478,7 +478,6 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   protected function updateSynthesisObj ($doNotSave=false) {
-debugLog("----- updateSynthesisObj for ".get_class($this)." #$this->id $this->refName with doNotSave=$doNotSave");  	
   	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
   	$this->validatedCalculated=0;
     $assignedWork=0;
