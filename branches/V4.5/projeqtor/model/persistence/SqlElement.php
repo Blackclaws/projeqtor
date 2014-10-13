@@ -3154,7 +3154,7 @@ abstract class SqlElement {
 		$fieldEnd='</td>';
 		$sectionStart='<td colspan="3" style="background:#555555;color: #FFFFFF; text-align: center;font-size:10pt;font-weight:bold;">';
 		$sectionEnd='</td>';
-		$tableStart='<table style="font-size:9pt; width: 95%">';
+		$tableStart='<table style="font-size:9pt; width: 95%;font-family: Verdana, Arial, Helvetica, sans-serif;">';
 		$tableEnd='</table>';
 		$msg=$tableStart;
 		$ref=$this->getReferenceUrl();
