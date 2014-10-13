@@ -584,6 +584,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
              || page.indexOf("portfolioPlanningMain.php")>=0 || page.indexOf("portfolioPlanningList.php")>=0
              || page.indexOf("jsonPortfolioPlanning.php")>=0) {                
           drawGantt();
+          selectPlanningRow();
           hideWait();
         } else if (destination=="resultDivMultiple") {
           finalizeMultipleSave();
@@ -674,6 +675,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
                        || page.indexOf("portfolioPlanningMain.php")>=0 || page.indexOf("portfolioPlanningList.php")>=0
                        || (page.indexOf("jsonPortfolioPlanning.php")>=0 && dijit.byId("startDatePlanView"))) {                
                  drawGantt();
+                 selectPlanningRow();
                  hideWait();
                } else if (destination=="resultDivMultiple") {
                    finalizeMultipleSave();
@@ -1466,7 +1468,6 @@ var gridReposition=false;
 function selectRowById(gridName, id) {
   var grid = dijit.byId(gridName); // if the element is not a widget, exit.
   if ( ! grid) { 
-	  unselectPlanningLines();
     return;
   }
   unselectAllRows(gridName); // first unselect, to be sure to select only 1 line 
@@ -1487,7 +1488,9 @@ function selectRowById(gridName, id) {
   }
   gridReposition=false;
 }
-
+function selectPlanningRow() {
+	setTimeout("selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",1);
+}
 /**
  * ============================================================================
  * i18n (internationalization) function to return all messages and caption in
@@ -1837,7 +1840,7 @@ function highlightPlanningLine(id) {
   if (id<0) return;
   vGanttCurrentLine=id;
   vTaskList=g.getList();
-  for (i=0;i<vTaskList.length;i++) {
+  for (var i=0;i<vTaskList.length;i++) {
 	JSGantt.ganttMouseOut(i); 	
   }	
   var vRowObj1 = JSGantt.findObj('child_' + id);
@@ -1851,18 +1854,26 @@ function highlightPlanningLine(id) {
 	  dojo.addClass(vRowObj2,"dojoxGridRowSelected");
   }
 }
-function unselectPlanningLines() {
+function selectPlanningLine(selClass, selId) {
+	vGanttCurrentLine=id;
 	vTaskList=g.getList();
-	for (i=0;i<vTaskList.length;i++) {
-		var vRowObj1 = JSGantt.findObj('child_' + i);
-		if (vRowObj1 && vRowObj1.hasClass("dojoxGridRowSelected")) {
-			dojo.removeClass(vRowObj1,"dojoxGridRowSelected");
-		}
-		var vRowObj2 = JSGantt.findObj('childrow_' + i);
-		if (vRowObj2 && vRowObj2.hasClass("dojoxGridRowSelected")) {
-			dojo.removeClass(vRowObj2,"dojoxGridRowSelected");
-		}	
+	var tId=null;
+	for (var i=0;i<vTaskList.length;i++) {
+		scope = vTaskList[i].getScope();
+		spl=scope.split("_");	
+		if (spl.length>2 && spl[1]==selClass && spl[2]==selId) {
+		  tId=vTaskList[i].getID();
+		}	  
 	}
+	if (tId!=null) {
+	  unselectPlanningLines();
+	  highlightPlanningLine(tId);
+	}
+}
+function unselectPlanningLines() {
+	dojo.query(".dojoxGridRowSelected").forEach(function(node, index, nodelist){
+		dojo.removeClass(node,"dojoxGridRowSelected");
+	});
 }
 /**
  * calculate diffence (in work days) between dates

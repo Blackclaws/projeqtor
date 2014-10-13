@@ -210,7 +210,9 @@ class IndicatorValue extends SqlElement {
   	}
   	$this->warningTargetValue=$this->targetValue*$def->warningValue/100;
   	$this->alertTargetValue=$this->targetValue*$def->alertValue/100;
-  	if ($value>$this->warningTargetValue) {
+  	$targetValue=floatval($this->targetValue);
+  	$value=floatval($value);
+  	if ($value>$this->warningTargetValue and $targetValue) { // V4.5.0 : raise warning only if target value is set
   		if (! $this->warningSent) {
         $this->sendWarning();
         $this->warningSent='1';  
@@ -218,7 +220,7 @@ class IndicatorValue extends SqlElement {
   	} else {
   		$this->warningSent='0';  
   	}
-    if ($value>$this->alertTargetValue) {
+    if ($value>$this->alertTargetValue and $targetValue) { // V4.5.0 : raise alert only if target value is set
     	if (! $this->alertSent) {
         $this->sendAlert();
         $this->alertSent='1';
@@ -227,7 +229,7 @@ class IndicatorValue extends SqlElement {
     	$this->alertSent='0';
     }
     if ($obj->done) {
-      if ($value>$this->targetValue) {
+      if ($value>$targetValue) {
       	$this->status="KO";
       } else {
       	$this->status="OK";
