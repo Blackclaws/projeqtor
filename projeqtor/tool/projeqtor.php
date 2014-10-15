@@ -620,6 +620,18 @@ function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=  "(1 = 2)";  
     }         
+  } else if ($accessRightRead=='RES') {
+    if (property_exists($obj,"idResource")) {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      if ($alias===false) {
+        $queryWhere.=  "idResource = '" . Sql::fmtId($_SESSION['user']->id) . "'";   
+      } else {
+        $queryWhere.=  $table . ".idResource = '" . Sql::fmtId($_SESSION['user']->id) . "'";   
+      }
+    } else {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      $queryWhere.=  "(1 = 2)";  
+    }         
   } else if ($accessRightRead=='PRO') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
     if ($alias===false) {
@@ -1318,7 +1330,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
   }
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj, $user);
   if ($accessType=='create') {
-    $accessRight=($accessRight=='NO' or $accessRight=='OWN')?'NO':'YES';
+    $accessRight=($accessRight=='NO' or $accessRight=='OWN' or $accessRight=='RES')?'NO':'YES';
   } else if ($accessType=='update' or $accessType=='delete' or $accessType='read') {
     if ($accessRight=='NO') {
       // will return no
@@ -1343,6 +1355,15 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
       if ($obj != null) {
         if (property_exists($obj, 'idUser')) {
           if ($user->id==$obj->idUser) {
+            $accessRight='YES';
+          }
+        }
+      }
+    } else if ($accessRight=='RES') {
+      $accessRight='NO';
+      if ($obj != null) {
+        if (property_exists($obj, 'idResource')) {
+          if ($user->id==$obj->idResource) {
             $accessRight='YES';
           }
         }

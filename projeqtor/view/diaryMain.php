@@ -88,7 +88,7 @@
              $table[$user->id]=' ';
            } else if ($scope->accessCode=='ALL') {
              $table=SqlList::getList('Resource');
-           } else if ($scope->accessCode=='OWN' and $user->isResource ) {
+           } else if (($scope->accessCode=='OWN' or $scope->accessCode=='RES') and $user->isResource ) {
              $table=array($user->id=>SqlList::getNameFromId('Resource', $user->id));
            } else if ($scope->accessCode=='PRO') {
              $crit='idProject in ' . transformListIntoInClause($user->getVisibleProjects());
