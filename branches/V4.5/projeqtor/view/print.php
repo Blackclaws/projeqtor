@@ -105,7 +105,7 @@
               parseOnLoad: true,
               isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
-  <script type="text/javascript" src="../view/js/jsGantt.js"></script>
+  <script type="text/javascript" src="../view/js/jsgantt.js"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.parser");
     dojo.require("dojo.i18n");
