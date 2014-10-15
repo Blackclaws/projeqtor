@@ -47,6 +47,9 @@
     } else if ($accessRightRead=='OWN') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";            
+    } else if ($accessRightRead=='RES') {
+      $queryWhere.= ($queryWhere=='')?'':' and ';
+      $queryWhere.=  $table . ".idResource = '" . $_SESSION['user']->id . "'";            
     } else if ($accessRightRead=='PRO') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      

@@ -393,7 +393,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
       $canValidate=false;
     } else if ($scope->accessCode=='ALL') {
       $canValidate=true;
-    } else if ($scope->accessCode=='OWN' and $user->isResource and $resourceId==$user->id) {
+    } else if (($scope->accessCode=='OWN' or $scope->accessCode=='RES') and $user->isResource and $resourceId==$user->id) {
       $canValidate=true;
     } else if ($scope->accessCode=='PRO') {
       $crit='idProject in ' . transformListIntoInClause($user->getVisibleProjects());

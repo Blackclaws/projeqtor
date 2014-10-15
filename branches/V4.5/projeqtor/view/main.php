@@ -186,7 +186,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       // Relaunch Cron (if stopped, any connexion will restart it)
       adminCronRelaunch();
       var onKeyPressFunc = function(event) {
-        if(event.ctrlKey && event.keyChar == 's'){
+        if(event.ctrlKey && ! event.altKey && event.keyChar == 's'){
           event.preventDefault();
         	globalSave();
         } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
