@@ -13,5 +13,5 @@ INSERT INTO `${prefix}dependable` (id, `name`, `scope`, `idDefaultDependable`, `
 
 UPDATE `${prefix}planningmode` SET mandatoryStartDate=1, mandatoryEndDate=1 WHERE code='HALF';
 
-INSERT INTO `${prefix}accesRsscope` (`id`, `name`, `accessCode`, `sortOrder`, `idle`) VALUES
+INSERT INTO `${prefix}accessscope` (`id`, `name`, `accessCode`, `sortOrder`, `idle`) VALUES
 (5, 'accessScopeResp', 'RES', 250, 0);
