@@ -321,6 +321,16 @@ class TicketMain extends SqlElement {
   	  $this->WorkElement->done=$this->done;
   	  $this->WorkElement->idle=$this->idle;
   	}
+  	if ($old->idActivity!=$this->idActivity and $this->idActivity) {
+  		$act=new Activity($this->idActivity);
+  		if ($act->idTargetVersion) {
+  			$this->idTargetVersion=$act->idTargetVersion;
+  			$vers=new Version($act->idTargetVersion);
+  			if ($vers->idProduct) {
+  				$this->idProduct=$vers->idProduct;
+  			}
+  		}
+  	}
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
