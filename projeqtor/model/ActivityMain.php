@@ -245,12 +245,14 @@ class ActivityMain extends SqlElement {
     $oldIdle=null;
     $oldIdProject=null;
     $oldIdActivity=null;
+    $oldTargetVersion=null;
     if ($this->id) {
       $old=$this->getOld();
       $oldResource=$old->idResource;
       $oldIdle=$old->idle;
       $oldIdProject=$old->idProject;
       $oldIdActivity=$old->idActivity;
+      $oldTargetVersion=$old->idTargetVersion;
     }
     // #305 : need to recalculate before dispatching to PE
     $this->recalculateCheckboxes();
@@ -339,6 +341,17 @@ class ActivityMain extends SqlElement {
     			$objBis->idProject=$this->idProject;
     			$tmpRes=$objBis->save();
     		}
+    	}
+    }
+    if ($oldTargetVersion!=$this->idTargetVersion) {
+    	$vers=new Version($this->idTargetVersion);
+    	$idProduct=($vers->idProduct)?$vers->idProduct:null;
+    	$ticket=new Ticket();
+    	$ticketList=$ticket->getSqlElementsFromCriteria(array('idActivity'=>$this->id));
+    	foreach ($ticketList as $ticket) {
+    		$ticket->idTargetVersion=$this->idTargetVersion;
+    		if ($idProduct) {$ticket->idProduct=$idProduct;}
+    		$ticket->save();
     	}
     }
     return $result;
