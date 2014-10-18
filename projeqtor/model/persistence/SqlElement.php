@@ -3312,7 +3312,7 @@ abstract class SqlElement {
 		if (isset($this->_Note) and is_array($this->_Note)) {
 			$msg.=$rowStart.$sectionStart.i18n('sectionNotes').$sectionEnd.$rowEnd;
 			$note = new Note();
-			$notes=$note->getSqlElementsFromCriteria(array('refType'=>get_class($this),'refId'=>$this->id));
+			$notes=$note->getSqlElementsFromCriteria(array('refType'=>get_class($this),'refId'=>$this->id),false,null,'id desc');
 			foreach ($notes as $note) {
 				if ($note->idPrivacy==1) {
 					$userId=$note->idUser;
