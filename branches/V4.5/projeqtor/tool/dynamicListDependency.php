@@ -95,9 +95,9 @@ class="selectList" >
    echo "<option value='$lstObj->id'" . $sel . ">#".$lstObj->id." - ".htmlEncode($val)."</option>";
  }
  foreach ($selectedArray as $selected) {
-	 if ($selected and ! isset($found[$selected]) ) {
-	   $val=$lstObj->name;
+	 if ($selected and ! isset($found[$selected]) ) {   
 	 	 $lstObj=new $refTypeDep($selected);
+	 	 $val=$lstObj->name;
 	 	 echo "<option value='$lstObj->id' selected='selected' >#".$lstObj->id." - ".htmlEncode($val)."</option>";
 	 }
  }

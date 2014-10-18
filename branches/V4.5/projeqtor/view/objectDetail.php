@@ -43,7 +43,6 @@ $readOnly=false;
  * @param $included boolean indicating wether the function is called recursively or not
  * @return void
  */
-
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, 
 	 $collapsedList,$printWidth, $detailWidth, $readOnly;
@@ -2845,6 +2844,16 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj)=="YES";
+  if (! $canRead and ! $obj->id) {
+     $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
+     if ($accessRightRead=='OWN' and property_exists($obj, 'idUser')) {
+       $canRead=true;
+       $obj->idUser=$user->id;
+     } else if ($accessRightRead=='RES' and property_exists($obj, 'idResource')) {
+			 $canRead=true;
+			 $obj->idResource=$user->id;
+     }
+  }
   
   if ( $noselect) {
   	echo $noData;
