@@ -956,6 +956,7 @@ function selectLinkItem() {
  * Refresh the link list (after update)
  */
 function refreshLinkList(selected) {
+console.log("refreshLinkList("+selected+")");
 	if (noRefreshLink) return;
 	disableWidget('dialogLinkSubmit');
 	var url='../tool/dynamicListLink.php';
@@ -2028,6 +2029,7 @@ function editDependency (depType, id, refType, refTypeName, refId, delay) {
 */
 var noRefreshDependencyList=false;
 function refreshDependencyList(selected) {
+console.log("refreshDependencyList("+selected+")");
 	if (noRefreshDependencyList) return;
 	disableWidget('dialogDependencySubmit');
 	var url='../tool/dynamicListDependency.php';

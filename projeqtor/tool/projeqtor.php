@@ -32,8 +32,8 @@ session_start();
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V4.4.2";            // Version of application : Major / Minor / Release
-$build="0106";                // Build number. To be increased on each release
+$version="V4.5.0";            // Version of application : Major / Minor / Release
+$build="0107";                // Build number. To be increased on each release
 $website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
@@ -1354,7 +1354,8 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
       $accessRight='NO';
       if ($obj != null) {
         if (property_exists($obj, 'idUser')) {
-          if ($user->id==$obj->idUser) {
+        	$old=$obj->getOld();
+          if ($user->id==$old->idUser) {
             $accessRight='YES';
           }
         }
@@ -1363,7 +1364,8 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
       $accessRight='NO';
       if ($obj != null) {
         if (property_exists($obj, 'idResource')) {
-          if ($user->id==$obj->idResource) {
+        	$old=$obj->getOld();
+          if ($user->id==$old->idResource) {
             $accessRight='YES';
           }
         }
