@@ -447,7 +447,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			//if ($comboDetail) {
 			//  $colScript=str_replace($col,$col . $extName,$colScript);
 			//  $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
-			//}
+			//}			
 			if (is_object($val) ) {
 				if (! $obj->isAttributeSetToField($col,'hidden')) {
 					if ($col=='Origin') {
@@ -754,14 +754,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo ' >';
 				echo $colScript;
 				echo '</div>';
-				echo '<div dojoType="dijit.form.TimeTextBox" ';
+        $fmtDT=(strlen($valTime)>5 && strpos($attributes, 'readonly')!==false)?'text':'time'; //valTime=substr($valTime,0,5);
+				echo '<div dojoType="dijit.form.'.(($fmtDT=='time')?'Time':'').'TextBox" ';
 				echo $nameBis;
 				echo $attributes;
 				echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
-				echo ' type="text" maxlength="5" ';
+				echo ' type="text" maxlength="8" ';
 				//echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-				echo ' style="width:50px; text-align: center;' . $specificStyle . '" class="input" ';
-				echo ' value="T' . $valTime . '" ';
+				echo ' style="width:'.(($fmtDT=='time')?'50':'55').'px; text-align: center;' . $specificStyle . '" class="input" ';
+				echo ' value="'.(($fmtDT=='time')?'T':'') . $valTime . '" ';
 				echo ' hasDownArrow="false" ';
 				echo ' >';
 				echo $colScriptBis;
@@ -771,14 +772,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				if ($col=='creationTime' and ($val=='' or $val==null) and ! $obj->id) {
 					$val=date("H:i");
 				}
-				echo '<div dojoType="dijit.form.TimeTextBox" ';
+				$fmtDT=(strlen($val)>5 && strpos($attributes, 'readonly')!==false)?'text':'time'; //valTime=substr($valTime,0,5);
+				echo '<div dojoType="dijit.form.'.(($fmtDT=='time')?'Time':'').'TextBox" ';
 				echo $name;
 				echo $attributes;
 				echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
 				echo ' type="text" maxlength="' . $dataLength . '" ';
 				//echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-				echo ' style="width:50px; text-align: center;' . $specificStyle . '" class="input" ';
-				echo ' value="T' . $val . '" ';
+				echo ' style="width:'.(($fmtDT=='time')?'50':'55').'px; text-align: center;' . $specificStyle . '" class="input" ';
+				echo ' value="'.(($fmtDT=='time')?'T':'') . $val . '" ';
 				echo ' hasDownArrow="false" ';
 				echo ' >';
 				echo $colScript;
