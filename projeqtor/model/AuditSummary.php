@@ -78,11 +78,11 @@ class AuditSummary extends SqlElement {
   	$totDuration=0;
   	$list=$audit->getSqlElementsFromCriteria($crit);
   	foreach($list as $audit) {
-      if (! $summary->firstConnection or $audit->connection<$summary->firstConnection) {
-  		  $summary->firstConnection=$audit->connection;
+      if (! $summary->firstConnection or $audit->connectionDateTime<$summary->firstConnection) {
+  		  $summary->firstConnection=$audit->connectionDateTime;
       }  
-      if ($audit->disconnection>$summary->lastConnection) {
-        $summary->lastConnection=$audit->disconnection;
+      if ($audit->disconnectionDateTime>$summary->lastConnection) {
+        $summary->lastConnectione=$audit->disconnectionDateTime;
       }
       $summary->numberSessions++;
       if (! $summary->minDuration or $audit->duration<$summary->minDuration) {
@@ -91,7 +91,7 @@ class AuditSummary extends SqlElement {
       if ($audit->duration>$summary->maxDuration) {
         $summary->maxDuration=$audit->duration;
       }
-      $totDuration+=strtotime($audit->lastAccess)-strtotime($audit->connection);
+      $totDuration+=strtotime($audit->lastAccessDateTime)-strtotime($audit->connectionDateTime);
   	}
     if ($summary->numberSessions>0) {
   	  $meanDuration=round($totDuration/$summary->numberSessions,0);   
@@ -115,11 +115,11 @@ class AuditSummary extends SqlElement {
    	 $delay=Parameter::getGlobalParameter('alertCheckTime');
    	 if (! $delay or $delay < 30) { $delay==30 ;}
    	 foreach ($list as $audit) {
-   	 	 $duration=strtotime(date('Y-m-d'))-strtotime($audit->lastAccess);
+   	 	 $duration=strtotime(date('Y-m-d'))-strtotime($audit->lastAccessDateTime);
        if ($duration>5*$delay) { // Very old connection, idle now, must be closed
     	 	 //$audit->requestDisconnection=1;
          $audit->idle=1;
-   	 	   $audit->disconnection=$audit->lastAccess;
+   	 	   $audit->disconnectionDateTime=$audit->lastAccessDateTime;
          $res=$audit->save();
    	   } 
    	 }    	 
