@@ -15,3 +15,9 @@ UPDATE `${prefix}planningmode` SET mandatoryStartDate=1, mandatoryEndDate=1 WHER
 
 INSERT INTO `${prefix}accessscope` (`id`, `name`, `accessCode`, `sortOrder`, `idle`) VALUES
 (5, 'accessScopeResp', 'RES', 250, 0);
+
+ALTER TABLE `${prefix}audit` CHANGE `connection` connectionDateTime datetime,
+CHANGE `disconnection` disconnectionDateTime datetime,
+CHANGE `lastAccess` lastAccessDateTime datetime;
+
+DELETE FROM `${prefix}columnselector` WHERE objectClass='Audit';

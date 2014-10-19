@@ -42,9 +42,9 @@ class Audit extends SqlElement {
 	public $browserVersion;
 	public $userAgent;
 	public $_col_2_2_connectionStatus;
-	public $connection;
-	public $lastAccess;
-	public $disconnection;
+	public $connectionDateTime;
+	public $lastAccessDateTime;
+	public $disconnectionDateTime;
 	public $duration;
 	public $idle;
 	public $_spe_disconnectButton;
@@ -59,8 +59,8 @@ class Audit extends SqlElement {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="sessionId" width="15%" ># ${sessionId}</th>
     <th field="userName" width="15%" >${idUser}</th>
-    <th field="connection" formatter="dateFormatter" width="12%" >${connection}</th>
-    <th field="lastAccess" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
+    <th field="connectionDateTime" formatter="dateFormatter" width="12%" >${connection}</th>
+    <th field="lastAccessDateTime" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
     <th field="duration" formatter="timeFormatter" width="10%"  >${duration}</th>
     <th field="platform" width="10%" >${platform}</th>
     <th field="browser" formatter="timeFormatter" width="10%" >${browser}</th>
@@ -69,11 +69,15 @@ class Audit extends SqlElement {
     ';
 	private static $_fieldsAttributes = array (
 			"auditDay" => "hidden",
-			"disconnection" => "hidden",
+			"disconnectionDateTime" => "hidden",
 			"idUser" => "hidden",
 			"requestRefreshParam" => "hidden",
 			"requestRefreshProject" => "hidden" 
 	);
+	
+	private static $_colCaptionTransposition = array('connectionDateTime'=>'connection',
+			'lastAccessDateTime'=> 'lastAccess');
+	
 	/**
 	 * ==========================================================================
 	 * Constructor
@@ -110,6 +114,14 @@ class Audit extends SqlElement {
 		return self::$_layout;
 	}
 	
+	/** ============================================================================
+	 * Return the specific colCaptionTransposition
+	 * @return the colCaptionTransposition
+	 */
+	protected function getStaticColCaptionTransposition($fld) {
+		return self::$_colCaptionTransposition;
+	}
+	
 	/**
 	 * ==========================================================================
 	 * Return the specific fieldsAttributes
@@ -129,7 +141,7 @@ class Audit extends SqlElement {
 		if (! $audit->id) {
 			$audit->sessionId = session_id ();
 			$audit->auditDay = date ( 'Ymd' );
-			$audit->connection = date ( 'Y-m-d H:i:s' );
+			$audit->connectionDateTime = date ( 'Y-m-d H:i:s' );
 			$user = $_SESSION ['user'];
 			$audit->idUser = $user->id;
 			$audit->userName = $user->name;
@@ -138,7 +150,7 @@ class Audit extends SqlElement {
 			$audit->platform = $browser ['platform'];
 			$audit->browser = $browser ['browser'];
 			$audit->browserVersion = $browser ['version'];
-			$audit->disconnection = null;
+			$audit->disconnectionDateTime = null;
 		} else if ($audit->requestDisconnection) {
 			$script = basename ( $_SERVER ['SCRIPT_NAME'] );
 			if ($script == 'checkAlertToDisplay.php') {
@@ -160,10 +172,10 @@ class Audit extends SqlElement {
 				echo '<input type="hidden" id="requestRefreshProject" name="requestRefreshProject" value="true" ./>';
 			}
 		}
-		$audit->lastAccess = date ( 'Y-m-d H:i:s' );
+		$audit->lastAccessDateTime = date ( 'Y-m-d H:i:s' );
 		// date_diff is only supported from PHP 5.3
-		$audit->duration = date ( 'H:i:s', strtotime ( $audit->lastAccess ) - strtotime ( $audit->connection ) - 3600 );
-		// $duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
+		$audit->duration = date ( 'H:i:s', strtotime ( $audit->lastAccessDateTime ) - strtotime ( $audit->connectionDateTime ) - 3600 );
+		// $duration=date_diff(date_create($audit->connectionDateTime), date_create($audit->lastAccessDateTime)) ;
 		// $audit->duration=$duration->format('%H%I%S');
 		$audit->requestDisconnection = 0;
 		$audit->idle = 0;
@@ -175,12 +187,12 @@ class Audit extends SqlElement {
 				'sessionId' => session_id () 
 		) );
 		if ($audit->id) {
-			$audit->lastAccess = date ( 'Y-m-d H:i:s' );
+			$audit->lastAccessDateTime = date ( 'Y-m-d H:i:s' );
 			$audit->requestRefreshParam = 0;
-			$audit->disconnection = $audit->lastAccess;
+			$audit->disconnectionDateTime = $audit->lastAccessDateTime;
 			// date_diff is only supported from PHP 5.3
-			$audit->duration = date ( 'H:i:s', strtotime ( $audit->lastAccess ) - strtotime ( $audit->connection ) - 3600 );
-			// $duration=date_diff(date_create($audit->connection), date_create($audit->lastAccess)) ;
+			$audit->duration = date ( 'H:i:s', strtotime ( $audit->lastAccessDateTime ) - strtotime ( $audit->connectionDateTime ) - 3600 );
+			// $duration=date_diff(date_create($audit->connectionDateTime), date_create($audit->lastAccessDateTime)) ;
 			// $audit->duration=$duration->format('%H%I%S');
 			$audit->idle = 1;
 			$audit->save ();
