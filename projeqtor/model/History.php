@@ -76,6 +76,9 @@ class History extends SqlElement {
     $hist=new History();
     // Attention : History fields are not to be escaped by Sql::str because $olValue and $newValue have already been escaped
     // So other fiels (names) must be manually "quoted"
+    if ($refType=='PlanningElement' and $obj and isset($obj->refType)) {
+    	$refType=$obj->refType.'PlanningElement';
+    }
     $hist->refType=$refType;
     if ($refType=='TicketSimple') {
       $hist->refType='Ticket';
