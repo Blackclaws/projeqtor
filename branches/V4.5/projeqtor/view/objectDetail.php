@@ -588,7 +588,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo '    </span>';
         echo '  </a>';
         echo '</span>';
-        echo '<input disabled=disabled type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:'.$largeWidth.'px;" value="'.$ref.'" />';
+        echo '<input readOnly  type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:'.$largeWidth.'px;" value="'.$ref.'" />';
 			  $alertLevelArray=$obj->getAlertLevel(true);
         $alertLevel=$alertLevelArray['level'];
         $colorAlert="background-color:#FFFFFF";
@@ -2846,15 +2846,19 @@ if ( array_key_exists('refresh',$_REQUEST) ) {
   }
   $noData=htmlGetNoDataMessage($objClass);
   $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj)=="YES";
-  if (! $canRead and ! $obj->id) {
-     $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
-     if ($accessRightRead=='OWN' and property_exists($obj, 'idUser')) {
-       $canRead=true;
-       $obj->idUser=$user->id;
-     } else if ($accessRightRead=='RES' and property_exists($obj, 'idResource')) {
-			 $canRead=true;
-			 $obj->idResource=$user->id;
-     }
+  if (! $obj->id) {
+		$canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update')=="YES";
+		if (! $canRead or ! $canUpdate) {
+	     $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
+	     $accessRightUpdate=securityGetAccessRight('menu' . get_class($obj), 'update', null, $user);
+	     if ( ($accessRightRead=='OWN' or $accessRightUpdate=='OWN') and property_exists($obj, 'idUser')) {
+	       $canRead=true;
+	       $obj->idUser=$user->id;
+	     } else if ( ($accessRightRead=='RES' or $accessRightUpdate=='RES') and property_exists($obj, 'idResource')) {
+				 $canRead=true;
+				 $obj->idResource=$user->id;
+	     }
+	  }
   }
   
   if ( $noselect) {

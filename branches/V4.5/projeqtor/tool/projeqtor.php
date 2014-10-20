@@ -604,6 +604,7 @@ function getAccesResctictionClause($objectClass,$alias=null, $showIdle=false) {
     $table=$obj->getDatabaseTableName();
   }
   $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');
+  $accessRightUpdate=securityGetAccessRight($obj->getMenuClass(), 'update');
   $queryWhere="";
   if ($accessRightRead=='NO') {
     $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -1331,7 +1332,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj, $user);
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN' or $accessRight=='RES')?'NO':'YES';
-  } else if ($accessType=='update' or $accessType=='delete' or $accessType='read') {
+  } else if ($accessType=='update' or $accessType=='delete' or $accessType=='read') {
     if ($accessRight=='NO') {
       // will return no
     } else if ($accessRight=='ALL') {
@@ -1355,7 +1356,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
       if ($obj != null) {
         if (property_exists($obj, 'idUser')) {
         	$old=$obj->getOld();
-          if ($user->id==$old->idUser) {
+          if ($old->id and $user->id==$old->idUser) {
             $accessRight='YES';
           }
         }
@@ -1365,7 +1366,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
       if ($obj != null) {
         if (property_exists($obj, 'idResource')) {
         	$old=$obj->getOld();
-          if ($user->id==$old->idResource) {
+          if ($old->id and $user->id==$old->idResource) {
             $accessRight='YES';
           }
         }
