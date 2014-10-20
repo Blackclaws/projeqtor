@@ -2395,6 +2395,10 @@ function showPlanParam (selectedProject) {
  * 
  */
 function plan() {
+  var bt=dijit.byId('planButton');
+  if (bt) {
+	  bt.set('iconClass',"iconPlan");
+  }
   if (!dijit.byId('idProjectPlan').get('value')) {
     dijit.byId('idProjectPlan').set('value',' ');
   }

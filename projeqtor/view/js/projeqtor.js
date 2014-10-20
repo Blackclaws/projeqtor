@@ -586,6 +586,10 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           drawGantt();
           selectPlanningRow();
           hideWait();
+          var bt=dijit.byId('planButton');
+          if (bt) {
+        	  bt.set('iconClass',"iconPlanStopped");
+          }
         } else if (destination=="resultDivMultiple") {
           finalizeMultipleSave();
         } else {
@@ -677,6 +681,10 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
                  drawGantt();
                  selectPlanningRow();
                  hideWait();
+                 var bt=dijit.byId('planButton');
+                 if (bt) {
+               	  bt.set('iconClass',"iconPlanStopped");
+                 }
                } else if (destination=="resultDivMultiple") {
                    finalizeMultipleSave();
                } else {

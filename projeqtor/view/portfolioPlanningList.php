@@ -93,7 +93,7 @@ if ($saveShowClosed) {
 <?php if ($canPlan) { ?>
 		              <button id="planButton" dojoType="dijit.form.Button" showlabel="false"
 		                title="<?php echo i18n('buttonPlan');?>"
-		                iconClass="iconPlan" style="display:none">
+		                iconClass="iconPlanStopped" style="display:none">
 		                <script type="dojo/connect" event="onClick" args="evt">
                      showPlanParam();
                      return false;
