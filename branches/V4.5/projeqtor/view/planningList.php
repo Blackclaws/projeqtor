@@ -139,7 +139,7 @@ if ($saveShowClosed) {
                       <td width="32px">
                         <button id="savePlanningButton" dojoType="dijit.form.Button" showlabel="false"
                          title="<?php echo i18n('savePlannedDates');?>"
-                         iconClass="dijitEditorIcon dijitEditorIconSave" >
+                         iconClass="iconValidateProject" >
                          <script type="dojo/connect" event="onClick" args="evt">
 		                      showPlanSaveDates();
                           return false;  

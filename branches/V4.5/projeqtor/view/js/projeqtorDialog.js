@@ -4621,7 +4621,7 @@ function checkExportColumns(scope) {
 // ==================================================================
 function changeProjectSelectorType(displayMode) {
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=projectSelectorDisplayMode&value="+displayMode,
+    url: "../tool/saveDataToSession.php?saveUserParam=true&id=projectSelectorDisplayMode&value="+displayMode,
     load: function() {loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');}
   });
   if (dijit.byId('dialogProjectSelectorParameters')) {

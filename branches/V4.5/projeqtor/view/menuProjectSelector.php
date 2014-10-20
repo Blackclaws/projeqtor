@@ -41,6 +41,10 @@ if (isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorSh
 $subProjectsToDraw=$prj->drawSubProjects('selectedProject', false, true, $limitToActiveProjects);     
 $cpt=substr_count($subProjectsToDraw,'<tr>');
 $displayMode="standard";
+$paramDisplayMode=Parameter::getUserParameter('projectSelectorDisplayMode');
+if ($paramDisplayMode) {
+  $_SESSION['projectSelectorDisplayMode']=$paramDisplayMode;
+}
 if (isset($_SESSION['projectSelectorDisplayMode'])) {
   $displayMode=$_SESSION['projectSelectorDisplayMode'];
 }
