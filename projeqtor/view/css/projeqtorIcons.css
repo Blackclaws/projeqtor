@@ -101,6 +101,8 @@
   background-image: url(images/indentDecreaseDisabled.png);
 }
 
+.iconValidateProject { background-image: url(images/iconValidateProject16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.dijitDisabled .iconValidateProject { background-image: url(images/iconValidateProject16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */
