@@ -100,7 +100,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	      traceLog('error in htmlDrawOptionForReference : no control rights for ' . $class);
         return;		
 	    }
-      $controlRights=$controlRightsTable[$menuClass];
+      $controlRights=$controlRightsTable[$menuClass]; 
       if ($obj->id==null) {
         // creation mode
         if ($controlRights["create"]=="PRO") {
@@ -110,7 +110,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         // read or update mode
         if (securityGetAccessRightYesNo($menuClass, 'update', $obj)=="YES") {
           // update
-          if ($controlRights["update"]=="PRO") {
+          if ($controlRights["update"]=="PRO" or $controlRights["update"]=="OWN" or $controlRights["update"]=="RES") {
             $restrictArray=$user->getVisibleProjects();
           }            
         }
