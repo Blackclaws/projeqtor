@@ -124,6 +124,11 @@ $pe_pm="";
 if (array_key_exists($pe.'_'.$pm,$_REQUEST)) {
 	$pe_pm=trim($_REQUEST[$pe.'_'.$pm]);
 }
+$type="";
+if (array_key_exists('idType',$_REQUEST)) {
+	$type=trim($_REQUEST['idType']);
+}
+
 
 unset($_SESSION['currentObject']); // Clear last accessed item : otherwise history will get wrong
 $cptOk=0;
@@ -141,6 +146,10 @@ foreach ($selectList as $id) {
     $cptWarning++;
     echo '<td><span class="messageWARNING" >' . i18n($className) . " #" . $item->id . ' '.i18n('colLocked'). '</span></td>';
 		continue;
+	}
+	$typeField='id'.$className.'Type';
+	if ($type and property_exists($item,$typeField)) {
+		$item->$typeField=$type;
 	}
 	if ($description and property_exists($item,'description')) {
 		$item->description.=(($item->description)?"\n":"").$description;
