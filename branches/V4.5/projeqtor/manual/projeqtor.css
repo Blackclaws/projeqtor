@@ -789,6 +789,14 @@ label, .label {
   text-align: center;
   cursor: pointer;
 }
+.iconPlanStopped {
+  background-image: url(images/planStopped.gif);
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
 
 .iconHelp {
   background-image: url('images/iconHelp.png');
