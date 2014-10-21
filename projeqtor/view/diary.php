@@ -146,7 +146,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		if ($item['work'] and ! $item['real']) { $hintHtml.=i18n('colPlannedWork').": <i>".Work::displayWorkWithUnit($item['work'])."</i>"; }
 		echo '<tr>';
 		echo '<td style="padding: 3px 3px 0px 3px; width:100%">';
-		echo '<div id="item_'.$cpt.'" title="'.$hint.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
+		echo '<div id="item_'.$cpt.'" style="border:1px solid: #EEEEEE; box-shadow: 2px 2px 4px #AAAAAA; width: 100%;background-color:'.$item['color'].'">';
 		echo '<table><tr><td>';
 		$attr=((! $item['real'])?'':' style="opacity:0.5;filter:alpha(opacity=50);"');
 		echo '<img src="../view/css/images/icon'.$item['type'].'16.png"'.$attr.'/></td><td style="width:1px">';

@@ -82,7 +82,7 @@ class AuditSummary extends SqlElement {
   		  $summary->firstConnection=$audit->connectionDateTime;
       }  
       if ($audit->disconnectionDateTime>$summary->lastConnection) {
-        $summary->lastConnectione=$audit->disconnectionDateTime;
+        $summary->lastConnection=$audit->disconnectionDateTime;
       }
       $summary->numberSessions++;
       if (! $summary->minDuration or $audit->duration<$summary->minDuration) {
