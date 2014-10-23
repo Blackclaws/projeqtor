@@ -183,8 +183,8 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.10.1-src"/>
-	<property name="dojo.version" value="1.10.0"/>
+	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.10.2-src"/>
+	<property name="dojo.version" value="1.10.2"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>
@@ -235,6 +235,7 @@
 		  	<exclude name="form/uploader/*.js"/>
 		  	<exclude name="form/uploader/plugin/*.js"/>
 		    <exclude name="grid/*.js"/>
+		  	<exclude name="mobile/*.js"/>
 		  	<exclude name="fx/*.js"/>
 		  	<exclude name="image/*.js"/>
 		  </fileset>

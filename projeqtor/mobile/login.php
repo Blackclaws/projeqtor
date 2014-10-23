@@ -29,159 +29,78 @@
  */
    require_once "../tool/projeqtor.php";
    header ('Content-Type: text/html; charset=UTF-8');
-   scriptLog('   ->/mobile/login.php');
+   scriptLog('   ->/view/login.php');
    $_SESSION['application']="PROJEQTOR";
-?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
-  "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+   $title=(Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");
+?> <html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="keywork" content="projeqtor, project management" />
-  <meta name="author" content="projeqtor" />
-  <meta name="Copyright" content="Pascal BERNARD" />
-  <title><?php echo (Parameter::getGlobalParameter('paramDbDisplayName'))?Parameter::getGlobalParameter('paramDbDisplayName'):i18n("applicationTitle");?></title>
-  <link rel="shortcut icon" href="../view/img/logo.ico" type="image/x-icon" />
-  <link rel="icon" href="../view/img/logo.ico" type="image/x-icon" />
-  <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
- <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
-    djConfig='modulePaths: {i18n: "../../tool/i18n"},
-              parseOnLoad: true, 
-              isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
-  <script type="text/javascript"> 
-    dojo.require("dojo.parser");
-    var aesLoginHash="<?php echo md5(session_id());?>";
-    dojo.addOnLoad(function(){
-      currentLocale="<?php echo $currentLocale?>";
-      dijit.byId('login').focus(); 
-      var changePassword=false;
-      hideWait();
-    }); 
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title><?php echo $title;?></title>
+  <!-- application stylesheet will go here -->
+  <!-- dynamically apply native visual theme according to the browser user agent -->
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/dojo/1.9.4/dojox/mobile/deviceTheme.js"></script>
+  <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.4/dojox/mobile/themes/custom/custom.css"></link>
+  <!-- dojo configuration options -->
+  <script type="text/javascript">
+		dojoConfig = {
+		  async: true,
+	    parseOnLoad: false
+    };
+  </script>
+  <!-- dojo bootstrap -->
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/dojo/1.9.4/dojo/dojo.js"></script>
+  <!-- dojo application code -->
+  <script type="text/javascript">
+    require([
+    		"dojox/mobile/parser",
+    		"dojox/mobile/compat",
+    		"dojo/domReady!",
+    		"dojox/mobile/ScrollableView",
+    		"dojox/mobile/Heading",
+    		"dojox/mobile/RoundRect",
+    		"dojox/mobile/ListItem",
+    		"dojox/mobile/Switch",
+    		"dojox/mobile/RoundRectCategory",
+    		"dojox/mobile/FormLayout",
+    		"dojox/mobile/TextBox",
+    		"dojox/mobile/ToolBarButton"
+      ], function (parser) {
+        // now parse the page for widgets
+    	  parser.parse();
+    });
   </script>
 </head>
-
-<body onLoad="hideWait();" style="background-color: #000000;">
-  <div id="waitLogin" style="display:none" >
-  </div> 
-  <table align="center" width="100%" height="100%">
-    <tr height="100%">
-	    <td width="100%" align="center">
-	      <div>
-			  <table align="center" >
-			    <tr style="height:10px;" >
-			      <td align="left" style="height: 1%;" valign="top">
-			        <div style="wbackground-size: contain; background-repeat: no-repeat;
-			        background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'../view/img/titleSmall.png';?>);">
-			        </div>
-			      </td>
-			    </tr>
-			    <tr style="height:100%" height="100%">
-			      <td style="height:99%" align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden;position: relative;">
-			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
-			            <script type="dojo/method" event="onSubmit" >             
-                    connect(false);
-    		            return false;        
-                  </script>
-                  <br/><br/>
-			            <table>
-			              <tr>     
-			                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
-			                <td>
-			                  <input tabindex="1" id="login" style="width:200px" type="text"  
-			                   dojoType="dijit.form.TextBox" />
-                        <input type="hidden" id="hashStringLogin" name="login" style="width:200px" value=""/>  
-			                </td>
-			              </tr>
-			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
-			              <tr>
-			                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
-			                <td>
-			                  <input tabindex="2" id="password" style="width:200px" type="password"  
-			                   dojoType="dijit.form.TextBox" />
-                        <input type="hidden" id="hashStringPassword" name="password" style="width:200px" value=""/>
-			                </td>
-			              </tr>
-			              <?php if (Parameter::getGlobalParameter('rememberMe')!='NO') {?>
-			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
-			              <tr>
-			                <td></td>
-			                <td><div dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></td>
-			              </tr>
-			              <?php }?>
-			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
-			              <tr>
-			                <td class="label"><label>&nbsp;</label></td>
-			                <td>
-			                  <button tabindex="3" type="submit" id="loginButton" 
-			                   dojoType="dijit.form.Button" showlabel="true">OK
-			                    <script type="dojo/connect" event="onClick" args="evt">
-                            return true;
-                          </script>
-			                  </button>
-			                </td>
-			              </tr>
-	<?php 
-	$showPassword=true;
-	$lockPassword=Parameter::getGlobalParameter('lockPassword');
-	if (isset($lockPassword)) {
-	  if (getBooleanValue($lockPassword)) {
-	    $showPassword=false;
-	  }
-	}
-	if ($showPassword) { 
-	?>              
-			              <tr>
-			                <td class="label"><label>&nbsp;</label></td>
-			                <td>  
-			                  <button tabindex="4" id="passwordButton" type="button" dojoType="dijit.form.Button" showlabel="true">
-			                    <?php echo i18n('buttonChangePassword') ?>
-			                    <script type="dojo/connect" event="onClick" args="evt">
-                            connect(true);
-                            return false;
-                          </script>
-			                  </button>  
-			                </td>
-			              </tr>
-  <?php }?>
-			              <tr><td colspan="2">&nbsp;</td></tr>
-			              <tr>
-			                <td class="label"><label>&nbsp;</label></td>
-			                <td>
-			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="55px" style="overflow: auto;" >
-			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
-			                    <?php if (Parameter::getGlobalParameter('applicationStatus')=='Closed'
-			                          or Sql::getDbVersion()!=$version) {
-			                    	      echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
-			                    	      echo '<img src="../view/img/closedApplication.gif" width="60px"/>';
-			                    	      echo '</div>';
-			                    	      echo '<span class="messageERROR" >';
-			                    	      if (Parameter::getGlobalParameter('applicationStatus')=='Closed') {
-			                    	        echo htmlEncode(Parameter::getGlobalParameter('msgClosedApplication'),'withBR');
-			                    	      } else {
-			                    	      	echo i18n('wrongMaintenanceUser');
-			                    	      }
-			                    	      echo '</span>';
-			                          } else if (array_key_exists('lostConnection',$_REQUEST)) {
-			                            echo i18n("disconnectMessage");
-			                            echo '<br/>';
-			                            echo i18n("errorConnection");
-			                          } 
-			                     ?>
-			                  </div>
-			                </td>
-			              </tr>
-			            </table>
-			          </form>
-		          </div>
-		        </td>
-		      </tr>
-	      </table>
-	      </div>
-      </td>
-    </tr>
-  </table>
+<body style="visibility:hidden;">
+  <div id="settings" data-dojo-type="dojox/mobile/ScrollableView">
+    <div data-dojo-type="dojox/mobile/Heading" data-dojo-props="fixed: 'top', label: 'ProjeQtOr xxx'">
+      <span id="doneButton" data-dojo-type="dojox/mobile/ToolBarButton" onClick="alert('TEST');"
+            data-dojo-props="label:'Connect', moveTo:'#', transition:'none'" style="float:right;"></span>
+    </div>
+    <div data-dojo-type="dojox/mobile/RoundRect">
+      <div data-dojo-type="dojox/mobile/FormLayout" data-dojo-props="columns:'two'">
+        <div>
+            <label for="login"><span style="float:right;">Login</span></label>
+            <fieldset>
+                <input type="text" id="login" data-dojo-type="dojox/mobile/TextBox" data-dojo-props="value:''">
+            </fieldset>
+        </div>
+        <div>
+            <label for="password"><span style="float:right;">Password</span></label>
+            <fieldset>
+                <input type="text" id="password" data-dojo-type="dojox/mobile/TextBox" data-dojo-props="value:''">
+            </fieldset>
+        </div>
+        <div>
+            <label for="rememberme"><span style="float:right;">Remember me</span></label>
+            <fieldset>
+                <input type="checkbox" id="rememberme" data-dojo-type="dojox/mobile/Switch" value="on" leftLabel="Yes" rightLabel="No">
+            </fieldset>
+        </div>
+       
+    </div>
+</div>
+</div>
 </body>
 </html>
