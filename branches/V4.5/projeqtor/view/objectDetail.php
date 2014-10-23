@@ -566,6 +566,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				if (! $print) {
 					echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
 					echo $name;
+					if ($dataType=='decimal' and (substr($col, -4,4)=='Work') ) {
+					  $val=Work::displayWork($val);
+					}
 					echo ' value="' . htmlEncode($val) . '" ></div>';
 				}
 			} else if (strpos($obj->getFieldAttributes($col), 'displayHtml')!==false) {
