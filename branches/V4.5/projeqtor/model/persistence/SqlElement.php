@@ -3379,27 +3379,44 @@ abstract class SqlElement {
 		}
 		$type=new $typeClass($this->$fldType);
 		if ( ( (property_exists($type,'lockHandled') and $type->lockHandled) or $force)
-		and property_exists($this,'handled')
-		) {
-			$this->handled=($status->setHandledStatus)?1:0;
+		and property_exists($this,'handled')) {
+			if ($status->setHandledStatus) {
+				$this->handled=1;
+				if (property_exists($this,'handledDate') and !$this->handledDate) $this->handledDate=date("Y-m-d");
+				if (property_exists($this,'handledDateTime') and !$this->handledDateTime) $this->handledDateTime=date("Y-m-d H:i:s");
+			} else {
+				$this->handled=0;
+			}
 		}
 		if ( ( (property_exists($type,'lockDone') and $type->lockDone) or $force)
 		and property_exists($this,'done') ) {
-			$this->done=($status->setDoneStatus)?1:0;
+			if ($status->setDoneStatus) {
+				$this->done=1;
+				if (property_exists($this,'doneDate') and !$this->doneDate) $this->doneDate=date("Y-m-d");
+				if (property_exists($this,'doneDateTime') and !$this->doneDateTime) $this->doneDateTime=date("Y-m-d H:i:s");
+			} else {
+				$this->done=0;
+			}
 		}
 		if ( ( (property_exists($type,'lockIdle') and $type->lockIdle) or $force)
 		and property_exists($this,'idle') ) {
 			if (! self::isSaveConfirmed()) {
-				// If save confirmed, must not override idle status that is cascaded
-			  $this->idle=($status->setIdleStatus)?1:0;
+			// If save confirmed, must not override idle status that is cascaded
+				if ($status->setIdleStatus) {
+					$this->idle=1;
+					if (property_exists($this,'idleDate') and !$this->idleDate) $this->idleDate=date("Y-m-d");
+					if (property_exists($this,'idleDateTime') and !$this->idleDateTime) $this->idleDateTime=date("Y-m-d H:i:s");
+				} else {
+					$this->idle=0;
+				}
 			}
 		}
 		if ( ( (property_exists($type,'lockCancelled') and $type->lockCancelled) or $force)
-    and property_exists($this,'cancelled') ) {
-			$this->cancelled=($status->setCancelledStatus)?1:0;
+			and property_exists($this,'cancelled') ) {
+				$this->cancelled=($status->setCancelledStatus)?1:0;
 		}
 	}
-
+	
 	public function getAlertLevel($withIndicator=false) {
 		$crit=array('refType'=>get_class($this),'refId'=>$this->id);
 		$indVal=new IndicatorValue();
