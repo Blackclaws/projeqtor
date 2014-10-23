@@ -65,7 +65,7 @@
           <tr style="height:100%" height="100%">
             <td style="height:99%" align="left" valign="middle">
               <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden">
-  				<form id="indexForm" name="indexForm" action="main.php" method="post">
+  				<form id="indexForm" name="indexForm" action="template.php" method="post">
   				</form>
               </div>
             </td>
