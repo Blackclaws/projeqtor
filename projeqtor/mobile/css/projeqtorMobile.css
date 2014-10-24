@@ -1,0 +1,12 @@
+.messageOK {
+  color : green; 
+}
+
+.messageERROR {
+  color : red;
+  font-weight: bold; 
+}
+
+.messageNO_CHANGE {
+  color : grey; 
+}
