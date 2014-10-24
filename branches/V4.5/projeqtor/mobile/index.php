@@ -1,80 +1,104 @@
 <?php
-/*** COPYRIGHT NOTICE *********************************************************
- *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
- * Contributors : -
- *
- * This file is part of ProjeQtOr.
- * 
- * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free 
- * Software Foundation, either version 3 of the License, or (at your option) 
- * any later version.
- * 
- * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
- *
- * You can get complete code of ProjeQtOr, other resource, help and information
- * about contributors at http://www.projeqtor.org 
- *     
- *** DO NOT REMOVE THIS NOTICE ************************************************/
-
-/* ============================================================================
- * Default page. Redirects to view directory
- */
+require_once "../tool/projeqtor.php";
+header ( 'Content-Type: text/html; charset=UTF-8' );
+scriptLog ( '   ->/view/login.php' );
+$_SESSION ['application'] = "PROJEQTOR";
+$title = (Parameter::getGlobalParameter ( 'paramDbDisplayName' )) ? Parameter::getGlobalParameter ( 'paramDbDisplayName' ) : i18n ( "applicationTitle" );
+$title = htmlEncode ( $title, 'quotes' );
+function i18nMobile($value) {
+	echo htmlEncode ( i18n ( $value ), 'quotes' );
+}
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
-  "http://www.w3.org/TR/html4/strict.dtd">
-<html style="margin: 0px; padding: 0px;">
+<html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <link rel="shortcut icon" href="../view/img/logo.ico" type="image/x-icon" />
-  <link rel="icon" href="../view/img/logo.ico" type="image/x-icon" />
-  <title>ProjeQtOr</title>
-  <script type="text/javascript" src="../external/dojo/dojo.js"
-    djConfig='parseOnLoad: false, 
-              isDebug: false'></script>
-  <script type="text/javascript">             
-     dojo.addOnLoad(function(){
-       window.setTimeout('dojo.byId("indexForm").submit();',10);
-     });
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title><?php echo $title;?></title>
+<!-- application stylesheet will go here -->
+  <link rel="stylesheet" type="text/css" href="css/projeqtorMobile.css"></link>
+  <script type="text/javascript" src="../external/CryptoJS/rollups/md5.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../external/CryptoJS/rollups/sha256.js?version=<?php echo $version.'.'.$build;?>" ></script>
+  <script type="text/javascript" src="../external/phpAES/aes.js?version=<?php echo $version.'.'.$build;?>" ></script>
+<!-- dynamically apply native visual theme according to the browser user agent -->
+<script type="text/javascript"
+	src="../external/dojox/mobile/deviceTheme.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="../external/dojox/mobile/themes/custom/custom.css"></link>
+<!-- dojo configuration options -->
+<script type="text/javascript">
+		dojoConfig = {
+				packages: [{
+		            name: "dojo",
+		            location: "../external/dojo"
+		        }]
+		async: true,
+		baseUrl: './',
+		mblHideAddressBar: true,
+		parseOnLoad: false 
+    };
   </script>
+<!-- dojo bootstrap -->
+<script type="text/javascript" src="../external/dojo/dojo.js"></script>
+<!-- dojo application code -->
+<script type="text/javascript">
+    require([
+    		"dojox/mobile/parser",
+    		"dojox/mobile/compat",
+    		"dojo/domReady!",
+    		"dojox/mobile/ScrollableView",
+    		"dojox/mobile/View",
+    		"dojox/mobile/Heading",
+    		"dojox/mobile/RoundRect",
+    		"dojox/mobile/ListItem",
+    		"dojox/mobile/Switch",
+    		"dojox/mobile/RoundRectCategory",
+    		"dojox/mobile/FormLayout",
+    		"dojox/mobile/TextBox",
+    		"dojox/mobile/Button",
+    		"dojox/mobile/ToolBarButton",
+    		"dojox/mobile/ProgressIndicator",
+    		"dojox/mobile/ContentPane"
+      ], function (parser) {
+        // now parse the page for widgets
+    	  parser.parse();
+    	  loadItems("<?php echo date('Ymd');?>");
+    });
+  </script>
+  <script type="text/javascript" src="js/projeqtorMobile.js"></script>
 </head>
+<body  style="visibility: hidden;">
 
-<body class="ProjeQtOr" style='background-color: #000000' >
-  <div id="wait">
-  &nbsp;
-  </div> 
-  <table align="center" width="100%" height="100%" >
-    <tr height="100%">
-      <td width="100%" align="center">
-        <div >
-        <table  align="center" >
-          <tr style="height:10px;" >
-            <td align="left" style="height: 1%;" valign="top">
-              <div style="width: 300px; height: 54px; background-size: contain; background-repeat: no-repeat;
-              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'../view/img/titleSmall.png';?>);">
-              </div>
-            </td>
-          </tr>
-          <tr style="height:100%" height="100%">
-            <td style="height:99%" align="left" valign="middle">
-              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden">
-  				<form id="indexForm" name="indexForm" action="template.php" method="post">
-  				</form>
-              </div>
-            </td>
-          </tr>
-        </table>
-        </div>
-      </td>
-    </tr>
-  </table>
+	<div id="list" data-dojo-type="dojox/mobile/ScrollableView" data-dojo-props="selected:true">
+		<div data-dojo-type="dojox/mobile/Heading" 
+			data-dojo-props="fixed: 'top', label: '<?php echo $title;?>'">
+			<span id="menuButton" data-dojo-type="dojox/mobile/ToolBarButton"
+				data-dojo-props="label:'Menu', moveTo:'menu', transition:'slide'"
+				style="float: right;"></span>
+		    <span style="float: left;"><img src="../view/img/logoMedium.png" style="height:40px" /></span>	
+		</div>
+
+		<div  valign="middle" center="true" 
+		  style="text-align: center;visibility: hidden; display:none;" 
+		  id="resultDiv" data-dojo-type='dojox.mobile.RoundRect' shadow='true'></div>
+	</div>
+	
+	<div id="menu" data-dojo-type="dojox/mobile/ScrollableView">
+		<div data-dojo-type="dojox/mobile/Heading" 
+		   data-dojo-props="fixed: 'top', back:'retour', moveTo:'list'">Menu</div>
+		    
+		  <div style="margin:5px; padding:5px">
+		  <button data-dojo-type="dojox/mobile/Button" center="true" class="mblGreyButton" style="width:100%"
+		   data-dojo-props='label:"<?php i18nMobile("disconnect");?>", 
+		   onClick:function(e){ disconnect();return true; }'>
+		 </button>
+		 </div>
+	</div>
+	
+	<div id="wait" data-dojo-type="dojox/mobile/ProgressIndicator" startSpinning="true" size="50" 
+	 valign="middle" center="true" class="mblProgWhite" style="position:absolute;top: 45%;visibility: hidden;"></div>
+	
 </body>
 
 </html>
