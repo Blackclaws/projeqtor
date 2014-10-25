@@ -1435,7 +1435,7 @@ function unselectAllRows(gridName) {
 	onComplete: function (items) { 
 	  dojo.forEach(items, function (item, index) { 
 		  grid.selection.setSelected(index,false);
-	  }) 
+	  }); 
 	} 
   }); 
 }
@@ -1449,7 +1449,7 @@ function selectAllRows(gridName) {
 	onComplete: function (items) { 
 	  dojo.forEach(items, function (item, index) { 
 		  grid.selection.setSelected(index,true);
-	  }) 
+	  }); 
 	} 
   }); 
 }

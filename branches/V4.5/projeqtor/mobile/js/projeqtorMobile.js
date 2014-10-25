@@ -93,12 +93,12 @@ function checkLogin() {
 
 function loadItems(currentDate) {
 	showWait();
-	url='../mobile/getJsonDay.php?currentDate='+currentDate
+	url='../mobile/getJsonDay.php?currentDate='+currentDate;
 	dojo.xhrPost({
       url: url,
       handleAs: "text",
       load: function(data,args){
-    	  alert(data);
+    	  fillItemsFromJson(data);
     	  hideWait();
       },
       error: function() {
@@ -106,4 +106,63 @@ function loadItems(currentDate) {
     	  hideWait();
       }
 	});
+}
+
+var jsonDataArray=null;
+function fillItemsFromJson(json) {
+	var jsonArray = JSON.parse(json);
+	jsonDataArray=jsonArray;
+	var list = dijit.byId('itemList');
+	list.destroyDescendants();
+	dijit.byId('dayCaption').domNode.innerHTML=jsonArray.dayCaption;
+	var cpt=0;
+	dojo.forEach(jsonArray.items, function (item,index) {
+		var itemWidget= new dojox.mobile.ListItem({icon: item.icon, style:"height:100%;"+((item.real)?'opacity: 0.5;filter: alpha(opacity=50);':''), moveTo: "detail", id:index, onClick:function(e){fillDetailFromJson(index);}});
+		itemNode='<div>'+item.nameType+" #"+item.id;
+		itemNode+='<span '+((! item.real)?'onClick="saveWork();"':'')+' class="projeqtorActionBtn'+((item.real)?'Disabled':'')+'" style="z-index:ççç;font-weight:normal;position: relative; left:10px">'+item.workUnit+'<span></div>';
+		itemNode+='<div  style="font-weight:normal;font-size:80%">'+item.name+'</div>';
+		itemWidget.domNode.innerHTML=itemNode;
+		list.addChild(itemWidget,index);
+		cpt++;
+	});
+}
+function saveWork() {
+	//TODO : saveWork planned for item
+	console.log('TODO...');
+	setTimeout("retourSaveWork()",100);
+}
+function retourSaveWork(){
+	alert("Sauvegarde non implémentée");
+}
+function fillDetailFromJson(index) {
+	showWait();
+	item=jsonDataArray.items[index];
+	dijit.byId('mobileItem').set('value',item.nameType+ " #"+item.id);
+	dijit.byId('mobileName').set('value',item.name);
+	url='../mobile/getLongData.php?class='+item.type+"&id="+item.id;
+	dojo.xhrPost({
+      url: url,
+      handleAs: "text",
+      load: function(data,args){
+    	  var result=data.split(longFieldsSeparator);
+    	  dijit.byId('mobileDescription').set('value',result[0]);
+    	  dijit.byId('mobileResult').set('value',result[1]);
+    	  var list = dijit.byId('mobileNotes');
+    	  list.destroyDescendants();
+    	  for (var i=2;i<result.length;i++){
+    		  var itemWidget= new dojox.mobile.ListItem({style:"line-height:normal;height:100%", moveTo: ""});
+    		  itemNode='<span style="font-weight:normal; font-size:70%">'+result[i]+'</span>';
+    		  itemWidget.domNode.innerHTML=itemNode;
+    		  list.addChild(itemWidget,i-2);
+    	  }
+    	  hideWait();
+      },
+      error: function() {
+    	  alert('ERROR LOADING DATA FROM \n'+url);
+    	  hideWait();
+      }
+	});
+	
+	
+	
 }
