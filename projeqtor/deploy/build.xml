@@ -183,14 +183,15 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.10.2-src"/>
-	<property name="dojo.version" value="1.10.2"/>
+	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.9.5-src"/>
+	<property name="dojo.version" value="1.9.5"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>
 
   <target name="_dojoBuildFull">
       <antcall target="_dojoPackaging"/>
+  	  <antcall target="_dojoPackagingMobile"/>
       <antcall target="_dojoOptimisation"/>
   </target>
   	
@@ -218,6 +219,31 @@
 	    </classpath>     
 	  </java>
 	</target>
+	
+	 <target name="_dojoPackagingMobile" depends="" description="Build du projet mobile">        
+	    <java classname="org.mozilla.javascript.tools.shell.Main"
+	          dir="${buildscripts.dir}"
+	          fork="true"
+	          failonerror="true"
+	          maxmemory="512m" >
+	        <arg value="../../dojo/dojo.js"/>
+	        <arg value="baseUrl=../../dojo"/>
+	        <arg value="load=build"/>
+	        <arg value="version=${dojo.version}"/>
+	        <arg value="profileFile=../../../projeqtorMobile.profile.js"/>
+	        <arg value="action=release"/>
+	        <arg value="releaseDir=../../../"/>
+	        <arg value="releaseName=${build.name}" />
+	        <arg value="optimize=shrinksafe"/>
+	        <arg value="cssOptimize=comments.keepLines"/>
+	      <classpath>
+	        <pathelement location="${buildscripts.dir}\..\shrinksafe\shrinksafe.jar"/>
+	        <pathelement location="${dojo.build.util.dir}\..\closureCompiler\compiler.jar"/>
+	        <pathelement location="${buildscripts.dir}\..\shrinksafe\js.jar"/>
+	        <pathelement path="${java.class.path}"/>
+	      </classpath>     
+	    </java>
+	  </target>
 	    
 	<target name="_dojoOptimisation" description="optimisation de la release">	        
 		<delete>
@@ -235,7 +261,8 @@
 		  	<exclude name="form/uploader/*.js"/>
 		  	<exclude name="form/uploader/plugin/*.js"/>
 		    <exclude name="grid/*.js"/>
-		  	<exclude name="mobile/*.js"/>
+		  	<exclude name="mobile/*.*"/>
+		  	<exclude name="mobile/**/*"/>
 		  	<exclude name="fx/*.js"/>
 		  	<exclude name="image/*.js"/>
 		  </fileset>
