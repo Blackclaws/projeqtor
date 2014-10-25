@@ -39,6 +39,7 @@ function i18nMobile($value) {
     };
   </script>
 <!-- dojo bootstrap -->
+<!--  <script type="text/javascript" src="../external/dojo/projeqtorMobileDojo.js"></script> -->
 <script type="text/javascript" src="../external/dojo/dojo.js"></script>
 <!-- dojo application code -->
 <script type="text/javascript">

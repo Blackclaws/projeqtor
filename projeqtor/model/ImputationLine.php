@@ -723,10 +723,10 @@ scriptLog("      => ImputationLine->getParent()-exit");
 					$idWork=$line->arrayWork[$i]->id;
 					if (! $print) {
 						echo '<div style="position: relative">';
-						if ($showPlanned) {
+						if ($showPlanned and $line->arrayPlannedWork[$i]->work) {
 							echo '<div style="display: inline;';
-							echo ' position: absolute; right: 5px; top: 0px; text-align: right;';
-							echo ' color:#8080DD; font-size:80%;">';
+							echo ' position: absolute; right: 10px; top: 0px; text-align: right;';
+							echo ' color:#8080DD; font-size:90%;">';
 							echo  Work::displayImputation($line->arrayPlannedWork[$i]->work);
 							echo '</div>';
 						}
