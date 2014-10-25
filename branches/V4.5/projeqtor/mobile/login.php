@@ -49,8 +49,6 @@ $title = htmlEncode ( $title, 'quotes' );
 <!-- dynamically apply native visual theme according to the browser user agent -->
 <script type="text/javascript"
 	src="../external/dojox/mobile/deviceTheme.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="../external/dojox/mobile/themes/custom/custom.css"></link>
 <!-- dojo configuration options -->
 <script type="text/javascript">
 		dojoConfig = {
