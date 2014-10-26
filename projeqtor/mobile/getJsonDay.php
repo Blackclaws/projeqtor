@@ -68,7 +68,7 @@
   $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource);
   echo '{"identifier":"id",' ;
   echo '"label": "name",';
-  echo '"day": "'.$day.'",';
+  echo '"day": "'.$currentDay.'",';
   echo '"dayCaption":"'.$weekDaysCaption[date('w',strtotime($currentDay))]." ".$day.'/'.$month.'/'.$year.'",';
   echo ' "items":[';
   drawDay($currentDay,$idRessource,$calendar);

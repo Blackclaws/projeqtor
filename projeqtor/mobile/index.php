@@ -98,7 +98,7 @@ function i18nMobile($value) {
 		</div>
 		<div  valign="middle" center="true" 
 		  style="text-align: center;visibility: hidden; display:none;" 
-		  id="resultDiv" data-dojo-type='dojox.mobile.RoundRect' shadow='true'></div>
+		  id="resultDivList" data-dojo-type='dojox.mobile.RoundRect' shadow='true'></div>
 		  
 	  <ul id="itemList" data-dojo-type="dojox/mobile/RoundRectList" class="roundRect roundRectList">
 	    
@@ -109,18 +109,30 @@ function i18nMobile($value) {
 		<div data-dojo-type="dojox/mobile/Heading" 
 			data-dojo-props="fixed: 'top', back:'retour', moveTo:'list', label: '<?php echo $title;?>'">
 			<span id="menuButtonDetail" data-dojo-type="dojox/mobile/ToolBarButton"
-				data-dojo-props="label:'Menu', moveTo:'menu', transition:'slide'"
-				style="float: right;"></span>
+				data-dojo-props="label:'Sauver', moveTo:'', transition:''"
+				style="float: right;" onClick="saveDetail();"></span>
 		    	
 	  </div>
+	  <div  valign="middle" center="true" 
+		  style="text-align: center;visibility: hidden; display:none;" 
+		  id="resultDivDetail" data-dojo-type='dojox.mobile.RoundRect' shadow='true'></div>
 	  <div data-dojo-type="dojox/mobile/RoundRect">
 			<form id="detailForm" jsId="detailForm" name="detailForm"
 				encType="multipart/form-data" action="" method="">
 				<script type="dojo/method" event="onSubmit">             
           alert("prototype non finalisé");
     	  </script>
+    	  <input type="hidden" name="mobileType" id="mobileType" />
+    	  <input type="hidden" name="mobileId" id="mobileId" />
 				<div data-dojo-type="dojox/mobile/FormLayout" style="width:100%;"
 					data-dojo-props="columns:'two'">
+					<div>
+						<label for="login"><span style="float: right;"><?php i18nMobile('colIdProject');?></span></label>
+						<fieldset style="width:100%;">
+							<input disabled type="text" id="mobileProject" name="mobileProject	" data-dojo-type="dojox/mobile/TextBox"
+								style="width:100%;" data-dojo-props="value:''" />
+						</fieldset>
+					</div>
 					<div>
 						<label for="login"><span style="float: right;"></span></label>
 						<fieldset style="width:100%;">
