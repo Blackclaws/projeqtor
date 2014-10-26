@@ -91,14 +91,14 @@ function checkLogin() {
   }
 }
 
-function loadItems(currentDate) {
+function loadItems(currentDate, keepMessage) {
 	showWait();
 	url='../mobile/getJsonDay.php?currentDate='+currentDate;
 	dojo.xhrPost({
       url: url,
       handleAs: "text",
       load: function(data,args){
-    	  fillItemsFromJson(data);
+    	  fillItemsFromJson(data,keepMessage);
     	  hideWait();
       },
       error: function() {
@@ -109,7 +109,7 @@ function loadItems(currentDate) {
 }
 
 var jsonDataArray=null;
-function fillItemsFromJson(json) {
+function fillItemsFromJson(json,keepMessage) {
 	var jsonArray = JSON.parse(json);
 	jsonDataArray=jsonArray;
 	var list = dijit.byId('itemList');
@@ -119,26 +119,92 @@ function fillItemsFromJson(json) {
 	dojo.forEach(jsonArray.items, function (item,index) {
 		var itemWidget= new dojox.mobile.ListItem({icon: item.icon, style:"height:100%;"+((item.real)?'opacity: 0.5;filter: alpha(opacity=50);':''), moveTo: "detail", id:index, onClick:function(e){fillDetailFromJson(index);}});
 		itemNode='<div>'+item.nameType+" #"+item.id;
-		itemNode+='<span '+((! item.real)?'onClick="saveWork();"':'')+' class="projeqtorActionBtn'+((item.real)?'Disabled':'')+'" style="z-index:ççç;font-weight:normal;position: relative; left:10px">'+item.workUnit+'<span></div>';
-		itemNode+='<div  style="font-weight:normal;font-size:80%">'+item.name+'</div>';
+		itemNode+='<span '+((! item.real)?'onClick="saveWork(\''+item.type+'\','+item.id+',\''+jsonArray.day+'\');"':'')+' class="projeqtorActionBtn'+((item.real)?'Disabled':'')+'" style="z-index:999;font-weight:normal;position: relative; left:10px">'+item.workUnit+'<span></div>';
+		itemNode+='<div  style="font-weight:normal;font-size:80%">'+item.display+'</div>';
 		itemWidget.domNode.innerHTML=itemNode;
 		list.addChild(itemWidget,index);
 		cpt++;
 	});
+	if (! keepMessage) {
+	  clearMessages();
+	}
 }
-function saveWork() {
+saveInProgress=false;
+function saveWork(refType, refId, day) {
+	showWait();
+	saveInProgress=true;
+	clearMessages();
+	url="saveWork.php?refType="+refType+"&refId="+refId+"&day="+day;
+	dojo.xhrPost({
+      url: url,
+      handleAs: "text",
+      load: function(data,args){
+    	  showMessage(data, 'Detail');
+    	  loadItems(day, true);
+    	  saveInProgress=false;
+      },
+      error: function() {
+    	  alert('ERROR LOADING DATA FROM \n'+url);
+    	  hideWait();
+    	  saveInProgress=false;
+      }
+	});
+}
+function saveDetail() {
 	//TODO : saveWork planned for item
-	console.log('TODO...');
-	setTimeout("retourSaveWork()",100);
+	showWait();
+	saveInProgress=true;
+	clearMessages();
+	url="saveDetail.php";
+	dojo.xhrPost({
+      url: url,
+      form: 'detailForm',
+      handleAs: "text",
+      load: function(data,args){
+    	  showMessage(data, 'Detail');
+    	  saveInProgress=false;
+    	  hideWait();
+      },
+      error: function() {
+    	  alert('ERROR LOADING DATA FROM \n'+url);
+    	  hideWait();
+    	  saveInProgress=false;
+      }
+	});
 }
-function retourSaveWork(){
-	alert("Sauvegarde non implémentée");
+
+
+function clearMessages() {
+	if (dojo.byId('resultDivDetail')) {
+		dojo.byId('resultDivDetail').style.visibility="hidden";
+		dojo.byId('resultDivDetail').style.display="none";
+		dojo.byId('resultDivDetail').innerHTML='';
+	}
+	if (dojo.byId('resultDivList')) {
+		dojo.byId('resultDivList').style.visibility="hidden";
+		dojo.byId('resultDivList').style.display="none";
+		dojo.byId('resultDivList').innerHTML='';
+	}
+}
+function showMessage(message, section, type) {
+	var resulDiv = dojo.byId('resultDiv'+section);
+	if (resulDiv) {
+		resulDiv.style.visibility="visible";
+		resulDiv.style.display="block";
+		if (type=='ERROR') {
+			message='<span class="messageERROR">'+message+"</span>";
+		}
+		resulDiv.innerHTML=message;
+	}
 }
 function fillDetailFromJson(index) {
-	showWait();
+	if (! saveInProgress) showWait();
 	item=jsonDataArray.items[index];
 	dijit.byId('mobileItem').set('value',item.nameType+ " #"+item.id);
 	dijit.byId('mobileName').set('value',item.name);
+	dijit.byId('mobileProject').set('value',item.project);
+	dojo.byId('mobileType').value=item.type;
+	dojo.byId('mobileId').value=item.id;
 	url='../mobile/getLongData.php?class='+item.type+"&id="+item.id;
 	dojo.xhrPost({
       url: url,
@@ -155,11 +221,11 @@ function fillDetailFromJson(index) {
     		  itemWidget.domNode.innerHTML=itemNode;
     		  list.addChild(itemWidget,i-2);
     	  }
-    	  hideWait();
+    	  if (! saveInProgress) hideWait();
       },
       error: function() {
     	  alert('ERROR LOADING DATA FROM \n'+url);
-    	  hideWait();
+    	  if (! saveInProgress) hideWait();
       }
 	});
 	

@@ -131,7 +131,7 @@ $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
 $ass=new Assignment();
 $res=new Resource();
-$querySelect .= "pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, pe.priority priority, pe.idplanningmode idplanningmode, ass.* , usr.fullName as name, pe.refName refName";
+$querySelect .= "pe.idProject as idProj, pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, pe.priority priority, pe.idplanningmode idplanningmode, ass.* , usr.fullName as name, pe.refName refName";
 $queryFrom .= $table . ' pe, ' . $ass->getDatabaseTableName() . ' ass, ' . $res->getDatabaseTableName() . ' usr';
 $queryWhere= ' pe.refType=ass.refType and pe.RefId=ass.refId and usr.id=ass.idResource and ' . str_replace($table, 'pe', $queryWhere);
 $queryOrderBy .= ' name, pe.wbsSortable ';
@@ -148,6 +148,7 @@ $arrayPeAss=array();
 $arrayResource=array();
 $arrayProject=array();
 $nbRows=0;
+debugLog($query);
 // return result in json format
 $d=new Dependency();
 if (Sql::$lastQueryNbRows == 0) {
@@ -171,6 +172,7 @@ if (Sql::$lastQueryNbRows == 0) {
   $keyRes="";
   $idRes='';
 	while ($line = Sql::fetchLine($result)) {
+		debugLog($line['name'].' - '.$line['wbsSortable'].' - '.$line['idProj'].' - '.$line['idProject']);
 		$line=array_change_key_case($line,CASE_LOWER);
 		if ($line['idresource']!=$idResource) {
 			$idResource=$line['idresource'];
@@ -204,8 +206,8 @@ if (Sql::$lastQueryNbRows == 0) {
 		  $sumPlanned=0;
 		  $idProject="";
 		}
-	  if ($showProject and $line['idproject']!=$idProject) {
-      $idProject=$line['idproject'];
+	  if ($showProject and $line['idproj']!=$idProject) {
+      $idProject=$line['idproj'];
       if (array_key_exists($idProject, $arrayProject)) {
       	$prj=$arrayProject[$idProject];
       } else {

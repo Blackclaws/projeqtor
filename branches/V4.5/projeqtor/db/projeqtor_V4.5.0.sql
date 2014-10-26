@@ -21,3 +21,6 @@ CHANGE `disconnection` disconnectionDateTime datetime,
 CHANGE `lastAccess` lastAccessDateTime datetime;
 
 DELETE FROM `${prefix}columnselector` WHERE objectClass='Audit';
+
+UPDATE `${prefix}assignment` ass set idProject=(SELECT idProject FROM `${prefix}planningelement` pe 
+WHERE pe.refType=ass.refType and pe.refId=ass.refId);
