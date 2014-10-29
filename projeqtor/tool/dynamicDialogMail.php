@@ -24,7 +24,7 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-scriptLog('dynamicDialogAttachement.php');
+scriptLog('dynamicDialogMailt.php');
 $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
 	$isIE=$_REQUEST['isIE'];
