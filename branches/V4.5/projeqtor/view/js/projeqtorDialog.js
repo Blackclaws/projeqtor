@@ -4207,6 +4207,8 @@ function showMailOptions() {
 		dijit.byId("dialogMail").show();
 	}
 	if (dijit.byId("dialogMail") && dojo.byId('dialogMailObjectClass') && dojo.byId('dialogMailObjectClass').value==dojo.byId("objectClass").value) {
+		dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
+		dojo.byId('mailRefId').value=dojo.byId('objectId').value;
 		dijit.byId("dialogMail").show();	
 	} else  {
 		var param="&objectClass="+dojo.byId("objectClass").value;
