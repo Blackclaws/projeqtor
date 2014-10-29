@@ -1,4 +1,17 @@
 <?php
+/*** COPYRIGHT NOTICE *********************************************************
+ *
+ * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ *
+ * This file is a plugIn for ProjeQtOr.
+ * This plugIn in not Open Source.
+ * You must have bought the licence from Copyrigth owner to use this plgIn.
+ *
+ *** DO NOT REMOVE THIS NOTICE ************************************************/
+
+/* ============================================================================
+ * Main page for mobile application
+ */
 require_once "../tool/projeqtor.php";
 header ( 'Content-Type: text/html; charset=UTF-8' );
 scriptLog ( '   ->/view/login.php' );

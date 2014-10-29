@@ -77,6 +77,12 @@ if (isset($_REQUEST['password'])) {
 if (isset($_REQUEST['apikey'])) {
 	$apiKeyParam=$_REQUEST['apikey'];
 }
+$searchParameters="";
+for ($i=1;$i<=3;$i++) {
+	if (isset($_REQUEST['crit'.$i])) {
+		$searchParameters.="/".urlencode($_REQUEST['crit'.$i]);
+	}
+}
 
 if ($action=='display') {
 
@@ -107,6 +113,14 @@ if ($action=='display') {
 	      if (context=='byId') { url+='&id='+dojo.byId("id").value; }
 	      if (context=='listAll') { url+='&list=all'; }
 	      if (context=='listFilter') { url+='&list=filter&filter='+dojo.byId("filterId").value; }
+	      if (context=='search') {
+          for (var i=1;i<=3;i++) {
+            if (dojo.byId("crit"+i).value) {
+            	url+="&list=search";
+            	url+="&crit"+i+"="+encodeURI(dojo.byId("crit"+i).value);
+            }
+          }
+	      }
 			} else {
 				url+='&data='+encodeURIComponent(dojo.byId("result").value);
 			}
@@ -182,12 +196,20 @@ if ($action=='display') {
   <div class="line">Filter id : <input type="text" name="filterId" id="filterId" /></div>
   <div class="line button"><button onClick="runApi('GET','listFilter');" >Get items</button></div>
 </td>
-
 <td>&nbsp;&nbsp;&nbsp;</td>
 <td style="border:1px solid grey"><div class="line title">Update Json Item (in result)</div>
   <div class="line button"><button onClick="runApi('PUT','');" >PUT item</button>
                            <button onClick="runApi('POST','');" >POST item</button></div>
   <div class="line button"><button onClick="runApi('DELETE','');" >DELETE item</button></div>
+</td>
+</tr>
+<tr>
+<td colspan="12" style="border:1px solid grey">
+  <span class="line title">Search criteria (sql like)</span>
+  <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crit1: <input style="width:250px" type="text" name="crit1" id="crit1" /></span>
+  <span class="line">&nbsp;&nbsp;&nbsp;crit2: <input style="width:250px" type="text" name="crit2" id="crit2" /></span>
+  <span class="line">&nbsp;&nbsp;&nbsp;crit3: <input style="width:250px" type="text" name="crit3" id="crit3" /></span>
+  <span class="line button"><button onClick="runApi('GET','search');" >Get items</button></span>
 </td>
 </tr>
 </table>
@@ -204,6 +226,8 @@ if ($id) {
 	$fullUrl=$service_url.'/'.$object.'/all';	
 } else if ($list and $list=='filter'){
 	$fullUrl=$service_url.'/'.$object.'/filter/'.$filter; 
+} else if ($list and $list=='search'){
+	$fullUrl=$service_url.'/'.$object.'/search'.$searchParameters;
 } else if ($action=="PUT" or $action=="POST" or $action=="DELETE") {
   $fullUrl=$service_url.'/'.$object;
   if (isset($_REQUEST['data'])) {

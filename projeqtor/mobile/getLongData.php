@@ -10,7 +10,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Presents an object. 
+ * retrives long fields (description, result) for consulted item
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/mobile/getLongData.php');  
