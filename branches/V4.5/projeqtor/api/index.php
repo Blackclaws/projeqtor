@@ -26,12 +26,12 @@
 * about contributors at http://www.projeqtor.org
 *
 *** DO NOT REMOVE THIS NOTICE ************************************************/
-
 $querySyntax='Possible values are :  
 GET    ../api/{objectClass}/{objectId}
-		   ../api/{objectClass}/all
-		   ../api/{objectClass}/filter/{filterId}
-		   ../api/{objectClass}/updated/{YYYYMMDDHHMNSS}/{YYYYMMDDHHMNSS}
+       ../api/{objectClass}/all
+       ../api/{objectClass}/filter/{filterId}
+       ../api/{objectClass}/search/criteria1/criteria2/... (criteria as sql where clause)
+       ../api/{objectClass}/updated/{YYYYMMDDHHMNSS}/{YYYYMMDDHHMNSS}
 PUT    ../api/{objectClass} with data containing json description of items
 POST   ../api/{objectClass} with data containing json description of items
 DELETE ../api/{objectClass} with data containing json id of items';
@@ -161,6 +161,14 @@ IF ($_SERVER['REQUEST_METHOD']=='GET') {
 			        }
 			      }
 			    }
+        } else if (count($split)>=2 and $split[1]=='search') { // =============== uri = {OblectClass}/search
+        	$cpt=2;
+        	$where="";
+        	while (isset($split[$cpt])) {
+        		$where.=($where)?" and ":'';
+        		$where.=urldecode($split[$cpt]);
+        		$cpt++;
+        	}
         } else {
         	returnError($invalidQuery, $querySyntax);
         }

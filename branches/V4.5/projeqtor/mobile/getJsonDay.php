@@ -2,30 +2,15 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
- * Contributors : -
  *
- * This file is part of ProjeQtOr.
- * 
- * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free 
- * Software Foundation, either version 3 of the License, or (at your option) 
- * any later version.
- * 
- * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
- *
- * You can get complete code of ProjeQtOr, other resource, help and information
- * about contributors at http://www.projeqtor.org 
+ * This file is a plugIn for ProjeQtOr.
+ * This plugIn in not Open Source.
+ * You must have bought the licence from Copyrigth owner to use this plgIn.
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Presents an object. 
+ * Display Agenda - like items, in a Json format 
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/mobile/getJsonDay.php');  
@@ -212,11 +197,11 @@ function getAllActivities($startDate, $endDate, $ress) {
 	foreach ($workList as $pw) {
 		$item=new $pw->refType($pw->refId);
 		if ($pw->refType=='Meeting') {
-			$display=substr($item->meetingStartTime,0,5).' - '.htmlEncode($item->name);
+			$display=substr($item->meetingStartTime,0,5).' - '.$item->name;
 		} else if (get_class($pw)=='Work') {
-				$display='['.Work::displayWorkWithUnit($pw->work).'] '.htmlEncode($item->name);
+				$display=$item->name;
 		} else {
-		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);
+		  $display=$item->name;
 		}
 		if (array_key_exists($item->idProject,$projectColorArray)) {
 			$color=$projectColorArray[$item->idProject];

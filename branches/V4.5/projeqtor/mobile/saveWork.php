@@ -10,7 +10,8 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Presents an object. 
+ * Save real work for mobile application
+ * Converts planned work to real work
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/mobile/saveWork.php');  

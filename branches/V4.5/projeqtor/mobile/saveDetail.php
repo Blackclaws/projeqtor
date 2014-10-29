@@ -10,7 +10,8 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Presents an object. 
+ * Save detail for mobile application
+ * Restricted to some fields : result, ... 
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/mobile/saveDetail.php');  

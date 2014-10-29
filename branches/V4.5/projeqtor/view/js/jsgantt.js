@@ -652,7 +652,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
           + '</td></tr></table>'
           +'</span>'
           +'</TD>'
-          +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap >';
+          +'<TD class="ganttName ganttAlignLeft" style="width: ' + vNameWidth + 'px;" nowrap title="' + vTaskList[i].getName() + '">';
         vLeftTable+='<div class="ganttLeftHover" style="width:'+(vLeftWidth-25)+'px;" '
             + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); '
         	+ ' onMouseover=JSGantt.ganttMouseOver(' + vID + ',"left","' + vRowType + '")'
@@ -687,7 +687,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
         vLeftTable +='</td><td>';
         var nameLeftWidth= vNameWidth - 16 - levlWidth - 18 ;
         vLeftTable += '<div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; '
-          +'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><NOBR>' + vTaskList[i].getName() + '</NOBR></div>' ;
+        	+'width:'+ nameLeftWidth +'px;" class="namePart' + vRowType + '"><NOBR>' + vTaskList[i].getName() + '</NOBR></div>' ;
         vLeftTable +='</td></tr></table></div>';
         vLeftTable +='</TD>';
         for (iSort=0;iSort<sortArray.length;iSort++) {
