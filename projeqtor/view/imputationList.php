@@ -136,6 +136,9 @@ $displayOnlyCurrentWeekMeetings=Parameter::getUserParameter('imputationDisplayOn
               <td style="width: 200px;text-align: left; align: left;"nowrap="nowrap">
                 <?php echo i18n("colFirstDay");?> 
                 <div dojoType="dijit.form.DateTextBox"
+                	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                   id="dateSelector" name=""dateSelector""
                   invalidMessage="<?php echo i18n('messageInvalidDate')?>"
                   type="text" maxlength="10"

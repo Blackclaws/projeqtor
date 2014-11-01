@@ -72,10 +72,14 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <script type="text/javascript" src="js/projeqtorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"
-    djConfig='modulePaths: {"i18n":"../../tool/i18n"},
-              parseOnLoad: true, 
-              isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>'></script>
+  <script type="text/javascript">
+        var dojoConfig = {
+            modulePaths: {"i18n":"../../tool/i18n"},
+            parseOnLoad: true,
+            isDebug: <?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramDebugMode'));?>
+        };
+    </script>
+  <script type="text/javascript" src="../external/dojo/dojo.js?version=<?php echo $version.'.'.$build;?>"></script>
   <script type="text/javascript" src="../external/dojo/projeqtorDojo.js?version=<?php echo $version;?>"></script>
   <script type="text/javascript"> 
     dojo.require("dojo.store.DataStore");
@@ -163,6 +167,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var paramHoursPerDay='<?php echo Parameter::getGlobalParameter('dayTime');?>';
     if (! paramHoursPerDay) paramHoursPerDay=8;
     var paramConfirmQuit="<?php echo Parameter::getUserParameter("paramConfirmQuit")?>";
+    var browserLocaleDateFormat="<?php echo Parameter::getUserParameter('browserLocaleDateFormat');?>";
+    var browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
@@ -902,6 +908,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="billLineStartDate" name="billLineStartDate"
                 dojoType="dijit.form.DateTextBox" required="true" hasDownArrow="false"   
+                constraints="{datePattern:browserLocaleDateFormatJs}"
                 type="text" maxlength="10"  style="width:100px; text-align: center;" class="input"
                 missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                 invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" >
@@ -915,6 +922,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="billLineEndDate" name="billLineEndDate"
                 dojoType="dijit.form.DateTextBox" required="true" hasDownArrow="false"   
+                constraints="{datePattern:browserLocaleDateFormatJs}"
                 type="text" maxlength="10"  style="width:100px; text-align: center;" class="input"
                 missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                 invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" >
@@ -1654,6 +1662,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="expenseDetailDate" name="expenseDetailDate"
                  dojoType="dijit.form.DateTextBox" 
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
                  invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
                  type="text" maxlength="10" 
                  style="width:100px; text-align: center;" class="input"
@@ -1753,6 +1762,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div dojoType="dijit.form.DateTextBox" 
                  id="startDatePlan" name="startDatePlan" 
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
                  invalidMessage="<?php echo i18n('messageInvalidDate')?>" 
                  type="text" maxlength="10"
                  style="width:100px; text-align: center;" class="input"
@@ -1936,6 +1946,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="resourceCostStartDate" name="resourceCostStartDate" value="" 
                  dojoType="dijit.form.DateTextBox" 
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >
@@ -2001,6 +2012,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="versionProjectStartDate" name="versionProjectStartDate" value="" 
                  dojoType="dijit.form.DateTextBox" 
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >
@@ -2014,6 +2026,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <div id="versionProjectEndDate" name="versionProjectEndDate" value="" 
                  dojoType="dijit.form.DateTextBox" 
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >
@@ -2323,7 +2336,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                  /> 
                 <input id="filterValueDate" name="filterValueDate" value=""  
                  dojoType="dijit.form.DateTextBox" 
-                 style="width:400px" />
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
+                 style="width:100px" />
                  <select id="filterSortValueList" name="filterSortValueList" value="asc"  
                  dojoType="dijit.form.FilteringSelect"
                  missingMessage="<?php echo i18n('valueNotSelected');?>" 

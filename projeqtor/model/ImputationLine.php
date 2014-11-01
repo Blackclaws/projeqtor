@@ -675,9 +675,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			echo '</tr></table>';
 			echo '</td>';
 			//echo '<td class="ganttDetail" align="center">' . $line->description . '</td>';
-			echo '<td class="ganttDetail" align="center" width="5%">' . htmlFormatDate($line->startDate) . '</td>';
-			echo '<td class="ganttDetail" align="center" width="5%">' . htmlFormatDate($line->endDate) . '</td>';
-			echo '<td class="ganttDetail" align="center" width="5%">';
+			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->startDate) . '</td>';
+			echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">' . htmlFormatDate($line->endDate) . '</td>';
+			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
@@ -693,7 +693,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 				}
 			}
 			echo '</td>';
-			echo '<td class="ganttDetail" align="center" width="5%">';
+			echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
 			if ($line->imputable) {
 				if (!$print) {
 					echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';

@@ -343,6 +343,7 @@ $ctrls['logLevel'] = '=4=3=2=1=0=';
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();
+      userBrowserLocaleForDates="";
       saveBrowserLocaleToSession();
       dijit.Tooltip.defaultPosition=["below","right"];
       //dojo.byId('login').focus();

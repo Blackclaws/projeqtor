@@ -313,21 +313,22 @@ function saveBrowserLocaleToSession() {
     load: function(data,args) { }
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
-  var formatted=dojo.date.locale.format(date, {formatLength: "short", selector: "date"});
-  /*var format="YYYYMMDD";
-  if (formatted.substr(0,2)=='31') {
-    format='DDMMYYYY';  
-  } else if (formatted.substr(0,2)=='12') {
-	format='MMDDYYYY';
-  }*/
-  var reg=new RegExp("(2000)", "g");
-  format=formatted.replace(reg,'YYYY');
-  reg=new RegExp("(00)", "g");
-  format=format.replace(reg,'YYYY');
-  reg=new RegExp("(12)", "g");
-  format=format.replace(reg,'MM');
-  reg=new RegExp("(31)", "g");
-  format=format.replace(reg,'DD');
+  
+  if (browserLocaleDateFormat) {
+	  format=browserLocaleDateFormat;
+  } else {
+	  var formatted=dojo.date.locale.format(date, {formatLength: "short", selector: "date"});
+	  var reg=new RegExp("(2000)", "g");
+	  format=formatted.replace(reg,'YYYY');
+	  reg=new RegExp("(00)", "g");
+	  format=format.replace(reg,'YYYY');
+	  reg=new RegExp("(12)", "g");
+	  format=format.replace(reg,'MM');
+	  reg=new RegExp("(31)", "g");
+	  format=format.replace(reg,'DD');
+	  browserLocaleDateFormat=format;
+	  browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
+  }
   dojo.xhrPost({
     url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + format,
     handleAs: "text",
@@ -373,7 +374,6 @@ function changeLocale(locale) {
     	  showWait();
           noDisconnect=true;
           quitConfirmed=true;
-          //window.location=("../view/main.php?directAccessPage=parameter.php&menuActualStatus=" + menuActualStatus + "&p1name=type&p1value=userParameter");
           dojo.byId("directAccessPage").value="parameter.php";
           dojo.byId("menuActualStatus").value=menuActualStatus;
           dojo.byId("p1name").value="type";
@@ -386,6 +386,24 @@ function changeLocale(locale) {
       error: function(error,args){}
     });
   }
+}
+
+function changeBrowserLocaleForDates(newFormat) {
+	saveUserParameter('browserLocaleDateFormat', newFormat);
+	dojo.xhrPost({
+	    url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + newFormat,
+	    handleAs: "text",
+	    load: function(data,args) {
+    	  showWait();
+          noDisconnect=true;
+          quitConfirmed=true;
+          dojo.byId("directAccessPage").value="parameter.php";
+          dojo.byId("menuActualStatus").value=menuActualStatus;
+          dojo.byId("p1name").value="type";
+          dojo.byId("p1value").value="userParameter";
+          dojo.byId("directAccessForm").submit();	    	
+	    }
+	  });
 }
 
 /**

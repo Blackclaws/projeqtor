@@ -241,7 +241,7 @@ function costFormatter(value) {
 function dateFormatter(value) {
   if (value.length==10) {
   	vDate=dojo.date.locale.parse(value, {selector: "date", datePattern: "yyyy-MM-dd"});
-    return dojo.date.locale.format(vDate, {formatLength: "short", fullYear: true, selector: "date"});
+    return dojo.date.locale.format(vDate, {datePattern: browserLocaleDateFormatJs,formatLength: "short", fullYear: true, selector: "date"});
   } else {
   	return value;
   }
@@ -280,7 +280,7 @@ function dateTimeFormatter(value) {
   	    return dateFormatter(value.substr(0,10))+":"+value.substr(11,5);
   	  }
   	}
-    return dojo.date.locale.format(vDate, {formatLength: "short", fullYear: true});
+    return dojo.date.locale.format(vDate, {datePattern: browserLocaleDateFormatJs,formatLength: "short", fullYear: true});
   } else {
   	return value;
   }

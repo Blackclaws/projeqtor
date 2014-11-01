@@ -725,7 +725,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo $attributes;
 				echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
 				echo ' type="text" maxlength="' . $dataLength . '" ';
-				//echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
+				if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+					echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+				}
 				echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
 				echo ' value="' . htmlEncode($val) . '" ';
 				echo ' hasDownArrow="false" ';
@@ -750,7 +752,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo $attributes;
 				echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
 				echo ' type="text" maxlength="10" ';
-				//echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
+				if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+					echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+				}
 				echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
 				echo ' value="' . $valDate . '" ';
 				echo ' hasDownArrow="false" ';
