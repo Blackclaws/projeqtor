@@ -74,6 +74,7 @@
       ?>
       dijit.Tooltip.defaultPosition=["below", "right"];
       saveResolutionToSession();
+      userBrowserLocaleForDates="";
       saveBrowserLocaleToSession();
     }); 
   </script>

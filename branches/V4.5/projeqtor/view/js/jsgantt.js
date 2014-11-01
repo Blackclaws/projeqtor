@@ -1625,7 +1625,7 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
   var vDateStr = "";  
   switch(pFormatStr) {
     case 'default':
-      return dojo.date.locale.format(pDate, {formatLength: "short", fullYear: true, selector: "date"});
+      return dojo.date.locale.format(pDate, {datePattern: browserLocaleDateFormatJs, formatLength: "short", fullYear: true, selector: "date"});
     case 'mm/dd/yyyy':
       return( vMonthStr + '/' + vDayStr + '/' + vYear4Str );
     case 'dd/mm/yyyy':

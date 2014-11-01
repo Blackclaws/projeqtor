@@ -70,6 +70,8 @@
     dojo.require("dijit.form.FilteringSelect");
     var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
     var aesLoginHash="<?php echo md5(session_id());?>";
+    var browserLocaleDateFormat="";
+    var browserLocaleDateFormatJs="";
     dojo.addOnLoad(function(){
       currentLocale="<?php echo $currentLocale?>";
       saveResolutionToSession();

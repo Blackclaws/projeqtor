@@ -168,6 +168,9 @@ if (array_key_exists('isIE',$_REQUEST)) {
         <td>
           <div id="documentVersionDate" name="documentVersionDate"
            dojoType="dijit.form.DateTextBox" 
+          <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+						echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+					}?>
            invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
            type="text" maxlength="10" 
            style="width:100px; text-align: center;" class="input"

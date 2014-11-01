@@ -284,6 +284,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="initialDueDate" id="initialDueDate"
+                	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>
@@ -294,6 +297,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualDueDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="actualDueDate" id="actualDueDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>
@@ -304,6 +310,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialEndDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="initialEndDate" id="initialEndDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>
@@ -314,6 +323,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualEndDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="actualEndDate" id="actualEndDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>
@@ -324,6 +336,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeInitialDueDateTime');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="initialDueDate" id="initialDueDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
                 <div dojoType="dijit.form.TimeTextBox" name="initialDueTime" id="initialDueTime"
                  style="width:100px;" class="input" value="" ></div>
@@ -336,6 +351,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeActualDueDateTime');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="actualDueDate" id="actualDueDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
                 <div dojoType="dijit.form.TimeTextBox" name="actualDueTime" id="actualDueTime"
                  style="width:100px;" class="input" value="" ></div>
@@ -349,6 +367,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedStartDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedStartDate" id="<?php echo $pe;?>_validatedStartDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>
@@ -360,6 +381,9 @@
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeValidatedEndDate');?>&nbsp;:&nbsp;</td>
               <td>
                 <div dojoType="dijit.form.DateTextBox" name="<?php echo $pe;?>_validatedEndDate" id="<?php echo $pe;?>_validatedEndDate"
+                <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
                  style="width:100px;" class="input" value="" ></div>
               </td>
             </tr>

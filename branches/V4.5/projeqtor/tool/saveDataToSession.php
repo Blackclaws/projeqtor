@@ -46,6 +46,9 @@ if ($id=='disconnect') {
 $value=$_REQUEST['value'];
 
 $_SESSION[$id]=$value;
+if ($id=='browserLocaleDateFormat') {
+	$_SESSION['browserLocaleDateFormatJs']=str_replace(array('D','Y'), array('d','y'), $value);
+}
 
 if (array_key_exists('userParamatersArray',$_SESSION)) {
 	if (array_key_exists($id,$_SESSION['userParamatersArray'])) {
@@ -56,5 +59,6 @@ if (array_key_exists('userParamatersArray',$_SESSION)) {
 if (isset($_REQUEST['saveUserParam']) && $_REQUEST['saveUserParam']=='true') {
 	Parameter::storeUserParameter($id, $value);
 }
+
 
 ?>
