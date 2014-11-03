@@ -54,6 +54,8 @@ class Resource extends SqlElement {
   public $_ResourceCost=array();
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $_spe_affectationGraph;
+  public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;
   public $password;
   
@@ -399,6 +401,12 @@ class Resource extends SqlElement {
       $affList=$aff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
+    } else if ($item=='affectationGraph') {
+    	$result.='<tr style="height:100%">';
+    	$result.='<td colspan="2" style="width:100%">';
+    	$result.=Affectation::drawResourceAffectation($this->id);
+    	$result.='</td></tr>';
+    	echo $result;
     } else if ($item=='image' and $this->id){
     	$result="";
     	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>'Resource', 'refId'=>$this->id));

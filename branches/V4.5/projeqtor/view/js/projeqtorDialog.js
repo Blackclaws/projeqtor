@@ -3168,6 +3168,8 @@ function addAffectation(objectClass, type, idResource, idProject) {
 	dijit.byId("affectationResource").set('required',true);
 	dijit.byId("affectationRate").set('value','100');
 	dijit.byId("affectationIdle").reset();
+	dijit.byId("affectationStartDate").reset();
+	dijit.byId("affectationEndDate").reset();
 	dijit.byId("dialogAffectation").show();
 }
 
@@ -3184,7 +3186,7 @@ function removeAffectation(id) {
 } 
 
 affectationLoad=false;
-function editAffectation(id, objectClass, type, idResource, idProject, rate,idle) {
+function editAffectation(id, objectClass, type, idResource, idProject, rate,idle, startDate, endDate) {
 	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -3213,6 +3215,16 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 	  dijit.byId("affectationRate").set('value',rate);
 	} else {
       dijit.byId("affectationRate").reset();
+	}
+	if (startDate) {
+		dijit.byId("affectationStartDate").set('value',startDate);
+	} else {
+		dijit.byId("affectationStartDate").reset();
+	}
+	if (endDate) {
+		dijit.byId("affectationEndDate").set('value',endDate);
+	} else {
+		dijit.byId("affectationEndDate").reset();
 	}
 	if (idle==1) {
 		dijit.byId("affectationIdle").set('value',idle);
