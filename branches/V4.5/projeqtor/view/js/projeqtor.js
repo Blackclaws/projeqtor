@@ -313,7 +313,7 @@ function saveBrowserLocaleToSession() {
     load: function(data,args) { }
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
-  
+console.log("browserLocaleDateFormat='"+browserLocaleDateFormat+"'");  
   if (browserLocaleDateFormat) {
 	  format=browserLocaleDateFormat;
   } else {
@@ -326,11 +326,12 @@ function saveBrowserLocaleToSession() {
 	  format=format.replace(reg,'MM');
 	  reg=new RegExp("(31)", "g");
 	  format=format.replace(reg,'DD');
+console.log("calculated format='"+format+"'");
 	  browserLocaleDateFormat=format;
 	  browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
   }
   dojo.xhrPost({
-    url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + format,
+    url: "../tool/saveDataToSession.php?id=browserLocaleDateFormat&value=" + encodeURI(format),
     handleAs: "text",
     load: function(data,args) { }
   });

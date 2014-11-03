@@ -245,8 +245,6 @@ function setupLocale () {
   $_SESSION['lang']=$currentLocale; // Must be kept for user parameter screen initialization
   if (isset($_SESSION['browserLocaleDateFormat'])) {
     $browserLocaleDateFormat=$_SESSION['browserLocaleDateFormat'];
-  } else {
-    $browserLocaleDateFormat='YYYY-MM-DD';
   }
 }
 

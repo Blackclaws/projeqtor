@@ -428,7 +428,7 @@ public $_noCopy;
   			if (! isset($projects[$idP])) {
   				$cptProj++;
   				$projects[$idP]=array('position'=>$cptProj,
-  						'name'=>SqlList::getNameFromId('Project',$idP),
+  						//'name'=>SqlList::getNameFromId('Project',$idP),
   						'periods'=>array()
   				);
   			}
@@ -439,7 +439,7 @@ public $_noCopy;
   				and $lst['rate']=$p['rate']) {
   				$projects[$idP]['periods'][count($per)-1]['end']=$p['end'];
   			} else {
-  				$projects[$idP]['periods'][]=array('start'=>$p['start'], 'end'=>$p['end'], 'rate'=>$p['rate']);
+  				$projects[$idP]['periods'][]=array('start'=>$p['start'], 'end'=>$p['end'], 'rate'=>$p['projects'][$idP]);
   			}
   		}
   	}
@@ -472,20 +472,23 @@ public $_noCopy;
   	} 	 
   	$duration=dayDiffDates($start, $end)+1;
   	$maxRate=100;
-  	$lineHeight=14;
+  	$lineHeight=15;
   	$cptProj=0;
   	foreach ($periods as $p) {
   		if ($p['rate']>$maxRate) $maxRate=$p['rate'];
   		foreach($p['projects'] as $idP=>$affP) {
   			if (! isset($projects[$idP])) {
   				$cptProj++;
-  				$projects[$idP]=array('position'=>$cptProj,'name'=>SqlList::getNameFromId('Project',$idP));
+  				$projects[$idP]=array('position'=>$cptProj,
+  						'name'=>SqlList::getNameFromId('Project',$idP), 
+  						'color'=>SqlList::getFieldFromId('Project', $idP, 'color'));
   			}
   		}
   	}
   	$result='<div style="position:relative;height:5px;"></div>'
-  			.'<div style="position:relative;width:98%; height:'.((count($projects)+1)*$lineHeight+6).'px; border: 2px solid #AAAAAA;background-color:#FEFEFE;'
-  			.'border-radius:5px; box-shadow:5px 5px 5px #888888; overflow:hidden;">';
+  			.'<div style="position:relative;width:99%; height:'.((count($projects)+1)*($lineHeight+4)+4).'px; '
+  			.' border: 1px solid #AAAAAA;background-color:#FEFEFE;'
+  			.'border-radius:5px; box-shadow:2px 2px 2px #888888; overflow:hidden;">';
   	foreach ($periods as $p) {
   		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
   		$width=($len/$duration*100);
@@ -511,21 +514,22 @@ public $_noCopy;
 	  		$width=($len/$duration*100);
 	  		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
 	  		$title=self::formatDate($p['start']).' => '.self::formatDate($p['end']).' - '.$p['rate'].'%';
-	  		$title.="\n".$proj['name'];
+	  		$title.="\n".$projects[$idP]['name'];
+	  		$color=($projects[$idP]['color'])?$projects[$idP]['color']:'#EEEEEE';
 	  		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;'
-	  				.' top:'.(3+$lineHeight*($proj['position'])).'px;'
+	  				.' top:'.(3+($lineHeight+4)*($proj['position'])).'px;'
 	  				.' height:'.($lineHeight).'px;z-index:'.(99-$proj['position']).';'
-	  						.' background-color:#'.(($p['rate']>100)?'FFDDDD':'EEEEFF').'; '
-	  								.' border:1px solid #'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';border-radius:5px" title="'.$title.'">';
+	  				.' background-color:'.$color.'; '
+	  				.' border:1px solid #222222;border-radius:5px" title="'.$title.'">';
 	  		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
-	  				.'width:100%;text-align:right;color:#888888;text-shadow: 1px 1px #ffffff;">';
+	  				.'width:100%;text-align:right;color:'.htmlForeColorForBackgroundColor($color).';">';
 	  		$result.=$p['rate'].'%';
 	  		$result.= '</div>';
 	  		$result.='<div style="position: absolute; top:0px;left:0px;width:100%;height:'.$lineHeight.'px;'
-	  				.'text-shadow: 1px 1px #ffffff;white-space:nowrap;z-index:9999">';
-	  		$result.=$proj['name'];
+	  				.'color:'.htmlForeColorForBackgroundColor($color).';white-space:nowrap;z-index:9999">';
+	  		$result.=$projects[$idP]['name'];
 	  		$result.= '</div>';
-	  		$proj['name']='';	  			
+	  		$projects[$idP]['name']='';	  			
 	  		$result.='</div>';
   		}
   	}

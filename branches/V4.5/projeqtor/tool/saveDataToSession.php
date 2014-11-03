@@ -59,6 +59,4 @@ if (array_key_exists('userParamatersArray',$_SESSION)) {
 if (isset($_REQUEST['saveUserParam']) && $_REQUEST['saveUserParam']=='true') {
 	Parameter::storeUserParameter($id, $value);
 }
-
-
 ?>
