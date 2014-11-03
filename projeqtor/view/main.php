@@ -2243,6 +2243,32 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              </td>    
            </tr>
            <tr>
+             <td colspan="2">
+               <table>
+                 <tr>
+                   <td class="dialogLabel" >
+                     <label for="affectationStartDate" ><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
+                   </td>
+                   <td>
+                     <input id="affectationStartDate" name="affectationStartDate" value=""  
+			                 dojoType="dijit.form.DateTextBox" 
+			                 constraints="{datePattern:browserLocaleDateFormatJs}"
+			                 style="width:100px" />
+                   </td>
+                   <td class="dialogLabel" >
+                     <label for="affectationEndDate" ><?php echo i18n("colEndDate");?>&nbsp;:&nbsp;</label>
+                   </td>
+                   <td>
+                   <input id="affectationEndDate" name="affectationEndDate" value=""  
+		                 dojoType="dijit.form.DateTextBox" 
+		                 constraints="{datePattern:browserLocaleDateFormatJs}"
+		                 style="width:100px" />
+                   </td>
+                 </tr>
+               </table>
+             </td>
+           </tr>
+           <tr>
              <td class="dialogLabel" >
                <label for="affectationIdle" ><?php echo i18n("colIdle");?>&nbsp;:&nbsp;</label>
              </td>

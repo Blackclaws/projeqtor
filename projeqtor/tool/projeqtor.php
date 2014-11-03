@@ -522,7 +522,20 @@ function array_merge_preserve_keys() {
   }  
   return $result;
 }
-
+function array_sum_preserve_keys() {
+	$params= func_get_args();
+	$result=array();
+	foreach($params as &$array) {
+		foreach ($array as $key=>&$value) {
+			if (isset($result[$key])) {
+				$result[$key]+=$value;
+			} else {
+				$result[$key]=$value;
+			}
+		}
+	}
+	return $result;
+}
 /** ===========================================================================
  * Check if menu can be displayed, depending of user profile
  * @param $menu the name of the menu to check

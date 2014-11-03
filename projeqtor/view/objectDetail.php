@@ -2443,16 +2443,18 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 	}
 
 	if (! $print) {
-		echo '<td class="assignHeader" style="width:10%">';
+		echo '<td class="assignHeader" style="width:5%">';
 		if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
 			echo '<img src="css/images/smallButtonAdd.png" ' .
            ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
 		}
 		echo '</td>';
 	}
-	echo '<td class="assignHeader" style="width:10%">' . i18n('colId') . '</td>';
-	echo '<td class="assignHeader" style="width:' . (($print)?'70':'60') . '%">' . i18n('colId'.$type) . '</td>';
-	echo '<td class="assignHeader" style="width:20%">' . i18n('colRate'). '</td>';
+	echo '<td class="assignHeader" style="width:5%">' . i18n('colId') . '</td>';
+	echo '<td class="assignHeader" style="width:' . (($print)?'50':'45') . '%">' . i18n('colId'.$type) . '</td>';
+	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
+	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
+	echo '<td class="assignHeader" style="width:10%">' . i18n('colRate'). '</td>';
 	//echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
 
 	echo '</tr>';
@@ -2473,7 +2475,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 		if ($aff->idResource!=$name) {
 			echo '<tr>';
 			if (! $print) {
-				echo '<td class="assignData'.$idleClass.'" style="text-align:center;">';
+				echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
 				if ($canUpdate and ! $print) {
 					echo '  <img src="css/images/smallButtonEdit.png" '
 					. 'onClick="editAffectation(' . "'" . $aff->id . "'"
@@ -2483,6 +2485,8 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 					. ",'" . $aff->idProject . "'"
 					. ",'" . $aff->rate . "'"
 					. ",'" . $aff->idle . "'"
+					. ",'" . $aff->startDate . "'"
+					. ",'" . $aff->endDate . "'"				
 					. ');" '
 					. 'title="' . i18n('editAffectation') . '" class="smallButton"/> ';
 				}
@@ -2509,7 +2513,9 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 			} else {
 				echo '<td class="assignData'.$idleClass.'" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Project', $aff->idProject)) . '</td>';
 			}
-			echo '<td class="assignData'.$idleClass.'" align="center">' . $aff->rate . '</td>';
+			echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">' . htmlFormatDate($aff->startDate) . '</td>';
+			echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">' . htmlFormatDate($aff->endDate) . '</td>';
+			echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">' . $aff->rate . '</td>';
 			//echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
 			echo '</tr>';
 		}

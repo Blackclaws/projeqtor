@@ -40,9 +40,12 @@ class Affectation extends SqlElement {
   public $idUser;
   public $idProject;
   public $rate;
+  public $startDate;
+  public $endDate;
   public $idle;
   public $description;
   public $_col_2_2;
+  public $_resourcePeriods=array();
   
 public $_noCopy;
 
@@ -316,6 +319,228 @@ public $_noCopy;
       $aff->idle=1;
       $aff->save();
     }
+  }
+  public static $maxAffectationDate='2029-12-31';
+  public static $minAffectationDate='1970-01-01';
+  public static function buildResourcePeriods($idResource,$showIdle=false) {
+    if (isset($_resourcePeriods[$idResource][$showIdle])) {
+    	return $_resourcePeriods[$idResource][$showIdle];
+    }
+  	$aff=new Affectation();
+  	$crit=array('idResource'=>$idResource);
+  	if (!$showIdle) {
+  		$crit['idle']='0';
+  	}
+  	$list=$aff->getSqlElementsFromCriteria($crit,false,null, 'startDate asc, endDate asc, idProject asc');
+  	$res=array();
+  	foreach ($list as $aff) {
+  		$start=($aff->startDate)?$aff->startDate:self::$minAffectationDate;
+  		$end=($aff->endDate)?$aff->endDate:self::$maxAffectationDate;
+  		$arrAffProj=array($aff->idProject=>$aff->rate);
+  		foreach($res as $r) {
+  			if (!$start or !$end) break;
+  			if ($start<=$r['start']) {
+  				if ($end>=$r['start']) {
+  					if ($end<=$r['end']) {
+  						$res[$r['start']]=array(
+  								'start'=>$r['start'],
+  								'end'=>$end,
+  								'rate'=>$aff->rate+$r['rate'],
+  								'projects'=>array_sum_preserve_keys($r['projects'],$arrAffProj));
+  						if ($end!=$r['end']) {
+	  						$next=addDaysToDate($end, 1);
+	  						$res[$next]=array(
+	  								'start'=>$next,
+	  								'end'=>$r['end'],
+	  								'rate'=>$r['rate'],
+	  								'projects'=>$r['projects']);
+  						}
+  						$end=($start!=$r['start'])?addDaysToDate($r['start'], -1):'';
+  					} else {
+  					  if ($start!=$r['start']) {
+	  						$res[$start]=array(
+	  								'start'=>$start,
+	  								'end'=>addDaysToDate($r['start'], -1),
+	  								'rate'=>$aff->rate,
+	  								'projects'=>$arrAffProj);
+  					  }
+  						$next=$r['start'];
+  						$res[$next]=array(
+  								'start'=>$next,
+  								'end'=>$r['end'],
+  								'rate'=>$r['rate']+$aff->rate,
+  								'projects'=>array_sum_preserve_keys($r['projects'],$arrAffProj));
+  						$start=($end!=$r['end'])?addDaysToDate($r['end'], 1):'';
+  					}
+  				}  				
+  			} else { //$start>$r['startDate'] 
+  				if ($start<=$r['end']) {
+  					$res[$r['start']]=array(
+  							'start'=>$r['start'],
+  							'end'=>addDaysToDate($start, -1),
+  							'rate'=>$r['rate'],
+  							'projects'=>$r['projects']);
+  					if ($end<=$r['end']) { 						
+  						$res[$start]=array(
+  								'start'=>$start,
+  								'end'=>$end,
+  								'rate'=>$r['rate']+$aff->rate,
+  								'projects'=>array_sum_preserve_keys($r['projects'],$arrAffProj));
+  						if ($end!=$r['end']) {
+  							$next=addDaysToDate($end, 1);
+  							$res[$next]=array(
+  									'start'=>$next,
+  									'end'=>$r['end'],
+  									'rate'=>$r['rate'],
+  									'projects'=>$r['projects']);
+  						}
+  						$start='';$end='';
+  					} else { // ($end>$r['end'])
+  						$res[$start]=array(
+  								'start'=>$start,
+  								'end'=>$r['end'],
+  								'rate'=>$r['rate']+$aff->rate,
+  								'projects'=>array_sum_preserve_keys($r['projects'],$arrAffProj));
+  						$start=addDaysToDate($r['end'], 1);
+  					}
+  				}
+  			}
+  		} // End loop
+  		if ($start and $end) {
+  		  $res[$start]=array('start'=>$start,
+  		  		               'end'=>$end,
+  		  		               'rate'=>$aff->rate,
+  		  		               'projects'=>$arrAffProj);
+  		}
+  	}
+  	if (!isset($_resourcePeriods[$idResource])) {
+  		$_resourcePeriods[$idResource]=array();
+  	}
+  	$_resourcePeriods[$idResource][$showIdle]=$res;
+  	return $res;
+  }
+  public static function buildResourcePeriodsPerProject($idResource, $showIdle=false){
+  	$periods=self::buildResourcePeriods($idResource,$showIdle);
+  	$cptProj=0;
+  	$projects=array();
+  	foreach ($periods as $p) {
+  		foreach($p['projects'] as $idP=>$affP) {
+  			if (! isset($projects[$idP])) {
+  				$cptProj++;
+  				$projects[$idP]=array('position'=>$cptProj,
+  						'name'=>SqlList::getNameFromId('Project',$idP),
+  						'periods'=>array()
+  				);
+  			}
+  			$per=$projects[$idP]['periods'];
+  			$lst=end($per);
+  			if (count($per)>0 
+  				and $lst['end']=addDaysToDate($p['start'], -1) 
+  				and $lst['rate']=$p['rate']) {
+  				$projects[$idP]['periods'][count($per)-1]['end']=$p['end'];
+  			} else {
+  				$projects[$idP]['periods'][]=array('start'=>$p['start'], 'end'=>$p['end'], 'rate'=>$p['rate']);
+  			}
+  		}
+  	}
+  	return $projects; 
+  }
+  
+  public static function drawResourceAffectation($idResource, $showIdle=false) {
+  	$periods=self::buildResourcePeriods($idResource,$showIdle);
+  	ksort($periods);
+  	$first=reset($periods);
+  	$start=$first['start'];
+  	$last=end($periods);
+  	$end=$last['end'];
+  	$projects=array();
+  	$nb=count($periods);
+  	if ( ($start==self::$minAffectationDate or $end==self::$maxAffectationDate) and $nb>1) {
+  		if ($start==self::$minAffectationDate) {
+  			if ($end==self::$maxAffectationDate){
+  				$newDur=dayDiffDates($first['end'],$last['start'])+1;
+  				
+  			} else {
+  				$newDur=dayDiffDates($first['end'],$end)+1;
+  			}
+  		} else {
+  			$newDur=dayDiffDates($start,$last['start'])+1;
+  		}
+  		$gap=ceil($newDur/$nb);
+  		$start=($start==self::$minAffectationDate)?addDaysToDate($first['end'], $gap*(-1)):$start;
+  		$end=($end==self::$maxAffectationDate)?addDaysToDate($last['start'], $gap):$end;
+  	} 	 
+  	$duration=dayDiffDates($start, $end)+1;
+  	$maxRate=100;
+  	$lineHeight=14;
+  	$cptProj=0;
+  	foreach ($periods as $p) {
+  		if ($p['rate']>$maxRate) $maxRate=$p['rate'];
+  		foreach($p['projects'] as $idP=>$affP) {
+  			if (! isset($projects[$idP])) {
+  				$cptProj++;
+  				$projects[$idP]=array('position'=>$cptProj,'name'=>SqlList::getNameFromId('Project',$idP));
+  			}
+  		}
+  	}
+  	$result='<div style="position:relative;height:5px;"></div>'
+  			.'<div style="position:relative;width:98%; height:'.((count($projects)+1)*$lineHeight+6).'px; border: 2px solid #AAAAAA;background-color:#FEFEFE;'
+  			.'border-radius:5px; box-shadow:5px 5px 5px #888888; overflow:hidden;">';
+  	foreach ($periods as $p) {
+  		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
+  		$width=($len/$duration*100);
+  		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
+  		$title=self::formatDate($p['start']).' => '.self::formatDate($p['end']).' - '.$p['rate'].'%';
+  		foreach ($p['projects'] as $idP=>$affP) {
+  			$title.="\n".$affP.'% - '.SqlList::getNameFromId('Project',$idP);
+  		}
+  		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;top:3px;'
+  			.' height:'.($lineHeight).'px;'
+  			.' background-color:#'.(($p['rate']>100)?'FFDDDD':'EEEEFF').'; '
+  			.' border:1px solid #'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';border-radius:5px;" title="'.$title.'">';
+  		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
+  				.'width:100%;text-align:center;color:#'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';">';
+  		$result.=$p['rate'].'%';
+  		$result.= '</div>';
+  		$result.='</div>';	
+  	}
+  	$periodsPerProject=self::buildResourcePeriodsPerProject($idResource, $showIdle);
+  	foreach ($periodsPerProject as $idP=>$proj) {
+  		foreach ($proj['periods'] as $p) {
+	  		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
+	  		$width=($len/$duration*100);
+	  		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
+	  		$title=self::formatDate($p['start']).' => '.self::formatDate($p['end']).' - '.$p['rate'].'%';
+	  		$title.="\n".$proj['name'];
+	  		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;'
+	  				.' top:'.(3+$lineHeight*($proj['position'])).'px;'
+	  				.' height:'.($lineHeight).'px;z-index:'.(99-$proj['position']).';'
+	  						.' background-color:#'.(($p['rate']>100)?'FFDDDD':'EEEEFF').'; '
+	  								.' border:1px solid #'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';border-radius:5px" title="'.$title.'">';
+	  		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
+	  				.'width:100%;text-align:right;color:#888888;text-shadow: 1px 1px #ffffff;">';
+	  		$result.=$p['rate'].'%';
+	  		$result.= '</div>';
+	  		$result.='<div style="position: absolute; top:0px;left:0px;width:100%;height:'.$lineHeight.'px;'
+	  				.'text-shadow: 1px 1px #ffffff;white-space:nowrap;z-index:9999">';
+	  		$result.=$proj['name'];
+	  		$result.= '</div>';
+	  		$proj['name']='';	  			
+	  		$result.='</div>';
+  		}
+  	}
+  	$result.= '</div>';
+  	return $result;
+  }
+  
+  private static function formatDate($date) {
+  	if ($date==self::$minAffectationDate) {
+  		return "*";
+  	}
+  	if ($date==self::$maxAffectationDate) {
+  		return "*";
+  	}
+  	return htmlFormatDate($date);
   }
   
 }

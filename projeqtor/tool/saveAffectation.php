@@ -56,6 +56,16 @@ if (! array_key_exists('affectationRate',$_REQUEST)) {
 }
 $rate=($_REQUEST['affectationRate']);
 
+$startDate="";
+if (array_key_exists('affectationStartDate',$_REQUEST)) {
+	$startDate=($_REQUEST['affectationStartDate']);;
+}
+
+$endDate="";
+if (array_key_exists('affectationEndDate',$_REQUEST)) {
+	$endDate=($_REQUEST['affectationEndDate']);;
+}
+
 $idle=false;
 if (array_key_exists('affectationIdle',$_REQUEST)) {
   $idle=1;
@@ -69,7 +79,8 @@ if (! $idTeam) {
 	
 	$affectation->idle=$idle;
 	$affectation->rate=$rate;
-	
+	$affectation->startDate=$startDate;
+	$affectation->endDate=$endDate;
 	$result=$affectation->save();
 } else {
 	$crit=array('idTeam'=>$idTeam);
@@ -82,6 +93,8 @@ if (! $idTeam) {
     $affectation->idResource=$ress->id;
     $affectation->idle=$idle;
     $affectation->rate=$rate;
+    $affectation->startDate=$startDate;
+    $affectation->endDate=$endDate;
     $res=$affectation->save();
     if (stripos($res,'id="lastOperationStatus" value="OK"')>0 ) {
       $nbAff++;
