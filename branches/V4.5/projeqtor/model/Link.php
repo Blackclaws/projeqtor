@@ -117,7 +117,7 @@ class Link extends SqlElement {
     $class=get_class($obj);
     if ($classLink) {
       if ($class<$classLink) {
-        $where=" ref1Type='" . $class . "' and ref1Id=" . Sql::fmtId($obj->id) . " and ref2Type=" . $classLink . "' ";
+        $where=" ref1Type='" . $class . "' and ref1Id=" . Sql::fmtId($obj->id) . " and ref2Type='" . $classLink . "' ";
       } else {
         $where=" ref2Type='" . $class . "' and ref2Id=" . Sql::fmtId($obj->id) . " and ref1Type='" . $classLink . "' ";
       }
