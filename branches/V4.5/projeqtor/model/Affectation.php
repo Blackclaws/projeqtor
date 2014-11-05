@@ -447,7 +447,9 @@ public $_noCopy;
   }
   
   public static function drawResourceAffectation($idResource, $showIdle=false) {
+  	global $print;
   	$periods=self::buildResourcePeriods($idResource,$showIdle);
+  	if (count($periods)==0) return;
   	ksort($periods);
   	$first=reset($periods);
   	$start=$first['start'];
@@ -500,7 +502,9 @@ public $_noCopy;
   		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;top:3px;'
   			.' height:'.($lineHeight).'px;'
   			.' background-color:#'.(($p['rate']>100)?'FFDDDD':'EEEEFF').'; '
-  			.' border:1px solid #'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';border-radius:5px;" title="'.$title.'">';
+  			.' border:1px solid #'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';border-radius:5px;" ';
+  		if (! $print)	$result.='title="'.$title.'" ';
+  		$result.='>';
   		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
   				.'width:100%;text-align:center;color:#'.(($p['rate']>100)?'EEAAAA':'AAAAEE').';">';
   		$result.=$p['rate'].'%';
@@ -520,7 +524,10 @@ public $_noCopy;
 	  				.' top:'.(3+($lineHeight+4)*($proj['position'])).'px;'
 	  				.' height:'.($lineHeight).'px;z-index:'.(99-$proj['position']).';'
 	  				.' background-color:'.$color.'; '
-	  				.' border:1px solid #222222;border-radius:5px" title="'.$title.'">';
+	  				.' border:1px solid #222222;border-radius:5px" ';
+  		if (! $print)	$result.='title="'.$title.'" ';
+  		$result.='>';
+debugLog($projects[$idP]['name']." debut=".$p['start']." fin=".$p['end']." left=".$left."% width:".$width."%");
 	  		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
 	  				.'width:100%;text-align:right;color:'.htmlForeColorForBackgroundColor($color).';">';
 	  		$result.=$p['rate'].'%';
