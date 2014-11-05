@@ -1486,6 +1486,7 @@ function workDayDiffDates($start, $end) {
  * @return int number of days
  */
 function dayDiffDates($start, $end) {
+	if (! trim($start) or ! trim($end)) return 0;
   $tStart = explode("-", $start);
   $tEnd = explode("-", $end);
   $dStart=mktime(0, 0, 0, $tStart[1], $tStart[2], $tStart[0]);

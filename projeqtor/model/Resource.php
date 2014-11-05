@@ -72,7 +72,7 @@ class Resource extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required", 
+  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100", 
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
                                           "isContact"=>"readonly",
@@ -163,7 +163,7 @@ class Resource extends SqlElement {
     return self::$_databaseCriteria;
   }
 
-     /** ==========================================================================
+  /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
@@ -402,10 +402,10 @@ class Resource extends SqlElement {
       drawAffectationsFromObject($affList, $this, 'Project', false);   
       return $result;
     } else if ($item=='affectationGraph') {
-    	$result.='<tr style="height:100%">';
-    	$result.='<td colspan="2" style="width:100%">';
+    	//$result.='<tr style="height:100%">';
+    	//$result.='<td colspan="2" style="width:100%">';
     	$result.=Affectation::drawResourceAffectation($this->id);
-    	$result.='</td></tr>';
+    	//$result.='</td></tr>';
     	echo $result;
     } else if ($item=='image' and $this->id){
     	$result="";
@@ -416,18 +416,18 @@ class Resource extends SqlElement {
     		  $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
     	    $result.='<td>&nbsp;&nbsp;';
     	    $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
-    	    $left=250;
-    	    $top=66;
+    	    $horizontal='right:51%';
+    	    $top='30px';
     	  } else {
     	  	if ($outMode=='pdf') {
-    	  		$left=450;
-            $top=90;
+    	  		$horizontal='left:450px';
+            $top='100px';
     	  	} else {
-    	  	  $left=400;
-    	  	  $top=64;
+    	  	  $horizontal='left:400px';
+    	  	  $top='70px';
     	  	}
     	  }
-    	  $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
+    	  $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
            . ' title="'.$image->fileName.'" style="cursor:pointer"'
            . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
         if (!$print) {

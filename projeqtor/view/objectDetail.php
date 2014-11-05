@@ -427,6 +427,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				if (strpos($obj->getFieldAttributes($col), 'mediumWidth')!==false) {
 					$fieldWidth=$mediumWidth;
 				}
+				if (strpos($obj->getFieldAttributes($col), 'truncatedWidth')!==false) {
+					$pos=strpos($obj->getFieldAttributes($col), 'truncatedWidth');
+					$truncValue=substr($obj->getFieldAttributes($col),$pos+14,3);
+					$fieldWidth-=$truncValue;
+				}
 			}
 			//echo $dataType . '(' . $dataLength . ') ';
 			if ($included) {

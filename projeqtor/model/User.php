@@ -74,7 +74,8 @@ class User extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_fieldsAttributes=array("name"=>"required",
+  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
+  		                                    "email"=>"truncatedWidth100",
   										                    "isLdap"=>"hidden,forceExport",
                                           "idProfile"=>"required",
                                           "loginTry"=>"hidden",
@@ -293,16 +294,18 @@ class User extends SqlElement {
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
-        } else {
-          if ($outMode=='pdf') {
-            $left=450;
-            $top=90;
-          } else {
-            $left=400;
-            $top=64;
-          }
-        }
-        $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:80px;height:80px;border: 1px solid grey;">'
+        	$horizontal='right:52%';
+    	    $top='30px';
+    	  } else {
+    	  	if ($outMode=='pdf') {
+    	  		$horizontal='left:450px';
+            $top='100px';
+    	  	} else {
+    	  	  $horizontal='left:400px';
+    	  	  $top='70px';
+    	  	}
+    	  }
+        $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;">'
            . ' <img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
            . ' title="'.$image->fileName.'" style="cursor:pointer;"'
            . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
