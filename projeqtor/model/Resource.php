@@ -442,7 +442,7 @@ class Resource extends SqlElement {
 	        $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
 	        $result.='<td>&nbsp;&nbsp;';
 	        $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
-	        $result.='<div style="position: absolute; top:64px;left:250px; width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
+	        $result.='<div style="position: absolute; top:30px; right:51%; width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
 	            .' onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'">'
 	            . i18n('addPhoto').'</div>';
 	        $result.='</td>';
