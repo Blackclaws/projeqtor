@@ -416,6 +416,7 @@ public $_noCopy;
   	if (!isset($_resourcePeriods[$idResource])) {
   		$_resourcePeriods[$idResource]=array();
   	}
+  	ksort($res);
   	$_resourcePeriods[$idResource][$showIdle]=$res;
   	return $res;
   }
@@ -433,10 +434,10 @@ public $_noCopy;
   				);
   			}
   			$per=$projects[$idP]['periods'];
-  			$lst=end($per);
+  			$last=end($per);
   			if (count($per)>0 
-  				and $lst['end']=addDaysToDate($p['start'], -1) 
-  				and $lst['rate']=$p['rate']) {
+  				and $last['end']=addDaysToDate($p['start'], -1) 
+  				and $last['rate']=$p['rate']) {
   				$projects[$idP]['periods'][count($per)-1]['end']=$p['end'];
   			} else {
   				$projects[$idP]['periods'][]=array('start'=>$p['start'], 'end'=>$p['end'], 'rate'=>$p['projects'][$idP]);
@@ -450,7 +451,6 @@ public $_noCopy;
   	global $print;
   	$periods=self::buildResourcePeriods($idResource,$showIdle);
   	if (count($periods)==0) return;
-  	ksort($periods);
   	$first=reset($periods);
   	$start=$first['start'];
   	$last=end($periods);
@@ -528,13 +528,13 @@ public $_noCopy;
   		if (! $print)	$result.='title="'.$title.'" ';
   		$result.='>';
 debugLog($projects[$idP]['name']." debut=".$p['start']." fin=".$p['end']." left=".$left."% width:".$width."%");
-	  		$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
-	  				.'width:100%;text-align:right;color:'.htmlForeColorForBackgroundColor($color).';">';
-	  		$result.=$p['rate'].'%';
-	  		$result.= '</div>';
-	  		$result.='<div style="position: absolute; top:0px;left:0px;width:100%;height:'.$lineHeight.'px;'
-	  				.'color:'.htmlForeColorForBackgroundColor($color).';white-space:nowrap;z-index:9999">';
-	  		$result.=$projects[$idP]['name'];
+	  		//$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
+	  		//		.'width:100%;text-align:right;color:'.htmlForeColorForBackgroundColor($color).';">';
+	  		//$result.=$p['rate'].'%';
+	  		//$result.= '</div>';
+	  		$result.='<div style="position: absolute; top:0px;left:0px;width:100%;height:'.$lineHeight.'px;overflow:visible;'
+	  				.'color:'.htmlForeColorForBackgroundColor($color).';text-shadow:1px 1px '.$color.';white-space:nowrap;z-index:9999">';
+	  		$result.='['.$p['rate'].'%]&nbsp;'.$projects[$idP]['name'];
 	  		$result.= '</div>';
 	  		$projects[$idP]['name']='';	  			
 	  		$result.='</div>';

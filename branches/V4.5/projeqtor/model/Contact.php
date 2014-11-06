@@ -449,7 +449,7 @@ class Contact extends SqlElement {
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachement('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
-        	$horizontal='right:52%';
+        	$horizontal='right:51%';
     	    $top='30px';
     	  } else {
     	  	if ($outMode=='pdf') {
@@ -460,7 +460,7 @@ class Contact extends SqlElement {
     	  	  $top='70px';
     	  	}
     	  }
-        $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:60px;height:60px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),60).'" '
+        $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),60).'" '
            . ' title="'.$image->fileName.'" style="cursor:pointer"'
            . ' onClick="showImage(\'Attachement\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
         if (!$print) {
@@ -475,7 +475,7 @@ class Contact extends SqlElement {
           $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
           $result.='<td>&nbsp;&nbsp;';
           $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
-          $result.='<div style="position: absolute; top:'.$top.'px;left:'.$left.'px; width:60px;height:60px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
+          $result.='<div style="position: absolute; top:30px; right:51%; width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
               .' onClick="addAttachement(\'file\');" title="'.i18n('addPhoto').'">'
               . i18n('addPhoto').'</div>';
           $result.='</td>';
