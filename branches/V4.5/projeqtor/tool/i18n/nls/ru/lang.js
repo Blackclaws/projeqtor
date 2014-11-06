@@ -1944,6 +1944,6 @@ helpBrowserLocaleDateFormat: "[format used to represent dates - DD for day - MM 
 langEl: "Greek",
 langJa: "Японский - 日本語",
 paramBrowserLocaleDateFormat: "[format used to represent dates]",
-themeProjectom: "Projectom",
+themeProjectom: "[Projectom]",
 currentLocaleOfFile: "ru"
 }
