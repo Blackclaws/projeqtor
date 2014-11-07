@@ -244,7 +244,7 @@ class GeneralWork extends SqlElement {
   
   public static function displayShortWorkUnit() {
     self::setWorkUnit();
-    $res=substr(i18n(self::$workUnit),0,1);
+    $res=mb_substr(i18n(self::$workUnit),0,1);
     return $res;
   }
   public static function getWorkUnit() {

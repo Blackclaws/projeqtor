@@ -256,7 +256,7 @@ class Calendar extends SqlElement {
           }
       		$result.= '<td class="calendar" style="'.$style.'">';
       		$result.= '<div style="cursor: pointer;" onClick="loadContent(\'../tool/saveCalendar.php?idCalendarDefinition='.$this->idCalendarDefinition.'&day='. $day . '\',\'CalendarDefinition_Calendar\');">';
-      		$result.=  substr(i18n(date('l',$iDay)),0,1) . $d ;
+      		$result.=  mb_substr(i18n(date('l',$iDay)),0,1,"UTF-8") . $d ;
       		$result.= '</div>';
       		$result.= '</td>';
       	}
