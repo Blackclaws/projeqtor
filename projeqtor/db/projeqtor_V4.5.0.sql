@@ -24,3 +24,6 @@ DELETE FROM `${prefix}columnselector` WHERE objectClass='Audit';
 
 UPDATE `${prefix}assignment` ass set idProject=(SELECT idProject FROM `${prefix}planningelement` pe 
 WHERE pe.refType=ass.refType and pe.refId=ass.refId);
+
+ALTER TABLE `${prefix}assignment` ADD COLUMN `notPlannedWork` DECIMAL(12,5) UNSIGNED DEFAULT 0;
+ALTER TABLE `${prefix}planningelement` ADD COLUMN `notPlannedWork` DECIMAL(12,5) UNSIGNED DEFAULT 0;

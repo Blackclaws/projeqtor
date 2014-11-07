@@ -75,6 +75,7 @@ class PlanningElement extends SqlElement {
   public $_costVisibility;
   public $idBill;
   public $validatedCalculated;
+  public $notPlannedWork;
 
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
@@ -97,6 +98,7 @@ class PlanningElement extends SqlElement {
                                   "plannedEndDate"=>"readonly,noImport",
                                   "plannedDuration"=>"readonly,noImport",
                                   "plannedWork"=>"readonly,noImport",
+  								  "notPlannedWork"=>"hidden",
                                   "realStartDate"=>"readonly,noImport",
                                   "realEndDate"=>"readonly,noImport",
                                   "realDuration"=>"readonly,noImport",
@@ -485,6 +487,7 @@ class PlanningElement extends SqlElement {
     $assignedWork=0;
     $leftWork=0;
     $plannedWork=0;
+    $notPlannedWork=0;
     $realWork=0;
     $validatedWork=0;
     $assignedCost=0;
@@ -509,6 +512,7 @@ class PlanningElement extends SqlElement {
     	$assignedWork+=$ass->assignedWork;
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
+      $notPlannedWork+=$ass->notPlannedWork;
       $realWork+=$ass->realWork;
       if ($ass->assignedCost) $assignedCost+=$ass->assignedCost;
       if ($ass->leftCost) $leftCost+=$ass->leftCost;
@@ -537,6 +541,7 @@ class PlanningElement extends SqlElement {
         $assignedWork+=$pla->assignedWork;
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
+        $notPlannedWork+=$pla->notPlannedWork;
         $realWork+=$pla->realWork;
         if (!$pla->cancelled and $pla->assignedCost) $assignedCost+=$pla->assignedCost;
         if (!$pla->cancelled and $pla->leftCost) $leftCost+=$pla->leftCost;
@@ -575,6 +580,7 @@ class PlanningElement extends SqlElement {
     $this->assignedWork=$assignedWork;
     $this->leftWork=$leftWork;
     $this->plannedWork=$plannedWork;
+    $this->notPlannedWork=$notPlannedWork;
     $this->realWork=$realWork;
     $this->assignedCost=$assignedCost;
     $this->leftCost=$leftCost;

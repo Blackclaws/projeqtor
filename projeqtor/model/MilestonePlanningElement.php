@@ -67,6 +67,7 @@ class MilestonePlanningElement extends PlanningElement {
     "initialWork"=>"hidden,noImport",
     "validatedWork"=>"hidden,noImport",
     "plannedWork"=>"hidden,noImport",
+  	"notPlannedWork"=>"hidden",
     "realWork"=>"hidden,noImport",
     "plannedEndDate"=>"readonly",
     "assignedWork"=>"hidden,noImport",
@@ -148,6 +149,7 @@ class MilestonePlanningElement extends PlanningElement {
     $this->initialWork=0;
     $this->validatedWork=0;
     $this->plannedWork=0;
+    $this->notPlannedWork=0;
     $this->realWork=0;
     $this->elementary=1;
     return parent::save();

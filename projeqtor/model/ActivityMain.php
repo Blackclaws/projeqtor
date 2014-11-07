@@ -294,6 +294,7 @@ class ActivityMain extends SqlElement {
 	      $ass->realWork=0;
 	      $ass->leftWork=0;
 	      $ass->plannedWork=0;
+	      $ass->notPlannedWork=0;
 	      $ass->rate='100';
 	      $ass->save();
       }   

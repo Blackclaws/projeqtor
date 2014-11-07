@@ -1182,6 +1182,7 @@ abstract class SqlElement {
 						$newObj->$col_name->plannedWork=0;
 						$newObj->$col_name->leftWork=0;
 						$newObj->$col_name->realWork=0;
+						$newObj->$col_name->notPlannedWork=0;
 						$newObj->$col_name->idle=0;
 						$newObj->$col_name->done=0;
 					}
