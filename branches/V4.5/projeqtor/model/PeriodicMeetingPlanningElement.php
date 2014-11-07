@@ -59,6 +59,7 @@ class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
     "validatedDuration"=>"hidden,noImport",
     "initialWork"=>"hidden,noImport",
     "plannedWork"=>"hidden,noImport",
+  	"notPlannedWork"=>"hidden",
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",

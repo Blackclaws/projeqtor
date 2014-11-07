@@ -468,7 +468,7 @@ public $_noCopy;
   		} else {
   			$newDur=dayDiffDates($start,$last['start'])+1;
   		}
-  		$gap=ceil($newDur/$nb);
+  		$gap=ceil(max(30,$newDur)/$nb);
   		$start=($start==self::$minAffectationDate)?addDaysToDate($first['end'], $gap*(-1)):$start;
   		$end=($end==self::$maxAffectationDate)?addDaysToDate($last['start'], $gap):$end;
   	} 	 
@@ -495,9 +495,9 @@ public $_noCopy;
   		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
   		$width=($len/$duration*100);
   		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
-  		$title=self::formatDate($p['start']).' => '.self::formatDate($p['end']).' - '.$p['rate'].'%';
+  		$title='['.$p['rate'].'%] '.self::formatDate($p['start']).' => '.self::formatDate($p['end']);
   		foreach ($p['projects'] as $idP=>$affP) {
-  			$title.="\n".$affP.'% - '.SqlList::getNameFromId('Project',$idP);
+  			$title.="\n[".$affP.'%] '.SqlList::getNameFromId('Project',$idP);
   		}
   		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;top:3px;'
   			.' height:'.($lineHeight).'px;'
@@ -517,7 +517,7 @@ public $_noCopy;
 	  		$len=dayDiffDates(max($start,$p['start']), min($end,$p['end']))+1;
 	  		$width=($len/$duration*100);
 	  		$left=(dayDiffDates($start, max($start,$p['start']))/$duration*100);
-	  		$title=self::formatDate($p['start']).' => '.self::formatDate($p['end']).' - '.$p['rate'].'%';
+	  		$title='['.$p['rate'].'%] '.self::formatDate($p['start']).' => '.self::formatDate($p['end']);
 	  		$title.="\n".$projects[$idP]['name'];
 	  		$color=($projects[$idP]['color'])?$projects[$idP]['color']:'#EEEEEE';
 	  		$result.= '<div style="position:absolute;left:'.$left.'%;width:'.$width.'%;'
@@ -525,9 +525,8 @@ public $_noCopy;
 	  				.' height:'.($lineHeight).'px;z-index:'.(99-$proj['position']).';'
 	  				.' background-color:'.$color.'; '
 	  				.' border:1px solid #222222;border-radius:5px" ';
-  		if (! $print)	$result.='title="'.$title.'" ';
-  		$result.='>';
-debugLog($projects[$idP]['name']." debut=".$p['start']." fin=".$p['end']." left=".$left."% width:".$width."%");
+  			if (! $print)	$result.='title="'.$title.'" ';
+  			$result.='>';
 	  		//$result.='<div style="z-index:1;position: absolute; top:0px;right:0px;height:'.$lineHeight.'px;white-space:nowrap;overflow:hidden;'
 	  		//		.'width:100%;text-align:right;color:'.htmlForeColorForBackgroundColor($color).';">';
 	  		//$result.=$p['rate'].'%';

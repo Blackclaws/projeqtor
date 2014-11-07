@@ -59,6 +59,7 @@ class MeetingPlanningElement extends PlanningElement {
     "validatedDuration"=>"hidden",
     "initialWork"=>"hidden",
     "plannedWork"=>"hidden,noImport",
+  	"notPlannedWork"=>"hidden",
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",

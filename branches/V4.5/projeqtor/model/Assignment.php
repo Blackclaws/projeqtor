@@ -42,6 +42,7 @@ class Assignment extends SqlElement {
   public $realWork;
   public $leftWork;
   public $plannedWork;
+  public $notPlannedWork;
   public $rate;
   public $realStartDate;
   public $realEndDate;
@@ -59,6 +60,7 @@ class Assignment extends SqlElement {
   private static $_fieldsAttributes=array("idProject"=>"required", 
     "idResource"=>"required", 
     "refType"=>"required", 
+  	"notPlannedWork"=>"hidden",
     "refId"=>"required");
   
    /** ==========================================================================
@@ -303,6 +305,7 @@ class Assignment extends SqlElement {
             $assi->realWork=0;
             $assi->leftWork=0;
             $assi->plannedWork=0;
+            $assi->notPlannedWork=0;
             $assi->rate=0;
             //$assi->realStartDate;
             //$assi->$realEndDate;

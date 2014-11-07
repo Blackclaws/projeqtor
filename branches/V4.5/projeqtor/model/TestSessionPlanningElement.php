@@ -99,6 +99,7 @@ class TestSessionPlanningElement extends PlanningElement {
     "realDuration"=>"readonly,noImport",
     "initialWork"=>"hidden,noImport",
     "plannedWork"=>"readonly,noImport",
+  	"notPlannedWork"=>"hidden",
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
