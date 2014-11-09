@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2014 Pascal BERNARD - support@projeqtor.org
  *
  * This file is a plugIn for ProjeQtOr.
  * This plugIn in not Open Source.
@@ -30,7 +30,6 @@
   $finalResult="";
   if (! $pw->id or ! $ass->id) {
   	$status=='ERROR';
-  	debugLog("SaveWork.php - refType=$refType, refId=$refId, day=$day, idPlannedWork=$pw->id, idAssignment=$ass->id");
   	$finalResult="ERROR - no planned work found or no assignment found";
   }
   Sql::beginTransaction();

@@ -358,9 +358,12 @@ class Project extends SqlElement {
     return $list;
   }
 
-  
+  private static $topProjectListArray=array();
   public function getTopProjectList($includeSelf=false) {
-//scriptLog("Project($this->id)->getTopProjectList($includeSelf)");    	
+//scriptLog("Project($this->id)->getTopProjectList($includeSelf)");
+    if (isset(self::$topProjectListArray[$this->id.'#'.$includeSelf])) {
+    	return self::$topProjectListArray[$this->id.'#'.$includeSelf];	
+    }
     if ($includeSelf) {
       return array_merge(array($this->id),$this->getTopProjectList(false));
     }
@@ -370,6 +373,7 @@ class Project extends SqlElement {
       $topProj=new Project($this->idProject);
       $topList=$topProj->getTopProjectList();
       $result=array_merge(array($this->idProject),$topList);
+      self::$topProjectListArray[$this->id.'#'.$includeSelf]=$result;
       return $result;
     }
   }

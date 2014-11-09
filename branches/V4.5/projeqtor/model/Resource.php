@@ -296,9 +296,13 @@ class Resource extends SqlElement {
     return $result;
   }
   
+  private static $affectationRates=array();
   public function getAffectationRate($idProject) {
+  	if (isset(self::$affectationRates[$this->id.'#'.$idProject])) {
+  		return self::$affectationRates[$this->id.'#'.$idProject];
+  	}
     $result="";
-    $crit=array('idResource'=>$this->id, 'idProject'=>$idProject);
+    /*$crit=array('idResource'=>$this->id, 'idProject'=>$idProject);
     $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation',$crit);
     if ($aff->rate) {
       $result=$aff->rate;
@@ -309,8 +313,28 @@ class Resource extends SqlElement {
       } else {
         $result='100';
       }
+    }*/
+    $periods=Affectation::buildResourcePeriodsPerProject($this->id);
+    if (isset($periods[$idProject])) {
+    	$result=$periods[$idProject]['periods'];
+    } else {
+		  $result=array(array('start'=>Affectation::$minAffectationDate, 'end'=>Affectation::$maxAffectationDate, 'rate'=>100));
     }
+    self::$affectationRates[$this->id.'#'.$idProject]=$result;
     return $result;
+  }
+  // Find a rate amongst list of project affectation periods
+  public static function findAffectationRate($arrayPeriods,$date) {
+debugLog("findAffectationRate(arrayPeriods,$date)");
+  	foreach ($arrayPeriods as $period) {
+debugLog('   '.$period['start'].'=>'.$period['end']);
+  		if ($period['start']<=$date and $date<=$period['end']) {
+  			return $period['rate']; 
+  		} else if ($date<$period['start']) {
+  			return 0;
+  		}
+  	}
+  	return -1; // not found => -1;
   }
 /** =========================================================================
    * control data corresponding to Model constraints

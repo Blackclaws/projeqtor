@@ -45,7 +45,6 @@ class Affectation extends SqlElement {
   public $idle;
   public $description;
   public $_col_2_2;
-  public $_resourcePeriods=array();
   
 public $_noCopy;
 
@@ -261,13 +260,13 @@ public $_noCopy;
     	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdProject')));
     }
     if ($result=='') {
-      $clauseWhere=" idResource=".Sql::fmtId($this->idResource)
+      /*$clauseWhere=" idResource=".Sql::fmtId($this->idResource)
          ." and idProject=".Sql::fmtId($this->idProject)
          ." and id<>".Sql::fmtId($this->id);
       $search=$this->getSqlElementsFromCriteria(null, false, $clauseWhere);
       if (count($search)>0) { 
       	$result.='<br/>' . i18n('errorDuplicateAffectation');
-      }
+      }*/
     } else {
     
     }
@@ -322,9 +321,10 @@ public $_noCopy;
   }
   public static $maxAffectationDate='2029-12-31';
   public static $minAffectationDate='1970-01-01';
+  private static $_resourcePeriods=array();
   public static function buildResourcePeriods($idResource,$showIdle=false) {
-    if (isset($_resourcePeriods[$idResource][$showIdle])) {
-    	return $_resourcePeriods[$idResource][$showIdle];
+    if (isset(self::$_resourcePeriods[$idResource][$showIdle])) {
+    	return self::$_resourcePeriods[$idResource][$showIdle];
     }
   	$aff=new Affectation();
   	$crit=array('idResource'=>$idResource);
@@ -420,7 +420,11 @@ public $_noCopy;
   	$_resourcePeriods[$idResource][$showIdle]=$res;
   	return $res;
   }
+  private static $_resourcePeriodsPerProject=array();
   public static function buildResourcePeriodsPerProject($idResource, $showIdle=false){
+  	if (isset(self::$_resourcePeriodsPerProject[$idResource][$showIdle])) {
+  		return self::$_resourcePeriodsPerProject[$idResource][$showIdle];
+  	}
   	$periods=self::buildResourcePeriods($idResource,$showIdle);
   	$cptProj=0;
   	$projects=array();
@@ -434,16 +438,20 @@ public $_noCopy;
   				);
   			}
   			$per=$projects[$idP]['periods'];
-  			$last=end($per);
+  			$last=end($per);	
   			if (count($per)>0 
-  				and $last['end']=addDaysToDate($p['start'], -1) 
-  				and $last['rate']=$p['rate']) {
+  				and $last['end']==addDaysToDate($p['start'], -1) 
+  				and $last['rate']==$p['projects'][$idP]) {
   				$projects[$idP]['periods'][count($per)-1]['end']=$p['end'];
   			} else {
   				$projects[$idP]['periods'][]=array('start'=>$p['start'], 'end'=>$p['end'], 'rate'=>$p['projects'][$idP]);
   			}
   		}
   	}
+  	if (!isset($_resourcePeriodsPerProject[$idResource])) {
+  		$_resourcePeriodsPerProject[$idResource]=array();
+  	}
+  	$_resourcePeriodsPerProject[$idResource][$showIdle]=$projects;
   	return $projects; 
   }
   
@@ -535,7 +543,7 @@ public $_noCopy;
 	  				.'color:'.htmlForeColorForBackgroundColor($color).';text-shadow:1px 1px '.$color.';white-space:nowrap;z-index:9999">';
 	  		$result.='['.$p['rate'].'%]&nbsp;'.$projects[$idP]['name'];
 	  		$result.= '</div>';
-	  		$projects[$idP]['name']='';	  			
+	  		//$projects[$idP]['name']='';	  			
 	  		$result.='</div>';
   		}
   	}
@@ -545,10 +553,10 @@ public $_noCopy;
   
   private static function formatDate($date) {
   	if ($date==self::$minAffectationDate) {
-  		return "*";
+  		return "";
   	}
   	if ($date==self::$maxAffectationDate) {
-  		return "*";
+  		return "";
   	}
   	return htmlFormatDate($date);
   }

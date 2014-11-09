@@ -148,7 +148,6 @@ $arrayPeAss=array();
 $arrayResource=array();
 $arrayProject=array();
 $nbRows=0;
-debugLog($query);
 // return result in json format
 $d=new Dependency();
 if (Sql::$lastQueryNbRows == 0) {
@@ -172,7 +171,6 @@ if (Sql::$lastQueryNbRows == 0) {
   $keyRes="";
   $idRes='';
 	while ($line = Sql::fetchLine($result)) {
-		debugLog($line['name'].' - '.$line['wbsSortable'].' - '.$line['idProj'].' - '.$line['idProject']);
 		$line=array_change_key_case($line,CASE_LOWER);
 		if ($line['idresource']!=$idResource) {
 			$idResource=$line['idresource'];

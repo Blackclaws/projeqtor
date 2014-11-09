@@ -210,7 +210,7 @@ class Contact extends SqlElement {
   } 
 
 
-  public function getWork($startDate, $withProjectRepartition=false) {
+/*  public function getWork($startDate, $withProjectRepartition=false) {
     $result=array();
     $startDay=str_replace('-','',$startDate);
     $where="day >= '" . $startDay . "'";
@@ -299,9 +299,9 @@ class Contact extends SqlElement {
 // ProjectRepartition - end
     }
     return $result;
-  }
+  }*/
   
-  public function getAffectationRate($idProject) {
+/*  public function getAffectationRate($idProject) {
     $result="";
     $crit=array('idResource'=>$this->id, 'idProject'=>$idProject);
     $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation',$crit);
@@ -316,7 +316,7 @@ class Contact extends SqlElement {
       }
     }
     return $result;
-  }
+  }*/
   
  
 /** =========================================================================

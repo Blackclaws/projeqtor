@@ -188,7 +188,7 @@ html, body {
       vertical-align: middle;
       margin: 2px 8px 2px 8px; padding: 5px;
       opacity:0.0;filter:alpha(opacity=00);
-      overflow: hidden;
+      overflow-y: auto;
     }
     #formDiv {
       overflow: auto; 
