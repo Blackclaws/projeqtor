@@ -176,6 +176,7 @@ class PlannedWork extends GeneralWork {
     $resources=array();
     $a=new Assignment();
     $topList=array();
+    $arrayNotPlanned=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
 //traceLog("$plan->id $plan->refType #$plan->refId");
@@ -485,7 +486,14 @@ class PlannedWork extends GeneralWork {
                     if (array_key_exists($week,$ress[$projectKey])) {
                       $plannedProj=$ress[$projectKey][$week];
                     }
-                    $rateProj=$ress[$projectKey]['rate'] / 100;
+                    $rateProj=Resource::findAffectationRate($ress[$projectKey]['rate'],$currentDate) / 100;
+                    // ATTENTION, if $rateProj < 0, this means there is no affectation left ...
+                    if ($rateProj<0) {
+                    	$changedAss=true;
+                    	$ass->notPlannedWork=$left;
+                    	$arrayNotPlanned[$ass->id]=$left;
+                    	$left=0;
+                    }
                     if ($rateProj==1) {
                     	$leftProj=round(7*$capacity*$rateProj,2)-$plannedProj; // capacity for a full week
                     	// => to be able to plan weekends
@@ -552,7 +560,7 @@ class PlannedWork extends GeneralWork {
 	                    if (isset($grp['ResourceWork'][$projectKey][$week])) {
 	                      $plannedProj=$grp['ResourceWork'][$projectKey][$week];
 	                    }
-	                    $rateProj=$grp['ResourceWork'][$projectKey]['rate'] / 100;
+	                    $rateProj=Resource::findAffectationRate($grp['ResourceWork'][$projectKey]['rate']) / 100;
 	                    if ($rateProj==1) {
 	                      $leftProj=round(7*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a full week
 	                      // => to be able to plan weekends
@@ -679,11 +687,20 @@ class PlannedWork extends GeneralWork {
     
     $endTime=time();
     $endMicroTime=microtime(true);
-    
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
-    $result=i18n('planDone', array($duration));
-    $result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
-
+    if (count($arrayNotPlanned)>0) {
+    	$result=i18n('planDoneWithLimits', array($duration));
+    	foreach ($arrayNotPlanned as $assId=>$left) {
+    		$ass=new Assignment($assId);
+    		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
+    		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
+    		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.$ass->refId.' '.$oName; 
+    	}	
+    	$result .= '<input type="hidden" id="lastPlanStatus" value="ERROR" />';
+    } else {
+    	$result=i18n('planDone', array($duration));
+    	$result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+    }
     return $result;
   }
   

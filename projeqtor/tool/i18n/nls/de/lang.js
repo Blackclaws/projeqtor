@@ -1944,6 +1944,7 @@ helpBrowserLocaleDateFormat: "[format used to represent dates - DD for day - MM 
 langEl: "Greek",
 langJa: "Japanisch - 日本語",
 paramBrowserLocaleDateFormat: "[format used to represent dates]",
+planDoneWithLimits: "[Planning calculated with some limits<br/>Following tasks could not be planned due to affectation restrictions :]",
 themeProjectom: "Projectom",
 currentLocaleOfFile: "de"
 }
