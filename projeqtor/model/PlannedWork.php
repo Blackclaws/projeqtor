@@ -697,7 +697,7 @@ class PlannedWork extends GeneralWork {
     		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.$ass->refId.' '.$oName; 
     	}	
     	$result.='</div>';
-    	$result .= '<input type="hidden" id="lastPlanStatus" value="ERROR" />';
+    	$result .= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';
     } else {
     	$result=i18n('planDone', array($duration));
     	$result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';

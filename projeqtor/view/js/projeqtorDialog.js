@@ -3236,6 +3236,14 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 
 function saveAffectation() {
 	var formVar = dijit.byId('affectationForm');
+	if (dijit.byId('affectationStartDate') && dijit.byId('affectationEndDate') ) {
+	   start=trim(dijit.byId('affectationStartDate').get("value"));
+	   end=trim(dijit.byId('affectationEndDate').get("value"));
+	   if (start!="" && end!="" && end<start) {
+		   showAlert(i18n("errorStartEndDates",new Array(i18n("colStartDate"),i18n("colEndDate"))));
+		   return;
+	   }
+	}
 	if(formVar.validate()){		
 		loadContent("../tool/saveAffectation.php", "resultDiv", "affectationForm", true,'affectation');
 		dijit.byId('dialogAffectation').hide();

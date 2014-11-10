@@ -2097,6 +2097,7 @@ function setGanttVisibility(g) {
 	g.setSortArray(planningColumnOrder);
 }
 JSGantt.ganttMouseOver = function( pID, pPos, pType) {
+  if (!g) return;
   if (! pType) {
 	vTaskList=g.getList();	
 	if( vTaskList[pID].getGroup()) {	
@@ -2123,6 +2124,7 @@ JSGantt.ganttMouseOver = function( pID, pPos, pType) {
 };
 
 JSGantt.ganttMouseOut = function(pID, pPos, pType) {
+  if (!g) return;
   if (! pType) {
 	vTaskList=g.getList();	
 	if( vTaskList[pID].getGroup()) {	
@@ -2143,11 +2145,13 @@ JSGantt.ganttMouseOut = function(pID, pPos, pType) {
 
 ongoingJsLink=-1;
 JSGantt.startLink = function (idRow) {
+	if (!g) return;
 	vTaskList=g.getList();
 	document.body.style.cursor="url('css/images/dndLink.png'),help";
 	ongoingJsLink=idRow;
 };
 JSGantt.endLink = function (idRow) {
+	if (!g) return;
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
 	if (ongoingJsLink>=0 && idRow!=ongoingJsLink) {
@@ -2171,6 +2175,7 @@ JSGantt.endLink = function (idRow) {
 	ongoingJsLink=-1;
 };
 JSGantt.cancelLink = function (idRow) {
+	if (!g) return;
 	vTaskList=g.getList();
 	document.body.style.cursor='default';
 	if (idRow) {
