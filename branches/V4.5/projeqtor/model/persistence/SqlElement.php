@@ -1912,7 +1912,7 @@ abstract class SqlElement {
 				}
 			}
 			return 'undefined';
-		}
+		}	
 		$fmt=$formatList[$colName];
 		$split=preg_split('/[()\s]+/',$fmt,2);
 		return $split[0];
@@ -1940,6 +1940,12 @@ abstract class SqlElement {
 			return 19;
 		} else if ($type=='double') {
 			return 2;
+		} else if ($type=='text') {
+			return 65535;
+		} else if ($type=='mediumtext') {
+				return 16777215;
+		} else if ($type=='longtext') {
+				return 4294967295;
 		} else {
 			if (count($split)>=2) {
 				return $split[1];

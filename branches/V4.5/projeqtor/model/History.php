@@ -86,8 +86,13 @@ class History extends SqlElement {
     $hist->refId=$refId;
     $hist->operation=$operation;
     $hist->colName=$colName;
-    $hist->oldValue=$oldValue;
-    $hist->newValue=$newValue;
+    if ($colName and strtolower(substr($obj->getDataType($colName),-4))=='text') {
+    	$hist->oldValue=mb_substr($oldValue,0,$hist->getDataLength('oldValue'),'UTF-8');
+    	$hist->newValue=mb_substr($newValue,0,$hist->getDataLength('newValue'),'UTF-8');
+    } else {
+    	$hist->oldValue=$oldValue;
+    	$hist->newValue=$newValue;
+    }
     $hist->idUser=$user->id;
     $returnValue=$hist->save();
     // For TestCaseRun : store history for TestSession 

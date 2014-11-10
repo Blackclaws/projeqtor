@@ -371,6 +371,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			or ($obj->idle==1 and $col!='idle' and $col!='idStatus') ) {
 				$attributes.=' readonly tabindex="-1"';
 				$readOnly=true;
+				$specificStyle="background-color: #F0F0F0; background-image: url(css/images/checkmarks.png); background-repeat: repeat-x; color:#606060 !important; ";
 			}
 			if ($internalTable==0) {
 				if (! is_object($val) and ! is_array($val) and ! $hide and !$nobr_before) {
@@ -404,6 +405,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			}
 			$dataType = $obj->getDataType($col);
 			$dataLength = $obj->getDataLength($col);
+			if ($dataType=='text') {
+				$dataLength = 65535 ;
+			} else if ($dataType=='mediumtext') {
+				$dataLength = 16777215 ;
+		  }
 			//echo $col . "/" . $dataType . "/" . $dataLength;
 			if ($dataLength) {
 				if ($dataLength <= 3) {
@@ -1086,9 +1092,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo $name;
 				echo $attributes;
 				if (strpos($attributes, 'readonly')>0) {
-					$specificStyle.=' color:grey; background:none; background-color: #F0F0F0; ';
+					$specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
 				}
-				echo ' rows="2" style="width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
+				echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
 				echo ' maxlength="' . $dataLength . '" ';
 				//        echo ' maxSize="4" ';
 				echo ' class="input" ' . '>';
