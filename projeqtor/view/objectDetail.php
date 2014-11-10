@@ -371,7 +371,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			or ($obj->idle==1 and $col!='idle' and $col!='idStatus') ) {
 				$attributes.=' readonly tabindex="-1"';
 				$readOnly=true;
-				$specificStyle="background-color: #F0F0F0; background-image: url(css/images/checkmarks.png); background-repeat: repeat-x; color:#606060 !important; ";
 			}
 			if ($internalTable==0) {
 				if (! is_object($val) and ! is_array($val) and ! $hide and !$nobr_before) {
