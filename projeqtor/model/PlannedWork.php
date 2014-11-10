@@ -689,13 +689,14 @@ class PlannedWork extends GeneralWork {
     $endMicroTime=microtime(true);
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
     if (count($arrayNotPlanned)>0) {
-    	$result=i18n('planDoneWithLimits', array($duration));
+    	$result='<div style="text-align:left;color: #550000;white-space:nowrap;overflow:hidden;">'.i18n('planDoneWithLimits', array($duration));
     	foreach ($arrayNotPlanned as $assId=>$left) {
     		$ass=new Assignment($assId);
     		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
     		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.$ass->refId.' '.$oName; 
     	}	
+    	$result.='</div>';
     	$result .= '<input type="hidden" id="lastPlanStatus" value="ERROR" />';
     } else {
     	$result=i18n('planDone', array($duration));
