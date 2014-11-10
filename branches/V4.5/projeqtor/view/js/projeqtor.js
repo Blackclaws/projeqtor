@@ -313,7 +313,6 @@ function saveBrowserLocaleToSession() {
     load: function(data,args) { }
   });
   var date = new Date(2000, 11, 31, 0, 0, 0, 0);
-console.log("browserLocaleDateFormat='"+browserLocaleDateFormat+"'");  
   if (browserLocaleDateFormat) {
 	  format=browserLocaleDateFormat;
   } else {
@@ -326,7 +325,6 @@ console.log("browserLocaleDateFormat='"+browserLocaleDateFormat+"'");
 	  format=format.replace(reg,'MM');
 	  reg=new RegExp("(31)", "g");
 	  format=format.replace(reg,'DD');
-console.log("calculated format='"+format+"'");
 	  browserLocaleDateFormat=format;
 	  browserLocaleDateFormatJs=browserLocaleDateFormat.replace(/D/g,'d').replace(/Y/g,'y');
   }
@@ -638,7 +636,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           var contentWidget = dijit.byId(destination);
           if (! contentWidget) {return;};
           if (dijit.byId('planResultDiv')) {
-        	  dijit.byId('planResultDiv').set('content',"");
+        	  if (dojo.byId("lastPlanStatus") && dojo.byId("lastPlanStatus").value=="INCOMPLETE") {
+        		  // Do not clean result content
+        	  } else {
+        	    dijit.byId('planResultDiv').set('content',"");
+        	  }
           }
           contentWidget.set('content',data);
           checkDestination(destination);
@@ -847,7 +849,7 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
-  if (lastOperationStatus.value=="OK") {	  
+  if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
     msg=message.substr(posdeb, posfin-posdeb);
@@ -1087,7 +1089,8 @@ function finalizeMessageDisplay(destination, validationType) {
     hideWait();
   }
   // If operation is correct (not an error) slowly fade the result message
-  if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" && lastOperationStatus.value!="CONFIRM")) {
+  if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" 
+	  && lastOperationStatus.value!="CONFIRM" && lastOperationStatus.value!="INCOMPLETE")) {
     dojo.fadeOut({node: contentNode, duration: 3000}).play();
   } else {
     if (lastOperationStatus.value=="ERROR") {
@@ -1109,7 +1112,7 @@ function finalizeMessageDisplay(destination, validationType) {
       } else {
         showAlert(message);
       }
-      if (destination=="planResultDiv") {
+      if (destination=="planResultDiv" && lastOperationStatus.value!="INCOMPLETE") {
     	  dojo.fadeOut({node: contentNode, duration: 1000}).play();
     	  setTimeout("dijit.byId('planResultDiv').set('content','');",1000);    	  
       }
@@ -1790,6 +1793,10 @@ function drawGantt() {
       if (item.validatedenddate!=" " && item.validatedenddate < pEnd) {
         pColor='BB5050';  
       }
+      if (item.notplannedwork>0) {
+        pColor='B45F04';  
+      }
+        
       // pMile : is it a milestone ?
       var pMile=(item.reftype=='Milestone')?1:0;
       if (pMile) { pStart=pEnd; }

@@ -84,7 +84,7 @@ if ($saveShowClosed) {
 		      <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
 		        <table style="width: 100%;">
 		          <tr>
-		            <td>
+		            <td style="width:70px">
 		              <input type="hidden" id="objectClass" name="objectClass" value="" /> 
 		              <input type="hidden" id="objectId" name="objectId" value="" />
 		              &nbsp;&nbsp;&nbsp;
@@ -99,7 +99,7 @@ if ($saveShowClosed) {
 		              </button>
 <?php }?>             
 		            </td>
-		            <td style="white-space:nowrap;">
+		            <td style="white-space:nowrap;width:240px">
 		              <table>
                     <tr>
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo i18n("displayStartDate");?>&nbsp;&nbsp;</td><td>
@@ -217,7 +217,7 @@ if ($saveShowClosed) {
                   </table>
                 </td>
 		            <td>
-                  <div id="planResultDiv" style=" width: 260px;height: 10px;" 
+                  <div id="planResultDiv" style="position: absolute; top:0px; left:57%;min-width: 200px; width:35%;height: 45px;" 
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
                 </td>

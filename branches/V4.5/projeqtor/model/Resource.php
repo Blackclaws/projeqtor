@@ -325,9 +325,7 @@ class Resource extends SqlElement {
   }
   // Find a rate amongst list of project affectation periods
   public static function findAffectationRate($arrayPeriods,$date) {
-debugLog("findAffectationRate(arrayPeriods,$date)");
   	foreach ($arrayPeriods as $period) {
-debugLog('   '.$period['start'].'=>'.$period['end']);
   		if ($period['start']<=$date and $date<=$period['end']) {
   			return $period['rate']; 
   		} else if ($date<$period['start']) {
