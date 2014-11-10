@@ -2579,10 +2579,13 @@ table.dijitCalendarContainer {
  
 .dijitReadOnly *, .dijitDisabled *, .dijitReadOnly, .dijitDisabled {
 	/*color:grey;*/
+	color:#606060 !important;
 	cursor: default !important;
 }
-.dijitTextBoxReadOnly {
-	background-color: #F0F0F0; 
+.dijitTextBoxReadOnly { 
+	color:#606060 !important;
+	background-color: #F0F0F0;
+	background-image: none;
 }
    
 /* TEST */
