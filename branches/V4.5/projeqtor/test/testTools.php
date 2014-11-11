@@ -29,6 +29,7 @@
 $cptTest=0;
 $cptOK=0;
 $cptKO=0;
+$cptCTRL=0;
 $startTime=microtime(true);
 $last='';
 $microtime=microtime(true);
@@ -68,12 +69,22 @@ function testSubTitle($title){
   $last='subtitle';
 }
 function testResult($msg,$type){
-	global $last,$cptTest, $cptOK, $cptKO, $microtime;
+	global $last,$cptTest, $cptOK, $cptKO, $cptCTRL, $microtime;
 	$cptTest+=1;
 	$delay=round((microtime(true)-$microtime)*1000,0);
-	if ($type=='OK') {$cptOK+=1;} else {$cptKO+=1;}
+	$color="#FFFFFF";
+	if ($type=='OK') {
+		$cptOK+=1;
+		$color='#AAFFAA';
+	} else if ($type=="CTRL") {
+		$cptCTRL+=1;
+		$color='#AAAAFF';
+	} else {
+		$cptKO+=1;
+		$color='#FFAAAA';
+	}
 	echo '<td style="width:100px;">'.$delay.' ms</td>';
-  echo '<td style="width:300px;background-color:'.(($type=='OK')?'#AAFFAA':'#FFAAAA').'">'.$msg.'</td></tr>';
+  echo '<td style="width:300px;background-color:'.$color.'">'.$msg.'</td></tr>';
   $last='result';
   //$microtime=microtime();
 }
@@ -83,6 +94,8 @@ function testCheck($result,$test) {
 	  if (stripos($result,$test)>0 and stripos($result,'id="lastOperationStatus" value="OK"')>0) {
 			//$ctpOK+=1;
 			return 'OK';
+		} else  if (stripos($result,$test)>0 and stripos($result,'id="lastOperationStatus" value="INVALID"')>0) {
+			return 'CTRL';
 		} else {
 			//$cptOK+=1;
 			return 'KO';
@@ -90,11 +103,12 @@ function testCheck($result,$test) {
 }
 
 function testSummary() {
-	global $startTime, $cptOK, $cptKO, $cptTest;
+	global $startTime, $cptOK, $cptKO, $cptTest, $cptCTRL;
 	echo '<div style="position:fixed; right: 10px; top: 10px; width: 150px; font-family:arial;';
-	echo 'background-color:'.(($cptKO==0)?'#AAFFAA':'#FFAAAA').'; border: 1px solid #000000">';
+	echo 'background-color:'.(($cptKO==0)?($cptCTRL==0)?'#AAFFAA':'#AAAAFF':'#FFAAAA').'; border: 1px solid #000000">';
 	echo '<b>Tests run : </b>'.$cptTest.'<br/>';
 	echo '<b>Tests OK : </b>'.$cptOK.'<br/>';
+	echo '<b>Tests Ctrl : </b>'.$cptCTRL.'<br/>';
 	echo '<b>Tests KO : </b>'.$cptKO.'<br/>';
 	echo '<b>Duration : </b>'. (round(microtime(true)-$startTime)). ' s'.'<br/>';
 	echo '</div>';
