@@ -44,7 +44,7 @@ if (is_dir($classDir)) {
         $split=explode('.',$file);
         $class=$split[0];
         if ($class!='GeneralWork' and $class!='index' and $class!='Mutex' and $class!='NumberFormatter52'
-        and $class!='ShortType' and $class!='ImapMailbox' 
+        and $class!='ShortType' and $class!='ImapMailbox' and $class!='ContextType'
         and substr($class,-4)!='Main' and $class!='_securityCheck'
         //and $class>='Ti' // and $class<'B' 
         ){

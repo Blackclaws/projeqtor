@@ -434,7 +434,10 @@ class PlanningElement extends SqlElement {
     	  }
       }
     }
-    
+    if ($old->topId!=$this->topId) {
+    	$pe=new PlanningElement($old->topId);
+    	$pe->renumberWbs();
+    }
     return $result;
   }
   
@@ -971,6 +974,26 @@ class PlanningElement extends SqlElement {
   	$result .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
   	$result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
   	return $result;
+  }
+  
+  public function renumberWbs() {
+  	if ($this->id) {
+  		$where="topRefType='" . $this->refType . "' and topRefId=" . Sql::fmtId($this->refId) ;
+  	} else {
+  		$where="refType is null and refId is null";
+  	}
+  	$order="wbsSortable asc";
+  	$list=$this->getSqlElementsFromCriteria(null,false,$where,$order);
+  	$idx=0;
+  	$currentIdx=0;
+  	foreach ($list as $pe) {
+  			$idx++;
+  			$root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
+  			$pe->wbs=($root=='')?$idx:$root.'.'.$idx;
+  			if ($pe->refType) {
+  				$pe->save();
+  			}
+  	}
   }
   
   public function setVisibility() {
