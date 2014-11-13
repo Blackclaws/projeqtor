@@ -1,4 +1,0 @@
-id;idProject;idActivityType;name;description;creationDate;idUser;idActivity;idStatus;idResource;result;handled;handledDate;done;doneDate;idle;idleDate;idActivityPlanningMode;initialStartDate;validatedStartDate;initialEndDate;validatedEndDate;initialDuration;validatedDuration;validatedWork;priority
-1;1;21;Updated name;Updated description;;;;4;3;Updated result;1;2010-10-01;1;2010-10-15;0;NULL;1;;;;;;;;
-2;1;;;;;;;;;;;;;;;;4;2010-09-01;2010-10-01;2010-12-31;2010-12-15;;;27;200
-;1;22;New activity;Description of new Activity;2010-11-05;3;;1;;;;;;;;;1;2010-09-02;2010-10-02;2010-11-30;2010-12-01;;;42;
