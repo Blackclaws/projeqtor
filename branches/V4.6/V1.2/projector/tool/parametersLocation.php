@@ -1,0 +1,2 @@
+<?php 
+$parametersLocation = "..\parameters.php";
