@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<project name="Project'Or RIA" default="buildQuick">
+
+  <property name="version"       value="V1.6.2" />
+  <property name="projName"       value="projectorria" />
+  <property name="setup.dir"     value="D:/ProjectOr/setup" />
+  <property name="deploy.dir"    value="${setup.dir}/${projName}" />
+  <property name="src.dir"       value="G:/www/projector16" />
+  
+  <target name="clean">
+     <delete dir="${deploy.dir}"/>
+     <delete file="${setup.dir}/projectorria${version}.zip"/>
+  </target>
+  
+  <target name="copyDb">
+     <copy todir="${deploy.dir}/db">
+       <fileset dir="${src.dir}/db"/>
+     </copy>
+  </target>
+  
+  <target name="copyExternal">
+     <copy todir="${deploy.dir}/external/dijit">
+       <fileset dir="${src.dir}/external/dijit"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/dojo">
+       <fileset dir="${src.dir}/external/dojo"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/dojox">
+       <fileset dir="${src.dir}/external/dojox"/>
+     </copy>
+     <copy todir="${deploy.dir}/external/pChart">
+       <fileset dir="${src.dir}/external/pChart"/>
+     </copy>
+  	 <copy todir="${deploy.dir}/external/html2pdf">
+  	   <fileset dir="${src.dir}/external/html2pdf">
+  	     <exclude name="**/exemples/"/>
+  	     <exclude name="**/_tcpdf/examples/"/>
+  	   	 <exclude name="**/_tcpdf/cache/*.*"/>
+  	   	 <exclude name="**/_tcpdf/fonts/"/>
+  	 	</fileset>
+  	 	<fileset dir="${src.dir}/external/html2pdf">
+         <include name="**/_tcpdf/fonts/freesans.*"/>
+         <include name="**/_tcpdf/fonts/helvetica.*"/>
+      </fileset>
+  	 </copy>
+     <copy todir="${deploy.dir}/external">
+		   <fileset dir="${src.dir}/external">
+		     <include name="../*.version"/>
+		     <include name="../*.php"/>
+		   </fileset>
+		 </copy>
+  </target>
+  
+  <target name="copyFiles">
+    <mkdir dir="${deploy.dir}/files/attach"/>
+    <mkdir dir="${deploy.dir}/files/config"/>
+    <mkdir dir="${deploy.dir}/files/logs"/>
+    <mkdir dir="${deploy.dir}/files/report"/>
+    <copy todir="${deploy.dir}/files" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/attach" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/config" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/logs" file="${src.dir}/files/index.php" />
+    <copy todir="${deploy.dir}/files/report" file="${src.dir}/files/index.php" />
+  </target>
+  
+  <target name="copyManual">
+    <copy todir="${deploy.dir}/manual">
+      <fileset dir="${src.dir}/manual">
+        <exclude name="**/*.ppt"/>
+        <exclude name="**/*.xls"/>
+        <exclude name="**/slides/*.html"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copyModel">
+    <copy todir="${deploy.dir}/model">
+      <fileset dir="${src.dir}/model"/>
+    </copy>
+  </target>
+
+  <target name="copyReport">
+    <copy todir="${deploy.dir}/report">
+      <fileset dir="${src.dir}/report"/>
+    </copy>
+  </target>
+  
+  <target name="copyTool">
+    <copy todir="${deploy.dir}/tool">
+      <fileset dir="${src.dir}/tool">
+        <exclude name="**/i18n/nls/lang.xls"/>
+      	<exclude name="**/parametersLocation.php"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="copyView">
+    <copy todir="${deploy.dir}/view">
+      <fileset dir="${src.dir}/view"/>
+    </copy>
+  </target>
+
+  <target name="copyTop">
+    <copy todir="${deploy.dir}" file="${src.dir}/index.php" />
+  </target>
+  
+  <target name="copyMisc">
+    <copy todir="${setup.dir}" file="${src.dir}/tool/i18n/nls/lang.xls" />
+  	<copy todir="${setup.dir}" file="${src.dir}/manual/Project'Or RIA.ppt" />
+  </target>
+	
+  <target name="zipVersion">
+    <zip destfile="${setup.dir}/${projName}${version}.zip" update="true">
+      <zipfileset dir="${deploy.dir}" prefix="${projName}"/>
+      <fileset dir="${setup.dir}" includes="readme.txt"/>
+      <fileset dir="${setup.dir}" includes="license.txt"/>
+    </zip>
+  </target>
+  
+  <target name="buildFull">
+    <antcall target="clean"/>
+    <antcall target="copyDb"/>
+    <antcall target="copyExternal"/>
+    <antcall target="copyFiles"/>
+    <antcall target="copyManual"/>
+    <antcall target="copyModel"/>
+    <antcall target="copyReport"/>
+    <antcall target="copyTool"/>
+    <antcall target="copyView"/>
+    <antcall target="copyTop"/>
+  	<antcall target="copyMisc"/>
+    <antcall target="zipVersion"/>                  
+  </target>
+  
+  <target name="buildQuick">
+    <antcall target="copyDb"/>
+    <antcall target="copyFiles"/>
+    <antcall target="copyManual"/>
+    <antcall target="copyModel"/>
+    <antcall target="copyReport"/>
+    <antcall target="copyTool"/>
+    <antcall target="copyView"/>
+    <antcall target="copyTop"/>
+  	<antcall target="copyMisc"/>
+    <antcall target="zipVersion"/>                             
+  </target>
+
+<!-- ==============================================================================================
+     ==============================================================================================
+     ==== BUILD A NEW DOJO RELEASE                                                              ===
+     ==============================================================================================
+     ============================================================================================== --> 
+<!-- Full  : 40,9 Mo -->
+<!-- Build : 14,8 Mo -->
+<!-- Clean :  5,7 Mo -->
+	
+	<property name="dojo.release.dir" value ="${setup.dir}/dojo-release-1.6.1-src"/>
+	<property name="dojo.version" value="1.6.1"/>
+	<property name="build.name" value="external"/> 
+  <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
+	<property name="release.dir" value="${setup.dir}/${build.name}/"/>
+
+  <target name="_dojoBuild">
+    <antcall target="_dojoPackaging"/>
+    <antcall target="_dojoOptimisation"/>
+  </target>
+  	
+	<target name="_dojoPackaging" depends="" description="Build du projet">        
+	  <java classname="org.mozilla.javascript.tools.shell.Main"
+	        dir="${buildscripts.dir}"
+	        fork="true"
+	        failonerror="true"
+	        maxmemory="128m">
+	    <arg line="build.js"/>
+	    <arg line="action=clean,release"/>
+	    <arg line="dojodir=${dojo.release.dir}/"/>
+	    <arg line="profileFile=${src.dir}/deploy/projector.profile.js"/>
+	    <arg line="releaseName=${build.name}"/>
+	    <arg line="releaseDir=${setup.dir}"/>
+	    <arg line="version=${dojo.version}"/>
+	    <arg line="cssOptimize=comments"/>
+	    <arg line="layerOptimize=shrinksafe"/>
+	    <arg line="copyTests=false"/>
+	    <classpath>
+	      <pathelement location="${buildscripts.dir}\..\shrinksafe\shrinksafe.jar"/>
+	      <pathelement location="${buildscripts.dir}\..\shrinksafe\js.jar"/>
+	      <pathelement path="${java.class.path}"/>
+	    </classpath>     
+	  </java>
+	</target>
+	    
+	<target name="_dojoOptimisation" description="optimisation de la release">	        
+		<delete dir="${release.dir}/dojo/_firebug"/> 
+		<delete>
+		  <fileset dir="${release.dir}" includes="**/*.uncompressed.js"/>
+		</delete>
+		<delete includeemptydirs="true">
+		  <fileset dir="${release.dir}/dojox" >
+		  	<include name="**/*"/>
+		  	<exclude name="*.js"/>
+		  	<exclude name="LICENSE/*.*"/>
+		  	<exclude name="data/*.js"/>
+		  	<exclude name="form/*.js"/>
+		    <exclude name="grid/*.js"/>
+		  </fileset>
+		</delete>  
+	</target>
+
+</project>

@@ -1,0 +1,283 @@
+body
+	{width:534px;
+	height:400px;}
+.TB
+	{mso-special-format:nobullet•;}
+.T
+	{text-align:center;
+	font-family:Arial;
+	mso-ascii-font-family:Verdana;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Verdana;
+	font-weight:bold;
+	color:black;
+	mso-color-index:3;
+	font-size:85%;}
+.B
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.B1
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.B2
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.B3
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.B4
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.NB
+	{mso-special-format:nobullet•;}
+.N
+	{text-align:left;
+	font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:57%;}
+.N1B
+	{mso-special-format:nobullet•;}
+.N1
+	{text-align:left;
+	font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:57%;}
+.N2B
+	{mso-special-format:nobullet•;}
+.N2
+	{text-align:left;
+	font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:57%;}
+.N3B
+	{mso-special-format:nobullet•;}
+.N3
+	{text-align:left;
+	font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:57%;}
+.N4N
+	{mso-special-format:nobullet•;}
+.N4
+	{text-align:left;
+	font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:57%;}
+.OB
+	{mso-special-format:nobullet•;}
+.O
+	{text-align:left;
+	font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:85%;}
+.O1B
+	{mso-special-format:nobullet•;}
+.O1
+	{text-align:left;
+	font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	color:black;
+	mso-color-index:1;
+	font-size:85%;}
+.O2
+	{font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Arial;}
+.O3
+	{font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Arial;}
+.O4
+	{font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Arial;}
+.CB
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.CB1
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.CB2
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.CB3
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.CB4
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:85%;}
+.CT
+	{font-family:Arial;
+	mso-ascii-font-family:Verdana;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Verdana;
+	font-weight:bold;
+	font-size:85%;}
+.HB
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.HB1
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.HB2
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.HB3
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.HB4
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.QB
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:66%;}
+.QB1
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:66%;}
+.QB2
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:66%;}
+.QB3
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:66%;}
+.QB4
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:66%;}
+.Tbl
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.Tbl1
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.Tbl2
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.Tbl3
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.Tbl4
+	{font-family:Arial;
+	mso-ascii-font-family:"EADS Sans";
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:"EADS Sans";
+	font-size:76%;}
+.defaultB
+	{mso-special-format:nobullet•;}
+.default
+	{text-align:left;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:none;
+	text-effect:none;
+	mso-fareast-hint:no;
+	layout-flow:horizontal;
+	color:black;
+	mso-color-index:1;
+	font-size:85%;
+	mso-text-raise:0%;
+	mso-line-spacing:"100 0 0";
+	mso-margin-left-alt:0;
+	mso-text-indent-alt:0;
+	mso-char-wrap:1;
+	mso-kinsoku-overflow:1;
+	direction:ltr;
+	mso-word-wrap:1;
+	mso-vertical-align-special:baseline;
+	mso-ansi-language:EN-US;}
+a:link
+	{color:#E2EEDC !important;}
+a:active
+	{color:#D7E8D0 !important;}
+a:visited
+	{color:#EEF6EC !important;}
