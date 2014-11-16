@@ -69,9 +69,9 @@ function getDate(dateString) {
  */
 function booleanFormatter(value) {
   if (value!=0) { 
-  	return '<img src="img/checkedOK.png" width="12" height="12" />'; 
+  	return '<div style="width:100%;text-align:center;"><img src="img/checkedOK.png" width="12" height="12" /></div>'; 
   } else { 
-  	return '<img src="img/checkedKO.png" width="12" height="12" />'; 
+  	return '<div style="width:100%;text-align:center;"><img src="img/checkedKO.png" width="12" height="12" /></div>'; 
   }
 }
 
@@ -122,7 +122,7 @@ function colorNameFormatter(value) {
   		  var light=(0.3)*parseInt(red,16)+(0.6)*parseInt(green,16)+(0.1)*parseInt(blue,16);
   		  if (light<128) { foreColor='#FFFFFF'; }
   		}
-  	  return '<span style="display:none;">' + order + '</span><table width="100%"><tr><td style="background-color: ' + color + '; color:' +foreColor + ';width: 100%;">' + val + '</td></tr></table>'; 
+  	  return '<span style="display:none;">' + order + '</span><table width="100%" style="min-height:20px !important;"><tr style="height:100% !important;"><td style="text-align: center;border-radius: 10px; padding: 5px 5px !important;background-color: ' + color + '; color:' +foreColor + ';width: 100%;">' + val + '</td></tr></table>'; 
   	} else {
   		return value;
   	}
@@ -188,7 +188,13 @@ function translateFormatter(value, prefix) {
  */
 function percentFormatter(value) {
   if (value) { 
-   return parseInt(value,10) + '&nbsp;%';
+   var pct=parseInt(value,10);
+   var pctTxt='<div style="width:100%;text-align:center;">'+pct+'&nbsp;%</div>';
+   pctTxt+='<div style="height:3px;width:100%;position: relative; bottom:0px;">';
+   pctTxt+='<div style="height:3px;width:'+pct+'%;position: absolute;left:0%;background-color:#AAFFAA">&nbsp;</div>';
+   pctTxt+='<div style="height:3px;width:'+(100-pct)+'%;position: absolute;left:'+pct+'%; background-color:#FFAAAA">&nbsp;</div>';
+   pctTxt+='</div>';
+   return pctTxt;
   } else { 
   	return ''; 
   }

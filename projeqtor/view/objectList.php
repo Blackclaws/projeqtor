@@ -131,7 +131,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               &nbsp;</NOBR> 
             </td>
             <td width="5px">
-              <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField" dojoType="dijit.form.TextBox" 
+              <div title="<?php echo i18n('filterOnId')?>" style="width:50px" class="filterField rounded" dojoType="dijit.form.TextBox" 
                type="text" id="listIdFilter" name="listIdFilter">
                 <script type="dojo/method" event="onKeyUp" >
 				          setTimeout("filterJsonList()",10);
@@ -145,8 +145,8 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 &nbsp;</NOBR> 
               </td>
               <td width="5px">
-                <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
-                id="listNameFilter" name="listNameFilter">
+                <div title="<?php echo i18n('filterOnName')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
+                id="listNameFilter" name="listNameFilter" >
                   <script type="dojo/method" event="onKeyUp" >
                   setTimeout("filterJsonList()",10);
                 </script>
@@ -160,8 +160,8 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 &nbsp;</NOBR>
               </td>
               <td width="5px">
-                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField" dojoType="dijit.form.FilteringSelect" 
-                id="listTypeFilter" name="listTypeFilter" style="height: 14px;">
+                <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect" 
+                id="listTypeFilter" name="listTypeFilter" >
                   <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
                   <script type="dojo/method" event="onChange" >
                     refreshJsonList('<?php echo $objectClass;?>');

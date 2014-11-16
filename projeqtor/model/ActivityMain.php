@@ -83,7 +83,7 @@ class ActivityMain extends SqlElement {
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="progress" from="ActivityPlanningElement" width="5%" formatter="percentFormatter">${progress}</th>
     <th field="nameTargetVersion" width="8%" >${targetVersion}</th>
-    <th field="nameResource" width="8%" >${responsible}</th>
+    <th field="nameResource" formatter="thumb48" width="8%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>

@@ -121,7 +121,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>     
 			                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
 			                <td>
-			                  <input tabindex="1" id="login" style="width:200px" type="text"  
+			                  <input tabindex="1" id="login" style="width:200px" type="text"  class="rounded"
 			                   dojoType="dijit.form.TextBox" />
                         <input type="hidden" id="hashStringLogin" name="login" style="width:200px" value=""/>  
 			                </td>
@@ -130,7 +130,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>
 			                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
 			                <td>
-			                  <input tabindex="2" id="password" style="width:200px" type="password"  
+			                  <input tabindex="2" id="password" style="width:200px" type="password" class="rounded"
 			                   dojoType="dijit.form.TextBox" />
                         <input type="hidden" id="hashStringPassword" name="password" style="width:200px" value=""/>
 			                </td>

@@ -138,7 +138,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
 	foreach ($obj as $col => $val) {
 		if ($detailWidth) {
-			$colWidth = ( $detailWidth) / $nbCol;        // 2 columns should be displayable
+			$colWidth = ( $detailWidth - 25) / $nbCol;        // 2 columns should be displayable
 			$maxWidth= $colWidth - $labelWidth ;          // subtract label width and a margin for slider place
 			if ($maxWidth >= $mediumWidth) {
 				$largeWidth = $maxWidth;
@@ -590,18 +590,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				// Draw Id (only visible) ============================================= ID
 				// id is only visible
 				$ref=$obj->getReferenceUrl();
-				echo '<span style="font-size:8pt;color:#AAAAAA">';
-				echo '  <a href="' . $ref . '" onClick="copyDirectLinkUrl();return false;" title="'.i18n("rightClickToCopy").'">';
-				echo '    <span style="color:grey;vertical-align:middle;">#</span>';
+				echo '<span style="font-size:8pt;color:#AAAAAA;">';
+				echo '  <a href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' 
+						. ' title="'.i18n("rightClickToCopy").'" style="cursor: pointer;">';
+				echo '    <span style="color:grey;vertical-align:middle;padding: 2px 0px 2px 0px !important;">#</span>';
 				echo '    <span dojoType="dijit.form.TextBox" type="text"  ';
 				echo       $name;
 				echo '     class="display" ';
-				echo '     readonly tabindex="-1" style="width: ' . $smallWidth . 'px;" ' ;
+				echo '     readonly tabindex="-1" style="cursor: pointer !important;width: ' . $smallWidth . 'px; padding: 2px 0px 2px 0px !important;" ' ;
 				echo '     value="' . htmlEncode($val) . '" >';
 				echo '    </span>';
         echo '  </a>';
         echo '</span>';
-        echo '<input readOnly  type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:'.$largeWidth.'px;" value="'.$ref.'" />';
+        echo '<input readOnly type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:'.$largeWidth.'px;" value="'.$ref.'" />';
 			  $alertLevelArray=$obj->getAlertLevel(true);
         $alertLevel=$alertLevelArray['level'];
         $colorAlert="background-color:#FFFFFF";
@@ -628,7 +629,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo '<span dojoType="dijit.form.TextBox" type="text"  ';
 				echo $name;
 				echo ' class="display" ';
-				echo ' readonly tabindex="-1" style="width: ' . ($largeWidth - $smallWidth -20) . 'px;" ' ;
+				echo ' readonly tabindex="-1" style="width: ' . ($largeWidth - $smallWidth - 40) . 'px;" ' ;
 				echo ' value="' . htmlEncode($val) . '" ></span>';
 			} else if ($col=='password') {
 				$paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
