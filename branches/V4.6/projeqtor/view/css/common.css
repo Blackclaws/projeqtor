@@ -549,6 +549,7 @@ table.dojoDndAvatar {
 .dijitInputField INPUT,.dijitTextBox,.dijitComboBox,.dijitSpinner,
 .dijitInputContainer INPUT {
   margin: 0em 0.1em;
+  /* border-radius: 10px 10px; /* New GUI */
 }
 .dijitInputContainer INPUT,
 .dijitTextBox {
@@ -556,12 +557,15 @@ table.dojoDndAvatar {
 }
 
 .dijitTextArea {
-  padding: 3px;
+  padding: 2px 5px 2px 5px !important; /* New GUI */
 }
 .dijitTextBox,.dijitComboBox,.dijitSpinner,.dijitTextArea {
   font-family: Verdana, Arial, Tahoma, sans-serif;
   font-size: 100%;
-  padding: 1px;
+  
+}
+.dijitInputInner {
+	padding: 2px 5px 2px 5px !important; /* New GUI */
 }
 .dijitTextArea {
   padding: 1px;
@@ -588,7 +592,7 @@ table.dojoDndAvatar {
   padding: 1px 0;
 }
 .dijitComboBox .dijitButtonNode {
-  padding: 0px 0.2em;
+  /*padding: 0px 0.2em;*/
 }
 .dijitTextBox .dijitButtonNode {
   border-color: #9b9b9b;
@@ -611,18 +615,19 @@ table.dojoDndAvatar {
   border-top-color: #606060;
 }
 .dijitError {
-  background-color: #f9f7ba;
+  background-color: #FFE0E0;
   background-image: none;
 }
 .dj_ie6 .dijitError INPUT {
   background-color: #f9f7ba !important;
 }
 .dijitErrorFocused {
-  background-color: #f9f999;
-  background-image: none;
+  background-color: #FFE0E0;
+  background-image: none !important;
 }
 .dj_ie6 .dijitErrorFocused INPUT {
-  background-color: #f9f999 !important;
+  background-color: #FFE0E0; !important;
+  background-image: none !important;
 }
 .dijitValidationIcon {
   width: 16px;
@@ -658,8 +663,9 @@ table.dojoDndAvatar {
 .dijitButtonNode {
   border: 1px solid #c0c0c0;
   border-bottom: 1px solid #9b9b9b;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  background: #fff url(images/buttonEnabled.png) repeat-x bottom left;
+  /*padding: 0.1em 0.2em 0.1em 0.2em;*/
+  height:19px;
+  background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
 }
 
 .dijitButtonNode button {
@@ -2221,11 +2227,12 @@ table.dijitCalendarContainer {
 .dojoxGridHeader {
 	position: absolute;
 	overflow: hidden;
+	text-align: center;
 }
 .dojoxGridHeader {
 	background-color: #e8e1cf;
 }
-.dojoxGridHeader table {
+.dojoxGridHeader table, .dojoxGridHeader th  {
 	text-align: center;
 }
 .dojoxGridHeader tr, .dojoxGridHeader th {
@@ -2247,6 +2254,9 @@ table.dijitCalendarContainer {
 	margin-bottom: 0;
 	padding-bottom: 0;
 	border-bottom-width: 3px;
+	-moz-opacity: 0.6;
+  opacity: 0.6;
+  filter: Alpha(Opacity = 60);
 }
 .dojoxGridHeader .dojoxGridCellFocus {
 	border: 1px dashed blue;

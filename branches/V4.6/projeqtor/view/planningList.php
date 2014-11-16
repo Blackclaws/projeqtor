@@ -342,7 +342,7 @@ if ($saveShowClosed) {
       id="GanttChartDIV" name="GanttChartDIV" >
        <div id="mainRightPlanningDivContainer" dojoType="dijit.layout.BorderContainer" style="z-index:-4;">
          <div dojoType="dijit.layout.ContentPane" region="top" 
-          style="width:100%; height:43px; overflow:hidden;" class="ganttDiv"
+          style="width:100%; height:45px; overflow:hidden;" class="ganttDiv"
           id="topGanttChartDIV" name="topGanttChartDIV">
          </div>
          <div dojoType="dijit.layout.ContentPane" region="center" 

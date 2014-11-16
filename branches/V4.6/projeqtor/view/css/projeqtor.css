@@ -381,9 +381,10 @@ label, .label {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   text-align: right; vertical-align: top;
   width: 150px;
-  padding: 1px 1px 0px 0px;
+  padding: 3px 1px 2px 0px;
   float:left;
   border: 1px;
+  text-shadow: 1px 1px #FFFFFF;
 }
 .largeLabel {
 	width: 300px;
@@ -905,6 +906,19 @@ label, .label {
     background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
 }
 
+.rounded {
+	-webkit-border-radius: 10px !important;
+	-moz-border-radius: 10px !important;
+	border-radius: 10px !important;
+}
+.roundedLeft {
+	-webkit-border-top-left-radius: 10px  !important;
+	-webkit-border-bottom-left-radius: 10px !important;
+	-moz-border-radius-topleft: 10px  !important;
+	-moz-border-radius-bottomleft: 10px !important;
+	border-top-left-radius: 10px !important;
+	border-bottom-left-radius: 10px !important;
+}
 
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
@@ -1697,6 +1711,9 @@ label, .label {
 .ProjeQtOr .dojoxGridRowOver .dojoxGridCell {
  background: url(images/titleBar.png) #dedede top repeat-x !important;
  color: #545281 !important;
+ -moz-opacity: 0.7;
+ opacity: 0.7;
+ filter: Alpha(Opacity = 70);
 } 
 
 .ProjeQtOr #buttonDiv { /**toolbar**/
@@ -2600,12 +2617,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', end
 /* =============================================================================== */	
 
 .dijitTitlePane .dijitTitlePaneTitle, .section {
-  border-top: 1px solid #A0A0A0;
+  /*border-top: 1px solid #A0A0A0;
   border-left: 1px solid #A0A0A0;
   border-bottom: 1px solid #FFFFFF; 
-  border-right: 1px solid #FFFFFF;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
+  border-right: 1px solid #FFFFFF;*/
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  padding: 2px 5px 2px 5px;
   font-weight: 600 !important;
 }
 #resultDivMultiple span.messageOK, #resultDivMultiple span.messageERROR {
@@ -2614,3 +2632,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', end
 #resultDivMultiple span.messageWARNING {
   text-shadow: 1px 1px #000000;
 }
+.dojoxGridRowOver .dojoxGridCell {
+ -moz-opacity: 0.7;
+ opacity: 0.7;
+ filter: Alpha(Opacity = 70);
+} 
