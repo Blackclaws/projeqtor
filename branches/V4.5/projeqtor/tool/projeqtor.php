@@ -1320,7 +1320,7 @@ function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=null) {
   // ATTENTION, NOT FOR READ ACCESS
-  
+traceLog("securityGetAccessRightYesNo($menuName, $accessType, obj, user)");  
 	if (! class_exists(substr($menuName,4))) {
 		errorLog("securityGetAccessRightYesNo : ".substr($menuName,4)." is not an existing object class");
 	}
@@ -1341,6 +1341,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
 	  }
   }
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj, $user);
+debugLog(" accessRight=$accessRight");
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN' or $accessRight=='RES')?'NO':'YES';
   } else if ($accessType=='update' or $accessType=='delete' or $accessType=='read') {
@@ -1357,6 +1358,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
           }
         } else if (property_exists($obj, 'idProject')) {
         	$limitToActiveProjects=(get_class($obj)=='Affectation')?false:true;
+        	if (isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1) $limitToActiveProjects=false;
           if (array_key_exists($obj->idProject, $user->getAffectedProjects($limitToActiveProjects)) or $obj->id==null) {
             $accessRight='YES';
           }
