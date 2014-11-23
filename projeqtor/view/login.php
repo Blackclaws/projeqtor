@@ -146,7 +146,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>
 			                <td class="label"><label>&nbsp;</label></td>
 			                <td>
-			                  <button tabindex="3" type="submit" id="loginButton" 
+			                  <button tabindex="3" type="submit" id="loginButton" style="width:200px"
 			                   dojoType="dijit.form.Button" showlabel="true">OK
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             return true;
@@ -166,8 +166,8 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 	?>              
 			              <tr>
 			                <td class="label"><label>&nbsp;</label></td>
-			                <td>  
-			                  <button tabindex="4" id="passwordButton" type="button" dojoType="dijit.form.Button" showlabel="true">
+			                <td style="width:200px">  
+			                  <button tabindex="4" id="passwordButton" style="width:200px !important" type="button" dojoType="dijit.form.Button" showlabel="true">
 			                    <?php echo i18n('buttonChangePassword') ?>
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             connect(true);

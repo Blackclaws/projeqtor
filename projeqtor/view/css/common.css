@@ -664,7 +664,8 @@ table.dojoDndAvatar {
   border: 1px solid #c0c0c0;
   border-bottom: 1px solid #9b9b9b;
   /*padding: 0.1em 0.2em 0.1em 0.2em;*/
-  height:19px;
+  height:20px;
+  
   background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
 }
 
@@ -672,6 +673,15 @@ table.dojoDndAvatar {
   border: 0px;
   background-color: transparent;
 }
+
+.dijitReset.dijitRight.dijitButtonNode {
+	border-radius:0px;
+}
+
+.dijitReset.dijitInline.dijitButtonNode {
+  border-radius:10px;
+}
+
 
 .dijitButtonText {
   text-align: center;
@@ -2803,4 +2813,6 @@ table.dijitCalendarContainer {
   margin:0; padding:0; 
 }
 
-
+.loginButton {
+	width: 200px;
+}
