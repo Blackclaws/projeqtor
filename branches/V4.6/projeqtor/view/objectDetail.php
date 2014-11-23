@@ -138,7 +138,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
 	foreach ($obj as $col => $val) {
 		if ($detailWidth) {
-			$colWidth = ( $detailWidth - 25) / $nbCol;        // 2 columns should be displayable
+			$colWidth = ( $detailWidth ) / $nbCol;        // 2 columns should be displayable
 			$maxWidth= $colWidth - $labelWidth ;          // subtract label width and a margin for slider place
 			if ($maxWidth >= $mediumWidth) {
 				$largeWidth = $maxWidth;
@@ -937,7 +937,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					}
 				}
 				if ($displayComboButtonCol or $displayDirectAccessButton) {
-					$fieldWidth -= 20;
+					$fieldWidth -= 27;
 				}
 				if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3')!==false) {
 					$fieldWidth=$fieldWidth/3-3;
@@ -953,7 +953,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 					if (isset($obj->$otherVersion) and ! $obj->isAttributeSetToField($col,'hidden') 
 					    and ! $obj->isAttributeSetToField($col,'readonly') and $canUpdate and !$obj->idle) {
 						$hasOtherVersion=true;
-						$fieldWidth -= 20;
+						$fieldWidth -= 27;
 					}
 				}
 				echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
@@ -968,7 +968,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				echo '</select>';
 				if ($displayComboButtonCol) {
 					echo '<button id="' . $col . 'Button" dojoType="dijit.form.Button" showlabel="false"';
-					echo ' title="' . i18n('showDetail') . '" style="position: relative; top:1px"';
+					echo ' title="' . i18n('showDetail') . '" ';
 					echo ' iconClass="iconView">';
 					echo ' <script type="dojo/connect" event="onClick" args="evt">';
 				  echo '   if (clickTimer) clearTimeout(clickTimer);';
@@ -1000,8 +1000,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 				}
 				if ($hasOtherVersion) {
 					if ($obj->id and $canUpdate) {
-						echo '<span style="text-align:center; vertical-align:middle;">';
-						echo '<img src="css/images/smallButtonAdd.png" style="position:relative; top:2px; left:2px;"'
+						//echo '<span style="width:1px"> </span>';
+						echo '<span style="position:relative; left:2px;text-align:center; vertical-align:middle;width:20px; height:20px" class="dijitReset dijitInline dijitButtonNode">';
+						echo '<img src="css/images/smallButtonAdd.png" style="position:relative; top:2px; left:0px;"'
 						. 'onClick="addOtherVersion(' . "'" . $versionType . "'"
 						. ');" ';
 						echo ' title="' . i18n('otherVersionAdd') . '" class="smallButton"/> ';
