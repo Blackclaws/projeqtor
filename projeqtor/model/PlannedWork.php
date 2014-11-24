@@ -560,7 +560,7 @@ class PlannedWork extends GeneralWork {
 	                    if (isset($grp['ResourceWork'][$projectKey][$week])) {
 	                      $plannedProj=$grp['ResourceWork'][$projectKey][$week];
 	                    }
-	                    $rateProj=Resource::findAffectationRate($grp['ResourceWork'][$projectKey]['rate']) / 100;
+	                    $rateProj=Resource::findAffectationRate($grp['ResourceWork'][$projectKey]['rate'],$currentDate) / 100;
 	                    if ($rateProj==1) {
 	                      $leftProj=round(7*$grp['capacity']*$rateProj,2)-$plannedProj; // capacity for a full week
 	                      // => to be able to plan weekends
