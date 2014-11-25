@@ -2374,12 +2374,12 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
 		echo '</td>';
 	}
 	if ($idProj) {
-		echo '<td class="assignHeader" style="width:' . (($print)?'50':'40') . '%">' . i18n('colIdVersion') . '</td>';
+		echo '<td class="assignHeader" style="width:' . (($print)?'60':'50') . '%">' . i18n('colIdVersion') . '</td>';
 	} else {
-		echo '<td class="assignHeader" style="width:' . (($print)?'50':'40') . '%">' . i18n('colIdProject') . '</td>';
+		echo '<td class="assignHeader" style="width:' . (($print)?'60':'50') . '%">' . i18n('colIdProject') . '</td>';
 	}
-	echo '<td class="assignHeader" style="width:20%">' . i18n('colStartDate'). '</td>';
-	echo '<td class="assignHeader" style="width:20%">' . i18n('colEndDate'). '</td>';
+	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate'). '</td>';
+	echo '<td class="assignHeader" style="width:15%">' . i18n('colEndDate'). '</td>';
 	echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
 
 	echo '</tr>';
@@ -2455,7 +2455,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 	}
 
 	if (! $print) {
-		echo '<td class="assignHeader" style="width:5%">';
+		echo '<td class="assignHeader" style="width:10%">';
 		if ($obj->id!=null and ! $print and $canCreate and !$obj->idle) {
 			echo '<img src="css/images/smallButtonAdd.png" ' .
            ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\''. $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
@@ -2463,7 +2463,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 		echo '</td>';
 	}
 	echo '<td class="assignHeader" style="width:5%">' . i18n('colId') . '</td>';
-	echo '<td class="assignHeader" style="width:' . (($print)?'50':'45') . '%">' . i18n('colId'.$type) . '</td>';
+	echo '<td class="assignHeader" style="width:' . (($print)?'55':'45') . '%">' . i18n('colId'.$type) . '</td>';
 	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
 	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
 	echo '<td class="assignHeader" style="width:10%">' . i18n('colRate'). '</td>';
