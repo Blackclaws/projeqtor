@@ -3237,9 +3237,9 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 function saveAffectation() {
 	var formVar = dijit.byId('affectationForm');
 	if (dijit.byId('affectationStartDate') && dijit.byId('affectationEndDate') ) {
-	   start=trim(dijit.byId('affectationStartDate').get("value"));
-	   end=trim(dijit.byId('affectationEndDate').get("value"));
-	   if (start!="" && end!="" && end<start) {
+	   var start=dijit.byId('affectationStartDate').value;
+	   var end=dijit.byId('affectationEndDate').value;	   
+	   if (start && end && dayDiffDates(start,end)<0) {
 		   showAlert(i18n("errorStartEndDates",new Array(i18n("colStartDate"),i18n("colEndDate"))));
 		   return;
 	   }
