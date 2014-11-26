@@ -45,7 +45,7 @@ $readOnly=false;
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 	global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, 
-	 $collapsedList,$printWidth, $detailWidth, $readOnly;
+	 $collapsedList,$printWidth, $detailWidth, $readOnly,$largeWidth;
 	/*if ($print===null) {
 	 $print=$_REQUEST['print'];
 	 }
