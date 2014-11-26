@@ -176,7 +176,7 @@
 	      $nbRows=0;
 	      $lstRes=array();
 	      if (array_key_exists('selected', $_REQUEST)) {
-	        $lstRes[$_REQUEST['selected']]=SqlList::getNameFromId('Resource', $_REQUEST['selected']);
+	        $lstRes[$_REQUEST['selected']]=SqlList::getNameFromId('Affectable', $_REQUEST['selected']);
 	      }
 	      foreach ($list as $aff) {
 	        if (! array_key_exists($aff->idResource, $lstRes)) {
