@@ -62,9 +62,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       if (! array_key_exists($aff->idResource, $table)) {
         $id=$aff->idResource;
         $name=SqlList::getNameFromId('Resource', $id);
+        if ($name==$id and $col=='idResource') {
+        	$name=SqlList::getNameFromId('User', $id);
+        }
         if ($name!=$id) {
           $table[$id]=$name;
-        }
+        } 
       }
     }
     asort($table);

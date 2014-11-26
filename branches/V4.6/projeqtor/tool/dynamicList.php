@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ============================================================================
- * Save some information to session (remotely).
+ * Get a list , dynamically.
  */
 
 require_once "../tool/projeqtor.php";
@@ -52,7 +52,7 @@ onchange="enableWidget('dialogLinkSubmit');"
 class="selectList" >
  <?php
  foreach ($list as $lstObj) {
- 	 $val=$lstObj->name;
+   $val=$lstObj->name;
    if ($ref2Type=="Project" and $sepChar!='no') {
      $wbs=$wbsList[$lstObj->id];
      $wbsTest=$wbs;
