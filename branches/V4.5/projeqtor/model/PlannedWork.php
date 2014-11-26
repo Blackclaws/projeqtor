@@ -493,6 +493,10 @@ class PlannedWork extends GeneralWork {
                     	$changedAss=true;
                     	$ass->notPlannedWork=$left;
                     	$plan->notPlannedWork+=$left;
+                    	if (!$ass->plannedStartDate) $ass->plannedStartDate=$currentDate;
+                    	if (!$ass->plannedEndDate) $ass->plannedEndDate=$currentDate;
+                    	if (!$plan->plannedStartDate) $plan->plannedStartDate=$currentDate;
+                    	if (!$plan->plannedEndDate) $plan->plannedEndDate=$currentDate;
                     	$arrayNotPlanned[$ass->id]=$left;
                     	$left=0;
                     }
