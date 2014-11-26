@@ -129,6 +129,7 @@ if ($action=='display') {
       dojo.byId('result').innerHTML="";
       dojo.byId('resultUrl').innerHTML="";
       document.body.style.cursor = 'wait';
+      //console.log to keep
       console.log(url);
       dojo.xhrGet({
         url: url,
