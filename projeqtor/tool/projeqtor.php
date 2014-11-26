@@ -1341,7 +1341,6 @@ traceLog("securityGetAccessRightYesNo($menuName, $accessType, obj, user)");
 	  }
   }
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj, $user);
-debugLog(" accessRight=$accessRight");
   if ($accessType=='create') {
     $accessRight=($accessRight=='NO' or $accessRight=='OWN' or $accessRight=='RES')?'NO':'YES';
   } else if ($accessType=='update' or $accessType=='delete' or $accessType=='read') {

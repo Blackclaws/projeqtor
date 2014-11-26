@@ -122,7 +122,11 @@
         $list=SqlList::getList($class);
       }
       if ($selected) {
-        $list[$selected]=SqlList::getNameFromId($class, $selected);
+      	$name=SqlList::getNameFromId($class, $selected);
+      	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
+      		$name=SqlList::getNameFromId('Affectable', $selected);
+      	}
+        $list[$selected]=$name;
       }
       if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
       $nbRows=0;
