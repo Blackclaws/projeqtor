@@ -28,7 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php"; 
-    scriptLog('   ->/tool/jsonList.php');
+    scriptLog('   ->/tool/jsonList.php');  
     $type=$_REQUEST['listType'];
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
@@ -121,13 +121,12 @@
       } else {
         $list=SqlList::getList($class);
       }
-debugLog("OK - selected=$selected");
       if ($selected) {
       	$name=SqlList::getNameFromId($class, $selected);
       	if ($name==$selected and ($class=='Resource' or $class=='User' or $class=='Contact')) {
-      		$name==SqlList::getNameFromId('Affectable', $selected);
+      		$name=SqlList::getNameFromId('Affectable', $selected);
       	}
-        $list[$selected]=SqlList::getNameFromId($class, $selected);
+        $list[$selected]=$name;
       }
       if ($dataType=="idProject") { $wbsList=SqlList::getList('Project','sortOrder',$selected, true);} 
       $nbRows=0;
