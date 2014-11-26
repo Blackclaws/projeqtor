@@ -3193,9 +3193,9 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 	}
 	refreshList('idProject', null, null, idProject, 'affectationProject', true);
 	if (objectClass=='Project') {
-	  refreshList('id'+type, null, null, null, 'affectationResource', true);
+	  refreshList('id'+type, null, null, idResource, 'affectationResource', true);
 	} else { 
-	  refreshList('id'+objectClass, null, null, null, 'affectationResource', true);
+	  refreshList('id'+objectClass, null, null, idResource, 'affectationResource', true);
 	}
 	dijit.byId("affectationResource").set('required',true);
 	dojo.byId("affectationId").value=id;
