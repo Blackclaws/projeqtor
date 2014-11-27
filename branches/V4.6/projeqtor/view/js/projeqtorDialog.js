@@ -767,7 +767,7 @@ function addAttachement (attachmentType) {
 function changeAttachment(list) {
   if (list.length>0) {
 	htmlList="";
-	for (i=0;i<list.length;i++) {
+	for (var i=0;i<list.length;i++) {
 	  htmlList+=list[i]['name']+'<br/>';
     }
 	dojo.byId('attachementFileName').innerHTML=htmlList;
@@ -1378,8 +1378,8 @@ function assignmentUpdateLeftWork(prefix) {
   	assigned.value=dojo.number.format(newAssigned);
 	}  
   var left = dojo.byId(prefix + "LeftWork");
-  var real = dojo.byId(prefix + "RealWork"); 
-  var planned = dojo.byId(prefix + "PlannedWork");
+  //var real = dojo.byId(prefix + "RealWork"); 
+  //var planned = dojo.byId(prefix + "PlannedWork");
 	diff=dojo.number.parse(assigned.value)-initAssigned.value;
 	newLeft=parseFloat(initLeft.value) + diff;
 	if (newLeft<0 || isNaN(newLeft)) { newLeft=0;}
@@ -2266,7 +2266,7 @@ function removeBillLine (lineId) {
 */
 function addChecklistDefinitionLine (checkId) {
   var params="&checkId="+checkId;
-  loadDialog('dialogChecklistDefinitionLine',null, true, params)
+  loadDialog('dialogChecklistDefinitionLine',null, true, params);
 }
 
 
@@ -2276,7 +2276,7 @@ function addChecklistDefinitionLine (checkId) {
 */
 function editChecklistDefinitionLine (checkId, lineId) {
   var params="&checkId="+checkId+"&lineId="+lineId;
-  loadDialog('dialogChecklistDefinitionLine',null, true, params)
+  loadDialog('dialogChecklistDefinitionLine',null, true, params);
 }
 
 
@@ -2329,7 +2329,7 @@ function saveChecklist() {
 function checkClick(line, item) {
   checkName="check_"+line+"_"+item;
   if (dijit.byId(checkName).get('checked')) {
-    for (i=1;i<=5;i++) {
+    for (var i=1;i<=5;i++) {
       if (i!=item && dijit.byId("check_"+line+"_"+i)) {
         dijit.byId("check_"+line+"_"+i).set('checked',false);
       }

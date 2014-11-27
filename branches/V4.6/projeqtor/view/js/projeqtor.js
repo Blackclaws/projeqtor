@@ -2117,7 +2117,6 @@ function refreshTodayProjectsList(value) {
   loadContent("../view/today.php?refreshProjects=true", "Today_project", "todayProjectsForm", false);  
 }
 
-var clickTimer;
 function gotoElement(eltClass, eltId, noHistory) {
   if (checkFormChangeInProgress() ) {
     return false;
