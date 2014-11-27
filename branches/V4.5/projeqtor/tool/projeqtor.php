@@ -1320,7 +1320,7 @@ function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=null) {
   // ATTENTION, NOT FOR READ ACCESS
-traceLog("securityGetAccessRightYesNo($menuName, $accessType, obj, user)");  
+  // traceLog("securityGetAccessRightYesNo($menuName, $accessType, obj, user)");  
 	if (! class_exists(substr($menuName,4))) {
 		errorLog("securityGetAccessRightYesNo : ".substr($menuName,4)." is not an existing object class");
 	}
