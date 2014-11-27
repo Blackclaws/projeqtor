@@ -85,7 +85,7 @@ function booleanFormatter(value) {
  */
 function colorFormatter(value) {
   if (value) { 
-  	return '<table width="100%"><tr><td style="background-color: ' + value + '; width: 100%;">&nbsp;</td></tr></table>'; 
+  	return '<table width="100%"><tr><td style="min-height:20px;border-radius: 10px; padding: 5px 5px !important;background-color: ' + value + '; width: 100%;">&nbsp;</td></tr></table>'; 
   } else { 
   	return ''; 
   }

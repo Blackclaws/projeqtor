@@ -77,7 +77,7 @@ class User extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
   		                                    "email"=>"truncatedWidth100",
   										                    "isLdap"=>"hidden,forceExport",
-                                          "idProfile"=>"required, truncatedWidth100",
+                                          "idProfile"=>"required",
                                           "loginTry"=>"hidden",
                                           "salt"=>'hidden', 
                                           "crypto"=>'hidden',
