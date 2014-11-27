@@ -2576,3 +2576,7 @@ function startStopWork(action, type, id, start) {
     dojo.byId("statusBarInfoDiv").style.display='block';
   }
 }
+
+function getBrowserLocaleDateFormatJs() {
+ return browserLocaleDateFormatJs;
+}
