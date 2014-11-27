@@ -920,6 +920,34 @@ label, .label {
 	border-bottom-left-radius: 10px !important;
 }
 
+/* SPECIFIC ROUND BUTTON */
+
+.roundedButton {
+  height:20px; width:20px;
+  /*background: #eee url(images/buttonEnabled.png) repeat-x bottom left;*/
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  border-radius: 10px !important;
+  cursor: pointer;
+}
+.roundedButton.disabled {
+  border-color: #d5d5d5 #d5d5d5 #bdbdbd #d5d5d5;
+  background: #e4e4e4 url(images/buttonDisabled.png) top repeat-x;
+  cursor: default;
+}
+.roundedButton:hover {
+  border: 1px solid #c0c0c0;
+  border-color: #a5a5a5;
+  border-bottom-color: #757575;
+  color: #3C3C3C;
+  background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
+}
+.roundedButton:active {
+	border: 1px solid #c0c0c0;
+    border-color:#366dba;
+    background: #ededed url(images/buttonActive.png) bottom repeat-x;
+}
+
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */
