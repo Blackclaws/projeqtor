@@ -2580,3 +2580,20 @@ function startStopWork(action, type, id, start) {
 function getBrowserLocaleDateFormatJs() {
  return browserLocaleDateFormatJs;
 }
+
+// For FF issue on CTRL+S and F1
+// Fix proposed by CACCIA
+function stopDef(e) {
+  var inputs, index;
+ 
+  inputs = document.getElementsByTagName('input');
+  for (index = 0; index < inputs.length; ++index) {
+      inputs[index].blur(); 
+  }
+ 
+  if (e && e.preventDefault)
+    e.preventDefault();
+  else if (window.event && window.event.returnValue)
+    window.eventReturnValue = false;
+};
+// End Fix
