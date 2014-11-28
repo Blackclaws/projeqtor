@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project name="ProjeQtOr V4.5" default="buildQuick">
 
-	<property name="drive"       value="G:" />
-  <property name="version"       value="V4.5.0" />
+	<property name="drive"       value="D:" />
+  <property name="version"       value="V4.6.0" />
   <property name="projName"       value="projeqtor" />
   <property name="setup.dir"     value="${drive}/ProjeQtOr/setup" />
   <property name="deploy.dir"    value="${setup.dir}/${projName}" />
@@ -183,8 +183,8 @@
 <!-- Build : 21,4 Mo -->
 <!-- Clean : 3,56 Mo -->
 	
-	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.9.5-src"/>
-	<property name="dojo.version" value="1.9.5"/>
+	<property name="dojo.release.dir" value ="D:/ProjeQtOr/External/dojo-release-1.10.2-src"/>
+	<property name="dojo.version" value="1.10.2"/>
 	<property name="build.name" value="external"/> 
   <property name="buildscripts.dir" value="${dojo.release.dir}/util/buildscripts/" /> 
 	<property name="release.dir" value="${dojo.release.dir}/../${build.name}/"/>

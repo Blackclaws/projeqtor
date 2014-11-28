@@ -11,7 +11,6 @@
 			dependencies: [
 		    "dojox/mobile/parser",
     		"dojox/mobile/compat",
-    		"dojo/domReady!",
     		"dojox/mobile/ScrollableView",
     		"dojox/mobile/View",
     		"dojox/mobile/Heading",

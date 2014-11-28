@@ -53,6 +53,11 @@ html.mobile,
 .mblImageIcon {
   vertical-align: top;
 }
+.unselectable {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
 body {
   -ms-touch-action: pan-y;
 }
@@ -601,7 +606,6 @@ h6.mblHeading {
   float: right;
   line-height: normal;
   margin-right: 4px;
-  color: black;
   margin-top: 12px;
 }
 .mblListItemLabel {

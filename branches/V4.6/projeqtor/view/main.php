@@ -192,16 +192,31 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       saveBrowserLocaleToSession();
       // Relaunch Cron (if stopped, any connexion will restart it)
       adminCronRelaunch();
-      var onKeyPressFunc = function(event) {
+      /*var onKeyPressFunc = function(event) {
         if(event.ctrlKey && ! event.altKey && event.keyChar == 's'){
           event.preventDefault();
-        	globalSave();
+          stopDef(event);
+          globalSave();
         } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
-        	event.preventDefault();
-        	showHelp();
+          event.preventDefault();
+          stopDef(event);
+          showHelp();
         }  
       };
-      dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      dojo.connect(document, "onkeypress", this, onKeyPressFunc);*/
+      // Fix proposed by CACCIA
+      var onKeyPressFunc = document.addEventListener("keydown", function(e) {
+          if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && ! e.altKey) { // CTRL + S
+            e.preventDefault();
+            if (dojo.isFF) stopDef();
+            globalSave();
+          } else if (e.keyCode == 112) { // On F1
+            e.preventDefault();
+            if (dojo.isFF) stopDef();
+            showHelp();
+          }
+        }, false);
+      // End Fix
       <?php 
       $firstPage="welcome.php";
       if (securityCheckDisplayMenu(1) ) {
