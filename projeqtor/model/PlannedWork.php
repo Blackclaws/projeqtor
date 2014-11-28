@@ -247,7 +247,7 @@ class PlannedWork extends GeneralWork {
         if ($prec->realEndDate) {
         	$precEnd=$prec->realEndDate;
         }
-        if (addWorkDaysToDate($precEnd,1+$precVal) > $startPlan) { // #77       
+        if (addWorkDaysToDate($precEnd,1+$precVal) >= $startPlan) { // #77       
           if ($prec->refType=='Milestone') {
           	if ($plan->refType=='Milestone') {
           	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
