@@ -941,8 +941,10 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
             $critVal = SqlList::getNameFromId ( 'Checklistable', $obj->idChecklistable, false );
           }
         }
-        if ($displayComboButtonCol or $displayDirectAccessButton) {
+        if ($displayComboButtonCol) {
           $fieldWidth -= 50;
+        } else if ($displayDirectAccessButton) {
+        	$fieldWidth -= 27;
         }
         if ($nobr_before or strpos ( $obj->getFieldAttributes ( $col ), 'size1/3' ) !== false) {
           $fieldWidth = $fieldWidth / 3 - 3;
