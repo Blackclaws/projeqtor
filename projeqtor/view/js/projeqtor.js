@@ -52,6 +52,8 @@ var noDisconnect=false;
 var forceRefreshMenu=false;
 var directAccessIndex=null;
 
+var debugPerf=new Array();
+
 // =============================================================================
 // = Functions
 // =============================================================================
@@ -495,11 +497,21 @@ function cleanContent(destination) {
  * @return void
  */
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
-//console.log to keep
-//console.log("loadcontent("+page+", "+destination+", "+formName+", "+isResultMessage+", "+validationType+", "+directAccess+")");
+  var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
+  var fadingMode=top.fadeLoading;
+  if (top.dojo.isIE >= 8) { fadingMode=false;}
+  if (page.substr(0,16)=='objectDetail.php') {
+    // if item = current => refresh without fading
+    if (dojo.byId('objectClass') && dojo.byId('objectId') && dojo.byId('className') && dojo.byId('id')) {
+      if (dojo.byId('objectClass').value==dojo.byId('className').value 
+          && dojo.byId('objectId').value==dojo.byId('id').value) {
+        fadingMode=false;
+      }     
+    }
+  }
   if ( ! (contentNode && contentWidget) ) {
     console.warn(i18n("errorLoadContent", new Array(page, destination, formName, isResultMessage,destination)));
     return;
@@ -526,200 +538,119 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     }	   
   } 
   showWait();
-  // Direct mode, without fading effect =====
-  // IE Issue : must not fade load
-  if ( (top.dojo.isIE < 8) || ! top.fadeLoading) {
-    // send Ajax request
-    dojo.xhrPost({
-      url: page,
-      form: dojo.byId(formName),
-      handleAs: "text",
-      load: function(data,args){
-        // update the destination when ajax request is received
-        // cleanContent(destination);
-        var contentWidget = dijit.byId(destination);
-        if (! contentWidget) {return;}
-        contentWidget.set('content',data);
-        checkDestination(destination);
-        if (destination=="detailDiv" || destination=="centerDiv") {
-          finaliseButtonDisplay();
-        }
-        if (destination=="centerDiv") {
-          showList();
-        }
-        if (destination=="dialogLinkList") {
-      	  selectLinkItem();
-        }
-        if (destination=="directFilterList") {
-        	if (validationType!='returnFromFilter') {
-        	  if (dojo.byId('noFilterSelected') && dojo.byId('noFilterSelected').value=='true') {
-	              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
-	        	} else {
-	        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
-	            }
-	        	refreshJsonList(dojo.byId('objectClass').value);
-        	  }
-        	}
-        if (destination=="expenseDetailDiv") {
-          expenseDetailRecalculate();
-        }
-        if (directAccess) {
-          if (dijit.byId('listIdFilter')) {
-            // dijit.byId('listIdFilter').set('value',directAccess);
-            // setTimeout("filterJsonList();",100);
-            dojo.byId('objectId').value=directAccess;
-            // dijit.byId("listDiv").resize({h: 0});
-            // dijit.byId("mainDivContainer").resize();
-            loadContent("objectDetail.php", "detailDiv", 'listForm');
-            showWait();
-            hideList();
-            setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');',500);
-          }
-        }
-        if (isResultMessage) {
-          var contentNode = dojo.byId(destination);
-          // Set the Div visible, needed if destination is result message
-      // (invisible before needed)
-          dojo.fadeIn({
-            node: contentNode, 
-            duration: 1,
-            onEnd: function() {
-              if (isResultMessage) {
-                // finalize message is return from treatment
-                finalizeMessageDisplay(destination,validationType);
-              }
-            }
-            }).play();
-        } else if (destination=="loginResultDiv") {
-          checkLogin();
-        } else if (destination=="passwordResultDiv") {
-          checkLogin();
-        } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
-             || page.indexOf("jsonPlanning.php")>=0
-             || page.indexOf("resourcePlanningMain.php")>=0 || page.indexOf("resourcePlanningList.php")>=0
-             || page.indexOf("jsonResourcePlanning.php")>=0
-             || page.indexOf("portfolioPlanningMain.php")>=0 || page.indexOf("portfolioPlanningList.php")>=0
-             || page.indexOf("jsonPortfolioPlanning.php")>=0) {                
-          drawGantt();
-          selectPlanningRow();
-          hideWait();
-          var bt=dijit.byId('planButton');
-          if (bt) {
-        	  bt.set('iconClass',"iconPlanStopped");
-          }
-        } else if (destination=="resultDivMultiple") {
-          finalizeMultipleSave();
+  // NB : IE Issue (<IE8) must not fade load
+  // send Ajax request
+  dojo.xhrPost({
+    url: page,
+    form: dojo.byId(formName),
+    handleAs: "text",
+    load: function(data,args){
+    	var contentNode = dojo.byId(destination);
+    	var contentWidget = dijit.byId(destination);
+    	if (fadingMode) {
+        dojo.fadeIn({ 
+  		    node: contentNode ,
+  		    duration: 800, 
+  		    onEnd: function() { }
+    		}).play();
+    	}
+      // update the destination when ajax request is received
+      if (! contentWidget) {return;}
+      if (dijit.byId('planResultDiv')) {
+        if (dojo.byId("lastPlanStatus") && dojo.byId("lastPlanStatus").value=="INCOMPLETE") {
+          // Do not clean result content
         } else {
-          hideWait();
+        dijit.byId('planResultDiv').set('content',"");
         }
-      },
-      error: function(error,args){
+      }
+      contentWidget.set('content',data);
+      checkDestination(destination);
+      if (destination=="detailDiv" || destination=="centerDiv") {
+        finaliseButtonDisplay();
+      }
+      if (destination=="centerDiv" && switchedMode) {
+        showList();
+      }
+      if (destination=="dialogLinkList") {
+    	  selectLinkItem();
+      }
+      if (destination=="directFilterList") {
+        if (!validationType && validationType!='returnFromFilter') {    
+          if (top.dojo.byId('noFilterSelected') && top.dojo.byId('noFilterSelected').value=='true') {
+            dijit.byId("listFilterFilter").set("iconClass","iconFilter16"); 
+          } else {
+            dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
+          }
+          refreshJsonList(dojo.byId('objectClass').value);
+        }
+      }
+      if (destination=="expenseDetailDiv") {
+        expenseDetailRecalculate();
+      }
+      if (directAccess) {
+        if (dijit.byId('listIdFilter')) {
+          dojo.byId('objectId').value=directAccess;
+          showWait();
+          loadContent("objectDetail.php", "detailDiv", 'listForm');
+          showWait();
+          hideList();
+          setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');',500);
+        }
+      }
+      if (isResultMessage) {
+        var contentNode = dojo.byId(destination);
+        dojo.fadeIn({
+          node: contentNode, 
+          duration: 100,
+          onEnd: function() {
+            finalizeMessageDisplay(destination,validationType);
+          }
+        }).play();
+      } else if (destination=="loginResultDiv") {
+        checkLogin();
+      } else if (destination=="passwordResultDiv") {
+        checkLogin();
+      } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
+          || (page.indexOf("jsonPlanning.php")>=0 && dijit.byId("startDatePlanView"))
+          || page.indexOf("resourcePlanningMain.php")>=0 || page.indexOf("resourcePlanningList.php")>=0
+          || (page.indexOf("jsonResourcePlanning.php")>=0 && dijit.byId("startDatePlanView")) 
+          || page.indexOf("portfolioPlanningMain.php")>=0 || page.indexOf("portfolioPlanningList.php")>=0
+          || (page.indexOf("jsonPortfolioPlanning.php")>=0 && dijit.byId("startDatePlanView"))) {               
+        drawGantt();
+        selectPlanningRow();
+        hideWait();
+        var bt=dijit.byId('planButton');
+        if (bt) {
+      	  bt.set('iconClass',"iconPlanStopped");
+        }
+      } else if (destination=="resultDivMultiple") {
+        finalizeMultipleSave();
+      } else {
+        hideWait();
+      } 
+      // For debugging purpose : will display call page wil execution time
+      var debugEnd=(new Date()).getTime();
+    	var debugDuration=debugEnd-debugStart;
+    	var msg = "=> "+debugDuration+"ms";
+    	msg+=" | page='"+((page.indexOf('?'))?page.substring(0,page.indexOf('?')):page)+"'"; 
+    	msg+=" | destination='"+destination+"'";
+    	if (formName) msg+=" | formName="+formName+"'";
+    	if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
+    	if (validationType) msg+=" | validationType='"+validationType+"'";
+    	if (directAccess) msg+=" | directAccess='"+directAccess+"'";
+    	console.log(msg);
+    },
+    error: function(error,args){
         console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
         hideWait();}
-    });
-    return;
+  });
+  if (fadingMode) {
+	  dojo.fadeOut({ 
+	    node: contentNode ,
+	    duration: 200, 
+	    onEnd: function() { }
+	  }).play();
   }
-  // Smooth mode, with fading effect =====
-  // fade out the destination, for smooth effect
-  dojo.fadeOut({ 
-    node: contentNode ,
-    duration: 100, 
-    onEnd: function() {
-      // send Ajax request
-    dojo.xhrPost({
-        url: page,
-        form: dojo.byId(formName),
-        handleAs: "text",
-        load: function(data,args){
-          // update the destination when ajax request is received
-          // cleanContent(destination);
-          var contentWidget = dijit.byId(destination);
-          if (! contentWidget) {return;};
-          if (dijit.byId('planResultDiv')) {
-        	  if (dojo.byId("lastPlanStatus") && dojo.byId("lastPlanStatus").value=="INCOMPLETE") {
-        		  // Do not clean result content
-        	  } else {
-        	    dijit.byId('planResultDiv').set('content',"");
-        	  }
-          }
-          contentWidget.set('content',data);
-          checkDestination(destination);
-          var contentNode = dojo.byId(destination);
-          if (destination=="detailDiv" || destination=="centerDiv" ) {
-            finaliseButtonDisplay();
-          }
-          if (destination=="centerDiv" && switchedMode) {
-            showList();
-          }
-          if (destination=="dialogLinkList") {
-        	  selectLinkItem();
-          }
-          if (destination=="directFilterList") {
-            if (!validationType && validationType!='returnFromFilter') {    
-  	        	if (top.dojo.byId('noFilterSelected') && top.dojo.byId('noFilterSelected').value=='true') {
-  	              dijit.byId("listFilterFilter").set("iconClass","iconFilter16");	
-  	        	} else {
-  	        	  dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
-  	            }
-  	        	refreshJsonList(dojo.byId('objectClass').value);
-        	  }
-          }
-          if (destination=="expenseDetailDiv") {
-              expenseDetailRecalculate();
-          }
-          if (directAccess) {
-            if (dijit.byId('listIdFilter')) {
-              // dijit.byId('listIdFilter').set('value',directAccess);
-              // setTimeout("filterJsonList();",100);
-              dojo.byId('objectId').value=directAccess;
-              // dijit.byId("listDiv").resize({h: 0});
-              // dijit.byId("mainDivContainer").resize();
-              showWait();
-              loadContent("objectDetail.php", "detailDiv", 'listForm');
-              showWait();
-              hideList();
-              setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');',500);
-            }
-          }
-          // fade in the destination, to set is visible back
-          dojo.fadeIn({
-            node: contentNode, 
-            duration: 200,
-            onEnd: function() {
-        	  if (isResultMessage) {
-                // finalize message is return from treatment      		  
-        		  finalizeMessageDisplay(destination, validationType);
-              } else if (destination=="loginResultDiv") {
-                checkLogin();
-               } else if (destination=="passwordResultDiv") {
-                checkLogin();
-               } else if (page.indexOf("planningMain.php")>=0 || page.indexOf("planningList.php")>=0
-                       || (page.indexOf("jsonPlanning.php")>=0 && dijit.byId("startDatePlanView"))
-                       || page.indexOf("resourcePlanningMain.php")>=0 || page.indexOf("resourcePlanningList.php")>=0
-                       || (page.indexOf("jsonResourcePlanning.php")>=0 && dijit.byId("startDatePlanView")) 
-                       || page.indexOf("portfolioPlanningMain.php")>=0 || page.indexOf("portfolioPlanningList.php")>=0
-                       || (page.indexOf("jsonPortfolioPlanning.php")>=0 && dijit.byId("startDatePlanView"))) {                
-                 drawGantt();
-                 selectPlanningRow();
-                 hideWait();
-                 var bt=dijit.byId('planButton');
-                 if (bt) {
-               	  bt.set('iconClass',"iconPlanStopped");
-                 }
-               } else if (destination=="resultDivMultiple") {
-                   finalizeMultipleSave();
-               } else {
-                hideWait();
-              }
-            }
-          }).play();
-        },
-        error: function(error,args){
-          console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
-        }
-      },true);
-    }
-  }).play();
 }
 
 /**
