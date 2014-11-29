@@ -56,7 +56,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $nbRows=0;
     $table=array();
     if ($selection) {
-       $table[$selection]=SqlList::getNameFromId('Resource', $selection);
+       $table[$selection]=SqlList::getNameFromId('Affectable', $selection);
     }
     foreach ($list as $aff) {
       if (! array_key_exists($aff->idResource, $table)) {
