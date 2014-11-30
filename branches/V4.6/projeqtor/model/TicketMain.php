@@ -32,7 +32,7 @@ class TicketMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_col_1_3_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $idProject;
@@ -52,7 +52,7 @@ class TicketMain extends SqlElement {
   public $idOriginalVersion;
   public $_OtherOriginalVersion=array();
   public $description;
-  public $_col_2_2_treatment;
+  public $_col_2_3_treatment;
   public $idActivity;
   public $idStatus;
   public $idResource;
@@ -72,7 +72,7 @@ class TicketMain extends SqlElement {
   public $idTargetVersion;
   public $_OtherTargetVersion=array();
   public $result;
-  public $_col_1_1_Link;
+  public $_col_3_3_Link;
   public $_Link=array();
   public $_Attachement=array();
   public $_Note=array();

@@ -269,7 +269,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
     } else if (substr ( $col, 0, 5 ) == '_sec_') { // if field is _col, draw a new main column
       if ($col == '_sec_Assignment') {
       }
-      echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr>';
+      echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
       if ($section and ! $print) {
         echo '</table></div>';
       }
@@ -287,7 +287,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
         echo '<table class="detail" style="width:' . $widthPct . ';" >';
       } else {
-        echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
+        echo '<tr><td colspan="2" style="width: 100%" class="section">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
       }
     } else if (substr ( $col, 0, 5 ) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item = substr ( $col, 5 );
@@ -376,16 +376,24 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         $attributes .= ' readonly tabindex="-1"';
         $readOnly = true;
       }
+      $dataType = $obj->getDataType ( $col );
+      $dataLength = $obj->getDataLength ( $col );
       if ($internalTable == 0) {
-        if (! is_object ( $val ) and ! is_array ( $val ) and ! $hide and ! $nobr_before) {
-          echo '<tr class="detail"><td class="label" style="width:' . $labelStyleWidth . ';">';
-          echo '<label for="' . $col . '" >' . htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>' . $cr;
-          echo '</td>';
-          if ($print and $outMode == "pdf") {
-            echo '<td style="width: 120px">';
-          } else {
-            echo '<td width="90%">';
-          }
+      	if (! is_object ( $val ) and ! is_array ( $val ) and ! $hide and ! $nobr_before) {
+          echo '<tr class="detail">';
+          if ($dataLength > 4000) {
+      		  // Will have to add label
+          	echo '<td colspan="2">';
+      	  } else {
+	          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
+	          echo '<label for="' . $col . '" >' . htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>' . $cr;
+	          echo '</td>';
+	          if ($print and $outMode == "pdf") {
+	            echo '<td style="width: 120px">';
+	          } else {
+	            echo '<td width="90%">';
+	          }
+      	  }
         }
       } else {
         if ($internalTable % $internalTableCols == 0) {
@@ -405,13 +413,6 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
             echo '</td><td class="detail" >';
           }
         }
-      }
-      $dataType = $obj->getDataType ( $col );
-      $dataLength = $obj->getDataLength ( $col );
-      if ($dataType == 'text') {
-        $dataLength = 65535;
-      } else if ($dataType == 'mediumtext') {
-        $dataLength = 16777215;
       }
       // echo $col . "/" . $dataType . "/" . $dataLength;
       if ($dataLength) {
@@ -540,6 +541,11 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           echo '<img src="img/' . $checkImg . '" />';
         } else if (substr ( $col, 0, 2 ) == 'id' and $dataType == 'int' and strlen ( $col ) > 2 and substr ( $col, 2, 1 ) == strtoupper ( substr ( $col, 2, 1 ) )) { // Idxxx
           echo htmlEncode ( SqlList::getNameFromId ( substr ( $col, 2 ), $val ) );
+        } else if ($dataLength > 4000) {
+          	//echo '</td></tr><tr><td colspan="2">';
+          	echo '<div style="border:1px dotted #AAAAAA;width:'.$colWidth.'px;overflow:hidden">';
+          	echo $val;
+          	echo '</div>';
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           echo htmlEncode ( $val, 'print' );
           $fldFull = '_' . $col . '_full';
@@ -595,13 +601,13 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
         $ref = $obj->getReferenceUrl ();
-        echo '<span style="font-size:8pt;color:#AAAAAA;">';
-        echo '  <a href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' . ' title="' . i18n ( "rightClickToCopy" ) . '" style="cursor: pointer;">';
+        echo '<span class="roundedButton" style="padding:1px 5px 5px 5px;font-size:8pt; height: 50px; color:#AAAAAA;" >';
+        echo '  <a  href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' . ' title="' . i18n ( "rightClickToCopy" ) . '" style="cursor: pointer;">';
         echo '    <span style="color:grey;vertical-align:middle;padding: 2px 0px 2px 0px !important;">#</span>';
         echo '    <span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
-        echo '     class="display" ';
-        echo '     readonly tabindex="-1" style="cursor: pointer !important;width: ' . $smallWidth . 'px; padding: 2px 0px 2px 0px !important;" ';
+        echo '     class="display pointer" ';
+        echo '     readonly tabindex="-1" style="background: transparent; border: 0; cursor: pointer !important;width: ' . $smallWidth . 'px; padding: 2px 0px 2px 0px !important;" ';
         echo '     value="' . htmlEncode ( $val ) . '" >';
         echo '    </span>';
         echo '  </a>';
@@ -960,28 +966,22 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
             $fieldWidth -= 27;
           }
         }
+        if ($col=='idStatus') {
+        	$fieldWidth=round($fieldWidth/2	);
+        }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
-        // echo ' style="width: ' . $fieldWidth . 'px;' . $specificStyle . '"';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
         echo $valStore;
         echo ' >';
-        htmlDrawOptionForReference ( $col, $val, $obj, $isRequired, $critFld, $critVal );
+        $next=htmlDrawOptionForReference ( $col, $val, $obj, $isRequired, $critFld, $critVal );
         echo $colScript;
         echo '</select>';
         if ($displayDirectAccessButton or $displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonGoto" ';
           echo ' title="' . i18n ( 'showDirectAccess' ) . '" style="float:right;margin-right:3px;"';
           echo ' class="roundedButton">';
-          /*echo ' <script type="dojo/connect" event="onClick" args="evt">';
-          echo '  var linkedSelect=dijit.byId("' . $fieldId . '");';
-          echo '  if (linkedSelect && trim(linkedSelect.get("value")) ) {';
-          echo '    gotoElement("' . substr ( $col, 2 ) . '","' . $val . '");';
-          echo '  } else {';
-          echo '  showAlert("' . i18n ( 'cannotGoto' ) . '");';
-          echo '  }';
-          echo ' </script>';*/
           echo '<div class="iconGoto" ';
           $jsFunction="var sel=dijit.byId('$fieldId');"
             ."if (sel && trim(sel.get('value'))) {" 
@@ -997,15 +997,6 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           echo '<div id="' . $col . 'ButtonDetail" ';
           echo ' title="' . i18n ( 'showDetail' ) . '" style="float:right;margin-right:3px;"';
           echo ' class="roundedButton">';
-          /* echo ' <script type="dojo/method" event="onDblClick" args="evt">';
-           echo '  clearTimeout(clickTimer);';
-          echo '  var linkedSelect=dijit.byId("' . $fieldId . '");';
-          echo '  if (linkedSelect && trim(linkedSelect.get("value")) ) {';
-          echo '    gotoElement("' . substr ( $col, 2 ) . '","' . $val . '");';
-          echo '  } else {';
-          echo '  showAlert("' . i18n ( 'cannotGoto' ) . '");';
-          echo '  }';
-          echo ' </script>';*/
           echo '<div class="iconView" ';
           echo ' onclick="showDetail(\''.$col.'\','.(($canCreateCol) ? 1 : 0).')"';
           echo '></div>';
@@ -1013,15 +1004,25 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         }
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
-            // echo '<span style="width:1px"> </span>';
-            echo '<span style="position:relative; left:2px;text-align:center; vertical-align:middle;width:20px; height:20px" class="dijitReset dijitInline dijitButtonNode">';
-            echo '<img src="css/images/smallButtonAdd.png" style="position:relative; top:2px; left:0px;"' . 'onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
-            echo ' title="' . i18n ( 'otherVersionAdd' ) . '" class="smallButton"/> ';
-            echo '</span>';
+            echo '<div class="roundedButton" style="float:right;margin-right:3px;" ';
+            echo ' title="' . i18n ( 'otherVersionAdd' ) . '" class="smallButton">';
+            echo '<div class="iconAdd"';
+            echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
+            echo '></div>';
+            echo '</div>';	
           }
           if (count ( $obj->$otherVersion ) > 0) {
             drawOtherVersionFromObject ( $obj->$otherVersion, $obj, $versionType );
           }
+        }
+        if ($col=='idStatus' and $next) {
+        	echo '<div class="roundedVisibleButton roundedButton"';
+        	echo ' title="'.i18n("moveStatusTo",array(SqlList::getNameFromId('Status',$next))).'"';
+        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
+        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');saveObject();">';
+        	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
+        	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
+        	echo '</div>';
         }
       } else if (strpos ( $obj->getFieldAttributes ( $col ), 'display' ) !== false) {
         echo '<div ';
@@ -1096,22 +1097,47 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($isPercent) {
           echo '%';
         }
-      } else if ($dataLength > 100 and ! array_key_exists ( 'testingMode', $_REQUEST )) {
+      } else if ($dataLength > 100 and $dataLength<=4000 and ! array_key_exists('testingMode', $_REQUEST) ){
+      	// Draw a long text (as a textarea) =================================== TEXTAREA
+      	echo '<textarea dojoType="dijit.form.Textarea" ';
+        	echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
+        	echo $name;
+        	echo $attributes;
+        	if (strpos($attributes, 'readonly')>0) {
+        		$specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
+        	}
+        	echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
+        	echo ' maxlength="' . $dataLength . '" ';
+        	//        echo ' maxSize="4" ';
+        	echo ' class="input" ' . '>';
+        	echo htmlEncode($val);
+        	//echo $colScript; // => this leads to the display of script in textarea
+        	echo '</textarea>';
+      } else if ($dataLength > 4000 and ! array_key_exists ( 'testingMode', $_REQUEST )) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
-        echo '<textarea dojoType="dijit.form.Textarea" ';
-        echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
-        echo $name;
+      	echo '<textarea style="display:none; visibility:hidden;" '; 
+      	echo ' maxlength="' . $dataLength . '" ';	
+      	echo $name;
+        echo $attributes;
+      	echo '>';
+      	echo $val;
+      	echo '</textarea>';
+      	echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode ( $obj->getColCaption ( $col )).'</div>';
+      	echo '<div data-dojo-type="dijit.Editor" 	';
+      	echo ' height="200px" ';
+        echo ' data-dojo-props="';
+        echo 'onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];}';
+        echo ',onKeyPress:function(){console.log(\'key\');top.formChanged();}'; // hard coding default event
+        echo '" ';
         echo $attributes;
         if (strpos ( $attributes, 'readonly' ) > 0) {
           $specificStyle .= ' color:#606060 !important; background:none; background-color: #F0F0F0; ';
         }
-        echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
+        echo ' rows="2" style="width: ' . ($largeWidth+150) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
-        // echo ' maxSize="4" ';
         echo ' class="input" ' . '>';
-        echo htmlEncode ( $val );
-        // echo $colScript; // => this leads to the display of script in textarea
-        echo '</textarea>';
+        echo $val;
+        echo '</div>';
       } else if ($col == 'icon') {
         echo '<div dojoType="dijit.form.Select" class="input" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';

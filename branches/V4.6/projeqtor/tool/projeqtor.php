@@ -114,7 +114,8 @@ if (ini_get('register_globals')) {
 }
 
 $page=$_SERVER['PHP_SELF'];
-if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batchMode)) {
+if ( ! (isset($maintenance) and $maintenance) and ! (isset($batchMode) and $batchMode)
+and ! (isset($indexPhp) and $indexPhp) ) {
   // Get the user from session. If not exists, request connection ===============
   if (isset($_SESSION['user'])) {
     $user=$_SESSION['user'];

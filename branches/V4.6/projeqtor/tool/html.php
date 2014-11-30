@@ -126,6 +126,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       	reset($table);
         $fisrtKey=key($table);
         $firstName=current($table);
+        // look for workflow
         if ($obj->$idType and $obj->idStatus) {
           $profile="";
           if (array_key_exists('user', $_SESSION)) {
@@ -188,6 +189,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     $wbsLevelArray=array();
   }
   if (! $obj) $sepChar='no';
+  $selectedFound=false;
+  $next="";
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) ) ) {
       if ($col=="idProject" and $sepChar!='no') {
@@ -207,11 +210,20 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         //$sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
         $val = $sep.$val;
       }
+      if ($selectedFound) {
+      	$selectedFound=false;
+      	$next=$key;
+      }
       echo '<OPTION value="' . $key . '"';
-      if ( $selection and $key==$selection ) { echo ' SELECTED '; } 
+      if ( $selection and $key==$selection ) { 
+      	echo ' SELECTED ';
+      	$selectedFound=true; 
+      } 
       echo '><span >'. htmlEncode($val) . '</span></OPTION>';
     }
   }
+  // This function is not ecpected to return value, but is used to return next value (for status)
+  return $next;
 }
 
 function htmlReturnOptionForWeekdays($selection, $required=false) {

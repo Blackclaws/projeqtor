@@ -1,4 +1,7 @@
 <?php
+$indexPhp=true;
+chdir(__DIR__.'/view');
+include_once '../tool/projeqtor.php';
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
@@ -44,7 +47,7 @@
   </script>
 </head>
 
-<body class="ProjeQtOr"  style='background-color: #C3C3EB' onload="autoRedirect();">
+<body class="tundra <?php echo getTheme();?>"  style='background-color: #C3C3EB' onload="autoRedirect();">
   <div id="wait">
   &nbsp;
   </div> 
