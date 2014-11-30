@@ -950,7 +950,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($displayComboButtonCol) {
           $fieldWidth -= 50;
         } else if ($displayDirectAccessButton) {
-        	$fieldWidth -= 27;
+        	$fieldWidth -= 30;
         }
         if ($nobr_before or strpos ( $obj->getFieldAttributes ( $col ), 'size1/3' ) !== false) {
           $fieldWidth = $fieldWidth / 3 - 3;
@@ -963,7 +963,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           $otherVersion = '_Other' . $versionType;
           if (isset ( $obj->$otherVersion ) and ! $obj->isAttributeSetToField ( $col, 'hidden' ) and ! $obj->isAttributeSetToField ( $col, 'readonly' ) and $canUpdate and ! $obj->idle) {
             $hasOtherVersion = true;
-            $fieldWidth -= 27;
+            $fieldWidth -= 28;
           }
         }
         if ($col=='idStatus') {
@@ -1127,6 +1127,12 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       	echo ' height="200px" ';
         echo ' data-dojo-props="';
         echo 'onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];}';
+        echo ",plugins:['removeFormat','bold','italic','underline'";
+        echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
+        echo ",'|','insertOrderedList','insertUnorderedList','|']";
+        echo ",extraPlugins:['foreColor','hiliteColor','|','fullScreen'";
+        //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
+       	echo "]";
         echo ',onKeyPress:function(){console.log(\'key\');top.formChanged();}'; // hard coding default event
         echo '" ';
         echo $attributes;
