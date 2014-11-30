@@ -463,6 +463,9 @@ label, .label {
   margin: 1px; padding: 0px; 
   cursor: default !important;
 }
+.display .pointer {
+	cursor: pointer !important;
+}
 
 .detail {
   width: 1px;
@@ -929,6 +932,10 @@ label, .label {
   -moz-border-radius: 10px !important;
   border-radius: 10px !important;
   cursor: pointer;
+}
+.roundedVisibleButton {
+	background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
+	border: 1px solid #c0c0c0;
 }
 .roundedButton.disabled {
   border-color: #d5d5d5 #d5d5d5 #bdbdbd #d5d5d5;

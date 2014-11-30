@@ -2528,3 +2528,8 @@ function stopDef(e) {
     window.eventReturnValue = false;
 };
 // End Fix
+
+function saveObject() {
+  dojo.byId("saveButton").blur();
+  submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
+}
