@@ -210,7 +210,8 @@ foreach ($uploadedFileArray as $uploadedFile) {
 	  $attachement->creationDate=date("Y-m-d H:i:s");
 	  if ($type=='file') {
 	    $attachement->fileName=basename($uploadedFile['name']);
-	    if (strtolower(substr($attachement->fileName,-4))=='.php') {
+	    if (strtolower(substr($attachement->fileName,-4))=='.php' 
+	     or strtolower(substr($attachement->fileName,-5,4))=='.php') {
 	    	$attachement->fileName.=".projeqtor";
 	    }
 	    $attachement->mimeType=$uploadedFile['type'];
