@@ -104,7 +104,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			    <tr style="height:10px;" >
 			      <td align="left" style="position:relative;height: 1%;" valign="top">
 			        <div style="position:relative;width: 400px; height: 54px;">
-			          <div style="z-index:10;border:1px solid blue;overflow:visible;position:absolute;width: 480px; height: 280px;">
+			          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;">
 				        <img src="<?php 
 				          if (file_exists("../logo.gif")) echo '../logo.gif';
 				          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
@@ -116,7 +116,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			    </tr>
 			    <tr style="height:100%" height="100%">
 			      <td style="height:99%" align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden;position: relative;">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="background:transparent !important;width: 470px; height:210px;overflow:hidden;position: relative;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
                     connect(false);
@@ -125,7 +125,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                   <br/><br/>
 			            <table>
 			              <tr>     
-			                <td class="label"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
+			                <td class="label" style="background:transparent !important;"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
 			                <td>
 			                  <input tabindex="1" id="login" style="width:200px" type="text"  class="rounded"
 			                   dojoType="dijit.form.TextBox" />
@@ -134,7 +134,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              </tr>
 			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
-			                <td class="label"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
+			                <td class="label" style="background:transparent !important;"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
 			                <td>
 			                  <input tabindex="2" id="password" style="width:200px" type="password" class="rounded"
 			                   dojoType="dijit.form.TextBox" />
@@ -150,7 +150,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <?php }?>
 			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
-			                <td class="label"><label>&nbsp;</label></td>
+			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td>
 			                  <button tabindex="3" type="submit" id="loginButton" style="width:200px"
 			                   dojoType="dijit.form.Button" showlabel="true">OK
@@ -171,7 +171,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 	if ($showPassword) { 
 	?>              
 			              <tr>
-			                <td class="label"><label>&nbsp;</label></td>
+			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td style="width:200px">  
 			                  <button tabindex="4" id="passwordButton" style="width:200px !important" type="button" dojoType="dijit.form.Button" showlabel="true">
 			                    <?php echo i18n('buttonChangePassword') ?>
@@ -185,7 +185,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
   <?php }?>
 			              <tr><td colspan="2">&nbsp;</td></tr>
 			              <tr>
-			                <td class="label"><label>&nbsp;</label></td>
+			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td>
 			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="55px" style="overflow: auto;" >
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />

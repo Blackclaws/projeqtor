@@ -61,9 +61,15 @@ include_once '../tool/projeqtor.php';
         <table  align="center" >
           <tr style="height:10px;" >
             <td align="left" style="height: 1%;" valign="top">
-              <div style="width: 300px; height: 54px; background-size: contain; background-repeat: no-repeat;
-              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleSmall.png';?>);">
-              </div>
+		        <div style="position:relative;width: 400px; height: 54px;">
+		          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;">
+			        <img src="<?php 
+			          if (file_exists("../logo.gif")) echo '../logo.gif';
+			          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
+			          else if (file_exists("../logo.png")) echo '../logo.png';
+			          else echo 'img/titleSmall.png';?>" />
+		          </div>
+		        </div>
             </td>
           </tr>
           <tr style="height:100%" height="100%">
