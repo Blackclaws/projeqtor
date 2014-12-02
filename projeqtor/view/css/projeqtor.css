@@ -389,6 +389,9 @@ label, .label {
 .largeLabel {
 	width: 300px;
 }
+.smallLabel {
+	width: 100px !important;
+}
 .notLabel {
 	float:none;
 }
