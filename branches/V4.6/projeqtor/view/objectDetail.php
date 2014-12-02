@@ -784,7 +784,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         echo ' >';
         echo $colScript;
         echo '</div>';
-        $fmtDT = (strlen ( $valTime ) > 5 && strpos ( $attributes, 'readonly' ) !== false) ? 'text' : 'time'; // valTime=substr($valTime,0,5);
+        $fmtDT = ($classObj=="Audit" && strlen ( $valTime ) > 5 && strpos ( $attributes, 'readonly' ) !== false) ? 'text' : 'time'; // valTime=substr($valTime,0,5);
         echo '<div dojoType="dijit.form.' . (($fmtDT == 'time') ? 'Time' : '') . 'TextBox" ';
         echo $nameBis;
         echo $attributes;
@@ -802,7 +802,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($col == 'creationTime' and ($val == '' or $val == null) and ! $obj->id) {
           $val = date ( "H:i" );
         }
-        $fmtDT = (strlen ( $val ) > 5 && strpos ( $attributes, 'readonly' ) !== false) ? 'text' : 'time'; // valTime=substr($valTime,0,5);
+        $fmtDT = ($classObj=="Audit" && strlen ( $val ) > 5 && strpos ( $attributes, 'readonly' ) !== false) ? 'text' : 'time'; // valTime=substr($valTime,0,5);
         echo '<div dojoType="dijit.form.' . (($fmtDT == 'time') ? 'Time' : '') . 'TextBox" ';
         echo $name;
         echo $attributes;
