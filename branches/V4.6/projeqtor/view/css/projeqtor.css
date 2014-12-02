@@ -207,7 +207,7 @@ html, body {
 #statusBarDiv {
   border: 0px; margin: 0px; padding: 1px;
   overflow: hidden;
-  height: 20px;
+  height: 32px;
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #A0A0A0;
 }
