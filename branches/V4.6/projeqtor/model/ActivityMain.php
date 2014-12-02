@@ -32,7 +32,7 @@ class ActivityMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_col_1_3_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $idProject;
@@ -44,7 +44,7 @@ class ActivityMain extends SqlElement {
   public $idContact;
   public $Origin;
   public $description;  
-  public $_col_2_2_treatment;
+  public $_col_2_3_treatment;
   public $idActivity;
   public $idStatus;
   public $idResource;  
@@ -60,7 +60,7 @@ class ActivityMain extends SqlElement {
   public $result;
   //public $_sec_Assignment;
   public $_Assignment=array();
-  public $_col_1_1_Progress;
+  public $_col_3_3_Progress;
   public $ActivityPlanningElement; // is an object
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();

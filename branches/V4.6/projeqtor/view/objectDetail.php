@@ -180,7 +180,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         }
       }
       echo '</table><table id="' . $col . '" class="detail"><tr class="detail">';
-      echo '<td class="detail"><label></label></td>' . $cr; // Empty label, to have column header in front of columns
+      echo '<td class="detail"></td>' . $cr; // Empty label, to have column header in front of columns
       for($i = 0; $i < $internalTableCols; $i ++) { // draw table headers
         echo '<td class="detail">';
         if ($val [$i]) {
@@ -399,9 +399,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
-          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
+          echo '<td class="smallLabel" style="width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
-            echo '<label>' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
+            echo '<label class="smallLabel">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
           }
           echo '</td><td style="width:90%">';
           $internalTableCurrentRow ++;
@@ -1018,7 +1018,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($col=='idStatus' and $next) {
         	echo '<div class="roundedVisibleButton roundedButton"';
         	echo ' title="'.i18n("moveStatusTo",array(SqlList::getNameFromId('Status',$next))).'"';
-        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
+        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-10).'px"';
         	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');saveObject();">';
         	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
         	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
