@@ -7,7 +7,7 @@ $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='postgres'; $paramDbPassword='admin';
 $paramDbName='projeqtor_v45';$paramDbPrefix='';
 //$paramDbName='steria'; $paramDbPrefix='';
-//$paramDbName='hosted_galaxysemi'; $paramDbPrefix='galaxysemi_';
+//$paramDbName='test'; $paramDbPrefix='';
 //$paramDbName='ael'; $paramDbPrefix='ael_';
 $paramDbHost='127.0.0.1';
 $logFile='../files/logs/projeqtor_${date}.log';

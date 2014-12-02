@@ -1669,7 +1669,12 @@ abstract class SqlElement {
 							$formFieldBis = get_class($this) . '_' . $key . "Bis" . $ext;
 						}
 						if (isset($_REQUEST[$formFieldBis])) {
-							$this->$key = $_REQUEST[$formField] . " " . substr($_REQUEST[$formFieldBis],1);
+							$this->$key = $_REQUEST[$formField] . " ";
+                            if (substr($_REQUEST[$formFieldBis],0,1)=='T') {
+							  $this->$key .= substr($_REQUEST[$formFieldBis],1);
+                            } else {
+                              $this->$key .= $_REQUEST[$formFieldBis];
+                            }
 						} else {
 							//hidden field
 							if (isset($_REQUEST[$formField])) {
