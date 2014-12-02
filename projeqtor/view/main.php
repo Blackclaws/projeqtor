@@ -157,7 +157,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     var historyTable=new Array();
     var historyPosition=-1;    
     var fadeLoading=<?php echo getBooleanValueAsString(Parameter::getGlobalParameter('paramFadeLoadingMode'));?>;
-    //var refreshUpdates="<?php echo (array_key_exists('refreshUpdates',$_SESSION))?$_SESSION['refreshUpdates']:'YES';?>";
     var refreshUpdates="YES";
     var aesLoginHash="<?php echo md5(session_id());?>";
     var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
@@ -273,6 +272,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       } else if (Parameter::getUserParameter('hideMenu') and Parameter::getUserParameter('hideMenu')!='NO'){
         echo 'hideShowMenu();';
       }
+      
       if ($firstPage) {
       ?>
         loadContent("<?php echo $firstPage;?>","centerDiv");
@@ -367,19 +367,25 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <div class="background loginFrame" >
         <table align="center" >
           <tr style="height:10px;">
-            <td align="left" style="height: 1%;" valign="top">
+            <td align="left" style="position:relative;height: 100%;" valign="top">
               <div style="position:relative; width: 400px; height: 54px;">
     	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;">
-    		        <img src="<?php 
-    		          if (file_exists("../logo.gif")) echo '../logo.gif';
-    		          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
-    		          else if (file_exists("../logo.png")) echo '../logo.png';
-    		          else echo 'img/titleSmall.png';?>" />
+    	           <div id="waitLogin" style="position:absolute;top:50%"></div>  
+	    		        <img src="<?php 
+	    		          if (file_exists("../logo.gif")) echo '../logo.gif';
+	    		          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
+	    		          else if (file_exists("../logo.png")) echo '../logo.png';
+	    		          else echo 'img/titleSmall.png';?>" />
     	          </div>
-  	            <div style="width: 470px; height:210px;overflow:hidden;text-align:center;">
-                  <br/><br/>Loading ...
-                  <div id="waitLogin"></div>               
+  	            <div style="width: 470px; height:280px;top:50px;overflow:hidden;text-align:center;">
+                  <br/><br/>Loading ...                               
                 </div>
+              </div>
+            </td>
+          </tr>
+          <tr style="height:100%" height="100%">
+            <td style="height:99%" align="left" valign="middle">
+              <div  id="" style="width: 470px; height:210px;overflow:hidden">
               </div>
             </td>
           </tr>
