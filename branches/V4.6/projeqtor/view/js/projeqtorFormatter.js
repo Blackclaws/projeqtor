@@ -216,6 +216,7 @@ function numericFormatter(value) {
 }
 
 function workFormatter(value) {
+	  if (value==null) return null;
 	  // result=dojo.number.format(value);
 	  if (top.paramWorkUnit!='days') value=value*top.paramHoursPerDay;
 	  roundedValue=dojo.number.format(Math.round(value*100)/100);
