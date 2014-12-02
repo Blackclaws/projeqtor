@@ -364,20 +364,22 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   <table align="center" width="100%" height="100%" class="loginBackground">
     <tr height="100%">
       <td width="100%" align="center">
-        <div class="position: relative; background loginFrame" >
+        <div class="background loginFrame" >
         <table align="center" >
-          <tr style="height:10px;" >
+          <tr style="height:10px;">
             <td align="left" style="height: 1%;" valign="top">
-              <div style="position: relative; left: -5px;width: 300px; height: 54px; background-size: contain; background-repeat: no-repeat;
-              background-image: url(<?php echo (file_exists("../logo.gif"))?'../logo.gif':'img/titleSmall.png';?>);">
-              </div>
-            </td>
-          </tr>
-          <tr style="height:100%" height="100%">
-            <td style="height:99%" align="left" valign="middle">
-              <div dojoType="dijit.layout.ContentPane" region="center" style="width: 470px; height:210px;overflow:hidden;text-align:center;">
-              <br/><br/>Loading ...
-              <div id="waitLogin"></div>               
+              <div style="position:relative; width: 400px; height: 54px;">
+    	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;">
+    		        <img src="<?php 
+    		          if (file_exists("../logo.gif")) echo '../logo.gif';
+    		          else if (file_exists("../logo.jpg")) echo '../logo.jpg';
+    		          else if (file_exists("../logo.png")) echo '../logo.png';
+    		          else echo 'img/titleSmall.png';?>" />
+    	          </div>
+  	            <div style="width: 470px; height:210px;overflow:hidden;text-align:center;">
+                  <br/><br/>Loading ...
+                  <div id="waitLogin"></div>               
+                </div>
               </div>
             </td>
           </tr>
