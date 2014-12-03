@@ -390,7 +390,7 @@ label, .label, .smallLabel {
 	width: 300px;
 }
 .smallLabel {
-	width: 100px !important;
+	width: 77px !important;
 }
 .notLabel {
 	float:none;
@@ -499,7 +499,7 @@ label, .label, .smallLabel {
   font-family: Verdana, Arial, Tahoma, sans-serif; font-size: 8pt;
   text-align: center;
   border: none; padding: 0px; spacing: 0px;
-  width: 80px;
+  width: 77px;
 }
 .smallTabLabel, .smallTabLabelRight {
   font-weight: normal;

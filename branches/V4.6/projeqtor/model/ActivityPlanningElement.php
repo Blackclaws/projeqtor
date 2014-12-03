@@ -60,30 +60,22 @@ class ActivityPlanningElement extends PlanningElement {
   public $realCost;
   public $leftCost;
   public $plannedCost;
-    
-  public $priority;
-  public $idActivityPlanningMode;
-  public $_label_wbs;
-  public $wbs;
-  public $_label_progress;
-  public $progress;
-  public $_label_expected;
-  public $expectedProgress;
-  public $_void_51;
-  public $_void_52;
-  public $_void_53;
-  public $workElementEstimatedWork;
+  public $_tab_5_1 = array('count', '', 'real', 'left', 'planned', 'ticket');
+  public $workElementCount;
+  public $_void_ticket;
   public $workElementRealWork;
   public $workElementLeftWork;
-  public $_label_workElementCount;
-  public $workElementCount;
-  public $_void_59;
-  public $_void_50;
-  public $_void_61;
-  public $_void_67;
-  public $_void_68;
-  public $_void_69;
-  public $_void_60;
+  public $workElementEstimatedWork;
+  
+  
+  public $priority;
+  public $idActivityPlanningMode;
+  //public $_label_wbs;
+  public $wbs;
+  //public $_label_progress;
+  public $progress;
+  //public $_label_expected;
+  public $expectedProgress;
   public $wbsSortable;
   public $topId;
   public $topRefType;

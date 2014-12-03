@@ -997,7 +997,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           $fieldWidth = $smallWidth;
         }
         if (($isCost or $isWork or $isDuration) and $internalTable!=0 and $displayWidth<1600) {
-        	$fieldWidth-=10;
+        	$fieldWidth-=12;
         }
         if ($dataType == 'int' and strtolower ( substr ( $col, - 8, 8 ) == 'progress' )) {
           $isPercent = true;
