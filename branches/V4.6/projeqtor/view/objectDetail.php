@@ -46,14 +46,11 @@ $readOnly = false;
  * @return void
  */
 function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $detailWidth, $readOnly, $largeWidth;
-  /*
-   * if ($print===null) { $print=$_REQUEST['print']; } if ($collapsedList===null) { $collapsedList=Collapsed::getCollaspedList(); } $callFromMail=false; if (array_key_exists('callFromMail', $_REQUEST)) { $callFromMail=true; }
-   */
-  
-  if ($outMode == 'pdf') {
-    $obj->splitLongFields ();
-  }
+  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, 
+  $printWidth, $detailWidth, $readOnly, $largeWidth, $widthPct;
+  //if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
+  //  $obj->splitLongFields ();
+  //}
   $currency = Parameter::getGlobalParameter ( 'currency' );
   $currencyPosition = Parameter::getGlobalParameter ( 'currencyPosition' );
   $treatedObjects [] = $obj;
@@ -86,7 +83,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
     $extName = "_detail";
   }
   $detailWidth = null; // Default detail div width
-                     // Check screen resolution, to determine max field width (largeWidth)
+  // Check screen resolution, to determine max field width (largeWidth)
   if (array_key_exists ( 'destinationWidth', $_REQUEST )) {
     $detailWidth = $_REQUEST ['destinationWidth'];
   } else {
@@ -94,9 +91,8 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       $detailWidth = round ( ($_SESSION ['screenWidth'] * 0.8) - 15 ); // 80% of screen - split barr - padding (x2)
     }
   }
-
-echo "displayWidth=$displayWidth detailWidth=$detailWidth";
-  if ($displayWidth > 1350) {
+  // Set some king of responsive design : number of display columns depends on screen width
+  if ($displayWidth > 1380) {
     $nbColMax=3;
   } else if ($displayWidth > 900) {
     $nbColMax=2;
@@ -125,9 +121,6 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
   $section = '';
   $nbLineSection = 0;
   // Loop on each propertie of the object
-  if (! $included) {
-//    echo '<table id="mainTable" >'; // Main table to present multi-column
-  }
   if (is_subclass_of ( $obj, 'PlanningElement' )) {
     $obj->setVisibility ();
     $workVisibility = $obj->_workVisibility;
@@ -145,8 +138,8 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
   }
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
-      $colWidth = ($displayWidth) / $nbCol; // 3 columns should be displayable
-      $maxWidth = $colWidth - $labelWidth; // subtract label width and a margin for slider place
+      $colWidth =  round(($displayWidth) / $nbCol); // 3 columns should be displayable
+      $maxWidth = $colWidth - $labelWidth;  // subtract label width
       if ($maxWidth >= $mediumWidth) {
         $largeWidth = $maxWidth;
       } else {
@@ -160,7 +153,7 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
       $hide = true;
     }
     // If field is _tab_x_y, start a table presentation with x columns and y lines
-    // the filed _tab_x_y must be an array containing x + y values :
+    // the field _tab_x_y must be an array containing x + y values :
     // - the x column headers
     // - the y line headers
     if (substr ( $col, 0, 4 ) == '_tab') {
@@ -192,15 +185,10 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
       for($i = 0; $i < $internalTableCols; $i ++) { // draw table headers
         echo '<td class="detail">';
         if ($val [$i]) {
-          if ($print) {
-            echo '<div class="tabLabel" style="text-align:left;">' . htmlEncode ( $obj->getColCaption ( $val [$i] ) ) . '</div>';
-          } else {
-            echo '<input type="text" class="tabLabel" style="text-align:left;" value="' . htmlEncode ( $obj->getColCaption ( $val [$i] ) ) . '" tabindex="-1" />' . $cr;
-          }
+          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode ( $obj->getColCaption ( $val [$i] ) ) . '</div>';
         } else {
           echo '<div class="tabLabel" style="text-align:left;">&nbsp;</div>';
         }
-        
         if ($i < $internalTableCols - 1) {
           echo '</td>';
         }
@@ -208,7 +196,6 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
     } else if (substr ( $col, 0, 5 ) == '_col_') { // if field is _col, draw a new main column
       $previousCol = $currentCol;
-      //$currentCol = substr ( $col, 5, 1 );
       $currentCol += 1;
       $nbCol = substr ( $col, 7, 1 );
       $nbCol=$nbColMax;
@@ -218,89 +205,27 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
       }
       if (substr ( $displayWidth, - 2, 2 ) == "px") {
         $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
-        $widthPct = round ( ($val / $nbCol) - 2 * ($nbCol - 1) ) . "px";
+        $widthPct = round ( ($val / $nbCol) - 4) . "px";
       }
       if ($print) {
         $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
       }
       $prevSection = $section;
-      if (strlen ( $col ) > 8) {
-        $section = substr ( $col, 9 );
+      $split=explode('_',$col);
+      if (count($split)>1) {
+        $section = $split[count($split)-1];
       } else {
         $section = '';
       }
-      
-//      if ($currentCol == '1') {
-//        if ($previousCol == 0) {
-//          echo '</table>';
-//        } else {
-//          echo '</table>';
-//          if ($prevSection and ! $print) {
-//            echo '</div>';
-//          }
-//          echo '</td></tr></table>';
-//        }
-//        echo '<table id="col1_' . $col . '" class="detail"><tr class="detail"><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="Subcol1_' . $col . '" >';
-//        $nbLineSection ++;
-//      } else {
-//        echo '</table>';
-      if ($prevSection and ! $print) {
-        echo '</table>';
-        echo '</div>';
-      }
-//        echo '</td><td class="detail" style="width: 2px;">&nbsp;</td><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="subcol' . $currentCol . '_' . $col . '" >';
-//      }
-      if (strlen ( $section ) > 1) {
-        if ($nbLineSection > 1) {
-//          echo '<tr><td></td><td>&nbsp;</td></tr>';
-        }
-        if (! $print) {
-          //echo '</table>';
-          // Extra div closure : leads to scrollbar error (mostly on workflow)
-          // if ($prevSection) {
-          // echo 'z</div>';
-          // }
-          $titlePane = $classObj . "_" . $section;
-          echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
-          echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
-          echo ' id="' . $titlePane . '" ';
-          echo ' style="width:' . $widthPct . ';"';
-          echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
-          echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
-          echo '<table class="detail" style="width:' . $widthPct . ';" >';
-// TODO       } else {
-// TODO         echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
-        }
-        if ($print and $outMode == "pdf") {
-          echo '<tr class="detail" style="height:2px;font-size:2px;">';
-          echo '<td class="detail" style="width:10%;">&nbsp;</td>';
-          echo '<td style="width: 120px">&nbsp;</td>';
-          echo '</tr>';
-        }
-      }
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
     } else if (substr ( $col, 0, 5 ) == '_sec_') { // if field is _section, draw a new section bar column
-/* TODO      if ($col == '_sec_Assignment') {
-      }
-      echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
-      if ($section and ! $print) {
-        echo '</table></div>';
-      }
+    	$prevSection=$section;
       if (strlen ( $col ) > 8) {
         $section = substr ( $col, 5 );
       } else {
         $section = '';
       }
-      if (! $print) {
-        $titlePane = $classObj . "_" . $section;
-        echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
-        echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
-        echo ' id="' . $titlePane . '" ';
-        echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
-        echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
-        echo '<table class="detail" style="width:' . $widthPct . ';" >';
-      } else {
-        echo '<tr><td colspan="2" style="width: 100%" class="section">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
-      } */
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
     } else if (substr ( $col, 0, 5 ) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item = substr ( $col, 5 );
       echo '<tr><td colspan=2>';
@@ -329,26 +254,26 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
       if (strlen ( $col ) > 5) {
         $linkClass = substr ( $col, 6 );
       }
-//      drawLinksFromObject ( $val, $obj, $linkClass );
+      drawLinksFromObject ( $val, $obj, $linkClass );
     } else if (substr ( $col, 0, 11 ) == '_Assignment') { // Display Assignments
-//      drawAssignmentsFromObject ( $val, $obj );
+      drawAssignmentsFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 11 ) == '_Approver') { // Display Assignments
-//      drawApproverFromObject ( $val, $obj );
+      drawApproverFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 15 ) == '_VersionProject') { // Display Version Project
-//      drawVersionProjectsFromObject ( $val, $obj );
+      drawVersionProjectsFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 11 ) == '_Dependency') { // Display Dependencies
       $depType = (strlen ( $col ) > 11) ? substr ( $col, 12 ) : "";
-//      drawDependenciesFromObject ( $val, $obj, $depType );
+      drawDependenciesFromObject ( $val, $obj, $depType );
     } else if ($col == '_ResourceCost') { // Display ResourceCost
-//      drawResourceCostFromObject ( $val, $obj, false );
+      drawResourceCostFromObject ( $val, $obj, false );
     } else if ($col == '_DocumentVersion') { // Display ResourceCost
-//      drawDocumentVersionFromObject ( $val, $obj, false );
+      drawDocumentVersionFromObject ( $val, $obj, false );
     } else if ($col == '_ExpenseDetail') { // Display ExpenseDetail
       if ($obj->getFieldAttributes ( $col ) != 'hidden') {
-//        drawExpenseDetailFromObject ( $val, $obj, false );
+        drawExpenseDetailFromObject ( $val, $obj, false );
       }
     } else if (substr ( $col, 0, 12 ) == '_TestCaseRun') { // Display TestCaseRun
-//      drawTestCaseRunFromObject ( $val, $obj );
+      drawTestCaseRunFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 1 ) == '_' and substr ( $col, 0, 6 ) != '_void_' and substr ( $col, 0, 7 ) != '_label_') { // field not to be displayed
                                          //
     } else {
@@ -411,9 +336,9 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
-          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
+          echo '<td class="smallLabel" style="width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
-            echo '<label>' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
+            echo '<label class="label smallLabel">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
           }
           echo '</td><td style="width:90%">';
           $internalTableCurrentRow ++;
@@ -979,7 +904,7 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
           }
         }
         if ($col=='idStatus') {
-        	$fieldWidth=round($fieldWidth/2	);
+        	$fieldWidth=round($fieldWidth/2	)-5;
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
@@ -1246,6 +1171,35 @@ echo "displayWidth=$displayWidth detailWidth=$detailWidth";
       echo '</page>';
   }
 }
+
+function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection) {
+	//echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
+	echo '</table>';
+	if ($prevSection and ! $print) {
+		echo '</div>';
+	}
+	if (! $print) {
+		$titlePane = $classObj . "_" . $section;
+		echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
+		echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
+		echo ' id="' . $titlePane . '" ';
+		echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 5px 5px; padding: 0;top:0px;"';
+		echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+		echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
+		echo '<table class="detail" style="width:' . $widthPct . ';" >';
+	} else {
+		echo '<table class="detail" style="width:' . $widthPct . ';" >';
+		echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' 
+				. i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
+		if ($outMode == "pdf") {
+			echo '<tr class="detail" style="height:2px;font-size:2px;">';
+			echo '<td class="detail" style="width:10%;">&nbsp;</td>';
+			echo '<td style="width: 120px">&nbsp;</td>';
+			echo '</tr>';
+		}
+	}
+}
+
 function drawDocumentVersionFromObject($list, $obj, $refresh = false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
@@ -2123,7 +2077,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh = false) {
   echo '</table></td></tr>';
 }
 function drawAssignmentsFromObject($list, $obj, $refresh = false) {
-  global $cr, $print, $user, $browserLocale, $comboDetail, $section, $collapsedList, $widthPct;
+  global $cr, $print, $user, $browserLocale, $comboDetail, $section, $collapsedList, $widthPct, $outMode;
   if ($comboDetail) {
     return;
   }
@@ -2134,23 +2088,8 @@ function drawAssignmentsFromObject($list, $obj, $refresh = false) {
   if ($habil and $habil->rightAccess != 1) {
     return;
   }
-  echo '<tr><td colspan=2 style="width: 100%" class="halfLine">&nbsp;</td></tr>';
-  if (! $print) {
-    echo '</table></div>';
-  }
   $section = 'Assignment';
-  if (! $print) {
-    $titlePane = get_class ( $obj ) . "_" . $section;
-    echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
-    echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
-    echo ' id="' . $titlePane . '" ';
-    echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
-    echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
-    echo '<table class="detail" style="width:100%;" >';
-  } else {
-    echo '<tr><td colspan=2 style="width: 100%" class="section">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
-  }
-  
+  //startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes");
   $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
   $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array (
       'idProfile' => $user->idProfile,
@@ -2665,6 +2604,7 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
 // ********************************************************************************************************
 // MAIN PAGE
 // ********************************************************************************************************
+
 // fetch information depending on, request
 $objClass = $_REQUEST ['objectClass'];
 if (isset ( $_REQUEST ['noselect'] )) {
@@ -2770,7 +2710,7 @@ if (array_key_exists ( 'destinationWidth', $_REQUEST )) {
   }
 }
 if ($print) {
-  $displayWidth = $printWidth . 'px'; // must match iFrmae size (see main.php)
+  $displayWidth = $printWidth . 'px'; // must match iFrame size (see main.php)
 }
 
 if ($print) {
@@ -2788,8 +2728,7 @@ if (array_key_exists ( 'refresh', $_REQUEST )) {
   exit ();
 }
 ?>
-<div <?php echo ($print)?'x':'';?>
-	dojoType="dijit.layout.BorderContainer" class="background"><?php
+<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
 if (! $refresh and ! $print) {
   ?>
 <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
