@@ -54,7 +54,6 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   if ($outMode == 'pdf') {
     $obj->splitLongFields ();
   }
-  
   $currency = Parameter::getGlobalParameter ( 'currency' );
   $currencyPosition = Parameter::getGlobalParameter ( 'currencyPosition' );
   $treatedObjects [] = $obj;
@@ -62,16 +61,14 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   $verySmallWidth = '44';
   $smallWidth = '75';
   $mediumWidth = '200';
-  $largeWidth = '406';
-  $labelWidth = 175; // To be changed if changes in css file (label and .label)
+  $largeWidth = '300';
+  $labelWidth = 160; // To be changed if changes in css file (label and .label)
   $labelStyleWidth = '10%';
   if ($outMode == 'pdf') {
     $labelWidth = 50;
     $labelStyleWidth = $labelWidth . 'px';
   }
   $fieldWidth = $smallWidth;
-  $currentCol = 0;
-  $nbCol = 1;
   $extName = "";
   $user = $_SESSION ['user'];
   $displayComboButton = false;
@@ -97,8 +94,18 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       $detailWidth = round ( ($_SESSION ['screenWidth'] * 0.8) - 15 ); // 80% of screen - split barr - padding (x2)
     }
   }
+
+echo "displayWidth=$displayWidth detailWidth=$detailWidth";
+  if ($displayWidth > 1350) {
+    $nbColMax=3;
+  } else if ($displayWidth > 900) {
+    $nbColMax=2;
+  } else {
+    $nbColMax=1;
+  }  
+  $currentCol = 0;
+  $nbCol = $nbColMax;
   
-  // echo "screenWidth=" . $_SESSION['screenWidth'] . "<br/>detailWidth=" . $detailWidth . "<br/>";
   // Define internalTable values, to present data as a table
   $internalTable = 0;
   $internalTableCols = 0;
@@ -119,7 +126,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   $nbLineSection = 0;
   // Loop on each propertie of the object
   if (! $included) {
-    echo '<table id="mainTable" >'; // Main table to present multi-column
+//    echo '<table id="mainTable" >'; // Main table to present multi-column
   }
   if (is_subclass_of ( $obj, 'PlanningElement' )) {
     $obj->setVisibility ();
@@ -138,7 +145,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   }
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
-      $colWidth = ($detailWidth) / $nbCol; // 2 columns should be displayable
+      $colWidth = ($displayWidth) / $nbCol; // 3 columns should be displayable
       $maxWidth = $colWidth - $labelWidth; // subtract label width and a margin for slider place
       if ($maxWidth >= $mediumWidth) {
         $largeWidth = $maxWidth;
@@ -179,8 +186,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           $val [5] = '';
         }
       }
-      echo '</table><table id="' . $col . '" class="detail"><tr class="detail">';
-      echo '<td class="detail"></td>' . $cr; // Empty label, to have column header in front of columns
+      echo '</table><table id="' . $col . '" class="detail">';
+      echo '<tr class="detail">';
+      echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns
       for($i = 0; $i < $internalTableCols; $i ++) { // draw table headers
         echo '<td class="detail">';
         if ($val [$i]) {
@@ -200,8 +208,10 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
     } else if (substr ( $col, 0, 5 ) == '_col_') { // if field is _col, draw a new main column
       $previousCol = $currentCol;
-      $currentCol = substr ( $col, 5, 1 );
+      //$currentCol = substr ( $col, 5, 1 );
+      $currentCol += 1;
       $nbCol = substr ( $col, 7, 1 );
+      $nbCol=$nbColMax;
       $widthPct = round ( 98 / $nbCol ) . "%";
       if ($nbCol == '1') {
         $widthPct = $displayWidth;
@@ -220,31 +230,32 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         $section = '';
       }
       
-      if ($currentCol == '1') {
-        if ($previousCol == 0) {
-          echo '</table>';
-        } else {
-          echo '</table>';
-          if ($prevSection and ! $print) {
-            echo '</div>';
-          }
-          echo '</td></tr></table>';
-        }
-        echo '<table id="col1_' . $col . '" class="detail"><tr class="detail"><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="Subcol1_' . $col . '" >';
-        $nbLineSection ++;
-      } else {
+//      if ($currentCol == '1') {
+//        if ($previousCol == 0) {
+//          echo '</table>';
+//        } else {
+//          echo '</table>';
+//          if ($prevSection and ! $print) {
+//            echo '</div>';
+//          }
+//          echo '</td></tr></table>';
+//        }
+//        echo '<table id="col1_' . $col . '" class="detail"><tr class="detail"><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="Subcol1_' . $col . '" >';
+//        $nbLineSection ++;
+//      } else {
+//        echo '</table>';
+      if ($prevSection and ! $print) {
         echo '</table>';
-        if ($prevSection and ! $print) {
-          echo '</div>';
-        }
-        echo '</td><td class="detail" style="width: 2px;">&nbsp;</td><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="subcol' . $currentCol . '_' . $col . '" >';
+        echo '</div>';
       }
+//        echo '</td><td class="detail" style="width: 2px;">&nbsp;</td><td class="detail" style="width:' . $widthPct . ';" valign="top"><table style="width:' . $widthPct . ';" id="subcol' . $currentCol . '_' . $col . '" >';
+//      }
       if (strlen ( $section ) > 1) {
         if ($nbLineSection > 1) {
-          echo '<tr><td></td><td>&nbsp;</td></tr>';
+//          echo '<tr><td></td><td>&nbsp;</td></tr>';
         }
         if (! $print) {
-          echo '</table>';
+          //echo '</table>';
           // Extra div closure : leads to scrollbar error (mostly on workflow)
           // if ($prevSection) {
           // echo 'z</div>';
@@ -253,11 +264,12 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
           echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
           echo ' id="' . $titlePane . '" ';
+          echo ' style="width:' . $widthPct . ';"';
           echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
           echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
           echo '<table class="detail" style="width:' . $widthPct . ';" >';
-        } else {
-          echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
+// TODO       } else {
+// TODO         echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
         }
         if ($print and $outMode == "pdf") {
           echo '<tr class="detail" style="height:2px;font-size:2px;">';
@@ -266,8 +278,8 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           echo '</tr>';
         }
       }
-    } else if (substr ( $col, 0, 5 ) == '_sec_') { // if field is _col, draw a new main column
-      if ($col == '_sec_Assignment') {
+    } else if (substr ( $col, 0, 5 ) == '_sec_') { // if field is _section, draw a new section bar column
+/* TODO      if ($col == '_sec_Assignment') {
       }
       echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
       if ($section and ! $print) {
@@ -288,7 +300,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         echo '<table class="detail" style="width:' . $widthPct . ';" >';
       } else {
         echo '<tr><td colspan="2" style="width: 100%" class="section">' . i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
-      }
+      } */
     } else if (substr ( $col, 0, 5 ) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item = substr ( $col, 5 );
       echo '<tr><td colspan=2>';
@@ -317,26 +329,26 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       if (strlen ( $col ) > 5) {
         $linkClass = substr ( $col, 6 );
       }
-      drawLinksFromObject ( $val, $obj, $linkClass );
+//      drawLinksFromObject ( $val, $obj, $linkClass );
     } else if (substr ( $col, 0, 11 ) == '_Assignment') { // Display Assignments
-      drawAssignmentsFromObject ( $val, $obj );
+//      drawAssignmentsFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 11 ) == '_Approver') { // Display Assignments
-      drawApproverFromObject ( $val, $obj );
+//      drawApproverFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 15 ) == '_VersionProject') { // Display Version Project
-      drawVersionProjectsFromObject ( $val, $obj );
+//      drawVersionProjectsFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 11 ) == '_Dependency') { // Display Dependencies
       $depType = (strlen ( $col ) > 11) ? substr ( $col, 12 ) : "";
-      drawDependenciesFromObject ( $val, $obj, $depType );
+//      drawDependenciesFromObject ( $val, $obj, $depType );
     } else if ($col == '_ResourceCost') { // Display ResourceCost
-      drawResourceCostFromObject ( $val, $obj, false );
+//      drawResourceCostFromObject ( $val, $obj, false );
     } else if ($col == '_DocumentVersion') { // Display ResourceCost
-      drawDocumentVersionFromObject ( $val, $obj, false );
+//      drawDocumentVersionFromObject ( $val, $obj, false );
     } else if ($col == '_ExpenseDetail') { // Display ExpenseDetail
       if ($obj->getFieldAttributes ( $col ) != 'hidden') {
-        drawExpenseDetailFromObject ( $val, $obj, false );
+//        drawExpenseDetailFromObject ( $val, $obj, false );
       }
     } else if (substr ( $col, 0, 12 ) == '_TestCaseRun') { // Display TestCaseRun
-      drawTestCaseRunFromObject ( $val, $obj );
+//      drawTestCaseRunFromObject ( $val, $obj );
     } else if (substr ( $col, 0, 1 ) == '_' and substr ( $col, 0, 6 ) != '_void_' and substr ( $col, 0, 7 ) != '_label_') { // field not to be displayed
                                          //
     } else {
@@ -399,9 +411,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
-          echo '<td class="smallLabel" style="width:' . $labelStyleWidth . ';">';
+          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
-            echo '<label class="smallLabel">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
+            echo '<label>' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
           }
           echo '</td><td style="width:90%">';
           $internalTableCurrentRow ++;
@@ -1018,7 +1030,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($col=='idStatus' and $next) {
         	echo '<div class="roundedVisibleButton roundedButton"';
         	echo ' title="'.i18n("moveStatusTo",array(SqlList::getNameFromId('Status',$next))).'"';
-        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-10).'px"';
+        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
         	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');saveObject();">';
         	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
         	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
@@ -1213,7 +1225,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       if ($section and ! $print) {
         echo '</div>';
       }
-      echo '</td></tr></table>';
+      //echo '</td></tr></table>';
     }
   }
   if ($outMode == 'pdf') {
