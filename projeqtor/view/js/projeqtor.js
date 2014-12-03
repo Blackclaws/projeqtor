@@ -545,6 +545,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     form: dojo.byId(formName),
     handleAs: "text",
     load: function(data,args){
+console.log(data);
     	var contentNode = dojo.byId(destination);
     	var contentWidget = dijit.byId(destination);
     	if (fadingMode) {
