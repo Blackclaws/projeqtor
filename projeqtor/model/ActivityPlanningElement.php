@@ -49,28 +49,22 @@ class ActivityPlanningElement extends PlanningElement {
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $_label_priority;
-  public $priority;
-  public $_void_19;
-  public $_void_10;
-  public $_void_23;
-  public $_void_26;
-  public $_label_planning;
-  public $idActivityPlanningMode;
-  
-  public $_void_33;
-  
-  public $_void_36;
-  public $_label_wbs;
-  public $wbs;
-  public $_void_39;
-  public $_void_30;
-  public $_void_41;
+  public $_tab_5_2 = array('validated', 'assigned', 'real', 'left', 'planned', 'work', 'cost');
   public $validatedWork;
   public $assignedWork;
-  public $plannedWork;
   public $realWork;
   public $leftWork;
+  public $plannedWork;
+  public $validatedCost;
+  public $assignedCost;
+  public $realCost;
+  public $leftCost;
+  public $plannedCost;
+    
+  public $priority;
+  public $idActivityPlanningMode;
+  public $_label_wbs;
+  public $wbs;
   public $_label_progress;
   public $progress;
   public $_label_expected;
@@ -86,11 +80,6 @@ class ActivityPlanningElement extends PlanningElement {
   public $_void_59;
   public $_void_50;
   public $_void_61;
-  public $validatedCost;
-  public $assignedCost;
-  public $plannedCost;
-  public $realCost;
-  public $leftCost;
   public $_void_67;
   public $_void_68;
   public $_void_69;

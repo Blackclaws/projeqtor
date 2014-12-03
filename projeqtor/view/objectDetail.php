@@ -205,7 +205,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       }
       if (substr ( $displayWidth, - 2, 2 ) == "px") {
         $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
-        $widthPct = round ( ($val / $nbCol) - 4) . "px";
+        $widthPct = round ( ($val / $nbCol) - 5) . "px";
       }
       if ($print) {
         $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
@@ -340,14 +340,14 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
             echo '<label class="label smallLabel">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
           }
-          echo '</td><td style="width:90%">';
+          echo '</td><td style="width:90%;white-space:nowrap;">';
           $internalTableCurrentRow ++;
         } else {
           if ($obj->isAttributeSetToField ( $col, "colspan3" )) {
             echo '</td><td class="detail" colspan="3">';
             $internalTable -= 2;
           } else {
-            echo '</td><td class="detail" >';
+            echo '</td><td class="detail" style="white-space:nowrap;">';
           }
         }
       }
@@ -995,6 +995,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($dataType == 'int' and (substr ( $col, - 8, 8 ) == 'Duration')) {
           $isDuration = true;
           $fieldWidth = $smallWidth;
+        }
+        if (($isCost or $isWork or $isDuration) and $internalTable!=0 and $displayWidth<1600) {
+        	$fieldWidth-=10;
         }
         if ($dataType == 'int' and strtolower ( substr ( $col, - 8, 8 ) == 'progress' )) {
           $isPercent = true;
