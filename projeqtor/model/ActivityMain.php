@@ -58,10 +58,10 @@ class ActivityMain extends SqlElement {
   public $_lib_cancelled;
   public $idTargetVersion;
   public $result;
-  //public $_sec_Assignment;
-  public $_Assignment=array();
   public $_col_3_3_Progress;
   public $ActivityPlanningElement; // is an object
+  public $_col_Assignment;
+  public $_Assignment=array();
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
