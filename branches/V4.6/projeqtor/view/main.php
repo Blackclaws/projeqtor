@@ -377,8 +377,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 	    		          else if (file_exists("../logo.png")) echo '../logo.png';
 	    		          else echo 'img/titleSmall.png';?>" />
     	          </div>
-  	            <div style="width: 470px; height:280px;top:50px;overflow:hidden;text-align:center;">
-                  <br/><br/>Loading ...                               
+  	            <div style="width: 470px; height:130px;position:absolute;top:150px;overflow:hidden;text-align:center;">
+                  Loading ...                               
                 </div>
               </div>
             </td>
