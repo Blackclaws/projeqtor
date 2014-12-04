@@ -36,7 +36,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $refId;
   public $refName;
   //public $_tab_10_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '',  '', '','startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
-  public $_tab_4_3 = array('requested', 'validated', 'planned', 'real', 'startDate', 'endDate', 'duration');
+  public $_tab_4_3 = array('requested', 'validated', 'reassessed', 'real', 'startDate', 'endDate', 'duration');
   public $initialStartDate;
   public $validatedStartDate;
   public $plannedStartDate;
@@ -49,7 +49,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $_tab_5_2 = array('validated', 'assigned', 'real', 'left', 'planned', 'work', 'cost');
+  public $_tab_5_2 = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
   public $validatedWork;
   public $assignedWork;
   public $realWork;
@@ -60,22 +60,24 @@ class ActivityPlanningElement extends PlanningElement {
   public $realCost;
   public $leftCost;
   public $plannedCost;
-  public $_tab_5_1 = array('count', '', 'real', 'left', 'planned', 'ticket');
+  public $_tab_2_1 = array('real', 'expected', 'progress');
+  public $progress;
+  public $expectedProgress;
+  public $_tab_4_1 = array('workElementCount', 'estimated', 'real', 'left', 'ticket');
   public $workElementCount;
-  public $_void_ticket;
+  public $workElementEstimatedWork;
   public $workElementRealWork;
   public $workElementLeftWork;
-  public $workElementEstimatedWork;
-  
+
   
   public $priority;
   public $idActivityPlanningMode;
   //public $_label_wbs;
   public $wbs;
   //public $_label_progress;
-  public $progress;
+  
   //public $_label_expected;
-  public $expectedProgress;
+ 
   public $wbsSortable;
   public $topId;
   public $topRefType;
