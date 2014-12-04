@@ -205,7 +205,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       }
       if (substr ( $displayWidth, - 2, 2 ) == "px") {
         $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
-        $widthPct = round ( ($val / $nbCol) - 5) . "px";
+        $widthPct = round ( ($val / $nbCol) - 4) . "px";
       }
       if ($print) {
         $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
@@ -1186,7 +1186,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
 		echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
 		echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
 		echo ' id="' . $titlePane . '" ';
-		echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 5px 5px; padding: 0;top:0px;"';
+		echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 4px 4px; padding: 0;top:0px;"';
 		echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
 		echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
 		echo '<table class="detail" style="width:' . $widthPct . ';" >';
@@ -1281,7 +1281,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh = false) {
   echo '</table></td></tr>';
 }
 function drawOrigin($refType, $refId, $obj, $col, $print) {
-  echo '<tr class="detail"><td class="label" style="width:10%;">';
+  echo '<tr class="detail"><td class="label" xstyle="width:10%;">';
   echo '<label for="' . $col . '" >' . htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>';
   echo '</td>';
   $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
@@ -1291,7 +1291,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
   if ($print) {
     echo '<td style="width: 120px">';
   } else {
-    echo '<td width="90%">';
+    echo '<td>';
   }
   if ($refType and $refId) {
     echo '<table width="100%"><tr height="20px"><td xclass="noteData" width="1%" xvalign="top">';
@@ -2638,10 +2638,11 @@ if ($noselect) {
     drawAttachementsFromObject ( $obj, true );
     exit ();
   }
-  if (array_key_exists ( 'refreshAssignment', $_REQUEST )) {
-    drawAttachementsFromObject ( $obj, true );
+  /* On assignment change refresh all item
+   * if (array_key_exists ( 'refreshAssignment', $_REQUEST )) {
+    drawAssignmentsFromObject($obj->_Assignment, $obj, true );
     exit ();
-  }
+  }*/
   if (array_key_exists ( 'refreshResourceCost', $_REQUEST )) {
     drawResourceCostFromObject ( $obj->$_ResourceCost, $obj, true );
     exit ();
@@ -2849,7 +2850,9 @@ saveAttachementAck(dataArray);
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
      id="<?php echo $titlePane;?>" 
      onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawAttachementsFromObject($obj); ?>
+     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php 
+     //startTitlePane(get_class($obj), 'attachment', $collapsedList, $widthPct, $print, $outMode, "yes");
+     drawAttachementsFromObject($obj); ?>
 </div>
 
 <?php }?> <?php
@@ -2900,7 +2903,8 @@ if (! $noselect and isset ( $obj->_ChecklistDefinitionLine )) {
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
      id="<?php echo $titlePane;?>"       
      onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawChecklistDefinitionLinesFromObject($obj); ?>
+     onShow="saveExpanded('<?php echo $titlePane;?>');" >
+     <?php  drawChecklistDefinitionLinesFromObject($obj); ?>
 </div>
 <?php }?> <?php
 }
