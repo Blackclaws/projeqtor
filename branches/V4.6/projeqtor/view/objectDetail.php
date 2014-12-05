@@ -205,7 +205,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       }
       if (substr ( $displayWidth, - 2, 2 ) == "px") {
         $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
-        $widthPct = round ( ($val / $nbCol) - 4) . "px";
+        $widthPct = floor ( ($val / $nbCol) - 4) . "px";
       }
       if ($print) {
         $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
