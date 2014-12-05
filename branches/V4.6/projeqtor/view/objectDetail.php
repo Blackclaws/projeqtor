@@ -1063,23 +1063,23 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       	echo $val;
       	echo '</textarea>';
       	echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode ( $obj->getColCaption ( $col )).'</div>';
-      	echo '<div data-dojo-type="dijit.Editor" 	';
-      	echo ' height="200px" ';
-        echo ' data-dojo-props="';
-        echo 'onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];}';
-        echo ",plugins:['removeFormat','bold','italic','underline'";
-        echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
-        echo ",'|','insertOrderedList','insertUnorderedList','|']";
-        echo ",extraPlugins:['foreColor','hiliteColor','|','fullScreen'";
+      	echo '<div data-dojo-type="dijit.InlineEditBox" ';
+      	echo ' height="" ';
+        echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
+        echo ',onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];}';
+        echo ",editorParams:{plugins:['removeFormat','bold','italic','underline'";
+         echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
+         echo ",'|','insertOrderedList','insertUnorderedList','|']";
+         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor','|','fullScreen'";
         //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
-       	echo "]";
+       	echo "]}";
         echo ',onKeyPress:function(){console.log(\'key\');top.formChanged();}'; // hard coding default event
         echo '" ';
         echo $attributes;
         if (strpos ( $attributes, 'readonly' ) > 0) {
           $specificStyle .= ' color:#606060 !important; background:none; background-color: #F0F0F0; ';
         }
-        echo ' rows="2" style="width: ' . ($largeWidth+150) . 'px;' . $specificStyle . '" ';
+        echo ' rows="2" style="max-height:150px;overflow:auto;width: ' . ($largeWidth+140) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input" ' . '>';
         echo $val;
