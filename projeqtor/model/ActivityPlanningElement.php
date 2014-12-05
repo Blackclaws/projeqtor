@@ -36,7 +36,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $refId;
   public $refName;
   //public $_tab_10_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '',  '', '','startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
-  public $_tab_4_3 = array('requested', 'validated', 'reassessed', 'real', 'startDate', 'endDate', 'duration');
+  public $_tab_4_3 = array('requested', 'validated', 'planned', 'real', 'startDate', 'endDate', 'duration');
   public $initialStartDate;
   public $validatedStartDate;
   public $plannedStartDate;
