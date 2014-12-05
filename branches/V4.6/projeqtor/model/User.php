@@ -41,7 +41,6 @@ class User extends SqlElement {
   public $locked;
   public $loginTry;
   public $isLdap;
-  public $_spe_image;
   public $isContact;
   public $isResource=0;
   public $initials;
@@ -51,6 +50,8 @@ class User extends SqlElement {
   public $apiKey;
   public $_col_2_2_Affectations;
   public $_spe_affectations;
+  public $_col_Miscellaneous;
+  public $_spe_image;
   public $dontReceiveTeamMails;
   public $_arrayFilters=array();
   //public $_arrayFiltersId=array();

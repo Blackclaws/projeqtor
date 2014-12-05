@@ -916,6 +916,7 @@ label, .label, .smallLabel {
 	-webkit-border-radius: 10px !important;
 	-moz-border-radius: 10px !important;
 	border-radius: 10px !important;
+	padding-left: 7px;
 }
 .roundedLeft {
 	-webkit-border-top-left-radius: 10px  !important;
