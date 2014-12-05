@@ -50,18 +50,19 @@
   	$printPage='../report/object/'.$class.'.php';
   }
 ?>
-<table>
-  <tr>
-    <td width="50px" align="center">
-      <img src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
-    </td>
-    <td><span class="title"><?php echo i18n($_REQUEST['objectClass']);?></span></td>
-    <td width="15px">&nbsp;</td>
-    <td><nobr>
+<table style="width:100%;height:100%;border:1px solid red;">
+  <tr style="height:100%;border:1px solid yellow";>
+  <td  style="width:50%;border:1px solid white;">
+    <img style="position:relative; left:10px;" src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
+    <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?></span>
+  </td>
+  <td  style="width:50%;border:1px solid white;">
+  <div style="float:left;position:50%;width:45%;white-space:nowrap">  
     <?php if (! $comboDetail ) {?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false" 
+       style="width:32px;height:32px !important;border-radius:10px"
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
-       iconClass="dijitEditorIcon dijitEditorIconNew" >
+       iconClass="dijitButtonIcon dijitButtonIconNew" >
         <script type="dojo/connect" event="onClick" args="evt">
 		  dojo.byId("newButton").blur();
           id=dojo.byId('objectId');
@@ -77,7 +78,7 @@
       <button id="saveButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonSave', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
-       iconClass="dijitEditorIcon dijitEditorIconSave" >
+       iconClass="dijitButtonIcon dijitButtonIconSave" >
         <script type="dojo/connect" event="onClick" args="evt">
 		      saveObject();
         </script>
@@ -256,6 +257,8 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
-    </nobr></td>
+  </div>
+  </td>
   </tr>
 </table>
+

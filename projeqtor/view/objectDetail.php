@@ -60,7 +60,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   $mediumWidth = '200';
   $largeWidth = '300';
   $labelWidth = 160; // To be changed if changes in css file (label and .label)
-  $labelStyleWidth = '10%';
+  $labelStyleWidth = '145px';
   if ($outMode == 'pdf') {
     $labelWidth = 50;
     $labelStyleWidth = $labelWidth . 'px';
@@ -328,7 +328,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
 	          if ($print and $outMode == "pdf") {
 	            echo '<td style="width: 120px">';
 	          } else {
-	            echo '<td width="90%">';
+	            echo '<td style="width:'.($largeWidth+10).'px">';
 	          }
       	  }
         }
@@ -1064,10 +1064,11 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       	echo '</textarea>';
       	echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode ( $obj->getColCaption ( $col )).'</div>';
       	echo '<div data-dojo-type="dijit.InlineEditBox" ';
-      	echo ' height="" ';
+      	echo ' height="" title="'.i18n('clickToEditRichText').'"';
         echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
+        if ($readOnly) echo ', disabled:true,';
         echo ',onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];}';
-        echo ",editorParams:{plugins:['removeFormat','bold','italic','underline'";
+        echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
          echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
          echo ",'|','insertOrderedList','insertUnorderedList','|']";
          echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor','|','fullScreen'";
@@ -1079,7 +1080,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if (strpos ( $attributes, 'readonly' ) > 0) {
           $specificStyle .= ' color:#606060 !important; background:none; background-color: #F0F0F0; ';
         }
-        echo ' rows="2" style="max-height:150px;overflow:auto;width: ' . ($largeWidth+140) . 'px;' . $specificStyle . '" ';
+        echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth+145) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input" ' . '>';
         echo $val;
@@ -1133,7 +1134,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       if ($internalTable > 0) {
         $internalTable --;
         if ($internalTable == 0) {
-          echo "</td></tr></table><table>";
+          echo '</td></tr></table><table  style="width: 100%;">';
         }
       } else {
         if ($internalTable == 0 and ! $hide and ! $nobr) {
@@ -1189,7 +1190,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
 		echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 4px 4px; padding: 0;top:0px;"';
 		echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
 		echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
-		echo '<table class="detail" style="width:' . $widthPct . ';" >';
+		echo '<table class="detail"  style="width: 100%;" >';
 	} else {
 		echo '<table class="detail" style="width:' . $widthPct . ';" >';
 		echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' 
@@ -2735,17 +2736,8 @@ if (array_key_exists ( 'refresh', $_REQUEST )) {
 <div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
 if (! $refresh and ! $print) {
   ?>
-<div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
-		<div dojoType="dijit.layout.BorderContainer">
-			<div id="buttonDivContainer" dojoType="dijit.layout.ContentPane"
-				region="left"><?php  include 'objectButtons.php'; ?></div>
-			<div id="resultDiv" dojoType="dijit.layout.ContentPane"
-				region="center"></div>
-			<div id="detailBarShow" onMouseover="hideList('mouse');"
-				onClick="hideList('click');">
-				<div id="detailBarIcon" align="center"></div>
-			</div>
-		</div>
+    <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
+		<?php  include 'objectButtons.php'; ?>
 	</div>
 	<div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"><?php
 }

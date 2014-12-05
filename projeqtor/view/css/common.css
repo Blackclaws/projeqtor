@@ -557,7 +557,7 @@ table.dojoDndAvatar {
 }
 
 .dijitTextArea {
-  padding: 2px 5px 2px 5px !important; /* New GUI */
+  padding: 2px 2px 2px 5px !important; /* New GUI */
 }
 .dijitTextBox,.dijitComboBox,.dijitSpinner,.dijitTextArea {
   font-family: Verdana, Arial, Tahoma, sans-serif;
@@ -565,7 +565,7 @@ table.dojoDndAvatar {
   
 }
 .dijitInputInner {
-	padding: 2px 5px 2px 5px !important; /* New GUI */
+	padding: 2px 0px 2px 3px !important; /* New GUI */
 }
 .dijitTextArea {
   padding: 1px;
@@ -1750,7 +1750,7 @@ table.dijitCalendarContainer {
 }
 
 .dijitToolbar .dijitToolbarSeparator {
-  background: url(images/editor.gif);
+  background: url('images/editorIconsEnabled.png');
 }
 
 .dijitEditor {
@@ -1818,14 +1818,16 @@ table.dijitCalendarContainer {
 .dijitButtonIcon {
   background-image: url(images/editorButtonsEnabled.gif);
   background-repeat: no-repeat;
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
   text-align: center;
   cursor: pointer;
 }
 .dijitDisabled .dijitButtonIcon {
   background-image: url(images/editorButtonsDisabled.gif);
 }
+.dijitButtonIconNew { background-position: -756px; }
+.dijitButtonIconSave { background-position: -558px; }
 
 
 .dijitColorPalette {
