@@ -145,14 +145,14 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
 			                <td></td>
-			                <td><div dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></td>
+			                <td><div style="width:200px;text-align:center;"><div dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></div></td>
 			              </tr>
 			              <?php }?>
 			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td>
-			                  <button tabindex="3" type="submit" id="loginButton" style="width:200px"
+			                  <button tabindex="3" type="submit" id="loginButton" style="width:200px; height:20px;"
 			                   dojoType="dijit.form.Button" showlabel="true">OK
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             return true;
@@ -169,11 +169,11 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 	  }
 	}
 	if ($showPassword) { 
-	?>              
+	?>               <tr style="height:5px"><td colspan="2" ></td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td style="width:200px">  
-			                  <button tabindex="4" id="passwordButton" style="width:200px !important" type="button" dojoType="dijit.form.Button" showlabel="true">
+			                  <button tabindex="4" id="passwordButton" style="width:200px; height:20px;" type="button" dojoType="dijit.form.Button" showlabel="true">
 			                    <?php echo i18n('buttonChangePassword') ?>
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             connect(true);

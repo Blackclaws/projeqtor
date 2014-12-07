@@ -32,8 +32,8 @@
 .iconGoto { background-image: url(images/iconGoto.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
 .iconAdd { background-image: url(images/buttonAdd16.png); background-repeat: no-repeat; width: 20px; height: 20px; background-position:center center; }
 
-.iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 32px; height: 32px;}
-.dijitDisabled .iconPdf { background-image: url(images/pdfDisabled.png); background-repeat: no-repeat; width: 32px; height: 32px;}
+.iconPdf { background-image: url(images/pdf.png); background-repeat: no-repeat; width: 24px; height: 24px;}
+.dijitDisabled .iconPdf { background-image: url(images/pdfDisabled.png); background-repeat: no-repeat; width: 24px; height: 24px;}
 
 .iconCsv { background-image: url(images/csv.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 .dijitDisabled .iconCsv { background-image: url(images/csvDisabled.png); background-repeat: no-repeat; width: 16px; height: 16px;}

@@ -663,12 +663,13 @@ table.dojoDndAvatar {
 .dijitButtonNode {
   border: 1px solid #c0c0c0;
   border-bottom: 1px solid #9b9b9b;
-  /*padding: 0.1em 0.2em 0.1em 0.2em;*/
-  height:20px;
-  
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  height:100%; width:100%;
   background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
 }
-
+.dijitStretch {
+	height:100%;
+}
 .dijitButtonNode button {
   border: 0px;
   background-color: transparent;
@@ -676,10 +677,37 @@ table.dojoDndAvatar {
 
 .dijitReset.dijitRight.dijitButtonNode {
 	border-radius:0px;
+	height:17px;
+	width:16px;
 }
 
 .dijitReset.dijitInline.dijitButtonNode {
-  border-radius:3px;
+  border-radius:5px;
+  background-color: #ffffff;
+}
+
+.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode {
+  background: transparent;
+  border: 1px solid #ffffff;
+}
+.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Hover {
+	background-color: #ffffff;
+	background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
+	/*border: 1px solid #FFFFFF;*/
+}
+.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Active {
+  background-color: #ffffff;
+  border: 1px solid #c0c0c0;
+  background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
+}
+.dijit.dijitReset.dijitInline.detailButton.dijitButton.dijitDisabled .dijitButtonNode {
+  background-color: #eeeeee;
+  background: transparent;
+  border: 1px solid #B0B0B0;
+  /*border: transparent;*/
+  -moz-opacity: 0.8;
+  opacity: 0.81;
+  filter: Alpha(Opacity = 80);
 }
 
 .dijitButtonText {
@@ -1816,19 +1844,36 @@ table.dijitCalendarContainer {
 
 /* SPECIFIC BUTTONS FOR PROJEQTOR */
 .dijitButtonIcon {
-  background-image: url(images/editorButtonsEnabled.gif);
+  background-image: url(images/editorButtonsEnabled.png);
   background-repeat: no-repeat;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   text-align: center;
-  cursor: pointer;
 }
 .dijitDisabled .dijitButtonIcon {
-  background-image: url(images/editorButtonsDisabled.gif);
+  background-image: url('images/editorButtonsDisabled.png'); 
 }
-.dijitButtonIconNew { background-position: -756px; }
-.dijitButtonIconSave { background-position: -558px; }
-
+.dijitButtonRounded, .dijit.dijitReset.dijitInline.dijitButtonRounded {
+	background-color: #FF0011;
+	background-image: none;
+	-webkit-border-radius: 12px !important;
+  -moz-border-radius: 12px !important;
+  border-radius: 12px !important;
+  border:2px solid red;
+}
+.dijitButtonIconNew { background-position: -0px; }
+.dijitButtonIconSave { background-position: -26px; }
+.dijitButtonIconPrint { background-position: -51px; }
+.dijitButtonIconPdf { background-position: -76px; }
+.dijitButtonIconCopy { background-position: -101px; }
+.dijitButtonIconUndo { background-position: -126px; }
+.dijitButtonIconDelete { background-position: -151px; }
+.dijitButtonIconRefresh { background-position: -176px; }
+.dijitButtonIconEmail { background-position: -201px; }
+.dijitButtonIconMultipleUpdate { background-position: -226px; }
+.dijitButtonIconChecklist { background-position: -251px; }
+.dijitButtonIconIncrease { background-position: -276px; }
+.dijitButtonIconDecrease { background-position: -301px; }
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
