@@ -50,19 +50,18 @@
   	$printPage='../report/object/'.$class.'.php';
   }
 ?>
-<table style="width:100%;height:100%;border:1px solid red;">
-  <tr style="height:100%;border:1px solid yellow";>
-  <td  style="width:50%;border:1px solid white;">
+<table style="width:100%;height:100%;">
+  <tr style="height:100%;";>
+  <td  style="width:50%;position:relative;">
     <img style="position:relative; left:10px;" src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?></span>
   </td>
-  <td  style="width:50%;border:1px solid white;">
+  <td  style="width:50%;">
   <div style="float:left;position:50%;width:45%;white-space:nowrap">  
     <?php if (! $comboDetail ) {?>
-      <button id="newButton" dojoType="dijit.form.Button" showlabel="false" 
-       style="width:32px;height:32px !important;border-radius:10px"
+      <button id="newButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
-       iconClass="dijitButtonIcon dijitButtonIconNew" >
+       iconClass="dijitButtonIcon dijitButtonIconNew" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
 		  dojo.byId("newButton").blur();
           id=dojo.byId('objectId');
@@ -78,7 +77,7 @@
       <button id="saveButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonSave', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
-       iconClass="dijitButtonIcon dijitButtonIconSave" >
+       iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
 		      saveObject();
         </script>
@@ -86,7 +85,7 @@
       <button id="printButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonPrint', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="dijitEditorIcon dijitEditorIconPrint" >
+       iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
 		    dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
@@ -97,7 +96,7 @@
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('reportPrintPdf');?>"
        <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="iconPdf" >
+       iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
         dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
@@ -109,7 +108,7 @@
       <button id="copyButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonCopy', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?>
-       iconClass="dijitEditorIcon dijitEditorIconCopy" >
+       iconClass="dijitButtonIcon dijitButtonIconCopy" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           <?php 
           $crit=array('name'=> $_REQUEST['objectClass']);
@@ -130,7 +129,7 @@
       <button id="undoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndo', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect or 1) {echo "disabled";} ?>
-       iconClass="dijitEditorIcon dijitEditorIconUndo" >
+       iconClass="dijitButtonIcon dijitButtonIconUndo" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("undoButton").blur();
           loadContent("objectDetail.php", "detailDiv", 'listForm');
@@ -140,7 +139,7 @@
       <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="dijitEditorIcon dijitEditorIconDelete" >
+       iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("deleteButton").blur();
 		      action=function(){
@@ -159,7 +158,7 @@
      <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonRefresh', array(i18n($_REQUEST['objectClass'])));?>"
        <?php if ($noselect) {echo "disabled";} ?> 
-       iconClass="dijitEditorIcon dijitEditorIconRefresh" >
+       iconClass="dijitButtonIcon dijitButtonIconRefresh" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("refreshButton").blur();
           loadContent("objectDetail.php", "detailDiv", 'listForm');
@@ -174,7 +173,7 @@
      <button id="mailButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonMail', array(i18n($clsObj)));?>"
        <?php if ($noselect) {echo "disabled";} ?>
-       iconClass="dijitEditorIcon dijitEditorIconMail" >
+       iconClass="dijitButtonIcon dijitButtonIconEmail" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           showMailOptions();  
         </script>
@@ -184,7 +183,7 @@
     <span id="multiUpdateButtonDiv">
     <button id="multiUpdateButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonMultiUpdate');?>"
-       iconClass="dijitEditorIcon dijitEditorIconMultipleUpdate" >
+       iconClass="dijitButtonIcon dijitButtonIconMultipleUpdate" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           startMultipleUpdateMode('<?php echo get_class($obj);?>');  
         </script>
@@ -196,14 +195,14 @@
     <span id="indentButtonDiv">
      <button id="indentDecreaseButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('indentDecreaseButton');?>"
-        iconClass="iconIndentDecrease" >
+        iconClass="dijitButtonIcon dijitButtonIconDecrease" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           indentTask("decrease");  
         </script>
       </button>
       <button id="indentIncreaseButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('indentIncreaseButton');?>"
-        iconClass="iconIndentIncrease" >
+        iconClass="dijitButtonIcon dijitButtonIconIncrease" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           indentTask("increase");  
         </script>
@@ -238,7 +237,7 @@
       <?php if ($buttonCheckListVisible=='visible') {?>
       <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('Checklist');?>"
-        iconClass="iconChecklistDefinition16" >
+        iconClass="dijitButtonIcon dijitButtonIconChecklist" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           showChecklist('<?php echo get_class($obj);?>',<?php echo $obj->id;?>);  
         </script>

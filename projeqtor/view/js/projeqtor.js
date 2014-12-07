@@ -2530,7 +2530,21 @@ function stopDef(e) {
 };
 // End Fix
 
+// Button Functions to simplify onClick 
+function newObject() {
+  dojo.byId("newButton").blur();
+  id=dojo.byId('objectId');
+  if (id) {   
+  id.value="";
+  unselectAllRows("objectGrid");
+    loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+  } else { 
+    showError(i18n("errorObjectId"));
+  }
+}
+
 function saveObject() {
   dojo.byId("saveButton").blur();
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
 }
+
