@@ -103,10 +103,10 @@ if (count($cdList)>0 and $newObj->id) {
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . formatResult($result) . '</span>';
+  echo '<div class="messageERROR" >' . formatResult($result) . '</div>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . formatResult($result) . '</span>';
+  echo '<div class="messageOK" >' . formatResult($result) . '</div>';
   // save the new object to session (modified status)
   if (! array_key_exists('comboDetail', $_REQUEST)) {
   	if (isset($_REQUEST['directAccessIndex'])) {
@@ -117,7 +117,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   }
 } else { 
 	Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . formatResult($result) . '</span>';
+  echo '<div class="messageWARNING" >' . formatResult($result) . '</div>';
 }
 echo '<input type="hidden" id="buttonCheckListVisibleObject" value="'.$buttonCheckListVisible.'" />';
 
