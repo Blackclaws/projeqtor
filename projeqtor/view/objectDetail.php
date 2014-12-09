@@ -2736,11 +2736,12 @@ if (array_key_exists ( 'refresh', $_REQUEST )) {
 <div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
 if (! $refresh and ! $print) {
   ?>
-  <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:35px;position:relative;">
-    <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" 
-       style="z-index:9999999999;border-radius: 10px;width:49%;position:absolute;top:-0px;left:-0px; min-height:30px;overflow:visible !important;">
-       <div style="float:right;border: 1px solid #EEEEEE;">X</div>
+    <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="none" 
+       style="z-index:1000;border-radius: 10px;width:49%;position:absolute;top:1px !important;
+       left:1px !important; overflow:visible !important;box-shadow: 5px 5px 10px #656565">       
     </div>
+  <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" style="height:35px;position:relative;">
+
 		<?php  include 'objectButtons.php'; ?>
 	</div>
 	<div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"><?php

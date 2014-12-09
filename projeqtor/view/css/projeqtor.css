@@ -174,7 +174,7 @@ html, body {
       border-bottom: 1px solid #ffffff;
     }
     #resultDiv {
-      background: #fff url(images/buttonEnabled.png) repeat-x bottom left;
+      /*background: #fff url(images/buttonEnabled.png) repeat-x bottom left;*/
       color: #555555; font-weight: bold;
       /*text-shadow: 1px 1px #555555;*/
       text-align: center;
@@ -182,7 +182,7 @@ html, body {
       /* margin: 4px 8px 4px 8px;*/ 
       /* padding: 5px;*/
       opacity:0.0;filter:alpha(opacity=00);
-      z-index:999; overflow:visible;
+      z-index:1100; overflow:visible;
     }
     #planResultDiv {
       background: #fff url(images/buttonEnabled.png) repeat-x bottom left;
@@ -543,7 +543,8 @@ label, .label, .smallLabel {
   font-weight: bold; 
   color:#555555; 
   background: #FFAAAA url();
-  border: 1px solid red;
+  border: 2px solid #CCCCCC;
+  border-radius: 10px;
   min-width:32px;
   width:100%;
   height:100%;
@@ -552,7 +553,11 @@ label, .label, .smallLabel {
 .messageNO_CHANGE {
   color : grey; 
 }
-
+.messageClosebox {
+	position: absolute;
+	z-index: 99999;
+	float: right;
+}
 .colorSelector {
   background-image: url(images/colorSelector.png);
   background-repeat: no-repeat;
