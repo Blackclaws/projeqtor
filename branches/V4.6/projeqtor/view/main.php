@@ -405,7 +405,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   </div>
   
   <div id="globalContainer" class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">    
-    <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" xsplitter="true" xstyle="display:none">
+    <div id="leftDiv" dojoType="dijit.layout.ContentPane" region="left" splitter="true">
      <div id="menuBarShow" onMouseover="tempShowMenu('mouse');" onClick="tempShowMenu('click');"><div id="menuBarIcon" valign="middle"></div></div>       
       <div class="container" dojoType="dijit.layout.BorderContainer" liveSplitters="false">
         <div id="logoDiv" dojoType="dijit.layout.ContentPane" region="top">
