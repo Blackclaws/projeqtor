@@ -329,8 +329,16 @@ html, body {
 }
 
 #loginResultDiv {
-  overflow: auto !important;
-  width: 320px;
+  /*overflow: auto !important;*/
+  position:absolute !important; top: 0px; left: 150px !important;
+  width:100%;
+  overflow: visible !important;
+  z-index:9999;
+  padding: 0px 0px 20px 0px;
+  text-align: center;
+  max-width: 350px;
+  max-height:220px;
+  vertical-align: middle;
 }
   
 #dialogReminder {
@@ -525,9 +533,9 @@ label, .label, .smallLabel {
   vertical-align: middle;
   padding: 5px 5px;
   color:#555555; 
-  border: 2px solid #CCCCCC;
+  border: 1px solid #CCCCCC;
   border-radius: 10px;
-  min-height:20px; max-height:200px;
+  min-height:16px; max-height:200px;
   min-width: 100px;
   overflow-y:auto; overflox-x: hidden;
   width:90%;
@@ -536,10 +544,10 @@ label, .label, .smallLabel {
 }
 .messageOK {
   background: #DDFFDD url();
+  font-weight: 600;
 }
 .messageERROR {
   background: #FF0000 url();
-  border: 1px solid red;
   color: #FFFFFF;
   text-shadow: 1px 1px #555555; 
 }
