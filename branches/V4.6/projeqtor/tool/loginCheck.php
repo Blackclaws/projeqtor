@@ -132,9 +132,9 @@
    */
   function loginError() {
     global $login;
-    echo '<span class="messageERROR">';
+    echo '<div class="messageERROR">';
     echo i18n('invalidLogin');
-    echo '</span>';
+    echo '</div>';
     unset($_SESSION['user']);
     traceLog("Login error for user '" . $login . "'");
     exit;
@@ -146,9 +146,9 @@
    */
   function loginLdapError() {
     global $login;
-    echo '<span class="messageERROR">';
+    echo '<div class="messageERROR">';
     echo i18n('ldapError');
-    echo '</span>';
+    echo '</div>';
     unset($_SESSION['user']);
     traceLog("Error contacting Ldap for user '" . $login . "'");
     exit;
@@ -160,9 +160,9 @@
    */
   function loginPasswordError() {
     global $login;
-    echo '<span class="messageERROR">';
+    echo '<div class="messageERROR">';
     echo i18n('invalidLoginPassword');
-    echo '</span>';
+    echo '</div>';
     unset($_SESSION['user']);
     traceLog("Login error for user '" . $login . "'");
     exit;
@@ -174,9 +174,9 @@
    */
   function loginErrorLocked() {
     global $login;
-    echo '<span class="messageERROR">';
+    echo '<div class="messageERROR">';
     echo i18n('lockedUser');
-    echo '</span>';
+    echo '</div>';
     unset($_SESSION['user']);
     traceLog("Login locked for user '" . $login . "'");
     exit;
@@ -191,9 +191,9 @@
     echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
     echo '<img src="../view/img/closedApplication.gif"  width="60px"/>';
     echo '</div>';
-    echo '<span class="messageERROR">';
+    echo '<div class="messageERROR">';
     echo i18n('wrongMaintenanceUser');
-    echo '</span>';
+    echo '</div>';
     unset($_SESSION['user']);
     traceLog("Login of non admin user during upgrade. User '" . $login . "'");
     exit;
@@ -203,9 +203,9 @@
     echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
     echo '<img src="../view/img/closedApplication.gif"  width="60px" />';
     echo '</div>';
-    echo '<span class="messageERROR" >';
+    echo '<div class="messageERROR" >';
     echo htmlEncode(Parameter::getGlobalParameter('msgClosedApplication'),'withBR');
-    echo '</span>';
+    echo '</div>';
     exit;
   }
   
@@ -262,11 +262,11 @@
         $_SESSION[$obj->parameterCode]=$obj->parameterValue;
       }
     }
-    echo '<span class="messageOK">';
+    echo '<div class="messageOK">';
     echo i18n('loginOK');
     echo '<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
     echo '</div>';
-    echo '</span>';
+    echo '</div>';
     traceLog("NEW CONNECTED USER '" . $login . "'");
     Audit::updateAudit();
   }
