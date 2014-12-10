@@ -100,7 +100,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
     <tr height="100%">
 	    <td width="100%" align="center">
 	      <div class="background loginFrame" >
-			  <table  align="center" >
+			  <table  align="center">
 			    <tr style="height:10px;" >
 			      <td align="left" style="position:relative;height: 1%;" valign="top">
 			        <div style="position:relative;width: 400px; height: 54px;">
@@ -116,14 +116,14 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			    </tr>
 			    <tr style="height:100%" height="100%">
 			      <td style="height:99%" align="left" valign="middle">
-			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="background:transparent !important;width: 470px; height:210px;overflow:hidden;position: relative;">
+			        <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="background:transparent !important;width: 470px; overflow:hidden;position: relative;">
 			          <form  dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" name="loginForm" encType="multipart/form-data" action="" method="" >
 			            <script type="dojo/method" event="onSubmit" >             
                     connect(false);
     		            return false;        
                   </script>
                   <br/><br/>
-			            <table>
+			            <table width="100%">
 			              <tr>     
 			                <td class="label" style="background:transparent !important;"><label><?php echo i18n('login');?>&nbsp;:&nbsp;</label></td>
 			                <td>
@@ -131,8 +131,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                   dojoType="dijit.form.TextBox" />
                         <input type="hidden" id="hashStringLogin" name="login" style="width:200px" value=""/>  
 			                </td>
+			                <td width="110px">&nbsp;</td>
 			              </tr>
-			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
+			              <tr style="font-size:50%"><td colspan="3">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label><?php echo i18n('password');?>&nbsp;:&nbsp;</label></td>
 			                <td>
@@ -140,15 +141,17 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                   dojoType="dijit.form.TextBox" />
                         <input type="hidden" id="hashStringPassword" name="password" style="width:200px" value=""/>
 			                </td>
+			                <td></td>
 			              </tr>
 			              <?php if (Parameter::getGlobalParameter('rememberMe')!='NO') {?>
 			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
 			                <td></td>
 			                <td><div style="width:200px;text-align:center;"><div dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></div></td>
+			                <td></td>
 			              </tr>
 			              <?php }?>
-			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
+			              <tr style="font-size:50%"><td colspan="3">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td>
@@ -159,6 +162,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                           </script>
 			                  </button>
 			                </td>
+			                <td></td>
 			              </tr>
 	<?php 
 	$showPassword=true;
@@ -169,7 +173,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 	  }
 	}
 	if ($showPassword) { 
-	?>               <tr style="height:5px"><td colspan="2" ></td></tr>
+	?>               <tr style="height:5px"><td colspan="3" ></td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td style="width:200px">  
@@ -181,26 +185,27 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
                           </script>
 			                  </button>  
 			                </td>
+			                <td ></td>
 			              </tr>
   <?php }?>
-			              <tr><td colspan="2">&nbsp;</td></tr>
+			              <tr><td colspan="3">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
-			                <td>
-			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="center" height="55px" style="overflow: auto;" >
+			                <td colspan="2" style="position:fixed;width:100%; height:100%">
+			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="none" >
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
 			                    <?php if (Parameter::getGlobalParameter('applicationStatus')=='Closed'
 			                          or Sql::getDbVersion()!=$version) {
-			                    	      echo '<div style="position:absolute;float: left;left:30px;top : 120px;">';
+			                    	      echo '<div style="position:absolute;float: left;left:-110px;top : -50px;">';
 			                    	      echo '<img src="../view/img/closedApplication.gif" width="60px"/>';
 			                    	      echo '</div>';
-			                    	      echo '<span class="messageERROR" >';
+			                    	      echo '<div class="messageERROR" >';
 			                    	      if (Parameter::getGlobalParameter('applicationStatus')=='Closed') {
 			                    	        echo htmlEncode(Parameter::getGlobalParameter('msgClosedApplication'),'withBR');
 			                    	      } else {
 			                    	      	echo i18n('wrongMaintenanceUser');
 			                    	      }
-			                    	      echo '</span>';
+			                    	      echo '</div>';
 			                          } else if (array_key_exists('lostConnection',$_REQUEST)) {
 			                            echo i18n("disconnectMessage");
 			                            echo '<br/>';
