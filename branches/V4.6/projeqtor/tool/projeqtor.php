@@ -2241,5 +2241,24 @@ function formatNumericInput($val) {
 	$to=array('.','','');
 	return str_replace($from,$to,$val);
 }
+
+function getLastOperationStatus($result) {
+  $search='id="lastOperationStatus" value="';
+  $start=stripos($result,$search)+strlen($search);
+  $end=stripos($result,'"',$start);
+  $status=substr($result, $start, $end-$start);
+  switch ($status) {
+  	case "OK":
+  	case "INVALID":
+  	case "ERROR":
+  	case "NO_CHANGE":
+  	  break; // OK, valid status
+  	default:
+  	  errorLog("'$status' is not an expected status");
+  }
+  return $status;
+  
+}
+
 //
 ?>
