@@ -69,10 +69,10 @@ $result=$obj->delete();
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
+  echo '<div class="messageERROR" >' . $result . '</div>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . $result . '</span>';
+  echo '<div class="messageOK" >' . $result . '</div>';
   if (isset($_REQUEST['directAccessIndex'])) {
   	unset($_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]);
   } else {
@@ -80,7 +80,7 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   }
 } else { 
 	Sql::commitTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
+  echo '<div class="messageWARNING" >' . $result . '</div>';
 }
 echo '<input type="hidden" id="buttonCheckListVisibleObject" value="hidden" />';
 ?>
