@@ -74,9 +74,9 @@
     	$note=new Note();
     	$noteTable=$note->getDatabaseTableName();
     	foreach($obj as $fld=>$val) {
-    		if ($obj->getDataType($fld)=='varchar') {    				
+    	  if ($obj->getDataType($fld)=='varchar' or substr($obj->getDataType($fld),-4)=='text') {    				
             $queryWhere.=' or '.$table.".".$fld." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$quickSearch."%'";
-    		}
+    	  }
     	}
     	if (is_numeric($quickSearch)) {
     		$queryWhere.= ' or ' . $table . ".id=" . $quickSearch . "";

@@ -101,6 +101,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dijit._editor.plugins.TextColor");
     //dojo.require("dijit._editor.plugins.LinkDialog ");
     //dojo.require("dojox.editor.plugins.LocalImage");
+    dojo.require("dijit.Fieldset");
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.CheckBox");
     dojo.require("dijit.form.ComboBox");
