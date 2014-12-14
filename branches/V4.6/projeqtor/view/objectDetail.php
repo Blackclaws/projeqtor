@@ -2738,7 +2738,7 @@ if (! $refresh and ! $print) {
   ?>
     
     <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" style="z-index:3;height:35px;position:relative;overflow:visible !important;">  	
-       <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"></div>
+       <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" ></div>
 		<?php  include 'objectButtons.php'; ?>
 	</div>
 	<div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">

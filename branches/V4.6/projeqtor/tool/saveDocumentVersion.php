@@ -207,7 +207,7 @@ if (! $error) {
 	  if ($documentVersionLink) {
 	  	
 	  } else {
-	    $dv->fileName=basename($uploadedFile['name']);
+	    $dv->fileName=$uploadedFile['name'];
 	    $dv->mimeType=$uploadedFile['type'];
 	    $dv->fileSize=$uploadedFile['size'];
 	  }
