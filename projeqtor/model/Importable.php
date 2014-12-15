@@ -394,11 +394,11 @@ class Importable extends SqlElement {
 				}
 				if (stripos($result, 'id="lastOperationStatus" value="ERROR"') > 0) {
 					Sql::rollbackTransaction();
-					$htmlResult.= '<span class="messageERROR" >' . $result . '</span>';
+					$htmlResult.= '<div class="messageERROR" >' . $result . '</div>';
 					self::$cptError+=1;
 				} else if (stripos($result, 'id="lastOperationStatus" value="OK"') > 0) {
 					Sql::commitTransaction();
-					$htmlResult.= '<span class="messageOK" >' . $result . '</span>';
+					$htmlResult.= '<div class="messageOK" >' . $result . '</div>';
 					self::$cptOK+=1;
 					if (stripos($result, 'id="lastOperation" value="insert"') > 0) {
 						self::$cptCreated+=1;
@@ -409,7 +409,7 @@ class Importable extends SqlElement {
 					}
 				} else {
 					Sql::commitTransaction();
-					$htmlResult.= '<span class="messageWARNING" >' . $result . '</span>';
+					$htmlResult.= '<div class="messageWARNING" >' . $result . '</div>';
 					self::$cptWarning+=1;
 					if (stripos($result, 'id="lastOperationStatus" value="INVALID"') > 0) {
 						self::$cptInvalid+=1;
