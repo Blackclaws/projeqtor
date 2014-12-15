@@ -65,9 +65,9 @@ scriptLog("changePassword.php");
    * @return void
    */
   function passwordError() {
-    echo '<span class="messageERROR">';
+    echo '<div class="messageERROR">';
     echo i18n('invalidPasswordChange', array(Parameter::getGlobalParameter('paramPasswordMinLength')));
-    echo '</span>';
+    echo '</div>';
     exit;
   }
   
@@ -84,21 +84,7 @@ scriptLog("changePassword.php");
     $user->crypto=$crypto;
     $user->passwordChangeDate=date('Y-m-d');
     $result=$user->save();
-		if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-		  Sql::rollbackTransaction();
-		  echo '<span class="messageERROR" >' . $result . '</span>';
-		} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-		  Sql::commitTransaction();
-		  $_SESSION['user']=$user;
-		  echo '<span class="messageOK">';
-	    echo i18n('passwordChanged');
-	    echo '<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
-	    echo '</div>';
-	    echo '</span>';
-		} else { 
-		  Sql::rollbackTransaction();
-		  echo '<span class="messageWARNING" >' . $result . '</span>';
-		}
+    displayLastOperationStatus($result);
   }
   
 ?>
