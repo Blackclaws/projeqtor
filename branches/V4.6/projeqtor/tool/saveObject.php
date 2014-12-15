@@ -103,12 +103,14 @@ if (count ( $cdList ) > 0 and $newObj->id) {
 }
 
 // Message of correct saving
-debugLog ( $result );
 $status = getLastOperationStatus ( $result );
 if ($status == "OK") {
   Sql::commitTransaction ();
-  echo '<div class="messageOK" >' . formatResult ( $result ) . '</div>';
-  // save the new object to session (modified status)
+} else {
+  Sql::rollbackTransaction ();
+}
+echo '<div class="message' . $status . '" >' . formatResult ( $result ) . '</div>';
+if ($status == "OK") {
   if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
     if (isset ( $_REQUEST ['directAccessIndex'] )) {
       $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = new $className ( $newObj->id );
@@ -116,11 +118,7 @@ if ($status == "OK") {
       $_SESSION ['currentObject'] = new $className ( $newObj->id );
     }
   }
-} else {
-  Sql::rollbackTransaction ();
-  echo '<div class="message' . $status . '" >' . formatResult ( $result ) . '</div>';
 }
-echo '<input type="hidden" id="buttonCheckListVisibleObject" value="' . $buttonCheckListVisible . '" />';
 
 function formatResult($result) {
   if (array_key_exists ( 'comboDetail', $_REQUEST )) {
