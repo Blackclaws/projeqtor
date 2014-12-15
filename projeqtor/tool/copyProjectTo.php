@@ -80,22 +80,15 @@ $newProj=copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 $result=$newProj->_copyResult;
 unset($newProj->_copyResult);
 // Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
-  Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-  if (! array_key_exists('comboDetail', $_REQUEST)) {
-    if (isset($_REQUEST['directAccessIndex'])) {
-      $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=new Project($newProj->id);
+$status = displayLastOperationStatus($result);
+if ($status == "OK") {
+  if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
+    if (isset ( $_REQUEST ['directAccessIndex'] )) {
+      $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = new $className ( $newObj->id );
     } else {
-      $_SESSION['currentObject']=new Project($newProj->id);
+      $_SESSION ['currentObject'] = new $className ( $newObj->id );
     }
   }
-  Sql::commitTransaction();
-  echo '<span class="messageOK" >' . $result . '</span>';
-} else { 
-  Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
 }
 
 function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $newTop=null) {
@@ -260,9 +253,9 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
   }
   
 	if ($nbErrors>0) {
-    $result='<span class="messageERROR" >' 
+    $result='<div class="messageERROR" >' 
            . i18n('errorMessageCopy',array($nbErrors))
-           . '</span><br/>'
+           . '</div><br/>'
            . str_replace('<br/><br/>','<br/>',$errorFullMessage);
     $newProj->_copyResult=str_replace('id="lastOperationStatus" value="OK"','id="lastOperationStatus" value="ERROR"',$result);
   }
