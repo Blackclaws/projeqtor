@@ -38,13 +38,4 @@ $audit->requestDisconnection=1;
 $result=$audit->save();
 $msgEnd=strpos($result,'<');
 $result=i18n('colRequestDisconnection').substr($result,$msgEnd);
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-  Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-  Sql::commitTransaction();
-  echo '<span class="messageOK" >' . $result . '</span>';
-} else { 
-  Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
-}
+displayLastOperationStatus($result);
