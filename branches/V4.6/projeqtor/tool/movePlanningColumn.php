@@ -46,16 +46,6 @@ foreach ($arrayList as $order=>$col) {
 		$result=$param->save();
 	}
 }
-//$result="ERROR";
-//$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . '</span>';
-} else { 
-	Sql::commitTransaction();
-  echo '<span class="messageWARNING" >' . '</span>';
-}
+
+displayLastOperationStatus($result);
 ?>

@@ -571,7 +571,7 @@ function htmlEncodeJson($val, $numericLength=0) {
  * @return formated html message, with corresponding html input
  */
 function htmlGetErrorMessage($message) {
-  $returnValue = '<span class="messageERROR" >' . $message . '</span>';
+  $returnValue = '<div class="messageERROR" >' . $message . '</div>';
   $returnValue .= '<input type="hidden" id="lastSaveId" value="" />';
   $returnValue .= '<input type="hidden" id="lastOperation" value="control" />';
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
@@ -584,7 +584,7 @@ function htmlGetErrorMessage($message) {
  * @return formated html message, with corresponding html input
  */
 function htmlGetWarningMessage($message) {
-  $returnValue = '<span class="messageWARNING" >' . $message . '</span>';
+  $returnValue = '<div class="messageWARNING" >' . $message . '</div>';
   $returnValue .= '<input type="hidden" id="lastSaveId" value="" />';
   $returnValue .= '<input type="hidden" id="lastOperation" value="control" />';
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="WARNING" />';

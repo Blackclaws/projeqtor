@@ -87,15 +87,15 @@ if ($name) {
   $critFilter=array("refType"=>$filterObjectClass, "name"=>$name, "idUser"=>$user->id);
   $filter=SqlElement::getSingleSqlElementFromCriteria("Filter", $critFilter);
   if (! $filter->id) {
-    echo '<span class="messageERROR">' . i18n('defaultFilterError', array($name)) . '</span>';
+    echo '<div class="messageERROR">' . i18n('defaultFilterError', array($name)) . '</div>';
   } else {
     $param->parameterValue=$filter->id;
     $param->save();
-    echo '<span class="messageOK">' . i18n('defaultFilterSet', array($name)) . '</span>';
+    echo '<div class="messageOK">' . i18n('defaultFilterSet', array($name)) . '</div>';
   }
 } else {
   $param->delete();
-  echo '<span class="messageOK">' . i18n('defaultFilterCleared') . '</span>';
+  echo '<div class="messageOK">' . i18n('defaultFilterCleared') . '</div>';
 }
 echo '</td></tr></table>';
 Sql::commitTransaction();

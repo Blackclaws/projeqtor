@@ -66,7 +66,7 @@ if (!$checklistDefinition or ! $checklistDefinition->id) {
 	}
 }
 if (!$checklistDefinition or !$checklistDefinition->id) {
-	echo '<span class="ERROR" >'.i18n('noChecklistDefined').'</span>';
+	echo '<div class="ERROR" >'.i18n('noChecklistDefined').'</div>';
 	exit;
 }
 $cdl=new ChecklistDefinitionLine();
