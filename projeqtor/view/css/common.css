@@ -688,6 +688,7 @@ table.dojoDndAvatar {
 
 .dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode {
   background: transparent;
+  background: rgba(255,255,255,0.5);
   border: 1px solid #ffffff;
 }
 .dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Hover {
