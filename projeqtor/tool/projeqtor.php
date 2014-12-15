@@ -2260,5 +2260,16 @@ function getLastOperationStatus($result) {
   
 }
 
+function displayLastOperationStatus($result) {
+  $status = getLastOperationStatus ( $result );
+  if ($status == "OK") {
+    Sql::commitTransaction ();
+  } else {
+    Sql::rollbackTransaction ();
+  }
+  echo '<div class="message' . $status . '" >' . $result . '</div>';
+  return $status;
+}
+
 //
 ?>
