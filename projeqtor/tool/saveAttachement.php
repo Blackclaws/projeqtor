@@ -270,20 +270,16 @@ foreach ($uploadedFileArray as $uploadedFile) {
 }
 if (! $error) {
   // Message of correct saving
-  if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-  	Sql::rollbackTransaction();
-    $message='<span class="messageERROR" >' . $result . '</span>';
-  } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-  	Sql::commitTransaction();
-    $message= '<span class="messageOK" >' . $result . '</span>';
-  } else { 
-  	Sql::rollbackTransaction();
-    $message= '<span class="messageWARNING" >' . $result . '</span>';
+  $status = getLastOperationStatus ( $result );
+  if ($status == "OK") {
+    Sql::commitTransaction ();
+  } else {
+    Sql::rollbackTransaction ();
   }
+  $message = '<div class="message' . $status . '" >' . $result . '</div>';
 } else {
 	Sql::rollbackTransaction();
-	//$message=htmlGetErrorMessage($error);
-	$message=$error;
+	$message = '<div class="message' . $status . '" >' . $error . '</div>';
 }
 
 $jsonReturn='{"file":"'.$attachement->fileName.'",'
