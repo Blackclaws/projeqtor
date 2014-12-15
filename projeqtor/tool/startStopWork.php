@@ -84,17 +84,7 @@ if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0
   }
 }
 // Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . formatResult($result,'') . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . formatResult($result, $action) . '</span>';
-  // save the new object to session (modified status)
-} else { 
-	Sql::commitTransaction();
-  echo '<span class="messageWARNING" >' . formatResult($result,'') . '</span>';
-}
+displayLastOperationStatus($result);
 
 function formatResult($result, $action) {
   if ($action=='start') {
