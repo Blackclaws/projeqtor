@@ -63,22 +63,17 @@ $newObj=$obj->copy();
 // save the new object to session (modified status)
 $result=$newObj->_copyResult;
 unset($newObj->_copyResult);
-if (! array_key_exists('comboDetail', $_REQUEST)) {
-  if (isset($_REQUEST['directAccessIndex'])) {
-    $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=$newObj;
-  } else {
-    $_SESSION['currentObject']=$newObj;
+
+// Message of correct saving
+$status=displayLastOperationStatus($result);
+if ($status == "OK") {
+  if (! array_key_exists('comboDetail', $_REQUEST)) {
+    if (isset($_REQUEST['directAccessIndex'])) {
+      $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=$newObj;
+    } else {
+      $_SESSION['currentObject']=$newObj;
+    }
   }
 }
-// Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
-	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . $result . '</span>';
-} else {
-	Sql::rollbackTransaction(); 
-  echo '<span class="messageWARNING" >' . $result . '</span>';
-}
+
 ?>

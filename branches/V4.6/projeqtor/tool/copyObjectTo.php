@@ -124,29 +124,18 @@ if ($copyToLinkOrigin) {
 
 
 // Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
-	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $result . '</span>';
-} else if (stripos($result,'id="lastOperationStatus" value="OK"')>0) {
-	if ($res=="OK") {
-	  if (! array_key_exists('comboDetail', $_REQUEST)) {
+$status = displayLastOperationStatus($result);
+if ($status == "OK") {
+  if ($res=="OK") {
+    if (! array_key_exists('comboDetail', $_REQUEST)) {
       if (isset($_REQUEST['directAccessIndex'])) {
         $_SESSION['directAccessIndex'][$_REQUEST['directAccessIndex']]=$newObj;
       } else {
         $_SESSION['currentObject']=$newObj;
       }
     }
-		Sql::commitTransaction();
-	  echo '<span class="messageOK" >' . $result . '</span>';
-  } else {
-  	Sql::rollbackTransaction();
-    echo '<span class="messageWARNING" >' . $res . '</span>';
   }
-} else { 
-	Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . $result . '</span>';
 }
-
 
 function copyStructure($from, $to) {
 	$nbErrors=0;
@@ -243,9 +232,9 @@ function copyStructure($from, $to) {
   }
   $result="OK";
   if ($nbErrors>0) {
-    $result='<span class="messageERROR" >' 
+    $result='<div class="messageERROR" >' 
            . i18n('errorMessageCopy',array($nbErrors))
-           . '</span><br/>'
+           . '</div><br/>'
            . str_replace('<br/><br/>','<br/>',$errorFullMessage);
   }
   return $result;
