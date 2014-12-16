@@ -174,17 +174,16 @@ html, body {
       border-bottom: 1px solid #ffffff;
     }
     #resultDiv {
-      z-index:1000;
       width:45%;
       max-height:220px;
       position:absolute;
-      top:3px !important; left:5% !important; 
+      top:3px !important; left:3px !important; 
       overflow:hidden;
       color: #555555;
       text-align: center;
       vertical-align: middle;
       /* margin: 4px 8px 4px 8px;*/ 
-      padding: 0px 0px 10px 0px;
+      /*padding: 0px 0px 10px 0px;*/
       opacity:0.0;filter:alpha(opacity=00);
     }
     #planResultDiv {
@@ -538,7 +537,7 @@ label, .label, .smallLabel {
   min-height:16px; max-height:200px;
   min-width: 100px;
   overflow-y:auto; overflox-x: hidden;
-  width:90%;
+  width:95%;
   height:100%;
   box-shadow: 5px 5px 10px #656565;
 }

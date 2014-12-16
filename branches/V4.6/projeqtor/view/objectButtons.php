@@ -57,7 +57,7 @@
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?></span>
   </td>
   <td  style="width:50%;">
-  <div style="float:left;position:50%;width:45%;white-space:nowrap">  
+    <div style="float:left;position:50%;width:45%;white-space:nowrap">  
     <?php if (! $comboDetail ) {?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
@@ -256,7 +256,28 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
+       <?php if (! isIE() and ! $readOnly) {?>
+			<div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
+			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+			url="../tool/saveAttachement.php"
+			multiple="true" 
+			label="<?php echo i18n("Attachement");?><br/><i>(<?php echo i18n("dragAndDrop");?>)</i>"
+			uploadOnSelect="true"
+			target="resultPost"
+			onBegin="saveAttachement();"
+			onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
+			style="font-size:60%;position:relative;height:21px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
+			 text-align: center; vertical-align:middle;font-size: 7pt; background-color: #FFFFFF; opacity: 0.8;">		 
+			  <script type="dojo/connect" event="onComplete" args="dataArray">
+          saveAttachementAck(dataArray);
+	      </script>
+				<script type="dojo/connect" event="onProgress" args="data">
+          saveAttachementProgress(data);
+	      </script>
+			</div>
   </div>
+     
+<?php }?>
   </td>
   </tr>
 </table>
