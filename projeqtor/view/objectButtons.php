@@ -54,7 +54,9 @@
   <tr style="height:100%;";>
   <td  style="width:50%;position:relative;">
     <img style="position:relative; left:10px;" src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
-    <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?></span>
+    <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
+      <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
+    </span>
   </td>
   <td  style="width:50%;">
     <div style="float:left;position:50%;width:45%;white-space:nowrap">  
