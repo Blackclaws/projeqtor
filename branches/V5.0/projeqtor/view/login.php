@@ -191,7 +191,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr><td colspan="3">&nbsp;</td></tr>
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
-			                <td colspan="2" style="position:fixed;width:100%; height:100%">
+			                <td colspan="3" style="position:fixed;width:100%; height:100%">
 			                  <div id="loginResultDiv" dojoType="dijit.layout.ContentPane" region="none" >
 			                    <input type="hidden" id="isLoginPage" name="isLoginPage" value="true" />
 			                    <?php if (Parameter::getGlobalParameter('applicationStatus')=='Closed'

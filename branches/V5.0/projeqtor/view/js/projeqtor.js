@@ -1023,7 +1023,12 @@ function finalizeMessageDisplay(destination, validationType) {
   // If operation is correct (not an error) slowly fade the result message
   if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" 
 	  && lastOperationStatus.value!="CONFIRM" && lastOperationStatus.value!="INCOMPLETE")) {
-    dojo.fadeOut({node: contentNode, duration: 3000}).play();
+    dojo.fadeOut({
+      node: contentNode, 
+      duration: 3000,
+      onEnd: function(){contentWidget.set("content","");}  
+    }).play(
+        );
   } else {
     if (lastOperationStatus.value=="ERROR") {
       showError(message);

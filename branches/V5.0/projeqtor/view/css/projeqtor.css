@@ -330,7 +330,7 @@ html, body {
 #loginResultDiv {
   /*overflow: auto !important;*/
   position:absolute !important; top: 0px; left: 150px !important;
-  width:100%;
+  width:300px;
   overflow: visible !important;
   z-index:9999;
   padding: 0px 0px 20px 0px;

@@ -228,6 +228,10 @@ class DocumentVersion extends SqlElement {
     	$dir->createDirectory();
     }
     $fileName=$this->fileName;
+    /* $ext = strtolower ( pathinfo ( $fileName, PATHINFO_EXTENSION ) );
+    if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm') {
+    	$fileName.=".projeqtor";
+    }*/ // Not usefull : id of Document Version is added after file extension 
     $paramFilenameCharset=Parameter::getGlobalParameter('filenameCharset');
     if ($paramFilenameCharset) {
     	$fileName=iconv("UTF-8", $paramFilenameCharset.'//TRANSLIT//IGNORE',$fileName);
