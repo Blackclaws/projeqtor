@@ -447,7 +447,7 @@ function throwError($message, $code=null) {
 			exit();
 		}
 	} else {
-	  echo '<span class="messageERROR" >ERROR : ' . $message . '</span>';
+	  echo '<div class="messageERROR" >ERROR : ' . $message . '</div>';
 	  echo '<input type="hidden" id="lastSaveId" value="" />';
 	  echo '<input type="hidden" id="lastOperation" value="ERROR" />';
 	  echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';

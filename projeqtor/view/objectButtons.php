@@ -256,7 +256,7 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
-       <?php if (! isIE() and ! $readOnly) {?>
+       <?php if (property_exists($obj,'_Attachement') and $updateRight=='YES' and (! isIE() or isIE()>=9) and ! $readOnly ) {?>
 			<div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
 			url="../tool/saveAttachement.php"
@@ -266,7 +266,7 @@
 			target="resultPost"
 			onBegin="saveAttachement();"
 			onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
-			style="font-size:60%;position:relative;height:21px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
+			style="<?php echo (!$obj->id)?'display:none;':'';?>font-size:60%;position:relative;height:21px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
 			 text-align: center; vertical-align:middle;font-size: 7pt; background-color: #FFFFFF; opacity: 0.8;">		 
 			  <script type="dojo/connect" event="onComplete" args="dataArray">
           saveAttachementAck(dataArray);
