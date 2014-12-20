@@ -279,9 +279,9 @@ if (! $error) {
   $message = '<div class="message' . $status . '" >' . $result . '</div>';
 } else {
 	Sql::rollbackTransaction();
-	$message = '<div class="message' . $status . '" >' . $error . '</div>';
+	$message = $error;
+	$attachement=new Attachement();
 }
-
 $jsonReturn='{"file":"'.$attachement->fileName.'",'
  .'"name":"'.$attachement->fileName.'",'
  .'"type":"'.$type.'",'

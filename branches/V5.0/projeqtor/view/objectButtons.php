@@ -52,13 +52,16 @@
 ?>
 <table style="width:100%;height:100%;">
   <tr style="height:100%;";>
-  <td  style="width:50%;position:relative;">
+  <td  style="z-index:-1;width:30%;position:relative;">
     <img style="position:relative; left:10px;" src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
       <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
     </span>
   </td>
-  <td  style="width:50%;">
+  <td  style="width:20%;">
+    <div id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+  </td>
+  <td  style="width:50%;white-space:nowrap;">
     <div style="float:left;position:50%;width:45%;white-space:nowrap">  
     <?php if (! $comboDetail ) {?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false"
@@ -259,6 +262,7 @@
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
        <?php if (property_exists($obj,'_Attachement') and $updateRight=='YES' and (! isIE() or isIE()>=9) and ! $readOnly ) {?>
+			<span id="attachementFileDirectDiv" style="position:relative;<?php echo (!$obj->id)?'visibility:hidden;':'';?>">
 			<div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
 			url="../tool/saveAttachement.php"
@@ -268,7 +272,7 @@
 			target="resultPost"
 			onBegin="saveAttachement();"
 			onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
-			style="<?php echo (!$obj->id)?'display:none;':'';?>font-size:60%;position:relative;height:21px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
+			style="font-size:60%;height:21px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
 			 text-align: center; vertical-align:middle;font-size: 7pt; background-color: #FFFFFF; opacity: 0.8;">		 
 			  <script type="dojo/connect" event="onComplete" args="dataArray">
           saveAttachementAck(dataArray);
@@ -277,6 +281,7 @@
           saveAttachementProgress(data);
 	      </script>
 			</div>
+			</span>
   </div>
      
 <?php }?>
