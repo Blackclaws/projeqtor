@@ -654,6 +654,25 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   }
 }
 
+/** 
+ * ============================================================================
+ * Load some non dojo content div (like loadContent, but for simple div)
+ * Content will not be parsed by dojo
+ * @param page php page to load
+ * @param destinationDiv name of distination div
+ * @param formName nale of form to post (optional)
+ */
+function loadDiv(page, destinationDiv, formName) {
+  var contentNode = dojo.byId(destinationDiv);
+  dojo.xhrPost({
+    url: page,
+    form: dojo.byId(formName),
+    handleAs: "text",
+    load: function(data,args){
+      contentNode.innerHTML=data;
+    }
+  });
+}
 /**
  * ============================================================================
  * Check if destnation is correct If not in main page and detect we have login
@@ -661,14 +680,14 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
  */
 function checkDestination(destination){
   if (dojo.byId("isLoginPage") && destination!="loginResultDiv") {
-    if (dojo.isFF) {
+    //if (dojo.isFF) {
       quitConfirmed=true;
       noDisconnect=true;
       window.location="main.php?lostConnection=true";
-    } else {
-      hideWait();
-      showAlert(i18n("errorConnection"));
-    }
+    //} else {
+    //  hideWait();
+    //  showAlert(i18n("errorConnection"));
+    //}
   }
   if (! dijit.byId('objectGrid') && dojo.byId('multiUpdateButtonDiv')) {
 	  dojo.byId('multiUpdateButtonDiv').style.display='none';
@@ -886,9 +905,23 @@ function finalizeMessageDisplay(destination, validationType) {
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
           refreshProjectSelectorList();
         }
+        if (dojo.byId("buttonDivObjectId") && dojo.byId("buttonDivObjectId").innerHTML=="" && lastSaveId.value ) {
+          dojo.byId("buttonDivObjectId").innerHTML="&nbsp;#"+lastSaveId.value;
+          if (dojo.byId('buttonDivCreationInfo')) {
+            var url='../tool/getObjectCreationInfo.php'
+              +'?objectClass='+dojo.byId('objectClass').value
+              +'&objectId='+lastSaveId.value;
+            loadDiv(url,'buttonDivCreationInfo',null);
+          }
+        }
+        console.log(dojo.byId('attachementFileDirectDiv'));
+        if (dojo.byId('attachementFileDirectDiv')) {
+          console.log('OK');
+          dojo.byId('attachementFileDirectDiv').style.visibility='visible';
+        }
         // TODO : after insert select the current line in the grid
         // selectRowById("objectGrid", lastSaveId.value); // does not work
-      // because grid is refreshing...
+        // because grid is refreshing...
       }
       if (lastOperation.value=="copy") {
         // TODO : after copy select the current line in the grid
@@ -1026,7 +1059,9 @@ function finalizeMessageDisplay(destination, validationType) {
     dojo.fadeOut({
       node: contentNode, 
       duration: 3000,
-      onEnd: function(){contentWidget.set("content","");}  
+      onEnd: function(){
+        contentWidget.set("content","");
+      }  
     }).play(
         );
   } else {
