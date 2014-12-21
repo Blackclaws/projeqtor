@@ -42,6 +42,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
 	$listType=substr($col,2);
 	$column='name';
+	$user=$_SESSION["user"];
 	if ($listType=='DocumentDirectory') {
 		$column='location';
 	}	
@@ -96,7 +97,6 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     		$doc=new Document();
     		$menuClass=$doc->getMenuClass();
     	}
-      $user=$_SESSION["user"];
       $controlRightsTable=$user->getAccessControlRights();
       if (! array_key_exists($menuClass,$controlRightsTable)) {
 	      // If AccessRight notdefined for object and user profile => empty list + log error
@@ -210,7 +210,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         //$sep=($levelWidth==0)?'':substr('_____________________________________________________',(-1)*($levelWidth));
         $val = $sep.$val;
       }
-      if ($selectedFound) {
+      if ($col=='idResource') {
+      	if ($key==$user->id) {
+      		$next=$key;
+      	}
+      } else if ($selectedFound) {
       	$selectedFound=false;
       	$next=$key;
       }
