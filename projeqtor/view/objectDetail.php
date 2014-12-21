@@ -903,7 +903,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
             $fieldWidth -= 28;
           }
         }
-        if ($col=='idStatus') {
+        if ($col=='idStatus' or $col=='idResource') {
         	$fieldWidth=round($fieldWidth/2	)-5;
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
@@ -959,6 +959,16 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');saveObject();">';
         	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
         	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
+        	echo '</div>';
+        }
+        if ($col=='idResource' and $next and $user->isResource and $user->id!=$val) {
+        	echo '<div class="roundedVisibleButton roundedButton"';
+        	echo ' title="'.i18n("assignToMe").'"';
+        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
+        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$user->id.');saveObject();"';
+        	echo '>';
+        	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
+        	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.i18n('assignToMeShort').'<div>';
         	echo '</div>';
         }
       } else if (strpos ( $obj->getFieldAttributes ( $col ), 'display' ) !== false) {
@@ -1063,18 +1073,21 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       	echo $val;
       	echo '</textarea>';
       	echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode ( $obj->getColCaption ( $col )).'</div>';
-      	echo '<div data-dojo-type="dijit.InlineEditBox" ';
+      	echo '<div data-dojo-type="dijit.InlineEditBox"';
       	echo ' height="" title="'.i18n('clickToEditRichText').'"';
         echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
         if ($readOnly) echo ', disabled:true,';
-        echo ',onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];}';
+        echo ',onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];top.formChanged();}';
+        //echo ',onKeyPress:function(){alert(\'keyPress\');}'; // hard coding default event
+        //echo ',onKeyUp:function(){alert(\'keyUp\');}'; // hard coding default event
+        echo ',onKeyDown:function(){alert(\'keyUp\');}'; // hard coding default event
         echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
          echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
          echo ",'|','insertOrderedList','insertUnorderedList','|']";
          echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor','|','fullScreen'";
         //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
        	echo "]}";
-        echo ',onKeyPress:function(){console.log(\'key\');top.formChanged();}'; // hard coding default event
+        
         echo '" ';
         echo $attributes;
         if (strpos ( $attributes, 'readonly' ) > 0) {
@@ -1083,6 +1096,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth+145) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input" ' . '>';
+        echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
+        echo '   alert("OK");';
+        echo '  </script>';
         echo $val;
         echo '</div>';
       } else if ($col == 'icon') {

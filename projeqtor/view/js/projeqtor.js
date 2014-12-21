@@ -2562,7 +2562,11 @@ function stopDef(e) {
   for (index = 0; index < inputs.length; ++index) {
       inputs[index].blur(); 
   }
- 
+  inputs = document.getElementsByClassName('dijitInlineEditBoxDisplayMode');
+  for (index = 0; index < inputs.length; ++index) {
+console.log(inputs[index]);
+      inputs[index].blur(); 
+  }
   if (e && e.preventDefault)
     e.preventDefault();
   else if (window.event && window.event.returnValue)
