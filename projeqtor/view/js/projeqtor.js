@@ -916,7 +916,6 @@ function finalizeMessageDisplay(destination, validationType) {
         }
         console.log(dojo.byId('attachementFileDirectDiv'));
         if (dojo.byId('attachementFileDirectDiv')) {
-          console.log('OK');
           dojo.byId('attachementFileDirectDiv').style.visibility='visible';
         }
         // TODO : after insert select the current line in the grid
@@ -936,6 +935,15 @@ function finalizeMessageDisplay(destination, validationType) {
         }
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
           refreshProjectSelectorList();
+        }
+        if (dojo.byId("buttonDivObjectId") ) {
+          dojo.byId("buttonDivObjectId").innerHTML="";
+        }
+        if (dojo.byId('buttonDivCreationInfo')) {
+          dojo.byId("buttonDivCreationInfo").innerHTML="";
+        }
+        if (dojo.byId('attachementFileDirectDiv')) {
+          dojo.byId('attachementFileDirectDiv').style.visibility='hidden';
         }
         // unselectAllRows("objectGrid");
         finaliseButtonDisplay();
