@@ -999,6 +999,18 @@ label, .label, .smallLabel {
     background: #ededed url(images/buttonActive.png) bottom repeat-x;
 }
 
+.directAttachment .dijitButtonText {
+	margin:auto;
+	padding:0;
+	line-height: 90%;
+	vertical-align:middle;
+}
+.directAttachment .dijitButtonText i {
+  font-size:90%;
+  vertical-align: middle;
+  margin: auto;
+}
+
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */

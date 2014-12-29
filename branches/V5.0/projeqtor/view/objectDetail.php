@@ -1073,21 +1073,22 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       	echo $val;
       	echo '</textarea>';
       	echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode ( $obj->getColCaption ( $col )).'</div>';
-      	echo '<div data-dojo-type="dijit.InlineEditBox"';
-      	echo ' height="" title="'.i18n('clickToEditRichText').'"';
+      	echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
+      	//echo '<div data-dojo-type="dijit.Editor"'; // TEST
+      	echo ' id="'.$fieldId.'Editor" ';
+      	echo ' height="50px" title="'.i18n('clickToEditRichText').'"';
         echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
         if ($readOnly) echo ', disabled:true,';
         echo ',onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];top.formChanged();}';
-        //echo ',onKeyPress:function(){alert(\'keyPress\');}'; // hard coding default event
-        //echo ',onKeyUp:function(){alert(\'keyUp\');}'; // hard coding default event
-        echo ',onKeyDown:function(){alert(\'keyUp\');}'; // hard coding default event
+        //echo ',onKeyPress:function(event){console.log(\'KeyPress\');}'; // hard coding default event
+        //echo ',onKeyDown:function(event){console.log(\'KeyDown\'+event.keyCode);top.onKeyDownFunction(event);}'; // hard coding default event
         echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
          echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
          echo ",'|','insertOrderedList','insertUnorderedList','|']";
-         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor','|','fullScreen'";
+         echo ',onKeyDown:function(event){top.dojo.byId(\''.$fieldId.'\').value=this.value;console.log(top.dojo.byId(\''.$fieldId.'\').value);top.onKeyDownFunction(event,\''.$fieldId.'\');}'; // hard coding default event
+         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor','|','fullScreen'";         
         //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
-       	echo "]}";
-        
+       	echo "]}";      
         echo '" ';
         echo $attributes;
         if (strpos ( $attributes, 'readonly' ) > 0) {
