@@ -2600,3 +2600,16 @@ function saveObject() {
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
 }
 
+function onKeyDownFunction(event, field) {
+  top.console.log("onKeyDownFunc : "+event.keyCode);
+  if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
+    top.console.log("onKeyDownFunc ==> SAVE");
+    event.preventDefault();
+    if (top.dojo.isFF) {top.stopDef();}
+    top.globalSave();
+  } else if (event.keyCode == 112) { // On F1
+    event.preventDefault();
+    if (top.dojo.isFF) {top.stopDef();}
+    top.showHelp();
+  }
+};

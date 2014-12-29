@@ -1,8 +1,9 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
- * Contributors : -
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
+ * Contributors : 
+ *  2014 - Caccia : fix #1544
  *
  * This file is part of ProjeQtOr.
  * 
@@ -201,31 +202,34 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       saveBrowserLocaleToSession();
       // Relaunch Cron (if stopped, any connexion will restart it)
       adminCronRelaunch();
-      /*var onKeyPressFunc = function(event) {
+      var onKeyPressFunc = function(event) {
         if(event.ctrlKey && ! event.altKey && event.keyChar == 's'){
           event.preventDefault();
-          stopDef(event);
+          if (dojo.isFF) stopDef(event);
           globalSave();
         } else if (event.keyCode==dojo.keys.F1 && ! event.keyChar) {
           event.preventDefault();
-          stopDef(event);
+          if (dojo.isFF) stopDef(event);
           showHelp();
         }  
       };
-      dojo.connect(document, "onkeypress", this, onKeyPressFunc);*/
-      // Fix proposed by CACCIA
-      var onKeyPressFunc = document.addEventListener("keydown", function(e) {
-          if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && ! e.altKey) { // CTRL + S
-            e.preventDefault();
-            if (dojo.isFF) stopDef();
-            globalSave();
-          } else if (e.keyCode == 112) { // On F1
-            e.preventDefault();
-            if (dojo.isFF) stopDef();
-            showHelp();
-          }
-        }, false);
-      // End Fix
+      var onKeyDownFunc = function(event) {
+        if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
+          console.log("onKeyDownFunc ==> SAVE");
+          event.preventDefault();
+          if (dojo.isFF) stopDef();
+          globalSave();
+        } else if (event.keyCode == 112) { // On F1
+          event.preventDefault();
+          if (dojo.isFF) stopDef();
+          showHelp();
+        }
+      };
+      if (dojo.isIE<=8) {
+        dojo.connect(document, "onkeypress", this, onKeyPressFunc);
+      } else {
+        dojo.connect(document, "onkeydown", this, onKeyDownFunc);
+      }
       <?php 
       $firstPage="welcome.php";
       if (securityCheckDisplayMenu(1) ) {
