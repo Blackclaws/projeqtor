@@ -2606,10 +2606,18 @@ function onKeyDownFunction(event, field) {
     top.console.log("onKeyDownFunc ==> SAVE");
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
-    top.globalSave();
+    console.log("OK1");
+    top.setTimeout("top.onKeyDownFunctionEditor();",10);
+    
   } else if (event.keyCode == 112) { // On F1
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
     top.showHelp();
   }
-};
+}
+function onKeyDownFunctionEditor () {
+  console.log("OK2");
+  dijit.byId('id').focus();
+  top.setTimeout("top.globalSave();",10);
+}
+
