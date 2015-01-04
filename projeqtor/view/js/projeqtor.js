@@ -811,13 +811,13 @@ function finalizeMessageDisplay(destination, validationType) {
     if (validationType) {  	
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
-      } else if (validationType=='attachement') {
+      } else if (validationType=='attachment') {
     	if (dojo.byId('objectClass') 
     	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' || dojo.byId('objectClass').value=='Contact') ) {
     	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
     	  refreshGrid();
     	} else {
-          loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
+          loadContent("objectDetail.php?refreshAttachments=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
     	}
     	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
       } else if (validationType=='billLine') {
@@ -914,9 +914,8 @@ function finalizeMessageDisplay(destination, validationType) {
             loadDiv(url,'buttonDivCreationInfo',null);
           }
         }
-        console.log(dojo.byId('attachementFileDirectDiv'));
-        if (dojo.byId('attachementFileDirectDiv')) {
-          dojo.byId('attachementFileDirectDiv').style.visibility='visible';
+        if (dojo.byId('attachmentFileDirectDiv')) {
+          dojo.byId('attachmentFileDirectDiv').style.visibility='visible';
         }
         // TODO : after insert select the current line in the grid
         // selectRowById("objectGrid", lastSaveId.value); // does not work
@@ -942,8 +941,8 @@ function finalizeMessageDisplay(destination, validationType) {
         if (dojo.byId('buttonDivCreationInfo')) {
           dojo.byId("buttonDivCreationInfo").innerHTML="";
         }
-        if (dojo.byId('attachementFileDirectDiv')) {
-          dojo.byId('attachementFileDirectDiv').style.visibility='hidden';
+        if (dojo.byId('attachmentFileDirectDiv')) {
+          dojo.byId('attachmentFileDirectDiv').style.visibility='hidden';
         }
         // unselectAllRows("objectGrid");
         finaliseButtonDisplay();
@@ -966,8 +965,8 @@ function finalizeMessageDisplay(destination, validationType) {
           if (lastOperation.value=="insert") {
         	  refreshDetailElse=true;
           } else {
-        	  if (dijit.byId('idle') && dojo.byId('attachementIdle')) {
-        		  if (dijit.byId('idle').get("value")!=dojo.byId('attachementIdle').value) {
+        	  if (dijit.byId('idle') && dojo.byId('attachmentIdle')) {
+        		  if (dijit.byId('idle').get("value")!=dojo.byId('attachmentIdle').value) {
         			  refreshDetailElse=true;
         		  }
         	  }
@@ -984,7 +983,7 @@ function finalizeMessageDisplay(destination, validationType) {
           }
           if (refreshDetailElse && ! validationType) {
             if (dojo.byId(dojo.byId('objectClass').value+'_attachment')) {
-              loadContent("objectDetail.php?refreshAttachements=true", dojo.byId('objectClass').value+'_attachment', 'listForm');
+              loadContent("objectDetail.php?refreshAttachemnts=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
             }
             if (dojo.byId(dojo.byId('objectClass').value+'_note')) {
               loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
@@ -1056,7 +1055,7 @@ function finalizeMessageDisplay(destination, validationType) {
       formInitialize();
     }
   } else {
-    if (validationType!='note' && validationType!='attachement') {
+    if (validationType!='note' && validationType!='attachment') {
       formInitialize();
     }
     hideWait();
@@ -2146,8 +2145,8 @@ function globalSave() {
 		var button=dijit.byId('dialogCopySubmit');
   } else if (dijit.byId('dialogCopyProject') && dijit.byId('dialogCopyProject').open) {
 		var button=dijit.byId('dialogProjectCopySubmit');
-  } else if (dijit.byId('dialogAttachement') && dijit.byId('dialogAttachement').open) {
-		var button=dijit.byId('dialogAttachementSubmit');
+  } else if (dijit.byId('dialogAttachment') && dijit.byId('dialogAttachment').open) {
+		var button=dijit.byId('dialogAttachmentSubmit');
   } else if (dijit.byId('dialogDocumentVersion') && dijit.byId('dialogDocumentVersion').open) {
 		var button=dijit.byId('submitDocumentVersionUpload');
   } else if (dijit.byId('dialogAssignment') && dijit.byId('dialogAssignment').open) {
@@ -2603,10 +2602,8 @@ function saveObject() {
 function onKeyDownFunction(event, field) {
   top.console.log("onKeyDownFunc : "+event.keyCode);
   if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
-    top.console.log("onKeyDownFunc ==> SAVE");
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
-    console.log("OK1");
     top.setTimeout("top.onKeyDownFunctionEditor();",10);
     
   } else if (event.keyCode == 112) { // On F1
@@ -2616,7 +2613,6 @@ function onKeyDownFunction(event, field) {
   }
 }
 function onKeyDownFunctionEditor () {
-  console.log("OK2");
   dijit.byId('id').focus();
   top.setTimeout("top.globalSave();",10);
 }

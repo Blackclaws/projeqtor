@@ -88,7 +88,7 @@ class TestSession extends SqlElement {
   public $_TestCaseRun=array();
   public $_col_1_1_Link;
   public $_Link=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
   
   // Define the layout that will be used for lists

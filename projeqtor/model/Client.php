@@ -52,7 +52,7 @@ class Client extends SqlElement {
   public $_spe_projects;
   public $_sec_Contacts;
   public $_spe_contacts;
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
   
   private static $_layout='

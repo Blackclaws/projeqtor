@@ -55,16 +55,16 @@ if (array_key_exists('isIE',$_REQUEST)) {
          <label for="documentVersionFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
         </td>
         <td>
-         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />     
+         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />     
          <?php  if ($isIE and $isIE<=9) {?>
-         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
           dojoType="dojox.form.FileInput" type="file" 
           name="documentVersionFile" id="documentVersionFile" 
           cancelText="<?php echo i18n("buttonReset");?>"
           label="<?php echo i18n("buttonBrowse");?>"
           title="<?php echo i18n("helpSelectFile");?>" />
          <?php } else {?>  
-         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
           dojoType="dojox.form.Uploader" type="file" 
           url="../tool/saveDocumentVersion.php"
           name="documentVersionFile" id="documentVersionFile" 

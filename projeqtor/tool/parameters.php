@@ -88,9 +88,9 @@ $paramFadeLoadingMode='false';                  // Setup the way frames are refr
 $paramRowPerPage='50';                          // Number of row per page on main Grid view {any integer}
 $paramIconSize='22';                            // Icon size on menu tree {'16' for small, '22' for medium, '32' for big}
 
-// === attachement
-$paramAttachementDirectory='/home/projeqtor/files'; // Directory to store Attachements. Set to empty string to disable attachement
-$paramAttachementMaxSize=1024*1024*2;           // Max file size for attachement = 1024 * 1024 * Mo
+// === attachment
+$paramAttachmentDirectory='/home/projeqtor/files'; // Directory to store Attachments. Set to empty string to disable attachment
+$paramAttachmentMaxSize=1024*1024*2;           // Max file size for attachment = 1024 * 1024 * Mo
 $paramPathSeparator='/';                        // Path separator, depending on system
 
 // === log management

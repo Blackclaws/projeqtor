@@ -196,7 +196,7 @@ label, .label {
   margin-bottom: 5px;
 }
 
-.historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, 
+.historyHeader, .noteHeader, .attachmentHeader, .messageHeader, .linkHeader, .assignHeader, 
 .dependencyHeader, .workflowHeader, .filterHeader, .calendarHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
@@ -295,7 +295,7 @@ label, .label {
   vertical-align: middle;
   padding: 0px 1px 0px 1px;
 }
-.historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
+.historyData, .noteData, .attachmentData, .messageData, .messageDataValue, .linkData, .assignData, 
 .dependencyData, .workflowData, .filterData, .messageDataValueGrey {
   font-size: 90%;
   padding: 1px 5px 1px 5px;

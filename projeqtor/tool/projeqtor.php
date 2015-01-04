@@ -23,7 +23,6 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
 $projeqtor='loaded';
 spl_autoload_register('projeqtorAutoload', true);
 include_once('../model/User.php');
@@ -52,7 +51,6 @@ $browserLocale="";
 $reportCount=0;
 include_once("../tool/file.php");
 include_once "../tool/html.php"; // include html functions
-
 /* ============================================================================
  * global variables
  * ============================================================================ */
@@ -92,9 +90,9 @@ securityCheckRequest();
 //$paramIconSize=setupIconSize();              //Not used any more this way - user Parameter::getUserParameter("paramIconSize"); 
 $cr="\n";                     // Line feed (just for html dynamic building, to ease debugging
 
-$isAttachementEnabled=true;   // allow attachement
-if (! Parameter::getGlobalParameter('paramAttachementDirectory') or ! Parameter::getGlobalParameter('paramAttachementMaxSize')) {
-  $isAttachementEnabled=false;
+$isAttachmentEnabled=true;   // allow attachment
+if (! Parameter::getGlobalParameter('paramAttachmentDirectory') or ! Parameter::getGlobalParameter('paramAttachmentMaxSize')) {
+  $isAttachmentEnabled=false;
 } 
 
 /* ============================================================================

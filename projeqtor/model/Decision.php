@@ -51,7 +51,7 @@ class Decision extends SqlElement {
   //public $_Link_Meeting=array();
   public $_col_1_1_link;
   public $_Link=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
 
   // Define the layout that will be used for lists

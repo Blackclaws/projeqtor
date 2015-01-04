@@ -170,7 +170,7 @@ function createThumb($imageFile,$size,$thumb=null) {
 
 function getThumbFileName($imageFile,$size) {
 	$thumbLocation='../files/thumbs';
-	$attLoc=Parameter::getGlobalParameter('paramAttachementDirectory');
+	$attLoc=Parameter::getGlobalParameter('paramAttachmentDirectory');
 	$docLoc=Parameter::getGlobalParameter('documentRoot');
 	$root='../files';
 	if (substr($imageFile,0,strlen($attLoc))==$attLoc) {

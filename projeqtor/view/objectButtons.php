@@ -152,9 +152,9 @@
 		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
           };
           var alsoDelete="";
-		      if (dojo.byId('nbAttachements')) {
-            if (dojo.byId('nbAttachements').value>0) {
-              alsoDelete+="<br/><br/>" + i18n('alsoDeleteAttachement', new Array(dojo.byId('nbAttachements').value) );
+		      if (dojo.byId('nbAttachments')) {
+            if (dojo.byId('nbAttachments').value>0) {
+              alsoDelete+="<br/><br/>" + i18n('alsoDeleteAttachment', new Array(dojo.byId('nbAttachments').value) );
             }
           }
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
@@ -261,24 +261,28 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
-       <?php if (property_exists($obj,'_Attachement') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
-			<span id="attachementFileDirectDiv" style="position:relative;<?php echo (!$obj->id)?'visibility:hidden;':'';?>">
-			<div dojoType="dojox.form.Uploader" type="file" id="attachementFileDirect" name="attachementFile" 
-			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
-			url="../tool/saveAttachement.php"
+       <?php $isAttachmentEnabled = true; // allow attachment
+    		if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
+    			$isAttachmentEnabled = false;
+    		} 
+       if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
+			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id)?'visibility:hidden;':'';?>">
+			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
+			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
+			url="../tool/saveAttachment.php"
 			multiple="true" class="directAttachment" 			
 			uploadOnSelect="true"
 			target="resultPost"
-			onBegin="saveAttachement();"
+			onBegin="saveAttachment();"
 			onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
 			style="font-size:60%;height:21px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
 			 text-align: center; vertical-align:middle;font-size: 7pt; background-color: #FFFFFF; opacity: 0.8;"
-			label="<?php echo i18n("Attachement");?><br/><i>(<?php echo i18n("dragAndDrop");?>)</i>">		 
+			label="<?php echo i18n("Attachment");?><br/><i>(<?php echo i18n("dragAndDrop");?>)</i>">		 
 			  <script type="dojo/connect" event="onComplete" args="dataArray">
-          saveAttachementAck(dataArray);
+          saveAttachmentAck(dataArray);
 	      </script>
 				<script type="dojo/connect" event="onProgress" args="data">
-          saveAttachementProgress(data);
+          saveAttachmentProgress(data);
 	      </script>
 			</div>
 			</span>

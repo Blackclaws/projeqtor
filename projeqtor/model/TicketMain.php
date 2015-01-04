@@ -74,7 +74,7 @@ class TicketMain extends SqlElement {
   public $result;
   public $_col_3_3_Link;
   public $_Link=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
   
   // Define the layout that will be used for lists

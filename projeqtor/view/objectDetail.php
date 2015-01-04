@@ -199,7 +199,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       $currentCol += 1;
       $nbCol = substr ( $col, 7, 1 );
       $nbCol=$nbColMax;
-      $widthPct = round ( 98 / $nbCol ) . "%";
+      /*$widthPct = round ( 98 / $nbCol ) . "%";
       if ($nbCol == '1') {
         $widthPct = $displayWidth;
       }
@@ -209,7 +209,8 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       }
       if ($print) {
         $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
-      }
+      }*/
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth);
       $prevSection = $section;
       $split=explode('_',$col);
       if (count($split)>1) {
@@ -274,6 +275,24 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       }
     } else if (substr ( $col, 0, 12 ) == '_TestCaseRun') { // Display TestCaseRun
       drawTestCaseRunFromObject ( $val, $obj );
+    } else if (substr ( $col, 0, 11 ) == '_Attachment') {
+    	if (! isset ( $isAttachmentEnabled )) {
+    		$isAttachmentEnabled = true; // allow attachment
+    		if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
+    			$isAttachmentEnabled = false;
+    		}
+    	}
+    	if ($isAttachmentEnabled and ! $comboDetail) {
+	    	$prevSection = $section;
+	    	$section="Attachment";
+	    	startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+	    	drawAttachmentsFromObject($obj,false);
+    	}
+    } else if (substr ( $col, 0, 5 ) == '_Note') {
+    		$prevSection = $section;
+    		$section="Notes";
+    		startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+    		drawNotesFromObject($obj,false);
     } else if (substr ( $col, 0, 1 ) == '_' and substr ( $col, 0, 6 ) != '_void_' and substr ( $col, 0, 7 ) != '_label_') { // field not to be displayed
                                          //
     } else {
@@ -1086,7 +1105,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
          echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
          echo ",'|','insertOrderedList','insertUnorderedList','|']";
          echo ',onKeyDown:function(event){top.dojo.byId(\''.$fieldId.'\').value=this.value;console.log(top.dojo.byId(\''.$fieldId.'\').value);top.onKeyDownFunction(event,\''.$fieldId.'\');}'; // hard coding default event
-         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor','|','fullScreen'";         
+         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
+        // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...  
+        if (0) echo ",'|','fullScreen'";         
         //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
        	echo "]}";      
         echo '" ';
@@ -1361,7 +1382,7 @@ function drawHistoryFromObjects($refresh = false) {
   $stockUser = null;
   $stockOper = null;
   foreach ( $historyList as $hist ) {
-    if (substr ( $hist->colName, 0, 25 ) == 'subDirectory|Attachement|' or substr ( $hist->colName, 0, 19 ) == 'idTeam|Attachement|') {
+    if (substr ( $hist->colName, 0, 25 ) == 'subDirectory|Attachment|' or substr ( $hist->colName, 0, 19 ) == 'idTeam|Attachment|') {
       continue;
     }
     $colName = ($hist->colName == null) ? '' : $hist->colName;
@@ -1712,110 +1733,110 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh = false) {
   echo '</tr>';
   echo '</table>';
 }
-function drawAttachementsFromObject($obj, $refresh = false) {
+function drawAttachmentsFromObject($obj, $refresh = false) {
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  echo '<input type="hidden" id="attachementIdle" value="' . $obj->idle . '" />';
+  echo '<input type="hidden" id="attachmentIdle" value="' . $obj->idle . '" />';
   $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
   if ($obj->idle == 1) {
     $canUpdate = false;
   }
-  if (isset ( $obj->_Attachement )) {
-    $attachements = $obj->_Attachement;
+  if (isset ( $obj->_Attachment )) {
+    $attachments = $obj->_Attachment;
   } else {
-    $attachements = array ();
+    $attachments = array ();
   }
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="attachementHeader" style="width:5%">';
+    echo '<td class="attachmentHeader" style="width:5%">';
     if ($obj->id != null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachement(\'file\');" title="' . i18n ( 'addAttachement' ) . '" class="smallButton"/> ';
-      echo '<img src="css/images/smallButtonLink.png" onClick="addAttachement(\'link\');" title="' . i18n ( 'addHyperlink' ) . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n ( 'addAttachment' ) . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n ( 'addHyperlink' ) . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="attachementHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="attachementHeader" style="width:10%;">' . i18n ( 'colSize' ) . '</td>';
-  echo '<td class="attachementHeader" style="width:5%;">' . i18n ( 'colType' ) . '</td>';
-  echo '<td class="attachementHeader" style="width:' . (($print) ? '50' : '45') . '%">' . i18n ( 'colFile' ) . '</td>';
-  echo '<td class="attachementHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="attachementHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:10%;">' . i18n ( 'colSize' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:5%;">' . i18n ( 'colType' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:' . (($print) ? '50' : '45') . '%">' . i18n ( 'colFile' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
   echo '</tr>';
-  foreach ( $attachements as $attachement ) {
-    $userId = $attachement->idUser;
+  foreach ( $attachments as $attachment ) {
+    $userId = $attachment->idUser;
     $ress = new Resource ( $user->id );
-    if ($user->id == $attachement->idUser or $attachement->idPrivacy == 1 or ($attachement->idPrivacy == 2 and $ress->idTeam == $attachement->idTeam)) {
+    if ($user->id == $attachment->idUser or $attachment->idPrivacy == 1 or ($attachment->idPrivacy == 2 and $ress->idTeam == $attachment->idTeam)) {
       $userName = SqlList::getNameFromId ( 'User', $userId );
-      $creationDate = $attachement->creationDate;
+      $creationDate = $attachment->creationDate;
       echo '<tr>';
       if (! $print) {
-        echo '<td class="attachementData" style="text-align:center;width:5%"">';
-        if ($attachement->fileName and $attachement->subDirectory and ! $print) {
-          echo '<a href="../tool/download.php?class=Attachement&id=' . $attachement->id . '"';
+        echo '<td class="attachmentData" style="text-align:center;width:5%"">';
+        if ($attachment->fileName and $attachment->subDirectory and ! $print) {
+          echo '<a href="../tool/download.php?class=Attachment&id=' . $attachment->id . '"';
           echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . '"><img src="css/images/smallButtonDownload.png" /></a>';
         }
-        if ($attachement->link and ! $print) {
-          echo '<a href="' . $attachement->link . '"';
-          echo ' target="#" title="' . urldecode ( $attachement->link ) . '"><img src="css/images/smallButtonLink.png" /></a>';
+        if ($attachment->link and ! $print) {
+          echo '<a href="' . $attachment->link . '"';
+          echo ' target="#" title="' . urldecode ( $attachment->link ) . '"><img src="css/images/smallButtonLink.png" /></a>';
         }
-        if ($attachement->idUser == $user->id and ! $print and $canUpdate) {
-          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachement(' . $attachement->id . ');" title="' . i18n ( 'removeAttachement' ) . '" class="smallButton"/>';
+        if ($attachment->idUser == $user->id and ! $print and $canUpdate) {
+          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n ( 'removeAttachment' ) . '" class="smallButton"/>';
         }
         echo '</td>';
       }
-      echo '<td class="attachementData" style="width:5%;">#' . $attachement->id . '</td>';
-      echo '<td class="attachementData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachement->fileSize ) . '</td>';
-      echo '<td class="attachementData" style="width:5%;text-align:center;">';
-      if ($attachement->isThumbable ()) {
-        echo '<img src="' . getImageThumb ( $attachement->getFullPathFileName (), 32 ) . '" ' . ' title="' . $attachement->fileName . '" style="cursor:pointer"' . ' onClick="showImage(\'Attachement\',\'' . $attachement->id . '\',\'' . $attachement->fileName . '\');" />';
-      } else if ($attachement->link and ! $print) {
-        echo '<div style="cursor:pointer" onClick="showLink(\'' . urldecode ( $attachement->link ) . '\');">';
-        echo '<img src="../view/img/mime/html.png" title="' . $attachement->link . '" />';
+      echo '<td class="attachmentData" style="width:5%;">#' . $attachment->id . '</td>';
+      echo '<td class="attachmentData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachment->fileSize ) . '</td>';
+      echo '<td class="attachmentData" style="width:5%;text-align:center;">';
+      if ($attachment->isThumbable ()) {
+        echo '<img src="' . getImageThumb ( $attachment->getFullPathFileName (), 32 ) . '" ' . ' title="' . $attachment->fileName . '" style="cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
+      } else if ($attachment->link and ! $print) {
+        echo '<div style="cursor:pointer" onClick="showLink(\'' . urldecode ( $attachment->link ) . '\');">';
+        echo '<img src="../view/img/mime/html.png" title="' . $attachment->link . '" />';
         echo '</div>';
       } else {
-        echo htmlGetMimeType ( $attachement->mimeType, $attachement->fileName, $attachement->id );
+        echo htmlGetMimeType ( $attachment->mimeType, $attachment->fileName, $attachment->id );
       }
       echo '</td>';
-      echo '<td class="attachementData" style="width:' . (($print) ? '50' : '45') . '%" title="' . $attachement->description . '">';
+      echo '<td class="attachmentData" style="width:' . (($print) ? '50' : '45') . '%" title="' . $attachment->description . '">';
       echo '<table style="width:100%"><tr >';
       echo ' <td>';
-      if ($attachement->link) {
-        echo htmlEncode ( urldecode ( $attachement->link ), 'print' );
+      if ($attachment->link) {
+        echo htmlEncode ( urldecode ( $attachment->link ), 'print' );
       } else {
-        echo htmlEncode ( $attachement->fileName, 'print' );
+        echo htmlEncode ( $attachment->fileName, 'print' );
       }
       echo ' </td>';
-      if ($attachement->description and ! $print) {
+      if ($attachment->description and ! $print) {
         echo '<td style="width:18px; vertical-align: top;"><img src="img/note.png" /></td>';
       }
-      if ($attachement->idPrivacy == 3) {
+      if ($attachment->idPrivacy == 3) {
         echo '<td style="width:18px;vertical-align: top;" title="' . i18n ( 'private' ) . '"><img src="img/private.png" /></td>';
-      } else if ($attachement->idPrivacy == 2) {
-        echo '<td style="width:18px;vertical-align: top;" title="' . i18n ( 'team' ) . " : " . SqlList::getNameFromId ( 'Team', $attachement->idTeam ) . '"><img src="img/team.png" /></td>';
+      } else if ($attachment->idPrivacy == 2) {
+        echo '<td style="width:18px;vertical-align: top;" title="' . i18n ( 'team' ) . " : " . SqlList::getNameFromId ( 'Team', $attachment->idTeam ) . '"><img src="img/team.png" /></td>';
       }
       echo '</tr></table>';
       echo '</td>';
       
-      echo '<td class="attachementData" style="width:15%">' . htmlFormatDateTime ( $creationDate ) . '<br/></td>';
-      echo '<td class="attachementData" style="width:15%">' . $userName . '</td>';
+      echo '<td class="attachmentData" style="width:15%">' . htmlFormatDateTime ( $creationDate ) . '<br/></td>';
+      echo '<td class="attachmentData" style="width:15%">' . $userName . '</td>';
       echo '</tr>';
     }
   }
   echo '<tr>';
   if (! $print) {
-    echo '<td class="attachementDataClosetable">&nbsp;';
-    echo '<input type="hidden" name="nbAttachements" id="nbAttachements" value="' . count ( $attachements ) . '" />';
+    echo '<td class="attachmentDataClosetable">&nbsp;';
+    echo '<input type="hidden" name="nbAttachments" id="nbAttachments" value="' . count ( $attachments ) . '" />';
     echo '</td>';
   }
-  echo '<td class="attachementDataClosetable">&nbsp;</td>';
-  echo '<td class="attachementDataClosetable">&nbsp;</td>';
-  echo '<td class="attachementDataClosetable">&nbsp;</td>';
-  echo '<td class="attachementDataClosetable">&nbsp;</td>';
-  echo '<td class="attachementDataClosetable">&nbsp;</td>';
-  echo '<td class="attachementDataClosetable">&nbsp;</td>';
+  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
+  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
+  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
+  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
+  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
+  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
 }
@@ -2652,8 +2673,8 @@ if ($noselect) {
     drawChecklistDefinitionLinesFromObject ( $obj, true );
     exit ();
   }
-  if (array_key_exists ( 'refreshAttachements', $_REQUEST )) {
-    drawAttachementsFromObject ( $obj, true );
+  if (array_key_exists ( 'refreshAttachments', $_REQUEST )) {
+    drawAttachmentsFromObject ( $obj, true );
     exit ();
   }
   /* On assignment change refresh all item
@@ -2811,51 +2832,13 @@ if (! $print) {
 		</form>
   <?php
 }
-$displayAttachement = 'YES_OPENED';
-if (array_key_exists ( 'displayAttachement', $_SESSION )) {
-  $displayAttachement = $_SESSION ['displayAttachement'];
-}
-if (! isset ( $isAttachementEnabled )) {
-  $isAttachementEnabled = true; // allow attachement
-  if (! Parameter::getGlobalParameter ( 'paramAttachementDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachementMaxSize' )) {
-    $isAttachementEnabled = false;
-  }
-}
-if (! $noselect and isset ( $obj->_Attachement ) and $isAttachementEnabled and ! $comboDetail) {
-  ?>
-<br />
-  <?php if ($print) {?>
-<table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('sectionAttachements');?></td>
-			</tr>
-			<tr>
-				<td><?php drawAttachementsFromObject($obj); ?></td>
-			</tr>
-		</table>
-  <?php
-  
-} else {
-    $titlePane = $objClass . "_attachment";
-    ?>
+$widthPct=setWidthPct($displayWidth, $print, $printWidth);
 
 
-<div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
-     title="<?php echo i18n('sectionAttachements');?>"
-     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>" 
-     onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php 
-     //startTitlePane(get_class($obj), 'attachment', $collapsedList, $widthPct, $print, $outMode, "yes");
-     drawAttachementsFromObject($obj); ?>
-</div>
-
-<?php }?> <?php
-}
 if (! $noselect and isset ( $obj->_BillLine )) {
   ?> <br />
   <?php if ($print) {?>
-<table width="<?php echo $printWidth;?>px;">
+<table width="<?php echo $widthPct;?>px;">
 			<tr>
 				<td class="section"><?php echo i18n('sectionBillLines');?></td>
 			</tr>
@@ -2868,7 +2851,7 @@ if (! $noselect and isset ( $obj->_BillLine )) {
 } else {
     $titlePane = $objClass . "_billLine";
     ?>
-<div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+<div style="width: <?php echo $widthPct;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionBillLines');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
      id="<?php echo $titlePane;?>"       
@@ -3001,5 +2984,26 @@ if ($print) {
   if ($list->code == 'YES' and count ( $cdList ) > 0 and $obj->id) {
     include_once "../tool/dynamicDialogChecklist.php";
   }
+}
+function setWidthPct($displayWidth, $print, $printWidth) {
+	if ($displayWidth > 1380) {
+		$nbCol=3;
+	} else if ($displayWidth > 900) {
+		$nbCol=2;
+	} else {
+		$nbCol=1;
+	}
+	$widthPct = round ( 98 / $nbCol ) . "%";
+	if ($nbCol == '1') {
+		$widthPct = $displayWidth;
+	}
+	if (substr ( $displayWidth, - 2, 2 ) == "px") {
+		$val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
+		$widthPct = floor ( ($val / $nbCol) - 4) . "px";
+	}
+	if ($print) {
+		$widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
+	}
+	return $widthPct;
 }
 ?>

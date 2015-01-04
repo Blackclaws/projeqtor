@@ -60,7 +60,7 @@ if (array_key_exists('importFile',$_FILES)) {
   errorLog(i18n('errorNotFoundFile'));
   exit;
 }
-$attachementMaxSize=Parameter::getGlobalParameter('paramAttachementMaxSize');
+$attachmentMaxSize=Parameter::getGlobalParameter('paramAttachmentMaxSize');
 if ( $uploadedFile['error']!=0 ) {
   switch ($uploadedFile['error']) {
     case 1:
@@ -69,8 +69,8 @@ if ( $uploadedFile['error']!=0 ) {
       exit;
       break; 
     case 2:  	
-      echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
-      errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'$paramAttachementMaxSize')));
+      echo htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
+      errorLog(i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
       exit;
       break;  
     case 4:
@@ -91,8 +91,8 @@ if (! $uploadedFile['name']) {
   $error=true; 
 }
 $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
-$attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
-$uploaddir = $attachementDirectory . $pathSeparator . "import" . $pathSeparator;
+$attachmentDirectory=Parameter::getGlobalParameter('paramAttachmentDirectory');
+$uploaddir = $attachmentDirectory . $pathSeparator . "import" . $pathSeparator;
 if (! file_exists($uploaddir)) {
   mkdir($uploaddir,0777,true);
 }
