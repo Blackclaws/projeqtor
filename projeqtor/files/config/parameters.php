@@ -12,9 +12,9 @@ $paramDbName='projeqtor_v50';$paramDbPrefix='';
 //$paramDbName='ael'; $paramDbPrefix='ael_';
 $paramDbHost='127.0.0.1';
 $logFile='../files/logs/projeqtor_${date}.log';
-$logLevel='4';
+$logLevel='3';
 $paramDebugMode='false';
 $flashReport=true;
-$debugQuery=true;
+$debugQuery=false;
 //======= END// New parameters V4.4.0
 $enforceUTF8 = '1';
