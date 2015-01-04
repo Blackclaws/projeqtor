@@ -90,8 +90,8 @@ $stockDate=null;
 $stockUser=null;
 $stockOper=null;
 foreach($historyList as $hist) {
-	if (substr($hist->colName,0,25)=='subDirectory|Attachement|' 
-	 or substr($hist->colName,0,19)=='idTeam|Attachement|') {
+	if (substr($hist->colName,0,25)=='subDirectory|Attachment|' 
+	 or substr($hist->colName,0,19)=='idTeam|Attachment|') {
 		continue;
 	}
   $colName=($hist->colName==null)?'':$hist->colName;

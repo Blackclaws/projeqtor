@@ -111,7 +111,7 @@ class History extends SqlElement {
     	if ($colName!="updateDate") {    
         self::store ($obj, $obj->refType, $obj->refId, $operation , $colName. '|' . $refType . '|' . $obj->id, $oldValue, $newValue);
     	}
-    } else if ($refType=='Attachement') {
+    } else if ($refType=='Attachment') {
       if ($operation=='insert') {
         $newValue=$obj->fileName;
       } else if ($operation=='delete') {

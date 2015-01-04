@@ -149,7 +149,7 @@ class Parameter extends SqlElement {
    * @return array of allowed values as code=>value
    */
   static function getList($parameter) {
-    global $isAttachementEnabled;
+    global $isAttachmentEnabled;
     $list=array();
     switch ($parameter) {
       case 'theme': case 'defaultTheme':
@@ -227,8 +227,8 @@ class Parameter extends SqlElement {
         $list=array('YES_OPENED'=>i18n('displayYesOpened'),
                     'YES_CLOSED'=>i18n('displayYesClosed'));
         break;
-      case 'displayAttachement':
-        if ($isAttachementEnabled) {
+      case 'displayAttachment':
+        if ($isAttachmentEnabled) {
           $list=array('YES_OPENED'=>i18n('displayYesOpened'),
                       'YES_CLOSED'=>i18n('displayYesClosed'));
         } else {
@@ -367,7 +367,7 @@ class Parameter extends SqlElement {
                            'paramIconSize'=>'list',
                            'paramTopIconSize'=>'list',
                            //'sectionObjectDetail'=>'section', 
-                           //"displayAttachement"=>"list",
+                           //"displayAttachment"=>"list",
                            //"displayNote"=>"list",
                          'sectionIHM'=>'section',
                            "displayHistory"=>"list",  
@@ -455,8 +455,8 @@ class Parameter extends SqlElement {
       	                       'defaultTheme'=>'list',
       	                       'maxItemsInTodayLists'=>'number',
       	                     'sectionFiles'=>'section',
-      	                       'paramAttachementDirectory'=>'text',
-      	                       'paramAttachementMaxSize'=>'longnumber',
+      	                       'paramAttachmentDirectory'=>'text',
+      	                       'paramAttachmentMaxSize'=>'longnumber',
       	                       'paramReportTempDirectory'=>'text',
       	                     'sectionDocument'=>'section',
       	                       'documentRoot'=>'text',
@@ -524,8 +524,8 @@ class Parameter extends SqlElement {
     	  unset($parameterList['cronImportDirectory']);
     	  unset($parameterList['paramMemoryLimitForPDF']);
     	  unset($parameterList['sectionFiles']);
-    	  unset($parameterList['paramAttachementDirectory']);
-    	  unset($parameterList['paramAttachementMaxSize']);    	  
+    	  unset($parameterList['paramAttachmentDirectory']);
+    	  unset($parameterList['paramAttachmentMaxSize']);    	  
     	  unset($parameterList['paramReportTempDirectory']);
     	  unset($parameterList['paramMailEol']);
     	  unset($parameterList['cronDirectory']);

@@ -22,6 +22,8 @@ ALTER TABLE `${prefix}project` CHANGE  description description text;
 ALTER TABLE `${prefix}ticket` CHANGE description description text,
 CHANGE result result text;
 
+RENAME TABLE `${prefix}attachement` to `${prefix}attachment`;
 
-
-
+UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentDirectory' WHERE parameterCode='paramAttachementDirectory';
+UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentMaxSize' WHERE parameterCode='paramAttachementMaxSize';
+UPDATE `${prefix}parameter` SET parameterCode='displayAttachment' WHERE parameterCode='displayAttachement';

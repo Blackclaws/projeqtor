@@ -51,7 +51,7 @@ class Version extends SqlElement {
   public $description;
   public $_col_2_2_Versionproject_projects;
   public $_VersionProject=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
   
   // Define the layout that will be used for lists

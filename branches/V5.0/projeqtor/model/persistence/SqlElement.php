@@ -69,13 +69,13 @@ abstract class SqlElement {
     "AccessScopeDelete" =>  array("AccessProfile"=>"control"),
     "Assignment" =>         array("PlannedWork"=>"cascade",
 	     				                    "Work"=>"control"),
-    "Action" =>             array("Attachement"=>"cascade",
+    "Action" =>             array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "ActionType" =>         array("Action"=>"control"),
     "Activity" =>           array("Activity"=>"confirm", 
                                   "Assignment"=>"confirm",
-                                  "Attachement"=>"cascade",
+                                  "Attachment"=>"cascade",
                                   "Dependency"=>"cascade",
                                   "Link"=>"cascade",
                                   "Milestone"=>"confirm",
@@ -91,7 +91,7 @@ abstract class SqlElement {
     "Checklist" =>	        array("ChecklistLine"=>"cascade"),
     "ChecklistDefinition"=> array("Checklist"=>"control",
                                   "ChecklistDefinitionLine"=>"cascade"),
-    "Command"=>             array("Attachement"=>"cascade",
+    "Command"=>             array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "CommandType"=>         array("Command"=>"control"),
@@ -106,7 +106,7 @@ abstract class SqlElement {
     "Criticality" =>        array("Requirement"=>"control",
                                   "Risk"=>"control",
                                   "Ticket"=>"control"),
-    "Decision" =>           array("Attachement"=>"cascade",
+    "Decision" =>           array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "DecisionType" =>       array("Decision"=>"control"),
@@ -119,13 +119,13 @@ abstract class SqlElement {
                                   "DocumentDirectory"=>"control"),
     "Feasibility" =>        array("Requirement"=>"control"),
     "Filter" =>             array("FilterCriteria"=>"cascade"),
-    "Issue" =>              array("Attachement"=>"cascade",
+    "Issue" =>              array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "IssueType" =>          array("Issue"=>"control"),
     "Likelihood" =>         array("Risk"=>"control"),
     "Meeting" =>            array("Assignment"=>"cascade",
-                                  "Attachement"=>"cascade",
+                                  "Attachment"=>"cascade",
                                   "Dependency"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade",
@@ -134,7 +134,7 @@ abstract class SqlElement {
                                   "PeriodicMeeting"=>"control"),
     "Menu" =>               array("AccessRight"=>"cascade"),
     "MessageType" =>        array("Message"=>"control"),
-    "Milestone" =>          array("Attachement"=>"cascade",
+    "Milestone" =>          array("Attachment"=>"cascade",
                                   "Dependency"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
@@ -158,7 +158,7 @@ abstract class SqlElement {
     "Project" =>            array("Action"=>"control",
                                   "Activity"=>"confirm",
                                   "Affectation"=>"confirm",
-                                  "Attachement"=>"cascade",
+                                  "Attachment"=>"cascade",
                                   "Bill"=>"control",
                                   "Command"=>"control",
                                   "Decision"=>"control",
@@ -187,14 +187,14 @@ abstract class SqlElement {
                                   "Work"=>"control"),
     "Question" =>           array("Link"=>"cascade"),
     "QuestionType" =>       array("Question"=>"control"),
-    "Quotation"=>           array("Attachement"=>"cascade",
+    "Quotation"=>           array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "QuotationType"=>       array("Quotation"=>"control"),    
     "Recipient" =>          array("Bill"=>"control",
                                   "Project"=>"control"),
     "RequirementType" =>    array("Requirement"=>"control"),
-    "Requirement" =>        array("Attachement"=>"cascade",
+    "Requirement" =>        array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade",
                                   "Requirement"=>"control"),
@@ -214,7 +214,7 @@ abstract class SqlElement {
                                   "TestCase"=>"control",
                                   "TestSession"=>"control",
                                   "Work"=>"control"),
-    "Risk" =>               array("Attachement"=>"cascade",
+    "Risk" =>               array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade"),
     "RiskLevel" =>          array("Requirement"=>"control"),
@@ -247,7 +247,7 @@ abstract class SqlElement {
                                   "TestCaseRun"=>"control" ),
     "TestCaseType" =>       array("TestCase"=>"control"),
     "TestSession" =>        array("Assignment"=>"confirm",
-                                  "Attachement"=>"cascade",
+                                  "Attachment"=>"cascade",
                                   "Dependency"=>"cascade",
                                   "Link"=>"cascade",
                                   "Milestone"=>"confirm",
@@ -255,7 +255,7 @@ abstract class SqlElement {
                                   "PlannedWork"=>"cascade",
                                   "TestCaseRun"=>"cascade",),
     "TestSessionType" =>    array("TestSession"=>"control"),
-    "Ticket" =>             array("Attachement"=>"cascade",
+    "Ticket" =>             array("Attachment"=>"cascade",
                                   "Link"=>"cascade",
                                   "Note"=>"cascade",
                                   "Ticket"=>"control",
@@ -266,7 +266,7 @@ abstract class SqlElement {
     "User" =>               array("Action"=>"control", 
                                   "Activity"=>"control",
                                   "Affectation"=>"control", 
-                                  "Attachement"=>"control",
+                                  "Attachment"=>"control",
                                   "Command"=>"control",
                                   "Decision"=>"control",
                                   "Issue"=>"control",
@@ -1349,24 +1349,24 @@ abstract class SqlElement {
 		}
 		if ($withAttachments) {
 			$crit=array('refType'=>get_class($this),'refId'=>$this->id);
-			$attachement=new Attachement();
-			$attachements=$attachement->getSqlElementsFromCriteria($crit);
+			$attachment=new Attachment();
+			$attachments=$attachment->getSqlElementsFromCriteria($crit);
 			$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
-			$attachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
-			foreach ($attachements as $attachement) {
-				$fromdir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
-				if (file_exists($fromdir.$attachement->fileName)) {
-					$attachement->id=null;
-					$attachement->refType=get_class($newObj);
-					$attachement->refId=$newObj->id;
-					$attachement->save();
-					$todir = $attachementDirectory . $pathSeparator . "attachement_" . $attachement->id . $pathSeparator;
+			$attachmentDirectory=Parameter::getGlobalParameter('paramAttachmentDirectory');
+			foreach ($attachments as $attachment) {
+				$fromdir = $attachmentDirectory . $pathSeparator . "attachment_" . $attachment->id . $pathSeparator;
+				if (file_exists($fromdir.$attachment->fileName)) {
+					$attachment->id=null;
+					$attachment->refType=get_class($newObj);
+					$attachment->refId=$newObj->id;
+					$attachment->save();
+					$todir = $attachmentDirectory . $pathSeparator . "attachment_" . $attachment->id . $pathSeparator;
 					if (! file_exists($todir)) {
 						mkdir($todir, 0777 , true);
 					}
-					copy($fromdir.$attachement->fileName, $todir.$attachement->fileName);
-					$attachement->subDirectory=str_replace($attachementDirectory,'${attachementDirectory}',$todir);
-					$attachement->save();
+					copy($fromdir.$attachment->fileName, $todir.$attachment->fileName);
+					$attachment->subDirectory=str_replace($attachmentDirectory,'${attachmentDirectory}',$todir);
+					$attachment->save();
 				}
 			}
 		}
@@ -1604,7 +1604,7 @@ abstract class SqlElement {
 	 */
 	public static function getSingleSqlElementFromCriteria($class, $critArray) {
 		$obj=new $class();
-		if ($class=='Attachement') {
+		if ($class=='Attachment') {
 			if (array_key_exists('refType',$critArray) ) {
 				if ($critArray['refType']=='User' or $critArray['refType']=='Contact') {
 					$critArray['refType']='Resource';
@@ -2724,7 +2724,7 @@ abstract class SqlElement {
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
 					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-						//if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachement") {
+						//if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachment") {
 						$crit=array("refType"=>get_class($this), "refId"=>$this->id);
 					}
 					if ($object=="Dependency") {

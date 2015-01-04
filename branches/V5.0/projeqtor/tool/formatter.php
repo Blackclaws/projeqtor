@@ -150,7 +150,7 @@ function sortableFormatter($value) {
 }
 
 function thumbFormatter($objectClass,$id,$size) {
-	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>$objectClass, 'refId'=>$id));
+	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$id));
   if ($image->id and $image->isThumbable()) {
     return '<img src="'.getImageThumb($image->getFullPathFileName(),$size).'" />';
   } else {

@@ -64,7 +64,7 @@ class Issue extends SqlElement {
   //public $_Link_Risk=array();
   public $_col_1_1_link;
   public $_Link=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
   
 

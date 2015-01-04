@@ -267,17 +267,17 @@ $ctrls['PathSeparator'] = '=/=\\=';
 $param['crlf07']='';
 $label['crlf07']='crlf';
 
-$param['AttachementDirectory'] = '../files/attach/';                              
-$label['AttachementDirectory'] = "Directory to store Attachments";
-$value['AttachementDirectory'] = "any valid directory, set to empty string to disable attachment<br/><b>Security hint :</b> move it ouside web access";
-$pname['AttachementDirectory'] = 'paramAttachementDirectory';
-$ctrls['AttachementDirectory'] = '';
+$param['AttachmentDirectory'] = '../files/attach/';                              
+$label['AttachmentDirectory'] = "Directory to store Attachments";
+$value['AttachmentDirectory'] = "any valid directory, set to empty string to disable attachment<br/><b>Security hint :</b> move it ouside web access";
+$pname['AttachmentDirectory'] = 'paramAttachmentDirectory';
+$ctrls['AttachmentDirectory'] = '';
 
-$param['AttachementMaxSize'] = 1024*1024*2;                              
-$label['AttachementMaxSize'] = "Max file size for attachment";
-$value['AttachementMaxSize'] = "size in bytes (1024 * 1024 * MB)";
-$pname['AttachementMaxSize'] = 'paramAttachementMaxSize';
-$ctrls['AttachementMaxSize'] = 'integer';
+$param['AttachmentMaxSize'] = 1024*1024*2;                              
+$label['AttachmentMaxSize'] = "Max file size for attachment";
+$value['AttachmentMaxSize'] = "size in bytes (1024 * 1024 * MB)";
+$pname['AttachmentMaxSize'] = 'paramAttachmentMaxSize';
+$ctrls['AttachmentMaxSize'] = 'integer';
 
 $param['crlf08']='';
 $label['crlf08']='crlf';

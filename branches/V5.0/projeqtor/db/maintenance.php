@@ -206,7 +206,7 @@ if (beforeVersion($currVersion,"V3.0.0")) {
     'paramDefaultPassword','paramPasswordMinLength', 'lockPassword',
     'paramDefaultLocale', 'paramDefaultTimezone', 'currency', 'currencyPosition',
     'paramFadeLoadingMode', 'paramRowPerPage', 'paramIconSize',
-    'defaultTheme', 'paramPathSeparator', 'paramAttachementDirectory', 'paramAttachementMaxSize',
+    'defaultTheme', 'paramPathSeparator', 'paramAttachmentDirectory', 'paramAttachmentMaxSize',
     'paramReportTempDirectory', 'paramMemoryLimitForPDF',
     'defaultBillCode','paramMailEol' 
     //'logFile', 'logLevel', 'paramDebugMode',

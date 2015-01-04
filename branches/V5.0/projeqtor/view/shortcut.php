@@ -33,7 +33,7 @@ $prj=new Project($proj);
 $lstProj=$prj->getRecursiveSubProjectsFlatList(true,true);
 echo '<table style="width: 100%;">';
 foreach ($lstProj as $prjId=>$prjName) {
-  $att=new Attachement();
+  $att=new Attachment();
   $lstAtt=$att->getSqlElementsFromCriteria(array('refType'=>'Project','refId'=>$prjId, 'type'=>'link'));
   //* $lstAtt Attachment[]
   if (count($lstAtt)>0) {

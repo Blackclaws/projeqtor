@@ -53,7 +53,7 @@ class IndividualExpense extends Expense {
   public $_ExpenseDetail=array();
   public $_col_1_1_Link;
   public $_Link=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
 
 

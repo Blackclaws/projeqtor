@@ -25,11 +25,11 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
- * Attachement is an object that can be included in all objects, 
+ * Attachment is an object that can be included in all objects, 
  * to trace file uploads and link it to objects.
  */ 
 require_once('_securityCheck.php'); 
-class Attachement extends SqlElement {
+class Attachment extends SqlElement {
 
   public $id;
   public $refType;
@@ -80,9 +80,9 @@ class Attachement extends SqlElement {
   
   public function delete() {
   	$paramPathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
-  	$paramAttachementDirectory=Parameter::getGlobalParameter('paramAttachementDirectory');
+  	$paramAttachmentDirectory=Parameter::getGlobalParameter('paramAttachmentDirectory');
   	return parent::delete();
-  	$subDirectory=str_replace('${attachementDirectory}', $paramAttachementDirectory, $this->subDirectory);
+  	$subDirectory=str_replace('${attachmentDirectory}', $paramAttachmentDirectory, $this->subDirectory);
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
@@ -98,7 +98,7 @@ class Attachement extends SqlElement {
   }
    
   public function getFullPathFileName() {
-  	$path = str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $this->subDirectory);
+  	$path = str_replace('${attachmentDirectory}', Parameter::getGlobalParameter('paramAttachmentDirectory'), $this->subDirectory);
   	$name = $this->fileName;
   	$file = $path . $name;
   	return $file;

@@ -130,11 +130,11 @@
     showMsg('Database \'' . $param['DbName'] . '\' created.');
   }
   
-  // Check attachement directory (may be empty)
-  if ($param['AttachementDirectory']) {
-    if (! file_exists ($param['AttachementDirectory'])) {
-      if (! mkdir($param['AttachementDirectory'],0777,true)) {
-        showError("incorrect value for '" . $label['AttachementDirectory'] . "', this is not a valid directory name");
+  // Check attachment directory (may be empty)
+  if ($param['AttachmentDirectory']) {
+    if (! file_exists ($param['AttachmentDirectory'])) {
+      if (! mkdir($param['AttachmentDirectory'],0777,true)) {
+        showError("incorrect value for '" . $label['AttachmentDirectory'] . "', this is not a valid directory name");
       }  
     }
   }

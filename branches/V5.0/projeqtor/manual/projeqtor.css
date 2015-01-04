@@ -620,7 +620,7 @@ label, .label {
 	background: #DDDDDD;
 }
 
-.historyHeader, .noteHeader, .attachementHeader, .messageHeader, .linkHeader, .assignHeader, 
+.historyHeader, .noteHeader, .attachmentHeader, .messageHeader, .linkHeader, .assignHeader, 
 .dependencyHeader, .workflowHeader, .filterHeader, .calendarHeader {
   border: 1px solid #AAAAAA;
   text-align: center;
@@ -720,7 +720,7 @@ label, .label {
   padding: 0px 1px 0px 1px;
 }
 
-.historyData, .noteData, .attachementData, .messageData, .messageDataValue, .linkData, .assignData, 
+.historyData, .noteData, .attachmentData, .messageData, .messageDataValue, .linkData, .assignData, 
 .dependencyData, .workflowData, .filterData, .messageDataValueGrey {
   font-size: 90%;
   padding: 1px 5px 1px 5px;
@@ -762,7 +762,7 @@ label, .label {
   border-left: 1px solid #AAAAAA;
   background-color: #FFFFFF;
 }
-.historyDataClosetable, .noteDataClosetable , .attachementDataClosetable, .linkDataCloseTable, .assignDataCloseTable {
+.historyDataClosetable, .noteDataClosetable , .attachmentDataClosetable, .linkDataCloseTable, .assignDataCloseTable {
   font-size: 1pt;
   padding: 0px 0px 0px 0px;
   border-top: 1px solid #AAAAAA;

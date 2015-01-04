@@ -91,8 +91,8 @@
          <?php echo i18n("colFile");?>&nbsp;&nbsp;
         </td>
         <td>
-         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />     
-         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />     
+         <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
           dojoType="dojox.form.FileInput" type="file"
           style="color: #000000;" 
           name="importFile" id="importFile" 

@@ -42,8 +42,8 @@ $obj=new $class($id);
 $preserveFileName=Parameter::getGlobalParameter('preserveUploadedFileName');
 if (!$preserveFileName) $preserveFileName="NO";
 
-if ($class=='Attachement') {
-  $path = str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $obj->subDirectory);
+if ($class=='Attachment') {
+  $path = str_replace('${attachmentDirectory}', Parameter::getGlobalParameter('paramAttachmentDirectory'), $obj->subDirectory);
   $name = $obj->fileName;
   if ($paramFilenameCharset) {
   	$name = iconv("UTF-8",$paramFilenameCharset.'//TRANSLIT//IGNORE',$name);

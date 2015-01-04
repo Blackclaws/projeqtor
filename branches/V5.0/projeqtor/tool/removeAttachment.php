@@ -25,24 +25,24 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ===========================================================================
- * Delete the current attachement : call corresponding method in SqlElement Class
+ * Delete the current attachment : call corresponding method in SqlElement Class
  */
 
 require_once "../tool/projeqtor.php";
 
-$attachementId=null;
-if (array_key_exists('attachementId',$_REQUEST)) {
-  $attachementId=$_REQUEST['attachementId'];
+$attachmentId=null;
+if (array_key_exists('attachmentId',$_REQUEST)) {
+  $attachmentId=$_REQUEST['attachmentId'];
 }
-$attachementId=trim($attachementId);
-if ($attachementId=='') {
-  $attachementId=null;
+$attachmentId=trim($attachmentId);
+if ($attachmentId=='') {
+  $attachmentId=null;
 } 
-if ($attachementId==null) {
-  throwError('attachementId parameter not found in REQUEST');
+if ($attachmentId==null) {
+  throwError('attachmentId parameter not found in REQUEST');
 }
-$obj=new Attachement($attachementId);
-$subDirectory=str_replace('${attachementDirectory}', Parameter::getGlobalParameter('paramAttachementDirectory'), $obj->subDirectory);
+$obj=new Attachment($attachmentId);
+$subDirectory=str_replace('${attachmentDirectory}', Parameter::getGlobalParameter('paramAttachmentDirectory'), $obj->subDirectory);
 if (file_exists($subDirectory . $obj->fileName)) {
   unlink($subDirectory . $obj->fileName);
   purgeFiles($subDirectory, null);

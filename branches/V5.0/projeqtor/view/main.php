@@ -1502,8 +1502,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   </table>
 </div>
 
-<div id="dialogAttachement" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachement");?>"></div>
-<form id='attachementAckForm' name='attachementAckForm'> 
+<div id="dialogAttachment" dojoType="dijit.Dialog" title="<?php echo i18n("dialogAttachment");?>"></div>
+<form id='attachmentAckForm' name='attachmentAckForm'> 
    <input type='hidden' id="resultAck" name="resultAck" />
 </form>   
     

@@ -52,7 +52,7 @@ class Expense extends SqlElement {
   public $idle;
   //public $_col_1_1_Detail;
   public $_ExpenseDetail=array();
-  public $_Attachement=array();
+  public $_Attachment=array();
   public $_Note=array();
 
 

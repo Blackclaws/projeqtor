@@ -345,7 +345,7 @@ function thumb(value,size) {
 	attachId=tab[1];
 	fileName=tab[2];
 	var result='<img style="height:'+size+'px;" src="'+filePath+'" style="cursor:pointer" '
-      +' onClick="showImage(\'Attachement\',\''+attachId+'\',\''+fileName+'\');" />';
+      +' onClick="showImage(\'Attachment\',\''+attachId+'\',\''+fileName+'\');" />';
 	return result;
 }
 

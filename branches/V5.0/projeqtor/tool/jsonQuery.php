@@ -616,7 +616,7 @@
             	} 
             }
             if (substr($formatter[$nbFields],0,5)=='thumb') {          	
-            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachement', array('refType'=>$objectClass, 'refId'=>$line['id']));
+            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
               if ($image->id and $image->isThumbable()) {
             	  $val=getImageThumb($image->getFullPathFileName(),$val).'#'.$image->id.'#'.$image->fileName; 
               } else {

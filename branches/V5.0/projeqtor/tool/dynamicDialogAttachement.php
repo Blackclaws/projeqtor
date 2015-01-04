@@ -24,53 +24,53 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-scriptLog('dynamicDialogAttachement.php');
+scriptLog('dynamicDialogAttachment.php');
 $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
 	$isIE=$_REQUEST['isIE'];
 } 
 ?>
-  <form id='attachementForm' name='attachementForm' 
+  <form id='attachmentForm' name='attachmentForm' 
   ENCTYPE="multipart/form-data" method="POST"
 <?php if ($isIE and $isIE<=9) {?>
-  action="../tool/saveAttachement.php?isIE=<?php echo $isIE;?>"
+  action="../tool/saveAttachment.php?isIE=<?php echo $isIE;?>"
   target="resultPost"
-  onSubmit="return saveAttachement();"
+  onSubmit="return saveAttachment();"
 <?php }?> 
   >
-    <input id="attachementId" name="attachementId" type="hidden" value="" />
-    <input id="attachementRefType" name="attachementRefType" type="hidden" value="" />
-    <input id="attachementRefId" name="attachementRefId" type="hidden" value="" />
-    <input id="attachementType" name="attachementType" type="hidden" value="" />
-    <div id="dialogAttachementFileDiv">
+    <input id="attachmentId" name="attachmentId" type="hidden" value="" />
+    <input id="attachmentRefType" name="attachmentRefType" type="hidden" value="" />
+    <input id="attachmentRefId" name="attachmentRefId" type="hidden" value="" />
+    <input id="attachmentType" name="attachmentType" type="hidden" value="" />
+    <div id="dialogAttachmentFileDiv">
       <table>
         <tr height="30px">
           <td class="dialogLabel" >
-           <label for="attachementFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
+           <label for="attachmentFile" ><?php echo i18n("colFile");?>&nbsp;:&nbsp;</label>
           </td>
           <td style="position:relative">
-           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>" />
+           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />
           <?php  if ($isIE and $isIE<=9) {?>
-           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
             dojoType="dojox.form.FileInput" type="file"
-            name="attachementFile" id="attachementFile"
+            name="attachmentFile" id="attachmentFile"
             cancelText="<?php echo i18n("buttonReset");?>"
             label="<?php echo i18n("buttonBrowse");?>"
             title="<?php echo i18n("helpSelectFile");?>" />
           <?php } else {?>  
-           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachementMaxSize');?>"
+           <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
             dojoType="dojox.form.Uploader" type="file" 
-            url="../tool/saveAttachement.php"
+            url="../tool/saveAttachment.php"
             <?php if (! $isIE) {?>
             style="overflow: hidden; z-index: 50;width:340px; border: 3px dotted #EEEEEE;"
             <?php } else {?>
             style="overflow: hidden; border: 0px"
             <?php }?>
-            name="attachementFile" id="attachementFile" 
+            name="attachmentFile" id="attachmentFile" 
             cancelText="<?php echo i18n("buttonReset");?>"
             multiple="true" 
             uploadOnSelect="false"
-            onBegin="saveAttachement();"
+            onBegin="saveAttachment();"
             onChange="changeAttachment(this.getFileList());"
             onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
             label="<?php echo i18n("buttonBrowse");?>"
@@ -79,19 +79,19 @@ if (array_key_exists('isIE',$_REQUEST)) {
           <?php if (! $isIE) {?>
           <span style="font-style:italic;position: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span>
           <?php }?>
-          <div style="font-style:italic;position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachementFileName" id="attachementFileName"></div>     
+          <div style="font-style:italic;position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachmentFileName" id="attachmentFileName"></div>     
           </td>
         </tr>
       </table>
     </div>
-    <div id="dialogAttachementLinkDiv">
+    <div id="dialogAttachmentLinkDiv">
       <table>
         <tr height="30px">
           <td class="dialogLabel" >
-            <label for="attachementLink" ><?php echo i18n("colHyperlink");?>&nbsp;:&nbsp;</label>
+            <label for="attachmentLink" ><?php echo i18n("colHyperlink");?>&nbsp;:&nbsp;</label>
           </td>
           <td>
-            <div id="attachementLink" name="attachementLink" dojoType="dijit.form.ValidationTextBox"
+            <div id="attachmentLink" name="attachmentLink" dojoType="dijit.form.ValidationTextBox"
                style="width: 350px;"
                trim="true" maxlength="400" class="input"
                value="">
@@ -103,11 +103,11 @@ if (array_key_exists('isIE',$_REQUEST)) {
     <table>
       <tr>
         <td class="dialogLabel" >
-         <label for="attachementDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
+         <label for="attachmentDescription" ><?php echo i18n("colDescription");?>&nbsp;:&nbsp;</label>
         </td>
         <td> 
          <textarea dojoType="dijit.form.Textarea" 
-          id="attachementDescription" name="attachementDescription"
+          id="attachmentDescription" name="attachmentDescription"
           style="width: 350px;"
           maxlength="4000"
           class="input"></textarea>   
@@ -131,12 +131,12 @@ if (array_key_exists('isIE',$_REQUEST)) {
       </td></tr>
       <tr>
         <td colspan="2" align="center">
-          <input type="hidden" id="dialogAttachementAction">
-          <button dojoType="dijit.form.Button" type="button" id="dialogAttachementCancel" onclick="dijit.byId('dialogAttachement').hide();">
+          <input type="hidden" id="dialogAttachmentAction">
+          <button dojoType="dijit.form.Button" type="button" id="dialogAttachmentCancel" onclick="dijit.byId('dialogAttachment').hide();">
             <?php echo i18n("buttonCancel");?>
           </button>
-          <button id="dialogAttachementSubmit" dojoType="dijit.form.Button" type="submit"
-          <?php if ($isIE and $isIE<=9) {?>onclick="saveAttachement();"<?php }?> >
+          <button id="dialogAttachmentSubmit" dojoType="dijit.form.Button" type="submit"
+          <?php if ($isIE and $isIE<=9) {?>onclick="saveAttachment();"<?php }?> >
             <?php echo i18n("buttonOK");?>
           </button>
         </td>
