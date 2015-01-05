@@ -326,6 +326,7 @@ deleteDuplicate();
 Sql::saveDbVersion($version);
 traceLog('=====================================');
 traceLog("");
+echo '<div class="message'.(($nbErrors==0)?'OK':'WARNING').'">';
 echo "____________________________________________";
 echo "<br/><br/>";
 if ($nbErrors==0) {
@@ -339,4 +340,5 @@ if ($nbErrors==0) {
 traceLog("");
 traceLog("=====================================");
 traceLog("");
-echo "<br/>____________________________________________";
+echo "<br/>____________________________________________<br/><br/>";
+echo '</div>';
