@@ -290,9 +290,14 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
     	}
     } else if (substr ( $col, 0, 5 ) == '_Note') {
     		$prevSection = $section;
-    		$section="Notes";
+    		$section="Note";
     		startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
     		drawNotesFromObject($obj,false);
+	} else if (substr ( $col, 0, 5 ) == '_BillLine') {
+	  $prevSection = $section;
+	  $section="BillLine";
+	  startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+	  drawBillLinesFromObject($obj,false);
     } else if (substr ( $col, 0, 1 ) == '_' and substr ( $col, 0, 6 ) != '_void_' and substr ( $col, 0, 7 ) != '_label_') { // field not to be displayed
                                          //
     } else {
@@ -1523,16 +1528,16 @@ function drawNotesFromObject($obj, $refresh = false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="noteHeader" style="width:5%">';
+    echo '<td class="noteHeader" style="width:10%">';
     if ($obj->id != null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n ( 'addNote' ) . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="noteHeader" style="width:' . (($print) ? '65' : '60') . '%">' . i18n ( 'colNote' ) . '</td>';
-  echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
+  echo '<td class="noteHeader" style="width:' . (($print) ? '95' : '85') . '%">' . i18n ( 'colNote' ) . '</td>';
+  //echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
+  //echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
   echo '</tr>';
   foreach ( $notes as $note ) {
     $ress = new Resource ( $user->id );
@@ -1572,12 +1577,12 @@ function drawNotesFromObject($obj, $refresh = false) {
       }
       echo '</tr></table>';
       echo '</td>';
-      echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>';
+      /*echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>';
       if ($note->fromEmail) {
         echo '<b>' . i18n ( 'noteFromEmail' ) . '</b>';
       }
       echo '<i>' . htmlFormatDateTime ( $updateDate ) . '</i></td>';
-      echo '<td class="noteData">' . $userName . '</td>';
+      echo '<td class="noteData">' . $userName . '</td>';*/
       echo '</tr>';
     }
   }
@@ -2443,7 +2448,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
   echo '<td class="assignHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
   echo '<td class="assignHeader" style="width:' . (($print) ? '55' : '45') . '%">' . i18n ( 'colId' . $type ) . '</td>';
   echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colStartDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colStartDate' ) . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colEndDate' ) . '</td>';
   echo '<td class="assignHeader" style="width:10%">' . i18n ( 'colRate' ) . '</td>';
   // echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
   
@@ -2886,31 +2891,6 @@ if (! $noselect and isset ( $obj->_ChecklistDefinitionLine )) {
 </div>
 <?php }?> <?php
 }
-if (! $noselect and isset ( $obj->_Note ) and ! $comboDetail) {
-  ?> <br />
-  <?php if ($print) {?>
-<table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('sectionNotes');?></td>
-			</tr>
-			<tr>
-				<td><?php drawNotesFromObject($obj); ?></td>
-			</tr>
-		</table>
-  <?php
-  
-} else {
-    $titlePane = $objClass . "_note";
-    ?>
-<div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
-     title="<?php echo i18n('sectionNotes');?>"
-     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>" 
-     onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawNotesFromObject($obj); ?>
-</div>
-<?php }?> <?php
-}
 
 $displayHistory = 'NO';
 if (array_key_exists ( 'displayHistory', $_SESSION )) {
@@ -2985,6 +2965,7 @@ if ($print) {
     include_once "../tool/dynamicDialogChecklist.php";
   }
 }
+
 function setWidthPct($displayWidth, $print, $printWidth) {
 	if ($displayWidth > 1380) {
 		$nbCol=3;
