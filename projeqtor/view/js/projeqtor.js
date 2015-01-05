@@ -810,7 +810,7 @@ function finalizeMessageDisplay(destination, validationType) {
     //alert('validationType='+validationType);
     if (validationType) {  	
       if (validationType=='note') {
-        loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
+        loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_Note', 'listForm');
       } else if (validationType=='attachment') {
     	if (dojo.byId('objectClass') 
     	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' || dojo.byId('objectClass').value=='Contact') ) {
@@ -821,7 +821,7 @@ function finalizeMessageDisplay(destination, validationType) {
     	}
     	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
       } else if (validationType=='billLine') {
-        loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
+        loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_BillLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
       //} else if (validationType=='documentVersion') {
       //    loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
@@ -958,8 +958,8 @@ function finalizeMessageDisplay(destination, validationType) {
           if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
             loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
           }
-          if (dojo.byId(dojo.byId('objectClass').value+'_billLine')) {
-              loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
+          if (dojo.byId(dojo.byId('objectClass').value+'_BillLine')) {
+              loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_BillLine', 'listForm');
           }
           var refreshDetailElse=false;
           if (lastOperation.value=="insert") {
@@ -982,14 +982,14 @@ function finalizeMessageDisplay(destination, validationType) {
         	  }
           }
           if (refreshDetailElse && ! validationType) {
-            if (dojo.byId(dojo.byId('objectClass').value+'_attachment')) {
+            if (dojo.byId(dojo.byId('objectClass').value+'_Attachment')) {
               loadContent("objectDetail.php?refreshAttachemnts=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
             }
-            if (dojo.byId(dojo.byId('objectClass').value+'_note')) {
-              loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_note', 'listForm');
+            if (dojo.byId(dojo.byId('objectClass').value+'_Note')) {
+              loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_Note', 'listForm');
             }
-            if (dojo.byId(dojo.byId('objectClass').value+'_billLine')) {
-                loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_billLine', 'listForm');
+            if (dojo.byId(dojo.byId('objectClass').value+'_BillLine')) {
+                loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_BillLine', 'listForm');
             }
             if (dojo.byId(dojo.byId('objectClass').value+'_checklistDefinitionLine')) {
                 loadContent("objectDetail.php?refreshChecklistDefinitionLines=true", dojo.byId('objectClass').value+'_checklistDefinitionLine', 'listForm');
