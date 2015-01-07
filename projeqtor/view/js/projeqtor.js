@@ -800,6 +800,7 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
+console.log("lastOperationStatus="+lastOperationStatus.value);
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
@@ -1074,22 +1075,24 @@ function finalizeMessageDisplay(destination, validationType) {
   } else {
     if (lastOperationStatus.value=="ERROR") {
       showError(message);
+      addCloseBoxToMessage(destination);
     } else {
       if (lastOperationStatus.value=="CONFIRM") {
-    	if (message.indexOf('id="confirmControl" value="delete"')>0) {
-	    	confirm=function () {
+        if (message.indexOf('id="confirmControl" value="delete"')>0) {
+        confirm=function () {
 	    		dojo.byId("deleteButton").blur();
 			    loadContent("../tool/deleteObject.php?confirmed=true", "resultDiv", 'objectForm', true);
-	    	};
-    	} else {
-    		confirm=function () {
-        		dojo.byId("saveButton").blur();
-    		    loadContent("../tool/saveObject.php?confirmed=true", "resultDiv", 'objectForm', true);
-        	  };
-    	}
-    	showConfirm(message,confirm);  
+  	    	};
+      	} else {
+      		confirm=function () {
+          		dojo.byId("saveButton").blur();
+      		    loadContent("../tool/saveObject.php?confirmed=true", "resultDiv", 'objectForm', true);
+          	  };
+      	}
+      	showConfirm(message,confirm);  
       } else {
-        showAlert(message);
+        //showAlert(message);
+        addCloseBoxToMessage(destination);
       }
       if (destination=="planResultDiv" && lastOperationStatus.value!="INCOMPLETE") {
     	  dojo.fadeOut({node: contentNode, duration: 1000}).play();
@@ -1099,7 +1102,24 @@ function finalizeMessageDisplay(destination, validationType) {
     hideWait();
   }
 }
-
+function addCloseBoxToMessage(destination) {
+console.log("addCloseBoxToMessage");
+  contentWidget=dijit.byId(destination);
+  var closeBox='<div class="closeBoxIcon" onClick="clickCloseBoxOnMessage('+"'"+destination+"'"+');">&nbsp;</div>';
+  contentWidget.set("content",closeBox+contentWidget.get("content"));
+}
+function clickCloseBoxOnMessage(destination) {
+  contentWidget=dijit.byId(destination);
+  contentNode=dojo.byId(destination);
+  dojo.fadeOut({
+    node: contentNode, 
+    duration: 500,
+    onEnd: function(){
+      contentWidget.set("content","");
+    }  
+  }).play(
+      );
+}
 /**
  * ============================================================================
  * Operates locking, hide and show correct buttons after loadContent, when

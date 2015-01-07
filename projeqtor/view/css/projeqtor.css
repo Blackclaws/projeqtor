@@ -1010,7 +1010,12 @@ label, .label, .smallLabel {
   vertical-align: middle;
   margin: auto;
 }
-
+.closeBoxIcon { 
+  float:right; position: absolute;right:4%; 
+  cursor:pointer; 
+  height:16px; width:16px;
+  background-image: url(images/close.png);
+}
 /* =============================================================================== */
 /* SPECIFIC BLUE THEME                                                             */
 /* =============================================================================== */
