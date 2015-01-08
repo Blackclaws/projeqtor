@@ -546,6 +546,12 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       } else if ($hide) {
         // Don't draw the field =============================================== Hidden field
         if (! $print) {
+        	if ($col == 'creationDate' and ($val == '' or $val == null) and ! $obj->id) {
+        		$val = date ( 'Y-m-d' );
+        	}
+        	if ($col == 'idUser') {
+        	 $val = $user->id;
+          }
           echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
           echo $name;
           if ($dataType == 'decimal' and (substr ( $col, - 4, 4 ) == 'Work')) {
