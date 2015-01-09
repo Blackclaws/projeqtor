@@ -32,8 +32,8 @@ session_start();
 // === Application data : version, dependencies, about message, ...
 $applicationName="ProjeQtOr"; // Name of the application
 $copyright=$applicationName;  // Copyright to be displayed
-$version="V4.5.3";            // Version of application : Major / Minor / Release
-$build="0110";                // Build number. To be increased on each release
+$version="V4.5.4";            // Version of application : Major / Minor / Release
+$build="0111";                // Build number. To be increased on each release
 $website="http://www.projeqtor.org"; // ProjeQtOr site url
 $aboutMessage='';             // About message to be displayed when clicking on application logo
 $aboutMessage.='<div>' . $applicationName . ' ' . $version . ' ('.($build+0).')</div><br/>';
@@ -2199,7 +2199,7 @@ function projeqtor_set_time_limit($timeout) {
 		traceLog("WARNING : try to extend time limit to $timeout seconds forbidden by safe_mode. This may lead to unsuccessfull operation.");
 	} else {
 		$max = ini_get('max_execution_time');
-		if ($max != 0 && $timeout > $max) { // Don't bother if unlimited
+		if ($max != 0 && ($timeout > $max or $timeout==0)) { // Don't bother if unlimited
 			@set_time_limit($timeout);
 		}
   }
