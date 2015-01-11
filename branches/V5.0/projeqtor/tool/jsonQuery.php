@@ -615,13 +615,17 @@
             	  }
             	} 
             }
-            if (substr($formatter[$nbFields],0,5)=='thumb') {          	
-            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
-              if ($image->id and $image->isThumbable()) {
-            	  $val=getImageThumb($image->getFullPathFileName(),$val).'#'.$image->id.'#'.$image->fileName; 
-              } else {
-              	$val="##";
-              }
+            if (substr($formatter[$nbFields],0,5)=='thumb') {
+            	if (0 and $objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' or $objectClass=='Affectable') {
+            		$val="##";
+            	} else {          	
+	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
+	              if ($image->id and $image->isThumbable()) {
+	            	  $val=getImageThumb($image->getFullPathFileName(),$val).'#'.$image->id.'#'.$image->fileName; 
+	              } else {
+	              	$val="##";
+	              }
+            	}
             } 
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
