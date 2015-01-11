@@ -2198,7 +2198,7 @@ function projeqtor_set_time_limit($timeout) {
 		traceLog("WARNING : try to extend time limit to $timeout seconds forbidden by safe_mode. This may lead to unsuccessfull operation.");
 	} else {
 		$max = ini_get('max_execution_time');
-		if ($max != 0 && $timeout > $max) { // Don't bother if unlimited
+		if ($max != 0 && ($timeout > $max or $timeout==0)) { // Don't bother if unlimited
 			@set_time_limit($timeout);
 		}
   }
