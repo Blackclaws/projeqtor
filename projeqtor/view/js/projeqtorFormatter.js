@@ -338,14 +338,18 @@ function thumb64(value) {
 	return thumb(value,64);
 }
 function thumb(value,size) {
-	if (value=="##") return "";
+	if (value=="##" || value=="####") return "";
 	if (! size) size=32;
 	var tab=value.split('#');
 	filePath=tab[0];
-	attachId=tab[1];
+	thumbObjectClass='Attachment';
+  if (tab.length>3) {
+    thumbObjectClass=tab[3];
+  }
+	thumbObjectId=tab[1];
 	fileName=tab[2];
 	var result='<img style="height:'+size+'px;" src="'+filePath+'" style="cursor:pointer" '
-      +' onClick="showImage(\'Attachment\',\''+attachId+'\',\''+fileName+'\');" />';
+      +' onClick="showImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',\''+fileName+'\');" />';
 	return result;
 }
 
