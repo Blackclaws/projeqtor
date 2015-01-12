@@ -43,8 +43,8 @@ if ($obj->id and property_exists ( $obj, 'idUser' )) {
 ?>
 <table style="width:100%">
   <td style="width: 50%; text-align: right;">
-    <div><?php echo i18n("colIssuer");?>&nbsp;:&nbsp;</div>
-    <div><?php echo i18n("colCreationDate");?>&nbsp;:&nbsp;</div>
+    <div  style="white-space: nowrap"><?php echo i18n("colIssuer");?>&nbsp;:&nbsp;</div>
+    <div  style="white-space: nowrap"><?php echo i18n("colCreationDate");?>&nbsp;:&nbsp;</div>
   </td>
   <td style="width: 50%;">
       <div style="white-space: nowrap" id="buttonDivIssuer"><?php echo SqlList::getNameFromId('Affectable', $obj->idUser);?> </div>

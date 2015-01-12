@@ -118,5 +118,24 @@ class Affectable extends SqlElement {
     return self::$_fieldsAttributes;
   }
   
+  public static function generateThumbs($classAffectable, $idAffectable, $fileFullName=null) {
+debugLog("generateThumbs($classAffectable, $idAffectable, $fileFullName)");
+    $sizes=array(16,22,32,48,80); // sizes to generate, may be used somewhere
+    $thumbLocation='../files/thumbs';
+    $attLoc=Parameter::getGlobalParameter('paramAttachmentDirectory');
+    if (! $fileFullName) {
+      $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$this->id));
+      if ($image->id) {
+        $fileFullName=$image->subDirectory.$image->fileName;
+      }
+    }
+    $fileFullName=str_replace('$fileFullName',$attLoc,$fileFullName);
+    if ($fileFullName and isThumbable($fileFullName)) {
+      foreach($sizes as $size) {
+        createThumb($fileFullName,$size, $thumbLocation."/Affectable$idAffectable/thumb$size.png");
+      }
+    }
+  }
+  
 }
 ?>

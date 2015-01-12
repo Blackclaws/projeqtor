@@ -2036,10 +2036,12 @@ function checkVersion() {
 	}
 	$checkUrl='http://projeqtor.org/admin/getVersion.php';
   $currentVersion=null;
-  enableCatchErrors();
-	$currentVersion=file_get_contents($checkUrl);
-  disableCatchErrors();
-	if (! $currentVersion) {
+  if (ini_get('allow_url_fopen')) {
+    enableCatchErrors();
+    $currentVersion=file_get_contents($checkUrl);
+    disableCatchErrors();
+  }
+  if (! $currentVersion) {
     traceLog('Cannot check Version at ' . $checkUrl);
     traceLog('Maybe allow_url_fopen is Off in php.ini...');
   }

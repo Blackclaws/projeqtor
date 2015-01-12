@@ -266,6 +266,9 @@ foreach ($uploadedFileArray as $uploadedFile) {
   		  $result=substr($result, 0,$pos).' - ' . i18n('mailSent').substr($result, $pos);
 		  }
 		}
+		if ($refType=='Resource') { // Also Includes User and Contact thanks to line ~156 
+          Affectable::generateThumbs($refType, $refId, $attachment->subDirectory.$attachment->fileName);
+        }
 	}
 }
 if (! $error) {
