@@ -85,9 +85,10 @@ function purgeFiles($dir, $pattern) {
 }
 
 /**
- * Create of thumb image of given size, with same name suffixed with "_thumb$size"
- * @param unknown_type $image
- * @param unknown_type $size
+ * Create of thumb image of given size, with same name suffixed with "_thumb$size" or with name definied in $thumb
+ * @param string $image source image to generate thumb from
+ * @param integer $size size of thumb
+ * @param string $thumb name of target thumb (to avoid dafaut naming)
  */
 function createThumb($imageFile,$size,$thumb=null) {
   if (!$size) {
