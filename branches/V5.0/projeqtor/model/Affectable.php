@@ -129,10 +129,15 @@ debugLog("generateThumbs($classAffectable, $idAffectable, $fileFullName)");
         $fileFullName=$image->subDirectory.$image->fileName;
       }
     }
-    $fileFullName=str_replace('$fileFullName',$attLoc,$fileFullName);
+    $fileFullName=str_replace('${attachmentDirectory}',$attLoc,$fileFullName);
+    $fileFullName=str_replace('\\', '/', $fileFullName);
+debugLog($fileFullName);
     if ($fileFullName and isThumbable($fileFullName)) {
+debugLog(count($sizes));
       foreach($sizes as $size) {
-        createThumb($fileFullName,$size, $thumbLocation."/Affectable$idAffectable/thumb$size.png");
+        $thumbFile=$thumbLocation."/Affectable_$idAffectable/thumb$size.png";
+debugLog($thumbFile);        
+        createThumb($fileFullName,$size,$thumbFile);
       }
     }
   }
