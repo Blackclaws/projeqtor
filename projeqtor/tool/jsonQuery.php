@@ -616,8 +616,13 @@
             	} 
             }
             if (substr($formatter[$nbFields],0,5)=='thumb') {
-            	if (0 and $objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' or $objectClass=='Affectable') {
-            		$val="##";
+            	if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' or $objectClass=='Affectable') {
+            		/*if (isset($line['fullName'])) {
+            			$nameAff=$line['fullName'];
+            		} else {
+            			$nameAff=$line['name'];
+            		}*/
+            		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val);
             	} else {          	
 	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
 	              if ($image->id and $image->isThumbable()) {

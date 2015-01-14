@@ -50,7 +50,14 @@ if (file_exists($subDirectory . $obj->fileName)) {
 }
 Sql::beginTransaction();
 $result=$obj->delete();
-
+$refType=$obj->refType;
+$refId=$obj->refId;
+if ($refType=='User' or $refType=='Contact') {
+	$refType='Resource';
+}
+if ($refType=='Resource') { 
+	Affectable::deleteThumbs($refType, intval($refId), $obj->subDirectory.$obj->fileName);
+}
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

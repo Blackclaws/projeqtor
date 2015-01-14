@@ -4464,7 +4464,11 @@ function updateSelectedCountMultiple() {
 }
 
 function showImage(objectClass, objectId, imageName) {
-  imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId; 
+  if (objectClass=='Affectable' || objectClass=='Resource' || objectClass=='User' || objectClass=='Contact') {
+    imageUrl="../files/thumbs/Affectable_"+objectId+"/thumb80.png";
+  } else {
+    imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId;
+  }
   var dialogShowImage = dijit.byId("dialogShowImage");
   if (! dialogShowImage) {
 	dialogShowImage = new dojox.image.LightboxDialog({});
