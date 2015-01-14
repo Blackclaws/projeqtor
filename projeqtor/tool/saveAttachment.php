@@ -267,7 +267,7 @@ foreach ($uploadedFileArray as $uploadedFile) {
 		  }
 		}
 		if ($refType=='Resource') { // Also Includes User and Contact thanks to line ~156 
-          Affectable::generateThumbs($refType, $refId, $attachment->subDirectory.$attachment->fileName);
+          Affectable::generateThumbs($refType, intval($refId), $attachment->subDirectory.$attachment->fileName);
         }
 	}
 }
