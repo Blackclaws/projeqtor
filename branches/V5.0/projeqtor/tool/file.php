@@ -91,6 +91,7 @@ function purgeFiles($dir, $pattern) {
  * @param string $thumb name of target thumb (to avoid dafaut naming)
  */
 function createThumb($imageFile,$size,$thumb=null) {
+debugLog("createThumb($imageFile,$size,$thumb)");	
   if (!$size) {
     copy($imageFile, $thumb);
     return;
