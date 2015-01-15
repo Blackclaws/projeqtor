@@ -347,7 +347,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           	echo '<td colspan="2">';
       	  } else {
 	          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
-	          echo '<label for="' . $col . '" >' . htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>' . $cr;
+	          echo '<label for="' . $col . '" >'; 
+	          if ($col=='idResource' or $col=='idUser' or $col=='idContact') echo formatUserThumb($val,null,16,'right');		
+	          echo htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>' . $cr;
 	          echo '</td>';
 	          if ($print and $outMode == "pdf") {
 	            echo '<td style="width: 120px">';
