@@ -405,10 +405,11 @@ console.log("thumb("+value+","+size+")");
   }
   thumbObjectId = tab[1];
   fileName = tab[2];
-  var result = '<img style="height:' + size + 'px;" src="' + filePath
+  var radius=Math.round(size/2);
+  var result = '<div style="width:100%;text-align:center;"><img style="border-radius:'+radius+'px;height:' + size + 'px;" src="' + filePath
       + '" style="cursor:pointer" ' + ' onClick="showImage(\''
       + thumbObjectClass + '\',\'' + thumbObjectId + '\',\'' + fileName
-      + '\');" />';
+      + '\');" /></div>';
   return result;
 }
 

@@ -65,7 +65,7 @@ class User extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
     <th field="name" width="20%">${userName}</th>
-    <th field="photo" formatter="thumb48" width="5%">${photo}</th>
+    <th field="photo" formatter="thumb32" width="5%">${photo}</th>
     <th field="nameProfile" width="15%" formatter="translateFormatter">${idProfile}</th>
     <th field="resourceName" width="25%">${realName}</th>
     <th field="initials" width="10%">${initials}</th> 
@@ -307,7 +307,7 @@ class User extends SqlElement {
     	  	}
     	  }
         $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;">'
-           . ' <img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
+           . ' <img src="'. Affectable::getThumbUrl('User', $this->id, 80).'" '
            . ' title="'.$image->fileName.'" style="cursor:pointer;"'
            . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
         if (!$print) {

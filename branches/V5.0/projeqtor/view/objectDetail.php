@@ -1569,6 +1569,7 @@ function drawNotesFromObject($obj, $refresh = false) {
       if (! $print) {
         echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode ( $note->note, 'none' ) . '"/>';
       }
+      echo formatUserThumb($userId,$userName);
       // ADDED BRW
       $strDataHTML = htmlEncode ( $note->note, '' ); // context = '' => only htmlspecialchar, not htmlentities
       $strDataHTML = preg_replace ( '@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML );
