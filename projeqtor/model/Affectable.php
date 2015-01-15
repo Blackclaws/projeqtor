@@ -157,14 +157,19 @@ class Affectable extends SqlElement {
 			foreach ( $sizes as $size ) {
 				$thumbFile = $thumbLocation . "/Affectable_$idAffectable/thumb$size.png";
 				debugLog ( $thumbFile );
-				createThumb ( $fileFullName, $size, $thumbFile );
+				createThumb ( $fileFullName, $size, $thumbFile, true );
 			}
+		}
+	}
+	public static function generateAllThumbs() {
+		$affList=SqlList::getList('Affectable',null,null,true);
+		foreach ($affList as $id=>$name) {
+			generateThumbs('Affectable',$id, null);
 		}
 	}
 	
 	public static function deleteThumbs($classAffectable, $idAffectable, $fileFullName = null) {
 		$thumbLocation = '../files/thumbs/Affectable_'.$idAffectable;
-		debugLog($thumbLocation);
 		purgeFiles($thumbLocation, null);
 	}
 	
@@ -174,7 +179,7 @@ class Affectable extends SqlElement {
 		if (file_exists ( $file )) {
 			return "$file#$affId#&nbsp;#Affectable";
 		} else {
-			return '##';
+			return "../view/img/Affectable/thumb$size.png#0#&nbsp;#Affectable";
 		}
 	}
 }

@@ -449,7 +449,7 @@ class Resource extends SqlElement {
     	  	  $top='70px';
     	  	}
     	  }
-    	  $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
+    	  $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;"><img src="'. Affectable::getThumbUrl('Resource', $this->id, 80).'" '
            . ' title="'.$image->fileName.'" style="cursor:pointer"'
            . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
         if (!$print) {

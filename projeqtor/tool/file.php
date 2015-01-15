@@ -88,10 +88,11 @@ function purgeFiles($dir, $pattern) {
  * Create of thumb image of given size, with same name suffixed with "_thumb$size" or with name definied in $thumb
  * @param string $image source image to generate thumb from
  * @param integer $size size of thumb
- * @param string $thumb name of target thumb (to avoid dafaut naming)
+ * @param string $thumb name of target thumb (to avoid defaut naming)
+ * $param boolean $square if thumb target to be rendered as a square (crop borders)
  */
-function createThumb($imageFile,$size,$thumb=null) {
-debugLog("createThumb($imageFile,$size,$thumb)");	
+function createThumb($imageFile,$size,$thumb=null, $square=false) {
+debugLog("createThumb($imageFile,$size,$thumb,$square)");	
   if (!$size) {
     copy($imageFile, $thumb);
     return;
@@ -135,7 +136,18 @@ debugLog("createThumb($imageFile,$size,$thumb)");
     $img=$imagecreate($imageFile);
     $x = imagesx($img);
     $y = imagesy($img);
-    if($x>$size or $y>$size) {
+    $px=0; $py=0;
+    if ($square) {
+    	$nx = $size;
+    	$ny = $size;
+    	if($x>$y) {
+    		$px=round(($x-$y)/2,0);
+    		$x=$y;
+    	} else if ($x<$y) {
+    		$py=round(($y-$y)/2,0);
+    		$y=$x;
+    	}
+    } else if($x>$size or $y>$size) {
       if($x>$y) {
         $nx = $size;
         $ny = floor($y/($x/$size));
@@ -155,7 +167,7 @@ debugLog("createThumb($imageFile,$size,$thumb)");
       imagealphablending($nimg, $blending); 
       imagesavealpha($nimg, true); 
     } 
-    imagecopyresampled($nimg,$img,0,0,0,0,$nx,$ny,$x,$y);
+    imagecopyresampled($nimg,$img,0,0,$px,$py,$nx,$ny,$x,$y);
     if (! $thumb) {
       $thumb=getThumbFileName($imageFile,$size);
     }
