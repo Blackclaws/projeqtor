@@ -180,8 +180,9 @@ function iconFormatter($value) {
 }
 
 function formatUserThumb($userId,$userName,$size=22,$float='right') {
+	if (! $userId) return '';
 	$radius=round($size/2,0);
-	$res='<img style="float:'.$float.';border-radius:'.$radius.'px" src="'.Affectable::getThumbUrl('Affectable', $userId, $size).'" ';
+	$res='<img style="width:'.$size.'px;float:'.$float.';border-radius:'.$radius.'px" src="'.Affectable::getThumbUrl('Affectable', $userId, $size).'" ';
 	$res.=' title="'.i18n('thumbCreatorTitle').' : '.$userName.'"';
 	$res.='/>';
 	return $res;
