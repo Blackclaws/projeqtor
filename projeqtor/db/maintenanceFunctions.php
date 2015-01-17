@@ -110,6 +110,10 @@ function runScript($vers,$pluginSqlFile=null) {
 	            $end=strpos($query,' ', $deb+1);
 	            $len=$end-$deb;
 	            $tableName=substr($query, $deb, $len );
+	            $pos=strpos($tableName,"\n");
+	            if ($pos) {
+	              $tableName=substr($tableName, 0,$pos);
+	            }            
 	            if ($action=="DROP TABLE") {            
                 $q=trim($query,"\n");
                 $q=trim($q,"\r");

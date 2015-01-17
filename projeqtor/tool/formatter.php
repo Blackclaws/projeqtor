@@ -184,7 +184,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
 	$radius=round($size/2,0);
 	$file=Affectable::getThumbUrl('Affectable', $userId, $size);
 	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
-	$res='<img style="'.(($known)?'cursor:pointer':'').';width:'.$size.'px;float:'.$float.';border-radius:'.$radius.'px"';
+	$res='<img style="'.(($known)?'cursor:pointer':'').';width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
 	
 	$res.=' src="'.$file.'" ';
 	if ($title) {
@@ -195,4 +195,15 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
 	}
 	$res.='/>';
 	return $res;
+}
+
+function formatColorThumb($col,$val, $size=20, $float='right') {
+  $class=substr($col,2);
+  if (! class_exists($class)) return ''; 
+  $color=SqlList::getFieldFromId($class, $val, 'color');
+  if (! $color) return '';
+  $radius=round($size/2,0);
+  $res='<div style="border: 1px solid #AAAAAA;background:'.$color.';';
+  $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px">&nbsp;</div>';
+  return $res;
 }
