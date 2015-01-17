@@ -273,7 +273,7 @@
 	        $from=htmlExtractArgument($val, 'from');
 	        $arrayWidth[$numField]=htmlExtractArgument($val, 'width');
 	        $querySelect .= ($querySelect=='')?'':', ';
-	        if (substr($formatter[$numField],0,5)=='thumb') {
+	        if (substr($formatter[$numField],0,5)=='thumb' and substr($formatter[$numField],0,9)!='thumbName') {
             $querySelect.=substr($formatter[$numField],5).' as ' . $fld;;
             continue;
           }    
@@ -323,6 +323,11 @@
 	          	$querySelect .= $fieldCalc . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
 	          } else {
 	          	$querySelect .= $externalTableAlias . '.' . $externalObj->getDatabaseColumnName('name') . ' as ' . ((Sql::isPgsql())?'"'.$fld.'"':$fld);
+	          }
+	          if (substr($formatter[$numField],0,9)=='thumbName') {
+	            $numField+=1;
+	            $formatter[$numField]='';
+	            $querySelect .= ', '.$table.'.id'.substr($fld,4);
 	          }
 	          //if (! stripos($queryFrom,$externalTable)) {
 	            $queryFrom .= ' left join ' . $externalTable . ' as ' . $externalTableAlias .
@@ -615,13 +620,17 @@
             	  }
             	} 
             }
-            if (substr($formatter[$nbFields],0,5)=='thumb') {
-            	if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' or $objectClass=='Affectable') {
-            		/*if (isset($line['fullName'])) {
-            			$nameAff=$line['fullName'];
-            		} else {
-            			$nameAff=$line['name'];
-            		}*/
+            if (substr($formatter[$nbFields],0,5)=='thumb') {             
+            	if (substr($formatter[$nbFields],0,9)=='thumbName') {
+            	  $nameClass=substr($id,4);
+            	  debugLog($nameClass.'#'.$val.'#'.$line['id'.$nameClass]);
+            	  if ($val) {
+            	    $val=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$nbFields],9)).'#'.$val;
+            	  } else {
+            	    $val="##";
+            	  }
+            	  debugLog($val);            	  
+            	} else if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' or $objectClass=='Affectable') {
             		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val);
             	} else {          	
 	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));
@@ -631,7 +640,8 @@
 	              	$val="##";
 	              }
             	}
-            } 
+            	
+            }            
             echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
           }
           echo '}';       

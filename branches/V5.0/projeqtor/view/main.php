@@ -576,7 +576,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <img src="img/error.png" />
       </td>
       <td>
-        <div id="dialogErrorMessage" class="messageERROR">
+        <div id="dialogErrorMessage">
         </div>
       </td>
     </tr>

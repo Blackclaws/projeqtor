@@ -34,7 +34,6 @@ class Contact extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $idClient;
   public $_spe_image;
   //public $idRecipient;
   public $isResource;
@@ -44,6 +43,7 @@ class Contact extends SqlElement {
   public $userName;
   
   public $email;
+  public $idClient;
   public $phone;
   public $mobile;
   public $fax;
@@ -76,8 +76,7 @@ class Contact extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100", 
-  		                                    "idClient"=>"truncatedWidth100",
+  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
                                           "isResource"=>"readonly",
@@ -439,51 +438,8 @@ class Contact extends SqlElement {
       return $result;
     }
     if ($item=='image' and $this->id){
-      $result="";
-      $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$this->id));
-      $left=250;
-      $top=88;
-      if ($image->id and $image->isThumbable()) {
-        if (!$print) {
-          $result.='<tr style="height:20px;">';
-          $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
-          $result.='<td>&nbsp;&nbsp;';
-          $result.='<img src="css/images/smallButtonRemove.png" onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';         
-        	$horizontal='left:'.($largeWidth+75).'px';
-    	    $top='30px';
-    	  } else {
-    	  	if ($outMode=='pdf') {
-    	  		$horizontal='left:450px';
-            $top='100px';
-    	  	} else {
-    	  	  $horizontal='left:400px';
-    	  	  $top='70px';
-    	  	}
-    	  }
-        $result.='<div style="position: absolute; top:'.$top.';'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;"><img src="'. getImageThumb($image->getFullPathFileName(),80).'" '
-           . ' title="'.$image->fileName.'" style="cursor:pointer"'
-           . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" /></div>';
-        if (!$print) {
-          $result.='</td></tr>';
-        }
-      } else {
-        if ($image->id) {
-          $image->delete();
-        }
-        if (!$print) {
-        	$horizontal='left:'.($largeWidth+75).'px';
-          $result.='<tr style="height:20px;">';
-          $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
-          $result.='<td>&nbsp;&nbsp;';
-          $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
-          $result.='<div style="position: absolute; top:30px;'.$horizontal.'; width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" '
-              .' onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'">'
-              . i18n('addPhoto').'</div>';
-          $result.='</td>';
-          $result.='</tr>';
-        }
-      }
-      return $result;
+      $result=Affectable::drawSpecificImage(get_class($this),$this->id, $print, $outMode, $largeWidth);
+    	echo $result;
     }
   }
   

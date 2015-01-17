@@ -53,6 +53,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   //}
   $currency = Parameter::getGlobalParameter ( 'currency' );
   $currencyPosition = Parameter::getGlobalParameter ( 'currencyPosition' );
+  $showThumb=Parameter::getGlobalParameter('paramShowThumb'); // show thumb between label and field ?
   $treatedObjects [] = $obj;
   $dateWidth = '75';
   $verySmallWidth = '44';
@@ -347,10 +348,19 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           	echo '<td colspan="2">';
       	  } else {
 	          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
-	          $thumb=(!$print && $val && ($col=='idResource' or $col=='idUser' or $col=='idContact'))?true:false;
+	          $thumbRes=SqlElement::isThumbableField($col);
+	          $thumbColor=SqlElement::isColorableField($col);
+	          //$thumbIcon=SqlElement::isIconableField($col);
+	          $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb)?true:false;
 	          echo '<label for="' . $col . '" '.(($thumb)?'class="labelWithThumb"':'').'>'; 
 	          echo htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;'.(($thumb)?'':':&nbsp;').'</label>' . $cr;
-	          if ($thumb) echo formatUserThumb($val,null,null,22,'right');	           
+	          if ($thumb) {
+	            if ($thumbRes) {
+	              echo formatUserThumb($val,null,null,22,'right');
+	            } else {
+	              echo formatColorThumb($col,$val,20,'right');
+	            }
+	          }
 	          echo '</td>';
 	          if ($print and $outMode == "pdf") {
 	            echo '<td style="width: 120px">';

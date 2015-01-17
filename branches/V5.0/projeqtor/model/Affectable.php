@@ -118,19 +118,28 @@ class Affectable extends SqlElement {
     return self::$_fieldsAttributes;
   }
 
+  // ============================================================================**********
+  // THUMBS & IMAGES
+  // ============================================================================**********
+  
+  /**
+   * 
+   * @param unknown $classAffectable
+   * @param unknown $idAffectable
+   * @param string $fileFullName
+   */
   public static function generateThumbs($classAffectable, $idAffectable, $fileFullName=null) {
     $sizes=array(16,22,32,48,80); // sizes to generate, may be used somewhere
     $thumbLocation='../files/thumbs';
     $attLoc=Parameter::getGlobalParameter('paramAttachmentDirectory');
     if (!$fileFullName) {
-      $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType' => 'Resource','refId' => $this->id));
+      $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType' => 'Resource','refId' => $idAffectable));
       if ($image->id) {
         $fileFullName=$image->subDirectory . $image->fileName;
       }
     }
     $fileFullName=str_replace('${attachmentDirectory}', $attLoc, $fileFullName);
     $fileFullName=str_replace('\\', '/', $fileFullName);
-    debugLog($fileFullName);
     if ($fileFullName and isThumbable($fileFullName)) {
       foreach ( $sizes as $size ) {
         $thumbFile=$thumbLocation . "/Affectable_$idAffectable/thumb$size.png";
@@ -141,9 +150,9 @@ class Affectable extends SqlElement {
 
   public static function generateAllThumbs() {
 debugLog("generateAllThumbs-start");
-    $affList=SqlList::getList('Affectable', null, null, true);
+    $affList=SqlList::getList('Affectable', 'name', null, true);
     foreach ( $affList as $id => $name ) {
-      generateThumbs('Affectable', $id, null);
+      self::generateThumbs('Affectable', $id, null);
     }
 debugLog("generateAllThumbs-end");    
   }
@@ -153,15 +162,74 @@ debugLog("generateAllThumbs-end");
     purgeFiles($thumbLocation, null);
   }
 
-  public static function getThumbUrl($objectClass, $affId, $size) {
+  public static function getThumbUrl($objectClass, $affId, $size, $nocache=false) {
     $thumbLocation='../files/thumbs';
     $file="$thumbLocation/Affectable_$affId/thumb$size.png";
     if (file_exists($file)) {
-      return "$file#$affId#&nbsp;#Affectable";
-    } else {
-      
+      return "$file".(($nocache)?"?nocache=".microtime():"#$affId#&nbsp;#Affectable");
+    } else {      
       return "../view/img/Affectable/thumb$size.png#0#&nbsp;#Affectable";
     }
+  }
+  
+  public static function showBigImageEmpty($extraStylePosition) {
+    $result='<div style="position: absolute;'.$extraStylePosition.';'
+      .'border-radius:40px;width:80px;height:80px;border: 1px solid grey;color: grey;font-size:80%;'
+      .'text-align:center;cursor: pointer;" '
+      .' onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'">'
+      .'<br/><br/><br/>'.i18n('addPhoto').'</div>';
+    return $result;
+  }
+  public static function showBigImage($extraStylePosition,$affId,$filename, $attachementId) {
+    $result='<div style="position: absolute;'.$extraStylePosition.'; border-radius:40px;width:80px;height:80px;border: 1px solid grey;">'
+      . '<img style="border-radius:40px;" src="'. Affectable::getThumbUrl('Resource', $affId, 80, true).'" '
+      . ' title="'.$filename.'" style="cursor:pointer"'
+      . ' onClick="showImage(\'Attachment\',\''.$attachementId.'\',\''.$filename.'\');" /></div>';
+    return $result;
+  }
+  public static function drawSpecificImage($class,$id, $print, $outMode, $largeWidth) {
+    $result="";
+    $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$id));
+    if ($image->id and $image->isThumbable()) {
+      if (!$print) {
+        $result.='<tr style="height:20px;">';
+        $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+        $result.='<td>&nbsp;&nbsp;';
+        $result.='<img src="css/images/smallButtonRemove.png" '
+            .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
+        $horizontal='left:'.($largeWidth+75).'px';
+        $top='30px';
+      } else {
+        if ($outMode=='pdf') {
+          $horizontal='left:450px';
+          $top='100px';
+        } else {
+          $horizontal='left:400px';
+          $top='70px';
+        }
+      }
+      $extraStyle='top:30px;'.$horizontal;
+      $result.=Affectable::showBigImage($extraStyle,$id,$image->fileName,$image->id);
+      if (!$print) {
+        $result.='</td></tr>';
+      }
+    } else {
+      if ($image->id) {
+        $image->delete();
+      }
+      if (!$print) {
+        $horizontal='left:'.($largeWidth+75).'px';
+        $result.='<tr style="height:20px;">';
+        $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+        $result.='<td>&nbsp;&nbsp;';
+        $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+        $extraStyle='top:30px;'.$horizontal;
+        $result.=Affectable::showBigImageEmpty($extraStyle);
+        $result.='</td>';
+        $result.='</tr>';
+      }
+    }
+    return $result;
   }
 }
 ?>

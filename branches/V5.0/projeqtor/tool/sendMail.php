@@ -101,11 +101,11 @@
   
   
   if ($result!="OK") {
-    echo '<span class="messageERROR" >' . i18n('noMailSent',array($dest, $result)) . '</span>';
+    echo '<div class="messageERROR" >' . i18n('noMailSent',array($dest, $result)) . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';
     echo '<input type="hidden" id="lastOperationStatus" value="ERROR" />';
   } else {
-    echo '<span class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</span>';
+    echo '<div class="messageOK" >' . i18n('mailSentTo',array($dest)) . '</div>';
     echo '<input type="hidden" id="lastOperation" value="mail" />';
     echo '<input type="hidden" id="lastOperationStatus" value="OK" />';
   } 

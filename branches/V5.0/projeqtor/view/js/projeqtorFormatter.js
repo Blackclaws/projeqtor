@@ -391,6 +391,21 @@ function thumb48(value) {
 function thumb64(value) {
   return thumb(value, 64);
 }
+function thumbName16(value) {
+  return thumb(value, 16);
+}
+function thumbName22(value) {
+  return thumb(value, 22);
+}
+function thumbName32(value) {
+  return thumb(value, 32);
+}
+function thumbName48(value) {
+  return thumb(value, 48);
+}
+function thumbName64(value) {
+  return thumb(value, 64);
+}
 function thumb(value, size) {
 console.log("thumb("+value+","+size+")");  
   if (value == "##" || value == "####")
@@ -403,19 +418,26 @@ console.log("thumb("+value+","+size+")");
   if (tab.length > 3) {
     thumbObjectClass = tab[3];
   }
+  thumbName="";
+  if (tab.length > 4) {
+    thumbName = tab[4];
+  }
   thumbObjectId = tab[1];
   fileName = tab[2];
   var radius=Math.round(size/2);
   var result = '';
   if (filePath) {
-    result+= '<div style="width:100%;text-align:center;">';
-    result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;" src="' + filePath + '"';
+    result+= '<div style="width:100%;'+((thumbName)?'':'text-align:center;')+'">';
+    //result+= thumbName;
+    result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:right;':'')+'" src="' + filePath + '"';
     if (filePath.substr(0,23) != '../view/img/Affectable/') {
-      result+=' style="cursor:pointer" ' + ' onClick="showImage(\''
+      result+=' onClick="showImage(\''
         + thumbObjectClass + '\',\'' + thumbObjectId + '\',\'' + fileName
         + '\');"';
     }
-    result+='/></div>';
+    result+='/>';
+    result+= thumbName;
+    result+='</div>';
   }
   return result;
 }
