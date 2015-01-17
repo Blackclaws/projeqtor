@@ -27,3 +27,5 @@ RENAME TABLE `${prefix}attachement` to `${prefix}attachment`;
 UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentDirectory' WHERE parameterCode='paramAttachementDirectory';
 UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentMaxSize' WHERE parameterCode='paramAttachementMaxSize';
 UPDATE `${prefix}parameter` SET parameterCode='displayAttachment' WHERE parameterCode='displayAttachement';
+
+CREATE INDEX workelementActivity ON `${prefix}workelement` (idActivity);

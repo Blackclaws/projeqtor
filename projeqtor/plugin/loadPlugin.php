@@ -4,8 +4,6 @@
  * Copyright 2014 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  * 
- * Most of properties are extracted from Dojo Framework.
- *
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under 

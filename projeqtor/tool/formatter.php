@@ -179,11 +179,20 @@ function iconFormatter($value) {
   return '<img src="icons/'.$value.'" />';
 }
 
-function formatUserThumb($userId,$userName,$size=22,$float='right') {
+function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
 	if (! $userId) return '';
 	$radius=round($size/2,0);
-	$res='<img style="width:'.$size.'px;float:'.$float.';border-radius:'.$radius.'px" src="'.Affectable::getThumbUrl('Affectable', $userId, $size).'" ';
-	$res.=' title="'.i18n('thumbCreatorTitle').' : '.$userName.'"';
+	$file=Affectable::getThumbUrl('Affectable', $userId, $size);
+	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
+	$res='<img style="'.(($known)?'cursor:pointer':'').';width:'.$size.'px;float:'.$float.';border-radius:'.$radius.'px"';
+	
+	$res.=' src="'.$file.'" ';
+	if ($title) {
+		$res.=' title="'.i18n('thumb'.$title.'Title',array($userName)).'"';
+	}
+	if ($known) {
+	  $res.=' onClick="showImage(\'Affectable\',\''.$userId.'\',\'&nbsp;\');"';
+	}
 	$res.='/>';
 	return $res;
 }

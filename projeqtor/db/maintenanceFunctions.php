@@ -3,8 +3,6 @@
  *
  * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
- * 
- * Most of properties are extracted from Dojo Framework.
  *
  * This file is part of ProjeQtOr.
  * 

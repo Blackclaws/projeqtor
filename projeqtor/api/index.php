@@ -5,8 +5,6 @@
 * Contributors : 
 *   => mamath : fix #1510
 *
-* Most of properties are extracted from Dojo Framework.
-*
 * This file is part of ProjeQtOr.
 *
 * ProjeQtOr is free software: you can redistribute it and/or modify it under

@@ -347,9 +347,10 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
           	echo '<td colspan="2">';
       	  } else {
 	          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
-	          echo '<label for="' . $col . '" >'; 
-	          if ($col=='idResource' or $col=='idUser' or $col=='idContact') echo formatUserThumb($val,null,16,'right');		
-	          echo htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>' . $cr;
+	          $thumb=(!$print && $val && ($col=='idResource' or $col=='idUser' or $col=='idContact'))?true:false;
+	          echo '<label for="' . $col . '" '.(($thumb)?'class="labelWithThumb"':'').'>'; 
+	          echo htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;'.(($thumb)?'':':&nbsp;').'</label>' . $cr;
+	          if ($thumb) echo formatUserThumb($val,null,null,22,'right');	           
 	          echo '</td>';
 	          if ($print and $outMode == "pdf") {
 	            echo '<td style="width: 120px">';
@@ -1571,7 +1572,7 @@ function drawNotesFromObject($obj, $refresh = false) {
       if (! $print) {
         echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode ( $note->note, 'none' ) . '"/>';
       }
-      echo formatUserThumb($userId,$userName);
+      echo formatUserThumb($userId,$userName,'Creator');
       // ADDED BRW
       $strDataHTML = htmlEncode ( $note->note, '' ); // context = '' => only htmlspecialchar, not htmlentities
       $strDataHTML = preg_replace ( '@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML );

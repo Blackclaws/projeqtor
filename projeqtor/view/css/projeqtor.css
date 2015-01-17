@@ -399,6 +399,9 @@ label, .label, .smallLabel {
   border: 1px;
   text-shadow: 1px 1px #FFFFFF;
 }
+.labelWithThumb {
+	width: 120px; !important
+}
 .largeLabel {
 	width: 300px;
 }
