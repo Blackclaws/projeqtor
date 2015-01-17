@@ -14,7 +14,7 @@ CREATE TABLE `${prefix}tempupdate` (
 DELETE FROM `${prefix}tempupdate` WHERE 1=1;
 
 INSERT INTO `${prefix}tempupdate` 
-  (SELECT id, refType, refId from `${prefix}workelement` WHERE (refType, refId) in 
+  (select id, refType, refId from `${prefix}workelement` WHERE (refType, refId) in 
   ( select refType, refId from  `${prefix}workelement` group by  refType, refId having count(*) >1 ));
   
 DELETE FROM `${prefix}tempupdate` WHERE id in 
