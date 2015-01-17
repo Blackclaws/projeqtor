@@ -406,10 +406,17 @@ console.log("thumb("+value+","+size+")");
   thumbObjectId = tab[1];
   fileName = tab[2];
   var radius=Math.round(size/2);
-  var result = '<div style="width:100%;text-align:center;"><img style="border-radius:'+radius+'px;height:' + size + 'px;" src="' + filePath
-      + '" style="cursor:pointer" ' + ' onClick="showImage(\''
-      + thumbObjectClass + '\',\'' + thumbObjectId + '\',\'' + fileName
-      + '\');" /></div>';
+  var result = '';
+  if (filePath) {
+    result+= '<div style="width:100%;text-align:center;">';
+    result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;" src="' + filePath + '"';
+    if (filePath.substr(0,23) != '../view/img/Affectable/') {
+      result+=' style="cursor:pointer" ' + ' onClick="showImage(\''
+        + thumbObjectClass + '\',\'' + thumbObjectId + '\',\'' + fileName
+        + '\');"';
+    }
+    result+='/></div>';
+  }
   return result;
 }
 

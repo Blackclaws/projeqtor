@@ -3,8 +3,6 @@
  *
  * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
- * 
- * Most of properties are extracted from Dojo Framework.
  *
  * This file is part of ProjeQtOr.
  * 
@@ -317,7 +315,9 @@ if (beforeVersion($currVersion,"V4.2.0")) {
 	}
 	
 }
-
+if (beforeVersion($currVersion,"V5.0.0") and $currVersion!='V0.0.0') {
+  Affectable::generateAllThumbs();
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
@@ -327,18 +327,18 @@ Sql::saveDbVersion($version);
 traceLog('=====================================');
 traceLog("");
 echo '<div class="message'.(($nbErrors==0)?'OK':'WARNING').'">';
-echo "____________________________________________";
+echo "__________________________________";
 echo "<br/><br/>";
 if ($nbErrors==0) {
   traceLog("DATABASE UPDATE COMPLETED TO VERSION " . $version);
-  echo "DATABASE UPDATE COMPLETED TO VERSION " . $version;
+  echo "DATABASE UPDATE COMPLETED <br/>TO VERSION " . $version;
 } else {
   traceLog($nbErrors . " ERRORS DURING UPDATE TO VERSION " . $version );
-  echo $nbErrors . " ERRORS DURING UPDATE TO VERSION " . $version . "<br/>";
-  echo "DETAILS CAN BE FOUND IN LOG FILE.";
+  echo $nbErrors . " ERRORS DURING UPDATE <BR/>TO VERSION " . $version . "<br/>";
+  echo "(details of errors in log file)";
 }
 traceLog("");
 traceLog("=====================================");
 traceLog("");
-echo "<br/>____________________________________________<br/><br/>";
+echo "<br/>__________________________________<br/><br/>";
 echo '</div>';
