@@ -966,6 +966,7 @@ label, .label, .smallLabel {
 	-moz-border-radius-bottomleft: 10px !important;
 	border-top-left-radius: 10px !important;
 	border-bottom-left-radius: 10px !important;
+	padding-left: 7px;
 }
 
 /* SPECIFIC ROUND BUTTON */
