@@ -50,11 +50,11 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
 }
 ?>
 <?php if ($displayMode=='standard') {?>
-<span maxsize="180px" style="position: absolute; left:75px; top:1px; height: 20px; width: 160px; color:#202020;" 
+<span maxsize="160px" style="position: absolute; left:75px; top:1px; height: 20px; width: 165px; color:#202020;" 
   dojoType="dijit.form.DropDownButton" 
   id="selectedProject" jsId="selectedProject" name="selectedProject" showlabel="true" class="">
-  <span style="width:160px; text-align: left;">
-    <div style="width:160px; overflow: hidden; text-align: left;" >
+  <span style="width:140px; text-align: left;">
+    <div style="width:140px; overflow: hidden; text-align: left;" >
     <?php
 if ($proj=='*') {
   echo '<i>' . i18n('allProjects') . '</i>';

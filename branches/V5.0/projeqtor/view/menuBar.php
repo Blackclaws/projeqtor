@@ -100,20 +100,23 @@
   }
 ?>
   <table width="100%"><tr height="<?php echo $iconSize+9; ?>px">  
-    <td width="285px">
+    <td width="287px">
       <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:75px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
-      <div style="border:0px solid red;" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
+      <div style="height:100%" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
         <?php include "menuProjectSelector.php"?>
       </div>
-      <span style="position: absolute; left:263px; top:1px; height: 20px">
+      <span style="position: absolute; left:250px; top:1px; height: 20px">
         <button id="projectSelectorParametersButton" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('menuParameter');?>"
-         iconClass="iconParameter16" >
+         iconClass="dijitButtonIcon dijitButtonIconTool" class="detailButton" >
           <script type="dojo/connect" event="onClick" args="evt">
            loadDialog('dialogProjectSelectorParameters', null, true);
           </script>
         </button>
       </span>
+      <div style="position:relative;top:-8px; font-size:80%; text-align:center; text-shadow:1px 1px #000000">
+        <?php htmlDisplayDatabaseInfos(); ?>
+      </div>
     </td>
 <?php if ($showMenuBar!='NO') {?>    
     <td width="3px"></td>

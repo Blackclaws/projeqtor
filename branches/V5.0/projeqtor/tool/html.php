@@ -279,7 +279,7 @@ function htmlDisplayDatabaseInfos() {
   if (! $paramDbDisplayName) {
     $paramDbDisplayName=$paramDbName;
   }
-  echo "<div class='statusBar' style='text-align:center;'><b>$paramDbDisplayName</b></div>";
+  echo "<div style='text-align:center;'><b>$paramDbDisplayName</b></div>";
 }
 
 /** ===========================================================================
