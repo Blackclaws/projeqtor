@@ -578,9 +578,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       if (destination=="directFilterList") {
         if (!validationType && validationType!='returnFromFilter') {    
           if (top.dojo.byId('noFilterSelected') && top.dojo.byId('noFilterSelected').value=='true') {
-            dijit.byId("listFilterFilter").set("iconClass","iconFilter16"); 
+            dijit.byId("listFilterFilter").set("iconClass","iconFilter"); 
           } else {
-            dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
+            dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter");
           }
           refreshJsonList(dojo.byId('objectClass').value);
         }
@@ -2615,6 +2615,10 @@ function newObject() {
 }
 
 function saveObject() {
+  if (waitingForReply)  {
+    showInfo(i18n("alertOngoingQuery"));
+    return true;
+  }
   dojo.byId("saveButton").blur();
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
 }

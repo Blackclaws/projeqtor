@@ -242,7 +242,10 @@ class ColumnSelector extends SqlElement {
 				$idClass=substr($col,2);
 				if (class_exists($idClass)) {
 					//$idObj=new $IdClass;
-					if(property_exists($idClass, 'color')) {
+					if (Affectable::isAffectable($idClass)) {
+					  $cs->formatter="thumbName22";
+					}
+				  if(property_exists($idClass, 'color')) {
 						$cs->field='color'.ucfirst($cs->field);
 	          $cs->formatter="colorNameFormatter";
 	        } else if(property_exists($idClass, '_isNameTranslatable')) {

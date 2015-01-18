@@ -87,7 +87,7 @@ class Command extends SqlElement {
     <th field="nameCommandType" width="7%" >${idCommandType}</th>
     <th field="name" width="12%" >${name}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="8%" >${responsible}</th>
+    <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="validatedEndDate" width="8%" formatter="dateFormatter" >${validatedEndDate}</th>
   	<th field="validatedWork" formatter="workFormatter" width="5%" >${validatedWork}</th>
   	<th field="validatedPricePerDayAmount" formatter="costFormatter" width="7%" >${validatedPricePerDayAmount}</th>

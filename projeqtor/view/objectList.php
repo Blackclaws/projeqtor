@@ -78,29 +78,27 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 &nbsp;</NOBR> 
         </td>
         <td style="vertical-align: middle;">
-          <div title="<?php echo i18n('quickSearch')?>" type="text" class="filterField" dojoType="dijit.form.TextBox" 
+          <div title="<?php echo i18n('quickSearch')?>" type="text" class="filterField rounded" dojoType="dijit.form.TextBox" 
              id="quickSearchValue" name="quickSearchValue"
              style="width:200px;">
           </div>
         </td>
-
-	      <td>             
+	      <td style="width:36px">            
 	        <button title="<?php echo i18n('quickSearch')?>"  
 	          dojoType="dijit.form.Button" 
 	          id="listQuickSearchExecute" name="listQuickSearchExecute"
-	          iconClass="iconSearch" showLabel="false">
+	          iconClass="dijitButtonIcon dijitButtonIconSearch" class="detailButton" showLabel="false">
 	          <script type="dojo/connect" event="onClick" args="evt">
               //dijit.byId('quickSearchListForm').submit();
               quickSearchExecute();
           </script>
 	        </button>
 	      </td>      
-      
-        <td>
+        <td style="width:36px">
           <button title="<?php echo i18n('comboCloseButton')?>"  
             dojoType="dijit.form.Button" 
             id="listQuickSearchClose" name="listQuickSearchClose"
-            iconClass="dijitEditorIcon dijitEditorIconUndo" showLabel="false">
+            iconClass="dijitButtonIcon dijitButtonIconUndo" class="detailButton" showLabel="false">
             <script type="dojo/connect" event="onClick" args="evt">
               quickSearchClose();
             </script>
@@ -187,11 +185,11 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             <td >&nbsp;</td>
             <td width="5px"><NOBR>&nbsp;</NOBR></td>
 <?php if (! $comboDetail or 1) {?>            
-            <td width="32px">
+            <td width="36px">
               <button title="<?php echo i18n('quickSearch')?>"  
                dojoType="dijit.form.Button" 
                id="iconSearchOpenButton" name="iconSearchOpenButton"
-               iconClass="iconSearch" showLabel="false">
+               iconClass="dijitButtonIcon dijitButtonIconSearch" class="detailButton" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
                   quickSearchOpen();
                 </script>
@@ -203,13 +201,13 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             </td>
 <?php }
       if (! $comboDetail or 1) {?>            
-            <td width="32px">
+            <td width="51px">
               <button 
               title="<?php echo i18n('advancedFilter')?>"  
-              class="filterField"
+               class="comboButton"
                dojoType="dijit.form.DropDownButton" 
                id="listFilterFilter" name="listFilterFilter"
-               iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter16" showLabel="false">
+               iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
                   showFilterDialog();
                 </script>
@@ -236,11 +234,10 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             </td>
 <?php }?>   
 <?php if (! $comboDetail) {?>  
-            <td  width="32px">           
-							<div dojoType="dijit.form.DropDownButton"
-							  style="height: 20px; color:#202020;"  
+            <td width="51px">           
+							<div dojoType="dijit.form.DropDownButton"							    
 							  id="listColumnSelector" jsId="listColumnSelector" name="listColumnSelector" 
-							  showlabel="false" class="" iconClass="iconColumnSelector"
+							  showlabel="false" class="comboButton" iconClass="dijitButtonIcon dijitButtonIconColumn" 
 							  title="<?php echo i18n('columnSelector');?>">
                 <span>title</span>
 							  <div dojoType="dijit.TooltipDialog" class="white" id="listColumnSelectorDialog"
@@ -293,11 +290,11 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
              </td>
 <?php }?>                 
 <?php if (! $comboDetail) {?>                
-             <td width="32px">
+             <td width="36px">
               <button title="<?php echo i18n('printList')?>"  
                dojoType="dijit.form.Button" 
                id="listPrint" name="listPrint"
-               iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+               iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
                   showPrint("../tool/jsonQuery.php", 'list');
                 </script>
@@ -305,21 +302,21 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               </td>
 <?php }?>            
 <?php if (! $comboDetail) {?>        
-             <td width="32px">
+             <td width="36px">
               <button title="<?php echo i18n('reportPrintPdf')?>"  
                dojoType="dijit.form.Button" 
                id="listPrintPdf" name="listPrintPdf"
-               iconClass="iconPdf" showLabel="false">
+               iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
                   showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
                 </script>
               </button>              
             </td>
-             <td width="32px">
+             <td width="36px">
               <button title="<?php echo i18n('reportPrintCsv')?>"  
                dojoType="dijit.form.Button" 
                id="listPrintCsv" name="listPrintCsv"
-               iconClass="iconCsv" showLabel="false">
+               iconClass="dijitButtonIcon dijitButtonIconCsv" class="detailButton" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
                   openExportDialog('csv');
                   //showPrint("../tool/jsonQuery.php", 'list', null, 'csv');
@@ -335,7 +332,7 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
             </td>
             <td style="text-align: right; vertical-align: middle;" width="30px">
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                <?php if ($showIdle) echo " checked ";?>
+                class="whiteCheck" <?php if ($showIdle) echo " checked ";?>
                 type="checkbox" id="listShowIdle" name="listShowIdle">
                 <script type="dojo/method" event="onChange" >
                   refreshJsonList('<?php echo $objectClass;?>');

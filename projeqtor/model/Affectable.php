@@ -149,12 +149,10 @@ class Affectable extends SqlElement {
   }
 
   public static function generateAllThumbs() {
-debugLog("generateAllThumbs-start");
     $affList=SqlList::getList('Affectable', 'name', null, true);
     foreach ( $affList as $id => $name ) {
       self::generateThumbs('Affectable', $id, null);
-    }
-debugLog("generateAllThumbs-end");    
+    } 
   }
 
   public static function deleteThumbs($classAffectable, $idAffectable, $fileFullName=null) {
@@ -230,6 +228,15 @@ debugLog("generateAllThumbs-end");
       }
     }
     return $result;
+  }
+  public static function isAffectable($objectClass=null) {
+    if ($objectClass) {
+      if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' 
+       or $objectClass=='Affectable' or $objectClass=='ResourceSelect') {
+        return true;
+      }
+    }
+    return false;
   }
 }
 ?>

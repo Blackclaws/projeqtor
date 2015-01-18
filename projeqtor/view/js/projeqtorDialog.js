@@ -2706,9 +2706,9 @@ function selectFilterContinue() {
 		load: function(data,args) { }
 	});
 	if (top.dojo.byId("nbFilterCriteria").value>0) {
-		doc.dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter16");
+		doc.dijit.byId("listFilterFilter").set("iconClass","iconActiveFilter");
 	} else {
-		doc.dijit.byId("listFilterFilter").set("iconClass","iconFilter16");
+		doc.dijit.byId("listFilterFilter").set("iconClass","iconFilter");
 	}
 	doc.loadContent("../tool/displayFilterList.php?context=directFilterList&filterObjectClass="+dojo.byId('objectClass').value+compUrl, "directFilterList", null, false,'returnFromFilter', false);
 	doc.refreshJsonList(dojo.byId('objectClass').value);
@@ -2741,8 +2741,8 @@ function clearFilter() {
 	}
 	top.dojo.byId('filterName').value="";
 	top.removefilterClause('all');	
-	//setTimeout("selectFilter();dijit.byId('listFilterFilter').set('iconClass','iconFilter16');",100);
-	dijit.byId('listFilterFilter').set('iconClass','iconFilter16');
+	//setTimeout("selectFilter();dijit.byId('listFilterFilter').set('iconClass','iconFilter');",100);
+	dijit.byId('listFilterFilter').set('iconClass','iconFilter');
 	top.dijit.byId('filterNameDisplay').set('value',null);
 	top.dojo.byId('filterName').value=null;
 }

@@ -78,7 +78,7 @@ class Issue extends SqlElement {
     <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
     <th field="actualEndDate" width="10%" formatter="dateFormatter">${actualEndDate}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="9%" >${responsible}</th>
+    <th field="nameResource" formatter="thumbName22" width="9%" >${responsible}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
