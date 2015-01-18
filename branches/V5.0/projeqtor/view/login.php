@@ -147,7 +147,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr style="font-size:50%"><td colspan="2">&nbsp;</td></tr>
 			              <tr>
 			                <td></td>
-			                <td><div style="width:200px;text-align:center;"><div dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></div></td>
+			                <td><div style="width:200px;text-align:center;"><div class="greyCheck" dojoType="dijit.form.CheckBox" type="checkbox" name="rememberMe"></div> <?php echo i18n('rememberMe');?></div></td>
 			                <td></td>
 			              </tr>
 			              <?php }?>

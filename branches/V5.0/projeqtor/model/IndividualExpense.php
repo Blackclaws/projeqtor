@@ -62,7 +62,7 @@ class IndividualExpense extends Expense {
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="15%" >${idProject}</th>
     <th field="nameIndividualExpenseType" width="15%" >${type}</th>
-    <th field="nameResource" width="15%" >${idResource}</th>
+    <th field="nameResource" formatter="thumbName22" width="15%" >${idResource}</th>
     <th field="name" width="25%" >${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>

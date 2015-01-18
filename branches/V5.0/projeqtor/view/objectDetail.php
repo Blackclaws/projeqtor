@@ -799,6 +799,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         // Draw a boolean (as a checkbox ====================================== BOOLEAN
         echo '<div dojoType="dijit.form.CheckBox" type="checkbox" ';
         echo $name;
+        echo ' class="greyCheck"';
         echo $attributes;
         echo ' style="' . $specificStyle . '" ';
         // echo ' value="' . $col . '" ' ;

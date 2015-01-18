@@ -127,6 +127,7 @@
 .iconActiveFilter32 { background-image: url(images/iconActiveFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconActiveFilter22 { background-image: url(images/iconActiveFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconActiveFilter16 { background-image: url(images/iconActiveFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconActiveFilter { background-image: url(images/iconActiveFilter.png);  background-repeat: no-repeat; width: 24px; height: 24px;}
 
 .iconActivity32 { background-image: url(images/iconActivity32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconActivity22 { background-image: url(images/iconActivity22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -262,6 +263,7 @@
 .iconFilter32 { background-image: url(images/iconFilter32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconFilter22 { background-image: url(images/iconFilter22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconFilter16 { background-image: url(images/iconFilter16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconFilter { background-image: url(images/iconFilter.png);  background-repeat: no-repeat; width: 24px; height: 24px;}
 
 .iconFinancial32 { background-image: url(images/iconFinancial32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconFinancial22 { background-image: url(images/iconFinancial22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }

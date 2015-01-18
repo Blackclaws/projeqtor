@@ -80,7 +80,7 @@ class Risk extends SqlElement {
     <th field="colorNameLikelihood" width="5%" formatter="colorNameFormatter" >${idLikelihood}</th>
     <th field="colorNameCriticality" width="5%" formatter="colorNameFormatter" >${idCriticality}</th>
     <th field="colorNameStatus" width="8%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="8%" >${responsible}</th>
+    <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="colorNamePriority" width="5%" formatter="colorNameFormatter" >${idPriority}</th>
     <th field="actualEndDate" width="8%" formatter="dateFormatter">${actualEndDate}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>

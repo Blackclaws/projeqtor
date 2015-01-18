@@ -30,6 +30,7 @@
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
+    $showThumb=Parameter::getGlobalParameter('paramShowThumbList');
     
     $hiddenFields=array();
     if (isset($_REQUEST['hiddenFields'])) {
@@ -623,14 +624,12 @@
             if (substr($formatter[$nbFields],0,5)=='thumb') {             
             	if (substr($formatter[$nbFields],0,9)=='thumbName') {
             	  $nameClass=substr($id,4);
-            	  debugLog($nameClass.'#'.$val.'#'.$line['id'.$nameClass]);
-            	  if ($val) {
+            	  if ($val and $showThumb) {
             	    $val=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$nbFields],9)).'#'.$val;
             	  } else {
-            	    $val="##";
-            	  }
-            	  debugLog($val);            	  
-            	} else if ($objectClass=='Resource' or $objectClass=='User' or $objectClass=='Contact' or $objectClass=='Affectable') {
+            	    $val="####$val";
+            	  }  	  
+            	} else if (Affectable::isAffectable($objectClass)) {
             		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val);
             	} else {          	
 	            	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>$objectClass, 'refId'=>$line['id']));

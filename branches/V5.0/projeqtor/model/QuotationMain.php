@@ -76,7 +76,7 @@ class QuotationMain extends SqlElement {
     <th field="nameQuotationType" width="7%" >${idQuotationType}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
-    <th field="nameResource" width="8%" >${responsible}</th>
+    <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="validityEndDate" width="8%" formatter="dateFormatter" >${offerValidityEndDate}</th>
   	<th field="initialWork" formatter="workFormatter" width="7%" >${validatedWork}</th>
   	<th field="initialAmount" formatter="costFormatter" width="7%" >${validatedAmount}</th>

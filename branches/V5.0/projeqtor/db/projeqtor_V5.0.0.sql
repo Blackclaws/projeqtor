@@ -29,3 +29,5 @@ UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentMaxSize' WHERE par
 UPDATE `${prefix}parameter` SET parameterCode='displayAttachment' WHERE parameterCode='displayAttachement';
 
 CREATE INDEX workelementActivity ON `${prefix}workelement` (idActivity);
+
+UPDATE `${prefix}columnselector` SET formatter="thumbName22" WHERE field in ('nameResource', 'nameUser', 'nameContact', 'nameResourceSelect');

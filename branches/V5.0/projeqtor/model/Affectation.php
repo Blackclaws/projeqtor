@@ -51,9 +51,9 @@ public $_noCopy;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameResourceSelect" width="20%" >${resourceName}</th>
-    <th field="nameContact" width="20%" >${contactName}</th>
-    <th field="nameUser" width="20%" >${userName}</th>
+    <th field="nameResourceSelect" formatter="thumbName22" width="20%" >${resourceName}</th>
+    <th field="nameContact" formatter="thumbName22" width="20%" >${contactName}</th>
+    <th field="nameUser" formatter="thumbName22" width="20%" >${userName}</th>
     <th field="nameProject" width="20%" >${projectName}</th>
     <th field="rate" width="10%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>

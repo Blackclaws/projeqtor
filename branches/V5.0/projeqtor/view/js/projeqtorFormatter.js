@@ -427,17 +427,21 @@ console.log("thumb("+value+","+size+")");
   var radius=Math.round(size/2);
   var result = '';
   if (filePath) {
-    result+= '<div style="width:100%;'+((thumbName)?'':'text-align:center;')+'">';
-    //result+= thumbName;
-    result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:right;':'')+'" src="' + filePath + '"';
+    result+= '<div style="'+((thumbName)?'text-align:left;':'text-align:center;')+'">';    
+    result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
     if (filePath.substr(0,23) != '../view/img/Affectable/') {
       result+=' onClick="showImage(\''
         + thumbObjectClass + '\',\'' + thumbObjectId + '\',\'' + fileName
         + '\');"';
     }
     result+='/>';
-    result+= thumbName;
+    if (thumbName) {
+      // text-shadow:1px 1px #FFFFFF; Can ease view when test is over thumb, but is ugly when line is selected (when text color is white)
+      result+='<div style="margin-left:'+(size+2)+'px;">'+thumbName+'</div>';
+    }
     result+='</div>';
+  } else {
+    result=thumbName;
   }
   return result;
 }

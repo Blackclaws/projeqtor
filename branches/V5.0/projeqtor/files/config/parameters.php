@@ -14,5 +14,6 @@ $paramDebugMode='false';
 $flashReport=true;
 $debugQuery=false;
 $paramShowThumb=true;
+$paramShowThumbList=true;
 //======= END// New parameters V4.4.0
 $enforceUTF8 = '1';

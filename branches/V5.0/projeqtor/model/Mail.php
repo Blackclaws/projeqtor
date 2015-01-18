@@ -53,7 +53,7 @@ class Mail extends SqlElement {
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameUser" width="10%" >${sender}</th>
+    <th field="nameUser" formatter="thumbName22" width="10%" >${sender}</th>
     <th field="mailTitle" width="50%" >${mailTitle}</th>
     <th field="mailDateTime" width="10%" >${mailDateTime}</th>
     <th field="mailStatus" width="10%" >${mailStatus}</th>

@@ -66,7 +66,7 @@ class Alert extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameUser" width="10%" >${alertReceiver}</th>
+    <th field="nameUser" formatter="thumbName22" width="10%" >${alertReceiver}</th>
     <th field="refType" width="10%" formatter="translatterFormatter" >${element}</th>
     <th field="refId" width="5%" >${id}</th>
     <th field="alertType" width="10%">${type}</th>

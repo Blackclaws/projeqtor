@@ -662,7 +662,8 @@ table.dojoDndAvatar {
 .dijitButtonNode {
   border: 1px solid #c0c0c0;
   border-bottom: 1px solid #9b9b9b;
-  padding: 0.1em 0.2em 0.1em 0.2em;
+  /* padding: 0.1em 0.2em 0.1em 0.2em;*/
+  padding: 0.1em 0.1em 0.1em 0.1em;
   height:100%; width:100%;
   background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
 }
@@ -684,19 +685,20 @@ table.dojoDndAvatar {
   border-radius:5px;
   background-color: #ffffff;
 }
-
 .dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode {
   background: transparent;
   background: rgba(255,255,255,0.5);
   border: 1px solid #ffffff;
   z-index:3000;
 }
-.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Hover {
+.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Hover,
+.comboButton .dijitReset.dijitInline.dijitButtonNode:Hover {
 	background-color: #ffffff;
 	background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
 	/*border: 1px solid #FFFFFF;*/
 }
-.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Active {
+.dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Active,
+.comboButton .dijitReset.dijitInline.dijitButtonNode:Active {
   background-color: #ffffff;
   border: 1px solid #c0c0c0;
   background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
@@ -709,6 +711,42 @@ table.dojoDndAvatar {
   -moz-opacity: 0.8;
   opacity: 0.81;
   filter: Alpha(Opacity = 80);
+}
+
+.comboButton .dijitReset.dijitInline.dijitButtonNode {
+  border-radius:5px;
+  background: transparent;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid #ffffff;
+  height: 24px;
+}
+
+.whiteCheck {
+  background-image: url(images/checkmarkNoBorderWhite.png) !important;
+  border: 2px solid #FFFFFF; 
+  border-radius:5px;
+}
+.greyCheck {
+  background-image: url(images/checkmarkNoBorderGrey.png) !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #AAAAAA; 
+  border-radius:5px;
+}
+.blackCheck {
+  background-image: url(images/checkmarkNoBorderBlack.png) !important;
+  border: 2px solid #000000; 
+  border-radius:5px;
+}
+
+
+.dijit.dijitReset.dijitInline.comboButton.dijitDropDownButton {
+}
+
+.dijitReset.dijitStretch.dijitButtonContents.dijitDownArrowButton {
+}
+
+.dijitReset.dijitInline.dijitIcon.dijitButtonIcon.dijitButtonIconFilter {
+	width:26px;
 }
 
 .dijitButtonText {
@@ -1875,6 +1913,14 @@ table.dijitCalendarContainer {
 .dijitButtonIconChecklist { background-position: -251px; }
 .dijitButtonIconIncrease { background-position: -276px; }
 .dijitButtonIconDecrease { background-position: -301px; }
+.dijitButtonIconSearch { background-position: -326px; }
+.dijitButtonIconCsv { background-position: -351px; }
+.dijitButtonIconFilter { background-position: -376px; }
+.dijitButtonIconColumn { background-position: -401px; }
+.dijitButtonIconHistory { background-position: -426px; }
+.dijitButtonIconTool { background-position: -451px; }
+.dijitButtonIconPrevious { background-position: -476px; }
+.dijitButtonIconNext { background-position: -501px; }
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
