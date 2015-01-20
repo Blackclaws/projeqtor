@@ -732,7 +732,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
        array('idUser'=>$_SESSION['user']->id, 'parameterCode'=>'Filter'.$filterObjectClass));
   $defaultFilter=($param)?$param->parameterValue:'';
   echo "<table width='100%'>";
-  echo "<tr>";
+  echo "<tr style='height:22px;'>";
   if ($context!='directFilterList') {
   	echo "<td class='filterHeader' style='width:730px;'>" . i18n("storedFilters") . "</td>";
     echo "<td class='filterHeader' style='width:25px;'>";

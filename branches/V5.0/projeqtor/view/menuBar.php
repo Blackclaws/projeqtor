@@ -107,8 +107,8 @@
       </div>
       <span style="position: absolute; left:250px; top:1px; height: 20px">
         <button id="projectSelectorParametersButton" dojoType="dijit.form.Button" showlabel="false"
-         title="<?php echo i18n('menuParameter');?>"
-         iconClass="dijitButtonIcon dijitButtonIconTool" class="detailButton" >
+         title="<?php echo i18n('menuParameter');?>" style="height:20px;"
+         iconClass="dijitButtonIcon dijitButtonIconTool" xclass="detailButton" >
           <script type="dojo/connect" event="onClick" args="evt">
            loadDialog('dialogProjectSelectorParameters', null, true);
           </script>

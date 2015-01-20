@@ -722,6 +722,7 @@ table.dojoDndAvatar {
 }
 
 .whiteCheck {
+	background:rgba(255,255,255,0.5);
   background-image: url(images/checkmarkNoBorderWhite.png) !important;
   border: 2px solid #FFFFFF; 
   border-radius:5px;
