@@ -75,7 +75,7 @@ if ($proj=='*') {
 </span>
 <?php } else if ($displayMode=='select') {?>
 <select dojoType="dijit.form.FilteringSelect" class="input"
-   style="position: absolute; left:75px; top:3px; width: 185px;" 
+   style="position: absolute; left:75px; top:3px; width: 165px;" 
    name="projectSelectorFiletering" id="projectSelectorFiletering" >
    <script type="dojo/connect" event="onChange" args="evt">
     if (this.isValid()) {

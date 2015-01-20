@@ -1576,7 +1576,7 @@ function i18n(str, vars) {
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
   if (selectionField) {
-	dijit.byId(selectionField).set("label",'<div style="width:160px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
+	dijit.byId(selectionField).set("label",'<div style="width:140px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
   }
   if (idProject!="") {
     dojo.xhrPost({
