@@ -155,7 +155,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td>
-			                  <button tabindex="3" type="submit" id="loginButton" style="width:200px; height:20px;"
+			                  <button tabindex="3" type="submit" id="loginButton" class="largeTextButton"
 			                   dojoType="dijit.form.Button" showlabel="true">OK
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             return true;
@@ -177,7 +177,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			              <tr>
 			                <td class="label" style="background:transparent !important;"><label>&nbsp;</label></td>
 			                <td style="width:200px">  
-			                  <button tabindex="4" id="passwordButton" style="width:200px; height:20px;" type="button" dojoType="dijit.form.Button" showlabel="true">
+			                  <button tabindex="4" id="passwordButton" class="largeTextButton" type="button" dojoType="dijit.form.Button" showlabel="true">
 			                    <?php echo i18n('buttonChangePassword') ?>
 			                    <script type="dojo/connect" event="onClick" args="evt">
                             connect(true);
@@ -207,9 +207,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			                    	      }
 			                    	      echo '</div>';
 			                          } else if (array_key_exists('lostConnection',$_REQUEST)) {
-			                            echo i18n("disconnectMessage");
+			                            echo '<div class="messageWARNING">'.i18n("disconnectMessage");
 			                            echo '<br/>';
-			                            echo i18n("errorConnection");
+			                            echo i18n("errorConnection").'</div>';
 			                          } 
 			                     ?>
 			                  </div>

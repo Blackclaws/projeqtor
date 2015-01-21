@@ -77,10 +77,10 @@ if (isset($_SESSION['projectSelectorDisplayMode'])) {
 <table style="width:100%">
 	<tr style="height:10px;">
 	  <td align="center">
-	   <button dojoType="dijit.form.Button" onclick="dijit.byId('dialogProjectSelectorParameters').hide();">
+	   <button class="mediumTextButton" dojoType="dijit.form.Button" onclick="dijit.byId('dialogProjectSelectorParameters').hide();">
 	     <?php echo i18n("buttonCancel");?>
 	   </button>&nbsp;
-     <button dojoType="dijit.form.Button"
+     <button class="mediumTextButton" dojoType="dijit.form.Button"
      onclick="refreshProjectSelectorList();">
        <?php echo i18n("buttonRefreshList");?>
      </button>
