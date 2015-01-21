@@ -195,7 +195,8 @@ class Parameter extends SqlElement {
                     'nl'=>i18n('langNl'),
                     'fa'=>i18n('langFa'),
                     'ja'=>i18n('langJa'),
-                    'el'=>i18n('langEl'));
+                    'el'=>i18n('langEl'),
+                    'ua'=>i18n('langUa'));
         //sort($list);  // not a good idea : would push brazialian as defaut (first) language...   
         break;
       case 'browserLocaleDateFormat':

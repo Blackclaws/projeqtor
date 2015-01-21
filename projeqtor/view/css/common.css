@@ -1922,6 +1922,7 @@ table.dijitCalendarContainer {
 .dijitButtonIconTool { background-position: -451px; }
 .dijitButtonIconPrevious { background-position: -476px; }
 .dijitButtonIconNext { background-position: -501px; }
+.dijitButtonIconSelect { background-position: -526px; }
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
