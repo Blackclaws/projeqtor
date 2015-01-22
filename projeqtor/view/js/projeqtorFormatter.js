@@ -407,7 +407,6 @@ function thumbName64(value) {
   return thumb(value, 64);
 }
 function thumb(value, size) {
-console.log("thumb("+value+","+size+")");  
   if (value == "##" || value == "####")
     return "";
   if (!size)
@@ -430,9 +429,8 @@ console.log("thumb("+value+","+size+")");
     result+= '<div style="'+((thumbName)?'text-align:left;':'text-align:center;')+'">';    
     result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
     if (filePath.substr(0,23) != '../view/img/Affectable/') {
-      result+=' onClick="showImage(\''
-        + thumbObjectClass + '\',\'' + thumbObjectId + '\',\'' + fileName
-        + '\');"';
+      result+=' onMouseOver="showBigImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',this);"';
+      result+=' onMouseOut="hideBigImage();"';
     }
     result+='/>';
     if (thumbName) {

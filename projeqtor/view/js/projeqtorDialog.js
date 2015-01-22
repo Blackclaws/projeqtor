@@ -4494,6 +4494,31 @@ function showImage(objectClass, objectId, imageName) {
   }
   //dijit.byId('formDiv').resize();
 }
+function showBigImage(objectClass, objectId, node) {
+  var top=node.getBoundingClientRect().top;
+  var left=node.getBoundingClientRect().left;
+  var height=node.getBoundingClientRect().height;
+  if (objectClass=='Affectable' || objectClass=='Resource' || objectClass=='User' || objectClass=='Contact') {
+    imageUrl="../files/thumbs/Affectable_"+objectId+"/thumb80.png";
+  } else {
+    imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId;
+  }
+  var centerThumb80=dojo.byId("centerThumb80");
+  if (centerThumb80) {
+    var htmlPhoto='<img style="border-radius:40px;" src="'+imageUrl+'" />';
+    centerThumb80.innerHTML=htmlPhoto;
+    centerThumb80.style.top=(top-40+(height/2))+"px";
+    centerThumb80.style.left=(left-85)+"px";
+    centerThumb80.style.display="block";
+  }
+}
+function hideBigImage(objectClass, objectId) {
+  var centerThumb80=dojo.byId("centerThumb80");
+  if (centerThumb80) {
+    centerThumb80.innerHTML="";
+    centerThumb80.style.display="none";
+  }
+}
 
 function showLink(link) {
    //window.frames['showHtmlFrame'].location.href='../view/preparePreview.php';
