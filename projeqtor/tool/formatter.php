@@ -184,14 +184,14 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
 	$radius=round($size/2,0);
 	$file=Affectable::getThumbUrl('Affectable', $userId, $size);
 	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
-	$res='<img style="'.(($known)?'cursor:pointer':'').';width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
+	$res='<img style="width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
 	
 	$res.=' src="'.$file.'" ';
 	if ($title) {
-		$res.=' title="'.i18n('thumb'.$title.'Title',array($userName)).'"';
+		$title=htmlEncode(i18n('thumb'.$title.'Title',array($userName)),'quotes');
 	}
 	if ($known) {
-	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this);" onMouseOut="hideBigImage();"';
+	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\');" onMouseOut="hideBigImage();"';
 	}
 	$res.='/>';
 	return $res;
@@ -206,4 +206,21 @@ function formatColorThumb($col,$val, $size=20, $float='right') {
   $res='<div style="border: 1px solid #AAAAAA;background:'.$color.';';
   $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px">&nbsp;</div>';
   return $res;
+}
+function formatDateThumb($creationDate,$updateDate,$float='right',$size=16) {
+  $res='<img style="width:'.$size.'px;height:.'.$size.'px;float:'.$float.';"';
+  $today=date('Y-m-d');
+  $date=($updateDate)?$updateDate:$creationDate;
+  $date=substr($date,0,10);
+  $color="White";
+  if ($date==$today) {
+    $color.='Red';
+  } else if (addWorkDaysToDate($date,1)==$today) {
+    $color.='Yellow';
+  }  
+  $file="../view/img/calendar$color$size.png";
+	$res.=' src="'.$file.'" ';
+  //$res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+	$res.='/>';
+	return $res;
 }

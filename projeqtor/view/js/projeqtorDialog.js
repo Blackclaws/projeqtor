@@ -4494,7 +4494,7 @@ function showImage(objectClass, objectId, imageName) {
   }
   //dijit.byId('formDiv').resize();
 }
-function showBigImage(objectClass, objectId, node) {
+function showBigImage(objectClass, objectId, node, title) {
   var top=node.getBoundingClientRect().top;
   var left=node.getBoundingClientRect().left;
   var height=node.getBoundingClientRect().height;
@@ -4506,6 +4506,9 @@ function showBigImage(objectClass, objectId, node) {
   var centerThumb80=dojo.byId("centerThumb80");
   if (centerThumb80) {
     var htmlPhoto='<img style="border-radius:40px;" src="'+imageUrl+'" />';
+    if (title) {
+      htmlPhoto+='<div class="thumbBigImageTitle">'+title+'</div>';
+    }
     centerThumb80.innerHTML=htmlPhoto;
     centerThumb80.style.top=(top-40+(height/2))+"px";
     centerThumb80.style.left=(left-85)+"px";
