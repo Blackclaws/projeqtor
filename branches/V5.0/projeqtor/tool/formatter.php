@@ -191,7 +191,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
 		$res.=' title="'.i18n('thumb'.$title.'Title',array($userName)).'"';
 	}
 	if ($known) {
-	  $res.=' onClick="showImage(\'Affectable\',\''.$userId.'\',\'&nbsp;\');"';
+	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this);" onMouseOut="hideBigImage();"';
 	}
 	$res.='/>';
 	return $res;

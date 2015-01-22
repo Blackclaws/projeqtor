@@ -250,18 +250,18 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                   </script>                 
                   <div style="text-align: center;position: relative;"> 
                     <button dojoType="dijit.form.Button" title="<?php echo i18n('titleResetList');?>"
-                        id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
+                        class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
                         <script type="dojo/connect" event="onClick" args="evt">
                         resetListColumn();
                       </script>
                       </button>
                     <button title="" dojoType="dijit.form.Button" 
-                      id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                      class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
                       <script type="dojo/connect" event="onClick" args="evt">
                         validateListColumn();
                       </script>
                     </button>
-                    <div style="position: absolute;top: 6px; right:3px;" id="columnSelectorTotWidthTop"></div>
+                    <div style="position: absolute;top: 34px; right:42px;" id="columnSelectorTotWidthTop"></div>
                   </div>   
                   <div style="height:5px;border-bottom:1px solid #AAAAAA"></div>    
 							    <div id="dndListColumnSelector" jsId="dndListColumnSelector" dojotype="dojo.dnd.Source"  
@@ -270,20 +270,20 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
 							      <?php include('../tool/listColumnSelector.php')?>
 							    </div>
                   <div style="height:5px;border-top:1px solid #AAAAAA"></div>    
-                  <div style="text-align: center;position: relative;"> 
+                  <div style="text-align: center;position: relative;">
 	                  <button dojoType="dijit.form.Button" title="<?php echo i18n('titleResetList');?>"
-	                      id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
+	                      class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonReset');?>
 	                      <script type="dojo/connect" event="onClick" args="evt">
                         resetListColumn();
                       </script>
 	                    </button>
                     <button title="" dojoType="dijit.form.Button" 
-                      id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                       class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
                       <script type="dojo/connect" event="onClick" args="evt">
                         validateListColumn();
                       </script>
                     </button>
-                    <div style="position: absolute;bottom: 5px; right:3px;" id="columnSelectorTotWidthBottom"></div>
+                    <div style="position: absolute;bottom: 33px; right:42px;" id="columnSelectorTotWidthBottom"></div>
                   </div>   
 							  </div>
 							</div>   

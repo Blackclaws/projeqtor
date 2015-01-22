@@ -89,6 +89,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dojo.dnd.Container");
     dojo.require("dojo.dnd.Manager");
     dojo.require("dojo.dnd.Source");
+    dojo.require("dojo.dom-geometry");
     dojo.require("dojo.i18n");
     //dojo.require("dojo.fx");
     dojo.require("dojo.parser");
@@ -367,6 +368,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   </script>
 </head>
 <body id="body" class="tundra <?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
+<div id="centerThumb80" style="display:none;z-index:999999;position:absolute;top:10px;left:10px;height:80px;width:80px;"></div>
 <div id="loadingDiv" class="<?php echo getTheme();?> loginFrame" 
  style="position:relative; visibility: visible; display:block; width:100%; height:100%; margin:0; padding:0; border:0">  
   <table align="center" width="100%" height="100%" class="loginBackground">

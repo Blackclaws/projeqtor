@@ -46,7 +46,11 @@ foreach ($listColumns as $col) {
 		// nothing
 	} else {
 		echo '<div style="width:100%;" class="dojoDndItem" id="listColumnSelectorId'.$col->id.'" dndType="planningColumn">';
-		echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
+		if ($col->attribute=='id') {
+		  echo '<span style="float:left;width:14px;">&nbsp;</span>';
+		} else {
+		  echo '<span class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;&nbsp;</span>';
+		}
 		echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkListColumnSelectorId'.$cpt.'" '
 		. ((! $col->hidden)?' checked="checked" ':'')
 		. (( $col->field=='id' or $col->field=='name')?' disabled="disabled" ':'')
@@ -58,8 +62,7 @@ foreach ($listColumns as $col) {
 		if ($col->attribute=='name') {
       echo '<div class="input" dojoType="dijit.form.NumberTextBox" id="checkListColumnSelectorWidthId'.$cpt.'" ';
       echo 'disabled="disabled" ';     
-      echo ' style="width:17px; background: #F0F0F0; text-align: center;" value="'.$col->widthPct.'" ></div>';
-      echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+      echo ' style="width:22px;position:absolute;right:24px;background: #F0F0F0; text-align: center;" value="'.$col->widthPct.'" ></div>';
       echo '<input type="hidden" id="columnSelectorNameFieldId" value="'.$cpt.'" />';
       echo '<input type="hidden" id="columnSelectorNameTableId" value="'.$col->id.'" />';
 		} else {
@@ -70,7 +73,7 @@ foreach ($listColumns as $col) {
 			  echo ' onClick="recalculateColumnSelectorName()" ';
 			}	 
 			echo ' constraints="{ min:1, max:50, places:0 }"';
-			echo ' style="width:35px; text-align: center;" value="'.$col->widthPct.'" >';
+			echo ' style="width:'.(($col->hidden or $col->attribute=='name')?'37':'35').'px; text-align: center;" value="'.$col->widthPct.'" >';
 			echo '</div>';
 		}
 		echo '&nbsp;</div>';

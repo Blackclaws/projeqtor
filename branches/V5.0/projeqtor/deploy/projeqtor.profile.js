@@ -15,6 +15,7 @@ dependencies = {
 			    "dojo.dnd.Container",
 			    "dojo.dnd.Manager",
 			    "dojo.dnd.Source",
+			    "dojo.dom-geometry",
 			    "dojo.i18n",
 			    "dojo.parser",
 			    "dojo.store.DataStore",			    
