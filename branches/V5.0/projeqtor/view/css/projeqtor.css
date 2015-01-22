@@ -848,7 +848,16 @@ label, .label, .smallLabel {
 .dynamicTextButton {
 	height:20px;
 }
-
+.thumbBigImageTitle {
+	position:absolute;
+	bottom:5px;
+	right:-20px;
+	text-shadow:1px 1px #ffffff; 
+	white-space:nowrap;
+	background:rgba(128,128,128,0.5);
+	border-radius:5px;
+	padding: 0px 5px 2px 5px;
+}
 
 
 
