@@ -4505,9 +4505,15 @@ function showBigImage(objectClass, objectId, node, title) {
   }
   var centerThumb80=dojo.byId("centerThumb80");
   if (centerThumb80) {
-    var htmlPhoto='<img style="border-radius:40px;" src="'+imageUrl+'" />';
+    var htmlPhoto='';
+    var alone='';
+    if (objectClass && objectId) {
+      htmlPhoto='<img style="border-radius:40px;" src="'+imageUrl+'" />';
+    } else {
+      alone='Alone';
+    }
     if (title) {
-      htmlPhoto+='<div class="thumbBigImageTitle">'+title+'</div>';
+      htmlPhoto+='<div class="thumbBigImageTitle'+alone+'">'+title+'</div>';
     }
     centerThumb80.innerHTML=htmlPhoto;
     centerThumb80.style.top=(top-40+(height/2))+"px";

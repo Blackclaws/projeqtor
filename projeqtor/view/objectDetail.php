@@ -1000,7 +1000,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         	echo '<div class="roundedVisibleButton roundedButton"';
         	echo ' title="'.i18n("moveStatusTo",array(SqlList::getNameFromId('Status',$next))).'"';
         	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
-        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');saveObject();">';
+        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');setTimeout(\'saveObject()\',10);">';
         	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
         	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
         	echo '</div>';
@@ -1009,7 +1009,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         	echo '<div class="roundedVisibleButton roundedButton"';
         	echo ' title="'.i18n("assignToMe").'"';
         	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
-        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$user->id.');saveObject();"';
+        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$user->id.');setTimeout(\'saveObject()\',10);"';
         	echo '>';
         	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
         	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.i18n('assignToMeShort').'<div>';
@@ -1579,26 +1579,19 @@ function drawNotesFromObject($obj, $refresh = false) {
         echo '</td>';
       }
       echo '<td class="noteData">#' . $note->id . '</td>';
-      echo '<td class="noteData"><table style="width:100%"><tr><td>';
+      echo '<td class="noteData">';
       if (! $print) {
         echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode ( $note->note, 'none' ) . '"/>';
       }
       echo formatUserThumb($userId,$userName,'Creator');
       echo formatDateThumb($creationDate,$updateDate);
+      echo formatPrivacyThumb($note->idPrivacy,$note->idTeam);
       // ADDED BRW
       $strDataHTML = htmlEncode ( $note->note, '' ); // context = '' => only htmlspecialchar, not htmlentities
       $strDataHTML = preg_replace ( '@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML );
       $strDataHTML = nl2br ( $strDataHTML ); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
       // END ADDED BRW
-      echo "</td>";
-      if ($note->idPrivacy == 3) {
-        echo '<td style="width:16px;vertical-align: top;" title="' . i18n ( 'private' ) . '"><img src="img/private.png" /></td>';
-      } else if ($note->idPrivacy == 2) {
-        echo '<td style="width:16px;vertical-align: top;" title="' . i18n ( 'team' ) . " : " . SqlList::getNameFromId ( 'Team', $note->idTeam ) . '"><img src="img/team.png" /></td>';
-      }
-      echo '</tr></table>';
-      echo '</td>';
       /*echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>';
       if ($note->fromEmail) {
         echo '<b>' . i18n ( 'noteFromEmail' ) . '</b>';
@@ -1612,9 +1605,6 @@ function drawNotesFromObject($obj, $refresh = false) {
   if (! $print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
   }
-  echo '<td class="noteDataClosetable">&nbsp;</td>';
-  echo '<td class="noteDataClosetable">&nbsp;</td>';
-  echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
@@ -1778,7 +1768,7 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (! $print) {
-    echo '<td class="attachmentHeader" style="width:5%">';
+    echo '<td class="attachmentHeader" style="width:10%">';
     if ($obj->id != null and ! $print and $canUpdate) {
       echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n ( 'addAttachment' ) . '" class="smallButton"/> ';
       echo '<img src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n ( 'addHyperlink' ) . '" class="smallButton"/> ';
@@ -1786,11 +1776,7 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
     echo '</td>';
   }
   echo '<td class="attachmentHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="attachmentHeader" style="width:10%;">' . i18n ( 'colSize' ) . '</td>';
-  echo '<td class="attachmentHeader" style="width:5%;">' . i18n ( 'colType' ) . '</td>';
-  echo '<td class="attachmentHeader" style="width:' . (($print) ? '50' : '45') . '%">' . i18n ( 'colFile' ) . '</td>';
-  echo '<td class="attachmentHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="attachmentHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:' . (($print) ? '95' : '85') . '%">' . i18n ( 'colFile' ) . '</td>';
   echo '</tr>';
   foreach ( $attachments as $attachment ) {
     $userId = $attachment->idUser;
@@ -1800,7 +1786,7 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
       $creationDate = $attachment->creationDate;
       echo '<tr>';
       if (! $print) {
-        echo '<td class="attachmentData" style="text-align:center;width:5%"">';
+        echo '<td class="attachmentData" style="text-align:center;width:10%"">';
         if ($attachment->fileName and $attachment->subDirectory and ! $print) {
           echo '<a href="../tool/download.php?class=Attachment&id=' . $attachment->id . '"';
           echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . '"><img src="css/images/smallButtonDownload.png" /></a>';
@@ -1815,7 +1801,6 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
         echo '</td>';
       }
       echo '<td class="attachmentData" style="width:5%;">#' . $attachment->id . '</td>';
-      echo '<td class="attachmentData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachment->fileSize ) . '</td>';
       echo '<td class="attachmentData" style="width:5%;text-align:center;">';
       if ($attachment->isThumbable ()) {
         echo '<img src="' . getImageThumb ( $attachment->getFullPathFileName (), 32 ) . '" ' . ' title="' . $attachment->fileName . '" style="cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
@@ -1829,6 +1814,8 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
       echo '</td>';
       echo '<td class="attachmentData" style="width:' . (($print) ? '50' : '45') . '%" title="' . $attachment->description . '">';
       echo '<table style="width:100%"><tr >';
+//      echo '<td class="attachmentData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachment->fileSize ) . '</td>';
+      
       echo ' <td>';
       if ($attachment->link) {
         echo htmlEncode ( urldecode ( $attachment->link ), 'print' );
@@ -1846,9 +1833,6 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
       }
       echo '</tr></table>';
       echo '</td>';
-      
-      echo '<td class="attachmentData" style="width:15%">' . htmlFormatDateTime ( $creationDate ) . '<br/></td>';
-      echo '<td class="attachmentData" style="width:15%">' . $userName . '</td>';
       echo '</tr>';
     }
   }

@@ -5,7 +5,7 @@
 Pre-requisites :
   - http server
   - PHP server (5.2 or over)
-  - MySQL database (5 or over)
+  - MySQL database (5 or over) or PostgreSql database (V9.1 or over)
   
   For instance, you may try to set-up an EasyPHP server, including all required elements.
   This set-up is not recommanded for production purpose, but only for testing and evaluation purpose.

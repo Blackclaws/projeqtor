@@ -40,23 +40,15 @@ if (! isset($obj))
 }
 
 if ($obj->id and property_exists ( $obj, 'idUser' )) {
-?>
-<table style="width:100%">
-  <td style="width: 50%; text-align: right;">
-    <div  style="white-space: nowrap"><?php echo i18n("colIssuer");?>&nbsp;:&nbsp;</div>
-    <div  style="white-space: nowrap"><?php echo i18n("colCreationDate");?>&nbsp;:&nbsp;</div>
-  </td>
-  <td style="width: 50%;">
-      <div style="white-space: nowrap" id="buttonDivIssuer"><?php echo SqlList::getNameFromId('Affectable', $obj->idUser);?> </div>
-    	<div style="white-space: nowrap" id="buttonDivCreationDate">
-    	<?php
-							if (property_exists ( $obj, 'creationDateTime' )) {
-								echo htmlFormatDateTime ( $obj->creationDateTime, false );
-							} else if (property_exists ( $obj, 'creationDate' )) {
-								echo htmlFormatDate ( $obj->creationDate );
-							}
-			?>
-			</div>
-    </td>
-</table>
-<?php }?>
+  echo formatUserThumb($obj->idUser,SqlList::getNameFromId('Affectable', $obj->idUser),'Creator',32);
+  $creationDate='';
+	if (property_exists ( $obj, 'creationDateTime' )) {
+		$creationDate=$obj->creationDateTime;
+	} else if (property_exists ( $obj, 'creationDate' )) {
+		$creationDate=$obj->creationDate;
+	}
+	if ($creationDate) {
+    echo formatDateThumb($creationDate,null,'right',32);
+  }
+      
+}?>

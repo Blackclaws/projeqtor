@@ -23,7 +23,7 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
+$monthArray=array();
 function colorNameFormatter($value) {
   global $print;
   if ($value) {
@@ -188,7 +188,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
 	
 	$res.=' src="'.$file.'" ';
 	if ($title) {
-		$title=htmlEncode(i18n('thumb'.$title.'Title',array($userName)),'quotes');
+		$title=htmlEncode(i18n('thumb'.$title.'Title',array('<b>'.$userName.'</b>')),'quotes');
 	}
 	if ($known) {
 	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\');" onMouseOut="hideBigImage();"';
@@ -207,20 +207,81 @@ function formatColorThumb($col,$val, $size=20, $float='right') {
   $res.='width:'.$size.'px;height:'.($size-2).'px;float:'.$float.';border-radius:'.$radius.'px">&nbsp;</div>';
   return $res;
 }
-function formatDateThumb($creationDate,$updateDate,$float='right',$size=16) {
-  $res='<img style="width:'.$size.'px;height:.'.$size.'px;float:'.$float.';"';
+function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
   $today=date('Y-m-d');
   $date=($updateDate)?$updateDate:$creationDate;
   $date=substr($date,0,10);
   $color="White";
   if ($date==$today) {
-    $color.='Red';
+    $color='Red';
   } else if (addWorkDaysToDate($date,1)==$today) {
-    $color.='Yellow';
+    $color='Yellow';
   }  
-  $file="../view/img/calendar$color$size.png";
+  $title=i18n('thumbCreationTitle',array('<b>'.htmlFormatDate($creationDate).'</b>'));
+  if ($updateDate and $updateDate!=$creationDate) {
+    $title.="<br><i>".i18n('thumbUpdateTitle',array('<b>'.htmlFormatDate($updateDate).'</b>')).'</i>';
+  }
+  $title=htmlEncode($title,'quotes');
+  $file="../view/css/images/calendar$color$size.png";
+  $res='<img style="float:'.$float.';padding-right:3px"';
 	$res.=' src="'.$file.'" ';
-  //$res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\');" onMouseOut="hideBigImage();"';
-	$res.='/>';
+	$res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+	$res.='/>';	
+	
+	if (0) { // just for testing choose 
+	  $month=getMonthName(substr($date, 5,2),5);
+	  $day=substr($date, 8,2);
+	  $res.='<div style="color:#000;text-align:center;width:20px;float:'.$float.';position:relative;top:5px;left:20px;font-size:7px;">'.$month.'<br/>'.$day.'</div>';
+	} else {
+	  $month=getMonthName(substr($date, 5,2),5);
+	  $day=substr($date, 8,2);
+	  $dispDate=htmlFormatDate($date,true);
+	  if (substr($dispDate,4,1)=='-') {
+	    $dispDate=substr($dispDate,5);
+	  } else {
+	    $dispDate=substr($dispDate,0,5);
+	  }
+	  switch ($size) {
+		  case 22:
+		    $fontSize=7;
+		    $width=20;
+		    break;
+		  case 32:
+		    $fontSize=8;
+		    $dispDate.='<br/>&nbsp;'.substr($date, 0,4);
+		    $width=25;
+		    break;
+		  default:
+		    $fontSize=11;
+		    $width=20;
+	  }
+	  $res.='<div style="border:1px solid red;color:#000;pointer-events:none;text-align:center;width:'.$width.'px;float:'.$float.';position:relative;top:8px;left:'.$width.'px;font-size:'.$fontSize.'px;">'.$dispDate.'</div>';
+	}  
 	return $res;
+}
+function formatPrivacyThumb($privacy, $team) {
+  // privacy=3 => private
+  // privacy=2 => team
+  // privacy=1 => public 
+  if ($privacy == 3) {
+    $title=htmlEncode(i18n('private'),'quotes');
+    echo '<img style="margin:0;padding:0;float:right;border:1px solid red;" src="img/private.png" />';
+  } else if ($privacy == 2) {
+    $title=htmlEncode(i18n('team')." : ".SqlList::getNameFromId ('Team',$team ),'quotes');
+    echo '<img title="'.$title.'" style="float:right" src="img/team.png" />';
+  }
+}
+
+function getMonthName($month,$maxLength=0) {
+  global $monthArray;
+ 
+  if (count($monthArray)==0) {
+    $monthArray=array(i18n("January"),i18n("February"),i18n("March"),
+      i18n("April"), i18n("May"),i18n("June"),
+      i18n("July"), i18n("August"), i18n("September"),
+      i18n("October"),i18n("November"),i18n("December"));
+  }
+  $dispMonth=$monthArray[$month-1];
+  if ($maxLength) $dispMonth=substr($dispMonth,0,$maxLength);
+  return $dispMonth;
 }

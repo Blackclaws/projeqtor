@@ -178,11 +178,11 @@ class Affectable extends SqlElement {
       .'<br/><br/><br/>'.i18n('addPhoto').'</div>';
     return $result;
   }
-  public static function showBigImage($extraStylePosition,$affId,$filename, $attachementId) {
+  public static function showBigImage($extraStylePosition,$affId,$filename, $attachmentId) {
     $result='<div style="position: absolute;'.$extraStylePosition.'; border-radius:40px;width:80px;height:80px;border: 1px solid grey;">'
       . '<img style="border-radius:40px;" src="'. Affectable::getThumbUrl('Resource', $affId, 80, true).'" '
       . ' title="'.$filename.'" style="cursor:pointer"'
-      . ' onClick="showImage(\'Attachment\',\''.$attachementId.'\',\''.$filename.'\');" /></div>';
+      . ' onClick="showImage(\'Attachment\',\''.$attachmentId.'\',\''.$filename.'\');" /></div>';
     return $result;
   }
   public static function drawSpecificImage($class,$id, $print, $outMode, $largeWidth) {

@@ -848,17 +848,23 @@ label, .label, .smallLabel {
 .dynamicTextButton {
 	height:20px;
 }
-.thumbBigImageTitle {
+.thumbBigImageTitle, .thumbBigImageTitleAlone {
 	position:absolute;
-	bottom:5px;
-	right:-20px;
+	right:-0px;
 	text-shadow:1px 1px #ffffff; 
 	white-space:nowrap;
-	background:rgba(128,128,128,0.5);
+	background:rgba(220,220,230,0.8);
+	border: 1px solid #AAAAAA;
+	box-shadow: 5px 5px 10px #555555; 
 	border-radius:5px;
 	padding: 0px 5px 2px 5px;
 }
-
+.thumbBigImageTitle{
+	bottom:5px;
+}
+.thumbBigImageTitleAlone {
+	top:35px;
+}
 
 
 .iconPlan {
