@@ -52,14 +52,14 @@
 ?>
 <table style="width:100%;height:100%;">
   <tr style="height:100%;";>
-  <td  style="z-index:-1;width:250px;position:relative;">
+  <td  style="z-index:-1;width:40%;position:relative;">
     <img style="position:relative; left:10px;" src="css/images/icon<?php echo $_REQUEST['objectClass'];?>32.png" width="32" height="32" />
     <span style="position:absolute; left:52px;top:6px;" class="title"><?php echo i18n($_REQUEST['objectClass']);?>
       <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
     </span>
   </td>
-  <td style="width:100px;">
-    <div style="margin-right:0.5em;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+  <td style="width:10%; text-align:right;">
+    <div style="width:100px;margin-right:0.5em;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
   </td>
   <td  style="white-space:nowrap;">
     <div style="float:left;position:50%;width:45%;white-space:nowrap"> 

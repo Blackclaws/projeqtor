@@ -228,35 +228,34 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
 	$res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
 	$res.='/>';	
 	
-	if (0) { // just for testing choose 
-	  $month=getMonthName(substr($date, 5,2),5);
-	  $day=substr($date, 8,2);
-	  $res.='<div style="color:#000;text-align:center;width:20px;float:'.$float.';position:relative;top:5px;left:20px;font-size:7px;">'.$month.'<br/>'.$day.'</div>';
-	} else {
-	  $month=getMonthName(substr($date, 5,2),5);
-	  $day=substr($date, 8,2);
-	  $dispDate=htmlFormatDate($date,true);
-	  if (substr($dispDate,4,1)=='-') {
-	    $dispDate=substr($dispDate,5);
-	  } else {
-	    $dispDate=substr($dispDate,0,5);
-	  }
-	  switch ($size) {
-		  case 22:
-		    $fontSize=7;
-		    $width=20;
-		    break;
-		  case 32:
-		    $fontSize=8;
-		    $dispDate.='<br/>&nbsp;'.substr($date, 0,4);
-		    $width=25;
-		    break;
-		  default:
-		    $fontSize=11;
-		    $width=20;
-	  }
-	  $res.='<div style="border:1px solid red;color:#000;pointer-events:none;text-align:center;width:'.$width.'px;float:'.$float.';position:relative;top:8px;left:'.$width.'px;font-size:'.$fontSize.'px;">'.$dispDate.'</div>';
-	}  
+  $month=getMonthName(substr($date, 5,2),5);
+  $day=substr($date, 8,2);
+  $dispDate=htmlFormatDate($date,true);
+  if (substr($dispDate,4,1)=='-') {
+    $dispDate=substr($dispDate,5);
+  } else {
+    $dispDate=substr($dispDate,0,5);
+  }
+  switch ($size) {
+	  case 22:
+	    $fontSize=7;
+	    $width=20;
+	    $float="float:right;";
+	    $top=8;
+	    break;
+	  case 32:
+	    $fontSize=8;
+	    $dispDate.='<br/>'.substr($date, 0,4);
+	    $width=31;
+	    $float="";
+	    $top=10;
+	    break;
+	  default:
+	    $fontSize=11;
+	    $width=10;
+	    $float="";
+	}
+	$res.='<div style="float:right;z-index:0;color:#000;background: transparent;pointer-events:none;text-align:center;width:'.$width.'px;'.$float.';position:relative;top:'.$top.'px;left:'.$width.'px;font-size:'.$fontSize.'px;">'.$dispDate.'</div>';  
 	return $res;
 }
 function formatPrivacyThumb($privacy, $team) {
