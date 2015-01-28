@@ -91,19 +91,41 @@ html, body {
   border-bottom: 1px solid #eeeeee;
 }
   .menuBarItem {
-    background: #ececec url(images/buttonActive.png) repeat-x bottom left;
+    position:relative;
     cursor:pointer;
-    margin:0px; 
-    padding:2px; 
-    border: 1px solid #c0c0c0;
-    border-bottom: 1px solid #9b9b9b;
+    margin:0px 0px;
+    width:50px; height:37px;
+    padding:15px 1px 0px 1px; 
+    border-radius: 10px 10px 0px 0px;
     vertical-align:middle;
+    background: transparent;
+    background: rgba(255,255,255,0.5);
+    border: 0px solid #ffffff;
+    text-align:center;
+    
+  }
+  .menuBarItemCaption {
+     font-size:6pt;
+     margin:auto; padding:0px 2px;
+     position:absolute;top:0px;left:0px;
+     width:48px; 
+     cursor:normal;
+     border-radius: 10px 10px 0px 0px;
+     text-shadow:1px 1px #FFF;
+     text-align:center;
+     color:#000;
+     background: transparent;
+     pointer-events:none;
+     background: rgba(255,255,255,0.7);
+     /*overflow:hidden;*/
   }
   .menuBarItem:hover {
     border-color: #a5a5a5;
     border-bottom-color: #757575;
     color: #3C3C3C;
-    background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
+    background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;    
+    background-color: #ffffff;
+    background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
   }
   .menuBarSeparator {
     width: 5px;
@@ -2649,9 +2671,9 @@ label, .label, .smallLabel {
     border-image: none;
     border-style: solid;
     border-width: 0;
-    margin: 0;
+    /*margin: 0;
     padding: 2px;
-    vertical-align: middle;
+    vertical-align: middle;*/
 }
 
 .Projectom .menuBarSeparator {

@@ -478,7 +478,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     //$showMenuBar='NO';
     if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
     $iconSize+=9;?>
-    <div id="toolBarDiv" style="height:<?php echo $iconSize;?>px" dojoType="dijit.layout.ContentPane" region="top"  >
+    <div id="toolBarDiv" style="height:<?php echo ($iconSize+10);?>px" dojoType="dijit.layout.ContentPane" region="top"  >
       <?php include "menuBar.php";?>
     </div>
     <div id="centerDiv" dojoType="dijit.layout.ContentPane" region="center" >      
