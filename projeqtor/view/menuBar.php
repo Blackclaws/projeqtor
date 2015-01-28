@@ -29,7 +29,8 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/menuBar.php');
-  $iconSize=Parameter::getUserParameter('paramTopIconSize');
+  //$iconSize=Parameter::getUserParameter('paramTopIconSize');
+  $iconSize=32;
   $showMenuBar=Parameter::getUserParameter('paramShowMenuBar');
   //$showMenuBar='NO';
   if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
@@ -44,14 +45,21 @@
     	}
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
-        echo '<td class="menuBarItem" title="' .i18n($menu->name) . '">';
-        echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
+        echo '<td  title="' .i18n($menu->name) . '">';
+        echo '<div class="menuBarItem">';
+        echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';       
+        echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
+        echo '</div>';
+       
         echo '</td><td>&nbsp;</td>';    	
     } else if ($menu->type=='object') { 
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
-      	echo '<td class="menuBarItem" title="' .i18n('menu'.$class) . '">';
+      	echo '<td title="' .i18n('menu'.$class) . '">';
+      	echo '<div class="menuBarItem">';
       	echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
+      	echo '<div class="menuBarItemCaption">'.i18n('menu'.$class).'</div>';
+      	echo '</div>';
       	echo '</td><td>&nbsp;</td>';
       }
     }
@@ -99,13 +107,22 @@
 	  }*/
   }
 ?>
-  <table width="100%"><tr height="<?php echo $iconSize+9; ?>px">  
+  <table width="100%"><tr height="<?php echo $iconSize+18; ?>px">  
     <td width="287px">
-      <div class="titleProject" class="titleProject" style="position: absolute; left:0px; top: 0px;width:75px; text-align:right;">&nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
+      <div class="titleProject" style="position: absolute; left:0px; top: -1px;width:75px; text-align:right;">
+        &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
+      <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
+        dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
+        >
+        <option value="all" selected=selected><?php echo i18n("all");?></option>
+        <option value="work"><?php echo i18n("work");?></option>
+        </div>
+      <div class="titleProject" style="position: absolute; left:0px; top: 22px;width:75px; text-align:right;">
+        &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
       <div style="height:100%" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >
         <?php include "menuProjectSelector.php"?>
       </div>
-      <span style="position: absolute; left:250px; top:1px; height: 20px">
+      <span style="position: absolute; left:250px; top:22px; height: 20px">
         <button id="projectSelectorParametersButton" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('menuParameter');?>" style="height:20px;"
          iconClass="dijitButtonIcon dijitButtonIconTool" xclass="detailButton" >
@@ -114,9 +131,6 @@
           </script>
         </button>
       </span>
-      <div style="position:relative;top:-8px; font-size:80%; text-align:center; text-shadow:1px 1px #000000">
-        <?php htmlDisplayDatabaseInfos(); ?>
-      </div>
     </td>
 <?php if ($showMenuBar!='NO') {?>    
     <td width="3px"></td>
@@ -139,8 +153,8 @@
     </td>
     <td class="menuBarSeparator" ></td>
     <td >
-    <div id="menuBarVisibleDiv" style="height:<?php echo $iconSize+9;?>px;width: <?php 
-      if (array_key_exists('screenWidth',$_SESSION)) {
+    <div id="menuBarVisibleDiv" style="height:<?php echo $iconSize+9;?>px;width:<?php 
+      if (0 and array_key_exists('screenWidth',$_SESSION)) {
          $width = $_SESSION['screenWidth'] - 395;
          echo $width . 'px';
       } else {

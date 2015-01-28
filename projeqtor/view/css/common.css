@@ -691,6 +691,19 @@ table.dojoDndAvatar {
   border: 1px solid #ffffff;
   z-index:3000;
 }
+.menuSelect .dijitReset.dijitRight.dijitButtonNode.dijitArrowButton.dijitDownArrowButton.dijitArrowButtonContainer {
+	display:none;
+}
+.menuSelect .dijitReset.dijitStretch.dijitButtonContents {
+	border-style: none;
+	padding: 2px 5px 2px 5px;
+	font-weight: bold;
+}
+.menuSelect .dijitReset.dijitStretch.dijitButtonContents:hover {
+	background: rgba(255,255,255,0.3);
+	border-radius:5px;
+}
+
 .dijit.dijitReset.dijitInline.detailButton.dijitButton .dijitButtonNode:Hover,
 .comboButton .dijitReset.dijitInline.dijitButtonNode:Hover {
 	background-color: #ffffff;
