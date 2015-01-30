@@ -41,26 +41,25 @@
     $idMenu=$menu->id;
     if ($menu->type=='menu') {
     	if ($menu->idMenu==0) {
-    		echo '<td class="menuBarSeparator" style="width:5px;"></td>';
+    		//echo '<td class="menuBarSeparator" style="width:5px;"></td>';
     	}
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
         echo '<td  title="' .i18n($menu->name) . '">';
-        echo '<div class="menuBarItem">';
-        echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';       
+        echo '<div class="menuBarItem '.$menu->menuClass.'" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
+        echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';       
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         echo '</div>';
-       
-        echo '</td><td>&nbsp;</td>';    	
+        echo '</td>';    	
     } else if ($menu->type=='object') { 
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
       	echo '<td title="' .i18n('menu'.$class) . '">';
-      	echo '<div class="menuBarItem">';
-      	echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" />';
+      	echo '<div class="menuBarItem '.$menu->menuClass.'" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
+      	echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" />';
       	echo '<div class="menuBarItemCaption">'.i18n('menu'.$class).'</div>';
       	echo '</div>';
-      	echo '</td><td>&nbsp;</td>';
+      	echo '</td>';
       }
     }
   }  
@@ -73,7 +72,7 @@
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
     $lastType='';
     foreach ($menuList as $menu) { 
-    	if ($menu->id==36) {$suspend=true;}
+    	//if ($menu->id==36) {$suspend=true;}
     	if (! $suspend and securityCheckDisplayMenu($menu->id,$menu) ) {
     		drawMenu($menu);
     		$lastType=$menu->type;
@@ -112,10 +111,13 @@
       <div class="titleProject" style="position: absolute; left:0px; top: -1px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
       <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
+        onChange="menuFilter(this.value);"
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
         >
-        <option value="all" selected=selected><?php echo i18n("all");?></option>
+        <option value="menuBarItem" selected=selected><?php echo i18n("all");?></option>
         <option value="work"><?php echo i18n("work");?></option>
+        <option value="risks"><?php echo i18n("risks");?></option>
+        <option value="security"><?php echo i18n("security");?></option>
         </div>
       <div class="titleProject" style="position: absolute; left:0px; top: 22px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>

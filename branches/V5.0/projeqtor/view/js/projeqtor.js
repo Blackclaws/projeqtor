@@ -2641,3 +2641,18 @@ function onKeyDownFunctionEditor () {
   top.setTimeout("top.globalSave();",10);
 }
 
+function menuFilter(filter) {
+  /*dojo.query(".menuBarItem").forEach(function(node, index, arr){
+      console.debug(node.innerHTML);
+  });*/
+  
+  dojo.query(".menuBarItem").fadeOut({
+    duration:200,
+    onEnd: function(){
+      dojo.query(".menuBarItem").style("display","none");
+      dojo.query("."+filter).style("display","block");
+      dojo.query("."+filter).fadeIn({duration:200}).play();
+    }
+  }).play();
+  
+}
