@@ -92,7 +92,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dojo.dom-geometry");
     dojo.require("dojo.i18n");
     //dojo.require("dojo.fx");
-    dojo.require("dojo.parser");
+    //dojo.require("dojox.fx.ext-dojo.NodeList-style"); // ====================NEW
+    dojo.require("dojo.NodeList-fx");
+    dojo.require("dojo.parser");   // ===================== NEW
+    dojo.require("dojo.query");
     dojo.require("dojo.store.DataStore");
     dojo.require("dijit.ColorPalette");
     dojo.require("dijit.Dialog"); 

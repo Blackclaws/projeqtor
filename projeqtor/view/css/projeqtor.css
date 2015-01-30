@@ -102,8 +102,11 @@ html, body {
     background: rgba(255,255,255,0.5);
     border: 0px solid #ffffff;
     text-align:center;
-    
   }
+  .menuBarItemNoWidth {
+     width:0px;
+  }
+  
   .menuBarItemCaption {
      font-size:6pt;
      margin:auto; padding:0px 2px;

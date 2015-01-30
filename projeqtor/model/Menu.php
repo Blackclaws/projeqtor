@@ -36,6 +36,7 @@ class Menu extends SqlElement {
   public $idMenu;
   public $type;
   public $sortOrder=0;
+  public $menuClass;
   public $idle;
   
   public $_isNameTranslatable = true;
