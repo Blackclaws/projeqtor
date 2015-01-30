@@ -32,6 +32,7 @@
   //$iconSize=Parameter::getUserParameter('paramTopIconSize');
   $iconSize=32;
   $showMenuBar=Parameter::getUserParameter('paramShowMenuBar');
+  $showMenuBar='YES';
   //$showMenuBar='NO';
   if (! $iconSize or $showMenuBar=='NO') $iconSize=16;
   
@@ -78,32 +79,6 @@
     		$lastType=$menu->type;
     	}
     }
-    if ($lastType!='menu') {
-      echo '<td class="menuBarSeparator" ></td>';
-    }
-    $menu=new Menu('20');
-    if (securityCheckDisplayMenu('20',$menu)) {
-    	drawMenu($menu);
-    	echo '<td class="menuBarSeparator" ></td>';
-    }
-	/*	    if ($level>0 and securityCheckDisplayMenu($menu->id,$menu) ) {
-		      while ($level>0 and $menu->idMenu!= $menuLevel[$level]) {
-		        drawMenuCloseChildren();
-		      }
-		    }
-	    if ($menu->type=='class') {
-	      drawMenuItemClass($menu->id,$menu->name);
-	    } else if ($menu->type=='menu') {
-	      drawMenuItem($menu->id,$menu->name,'menu', true);
-	    } else if ($menu->type=='item') {
-	      drawMenuItem($menu->id,$menu->name,'item', false);
-	    } else if ($menu->type=='object') {
-	      drawMenuItem($menu->id,$menu->name,'object', false);
-	    } 
-	  }
-	  while ($level>0) {
-	    drawMenuCloseChildren();
-	  }*/
   }
 ?>
   <table width="100%"><tr height="<?php echo $iconSize+18; ?>px">  
@@ -153,7 +128,6 @@
          </script>
       </button>    
     </td>
-    <td class="menuBarSeparator" ></td>
     <td >
     <div id="menuBarVisibleDiv" style="height:<?php echo $iconSize+9;?>px;width:<?php 
       if (0 and array_key_exists('screenWidth',$_SESSION)) {
@@ -177,8 +151,6 @@
 <?php }?>
     <td width="80px" align="center" class="statusBar" style="position:relative;z-index:30;">
 <?php if ($showMenuBar!='NO') {?>       
-      <div style="height:<?php echo $iconSize+9;?>px; position: absolute; top : -2px; margin:0; padding 0;z-index:35;" class="menuBarSeparator" ></div>
-      &nbsp;
       <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('menuBarMoveRight');?>"
        iconClass="rightBarIcon" onMouseDown="" onMouseUp=""
