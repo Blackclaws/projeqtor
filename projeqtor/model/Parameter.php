@@ -366,7 +366,7 @@ class Parameter extends SqlElement {
                            "lang"=>"list",
                            "browserLocaleDateFormat"=>"list",
                            'paramIconSize'=>'list',
-                           'paramTopIconSize'=>'list',
+                           //'paramTopIconSize'=>'list',
                            //'sectionObjectDetail'=>'section', 
                            //"displayAttachment"=>"list",
                            //"displayNote"=>"list",
