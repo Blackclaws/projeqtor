@@ -91,7 +91,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dojo.dnd.Source");
     dojo.require("dojo.dom-geometry");
     dojo.require("dojo.i18n");
-    //dojo.require("dojo.fx");
+    dojo.require("dojo.fx.easing");
     //dojo.require("dojox.fx.ext-dojo.NodeList-style"); // ====================NEW
     dojo.require("dojo.NodeList-fx");
     dojo.require("dojo.parser");   // ===================== NEW
@@ -308,6 +308,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 	      }
       }
       ?>
+      showHideMoveButtons();
     }); 
     var ganttPlanningScale="<?php echo Parameter::getUserParameter('planningScale');?>";
     var ganttPlanningOldStyle=<?php echo ((isset($ganttPlanningOldStyle) and $ganttPlanningOldStyle)?1:0);?>;

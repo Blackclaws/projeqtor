@@ -2398,24 +2398,43 @@ function trimTag (myString, car) {
   return myStringAsTring.replace(/^</g,'').replace(/>$/g,'');  
 } 
 
-function moveMenuBar(way) {
+function moveMenuBar(way, duration) {
+  if (! duration) duration=150;
   if (! menuBarMove) return;
 	var bar=dojo.byId('menubarContainer');
 	left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
-	var step=200;
+	width=parseInt(bar.style.width.substr(0,bar.style.width.length-2),10);
+	var step=56*1;
 	if (way=='left')  {pos=left+step;}
 	if (way=='right') {pos=left-step;}
 	if (pos>0) pos=0;
-	dojo.fx.slideTo({ duration: 500, node: bar, left: pos }).play();
-	//bar.style.left=pos+'px';
-	if (menuBarMove) {
-	  setTimeout("moveMenuBar('"+way+"');",500); 
+	if (way=='right') {
+    var visibleWidthRight=dojo.byId('menuBarRight').getBoundingClientRect().left;
+    var visibleWidthLeft=dojo.byId('menuBarLeft').getBoundingClientRect().right;
+    var visibleWidth=visibleWidthRight-visibleWidthLeft;
+    if (visibleWidth-left>width) {
+      moveMenuBarStop(); 
+      exit;
+    }
 	}
+	dojo.fx.slideTo({ 
+	  duration: duration, 
+	  node: bar, 
+	  left: pos, 
+	  easing: function(n) {return n;},
+	  onEnd: function() {
+	    duration-=10;
+	    if (duration<50) duration=50;
+	    if (menuBarMove) {
+	      moveMenuBar(way, duration); 
+	    }
+	    showHideMoveButtons();
+	  }
+	}).play();
 }
 menuBarMove=false;
 function moveMenuBarStop() {
   menuBarMove=false;  
-  
 }
 
 function isHtml5() {
@@ -2645,14 +2664,36 @@ function menuFilter(filter) {
   /*dojo.query(".menuBarItem").forEach(function(node, index, arr){
       console.debug(node.innerHTML);
   });*/
-  
-  dojo.query(".menuBarItem").fadeOut({
+  var allCollection=dojo.query(".menuBarItem");
+  var newCollection=dojo.query("."+filter);
+  allCollection.fadeOut({
     duration:200,
     onEnd: function(){
-      dojo.query(".menuBarItem").style("display","none");
-      dojo.query("."+filter).style("display","block");
-      dojo.query("."+filter).fadeIn({duration:200}).play();
+      allCollection.style("display","none");
+      bar=dojo.byId('menubarContainer');
+      bar.style.left=0;
+      dojo.byId("menubarContainer").style.width=(newCollection.length*56)+"px";
+      dojo.byId("menuBarVisibleDiv").style.width=(newCollection.length*56)+"px";
+      newCollection.style("display","block");
+      if (newCollection.length<20) {
+        newCollection.fadeIn({duration:200}).play();
+      } else {
+        newCollection.style("height","35px");
+        newCollection.style("opacity","1");
+      }
+      showHideMoveButtons();
     }
-  }).play();
-  
+  }).play();  
+  saveUserParameter('defaultMenu',filter);
+}
+
+function showHideMoveButtons() {
+  var bar=dojo.byId('menubarContainer');
+  left=parseInt(bar.style.left.substr(0,bar.style.left.length-2),10);
+  width=parseInt(bar.style.width.substr(0,bar.style.width.length-2),10);
+  dojo.byId('menuBarMoveLeft').style.display=(left==0)?'none':'block';
+  var visibleWidthRight=dojo.byId('menuBarRight').getBoundingClientRect().left;
+  var visibleWidthLeft=dojo.byId('menuBarLeft').getBoundingClientRect().right;
+  var visibleWidth=visibleWidthRight-visibleWidthLeft;
+  dojo.byId('menuBarMoveRight').style.display=(visibleWidth-left>width)?'none':'block';
 }

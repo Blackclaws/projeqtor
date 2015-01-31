@@ -93,7 +93,7 @@ html, body {
   .menuBarItem {
     position:relative;
     cursor:pointer;
-    margin:0px 0px;
+    margin:0px 0px 0px 4px;
     width:50px; height:37px;
     padding:15px 1px 0px 1px; 
     border-radius: 10px 10px 0px 0px;
@@ -303,22 +303,18 @@ html, body {
 .leftBarIcon {
   display: block;
   margin: 0px 0px;
-  top: 1px; left: -1px;
   position: relative;
-  height: 16px;
+  height: 48px;
   width: 14px;
-  background: url(images/spriteRoundedIconsSmall.png) no-repeat left top ;
-  background-position: -0px top;
+  background: url(images/leftBarIcon.png) no-repeat left top ;
 }
 .rightBarIcon {
   display: block;
   margin: 0px 0px;
-  top: 1px; left: -1px;
   position: relative;
-  height: 16px;
+  height: 48px;
   width: 14px;
-  background: url(images/spriteRoundedIconsSmall.png) no-repeat left top ;
-  background-position: -30px top;
+  background: url(images/rightBarIcon.png) no-repeat left top ;
 }
 #printPreview {
       overflow: hidden; 
