@@ -257,7 +257,15 @@ if (beforeVersion($currVersion,"V4.0.0")) {
 	// Deleting old files referencing projector or projectorria : these files have been renamed
   $root=$_SERVER['SCRIPT_FILENAME'];
 	$root=substr($root,0,strpos($root, '/tool/'));
-  $files = glob($root.'/db/Projector_*.sql'); // get all file names
+  if (! $root) { // On IIS, previous method dos not return correct method 
+	  $root=__FILE__;
+	  $root=substr($root,0,strpos($root, '/db/'));
+	}
+	if (! $root) { // On Windows, previous method should fail
+	  $root=__FILE__;
+	  $root=substr($root,0,strpos($root, '\\db\\'));
+	}	
+	$files = glob($root.'/db/Projector_*.sql'); // get all file names
   error_reporting(0);
   disableCatchErrors();
   if ($files) {
