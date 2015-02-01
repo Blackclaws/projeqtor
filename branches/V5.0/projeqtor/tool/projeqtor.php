@@ -2451,6 +2451,9 @@ function formatNumericInput($val) {
 
 function getLastOperationStatus($result) {
   $search = 'id="lastOperationStatus" value="';
+  if (!stripos ( $result, $search )) {
+    $search = 'id="lastPlanStatus" value="';
+  }
   $start = stripos ( $result, $search ) + strlen ( $search );
   $end = stripos ( $result, '"', $start );
   $status = substr ( $result, $start, $end - $start );
@@ -2461,7 +2464,7 @@ function getLastOperationStatus($result) {
     case "NO_CHANGE" :
       break; // OK, valid status
     default :
-      errorLog ( "'$status' is not an expected status" );
+      errorLog ( "'$status' is not an expected status in result \n$result" );
   }
   return $status;
 }
