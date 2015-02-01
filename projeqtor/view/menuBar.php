@@ -43,7 +43,9 @@
   if (! $defaultMenu) $defaultMenu='all';
   foreach ($menuList as $menu) {
     if (securityCheckDisplayMenu($menu->id,$menu)) {
-      $cptAllMenu+=1;
+      if ($menu->type!='menu' and (strpos(' menuBarItem '.$menu->menuClass, $defaultMenu)>0)) {
+        $cptAllMenu+=1;
+      }
       $sp=explode(" ", $menu->menuClass);
       foreach ($sp as $cl) {
         if (trim($cl)) {
@@ -54,9 +56,11 @@
   }
   
   function drawMenu($menu) {
-  	global $iconSize;
+  	global $iconSize, $defaultMenu;
   	$menuName=$menu->name;
+  	$menuClass=' menuBarItem '.$menu->menuClass;
     $idMenu=$menu->id;
+    $style=(strpos($menuClass, $defaultMenu)==0)?'display:none;':'';
     if ($menu->type=='menu') {
     	if ($menu->idMenu==0) {
     		//echo '<td class="menuBarSeparator" style="width:5px;"></td>';
@@ -64,7 +68,7 @@
     } else if ($menu->type=='item') {
     	  $class=substr($menuName,4); 
         echo '<td  title="' .i18n($menu->name) . '" >';
-        echo '<div class="menuBarItem '.$menu->menuClass.'" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
+        echo '<div class="'.$menuClass.'" style="'.$style.'" onClick="loadMenuBarItem(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');">';
         echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';       
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         echo '</div>';
@@ -73,7 +77,7 @@
       $class=substr($menuName,4);
       if (securityCheckDisplayMenu($idMenu, $class)) {
       	echo '<td title="' .i18n('menu'.$class) . '" >';
-      	echo '<div class="menuBarItem '.$menu->menuClass.'" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
+      	echo '<div class="'.$menuClass.'" style="'.$style.'" onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
       	echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" />';
       	echo '<div class="menuBarItemCaption">'.i18n('menu'.$class).'</div>';
       	echo '</div>';
@@ -105,7 +109,8 @@
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
         >
         <?php foreach ($allMenuClass as $cl=>$clVal) {
-          echo '<option value="'.$cl.'"><div class="menuSelectList"><img style="position:absolute;top:-1px;height:16px" src="../view/css/images/icon'.$cl.'16.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n('menu'.ucfirst($clVal)).'</div></option>';
+          $selected=($defaultMenu==$cl)?' selected=selected ':'';
+          echo '<option value="'.$cl.'" '.$selected.'><div class="menuSelectList"><img style="position:absolute;top:-1px;height:16px" src="../view/css/images/icon'.$cl.'16.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n('menu'.ucfirst($clVal)).'</div></option>';
         }?>
         </div>
       <div class="titleProject" style="position: absolute; left:0px; top: 22px;width:75px; text-align:right;">
@@ -175,8 +180,8 @@
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 12px; z-index:30;"
-       iconClass="dijitEditorIcon dijitEditorIconBackBtn" >
+       style="position:relative;left: 10px; top:-10px; z-index:30;"
+       iconClass="dijitButtonIcon dijitButtonIconPrevious" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           undoItemButton();
         </script>
@@ -184,8 +189,8 @@
       <button id="menuBarRedoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonRedoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 6px; z-index:30"
-       iconClass="dijitEditorIcon dijitEditorIconNextBtn" >
+       style="position:relative;left: 10px; top: -10px; z-index:30"
+       iconClass="dijitButtonIcon dijitButtonIconNext" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           redoItemButton();
         </script>
