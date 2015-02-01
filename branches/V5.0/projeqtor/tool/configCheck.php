@@ -93,8 +93,7 @@
   	     . "<br/>You have to create database '".$param['DbName']."' on your own "
   	     . "<br/>or create default database '".$param['DbUser']."' in order to allow connection of user '".$param['DbUser']."'";
   	} else {
-      showError(utf8_encode($e->getMessage()));
-      showError('dsn = '.$dsn);
+      showError(utf8_encode($e->getMessage()).'<br/>dsn = '.$dsn);
       if ($dbType=='mysql') {
         exit;
       }
@@ -123,8 +122,7 @@
       }
       $result=$connexion->exec($query);
   	} catch (PDOException $e) {
-      showError($e->getMessage());
-      showError('dsn = '.$dsn);
+      showError($e->getMessage().'<br/>dsn = '.$dsn);
       exit;
     }  
     showMsg('Database \'' . $param['DbName'] . '\' created.');
