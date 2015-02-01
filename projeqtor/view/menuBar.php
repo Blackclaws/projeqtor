@@ -40,7 +40,7 @@
   $obj=new Menu();
   $menuList=$obj->getSqlElementsFromCriteria(null, false);
   $defaultMenu=Parameter::getUserParameter('defaultMenu');
-  if (! $defaultMenu) $defaultMenu='all';
+  if (! $defaultMenu) $defaultMenu='menuBarItem';
   foreach ($menuList as $menu) {
     if (securityCheckDisplayMenu($menu->id,$menu)) {
       if ($menu->type!='menu' and (strpos(' menuBarItem '.$menu->menuClass, $defaultMenu)>0)) {

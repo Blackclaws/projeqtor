@@ -71,7 +71,8 @@ if (is_file ( "../tool/parametersLocation.php" )) {
   }
   include_once $parametersLocation;
 } else {
-  if (is_file ( "../tool/config.php" )) {
+  setSessionValue('setup', true);
+  if (is_file ( "../tool/config.php" )  and !(isset ( $indexPhp ) and $indexPhp)) {
     include_once "../tool/config.php";
     exit ();
   }
@@ -690,6 +691,8 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
  * Return the name of the theme : defaut of selected by user
  */
 function getTheme() {
+  global  $indexPhp;
+  if ( isset ( $indexPhp ) and $indexPhp and getSessionValue('setup')) return "ProjeQtOr"; // On firs configuration, use default
   $defaultTheme = Parameter::getGlobalParameter ( 'defaultTheme' );
   if (substr ( $defaultTheme, 0, 12 ) == "ProjectOrRia") {
     $defaultTheme = "ProjeQtOr" . substr ( $defaultTheme, 12 );
