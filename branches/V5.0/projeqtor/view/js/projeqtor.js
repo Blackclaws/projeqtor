@@ -2434,6 +2434,7 @@ function moveMenuBar(way, duration) {
 }
 menuBarMove=false;
 function moveMenuBarStop() {
+  showHideMoveButtons();
   menuBarMove=false;  
 }
 
