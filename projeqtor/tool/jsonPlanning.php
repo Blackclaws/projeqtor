@@ -119,9 +119,9 @@
   $queryWhere.= ($queryWhere=='')?'':' and ';
   if ($portfolio) {
   	//$queryWhere.=getAccesResctictionClause('Project',$table);
-  	$queryWhere.='('.getAccesResctictionClause('Project',$table).' OR '.getAccesResctictionClause('Milestone',$table).')';
+  	$queryWhere.='('.getAccesResctictionClause('Project',$table).' OR '.getAccesResctictionClause('Milestone',$table,$showIdleProjects).')';
   } else {
-    $queryWhere.=getAccesResctictionClause('Activity',$table);
+    $queryWhere.=getAccesResctictionClause('Activity',$table,$showIdleProjects);
   }
   if ( array_key_exists('report',$_REQUEST) ) {
     if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
@@ -162,6 +162,7 @@
        . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
+  debugLog($query);
   $nbRows=0;
   //$nbQueriedRows=Sql::$lastQueryNbRows;
   if ($print) {
