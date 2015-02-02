@@ -771,10 +771,8 @@ table.dojoDndAvatar {
 }
 
 
-.dijit.dijitReset.dijitInline.comboButton.dijitDropDownButton {
-}
-
-.dijitReset.dijitStretch.dijitButtonContents.dijitDownArrowButton {
+.dijitReset.dijitInline.dijitButtonText {
+	padding: 2px;
 }
 
 .dijitReset.dijitInline.dijitIcon.dijitButtonIcon.dijitButtonIconFilter {
