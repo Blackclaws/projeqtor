@@ -89,7 +89,7 @@ UPDATE `${prefix}menu` SET menuClass='EnvironmentalParameter ' WHERE name='menuP
 UPDATE `${prefix}menu` SET menuClass='EnvironmentalParameter ' WHERE name='menuVersion';
 UPDATE `${prefix}menu` SET menuClass='EnvironmentalParameter ' WHERE name='menuAffectation';
 UPDATE `${prefix}menu` SET menuClass='EnvironmentalParameter ' WHERE name='menuContext';
-UPDATE `${prefix}menu` SET menuClass='EnvironmentalParameter ' WHERE name='menuUser';
+UPDATE `${prefix}menu` SET menuClass='EnvironmentalParameter HabilitationParameter ' WHERE name='menuUser';
 UPDATE `${prefix}menu` SET menuClass='Work EnvironmentalParameter ' WHERE name='menuResource';
 UPDATE `${prefix}menu` SET menuClass='Financial EnvironmentalParameter ' WHERE name='menuContact';
 UPDATE `${prefix}menu` SET menuClass='Financial EnvironmentalParameter ' WHERE name='menuClient';
