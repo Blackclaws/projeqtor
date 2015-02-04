@@ -40,6 +40,15 @@ if ($line->id) {
 	$checkId=$line->idChecklistDefinition;
 } else {
 	$line->exclusive=1;
+	$all=$line->getSqlElementsFromCriteria(array('idChecklistDefinition'=>$checkId),false,null,'sortOrder desc');
+	if (count($all)) {
+	  $l=array_shift($all);
+	  if ($l and $l->id) {
+	    $line->sortOrder=$l->sortOrder+10;
+	  }	    
+	} else {
+	  $line->sortOrder=10;
+	}
 }
 
 ?>
