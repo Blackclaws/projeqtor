@@ -179,11 +179,11 @@ function iconFormatter($value) {
   return '<img src="icons/'.$value.'" />';
 }
 
-function formatUserThumb($userId,$userName,$title,$size=22,$float='right') {
+function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alwaysDisplayBigImage=false) {
 	if (! $userId) return '';
 	$radius=round($size/2,0);
 	$file=Affectable::getThumbUrl('Affectable', $userId, $size);
-	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
+	$known=($alwaysDisplayBigImage or substr($file,0,23) != '../view/img/Affectable/')?true:false;
 	$res='<img style="width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
 	
 	$res.=' src="'.$file.'" ';
