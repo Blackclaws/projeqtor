@@ -40,7 +40,7 @@ if (! isset($obj))
 }
 
 if ($obj->id and property_exists ( $obj, 'idUser' )) {
-  echo formatUserThumb($obj->idUser,SqlList::getNameFromId('Affectable', $obj->idUser),'Creator',32);
+  echo formatUserThumb($obj->idUser,SqlList::getNameFromId('Affectable', $obj->idUser),'Creator',32,'right',true);
   $creationDate='';
 	if (property_exists ( $obj, 'creationDateTime' )) {
 		$creationDate=$obj->creationDateTime;
