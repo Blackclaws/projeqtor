@@ -105,7 +105,7 @@
       <div class="titleProject" style="position: absolute; left:0px; top: -1px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
       <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
-        onChange="menuFilter(this.value);"
+        onChange="menuFilter(this.value);" id="menuSelector"
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
         >
         <?php foreach ($allMenuClass as $cl=>$clVal) {
