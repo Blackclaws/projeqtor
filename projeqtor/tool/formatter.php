@@ -183,15 +183,15 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	if (! $userId) return '';
 	$radius=round($size/2,0);
 	$file=Affectable::getThumbUrl('Affectable', $userId, $size);
-	$known=($alwaysDisplayBigImage or substr($file,0,23) != '../view/img/Affectable/')?true:false;
+	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
 	$res='<img style="width:'.$size.'px;height:'.($size).'px;float:'.$float.';border-radius:'.$radius.'px"';
 	
 	$res.=' src="'.$file.'" ';
 	if ($title) {
 		$title=htmlEncode(i18n('thumb'.$title.'Title',array('<b>'.$userName.'</b>')),'quotes');
 	}
-	if ($known) {
-	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+	if ($known or $alwaysDisplayBigImage) {
+	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\''.(($known)?"":",true").');" onMouseOut="hideBigImage();"';
 	}
 	$res.='/>';
 	return $res;
