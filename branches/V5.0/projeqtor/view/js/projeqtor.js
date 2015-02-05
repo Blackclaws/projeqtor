@@ -782,7 +782,10 @@ function finalizeMessageDisplay(destination, validationType) {
       lastOperation = "plan";
       validationType=null;
     }
-  }  
+  }
+  if (destination=='resultDiv') {
+	  contentNode.style.display="block"; 
+  }
   var noHideWait=false;
   if ( ! (contentWidget && contentNode && lastOperationStatus && lastOperation) ) {
     returnMessage="";
@@ -1069,6 +1072,7 @@ console.log("lastOperationStatus="+lastOperationStatus.value);
       duration: 3000,
       onEnd: function(){
         contentWidget.set("content","");
+        contentNode.style.display="none"; 
       }  
     }).play(
         );
@@ -1116,6 +1120,7 @@ function clickCloseBoxOnMessage(destination) {
     duration: 500,
     onEnd: function(){
       contentWidget.set("content","");
+      contentNode.style.display="none"; 
     }  
   }).play(
       );

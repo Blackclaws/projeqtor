@@ -4494,7 +4494,7 @@ function showImage(objectClass, objectId, imageName) {
   }
   //dijit.byId('formDiv').resize();
 }
-function showBigImage(objectClass, objectId, node, title) {
+function showBigImage(objectClass, objectId, node, title,hideImage) {
   var top=node.getBoundingClientRect().top;
   var left=node.getBoundingClientRect().left;
   var height=node.getBoundingClientRect().height;
@@ -4507,7 +4507,7 @@ function showBigImage(objectClass, objectId, node, title) {
   if (centerThumb80) {
     var htmlPhoto='';
     var alone='';
-    if (objectClass && objectId) {
+    if (objectClass && objectId && ! hideImage) {
       htmlPhoto='<img style="border-radius:40px;" src="'+imageUrl+'" />';
     } else {
       alone='Alone';
