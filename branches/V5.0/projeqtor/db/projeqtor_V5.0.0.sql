@@ -22,7 +22,7 @@ ALTER TABLE `${prefix}project` CHANGE  `description` `description` text;
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` text,
  CHANGE `result` `result` text;
 
-RENAME TABLE `${prefix}attachement` to `${prefix}attachment`;
+RENAME TABLE `${prefix}attachement` TO `${prefix}attachment`;
 
 UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentDirectory' WHERE parameterCode='paramAttachementDirectory';
 UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentMaxSize' WHERE parameterCode='paramAttachementMaxSize';
@@ -30,7 +30,7 @@ UPDATE `${prefix}parameter` SET parameterCode='displayAttachment' WHERE paramete
 
 CREATE INDEX workelementActivity ON `${prefix}workelement` (idActivity);
 
-UPDATE `${prefix}columnselector` SET formatter="thumbName22" WHERE field in ('nameResource', 'nameUser', 'nameContact', 'nameResourceSelect');
+UPDATE `${prefix}columnselector` SET formatter='thumbName22' WHERE field in ('nameResource', 'nameUser', 'nameContact', 'nameResourceSelect');
 
 CREATE TABLE `${prefix}menuselector` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

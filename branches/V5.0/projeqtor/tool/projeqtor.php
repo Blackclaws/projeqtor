@@ -71,7 +71,7 @@ if (is_file ( "../tool/parametersLocation.php" )) {
   }
   include_once $parametersLocation;
 } else {
-  setSessionValue('setup', true);
+  setSessionValue('setup', true, true);
   if (is_file ( "../tool/config.php" )  and !(isset ( $indexPhp ) and $indexPhp)) {
     include_once "../tool/config.php";
     exit ();
@@ -692,7 +692,7 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
  */
 function getTheme() {
   global  $indexPhp;
-  if ( isset ( $indexPhp ) and $indexPhp and getSessionValue('setup')) return "ProjeQtOr"; // On firs configuration, use default
+  if ( isset ( $indexPhp ) and $indexPhp and getSessionValue('setup', null, true)) return "ProjeQtOr"; // On firs configuration, use default
   $defaultTheme = Parameter::getGlobalParameter ( 'defaultTheme' );
   if (substr ( $defaultTheme, 0, 12 ) == "ProjectOrRia") {
     $defaultTheme = "ProjeQtOr" . substr ( $defaultTheme, 12 );
@@ -1325,7 +1325,7 @@ function traceLog($message) {
  * @return void
  */
 function errorLog($message) {
-  if (getSessionValue('setup')) return;
+  if (getSessionValue('setup', null, true)) return;
   logTracing ( $message, 1 );
 }
 
@@ -2410,18 +2410,26 @@ function projeqtor_set_memory_limit($memory) {
   @ini_set ( 'memory_limit', $memory );
 }
 
-function setSessionValue($code, $value) {
+function setSessionValue($code, $value, $global=false) {
   global $paramDbName, $paramDbPrefix;
-  $projeqtorSession = 'ProjeQtOr_' . $paramDbName . (($paramDbPrefix) ? '_' . $paramDbPrefix : '');
+  if ($global) {
+    $projeqtorSession = 'ProjeQtOr';
+  } else {
+    $projeqtorSession = 'ProjeQtOr_' . $paramDbName . (($paramDbPrefix) ? '_' . $paramDbPrefix : '');
+  }
   if (! isset ( $_SESSION [$projeqtorSession] )) {
     $_SESSION [$projeqtorSession] = array ();
   }
   $_SESSION [$projeqtorSession] [$code] = $value;
 }
 
-function getSessionValue($code, $default = null) {
+function getSessionValue($code, $default = null, $global=false) {
   global $paramDbName, $paramDbPrefix;
-  $projeqtorSession = 'ProjeQtOr_' . $paramDbName . (($paramDbPrefix) ? '_' . $paramDbPrefix : '');
+  if ($global) {
+    $projeqtorSession = 'ProjeQtOr';
+  } else {
+    $projeqtorSession = 'ProjeQtOr_' . $paramDbName . (($paramDbPrefix) ? '_' . $paramDbPrefix : '');
+  }
   if (! isset ( $_SESSION [$projeqtorSession] )) {
     return $default;
   }
