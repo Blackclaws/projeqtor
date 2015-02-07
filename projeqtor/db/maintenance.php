@@ -28,6 +28,7 @@ require_once('../model/_securityCheck.php');
 require_once('maintenanceFunctions.php');
 $maintenance=true;
 Sql::$maintenanceMode=true;
+setSessionValue('setup', false, true);
 // Version History : starts at 0.3.0 with clean database (before scripts are empty)
 $versionHistory = array(
   "V0.3.0",  "V0.4.0",  "V0.5.0",  "V0.6.0",  "V0.7.0",  "V0.8.0",  "V0.9.0",  
@@ -332,7 +333,6 @@ Habilitation::correctUpdates();
 Habilitation::correctUpdates();
 deleteDuplicate();
 Sql::saveDbVersion($version);
-setSessionValue('setup', false);
 traceLog('=====================================');
 traceLog("");
 echo '<div class="message'.(($nbErrors==0)?'OK':'WARNING').'">';

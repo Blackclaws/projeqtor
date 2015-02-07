@@ -35,7 +35,7 @@ if (isset($_REQUEST['username'])) {
 	$username=$_REQUEST['username'];
 	$username=AesCtr::decrypt($username, md5(session_id()), 256);	
 }
-if (! mb_check_encoding($username),'UTF-8') {
+if (! mb_check_encoding($username,'UTF-8')) {
   echo 'SESSION'.md5(session_id());
   exit;
 }
