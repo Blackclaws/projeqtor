@@ -41,6 +41,7 @@ class Issue extends SqlElement {
   public $idUser;
   public $cause;
   public $impact;
+  public $Origin;
   public $idCriticality;
   public $idPriority;
   public $description;

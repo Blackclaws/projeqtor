@@ -44,6 +44,11 @@
       if (! $idRes) return;
       $r=new Resource($idRes);
       echo $r->idRole;
+    } else if ($type=='resourceProfile') {
+      $idRes=$_REQUEST['idResource'];
+      if (! $idRes) return;
+      $r=new Resource($idRes);
+      echo $r->idProfile;
     } else {    
       echo '';
     } 

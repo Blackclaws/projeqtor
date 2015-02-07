@@ -51,6 +51,11 @@ if (! array_key_exists('affectationResource',$_REQUEST) and !$idTeam) {
 }
 $resource=($_REQUEST['affectationResource']);
 
+if (! array_key_exists('affectationProfile',$_REQUEST) and !$idTeam) {
+  throwError('affectationProfile parameter not found in REQUEST');
+}
+$profile=($_REQUEST['affectationProfile']);
+
 if (! array_key_exists('affectationRate',$_REQUEST)) {
   throwError('affectationRate parameter not found in REQUEST');
 }
@@ -81,6 +86,7 @@ if (! $idTeam) {
 	$affectation->rate=$rate;
 	$affectation->startDate=$startDate;
 	$affectation->endDate=$endDate;
+	$affectation->idProfile=$profile;
 	$result=$affectation->save();
 } else {
 	$crit=array('idTeam'=>$idTeam);
@@ -91,6 +97,7 @@ if (! $idTeam) {
 		$affectation=new Affectation($id);
     $affectation->idProject=$project;
     $affectation->idResource=$ress->id;
+    $affectation->idProfile=$ress->idProfile;
     $affectation->idle=$idle;
     $affectation->rate=$rate;
     $affectation->startDate=$startDate;

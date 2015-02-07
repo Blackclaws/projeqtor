@@ -3166,6 +3166,7 @@ function addAffectation(objectClass, type, idResource, idProject) {
 		dijit.byId("affectationProject").reset();
 	}
 	dijit.byId("affectationResource").set('required',true);
+	dijit.byId("affectationProfile").set('required',true);
 	dijit.byId("affectationRate").set('value','100');
 	dijit.byId("affectationIdle").reset();
 	dijit.byId("affectationStartDate").reset();
@@ -3186,7 +3187,7 @@ function removeAffectation(id) {
 } 
 
 affectationLoad=false;
-function editAffectation(id, objectClass, type, idResource, idProject, rate,idle, startDate, endDate) {
+function editAffectation(id, objectClass, type, idResource, idProject, rate,idle, startDate, endDate, idProfile) {
 	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -3226,6 +3227,11 @@ function editAffectation(id, objectClass, type, idResource, idProject, rate,idle
 	} else {
 		dijit.byId("affectationEndDate").reset();
 	}
+	if (idProfile) {
+	  dijit.byId("affectationProfile").set('value',idProfile);
+  } else {
+    dijit.byId("affectationProfile").reset();
+	}
 	if (idle==1) {
 		dijit.byId("affectationIdle").set('value',idle);
 	} else {
@@ -3260,15 +3266,29 @@ function affectTeamMembers(idTeam) {
 	refreshList('idProject', null, null, null, 'affectationProject', true);
 	dojo.byId("affectationId").value="";
 	dojo.byId("affectationIdTeam").value=idTeam;
-    dijit.byId("affectationResource").set('readOnly',true);
-    dijit.byId("affectationResource").set('required',false);
-	dijit.byId("affectationResource").reset();
+  dijit.byId("affectationResource").set('readOnly',true);
+  dijit.byId("affectationResource").set('required',false);
+  dijit.byId("affectationResource").reset();
+  dijit.byId("affectationProfile").set('readOnly',true);
+  dijit.byId("affectationProfile").set('required',false);
+  dijit.byId("affectationProfile").reset();
 	dijit.byId("affectationProject").set('readOnly',false);
 	dijit.byId("affectationProject").reset();
 	dijit.byId("affectationRate").set('value','100');
 	dijit.byId("affectationIdle").reset();
 	dijit.byId("affectationIdle").set('readOnly',true);
 	dijit.byId("dialogAffectation").show();
+}
+
+function affectationChangeResource() {
+  var idResource=dijit.byId("affectationResource").get("value");
+  if (! idResource) return;
+  dijit.byId('affectationProfile').reset();
+  dojo.xhrGet({
+    url: '../tool/getSingleData.php?dataType=resourceProfile&idResource=' + idResource,
+    handleAs: "text",
+    load: function (data) {dijit.byId('affectationProfile').set('value',data);}
+  });
 }
 //=============================================================================
 //= Misceallanous

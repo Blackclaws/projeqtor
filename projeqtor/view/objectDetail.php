@@ -950,8 +950,13 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
             $fieldWidth -= 28;
           }
         }
+        $showExtraButton=false;
         if ($col=='idStatus' or $col=='idResource') {
+          if ( ($col=='idStatus') 
+            or ($col=='idResource' and $user->isResource and $user->id!=$val and $obj->id and $classObj!='Affectation') ) {
+          $showExtraButton=true;
         	$fieldWidth=round($fieldWidth/2	)-5;
+          }
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
@@ -999,7 +1004,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
             drawOtherVersionFromObject ( $obj->$otherVersion, $obj, $versionType );
           }
         }
-        if ($col=='idStatus' and $next) {
+        if ($col=='idStatus' and $next and $showExtraButton) {
         	echo '<div class="roundedVisibleButton roundedButton"';
         	echo ' title="'.i18n("moveStatusTo",array(SqlList::getNameFromId('Status',$next))).'"';
         	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
@@ -1008,7 +1013,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
         	echo '</div>';
         }
-        if ($col=='idResource' and $next and $user->isResource and $user->id!=$val) {
+        if ($col=='idResource' and $next and $showExtraButton) {
         	echo '<div class="roundedVisibleButton roundedButton"';
         	echo ' title="'.i18n("assignToMe").'"';
         	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
@@ -2455,7 +2460,8 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
     echo '</td>';
   }
   echo '<td class="assignHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="assignHeader" style="width:' . (($print) ? '55' : '45') . '%">' . i18n ( 'colId' . $type ) . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print) ? '35' : '25') . '%">' . i18n ( 'colId' . $type ) . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n ( 'colIdProfile' ) . '</td>';
   echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colStartDate' ) . '</td>';
   echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colEndDate' ) . '</td>';
   echo '<td class="assignHeader" style="width:10%">' . i18n ( 'colRate' ) . '</td>';
@@ -2488,7 +2494,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
       if (! $print) {
         echo '<td class="assignData' . $idleClass . '" style="text-align:center;white-space: nowrap;">';
         if ($canUpdate and ! $print) {
-          echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAffectation(' . "'" . $aff->id . "'" . ",'" . get_class ( $obj ) . "'" . ",'" . $type . "'" . ",'" . $aff->idResource . "'" . ",'" . $aff->idProject . "'" . ",'" . $aff->rate . "'" . ",'" . $aff->idle . "'" . ",'" . $aff->startDate . "'" . ",'" . $aff->endDate . "'" . ');" ' . 'title="' . i18n ( 'editAffectation' ) . '" class="smallButton"/> ';
+          echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAffectation(' . "'" . $aff->id . "'" . ",'" . get_class ( $obj ) . "'" . ",'" . $type . "'" . ",'" . $aff->idResource . "'" . ",'" . $aff->idProject . "'" . ",'" . $aff->rate . "'" . ",'" . $aff->idle . "'" . ",'" . $aff->startDate . "'" . ",'" . $aff->endDate . "'" . ','.$aff->idProfile.');" ' . 'title="' . i18n ( 'editAffectation' ) . '" class="smallButton"/> ';
         }
         if ($canDelete and ! $print) {
           echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . $aff->id . "'" . ');" ' . 'title="' . i18n ( 'removeAffectation' ) . '" class="smallButton"/> ';
@@ -2508,6 +2514,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
       } else {
         echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode ( $name ) . '</td>';
       }
+      echo '<td class="assignData' . $idleClass . '" align="center" >' . SqlList::getNameFromId('Profile', $aff->idProfile, true ) . '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate ( $aff->startDate ) . '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate ( $aff->endDate ) . '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . $aff->rate . '</td>';

@@ -2269,11 +2269,25 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                 id="affectationResource" name="affectationResource" 
+                onChange="affectationChangeResource();"
                 class="input" value="" required="required">
                  <?php //htmlDrawOptionForReference('idResource', null, null, true);
                        // no use : will be updated on dialog opening;?>
                </select>
              </td>
+           </tr>
+           <tr>
+             <td class="dialogLabel" >
+               <label for="affectationProfile" ><?php echo i18n("colIdProfile");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <select dojoType="dijit.form.FilteringSelect" 
+                id="affectationProfile" name="affectationProfile" 
+                class="input" value="" required="required">
+                 <?php htmlDrawOptionForReference('idProfile', null, null, true);?>
+               </select>
+               </div>
+             </td>    
            </tr>
            <tr>
              <td class="dialogLabel" >

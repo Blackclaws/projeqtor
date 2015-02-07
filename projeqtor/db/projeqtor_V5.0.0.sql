@@ -39,6 +39,9 @@ CREATE TABLE `${prefix}menuselector` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+ALTER TABLE `${prefix}affectation` ADD `idProfile` int(12) unsigned;
+UPDATE `${prefix}affectation` SET idProfile=(select idProfile from `${prefix}resource` R where R.id=idResource); 
+
 ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuProject';
