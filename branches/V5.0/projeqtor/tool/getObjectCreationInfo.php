@@ -31,6 +31,7 @@
  * Get creation information for given object
  */
 require_once "../tool/projeqtor.php";
+require_once "../tool/formatter.php";
 scriptLog ( '   ->/tool/getObjectCreationInfo.php' );
 if (! isset($obj)) 
 {

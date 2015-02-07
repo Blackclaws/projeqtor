@@ -38,6 +38,7 @@ class Affectation extends SqlElement {
   public $idResource;
   public $idContact;
   public $idUser;
+  public $idProfile;
   public $idProject;
   public $rate;
   public $startDate;
@@ -51,9 +52,10 @@ public $_noCopy;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="nameResourceSelect" formatter="thumbName22" width="20%" >${resourceName}</th>
-    <th field="nameContact" formatter="thumbName22" width="20%" >${contactName}</th>
-    <th field="nameUser" formatter="thumbName22" width="20%" >${userName}</th>
+    <th field="nameResourceSelect" formatter="thumbName22" width="15%" >${resourceName}</th>
+    <th field="nameContact" formatter="thumbName22" width="15%" >${contactName}</th>
+    <th field="nameUser" formatter="thumbName22" width="15%" >${userName}</th>
+    <th field="nameProfile" width="15%" >${idProfile}</th>  
     <th field="nameProject" width="20%" >${projectName}</th>
     <th field="rate" width="10%" formatter="percentFormatter">${rate}</th>  
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
@@ -63,7 +65,10 @@ public $_noCopy;
                                                    'idContact'=>'orContact',
                                                    'idResourceSelect'=>'idResource');
   
-   private static $_fieldsAttributes=array("idResourceSelect"=>"hidden, forceExport", "idResource"=>"noExport,noList"); 
+   private static $_fieldsAttributes=array(
+       "idResourceSelect"=>"hidden, forceExport", 
+       "idResource"=>"noExport,noList",
+       "idProfile"=>"required"); 
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
@@ -141,6 +146,14 @@ public $_noCopy;
       $colScript .= '  if (! dijit.byId("idContact").get("value")) { dijit.byId("idContact").set("value",null); }'; 
       $colScript .= '  dijit.byId("idUser").set("value",this.value);'; 
       $colScript .= '  if (! dijit.byId("idUser").get("value")) { dijit.byId("idUser").set("value",null); }'; 
+      $colScript .= '  dijit.byId("idProfile").reset();';
+      $colScript .= '  if (this.value) {';
+      $colScript .= '    dojo.xhrGet({';
+      $colScript .= '      url: "../tool/getSingleData.php?dataType=resourceProfile&idResource=" + this.value,';
+      $colScript .= '      handleAs: "text",';
+      $colScript .= '      load: function (data) {dijit.byId("idProfile").set("value",data);}';
+      $colScript .= '    });';
+      $colScript .= '  };';
       $colScript .= '  terminateChange();';
       $colScript .= '  formChanged();';
       $colScript .= '};';
