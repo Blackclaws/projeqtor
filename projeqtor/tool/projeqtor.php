@@ -1325,6 +1325,7 @@ function traceLog($message) {
  * @return void
  */
 function errorLog($message) {
+  if (getSessionValue('setup')) return;
   logTracing ( $message, 1 );
 }
 
