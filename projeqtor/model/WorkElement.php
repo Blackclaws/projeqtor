@@ -35,13 +35,15 @@ class WorkElement extends SqlElement {
 	public $refId;
 	public $idActivity;
 	public $refName;
+	public $_tab_4_1 = array('planned', 'real','left', '','work');
 	public $plannedWork;
 	public $realWork;
+	public $leftWork;
 	public $_spe_run;
 	public $idUser;
 	public $ongoing;
 	public $ongoingStartDateTime;
-	public $leftWork;
+	
 	public $done;
 	public $idle;
 	private static $_fieldsAttributes = array (
@@ -55,7 +57,7 @@ class WorkElement extends SqlElement {
 			"idActivity" => "hidden",
 			"leftWork" => "readonly",
 			"done" => "hidden",
-			"idle" => "hidden" 
+			"idle" => "hidden"
 	);
 	private static $_colCaptionTransposition = array (
 			'plannedWork' => 'estimatedWork' 
@@ -331,7 +333,7 @@ class WorkElement extends SqlElement {
 			}
 			$canUpdate = (securityGetAccessRightYesNo ( 'menu' . $this->refType, 'update', $refObj ) == 'YES');
 			if ($user->isResource and $canUpdate and $this->id) {
-				$result .= '<div style="position: absolute; right: 12px; top : 175px;
+				$result .= '<div xstyle="left: 50px; top : 0px;
                      border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
 				$result .= '<button id="startStopWork" dojoType="dijit.form.Button" showlabel="true"';
 				if (($this->ongoing and $this->idUser != $user->id) or ! $user->isResource) {

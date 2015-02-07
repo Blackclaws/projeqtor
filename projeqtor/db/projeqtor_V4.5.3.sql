@@ -13,8 +13,7 @@ CREATE TABLE `${prefix}tempupdate` (
 
 DELETE FROM `${prefix}tempupdate` WHERE 1=1;
 
-INSERT INTO `${prefix}tempupdate`  
-  (select id, refType, refId from `${prefix}workelement` WHERE (refType, refId) in 
+INSERT INTO `${prefix}tempupdate` (select id, refType, refId from `${prefix}workelement` WHERE (refType, refId) in 
     ( select refType, refId from  `${prefix}workelement` group by  refType, refId having count(*) >1 ));
   
 DELETE FROM `${prefix}tempupdate` WHERE id in 
@@ -24,3 +23,4 @@ DELETE FROM `${prefix}workelement` WHERE id in
   (select id from `${prefix}tempupdate`);
 
 DELETE FROM `${prefix}tempupdate` WHERE 1=1;
+r

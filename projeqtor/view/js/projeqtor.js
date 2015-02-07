@@ -2547,7 +2547,7 @@ function cryptData(data) {
     dojo.byId('hashStringPassword').value=crypted;
   }
 }
-
+getHashTry=0;
 function connect(resetPassword) {
 	showWait();
     dojo.byId('login').focus();
@@ -2567,6 +2567,18 @@ function connect(resetPassword) {
       url: '../tool/getHash.php?username='+encodeURIComponent(crypted),
       handleAs: "text",
       load: function (data) {
+        if (data.substr(0,7)=="SESSION") {
+          getHashTry+=1;
+          if (getHashTry>1) {
+            showError(i18n('errorSessionHash'));
+            getHashTry=0;
+          } else {
+            console.log("Error retrieving hash - try again one time");
+            aesLoginHash=data.substring(7);
+            connect(resetPassword);
+          }
+        }
+        getHashTry=0;
         cryptData(data);
         loadContent("../tool/loginCheck.php"+urlCompl,"loginResultDiv", "loginForm");
       }
