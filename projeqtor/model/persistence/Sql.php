@@ -335,6 +335,7 @@ class Sql {
   
   // Retores the Sequence for PgSql
   public static function updatePgSeq($table) {
+    if ($table=='tempupdate') return;
     $updateSeq=Sql::query("SELECT setval('".$table."_id_seq', (SELECT MAX(id) FROM $table));");
   }
   
