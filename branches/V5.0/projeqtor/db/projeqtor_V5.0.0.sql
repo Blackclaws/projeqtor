@@ -5,22 +5,22 @@
 -- // Date : 2014-11-30                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}history` CHANGE oldValue oldValue text,
-CHANGE newValue newValue text;
+ALTER TABLE `${prefix}history` CHANGE `oldValue` `oldValue` text,
+ CHANGE `newValue` `newValue` text;
 
-ALTER TABLE `${prefix}action` CHANGE description description text,
-CHANGE result result text;
+ALTER TABLE `${prefix}action` CHANGE `description` `description` text,
+ CHANGE `result` `result` text;
 
-ALTER TABLE `${prefix}activity` CHANGE  description description text,
-CHANGE result result text;
+ALTER TABLE `${prefix}activity` CHANGE `description` `description` text,
+ CHANGE `result` `result` text;
 
-ALTER TABLE `${prefix}milestone` CHANGE description description text,
-CHANGE result result text;
+ALTER TABLE `${prefix}milestone` CHANGE `description` `description` text,
+ CHANGE `result` `result` text;
 
-ALTER TABLE `${prefix}project` CHANGE  description description text;
+ALTER TABLE `${prefix}project` CHANGE  `description` `description` text;
 
-ALTER TABLE `${prefix}ticket` CHANGE description description text,
-CHANGE result result text;
+ALTER TABLE `${prefix}ticket` CHANGE `description` `description` text,
+ CHANGE `result` `result` text;
 
 RENAME TABLE `${prefix}attachement` to `${prefix}attachment`;
 
@@ -39,7 +39,7 @@ CREATE TABLE `${prefix}menuselector` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}menu` ADD menuClass varchar(400);
+ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuProject';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuDocument';

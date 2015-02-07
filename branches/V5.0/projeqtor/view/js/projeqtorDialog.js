@@ -4142,6 +4142,7 @@ function resetListColumn() {
 }
 
 function moveListColumn(source,destination) {
+console.log("moveListColumn("+source+","+destination+")");  
   var mode='';
   var list='';
   var nodeList=dndListColumnSelector.getAllNodes();

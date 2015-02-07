@@ -324,6 +324,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       if (strpos ( $obj->getFieldAttributes ( $col ), 'hidden' ) !== false) {
         $hide = true;
       }
+      if (($col=='idUser' or $col=='creationDate' or $col=='creationDateTime') and !$print) {
+        $hide=true;
+      }
       if (strpos ( $obj->getFieldAttributes ( $col ), 'nobr' ) !== false) {
         $nobr = true;
       }
@@ -1132,7 +1135,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
          echo ',onKeyDown:function(event){top.dojo.byId(\''.$fieldId.'\').value=this.value;console.log(top.dojo.byId(\''.$fieldId.'\').value);top.onKeyDownFunction(event,\''.$fieldId.'\');}'; // hard coding default event
          echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...  
-        if (0) echo ",'|','fullScreen'";         
+        if (1) echo ",'|','fullScreen'";         
         //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
        	echo "]}";      
         echo '" ';

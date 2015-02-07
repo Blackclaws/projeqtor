@@ -29,6 +29,7 @@
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/moveListColumn.php');
+debugLog('   ->/tool/moveListColumn.php');
 if (! array_key_exists('orderedList',$_REQUEST)) {
   throwError('orderedList parameter not found in REQUEST');
 }
@@ -41,6 +42,7 @@ $cpt=0;
 foreach ($arrayList as $id) {
 	if (trim($id)) {
 		$cpt++;
+debugLog("save id $id to order $cpt");		
 	  $cs=new ColumnSelector($id);
 	  $cs->sortOrder=$cpt;
 		$result=$cs->save();
