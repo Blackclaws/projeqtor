@@ -29,67 +29,64 @@
  */
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
-scriptLog ( '   ->/view/objectDetail.php' );
-if (! isset ( $comboDetail )) {
-  $comboDetail = false;
+scriptLog('   ->/view/objectDetail.php');
+if (!isset($comboDetail)) {
+  $comboDetail=false;
 }
-$collapsedList = Collapsed::getCollaspedList ();
-$readOnly = false;
+$collapsedList=Collapsed::getCollaspedList();
+$readOnly=false;
+
 /**
  * ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
- * 
+ *
  * @param $obj the
  *          object to present
  * @param $included boolean
  *          indicating wether the function is called recursively or not
  * @return void
  */
-function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, 
-  $printWidth, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
-  //if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
-  //  $obj->splitLongFields ();
-  //}
-  $currency = Parameter::getGlobalParameter ( 'currency' );
-  $currencyPosition = Parameter::getGlobalParameter ( 'currencyPosition' );
+function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
+  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
+  // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
+  // $obj->splitLongFields ();
+  // }
+  $currency=Parameter::getGlobalParameter('currency');
+  $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   $showThumb=Parameter::getGlobalParameter('paramShowThumb'); // show thumb between label and field ?
-  $treatedObjects [] = $obj;
-  $dateWidth = '75';
-  $verySmallWidth = '44';
-  $smallWidth = '75';
-  $mediumWidth = '200';
-  $largeWidth = '300';
-  $labelWidth = 160; // To be changed if changes in css file (label and .label)
-  $labelStyleWidth = '145px';
+  $treatedObjects []=$obj;
+  $dateWidth='75';
+  $verySmallWidth='44';
+  $smallWidth='75';
+  $mediumWidth='200';
+  $largeWidth='300';
+  $labelWidth=160; // To be changed if changes in css file (label and .label)
+  $labelStyleWidth='145px';
   if ($outMode == 'pdf') {
-    $labelWidth = 50;
-    $labelStyleWidth = $labelWidth . 'px';
+    $labelWidth=50;
+    $labelStyleWidth=$labelWidth . 'px';
   }
-  $fieldWidth = $smallWidth;
-  $extName = "";
-  $user = $_SESSION ['user'];
-  $displayComboButton = false;
-  $habil = SqlElement::getSingleSqlElementFromCriteria ( 'habilitationOther', array (
-      'idProfile' => $user->idProfile,
-      'scope' => 'combo' 
-  ) );
+  $fieldWidth=$smallWidth;
+  $extName="";
+  $user=$_SESSION ['user'];
+  $displayComboButton=false;
+  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->idProfile,'scope' => 'combo'));
   if ($habil) {
-    $list = new ListYesNo ( $habil->rightAccess );
+    $list=new ListYesNo($habil->rightAccess);
     if ($list->code == 'YES') {
-      $displayComboButton = true;
+      $displayComboButton=true;
     }
   }
   if ($comboDetail) {
-    $extName = "_detail";
+    $extName="_detail";
   }
-  $detailWidth = null; // Default detail div width
-  // Check screen resolution, to determine max field width (largeWidth)
-  if (array_key_exists ( 'destinationWidth', $_REQUEST )) {
-    $detailWidth = $_REQUEST ['destinationWidth'];
+  $detailWidth=null; // Default detail div width
+                       // Check screen resolution, to determine max field width (largeWidth)
+  if (array_key_exists('destinationWidth', $_REQUEST)) {
+    $detailWidth=$_REQUEST ['destinationWidth'];
   } else {
-    if (array_key_exists ( 'screenWidth', $_SESSION )) {
-      $detailWidth = round ( ($_SESSION ['screenWidth'] * 0.8) - 15 ); // 80% of screen - split barr - padding (x2)
+    if (array_key_exists('screenWidth', $_SESSION)) {
+      $detailWidth=round(($_SESSION ['screenWidth'] * 0.8) - 15); // 80% of screen - split barr - padding (x2)
     }
   }
   // Set some king of responsive design : number of display columns depends on screen width
@@ -99,100 +96,100 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
     $nbColMax=2;
   } else {
     $nbColMax=1;
-  }  
-  $currentCol = 0;
-  $nbCol = $nbColMax;
+  }
+  $currentCol=0;
+  $nbCol=$nbColMax;
   
   // Define internalTable values, to present data as a table
-  $internalTable = 0;
-  $internalTableCols = 0;
-  $internalTableRows = 0;
-  $internalTableCurrentRow = 0;
+  $internalTable=0;
+  $internalTableCols=0;
+  $internalTableRows=0;
+  $internalTableCurrentRow=0;
   $internalTableSpecial='';
-  $internalTableRowsCaptions = array ();
-  $classObj = get_class ( $obj );
+  $internalTableRowsCaptions=array();
+  $classObj=get_class($obj);
   if ($obj->id == '0') {
-    $obj->id = null;
+    $obj->id=null;
   }
-  $type = $classObj . 'Type';
-  $idType = 'id' . $type;
-  $objType = null;
-  if (property_exists ( $obj, $idType )) {
-    $objType = new $type ( $obj->$idType );
+  $type=$classObj . 'Type';
+  $idType='id' . $type;
+  $objType=null;
+  if (property_exists($obj, $idType)) {
+    $objType=new $type($obj->$idType);
   }
-  $section = '';
-  $nbLineSection = 0;
+  $section='';
+  $nbLineSection=0;
   // Loop on each propertie of the object
-  if (is_subclass_of ( $obj, 'PlanningElement' )) {
-    $obj->setVisibility ();
-    $workVisibility = $obj->_workVisibility;
-    $costVisibility = $obj->_costVisibility;
-    if (get_class ( $obj ) == "MeetingPlanningElement") {
-      $obj->setAttributes ( $workVisibility, $costVisibility );
+  if (is_subclass_of($obj, 'PlanningElement')) {
+    $obj->setVisibility();
+    $workVisibility=$obj->_workVisibility;
+    $costVisibility=$obj->_costVisibility;
+    if (get_class($obj) == "MeetingPlanningElement") {
+      $obj->setAttributes($workVisibility, $costVisibility);
     }
-  } else if (method_exists ( $obj, 'setAttributes' )) {
-    $obj->setAttributes ();
+  } else if (method_exists($obj, 'setAttributes')) {
+    $obj->setAttributes();
   }
-  $nobr = false;
-  $canUpdate = (securityGetAccessRightYesNo ( 'menu' . $classObj, 'update', $obj ) == 'YES');
-  if ((isset ( $obj->locked ) and $obj->locked and $classObj != 'User') or isset ( $obj->_readOnly )) {
-    $canUpdate = false;
+  $nobr=false;
+  $canUpdate=(securityGetAccessRightYesNo('menu' . $classObj, 'update', $obj) == 'YES');
+  if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
+    $canUpdate=false;
   }
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
-      $colWidth =  round(($displayWidth) / $nbCol); // 3 columns should be displayable
-      $maxWidth = $colWidth - $labelWidth;  // subtract label width
+      $colWidth=round(($displayWidth) / $nbCol); // 3 columns should be displayable
+      $maxWidth=$colWidth - $labelWidth; // subtract label width
       if ($maxWidth >= $mediumWidth) {
-        $largeWidth = $maxWidth;
+        $largeWidth=$maxWidth;
       } else {
-        $largeWidth = $mediumWidth;
+        $largeWidth=$mediumWidth;
       }
     }
-    $hide = false;
-    $nobr_before = $nobr;
-    $nobr = false;
+    $hide=false;
+    $nobr_before=$nobr;
+    $nobr=false;
     if ($included and ($col == 'id' or $col == 'refId' or $col == 'refType' or $col == 'refName')) {
-      $hide = true;
+      $hide=true;
     }
     // If field is _tab_x_y, start a table presentation with x columns and y lines
     // the field _tab_x_y must be an array containing x + y values :
     // - the x column headers
     // - the y line headers
-    if (substr ( $col, 0, 4 ) == '_tab') {
-      $decomp = explode ( "_", $col );
-      $internalTableCols = $decomp [2];
-      $internalTableRows = $decomp [3];
+    if (substr($col, 0, 4) == '_tab') {
+      $decomp=explode("_", $col);
+      $internalTableCols=$decomp [2];
+      $internalTableRows=$decomp [3];
       $internalTableSpecial='';
-debugLog($decomp);
-      if (count($decomp)>4) {
-        $internalTableSpecial=$decomp[4];
+      debugLog($decomp);
+      if (count($decomp) > 4) {
+        $internalTableSpecial=$decomp [4];
       }
-      $internalTable = $internalTableCols * $internalTableRows;
-      $internalTableRowsCaptions = array_slice ( $val, $internalTableCols );
-      $internalTableCurrentRow = 0;
-      $colWidth = ($detailWidth) / $nbCol;
-      if (is_subclass_of ( $obj, 'PlanningElement' ) and $internalTableRows >= 3) {
-        for($i = 0; $i < $internalTableRows; $i ++) {
-          $testRowCaption = strtolower ( $internalTableRowsCaptions [$i] );
-          if ($workVisibility == 'NO' and substr ( $testRowCaption, - 4 ) == 'work') {
-            $internalTableRowsCaptions [$i] = '';
+      $internalTable=$internalTableCols * $internalTableRows;
+      $internalTableRowsCaptions=array_slice($val, $internalTableCols);
+      $internalTableCurrentRow=0;
+      $colWidth=($detailWidth) / $nbCol;
+      if (is_subclass_of($obj, 'PlanningElement') and $internalTableRows >= 3) {
+        for ($i=0; $i < $internalTableRows; $i++) {
+          $testRowCaption=strtolower($internalTableRowsCaptions [$i]);
+          if ($workVisibility == 'NO' and substr($testRowCaption, -4) == 'work') {
+            $internalTableRowsCaptions [$i]='';
           }
-          if ($costVisibility == 'NO' and (substr ( $testRowCaption, - 4 ) == 'cost' or substr ( $testRowCaption, - 7 ) == 'expense')) {
-            $internalTableRowsCaptions [$i] = '';
+          if ($costVisibility == 'NO' and (substr($testRowCaption, -4) == 'cost' or substr($testRowCaption, -7) == 'expense')) {
+            $internalTableRowsCaptions [$i]='';
           }
         }
         if ($workVisibility != 'ALL' and $costVisibility != 'ALL') {
-          $val [2] = '';
-          $val [5] = '';
+          $val [2]='';
+          $val [5]='';
         }
       }
       echo '</table><table id="' . $col . '" class="detail">';
       echo '<tr class="detail">';
       echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns
-      for($i = 0; $i < $internalTableCols; $i ++) { // draw table headers
+      for ($i=0; $i < $internalTableCols; $i++) { // draw table headers
         echo '<td class="detail">';
         if ($val [$i]) {
-          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode ( $obj->getColCaption ( $val [$i] ) ) . '</div>';
+          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
           echo '<div class="tabLabel" style="text-align:left;">&nbsp;</div>';
         }
@@ -201,197 +198,185 @@ debugLog($decomp);
         }
       }
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
-    } else if (substr ( $col, 0, 5 ) == '_col_') { // if field is _col, draw a new main column
-      $previousCol = $currentCol;
-      $currentCol += 1;
-      $nbCol = substr ( $col, 7, 1 );
+    } else if (substr($col, 0, 5) == '_col_') { // if field is _col, draw a new main column
+      $previousCol=$currentCol;
+      $currentCol+=1;
+      $nbCol=substr($col, 7, 1);
       $nbCol=$nbColMax;
-      /*$widthPct = round ( 98 / $nbCol ) . "%";
-      if ($nbCol == '1') {
-        $widthPct = $displayWidth;
-      }
-      if (substr ( $displayWidth, - 2, 2 ) == "px") {
-        $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
-        $widthPct = floor ( ($val / $nbCol) - 4) . "px";
-      }
-      if ($print) {
-        $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
-      }*/
+      /*
+       * $widthPct = round ( 98 / $nbCol ) . "%"; if ($nbCol == '1') { $widthPct = $displayWidth; } if (substr ( $displayWidth, - 2, 2 ) == "px") { $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 ); $widthPct = floor ( ($val / $nbCol) - 4) . "px"; } if ($print) { $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px"; }
+       */
       $widthPct=setWidthPct($displayWidth, $print, $printWidth);
-      $prevSection = $section;
-      $split=explode('_',$col);
-      if (count($split)>1) {
-        $section = $split[count($split)-1];
+      $prevSection=$section;
+      $split=explode('_', $col);
+      if (count($split) > 1) {
+        $section=$split [count($split) - 1];
       } else {
-        $section = '';
+        $section='';
       }
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
-    } else if (substr ( $col, 0, 5 ) == '_sec_') { // if field is _section, draw a new section bar column
-    	$prevSection=$section;
-      if (strlen ( $col ) > 8) {
-        $section = substr ( $col, 5 );
+    } else if (substr($col, 0, 5) == '_sec_') { // if field is _section, draw a new section bar column
+      $prevSection=$section;
+      if (strlen($col) > 8) {
+        $section=substr($col, 5);
       } else {
-        $section = '';
+        $section='';
       }
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
-    } else if (substr ( $col, 0, 5 ) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
-      $item = substr ( $col, 5 );
+    } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
+      $item=substr($col, 5);
       echo '<tr><td colspan=2>';
-      echo $obj->drawSpecificItem ( $item ); // the method must be implemented in the corresponidng class
+      echo $obj->drawSpecificItem($item); // the method must be implemented in the corresponidng class
       echo '</td></tr>';
-    } else if (substr ( $col, 0, 6 ) == '_calc_') { // if field is _calc_xxxx, draw calculated item
-      $item = substr ( $col, 6 );
-      echo $obj->drawCalculatedItem ( $item ); // the method must be implemented in the corresponidng class
-    } else if (substr ( $col, 0, 5 ) == '_lib_') { // if field is just a caption
-      $item = substr ( $col, 5 );
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'nobr' ) !== false) {
-        $nobr = true;
+    } else if (substr($col, 0, 6) == '_calc_') { // if field is _calc_xxxx, draw calculated item
+      $item=substr($col, 6);
+      echo $obj->drawCalculatedItem($item); // the method must be implemented in the corresponidng class
+    } else if (substr($col, 0, 5) == '_lib_') { // if field is just a caption
+      $item=substr($col, 5);
+      if (strpos($obj->getFieldAttributes($col), 'nobr') !== false) {
+        $nobr=true;
       }
-      if ($obj->getFieldAttributes ( $col ) != 'hidden') {
+      if ($obj->getFieldAttributes($col) != 'hidden') {
         if ($nobr)
           echo '&nbsp;';
-        echo '<span class="tabLabel" style="font-weight:normal">' . i18n ( $item ) . '</span>';
+        echo '<span class="tabLabel" style="font-weight:normal">' . i18n($item) . '</span>';
         echo '&nbsp;';
       }
       
-      if (! $nobr) {
+      if (!$nobr) {
         echo "</td></tr>";
       }
-    } else if (substr ( $col, 0, 5 ) == '_Link') { // Display links to other objects
-      $linkClass = null;
-      if (strlen ( $col ) > 5) {
-        $linkClass = substr ( $col, 6 );
+    } else if (substr($col, 0, 5) == '_Link') { // Display links to other objects
+      $linkClass=null;
+      if (strlen($col) > 5) {
+        $linkClass=substr($col, 6);
       }
-      drawLinksFromObject ( $val, $obj, $linkClass );
-    } else if (substr ( $col, 0, 11 ) == '_Assignment') { // Display Assignments
-      drawAssignmentsFromObject ( $val, $obj );
-    } else if (substr ( $col, 0, 11 ) == '_Approver') { // Display Assignments
-      drawApproverFromObject ( $val, $obj );
-    } else if (substr ( $col, 0, 15 ) == '_VersionProject') { // Display Version Project
-      drawVersionProjectsFromObject ( $val, $obj );
-    } else if (substr ( $col, 0, 11 ) == '_Dependency') { // Display Dependencies
-      $depType = (strlen ( $col ) > 11) ? substr ( $col, 12 ) : "";
-      drawDependenciesFromObject ( $val, $obj, $depType );
+      drawLinksFromObject($val, $obj, $linkClass);
+    } else if (substr($col, 0, 11) == '_Assignment') { // Display Assignments
+      drawAssignmentsFromObject($val, $obj);
+    } else if (substr($col, 0, 11) == '_Approver') { // Display Assignments
+      drawApproverFromObject($val, $obj);
+    } else if (substr($col, 0, 15) == '_VersionProject') { // Display Version Project
+      drawVersionProjectsFromObject($val, $obj);
+    } else if (substr($col, 0, 11) == '_Dependency') { // Display Dependencies
+      $depType=(strlen($col) > 11)?substr($col, 12):"";
+      drawDependenciesFromObject($val, $obj, $depType);
     } else if ($col == '_ResourceCost') { // Display ResourceCost
-      drawResourceCostFromObject ( $val, $obj, false );
+      drawResourceCostFromObject($val, $obj, false);
     } else if ($col == '_DocumentVersion') { // Display ResourceCost
-      drawDocumentVersionFromObject ( $val, $obj, false );
+      drawDocumentVersionFromObject($val, $obj, false);
     } else if ($col == '_ExpenseDetail') { // Display ExpenseDetail
-      if ($obj->getFieldAttributes ( $col ) != 'hidden') {
-        drawExpenseDetailFromObject ( $val, $obj, false );
+      if ($obj->getFieldAttributes($col) != 'hidden') {
+        drawExpenseDetailFromObject($val, $obj, false);
       }
-    } else if (substr ( $col, 0, 12 ) == '_TestCaseRun') { // Display TestCaseRun
-      drawTestCaseRunFromObject ( $val, $obj );
-    } else if (substr ( $col, 0, 11 ) == '_Attachment') {
-    	if (! isset ( $isAttachmentEnabled )) {
-    		$isAttachmentEnabled = true; // allow attachment
-    		if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Parameter::getGlobalParameter ( 'paramAttachmentMaxSize' )) {
-    			$isAttachmentEnabled = false;
-    		}
-    	}
-    	if ($isAttachmentEnabled and ! $comboDetail) {
-	    	$prevSection = $section;
-	    	$section="Attachment";
-	    	startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
-	    	drawAttachmentsFromObject($obj,false);
-    	}
-    } else if (substr ( $col, 0, 5 ) == '_Note') {
-    		$prevSection = $section;
-    		$section="Note";
-    		startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
-    		drawNotesFromObject($obj,false);
-	} else if (substr ( $col, 0, 5 ) == '_BillLine') {
-	  $prevSection = $section;
-	  $section="BillLine";
-	  startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
-	  drawBillLinesFromObject($obj,false);
-    } else if (substr ( $col, 0, 1 ) == '_' and substr ( $col, 0, 6 ) != '_void_' and substr ( $col, 0, 7 ) != '_label_') { // field not to be displayed
-                                         //
-    } else {
-      $attributes = '';
-      $isRequired = false;
-      $readOnly = false;
-      $specificStyle = '';
-      if (($col == "idle" or $col == "done" or $col == "handled" or $col == "cancelled") and $objType) {
-        $lock = 'lock' . ucfirst ( $col );
-        if (! $obj->id or (property_exists ( $objType, $lock ) and $objType->$lock)) {
-          $attributes .= ' readonly tabindex="-1"';
-          $readOnly = true;
+    } else if (substr($col, 0, 12) == '_TestCaseRun') { // Display TestCaseRun
+      drawTestCaseRunFromObject($val, $obj);
+    } else if (substr($col, 0, 11) == '_Attachment') {
+      if (!isset($isAttachmentEnabled)) {
+        $isAttachmentEnabled=true; // allow attachment
+        if (!Parameter::getGlobalParameter('paramAttachmentDirectory') or !Parameter::getGlobalParameter('paramAttachmentMaxSize')) {
+          $isAttachmentEnabled=false;
         }
       }
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'required' ) !== false) {
-        $attributes .= ' required="true" missingMessage="' . i18n ( 'messageMandatory', array (
-            $obj->getColCaption ( $col ) 
-        ) ) . '" invalidMessage="' . i18n ( 'messageMandatory', array (
-            $obj->getColCaption ( $col ) 
-        ) ) . '"';
-        $isRequired = true;
+      if ($isAttachmentEnabled and !$comboDetail) {
+        $prevSection=$section;
+        $section="Attachment";
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+        drawAttachmentsFromObject($obj, false);
       }
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'hidden' ) !== false) {
-        $hide = true;
+    } else if (substr($col, 0, 5) == '_Note') {
+      $prevSection=$section;
+      $section="Note";
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+      drawNotesFromObject($obj, false);
+    } else if (substr($col, 0, 5) == '_BillLine') {
+      $prevSection=$section;
+      $section="BillLine";
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+      drawBillLinesFromObject($obj, false);
+    } else if (substr($col, 0, 1) == '_' and substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_') { // field not to be displayed
+                                                                                                                              //
+    } else {
+      $attributes='';
+      $isRequired=false;
+      $readOnly=false;
+      $specificStyle='';
+      if (($col == "idle" or $col == "done" or $col == "handled" or $col == "cancelled") and $objType) {
+        $lock='lock' . ucfirst($col);
+        if (!$obj->id or (property_exists($objType, $lock) and $objType->$lock)) {
+          $attributes.=' readonly tabindex="-1"';
+          $readOnly=true;
+        }
       }
-      if (($col=='idUser' or $col=='creationDate' or $col=='creationDateTime') and !$print) {
+      if (strpos($obj->getFieldAttributes($col), 'required') !== false) {
+        $attributes.=' required="true" missingMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '" invalidMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '"';
+        $isRequired=true;
+      }
+      if (strpos($obj->getFieldAttributes($col), 'hidden') !== false) {
         $hide=true;
       }
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'nobr' ) !== false) {
-        $nobr = true;
+      if (($col == 'idUser' or $col == 'creationDate' or $col == 'creationDateTime') and !$print) {
+        $hide=true;
       }
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'invisible' ) !== false) {
-        $specificStyle .= ' visibility:hidden';
+      if (strpos($obj->getFieldAttributes($col), 'nobr') !== false) {
+        $nobr=true;
       }
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'title' ) !== false) {
-        $attributes .= ' title="' . $obj->getTitle ( $col ) . '"';
+      if (strpos($obj->getFieldAttributes($col), 'invisible') !== false) {
+        $specificStyle.=' visibility:hidden';
+      }
+      if (strpos($obj->getFieldAttributes($col), 'title') !== false) {
+        $attributes.=' title="' . $obj->getTitle($col) . '"';
       }
       
-      if (! $canUpdate or (strpos ( $obj->getFieldAttributes ( $col ), 'readonly' ) !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
-        $attributes .= ' readonly tabindex="-1"';
-        $readOnly = true;
+      if (!$canUpdate or (strpos($obj->getFieldAttributes($col), 'readonly') !== false) or $parentReadOnly or ($obj->idle == 1 and $col != 'idle' and $col != 'idStatus')) {
+        $attributes.=' readonly tabindex="-1"';
+        $readOnly=true;
       }
-      $dataType = $obj->getDataType ( $col );
-      $dataLength = $obj->getDataLength ( $col );
+      $dataType=$obj->getDataType($col);
+      $dataLength=$obj->getDataLength($col);
       if ($internalTable == 0) {
-      	if (! is_object ( $val ) and ! is_array ( $val ) and ! $hide and ! $nobr_before) {
+        if (!is_object($val) and !is_array($val) and !$hide and !$nobr_before) {
           echo '<tr class="detail">';
           if ($dataLength > 4000) {
-      		  // Will have to add label
-          	echo '<td colspan="2">';
-      	  } else {
-	          echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
-	          $thumbRes=SqlElement::isThumbableField($col);
-	          $thumbColor=SqlElement::isColorableField($col);
-	          //$thumbIcon=SqlElement::isIconableField($col);
-	          $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb)?true:false;
-	          echo '<label for="' . $col . '" '.(($thumb)?'class="labelWithThumb"':'').'>'; 
-	          echo htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;'.(($thumb)?'':':&nbsp;').'</label>' . $cr;
-	          if ($thumb) {
-	            if ($thumbRes) {
-	              echo formatUserThumb($val,null,null,22,'right');
-	            } else {
-	              echo formatColorThumb($col,$val,20,'right');
-	            }
-	          }
-	          echo '</td>';
-	          if ($print and $outMode == "pdf") {
-	            echo '<td style="width: 120px">';
-	          } else {
-	            echo '<td style="width:'.($largeWidth+10).'px">';
-	          }
-      	  }
+            // Will have to add label
+            echo '<td colspan="2">';
+          } else {
+            echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
+            $thumbRes=SqlElement::isThumbableField($col);
+            $thumbColor=SqlElement::isColorableField($col);
+            // $thumbIcon=SqlElement::isIconableField($col);
+            $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb)?true:false;
+            echo '<label for="' . $col . '" ' . (($thumb)?'class="labelWithThumb"':'') . '>';
+            echo htmlEncode($obj->getColCaption($col)) . '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
+            if ($thumb) {
+              if ($thumbRes) {
+                echo formatUserThumb($val, null, null, 22, 'right');
+              } else {
+                echo formatColorThumb($col, $val, 20, 'right');
+              }
+            }
+            echo '</td>';
+            if ($print and $outMode == "pdf") {
+              echo '<td style="width: 120px">';
+            } else {
+              echo '<td style="width:' . ($largeWidth + 10) . 'px">';
+            }
+          }
         }
       } else {
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
-          echo '<td class="'.$internalTableSpecial.'" style="width:' . $labelStyleWidth . ';">';
+          echo '<td class="' . $internalTableSpecial . '" style="width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
-            echo '<label class="label '.$internalTableSpecial.'">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
+            echo '<label class="label ' . $internalTableSpecial . '">' . htmlEncode($obj->getColCaption($internalTableRowsCaptions [$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
           }
           echo '</td><td style="width:90%;white-space:nowrap;">';
-          $internalTableCurrentRow ++;
+          $internalTableCurrentRow++;
         } else {
-          if ($obj->isAttributeSetToField ( $col, "colspan3" )) {
+          if ($obj->isAttributeSetToField($col, "colspan3")) {
             echo '</td><td class="detail" colspan="3">';
-            $internalTable -= 2;
+            $internalTable-=2;
           } else {
             echo '</td><td class="detail" style="white-space:nowrap;">';
           }
@@ -400,95 +385,92 @@ debugLog($decomp);
       // echo $col . "/" . $dataType . "/" . $dataLength;
       if ($dataLength) {
         if ($dataLength <= 3) {
-          $fieldWidth = $verySmallWidth;
+          $fieldWidth=$verySmallWidth;
         } else if ($dataLength <= 10) {
-          $fieldWidth = $smallWidth;
+          $fieldWidth=$smallWidth;
         } else if ($dataLength <= 25) {
-          $fieldWidth = $mediumWidth;
+          $fieldWidth=$mediumWidth;
         } else {
-          $fieldWidth = $largeWidth;
+          $fieldWidth=$largeWidth;
         }
       }
-      if (substr ( $col, 0, 2 ) == 'id' and $dataType == 'int' and strlen ( $col ) > 2 and substr ( $col, 2, 1 ) == strtoupper ( substr ( $col, 2, 1 ) )) {
-        $fieldWidth = $largeWidth;
+      if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
+        $fieldWidth=$largeWidth;
       }
-      if (strpos ( $obj->getFieldAttributes ( $col ), 'Width' ) !== false) {
-        if (strpos ( $obj->getFieldAttributes ( $col ), 'smallWidth' ) !== false) {
-          $fieldWidth = $smallWidth;
+      if (strpos($obj->getFieldAttributes($col), 'Width') !== false) {
+        if (strpos($obj->getFieldAttributes($col), 'smallWidth') !== false) {
+          $fieldWidth=$smallWidth;
         }
-        if (strpos ( $obj->getFieldAttributes ( $col ), 'mediumWidth' ) !== false) {
-          $fieldWidth = $mediumWidth;
+        if (strpos($obj->getFieldAttributes($col), 'mediumWidth') !== false) {
+          $fieldWidth=$mediumWidth;
         }
-        if (strpos ( $obj->getFieldAttributes ( $col ), 'truncatedWidth' ) !== false) {
-          $pos = strpos ( $obj->getFieldAttributes ( $col ), 'truncatedWidth' );
-          $truncValue = substr ( $obj->getFieldAttributes ( $col ), $pos + 14, 3 );
-          $fieldWidth -= $truncValue;
+        if (strpos($obj->getFieldAttributes($col), 'truncatedWidth') !== false) {
+          $pos=strpos($obj->getFieldAttributes($col), 'truncatedWidth');
+          $truncValue=substr($obj->getFieldAttributes($col), $pos + 14, 3);
+          $fieldWidth-=$truncValue;
         }
       }
       // echo $dataType . '(' . $dataLength . ') ';
       if ($included) {
-        $name = ' id="' . $classObj . '_' . $col . '" name="' . $classObj . '_' . $col . $extName . '" ';
-        $nameBis = ' id="' . $classObj . '_' . $col . 'Bis" name="' . $classObj . '_' . $col . 'Bis' . $extName . '" ';
-        $fieldId = $classObj . '_' . $col;
+        $name=' id="' . $classObj . '_' . $col . '" name="' . $classObj . '_' . $col . $extName . '" ';
+        $nameBis=' id="' . $classObj . '_' . $col . 'Bis" name="' . $classObj . '_' . $col . 'Bis' . $extName . '" ';
+        $fieldId=$classObj . '_' . $col;
       } else {
-        $name = ' id="' . $col . '" name="' . $col . $extName . '" ';
-        $nameBis = ' id="' . $col . 'Bis" name="' . $col . 'Bis' . $extName . '" ';
-        $fieldId = $col;
+        $name=' id="' . $col . '" name="' . $col . $extName . '" ';
+        $nameBis=' id="' . $col . 'Bis" name="' . $col . 'Bis' . $extName . '" ';
+        $fieldId=$col;
       }
       // prepare the javascript code to be executed
-      $colScript = $obj->getValidationScript ( $col );
-      $colScriptBis = "";
+      $colScript=$obj->getValidationScript($col);
+      $colScriptBis="";
       if ($dataType == 'datetime') {
-        $colScriptBis = $obj->getValidationScript ( $col . "Bis" );
+        $colScriptBis=$obj->getValidationScript($col . "Bis");
       }
       // if ($comboDetail) {
       // $colScript=str_replace($col,$col . $extName,$colScript);
       // $colScriptBis=str_replace($col,$col . $extName,$colScriptBis);
       // }
-      if (is_object ( $val )) {
-        if (! $obj->isAttributeSetToField ( $col, 'hidden' )) {
+      if (is_object($val)) {
+        if (!$obj->isAttributeSetToField($col, 'hidden')) {
           if ($col == 'Origin') {
-            drawOrigin ( $val->originType, $val->originId, $obj, $col, $print );
+            drawOrigin($val->originType, $val->originId, $obj, $col, $print);
           } else {
             // Draw an included object (recursive call) =========================== Type Object
-            $visibileSubObject = true;
-            if (get_class ( $val ) == 'WorkElement') {
-              $hWork = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array (
-                  'idProfile' => $user->idProfile,
-                  'scope' => 'work' 
-              ) );
+            $visibileSubObject=true;
+            if (get_class($val) == 'WorkElement') {
+              $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'work'));
               if ($hWork and $hWork->id) {
-                $visibility = SqlList::getFieldFromId ( 'VisibilityScope', $hWork->rightAccess, 'accessCode', false );
+                $visibility=SqlList::getFieldFromId('VisibilityScope', $hWork->rightAccess, 'accessCode', false);
                 if ($visibility != 'ALL') {
-                  $visibileSubObject = false;
+                  $visibileSubObject=false;
                 }
               }
             }
             if ($visibileSubObject) {
-              drawTableFromObject ( $val, true, $readOnly );
-              $hide = true; // to avoid display of an extra field for the object and an additional carriage return
+              drawTableFromObject($val, true, $readOnly);
+              $hide=true; // to avoid display of an extra field for the object and an additional carriage return
             }
           }
         }
-      } else if (is_array ( $val )) {
+      } else if (is_array($val)) {
         // Draw an array ====================================================== Type Array
         // TODO : impement array fields
         // echo $col . ' is an array' . $cr;
-      } else if (substr ( $col, 0, 6 ) == '_void_') {
+      } else if (substr($col, 0, 6) == '_void_') {
         // Empty field for tabular presentation
         // echo $col . ' is an array' . $cr;
         //
-      } else if (substr ( $col, 0, 7 ) == '_label_') {
-        $captionName = substr ( $col, 7 );
-        echo '<label class="label shortlabel">' . i18n ( 'col' . ucfirst ( $captionName ) ) . '&nbsp;:&nbsp;</label>';
+      } else if (substr($col, 0, 7) == '_label_') {
+        $captionName=substr($col, 7);
+        echo '<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
       } else if ($print) { // ================================================ Printing areas
         if ($hide) { // hidden field
                        // nothing
-        } else if (strpos ( $obj->getFieldAttributes ( $col ), 'displayHtml' ) !== false) {
+        } else if (strpos($obj->getFieldAttributes($col), 'displayHtml') !== false) {
           // Display full HTML ================================================== Hidden field
           // echo '<div class="displayHtml">';
           if ($outMode == 'pdf') {
-            echo htmlRemoveDocumentTags ( $val );
+            echo htmlRemoveDocumentTags($val);
           } else {
             echo $val;
           }
@@ -497,15 +479,15 @@ debugLog($decomp);
         } else if ($col == 'password') {
           echo "..."; // nothing
         } else if ($dataType == 'date' and $val != null and $val != '') {
-          echo htmlFormatDate ( $val );
+          echo htmlFormatDate($val);
         } else if ($dataType == 'datetime' and $val != null and $val != '') {
-          echo htmlFormatDateTime ( $val, false );
+          echo htmlFormatDateTime($val, false);
         } else if ($dataType == 'time' and $val != null and $val != '') {
-          echo htmlFormatTime ( $val, false );
+          echo htmlFormatTime($val, false);
         } else if ($col == 'color' and $dataLength == 7) { // color
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
-          echo '  value="' . htmlEncode ( $val ) . '" ';
+          echo '  value="' . htmlEncode($val) . '" ';
           echo '  style="width: ' . $smallWidth / 2 . 'px; ';
           echo ' color: ' . $val . '; ';
           echo ' background-color: ' . $val . ';"';
@@ -517,71 +499,71 @@ debugLog($decomp);
           }
           echo '</tr></table>';
         } else if ($dataType == 'int' and $dataLength == 1) { // boolean
-          $checkImg = "checkedKO.png";
-          if ($val != '0' and ! $val == null) {
-            $checkImg = 'checkedOK.png';
+          $checkImg="checkedKO.png";
+          if ($val != '0' and !$val == null) {
+            $checkImg='checkedOK.png';
           }
           echo '<img src="img/' . $checkImg . '" />';
-        } else if (substr ( $col, 0, 2 ) == 'id' and $dataType == 'int' and strlen ( $col ) > 2 and substr ( $col, 2, 1 ) == strtoupper ( substr ( $col, 2, 1 ) )) { // Idxxx
-          echo htmlEncode ( SqlList::getNameFromId ( substr ( $col, 2 ), $val ) );
+        } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) { // Idxxx
+          echo htmlEncode(SqlList::getNameFromId(substr($col, 2), $val));
         } else if ($dataLength > 4000) {
-          	//echo '</td></tr><tr><td colspan="2">';
-          	echo '<div style="border:1px dotted #AAAAAA;width:'.$colWidth.'px;overflow:hidden">';
-          	echo $val;
-          	echo '</div>';
+          // echo '</td></tr><tr><td colspan="2">';
+          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;overflow:hidden">';
+          echo $val;
+          echo '</div>';
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
-          echo htmlEncode ( $val, 'print' );
-          $fldFull = '_' . $col . '_full';
-          if ($outMode == 'pdf' and isset ( $obj->$fldFull )) {
+          echo htmlEncode($val, 'print');
+          $fldFull='_' . $col . '_full';
+          if ($outMode == 'pdf' and isset($obj->$fldFull)) {
             echo '<img src="../view/css/images/doubleArrowDown.png" />';
           }
-        } else if ($dataType == 'decimal' and (substr ( $col, - 4, 4 ) == 'Cost' or substr ( $col, - 6, 6 ) == 'Amount' or $col == 'amount')) {
+        } else if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
           if ($currencyPosition == 'after') {
-            echo htmlEncode ( $val, 'print' ) . ' ' . $currency;
+            echo htmlEncode($val, 'print') . ' ' . $currency;
           } else {
-            echo $currency . ' ' . htmlEncode ( $val, 'print' );
+            echo $currency . ' ' . htmlEncode($val, 'print');
           }
-        } else if ($dataType == 'decimal' and substr ( $col, - 4, 4 ) == 'Work') {
-          echo Work::displayWork ( $val ) . ' ' . Work::displayShortWorkUnit ();
+        } else if ($dataType == 'decimal' and substr($col, -4, 4) == 'Work') {
+          echo Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
         } else if ($col == 'icon') {
           echo '<img src="../view/icons/' . $val . '" />';
         } else {
-          if ($obj->isFieldTranslatable ( $col )) {
-            $val = i18n ( $val );
+          if ($obj->isFieldTranslatable($col)) {
+            $val=i18n($val);
           }
           if (0 and $internalTable == 0) {
             echo '<div style="width: 80%;"> ';
-            if (strpos ( $obj->getFieldAttributes ( $col ), 'html' ) !== false) {
+            if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
               echo $val;
             } else {
-              echo htmlEncode ( $val, 'print' );
+              echo htmlEncode($val, 'print');
             }
             echo '</div>';
           } else {
-            if (strpos ( $obj->getFieldAttributes ( $col ), 'html' ) !== false) {
+            if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
               echo $val;
             } else {
-              echo htmlEncode ( $val, 'print' );
+              echo htmlEncode($val, 'print');
             }
           }
         }
       } else if ($hide) {
         // Don't draw the field =============================================== Hidden field
-        if (! $print) {
-        	if ($col == 'creationDate' and ($val == '' or $val == null) and ! $obj->id) {
-        		$val = date ( 'Y-m-d' );
-        	}
-        	if ($col == 'idUser') {
-        	 $val = $user->id;
+        if (!$print) {
+          if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
+            $val=date('Y-m-d');
+          }
+          if ($col == 'idUser') {
+            $val=$user->id;
           }
           echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';
           echo $name;
-          if ($dataType == 'decimal' and (substr ( $col, - 4, 4 ) == 'Work')) {
-            $val = Work::displayWork ( $val );
+          if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Work')) {
+            $val=Work::displayWork($val);
           }
-          echo ' value="' . htmlEncode ( $val ) . '" ></div>';
+          echo ' value="' . htmlEncode($val) . '" ></div>';
         }
-      } else if (strpos ( $obj->getFieldAttributes ( $col ), 'displayHtml' ) !== false) {
+      } else if (strpos($obj->getFieldAttributes($col), 'displayHtml') !== false) {
         // Display full HTML ================================================== Simple Display html field
         echo '<div class="displayHtml">';
         echo $val;
@@ -589,27 +571,27 @@ debugLog($decomp);
       } else if ($col == 'id') {
         // Draw Id (only visible) ============================================= ID
         // id is only visible
-        $ref = $obj->getReferenceUrl ();
+        $ref=$obj->getReferenceUrl();
         echo '<span class="roundedButton" style="padding:1px 5px 5px 5px;font-size:8pt; height: 50px; color:#AAAAAA;" >';
-        echo '  <a  href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' . ' title="' . i18n ( "rightClickToCopy" ) . '" style="cursor: pointer;">';
+        echo '  <a  href="' . $ref . '" onClick="copyDirectLinkUrl();return false;"' . ' title="' . i18n("rightClickToCopy") . '" style="cursor: pointer;">';
         echo '    <span style="color:grey;vertical-align:middle;padding: 2px 0px 2px 0px !important;">#</span>';
         echo '    <span dojoType="dijit.form.TextBox" type="text"  ';
         echo $name;
         echo '     class="display pointer" ';
         echo '     readonly tabindex="-1" style="background: transparent; border: 0; cursor: pointer !important;width: ' . $smallWidth . 'px; padding: 2px 0px 2px 0px !important;" ';
-        echo '     value="' . htmlEncode ( $val ) . '" >';
+        echo '     value="' . htmlEncode($val) . '" >';
         echo '    </span>';
         echo '  </a>';
         echo '</span>';
         echo '<input readOnly type="text" onClick="this.select();" id="directLinkUrlDiv" style="display:none;font-size:9px; color: #000000;position :absolute; top: 9px; left: 157px; border: 0;background: transparent;width:' . $largeWidth . 'px;" value="' . $ref . '" />';
-        $alertLevelArray = $obj->getAlertLevel ( true );
-        $alertLevel = $alertLevelArray ['level'];
-        $colorAlert = "background-color:#FFFFFF";
+        $alertLevelArray=$obj->getAlertLevel(true);
+        $alertLevel=$alertLevelArray ['level'];
+        $colorAlert="background-color:#FFFFFF";
         if ($alertLevel != 'NONE') {
           if ($alertLevel == 'ALERT') {
-            $colorAlert = 'background-color:#FFAAAA;';
+            $colorAlert='background-color:#FFAAAA;';
           } else if ($alertLevel == 'WARNING') {
-            $colorAlert = 'background-color:#FFFFAA;';
+            $colorAlert='background-color:#FFFFAA;';
           }
           echo '<span style="width:20px; position: absolute; left: 5px;" id="alertId" >';
           if ($alertLevel == 'ALERT') {
@@ -629,23 +611,21 @@ debugLog($decomp);
         echo $name;
         echo ' class="display" ';
         echo ' readonly tabindex="-1" style="width: ' . ($largeWidth - $smallWidth - 40) . 'px;" ';
-        echo ' value="' . htmlEncode ( $val ) . '" ></span>';
+        echo ' value="' . htmlEncode($val) . '" ></span>';
       } else if ($col == 'password') {
-        $paramDefaultPassword = Parameter::getGlobalParameter ( 'paramDefaultPassword' );
+        $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
         // Password specificity ============================================= PASSWORD
         echo '<button id="resetPassword" dojoType="dijit.form.Button" showlabel="true"';
         echo $attributes;
-        $salt = hash ( 'sha256', "projeqtor" . date ( 'YmdHis' ) );
-        echo ' title="' . i18n ( 'helpResetPassword' ) . '" >';
-        echo '<span>' . i18n ( 'resetPassword' ) . '</span>';
+        $salt=hash('sha256', "projeqtor" . date('YmdHis'));
+        echo ' title="' . i18n('helpResetPassword') . '" >';
+        echo '<span>' . i18n('resetPassword') . '</span>';
         echo '<script type="dojo/connect" event="onClick" args="evt">';
         echo '  dijit.byId("salt").set("value","' . $salt . '");';
         echo '  dijit.byId("crypto").set("value","sha256");';
-        echo '  dojo.byId("password").value="' . hash ( 'sha256', $paramDefaultPassword . $salt ) . '";';
+        echo '  dojo.byId("password").value="' . hash('sha256', $paramDefaultPassword . $salt) . '";';
         echo '  formChanged();';
-        echo '  showInfo("' . i18n ( 'passwordReset', array (
-            $paramDefaultPassword 
-        ) ) . '");';
+        echo '  showInfo("' . i18n('passwordReset', array($paramDefaultPassword)) . '");';
         echo '</script>';
         echo '</button>';
         // password not visible
@@ -653,14 +633,14 @@ debugLog($decomp);
         echo $name;
         echo ' class="display" style="width:150px"';
         echo ' readonly tabindex="-1" ';
-        echo ' value="' . htmlEncode ( $val ) . '" />';
+        echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col == 'color' and $dataLength == 7) {
         // Draw a color selector ============================================== COLOR
         echo "<table><tr><td class='detail'>";
         echo '<input xdojoType="dijit.form.TextBox" class="colorDisplay" type="text" readonly tabindex="-1" ';
         echo $name;
         echo $attributes;
-        echo '  value="' . htmlEncode ( $val ) . '" ';
+        echo '  value="' . htmlEncode($val) . '" ';
         echo '  style="border: 0;width: ' . $smallWidth . 'px; ';
         echo ' color: ' . $val . '; ';
         if ($val) {
@@ -672,7 +652,7 @@ debugLog($decomp);
         // echo $colScript;
         // echo '</div>';
         echo '</td><td class="detail">';
-        if (! $readOnly) {
+        if (!$readOnly) {
           echo '<div id="' . 'colorButton" dojoType="dijit.form.DropDownButton"  ';
           // echo ' style="width: 100px; background-color: ' . $val . ';"';
           echo ' showlabel="false" iconClass="colorSelector" >';
@@ -689,10 +669,10 @@ debugLog($decomp);
           echo '</div>';
         }
         echo '</td><td>';
-        if (! $readOnly) {
+        if (!$readOnly) {
           echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
-          echo ' title="' . i18n ( 'helpResetColor' ) . '" >';
-          echo '<span>' . i18n ( 'resetColor' ) . '</span>';
+          echo ' title="' . i18n('helpResetColor') . '" >';
+          echo '<span>' . i18n('resetColor') . '</span>';
           echo '<script type="dojo/connect" event="onClick" args="evt">';
           echo '      var fld=dojo.byId("color");';
           echo '      fld.style.color="transparent";';
@@ -708,63 +688,63 @@ debugLog($decomp);
         echo '<div dojoType="dijit.form.TextBox" class="colorDisplay" type="text"  ';
         echo $name;
         echo $attributes;
-        echo '  value="' . htmlEncode ( $val ) . '" ';
+        echo '  value="' . htmlEncode($val) . '" ';
         echo '  style="width: 30px; "';
         echo ' >';
         echo '</div>';
-        echo i18n ( "shortDay" ) . "  ";
+        echo i18n("shortDay") . "  ";
         echo '<div dojoType="dijit.form.TextBox" class="colorDisplay" type="text"  ';
         echo $attributes;
-        echo '  value="' . htmlEncode ( $val ) . '" ';
+        echo '  value="' . htmlEncode($val) . '" ';
         echo '  style="width: 30px; "';
         echo ' >';
         echo '</div>';
-        echo i18n ( "shortHour" ) . "  ";
+        echo i18n("shortHour") . "  ";
         echo '<div dojoType="dijit.form.TextBox" class="colorDisplay" type="text"  ';
         echo $attributes;
-        echo '  value="' . htmlEncode ( $val ) . '" ';
+        echo '  value="' . htmlEncode($val) . '" ';
         echo '  style="width: 30px; "';
         echo ' >';
         echo '</div>';
-        echo i18n ( "shortMinute" ) . "  ";
+        echo i18n("shortMinute") . "  ";
       } else if ($dataType == 'date') {
         // Draw a date ======================================================== DATE
-        if ($col == 'creationDate' and ($val == '' or $val == null) and ! $obj->id) {
-          $val = date ( 'Y-m-d' );
+        if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
+          $val=date('Y-m-d');
         }
         echo '<div dojoType="dijit.form.DateTextBox" ';
         echo $name;
         echo $attributes;
-        echo ' invalidMessage="' . i18n ( 'messageInvalidDate' ) . '"';
+        echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
-        if (isset ( $_SESSION ['browserLocaleDateFormatJs'] )) {
+        if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
         echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
-        echo ' value="' . htmlEncode ( $val ) . '" ';
+        echo ' value="' . htmlEncode($val) . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScript;
         echo '</div>';
       } else if ($dataType == 'datetime') {
         // Draw a date ======================================================== DATETIME
-        if (strlen ( $val > 11 )) {
-          $valDate = substr ( $val, 0, 10 );
-          $valTime = substr ( $val, 11 );
+        if (strlen($val > 11)) {
+          $valDate=substr($val, 0, 10);
+          $valTime=substr($val, 11);
         } else {
-          $valDate = $val;
-          $valTime = '';
+          $valDate=$val;
+          $valTime='';
         }
-        if ($col == 'creationDateTime' and ($val == '' or $val == null) and ! $obj->id) {
-          $valDate = date ( 'Y-m-d' );
-          $valTime = date ( "H:i" );
+        if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
+          $valDate=date('Y-m-d');
+          $valTime=date("H:i");
         }
         echo '<div dojoType="dijit.form.DateTextBox" ';
         echo $name;
         echo $attributes;
-        echo ' invalidMessage="' . i18n ( 'messageInvalidDate' ) . '"';
+        echo ' invalidMessage="' . i18n('messageInvalidDate') . '"';
         echo ' type="text" maxlength="10" ';
-        if (isset ( $_SESSION ['browserLocaleDateFormatJs'] )) {
+        if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
         echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
@@ -773,33 +753,33 @@ debugLog($decomp);
         echo ' >';
         echo $colScript;
         echo '</div>';
-        $fmtDT = ($classObj=="Audit" && strlen ( $valTime ) > 5 && strpos ( $attributes, 'readonly' ) !== false) ? 'text' : 'time'; // valTime=substr($valTime,0,5);
-        echo '<div dojoType="dijit.form.' . (($fmtDT == 'time') ? 'Time' : '') . 'TextBox" ';
+        $fmtDT=($classObj == "Audit" && strlen($valTime) > 5 && strpos($attributes, 'readonly') !== false)?'text':'time'; // valTime=substr($valTime,0,5);
+        echo '<div dojoType="dijit.form.' . (($fmtDT == 'time')?'Time':'') . 'TextBox" ';
         echo $nameBis;
         echo $attributes;
-        echo ' invalidMessage="' . i18n ( 'messageInvalidTime' ) . '"';
+        echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="8" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time') ? '50' : '55') . 'px; text-align: center;' . $specificStyle . '" class="input" ';
-        echo ' value="' . (($fmtDT == 'time') ? 'T' : '') . $valTime . '" ';
+        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' value="' . (($fmtDT == 'time')?'T':'') . $valTime . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScriptBis;
         echo '</div>';
       } else if ($dataType == 'time') {
         // Draw a date ======================================================== TIME
-        if ($col == 'creationTime' and ($val == '' or $val == null) and ! $obj->id) {
-          $val = date ( "H:i" );
+        if ($col == 'creationTime' and ($val == '' or $val == null) and !$obj->id) {
+          $val=date("H:i");
         }
-        $fmtDT = ($classObj=="Audit" && strlen ( $val ) > 5 && strpos ( $attributes, 'readonly' ) !== false) ? 'text' : 'time'; // valTime=substr($valTime,0,5);
-        echo '<div dojoType="dijit.form.' . (($fmtDT == 'time') ? 'Time' : '') . 'TextBox" ';
+        $fmtDT=($classObj == "Audit" && strlen($val) > 5 && strpos($attributes, 'readonly') !== false)?'text':'time'; // valTime=substr($valTime,0,5);
+        echo '<div dojoType="dijit.form.' . (($fmtDT == 'time')?'Time':'') . 'TextBox" ';
         echo $name;
         echo $attributes;
-        echo ' invalidMessage="' . i18n ( 'messageInvalidTime' ) . '"';
+        echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time') ? '50' : '55') . 'px; text-align: center;' . $specificStyle . '" class="input" ';
-        echo ' value="' . (($fmtDT == 'time') ? 'T' : '') . $val . '" ';
+        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' value="' . (($fmtDT == 'time')?'T':'') . $val . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
         echo $colScript;
@@ -812,156 +792,150 @@ debugLog($decomp);
         echo $attributes;
         echo ' style="' . $specificStyle . '" ';
         // echo ' value="' . $col . '" ' ;
-        if ($val != '0' and ! $val == null) {
+        if ($val != '0' and !$val == null) {
           echo 'checked';
         }
         echo ' >';
         echo $colScript;
         echo '</div>';
-      } else if (substr ( $col, 0, 2 ) == 'id' and $dataType == 'int' and strlen ( $col ) > 2 and substr ( $col, 2, 1 ) == strtoupper ( substr ( $col, 2, 1 ) )) {
+      } else if (substr($col, 0, 2) == 'id' and $dataType == 'int' and strlen($col) > 2 and substr($col, 2, 1) == strtoupper(substr($col, 2, 1))) {
         // Draw a reference to another object (as combo box) ================== IDxxxxx => ComboBox
-        $displayComboButtonCol = $displayComboButton;
-        $displayDirectAccessButton = true;
-        $canCreateCol = false;
-        if ($comboDetail or strpos ( $attributes, 'readonly' ) !== false) {
-          $displayComboButtonCol = false;
+        $displayComboButtonCol=$displayComboButton;
+        $displayDirectAccessButton=true;
+        $canCreateCol=false;
+        if ($comboDetail or strpos($attributes, 'readonly') !== false) {
+          $displayComboButtonCol=false;
         }
-        if (strpos ( $obj->getFieldAttributes ( $col ), 'nocombo' ) !== false) {
-          $displayComboButtonCol = false;
-          $displayDirectAccessButton = false;
+        if (strpos($obj->getFieldAttributes($col), 'nocombo') !== false) {
+          $displayComboButtonCol=false;
+          $displayDirectAccessButton=false;
         }
         if ($displayComboButtonCol or $displayDirectAccessButton) {
-          $idMenu = ($col == "idResourceSelect") ? 'menuResource' : 'menu' . substr ( $col, 2 );
-          $menu = SqlElement::getSingleSqlElementFromCriteria ( 'Menu', array (
-              'name' => $idMenu 
-          ) );
-          $crit = array ();
-          $crit ['idProfile'] = $user->idProfile;
-          $crit ['idMenu'] = $menu->id;
-          $habil = SqlElement::getSingleSqlElementFromCriteria ( 'Habilitation', $crit );
+          $idMenu=($col == "idResourceSelect")?'menuResource':'menu' . substr($col, 2);
+          $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name' => $idMenu));
+          $crit=array();
+          $crit ['idProfile']=$user->idProfile;
+          $crit ['idMenu']=$menu->id;
+          $habil=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
           if ($habil and $habil->allowAccess) {
-            $accessRight = SqlElement::getSingleSqlElementFromCriteria ( 'AccessRight', array (
-                'idMenu' => $menu->id,
-                'idProfile' => $user->idProfile 
-            ) );
+            $accessRight=SqlElement::getSingleSqlElementFromCriteria('AccessRight', array('idMenu' => $menu->id,'idProfile' => $user->idProfile));
             if ($accessRight) {
-              $accessProfile = new AccessProfile ( $accessRight->idAccessProfile );
+              $accessProfile=new AccessProfile($accessRight->idAccessProfile);
               if ($accessProfile) {
-                $accessScope = new AccessScope ( $accessProfile->idAccessScopeCreate );
+                $accessScope=new AccessScope($accessProfile->idAccessScopeCreate);
                 if ($accessScope and $accessScope->accessCode != 'NO') {
-                  $canCreateCol = true;
+                  $canCreateCol=true;
                 }
               }
             }
           } else {
-            $displayComboButtonCol = false;
-            $displayDirectAccessButton = false;
+            $displayComboButtonCol=false;
+            $displayDirectAccessButton=false;
           }
         }
         if ($col == 'idProject') {
           if ($obj->id == null) {
-            if (array_key_exists ( 'project', $_SESSION ) and ! $obj->$col) {
-              $val = $_SESSION ['project'];
+            if (array_key_exists('project', $_SESSION) and !$obj->$col) {
+              $val=$_SESSION ['project'];
             }
-            $accessRight = securityGetAccessRight ( 'menu' . $classObj, 'create' );
+            $accessRight=securityGetAccessRight('menu' . $classObj, 'create');
           } else {
-            $accessRight = securityGetAccessRight ( 'menu' . $classObj, 'update' );
+            $accessRight=securityGetAccessRight('menu' . $classObj, 'update');
           }
-          if (securityGetAccessRight ( 'menu' . $classObj, 'read' ) == 'PRO' and $classObj != 'Project') {
-            $isRequired = true;
+          if (securityGetAccessRight('menu' . $classObj, 'read') == 'PRO' and $classObj != 'Project') {
+            $isRequired=true;
           }
         }
-        $critFld = null;
-        $critVal = null;
-        $valStore = '';
+        $critFld=null;
+        $critVal=null;
+        $valStore='';
         if ($col == 'idResource' or $col == 'idActivity' or $col == 'idProduct' or $col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or $col == 'idRequirement' or $col == 'idContact' or $col == 'idTicket' or $col == 'idUser') {
-          if ($col == 'idContact' and property_exists ( $obj, 'idClient' ) and $obj->idClient) {
-            $critFld = 'idClient';
-            $critVal = $obj->idClient;
-          } else if (property_exists ( $obj, 'idProject' ) and get_class ( $obj ) != 'Project' and get_class ( $obj ) != 'Affectation') {
+          if ($col == 'idContact' and property_exists($obj, 'idClient') and $obj->idClient) {
+            $critFld='idClient';
+            $critVal=$obj->idClient;
+          } else if (property_exists($obj, 'idProject') and get_class($obj) != 'Project' and get_class($obj) != 'Affectation') {
             if ($obj->id) {
-              $critFld = 'idProject';
-              $critVal = $obj->idProject;
-            } else if ($obj->isAttributeSetToField ( 'idProject', 'required' )) {
-              if (array_key_exists ( 'project', $_SESSION ) and $_SESSION ['project'] != '*') {
-                $critFld = 'idProject';
-                $critVal = $_SESSION ['project'];
+              $critFld='idProject';
+              $critVal=$obj->idProject;
+            } else if ($obj->isAttributeSetToField('idProject', 'required')) {
+              if (array_key_exists('project', $_SESSION) and $_SESSION ['project'] != '*') {
+                $critFld='idProject';
+                $critVal=$_SESSION ['project'];
               } else {
-                $table = SqlList::getList ( 'Project', 'name', null );
-                if (count ( $table ) > 0) {
+                $table=SqlList::getList('Project', 'name', null);
+                if (count($table) > 0) {
                   foreach ( $table as $idTable => $valTable ) {
-                    $firstId = $idTable;
+                    $firstId=$idTable;
                     break;
                   }
-                  $critFld = 'idProject';
-                  $critVal = $firstId;
+                  $critFld='idProject';
+                  $critVal=$firstId;
                 }
               }
             }
           }
         }
         // if version and idProduct exists and is set : criteria is product
-        if (isset ( $obj->idProduct ) and ($col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or ($col == 'idRequirement' and $obj->idProduct))) {
-          $critFld = 'idProduct';
-          $critVal = $obj->idProduct;
+        if (isset($obj->idProduct) and ($col == 'idVersion' or $col == 'idOriginalVersion' or $col == 'idTargetVersion' or $col == 'idTestCase' or ($col == 'idRequirement' and $obj->idProduct))) {
+          $critFld='idProduct';
+          $critVal=$obj->idProduct;
         }
-        if (get_class ( $obj ) == 'IndicatorDefinition') {
+        if (get_class($obj) == 'IndicatorDefinition') {
           if ($col == 'idIndicator') {
-            $critFld = 'idIndicatorable';
-            $critVal = $obj->idIndicatorable;
+            $critFld='idIndicatorable';
+            $critVal=$obj->idIndicatorable;
           }
           if ($col == 'idType') {
-            $critFld = 'scope';
-            $critVal = SqlList::getNameFromId ( 'Indicatorable', $obj->idIndicatorable );
+            $critFld='scope';
+            $critVal=SqlList::getNameFromId('Indicatorable', $obj->idIndicatorable);
           }
           if ($col == 'idWarningDelayUnit' or $col == 'idAlertDelayUnit') {
-            $critFld = 'idIndicator';
-            $critVal = $obj->idIndicatorable;
+            $critFld='idIndicator';
+            $critVal=$obj->idIndicatorable;
           }
         }
-        if (get_class ( $obj ) == 'PredefinedNote') {
+        if (get_class($obj) == 'PredefinedNote') {
           if ($col == 'idType') {
-            $critFld = 'scope';
-            $critVal = SqlList::getNameFromId ( 'Textable', $obj->idTextable, false );
+            $critFld='scope';
+            $critVal=SqlList::getNameFromId('Textable', $obj->idTextable, false);
           }
         }
-        if (get_class ( $obj ) == 'StatusMail') {
+        if (get_class($obj) == 'StatusMail') {
           if ($col == 'idType') {
-            $critFld = 'scope';
-            $critVal = SqlList::getNameFromId ( 'Mailable', $obj->idMailable, false );
+            $critFld='scope';
+            $critVal=SqlList::getNameFromId('Mailable', $obj->idMailable, false);
           }
         }
-        if (get_class ( $obj ) == 'ChecklistDefinition') {
+        if (get_class($obj) == 'ChecklistDefinition') {
           if ($col == 'idType') {
-            $critFld = 'scope';
-            $critVal = SqlList::getNameFromId ( 'Checklistable', $obj->idChecklistable, false );
+            $critFld='scope';
+            $critVal=SqlList::getNameFromId('Checklistable', $obj->idChecklistable, false);
           }
         }
         if ($displayComboButtonCol) {
-          $fieldWidth -= 50;
+          $fieldWidth-=50;
         } else if ($displayDirectAccessButton) {
-        	$fieldWidth -= 30;
+          $fieldWidth-=30;
         }
-        if ($nobr_before or strpos ( $obj->getFieldAttributes ( $col ), 'size1/3' ) !== false) {
-          $fieldWidth = $fieldWidth / 3 - 3;
+        if ($nobr_before or strpos($obj->getFieldAttributes($col), 'size1/3') !== false) {
+          $fieldWidth=$fieldWidth / 3 - 3;
         }
-        $hasOtherVersion = false;
-        $versionType = '';
-        $otherVersion = '';
-        if (substr ( $col, 7 ) == 'Version' or ($col == 'idOriginalVersion' and isset ( $obj->_OtherOriginalVersion )) or ($col == 'idTargetVersion' and isset ( $obj->_OtherTargetVersion ))) {
-          $versionType = substr ( $col, 2 );
-          $otherVersion = '_Other' . $versionType;
-          if (isset ( $obj->$otherVersion ) and ! $obj->isAttributeSetToField ( $col, 'hidden' ) and ! $obj->isAttributeSetToField ( $col, 'readonly' ) and $canUpdate and ! $obj->idle) {
-            $hasOtherVersion = true;
-            $fieldWidth -= 28;
+        $hasOtherVersion=false;
+        $versionType='';
+        $otherVersion='';
+        if (substr($col, 7) == 'Version' or ($col == 'idOriginalVersion' and isset($obj->_OtherOriginalVersion)) or ($col == 'idTargetVersion' and isset($obj->_OtherTargetVersion))) {
+          $versionType=substr($col, 2);
+          $otherVersion='_Other' . $versionType;
+          if (isset($obj->$otherVersion) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and $canUpdate and !$obj->idle) {
+            $hasOtherVersion=true;
+            $fieldWidth-=28;
           }
         }
         $showExtraButton=false;
-        if ($col=='idStatus' or $col=='idResource') {
-          if ( ($col=='idStatus') 
-            or ($col=='idResource' and $user->isResource and $user->id!=$val and $obj->id and $classObj!='Affectation') ) {
-          $showExtraButton=true;
-        	$fieldWidth=round($fieldWidth/2	)-5;
+        if ($col == 'idStatus' or $col == 'idResource') {
+          if (($col == 'idStatus') or ($col == 'idResource' and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation')) {
+            $showExtraButton=true;
+            $fieldWidth=round($fieldWidth / 2) - 5;
           }
         }
         echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
@@ -970,113 +944,108 @@ debugLog($decomp);
         echo $attributes;
         echo $valStore;
         echo ' >';
-        $next=htmlDrawOptionForReference ( $col, $val, $obj, $isRequired, $critFld, $critVal );
+        $next=htmlDrawOptionForReference($col, $val, $obj, $isRequired, $critFld, $critVal);
         echo $colScript;
         echo '</select>';
         if ($displayDirectAccessButton or $displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonGoto" ';
-          echo ' title="' . i18n ( 'showDirectAccess' ) . '" style="float:right;margin-right:3px;"';
+          echo ' title="' . i18n('showDirectAccess') . '" style="float:right;margin-right:3px;"';
           echo ' class="roundedButton">';
           echo '<div class="iconGoto" ';
-          $jsFunction="var sel=dijit.byId('$fieldId');"
-            ."if (sel && trim(sel.get('value'))) {" 
-            ." gotoElement('".substr ( $col, 2 )."','$val');"
-            ."} else {"
-            ." showAlert(i18n('cannotGoto'));"
-            ."}";
-          echo ' onclick="'.$jsFunction.'"';    
+          $jsFunction="var sel=dijit.byId('$fieldId');" . "if (sel && trim(sel.get('value'))) {" . " gotoElement('" . substr($col, 2) . "','$val');" . "} else {" . " showAlert(i18n('cannotGoto'));" . "}";
+          echo ' onclick="' . $jsFunction . '"';
           echo '></div>';
           echo '</div>';
         }
         if ($displayComboButtonCol) {
           echo '<div id="' . $col . 'ButtonDetail" ';
-          echo ' title="' . i18n ( 'showDetail' ) . '" style="float:right;margin-right:3px;"';
+          echo ' title="' . i18n('showDetail') . '" style="float:right;margin-right:3px;"';
           echo ' class="roundedButton">';
           echo '<div class="iconView" ';
-          echo ' onclick="showDetail(\''.$col.'\','.(($canCreateCol) ? 1 : 0).')"';
+          echo ' onclick="showDetail(\'' . $col . '\',' . (($canCreateCol)?1:0) . ')"';
           echo '></div>';
           echo '</div>';
         }
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
             echo '<div class="roundedButton" style="float:right;margin-right:3px;" ';
-            echo ' title="' . i18n ( 'otherVersionAdd' ) . '" class="smallButton">';
+            echo ' title="' . i18n('otherVersionAdd') . '" class="smallButton">';
             echo '<div class="iconAdd"';
             echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
             echo '></div>';
-            echo '</div>';	
+            echo '</div>';
           }
-          if (count ( $obj->$otherVersion ) > 0) {
-            drawOtherVersionFromObject ( $obj->$otherVersion, $obj, $versionType );
+          if (count($obj->$otherVersion) > 0) {
+            drawOtherVersionFromObject($obj->$otherVersion, $obj, $versionType);
           }
         }
-        if ($col=='idStatus' and $next and $showExtraButton) {
-        	echo '<div class="roundedVisibleButton roundedButton"';
-        	echo ' title="'.i18n("moveStatusTo",array(SqlList::getNameFromId('Status',$next))).'"';
-        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
-        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$next.');setTimeout(\'saveObject()\',10);">';
-        	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
-        	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.SqlList::getNameFromId('Status',$next).'<div>';
-        	echo '</div>';
+        if ($col == 'idStatus' and $next and $showExtraButton) {
+          echo '<div class="roundedVisibleButton roundedButton"';
+          echo ' title="' . i18n("moveStatusTo", array(SqlList::getNameFromId('Status', $next))) . '"';
+          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px"';
+          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $next . ');setTimeout(\'saveObject()\',10);">';
+          echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
+          echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . SqlList::getNameFromId('Status', $next) . '<div>';
+          echo '</div>';
         }
-        if ($col=='idResource' and $next and $showExtraButton) {
-        	echo '<div class="roundedVisibleButton roundedButton"';
-        	echo ' title="'.i18n("assignToMe").'"';
-        	echo ' style="text-align:left;float:right;margin-right:10px; width:'.($fieldWidth-5).'px"';
-        	echo ' onClick="dijit.byId(\''.$fieldId.'\').set(\'value\','.$user->id.');setTimeout(\'saveObject()\',10);"';
-        	echo '>';
-        	echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
-        	echo '<div style="position:relative;top:-16px;left:25px;width:'.($fieldWidth-30).'px">'.i18n('assignToMeShort').'<div>';
-        	echo '</div>';
+        if ($col == 'idResource' and $next and $showExtraButton) {
+          echo '<div class="roundedVisibleButton roundedButton"';
+          echo ' title="' . i18n("assignToMe") . '"';
+          echo ' style="text-align:left;float:right;margin-right:10px; width:' . ($fieldWidth - 5) . 'px"';
+          echo ' onClick="dijit.byId(\'' . $fieldId . '\').set(\'value\',' . $user->id . ');setTimeout(\'saveObject()\',10);"';
+          echo '>';
+          echo '<img src="css/images/iconMoveTo.png" style="position:relative;left:5px;top:2px;"/>';
+          echo '<div style="position:relative;top:-16px;left:25px;width:' . ($fieldWidth - 30) . 'px">' . i18n('assignToMeShort') . '<div>';
+          echo '</div>';
         }
-      } else if (strpos ( $obj->getFieldAttributes ( $col ), 'display' ) !== false) {
+      } else if (strpos($obj->getFieldAttributes($col), 'display') !== false) {
         echo '<div ';
         echo ' class="display" ';
         // echo ' style="width:10%; border:1px solid red;"';
         echo ' >';
-        if (strpos ( $obj->getFieldAttributes ( $col ), 'html' ) !== false) {
+        if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
           echo $val;
         } else {
-          echo htmlEncode ( $val );
+          echo htmlEncode($val);
         }
-        if (! $print) {
-          echo '<input type="hidden" ' . $name . ' value="' . htmlEncode ( $val ) . '" />';
+        if (!$print) {
+          echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
         }
-        if (strtolower ( substr ( $col, - 8, 8 ) ) == 'progress') {
+        if (strtolower(substr($col, -8, 8)) == 'progress') {
           echo '&nbsp;%';
         }
         echo '</div>';
       } else if ($dataType == 'int' or $dataType == 'decimal') {
         // Draw a number field ================================================ NUMBER
-        $isCost = false;
-        $isWork = false;
-        $isDuration = false;
-        $isPercent = false;
-        if ($dataType == 'decimal' and (substr ( $col, - 4, 4 ) == 'Cost' or substr ( $col, - 6, 6 ) == 'Amount' or $col == 'amount')) {
-          $isCost = true;
-          $fieldWidth = $smallWidth;
+        $isCost=false;
+        $isWork=false;
+        $isDuration=false;
+        $isPercent=false;
+        if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Cost' or substr($col, -6, 6) == 'Amount' or $col == 'amount')) {
+          $isCost=true;
+          $fieldWidth=$smallWidth;
         }
-        if ($dataType == 'decimal' and (substr ( $col, - 4, 4 ) == 'Work')) {
-          $isWork = true;
-          $fieldWidth = $smallWidth;
+        if ($dataType == 'decimal' and (substr($col, -4, 4) == 'Work')) {
+          $isWork=true;
+          $fieldWidth=$smallWidth;
         }
-        if ($dataType == 'int' and (substr ( $col, - 8, 8 ) == 'Duration')) {
-          $isDuration = true;
-          $fieldWidth = $smallWidth;
+        if ($dataType == 'int' and (substr($col, -8, 8) == 'Duration')) {
+          $isDuration=true;
+          $fieldWidth=$smallWidth;
         }
-        if (($isCost or $isWork or $isDuration) and $internalTable!=0 and $displayWidth<1600) {
-        	$fieldWidth-=12;
+        if (($isCost or $isWork or $isDuration) and $internalTable != 0 and $displayWidth < 1600) {
+          $fieldWidth-=12;
         }
-        if ($dataType == 'int' and strtolower ( substr ( $col, - 8, 8 ) == 'progress' )) {
-          $isPercent = true;
+        if ($dataType == 'int' and strtolower(substr($col, -8, 8) == 'progress')) {
+          $isPercent=true;
         }
-        $spl = explode ( ',', $dataLength );
-        $dec = 0;
-        if (count ( $spl ) > 1) {
-          $dec = $spl [1];
+        $spl=explode(',', $dataLength);
+        $dec=0;
+        if (count($spl) > 1) {
+          $dec=$spl [1];
         }
-        $ent = $spl [0] - $dec;
-        $max = substr ( '99999999999999999999', 0, $ent );
+        $ent=$spl [0] - $dec;
+        $max=substr('99999999999999999999', 0, $ent);
         if ($isCost and $currencyPosition == 'before') {
           echo $currency;
         }
@@ -1088,7 +1057,7 @@ debugLog($decomp);
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         echo ' class="input" ';
         // echo ' layoutAlign ="right" ';
-        echo ' value="' . (($isWork) ? Work::displayWork ( $val ) : htmlEncode ( $val )) . '" ';
+        echo ' value="' . (($isWork)?Work::displayWork($val):htmlEncode($val)) . '" ';
         // echo ' value="' . htmlEncode($val) . '" ';
         echo ' >';
         echo $colScript;
@@ -1097,64 +1066,66 @@ debugLog($decomp);
           echo $currency;
         }
         if ($isWork) {
-          echo Work::displayShortWorkUnit ();
+          echo Work::displayShortWorkUnit();
         }
         if ($isDuration) {
-          echo i18n ( "shortDay" );
+          echo i18n("shortDay");
         }
         if ($isPercent) {
           echo '%';
         }
-      } else if ($dataLength > 100 and $dataLength<=4000 and ! array_key_exists('testingMode', $_REQUEST) ){
-      	// Draw a long text (as a textarea) =================================== TEXTAREA
-      	echo '<textarea dojoType="dijit.form.Textarea" ';
-        	echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
-        	echo $name;
-        	echo $attributes;
-        	if (strpos($attributes, 'readonly')>0) {
-        		$specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
-        	}
-        	echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
-        	echo ' maxlength="' . $dataLength . '" ';
-        	//        echo ' maxSize="4" ';
-        	echo ' class="input" ' . '>';
-        	echo htmlEncode($val);
-        	//echo $colScript; // => this leads to the display of script in textarea
-        	echo '</textarea>';
-      } else if ($dataLength > 4000 and ! array_key_exists ( 'testingMode', $_REQUEST )) {
+      } else if ($dataLength > 100 and $dataLength <= 4000 and !array_key_exists('testingMode', $_REQUEST)) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
-      	echo '<textarea style="display:none; visibility:hidden;" '; 
-      	echo ' maxlength="' . $dataLength . '" ';	
-      	echo $name;
+        echo '<textarea dojoType="dijit.form.Textarea" ';
+        echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
+        echo $name;
         echo $attributes;
-      	echo '>';
-      	echo $val;
-      	echo '</textarea>';
-      	echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode ( $obj->getColCaption ( $col )).'</div>';
-      	echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
-      	//echo '<div data-dojo-type="dijit.Editor"'; // TEST
-      	echo ' id="'.$fieldId.'Editor" ';
-      	echo ' height="50px" title="'.i18n('clickToEditRichText').'"';
+        if (strpos($attributes, 'readonly') > 0) {
+          $specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
+        }
+        echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
+        echo ' maxlength="' . $dataLength . '" ';
+        // echo ' maxSize="4" ';
+        echo ' class="input" ' . '>';
+        echo htmlEncode($val);
+        // echo $colScript; // => this leads to the display of script in textarea
+        echo '</textarea>';
+      } else if ($dataLength > 4000 and !array_key_exists('testingMode', $_REQUEST)) {
+        // Draw a long text (as a textarea) =================================== TEXTAREA
+        echo '<textarea style="display:none; visibility:hidden;" ';
+        echo ' maxlength="' . $dataLength . '" ';
+        echo $name;
+        echo $attributes;
+        echo '>';
+        echo $val;
+        echo '</textarea>';
+        echo '<div style="text-align:left;font-weight:normal" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
+        echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
+                                                          // echo '<div data-dojo-type="dijit.Editor"'; // TEST
+        echo ' id="' . $fieldId . 'Editor" ';
+        echo ' height="50px" title="' . i18n('clickToEditRichText') . '"';
         echo ' data-dojo-props="editor:\'dijit/Editor\',renderAsHtml:true';
-        if ($readOnly) echo ', disabled:true,';
-        echo ',onChange:function(){top.dojo.byId(\''.$fieldId.'\').value=arguments[0];top.formChanged();}';
-        //echo ',onKeyPress:function(event){console.log(\'KeyPress\');}'; // hard coding default event
-        //echo ',onKeyDown:function(event){console.log(\'KeyDown\'+event.keyCode);top.onKeyDownFunction(event);}'; // hard coding default event
+        if ($readOnly)
+          echo ', disabled:true,';
+        echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
+        // echo ',onKeyPress:function(event){console.log(\'KeyPress\');}'; // hard coding default event
+        // echo ',onKeyDown:function(event){console.log(\'KeyDown\'+event.keyCode);top.onKeyDownFunction(event);}'; // hard coding default event
         echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
-         echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
-         echo ",'|','insertOrderedList','insertUnorderedList','|']";
-         echo ',onKeyDown:function(event){top.dojo.byId(\''.$fieldId.'\').value=this.value;console.log(top.dojo.byId(\''.$fieldId.'\').value);top.onKeyDownFunction(event,\''.$fieldId.'\');}'; // hard coding default event
-         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
-        // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...  
-        if (1) echo ",'|','fullScreen'";         
-        //echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
-       	echo "]}";      
+        echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
+        echo ",'|','insertOrderedList','insertUnorderedList','|']";
+        echo ',onKeyDown:function(event){top.dojo.byId(\'' . $fieldId . '\').value=this.value;console.log(top.dojo.byId(\'' . $fieldId . '\').value);top.onKeyDownFunction(event,\'' . $fieldId . '\');}'; // hard coding default event
+        echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
+        // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
+        if (1)
+          echo ",'|','fullScreen'";
+          // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
+        echo "]}";
         echo '" ';
         echo $attributes;
-        if (strpos ( $attributes, 'readonly' ) > 0) {
-          $specificStyle .= ' color:#606060 !important; background:none; background-color: #F0F0F0; ';
+        if (strpos($attributes, 'readonly') > 0) {
+          $specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
         }
-        echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth+145) . 'px;' . $specificStyle . '" ';
+        echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input" ' . '>';
         echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
@@ -1170,81 +1141,81 @@ debugLog($decomp);
         echo ' >';
         // htmlDrawOptionForReference($col, $val, $obj, $isRequired,$critFld, $critVal);
         echo '<span value=""> </span>';
-        if ($handle = opendir ( getcwd () . '/icons' )) {
-          while ( false !== ($entry = readdir ( $handle )) ) {
+        if ($handle=opendir(getcwd() . '/icons')) {
+          while ( false !== ($entry=readdir($handle)) ) {
             if ($entry != "." && $entry != "..") {
-              $ext = strtolower ( pathinfo ( $entry, PATHINFO_EXTENSION ) );
+              $ext=strtolower(pathinfo($entry, PATHINFO_EXTENSION));
               if ($ext == "png" or $ext == "gif" or $ext == "jpg" or $ext == "jpeg") {
-                echo '<span value="' . $entry . '" ' . (($entry == $val) ? 'selected="selected"' : '') . '><img src="../view/icons/' . $entry . '" /></span>';
+                echo '<span value="' . $entry . '" ' . (($entry == $val)?'selected="selected"':'') . '><img src="../view/icons/' . $entry . '" /></span>';
               }
             }
           }
-          closedir ( $handle );
+          closedir($handle);
         }
         echo $colScript;
         echo '</div>';
       } else {
         // Draw defaut data (text medium size) ================================ TEXT (default)
-        if ($obj->isFieldTranslatable ( $col )) {
-          $fieldWidth = $fieldWidth / 2;
+        if ($obj->isFieldTranslatable($col)) {
+          $fieldWidth=$fieldWidth / 2;
         }
         echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
         echo $name;
         echo $attributes;
         echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' trim="true" maxlength="' . $dataLength . '" class="input" ';
-        echo ' value="' . htmlEncode ( $val ) . '" ';
-        if ($obj->isFieldTranslatable ( $col )) {
-          echo ' title="' . i18n ( "msgTranslatable" ) . '" ';
+        echo ' value="' . htmlEncode($val) . '" ';
+        if ($obj->isFieldTranslatable($col)) {
+          echo ' title="' . i18n("msgTranslatable") . '" ';
         }
         echo ' >';
         echo $colScript;
         echo '</div>';
-        if ($obj->isFieldTranslatable ( $col )) {
+        if ($obj->isFieldTranslatable($col)) {
           echo '<div dojoType="dijit.form.TextBox" type="text"  ';
           echo ' class="display" ';
           echo ' readonly tabindex="-1" style="width: ' . $fieldWidth . 'px;" ';
-          echo ' title="' . i18n ( "msgTranslation" ) . '" ';
-          echo ' value="' . htmlEncode ( i18n ( $val ) ) . '" ></div>';
+          echo ' title="' . i18n("msgTranslation") . '" ';
+          echo ' value="' . htmlEncode(i18n($val)) . '" ></div>';
         }
       }
       if ($internalTable > 0) {
-        $internalTable --;
+        $internalTable--;
         if ($internalTable == 0) {
           echo '</td></tr></table><table  style="width: 100%;">';
         }
       } else {
-        if ($internalTable == 0 and ! $hide and ! $nobr) {
+        if ($internalTable == 0 and !$hide and !$nobr) {
           echo '</td></tr>' . $cr;
         }
       }
     }
   }
-  if (! $included) {
+  if (!$included) {
     if ($currentCol == 0) {
-      if ($section and ! $print) {
+      if ($section and !$print) {
         echo '</div>';
       }
       echo '</table>';
     } else {
       echo '</table>';
-      if ($section and ! $print) {
+      if ($section and !$print) {
         echo '</div>';
       }
-      //echo '</td></tr></table>';
+      // echo '</td></tr></table>';
     }
   }
   if ($outMode == 'pdf') {
-    $cpt = 0;
+    $cpt=0;
     foreach ( $obj as $col => $val ) {
-      if (substr ( $col, 0, 1 ) == '_' and substr ( $col, - 5 ) == '_full') {
-        $cpt ++;
-        $section = substr ( $col, 1, strlen ( $col ) - 6 );
+      if (substr($col, 0, 1) == '_' and substr($col, -5) == '_full') {
+        $cpt++;
+        $section=substr($col, 1, strlen($col) - 6);
         // echo '</page><page>';
         if ($cpt == 1)
           echo '<page><br/>';
-        echo '<table style="width:' . $printWidth . 'px;"><tr><td class="section">' . $obj->getColCaption ( $section ) . '</td></tr></table>';
-        echo htmlEncode ( $val, 'print' );
+        echo '<table style="width:' . $printWidth . 'px;"><tr><td class="section">' . $obj->getColCaption($section) . '</td></tr></table>';
+        echo htmlEncode($val, 'print');
         echo '<br/><br/>';
       }
     }
@@ -1254,103 +1225,104 @@ debugLog($decomp);
 }
 
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection) {
-	//echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
-	echo '</table>';
-	if ($prevSection and ! $print) {
-		echo '</div>';
-	}
-	if (! $print) {
-		$titlePane = $classObj . "_" . $section;
-		echo '<div dojoType="dijit.TitlePane" title="' . i18n ( 'section' . ucfirst ( $section ) ) . '" ';
-		echo ' open="' . (array_key_exists ( $titlePane, $collapsedList ) ? 'false' : 'true') . '" ';
-		echo ' id="' . $titlePane . '" ';
-		echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 4px 4px; padding: 0;top:0px;"';
-		echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
-		echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
-		echo '<table class="detail"  style="width: 100%;" >';
-	} else {
-		echo '<table class="detail" style="width:' . $widthPct . ';" >';
-		echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' 
-				. i18n ( 'section' . ucfirst ( $section ) ) . '</td></tr>';
-		if ($outMode == "pdf") {
-			echo '<tr class="detail" style="height:2px;font-size:2px;">';
-			echo '<td class="detail" style="width:10%;">&nbsp;</td>';
-			echo '<td style="width: 120px">&nbsp;</td>';
-			echo '</tr>';
-		}
-	}
+  // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
+  
+  if ($prevSection and !$print) {
+    echo '</table>';
+    echo '</div>';
+  }
+  if (!$print) {
+    $titlePane=$classObj . "_" . $section;
+    echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
+    echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
+    echo ' id="' . $titlePane . '" ';
+    echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 4px 4px; padding: 0;top:0px;"';
+    echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+    echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
+    echo '<table class="detail"  style="width: 100%;" >';
+  } else {
+    echo '<table class="detail" style="width:' . $widthPct . ';" >';
+    echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+    if ($outMode == "pdf") {
+      echo '<tr class="detail" style="height:2px;font-size:2px;">';
+      echo '<td class="detail" style="width:10%;">&nbsp;</td>';
+      echo '<td style="width: 120px">&nbsp;</td>';
+      echo '</tr>';
+    }
+  }
 }
 
-function drawDocumentVersionFromObject($list, $obj, $refresh = false) {
+function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->locked) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   // if ($obj->idle==1) {$canUpdate=false;}
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
-  $typeEvo = "EVO";
-  $type = new VersioningType ( $obj->idVersioningType );
-  $typeEvo = $type->code;
-  $num = "";
-  $vers = new DocumentVersion ( $obj->idDocumentVersion );
+  $typeEvo="EVO";
+  $type=new VersioningType($obj->idVersioningType);
+  $typeEvo=$type->code;
+  $num="";
+  $vers=new DocumentVersion($obj->idDocumentVersion);
   if ($typeEvo == 'SEQ') {
-    $num = intVal ( $vers->name ) + 1;
+    $num=intVal($vers->name) + 1;
   }
   echo '<tr>';
-  if (! $print) {
-    $statusTable = SqlList::getList ( 'Status', 'name', null );
-    reset ( $statusTable );
+  if (!$print) {
+    $statusTable=SqlList::getList('Status', 'name', null);
+    reset($statusTable);
     echo '<td class="assignHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate and ! $obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" ' . 'onClick="addDocumentVersion(' . "'" . key ( $statusTable ) . "'" . ",'" . $typeEvo . "'" . ",'" . $num . "'" . ",'" . $vers->name . "'" . ",'" . $vers->name . "'" . ');" ';
-      echo ' title="' . i18n ( 'addDocumentVersion' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" ' . 'onClick="addDocumentVersion(' . "'" . key($statusTable) . "'" . ",'" . $typeEvo . "'" . ",'" . $num . "'" . ",'" . $vers->name . "'" . ",'" . $vers->name . "'" . ');" ';
+      echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:15%" >' . i18n ( 'colIdVersion' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%" >' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colIdStatus' ) . '</td>';
-  echo '<td class="assignHeader" style="width:' . (($print) ? '55' : '45') . '%">' . i18n ( 'colFile' ) . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colIdVersion') . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colDate') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'55':'45') . '%">' . i18n('colFile') . '</td>';
   echo '</tr>';
-  $preserveFileName = Parameter::getGlobalParameter ( 'preserveUploadedFileName' );
-  if (! $preserveFileName) {
-    $preserveFileName = "NO";
+  $preserveFileName=Parameter::getGlobalParameter('preserveUploadedFileName');
+  if (!$preserveFileName) {
+    $preserveFileName="NO";
   }
   foreach ( $list as $version ) {
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="assignData" style="text-align:center; white-space: nowrap;">';
-      if (! $print) {
+      if (!$print) {
         echo '<a href="../tool/download.php?class=DocumentVersion&id=' . $version->id . '"';
-        echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . "\n" . (($preserveFileName == 'YES') ? $version->fileName : $version->fullName) . '"><img src="css/images/smallButtonDownload.png" /></a>';
+        echo ' target="printFrame" title="' . i18n('helpDownload') . "\n" . (($preserveFileName == 'YES')?$version->fileName:$version->fullName) . '"><img src="css/images/smallButtonDownload.png" /></a>';
       }
-      if ($canUpdate and ! $print and (! $obj->idle or $obj->idDocumentVersion == $version->id)) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" . ",'" . $version->version . "'" . ",'" . $version->revision . "'" . ",'" . $version->draft . "'" . ",'" . $version->versionDate . "'" . ",'" . $version->idStatus . "'" . ",'" . $version->isRef . "'" . ",'" . $typeEvo . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ');" ' . 'title="' . i18n ( 'editDocumentVersion' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print and (!$obj->idle or $obj->idDocumentVersion == $version->id)) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" . ",'" . $version->version . "'" . ",'" . $version->revision . "'" . ",'" . $version->draft . "'" . ",'" . $version->versionDate . "'" . ",'" . $version->idStatus . "'" . ",'" .
+             $version->isRef . "'" . ",'" . $typeEvo . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ');" ' . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';
       }
-      if ($canUpdate and ! $print and ! $obj->idle) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" . ', \'' . $version->name . '\');" ' . 'title="' . i18n ( 'removeDocumentVersion' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print and !$obj->idle) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" . ', \'' . $version->name . '\');" ' . 'title="' . i18n('removeDocumentVersion') . '" class="smallButton"/> ';
       }
       echo '<input type="hidden" id="documentVersion_' . $version->id . '" name="documentVersion_' . $version->id . '" value="' . $version->description . '"/>';
       echo '</td>';
     }
-    echo '<td class="assignData">' . (($version->isRef) ? '<b>' : '') . htmlEncode ( $version->name ) . (($version->isRef) ? '</b>' : '');
+    echo '<td class="assignData">' . (($version->isRef)?'<b>':'') . htmlEncode($version->name) . (($version->isRef)?'</b>':'');
     if ($version->approved) {
-      echo '&nbsp;&nbsp;<img src="../view/img/check.png" height="12px" title="' . i18n ( 'approved' ) . '"/>';
+      echo '&nbsp;&nbsp;<img src="../view/img/check.png" height="12px" title="' . i18n('approved') . '"/>';
     }
     echo '</td>';
-    echo '<td class="assignData">' . htmlFormatDate ( $version->versionDate ) . '</td>';
-    $objStatus = new Status ( $version->idStatus );
-    echo '<td class="assignData" style="width:15%">' . colorNameFormatter ( $objStatus->name . "#split#" . $objStatus->color ) . '</td>';
-    echo '<td class="assignData" title="' . htmlencode ( $version->description ) . '">';
+    echo '<td class="assignData">' . htmlFormatDate($version->versionDate) . '</td>';
+    $objStatus=new Status($version->idStatus);
+    echo '<td class="assignData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
+    echo '<td class="assignData" title="' . htmlencode($version->description) . '">';
     echo '  <table><tr >';
     echo '   <td>';
-    echo htmlEncode ( $version->fileName, 'print' );
+    echo htmlEncode($version->fileName, 'print');
     echo '   </td>';
-    if ($version->description and ! $print) {
+    if ($version->description and !$print) {
       echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
     }
     echo '</tr></table>';
@@ -1358,13 +1330,14 @@ function drawDocumentVersionFromObject($list, $obj, $refresh = false) {
   }
   echo '</table></td></tr>';
 }
+
 function drawOrigin($refType, $refId, $obj, $col, $print) {
   echo '<tr class="detail"><td class="label" xstyle="width:10%;">';
-  echo '<label for="' . $col . '" >' . htmlEncode ( $obj->getColCaption ( $col ) ) . '&nbsp;:&nbsp;</label>';
+  echo '<label for="' . $col . '" >' . htmlEncode($obj->getColCaption($col)) . '&nbsp;:&nbsp;</label>';
   echo '</td>';
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   if ($print) {
     echo '<td style="width: 120px">';
@@ -1373,165 +1346,166 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
   }
   if ($refType and $refId) {
     echo '<table width="100%"><tr height="20px"><td xclass="noteData" width="1%" xvalign="top">';
-    if (! $print and $canUpdate) {
+    if (!$print and $canUpdate) {
       echo '<img src="css/images/smallButtonRemove.png" ';
-      echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n ( 'removeOrigin' ) . '" class="smallButton"/> ';
+      echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="smallButton"/> ';
     }
     echo '</td><td width="5%" xclass="noteData" xvalign="top">';
-    echo '&nbsp;&nbsp;' . i18n ( $refType ) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
+    echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
     echo '</td><td xclass="noteData" style="height: 15px">';
-    $orig = new $refType ( $refId );
-    echo htmlEncode ( $orig->name );
+    $orig=new $refType($refId);
+    echo htmlEncode($orig->name);
     echo '</td></tr></table>';
   } else {
     echo '<table><tr height="20px"><td>';
-    if ($obj->id and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n ( 'addOrigin' ) . '" class="smallButton"/> ';
+    if ($obj->id and !$print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="smallButton"/> ';
     }
     echo '</td></tr></table>';
   }
 }
-function drawHistoryFromObjects($refresh = false) {
+
+function drawHistoryFromObjects($refresh=false) {
   global $cr, $print, $treatedObjects, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $inList = "( ('x',0)"; // initialize with non existing element, to avoid error if 1 only object involved
+  $inList="( ('x',0)"; // initialize with non existing element, to avoid error if 1 only object involved
   foreach ( $treatedObjects as $obj ) {
     // $inList.=($inList=='')?'(':', ';
     if ($obj->id) {
-      $inList .= ", ('" . get_class ( $obj ) . "', " . Sql::fmtId ( $obj->id ) . ")";
+      $inList.=", ('" . get_class($obj) . "', " . Sql::fmtId($obj->id) . ")";
     }
   }
-  $inList .= ')';
-  $where = ' (refType, refId) in ' . $inList;
-  $order = ' operationDate desc, id asc';
-  $hist = new History ();
-  $historyList = $hist->getSqlElementsFromCriteria ( null, false, $where, $order );
+  $inList.=')';
+  $where=' (refType, refId) in ' . $inList;
+  $order=' operationDate desc, id asc';
+  $hist=new History();
+  $historyList=$hist->getSqlElementsFromCriteria(null, false, $where, $order);
   echo '<table style="width:100%;">';
   echo '<tr>';
-  echo '<td class="historyHeader" style="width:10%">' . i18n ( 'colOperation' ) . '</td>';
-  echo '<td class="historyHeader" style="width:14%">' . i18n ( 'colColumn' ) . '</td>';
-  echo '<td class="historyHeader" style="width:23%">' . i18n ( 'colValueBefore' ) . '</td>';
-  echo '<td class="historyHeader" style="width:23%">' . i18n ( 'colValueAfter' ) . '</td>';
-  echo '<td class="historyHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="historyHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
+  echo '<td class="historyHeader" style="width:10%">' . i18n('colOperation') . '</td>';
+  echo '<td class="historyHeader" style="width:14%">' . i18n('colColumn') . '</td>';
+  echo '<td class="historyHeader" style="width:23%">' . i18n('colValueBefore') . '</td>';
+  echo '<td class="historyHeader" style="width:23%">' . i18n('colValueAfter') . '</td>';
+  echo '<td class="historyHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="historyHeader" style="width:15%">' . i18n('colUser') . '</td>';
   echo '</tr>';
-  $stockDate = null;
-  $stockUser = null;
-  $stockOper = null;
+  $stockDate=null;
+  $stockUser=null;
+  $stockOper=null;
   foreach ( $historyList as $hist ) {
-    if (substr ( $hist->colName, 0, 25 ) == 'subDirectory|Attachment|' or substr ( $hist->colName, 0, 19 ) == 'idTeam|Attachment|') {
+    if (substr($hist->colName, 0, 25) == 'subDirectory|Attachment|' or substr($hist->colName, 0, 19) == 'idTeam|Attachment|') {
       continue;
     }
-    $colName = ($hist->colName == null) ? '' : $hist->colName;
-    $split = explode ( '|', $colName );
-    if (count ( $split ) == 3) {
-      $colName = $split [0];
-      $refType = $split [1];
-      $refId = $split [2];
-      $refObject = '';
-    } else if (count ( $split ) == 4) {
-      $refObject = $split [0];
-      $colName = $split [1];
-      $refType = $split [2];
-      $refId = $split [3];
+    $colName=($hist->colName == null)?'':$hist->colName;
+    $split=explode('|', $colName);
+    if (count($split) == 3) {
+      $colName=$split [0];
+      $refType=$split [1];
+      $refId=$split [2];
+      $refObject='';
+    } else if (count($split) == 4) {
+      $refObject=$split [0];
+      $colName=$split [1];
+      $refType=$split [2];
+      $refId=$split [3];
     } else {
-      $refType = '';
-      $refId = '';
-      $refObject = '';
+      $refType='';
+      $refId='';
+      $refObject='';
     }
-    $curObj = null;
-    $dataType = "";
-    $dataLength = 0;
-    $hide = false;
-    $oper = i18n ( 'operation' . ucfirst ( $hist->operation ) );
-    $user = $hist->idUser;
-    $user = SqlList::getNameFromId ( 'User', $user );
-    $date = htmlFormatDateTime ( $hist->operationDate );
-    $class = "NewOperation";
+    $curObj=null;
+    $dataType="";
+    $dataLength=0;
+    $hide=false;
+    $oper=i18n('operation' . ucfirst($hist->operation));
+    $user=$hist->idUser;
+    $user=SqlList::getNameFromId('User', $user);
+    $date=htmlFormatDateTime($hist->operationDate);
+    $class="NewOperation";
     if ($stockDate == $hist->operationDate and $stockUser == $hist->idUser and $stockOper == $hist->operation) {
-      $oper = "";
-      $user = "";
-      $date = "";
-      $class = "ContinueOperation";
+      $oper="";
+      $user="";
+      $date="";
+      $class="ContinueOperation";
     }
     if ($colName != '' or $refType != "") {
       if ($refType) {
         if ($refType == "TestCase") {
-          $curObj = new TestCaseRun ();
+          $curObj=new TestCaseRun();
         } else {
-          $curObj = new $refType ();
+          $curObj=new $refType();
         }
       } else {
-        $curObj = new $hist->refType ();
+        $curObj=new $hist->refType();
       }
       if ($curObj) {
         if ($refType) {
-          $colCaption = i18n ( $refType ) . ' #' . $refId . ' ' . $curObj->getColCaption ( $colName );
+          $colCaption=i18n($refType) . ' #' . $refId . ' ' . $curObj->getColCaption($colName);
           if ($refObject) {
-            $colCaption = i18n ( $refObject ) . ' - ' . $colCaption;
+            $colCaption=i18n($refObject) . ' - ' . $colCaption;
           }
         } else {
-          $colCaption = $curObj->getColCaption ( $colName );
+          $colCaption=$curObj->getColCaption($colName);
         }
-        $dataType = $curObj->getDataType ( $colName );
-        $dataLength = $curObj->getDataLength ( $colName );
-        if (strpos ( $curObj->getFieldAttributes ( $colName ), 'hidden' ) !== false) {
-          $hide = true;
+        $dataType=$curObj->getDataType($colName);
+        $dataLength=$curObj->getDataLength($colName);
+        if (strpos($curObj->getFieldAttributes($colName), 'hidden') !== false) {
+          $hide=true;
         }
       }
     } else {
-      $colCaption = '';
+      $colCaption='';
     }
-    if (substr ( $hist->refType, - 15 ) == 'PlanningElement' and $hist->operation == 'insert') {
-      $hide = true;
+    if (substr($hist->refType, -15) == 'PlanningElement' and $hist->operation == 'insert') {
+      $hide=true;
     }
-    if (! $hide) {
+    if (!$hide) {
       echo '<tr>';
       echo '<td class="historyData' . $class . '" width="10%">' . $oper . '</td>';
       
       echo '<td class="historyData" width="14%">' . $colCaption . '</td>';
-      $oldValue = $hist->oldValue;
-      $newValue = $hist->newValue;
+      $oldValue=$hist->oldValue;
+      $newValue=$hist->newValue;
       if ($dataType == 'int' and $dataLength == 1) { // boolean
-        $oldValue = htmlDisplayCheckbox ( $oldValue );
-        $newValue = htmlDisplayCheckbox ( $newValue );
-      } else if (substr ( $colName, 0, 2 ) == 'id' and strlen ( $colName ) > 2 and strtoupper ( substr ( $colName, 2, 1 ) ) == substr ( $colName, 2, 1 )) {
+        $oldValue=htmlDisplayCheckbox($oldValue);
+        $newValue=htmlDisplayCheckbox($newValue);
+      } else if (substr($colName, 0, 2) == 'id' and strlen($colName) > 2 and strtoupper(substr($colName, 2, 1)) == substr($colName, 2, 1)) {
         if ($oldValue != null and $oldValue != '') {
           if ($oldValue == 0 and $colName == 'idStatus') {
-            $oldValue = '';
+            $oldValue='';
           } else {
-            $oldValue = SqlList::getNameFromId ( substr ( $colName, 2 ), $oldValue );
+            $oldValue=SqlList::getNameFromId(substr($colName, 2), $oldValue);
           }
         }
         if ($newValue != null and $newValue != '') {
-          $newValue = SqlList::getNameFromId ( substr ( $colName, 2 ), $newValue );
+          $newValue=SqlList::getNameFromId(substr($colName, 2), $newValue);
         }
       } else if ($colName == "color") {
-        $oldValue = htmlDisplayColored ( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oldValue );
-        $newValue = htmlDisplayColored ( "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $newValue );
+        $oldValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oldValue);
+        $newValue=htmlDisplayColored("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $newValue);
       } else if ($dataType == 'date') {
-        $oldValue = htmlFormatDate ( $oldValue );
-        $newValue = htmlFormatDate ( $newValue );
+        $oldValue=htmlFormatDate($oldValue);
+        $newValue=htmlFormatDate($newValue);
       } else if ($dataType == 'datetime') {
-        $oldValue = htmlFormatDateTime ( $oldValue );
-        $newValue = htmlFormatDateTime ( $newValue );
-      } elseif ($dataType == 'decimal' and substr ( $colName, - 4, 4 ) == 'Work') {
-        $oldValue = Work::displayWork ( $oldValue ) . ' ' . Work::displayShortWorkUnit ();
-        $newValue = Work::displayWork ( $newValue ) . ' ' . Work::displayShortWorkUnit ();
+        $oldValue=htmlFormatDateTime($oldValue);
+        $newValue=htmlFormatDateTime($newValue);
+      } elseif ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
+        $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
+        $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
       } else {
-        $oldValue = htmlEncode ( $oldValue, 'print' );
-        $newValue = htmlEncode ( $newValue, 'print' );
+        $oldValue=htmlEncode($oldValue, 'print');
+        $newValue=htmlEncode($newValue, 'print');
       }
       echo '<td class="historyData" width="23%">' . $oldValue . '</td>';
       echo '<td class="historyData" width="23%">' . $newValue . '</td>';
       echo '<td class="historyData' . $class . '" width="15%">' . $date . '</td>';
       echo '<td class="historyData' . $class . '" width="15%">' . $user . '</td>';
       echo '</tr>';
-      $stockDate = $hist->operationDate;
-      $stockUser = $hist->idUser;
-      $stockOper = $hist->operation;
+      $stockDate=$hist->operationDate;
+      $stockUser=$hist->idUser;
+      $stockOper=$hist->operation;
     }
   }
   echo '<tr>';
@@ -1544,140 +1518,141 @@ function drawHistoryFromObjects($refresh = false) {
   echo '</tr>';
   echo '</table>';
 }
-function drawNotesFromObject($obj, $refresh = false) {
+
+function drawNotesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
-  if (isset ( $obj->_Note )) {
-    $notes = $obj->_Note;
+  if (isset($obj->_Note)) {
+    $notes=$obj->_Note;
   } else {
-    $notes = array ();
+    $notes=array();
   }
   echo '<input type="hidden" id="noteIdle" value="' . $obj->idle . '" />';
   echo '<table width="100%">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="noteHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n ( 'addNote' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="noteHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="noteHeader" style="width:' . (($print) ? '95' : '85') . '%">' . i18n ( 'colNote' ) . '</td>';
-  //echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
-  //echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="noteHeader" style="width:' . (($print)?'95':'85') . '%">' . i18n('colNote') . '</td>';
+  // echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
+  // echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
   echo '</tr>';
   foreach ( $notes as $note ) {
-    $ress = new Resource ( $user->id );
+    $ress=new Resource($user->id);
     if ($user->id == $note->idUser or $note->idPrivacy == 1 or ($note->idPrivacy == 2 and $ress->idTeam == $note->idTeam)) {
-      $userId = $note->idUser;
-      $userName = SqlList::getNameFromId ( 'User', $userId );
-      $creationDate = $note->creationDate;
-      $updateDate = $note->updateDate;
+      $userId=$note->idUser;
+      $userName=SqlList::getNameFromId('User', $userId);
+      $creationDate=$note->creationDate;
+      $updateDate=$note->updateDate;
       if ($updateDate == null) {
-        $updateDate = '';
+        $updateDate='';
       }
       echo '<tr>';
-      if (! $print) {
+      if (!$print) {
         echo '<td class="noteData" style="text-align:center;">';
-        if ($note->idUser == $user->id and ! $print and $canUpdate) {
-          echo ' <img src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy . ');" title="' . i18n ( 'editNote' ) . '" class="smallButton"/> ';
-          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n ( 'removeNote' ) . '" class="smallButton"/> ';
+        if ($note->idUser == $user->id and !$print and $canUpdate) {
+          echo ' <img src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy . ');" title="' . i18n('editNote') . '" class="smallButton"/> ';
+          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" class="smallButton"/> ';
         }
         echo '</td>';
       }
       echo '<td class="noteData">#' . $note->id . '</td>';
       echo '<td class="noteData">';
-      if (! $print) {
-        echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode ( $note->note, 'none' ) . '"/>';
+      if (!$print) {
+        echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note, 'none') . '"/>';
       }
-      echo formatUserThumb($userId,$userName,'Creator');
-      echo formatDateThumb($creationDate,$updateDate);
-      echo formatPrivacyThumb($note->idPrivacy,$note->idTeam);
+      echo formatUserThumb($userId, $userName, 'Creator');
+      echo formatDateThumb($creationDate, $updateDate);
+      echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
       // ADDED BRW
-      $strDataHTML = htmlEncode ( $note->note, '' ); // context = '' => only htmlspecialchar, not htmlentities
-      $strDataHTML = preg_replace ( '@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML );
-      $strDataHTML = nl2br ( $strDataHTML ); // then convert line breaks : must be after preg_replace of url
+      $strDataHTML=htmlEncode($note->note, ''); // context = '' => only htmlspecialchar, not htmlentities
+      $strDataHTML=preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
+      $strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
       // END ADDED BRW
-      /*echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>';
-      if ($note->fromEmail) {
-        echo '<b>' . i18n ( 'noteFromEmail' ) . '</b>';
-      }
-      echo '<i>' . htmlFormatDateTime ( $updateDate ) . '</i></td>';
-      echo '<td class="noteData">' . $userName . '</td>';*/
+      /*
+       * echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>'; if ($note->fromEmail) { echo '<b>' . i18n ( 'noteFromEmail' ) . '</b>'; } echo '<i>' . htmlFormatDateTime ( $updateDate ) . '</i></td>'; echo '<td class="noteData">' . $userName . '</td>';
+       */
       echo '</tr>';
     }
   }
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
   }
   echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
 }
-function drawBillLinesFromObject($obj, $refresh = false) {
+
+function drawBillLinesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale;
   // $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
-  $lock = false;
+  $lock=false;
   if ($obj->done or $obj->idle or $obj->billingType == "N") {
-    $lock = true;
+    $lock=true;
   }
-  if (isset ( $obj->_BillLine )) {
-    $lines = $obj->_BillLine;
+  if (isset($obj->_BillLine)) {
+    $lines=$obj->_BillLine;
   } else {
-    $lines = array ();
+    $lines=array();
   }
   echo '<input type="hidden" id="billLineIdle" value="' . $obj->idle . '" />';
   echo '<table width="100%">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
-    if ($obj->id != null and ! $print and ! $lock) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine(' . (count ( $lines ) + 1) . ');" title="' . i18n ( 'addLine' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and !$lock) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine(' . (count($lines) + 1) . ');" title="' . i18n('addLine') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="noteHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="noteHeader" style="width:5%">' . i18n ( 'colLineNumber' ) . '</td>';
-  echo '<td class="noteHeader" style="width:5%">' . i18n ( 'colQuantity' ) . '</td>';
-  echo '<td class="noteHeader" style="width:25%">' . i18n ( 'colDescription' ) . '</td>';
-  echo '<td class="noteHeader" style="width:35%">' . i18n ( 'colDetail' ) . '</td>';
-  echo '<td class="noteHeader" style="width:10%">' . i18n ( 'colPrice' ) . '</td>';
-  echo '<td class="noteHeader" style="width:15%">' . strtolower ( i18n ( 'sum' ) ) . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colLineNumber') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colQuantity') . '</td>';
+  echo '<td class="noteHeader" style="width:25%">' . i18n('colDescription') . '</td>';
+  echo '<td class="noteHeader" style="width:35%">' . i18n('colDetail') . '</td>';
+  echo '<td class="noteHeader" style="width:10%">' . i18n('colPrice') . '</td>';
+  echo '<td class="noteHeader" style="width:15%">' . strtolower(i18n('sum')) . '</td>';
   echo '</tr>';
   
-  $fmt = new NumberFormatter52 ( $browserLocale, NumberFormatter52::INTEGER );
-  $fmtd = new NumberFormatter52 ( $browserLocale, NumberFormatter52::DECIMAL );
-  $lines = array_reverse ( $lines );
+  $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::INTEGER);
+  $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
+  $lines=array_reverse($lines);
   foreach ( $lines as $line ) {
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="noteData" style="text-align:center;">';
       if ($lock == 0) {
         echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
-		      ' . "'" . $line->id . "'" . ",'" . $line->line . "'" . ",'" . $fmtd->format ( $line->quantity ) . "'" . ",'" . $line->idTerm . "'" . ",'" . $line->idResource . "'" . ",'" . $line->idActivityPrice . "'" . ",'" . $line->startDate . "'" . ",'" . $line->endDate . "'" . ",'" . $fmtd->format ( $line->price ) . "'" . ');" title="' . i18n ( 'editLine' ) . '" class="smallButton"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeBillLine(' . $line->id . ');"' . ' title="' . i18n ( 'removeLine' ) . '" class="smallButton"/> ';
+		      ' .
+             "'" . $line->id . "'" . ",'" . $line->line . "'" . ",'" . $fmtd->format($line->quantity) . "'" . ",'" . $line->idTerm . "'" . ",'" . $line->idResource . "'" . ",'" . $line->idActivityPrice . "'" . ",'" . $line->startDate . "'" . ",'" . $line->endDate . "'" . ",'" .
+             $fmtd->format($line->price) . "'" . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeBillLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
     echo '<td class="noteData">#' . $line->id . '</td>';
     echo '<td class="noteData">' . $line->line . '</td>';
     echo '<td class="noteData">' . $line->quantity . '</td>';
-    echo '<td class="noteData">' . htmlEncode ( $line->description, 'withBR' );
+    echo '<td class="noteData">' . htmlEncode($line->description, 'withBR');
     echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
     echo '</td>';
-    echo '<td class="noteData">' . htmlEncode ( $line->detail, 'withBR' );
+    echo '<td class="noteData">' . htmlEncode($line->detail, 'withBR');
     echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
     echo '</td>';
     echo '<td class="noteData">' . $line->price . '</td>';
@@ -1685,7 +1660,7 @@ function drawBillLinesFromObject($obj, $refresh = false) {
     echo '</tr>';
   }
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
   }
   echo '<td class="noteDataClosetable">&nbsp;</td>';
@@ -1695,66 +1670,67 @@ function drawBillLinesFromObject($obj, $refresh = false) {
   echo '</tr>';
   echo '</table>';
 }
-function drawChecklistDefinitionLinesFromObject($obj, $refresh = false) {
+
+function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale;
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
-  if (isset ( $obj->_ChecklistDefinitionLine )) {
-    $lines = $obj->_ChecklistDefinitionLine;
+  if (isset($obj->_ChecklistDefinitionLine)) {
+    $lines=$obj->_ChecklistDefinitionLine;
   } else {
-    $lines = array ();
+    $lines=array();
   }
   echo '<input type="hidden" id="ChecklistDefinitionIdle" value="' . $obj->idle . '" />';
   echo '<table width="100%">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
-    if ($obj->id != null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png"' . ' onClick="addChecklistDefinitionLine(' . $obj->id . ');"' . ' title="' . i18n ( 'addLine' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png"' . ' onClick="addChecklistDefinitionLine(' . $obj->id . ');"' . ' title="' . i18n('addLine') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="noteHeader" style="width:30%">' . i18n ( 'colName' ) . '</td>';
-  echo '<td class="noteHeader" style="width:60%">' . i18n ( 'colChoices' ) . '</td>';
-  echo '<td class="noteHeader" style="width:5%">' . i18n ( 'colExclusiveShort' ) . '</td>';
+  echo '<td class="noteHeader" style="width:30%">' . i18n('colName') . '</td>';
+  echo '<td class="noteHeader" style="width:60%">' . i18n('colChoices') . '</td>';
+  echo '<td class="noteHeader" style="width:5%">' . i18n('colExclusiveShort') . '</td>';
   echo '</tr>';
   
-  usort ( $lines, "ChecklistDefinitionLine::sort" );
+  usort($lines, "ChecklistDefinitionLine::sort");
   foreach ( $lines as $line ) {
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="noteData" style="text-align:center;">';
       if ($canUpdate) {
-        echo ' <img src="css/images/smallButtonEdit.png"' . ' onClick="editChecklistDefinitionLine(' . $obj->id . ',' . $line->id . ');"' . ' title="' . i18n ( 'editLine' ) . '" class="smallButton"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeChecklistDefinitionLine(' . $line->id . ');"' . ' title="' . i18n ( 'removeLine' ) . '" class="smallButton"/> ';
+        echo ' <img src="css/images/smallButtonEdit.png"' . ' onClick="editChecklistDefinitionLine(' . $obj->id . ',' . $line->id . ');"' . ' title="' . i18n('editLine') . '" class="smallButton"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeChecklistDefinitionLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
     if ($line->check01) {
-      echo '<td class="noteData" style="position: relative; border-right:0; text-align:right" title="' . $line->title . '">' . htmlEncode ( $line->name ) . '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">' . $line->sortOrder . '</div>' . ' : </td>';
+      echo '<td class="noteData" style="position: relative; border-right:0; text-align:right" title="' . $line->title . '">' . htmlEncode($line->name) . '<div style="position:absolute;top:0px; left:0px; color: #AAAAAA;">' . $line->sortOrder . '</div>' . ' : </td>';
       echo '<td class="noteData" style="border-left:0;">';
       echo '<table witdh="100%"><tr>';
-      for($i = 1; $i <= 5; $i ++) {
-        $check = 'check0' . $i;
-        $title = 'title0' . $i;
-        echo '<td style="min-width:100px; white-space:nowrap; vertical-align:top; " ' . (($line->$title) ? 'title="' . $line->$title . '"' : '') . '>';
+      for ($i=1; $i <= 5; $i++) {
+        $check='check0' . $i;
+        $title='title0' . $i;
+        echo '<td style="min-width:100px; white-space:nowrap; vertical-align:top; " ' . (($line->$title)?'title="' . $line->$title . '"':'') . '>';
         if ($line->$check) {
-          echo htmlDisplayCheckbox ( 0 ) . "&nbsp;" . $line->$check . "&nbsp;&nbsp;";
+          echo htmlDisplayCheckbox(0) . "&nbsp;" . $line->$check . "&nbsp;&nbsp;";
         }
         echo '</td>';
       }
       echo '</tr></table>';
       echo '</td>';
-      echo '<td class="noteData">' . htmlDisplayCheckbox ( $line->exclusive ) . '</td>';
+      echo '<td class="noteData">' . htmlDisplayCheckbox($line->exclusive) . '</td>';
     } else {
       echo '<td class="reportTableHeader" colspan="3" style="text-align:center" title="' . $line->title . '">' . $line->name . '</td>';
     }
     echo '</tr>';
   }
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
   }
   echo '<td class="noteDataClosetable">&nbsp;</td>';
@@ -1764,86 +1740,87 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh = false) {
   echo '</tr>';
   echo '</table>';
 }
-function drawAttachmentsFromObject($obj, $refresh = false) {
+
+function drawAttachmentsFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
   echo '<input type="hidden" id="attachmentIdle" value="' . $obj->idle . '" />';
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
-  if (isset ( $obj->_Attachment )) {
-    $attachments = $obj->_Attachment;
+  if (isset($obj->_Attachment)) {
+    $attachments=$obj->_Attachment;
   } else {
-    $attachments = array ();
+    $attachments=array();
   }
   echo '<table width="100%">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="attachmentHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n ( 'addAttachment' ) . '" class="smallButton"/> ';
-      echo '<img src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n ( 'addHyperlink' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n('addAttachment') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n('addHyperlink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="attachmentHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="attachmentHeader" style="width:' . (($print) ? '95' : '85') . '%">' . i18n ( 'colFile' ) . '</td>';
+  echo '<td class="attachmentHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="attachmentHeader" style="width:' . (($print)?'95':'85') . '%">' . i18n('colFile') . '</td>';
   echo '</tr>';
   foreach ( $attachments as $attachment ) {
-    $userId = $attachment->idUser;
-    $ress = new Resource ( $user->id );
+    $userId=$attachment->idUser;
+    $ress=new Resource($user->id);
     if ($user->id == $attachment->idUser or $attachment->idPrivacy == 1 or ($attachment->idPrivacy == 2 and $ress->idTeam == $attachment->idTeam)) {
-      $userName = SqlList::getNameFromId ( 'User', $userId );
-      $creationDate = $attachment->creationDate;
+      $userName=SqlList::getNameFromId('User', $userId);
+      $creationDate=$attachment->creationDate;
       echo '<tr>';
-      if (! $print) {
+      if (!$print) {
         echo '<td class="attachmentData" style="text-align:center;width:10%"">';
-        if ($attachment->fileName and $attachment->subDirectory and ! $print) {
+        if ($attachment->fileName and $attachment->subDirectory and !$print) {
           echo '<a href="../tool/download.php?class=Attachment&id=' . $attachment->id . '"';
-          echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . '"><img src="css/images/smallButtonDownload.png" /></a>';
+          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
         }
-        if ($attachment->link and ! $print) {
+        if ($attachment->link and !$print) {
           echo '<a href="' . $attachment->link . '"';
-          echo ' target="#" title="' . urldecode ( $attachment->link ) . '"><img src="css/images/smallButtonLink.png" /></a>';
+          echo ' target="#" title="' . urldecode($attachment->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
         }
-        if ($attachment->idUser == $user->id and ! $print and $canUpdate) {
-          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n ( 'removeAttachment' ) . '" class="smallButton"/>';
+        if ($attachment->idUser == $user->id and !$print and $canUpdate) {
+          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n('removeAttachment') . '" class="smallButton"/>';
         }
         echo '</td>';
       }
       echo '<td class="attachmentData" style="width:5%;">#' . $attachment->id . '</td>';
       echo '<td class="attachmentData" style="width:5%;text-align:center;">';
-      if ($attachment->isThumbable ()) {
-        echo '<img src="' . getImageThumb ( $attachment->getFullPathFileName (), 32 ) . '" ' . ' title="' . $attachment->fileName . '" style="cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
-      } else if ($attachment->link and ! $print) {
-        echo '<div style="cursor:pointer" onClick="showLink(\'' . urldecode ( $attachment->link ) . '\');">';
+      if ($attachment->isThumbable()) {
+        echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . $attachment->fileName . '" style="cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
+      } else if ($attachment->link and !$print) {
+        echo '<div style="cursor:pointer" onClick="showLink(\'' . urldecode($attachment->link) . '\');">';
         echo '<img src="../view/img/mime/html.png" title="' . $attachment->link . '" />';
         echo '</div>';
       } else {
-        echo htmlGetMimeType ( $attachment->mimeType, $attachment->fileName, $attachment->id );
+        echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
       }
       echo '</td>';
-      echo '<td class="attachmentData" style="width:' . (($print) ? '50' : '45') . '%" title="' . $attachment->description . '">';
+      echo '<td class="attachmentData" style="width:' . (($print)?'50':'45') . '%" title="' . $attachment->description . '">';
       echo '<table style="width:100%"><tr >';
-//      echo '<td class="attachmentData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachment->fileSize ) . '</td>';
+      // echo '<td class="attachmentData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachment->fileSize ) . '</td>';
       
       echo ' <td>';
       if ($attachment->link) {
-        echo htmlEncode ( urldecode ( $attachment->link ), 'print' );
+        echo htmlEncode(urldecode($attachment->link), 'print');
       } else {
-        echo htmlEncode ( $attachment->fileName, 'print' );
+        echo htmlEncode($attachment->fileName, 'print');
       }
       echo ' </td>';
-      if ($attachment->description and ! $print) {
+      if ($attachment->description and !$print) {
         echo '<td style="width:18px; vertical-align: top;"><img src="img/note.png" /></td>';
       }
       if ($attachment->idPrivacy == 3) {
-        echo '<td style="width:18px;vertical-align: top;" title="' . i18n ( 'private' ) . '"><img src="img/private.png" /></td>';
+        echo '<td style="width:18px;vertical-align: top;" title="' . i18n('private') . '"><img src="img/private.png" /></td>';
       } else if ($attachment->idPrivacy == 2) {
-        echo '<td style="width:18px;vertical-align: top;" title="' . i18n ( 'team' ) . " : " . SqlList::getNameFromId ( 'Team', $attachment->idTeam ) . '"><img src="img/team.png" /></td>';
+        echo '<td style="width:18px;vertical-align: top;" title="' . i18n('team') . " : " . SqlList::getNameFromId('Team', $attachment->idTeam) . '"><img src="img/team.png" /></td>';
       }
       echo '</tr></table>';
       echo '</td>';
@@ -1851,9 +1828,9 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
     }
   }
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="attachmentDataClosetable">&nbsp;';
-    echo '<input type="hidden" name="nbAttachments" id="nbAttachments" value="' . count ( $attachments ) . '" />';
+    echo '<input type="hidden" name="nbAttachments" id="nbAttachments" value="' . count($attachments) . '" />';
     echo '</td>';
   }
   echo '<td class="attachmentDataClosetable">&nbsp;</td>';
@@ -1865,192 +1842,186 @@ function drawAttachmentsFromObject($obj, $refresh = false) {
   echo '</tr>';
   echo '</table>';
 }
-function drawLinksFromObject($list, $obj, $classLink, $refresh = false) {
-  if ($obj->isAttributeSetToField ( "_Link", "hidden" )) {
+
+function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
+  if ($obj->isAttributeSetToField("_Link", "hidden")) {
     return;
   }
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  if (get_class ( $obj ) == 'Document') {
-    $dv = new DocumentVersion ();
-    $lstVers = $dv->getSqlElementsFromCriteria ( array (
-        'idDocument' => $obj->id 
-    ) );
+  if (get_class($obj) == 'Document') {
+    $dv=new DocumentVersion();
+    $lstVers=$dv->getSqlElementsFromCriteria(array('idDocument' => $obj->id));
     foreach ( $lstVers as $dv ) {
-      $crit = "(ref1Type='DocumentVersion' and ref1Id=" . $dv->id . ")";
-      $crit .= "or (ref2Type='DocumentVersion' and ref2Id=" . $dv->id . ")";
-      $lnk = new Link ();
-      $lstLnk = $lnk->getSqlElementsFromCriteria ( null, null, $crit );
+      $crit="(ref1Type='DocumentVersion' and ref1Id=" . $dv->id . ")";
+      $crit.="or (ref2Type='DocumentVersion' and ref2Id=" . $dv->id . ")";
+      $lnk=new Link();
+      $lstLnk=$lnk->getSqlElementsFromCriteria(null, null, $crit);
       foreach ( $lstLnk as $lnk ) {
         if ($lnk->ref1Type == 'DocumentVersion') {
-          $lnk->ref1Type = 'Document';
-          $lnk->ref1Id = $obj->id;
+          $lnk->ref1Type='Document';
+          $lnk->ref1Id=$obj->id;
         } else {
-          $lnk->ref2Type = 'Document';
-          $lnk->ref2Id = $obj->id;
+          $lnk->ref2Type='Document';
+          $lnk->ref2Id=$obj->id;
         }
-        $list [] = $lnk;
+        $list []=$lnk;
       }
     }
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan="2" style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
-    if ($obj->id != null and ! $print and $canUpdate) {
-      $linkable = SqlElement::getSingleSqlElementFromCriteria ( 'Linkable', array (
-          'name' => get_class ( $obj ) 
-      ) );
-      $default = $linkable->idDefaultLinkable;
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n ( 'addLink' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate) {
+      $linkable=SqlElement::getSingleSqlElementFromCriteria('Linkable', array('name' => get_class($obj)));
+      $default=$linkable->idDefaultLinkable;
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  if (! $classLink) {
-    echo '<td class="linkHeader" style="width:10%">' . i18n ( 'colType' ) . '</td>';
+  if (!$classLink) {
+    echo '<td class="linkHeader" style="width:10%">' . i18n('colType') . '</td>';
   }
-  echo '<td class="linkHeader" style="width:' . (($print) ? '10' : '5') . '%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="linkHeader" style="width:' . (($classLink) ? '45' : '35') . '%">' . i18n ( 'colName' ) . '</td>';
+  echo '<td class="linkHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('colId') . '</td>';
+  echo '<td class="linkHeader" style="width:' . (($classLink)?'45':'35') . '%">' . i18n('colName') . '</td>';
   // if ($classLink and property_exists($classLink, 'idStatus')) {
-  echo '<td class="linkHeader" style="width:15%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="linkHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
   // }
-  echo '<td class="linkHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="linkHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
+  echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  echo '<td class="linkHeader" style="width:15%">' . i18n('colUser') . '</td>';
   echo '</tr>';
   foreach ( $list as $link ) {
-    $linkObj = null;
-    if ($link->ref1Type == get_class ( $obj ) and $link->ref1Id == $obj->id) {
-      $linkObj = new $link->ref2Type ( $link->ref2Id );
+    $linkObj=null;
+    if ($link->ref1Type == get_class($obj) and $link->ref1Id == $obj->id) {
+      $linkObj=new $link->ref2Type($link->ref2Id);
     } else {
-      $linkObj = new $link->ref1Type ( $link->ref1Id );
+      $linkObj=new $link->ref1Type($link->ref1Id);
     }
-    $userId = $link->idUser;
-    $userName = SqlList::getNameFromId ( 'User', $userId );
-    $creationDate = $link->creationDate;
-    $prop = '_Link_' . get_class ( $linkObj );
-    if ($classLink or ! property_exists ( $obj, $prop )) {
-      $gotoObj = (get_class ( $linkObj ) == 'DocumentVersion') ? new Document ( $linkObj->idDocument ) : $linkObj;
-      $canGoto = (securityCheckDisplayMenu ( null, get_class ( $gotoObj ) ) and securityGetAccessRightYesNo ( 'menu' . get_class ( $gotoObj ), 'read', $gotoObj ) == "YES") ? true : false;
+    $userId=$link->idUser;
+    $userName=SqlList::getNameFromId('User', $userId);
+    $creationDate=$link->creationDate;
+    $prop='_Link_' . get_class($linkObj);
+    if ($classLink or !property_exists($obj, $prop)) {
+      $gotoObj=(get_class($linkObj) == 'DocumentVersion')?new Document($linkObj->idDocument):$linkObj;
+      $canGoto=(securityCheckDisplayMenu(null, get_class($gotoObj)) and securityGetAccessRightYesNo('menu' . get_class($gotoObj), 'read', $gotoObj) == "YES")?true:false;
       echo '<tr>';
-      if (substr ( get_class ( $linkObj ), 0, 7 ) == 'Context') {
-        $classLinkName = SqlList::getNameFromId ( 'ContextType', substr ( get_class ( $linkObj ), 7, 1 ) );
+      if (substr(get_class($linkObj), 0, 7) == 'Context') {
+        $classLinkName=SqlList::getNameFromId('ContextType', substr(get_class($linkObj), 7, 1));
       } else {
-        $classLinkName = i18n ( get_class ( $linkObj ) );
+        $classLinkName=i18n(get_class($linkObj));
       }
-      if (! $print) {
+      if (!$print) {
         echo '<td class="linkData" style="text-align:center;width:5%;">';
-        if ($canGoto and (get_class ( $linkObj ) == 'DocumentVersion' or get_class ( $linkObj ) == 'Document') and isset ( $gotoObj->idDocumentVersion ) and $gotoObj->idDocumentVersion) {
-          echo '<a href="../tool/download.php?class=' . get_class ( $linkObj ) . '&id=' . $linkObj->id . '"';
-          echo ' target="printFrame" title="' . i18n ( 'helpDownload' ) . '"><img src="css/images/smallButtonDownload.png" /></a>';
+        if ($canGoto and (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') and isset($gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion) {
+          echo '<a href="../tool/download.php?class=' . get_class($linkObj) . '&id=' . $linkObj->id . '"';
+          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
         }
         if ($canUpdate) {
-          echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class ( $linkObj ) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n ( 'removeLink' ) . '" class="smallButton"/> ';
+          echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
         }
         echo '</td>';
       }
-      if (! $classLink) {
+      if (!$classLink) {
         echo '<td class="linkData" style="width:10%">' . $classLinkName . '</td>';
       }
-      echo '<td class="linkData" style="width:' . (($print) ? '10' : '5') . '%">#' . $linkObj->id;
+      echo '<td class="linkData" style="width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       echo '</td>';
-      $goto = "";
-      if (! $print and $canGoto) {
-        $goto = ' onClick="gotoElement(' . "'" . get_class ( $gotoObj ) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
+      $goto="";
+      if (!$print and $canGoto) {
+        $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
       }
-      echo '<td class="linkData" ' . $goto . ' style="width:' . (($classLink) ? '45' : '35') . '%" title="' . $link->comment . '">';
-      echo (get_class ( $linkObj ) == 'DocumentVersion') ? htmlEncode ( $linkObj->fullName ) : htmlEncode ( $linkObj->name );
-      if ($link->comment and ! $print) {
+      echo '<td class="linkData" ' . $goto . ' style="width:' . (($classLink)?'45':'35') . '%" title="' . $link->comment . '">';
+      echo (get_class($linkObj) == 'DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);
+      if ($link->comment and !$print) {
         echo '&nbsp;&nbsp;<img src="img/note.png" />';
       }
       echo '</td>';
-      if (property_exists ( $linkObj, 'idStatus' )) {
-        $objStatus = new Status ( $linkObj->idStatus );
+      if (property_exists($linkObj, 'idStatus')) {
+        $objStatus=new Status($linkObj->idStatus);
         // $color=$objStatus->color;
         // $foreColor=getForeColor($color);
         // echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
-        echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter ( $objStatus->name . "#split#" . $objStatus->color ) . '</td>';
+        echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
       }
-      echo '<td class="dependencyData"  style="width:15%">' . htmlFormatDateTime ( $creationDate ) . '<br/></td>';
+      echo '<td class="dependencyData"  style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
       echo '<td class="dependencyData"  style="width:15%">' . $userName . '</td>';
       echo '</tr>';
     }
   }
   echo '</table></td></tr>';
 }
-function drawApproverFromObject($list, $obj, $refresh = false) {
+
+function drawApproverFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="dependencyHeader" style="width:5%">';
-    if ($obj->id != null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addApprover();" title="' . i18n ( 'addApprover' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addApprover();" title="' . i18n('addApprover') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="dependencyHeader" style="width:' . (($print) ? '10' : '5') . '%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="dependencyHeader" style="width:40%">' . i18n ( 'colName' ) . '</td>';
-  echo '<td class="dependencyHeader" style="width:50%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="dependencyHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('colId') . '</td>';
+  echo '<td class="dependencyHeader" style="width:40%">' . i18n('colName') . '</td>';
+  echo '<td class="dependencyHeader" style="width:50%">' . i18n('colIdStatus') . '</td>';
   echo '</tr>';
-  if ($obj and get_class ( $obj ) == 'Document') {
-    $docVers = new DocumentVersion ( $obj->idDocumentVersion );
+  if ($obj and get_class($obj) == 'Document') {
+    $docVers=new DocumentVersion($obj->idDocumentVersion);
   }
   foreach ( $list as $app ) {
-    $appName = SqlList::getNameFromId ( 'Affectable', $app->idAffectable );
+    $appName=SqlList::getNameFromId('Affectable', $app->idAffectable);
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="dependencyData" style="text-align:center;">';
       if ($canUpdate) {
-        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeApprover(' . "'" . $app->id . "','" . $appName . "'" . ');" title="' . i18n ( 'removeApprover' ) . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeApprover(' . "'" . $app->id . "','" . $appName . "'" . ');" title="' . i18n('removeApprover') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
     echo '<td class="dependencyData">#' . $app->id . '</td>';
-    echo '<td class="dependencyData">' . htmlEncode ( $appName ) . '</td>';
+    echo '<td class="dependencyData">' . htmlEncode($appName) . '</td>';
     echo '<td class="dependencyData">';
-    $approved = 0;
-    $compMsg = "";
-    $date = "";
-    $approverId = null;
-    if ($obj and get_class ( $obj ) == 'Document') {
-      $crit = array (
-          'refType' => 'DocumentVersion',
-          'refId' => $obj->idDocumentVersion,
-          'idAffectable' => $app->idAffectable 
-      );
-      $versApp = SqlElement::getSingleSqlElementFromCriteria ( 'Approver', $crit );
+    $approved=0;
+    $compMsg="";
+    $date="";
+    $approverId=null;
+    if ($obj and get_class($obj) == 'Document') {
+      $crit=array('refType' => 'DocumentVersion','refId' => $obj->idDocumentVersion,'idAffectable' => $app->idAffectable);
+      $versApp=SqlElement::getSingleSqlElementFromCriteria('Approver', $crit);
       if ($versApp->id) {
-        $approved = $versApp->approved;
-        $compMsg = ' ' . $docVers->name;
-        $date = " (" . htmlFormatDateTime ( $versApp->approvedDate, false ) . ")";
-        $approverId = $versApp->id;
+        $approved=$versApp->approved;
+        $compMsg=' ' . $docVers->name;
+        $date=" (" . htmlFormatDateTime($versApp->approvedDate, false) . ")";
+        $approverId=$versApp->id;
       }
     } else {
-      $approved = $app->approved;
-      $approverId = $app->id;
-      $date = " (" . htmlFormatDateTime ( $app->approvedDate, false ) . ")";
+      $approved=$app->approved;
+      $approverId=$app->id;
+      $date=" (" . htmlFormatDateTime($app->approvedDate, false) . ")";
     }
     if ($approved) {
       echo '<img src="../view/img/check.png" height="12px"/>&nbsp;';
-      echo i18n ( "approved" ) . $compMsg . $date;
+      echo i18n("approved") . $compMsg . $date;
     } else {
-      echo i18n ( "notApproved" ) . $compMsg;
+      echo i18n("notApproved") . $compMsg;
       if ($user->id == $app->idAffectable) {
         echo '&nbsp;&nbsp;<button dojoType="dijit.form.Button" showlabel="true" >';
-        echo i18n ( 'approveNow' );
+        echo i18n('approveNow');
         echo '  <script type="dojo/connect" event="onClick" args="evt">';
         echo '   approveItem(' . $approverId . ');';
         echo '  </script>';
@@ -2063,466 +2034,474 @@ function drawApproverFromObject($list, $obj, $refresh = false) {
   }
   echo '</table></td></tr>';
 }
-function drawDependenciesFromObject($list, $obj, $depType, $refresh = false) {
+
+function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
-  $canEdit = $canUpdate;
-  if (get_class ( $obj ) == "Term" or get_class ( $obj ) == "Requirement" or get_class ( $obj ) == "TestCase") {
-    $canEdit = false;
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  $canEdit=$canUpdate;
+  if (get_class($obj) == "Term" or get_class($obj) == "Requirement" or get_class($obj) == "TestCase") {
+    $canEdit=false;
   }
-  if (get_class ( $obj ) == "Term") {
+  if (get_class($obj) == "Term") {
     if ($obj->idBill)
-      $canUpdate = false;
+      $canUpdate=false;
   }
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="dependencyHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addDependency(' . "'" . $depType . "'" . ');" title="' . i18n ( 'addDependency' . $depType ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addDependency(' . "'" . $depType . "'" . ');" title="' . i18n('addDependency' . $depType) . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="dependencyHeader" style="width:15%">' . i18n ( 'colType' ) . '</td>';
-  echo '<td class="dependencyHeader" style="width:' . (($print) ? '15' : '5') . '%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="dependencyHeader" style="width:55%">' . i18n ( 'colName' ) . '</td>';
-  echo '<td class="dependencyHeader" style="width:15%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="dependencyHeader" style="width:15%">' . i18n('colType') . '</td>';
+  echo '<td class="dependencyHeader" style="width:' . (($print)?'15':'5') . '%">' . i18n('colId') . '</td>';
+  echo '<td class="dependencyHeader" style="width:55%">' . i18n('colName') . '</td>';
+  echo '<td class="dependencyHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
   echo '</tr>';
   foreach ( $list as $dep ) {
-    $depObj = null;
-    if ($dep->predecessorRefType == get_class ( $obj ) and $dep->predecessorRefId == $obj->id) {
-      $depObj = new $dep->successorRefType ( $dep->successorRefId );
+    $depObj=null;
+    if ($dep->predecessorRefType == get_class($obj) and $dep->predecessorRefId == $obj->id) {
+      $depObj=new $dep->successorRefType($dep->successorRefId);
       // $depType="Successor";
     } else {
-      $depObj = new $dep->predecessorRefType ( $dep->predecessorRefId );
+      $depObj=new $dep->predecessorRefType($dep->predecessorRefId);
       // $depType="Predecessor";
     }
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="dependencyData" style="text-align:center;">';
       if ($canEdit) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . ' onClick="editDependency(' . "'" . $depType . "','" . $dep->id . "','" . SqlList::getIdFromName ( 'Dependable', i18n ( get_class ( $depObj ) ) ) . "','" . get_class ( $depObj ) . "','" . $depObj->id . "','" . $dep->dependencyDelay . "'" . ');" ' . ' title="' . i18n ( 'editDependency' . $depType ) . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonEdit.png" ' . ' onClick="editDependency(' . "'" . $depType . "','" . $dep->id . "','" . SqlList::getIdFromName('Dependable', i18n(get_class($depObj))) . "','" . get_class($depObj) . "','" . $depObj->id . "','" . $dep->dependencyDelay . "'" . ');" ' .
+             ' title="' . i18n('editDependency' . $depType) . '" class="smallButton"/> ';
       }
       if ($canUpdate) {
-        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeDependency(' . "'" . $dep->id . "','" . get_class ( $depObj ) . "','" . $depObj->id . "'" . ');" title="' . i18n ( 'removeDependency' . $depType ) . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeDependency(' . "'" . $dep->id . "','" . get_class($depObj) . "','" . $depObj->id . "'" . ');" title="' . i18n('removeDependency' . $depType) . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
-    echo '<td class="dependencyData">' . i18n ( get_class ( $depObj ) ) . '</td>';
+    echo '<td class="dependencyData">' . i18n(get_class($depObj)) . '</td>';
     echo '<td class="dependencyData">#' . $depObj->id . '</td>';
     echo '<td class="dependencyData"';
-    $goto = "";
-    if (securityCheckDisplayMenu ( null, get_class ( $depObj ) ) and securityGetAccessRightYesNo ( 'menu' . get_class ( $depObj ), 'read', $depObj ) == "YES") {
-      $goto = ' onClick="gotoElement(' . "'" . get_class ( $depObj ) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;" ';
+    $goto="";
+    if (securityCheckDisplayMenu(null, get_class($depObj)) and securityGetAccessRightYesNo('menu' . get_class($depObj), 'read', $depObj) == "YES") {
+      $goto=' onClick="gotoElement(' . "'" . get_class($depObj) . "','" . $depObj->id . "'" . ');" style="cursor: pointer;" ';
     }
-    if (! $print) {
+    if (!$print) {
       echo $goto;
     }
-    echo '>' . htmlEncode ( $depObj->name );
+    echo '>' . htmlEncode($depObj->name);
     if ($dep->dependencyDelay != 0 and $canEdit) {
-      echo '&nbsp;<span style="background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;font-size:80%;" title="' . i18n ( "colDependencyDelay" ) . '">&nbsp;' . $dep->dependencyDelay . '&nbsp;' . i18n ( 'shortDay' ) . '&nbsp;</span>';
+      echo '&nbsp;<span style="background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;font-size:80%;" title="' . i18n("colDependencyDelay") . '">&nbsp;' . $dep->dependencyDelay . '&nbsp;' . i18n('shortDay') . '&nbsp;</span>';
     }
     echo '</td>';
-    if (property_exists ( $depObj, 'idStatus' )) {
-      $objStatus = new Status ( $depObj->idStatus );
+    if (property_exists($depObj, 'idStatus')) {
+      $objStatus=new Status($depObj->idStatus);
     } else {
-      $objStatus = new Status ();
+      $objStatus=new Status();
     }
     // $color=$objStatus->color;
     // $foreColor=getForeColor($color);
     // echo '<td class="dependencyData"><table><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';">' . $objStatus->name . '</td></tr></table></td>';
     // echo '<td class="dependencyData" style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';">' . $objStatus->name . '</td>';
-    echo '<td class="dependencyData" style="width:15%">' . colorNameFormatter ( $objStatus->name . "#split#" . $objStatus->color ) . '</td>';
+    echo '<td class="dependencyData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
-function drawAssignmentsFromObject($list, $obj, $refresh = false) {
+
+function drawAssignmentsFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail, $section, $collapsedList, $widthPct, $outMode;
   if ($comboDetail) {
     return;
   }
-  $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array (
-      'idProfile' => $user->idProfile,
-      'scope' => 'assignmentView' 
-  ) );
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'assignmentView'));
   if ($habil and $habil->rightAccess != 1) {
     return;
   }
-  $section = 'Assignment';
-  //startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes");
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
-  $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array (
-      'idProfile' => $user->idProfile,
-      'scope' => 'assignmentEdit' 
-  ) );
+  $section='Assignment';
+  // startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes");
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'assignmentEdit'));
   if ($habil and $habil->rightAccess != 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
-  $pe = new PlanningElement ();
-  $pe->setVisibility ();
-  $workVisible = ($pe->_workVisibility == 'ALL') ? true : false;
+  $pe=new PlanningElement();
+  $pe->setVisibility();
+  $workVisible=($pe->_workVisibility == 'ALL')?true:false;
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (! $print and $canUpdate) {
+  if (!$print and $canUpdate) {
     echo '<td class="assignHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate and ! $obj->idle and $workVisible) {
+    if ($obj->id != null and !$print and $canUpdate and !$obj->idle and $workVisible) {
       echo '<img src="css/images/smallButtonAdd.png" ';
-      echo ' onClick="addAssignment(\'' . Work::displayShortWorkUnit () . '\',\'' . Work::getWorkUnit () . '\',\'' . Work::getHoursPerDay () . '\');" ';
-      echo ' title="' . i18n ( 'addAssignment' ) . '" class="smallButton"/> ';
+      echo ' onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\',\'' . Work::getWorkUnit() . '\',\'' . Work::getHoursPerDay() . '\');" ';
+      echo ' title="' . i18n('addAssignment') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print) ? '40' : '30') . '%">' . i18n ( 'colIdResource' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%" >' . i18n ( 'colRate' ) . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'40':'30') . '%">' . i18n('colIdResource') . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colRate') . '</td>';
   if ($workVisible) {
-    echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colAssigned' ) . ' (' . Work::displayShortWorkUnit () . ')' . '</td>';
-    echo '<td class="assignHeader"style="width:15%">' . i18n ( 'colReal' ) . ' (' . Work::displayShortWorkUnit () . ')' . '</td>';
-    echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colLeft' ) . ' (' . Work::displayShortWorkUnit () . ')' . '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colAssigned') . ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
+    echo '<td class="assignHeader"style="width:15%">' . i18n('colReal') . ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
+    echo '<td class="assignHeader" style="width:15%">' . i18n('colLeft') . ' (' . Work::displayShortWorkUnit() . ')' . '</td>';
   }
   echo '</tr>';
-  $fmt = new NumberFormatter52 ( $browserLocale, NumberFormatter52::DECIMAL );
+  $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
   foreach ( $list as $assignment ) {
     echo '<tr>';
-    $isResource = true;
-    $resName = SqlList::getNameFromId ( 'Resource', $assignment->idResource );
+    $isResource=true;
+    $resName=SqlList::getNameFromId('Resource', $assignment->idResource);
     if ($resName == $assignment->idResource) {
-      $affName = SqlList::getNameFromId ( 'Affectable', $assignment->idResource );
+      $affName=SqlList::getNameFromId('Affectable', $assignment->idResource);
       if ($affName != $resName) {
-        $isResource = false;
-        $resName = $affName;
+        $isResource=false;
+        $resName=$affName;
       }
     }
-    if (! $print and $canUpdate) {
+    if (!$print and $canUpdate) {
       echo '<td class="assignData" style="text-align:center;">';
-      if ($canUpdate and ! $print and $workVisible) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAssignment(' . "'" . $assignment->id . "'" . ",'" . $assignment->idResource . "'" . ",'" . $assignment->idRole . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . $assignment->rate . "'" . ",'" . Work::displayWork ( $assignment->assignedWork ) * 100 . "'" . ",'" . Work::displayWork ( $assignment->realWork ) * 100 . "'" . ",'" . Work::displayWork ( $assignment->leftWork ) * 100 . "'" . ",'" . Work::displayShortWorkUnit () . "'" . ');" ' . 'title="' . i18n ( 'editAssignment' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print and $workVisible) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAssignment(' . "'" . $assignment->id . "'" . ",'" . $assignment->idResource . "'" . ",'" . $assignment->idRole . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . $assignment->rate . "'" . ",'" .
+             Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ');" ' . 'title="' . i18n('editAssignment') .
+             '" class="smallButton"/> ';
         echo '<input type="hidden" id="comment_assignment_' . $assignment->id . '" value="' . $assignment->comment . '" />';
       }
-      if ($assignment->realWork == 0 and $canUpdate and ! $print and $workVisible) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" . Work::displayWork ( $assignment->realWork ) * 100 . "','" . htmlEncode ( $resName, 'quotes' ) . "'" . ');" ' . 'title="' . i18n ( 'removeAssignment' ) . '" class="smallButton"/> ';
+      if ($assignment->realWork == 0 and $canUpdate and !$print and $workVisible) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 'title="' . i18n('removeAssignment') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
     echo '<td class="assignData" ';
-    if (! $print) {
-      echo 'title="' . htmlEncodeJson ( $assignment->comment ) . '"';
+    if (!$print) {
+      echo 'title="' . htmlEncodeJson($assignment->comment) . '"';
     }
     echo '>';
     echo '<table><tr>';
-    $goto = "";
-    if (! $print and $isResource and securityCheckDisplayMenu ( null, 'Resource' ) and securityGetAccessRightYesNo ( 'menuResource', 'read', '' ) == "YES") {
-      $goto = ' onClick="gotoElement(\'Resource\',\'' . $assignment->idResource . '\');" style="cursor: pointer;" ';
+    $goto="";
+    if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '') == "YES") {
+      $goto=' onClick="gotoElement(\'Resource\',\'' . $assignment->idResource . '\');" style="cursor: pointer;" ';
     }
     echo '<td ' . $goto . '>' . $resName;
-    echo ($assignment->idRole) ? ' (' . SqlList::getNameFromId ( 'Role', $assignment->idRole ) . ')' : '';
+    echo ($assignment->idRole)?' (' . SqlList::getNameFromId('Role', $assignment->idRole) . ')':'';
     echo '</td>';
-    if ($assignment->comment and ! $print) {
+    if ($assignment->comment and !$print) {
       echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
     }
     echo '</tr></table>';
     echo '</td>';
     echo '<td class="assignData" align="center">' . $assignment->rate . '</td>';
     if ($workVisible) {
-      echo '<td class="assignData" align="right">' . $fmt->format ( Work::displayWork ( $assignment->assignedWork ) ) . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format ( Work::displayWork ( $assignment->realWork ) ) . '</td>';
-      echo '<td class="assignData" align="right">' . $fmt->format ( Work::displayWork ( $assignment->leftWork ) ) . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->assignedWork)) . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->realWork)) . '</td>';
+      echo '<td class="assignData" align="right">' . $fmt->format(Work::displayWork($assignment->leftWork)) . '</td>';
     }
     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
-function drawExpenseDetailFromObject($list, $obj, $refresh = false) {
+
+function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   // $pe=new PlanningElement();
   // $pe->setVisibility();
   // $workVisible=($pe->_workVisibility=='ALL')?true:false;
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (! $print) {
+  if (!$print) {
     echo '<td class="assignHeader" style="width:5%">';
     // if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
-    if ($obj->id != null and ! $print and $canUpdate and ! $obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail();" title="' . i18n ( 'addExpenseDetail' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail();" title="' . i18n('addExpenseDetail') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print) ? '15' : '10') . '%">' . i18n ( 'colDate' ) . '</td>';
-  echo '<td class="assignHeader"style="width:35%">' . i18n ( 'colName' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%" >' . i18n ( 'colType' ) . '</td>';
-  echo '<td class="assignHeader"style="width:25%">' . i18n ( 'colDetail' ) . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'15':'10') . '%">' . i18n('colDate') . '</td>';
+  echo '<td class="assignHeader"style="width:35%">' . i18n('colName') . '</td>';
+  echo '<td class="assignHeader" style="width:15%" >' . i18n('colType') . '</td>';
+  echo '<td class="assignHeader"style="width:25%">' . i18n('colDetail') . '</td>';
   // if ($workVisible) {
-  echo '<td class="assignHeader" style="width:10%">' . i18n ( 'colAmount' ) . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colAmount') . '</td>';
   // }
   echo '</tr>';
-  $fmt = new NumberFormatter52 ( $browserLocale, NumberFormatter52::DECIMAL );
+  $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
   foreach ( $list as $expenseDetail ) {
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="assignData" style="text-align:center;">';
       // if ($canUpdate and ! $print and $workVisible) {
-      if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" . $fmt->format ( $expenseDetail->amount ) . "'" . ');" ' . 'title="' . i18n ( 'editExpenseDetail' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" .
+             $fmt->format($expenseDetail->amount) . "'" . ');" ' . 'title="' . i18n('editExpenseDetail') . '" class="smallButton"/> ';
       }
       // if ($canUpdate and ! $print and $workVisible ) {
-      if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "'" . ');" ' . 'title="' . i18n ( 'removeExpenseDetail' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "'" . ');" ' . 'title="' . i18n('removeExpenseDetail') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
-    echo '<td class="assignData" >' . htmlFormatDate ( $expenseDetail->expenseDate ) . '</td>';
+    echo '<td class="assignData" >' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
     echo '<td class="assignData" ';
-    if (! $print) {
-      echo 'title="' . htmlEncodeJson ( $expenseDetail->description ) . '"';
+    if (!$print) {
+      echo 'title="' . htmlEncodeJson($expenseDetail->description) . '"';
     }
     echo '>' . $expenseDetail->name;
-    if ($expenseDetail->description and ! $print) {
+    if ($expenseDetail->description and !$print) {
       echo '<span>&nbsp;&nbsp;<img src="img/note.png" /></span>';
     }
-    echo '<input type="hidden" id="expenseDetail_' . $expenseDetail->id . '" value="' . htmlEncode ( $expenseDetail->name, 'none' ) . '"/>';
+    echo '<input type="hidden" id="expenseDetail_' . $expenseDetail->id . '" value="' . htmlEncode($expenseDetail->name, 'none') . '"/>';
     
     echo '</td>';
-    echo '<td class="assignData" >' . SqlList::getNameFromId ( 'ExpenseDetailType', $expenseDetail->idExpenseDetailType ) . '</td>';
+    echo '<td class="assignData" >' . SqlList::getNameFromId('ExpenseDetailType', $expenseDetail->idExpenseDetailType) . '</td>';
     echo '<td class="assignData" >';
-    echo $expenseDetail->getFormatedDetail ();
+    echo $expenseDetail->getFormatedDetail();
     echo '</td>';
-    echo '<td class="assignData" style="text-align:right;">' . htmlDisplayCurrency ( $expenseDetail->amount ) . '</td>';
+    echo '<td class="assignData" style="text-align:right;">' . htmlDisplayCurrency($expenseDetail->amount) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
-function drawResourceCostFromObject($list, $obj, $refresh = false) {
+
+function drawResourceCostFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
-  $pe = new PlanningElement ();
-  $pe->setVisibility ();
-  $costVisible = ($pe->_costVisibility == 'ALL') ? true : false;
-  if (! $costVisible)
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
+  $pe=new PlanningElement();
+  $pe->setVisibility();
+  $costVisible=($pe->_costVisibility == 'ALL')?true:false;
+  if (!$costVisible)
     return;
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  $funcList = ' ';
+  $funcList=' ';
   foreach ( $list as $rcost ) {
-    $key = '#' . $rcost->idRole . '#';
-    if (strpos ( $funcList, $key ) === false) {
-      $funcList .= $key;
+    $key='#' . $rcost->idRole . '#';
+    if (strpos($funcList, $key) === false) {
+      $funcList.=$key;
     }
   }
-  if (! $print) {
+  if (!$print) {
     echo '<td class="assignHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate and ! $obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\'' . $funcList . '\');" title="' . i18n ( 'addResourceCost' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\'' . $funcList . '\');" title="' . i18n('addResourceCost') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:' . (($print) ? '40' : '30') . '%">' . i18n ( 'colIdRole' ) . '</td>';
-  echo '<td class="assignHeader" style="width:20%">' . i18n ( 'colCost' ) . '</td>';
-  echo '<td class="assignHeader" style="width:20%">' . i18n ( 'colStartDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:20%">' . i18n ( 'colEndDate' ) . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'40':'30') . '%">' . i18n('colIdRole') . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colCost') . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colStartDate') . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colEndDate') . '</td>';
   
   echo '</tr>';
-  $fmt = new NumberFormatter52 ( $browserLocale, NumberFormatter52::DECIMAL );
+  $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
   foreach ( $list as $rcost ) {
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="assignData" style="text-align:center;">';
-      if (! $rcost->endDate and $canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" . ",'" . $rcost->idResource . "'" . ",'" . $rcost->idRole . "'" . ",'" . $rcost->cost * 100 . "'" . ",'" . $rcost->startDate . "'" . ",'" . $rcost->endDate . "'" . ');" ' . 'title="' . i18n ( 'editResourceCost' ) . '" class="smallButton"/> ';
+      if (!$rcost->endDate and $canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" . ",'" . $rcost->idResource . "'" . ",'" . $rcost->idRole . "'" . ",'" . $rcost->cost * 100 . "'" . ",'" . $rcost->startDate . "'" . ",'" . $rcost->endDate . "'" . ');" ' . 'title="' .
+             i18n('editResourceCost') . '" class="smallButton"/> ';
       }
-      if (! $rcost->endDate and $canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeResourceCost(' . "'" . $rcost->id . "'" . ",'" . $rcost->idRole . "'" . ",'" . SqlList::getNameFromId ( 'Role', $rcost->idRole ) . "'" . ",'" . htmlFormatDate ( $rcost->startDate ) . "'" . ');" ' . 'title="' . i18n ( 'removeResourceCost' ) . '" class="smallButton"/> ';
+      if (!$rcost->endDate and $canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeResourceCost(' . "'" . $rcost->id . "'" . ",'" . $rcost->idRole . "'" . ",'" . SqlList::getNameFromId('Role', $rcost->idRole) . "'" . ",'" . htmlFormatDate($rcost->startDate) . "'" . ');" ' . 'title="' .
+             i18n('removeResourceCost') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
-    echo '<td class="assignData" align="left">' . SqlList::getNameFromId ( 'Role', $rcost->idRole ) . '</td>';
-    echo '<td class="assignData" align="right">' . htmlDisplayCurrency ( $rcost->cost );
-    echo " / " . i18n ( 'shortDay' );
+    echo '<td class="assignData" align="left">' . SqlList::getNameFromId('Role', $rcost->idRole) . '</td>';
+    echo '<td class="assignData" align="right">' . htmlDisplayCurrency($rcost->cost);
+    echo " / " . i18n('shortDay');
     echo '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate ( $rcost->startDate ) . '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate ( $rcost->endDate ) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($rcost->endDate) . '</td>';
     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
-function drawVersionProjectsFromObject($list, $obj, $refresh = false) {
+
+function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (get_class ( $obj ) == 'Project') {
-    $idProj = $obj->id;
-    $idVers = null;
-  } else if (get_class ( $obj ) == 'Version') {
-    $idProj = null;
-    $idVers = $obj->id;
+  if (get_class($obj) == 'Project') {
+    $idProj=$obj->id;
+    $idVers=null;
+  } else if (get_class($obj) == 'Version') {
+    $idProj=null;
+    $idVers=$obj->id;
   }
-  if (! $print) {
+  if (!$print) {
     echo '<td class="assignHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canUpdate and ! $obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addVersionProject(\'' . $idVers . '\', \'' . $idProj . '\');" title="' . i18n ( 'addVersionProject' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addVersionProject(\'' . $idVers . '\', \'' . $idProj . '\');" title="' . i18n('addVersionProject') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
   if ($idProj) {
-    echo '<td class="assignHeader" style="width:' . (($print) ? '60' : '50') . '%">' . i18n ( 'colIdVersion' ) . '</td>';
+    echo '<td class="assignHeader" style="width:' . (($print)?'60':'50') . '%">' . i18n('colIdVersion') . '</td>';
   } else {
-    echo '<td class="assignHeader" style="width:' . (($print) ? '60' : '50') . '%">' . i18n ( 'colIdProject' ) . '</td>';
+    echo '<td class="assignHeader" style="width:' . (($print)?'60':'50') . '%">' . i18n('colIdProject') . '</td>';
   }
-  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colStartDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colEndDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:10%">' . i18n ( 'colIdle' ) . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colEndDate') . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle') . '</td>';
   
   echo '</tr>';
   foreach ( $list as $vp ) {
     echo '<tr>';
-    if (! $print) {
+    if (!$print) {
       echo '<td class="assignData" style="text-align:center;">';
-      if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editVersionProject(' . "'" . $vp->id . "'" . ",'" . $vp->idVersion . "'" . ",'" . $vp->idProject . "'" . ",'" . $vp->startDate . "'" . ",'" . $vp->endDate . "'" . ",'" . $vp->idle . "'" . ');" ' . 'title="' . i18n ( 'editVersionProject' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editVersionProject(' . "'" . $vp->id . "'" . ",'" . $vp->idVersion . "'" . ",'" . $vp->idProject . "'" . ",'" . $vp->startDate . "'" . ",'" . $vp->endDate . "'" . ",'" . $vp->idle . "'" . ');" ' . 'title="' .
+             i18n('editVersionProject') . '" class="smallButton"/> ';
       }
-      if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeVersionProject(' . "'" . $vp->id . "'" . ');" ' . 'title="' . i18n ( 'removeVersionProject' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeVersionProject(' . "'" . $vp->id . "'" . ');" ' . 'title="' . i18n('removeVersionProject') . '" class="smallButton"/> ';
       }
       echo '</td>';
     }
-    $goto = "";
+    $goto="";
     if ($idProj) {
-      if (! $print and securityCheckDisplayMenu ( null, 'Version' ) and securityGetAccessRightYesNo ( 'menuVersion', 'read', '' ) == "YES") {
-        $goto = ' onClick="gotoElement(\'Version\',\'' . $vp->idVersion . '\');" style="cursor: pointer;" ';
+      if (!$print and securityCheckDisplayMenu(null, 'Version') and securityGetAccessRightYesNo('menuVersion', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'Version\',\'' . $vp->idVersion . '\');" style="cursor: pointer;" ';
       }
-      echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode ( SqlList::getNameFromId ( 'Version', $vp->idVersion ) ) . '</td>';
+      echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Version', $vp->idVersion)) . '</td>';
     } else {
-      if (! $print and securityCheckDisplayMenu ( null, 'Project' ) and securityGetAccessRightYesNo ( 'menuProject', 'read', '' ) == "YES") {
-        $goto = ' onClick="gotoElement(\'Project\',\'' . $vp->idProject . '\');" style="cursor: pointer;" ';
+      if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'Project\',\'' . $vp->idProject . '\');" style="cursor: pointer;" ';
       }
-      echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode ( SqlList::getNameFromId ( 'Project', $vp->idProject ) ) . '</td>';
+      echo '<td class="assignData" align="left"' . $goto . '>' . htmlEncode(SqlList::getNameFromId('Project', $vp->idProject)) . '</td>';
     }
-    echo '<td class="assignData" align="center">' . htmlFormatDate ( $vp->startDate ) . '</td>';
-    echo '<td class="assignData" align="center">' . htmlFormatDate ( $vp->endDate ) . '</td>';
-    echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($vp->idle) ? 'OK' : 'KO') . '.png" /></td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($vp->startDate) . '</td>';
+    echo '<td class="assignData" align="center">' . htmlFormatDate($vp->endDate) . '</td>';
+    echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($vp->idle)?'OK':'KO') . '.png" /></td>';
     
     echo '</tr>';
   }
   echo '</table></td></tr>';
 }
-function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
+
+function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $canCreate = securityGetAccessRightYesNo ( 'menuAffectation', 'create' ) == "YES";
+  $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create') == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
-    $canCreate = false;
-    $canDelete = false;
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
   }
   echo '<table style="width:100%">';
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (get_class ( $obj ) == 'Project') {
-    $idProj = $obj->id;
-    $idRess = null;
-  } else if (get_class ( $obj ) == 'Resource' or get_class ( $obj ) == 'Contact' or get_class ( $obj ) == 'User') {
-    $idProj = null;
-    $idRess = $obj->id;
+  if (get_class($obj) == 'Project') {
+    $idProj=$obj->id;
+    $idRess=null;
+  } else if (get_class($obj) == 'Resource' or get_class($obj) == 'Contact' or get_class($obj) == 'User') {
+    $idProj=null;
+    $idRess=$obj->id;
   } else {
-    $idProj = null;
-    $idRess = null;
+    $idProj=null;
+    $idRess=null;
   }
   
-  if (! $print) {
+  if (!$print) {
     echo '<td class="assignHeader" style="width:10%">';
-    if ($obj->id != null and ! $print and $canCreate and ! $obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addAffectation(\'' . get_class ( $obj ) . '\',\'' . $type . '\',\'' . $idRess . '\', \'' . $idProj . '\');" title="' . i18n ( 'addAffectation' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\'' . $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" style="width:5%">' . i18n ( 'colId' ) . '</td>';
-  echo '<td class="assignHeader" style="width:' . (($print) ? '35' : '25') . '%">' . i18n ( 'colId' . $type ) . '</td>';
-  echo '<td class="assignHeader" style="width:20%">' . i18n ( 'colIdProfile' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colStartDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:15%">' . i18n ( 'colEndDate' ) . '</td>';
-  echo '<td class="assignHeader" style="width:10%">' . i18n ( 'colRate' ) . '</td>';
+  echo '<td class="assignHeader" style="width:5%">' . i18n('colId') . '</td>';
+  echo '<td class="assignHeader" style="width:' . (($print)?'35':'25') . '%">' . i18n('colId' . $type) . '</td>';
+  echo '<td class="assignHeader" style="width:20%">' . i18n('colIdProfile') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
+  echo '<td class="assignHeader" style="width:15%">' . i18n('colEndDate') . '</td>';
+  echo '<td class="assignHeader" style="width:10%">' . i18n('colRate') . '</td>';
   // echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
   
   echo '</tr>';
   foreach ( $list as $aff ) {
-    $canUpdate = securityGetAccessRightYesNo ( 'menuAffectation', 'update', $aff ) == "YES";
-    $canDelete = securityGetAccessRightYesNo ( 'menuAffectation', 'delete', $aff ) == "YES";
+    $canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update', $aff) == "YES";
+    $canDelete=securityGetAccessRightYesNo('menuAffectation', 'delete', $aff) == "YES";
     if ($obj->idle == 1) {
-      $canUpdate = false;
-      $canCreate = false;
-      $canDelete = false;
+      $canUpdate=false;
+      $canCreate=false;
+      $canDelete=false;
     }
-    $idleClass = ($aff->idle) ? ' idleClass' : '';
-    $isResource = true;
+    $idleClass=($aff->idle)?' idleClass':'';
+    $isResource=true;
     if ($type == 'Project') {
-      $name = SqlList::getNameFromId ( $type, $aff->idProject );
+      $name=SqlList::getNameFromId($type, $aff->idProject);
     } else {
-      $name = SqlList::getNameFromId ( $type, $aff->idResource );
+      $name=SqlList::getNameFromId($type, $aff->idResource);
       if ($aff->idResource == $name and $type == 'Resource') {
-        $name = SqlList::getNameFromId ( 'User', $aff->idResource );
-        if ($aff->idResource != $name and trim ( $name )) {
-          $name .= " (" . i18n ( 'User' ) . ")";
+        $name=SqlList::getNameFromId('User', $aff->idResource);
+        if ($aff->idResource != $name and trim($name)) {
+          $name.=" (" . i18n('User') . ")";
         }
       }
     }
-    if ($aff->idResource != $name and trim ( $name )) {
+    if ($aff->idResource != $name and trim($name)) {
       echo '<tr>';
-      if (! $print) {
+      if (!$print) {
         echo '<td class="assignData' . $idleClass . '" style="text-align:center;white-space: nowrap;">';
-        if ($canUpdate and ! $print) {
-          echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAffectation(' . "'" . $aff->id . "'" . ",'" . get_class ( $obj ) . "'" . ",'" . $type . "'" . ",'" . $aff->idResource . "'" . ",'" . $aff->idProject . "'" . ",'" . $aff->rate . "'" . ",'" . $aff->idle . "'" . ",'" . $aff->startDate . "'" . ",'" . $aff->endDate . "'" . ','.$aff->idProfile.');" ' . 'title="' . i18n ( 'editAffectation' ) . '" class="smallButton"/> ';
+        if ($canUpdate and !$print) {
+          echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAffectation(' . "'" . $aff->id . "'" . ",'" . get_class($obj) . "'" . ",'" . $type . "'" . ",'" . $aff->idResource . "'" . ",'" . $aff->idProject . "'" . ",'" . $aff->rate . "'" . ",'" . $aff->idle . "'" . ",'" .
+               $aff->startDate . "'" . ",'" . $aff->endDate . "'" . ',' . $aff->idProfile . ');" ' . 'title="' . i18n('editAffectation') . '" class="smallButton"/> ';
         }
-        if ($canDelete and ! $print) {
-          echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . $aff->id . "'" . ');" ' . 'title="' . i18n ( 'removeAffectation' ) . '" class="smallButton"/> ';
+        if ($canDelete and !$print) {
+          echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . $aff->id . "'" . ');" ' . 'title="' . i18n('removeAffectation') . '" class="smallButton"/> ';
         }
         if ($aff->idle) {
-          echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n ( 'colIdle' ) . '" class="smallButton"/> ';
+          echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '" class="smallButton"/> ';
         }
         echo '</td>';
       }
-      $goto = "";
-      if (! $print and securityCheckDisplayMenu ( null, 'Affectation' ) and securityGetAccessRightYesNo ( 'menuAffectation', 'read', '' ) == "YES") {
-        $goto = ' onClick="gotoElement(\'Affectation\',\'' . $aff->id . '\');" style="cursor: pointer;" ';
+      $goto="";
+      if (!$print and securityCheckDisplayMenu(null, 'Affectation') and securityGetAccessRightYesNo('menuAffectation', 'read', '') == "YES") {
+        $goto=' onClick="gotoElement(\'Affectation\',\'' . $aff->id . '\');" style="cursor: pointer;" ';
       }
       echo '<td class="assignData' . $idleClass . '" align="center">' . $aff->id . '</td>';
       if ($idProj) {
-        echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode ( $name ) . '</td>';
+        echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode($name) . '</td>';
       } else {
-        echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode ( $name ) . '</td>';
+        echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode($name) . '</td>';
       }
-      echo '<td class="assignData' . $idleClass . '" align="center" >' . SqlList::getNameFromId('Profile', $aff->idProfile, true ) . '</td>';
-      echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate ( $aff->startDate ) . '</td>';
-      echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate ( $aff->endDate ) . '</td>';
+      echo '<td class="assignData' . $idleClass . '" align="center" >' . SqlList::getNameFromId('Profile', $aff->idProfile, true) . '</td>';
+      echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate($aff->startDate) . '</td>';
+      echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . htmlFormatDate($aff->endDate) . '</td>';
       echo '<td class="assignData' . $idleClass . '" align="center" style="white-space: nowrap;">' . $aff->rate . '</td>';
       // echo '<td class="assignData" align="center"><img src="../view/img/checked' . (($aff->idle)?'OK':'KO') . '.png" /></td>';
       echo '</tr>';
@@ -2531,110 +2510,111 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh = false) {
   echo '</table></td></tr>';
   echo '</table>';
 }
-function drawTestCaseRunFromObject($list, $obj, $refresh = false) {
+
+function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
     return;
   }
-  $class = get_class ( $obj );
-  $otherClass = ($class == 'TestCase') ? 'TestSession' : 'TestCase';
-  $nameWidth = 67;
-  $canCreate = securityGetAccessRightYesNo ( 'menu' . $class, 'update', $obj ) == "YES";
-  $canUpdate = $canCreate;
-  $canDelete = $canCreate;
+  $class=get_class($obj);
+  $otherClass=($class == 'TestCase')?'TestSession':'TestCase';
+  $nameWidth=67;
+  $canCreate=securityGetAccessRightYesNo('menu' . $class, 'update', $obj) == "YES";
+  $canUpdate=$canCreate;
+  $canDelete=$canCreate;
   if ($obj->idle == 1) {
-    $canUpdate = false;
-    $canCreate = false;
-    $canDelete = false;
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
   }
   echo '<tr><td colspan="2" style="width:100%;">';
   echo '<table style="width:100%;">';
   echo '<tr>';
-  if (! $print and $class == 'TestSession') {
-    $nameWidth -= 10;
+  if (!$print and $class == 'TestSession') {
+    $nameWidth-=10;
     echo '<td class="assignHeader" style="width:10%;">';
-    if ($obj->id != null and ! $print and $canCreate and ! $obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addTestCaseRun();" title="' . i18n ( 'addTestCaseRun' ) . '" class="smallButton"/> ';
+    if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
+      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" class="smallButton"/> ';
     }
     echo '</td>';
     // also count colDetail size
-    $nameWidth -= 10;
+    $nameWidth-=10;
   }
-  echo '<td class="assignHeader" colspan="3" style="width:' . ($nameWidth + 15) . '%">' . i18n ( 'col' . $otherClass ) . '</td>';
-  if (! $print and $class == 'TestSession') {
-    echo '<td class="assignHeader" style="width:10%">' . i18n ( 'colDetail' ) . '</td>';
+  echo '<td class="assignHeader" colspan="3" style="width:' . ($nameWidth + 15) . '%">' . i18n('col' . $otherClass) . '</td>';
+  if (!$print and $class == 'TestSession') {
+    echo '<td class="assignHeader" style="width:10%">' . i18n('colDetail') . '</td>';
   }
-  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n ( 'colIdStatus' ) . '</td>';
+  echo '<td class="assignHeader" colspan="2" style="width:15%">' . i18n('colIdStatus') . '</td>';
   echo '</tr>';
-  asort ( $list );
+  asort($list);
   foreach ( $list as $tcr ) {
     if ($otherClass == 'TestCase') {
-      $tc = new TestCase ( $tcr->idTestCase );
+      $tc=new TestCase($tcr->idTestCase);
     } else {
-      $tc = new TestSession ( $tcr->idTestSession );
+      $tc=new TestSession($tcr->idTestSession);
     }
-    $st = new RunStatus ( $tcr->idRunStatus );
+    $st=new RunStatus($tcr->idRunStatus);
     echo '<tr>';
-    if (! $print and $class == 'TestSession') {
+    if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%;text-align:center;">';
       echo '<table style="width:100%"><tr><td style="width:50%">';
-      if ($canUpdate and ! $print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n ( 'editTestCaseRun' ) . '" class="smallButton"/> ';
+      if ($canUpdate and !$print) {
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('editTestCaseRun') . '" class="smallButton"/> ';
       }
-      if ($canDelete and ! $print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ');" ' . 'title="' . i18n ( 'removeTestCaseRun' ) . '" class="smallButton"/> ';
+      if ($canDelete and !$print) {
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ');" ' . 'title="' . i18n('removeTestCaseRun') . '" class="smallButton"/> ';
       }
-      if (! $print) {
-        echo '<input type="hidden" id="comment_' . $tcr->id . '" value="' . htmlEncode ( $tcr->comment, 'none' ) . '"/>';
+      if (!$print) {
+        echo '<input type="hidden" id="comment_' . $tcr->id . '" value="' . htmlEncode($tcr->comment, 'none') . '"/>';
       }
       echo '</td><td style="width:50%">';
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3 or $tcr->idRunStatus == 4) {
-        echo '  <img src="css/images/iconPassed16.png" ' . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n ( 'passedTestCaseRun' ) . '" class="smallButton"/> ';
+        echo '  <img src="css/images/iconPassed16.png" ' . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('passedTestCaseRun') . '" class="smallButton"/> ';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 4) {
-        echo '  <img src="css/images/iconFailed16.png" ' . 'onClick="failedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n ( 'failedTestCaseRun' ) . '" class="smallButton"/> ';
+        echo '  <img src="css/images/iconFailed16.png" ' . 'onClick="failedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('failedTestCaseRun') . '" class="smallButton"/> ';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3) {
-        echo '  <img src="css/images/iconBlocked16.png" ' . 'onClick="blockedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n ( 'blockedTestCaseRun' ) . '" class="smallButton"/> ';
+        echo '  <img src="css/images/iconBlocked16.png" ' . 'onClick="blockedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('blockedTestCaseRun') . '" class="smallButton"/> ';
       }
       echo '</td></tr></table>';
       echo '</td>';
     }
-    $goto = "";
-    if (! $print and securityCheckDisplayMenu ( null, 'TestCase' ) and securityGetAccessRightYesNo ( 'menuTestCase', 'read', '' ) == "YES") {
-      $goto = ' onClick="gotoElement(\'' . $otherClass . '\',\'' . $tc->id . '\');" style="cursor: pointer;" ';
+    $goto="";
+    if (!$print and securityCheckDisplayMenu(null, 'TestCase') and securityGetAccessRightYesNo('menuTestCase', 'read', '') == "YES") {
+      $goto=' onClick="gotoElement(\'' . $otherClass . '\',\'' . $tc->id . '\');" style="cursor: pointer;" ';
     }
-    $typeClass = 'id' . $otherClass . 'Type';
-    echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode ( SqlList::getNameFromId ( $otherClass . 'Type', $tc->$typeClass ) ) . '</td>';
+    $typeClass='id' . $otherClass . 'Type';
+    echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';
     echo '<td class="assignData" align="center" style="width:5%">#' . $tc->id . '</td>';
-    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" title="' . $tcr->comment . '" >' . htmlEncode ( $tc->name );
-    if ($tcr->comment and ! $print) {
+    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" title="' . $tcr->comment . '" >' . htmlEncode($tc->name);
+    if ($tcr->comment and !$print) {
       echo '&nbsp;&nbsp;<img src="img/note.png" />';
     }
     echo '</td>';
-    if (! $print and $class == 'TestSession') {
+    if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%" align="center">';
       if ($tc->description) {
-        echo '<img src="../view/css/images/description.png" title="' . i18n ( 'colDescription' ) . ":\n\n" . htmlEncode ( $tc->description ) . '" alt="desc" />';
+        echo '<img src="../view/css/images/description.png" title="' . i18n('colDescription') . ":\n\n" . htmlEncode($tc->description) . '" alt="desc" />';
         echo '&nbsp;';
       }
       if ($tc->result) {
-        echo '<img src="../view/css/images/result.png" title="' . i18n ( 'colExpectedResult' ) . ":\n\n" . htmlEncode ( $tc->result ) . '" alt="desc" />';
+        echo '<img src="../view/css/images/result.png" title="' . i18n('colExpectedResult') . ":\n\n" . htmlEncode($tc->result) . '" alt="desc" />';
         echo '&nbsp;';
       }
-      if (isset ( $tc->prerequisite ) and $tc->prerequisite) {
-        echo '<img src="../view/css/images/prerequisite.png" title="' . i18n ( 'colPrerequisite' ) . ":\n\n" . htmlEncode ( $tc->prerequisite ) . '" alt="desc" />';
+      if (isset($tc->prerequisite) and $tc->prerequisite) {
+        echo '<img src="../view/css/images/prerequisite.png" title="' . i18n('colPrerequisite') . ":\n\n" . htmlEncode($tc->prerequisite) . '" alt="desc" />';
       }
       echo '</td>';
     }
     echo '<td class="assignData" style="width:8%;text-align:left;border-right:0px;">';
-    echo colorNameFormatter ( i18n ( $st->name ) . '#split#' . $st->color );
+    echo colorNameFormatter(i18n($st->name) . '#split#' . $st->color);
     echo '</td>';
-    echo '<td class="assignData" style="width:10%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus == '3') ? '100' : '80') . '%; text-align: center;">';
+    echo '<td class="assignData" style="width:10%;border-left:0px;font-size:' . (($tcr->idTicket and $tcr->idRunStatus == '3')?'100':'80') . '%; text-align: center;">';
     if ($tcr->idTicket and $tcr->idRunStatus == '3') {
-      echo i18n ( 'Ticket' ) . ' #' . $tcr->idTicket;
+      echo i18n('Ticket') . ' #' . $tcr->idTicket;
     } else if ($tcr->statusDateTime) {
-      echo ' <i>(' . htmlFormatDateTime ( $tcr->statusDateTime, false ) . ')</i> ';
+      echo ' <i>(' . htmlFormatDateTime($tcr->statusDateTime, false) . ')</i> ';
     }
     echo '</td>';
     echo '</tr>';
@@ -2642,28 +2622,30 @@ function drawTestCaseRunFromObject($list, $obj, $refresh = false) {
   echo '</table>';
   echo '</td></tr>';
 }
+
 function drawOtherVersionFromObject($otherVersion, $obj, $type) {
   global $print;
-  usort ( $otherVersion, "OtherVersion::sort" );
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update', $obj ) == "YES";
+  usort($otherVersion, "OtherVersion::sort");
+  $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   if ($obj->idle == 1) {
-    $canUpdate = false;
+    $canUpdate=false;
   }
-  if (! $otherVersion or count ( $otherVersion ) == 0)
+  if (!$otherVersion or count($otherVersion) == 0)
     return;
   echo '<table>';
   foreach ( $otherVersion as $vers ) {
     if ($vers->id) {
       echo '<tr>';
-      if ($obj->id and $canUpdate and ! $print) {
+      if ($obj->id and $canUpdate and !$print) {
         echo '<td style="width:20px">';
-        echo '<img src="css/images/smallButtonRemove.png" ' . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId ( 'Version', $vers->idVersion ) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n ( 'otherVersionDelete' ) . '" class="smallButton"/> ';
+        echo '<img src="css/images/smallButtonRemove.png" ' . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId('Version', $vers->idVersion) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n('otherVersionDelete') . '" class="smallButton"/> ';
         echo '</td>';
         echo '<td style="width:20px">';
-        echo '<img src="css/images/smallButtonSwitch.png" ' . ' onClick="swicthOtherVersionToMain(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId ( 'Version', $vers->idVersion ) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n ( 'otherVersionSetMain' ) . '" class="smallButton"/> ';
+        echo '<img src="css/images/smallButtonSwitch.png" ' . ' onClick="swicthOtherVersionToMain(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId('Version', $vers->idVersion) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n('otherVersionSetMain') .
+             '" class="smallButton"/> ';
         echo '</td>';
       }
-      echo '<td>' . htmlEncode ( SqlList::getNameFromId ( 'Version', $vers->idVersion ) ) . '</td>';
+      echo '<td>' . htmlEncode(SqlList::getNameFromId('Version', $vers->idVersion)) . '</td>';
       echo '</tr>';
     }
   }
@@ -2675,209 +2657,209 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
 // ********************************************************************************************************
 
 // fetch information depending on, request
-$objClass = $_REQUEST ['objectClass'];
-if (isset ( $_REQUEST ['noselect'] )) {
-  $noselect = true;
+$objClass=$_REQUEST ['objectClass'];
+if (isset($_REQUEST ['noselect'])) {
+  $noselect=true;
 }
-if (! isset ( $noselect )) {
-  $noselect = false;
+if (!isset($noselect)) {
+  $noselect=false;
 }
 if ($noselect) {
-  $objId = "";
-  $obj = null;
+  $objId="";
+  $obj=null;
 } else {
-  $objId = $_REQUEST ['objectId'];
-  $obj = new $objClass ( $objId );
-  if (array_key_exists ( 'refreshNotes', $_REQUEST )) {
-    drawNotesFromObject ( $obj, true );
-    exit ();
+  $objId=$_REQUEST ['objectId'];
+  $obj=new $objClass($objId);
+  if (array_key_exists('refreshNotes', $_REQUEST)) {
+    drawNotesFromObject($obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshBillLines', $_REQUEST )) {
-    drawBillLinesFromObject ( $obj, true );
-    exit ();
+  if (array_key_exists('refreshBillLines', $_REQUEST)) {
+    drawBillLinesFromObject($obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshChecklistDefinitionLines', $_REQUEST )) {
-    drawChecklistDefinitionLinesFromObject ( $obj, true );
-    exit ();
+  if (array_key_exists('refreshChecklistDefinitionLines', $_REQUEST)) {
+    drawChecklistDefinitionLinesFromObject($obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshAttachments', $_REQUEST )) {
-    drawAttachmentsFromObject ( $obj, true );
-    exit ();
+  if (array_key_exists('refreshAttachments', $_REQUEST)) {
+    drawAttachmentsFromObject($obj, true);
+    exit();
   }
-  /* On assignment change refresh all item
-   * if (array_key_exists ( 'refreshAssignment', $_REQUEST )) {
-    drawAssignmentsFromObject($obj->_Assignment, $obj, true );
-    exit ();
-  }*/
-  if (array_key_exists ( 'refreshResourceCost', $_REQUEST )) {
-    drawResourceCostFromObject ( $obj->$_ResourceCost, $obj, true );
-    exit ();
+  /*
+   * On assignment change refresh all item if (array_key_exists ( 'refreshAssignment', $_REQUEST )) { drawAssignmentsFromObject($obj->_Assignment, $obj, true ); exit (); }
+   */
+  if (array_key_exists('refreshResourceCost', $_REQUEST)) {
+    drawResourceCostFromObject($obj->$_ResourceCost, $obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshVersionProject', $_REQUEST )) {
+  if (array_key_exists('refreshVersionProject', $_REQUEST)) {
     
-    FromObjectFromObject ( $obj->$_VersionProject, $obj, true );
-    exit ();
+    FromObjectFromObject($obj->$_VersionProject, $obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshDocumentVersion', $_REQUEST )) {
-    drawVersionFromObjectFromObject ( $obj->$_DocumentVersion, $obj, true );
-    exit ();
+  if (array_key_exists('refreshDocumentVersion', $_REQUEST)) {
+    drawVersionFromObjectFromObject($obj->$_DocumentVersion, $obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshTestCaseRun', $_REQUEST )) {
-    drawTestCaseRunFromObject ( $obj->_TestCaseRun, $obj, true );
-    exit ();
+  if (array_key_exists('refreshTestCaseRun', $_REQUEST)) {
+    drawTestCaseRunFromObject($obj->_TestCaseRun, $obj, true);
+    exit();
   }
-  if (array_key_exists ( 'refreshLinks', $_REQUEST )) {
-    if (property_exists ( $obj, '_Link' )) {
-      drawLinksFromObject ( $obj->_Link, $obj, null, true );
+  if (array_key_exists('refreshLinks', $_REQUEST)) {
+    if (property_exists($obj, '_Link')) {
+      drawLinksFromObject($obj->_Link, $obj, null, true);
     }
-    exit ();
+    exit();
   }
-  if (array_key_exists ( 'refreshHistory', $_REQUEST )) {
-    $treatedObjects [] = $obj;
+  if (array_key_exists('refreshHistory', $_REQUEST)) {
+    $treatedObjects []=$obj;
     foreach ( $obj as $col => $val ) {
-      if (is_object ( $val )) {
-        $treatedObjects [] = $val;
+      if (is_object($val)) {
+        $treatedObjects []=$val;
       }
     }
-    drawHistoryFromObjects ( true );
-    exit ();
+    drawHistoryFromObjects(true);
+    exit();
   }
 }
 // save the current object in session
-$print = false;
-if (array_key_exists ( 'print', $_REQUEST ) or isset ( $callFromMail )) {
-  $print = true;
+$print=false;
+if (array_key_exists('print', $_REQUEST) or isset($callFromMail)) {
+  $print=true;
 }
-if (! $print and ! $comboDetail and $obj) {
-  if (isset ( $_REQUEST ['directAccessIndex'] )) {
-    $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = $obj;
+if (!$print and !$comboDetail and $obj) {
+  if (isset($_REQUEST ['directAccessIndex'])) {
+    $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']]=$obj;
   } else {
-    $_SESSION ['currentObject'] = $obj;
+    $_SESSION ['currentObject']=$obj;
   }
 }
-$refresh = false;
-if (array_key_exists ( 'refresh', $_REQUEST )) {
-  $refresh = true;
+$refresh=false;
+if (array_key_exists('refresh', $_REQUEST)) {
+  $refresh=true;
 }
 
-$treatedObjects = array ();
+$treatedObjects=array();
 
-$displayWidth = '98%';
-if ($print and isset ( $outMode ) and $outMode == 'pdf') {
-  $printWidth = 1080;
+$displayWidth='98%';
+if ($print and isset($outMode) and $outMode == 'pdf') {
+  $printWidth=1080;
 } else {
-  $printWidth = 980;
+  $printWidth=980;
 }
-if (array_key_exists ( 'destinationWidth', $_REQUEST )) {
-  $width = $_REQUEST ['destinationWidth'];
-  $width -= 30;
-  $displayWidth = $width . 'px';
+if (array_key_exists('destinationWidth', $_REQUEST)) {
+  $width=$_REQUEST ['destinationWidth'];
+  $width-=30;
+  $displayWidth=$width . 'px';
 } else {
-  if (array_key_exists ( 'screenWidth', $_SESSION )) {
-    $detailWidth = round ( ($_SESSION ['screenWidth'] * 0.8) - 15 ); // 80% of screen - split barr - padding (x2)
+  if (array_key_exists('screenWidth', $_SESSION)) {
+    $detailWidth=round(($_SESSION ['screenWidth'] * 0.8) - 15); // 80% of screen - split barr - padding (x2)
   } else {
-    $displayWidth = '98%';
+    $displayWidth='98%';
   }
 }
 if ($print) {
-  $displayWidth = $printWidth . 'px'; // must match iFrame size (see main.php)
+  $displayWidth=$printWidth . 'px'; // must match iFrame size (see main.php)
 }
 
 if ($print) {
   echo '<br/>';
-  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;border: 0px solid #000000;">' . i18n ( $objClass ) . ' #' . ($objId + 0) . '</div>';
+  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;border: 0px solid #000000;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
   echo '<br/>';
 }
 
 // New refresh method
-if (array_key_exists ( 'refresh', $_REQUEST )) {
-  if (! $print) {
+if (array_key_exists('refresh', $_REQUEST)) {
+  if (!$print) {
     echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
   }
-  drawTableFromObject ( $obj );
-  exit ();
+  drawTableFromObject($obj);
+  exit();
 }
 ?>
-<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
-if (! $refresh and ! $print) {
-  ?>
+<div <?php echo ($print)?'x':'';?>
+  dojoType="dijit.layout.BorderContainer" class="background"><?php
+  if (!$refresh and !$print) {
+    ?>
     
-    <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top" style="z-index:3;height:35px;position:relative;overflow:visible !important;">  	
-       <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" style="display:none"></div>
+    <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
+    style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
+    <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
+      style="display: none"></div>
 		<?php  include 'objectButtons.php'; ?>
 	</div>
-	<div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
+  <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
 	<?php
-}
-if (! $print) {
-  ?>  
+  }
+  if (!$print) {
+    ?>  
 <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm"
-			name="objectForm" encType="multipart/form-data" action="" method="">
-			<script type="dojo/method" event="onSubmit">
+      name="objectForm" encType="multipart/form-data" action=""
+      method="">
+      <script type="dojo/method" event="onSubmit">
         // Don't do anything on submit, just cancel : no button is default => must click
 		    //submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
 		    return false;        
         </script>
-			<div style="width: 100%; height: 100%;">
-				<div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
-					region="top" style="width: 100%; height: 100%;"><?php
-}
-$noData = htmlGetNoDataMessage ( $objClass );
-$canRead = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'read', $obj ) == "YES";
-if (! $obj->id) {
-  $canUpdate = securityGetAccessRightYesNo ( 'menu' . get_class ( $obj ), 'update' ) == "YES";
-  if (! $canRead or ! $canUpdate) {
-    $accessRightRead = securityGetAccessRight ( 'menu' . get_class ( $obj ), 'read', $obj, $user );
-    $accessRightUpdate = securityGetAccessRight ( 'menu' . get_class ( $obj ), 'update', null, $user );
-    if (($accessRightRead == 'OWN' or $accessRightUpdate == 'OWN') and property_exists ( $obj, 'idUser' )) {
-      $canRead = true;
-      $obj->idUser = $user->id;
-    } else if (($accessRightRead == 'RES' or $accessRightUpdate == 'RES') and property_exists ( $obj, 'idResource' )) {
-      $canRead = true;
-      $obj->idResource = $user->id;
+      <div style="width: 100%; height: 100%;">
+        <div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
+          region="top" style="width: 100%; height: 100%;"><?php
+  }
+  $noData=htmlGetNoDataMessage($objClass);
+  $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
+  if (!$obj->id) {
+    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";
+    if (!$canRead or !$canUpdate) {
+      $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
+      $accessRightUpdate=securityGetAccessRight('menu' . get_class($obj), 'update', null, $user);
+      if (($accessRightRead == 'OWN' or $accessRightUpdate == 'OWN') and property_exists($obj, 'idUser')) {
+        $canRead=true;
+        $obj->idUser=$user->id;
+      } else if (($accessRightRead == 'RES' or $accessRightUpdate == 'RES') and property_exists($obj, 'idResource')) {
+        $canRead=true;
+        $obj->idResource=$user->id;
+      }
     }
   }
-}
-
-if ($noselect) {
-  echo $noData;
-} else if (! $canRead) {
-  echo htmlGetNoAccessMessage ( $objClass );
-  echo "</div></form>";
-  exit ();
-} else {
-  if (! $print or $comboDetail) {
-    echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
+  
+  if ($noselect) {
+    echo $noData;
+  } else if (!$canRead) {
+    echo htmlGetNoAccessMessage($objClass);
+    echo "</div></form>";
+    exit();
+  } else {
+    if (!$print or $comboDetail) {
+      echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
+    }
+    drawTableFromObject($obj);
   }
-  drawTableFromObject ( $obj );
-}
-
-if (! $print) {
-  ?> 
+  
+  if (!$print) {
+    ?> 
   </div>
-			</div>
-		</form>
+      </div>
+    </form>
   <?php
-}
-$widthPct=setWidthPct($displayWidth, $print, $printWidth);
-
-
-if (! $noselect and isset ( $obj->_BillLine )) {
-  ?> <br />
+  }
+  $widthPct=setWidthPct($displayWidth, $print, $printWidth);
+  
+  if (!$noselect and isset($obj->_BillLine)) {
+    ?> <br />
   <?php if ($print) {?>
 <table width="<?php echo $widthPct;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('sectionBillLines');?></td>
-			</tr>
-			<tr>
-				<td><?php drawBillLinesFromObject($obj);?></td>
-			</tr>
-		</table>
+      <tr>
+        <td class="section"><?php echo i18n('sectionBillLines');?></td>
+      </tr>
+      <tr>
+        <td><?php drawBillLinesFromObject($obj);?></td>
+      </tr>
+    </table>
   <?php
-  
-} else {
-    $titlePane = $objClass . "_billLine";
-    ?>
+    } else {
+      $titlePane=$objClass . "_billLine";
+      ?>
 <div style="width: <?php echo $widthPct;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionBillLines');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -2886,23 +2868,22 @@ if (! $noselect and isset ( $obj->_BillLine )) {
      onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawBillLinesFromObject($obj); ?>
 </div>
 <?php }?> <?php
-}
-if (! $noselect and isset ( $obj->_ChecklistDefinitionLine )) {
-  ?> <br />
+  }
+  if (!$noselect and isset($obj->_ChecklistDefinitionLine)) {
+    ?> <br />
   <?php if ($print) {?>ChecklistDefinitionLine
 <table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('sectionChecklistLines');?></td>
-			</tr>
-			<tr>
-				<td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
-			</tr>
-		</table>
+      <tr>
+        <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
+      </tr>
+      <tr>
+        <td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
+      </tr>
+    </table>
   <?php
-  
-} else {
-    $titlePane = $objClass . "_checklistDefinitionLine";
-    ?>
+    } else {
+      $titlePane=$objClass . "_checklistDefinitionLine";
+      ?>
 <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionChecklistLines');?>"
      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -2912,32 +2893,31 @@ if (! $noselect and isset ( $obj->_ChecklistDefinitionLine )) {
      <?php  drawChecklistDefinitionLinesFromObject($obj); ?>
 </div>
 <?php }?> <?php
-}
-
-$displayHistory = 'NO';
-if (array_key_exists ( 'displayHistory', $_SESSION )) {
-  $displayHistory = $_SESSION ['displayHistory'];
-}
-if ($obj and (property_exists ( $obj, '_noHistory' ) or property_exists ( $obj, '_noDisplayHistory' ))) {
-  $displayHistory = 'NO';
-}
-if ($print and Parameter::getUserParameter ( 'printHistory' ) != 'YES') {
-  $displayHistory = 'NO';
-}
-echo '<br/>';
-if ((! $noselect) and $displayHistory != 'NO' and ! $comboDetail) {
-  if ($print) {
-    ?>
-<table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('elementHistoty');?></td>
-			</tr>
-		</table>
-<?php drawHistoryFromObjects();?> <?php
+  }
   
-} else {
-    $titlePane = $objClass . "_history";
-    ?>
+  $displayHistory='NO';
+  if (array_key_exists('displayHistory', $_SESSION)) {
+    $displayHistory=$_SESSION ['displayHistory'];
+  }
+  if ($obj and (property_exists($obj, '_noHistory') or property_exists($obj, '_noDisplayHistory'))) {
+    $displayHistory='NO';
+  }
+  if ($print and Parameter::getUserParameter('printHistory') != 'YES') {
+    $displayHistory='NO';
+  }
+  echo '<br/>';
+  if ((!$noselect) and $displayHistory != 'NO' and !$comboDetail) {
+    if ($print) {
+      ?>
+<table width="<?php echo $printWidth;?>px;">
+      <tr>
+        <td class="section"><?php echo i18n('elementHistoty');?></td>
+      </tr>
+    </table>
+<?php drawHistoryFromObjects();?> <?php
+    } else {
+      $titlePane=$objClass . "_history";
+      ?>
 <div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
        open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -2945,12 +2925,11 @@ if ((! $noselect) and $displayHistory != 'NO' and ! $comboDetail) {
        onHide="saveCollapsed('<?php echo $titlePane;?>');"
        onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawHistoryFromObjects();?>
 </div>
-		<br />
+    <br />
 <?php }?> <?php
-
-} else {
-  $titlePane = $objClass . "_history";
-  ?>
+  } else {
+    $titlePane=$objClass . "_history";
+    ?>
 <div style="display:none; width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
        title="<?php echo i18n('elementHistoty');?>"
        open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
@@ -2958,53 +2937,50 @@ if ((! $noselect) and $displayHistory != 'NO' and ! $comboDetail) {
        onHide="saveCollapsed('<?php echo $titlePane;?>');"
        onShow="saveExpanded('<?php echo $titlePane;?>');" ></div>
 	<?php
-}
-?> <?php if ( ! $refresh and  ! $print) { ?></div>
+  }
+  ?> <?php if ( ! $refresh and  ! $print) { ?></div>
 <?php
 }
 ?></div>
 <?php
 
 if ($print) {
-  $crit = "nameChecklistable='" . get_class ( $obj ) . "'";
-  $type = 'id' . get_class ( $obj ) . 'Type';
-  if (property_exists ( $obj, $type )) {
-    $crit .= ' and (idType is null ';
+  $crit="nameChecklistable='" . get_class($obj) . "'";
+  $type='id' . get_class($obj) . 'Type';
+  if (property_exists($obj, $type)) {
+    $crit.=' and (idType is null ';
     if ($obj->$type) {
-      $crit .= ' or idType=' . $obj->$type;
+      $crit.=' or idType=' . $obj->$type;
     }
-    $crit .= ')';
+    $crit.=')';
   }
-  $cd = new ChecklistDefinition ();
-  $cdList = $cd->getSqlElementsFromCriteria ( null, false, $crit );
-  $user = $_SESSION ['user'];
-  $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array (
-      'idProfile' => $user->idProfile,
-      'scope' => 'checklist' 
-  ) );
-  $list = new ListYesNo ( $habil->rightAccess );
-  if ($list->code == 'YES' and count ( $cdList ) > 0 and $obj->id) {
+  $cd=new ChecklistDefinition();
+  $cdList=$cd->getSqlElementsFromCriteria(null, false, $crit);
+  $user=$_SESSION ['user'];
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'checklist'));
+  $list=new ListYesNo($habil->rightAccess);
+  if ($list->code == 'YES' and count($cdList) > 0 and $obj->id) {
     include_once "../tool/dynamicDialogChecklist.php";
   }
 }
 
 function setWidthPct($displayWidth, $print, $printWidth) {
-	if ($displayWidth > 1380) {
-		$nbCol=3;
-	} else if ($displayWidth > 900) {
-		$nbCol=2;
-	} else {
-		$nbCol=1;
-	}
-	$widthPct = round ( 98 / $nbCol ) . "%";
-	if ($nbCol == '1') {
-		$widthPct = $displayWidth;
-	}
-	if (substr ( $displayWidth, - 2, 2 ) == "px") {
-		$val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 );
-		$widthPct = floor ( ($val / $nbCol) - 4) . "px";
-	}
-	if ($print) {
+  if ($displayWidth > 1380) {
+    $nbCol=3;
+  } else if ($displayWidth > 900) {
+    $nbCol=2;
+  } else {
+    $nbCol=1;
+  }
+  $widthPct=round(98 / $nbCol) . "%";
+  if ($nbCol == '1') {
+    $widthPct=$displayWidth;
+  }
+  if (substr($displayWidth, -2, 2) == "px") {
+    $val=substr($displayWidth, 0, strlen($displayWidth) - 2);
+    $widthPct=floor(($val / $nbCol) - 4) . "px";
+  }
+  if ($print) {
 		$widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
 	}
 	return $widthPct;
