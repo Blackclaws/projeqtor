@@ -36,7 +36,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $refId;
   public $refName;
   //public $_tab_10_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '',  '', '','startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
-  public $_tab_4_3 = array('requested', 'validated', 'planned', 'real', 'startDate', 'endDate', 'duration');
+  public $_tab_4_3_smallLabel = array('requested', 'validated', 'planned', 'real', 'startDate', 'endDate', 'duration');
   public $initialStartDate;
   public $validatedStartDate;
   public $plannedStartDate;
@@ -49,7 +49,7 @@ class ActivityPlanningElement extends PlanningElement {
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $_tab_5_2 = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
+  public $_tab_5_2_smallLabel = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
   public $validatedWork;
   public $assignedWork;
   public $realWork;

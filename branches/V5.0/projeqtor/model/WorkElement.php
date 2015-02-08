@@ -35,7 +35,7 @@ class WorkElement extends SqlElement {
 	public $refId;
 	public $idActivity;
 	public $refName;
-	public $_tab_4_1 = array('planned', 'real','left', '','work');
+	public $_tab_3_1 = array('planned', 'real','left','work');
 	public $plannedWork;
 	public $realWork;
 	public $leftWork;
@@ -319,7 +319,7 @@ class WorkElement extends SqlElement {
 	 *         must be redefined in the inherited class
 	 */
 	public function drawSpecificItem($item) {
-		global $print, $comboDetail;
+		global $print, $comboDetail, $nbColMax;
 		$result = "";
 		$refObj = new $this->refType ( $this->refId );
 		if ($item == 'run' and ! $comboDetail and ! $this->idle) {
@@ -333,8 +333,8 @@ class WorkElement extends SqlElement {
 			}
 			$canUpdate = (securityGetAccessRightYesNo ( 'menu' . $this->refType, 'update', $refObj ) == 'YES');
 			if ($user->isResource and $canUpdate and $this->id) {
-				$result .= '<div style="position:absolute; right: 35%; top : 210px;
-                     border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
+				$result .= '<div style="position:absolute; right: '.(($nbColMax==3)?'35':'2').'%;';
+        $result .= ' border: 0px solid #FFFFFF; -moz-border-radius: 15px; border-radius: 15px; text-align: right;">';
 				$result .= '<button id="startStopWork" dojoType="dijit.form.Button" showlabel="true"';
 				if (($this->ongoing and $this->idUser != $user->id) or ! $user->isResource) {
 					$result .= ' disabled="disabled" ';

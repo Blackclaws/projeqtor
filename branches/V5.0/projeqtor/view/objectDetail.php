@@ -47,7 +47,7 @@ $readOnly = false;
  */
 function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, 
-  $printWidth, $detailWidth, $readOnly, $largeWidth, $widthPct;
+  $printWidth, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
   //if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   //  $obj->splitLongFields ();
   //}
@@ -108,6 +108,7 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
   $internalTableCols = 0;
   $internalTableRows = 0;
   $internalTableCurrentRow = 0;
+  $internalTableSpecial='';
   $internalTableRowsCaptions = array ();
   $classObj = get_class ( $obj );
   if ($obj->id == '0') {
@@ -161,6 +162,11 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
       $decomp = explode ( "_", $col );
       $internalTableCols = $decomp [2];
       $internalTableRows = $decomp [3];
+      $internalTableSpecial='';
+debugLog($decomp);
+      if (count($decomp)>4) {
+        $internalTableSpecial=$decomp[4];
+      }
       $internalTable = $internalTableCols * $internalTableRows;
       $internalTableRowsCaptions = array_slice ( $val, $internalTableCols );
       $internalTableCurrentRow = 0;
@@ -376,9 +382,9 @@ function drawTableFromObject($obj, $included = false, $parentReadOnly = false) {
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
-          echo '<td class="smallLabel" style="width:' . $labelStyleWidth . ';">';
+          echo '<td class="'.$internalTableSpecial.'" style="width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
-            echo '<label class="label smallLabel">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
+            echo '<label class="label '.$internalTableSpecial.'">' . htmlEncode ( $obj->getColCaption ( $internalTableRowsCaptions [$internalTableCurrentRow] ) ) . '&nbsp;:&nbsp;</label>';
           }
           echo '</td><td style="width:90%;white-space:nowrap;">';
           $internalTableCurrentRow ++;
