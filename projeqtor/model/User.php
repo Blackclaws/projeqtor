@@ -104,6 +104,8 @@ class User extends SqlElement {
 
   private $_affectedProjects;  // Array listing all affected projects
   private $_affectedProjectsIncludingClosed;  // Array listing all affected projects
+  private $_specificAffectedProfiles; // Array listing all projects affected with profile different from default
+  private $_specificAffectedProfilesIncludingClosed; // Array listing all projects affected with profile different from default
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;
@@ -298,7 +300,7 @@ class User extends SqlElement {
    */
   public function getAccessControlRights() {
     // _accessControlRights fetched yet, just return it
-    if ($this->_accessControlRights) {
+    if ($this->_accessControlRights) {    
       return $this->_accessControlRights;
     }
     $menuList=SqlList::getListNotTranslated('Menu');
@@ -372,22 +374,42 @@ class User extends SqlElement {
 	      	$result[$idSubPrj]=$nameSubPrj;
 	      }
     	}
+    	
     }
-    // Also get Project user have created
-    /* V1.7 => removed : it's not because user created the project that he is alowed to see all data about it
-    $prj=new Project();
-    $crit = array("idUser"=>$this->id);
-    $prjList=$prj->getSqlElementsFromCriteria($crit,false);
-    foreach ($prjList as $prj) {
-      if ( ! array_key_exists($prj->id, $result) ) {
-        $result[$prj->id]=$prj->name;
-      }
-    }
-    */
     if ($limitToActiveProjects) {
       $this->_affectedProjects=$result;
     } else {
       $this->_affectedProjectsIncludingClosed=$result;
+    }
+    return $result;
+  }
+
+  /** =========================================================================
+   * Get the list of all projects where affected profile is different from main profile
+   * @return a list of projects (idProject=>idProfile)
+   */
+  public function getSpecificAffectedProfiles($limitToActiveProjects=true) {
+    if ($this->_specificAffectedProfiles and $limitToActiveProjects) {
+      return $this->_specificAffectedProfiles;
+    } else if ($this->_specificAffectedProfilesIncludingClosed and ! $limitToActiveProjects) {
+      return $this->_specificAffectedProfilesIncludingClosed;
+    }
+    $result=array();
+    $aff=new Affectation();
+    $crit = array("idResource"=>$this->id);
+    if ($limitToActiveProjects) {
+      $crit["idle"]='0';
+    }
+    $affList=$aff->getSqlElementsFromCriteria($crit,false);
+    foreach ($affList as $aff) {
+      if ($aff->idProfile!=$this->idProfile) {
+        $result[$aff->idProject]=$aff->idProfile;
+      }  
+    }
+    if ($limitToActiveProjects) {
+      $this->_specificAffectedProfiles=$result;
+    } else {
+      $this->_specificAffectedProfilesIncludingClosed=$result;
     }
     return $result;
   }
@@ -525,6 +547,8 @@ class User extends SqlElement {
     $this->_affectedProjectsIncludingClosed=null;
     $this->_hierarchicalViewOfVisibleProjects=null;
     $this->_hierarchicalViewOfVisibleProjectsNotClosed=null;
+    $this->_specificAffectedProfiles=null;
+    $this->_specificAffectedProfilesIncludingClosed=null;
   }
   
   public static function resetAllVisibleProjects($idProject=null, $idUser=null) {
