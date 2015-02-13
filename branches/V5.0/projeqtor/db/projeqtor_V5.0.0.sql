@@ -39,6 +39,10 @@ CREATE TABLE `${prefix}menuselector` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+INSERT INTO `${prefix}indicatorable` (`id`,`name`, `idle`) VALUES (13,'Meeting', '0');
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('13', 'Meeting', '???', '0');
+
 ALTER TABLE `${prefix}affectation` ADD `idProfile` int(12) unsigned;
 UPDATE `${prefix}affectation` SET idProfile=(select idProfile from `${prefix}resource` R where R.id=idResource); 
 
