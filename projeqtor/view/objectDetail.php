@@ -1227,9 +1227,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection) {
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
   
-  if ($prevSection and !$print) {
+  //if ($prevSection and !$print) {
+  if ($prevSection) { 
     echo '</table>';
-    echo '</div>';
+    if (!$print) {
+      echo '</div>';
+    }
   }
   if (!$print) {
     $titlePane=$classObj . "_" . $section;

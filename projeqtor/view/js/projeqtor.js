@@ -792,6 +792,27 @@ function finalizeMessageDisplay(destination, validationType) {
     if (contentWidget) {
       returnMessage=contentWidget.get('content');
     }
+    console.log("***** ERROR ***** on finalizeMessageDisplay("+destination+", "+validationType+")");
+    if (! contentNode) {
+      console.log("contentNode unknown");
+    } else {
+      console.log("contentNode="+contentNode.innerHTML);
+    }
+    if (! contentWidget) {
+      console.log("contentWidget unknown");
+    } else {
+      console.log("contentWidget="+contentWidget.get("content"));
+    }
+    if (! lastOperationStatus) {
+      console.log("lastOperationStatus unknown");
+    } else {
+      console.log("lastOperationStatus="+lastOperationStatus.value);
+    }
+    if (! lastOperation) {
+      console.log("lastOperation unknown");
+    } else {
+      console.log("lastOperation="+lastOperation.value);
+    }
     showError(i18n("errorFinalizeMessage", new Array(destination,returnMessage)));
     hideWait();
     return;    
@@ -803,7 +824,7 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
-console.log("lastOperationStatus="+lastOperationStatus.value);
+//console.log("lastOperationStatus="+lastOperationStatus.value);
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
@@ -1071,7 +1092,7 @@ console.log("lastOperationStatus="+lastOperationStatus.value);
       node: contentNode, 
       duration: 3000,
       onEnd: function(){
-        contentWidget.set("content","");
+        //contentWidget.set("content","");
         contentNode.style.display="none"; 
       }  
     }).play(
@@ -1119,7 +1140,7 @@ function clickCloseBoxOnMessage(destination) {
     node: contentNode, 
     duration: 500,
     onEnd: function(){
-      contentWidget.set("content","");
+      //contentWidget.set("content","");
       contentNode.style.display="none"; 
     }  
   }).play(
