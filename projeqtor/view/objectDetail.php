@@ -2420,6 +2420,9 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     return;
   }
   $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create') == "YES";
+  if (! (securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj) == "YES") ) {
+    $canCreate=false;
+  }
   if ($obj->idle == 1) {
     $canUpdate=false;
     $canCreate=false;
@@ -2825,7 +2828,9 @@ if (array_key_exists('refresh', $_REQUEST)) {
       }
     }
   }
-  
+  if (get_class($obj)=='Project' and isset($obj->codeType) and $obj->codeType=='TMP') {
+    $canRead=true;
+  }  
   if ($noselect) {
     echo $noData;
   } else if (!$canRead) {

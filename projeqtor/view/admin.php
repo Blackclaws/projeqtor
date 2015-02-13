@@ -133,7 +133,7 @@
                 </td>
               </tr>
               <tr>
-                <td class="label"><?php echo i18n("colCreationDateTime"). "&nbsp;:&nbsp;";?></td>
+                <td class="label"><?php echo i18n("colSendDate"). "&nbsp;:&nbsp;";?></td>
                 <td>
                   <div dojoType="dijit.form.DateTextBox" name="alertSendDate" id="alertSendDate"
 	                  <?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
