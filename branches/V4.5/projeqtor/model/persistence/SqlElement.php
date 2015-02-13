@@ -1370,30 +1370,42 @@ abstract class SqlElement {
 				}
 			}
 		}
-		if ($withAssignments and property_exists($this,"_Assignment") and property_exists($newObj,"_Assignment")) {
-			$ass=new Assignment();
-	  	$crit=array('refType'=>get_class($this), 'refId'=>$this->id);
-	  	$lstAss=$ass->getSqlElementsFromCriteria($crit);
-	  	foreach ($lstAss as $ass) {
-	  		$ass->id=null;
-	  		$ass->idProject=$newObj->idProject;
-	  		$ass->refType=$newClass;
-	  		$ass->refId=$newObj->id;
-	  		$ass->comment=null;
-	  		$ass->realWork=0;
-	  		$ass->leftWork=$ass->assignedWork;
-	  		$ass->plannedWork=$ass->assignedWork;
-	  		$ass->realStartDate=null;
-	  		$ass->realEndDate=null;
-	  		$ass->plannedStartDate=null;
-	  		$ass->plannedEndDate=null;
-	  		$ass->realCost=0;
-	  		$ass->leftCost=$ass->assignedCost;
-	  		$ass->plannedCost=$ass->assignedCost;
-	  		$ass->billedWork=null;
-	  		$ass->idle=0;
-	  		$ass->save();
-	  	}
+			if ($withAssignments and property_exists($this,"_Assignment") and property_exists($newObj,"_Assignment")) {
+		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', 
+		      array('idProfile' => $_SESSION['user']->idProfile,'scope' => 'assignmentEdit'));
+		  if ($habil and $habil->rightAccess == 1) {
+  			$ass=new Assignment();
+  			// First delete existing Assignment (possibly created from Responsible)
+  			if (property_exists($this, 'idResource') and $this->idResource) {
+  			  $crit=array('idResource'=>$this->idResource,'refType'=>get_class($this), 'refId'=>$this->id);
+  			  $assResp=SqlElement::getSingleSqlElementFromCriteria('Assignment', $crit);
+  			  if ($assResp and $assResp->id) {
+  			    $assResp->delete();
+  			  }
+  			}
+  	  	$crit=array('refType'=>get_class($this), 'refId'=>$this->id);
+  	  	$lstAss=$ass->getSqlElementsFromCriteria($crit);
+  	  	foreach ($lstAss as $ass) {
+  	  		$ass->id=null;
+  	  		$ass->idProject=$newObj->idProject;
+  	  		$ass->refType=$newClass;
+  	  		$ass->refId=$newObj->id;
+  	  		$ass->comment=null;
+  	  		$ass->realWork=0;
+  	  		$ass->leftWork=$ass->assignedWork;
+  	  		$ass->plannedWork=$ass->assignedWork;
+  	  		$ass->realStartDate=null;
+  	  		$ass->realEndDate=null;
+  	  		$ass->plannedStartDate=null;
+  	  		$ass->plannedEndDate=null;
+  	  		$ass->realCost=0;
+  	  		$ass->leftCost=$ass->assignedCost;
+  	  		$ass->plannedCost=$ass->assignedCost;
+  	  		$ass->billedWork=null;
+  	  		$ass->idle=0;
+  	  		$ass->save();
+  	  	}
+		  }
 		}
 		$newObj->_copyResult=$returnValue;
 		return $newObj;
