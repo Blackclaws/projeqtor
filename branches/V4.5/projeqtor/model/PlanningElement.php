@@ -98,7 +98,7 @@ class PlanningElement extends SqlElement {
                                   "plannedEndDate"=>"readonly,noImport",
                                   "plannedDuration"=>"readonly,noImport",
                                   "plannedWork"=>"readonly,noImport",
-  								  "notPlannedWork"=>"hidden",
+  								                "notPlannedWork"=>"hidden",
                                   "realStartDate"=>"readonly,noImport",
                                   "realEndDate"=>"readonly,noImport",
                                   "realDuration"=>"readonly,noImport",

@@ -41,7 +41,7 @@ foreach ($csList as $cs) {
 	}
 }
 $htmlresult='<td valign="top">';
-$FieldsArray=$obj->getFieldsArray();
+$FieldsArray=$obj->getFieldsArray(true);
 foreach($FieldsArray as $key => $val) {
 	if ( ! SqlElement::isVisibleField($val) ) {
 		unset($FieldsArray[$key]);
