@@ -784,19 +784,23 @@ class User extends SqlElement {
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($ldapCnx, $paramLdap_base_dn, $filter_r);
 			if (!$result) {
+			  $this->unsuccessfullLogin();
 				return "login";
 			}
 			$result_user = ldap_get_entries($ldapCnx, $result);
 			if ($result_user['count'] == 0) {
+			  $this->unsuccessfullLogin();
 				return "login";
 			}
 		  if ($result_user['count'] > 1) {
+		    $this->unsuccessfullLogin();
         return "login";
       }
 			$first_user = $result_user[0];
 			$ldap_user_dn = $first_user['dn'];
       if (strtolower($ldap_user_dn)==strtolower($paramLdap_search_user)) {
       	traceLog("authenticate - Filter error : filter retrieved admin user (LDAP user in global parameters)" );
+      	$this->unsuccessfullLogin();
       	return "login";
       } 
 			
@@ -806,9 +810,11 @@ class User extends SqlElement {
 				$bind_user = @ldap_bind($ldapCnx, $ldap_user_dn, $parampassword);
 			} catch (Exception $e) {
         traceLog("authenticate - LdapBind Error : " . $e->getMessage() );
+        $this->unsuccessfullLogin();
         return "login";
       }
 			if (! $bind_user or !$parampassword) {
+			  $this->unsuccessfullLogin();
 				return "login";
 			}
 			disableCatchErrors();
@@ -825,9 +831,6 @@ class User extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
-				  if ($rememberMe) {
-				  	$this->setCookieHash();
-				  }
 				  $_SESSION['user']=$this;
 				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
@@ -866,6 +869,7 @@ class User extends SqlElement {
 				}					
 			}
 	  }
+	  $this->successfullLogin($rememberMe);
 	  $_SESSION['user']=$this;
 	  return "OK";     
   }

@@ -277,7 +277,7 @@ class ActivityMain extends SqlElement {
     }
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
-      return $result;    	
+      return $result;
     }
     if ( $this->idResource and trim($this->idResource) != ''
       and ! trim($oldResource)
