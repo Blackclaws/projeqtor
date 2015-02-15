@@ -22,6 +22,9 @@ ALTER TABLE `${prefix}project` CHANGE  `description` `description` text;
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` text,
  CHANGE `result` `result` text;
 
+ALTER TABLE `${prefix}message` CHANGE `description` `description` text;
+ALTER TABLE `${prefix}message` ADD `showOnLogin` int(1) unsigned DEFAULT 0;
+
 RENAME TABLE `${prefix}attachement` TO `${prefix}attachment`;
 
 UPDATE `${prefix}parameter` SET parameterCode='paramAttachmentDirectory' WHERE parameterCode='paramAttachementDirectory';
@@ -39,9 +42,9 @@ CREATE TABLE `${prefix}menuselector` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `${prefix}indicatorable` (`id`,`name`, `idle`) VALUES (13,'Meeting', '0');
-INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
-('13', 'Meeting', '???', '0');
+--INSERT INTO `${prefix}indicatorable` (`id`,`name`, `idle`) VALUES (13,'Meeting', '0');
+--INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+--('13', 'Meeting', '???', '0');
 
 ALTER TABLE `${prefix}affectation` ADD `idProfile` int(12) unsigned;
 UPDATE `${prefix}affectation` SET idProfile=(select idProfile from `${prefix}resource` R where R.id=idResource); 

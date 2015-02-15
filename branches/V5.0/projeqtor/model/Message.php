@@ -38,6 +38,7 @@ class Message extends SqlElement {
   public $idProfile;
   public $idProject;
   public $idUser;
+  public $showOnLogin;
   public $idle;
   public $_col_2_2_Message;
   public $description;

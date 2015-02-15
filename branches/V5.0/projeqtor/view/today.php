@@ -75,7 +75,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         //echo'<br />';
         $type=new MessageType($msg->idMessageType);
         echo '<tr><td class="messageHeader" style="color:' . $type->color . ';">' . htmlEncode($msg->name) . '</td></tr>';
-        echo '<tr><td class="messageData" style="color:' . $type->color . ';">' . htmlEncode($msg->description, 'print') . '</td></tr>';
+        echo '<tr><td class="messageData" >' . $msg->description . '</td></tr>';
       }
       echo'</table>';
     }
@@ -277,8 +277,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
              '    <div class="colorHealth" style="'.$styleHealth.'background:'.$healthColor.';" title="'.$healthName.'">&nbsp;</div>'.
              '  </td>';
           }
-          echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>';
-          echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?SqlList::getNameFromId('OverallProgress',$proj->idOverallProgress):""). '</td>';
+          echo '  <td style="width:'.$width.'px" class="messageDataValue'.($show?'':'Grey').'">' . ($show?displayProgress(htmlDisplayPct($progress),$planned,$left, $real,true,true):'') . '</td>';
+          echo '  <td style="width:'.$width.'px" class="messageDataValue'.($show?'':'Grey').'">' . ($show?SqlList::getNameFromId('OverallProgress',$proj->idOverallProgress):""). '</td>';
           if ($workVisibility=='ALL') {
             echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>';
           }

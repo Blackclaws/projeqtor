@@ -90,13 +90,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     }
   }
   // Set some king of responsive design : number of display columns depends on screen width
-  if ($displayWidth > 1380) {
-    $nbColMax=3;
-  } else if ($displayWidth > 900) {
-    $nbColMax=2;
-  } else {
-    $nbColMax=1;
-  }
+  $nbColMax=getNbColMax($displayWidth, $print, $printWidth, $obj);
   $currentCol=0;
   $nbCol=$nbColMax;
   
@@ -206,7 +200,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       /*
        * $widthPct = round ( 98 / $nbCol ) . "%"; if ($nbCol == '1') { $widthPct = $displayWidth; } if (substr ( $displayWidth, - 2, 2 ) == "px") { $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 ); $widthPct = floor ( ($val / $nbCol) - 4) . "px"; } if ($print) { $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px"; }
        */
-      $widthPct=setWidthPct($displayWidth, $print, $printWidth);
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
       $prevSection=$section;
       $split=explode('_', $col);
       if (count($split) > 1) {
@@ -631,7 +625,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // password not visible
         echo '<input type="password"  ';
         echo $name;
-        echo ' class="display" style="width:150px"';
+        echo ' class="display" style="width:150px;position:relative; left: 3px;"';
         echo ' readonly tabindex="-1" ';
         echo ' value="' . htmlEncode($val) . '" />';
       } else if ($col == 'color' and $dataLength == 7) {
@@ -1116,9 +1110,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ',onKeyDown:function(event){top.dojo.byId(\'' . $fieldId . '\').value=this.value;console.log(top.dojo.byId(\'' . $fieldId . '\').value);top.onKeyDownFunction(event,\'' . $fieldId . '\');}'; // hard coding default event
         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
-        if (1)
-          echo ",'|','fullScreen'";
-          // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
+        if (1) echo ",'|','fullScreen'";
+        // Font Choice ...
+        if (0) echo ",'fontName','fontSize'";
+        // Print option
+        //if (1) echo ",'|','print'"; // Not setup
+        // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
         echo "]}";
         echo '" ';
         echo $attributes;
@@ -2784,16 +2781,17 @@ if (array_key_exists('refresh', $_REQUEST)) {
   exit();
 }
 ?>
-<div <?php echo ($print)?'x':'';?>
-  dojoType="dijit.layout.BorderContainer" class="background"><?php
+<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
   if (!$refresh and !$print) {
     ?>
-    
-    <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
+  <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
     style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
     <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
       style="display: none"></div>
 		<?php  include 'objectButtons.php'; ?>
+		<div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');">
+      <div id="detailBarIcon" align="center"></div>
+    </div>
 	</div>
   <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
 	<?php
@@ -2851,7 +2849,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     </form>
   <?php
   }
-  $widthPct=setWidthPct($displayWidth, $print, $printWidth);
+  $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
   
   if (!$noselect and isset($obj->_BillLine)) {
     ?> <br />
@@ -2972,14 +2970,8 @@ if ($print) {
   }
 }
 
-function setWidthPct($displayWidth, $print, $printWidth) {
-  if ($displayWidth > 1380) {
-    $nbCol=3;
-  } else if ($displayWidth > 900) {
-    $nbCol=2;
-  } else {
-    $nbCol=1;
-  }
+function setWidthPct($displayWidth, $print, $printWidth, $obj) {
+  $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);
   $widthPct=round(98 / $nbCol) . "%";
   if ($nbCol == '1') {
     $widthPct=$displayWidth;
@@ -2993,4 +2985,24 @@ function setWidthPct($displayWidth, $print, $printWidth) {
 	}
 	return $widthPct;
 }
+function getNbColMax($displayWidth, $print, $printWidth, $obj) {
+  if ($displayWidth > 1380) {
+    $nbColMax=3;
+  } else if ($displayWidth > 900) {
+    $nbColMax=2;
+  } else {
+    $nbColMax=1;
+  }
+  if (property_exists($obj, '_nbColMax')) {
+    if ($nbColMax > $obj->_nbColMax) {
+      $nbColMax=$obj->_nbColMax;
+    }
+  } else {
+    if ($nbColMax > 2) {
+      $nbColMax=2;
+    }
+  }
+  return $nbColMax;
+}
+
 ?>

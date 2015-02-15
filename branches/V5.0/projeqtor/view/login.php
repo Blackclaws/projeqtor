@@ -31,6 +31,12 @@
    header ('Content-Type: text/html; charset=UTF-8');
    scriptLog('   ->/view/login.php');
    $_SESSION['application']="PROJEQTOR";
+   if (getSessionValue('setup', null, true)) {
+     $msgList=array();
+   } else {
+     $msg=new Message();
+     $msgList=$msg->getSqlElementsFromCriteria(array('showOnLogin'=>'1', 'idle'=>'0'));
+   }
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
@@ -95,7 +101,13 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 }
 ?>
   <div id="waitLogin" style="display:none" >
-  </div> 
+  </div>
+  <div class="loginMessageContainer">
+  	<?php foreach ($msgList as $msg) {?>  
+    <div class="loginMessage"><?php echo $msg->description;?>
+    </div>
+    <?php }?>
+  </div>
   <table align="center" width="100%" height="100%" class="loginBackground">
     <tr height="100%">
 	    <td width="100%" align="center">
