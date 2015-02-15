@@ -354,12 +354,14 @@ class PlannedWork extends GeneralWork {
 	            //$groupAss[$ass->idResource]['TogetherWork']=array();
 		          $groupAss[$ass->idResource]['capacity']=$capacity;
 		          $groupAss[$ass->idResource]['ResourceWork']=$ress;
-	            $groupAss[$ass->idResource]['assRate']=$assRate;	          
+	            $groupAss[$ass->idResource]['assRate']=$assRate;	
+	            $groupAss[$ass->idResource]['calendar']=$r->idCalendarDefinition;
 	          } else {
 	          	$groupAss[$ass->idResource]['leftWork']+=$ass->leftWork;
 	          	$assRate=$groupAss[$ass->idResource]['assRate']+$assRate;
 	          	if ($assRate>1) $assRate=1;
 	          	$groupAss[$ass->idResource]['assRate']=$assRate;
+	          	$groupAss[$ass->idResource]['calendar']=$r->idCalendarDefinition;
 	          }
         	  if ($withProjectRepartition) {
               foreach ($listTopProjects as $idProject) {
@@ -548,8 +550,10 @@ class PlannedWork extends GeneralWork {
                 	foreach($groupAss as $id=>$grp) {
                 		$grpCapacity=1;
                 		if ($grp['leftWorkTmp']>0) {
-	                		$grpCapacity=$grp['capacity']*$grp['assRate'];                		
-	                		if (isset($grp['ResourceWork'][$currentDate])) {
+	                		$grpCapacity=$grp['capacity']*$grp['assRate'];
+	                		if (isOffDay($currentDate,$grp['calendar'])) {
+	                		  $grpCapacity=0;
+	                		} else if (isset($grp['ResourceWork'][$currentDate])) {
 	                			$grpCapacity-=$grp['ResourceWork'][$currentDate];
 	                		}
                 		}

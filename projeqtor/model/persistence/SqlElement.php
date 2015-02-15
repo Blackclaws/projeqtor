@@ -789,6 +789,9 @@ abstract class SqlElement {
 				// special null treatment (new value)
 				//$col_new_value=Sql::str(trim($col_new_value));
 				$col_new_value=trim($col_new_value);
+				if ($dataType=='decimal') {
+				  $col_new_value=str_replace(',', '.', $col_new_value);
+				}
 				if ($col_new_value=='') {$col_new_value=NULL;};
 				// special null treatment (old value)
 				//$col_old_value=SQL::str(trim($col_old_value));
@@ -2122,12 +2125,17 @@ abstract class SqlElement {
 		return $arrayFields;
 	}
 
-	public function getFieldsArray() {
+	public function getFieldsArray($limitToExportableFields=false) {
 		$arrayFields=array();
 		foreach ($this as $fld=>$fldVal) {
 			if (is_object($this->$fld)) {
-				$arrayFields=array_merge($arrayFields,$this->$fld->getFieldsArray());
+				$arrayFields=array_merge($arrayFields,$this->$fld->getFieldsArray($limitToExportableFields));
 			} else {
+			  if ($limitToExportableFields) {
+			    if ($this->isAttributeSetToField($fld,'hidden') and ! $this->isAttributeSetToField($fld,'forceExport')) {
+			      continue;
+			    }
+			  }
 				$arrayFields[$fld]=$fld;
 			}
 		}
