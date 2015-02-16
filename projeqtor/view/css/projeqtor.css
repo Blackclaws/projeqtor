@@ -98,13 +98,24 @@ html, body {
 	z-index:0;
 }
 .loginMessage {
-	background: rgba(255,255,255,0.7);
+	background: rgba(255,255,255,0.75);
 	border: 1px solid #FFFFFF;
-	border-radius: 20px;
+	border-radius: 10px;
 	margin: 5%;
 	padding: 10px;
 	width: 85%;
 	z-index:-1;
+	position: relative;
+	opacity:0;
+}
+.loginMessageTitle{
+	position: absolute; top:0px; left:0px;
+	border-bottom:1px solid #FFFFFF;
+	width:100%;
+	text-align:center;
+	white-space: nowrap;
+	overflow: hidden;
+	font-weight: bold;
 }
 
 #toolBarDiv {
