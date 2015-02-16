@@ -551,7 +551,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     	if (fadingMode) {
         dojo.fadeIn({ 
   		    node: contentNode ,
-  		    duration: 800, 
+  		    duration: 500, 
   		    onEnd: function() { }
     		}).play();
     	}

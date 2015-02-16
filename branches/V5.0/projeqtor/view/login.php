@@ -36,6 +36,7 @@
    } else {
      $msg=new Message();
      $msgList=$msg->getSqlElementsFromCriteria(array('showOnLogin'=>'1', 'idle'=>'0'));
+     $msgTypeList=SqlList::getList('MessageType','color');
    }
 ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
@@ -90,7 +91,21 @@
       //dijit.byId('login').focus(); 
       var changePassword=false;
       hideWait();
-    }); 
+      showMessage(1, <?php echo count($msgList);?>);
+    });
+
+    function showMessage(id, idMax) {
+      console.log(id);
+      contentNode=dojo.byId('loginMessage_'+id);
+      dojo.fadeIn({ 
+		    node: contentNode ,
+		    duration: 800, 
+		    onEnd: function() {
+		      id++;
+			    if (id<=idMax) { showMessage(id, idMax);}
+				}
+  		}).play();
+    } 
   </script>
 </head>
 
@@ -103,8 +118,13 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
   <div id="waitLogin" style="display:none" >
   </div>
   <div class="loginMessageContainer">
-  	<?php foreach ($msgList as $msg) {?>  
-    <div class="loginMessage"><?php echo $msg->description;?>
+  	<?php 
+  	$cpt=0;
+  	foreach ($msgList as $msg) { 
+      $cpt++;?>  
+    <div class="loginMessage" id="loginMessage_<?php echo $cpt;?>">
+    <div class="loginMessageTitle" style="color:<?php echo $msgTypeList[$msg->idMessageType];?>;"><?php echo htmlEncode($msg->name);?></div>
+    <br/><?php echo $msg->description;?>
     </div>
     <?php }?>
   </div>
