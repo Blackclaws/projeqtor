@@ -107,7 +107,7 @@ $result=$newObj->_copyResult;
 unset($newObj->_copyResult);
 $res="OK";
 if ($copyWithStructure and get_class($obj)=='Activity' and get_class($newObj)=='Activity') {
-	$res=copyStructure($obj, $newObj);
+	$res=copyStructure($obj, $newObj, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
 }
 if ($copyToLinkOrigin) {
 	$link=new Link();
@@ -137,7 +137,7 @@ if ($status == "OK") {
   }
 }
 
-function copyStructure($from, $to) {
+function copyStructure($from, $to, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments) {
 	$nbErrors=0;
 	$errorFullMessage="";
 	$milArray=array();
@@ -164,7 +164,9 @@ function copyStructure($from, $to) {
   $itemArrayObj=array();
   $itemArray=array();
   foreach ($items as $id=>$item) {
-    $new=$item->copy();
+    //$new=$item->copy();
+    $toTypeFld='id'.get_class($item).'Type';
+    $new=$item->copyTo(get_class($item), $item->$toTypeFld, $item->name, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
     $tmpRes=$new->_copyResult;
     if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
       errorLog($tmpRes);
@@ -174,7 +176,7 @@ function copyStructure($from, $to) {
       $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
       $itemArray[$id]=get_class($new) . '_' . $new->id;
       if (get_class($item)=='Activity') {
-        copyStructure($item, $new);
+        copyStructure($item, $new, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
       }
     }
   }
