@@ -1032,7 +1032,12 @@
     echo '<Assignments>' . $nl;
     foreach ($lstAss as $ass) {
     	if (array_key_exists($ass->refType . '#' . $ass->refId, $arrayTask)) {
-        $res=$arrayResource[$ass->idResource];
+    	  if (isset($arrayResource[$ass->idResource])) {
+          $res=$arrayResource[$ass->idResource];
+    	  } else {
+    	    $res=new Resource($ass->idResource);
+    	    $arrayResource[$ass->idResource]=$res;
+    	  }
 	      echo "<Assignment>" . $nl;
 	      echo "<UID>" . $ass->id . "</UID>" . $nl;
 	      echo "<TaskUID>" . $arrayTask[$ass->refType . '#' . $ass->refId] . "</TaskUID>" . $nl;
