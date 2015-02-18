@@ -2816,13 +2816,13 @@ abstract class SqlElement {
 			if (! property_exists($this, 'idStatus')) {
 				return false; // exit if object has not idStatus
 			}
-			if (! $this->idStatus) {
-				return false; // exit if status not set
-			}
+			//if (! $this->idStatus) { Not valid any more : for instance note add available for document even without status
+			//	return false; // exit if status not set
+			//}
 			$crit=array();
 			$crit['idStatus']=$this->idStatus;
 			$crit="idle='0' and idMailable='" . $mailable->id . "' and ( false ";
-			if ($statusChange and $this->idStatus) {
+			if ($statusChange and trim($this->idStatus)) {
 				$crit.="  or idStatus='" . $this->idStatus . "' ";
 			}
 			if ($responsibleChange) {
