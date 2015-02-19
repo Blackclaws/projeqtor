@@ -332,6 +332,7 @@ class PlanningElement extends SqlElement {
       $this->elementary=0;
     } else {
       $this->elementary=1;
+      $this->validatedCalculated=0;
     }
 
     if (! $this->priority or $this->priority==0) {
