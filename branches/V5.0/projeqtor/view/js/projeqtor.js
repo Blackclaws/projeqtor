@@ -2681,20 +2681,26 @@ function saveObject() {
   submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);  
 }
 
-function onKeyDownFunction(event, field) {
-  top.console.log("onKeyDownFunc : "+event.keyCode);
+function onKeyDownFunction(event, field, editorFld) {
+  var editorWidth=editorFld.domNode.offsetWidth;
+  var screenWidth=document.body.getBoundingClientRect().width;
+  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  top.console.log("onKeyDownFunction() keyCode="+event.keyCode+"  screenWidth="+screenWidth+"  editorWidth="+editorWidth+"  fullScreenEditor="+fullScreenEditor); 
   if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
+	if (fullScreenEditor) return;
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
-    top.setTimeout("top.onKeyDownFunctionEditor();",10);
-    
+    top.setTimeout("top.onKeyDownFunctionEditorSave();",10);
   } else if (event.keyCode == 112) { // On F1
+	if (fullScreenEditor) return;
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
     top.showHelp();
+  } else if (event.keyCode==9) { // Tab : prevent
+	  if (fullScreenEditor) event.preventDefault();
   }
 }
-function onKeyDownFunctionEditor () {
+function onKeyDownFunctionEditorSave () {
   dijit.byId('id').focus();
   top.setTimeout("top.globalSave();",10);
 }

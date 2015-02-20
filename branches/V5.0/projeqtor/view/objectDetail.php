@@ -1107,7 +1107,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
         echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
         echo ",'|','insertOrderedList','insertUnorderedList','|']";
-        echo ',onKeyDown:function(event){top.dojo.byId(\'' . $fieldId . '\').value=this.value;console.log(top.dojo.byId(\'' . $fieldId . '\').value);top.onKeyDownFunction(event,\'' . $fieldId . '\');}'; // hard coding default event
+        echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
+        echo ',onBlur:function(event){console.log(\'blur\');}'; // hard coding default event
         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
         if (1) echo ",'|','fullScreen'";
