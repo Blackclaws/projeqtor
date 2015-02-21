@@ -961,7 +961,7 @@ abstract class SqlElement {
 				// if property is an object, delete it
 				if ($this->$col_name instanceof SqlElement) {
 					if ($this->$col_name->id and $this->$col_name->id!='') { // object may be a "new" element, so try to delete only if id exists
-						$resSub=$this->$col_name->delete();
+					  $resSub=$this->$col_name->delete();
 					}
 				}
 			}
@@ -1003,7 +1003,15 @@ abstract class SqlElement {
 		$result = Sql::query($query);
 		if (!$result) {
 			$returnStatus="ERROR";
+		} else {
+		  $peName=get_class($this).'PlanningElement';
+		  if (property_exists($this, $peName)) {
+		    $pe=new PlanningElement();
+		    $pe->purge(' refName is null');
+		  }
+		  
 		}
+		
 		// save history
 		if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {
 			$result = History::store($this, $class,$this->id,'delete');

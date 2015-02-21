@@ -736,6 +736,7 @@ label, .label, .smallLabel {
   text-shadow: 1px 1px #FFFFFF;
   background: url(images/titleBar.png) #DDDDDD top repeat-x !important;
   color: #505050;
+  height: 20px;
 }
 .workflowHeader {
   font-size: 90%;
@@ -835,6 +836,7 @@ label, .label, .smallLabel {
   border: 1px solid #AAAAAA;
   vertical-align: top;
   background-color: #FFFFFF;
+  height: 20px;
 }
 .messageDataValueGrey {
   background-color: #EEEEEE;
@@ -1058,7 +1060,10 @@ label, .label, .smallLabel {
 }
 
 /* SPECIFIC ROUND BUTTON */
-
+.smallButtonsGroup {
+	white-space:nowrap;
+	text-align:center;
+}
 .roundedButton {
   height:20px; width:20px;
   /*background: #eee url(images/buttonEnabled.png) repeat-x bottom left;*/
@@ -1067,23 +1072,30 @@ label, .label, .smallLabel {
   border-radius: 10px !important;
   cursor: pointer;
 }
+.roundedButtonSmall:hover {
+	/* height:14px; width:14px; */
+  -webkit-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+}
 .roundedVisibleButton {
 	background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
 	border: 1px solid #c0c0c0;
 }
-.roundedButton.disabled {
+.roundedButton.disabled, .roundedButtonSmall.disabled {
   border-color: #d5d5d5 #d5d5d5 #bdbdbd #d5d5d5;
   background: #e4e4e4 url(images/buttonDisabled.png) top repeat-x;
   cursor: default;
 }
-.roundedButton:hover {
+.roundedButton:hover, .roundedButtonSmall:hover {
   border: 1px solid #c0c0c0;
   border-color: #a5a5a5;
   border-bottom-color: #757575;
   color: #3C3C3C;
   background: #fcfdfd url(images/buttonHover.png) repeat-x bottom;
 }
-.roundedButton:active {
+.roundedButton:active, .roundedButtonSmall:active {
 	border: 1px solid #c0c0c0;
     border-color:#366dba;
     background: #ededed url(images/buttonActive.png) bottom repeat-x;

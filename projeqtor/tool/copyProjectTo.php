@@ -84,7 +84,7 @@ $status = displayLastOperationStatus($result);
 if ($status == "OK") {
   if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
     if (isset ( $_REQUEST ['directAccessIndex'] )) {
-      $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = new $className ( $newObj->id );
+      $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = new Project( $newObj->id );
     } else {
       $_SESSION ['currentObject'] = new $className ( $newObj->id );
     }

@@ -295,9 +295,11 @@ function formatForDbType($query) {
   	$from[]='  ';                                         $to[]=' ';
     $from[]='`';                                          $to[]='';
     $from[]=' int(12) unsigned NOT NULL AUTO_INCREMENT';  $to[]=' serial';
-    $from[]='int(';                                       $to[]=' numeric(';
+    $from[]=' int(';                                      $to[]=' numeric(';
     $from[]=' datetime';                                  $to[]=' timestamp';
     $from[]=' double';                                    $to[]=' double precision';
+    $from[]=' mediumtext';                                $to[]=' text';
+    $from[]=' longtext';                                  $to[]=' text';
     $from[]=' unsigned';                                  $to[]='';
     $from[]='\\\'';                                       $to[]='\'\'';
     $from[]='ENGINE=InnoDB';                              $to[]='';
