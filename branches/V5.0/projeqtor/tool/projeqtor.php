@@ -2482,9 +2482,7 @@ function getLastOperationStatus($result) {
 }
 
 function displayLastOperationStatus($result) {
-debugLog("result=$result");
   $status = getLastOperationStatus ( $result );
-debugLog("status=$status");  
   if ($status == "OK" or $status=="NO_CHANGE") {
     Sql::commitTransaction ();
   } else {

@@ -46,6 +46,8 @@ class WorkElement extends SqlElement {
 	
 	public $done;
 	public $idle;
+	public $_nbColMax=3;
+	
 	private static $_fieldsAttributes = array (
 			"refType" => "hidden",
 			"refId" => "hidden",

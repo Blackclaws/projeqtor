@@ -162,7 +162,6 @@
        . ' where ' . $queryWhere
        . ' order by ' . $queryOrderBy;
   $result=Sql::query($query);
-  debugLog($query);
   $nbRows=0;
   //$nbQueriedRows=Sql::$lastQueryNbRows;
   if ($print) {
@@ -186,6 +185,11 @@
     	$topProjectArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
+      	if ($line['id'] and !$line['refname']) { // If refName not set, delecte corresponding PE (results from incorrect delete
+      	  $peDel=new PlanningElement($line['id']);
+      	  $peDel->delete();
+      	  continue;
+      	}
         if ($line['reftype']=='Milestone' and $portfolio and $showMilestone and $showMilestone!='all' ) {   
           $mile=new Milestone($line['refid']);
           if ($mile->idMilestoneType!=$showMilestone) {

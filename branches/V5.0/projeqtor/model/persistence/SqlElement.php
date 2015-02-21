@@ -3278,7 +3278,13 @@ abstract class SqlElement {
 					//$msg.='<label class="label shortlabel">' . i18n('col' . ucfirst($captionName)) . '&nbsp;:&nbsp;</label>';
 				} else if ($hide) {
 					// Nothing
-				} else  if (strpos($this->getFieldAttributes($col), 'displayHtml')!==false) {
+				} else if ($dataLength>4000) {
+				  if (mb_strlen($val)>4000) {
+				    $msg.="...";
+				  } else {
+				    $msg.=  $val;
+				  }
+				} else  if (strpos($this->getFieldAttributes($col), 'displayHtml')!==false ) {
 					$msg.=  $val;
 				} else if ($col=='id') { // id
 					$msg.= '<span style="color:grey;">#</span>' . $val;

@@ -35,7 +35,6 @@ if (!isset($comboDetail)) {
 }
 $collapsedList=Collapsed::getCollaspedList();
 $readOnly=false;
-
 /**
  * ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
@@ -47,10 +46,12 @@ $readOnly=false;
  * @return void
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
+  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, 
+   $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
   // }
+  if ($print) $obj->_nbColMax=1;
   $currency=Parameter::getGlobalParameter('currency');
   $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
   $showThumb=Parameter::getGlobalParameter('paramShowThumb'); // show thumb between label and field ?
@@ -154,7 +155,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $internalTableCols=$decomp [2];
       $internalTableRows=$decomp [3];
       $internalTableSpecial='';
-      debugLog($decomp);
       if (count($decomp) > 4) {
         $internalTableSpecial=$decomp [4];
       }
@@ -1071,7 +1071,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if ($dataLength > 100 and $dataLength <= 4000 and !array_key_exists('testingMode', $_REQUEST)) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea dojoType="dijit.form.Textarea" ';
-        echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
+        echo ' onKeyPress="if (dojo.isFF || isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
         echo $name;
         echo $attributes;
         if (strpos($attributes, 'readonly') > 0) {
@@ -1108,14 +1108,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
         echo ",'|','insertOrderedList','insertUnorderedList','|']";
         echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
-        echo ',onBlur:function(event){console.log(\'blur\');}'; // hard coding default event
+        echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this);}'; // hard coding default event
+        echo ',onClose:function(){top.console.log(\'close\');}';
+        echo ',onResize:function(){top.console.log(\'resize\');}';
+        echo ',onDisplayChange:function(){top.console.log(\'displayChange\');}';
         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
         if (1) echo ",'|','fullScreen'";
         // Font Choice ...
         if (0) echo ",'fontName','fontSize'";
         // Print option
-        //if (1) echo ",'|','print'"; // Not setup
+        if (1) echo ",'print'"; // Not setup
         // echo ",{name: 'LocalImage', uploadable: true, uploadUrl: '../../form/tests/UploadFile.php', baseImageUrl: '../../form/tests/', fileMask: '*.jpg;*.jpeg;*.gif;*.png;*.bmp'}";
         echo "]}";
         echo '" ';
@@ -1230,6 +1233,8 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo '</table>';
     if (!$print) {
       echo '</div>';
+    } else {
+      echo '<br/>';
     }
   }
   if (!$print) {
@@ -1237,7 +1242,8 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
-    echo ' style="width:' . $widthPct . ';float: left;margin: 0 0 4px 4px; padding: 0;top:0px;"';
+    $float=(($section=='treatment' or $section=='description')?'left':'right');
+    echo ' style="width:' . $widthPct . ';float: '.$float.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
     echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
     echo '<table class="detail"  style="width: 100%;" >';
@@ -2986,7 +2992,9 @@ function setWidthPct($displayWidth, $print, $printWidth, $obj) {
 	}
 	return $widthPct;
 }
+
 function getNbColMax($displayWidth, $print, $printWidth, $obj) {
+  global $nbColMax;
   if ($displayWidth > 1380) {
     $nbColMax=3;
   } else if ($displayWidth > 900) {
