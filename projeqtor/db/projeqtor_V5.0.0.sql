@@ -5,24 +5,24 @@
 -- // Date : 2014-11-30                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}history` CHANGE `oldValue` `oldValue` text,
- CHANGE `newValue` `newValue` text;
+ALTER TABLE `${prefix}history` CHANGE `oldValue` `oldValue` mediumtext,
+ CHANGE `newValue` `newValue` mediumtext;
 
-ALTER TABLE `${prefix}action` CHANGE `description` `description` text,
- CHANGE `result` `result` text;
+ALTER TABLE `${prefix}action` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
 
-ALTER TABLE `${prefix}activity` CHANGE `description` `description` text,
- CHANGE `result` `result` text;
+ALTER TABLE `${prefix}activity` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
 
-ALTER TABLE `${prefix}milestone` CHANGE `description` `description` text,
- CHANGE `result` `result` text;
+ALTER TABLE `${prefix}milestone` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
 
-ALTER TABLE `${prefix}project` CHANGE  `description` `description` text;
+ALTER TABLE `${prefix}project` CHANGE  `description` `description` mediumtext;
 
-ALTER TABLE `${prefix}ticket` CHANGE `description` `description` text,
- CHANGE `result` `result` text;
+ALTER TABLE `${prefix}ticket` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
 
-ALTER TABLE `${prefix}message` CHANGE `description` `description` text;
+ALTER TABLE `${prefix}message` CHANGE `description` `description` mediumtext;
 ALTER TABLE `${prefix}message` ADD `showOnLogin` int(1) unsigned DEFAULT 0;
 
 RENAME TABLE `${prefix}attachement` TO `${prefix}attachment`;

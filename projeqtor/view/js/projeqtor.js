@@ -2178,9 +2178,9 @@ function saveReportInToday() {
  */
 function globalSave() {
   if (dijit.byId('dialogDetail') && dijit.byId('dialogDetail').open) {
-	var button=dijit.byId('comboSaveButton');
+	  var button=dijit.byId('comboSaveButton');
   } else if (dijit.byId('dialogNote') && dijit.byId('dialogNote').open) {
-	var button=dijit.byId('dialogNoteSubmit');
+	  var button=dijit.byId('dialogNoteSubmit');
   } else if (dijit.byId('dialogLine') && dijit.byId('dialogLine').open) {
 		var button=dijit.byId('dialogLineSubmit');
   } else if (dijit.byId('dialogLink') && dijit.byId('dialogLink').open) {
@@ -2218,14 +2218,15 @@ function globalSave() {
   } else if (dijit.byId('dialogChecklistDefinitionLine') && dijit.byId('dialogChecklistDefinitionLine').open) {
     var button=dijit.byId('dialogChecklistDefinitionLineSubmit');
   } else if (dijit.byId('dialogChecklist') && dijit.byId('dialogChecklist').open) {
-    var button=dijit.byId('dialogChecklistSubmit');  } else {
+    var button=dijit.byId('dialogChecklistSubmit');  } 
+  else {
     var button=dijit.byId('saveButton');
   }
   if (! button) {
     button=dijit.byId('saveParameterButton');
   }
   if (! button) {
-	button=dijit.byId('saveButtonMultiple');
+	  button=dijit.byId('saveButtonMultiple');
   }
   if ( button && button.isFocusable() ) {
     button.focus();
@@ -2687,7 +2688,7 @@ function onKeyDownFunction(event, field, editorFld) {
   var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
   top.console.log("onKeyDownFunction() keyCode="+event.keyCode+"  screenWidth="+screenWidth+"  editorWidth="+editorWidth+"  fullScreenEditor="+fullScreenEditor); 
   if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
-	if (fullScreenEditor) return;
+	  if (fullScreenEditor) return;
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
     top.setTimeout("top.onKeyDownFunctionEditorSave();",10);
@@ -2698,11 +2699,26 @@ function onKeyDownFunction(event, field, editorFld) {
     top.showHelp();
   } else if (event.keyCode==9) { // Tab : prevent
 	  if (fullScreenEditor) event.preventDefault();
+  } else {
+    formChanged();
   }
 }
 function onKeyDownFunctionEditorSave () {
+  console.log(onKeyDownFunctionEditorSave);
   dijit.byId('id').focus();
-  top.setTimeout("top.globalSave();",10);
+  top.setTimeout("top.globalSave();",20);
+}
+
+function editorBlur(fieldId, editorFld) {
+  console.log(editorFld);
+  var editorWidth=editorFld.domNode.offsetWidth;
+  var screenWidth=document.body.getBoundingClientRect().width;
+  var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
+  console.log("editorBlur: plugins="+editorFld.extraPlugins);
+  top.dojo.byId(fieldId).value=editorFld.document.body.firstChild.innerHTML;
+  if (fullScreenEditor) { 
+    editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS
+  }
 }
 
 function menuFilter(filter) {

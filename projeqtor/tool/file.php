@@ -92,7 +92,6 @@ function purgeFiles($dir, $pattern) {
  * $param boolean $square if thumb target to be rendered as a square (crop borders)
  */
 function createThumb($imageFile,$size,$thumb=null, $square=false) {
-debugLog("createThumb($imageFile,$size,$thumb,$square)");	
   if (!$size) {
     copy($imageFile, $thumb);
     return;

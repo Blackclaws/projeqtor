@@ -103,6 +103,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     dojo.require("dijit._editor.plugins.AlwaysShowToolbar");
     dojo.require("dijit._editor.plugins.FullScreen");
     dojo.require("dijit._editor.plugins.FontChoice");
+    dojo.require("dijit._editor.plugins.Print");
     dojo.require("dijit._editor.plugins.TextColor");
     //dojo.require("dijit._editor.plugins.LinkDialog ");
     //dojo.require("dojox.editor.plugins.LocalImage");
