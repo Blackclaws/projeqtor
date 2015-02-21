@@ -1354,7 +1354,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
   if ($refType and $refId) {
     echo '<table width="100%"><tr height="20px"><td xclass="noteData" width="1%" xvalign="top">';
     if (!$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonRemove.png" ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" ';
       echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="smallButton"/> ';
     }
     echo '</td><td width="5%" xclass="noteData" xvalign="top">';
@@ -1366,7 +1366,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
   } else {
     echo '<table><tr height="20px"><td>';
     if ($obj->id and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="smallButton"/> ';
     }
     echo '</td></tr></table>';
   }
@@ -1544,9 +1544,9 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (!$print) {
-    echo '<td class="noteHeader" style="width:10%">';
+    echo '<td class="noteHeader smallButtonsGroup" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -1567,10 +1567,10 @@ function drawNotesFromObject($obj, $refresh=false) {
       }
       echo '<tr>';
       if (!$print) {
-        echo '<td class="noteData" style="text-align:center;">';
+        echo '<td class="noteData smallButtonsGroup">';
         if ($note->idUser == $user->id and !$print and $canUpdate) {
-          echo ' <img src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy . ');" title="' . i18n('editNote') . '" class="smallButton"/> ';
-          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" class="smallButton"/> ';
+          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy . ');" title="' . i18n('editNote') . '" class="smallButton"/> ';
+          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" class="smallButton"/> ';
         }
         echo '</td>';
       }
@@ -1766,10 +1766,10 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   echo '<table width="100%">';
   echo '<tr>';
   if (!$print) {
-    echo '<td class="attachmentHeader" style="width:10%">';
+    echo '<td class="attachmentHeader smallButtonsGroup" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n('addAttachment') . '" class="smallButton"/> ';
-      echo '<img src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n('addHyperlink') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n('addAttachment') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n('addHyperlink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -1784,17 +1784,17 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
       $creationDate=$attachment->creationDate;
       echo '<tr>';
       if (!$print) {
-        echo '<td class="attachmentData" style="text-align:center;width:10%"">';
+        echo '<td class="attachmentData smallButtonsGroup" style="width:10%"">';
         if ($attachment->fileName and $attachment->subDirectory and !$print) {
           echo '<a href="../tool/download.php?class=Attachment&id=' . $attachment->id . '"';
-          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
+          echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img class="roundedButtonSmall" src="css/images/smallButtonDownload.png" /></a>';
         }
         if ($attachment->link and !$print) {
           echo '<a href="' . $attachment->link . '"';
-          echo ' target="#" title="' . urldecode($attachment->link) . '"><img src="css/images/smallButtonLink.png" /></a>';
+          echo ' target="#" title="' . urldecode($attachment->link) . '"><img class="roundedButtonSmall" src="css/images/smallButtonLink.png" /></a>';
         }
         if ($attachment->idUser == $user->id and !$print and $canUpdate) {
-          echo ' <img src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n('removeAttachment') . '" class="smallButton"/>';
+          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n('removeAttachment') . '" class="smallButton"/>';
         }
         echo '</td>';
       }
@@ -1811,25 +1811,17 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
       }
       echo '</td>';
       echo '<td class="attachmentData" style="width:' . (($print)?'50':'45') . '%" title="' . $attachment->description . '">';
-      echo '<table style="width:100%"><tr >';
-      // echo '<td class="attachmentData" style="width:10%;text-align:center;">' . htmlGetFileSize ( $attachment->fileSize ) . '</td>';
-      
-      echo ' <td>';
       if ($attachment->link) {
         echo htmlEncode(urldecode($attachment->link), 'print');
       } else {
         echo htmlEncode($attachment->fileName, 'print');
       }
-      echo ' </td>';
       if ($attachment->description and !$print) {
-        echo '<td style="width:18px; vertical-align: top;"><img src="img/note.png" /></td>';
+        echo '<img src="img/note.png" />';
       }
-      if ($attachment->idPrivacy == 3) {
-        echo '<td style="width:18px;vertical-align: top;" title="' . i18n('private') . '"><img src="img/private.png" /></td>';
-      } else if ($attachment->idPrivacy == 2) {
-        echo '<td style="width:18px;vertical-align: top;" title="' . i18n('team') . " : " . SqlList::getNameFromId('Team', $attachment->idTeam) . '"><img src="img/team.png" /></td>';
-      }
-      echo '</tr></table>';
+      //echo formatUserThumb($userId, $userName, 'Creator');
+      //echo formatDateThumb($creationDate, $updateDate);
+      echo formatPrivacyThumb($attachment->idPrivacy, $attachment->idTeam);
       echo '</td>';
       echo '</tr>';
     }

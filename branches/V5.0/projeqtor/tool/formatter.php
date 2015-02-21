@@ -264,7 +264,7 @@ function formatPrivacyThumb($privacy, $team) {
   // privacy=1 => public 
   if ($privacy == 3) {
     $title=htmlEncode(i18n('private'),'quotes');
-    echo '<img style="margin:0;padding:0;float:right;border:1px solid red;" src="img/private.png" />';
+    echo '<img style="float:right;" src="img/private.png" />';
   } else if ($privacy == 2) {
     $title=htmlEncode(i18n('team')." : ".SqlList::getNameFromId ('Team',$team ),'quotes');
     echo '<img title="'.$title.'" style="float:right" src="img/team.png" />';
