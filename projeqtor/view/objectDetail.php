@@ -1087,7 +1087,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
 			} else if ($dataLength > 100 and ! array_key_exists('testingMode', $_REQUEST) ){
 				// Draw a long text (as a textarea) =================================== TEXTAREA
 				echo '<textarea dojoType="dijit.form.Textarea" ';
-				echo ' onKeyPress="if (isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
+				echo ' onKeyPress="if (dojo.isFF || isUpdatableKey(event.keyCode)) {formChanged();}" '; // hard coding default event
 				echo $name;
 				echo $attributes;
 				if (strpos($attributes, 'readonly')>0) {
