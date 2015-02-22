@@ -331,7 +331,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 
     $cptDisplayId+=1;
     $result='<div style="position:relative; width:' . $width . 'px" id="displayProgress_' . $cptDisplayId . '">';
-    $result.='<div style="position:absolute; left:0px; width:' . $green . 'px;background: #AAFFAA;">&nbsp;</div>';
+    $result.='<div style="overflow:hidden;position:absolute; left:0px; width:' . $green . 'px;background: #AAFFAA;">&nbsp;</div>';
     $result.='<div style="position:absolute; width:' . $red . 'px;left:' . $green . 'px;background: #FFAAAA;">&nbsp;</div>';
     $result.='<div style="position:relative;">' . $value . '</div>';
     $result.='</div>';

@@ -1249,12 +1249,30 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   }
   
   if (!$print) {
-    $float=((strtolower($section)=='treatment' or strtolower($section)=='description')?'left':'right  ');
+    $arrayPosition=array(
+        'treatment'=>     array('float'=>'left',  'clear'=>'none'),
+        'description'=>   array('float'=>'left',  'clear'=>'none'),
+        'progress'=>      array('float'=>'left',  'clear'=>'none'),
+        'progress'=>      array('float'=>'left',  'clear'=>'none'),
+        'affectations'=>  array('float'=>'left',  'clear'=>'none'),
+        'predecessor'=>   array('float'=>'left',  'clear'=>(($nbCol==2)?'both':'right')),
+        'successor'=>     array('float'=>'left',  'clear'=>'none'),
+        
+        'attachment'=>    array('float'=>'left',  'clear'=>'none'),
+        'note'=>          array('float'=>'right',  'clear'=>'none'),
+        'link'=>          array('float'=>'right',  'clear'=>'none')
+    );
+    $float='right';
+    $clear='right';
+    $lc=strtolower($section);
+    if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
+    if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
+
     $titlePane=$classObj . "_" . $section;
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
-    echo ' style="position:relative;width:' . $widthPct . ';float: '.$float.';margin: 0 0 4px 4px; clear: right; padding: 0;top:0px;"';
+    echo ' style="position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
     echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
     echo '<table class="detail"  style="width: 100%;" >';

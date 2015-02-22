@@ -495,10 +495,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       <table width="100%">
         <tr>
           <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
-          <table>
+          <table >
               <tr>
                 <td>
-                  <img src="img/disconnect.png" />
+                  <img style="height:28px" src="img/disconnect.png" />
                 </td>
                 <td>
                   &nbsp;<?php echo i18n('disconnect') . '&nbsp;[' . $_SESSION["user"]->name . ']'; ?>
@@ -508,10 +508,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           </td>
           <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
-              <button class="largeTextButton" id="buttonHideMenu" dojoType="dijit.form.Button" onclick="hideShowMenu();">
+              <button class="largeTextButton" id="buttonHideMenu" dojoType="dijit.form.Button" onclick="hideShowMenu();" iconClass="dijitButtonIcon dijitButtonIconHideMenu">
                 <?php echo i18n("buttonHideMenu");?>
               </button>
-              <button class="largeTextButton" id="buttonSwitchMode" dojoType="dijit.form.Button" onclick="switchMode();">
+              <button class="largeTextButton" id="buttonSwitchMode" dojoType="dijit.form.Button" onclick="switchMode();" iconClass="dijitButtonIcon dijitButtonIconSwitchMode">
                 <?php 
                   if (isset($_SESSION['switchedMode']) and $_SESSION['switchedMode']!='NO') {
                     echo i18n("buttonStandardMode");
