@@ -712,6 +712,19 @@ label, .label, .smallLabel {
   background: url(images/titleBarDark.png) #909090 top repeat-x !important;
   text-shadow: 1px 1px #FEFEFE;
 }
+.sectionBadge {
+  position: absolute;
+  top:3px; right:7px;
+  width: 40px;
+  height: 12px;
+  text-align: center;
+  display: inline;
+  border: 1px solid #FFFFFF;
+  border-radius:12px;
+  -webkit-box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+}
+
 .dijitTitlePane .dijitTitlePaneTitle {
 	height: 18px;
 }
@@ -1079,6 +1092,9 @@ label, .label, .smallLabel {
   border-radius: 8px !important;
   cursor: pointer;
 }
+.roundedButton, .roundedButtonSmall {
+	border: 1px solid transparent;
+}
 .roundedVisibleButton {
 	background: #eee url(images/buttonEnabled.png) repeat-x bottom left;
 	border: 1px solid #c0c0c0;
@@ -1111,6 +1127,12 @@ label, .label, .smallLabel {
   font-size:90%;
   vertical-align: middle;
   margin: auto;
+}
+#attachmentFile  {
+	width:100px;
+}
+.dijitUploader .dijitReset.dijitInline.dijitButtonNode {
+	width:100px !important;
 }
 .closeBoxIcon { 
   float:right; position: absolute;right:4%; 

@@ -30,7 +30,12 @@
     require_once "../tool/projeqtor.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
-    $showThumb=Parameter::getGlobalParameter('paramShowThumbList');
+    $showThumb=Parameter::getUserParameter('paramShowThumbList');
+    if ($showThumb=='NO') {
+      $showThumb=false;
+    } else {
+      $showThumb=true;
+    }
     
     $hiddenFields=array();
     if (isset($_REQUEST['hiddenFields'])) {
