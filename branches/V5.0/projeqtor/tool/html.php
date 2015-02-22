@@ -609,9 +609,9 @@ function htmlGetMimeType($mimeType,$fileName, $id=null) {
   }
   $image='<img src="' . $img . '" title="' . $mimeType . '" ';
   if ($id and ($ext=="htm" or $ext=="html")) {
-  	$image.=' style="cursor:pointer;" onClick="showHtml(\''.$id.'\',\''.$fileName.'\')" ';
+  	$image.=' style="cursor:pointer;float:left;" onClick="showHtml(\''.$id.'\',\''.$fileName.'\')" ';
   }
-  $image.='/>';
+  $image.='/>&nbsp;';
   return $image;
 }
 
