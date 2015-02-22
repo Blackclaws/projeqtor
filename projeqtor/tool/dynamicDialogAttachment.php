@@ -62,7 +62,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
             dojoType="dojox.form.Uploader" type="file" 
             url="../tool/saveAttachment.php"
             <?php if (! $isIE) {?>
-            style="overflow: hidden; z-index: 50;width:340px; border: 3px dotted #EEEEEE;"
+            style="padding:0px;margin:0px;z-index: 50;width:340px; border: 3px dotted #EEEEEE;"
             <?php } else {?>
             style="overflow: hidden; border: 0px"
             <?php }?>
@@ -77,7 +77,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
             title="<?php echo i18n("helpSelectFile");?>"  />
           <?php }?>        
           <?php if (! $isIE) {?>
-          <span style="font-style:italic;position: absolute; z-index: 49; top: 8px; left: 100px; color: #AAAAAA; width:250px"><?php echo i18n("dragAndDrop");?></span>
+          <span style="font-style:italic;position: absolute; z-index: 49; top: 8px; left: 120px; color: #AAAAAA; width:230px"><?php echo i18n("dragAndDrop");?></span>
           <?php }?>
           <div style="font-style:italic;position: relative; left:10px; border-left: 2px solid #EEEEEE; padding-left:5px;" name="attachmentFileName" id="attachmentFileName"></div>     
           </td>

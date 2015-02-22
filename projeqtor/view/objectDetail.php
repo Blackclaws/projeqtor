@@ -54,7 +54,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ($print) $obj->_nbColMax=1;
   $currency=Parameter::getGlobalParameter('currency');
   $currencyPosition=Parameter::getGlobalParameter('currencyPosition');
-  $showThumb=Parameter::getGlobalParameter('paramShowThumb'); // show thumb between label and field ?
+  $showThumb=Parameter::getUserParameter('paramShowThumb'); // show thumb between label and field ?
+  if ($showThumb=='NO') {
+    $showThumb=false;
+  } else {
+    $showThumb=true;
+  }
   $treatedObjects []=$obj;
   $dateWidth='75';
   $verySmallWidth='44';
@@ -208,7 +213,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         $section='';
       }
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+      $sectionField='_'.$section;
+      $cpt=null;
+      if (property_exists($obj,$sectionField ) && is_array($obj->$sectionField)) {
+        $cpt=count($obj->$sectionField);
+      }
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
     } else if (substr($col, 0, 5) == '_sec_') { // if field is _section, draw a new section bar column
       $prevSection=$section;
       if (strlen($col) > 8) {
@@ -216,7 +226,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         $section='';
       }
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col, 5);
       echo '<tr><td colspan=2>';
@@ -275,18 +285,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       if ($isAttachmentEnabled and !$comboDetail) {
         $prevSection=$section;
         $section="Attachment";
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection,$nbCol,count($val));
         drawAttachmentsFromObject($obj, false);
       }
     } else if (substr($col, 0, 5) == '_Note') {
       $prevSection=$section;
       $section="Note";
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val));
       drawNotesFromObject($obj, false);
     } else if (substr($col, 0, 5) == '_BillLine') {
       $prevSection=$section;
       $section="BillLine";
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
       drawBillLinesFromObject($obj, false);
     } else if (substr($col, 0, 1) == '_' and substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_') { // field not to be displayed
                                                                                                                               //
@@ -1225,7 +1235,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
 }
 
-function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection) {
+function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $nbBadge=null) {
   // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
   
   //if ($prevSection and !$print) {
@@ -1237,13 +1247,14 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
       echo '<br/>';
     }
   }
+  
   if (!$print) {
+    $float=((strtolower($section)=='treatment' or strtolower($section)=='description')?'left':'right  ');
     $titlePane=$classObj . "_" . $section;
-    echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . '" ';
+    echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
-    $float=(($section=='treatment' or $section=='description')?'left':'right');
-    echo ' style="width:' . $widthPct . ';float: '.$float.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
+    echo ' style="position:relative;width:' . $widthPct . ';float: '.$float.';margin: 0 0 4px 4px; clear: right; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
     echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
     echo '<table class="detail"  style="width: 100%;" >';
@@ -1601,6 +1612,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
+  echo '<input id="NoteSectionCount" type="hidden" value="'.count($notes).'" />';
 }
 
 function drawBillLinesFromObject($obj, $refresh=false) {
@@ -1800,7 +1812,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '</td>';
       }
       echo '<td class="attachmentData" style="width:5%;">#' . $attachment->id . '</td>';
-      echo '<td class="attachmentData" style="width:5%;border-right:none;">';
+      echo '<td class="attachmentData" style="width:5%;border-right:none;text-align:center;">';
       if ($attachment->isThumbable()) {
         echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . $attachment->fileName . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
       } else if ($attachment->link and !$print) {
@@ -1840,6 +1852,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   echo '<td class="attachmentDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
+  echo '<input id="AttachmentSectionCount" type="hidden" value="'.count($attachments).'" />';
 }
 
 function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
@@ -1955,6 +1968,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     }
   }
   echo '</table></td></tr>';
+  echo '<input id="LinkSectionCount" type="hidden" value="'.count($list).'" />';
 }
 
 function drawApproverFromObject($list, $obj, $refresh=false) {
@@ -2126,7 +2140,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     return;
   }
   $section='Assignment';
-  // startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes");
+  // startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes", $nbCol);
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
   $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'assignmentEdit'));
   if ($habil and $habil->rightAccess != 1) {

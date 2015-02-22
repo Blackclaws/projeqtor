@@ -3444,6 +3444,9 @@ function hideShowMenu() {
 		menuActualStatus='visible';
 	}
 	setTimeout('dijit.byId("globalContainer").resize();',duration+10);
+	if (!formChangeInProgress && dojo.byId('id') && dojo.byId('id').value) {
+	  setTimeout('loadContent("objectDetail.php", "detailDiv", "listForm");',duration+50);
+	}
 	//dojo.byId('menuBarShow').style.top='50px';
 }
 function tempShowMenu(mode) {
