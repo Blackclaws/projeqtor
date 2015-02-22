@@ -1774,7 +1774,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="attachmentHeader" style="width:5%">' . i18n('colId') . '</td>';
-  echo '<td class="attachmentHeader" style="width:' . (($print)?'95':'85') . '%">' . i18n('colFile') . '</td>';
+  echo '<td colspan="2" class="attachmentHeader" style="width:' . (($print)?'95':'85') . '%">' . i18n('colFile') . '</td>';
   echo '</tr>';
   foreach ( $attachments as $attachment ) {
     $userId=$attachment->idUser;
@@ -1782,6 +1782,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
     if ($user->id == $attachment->idUser or $attachment->idPrivacy == 1 or ($attachment->idPrivacy == 2 and $ress->idTeam == $attachment->idTeam)) {
       $userName=SqlList::getNameFromId('User', $userId);
       $creationDate=$attachment->creationDate;
+      $updateDate=null;
       echo '<tr>';
       if (!$print) {
         echo '<td class="attachmentData smallButtonsGroup" style="width:10%"">';
@@ -1799,29 +1800,28 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '</td>';
       }
       echo '<td class="attachmentData" style="width:5%;">#' . $attachment->id . '</td>';
-      echo '<td class="attachmentData" style="width:5%;text-align:center;">';
+      echo '<td class="attachmentData" style="width:5%;border-right:none;">';
       if ($attachment->isThumbable()) {
-        echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . $attachment->fileName . '" style="cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
+        echo '<img src="' . getImageThumb($attachment->getFullPathFileName(), 32) . '" ' . ' title="' . $attachment->fileName . '" style="float:left;cursor:pointer"' . ' onClick="showImage(\'Attachment\',\'' . $attachment->id . '\',\'' . $attachment->fileName . '\');" />';
       } else if ($attachment->link and !$print) {
-        echo '<div style="cursor:pointer" onClick="showLink(\'' . urldecode($attachment->link) . '\');">';
+        echo '<div style="float:left;cursor:pointer" onClick="showLink(\'' . urldecode($attachment->link) . '\');">';
         echo '<img src="../view/img/mime/html.png" title="' . $attachment->link . '" />';
         echo '</div>';
       } else {
         echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
       }
-      echo '</td>';
-      echo '<td class="attachmentData" style="width:' . (($print)?'50':'45') . '%" title="' . $attachment->description . '">';
+      echo '</td><td class="attachmentData" style="border-left:none;width:' . (($print)?'90':'80') . '%" title="' . $attachment->description . '">';
+      echo formatUserThumb($userId, $userName, 'Creator');
+      echo formatDateThumb($creationDate, $updateDate);
+      echo formatPrivacyThumb($attachment->idPrivacy, $attachment->idTeam);
+      if ($attachment->description and !$print) {
+        echo '<img style="float:right;padding-right:3px;" src="img/note.png" />';
+      }
       if ($attachment->link) {
         echo htmlEncode(urldecode($attachment->link), 'print');
       } else {
         echo htmlEncode($attachment->fileName, 'print');
       }
-      if ($attachment->description and !$print) {
-        echo '<img src="img/note.png" />';
-      }
-      //echo formatUserThumb($userId, $userName, 'Creator');
-      //echo formatDateThumb($creationDate, $updateDate);
-      echo formatPrivacyThumb($attachment->idPrivacy, $attachment->idTeam);
       echo '</td>';
       echo '</tr>';
     }

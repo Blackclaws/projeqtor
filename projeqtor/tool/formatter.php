@@ -223,7 +223,8 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
   }
   $title=htmlEncode($title,'quotes');
   $file="../view/css/images/calendar$color$size.png";
-  $res='<img style="float:'.$float.';padding-right:3px"';
+  $res='<span style="position:relative;float:'.$float.';padding-right:3px">';
+  $res.='<img ';
 	$res.=' src="'.$file.'" ';
 	$res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
 	$res.='/>';	
@@ -238,7 +239,7 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
   }
   switch ($size) {
 	  case 22:
-	    $fontSize=7;
+	    $fontSize=6.5;
 	    $width=20;
 	    $float="float:right;";
 	    $top=8;
@@ -255,7 +256,9 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
 	    $width=10;
 	    $float="";
 	}
-	$res.='<div style="float:right;z-index:0;color:#000;background: transparent;pointer-events:none;text-align:center;width:'.$width.'px;'.$float.';position:relative;top:'.$top.'px;left:'.$width.'px;font-size:'.$fontSize.'px;">'.$dispDate.'</div>';  
+	$res.='<div style="z-index:0;color:#000;background: transparent;pointer-events:none;text-align:center;'
+	    .'width:'.$width.'px;'.$float.';position:absolute;top:'.$top.'px;font-size:'.$fontSize.'px;">'.$dispDate.'</div>';
+	$res.='</span>';  
 	return $res;
 }
 function formatPrivacyThumb($privacy, $team) {
@@ -264,10 +267,10 @@ function formatPrivacyThumb($privacy, $team) {
   // privacy=1 => public 
   if ($privacy == 3) {
     $title=htmlEncode(i18n('private'),'quotes');
-    echo '<img style="float:right;" src="img/private.png" />';
+    echo '<img style="float:right;padding-right:3px" src="img/private.png" />';
   } else if ($privacy == 2) {
     $title=htmlEncode(i18n('team')." : ".SqlList::getNameFromId ('Team',$team ),'quotes');
-    echo '<img title="'.$title.'" style="float:right" src="img/team.png" />';
+    echo '<img title="'.$title.'" style="float:right;padding-right:3px" src="img/team.png" />';
   }
 }
 
