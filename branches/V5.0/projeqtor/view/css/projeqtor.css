@@ -269,9 +269,10 @@ html, body {
 #statusBarDiv {
   border: 0px; margin: 0px; padding: 1px;
   overflow: hidden;
-  height: 32px;
+  height: 28px;
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #A0A0A0;
+  vertical-align:middle;
 }
 
 #menuBarShow {
@@ -849,7 +850,6 @@ label, .label, .smallLabel {
   border: 1px solid #AAAAAA;
   vertical-align: top;
   background-color: #FFFFFF;
-  height: 20px;
 }
 .messageDataValueGrey {
   background-color: #EEEEEE;
