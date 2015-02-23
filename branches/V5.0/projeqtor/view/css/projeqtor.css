@@ -1116,6 +1116,22 @@ label, .label, .smallLabel {
     border-color:#366dba;
     background: #ededed url(images/buttonActive.png) bottom repeat-x;
 }
+.pseudoButton {
+  background: transparent;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid #ffffff;
+  border-radius:5px;
+  z-index:3000;
+  color: #FFFFFF;
+  text-shadow: 1px 1px #000000 ;
+}
+.pseudoButton:hover {
+  background-color: #ffffff;
+  background: #ffffff url(images/buttonHover.png) repeat-x bottom left;
+  color: #000000;
+  text-shadow: 1px 1px #FFFFFF  ;
+}
+
 
 .directAttachment .dijitButtonText {
 	margin:auto;

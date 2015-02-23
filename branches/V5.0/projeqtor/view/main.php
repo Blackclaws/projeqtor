@@ -494,17 +494,19 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
       <table width="100%">
         <tr>
-          <td width="10%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
-          <table >
+          <td width="5%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
+            <div class="pseudoButton">
+            <table >
               <tr>
                 <td>
-                  <img style="height:28px" src="img/disconnect.png" />
+                  <img style="height:24px" src="img/disconnect.png" />
                 </td>
                 <td>
-                  &nbsp;<?php echo i18n('disconnect') . '&nbsp;[' . $_SESSION["user"]->name . ']'; ?>
+                  &nbsp;<?php echo i18n('disconnect'); ?>&nbsp;&nbsp;
                 </td>
               </tr>
             </table>    
+            </div>
           </td>
           <td width="10%">&nbsp;<?php '[' . $_SESSION["user"]->name . ']'; ?>
           </td>
