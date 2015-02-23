@@ -494,7 +494,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
       <table width="100%">
         <tr>
-          <td width="20%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
+          <td width="10%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
           <table >
               <tr>
                 <td>
@@ -505,6 +505,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                 </td>
               </tr>
             </table>    
+          </td>
+          <td width="10%">&nbsp;<?php '[' . $_SESSION["user"]->name . ']'; ?>
           </td>
           <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
