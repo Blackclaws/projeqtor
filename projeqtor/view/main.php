@@ -508,8 +508,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             </table>    
             </div>
           </td>
-          <td width="10%">&nbsp;<?php '[' . $_SESSION["user"]->name . ']'; ?>
-          </td>
+          <td width="1%">&nbsp;</td>
+          <td width="5%">&nbsp;<?php echo '[' . $_SESSION["user"]->name . ']'; ?></td>
+          <td width="9%">&nbsp;</td>
           <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
               <button class="largeTextButton" id="buttonHideMenu" dojoType="dijit.form.Button" onclick="hideShowMenu();" iconClass="dijitButtonIcon dijitButtonIconHideMenu">
