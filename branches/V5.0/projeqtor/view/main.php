@@ -496,52 +496,73 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <tr>
           <td width="5%"  >
             <div class="pseudoButton" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
-            <table >
-              <tr>
-                <td>
-                  <img style="height:24px" src="img/disconnect.png" />
-                </td>
-                <td>
-                  &nbsp;<?php echo i18n('disconnect'); ?>&nbsp;&nbsp;
-                </td>
-              </tr>
-            </table>    
+              <table >
+                <tr>
+                  <td>
+                    <img style="height:24px" src="img/disconnect.png" />
+                  </td>
+                  <td>
+                    &nbsp;<?php echo i18n('disconnect'); ?>&nbsp;&nbsp;
+                  </td>
+                </tr>
+              </table>    
             </div>
           </td>
           <td width="1px">&nbsp;</td>
           <td width="5%">
             <div class="pseudoButton" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
-            <table >
-              <tr>
-                <td>
-                  <img style="height:24px" src="css/images/iconUserParameter22.png" />
-                </td>
-                <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
-              </tr>
-            </table>    
+              <table >
+                <tr>
+                  <td>
+                    <img style="height:24px" src="css/images/iconUserParameter22.png" />
+                  </td>
+                  <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
+                </tr>
+              </table>    
             </div>
           <td width="8%">&nbsp;</td>
           <td width="30%" style="vertical-align: top;">
-            <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
-              <button class="largeTextButton" id="buttonHideMenu" dojoType="dijit.form.Button" onclick="hideShowMenu();" iconClass="dijitButtonIcon dijitButtonIconHideMenu">
-                <?php echo i18n("buttonHideMenu");?>
-              </button>
-              <button class="largeTextButton" id="buttonSwitchMode" dojoType="dijit.form.Button" onclick="switchMode();" iconClass="dijitButtonIcon dijitButtonIconSwitchMode">
-                <?php 
-                  if (isset($_SESSION['switchedMode']) and $_SESSION['switchedMode']!='NO') {
-                    echo i18n("buttonStandardMode");
-                  } else {
-                    echo i18n("buttonSwitchedMode");
-                  }?>
-              </button>                
+            <div id="statusBarProgressDiv" style="text-align: left;color: #000000">
+              <table><tr><td>
+              <div class="pseudoButton" onclick="hideShowMenu();" style="width:150px">
+                <table >
+                  <tr>
+                    <td style="width:40px">
+                      <div class="dijitButtonIcon dijitButtonIconHideMenu"></div>
+                    </td>
+                    <td id="buttonHideMenuLabel"><?php echo i18n("buttonHideMenu");?></td>
+                  </tr>
+                </table>    
+              </div>
+              </td>
+              <td width="1px">&nbsp;</td>
+              <td>
+              <div class="pseudoButton" onclick="switchMode();" style="width:150px">
+                <table >
+                  <tr>
+                    <td style="width:40px">
+                      <div class="dijitButtonIcon dijitButtonIconSwitchMode"></div>
+                    </td>
+                    <td id="buttonSwitchModeLabel">
+                      <?php 
+                      if (isset($_SESSION['switchedMode']) and $_SESSION['switchedMode']!='NO') {
+                        echo i18n("buttonStandardMode");
+                      } else {
+                        echo i18n("buttonSwitchedMode");
+                      }?>
+                    </td>
+                  </tr>
+                </table>    
+              </div>
+              </td></tr></table>               
             </div>
           </td>
-          <td width="30%" style="vertical-align: top;" >
+          <td width="30%" style="vertical-align: middle;" >
             <div id="statusBarMessageDiv" style="text-align: left">
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
-          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: top;"> 
+          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;"> 
             <div width="100%" id="statusBarInfoDiv" style="text-align: right;">
               <?php htmlDisplayInfos();?>
             </div>

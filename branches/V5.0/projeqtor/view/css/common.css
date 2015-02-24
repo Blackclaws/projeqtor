@@ -1952,8 +1952,8 @@ table.dijitCalendarContainer {
 .dijitButtonIconPrevious { background-position: -476px; }
 .dijitButtonIconNext { background-position: -501px; }
 .dijitButtonIconSelect { background-position: -526px; }
-.dijitButtonIconHideMenu { background-position: -551px; position: relative; top: -3px; right:10px;}
-.dijitButtonIconSwitchMode { background-position: -576px; position: relative; top: -3px; right:10px;}
+.dijitButtonIconHideMenu { background-position: -551px; }
+.dijitButtonIconSwitchMode { background-position: -576px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;

@@ -566,11 +566,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       }
       contentWidget.set('content',data);
       checkDestination(destination);
-      if (destination.indexOf(dojo.byId('objectClass').value)==0) { // If refresh a section
+      if (dojo.byId('objectClass') && destination.indexOf(dojo.byId('objectClass').value)==0) { // If refresh a section
         var section=destination.substr(dojo.byId('objectClass').value.length+1);
         console.log("section="+section);
         if (dojo.byId(section+"SectionCount") && dojo.byId(section+"Badge")) {
-          dojo.byId(section+"Badge").innerHTML=dojo.byId(section+"SectionCount").value
+          dojo.byId(section+"Badge").innerHTML=dojo.byId(section+"SectionCount").value;
         }
       }
       if (destination=="detailDiv" || destination=="centerDiv") {

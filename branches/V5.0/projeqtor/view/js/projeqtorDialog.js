@@ -3419,7 +3419,7 @@ function hideShowMenu() {
 		  setTimeout("dojo.byId('menuBarShow').style.display='block'",duration);
 		  setTimeout("dojo.byId('leftDiv_splitter').style.display='none';",duration);
 		}
-	    dijit.byId("buttonHideMenu").set('label',i18n('buttonShowMenu'));
+	  dojo.byId("buttonHideMenuLabel").innerHTML=i18n('buttonShowMenu');
 		menuHidden=true;
 		menuActualStatus='hidden';		
 	} else {
@@ -3439,7 +3439,7 @@ function hideShowMenu() {
 			dojox.fx.animateProperty({  node:"leftDiv_splitter", properties: { left: menuDivSize}, duration: duration })
 		  ]).play();
 		}
-		dijit.byId("buttonHideMenu").set('label',i18n('buttonHideMenu'));
+		dojo.byId("buttonHideMenuLabel").innerHTML=i18n('buttonHideMenu');
 		menuHidden=false;
 		menuActualStatus='visible';
 	}
@@ -3469,7 +3469,7 @@ var switchListMode='CLICK';
 function switchMode(){
 	if (! switchedMode) {
 		switchedMode=true;
-		dijit.byId("buttonSwitchMode").set('label',i18n('buttonStandardMode'));
+		dojo.byId("buttonSwitchModeLabel").innerHTML=i18n('buttonStandardMode');
 		if (! dojo.byId("listDiv")) {
 			if (listDivSize==0) {
 			  listDivSize=dojo.byId("centerDiv").offsetHeight*.4;
@@ -3488,7 +3488,7 @@ function switchMode(){
 		}
 	} else {
 		switchedMode=false;
-		dijit.byId("buttonSwitchMode").set('label',i18n('buttonSwitchedMode'));
+		dojo.byId("buttonSwitchModeLabel").innerHTML=i18n('buttonSwitchedMode');
 		if (! dojo.byId("listDiv")) {
 			return;
 		}

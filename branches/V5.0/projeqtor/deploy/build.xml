@@ -108,7 +108,9 @@
 	
   <target name="copyReport">
     <copy todir="${deploy.dir}/report">
-      <fileset dir="${src.dir}/report"/>
+      <fileset dir="${src.dir}/report">
+        <exclude name="**/object/*.*"/>
+      </fileset>
     </copy>
   </target>
   
