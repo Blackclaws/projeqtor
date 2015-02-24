@@ -1124,6 +1124,7 @@ label, .label, .smallLabel {
   z-index:3000;
   color: #000000;
   text-shadow: 1px 1px #FFFFFF  ;
+  cursor:pointer;
 }
 .pseudoButton:hover {
   background-color: #ffffff;

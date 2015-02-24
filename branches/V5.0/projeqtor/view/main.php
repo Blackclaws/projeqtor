@@ -494,8 +494,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     <div id="statusBarDiv" dojoType="dijit.layout.ContentPane" region="bottom">
       <table width="100%">
         <tr>
-          <td width="5%" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);" style="vertical-align: top; text-align: left; cursor: pointer; ">
-            <div class="pseudoButton">
+          <td width="5%"  >
+            <div class="pseudoButton" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
             <table >
               <tr>
                 <td>
@@ -508,9 +508,19 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             </table>    
             </div>
           </td>
-          <td width="1%">&nbsp;</td>
-          <td width="5%">&nbsp;<?php echo '[' . $_SESSION["user"]->name . ']'; ?></td>
-          <td width="9%">&nbsp;</td>
+          <td width="1px">&nbsp;</td>
+          <td width="5%">
+            <div class="pseudoButton" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
+            <table >
+              <tr>
+                <td>
+                  <img style="height:24px" src="css/images/iconUserParameter22.png" />
+                </td>
+                <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
+              </tr>
+            </table>    
+            </div>
+          <td width="8%">&nbsp;</td>
           <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000"> 
               <button class="largeTextButton" id="buttonHideMenu" dojoType="dijit.form.Button" onclick="hideShowMenu();" iconClass="dijitButtonIcon dijitButtonIconHideMenu">
