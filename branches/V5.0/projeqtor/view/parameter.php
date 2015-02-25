@@ -189,6 +189,7 @@ function drawTableFromObjectList($objectList) {
 			  $user->drawSpecificItem('image');
 			  echo '<input type="hidden" id="objectId" value="'.$user->id.'"/>';
 			  echo '<input type="hidden" id="objectClass" value="User"/>';
+			  echo '<input type="hidden" id="parameter" value="true"/>';
 			  echo "<tr><td></td><td>";
 			  echo '<div style="position:relative;top:0px;left:0px;height:65px;">&nbsp;</div>';
 			}

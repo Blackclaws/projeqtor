@@ -844,14 +844,20 @@ function finalizeMessageDisplay(destination, validationType) {
       if (validationType=='note') {
         loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_Note', 'listForm');
       } else if (validationType=='attachment') {
-    	if (dojo.byId('objectClass') 
-    	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' || dojo.byId('objectClass').value=='Contact') ) {
-    	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	  refreshGrid();
-    	} else {
+        if (dojo.byId('parameter') && dojo.byId('parameter').value=='true') {
+          formChangeInProgress=false;
+          waitingForReply=false;
+          console.log("refresh parameter");
+          loadMenuBarItem('UserParameter','UserParameter','bar');
+        }  else if (dojo.byId('objectClass') 
+      	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' 
+      	      || dojo.byId('objectClass').value=='Contact') ) {
+      	  loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
+      	  refreshGrid();
+      	} else  {     	
           loadContent("objectDetail.php?refreshAttachments=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
-    	}
-    	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
+      	}
+      	dojo.style(dojo.byId('downloadProgress'), {display:'none'});
       } else if (validationType=='billLine') {
         loadContent("objectDetail.php?refreshBillLines=true", dojo.byId('objectClass').value+'_BillLine', 'listForm');
         loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
