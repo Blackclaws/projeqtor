@@ -195,7 +195,7 @@ class Affectable extends SqlElement {
         $result.='<td>&nbsp;&nbsp;';
         $result.='<img src="css/images/smallButtonRemove.png" '
             .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
-        $horizontal='left:'.($largeWidth+75).'px';
+        $horizontal='right:10px';
         $top='30px';
       } else {
         if ($outMode=='pdf') {
@@ -216,7 +216,7 @@ class Affectable extends SqlElement {
         $image->delete();
       }
       if (!$print) {
-        $horizontal='left:'.($largeWidth+75).'px';
+        $horizontal='right:10px';
         $result.='<tr style="height:20px;">';
         $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
         $result.='<td>&nbsp;&nbsp;';

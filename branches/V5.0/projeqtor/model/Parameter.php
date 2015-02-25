@@ -383,7 +383,10 @@ class Parameter extends SqlElement {
                            'sectionMiscellaneous'=>'section',      
                            "defaultProject"=>"list",
                            'projectIndentChar'=>'list',
-                           'newColumn'=>'newColumn'
+                           'newColumn'=>'newColumn',
+                         'newColumn'=>'newColumn',
+                         'sectionPhoto'=>'section',
+                         'image'=>'photo'
         
         );
         break;
