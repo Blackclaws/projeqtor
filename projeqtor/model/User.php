@@ -34,6 +34,7 @@ class User extends SqlElement {
   public $_col_1_2_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
+  public $_spe_image;
   public $email;
   public $password;
   public $_spe_buttonSendMail;
@@ -51,7 +52,6 @@ class User extends SqlElement {
   public $_col_2_2_Affectations;
   public $_spe_affectations;
   public $_col_Miscellaneous;
-  public $_spe_image;
   public $dontReceiveTeamMails;
   public $_arrayFilters=array();
   //public $_arrayFiltersId=array();

@@ -113,8 +113,10 @@ function drawTableFromObjectList($objectList) {
       echo '</table></div></td></tr><tr><td colspan="2" style="width:50%;vertical-align:top;"><div><table>';
     } else {
 			if ($format!="section") {
-				echo '<tr>';
-				echo '<td class="crossTableLine"><label class="label largeLabel" for="' . $code . '" title="' . i18n('help' . ucfirst($code)) . '">' . i18n('param' . ucfirst($code) ) . ' :&nbsp;</label></td><td>';
+			  if ($format!='photo') {
+				  echo '<tr>';
+				  echo '<td class="crossTableLine"><label class="label largeLabel" for="' . $code . '" title="' . i18n('help' . ucfirst($code)) . '">' . i18n('param' . ucfirst($code) ) . ' :&nbsp;</label></td><td>';
+			  }
 			} else {
 				echo '</table></div><br/>';
 				$divName=$type.'_'.$code;
@@ -122,7 +124,7 @@ function drawTableFromObjectList($objectList) {
 				echo ' open="' . (array_key_exists($divName, $collapsedList)?'false':'true') . '"';
 				echo ' onHide="saveCollapsed(\'' . $divName . '\');"';
 				echo ' onShow="saveExpanded(\'' . $divName . '\');"';
-				echo ' title="' . i18n($code) . '"';
+				echo ' title="' . i18n($code) . '" style="width:98%; position:relative;"';
 				echo '>';
 				echo '<table>';
 				echo '<tr>';
@@ -181,6 +183,14 @@ function drawTableFromObjectList($objectList) {
 				echo $obj->parameterValue;
 				//echo $obj->getValidationScript($code);
 				echo '</textarea>';
+			} else if ($format=='photo') { // for user photo 
+			  echo "</td></tr>";
+			  $user=$_SESSION['user'];
+			  $user->drawSpecificItem('image');
+			  echo '<input type="hidden" id="objectId" value="'.$user->id.'"/>';
+			  echo '<input type="hidden" id="objectClass" value="User"/>';
+			  echo "<tr><td></td><td>";
+			  echo '<div style="position:relative;top:0px;left:0px;height:65px;">&nbsp;</div>';
 			}
 			echo '</td></tr>';
 		}
