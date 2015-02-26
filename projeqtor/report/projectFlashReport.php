@@ -39,7 +39,7 @@ if (! isset($outMode)) {
 }
 
 if (array_key_exists('version',$_REQUEST)) {
-	echo "Rapport Flash version 2.0 [2014-02-20]";
+	echo "Rapport Flash version 3.0 [2015-02-26]";
 	exit;
 }
 
@@ -315,6 +315,8 @@ if ($outMode!='pdf') {
 ?>
 <div style="font-family: arial;font-size:<?php echo (($outMode=='pdf')?'3':'3');?>mm; width:<?php displayWidth(100);?>; height:<?php displayheight(100);?>;background-color: white; <?php echo $borderMain?>" >
 
+<!-- ********** Entête ********** -->
+
   <div style="position:relative;width:<?php displayWidth(100);?>;height:37mm;<?php echo $borderMain?>">
   <?php if ($showHeader) {
     $titleLeft=0;
@@ -324,15 +326,15 @@ if ($outMode!='pdf') {
     $curHeight=0;
     ?>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
-      width:<?php echo $titleWidth;?>mm;font-weight: bold">Situation du <br/>projet</div>
+      width:<?php echo $titleWidth;?>mm;" class="reportTableLineHeader">Projet</div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm;
-      font-size:150%;font-weight:bold;<?php echo $borderMain?>">
+      white-space:nowrap;font-weight:bold;<?php echo $borderMain?>">
       <?php displayField($proj->name);?></div>
     
-    <?php $curHeight=10;?>
+    <?php $curHeight+=$lineHeight;?>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
       width:<?php echo $titleWidth;?>mm; height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("CPU:");?></div>
+      <?php displayHeader("CPU");?></div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
       <?php displayField(SqlList::getNameFromId('Contact',$proj->idContact));?>
     </div>
@@ -340,38 +342,30 @@ if ($outMode!='pdf') {
     <?php $curHeight+=$lineHeight;?>
     <div style="position:absolute;top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
     width:<?php echo $titleWidth;?>mm;height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("CPI:");?>
+      <?php displayHeader("CPI");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
       <?php displayField(SqlList::getFieldFromId('User',$proj->idUser, 'fullName'));?>
     </div>
 
-    <?php $curHeight+=$lineHeight;?>
+    <?php $titleLeft=round($width*25/100,0);
+    $titleWidth=18;
+    $colLeft=$titleLeft+$titleWidth+3;
+    $lineHeight=4;
+    $curHeight=0;?>    
+   
     <div style="position:absolute;top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
     width:<?php echo $titleWidth;?>mm;height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("Situation à:");?>
+      <?php displayHeader("Situation au");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
       <?php displayField(htmlFormatDate(date("Y-m-d")));?>
     </div>
     
-    <?php $titleLeft=round($width*25/100,0);
-    $titleWidth=18;
-    $colLeft=$titleLeft+$titleWidth+3;
-    $lineHeight=4;
-    $curHeight=6;?>
-    <div style="position:absolute;top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
-    width:<?php echo $titleWidth;?>mm; height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("Priorité:");?>
-    </div>
-    <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
-      <?php echo $proj->ProjectPlanningElement->priority;?>
-    </div>
-    
     <?php $curHeight+=$lineHeight;?>
     <div style="position:absolute;top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
     width:<?php echo $titleWidth;?>mm; height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("Sponsor:");?>
+      <?php displayHeader("Sponsor");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
       <?php echo SqlList::getNameFromId('Sponsor',$proj->idSponsor);?>
@@ -380,7 +374,7 @@ if ($outMode!='pdf') {
     <?php $curHeight+=$lineHeight;?>
     <div style="position:absolute;top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
     width:<?php echo $titleWidth;?>mm; height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("Direction:");?>
+      <?php displayHeader("Direction");?>
     </div>
     <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
       <?php $cli=new Client($proj->idClient);
@@ -394,21 +388,14 @@ if ($outMode!='pdf') {
       }
       echo $name;?>
     </div>
+ 
+<!-- ********** Description ********** -->
     
-    <?php $curHeight+=$lineHeight;?>
-    <div style="position:absolute;top:<?php echo $curHeight;?>mm; left:<?php echo $titleLeft;?>mm; 
-    width:<?php echo $titleWidth;?>mm; height:<?php echo $lineHeight;?>mm;white-space:nowrap;" class="reportTableLineHeader" >
-      <?php displayHeader("Etat:");?>
-    </div>
-    <div style="position:absolute; top:<?php echo $curHeight;?>mm; left:<?php echo $colLeft;?>mm; white-space:nowrap;">
-      <?php echo SqlList::getNameFromId('Status',$proj->idStatus);?>
-    </div>
-
     <div style="position:absolute; left:<?php displayWidth(50);?>;top:0mm;height:<?php echo $lineHeight;?>mm;
     width:<?php displayWidth(49.5);?>;white-space:nowrap;" class="reportTableLineHeader">
-    <?php displayHeader("Périmètre & objectifs Projet / Process Métier impactés");?>
+    <?php displayHeader("Descriptif du projet");?>
     </div>
-    <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:<?php displayWidth(50);?>;top:<?php echo $lineHeight;?>mm;height:30.5mm;
+    <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:<?php displayWidth(50);?>;top:<?php echo $lineHeight;?>mm;height:15mm;
     width:<?php displayWidth(50);?>;<?php echo $border;?>">
       <?php displayField($proj->description);?>
     </div> 
