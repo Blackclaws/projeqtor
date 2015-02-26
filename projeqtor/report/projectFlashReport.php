@@ -109,6 +109,34 @@ foreach ($actList as $act) {
 		$arrayActionTodo[]=$name;
 	}
 }
+
+// ACTIVITY
+$showWbs=true;
+$arrayActivityDone=array();
+$arrayActivityOngoing=array();
+$arrayActivityTodo=array();
+$act=new Activity();
+$actList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject", "id asc");
+foreach ($actList as $act) {
+  $status=new Status($act->idStatus);
+  $name=$act->name;
+  if ($showWbs) $name=$act->ActivityPlanningElement->wbs." ".$name;
+  if (strlen($name)>60) {
+    $name=substr($name, 0,55).'[...]';
+  }
+  if ($status->setHandledStatus and $status->setDoneStatus) {
+    if (addMonthsToDate($act->doneDate, 3)>=date('Y-m-d')) {
+      $arrayActivityDone[$act->ActivityPlanningElement->wbsSortable]=$name;
+    }
+  } else if ($status->setHandledStatus and ! $status->setDoneStatus) {
+    $arrayActivityOngoing[$act->ActivityPlanningElement->wbsSortable]=$name;
+  } else {
+    if ( $act->ActivityPlanningElement->plannedEndDate <= addMonthsToDate(date('Y-m-d'),3)) {
+      $arrayActivityTodo[$act->ActivityPlanningElement->wbsSortable]=$name;
+    }
+  }
+}
+
 // ACTIVITIES
 $notStartedCost=0;
 $activitiesCost=0;
@@ -306,6 +334,7 @@ $showHeader=1;
 $showDecision=1;
 $showIndicator=1;
 $showActivity=1;
+$showAction=1;
 $showMilestone=1;
 $showRisk=1;
 $showCost=1;
@@ -317,7 +346,7 @@ if ($outMode!='pdf') {
 
 <!-- ********** Entête ********** -->
 
-  <div style="position:relative;width:<?php displayWidth(100);?>;height:37mm;<?php echo $borderMain?>">
+  <div style="position:relative;width:<?php displayWidth(100);?>;height:20mm;<?php echo $borderMain?>">
   <?php if ($showHeader) {
     $titleLeft=0;
   	$titleWidth=18;
@@ -401,81 +430,29 @@ if ($outMode!='pdf') {
     </div> 
   <?php }?>   
   </div>
+
+   
+<!-- ********** Activités ********** -->
   
-  
-  <div style="position:relative;top:2mm; width:<?php displayWidth(100);?>;height:28mm;<?php echo $borderMain?>" >
-  <?php if ($showDecision) {?>
-    <div class="reportTableLineHeader" style="width:<?php displayWidth(48.8);?>; white-space:nowrap;"><?php displayHeader("Décisions attendues");?></div>    
-      <?php displayList($arrayDecision,5,49);?>
-  <?php }?>  
-  <?php if ($showIndicator) {
-  	$overallProgress=new OverallProgress($proj->idOverallProgress);
-    $health=new Health($proj->idHealth);
-    $trend=new Trend($proj->idTrend);
-    $quality=new Quality($proj->idQuality);?>
-    <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;">
-      <?php displayHeader("Global");?><br/>
-      <span style="font-size:150%"><i><?php echo htmlEncode($overallProgress->name);?></i></span></div>
-    <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-       <?php displayIndicator($health);?>
-      </div>
-    <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>; ">
-      <?php displayHeader("Tendance");?><br/>
-      <i>"<?php echo htmlEncode($trend->name);?>"</i></div>  
-    <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <?php displayIndicator($trend);?></div>  
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>; ">
-      <?php displayHeader("Coût");?></div>  
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <?php displayHeader("Qualité");?></div>
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
-      <?php displayHeader("Délai");?></div>
-    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
-    width:<?php displayWidth(9.5);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-      <?php displayHeader("Risque");?></div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;<?php echo $border;?>">
-      <img src="../view/icons/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
-      <?php displayIndicator($quality);?>
-      </div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
-      <img src="../view/icons/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
-    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
-    width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
-     <?php displayIndicator($maxRiskCriticality);?></div>    
-  <?php }?>  
-  
-  </div>  
-  
- 
   <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
   <?php if ($showActivity) {?>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions réalisées");?></div>
-      <?php displayList($arrayActionDone,10,32);?>
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Activités réalisées (<3 mois)");?></div>
+      <?php displayList($arrayActivityDone,10,32);?>
     </div>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(34);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions en cours");?></div>
-      <?php displayList($arrayActionOngoing,12,32);?>
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Activités en cours");?></div>
+      <?php displayList($arrayActivityOngoing,12,32);?>
     </div>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(67);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions à venir");?></div>
-      <?php displayList($arrayActionTodo,12,32);?>
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Activités à venir (<3 mois)");?></div>
+      <?php displayList($arrayActivityTodo,12,32);?>
     </div>
   <?php }?>   
   </div>
   
-  
+<!-- ********** Jalons ********** -->
+   
   <div style="position:relative;top: 1mm; width:<?php displayWidth(100);?>;height:23mm;<?php echo $borderMain?>" >
   <?php if ($showMilestone) {
   $max=$maxMile;	
@@ -524,7 +501,85 @@ if ($outMode!='pdf') {
     }
   }?>
   </div> 
+      
+    
+  <div style="position:relative;top:2mm; width:<?php displayWidth(100);?>;height:28mm;<?php echo $borderMain?>" >
   
+<!-- ********** Decisions ********** -->  
+  <?php if ($showDecision) {?>
+    <div class="reportTableLineHeader" style="width:<?php displayWidth(48.8);?>; white-space:nowrap;"><?php displayHeader("Décisions attendues");?></div>    
+      <?php displayList($arrayDecision,5,49);?>
+  <?php }?>  
+  
+<!-- ********** Indicators ********** -->
+  
+  <?php if ($showIndicator) {
+  	$overallProgress=new OverallProgress($proj->idOverallProgress);
+    $health=new Health($proj->idHealth);
+    $trend=new Trend($proj->idTrend);
+    $quality=new Quality($proj->idQuality);?>
+    <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;">
+      <?php displayHeader("Global");?><br/>
+      <span style="font-size:150%"><i><?php echo htmlEncode($overallProgress->name);?></i></span></div>
+    <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
+       <?php displayIndicator($health);?>
+      </div>
+    <div class="reportTableLineHeader" style="position: absolute; top: 0mm; height: 10mm; text-align: center;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>; ">
+      <?php displayHeader("Tendance");?><br/>
+      <i>"<?php echo htmlEncode($trend->name);?>"</i></div>  
+    <div style="position: absolute; top: 0mm; height: 10mm; text-align: center; background-color: #FFFFFF;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
+      <?php displayIndicator($trend);?></div>  
+    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>; ">
+      <?php displayHeader("Coût");?></div>  
+    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
+      <?php displayHeader("Qualité");?></div>
+    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
+      <?php displayHeader("Délai");?></div>
+    <div class="reportTableLineHeader" style="position: absolute; top: 10mm; height: 5mm; text-align: center;
+    width:<?php displayWidth(9.5);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
+      <?php displayHeader("Risque");?></div>
+    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(60);?>;<?php echo $border;?>">
+      <img src="../view/icons/smiley<?php echo ucfirst($costIndicator);?>.png" /></div>  
+    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center;vertical-align: middle; background-color: #FFFFFF;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(70);?>;<?php echo $border;?>">
+      <?php displayIndicator($quality);?>
+      </div>
+    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle; background-color: #FFFFFF;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(80);?>;<?php echo $border;?>">
+      <img src="../view/icons/smiley<?php echo ucfirst($delayIndicator);?>.png" /></div>
+    <div style="position: absolute; top: 15mm; height: 10mm; text-align: center; vertical-align: middle;background-color: #FFFFFF;
+    width:<?php displayWidth(10);?>; left:<?php displayWidth(90);?>;<?php echo $border;?>">
+     <?php displayIndicator($maxRiskCriticality);?></div>    
+  <?php }?>  
+  </div>  
+  
+ 
+  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
+  <?php if ($showActivity) {?>
+    <div style="width:<?php displayWidth(32);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions réalisées");?></div>
+      <?php displayList($arrayActionDone,10,32);?>
+    </div>
+    <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(34);?>; top:0mm; background-color: white;">
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions en cours");?></div>
+      <?php displayList($arrayActionOngoing,12,32);?>
+    </div>
+    <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(67);?>; top:0mm; background-color: white;">
+      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions à venir");?></div>
+      <?php displayList($arrayActionTodo,12,32);?>
+    </div>
+  <?php }?>   
+  </div>
+  
+ 
   
   <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:25mm;<?php echo $borderMain?>" >
   <?php if ($showRisk) {?>
