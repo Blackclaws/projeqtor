@@ -180,7 +180,9 @@ function iconFormatter($value) {
 }
 
 function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alwaysDisplayBigImage=false) {
-	if (! $userId) return '';
+	global $print;
+	if ($print) return "";//$userName;
+  if (! $userId) return '';
 	$radius=round($size/2,0);
 	$file=Affectable::getThumbUrl('Affectable', $userId, $size);
 	$known=(substr($file,0,23) != '../view/img/Affectable/')?true:false;
@@ -190,7 +192,7 @@ function formatUserThumb($userId,$userName,$title,$size=22,$float='right',$alway
 	if ($title) {
 		$title=htmlEncode(i18n('thumb'.$title.'Title',array('<b>'.$userName.'</b>')),'quotes');
 	}
-	if ($known or $alwaysDisplayBigImage) {
+	if (! $print and ($known or $alwaysDisplayBigImage)) {
 	  $res.=' onMouseOver="showBigImage(\'Affectable\',\''.$userId.'\',this,\''.$title.'\''.(($known)?"":",true").');" onMouseOut="hideBigImage();"';
 	}
 	$res.='/>';
@@ -208,6 +210,8 @@ function formatColorThumb($col,$val, $size=20, $float='right') {
   return $res;
 }
 function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
+  global $print;
+  if ($print) return "";//htmlFormatDate($creationDate);
   $today=date('Y-m-d');
   $date=($updateDate)?$updateDate:$creationDate;
   $date=substr($date,0,10);
@@ -226,7 +230,9 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
   $res='<span style="position:relative;float:'.$float.';padding-right:3px">';
   $res.='<img ';
 	$res.=' src="'.$file.'" ';
-	$res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+	if (! $print) {
+	  $res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+	}
 	$res.='/>';	
 	
   $month=getMonthName(substr($date, 5,2),5);
