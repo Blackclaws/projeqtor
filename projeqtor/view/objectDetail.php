@@ -2475,7 +2475,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
 	echo '<td class="assignHeader" style="width:5%">' . i18n('colId') . '</td>';
 	echo '<td class="assignHeader" style="width:' . (($print)?'55':'45') . '%">' . i18n('colId'.$type) . '</td>';
 	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
-	echo '<td class="assignHeader" style="width:15%">' . i18n('colStartDate') . '</td>';
+	echo '<td class="assignHeader" style="width:15%">' . i18n('colEndDate') . '</td>';
 	echo '<td class="assignHeader" style="width:10%">' . i18n('colRate'). '</td>';
 	//echo '<td class="assignHeader" style="width:10%">' . i18n('colIdle'). '</td>';
 
