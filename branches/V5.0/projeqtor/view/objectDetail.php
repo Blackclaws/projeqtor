@@ -61,7 +61,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $showThumb=true;
   }
   $treatedObjects []=$obj;
-  $dateWidth='75';
+  $dateWidth='74';
   $verySmallWidth='44';
   $smallWidth='75';
   $mediumWidth='200';
@@ -1278,13 +1278,10 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo '<table class="detail"  style="width: 100%;" >';
   } else {
     echo '<table class="detail" style="width:' . $widthPct . ';" >';
-    echo '<tr><td colspan=2 class="section" style="width' . $widthPct . '">' . i18n('section' . ucfirst($section)) . '</td></tr>';
-    if ($outMode == "pdf") {
+    echo '<tr><td colspan="2" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
       echo '<tr class="detail" style="height:2px;font-size:2px;">';
-      echo '<td class="detail" style="width:10%;">&nbsp;</td>';
-      echo '<td style="width: 120px">&nbsp;</td>';
+      echo '<td class="detail" colspan="2">&nbsp;</td>';
       echo '</tr>';
-    }
   }
 }
 
@@ -1569,13 +1566,14 @@ function drawNotesFromObject($obj, $refresh=false) {
   } else {
     $notes=array();
   }
+  if (!$refresh) echo '<tr><td colspan="2">';
   echo '<input type="hidden" id="noteIdle" value="' . $obj->idle . '" />';
   echo '<table width="100%">';
   echo '<tr>';
   if (!$print) {
     echo '<td class="noteHeader smallButtonsGroup" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addNote();" title="' . i18n('addNote') . '" /> ';
     }
     echo '</td>';
   }
@@ -1598,8 +1596,8 @@ function drawNotesFromObject($obj, $refresh=false) {
       if (!$print) {
         echo '<td class="noteData smallButtonsGroup">';
         if ($note->idUser == $user->id and !$print and $canUpdate) {
-          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy . ');" title="' . i18n('editNote') . '" class="smallButton"/> ';
-          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" class="smallButton"/> ';
+          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonEdit.png" onClick="editNote(' . $note->id . ',' . $note->idPrivacy . ');" title="' . i18n('editNote') . '" /> ';
+          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeNote(' . $note->id . ');" title="' . i18n('removeNote') . '" /> ';
         }
         echo '</td>';
       }
@@ -1617,6 +1615,7 @@ function drawNotesFromObject($obj, $refresh=false) {
       $strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
       // END ADDED BRW
+      echo '</td>';
       /*
        * echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>'; if ($note->fromEmail) { echo '<b>' . i18n ( 'noteFromEmail' ) . '</b>'; } echo '<i>' . htmlFormatDateTime ( $updateDate ) . '</i></td>'; echo '<td class="noteData">' . $userName . '</td>';
        */
@@ -1627,9 +1626,10 @@ function drawNotesFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
   }
-  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td colspan="3" class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
+  if (!$refresh) echo '</td></tr>'; 
   echo '<input id="NoteSectionCount" type="hidden" value="'.count($notes).'" />';
 }
 
@@ -1793,6 +1793,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   } else {
     $attachments=array();
   }
+  if (!$refresh) echo '<tr><td colspan="2">';
   echo '<table width="100%">';
   echo '<tr>';
   if (!$print) {
@@ -1870,6 +1871,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   echo '<td class="attachmentDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
+  if (! $refresh) echo "</td></tr>";
   echo '<input id="AttachmentSectionCount" type="hidden" value="'.count($attachments).'" />';
 }
 
@@ -1905,14 +1907,15 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   if ($obj->idle == 1) {
     $canUpdate=false;
   }
-  echo '<tr><td colspan="2" style="width:100%;"><table style="width:100%;">';
+  if (!$refresh) echo '<tr><td colspan="2">';
+  echo '<table style="width:100%;">';
   echo '<tr>';
   if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id != null and !$print and $canUpdate) {
       $linkable=SqlElement::getSingleSqlElementFromCriteria('Linkable', array('name' => get_class($obj)));
       $default=$linkable->idDefaultLinkable;
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
     }
     echo '</td>';
   }
@@ -1954,7 +1957,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
         }
         if ($canUpdate) {
-          echo '  <img src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
+          echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
         }
         echo '</td>';
       }
@@ -1985,7 +1988,8 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       echo '</tr>';
     }
   }
-  echo '</table></td></tr>';
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
   echo '<input id="LinkSectionCount" type="hidden" value="'.count($list).'" />';
 }
 

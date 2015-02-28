@@ -162,6 +162,7 @@ class Parameter extends SqlElement {
                     'ProjeQtOrDark'=>i18n('themeProjeQtOrDark'),
                     'ProjeQtOrLight'=>i18n('themeProjeQtOrLight'),
                     'Projectom'=>i18n('themeProjectom'),
+                    'ProjectomLight'=>i18n('themeProjectomLight'),
                     'blueLight'=>i18n('themeBlueLight'), 
                     'blue'=>i18n('themeBlue'), 
                     'blueContrast'=>i18n('themeBlueContrast'),

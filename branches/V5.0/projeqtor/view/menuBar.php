@@ -42,9 +42,13 @@
   $defaultMenu=Parameter::getUserParameter('defaultMenu');
   if (! $defaultMenu) $defaultMenu='menuBarItem';
   foreach ($menuList as $menu) {
+debugLog("name=$menu->name class=$menu->menuClass");
     if (securityCheckDisplayMenu($menu->id,$menu)) {
       if ($menu->type!='menu' and (strpos(' menuBarItem '.$menu->menuClass, $defaultMenu)>0)) {
         $cptAllMenu+=1;
+      }
+      if ($menu->type=='menu' or $menu->name=='menuAlert' or $menu->name=='menuToday' or $menu->name=='menuReports' or $menu->name=='menuParameter' or $menu->name=='menuUserParameter') {
+        continue;
       }
       $sp=explode(" ", $menu->menuClass);
       foreach ($sp as $cl) {
@@ -60,7 +64,7 @@
   	$menuName=$menu->name;
   	$menuClass=' menuBarItem '.$menu->menuClass;
     $idMenu=$menu->id;
-    $style=(strpos($menuClass, $defaultMenu)==0)?'display:none;':'';
+    $style=(strpos($menuClass, $defaultMenu)===false)?'display:none;':'display:block;';
     if ($menu->type=='menu') {
     	if ($menu->idMenu==0) {
     		//echo '<td class="menuBarSeparator" style="width:5px;"></td>';
