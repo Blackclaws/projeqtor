@@ -61,7 +61,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $showThumb=true;
   }
   $treatedObjects []=$obj;
-  $dateWidth='74';
+  $dateWidth='72';
   $verySmallWidth='44';
   $smallWidth='75';
   $mediumWidth='200';
@@ -190,7 +190,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($val [$i]) {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
-          echo '<div class="tabLabel" style="text-align:left;">&nbsp;</div>';
+          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">&nbsp;xxx</div>';
         }
         if ($i < $internalTableCols - 1) {
           echo '</td>';
@@ -1015,7 +1015,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (!$print) {
           echo '<input type="hidden" ' . $name . ' value="' . htmlEncode($val) . '" />';
         }
-        if (strtolower(substr($col, -8, 8)) == 'progress') {
+        if (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct') {
           echo '&nbsp;%';
         }
         echo '</div>';
@@ -1040,7 +1040,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (($isCost or $isWork or $isDuration) and $internalTable != 0 and $displayWidth < 1600) {
           $fieldWidth-=12;
         }
-        if ($dataType == 'int' and strtolower(substr($col, -8, 8) == 'progress')) {
+        if ($dataType == 'int' and (strtolower(substr($col, -8, 8)) == 'progress' or substr($col, -3, 3) == 'Pct')) {
           $isPercent=true;
         }
         $spl=explode(',', $dataLength);
@@ -1053,11 +1053,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($isCost and $currencyPosition == 'before') {
           echo $currency;
         }
+        $negative=(($isCost or $isWork) and $val<0)?'border:1px solid #FF5555 !important;':''; 
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
         // echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
-        echo ' style="width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
+        echo ' style="'.$negative.'width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
         echo ' class="input" ';
         // echo ' layoutAlign ="right" ';
