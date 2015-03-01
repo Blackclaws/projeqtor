@@ -51,6 +51,9 @@ UPDATE `${prefix}affectation` SET idProfile=(select idProfile from `${prefix}res
 
 DELETE FROM `${prefix}planningelement` WHERE refName is null;
 
+ALTER TABLE `${prefix}planningelement` ADD `marginWork` decimal(14,5),
+ADD `marginCost` decimal(14,5), ADD `marginWorkPct` int(6), ADD `marginCostPct` int(6);
+
 ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuProject';

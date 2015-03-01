@@ -35,7 +35,7 @@ class ProjectPlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', '', 'requested', 'startDateShort', 'endDateShort', 'durationShort' );
+  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', '', 'requested', 'startDate', 'endDate', 'duration' );
   //'real', 'left', '', '', '', '', , 'work', 'resourceCost', 'expense', 'totalCost');
   public $validatedStartDate;
   public $plannedStartDate;
@@ -52,12 +52,13 @@ class ProjectPlanningElement extends PlanningElement {
   public $realDuration;
   public $_void_34;
   public $initialDuration;
-  public $_tab_5_6_smallLabel = array('validated','assigned','real','left','reassessed','work','cost','expense','totalCost','progress','priority');
+  public $_tab_5_7_smallLabel = array('validated','assigned','real','left','reassessed',
+      'work','cost','expense','totalCost','progress','margin','priority');
   public $validatedWork;
   public $assignedWork;
-  public $plannedWork;
   public $realWork;
   public $leftWork;
+  public $plannedWork;
   public $validatedCost;
   public $assignedCost;
   public $realCost;
@@ -78,6 +79,11 @@ class ProjectPlanningElement extends PlanningElement {
   public $expectedProgress;
   public $_label_wbs;
   public $wbs;
+  public $marginWork;
+  public $marginWorkPct;
+  public $marginCost;
+  public $marginCostPct;
+  public $_void_7_5;
   public $priority;
   
   public $wbsSortable;
@@ -150,6 +156,20 @@ class ProjectPlanningElement extends PlanningElement {
   	$this->totalPlannedCost=$this->plannedCost+$this->expensePlannedAmount;
   	$this->totalRealCost=$this->realCost+$this->expenseRealAmount;
   	$this->totalValidatedCost=$this->validatedCost+$this->expenseValidatedAmount;
+  	if ($this->plannedWork and $this->validatedWork) {
+  	  $this->marginWork=$this->validatedWork-$this->plannedWork;
+  	  $this->marginWorkPct=round($this->marginWork/$this->validatedWork*100,0);
+  	} else {
+  	  $this->marginWork=null;
+  	  $this->marginWorkPct=null;
+  	}
+    if ($this->totalPlannedCost and $this->totalValidatedCost) {
+  	  $this->marginCost=$this->totalValidatedCost-$this->totalPlannedCost;
+  	  $this->marginCostPct=round($this->marginCost/$this->totalValidatedCost*100,0);
+  	} else {
+  	  $this->marginCost=null;
+  	  $this->marginCostPct=null;
+  	}
   }
   
   protected function updateSynthesisObj ($doNotSave=false) {

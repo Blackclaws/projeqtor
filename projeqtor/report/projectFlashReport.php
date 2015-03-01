@@ -90,24 +90,22 @@ foreach($decList as $dec) {
 }
 
 // ACTIONS
-$arrayActionDone=array();
-$arrayActionOngoing=array();
-$arrayActionTodo=array();
+$arrayActionDecision=array();
 $act=new Action();
+$dec=new Decision();
 $actList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject", "actualDueDate asc, initialDueDate asc, creationDate asc");
+$decList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject", "actualDueDate asc, initialDueDate asc, creationDate asc");
 foreach ($actList as $act) {
 	$status=new Status($act->idStatus);
 	$name=$act->name;
 	if (strlen($name)>60) {
 		$name=substr($name, 0,55).'[...]';
 	}
-	if ($status->setHandledStatus and $status->setDoneStatus) {
-		$arrayActionDone[]=$name;
-	} else if ($status->setHandledStatus and ! $status->setDoneStatus) {
-		$arrayActionOngoing[]=$name;
-	} else {
-		$arrayActionTodo[]=$name;
-	}
+	if (! $status->setDoneStatus) {
+		$arrayActionDecision[]=array('name'=>$name,
+		    'responsible'=>SqlList::getNameFromId('Affectable', $act->idResource),
+		    'dueDate'=>$act->actualDueDate);
+	} 
 }
 
 // ACTIVITY
@@ -121,8 +119,8 @@ foreach ($actList as $act) {
   $status=new Status($act->idStatus);
   $name=$act->name;
   if ($showWbs) $name=$act->ActivityPlanningElement->wbs." ".$name;
-  if (strlen($name)>60) {
-    $name=substr($name, 0,55).'[...]';
+  if (strlen($name)>70) {
+    $name=substr($name, 0,65).'[...]';
   }
   if ($status->setHandledStatus and $status->setDoneStatus) {
     if (addMonthsToDate($act->doneDate, 3)>=date('Y-m-d')) {
@@ -136,6 +134,9 @@ foreach ($actList as $act) {
     }
   }
 }
+ksort($arrayActivityDone);
+ksort($arrayActivityOngoing);
+ksort($arrayActivityTodo);
 
 // ACTIVITIES
 $notStartedCost=0;
@@ -257,8 +258,8 @@ foreach ($riskList as $risk) {
 		}
 		$order=htmlFixLengthNumeric($order,6).'-'.$risk->id;
 		$name=$risk->name;
-	  if (strlen($name)>90) {
-	    $name=substr($name, 0,85).'[...]';
+	  if (strlen($name)>80) {
+	    $name=substr($name, 0,75).'[...]';
 	  }
 		$arrayRisk[$order]=array('name'=>$name, 
 		  'criticality'=>$criticality->name,
@@ -424,9 +425,9 @@ if ($outMode!='pdf') {
     width:<?php displayWidth(49.5);?>;white-space:nowrap;" class="reportTableLineHeader">
     <?php displayHeader("Descriptif du projet");?>
     </div>
-    <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:<?php displayWidth(50);?>;top:<?php echo $lineHeight;?>mm;height:15mm;
+    <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:<?php displayWidth(50);?>;top:<?php echo $lineHeight;?>mm;height:16mm;
     width:<?php displayWidth(50);?>;<?php echo $border;?>">
-      <?php displayField($proj->description);?>
+      <?php displayField($proj->description, '16', false);?>
     </div> 
   <?php }?>   
   </div>
@@ -434,7 +435,7 @@ if ($outMode!='pdf') {
    
 <!-- ********** Activités ********** -->
   
-  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
+  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:51mm;<?php echo $borderMain?>" >
   <?php if ($showActivity) {?>
     <div style="width:<?php displayWidth(32);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
       <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Activités réalisées (<3 mois)");?></div>
@@ -505,11 +506,58 @@ if ($outMode!='pdf') {
     
   <div style="position:relative;top:2mm; width:<?php displayWidth(100);?>;height:28mm;<?php echo $borderMain?>" >
   
-<!-- ********** Decisions ********** -->  
-  <?php if ($showDecision) {?>
-    <div class="reportTableLineHeader" style="width:<?php displayWidth(48.8);?>; white-space:nowrap;"><?php displayHeader("Décisions attendues");?></div>    
-      <?php displayList($arrayDecision,5,49);?>
-  <?php }?>  
+<!-- ********** Risques ********** -->  
+  
+    <?php if ($showRisk) {?>
+    <div style="position:absolute;top:0mm; width:<?php displayWidth(55);?>;height:30mm;<?php echo $borderMain?>" >
+	    <table style="width:100%">
+	       <tr>
+	         <td colspan="4" class="reportTableLineHeader" >
+	           <?php displayHeader("Alertes / Risques");?>
+	         </td>
+	       </tr>
+         <tr>
+           <td  style="width:70%; font-weight:bold;<?php echo $border;?>" >
+             <?php displayHeader("Risque");?>
+           </td>
+           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
+             <?php displayHeader("Criticité");?>
+           </td>
+           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
+             <?php displayHeader("Sévérité");?>
+           </td>
+         </tr>
+         <?php 
+          $nb=0;
+          $max=6;
+          foreach ($arrayRisk as $risk) {
+            $nb++;
+            if ($nb>$max) break;?>
+          <tr>
+           <td  style="position:relative; width:55%; <?php echo $border;?>" >
+             <?php displayField($risk['name']);?>
+           </td>
+           <td  style="background-color:<?php echo $risk['criticalityColor'];?>;
+               color:<?php echo htmlForeColorForBackgroundColor($risk['criticalityColor'])?>;
+               text-align: center;width:15%; <?php echo $border;?>" >
+             <?php echo $risk['criticality'];?>
+           </td>
+           <td  style="background-color:<?php echo $risk['severityColor'];?>;
+               color:<?php echo htmlForeColorForBackgroundColor($risk['severityColor'])?>;
+               text-align: center;width:15%; <?php echo $border;?>" >
+             <?php echo $risk['severity'];
+             if ($nb==$max and count($arrayRisk)>$max) {
+              echo '<div class="reportTableLineHeader"';
+              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-130':'0').'mm; width:10mm;">';
+              echo '...'.$nb.'/'.count($arrayRisk).'&nbsp;';
+              echo '</div>';
+             }?>
+           </td>
+          </tr>
+         <?php }?>
+	     </table>
+    </div>
+  <?php }?>
   
 <!-- ********** Indicators ********** -->
   
@@ -561,142 +609,54 @@ if ($outMode!='pdf') {
   <?php }?>  
   </div>  
   
- 
-  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:50mm;<?php echo $borderMain?>" >
-  <?php if ($showActivity) {?>
-    <div style="width:<?php displayWidth(32);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions réalisées");?></div>
-      <?php displayList($arrayActionDone,10,32);?>
-    </div>
-    <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(34);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions en cours");?></div>
-      <?php displayList($arrayActionOngoing,12,32);?>
-    </div>
-    <div style="width:<?php displayWidth(32);?>; position:absolute; left:<?php displayWidth(67);?>; top:0mm; background-color: white;">
-      <div class="reportTableLineHeader" style="width:<?php displayWidth(31.8);?>; white-space:nowrap;"><?php displayHeader("Actions à venir");?></div>
-      <?php displayList($arrayActionTodo,12,32);?>
-    </div>
-  <?php }?>   
-  </div>
   
- 
-  
-  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:25mm;<?php echo $borderMain?>" >
-  <?php if ($showRisk) {?>
-    <div style="position:absolute;top:0mm; width:<?php displayWidth(50);?>;height:30mm;<?php echo $borderMain?>" >
-	    <table style="width:95%">
+  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:45mm;<?php echo $borderMain?>" >
+  <?php if ($showAction) {?>
+    <div style="width:<?php displayWidth(100);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
+      <table style="width:100%">
 	       <tr>
-	         <td colspan="4" class="reportTableLineHeader" >
-	           <?php displayHeader("Alertes / Risques détectés sur le chantier et plan d'action");?>
+	         <td style="width:70%" class="reportTableLineHeader" >
+	           <?php displayHeader("Actions / décisions attendues");?>
+	         </td>
+	         <td style="width:20%; text-align:center" class="reportTableLineHeader" >
+	           <?php displayHeader("Responsable");?>
+	         </td>
+	         <td style="width:10%; text-align:center" class="reportTableLineHeader" >
+	           <?php displayHeader("Date prévue");?>
 	         </td>
 	       </tr>
-         <tr>
-           <td  style="width:55%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Risque");?>
-           </td>
-           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Criticité");?>
-           </td>
-           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Sévérité");?>
-           </td>
-           <td  style="text-align: center;width:15%; font-weight:bold;<?php echo $border;?>" >
-             <?php displayHeader("Probabilité");?>
-           </td>
-         </tr>
-         <?php 
-          $nb=0;
-          $max=6;
-          foreach ($arrayRisk as $risk) {
-            $nb++;
-            if ($nb>$max) break;?>
-          <tr>
-           <td  style="position:relative; width:55%; <?php echo $border;?>" >
-             <?php displayField($risk['name']);?>
-           </td>
-           <td  style="background-color:<?php echo $risk['criticalityColor'];?>;
-               color:<?php echo htmlForeColorForBackgroundColor($risk['criticalityColor'])?>;
-               text-align: center;width:15%; <?php echo $border;?>" >
-             <?php echo $risk['criticality'];?>
-           </td>
-           <td  style="background-color:<?php echo $risk['severityColor'];?>;
-               color:<?php echo htmlForeColorForBackgroundColor($risk['severityColor'])?>;
-               text-align: center;width:15%; <?php echo $border;?>" >
-             <?php echo $risk['severity'];?>
-           </td>
-           <td  style="background-color:<?php echo $risk['likelihoodColor'];?>;
-               color:<?php echo htmlForeColorForBackgroundColor($risk['likelihoodColor'])?>;
-               text-align: center; position:relative; width:15%; <?php echo $border;?>" >
-             <?php echo $risk['likelihood'];
-             if ($nb==$max and count($arrayRisk)>$max) {
-              echo '<div class="reportTableLineHeader"';
-              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-7':'0').'mm; width:10mm;">';
-              echo '...'.$nb.'/'.count($arrayRisk).'&nbsp;';
-              echo '</div>';
-             }?>
-           </td>
-          </tr>
-         <?php }?>
-	     </table>
+	       <?php foreach ($arrayActionDecision as $act) {?>
+  	       <tr>
+  	         <td style="<?php echo $border;?>">
+  	           <?php displayField($act['name']);?>
+  	         </td>
+  	         <td style="text-align:center;<?php echo $border;?>">
+  	           <?php displayField($act['responsible']);?>
+  	         </td>
+  	         <td style="text-align:center;<?php echo $border;?>">
+  	           <?php displayField($act['dueDate']);?>
+  	         </td>
+  	       </tr>
+	       <?php }?>
+	    </table>
+	  </div>
+  <?php }?>    
+  </div>
+
+  <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:20mm;<?php echo $borderMain?>" >
+  
+<!-- Observations -->
+   
+   <div style="position:absolute; left:0px;top:0mm;height:<?php echo $lineHeight;?>mm;
+    width:<?php displayWidth(99.5);?>;white-space:nowrap;" class="reportTableLineHeader">
+    <?php displayHeader("Observations");?>
     </div>
-  <?php }?>
-  <?php if ($showCost) {?>
-    <div style="position:absolute;top:0mm; left:<?php displayWidth(50);?>;height:30mm;width:<?php displayWidth(50);?>;<?php echo $borderMain?>" >
-      <table style="width:100%">
-	      <tr>
-	        <td style="width:15%" class="reportTableLineHeader" >
-	          <?php displayHeader("Budget\nProjet");?>
-	        </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("AE Budgétées / Planifiées");?>
-          </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("AE Engagé");?>
-          </td>
-          <td style="text-align: center;width:20%" class="reportTableLineHeader" >
-            <?php displayHeader("CP consommé");?>
-          </td>
-          <td style="text-align: center;width:25%" class="reportTableLineHeader" >
-            <?php displayHeader("Charge consommée de l'année (Jours Homme)");?>
-          </td>
-	      </tr>
-        <tr style="height:7mm">
-          <td style="width:15%" class="reportTableLineHeader" >
-            <?php displayHeader("TTC");?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($AEbudgetes, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($AEengages, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php echo htmlDisplayCurrency($CPconsommes, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo Work::displayWorkWithUnit($proj->ProjectPlanningElement->realWork);?>
-          </td>
-         </tr>
-         <tr style="height:7mm">
-          <td style="width:15%;border-right:#A0A0A0;">
-            
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php echo htmlDisplayCurrency($activitiesCost, true);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>" >
-            <?php displayProgress($AEengages,$AEbudgetes,27);?>
-          </td>
-          <td style="text-align: center;width:20%;<?php echo $border;?>"  >
-            <?php displayProgress($CPconsommes,$AEengages,27);?>
-          </td>
-          <td style="text-align: center;width:25%;<?php echo $border;?>" >
-            <?php displayProgress($proj->ProjectPlanningElement->realWork,$proj->ProjectPlanningElement->validatedWork,34);?>
-          </td>
-         </tr>
-      </table>
-    </div>
-  <?php }?>
+    <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:0px;
+    top:<?php echo $lineHeight;?>mm;height:10m;
+    width:<?php displayWidth(100);?>;<?php echo $border;?>">
+      <?php displayField($proj->description, '10', false);?>
+    </div> 
+
   </div> 
 </div>
 <?php
@@ -711,14 +671,14 @@ if ($outMode!='pdf') {
 }
 // END OF MAIN LOOP OVER SELECTED PROJECT AND ITS SUB-PROJECTS
 
-function displayField($value,$height=null) {
+function displayField($value,$height=null,$encodeHtml=true) {
   $res="";
   if ($height) {
 	  $res.='<div style="top:0px;width:100%;';
     $res.='height:'.$height.'mm;';
     $res.='white-space:nowrap; text-overflow:ellipsis;">';
   }
-  $res.=htmlEncode($value,'print');
+  $res.=($encodeHtml)?htmlEncode($value,'print'):$value;
   if ($height) {
     $res.='</div>';
   }
@@ -745,7 +705,7 @@ function displayList($list, $max, $width) {
 	foreach ($list as $item) {
     $nb++;
     if ($nb>$max) break;
-    echo '<div style="position:relative;vertical-align:top; width:';
+    echo '<div style="vertical-align:top; width:';
     displayWidth($width);
     echo ';padding-left:1mm;border: 1px solid #A0A0A0;">';
     displayField($item);

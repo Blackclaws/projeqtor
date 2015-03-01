@@ -716,12 +716,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <div id="dialogPrint" dojoType="dijit.Dialog" title="<?php echo i18n("dialogPrint");?>" onHide="window.document.title=i18n('applicationTitle');dojo.byId('printFrame').src='../view/preparePreview.php';" >
   <?php 
     $printHeight=600;
-    $printWidth=1000;
+    $printWidth=1075;
     //if (array_key_exists('screenWidth',$_SESSION)) {
     //   $printWidth = $_SESSION['screenWidth'] * 0.8;
     //}
     if (array_key_exists('screenHeight',$_SESSION)) {
       $printHeight=round($_SESSION['screenHeight']*0.50);
+    }
+    if (array_key_exists('screenWidth',$_SESSION) and $_SESSION['screenWidth']<1200) {
+      $printWidth=round($_SESSION['screenWidth']*0.9);
     }
   ?> 
   <div style="widht:100%" id="printPreview" dojoType="dijit.layout.ContentPane" region="center">
