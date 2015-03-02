@@ -190,7 +190,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($val [$i]) {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
-          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">&nbsp;xxx</div>';
+          echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">&nbsp;</div>';
         }
         if ($i < $internalTableCols - 1) {
           echo '</td>';
