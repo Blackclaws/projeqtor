@@ -375,7 +375,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 <body id="body" class="tundra <?php echo getTheme();?>" onBeforeUnload="return beforequit();" onUnload="quit();">
 <div id="centerThumb80" style="display:none;z-index:999999;position:absolute;top:10px;left:10px;height:80px;width:80px;"></div>
 <div id="loadingDiv" class="<?php echo getTheme();?> loginFrame" 
- style="position:relative; visibility: visible; display:block; width:100%; height:100%; margin:0; padding:0; border:0">  
+ style="position:absolute; visibility: visible; display:block; width:100%; height:100%; margin:0; padding:0; border:0">  
   <table align="center" width="100%" height="100%" class="loginBackground">
     <tr height="100%">
       <td width="100%" align="center">
@@ -384,7 +384,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <tr style="height:10px;">
             <td align="left" style="position:relative;height: 100%;" valign="top">
               <div style="position:relative; width: 400px; height: 54px;">
-    	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;">
+    	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;left:-10px;">
     	           <div id="waitLogin" style="position:absolute;top:50%"></div>  
 	    		        <img src="<?php 
 	    		          if (file_exists("../logo.gif")) echo '../logo.gif';
@@ -392,7 +392,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 	    		          else if (file_exists("../logo.png")) echo '../logo.png';
 	    		          else echo 'img/titleSmall.png';?>" />
     	          </div>
-  	            <div style="width: 470px; height:130px;position:absolute;top:150px;overflow:hidden;text-align:center;">
+  	            <div style="width: 470px; height:130px;position:absolute;top:160px;overflow:hidden;text-align:center;">
                   Loading ...                               
                 </div>
               </div>

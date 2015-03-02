@@ -645,7 +645,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         echo '  value="' . htmlEncode($val) . '" ';
-        echo '  style="border: 0;width: ' . $smallWidth . 'px; ';
+        echo '  style="border-radius:10px; height:20px; border: 0;width: ' . $smallWidth . 'px; ';
         echo ' color: ' . $val . '; ';
         if ($val) {
           echo ' background-color: ' . $val . ';';
@@ -716,6 +716,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
           $val=date('Y-m-d');
         }
+        $negative='';
+        $negative=($col=="plannedEndDate" and $obj->plannedEndDate and $obj->validatedEndDate and $obj->plannedEndDate>$obj->validatedEndDate )?'background-color: #FFAAAA !important;':'';
         echo '<div dojoType="dijit.form.DateTextBox" ';
         echo $name;
         echo $attributes;
@@ -724,7 +726,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -1053,7 +1055,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($isCost and $currencyPosition == 'before') {
           echo $currency;
         }
-        $negative=(($isCost or $isWork) and $val<0)?'border:1px solid #FF5555 !important;':''; 
+        $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':''; 
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
@@ -1569,7 +1571,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   }
   if (!$refresh) echo '<tr><td colspan="2">';
   echo '<input type="hidden" id="noteIdle" value="' . $obj->idle . '" />';
-  echo '<table width="100%">';
+  echo '<table width="99.9%">';
   echo '<tr>';
   if (!$print) {
     echo '<td class="noteHeader smallButtonsGroup" style="width:10%">';
@@ -1867,9 +1869,6 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   echo '<td class="attachmentDataClosetable">&nbsp;</td>';
   echo '<td class="attachmentDataClosetable">&nbsp;</td>';
   echo '<td class="attachmentDataClosetable">&nbsp;</td>';
-  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
-  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
-  echo '<td class="attachmentDataClosetable">&nbsp;</td>';
   echo '</tr>';
   echo '</table>';
   if (! $refresh) echo "</td></tr>";
@@ -1921,15 +1920,17 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     echo '</td>';
   }
   if (!$classLink) {
-    echo '<td class="linkHeader" style="width:10%">' . i18n('colType') . '</td>';
+    echo '<td class="linkHeader" style="width:' . (($print)?'20':'15') . '%">' . i18n('colElement') . '</td>';
+  } else {
+    echo '<td class="linkHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('colId') . '</td>';
   }
-  echo '<td class="linkHeader" style="width:' . (($print)?'10':'5') . '%">' . i18n('colId') . '</td>';
-  echo '<td class="linkHeader" style="width:' . (($classLink)?'45':'35') . '%">' . i18n('colName') . '</td>';
+  
+  echo '<td class="linkHeader" style="width:' . (($classLink)?'75':'65') . '%">' . i18n('colName') . '</td>';
   // if ($classLink and property_exists($classLink, 'idStatus')) {
   echo '<td class="linkHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
   // }
-  echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
-  echo '<td class="linkHeader" style="width:15%">' . i18n('colUser') . '</td>';
+  //echo '<td class="linkHeader" style="width:15%">' . i18n('colDate') . '</td>';
+  //echo '<td class="linkHeader" style="width:15%">' . i18n('colUser') . '</td>';
   echo '</tr>';
   foreach ( $list as $link ) {
     $linkObj=null;
@@ -1963,18 +1964,22 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '</td>';
       }
       if (!$classLink) {
-        echo '<td class="linkData" style="width:10%">' . $classLinkName . '</td>';
+        echo '<td class="linkData" style="width:' . (($print)?'20':'15') . '%">'.$classLinkName .' #' . $linkObj->id;
+      } else {
+        echo '<td class="linkData" style="width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
-      echo '<td class="linkData" style="width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       echo '</td>';
       $goto="";
       if (!$print and $canGoto) {
         $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
       }
-      echo '<td class="linkData" ' . $goto . ' style="width:' . (($classLink)?'45':'35') . '%" title="' . $link->comment . '">';
+      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink)?'45':'35') . '%" title="' . $link->comment . '">';
       echo (get_class($linkObj) == 'DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);
+      
+      echo formatUserThumb($userId, $userName, 'Creator');
+      echo formatDateThumb($creationDate, null);
       if ($link->comment and !$print) {
-        echo '&nbsp;&nbsp;<img src="img/note.png" />';
+        echo '<img style="float:right;padding-right:3px;" src="img/note.png" />';
       }
       echo '</td>';
       if (property_exists($linkObj, 'idStatus')) {
@@ -1984,8 +1989,8 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         // echo '<td class="linkData"><table width="100%"><tr><td style="background-color: ' . $objStatus->color . '; color:' . $foreColor . ';width: 100%;">' . $objStatus->name . '</td></tr></table></td>';
         echo '<td class="dependencyData"  style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
       }
-      echo '<td class="dependencyData"  style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
-      echo '<td class="dependencyData"  style="width:15%">' . $userName . '</td>';
+      //echo '<td class="dependencyData"  style="width:15%">' . htmlFormatDateTime($creationDate) . '<br/></td>';
+      //echo '<td class="dependencyData"  style="width:15%">' . $userName . '</td>';
       echo '</tr>';
     }
   }
@@ -2088,12 +2093,13 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   if ($obj->idle == 1) {
     $canUpdate=false;
   }
-  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  if (!$refresh) echo '<tr><td colspan=2 style="width:100%;">';
+  echo '<table style="width:100%;">';
   echo '<tr>';
   if (!$print) {
     echo '<td class="dependencyHeader" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addDependency(' . "'" . $depType . "'" . ');" title="' . i18n('addDependency' . $depType) . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addDependency(' . "'" . $depType . "'" . ');" title="' . i18n('addDependency' . $depType) . '"/> ';
     }
     echo '</td>';
   }
@@ -2115,11 +2121,11 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     if (!$print) {
       echo '<td class="dependencyData" style="text-align:center;">';
       if ($canEdit) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . ' onClick="editDependency(' . "'" . $depType . "','" . $dep->id . "','" . SqlList::getIdFromName('Dependable', i18n(get_class($depObj))) . "','" . get_class($depObj) . "','" . $depObj->id . "','" . $dep->dependencyDelay . "'" . ');" ' .
-             ' title="' . i18n('editDependency' . $depType) . '" class="smallButton"/> ';
+        echo '  <img class="roundedButtonSmall" src="css/images/smallButtonEdit.png" ' . ' onClick="editDependency(' . "'" . $depType . "','" . $dep->id . "','" . SqlList::getIdFromName('Dependable', i18n(get_class($depObj))) . "','" . get_class($depObj) . "','" . $depObj->id . "','" . $dep->dependencyDelay . "'" . ');" ' .
+             ' title="' . i18n('editDependency' . $depType) . '" /> ';
       }
       if ($canUpdate) {
-        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeDependency(' . "'" . $dep->id . "','" . get_class($depObj) . "','" . $depObj->id . "'" . ');" title="' . i18n('removeDependency' . $depType) . '" class="smallButton"/> ';
+        echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeDependency(' . "'" . $dep->id . "','" . get_class($depObj) . "','" . $depObj->id . "'" . ');" title="' . i18n('removeDependency' . $depType) . '" /> ';
       }
       echo '</td>';
     }
@@ -2150,7 +2156,9 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     echo '<td class="dependencyData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     echo '</tr>';
   }
-  echo '</table></td></tr>';
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
+  echo '<input id="'.$depType.'DependencySectionCount" type="hidden" value="'.count($list).'" />';
 }
 
 function drawAssignmentsFromObject($list, $obj, $refresh=false) {

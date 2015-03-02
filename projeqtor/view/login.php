@@ -136,7 +136,7 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
 			    <tr style="height:10px;" >
 			      <td align="left" style="position:relative;height: 1%;" valign="top">
 			        <div style="position:relative;width: 400px; height: 54px;">
-			          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;">
+			          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;left:-10px;">
 				        <img src="<?php 
 				          if (file_exists("../logo.gif")) echo '../logo.gif';
 				          else if (file_exists("../logo.jpg")) echo '../logo.jpg';

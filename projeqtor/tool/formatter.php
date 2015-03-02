@@ -48,7 +48,7 @@ function colorNameFormatter($value) {
         $light=(0.3)*base_convert($red,16,10)+(0.6)*base_convert($green,16,10)+(0.1)*base_convert($blue,16,10);
         if ($light<128) { $foreColor='#FFFFFF'; }
       }
-      return '<div style="text-align: center;width:' . (($print)?'95':'100') . '%;background-color: ' . $color . '; color:' . $foreColor . ';">' . $val . '</div>';
+      return '<div style="vertical-align:middle; line-height:18px;border-radius:10px; height:18px;text-align: center;width:' . (($print)?'95':'100') . '%;background-color: ' . $color . '; color:' . $foreColor . ';">' . $val . '</div>';
 
     } else {
       return $value;
