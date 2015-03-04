@@ -132,6 +132,9 @@ echo '<input type="hidden" id="objectId" value="' . $_REQUEST['objectId'] . '" /
     <tr height="100%">
 	    <td width="100%" align="center">
 	      <div class="background loginFrame" >
+	          <!--  <div style="position:fixed; top:0px; right:0px; height:128px;width:128px;box-shadow:0px 0px 50px #FFFFFF; background: #FFFFFF; border-radius:64px;"> 
+	          <img style="position:absolute; top:2px;right:-2px;" src="img/logoMedium.png"  />
+	          </div>  -->
 			  <table  align="center">
 			    <tr style="height:10px;" >
 			      <td align="left" style="position:relative;height: 1%;" valign="top">
