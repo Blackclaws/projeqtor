@@ -437,7 +437,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                       background-repeat: no-repeat; height: 50px;" 
                onclick="showAbout(aboutMessage);" title="<?php echo i18n('aboutMessage');?>" > 
           </div>
-          <div style="position:absolute; right:0;" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
+          <div style="position:absolute; right:0; bottom:0px" id="help" style="text-align:right"; onclick="showHelp();"><img width="32px" height="32px" src='../view/img/help.png' title="<?php echo i18n('help');?>" onclick="showHelp();" /></div>
         </div>
         <div id="mapDiv" dojoType="dijit.layout.ContentPane" region="center" style="padding: 0px; margin:0px">
           <div dojoType="dijit.layout.AccordionContainer" style="height: 300px;" >
