@@ -610,7 +610,7 @@ if ($outMode!='pdf') {
   </div>  
   
   
-  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:45mm;<?php echo $borderMain?>" >
+  <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:40mm;<?php echo $borderMain?>" >
   <?php if ($showAction) {?>
     <div style="width:<?php displayWidth(100);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
       <table style="width:100%">

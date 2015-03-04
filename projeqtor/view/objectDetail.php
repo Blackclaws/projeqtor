@@ -214,9 +214,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section='';
       }
       $sectionField='_'.$section;
+      $sectionFieldDep='_Dependency_'.ucfirst($section);
       $cpt=null;
       if (property_exists($obj,$sectionField ) && is_array($obj->$sectionField)) {
         $cpt=count($obj->$sectionField);
+      } else if (property_exists($obj,$sectionFieldDep ) && is_array($obj->$sectionFieldDep)){
+        $cpt=count($obj->$sectionFieldDep);
+      } else {
+        //echo $sectionField;
       }
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
     } else if (substr($col, 0, 5) == '_sec_') { // if field is _section, draw a new section bar column
@@ -225,6 +230,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section=substr($col, 5);
       } else {
         $section='';
+      }
+      $sectionField='_'.$section;
+      $sectionFieldVP='_VersionProject';
+      $cpt=null;
+      if (property_exists($obj,$sectionField ) && is_array($obj->$sectionField)) {
+        $cpt=count($obj->$sectionField);
+      } else if ($section=='versions' and property_exists($obj,$sectionFieldVP ) && is_array($obj->$sectionFieldVP)){
+        $cpt=count($obj->$sectionFieldVP);
+      } else {
+        echo $sectionField & "  " & $sectionFieldVP;
       }
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
@@ -2119,7 +2134,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '<tr>';
     if (!$print) {
-      echo '<td class="dependencyData" style="text-align:center;">';
+      echo '<td class="dependencyData" style="text-align:center;white-space:nowrap;">';
       if ($canEdit) {
         echo '  <img class="roundedButtonSmall" src="css/images/smallButtonEdit.png" ' . ' onClick="editDependency(' . "'" . $depType . "','" . $dep->id . "','" . SqlList::getIdFromName('Dependable', i18n(get_class($depObj))) . "','" . get_class($depObj) . "','" . $depObj->id . "','" . $dep->dependencyDelay . "'" . ');" ' .
              ' title="' . i18n('editDependency' . $depType) . '" /> ';
