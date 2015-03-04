@@ -71,11 +71,8 @@ class ProjectMain extends SqlElement {
   public $_spe_affectations;
   public $_col_Subprojects;
   public $_spe_subprojects;
-  
   public $_sec_Versionproject_versions;
   public $_VersionProject=array();
- 
- 
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
