@@ -156,7 +156,7 @@ class ProjectPlanningElement extends PlanningElement {
   	$this->totalPlannedCost=$this->plannedCost+$this->expensePlannedAmount;
   	$this->totalRealCost=$this->realCost+$this->expenseRealAmount;
   	$this->totalValidatedCost=$this->validatedCost+$this->expenseValidatedAmount;
-  	if ($this->plannedWork and $this->validatedWork) {
+  	if ($this->plannedWork!=0 and $this->validatedWork!=0) {
   	  $this->marginWork=$this->validatedWork-$this->plannedWork;
   	  $this->marginWorkPct=round($this->marginWork/$this->validatedWork*100,0);
   	} else {

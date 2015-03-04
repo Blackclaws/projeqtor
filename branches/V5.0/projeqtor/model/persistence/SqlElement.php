@@ -1570,7 +1570,6 @@ abstract class SqlElement {
 		}
 		// If $whereClause is set, get the element from Database
 		$query = "select count(*) as cpt from " . $this->getDatabaseTableName() . $whereClause;
-
 		$result = Sql::query($query);
 		if (Sql::$lastQueryNbRows > 0) {
 			$line = Sql::fetchLine($result);

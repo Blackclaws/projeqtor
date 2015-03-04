@@ -236,12 +236,21 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $cpt=null;
       if (property_exists($obj,$sectionField ) && is_array($obj->$sectionField)) {
         $cpt=count($obj->$sectionField);
-      } else if ($section=='versions' and property_exists($obj,$sectionFieldVP ) && is_array($obj->$sectionFieldVP)){
+      } else if (substr($section,0,14)=='Versionproject' and property_exists($obj,$sectionFieldVP ) and is_array($obj->$sectionFieldVP)){
         $cpt=count($obj->$sectionFieldVP);
+      } else if ($section=='Affectations') {        
+        $crit=array('idProject=>'=>'0', 'idResource'=>'0');
+        if (get_class($obj)=='Project') {
+          $crit=array('idProject'=>$obj->id);
+        } else if (get_class($obj)=='Resource' or get_class($obj)=='User' or get_class($obj)=='Contact') {
+          $crit=array('idResource'=>$obj->id);
+        }
+        $aff=new Affectation();
+        $cpt=$aff->countSqlElementsFromCriteria($crit);
       } else {
-        echo $sectionField & "  " & $sectionFieldVP;
+        //echo $sectionField & "  " & $sectionFieldVP;
       }
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt);
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col, 5);
       echo '<tr><td colspan=2>';
@@ -990,7 +999,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($hasOtherVersion) {
           if ($obj->id and $canUpdate) {
             echo '<div class="roundedButton" style="float:right;margin-right:3px;" ';
-            echo ' title="' . i18n('otherVersionAdd') . '" class="smallButton">';
+            echo ' title="' . i18n('otherVersionAdd') . '" class="roundedButtonSmall">';
             echo '<div class="iconAdd"';
             echo ' onClick="addOtherVersion(' . "'" . $versionType . "'" . ');" ';
             echo '></div>';
@@ -1329,7 +1338,7 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
       echo '<img src="css/images/smallButtonAdd.png" ' . 'onClick="addDocumentVersion(' . "'" . key($statusTable) . "'" . ",'" . $typeEvo . "'" . ",'" . $num . "'" . ",'" . $vers->name . "'" . ",'" . $vers->name . "'" . ');" ';
-      echo ' title="' . i18n('addDocumentVersion') . '" class="smallButton"/> ';
+      echo ' title="' . i18n('addDocumentVersion') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -1352,10 +1361,10 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
       }
       if ($canUpdate and !$print and (!$obj->idle or $obj->idDocumentVersion == $version->id)) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editDocumentVersion(' . "'" . $version->id . "'" . ",'" . $version->version . "'" . ",'" . $version->revision . "'" . ",'" . $version->draft . "'" . ",'" . $version->versionDate . "'" . ",'" . $version->idStatus . "'" . ",'" .
-             $version->isRef . "'" . ",'" . $typeEvo . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ');" ' . 'title="' . i18n('editDocumentVersion') . '" class="smallButton"/> ';
+             $version->isRef . "'" . ",'" . $typeEvo . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ",'" . $version->name . "'" . ');" ' . 'title="' . i18n('editDocumentVersion') . '" class="roundedButtonSmall"/> ';
       }
       if ($canUpdate and !$print and !$obj->idle) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" . ', \'' . $version->name . '\');" ' . 'title="' . i18n('removeDocumentVersion') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeDocumentVersion(' . "'" . $version->id . "'" . ', \'' . $version->name . '\');" ' . 'title="' . i18n('removeDocumentVersion') . '" class="roundedButtonSmall"/> ';
       }
       echo '<input type="hidden" id="documentVersion_' . $version->id . '" name="documentVersion_' . $version->id . '" value="' . $version->description . '"/>';
       echo '</td>';
@@ -1399,7 +1408,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
     echo '<table width="100%"><tr height="20px"><td xclass="noteData" width="1%" xvalign="top">';
     if (!$print and $canUpdate) {
       echo '<img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" ';
-      echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="smallButton"/> ';
+      echo ' onClick="removeOrigin(\'' . $obj->$col->id . '\',\'' . $refType . '\',\'' . $refId . '\');" title="' . i18n('removeOrigin') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td><td width="5%" xclass="noteData" xvalign="top">';
     echo '&nbsp;&nbsp;' . i18n($refType) . '&nbsp;#' . $refId . '&nbsp;:&nbsp;';
@@ -1410,7 +1419,7 @@ function drawOrigin($refType, $refId, $obj, $col, $print) {
   } else {
     echo '<table><tr height="20px"><td>';
     if ($obj->id and !$print and $canUpdate) {
-      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addOrigin();" title="' . i18n('addOrigin') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td></tr></table>';
   }
@@ -1672,7 +1681,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
     if ($obj->id != null and !$print and !$lock) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine(' . (count($lines) + 1) . ');" title="' . i18n('addLine') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addBillLine(' . (count($lines) + 1) . ');" title="' . i18n('addLine') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -1696,8 +1705,8 @@ function drawBillLinesFromObject($obj, $refresh=false) {
         echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
 		      ' .
              "'" . $line->id . "'" . ",'" . $line->line . "'" . ",'" . $fmtd->format($line->quantity) . "'" . ",'" . $line->idTerm . "'" . ",'" . $line->idResource . "'" . ",'" . $line->idActivityPrice . "'" . ",'" . $line->startDate . "'" . ",'" . $line->endDate . "'" . ",'" .
-             $fmtd->format($line->price) . "'" . ');" title="' . i18n('editLine') . '" class="smallButton"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeBillLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="smallButton"/> ';
+             $fmtd->format($line->price) . "'" . ');" title="' . i18n('editLine') . '" class="roundedButtonSmall"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeBillLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -1743,7 +1752,7 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png"' . ' onClick="addChecklistDefinitionLine(' . $obj->id . ');"' . ' title="' . i18n('addLine') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png"' . ' onClick="addChecklistDefinitionLine(' . $obj->id . ');"' . ' title="' . i18n('addLine') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -1758,8 +1767,8 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
     if (!$print) {
       echo '<td class="noteData" style="text-align:center;">';
       if ($canUpdate) {
-        echo ' <img src="css/images/smallButtonEdit.png"' . ' onClick="editChecklistDefinitionLine(' . $obj->id . ',' . $line->id . ');"' . ' title="' . i18n('editLine') . '" class="smallButton"/> ';
-        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeChecklistDefinitionLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="smallButton"/> ';
+        echo ' <img src="css/images/smallButtonEdit.png"' . ' onClick="editChecklistDefinitionLine(' . $obj->id . ',' . $line->id . ');"' . ' title="' . i18n('editLine') . '" class="roundedButtonSmall"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png"' . ' onClick="removeChecklistDefinitionLine(' . $line->id . ');"' . ' title="' . i18n('removeLine') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -1817,8 +1826,8 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<td class="attachmentHeader smallButtonsGroup" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n('addAttachment') . '" class="smallButton"/> ';
-      echo '<img class="roundedButtonSmall" src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n('addHyperlink') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="' . i18n('addAttachment') . '" class="roundedButtonSmall"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonLink.png" onClick="addAttachment(\'link\');" title="' . i18n('addHyperlink') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -1844,7 +1853,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
           echo ' target="#" title="' . urldecode($attachment->link) . '"><img class="roundedButtonSmall" src="css/images/smallButtonLink.png" /></a>';
         }
         if ($attachment->idUser == $user->id and !$print and $canUpdate) {
-          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n('removeAttachment') . '" class="smallButton"/>';
+          echo ' <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeAttachment(' . $attachment->id . ');" title="' . i18n('removeAttachment') . '" class="roundedButtonSmall"/>';
         }
         echo '</td>';
       }
@@ -1930,7 +1939,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
     if ($obj->id != null and !$print and $canUpdate) {
       $linkable=SqlElement::getSingleSqlElementFromCriteria('Linkable', array('name' => get_class($obj)));
       $default=$linkable->idDefaultLinkable;
-      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addLink(' . "'" . $classLink . "','" . $default . "'" . ');" title="' . i18n('addLink') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -1974,7 +1983,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
           echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
         }
         if ($canUpdate) {
-          echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="smallButton"/> ';
+          echo '  <img class="roundedButtonSmall" src="css/images/smallButtonRemove.png" onClick="removeLink(' . "'" . $link->id . "','" . get_class($linkObj) . "','" . $linkObj->id . "','" . $classLinkName . "'" . ');" title="' . i18n('removeLink') . '" class="roundedButtonSmall"/> ';
         }
         echo '</td>';
       }
@@ -2028,7 +2037,7 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
   if (!$print) {
     echo '<td class="dependencyHeader" style="width:5%">';
     if ($obj->id != null and !$print and $canUpdate) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addApprover();" title="' . i18n('addApprover') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addApprover();" title="' . i18n('addApprover') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -2045,7 +2054,7 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
     if (!$print) {
       echo '<td class="dependencyData" style="text-align:center;">';
       if ($canUpdate) {
-        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeApprover(' . "'" . $app->id . "','" . $appName . "'" . ');" title="' . i18n('removeApprover') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" onClick="removeApprover(' . "'" . $app->id . "','" . $appName . "'" . ');" title="' . i18n('removeApprover') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -2205,7 +2214,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle and $workVisible) {
       echo '<img src="css/images/smallButtonAdd.png" ';
       echo ' onClick="addAssignment(\'' . Work::displayShortWorkUnit() . '\',\'' . Work::getWorkUnit() . '\',\'' . Work::getHoursPerDay() . '\');" ';
-      echo ' title="' . i18n('addAssignment') . '" class="smallButton"/> ';
+      echo ' title="' . i18n('addAssignment') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -2234,11 +2243,11 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       if ($canUpdate and !$print and $workVisible) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAssignment(' . "'" . $assignment->id . "'" . ",'" . $assignment->idResource . "'" . ",'" . $assignment->idRole . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . $assignment->rate . "'" . ",'" .
              Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ');" ' . 'title="' . i18n('editAssignment') .
-             '" class="smallButton"/> ';
+             '" class="roundedButtonSmall"/> ';
         echo '<input type="hidden" id="comment_assignment_' . $assignment->id . '" value="' . $assignment->comment . '" />';
       }
       if ($assignment->realWork == 0 and $canUpdate and !$print and $workVisible) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 'title="' . i18n('removeAssignment') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 'title="' . i18n('removeAssignment') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -2289,7 +2298,7 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignHeader" style="width:5%">';
     // if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail();" title="' . i18n('addExpenseDetail') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail();" title="' . i18n('addExpenseDetail') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -2309,11 +2318,11 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
       // if ($canUpdate and ! $print and $workVisible) {
       if ($canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" .
-             $fmt->format($expenseDetail->amount) . "'" . ');" ' . 'title="' . i18n('editExpenseDetail') . '" class="smallButton"/> ';
+             $fmt->format($expenseDetail->amount) . "'" . ');" ' . 'title="' . i18n('editExpenseDetail') . '" class="roundedButtonSmall"/> ';
       }
       // if ($canUpdate and ! $print and $workVisible ) {
       if ($canUpdate and !$print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "'" . ');" ' . 'title="' . i18n('removeExpenseDetail') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeExpenseDetail(' . "'" . $expenseDetail->id . "'" . ');" ' . 'title="' . i18n('removeExpenseDetail') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -2365,7 +2374,7 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
   if (!$print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\'' . $funcList . '\');" title="' . i18n('addResourceCost') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addResourceCost(\'' . $obj->id . '\', \'' . $obj->idRole . '\',\'' . $funcList . '\');" title="' . i18n('addResourceCost') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -2382,11 +2391,11 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="text-align:center;">';
       if (!$rcost->endDate and $canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editResourceCost(' . "'" . $rcost->id . "'" . ",'" . $rcost->idResource . "'" . ",'" . $rcost->idRole . "'" . ",'" . $rcost->cost * 100 . "'" . ",'" . $rcost->startDate . "'" . ",'" . $rcost->endDate . "'" . ');" ' . 'title="' .
-             i18n('editResourceCost') . '" class="smallButton"/> ';
+             i18n('editResourceCost') . '" class="roundedButtonSmall"/> ';
       }
       if (!$rcost->endDate and $canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeResourceCost(' . "'" . $rcost->id . "'" . ",'" . $rcost->idRole . "'" . ",'" . SqlList::getNameFromId('Role', $rcost->idRole) . "'" . ",'" . htmlFormatDate($rcost->startDate) . "'" . ');" ' . 'title="' .
-             i18n('removeResourceCost') . '" class="smallButton"/> ';
+             i18n('removeResourceCost') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -2422,7 +2431,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   if (!$print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addVersionProject(\'' . $idVers . '\', \'' . $idProj . '\');" title="' . i18n('addVersionProject') . '" class="smallButton"/> ';
+      echo '<img class="roundedButtonSmall" src="css/images/smallButtonAdd.png" onClick="addVersionProject(\'' . $idVers . '\', \'' . $idProj . '\');" title="' . i18n('addVersionProject') . '" /> ';
     }
     echo '</td>';
   }
@@ -2442,10 +2451,10 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="text-align:center;">';
       if ($canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editVersionProject(' . "'" . $vp->id . "'" . ",'" . $vp->idVersion . "'" . ",'" . $vp->idProject . "'" . ",'" . $vp->startDate . "'" . ",'" . $vp->endDate . "'" . ",'" . $vp->idle . "'" . ');" ' . 'title="' .
-             i18n('editVersionProject') . '" class="smallButton"/> ';
+             i18n('editVersionProject') . '" class="roundedButtonSmall"/> ';
       }
       if ($canUpdate and !$print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeVersionProject(' . "'" . $vp->id . "'" . ');" ' . 'title="' . i18n('removeVersionProject') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeVersionProject(' . "'" . $vp->id . "'" . ');" ' . 'title="' . i18n('removeVersionProject') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
@@ -2501,7 +2510,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   if (!$print) {
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\'' . $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addAffectation(\'' . get_class($obj) . '\',\'' . $type . '\',\'' . $idRess . '\', \'' . $idProj . '\');" title="' . i18n('addAffectation') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -2541,13 +2550,13 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
         echo '<td class="assignData' . $idleClass . '" style="text-align:center;white-space: nowrap;">';
         if ($canUpdate and !$print) {
           echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAffectation(' . "'" . $aff->id . "'" . ",'" . get_class($obj) . "'" . ",'" . $type . "'" . ",'" . $aff->idResource . "'" . ",'" . $aff->idProject . "'" . ",'" . $aff->rate . "'" . ",'" . $aff->idle . "'" . ",'" .
-               $aff->startDate . "'" . ",'" . $aff->endDate . "'" . ',' . $aff->idProfile . ');" ' . 'title="' . i18n('editAffectation') . '" class="smallButton"/> ';
+               $aff->startDate . "'" . ",'" . $aff->endDate . "'" . ',' . $aff->idProfile . ');" ' . 'title="' . i18n('editAffectation') . '" class="roundedButtonSmall"/> ';
         }
         if ($canDelete and !$print) {
-          echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . $aff->id . "'" . ');" ' . 'title="' . i18n('removeAffectation') . '" class="smallButton"/> ';
+          echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAffectation(' . "'" . $aff->id . "'" . ');" ' . 'title="' . i18n('removeAffectation') . '" class="roundedButtonSmall"/> ';
         }
         if ($aff->idle) {
-          echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '" class="smallButton"/> ';
+          echo '  <img src="css/images/tabClose.gif" ' . 'title="' . i18n('colIdle') . '" class="roundedButtonSmall"/> ';
         }
         echo '</td>';
       }
@@ -2596,7 +2605,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     $nameWidth-=10;
     echo '<td class="assignHeader" style="width:10%;">';
     if ($obj->id != null and !$print and $canCreate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" class="smallButton"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" ' . ' onClick="addTestCaseRun();" title="' . i18n('addTestCaseRun') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
     // also count colDetail size
@@ -2621,23 +2630,23 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="width:10%;text-align:center;">';
       echo '<table style="width:100%"><tr><td style="width:50%">';
       if ($canUpdate and !$print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('editTestCaseRun') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('editTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
       if ($canDelete and !$print) {
-        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ');" ' . 'title="' . i18n('removeTestCaseRun') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ');" ' . 'title="' . i18n('removeTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
       if (!$print) {
         echo '<input type="hidden" id="comment_' . $tcr->id . '" value="' . htmlEncode($tcr->comment, 'none') . '"/>';
       }
       echo '</td><td style="width:50%">';
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3 or $tcr->idRunStatus == 4) {
-        echo '  <img src="css/images/iconPassed16.png" ' . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('passedTestCaseRun') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/iconPassed16.png" ' . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('passedTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 4) {
-        echo '  <img src="css/images/iconFailed16.png" ' . 'onClick="failedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('failedTestCaseRun') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/iconFailed16.png" ' . 'onClick="failedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('failedTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3) {
-        echo '  <img src="css/images/iconBlocked16.png" ' . 'onClick="blockedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('blockedTestCaseRun') . '" class="smallButton"/> ';
+        echo '  <img src="css/images/iconBlocked16.png" ' . 'onClick="blockedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('blockedTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td></tr></table>';
       echo '</td>';
@@ -2700,11 +2709,11 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
       echo '<tr>';
       if ($obj->id and $canUpdate and !$print) {
         echo '<td style="width:20px">';
-        echo '<img src="css/images/smallButtonRemove.png" ' . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId('Version', $vers->idVersion) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n('otherVersionDelete') . '" class="smallButton"/> ';
+        echo '<img src="css/images/smallButtonRemove.png" ' . ' onClick="removeOtherVersion(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId('Version', $vers->idVersion) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n('otherVersionDelete') . '" class="roundedButtonSmall"/> ';
         echo '</td>';
         echo '<td style="width:20px">';
         echo '<img src="css/images/smallButtonSwitch.png" ' . ' onClick="swicthOtherVersionToMain(' . "'" . $vers->id . "'" . ', \'' . SqlList::getNameFromId('Version', $vers->idVersion) . '\'' . ', \'' . $vers->scope . '\'' . ');" ' . 'title="' . i18n('otherVersionSetMain') .
-             '" class="smallButton"/> ';
+             '" class="roundedButtonSmall"/> ';
         echo '</td>';
       }
       echo '<td>' . htmlEncode(SqlList::getNameFromId('Version', $vers->idVersion)) . '</td>';
