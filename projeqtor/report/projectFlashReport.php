@@ -90,24 +90,60 @@ foreach($decList as $dec) {
 }
 
 // ACTIONS
+$clauseStatus=transformListIntoInClause(SqlList::getListWithCrit('Status', array('setDoneStatus'=>'0')));
+debugLog($clauseStatus);
 $arrayActionDecision=array();
 $act=new Action();
 $dec=new Decision();
-$actList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject", "actualDueDate asc, initialDueDate asc, creationDate asc");
-$decList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject", "actualDueDate asc, initialDueDate asc, creationDate asc");
+$link=new Link();
+$crit=array('done'=>'0');
+$actList=$act->getSqlElementsFromCriteria($crit, false, "idProject=$idProject and idStatus in $clauseStatus", "id asc",true,true);
+$inList='(0';
 foreach ($actList as $act) {
-	$status=new Status($act->idStatus);
-	$name=$act->name;
-	if (strlen($name)>60) {
-		$name=substr($name, 0,55).'[...]';
-	}
-	if (! $status->setDoneStatus) {
-		$arrayActionDecision[]=array('name'=>$name,
-		    'responsible'=>SqlList::getNameFromId('Affectable', $act->idResource),
-		    'dueDate'=>$act->actualDueDate);
-	} 
+  $inList.=','.$act->id;
 }
-
+$inList.=')';
+$decList=$dec->getSqlElementsFromCriteria(null, false, "idProject=$idProject and idStatus in $clauseStatus", "id asc",true,true);
+$decListResidual=$decList; // Copy the list, this one will be purged
+$linkList=$link->getSqlElementsFromCriteria(null,false,"ref1Type='Action' and ref1Id in $inList and ref2Type='Decision'","ref1Id asc",true);
+foreach ($actList as $act) {
+debugLog("Action #$act->id");
+  $name="Action #$act->id : $act->name";
+	//$name=$act->name;
+	/*if (strlen($name)>60) {
+		$name=substr($name, 0,55).'[...]';
+	}*/
+	$arrayActionDecision[]=array('name'=>$name,
+		    'responsible'=>SqlList::getNameFromId('Affectable', $act->idResource),
+		    'dueDate'=>$act->actualDueDate,
+	      'action'=>$act->id);
+	foreach ($linkList as $lnk) {
+	  if ($lnk->ref1Id==$act->id) { // Decision linked to action
+	    if (isset($decList['#'.$lnk->ref2Id])) {
+  	    $dec=$decList['#'.$lnk->ref2Id];
+  	    $name="_____Décision #$dec->id : $dec->name";
+  	    $arrayActionDecision[]=array('name'=>$name,
+  	        'responsible'=>SqlList::getNameFromId('Affectable', $dec->idResource),
+  	        'dueDate'=>$dec->decisionDate,
+  	        'action'=>$act->id);
+  	    if (isset($decListResidual['#'.$lnk->ref2Id])) {
+  	      unset($decListResidual['#'.$lnk->ref2Id]);
+  	    }
+	    }
+	    if (isset($linkList['#'.$lnk->id])) { unset($linkList['#'.$lnk->id]);}
+	  } else if ($lnk->ref1Id>$act->id) {
+	    //break;
+	  }
+	}
+}
+foreach ($decListResidual as $dec) {
+  //$name="/&nbsp;$dec->name";
+  $name="Décision #$dec->id : $dec->name";
+  $arrayActionDecision[]=array('name'=>$name,
+      'responsible'=>SqlList::getNameFromId('Affectable', $dec->idResource),
+      'dueDate'=>$dec->decisionDate,
+      'action'=>$act->id);
+}
 // ACTIVITY
 $showWbs=true;
 $arrayActivityDone=array();
@@ -625,7 +661,12 @@ if ($outMode!='pdf') {
 	           <?php displayHeader("Date prévue");?>
 	         </td>
 	       </tr>
-	       <?php foreach ($arrayActionDecision as $act) {?>
+	       <?php 
+	       $nb=0;
+	       $max=10;
+	         foreach ($arrayActionDecision as $act) {
+            $nb++;
+            if ($nb>$max) break;?>
   	       <tr>
   	         <td style="<?php echo $border;?>">
   	           <?php displayField($act['name']);?>
@@ -634,10 +675,17 @@ if ($outMode!='pdf') {
   	           <?php displayField($act['responsible']);?>
   	         </td>
   	         <td style="text-align:center;<?php echo $border;?>">
-  	           <?php displayField($act['dueDate']);?>
+  	           <?php displayField(htmlFormatDate($act['dueDate']));?>
   	         </td>
   	       </tr>
-	       <?php }?>
+	       <?php
+          if ($nb==$max and count($arrayActionDecision)>$max) {
+              echo '<div class="reportTableLineHeader"';
+              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-130':'0').'mm; width:10mm;">';
+              echo '...'.$nb.'/'.count($arrayActionDecision).'&nbsp;';
+              echo '</div>';
+             } 
+          }?>
 	    </table>
 	  </div>
   <?php }?>    
