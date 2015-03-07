@@ -89,9 +89,8 @@ foreach($decList as $dec) {
 	}
 }
 
-// ACTIONS
+// ACTIONS  
 $clauseStatus=transformListIntoInClause(SqlList::getListWithCrit('Status', array('setDoneStatus'=>'0')));
-debugLog($clauseStatus);
 $arrayActionDecision=array();
 $act=new Action();
 $dec=new Decision();
@@ -107,7 +106,6 @@ $decList=$dec->getSqlElementsFromCriteria(null, false, "idProject=$idProject and
 $decListResidual=$decList; // Copy the list, this one will be purged
 $linkList=$link->getSqlElementsFromCriteria(null,false,"ref1Type='Action' and ref1Id in $inList and ref2Type='Decision'","ref1Id asc",true);
 foreach ($actList as $act) {
-debugLog("Action #$act->id");
   $name="Action #$act->id : $act->name";
 	//$name=$act->name;
 	/*if (strlen($name)>60) {
@@ -360,6 +358,17 @@ if ($noteRisque<=$noteMin+$etendue/3) {
 
 //$qualityIndicator="green";
 
+// OBSERVATION 
+
+$note="";
+$n=new Note();
+$nl=$n->getSqlElementsFromCriteria(array('refType'=>'Project', 'refId'=>$idProject),null, null, 'creationDate desc');
+if (count($nl)>0) {
+  $n=reset($nl);
+  $note=$n->note;
+}
+
+
 // FORMATING VALUES
 $height=185;
 $width=277;
@@ -375,6 +384,7 @@ $showAction=1;
 $showMilestone=1;
 $showRisk=1;
 $showCost=1;
+$showObservation=1;
 if ($outMode!='pdf') {
 	echo '<div style="height:1mm;">&nbsp;</div>';
 }
@@ -648,7 +658,7 @@ if ($outMode!='pdf') {
   
   <div style="position:relative; top: 3mm; width:<?php displayWidth(100);?>;height:40mm;<?php echo $borderMain?>" >
   <?php if ($showAction) {?>
-    <div style="width:<?php displayWidth(100);?>; position:absolute; left:0mm; top:0mm; background-color: white;">
+    <div style="width:<?php displayWidth(100);?>; position:absolute; left:0mm; top:0mm; height:40mm; background-color: white;">
       <table style="width:100%">
 	       <tr>
 	         <td style="width:70%" class="reportTableLineHeader" >
@@ -676,16 +686,16 @@ if ($outMode!='pdf') {
   	         </td>
   	         <td style="text-align:center;<?php echo $border;?>">
   	           <?php displayField(htmlFormatDate($act['dueDate']));?>
+  	           <?php
+                if ($nb==$max and count($arrayActionDecision)>$max) {
+                  echo '<div class="reportTableLineHeader"';
+                  echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-249':'0').'mm; width:10mm;">';
+                  echo '...'.$nb.'/'.count($arrayActionDecision).'&nbsp;';
+                  echo '</div>';
+                } ?>
   	         </td>
   	       </tr>
-	       <?php
-          if ($nb==$max and count($arrayActionDecision)>$max) {
-              echo '<div class="reportTableLineHeader"';
-              echo ' style="position:absolute;top:0mm;right:'.(($outMode=='pdf')?'-130':'0').'mm; width:10mm;">';
-              echo '...'.$nb.'/'.count($arrayActionDecision).'&nbsp;';
-              echo '</div>';
-             } 
-          }?>
+	       <?php }?>
 	    </table>
 	  </div>
   <?php }?>    
@@ -694,17 +704,17 @@ if ($outMode!='pdf') {
   <div style="position:relative;top: 2mm; width:<?php displayWidth(100);?>;height:20mm;<?php echo $borderMain?>" >
   
 <!-- Observations -->
-   
+   <?php if ($showObservation) {?>
    <div style="position:absolute; left:0px;top:0mm;height:<?php echo $lineHeight;?>mm;
     width:<?php displayWidth(99.5);?>;white-space:nowrap;" class="reportTableLineHeader">
     <?php displayHeader("Observations");?>
     </div>
     <div style="overflow: <?php echo ($outMode=='pdf')?'hidden':'auto'?>;position:absolute; left:0px;
-    top:<?php echo $lineHeight;?>mm;height:10m;
+    top:<?php echo $lineHeight;?>mm;height:10mm;
     width:<?php displayWidth(100);?>;<?php echo $border;?>">
-      <?php displayField($proj->description, '10', false);?>
+      <?php displayField($note, '10', false);?>
     </div> 
-
+    <?php }?>
   </div> 
 </div>
 <?php
@@ -726,6 +736,7 @@ function displayField($value,$height=null,$encodeHtml=true) {
     $res.='height:'.$height.'mm;';
     $res.='white-space:nowrap; text-overflow:ellipsis;">';
   }
+  if (1 or Parameter::getGlobalParameter('dbVersion')<"V5.0.0") $encodeHtml=true;
   $res.=($encodeHtml)?htmlEncode($value,'print'):$value;
   if ($height) {
     $res.='</div>';
