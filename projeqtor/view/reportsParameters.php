@@ -39,6 +39,7 @@ scriptLog('   ->/view/reportsList.php');
     <td>&nbsp;</td>
   </tr>
 <?php 
+$user=$_SESSION['user'];
 $currentWeek=weekNumber(date('Y-m-d'));
 if (strlen($currentWeek)==1) {
   $currentWeek='0' . $currentWeek;
@@ -316,7 +317,6 @@ foreach ($listParam as $param) {
     $defaultValue='';
     if ($param->defaultValue=='currentUser') {
       if (array_key_exists('user',$_SESSION)) {
-        $user=$_SESSION['user'];
         $defaultValue=$user->id;
       }
     } else if ($param->defaultValue) {
@@ -369,11 +369,16 @@ foreach ($listParam as $param) {
     $defaultValue='';
     if ($param->defaultValue=='currentResource') {
       if (array_key_exists('project',$_SESSION)) {
-        $user=$_SESSION['user'];
         $defaultValue=$user->id;
       }
     } else if ($param->defaultValue) {
       $defaultValue=$param->defaultValue; 
+    }
+    $canChangeResource=false;
+    $crit=array('idProfile'=>$user->idProfile, 'scope'=>'reportResourceAll');
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+    if ($habil and $habil->id and $habil->rightAccess=='1') {
+      $canChangeResource=true;
     }
 ?>
     <tr>
@@ -381,6 +386,7 @@ foreach ($listParam as $param) {
     <td>
     <select dojoType="dijit.form.FilteringSelect" class="input" 
        style="width: 200px;"
+       <?php if (! $canChangeResource) echo ' readonly ';?>
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
        <?php htmlDrawOptionForReference('idResource', $defaultValue, null, false); ?>
