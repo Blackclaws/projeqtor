@@ -309,6 +309,15 @@ function drawTableFromObjectList($objectList) {
   	echo ' title="' . i18n('sectionReport') . '">';
   	htmlDrawCrossTable(array('reportResourceAll'=>i18n('reportResourceAll')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
   	echo '</div><br/>';
+  	$titlePane="habilitationOther_Delete";
+  	echo '<div dojoType="dijit.TitlePane"';
+  	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+  	echo ' id="' . $titlePane . '" ';
+  	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+  	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
+  	echo ' title="' . i18n('sectionDelete') . '">';
+  	htmlDrawCrossTable(array('canForceDelete'=>i18n('canForceDelete')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+  	echo '</div><br/>';
   } else {
   	drawTableFromObjectList($parameterList);
   }

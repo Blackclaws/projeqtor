@@ -42,7 +42,6 @@
   $defaultMenu=Parameter::getUserParameter('defaultMenu');
   if (! $defaultMenu) $defaultMenu='menuBarItem';
   foreach ($menuList as $menu) {
-debugLog("name=$menu->name class=$menu->menuClass");
     if (securityCheckDisplayMenu($menu->id,$menu)) {
       if ($menu->type!='menu' and (strpos(' menuBarItem '.$menu->menuClass, $defaultMenu)>0)) {
         $cptAllMenu+=1;
