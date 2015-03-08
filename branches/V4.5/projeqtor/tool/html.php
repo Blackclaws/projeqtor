@@ -105,6 +105,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         // creation mode
         if ($controlRights["create"]=="PRO") {
           $restrictArray=$user->getVisibleProjects();
+          if (count($restrictArray)==0) { // If user is affected to no project, only possible value is 0 (never users)
+            $restrictArray[0]=0;
+          }
         }
       } else {
         // read or update mode
