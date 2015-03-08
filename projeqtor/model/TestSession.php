@@ -320,6 +320,7 @@ class TestSession extends SqlElement {
     	$new->idTestSession=$newId;
     	$new->idTestCase=$tcr->idTestCase;
     	$new->idRunStatus='1';
+    	$new->_copy=true;
     	$new->save();
     }  
     $new=new TestSession($newId);
