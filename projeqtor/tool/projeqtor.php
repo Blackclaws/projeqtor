@@ -2462,6 +2462,7 @@ function formatNumericInput($val) {
 }
 
 function getLastOperationStatus($result) {
+  if (!$result) return 'OK';
   $search = 'id="lastOperationStatus" value="';
   if (!stripos ( $result, $search )) {
     $search = 'id="lastPlanStatus" value="';
@@ -2479,6 +2480,9 @@ function getLastOperationStatus($result) {
       errorLog ( "'$status' is not an expected status in result \n$result" );
   }
   return $status;
+}
+function getLastOperationMessage($result) {
+  return substr($result,0,strpos($result,'<input type="hidden" id="lastSaveId" value="'));
 }
 
 function displayLastOperationStatus($result) {
