@@ -100,10 +100,18 @@ class TestCaseRun extends SqlElement {
     return $result;
   }
   
-  public function save($allowDupplicate=false) {
+  public function save($allowDuplicate=false) {
 
   	$new=($this->id)?false:true;
   	$old=$this->getOld();
+
+  	if (! $allowDuplicate and property_exists($this, '_copy') and $this->_copy) { // Already controlled on saveTestCaseRun.php, but must be done again for copy of TestSession
+  	  $crit=array('idTestCase'=>$this->idTestCase,'idTestSession'=>$this->idTestSession);
+  	  $lst=$this->getSqlElementsFromCriteria($crit);
+  	  if (count($lst)>0) {
+  	    return "not copied";
+  	  }
+  	}
   	
   	$result=parent::save();
   	
@@ -128,7 +136,7 @@ class TestCaseRun extends SqlElement {
   	  foreach ($list as $tc) {
   	  	$crit=array('idTestCase'=>$tc->id,'idTestSession'=>$this->idTestSession);
 		    $lst=$this->getSqlElementsFromCriteria($crit);
-		    if (count($lst)==0 or $allowDupplicate) {
+		    if (count($lst)==0 or $allowDuplicate) {
 		    	$tcr=new TestCaseRun();
 	  	  	$tcr->idTestCase=$tc->id;
 	        $tcr->idTestSession=$this->idTestSession;
