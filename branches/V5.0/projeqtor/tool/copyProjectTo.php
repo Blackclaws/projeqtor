@@ -86,7 +86,7 @@ if ($status == "OK") {
     if (isset ( $_REQUEST ['directAccessIndex'] )) {
       $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']] = new Project( $newObj->id );
     } else {
-      $_SESSION ['currentObject'] = new $className ( $newObj->id );
+      $_SESSION ['currentObject'] = new Project ( $newProj->id );
     }
   }
 }
@@ -234,7 +234,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	    }
 	  	$dep->id=null;
 	    $tmpRes=$dep->save();
-	    if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
+	    if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
 	      errorLog($tmpRes);
         $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.$dep->id." : ".$tmpRes;
 	      $nbErrors++;
