@@ -4,6 +4,8 @@
  * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  * 
+ * Most of properties are extracted from Dojo Framework.
+ *
  * This file is part of ProjeQtOr.
  * 
  * ProjeQtOr is free software: you can redistribute it and/or modify it under 
@@ -52,6 +54,21 @@ if (array_key_exists('weekSpinner',$_REQUEST)) {
 
 $user=$_SESSION['user'];
 
+$paramResource='';
+if (array_key_exists('idResource',$_REQUEST)) {
+  $paramResource=trim($_REQUEST['idResource']);
+  $canChangeResource=false;
+  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'reportResourceAll');
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+  if ($habil and $habil->id and $habil->rightAccess=='1') {
+    $canChangeResource=true;
+  }
+  if (!$canChangeResource and $paramResource!=$user->id) {
+    echo i18n('messageNoAccess',array(i18n('colReport')));
+    exit;
+  } 
+}
+
 $periodType=$_REQUEST['periodType'];
 $periodValue=$_REQUEST['periodValue'];
 
@@ -73,6 +90,9 @@ if ($periodType=='month') {
 if ( $periodType=='week') {
   $headerParameters.= i18n("week") . ' : ' . $paramWeek . '<br/>';
 }
+if ( $paramResource=='') {
+  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$paramResource)) . '<br/>';
+}
 include "header.php";
 
 $where=getAccesResctictionClause('Activity',false);
@@ -83,6 +103,7 @@ $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
 if ($paramProject!='') {
   $where.=  "and idProject in " . getVisibleProjectsList(true, $paramProject) ;
 }
+$where.=($paramResource!='')?" and idResource='" . $paramResource . "'":'';
 $order="";
 //echo $where;
 $work=new Work();

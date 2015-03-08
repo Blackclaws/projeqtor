@@ -93,7 +93,8 @@ if ($type=='habilitation') {
                                      'planning'=>i18n('planningRight'),
   																	 'resourcePlanning'=>i18n('resourcePlanningRight'),
                                      'document'=>i18n('documentUnlockRight'),
-                                     'requirement'=>i18n('requirementUnlockRight')), 
+                                     'requirement'=>i18n('requirementUnlockRight'),
+                                     'reportResourceAll'=>i18n('reportResourceAll')), 
                                'profile', 
                                'habilitationOther') ;
   foreach($crosTable as $lineId => $line) {
