@@ -581,6 +581,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if ($col == 'creationDate' and ($val == '' or $val == null) and !$obj->id) {
             $val=date('Y-m-d');
           }
+          if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
+            $val=date('Y-m-d H:i:s');
+          }
           if ($col == 'idUser') {
             $val=$user->id;
           }
