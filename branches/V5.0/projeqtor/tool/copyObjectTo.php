@@ -138,108 +138,135 @@ if ($status == "OK") {
 }
 
 function copyStructure($from, $to, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments) {
-	$nbErrors=0;
-	$errorFullMessage="";
-	$milArray=array();
-  $milArrayObj=array();
-  $actArray=array();
-  $actArrayObj=array();
-  $crit=array('idActivity'=>$from->id);
-  $items=array();
-  // Activities to be copied
-  $activity=New Activity();
-  $activities=$activity->getSqlElementsFromCriteria($crit, false, null, null, true);
-  foreach ($activities as $activity) {
-    $act=new Activity($activity->id);
-    $items['Activity_'.$activity->id]=$act;
-  }
-  $mile=New Milestone();
-  $miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
-  foreach ($miles as $mile) {
-    $mil=new Milestone($mile->id);
-    $items['Milestone_'.$mile->id]=$mil;
-  }
-  // Sort by wbsSortable
-  uasort($items, "customSortByWbsSortable");
-  $itemArrayObj=array();
-  $itemArray=array();
-  foreach ($items as $id=>$item) {
-    //$new=$item->copy();
-    $toTypeFld='id'.get_class($item).'Type';
-    $new=$item->copyTo(get_class($item), $item->$toTypeFld, $item->name, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
-    $tmpRes=$new->_copyResult;
-    if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
-      errorLog($tmpRes);
-      $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
-      $nbErrors++;
-    } else {
-      $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
-      $itemArray[$id]=get_class($new) . '_' . $new->id;
-      if (get_class($item)=='Activity') {
-        copyStructure($item, $new, $copyToOrigin, $copyToWithNotes, $copyToWithAttachments,$copyToWithLinks, $copyAssignments);
+  	$nbErrors=0;
+  	$errorFullMessage="";
+  	$milArray=array();
+    $milArrayObj=array();
+    $actArray=array();
+    $actArrayObj=array();
+    $crit=array('idActivity'=>$from->id);
+    $items=array();
+    // Activities to be copied
+    $activity=New Activity();
+    $activities=$activity->getSqlElementsFromCriteria($crit, false, null, null, true);
+    foreach ($activities as $activity) {
+      $act=new Activity($activity->id);
+      $items['Activity_'.$activity->id]=$act;
+    }
+    $mile=New Milestone();
+    $miles=$mile->getSqlElementsFromCriteria($crit, false, null, null, true);
+    foreach ($miles as $mile) {
+      $mil=new Milestone($mile->id);
+      $items['Milestone_'.$mile->id]=$mil;
+    }
+    // Sort by wbsSortable
+    uasort($items, "customSortByWbsSortable");
+    $itemArrayObj=array();
+    $itemArray=array();
+    $itemArrayAssignment=array();
+    foreach ($items as $id=>$item) {
+      //$new=$item->copy();
+      //$toTypeFld='id'.get_class($item).'Type';
+      $new=$new=$item->copy();
+      $tmpRes=$new->_copyResult;
+      if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
+        errorLog($tmpRes);
+        $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
+        $nbErrors++;
+      } else {
+        $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
+        $itemArray[$id]=get_class($new) . '_' . $new->id;
+        if ($copyAssignments and property_exists($item, '_Assignment')) {
+  	      $itemArrayAssignment[]=array('class'=>get_class($item),'oldId'=>$item->id,'newId'=>$new->id);
+  	    }
       }
     }
-  }
-  foreach ($itemArrayObj as $new) {
-    //$new->idProject=$newProj->id;
-    $new->idActivity=$to->id;
-    $pe=get_class($new).'PlanningElement';
-    $new->$pe->wbs=null;
-    $tmpRes=$new->save();
-    if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
-      errorLog($tmpRes);
-      $errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
-      $nbErrors++;
-    } 
-  }
-  // Copy dependencies 
-  $critWhere="";
-  foreach ($itemArray as $id=>$new) {
-    $split=explode('_',$id);
-    $critWhere.=($critWhere)?', ':'';
-    $critWhere.="('" . $split[0] . "','" . Sql::fmtId($split[1]) . "')";
-  }
-  if ($critWhere) {
-    $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
-         . " or (successorRefType,successorRefId) in (" . $critWhere . ")";
-  } else {
-    $clauseWhere=" 1=0 ";
-  }
-  $dep=New dependency();
-  $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
-  foreach ($deps as $dep) {
-    if (array_key_exists($dep->predecessorRefType . "_" . $dep->predecessorRefId, $itemArray) ) {
-      $split=explode('_',$itemArray[$dep->predecessorRefType . "_" . $dep->predecessorRefId]);
-      $dep->predecessorRefType=$split[0];
-      $dep->predecessorRefId=$split[1];
-      $crit=array('refType'=>$split[0], 'refId'=>$split[1]);
-      $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-      $dep->predecessorId=$pe->id;
+    foreach ($itemArrayObj as $new) {
+      $new->idProject=$from->idProject;
+      $new->idActivity=$to->id;
+      $pe=get_class($new).'PlanningElement';
+      $new->$pe->wbs=null;
+      $tmpRes=$new->save();
+      if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
+        errorLog($tmpRes);
+        $errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
+        $nbErrors++;
+      } 
     }
-    if (array_key_exists($dep->successorRefType . "_" . $dep->successorRefId, $itemArray) ) {
-      $split=explode('_',$itemArray[$dep->successorRefType . "_" . $dep->successorRefId]);
-      $dep->successorRefType=$split[0];
-      $dep->successorRefId=$split[1];
-      $crit=array('refType'=>$split[0], 'refId'=>$split[1]);
-      $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
-      $dep->successorId=$pe->id;
+    if ($copyAssignments) {
+      foreach ($itemArrayAssignment as $item) {
+        $ass=new Assignment();
+        $crit=array('refType'=>$item['class'], 'refId'=>$item['oldId']);
+        $lstAss=$ass->getSqlElementsFromCriteria($crit);
+        foreach ($lstAss as $ass) {
+          $ass->id=null;
+          $ass->idProject=$from->idProject;
+          $ass->refId=$item['newId'];
+          $ass->comment=null;
+          $ass->realWork=0;
+          $ass->leftWork=$ass->assignedWork;
+          $ass->plannedWork=$ass->assignedWork;
+          $ass->realStartDate=null;
+          $ass->realEndDate=null;
+          $ass->plannedStartDate=null;
+          $ass->plannedEndDate=null;
+          $ass->realCost=0;
+          $ass->leftCost=$ass->assignedCost;
+          $ass->plannedCost=$ass->assignedCost;
+          $ass->billedWork=null;
+          $ass->idle=0;
+          $ass->save();
+        }
+      }
     }
-    $dep->id=null;
-    $tmpRes=$dep->save();
-    if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
-      errorLog($tmpRes);
-      $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.$dep->id." : ".$tmpRes;
-      $nbErrors++;
-    } 
-  }
-  $result="OK";
-  if ($nbErrors>0) {
-    $result='<div class="messageERROR" >' 
-           . i18n('errorMessageCopy',array($nbErrors))
-           . '</div><br/>'
-           . str_replace('<br/><br/>','<br/>',$errorFullMessage);
-  }
-  return $result;
+    // Copy dependencies 
+    $critWhere="";
+    foreach ($itemArray as $id=>$new) {
+      $split=explode('_',$id);
+      $critWhere.=($critWhere)?', ':'';
+      $critWhere.="('" . $split[0] . "','" . Sql::fmtId($split[1]) . "')";
+    }
+    if ($critWhere) {
+      $clauseWhere="(predecessorRefType,predecessorRefId) in (" . $critWhere . ")"
+           . " or (successorRefType,successorRefId) in (" . $critWhere . ")";
+    } else {
+      $clauseWhere=" 1=0 ";
+    }
+    $dep=New dependency();
+    $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
+    foreach ($deps as $dep) {
+      if (array_key_exists($dep->predecessorRefType . "_" . $dep->predecessorRefId, $itemArray) ) {
+        $split=explode('_',$itemArray[$dep->predecessorRefType . "_" . $dep->predecessorRefId]);
+        $dep->predecessorRefType=$split[0];
+        $dep->predecessorRefId=$split[1];
+        $crit=array('refType'=>$split[0], 'refId'=>$split[1]);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->predecessorId=$pe->id;
+      }
+      if (array_key_exists($dep->successorRefType . "_" . $dep->successorRefId, $itemArray) ) {
+        $split=explode('_',$itemArray[$dep->successorRefType . "_" . $dep->successorRefId]);
+        $dep->successorRefType=$split[0];
+        $dep->successorRefId=$split[1];
+        $crit=array('refType'=>$split[0], 'refId'=>$split[1]);
+        $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        $dep->successorId=$pe->id;
+      }
+      $dep->id=null;
+      $tmpRes=$dep->save();
+      if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
+        errorLog($tmpRes);
+        $errorFullMessage.='<br/>'.i18n(get_class($dep)).' #'.$dep->id." : ".$tmpRes;
+        $nbErrors++;
+      } 
+    }
+    $result="OK";
+    if ($nbErrors>0) {
+      $result='<div class="messageERROR" >' 
+             . i18n('errorMessageCopy',array($nbErrors))
+             . '</div><br/>'
+             . str_replace('<br/><br/>','<br/>',$errorFullMessage);
+    }
+    return $result;
 }
 function customSortByWbsSortable($a,$b) {
   $pe=get_class($a).'PlanningElement';
