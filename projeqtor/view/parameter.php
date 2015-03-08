@@ -300,6 +300,15 @@ function drawTableFromObjectList($objectList) {
   	echo ' title="' . i18n('sectionUnlock') . '">';
   	htmlDrawCrossTable(array('document'=>i18n('documentUnlockRight'),'requirement'=>i18n('requirementUnlockRight')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
   	echo '</div><br/>';
+  	$titlePane="habilitationOther_Report";
+  	echo '<div dojoType="dijit.TitlePane"';
+  	echo ' open="' . ( array_key_exists($titlePane, $collapsedList)?'false':'true') . '"';
+  	echo ' id="' . $titlePane . '" ';
+  	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
+  	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
+  	echo ' title="' . i18n('sectionReport') . '">';
+  	htmlDrawCrossTable(array('reportResourceAll'=>i18n('reportResourceAll')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+  	echo '</div><br/>';
   } else {
   	drawTableFromObjectList($parameterList);
   }
