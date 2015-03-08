@@ -61,6 +61,7 @@ abstract class SqlElement {
 	// All dependencies between objects :
 	//    control => sub-object must not exist to allow deletion
 	//    cascade => sub-objects are automaticaly deleted
+	//    confirm => confirmation will be requested
 	private static $_relationShip=array(
     "AccessProfile" =>      array("AccessRight"=>"cascade"),
     "AccessScopeRead" =>    array("AccessProfile"=>"control"),
@@ -922,7 +923,7 @@ abstract class SqlElement {
 	 * Delete an object from the database
 	 * @return void
 	 */
-	private function deleteSqlElement() {
+	private function deleteSqlElement() {	  
 		if (! $this->id or $this->id<0 ) {return;}
 		$class = get_class($this);
 		$control=$this->deleteControl();
@@ -963,17 +964,29 @@ abstract class SqlElement {
 				// if property is an object, delete it
 				if ($this->$col_name instanceof SqlElement) {
 					if ($this->$col_name->id and $this->$col_name->id!='') { // object may be a "new" element, so try to delete only if id exists
-						$resSub=$this->$col_name->delete();
+					  $resSub=$this->$col_name->delete();
 					}
 				}
 			}
 		}
 		// check relartionship : if "cascade", then auto delete
 		$relationShip=self::$_relationShip;
+		$canForceDelete=false;
+		$user=$_SESSION['user'];
+		$crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+		if ($habil and $habil->id and $habil->rightAccess=='1') {
+		  $canForceDelete=true;
+		}
+		$returnStatus="OK";
+		$returnValue='';
 		if ($class=='TicketSimple') {$class='Ticket';}
 		if (array_key_exists($class,$relationShip)) {
 			$relations=$relationShip[$class];
 			foreach ($relations as $object=>$mode) {
+			  if ($mode=="control" and $canForceDelete) {
+			    $mode="confirm";
+			  }
 				if ($mode=="cascade" or ($mode=="confirm" and self::isDeleteConfirmed())) {
 					$where=null;
 					$obj=new $object();
@@ -995,27 +1008,43 @@ abstract class SqlElement {
 					foreach ($list as $subObj) {
 						$subObjDel=new $object($subObj->id);
 						$resSub=$subObjDel->delete();
+						$statusSub = getLastOperationStatus ( $resSub );
+						if ($statusSub=='INVALID' or $statusSub=='ERROR') {
+						  $returnStatus=$statusSub;
+						  $returnValue="$object #$subObj->id <br/><br/>".getLastOperationMessage($resSub);
+						  break 2;
+						}
 					}
 				}
 			}
 		}
-		$query="delete from " .  $this->getDatabaseTableName() . " where id=" . Sql::fmtId($this->id) . "";
-		// execute request
-		$returnStatus="OK";
-		$result = Sql::query($query);
-		if (!$result) {
-			$returnStatus="ERROR";
+		if ($returnStatus=="OK") { // May have errors deleting dependant elements 
+  		$query="delete from " .  $this->getDatabaseTableName() . " where id=" . Sql::fmtId($this->id) . "";
+  		// execute request
+  		$result = Sql::query($query);
+  		if (!$result) {
+  			$returnStatus="ERROR";
+  		} else {
+  		  $peName=get_class($this).'PlanningElement';
+  		  if (property_exists($this, $peName)) {
+  		    $pe=new PlanningElement();
+  		    $pe->purge(' refName is null');
+  		  }
+  		}
 		}
+		
 		// save history
 		if ($returnStatus!="ERROR" and ! property_exists($this,'_noHistory') ) {
 			$result = History::store($this, $class,$this->id,'delete');
 			if (!$result) {$returnStatus="ERROR";}
 		}
-		if ($returnStatus!="ERROR") {
-			$returnValue=i18n($class) . ' #' . $this->id . ' ' . i18n('resultDeleted');
-		} else {
-			$returnValue=Sql::$lastQueryErrorMessage;
-		}
+		if ($returnValue=='') { // If $returnValue set from sub object, do not override with possibly empty.
+  		if ($returnStatus!="ERROR") {
+  			$returnValue=i18n($class) . ' #' . $this->id . ' ' . i18n('resultDeleted');
+  		} else  { 
+  			$returnValue=Sql::$lastQueryErrorMessage;
+  		}
+		}	
 		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
 		$returnValue .= '<input type="hidden" id="lastOperation" value="delete" />';
 		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
@@ -2735,16 +2764,26 @@ abstract class SqlElement {
 			return $result;
 		}
 		$relationShip=self::$_relationShip;
+		$canForceDelete=false;
+		$user=$_SESSION['user'];
+		$crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+		if ($habil and $habil->id and $habil->rightAccess=='1') {
+		  $canForceDelete=true;
+		}
 		if (array_key_exists(get_class($this),$relationShip)) {
 			$relations=$relationShip[get_class($this)];
 			$error=false;
 			foreach ($relations as $object=>$mode) {
+			  if ($mode=="control" and $canForceDelete) {
+			    $mode="confirm";
+			  }
 				if ($mode=="control" or $mode=="confirm") {
 					$where=null;
 					$obj=new $object();
 					$crit=array('id' . get_class($this) => $this->id);
 					if (property_exists($obj, 'refType') and property_exists($obj,'refId')) {
-						//if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachement") {
+						//if (($object=="Assignment" and get_class($this)=="Activity") or $object=="Note" or $object=="Attachment") {
 						$crit=array("refType"=>get_class($this), "refId"=>$this->id);
 					}
 					if ($object=="Dependency") {

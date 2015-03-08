@@ -2240,5 +2240,39 @@ function formatNumericInput($val) {
 	$to=array('.','','');
 	return str_replace($from,$to,$val);
 }
+function getLastOperationStatus($result) {
+  if (!$result) return 'OK';
+  $search = 'id="lastOperationStatus" value="';
+  if (!stripos ( $result, $search )) {
+    $search = 'id="lastPlanStatus" value="';
+  }
+  $start = stripos ( $result, $search ) + strlen ( $search );
+  $end = stripos ( $result, '"', $start );
+  $status = substr ( $result, $start, $end - $start );
+  switch ($status) {
+  	case "OK" :
+  	case "INVALID" :
+  	case "ERROR" :
+  	case "NO_CHANGE" :
+  	  break; // OK, valid status
+  	default :
+  	  errorLog ( "'$status' is not an expected status in result \n$result" );
+  }
+  return $status;
+}
+function getLastOperationMessage($result) {
+  return substr($result,0,strpos($result,'<input type="hidden" id="lastSaveId" value="'));
+}
+
+function displayLastOperationStatus($result) {
+  $status = getLastOperationStatus ( $result );
+  if ($status == "OK" or $status=="NO_CHANGE") {
+    Sql::commitTransaction ();
+  } else {
+    Sql::rollbackTransaction ();
+  }
+  echo '<div class="message' . $status . '" >' . $result . '</div>';
+  return $status;
+}
 //
 ?>
