@@ -562,14 +562,19 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               <?php htmlDisplayDatabaseInfos();?>
             </div>
           </td>
-          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;"> 
-            <div width="100%" id="statusBarInfoDiv" style="text-align: right;">
-              <?php htmlDisplayInfos();?>
-            </div>
-            <div width="100%" id="currentWorkDiv" style="text-align: right;position:absolute; top: 0px; right:0px;">
-              <?php //htmlDisplayCurrentWork();?>
-            </div>
-            
+          <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
+            <div class="pseudoButton" style="width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
+              <table style="width:100%">
+                  <tr>
+                    <td style="vertical-align: middle;text-align:center;width:70px">
+                      <?php echo "$copyright<br>$version";?>
+                    </td>
+                    <td  style="width:35px">
+                      <img style="height:28px;width:28px" src="img/logoSmall.png" />
+                    </td>
+                  </tr>
+                </table>
+            </a></div>            
           </td>
         </tr>
       </table>  
