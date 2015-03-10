@@ -23,7 +23,6 @@
  * about contributors at http://www.projeqtor.org 
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
-
 include_once "../tool/projeqtor.php";
 scriptLog("saveAttachment.php");
 header ('Content-Type: text/html; charset=UTF-8');
@@ -43,7 +42,7 @@ if ($isIE and $isIE<=9) {?>
 <head>   
 </head>
 <body onload="parent.saveAttachmentAck();">
-<?php } ?>
+<?php } else { ob_start();}?>
 <?php 
 $error=false;
 $type='file';
@@ -87,23 +86,26 @@ if ($type=='file') {
 	      //$error=true;
 	      switch ($uploadedFile['error']) {
 	        case 1:
-	          $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+	          $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	          errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	          break;
 	        case 2:
-	          $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
+	          $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
 	          errorLog(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
 	          break;
 	        case 4:
-	          $error.=htmlGetWarningMessage(i18n('errorNoFile'));
+	          $error.=htmlGetWarningMessage($error="[".$uploadedFile['error']."] ".i18n('errorNoFile'));
 	          errorLog(i18n('errorNoFile'));
 	          break;
+	        case 3:
+	            $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorUploadNotComplete'));
+	            errorLog(i18n('errorUploadNotComplete'));
+	            break;
 	        default:
-	          $error.=htmlGetErrorMessage(i18n('errorUploadFile',array($uploadedFile['error'])));
+	          $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorUploadFile',array($uploadedFile['error'])));
 	          errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
 	          break;
 	      }
-	      
 	    }
 	  }
 	  if (! $error) {
@@ -291,11 +293,11 @@ $jsonReturn='{"file":"'.$attachment->fileName.'",'
  .'"size":"'.$attachment->fileSize.'"  ,'
  .'"message":"'.str_replace('"',"'",$message).'"}';
 
-
 if ($isIE and $isIE<=9) {
 	echo $message;
   echo '</body>';
   echo '</html>';
 } else {
+  ob_end_clean();
   echo $jsonReturn;
 }?>

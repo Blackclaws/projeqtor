@@ -2451,7 +2451,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   foreach ( $list as $vp ) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center;">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
       if ($canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editVersionProject(' . "'" . $vp->id . "'" . ",'" . $vp->idVersion . "'" . ",'" . $vp->idProject . "'" . ",'" . $vp->startDate . "'" . ",'" . $vp->endDate . "'" . ",'" . $vp->idle . "'" . ');" ' . 'title="' .
              i18n('editVersionProject') . '" class="roundedButtonSmall"/> ';

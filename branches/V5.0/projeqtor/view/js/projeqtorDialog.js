@@ -731,6 +731,7 @@ function addAttachment (attachmentType) {
 	  callBack=function() {
 		  dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(dataArray){saveAttachmentAck(dataArray);});
 	      dojo.connect(dijit.byId("attachmentFile"), "onProgress", function(data){saveAttachmentProgress(data);});
+	      dojo.connect(dijit.byId("attachmentFile"), "onError", function(){alert("ERROR");hideWait();});
 		  addAttachment (attachmentType);};	
 	  loadDialog('dialogAttachment',callBack);
 	  return;
