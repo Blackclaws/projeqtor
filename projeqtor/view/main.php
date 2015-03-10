@@ -563,10 +563,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
             </div>
           </td>
           <td width="20%" title="<?php echo i18n('infoMessage');?>" style="vertical-align: middle;text-align:center;"> 
-            <div class="pseudoButton" style="width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
+            <div class="pseudoButton" style="margin:0;padding:0;width:100px;float:right"><a target="#" href="<?php echo $website;?>" >
               <table style="width:100%">
                   <tr>
-                    <td style="vertical-align: middle;text-align:center;width:70px">
+                    <td style="position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">
                       <?php echo "$copyright<br>$version";?>
                     </td>
                     <td  style="width:35px">
