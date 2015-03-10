@@ -1289,14 +1289,15 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
         'predecessor'=>   array('float'=>'left',  'clear'=>(($nbCol==2)?'both':'right')),
         'successor'=>     array('float'=>'left',  'clear'=>'none'),
         'version'=>       array('float'=>'left',  'clear'=>'none'),
-        'approvers'=>      array('float'=>'left',  'clear'=>'none'),
-        'lock'=>          array('float'=>'right',  'clear'=>'none'),
+        'approvers'=>     array('float'=>'left',  'clear'=>'none'),
+        'lock'=>          array('float'=>'left',  'clear'=>'none'),
         'attachment'=>    array('float'=>'left',  'clear'=>'none'),
-        'note'=>          array('float'=>'right',  'clear'=>'none'),
-        'link'=>          array('float'=>'right',  'clear'=>'none')
+        'note'=>          array('float'=>'left',  'clear'=>'none'),
+        'link'=>          array('float'=>'left',  'clear'=>'none')
     );
     $float='right';
     $clear='right';
+    $float='left'; $clear='right';
     $lc=strtolower($section);
     if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
     if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
