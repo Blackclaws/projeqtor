@@ -43,7 +43,7 @@ if ($isIE and $isIE<=9) {?>
 <head>   
 </head>
 <body onload="parent.saveAttachementAck();">
-<?php } ?>
+<?php }  else { ob_start();}?>
 <?php 
 $error=false;
 $type='file';
@@ -190,6 +190,7 @@ if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
 $result="";
 $user=$_SESSION['user'];
 Sql::beginTransaction();
+$attachement=new Attachement();
 foreach ($uploadedFileArray as $uploadedFile) {
   $attachement=new Attachement();
 	if (! $error) {
@@ -298,5 +299,6 @@ if ($isIE and $isIE<=9) {
   echo '</body>';
   echo '</html>';
 } else {
+  ob_end_clean();
   echo $jsonReturn;
 }?>
