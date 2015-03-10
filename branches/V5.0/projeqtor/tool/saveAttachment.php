@@ -81,24 +81,24 @@ if ($type=='file') {
   foreach ($uploadedFileArray as $uploadedFile) {
 	  if (! $error) {
 	    if ( $uploadedFile['error']!=0) {
-	      $error="[".$uploadedFile['error']."] ";
+	      //$error="[".$uploadedFile['error']."] ";
 	      errorLog("[".$uploadedFile['error']."] saveAttachment.php");
 	      //$error=true;
 	      switch ($uploadedFile['error']) {
 	        case 1:
-	          $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+	          $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	          errorLog(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	          break;
 	        case 2:
-	          $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
+	          $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
 	          errorLog(i18n('errorTooBigFile',array($attachmentMaxSize,'paramAttachmentMaxSize')));
 	          break;
 	        case 4:
-	          $error.=htmlGetWarningMessage($error="[".$uploadedFile['error']."] ".i18n('errorNoFile'));
+	          $error.=htmlGetWarningMessage("[".$uploadedFile['error']."] ".i18n('errorNoFile'));
 	          errorLog(i18n('errorNoFile'));
 	          break;
 	        case 3:
-	            $error.=htmlGetErrorMessage($error="[".$uploadedFile['error']."] ".i18n('errorUploadNotComplete'));
+	            $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorUploadNotComplete'));
 	            errorLog(i18n('errorUploadNotComplete'));
 	            break;
 	        default:
@@ -192,6 +192,7 @@ if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
 $result="";
 $user=$_SESSION['user'];
 Sql::beginTransaction();
+$attachment=new Attachment();
 foreach ($uploadedFileArray as $uploadedFile) {
   $attachment=new Attachment();
 	if (! $error) {

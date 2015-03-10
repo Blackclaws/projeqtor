@@ -1962,7 +1962,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
 	               <input id="dependencyDelay" name="dependencyDelay" value="0" 
 	                 dojoType="dijit.form.NumberTextBox" 
                    constraints="{min:-999, max:999}" 
-	                 style="width:50px; text-align: right;" 
+	                 style="width:50px; text-align: center;" 
 	                 missingMessage="<?php echo i18n('messageMandatory',array(i18n('colDependencyDelay')));?>" 
 	                 required="true" />&nbsp;
 	               <?php echo i18n('colDependencyDelayComment'); ?>

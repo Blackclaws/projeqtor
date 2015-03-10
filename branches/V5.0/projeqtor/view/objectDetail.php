@@ -250,6 +250,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         //echo $sectionField & "  " & $sectionFieldVP;
       }
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt);
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col, 5);
@@ -1287,7 +1288,9 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
         'affectations'=>  array('float'=>'left',  'clear'=>'none'),
         'predecessor'=>   array('float'=>'left',  'clear'=>(($nbCol==2)?'both':'right')),
         'successor'=>     array('float'=>'left',  'clear'=>'none'),
-        
+        'version'=>       array('float'=>'left',  'clear'=>'none'),
+        'approvers'=>      array('float'=>'left',  'clear'=>'none'),
+        'lock'=>          array('float'=>'right',  'clear'=>'none'),
         'attachment'=>    array('float'=>'left',  'clear'=>'none'),
         'note'=>          array('float'=>'right',  'clear'=>'none'),
         'link'=>          array('float'=>'right',  'clear'=>'none')
@@ -3043,13 +3046,13 @@ if ($print) {
 
 function setWidthPct($displayWidth, $print, $printWidth, $obj) {
   $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);
-  $widthPct=round(98 / $nbCol) . "%";
+  $widthPct=round(99 / $nbCol) . "%";
   if ($nbCol == '1') {
     $widthPct=$displayWidth;
   }
   if (substr($displayWidth, -2, 2) == "px") {
     $val=substr($displayWidth, 0, strlen($displayWidth) - 2);
-    $widthPct=floor(($val / $nbCol) - 4) . "px";
+    $widthPct=floor( ($val / $nbCol) - 4) . "px";
   }
   if ($print) {
 		$widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
