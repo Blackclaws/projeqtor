@@ -730,8 +730,8 @@ function addAttachment (attachmentType) {
 	if (content=="") {
 	  callBack=function() {
 		  dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(dataArray){saveAttachmentAck(dataArray);});
-	      dojo.connect(dijit.byId("attachmentFile"), "onProgress", function(data){saveAttachmentProgress(data);});
-	      dojo.connect(dijit.byId("attachmentFile"), "onError", function(){alert("ERROR");hideWait();});
+	    dojo.connect(dijit.byId("attachmentFile"), "onProgress", function(data){saveAttachmentProgress(data);});
+	    dojo.connect(dijit.byId("attachmentFile"), "onError", function(evt){alert(i18n("uploadUncomplete"));});
 		  addAttachment (attachmentType);};	
 	  loadDialog('dialogAttachment',callBack);
 	  return;
