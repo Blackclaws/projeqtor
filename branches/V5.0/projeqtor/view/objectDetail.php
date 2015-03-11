@@ -1281,9 +1281,10 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   
   if (!$print) {
     $arrayPosition=array(
-        'treatment'=>     array('float'=>'left',  'clear'=>'none'),
-        'description'=>   array('float'=>'left',  'clear'=>'none'),
-        'progress'=>      array('float'=>'left',  'clear'=>'none'),
+        'description'=>   array('float'=>'left',                         'clear'=>'left'),
+        'treatment'=>     array('float'=>(($nbCol==2)?'right':'left'),   'clear'=>(($nbCol==2)?'right':'none')),
+        
+
         'progress'=>      array('float'=>'left',  'clear'=>'none'),
         'affectations'=>  array('float'=>'left',  'clear'=>'none'),
         'predecessor'=>   array('float'=>'left',  'clear'=>(($nbCol==2)?'both':'right')),
@@ -1291,13 +1292,14 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
         'version'=>       array('float'=>'left',  'clear'=>'none'),
         'approvers'=>     array('float'=>'left',  'clear'=>'none'),
         'lock'=>          array('float'=>'left',  'clear'=>'none'),
+        
+        'link'=>          array('float'=>'left',  'clear'=>'none'),
         'attachment'=>    array('float'=>'left',  'clear'=>'none'),
-        'note'=>          array('float'=>'left',  'clear'=>'none'),
-        'link'=>          array('float'=>'left',  'clear'=>'none')
+        'note'=>          array('float'=>'left',  'clear'=>'none')
+        
     );
-    $float='right';
-    $clear='right';
-    $float='left'; $clear='right';
+    $float='left';
+    $clear='none';
     $lc=strtolower($section);
     if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
     if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
