@@ -729,9 +729,9 @@ function addAttachement (attachmentType) {
 	content=dijit.byId('dialogAttachement').get('content');
 	if (content=="") {
 	  callBack=function() {
-		  dojo.connect(dijit.byId("attachementFile"), "onComplete", function(dataArray){saveAttachementAck(dataArray);});
+		dojo.connect(dijit.byId("attachementFile"), "onComplete", function(dataArray){saveAttachementAck(dataArray);});
 	    dojo.connect(dijit.byId("attachementFile"), "onProgress", function(data){saveAttachementProgress(data);});
-	    dojo.connect(dijit.byId("attachmentFile"), "onError", function(evt){alert("ERROR");top.hideWait();});
+	    dojo.connect(dijit.byId("attachementFile"), "onError", function(evt){alert("ERROR");top.hideWait();});
 		  addAttachement (attachmentType);};	
 	  loadDialog('dialogAttachement',callBack);
 	  return;

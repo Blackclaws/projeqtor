@@ -26,6 +26,8 @@
 
 include_once "../tool/projeqtor.php";
 scriptLog("saveAttachement.php");
+debugLog("=> saveAttachement.php");
+debugLog("   par utilisateur ".$_SESSION['user']->name);
 header ('Content-Type: text/html; charset=UTF-8');
 /** ===========================================================================
  * Save an attachement (file) : call corresponding method in SqlElement Class
@@ -43,8 +45,7 @@ if ($isIE and $isIE<=9) {?>
 <head>   
 </head>
 <body onload="parent.saveAttachementAck();">
-<?php }  else { ob_start();}?>
-<?php 
+<?php }  else { ob_start();}
 $error=false;
 $type='file';
 if (! array_key_exists('attachementType',$_REQUEST)) {
@@ -57,6 +58,7 @@ if (! array_key_exists('attachementType',$_REQUEST)) {
 $attachementMaxSize=Parameter::getGlobalParameter('paramAttachementMaxSize');
 $uploadedFileArray=array();
 if ($type=='file') {
+debugLog("   attachement de type fichier");
   if (array_key_exists('attachementFile',$_FILES)) {
     $uploadedFileArray[]=$_FILES['attachementFile'];
   } else if (array_key_exists('uploadedfile0',$_FILES)) {
@@ -79,6 +81,7 @@ if ($type=='file') {
     errorLog(i18n('errorTooBigFile',array($attachementMaxSize,'paramAttachementMaxSize')));
     //$error=true;
   }
+debugLog("   nombre de fichiers = ".count($uploadedFileArray));
   foreach ($uploadedFileArray as $uploadedFile) {
 	  if (! $error) {
 	    if ( $uploadedFile['error']!=0) {
@@ -103,7 +106,6 @@ if ($type=='file') {
 	          errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
 	          break;
 	      }
-	      
 	    }
 	  }
 	  if (! $error) {
@@ -113,6 +115,7 @@ if ($type=='file') {
 	      //$error=true;
 	    }
 	  }
+debugLog("   fichier ".$uploadedFile['name'].", error='$error'");
   }
 } else if ($type=='link') {
   if (! array_key_exists('attachementLink',$_REQUEST)) {
@@ -136,6 +139,7 @@ if (! array_key_exists('currentObject',$_SESSION)) {
 } else { 
   $obj=$_SESSION['currentObject'];
 }
+debugLog("   tous les fichiers examinés, error='$error'");
 if (! $error) {
   if (! array_key_exists('attachementRefType',$_REQUEST)) {
   	if (!$obj) {
@@ -186,12 +190,13 @@ if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
 } else  {
   $idPrivacy=$_REQUEST['attachmentPrivacy'];
 }
-
+debugLog("   paramètres récupérés");
 $result="";
 $user=$_SESSION['user'];
 Sql::beginTransaction();
 $attachement=new Attachement();
 foreach ($uploadedFileArray as $uploadedFile) {
+debugLog("   traitement fichier ".$uploadedFile['name']);
   $attachement=new Attachement();
 	if (! $error) {
 		if ($refType=="Resource") {
@@ -268,6 +273,7 @@ foreach ($uploadedFileArray as $uploadedFile) {
 		  }
 		}
 	}
+debugLog("   fin traitement fichier ".$uploadedFile['name'].", error='$error'");
 }
 if (! $error) {
   // Message of correct saving
@@ -286,19 +292,21 @@ if (! $error) {
 	//$message=htmlGetErrorMessage($error);
 	$message=$error;
 }
-
+debugLog("   préparation réponse ");
 $jsonReturn='{"file":"'.$attachement->fileName.'",'
  .'"name":"'.$attachement->fileName.'",'
  .'"type":"'.$type.'",'
  .'"size":"'.$attachement->fileSize.'"  ,'
  .'"message":"'.str_replace('"',"'",$message).'"}';
-
+debugLog("   réponse=$jsonReturn");
 
 if ($isIE and $isIE<=9) {
 	echo $message;
   echo '</body>';
   echo '</html>';
+debugLog("   retour pour IE OK");
 } else {
   ob_end_clean();
   echo $jsonReturn;
+debugLog("   retour pour autres que IE OK");
 }?>
