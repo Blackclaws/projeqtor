@@ -98,7 +98,7 @@ class Requirement extends SqlElement {
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
-  
+  public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
