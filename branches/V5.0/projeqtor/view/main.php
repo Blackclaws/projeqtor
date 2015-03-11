@@ -495,7 +495,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       <table width="100%">
         <tr>
           <td width="5%"  >
-            <div class="pseudoButton" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
+            <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
               <table >
                 <tr>
                   <td>
@@ -510,7 +510,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           </td>
           <td width="1px">&nbsp;</td>
           <td width="5%">
-            <div class="pseudoButton" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
+            <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
               <table >
                 <tr>
                   <td>
@@ -520,7 +520,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                 </tr>
               </table>    
             </div>
-          <td width="8%">&nbsp;</td>
+          <td width="1px">&nbsp;</td>
           <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000">
               <table><tr><td>
@@ -557,7 +557,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               </td></tr></table>               
             </div>
           </td>
-          <td width="30%" style="vertical-align: middle;" >
+          <td width="40%" style="vertical-align: middle;" >
             <div id="statusBarMessageDiv" style="text-align: left">
               <?php htmlDisplayDatabaseInfos();?>
             </div>
