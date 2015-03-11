@@ -45,11 +45,7 @@ class DocumentMain extends SqlElement {
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
-  public $_sec_Lock;
-  public $_spe_lockButton;
-  public $locked;
-  public $idLocker;
-  public $lockedDate;
+  
   public $_col_2_2_Version; 
   public $idVersioningType;
   public $idDocumentVersion;
@@ -59,6 +55,13 @@ class DocumentMain extends SqlElement {
   public $_sec_approvers;
   public $_Approver=Array();
   public $_spe_buttonSendMail;
+  
+  public $_sec_Lock;
+  public $_spe_lockButton;
+  public $locked;
+  public $idLocker;
+  public $lockedDate;
+  
   public $version;
   public $revision;
   public $draft;

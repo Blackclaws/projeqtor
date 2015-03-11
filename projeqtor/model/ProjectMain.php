@@ -66,23 +66,31 @@ class ProjectMain extends SqlElement {
   public $latitude;
   public $description;
   public $_col_Progress;
+  
   public $ProjectPlanningElement; // is an object
+  
   public $_sec_Affectations;
   public $_spe_affectations;
-  public $_col_Subprojects;
-  public $_spe_subprojects;
+  
   public $_sec_Versionproject_versions;
   public $_VersionProject=array();
+  
+  public $_col_Subprojects;
+  public $_spe_subprojects;
+  
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();
+  
   public $_col_2_2_successor;
   public $_Dependency_Successor=array();
-  public $sortOrder;
+  
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
 
+  // hidden
+  public $sortOrder;
   public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='

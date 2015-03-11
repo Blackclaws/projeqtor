@@ -1281,21 +1281,21 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   
   if (!$print) {
     $arrayPosition=array(
-        'description'=>   array('float'=>'left',                         'clear'=>'left'),
-        'treatment'=>     array('float'=>(($nbCol==2)?'right':'left'),   'clear'=>(($nbCol==2)?'right':'none')),
+         'treatment'=>     array('clear'=>(($nbCol==2)?'right':'none')),
+         'progress'=>      array('clear'=>(($nbCol==2)?'right':'none')),
+         'predecessor'=>   array('clear'=>(($nbCol==2)?'both':'none')),
+         'successor'=>     array('float'=>(($nbCol==2)?'left':'right'),  'clear'=>'none'),
         
-
-        'progress'=>      array('float'=>'left',  'clear'=>'none'),
-        'affectations'=>  array('float'=>'left',  'clear'=>'none'),
-        'predecessor'=>   array('float'=>'left',  'clear'=>(($nbCol==2)?'both':'right')),
-        'successor'=>     array('float'=>'left',  'clear'=>'none'),
-        'version'=>       array('float'=>'left',  'clear'=>'none'),
-        'approvers'=>     array('float'=>'left',  'clear'=>'none'),
-        'lock'=>          array('float'=>'left',  'clear'=>'none'),
+         'subprojects'=>   array('float'=>(($nbCol==2)?'left':'left'),   'clear'=>(($nbCol==2)?'left':'none')),
+'versionproject_versions'=>array('float'=>(($nbCol==2)?'right':'left'),  'clear'=>'right'),
+         
+         'version'=>       array('float'=>(($nbCol==2)?'right':'left'),  'clear'=>'none'),
+         'approvers'=>     array('float'=>'right','clear'=>'right'),
+         'lock'=>          array('float'=>(($nbCol==2)?'left':'right'),  'clear'=>(($nbCol==2)?'none':'right')),
         
-        'link'=>          array('float'=>'left',  'clear'=>'none'),
-        'attachment'=>    array('float'=>'left',  'clear'=>'none'),
-        'note'=>          array('float'=>'left',  'clear'=>'none')
+         'link'=>          array('clear'=>(($nbCol==3)?'left':'left')),
+         'attachment'=>    array('float'=>'left',  'clear'=>'none'),
+         'note'=>          array('float'=>'right',  'clear'=>'none')
         
     );
     $float='left';
@@ -1308,7 +1308,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
     echo ' id="' . $titlePane . '" ';
-    echo ' style="position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
+    echo ' style="display:inline-block;position:relative;width:' . $widthPct . ';float: '.$float.';clear:'.$clear.';margin: 0 0 4px 4px; padding: 0;top:0px;"';
     echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
     echo ' onShow="saveExpanded(\'' . $titlePane . '\');">';
     echo '<table class="detail"  style="width: 100%;" >';
@@ -3055,7 +3055,7 @@ function setWidthPct($displayWidth, $print, $printWidth, $obj) {
   }
   if (substr($displayWidth, -2, 2) == "px") {
     $val=substr($displayWidth, 0, strlen($displayWidth) - 2);
-    $widthPct=floor( ($val / $nbCol) - 4) . "px";
+    $widthPct=floor( ($val / $nbCol) - ($nbCol)) . "px";
   }
   if ($print) {
 		$widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";
