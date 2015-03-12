@@ -4544,7 +4544,7 @@ function showBigImage(objectClass, objectId, node, title,hideImage) {
       htmlPhoto+='<div class="thumbBigImageTitle'+alone+'">'+title+'</div>';
     }
     centerThumb80.innerHTML=htmlPhoto;
-    centerThumb80.style.top=(top-40+(height/2))+"px";
+    centerThumb80.style.top= (top-40+(height/2)) +"px";
     centerThumb80.style.left=(left-85)+"px";
     centerThumb80.style.display="block";
   }
