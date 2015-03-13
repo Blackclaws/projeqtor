@@ -972,11 +972,13 @@ abstract class SqlElement {
 		// check relartionship : if "cascade", then auto delete
 		$relationShip=self::$_relationShip;
 		$canForceDelete=false;
-		$user=$_SESSION['user'];
-		$crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
-		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-		if ($habil and $habil->id and $habil->rightAccess=='1') {
-		  $canForceDelete=true;
+		if (isset($_SESSION['user'])) {
+		  $user=$_SESSION['user'];
+  		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+  		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+  		  if ($habil and $habil->id and $habil->rightAccess=='1') {
+  		    $canForceDelete=true;
+  		  }
 		}
 		$returnStatus="OK";
 		$returnValue='';
@@ -2765,11 +2767,13 @@ abstract class SqlElement {
 		}
 		$relationShip=self::$_relationShip;
 		$canForceDelete=false;
-		$user=$_SESSION['user'];
-		$crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
-		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-		if ($habil and $habil->id and $habil->rightAccess=='1') {
-		  $canForceDelete=true;
+	    if (isset($_SESSION['user'])) {
+		  $user=$_SESSION['user'];
+  		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+  		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+  		  if ($habil and $habil->id and $habil->rightAccess=='1') {
+  		    $canForceDelete=true;
+  		  }
 		}
 		if (array_key_exists(get_class($this),$relationShip)) {
 			$relations=$relationShip[get_class($this)];
