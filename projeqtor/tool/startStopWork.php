@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -84,7 +84,7 @@ if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0
   }
 }
 // Message of correct saving
-displayLastOperationStatus($result);
+displayLastOperationStatus(formatResult($result,$action));
 
 function formatResult($result, $action) {
   if ($action=='start') {

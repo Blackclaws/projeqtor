@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -36,20 +36,23 @@ class ActivityPlanningElement extends PlanningElement {
   public $refId;
   public $refName;
   //public $_tab_10_6 = array('requested', 'validated', 'assigned', 'planned', 'real', 'left', '', '',  '', '','startDate', 'endDate', 'duration', 'work', 'ticketWork', 'cost');
-  public $_tab_4_3_smallLabel = array('requested', 'validated', 'planned', 'real', 'startDate', 'endDate', 'duration');
-  public $initialStartDate;
+  public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', '', 'requested', 'startDate', 'endDate', 'duration');
   public $validatedStartDate;
   public $plannedStartDate;
   public $realStartDate;
-  public $initialEndDate;
+  public $_void_1_4;
+  public $initialStartDate;
   public $validatedEndDate;
   public $plannedEndDate;
   public $realEndDate;
-  public $initialDuration;
+  public $_void_2_4;
+  public $initialEndDate;
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $_tab_5_2_smallLabel = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
+  public $_void_3_4;
+  public $initialDuration;
+  public $_tab_5_4_smallLabel = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost','progress','priority');
   public $validatedWork;
   public $assignedWork;
   public $realWork;
@@ -60,20 +63,24 @@ class ActivityPlanningElement extends PlanningElement {
   public $realCost;
   public $leftCost;
   public $plannedCost;
-  public $_tab_2_1 = array('real', 'expected', 'progress');
   public $progress;
+  public $_label_expected;
   public $expectedProgress;
-  public $_tab_4_1 = array('workElementCount', 'estimated', 'real', 'left', 'ticket');
+  public $_label_wbs;
+  public $wbs;
+  public $priority;
+  public $_label_idActivityPlanningMode;
+  public $idActivityPlanningMode;
+  public $_tab_4_1_smallLabel = array('workElementCount', 'estimated', 'real', 'left', 'ticket');
   public $workElementCount;
   public $workElementEstimatedWork;
   public $workElementRealWork;
   public $workElementLeftWork;
 
   
-  public $priority;
-  public $idActivityPlanningMode;
+  
   //public $_label_wbs;
-  public $wbs;
+  
   //public $_label_progress;
   
   //public $_label_expected;

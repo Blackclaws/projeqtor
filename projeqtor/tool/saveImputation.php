@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -135,13 +135,13 @@ for ($i=0; $i<$nbLines; $i++) {
 
 if ($status=='ERROR') {
 	Sql::rollbackTransaction();
-  echo '<span class="messageERROR" >' . $finalResult . '</span>';
+  echo '<div class="messageERROR" >' . $finalResult . '</div>';
 } else if ($status=='OK'){ 
 	Sql::commitTransaction();
-  echo '<span class="messageOK" >' . i18n('messageImputationSaved') . '</span>';
+  echo '<div class="messageOK" >' . i18n('messageImputationSaved') . '</div>';
 } else {
 	Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . i18n('messageNoImputationChange') . '</span>';
+  echo '<div class="messageNO_CHANGE" >' . i18n('messageNoImputationChange') . '</div>';
 }
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
 echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . $status .'">';

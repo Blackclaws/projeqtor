@@ -177,7 +177,7 @@ function i18nMobile($value) {
 					
 				</div>
 		  </form>
-		  <div style="width:100%; text-align:center"><?php i18nMobile('sectionNotes');?></div>
+		  <div style="width:100%; text-align:center"><?php i18nMobile('sectionNote');?></div>
 		  <div>		 
 				<ul id="mobileNotes" data-dojo-type="dojox/mobile/RoundRectList" class="roundRect roundRectList">
 	      </ul>	

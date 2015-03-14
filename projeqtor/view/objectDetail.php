@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -215,11 +215,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       }
       $sectionField='_'.$section;
       $sectionFieldDep='_Dependency_'.ucfirst($section);
+      $sectionFieldDoc='_Document'.$section;
       $cpt=null;
-      if (property_exists($obj,$sectionField ) && is_array($obj->$sectionField)) {
+      if (property_exists($obj,$sectionField ) && isset($obj->$sectionField) && is_array($obj->$sectionField)) {
         $cpt=count($obj->$sectionField);
       } else if (property_exists($obj,$sectionFieldDep ) && is_array($obj->$sectionFieldDep)){
         $cpt=count($obj->$sectionFieldDep);
+      } else if (property_exists($obj,$sectionFieldDoc ) && is_array($obj->$sectionFieldDoc)){
+        $cpt=count($obj->$sectionFieldDoc);
       } else {
         //echo $sectionField;
       }
@@ -373,16 +376,18 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             echo '<td class="label" style="width:' . $labelStyleWidth . ';">';
             $thumbRes=SqlElement::isThumbableField($col);
             $thumbColor=SqlElement::isColorableField($col);
+            $formatedThumb='';
+            if ($thumbRes) {
+              $formatedThumb=formatUserThumb($val, null, null, 22, 'right');
+            } else if ($thumbColor) {
+              $formatedThumb=formatColorThumb($col, $val, 20, 'right');              
+            }
             // $thumbIcon=SqlElement::isIconableField($col);
-            $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb)?true:false;
+            $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb && $formatedThumb)?true:false;
             echo '<label for="' . $col . '" ' . (($thumb)?'class="labelWithThumb"':'') . '>';
             echo htmlEncode($obj->getColCaption($col)) . '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
             if ($thumb) {
-              if ($thumbRes) {
-                echo formatUserThumb($val, null, null, 22, 'right');
-              } else {
-                echo formatColorThumb($col, $val, 20, 'right');
-              }
+              echo $formatedThumb;
             }
             echo '</td>';
             if ($print and $outMode == "pdf") {
@@ -967,7 +972,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         $showExtraButton=false;
         if ($col == 'idStatus' or $col == 'idResource') {
-          if (($col == 'idStatus') or ($col == 'idResource' and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation')) {
+          if ( (($col == 'idStatus') or ($col == 'idResource' and $user->isResource and $user->id != $val and $obj->id and $classObj != 'Affectation'))
+            and $classObj!='Document') {
             $showExtraButton=true;
             $fieldWidth=round($fieldWidth / 2) - 5;
           }
@@ -1282,16 +1288,18 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   if (!$print) {
     $arrayPosition=array(
          'treatment'=>     array('clear'=>(($nbCol==2)?'right':'none')),
-         'progress'=>      array('clear'=>(($nbCol==2)?'right':'none')),
+         'progress'=>      array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>(($nbCol==2)?'right':'none')),
          'predecessor'=>   array('clear'=>(($nbCol==2)?'both':'none')),
-         'successor'=>     array('float'=>(($nbCol==2)?'left':'right'),  'clear'=>'none'),
+         'successor'=>     array('float'=>(($nbCol==2 or $classObj!='Project')?'left':'right'),  'clear'=>'none'),
         
-         'subprojects'=>   array('float'=>(($nbCol==2)?'left':'left'),   'clear'=>(($nbCol==2)?'left':'none')),
-'versionproject_versions'=>array('float'=>(($nbCol==2)?'right':'left'),  'clear'=>'right'),
+         //'subprojects'=>   array('float'=>(($nbCol==2)?'left':'left'),   'clear'=>(($nbCol==2)?'left':'none')),
+         'versionproject_versions'=>array('float'=>(($nbCol==2)?'right':'left'),  'clear'=>'right'),
          
          'version'=>       array('float'=>(($nbCol==2)?'right':'left'),  'clear'=>'none'),
-         'approvers'=>     array('float'=>'right','clear'=>'right'),
+         'approver'=>      array('float'=>'right','clear'=>'right'),
          'lock'=>          array('float'=>(($nbCol==2)?'left':'right'),  'clear'=>(($nbCol==2)?'none':'right')),
+        
+         'assignment'=>    array('float'=>'left','clear'=>(($nbCol==2)?'left':'none')),
         
          'link'=>          array('clear'=>(($nbCol==3)?'left':'left')),
          'attachment'=>    array('float'=>'left',  'clear'=>'none'),
@@ -1303,7 +1311,10 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     $lc=strtolower($section);
     if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
     if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
-
+    if ($nbCol==3 and ($lc=='note' or $lc=='link' or $lc=='attachment')) {
+      $float='right';
+      $clear='right';
+    }
     $titlePane=$classObj . "_" . $section;
     echo '<div dojoType="dijit.TitlePane" title="' . i18n('section' . ucfirst($section)) . (($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="' . (array_key_exists($titlePane, $collapsedList)?'false':'true') . '" ';
@@ -2248,7 +2259,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       }
     }
     if (!$print and $canUpdate) {
-      echo '<td class="assignData" style="text-align:center;">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap;">';
       if ($canUpdate and !$print and $workVisible) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAssignment(' . "'" . $assignment->id . "'" . ",'" . $assignment->idResource . "'" . ",'" . $assignment->idRole . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . $assignment->rate . "'" . ",'" .
              Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ');" ' . 'title="' . i18n('editAssignment') .

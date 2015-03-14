@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -63,7 +63,7 @@ class Issue extends SqlElement {
   //public $_Link_Action=array();
   //public $_sec_linkRisk;
   //public $_Link_Risk=array();
-  public $_col_1_1_link;
+  public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

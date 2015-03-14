@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -84,6 +84,11 @@ scriptLog("changePassword.php");
     $user->crypto=$crypto;
     $user->passwordChangeDate=date('Y-m-d');
     $result=$user->save();
+    if (getLastOperationStatus($result)=='OK') {
+      $result=i18n('passwordChanged');
+	    $result.='<div id="validated" name="validated" type="hidden"  dojoType="dijit.form.TextBox">OK';
+	    $result.='<input type="hidden" id="lastOperationStatus" value="OK" />';
+    }
     displayLastOperationStatus($result);
   }
   

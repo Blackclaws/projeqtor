@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -57,7 +57,7 @@ class Question extends SqlElement {
   public $result;    
   //public $_sec_linkMeeting;
   //public $_Link_Meeting=array();
-  public $_col_1_1_link;
+  public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

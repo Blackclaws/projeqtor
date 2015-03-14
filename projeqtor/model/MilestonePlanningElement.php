@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -35,19 +35,15 @@ class MilestonePlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_6_2 = array('requested', 'validated', 'planned', 'real','' ,'' , 'dueDate', '');
-  public $initialEndDate;
+  public $_tab_5_1_smallLabel = array('validated', 'planned', 'real','','requested', 'dueDate');
   public $validatedEndDate;
   public $plannedEndDate;
   public $realEndDate;
-  public $_label_planning;
-  public $idMilestonePlanningMode;
-  public $_void_21;
-  public $_void_22;
-  public $_void_23;
-  public $_void_24;
-  public $_label_wbs;
+  public $_void_1_4;
+  public $initialEndDate;
   public $wbs;
+  public $idMilestonePlanningMode;
+  
   public $wbsSortable;
   public $topId;
   public $topRefType;

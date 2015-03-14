@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -97,8 +97,6 @@
       $dest=$resultMail['dest'];
     }
   }
-  
-  
   
   if ($result!="OK") {
     echo '<div class="messageERROR" >' . i18n('noMailSent',array($dest, $result)) . '</div>';

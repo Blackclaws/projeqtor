@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class DocumentMain extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_col_Description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -46,13 +46,14 @@ class DocumentMain extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   
-  public $_col_2_2_Version; 
+  public $_col_Version; 
   public $idVersioningType;
   public $idDocumentVersion;
   public $idDocumentVersionRef;
   public $idStatus;
   public $_DocumentVersion=array();
-  public $_sec_approvers;
+  
+  public $_sec_Approver;
   public $_Approver=Array();
   public $_spe_buttonSendMail;
   
@@ -65,7 +66,7 @@ class DocumentMain extends SqlElement {
   public $version;
   public $revision;
   public $draft;
-  public $_col_1_1_Link;
+  public $_col_Link;
   public $_Link=array();
   public $_Note=array();
   
@@ -171,7 +172,7 @@ class DocumentMain extends SqlElement {
   public function drawSpecificItem($item){
   	global $print;
     $result="";
-    if ($item=='lockButton' and !$print) {
+    if ($item=='lockButton' and !$print and $this->id) {
     	if ($this->locked) {
         $canUnlock=false;
         $user=$_SESSION['user'];
@@ -212,7 +213,7 @@ class DocumentMain extends SqlElement {
     	return $result;
     }
     if ($item=='buttonSendMail') {
-    	if ($print) {
+    	if ($print or ! $this->id) {
     		return "";
     	}
     	$result .= '<tr><td colspan="2">';

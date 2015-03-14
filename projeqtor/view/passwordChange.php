@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -85,7 +85,7 @@
           </tr>
           <tr style="height:100%" height="100%">
             <td style="height:99%" align="left" valign="middle">
-              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden">
+              <div  id="formDiv" dojoType="dijit.layout.ContentPane" region="center" style="width: 450px; height:210px;overflow:hidden;position: relative;">
              <form  dojoType="dijit.form.Form" id="passwordForm" jsId="passwordForm" name="passwordForm" encType="multipart/form-data" action="" method="" >
              <script type="dojo/method" event="onSubmit" >
               dojo.byId('goButton').focus();
@@ -99,12 +99,12 @@
               loadContent("../tool/changePassword.php","passwordResultDiv", "passwordForm");
               return false;       
             </script><br/><br/>     
-            <div dojoType="dojox.form.PasswordValidator" id="password">
+            <div dojoType="dojox.form.PasswordValidator" id="password" class="rounded">
               <label class="label" style="width:200px;"><?php echo i18n('newPassword');?>&nbsp;:&nbsp;</label>
-              <input type="password" pwType="new" /><br/>
+              <input type="password" pwType="new" class="rounded" /><br/>
               <br/>
               <label class="label" style="width:200px;"><?php echo i18n('validatePassword');?>&nbsp;:&nbsp;</label>
-              <input type="password" pwType="verify" /><br/>
+              <input type="password" pwType="verify" class="rounded" /><br/>
             </div>            
             <input type="hidden" id="hashString" name="password" value=""/>
             <input type="hidden" id="userSalt" name="userSalt" value=""/>
@@ -127,8 +127,9 @@
             </button>  
             <?php }?>  
             <br/><br/>
+            
             <label class="label" style="width:200px" >&nbsp;</label>
-            <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="bottom" >
+            <div id="passwordResultDiv" dojoType="dijit.layout.ContentPane" region="none" style="top:150px;">
             </div>
             </form>
               </div>
