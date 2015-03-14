@@ -542,9 +542,12 @@ class Parameter extends SqlElement {
   static public function getGlobalParameter($code) {
   	global $$code;
   	if (isset($$code)) {
+  	  if ($code=='paramDbPrefix') {
+  	    $$code=strtolower($$code);
+  	  }
   		return $$code;
   	}
-  	if ($code=='paramDbHost' or $code=='paramDbPort' or $code=='paramDbType'
+  	if ($code=='paramDbHost' or $code=='paramDbPort' or $code=='paramDbType' or $code=='paramDbPrefix'
   	 or $code=='paramDbName' or $code=='paramDbUser' or $code=='paramDbPassword') {
   		return '';
   	}

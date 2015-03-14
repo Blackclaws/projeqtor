@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -89,7 +89,7 @@ if ($saveShowClosed) {
 <?php if ($canPlan) { ?>
 		              <button id="planButton" dojoType="dijit.form.Button" showlabel="false"
 		                title="<?php echo i18n('buttonPlan');?>"
-		                iconClass="iconPlanStopped" >
+		                iconClass="iconPlanStopped" class="detailButton">
 		                <script type="dojo/connect" event="onClick" args="evt">
                      showPlanParam();
                      return false;
@@ -107,8 +107,8 @@ if ($saveShowClosed) {
 													}?>
                            id="startDatePlanView" name="startDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
-                           type="text" maxlength="10"
-                           style="width:100px; text-align: center;" class="input"
+                           type="text" maxlength="10" 
+                           style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
                            value="<?php echo $startDate;?>" >
                            <script type="dojo/method" event="onChange" >
@@ -127,7 +127,7 @@ if ($saveShowClosed) {
                            id="endDatePlanView" name="endDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
                            type="text" maxlength="10"
-                           style="width:100px; text-align: center;" class="input"
+                           style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
                            value="<?php echo $endDate;?>" >
                            <script type="dojo/method" event="onChange" >

@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -36,8 +36,8 @@ class ActivityMain extends SqlElement {
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
-  public $idProject;
   public $idActivityType;
+  public $idProject;
   public $externalReference;  
   public $creationDate;
   public $idUser;

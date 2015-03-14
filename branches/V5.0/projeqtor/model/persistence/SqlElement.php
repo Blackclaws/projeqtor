@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  * 
  * This file is part of ProjeQtOr.
@@ -3239,8 +3239,9 @@ abstract class SqlElement {
 			if (substr($col,0,4)=='_tab') {
 				// Nothing
 			} else if (substr($col,0,5)=='_col_') {
-				if (strlen($col)>8) {
-					$section=substr($col,9);
+			  $pos=strrpos($col, '_');
+			  if ($pos>0) {
+					$section=substr($col,$pos+1);
 					if ($section=='description' or $section=='treatment') {
 						$msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
 					}
@@ -3388,7 +3389,7 @@ abstract class SqlElement {
 			}
 		}
 		if (isset($this->_Note) and is_array($this->_Note)) {
-			$msg.=$rowStart.$sectionStart.i18n('sectionNotes').$sectionEnd.$rowEnd;
+			$msg.=$rowStart.$sectionStart.i18n('sectionNote').$sectionEnd.$rowEnd;
 			$note = new Note();
 			$notes=$note->getSqlElementsFromCriteria(array('refType'=>get_class($this),'refId'=>$this->id),false,null,'id desc');
 			foreach ($notes as $note) {

@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -75,23 +75,23 @@ if (! $documentVersionId) { // Get file only on insert
 	}
 	if (! $error and $uploadedFile and $uploadedFile['name']) {
 	  if ( $uploadedFile['error']!=0 ) {
-	  	$error="[".$uploadedFile['error']."] ";
+	  	//$error="[".$uploadedFile['error']."] ";
       errorLog("[".$uploadedFile['error']."] saveDocumentVersion.php");
 	    switch ($uploadedFile['error']) {
 	      case 1:
 	        $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
-	        errorLog("[2] ".i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
+	        errorLog("[2] ".i18n("[".$uploadedFile['error']."] ".'errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
 	        break; 
 	      case 2:
 	        $error.=htmlGetErrorMessage(i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
-	        errorLog("[3] ".i18n('errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
+	        errorLog("[3] ".i18n("[".$uploadedFile['error']."] ".'errorTooBigFile',array($attachmentMaxSize,'$paramAttachmentMaxSize')));
 	        break;  
 	      case 4:
 	        $error.=htmlGetWarningMessage(i18n('errorNoFile'));
 	        errorLog(i18n('errorNoFile'));
 	        break;  
 	      default:
-	        $error.=htmlGetErrorMessage(i18n('errorUploadFile',array($uploadedFile['error'])));
+	        $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorUploadFile',array($uploadedFile['error'])));
 	        errorLog(i18n('errorUploadFile',array($uploadedFile['error'])));
 	        break;
 	    }
@@ -251,13 +251,13 @@ if (! $error) {
   // Message of correct saving
   if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
   	Sql::rollbackTransaction();
-    $message='<span class="messageERROR" >' . $result . '</span>';
+    $message='<div class="messageERROR" >' . $result . '</div>';
   } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   	Sql::commitTransaction();
-    $message='<span class="messageOK" >' . $result . '</span>';
+    $message='<div class="messageOK" >' . $result . '</div>';
   } else { 
   	Sql::rollbackTransaction();
-    $message='<span class="messageWARNING" >' . $result . '</span>';
+    $message='<div class="messageWARNING" >' . $result . '</div>';
   }
 } else {
 	 Sql::rollbackTransaction();

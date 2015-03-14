@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -35,9 +35,9 @@ class MilestoneMain extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
-  public $idProject;
-  public $idMilestoneType;
   public $name;
+  public $idMilestoneType;
+  public $idProject;
   public $creationDate;
   public $idUser;
   public $Origin;
@@ -67,6 +67,8 @@ class MilestoneMain extends SqlElement {
   public $_Attachment=array();
   public $_Note=array();  
   // Define the layout that will be used for lists
+  
+  public $_nbColMax=3;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>

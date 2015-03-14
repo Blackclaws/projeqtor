@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -48,6 +48,8 @@ class ProjectMain extends SqlElement {
   public $idProject;
   public $idSponsor;
   public $idUser;
+  public $creationDate;
+  
   public $color;
   //public $paymentDelay;
   public $idStatus;
@@ -65,6 +67,7 @@ class ProjectMain extends SqlElement {
   public $longitude;
   public $latitude;
   public $description;
+  public $objectives;
   public $_col_Progress;
   
   public $ProjectPlanningElement; // is an object
@@ -78,13 +81,13 @@ class ProjectMain extends SqlElement {
   public $_col_Subprojects;
   public $_spe_subprojects;
   
-  public $_col_1_2_predecessor;
+  public $_col_predecessor;
   public $_Dependency_Predecessor=array();
   
-  public $_col_2_2_successor;
+  public $_col_successor;
   public $_Dependency_Successor=array();
   
-  public $_col_1_1_Link;
+  public $_col_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

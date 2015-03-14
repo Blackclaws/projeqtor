@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -34,9 +34,9 @@ class ActionMain extends SqlElement {
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
-  public $idProject;
-  public $idActionType;
   public $name;
+  public $idActionType;
+  public $idProject;
   public $creationDate;
   public $idUser;
   public $idPriority;
@@ -60,12 +60,12 @@ class ActionMain extends SqlElement {
   //public $_Link_Risk=array();
   //public $_sec_linkIssue;
   //public $_Link_Issue=array();
-  public $_col_1_1_link;
+  public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
 
-
+  public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>

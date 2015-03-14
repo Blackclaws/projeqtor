@@ -1,6 +1,6 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -731,7 +731,7 @@ function addAttachment (attachmentType) {
 	  callBack=function() {
 		  dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(dataArray){saveAttachmentAck(dataArray);});
 	    dojo.connect(dijit.byId("attachmentFile"), "onProgress", function(data){saveAttachmentProgress(data);});
-	    dojo.connect(dijit.byId("attachmentFile"), "onError", function(evt){alert(i18n("uploadUncomplete"));});
+	    dojo.connect(dijit.byId("attachmentFile"), "onError", function(evt){hideWait();showError(i18n("uploadUncomplete"));});
 		  addAttachment (attachmentType);};	
 	  loadDialog('dialogAttachment',callBack);
 	  return;

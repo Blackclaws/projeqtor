@@ -1,6 +1,6 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -775,6 +775,7 @@ function submitForm(page, destination, formName) {
  *            the name of the Div receiving the validation message
  * @return void
  */
+var resultDivFadingOut=null;
 function finalizeMessageDisplay(destination, validationType) {
 //console.log to keep
 //console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
@@ -867,7 +868,9 @@ function finalizeMessageDisplay(destination, validationType) {
         loadContent("objectDetail.php?refreshChecklistDefinitionLines=true", dojo.byId('objectClass').value+'_checklistDefinitionLine', 'listForm');
       } else if (validationType=='testCaseRun') {
     	loadContent("objectDetail.php?refresh=true", "detailFormDiv", 'listForm');
-    	loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');    	
+    	if (dojo.byId(dojo.byId('objectClass').value+'_history')) {
+    	  loadContent("objectDetail.php?refreshHistory=true", dojo.byId('objectClass').value+'_history', 'listForm');
+    	}
         //loadContent("objectDetail.php?refreshTestCaseRun=true", dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
         //loadContent("objectDetail.php?refreshLinks=true", dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType=='copyTo' || validationType=='copyProject') {
@@ -1021,7 +1024,7 @@ function finalizeMessageDisplay(destination, validationType) {
           }
           if (refreshDetailElse && ! validationType) {
             if (dojo.byId(dojo.byId('objectClass').value+'_Attachment')) {
-              loadContent("objectDetail.php?refreshAttachemnts=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
+              loadContent("objectDetail.php?refreshAttachments=true", dojo.byId('objectClass').value+'_Attachment', 'listForm');
             }
             if (dojo.byId(dojo.byId('objectClass').value+'_Note')) {
               loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+'_Note', 'listForm');
@@ -1099,14 +1102,14 @@ function finalizeMessageDisplay(destination, validationType) {
     hideWait();
   }
   // If operation is correct (not an error) slowly fade the result message
+  if (resultDivFadingOut) resultDivFadingOut.stop();
   if ((lastOperationStatus.value!="ERROR" && lastOperationStatus.value!="INVALID" 
 	  && lastOperationStatus.value!="CONFIRM" && lastOperationStatus.value!="INCOMPLETE")) {
-    dojo.fadeOut({
+    resultDivFadingOut=dojo.fadeOut({
       node: contentNode, 
       duration: 3000,
       onEnd: function(){
-        //contentWidget.set("content","");
-        contentNode.style.display="none"; 
+        contentNode.style.display="none";
       }  
     }).play(
         );
@@ -1141,7 +1144,6 @@ function finalizeMessageDisplay(destination, validationType) {
   }
 }
 function addCloseBoxToMessage(destination) {
-console.log("addCloseBoxToMessage");
   contentWidget=dijit.byId(destination);
   var closeBox='<div class="closeBoxIcon" onClick="clickCloseBoxOnMessage('+"'"+destination+"'"+');">&nbsp;</div>';
   contentWidget.set("content",closeBox+contentWidget.get("content"));
