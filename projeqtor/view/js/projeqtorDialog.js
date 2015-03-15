@@ -4526,6 +4526,8 @@ function showBigImage(objectClass, objectId, node, title,hideImage) {
   var top=node.getBoundingClientRect().top;
   var left=node.getBoundingClientRect().left;
   var height=node.getBoundingClientRect().height;
+  if (! height) height=40;
+  console.log("top="+top+", left="+left+", height="+height);
   if (objectClass=='Affectable' || objectClass=='Resource' || objectClass=='User' || objectClass=='Contact') {
     imageUrl="../files/thumbs/Affectable_"+objectId+"/thumb80.png";
   } else {
@@ -4543,9 +4545,12 @@ function showBigImage(objectClass, objectId, node, title,hideImage) {
     if (title) {
       htmlPhoto+='<div class="thumbBigImageTitle'+alone+'">'+title+'</div>';
     }
+    var topPx=(top-40+(height/2))+"px";
+    var leftPx=(left-85)+"px";
+    console.log(topPx);
     centerThumb80.innerHTML=htmlPhoto;
-    centerThumb80.style.top= (top-40+(height/2)) +"px";
-    centerThumb80.style.left=(left-85)+"px";
+    centerThumb80.style.top=topPx;
+    centerThumb80.style.left=leftPx;
     centerThumb80.style.display="block";
   }
 }

@@ -107,6 +107,12 @@ function sendAlert(){
   $lstUser=array();
   if ($alertSendTo=='*') {
     $lstUser=SqlList::getList('User');
+  } else if ($alertSendTo=='connect'){
+    $audit=new Audit();
+    $lst=$audit->getSqlElementsFromCriteria(array('idle'=>'0'));
+    foreach($lst as $audit) {
+      $lstUser[$audit->idUser]='';
+    }
   } else {
  	  $lstUser[$alertSendTo]='';
   }

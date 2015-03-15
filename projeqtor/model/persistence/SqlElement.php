@@ -3761,5 +3761,70 @@ abstract class SqlElement {
 	  return ($col=='idQuality' or $col=='idHealth' or $col=='idTrend')?true:false;
 	}
 	
+	public function getExtraRequiredFields($newType="", $newStatus="", $newPlanningMode="") {
+	  $result=array();
+	  $type=$newType;
+	  $status=$newStatus;
+	  $planningMode=$newPlanningMode;
+	  if ($this->id) {
+	    $typeName='id'.get_class($this).'Type';
+	    $planningModeName='id'.get_class($this).'PlanningMode';
+	    if (!$type and property_exists($this,$typeName)) {
+	      $type=$this->$typeName;
+	    }
+	    if (! $status and property_exists($this,'idStatus') ) {
+	      $status=$this->idStatus;
+	    }
+	    if (! $planningMode and property_exists($this,$planningModeName) ) {
+	      $planningMode=$this->$planningModeName;
+	    }
+	  } else {
+	    
+	  }
+	  switch ($planningMode) {
+	  	case 2: 
+	  	case 3:
+	  	case 7:
+	  	case 10:
+	  	case 11:
+	  	case 13:
+	  	case 16:
+	  	  if (property_exists($this,'validatedStartDate')) {
+	        $result['validatedStartDate']='validatedStartDate';
+	  	  }
+	  	  if (property_exists($this,'validatedEndDate')) {
+	        $result['validatedEndDate']='validatedEndDate';
+	  	  }
+	  	  break;
+	  	case 6:
+  	    if (property_exists($this,'validatedStartDate')) {
+  	      $result['validatedStartDate']='validatedStartDate';
+  	    }
+  	    break;
+	  	case 4:
+	  	  if (property_exists($this,'validatedEndDate')) {
+	  	    $result['validatedEndDate']='validatedEndDate';
+	  	  }
+	  	  break;
+	  }
+	  if ($type) {
+	    $typeObj=new Type($type);
+	    if ($typeObj->mandatoryResourceOnHandled) {
+	      if ($newStatus) {
+	        $statusObj=new Status($newStatus);
+	        
+	      } else {
+	        if (property_exists($this,'handled') and $this->handled) {
+	          $result['idResource']='idResource';
+	        }
+	      }
+	    }
+	  }
+	  
+	  
+	  return $result;
+	  
+	} 
+	
 }
 ?>

@@ -128,6 +128,7 @@
                   <select dojoType="dijit.form.FilteringSelect" class="input" required="true"
                     style="width: 98%;" name="alertSendTo" id="alertSendTo">
                     <option value="*"><?php echo i18n('allUsers')?></option>
+                    <option value="connect"><?php echo i18n('allConnectedUsers')?></option>
                     <?php htmlDrawOptionForReference('idUser', null, null, true);?>
                   </select>
                 </td>
