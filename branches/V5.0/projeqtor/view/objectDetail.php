@@ -341,6 +341,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       }
       if (strpos($obj->getFieldAttributes($col), 'required') !== false) {
+        //$attributes.=' required="true" missingMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '" invalidMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '"';
+        $isRequired=true;
+      }
+      $arrayRequired=$obj->getExtraRequiredFields();
+      if (array_key_exists($col, $arrayRequired)) {
         $attributes.=' required="true" missingMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '" invalidMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '"';
         $isRequired=true;
       }
@@ -759,7 +764,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
-        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' style="'.$negative.'width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . htmlEncode($val) . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -786,7 +791,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if (isset($_SESSION ['browserLocaleDateFormatJs'])) {
           echo ' constraints="{datePattern:\'' . $_SESSION ['browserLocaleDateFormatJs'] . '\'}" ';
         }
-        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' style="width:' . $dateWidth . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . $valDate . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -799,7 +804,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="8" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $valTime . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -817,7 +822,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' invalidMessage="' . i18n('messageInvalidTime') . '"';
         echo ' type="text" maxlength="' . $dataLength . '" ';
         // echo ' constraints="{datePattern:\'yy-MM-dd\'}" ';
-        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input" ';
+        echo ' style="width:' . (($fmtDT == 'time')?'50':'55') . 'px; text-align: center;' . $specificStyle . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . (($fmtDT == 'time')?'T':'') . $val . '" ';
         echo ' hasDownArrow="false" ';
         echo ' >';
@@ -978,7 +983,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             $fieldWidth=round($fieldWidth / 2) - 5;
           }
         }
-        echo '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" ';
+        echo '<select dojoType="dijit.form.FilteringSelect" class="input '.(($isRequired)?'required':'').'" xlabelType="html" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
@@ -1096,7 +1101,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         // echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' style="'.$negative.'width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' constraints="{min:-' . $max . ',max:' . $max . '}" ';
-        echo ' class="input" ';
+        echo ' class="input '.(($isRequired)?'required':'').'" ';
         // echo ' layoutAlign ="right" ';
         echo ' value="' . (($isWork)?Work::displayWork($val):htmlEncode($val)) . '" ';
         // echo ' value="' . htmlEncode($val) . '" ';
@@ -1127,7 +1132,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' rows="2" style="max-height:150px;width: ' . $largeWidth . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         // echo ' maxSize="4" ';
-        echo ' class="input" ' . '>';
+        echo ' class="input '.(($isRequired)?'required':'').'" ' . '>';
         echo htmlEncode($val);
         // echo $colScript; // => this leads to the display of script in textarea
         echo '</textarea>';
@@ -1175,14 +1180,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
-        echo ' class="input" ' . '>';
+        echo ' class="input '.(($isRequired)?'required':'').'" ' . '>';
         echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
         echo '   alert("OK");';
         echo '  </script>';
         echo $val;
         echo '</div>';
       } else if ($col == 'icon') {
-        echo '<div dojoType="dijit.form.Select" class="input" ';
+        echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').'" ';
         echo '  style="width: ' . ($fieldWidth) . 'px;' . $specificStyle . '"';
         echo $name;
         echo $attributes;
@@ -1210,8 +1215,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
         echo $name;
         echo $attributes;
-        echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
-        echo ' trim="true" maxlength="' . $dataLength . '" class="input" ';
+        echo '  style="width: ' . $fieldWidth . 'px;' . $specificStyle . ';" ';
+        echo ' trim="true" maxlength="' . $dataLength . '" class="input '.(($isRequired)?'required':'').'" ';
         echo ' value="' . htmlEncode($val) . '" ';
         if ($obj->isFieldTranslatable($col)) {
           echo ' title="' . i18n("msgTranslatable") . '" ';
@@ -3066,7 +3071,7 @@ function setWidthPct($displayWidth, $print, $printWidth, $obj) {
   }
   if (substr($displayWidth, -2, 2) == "px") {
     $val=substr($displayWidth, 0, strlen($displayWidth) - 2);
-    $widthPct=floor( ($val / $nbCol) - ($nbCol)) . "px";
+    $widthPct=floor( ($val / $nbCol) - ($nbCol+1)) . "px";
   }
   if ($print) {
 		$widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";

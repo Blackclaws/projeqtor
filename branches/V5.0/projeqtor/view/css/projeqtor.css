@@ -3090,3 +3090,7 @@ color : #404952;
  opacity: 0.7;
  filter: Alpha(Opacity = 70);
 } 
+
+.input.required {
+	background: #FFFFDD !important;
+}
