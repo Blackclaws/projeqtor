@@ -56,6 +56,8 @@ ADD `marginCost` decimal(14,5), ADD `marginWorkPct` int(6), ADD `marginCostPct` 
 
 ALTER TABLE `${prefix}project` ADD `creationDate` datetime DEFAULT NULL,
 ADD `objectives` mediumtext;
+ALTER TABLE `${prefix}project` ADD `idResource` int(12) unsigned DEFAULT NULL;
+UPDATE `${prefix}project` set `idResource`=`idUser`;
 
 ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';
