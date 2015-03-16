@@ -2328,7 +2328,11 @@ function isHtml5() {
 function isIE() {
   $browser = Audit::getBrowser ();
   if ($browser ['browser'] == 'Internet Explorer') {
-    return true;
+    if ($browser ['version']) {
+      return $browser ['version'];
+    } else {
+      return true;
+    }
   }
   return false;
 }
