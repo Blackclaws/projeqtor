@@ -108,14 +108,18 @@
       <div class="titleProject" style="position: absolute; left:0px; top: -1px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
       <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
-        onChange="menuFilter(this.value);" id="menuSelector"
+        onChange="menuFilter(this.value);" id="menuSelector" id="menuSelector"
+        onMouseEnter="console.log('over');"
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
-        >
-        <?php foreach ($allMenuClass as $cl=>$clVal) {
+        ><br/><?php foreach ($allMenuClass as $cl=>$clVal) {
           $selected=($defaultMenu==$cl)?' selected=selected ':'';
-          echo '<option value="'.$cl.'" '.$selected.'><div class="menuSelectList"><img style="position:absolute;top:-1px;height:16px" src="../view/css/images/icon'.$cl.'16.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.i18n('menu'.ucfirst($clVal)).'</div></option>';
-        }?>
-        </div>
+          //echo '<option value="'.$cl.'" '.$selected.'>';
+          echo '<span style="height:25px" value="'.$cl.'" '.$selected.' class="menuSelectList">';
+          echo '<img style="position:absolute;height:15px" src="../view/css/images/icon'.$cl.'16.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+          echo i18n('menu'.ucfirst($clVal));
+          echo '</span><br/>';
+          //echo '</option>';
+      }?></div>
       <div class="titleProject" style="position: absolute; left:0px; top: 22px;width:75px; text-align:right;">
         &nbsp;<?php echo (i18n("projectSelector"));?>&nbsp;:&nbsp;</div>
       <div style="height:100%" dojoType="dijit.layout.ContentPane" region="center" id="projectSelectorDiv" >

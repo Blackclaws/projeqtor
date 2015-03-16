@@ -707,6 +707,9 @@ table.dojoDndAvatar {
 .menuSelectList {
  vertical-align:middle;
  position:relative;
+ white-space: nowrap;
+ color:#000000;
+ height:10px;
 }
 .dijit.dijitReset.dijitInline.dijitButton.buttonMove {
 	background:transparent !important;
