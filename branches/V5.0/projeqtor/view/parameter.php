@@ -194,13 +194,17 @@ function drawTableFromObjectList($objectList) {
 			  echo '<div style="position:relative;top:0px;left:0px;height:65px;">&nbsp;</div>';
 			} else if ($format=='specific') {
 			  if ($code=='password') {
-			    echo '<div onclick="requestPasswordChange();" class="pseudoButton" style="margin:0;padding:0;width:100px;float:right">';
-                echo '<table style="width:100%">';
-                echo '<td  style="width:35px"><img style="height:28px;width:28px" src="img/logoSmall.png" /></td>';
-                echo '<tr><td style="color:#000000;position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">';
-                echo i18n('passwordChange');
-                echo '</td>';
-                echo '</tr></table></a></div>';           
+			    $title=i18n('changePassword');
+			    echo '<button id="changePassword" dojoType="dijit.form.Button" showlabel="true"';
+			    if (0) {
+			      $result .= ' disabled="disabled" ';
+			    }
+			    echo ' title="' . $title . '" style="vertical-align: middle;">';
+			    echo '<span>' . $title . '</span>';
+			    echo '<script type="dojo/connect" event="onClick" args="evt">';
+			    echo ' requestPasswordChange();';
+			    echo '</script>';
+			    echo '</button>';
 			  }
 			}
 			echo '</td></tr>';
