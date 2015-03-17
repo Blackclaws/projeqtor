@@ -407,6 +407,16 @@ function changeBrowserLocaleForDates(newFormat) {
 	  });
 }
 
+function requestPasswordChange() {
+	showWait();
+    noDisconnect=true;
+    quitConfirmed=true;
+    dojo.byId("directAccessPage").value="changePassword.php";
+    dojo.byId("menuActualStatus").value=menuActualStatus;
+    dojo.byId("p1name").value="type";
+    dojo.byId("p1value").value="userParameter";
+    dojo.byId("directAccessForm").submit();
+}
 /**
  * ============================================================================
  * Change display theme to a new one. Themes must be defined is projeqtor.css.

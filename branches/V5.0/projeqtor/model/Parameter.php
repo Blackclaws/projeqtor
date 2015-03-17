@@ -387,7 +387,9 @@ class Parameter extends SqlElement {
                            'newColumn'=>'newColumn',
                          'newColumn'=>'newColumn',
                          'sectionPhoto'=>'section',
-                         'image'=>'photo'
+                         'image'=>'photo',
+                         'sectionPassword'=>'section',
+                         'password'=>'specific'
         
         );
         break;
