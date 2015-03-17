@@ -192,6 +192,16 @@ function drawTableFromObjectList($objectList) {
 			  echo '<input type="hidden" id="parameter" value="true"/>';
 			  echo "<tr><td></td><td>";
 			  echo '<div style="position:relative;top:0px;left:0px;height:65px;">&nbsp;</div>';
+			} else if ($format=='specific') {
+			  if ($code=='password') {
+			    echo '<div onclick="requestPasswordChange();" class="pseudoButton" style="margin:0;padding:0;width:100px;float:right">';
+                echo '<table style="width:100%">';
+                echo '<td  style="width:35px"><img style="height:28px;width:28px" src="img/logoSmall.png" /></td>';
+                echo '<tr><td style="color:#000000;position:relative; top:-2px;vertical-align: middle;text-align:center;width:70px">';
+                echo i18n('passwordChange');
+                echo '</td>';
+                echo '</tr></table></a></div>';           
+			  }
 			}
 			echo '</td></tr>';
 		}
