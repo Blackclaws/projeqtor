@@ -221,7 +221,7 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'));
         break;
-      case 'pdfInNewWindow': case "paramConfirmQuit":
+      case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
       	$list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
@@ -367,6 +367,8 @@ class Parameter extends SqlElement {
                            "lang"=>"list",
                            "browserLocaleDateFormat"=>"list",
                            'paramIconSize'=>'list',
+                           "paramShowThumb"=>"list",
+                           "paramShowThumbList"=>"list",
                            //'paramTopIconSize'=>'list',
                            //'sectionObjectDetail'=>'section', 
                            //"displayAttachment"=>"list",
