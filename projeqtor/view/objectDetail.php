@@ -2002,7 +2002,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         $classLinkName=i18n(get_class($linkObj));
       }
       if (!$print) {
-        echo '<td class="linkData" style="text-align:center;width:5%;">';
+        echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
         if ($canGoto and (get_class($linkObj) == 'DocumentVersion' or get_class($linkObj) == 'Document') and isset($gotoObj->idDocumentVersion) and $gotoObj->idDocumentVersion) {
           echo '<a href="../tool/download.php?class=' . get_class($linkObj) . '&id=' . $linkObj->id . '"';
           echo ' target="printFrame" title="' . i18n('helpDownload') . '"><img src="css/images/smallButtonDownload.png" /></a>';
@@ -2013,9 +2013,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '</td>';
       }
       if (!$classLink) {
-        echo '<td class="linkData" style="width:' . (($print)?'20':'15') . '%">'.$classLinkName .' #' . $linkObj->id;
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.$classLinkName.'16.png" />&nbsp;'.$classLinkName .' #' . $linkObj->id;
       } else {
-        echo '<td class="linkData" style="width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
       echo '</td>';
       $goto="";
