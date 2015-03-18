@@ -2340,6 +2340,10 @@ abstract class SqlElement {
 				if ($colName=='idProject' and property_exists($this,'idUser')) {
 					$colScript .= '   refreshList("idUser","idProject", this.value);';
 				}
+				if ($colName=='idStatus' or $colName=='id'.get_class($this).'Type' or substr($colName,-12)=='PlanningMode') {
+				  $colScript .= '   getExtraRequiredFields();';
+				}
+				
 			}
 			$colScript .= '</script>';
 		}
@@ -3761,14 +3765,14 @@ abstract class SqlElement {
 	  return ($col=='idQuality' or $col=='idHealth' or $col=='idTrend')?true:false;
 	}
 	
-	public function getExtraRequiredFields($newType="", $newStatus="", $newPlanningMode="") {
+	public function getExtraRequiredFields($newType="", $newStatus="", $newPlanningMode="") {  
 	  $result=array();
 	  $type=$newType;
 	  $status=$newStatus;
 	  $planningMode=$newPlanningMode;
 	  if ($this->id) {
 	    $typeName='id'.get_class($this).'Type';
-	    $planningModeName='id'.get_class($this).'PlanningMode';
+	    $planningModeName='id'.str_replace('PlanningElement', '',get_class($this)).'PlanningMode';
 	    if (!$type and property_exists($this,$typeName)) {
 	      $type=$this->$typeName;
 	    }
@@ -3779,52 +3783,78 @@ abstract class SqlElement {
 	      $planningMode=$this->$planningModeName;
 	    }
 	  } else {
-	    
-	  }
-	  switch ($planningMode) {
-	  	case 2: 
-	  	case 3:
-	  	case 7:
-	  	case 10:
-	  	case 11:
-	  	case 13:
-	  	case 16:
-	  	  if (property_exists($this,'validatedStartDate')) {
-	        $result['validatedStartDate']='validatedStartDate';
-	  	  }
-	  	  if (property_exists($this,'validatedEndDate')) {
-	        $result['validatedEndDate']='validatedEndDate';
-	  	  }
-	  	  break;
-	  	case 6:
-  	    if (property_exists($this,'validatedStartDate')) {
-  	      $result['validatedStartDate']='validatedStartDate';
+	    $typeName='id'.get_class($this).'Type';
+	    $typeClassName=get_class($this).'Type';
+	    if (property_exists($this,$typeName) and class_exists($typeClassName)) {
+  	    $table=SqlList::getList($typeClassName, 'name', null);
+  	    if (count($table) > 0) {
+  	      foreach ( $table as $idTable => $valTable ) {
+  	        $type=$idTable;
+  	        break;
+  	      }
   	    }
-  	    break;
-	  	case 4:
-	  	  if (property_exists($this,'validatedEndDate')) {
-	  	    $result['validatedEndDate']='validatedEndDate';
-	  	  }
-	  	  break;
+	    }
+	    $status=1; // first status always 1 (recorded)
+	  } 
+	  if ($planningMode) {
+  	  switch ($planningMode) {
+  	  	case 2: 
+  	  	case 3:
+  	  	case 7:
+  	  	case 10:
+  	  	case 11:
+  	  	case 13:
+  	  	case 16:
+  	  	  if (property_exists($this,'validatedStartDate')) {
+  	        $result['validatedStartDate']='required';
+  	  	  }
+  	  	  if (property_exists($this,'validatedEndDate')) {
+  	        $result['validatedEndDate']='required';
+  	  	  }
+  	  	  break;
+  	  	case 6:
+    	    if (property_exists($this,'validatedStartDate')) {
+    	      $result['validatedStartDate']='required';
+    	    }
+    	    break;
+  	  	case 4:
+  	  	  if (property_exists($this,'validatedEndDate')) {
+  	  	    $result['validatedEndDate']='required';
+  	  	  }
+  	  	  break;
+  	  }
 	  }
 	  if ($type) {
 	    $typeObj=new Type($type);
 	    if ($typeObj->mandatoryResourceOnHandled) {
 	      if ($newStatus) {
 	        $statusObj=new Status($newStatus);
-	        
+	        if ($statusObj->setHandledStatus) {
+	          $result['idResource']='required';
+	        }
 	      } else {
 	        if (property_exists($this,'handled') and $this->handled) {
-	          $result['idResource']='idResource';
+	          $result['idResource']='required';
+	        }
+	      }
+	    }
+	    if ($typeObj->mandatoryDescription) {
+	      $result['description']='required';
+	    }
+	    if ($typeObj->mandatoryResultOnDone) {
+	      if ($newStatus) {
+	        $statusObj=new Status($newStatus);
+	        if ($statusObj->setDoneStatus) {
+	          $result['result']='required';
+	        }
+	      } else {
+	        if (property_exists($this,'done') and $this->done) {
+	          $result['result']='required';
 	        }
 	      }
 	    }
 	  }
-	  
-	  
 	  return $result;
-	  
 	} 
-	
 }
 ?>
