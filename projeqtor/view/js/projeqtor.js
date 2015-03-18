@@ -2780,3 +2780,14 @@ function showHideMoveButtons() {
   var visibleWidth=visibleWidthRight-visibleWidthLeft;
   dojo.byId('menuBarMoveRight').style.display=(visibleWidth-left>width)?'none':'block';
 }
+
+function getExtraRequiredFields() {
+  dojo.xhrPost({
+    url: "../tool/getExtraRequiredFields.php",
+    form: dojo.byId('objectForm'),
+    handleAs: "text",
+    load: function(data) { 
+      showInfo(data);
+    }
+  }); 
+}

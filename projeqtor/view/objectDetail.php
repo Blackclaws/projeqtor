@@ -135,6 +135,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   if ((isset($obj->locked) and $obj->locked and $classObj != 'User') or isset($obj->_readOnly)) {
     $canUpdate=false;
   }
+  $arrayRequired=$obj->getExtraRequiredFields(); // will define extra required fields, depending on status, planning mode...
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
       $colWidth=round(($displayWidth) / $nbCol); // 3 columns should be displayable
@@ -344,7 +345,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         //$attributes.=' required="true" missingMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '" invalidMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '"';
         $isRequired=true;
       }
-      $arrayRequired=$obj->getExtraRequiredFields();
       if (array_key_exists($col, $arrayRequired)) {
         $attributes.=' required="true" missingMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '" invalidMessage="' . i18n('messageMandatory', array($obj->getColCaption($col))) . '"';
         $isRequired=true;
