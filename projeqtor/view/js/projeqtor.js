@@ -2789,15 +2789,21 @@ function getExtraRequiredFields() {
     load: function(data) { 
     	console.log(data);
     	var obj = JSON.parse(data);
-    	//console.log(obj);
     	for (var key in obj) {
     		if (dijit.byId(key)) {
     		  if (obj[key]=='required') {
-       	        console.log (key);
-       	        dijit.byId(key).set('class','input required');
-       	        //dojo.addClass(dojo.byId(key), "required");
+       	    dijit.byId(key).set('class','input required');
+    		  } else if (obj[key]=='optional') {
+    		    dijit.byId(key).set('class','input');
     		  }
-
+    		} else if (dojo.byId(key+'Editor')) {
+    		  keyEditor=key+'Editor';
+    		  console.log(keyEditor);
+    		  if (obj[key]=='required') {
+            dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input required');
+          } else if (obj[key]=='optional') {
+            dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input');
+          }
     		}
     	}
     }

@@ -59,7 +59,19 @@ if (isset($_REQUEST[$pmName])) {
 }
 
 $result=$obj->getExtraRequiredFields($type,$status,$planningMode);
-$arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional');
 
+$peName=$objectClass.'PlanningElement';
+if (property_exists($obj, $peName)) {
+  $pe=$obj->$peName;
+  $resultPe=$pe->getExtraRequiredFields($type,$status,$planningMode);
+  foreach ($resultPe as $key=>$val) {
+    $result[$peName.'_'.$key]=$val;
+  }
+}
+
+
+$arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional',
+   $peName.'_validatedStartDate'=>'optional', $peName.'_validatedEndDate'=>'optional', $peName.'_validatedDuration'=>'optional');
+$result=array_merge($arrayDefault,$result);
 
 echo json_encode($result);
