@@ -2787,6 +2787,7 @@ function getExtraRequiredFields() {
     form: dojo.byId('objectForm'),
     handleAs: "text",
     load: function(data) { 
+      
       showInfo(data);
     }
   }); 
