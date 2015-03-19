@@ -2787,8 +2787,19 @@ function getExtraRequiredFields() {
     form: dojo.byId('objectForm'),
     handleAs: "text",
     load: function(data) { 
-      
-      showInfo(data);
+    	console.log(data);
+    	var obj = JSON.parse(data);
+    	//console.log(obj);
+    	for (var key in obj) {
+    		if (dijit.byId(key)) {
+    		  if (obj[key]=='required') {
+       	        console.log (key);
+       	        dijit.byId(key).set('class','input required');
+       	        //dojo.addClass(dojo.byId(key), "required");
+    		  }
+
+    		}
+    	}
     }
   }); 
 }
