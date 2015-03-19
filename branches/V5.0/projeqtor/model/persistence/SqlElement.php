@@ -3822,6 +3822,10 @@ abstract class SqlElement {
   	  	    $result['validatedEndDate']='required';
   	  	  }
   	  	  break;
+  	  	case 8: case 14:
+  	  	  if (property_exists($this,'validatedDuration')) {
+  	  	    $result['validatedDuration']='required';
+  	  	  }
   	  }
 	  }
 	  if ($type) {
