@@ -37,7 +37,7 @@ $objectId=null;
 if (isset($_REQUEST['id'])) {
   $objectId=$_REQUEST['id'];
 }
-if (! $objectClass or ! $objectId) {
+if ($objectClass===null or $objectId===null) {
   throwError('className and/or id not found in REQUEST');
 }
 
@@ -59,7 +59,7 @@ if (isset($_REQUEST[$pmName])) {
 }
 
 $result=$obj->getExtraRequiredFields($type,$status,$planningMode);
-$arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource')
+$arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional');
 
 
 echo json_encode($result);
