@@ -72,6 +72,11 @@ if (property_exists($obj, $peName)) {
 
 $arrayDefault=array('description'=>'optional', 'result'=>'optional', 'idResource'=>'optional',
    $peName.'_validatedStartDate'=>'optional', $peName.'_validatedEndDate'=>'optional', $peName.'_validatedDuration'=>'optional');
+foreach ($arrayDefault as $key=>$val) {
+  if (property_exists($obj,$key) and $obj->isAttributeSetToField($key,'required')) {
+    $arrayDefault[$key]='required';
+  }
+}
 $result=array_merge($arrayDefault,$result);
 
 echo json_encode($result);
