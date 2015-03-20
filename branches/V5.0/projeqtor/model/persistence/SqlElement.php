@@ -2178,7 +2178,15 @@ abstract class SqlElement {
 	 * @return the format list
 	 */
 	private static function getFormatList($class) {
-		if (array_key_exists($class, self::$_tablesFormatList)) {
+		if (count(self::$_tablesFormatList)==0) { // if static value not initalized, try and retrieve from session
+		  $fromSession=getSessionValue('_tablesFormatList');
+		  if ($fromSession==null) {
+		    setSessionValue('_tablesFormatList', self::$_tablesFormatList);
+		  } else {
+		    self::$_tablesFormatList=$fromSession;
+		  }
+		}
+	  if (array_key_exists($class, self::$_tablesFormatList)) {
 			return self::$_tablesFormatList[$class];
 		}
 		$obj=new $class();
@@ -2212,6 +2220,7 @@ abstract class SqlElement {
 			$formatList[strtolower($fieldName)] = $type;
 		}
 		self::$_tablesFormatList[$class]=$formatList;
+		setSessionValue('_tablesFormatList', self::$_tablesFormatList); // store session value (as initalized)
 		return $formatList;
 	}
 

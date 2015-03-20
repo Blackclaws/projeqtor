@@ -2792,17 +2792,21 @@ function getExtraRequiredFields() {
     	for (var key in obj) {
     		if (dijit.byId(key)) {
     		  if (obj[key]=='required') {
-       	    dijit.byId(key).set('class','input required');
+       	    //dijit.byId(key).set('class','input required');
+    		    dojo.addClass(dijit.byId(key).domNode,'required');
     		  } else if (obj[key]=='optional') {
-    		    dijit.byId(key).set('class','input');
+    		    //dijit.byId(key).set('class','input');
+    		    dojo.removeClass(dijit.byId(key).domNode,'required');
     		  }
     		} else if (dojo.byId(key+'Editor')) {
     		  keyEditor=key+'Editor';
     		  console.log(keyEditor);
     		  if (obj[key]=='required') {
-            dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input required');
+            //dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input required');
+    		    dojo.addClass(dijit.byId(keyEditor).domNode,'required');
           } else if (obj[key]=='optional') {
-            dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input');
+            //dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input');
+            dojo.removeClass(dijit.byId(keyEditor).domNode,'required');
           }
     		}
     	}

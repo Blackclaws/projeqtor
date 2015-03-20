@@ -2428,6 +2428,8 @@ function setSessionValue($code, $value, $global=false) {
 }
 
 function getSessionValue($code, $default = null, $global=false) {
+  // Global parameter is forced when "whatever the databse" is required
+  // it is mostly used to cases "also when database is not set yet" ;) 
   global $paramDbName, $paramDbPrefix;
   if ($global) {
     $projeqtorSession = 'ProjeQtOr';
