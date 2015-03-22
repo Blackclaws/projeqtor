@@ -206,7 +206,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       /*
        * $widthPct = round ( 98 / $nbCol ) . "%"; if ($nbCol == '1') { $widthPct = $displayWidth; } if (substr ( $displayWidth, - 2, 2 ) == "px") { $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 ); $widthPct = floor ( ($val / $nbCol) - 4) . "px"; } if ($print) { $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px"; }
        */
-      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
       $prevSection=$section;
       $split=explode('_', $col);
       if (count($split) > 1) {
@@ -214,6 +213,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         $section='';
       }
+      $colSpan=null;
+      if ( (get_class($obj)=='Requirement' and $section=='Progress') 
+        or (get_class($obj)=='TestSession' and $section=='TestCaseRun' ) ) {
+        $colSpan="2";
+      }
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
       $sectionField='_'.$section;
       $sectionFieldDep='_Dependency_'.ucfirst($section);
       $sectionFieldDoc='_Document'.$section;
@@ -3063,7 +3068,7 @@ if ($print) {
   }
 }
 
-function setWidthPct($displayWidth, $print, $printWidth, $obj) {
+function setWidthPct($displayWidth, $print, $printWidth, $obj,$colSpan=null) {
   $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);
   $widthPct=round(99 / $nbCol) . "%";
   if ($nbCol == '1') {
@@ -3072,6 +3077,9 @@ function setWidthPct($displayWidth, $print, $printWidth, $obj) {
   if (substr($displayWidth, -2, 2) == "px") {
     $val=substr($displayWidth, 0, strlen($displayWidth) - 2);
     $widthPct=floor( ($val / $nbCol) - ($nbCol+1)) . "px";
+  }
+  if ($colSpan and $nbCol>=$colSpan) {
+    $widthPct=$colSpan*substr($widthPct, 0, strlen($widthPct) - 2)."px";
   }
   if ($print) {
 		$widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px";

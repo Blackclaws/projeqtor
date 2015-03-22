@@ -70,7 +70,7 @@
 		   <input type="hidden" name="diaryWeek" id="diaryWeek" value="<?php echo $week;?>" />
 		   <input type="hidden" name="diaryDay" id="diaryDay" value="<?php echo $day;?>" />
 		   <?php echo i18n("colIdResource");?> 
-		   <select dojoType="dijit.form.FilteringSelect" class="input" style="width: 150px;"
+		   <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" style="width: 150px;"
         name="diaryResource" id="diaryResource"
         value="<?php echo ($user->isResource)?$user->id:'0';?>" >
          <script type="dojo/method" event="onChange" >

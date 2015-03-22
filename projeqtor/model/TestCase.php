@@ -62,18 +62,18 @@ class TestCase extends SqlElement {
   public $prerequisite;
   public $result;
   public $_calc_runStatus;
-  public $idRunStatus;
-  public $_col_1_1_TestCaseRun;
-  public $_TestCaseRun=array();
+  public $idRunStatus; 
   public $_col_1_2_predecessor;
   public $_Dependency_Predecessor=array();
   public $_col_2_2_successor;
   public $_Dependency_Successor=array();
+  public $_col_1_1_TestCaseRun;
+  public $_TestCaseRun=array();
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
-  
+  public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>

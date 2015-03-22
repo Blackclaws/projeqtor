@@ -504,6 +504,7 @@ function cleanContent(destination) {
  * @return void
  */
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
+console.log(page+"/"+destination+"/"+isResultMessage);
   var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
@@ -568,14 +569,13 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         if (dojo.byId("lastPlanStatus") && dojo.byId("lastPlanStatus").value=="INCOMPLETE") {
           // Do not clean result content
         } else {
-        dijit.byId('planResultDiv').set('content',"");
+          //dijit.byId('planResultDiv').set('content',"");
         }
       }
       contentWidget.set('content',data);
       checkDestination(destination);
       if (dojo.byId('objectClass') && destination.indexOf(dojo.byId('objectClass').value)==0) { // If refresh a section
         var section=destination.substr(dojo.byId('objectClass').value.length+1);
-        console.log("section="+section);
         if (dojo.byId(section+"SectionCount") && dojo.byId(section+"Badge")) {
           dojo.byId(section+"Badge").innerHTML=dojo.byId(section+"SectionCount").value;
         }
@@ -798,7 +798,7 @@ function finalizeMessageDisplay(destination, validationType) {
       validationType=null;
     }
   }
-  if (destination=='resultDiv') {
+  if (destination=='resultDiv' || destination=='planResultDiv') {
 	  contentNode.style.display="block"; 
   }
   var noHideWait=false;
@@ -1141,10 +1141,6 @@ function finalizeMessageDisplay(destination, validationType) {
       } else {
         //showAlert(message);
         addCloseBoxToMessage(destination);
-      }
-      if (destination=="planResultDiv" && lastOperationStatus.value!="INCOMPLETE") {
-    	  dojo.fadeOut({node: contentNode, duration: 1000}).play();
-    	  setTimeout("dijit.byId('planResultDiv').set('content','');",1000);    	  
       }
     }
     hideWait();

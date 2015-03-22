@@ -681,6 +681,14 @@ table.dojoDndAvatar {
 	width:16px;
 }
 
+.whiteBackground {
+	border: 1px solid #AAAAAA !important;
+	padding-right:4px;
+	margin-right: 1px;
+	background: #555555;
+	border-radius: 6px;
+	background: rgba(128,128,128,0.5);
+}
 .dijitReset.dijitInline.dijitButtonNode {
   border-radius:5px;
   background-color: #ffffff;
@@ -1960,6 +1968,10 @@ table.dijitCalendarContainer {
 .dijitButtonIconSelect { background-position: -526px; }
 .dijitButtonIconHideMenu { background-position: -551px; }
 .dijitButtonIconSwitchMode { background-position: -576px;}
+.dijitButtonIconSavePlan { background-position: -601px;}
+.dijitButtonIconMSProject { background-position: -626px;}
+.dijitButtonIconDisplay { background-position: -651px;}
+.dijitButtonIconToday { background-position: -676 px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;
