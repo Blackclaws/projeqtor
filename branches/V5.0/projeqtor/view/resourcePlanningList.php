@@ -110,7 +110,7 @@ if ($saveShowClosed) {
                            id="startDatePlanView" name="startDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
                            type="text" maxlength="10"
-                           style="width:100px; text-align: center;" class="input"
+                           style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
                            value="<?php echo $startDate;?>" >
                            <script type="dojo/method" event="onChange" >
@@ -129,7 +129,7 @@ if ($saveShowClosed) {
                            id="endDatePlanView" name="endDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
                            type="text" maxlength="10"
-                           style="width:100px; text-align: center;" class="input"
+                           style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
                            value="<?php echo $endDate;?>" >
                            <script type="dojo/method" event="onChange" >
@@ -147,7 +147,7 @@ if ($saveShowClosed) {
                         <button title="<?php echo i18n('printPlanning')?>"
                          dojoType="dijit.form.Button"
                          id="listPrint" name="listPrint"
-                         iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+                         iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
 <?php $ganttPlanningPrintOldStyle=Parameter::getGlobalParameter('ganttPlanningPrintOldStyle');
       if (!$ganttPlanningPrintOldStyle) {$ganttPlanningPrintOldStyle="NO";}
@@ -163,7 +163,7 @@ if ($saveShowClosed) {
                         <button title="<?php echo i18n('reportPrintPdf')?>"
                          dojoType="dijit.form.Button"
                          id="listPrintPdf" name="listPrintPdf"
-                         iconClass="iconPdf" showLabel="false">
+                         iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
                           <script type="dojo/connect" event="onClick" args="evt">
                           showPrint("../tool/jsonResourcePlanning_pdf.php", 'planning', null, 'pdf');
                           </script>
@@ -172,9 +172,8 @@ if ($saveShowClosed) {
                       <td width="32px">
                         <input type="hidden" id="outMode" name="outMode" value="" />
                         <div dojoType="dijit.form.DropDownButton"
-                             style="height: 20px; color:#202020;"  
                              id="planningColumnSelector" jsId="planningColumnSelector" name="planningColumnSelector" 
-                             showlabel="false" class="" iconClass="iconColumnSelector"
+                             showlabel="false" class="comboButton" iconClass="dijitButtonIcon dijitButtonIconColumn" 
                              title="<?php echo i18n('columnSelector');?>">
                           <span>title</span>
                           <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">
@@ -204,7 +203,7 @@ if ($saveShowClosed) {
                     <tr>
                       <td colspan="3" style="white-space:nowrap;">
                         <span title="<?php echo i18n('saveDates')?>" dojoType="dijit.form.CheckBox"
-                           type="checkbox" id="listSaveDates" name="listSaveDates" class=""
+                           type="checkbox" id="listSaveDates" name="listSaveDates" class="whiteCheck"
                            <?php if ( $saveDates) {echo 'checked="checked"'; } ?>  >
 
                           <script type="dojo/method" event="onChange" >
@@ -217,7 +216,7 @@ if ($saveShowClosed) {
                   </table>
                 </td>
 		            <td>
-                  <div id="planResultDiv" style="position: absolute; top:0px; left:57%;min-width: 200px; width:35%;height: 45px;" 
+                  <div id="planResultDiv" style="display:none"
                     dojoType="dijit.layout.ContentPane" region="center" >
                   </div>
                 </td>
@@ -226,7 +225,7 @@ if ($saveShowClosed) {
                   <?php echo i18n("labelShowWbs");?>
                   </td><td >
 		              <div title="<?php echo i18n('showWbs')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="showWBS" name="showWBS" 
+                    type="checkbox" id="showWBS" name="showWBS" class="whiteCheck"
                     <?php if ($saveShowWbs=='1') { echo ' checked="checked" '; }?> >
 		                <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowWbs',((this.checked)?'1':'0'));
@@ -237,7 +236,7 @@ if ($saveShowClosed) {
 		              <?php echo i18n("labelShowIdle");?>
                   </td><td>
 		              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowIdle" name="listShowIdle"
+                    type="checkbox" id="listShowIdle" name="listShowIdle" class="whiteCheck"
                     <?php if ($saveShowClosed=='1') { echo ' checked="checked" '; }?> >
 		                <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowClosed',((this.checked)?'1':'0'));
@@ -248,7 +247,7 @@ if ($saveShowClosed) {
                   <?php echo i18n("labelShowLeftWork");?>
                   </td><td>
                   <div title="<?php echo i18n('showLeftWork')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowLeftWork" name="listShowLeftWork"
+                    type="checkbox" id="listShowLeftWork" name="listShowLeftWork" class="whiteCheck"
                     <?php if ($saveShowWork=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowWork',((this.checked)?'1':'0'));
@@ -259,7 +258,7 @@ if ($saveShowClosed) {
                   <?php echo i18n("labelShowProjectLevel");?>
                   </td><td >
                   <div title="<?php echo i18n('showProjectLevel')?>" dojoType="dijit.form.CheckBox" 
-                    type="checkbox" id="listShowProject" name="listShowProject" 
+                    type="checkbox" id="listShowProject" name="listShowProject" class="whiteCheck"
                     <?php if ($saveShowProject=='1') { echo ' checked="checked" '; }?> >
                     <script type="dojo/method" event="onChange" >
                       saveUserParameter('planningShowProject',((this.checked)?'1':'0'));

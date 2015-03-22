@@ -106,6 +106,7 @@ class User extends SqlElement {
   private $_affectedProjectsIncludingClosed;  // Array listing all affected projects
   private $_specificAffectedProfiles; // Array listing all projects affected with profile different from default
   private $_specificAffectedProfilesIncludingClosed; // Array listing all projects affected with profile different from default
+
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_visibleProjectsIncludingClosed;
   private $_hierarchicalViewOfVisibleProjects;

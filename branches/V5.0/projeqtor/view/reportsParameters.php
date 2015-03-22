@@ -563,13 +563,13 @@ foreach ($listParam as $param) {
       <button title="<?php echo i18n('reportShow')?>"   
          dojoType="dijit.form.Button" type="submit" 
          id="reportSubmit" name="reportSubmit" 
-         iconClass="iconDisplay" showLabel="false"
+         iconClass="dijitButtonIcon dijitButtonIconDisplay" class="detailButton whiteBackground" showLabel="false"
          onclick="dojo.byId('outMode').value='';runReport();return false;">
       </button>
       <button title="<?php echo i18n('reportPrint')?>"  
          dojoType="dijit.form.Button" type="button"
          id="reportPrint" name="reportPrint"
-         iconClass="dijitEditorIcon dijitEditorIconPrint" showLabel="false">
+         iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton whiteBackground" showLabel="false">
           <script type="dojo/connect" event="onClick" args="evt">
             dojo.byId('outMode').value='';            
             var fileName=dojo.byId('reportFile').value;
@@ -579,7 +579,7 @@ foreach ($listParam as $param) {
       <button title="<?php echo i18n('reportPrintPdf')?>"  
          dojoType="dijit.form.Button" 
          id="reportPrintPdf" name="reportPrintPdf"
-         iconClass="iconPdf" showLabel="false">
+         iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton whiteBackground" showLabel="false">
           <script type="dojo/connect" event="onClick" args="evt">
             dojo.byId('outMode').value='pdf';
             var fileName=dojo.byId('reportFile').value;
@@ -597,7 +597,7 @@ foreach ($listParam as $param) {
       <button title="<?php echo i18n('showInToday')?>"   
          dojoType="dijit.form.Button" type="button" 
          id="reportShowInToday" name="reportShowInToday" 
-         iconClass="iconToday16" showLabel="false"
+         iconClass="dijitButtonIcon dijitButtonIconToday" class="detailButton whiteBackground" showLabel="false"
          onclick="saveReportInToday();">
       </button>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
@@ -612,6 +612,6 @@ foreach ($listParam as $param) {
   </tr>
 </table>
 </td><td>&nbsp;
-<div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" style="width:100px;"></div>
+<div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" style="display:none"></div>
 </td></tr></table>
 </form>
