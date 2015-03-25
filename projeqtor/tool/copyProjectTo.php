@@ -92,7 +92,9 @@ if ($status == "OK") {
 }
 
 function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $newTop=null) {
+debugLog("copyProject($proj->id, $toName, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $newTop)");
   $newProj=$proj->copyTo('Project',$toType, $toName, false, false,false,false, $copyAssignments);
+debugLog(" => project copied");
   $result=$newProj->_copyResult;
 	$nbErrors=0;
 	$errorFullMessage="";
@@ -103,7 +105,9 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
     $project=New Project();
     $projects=$project->getSqlElementsFromCriteria($crit, false, null, null, true);
     foreach ($projects as $project) {
+debugLog(" => Copy sub-project $project->id : $project->name");
       $newSubProject=copyProject($project, $project->name, $toType , $copyStructure, $copySubProjects, $copyAffectations, $copyAssignments, $proj->id);
+debugLog(" => sub-project copied");
       $subResult=$newSubProject->_copyResult;
       unset($newSubProject->_copyResult);
       if (stripos($subResult,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -118,7 +122,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
     }
   }
 	if (stripos($result,'id="lastOperationStatus" value="OK"')>0 and $copyStructure and $nbErrors==0) {
-		$milArray=array();
+      $milArray=array();
 	  $milArrayObj=array();
 	  $actArray=array();
 	  $actArrayObj=array();
@@ -143,21 +147,24 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 	  $itemArray=array();
 	  $itemArrayAssignment=array();
 	  foreach ($items as $id=>$item) {
+debugLog("    => copy structure : item = ".get_class($item)." #".$item->id);
 	  	$new=$item->copy();
+debugLog("    => copy structure : done");	  	
 	  	$tmpRes=$new->_copyResult;
 	  	if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
-        errorLog($tmpRes);
-        $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
-        $nbErrors++;
-      } else {
-	  	  $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
-	      $itemArray[$id]=get_class($new) . '_' . $new->id;
-	      if ($copyAssignments and property_exists($item, '_Assignment')) {
-	      	$itemArrayAssignment[]=array('class'=>get_class($item),'oldId'=>$item->id,'newId'=>$new->id);
-	      }
-      }
+          errorLog($tmpRes);
+          $errorFullMessage.='<br/>'.i18n(get_class($item)).' #'.$item->id." : ".$tmpRes;
+          $nbErrors++;
+        } else {
+  	  	  $itemArrayObj[get_class($new) . '_' . $new->id]=$new;
+  	      $itemArray[$id]=get_class($new) . '_' . $new->id;
+  	      if ($copyAssignments and property_exists($item, '_Assignment')) {
+  	      	$itemArrayAssignment[]=array('class'=>get_class($item),'oldId'=>$item->id,'newId'=>$new->id);
+  	      }
+        }
 	  }
 	  foreach ($itemArrayObj as $new) {
+debugLog("    => changes for structure (idProject, wbs) new =  ".get_class($new)." #".$new->id);
 			$new->idProject=$newProj->id;
 			if ($new->idActivity) {
 			 if (array_key_exists('Activity_' . $new->idActivity,$itemArray)) {
@@ -168,6 +175,7 @@ function copyProject($proj, $toName, $toType , $copyStructure, $copySubProjects,
 			$pe=get_class($new).'PlanningElement';
 			$new->$pe->wbs=null;
 			$tmpRes=$new->save();
+debugLog("    => changes for structure done");		
 			if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
 				errorLog($tmpRes);
 				$errorFullMessage.='<br/>'.i18n(get_class($new)).' #'.$new->id." : ".$tmpRes;
