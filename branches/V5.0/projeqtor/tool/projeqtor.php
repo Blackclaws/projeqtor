@@ -1262,16 +1262,16 @@ function logTracing($message, $level = 9, $increment = 0) {
     }
     switch ($level) {
       case 1 :
-        $msg = date ( 'Y-m-d H:i:s' ) . " ***** ERROR ***** " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ***** ERROR ***** " . $msg;
         break;
       case 2 :
-        $msg = date ( 'Y-m-d H:i:s' ) . " ===== TRACE ===== " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ===== TRACE ===== " . $msg;
         break;
       case 3 :
-        $msg = date ( 'Y-m-d H:i:s' ) . " ----- DEBUG ----- " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ----- DEBUG ----- " . $msg;
         break;
       case 4 :
-        $msg = date ( 'Y-m-d H:i:s' ) . " ..... SCRIPT .... " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ..... SCRIPT .... " . $msg;
         break;
       default :
         break;
