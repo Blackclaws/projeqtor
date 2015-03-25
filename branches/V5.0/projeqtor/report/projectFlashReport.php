@@ -95,8 +95,8 @@ $arrayActionDecision=array();
 $act=new Action();
 $dec=new Decision();
 $link=new Link();
-$crit=array('done'=>'0');
-$actList=$act->getSqlElementsFromCriteria($crit, false, "idProject=$idProject and idStatus in $clauseStatus", "id asc",true,true);
+// #1682 : PBE - modification critère de sélection des actions
+$actList=$act->getSqlElementsFromCriteria(null, false, "idProject=$idProject and done=0", "id asc",true,true);
 $inList='(0';
 foreach ($actList as $act) {
   $inList.=','.$act->id;
@@ -106,7 +106,7 @@ $decList=$dec->getSqlElementsFromCriteria(null, false, "idProject=$idProject and
 $decListResidual=$decList; // Copy the list, this one will be purged
 $linkList=$link->getSqlElementsFromCriteria(null,false,"ref1Type='Action' and ref1Id in $inList and ref2Type='Decision'","ref1Id asc",true);
 foreach ($actList as $act) {
-  $name="Action #$act->id : $act->name";
+    $name="Action #$act->id : $act->name";
 	//$name=$act->name;
 	/*if (strlen($name)>60) {
 		$name=substr($name, 0,55).'[...]';
