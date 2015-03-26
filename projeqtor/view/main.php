@@ -868,9 +868,21 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
          <textarea dojoType="dijit.form.Textarea" 
           id="noteNote" name="noteNote"
           style="width: 500px;"
-          maxlength="4000"
           class="input"
           onClick="dijit.byId('noteNote').setAttribute('class','');"></textarea>
+         
+        <div data-dojo-type="dijit.Editor"' id="noteNoteEditor" height="125px" 
+         data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];top.formChanged();}
+          ,plugins:['removeFormat','bold','italic','underline','|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 
+                    'justifyRight', 'justifyFull','|','insertOrderedList','insertUnorderedList','|']
+          ,onKeyDown:function(event){top.onKeyDownFunction(event,'noteNoteEditor',this);}
+          ,onBlur:function(event){top.editorBlur('noteNoteEditor',this);}
+          ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
+          style="width: 500px;color:#606060 !important; background:none; background-color: #F0F0F0; 
+            padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;"
+          class="input required" >
+        </div>
+
           <table width="100%"><tr height="25px">
             <td width="33%" class="smallTabLabel" >
               <label class="smallTabLabelRight" for="notePrivacyPublic"><?php echo i18n('public');?>&nbsp;</label>

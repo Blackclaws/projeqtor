@@ -1166,9 +1166,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ",'|','insertOrderedList','insertUnorderedList','|']";
         echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
         echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this);}'; // hard coding default event
-        echo ',onClose:function(){top.console.log(\'close\');}';
-        echo ',onResize:function(){top.console.log(\'resize\');}';
-        echo ',onDisplayChange:function(){top.console.log(\'displayChange\');}';
+        //echo ',onClose:function(){top.console.log(\'close\');}';
+        //echo ',onResize:function(){top.console.log(\'resize\');}';
+        //echo ',onDisplayChange:function(){top.console.log(\'displayChange\');}';
         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
         if (1) echo ",'|','fullScreen'";
@@ -1667,9 +1667,10 @@ function drawNotesFromObject($obj, $refresh=false) {
       echo formatDateThumb($creationDate, $updateDate);
       echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
       // ADDED BRW
-      $strDataHTML=htmlEncode($note->note, ''); // context = '' => only htmlspecialchar, not htmlentities
+      //$strDataHTML=htmlEncode($note->note, ''); // context = '' => only htmlspecialchar, not htmlentities
+      $strDataHTML=$note->note;
       $strDataHTML=preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
-      $strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
+      //$strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
       // END ADDED BRW
       echo '</td>';

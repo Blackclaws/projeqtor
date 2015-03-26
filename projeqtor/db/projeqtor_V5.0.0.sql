@@ -22,6 +22,8 @@ ALTER TABLE `${prefix}project` CHANGE  `description` `description` mediumtext;
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
+ALTER TABLE `${prefix}note` CHANGE  `note` `note` mediumtext;
+
 ALTER TABLE `${prefix}message` CHANGE `description` `description` mediumtext;
 ALTER TABLE `${prefix}message` ADD `showOnLogin` int(1) unsigned DEFAULT 0;
 
