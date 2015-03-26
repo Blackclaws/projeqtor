@@ -75,7 +75,7 @@ $today=new Today();
       echo '<td class="dojoDndHandle handleCursor"><img style="width:6px" src="css/images/iconDrag.gif" />&nbsp;</td>';
       echo '<td style="width:16px;height:10px;">';
       if ($todayItem->scope!='static') {
-        echo '<img src="../view/css/images/smallButtonRemove.png" onClick="setTodayParameterDeleted(' . $todayItem->id. ');" />';
+        echo '<img class="roundedButtonSmall" src="../view/css/images/smallButtonRemove.png" onClick="setTodayParameterDeleted(' . $todayItem->id. ');" />';
       }
       echo '<input type="hidden" name="dialogTodayParametersDelete' . $todayItem->id. '" id="dialogTodayParametersDelete' . $todayItem->id. '" value="0" />';
       echo '</td>';
