@@ -633,6 +633,7 @@ function addNote () {
 	dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("noteRefId").value=dojo.byId("objectId").value;
 	dijit.byId("noteNote").set("value",null);
+	dijit.byId("noteNoteEditor").set('value','');
 	dijit.byId("dialogNote").set('title',i18n("dialogNote"));
 	dojo.xhrGet({
 		url: '../tool/dynamicListPredefinedText.php?objectClass='+dojo.byId("noteRefType").value
@@ -654,6 +655,7 @@ function noteSelectPredefinedText(idPrefefinedText) {
 		handleAs: "text",
 		load: function (data) {
 			dijit.byId('noteNote').set('value',data);
+			dijit.byId('noteNoteEditor').set('value',data);
 		  }
 	});
 }
@@ -670,6 +672,7 @@ function editNote (noteId, privacy) {
 	dojo.byId("noteRefType").value=dojo.byId("objectClass").value;
 	dojo.byId("noteRefId").value=dojo.byId("objectId").value;
 	dijit.byId("noteNote").set("value",dojo.byId("note_"+noteId).value);
+	dijit.byId("noteNoteEditor").set('value',dojo.byId("note_"+noteId).value);
 	dijit.byId("dialogNote").set('title',i18n("dialogNote") + " #" + noteId);
 	if (privacy==1) {
 		dijit.byId('notePrivacyPublic').set('checked','true');	
