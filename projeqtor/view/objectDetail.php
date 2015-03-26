@@ -1186,9 +1186,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo ' class="input '.(($isRequired)?'required':'').'" ' . '>';
-        echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
-        echo '   alert("OK");';
-        echo '  </script>';
+        //echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
+        //echo '   alert("OK");';
+        //echo '  </script>';
         echo $val;
         echo '</div>';
       } else if ($col == 'icon') {
@@ -2018,7 +2018,7 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
         echo '</td>';
       }
       if (!$classLink) {
-        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.$classLinkName.'16.png" />&nbsp;'.$classLinkName .' #' . $linkObj->id;
+        echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'20':'15') . '%"><img src="css/images/icon'.get_class($linkObj).'16.png" />&nbsp;'.$classLinkName .' #' . $linkObj->id;
       } else {
         echo '<td class="linkData" style="white-space:nowrap;width:' . (($print)?'10':'5') . '%">#' . $linkObj->id;
       }
@@ -2157,8 +2157,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '</td>';
   }
-  echo '<td class="dependencyHeader" style="width:15%">' . i18n('colType') . '</td>';
-  echo '<td class="dependencyHeader" style="width:' . (($print)?'15':'5') . '%">' . i18n('colId') . '</td>';
+  echo '<td class="dependencyHeader" style="width:' . (($print)?'30':'20') . '%">' . i18n('colElement') . '</td>';
   echo '<td class="dependencyHeader" style="width:55%">' . i18n('colName') . '</td>';
   echo '<td class="dependencyHeader" style="width:15%">' . i18n('colIdStatus') . '</td>';
   echo '</tr>';
@@ -2183,8 +2182,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="dependencyData">' . i18n(get_class($depObj)) . '</td>';
-    echo '<td class="dependencyData">#' . $depObj->id . '</td>';
+    echo '<td class="dependencyData"><img src="css/images/icon'.get_class($depObj).'16.png" />&nbsp;' . i18n(get_class($depObj)) . ' #' . $depObj->id . '</td>';
     echo '<td class="dependencyData"';
     $goto="";
     if (securityCheckDisplayMenu(null, get_class($depObj)) and securityGetAccessRightYesNo('menu' . get_class($depObj), 'read', $depObj) == "YES") {
