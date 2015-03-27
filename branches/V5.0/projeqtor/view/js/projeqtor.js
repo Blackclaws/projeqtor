@@ -504,7 +504,6 @@ function cleanContent(destination) {
  * @return void
  */
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
-console.log(page+"/"+destination+"/"+isResultMessage);
   var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
@@ -553,7 +552,6 @@ console.log(page+"/"+destination+"/"+isResultMessage);
     form: dojo.byId(formName),
     handleAs: "text",
     load: function(data,args){
-//console.log(data);
     	var contentNode = dojo.byId(destination);
     	var contentWidget = dijit.byId(destination);
     	if (fadingMode) {
@@ -653,6 +651,7 @@ console.log(page+"/"+destination+"/"+isResultMessage);
     	if (isResultMessage) msg+=" | isResultMessage='"+isResultMessage+"'";
     	if (validationType) msg+=" | validationType='"+validationType+"'";
     	if (directAccess) msg+=" | directAccess='"+directAccess+"'";
+    	//console.log to keep
     	console.log(msg);
     },
     error: function(error,args){
@@ -784,8 +783,6 @@ function submitForm(page, destination, formName) {
  */
 var resultDivFadingOut=null;
 function finalizeMessageDisplay(destination, validationType) {
-//console.log to keep
-//console.log("finalizeMessageDisplay("+destination+", "+validationType+")");
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var lastOperationStatus = dojo.byId('lastOperationStatus');
@@ -807,26 +804,35 @@ function finalizeMessageDisplay(destination, validationType) {
     if (contentWidget) {
       returnMessage=contentWidget.get('content');
     }
+    //console.log to keep
     console.log("***** ERROR ***** on finalizeMessageDisplay("+destination+", "+validationType+")");
     if (! contentNode) {
-      console.log("contentNode unknown");
+    	//console.log to keep
+    	console.log("contentNode unknown");
     } else {
-      console.log("contentNode="+contentNode.innerHTML);
+    	//console.log to keep
+    	console.log("contentNode="+contentNode.innerHTML);
     }
     if (! contentWidget) {
-      console.log("contentWidget unknown");
+    	//console.log to keep
+    	console.log("contentWidget unknown");
     } else {
-      console.log("contentWidget="+contentWidget.get("content"));
+    	//console.log to keep
+    	console.log("contentWidget="+contentWidget.get("content"));
     }
     if (! lastOperationStatus) {
-      console.log("lastOperationStatus unknown");
+    	//console.log to keep
+    	console.log("lastOperationStatus unknown");
     } else {
-      console.log("lastOperationStatus="+lastOperationStatus.value);
+    	//console.log to keep
+    	console.log("lastOperationStatus="+lastOperationStatus.value);
     }
     if (! lastOperation) {
-      console.log("lastOperation unknown");
+    	//console.log to keep
+    	console.log("lastOperation unknown");
     } else {
-      console.log("lastOperation="+lastOperation.value);
+    	//console.log to keep
+    	console.log("lastOperation="+lastOperation.value);
     }
     showError(i18n("errorFinalizeMessage", new Array(destination,returnMessage)));
     hideWait();
@@ -839,7 +845,6 @@ function finalizeMessageDisplay(destination, validationType) {
   posfin=message.indexOf('>')-1;
   typeMsg=message.substr(posdeb, posfin-posdeb);
   // if operation is OK
-//console.log("lastOperationStatus="+lastOperationStatus.value);
   if (lastOperationStatus.value=="OK" || lastOperationStatus.value=="INCOMPLETE") {	  
     posdeb=posfin+2;
     posfin=message.indexOf('<',posdeb);
@@ -855,7 +860,6 @@ function finalizeMessageDisplay(destination, validationType) {
         if (dojo.byId('parameter') && dojo.byId('parameter').value=='true') {
           formChangeInProgress=false;
           waitingForReply=false;
-          console.log("refresh parameter");
           loadMenuBarItem('UserParameter','UserParameter','bar');
         }  else if (dojo.byId('objectClass') 
       	  && (dojo.byId('objectClass').value=='Resource' || dojo.byId('objectClass').value=='User' 
@@ -2613,7 +2617,6 @@ function connect(resetPassword) {
             showError(i18n('errorSessionHash'));
             getHashTry=0;
           } else {
-            console.log("Error retrieving hash - try again one time");
             aesLoginHash=data.substring(7);
             connect(resetPassword);
           }
@@ -2668,7 +2671,6 @@ function stopDef(e) {
   }
   inputs = document.getElementsByClassName('dijitInlineEditBoxDisplayMode');
   for (index = 0; index < inputs.length; ++index) {
-console.log(inputs[index]);
       inputs[index].blur(); 
   }
   if (e && e.preventDefault)
@@ -2704,7 +2706,6 @@ function onKeyDownFunction(event, field, editorFld) {
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
   var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
-  top.console.log("onKeyDownFunction() keyCode="+event.keyCode+"  screenWidth="+screenWidth+"  editorWidth="+editorWidth+"  fullScreenEditor="+fullScreenEditor); 
   if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
 	  if (fullScreenEditor) return;
     event.preventDefault();
@@ -2722,17 +2723,14 @@ function onKeyDownFunction(event, field, editorFld) {
   }
 }
 function onKeyDownFunctionEditorSave () {
-  console.log(onKeyDownFunctionEditorSave);
   dijit.byId('id').focus();
   top.setTimeout("top.globalSave();",20);
 }
 
 function editorBlur(fieldId, editorFld) {
-  console.log(editorFld);
   var editorWidth=editorFld.domNode.offsetWidth;
   var screenWidth=document.body.getBoundingClientRect().width;
   var fullScreenEditor=(editorWidth>screenWidth*0.9)?true:false; // if editor is  > 90% screen width : editor is in full mode
-  console.log("editorBlur: plugins="+editorFld.extraPlugins);
   top.dojo.byId(fieldId).value=editorFld.document.body.firstChild.innerHTML;
   if (fullScreenEditor) { 
     editorFld.toggle(); // Not existing function : block some unexpected resizing // KEEP THIS
@@ -2783,7 +2781,6 @@ function getExtraRequiredFields() {
     form: dojo.byId('objectForm'),
     handleAs: "text",
     load: function(data) { 
-    	console.log(data);
     	var obj = JSON.parse(data);
     	for (var key in obj) {
     		if (dijit.byId(key)) {
@@ -2796,7 +2793,6 @@ function getExtraRequiredFields() {
     		  }
     		} else if (dojo.byId(key+'Editor')) {
     		  keyEditor=key+'Editor';
-    		  console.log(keyEditor);
     		  if (obj[key]=='required') {
             //dijit.byId(keyEditor).set('class','dijitInlineEditBoxDisplayMode input required');
     		    dojo.addClass(dijit.byId(keyEditor).domNode,'required');

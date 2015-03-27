@@ -95,7 +95,6 @@
     });
 
     function showMessage(id, idMax) {
-      console.log(id);
       contentNode=dojo.byId('loginMessage_'+id);
       dojo.fadeIn({ 
 		    node: contentNode ,
