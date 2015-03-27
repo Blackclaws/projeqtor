@@ -220,7 +220,6 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
       };
       var onKeyDownFunc = function(event) {
         if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey) && ! event.altKey) { // CTRL + S
-          console.log("onKeyDownFunc ==> SAVE");
           event.preventDefault();
           if (dojo.isFF) stopDef();
           globalSave();
@@ -865,11 +864,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
          <input id="noteId" name="noteId" type="hidden" value="" />
          <input id="noteRefType" name="noteRefType" type="hidden" value="" />
          <input id="noteRefId" name="noteRefId" type="hidden" value="" />
-         <textarea dojoType="dijit.form.Textarea" 
+         <textarea dojoType="dijit.form.Textarea" type="hidden"
           id="noteNote" name="noteNote"
-          style="width: 500px;"
-          class="input"
-          onClick="dijit.byId('noteNote').setAttribute('class','');"></textarea>
+          style="width: 500px;display:none;"></textarea>
          
         <div data-dojo-type="dijit.Editor"' id="noteNoteEditor" height="125px" 
          data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];top.formChanged();}
@@ -878,9 +875,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           ,onKeyDown:function(event){top.onKeyDownFunction(event,'noteNoteEditor',this);}
           ,onBlur:function(event){top.editorBlur('noteNoteEditor',this);}
           ,extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor']"
-          style="width: 500px;color:#606060 !important; background:none; background-color: #F0F0F0; 
+          style="width: 500px;color:#606060 !important; background:none; 
             padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;"
-          class="input required" >
+          class="input" >
         </div>
 
           <table width="100%"><tr height="25px">

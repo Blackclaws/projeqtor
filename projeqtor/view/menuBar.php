@@ -109,7 +109,6 @@
         &nbsp;<?php echo (i18n("menu"));?>&nbsp;:&nbsp;</div>
       <div style="position: absolute; left:75px; top: 1px;width:205px; background: transparent; color: #FFFFFF; border:1px solid #FFF" 
         onChange="menuFilter(this.value);" id="menuSelector" id="menuSelector"
-        onMouseEnter="console.log('over');"
         dojoType="dijit.form.Select" class="input filterField rounded menuSelect" 
         ><br/><?php foreach ($allMenuClass as $cl=>$clVal) {
           $selected=($defaultMenu==$cl)?' selected=selected ':'';

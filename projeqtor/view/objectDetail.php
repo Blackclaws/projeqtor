@@ -1159,16 +1159,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         if ($readOnly)
           echo ', disabled:true,';
         echo ',onChange:function(){top.dojo.byId(\'' . $fieldId . '\').value=arguments[0];top.formChanged();}';
-        // echo ',onKeyPress:function(event){console.log(\'KeyPress\');}'; // hard coding default event
-        // echo ',onKeyDown:function(event){console.log(\'KeyDown\'+event.keyCode);top.onKeyDownFunction(event);}'; // hard coding default event
         echo ",editorParams:{height:'125px',plugins:['removeFormat','bold','italic','underline'";
         echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
         echo ",'|','insertOrderedList','insertUnorderedList','|']";
         echo ',onKeyDown:function(event){top.onKeyDownFunction(event,\'' . $fieldId . '\',this);}'; // hard coding default event
         echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this);}'; // hard coding default event
-        //echo ',onClose:function(){top.console.log(\'close\');}';
-        //echo ',onResize:function(){top.console.log(\'resize\');}';
-        //echo ',onDisplayChange:function(){top.console.log(\'displayChange\');}';
         echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
         // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
         if (1) echo ",'|','fullScreen'";
@@ -1661,7 +1656,9 @@ function drawNotesFromObject($obj, $refresh=false) {
       echo '<td class="noteData">#' . $note->id . '</td>';
       echo '<td class="noteData">';
       if (!$print) {
-        echo '<input type="hidden" id="note_' . $note->id . '" value="' . htmlEncode($note->note, 'none') . '"/>';
+        echo '<div style="display:none" type="hidden" id="note_' . $note->id . '">';
+        echo $note->note;
+        echo '</div>';
       }
       echo formatUserThumb($userId, $userName, 'Creator');
       echo formatDateThumb($creationDate, $updateDate);
