@@ -869,7 +869,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           style="width: 500px;display:none;"></textarea>
          
         <div data-dojo-type="dijit.Editor"' id="noteNoteEditor" height="125px" 
-         data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];top.formChanged();}
+         data-dojo-props="onChange:function(){top.dojo.byId('noteNote').value=arguments[0];}
           ,plugins:['removeFormat','bold','italic','underline','|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 
                     'justifyRight', 'justifyFull','|','insertOrderedList','insertUnorderedList','|']
           ,onKeyDown:function(event){top.onKeyDownFunction(event,'noteNoteEditor',this);}

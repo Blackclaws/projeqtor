@@ -2712,14 +2712,16 @@ function onKeyDownFunction(event, field, editorFld) {
     if (top.dojo.isFF) {top.stopDef();}
     top.setTimeout("top.onKeyDownFunctionEditorSave();",10);
   } else if (event.keyCode == 112) { // On F1
-	if (fullScreenEditor) return;
+	  if (fullScreenEditor) return;
     event.preventDefault();
     if (top.dojo.isFF) {top.stopDef();}
     top.showHelp();
   } else if (event.keyCode==9) { // Tab : prevent
 	  if (fullScreenEditor) event.preventDefault();
   } else {
-    formChanged();
+    if (field!='noteNoteEditor') {
+      formChanged();
+    }
   }
 }
 function onKeyDownFunctionEditorSave () {
