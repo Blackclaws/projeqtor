@@ -2646,6 +2646,14 @@ abstract class SqlElement {
 					}
 				}
 			}
+			// TODO Check HTML validity for Long Texts
+			if ($dataLength>4000) {
+			  /*try {
+			    $test=strip_tags($val);
+			  } catch (Exception $e) {
+			    $result.='<br/>' . i18n('messageInvalidHTML',array(i18n('col' . ucfirst($col))));
+			  }*/
+			}
 		}
 		$idType='id'.((get_class($this)=='TicketSimple')?'Ticket':get_class($this)).'Type';
 		if (property_exists($this, $idType)) {

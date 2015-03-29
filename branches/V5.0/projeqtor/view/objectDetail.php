@@ -214,9 +214,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $section='';
       }
       $colSpan=null;
-      if ( (get_class($obj)=='Requirement' and $section=='Progress') 
-        or (get_class($obj)=='TestSession' and $section=='TestCaseRun' ) ) {
-        $colSpan="2";
+      $colSpanSection='_'.lcfirst($section).'_colSpan';
+      if ( property_exists($obj,$colSpanSection) ) {
+        $colSpan=$obj->$colSpanSection;
       }
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
       $sectionField='_'.$section;
@@ -552,8 +552,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo htmlEncode(SqlList::getNameFromId(substr($col, 2), $val));
         } else if ($dataLength > 4000) {
           // echo '</td></tr><tr><td colspan="2">';
+          echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col)).'&nbsp;:&nbsp;</div>';
           echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;overflow:hidden">';
-          echo $val;
+          if ($outMode=="pdf") {
+            echo strip_tags($val); // Must purge data, otherwise will never be generated
+          } else {
+            echo $val;
+          }
           echo '</div>';
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           echo htmlEncode($val, 'print');
@@ -1666,7 +1671,7 @@ function drawNotesFromObject($obj, $refresh=false) {
       // ADDED BRW
       //$strDataHTML=htmlEncode($note->note, ''); // context = '' => only htmlspecialchar, not htmlentities
       $strDataHTML=$note->note;
-      $strDataHTML=preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
+      //$strDataHTML=preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
       //$strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
       // END ADDED BRW
@@ -2180,7 +2185,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="dependencyData"><img src="css/images/icon'.get_class($depObj).'16.png" />&nbsp;' . i18n(get_class($depObj)) . ' #' . $depObj->id . '</td>';
+    echo '<td class="dependencyData" style="white-space:nowrap"><img src="css/images/icon'.get_class($depObj).'16.png" />&nbsp;' . i18n(get_class($depObj)) . ' #' . $depObj->id . '</td>';
     echo '<td class="dependencyData"';
     $goto="";
     if (securityCheckDisplayMenu(null, get_class($depObj)) and securityGetAccessRightYesNo('menu' . get_class($depObj), 'read', $depObj) == "YES") {

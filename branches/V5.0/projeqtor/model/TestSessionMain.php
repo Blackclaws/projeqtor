@@ -28,34 +28,28 @@
  * Action is establised during meeting, to define an action to be followed.
  */ 
 require_once('_securityCheck.php');
-class RequirementMain extends SqlElement {
+class TestSessionMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   public $_col_1_2_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
-  public $idRequirementType;
+  public $idTestSessionType;
   public $idProject;
   public $idProduct;
-  //public $idVersion;
+  public $idVersion;
   public $externalReference;
   public $creationDateTime;
   public $idUser;
-  public $idContact;
-  public $Origin;
-  public $idUrgency;
-  public $initialDueDate;
-  public $actualDueDate;
   public $description;
   public $_col_2_2_treatment;
-  public $idRequirement;
+  public $idActivity;
+  public $idTestSession;
   public $idStatus;
   public $idResource;
-  public $idCriticality;
-  public $idFeasibility;
-  public $idRiskLevel;
-  public $plannedWork;
+  public $startDate;
+  public $endDate;
   public $handled;
   public $handledDate;
   public $done;
@@ -64,17 +58,11 @@ class RequirementMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
-  public $idTargetVersion;
   public $result;
-  //public $_sec_Lock;
-  public $_spe_lockButton;
-  public $locked;
-  public $idLocker;
-  public $lockedDate;
-  public $_col_1_2_predecessor;
-  public $_Dependency_Predecessor=array();
-  public $_col_2_2_successor;
-  public $_Dependency_Successor=array();
+  public $_sec_Assignment;
+  public $_Assignment=array();
+  public $_col_1_1_Progress;
+  public $TestSessionPlanningElement;
   public $_sec_testCaseSummary;
   public $_tab_5_2_smallLabel = array('countTotal','countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'workElementCount','');
   public $countTotal;
@@ -91,26 +79,34 @@ class RequirementMain extends SqlElement {
   public $_tab_5_1_smallLabel = array('testSummary','', '','','countIssues','');
   public $runStatusIcon;
   public $runStatusName;
-  public $_void_5;
-  public $_void_6;
+  public $_void_2;
+  public $_void_3;
   public $countIssues;
-  
+  public $_col_1_2_predecessor;
+  public $_Dependency_Predecessor=array();
+  public $_col_2_2_successor;
+  public $_Dependency_Successor=array();
+  public $_col_1_1_TestCaseRun;
+  public $_testCaseRun_colSpan="2";
+  public $_TestCaseRun=array();
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
+  
   public $_nbColMax=3;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="8%" >${idProject}</th>
     <th field="nameProduct" width="8%" >${idProduct}</th>
-    <th field="nameRequirementType" width="8%" >${type}</th>
+    <th field="nameVersion" width="8%" >${idVersion}</th>
+    <th field="nameTestSessionType" width="10%" >${type}</th>
     <th field="name" width="20%" >${name}</th>
     <th field="colorNameRunStatus" width="6%" formatter="colorNameFormatter">${testSummary}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="10%" >${responsible}</th>
-    <th field="nameTargetVersion" width="10%" >${idVersion}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
@@ -118,14 +114,13 @@ class RequirementMain extends SqlElement {
 
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
                                   "name"=>"required", 
-                                  "idRequirementType"=>"required",
+                                  "idTestSessionType"=>"required",
                                   "idStatus"=>"required",
                                   "creationDateTime"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
                                   "idUser"=>"hidden",
-                                  "countLinked"=>"display",
                                   "countTotal"=>"display",
                                   "countPlanned"=>"display",
                                   "countPassed"=>"display",
@@ -133,31 +128,26 @@ class RequirementMain extends SqlElement {
                                   "countBlocked"=>"display",
                                   "countIssues"=>"display",
                                   "noDisplay1"=>"calculated,hidden",
-                                  "noDisplay2"=>"calculated,hidden",
                                   "pctPlanned"=>"calculated,display,html",
                                   "pctPassed"=>"calculated,display,html",
                                   "pctBlocked"=>"calculated,display,html",
                                   "pctFailed"=>"calculated,display,html",
                                   "noDisplay3"=>"calculated,hidden",
-                                  "noDisplay4"=>"calculated,hidden",
                                   "idRunStatus"=>"display,html,hidden",
                                   "runStatusIcon"=>"calculated,display,html",
                                   "runStatusName"=>"calculated,display,html",
-                                  "locked"=>"readonly",
-                                  "idLocker"=>"readonly",
-                                  "lockedDate"=>"readonly",
+                                  "startDate"=>"hidden", 
+                                  "endDate"=>"hidden",
                                   "idleDate"=>"nobr",
                                   "cancelled"=>"nobr"
   );  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible',
-                                                   'idTargetVersion'=>'targetVersion',
-                                                   'idRiskLevel'=>'technicalRisk',
-                                                   'plannedWork'=>'estimatedEffort',
-                                                   'idContact' => 'requestor',
+                                                   'idVersion'=>'productVersion',
+                                                   'idActivity'=>'parentActivity',
+                                                   'idTestSession'=>'parentTestSession'
                                                    );
   
-  //private static $_databaseColumnName = array('idResource'=>'idUser');
   private static $_databaseColumnName = array();
     
    /** ==========================================================================
@@ -215,8 +205,7 @@ class RequirementMain extends SqlElement {
     return self::$_databaseColumnName;
   }
   
-  
-// ============================================================================**********
+  // ============================================================================**********
 // GET VALIDATION SCRIPT
 // ============================================================================**********
   
@@ -226,22 +215,26 @@ class RequirementMain extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-
-    if ($colName=="initialDueDate") {
+    if ($colName=="idProject" ) {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("actualDueDate").get("value")==null) { ';
-      $colScript .= '    dijit.byId("actualDueDate").set("value", this.value); ';
-      $colScript .= '  } ';
+      $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
       $colScript .= '  formChanged();';
-      $colScript .= '</script>';     
-    } else if ($colName=="actualDueDate") {
+      $colScript .= '</script>';
+    } 
+     if ($colName=="idActivity") {   
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  if (dijit.byId("initialDueDate").get("value")==null) { ';
-      $colScript .= '    dijit.byId("initialDueDate").set("value", this.value); ';
-      $colScript .= '  } ';
+      $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
+      $colScript .= '  if (trim(this.value)) dijit.byId("idTestSession").set("value",null); ';
       $colScript .= '  formChanged();';
-      $colScript .= '</script>';           
-    }
+      $colScript .= '</script>';
+    } 
+     if ($colName=="idTestSession" ) {   
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  dojo.byId("TestSessionPlanningElement_wbs").value=""; ';
+      $colScript .= '  if (trim(this.value)) dijit.byId("idActivity").set("value",null); ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
     return $colScript;
   }
 
@@ -257,33 +250,21 @@ class RequirementMain extends SqlElement {
     if (!trim($this->idProject) and !trim($this->idProduct)) {
       $result.="<br/>" . i18n('messageMandatory',array(i18n('colIdProject') . " " . i18n('colOrProduct')));
     }
-    
-    if ($this->id and $this->id==$this->idRequirement) {
+    if ($this->id and $this->id==$this->idTestSession) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
-    } else if (trim($this->idRequirement)){
-      $parentList=array();
-    	$parent=new Requirement($this->idRequirement);
-    	while ($parent->idRequirement) {
-    		$parentList[$parent->idRequirement]=$parent->idRequirement;
-    		$parent=new Requirement($parent->idRequirement);
-    	}
-      if (array_key_exists($this->id,$parentList)) {
+    } else if ($this->TestSessionPlanningElement and $this->TestSessionPlanningElement->id){
+      $parent=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',array('refType'=>'TestSession','refId'=>$this->idTestSession));
+      $parentList=$parent->getParentItemsArray();
+      if (array_key_exists('#' . $this->TestSessionPlanningElement->id,$parentList)) {
         $result.='<br/>' . i18n('errorHierarchicLoop');
       }
     }
-    if (trim($this->idRequirement)) {
-      $parentRequirement=new Requirement($this->idRequirement);
-      if ( trim($this->idProduct)) {
-        if (trim($parentRequirement->idProduct)!=trim($this->idProduct)) {
-          $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
-        }
-      } else {
-        if (trim($parentRequirement->idProject)!=trim($this->idProject)) {
-          $result.='<br/>' . i18n('msgParentRequirementInSameProjectProduct');
-        }
+    if (trim($this->idActivity)) {
+      $parentActivity=new Activity($this->idActivity);
+      if ($parentActivity->idProject!=$this->idProject) {
+        $result.='<br/>' . i18n('msgParentActivityInSameProject');
       }
     }
-    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -296,119 +277,97 @@ class RequirementMain extends SqlElement {
   
   public function save() {
 
+  	$old=$this->getOld();
   	if (! trim($this->idRunStatus)) $this->idRunStatus=5;
+  	
+  	$this->recalculateCheckboxes();
+    $this->TestSessionPlanningElement->refName=$this->name;
+    $this->TestSessionPlanningElement->idProject=$this->idProject;
+    $this->TestSessionPlanningElement->idle=$this->idle;
+    $this->TestSessionPlanningElement->done=$this->done;
+    $this->TestSessionPlanningElement->cancelled=$this->cancelled;
+    if ($this->idActivity and trim($this->idActivity)!='') {
+      $this->TestSessionPlanningElement->topRefType='Activity';
+      $this->TestSessionPlanningElement->topRefId=$this->idActivity;
+      $this->TestSessionPlanningElement->topId=null;
+    } else if ($this->idTestSession and trim($this->idTestSession)!=''){
+    	$this->TestSessionPlanningElement->topRefType='TestSession';
+      $this->TestSessionPlanningElement->topRefId=$this->idTestSession;
+      $this->TestSessionPlanningElement->topId=null;
+    } else  if ($this->idProject and trim($this->idProject)!=''){
+      $this->TestSessionPlanningElement->topRefType='Project';
+      $this->TestSessionPlanningElement->topRefId=$this->idProject;
+      $this->TestSessionPlanningElement->topId=null;
+    } else {
+    	$this->TestSessionPlanningElement->topRefType=null;
+      $this->TestSessionPlanningElement->topRefId=null;
+      $this->TestSessionPlanningElement->topId=null;
+    }
+    if (trim($this->idProject)!=trim($old->idProject) or trim($this->idActivity)!=trim($old->idActivity)) {
+      $this->TestSessionPlanningElement->wbs=null;
+      $this->TestSessionPlanningElement->wbsSortable=null;
+    }
   	$result=parent::save();
     return $result;
   }
   
-  public function drawSpecificItem($item){
-    global $print;
-    $result="";
-    if ($item=='lockButton' and !$print) {
-      if ($this->locked) {
-        $canUnlock=false;
-        $user=$_SESSION['user'];
-        if ($user->id==$this->idLocker) {
-          $canUnlock=true;
-        } else {
-          $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$user->idProfile, 'scope'=>'requirement'));        
-          if ($right) {
-            $list=new ListYesNo($right->rightAccess);
-            if ($list->code=='YES') {
-              $canUnlock=true;
-            }
-          }  
-        }
-        if ($canUnlock) {
-          $result .= '<tr><td></td><td>';
-          $result .= '<button id="unlockRequirement" dojoType="dijit.form.Button" showlabel="true"'; 
-          $result .= ' title="' . i18n('unlockRequirement') . '" >';
-          $result .= '<span>' . i18n('unlockRequirement') . '</span>';
-          $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-          $result .=  '  unlockRequirement();';
-          $result .= '</script>';
-          $result .= '</button>';
-          $result .= '</td></tr>';
-        }
-      } else {
-        $result .= '<tr><td></td><td>';
-        $result .= '<button id="lockRequirement" dojoType="dijit.form.Button" showlabel="true"'; 
-        $result .= ' title="' . i18n('lockRequirement') . '" >';
-        $result .= '<span>' . i18n('lockRequirement') . '</span>';
-        $result .=  '<script type="dojo/connect" event="onClick" args="evt">';
-        $result .=  '  lockRequirement();';
-        $result .= '</script>';
-        $result .= '</button>';
-        $result .= '</td></tr>';
-      }
-      $result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . $_SESSION['user']->id . '" />';
-      return $result;
-    }
+  public function copy() {
+
+    $newObj=parent::copy();
+    $copyResult=$newObj->_copyResult;
+    // Copy TestCaseRun for session
+    $newId=$newObj->id;
+    $crit=array('idTestSession'=>$this->id);
+    $tcr=new TestCaseRun();
+    $list=$tcr->getSqlElementsFromCriteria($crit);
+    foreach ($list as $tcr) {
+    	$new=new TestCaseRun();
+    	$new->idTestSession=$newId;
+    	$new->idTestCase=$tcr->idTestCase;
+    	$new->idRunStatus='1';
+    	$new->_copy=true;
+    	$new->save();
+    }  
+    $new=new TestSession($newId);
+    $new->_noHistory=true;
+    $new->save();
+    $new->updateDependencies();
+    $new->_copyResult=$copyResult;
+    unset($new->_noHistory);
+    return $new;
+  
   }
   
-   
-  public function getCalculatedItem(){
-     if ($this->countTotal!=0) {
-     	$this->pctPlanned='<i>('.htmlDisplayPct(round($this->countPlanned/$this->countTotal*100)).')</i>';
-     	$this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
-      $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
-      $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
-     }
-     if ($this->id) {
-       $name=SqlList::getNameFromId('RunStatus', $this->idRunStatus,false);
-       $this->runStatusName=i18n($name);
-       $this->runStatusIcon='<img src="../view/css/images/icon'.ucfirst($name).'22.png" />';
-     }
-  }
   
   public function updateDependencies() {
   	$this->_noHistory=true;
-  	$listCrit='idTestCase in (0';
-  	$this->countLinked=0;
-    foreach ($this->_Link as $link) {
-      if ($link->ref2Type=='TestCase') {
-        $listCrit.=','.Sql::fmtId($link->ref2Id);
-        $this->countLinked+=1;
-      }
-      if ($link->ref2Type=='Ticket') {
-        $this->countIssues+=1;
-      }
-    }
-    $listCrit.=")";
-    $tcr=new TestCaseRun();
-    $listTcr=$tcr->getSqlElementsFromCriteria(null, false, $listCrit,  "statusDateTime asc");
-    $this->countBlocked=0;
-    $this->countFailed=0;
-    $this->countIssues=0;
-    $this->countPassed=0;
-    $this->countPlanned=0;
-    $this->countTotal=0;
-    $countTotal=0;
-    $lstStatus=array();
-    // Fixing : take into account only last test cas run for a test case
-    foreach($listTcr as $tcr) {
-    	$countTotal+=1;
-    	$lstStatus[$tcr->idTestCase]=$tcr;
-    }
-    // adding taking into account sub-requirements for top requirement
-    $lstReq=$this->getSqlElementsFromCriteria(array('idRequirement'=>$this->id));
-    $lstStatus=array_merge($lstStatus,$lstReq);
-    foreach ($lstStatus as $tcr) { // thanks to previous treatment, this list includes only last status of test case
-    	$this->countTotal+=1;
+  	$this->countBlocked=0;
+  	$this->countFailed=0;
+  	$this->countIssues=0;
+  	$this->countPassed=0;
+  	$this->countPlanned=0;
+  	$this->countTotal=0;
+  	foreach($this->_TestCaseRun as $tcr) {
+  		$this->countTotal+=1;
       if ($tcr->idRunStatus==1) {
         $this->countPlanned+=1;
       }
-      if ($tcr->idRunStatus==2) {
-        $this->countPassed+=1;
-      }
-      if ($tcr->idRunStatus==3) {
+  		if ($tcr->idRunStatus==2) {
+  			$this->countPassed+=1;
+  		}
+  	  if ($tcr->idRunStatus==3) {
         $this->countFailed+=1;
       }
-      if ($tcr->idRunStatus==4) {
+  	  if ($tcr->idRunStatus==4) {
         $this->countBlocked+=1;
       }
-    }
-    if ($this->countFailed>0) {
+  	}
+  	foreach($this->_Link as $link) {
+  		if ($link->ref2Type=='Ticket') {
+  			$this->countIssues+=1;
+  		}
+  	}
+  	if ($this->countFailed>0) {
       $this->idRunStatus=3; // failed
     } else if ($this->countBlocked>0) {
       $this->idRunStatus=4; // blocked
@@ -419,11 +378,34 @@ class RequirementMain extends SqlElement {
     } else {
       $this->idRunStatus=2; // passed
     }  
-    $this->save();
-    if ($this->idRequirement) {
-    	$top=new Requirement($this->idRequirement);
-    	$top->updateDependencies();
-    }
+  	$this->save();
+  	
   }
+  
+   public function getCalculatedItem(){
+   	 if ($this->countTotal!=0) {
+       $this->pctPlanned='<i>('.htmlDisplayPct(round($this->countPlanned/$this->countTotal*100)).')</i>';
+       $this->pctPassed='<i>('.htmlDisplayPct(round($this->countPassed/$this->countTotal*100)).')</i>';
+       $this->pctFailed='<i>('.htmlDisplayPct(round($this->countFailed/$this->countTotal*100)).')</i>';
+       $this->pctBlocked='<i>('.htmlDisplayPct(round($this->countBlocked/$this->countTotal*100)).')</i>';
+     }
+     if ($this->id) {
+       $name=SqlList::getNameFromId('RunStatus', $this->idRunStatus,false);
+       $this->runStatusName=i18n($name);
+       $this->runStatusIcon='<img src="../view/css/images/icon'.ucfirst($name).'22.png" />';
+     }
+  }
+  
+  public function drawSpecificItem($item){
+//scriptLog("Project($this->id)->drawSpecificItem($item)");   
+    $result="";
+    if ($item=='separator_progress') {
+    	$result .='<div style="height:5px;">&nbsp;</div>';
+      $result .='<div class="section" style="height:14px;">';
+      $result .="&nbsp;".i18n('menuTestCase')."&nbsp;";
+      $result .='</div>';
+      return $result;
+    }
+  }  
 }
 ?>

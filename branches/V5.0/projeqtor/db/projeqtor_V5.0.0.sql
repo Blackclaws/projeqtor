@@ -13,12 +13,29 @@ ALTER TABLE `${prefix}action` CHANGE `description` `description` mediumtext,
 
 ALTER TABLE `${prefix}activity` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
+ 
+ALTER TABLE `${prefix}expense` CHANGE `description` `description` mediumtext;
 
 ALTER TABLE `${prefix}milestone` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
 ALTER TABLE `${prefix}project` CHANGE  `description` `description` mediumtext;
 
+ALTER TABLE `${prefix}quotation` CHANGE `description` `description` mediumtext,
+ CHANGE `additionalInfo` `additionalInfo` mediumtext,
+ CHANGE `comment` `comment` mediumtext;
+ALTER TABLE `${prefix}quotation` ADD `result` mediumtext;
+
+ALTER TABLE `${prefix}requirement` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
+ 
+ALTER TABLE `${prefix}testcase` CHANGE `description` `description` mediumtext,
+ CHANGE `prerequisite` `result` mediumtext,
+ CHANGE `result` `result` mediumtext;
+
+ALTER TABLE `${prefix}testsession` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
+  
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 

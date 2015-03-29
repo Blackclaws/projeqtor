@@ -51,12 +51,13 @@ class IndividualExpense extends Expense {
   public $_lib_cancelled;
   public $_col_1_1_Detail;
   public $_ExpenseDetail=array();
+  public $_detail_colSpan="2";
   public $_col_1_1_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
 
-
+  public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
