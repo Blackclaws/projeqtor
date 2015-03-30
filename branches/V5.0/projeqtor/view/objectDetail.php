@@ -1610,7 +1610,9 @@ function drawHistoryFromObjects($refresh=false) {
 }
 
 function drawNotesFromObject($obj, $refresh=false) {
-  global $cr, $print, $user, $comboDetail;
+  global $cr, $print, $user, $comboDetail, $displayWidth, $printWidth;
+  $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
+  $widthPctNote=((substr($widthPct,0,strlen($widthPct)-2)*0.85)-45).'px';
   if ($comboDetail) {
     return;
   }
@@ -1670,10 +1672,12 @@ function drawNotesFromObject($obj, $refresh=false) {
       echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
       // ADDED BRW
       //$strDataHTML=htmlEncode($note->note, ''); // context = '' => only htmlspecialchar, not htmlentities
+      if (! $print) echo '<div style="max-width:'.$widthPctNote.';overflow-x:auto;" >';
       $strDataHTML=$note->note;
       //$strDataHTML=preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
       //$strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
       echo $strDataHTML;
+      if (! $print) echo '</div>';
       // END ADDED BRW
       echo '</td>';
       /*
