@@ -39,7 +39,6 @@ class IndividualExpenseMain extends Expense {
   public $idResource;
   public $idProject;
   public $idUser;
-  
   public $description;
   public $_col_2_2_treatment;
   public $idStatus;  

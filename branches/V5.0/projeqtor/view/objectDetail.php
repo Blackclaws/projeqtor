@@ -1155,7 +1155,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo '>';
         echo $val;
         echo '</textarea>';
-        echo '<div style="text-align:left;font-weight:normal" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
+        echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
         echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
                                                           // echo '<div data-dojo-type="dijit.Editor"'; // TEST
         echo ' id="' . $fieldId . 'Editor" ';
@@ -2327,13 +2327,14 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
   if ($obj->idle == 1) {
     $canUpdate=false;
   }
+  $scope=str_replace('expense','',strtolower(get_class($obj)));
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   if (!$print) {
     echo '<td class="assignHeader" style="width:5%">';
     // if ($obj->id!=null and ! $print and $canUpdate and !$obj->idle and $workVisible) {
     if ($obj->id != null and !$print and $canUpdate and !$obj->idle) {
-      echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail();" title="' . i18n('addExpenseDetail') . '" class="roundedButtonSmall"/> ';
+      echo '<img src="css/images/smallButtonAdd.png" onClick="addExpenseDetail(\''.$scope.'\');" title="' . i18n('addExpenseDetail') . '" class="roundedButtonSmall"/> ';
     }
     echo '</td>';
   }
@@ -2352,7 +2353,7 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
       echo '<td class="assignData" style="text-align:center;">';
       // if ($canUpdate and ! $print and $workVisible) {
       if ($canUpdate and !$print) {
-        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" .
+        echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(\''.$scope.'\',' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" .
              $fmt->format($expenseDetail->amount) . "'" . ');" ' . 'title="' . i18n('editExpenseDetail') . '" class="roundedButtonSmall"/> ';
       }
       // if ($canUpdate and ! $print and $workVisible ) {

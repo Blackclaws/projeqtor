@@ -13,6 +13,12 @@ ALTER TABLE `${prefix}action` CHANGE `description` `description` mediumtext,
 
 ALTER TABLE `${prefix}activity` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
+
+ALTER TABLE `${prefix}bill` CHANGE `description` `description` mediumtext;
+ 
+ALTER TABLE `${prefix}command` CHANGE `description` `description` mediumtext,
+ CHANGE `additionalInfo` `additionalInfo` mediumtext,
+ CHANGE `comment` `comment` mediumtext;
  
 ALTER TABLE `${prefix}expense` CHANGE `description` `description` mediumtext;
 
@@ -77,6 +83,12 @@ ALTER TABLE `${prefix}project` ADD `creationDate` datetime DEFAULT NULL,
 ADD `objectives` mediumtext;
 ALTER TABLE `${prefix}project` ADD `idResource` int(12) unsigned DEFAULT NULL;
 UPDATE `${prefix}project` set `idResource`=`idUser`;
+
+ALTER TABLE `${prefix}expensedetailtype` ADD `individual` int(1) unsigned DEFAULT 0,
+ADD `project` int(1) unsigned DEFAULT 0;
+UPDATE `${prefix}expensedetailtype` set `individual`=1;
+INSERT INTO `${prefix}expensedetailtype` (id, name, sortOrder, value01, unit01, value02, unit02, value03, unit03, idle, project) VALUES
+(5, 'detail', 50, null, 'units', null, '€ per unit', null, null, 0, 1);
 
 ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';

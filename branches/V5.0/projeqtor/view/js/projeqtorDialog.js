@@ -1492,7 +1492,7 @@ function assignmentChangeRole() {
 * Display a add Assignment Box
 * 
 */
-function addExpenseDetail () {
+function addExpenseDetail (expenseType) {
 	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
@@ -1504,6 +1504,7 @@ function addExpenseDetail () {
 	dijit.byId("expenseDetailType").reset();
 	dojo.byId("expenseDetailDiv").innerHtml="";
 	dijit.byId("expenseDetailAmount").reset();
+	refreshList('idExpenseDetailType', expenseType, '1', null, 'expenseDetailType', true);
 	//dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail"));
 	dijit.byId("dialogExpenseDetail").show();
 }
@@ -1513,16 +1514,17 @@ function addExpenseDetail () {
 * 
 */
 var expenseDetailLoad=false;
-function editExpenseDetail (id, idExpense, type, expenseDate, amount) {
+function editExpenseDetail (expenseType, id, idExpense, type, expenseDate, amount) {
 	expenseDetailLoad=true;
 	if (checkFormChangeInProgress()) {
 		showAlert(i18n('alertOngoingChange'));
 		return;
 	}
+	refreshList('idExpenseDetailType', expenseType, '1', null, 'expenseDetailType', true);
 	dojo.byId("expenseDetailId").value=id;
 	dojo.byId("idExpense").value=idExpense;	
 	dijit.byId("expenseDetailName").set("value",dojo.byId('expenseDetail_'+id).value);
-  	dijit.byId("expenseDetailDate").set("value",getDate(expenseDate));
+  dijit.byId("expenseDetailDate").set("value",getDate(expenseDate));
 	dijit.byId("expenseDetailAmount").set("value",dojo.number.parse(amount));
 	dijit.byId("dialogExpenseDetail").set('title',i18n("dialogExpenseDetail") + " #" + id);
 	dijit.byId("expenseDetailType").set("value",type);
@@ -3347,6 +3349,7 @@ function refreshList(field, param, paramVal, selected, destination, required) {
 	mySelect.set('store',store);
 }
 function refreshListSpecific(listType, destination, param, paramVal, selected, required ) {
+console.log('refreshListSpecific('+listType+', '+destination+', '+param+', '+paramVal+', '+selected+', '+required+' )');
 	var urlList='../tool/jsonList.php?listType='+listType;
 	if (param) {
 	  urlList+='&'+param+'='+paramVal;
@@ -3357,6 +3360,7 @@ function refreshListSpecific(listType, destination, param, paramVal, selected, r
 	if (required) {
 		urlList+='&required=true';
 	}
+console.log(urlList);
 	var datastore = new dojo.data.ItemFileReadStore({url: urlList});
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
