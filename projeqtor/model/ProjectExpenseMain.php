@@ -48,7 +48,7 @@ class ProjectExpenseMain extends Expense {
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
-  //public $_col_ExpenseDetail;
+  public $_col_ExpenseDetail;
   public $_ExpenseDetail=array();
   public $_expenseDetail_colSpan="2";
   public $_col_1_1_Link;
@@ -73,11 +73,10 @@ class ProjectExpenseMain extends Expense {
                                   "idProjectExpenseType"=>"required",
                                   "expensePlannedDate"=>"",
                                   "plannedAmount"=>"",
-                                  "idResource"=>"required",
                                   "idStatus"=>"required",
                                   "idResource"=>"hidden",
   								                "idUser"=>"hidden",
-                                  "_ExpenseDetail"=>"hidden",
+                                  
                                   "day"=>"hidden",
                                   "week"=>"hidden",
                                   "month"=>"hidden",
@@ -106,6 +105,9 @@ class ProjectExpenseMain extends Expense {
    */ 
   function __construct($id = NULL) {
     parent::__construct($id);
+    if (count($this->getExpenseDetail())>0) {
+      self::$_fieldsAttributes['realAmount']="readonly";
+    }
   }
 
    /** ==========================================================================

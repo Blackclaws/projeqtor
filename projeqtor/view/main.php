@@ -383,7 +383,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <tr style="height:10px;">
             <td align="left" style="position:relative;height: 100%;" valign="top">
               <div style="position:relative; width: 400px; height: 54px;">
-    	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;left:-10px;">
+    	          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;text-align: center">
     	           <div id="waitLogin" style="position:absolute;top:50%"></div>  
 	    		        <img src="<?php 
 	    		          if (file_exists("../logo.gif")) echo '../logo.gif';

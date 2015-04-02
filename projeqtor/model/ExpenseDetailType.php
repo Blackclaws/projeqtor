@@ -43,17 +43,22 @@ class ExpenseDetailType extends SqlElement {
   public $unit03;
   public $idle;
   public $description;
+  public $_col_scope;
+  public $individual;
+  public $project;
   
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
-    <th field="name" width="25%" >${name}</th>
+    <th field="name" width="26%" >${name}</th>
     <th field="sortOrder" width="5%">${sortOrder}</th>
-    <th field="value01" width="10%" >${value}</th>
+    <th field="value01" width="5%" >${value}</th>
     <th field="unit01" width="10%" >${unit}</th>
-    <th field="value02" width="10%" >${value}</th>
+    <th field="value02" width="5%" >${value}</th>
     <th field="unit02" width="10%" >${unit}</th>
-    <th field="value03" width="10%" >${value}</th>
+    <th field="value03" width="5%" >${value}</th>
     <th field="unit03" width="10%" >${unit}</th>
+    <th field="individual" width="7%" formatter="booleanFormatter">${individualExpense}</th>
+    <th field="project" width="7%" formatter="booleanFormatter">${projectExpense}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
     
@@ -68,7 +73,9 @@ class ExpenseDetailType extends SqlElement {
                                                    'value03' => 'valueUnit',
                                                    'unit01'=>'unit', 
                                                    'unit02'=>'unit',
-                                                   'unit03'=>'unit');
+                                                   'unit03'=>'unit',
+                                                   'project'=>'projectExpense',
+                                                   'individual'=>'individualExpense');
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
