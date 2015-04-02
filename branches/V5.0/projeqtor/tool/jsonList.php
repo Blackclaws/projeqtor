@@ -28,7 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php"; 
-    scriptLog('   ->/tool/jsonList.php');  
+scriptLog('   ->/tool/jsonList.php');  
     $type=$_REQUEST['listType'];
     echo '{"identifier":"id",' ;
     echo 'label: "name",';
@@ -42,6 +42,9 @@
     	$type='listResourceProject';
     	$_REQUEST['idProject']=$_REQUEST['critValue'];
     	$required=array_key_exists('required', $_REQUEST);
+    }
+    if ($type=='ExpenseDetailType') {
+      $type='list';
     }
     
     if ($type=='empty') {
