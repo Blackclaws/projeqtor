@@ -330,8 +330,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     } else if (substr($col, 0, 5) == '_BillLine') {
       $prevSection=$section;
       $section="BillLine";
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
-      drawBillLinesFromObject($obj, false);
+      $colSpanSection='_'.lcfirst($section).'_colSpan';
+      if ( property_exists($obj,$colSpanSection) ) {
+        $colSpan=$obj->$colSpanSection;
+      }
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
+      //startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
+      //drawBillLinesFromObject($obj, false);
     } else if (substr($col, 0, 1) == '_' and substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_') { // field not to be displayed
                                                                                                                               //
     } else {
@@ -2953,7 +2958,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     </form>
   <?php
   }
-  $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
+  $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
   
   if (!$noselect and isset($obj->_BillLine)) {
     ?> <br />
