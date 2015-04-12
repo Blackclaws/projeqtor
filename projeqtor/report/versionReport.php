@@ -97,7 +97,7 @@ if ($paramProject) {
 		}
 	}
 } else {
-	$lstVersion=SqlList::getList('Version');
+	$lstVersion=SqlList::getList('Version',null,true);
 }
 asort($lstVersion);
 $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
