@@ -726,7 +726,7 @@ function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sen
   	// Cute method using PHPMailer : should work on all situations / First implementation on V4.0
   	return sendMail_phpmailer($to, $subject, $messageBody, $object, $headers, $sender, $attachmentsArray);
   } else { 
-  	$messageBody = wordwrap($messageBody, 70);
+  	$messageBody = wordwrap($messageBody, 70); 
 		if ((isset($paramMailerType) and $paramMailerType=='mail') or ! $paramMailSmtpUsername or ! $paramMailSmtpPassword) {
 			// Standard method using php mail function : do not take authentication into account
 		  return sendMail_mail($to, $subject, $messageBody, $object, $headers, $sender, $boundary);	
