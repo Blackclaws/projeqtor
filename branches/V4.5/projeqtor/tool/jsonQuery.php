@@ -443,6 +443,9 @@
 		      	  ." and VERS.idVersion IN ".$critSqlValue
 		      	  .")";
 		      }
+		      if ($crit['sql']['operator']=='NOT IN') {
+		        $queryWhere.=" or ".$table . "." . $crit['sql']['attribute']. " IS NULL ";
+		      }
 		      if ($crit['sql']['operator']!=' exists ') {
 		        $queryWhere.=")";
 		      }
