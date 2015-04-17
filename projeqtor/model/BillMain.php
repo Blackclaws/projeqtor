@@ -54,9 +54,10 @@ class BillMain extends SqlElement {
   public $fullAmount;
   public $description;
   public $billingType;
-  public $_col_1_1_Link;
+  //public $_sec_BillLine;
   public $_BillLine=array();
-  //public $_BillLine_colSpan="2";
+  public $_BillLine_colSpan="2";
+  public $_col_Link;
   public $_Link=array();
   public $_Note=array();
 

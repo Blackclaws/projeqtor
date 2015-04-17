@@ -42,6 +42,8 @@ class DocumentMain extends SqlElement {
   public $documentReference;
   public $externalReference;
   public $idAuthor;
+  public $idUser;
+  public $creationDate;
   public $idle;
   public $cancelled;
   public $_lib_cancelled;

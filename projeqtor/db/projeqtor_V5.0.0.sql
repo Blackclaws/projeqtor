@@ -5,8 +5,9 @@
 -- // Date : 2014-11-30                                     //
 -- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}history` CHANGE `oldValue` `oldValue` mediumtext,
- CHANGE `newValue` `newValue` mediumtext;
+-- ///////////////////////////////////////////////////////////
+-- Change from varchar(4000) to MediumText for editorable fields
+-- ///////////////////////////////////////////////////////////
 
 ALTER TABLE `${prefix}action` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
@@ -19,14 +20,41 @@ ALTER TABLE `${prefix}bill` CHANGE `description` `description` mediumtext;
 ALTER TABLE `${prefix}command` CHANGE `description` `description` mediumtext,
  CHANGE `additionalInfo` `additionalInfo` mediumtext,
  CHANGE `comment` `comment` mediumtext;
+
+ALTER TABLE `${prefix}decision` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}expense` CHANGE `description` `description` mediumtext;
 
+ALTER TABLE `${prefix}history` CHANGE `oldValue` `oldValue` mediumtext,
+ CHANGE `newValue` `newValue` mediumtext;
+ 
+ALTER TABLE `${prefix}issue` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext,
+ CHANGE `cause` `cause` mediumtext,
+ CHANGE `impact` `impact` mediumtext;
+ 
+ALTER TABLE `${prefix}meeting` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
+
+ALTER TABLE `${prefix}message` CHANGE `description` `description` mediumtext;
+ 
 ALTER TABLE `${prefix}milestone` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
+ALTER TABLE `${prefix}note` CHANGE  `note` `note` mediumtext;
+
+ALTER TABLE `${prefix}opportunity` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext,
+ CHANGE `cause` `cause` mediumtext,
+ CHANGE `impact` `impact` mediumtext;
+ 
+ALTER TABLE `${prefix}periodicmeeting` CHANGE `description` `description` mediumtext;
+ 
 ALTER TABLE `${prefix}project` CHANGE  `description` `description` mediumtext;
 
+ALTER TABLE `${prefix}question` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext;
+ 
 ALTER TABLE `${prefix}quotation` CHANGE `description` `description` mediumtext,
  CHANGE `additionalInfo` `additionalInfo` mediumtext,
  CHANGE `comment` `comment` mediumtext;
@@ -34,6 +62,11 @@ ALTER TABLE `${prefix}quotation` ADD `result` mediumtext;
 
 ALTER TABLE `${prefix}requirement` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
+ 
+ALTER TABLE `${prefix}risk` CHANGE `description` `description` mediumtext,
+ CHANGE `result` `result` mediumtext,
+ CHANGE `cause` `cause` mediumtext,
+ CHANGE `impact` `impact` mediumtext;
  
 ALTER TABLE `${prefix}testcase` CHANGE `description` `description` mediumtext,
  CHANGE `prerequisite` `result` mediumtext,
@@ -45,9 +78,10 @@ ALTER TABLE `${prefix}testsession` CHANGE `description` `description` mediumtext
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
-ALTER TABLE `${prefix}note` CHANGE  `note` `note` mediumtext;
+-- ///////////////////////////////////////////////////////////
+-- Other Changes
+-- ///////////////////////////////////////////////////////////
 
-ALTER TABLE `${prefix}message` CHANGE `description` `description` mediumtext;
 ALTER TABLE `${prefix}message` ADD `showOnLogin` int(1) unsigned DEFAULT 0;
 
 RENAME TABLE `${prefix}attachement` TO `${prefix}attachment`;
@@ -89,6 +123,14 @@ ADD `project` int(1) unsigned DEFAULT 0;
 UPDATE `${prefix}expensedetailtype` set `individual`=1;
 INSERT INTO `${prefix}expensedetailtype` (id, name, sortOrder, value01, unit01, value02, unit02, value03, unit03, idle, project) VALUES
 (5, 'detail', 50, null, 'units', null, '€ per unit', null, null, 0, 1);
+
+ALTER TABLE `${prefix}document` ADD `idUser` int(12) unsigned,
+ADD `creationDate` date DEFAULT NULL;
+UPDATE `${prefix}document` set idUser=idAuthor;
+
+-- ///////////////////////////////////////////////////////////
+-- Menu upgrade for new contectual menu function
+-- ///////////////////////////////////////////////////////////
 
 ALTER TABLE `${prefix}menu` ADD `menuClass` varchar(400);
 UPDATE `${prefix}menu` SET menuClass='Work Risk RequirementTest Financial Meeting ' WHERE name='menuToday';

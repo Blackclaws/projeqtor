@@ -408,7 +408,7 @@
     
     // Check for an advanced filter (stored in User)
     foreach ($arrayFilter as $crit) {
-      if ($crit['sql']['operator']!='SORT') {
+      if ($crit['sql']['operator']!='SORT') { 
       	$split=explode('_', $crit['sql']['attribute']);
       	$critSqlValue=$crit['sql']['value'];
       	if ($crit['sql']['operator']=='IN' and $crit['sql']['attribute']=='idProduct') {
@@ -453,6 +453,9 @@
 		      	  ." where VERS.refType=".Sql::str($objectClass)." and VERS.refId=".$table.".id and scope=".Sql::str($scope)
 		      	  ." and VERS.idVersion IN ".$critSqlValue
 		      	  .")";
+		      }
+		      if ($crit['sql']['operator']=='NOT IN') {
+		        $queryWhere.=" or ".$table . "." . $crit['sql']['attribute']. " IS NULL ";
 		      }
 		      if ($crit['sql']['operator']!=' exists ') {
 		        $queryWhere.=")";
