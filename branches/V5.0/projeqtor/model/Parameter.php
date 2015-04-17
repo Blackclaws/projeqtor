@@ -382,18 +382,21 @@ class Parameter extends SqlElement {
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
-                           "pdfInNewWindow"=>"list", 
-                           'sectionMiscellaneous'=>'section',      
+                           "pdfInNewWindow"=>"list",
+                         'newColumn'=>'newColumn',
+                         'sectionMiscellaneous'=>'section',      
                            "defaultProject"=>"list",
                            'projectIndentChar'=>'list',
                            'newColumn'=>'newColumn',
-                         'newColumn'=>'newColumn',
                          'sectionPhoto'=>'section',
-                         'image'=>'photo',
-                         'sectionPassword'=>'section',
-                         'password'=>'specific'
-        
+                           'image'=>'photo'
         );
+        $lockPassword=Parameter::getGlobalParameter('lockPassword');
+        if (! getBooleanValue($lockPassword)) {
+          $parameterList['sectionPassword']='section';
+          $parameterList['password']='specific';
+        }
+        
         break;
       case ('globalParameter'):
       	$parameterList=array('sectionDailyHours'=>"section",

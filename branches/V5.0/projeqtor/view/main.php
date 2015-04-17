@@ -509,6 +509,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           </td>
           <td width="1px">&nbsp;</td>
           <td width="5%">
+            <?php 
+            $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name'=>'menuUserParameter'));
+            $buttonUserParameter=securityCheckDisplayMenu($menu->id,$menu);
+            if ($buttonUserParameter) {?>
             <div class="pseudoButton" style="min-width:100px" title="<?php echo i18n('menuUserParameter');?>" onClick="loadMenuBarItem('UserParameter','UserParameter','bar');">
               <table >
                 <tr>
@@ -517,8 +521,18 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   </td>
                   <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
                 </tr>
-              </table>    
+              </table>      
             </div>
+            <?php } else {?>
+              <table >
+                <tr>
+                  <td>
+                    <img style="height:24px" src="css/images/iconUser22.png" />
+                  </td>
+                  <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
+                </tr>
+              </table>    
+            <?php }?>
           <td width="1px">&nbsp;</td>
           <td width="30%" style="vertical-align: top;">
             <div id="statusBarProgressDiv" style="text-align: left;color: #000000">

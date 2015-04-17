@@ -232,7 +232,23 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         //echo $sectionField;
       }
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
+      if ($col=='_col_2_2') {
+        if ($prevSection) {
+          echo '</table>';
+          if (!$print) {
+            echo '</div>';
+          } else {
+            echo '<br/>';
+          }
+        }
+        if (!$print) {
+          echo '<div style="float:left;width:'.$widthPct.'" ><table><tr><td>&nbsp;</td></tr>';
+        } else {
+          echo '<table>';
+        }
+      } else {
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
+      }
     } else if (substr($col, 0, 5) == '_sec_') { // if field is _section, draw a new section bar column
       $prevSection=$section;
       if (strlen($col) > 8) {
@@ -327,7 +343,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       $section="Note";
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val));
       drawNotesFromObject($obj, false);
-    } else if (substr($col, 0, 5) == '_BillLine') {
+    } else if ($col== '_BillLine') {
       $prevSection=$section;
       $section="BillLine";
       $colSpanSection='_'.lcfirst($section).'_colSpan';
@@ -335,8 +351,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         $colSpan=$obj->$colSpanSection;
       }
       $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
-      //startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol);
-      //drawBillLinesFromObject($obj, false);
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,count($val));
+      drawBillLinesFromObject($obj, false);
     } else if (substr($col, 0, 1) == '_' and substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_') { // field not to be displayed
                                                                                                                               //
     } else {
@@ -1316,6 +1332,10 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
         
          'assignment'=>    array('float'=>'left','clear'=>(($nbCol==2)?'left':'none')),
         
+        'periodicity'=>    array('float'=>'left','clear'=>'left'),
+        
+        'expensedetail'=>      array('clear'=>'left'),
+         'billline'=>      array('clear'=>'left'),
          'link'=>          array('clear'=>(($nbCol==3)?'left':'left')),
          'attachment'=>    array('float'=>'left',  'clear'=>'none'),
          'note'=>          array('float'=>'right',  'clear'=>'none')
@@ -1742,7 +1762,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   foreach ( $lines as $line ) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="noteData" style="text-align:center;">';
+      echo '<td class="noteData" style="text-align:center;white-space:nowrap">';
       if ($lock == 0) {
         echo ' <img src="css/images/smallButtonEdit.png" onClick="editBillLine(
 		      ' .
@@ -2355,7 +2375,7 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
   foreach ( $list as $expenseDetail ) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center;">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
       // if ($canUpdate and ! $print and $workVisible) {
       if ($canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editExpenseDetail(\''.$scope.'\',' . "'" . $expenseDetail->id . "'" . ",'" . $expenseDetail->idExpense . "'" . ",'" . $expenseDetail->idExpenseDetailType . "'" . ",'" . $expenseDetail->expenseDate . "'" . ",'" .
@@ -2960,7 +2980,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
   }
   $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
   
-  if (!$noselect and isset($obj->_BillLine)) {
+/*  if (!$noselect and isset($obj->_BillLine)) {
     ?> <br />
   <?php if ($print) {?>
 <table width="<?php echo $widthPct;?>px;">
@@ -2973,7 +2993,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     </table>
   <?php
     } else {
-      $titlePane=$objClass . "_billLine";
+      $titlePane=$objClass . "_BillLine";
       ?>
 <div style="width: <?php echo $widthPct;?>" dojoType="dijit.TitlePane" 
      title="<?php echo i18n('sectionBillLines');?>"
@@ -2983,7 +3003,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
      onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawBillLinesFromObject($obj); ?>
 </div>
 <?php }?> <?php
-  }
+  } */
   if (!$noselect and isset($obj->_ChecklistDefinitionLine)) {
     ?> <br />
   <?php if ($print) {?>ChecklistDefinitionLine

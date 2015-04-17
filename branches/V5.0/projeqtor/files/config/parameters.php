@@ -20,3 +20,4 @@ $flashReport=true;
 $debugQuery=false;
 //======= END// New parameters V4.4.0
 $enforceUTF8 = '1';
+$lockPassword="false";
