@@ -33,7 +33,7 @@ require_once('_securityCheck.php');
 class ProjectMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
   public $_spe_rf; 
   public $name;
@@ -68,7 +68,7 @@ class ProjectMain extends SqlElement {
   public $latitude;
   public $description;
   public $objectives;
-  public $_col_Progress;
+  public $_sec_Progress;
   
   public $ProjectPlanningElement; // is an object
   
@@ -78,16 +78,16 @@ class ProjectMain extends SqlElement {
   public $_sec_Versionproject_versions;
   public $_VersionProject=array();
   
-  public $_col_Subprojects;
+  public $_sec_Subprojects;
   public $_spe_subprojects;
   
-  public $_col_predecessor;
+  public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   
-  public $_col_successor;
+  public $_sec_successor;
   public $_Dependency_Successor=array();
   
-  public $_col_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

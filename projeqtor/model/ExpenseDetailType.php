@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class ExpenseDetailType extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;
   public $name;
   public $sortOrder;
@@ -43,7 +43,7 @@ class ExpenseDetailType extends SqlElement {
   public $unit03;
   public $idle;
   public $description;
-  public $_col_scope;
+  public $_sec_scope;
   public $individual;
   public $project;
   

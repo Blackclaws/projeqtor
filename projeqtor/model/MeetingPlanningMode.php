@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class MeetingPlanningMode extends PlanningMode {
 
   // extends SqlElement, so has $id
-  public $_col_1_2;
+  public $_sec_description;
   public $id;
   public $name;
   public $code;
@@ -40,7 +40,7 @@ class MeetingPlanningMode extends PlanningMode {
   public $mandatoryEndDate;
   public $applyTo;
   public $idle ;
-  public $_col_2_2;
+  public $_sec_void;
   
   // Define the layout that will be used for lists
   private static $_layout='

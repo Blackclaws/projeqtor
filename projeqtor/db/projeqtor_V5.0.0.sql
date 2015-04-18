@@ -15,6 +15,8 @@ ALTER TABLE `${prefix}action` CHANGE `description` `description` mediumtext,
 ALTER TABLE `${prefix}activity` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
+ALTER TABLE `${prefix}affectation` CHANGE `description` `description` mediumtext;
+
 ALTER TABLE `${prefix}bill` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}command` CHANGE `description` `description` mediumtext,
@@ -32,6 +34,8 @@ ALTER TABLE `${prefix}issue` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext,
  CHANGE `cause` `cause` mediumtext,
  CHANGE `impact` `impact` mediumtext;
+
+ALTER TABLE `${prefix}mail` CHANGE `mailBody` `mailBody` mediumtext;
  
 ALTER TABLE `${prefix}meeting` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
@@ -49,6 +53,8 @@ ALTER TABLE `${prefix}opportunity` CHANGE `description` `description` mediumtext
  CHANGE `impact` `impact` mediumtext;
  
 ALTER TABLE `${prefix}periodicmeeting` CHANGE `description` `description` mediumtext;
+
+ALTER TABLE `${prefix}product` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}project` CHANGE  `description` `description` mediumtext;
 
@@ -62,6 +68,8 @@ ALTER TABLE `${prefix}quotation` ADD `result` mediumtext;
 
 ALTER TABLE `${prefix}requirement` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
+ 
+ALTER TABLE `${prefix}resource` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}risk` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext,
@@ -78,6 +86,7 @@ ALTER TABLE `${prefix}testsession` CHANGE `description` `description` mediumtext
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
+ALTER TABLE `${prefix}version` CHANGE `description` `description` mediumtext;
 -- ///////////////////////////////////////////////////////////
 -- Other Changes
 -- ///////////////////////////////////////////////////////////

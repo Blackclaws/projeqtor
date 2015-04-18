@@ -31,20 +31,21 @@ require_once('_securityCheck.php');
 class Mail extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_MailDescription;
+  public $_sec_MailDescription;
   public $id;    // redefine $id to specify its visible place 
   public $idUser;
   public $mailDateTime;
   public $mailTo;
   public $mailStatus;
   public $idle;
-  public $_col_2_2_MailItem;
+  public $mailTitle;
+  public $_sec_MailItem;
   public $idProject;
   public $idMailable;
   public $refId;
   public $idStatus;
-  public $_col_1_1_MailText;
-  public $mailTitle;
+  public $_sec_MailText;
+  public $_mailText_colSpan="2";
   public $mailBody;
   
   
@@ -61,7 +62,7 @@ class Mail extends SqlElement {
     ';
     
     private static $_fieldsAttributes=array('mailBody'=>'displayHtml',
-        'mailTitle'=>'displayHtml');
+        'mailTitle'=>'readonly');
        
     private static $_databaseColumnName = array('idMailable'=>'refType');
     

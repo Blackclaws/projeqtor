@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class PeriodicMeetingMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idMeetingType;
@@ -39,7 +39,7 @@ class PeriodicMeetingMain extends SqlElement {
   public $location;
   public $idUser;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $MeetingPlanningElement;
   public $idActivity;
   public $idResource;

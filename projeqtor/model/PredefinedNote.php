@@ -30,7 +30,7 @@
 require_once('_securityCheck.php');
 class PredefinedNote extends SqlElement {
 
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;
   public $scope;
   public $idTextable;
@@ -38,7 +38,7 @@ class PredefinedNote extends SqlElement {
   public $name;
   public $text;
   public $idle;
-	public $_col_2_2;  
+	public $_sec_void;  
 
 	// Define the layout that will be used for lists
   private static $_layout='

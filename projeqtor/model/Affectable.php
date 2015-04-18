@@ -31,7 +31,7 @@ require_once ('_securityCheck.php');
 class Affectable extends SqlElement {
   
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id; // redefine $id to specify its visible place
   public $name;
   public $userName;
@@ -190,13 +190,16 @@ class Affectable extends SqlElement {
     $image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$id));
     if ($image->id and $image->isThumbable()) {
       if (!$print) {
-        $result.='<tr style="height:20px;">';
-        $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
-        $result.='<td>&nbsp;&nbsp;';
+        //$result.='<tr style="height:20px;">';
+        //$result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+        //$result.='<td>&nbsp;&nbsp;';
+        $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
+        $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
         $result.='<img src="css/images/smallButtonRemove.png" '
             .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
         $horizontal='right:10px';
         $top='30px';
+        $result.='</span>';
       } else {
         if ($outMode=='pdf') {
           $horizontal='left:450px';
@@ -209,7 +212,7 @@ class Affectable extends SqlElement {
       $extraStyle='top:30px;'.$horizontal;
       $result.=Affectable::showBigImage($extraStyle,$id,$image->fileName,$image->id);
       if (!$print) {
-        $result.='</td></tr>';
+        //$result.='</td></tr>';
       }
     } else {
       if ($image->id) {
@@ -217,14 +220,18 @@ class Affectable extends SqlElement {
       }
       if (!$print) {
         $horizontal='right:10px';
-        $result.='<tr style="height:20px;">';
-        $result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
-        $result.='<td>&nbsp;&nbsp;';
+        //$result.='<tr style="height:20px;">';
+        //$result.='<td class="label">'.i18n('colPhoto').'&nbsp;:&nbsp;</td>';
+        //$result.='<td>&nbsp;&nbsp;';
+        $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
+        $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
         $result.='<img src="css/images/smallButtonAdd.png" onClick="addAttachment(\'file\');" title="'.i18n('addPhoto').'" class="smallButton"/> ';
+        $result.='</span>';
         $extraStyle='top:30px;'.$horizontal;
         $result.=Affectable::showBigImageEmpty($extraStyle);
-        $result.='</td>';
-        $result.='</tr>';
+        //$result.='</td>';
+        //$result.='</tr>';
+        
       }
     }
     return $result;

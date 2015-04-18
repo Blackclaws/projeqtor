@@ -31,28 +31,29 @@ require_once('_securityCheck.php');
 class User extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $name;
   public $_spe_image;
+  public $name;
+  public $resourceName;
+  public $initials;
   public $email;
-  public $password;
-  public $_spe_buttonSendMail;
   public $idProfile;
   public $locked;
   public $loginTry;
   public $isLdap;
   public $isContact;
   public $isResource=0;
-  public $initials;
-  public $resourceName;
+  
   public $idle;
   public $description;
-  public $apiKey;
-  public $_col_2_2_Affectations;
+  public $_sec_Affectations;
   public $_spe_affectations;
-  public $_col_Miscellaneous;
+  public $_sec_Miscellaneous;
+  public $password;
   public $dontReceiveTeamMails;
+  public $apiKey;
+  public $_spe_buttonSendMail;
   public $_arrayFilters=array();
   //public $_arrayFiltersId=array();
   public $_arrayFiltersDetail=array();
@@ -75,7 +76,9 @@ class User extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
   
-  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
+  private static $_fieldsAttributes=array("id"=>"nobr",
+                                          "name"=>"required, truncatedWidth100",
+                                          "resourceName"=>"truncatedWidth100",
   		                                    "email"=>"truncatedWidth100",
   										                    "isLdap"=>"hidden,forceExport",
                                           "idProfile"=>"required",

@@ -47,14 +47,20 @@ foreach($FieldsArray as $key => $val) {
 		unset($FieldsArray[$key]);
     continue;
 	}
-	$FieldsArray[$key]=$obj->getColCaption($val);
-	if (substr($val,0,5)=='_col_') {
-		if (strlen($val)>8) {
-			$section=substr($val,9);
-			if ($section!='predecessor' and $section!='successor' and $section !='TestCaseRun') {
-				$FieldsArray[$key]=i18n('section' . ucfirst($section));
+	if (substr($val,0,5)=='_sec_') {
+		if (strlen($val)>6) {
+			$section=substr($val,5);
+			if ($section=='Assignment' or $section=='Affectations' or substr($section,0,14)=='Versionproject'
+       or $section=='Subprojects' or $section=='Approver' or $section=='ExpenseDetail' 
+       or $section=='predecessor' or $section=='successor' or $section =='TestCaseRun'
+       or $section=='Projects') {
+			  unset($FieldsArray[$key]);
+			  continue;
 			}
+			$FieldsArray[$key]=i18n('section' . ucfirst($section));
 		}
+	} else {
+	  $FieldsArray[$key]=$obj->getColCaption($val);
 	}
 	if(substr($FieldsArray[$key],0,1)=="["){
 		unset($FieldsArray[$key]);
@@ -67,7 +73,7 @@ $index=1;
 $last_key = end($FieldsArray);
 $allChecked="checked";
 foreach($FieldsArray as $key => $val){
-	if(substr($key,0,5)=="_col_"){
+	if(substr($key,0,5)=="_sec_"){
 		if($val!=$last_key) {
 			$htmlresult.='</td><td style="vertical-align:top;width: 200px;" valign="top">'
 			.'<div class="section" style="width:90%"><b>'.$val.'</b></div><br/>';

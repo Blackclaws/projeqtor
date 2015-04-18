@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class OpportunityMAin extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -46,7 +46,7 @@ class OpportunityMAin extends SqlElement {
   public $cause;
   public $impact;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $idStatus;
   public $idResource;
   public $idPriority;
@@ -65,7 +65,7 @@ class OpportunityMAin extends SqlElement {
   //public $_Link_Action=array();
   //public $_sec_linkIssue;
   //public $_Link_Issue=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

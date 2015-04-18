@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class QuotationMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -44,7 +44,7 @@ class QuotationMain extends SqlElement {
   public $idContact;
   public $description;
   public $additionalInfo;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $idStatus;
   public $idResource;  
   public $sendDate;
@@ -63,7 +63,7 @@ class QuotationMain extends SqlElement {
   public $initialEndDate;
   public $idActivityType;
   public $comment;
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

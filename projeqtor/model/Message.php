@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Message extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $idMessageType;
@@ -40,7 +40,7 @@ class Message extends SqlElement {
   public $idUser;
   public $showOnLogin;
   public $idle;
-  public $_col_2_2_Message;
+  public $_sec_Message;
   public $description;
   
   private static $_layout='

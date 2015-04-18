@@ -32,7 +32,7 @@ require_once('_securityCheck.php');
 class VersionProject extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idVersion;
   public $idProject;

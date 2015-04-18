@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class IndicatorDefinition extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idIndicatorable;
   public $name;
@@ -47,7 +47,7 @@ class IndicatorDefinition extends SqlElement {
   public $idAlertDelayUnit;
   public $codeAlertDelayUnit;
   public $idle;
-  public $_col_2_2_SendMail;
+  public $_sec_SendMail;
   
   public $mailToContact;
   public $mailToUser;

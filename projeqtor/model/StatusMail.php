@@ -31,14 +31,14 @@ require_once('_securityCheck.php');
 class StatusMail extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $idMailable;
   public $idType;
   public $idStatus;
   public $idEvent;
   public $idle;
-  public $_col_2_2_SendMail;
+  public $_sec_SendMail;
   public $mailToContact;
   public $mailToUser;
   public $mailToResource;

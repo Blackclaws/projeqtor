@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class PlanningMode extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2;
+  public $_sec_description;
   public $id;
   public $name;
   public $code;
@@ -41,7 +41,7 @@ class PlanningMode extends SqlElement {
   public $mandatoryDuration;
   public $applyTo;
   public $idle ;
-  public $_col_2_2;
+  public $_sec_void;
   
   public $_isNameTranslatable = true;
   

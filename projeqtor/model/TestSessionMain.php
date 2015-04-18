@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class TestSessionMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -43,7 +43,7 @@ class TestSessionMain extends SqlElement {
   public $creationDateTime;
   public $idUser;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $idActivity;
   public $idTestSession;
   public $idStatus;
@@ -61,7 +61,7 @@ class TestSessionMain extends SqlElement {
   public $result;
   public $_sec_Assignment;
   public $_Assignment=array();
-  public $_col_1_1_Progress;
+  public $_sec_Progress;
   public $TestSessionPlanningElement;
   public $_sec_testCaseSummary;
   public $_tab_5_2_smallLabel = array('countTotal','countPlanned', 'countPassed', 'countBlocked', 'countFailed', 'workElementCount','');
@@ -82,14 +82,14 @@ class TestSessionMain extends SqlElement {
   public $_void_2;
   public $_void_3;
   public $countIssues;
-  public $_col_1_2_predecessor;
+  public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
-  public $_col_2_2_successor;
+  public $_sec_successor;
   public $_Dependency_Successor=array();
-  public $_col_1_1_TestCaseRun;
+  public $_sec_TestCaseRun;
   public $_testCaseRun_colSpan="2";
   public $_TestCaseRun=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

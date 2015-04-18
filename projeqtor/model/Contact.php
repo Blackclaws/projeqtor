@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Contact extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $_spe_image;
@@ -49,7 +49,7 @@ class Contact extends SqlElement {
   public $fax;
   public $idle;
   public $description;
-  public $_col_2_2_Address;
+  public $_sec_Address;
   public $designation;
   public $street;
   public $complement;

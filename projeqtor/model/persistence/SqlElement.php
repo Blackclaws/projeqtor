@@ -3259,16 +3259,6 @@ abstract class SqlElement {
 			$nobr=false;
 			if (substr($col,0,4)=='_tab') {
 				// Nothing
-			} else if (substr($col,0,5)=='_col_') {
-			  $pos=strrpos($col, '_');
-			  if ($pos>0) {
-					$section=substr($col,$pos+1);
-					if ($section=='description' or $section=='treatment') {
-						$msg.=$rowStart.$sectionStart.i18n('section' . ucfirst($section)).$sectionEnd.$rowEnd;
-					}
-				} else {
-					$section='';
-				}
 			} else if (substr($col,0,5)=='_sec_') {
 				if (strlen($col)>8) {
 					$section=substr($col,5);
@@ -3702,7 +3692,7 @@ abstract class SqlElement {
 		$maxLenth=500;
 		foreach ($this as $fld=>$val) {
 			if ($this->getDataLength($fld)>100 and strlen($val)>$maxLenth) {
-				//$secFull="_col_1_1_".$fld;
+				//$secFull="_sec_".$fld;
 				//$this->$secFull=$val;
 				$fldFull="_".$fld."_full";
 				$this->$fldFull=$val;

@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Recipient extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $companyNumber;
@@ -43,7 +43,7 @@ class Recipient extends SqlElement {
   public $ibanCountry;
   public $ibanKey;
   public $ibanBban;
-  public $_col_2_2_Address;
+  public $_sec_Address;
   public $designation;
   public $street;
   public $complement;
