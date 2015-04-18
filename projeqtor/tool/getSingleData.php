@@ -47,7 +47,7 @@
     } else if ($type=='resourceProfile') {
       $idRes=$_REQUEST['idResource'];
       if (! $idRes) return;
-      $r=new Resource($idRes);
+      $r=new Affectable($idRes);
       echo $r->idProfile;
     } else {    
       echo '';

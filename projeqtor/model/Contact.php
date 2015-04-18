@@ -33,21 +33,20 @@ class Contact extends SqlElement {
   // extends SqlElement, so has $id
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $name;
   public $_spe_image;
-  //public $idRecipient;
-  public $isResource;
-  public $initials;
-  public $isUser;
-  public $idProfile;
+  public $name;
   public $userName;
-  
+  public $initials;
   public $email;
+  public $idProfile;
   public $idClient;
   public $phone;
   public $mobile;
   public $fax;
+  public $isResource;
+  public $isUser;
   public $idle;
+  //public $idRecipient;
   public $description;
   public $_sec_Address;
   public $designation;
@@ -59,6 +58,7 @@ class Contact extends SqlElement {
   public $country;  
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;
   public $password;
   
@@ -77,6 +77,8 @@ class Contact extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
+                                          "userName"=>"truncatedWidth100",
+                                          "email"=>"truncatedWidth100",
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
                                           "isResource"=>"readonly",
