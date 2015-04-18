@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class QuestionMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -40,7 +40,7 @@ class QuestionMain extends SqlElement {
   public $creationDate;
   public $idUser;
   public $description;
-  public $_col_2_2_answer;
+  public $_sec_answer;
   public $idStatus;
   public $idResource;
   public $initialDueDate;
@@ -57,7 +57,7 @@ class QuestionMain extends SqlElement {
   public $result;    
   //public $_sec_linkMeeting;
   //public $_Link_Meeting=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

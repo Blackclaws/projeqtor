@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class MeetingMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -49,7 +49,7 @@ class MeetingMain extends SqlElement {
   public $_spe_buttonSendMail;
   public $idUser;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $MeetingPlanningElement;
   public $idActivity;
   public $idStatus;
@@ -71,7 +71,7 @@ class MeetingMain extends SqlElement {
   //public $_Link_Decision=array();
   //public $_sec_linkQuestion;
   //public $_Link_Question=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

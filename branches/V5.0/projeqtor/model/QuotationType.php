@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class QuotationType extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $code;
@@ -39,7 +39,7 @@ class QuotationType extends SqlElement {
   public $sortOrder=0;
   public $idle;
   public $description;
-  public $_col_2_2_behavior;
+  public $_sec_behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $mandatoryResourceOnHandled;

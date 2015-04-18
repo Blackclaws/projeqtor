@@ -31,13 +31,13 @@ require_once('_securityCheck.php');
 class TermMain extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idProject;
   public $idBill;
   public $idle;
-  public $_col_2_2_Price;
+  public $_sec_Price;
   public $_tab_3_2 = array('real', 'validated', 'planned', 'amount', 'date');
   public $amount;
   public $validatedAmount; 
@@ -45,7 +45,7 @@ class TermMain extends SqlElement {
   public $date;
   public $validatedDate;
   public $plannedDate;
-  public $_col_1_1_trigger;
+  public $_sec_trigger;
   public $_Dependency_Predecessor=array();
   public $_Note=array();
   

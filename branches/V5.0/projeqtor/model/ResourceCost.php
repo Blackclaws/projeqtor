@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class ResourceCost extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idResource;
   public $idRole;
@@ -39,7 +39,7 @@ class ResourceCost extends SqlElement {
   public $startDate;
   public $endDate; 
   public $idle;
-  public $_col_2_2;
+  public $_sec_void;
   
   // Define the layout that will be used for lists
   private static $_layout='

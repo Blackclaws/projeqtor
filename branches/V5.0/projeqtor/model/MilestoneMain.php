@@ -32,7 +32,7 @@ class MilestoneMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -42,7 +42,7 @@ class MilestoneMain extends SqlElement {
   public $idUser;
   public $Origin;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $idActivity;
   public $idStatus;
   public $idResource;
@@ -56,13 +56,13 @@ class MilestoneMain extends SqlElement {
   public $_lib_cancelled;
   public $idVersion;
   public $result;
-  public $_col_1_1_Progress;
+  public $_sec_Progress;
   public $MilestonePlanningElement; // is an object
-  public $_col_1_2_predecessor;
+  public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
-  public $_col_2_2_successor;
+  public $_sec_successor;
   public $_Dependency_Successor=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();  

@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Expense extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idProject;
   public $idResource;
@@ -39,7 +39,7 @@ class Expense extends SqlElement {
   //public $idExpenseType;
   public $name;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $idStatus;  
   public $expensePlannedDate;
   public $plannedAmount;
@@ -50,7 +50,7 @@ class Expense extends SqlElement {
   public $month;
   public $year;
   public $idle;
-  //public $_col_1_1_Detail;
+  //public $_sec_Detail;
   public $_ExpenseDetail=array();
   public $_Attachment=array();
   public $_Note=array();

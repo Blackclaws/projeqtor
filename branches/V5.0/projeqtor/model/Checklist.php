@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Checklist extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idChecklistDefinition;
   public $refType;

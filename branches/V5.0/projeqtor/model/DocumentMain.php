@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class DocumentMain extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -48,7 +48,7 @@ class DocumentMain extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   
-  public $_col_Version; 
+  public $_sec_Version; 
   public $idVersioningType;
   public $idDocumentVersion;
   public $idDocumentVersionRef;
@@ -68,7 +68,7 @@ class DocumentMain extends SqlElement {
   public $version;
   public $revision;
   public $draft;
-  public $_col_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Note=array();
   

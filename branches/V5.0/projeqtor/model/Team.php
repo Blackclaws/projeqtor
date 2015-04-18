@@ -31,12 +31,12 @@ require_once('_securityCheck.php');
 class Team extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $idle;
   public $description;
-  public $_col_2_2_members;
+  public $_sec_members;
   public $_spe_members;
   public $_spe_affectMembers;
   

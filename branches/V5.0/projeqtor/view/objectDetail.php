@@ -198,59 +198,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
       }
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
-    } else if (substr($col, 0, 5) == '_col_') { // if field is _col, draw a new main column
-      $previousCol=$currentCol;
-      $currentCol+=1;
-      $nbCol=substr($col, 7, 1);
-      $nbCol=$nbColMax;
-      /*
-       * $widthPct = round ( 98 / $nbCol ) . "%"; if ($nbCol == '1') { $widthPct = $displayWidth; } if (substr ( $displayWidth, - 2, 2 ) == "px") { $val = substr ( $displayWidth, 0, strlen ( $displayWidth ) - 2 ); $widthPct = floor ( ($val / $nbCol) - 4) . "px"; } if ($print) { $widthPct = round ( ($printWidth / $nbCol) - 2 * ($nbCol - 1) ) . "px"; }
-       */
-      $prevSection=$section;
-      $split=explode('_', $col);
-      if (count($split) > 1) {
-        $section=$split [count($split) - 1];
-      } else {
-        $section='';
-      }
-      $colSpan=null;
-      $colSpanSection='_'.lcfirst($section).'_colSpan';
-      if ( property_exists($obj,$colSpanSection) ) {
-        $colSpan=$obj->$colSpanSection;
-      }
-      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
-      $sectionField='_'.$section;
-      $sectionFieldDep='_Dependency_'.ucfirst($section);
-      $sectionFieldDoc='_Document'.$section;
-      $cpt=null;
-      if (property_exists($obj,$sectionField ) && isset($obj->$sectionField) && is_array($obj->$sectionField)) {
-        $cpt=count($obj->$sectionField);
-      } else if (property_exists($obj,$sectionFieldDep ) && is_array($obj->$sectionFieldDep)){
-        $cpt=count($obj->$sectionFieldDep);
-      } else if (property_exists($obj,$sectionFieldDoc ) && is_array($obj->$sectionFieldDoc)){
-        $cpt=count($obj->$sectionFieldDoc);
-      } else {
-        //echo $sectionField;
-      }
-      if ($col=='_col_2_2') {
-        if ($prevSection) {
-          echo '</table>';
-          if (!$print) {
-            echo '</div>';
-          } else {
-            echo '<br/>';
-          }
-        }
-        if (!$print) {
-          echo '<div style="float:left;width:'.$widthPct.'" ><table><tr><td>&nbsp;</td></tr>';
-        } else {
-          echo '<table>';
-        }
-      } else {
-        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol,$cpt);
-      }
     } else if (substr($col, 0, 5) == '_sec_') { // if field is _section, draw a new section bar column
       $prevSection=$section;
+      $currentCol+=1;
       if (strlen($col) > 8) {
         $section=substr($col, 5);
       } else {
@@ -275,8 +225,56 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else {
         //echo $sectionField & "  " & $sectionFieldVP;
       }
-      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
-      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt);
+      $colSpan=null;
+      $colSpanSection='_'.lcfirst($section).'_colSpan';
+      if ( property_exists($obj,$colSpanSection) ) {
+        $colSpan=$obj->$colSpanSection;
+      }
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,$colSpan);
+      $sectionField='_'.$section;
+      $sectionFieldDep='_Dependency_'.ucfirst($section);
+      $sectionFieldDoc='_Document'.$section;
+      if ($section=='trigger') {
+        $sectionFieldDep='_Dependency_Predecessor';
+      }
+      if (substr($section,0,14)=="Versionproject") {
+        $sectionField='_VersionProject';
+      }
+      $cpt=null;
+      if (property_exists($obj,$sectionField ) && isset($obj->$sectionField) && is_array($obj->$sectionField)) {
+        $cpt=count($obj->$sectionField);
+      } else if (property_exists($obj,$sectionFieldDep ) && is_array($obj->$sectionFieldDep)){
+        $cpt=count($obj->$sectionFieldDep);
+      } else if (property_exists($obj,$sectionFieldDoc ) && is_array($obj->$sectionFieldDoc)){
+        $cpt=count($obj->$sectionFieldDoc);
+      } else if ($section=='Affectations') {
+          $aff=new Affectation();
+          if ($classObj=='Project') {
+            $crit=array('idProject'=>$obj->id);
+          } else {
+            $crit=array('idResource'=>$obj->id);
+          }
+          $cpt=$aff->countSqlElementsFromCriteria($crit);
+      } else {
+        // echo "***** $section *****<br/>";
+      }
+      if ($col=='_sec_void') {
+        if ($prevSection) {
+          echo '</table>';
+          if (!$print) {
+            echo '</div>';
+          } else {
+            echo '<br/>';
+          }
+        }
+        if (!$print) {
+          echo '<div style="float:left;width:'.$widthPct.'" ><table><tr><td>&nbsp;</td></tr>';
+        } else {
+          echo '<table>';
+        }
+      } else {
+        startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt);
+      }
     } else if (substr($col, 0, 5) == '_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col, 5);
       echo '<tr><td colspan=2>';

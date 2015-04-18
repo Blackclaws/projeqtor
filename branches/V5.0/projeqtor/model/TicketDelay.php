@@ -32,14 +32,14 @@ class TicketDelay extends Delay {
 
   // Define the layout that will be used for lists
     
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
   public $idTicketType;
   public $idUrgency;
   public $value;
   public $idDelayUnit;
   public $idle;
-  public $_col_2_2;
+  public $_sec_void;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>

@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class ActivityPrice extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place
   public $name;
   public $idProject;
@@ -42,7 +42,7 @@ class ActivityPrice extends SqlElement {
   //public $idTeam;
   public $sortOrder=0;
   public $idle;
-  public $_col_2_2;
+  public $_sec_void;
   //public $_sec_Abacus;
   //public $isRef;
   //public $pct;

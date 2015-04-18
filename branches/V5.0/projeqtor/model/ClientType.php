@@ -35,13 +35,13 @@ class ClientType extends SqlElement{
   private static $_databaseCriteria = array('scope'=>'Client');
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place
   public $name;
   public $sortOrder=0;
   public $idle;
   public $description;
-  public $_col_2_2_Behavior;
+  public $_sec_Behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   

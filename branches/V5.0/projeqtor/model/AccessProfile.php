@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class AccessProfile extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
   public $idAccessScopeRead;
@@ -41,7 +41,7 @@ class AccessProfile extends SqlElement {
   public $sortOrder=0;
   public $idle;
   public $description;
-  public $_col_2_2;
+  public $_sec_void;
   
   public $_isNameTranslatable = true;
   

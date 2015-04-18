@@ -103,7 +103,7 @@ class TicketSimpleMain extends Ticket {
     parent::__construct($id);
     unset($this->_Link);
     unset($this->WorkElement);
-    unset($this->_col_Link);
+    unset($this->_sec_Link);
   }
 
    /** ==========================================================================

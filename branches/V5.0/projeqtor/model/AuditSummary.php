@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class AuditSummary extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $auditDay;
   public $firstConnection;

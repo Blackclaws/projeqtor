@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class IndicatorValue extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;
   public $code;
   public $type;

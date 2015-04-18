@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class TestCaseMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -46,7 +46,7 @@ class TestCaseMain extends SqlElement {
   public $idContext3;
   public $idUser;
   public $description;
-  public $_col_2_2_treatment;
+  public $_sec_treatment;
   public $idTestCase;
   public $idStatus;
   public $idResource;
@@ -63,13 +63,13 @@ class TestCaseMain extends SqlElement {
   public $result;
   public $_calc_runStatus;
   public $idRunStatus; 
-  public $_col_1_2_predecessor;
+  public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
-  public $_col_2_2_successor;
+  public $_sec_successor;
   public $_Dependency_Successor=array();
-  public $_col_1_1_TestCaseRun;
+  public $_sec_TestCaseRun;
   public $_TestCaseRun=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

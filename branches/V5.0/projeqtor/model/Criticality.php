@@ -31,14 +31,14 @@ require_once('_securityCheck.php');
 class Criticality extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $value;
   public $color;
   public $sortOrder=0;
   public $idle;
-  public $_col_2_2;
+  public $_sec_void;
   
   // Define the layout that will be used for lists
   private static $_layout='

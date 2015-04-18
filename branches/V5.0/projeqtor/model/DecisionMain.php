@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class DecisionMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $reference;
   public $name;
@@ -39,7 +39,7 @@ class DecisionMain extends SqlElement {
   public $idProject;
   public $idUser;
   public $description;
-  public $_col_2_2_validation;
+  public $_sec_validation;
   public $idStatus;
   public $decisionDate;
   public $origin;
@@ -49,7 +49,7 @@ class DecisionMain extends SqlElement {
   public $_lib_cancelled;
   //public $_sec_linkMeeting;
   //public $_Link_Meeting=array();
-  public $_col_1_1_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();

@@ -32,7 +32,7 @@ require_once('_securityCheck.php');
 class Calendar extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
 	public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idCalendarDefinition;
@@ -43,8 +43,7 @@ class Calendar extends SqlElement {
   public $month;
   public $year;
   public $idle;
-  public $_col_2_2;  
-  public $_col_1_1;
+  public $_sec_void;  
   public $_spe_calendarView;
   
   // Define the layout that will be used for lists

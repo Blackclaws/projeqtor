@@ -31,15 +31,15 @@ require_once('_securityCheck.php');
 class CalendarDefinition extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   //public $sortOrder=0;
   public $idle;
-  public $_col_2_2_Year;
+  public $_sec_Year;
   public $_spe_year;
   public $_spe_copyFromDefault;
-  public $_col_1_1_Calendar;
+  public $_sec_Calendar;
   public $_spe_calendar;
   
   // Define the layout that will be used for lists

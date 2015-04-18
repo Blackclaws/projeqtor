@@ -32,7 +32,7 @@ class ProjectType extends SqlElement {
 
   // Define the layout that will be used for lists
     // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $code;
@@ -42,7 +42,7 @@ class ProjectType extends SqlElement {
   public $_spe_billingType;
   public $idle;
   public $description;
-  public $_col_2_2_Behavior;
+  public $_sec_Behavior;
   public $mandatoryDescription;
   public $_lib_mandatoryField;
   public $lockDone;

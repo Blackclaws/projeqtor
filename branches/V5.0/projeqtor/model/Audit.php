@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Audit extends SqlElement {
 	
 	// List of fields that will be exposed in general user interface
-	public $_col_1_2_description;
+	public $_sec_description;
 	public $id; // redefine $id to specify its visible place
 	public $sessionId;
 	public $auditDay;
@@ -41,7 +41,7 @@ class Audit extends SqlElement {
 	public $browser;
 	public $browserVersion;
 	public $userAgent;
-	public $_col_2_2_connectionStatus;
+	public $_sec_connectionStatus;
 	public $connectionDateTime;
 	public $lastAccessDateTime;
 	public $disconnectionDateTime;

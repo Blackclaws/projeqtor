@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class Alert extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;
   public $idProject;
   public $refType;
@@ -45,7 +45,7 @@ class Alert extends SqlElement {
   public $alertReadDateTime; 
   public $_spe_markAsRead;
   public $idle;
-  public $_col_2_2_Message;
+  public $_sec_Message;
   public $title;
   public $message;  
   // Define the layout that will be used for lists

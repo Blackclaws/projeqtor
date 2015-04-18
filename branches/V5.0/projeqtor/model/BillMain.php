@@ -31,7 +31,7 @@ require_once('_securityCheck.php');
 class BillMain extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  public $_col_1_2_description;
+  public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $idBillType;
@@ -42,7 +42,7 @@ class BillMain extends SqlElement {
   public $idRecipient;
   public $Origin;
   public $_spe_billingType;
-  public $_col_2_2_treatment;  
+  public $_sec_treatment;  
   public $billId;
   public $idStatus;
   public $done;
@@ -57,7 +57,7 @@ class BillMain extends SqlElement {
   //public $_sec_BillLine;
   public $_BillLine=array();
   public $_BillLine_colSpan="2";
-  public $_col_Link;
+  public $_sec_Link;
   public $_Link=array();
   public $_Note=array();
 

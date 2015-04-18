@@ -31,18 +31,18 @@ require_once('_securityCheck.php');
 class WorkflowMain extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
   public $sortOrder;
   public $idle;
   public $workflowUpdate;
   public $description;
-  public $_col_2_2;
+  public $_sec_void;
   public $_spe_hideStatus;
-  public $_col_1_1_WorkflowDiagram;
+  public $_sec_WorkflowDiagram;
   public $_spe_workflowDiagram;
-  public $_col_1_1_WorkflowStatus;
+  public $_sec_WorkflowStatus;
   public $_spe_workflowStatus;
   public $_workflowStatus;
   public $_statusList;

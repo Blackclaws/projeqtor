@@ -31,12 +31,13 @@ require_once('_securityCheck.php');
 class Context extends SqlElement {
 
   // extends SqlElement, so has $id
-  public $_col_1_2_Description;
+  public $_sec_Description;
   public $id;    // redefine $id to specify its visiblez place 
   public $idContextType;
   public $name;
   public $sortOrder;
   public $idle;
+  public $_sec_void;
  
     private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
