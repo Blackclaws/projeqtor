@@ -35,6 +35,7 @@ class Affectable extends SqlElement {
   public $id; // redefine $id to specify its visible place
   public $name;
   public $userName;
+  public $idProfile;
   public $isResource;
   public $isUser;
   public $isContact;
@@ -195,7 +196,7 @@ class Affectable extends SqlElement {
         //$result.='<td>&nbsp;&nbsp;';
         $result.='<span class="label" style="position: absolute;top:30px;right:105px;">';
         $result.=i18n('colPhoto').'&nbsp;:&nbsp;';
-        $result.='<img src="css/images/smallButtonRemove.png" '
+        $result.='<img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" style="height:12px" '
             .'onClick="removeAttachment('.$image->id.');" title="'.i18n('removePhoto').'" class="smallButton"/>';
         $horizontal='right:10px';
         $top='30px';

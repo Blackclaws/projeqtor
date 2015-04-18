@@ -33,20 +33,20 @@ class Resource extends SqlElement {
   // extends SqlElement, so has $id
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $name;
   public $_spe_image;
-  public $initials;
-  public $capacity;
-  public $isContact;
-  public $isUser;
+  public $name;
   public $userName;
-  public $idProfile;
-  public $idTeam;
-  public $idCalendarDefinition;
+  public $initials;
   public $email;
+  public $idProfile;
+  public $capacity;
+  public $idCalendarDefinition;
+  public $idTeam;
   public $phone;
   public $mobile;
   public $fax;
+  public $isContact;
+  public $isUser;
   public $idle;
   public $description;
   public $_sec_ResourceCost;
@@ -72,7 +72,9 @@ class Resource extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100", 
+  private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
+                                          "userName"=>"truncatedWidth100",
+                                          "email"=>"truncatedWidth100",
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
                                           "isContact"=>"readonly",
