@@ -43,7 +43,7 @@
 ?>
 <div dojoType="dijit.layout.BorderContainer" class="background">
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
-    <div dojoType="dijit.layout.BorderContainer">
+    <div dojoType="dijit.layout.BorderContainer" >
       <div id="buttonDivContainer" dojoType="dijit.layout.ContentPane" region="left">
         <table width="100%" class="listTitle" >
           <tr valign="middle" height="32px"> 
@@ -57,7 +57,7 @@
             <td><nobr>
              <button id="selectAllButton" dojoType="dijit.form.Button" showlabel="false" 
                title="<?php echo i18n('buttonSelectAll');?>"
-               iconClass="iconSelectAll" >
+               iconClass="iconSelectAll" class="detailButton" >
                 <script type="dojo/connect" event="onClick" args="evt">
                    selectAllRows('objectGrid');
                    updateSelectedCountMultiple();
@@ -65,7 +65,7 @@
               </button>    
               <button id="unselectAllButton" dojoType="dijit.form.Button" showlabel="false" 
                title="<?php echo i18n('buttonUnselectAll');?>"
-               iconClass="iconUnselectAll" >
+               iconClass="iconUnselectAll" class="detailButton" >
                 <script type="dojo/connect" event="onClick" args="evt">
                    unselectAllRows('objectGrid');
                    updateSelectedCountMultiple();
@@ -73,14 +73,14 @@
               </button>    
               <button id="saveButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
                title="<?php echo i18n('buttonSaveMultiple');?>"
-               iconClass="dijitEditorIcon dijitEditorIconSave" >
+               iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton" >
                 <script type="dojo/connect" event="onClick" args="evt">
                   saveMultipleUpdateMode("<?php echo $objectClass;?>");  
                 </script>
               </button>
               <button id="undoButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
                title="<?php echo i18n('buttonQuitMultiple');?>"
-               iconClass="dijitEditorIcon dijitEditorIconUndo" >
+               iconClass="dijitButtonIcon dijitButtonIconExit" class="detailButton" >
                 <script type="dojo/connect" event="onClick" args="evt">
                   dojo.byId("undoButtonMultiple").blur();
                   endMultipleUpdateMode("<?php echo $objectClass;?>");
@@ -97,16 +97,19 @@
             <td>&nbsp;&nbsp;&nbsp;</td>
             <td>
               <?php echo i18n("selectedItemsCount");?> :
-              <input dojoType="dijit.form.TextBox" type="text" id="selectedCount" style="width: 40px" value="0" readonly />
+              <input type="text" id="selectedCount"
+                style="font-weight: bold;background: transparent;border: 0px;color: white;" 
+                value="0" readOnly />
             </td>
           </tr>
         </table>
       </div>
-      <div dojoType="dijit.layout.ContentPane" region="center" >
-        <div id="resultDiv">
-        </div>
+      <div dojoType="dijit.layout.ContentPane" region="center" 
+       style="z-index: 3; height: 35px; position: absolute !important; overflow: visible !important;">
       </div>
     </div>
+  </div>
+  <div id="resultDiv" style="left: 60% ! important; width: 40%;">
   </div>
   <div dojoType="dijit.layout.ContentPane" region="center">
     <div dojoType="dijit.layout.BorderContainer" class="background">
@@ -438,7 +441,7 @@
           </div>
         </form>
       </div>
-      <div dojoType="dijit.layout.ContentPane" id="resultDivMultiple" region="right" class="listTitle" style="width:40%"></div>
+      <div dojoType="dijit.layout.ContentPane" id="resultDivMultiple" region="right" class="listTitle" style="width:38%"></div>
     </div>
   </div> 
 </div>
