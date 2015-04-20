@@ -46,7 +46,8 @@ $selection=trim($_REQUEST['selection']);
 $selectList=explode(';',$selection);
 
 if (!$selection or count($selectList)==0) {
-	 echo '<span class="messageERROR" >'.i18n('messageNoData',array(i18n($className))).'</span>';
+	 $summary='<div class=\'messageWARNING\' >'.i18n('messageNoData',array(i18n($className))).'</div >';
+	 echo '<input type="hidden" id="summaryResult" value="'.$summary.'" />';
 	 exit;
 }
 
@@ -134,6 +135,7 @@ unset($_SESSION['currentObject']); // Clear last accessed item : otherwise histo
 $cptOk=0;
 $cptError=0;
 $cptWarning=0;
+$cptNoChange=0;
 echo "<table>";
 foreach ($selectList as $id) {
 	if (!trim($id)) { continue;}
@@ -222,19 +224,21 @@ foreach ($selectList as $id) {
     }   
   }
 	$resultSave=str_replace('<br/><br/>','<br/>',$resultSave);
-	if (stripos($resultSave,'id="lastOperationStatus" value="ERROR"')>0 ) {
+	$statusSave = getLastOperationStatus ( $resultSave );
+	if ($statusSave=="ERROR" ) {
 	  Sql::rollbackTransaction();
 	  $cptError++;
-	  echo '<td><span class="messageERROR" >' . $resultSave . '</span></td>';
-	} else if (stripos($resultSave,'id="lastOperationStatus" value="OK"')>0 ) {
+	} else if ($statusSave=="OK") {
 	  Sql::commitTransaction();
 	  $cptOk++;
-	  echo '<td><span class="messageOK" >' . $resultSave . '</span></td>';
+	} else if ($statusSave=="NO_CHANGE") {
+	  Sql::commitTransaction();
+	  $cptNoChange++;
 	} else { 
 	  Sql::rollbackTransaction();
 	  $cptWarning++;
-	  echo '<td><span class="messageWARNING" >' . $resultSave . '</span></td>';
   }
+  echo '<td><div style="padding: 0px 5px;" class="message'.$statusSave.'" >' . $resultSave . '</div></td>';
   echo '</tr>';
 }
 echo "</table>";
@@ -247,6 +251,9 @@ if ($cptOk) {
 }
 if ($cptWarning) {
   $summary.='<div class=\'messageWARNING\' >' . $cptWarning." ".i18n('resultWarning') . '</div>';
+}
+if ($cptNoChange) {
+  $summary.='<div class=\'messageNO_CHANGE\' >' . $cptNoChange." ".i18n('resultNoChange') . '</div>';
 }
 echo '<input type="hidden" id="summaryResult" value="'.$summary.'" />';
 ?>

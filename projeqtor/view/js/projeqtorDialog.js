@@ -4504,8 +4504,8 @@ function deleteMultipleUpdateMode(objectClass) {
 	showError("delete is no designed yet");
 }
 function updateSelectedCountMultiple() {
-  if (dijit.byId('selectedCount')) {
-    dijit.byId('selectedCount').set('value',countSelectedItem('objectGrid'));
+  if (dojo.byId('selectedCount')) {
+    dojo.byId('selectedCount').value=countSelectedItem('objectGrid');
   }
 }
 
