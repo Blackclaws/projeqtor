@@ -4540,13 +4540,16 @@ function showImage(objectClass, objectId, imageName) {
   }
   //dijit.byId('formDiv').resize();
 }
-function showBigImage(objectClass, objectId, node, title,hideImage) {
+function showBigImage(objectClass, objectId, node, title,hideImage,nocache) {
   var top=node.getBoundingClientRect().top;
   var left=node.getBoundingClientRect().left;
   var height=node.getBoundingClientRect().height;
   if (! height) height=40;
   if (objectClass=='Affectable' || objectClass=='Resource' || objectClass=='User' || objectClass=='Contact') {
     imageUrl="../files/thumbs/Affectable_"+objectId+"/thumb80.png";
+    if (nocache) {
+      imageUrl+=nocache;
+    }
   } else {
     imageUrl="../tool/download.php?class="+objectClass+"&id="+objectId;
   }
