@@ -161,11 +161,12 @@ class Affectable extends SqlElement {
     purgeFiles($thumbLocation, null);
   }
 
-  public static function getThumbUrl($objectClass, $affId, $size, $nocache=false) {
+  public static function getThumbUrl($objectClass, $affId, $size) {
     $thumbLocation='../files/thumbs';
     $file="$thumbLocation/Affectable_$affId/thumb$size.png";
     if (file_exists($file)) {
-      return "$file".(($nocache)?"?nocache=".microtime():"#$affId#&nbsp;#Affectable");
+      $cache=filemtime($file);
+      return "$file?nocache=".$cache."#$affId#&nbsp;#Affectable";
     } else {      
       return "../view/img/Affectable/thumb$size.png#0#&nbsp;#Affectable";
     }
@@ -181,7 +182,7 @@ class Affectable extends SqlElement {
   }
   public static function showBigImage($extraStylePosition,$affId,$filename, $attachmentId) {
     $result='<div style="position: absolute;'.$extraStylePosition.'; border-radius:40px;width:80px;height:80px;border: 1px solid grey;">'
-      . '<img style="border-radius:40px;" src="'. Affectable::getThumbUrl('Resource', $affId, 80, true).'" '
+      . '<img style="border-radius:40px;" src="'. Affectable::getThumbUrl('Resource', $affId, 80).'" '
       . ' title="'.$filename.'" style="cursor:pointer"'
       . ' onClick="showImage(\'Attachment\',\''.$attachmentId.'\',\''.$filename.'\');" /></div>';
     return $result;

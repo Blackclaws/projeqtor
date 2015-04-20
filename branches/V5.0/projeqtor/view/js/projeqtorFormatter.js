@@ -413,6 +413,11 @@ function thumb(value, size) {
     size = 32;
   var tab = value.split('#');
   filePath = tab[0];
+  var nocache='';
+  var searchNocache=filePath.indexOf('?');
+  if (searchNocache>0) {
+    nocache=filePath.substring(searchNocache);
+  }
   thumbObjectClass = 'Attachment';
   if (tab.length > 3) {
     thumbObjectClass = tab[3];
@@ -429,7 +434,7 @@ function thumb(value, size) {
     result+= '<div style="'+((thumbName)?'text-align:left;':'text-align:center;')+'">';    
     result+='<img style="border-radius:'+radius+'px;height:' + size + 'px;'+((thumbName)?'float:left;':'')+'" src="' + filePath + '"';
     if (filePath.substr(0,23) != '../view/img/Affectable/') {
-      result+=' onMouseOver="showBigImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',this);"';
+      result+=' onMouseOver="showBigImage(\''+thumbObjectClass+'\',\''+thumbObjectId+'\',this,null,null,\''+nocache+'\');"';
       result+=' onMouseOut="hideBigImage();"';
     }
     result+='/>';

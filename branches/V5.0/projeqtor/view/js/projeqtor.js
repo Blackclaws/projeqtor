@@ -1246,8 +1246,13 @@ function finalizeMultipleSave() {
 	msg=msg.replace(" class='messageOK' ","");
 	msg=msg.replace(" class='messageWARNING' ","");
 	msg=msg.replace("</div><div>",", ");
+	msg=msg.replace("</div><div>",", ");
+	msg=msg.replace("<div>","");
 	msg=msg.replace("<div>","");
 	msg=msg.replace("</div>","");
+	msg=msg.replace("</div>","");
+  console.log('=== msg ===============================================  ');
+  console.log(msg);
 	addMessage(msg);
 	dojo.fadeIn({
       node: contentNode, 
