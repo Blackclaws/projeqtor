@@ -24,6 +24,8 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
+include_once '../tool/formatter.php';
+
 if (! isset ($print)) {
 	$print=false;
 }
@@ -136,13 +138,17 @@ if ($print) $canUpdate=false;
 		            </td>
 				<?php }?>
 					
-				<td style="text-align:right; width:15px; color: #A0A0A0;" valign="top">				  
+				<td style="text-align:right; width:50px; color: #A0A0A0;white-space:nowrap" valign="top">				  
 				<?php 
 				  if ($lineVal->checkTime and !$print) {
-            echo '<img src="../view/img/note.png"'; 
-            echo 'title="'.SqlList::getNameFromId('User',$lineVal->idUser)."\n";
-            echo htmlFormatDateTime($lineVal->checkTime,false).'"';
-            echo '/>';
+            //echo '<img src="../view/img/note.png"'; 
+            //echo 'title="'.SqlList::getNameFromId('User',$lineVal->idUser)."\n";
+            //echo htmlFormatDateTime($lineVal->checkTime,false).'"';
+            //echo '/>';
+            $userId=$lineVal->idUser;
+            $userName=SqlList::getNameFromId('User', $userId);
+            echo formatUserThumb($userId, $userName, 'Creator');
+            echo formatDateThumb($lineVal->checkTime,null);
          }?></td>
 				<td >&nbsp;</td>
 				<td valign="top" style="width: 150px;"> 

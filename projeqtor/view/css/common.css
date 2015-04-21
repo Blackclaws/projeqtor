@@ -699,6 +699,11 @@ table.dojoDndAvatar {
   border: 1px solid #ffffff;
   z-index:3000;
 }
+.dialogDetailButton, 
+.dijit.dijitReset.dijitInline.dialogDetailButton.dijitButton .dijitButtonNode {
+	width: 32px;
+	height: 24px;
+}
 .menuSelect .dijitReset.dijitRight.dijitButtonNode.dijitArrowButton.dijitDownArrowButton.dijitArrowButtonContainer {
 	display:none;
 }

@@ -9,6 +9,8 @@
 -- Change from varchar(4000) to MediumText for editorable fields
 -- ///////////////////////////////////////////////////////////
 
+ALTER TABLE `${prefix}accessprofile` CHANGE `description` `description` mediumtext;
+
 ALTER TABLE `${prefix}action` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
@@ -18,14 +20,20 @@ ALTER TABLE `${prefix}activity` CHANGE `description` `description` mediumtext,
 ALTER TABLE `${prefix}affectation` CHANGE `description` `description` mediumtext;
 
 ALTER TABLE `${prefix}bill` CHANGE `description` `description` mediumtext;
+
+ALTER TABLE `${prefix}client` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}command` CHANGE `description` `description` mediumtext,
  CHANGE `additionalInfo` `additionalInfo` mediumtext,
  CHANGE `comment` `comment` mediumtext;
 
+ALTER TABLE `${prefix}contexttype` CHANGE `description` `description` mediumtext;
+
 ALTER TABLE `${prefix}decision` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}expense` CHANGE `description` `description` mediumtext;
+
+ALTER TABLE `${prefix}expensedetailtype` CHANGE `description` `description` mediumtext;
 
 ALTER TABLE `${prefix}history` CHANGE `oldValue` `oldValue` mediumtext,
  CHANGE `newValue` `newValue` mediumtext;
@@ -54,8 +62,12 @@ ALTER TABLE `${prefix}opportunity` CHANGE `description` `description` mediumtext
  
 ALTER TABLE `${prefix}periodicmeeting` CHANGE `description` `description` mediumtext;
 
+ALTER TABLE `${prefix}predefinedtext` CHANGE `text` `text` mediumtext;
+
 ALTER TABLE `${prefix}product` CHANGE `description` `description` mediumtext;
  
+ALTER TABLE `${prefix}profile` CHANGE `description` `description` mediumtext;
+
 ALTER TABLE `${prefix}project` CHANGE  `description` `description` mediumtext;
 
 ALTER TABLE `${prefix}question` CHANGE `description` `description` mediumtext,
@@ -75,6 +87,10 @@ ALTER TABLE `${prefix}risk` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext,
  CHANGE `cause` `cause` mediumtext,
  CHANGE `impact` `impact` mediumtext;
+
+ALTER TABLE `${prefix}role` CHANGE `description` `description` mediumtext;
+
+ALTER TABLE `${prefix}team` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}testcase` CHANGE `description` `description` mediumtext,
  CHANGE `prerequisite` `result` mediumtext,
@@ -86,7 +102,12 @@ ALTER TABLE `${prefix}testsession` CHANGE `description` `description` mediumtext
 ALTER TABLE `${prefix}ticket` CHANGE `description` `description` mediumtext,
  CHANGE `result` `result` mediumtext;
 
+ALTER TABLE `${prefix}type` CHANGE `description` `description` mediumtext;
+
 ALTER TABLE `${prefix}version` CHANGE `description` `description` mediumtext;
+
+ALTER TABLE `${prefix}workflow` CHANGE `description` `description` mediumtext;
+
 -- ///////////////////////////////////////////////////////////
 -- Other Changes
 -- ///////////////////////////////////////////////////////////

@@ -493,13 +493,17 @@ class Resource extends SqlElement {
   
   public function getPhotoThumb($size) {
   	$result="";
+  	$radius=round($size/2,0);
   	$image=SqlElement::getSingleSqlElementFromCriteria('Attachment', array('refType'=>'Resource', 'refId'=>$this->id));
     if ($image->id and $image->isThumbable()) {
   	  $result.='<img src="'. getImageThumb($image->getFullPathFileName(),$size).'" '
-             . ' title="'.$image->fileName.'" style="cursor:pointer"'
+             . ' style="cursor:pointer;border-radius:'.$radius.'px;height:'.$size.'px;width:'.$size.'px"'
              . ' onClick="showImage(\'Attachment\',\''.$image->id.'\',\''.$image->fileName.'\');" />';
     } else {
-    	$result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
+    	//$result='<div style="width:'.$size.';height:'.$size.';border:1px solide grey;">&nbsp;</span>';
+      $result.='<img src="../view/img/Affectable/thumb'.$size.'.png" '
+             . ' style="border-radius:'.$radius.'px;height:'.$size.'px;width:'.$size.'px"'
+             . '  />';
     }
     return $result;
   }
