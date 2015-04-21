@@ -32,13 +32,13 @@ class PredefinedNote extends SqlElement {
 
   public $_sec_Description;
   public $id;
+  public $name;
   public $scope;
   public $idTextable;
   public $idType;
-  public $name;
-  public $text;
   public $idle;
-	public $_sec_void;  
+  public $text;
+  public $_sec_void;  
 
 	// Define the layout that will be used for lists
   private static $_layout='

@@ -33,8 +33,8 @@ class DocumentDirectory extends SqlElement {
   // extends SqlElement, so has $id
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
-  public $idDocumentDirectory;
   public $name;
+  public $idDocumentDirectory;
   public $location;
   public $idProject;
   public $idProduct;

@@ -41,10 +41,13 @@ class WorkflowMain extends SqlElement {
   public $_sec_void;
   public $_spe_hideStatus;
   public $_sec_WorkflowDiagram;
+  public $_workflowDiagram_colSpan="2";
   public $_spe_workflowDiagram;
   public $_sec_WorkflowStatus;
+  public $_workflowStatus_colSpan="2";
   public $_spe_workflowStatus;
   public $_workflowStatus;
+  
   public $_statusList;
   
   private static $_layout='
@@ -162,7 +165,7 @@ class WorkflowMain extends SqlElement {
     global $_REQUEST, $print;
     if (array_key_exists('destinationWidth', $_REQUEST)) {
       $detailWidth=$_REQUEST['destinationWidth'];
-      $detailWidth-=30;
+      $detailWidth-=40;
       $detailWidth.='px';
     } else {
       $detailWidth="100%";
@@ -456,7 +459,7 @@ class WorkflowMain extends SqlElement {
     	if (!$print and $this->id) {
         $result.='<button id="workflowParameterButton" dojoType="dijit.form.Button" showlabel="false"';
         $result.='title="'.i18n('workflowParameters').'"'; 
-        $result.='iconClass="iconParameter16" >';
+        $result.='iconClass="iconParameter16" style="position:relative;left:-31px;top:12px;">';
         $result.=' <script type="dojo/connect" event="onClick" args="evt">';
 		    $result.='  showWorkflowParameter('.$this->id.');';
         $result.=' </script>';

@@ -232,7 +232,7 @@ function drawTableFromObjectList($objectList) {
     <button id="saveParameterButton" dojoType="dijit.form.Button"
       showlabel="false"
       title="<?php echo i18n('buttonSaveParameters');?>"
-      iconClass="dijitEditorIcon dijitEditorIconSave"><script
+      iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton"><script
       type="dojo/connect" event="onClick" args="evt">
 <?php if ($type=='habilitation') {?>
           forceRefreshMenu="<?php echo $type;?>";
@@ -241,13 +241,14 @@ function drawTableFromObjectList($objectList) {
           </script></button>
     <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveParameter")?></div>
     </td>
-    <td>
-    <div id="resultDiv" dojoType="dijit.layout.ContentPane"
-      region="center"></div>
+    <td style="position:relative;">
+    
     </td>
   </tr>
 </table>
 </div>
+<div id="resultDiv" dojoType="dijit.layout.ContentPane"
+      region="center" style="padding:5px;"></div>
 <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"
   style="overflow-y: auto; overflow-x: hidden;">
 <form dojoType="dijit.form.Form" id="parameterForm" jsId="objectForm"

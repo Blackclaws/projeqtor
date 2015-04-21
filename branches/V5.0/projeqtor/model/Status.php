@@ -57,7 +57,7 @@ class Status extends SqlElement {
     <th field="idle" width="5%" formatter="booleanFormatter">${idle}</th>
     ';
 
-  private static $_fieldsAttributes=array("isCopyStatus"=>"hidden");
+  private static $_fieldsAttributes=array("isCopyStatus"=>"hidden", "name"=>"required");
    /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)

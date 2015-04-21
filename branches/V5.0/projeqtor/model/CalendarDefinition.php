@@ -41,6 +41,7 @@ class CalendarDefinition extends SqlElement {
   public $_spe_copyFromDefault;
   public $_sec_Calendar;
   public $_spe_calendar;
+  public $_calendar_colSpan="2";
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -115,7 +116,7 @@ class CalendarDefinition extends SqlElement {
   		  . ' <script type="dojo/method" event="onClick" >'
   			. ' 	loadContent("../tool/saveCalendar.php?copyYearFrom="+dijit.byId("calendarCopyFrom").get("value")+"&idCalendarDefinition='.$this->id.'&year="+dijit.byId("calendartYearSpinner").get("value"),"CalendarDefinition_Calendar");'
   			. ' </script>'
-  			. '</div>';
+  			. '</div>&nbsp;&nbsp;';
   		  $result.='<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" '
 				. '  style="width:150px;" name="calendarCopyFrom" id="calendarCopyFrom" >';
   		  ob_start();

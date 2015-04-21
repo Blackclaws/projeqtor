@@ -819,41 +819,41 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <input type="hidden" id='comboMultipleSelect' name='comboMultipleSelect' value='' />
           <button id="comboSearchButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboSearchButton');?>" 
-            iconClass="dijitButtonIcon dijitButtonIconSearch" >
+            iconClass="dijitButtonIcon dijitButtonIconSearch" class="dialogDetailButton">
             <script type="dojo/connect" event="onClick" args="evt">
               displaySearch();
             </script>
           </button>
           <button id="comboSelectButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboSelectButton');?>" 
-            iconClass="dijitButtonIcon dijitButtonIconSelect" >
+            iconClass="dijitButtonIcon dijitButtonIconSelect" class="dialogDetailButton">
             <script type="dojo/connect" event="onClick" args="evt">
               selectDetailItem();
             </script>
           </button>
           <button id="comboNewButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboNewButton');?>" 
-            iconClass="dijitButtonIcon dijitButtonIconNew" >
+            iconClass="dijitButtonIcon dijitButtonIconNew" class="dialogDetailButton">
             <script type="dojo/connect" event="onClick" args="evt">
               newDetailItem();
             </script>
           </button>
           <button id="comboSaveButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboSaveButton');?>" 
-            iconClass="dijitButtonIcon dijitButtonIconSave" >
+            iconClass="dijitButtonIcon dijitButtonIconSave" class="dialogDetailButton">
             <script type="dojo/connect" event="onClick" args="evt">
               saveDetailItem();
             </script>
           </button>
          <button id="comboCloseButton" dojoType="dijit.form.Button" showlabel="false"
             title="<?php echo i18n('comboCloseButton');?>" 
-            iconClass="dijitButtonIcon dijitButtonIconUndo"  >
+            iconClass="dijitButtonIcon dijitButtonIconUndo" class="dialogDetailButton">
             <script type="dojo/connect" event="onClick" args="evt">
               hideDetail();
             </script>
           </button>
         </td>
-        <td align="left" style="width:<?php echo ($detailWidth - 400);?>px">
+        <td align="left" style="width:<?php echo ($detailWidth - 400);?>px; position:relative;">
           <div style="width:100%;font-size:8pt" dojoType="dijit.layout.ContentPane" region="center" name="comboDetailResult" id="comboDetailResult"></div>
         </td>
         <td></td>
