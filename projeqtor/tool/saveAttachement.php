@@ -196,7 +196,7 @@ $user=$_SESSION['user'];
 Sql::beginTransaction();
 $attachement=new Attachement();
 foreach ($uploadedFileArray as $uploadedFile) {
-debugLog("   traitement fichier ".$uploadedFile['name']);
+//debugLog("   traitement fichier ".$uploadedFile['name']);
   $attachement=new Attachement();
 	if (! $error) {
 		if ($refType=="Resource") {
