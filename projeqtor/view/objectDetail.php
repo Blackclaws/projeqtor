@@ -69,8 +69,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $labelWidth=160; // To be changed if changes in css file (label and .label)
   $labelStyleWidth='145px';
   if ($outMode == 'pdf') {
-    $labelWidth=50;
-    $labelStyleWidth=$labelWidth . 'px';
+    //$labelWidth=40;
+    //$labelStyleWidth=$labelWidth . 'px;';
   }
   $fieldWidth=$smallWidth;
   $extName="";
@@ -186,8 +186,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       echo '</table><table id="' . $col . '" class="detail">';
       echo '<tr class="detail">';
       echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns
+      $internalTableBorderTitle=($print)?'border:1px solid #A0A0A0;':'';
       for ($i=0; $i < $internalTableCols; $i++) { // draw table headers
-        echo '<td class="detail">';
+        echo '<td class="detail" style="'.$internalTableBorderTitle.'">';
         if ($val [$i]) {
           echo '<div class="tabLabel" style="text-align:left;white-space:nowrap;">' . htmlEncode($obj->getColCaption($val [$i])) . '</div>';
         } else {
@@ -414,34 +415,40 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             // $thumbIcon=SqlElement::isIconableField($col);
             $thumb=(!$print && $val && ($thumbRes or $thumbColor) && $showThumb && $formatedThumb)?true:false;
             echo '<label for="' . $col . '" ' . (($thumb)?'class="labelWithThumb"':'') . '>';
-            echo htmlEncode($obj->getColCaption($col)) . '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
+            if ($outMode == 'pdf') { 
+              echo str_replace(' ', '&nbsp;',htmlEncode($obj->getColCaption($col)));
+            } else {
+              echo htmlEncode($obj->getColCaption($col));
+            }
+            echo '&nbsp;' . (($thumb)?'':':&nbsp;') . '</label>' . $cr;
             if ($thumb) {
               echo $formatedThumb;
             }
             echo '</td>';
             if ($print and $outMode == "pdf") {
-              echo '<td style="width: 120px">';
+              echo '<td style="width:' . ($largeWidth + 10) . 'px">';
             } else {
               echo '<td style="width:' . ($largeWidth + 10) . 'px">';
             }
           }
         }
       } else {
+        $internalTableBorder=($print)?'border:1px dotted #A0A0A0;':'';
         if ($internalTable % $internalTableCols == 0) {
           echo '</td></tr>' . $cr;
           echo '<tr class="detail">';
-          echo '<td class="' . $internalTableSpecial . '" style="width:' . $labelStyleWidth . ';">';
+          echo '<td class="' . $internalTableSpecial . '" style="text-align:right;width:' . $labelStyleWidth . ';">';
           if ($internalTableRowsCaptions [$internalTableCurrentRow]) {
             echo '<label class="label ' . $internalTableSpecial . '">' . htmlEncode($obj->getColCaption($internalTableRowsCaptions [$internalTableCurrentRow])) . '&nbsp;:&nbsp;</label>';
           }
-          echo '</td><td style="width:90%;white-space:nowrap;">';
+          echo '</td><td style="width:90%;white-space:nowrap;'.$internalTableBorder.'">';
           $internalTableCurrentRow++;
         } else {
           if ($obj->isAttributeSetToField($col, "colspan3")) {
             echo '</td><td class="detail" colspan="3">';
             $internalTable-=2;
-          } else {
-            echo '</td><td class="detail" style="white-space:nowrap;">';
+          } else {            
+            echo '</td><td class="detail" style="white-space:nowrap;'.$internalTableBorder.'">';
           }
         }
       }
@@ -544,6 +551,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else if ($dataType == 'date' and $val != null and $val != '') {
           echo htmlFormatDate($val);
         } else if ($dataType == 'datetime' and $val != null and $val != '') {
+          //echo str_replace(' ','&nbsp;',htmlFormatDateTime($val, false));
           echo htmlFormatDateTime($val, false);
         } else if ($dataType == 'time' and $val != null and $val != '') {
           echo htmlFormatTime($val, false);
@@ -551,7 +559,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
           echo '  value="' . htmlEncode($val) . '" ';
-          echo '  style="width: ' . $smallWidth / 2 . 'px; ';
+          echo '  style="width: ' . $smallWidth / 2 . 'px; border-radius:10px;';
           echo ' color: ' . $val . '; ';
           echo ' background-color: ' . $val . ';"';
           echo ' >';
@@ -573,12 +581,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else if ($dataLength > 4000) {
           // echo '</td></tr><tr><td colspan="2">';
           echo '<div style="text-align:left;font-weight:normal" class="tabLabel">'.htmlEncode($obj->getColCaption($col)).'&nbsp;:&nbsp;</div>';
-          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;overflow:hidden">';
-          if ($outMode=="pdf") {
-            echo strip_tags($val); // Must purge data, otherwise will never be generated
-          } else {
-            echo $val;
+          echo '<div style="border:1px dotted #AAAAAA;width:' . $colWidth . 'px;">';
+          if ($outMode=="pdf") { // Must purge data, otherwise will never be generated
+            $val=str_replace(array('<div>','</div>'),array('<br/>',''), $val);
+            $val=strip_tags($val,'<br><br/><font><b>');            
           }
+          echo $val.'&nbsp;';
           echo '</div>';
         } else if ($dataLength > 100) { // Text Area (must reproduce BR, spaces, ...
           echo htmlEncode($val, 'print');
@@ -595,7 +603,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         } else if ($dataType == 'decimal' and substr($col, -4, 4) == 'Work') {
           echo Work::displayWork($val) . ' ' . Work::displayShortWorkUnit();
         } else if ($col == 'icon') {
-          echo '<img src="../view/icons/' . $val . '" />';
+          if ($val) {
+            echo '<img src="../view/icons/' . $val . '" />';
+          }
         } else {
           if ($obj->isFieldTranslatable($col)) {
             $val=i18n($val);
@@ -1077,7 +1087,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
       } else if (strpos($obj->getFieldAttributes($col), 'display') !== false) {
         echo '<div ';
         echo ' class="display" ';
-        // echo ' style="width:10%; border:1px solid red;"';
         echo ' >';
         if (strpos($obj->getFieldAttributes($col), 'html') !== false) {
           echo $val;
@@ -1174,7 +1183,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo $name;
         echo $attributes;
         echo '>';
-        echo $val;
+        echo htmlentities($val);
         echo '</textarea>';
         echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
         echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
@@ -1210,7 +1219,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         //echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
         //echo '   alert("OK");';
         //echo '  </script>';
-        echo $val;
+        echo  str_replace( "\n", '<br />', $val );
         echo '</div>';
       } else if ($col == 'icon') {
         echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').'" ';
@@ -1362,10 +1371,12 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo '<table class="detail"  style="width: 100%;" >';
   } else {
     echo '<table class="detail" style="width:' . $widthPct . ';" >';
-    echo '<tr><td colspan="2" class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
-      echo '<tr class="detail" style="height:2px;font-size:2px;">';
-      echo '<td class="detail" colspan="2">&nbsp;</td>';
-      echo '</tr>';
+    echo '<tr><td class="section">' . i18n('section' . ucfirst($section)) . '</td></tr>';
+    echo '<tr class="detail" style="height:2px;font-size:2px;">';
+    echo '<td class="detail" >&nbsp;</td>';
+    echo '</tr>';
+    echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
+    //echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
   }
 }
 
@@ -1637,7 +1648,7 @@ function drawHistoryFromObjects($refresh=false) {
 }
 
 function drawNotesFromObject($obj, $refresh=false) {
-  global $cr, $print, $user, $comboDetail, $displayWidth, $printWidth;
+  global $cr, $print, $outMode, $user, $comboDetail, $displayWidth, $printWidth;
   $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj);
   $widthPctNote=((substr($widthPct,0,strlen($widthPct)-2)*0.85)-45).'px';
   if ($comboDetail) {
@@ -1652,9 +1663,11 @@ function drawNotesFromObject($obj, $refresh=false) {
   } else {
     $notes=array();
   }
-  if (!$refresh) echo '<tr><td colspan="2">';
+  if (!$refresh and !$print) echo '<tr><td colspan="2">';
   echo '<input type="hidden" id="noteIdle" value="' . $obj->idle . '" />';
-  echo '<table width="99.9%">';
+  if (! $print) {
+    echo '<table width="99.9%">';
+  }  
   echo '<tr>';
   if (!$print) {
     echo '<td class="noteHeader smallButtonsGroup" style="width:10%">';
@@ -1703,6 +1716,10 @@ function drawNotesFromObject($obj, $refresh=false) {
       $strDataHTML=$note->note;
       //$strDataHTML=preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
       //$strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
+      if ($print and $outMode=='pdf') {
+        $strDataHTML=str_replace(array('<div>','</div>'),array('<br/>',''), $strDataHTML);
+        $strDataHTML=strip_tags($strDataHTML,'<br><br/><font><b>');
+      }
       echo $strDataHTML;
       if (! $print) echo '</div>';
       // END ADDED BRW
@@ -1717,15 +1734,17 @@ function drawNotesFromObject($obj, $refresh=false) {
   if (!$print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
   }
-  echo '<td colspan="3" class="noteDataClosetable">&nbsp;</td>';
+  echo '<td colspan="'.(($print)?'2':'3').'" class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
-  echo '</table>';
-  if (!$refresh) echo '</td></tr>'; 
+  if (!$print) {
+    echo '</table>';
+  }
+  if (!$refresh and !$print) echo '</td></tr>'; 
   echo '<input id="NoteSectionCount" type="hidden" value="'.count($notes).'" />';
 }
 
 function drawBillLinesFromObject($obj, $refresh=false) {
-  global $cr, $print, $user, $browserLocale;
+  global $cr, $print, $user, $browserLocale, $widthPct;
   // $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
   if ($obj->idle == 1) {
     $canUpdate=false;
@@ -1739,8 +1758,10 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   } else {
     $lines=array();
   }
-  echo '<input type="hidden" id="billLineIdle" value="' . $obj->idle . '" />';
-  echo '<table width="100%">';
+  if (!$print) {
+    echo '<input type="hidden" id="billLineIdle" value="' . $obj->idle . '" />';
+    echo '<table width="100%">'; 
+  }
   echo '<tr>';
   if (!$print) {
     echo '<td class="noteHeader" style="width:5%">'; // changer le header
@@ -1774,17 +1795,21 @@ function drawBillLinesFromObject($obj, $refresh=false) {
       }
       echo '</td>';
     }
-    echo '<td class="noteData">#' . $line->id . '</td>';
-    echo '<td class="noteData">' . $line->line . '</td>';
-    echo '<td class="noteData">' . $line->quantity . '</td>';
-    echo '<td class="noteData">' . htmlEncode($line->description, 'withBR');
-    echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
+    echo '<td class="noteData" style="width:5%">#' . $line->id . '</td>';
+    echo '<td class="noteData" style="width:5%">' . $line->line . '</td>';
+    echo '<td class="noteData" style="width:5%">' . $line->quantity . '</td>';
+    echo '<td class="noteData" style="width:25%">' . htmlEncode($line->description, 'withBR');
+    if (!$print) {
+      echo '<input type="hidden" id="billLineDescription_' . $line->id . '" value="' . $line->description . '" />';
+    }
     echo '</td>';
-    echo '<td class="noteData">' . htmlEncode($line->detail, 'withBR');
-    echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
+    echo '<td class="noteData" style="width:35%">' . htmlEncode($line->detail, 'withBR');
+    if (!$print) {
+      echo '<input type="hidden" id="billLineDetail_' . $line->id . '" value="' . $line->detail . '" />';
+    }
     echo '</td>';
-    echo '<td class="noteData">' . $line->price . '</td>';
-    echo '<td class="noteData">' . $line->amount . '</td>';
+    echo '<td class="noteData" style="width:10%">' . $line->price . '</td>';
+    echo '<td class="noteData" style="width:15%">' . $line->amount . '</td>';
     echo '</tr>';
   }
   echo '<tr>';
@@ -1796,7 +1821,9 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '<td class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
-  echo '</table>';
+  if (!$print) {
+    echo '</table>';
+  }
 }
 
 function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
@@ -2878,7 +2905,10 @@ $treatedObjects=array();
 
 $displayWidth='98%';
 if ($print and isset($outMode) and $outMode == 'pdf') {
-  $printWidth=1080;
+  if (isset($orientation) and $orientation=='L')
+    $printWidth=1080;
+  else 
+    $printWidth=760;
 } else {
   $printWidth=980;
 }
@@ -2899,7 +2929,7 @@ if ($print) {
 
 if ($print) {
   echo '<br/>';
-  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;border: 0px solid #000000;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
+  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
   echo '<br/>';
 }
 
@@ -3103,6 +3133,9 @@ if ($print) {
 
 function setWidthPct($displayWidth, $print, $printWidth, $obj,$colSpan=null) {
   $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);
+  if ($print) {
+    $nbCol=1;
+  }
   $widthPct=round(99 / $nbCol) . "%";
   if ($nbCol == '1') {
     $widthPct=$displayWidth;

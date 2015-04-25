@@ -97,7 +97,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
 		    dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-        showPrint("<?php echo $printPage;?>");
+        showPrint("<?php echo $printPage;?>", null, null, null, 'P');
         </script>
       </button>  
 <?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
@@ -108,7 +108,7 @@
         <script type="dojo/connect" event="onClick" args="evt">
         dojo.byId("printButton").blur();
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
-        showPrint("<?php echo $printPage;?>", null, null, 'pdf');
+        showPrint("<?php echo $printPage;?>", null, null, 'pdf', 'P');
         </script>
       </button>   
 <?php } 
