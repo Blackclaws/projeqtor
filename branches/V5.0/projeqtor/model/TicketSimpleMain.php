@@ -104,6 +104,7 @@ class TicketSimpleMain extends Ticket {
     unset($this->_Link);
     unset($this->WorkElement);
     unset($this->_sec_Link);
+    unset($this->_tab_2_1);
   }
 
    /** ==========================================================================

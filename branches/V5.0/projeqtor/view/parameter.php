@@ -191,7 +191,7 @@ function drawTableFromObjectList($objectList) {
 			  echo '<input type="hidden" id="objectClass" value="User"/>';
 			  echo '<input type="hidden" id="parameter" value="true"/>';
 			  echo "<tr><td></td><td>";
-			  echo '<div style="position:relative;top:0px;left:0px;height:65px;">&nbsp;</div>';
+			  echo '<div style="position:relative;top:0px;left:0px;height:85px;">&nbsp;</div>';
 			} else if ($format=='specific') {
 			  if ($code=='password') {
 			    $title=i18n('changePassword');

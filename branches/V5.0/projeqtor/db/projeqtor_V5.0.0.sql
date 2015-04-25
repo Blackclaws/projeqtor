@@ -93,7 +93,7 @@ ALTER TABLE `${prefix}role` CHANGE `description` `description` mediumtext;
 ALTER TABLE `${prefix}team` CHANGE `description` `description` mediumtext;
  
 ALTER TABLE `${prefix}testcase` CHANGE `description` `description` mediumtext,
- CHANGE `prerequisite` `result` mediumtext,
+ CHANGE `prerequisite` `prerequisite` mediumtext,
  CHANGE `result` `result` mediumtext;
 
 ALTER TABLE `${prefix}testsession` CHANGE `description` `description` mediumtext,

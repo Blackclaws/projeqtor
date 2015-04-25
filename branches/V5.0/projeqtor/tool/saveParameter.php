@@ -36,21 +36,38 @@ $type=$_REQUEST['parameterType'];
 Sql::beginTransaction();
 if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable('menu', 'profile', 'habilitation') ;
+  $hab=new Habilitation();
+  $allHab=$hab->getSqlElementsFromCriteria(array());
+  foreach ($allHab as $hab) {
+    $allHab[$hab->idMenu.'#'.$hab->idProfile]=$hab;
+    unset($allHab[$hab->id]);
+  }
   foreach($crosTable as $lineId => $line) {
     foreach($line as $colId => $val) {
-      $crit['idMenu']=$lineId;
-      $crit['idProfile']=$colId;
-      $obj=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
-      $obj->allowAccess=($val)?1:0;
-      $result=$obj->save();
-      $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
-      $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
-      if ($isSaveNO_CHANGE===false) {
-        if ($isSaveOK===false) {
-          $status="ERROR";
-          $errors=$result;
-        } else if ($status=="NO_CHANGE") {
-          $status="OK";
+      //$crit['idMenu']=$lineId;
+      //$crit['idProfile']=$colId;
+      //$obj=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
+      $key=$lineId.'#'.$colId;
+      if (isset($allHab[$key])) {
+        $obj=$allHab[$key];
+      } else {
+        $obj=new Habilitation();
+        $obj->idMenu=$lineId;
+        $obj->idProfile=$colId;
+      }
+      $newVal=($val)?1:0;
+      if ($obj->allowAccess!=$newVal) {
+        $obj->allowAccess=$newVal;
+        $result=$obj->save();
+        $isSaveOK=strpos($result, 'id="lastOperationStatus" value="OK"');
+        $isSaveNO_CHANGE=strpos($result, 'id="lastOperationStatus" value="NO_CHANGE"');
+        if ($isSaveNO_CHANGE===false) {
+          if ($isSaveOK===false) {
+            $status="ERROR";
+            $errors=$result;
+          } else if ($status=="NO_CHANGE") {
+            $status="OK";
+          }
         }
       }
     }
