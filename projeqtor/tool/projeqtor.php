@@ -1225,7 +1225,18 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
  *          of trace : 1=error, 2=trace, 3=debug, 4=script
  * @return void
  */
+$previousTraceTimestamp=0;
 function logTracing($message, $level = 9, $increment = 0) {
+  global $debugPerf, $previousTraceTimestamp;
+  $execTime="";
+  if (isset($debugPerf) and $debugPerf==true) {
+    if ($previousTraceTimestamp) {
+      $execTime=" => ".round(microtime(true)-$previousTraceTimestamp,3);
+    } else {
+      $execTime=' => 0.000';
+    }
+    $previousTraceTimestamp=microtime(true);
+  }
   $logLevel = Parameter::getGlobalParameter ( 'logLevel' );
   $tabcar = '                        ';
   if ($logLevel == 5) {
@@ -1262,16 +1273,16 @@ function logTracing($message, $level = 9, $increment = 0) {
     }
     switch ($level) {
       case 1 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ***** ERROR ***** " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ***** ERROR ***** " . $msg;
         break;
       case 2 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ===== TRACE ===== " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ===== TRACE ===== " . $msg;
         break;
       case 3 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ----- DEBUG ----- " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ----- DEBUG ----- " . $msg;
         break;
       case 4 :
-        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . " ..... SCRIPT .... " . $msg;
+        $msg = date ( 'Y-m-d H:i:s' ) . substr(microtime(), 1, 4) . $execTime . " ..... SCRIPT .... " . $msg;
         break;
       default :
         break;
@@ -2481,6 +2492,7 @@ function getLastOperationStatus($result) {
     case "INVALID" :
     case "ERROR" :
     case "NO_CHANGE" :
+    case "INCOMPLETE" :
       break; // OK, valid status
     default :
       errorLog ( "'$status' is not an expected status in result \n$result" );
@@ -2493,7 +2505,7 @@ function getLastOperationMessage($result) {
 
 function displayLastOperationStatus($result) {
   $status = getLastOperationStatus ( $result );
-  if ($status == "OK" or $status=="NO_CHANGE") {
+  if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
     Sql::commitTransaction ();
   } else {
     Sql::rollbackTransaction ();

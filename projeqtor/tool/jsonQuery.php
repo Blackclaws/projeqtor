@@ -80,7 +80,7 @@
     	$note=new Note();
     	$noteTable=$note->getDatabaseTableName();
     	foreach($obj as $fld=>$val) {
-    	  if ($obj->getDataType($fld)=='varchar' or substr($obj->getDataType($fld),-4)=='text') {    				
+    	  if ($obj->getDataType($fld)=='varchar') {    				
             $queryWhere.=' or '.$table.".".$fld." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$quickSearch."%'";
     	  }
     	}

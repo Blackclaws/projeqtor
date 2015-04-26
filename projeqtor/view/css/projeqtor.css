@@ -246,10 +246,10 @@ html, body {
       opacity:0.0;filter:alpha(opacity=00);
     }
     #planResultDiv {
-      max-height:220px;
+      /*max-height:220px;*/
       position:absolute;
       top:3px !important; left:57% !important; 
-      min-width: 200px; width:35%; height: 30px;
+      min-width: 200px; width:35%; 
       overflow:hidden;
       color: #555555;
       text-align: center;
@@ -608,7 +608,7 @@ label, .label, .smallLabel {
 	text-align: right;
 }
 
-.messageOK, .messageNO_CHANGE, .messageINVALID, .messageERROR, .messageWARNING {
+.messageOK, .messageNO_CHANGE, .messageINVALID, .messageERROR, .messageWARNING, .messageINCOMPLETE {
   top:0px;
   overflow:visible;
   /*text-align: center;*/
@@ -633,7 +633,7 @@ label, .label, .smallLabel {
   color: #FFFFFF;
   text-shadow: 1px 1px #555555; 
 }
-.messageWARNING {
+.messageWARNING, .messageINCOMPLETE {
   background: #FFDDDD url();
 }
 .messageNO_CHANGE {

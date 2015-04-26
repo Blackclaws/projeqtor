@@ -55,6 +55,9 @@ scriptLog('   ->/tool/jsonList.php');
       $nbRows=listFieldsForFilter ($obj,0);
     } else if ($type=='operator') {    
       $dataType=$_REQUEST['dataType'];
+debugLog($dataType);
+      debugLog($dataType);
+      debugLog($_REQUEST);
       if ($dataType=='int' or $dataType=='date' or $dataType=='datetime' or $dataType=='decimal') {
         echo ' {id:"=", name:"="}';
         echo ',{id:">=", name:">="}';

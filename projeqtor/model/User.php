@@ -149,6 +149,9 @@ class User extends SqlElement {
 	    	self::$_fieldsAttributes["email"]="readonly, truncatedWidth100";
 	    	self::$_fieldsAttributes["password"]="hidden";
 	    }
+	    if ($this->isResource or $this->isContact) {
+	      self::$_fieldsAttributes["resourceName"]="required,truncatedWidth100";
+	    }
   	}
   }
 
@@ -229,8 +232,10 @@ class User extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked || dijit.byId("isContact").get("checked")) { ';
       $colScript .= '    dijit.byId("resourceName").set("required", "true");';
+      $colScript .= '    dojo.addClass(dijit.byId("resourceName").domNode,"required");';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("resourceName").set("required", null);';
+      $colScript .= '    dojo.removeClass(dijit.byId("resourceName").domNode,"required");';
       //$colScript .= '    dijit.byId("resourceName").set("value", "");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
@@ -240,8 +245,10 @@ class User extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked || dijit.byId("isResource").get("checked")) { ';
       $colScript .= '    dijit.byId("resourceName").set("required", "true");';
+      $colScript .= '    dojo.addClass(dijit.byId("resourceName").domNode,"required");';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("resourceName").set("required", null);';
+      $colScript .= '    dojo.removeClass(dijit.byId("resourceName").domNode,"required");';
       //$colScript .= '    dijit.byId("resourceName").set("value", "");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';

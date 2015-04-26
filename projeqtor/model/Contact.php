@@ -110,6 +110,10 @@ class Contact extends SqlElement {
     if (securityCheckDisplayMenu($menu->id)) {
       self::$_fieldsAttributes["isUser"]="";
       self::$_fieldsAttributes["idProfile"]="";
+      if ($this->isUser) {
+        self::$_fieldsAttributes["idProfile"]="required";
+        self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
+      }
     } 
     
     $crit=array("name"=>"menuResource");
@@ -199,9 +203,15 @@ class Contact extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    dijit.byId("userName").set("required", "true");';
+      $colScript .= '    dojo.addClass(dijit.byId("userName").domNode,"required");';
+      $colScript .= '    dijit.byId("idProfile").set("required", "true");';
+      $colScript .= '    dojo.addClass(dijit.byId("idProfile").domNode,"required");';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("userName").set("required", null);';
-      //$colScript .= '    dijit.byId("userName").set("value", "");';
+      $colScript .= '    dojo.removeClass(dijit.byId("userName").domNode,"required");';
+      $colScript .= '    dijit.byId("idProfile").set("required", "true");';
+      $colScript .= '    dojo.removeClass(dijit.byId("idProfile").domNode,"required");';
+      $colScript .= '    dijit.byId("userName").set("value", "");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';

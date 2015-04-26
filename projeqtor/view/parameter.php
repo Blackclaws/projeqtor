@@ -220,6 +220,8 @@ function drawTableFromObjectList($objectList) {
 <div class="container" dojoType="dijit.layout.BorderContainer">
 <div id="parameterButtonDiv" class="listTitle"
   dojoType="dijit.layout.ContentPane" region="top">
+  <div id="resultDiv" dojoType="dijit.layout.ContentPane"
+      region="top" style="padding:5px;height:100px;padding-left:300px;"></div>
 <table width="100%">
   <tr>
     <td width="50px" align="center"><img
@@ -247,8 +249,6 @@ function drawTableFromObjectList($objectList) {
   </tr>
 </table>
 </div>
-<div id="resultDiv" dojoType="dijit.layout.ContentPane"
-      region="center" style="padding:5px;"></div>
 <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"
   style="overflow-y: auto; overflow-x: hidden;">
 <form dojoType="dijit.form.Form" id="parameterForm" jsId="objectForm"

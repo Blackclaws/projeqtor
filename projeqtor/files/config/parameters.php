@@ -18,6 +18,7 @@ $logLevel='3';
 $paramDebugMode='false';
 $flashReport=true;
 $debugQuery=false;
+$debugPerf=true;
 //======= END// New parameters V4.4.0
 $enforceUTF8 = '1';
 $lockPassword="false";

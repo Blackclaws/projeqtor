@@ -1842,6 +1842,7 @@ function drawGantt() {
       // display color of the task bar
       var pColor='50BB50';
       // show in red not respected constraints
+console.log(pName+" "+item.validatedenddate+" "+pEnd);      
       if (item.validatedenddate!=" " && item.validatedenddate < pEnd) {
         pColor='BB5050';  
       }
