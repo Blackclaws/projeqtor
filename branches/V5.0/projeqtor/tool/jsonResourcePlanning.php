@@ -131,7 +131,7 @@ $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
 $ass=new Assignment();
 $res=new Resource();
-$querySelect .= "pe.idProject as idProj, pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, pe.priority priority, pe.idplanningmode idplanningmode, ass.* , usr.fullName as name, pe.refName refName";
+$querySelect .= "pe.idProject as idProj, pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, pe.priority priority, pe.idplanningmode idplanningmode, pe.validatedenddate, pe.notplannedwork, ass.* , usr.fullName as name, pe.refName refName";
 $queryFrom .= $table . ' pe, ' . $ass->getDatabaseTableName() . ' ass, ' . $res->getDatabaseTableName() . ' usr';
 $queryWhere= ' pe.refType=ass.refType and pe.RefId=ass.refId and usr.id=ass.idResource and ' . str_replace($table, 'pe', $queryWhere);
 $queryOrderBy .= ' name, pe.wbsSortable ';

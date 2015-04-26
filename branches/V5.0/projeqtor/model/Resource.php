@@ -78,7 +78,8 @@ class Resource extends SqlElement {
                                           "idProfile"=>"readonly",
                                           "isUser"=>"readonly",
                                           "isContact"=>"readonly",
-                                          "password"=>"hidden" 
+                                          "password"=>"hidden" ,
+                                          "idCalendarDefinition"=>"required"
   );    
   
   private static $_databaseTableName = 'resource';
@@ -107,6 +108,10 @@ class Resource extends SqlElement {
     if (securityCheckDisplayMenu($menu->id)) {
     	self::$_fieldsAttributes["isUser"]="";
     	self::$_fieldsAttributes["idProfile"]="";
+    	if ($this->isUser) {
+    	  self::$_fieldsAttributes["idProfile"]="required";
+    	  self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
+    	}
     }
     
     $crit=array("name"=>"menuContact");
@@ -196,9 +201,15 @@ class Resource extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.checked) { ';
       $colScript .= '    dijit.byId("userName").set("required", "true");';
+      $colScript .= '    dojo.addClass(dijit.byId("userName").domNode,"required");';
+      $colScript .= '    dijit.byId("idProfile").set("required", "true");';
+      $colScript .= '    dojo.addClass(dijit.byId("idProfile").domNode,"required");';
       $colScript .= '  } else {';
       $colScript .= '    dijit.byId("userName").set("required", null);';
       $colScript .= '    dijit.byId("userName").set("value", "");';
+      $colScript .= '    dojo.removeClass(dijit.byId("userName").domNode,"required");';
+      $colScript .= '    dijit.byId("idProfile").set("required", null);';
+      $colScript .= '    dojo.removeClass(dijit.byId("idProfile").domNode,"required");';
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -344,6 +355,7 @@ class Resource extends SqlElement {
    */
   public function control(){
     $result="";
+    
     if ($this->isUser and (! $this->userName or $this->userName=="")) {
       $result.='<br/>' . i18n('messageMandatory',array(i18n('colUserName')));
     } 
@@ -364,6 +376,9 @@ class Resource extends SqlElement {
           $result.=$resultDelete;
         }
     }
+    self::$_fieldsAttributes["idProfile"]="";
+    self::$_fieldsAttributes["userName"]="";
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;

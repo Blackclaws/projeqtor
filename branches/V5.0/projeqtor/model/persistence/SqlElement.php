@@ -2204,8 +2204,8 @@ abstract class SqlElement {
 			$fieldName=(isset($line['Field']))?$line['Field']:$line['field'];
 			$fieldName=$obj->getDatabaseColumnNameReversed($fieldName);
 			$type=(isset($line['Type']))?$line['Type']:$line['type'];
-			if (Sql::isPgsql()) {
-				$from=array();                               $to=array();
+			$from=array();                               $to=array();
+			if (Sql::isPgsql()) {		  
 				$from[]='integer';                           $to[]='int(12)';
 				$from[]='numeric(12,0)';                     $to[]='int(12)';
 				$from[]='numeric(5,0)';                      $to[]='int(5)';
@@ -2215,8 +2215,12 @@ abstract class SqlElement {
 				$from[]='character varying';                 $to[]='varchar';
 				$from[]='numeric';                           $to[]='decimal';
 				$from[]='timestamp';                         $to[]='datetime';
-				$type=str_ireplace($from, $to, $type);
-			}
+			} 
+			$from[]='mediumtext';                          $to[]='varchar(16777215)';
+			$from[]='longtext';                            $to[]='varchar(4294967295)';
+			$from[]='text';                                $to[]='varchar(65535)';
+			
+			$type=str_ireplace($from, $to, $type);
 			$formatList[strtolower($fieldName)] = $type;
 		}
 		self::$_tablesFormatList[$class]=$formatList;

@@ -183,14 +183,18 @@
       /* HTML2PDF way */
       require_once('../external/html2pdf/html2pdf.class.php');
       $html2pdf = new HTML2PDF($orientation,'A4','en');
+      //$html2pdf->setModeDebug();
+      debugLog("PDF - start generation");
       $html2pdf->pdf->SetDisplayMode('fullpage');
-      $html2pdf->setDefaultFont('freesans');
+      //$html2pdf->setDefaultFont('freesans');
+      $html2pdf->setDefaultFont('helvetica');
       $html2pdf->setTestTdInOnePage(false);
       //$html2pdf->setModeDebug(); 
       //$html2pdf->setDefaultFont('uni2cid_ag15');
 //traceExecutionTime($includeFile,true);
       $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
       $html2pdf->Output();
+      debugLog("PDF - end generation");
 //traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */
