@@ -337,6 +337,10 @@ class Parameter extends SqlElement {
       		if (securityCheckDisplayMenu(null,$item)) {$list['objectMain.php?objectClass='.$item]=i18n('menu'.$item);}
       	}
       	$list['welcome.php']=i18n('paramNone');
+      	$prf=new Profile($_SESSION['user']->idProfile);
+      	if ($prf->profileCode=='ADM') {
+      	  $list['startGuide.php']=i18n('startGuideTitle');
+      	}
       	break; 
       case 'changeReferenceOnTypeChange': case 'rememberMe':
         	$list=array('YES'=>i18n('displayYes'),

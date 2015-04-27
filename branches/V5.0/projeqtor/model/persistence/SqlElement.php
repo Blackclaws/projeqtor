@@ -249,7 +249,6 @@ abstract class SqlElement {
                                   "Attachment"=>"cascade",
                                   "Dependency"=>"cascade",
                                   "Link"=>"cascade",
-                                  "Milestone"=>"confirm",
                                   "Note"=>"cascade",
                                   "PlannedWork"=>"cascade",
                                   "TestCaseRun"=>"cascade",),
@@ -2783,6 +2782,11 @@ abstract class SqlElement {
 		$result="";
 		$objects="";
 		$right=securityGetAccessRightYesNo('menu' . get_class($this), 'delete', $this);
+		if (get_class($this)=='Alert' or get_class($this)=='Mail'
+		    or get_class($this)=='Audit' or get_class($this)=='AuditSummary'
+		    or get_class($this)=='ColumnSelector') {
+		  $right='YES';
+		}
 		if ($right!='YES') {
 			$result.='<br/>' . i18n('errorDeleteRights');
 			return $result;

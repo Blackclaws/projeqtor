@@ -603,6 +603,20 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </div>
    <br/><?php 
     }
+    $paramFirstPage=Parameter::getUserParameter('startPage');
+    if ($paramFirstPage=='startGuide.php' and !$print) {
+      $titlePane="Today_startGuide";
+    ?>
+    <div dojoType="dijit.TitlePane" 
+      open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+      id="<?php echo $titlePane;?>" 
+      onHide="saveCollapsed('<?php echo $titlePane;?>');"
+      onShow="saveExpanded('<?php echo $titlePane;?>');"
+      title="<?php echo i18n('startGuideTitle');?>">  
+      <?php include "startGuide.php";?>
+    </div><br/>
+    <?php 
+    }
 foreach ($todayList as $todayItem) {
   if ($todayItem->scope=='static' and $todayItem->staticSection=='Projects') {
     $titlePane="Today_project"; 

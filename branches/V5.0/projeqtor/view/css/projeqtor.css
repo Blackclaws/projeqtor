@@ -56,7 +56,7 @@ html, body, #mainDiv,
   font-weight: bold; 
   font-size: 20pt; 
   text-decoration: none; 
-  color: #CC3300; 
+  color: #E97B2C; 
   text-shadow: 0.1em 0.1em 0.2em grey;
 }
 .siteH2 {
@@ -64,7 +64,7 @@ html, body, #mainDiv,
   font-weight: normal; 
   font-size: 14pt; 
   text-decoration: none; 
-  color: #CC3300; 
+  color: #545381; 
 }
 /* Specific style for debug purpose============================================ */
 html, body { 

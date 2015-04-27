@@ -789,7 +789,7 @@ function changeAttachment(list) {
  * save an Attachment
  * 
  */
-function saveAttachment() {
+function saveAttachment(direct) {
 	//disableWidget('dialogAttachmentSubmit');
 	if (! isHtml5()) {
 	  //dojo.byId('attachmentForm').submit();
@@ -801,6 +801,21 @@ function saveAttachment() {
      && dojo.byId('attachmentFileName') && dojo.byId('attachmentFileName').innerHTML=="") {
 	  return false;
 	}
+	if (direct) {
+	  if (dijit.byId("attachmentFileDirect")) {
+      if (dijit.byId("attachmentFileDirect").getFileList().length>20) {
+        showAlert(i18n('uploadLimitNumberFiles'));
+        return false;
+      }
+    }
+	} else {
+	  if (dijit.byId("attachmentFile")) {
+  	  if (dijit.byId("attachmentFile").getFileList().length>20) {
+  	    showAlert(i18n('uploadLimitNumberFiles'));
+        return false;
+  	  }
+	  }
+  }
 	dojo.style(dojo.byId('downloadProgress'), {display:'block'});
 	showWait();
 	dijit.byId('dialogAttachment').hide();
