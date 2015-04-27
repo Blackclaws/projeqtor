@@ -117,6 +117,8 @@ if ($currVersion=='V0.0.0') {
   $prm->parameterCode='consolidateValidated';
   $prm->parameterValue='IFSET';
   $prm->save();
+  // New in V5 : Start Guide Page
+  Parameter::storeUserParameter('startPage', 'startGuide.php');
 }
 
 //echo "for V1.6.1<br/>";

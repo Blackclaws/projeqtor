@@ -717,7 +717,7 @@ class PlanningElement extends SqlElement {
   	$result="";
   	 
   	// Cannot delete item with real work
-  	if ($this->realWork>0)	{
+  	if ($this->id and $this->realWork and $this->realWork>0)	{
   		$result .= "<br/>" . i18n("msgUnableToDeleteRealWork");
   	}
   	 
@@ -956,12 +956,19 @@ class PlanningElement extends SqlElement {
   			echo $pe->moveTo($peTop->id,"after");
   		}
   	} else { // $way=="increase"
-  		$precs=$this->getSqlElementsFromCriteria(null,false,"wbsSortable<'".$this->wbsSortable."'","wbsSortable desc");
+  		$precs=$this->getSqlElementsFromCriteria(null,false,
+  		    "wbsSortable<'".$this->wbsSortable."' and idProject in " . getVisibleProjectsList(true),"wbsSortable desc");
   		if (count($precs)>0) {
   			foreach ($precs as $pp) {
   				if (strlen($pp->wbsSortable)<=strlen($this->wbsSortable)) {
-  					$prec=$pp;
-  					break;
+  				  $proj=new Project($pp->idProject);
+  				  $type=new Type($proj->idProjectType);
+  				  if ($type->code=='TMP' or $type->code=='ADM') {
+  				    continue;
+  				  } else {
+  					  $prec=$pp;
+  					  break;
+  				  } 
   				}
   			}
   			if ($prec->refType=='Project' and $prec->refId!=$task->idProject) {

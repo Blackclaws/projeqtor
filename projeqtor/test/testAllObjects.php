@@ -88,7 +88,7 @@ function fillObj($obj) {
   $dbCrit=$obj->getDatabaseCriteria();
 	foreach($obj as $fld=>$val){
 		$var=($obj->id)?'zzzzzzzzzzzzzzzzzzzzzzzzz':'abcdfeghijklmnopqrstuvwxy';
-		$num=($obj->id)?2:1;
+		$num=(substr($fld,0,4)=='real' and substr(get_class($obj),-7)!='Expense')?0:(($obj->id)?2:1);
 		$bool=($obj->id)?0:1;
 		$id=($obj->id)?2:1;
 		for ($i=1;$i<=4;$i++) {$var.=$var;}
@@ -121,8 +121,10 @@ function fillObj($obj) {
 			$obj->$fld=null;
 		} else if ($fld=='wbs' or $fld=='wbsSortable') {
 			$obj->$fld=null;
-		} else if ($fld=='predecessorRefType' or $fld=='successorRefType') {
-			$obj->$fld=$fld;
+		} else if ($fld=='predecessorRefType') {
+			$obj->$fld='Activity';
+	  } else if ($fld=='successorRefType') {
+	    $obj->$fld='Milestone';
 		} else if ($dbType=='varchar') {			 
 	    $obj->$fld=substr($var,0,$dbLength);
 		} else if ($dbType=='int' and $dbLength==1) {
