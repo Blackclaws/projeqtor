@@ -105,6 +105,8 @@
  
  echo i18n('startGuideFooter');
  echo '<br/>';
+ echo '<br/>';
+ echo '<br/>';
  /*
   "*/
 ?>
