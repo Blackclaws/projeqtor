@@ -135,6 +135,23 @@ function percentFormatter($value) {
   }
 }
 
+function progressFormatter($value,$displayProgressText) {
+  if ($value!==null) {
+    $pct = intval($value, 10);
+    $pctTxt='<div style="width:100%;text-align:center;">'.$displayProgressText.$pct.'&nbsp;%</div>';
+    $pctTxt.='<div style="height:3px;width:100%;position: relative; bottom:0px;">';
+    $pctTxt.='<div style="height:3px;width:'.$pct.'%;position: absolute;left:0%;background-color:#AAFFAA">&nbsp;</div>';
+    $pctTxt.='<div style="height:3px;width:'.(100 - $pct)
+       .'%;position: absolute;left:'.$pct
+       .'%; background-color:#FFAAAA">&nbsp;</div>';
+    $pctTxt.='</div>';
+    return $pctTxt;
+  } else {
+    return '';
+  }
+}
+
+
 function numericFormatter($value) {
   return ltrim($value,"0");
 }
