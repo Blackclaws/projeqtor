@@ -29,10 +29,11 @@
  * Every user may change these parameters (for his own user only !).
  */
   require_once "../tool/projeqtor.php";
+  require_once "../tool/formatter.php";
   scriptLog('   ->/view/startGuide.php');  
   $user=$_SESSION['user'];
   
- echo '<div style="height:100%;padding:10px;overflow:auto;">';
+ echo '<div style="height:100%;padding:10px;overflow:auto;position:relative;">';
  echo '<div class="siteH1">'.i18n('startGuideTitle').'</div>';
  echo '<br/>';
  
@@ -107,6 +108,22 @@
  echo '<br/>';
  echo '<br/>';
  echo '<br/>';
+ echo '<div style="position:absolute; right:10px; top:0px; ">';
+ $progressVal=round($progress/$total*100,0);
+ echo '<div class="siteH2" style="white-space:nowrap">'.progressFormatter($progressVal,i18n('progress')."&nbsp;:&nbsp; ").'</div>';
+ echo '<br/>'.i18n('showThisPageOnStart').'&nbsp;';
+ echo '<div dojoType="dijit.form.CheckBox" checked type="checkbox" id="showOnStart">';
+ echo '<script type="dojo/method" event="onChange" >';
+ echo ' if (this.checked) {';
+ echo '   saveUserParameter("startPage", "startGuide.php");';
+ echo ' } else {';
+ echo '   saveUserParameter("startPage", "today.php");';
+ echo '   showInfo(i18n("showThisPageUnckeck"));';
+ echo ' }';
+ echo '</script>';
+ echo '</div>';
+ echo '</div>';
+ echo '</div>'
  /*
   "*/
 ?>
