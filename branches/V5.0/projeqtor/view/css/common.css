@@ -1978,6 +1978,7 @@ table.dijitCalendarContainer {
 .dijitButtonIconDisplay { background-position: -651px;}
 .dijitButtonIconToday { background-position: -676px;}
 .dijitButtonIconExit { background-position: -701px;}
+.dijitButtonIconStats { background-position: -726px;}
 
 .dijitColorPalette {
   border: 1px solid #7eabcd;

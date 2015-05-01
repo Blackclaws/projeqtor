@@ -2335,7 +2335,15 @@ function removeChecklistDefinitionLine (lineId) {
 //= Checklist
 //=============================================================================
 
-function showChecklist(objectClass, objectId) {
+function showChecklist(objectClass) {
+  if (! objectClass) {
+    return;
+  }
+  if (dijit.byId('id')) {
+    var objectId=dijit.byId('id').get('value');
+  } else {
+    return;
+  }
   var params="&objectClass="+objectClass+"&objectId="+objectId;
   loadDialog('dialogChecklist',null, true, params);
 }
@@ -2357,6 +2365,23 @@ function checkClick(line, item) {
       }
     } 
   }
+}
+
+//=============================================================================
+//= History
+//=============================================================================
+
+function showHistory(objectClass) {
+  if (! objectClass) {
+    return;
+  }
+  if (dijit.byId('id')) {
+    var objectId=dijit.byId('id').get('value');
+  } else {
+    return;
+  }
+  var params="&objectClass="+objectClass+"&objectId="+objectId;
+  loadDialog('dialogHistory',null, true, params);
 }
 //=============================================================================
 //= Import
@@ -4516,7 +4541,24 @@ function endMultipleUpdateMode(objectClass) {
 }  
 
 function deleteMultipleUpdateMode(objectClass) {
-	showError("delete is no designed yet");
+  grid = dijit.byId("objectGrid"); // if the element is not a widget, exit.
+  if ( ! grid) { 
+    return;
+  }
+  dojo.byId("selection").value=""
+  var items=grid.selection.getSelected();
+  if (items.length) {
+    dojo.forEach(items, function(selectedItem) {
+      if (selectedItem !== null) {
+        dojo.byId("selection").value+=parseInt(selectedItem.id)+";";
+      }
+    });
+  }
+  actionOK=function() {
+    loadContent('../tool/deleteObjectMultiple.php?objectClass='+objectClass,'resultDivMultiple','objectFormMultiple');
+  };
+  msg=i18n('confirmDeleteMultiple',new Array(i18n('menu'+objectClass), items.length));
+  showConfirm (msg, actionOK);
 }
 function updateSelectedCountMultiple() {
   if (dojo.byId('selectedCount')) {
@@ -4578,7 +4620,6 @@ function showBigImage(objectClass, objectId, node, title,hideImage,nocache) {
       alone='Alone';
     }
     if (title) {
-      //console.log(title);
       htmlPhoto+='<div class="thumbBigImageTitle'+alone+'">'+title+'</div>';
     }
     var topPx=(top-40+(height/2))+"px";

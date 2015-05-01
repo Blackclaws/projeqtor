@@ -241,20 +241,39 @@
       }
       //$displayButton=( $buttonCheckListVisible=="visible")?'void':'none';?>
       
-    <span id="checkListButtonDiv" style="width:40px;">
-      <?php if ($buttonCheckListVisible=='visible') {?>
+    <span id="checkListButtonDiv" style="display:<?php echo ($buttonCheckListVisible=='visible')?'inline':'none';?>;">
+      <?php if ($buttonCheckListVisible!="never") {?>
       <button id="checkListButton" dojoType="dijit.form.Button" showlabel="false"
         title="<?php echo i18n('Checklist');?>"
         iconClass="dijitButtonIcon dijitButtonIconChecklist" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
-          showChecklist('<?php echo get_class($obj);?>',<?php echo $obj->id;?>);  
+          showChecklist('<?php echo get_class($obj);?>');  
         </script>
       </button>
-      <?php } else if ($buttonCheckListVisible != 'never') { 
-      	echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-      }?>
+      <?php }?>
       <input type="hidden" id="buttonCheckListVisible" value="<?php echo $buttonCheckListVisible;?>" />
     </span>
+    
+    <?php $buttonHistoryVisible=true; 
+      $paramHistoryVisible=Parameter::getUserParameter('displayHistory');
+      if ($paramHistoryVisible and $paramHistoryVisible!='REQ') {
+        $buttonHistoryVisible=false;
+      }
+      if (!$obj->id) $buttonHistoryVisible=false;
+    ?>
+    <span id="historyButtonDiv" style="display:<?php echo ($buttonHistoryVisible)?'inline':'none';?>;">
+      <?php if ($paramHistoryVisible=='REQ') {?>
+      <button id="historyButton" dojoType="dijit.form.Button" showlabel="false"
+        title="<?php echo i18n('showHistory');?>"
+        iconClass="dijitButtonIcon dijitButtonIconHistory" class="detailButton">
+        <script type="dojo/connect" event="onClick" args="evt">
+          showHistory('<?php echo get_class($obj);?>');  
+        </script>
+      </button>
+      <?php }?>
+      <input type="hidden" id="buttonHistoryVisible" value="<?php echo $paramHistoryVisible;?>" />
+    </span>
+    
     <?php
         }
         $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
