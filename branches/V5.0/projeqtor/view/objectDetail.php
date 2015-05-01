@@ -1446,14 +1446,16 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     $objStatus=new Status($version->idStatus);
     echo '<td class="assignData" style="width:15%">' . colorNameFormatter($objStatus->name . "#split#" . $objStatus->color) . '</td>';
     echo '<td class="assignData" title="' . htmlencode($version->description) . '">';
-    echo '  <table><tr >';
-    echo '   <td>';
+    //echo '  <table><tr >';
+    //echo '   <td>';
     echo htmlEncode($version->fileName, 'print');
-    echo '   </td>';
     if ($version->description and !$print) {
-      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+      //echo '<td>';
+      echo formatCommentThumb($version->description);
+      //echo '</td>';
     }
-    echo '</tr></table>';
+    //echo '   </td>';
+    //echo '</tr></table>';
     echo '</td></tr>';
   }
   echo '</table></td></tr>';
@@ -1959,12 +1961,12 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
       } else {
         echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
       }
-      echo '</td><td class="attachmentData" style="border-left:none;width:' . (($print)?'90':'80') . '%" title="' . $attachment->description . '">';
+      echo '</td><td class="attachmentData" style="border-left:none;width:' . (($print)?'90':'80') . '%" >';
       echo formatUserThumb($userId, $userName, 'Creator');
       echo formatDateThumb($creationDate, $updateDate);
       echo formatPrivacyThumb($attachment->idPrivacy, $attachment->idTeam);
       if ($attachment->description and !$print) {
-        echo '<img style="float:right;padding-right:3px;" src="img/note.png" />';
+        echo formatCommentThumb($attachment->description);
       }
       if ($attachment->link) {
         echo htmlEncode(urldecode($attachment->link), 'print');
@@ -2088,14 +2090,13 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
       if (!$print and $canGoto) {
         $goto=' onClick="gotoElement(' . "'" . get_class($gotoObj) . "','" . $gotoObj->id . "'" . ');" style="cursor: pointer;" ';
       }
-      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink)?'45':'35') . '%" title="' . $link->comment . '">';
+      echo '<td class="linkData" ' . $goto . ' style="position:relative;width:' . (($classLink)?'45':'35') . '%">';
       echo (get_class($linkObj) == 'DocumentVersion')?htmlEncode($linkObj->fullName):htmlEncode($linkObj->name);
       
       echo formatUserThumb($userId, $userName, 'Creator');
       echo formatDateThumb($creationDate, null);
-      if ($link->comment and !$print) {
-        echo '<img style="float:right;padding-right:3px;" src="img/note.png" />';
-      }
+      echo formatCommentThumb($link->comment);
+      
       echo '</td>';
       if (property_exists($linkObj, 'idStatus')) {
         $objStatus=new Status($linkObj->idStatus);
@@ -2333,19 +2334,15 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAssignment(' . "'" . $assignment->id . "'" . ",'" . $assignment->idResource . "'" . ",'" . $assignment->idRole . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . $assignment->rate . "'" . ",'" .
              Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ');" ' . 'title="' . i18n('editAssignment') .
              '" class="roundedButtonSmall"/> ';
-        echo '<input type="hidden" id="comment_assignment_' . $assignment->id . '" value="' . $assignment->comment . '" />';
+        echo '<input type="hidden" id="comment_assignment_' . $assignment->id . '" value="' . htmlEncode($assignment->comment) . '" />';
       }
       if ($assignment->realWork == 0 and $canUpdate and !$print and $workVisible) {
         echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 'title="' . i18n('removeAssignment') . '" class="roundedButtonSmall"/> ';
       }
       echo '</td>';
     }
-    echo '<td class="assignData" ';
-    if (!$print) {
-      echo 'title="' . htmlEncodeJson($assignment->comment) . '"';
-    }
-    echo '>';
-    echo '<table><tr>';
+    echo '<td class="assignData">';
+    echo '<table width="100%"><tr>';
     $goto="";
     if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '') == "YES") {
       $goto=' onClick="gotoElement(\'Resource\',\'' . $assignment->idResource . '\');" style="cursor: pointer;" ';
@@ -2354,7 +2351,9 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo ($assignment->idRole)?' (' . SqlList::getNameFromId('Role', $assignment->idRole) . ')':'';
     echo '</td>';
     if ($assignment->comment and !$print) {
-      echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+      echo '<td>';
+      echo formatCommentThumb($assignment->comment);
+      echo '</td>';
     }
     echo '</tr></table>';
     echo '</td>';
@@ -2418,12 +2417,10 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     }
     echo '<td class="assignData" >' . htmlFormatDate($expenseDetail->expenseDate) . '</td>';
     echo '<td class="assignData" ';
-    if (!$print) {
-      echo 'title="' . htmlEncodeJson($expenseDetail->description) . '"';
-    }
     echo '>' . $expenseDetail->name;
     if ($expenseDetail->description and !$print) {
-      echo '<span>&nbsp;&nbsp;<img src="img/note.png" /></span>';
+      //echo '<span>&nbsp;&nbsp;<img src="img/note.png" /></span>';
+      echo formatCommentThumb($expenseDetail->description);
     }
     echo '<input type="hidden" id="expenseDetail_' . $expenseDetail->id . '" value="' . htmlEncode($expenseDetail->name, 'none') . '"/>';
     

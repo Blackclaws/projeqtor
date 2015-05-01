@@ -304,6 +304,15 @@ function formatPrivacyThumb($privacy, $team) {
   }
 }
 
+function formatCommentThumb($comment) {
+  $res='';
+  if (! trim($comment)) return '';
+  $title=htmlEncode($comment,'title');
+  $res.='<img style="float:right;padding-right:3px;" src="img/note.png" ';
+  $res.=' onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"';
+  $res.='/>';
+  return $res;
+}
 function getMonthName($month,$maxLength=0) {
   global $monthArray;
   if (!$month) return'';

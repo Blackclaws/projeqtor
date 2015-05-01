@@ -4578,6 +4578,7 @@ function showBigImage(objectClass, objectId, node, title,hideImage,nocache) {
       alone='Alone';
     }
     if (title) {
+      //console.log(title);
       htmlPhoto+='<div class="thumbBigImageTitle'+alone+'">'+title+'</div>';
     }
     var topPx=(top-40+(height/2))+"px";

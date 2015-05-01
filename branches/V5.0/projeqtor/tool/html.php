@@ -543,9 +543,14 @@ function htmlEncode($val,$context="default") {
   	$str=$val;
   	$str=str_replace("	"," ",$val);
   	return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
-  } else if ($context="parameter") {
+  } else if ($context=="parameter") {
   	$str=str_replace('"',"''",$val);
   	return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
+  } else if ($context=="title") {
+    $str=$val;
+    $str=htmlspecialchars(htmlspecialchars($str,ENT_QUOTES,'UTF-8'),ENT_QUOTES,'UTF-8');
+    $str=str_replace( array("\r\n","\n","\r"), array('<br/>','<br/>','<br/>'),$str);
+    return $str;
   }
   return htmlspecialchars($val,ENT_QUOTES,'UTF-8');
 }
