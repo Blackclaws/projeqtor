@@ -2878,6 +2878,11 @@ if ($noselect) {
       }
     }
     drawHistoryFromObjects(true);
+    if (isset($dynamicDialogHistory)) {
+      echo '<table style="width: 100%;"><tr><td style="width: 100%;" align="center">';
+      echo '<button dojoType="dijit.form.Button" type="button" onclick="dijit.byId(\'dialogHistory\').hide();">';
+      echo i18n("close").'</button></td></tr></table>';
+    }
     exit();
   }
 }
@@ -3009,30 +3014,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
   }
   $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
   
-/*  if (!$noselect and isset($obj->_BillLine)) {
-    ?> <br />
-  <?php if ($print) {?>
-<table width="<?php echo $widthPct;?>px;">
-      <tr>
-        <td class="section"><?php echo i18n('sectionBillLines');?></td>
-      </tr>
-      <tr>
-        <td><?php drawBillLinesFromObject($obj);?></td>
-      </tr>
-    </table>
-  <?php
-    } else {
-      $titlePane=$objClass . "_BillLine";
-      ?>
-<div style="width: <?php echo $widthPct;?>" dojoType="dijit.TitlePane" 
-     title="<?php echo i18n('sectionBillLines');?>"
-     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>"       
-     onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawBillLinesFromObject($obj); ?>
-</div>
-<?php }?> <?php
-  } */
+
   if (!$noselect and isset($obj->_ChecklistDefinitionLine)) {
     ?> <br />
   <?php if ($print) {?>ChecklistDefinitionLine
@@ -3059,9 +3041,10 @@ if (array_key_exists('refresh', $_REQUEST)) {
 <?php }?> <?php
   }
   
-  $displayHistory='NO';
-  if (array_key_exists('displayHistory', $_SESSION)) {
-    $displayHistory=$_SESSION ['displayHistory'];
+  $displayHistory='REQ';
+  $paramDisplayHistory=Parameter::getUserParameter('displayHistory');
+  if ($paramDisplayHistory) {
+    $displayHistory=$paramDisplayHistory;
   }
   if ($obj and (property_exists($obj, '_noHistory') or property_exists($obj, '_noDisplayHistory'))) {
     $displayHistory='NO';

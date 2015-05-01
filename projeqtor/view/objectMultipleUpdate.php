@@ -78,19 +78,19 @@
                   saveMultipleUpdateMode("<?php echo $objectClass;?>");  
                 </script>
               </button>
+              <button id="deleteButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
+               title="<?php echo i18n('buttonDeleteMultiple');?>"
+               iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton" >
+                <script type="dojo/connect" event="onClick" args="evt">
+                  deleteMultipleUpdateMode("<?php echo $objectClass;?>");  
+                </script>
+              </button>
               <button id="undoButtonMultiple" dojoType="dijit.form.Button" showlabel="false"
                title="<?php echo i18n('buttonQuitMultiple');?>"
                iconClass="dijitButtonIcon dijitButtonIconExit" class="detailButton" >
                 <script type="dojo/connect" event="onClick" args="evt">
                   dojo.byId("undoButtonMultiple").blur();
                   endMultipleUpdateMode("<?php echo $objectClass;?>");
-                </script>
-              </button>    
-              <button id="deleteButtonMultiple" dojoType="dijit.form.Button" showlabel="false" 
-               title="<?php echo i18n('buttonDeleteMultiple');?>" style="display:none"
-               iconClass="dijitEditorIcon dijitEditorIconDelete" >
-                <script type="dojo/connect" event="onClick" args="evt">
-                   deleteMultipleUpdateMode("<?php echo $objectClass;?>");  
                 </script>
               </button>    
             </nobr></td>

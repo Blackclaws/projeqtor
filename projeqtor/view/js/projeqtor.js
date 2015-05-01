@@ -1054,19 +1054,30 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       }
       // Manage checkList button
+      console.log("=> check if buttons have to be changed");
       if (dojo.byId('buttonCheckListVisible') && dojo.byId('buttonCheckListVisibleObject')) {
         var visible=dojo.byId('buttonCheckListVisible').value;
         var visibleObj=dojo.byId('buttonCheckListVisibleObject').value;
+        console.log("visible="+visible+" visibleObj="+visibleObj);
         //loadContent('objectButtons.php', 'buttonDivContainer','listForm');
         if ( visible!='never' && visible!=visibleObj) {
-          loadContent('objectButtons.php', 'buttonDivContainer','listForm');
-          /*if (visibleObj=='visible') {
-            dojo.byId("checkListButtonDiv").style.display="void";
+          console.log("must show or hide checklistButton");
+          //loadContent('objectButtons.php', 'buttonDivContainer','listForm');
+          if (visibleObj=='visible') {
+            dojo.byId("checkListButtonDiv").style.display="inline";
           } else {
             dojo.byId("checkListButtonDiv").style.display="none";
           }
-          dojo.byId('buttonCheckListVisible').value=visibleObj;*/
+          dojo.byId('buttonCheckListVisible').value=visibleObj;
         }
+      }
+      if (lastOperation.value=="insert" && dojo.byId("buttonHistoryVisible") && dojo.byId("buttonHistoryVisible").value=='REQ') {
+        console.log("must show historyButton");
+        dojo.byId("historyButtonDiv").style.display="inline";
+      }
+      if (lastOperation.value=="delete" && dojo.byId("buttonHistoryVisible")) {
+        console.log("must hide historyButton");
+        dojo.byId("historyButtonDiv").style.display="none";
       }
     }
     var classObj=dojo.byId('objectClass');

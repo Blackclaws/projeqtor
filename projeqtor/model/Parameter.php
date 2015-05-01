@@ -217,10 +217,14 @@ class Parameter extends SqlElement {
           $list[$key]=$val;
         }
         break;
-      case 'displayHistory': case 'printHistory':
+      case 'displayHistory':
         $list=array('NO'=>i18n('displayNo'),
-                    'YES'=>i18n('displayYes'));
+                    'YES'=>i18n('displayYes'),
+                    'REQ'=>i18n('displayOnRequest'));
         break;
+      case 'printHistory':
+        $list=array('NO'=>i18n('displayNo'),
+            'YES'=>i18n('displayYes'));
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
       	$list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));

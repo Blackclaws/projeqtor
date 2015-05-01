@@ -96,6 +96,7 @@
 
     function showMessage(id, idMax) {
       contentNode=dojo.byId('loginMessage_'+id);
+      if (! contentNode) return;
       dojo.fadeIn({ 
 		    node: contentNode ,
 		    duration: 800, 

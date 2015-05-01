@@ -101,6 +101,7 @@ if (count ( $cdList ) > 0 and $newObj->id) {
 } else {
   $buttonCheckListVisible = "hidden";
 }
+echo '<input type="hidden" id="buttonCheckListVisibleObject" value="'.$buttonCheckListVisible.'" />';
 
 // Message of correct saving
 $status = getLastOperationStatus ( $result );
