@@ -218,7 +218,7 @@ function drawTableFromObjectList($objectList) {
   type="hidden" name="objectClassManual" id="objectClassManual"
   value="<?php echo $manual;?>" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
-<div id="parameterButtonDiv" class="listTitle"
+<div id="parameterButtonDiv" class="listTitle" style="overflow:hidden !important"
   dojoType="dijit.layout.ContentPane" region="top">
   <div id="resultDiv" dojoType="dijit.layout.ContentPane"
       region="top" style="padding:5px;height:100px;padding-left:300px;"></div>

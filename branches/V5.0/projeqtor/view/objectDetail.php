@@ -1545,6 +1545,7 @@ function drawHistoryFromObjects($refresh=false) {
       $refId='';
       $refObject='';
     }
+    if ($refType=='Attachement') $refType='Attachment'; // New in V5 : change Class name, must preserve display for history
     $curObj=null;
     $dataType="";
     $dataLength=0;
@@ -1631,7 +1632,7 @@ function drawHistoryFromObjects($refresh=false) {
       echo '<td class="historyData" width="23%">' . $oldValue . '</td>';
       echo '<td class="historyData" width="23%">' . $newValue . '</td>';
       echo '<td class="historyData' . $class . '" width="15%">' . $date . '</td>';
-      echo '<td class="historyData' . $class . '" width="15%">' . $user . '</td>';
+      echo '<td class="historyData' . $class . '" style="border-right: 1px solid #AAAAAA;" width="15%">' . $user . '</td>';
       echo '</tr>';
       $stockDate=$hist->operationDate;
       $stockUser=$hist->idUser;
@@ -2334,7 +2335,7 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editAssignment(' . "'" . $assignment->id . "'" . ",'" . $assignment->idResource . "'" . ",'" . $assignment->idRole . "'" . ",'" . ($assignment->dailyCost * 100) . "'" . ",'" . $assignment->rate . "'" . ",'" .
              Work::displayWork($assignment->assignedWork) * 100 . "'" . ",'" . Work::displayWork($assignment->realWork) * 100 . "'" . ",'" . Work::displayWork($assignment->leftWork) * 100 . "'" . ",'" . Work::displayShortWorkUnit() . "'" . ');" ' . 'title="' . i18n('editAssignment') .
              '" class="roundedButtonSmall"/> ';
-        echo '<input type="hidden" id="comment_assignment_' . $assignment->id . '" value="' . htmlEncode($assignment->comment) . '" />';
+        echo '<textarea style="display:none" id="comment_assignment_' . $assignment->id . '" >'.$assignment->comment."</textarea>";
       }
       if ($assignment->realWork == 0 and $canUpdate and !$print and $workVisible) {
         echo '  <img src="css/images/smallButtonRemove.png" ' . 'onClick="removeAssignment(' . "'" . $assignment->id . "','" . Work::displayWork($assignment->realWork) * 100 . "','" . htmlEncode($resName, 'quotes') . "'" . ');" ' . 'title="' . i18n('removeAssignment') . '" class="roundedButtonSmall"/> ';
@@ -3053,7 +3054,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     $displayHistory='NO';
   }
   echo '<br/>';
-  if ((!$noselect) and $displayHistory != 'NO' and !$comboDetail) {
+  if ((!$noselect) and $displayHistory == 'YES' and !$comboDetail) {
     if ($print) {
       ?>
 <table width="<?php echo $printWidth;?>px;">

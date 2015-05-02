@@ -115,7 +115,7 @@ $assignment->assignedWork=Work::convertWork($assignedWork);
 //$assignment->realWork=Work::convertWork($realWork); // Should not be changed here
 $assignment->leftWork=Work::convertWork($leftWork);
 $assignment->plannedWork=Work::convertWork($plannedWork);
-$assignment->comment=htmlEncodeJson($comment);
+$assignment->comment=$comment;
 
 if (! $assignment->idProject) {
   $refObj=new $refType($refId);

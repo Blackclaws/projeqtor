@@ -222,7 +222,7 @@ if ($status=='ERROR') {
   echo '<span class="messageOK" >' . i18n('messageParametersSaved') . '</span>';
 } else {
 	Sql::rollbackTransaction();
-  echo '<span class="messageWARNING" >' . i18n('messageParametersNoChangeSaved') . '</span>';
+  echo '<span class="messageNO_CHANGE" >' . i18n('messageParametersNoChangeSaved') . '</span>';
 }
 echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
 echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . $status .'">';

@@ -158,6 +158,8 @@ ALTER TABLE `${prefix}document` ADD `idUser` int(12) unsigned,
 ADD `creationDate` date DEFAULT NULL;
 UPDATE `${prefix}document` set idUser=idAuthor;
 
+UPDATE `${prefix}history` set refTYpe='Attachment' where refType='Attachement';
+
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function
 -- ///////////////////////////////////////////////////////////

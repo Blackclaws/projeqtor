@@ -1357,7 +1357,7 @@ function editAssignment (assignmentId, idResource, idRole, cost, rate, assignedW
 	dijit.byId("assignmentLeftWork").set('value',dojo.number.format(leftWork/100));
 	var comment=dojo.byId('comment_assignment_'+assignmentId);
 	if (comment) {
-	  dijit.byId("assignmentComment").set('value',comment.value);
+	  dijit.byId("assignmentComment").set('value',comment.innerHTML);
 	} else {
 		dijit.byId("assignmentComment").set('value','');	
 	} 
