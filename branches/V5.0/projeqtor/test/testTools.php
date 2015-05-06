@@ -41,8 +41,7 @@ function testFooter(){
 }
 function testTitle($title){
 	global $last, $microtime, $debugTrace;
-	// debugLog to keep
-	if ($debugTrace)debugLog("=>$title"); 
+	if ($debugTrace) debugTraceLog("=>$title"); 
   echo '<tr style="border:1px solid #000000;">';
   echo '<td style="width:100px">'.date('H:i:s').'</td>';
   echo '<td style="width:200px">'.$title.'</td>';
@@ -51,8 +50,7 @@ function testTitle($title){
 }
 function testSubTitle($title){	
 	global $last, $microtime, $debugTrace;
-	// debugLog to keep
-  if ($debugTrace)debugLog("   =>$title");
+  if ($debugTrace) debugTraceLog("   =>$title");
 	if ($last=='sublevel') {
 		echo '<td></td></tr><tr style="border:1px solid #000000;"><td></td>';
 	} else {

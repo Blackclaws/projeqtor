@@ -43,7 +43,7 @@ $batchMode=true;
 require_once "projeqtor.php";
 // Set user 
 $user=new User(); // if script to be run requires specific rights, set "$user=new User(id)" where id is the id of admin user
-$_SESSION['user']=$user;
+setSessionUser($user);
 
 // Run script
 include 'cronRelaunch.php';
