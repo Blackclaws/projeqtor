@@ -26,7 +26,7 @@
 
 function getGraphImgName($root) {
   global $reportCount;
-  //$user=$_SESSION['user'];
+  //$user=getSessionUser();
   $reportCount+=1;
   $name=Parameter::getGlobalParameter('paramReportTempDirectory');
   $name.="/user" . getCurrentUserId() . "_";

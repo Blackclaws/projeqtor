@@ -39,7 +39,7 @@ if ($idProject) {
 
 include "header.php";
   
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $tab=array();
 

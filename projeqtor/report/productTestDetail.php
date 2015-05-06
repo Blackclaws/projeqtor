@@ -42,7 +42,7 @@ if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
 };
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
   
   // Header
 $headerParameters="";

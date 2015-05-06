@@ -45,7 +45,7 @@ $paramOtherVersion=false;
     $paramOtherVersion=true;
   };
   
-$user=$_SESSION['user'];
+$user=getSessionUser();
   
   // Header
 $headerParameters="";

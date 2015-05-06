@@ -40,7 +40,7 @@ if (array_key_exists('monthSpinner',$_REQUEST)) {
 //  $paramWeek=$_REQUEST['weekSpinner'];
 //};
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $periodType='month';
 $periodValue=$_REQUEST['periodValue'];

@@ -54,7 +54,7 @@ include "header.php";
 
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $queryWhere=getAccesResctictionClause('ProjectExpense','exp');
 //echo $queryWhere;
 

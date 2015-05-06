@@ -54,7 +54,7 @@ include "header.php";
 
 $accessRightRead=securityGetAccessRight('menuProject', 'read');
   
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $queryWhereW=getAccesResctictionClause('Activity','w');
 $queryWhereExp=getAccesResctictionClause('Activity','exp');

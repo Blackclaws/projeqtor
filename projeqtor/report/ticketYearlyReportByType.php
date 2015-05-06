@@ -64,7 +64,7 @@ if (array_key_exists('responsible',$_REQUEST)) {
   $paramResponsible=trim($_REQUEST['responsible']);
 };
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $periodType='year';
 //$periodValue=$_REQUEST['periodValue'];

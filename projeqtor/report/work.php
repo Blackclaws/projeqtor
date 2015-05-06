@@ -52,7 +52,7 @@ if (array_key_exists('weekSpinner',$_REQUEST)) {
   $paramWeek=$_REQUEST['weekSpinner'];
 };
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $paramResource='';
 if (array_key_exists('idResource',$_REQUEST)) {

@@ -55,7 +55,7 @@ if (! isset($includedReport)) {
     $showIdle=true;
   }
   
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
     
   // Header
   $headerParameters="";
@@ -72,7 +72,7 @@ if (! isset($includedReport)) {
 }
 
 $obj=new $refType();
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $query = "select count(id) as nb, id" . $refType . "Type as idType, idStatus ";
 $query .= " from " . $obj->getDatabaseTableName();

@@ -45,7 +45,7 @@ $paramTeam='';
 if (array_key_exists('idTeam',$_REQUEST)) {
   $paramTeam=trim($_REQUEST['idTeam']);
 }
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $periodType=$_REQUEST['periodType'];
 $periodValue=$_REQUEST['periodValue'];
