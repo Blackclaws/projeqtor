@@ -29,15 +29,22 @@ include_once '../tool/formatter.php';
 if (! isset ($print)) {
 	$print=false;
 }
-if (! array_key_exists('objectClass',$_REQUEST)) {
-	throwError('Parameter objectClass not found in REQUEST');
+$context="popup";
+if (isset($obj)) {
+  $objectClass=get_class($obj);
+  $objectId=$obj->id;
+  $context="detail";
+} else {
+  if (! array_key_exists('objectClass',$_REQUEST)) {
+  	throwError('Parameter objectClass not found in REQUEST');
+  }
+  $objectClass=$_REQUEST['objectClass'];
+  
+  if (! array_key_exists('objectId',$_REQUEST)) {
+  	throwError('Parameter objectId not found in REQUEST');
+  }
+  $objectId=$_REQUEST['objectId'];
 }
-$objectClass=$_REQUEST['objectClass'];
-
-if (! array_key_exists('objectId',$_REQUEST)) {
-	throwError('Parameter objectId not found in REQUEST');
-}
-$objectId=$_REQUEST['objectId'];
 
 $checklistDefinition=null;
 $obj=new $objectClass($objectId);
@@ -53,7 +60,7 @@ if ($checklist and $checklist->id) {
 		unset($checklist);
 	}
 }
-if (!$checklist or !$checklist->id) {
+if (!isset($checklist) or !$checklist or !$checklist->id) {
 	$checklist=new Checklist();
 }
 
@@ -87,13 +94,19 @@ if ($obj->idle) $canUpdate=false;
 if ($print) $canUpdate=false;
 ?>
 <?php if (! $print) {?>
+<?php if ($context=='popup') {?>
 <form id="dialogChecklistForm" name="dialogChecklistForm" action="">
+<?php }?>
 <input type="hidden" name="checklistDefinitionId" value="<?php echo $checklistDefinition->id;?>" />
 <input type="hidden" name="checklistId" value="<?php echo $checklist->id;?>" />
 <input type="hidden" name="checklistObjectClass" value="<?php echo $objectClass;?>" />
 <input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
 <?php } else {?>
-<table style="width: 100%;"><tr><td class="section"><?php echo i18n("Checklist");?></td></tr></table>	
+<table style="width: 100%;">
+  <tr><td>&nbsp;</td></tr>
+  <tr><td class="section"><?php echo i18n("Checklist");?></td></tr>
+  <tr style="height:0.5em;font-size:80%"><td>&nbsp;</td></tr>
+</table>	
 <?php }?> 
 <table style="width: 100%;">
   <tr>
@@ -141,10 +154,6 @@ if ($print) $canUpdate=false;
 				<td style="text-align:right; width:50px; color: #A0A0A0;white-space:nowrap" valign="top">				  
 				<?php 
 				  if ($lineVal->checkTime and !$print) {
-            //echo '<img src="../view/img/note.png"'; 
-            //echo 'title="'.SqlList::getNameFromId('User',$lineVal->idUser)."\n";
-            //echo htmlFormatDateTime($lineVal->checkTime,false).'"';
-            //echo '/>';
             $userId=$lineVal->idUser;
             $userName=SqlList::getNameFromId('User', $userId);
             echo formatUserThumb($userId, $userName, 'Creator');
@@ -165,7 +174,7 @@ if ($print) $canUpdate=false;
 				  </tr></table></td>
 				
 <?php } else { ?>
-				<td class="reportTableHeader" colspan="2" style="text-align:center" title="<?php echo $line->title;?>">
+				<td class="noteHeader" colspan="2" style="text-align:center" title="<?php echo $line->title;?>">
 				  <?php echo $line->name;?>
 				  <div style="width: 150px; float:right; font-weight: normal"><?php echo i18n('colComment')?></div>
 				</td>
@@ -195,7 +204,7 @@ if ($print) $canUpdate=false;
 	  </table>
   </td></tr>
  <tr><td style="width: 100%;">&nbsp;</td></tr>
-<?php if (! $print) {?>
+<?php if (! $print and $context=='popup') {?>
  <tr>
    <td style="width: 100%;" align="center">
      <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogChecklist').hide();">
@@ -209,4 +218,4 @@ if ($print) $canUpdate=false;
  </tr>      
 <?php }?> 
 </table>
-<?php if (! $print) {?></form><?php }?>
+<?php if (! $print and $context=='popup') {?></form><?php }?>

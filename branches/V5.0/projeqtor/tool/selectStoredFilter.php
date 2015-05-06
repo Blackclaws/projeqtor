@@ -31,7 +31,7 @@
 
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/selectStoredFilter.php');
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $comboDetail=false;
 if (array_key_exists('comboDetail',$_REQUEST)) {

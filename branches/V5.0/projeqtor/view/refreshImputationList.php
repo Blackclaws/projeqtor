@@ -29,6 +29,7 @@
  *
  */
 require_once "../tool/projeqtor.php";
+require_once "../tool/formatter.php";
 scriptLog('   ->/view/refrehImputationList.php'); 
 $rangeType=$_REQUEST['rangeType'];
 $rangeValue=$_REQUEST['rangeValue'];

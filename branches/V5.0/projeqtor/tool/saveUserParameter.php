@@ -28,7 +28,7 @@ require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
  $crit=array();
- $user=$_SESSION['user'];
+ $user=getSessionUser();
  $crit['idUser']=$user->id;
  $crit['idProject']=null;
  $crit['parameterCode']=$_REQUEST['parameter'];

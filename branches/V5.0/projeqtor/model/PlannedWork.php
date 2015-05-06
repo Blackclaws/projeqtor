@@ -851,15 +851,12 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
     }
   }
   private static function traceArray($list) {
-  	// debugLog to keep
-  	debugLog('*****traceArray()*****');
+  	debugTraceLog('*****traceArray()*****');
   	foreach($list as $id=>$pe) {
-  		// debugLog to keep
-  		debugLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority . ' - Left='.$pe->leftWork.' - '.$pe->_sortCriteria);
+  		debugTraceLog($id . ' - ' . $pe->wbs . ' - ' . $pe->refType . '#' . $pe->refId . ' - ' . $pe->refName . ' - Prio=' . $pe->priority . ' - Left='.$pe->leftWork.' - '.$pe->_sortCriteria);
   		if (count($pe->_predecessorListWithParent)>0) {
   			foreach($pe->_predecessorListWithParent as $idPrec=>$prec) {
-  				// debugLog to keep
-  			  debugLog('   ' . $idPrec.'=>'.$prec);
+  				debugTraceLog('   ' . $idPrec.'=>'.$prec);
   			}
   		}
   	}

@@ -34,7 +34,7 @@
       $result=i18n('colRequestDisconnection');
     }
   }*/
-  unset($_SESSION['user']);
+  setSessionUser(null);
   unset($_REQUEST['objectClass']);
   unset($_REQUEST['objectId']);
   $_REQUEST['lostConnection']=true;

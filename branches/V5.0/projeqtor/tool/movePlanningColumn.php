@@ -35,7 +35,7 @@ if (! array_key_exists('orderedList',$_REQUEST)) {
 $list=$_REQUEST['orderedList'];
 
 $arrayList=explode("|", $list);
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 Sql::beginTransaction();
 foreach ($arrayList as $order=>$col) {

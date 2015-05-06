@@ -160,7 +160,7 @@ if ($type=='habilitation') {
   $parameterList=Parameter::getParamtersList($type);
   foreach($_REQUEST as $fld => $val) {
     if (array_key_exists($fld, $parameterList)) {
-      $user=$_SESSION['user'];
+      $user=getSessionUser();
       $crit['idUser']=$user->id;
       $crit['idProject']=null;
       $crit['parameterCode']=$fld;
@@ -228,8 +228,8 @@ echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">
 echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . $status .'">';
 
 function resetUser() {
-	$user=$_SESSION['user'];
+	$user=getSessionUser();
   $user->reset();
-	$_SESSION['user']=$user;
+	setSessionUser($user);
 }
 ?>

@@ -34,7 +34,7 @@
 require_once "../tool/projeqtor.php";
 //traceLog("backupFilter.php");
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $comboDetail=false;
 if (array_key_exists('comboDetail',$_REQUEST)) {
@@ -80,21 +80,21 @@ if ($cancel) {
   if (! $comboDetail) {
 		if (array_key_exists($filterName,$_SESSION)) {
       $user->_arrayFilters[$filterObjectClass]=$_SESSION[$filterName];
-	    $_SESSION['user']=$user;
+	    setSessionUser($user);
 	  } else {
 	    if (array_key_exists($filterObjectClass, $user->_arrayFilters)) {
 	      unset($user->_arrayFilters[$filterObjectClass]);
-	      $_SESSION['user']=$user;
+	      setSessionUser($user);
 	    }
 	  }
   } else {
     if (array_key_exists($filterName.'_Detail',$_SESSION)) {
       $user->_arrayFiltersDetail[$filterObjectClass]=$_SESSION[$filterName.'_Detail'];
-      $_SESSION['user']=$user;
+      setSessionUser($user);
     } else {
       if (array_key_exists($filterObjectClass, $user->_arrayFiltersDetail)) {
         unset($user->_arrayFiltersDetail[$filterObjectClass]);
-        $_SESSION['user']=$user;
+        setSessionUser($user);
       }
     }
   }
@@ -129,7 +129,7 @@ if ( ! $clean and ! $cancel and !$valid) {
 
 if ($valid or $cancel) {
   $user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
-  $_SESSION['user']=$user;
+  setSessionUser($user);
 }
 
 ?>

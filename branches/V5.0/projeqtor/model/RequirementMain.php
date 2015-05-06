@@ -94,7 +94,7 @@ class RequirementMain extends SqlElement {
   public $_void_5;
   public $_void_6;
   public $countIssues;
-  
+  public $countLinked;
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -125,7 +125,7 @@ class RequirementMain extends SqlElement {
                                   "done"=>"nobr",
                                   "idle"=>"nobr",
                                   "idUser"=>"hidden",
-                                  "countLinked"=>"display",
+                                  "countLinked"=>"hidden",
                                   "countTotal"=>"display",
                                   "countPlanned"=>"display",
                                   "countPassed"=>"display",
@@ -307,7 +307,7 @@ class RequirementMain extends SqlElement {
     if ($item=='lockButton' and !$print) {
       if ($this->locked) {
         $canUnlock=false;
-        $user=$_SESSION['user'];
+        $user=getSessionUser();
         if ($user->id==$this->idLocker) {
           $canUnlock=true;
         } else {
@@ -341,7 +341,7 @@ class RequirementMain extends SqlElement {
         $result .= '</button>';
         $result .= '</td></tr>';
       }
-      $result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . $_SESSION['user']->id . '" />';
+      $result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . getSessionUser()->id . '" />';
       return $result;
     }
   }

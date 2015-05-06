@@ -51,7 +51,7 @@ $comment="";
 if (array_key_exists('otherVersionComment',$_REQUEST)) {
     $comment=$_REQUEST['otherVersionComment'];
 }
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $arrayId=array();
 if (is_array($versionId)) {
 	$arrayId=$versionId;

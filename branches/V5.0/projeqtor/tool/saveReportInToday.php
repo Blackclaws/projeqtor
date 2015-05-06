@@ -39,7 +39,7 @@ $reportId=$_REQUEST['reportId'];
 
 Sql::beginTransaction();
 $item=new Today();
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $item->idUser=$user->id;
 $item->scope='report';
 $item->idReport=$reportId;

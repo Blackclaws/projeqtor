@@ -138,8 +138,9 @@ foreach($arrayTestCase as $testCaseId) {
 	  }
   }
 }
+displayLastOperationStatus($result);
 // Message of correct saving
-if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
+/*if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 	Sql::rollbackTransaction();
   echo '<span class="messageERROR" >' . $result . '</span>';
 } else if (stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
@@ -148,5 +149,5 @@ if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
 } else { 
 	Sql::rollbackTransaction();
   echo '<span class="messageWARNING" >' . $result . '</span>';
-}
+}*/
 ?>

@@ -87,10 +87,10 @@ class QuotationMain extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("id"=>"nobr", 
+                                  "idQuotationType"=>"required",
   		                            "idProject"=>"required",
   		                            "reference"=>"readonly",
                                   "name"=>"required", 
-                                  "idOrderType"=>"required",
                                   "idStatus"=>"required",
                                   "handled"=>"nobr",
                                   "done"=>"nobr",

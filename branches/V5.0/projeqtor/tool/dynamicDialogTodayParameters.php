@@ -35,7 +35,7 @@ $today=new Today();
     Today::insertStaticItems();
     $todayList=$today->getSqlElementsFromCriteria($crit, false, null,'sortOrder asc');
   }
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $profile=SqlList::getFieldFromId('Profile', $user->idProfile, 'profileCode',false);
   echo '<form dojoType="dijit.form.Form" id="todayParametersForm" name="todayParametersForm" onSubmit="return false;">';
   echo '<table style="width:100%">';

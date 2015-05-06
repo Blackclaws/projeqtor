@@ -33,7 +33,7 @@ header("Content-Type: text/plain");
 $toStore = (isset($_REQUEST["toStore"])) ? $_REQUEST["toStore"] : NULL;
 $toStore=explode(";",$toStore);
 $objClass = (isset($_REQUEST["objectClass"])) ? $_REQUEST["objectClass"] : NULL;
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $idUser = $user->id;
 $obj=new $objClass();
 Sql::beginTransaction();

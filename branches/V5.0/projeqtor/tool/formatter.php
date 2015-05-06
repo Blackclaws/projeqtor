@@ -236,6 +236,7 @@ function formatColorThumb($col,$val, $size=20, $float='right') {
 function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
   global $print;
   if ($print) return "";//htmlFormatDate($creationDate);
+  if (! trim($creationDate) and ! trim($updateDate)) return '';
   $today=date('Y-m-d');
   $date=($updateDate)?$updateDate:$creationDate;
   $date=substr($date,0,10);

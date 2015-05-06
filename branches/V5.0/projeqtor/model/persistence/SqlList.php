@@ -195,7 +195,7 @@ class SqlList {
     $query .=')';
     if ($listType=='Report') {
       $hr=new HabilitationReport();
-      $user=$_SESSION['user'];
+      $user=getSessionUser();
       $lstIn="";
       $lst=$hr->getSqlElementsFromCriteria(array('idProfile'=>$user->idProfile, 'allowAccess'=>'1'), false);
       foreach ($lst as $h) {

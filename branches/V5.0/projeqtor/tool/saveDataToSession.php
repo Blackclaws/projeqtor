@@ -31,11 +31,11 @@ require_once "../tool/projeqtor.php";
 
 $id=$_REQUEST['id'];
 if ($id=='disconnect') {
-  //$user=$_SESSION['user'];
+  //$user=getSessionUser();
   //$user->disconnect();
   //session_destroy();
-	if (isset($_REQUEST['cleanCookieHash']) and $_REQUEST['cleanCookieHash']=='true' and isset($_SESSION['user']) ) {
-		 $user=new User($_SESSION['user']->id);
+	if (isset($_REQUEST['cleanCookieHash']) and $_REQUEST['cleanCookieHash']=='true' and getSessionUser()->id ) {
+		 $user=new User(getSessionUser()->id);
 		 $user->cleanCookieHash();
 	}
 	Audit::finishSession();

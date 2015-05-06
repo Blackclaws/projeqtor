@@ -39,7 +39,7 @@ scriptLog('   ->/view/reportsList.php');
     <td>&nbsp;</td>
   </tr>
 <?php 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $currentWeek=weekNumber(date('Y-m-d'));
 if (strlen($currentWeek)==1) {
   $currentWeek='0' . $currentWeek;

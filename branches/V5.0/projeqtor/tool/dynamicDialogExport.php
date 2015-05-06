@@ -30,7 +30,7 @@ if (! array_key_exists('objectClass',$_REQUEST)) {
 $objectClass=$_REQUEST['objectClass'];
 $obj=new $objectClass();
 
-$idUser = $_SESSION['user']->id;
+$idUser = getSessionUser()->id;
 $cs=new ColumnSelector();
 $crit=array('scope'=>'export','objectClass'=>$objectClass, 'idUser'=>$user->id);
 $csList=$cs->getSqlElementsFromCriteria($crit);

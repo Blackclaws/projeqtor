@@ -30,7 +30,7 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/today.php');  
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $profile=new Profile($user->idProfile);
   $cptMax=Parameter::getGlobalParameter('maxItemsInTodayLists');
   if (! $cptMax) {$cptMax=100;}
@@ -54,7 +54,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     
   function showMessages() {
   	global $cptMax;
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $msg=new Message();
     $where="idle=0";
     $where.=" and (idUser is null or idUser='" .Sql::fmtId( $user->id) . "')";
@@ -83,7 +83,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   
   function showProjects() {
   	global $cptMax, $print, $workVisibility;
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $prjVisLst=$user->getVisibleProjects();
     $prjLst=$user->getHierarchicalViewOfVisibleProjects(true);
     $obj=new Action();
@@ -355,7 +355,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showAssignedTasks() {
-  	$user=$_SESSION['user'];
+  	$user=getSessionUser();
   	$ass=new Assignment();
     $act=new Activity();
     $meet=new Meeting();
@@ -369,7 +369,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showResponsibleTasks() {
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $ass=new Assignment();
     $act=new Activity();
     $where="(idResource='" . Sql::fmtId($user->id) . "'" .
@@ -381,7 +381,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   }
   
   function showIssuerRequestorTasks() {
-  	$user=$_SESSION['user'];
+  	$user=getSessionUser();
   	$where="(idUser='" . Sql::fmtId($user->id) . "'" . 
        ") and idle=0 and done=0";
   	$whereTicket="(idUser='" . Sql::fmtId($user->id) . "'" . 
@@ -408,7 +408,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
   	// $whereTicket :    NO      YES     YES     YES     Ticket
   	// $whereMeeting :   YES     YES     YES     NO      Meeting, TestSession
   	global $cptMax, $print, $cptDisplayId, $collapsedList;
-  	$user=$_SESSION['user'];
+  	$user=getSessionUser();
   	$crit=array('idUser'=>$user->id,'idToday'=>null,'parameterName'=>'periodDays');
     $tp=SqlElement::getSingleSqlElementFromCriteria('TodayParameter',$crit);
     $periodDays=$tp->parameterValue;

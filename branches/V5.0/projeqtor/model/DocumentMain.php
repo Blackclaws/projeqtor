@@ -132,7 +132,7 @@ class DocumentMain extends SqlElement {
     	self::$_fieldsAttributes['idVersioningType']="readonly";
     }
     if (!$this->id and ! $this->idAuthor and array_key_exists('user',$_SESSION)) {
-    	$user=$_SESSION['user'];
+    	$user=getSessionUser();
     	$this->idAuthor=$user->id;
     }
     
@@ -177,7 +177,7 @@ class DocumentMain extends SqlElement {
     if ($item=='lockButton' and !$print and $this->id) {
     	if ($this->locked) {
         $canUnlock=false;
-        $user=$_SESSION['user'];
+        $user=getSessionUser();
         if ($user->id==$this->idLocker) {
         	$canUnlock=true;
     	  } else {
@@ -211,7 +211,7 @@ class DocumentMain extends SqlElement {
 	      $result .= '</button>';
 	      $result .= '</td></tr>';
     	}
-    	$result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . $_SESSION['user']->id . '" />';
+    	$result .= '<input type="hidden" id="idCurrentUser" name="idCurrentUser" value="' . getSessionUser()->id . '" />';
     	return $result;
     }
     if ($item=='buttonSendMail') {

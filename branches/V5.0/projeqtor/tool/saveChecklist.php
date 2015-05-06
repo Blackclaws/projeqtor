@@ -29,6 +29,7 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
+debugLog("saveCheckList");
 if (! array_key_exists('checklistDefinitionId',$_REQUEST)) {
 	throwError('checklistDefinitionId parameter not found in REQUEST');
 }
@@ -59,13 +60,22 @@ $linesVal=array();
 foreach ($linesTmp as $line) {
 	$linesVal[$line->idChecklistDefinitionLine]=$line;
 }
-
 Sql::beginTransaction();
 $checklist->refType=$checklistObjectClass;
 $checklist->refId=$checklistObjectId;
 $checklist->idChecklistDefinition=$checklistDefinitionId;
+$changed=false;
+if ($checklist->comment!=trim($comment)) {
+  $changed=true;
+}
 $checklist->comment=$comment;
 $result=$checklist->save();
+if ($changed) {
+  $status=getLastOperationStatus($result);
+} else {
+  $status='NO_CHANGE';
+}
+
 if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
   foreach($checklistDefinition->_ChecklistDefinitionLine as $line) {
 		if (isset($linesVal[$line->id])) {
@@ -75,50 +85,75 @@ if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
 		}
 		$valLine->idChecklist=$checklist->id;
 		$valLine->idChecklistDefinitionLine=$line->id;
-		$valLine->checkTime=date('Y-m-d H:i:s');
-		$valLine->idChecklistDefinitionLine=$line->id;
-		
+		//$valLine->checkTime=date('Y-m-d H:i:s');		
 		$checkedCpt=0;
+		$checkedCptChanged=0;
 		for ($i=1; $i<=5; $i++) {
 			$checkName="check_".$line->id."_".$i;
 			$valueName="value0".$i;
 			if (isset($_REQUEST[$checkName])) {
-				$checkedCpt+=1;
+				$checkedCpt++;
 				if (! $valLine->$valueName) {
-					$valLine->idUser=$_SESSION['user']->id;
+				  $checkedCptChanged++;
+					$valLine->idUser=getSessionUser()->id;
 				  $valLine->checkTime=date('Y-m-d H:i:s');
 				}
 				$valLine->$valueName=1;
 			} else {
+				if ($valLine->$valueName) {
+				  $checkedCptChanged++;
+				}
 				$valLine->$valueName=0;
 			}
 		}
 		$cmtName='checklistLineComment_'.$line->id;
 		if (isset($_REQUEST[$cmtName])) {
-			$cmt=$_REQUEST[$cmtName];
+			$cmt=trim($_REQUEST[$cmtName]);
+			if ($valLine->comment!=$cmt) {
+			  $checkedCptChanged++;
+			}
 			$valLine->comment=$cmt;
 			if ($cmt) $checkedCpt+=1;
-		}
+		}	
 	  $resultLine="";
 		if ($checkedCpt==0) {
 			if ($valLine->id) {
 				$resultLine=$valLine->delete();
 			}
-		} else {
+		} else if ($checkedCptChanged) {
 			$resultLine=$valLine->save();
 		}
-		if (stripos($resultLine,'id="lastOperationStatus" value="ERROR"')>0) {
-		 	$result=$resultLine;
-	  }
+		if ($resultLine) {
+  		$statusLine=getLastOperationStatus ( $resultLine );
+  		debugLog("saveCheckListLine StatusLine=$statusLine ResultLine=$resultLine");
+  		if ($statusLine=="NO_CHANGE") {
+  		  // Nothing
+  		} else if ($statusLine=="ERROR") {
+  		 	$result=$resultLine;
+  		 	$status=$statusLine;
+  	  } else if ($status=='NO_CHANGE') { // Explicitly, $statusLine=="OK"
+  	    $result=$resultLine;
+  	    $status=$statusLine;
+  	  }
+		}
   }
-} 
-if (! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
-  $result=i18n('Checklist') . ' ' . i18n('resultUpdated');
-  $result .= '<input type="hidden" id="lastSaveId" value="' . $checklist->id . '" />';
+}
+debugLog("saveCheckList Status=$status, Result = $result");
+if ($status=="OK") {
+  $result=i18n('Checklist') . ' ' . i18n('resultUpdated').' ('.i18n($checklistObjectClass).' #'.$checklistObjectId.')';
+  $result .= '<input type="hidden" id="lastSaveId" value="' . $checklistObjectId . '" />';
   $result .= '<input type="hidden" id="lastOperation" value="update" />';
   $result .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
   $result .= '<input type="hidden" id="checklistUpdated" value="true" />';
 }
 // Message of correct saving
-displayLastOperationStatus($result);
+if (! isset($included) ) {
+  displayLastOperationStatus($result);
+} else {
+  if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+    Sql::commitTransaction ();
+  } else {
+    Sql::rollbackTransaction ();
+  }
+}
 ?>

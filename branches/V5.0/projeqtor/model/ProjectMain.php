@@ -432,7 +432,7 @@ class ProjectMain extends SqlElement {
     } else if ($item=='rf') { 
     	global $flashReport, $print;
     	if (! $print and $this->id and isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
-    		$user=$_SESSION['user'];
+    		$user=getSessionUser();
     		$crit=array('idProfile'=>$user->idProfile, 'idReport'=>51);
     		$hr=SqlElement::getSingleSqlElementFromCriteria('HabilitationReport', $crit);
     		if ($hr and $hr->allowAccess=='1') {
@@ -469,7 +469,7 @@ class ProjectMain extends SqlElement {
 scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserProjects=$limitToUserProjects, limitToActiveProjects=$limitToActiveProjects)");
   	self::$_drawSubProjectsDone[$this->id]=$this->name;
     if ($limitToUserProjects) {
-      $user=$_SESSION['user'];
+      $user=getSessionUser();
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
       }

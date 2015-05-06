@@ -545,7 +545,7 @@ class UserOld extends SqlElement {
   }
   
   public static function resetAllVisibleProjects($idProject=null, $idUser=null) {
-  	$user=$_SESSION['user'];
+  	$user=getSessionUser();
     if ($idUser) {
       if ($idUser==$user->id) {
          self::resetAllVisibleProjects(null, null);
@@ -574,7 +574,7 @@ class UserOld extends SqlElement {
       }
     } else {
     	$user->resetVisibleProjects();
-      $_SESSION['user']=$user;
+      setSessionUser($user);
       unset($_SESSION['visibleProjectsList']);
     }
   }
@@ -805,7 +805,7 @@ class UserOld extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
-				  $_SESSION['user']=$this;
+				  setSessionUser($this);
 				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
@@ -843,7 +843,7 @@ class UserOld extends SqlElement {
 				}					
 			}
 	  }
-	  $_SESSION['user']=$this;
+	  setSessionUser($this);
 	  return "OK";     
   }
 
@@ -876,7 +876,7 @@ class UserOld extends SqlElement {
     $this->stopAllWork();
     traceLog("DISCONNECTED USER '" . $this->name . "'");
     Parameter::clearGlobalParameters();
-    unset($_SESSION['user']);
+    setSessionUser(null);
   }
 
   public function stopAllWork() {

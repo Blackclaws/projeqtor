@@ -35,7 +35,7 @@ if (! array_key_exists('user',$_SESSION)) {
 	echo "noUser";
 	return;
 }
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $crit=array('idUser'=>$user->id,'readFlag'=>'0', 'idle'=>'0');
 $alert=new Alert();
 $lst=$alert->getSqlElementsFromCriteria($crit, false, null, 'id asc');

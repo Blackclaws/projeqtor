@@ -1176,14 +1176,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         echo htmlEncode($val);
         // echo $colScript; // => this leads to the display of script in textarea
         echo '</textarea>';
-      } else if ($dataLength > 4000 and !array_key_exists('testingMode', $_REQUEST)) {
+      } else if ($dataLength > 4000) {
         // Draw a long text (as a textarea) =================================== TEXTAREA
         echo '<textarea style="display:none; visibility:hidden;" ';
         echo ' maxlength="' . $dataLength . '" ';
         echo $name;
         echo $attributes;
         echo '>';
-        echo htmlentities($val);
+        echo htmlspecialchars($val);
         echo '</textarea>';
         echo '<div style="text-align:left;font-weight:normal; width:300px;" class="tabLabel">' . htmlEncode($obj->getColCaption($col)) . '</div>';
         echo '<div data-dojo-type="dijit.InlineEditBox"'; // TEST
@@ -1215,11 +1215,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         }
         echo ' rows="2" style="padding:3px 0px 3px 3px;margin-right:2px;max-height:150px;min-height:16px;overflow:auto;width: ' . ($largeWidth + 145) . 'px;' . $specificStyle . '" ';
         echo ' maxlength="' . $dataLength . '" ';
-        echo ' class="input '.(($isRequired)?'required':'').'" ' . '>';
+        echo ' class="input '.(($isRequired)?'required':'').'" ';
+        echo ' style="background: none; background-color: #AAAAFF" ';
+        echo '>';
         //echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
         //echo '   alert("OK");';
         //echo '  </script>';
         echo  str_replace( "\n", '<br />', $val );
+        //echo $val;
         echo '</div>';
       } else if ($col == 'icon') {
         echo '<div dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').'" ';
@@ -1622,17 +1625,26 @@ function drawHistoryFromObjects($refresh=false) {
       } else if ($dataType == 'datetime') {
         $oldValue=htmlFormatDateTime($oldValue);
         $newValue=htmlFormatDateTime($newValue);
-      } elseif ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
+      } else if ($dataType == 'decimal' and substr($colName, -4, 4) == 'Work') {
         $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
         $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
+      } else if ($dataLength>4000) {
+        // Nothing, préserve html format 
       } else {
         $oldValue=htmlEncode($oldValue, 'print');
         $newValue=htmlEncode($newValue, 'print');
       }
       echo '<td class="historyData" width="23%">' . $oldValue . '</td>';
       echo '<td class="historyData" width="23%">' . $newValue . '</td>';
-      echo '<td class="historyData' . $class . '" width="15%">' . $date . '</td>';
-      echo '<td class="historyData' . $class . '" style="border-right: 1px solid #AAAAAA;" width="15%">' . $user . '</td>';
+      echo '<td class="historyData' . $class . '" width="15%">';
+      //echo formatDateThumb($creationDate, $updateDate);
+      echo  $date . '</td>';
+      echo '<td class="historyData' . $class . '" style="border-right: 1px solid #AAAAAA;" width="15%">';
+      if ($user) {
+        echo formatUserThumb($hist->idUser, $user, null,'16','left').'&nbsp;';
+      }
+      echo $user; 
+      echo '</td>';
       echo '</tr>';
       $stockDate=$hist->operationDate;
       $stockUser=$hist->idUser;
@@ -1743,7 +1755,9 @@ function drawNotesFromObject($obj, $refresh=false) {
     echo '</table>';
   }
   if (!$refresh and !$print) echo '</td></tr>'; 
-  echo '<input id="NoteSectionCount" type="hidden" value="'.count($notes).'" />';
+  if (!$print) {
+    echo '<input id="NoteSectionCount" type="hidden" value="'.count($notes).'" />';
+  }
 }
 
 function drawBillLinesFromObject($obj, $refresh=false) {
@@ -1851,7 +1865,7 @@ function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:30%">' . i18n('colName') . '</td>';
-  echo '<td class="noteHeader" style="width:60%">' . i18n('colChoices') . '</td>';
+  echo '<td class="noteHeader" style="width:'.(($print)?'65':'60').'%">' . i18n('colChoices') . '</td>';
   echo '<td class="noteHeader" style="width:5%">' . i18n('colExclusiveShort') . '</td>';
   echo '</tr>';
   
@@ -1990,7 +2004,9 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
   echo '</tr>';
   echo '</table>';
   if (! $refresh) echo "</td></tr>";
-  echo '<input id="AttachmentSectionCount" type="hidden" value="'.count($attachments).'" />';
+  if (! $print) {
+    echo '<input id="AttachmentSectionCount" type="hidden" value="'.count($attachments).'" />';
+  }
 }
 
 function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
@@ -2113,7 +2129,9 @@ function drawLinksFromObject($list, $obj, $classLink, $refresh=false) {
   }
   echo '</table>';
   if (!$refresh) echo '</td></tr>';
-  echo '<input id="LinkSectionCount" type="hidden" value="'.count($list).'" />';
+  if (! $print) {
+    echo '<input id="LinkSectionCount" type="hidden" value="'.count($list).'" />';
+  }
 }
 
 function drawApproverFromObject($list, $obj, $refresh=false) {
@@ -2273,7 +2291,9 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   }
   echo '</table>';
   if (!$refresh) echo '</td></tr>';
-  echo '<input id="'.$depType.'DependencySectionCount" type="hidden" value="'.count($list).'" />';
+  if (! $print) {
+    echo '<input id="'.$depType.'DependencySectionCount" type="hidden" value="'.count($list).'" />';
+  }
 }
 
 function drawAssignmentsFromObject($list, $obj, $refresh=false) {
@@ -2420,7 +2440,6 @@ function drawExpenseDetailFromObject($list, $obj, $refresh=false) {
     echo '<td class="assignData" ';
     echo '>' . $expenseDetail->name;
     if ($expenseDetail->description and !$print) {
-      //echo '<span>&nbsp;&nbsp;<img src="img/note.png" /></span>';
       echo formatCommentThumb($expenseDetail->description);
     }
     echo '<input type="hidden" id="expenseDetail_' . $expenseDetail->id . '" value="' . htmlEncode($expenseDetail->name, 'none') . '"/>';
@@ -2716,7 +2735,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     echo '<tr>';
     if (!$print and $class == 'TestSession') {
       echo '<td class="assignData" style="width:10%;text-align:center;">';
-      echo '<table style="width:100%"><tr><td style="width:50%">';
+      echo '<table style="width:100%"><tr><td style="width:30%;white-space:nowrap;">';
       if ($canUpdate and !$print) {
         echo '  <img src="css/images/smallButtonEdit.png" ' . 'onClick="editTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('editTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
@@ -2726,7 +2745,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
       if (!$print) {
         echo '<input type="hidden" id="comment_' . $tcr->id . '" value="' . htmlEncode($tcr->comment, 'none') . '"/>';
       }
-      echo '</td><td style="width:50%">';
+      echo '</td><td>&nbsp;&nbsp;&nbsp;</td><td style="white-space:nowrap;">';
       if ($tcr->idRunStatus == 1 or $tcr->idRunStatus == 3 or $tcr->idRunStatus == 4) {
         echo '  <img src="css/images/iconPassed16.png" ' . 'onClick="passedTestCaseRun(' . "'" . $tcr->id . "'" . ",'" . $tcr->idTestCase . "'" . ",'" . $tcr->idRunStatus . "'" . ",'" . $tcr->idTicket . "'" . ');" ' . 'title="' . i18n('passedTestCaseRun') . '" class="roundedButtonSmall"/> ';
       }
@@ -2746,9 +2765,9 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
     $typeClass='id' . $otherClass . 'Type';
     echo '<td class="assignData" align="center" style="width:10%">' . htmlEncode(SqlList::getNameFromId($otherClass . 'Type', $tc->$typeClass)) . '</td>';
     echo '<td class="assignData" align="center" style="width:5%">#' . $tc->id . '</td>';
-    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" title="' . $tcr->comment . '" >' . htmlEncode($tc->name);
+    echo '<td class="assignData" align="left"' . $goto . ' style="width:' . $nameWidth . '%" >' . htmlEncode($tc->name);
     if ($tcr->comment and !$print) {
-      echo '&nbsp;&nbsp;<img src="img/note.png" />';
+      echo formatCommentThumb($tcr->comment);
     }
     echo '</td>';
     if (!$print and $class == 'TestSession') {
@@ -2809,6 +2828,48 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
     }
   }
   echo '</table>';
+}
+
+function drawChecklistFromObject($obj) {
+  global $print, $noselect,$collapsedList,$displayWidth, $printWidth;
+  if (!$obj or !$obj->id) return; // Don't try and display checklist for non existant objects
+  $displayChecklist='NO';
+  $crit="nameChecklistable='".get_class($obj)."'";
+  $type='id'.get_class($obj).'Type';
+  if (property_exists($obj,$type) ) {
+    $crit.=' and (idType is null ';
+    if ($obj->$type) {
+      $crit.=" or idType='".$obj->$type."'";
+    }
+    $crit.=')';
+  }
+  $cd=new ChecklistDefinition();
+  $cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
+  if (count($cdList)==0) return; // Don't display checklist if non definition exist for it
+  $user=getSessionUser();
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
+  $list=new ListYesNo($habil->rightAccess);
+  $displayChecklist=Parameter::getUserParameter('displayChecklist');
+  if (!$noselect and $obj->id and $list->code=='YES' and ($displayChecklist=='YES' or $print) ) {
+      if ($print) {
+        echo '<table width="'.$printWidth.'px;">';
+        echo '<tr><td>';
+        include_once "../tool/dynamicDialogChecklist.php";
+        echo '</td></tr>';
+        echo '</table>';
+      } else {
+        $titlePane=get_class($obj) . "_checklist";
+        echo '<div style="width:'.$displayWidth.'" dojoType="dijit.TitlePane"'; 
+        echo ' title="'.i18n('sectionChecklist').'"';
+        echo ' open="'.((array_key_exists($titlePane, $collapsedList))?'false':'true').'"';
+        echo ' id="'.$titlePane.'"';       
+        echo ' onHide="saveCollapsed(\''.$titlePane.'\');"';
+        echo ' onShow="saveExpanded(\''.$titlePane.'\');"';
+        echo '>';
+        include_once "../tool/dynamicDialogChecklist.php";
+        echo '</div>';
+      }
+  }
 }
 
 // ********************************************************************************************************
@@ -2942,6 +3003,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
     echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
   }
   drawTableFromObject($obj);
+  drawChecklistFromObject($obj);
   exit();
 }
 ?>
@@ -3004,8 +3066,9 @@ if (array_key_exists('refresh', $_REQUEST)) {
       echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
     }
     drawTableFromObject($obj);
+    drawChecklistFromObject($obj);
   }
-  
+
   if (!$print) {
     ?> 
   </div>
@@ -3014,11 +3077,9 @@ if (array_key_exists('refresh', $_REQUEST)) {
   <?php
   }
   $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
-  
-
   if (!$noselect and isset($obj->_ChecklistDefinitionLine)) {
     ?> <br />
-  <?php if ($print) {?>ChecklistDefinitionLine
+  <?php if ($print) {?>
 <table width="<?php echo $printWidth;?>px;">
       <tr>
         <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
@@ -3041,7 +3102,6 @@ if (array_key_exists('refresh', $_REQUEST)) {
 </div>
 <?php }?> <?php
   }
-  
   $displayHistory='REQ';
   $paramDisplayHistory=Parameter::getUserParameter('displayHistory');
   if ($paramDisplayHistory) {
@@ -3075,7 +3135,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
 </div>
     <br />
 <?php }?> <?php
-  } else {
+  } else if (!$print){
     $titlePane=$objClass . "_history";
     ?>
 <div style="display:none; width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
@@ -3091,26 +3151,6 @@ if (array_key_exists('refresh', $_REQUEST)) {
 }
 ?></div>
 <?php
-
-if ($print) {
-  $crit="nameChecklistable='" . get_class($obj) . "'";
-  $type='id' . get_class($obj) . 'Type';
-  if (property_exists($obj, $type)) {
-    $crit.=' and (idType is null ';
-    if ($obj->$type) {
-      $crit.=' or idType=' . $obj->$type;
-    }
-    $crit.=')';
-  }
-  $cd=new ChecklistDefinition();
-  $cdList=$cd->getSqlElementsFromCriteria(null, false, $crit);
-  $user=$_SESSION ['user'];
-  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'checklist'));
-  $list=new ListYesNo($habil->rightAccess);
-  if ($list->code == 'YES' and count($cdList) > 0 and $obj->id) {
-    include_once "../tool/dynamicDialogChecklist.php";
-  }
-}
 
 function setWidthPct($displayWidth, $print, $printWidth, $obj,$colSpan=null) {
   $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);

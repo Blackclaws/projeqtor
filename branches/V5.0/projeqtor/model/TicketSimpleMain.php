@@ -162,7 +162,7 @@ class TicketSimpleMain extends Ticket {
 
   public function save() {
   	//$old=new Ticket($this->id);
-  	$user=$_SESSION['user'];
+  	$user=getSessionUser();
   	if (! $this->id) {
   	  if (! trim($this->idContact) and $user->isContact) {
   		  $this->idContact=$user->id;
