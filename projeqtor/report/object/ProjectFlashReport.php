@@ -68,7 +68,7 @@ ob_end_clean();
 $proj=new Project($idProject);
 $arrayProjects=array($idProject=>$proj);
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $subProjects=$proj->getSqlElementsFromCriteria(array('idProject'=>$idProject));
 foreach ($subProjects as $p) {
