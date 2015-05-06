@@ -2345,7 +2345,7 @@ function showChecklist(objectClass) {
     return;
   }
   var params="&objectClass="+objectClass+"&objectId="+objectId;
-  loadDialog('dialogChecklist',null, true, params);
+  loadDialog('dialogChecklist',null, true, params,true);
 }
 
 function saveChecklist() {
@@ -4407,16 +4407,23 @@ function unlockRequirement() {
   return true;
 }
 
-function loadDialog(dialogDiv,callBack, autoShow, params) {
+function loadDialog(dialogDiv,callBack, autoShow, params, clearOnHide) {
+  var hideCallback=function() {};
+  if (clearOnHide) {
+    hideCallback=function() {
+      dijit.byId(dialogDiv).set('content',null);
+    }
+  }
   if (! dijit.byId(dialogDiv) ) {
 	  dialog = new dijit.Dialog({
 	  id: dialogDiv,
       title: i18n(dialogDiv),
       width: '500px',
+      onHide: hideCallback,
 	  content: i18n("loading")
     });
   } else {
-	dialog=dijit.byId(dialogDiv);
+	  dialog=dijit.byId(dialogDiv);
   }
   if (!params) {params=""};
   showWait();
