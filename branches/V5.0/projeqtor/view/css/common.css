@@ -575,6 +575,13 @@ table.dojoDndAvatar {
   border: 1px solid #b3b3b3;
   line-height: normal;
 }
+.dijitInlineEditBoxDisplayMode.input, #dijitEditorBody, .dijitEditorIFrameContainer {
+	background: #fff url(images/validationInputBg.gif) repeat-x top left;
+}
+.dijitInlineEditBoxDisplayMode.input:hover {
+	/* border:1px solid #000000; */
+}
+
 .dijitTextBoxDisabled,.dijitComboBoxDisabled,.dijitSpinnerDisabled,.dijitTextAreaDisabled
   {
   color: grey;
