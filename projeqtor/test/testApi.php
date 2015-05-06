@@ -44,7 +44,7 @@ $apiKeyParam=$userApi->apiKey;
 //var_dump($_SERVER);
 $curl_post_data="";
 $user=new User(); 
-$_SESSION['user']=$user;
+setSessionUser($user);
 
 $action="display";
 if (isset($_REQUEST['action'])) {

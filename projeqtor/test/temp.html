@@ -3,224 +3,217 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-<title>ProjeQtOr - Facture #2</title>
-<link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
-<link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
-<link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
-<link rel="icon" href="img/logo.ico" type="image/x-icon" />
-<script type="text/javascript" src="../external/dojo/dojo.js"
-  djConfig='modulePaths: {i18n: "../../tool/i18n"},
-              parseOnLoad: true,
-              isDebug: false'></script>
-<script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
-<script type="text/javascript" src="../view/js/jsgantt.js"></script>
-<script type="text/javascript">
-  dojo.require("dojo.parser");
-  dojo.require("dojo.i18n");
-  //dojo.require("dojo.date.locale");
-  dojo.addOnLoad(function() {
-    var printInNewWindow = false;
-    if (printInNewWindow) {
-      objTop = window.opener;
-    } else {
-      objTop = top;
-    }
-    objTop.hideWait();
-    objTop.window.document.title = "ProjeQtOr - Facture #2";
-    window.document.title = "ProjeQtOr - Facture #2";
-  });
-</script>
-</head>
+
 <page backtop="100px" backbottom="20px" footer="page">
 <div style="-webkit-print-color-adjust: exact;" id="bodyPrint"
   class="white" onload="top.hideWait();">
   <br />
-  <div class="reportTableHeader" style="width: 970px; font-size: 150%;">Facture
-    #2</div>
-  <br />
+  
   <div xdojoType="dijit.layout.BorderContainer" class="background">
-    <table class="detail" style="width: 980px;">
-      <tr>
-        <td class="section">Description</td>
-      </tr>
-      <tr class="detail" style="height: 2px; font-size: 2px;">
-        <td class="detail">&nbsp;</td>
-      </tr>
-    </table>
     <table class="detail" style="width: 980px;">
       <tr class="detail">
         <td class="label" style="width: 145px;"><label for="id">id&nbsp;:&nbsp;</label>
         </td>
-        <td style="width: 830px"><span style="color: grey;">#2&nbsp;&nbsp;&nbsp;</span></td>
+        <td style="width: 830px"><span style="color: grey;">#9&nbsp;&nbsp;&nbsp;</span>001-001-SUP-4</td>
       </tr>
       <tr class="detail">
-        <td class="label" style="width: 145px;"><label for="name">nom&nbsp;:&nbsp;</label>
+        <td class="label" style="width: 145px;"><label for="name">name&nbsp;:&nbsp;</label>
         </td>
-        <td style="width: 830px">Bill for tests</td>
+        <td style="width: 830px">dsfsdfsdf dsf sd f</td>
       </tr>
       <tr class="detail">
         <td class="label" style="width: 145px;"><label
-          for="idBillType">type de facture&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px">Partial bill</td>
+          for="idTicketType">ticket type&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px">Support / Assistance</td>
       </tr>
       <tr class="detail">
         <td class="label" style="width: 145px;"><label
-          for="idProject">projet&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px">project two</td>
+          for="idProject">project&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px">project one</td>
       </tr>
       <tr class="detail">
-        <td class="label" style="width: 145px;"><label for="date">date&nbsp;:&nbsp;</label>
+        <td class="label" style="width: 145px;"><label
+          for="externalReference">external
+            reference&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idUrgency">urgency&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="creationDateTime">creation
+            date/time&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px">06/05/2015 13:35</td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label for="idUser">issuer&nbsp;:&nbsp;</label>
         </td>
-        <td style="width: 830px"></td>
+        <td style="width: 830px">admin</td>
       </tr>
       <tr class="detail">
         <td class="label" style="width: 145px;"><label
-          for="idClient">client&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px">client one</td>
-      </tr>
-      <tr class="detail">
-        <td class="label" style="width: 145px;"><label
-          for="idContact">contact facturation&nbsp;:&nbsp;</label></td>
+          for="idContact">requestor&nbsp;:&nbsp;</label></td>
         <td style="width: 830px"></td>
       </tr>
       <tr class="detail">
-        <td class="label" style="width: 145px;"><label
-          for="idRecipient">bénéficiaire&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px"></td>
-      </tr>
-      <tr class="detail">
-        <td class="label" xstyle="width:10%;"><label for="Origin">origine&nbsp;:&nbsp;</label></td>
+        <td class="label" xstyle="width:10%;"><label for="Origin">origin&nbsp;:&nbsp;</label></td>
         <td style="width: 120px"><table>
             <tr height="20px">
               <td></td>
             </tr>
           </table></td>
       </tr>
-      <tr>
-        <td colspan=2><table>
-            <tr>
-              <td class='label' valign='top'><label>type de
-                  facturation&nbsp;:&nbsp;</label></td>
-              <td>sur la charge produite</td>
-            </tr>
-          </table></td>
-      </tr>
-    </table>
-    <br />
-    <table class="detail" style="width: 980px;">
-      <tr>
-        <td class="section">Traitement</td>
-      </tr>
-      <tr class="detail" style="height: 2px; font-size: 2px;">
-        <td class="detail">&nbsp;</td>
-      </tr>
-    </table>
-    <table class="detail" style="width: 980px;">
       <tr class="detail">
-        <td class="label" style="width: 145px;"><label for="billId">n°&nbsp;:&nbsp;</label>
-        </td>
+        <td class="label" style="width: 145px;"><label
+          for="idTicket">duplicate ticket&nbsp;:&nbsp;</label></td>
         <td style="width: 830px"></td>
       </tr>
       <tr class="detail">
         <td class="label" style="width: 145px;"><label
-          for="idStatus">état&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px">recorded</td>
-      </tr>
-      <tr class="detail">
-        <td class="label" style="width: 145px;"><label for="done">fait&nbsp;:&nbsp;</label>
-        </td>
-        <td style="width: 830px"><img src="img/checkedKO.png" /></td>
-      </tr>
-      <tr class="detail">
-        <td class="label" style="width: 145px;"><label for="idle">clos&nbsp;:&nbsp;</label>
-        </td>
-        <td style="width: 830px"><img src="img/checkedKO.png" />&nbsp;&nbsp;&nbsp;<img
-          src="img/checkedKO.png" /><span class="tabLabel"
-          style="font-weight: normal">annulé</span>&nbsp;</td>
-      </tr>
-      <tr class="detail">
-        <td class="label" style="width: 145px;"><label
-          for="untaxedAmount">montant HT&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px">13500.00 €</td>
-      </tr>
-      <tr class="detail">
-        <td class="label" style="width: 145px;"><label for="tax">TVA
-            (%)&nbsp;:&nbsp;</label></td>
+          for="idContext1">context&nbsp;:&nbsp;</label></td>
         <td style="width: 830px"></td>
       </tr>
       <tr class="detail">
         <td class="label" style="width: 145px;"><label
-          for="fullAmount">montant TTC&nbsp;:&nbsp;</label></td>
-        <td style="width: 830px">13500.00 €</td>
+          for="idProduct">product&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idOriginalVersion">original version&nbsp;:&nbsp;</label>
+        </td>
+        <td style="width: 830px"></td>
       </tr>
       <tr class="detail">
         <td colspan="2"><div
             style="text-align: left; font-weight: normal"
-            class="tabLabel">commentaires&nbsp;:&nbsp;</div>
+            class="tabLabel">description&nbsp;:&nbsp;</div>
           <div style="border: 1px dotted #AAAAAA; width: 980px;">&nbsp;</div></td>
       </tr>
     </table>
     <br />
     <table class="detail" style="width: 980px;">
       <tr>
-        <td class="section">Lignes de facture</td>
+        <td class="section">Treatment</td>
       </tr>
       <tr class="detail" style="height: 2px; font-size: 2px;">
         <td class="detail">&nbsp;</td>
       </tr>
     </table>
     <table class="detail" style="width: 980px;">
-      <input type="hidden" id="billLineIdle" value="0" />
-      <tr>
-        <td class="noteHeader" style="width: 5%">id</td>
-        <td class="noteHeader" style="width: 5%">n°</td>
-        <td class="noteHeader" style="width: 5%">quantité</td>
-        <td class="noteHeader" style="width: 25%">description</td>
-        <td class="noteHeader" style="width: 35%">détail</td>
-        <td class="noteHeader" style="width: 10%">prix</td>
-        <td class="noteHeader" style="width: 15%">total</td>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idActivity">planning activity&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
       </tr>
-      <tr>
-        <td class="noteData">#2</td>
-        <td class="noteData">1</td>
-        <td class="noteData">10.00</td>
-        <td class="noteData">Billing for not followed work<input
-          type="hidden" id="billLineDescription_2"
-          value="Billing for not followed work" /></td>
-        <td class="noteData">10 days of Architect<input
-          type="hidden" id="billLineDetail_2"
-          value="10 days of Architect" /></td>
-        <td class="noteData">900.00</td>
-        <td class="noteData">9000.00</td>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idStatus">status&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px">recorded</td>
       </tr>
-      <tr>
-        <td class="noteData">#4</td>
-        <td class="noteData">2</td>
-        <td class="noteData">5.00</td>
-        <td class="noteData">project manager<br /> Management (not
-          included in fixed price)<br /> 01/03/2012 - 31/03/2012<input
-          type="hidden" id="billLineDescription_4"
-          value="project manager
-Management (not included in fixed price)
-01/03/2012 - 31/03/2012" /></td>
-        <td class="noteData">Management : 5 days<input
-          type="hidden" id="billLineDetail_4"
-          value="Management : 5 days" /></td>
-        <td class="noteData">900.00</td>
-        <td class="noteData">4500.00</td>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idResource">responsible&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
       </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idCriticality">criticality&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idPriority">priority&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
+      </tr>
+    </table>
+    <table id="_tab_2_1" class="detail">
+      <tr class="detail">
+        <td class="detail"></td>
+        <td class="detail" style="border: 1px solid #A0A0A0;"><div
+            class="tabLabel"
+            style="text-align: left; white-space: nowrap;">initial</div></td>
+        <td class="detail" style="border: 1px solid #A0A0A0;"><div
+            class="tabLabel"
+            style="text-align: left; white-space: nowrap;">actual</div></td>
+      </tr>
+      <tr class="detail">
+        <td class="" style="text-align: right; width: 145px;"><label
+          class="label ">due date&nbsp;:&nbsp;</label></td>
+        <td
+          style="width: 90%; white-space: nowrap; border: 1px dotted #A0A0A0;"></td>
+        <td class="detail"
+          style="white-space: nowrap; border: 1px dotted #A0A0A0;"></td>
+      </tr>
+    </table>
+    <table style="width: 100%;"></table>
+    <table id="_tab_3_1" class="detail">
+      <tr class="detail">
+        <td class="detail"></td>
+        <td class="detail" style="border: 1px solid #A0A0A0;"><div
+            class="tabLabel"
+            style="text-align: left; white-space: nowrap;">planned</div></td>
+        <td class="detail" style="border: 1px solid #A0A0A0;"><div
+            class="tabLabel"
+            style="text-align: left; white-space: nowrap;">real</div></td>
+        <td class="detail" style="border: 1px solid #A0A0A0;"><div
+            class="tabLabel"
+            style="text-align: left; white-space: nowrap;">left</div></td>
+      </tr>
+      <tr class="detail">
+        <td class="" style="text-align: right; width: 145px;"><label
+          class="label ">work&nbsp;:&nbsp;</label></td>
+        <td
+          style="width: 90%; white-space: nowrap; border: 1px dotted #A0A0A0;">0
+          d</td>
+        <td class="detail"
+          style="white-space: nowrap; border: 1px dotted #A0A0A0;">0
+          d</td>
+        <td class="detail"
+          style="white-space: nowrap; border: 1px dotted #A0A0A0;">0
+          d</td>
+      </tr>
+    </table>
+    <table style="width: 100%;">
       <tr>
-        <td class="noteDataClosetable">&nbsp;</td>
-        <td class="noteDataClosetable">&nbsp;</td>
-        <td class="noteDataClosetable">&nbsp;</td>
-        <td class="noteDataClosetable">&nbsp;</td>
+        <td colspan=2></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="handled">handled&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"><img src="img/checkedKO.png" /></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label for="done">done&nbsp;:&nbsp;</label>
+        </td>
+        <td style="width: 830px"><img src="img/checkedKO.png" /></td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label for="idle">closed&nbsp;:&nbsp;</label>
+        </td>
+        <td style="width: 830px"><img src="img/checkedKO.png" />&nbsp;&nbsp;&nbsp;<img
+          src="img/checkedKO.png" /><span class="tabLabel"
+          style="font-weight: normal">cancelled</span>&nbsp;</td>
+      </tr>
+      <tr class="detail">
+        <td class="label" style="width: 145px;"><label
+          for="idTargetVersion">target version&nbsp;:&nbsp;</label></td>
+        <td style="width: 830px"></td>
+      </tr>
+      <tr class="detail">
+        <td colspan="2"><div
+            style="text-align: left; font-weight: normal"
+            class="tabLabel">result&nbsp;:&nbsp;</div>
+          <div style="border: 1px dotted #AAAAAA; width: 980px;">&nbsp;</div></td>
       </tr>
     </table>
     <br />
     <table class="detail" style="width: 980px;">
       <tr>
-        <td class="section">Eléments liés</td>
+        <td class="section">Linked Elements</td>
       </tr>
       <tr class="detail" style="height: 2px; font-size: 2px;">
         <td class="detail">&nbsp;</td>
@@ -230,13 +223,50 @@ Management (not included in fixed price)
       <tr>
         <td colspan="2"><table style="width: 100%;">
             <tr>
-              <td class="linkHeader" style="width: 20%">élément</td>
-              <td class="linkHeader" style="width: 65%">nom</td>
-              <td class="linkHeader" style="width: 15%">état</td>
+              <td class="linkHeader" style="width: 20%">element</td>
+              <td class="linkHeader" style="width: 65%">name</td>
+              <td class="linkHeader" style="width: 15%">status</td>
             </tr>
           </table></td>
       </tr>
       <input id="LinkSectionCount" type="hidden" value="0" />
+    </table>
+    <br />
+    <table class="detail" style="width: 980px;">
+      <tr>
+        <td class="section">Attachments</td>
+      </tr>
+      <tr class="detail" style="height: 2px; font-size: 2px;">
+        <td class="detail">&nbsp;</td>
+      </tr>
+    </table>
+    <table class="detail" style="width: 980px;">
+      <input type="hidden" id="attachmentIdle" value="0" />
+      <tr>
+        <td colspan="2"><table width="100%">
+            <tr>
+              <td class="attachmentHeader" style="width: 5%">id</td>
+              <td colspan="2" class="attachmentHeader"
+                style="width: 95%">file</td>
+            </tr>
+            <tr>
+              <td class="attachmentData" style="width: 5%;">#14</td>
+              <td class="attachmentData"
+                style="width: 5%; border-right: none; text-align: center;"><img
+                src="../view/img/mime/doc.png"
+                title="application/msword" />&nbsp;</td>
+              <td class="attachmentData"
+                style="border-left: none; width: 90%">Mod&egrave;le
+                - Acte de nomination.doc</td>
+            </tr>
+            <tr>
+              <td class="attachmentDataClosetable">&nbsp;</td>
+              <td class="attachmentDataClosetable">&nbsp;</td>
+              <td class="attachmentDataClosetable">&nbsp;</td>
+            </tr>
+          </table></td>
+      </tr>
+      <input id="AttachmentSectionCount" type="hidden" value="1" />
     </table>
     <br />
     <table class="detail" style="width: 980px;">
@@ -254,15 +284,23 @@ Management (not included in fixed price)
         <td class="noteHeader" style="width: 95%">note</td>
       </tr>
       <tr>
+        <td class="noteData">#7</td>
+        <td class="noteData">g dfghtrf
+          <div>th rfst</div>
+          <div>h rth rthh</div>
+          <div>rth rt hrth</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="noteData">#6</td>
+        <td class="noteData">dsf sdfsdf sdff</td>
+      </tr>
+      <tr>
         <td colspan="2" class="noteDataClosetable">&nbsp;</td>
       </tr>
-      <input id="NoteSectionCount" type="hidden" value="0" />
+      <input id="NoteSectionCount" type="hidden" value="2" />
     </table>
     <br />
-    <div style="display: none; width: 980px;" dojoType="dijit.TitlePane"
-      title="Historique des modifications" open="true" id="Bill_history"
-      onHide="saveCollapsed('Bill_history');"
-      onShow="saveExpanded('Bill_history');"></div>
   </div>
 </div>
 </page>
