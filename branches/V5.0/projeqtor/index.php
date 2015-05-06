@@ -58,15 +58,15 @@ include_once '../tool/projeqtor.php';
         <table  align="center" >
           <tr style="height:10px;" >
             <td align="left" style="height: 1%;" valign="top">
-		        <div style="position:relative;width: 400px; height: 54px;">
-		          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;text-align: center">
-			        <img src="<?php 
-			          if (file_exists("../logo.gif")) echo 'logo.gif';
-			          else if (file_exists("../logo.jpg")) echo 'logo.jpg';
-			          else if (file_exists("../logo.png")) echo 'logo.png';
-			          else echo 'view/img/titleSmall.png';?>" />
-		          </div>
-		        </div>
+		        	<div style="position:relative;width: 400px; height: 54px;">
+			          <div style="overflow:visible;position:absolute;width: 480px; height: 280px;top:15px;text-align: center">
+				        <img src="<?php 
+				          if (file_exists("logo.gif")) echo 'logo.gif';
+				          else if (file_exists("logo.jpg")) echo 'logo.jpg';
+				          else if (file_exists("logo.png")) echo 'logo.png';
+				          else echo 'view/img/titleSmall.png';?>" />
+			          </div>
+			        </div>
             </td>
           </tr>
           <tr style="height:100%" height="100%">
