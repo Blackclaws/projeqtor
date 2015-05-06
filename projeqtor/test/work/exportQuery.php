@@ -32,7 +32,7 @@
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.=  $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;
+        $queryWhere.=  $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects()) ;
     } 
     if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
         if ($_SESSION['project']!='*') {
@@ -46,13 +46,13 @@
       $queryWhere.=  "(1 = 2)";      
     } else if ($accessRightRead=='OWN') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  $table . ".idUser = '" . $_SESSION['user']->id . "'";            
+      $queryWhere.=  $table . ".idUser = '" . getSessionUser()->id . "'";            
     } else if ($accessRightRead=='RES') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  $table . ".idResource = '" . $_SESSION['user']->id . "'";            
+      $queryWhere.=  $table . ".idResource = '" . getSessionUser()->id . "'";            
     } else if ($accessRightRead=='PRO') {
       $queryWhere.= ($queryWhere=='')?'':' and ';
-      $queryWhere.=  $table . ".idProject in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects()) ;      
+      $queryWhere.=  $table . ".idProject in " . transformListIntoInClause(getSessionUser()->getVisibleProjects()) ;      
     } else if ($accessRightRead=='ALL') {
       // No restriction to add
     }
