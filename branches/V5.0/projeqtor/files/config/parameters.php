@@ -16,9 +16,9 @@ $paramDbHost='127.0.0.1';
 $logFile='../files/logs/projeqtor_${date}.log';
 $logLevel='3';
 $paramDebugMode='false';
+$enforceUTF8 = '1';
+//$lockPassword="false";
+//$hosted=true;
 $flashReport=true;
 $debugQuery=false;
 $debugPerf=true;
-//======= END// New parameters V4.4.0
-$enforceUTF8 = '1';
-$lockPassword="false";
