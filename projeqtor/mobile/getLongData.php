@@ -24,7 +24,7 @@
   echo $obj->result;
   $note=new Note();
   $notes=$note->getSqlElementsFromCriteria(array('refType'=>$class,'refId'=>$id),false,null,'id desc');
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $ress=new Resource($user->id);
   foreach ($notes as $note) {
   	if ($user->id==$note->idUser or $note->idPrivacy==1 or ($note->idPrivacy==2 and $ress->idTeam==$note->idTeam)) {

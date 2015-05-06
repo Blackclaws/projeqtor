@@ -20,7 +20,7 @@
   $refId=$_REQUEST['refId'];
   $workDate=$_REQUEST['day'];
   $day=str_replace('-','',$workDate);
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $obj=new $refType($refId);
   
   $pw=SqlElement::getSingleSqlElementFromCriteria('PlannedWork', array('idResource'=>$user->id,'refType'=>$refType,'refId'=>$refId,'day'=>$day));
