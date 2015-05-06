@@ -299,8 +299,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           setTimeout("runWelcomeAnimation();",2000);
       <?php } ?>
       <?php // check for ongoing work on Ticket 
-      if (isset($_SESSION["user"])) {
-	      $crit=array('ongoing'=>'1','idUser'=>$_SESSION["user"]->id);
+      if (getSessionUser()->id) {
+	      $crit=array('ongoing'=>'1','idUser'=>getSessionUser()->id);
 	      $we=SqlElement::getSingleSqlElementFromCriteria('WorkElement', $crit);
 	      if ($we and $we->id) {
 	      	$start=$we->ongoingStartDateTime;
@@ -517,9 +517,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
               <table >
                 <tr>
                   <td>
-                    <img style="height:24px" src="css/images/iconUserParameter22.png" />
+                    <?php $user=getSessionUser();
+                       $imgUrl=Affectable::getThumbUrl('User',$user->id, 22,true);
+                       if (!$imgUrl) {
+                         $imgUrl="css/images/iconUserParameter22.png";
+                       }?>
+                       
+                    <img style="border-radius:13px;height:26px" src="<?php echo $imgUrl; ?>" />
                   </td>
-                  <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
+                  <td>&nbsp;<?php echo $user->name; ?>&nbsp;&nbsp;</td>
                 </tr>
               </table>      
             </div>
@@ -529,7 +535,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   <td>
                     <img style="height:24px" src="css/images/iconUser22.png" />
                   </td>
-                  <td>&nbsp;<?php echo $_SESSION["user"]->name; ?>&nbsp;&nbsp;</td>
+                  <td>&nbsp;<?php echo getSessionUser()->name; ?>&nbsp;&nbsp;</td>
                 </tr>
               </table>    
             <?php }?>

@@ -1310,8 +1310,23 @@ function logTracing($message, $level = 9, $increment = 0) {
  *          to store on log
  * @return void
  */
-// debugLog to keep
 function debugLog($message) {
+  logTracing ( $message, 3 );
+}
+/**
+ * ===========================================================================
+ * Log tracing for debug to keep in the code
+ * Will be used for debugQuery mode of for performance tracing
+ * so can be considered as Trace log, but will generate a Debug message in log
+ * Will be activated, depending on location, with :
+ *  $debugTrace=true
+ *  $debugQuery=true
+ *  or directly calling traceExecutionTime() function
+ * @param $message message
+ *          to store on log
+ * @return void
+ */
+function debugTraceLog($message) {
   logTracing ( $message, 3 );
 }
 
@@ -2321,8 +2336,7 @@ function traceExecutionTime($step = '', $reset = false) {
     $startMicroTime = microtime ( true );
     return;
   }
-  // debugLog to keep
-  debugLog ( round ( (microtime ( true ) - $startMicroTime) * 1000 ) / 1000 . (($step) ? " s for step " . $step : '') );
+  debugTraceLog( round ( (microtime ( true ) - $startMicroTime) * 1000 ) / 1000 . (($step) ? " s for step " . $step : '') );
   $startMicroTime = microtime ( true );
 }
 
@@ -2454,6 +2468,22 @@ function getSessionValue($code, $default = null, $global=false) {
     return $default;
   }
   return $_SESSION [$projeqtorSession] [$code];
+}
+function getSessionUser() {
+  if (isset($_SESSION['user'])) {
+    return $_SESSION['user'];
+  } else {
+    return new User();
+  }
+ // TODO : use getSEssionValue;    	
+}
+function setSessionUser($user) {
+  if ($user and is_object($user)) {
+    $_SESSION['user']=$user;
+  } else {
+    unset($_SESSION['user']);
+  }
+  // TODO : use getSessionValue;
 }
 
 function formatNumericOutput($val) {

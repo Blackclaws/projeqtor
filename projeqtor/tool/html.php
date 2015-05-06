@@ -40,9 +40,9 @@ require_once "../tool/projeqtor.php";
  */
 function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true) {
 	//scriptLog("      =>htmlDrawOptionForReference($col,$selection," . (($obj)?get_class($obj).'#'.$obj->id:'null' ).",$required,$critFld,$critVal)");
-	$listType=substr($col,2);
+  $listType=substr($col,2);
 	$column='name';
-	$user=$_SESSION["user"];
+	$user=getSessionUser();
 	if ($listType=='DocumentDirectory') {
 		$column='location';
 	}	
@@ -133,7 +133,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         if ($obj->$idType and $obj->idStatus) {
           $profile="";
           if (array_key_exists('user', $_SESSION)) {
-            $profile=$_SESSION['user']->idProfile;
+            $profile=getSessionUser()->idProfile;
           } 
           $type=new $typeClass($obj->$idType);
           if (property_exists($type,'idWorkflow') ) {
@@ -167,7 +167,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
   } else { // (! $obj)
   	if ($col=="idProject") {
-      $user=$_SESSION["user"];
+      $user=getSessionUser();
       if (! $user->_accessControlVisibility) {
         $user->getAccessControlRights(); // Force setup of accessControlVisibility
       }      
@@ -737,7 +737,7 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
 function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter="", $context="") {
   // Display Result
   $param=SqlElement::getSingleSqlElementFromCriteria('Parameter', 
-       array('idUser'=>$_SESSION['user']->id, 'parameterCode'=>'Filter'.$filterObjectClass));
+       array('idUser'=>getSessionUser()->id, 'parameterCode'=>'Filter'.$filterObjectClass));
   $defaultFilter=($param)?$param->parameterValue:'';
   echo "<table width='100%'>";
   echo "<tr style='height:22px;'>";

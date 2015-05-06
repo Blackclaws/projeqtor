@@ -33,7 +33,7 @@ scriptLog('   ->/view/parameter.php');
 
 $type=$_REQUEST['type'];
 $criteriaRoot=array();
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $manual=ucfirst($type);
 
 $collapsedList=Collapsed::getCollaspedList();
@@ -185,7 +185,7 @@ function drawTableFromObjectList($objectList) {
 				echo '</textarea>';
 			} else if ($format=='photo') { // for user photo 
 			  echo "</td></tr>";
-			  $user=$_SESSION['user'];
+			  $user=getSessionUser();
 			  $user->drawSpecificItem('image');
 			  echo '<input type="hidden" id="objectId" value="'.$user->id.'"/>';
 			  echo '<input type="hidden" id="objectClass" value="User"/>';

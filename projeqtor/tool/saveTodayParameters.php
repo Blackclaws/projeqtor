@@ -30,7 +30,7 @@
 require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $crit=array('idUser'=>$user->id);
 $today=new Today();
 $todayList=$today->getSqlElementsFromCriteria($crit, false, 'sortOrder asc');

@@ -31,7 +31,7 @@
 
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/displayFiletrList.php');
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $context="";
 
 $comboDetail=false;

@@ -190,7 +190,7 @@ if (! array_key_exists('attachmentPrivacy',$_REQUEST)) {
 }
 
 $result="";
-$user=$_SESSION['user'];
+$user=getSessionUser();
 Sql::beginTransaction();
 $attachment=new Attachment();
 foreach ($uploadedFileArray as $uploadedFile) {

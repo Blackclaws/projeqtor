@@ -40,7 +40,7 @@ scriptLog("changePassword.php");
   if ($password==hash('sha256',Parameter::getGlobalParameter('paramDefaultPassword').$userSalt)) {
     passwordError();
   }
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   if ( ! $user ) {
    passwordError();
   } 

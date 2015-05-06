@@ -41,7 +41,7 @@ if ($right) {
 }
 $startDate=date('Y-m-d');
 $endDate=null;
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $saveDates=false;
 $paramStart=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningStartDate'));
 if ($paramStart->id) {

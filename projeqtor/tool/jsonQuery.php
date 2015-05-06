@@ -126,7 +126,7 @@
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause($_SESSION['user']->getVisibleProjects(! $showIdle)) ;
+        $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects(! $showIdle)) ;
         if ($objectClass=='Project') {
           $queryWhere.= " or codeType='TMP' ";
         }
@@ -175,13 +175,13 @@
     
     $arrayFilter=array();
     if (! $quickSearch) {
-      if (! $comboDetail and is_array( $_SESSION['user']->_arrayFilters)) {
-        if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-        	$arrayFilter=$_SESSION['user']->_arrayFilters[$objectClass];
+      if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
+        if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
+        	$arrayFilter=getSessionUser()->_arrayFilters[$objectClass];
         }
-      } else if ($comboDetail and is_array( $_SESSION['user']->_arrayFiltersDetail)) {
-        if (array_key_exists($objectClass, $_SESSION['user']->_arrayFiltersDetail)) {
-          $arrayFilter=$_SESSION['user']->_arrayFiltersDetail[$objectClass];
+      } else if ($comboDetail and is_array( getSessionUser()->_arrayFiltersDetail)) {
+        if (array_key_exists($objectClass, getSessionUser()->_arrayFiltersDetail)) {
+          $arrayFilter=getSessionUser()->_arrayFiltersDetail[$objectClass];
         }
       }
     }

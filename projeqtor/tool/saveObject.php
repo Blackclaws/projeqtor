@@ -90,7 +90,7 @@ $type = 'id' . get_class ( $newObj ) . 'Type';
 if (property_exists ( $newObj, $type )) {
   $crit .= ' and (idType is null ';
   if ($newObj->$type) {
-    $crit .= ' or idType=' . $newObj->$type;
+    $crit .= " or idType='" . $newObj->$type . "'";
   }
   $crit .= ')';
 }
@@ -103,14 +103,14 @@ if (count ( $cdList ) > 0 and $newObj->id) {
 }
 echo '<input type="hidden" id="buttonCheckListVisibleObject" value="'.$buttonCheckListVisible.'" />';
 
-// Message of correct saving
 $status = getLastOperationStatus ( $result );
+// Message of correct saving
 if ($status == "OK") {
   Sql::commitTransaction ();
 } else {
   Sql::rollbackTransaction ();
 }
-echo '<div class="message' . $status . '" >' . formatResult ( $result ) . '</div>';
+
 if ($status == "OK") {
   if (! array_key_exists ( 'comboDetail', $_REQUEST )) {
     if (isset ( $_REQUEST ['directAccessIndex'] )) {
@@ -120,6 +120,23 @@ if ($status == "OK") {
     }
   }
 }
+
+$globalResult=$result;
+$globalStatus=$status;
+if (array_key_exists('checklistDefinitionId',$_REQUEST) and array_key_exists('checklistId',$_REQUEST)) {
+  $included=true;
+  include "saveChecklist.php";
+  $included=false;
+  if ($globalStatus=='NO_CHANGE' and $status=='OK') {
+    //$status = "OK";
+    //$result => keep status of checklist save
+  } else {
+    $status=$globalStatus;
+    $result=$globalResult;
+  }
+}
+
+echo '<div class="message' . $status . '" >' . formatResult ( $result ) . '</div>';
 
 function formatResult($result) {
   if (array_key_exists ( 'comboDetail', $_REQUEST )) {

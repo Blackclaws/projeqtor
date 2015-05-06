@@ -168,15 +168,15 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
               </td>
               <?php }?>              
               <?php $activeFilter=false;
-                 if (! $comboDetail and is_array($_SESSION['user']->_arrayFilters)) {
-                   if (array_key_exists($objectClass, $_SESSION['user']->_arrayFilters)) {
-                     if (count($_SESSION['user']->_arrayFilters[$objectClass])>0) {
+                 if (! $comboDetail and is_array(getSessionUser()->_arrayFilters)) {
+                   if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
+                     if (count(getSessionUser()->_arrayFilters[$objectClass])>0) {
                        $activeFilter=true;
                      }
                    }
-                 } else if ($comboDetail and is_array($_SESSION['user']->_arrayFiltersDetail)) {
-                   if (array_key_exists($objectClass, $_SESSION['user']->_arrayFiltersDetail)) {
-                     if (count($_SESSION['user']->_arrayFiltersDetail[$objectClass])>0) {
+                 } else if ($comboDetail and is_array(getSessionUser()->_arrayFiltersDetail)) {
+                   if (array_key_exists($objectClass, getSessionUser()->_arrayFiltersDetail)) {
+                     if (count(getSessionUser()->_arrayFiltersDetail[$objectClass])>0) {
                        $activeFilter=true;
                      }
                    }

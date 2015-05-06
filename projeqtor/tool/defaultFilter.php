@@ -34,7 +34,7 @@
 require_once "../tool/projeqtor.php";
 //traceLog("defaultFilter.php");
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
@@ -45,37 +45,6 @@ if (array_key_exists('filterName',$_REQUEST)) {
   $name=$_REQUEST['filterName'];
 }
 
-/*
-$filterName='stockFilter' . $filterObjectClass;
-if ($cancel) {
-  if (array_key_exists($filterName,$_SESSION)) {
-    $user->_arrayFilters[$filterObjectClass]=$_SESSION[$filterName];
-    $_SESSION['user']=$user;
-  } else {
-    if (array_key_exists($filterObjectClass, $user->_arrayFilters)) {
-      unset($user->_arrayFilters[$filterObjectClass]);
-      $_SESSION['user']=$user;
-    }
-  }
-} 
-if ($clean or $cancel or $valid) {
-   if (array_key_exists($filterName,$_SESSION)) {
-     unset($_SESSION[$filterName]);
-   }
-}
-if ( ! $clean and ! $cancel and !$valid) {
-  if (array_key_exists($filterObjectClass,$user->_arrayFilters)) {
-    $_SESSION[$filterName]= $user->_arrayFilters[$filterObjectClass];
-  } else {
-    $_SESSION[$filterName]=array();
-  }
-}
-
-if ($valid or $cancel) {
-  $user->_arrayFilters[$filterObjectClass . "FilterName"]=$name;
-  $_SESSION['user']=$user;
-}
-*/
 Sql::beginTransaction();
 echo '<table width="100%"><tr><td align="center">';
 $crit=array();

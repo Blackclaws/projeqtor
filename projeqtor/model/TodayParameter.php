@@ -127,7 +127,7 @@ class TodayParameter extends SqlElement {
         $defaultValue='';
         if ($param->defaultValue=='currentUser') {
           if (array_key_exists('user',$_SESSION)) {
-            $user=$_SESSION['user'];
+            $user=getSessionUser();
             $defaultValue=$user->id;
           }
         } else if ($param->defaultValue) {
@@ -144,7 +144,7 @@ class TodayParameter extends SqlElement {
         $defaultValue='';
         if ($param->defaultValue=='currentResource') {
           if (array_key_exists('project',$_SESSION)) {
-            $user=$_SESSION['user'];
+            $user=getSessionUser();
             $defaultValue=$user->id;
           }
         } else if ($param->defaultValue) {

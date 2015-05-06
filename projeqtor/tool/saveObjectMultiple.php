@@ -216,7 +216,7 @@ foreach ($selectList as $id) {
     $noteObj->creationDate=date('Y-m-d H:i:s');
     $noteObj->note=$note;
     $noteObj->idPrivacy=1;
-    $res=new Resource($_SESSION['user']->id);
+    $res=new Resource(getSessionUser()->id);
     $noteObj->idTeam=$res->idTeam;
     $resultSaveNote=$noteObj->save();
     if (! stripos($resultSave,'id="lastOperationStatus" value="OK"')>0) {

@@ -29,9 +29,10 @@
  *
  */
 require_once "../tool/projeqtor.php";
+require_once "../tool/formatter.php";
 scriptLog('   ->/view/imputationList.php');
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $rangeType='week';
 $currentWeek=weekNumber(date('Y-m-d')) ;
 $currentYear=strftime("%Y") ;

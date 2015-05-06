@@ -31,7 +31,7 @@
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/admin.php');
   
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $collapsedList=Collapsed::getCollaspedList();      
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Administration" />

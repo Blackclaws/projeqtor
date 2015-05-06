@@ -31,7 +31,7 @@
   require_once "../tool/projeqtor.php";
   require_once "../tool/formatter.php";
   scriptLog('   ->/view/startGuide.php');  
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   
  echo '<div style="height:100%;padding:10px;overflow:auto;position:relative;">';
  echo '<div class="siteH1">'.i18n('startGuideTitle').'</div>';

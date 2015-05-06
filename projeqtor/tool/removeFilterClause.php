@@ -30,7 +30,7 @@
  */
 require_once "../tool/projeqtor.php";
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 
 $comboDetail=false;
 if (array_key_exists('comboDetail',$_REQUEST)) {
@@ -85,7 +85,7 @@ if (! $comboDetail) {
 htmlDisplayFilterCriteria($filterArray,$name);
 
 // save user (for filter saving)
-$_SESSION['user']=$user;
+setSessionUser($user);
 
 
 ?>

@@ -207,7 +207,7 @@ class Parameter extends SqlElement {
       	break;
       case 'defaultProject':
         if (array_key_exists('user',$_SESSION)) {
-          $user=$_SESSION['user'];
+          $user=getSessionUser();
           $listVisible=$user->getVisibleProjects();
         } else {
           $listVisible=SqlList::getList('Project');
@@ -221,6 +221,10 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes'),
                     'REQ'=>i18n('displayOnRequest'));
+        break;
+      case 'displayChecklist':
+        $list=array('YES'=>i18n('displayYes'),
+            'REQ'=>i18n('displayOnRequest'));
         break;
       case 'printHistory':
         $list=array('NO'=>i18n('displayNo'),
@@ -341,7 +345,7 @@ class Parameter extends SqlElement {
       		if (securityCheckDisplayMenu(null,$item)) {$list['objectMain.php?objectClass='.$item]=i18n('menu'.$item);}
       	}
       	$list['welcome.php']=i18n('paramNone');
-      	$prf=new Profile($_SESSION['user']->idProfile);
+      	$prf=new Profile(getSessionUser()->idProfile);
       	if ($prf->profileCode=='ADM') {
       	  $list['startGuide.php']=i18n('startGuideTitle');
       	}
@@ -382,7 +386,8 @@ class Parameter extends SqlElement {
                            //"displayAttachment"=>"list",
                            //"displayNote"=>"list",
                          'sectionIHM'=>'section',
-                           "displayHistory"=>"list",  
+                           "displayHistory"=>"list",
+                           "displayChecklist"=>"list",  
                            "hideMenu"=>"list",
                            "switchedMode"=>"list",
                            "paramConfirmQuit"=>"list",
@@ -551,6 +556,11 @@ class Parameter extends SqlElement {
     	  unset($parameterList['cronDirectory']);
     	}
     }
+    $user=getSessionUser();
+    $showChecklist=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
+    if (!$showChecklist or ! $showChecklist->id or $showChecklist->rightAccess!='1') {
+      unset($parameterList['displayChecklist']);
+    }
     return $parameterList;
   }
   
@@ -612,7 +622,7 @@ class Parameter extends SqlElement {
       return $_SESSION['userParamatersArray'][$code];
     } 
     $p=new Parameter();
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $crit=" idUser ='" . $user->id . "' and idProject is null and parameterCode='" . $code . "'";
     $lst=$p->getSqlElementsFromCriteria(null, false, $crit);
     $val='';
@@ -628,7 +638,7 @@ class Parameter extends SqlElement {
   }
   
   static function storeUserParameter($code,$value) {
-  	$userId=$_SESSION['user']->id;
+  	$userId=getSessionUser()->id;
   	$param=SqlElement::getSingleSqlElementFromCriteria('Parameter', array('idUser'=>$userId,'parameterCode'=>$code));
   	if (! $param->id) {
   		$param->parameterCode=$code;
@@ -655,7 +665,7 @@ class Parameter extends SqlElement {
     $costVisibility=$pe->_costVisibility;    
   	$res=array();
   	// Default Values
-  	$user=$_SESSION['user'];
+  	$user=getSessionUser();
   	$critHidden="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningHideColumn%'";
   	$critOrder="idUser=" . $user->id . " and idProject is null and parameterCode like 'planningColumnOrder%'";
   	$param=new Parameter();

@@ -427,7 +427,7 @@ class MeetingMain extends SqlElement {
     //$vcal .= "METHOD:REQUEST\r\n";
     $vcal .= "METHOD:REQUEST\r\n";
     $vcal .= "BEGIN:VEVENT\r\n";
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $vcal .= "ORGANIZER;CN=".(($user->resourceName)?$user->resourceName:$user->name);
     //$vcal .= ';SENT-BY="MAILTO:'.$paramMailSender.'"';
     //$vcal .= ":MAILTO:$user->email\r\n";

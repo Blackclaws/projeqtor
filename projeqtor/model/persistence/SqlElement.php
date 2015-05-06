@@ -969,13 +969,13 @@ abstract class SqlElement {
 		// check relartionship : if "cascade", then auto delete
 		$relationShip=self::$_relationShip;
 		$canForceDelete=false;
-	    if (isset($_SESSION['user'])) {
-		  $user=$_SESSION['user'];
-  		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
-  		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-  		  if ($habil and $habil->id and $habil->rightAccess=='1') {
-  		    $canForceDelete=true;
-  		  }
+	  if (getSessionUser()->id) {
+		  $user=getSessionUser();
+		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
+		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+		  if ($habil and $habil->id and $habil->rightAccess=='1') {
+		    $canForceDelete=true;
+		  }
 		}
 		$returnStatus="OK";
 		$returnValue='';
@@ -1162,7 +1162,7 @@ abstract class SqlElement {
 
 		}
 		if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation' and get_class($newObj)!='Message') {
-			$newObj->idUser=$_SESSION['user']->id;
+			$newObj->idUser=getSessionUser()->id;
 		}
 		if (property_exists($newObj,"creationDate")) {
 			$newObj->creationDate=date('Y-m-d');
@@ -1312,7 +1312,7 @@ abstract class SqlElement {
 			$newObj->idStatus=$st->id;
 		}
 		if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation' and get_class($newObj)!='Message') {
-			$newObj->idUser=$_SESSION['user']->id;
+			$newObj->idUser=getSessionUser()->id;
 		}
 		if (property_exists($newObj,"creationDate")) {
 			$newObj->creationDate=date('Y-m-d');
@@ -1403,7 +1403,7 @@ abstract class SqlElement {
 		}
 		if ($withAssignments and property_exists($this,"_Assignment") and property_exists($newObj,"_Assignment")) {
 		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', 
-		      array('idProfile' => $_SESSION['user']->idProfile,'scope' => 'assignmentEdit'));
+		      array('idProfile' => getSessionUser()->idProfile,'scope' => 'assignmentEdit'));
 		  if ($habil and $habil->rightAccess == 1) {
   			$ass=new Assignment();
   			// First delete existing Assignment (possibly created from Responsible)
@@ -1849,7 +1849,7 @@ abstract class SqlElement {
 		// set default idUser if exists
 		if ($empty and property_exists($this, 'idUser') and get_class($this)!='Affectation' and get_class($this)!='Message') {
 			if (array_key_exists('user', $_SESSION)) {
-				$this->idUser=$_SESSION['user']->id;
+				$this->idUser=getSessionUser()->id;
 			}
 		}
 		if ($curId and array_key_exists(get_class($this),self::$_cachedQuery)) {
@@ -2593,8 +2593,8 @@ abstract class SqlElement {
 	  } else if (isset($loginSave) and $loginSave==true) { // User->save during autenticate can do everything
         $right='YES';
 		} else if (get_class($this)=='User') { // User can change his own data (to be able to change password)
-			if (isset($_SESSION['user'])) {
-				$usr=$_SESSION['user'];
+			if (getSessionUser()->id) {
+				$usr=getSessionUser();
 				if ($this->id==$usr->id) {
 					$right='YES';
 				}
@@ -2651,6 +2651,8 @@ abstract class SqlElement {
 			}
 			// TODO Check HTML validity for Long Texts
 			if ($dataLength>4000) {
+			  // Remove "\n" that have no use here
+			  $this->$col=str_replace( "\n", ' ', $val );
 			  /*try {
 			    $test=strip_tags($val);
 			  } catch (Exception $e) {
@@ -2672,7 +2674,7 @@ abstract class SqlElement {
 			and property_exists($this, 'idResource')
 			and property_exists($this, 'handled')) {
 				if ($this->handled and ! trim($this->idResource)) {
-					$user=$_SESSION['user'];
+					$user=getSessionUser();
 					if ($user->isResource and Parameter::getGlobalParameter('setResponsibleIfNeeded')!='NO') {
 						$this->idResource=$user->id;
 					} else {
@@ -2748,7 +2750,7 @@ abstract class SqlElement {
 				$type=new Type($this->$fldType);
 				$crit=array('idWorkflow'=>$type->idWorkflow,
 	    	            'idStatusTo'=>$this->idStatus,
-	    	            'idProfile'=>$_SESSION['user']->idProfile);
+	    	            'idProfile'=>getSessionUser()->idProfile);
 				if (trim($old->idStatus)!=trim($this->idStatus)) {
 					$crit['idStatusFrom']=$old->idStatus;
 				}
@@ -2793,8 +2795,8 @@ abstract class SqlElement {
 		}
 		$relationShip=self::$_relationShip;
 		$canForceDelete=false;
-	    if (isset($_SESSION['user'])) {
-		  $user=$_SESSION['user'];
+	    if (getSessionUser()->id) {
+		  $user=getSessionUser();
   		  $crit=array('idProfile'=>$user->idProfile, 'scope'=>'canForceDelete');
   		  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
   		  if ($habil and $habil->id and $habil->rightAccess=='1') {
@@ -3179,7 +3181,7 @@ abstract class SqlElement {
 		
 		// sender
 		$arrayFrom[]='${sender}';
-		$user=$_SESSION['user'];
+		$user=getSessionUser();
 		$arrayTo[]=($user->resourceName)?$user->resourceName:$user->name;
 		
 		// context1 to context3
@@ -3225,7 +3227,7 @@ abstract class SqlElement {
 		
 		// login
 		$arrayFrom[]='${login}';
-		$arrayTo[]=($objectClass=='User')?$this->name:$_SESSION['user']->name;
+		$arrayTo[]=($objectClass=='User')?$this->name:getSessionUser()->name;
 		
 		// password
 		$arrayFrom[]='${password}';

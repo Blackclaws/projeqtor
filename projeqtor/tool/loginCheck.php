@@ -135,7 +135,7 @@
     echo '<div class="messageERROR">';
     echo i18n('invalidLogin');
     echo '</div>';
-    unset($_SESSION['user']);
+    setSessionUser(null);
     traceLog("Login error for user '" . $login . "'");
     exit;
   }
@@ -149,7 +149,7 @@
     echo '<div class="messageERROR">';
     echo i18n('ldapError');
     echo '</div>';
-    unset($_SESSION['user']);
+    setSessionUser(null);
     traceLog("Error contacting Ldap for user '" . $login . "'");
     exit;
   }
@@ -163,7 +163,7 @@
     echo '<div class="messageERROR">';
     echo i18n('invalidLoginPassword');
     echo '</div>';
-    unset($_SESSION['user']);
+    setSessionUser(null);
     traceLog("Login error for user '" . $login . "'");
     exit;
   }
@@ -177,7 +177,7 @@
     echo '<div class="messageERROR">';
     echo i18n('lockedUser');
     echo '</div>';
-    unset($_SESSION['user']);
+    setSessionUser(null);
     traceLog("Login locked for user '" . $login . "'");
     exit;
   }
@@ -194,7 +194,7 @@
     echo '<div class="messageERROR">';
     echo i18n('wrongMaintenanceUser');
     echo '</div>';
-    unset($_SESSION['user']);
+    setSessionUser(null);
     traceLog("Login of non admin user during upgrade. User '" . $login . "'");
     exit;
   }
@@ -216,7 +216,7 @@
    */
   function loginOk ($user) {
     global $login;
-    $_SESSION['user']=$user;
+    setSessionUser($user);
   	$_SESSION['appRoot']=getAppRoot();
     $crit=array();
     $crit['idUser']=$user->id;

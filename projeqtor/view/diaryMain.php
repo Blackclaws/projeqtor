@@ -29,7 +29,7 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/diaryMain.php');  
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Diary" />
 <div class="container" dojoType="dijit.layout.BorderContainer">

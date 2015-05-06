@@ -29,7 +29,7 @@
  */
 require_once "../tool/projeqtor.php";
 Sql::beginTransaction();
-$user=$_SESSION['user'];
+$user=getSessionUser();
 if (! array_key_exists('action',$_REQUEST)) {
   throwError('action parameter not found in REQUEST');
 }

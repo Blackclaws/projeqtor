@@ -222,17 +222,18 @@
       $type='id'.get_class($obj).'Type';
       if (property_exists($obj,$type) ) {
         $crit.=' and (idType is null ';
-        if ( $obj->$type) {
-          $crit.=' or idType='.$obj->$type;
+        if ($obj->$type) {
+          $crit.=" or idType='".$obj->$type."'";
         }
         $crit.=')';
   		}
   		$cd=new ChecklistDefinition();
   		$cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
-  		$user=$_SESSION['user'];
+  		$user=getSessionUser();
   		$habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
   		$list=new ListYesNo($habil->rightAccess);
-  		if ($list->code!='YES') { 
+  		$displayChecklist=Parameter::getUserParameter('displayChecklist');
+  		if ($list->code!='YES' or $displayChecklist!='REQ') {
   		  $buttonCheckListVisible="never";
   		} else if (count($cdList)>0 and $obj->id) {
         $buttonCheckListVisible="visible";

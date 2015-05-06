@@ -30,7 +30,7 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/view/calendar.php');
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $collapsedList=Collapsed::getCollaspedList();
   $currentYear=strftime("%Y") ;
   $idCalendarDefinition=0;

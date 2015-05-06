@@ -77,7 +77,7 @@ class ColumnSelector extends SqlElement {
 			return self::$cachedLists['list#'.$classObj];
 		}
 		// retrieve from database, in correct order
-		$user=$_SESSION['user'];
+		$user=getSessionUser();
 		$obj=new $classObj();
 		$cs=new ColumnSelector();
 		$crit=array('scope'=>'list', 'objectClass'=>$classObj, 'idUser'=>$user->id);
@@ -162,7 +162,7 @@ class ColumnSelector extends SqlElement {
 	private static function addAllFields($result, $obj, $included=false, $sourceClass=null) {
 		// TODO : fiabilize this function
 		$fieldsArray=$obj->getFieldsArray();
-		$user=$_SESSION['user'];
+		$user=getSessionUser();
 		$cpt=count($result);
 		foreach($obj as $col => $val) {
 		  if (array_key_exists($col,$result)) {

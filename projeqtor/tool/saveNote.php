@@ -47,7 +47,6 @@ if (! array_key_exists('noteNote',$_REQUEST)) {
   throwError('noteNote parameter not found in REQUEST');
 }
 $noteNote=$_REQUEST['noteNote'];
-debugLog($noteNote);
 $notePrivacy=null;
 if (array_key_exists('notePrivacy',$_REQUEST)) {
   $notePrivacy=$_REQUEST['notePrivacy'];
@@ -65,7 +64,7 @@ Sql::beginTransaction();
 // get the modifications (from request)
 $note=new Note($noteId);
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
 if (! $note->id) {
   $note->idUser=$user->id;
   $ress=new Resource($user->id);

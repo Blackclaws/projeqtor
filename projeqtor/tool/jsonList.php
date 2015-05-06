@@ -55,9 +55,6 @@ scriptLog('   ->/tool/jsonList.php');
       $nbRows=listFieldsForFilter ($obj,0);
     } else if ($type=='operator') {    
       $dataType=$_REQUEST['dataType'];
-debugLog($dataType);
-      debugLog($dataType);
-      debugLog($_REQUEST);
       if ($dataType=='int' or $dataType=='date' or $dataType=='datetime' or $dataType=='decimal') {
         echo ' {id:"=", name:"="}';
         echo ',{id:">=", name:">="}';
@@ -103,7 +100,7 @@ debugLog($dataType);
       }
       $class=substr($dataType,2);
       if ($dataType=='idProject' and securityGetAccessRight('menuProject', 'read')!='ALL') {
-      	$user=$_SESSION['user'];
+      	$user=getSessionUser();
       	$list=$user->getVisibleProjects();
       } else if ($dataType=='idProduct' and array_key_exists('critField', $_REQUEST) and array_key_exists('critValue', $_REQUEST)) {
       	if (trim($_REQUEST['critValue'])) {    	
@@ -313,7 +310,7 @@ debugLog($dataType);
       $docVers=new documentVersion($idDocumentVersion);
     	$table=SqlList::getList('Status','name',$docVers->idStatus);
     	if ($docVers->idStatus) {      
-	      $profile=$_SESSION['user']->idProfile;
+	      $profile=getSessionUser()->idProfile;
 	      $type=new DocumentType($doc->idDocumentType);
 	      $ws=new WorkflowStatus();
 	      $crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$docVers->idStatus);

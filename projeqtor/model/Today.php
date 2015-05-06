@@ -77,7 +77,7 @@ class Today extends SqlElement {
    */
   
   public static function insertStaticItems() {
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $sort=0;
     foreach (self::$staticList as $static) {
       $crit=array('idUser'=>$user->id, 'scope'=>'static', 'staticSection'=>$static);

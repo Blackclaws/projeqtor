@@ -563,8 +563,8 @@ class User extends SqlElement {
   }
   
   public static function resetAllVisibleProjects($idProject=null, $idUser=null) {
-  	if (! isset($_SESSION['user'])) return;
-  	$user=$_SESSION['user'];
+  	if (! getSessionUser()->id) return;
+  	$user=getSessionUser();
     if ($idUser) {
       if ($idUser==$user->id) {
          self::resetAllVisibleProjects(null, null);
@@ -593,7 +593,7 @@ class User extends SqlElement {
       }
     } else {
     	$user->resetVisibleProjects();
-      $_SESSION['user']=$user;
+      setSessionUser($user);
       unset($_SESSION['visibleProjectsList']);
     }
   }
@@ -785,11 +785,11 @@ class User extends SqlElement {
   		try {
 		   $bind=ldap_bind($ldapCnx, $ldap_bind_dn, $ldap_bind_pw);
   		} catch (Exception $e) {
-//debugLog("authenticate - LdapBind Error : " . $e->getMessage() );
+        traceLog("authenticate - LDAP Bind Error : " . $e->getMessage() );
         return "ldap";
       }  
 			if (! $bind) {
-//debugLog("authenticate - LdapBind Error : not identified error" );
+        traceLog("authenticate - LDAP Bind Error : not identified error" );
 			  return "ldap";
 			}
 			$filter_r = html_entity_decode(str_replace('%USERNAME%', $this->name, $paramLdap_user_filter), ENT_COMPAT, 'UTF-8');
@@ -842,7 +842,7 @@ class User extends SqlElement {
 				  $this->isLdap=1;
 				  $this->name=$paramlogin;
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
-				  $_SESSION['user']=$this;
+				  setSessionUser($this);
 				  $resultSaveUser=$this->save();
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
@@ -881,7 +881,7 @@ class User extends SqlElement {
 			}
 	  }
 	  $this->successfullLogin($rememberMe);
-	  $_SESSION['user']=$this;
+	  setSessionUser($this);
 	  return "OK";     
   }
 
@@ -921,7 +921,7 @@ class User extends SqlElement {
     $this->stopAllWork();
     traceLog("DISCONNECTED USER '" . $this->name . "'");
     Parameter::clearGlobalParameters();
-    unset($_SESSION['user']);
+    setSessionUser(null);
   }
 
   public function stopAllWork() {

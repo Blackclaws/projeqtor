@@ -123,7 +123,7 @@ class Alert extends SqlElement {
   public function drawSpecificItem($item){
     $result="";
     if ($item=='markAsRead') {
-    	$user=$_SESSION['user'];
+    	$user=getSessionUser();
     	if ($user->id==$this->idUser and ! $this->readFlag) {
     	  $result .='<table><tr><td class="label">&nbsp;</td><td>';
         $result .='<button dojoType="dijit.form.Button" onclick="setAlertReadMessageInForm();">';

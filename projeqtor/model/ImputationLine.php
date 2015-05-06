@@ -82,7 +82,7 @@ class ImputationLine {
 		if (Parameter::getGlobalParameter('displayOnlyHandled')=="YES") {
 			$hideNotHandled=1;
 		}
-		$user=$_SESSION['user'];
+		$user=getSessionUser();
 		$user=new User($user->id);
 		
 		$visibleProjects=$user->getVisibleProjects();
@@ -337,7 +337,7 @@ class ImputationLine {
 	private static function getParent($elt, $result, $direct=true, $accessRight){
 //scriptLog("      => ImputationLine->getParent($elt->refType#$elt->refId, result[], $direct)");		
 		$plan=null;
-		$user=$_SESSION['user'];
+		$user=getSessionUser();
 		$visibleProjectList=$user->getVisibleProjects();
 		
 		//$visibleProjectList=explode(', ', getVisibleProjectsList());
@@ -384,7 +384,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 //scriptLog("      => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");		
 		$crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId); 
 		$period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
-		$user=$_SESSION['user'];		
+		$user=getSessionUser();		
 		$canValidate=false;
 		$crit=array('scope'=>'workValid', 'idProfile'=>$user->idProfile);
     $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
@@ -602,13 +602,9 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			if (! $line->refType) {$line->refType='Imputation';};
 			echo '<img src="css/images/icon' . $line->refType . '16.png" />';
 			echo '</td>';
-			if (! $print) {
-				echo '<td class="ganttName" title="' . htmlEncodeJson($line->comment) . '">';
-			} else {
-				echo '<td class="ganttName" >';
-			}
+			echo '<td class="ganttName" >';
 			// tab the name depending on level
-			echo '<table><tr><td>';
+			echo '<table width:"100%"><tr><td>';
 		  $wbs=$line->wbsSortable;
       $wbsTest=$wbs;
       $level=1;
@@ -670,7 +666,7 @@ scriptLog("      => ImputationLine->getParent()-exit");
 			}
 			echo '</td>';
 			if ($line->comment and !$print) {
-					echo '<td>&nbsp;&nbsp;<img src="img/note.png" /></td>';
+					echo '<td>&nbsp;&nbsp;</td><td>'.formatCommentThumb($line->comment).'</td>';
 			}
 			echo '</tr></table>';
 			echo '</td>';

@@ -30,7 +30,7 @@
 require_once "../tool/projeqtor.php";
 
 Sql::beginTransaction();
-$user=$_SESSION['user'];
+$user=getSessionUser();
 $action=$_REQUEST['action'];
 if ($action=='status') {
   $status=$_REQUEST['status'];

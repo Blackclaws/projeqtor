@@ -116,7 +116,7 @@ if ($copyToLinkOrigin) {
   $link->ref2Id=$newObj->id;
   $link->ref2Type=get_class($newObj);
   $link->comment=null;
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $link->idUser=$user->id;
   $link->creationDate=date("Y-m-d H:i:s"); 
   $resLink=$link->save();

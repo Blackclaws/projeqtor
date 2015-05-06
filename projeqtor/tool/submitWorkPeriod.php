@@ -65,7 +65,7 @@ if ($action=='submit') {
 } if ($action=='validate') {
   $period->validated=1;
   $period->validatedDate=date('Y-m-d H:i:s');
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   $period->idLocker=$user->id;
 } if ($action=='unvalidate') {
 	$period->validated=0;		

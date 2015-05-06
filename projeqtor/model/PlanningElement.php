@@ -421,7 +421,7 @@ class PlanningElement extends SqlElement {
     	 	  $typeClass=$refType.'Type';
     	 	  $typeField='id'.$typeClass;
     	  	$type=new $typeClass($refObj->$typeField);
-    	  	$user=$_SESSION['user'];
+    	  	$user=getSessionUser();
     	 	  $crit=array('idWorkflow'=>$type->idWorkflow, 'idStatusFrom'=>$refObj->idStatus, 'idProfile'=>$user->idProfile, 'allowed'=>'1');
     	 	  $ws=new WorkflowStatus();
     	 	  $possibleStatus=$ws->getSqlElementsFromCriteria($crit);
@@ -1021,7 +1021,7 @@ class PlanningElement extends SqlElement {
     if (! array_key_exists('user',$_SESSION)) {
       return;
     }
-    $user=$_SESSION['user'];
+    $user=getSessionUser();
     $list=SqlList::getList('VisibilityScope', 'accessCode', null, false);
     $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'cost'));
     $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'work'));
