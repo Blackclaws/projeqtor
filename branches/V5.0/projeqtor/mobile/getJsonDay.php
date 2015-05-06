@@ -17,7 +17,7 @@
   
   $cpt=0;
   $arrayActivities=array(); // Array of activities to display
-  $idRessource=$_SESSION['user']->id;
+  $idRessource=getSessionUser()->id;
   $period='day';
   $fullDay=$_REQUEST['currentDate'];
   if ($fullDay=='prev') {
@@ -117,9 +117,9 @@ function getAllActivities($startDate, $endDate, $ress) {
 		   ." or ( actualDueDateTime is null and (initialDueDateTime>='$startDate 00:00:00' and initialDueDateTime<='$endDate 23:59:59') )"
 	     ." )";
 		} else if (property_exists($obj, 'validatedEndDate') ) {
-			if ($ress==$_SESSION['user']->id) {
+			if ($ress==getSessionUser()->id) {
 				$critWhere=" refType='MileStone' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
-				$critWhere.=" and idProject in ".transformListIntoInClause($_SESSION['user']->getVisibleProjects(true));
+				$critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
 			} else {
 				$critWhere="1=0";
 			}
