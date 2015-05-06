@@ -69,7 +69,7 @@ if (!$user->id) {
 	returnError($invalidQuery, "user '$username' unknown in database");
 }
 traceLog ("API : mode=".$_SERVER['REQUEST_METHOD']." user=$user->name, id=$user->id, profile=$user->idProfile");
-$_SESSION['user']=$user;
+setSessionUser($user);
 
 IF ($_SERVER['REQUEST_METHOD']=='GET') {
   if (isset($_REQUEST['uri'])) {
