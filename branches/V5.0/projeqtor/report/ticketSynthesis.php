@@ -71,7 +71,7 @@ if (! isset($includedReport)) {
     $paramResponsible=trim($_REQUEST['responsible']);
   }
   
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   
   $periodType="";
   $periodValue="";

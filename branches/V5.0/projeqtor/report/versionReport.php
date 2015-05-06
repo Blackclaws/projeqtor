@@ -51,7 +51,7 @@ if (! isset($includedReport)) {
     $paramOtherVersion=true;
   };
   
-  $user=$_SESSION['user'];
+  $user=getSessionUser();
   
   // Header
   $headerParameters="";

@@ -46,7 +46,7 @@ if (array_key_exists('showDetail',$_REQUEST)) {
   $paramDetail=trim($_REQUEST['showDetail']);
 }
 
-$user=$_SESSION['user'];
+$user=getSessionUser();
   
   // Header
 $headerParameters="";
