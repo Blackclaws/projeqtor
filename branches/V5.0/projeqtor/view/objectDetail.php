@@ -2852,11 +2852,11 @@ function drawChecklistFromObject($obj) {
   $displayChecklist=Parameter::getUserParameter('displayChecklist');
   if (!$noselect and $obj->id and $list->code=='YES' and ($displayChecklist=='YES' or $print) ) {
       if ($print) {
-        echo '<table width="'.$printWidth.'px;">';
-        echo '<tr><td>';
+        //echo '<table class="detail" width="'.$printWidth.'px;">';
+        //echo '<tr><td>';
         include_once "../tool/dynamicDialogChecklist.php";
-        echo '</td></tr>';
-        echo '</table>';
+        //echo '</td></tr>';
+        //echo '</table>';
       } else {
         $titlePane=get_class($obj) . "_checklist";
         echo '<div style="width:'.$displayWidth.'" dojoType="dijit.TitlePane"'; 

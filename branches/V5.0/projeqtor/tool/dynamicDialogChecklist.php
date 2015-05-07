@@ -26,8 +26,16 @@
 
 include_once '../tool/formatter.php';
 
-if (! isset ($print)) {
+if (! isset ($print) or !$print) {
 	$print=false;
+	$printWidthDialog="100%";
+	$internalWidth='100%';
+	$nameWidth="15%";
+} else {
+  $printWidthDialog=$printWidth.'px';
+  $nameWidthValue=120;
+  $nameWidth=$nameWidthValue.'px;';
+  $internalWidth=($printWidth-$nameWidthValue+8).'px';
 }
 $context="popup";
 if (isset($obj)) {
@@ -102,35 +110,35 @@ if ($print) $canUpdate=false;
 <input type="hidden" name="checklistObjectClass" value="<?php echo $objectClass;?>" />
 <input type="hidden" name="checklistObjectId" value="<?php echo $objectId;?>" />
 <?php } else {?>
-<table style="width: 100%;">
+<table style="width:<?php echo $printWidthDialog;?>;">
   <tr><td>&nbsp;</td></tr>
   <tr><td class="section"><?php echo i18n("Checklist");?></td></tr>
   <tr style="height:0.5em;font-size:80%"><td>&nbsp;</td></tr>
 </table>	
 <?php }?> 
-<table style="width: 100%;">
+<table style="width:<?php echo $printWidthDialog;?>;">
   <tr>
-    <td style="width: 100%;">
-	    <table width="100%;" >
+    <td style="width:<?php echo $printWidthDialog;?>;">
+	    <table style="width:<?php echo $printWidthDialog;?>;" >
 <?php foreach($defLines as $line) {
 	      if (isset($linesVal[$line->id])) {
           $lineVal=$linesVal[$line->id];
         } else {
           $lineVal=new ChecklistLine();
         }?>	 
-		    <tr>
+		    <tr >
 <?php   if ($line->check01) {?>
-			    <td class="noteData" style="position: relative; border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
+			    <td class="noteData" style="<?php echo ($print)?'width:'.$nameWidth:'';?>position: relative; border-right:0; text-align:right" title="<?php echo ($print)?'':$line->title;?>"> 
 				  <?php echo htmlEncode( $line->name);?> :   
 		      </td>
 			    <td class="noteData" style="border-left:0;">
-			      <table witdh="100%" style="width:100%;">
+			      <table style="width:<?php echo $internalWidth;?>;">
 			        <tr>
 				<?php for ($i=1;$i<=5;$i++) {
 								$check='check0'.$i;
 								$title='title0'.$i;
 								$value='value0'.$i;?>
-								<td style="min-width:100px;<?php if ($print) echo 'width:15%;'?>white-space:nowrap; vertical-align:top;" title="<?php echo ($print)?'':$line->$title;?>" >
+								<td style="<?php echo (!$print)?'':''?>min-width:100px;width:15%;vertical-align:top;" title="<?php echo ($print)?'':$line->$title;?>" >
 					<?php if ($line->$check) {
 								  $checkName="check_".$line->id."_".$i;
 								  if ($print) {
@@ -150,8 +158,10 @@ if ($print) $canUpdate=false;
 		            }?>
 		            </td>
 				<?php }?>
-					
-				<td style="text-align:right; width:50px; color: #A0A0A0;white-space:nowrap" valign="top">				  
+				<?php if (! $print) {?>
+				<td >&nbsp;</td>
+				<?php }?>	
+				<td style="white-space:nowrap;text-align:right; width:<?php echo ($print)?'0px':'50px;min-width:50px';?>; color: #A0A0A0;white-space:nowrap" valign="top">				  
 				<?php 
 				  if ($lineVal->checkTime and !$print) {
             $userId=$lineVal->idUser;
@@ -159,8 +169,8 @@ if ($print) $canUpdate=false;
             echo formatUserThumb($userId, $userName, 'Creator');
             echo formatDateThumb($lineVal->checkTime,null);
          }?></td>
-				<td >&nbsp;</td>
-				<td valign="top" style="width: 150px;"> 
+				<td style="width:3px;">&nbsp;</td>
+				<td valign="top" style="width:<?php echo ($print)?'115px;font-size:90%;':'150px;';?>"> 
 				  <?php if (! $print) {?>
 				  <textarea dojoType="dijit.form.Textarea" 
             id="checklistLineComment_<?php echo $line->id;?>" name="checklistLineComment_<?php echo $line->id;?>"
@@ -203,7 +213,7 @@ if ($print) $canUpdate=false;
 	    <?php }?>
 	  </table>
   </td></tr>
- <tr><td style="width: 100%;">&nbsp;</td></tr>
+ <tr><td style="width:<?php echo $printWidthDialog;?>;">&nbsp;</td></tr>
 <?php if (! $print and $context=='popup') {?>
  <tr>
    <td style="width: 100%;" align="center">
