@@ -3,13 +3,51 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-
+<head>
+<title>ProjeQtOr - Ticket #9</title>
+<link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
+<link rel="stylesheet" type="text/css" href="css/projeqtorPrint.css" />
+<link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
+<link rel="icon" href="img/logo.ico" type="image/x-icon" />
+<script type="text/javascript" src="../external/dojo/dojo.js"
+  djConfig='modulePaths: {i18n: "../../tool/i18n"},
+              parseOnLoad: true,
+              isDebug: false'></script>
+<script type="text/javascript" src="../external/dojo/projeqtorDojo.js"></script>
+<script type="text/javascript" src="../view/js/jsgantt.js"></script>
+<script type="text/javascript">
+  dojo.require("dojo.parser");
+  dojo.require("dojo.i18n");
+  //dojo.require("dojo.date.locale");
+  dojo.addOnLoad(function() {
+    var printInNewWindow = false;
+    if (printInNewWindow) {
+      objTop = window.opener;
+    } else {
+      objTop = top;
+    }
+    objTop.hideWait();
+    objTop.window.document.title = "ProjeQtOr - Ticket #9";
+    window.document.title = "ProjeQtOr - Ticket #9";
+  });
+</script>
+</head>
 <page backtop="100px" backbottom="20px" footer="page">
 <div style="-webkit-print-color-adjust: exact;" id="bodyPrint"
   class="white" onload="top.hideWait();">
   <br />
-  
+  <div class="reportTableHeader" style="width: 970px; font-size: 150%;">Ticket
+    #9</div>
+  <br />
   <div xdojoType="dijit.layout.BorderContainer" class="background">
+    <table class="detail" style="width: 980px;">
+      <tr>
+        <td class="section">Description</td>
+      </tr>
+      <tr class="detail" style="height: 2px; font-size: 2px;">
+        <td class="detail">&nbsp;</td>
+      </tr>
+    </table>
     <table class="detail" style="width: 980px;">
       <tr class="detail">
         <td class="label" style="width: 145px;"><label for="id">id&nbsp;:&nbsp;</label>
@@ -229,7 +267,6 @@
             </tr>
           </table></td>
       </tr>
-      <input id="LinkSectionCount" type="hidden" value="0" />
     </table>
     <br />
     <table class="detail" style="width: 980px;">
@@ -250,23 +287,12 @@
                 style="width: 95%">file</td>
             </tr>
             <tr>
-              <td class="attachmentData" style="width: 5%;">#14</td>
-              <td class="attachmentData"
-                style="width: 5%; border-right: none; text-align: center;"><img
-                src="../view/img/mime/doc.png"
-                title="application/msword" />&nbsp;</td>
-              <td class="attachmentData"
-                style="border-left: none; width: 90%">Mod&egrave;le
-                - Acte de nomination.doc</td>
-            </tr>
-            <tr>
               <td class="attachmentDataClosetable">&nbsp;</td>
               <td class="attachmentDataClosetable">&nbsp;</td>
               <td class="attachmentDataClosetable">&nbsp;</td>
             </tr>
           </table></td>
       </tr>
-      <input id="AttachmentSectionCount" type="hidden" value="1" />
     </table>
     <br />
     <table class="detail" style="width: 980px;">
@@ -284,21 +310,120 @@
         <td class="noteHeader" style="width: 95%">note</td>
       </tr>
       <tr>
-        <td class="noteData">#7</td>
-        <td class="noteData">g dfghtrf
-          <div>th rfst</div>
-          <div>h rth rthh</div>
-          <div>rth rt hrth</div>
-        </td>
-      </tr>
-      <tr>
-        <td class="noteData">#6</td>
-        <td class="noteData">dsf sdfsdf sdff</td>
-      </tr>
-      <tr>
         <td colspan="2" class="noteDataClosetable">&nbsp;</td>
       </tr>
-      <input id="NoteSectionCount" type="hidden" value="2" />
+    </table>
+    <table width="980px;">
+      <tr>
+        <td><table style="width: 100%;">
+            <tr>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="section">Checklist</td>
+            </tr>
+            <tr style="height: 0.5em; font-size: 80%">
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+
+          <table style="width: 100%;">
+            <tr>
+              <td style="width: 100%;">
+                <table width="100%;">
+
+                  <tr>
+                    <td class="noteData"
+                      style="position: relative; border-right: 0; text-align: right"
+                      title="">Type appel :</td>
+                    <td class="noteData" style="border-left: 0;">
+                      <table witdh="100%" style="width: 100%;">
+                        <tr>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""><img src="img/checkedKO.png" />&nbsp;Email&nbsp;&nbsp;
+                          </td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""><img src="img/checkedOK.png" />&nbsp;Téléphone&nbsp;&nbsp;
+                          </td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""><img src="img/checkedKO.png" />&nbsp;Forum&nbsp;&nbsp;
+                          </td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""></td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""></td>
+
+                          <td
+                            style="text-align: right; width: 50px; color: #A0A0A0; white-space: nowrap"
+                            valign="top"></td>
+                          <td>&nbsp;</td>
+                          <td valign="top" style="width: 150px;">
+                            dfsfs dfs</td>
+                        </tr>
+                      </table>
+                    </td>
+
+
+                  </tr>
+
+                  <tr>
+                    <td class="noteData"
+                      style="position: relative; border-right: 0; text-align: right"
+                      title="">Utilisateur connu :</td>
+                    <td class="noteData" style="border-left: 0;">
+                      <table witdh="100%" style="width: 100%;">
+                        <tr>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""><img src="img/checkedKO.png" />&nbsp;Oui&nbsp;&nbsp;
+                          </td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""><img src="img/checkedKO.png" />&nbsp;Non&nbsp;&nbsp;
+                          </td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""></td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""></td>
+                          <td
+                            style="min-width: 100px; width: 15%; white-space: nowrap; vertical-align: top;"
+                            title=""></td>
+
+                          <td
+                            style="text-align: right; width: 50px; color: #A0A0A0; white-space: nowrap"
+                            valign="top"></td>
+                          <td>&nbsp;</td>
+                          <td valign="top" style="width: 150px;"></td>
+                        </tr>
+                      </table>
+                    </td>
+
+
+                  </tr>
+                  <tr>
+                    <td class="noteDataClosetable">&nbsp;</td>
+                    <td class="noteDataClosetable">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;">comments&nbsp;:&nbsp;</td>
+                    <td>sddsff sdf</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 100%;">&nbsp;</td>
+            </tr>
+
+          </table></td>
+      </tr>
     </table>
     <br />
   </div>
