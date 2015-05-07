@@ -53,12 +53,13 @@ if (isset($obj)) {
   }
   $objectId=$_REQUEST['objectId'];
 }
-
 $checklistDefinition=null;
 $obj=new $objectClass($objectId);
 $type='id'.$objectClass.'Type';
-$checklist=SqlElement::getSingleSqlElementFromCriteria('Checklist', array('refType'=>$objectClass, 'refId'=>$objectId));
-if ($checklist and $checklist->id) {
+$checklist=new Checklist();
+$checklistList=$checklist->getSqlElementsFromCriteria(array('refType'=>$objectClass, 'refId'=>$objectId));
+if (count($checklistList)>0) {
+  $checklist=array_shift($checklistList);
 	$checklistDefinition=new ChecklistDefinition($checklist->idChecklistDefinition);
 	if ($checklistDefinition->id and 
       ( ( $checklistDefinition->nameChecklistable!=$objectClass) 
@@ -66,6 +67,12 @@ if ($checklist and $checklist->id) {
       ) ) {
 		$checklist->delete();
 		unset($checklist);
+	}
+	// Clear dupplicate 
+	if (count($checklistList)>0) {
+	  foreach ($checklistList as $del) {
+	    $del->delete();
+	  }
 	}
 }
 if (!isset($checklist) or !$checklist or !$checklist->id) {
