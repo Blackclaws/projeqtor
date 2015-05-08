@@ -3198,7 +3198,7 @@ abstract class SqlElement {
 		
 		// projectCode
 		$arrayFrom[]='${projectCode}';
-		$arrayTo[]=SqlList::getNameFromId('Sponsor', $project->projectCode);
+		$arrayTo[]=$project->projectCode;
 		
 		// ContractCode
 		$arrayFrom[]='${contractCode}';
