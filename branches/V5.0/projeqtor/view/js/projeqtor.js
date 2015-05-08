@@ -525,16 +525,18 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   }
   if (contentNode) {
     destinationWidth=dojo.style(contentNode, "width");
+    destinationHeight=dojo.style(contentNode, "height");
     if (destination=='detailFormDiv') {
       widthNode=dojo.byId('detailDiv');
       if (widthNode) {
         destinationWidth=dojo.style(widthNode, "width");
+        destinationHeight=dojo.style(widthNode, "height");
       }
     }
     if ( page.indexOf("?")>0) {
-      page+="&destinationWidth="+destinationWidth;
+      page+="&destinationWidth="+destinationWidth+"&destinationHeight="+destinationHeight;
     } else {
-      page+="?destinationWidth="+destinationWidth;
+      page+="?destinationWidth="+destinationWidth+"&destinationHeight="+destinationHeight;
     }
   }
   if (directAccessIndex) {

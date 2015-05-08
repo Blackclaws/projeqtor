@@ -28,8 +28,7 @@
  * Presents an object. 
  */
   require_once "../tool/projeqtor.php";
-  scriptLog('   ->/view/diary.php');  
-  
+  scriptLog('   ->/view/diary.php');   
   $cpt=0;
   $arrayActivities=array(); // Array of activities to display
   $idRessource=getSessionUser()->id;
@@ -42,6 +41,7 @@
     Parameter::storeUserParameter("diaryPeriod",$period);
     $idRessource=$_REQUEST['diaryResource'];
   }
+
   $ress=new Resource($idRessource);
   $calendar=$ress->idCalendarDefinition;
   $weekDaysCaption=array(
@@ -65,12 +65,16 @@
   }
 
   if ($period=="month") {
-  	$currentDay=date('Y-m-d',firstDayofWeek($week,$year));
+    if ($month=='01' and $week>50) {
+      $currentDay=date('Y-m-d',firstDayofWeek($week,$year-1));
+    } else {
+  	  $currentDay=date('Y-m-d',firstDayofWeek($week,$year));
+    }
   	$lastDayOfMonth=date('t',strtotime($year.'-'.$month.'-01'));
   	$weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
   	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, (($lastWeek>$week)?$year:$year+1) ));	
   	$endDay=addDaysToDate($firstDayOfLastWeek, 6);
-  	$inScopeDay=false;
+  	$inScopeDay=false;	
   } else if ($period=="week") {
   	$currentDay=date('Y-m-d',firstDayofWeek($week,$year));
   	$endDay=addDaysToDate($currentDay, 6);
@@ -111,6 +115,12 @@
   
 function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	global $cpt;
+	$dayHeight="100%";
+	if (isset($_REQUEST['destinationHeight']) and $period=='month') {
+	  $destHeight=$_REQUEST['destinationHeight'];
+	  $dayHeight=(round(($destHeight-24)/5,0)-15).'px';
+	}
+	
 	echo '<table style="width:100%; height: 100%;'.(($date==date('Y-m-d'))?'border:0px solid #555555;':'').'">';
 	if ($period!='day') {
 		echo '<tr style="height:10px">';
@@ -130,7 +140,7 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 	}
 	
 	echo '<td style="vertical-align:top;background-color:'.$bgColor.';">';
-	echo '<div style="overflow-y: auto; overflow-y:none; height:100%;">';
+	echo '<div style="overflow-y: auto; overflow-x:hidden; height:'.$dayHeight.';">';
 	echo '<table style="width:100%">';
 	$lst=getActivity($date);
 	foreach ($lst as $item) {
