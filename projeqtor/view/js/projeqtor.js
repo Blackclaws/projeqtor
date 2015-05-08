@@ -2276,7 +2276,11 @@ function globalSave() {
 }
 
 function getFirstDayOfWeek(week, year) {
-   var testDate=new Date(year,0, 5+(week-1)*7);
+   if (week>=53) {
+     var testDate=new Date(year,11, 31);
+   } else {
+     var testDate=new Date(year,0, 5+(week-1)*7);
+   }
    var day=testDate.getDate();
    var month=testDate.getMonth()+1;
    var year=testDate.getFullYear();
@@ -2319,7 +2323,7 @@ dateGetWeek = function (paramDate,dowOffset) {
 		 * if the next year starts before the middle of the week, it is week #1
 		 * of that year
 		 */
-      weeknum = nday < 4 ? 1 : 55;
+      weeknum = nday < 4 ? 1 : 53;
     }
   }
   else {

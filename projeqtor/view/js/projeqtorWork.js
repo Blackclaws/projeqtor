@@ -169,7 +169,7 @@ function refreshImputationPeriod(directDate) {
 	if ((year+'').length==4) {
 		refreshImputationList();
 	}
-	setTimeout("noRefreshImputationPeriod=false",100);
+	setTimeout("noRefreshImputationPeriod=false;",100);
 	return true;
 }
 

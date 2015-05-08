@@ -4834,8 +4834,13 @@ function diaryNext() {
   diaryPreviousNext(1);
 }
 
+var noRefreshDiaryPeriod=false;
 function diarySelectDate(directDate) {
   if (! directDate) return;
+  if (noRefreshDiaryPeriod) {
+    return;
+  }
+  noRefreshDiaryPeriod=true;
   var period=dojo.byId("diaryPeriod").value;
   var year=directDate.getFullYear();  
   var month=directDate.getMonth()+1;
@@ -4862,6 +4867,7 @@ function diarySelectDate(directDate) {
     dojo.byId("diaryYear").value=year;
     diaryDisplayDay(day);
   } 
+  setTimeout("noRefreshDiaryPeriod=false;",100);
   loadContent("../view/diary.php","detailDiv","diaryForm");
   return true;
 }
@@ -4951,6 +4957,8 @@ function diaryDisplayMonth(month, year) {
             i18n("October"),i18n("November"),i18n("December"));
   caption=vMonthArr[month-1]+" "+year;
   dojo.byId("diaryCaption").innerHTML=caption;
+  var firstday = new Date(year,month-1, 1);
+  dijit.byId('dateSelector').set('value',firstday);
 }
 
 function diaryDisplayWeek(week, year) {
@@ -4959,6 +4967,7 @@ function diaryDisplayWeek(week, year) {
   lastday.setDate(firstday.getDate()+6);
   caption=year+' #'+week+" ("+dateFormatter(formatDate(firstday))+" - "+dateFormatter(formatDate(lastday))+")";
   dojo.byId("diaryCaption").innerHTML=caption;
+  dijit.byId('dateSelector').set('value',firstday);
 }
 
 function diaryDisplayDay(day) {
@@ -4967,6 +4976,7 @@ function diaryDisplayDay(day) {
   var d=getDate(day);
   caption=vDayArr[d.getDay()]+" "+dateFormatter(day);
   dojo.byId("diaryCaption").innerHTML=caption;
+  dijit.byId('dateSelector').set('value',day);
 }
 
 //******************************************************************************************** 
