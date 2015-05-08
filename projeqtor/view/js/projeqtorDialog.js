@@ -4838,18 +4838,23 @@ function diarySelectDate(directDate) {
   if (! directDate) return;
   var period=dojo.byId("diaryPeriod").value;
   var year=directDate.getFullYear();  
+  var month=directDate.getMonth()+1;
   if (period=="month") {
-    var month=directDate.getMonth()+1;  
     dojo.byId("diaryYear").value=year;
     dojo.byId("diaryMonth").value=(month>=10)?month:"0"+month;
     diaryDisplayMonth(month, year);
   } else if (period=="week") {
-    var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
-    if (week==1 && directDate.getMonth()>10) {
+    var week=getWeek(directDate.getDate(),month,year)+'';
+    console.log("week="+week+" year="+year+" month="+month);
+    if (week==1 && month>10) {
       year+=1;
+    }
+    if (week>50 && month==1) {
+      year-=1;
     }
     dojo.byId("diaryWeek").value=week;
     dojo.byId("diaryYear").value=year;
+    dojo.byId("diaryMonth").value=month;
     diaryDisplayWeek(week, year);
   } else if (period=="day") {
     day=formatDate(directDate);

@@ -155,6 +155,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
            '  <td class="messageHeader" colspan="2" width="' . ($width) . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('progress')) . '</div></td>';
       if ($workVisibility=='ALL') {
         echo '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLeft')) . '</div></td>' ;
+        echo '  <td class="messageHeader" width="' . $width . 'px;"><div xstyle="width:50px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colMargin')) . '</div></td>' ;
       }
       echo '  <td class="messageHeader" width="5%"><div xstyle="width:80px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colEndDate')) . '</div></td>' .
            '  <td class="messageHeader" width="5%"><div xstyle="width:60px; xoverflow: hidden; xtext-overflow: ellipsis;">' . ucfirst(i18n('colLate')) . '</div></td>' . 
@@ -227,6 +228,10 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         }
         $real=$prjPE->realWork;
         $left=$prjPE->leftWork;
+        $margin=$prjPE->marginWorkPct;
+        if ($margin!==null) {
+          $margin='<div style="color:' .(($margin==0)?'#555555':(($margin<0)?'#DD0000':'#00AA00')) . ';">' . $margin .'&nbsp;%</div>';
+        }
         $planned=$prjPE->plannedWork;
         $late='';
         if ($prjPE->plannedEndDate!='' and $prjPE->validatedEndDate!='') {
@@ -281,6 +286,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           echo '  <td style="width:'.$width.'px" class="messageDataValue'.($show?'':'Grey').'">' . ($show?SqlList::getNameFromId('OverallProgress',$proj->idOverallProgress):""). '</td>';
           if ($workVisibility=='ALL') {
             echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?Work::displayWorkWithUnit($left):'') . '</td>';
+            echo '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$margin:'') . '</td>';
           }
           echo '  <td class="messageDataValue'.($show?'':'Grey').'" NOWRAP>' . ($show?htmlFormatDate($endDate):'') . '</td>' .
              '  <td class="messageDataValue'.($show?'':'Grey').'">' . ($show?$late:'') . '</td>' .
