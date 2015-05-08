@@ -79,8 +79,7 @@
                   hasDownArrow="true"
                   value="<?php echo $currentDay;?>" >
                   <script type="dojo/method" event="onChange">
-                    alert("TODO:::");
-                     //return refreshImputationPeriod(this.value);
+                    return diarySelectDate(this.value);
                   </script>
                 </div>
               </td>

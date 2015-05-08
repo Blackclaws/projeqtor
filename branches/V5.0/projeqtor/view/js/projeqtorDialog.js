@@ -4834,6 +4834,33 @@ function diaryNext() {
   diaryPreviousNext(1);
 }
 
+function diarySelectDate(directDate) {
+  if (! directDate) return;
+  var period=dojo.byId("diaryPeriod").value;
+  var year=directDate.getFullYear();  
+  if (period=="month") {
+    var month=directDate.getMonth()+1;  
+    dojo.byId("diaryYear").value=year;
+    dojo.byId("diaryMonth").value=(month>=10)?month:"0"+month;
+    diaryDisplayMonth(month, year);
+  } else if (period=="week") {
+    var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
+    if (week==1 && directDate.getMonth()>10) {
+      year+=1;
+    }
+    dojo.byId("diaryWeek").value=week;
+    dojo.byId("diaryYear").value=year;
+    diaryDisplayWeek(week, year);
+  } else if (period=="day") {
+    day=formatDate(directDate);
+    dojo.byId("diaryDay").value=day;
+    dojo.byId("diaryYear").value=year;
+    diaryDisplayDay(day);
+  } 
+  loadContent("../view/diary.php","detailDiv","diaryForm");
+  return true;
+}
+
 function diaryPreviousNext(way) {
   period=dojo.byId("diaryPeriod").value;
   year=dojo.byId("diaryYear").value;
