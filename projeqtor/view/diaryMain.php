@@ -63,6 +63,27 @@
        echo "</div>";
 		   ?>
 		   </td>
+		    <td style="width: 200px;text-align: left; align: left;"nowrap="nowrap">
+                <?php echo i18n("colFirstDay");
+                $currentWeek=weekNumber(date('Y-m-d')) ;
+                $currentYear=strftime("%Y") ;
+                $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));?> 
+                <div dojoType="dijit.form.DateTextBox"
+                	<?php if (isset($_SESSION['browserLocaleDateFormatJs'])) {
+										echo ' constraints="{datePattern:\''.$_SESSION['browserLocaleDateFormatJs'].'\'}" ';
+									}?>
+                  id="dateSelector" name=""dateSelector""
+                  invalidMessage="<?php echo i18n('messageInvalidDate')?>"
+                  type="text" maxlength="10" 
+                  style="width:100px; text-align: center;" class="input roundedLeft"
+                  hasDownArrow="true"
+                  value="<?php echo $currentDay;?>" >
+                  <script type="dojo/method" event="onChange">
+                    alert("TODO:::");
+                     //return refreshImputationPeriod(this.value);
+                  </script>
+                </div>
+              </td>
 		   <td nowrap="nowrap" width="250px" ><form id="diaryForm" name="diaryForm">
 		   <input type="hidden" name="diaryPeriod" id="diaryPeriod" value="<?php echo $period;?>" />
 		   <input type="hidden" name="diaryYear" id="diaryYear" value="<?php echo $year;?>" />

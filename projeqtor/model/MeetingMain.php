@@ -71,6 +71,10 @@ class MeetingMain extends SqlElement {
   //public $_Link_Decision=array();
   //public $_sec_linkQuestion;
   //public $_Link_Question=array();
+  public $_sec_predecessor;
+  public $_Dependency_Predecessor=array();
+  public $_sec_successor;
+  public $_Dependency_Successor=array();
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
