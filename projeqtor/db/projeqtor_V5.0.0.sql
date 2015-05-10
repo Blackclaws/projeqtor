@@ -135,6 +135,15 @@ CREATE TABLE `${prefix}menuselector` (
 --INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
 --('13', 'Meeting', '???', '0');
 
+INSERT INTO `${prefix}habilitationother` (idProfile,scope,rightAccess) VALUES 
+(1,'canUpdateCreation','1'),
+(2,'canUpdateCreation','2'),
+(3,'canUpdateCreation','2'),
+(4,'canUpdateCreation','2'),
+(6,'canUpdateCreation','2'),
+(7,'canUpdateCreation','2'),
+(5,'canUpdateCreation','2');
+
 ALTER TABLE `${prefix}affectation` ADD `idProfile` int(12) unsigned;
 UPDATE `${prefix}affectation` SET idProfile=(select idProfile from `${prefix}resource` R where R.id=idResource); 
 
@@ -159,6 +168,10 @@ ADD `creationDate` date DEFAULT NULL;
 UPDATE `${prefix}document` set idUser=idAuthor;
 
 UPDATE `${prefix}history` set refTYpe='Attachment' where refType='Attachement';
+
+INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`) VALUES
+(167,38,'showDoneVersions','boolean',850,0,null),
+(168,39,'showDoneVersions','boolean',850,0,null);
 
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function

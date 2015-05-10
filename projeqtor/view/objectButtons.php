@@ -49,6 +49,21 @@
   if (file_exists('../report/object/'.$class.'.php')) {
   	$printPage='../report/object/'.$class.'.php';
   }
+  $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
+  $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
+  $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
+  
+  $canUpdateCreationInfo=false;
+  if ($updateRight) {
+    $user=getSessionUser();
+    $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->idProfile,'scope' => 'canUpdateCreation'));
+    if ($habil) {
+      $list=new ListYesNo($habil->rightAccess);
+      if ($list->code == 'YES') {
+        $canUpdateCreationInfo=true;
+      }
+    }
+  }
 ?>
 <table style="width:100%;height:100%;">
   <tr style="height:100%;";>
@@ -58,8 +73,11 @@
       <span id="buttonDivObjectId"><?php echo ($obj->id)?'&nbsp;#'.$obj->id:'';?></span>
     </span>
   </td>
-  <td style="width:10%; text-align:right;">
-    <div style="width:100px;margin-right:0.5em;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+  <td style="width:80px; text-align:right;"  >
+    <div <?php echo ($canUpdateCreationInfo)?'class="buttonDivCreationInfoEdit" onClick="changeCreationInfo();"':'';?>>
+      <div style="width:100px;margin-right:16px;" id="buttonDivCreationInfo" 
+        ><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+    </div>
   </td>
   <td style="width:19%;">
     &nbsp;
@@ -277,9 +295,6 @@
     
     <?php
         }
-        $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
-        $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
-        $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
       ?>
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo $updateRight;?>" />

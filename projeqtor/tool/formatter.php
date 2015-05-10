@@ -316,7 +316,7 @@ function formatCommentThumb($comment) {
 }
 function getMonthName($month,$maxLength=0) {
   global $monthArray;
-  if (!$month) return'';
+  if (! $month or $month==0) return '';
   if (count($monthArray)==0) {
     $monthArray=array(i18n("January"),i18n("February"),i18n("March"),
       i18n("April"), i18n("May"),i18n("June"),

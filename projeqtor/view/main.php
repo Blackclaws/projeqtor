@@ -875,6 +875,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </table>
   </div>
 </div>
+
 <div id="dialogNote" dojoType="dijit.Dialog" title="<?php echo i18n("dialogNote");?>">
   <table>
     <tr><td><div id="dialogNotePredefinedDiv" dojoType="dijit.layout.ContentPane" region="center"></div></td></tr>
@@ -1258,6 +1259,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </tr>
   </table>
 </div>
+
 <div id="dialogApprover" dojoType="dijit.Dialog" title="<?php echo i18n("dialogApprover");?>">
   <table>
     <tr>
@@ -1305,6 +1307,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
     </tr>
   </table>
 </div>
+
 <div id="dialogOrigin" dojoType="dijit.Dialog" title="<?php echo i18n("dialogOrigin");?>">
   <table>
     <tr>
@@ -1360,6 +1363,65 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <?php echo i18n("buttonCancel");?>
         </button>
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogOriginSubmit" onclick="saveOrigin();return false;">
+          <?php echo i18n("buttonOK");?>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="dialogCreationInfo" dojoType="dijit.Dialog" title="<?php echo i18n("dialogCreationInfo");?>">
+  <table>
+    <tr>
+      <td>
+        <table >
+          <tr id="dialogCreationInfoCreatorLine">
+            <td class="dialogLabel"  >
+              <label for="dialogCreationInfoCreator" ><?php echo i18n("colIssuer") ?>&nbsp;:&nbsp;</label>
+            </td>
+            <td>
+              <select dojoType="dijit.form.FilteringSelect" id="dialogCreationInfoCreator" class="input" value="" >
+                <?php htmlDrawOptionForReference('idUser', null, null, true);?>
+              </select>
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+          <tr id="dialogCreationInfoDateLine">
+            <td class="dialogLabel" >
+              <label for="dialogCreationInfoDate" ><?php echo i18n("colCreationDate") ?>&nbsp;:&nbsp;</label>
+            </td>
+            <td>
+              <div id="dialogCreationInfoDate" dojoType="dijit.form.DateTextBox" 
+                 constraints="{datePattern:browserLocaleDateFormatJs}"
+                 invalidMessage="<?php echo i18n('messageInvalidDate');?> " 
+                 type="text" maxlength="10" 
+                 style="width:100px; text-align: center;" class="input"
+                 required="true" hasDownArrow="true" 
+                 missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+                 invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
+                 >
+              </div>
+              <span id="dialogCreationInfoTimeLine">
+              <div id="dialogCreationInfoTime" dojoType="dijit.form.TimeTextBox" 
+                 invalidMessage="<?php echo i18n('messageInvalidTime');?>"
+                 type="text" maxlength="8"
+                 style="width:65px; text-align: center;" class="input"
+                 required="true" 
+                 >
+              </div>
+              </span>
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCreationInfo').hide();">
+          <?php echo i18n("buttonCancel");?>
+        </button>
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCreationInfoSubmit" onclick="saveCreationInfo();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

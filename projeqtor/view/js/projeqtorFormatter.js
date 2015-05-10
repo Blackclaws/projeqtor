@@ -48,6 +48,19 @@ function formatDate(date) {
   day = (day < 10) ? "0" + day : day;
   return year + "-" + month + "-" + day;
 }
+function formatTime(date) {
+  if (!date) {
+    return '';
+  }
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+  return hours + ":" + minutes + ":" + seconds;
+}
+
 function getDate(dateString) {
   if (dateString.length != 10)
     return null;

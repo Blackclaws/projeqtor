@@ -331,7 +331,7 @@ function drawTableFromObjectList($objectList) {
   	echo ' onHide="saveCollapsed(\'' . $titlePane . '\');"';
   	echo ' onShow="saveExpanded(\'' . $titlePane . '\');"';
   	echo ' title="' . i18n('sectionDelete') . '">';
-  	htmlDrawCrossTable(array('canForceDelete'=>i18n('canForceDelete')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
+  	htmlDrawCrossTable(array('canForceDelete'=>i18n('canForceDelete'),'canUpdateCreation'=>i18n('canUpdateCreationInfo')), 'scope', 'profile', 'idProfile', 'habilitationOther', 'rightAccess', 'list', 'listYesNo') ;
   	echo '</div><br/>';
   } else {
   	drawTableFromObjectList($parameterList);
