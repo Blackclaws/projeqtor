@@ -81,10 +81,10 @@ scriptLog('   ->/view/reportsList.php');
       </td>
     </tr>
     <tr>
-      <td>
+      <td valign="top">
         <select id="reportsCategory" name="reportsCategory" value=""  
                 dojoType="dijit.form.MultiSelect" multiple="false"
-                 style="width:200px" size="10" class="input" >
+                 style="width:200px" size="12" class="input" >
            <?php htmlDrawOptionForReference('idReportCategory',null,null, true); ?>
           <script type="dojo/connect" event="onChange" args="value">
              reportSelectCategory(value);       
@@ -92,16 +92,16 @@ scriptLog('   ->/view/reportsList.php');
         </select>
       </td>
       <td ></td>
-      <td>
-        <div dojoType="dojo.data.ItemFileReadStore" jsId="reportStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
-        </div>
+      <td valign="top">
         <select id="reportsList" name="reportsList" value=""  
                 dojoType="dijit.form.MultiSelect"  multiple="false"
-                style="width:300px" size="10" class="input" store="reportStore">
+                style="width:300px" size="12" class="input" store="reportStore">
         <script type="dojo/connect" event="onChange" args="value">
              reportSelectReport(value);       
           </script>
         </select>
+        <div dojoType="dojo.data.ItemFileReadStore" jsId="reportStore" url="../tool/jsonList.php?listType=empty" searchAttr="name" >
+        </div>
       </td>
       <td ></td>
       <td valign="top">

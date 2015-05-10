@@ -440,6 +440,14 @@ html, body {
   border: 1px solid #b3b3b3;
   line-height: normal; 
 }
+
+.buttonDivCreationInfoEdit {
+  width:120px;
+  height:32px;
+}
+.buttonDivCreationInfoEdit:hover {
+	background: url(images/smallButtonEdit.png) no-repeat top right;
+}
 /* Specific attributes on common nodes ======================================== */
 
 table {

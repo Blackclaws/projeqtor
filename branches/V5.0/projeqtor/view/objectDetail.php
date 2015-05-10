@@ -635,7 +635,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           if ($col == 'creationDateTime' and ($val == '' or $val == null) and !$obj->id) {
             $val=date('Y-m-d H:i:s');
           }
-          if ($col == 'idUser') {
+          if ($col == 'idUser' and ($val == '' or $val == null) and !$obj->id) {
             $val=$user->id;
           }
           echo '<div dojoType="dijit.form.TextBox" type="hidden"  ';

@@ -40,6 +40,10 @@ $paramVersion='';
 if (array_key_exists('idVersion',$_REQUEST)) {
   $paramVersion=trim($_REQUEST['idVersion']);
 };
+$paramDoneVersion=false;
+if (array_key_exists('showDoneVersions',$_REQUEST)) {
+  $paramDoneVersion=true;
+};
 $paramOtherVersion=false;
   if (array_key_exists('otherVersions',$_REQUEST)) {
     $paramOtherVersion=true;
@@ -57,6 +61,9 @@ if ($paramResponsible!="") {
 }
 if ($paramVersion!="") {
   $headerParameters.= i18n("colVersion") . ' : ' . htmlEncode(SqlList::getNameFromId('Version', $paramVersion)) . '<br/>';
+}
+if ($paramDoneVersion!="") {
+  $headerParameters.= i18n("colShowDoneVersions") . ' : ' . i18n('displayYes') . '<br/>';
 }
 if ($paramOtherVersion!="") {
     $headerParameters.= i18n("colOtherVersions") . ' : ' . i18n('displayYes') . '<br/>';
@@ -81,7 +88,12 @@ if ($paramVersion) {
 			}
 		}
 	} else {
-    $lstVersion=SqlList::getList('Version');
+  	if ($paramDoneVersion) {
+  	  $lstVersion=SqlList::getList('Version','name',null,true);
+    } else {
+      $lstVersion=SqlList::getListWithCrit('Version',array('isEis'=>'0'),'name',null,true);
+    }
+  
 	}
   $lstVersion[0]='<i>'.i18n('undefinedValue').'</i>';
 }

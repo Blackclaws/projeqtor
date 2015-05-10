@@ -3400,7 +3400,6 @@ function refreshList(field, param, paramVal, selected, destination, required) {
 	mySelect.set('store',store);
 }
 function refreshListSpecific(listType, destination, param, paramVal, selected, required ) {
-console.log('refreshListSpecific('+listType+', '+destination+', '+param+', '+paramVal+', '+selected+', '+required+' )');
 	var urlList='../tool/jsonList.php?listType='+listType;
 	if (param) {
 	  urlList+='&'+param+'='+paramVal;
@@ -3411,7 +3410,6 @@ console.log('refreshListSpecific('+listType+', '+destination+', '+param+', '+par
 	if (required) {
 		urlList+='&required=true';
 	}
-console.log(urlList);
 	var datastore = new dojo.data.ItemFileReadStore({url: urlList});
 	var store = new dojo.store.DataStore({store: datastore});
 	store.query({id:"*"});
@@ -4850,7 +4848,6 @@ function diarySelectDate(directDate) {
     diaryDisplayMonth(month, year);
   } else if (period=="week") {
     var week=getWeek(directDate.getDate(),month,year)+'';
-    console.log("week="+week+" year="+year+" month="+month);
     if (week==1 && month>10) {
       year+=1;
     }
@@ -4997,4 +4994,95 @@ function showWorkflowParameter(id) {
 function saveWorkflowParameter() {
   loadContent("../tool/saveWorkflowParameter.php","resultDiv","dialogWorkflowParameterForm", true);
   dijit.byId('dialogWorkflowParameter').hide();
+}
+
+function changeCreationInfo() {
+  toShow=false;
+  if (dijit.byId('idUser')) {
+    dijit.byId('dialogCreationInfoCreator').set('value',dijit.byId('idUser').get('value'));
+    dojo.byId('dialogCreationInfoCreatorLine').style.display='inline';
+    toShow=true;
+  } else if (dojo.byId('idUser')) {
+    dijit.byId('dialogCreationInfoCreator').set('value',dojo.byId('idUser').value);
+    dojo.byId('dialogCreationInfoCreatorLine').style.display='inline';
+    toShow=true;
+  } else {
+    dojo.byId('dialogCreationInfoCreatorLine').style.display='none';
+  }
+  
+  if (dijit.byId('creationDate')) {
+    dijit.byId('dialogCreationInfoDate').set('value',dijit.byId('creationDate').get('value'));
+    dojo.byId('dialogCreationInfoDateLine').style.display='inline';
+    dojo.byId('dialogCreationInfoTimeLine').style.display='none';
+    toShow=true;
+  } else if (dojo.byId('creationDate')) {
+    dijit.byId('dialogCreationInfoDate').set('value',dojo.byId('creationDate').value);
+    dojo.byId('dialogCreationInfoDateLine').style.display='inline';
+    dojo.byId('dialogCreationInfoTimeLine').style.display='none';
+    toShow=true;
+  } else {
+    if (dijit.byId('creationDateTime')) {
+      val=dijit.byId('creationDateTime').get('value');
+      valDate=val.substr(0,10);
+      valTime='T'+val.substr(11,8);
+      console.log("val="+val+" valDate="+valDate+" valTime="+valTime);
+      dijit.byId('dialogCreationInfoDate').set('value',valDate);
+      dijit.byId('dialogCreationInfoTime').set('value',valTime);
+      dojo.byId('dialogCreationInfoDateLine').style.display='inline';
+      dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
+      toShow=true;
+    } else if (dojo.byId('creationDateTime')) {
+      val=dojo.byId('creationDateTime').value;
+      valDate=val.substr(0,10);
+      valTime=val.substr(11,8);
+      dijit.byId('dialogCreationInfoDate').set('value',valDate);
+      dijit.byId('dialogCreationInfoTime').set('value',valTime);
+      dojo.byId('dialogCreationInfoDateLine').style.display='inline';
+      dojo.byId('dialogCreationInfoTimeLine').style.display='inline';
+      toShow=true;
+    } else {
+      dojo.byId('dialogCreationInfoDateLine').style.display='none';
+      dojo.byId('dialogCreationInfoTimeLine').style.display='none';
+    }
+  }
+  if (toShow) {
+    dijit.byId('dialogCreationInfo').show();
+  }
+  
+  if (toShow) {
+    dijit.byId('dialogCreationInfo').show();
+  }
+}
+
+function saveCreationInfo() {
+  if (dijit.byId('idUser')) {
+    dijit.byId('idUser').set('value',dijit.byId('dialogCreationInfoCreator').get('value'));
+  } else if (dojo.byId('idUser')) {
+    dojo.byId('idUser').value=dijit.byId('dialogCreationInfoCreator').get('value');
+  }
+  
+  if (dijit.byId('creationDate')) {
+    dijit.byId('creationDate').set('value',formatDate(dijit.byId('dialogCreationInfoDate').get('value')));
+  } else if (dojo.byId('creationDate')) {
+    dojo.byId('creationDate').value=formatDate(dijit.byId('dialogCreationInfoDate').get('value')) ;
+  } else {
+    if (dijit.byId('creationDateTime')) {
+      valDate=formatDate(dijit.byId('dialogCreationInfoDate').get('value'));
+      valTime=formatTime(dijit.byId('dialogCreationInfoTime').get('value'));
+      console.log(valDate);
+      console.log(valTime);
+      val=valDate+' '+valTime;
+      dijit.byId('creationDateTime').set('value',val);
+    } else if (dojo.byId('creationDateTime')) {
+      valDate=format(Datedijit.byId('dialogCreationInfoDate').get('value'));
+      valTime=format(Datedijit.byId('dialogCreationInfoTime').get('value'));
+      val=valDate+' '+valTime;
+      dojo.byId('dialogCreationInfoDate').value=val;
+    }
+  }
+  formChanged();
+  dojo.byId('buttonDivCreationInfo').innerHTML="";
+  forceRefreshCreationInfo=true;
+  saveObject();
+  dijit.byId('dialogCreationInfo').hide();
 }

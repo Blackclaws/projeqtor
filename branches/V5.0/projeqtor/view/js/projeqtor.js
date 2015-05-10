@@ -784,6 +784,7 @@ function submitForm(page, destination, formName) {
  * @return void
  */
 var resultDivFadingOut=null;
+var forceRefreshCreationInfo=false;
 function finalizeMessageDisplay(destination, validationType) {
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
@@ -954,12 +955,12 @@ function finalizeMessageDisplay(destination, validationType) {
       }
       // last operations depending on the executed operatoin (insert, delete,
     // ...)
-      if (lastOperation.value=="insert") {
+      if (lastOperation.value=="insert" || forceRefreshCreationInfo) {       
         dojo.byId('id').value=lastSaveId.value;
         if (dojo.byId('objectClass') && dojo.byId('objectClass').value=="Project") {
           refreshProjectSelectorList();
         }
-        if (dojo.byId("buttonDivObjectId") && dojo.byId("buttonDivObjectId").innerHTML=="" && lastSaveId.value ) {
+        if (dojo.byId("buttonDivObjectId") && (dojo.byId("buttonDivObjectId").innerHTML=="" || forceRefreshCreationInfo) && lastSaveId.value ) {
           dojo.byId("buttonDivObjectId").innerHTML="&nbsp;#"+lastSaveId.value;
           if (dojo.byId('buttonDivCreationInfo')) {
             var url='../tool/getObjectCreationInfo.php'
@@ -968,6 +969,7 @@ function finalizeMessageDisplay(destination, validationType) {
             loadDiv(url,'buttonDivCreationInfo',null);
           }
         }
+        forceRefreshCreationInfo=false;
         if (dojo.byId('attachmentFileDirectDiv')) {
           dojo.byId('attachmentFileDirectDiv').style.visibility='visible';
         }
@@ -1056,14 +1058,11 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       }
       // Manage checkList button
-      console.log("=> check if buttons have to be changed");
       if (dojo.byId('buttonCheckListVisible') && dojo.byId('buttonCheckListVisibleObject')) {
         var visible=dojo.byId('buttonCheckListVisible').value;
         var visibleObj=dojo.byId('buttonCheckListVisibleObject').value;
-        console.log("visible="+visible+" visibleObj="+visibleObj);
         //loadContent('objectButtons.php', 'buttonDivContainer','listForm');
         if ( visible!='never' && visible!=visibleObj) {
-          console.log("must show or hide checklistButton");
           //loadContent('objectButtons.php', 'buttonDivContainer','listForm');
           if (visibleObj=='visible') {
             dojo.byId("checkListButtonDiv").style.display="inline";
@@ -1074,11 +1073,9 @@ function finalizeMessageDisplay(destination, validationType) {
         }
       }
       if (lastOperation.value=="insert" && dojo.byId("buttonHistoryVisible") && dojo.byId("buttonHistoryVisible").value=='REQ') {
-        console.log("must show historyButton");
         dojo.byId("historyButtonDiv").style.display="inline";
       }
       if (lastOperation.value=="delete" && dojo.byId("buttonHistoryVisible")) {
-        console.log("must hide historyButton");
         dojo.byId("historyButtonDiv").style.display="none";
       }
     }
@@ -1264,9 +1261,7 @@ function finalizeMultipleSave() {
 	msg=msg.replace("<div>","");
 	msg=msg.replace("</div>","");
 	msg=msg.replace("</div>","");
-  console.log('=== msg ===============================================  ');
-  console.log(msg);
-	addMessage(msg);
+  addMessage(msg);
 	dojo.fadeIn({
       node: contentNode, 
       duration: 10,
@@ -1855,7 +1850,6 @@ function drawGantt() {
       // display color of the task bar
       var pColor='50BB50';
       // show in red not respected constraints
-console.log(pName+" "+item.validatedenddate+" "+pEnd);      
       if (item.validatedenddate!=" " && item.validatedenddate < pEnd) {
         pColor='BB5050';  
       }
