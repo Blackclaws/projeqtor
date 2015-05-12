@@ -3814,35 +3814,15 @@ abstract class SqlElement {
 	    $status=1; // first status always 1 (recorded)
 	  } 
 	  if ($planningMode) {
-  	  switch ($planningMode) {
-  	  	case 2: 
-  	  	case 3:
-  	  	case 7:
-  	  	case 10:
-  	  	case 11:
-  	  	case 13:
-  	  	case 16:
-  	  	  if (property_exists($this,'validatedStartDate')) {
-  	        $result['validatedStartDate']='required';
-  	  	  }
-  	  	  if (property_exists($this,'validatedEndDate')) {
-  	        $result['validatedEndDate']='required';
-  	  	  }
-  	  	  break;
-  	  	case 6:
-    	    if (property_exists($this,'validatedStartDate')) {
-    	      $result['validatedStartDate']='required';
-    	    }
-    	    break;
-  	  	case 4:
-  	  	  if (property_exists($this,'validatedEndDate')) {
-  	  	    $result['validatedEndDate']='required';
-  	  	  }
-  	  	  break;
-  	  	case 8: case 14:
-  	  	  if (property_exists($this,'validatedDuration')) {
-  	  	    $result['validatedDuration']='required';
-  	  	  }
+	    $planningModeObj=new PlanningMode($planningMode);
+	    if ($planningModeObj->mandatoryStartDate and property_exists($this,'validatedStartDate')) {
+  	    $result['validatedStartDate']='required';
+  	  }
+  	  if ($planningModeObj->mandatoryEndDate and property_exists($this,'validatedEndDate')) {
+  	    $result['validatedEndDate']='required';
+  	  }
+  	  if ($planningModeObj->mandatoryDuration and property_exists($this,'validatedDuration')) {
+  	  	$result['validatedDuration']='required';
   	  }
 	  }
 	  if ($type) {

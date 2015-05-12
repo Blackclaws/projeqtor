@@ -173,6 +173,15 @@ INSERT INTO `${prefix}reportparameter` (`id`, `idReport`, `name`, `paramType`, `
 (167,38,'showDoneVersions','boolean',850,0,null),
 (168,39,'showDoneVersions','boolean',850,0,null);
 
+ALTER TABLE `${prefix}assignment` ADD `plannedStartFraction` DECIMAL(6,5) default 0,
+ADD `plannedEndFraction` DECIMAL(6,5) default 1;
+ALTER TABLE `${prefix}planningelement` ADD `plannedStartFraction` DECIMAL(6,5) default 0,
+ADD `plannedEndFraction` DECIMAL(6,5) default 1;
+
+INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
+(19, 'Activity', 'PlanningModeSTART', 'START', 130, 0 , 1, 0),
+(20, 'Activity', 'PlanningModeQUART', 'QUART', 340, 0 , 1, 1);
+
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function
 -- ///////////////////////////////////////////////////////////

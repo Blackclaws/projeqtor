@@ -1231,7 +1231,11 @@ function logTracing($message, $level = 9, $increment = 0) {
   $execTime="";
   if (isset($debugPerf) and $debugPerf==true) {
     if ($previousTraceTimestamp) {
-      $execTime=" => ".round(microtime(true)-$previousTraceTimestamp,3);
+      $execTime=(round(microtime(true)-$previousTraceTimestamp,3));
+      $pos=strpos($execTime,'.');
+      if ($pos==0) $execTime=$execTime.'.000';
+      else $execTime=substr($execTime.'000',0,($pos+4));
+      $execTime=" => ".$execTime;
     } else {
       $execTime=' => 0.000';
     }
@@ -1678,14 +1682,14 @@ function addWorkDaysToDate_old($date, $days) {
 }
 
 function addWorkDaysToDate($date, $days) {
+  if (! $date) {
+    return;
+  }
   if ($days == 0) {
     return $date;
   }
   if ($days < 0) {
     return removeWorkDaysToDate ( $date, (- 1) * $days );
-  }
-  if (! $date) {
-    return;
   }
   $endDate = $date;
   $left = $days;
@@ -1697,33 +1701,6 @@ function addWorkDaysToDate($date, $days) {
     }
   }
   return $endDate;
-}
-
-function removeWorkDaysToDate_old($date, $days) {
-  if ($days == 0) {
-    return $date;
-  }
-  if ($days <= 0) {
-    return addWorkDaysToDate ( $date, (- 1) * $days );
-  }
-  if (! $date) {
-    return;
-  }
-  // $days+=1;
-  $tDate = explode ( "-", $date );
-  $dStart = mktime ( 0, 0, 0, $tDate [1], $tDate [2], $tDate [0] );
-  if (date ( "N", $dStart ) >= 6) {
-    $tDate [2] = $tDate [2] + 5 - date ( "N", $dStart );
-    $dStart = mktime ( 0, 0, 0, $tDate [1], $tDate [2], $tDate [0] );
-  }
-  $weekEnds = floor ( $days / 5 );
-  $additionalDays = $days - (5 * $weekEnds);
-  if (date ( "N", $dStart ) - $additionalDays <= 0) {
-    $weekEnds += 1;
-  }
-  $days += 2 * $weekEnds;
-  $dEnd = mktime ( 0, 0, 0, $tDate [1], $tDate [2] - $days, $tDate [0] );
-  return date ( "Y-m-d", $dEnd );
 }
 
 function removeWorkDaysToDate($date, $days) {

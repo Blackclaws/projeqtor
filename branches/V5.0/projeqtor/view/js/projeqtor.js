@@ -1802,10 +1802,10 @@ function drawGantt() {
       var topId=item.topid;
       // pStart : start date of task
       var pStart="";
-      pStart=(item.initialstartdate!=" ")?item.initialstartdate:pStart;
-      pStart=(item.validatedstartdate!=" ")?item.validatedstartdate:pStart;
-      pStart=(item.plannedstartdate!=" ")?item.plannedstartdate:pStart;
-      pStart=(item.realstartdate!=" ")?item.realstartdate:pStart;
+      pStart=(trim(item.initialstartdate!="")?item.initialstartdate:pStart;
+      pStart=(trim(item.validatedstartdate)!="")?item.validatedstartdate:pStart;
+      pStart=(trim(item.plannedstartdate!="")?item.plannedstartdate:pStart;
+      pStart=(trim(item.realstartdate)!="")?item.realstartdate:pStart;
       if (item.plannedstartdate!=" " 
        && item.realstartdate!=" " 
        && item.plannedstartdate<item.realstartdate) {
@@ -1916,6 +1916,9 @@ function drawGantt() {
 }
 
 function runScript(refType, refId, id) {
+  if (refType=='Fixed') {
+    refType='Project';
+  }
   if (waitingForReply)  {
 	showInfo(i18n("alertOngoingQuery"));
     return;

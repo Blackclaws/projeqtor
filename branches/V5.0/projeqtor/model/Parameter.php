@@ -230,6 +230,7 @@ class Parameter extends SqlElement {
         $list=array('NO'=>i18n('displayNo'),
             'YES'=>i18n('displayYes'));
       case 'pdfInNewWindow': case "paramConfirmQuit": case "paramShowThumb" : case "paramShowThumbList":
+      case 'dependencyStrictMode' :
       	$list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
@@ -427,6 +428,7 @@ class Parameter extends SqlElement {
       	                       'maxProjectsToDisplay'=>'number',
       	                       'ganttPlanningPrintOldStyle'=>'list',
       	                       'consolidateValidated'=>'list',
+      	                       'dependencyStrictMode'=>'list',
       	                     'sectionImputation'=>'section',
       	                       'displayOnlyHandled'=>'list',
       	                       'setHandledOnRealWork'=>'list',

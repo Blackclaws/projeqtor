@@ -59,8 +59,9 @@ class BillMain extends SqlElement {
   public $_BillLine_colSpan="2";
   public $_sec_Link;
   public $_Link=array();
+  public $_Attachment=array();
   public $_Note=array();
-
+  
   public $_nbColMax=3;
 
   // Define the layout that will be used for lists

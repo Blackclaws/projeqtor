@@ -73,7 +73,9 @@ class PeriodicMeetingPlanningElement extends MeetingPlanningElement {
     "expectedProgress"=>"hidden,noImport",
     "priority"=>"hidden,noImport",
     "wbs"=>"hidden,noImport",
-    "idMeetingPlanningMode"=>"hidden,required,noImport"
+    "idMeetingPlanningMode"=>"hidden,required,noImport",
+    "plannedStartFraction"=>"hidden",
+    "plannedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

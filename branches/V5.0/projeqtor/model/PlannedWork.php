@@ -112,17 +112,24 @@ class PlannedWork extends GeneralWork {
    * @param string $startDate start date for planning
    * @return string result
    */
+
+// ================================================================================================================================
+// PLAN
+// ================================================================================================================================
+
     public static function plan($projectId, $startDate) {
-//echo "<br/>******************************";
-//echo "<br/>PLANNING - Started at " . date('H:i:s');
-//echo "<br/>******************************";
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
-
-  	// Manage cache
+  	
+  	// TODO : set strict dependency or not as parameter
+  	// Strict dependency means when B follows A (A->B), B cannot start same date as A ends, but only day after
+  	$strictDependency=(Parameter::getGlobalParameter('dependencyStrictMode')=='NO')?false:true;
+  	
+  	//-- Manage cache
   	SqlElement::$_cachedQuery['Resource']=array();
   	SqlElement::$_cachedQuery['Project']=array();
   	SqlElement::$_cachedQuery['Affectation']=array();
+  	SqlElement::$_cachedQuery['PlanningMode']=array();
   	
   	$workUnit=Work::getWorkUnit();
   	$hoursPerDay=Work::getHoursPerDay();
@@ -140,8 +147,8 @@ class PlannedWork extends GeneralWork {
     $arrayAssignment=array();
     $arrayPlanningElement=array();
 
+    //-- Controls (check that current user can run planning)
     $accessRightRead=securityGetAccessRight('menuActivity', 'read');
-    //echo $accessRightRead . "|" . $projectId . '|';
     if ($accessRightRead=='ALL' and ! trim($projectId)) {
       $listProj=explode(',',getVisibleProjectsList());
       if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
@@ -150,25 +157,30 @@ class PlannedWork extends GeneralWork {
         return $result;
       }
     }
-      // build in list to get a where clause : "idProject in ( ... )"
+    
+    //-- Build in list to get a where clause : "idProject in ( ... )"
     $proj=new Project($projectId);
     $inClause="idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     $inClause.=" and " . getAccesResctictionClause('Activity',false);
-    // Remove Projects with Fixed Planning flag
+    //-- Remove Projects with Fixed Planning flag
     $inClause.=" and idProject not in " . Project::getFixedProjectList() ;
-    // Purge existing planned work
+    //-- Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);
-    
-    // #697 : moved the administrative project clause after the purge
-    // Remove administrative projects :
+    //-- #697 : moved the administrative project clause after the purge
+    //-- Remove administrative projects
     $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
     
-    // Get the list of all PlanningElements to plan (includes Activity and/or Projects)
+    //-- Get the list of all PlanningElements to plan (includes Activity and/or Projects)
     $pe=new PlanningElement();
     $clause=$inClause;
     $order="wbsSortable asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
+    if (count($list)==0) {
+      $result=i18n('planDone', array('0'));
+      $result.= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';
+      return $result;
+    }
     $fullListPlan=PlanningElement::initializeFullList($list);
     $listProjectsPriority=$fullListPlan['_listProjectsPriority'];
     unset($fullListPlan['_listProjectsPriority']);
@@ -177,14 +189,14 @@ class PlannedWork extends GeneralWork {
     $a=new Assignment();
     $topList=array();
     $arrayNotPlanned=array();
-    // Treat each PlanningElement
+//-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
-//traceLog("$plan->id $plan->refType #$plan->refId");
+debugLog("PlanningElement ".$plan->refType." #".$plan->refId." : ".$plan->refName);
       if (! $plan->id) {
         continue;
       }
     	$plan=$fullListPlan['#'.$plan->id];
-      // Determine planning profile
+      //-- Determine planning profile
       if ($plan->idle) {
       	$plan->_noPlan=true;
       	$fullListPlan=self::storeListPlan($fullListPlan,$plan);
@@ -193,8 +205,9 @@ class PlannedWork extends GeneralWork {
       if (isset($plan->_noPlan) and $plan->_noPlan) {
       	continue;
       } 
-      $profile="ASAP";
+      $profile="ASAP"; // Default planning mode
       $startPlan=$startDate;
+      $startFraction=0;
       $endPlan=null;
       $step=1;
       if (! $plan->idPlanningMode) {
@@ -204,7 +217,7 @@ class PlannedWork extends GeneralWork {
         $profile=$pm->code;  
       }
       if ($profile=="REGUL" or $profile=="FULL" 
-       or $profile=="HALF" ) { // Regular planning
+       or $profile=="HALF" or $profile=="QUART") { // Regular planning
         $startPlan=$plan->validatedStartDate;
         $endPlan=$plan->validatedEndDate;
         $step=1;
@@ -231,46 +244,64 @@ class PlannedWork extends GeneralWork {
         $endPlan=$plan->validatedEndDate;
         $plan->plannedStartDate=$plan->validatedEndDate;
         $plan->plannedEndDate=$plan->validatedEndDate;
-        $fullListPlan=self::storeListPlan($fullListPlan,$plan);
-        //$plan->save();
+        if ($plan->refType=='Milestone') {
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
+        }
         $step=1;
+      } else if ($profile=="START") { // Start not before validated date
+        $startPlan=$plan->validatedStartDate;
+      	$endPlan=null;
+        $step=1;
+        $profile='ASAP'; // Once start is set, treat as ASAP mode (as soon as possible)
       } else {
         $profile=="ASAP"; // Default is ASAP
         $startPlan=$startDate;
         $endPlan=null;
         $step=1;
       }
+      //-- Take into accound predecessors
       $precList=$plan->_predecessorListWithParent;
-      foreach ($precList as $precId=>$precVal) { // #77 : $precVal = dependency delay
+      foreach ($precList as $precId=>$precVal) { // $precVal = dependency delay
       	$prec=$fullListPlan[$precId];
-        $precEnd=$prec->plannedEndDate;       
+        $precEnd=$prec->plannedEndDate;
+        $precFraction=$prec->plannedEndFraction;       
         if ($prec->realEndDate) {
         	$precEnd=$prec->realEndDate;
+        	$precFraction=1;
         }
-        if (addWorkDaysToDate($precEnd,1+$precVal) >= $startPlan) { // #77       
-          if ($prec->refType=='Milestone') {
-          	if ($plan->refType=='Milestone') {
-          	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
-          	} else {
-              $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
-            }         	
+        if ($strictDependency or $precVal!=0 or $precFraction==1) {
+          if ( ( $prec->refType!='Milestone' and $plan->refType!='Milestone') or $precFraction==1) {
+          //if ($prec->refType!='Milestone') {
+            $startPossible=addWorkDaysToDate($precEnd,($precVal>=0)?2+$precVal:1+$precVal); // #77
           } else {
-          	if ($plan->refType=='Milestone') {
-          	  $startPlan=addWorkDaysToDate($precEnd,1+$precVal); // #77 
-          	} else {
-              $startPlan=addWorkDaysToDate($precEnd,($precVal>=0)?2+$precVal:1+$precVal); // #77 
-            }           
+            $startPossible=addWorkDaysToDate($precEnd,1+$precVal);
           }
+          $startPossibleFraction=0;
+        } else {
+          $startPossible=$precEnd;
+          $startPossibleFraction=$precFraction;
+        }
+        if ($startPossible>=$startPlan or ($startPossible==$startPlan and $startPossibleFraction>$startFraction)) { // #77       
+          $startPlan=$startPossible;
+          $startFraction=$startPossibleFraction;
         }
       }
+debugLog("   startPlan=$startPlan, startFraction=$startFraction");
       if ($plan->refType=='Milestone') {
         if ($profile!="FIXED") {
-        	if (count($precList)>0) {
-            $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
-        	} else {
-        		$plan->plannedStartDate=addWorkDaysToDate($startPlan,1);
-        	}
+          if ($strictDependency or $startFraction==1) {
+          	if (count($precList)>0) {
+              $plan->plannedStartDate=addWorkDaysToDate($startPlan,2);
+          	} else {
+          		$plan->plannedStartDate=addWorkDaysToDate($startPlan,1);
+          	}
+          	$plan->plannedStartFraction=0;
+          } else {
+            $plan->plannedStartDate=$startPlan;
+            $plan->plannedStartFraction=$startFraction;
+          }
           $plan->plannedEndDate=$plan->plannedStartDate;
+          $plan->plannedEndFraction=$plan->plannedStartFraction;
           $plan->plannedDuration=0;
           //$plan->save();
           $fullListPlan=self::storeListPlan($fullListPlan,$plan);
@@ -379,6 +410,7 @@ class PlannedWork extends GeneralWork {
         }
         $plan->notPlannedWork=0;
         foreach ($listAss as $ass) {
+debugLog("   Assignment".$ass->idResource." : ".$ass->leftWork."d");          
           if ($profile=='GROUP' and $withProjectRepartition) {
           	foreach ($listAss as $asstmp) {
 	            foreach ($listTopProjects as $idProject) {
@@ -430,7 +462,7 @@ class PlannedWork extends GeneralWork {
           $capacityRate=round($assRate*$capacity,2);
           $left=$ass->leftWork;
           $regul=false;
-          if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile=="FDUR") {
+          if ($profile=="REGUL" or $profile=="FULL" or $profile=="HALF" or $profile=="QUART" or $profile=="FDUR") {
           	$delaiTh=workDayDiffDates($currentDate,$endPlan);
           	if ($delaiTh and $delaiTh>0) { 
               $regulTh=round($ass->leftWork/$delaiTh,10);
@@ -513,7 +545,11 @@ class PlannedWork extends GeneralWork {
                     }
                   }
                 }
-                $value=($value>$left)?$left:$value;              
+                $value=($value>$left)?$left:$value;
+debugLog("      $currentDate : $value d    startDate=$startPlan startFraction=$startFraction");          
+                if ($currentDate==$startPlan and $value>((1-$startFraction)*$capacity)) {
+                  $value=((1-$startFraction)*$capacity);
+                }
                 if ($regul) {
                 	$tmpTarget=$regul;
                   $tempCapacity=$capacityRate;
@@ -542,6 +578,13 @@ class PlannedWork extends GeneralWork {
                       $value=0;
                     } else {
                       $value=0.5;
+                    }
+                  }
+                  if ($profile=="QUART" and $interval<$delai) {
+                    if ($toPlan<0.25) {
+                      $value=0;
+                    } else {
+                      $value=0.25;
                     }
                   }
                   $regulDone+=$value;
@@ -597,7 +640,8 @@ class PlannedWork extends GeneralWork {
 	                  }
                 	}
                 }
-                if ($value>=0.01) {             
+                if ($value>=0.01) {
+                  $fraction=($capacity!=0)?round($value/$capacity,2):'1';;             
                   $plannedWork=new PlannedWork();
                   $plannedWork->idResource=$ass->idResource;
                   $plannedWork->idProject=$ass->idProject;
@@ -609,15 +653,23 @@ class PlannedWork extends GeneralWork {
                   $arrayPlannedWork[]=$plannedWork;
                   if (! $ass->plannedStartDate or $ass->plannedStartDate>$currentDate) {
                     $ass->plannedStartDate=$currentDate;
+                    $ass->plannedStartFraction=$fraction;
                   }
                   if (! $ass->plannedEndDate or $ass->plannedEndDate<$currentDate) {
                     $ass->plannedEndDate=$currentDate;
+                    $ass->plannedEndFraction=$fraction;
                   }
                   if (! $plan->plannedStartDate or $plan->plannedStartDate>$currentDate) {
                     $plan->plannedStartDate=$currentDate;
+                    $plan->plannedStartFraction=$fraction;
+                  } else if ($plan->plannedStartDate==$currentDate and $plan->plannedStartFraction<$fraction) {
+                    $plan->plannedStartFraction=$fraction;
                   }
                   if (! $plan->plannedEndDate or $plan->plannedEndDate<$currentDate) {
                     $plan->plannedEndDate=$currentDate;
+                    $plan->plannedEndFraction=$fraction;
+                  } else if ($plan->plannedEndDate==$currentDate and $plan->plannedEndFraction<$fraction) {
+                    $plan->plannedEndFraction=$fraction;
                   }
                   $changedAss=true;
                   $left-=$value;
@@ -715,10 +767,14 @@ class PlannedWork extends GeneralWork {
     }
     return $result;
   }
+// End of PLAN
+// ================================================================================================================================
+  
   
   private static function storeListPlan($listPlan,$plan) {
 scriptLog("storeListPlan(listPlan,$plan->id)");
     $listPlan['#'.$plan->id]=$plan;
+    // Update planned dates of parents
     if (($plan->plannedStartDate or $plan->realStartDate) and ($plan->plannedEndDate or $plan->realEndDate) ) {
       foreach ($plan->_parentList as $topId=>$topVal) {
         $top=$listPlan[$topId];
@@ -736,36 +792,15 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
     return $listPlan;
   }
   
-  /*private static function sortPlanningElements($planList) {
-    $result=array();
-    foreach ($planList as $key=>$plan) {
-      if ( ! array_key_exists ($key,$result)) {
-        $predList=$plan->getPredecessorItemsArrayIncludingParents();
-        if (count($predList)==0) {
-          $result[$key]=$plan;
-        } else {
-          $tempList=array();
-          foreach ($planList as $tmpKey=>$tmpPlan) {
-            if (array_key_exists($tmpKey,$predList)) {
-              $tempList[$tmpKey]=$tmpPlan;
-            }
-          }
-          $result=array_merge($result,self::sortPlanningElements($tempList));
-          $result[$key]=$plan;
-        }
-      }
-    }
-    return $result;
-  }*/
-  
   private static function sortPlanningElements($list,$listProjectsPriority) {
   	// first sort on simple criterias
     foreach ($list as $id=>$elt) {
-    	if ($elt->idPlanningMode=='16') {
+    	if ($elt->idPlanningMode=='16' or $elt->idPlanningMode=='6') { // FIXED
     		$crit='1';
-    	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7') {
+    	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7' or  $elt->idPlanningMode=='20'
+    	  or $elt->idPlanningMode=='10' or $elt->idPlanningMode=='11' or $elt->idPlanningMode=='13') { // REGUL or FULL or HALF or QUART)
     	  $crit='2';	
-    	} else {
+    	} else { // Others (includes GROUP, with is not a priority but a constraint
         $crit='3';
     	}
       $crit.='.';
