@@ -1789,6 +1789,7 @@ function drawGantt() {
       hideWait();
       return;
   }
+  var now=formatDate(new Date());
   // g.AddTaskItem(new JSGantt.TaskItem( 0, 'project', '', '', 'ff0000', '',
   // 0, '', '10', 1, '', 1, '' , 'test'));
   if( g && jsonData) {
@@ -1801,21 +1802,21 @@ function drawGantt() {
       //var topId=(i==0)?'':item.topid;
       var topId=item.topid;
       // pStart : start date of task
-      var pStart="";
-      pStart=(trim(item.initialstartdate!="")?item.initialstartdate:pStart;
+      var pStart=now;
+      pStart=(trim(item.initialstartdate)!="")?item.initialstartdate:pStart;
       pStart=(trim(item.validatedstartdate)!="")?item.validatedstartdate:pStart;
-      pStart=(trim(item.plannedstartdate!="")?item.plannedstartdate:pStart;
+      pStart=(trim(item.plannedstartdate)!="")?item.plannedstartdate:pStart;
       pStart=(trim(item.realstartdate)!="")?item.realstartdate:pStart;
-      if (item.plannedstartdate!=" " 
-       && item.realstartdate!=" " 
+      if (trim(item.plannedstartdate!="")
+       && trim(item.realstartdate)!="" 
        && item.plannedstartdate<item.realstartdate) {
         pStart=item.plannedstartdate;
       }
       // pEnd : end date of task
-      var pEnd="";
-      pEnd=(item.initialenddate!=" ")?item.initialenddate:pEnd;
-      pEnd=(item.validatedenddate!=" ")?item.validatedenddate:pEnd;
-      pEnd=(item.plannedenddate!=" ")?item.plannedenddate:pEnd;
+      var pEnd=now;
+      pEnd=(trim(item.initialenddate)!="")?item.initialenddate:pEnd;
+      pEnd=(trim(item.validatedenddate)!="")?item.validatedenddate:pEnd;
+      pEnd=(trim(item.plannedenddate)!="")?item.plannedenddate:pEnd;
       pRealEnd="";
       pPlannedStart="";
       pWork="";
@@ -1825,8 +1826,11 @@ function drawGantt() {
         pWork=item.leftworkdisplay;
         g.setSplitted(true);
       } else {
-    	pEnd=(item.realenddate!=" ")?item.realenddate:pEnd;
+    	pEnd=(trim(item.realenddate)!="")?item.realenddate:pEnd;
       }
+      if (pEnd<pStart) pEnd=pStart;
+      //
+      console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfraction);
       var realWork=parseFloat(item.realwork);
       var plannedWork=parseFloat(item.plannedwork);
       var progress=0;
