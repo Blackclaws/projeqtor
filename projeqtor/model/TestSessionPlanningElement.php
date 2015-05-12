@@ -93,7 +93,9 @@ class TestSessionPlanningElement extends PlanningElement {
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
     "idTestSessionPlanningMode"=>"required,mediumWidth,colspan3",
-    "idPlanningMode"=>"hidden,noImport"
+    "idPlanningMode"=>"hidden,noImport",
+    "plannedStartFraction"=>"hidden",
+    "plannedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

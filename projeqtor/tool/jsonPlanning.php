@@ -185,7 +185,7 @@
     	$topProjectArray=array();
       while ($line = Sql::fetchLine($result)) {
       	$line=array_change_key_case($line,CASE_LOWER);
-      	if ($line['id'] and !$line['refname']) { // If refName not set, delecte corresponding PE (results from incorrect delete
+      	if ($line['id'] and !$line['refname']) { // If refName not set, delete corresponding PE (results from incorrect delete
       	  $peDel=new PlanningElement($line['id']);
       	  $peDel->delete();
       	  continue;
@@ -212,6 +212,10 @@
         $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
         if ($line["reftype"]=="Project") {
         	$topProjectArray[$line['refid']]=$line['id'];
+        	$proj=new Project($line["refid"]);
+        	if ($proj->fixPlanning) {
+        	  $line['reftype']='Fixed';
+        	}
         } else if ($portfolio and $line["reftype"]=="Milestone" and $line["topreftype"]!='Project') {
           $line["topid"]=$topProjectArray[$line['idproject']];
         }
@@ -234,7 +238,7 @@
         } else {
         	echo ',"collapsed":"0"';
         }
-        //if ($displayResource and strtoupper($displayResource)!='NO') {
+        if ($line['reftype']!='Project' and $line['reftype']!='Fixed') {
         	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
           $ass=new Assignment();
           $assList=$ass->getSqlElementsFromCriteria($crit,false);
@@ -249,9 +253,9 @@
 	        	  }
 	        	}
 	        }
-	        $res=new Resource($ass->idResource);
+	        //$res=new Resource($ass->idResource);
 	        echo ',"resource":"' . implode(', ',$arrayResource) . '"';
-        //}
+        }
         $crit=array('successorId'=>$idPe);
         $listPred="";
         $depList=$d->getSqlElementsFromCriteria($crit,false);

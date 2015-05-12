@@ -38,10 +38,12 @@ class PlanningElement extends SqlElement {
   public $initialStartDate;
   public $validatedStartDate;
   public $plannedStartDate;
+  public $plannedStartFraction;
   public $realStartDate;
   public $initialEndDate;
   public $validatedEndDate;
   public $plannedEndDate;
+  public $plannedEndFraction;
   public $realEndDate;
   public $initialDuration;
   public $validatedDuration;
@@ -114,7 +116,9 @@ class PlanningElement extends SqlElement {
                                   "elementary"=>"hidden",
                                   "idPlanningMode"=>"hidden",
   								                "idBill"=>"hidden",
-  		                            "validatedCalculated"=>"hidden"
+  		                            "validatedCalculated"=>"hidden",
+    "plannedStartFraction"=>"hidden",
+    "plannedEndFraction"=>"hidden"
   );   
   
   private static $predecessorItemsArray = array();
@@ -1081,6 +1085,7 @@ class PlanningElement extends SqlElement {
    * @param List of PlanningElements
    */
   public static function initializeFullList($list) {
+    if (count($list)==0) return $list;
     $idList=array();
     // $list must be sorted on WBS !
     $result=$list;
@@ -1201,86 +1206,6 @@ class PlanningElement extends SqlElement {
   	return $result;
   }
   
-  /* not used anymore
-  static function comparePlanningElement($a, $b) {
-    if (array_key_exists('#'.$a->id, $b->_predecessorListWithParent)) {
-    	return -1;
-    }
-    if (array_key_exists('#'.$b->id, $a->_predecessorListWithParent)) {
-      return +1;
-    }
-    if (array_key_exists('#'.$a->id, $b->_parentList)) {
-      return +1;
-    }
-    if (array_key_exists('#'.$b->id, $a->_parentList)) {
-      return -1;
-    }
-    // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
-    if ($a->idPlanningMode=='2' or $a->idPlanningMode=='3' or $a->idPlanningMode=='2') {
-    	return -1;
-    }
-    if ($b->idPlanningMode=='2' or $b->idPlanningMode=='3' or $b->idPlanningMode=='2') {
-      return +1;
-    }
-    if ($a->priority<$b->priority) {
-      return -1;
-    }
-    if ($a->priority>$b->priority) {
-      return +1;
-    }
-    
-    if ($a->wbsSortable<$b->wbsSortable) {
-      return -1;
-    }
-    if ($a->wbsSortable>$b->wbsSortable) {
-      return +1;
-    }
-    return 0;       
-  }*/
-  
-  /* not used anymore
-  static function comparePlanningElementPredecessor($a, $b) {
-    if (array_key_exists('#'.$a->id, $b->_predecessorListWithParent)) {
-      return -1;
-    }
-    if (array_key_exists('#'.$b->id, $a->_predecessorListWithParent)) {
-      return +1;
-    }
-    return 0;
-  }*/
-  
-  /* not used anymore
-  static function comparePlanningElementSimpleOld($a, $b) {
-    if ($a->idPlanningMode=='16' and $b->idPlanningMode!='16') { 	
-      return -1;
-    }
-    if ($b->idPlanningMode=='16' and $a->idPlanningMode!='16') {
-      return +1;
-    }
-    // idPlanningMode '2'=>REGUL '3'=>FULL '7'=>HALF
-  	if ( ($a->idPlanningMode=='2' or  $a->idPlanningMode=='3' or  $a->idPlanningMode=='7') and 
-         ($b->idPlanningMode!='2' and $a->idPlanningMode!='3' and $a->idPlanningMode!='7') ) {
-      return -1;
-    }
-    if ( ( $b->idPlanningMode=='2' or $b->idPlanningMode=='3' or $b->idPlanningMode=='7') and 
-         ($a->idPlanningMode!='2' and $a->idPlanningMode!='3' and $a->idPlanningMode!='7') ) {
-      return +1;
-    }
-    if ($a->priority<$b->priority) {
-      return -1;
-    }
-    if ($a->priority>$b->priority) {
-      return +1;
-    }
-    
-    if ($a->wbsSortable<$b->wbsSortable) {
-      return -1;
-    }
-    if ($a->wbsSortable>$b->wbsSortable) {
-      return +1;
-    }
-    return 0;       
-  }*/
   static function comparePlanningElementSimple($a, $b) {
     if ($a->_sortCriteria<$b->_sortCriteria) {
       return -1;

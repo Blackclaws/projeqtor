@@ -47,7 +47,9 @@ class Assignment extends SqlElement {
   public $realStartDate;
   public $realEndDate;
   public $plannedStartDate;
+  public $plannedStartFraction;
   public $plannedEndDate;
+  public $plannedEndFraction;
   public $dailyCost;
   public $newDailyCost;
   public $assignedCost;

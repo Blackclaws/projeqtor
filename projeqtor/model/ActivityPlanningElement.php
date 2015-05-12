@@ -110,7 +110,9 @@ class ActivityPlanningElement extends PlanningElement {
   	"workElementEstimatedWork"=>"readonly,noImport",
   	"workElementRealWork"=>"readonly,noImport",
   	"workElementLeftWork"=>"readonly,noImport",
-  	"workElementCount"=>"display,noImport"
+  	"workElementCount"=>"display,noImport",
+    "plannedStartFraction"=>"hidden",
+    "plannedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

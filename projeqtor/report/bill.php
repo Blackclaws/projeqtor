@@ -44,7 +44,7 @@ if (array_key_exists('idBill', $_REQUEST)){
 }
 $crit = array();
 $crit['idle']="0";
-$crit['done']="1";
+//$crit['done']="1";
 if ($idBill != ""){
 	$crit['id']=$idBill;
 } else {
@@ -150,10 +150,10 @@ foreach ($billList as $bill)
   echo ' font-family: arial; font-size: 11px; min-height: 55em; page-break-inside:avoid">';
 	echo '<table style="width:100%; vertical-align: middle; text-align: center;">';
   echo '<tr>';
-  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colQuantity')) . '</th>';  
   echo '<th style="width:30%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colDescription')) . '</th>';
   echo '<th style="width:40%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colDetail')) . '</th>';
   echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colPrice')) . '</th>';
+  echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colQuantity')) . '</th>';  
   echo '<th style="width:10%; border:solid 2px #7070A0; background: #F0F0F0; text-align: center;">' . ucfirst(i18n('colAmount')) . '</th>';  
   echo '</tr>';
   foreach ($lineList as $line) {
@@ -165,10 +165,10 @@ foreach ($billList as $bill)
     echo '<td style="border-right:solid 2px #7070A0;">&nbsp;</td>';
   	echo '</tr>';
     echo '<tr>';
-    echo '<td style="text-align: center; vertical-align: top; border-left:solid 2px #7070A0; border-right:solid 2px #7070A0;">' . $line->quantity . '</td>';
-    echo '<td style="text-align: left; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->description,'withBR') . '</td>';
-    echo '<td style="text-align: left; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->detail,'withBR') . '</td>';
+    echo '<td style="padding-left:5px;text-align: left; vertical-align: top; border-left:solid 2px #7070A0;border-right:solid 2px #7070A0;">' . htmlEncode($line->description,'withBR') . '</td>';
+    echo '<td style="padding-left:5px;text-align: left; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlEncode($line->detail,'withBR') . '</td>';
     echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($line->price) . '</td>';
+    echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . $line->quantity . '</td>';
     echo '<td style="text-align: center; vertical-align: top; border-right:solid 2px #7070A0;">' . htmlDisplayCurrency($line->amount) . '</td>';
     echo '</tr>';
   }

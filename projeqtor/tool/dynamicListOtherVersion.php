@@ -61,7 +61,7 @@ if ($prod) {
 } else if ($proj) { 
 	$crit=array( 'idProject'=>$proj);
 }  
-$list=SqlList::getListWithCrit($versionType, $crit);
+$list=SqlList::getListWithCrit('Version', $crit);
 ?>
 <select id="otherVersionIdVersion" size="14"" name="otherVersionIdVersion[]" multiple
 onchange="selectOtherVersionItem();"  ondblclick="saveOtherVersion();"

@@ -779,10 +779,13 @@ table.dojoDndAvatar {
 
 .whiteCheck {
   /*background: #FFFFFF; -moz-opacity: 0.5;  opacity: 0.5; filter: Alpha(Opacity = 50);*/
-  background:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.4);
   background-image: url(images/checkmarkNoBorderWhite.png) !important;
-  border: 2px solid #FFFFFF; 
+  border: 1px solid #FFFFFF; 
   border-radius:5px;
+}
+.whiteCheck:hover {
+	
 }
 .greyCheck {
   background-image: url(images/checkmarkNoBorderGrey.png) !important;
