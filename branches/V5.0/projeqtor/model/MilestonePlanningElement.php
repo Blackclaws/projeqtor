@@ -78,7 +78,9 @@ class MilestonePlanningElement extends PlanningElement {
     "progress"=>"hidden,noImport",
     "expectedProgress"=>"hidden,noImport",
     "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden"
+    "plannedEndFraction"=>"hidden",
+    "validatedStartFraction"=>"hidden",
+    "validatedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

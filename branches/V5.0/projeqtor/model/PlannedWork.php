@@ -240,13 +240,16 @@ debugLog("PlanningElement ".$plan->refType." #".$plan->refId." : ".$plan->refNam
         $endPlan=null;
         $step=1;
       } else if ($profile=="FIXED") { // Fixed milestone
-        $startPlan=$plan->validatedEndDate;
-        $endPlan=$plan->validatedEndDate;
-        $plan->plannedStartDate=$plan->validatedEndDate;
-        $plan->plannedEndDate=$plan->validatedEndDate;
         if ($plan->refType=='Milestone') {
-          $fullListPlan=self::storeListPlan($fullListPlan,$plan);
+          $startPlan=$plan->validatedEndDate;
+          $plan->plannedStartDate=$plan->validatedEndDate;
+          $plan->plannedEndDate=$plan->validatedEndDate;
+          $fullListPlan=self::storeListPlan($fullListPlan,$plan);          
+        } else {
+          $startPlan=$plan->validatedStartDate;
+          $startFraction=$plan->validatedStartFraction;
         }
+        $endPlan=$plan->validatedEndDate;
         $step=1;
       } else if ($profile=="START") { // Start not before validated date
         $startPlan=$plan->validatedStartDate;
@@ -306,7 +309,7 @@ debugLog("   startPlan=$startPlan, startFraction=$startFraction");
           //$plan->save();
           $fullListPlan=self::storeListPlan($fullListPlan,$plan);
         }
-        if ($profile=="FIXED") {
+        if ($profile=="FIXED") { // We are on Milestone ;)
         	$plan->plannedEndDate=$plan->validatedEndDate;
         	$plan->plannedDuration=0;
           //$plan->save();
@@ -410,7 +413,7 @@ debugLog("   startPlan=$startPlan, startFraction=$startFraction");
         }
         $plan->notPlannedWork=0;
         foreach ($listAss as $ass) {
-debugLog("   Assignment".$ass->idResource." : ".$ass->leftWork."d");          
+debugLog("   Assignment Resource #".$ass->idResource." : ".$ass->leftWork."d");          
           if ($profile=='GROUP' and $withProjectRepartition) {
           	foreach ($listAss as $asstmp) {
 	            foreach ($listTopProjects as $idProject) {
@@ -489,8 +492,16 @@ debugLog("   Assignment".$ass->idResource." : ".$ass->leftWork."d");
               $regulTarget=0;
             }
           }
-          while (1) {            
+          while (1) {           
             if ($left<0.01) {
+              break;
+            }
+            if ($profile=='FIXED' and $currentDate>$plan->validatedEndDate) {
+              $changedAss=true;
+              $ass->notPlannedWork=$left;
+              $plan->notPlannedWork+=$left;
+              $arrayNotPlanned[$ass->id]=$left;
+              $left=0;
               break;
             }
             // Set limits to avoid eternal loop
@@ -641,6 +652,11 @@ debugLog("      $currentDate : $value d    startDate=$startPlan startFraction=$s
                 	}
                 }
                 if ($value>=0.01) {
+                  if ($profile=='FIXED' and $currentDate==$plan->validatedStartDate) {
+                    $fractionStart=$plan->validatedStartFraction;
+                  } else {
+                    $fractionStart=($capacity!=0)?round($planned/$capacity,2):'0';
+                  }
                   $fraction=($capacity!=0)?round($value/$capacity,2):'1';;             
                   $plannedWork=new PlannedWork();
                   $plannedWork->idResource=$ass->idResource;
@@ -653,23 +669,23 @@ debugLog("      $currentDate : $value d    startDate=$startPlan startFraction=$s
                   $arrayPlannedWork[]=$plannedWork;
                   if (! $ass->plannedStartDate or $ass->plannedStartDate>$currentDate) {
                     $ass->plannedStartDate=$currentDate;
-                    $ass->plannedStartFraction=$fraction;
+                    $ass->plannedStartFraction=$fractionStart;
                   }
                   if (! $ass->plannedEndDate or $ass->plannedEndDate<$currentDate) {
                     $ass->plannedEndDate=$currentDate;
-                    $ass->plannedEndFraction=$fraction;
+                    $ass->plannedEndFraction=min(($fractionStart+$fraction),1);
                   }
                   if (! $plan->plannedStartDate or $plan->plannedStartDate>$currentDate) {
                     $plan->plannedStartDate=$currentDate;
-                    $plan->plannedStartFraction=$fraction;
-                  } else if ($plan->plannedStartDate==$currentDate and $plan->plannedStartFraction<$fraction) {
-                    $plan->plannedStartFraction=$fraction;
+                    $plan->plannedStartFraction=$fractionStart;
+                  } else if ($plan->plannedStartDate==$currentDate and $plan->plannedStartFraction<$fractionStart) {
+                    $plan->plannedStartFraction=$fractionStart;
                   }
                   if (! $plan->plannedEndDate or $plan->plannedEndDate<$currentDate) {
                     $plan->plannedEndDate=$currentDate;
-                    $plan->plannedEndFraction=$fraction;
+                    $plan->plannedEndFraction=min(($fractionStart+$fraction),1);
                   } else if ($plan->plannedEndDate==$currentDate and $plan->plannedEndFraction<$fraction) {
-                    $plan->plannedEndFraction=$fraction;
+                    $plan->plannedEndFraction=min(($fractionStart+$fraction),1);
                   }
                   $changedAss=true;
                   $left-=$value;
@@ -757,7 +773,7 @@ debugLog("      $currentDate : $value d    startDate=$startPlan startFraction=$s
     		$ass=new Assignment($assId);
     		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
-    		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.$ass->refId.' '.$oName; 
+    		$result .='<br/>&nbsp;&nbsp;&nbsp;'.Work::displayWorkWithUnit($left). ' - '.$rName.' - '.i18n($ass->refType).' #'.$ass->refId.' : '.$oName; 
     	}	
     	//$result.='</div>';
     	$result .= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';

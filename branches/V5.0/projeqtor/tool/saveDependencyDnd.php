@@ -73,6 +73,17 @@ $dep->predecessorRefId=$predecessor->refId;
 $dep->dependencyType='E-S';
 $dep->dependencyDelay=$dependencyDelay;
 $result=$dep->save();
+$tmpStatus=getLastOperationStatus ($result);
+if ($tmpStatus=='OK') {
+  if ($predecessor->plannedEndDate) {
+    if ($predecessor->refType=='Milestone') {
+      $successor->plannedStartDate=$predecessor->plannedEndDate;
+    } else {
+      $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+    }
+    $successor->save();
+  }
+}
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {	

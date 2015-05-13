@@ -37,11 +37,13 @@ class PlanningElement extends SqlElement {
   public $refName;
   public $initialStartDate;
   public $validatedStartDate;
+  public $validatedStartFraction;
   public $plannedStartDate;
   public $plannedStartFraction;
   public $realStartDate;
   public $initialEndDate;
   public $validatedEndDate;
+  public $validatedEndFraction;
   public $plannedEndDate;
   public $plannedEndFraction;
   public $realEndDate;
@@ -118,7 +120,9 @@ class PlanningElement extends SqlElement {
   								                "idBill"=>"hidden",
   		                            "validatedCalculated"=>"hidden",
     "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden"
+    "plannedEndFraction"=>"hidden",
+    "validatedStartFraction"=>"hidden",
+    "validatedEndFraction"=>"hidden"
   );   
   
   private static $predecessorItemsArray = array();

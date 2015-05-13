@@ -75,7 +75,9 @@ class MeetingPlanningElement extends PlanningElement {
     "wbs"=>"hidden,noImport",
     "idMeetingPlanningMode"=>"hidden,required,noImport",
     "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden"
+    "plannedEndFraction"=>"hidden",
+    "validatedStartFraction"=>"hidden",
+    "validatedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';
@@ -194,7 +196,12 @@ class MeetingPlanningElement extends PlanningElement {
   	  $this->validatedStartDate=$meeting->meetingDate;
   	  $this->validatedEndDate=$meeting->meetingDate;
   	}
-  	$this->validatedDuration=1; // TODO : Could be improved : duration is less than one.
+  	
+  	$this->validatedStartFraction=calculateFractionFromTime($meeting->meetingStartTime);
+  	$this->validatedDuration=calculateFractionBeetweenTimes($meeting->meetingStartTime,$meeting->meetingEndTime);
+  	$this->validatedEndFraction=$this->validatedStartFraction+$this->validatedDuration;
+  	
+debugLog($this->validatedStartFraction." + ".$this->validatedDuration." = ".$this->validatedEndFraction);  	
   	//$this->validatedWork=0; // TODO : To be calculated from Number of assignements x meeting duration
     $this->idProject=$meeting->idProject;
     $this->refName=$meeting->name;

@@ -115,7 +115,9 @@ class ProjectPlanningElement extends PlanningElement {
   	"totalLeftCost"=>"readonly,noImport",
   	"totalValidatedCost"=>"readonly,noImport",
     "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden"
+    "plannedEndFraction"=>"hidden",
+    "validatedStartFraction"=>"hidden",
+    "validatedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

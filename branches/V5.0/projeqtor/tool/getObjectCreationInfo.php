@@ -33,13 +33,29 @@
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
 scriptLog ( '   ->/tool/getObjectCreationInfo.php' );
-if (! isset($obj)) 
-{
+if (! isset($obj)) {
 	$objectClass = $_REQUEST ['objectClass'];
 	$objectId = $_REQUEST ['objectId'];
 	$obj = new $objectClass ( $objectId );
+} else {
+  $objectClass=get_class($obj);
+  $objectId=$obj->id;
 }
-
+$updateRight=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj);
+$canUpdateCreationInfo=false;
+if ($obj->id and $updateRight) {
+  $user=getSessionUser();
+  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->idProfile,'scope' => 'canUpdateCreation'));
+  if ($habil) {
+    $list=new ListYesNo($habil->rightAccess);
+    if ($list->code == 'YES') {
+      $canUpdateCreationInfo=true;
+    }
+  }
+}
+?>
+<div style="padding-right:16px;" <?php echo ($canUpdateCreationInfo)?'class="buttonDivCreationInfoEdit" onClick="changeCreationInfo();"':'';?>>
+<?php 
 if ($obj->id and property_exists ( $obj, 'idUser' )) {
   echo formatUserThumb($obj->idUser,SqlList::getNameFromId('Affectable', $obj->idUser),'Creator',32,'right',true);
   $creationDate='';
@@ -53,3 +69,4 @@ if ($obj->id and property_exists ( $obj, 'idUser' )) {
   }
       
 }?>
+</div>

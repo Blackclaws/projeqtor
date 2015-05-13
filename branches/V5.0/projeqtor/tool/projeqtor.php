@@ -2521,5 +2521,32 @@ function displayLastOperationStatus($result) {
   return $status;
 }
 
+function calculateFractionFromTime($time,$subtractMidDay=true) {
+  debugLog("calculateStartFraction($time)");
+  $paramHoursPerDay=Parameter::getGlobalParameter('dayTime');
+  $paramStartAm=Parameter::getGlobalParameter('startAM');
+  $paramEndAm=Parameter::getGlobalParameter('endAM');
+  $paramStartPm=Parameter::getGlobalParameter('startPM');
+  $paramEndPm=Parameter::getGlobalParameter('endPM');
+debugLog("$paramHoursPerDay h/j : $paramStartAm-$paramEndAm / $paramStartPm-$paramEndPm");  
+  $minutesPerDay=60*$paramHoursPerDay;
+  if (! $minutesPerDay) return 0;
+  $minutesTime = round(strtotime("1970-01-01 $time UTC")/60,0);
+  $minutesStartAM=round(strtotime("1970-01-01 $paramStartAm UTC")/60,0);
+  $minutesEndAM=round(strtotime("1970-01-01 $paramEndAm UTC")/60,0);
+  $minutesStartPM=round(strtotime("1970-01-01 $paramStartPm UTC")/60,0);
+  $minutes=$minutesTime-$minutesStartAM;
+  if ($subtractMidDay and $minutesTime>$minutesStartPM) {
+    $minutes-=$minutesStartPM-$minutesEndAM;
+  }
+  return round($minutes/$minutesPerDay,2);
+}
+function calculateFractionBeetweenTimes($startTime,$endTime) {
+  $start=calculateFractionFromTime($startTime,false);
+  $end=calculateFractionFromTime($endTime,false);
+  return($end-$start);
+}
+
+ 
 //
 ?>

@@ -66,11 +66,6 @@ class MeetingMain extends SqlElement {
   public $_sec_Attendees;
   public $_Assignment=array();
   public $attendees;
-  
-  //public $_sec_linkDecision;
-  //public $_Link_Decision=array();
-  //public $_sec_linkQuestion;
-  //public $_Link_Question=array();
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
