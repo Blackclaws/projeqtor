@@ -1630,6 +1630,10 @@ function drawHistoryFromObjects($refresh=false) {
         $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
       } else if ($dataLength>4000) {
         // Nothing, préserve html format 
+      } else if ($colName=='password' or $colName=='apiKey') {
+        $allstars="**********";
+        if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);
+        if ($newValue) $newValue=substr($newValue,0,5).$allstars.substr($newValue,-5);
       } else {
         $oldValue=htmlEncode($oldValue, 'print');
         $newValue=htmlEncode($newValue, 'print');
@@ -2274,7 +2278,7 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '>' . htmlEncode($depObj->name);
     if ($dep->dependencyDelay != 0 and $canEdit) {
-      echo '&nbsp;<span style="background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;font-size:80%;" title="' . i18n("colDependencyDelay") . '">&nbsp;' . $dep->dependencyDelay . '&nbsp;' . i18n('shortDay') . '&nbsp;</span>';
+      echo '&nbsp;<span style="float:right;background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;" title="' . i18n("colDependencyDelay") . '">&nbsp;' . $dep->dependencyDelay . '&nbsp;' . i18n('shortDay') . '&nbsp;</span>';
     }
     echo '</td>';
     if (property_exists($depObj, 'idStatus')) {
@@ -2371,12 +2375,20 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '<td ' . $goto . '>' . $resName;
     echo ($assignment->idRole)?' (' . SqlList::getNameFromId('Role', $assignment->idRole) . ')':'';
     echo '</td>';
+    if ($assignment->notPlannedWork> 0) {
+      echo '<td>';
+      echo '&nbsp;<span style="float:right;background-color:#FFAAAA; color:#696969; border:1px solid #A9A9A9;" title="' . i18n("colNotPlannedWork") . '">&nbsp;' . Work::displayWorkWithUnit($assignment->notPlannedWork). '&nbsp;</span>';
+      echo '</td>';
+    }
     if ($assignment->comment and !$print) {
       echo '<td>';
       echo formatCommentThumb($assignment->comment);
       echo '</td>';
     }
     echo '</tr></table>';
+    
+
+
     echo '</td>';
     echo '<td class="assignData" align="center">' . $assignment->rate . '</td>';
     if ($workVisible) {
