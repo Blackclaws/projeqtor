@@ -1864,7 +1864,7 @@ console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfracti
         pColor='BB5050';  
       }
       if (item.notplannedwork>0) {
-        pColor='B45F04';  
+        pColor='9933CC';  
       }       
       // pMile : is it a milestone ?
       var pMile=(item.reftype=='Milestone')?1:0;
