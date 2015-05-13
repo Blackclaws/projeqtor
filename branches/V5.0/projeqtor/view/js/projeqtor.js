@@ -2253,8 +2253,10 @@ function globalSave() {
   } else if (dijit.byId('dialogChecklistDefinitionLine') && dijit.byId('dialogChecklistDefinitionLine').open) {
     var button=dijit.byId('dialogChecklistDefinitionLineSubmit');
   } else if (dijit.byId('dialogChecklist') && dijit.byId('dialogChecklist').open) {
-    var button=dijit.byId('dialogChecklistSubmit');  } 
-  else {
+    var button=dijit.byId('dialogChecklistSubmit');  
+  } else if (dijit.byId('dialogCreationInfo') && dijit.byId('dialogCreationInfo').open) {
+    var button=dijit.byId('dialogCreationInfoSubmit');  
+  } else {
     var button=dijit.byId('saveButton');
   }
   if (! button) {
