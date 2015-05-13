@@ -3039,6 +3039,9 @@ if (array_key_exists('refresh', $_REQUEST)) {
 <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm"
       name="objectForm" encType="multipart/form-data" action=""
       method="">
+      <script type="dojo/method" event="onShow">
+        if (dijit.byId('name')) dijit.byId('name').focus();
+      </script>
       <script type="dojo/method" event="onSubmit">
         // Don't do anything on submit, just cancel : no button is default => must click
 		    //submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
