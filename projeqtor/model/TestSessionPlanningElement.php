@@ -95,7 +95,9 @@ class TestSessionPlanningElement extends PlanningElement {
     "idTestSessionPlanningMode"=>"required,mediumWidth,colspan3",
     "idPlanningMode"=>"hidden,noImport",
     "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden"
+    "plannedEndFraction"=>"hidden",
+    "validatedStartFraction"=>"hidden",
+    "validatedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';

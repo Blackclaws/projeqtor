@@ -243,7 +243,7 @@ function formatDateThumb($creationDate,$updateDate,$float='right',$size=22) {
   $color="White";
   if ($date==$today) {
     $color='Red';
-  } else if (addWorkDaysToDate($date,1)==$today) {
+  } else if (addWorkDaysToDate($date,2)==$today) {
     $color='Yellow';
   }  
   $title=i18n('thumbCreationTitle',array('<b>'.htmlFormatDate($creationDate).'</b>'));

@@ -29,7 +29,7 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
-
+debugLog("Save Dependency");
 // Get the link info
 if (! array_key_exists('dependencyRefType',$_REQUEST)) {
   throwError('dependencyRefType parameter not found in REQUEST');
@@ -80,7 +80,6 @@ if ($dependencyId) { // Edit Mode
 	$result=$dep->save();
 } else { // Add Mode
 	$result="";
-	
 	foreach ($arrayDependencyRefIdDep as $dependencyRefIdDep) {
 		if ($dependencyType=="Successor") {
 		  $critPredecessor=array("refType"=>$dependencyRefType,"refId"=>$dependencyRefId);
@@ -93,7 +92,6 @@ if ($dependencyId) { // Edit Mode
 		}
 	  $successor=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$critSuccessor);
 	  $predecessor=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$critPredecessor);;
-		
 		$dep=new Dependency($dependencyId);
 		$dep->successorId=$successor->id;
 		$dep->successorRefType=$successor->refType;
@@ -118,6 +116,17 @@ if ($dependencyId) { // Edit Mode
 	    } else {
 	      $result=$res;
 	    } 
+	  }
+	  $tmpStatus=getLastOperationStatus ($result);
+	  if ($tmpStatus=='OK') {
+	    if ($predecessor->plannedEndDate) {
+	      if ($predecessor->refType=='Milestone') {
+	        $successor->plannedStartDate=$predecessor->plannedEndDate;
+	      } else {
+	        $successor->plannedStartDate=addWorkDaysToDate($predecessor->plannedEndDate, 2);
+	      } 
+	      $successor->save();
+	    }
 	  }
 	}
 }

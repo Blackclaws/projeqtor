@@ -112,7 +112,9 @@ class ActivityPlanningElement extends PlanningElement {
   	"workElementLeftWork"=>"readonly,noImport",
   	"workElementCount"=>"display,noImport",
     "plannedStartFraction"=>"hidden",
-    "plannedEndFraction"=>"hidden"
+    "plannedEndFraction"=>"hidden",
+    "validatedStartFraction"=>"hidden",
+    "validatedEndFraction"=>"hidden"
   );   
   
   private static $_databaseTableName = 'planningelement';
