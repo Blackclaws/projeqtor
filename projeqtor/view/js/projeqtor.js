@@ -1803,17 +1803,23 @@ function drawGantt() {
       var topId=item.topid;
       // pStart : start date of task
       var pStart=now;
+      var pStartFraction=0;
       pStart=(trim(item.initialstartdate)!="")?item.initialstartdate:pStart;
       pStart=(trim(item.validatedstartdate)!="")?item.validatedstartdate:pStart;
       pStart=(trim(item.plannedstartdate)!="")?item.plannedstartdate:pStart;
       pStart=(trim(item.realstartdate)!="")?item.realstartdate:pStart;
+      if (trim(item.plannedstartdate)!="" && trim(item.realenddate)=="") {
+        pStartFraction=item.plannedstartfraction;
+      }
       if (trim(item.plannedstartdate!="")
        && trim(item.realstartdate)!="" 
        && item.plannedstartdate<item.realstartdate) {
         pStart=item.plannedstartdate;
       }
+      
       // pEnd : end date of task
       var pEnd=now;
+      var pEndFraction=1;
       pEnd=(trim(item.initialenddate)!="")?item.initialenddate:pEnd;
       pEnd=(trim(item.validatedenddate)!="")?item.validatedenddate:pEnd;
       pEnd=(trim(item.plannedenddate)!="")?item.plannedenddate:pEnd;
@@ -1821,16 +1827,16 @@ function drawGantt() {
       pPlannedStart="";
       pWork="";
       if (dojo.byId('resourcePlanning')) {
-    	pRealEnd=item.realenddate;
-    	pPlannedStart=item.plannedstartdate;
+    	  pRealEnd=item.realenddate;
+    	  pPlannedStart=item.plannedstartdate;
         pWork=item.leftworkdisplay;
         g.setSplitted(true);
       } else {
-    	pEnd=(trim(item.realenddate)!="")?item.realenddate:pEnd;
+    	  pEnd=(trim(item.realenddate)!="")?item.realenddate:pEnd;
       }
       if (pEnd<pStart) pEnd=pStart;
       //
-      console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfraction);
+console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfraction);
       var realWork=parseFloat(item.realwork);
       var plannedWork=parseFloat(item.plannedwork);
       var progress=0;
@@ -1859,8 +1865,7 @@ function drawGantt() {
       }
       if (item.notplannedwork>0) {
         pColor='B45F04';  
-      }
-        
+      }       
       // pMile : is it a milestone ?
       var pMile=(item.reftype=='Milestone')?1:0;
       if (pMile) { pStart=pEnd; }
@@ -1904,18 +1909,6 @@ function drawGantt() {
     // showAlert("Gantt chart not defined");
     return;
   }
-  /* Issue 985 : removed this update 
-   * seems no use and generate issue moving assignments from one activity to another
-    // Refresh class and id
-    var listId=dojo.byId('objectId');
-    var listClass=dojo.byId('objectClass');
-    var objId=dojo.byId('id');
-    var objClass=dojo.byId('className');
-    if (listId && listClass && objId && objClass) {
-      listClass.value=objClass.value;
-      listId.value=objId.value;
-    }
-  */
   highlightPlanningLine();
 }
 
