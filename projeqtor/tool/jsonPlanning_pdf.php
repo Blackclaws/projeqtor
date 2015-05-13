@@ -646,8 +646,8 @@
           $pBackground='background-color:#505050;';
         } else {
           if ($line['notplannedwork']>0) {        		
-        		$pColor='#B45F04';
-        		$pBackground='background-color:#B45F04;';
+        		$pColor='#9933CC';
+        		$pBackground='background-color:#9933CC;';
         	} else if (trim($line['validatedenddate'])!="" && $line['validatedenddate'] < $pEnd) {
             $pColor='#BB5050';
             //$pBackground='background:#BB5050 url(../view/img/red.png) repeat-x;';
