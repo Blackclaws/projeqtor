@@ -35,13 +35,13 @@ class MeetingPlanningElement extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
-  public $_tab_3_2=array('assigned', 'real', 'left', 'work', 'cost');
+
+  public $_tab_4_1=array('validated','assigned', 'real', 'left', 'work');
+  public $validatedWork;
   public $assignedWork;
   public $realWork;
   public $leftWork;
-  public $assignedCost;
-  public $realCost;
-  public $leftCost;
+  public $priority;
   public $idMeetingPlanningMode;
   
   private static $_fieldsAttributes=array(
@@ -63,15 +63,14 @@ class MeetingPlanningElement extends PlanningElement {
     "realWork"=>"readonly,noImport",
     "leftWork"=>"readonly,noImport",
     "assignedWork"=>"readonly,noImport",
-    "validatedWork"=>"hidden",
     "validatedCost"=>"hidden",
-    "assignedCost"=>"readonly,noImport",
+    "assignedCost"=>"hidden,readonly,noImport",
     "plannedCost"=>"hidden,noImport",
-    "realCost"=>"readonly,noImport",
-    "leftCost"=>"readonly,noImport",
+    "realCost"=>"hidden,readonly,noImport",
+    "leftCost"=>"hidden,readonly,noImport",
     "progress"=>"hidden,noImport",
     "expectedProgress"=>"hidden,noImport",
-    "priority"=>"hidden",
+    //"priority"=>"hidden",
     "wbs"=>"hidden,noImport",
     "idMeetingPlanningMode"=>"hidden,required,noImport",
     "plannedStartFraction"=>"hidden",
@@ -97,43 +96,46 @@ class MeetingPlanningElement extends PlanningElement {
   }
   
   private function hideWorkCost() {
-  	unset($this->_tab_3_2);
+    unset($this->_tab_4_1);
   	self::$_fieldsAttributes['validatedWork']='hidden';
     self::$_fieldsAttributes['assignedWork']='hidden';
     self::$_fieldsAttributes['realWork']='hidden';
     self::$_fieldsAttributes['leftWork']='hidden';
-    self::$_fieldsAttributes['validatedCost']='hidden';
+    //self::$_fieldsAttributes['validatedCost']='hidden';
     self::$_fieldsAttributes['assignedCost']='hidden';
     self::$_fieldsAttributes['realCost']='hidden';
     self::$_fieldsAttributes['leftCost']='hidden';
+    //self::$_fieldsAttributes['priority']='hidden';
   }
   private function showWorkCost() {
-  	$this->_tab_3_2 = array('assigned', 'real', 'left', 'work', 'cost');
-    self::$_fieldsAttributes['validatedWork']='hidden';
+  	$this->_tab_4_1 = array('validated','assigned', 'real', 'left', 'work');
+  	//$this->_sec_progress=true;
+    self::$_fieldsAttributes['validatedWork']='';
     self::$_fieldsAttributes['assignedWork']='readonly';
     self::$_fieldsAttributes['realWork']='readonly';
-    self::$_fieldsAttributes['leftWork']='readonly';
-    self::$_fieldsAttributes['validatedCost']='hidden';
-    self::$_fieldsAttributes['assignedCost']='readonly';
-    self::$_fieldsAttributes['realCost']='readonly';
-    self::$_fieldsAttributes['leftCost']='readonly';
+    self::$_fieldsAttributes['leftWork']='readonly';    
+    //self::$_fieldsAttributes['validatedCost']='hidden';
+    self::$_fieldsAttributes['assignedCost']='hidden';
+    self::$_fieldsAttributes['realCost']='hidden';
+    self::$_fieldsAttributes['leftCost']='hidden';
+    //self::$_fieldsAttributes['priority']='';
   }
   
-  public function setAttributes() {
-  	global $workVisibility,$costVisibility;
+  public function setAttributes($workVisibility, $costVisibility) {
+  	//global $workVisibility,$costVisibility;
     if (! $this->id) {
-      $this->hideWorkCost();
+      //$this->hideWorkCost();
     } else {
       if ($workVisibility!='ALL' or $costVisibility!='ALL') {
         $this->hideWorkCost();
       } else {
-        $ass=new Assignment();
+        /*$ass=new Assignment();
         $cptAss=$ass->countSqlElementsFromCriteria(array('refType'=>$this->refType, 'refId'=>$this->refId));
-        if ($cptAss>0) {
+        if ($cptAss>0) {*/
           $this->showWorkCost();
-        } else {
+        /*} else {
           $this->hideWorkCost();
-        } 
+        } */
       }
     }
   }
@@ -179,7 +181,9 @@ class MeetingPlanningElement extends PlanningElement {
   	$meeting=new $this->refType($this->refId);
   	$old=new MeetingPlanningElement($this->id);
   	if (!$this->id) {
-  		$this->priority=1; // very high priority
+  	  if (!$this->priority) {
+  		  $this->priority=1; // very high priority
+  	  }
   		$this->idMeetingPlanningMode=16; // fixed planning  		
   	}
   	if ($this->refType=='Meeting' and $meeting->idPeriodicMeeting) {

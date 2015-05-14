@@ -40,13 +40,9 @@ class PeriodicMeetingMain extends SqlElement {
   public $idUser;
   public $description;
   public $_sec_treatment;
-  public $MeetingPlanningElement;
   public $idActivity;
   public $idResource;
   public $idle;
-  public $_sec_Attendees;
-  public $_Assignment=array();
-  public $attendees;
   public $_sec_periodicity;
   public $periodicityStartDate;
   public $_lib_periodicUntil;
@@ -70,6 +66,11 @@ class PeriodicMeetingMain extends SqlElement {
   public $periodicityMonthlyWeekDay;
   public $periodicityYearlyDay;
   public $periodicityYearlyMonth;
+  public $_sec_Attendees;
+  public $_Assignment=array();
+  public $attendees;
+  public $_sec_progress;
+  public $MeetingPlanningElement;
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
@@ -603,8 +604,26 @@ class PeriodicMeetingMain extends SqlElement {
       $meeting->idStatus=key($table);
     }
     if ($old->location!=$this->idResource) $meeting->idResource=$this->idResource;
+    if ($old->MeetingPlanningElement->priority!=$this->MeetingPlanningElement->priority) 
+        $meeting->MeetingPlanningElement->priority=$this->MeetingPlanningElement->priority;
     // Assignments => dispatch ========================== TODO
     $resultMeetingSave=$meeting->save();
+  }
+  
+  public function setAttributes() { 
+    /*if (! $this->id) {
+      unset($this->_sec_progress);
+    } else {
+      $pe=new PlanningElement();
+      $pe->setVisibility();
+      if ($pe->_workVisibility!='ALL') {
+        unset($this->_sec_progress);
+      } else {
+        if (count($this->_Assignment)==0) {
+          unset($this->_sec_progress);
+        }
+      }
+    }*/
   }
   
 }

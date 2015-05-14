@@ -619,8 +619,10 @@ class User extends SqlElement {
     $old=$this->getOld();
     // if uncheck isResource must check resource for deletion
     if ($old->isResource and ! $this->isResource and $this->id) {
+debugLog("uncheck Resource : must control possibility to delete resource");
     		$obj=new Resource($this->id);
     		$resultDelete=$obj->deleteControl(true);
+debugLog("resultDelete for resource = $resultDelete");    		
     		if ($resultDelete and $resultDelete!='OK') {
     			$result.=$resultDelete;
     		}
@@ -652,7 +654,7 @@ class User extends SqlElement {
 	        $obj=new Resource($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.=$resultDelete;
+	          $result.='<b><br/>'.i18n('Resource').' #'.$this->id.' :</b>'.$resultDelete;
 	        }
 	    }
 	    // if uncheck isContact must check contact for deletion
@@ -660,16 +662,18 @@ class User extends SqlElement {
 	        $obj=new Contact($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.=$resultDelete;
+	          $result.='<b><br/>'.i18n('Contact').' #'.$this->id.' :</b>'.$resultDelete;
 	        }
       }
     }
     if ($nested) {
       SqlElement::unsetRelationShip('User','Affectation');
     }
-    if (! $result) {  
-      $result=parent::deleteControl();
-    }
+    $resultDelete=parent::deleteControl();
+    if ($result and $resultDelete) {
+      $resultDelete='<b><br/>'.i18n('User').' #'.$this->id.' :</b>'.$resultDelete.'<br/>';
+    } 
+    $result=$resultDelete.$result;
     return $result;
   }
   

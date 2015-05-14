@@ -387,10 +387,11 @@ class Contact extends SqlElement {
       $crit=array("name"=>"menuUser");
       $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
       if (! $menu) {
-        return;
+        return "KO";
       }     
       if (! securityCheckDisplayMenu($menu->id)) {
         $result="<br/>" . i18n("msgCannotDeleteContact");
+        return $result;
       }             
     }
     /*$rec = new Recipient();
@@ -406,7 +407,7 @@ class Contact extends SqlElement {
 	        $obj=new Resource($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.=$resultDelete;
+	          $result.='<b><br/>'.i18n('Resource').' #'.$this->id.' :</b>'.$resultDelete;
 	        }
 	    }
 	  // if uncheck isUser must check user for deletion
@@ -414,16 +415,18 @@ class Contact extends SqlElement {
 	        $obj=new User($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.=$resultDelete;
+	          $result.='<b><br/>'.i18n('User').' #'.$this->id.' :</b>'.$resultDelete;
 	        }
 	    }
     }
     if ($nested) {
       SqlElement::unsetRelationShip('Contact','Affectation');
     }
-    if (! $result) {  
-      $result=parent::deleteControl();
-    }
+    $resultDelete=parent::deleteControl();
+    if ($result and $resultDelete) {
+      $resultDelete='<b><br/>'.i18n('Contact').' #'.$this->id.' :</b>'.$resultDelete.'<br/>';
+    } 
+    $result=$resultDelete.$result;
     return $result;
   }
   
