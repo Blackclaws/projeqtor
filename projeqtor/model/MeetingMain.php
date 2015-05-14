@@ -50,7 +50,6 @@ class MeetingMain extends SqlElement {
   public $idUser;
   public $description;
   public $_sec_treatment;
-  public $MeetingPlanningElement;
   public $idActivity;
   public $idStatus;
   public $idResource;
@@ -66,6 +65,8 @@ class MeetingMain extends SqlElement {
   public $_sec_Attendees;
   public $_Assignment=array();
   public $attendees;
+  public $_sec_progress;
+  public $MeetingPlanningElement;
   public $_sec_predecessor;
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
@@ -144,6 +145,19 @@ class MeetingMain extends SqlElement {
     	self::$_fieldsAttributes['isPeriodic']="readonly";
     	unset($this->isPeriodic);
     }  	
+    /*if (! $this->id) {
+      unset($this->_sec_progress);
+    } else {
+      $pe=new PlanningElement();
+      $pe->setVisibility();
+      if ($pe->_workVisibility!='ALL') {
+        unset($this->_sec_progress);
+      } else {        
+        if (count($this->_Assignment)==0) {
+          unset($this->_sec_progress);
+        }
+      }
+    }*/
   }
 // ============================================================================**********
 // GET STATIC DATA FUNCTIONS

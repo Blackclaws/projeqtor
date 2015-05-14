@@ -124,7 +124,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
     $obj->setVisibility();
     $workVisibility=$obj->_workVisibility;
     $costVisibility=$obj->_costVisibility;
-    if (get_class($obj) == "MeetingPlanningElement") {
+    if (get_class($obj) == "MeetingPlanningElement" or get_class($obj) == "PeriodicMeetingPlanningElement") {
       $obj->setAttributes($workVisibility, $costVisibility);
     }
   } else if (method_exists($obj, 'setAttributes')) {
@@ -1343,8 +1343,9 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
          'lock'=>          array('float'=>(($nbCol==2)?'left':'right'),  'clear'=>(($nbCol==2)?'none':'right')),
         
          'assignment'=>    array('float'=>'left','clear'=>(($nbCol==2)?'left':'none')),
+         'attendees'=>     array('float'=>'left','clear'=>(($nbCol==2)?'left':'none')),
         
-        'periodicity'=>    array('float'=>'left','clear'=>'left'),
+        //'periodicity'=>    array('float'=>'left','clear'=>'left'),
         
         'internalalert'=>  array('float'=>'right'),
         

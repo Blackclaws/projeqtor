@@ -453,16 +453,17 @@ class Resource extends SqlElement {
   }
   
   public function deleteControl($nested=false) {
-    
+debugLog("Resource->deleteControl($nested)");  
   	$result="";
     if ($this->isUser) {   	
 	    $crit=array("name"=>"menuUser");
 	    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
 	    if (! $menu) {
-	      return;
+	      return "KO";
 	    }     
 	    if (! securityCheckDisplayMenu($menu->id)) {
 	      $result="<br/>" . i18n("msgCannotDeleteResource");
+	      return $result;
 	    }     	    	
     }
     if (! $nested) {
@@ -471,7 +472,7 @@ class Resource extends SqlElement {
 	        $obj=new Contact($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.=$resultDelete;
+	          $result.='<b><br/>'.i18n('Contact').' #'.$this->id.' :</b>'.$resultDelete;
 	        }
 	    }
 	  // if uncheck isUser must check user for deletion
@@ -479,16 +480,18 @@ class Resource extends SqlElement {
 	        $obj=new User($this->id);
 	        $resultDelete=$obj->deleteControl(true);
 	        if ($resultDelete and $resultDelete!='OK') {
-	          $result.=$resultDelete;
+	          $result.='<b><br/>'.i18n('User').' #'.$this->id.' :</b>'.$resultDelete;;
 	        }
 	    }
     }
     if ($nested) {
     	SqlElement::unsetRelationShip('Resource','Affectation');
     }
-    if (! $result) {	
-      $result=parent::deleteControl();
-    }
+    $resultDelete=parent::deleteControl();
+    if ($result and $resultDelete) {
+      $resultDelete='<b><br/>'.i18n('Resource').' #'.$this->id.' :</b>'.$resultDelete.'<br/>';
+    } 
+    $result=$resultDelete.$result;
     return $result;
   }
   
