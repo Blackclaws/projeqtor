@@ -2344,15 +2344,15 @@ function formatBrowserDateToDate($dateTime) {
   if (substr ( $dateTime, 4, 1 ) == '-' and substr ( $dateTime, 7, 1 ) == '-') {
     return $dateTime;
   }
-  if (substr_count ( $dateTime, ':' ) > 0) {
+  if (substr_count ( $dateTime, ':' ) > 0 and substr_count ( $dateTime, ' ' ) > 0) {
     list ( $date, $time ) = explode ( ' ', $dateTime );
   } else {
     $date = $dateTime;
     $time = "";
   }
-  if ($browserLocaleDateFormat == 'DD/MM/YYYY') {
+  if ($browserLocaleDateFormat == 'DD/MM/YYYY' and substr_count ( $date, '/' ) == 2 ) {
     list ( $day, $month, $year ) = explode ( '/', $date );
-  } else if ($browserLocaleDateFormat == 'MM/DD/YYYY') {
+  } else if ($browserLocaleDateFormat == 'MM/DD/YYYY' and substr_count ( $date, '/' ) == 2 ) {
     list ( $month, $day, $year ) = explode ( '/', $date );
   } else {
     return $dateTime;

@@ -184,6 +184,8 @@ INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder
 (19, 'Activity', 'PlanningModeSTART', 'START', 130, 0 , 1, 0),
 (20, 'Activity', 'PlanningModeQUART', 'QUART', 340, 0 , 1, 1);
 
+ALTER TABLE `${prefix}resource` ADD `function` VARCHAR(100) default NULL;
+
 -- ///////////////////////////////////////////////////////////
 -- Menu upgrade for new contectual menu function
 -- ///////////////////////////////////////////////////////////
