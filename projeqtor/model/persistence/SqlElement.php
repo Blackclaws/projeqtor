@@ -2747,7 +2747,7 @@ abstract class SqlElement {
 			}
 		}
 		// Control for Closed item that all items are closed
-		if (property_exists($this,'idle') and $this->idle) {
+		if (property_exists($this,'idle') and $this->idle and $this->id) { // #1690 : should be possible to import closed items
 			$relationShip=self::$_closeRelationShip;
 			if (array_key_exists(get_class($this),$relationShip)) {
 				$objects='';

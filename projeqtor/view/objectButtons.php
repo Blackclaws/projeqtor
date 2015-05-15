@@ -159,11 +159,11 @@
 		        loadContent("../tool/deleteObject.php", "resultDiv", 'objectForm', true);
           };
           var alsoDelete="";
-		      if (dojo.byId('nbAttachments')) {
-            if (dojo.byId('nbAttachments').value>0) {
-              alsoDelete+="<br/><br/>" + i18n('alsoDeleteAttachment', new Array(dojo.byId('nbAttachments').value) );
-            }
-          }
+		      //if (dojo.byId('nbAttachments')) {
+          //  if (dojo.byId('nbAttachments').value>0) {
+          //    alsoDelete+="<br/><br/>" + i18n('alsoDeleteAttachment', new Array(dojo.byId('nbAttachments').value) );
+          //  }
+          //}
           showConfirm(i18n("confirmDelete", new Array("<?php echo i18n($_REQUEST['objectClass']);?>",dojo.byId('id').value))+alsoDelete ,action);
         </script>
       </button>    

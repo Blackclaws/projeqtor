@@ -453,7 +453,6 @@ class Resource extends SqlElement {
   }
   
   public function deleteControl($nested=false) {
-debugLog("Resource->deleteControl($nested)");  
   	$result="";
     if ($this->isUser) {   	
 	    $crit=array("name"=>"menuUser");

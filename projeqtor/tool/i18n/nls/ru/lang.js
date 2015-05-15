@@ -1343,6 +1343,7 @@ msgEnterPlannedDA: "Должны быть введены дата планиро
 msgEnterRealDA: "Должны быть введены реальная дата и сумма",
 msgEnterRPAmount: "Вы должны ввести сумму (плановую или реальную)",
 msgEnterRPDate: "Вы должны ввести дату (плановую или реальную)",
+msgFirstStatusMandatoryInWorkflow: "[you must include the first status '${1}' in the workflow]",
 msgIncorrectReceiver: "[this receiver cannot be selected for this element]",
 msgNotGranted: "Вы не можете выполнить данную операцию",
 msgParentActivityInSameProject: "Родительская деятельность должна быть в одном проекте",

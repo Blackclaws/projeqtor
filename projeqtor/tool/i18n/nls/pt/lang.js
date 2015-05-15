@@ -1343,6 +1343,7 @@ msgEnterPlannedDA: "A data planeada e o montante têm ambos de ser especificados
 msgEnterRealDA: "A data real e o montante têm ambos de ser especificados",
 msgEnterRPAmount: "Você tem de introduzir um montante (planeado ou real)",
 msgEnterRPDate: "Você tem de introduzir uma data (planeada ou real)",
+msgFirstStatusMandatoryInWorkflow: "[you must include the first status '${1}' in the workflow]",
 msgIncorrectReceiver: "este destinatário não pode ser selecionado para este elemento",
 msgNotGranted: "Não está autorizado a fazer esta operação",
 msgParentActivityInSameProject: "A actividade pai tem de existir no mesmo projecto",

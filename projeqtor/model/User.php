@@ -620,10 +620,8 @@ class User extends SqlElement {
     $old=$this->getOld();
     // if uncheck isResource must check resource for deletion
     if ($old->isResource and ! $this->isResource and $this->id) {
-debugLog("uncheck Resource : must control possibility to delete resource");
     		$obj=new Resource($this->id);
     		$resultDelete=$obj->deleteControl(true);
-debugLog("resultDelete for resource = $resultDelete");    		
     		if ($resultDelete and $resultDelete!='OK') {
     			$result.=$resultDelete;
     		}

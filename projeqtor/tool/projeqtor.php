@@ -98,6 +98,12 @@ if (! Parameter::getGlobalParameter ( 'paramAttachmentDirectory' ) or ! Paramete
   $isAttachmentEnabled = false;
 }
 
+if (isset($debugReport) and $debugReport) {
+  $pos=strpos($_SERVER ["SCRIPT_NAME"], '/report/');
+  if ($pos!==false) {
+    echo substr($_SERVER ["SCRIPT_NAME"],$pos);
+  }
+}
 /*
  * ============================================================================ main controls ============================================================================
  */
@@ -2522,13 +2528,11 @@ function displayLastOperationStatus($result) {
 }
 
 function calculateFractionFromTime($time,$subtractMidDay=true) {
-  debugLog("calculateStartFraction($time)");
   $paramHoursPerDay=Parameter::getGlobalParameter('dayTime');
   $paramStartAm=Parameter::getGlobalParameter('startAM');
   $paramEndAm=Parameter::getGlobalParameter('endAM');
   $paramStartPm=Parameter::getGlobalParameter('startPM');
   $paramEndPm=Parameter::getGlobalParameter('endPM');
-debugLog("$paramHoursPerDay h/j : $paramStartAm-$paramEndAm / $paramStartPm-$paramEndPm");  
   $minutesPerDay=60*$paramHoursPerDay;
   if (! $minutesPerDay) return 0;
   $minutesTime = round(strtotime("1970-01-01 $time UTC")/60,0);

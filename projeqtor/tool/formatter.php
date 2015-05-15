@@ -327,3 +327,38 @@ function getMonthName($month,$maxLength=0) {
   if ($maxLength) $dispMonth=substr($dispMonth,0,$maxLength);
   return $dispMonth;
 }
+
+function diffValues(&$old,&$new) {
+  debugLog("=============================================================================================");
+  if ($old) {
+    $array=Diff::compare(diffReplaceEOL($old), diffReplaceEOL($new));
+    $arrayOld=array();
+    $arrayNew=array();
+    foreach ($array as $id=>$line) {
+      debugLog( (($line[1]==0)?'  ':(($line[1]==1)?'- ':'+ ')).$line[0] );
+      if ($line[1]==Diff::DELETED) {
+        $arrayOld[$id]=$line;
+      } else if ($line[1]==Diff::INSERTED) {
+        $arrayNew[$id]=$line;
+      }
+    }
+    if ( (count($arrayNew)+count($arrayOld))<count($array)) { // Set Diff only if diff is shorter than original
+      $new=nl2br(Diff::toString($arrayNew));
+      $old=nl2br(Diff::toString($arrayOld));
+    }
+  }
+}
+function diffReplaceEOL($valIn) {
+  $val=preg_replace('/<p(.)*?>/', "\n", $valIn);
+  $val=preg_replace('/<td(.)*?>/', "\n", $val);
+  $val=preg_replace('/<tr(.)*?>/', "\n", $val);
+  $val=preg_replace('/<table(.)*?>/', "\n", $val);
+  $val=str_replace(array('&nbsp;','<br/>','<div>','</div>','</p>','</td>','</tr>','</table>','<tbody>','</tbody>','color:white'),
+                   array(' '     ,"\n"   ,"\n"   ,''      ,''    ,''     ,''     ,''        ,''       ,''        ,'color:grey'),
+                   $val);
+  if (substr_count($val,'<o:p> </o:p>')>0 or substr_count($val,'<o:p></o:p>')>0) {
+    $val=strip_tags($val);
+    //return $valIn;
+  }
+  return $val;
+}

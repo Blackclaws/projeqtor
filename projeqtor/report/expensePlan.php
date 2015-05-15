@@ -263,7 +263,7 @@ $graph->drawRoundedRectangle(5,5,$width-5,258,5,230,230,230);
 $graph->setGraphArea(40,30,$width-200,200);  
 $graph->drawGraphArea(252,252,252);  
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  
-$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_ADDALL,0,0,0,TRUE,90,1, true);  
+$graph->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_ADDALLSTART0,0,0,0,TRUE,90,1, true);  
 $graph->drawGrid(5,TRUE,230,230,230,255);  
 $graph->drawStackedBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),TRUE);  
 $graph->setFontProperties("../external/pChart/Fonts/tahoma.ttf",8);  

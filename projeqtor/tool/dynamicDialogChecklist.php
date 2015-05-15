@@ -228,7 +228,7 @@ if ($print) $canUpdate=false;
        <?php echo i18n("buttonCancel");?>
      </button>
      <button id="dialogChecklistSubmit" dojoType="dijit.form.Button" type="submit" 
-       onclick="saveChecklist();return false;" >
+       onclick="protectDblClick(this);saveChecklist();return false;" >
        <?php echo i18n("buttonOK");?>
      </button>
    </td>

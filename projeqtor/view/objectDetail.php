@@ -29,6 +29,7 @@
  */
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
+
 scriptLog('   ->/view/objectDetail.php');
 if (!isset($comboDetail)) {
   $comboDetail=false;
@@ -1221,7 +1222,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
         //echo '  <script type="dojo/connect" event="onKeyPress" args="evt">';
         //echo '   alert("OK");';
         //echo '  </script>';
-        echo  str_replace( "\n", '<br />', $val );
+        echo  str_replace( "\n", '<br/>', $val );
         //echo $val;
         echo '</div>';
       } else if ($col == 'icon') {
@@ -1630,12 +1631,14 @@ function drawHistoryFromObjects($refresh=false) {
         $oldValue=Work::displayWork($oldValue) . ' ' . Work::displayShortWorkUnit();
         $newValue=Work::displayWork($newValue) . ' ' . Work::displayShortWorkUnit();
       } else if ($dataLength>4000) {
+        $diff=diffValues($oldValue,$newValue);
         // Nothing, préserve html format 
       } else if ($colName=='password' or $colName=='apiKey') {
         $allstars="**********";
         if ($oldValue) $oldValue=substr($oldValue,0,5).$allstars.substr($oldValue,-5);
         if ($newValue) $newValue=substr($newValue,0,5).$allstars.substr($newValue,-5);
       } else {
+        $diff=diffValues($oldValue,$newValue);
         $oldValue=htmlEncode($oldValue, 'print');
         $newValue=htmlEncode($newValue, 'print');
       }

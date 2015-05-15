@@ -65,6 +65,9 @@
          <include name="*.php"/>
        </fileset>
 		 </copy>
+  	 <copy todir="${deploy.dir}/external/diff">
+  	   <fileset dir="${src.dir}/external/diff"/>
+  	 </copy>
   </target>
   
   <target name="copyFiles">

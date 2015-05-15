@@ -136,7 +136,7 @@ if (array_key_exists('isIE',$_REQUEST)) {
             <?php echo i18n("buttonCancel");?>
           </button>
           <button id="dialogAttachmentSubmit" dojoType="dijit.form.Button" type="submit"
-          <?php if ($isIE and $isIE<=9) {?>onclick="saveAttachment();"<?php }?> >
+          <?php if ($isIE and $isIE<=9) {?>onclick="protectDblClick(this);saveAttachment();"<?php }?> >
             <?php echo i18n("buttonOK");?>
           </button>
         </td>

@@ -29,7 +29,6 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
-debugLog("saveCheckList");
 if (! array_key_exists('checklistDefinitionId',$_REQUEST)) {
 	throwError('checklistDefinitionId parameter not found in REQUEST');
 }
@@ -125,7 +124,6 @@ if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
 		}
 		if ($resultLine) {
   		$statusLine=getLastOperationStatus ( $resultLine );
-  		debugLog("saveCheckListLine StatusLine=$statusLine ResultLine=$resultLine");
   		if ($statusLine=="NO_CHANGE") {
   		  // Nothing
   		} else if ($statusLine=="ERROR") {
@@ -138,7 +136,6 @@ if ( ! stripos($result,'id="lastOperationStatus" value="ERROR"')>0) {
 		}
   }
 }
-debugLog("saveCheckList Status=$status, Result = $result");
 if ($status=="OK") {
   $result=i18n('Checklist') . ' ' . i18n('resultUpdated').' ('.i18n($checklistObjectClass).' #'.$checklistObjectId.')';
   $result .= '<input type="hidden" id="lastSaveId" value="' . $checklistObjectId . '" />';

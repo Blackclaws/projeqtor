@@ -124,7 +124,7 @@ if ($line->id) {
        <?php echo i18n("buttonCancel");?>
      </button>
      <button id="dialogChecklistDefinitionLineSubmit" dojoType="dijit.form.Button" type="submit" 
-       onclick="saveChecklistDefinitionLine();return false;" >
+       onclick="protectDblClick(this);saveChecklistDefinitionLine();return false;" >
        <?php echo i18n("buttonOK");?>
      </button>
    </td>

@@ -468,7 +468,43 @@ class WorkflowMain extends SqlElement {
     }  
     return $result;
   }
+  /** =========================================================================
+   * control data corresponding to Model constraints
+   * @param void
+   * @return "OK" if controls are good or an error message
+   *  must be redefined in the inherited class
+   */
+  public function control(){
+    $result="";
+    $statusList=SqlList::getList('Status');
+    $firstStatus=key($statusList);
+    $firstStatusName=current($statusList);
+    $firstStatusFound=false;
+    $search = 'val_' . $firstStatus . '_';
+    foreach ($_REQUEST as $field=>$value) {
+      if (substr($field,0,strlen($search))==$search) {
+        $firstStatusFound=true;
+        break;
+      }
+    }    
+    if (!$firstStatusFound) {
+        $result.='<br/>' . i18n('msgFirstStatusMandatoryInWorkflow',array($firstStatusName)); 
+    }
+    
+    $defaultControl=parent::control();
+    if ($defaultControl!='OK') {
+      $result.=$defaultControl;
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
   
+  /** =========================================================================
+   * save data
+   * @param void
+   */
   public function save() {
     global $_REQUEST;
     

@@ -121,6 +121,11 @@ function hideField(field) {
   }
 }
 
+function protectDblClick(widget){
+  if (!widget.id) return;
+  disableWidget(widget.id);
+  setTimeout("enableWidget('"+widget.id+"');",300);
+}
 // =============================================================================
 // = Message boxes
 // =============================================================================

@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 include_once '../tool/projeqtor.php';
-//echo "detailPlan.php";
+
 AuditSummary::updateAuditSummary(date('Ymd'));
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {
