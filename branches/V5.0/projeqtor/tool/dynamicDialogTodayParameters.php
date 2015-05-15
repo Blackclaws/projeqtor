@@ -109,7 +109,7 @@ $today=new Today();
   echo '      <button dojoType="dijit.form.Button" onclick="dijit.byId(\'dialogTodayParameters\').hide();">';
   echo          i18n("buttonCancel");
   echo '      </button>';
-  echo '      <button dojoType="dijit.form.Button" type="submit" id=dialogTodayParametersSubmit" onclick="saveTodayParameters();return false;">';
+  echo '      <button dojoType="dijit.form.Button" type="submit" id=dialogTodayParametersSubmit" onclick="protectDblClick(this);saveTodayParameters();return false;">';
   echo          i18n("buttonOK");
   echo '      </button>';
   echo '    </td>';

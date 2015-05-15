@@ -1151,7 +1151,10 @@ function finalizeMessageDisplay(destination, validationType) {
       		    loadContent("../tool/saveObject.php?confirmed=true", "resultDiv", 'objectForm', true);
           	  };
       	}
-      	showConfirm(message,confirm);  
+      	showConfirm(message,confirm);
+      	contentWidget=dijit.byId(destination);
+      	contentNode=dojo.byId(destination);
+      	contentNode.style.display="none"; 
       } else {
         //showAlert(message);
         addCloseBoxToMessage(destination);

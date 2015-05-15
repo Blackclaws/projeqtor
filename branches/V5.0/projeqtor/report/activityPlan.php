@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 include_once '../tool/projeqtor.php';
-//echo "activityPlan.php";
+if (isset($debugReport) and $debugReport) echo "activityPlan.php";
 
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {

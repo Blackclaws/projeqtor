@@ -170,7 +170,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
         <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMail').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="sendMail();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="protectDblClick(this);sendMail();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

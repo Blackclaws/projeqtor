@@ -22,3 +22,4 @@ $enforceUTF8 = '1';
 $flashReport=true;
 $debugQuery=false;
 $debugPerf=true;
+$debugReport=true;

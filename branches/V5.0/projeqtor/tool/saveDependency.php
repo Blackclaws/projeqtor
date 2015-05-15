@@ -29,7 +29,6 @@
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
-debugLog("Save Dependency");
 // Get the link info
 if (! array_key_exists('dependencyRefType',$_REQUEST)) {
   throwError('dependencyRefType parameter not found in REQUEST');

@@ -95,7 +95,7 @@
         <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogPlanSaveDates').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" id="dialogPlanSaveDatesSubmit" onclick="planSaveDates();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogPlanSaveDatesSubmit" onclick="protectDblClick(this);planSaveDates();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

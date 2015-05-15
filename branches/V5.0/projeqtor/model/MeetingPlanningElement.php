@@ -205,7 +205,6 @@ class MeetingPlanningElement extends PlanningElement {
   	$this->validatedDuration=calculateFractionBeetweenTimes($meeting->meetingStartTime,$meeting->meetingEndTime);
   	$this->validatedEndFraction=$this->validatedStartFraction+$this->validatedDuration;
   	
-debugLog($this->validatedStartFraction." + ".$this->validatedDuration." = ".$this->validatedEndFraction);  	
   	//$this->validatedWork=0; // TODO : To be calculated from Number of assignements x meeting duration
     $this->idProject=$meeting->idProject;
     $this->refName=$meeting->name;

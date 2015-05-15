@@ -24,8 +24,6 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-//echo "availabilityPlan.php";
-
 include_once '../tool/projeqtor.php';
 $paramYear='';
 if (array_key_exists('yearSpinner',$_REQUEST)) {

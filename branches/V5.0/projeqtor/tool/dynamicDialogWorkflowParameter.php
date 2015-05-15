@@ -75,7 +75,7 @@ $statusColorList=SqlList::getList('Status', 'color');
         <?php echo i18n("buttonCancel");?>
         </button>
         <button id="dialogWorkflowParameterSubmit" dojoType="dijit.form.Button" type="submit" 
-         onclick="saveWorkflowParameter();return false;" >
+         onclick="protectDblClick(this);saveWorkflowParameter();return false;" >
          <?php echo i18n("buttonOK");?>
         </button>
       </td>

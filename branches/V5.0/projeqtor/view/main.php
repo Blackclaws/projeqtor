@@ -704,7 +704,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="smallTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogQuestion').acceptCallbackNo();dijit.byId('dialogQuestion').hide();">
           <?php echo i18n("buttonNo");?>
         </button>
-        <button class="smallTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogQuestion').acceptCallbackYes();dijit.byId('dialogQuestion').hide();">
+        <button class="smallTextButton" id="dialogQuestionSubmitButton" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);dijit.byId('dialogQuestion').acceptCallbackYes();dijit.byId('dialogQuestion').hide();">
           <?php echo i18n("buttonYes");?>
         </button>
       </td>
@@ -729,7 +729,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogConfirm').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" onclick="dijit.byId('dialogConfirm').acceptCallback();dijit.byId('dialogConfirm').hide();">
+        <button class="mediumTextButton" id="dialogConfirmSubmitButton" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);dijit.byId('dialogConfirm').acceptCallback();dijit.byId('dialogConfirm').hide();">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -924,7 +924,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton"  dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogNote').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton"  id="dialogNoteSubmit" dojoType="dijit.form.Button" type="submit" onclick="saveNote();return false;">
+        <button class="mediumTextButton"  id="dialogNoteSubmit" dojoType="dijit.form.Button" type="submit" onclick="protectDblClick(this);saveNote();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1104,7 +1104,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogBillLine').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" id="dialogBillLineSubmit" type="submit" onclick="saveBillLine();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" id="dialogBillLineSubmit" type="submit" onclick="protectDblClick(this);saveBillLine();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1202,7 +1202,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogLink').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogLinkSubmit" onclick="saveLink();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogLinkSubmit" onclick="protectDblClick(this);saveLink();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1252,7 +1252,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogOtherVersion').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogOtherVersionSubmit" onclick="saveOtherVersion();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogOtherVersionSubmit" onclick="protectDblClick(this);saveOtherVersion();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1300,7 +1300,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogApprover').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogApproverSubmit" onclick="saveApprover();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogApproverSubmit" onclick="protectDblClick(this);saveApprover();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1362,7 +1362,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogOrigin').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogOriginSubmit" onclick="saveOrigin();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogOriginSubmit" onclick="protectDblClick(this);saveOrigin();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1421,7 +1421,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCreationInfo').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCreationInfoSubmit" onclick="saveCreationInfo();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCreationInfoSubmit" onclick="protectDblClick(this);saveCreationInfo();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1553,7 +1553,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCopy').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="copyObjectToSubmit();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogCopySubmit" onclick="protectDblClick(this);copyObjectToSubmit();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1639,7 +1639,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogCopyProject').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="copyProjectToSubmit();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogProjectCopySubmit" onclick="protectDblClick(this);copyProjectToSubmit();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1808,7 +1808,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAssignment').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" id="dialogAssignmentSubmit" type="submit" onclick="saveAssignment();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" id="dialogAssignmentSubmit" type="submit" onclick="protectDblClick(this);saveAssignment();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1903,7 +1903,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogExpenseDetail').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogExpenseDetailSubmit" onclick="saveExpenseDetail();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogExpenseDetailSubmit" onclick="protectDblClick(this);saveExpenseDetail();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -1966,7 +1966,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="cancelPlan();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogPlanSubmit" onclick="plan();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogPlanSubmit" onclick="protectDblClick(this);plan();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -2072,7 +2072,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogDependency').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogDependencySubmit" onclick="saveDependency();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogDependencySubmit" onclick="protectDblClick(this);saveDependency();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -2145,7 +2145,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogResourceCost').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogResourceCostSubmit" onclick="saveResourceCost();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogResourceCostSubmit" onclick="protectDblClick(this);saveResourceCost();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -2236,7 +2236,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button"  onclick="dijit.byId('dialogVersionProject').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogVersionProjectSubmit" onclick="saveVersionProject();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogVersionProjectSubmit" onclick="protectDblClick(this);saveVersionProject();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -2370,7 +2370,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogTestCaseRun').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogTestCaseRunSubmit" onclick="saveTestCaseRun();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogTestCaseRunSubmit" onclick="protectDblClick(this);saveTestCaseRun();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -2485,7 +2485,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
         <button class="mediumTextButton" dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogAffectation').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogAffectationSubmit" onclick="saveAffectation();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogAffectationSubmit" onclick="protectDblClick(this);saveAffectation();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>
@@ -2593,7 +2593,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           <?php echo i18n("buttonCancel");?>
         </button>
         </td><td>
-        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogFilterSubmit" onclick="selectFilter();return false;">
+        <button class="mediumTextButton" dojoType="dijit.form.Button" type="submit" id="dialogFilterSubmit" onclick="protectDblClick(this);selectFilter();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
         </td></tr></table>

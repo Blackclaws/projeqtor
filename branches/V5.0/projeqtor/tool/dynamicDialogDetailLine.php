@@ -60,7 +60,7 @@ if (! $print) {?>
        <?php echo i18n("buttonCancel");?>
      </button>
      <button id="dialogChecklistSubmit" dojoType="dijit.form.Button" type="submit" 
-       onclick="saveDetailLine();return false;" >
+       onclick="protectDblClick(this);saveDetailLine();return false;" >
        <?php echo i18n("buttonOK");?>
      </button>
    </td>
