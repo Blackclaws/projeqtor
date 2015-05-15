@@ -163,6 +163,7 @@ class Importable extends SqlElement {
 				break;
 			case "xlsx":
 				$data=Importable::importXLSX($fileName);
+				date_default_timezone_set('UTC');
 				break;
 			default:
 				errorLog("ERROR - File Type not recognized");

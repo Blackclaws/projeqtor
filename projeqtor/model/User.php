@@ -41,7 +41,7 @@ class User extends SqlElement {
   public $idProfile;
   public $locked;
   public $loginTry;
-  public $isLdap;
+  
   public $isContact;
   public $isResource=0;
   
@@ -52,6 +52,7 @@ class User extends SqlElement {
   public $_sec_Miscellaneous;
   public $password;
   public $dontReceiveTeamMails;
+  public $isLdap;
   public $apiKey;
   public $_spe_buttonSendMail;
   public $_arrayFilters=array();
@@ -80,7 +81,7 @@ class User extends SqlElement {
                                           "name"=>"required, truncatedWidth100",
                                           "resourceName"=>"truncatedWidth100",
   		                                    "email"=>"truncatedWidth100",
-  										                    "isLdap"=>"hidden,forceExport",
+  										                    "isLdap"=>"",
                                           "idProfile"=>"required",
                                           "loginTry"=>"hidden",
                                           "salt"=>'hidden', 

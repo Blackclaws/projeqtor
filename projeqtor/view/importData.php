@@ -40,15 +40,15 @@
       onSubmit="return importData();" >
     <table width="100%">
       <tr>
-        <td width="50px" align="center">
+        <td width="5%" align="center">
           <img src="css/images/iconImportData32.png" width="32" height="32" />
         </td>
-        <td NOWRAP width="30%" class="title" >
+        <td NOWRAP width="45%" class="title" >
           <?php echo i18n('menuImportData')?>&nbsp;&nbsp;&nbsp;
         </td>
-        <td width="10px" >&nbsp;
+        <td width="5%" >&nbsp;
         </td>
-        <td class="white" width="10%" nowrap align="right" >
+        <td class="white" width="15%" nowrap align="right" >
           <?php echo i18n("colImportElementType") ?>&nbsp;&nbsp;
         </td>
         <td width="10%" >
@@ -58,7 +58,7 @@
             <?php htmlDrawOptionForReference('idImportable', null, null, true);?>
            </select> 
         </td>
-        <td  align="left"> 
+        <td width="20%" align="left"> 
           <button id="helpImportData" iconClass="iconHelp" dojoType="dijit.form.Button" type="button" showlabel="false"
           title="<?php echo i18n('helpImport');?>">
              <script type="dojo/connect" event="onClick" args="evt">
@@ -90,7 +90,7 @@
         <td class="white" nowrap align="right">
          <?php echo i18n("colFile");?>&nbsp;&nbsp;
         </td>
-        <td>
+        <td colspan="2">
          <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>" />     
          <input MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
           dojoType="dojox.form.FileInput" type="file"
@@ -108,7 +108,7 @@
             <?php echo i18n("buttonImportData");?>
           </button>
          </td>
-         <td></td>
+       <td></td>
       </tr>
     </table>
     </form>
