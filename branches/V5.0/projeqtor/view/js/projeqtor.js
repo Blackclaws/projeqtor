@@ -1196,6 +1196,7 @@ function finaliseButtonDisplay() {
     // change
       formLock();
       enableWidget('newButton');
+      enableWidget('newButtonList');
       enableWidget('saveButton');
       disableWidget('undoButton');
       disableWidget('mailButton');
@@ -1211,6 +1212,7 @@ function finaliseButtonDisplay() {
     // id does not exist => not selected, only new button possible
     formLock();
     enableWidget('newButton');
+    enableWidget('newButtonList');
     if (dijit.byId("objectGrid")) {
       enableWidget('multiUpdateButton');
     } else {
@@ -1289,6 +1291,7 @@ function formChanged() {
     rerurn;
   }
   disableWidget('newButton');
+  disableWidget('newButtonList');
   enableWidget('saveButton');
   disableWidget('printButton');
   disableWidget('printButtonPdf');
@@ -1321,6 +1324,7 @@ function formChanged() {
  */
 function formInitialize() {
   enableWidget('newButton');
+  enableWidget('newButtonList');
   enableWidget('saveButton');
   enableWidget('printButton');
   enableWidget('printButtonPdf');
@@ -1348,6 +1352,7 @@ function formInitialize() {
  */
 function formLock() {
   disableWidget('newButton');
+  disableWidget('newButtonList');
   disableWidget('saveButton');
   disableWidget('printButton');
   disableWidget('printButtonPdf');
@@ -1372,6 +1377,7 @@ function buttonRightLock() {
   if (createRight) {
     if (createRight.value!='YES') {
       disableWidget('newButton');
+      disableWidget('newButtonList');
       disableWidget('copyButton');
     }
   }

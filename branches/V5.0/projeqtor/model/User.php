@@ -416,6 +416,8 @@ class User extends SqlElement {
     foreach ($affList as $aff) {
       if ($aff->idProfile!=$this->idProfile) {
         $result[$aff->idProject]=$aff->idProfile;
+        $proj=new Project($aff->idProject);
+        $list=$proj->getSubProjectsList($limitToActiveProjects);
       }  
     }
     if ($limitToActiveProjects) {
