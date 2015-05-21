@@ -183,6 +183,7 @@ ADD `validatedEndFraction` DECIMAL(6,5) default 1;
 INSERT INTO `${prefix}planningmode` (`id`, `applyTo`, `name`, `code`, `sortOrder`, `idle`, `mandatoryStartDate`, `mandatoryEndDate`) VALUES
 (19, 'Activity', 'PlanningModeSTART', 'START', 130, 0 , 1, 0),
 (20, 'Activity', 'PlanningModeQUART', 'QUART', 340, 0 , 1, 1);
+UPDATE `${prefix}planningmode` SET code='FIXED' WHERE name='PlanningModeFIXED';
 
 ALTER TABLE `${prefix}resource` ADD `function` VARCHAR(100) default NULL;
 

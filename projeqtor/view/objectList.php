@@ -323,6 +323,26 @@ $showIdle=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_
                 </script>
               </button>              
             </td>
+            <td width="36px">
+              <button id="newButtonList" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
+                iconClass="dijitButtonIcon dijitButtonIconNew" class="detailButton">
+                <script type="dojo/connect" event="onClick" args="evt">
+		              dojo.byId("newButton").blur();
+                  id=dojo.byId('objectId');
+	                if (id) { 	
+		                id.value="";
+		                unselectAllRows("objectGrid");
+                    if (switchedMode) {
+                      setTimeout("hideList(null,true);", 1);
+                    }
+                    loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+                  } else { 
+                    showError(i18n("errorObjectId"));
+	                }
+                </script>
+              </button>
+            </td>
 <?php }?>       
 <?php if (! $comboDetail) {?> 
             <td style="text-align: right; " width="5px">

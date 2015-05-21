@@ -598,6 +598,10 @@ debugLog("      $currentDate : $value d    startDate=$startPlan startFraction=$s
                       $value=0.25;
                     }
                   }
+                  if ($value>($capacity-$planned)) {
+                    $value=$capacity-$planned;
+                    if ($value<0.1) $value=0;
+                  }
                   $regulDone+=$value;
                 }
                 if ($profile=='GROUP') {
@@ -815,9 +819,11 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
     		$crit='1';
     	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7' or  $elt->idPlanningMode=='20'
     	  or $elt->idPlanningMode=='10' or $elt->idPlanningMode=='11' or $elt->idPlanningMode=='13') { // REGUL or FULL or HALF or QUART)
-    	  $crit='2';	
-    	} else { // Others (includes GROUP, with is not a priority but a constraint
-        $crit='3';
+    	  $crit='2';
+    	} else if ($elt->idPlanningMode=='8' or  $elt->idPlanningMode=='14') { // FDUR  
+    	  $crit='3';
+    	} else { // Others (includes GROUP, with is not a priority but a constraint)
+        $crit='4';
     	}
       $crit.='.';
       $prio=$elt->priority;
