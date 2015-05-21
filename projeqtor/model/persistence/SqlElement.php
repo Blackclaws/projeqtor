@@ -251,7 +251,7 @@ abstract class SqlElement {
                                   "Attachement"=>"cascade",
                                   "Dependency"=>"cascade",
                                   "Link"=>"cascade",
-                                  "Milestone"=>"confirm",
+                                  // "Milestone"=>"confirm",
                                   "Note"=>"cascade",
                                   "PlannedWork"=>"cascade",
                                   "TestCaseRun"=>"cascade",),

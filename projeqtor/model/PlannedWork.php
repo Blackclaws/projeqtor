@@ -179,7 +179,7 @@ class PlannedWork extends GeneralWork {
     $arrayNotPlanned=array();
     // Treat each PlanningElement
     foreach ($listPlan as $plan) {
-//traceLog("$plan->id $plan->refType #$plan->refId");
+//debugLog("$plan->id $plan->refType #$plan->refId");
       if (! $plan->id) {
         continue;
       }
@@ -203,6 +203,7 @@ class PlannedWork extends GeneralWork {
         $pm=new PlanningMode($plan->idPlanningMode);
         $profile=$pm->code;  
       }
+debugLog("$plan->id $plan->refType #$plan->refId Profile=$profile Left=$plan->leftWork");
       if ($profile=="REGUL" or $profile=="FULL" 
        or $profile=="HALF" ) { // Regular planning
         $startPlan=$plan->validatedStartDate;
@@ -397,6 +398,7 @@ class PlannedWork extends GeneralWork {
           } else {
             $ress=$r->getWork($startDate, $withProjectRepartition);        
           }
+debugLog("   Assignment pour #".$ass->idResource.", Left=".$ass->leftWork.", Used[16/06]=".((isset($ress['2015-06-16']))?$ress['2015-06-16']:'0'));
           if ($startPlan>$startDate) {
             $currentDate=$startPlan;
           } else {
@@ -525,7 +527,7 @@ class PlannedWork extends GeneralWork {
                     $tmpTarget=round($tmpTarget*$tempCapacity/$regulTh,10);
                   }                                    
                 	$regulTarget=round($regulTarget+$tmpTarget,10);              
-                  $toPlan=$regulTarget-$regulDone;
+                  $toPlan=$regulTarget-$regulDone;                  
                   if ($value>$toPlan) {
                     $value=$toPlan;
                   }
@@ -543,6 +545,10 @@ class PlannedWork extends GeneralWork {
                     } else {
                       $value=0.5;
                     }
+                  }
+                  if ($value>($capacity-$planned)) {
+                    $value=$capacity-$planned;
+                    if ($value<0.1) $value=0;
                   }
                   $regulDone+=$value;
                 }
@@ -764,8 +770,10 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
     		$crit='1';
     	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7') {
     	  $crit='2';	
+    	} else if ($elt->idPlanningMode=='8' or  $elt->idPlanningMode=='14') {  
+    	  $crit='3';
     	} else {
-        $crit='3';
+        $crit='4';
     	}
       $crit.='.';
       $prio=$elt->priority;
