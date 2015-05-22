@@ -29,6 +29,8 @@
  */
   require_once "../tool/projeqtor.php";
   scriptLog('   ->/tool/jsonPlanning.php');
+  SqlElement::$_cachedQuery['Project']=array();
+  SqlElement::$_cachedQuery['Resource']=array();
   $objectClass='PlanningElement';
   $obj=new $objectClass();
   $table=$obj->getDatabaseTableName();
@@ -47,6 +49,10 @@
   }
   if ( array_key_exists('portfolio',$_REQUEST) ) {
     $portfolio=true;
+  }
+  $showResource=false;
+  if ( array_key_exists('showResource',$_REQUEST) ) {
+    $showResource=true;
   }
   $starDate="";
   $endDate="";
@@ -177,6 +183,7 @@
     }
   } else {
     // return result in json format
+    $arrayObj=array();
     $d=new Dependency();
     echo '{"identifier":"id",' ;
     echo ' "items":[';
@@ -233,26 +240,40 @@
           if ($id=='id') {$idPe=$val;}
         }
         //add expanded status
-        if (array_key_exists('Planning_'.$line['reftype'].'_'.$line['refid'], $collapsedList)) {
+        if (isset($collapsedList['Planning_'.$line['reftype'].'_'.$line['refid']])) {
         	echo ',"collapsed":"1"';
         } else {
         	echo ',"collapsed":"0"';
         }
         if ($line['reftype']!='Project' and $line['reftype']!='Fixed') {
-        	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
-          $ass=new Assignment();
-          $assList=$ass->getSqlElementsFromCriteria($crit,false);
-	        $arrayResource=array();
-	        $objElt=new $line['reftype']($line['refid']);
-	        foreach ($assList as $ass) {       	
-	        	$res=new Resource($ass->idResource);
-	        	if ($res->$displayResource)	{
-	        	  $arrayResource[$res->id]=$res->$displayResource;
-	        	  if ($objElt and property_exists($objElt,'idResource') and $objElt->idResource==$res->id ) {
-	        		  $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
-	        	  }
-	        	}
-	        }
+          $arrayResource=array();
+          if ($showResource) {
+          	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
+            $ass=new Assignment();
+            $assList=$ass->getSqlElementsFromCriteria($crit,false); 
+            $resp="";	        
+  	        if (isset($arrayObj[$line['reftype']])) {
+  	          $objElt=$arrayObj[$line['reftype']];
+  	        } else {
+              $objElt=new $line['reftype']();
+              if (! property_exists($objElt,'idResource')) {
+                $objElt=null;
+              }
+              $arrayObj[$line['reftype']]=$objElt;
+  	        }
+  	        if ($objElt) {
+  	          $resp=SqlList::getFieldFromId($line['reftype'], $line['refid'], 'idResource');
+  	        }
+  	        foreach ($assList as $ass) {       	
+  	        	$res=new Resource($ass->idResource);
+  	        	if ($res->$displayResource)	{
+  	        	  $arrayResource[$res->id]=$res->$displayResource;
+  	        	  if ($resp and $resp==$res->id ) {
+  	        		  $arrayResource[$res->id]='<b>'.$res->$displayResource.'</b>';
+  	        	  }
+  	        	}
+  	        }
+          }
 	        //$res=new Resource($ass->idResource);
 	        echo ',"resource":"' . implode(', ',$arrayResource) . '"';
         }

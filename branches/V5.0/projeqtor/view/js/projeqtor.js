@@ -503,7 +503,7 @@ function cleanContent(destination) {
  *            some treatment, calling finalizeMessageDisplay
  * @return void
  */
-function loadContent(page, destination, formName, isResultMessage, validationType, directAccess) {
+function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent) {
   var debugStart=(new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
@@ -546,7 +546,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
 	   page+="?directAccessIndex="+directAccessIndex;
     }	   
   } 
-  showWait();
+  if (! silent) showWait();
   // NB : IE Issue (<IE8) must not fade load
   // send Ajax request
   dojo.xhrPost({
@@ -633,7 +633,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           || (page.indexOf("jsonPortfolioPlanning.php")>=0 && dijit.byId("startDatePlanView"))) {               
         drawGantt();
         selectPlanningRow();
-        hideWait();
+        if (! silent) hideWait();
         var bt=dijit.byId('planButton');
         if (bt) {
       	  bt.set('iconClass',"iconPlanStopped");
@@ -641,7 +641,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
       } else if (destination=="resultDivMultiple") {
         finalizeMultipleSave();
       } else {
-        hideWait();
+        if (! silent) hideWait();
       } 
       // For debugging purpose : will display call page wil execution time
       var debugEnd=(new Date()).getTime();
@@ -658,7 +658,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     },
     error: function(error,args){
         console.warn(i18n("errorXhrPost", new Array(page, destination, formName, isResultMessage, error)));
-        hideWait();}
+        if (! silent) hideWait();}
   });
   if (fadingMode) {
 	  dojo.fadeOut({ 
@@ -1646,7 +1646,7 @@ function i18n(str, vars) {
  */
 function setSelectedProject(idProject, nameProject, selectionField) {
   if (selectionField) {
-	dijit.byId(selectionField).set("label",'<div style="width:140px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
+	  dijit.byId(selectionField).set("label",'<div style="width:140px; overflow: hidden;text-align: left;" >'+nameProject+'</div>');
   }
   if (idProject!="") {
     dojo.xhrPost({
@@ -1676,7 +1676,7 @@ function setSelectedProject(idProject, nameProject, selectionField) {
   if (selectionField) {
     dijit.byId(selectionField).closeDropDown();
   }
-  loadContent('../view/shortcut.php',"projectLinkDiv");
+  loadContent('../view/shortcut.php',"projectLinkDiv",null,null,null,null,true);
 }
 
 /**
@@ -1845,7 +1845,7 @@ function drawGantt() {
       }
       if (pEnd<pStart) pEnd=pStart;
       //
-console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfraction);
+//console.log(item.refname+" "+item.plannedstartfraction+" "+item.plannedendfraction);
       var realWork=parseFloat(item.realwork);
       var plannedWork=parseFloat(item.plannedwork);
       var progress=0;

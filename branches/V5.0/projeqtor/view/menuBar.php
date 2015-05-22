@@ -166,6 +166,7 @@
     <td style="width:80%"><div id="menuBarVisibleDiv"></div></td>
 <?php }?>
     <td width="100px" align="center" id="menuBarRight" class="statusBar" style="position:relative;z-index:30;">
+      <table><tr><td rowspan="2">
 <?php if ($showMenuBar!='NO') {?>       
       <button id="menuBarMoveRight" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('menuBarMoveRight');?>"
@@ -183,23 +184,42 @@
          </script>
       </button>   
 <?php }?>
+      </td><td>
       <button id="menuBarUndoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonUndoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 10px; top:-10px; z-index:30;"
+       style="position:relative;left: 10px; top:0px; z-index:30;"
        iconClass="dijitButtonIcon dijitButtonIconPrevious" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           undoItemButton();
         </script>
-      </button>    
+      </button>  
+      </td><td>  
       <button id="menuBarRedoButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonRedoItem');?>"
        disabled="disabled"
-       style="position:relative;left: 10px; top: -10px; z-index:30"
+       style="position:relative;left: 10px; top: 0px; z-index:30"
        iconClass="dijitButtonIcon dijitButtonIconNext" class="detailButton" >
         <script type="dojo/connect" event="onClick" args="evt">
           redoItemButton();
         </script>
-      </button>    
+      </button>
+      </td></tr>
+      <tr style="height:10px;"><td colspan="2">     
+       <a id="menuBarNewtabButton" title="<?php echo i18n('buttonNewtabItem');?>"
+       style="height:10px; position:relative; top:-3px;left:10px;width:60px;" 
+       href="" target="_blank">
+       <button dojoType="dijit.form.Button" xiconClass="dijitButtonIcon" class="detailButton"
+       style="height:10px;width:60px;">
+         <script type="dojo/connect" event="onClick" args="evt">
+           var url="main.php?directAccess=true";
+           if (dojo.byId('objectClass')) url+="&objectClass="+dojo.byId('objectClass').value;
+           if (dojo.byId('objectId')) url+="&objectClass="+dojo.byId('objectId').value;
+           dojo.byId("menuBarNewtabButton").href=url;
+         </script>
+       </button>
+       </a>
+      </td></tr>
+      </table>    
     </td>
   </tr></table>

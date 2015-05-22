@@ -317,6 +317,7 @@ if ($saveShowClosed) {
 		<div dojoType="dijit.layout.ContentPane" id="planningJsonData" jsId="planningJsonData" 
      style="display: none">
 		  <?php
+		       if ($saveShowResource) $_REQUEST['showResource']='on';
             include '../tool/jsonPlanning.php';
           ?>
 		</div>

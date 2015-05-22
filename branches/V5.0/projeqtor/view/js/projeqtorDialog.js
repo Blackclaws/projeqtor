@@ -4268,6 +4268,9 @@ function redoItemButton() {
   }
 }
 
+function newTab() {
+  
+}
 // Stock id and name, to
 // => avoid filterJsonList to reduce visibility => clear this data on open
 // => retrieve data before close to retrieve the previous visibility
@@ -5563,6 +5566,10 @@ function diarySelectDate(directDate) {
 }
 
 function diaryPreviousNext(way) {
+  if (waitingForReply)  {
+    showInfo(i18n("alertOngoingQuery"));
+    return;
+  }
   period=dojo.byId("diaryPeriod").value;
   year=dojo.byId("diaryYear").value;
   month=dojo.byId("diaryMonth").value;
