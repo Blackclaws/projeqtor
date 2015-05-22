@@ -632,6 +632,7 @@
             if (substr($formatter[$nbFields],0,5)=='thumb') {             
             	if (substr($formatter[$nbFields],0,9)=='thumbName') {
             	  $nameClass=substr($id,4);
+            	  if (Sql::isPgsql()) $nameClass=strtolower($nameClass);
             	  if ($val and $showThumb) {
             	    $val=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$nbFields],9)).'#'.$val;
             	  } else {

@@ -1412,17 +1412,20 @@ JSGantt.findObj = function (theObj, theDoc) {
  */
 JSGantt.changeFormat = function(pFormat,ganttObj) {
   if(ganttObj) {
-	top.showWait();  
-    if (ganttObj.getFormat()=='month' && ganttObj.getEndDateView() ) {
-      ganttObj.setFormat(pFormat);
-	  refreshJsonPlanning();
-	} else {
-      ganttObj.resetStartDateView();
-      ganttObj.resetEndDateView();
-      ganttObj.setFormat(pFormat);
-      ganttObj.DrawDependencies();
-	}
-    top.hideWait();
+	  top.showWait();
+	  var func=function() {
+  	  if (ganttObj.getFormat()=='month' && ganttObj.getEndDateView() ) {
+        ganttObj.setFormat(pFormat);
+        refreshJsonPlanning();
+      } else {
+        ganttObj.resetStartDateView();
+        ganttObj.resetEndDateView();
+        ganttObj.setFormat(pFormat);
+        ganttObj.DrawDependencies();
+      }
+  	  top.hideWait();
+	  };
+	  setTimeout(func,10); // This is done to let the time to the browser to display the waiting spinner (showWait())
   } else {
     alert('Chart undefined');
   };
@@ -1430,7 +1433,6 @@ JSGantt.changeFormat = function(pFormat,ganttObj) {
   ganttPlanningScale=pFormat;
   highlightPlanningLine();
 };
-
 
 /**
  * Open/Close and hide/show children of specified task
