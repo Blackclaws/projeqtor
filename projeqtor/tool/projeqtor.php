@@ -1843,12 +1843,11 @@ function getForeColor($color) {
 /* calculate the first day of a given week
  * 
  */
-function firstDayofWeek($week,$year) 
-{
-    $Jan1 = mktime(1,1,1,1,1,$year); 
-    $MondayOffset = (11-date('w',$Jan1))%7-3; 
-    $desiredMonday = strtotime(($week-1) . ' weeks '.$MondayOffset.' days', $Jan1); 
-    return $desiredMonday; 
+function firstDayofWeek($week, $year) {
+  $Jan1 = mktime ( 1, 1, 1, 1, 1, $year );
+  $MondayOffset = (11 - date ( 'w', $Jan1 )) % 7 - 3;
+  $desiredMonday = strtotime ( ($week - 1) . ' weeks ' . $MondayOffset . ' days', $Jan1 );
+  return $desiredMonday;
 }
 
 /* Calculate number of days between 2 dates
