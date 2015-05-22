@@ -209,12 +209,12 @@
        <a id="menuBarNewtabButton" title="<?php echo i18n('buttonNewtabItem');?>"
        style="height:10px; position:relative; top:-3px;left:10px;width:60px;" 
        href="" target="_blank">
-       <button dojoType="dijit.form.Button" xiconClass="dijitButtonIcon" class="detailButton"
+       <button dojoType="dijit.form.Button" iconClass="dijitButtonIcon iconNewtab" class="detailButton"
        style="height:10px;width:60px;">
          <script type="dojo/connect" event="onClick" args="evt">
            var url="main.php?directAccess=true";
            if (dojo.byId('objectClass')) url+="&objectClass="+dojo.byId('objectClass').value;
-           if (dojo.byId('objectId')) url+="&objectClass="+dojo.byId('objectId').value;
+           if (dojo.byId('objectId')) url+="&objectId="+dojo.byId('objectId').value;
            dojo.byId("menuBarNewtabButton").href=url;
          </script>
        </button>
