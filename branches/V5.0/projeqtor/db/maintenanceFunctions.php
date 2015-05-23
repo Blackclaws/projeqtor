@@ -76,34 +76,25 @@ function runScript($vers,$pluginSqlFile=null) {
 	            traceLog("*************************************************");
 	            traceLog("");
 	            $query="";
-	          } else {
-	          	Sql::commitTransaction();
+	          } else {	          	
 	            $action="";
 	            if (substr($query,0,12)=='CREATE TABLE') {
 	              $action="CREATE TABLE";
-	            }
-	            if (substr($query,0,12)=='RENAME TABLE') {
+	            } else if (substr($query,0,12)=='RENAME TABLE') {
 	              $action="RENAME TABLE";
-	            }
-	            if (substr($query,0,11)=='INSERT INTO') {
+	            } else if (substr($query,0,11)=='INSERT INTO') {
 	              $action="INSERT INTO";
-	            }
-	            if (substr($query,0,6)=='UPDATE') {
+	            } else if (substr($query,0,6)=='UPDATE') {
 	              $action="UPDATE";
-	            }
-	            if (substr($query,0,11)=='ALTER TABLE') {
+	            } else if (substr($query,0,11)=='ALTER TABLE') {
 	              $action="ALTER TABLE";
-	            }
-	            if (substr($query,0,10)=='DROP TABLE') {
+	            } else if (substr($query,0,10)=='DROP TABLE') {
 	              $action="DROP TABLE";
-	            }
-	            if (substr($query,0,11)=='DELETE FROM') {
+	            } else if (substr($query,0,11)=='DELETE FROM') {
 	              $action="DELETE FROM";
-	            }
-	            if (substr($query,0,14)=='TRUNCATE TABLE') {
+	            } else if (substr($query,0,14)=='TRUNCATE TABLE') {
 	              $action="TRUNCATE TABLE";
-	            }
-	            if (substr($query,0,12)=='CREATE INDEX') {
+	            } else if (substr($query,0,12)=='CREATE INDEX') {
                 $action="CREATE INDEX";
               }
 	            $deb=strlen($action);
@@ -125,6 +116,21 @@ function runScript($vers,$pluginSqlFile=null) {
 	            $tableName=trim($tableName,'`');
 	            $tableName=trim($tableName,'"');
 	            $tableName=trim($tableName,';');
+	            if ( $action=="RENAME TABLE" or 
+	                 ($action=="ALTER TABLE" and Sql::isPgsql() and strpos($query,' RENAME TO ')>0 ) ) { // Must also rename sequence
+	               $pos=strpos($query,' TO ');
+	               $toTableName=substr($query,$pos+4);
+	               $toTableName=trim($toTableName);
+	               $toTableName=trim($toTableName,'`');
+	               $toTableName=trim($toTableName,'"');
+	               $toTableName=trim($toTableName,';');
+	               if (Sql::isPgsql()) {
+	                 $action="RENAME TABLE";
+	                 $querySeq="ALTER SEQUENCE ".$tableName."_id_seq RENAME TO ".$toTableName."_id_seq";
+	                 $resultSeq=Sql::query($querySeq);
+	               }
+	            }
+	            Sql::commitTransaction();
 	            switch ($action) {
 	              case "CREATE TABLE" :
 	                traceLog(" Table \"" . $tableName . "\" created."); 
@@ -136,7 +142,7 @@ function runScript($vers,$pluginSqlFile=null) {
 	                traceLog(" Table \"" . $tableName . "\" altered."); 
 	                break;
 	              case "RENAME TABLE" :
-	                traceLog(" Table \"" . $tableName . "\" renamed."); 
+	                traceLog(" Table \"" . $tableName . "\" renamed to \"".$toTableName."\""); 
 	                break;
 	              case "TRUNCATE TABLE" :
 	                traceLog(" Table \"" . $tableName . "\" truncated.");
