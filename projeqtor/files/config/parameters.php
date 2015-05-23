@@ -14,3 +14,4 @@ $debugQuery=false;
 $enforceUTF8='1';
 //======= END$memoryLimitForPDF = '512';
 $memoryLimitForPDF = '512';
+$memoryLimitForPDF = '512';
