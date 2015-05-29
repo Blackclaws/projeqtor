@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin name="translationFrench">
+  <property name="description"    value="Translation of parameters values into french" />
+  <property name="version"        value="1.0" />
+  <property name="compatibility"  value="V4.5.0" />
+  <property name="sql"            value="translationFrench.sql"/>
+</plugin>
