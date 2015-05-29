@@ -187,6 +187,7 @@ class Parameter extends SqlElement {
       case 'lang':case 'paramDefaultLocale':
         $list=array('en'=>i18n('langEn'), 
                     'fr'=>i18n('langFr'), 
+                    'fr-ca'=>i18n('langFrCa'),
                     'de'=>i18n('langDe'),
                     'es'=>i18n('langEs'),
                     'pt'=>i18n('langPt'),
