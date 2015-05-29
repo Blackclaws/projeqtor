@@ -127,9 +127,18 @@ function translateFormatter($value) {
   }
 }
 
-function percentFormatter($value) {
-  if ($value!==null) { 
-    return $value . '&nbsp;%';
+function percentFormatter($value, $withProgressBar=false) {
+  if ($value!==null) {
+    if ($withProgressBar) {
+      $pctTxt ='<div style="width:100%;text-align:center;">'.$value.'&nbsp;%</div>';
+      $pctTxt.='<div style="height:3px;width:100%;position: relative; bottom:0px;">';
+      $pctTxt.='<div style="height:3px;width:'.$value.'%;position: absolute;left:0%;background-color:#AAFFAA">&nbsp;</div>';
+      $pctTxt.='<div style="height:3px;width:'.(100 - $value).'%;position: absolute;left:'.$value.'%; background-color:#FFAAAA">&nbsp;</div>';
+      $pctTxt.='</div>';
+      return $pctTxt;
+    } else {
+      return $value . '&nbsp;%';
+    }
   } else {
     return ''; 
   }

@@ -333,6 +333,7 @@
 	          if (substr($formatter[$numField],0,9)=='thumbName') {
 	            $numField+=1;
 	            $formatter[$numField]='';
+	            $arrayWidth[$numField]='';
 	            $querySelect .= ', '.$table.'.id'.substr($fld,4);
 	          }
 	          //if (! stripos($queryFrom,$externalTable)) {
@@ -557,6 +558,7 @@
 	          foreach ($line as $id => $val) {
 	            $numField+=1;
 	            $disp="";
+	            if (!isset($arrayWidth[$numField]) or $arrayWidth[$numField]=='') continue;
 	            if ($formatter[$numField]=="colorNameFormatter") {
 	              $disp=colorNameFormatter($val);
 	            } else if ($formatter[$numField]=="booleanFormatter") {
@@ -572,7 +574,7 @@
 	            } else if ($formatter[$numField]=="translateFormatter") {
 	              $disp=translateFormatter($val);
 	            } else if ($formatter[$numField]=="percentFormatter") {
-	              $disp=percentFormatter($val);
+	              $disp=percentFormatter($val,true);
 	            } else if ($formatter[$numField]=="numericFormatter") {
 	              $disp=numericFormatter($val);
 	            } else if ($formatter[$numField]=="sortableFormatter") {
@@ -583,11 +585,28 @@
                 $disp=costFormatter($val);
               } else if ($formatter[$numField]=="iconFormatter") {
                 $disp=iconFormatter($val);
-	            } else if (substr($formatter[$numField],0,5)=='thumb') {
+              } else if (substr($formatter[$numField],0,9)=='thumbName') {
+                //$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
+                $nameClass=substr($id,4);
+                if (Sql::isPgsql()) $nameClass=strtolower($nameClass);
+                if ($val and $showThumb) {
+                  $size=substr($formatter[$numField],9);
+                  $radius=round($size/2,0);
+                  $thumbUrl=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$numField],9)).'#'.$val;
+                  $disp='<div style="text-align:left;">';
+                  $disp.='<img style="border-radius:'.$radius.'px;height:'.$size.'px;float:left" src="'.$thumbUrl.'"';
+                  $disp.='/>';
+                  $disp.='<div style="margin-left:'.($size+2).'px;">'.$val.'</div>';
+                  $disp.='</div>';
+                } else {
+                  $disp="";
+                }
+              } else if (substr($formatter[$numField],0,5)=='thumb') {
 	            	$disp=thumbFormatter($objectClass,$line['id'],substr($formatter[$numField],5));
 	            } else {
 	              $disp=htmlEncode($val);
 	            }
+	            
 	            echo '<td class="tdListPrint" style="width:' . $arrayWidth[$numField] . ';">' . $disp . '</td>';
 	          }
 	          echo '</tr>';       

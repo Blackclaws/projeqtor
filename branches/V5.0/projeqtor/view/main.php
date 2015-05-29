@@ -2546,15 +2546,15 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   </script>        
                </select>
              </td>
-             <td style="width:410px;">
+             <td style="width:410px;vertical-align:middle;">
                <input id="filterValue" name="filterValue" value=""  
                  dojoType="dijit.form.TextBox" 
                  style="width:400px" />
                <select id="filterValueList" name="filterValueList[]" value=""  
                  dojoType="dijit.form.MultiSelect" multiple
-                 style="width:400px" size="10" class="input"></select>
+                 style="width:400px" size="10" class="selectList"></select>
                 <input type="checkbox" id="filterValueCheckbox" name="filterValueCheckbox" value=""  
-                 dojoType="dijit.form.CheckBox" 
+                 dojoType="dijit.form.CheckBox" style="padding-top:7px";
                  /> 
                 <input id="filterValueDate" name="filterValueDate" value=""  
                  dojoType="dijit.form.DateTextBox" 
@@ -2568,8 +2568,8 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
                   <option value="desc"><?php echo i18n('sortDesc');?></option>
                  </select> 
              </td>
-             <td style="width:25px; text-align: center;" align="center">
-               <img src="css/images/smallButtonAdd.png" onClick="addfilterClause();" title="<?php echo i18n('addFilterClause');?>" class="smallButton"/> 
+             <td style="width:25px; text-align: center;vertical-align:middle;" align="center">
+               <img src="css/images/smallButtonAdd.png" style="margin-top:3px" class="roundedButtonSmall" onClick="addfilterClause();" title="<?php echo i18n('addFilterClause');?>" class="smallButton"/> 
              </td>
            </tr>
          </table>

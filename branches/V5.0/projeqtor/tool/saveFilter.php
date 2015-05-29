@@ -98,8 +98,8 @@ if (! $name) {
     $criteria->save();
   }
 }
-echo '<table width="100%"><tr><td align="center">';
-echo '<span class="messageOK" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . ' (#'.$filter->id.')</span>';
+echo '<table width="100%"><tr><td align="center" >';
+echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultUpdated') . ' (#'.$filter->id.')</span>';
 echo '</td></tr></table>';
 
 $flt=new Filter();

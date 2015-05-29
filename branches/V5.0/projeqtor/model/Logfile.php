@@ -82,7 +82,7 @@ class Logfile
       } 
       $files=array();
       while (!$error and ($file = readdir($handle)) !== false) {
-        if ($file == '.' || $file == '..') {
+        if ($file == '.' || $file == '..' || $file=='index.php') {
           continue;
         }
         $filepath = ($dir == '.') ? $file : $dir . '/' . $file;
