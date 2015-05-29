@@ -36,7 +36,9 @@
 ?>
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="Administration" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="adminButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top">
+  <div id="adminButtonDiv" class="listTitle" dojoType="dijit.layout.ContentPane" region="top" style="z-index:3;overflow:visible">
+    <div id="resultDiv" dojoType="dijit.layout.ContentPane"
+      region="top" style="padding:5px;mas-height:100px;padding-left:300px;z-index:999"></div>
     <table width="100%">
       <tr>
         <td width="50px" align="center">
@@ -49,9 +51,7 @@
         </td>
         <td width="50px"> 
         </td>
-        <td>
-           <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="center" style="height:20px">
-           </div>       
+        <td>      
         </td>
       </tr>
     </table>
@@ -438,6 +438,55 @@
                 </td>
               </tr>
             </table></div>
+            <br/>
+            <?php $titlePane="Admin_logfileMaintenance"; ?> 
+            <div dojoType="dijit.TitlePane"
+             open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+             id="<?php echo $titlePane;?>" 
+             onHide="saveCollapsed('<?php echo $titlePane;?>');"
+             onShow="saveExpanded('<?php echo $titlePane;?>');"
+             title="<?php echo i18n('logfileMaintenance');?>">
+            <table style="width:100%;">
+              <tr>
+                <td class="label" style="width:200px">
+                  <?php echo i18n("deleteLogfile"). "&nbsp;:&nbsp;";?>
+                </td>
+                <td class="display" width="90%">
+                  <?php echo i18n('olderThan');?>&nbsp;
+                  <div dojoType="dijit.form.NumberTextBox" constraints="{min:0,max:999}"
+                    style="width:30px;"
+                    value="7"
+                    name="deleteLogfileDays" id="deleteLogfileDays">
+                  </div>
+                  &nbsp;<?php echo i18n('days');?>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <button id="deleteLogfile" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('deleteButton'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                       maintenance('delete','Logfile');
+                       return false;
+                     </script>
+                 </button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                 <button id="showLogfile" dojoType="dijit.form.Button" showlabel="true" class="">
+                    <?php echo i18n('showLogfiles'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                       loadDialog('DialogLogfiles',null,true);
+                       //loadContent("../view/logfiles.php","centerDiv");
+                     </script>
+                 </button>
+                </td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+            </table>
+            </div>
           </td>
         </tr>
       </table>

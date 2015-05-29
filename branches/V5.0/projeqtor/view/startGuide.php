@@ -76,9 +76,14 @@
        }
      } else {
         $obj=new $item();
-        $nbItem=$obj->countSqlElementsFromCriteria(array());
+        $crit=array();
+        if ($item=='Contact' or $item=='Resource' or $item=='User') {
+          $crit['is'.$item]='1';
+        }
+        $nbItem=$obj->countSqlElementsFromCriteria($crit);
      }
-     if ($nbItem==0) {
+     
+     if ($nbItem==0 or ($item=='User' and $nbItem<=2) ) {
        echo '<img src="css/images/iconStartGuideTodo.png" />&nbsp;&nbsp;&nbsp;</td>';
        echo '<td VALIGN="middle" colspan="2" style="white-space:normal">';
      } else {
