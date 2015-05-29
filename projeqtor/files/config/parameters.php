@@ -7,8 +7,8 @@
   $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
   $paramDbName='projeqtor_v50';$paramDbPrefix='';
 // PostgreSql Default
-  $paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
-  $paramDbName='projeqtor';$paramDbPrefix=''; 
+//$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
+//$paramDbName='projeqtor';$paramDbPrefix=''; 
 //$paramDbName='steria'; $paramDbPrefix='';
 //$paramDbName='test'; $paramDbPrefix='';
 //$paramDbName='ael'; $paramDbPrefix='ael_';

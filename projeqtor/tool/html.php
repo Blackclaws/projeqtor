@@ -686,7 +686,7 @@ function htmlExtractArgument($tag, $arg) {
  */
 function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   // Display Result
-  echo "<table width='100%'>";
+  echo "<table width='99.9%'>";
   echo "<tr><td class='dialogLabel'>";
   echo '<label for="filterNameDisplay" >' . i18n("filterName") . '&nbsp;:&nbsp;</label>';
   echo '<div type="text" dojoType="dijit.form.ValidationTextBox" ';
@@ -706,7 +706,7 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
   echo "<tr>";
   echo "<td class='filterHeader' style='width:525px;'>" . i18n("criteria") . "</td>";
   echo "<td class='filterHeader' style='width:25px;'>";
-  echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilterClause(\'all\');" title="' . i18n('removeAllFilters') . '" class="smallButton"/> ';
+  echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removefilterClause(\'all\');" title="' . i18n('removeAllFilters') . '" class="smallButton"/> ';
   echo "</td>";
   echo "</tr>";
   if (count($filterArray)>0) { 
@@ -718,7 +718,7 @@ function htmlDisplayFilterCriteria($filterArray, $filterName="") {
            $filter['disp']['value'] .
            "</td>";
       echo "<td class='filterData' style='text-align: center;'>";
-      echo ' <img src="css/images/smallButtonRemove.png" onClick="removefilterClause(' . $id . ');" title="' . i18n('removeFilter') . '" class="smallButton"/> ';
+      echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removefilterClause(' . $id . ');" title="' . i18n('removeFilter') . '" class="smallButton"/> ';
       echo "</td>";
       echo "</tr>";
     }
@@ -773,7 +773,7 @@ function htmlDisplayStoredFilter($filterArray,$filterObjectClass,$currentFilter=
            . "</td>";
       if ($context!='directFilterList') {
         echo "<td class='filterData' style='text-align: center;'>";      
-        echo ' <img src="css/images/smallButtonRemove.png" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
+        echo ' <img src="css/images/smallButtonRemove.png" class="roundedButtonSmall" onClick="removeStoredFilter('. "'" . $filter->id . "','" . htmlEncode(htmlEncode($filter->name)) . "'" . ');" title="' . i18n('removeStoredFilter') . '" class="smallButton"/> ';
         echo "</td>";
       }
       echo "</tr>";

@@ -43,7 +43,12 @@ if (! array_key_exists('idFilter',$_REQUEST)) {
 $idFilter=$_REQUEST['idFilter'];
 Sql::beginTransaction();
 $filter=new Filter($idFilter);
+$name=$filter->name;
 $filter->delete();
+
+echo '<table width="100%"><tr><td align="center" >';
+echo '<span class="messageOK" style="z-index:999;position:relative;top:7px" >' . i18n('colFilter') . " '" . htmlEncode($name) . "' " . i18n('resultDeleted') . ' (#'.$filter->id.')</span>';
+echo '</td></tr></table>';
 
 $flt=new Filter();
 $crit=array('idUser'=> $user->id, 'refType'=>$filterObjectClass );

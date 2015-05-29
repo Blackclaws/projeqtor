@@ -739,7 +739,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           echo '<div id="' . 'colorButton" dojoType="dijit.form.DropDownButton"  ';
           // echo ' style="width: 100px; background-color: ' . $val . ';"';
           echo ' showlabel="false" iconClass="colorSelector" >';
-          echo '  <span>Select color</span>';
+          echo '  <span>' . i18n('selectColor') . '</span>';
           echo '  <div dojoType="dijit.ColorPalette" >';
           echo '    <script type="dojo/method" event="onChange" >';
           echo '      var fld=dojo.byId("color");';
