@@ -142,7 +142,7 @@ function maintenance() {
   if (! trim($operation) or ($operation!='delete' and $operation!='close')) {
     $ctrl.='ERROR<br/>';
   }
-  if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit')) {
+  if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit' and $item!="Logfile")) {
     $ctrl.='ERROR<br/>';
   }
   if ( trim($nbDays)=='' or (intval($nbDays)=='0' and $nbDays!='0')) {
@@ -164,7 +164,8 @@ function maintenance() {
   	$clauseWhere="mailDateTime<'" . $targetDate . "'";
   } else if ($item=="Audit") {
     $clauseWhere="disconnectionDateTime<'" . $targetDate . "'";
-   
+  } else if ($item=="Logfile") {
+    $clauseWhere=$targetDate;
   }
   if ($operation=="close") {
   	return $obj->close($clauseWhere);
