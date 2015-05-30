@@ -5796,3 +5796,7 @@ function saveCreationInfo() {
   saveObject();
   dijit.byId('dialogCreationInfo').hide();
 }
+
+function showLogfile(name) {
+  loadDialog('dialogLogfile', null, true, '&logname='+name, true);
+}

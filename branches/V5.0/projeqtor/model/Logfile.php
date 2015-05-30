@@ -26,10 +26,31 @@
 require_once('_securityCheck.php');
 class Logfile
 {
-    var $name;
-    var $size;
-    var $date;
- 
+    public $name;
+    public $size;
+    public $date;
+    public $type;
+    public $filePath;
+    
+    
+    function __construct($name = NULL) {
+      $this->name=$name;
+      $this->getInfos();
+    }
+    function getInfos() {
+      if ($this->name) {
+        $dir=self::getDir();
+        $filepath=$dir."/".$this->name;
+        if (is_file($filepath) and substr($this->name,0,1)!='.') {
+          $dt=filemtime ($filepath);
+          $this->date=date('Y-m-d H:i',$dt);
+          $this->size=filesize($filepath);
+          $this->type="text/plain";
+          $this->filePath=$filepath;
+        }
+      }
+    }
+    
     function purge($datePurge) {
       $error="";
       traceLog("Logfile->purge() : Technical trace to keep current log file");
@@ -100,6 +121,17 @@ class Logfile
       }
       if (! $error) closedir($handle);
       return $files;
+    }
+    
+    public static function getLast() {
+      $name='';
+      $date='';
+      foreach (self::getList() as $item) {
+        if ($item['date']>$date) {
+          $name=$item['name'];
+        }
+      }
+      return new Logfile($name);
     }
 }
  

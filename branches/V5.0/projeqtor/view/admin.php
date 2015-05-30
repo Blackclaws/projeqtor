@@ -473,13 +473,22 @@
                  </button>
                 </td>
               </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
-                <td colspan="2">
+                <td class="label" style="width:200px"><?php echo i18n('showLogfiles'). "&nbsp;:&nbsp;";?></td>
+                <td>
                  <button id="showLogfile" dojoType="dijit.form.Button" showlabel="true" class="">
                     <?php echo i18n('showLogfiles'); ?>
                      <script type="dojo/connect" event="onClick" args="evt">
-                       loadDialog('DialogLogfiles',null,true);
+                       loadDialog('dialogLogfiles',null,true);
                        //loadContent("../view/logfiles.php","centerDiv");
+                     </script>
+                 </button>
+                 <br/>
+                 <button id="showLastLogfile" dojoType="dijit.form.Button" showlabel="true" class="">
+                    <?php echo i18n('showLastLogfile'); ?>
+                     <script type="dojo/connect" event="onClick" args="evt">
+                       showLogfile('last');
                      </script>
                  </button>
                 </td>
