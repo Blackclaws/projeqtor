@@ -73,7 +73,7 @@ class WorkElement extends SqlElement {
 	 *        	id of the object in the database (null if not stored yet)
 	 * @return void
 	 */
-	function __construct($id = NULL) {
+	function __construct($id = NULL, $withoutDependentObjects=false) {
 		parent::__construct ( $id );
 	}
 	
@@ -119,7 +119,7 @@ class WorkElement extends SqlElement {
 		$old = $this->getOld ();
 		if (! array_key_exists ( 'user', $_SESSION ))
 			return parent::save ();
-		$user = $_SESSION ['user'];
+		$user = getSessionUser();
 		// Update left work
 		$this->leftWork = $this->plannedWork - $this->realWork;
 		if ($this->leftWork < 0 or $this->done) {
@@ -288,9 +288,9 @@ class WorkElement extends SqlElement {
 	
 	public function start() {
 		// First, stop all ongoing work
-		$_SESSION ['user']->stopAllWork ();
+		getSessionUser()->stopAllWork ();
 		// Then start current work
-		$this->idUser = $_SESSION ['user']->id;
+		$this->idUser = getSessionUser()->id;
 		$this->ongoing = 1;
 		$this->ongoingStartDateTime = date ( 'Y-m-d H:i' );
 		$this->save ();
@@ -328,7 +328,7 @@ class WorkElement extends SqlElement {
 			if ($print) {
 				return "";
 			}
-			$user = $_SESSION ['user'];
+			$user = getSessionUser();
 			$title = i18n ( 'startWork' );
 			if ($this->ongoing) {
 				$title = i18n ( 'stopWork' );

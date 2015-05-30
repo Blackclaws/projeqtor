@@ -47,7 +47,7 @@ $readOnly=false;
  * @return void
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
-  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, 
+  global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
    $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
   // $obj->splitLongFields ();
@@ -75,9 +75,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   }
   $fieldWidth=$smallWidth;
   $extName="";
-  $user=$_SESSION ['user'];
+  $user=getSessionUser();
+debugLog($user->getSpecificAffectedProfiles());
   $displayComboButton=false;
-  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->idProfile,'scope' => 'combo'));
+  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $profile,'scope' => 'combo'));
   if ($habil) {
     $list=new ListYesNo($habil->rightAccess);
     if ($list->code == 'YES') {
@@ -509,7 +510,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
             // Draw an included object (recursive call) =========================== Type Object
             $visibileSubObject=true;
             if (get_class($val) == 'WorkElement') {
-              $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'work'));
+              $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'work'));
               if ($hWork and $hWork->id) {
                 $visibility=SqlList::getFieldFromId('VisibilityScope', $hWork->rightAccess, 'accessCode', false);
                 if ($visibility != 'ALL') {
@@ -900,11 +901,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
           $idMenu=($col == "idResourceSelect")?'menuResource':'menu' . substr($col, 2);
           $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', array('name' => $idMenu));
           $crit=array();
-          $crit ['idProfile']=$user->idProfile;
+          $crit ['idProfile']=$profile;
           $crit ['idMenu']=$menu->id;
           $habil=SqlElement::getSingleSqlElementFromCriteria('Habilitation', $crit);
           if ($habil and $habil->allowAccess) {
-            $accessRight=SqlElement::getSingleSqlElementFromCriteria('AccessRight', array('idMenu' => $menu->id,'idProfile' => $user->idProfile));
+            $accessRight=SqlElement::getSingleSqlElementFromCriteria('AccessRight', array('idMenu' => $menu->id,'idProfile' => $profile));
             if ($accessRight) {
               $accessProfile=new AccessProfile($accessRight->idAccessProfile);
               if ($accessProfile) {
@@ -2305,18 +2306,18 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
 }
 
 function drawAssignmentsFromObject($list, $obj, $refresh=false) {
-  global $cr, $print, $user, $browserLocale, $comboDetail, $section, $collapsedList, $widthPct, $outMode;
+  global $cr, $print, $user, $browserLocale, $comboDetail, $section, $collapsedList, $widthPct, $outMode, $profile;
   if ($comboDetail) {
     return;
   }
-  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'assignmentView'));
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentView'));
   if ($habil and $habil->rightAccess != 1) {
     return;
   }
   $section='Assignment';
   // startTitlePane(get_class ( $obj ), $section, $collapsedList, $widthPct, $print, $outMode, "yes", $nbCol);
   $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj) == "YES";
-  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $user->idProfile,'scope' => 'assignmentEdit'));
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile' => $profile,'scope' => 'assignmentEdit'));
   if ($habil and $habil->rightAccess != 1) {
     $canUpdate=false;
   }
@@ -2847,7 +2848,7 @@ function drawOtherVersionFromObject($otherVersion, $obj, $type) {
 }
 
 function drawChecklistFromObject($obj) {
-  global $print, $noselect,$collapsedList,$displayWidth, $printWidth;
+  global $print, $noselect,$collapsedList,$displayWidth, $printWidth, $profile;
   if (!$obj or !$obj->id) return; // Don't try and display checklist for non existant objects
   $displayChecklist='NO';
   $crit="nameChecklistable='".get_class($obj)."'";
@@ -2863,7 +2864,7 @@ function drawChecklistFromObject($obj) {
   $cdList=$cd->getSqlElementsFromCriteria(null,false,$crit);
   if (count($cdList)==0) return; // Don't display checklist if non definition exist for it
   $user=getSessionUser();
-  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
+  $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'checklist'));
   $list=new ListYesNo($habil->rightAccess);
   $displayChecklist=Parameter::getUserParameter('displayChecklist');
   if (!$noselect and $obj->id and $list->code=='YES' and ($displayChecklist=='YES' or $print) ) {
@@ -2903,9 +2904,11 @@ if (!isset($noselect)) {
 if ($noselect) {
   $objId="";
   $obj=null;
+  $profile=getSessionUser()->idProfile;
 } else {
   $objId=$_REQUEST ['objectId'];
   $obj=new $objClass($objId);
+  $profile=getSessionUser()->getProfile($obj);
   if (array_key_exists('refreshNotes', $_REQUEST)) {
     drawNotesFromObject($obj, true);
     exit();

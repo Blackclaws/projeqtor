@@ -122,10 +122,10 @@ class User extends SqlElement {
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */ 
-  function __construct($id = NULL) {
+  function __construct($id = NULL, $withoutDependentObjects=false) {
     global $objClass;
     $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
-  	parent::__construct($id);
+  	parent::__construct($id,$withoutDependentObjects);
     
   	if (! $this->id and Parameter::getGlobalParameter('initializePassword')=="YES") {
   		$tmpSalt=hash('sha256',"projeqtor".date('YmdHis'));
@@ -378,7 +378,7 @@ class User extends SqlElement {
     }
     $affList=$aff->getSqlElementsFromCriteria($crit,false);
     foreach ($affList as $aff) {
-    	$prj=new Project($aff->idProject);
+    	$prj=new Project($aff->idProject,true);
     	if (! isset($result[$aff->idProject])) {
 	      $result[$aff->idProject]=$prj->name;
 	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
@@ -405,8 +405,15 @@ class User extends SqlElement {
       return $this->_specificAffectedProfiles;
     } else if ($this->_specificAffectedProfilesIncludingClosed and ! $limitToActiveProjects) {
       return $this->_specificAffectedProfilesIncludingClosed;
+    } else {
+      $this->getVisibleProjects($limitToActiveProjects); // Will update_specificAffectedProfiles or _specificAffectedProfilesIncludingClosed
+      if ($limitToActiveProjects) {
+        return $this->_specificAffectedProfiles;
+      } else {
+        return $this->_specificAffectedProfilesIncludingClosed;
+      }
     }
-    $result=array();
+    /*$result=array();
     $aff=new Affectation();
     $crit = array("idResource"=>$this->id);
     if ($limitToActiveProjects) {
@@ -425,7 +432,7 @@ class User extends SqlElement {
     } else {
       $this->_specificAffectedProfilesIncludingClosed=$result;
     }
-    return $result;
+    return $result;*/
   }
   
   /** =========================================================================
@@ -443,6 +450,21 @@ class User extends SqlElement {
       return $this->_visibleProjectsIncludingClosed;
     }
     $result=array();
+    // Retrieve current affectation profile for each project
+    $resultAff=array();
+    $affProfile=array();
+    $aff=new Affectation();
+    $crit = array("idResource"=>$this->id);
+    if ($limitToActiveProjects) {
+      $crit["idle"]='0';
+    }
+    $affList=$aff->getSqlElementsFromCriteria($crit,false, null,'idProject asc, startDate asc');
+    $today=date('Y-m-d');
+    foreach ($affList as $aff) {
+      if ( (! $aff->startDate or $aff->startDate<$today) and (! $aff->endDate or $aff->endDate>$today)) {
+        $affProfile[$aff->idProject]=$aff->idProfile;
+      }
+    }
     $accessRightRead=securityGetAccessRight('menuProject', 'read');
     if ($accessRightRead=="ALL") {
     	$listAllProjects=SqlList::getList('Project');
@@ -451,21 +473,34 @@ class User extends SqlElement {
     	}
     } else {
 	    $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
+debugLog("User::getVisibleProjects() affPrjList");
+debugLog($affPrjList);
+	    $profile=$this->idProfile;
 	    foreach($affPrjList as $idPrj=>$namePrj) {
-	    	if (! isset($result[$idPrj])) {
-		      $result[$idPrj]=$namePrj;
-		      $prj=new Project($idPrj);
-		      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
-		      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
-		        $result[$idSubPrj]=$nameSubPrj;
-		      }
-	    	}  
+	      if (isset($affProfile[$idPrj])) {	        
+	        $profile=$affProfile[$idPrj];
+	        $resultAff[$idPrj]=$profile;
+	        $prj=new Project($idPrj);
+	        $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
+	        foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+	          $result[$idSubPrj]=$nameSubPrj;
+	          $resultAff[$idSubPrj]=$profile;
+	        }
+	      } 
+	    	$result[$idPrj]=$namePrj;
+//debugLog("loop affPrjList idPrj=$idPrj ($namePrj) profile=$profile");		    		    
 	    }
     }
+//debugLog("User::getVisibleProjects() resultAff");
+//debugLog($resultAff);
+//debugLog("User::getVisibleProjects() result");
+//debugLog($result);
     if ($limitToActiveProjects) {
       $this->_visibleProjects=$result;
+      $this->_specificAffectedProfiles=$resultAff;
     } else {
       $this->_visibleProjectsIncludingClosed=$result;
+      $this->_specificAffectedProfilesIncludingClosed=$resultAff;
     }
     return $result;
   }
@@ -550,6 +585,27 @@ class User extends SqlElement {
     $this->_hierarchicalViewOfVisibleProjects=$result;
     return $result;
   }
+  
+  public function getProfile($objectOrIdProject) {
+    if (is_object($objectOrIdProject)) {
+      if (get_class($objectOrIdProject)=='Project') {
+        $idProject=$objectOrIdProject->id;
+      } else if (property_exists($objectOrIdProject, 'idProject')) {
+        $idProject=$objectOrIdProject->idProject;
+      } else {
+        return $this->idProfile;
+      }
+    } else {
+      $idProject=$objOrIdProject;
+    }
+    $specificProfiles=$this->getSpecificAffectedProfiles();
+    if (isset($specificProfiles[$idProject])) {
+      return $specificProfiles[$idProject];
+    } else {
+      return $this->idProfile;
+    }
+  }
+  
   /** =========================================================================
    * Reinitalise Visible Projects list to force recalculate
    * @return void

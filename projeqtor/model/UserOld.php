@@ -104,10 +104,10 @@ class UserOld extends SqlElement {
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */ 
-  function __construct($id = NULL) {
+  function __construct($id = NULL, $withoutDependentObjects=false) {
     global $objClass;
     $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
-  	parent::__construct($id);
+  	parent::__construct($id,$withoutDependentObjects);
     
   	if (! $this->id and Parameter::getGlobalParameter('initializePassword')=="YES") {
   		$tmpSalt=hash('sha256',"projeqtor".date('YmdHis'));
