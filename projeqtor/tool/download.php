@@ -66,6 +66,11 @@ if ($class=='Attachment') {
   $size = $obj->fileSize;
   $type = $obj->mimeType;
   $file = $obj->getUploadFileName();
+} else if ($class=='Logfile') {
+  $name=$obj->name;
+  $size=$obj->size;
+  $type=$obj->type;
+  $file=$obj->filePath;
 }
 $contentType="application/force-download";
 if ($type) {$contentType=$type;}

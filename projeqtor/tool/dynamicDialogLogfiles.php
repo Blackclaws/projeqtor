@@ -36,9 +36,9 @@
 
 echo '<table>';
 echo '<tr>';
-echo '<td width="50%" class="reportTableHeader">file name</td>';
-echo '<td width="20%" class="reportTableHeader">date</td>';
-echo '<td width="20%" class="reportTableHeader">size</td>';
+echo '<td width="50%" class="reportTableHeader">'.i18n('colName').'</td>';
+echo '<td width="20%" class="reportTableHeader">'.i18n('colDate').'</td>';
+echo '<td width="20%" class="reportTableHeader">'.i18n('colSize').'</td>';
 echo '<td width="10%" class="reportTableHeader"></td>';
 echo '</tr>';
 $list=Logfile::getList();
@@ -46,9 +46,33 @@ foreach ($list as $file) {
   echo '<tr>';
   echo '<td class="reportTableData" style="text-align:left;padding:0px 10px">'.$file['name'].'</td>';
   echo '<td class="reportTableData" style="padding:0px 10px">'.htmlFormatDateTime($file['date'],false).'</td>';
-  echo '<td class="reportTableData">'.$file['size'].'</td>';
-  echo '<td class="reportTableData">X X</td>';
+  echo '<td class="reportTableData">'.byteSize($file['size']).'</td>';
+  echo '<td class="reportTableData">';
+  echo '<a href="../tool/download.php?class=Logfile&id=' . $file['name'] . '" target="printFrame" title="' . i18n('helpDownload') . '">';
+  echo '<img src="../view/css/images/smallButtonDownload.png" class"roundedButtonSmall" onClick=""/>';
+  echo '</a>&nbsp;&nbsp;';
+  echo '<img style="cursor:pointer" src="../view/css/images/display.png" class"roundedButtonSmall" title="'. i18n('helpLogfile').'" onClick="showLogfile(\''.$file['name'].'\');" />';
+  echo '</td>';
   echo '</tr>';
 }
 echo '</table>';
+
+function byteSize($size) {
+  $letter=i18n('byteLetter');
+  if ($size<1000) {
+    return $size.'&nbsp;'.$letter;
+  }
+  $size=round($size/1024,1);
+  if ($size<1000) {
+    return $size.'&nbsp;K'.$letter;
+  }
+  $size=round($size/1024,1);
+  if ($size<1000) {
+    return $size.'&nbsp;M'.$letter;
+  }
+  $size=round($size/1024,1);
+  if ($size<1000) {
+    return $size.'&nbsp;G'.$letter;
+  }
+}
 ?>
