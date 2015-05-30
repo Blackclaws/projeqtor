@@ -402,7 +402,7 @@ class Parameter extends SqlElement {
                          'sectionMiscellaneous'=>'section',      
                            "defaultProject"=>"list",
                            'projectIndentChar'=>'list',
-                           'newColumn'=>'newColumn',
+                           'markAlertsAsRead'=>'specific',
                          'sectionPhoto'=>'section',
                            'image'=>'photo'
         );

@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -137,9 +137,9 @@ function sendAlert(){
 function maintenance() {
 	$operation=(array_key_exists('operation', $_REQUEST))?$_REQUEST['operation']:'';
 	$item=(array_key_exists('item', $_REQUEST))?$_REQUEST['item']:'';
-	$nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'';
+	$nbDays=(array_key_exists('nbDays', $_REQUEST))?$_REQUEST['nbDays']:'0';
 	$ctrl="";
-  if (! trim($operation) or ($operation!='delete' and $operation!='close')) {
+  if (! trim($operation) or ($operation!='delete' and $operation!='close' and $operation!='read')) {
     $ctrl.='ERROR<br/>';
   }
   if (! trim($item) or ($item!='Alert' and $item!='Mail' and $item!='Audit' and $item!="Logfile")) {
@@ -168,10 +168,15 @@ function maintenance() {
     $clauseWhere=$targetDate;
   }
   if ($operation=="close") {
-  	return $obj->close($clauseWhere);
-  }
-  if ($operation=="delete") {
+  	if ($item=="Alert") {
+  	  $obj->read($clauseWhere);
+  	}
+    return $obj->close($clauseWhere);
+  } else if ($operation=="delete") {
     return $obj->purge($clauseWhere);
+  } else if ($operation=="read" and $item=="Alert") {
+    $clauseWhere="readFlag=0 and idUser=".getSessionUser()->id;
+    return $obj->read($clauseWhere);
   }
 }
 

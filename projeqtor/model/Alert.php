@@ -1,7 +1,7 @@
 <?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -133,6 +133,29 @@ class Alert extends SqlElement {
     	}
     }
     return $result;
+  }
+  
+  public function read($clause) {
+    $objectClass = get_class($this);
+    // get all data, and identify if changes
+    $date=date('Y-m-d H:i');
+    $query="update " .  $this->getDatabaseTableName() . " set readFlag='1', alertReadDateTime='$date' where " . $clause;
+    // execute request
+    $returnStatus="OK";
+    $result = Sql::query($query);
+    if (!$result) {
+      $returnStatus="ERROR";
+    }
+    if ($returnStatus!="ERROR") {
+      $returnValue=Sql::$lastQueryNbRows . " " . i18n(get_class($this)) . '(s) ' . i18n('doneoperationread');
+    } else {
+      $returnValue=Sql::$lastQueryErrorMessage;
+    }
+    $returnValue .= '<input type="hidden" id="lastSaveId" value="' . $this->id . '" />';
+    $returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
+    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus .'" />';
+    $returnValue .= '<input type="hidden" id="noDataMessage" value="' . htmlGetNoDataMessage(get_class($this)) . '" />';
+    return $returnValue;
   }
   
 }

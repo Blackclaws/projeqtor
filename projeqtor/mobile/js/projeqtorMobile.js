@@ -1,6 +1,6 @@
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2014 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2014 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  *
  * This file is a plugIn for ProjeQtOr.
  * This plugIn in not Open Source.

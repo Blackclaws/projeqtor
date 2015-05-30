@@ -1,7 +1,7 @@
 /*******************************************************************************
  * COPYRIGHT NOTICE *
  * 
- * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org Contributors : -
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org Contributors : -
  * 
  * This file is part of ProjeQtOr.
  * 
@@ -4689,7 +4689,10 @@ function maintenance(operation, item) {
         + operation + "&element=" + item, "resultDiv", "adminForm", true,
         'admin');
   } else {
-    var nb=dijit.byId(operation + item + "Days").get('value');
+    var nb=0;
+    if (operation!='read') {
+      nb=dijit.byId(operation + item + "Days").get('value');
+    }
     loadContent(
         "../tool/adminFunctionalities.php?adminFunctionality=maintenance&operation="
             + operation + "&item=" + item + "&nbDays=" + nb, "resultDiv",
