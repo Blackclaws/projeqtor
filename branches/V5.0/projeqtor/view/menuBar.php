@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -213,8 +213,16 @@
        style="height:10px;width:60px;">
          <script type="dojo/connect" event="onClick" args="evt">
            var url="main.php?directAccess=true";
-           if (dojo.byId('objectClass')) url+="&objectClass="+dojo.byId('objectClass').value;
-           if (dojo.byId('objectId')) url+="&objectId="+dojo.byId('objectId').value;
+           if (dojo.byId('objectClass')) { 
+             url+="&objectClass="+dojo.byId('objectClass').value;
+           } else {
+             url+="&objectClass=Today";
+           }
+           if (dojo.byId('objectId')) {
+             url+="&objectId="+dojo.byId('objectId').value;
+           } else {
+             url+="&objectId=0";
+           }
            dojo.byId("menuBarNewtabButton").href=url;
          </script>
        </button>

@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : 
  *  2014 - Caccia : fix #1544
  *
@@ -279,8 +279,12 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           $_SESSION['directAccessIndex']=$directAccessIndex;
         	echo "directAccessIndex=$index;";
         }
-        echo 'gotoElement("' . $class . '","' . $id . '");';
-        $firstPage="";
+        if ($class=="Today") {
+          $firstPage="welcome.php";
+        } else { 
+          echo 'gotoElement("' . $class . '","' . $id . '");';
+          $firstPage="";
+        }
       } else if (Parameter::getUserParameter('hideMenu') and Parameter::getUserParameter('hideMenu')!='NO'){
         echo 'hideShowMenu();';
       }

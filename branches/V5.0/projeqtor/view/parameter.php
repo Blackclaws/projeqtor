@@ -1,7 +1,7 @@
 <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
- * Copyright 2009-2015 Pascal BERNARD - support@projeqtor.org
+ * Copyright 2009-2015 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
@@ -205,6 +205,15 @@ function drawTableFromObjectList($objectList) {
 			    echo ' requestPasswordChange();';
 			    echo '</script>';
 			    echo '</button>';
+			  } else if ($code=='markAlertsAsRead') {
+			    $title=i18n('helpMarkAlertsAsRead');
+			    echo '<button id="markAlertsAsRead" dojoType="dijit.form.Button" showlabel="true"';
+			    echo ' title="' . $title . '" style="vertical-align: middle;">';
+			    echo '<span>' . i18n('paramMarkAlertsAsRead') . '</span>';
+			    echo '<script type="dojo/connect" event="onClick" args="evt">';
+			    echo ' maintenance("read","Alert");';
+			    echo '</script>';
+			    echo '</button>';
 			  }
 			}
 			echo '</td></tr>';
@@ -218,10 +227,10 @@ function drawTableFromObjectList($objectList) {
   type="hidden" name="objectClassManual" id="objectClassManual"
   value="<?php echo $manual;?>" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
-<div id="parameterButtonDiv" class="listTitle" style="overflow:hidden !important"
+<div id="parameterButtonDiv" class="listTitle" style="z-index:3;overflow:visible"
   dojoType="dijit.layout.ContentPane" region="top">
   <div id="resultDiv" dojoType="dijit.layout.ContentPane"
-      region="top" style="padding:5px;height:100px;padding-left:300px;"></div>
+      region="top" style="padding:5px;max-height:100px;padding-left:300px;z-index:999"></div>
 <table width="100%">
   <tr>
     <td width="50px" align="center"><img
