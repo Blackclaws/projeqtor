@@ -119,12 +119,11 @@ if (get_magic_quotes_runtime ()) {
 if (ini_get ( 'register_globals' )) {
   traceLog ( i18n ( "errorRegisterGlobals" ) );
 }
-
 $page = $_SERVER ['PHP_SELF'];
 if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and $batchMode) and ! (isset ( $indexPhp ) and $indexPhp)) {
   // Get the user from session. If not exists, request connection ===============
-  if (isset ( $_SESSION ['user'] )) {
-    $user = $_SESSION ['user'];
+  if (getSessionUser() and getSessionUser()->id) {
+    $user = getSessionUser();
     // user must be a User object. Otherwise, it may be hacking attempt.
     if (get_class ( $user ) != "User") {
       // Hacking detected
@@ -163,7 +162,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
         $loginSave = true;
         $user->setCookieHash ();
         $user->save ();
-        $_SESSION ['user'] = $user;
+        setSessionUser($user);
       }
     }
     if (! $user) {
@@ -177,6 +176,7 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
       exit ();
     }
   }
+
   if (isset ( $user )) {
     if ($user->isLdap == 0) {
       if ($user and $page != 'loginCheck.php' and $page != "changePassword.php") {
@@ -221,7 +221,6 @@ if (! (isset ( $maintenance ) and $maintenance) and ! (isset ( $batchMode ) and 
     Audit::updateAudit ();
   }
 }
-
 /*
  * ============================================================================ functions ============================================================================
  */
@@ -506,7 +505,7 @@ function getCurrentUserId() {
     throw new Exception ( "ERROR user does not exist" );
     exit ();
   }
-  $user = $_SESSION ['user'];
+  $user = getSessionUser();
   if (get_class ( $user ) != 'User') {
     throw new Exception ( "ERROR user is not a User object" );
     exit ();
@@ -563,7 +562,7 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
     $menu = SqlList::getIdFromName ( 'MenuList', 'menu' . $class );
   }
   if (array_key_exists ( 'user', $_SESSION )) {
-    $user = $_SESSION ['user'];
+    $user = getSessionUser();
   }
   if (! $user) {
     return false;
@@ -608,7 +607,7 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
     return $_SESSION ['visibleProjectsList'] [$keyVPL];
   }
   if ($project == "*" or $project == '') {
-    $user = $_SESSION ['user'];
+    $user = getSessionUser();
     $_SESSION ['visibleProjectsList'] [$keyVPL] = transformListIntoInClause ( $user->getVisibleProjects ( $limitToActiveProjects ) );
     return $_SESSION ['visibleProjectsList'] [$keyVPL];
   }
@@ -643,9 +642,9 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
     if (property_exists ( $obj, "idUser" )) {
       $queryWhere .= ($queryWhere == '') ? '' : ' and ';
       if ($alias === false) {
-        $queryWhere .= "idUser = '" . Sql::fmtId ( $_SESSION ['user']->id ) . "'";
+        $queryWhere .= "idUser = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
       } else {
-        $queryWhere .= $table . ".idUser = '" . Sql::fmtId ( $_SESSION ['user']->id ) . "'";
+        $queryWhere .= $table . ".idUser = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
       }
     } else {
       $queryWhere .= ($queryWhere == '') ? '' : ' and ';
@@ -655,9 +654,9 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
     if (property_exists ( $obj, "idResource" )) {
       $queryWhere .= ($queryWhere == '') ? '' : ' and ';
       if ($alias === false) {
-        $queryWhere .= "idResource = '" . Sql::fmtId ( $_SESSION ['user']->id ) . "'";
+        $queryWhere .= "idResource = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
       } else {
-        $queryWhere .= $table . ".idResource = '" . Sql::fmtId ( $_SESSION ['user']->id ) . "'";
+        $queryWhere .= $table . ".idResource = '" . Sql::fmtId ( getSessionUser()->id ) . "'";
       }
     } else {
       $queryWhere .= ($queryWhere == '') ? '' : ' and ';
@@ -667,23 +666,23 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
     $queryWhere .= ($queryWhere == '') ? '' : ' and ';
     if ($alias === false) {
       if ($objectClass == 'Project') {
-        $queryWhere .= "id in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) );
+        $queryWhere .= "id in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
       } else if ($objectClass == 'Document') {
         $v = new Version ();
         $vp = new VersionProject ();
-        $queryWhere .= "(idProject in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) ) . " or (idProject is null and idProduct in" . " (select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP where existV.id=existVP.idVersion " . " and existVP.idProject in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) ) . ") ) )";
+        $queryWhere .= "(idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . " or (idProject is null and idProduct in" . " (select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP where existV.id=existVP.idVersion " . " and existVP.idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . ") ) )";
       } else {
-        $queryWhere .= "idProject in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) );
+        $queryWhere .= "idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
       }
     } else {
       if ($objectClass == 'Project') {
-        $queryWhere .= $table . ".id in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) );
+        $queryWhere .= $table . ".id in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
       } else if ($objectClass == 'Document') {
         $v = new Version ();
         $vp = new VersionProject ();
-        $queryWhere .= "(" . $table . ".idProject in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) ) . " or (" . $table . ".idProject is null and " . $table . ".idProduct in" . " (select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP where existV.id=existVP.idVersion " . " and existVP.idProject in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) ) . ") ) )";
+        $queryWhere .= "(" . $table . ".idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . " or (" . $table . ".idProject is null and " . $table . ".idProduct in" . " (select idProduct from " . $v->getDatabaseTableName () . " existV, " . $vp->getDatabaseTableName () . " existVP where existV.id=existVP.idVersion " . " and existVP.idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) ) . ") ) )";
       } else {
-        $queryWhere .= $table . ".idProject in " . transformListIntoInClause ( $_SESSION ['user']->getAffectedProjects ( ! $showIdle ) );
+        $queryWhere .= $table . ".idProject in " . transformListIntoInClause ( getSessionUser()->getAffectedProjects ( ! $showIdle ) );
       }
     }
   } else if ($accessRightRead == 'ALL') {
@@ -775,7 +774,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   // Save data of the mail ===========================================================
   $mail = new Mail ();
   if (array_key_exists ( 'user', $_SESSION )) {
-    $mail->idUser = $_SESSION ['user']->id;
+    $mail->idUser = getSessionUser()->id;
   }
   if ($object) {
     $mail->idProject = (property_exists ( $object, 'idProject' )) ? $object->idProject : null;
@@ -949,7 +948,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
   // Save data of the mail
   $mail = new Mail ();
   if (array_key_exists ( 'user', $_SESSION )) {
-    $mail->idUser = $_SESSION ['user']->id;
+    $mail->idUser = getSessionUser()->id;
   }
   if ($object) {
     $mail->idProject = (property_exists ( $object, 'idProject' )) ? $object->idProject : null;
@@ -1147,7 +1146,7 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
   // Save data of the mail
   $mail = new Mail ();
   if (array_key_exists ( 'user', $_SESSION )) {
-    $mail->idUser = $_SESSION ['user']->id;
+    $mail->idUser = getSessionUser()->id;
   }
   if ($object) {
     $mail->idProject = (property_exists ( $object, 'idProject' )) ? $object->idProject : null;
@@ -1427,7 +1426,7 @@ function getIP() {
  */
 function securityGetAccessRight($menuName, $accessType, $obj = null, $user = null) {
   if (! $user) {
-    $user = $_SESSION ['user'];
+    $user = getSessionUser();
   }
   $accessRightList = $user->getAccessControlRights ();
   $accessRight = 'ALL';
@@ -1471,7 +1470,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
         return 'YES';
       }
     } else {
-      $user = $_SESSION ['user'];
+      $user = getSessionUser();
     }
   }
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
@@ -2213,7 +2212,7 @@ function getPrintInNewWindow($mode = 'print') {
 
 function checkVersion() {
   global $version, $website;
-  $user = $_SESSION ['user'];
+  $user = getSessionUser();
   $profile = new Profile ( $user->idProfile );
   if ($profile->profileCode != 'ADM') {
     return;

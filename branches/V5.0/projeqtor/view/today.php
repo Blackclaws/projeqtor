@@ -259,7 +259,9 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           //and securityGetAccessRightYesNo('menuProject', 'read', $prj)=="YES"
           and array_key_exists($id,$prjVisLst)
           ) {
-            $goto=' onClick="gotoElement(' . "'Project','" . $id . "'" . ');" style="cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
+            $goto=' onClick="gotoElement(' . "'Project','" . $id . "'" . ');" style="border-right:0px;text-align: left;cursor: pointer;' . ($show?'':'color:#AAAAAA;') . '" ';  
+          } else {
+            $goto=' style="border-right:0px;text-align: left;"';
           }
           $proj=new Project($id);
           $healthColor=SqlList::getFieldFromId("Health", $proj->idHealth, "color");
@@ -269,7 +271,7 @@ SqlElement::$_cachedQuery['PlanningElement']=array();
           $trendName=SqlList::getNameFromId("Trend", $proj->idTrend);
           $styleHealth=($print)?'width:10px;height:10px;margin:1px;padding:0;-moz-border-radius:6px;border-radius:6px;border:1px solid #AAAAAA;':'';
           echo '<tr style="text-align: center">' .
-             '  <td class="messageData" style="border-right:0px;text-align: left;"'. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>';
+             '  <td class="messageData" '. $goto . '><div style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">' . $tab . htmlEncode($name) . '</div></td>';
           echo ' <td class="messageData" style="vertical-align:middle;width:12px;margin:0;padding:0;spacing:0;border-left:0px;border-right:0px;" '. $goto . ' >'.
              (($trendIcon)?'    <img height="12px" src="icons/'.$trendIcon.'" title="'.$trendName.'"/>':'').
              '  </td>';

@@ -118,7 +118,7 @@ UPDATE `${prefix}status` SET name='ré-ouvert' WHERE name='re-opened';
 UPDATE `${prefix}status` SET name='assigné' WHERE name='assigned';
 UPDATE `${prefix}status` SET name='préparé' WHERE name='prepared';
 UPDATE `${prefix}status` SET name='en cours' WHERE name='in progress';
-UPDATE `${prefix}status` SET name='terminé' WHERE name='done';
+UPDATE `${prefix}status` SET name='fait' WHERE name='done';
 UPDATE `${prefix}status` SET name='vérifié' WHERE name='verified';
 UPDATE `${prefix}status` SET name='livré' WHERE name='delivered';
 UPDATE `${prefix}status` SET name='validé' WHERE name='validated';

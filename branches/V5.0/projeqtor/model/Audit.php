@@ -86,7 +86,7 @@ class Audit extends SqlElement {
 	 *        	id of the object in the database (null if not stored yet)
 	 * @return void
 	 */
-	function __construct($id = NULL) {
+	function __construct($id = NULL, $withoutDependentObjects=false) {
 		parent::__construct ( $id );
 	}
 	
@@ -133,7 +133,7 @@ class Audit extends SqlElement {
 	}
 	static function updateAudit() {
 		// $source can be "main" (from projeqtor.php), "login" (from loginCheck.php) or "alert" (from checkAlertToDisplay.php)
-		if (! isset ( $_SESSION ['user'] ))
+		if (! getSessionUser() )
 			return;
 		$audit = SqlElement::getSingleSqlElementFromCriteria ( 'Audit', array (
 				'sessionId' => session_id () 
@@ -142,7 +142,7 @@ class Audit extends SqlElement {
 			$audit->sessionId = session_id ();
 			$audit->auditDay = date ( 'Ymd' );
 			$audit->connectionDateTime = date ( 'Y-m-d H:i:s' );
-			$user = $_SESSION ['user'];
+			$user = getSessionUser();
 			$audit->idUser = $user->id;
 			$audit->userName = $user->name;
 			$audit->userAgent = $_SERVER ['HTTP_USER_AGENT'];
@@ -202,7 +202,7 @@ class Audit extends SqlElement {
 			$audit->save ();
 		}
 		AuditSummary::updateAuditSummary ( $audit->auditDay );
-		$user = $_SESSION ['user'];
+		$user = getSessionUser();
 		$user->disconnect ();
 		// terminate the session
 		if (ini_get ( "session.use_cookies" )) {

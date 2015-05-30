@@ -39,8 +39,8 @@ class OriginalVersion extends Version {
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */ 
-  function __construct($id = NULL) {
-    parent::__construct($id);
+  function __construct($id = NULL, $withoutDependentObjects=false) {
+    parent::__construct($id,$withoutDependentObjects);
     if ($this->name) {
       if ($this->realEisDate){
         $this->name.=" [" . htmlFormatDate($this->realEisDate) . "]";

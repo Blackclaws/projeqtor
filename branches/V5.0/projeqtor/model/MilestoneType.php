@@ -50,10 +50,10 @@ class MilestoneType extends Type {
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
    */ 
-  function __construct($id = NULL) {
+  function __construct($id = NULL, $withoutDependentObjects=false) {
   	global $flashReport;
   
-    parent::__construct($id);
+    parent::__construct($id,$withoutDependentObjects);
     if (isset($flashReport) and ($flashReport==true or $flashReport=='true')) {
       self::$_fieldsAttributes["showInFlash"]="";
     }
