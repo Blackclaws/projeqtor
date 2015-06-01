@@ -36,6 +36,295 @@ if (!isset($comboDetail)) {
 }
 $collapsedList=Collapsed::getCollaspedList();
 $readOnly=false;
+
+// ********************************************************************************************************
+// MAIN PAGE
+// ********************************************************************************************************
+
+// fetch information depending on, request
+$objClass=$_REQUEST ['objectClass'];
+if (isset($_REQUEST ['noselect'])) {
+  $noselect=true;
+}
+if (!isset($noselect)) {
+  $noselect=false;
+}
+if ($noselect) {
+  $objId="";
+  $obj=null;
+  $profile=getSessionUser()->idProfile;
+} else {
+  $objId=$_REQUEST ['objectId'];
+  $obj=new $objClass($objId);
+  $profile=getSessionUser()->getProfile($obj);
+  if (array_key_exists('refreshNotes', $_REQUEST)) {
+    drawNotesFromObject($obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshBillLines', $_REQUEST)) {
+    drawBillLinesFromObject($obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshChecklistDefinitionLines', $_REQUEST)) {
+    drawChecklistDefinitionLinesFromObject($obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshAttachments', $_REQUEST)) {
+    drawAttachmentsFromObject($obj, true);
+    exit();
+  }
+  /*
+   * On assignment change refresh all item if (array_key_exists ( 'refreshAssignment', $_REQUEST )) { drawAssignmentsFromObject($obj->_Assignment, $obj, true ); exit (); }
+  */
+  if (array_key_exists('refreshResourceCost', $_REQUEST)) {
+    drawResourceCostFromObject($obj->$_ResourceCost, $obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshVersionProject', $_REQUEST)) {
+
+    FromObjectFromObject($obj->$_VersionProject, $obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshDocumentVersion', $_REQUEST)) {
+    drawVersionFromObjectFromObject($obj->$_DocumentVersion, $obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshTestCaseRun', $_REQUEST)) {
+    drawTestCaseRunFromObject($obj->_TestCaseRun, $obj, true);
+    exit();
+  }
+  if (array_key_exists('refreshLinks', $_REQUEST)) {
+    if (property_exists($obj, '_Link')) {
+      drawLinksFromObject($obj->_Link, $obj, null, true);
+    }
+    exit();
+  }
+  if (array_key_exists('refreshHistory', $_REQUEST)) {
+    $treatedObjects []=$obj;
+    foreach ( $obj as $col => $val ) {
+      if (is_object($val)) {
+        $treatedObjects []=$val;
+      }
+    }
+    drawHistoryFromObjects(true);
+    if (isset($dynamicDialogHistory)) {
+      echo '<table style="width: 100%;"><tr><td style="width: 100%;" align="center">';
+      echo '<button dojoType="dijit.form.Button" type="button" onclick="dijit.byId(\'dialogHistory\').hide();">';
+      echo i18n("close").'</button></td></tr></table>';
+    }
+    exit();
+  }
+}
+// save the current object in session
+$print=false;
+if (array_key_exists('print', $_REQUEST) or isset($callFromMail)) {
+  $print=true;
+}
+if (!$print and !$comboDetail and $obj) {
+  if (isset($_REQUEST ['directAccessIndex'])) {
+    $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']]=$obj;
+  } else {
+    $_SESSION ['currentObject']=$obj;
+  }
+}
+$refresh=false;
+if (array_key_exists('refresh', $_REQUEST)) {
+  $refresh=true;
+}
+
+$treatedObjects=array();
+
+$displayWidth='98%';
+if ($print and isset($outMode) and $outMode == 'pdf') {
+  if (isset($orientation) and $orientation=='L')
+    $printWidth=1080;
+  else
+    $printWidth=760;
+} else {
+  $printWidth=980;
+}
+if (array_key_exists('destinationWidth', $_REQUEST)) {
+  $width=$_REQUEST ['destinationWidth'];
+  $width-=30;
+  $displayWidth=$width . 'px';
+} else {
+  if (array_key_exists('screenWidth', $_SESSION)) {
+    $detailWidth=round(($_SESSION ['screenWidth'] * 0.8) - 15); // 80% of screen - split barr - padding (x2)
+  } else {
+    $displayWidth='98%';
+  }
+}
+if ($print) {
+  $displayWidth=$printWidth . 'px'; // must match iFrame size (see main.php)
+}
+
+if ($print) {
+  echo '<br/>';
+  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
+  echo '<br/>';
+}
+
+debugLog(" profile ? = $profile");
+// New refresh method
+if (array_key_exists('refresh', $_REQUEST)) {
+  if (!$print) {
+    echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
+  }
+  drawTableFromObject($obj);
+  drawChecklistFromObject($obj);
+  exit();
+}
+?>
+<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
+  if (!$refresh and !$print) {
+    ?>
+  <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
+    style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
+    <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
+      style="display: none"></div>
+		<?php  include 'objectButtons.php'; ?>
+		<div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');">
+      <div id="detailBarIcon" align="center"></div>
+    </div>
+	</div>
+  <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
+	<?php
+  }
+  if (!$print) {
+    ?>  
+<form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm"
+      name="objectForm" encType="multipart/form-data" action=""
+      method="">
+      <script type="dojo/method" event="onShow">
+        if (dijit.byId('name')) dijit.byId('name').focus();
+      </script>
+      <script type="dojo/method" event="onSubmit">
+        // Don't do anything on submit, just cancel : no button is default => must click
+		    //submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
+		    return false;        
+        </script>
+      <div style="width: 100%; height: 100%;">
+        <div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
+          region="top" style="width: 100%; height: 100%;"><?php
+  }
+  $noData=htmlGetNoDataMessage($objClass);
+  debugLog("Check canRead");
+  $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
+  debugLog("canRead=$canRead");
+  if (!$obj->id) {
+    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";
+    if (!$canRead or !$canUpdate) {
+      $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
+      $accessRightUpdate=securityGetAccessRight('menu' . get_class($obj), 'update', null, $user);
+      if (($accessRightRead == 'OWN' or $accessRightUpdate == 'OWN') and property_exists($obj, 'idUser')) {
+        $canRead=true;
+        $obj->idUser=$user->id;
+      } else if (($accessRightRead == 'RES' or $accessRightUpdate == 'RES') and property_exists($obj, 'idResource')) {
+        $canRead=true;
+        $obj->idResource=$user->id;
+      }
+    }
+  }
+  if (get_class($obj)=='Project' and isset($obj->codeType) and $obj->codeType=='TMP') {
+    $canRead=true;
+  }  
+  if ($noselect) {
+    echo $noData;
+  } else if (!$canRead) {
+    echo htmlGetNoAccessMessage($objClass);
+    echo "</div></form>";
+    exit();
+  } else {
+    if (!$print or $comboDetail) {
+      echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
+    }
+    drawTableFromObject($obj);
+    drawChecklistFromObject($obj);
+  }
+
+  if (!$print) {
+    ?> 
+  </div>
+      </div>
+    </form>
+  <?php
+  }
+  $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
+  if (!$noselect and isset($obj->_ChecklistDefinitionLine)) {
+    ?> <br />
+  <?php if ($print) {?>
+<table width="<?php echo $printWidth;?>px;">
+      <tr>
+        <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
+      </tr>
+      <tr>
+        <td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
+      </tr>
+    </table>
+  <?php
+    } else {
+      $titlePane=$objClass . "_checklistDefinitionLine";
+      ?>
+<div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
+     title="<?php echo i18n('sectionChecklistLines');?>"
+     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+     id="<?php echo $titlePane;?>"       
+     onHide="saveCollapsed('<?php echo $titlePane;?>');"
+     onShow="saveExpanded('<?php echo $titlePane;?>');" >
+     <?php  drawChecklistDefinitionLinesFromObject($obj); ?>
+</div>
+<?php }?> <?php
+  }
+  $displayHistory='REQ';
+  $paramDisplayHistory=Parameter::getUserParameter('displayHistory');
+  if ($paramDisplayHistory) {
+    $displayHistory=$paramDisplayHistory;
+  }
+  if ($obj and (property_exists($obj, '_noHistory') or property_exists($obj, '_noDisplayHistory'))) {
+    $displayHistory='NO';
+  }
+  if ($print and Parameter::getUserParameter('printHistory') != 'YES') {
+    $displayHistory='NO';
+  }
+  echo '<br/>';
+  if ((!$noselect) and $displayHistory == 'YES' and !$comboDetail) {
+    if ($print) {
+      ?>
+<table width="<?php echo $printWidth;?>px;">
+      <tr>
+        <td class="section"><?php echo i18n('elementHistoty');?></td>
+      </tr>
+    </table>
+<?php drawHistoryFromObjects();?> <?php
+    } else {
+      $titlePane=$objClass . "_history";
+      ?>
+<div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
+       title="<?php echo i18n('elementHistoty');?>"
+       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+       id="<?php echo $titlePane;?>"         
+       onHide="saveCollapsed('<?php echo $titlePane;?>');"
+       onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawHistoryFromObjects();?>
+</div>
+    <br />
+<?php }?> <?php
+  } else if (!$print){
+    $titlePane=$objClass . "_history";
+    ?>
+<div style="display:none; width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
+       title="<?php echo i18n('elementHistoty');?>"
+       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+       id="<?php echo $titlePane;?>"         
+       onHide="saveCollapsed('<?php echo $titlePane;?>');"
+       onShow="saveExpanded('<?php echo $titlePane;?>');" ></div>
+	<?php
+  }
+  ?> <?php if ( ! $refresh and  ! $print) { ?></div>
+<?php
+}
+?></div>
+<?php
+
 /**
  * ===========================================================================
  * Draw all the properties of object as html elements, depending on type of data
@@ -47,6 +336,7 @@ $readOnly=false;
  * @return void
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
+scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
   global $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, 
    $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax;
   // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
@@ -77,6 +367,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false) {
   $extName="";
   $user=getSessionUser();
 debugLog($user->getSpecificAffectedProfiles());
+debugLog(get_class($obj).' #'.$obj->id." profile=$profile");
   $displayComboButton=false;
   $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $profile,'scope' => 'combo'));
   if ($habil) {
@@ -121,7 +412,7 @@ debugLog($user->getSpecificAffectedProfiles());
   }
   $section='';
   $nbLineSection=0;
-  // Loop on each propertie of the object
+  
   if (is_subclass_of($obj, 'PlanningElement')) {
     $obj->setVisibility();
     $workVisibility=$obj->_workVisibility;
@@ -138,6 +429,7 @@ debugLog($user->getSpecificAffectedProfiles());
     $canUpdate=false;
   }
   $arrayRequired=$obj->getExtraRequiredFields(); // will define extra required fields, depending on status, planning mode...
+  // Loop on each property of the object
   foreach ( $obj as $col => $val ) {
     if ($detailWidth) {
       $colWidth=round(($displayWidth) / $nbCol); // 3 columns should be displayable
@@ -2889,290 +3181,6 @@ function drawChecklistFromObject($obj) {
   }
 }
 
-// ********************************************************************************************************
-// MAIN PAGE
-// ********************************************************************************************************
-
-// fetch information depending on, request
-$objClass=$_REQUEST ['objectClass'];
-if (isset($_REQUEST ['noselect'])) {
-  $noselect=true;
-}
-if (!isset($noselect)) {
-  $noselect=false;
-}
-if ($noselect) {
-  $objId="";
-  $obj=null;
-  $profile=getSessionUser()->idProfile;
-} else {
-  $objId=$_REQUEST ['objectId'];
-  $obj=new $objClass($objId);
-  $profile=getSessionUser()->getProfile($obj);
-  if (array_key_exists('refreshNotes', $_REQUEST)) {
-    drawNotesFromObject($obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshBillLines', $_REQUEST)) {
-    drawBillLinesFromObject($obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshChecklistDefinitionLines', $_REQUEST)) {
-    drawChecklistDefinitionLinesFromObject($obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshAttachments', $_REQUEST)) {
-    drawAttachmentsFromObject($obj, true);
-    exit();
-  }
-  /*
-   * On assignment change refresh all item if (array_key_exists ( 'refreshAssignment', $_REQUEST )) { drawAssignmentsFromObject($obj->_Assignment, $obj, true ); exit (); }
-   */
-  if (array_key_exists('refreshResourceCost', $_REQUEST)) {
-    drawResourceCostFromObject($obj->$_ResourceCost, $obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshVersionProject', $_REQUEST)) {
-    
-    FromObjectFromObject($obj->$_VersionProject, $obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshDocumentVersion', $_REQUEST)) {
-    drawVersionFromObjectFromObject($obj->$_DocumentVersion, $obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshTestCaseRun', $_REQUEST)) {
-    drawTestCaseRunFromObject($obj->_TestCaseRun, $obj, true);
-    exit();
-  }
-  if (array_key_exists('refreshLinks', $_REQUEST)) {
-    if (property_exists($obj, '_Link')) {
-      drawLinksFromObject($obj->_Link, $obj, null, true);
-    }
-    exit();
-  }
-  if (array_key_exists('refreshHistory', $_REQUEST)) {
-    $treatedObjects []=$obj;
-    foreach ( $obj as $col => $val ) {
-      if (is_object($val)) {
-        $treatedObjects []=$val;
-      }
-    }
-    drawHistoryFromObjects(true);
-    if (isset($dynamicDialogHistory)) {
-      echo '<table style="width: 100%;"><tr><td style="width: 100%;" align="center">';
-      echo '<button dojoType="dijit.form.Button" type="button" onclick="dijit.byId(\'dialogHistory\').hide();">';
-      echo i18n("close").'</button></td></tr></table>';
-    }
-    exit();
-  }
-}
-// save the current object in session
-$print=false;
-if (array_key_exists('print', $_REQUEST) or isset($callFromMail)) {
-  $print=true;
-}
-if (!$print and !$comboDetail and $obj) {
-  if (isset($_REQUEST ['directAccessIndex'])) {
-    $_SESSION ['directAccessIndex'] [$_REQUEST ['directAccessIndex']]=$obj;
-  } else {
-    $_SESSION ['currentObject']=$obj;
-  }
-}
-$refresh=false;
-if (array_key_exists('refresh', $_REQUEST)) {
-  $refresh=true;
-}
-
-$treatedObjects=array();
-
-$displayWidth='98%';
-if ($print and isset($outMode) and $outMode == 'pdf') {
-  if (isset($orientation) and $orientation=='L')
-    $printWidth=1080;
-  else 
-    $printWidth=760;
-} else {
-  $printWidth=980;
-}
-if (array_key_exists('destinationWidth', $_REQUEST)) {
-  $width=$_REQUEST ['destinationWidth'];
-  $width-=30;
-  $displayWidth=$width . 'px';
-} else {
-  if (array_key_exists('screenWidth', $_SESSION)) {
-    $detailWidth=round(($_SESSION ['screenWidth'] * 0.8) - 15); // 80% of screen - split barr - padding (x2)
-  } else {
-    $displayWidth='98%';
-  }
-}
-if ($print) {
-  $displayWidth=$printWidth . 'px'; // must match iFrame size (see main.php)
-}
-
-if ($print) {
-  echo '<br/>';
-  echo '<div class="reportTableHeader" style="width:' . ($printWidth - 10) . 'px;font-size:150%;">' . i18n($objClass) . ' #' . ($objId + 0) . '</div>';
-  echo '<br/>';
-}
-
-// New refresh method
-if (array_key_exists('refresh', $_REQUEST)) {
-  if (!$print) {
-    echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
-  }
-  drawTableFromObject($obj);
-  drawChecklistFromObject($obj);
-  exit();
-}
-?>
-<div <?php echo ($print)?'x':'';?>dojoType="dijit.layout.BorderContainer" class="background"><?php
-  if (!$refresh and !$print) {
-    ?>
-  <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
-    style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
-    <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
-      style="display: none"></div>
-		<?php  include 'objectButtons.php'; ?>
-		<div id="detailBarShow" onMouseover="hideList('mouse');" onClick="hideList('click');">
-      <div id="detailBarIcon" align="center"></div>
-    </div>
-	</div>
-  <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
-	<?php
-  }
-  if (!$print) {
-    ?>  
-<form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm"
-      name="objectForm" encType="multipart/form-data" action=""
-      method="">
-      <script type="dojo/method" event="onShow">
-        if (dijit.byId('name')) dijit.byId('name').focus();
-      </script>
-      <script type="dojo/method" event="onSubmit">
-        // Don't do anything on submit, just cancel : no button is default => must click
-		    //submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
-		    return false;        
-        </script>
-      <div style="width: 100%; height: 100%;">
-        <div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
-          region="top" style="width: 100%; height: 100%;"><?php
-  }
-  $noData=htmlGetNoDataMessage($objClass);
-  $canRead=securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj) == "YES";
-  if (!$obj->id) {
-    $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update') == "YES";
-    if (!$canRead or !$canUpdate) {
-      $accessRightRead=securityGetAccessRight('menu' . get_class($obj), 'read', $obj, $user);
-      $accessRightUpdate=securityGetAccessRight('menu' . get_class($obj), 'update', null, $user);
-      if (($accessRightRead == 'OWN' or $accessRightUpdate == 'OWN') and property_exists($obj, 'idUser')) {
-        $canRead=true;
-        $obj->idUser=$user->id;
-      } else if (($accessRightRead == 'RES' or $accessRightUpdate == 'RES') and property_exists($obj, 'idResource')) {
-        $canRead=true;
-        $obj->idResource=$user->id;
-      }
-    }
-  }
-  if (get_class($obj)=='Project' and isset($obj->codeType) and $obj->codeType=='TMP') {
-    $canRead=true;
-  }  
-  if ($noselect) {
-    echo $noData;
-  } else if (!$canRead) {
-    echo htmlGetNoAccessMessage($objClass);
-    echo "</div></form>";
-    exit();
-  } else {
-    if (!$print or $comboDetail) {
-      echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;
-    }
-    drawTableFromObject($obj);
-    drawChecklistFromObject($obj);
-  }
-
-  if (!$print) {
-    ?> 
-  </div>
-      </div>
-    </form>
-  <?php
-  }
-  $widthPct=setWidthPct($displayWidth, $print, $printWidth,$obj,"2");
-  if (!$noselect and isset($obj->_ChecklistDefinitionLine)) {
-    ?> <br />
-  <?php if ($print) {?>
-<table width="<?php echo $printWidth;?>px;">
-      <tr>
-        <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
-      </tr>
-      <tr>
-        <td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
-      </tr>
-    </table>
-  <?php
-    } else {
-      $titlePane=$objClass . "_checklistDefinitionLine";
-      ?>
-<div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
-     title="<?php echo i18n('sectionChecklistLines');?>"
-     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>"       
-     onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" >
-     <?php  drawChecklistDefinitionLinesFromObject($obj); ?>
-</div>
-<?php }?> <?php
-  }
-  $displayHistory='REQ';
-  $paramDisplayHistory=Parameter::getUserParameter('displayHistory');
-  if ($paramDisplayHistory) {
-    $displayHistory=$paramDisplayHistory;
-  }
-  if ($obj and (property_exists($obj, '_noHistory') or property_exists($obj, '_noDisplayHistory'))) {
-    $displayHistory='NO';
-  }
-  if ($print and Parameter::getUserParameter('printHistory') != 'YES') {
-    $displayHistory='NO';
-  }
-  echo '<br/>';
-  if ((!$noselect) and $displayHistory == 'YES' and !$comboDetail) {
-    if ($print) {
-      ?>
-<table width="<?php echo $printWidth;?>px;">
-      <tr>
-        <td class="section"><?php echo i18n('elementHistoty');?></td>
-      </tr>
-    </table>
-<?php drawHistoryFromObjects();?> <?php
-    } else {
-      $titlePane=$objClass . "_history";
-      ?>
-<div style="width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
-       title="<?php echo i18n('elementHistoty');?>"
-       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-       id="<?php echo $titlePane;?>"         
-       onHide="saveCollapsed('<?php echo $titlePane;?>');"
-       onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawHistoryFromObjects();?>
-</div>
-    <br />
-<?php }?> <?php
-  } else if (!$print){
-    $titlePane=$objClass . "_history";
-    ?>
-<div style="display:none; width: <?php echo $displayWidth;?>;" dojoType="dijit.TitlePane" 
-       title="<?php echo i18n('elementHistoty');?>"
-       open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-       id="<?php echo $titlePane;?>"         
-       onHide="saveCollapsed('<?php echo $titlePane;?>');"
-       onShow="saveExpanded('<?php echo $titlePane;?>');" ></div>
-	<?php
-  }
-  ?> <?php if ( ! $refresh and  ! $print) { ?></div>
-<?php
-}
-?></div>
-<?php
 
 function setWidthPct($displayWidth, $print, $printWidth, $obj,$colSpan=null) {
   $nbCol=getNbColMax($displayWidth, $print, $printWidth, $obj);

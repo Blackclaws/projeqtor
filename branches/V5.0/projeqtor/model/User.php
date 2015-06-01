@@ -310,10 +310,14 @@ class User extends SqlElement {
    * @return an array containing rights for every screen
    *  must be redefined in the inherited class
    */
-  public function getAccessControlRights() {
+  public function getAccessControlRights($obj=null) {
     // _accessControlRights fetched yet, just return it
-    if ($this->_accessControlRights) {    
-      return $this->_accessControlRights;
+    $profile=$this->idProfile;
+    if ($obj) {
+      $profile=$this->getProfile($obj);
+    }
+    if ($this->_accessControlRights and isset($this->_accessControlRights[$profile])) {    
+      return $this->_accessControlRights[$profile];
     }
     $menuList=SqlList::getListNotTranslated('Menu');
     $noAccessArray=array( 'read' => 'NO', 'create' => 'NO', 'update' => 'NO', 'delete' => 'NO');
@@ -323,10 +327,10 @@ class User extends SqlElement {
     $accessControlRights=array();
     $accessScopeList=SqlList::getList('AccessScope', 'accessCode');
     $accessRight=new AccessRight();
-    $crit=array('idProfile'=>$this->idProfile);
+    $crit=array('idProfile'=>$profile);
     $accessRightList=$accessRight->getSqlElementsFromCriteria( $crit, false);
     $habilitation=new Habilitation();
-    $crit=array('idProfile'=>$this->idProfile, 'allowAccess'=>'1');
+    $crit=array('idProfile'=>$profile, 'allowAccess'=>'1');
     $habilitationList=$habilitation->getSqlElementsFromCriteria( $crit, false);
     foreach ($habilitationList as $hab) {
     	if (array_key_exists($hab->idMenu,$menuList)) {
@@ -356,8 +360,14 @@ class User extends SqlElement {
       }     	
     }
     // override with habilitation 
-    $this->_accessControlRights=$accessControlRights;
-    return $this->_accessControlRights;
+    if (! $this->_accessControlRights) {
+      $this->_accessControlRights=array();
+    }
+    $this->_accessControlRights[$profile]=$accessControlRights;
+    if ($this->id==getSessionUser()->id) {
+      setSessionUser($this); // Store user to cache Data
+    }
+    return $this->_accessControlRights[$profile];
   }
 
   /** =========================================================================
@@ -586,23 +596,26 @@ debugLog($affPrjList);
     return $result;
   }
   
-  public function getProfile($objectOrIdProject) {
+  public function getProfile($objectOrIdProject=null) {
     if (is_object($objectOrIdProject)) {
       if (get_class($objectOrIdProject)=='Project') {
         $idProject=$objectOrIdProject->id;
       } else if (property_exists($objectOrIdProject, 'idProject')) {
         $idProject=$objectOrIdProject->idProject;
       } else {
-        return $this->idProfile;
+        return ($this->idProfile)?$this->idProfile:0;
       }
     } else {
-      $idProject=$objOrIdProject;
+      $idProject=$objectOrIdProject;
+    }
+    if (! $idProject) {
+      return ($this->idProfile)?$this->idProfile:0;
     }
     $specificProfiles=$this->getSpecificAffectedProfiles();
     if (isset($specificProfiles[$idProject])) {
       return $specificProfiles[$idProject];
     } else {
-      return $this->idProfile;
+      return ($this->idProfile)?$this->idProfile:0;
     }
   }
   

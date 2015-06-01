@@ -1425,16 +1425,18 @@ function getIP() {
  *         'ALL' => any element
  */
 function securityGetAccessRight($menuName, $accessType, $obj = null, $user = null) {
+debugLog("securityGetAccessRight($menuName, $accessType,".(($obj)?get_class($obj).' #'.$obj->id:'NULL').")");
   if (! $user) {
     $user = getSessionUser();
   }
-  $accessRightList = $user->getAccessControlRights ();
+  $accessRightList = $user->getAccessControlRights ($obj);
   $accessRight = 'ALL';
   if ($accessType == 'update' and $obj and $obj->id == null) {
     return securityGetAccessRight ( $menuName, 'create' );
   }
   if (array_key_exists ( $menuName, $accessRightList )) {
     $accessRightObj = $accessRightList [$menuName];
+debugLog ($accessRightObj);
     if (array_key_exists ( $accessType, $accessRightObj )) {
       $accessRight = $accessRightObj [$accessType];
     }
@@ -1453,6 +1455,7 @@ function securityGetAccessRight($menuName, $accessType, $obj = null, $user = nul
  * @return the right as Yes or No (depending on object properties)
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
+  debugLog("securityGetAccessRightYesNo(($menuName, $accessType)");
   // ATTENTION, NOT FOR READ ACCESS
   if (! class_exists ( substr ( $menuName, 4 ) )) {
     errorLog ( "securityGetAccessRightYesNo : " . substr ( $menuName, 4 ) . " is not an existing object class" );
@@ -1474,6 +1477,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     }
   }
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
+debugLog("  =>accessRight=$accessRight");
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
