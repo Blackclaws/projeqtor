@@ -1022,18 +1022,22 @@ class PlanningElement extends SqlElement {
   }
   
   public function setVisibility() {
-    if (self::$staticCostVisibility and self::$staticWorkVisibility) {
-      $this->_costVisibility=self::$staticCostVisibility ;
-      $this->_workVisibility=self::$staticWorkVisibility;
-      return;
-    }
     if (! sessionUserExists()) {
       return;
     }
     $user=getSessionUser();
+    $profile=$user->getProfile($this->idProject);
+    if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
+    and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
+      $this->_costVisibility=self::$staticCostVisibility[$profile];
+      $this->_workVisibility=self::$staticWorkVisibility[$profile];
+      return;
+    }
+    
+    $user=getSessionUser();
     $list=SqlList::getList('VisibilityScope', 'accessCode', null, false);
-    $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'cost'));
-    $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'work'));
+    $hCost=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'cost'));
+    $hWork=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile,'scope'=>'work'));
     if ($hCost->id) {
       $this->_costVisibility=$list[$hCost->rightAccess];
     } else {
@@ -1044,8 +1048,10 @@ class PlanningElement extends SqlElement {
     } else {
       $this->_workVisibility='ALL';
     }
-    self::$staticCostVisibility=$this->_costVisibility;
-    self::$staticWorkVisibility=$this->_workVisibility;
+    if (!self::$staticCostVisibility) self::$staticCostVisibility=array();
+    if (!self::$staticWorkVisibility) self::$staticWorkVisibility=array();
+    self::$staticCostVisibility[$profile]=$this->_costVisibility;
+    self::$staticWorkVisibility[$profile]=$this->_workVisibility;
   }
   
   public function getFieldAttributes($fieldName) {

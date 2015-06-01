@@ -286,7 +286,7 @@ class ActivityMain extends SqlElement {
       and stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
       	// Add assignment for responsible
       $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',
-          array('idProfile' => getSessionUser()->idProfile,'scope' => 'assignmentEdit'));
+          array('idProfile' => getSessionUser()->getProfile($this->idProject),'scope' => 'assignmentEdit'));
       if ($habil and $habil->rightAccess == 1) {      
         $ass=new Assignment();
         $crit=array('idResource'=>$this->idResource, 'refType'=>'Activity', 'refId'=>$this->id);
