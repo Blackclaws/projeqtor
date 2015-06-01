@@ -316,7 +316,7 @@ foreach ($listParam as $param) {
   } else if ($param->paramType=='userList') {
     $defaultValue='';
     if ($param->defaultValue=='currentUser') {
-      if (array_key_exists('user',$_SESSION)) {
+      if (sessionUserExists()) {
         $defaultValue=$user->id;
       }
     } else if ($param->defaultValue) {

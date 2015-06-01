@@ -131,7 +131,7 @@ class DocumentMain extends SqlElement {
     if ($this->id and $this->idDocumentVersion) {
     	self::$_fieldsAttributes['idVersioningType']="readonly";
     }
-    if (!$this->id and ! $this->idAuthor and array_key_exists('user',$_SESSION)) {
+    if (!$this->id and ! $this->idAuthor and sessionUserExists()) {
     	$user=getSessionUser();
     	$this->idAuthor=$user->id;
     }

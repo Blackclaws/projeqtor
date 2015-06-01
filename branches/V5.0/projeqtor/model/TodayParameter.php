@@ -126,7 +126,7 @@ class TodayParameter extends SqlElement {
       } else if ($param->paramType=='userList') {
         $defaultValue='';
         if ($param->defaultValue=='currentUser') {
-          if (array_key_exists('user',$_SESSION)) {
+          if (sessionUserExists()) {
             $user=getSessionUser();
             $defaultValue=$user->id;
           }

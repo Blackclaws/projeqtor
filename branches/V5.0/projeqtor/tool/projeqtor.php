@@ -501,7 +501,7 @@ function projeqtorAutoload($className) {
  * @return the current user id or raises an error
  */
 function getCurrentUserId() {
-  if (! array_key_exists ( 'user', $_SESSION )) {
+  if (! sessionUserExists()) {
     throw new Exception ( "ERROR user does not exist" );
     exit ();
   }
@@ -561,7 +561,7 @@ function securityCheckDisplayMenu($idMenu, $class = null) {
   if (! $idMenu and $class) {
     $menu = SqlList::getIdFromName ( 'MenuList', 'menu' . $class );
   }
-  if (array_key_exists ( 'user', $_SESSION )) {
+  if (sessionUserExists()) {
     $user = getSessionUser();
   }
   if (! $user) {
@@ -773,7 +773,7 @@ function sendMail_phpmailer($to, $title, $message, $object = null, $headers = nu
   }
   // Save data of the mail ===========================================================
   $mail = new Mail ();
-  if (array_key_exists ( 'user', $_SESSION )) {
+  if (sessionUserExists()) {
     $mail->idUser = getSessionUser()->id;
   }
   if ($object) {
@@ -947,7 +947,7 @@ function sendMail_socket($to, $subject, $messageBody, $object = null, $headers =
   $smtpServers ['default'] ['smtpPort'] = Parameter::getGlobalParameter ( 'paramMailSmtpPort' );
   // Save data of the mail
   $mail = new Mail ();
-  if (array_key_exists ( 'user', $_SESSION )) {
+  if (sessionUserExists()) {
     $mail->idUser = getSessionUser()->id;
   }
   if ($object) {
@@ -1145,7 +1145,7 @@ function sendMail_mail($to, $title, $message, $object = null, $headers = null, $
   }
   // Save data of the mail
   $mail = new Mail ();
-  if (array_key_exists ( 'user', $_SESSION )) {
+  if (sessionUserExists()) {
     $mail->idUser = getSessionUser()->id;
   }
   if ($object) {
@@ -1464,7 +1464,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     return 'NO';
   }
   if (! $user) {
-    if (! array_key_exists ( 'user', $_SESSION )) {
+    if (! sessionUserExists()) {
       global $maintenance;
       if ($maintenance) {
         return 'YES';
@@ -2466,6 +2466,13 @@ function setSessionUser($user) {
     unset($_SESSION['user']);
   }
   // TODO : use getSessionValue;
+}
+function sessionUserExists() {
+  if (isset($_SESSION['user'])) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function formatNumericOutput($val) {

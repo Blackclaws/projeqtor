@@ -117,7 +117,7 @@ class WorkElement extends SqlElement {
 	}
 	public function save() {
 		$old = $this->getOld ();
-		if (! array_key_exists ( 'user', $_SESSION ))
+		if (! sessionUserExists())
 			return parent::save ();
 		$user = getSessionUser();
 		// Update left work

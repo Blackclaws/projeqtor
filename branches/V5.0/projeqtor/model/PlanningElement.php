@@ -1027,7 +1027,7 @@ class PlanningElement extends SqlElement {
       $this->_workVisibility=self::$staticWorkVisibility;
       return;
     }
-    if (! array_key_exists('user',$_SESSION)) {
+    if (! sessionUserExists()) {
       return;
     }
     $user=getSessionUser();
