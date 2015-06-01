@@ -25,7 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 require_once "../tool/projeqtor.php";
-if (! array_key_exists('user',$_SESSION)) {
+if (! sessionUserExists()) {
 	echo "noUser";
 	return;
 }

@@ -31,7 +31,7 @@ require_once "../tool/projeqtor.php";
 //Audit::updateAudit(); done on projeqtor.php
 
 //scriptLog('   ->/tool/checkAlertToDisplay.php');
-if (! array_key_exists('user',$_SESSION)) {
+if (! sessionUserExists()) {
 	echo "noUser";
 	return;
 }

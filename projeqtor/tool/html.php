@@ -132,7 +132,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         // look for workflow
         if ($obj->$idType and $obj->idStatus) {
           $profile="";
-          if (array_key_exists('user', $_SESSION)) {
+          if (sessionUserExists()) {
             $profile=getSessionUser()->idProfile;
           } 
           $type=new $typeClass($obj->$idType);

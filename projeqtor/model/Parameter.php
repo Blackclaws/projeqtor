@@ -207,7 +207,7 @@ class Parameter extends SqlElement {
       			'YYYY-MM-DD'=>'YYYY-MM-DD');
       	break;
       case 'defaultProject':
-        if (array_key_exists('user',$_SESSION)) {
+        if (sessionUserExists()) {
           $user=getSessionUser();
           $listVisible=$user->getVisibleProjects();
         } else {

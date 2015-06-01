@@ -94,7 +94,7 @@ class Collapsed extends SqlElement {
   }
   
   private static function getUserId() {
-  	if (array_key_exists('user', $_SESSION)) {
+  	if (sessionUserExists()) {
   		$user=getSessionUser();
   		return $user->id;
   	} else {
