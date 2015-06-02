@@ -636,8 +636,9 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
   $accessRightUpdate = securityGetAccessRight ( $obj->getMenuClass (), 'update' );
   $queryWhere = "";
   if ($accessRightRead == 'NO') {
-    $queryWhere .= ($queryWhere == '') ? '' : ' and ';
-    $queryWhere .= "(1 = 2)";
+    // Not applied here any more : will be applied for each project where profile has access = NO
+    //$queryWhere .= ($queryWhere == '') ? '' : ' and ';
+    //$queryWhere .= "(1 = 1)";
   } else if ($accessRightRead == 'OWN') {
     if (property_exists ( $obj, "idUser" )) {
       $queryWhere .= ($queryWhere == '') ? '' : ' and ';
@@ -1425,7 +1426,6 @@ function getIP() {
  *         'ALL' => any element
  */
 function securityGetAccessRight($menuName, $accessType, $obj = null, $user = null) {
-debugLog("securityGetAccessRight($menuName, $accessType,".(($obj)?get_class($obj).' #'.$obj->id:'NULL').")");
   if (! $user) {
     $user = getSessionUser();
   }
@@ -1436,7 +1436,6 @@ debugLog("securityGetAccessRight($menuName, $accessType,".(($obj)?get_class($obj
   }
   if (array_key_exists ( $menuName, $accessRightList )) {
     $accessRightObj = $accessRightList [$menuName];
-debugLog ($accessRightObj);
     if (array_key_exists ( $accessType, $accessRightObj )) {
       $accessRight = $accessRightObj [$accessType];
     }
@@ -1455,7 +1454,6 @@ debugLog ($accessRightObj);
  * @return the right as Yes or No (depending on object properties)
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user = null) {
-  debugLog("securityGetAccessRightYesNo(($menuName, $accessType)");
   // ATTENTION, NOT FOR READ ACCESS
   if (! class_exists ( substr ( $menuName, 4 ) )) {
     errorLog ( "securityGetAccessRightYesNo : " . substr ( $menuName, 4 ) . " is not an existing object class" );
@@ -1477,7 +1475,6 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
     }
   }
   $accessRight = securityGetAccessRight ( $menuName, $accessType, $obj, $user );
-debugLog("  =>accessRight=$accessRight");
   if ($accessType == 'create') {
     $accessRight = ($accessRight == 'NO' or $accessRight == 'OWN' or $accessRight == 'RES') ? 'NO' : 'YES';
   } else if ($accessType == 'update' or $accessType == 'delete' or $accessType == 'read') {
