@@ -560,8 +560,14 @@ class Parameter extends SqlElement {
     	}
     }
     $user=getSessionUser();
-    $showChecklist=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$user->idProfile,'scope'=>'checklist'));
-    if (!$showChecklist or ! $showChecklist->id or $showChecklist->rightAccess!='1') {
+    $showChecklistAll=false;
+    foreach ($user->getAllProfiles() as $prf) {
+      $showChecklist=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$prf,'scope'=>'checklist'));
+      if ($showChecklist and $showChecklist->id and $showChecklist->rightAccess=='1') {
+        $showChecklistAll=true;
+      }
+    }
+    if (! $showChecklistAll) {
       unset($parameterList['displayChecklist']);
     }
     return $parameterList;
