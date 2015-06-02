@@ -620,12 +620,15 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       if (securityGetAccessRight('menuProject', 'update', $this)=="PRO"){
         $id=($this->id)?$this->id:Sql::$lastQueryNewid;
         $crit=array('idProject'=>$id, 'idResource'=>$this->idUser);
+debugLog($crit);
         $aff=SqlElement::getSingleSqlElementFromCriteria('Affectation', $crit);
+debugLog($aff);
         if ( ! $aff or ! $aff->id) {
         	$aff=new Affectation();
         	$aff->idResource=$this->idUser;
         	$aff->idProject=$id;
-        	$aff->save();
+        	$resAff=$aff->save();
+debugLog($resAff);
         } else if (! $this->idle and $aff->idle) {
         	$aff->idle=0;
         	$resAff=$aff->save();

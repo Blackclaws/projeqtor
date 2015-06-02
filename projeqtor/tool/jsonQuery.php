@@ -158,9 +158,7 @@
 
     // --- Take into account restriction visibility clause depending on profile
     if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {
-    	// No limit 
-    } else if ( $objectClass=='Project' ) {
-    	// Restriction already applied
+    	// No limit, although idProject exists
     } else {
       $clause=getAccesResctictionClause($objectClass,$table, $showIdleProjects);
       if (trim($clause)) {
@@ -174,7 +172,7 @@
     }
     
     // --- Remove from list depending on possible profiles on each project
-    $notReadableProjectsList=getSessionUser()->getNotReadableProjectsList($objectClass);
+    /*$notReadableProjectsList=getSessionUser()->getNotReadableProjectsList($objectClass);
     if ( $objectClass=='Project' ) {
       $queryWhere.= ($queryWhere=='')?'(':' and (';
       $queryWhere.= $table.'.id not in '.transformListIntoInClause($notReadableProjectsList);
@@ -183,7 +181,7 @@
       $queryWhere.= ($queryWhere=='')?'(':' and (';
       $queryWhere.= $table.'.idProject not in '.transformListIntoInClause($notReadableProjectsList);
       $queryWhere.= ')';
-    }
+    }*/
     
     // --- Apply systematic restriction  criteria defined for the object class (for instance, for types, limit to corresponding type)
     $crit=$obj->getDatabaseCriteria();
@@ -502,7 +500,11 @@
          . ' order by' . $queryOrderBy;   
     // --- Execute query
     $result=Sql::query($query);
-debugLog($query);
+    if (isset($debugJsonQuery) and $debugJsonQuery) { // Trace in configured to
+       debugTraceLog($query); // Trace query
+       debugTraceLog("  => error (if any) = ".Sql::$lastQueryErrorCode.' - '.Sql::$lastQueryErrorMessage);
+       debugTraceLog("  => number of lines returned = ".Sql::$lastQueryNbRows);
+    }
     $nbRows=0;
     $dataType=array();
     if ($print) {

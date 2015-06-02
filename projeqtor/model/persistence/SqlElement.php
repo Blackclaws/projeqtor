@@ -902,7 +902,6 @@ abstract class SqlElement {
 		}
 
 		// if object is Asignable, update assignments on idle change
-		// TODO : add constrain 'is assignable'
 		if ($idleChange and $returnStatus!="ERROR") {
 			$ass=new Assignment();
 			$query="update " . $ass->getDatabaseTableName();
@@ -1211,10 +1210,6 @@ abstract class SqlElement {
 				}
 				$newObj->idStatus=$st->id;
 			}
-			// TODO : define a new status "copied"
-			//$newObj->idStatus='1';
-			//$st=SqlElement::getSingleSqlElementFromCriteria('Status', array('name'=>'copied'));
-			//if ($st->id) $newObj->idStatus=$st->id;
 
 		}
 		if (property_exists($newObj,"idUser") and get_class($newObj)!='Affectation' and get_class($newObj)!='Message') {
