@@ -111,7 +111,7 @@ class User extends SqlElement {
   private $_specificAffectedProfiles; // Array listing all projects affected with profile different from default
   private $_specificAffectedProfilesIncludingClosed; // Array listing all projects affected with profile different from default
   private $_allProfiles;
-  private $_notReadableProjects;
+  private $_allAccessRights;
   
   private $_visibleProjects;   // Array listing all visible projects (affected and their subProjects)
   private $_visibleProjectsIncludingClosed;
@@ -609,7 +609,7 @@ class User extends SqlElement {
   }
   
   // Return a list of project that user cannot read (not read acces to) for a given class
-  public function getNotReadableProjectsList($class) {
+  /*public function getNotReadableProjectsList($class) {
     if ($this->_notReadableProjects and isset($this->_notReadableProjects[$class])) {
       return $this->_notReadableProjects[$class];
     }
@@ -639,6 +639,57 @@ class User extends SqlElement {
       setSessionUser($this); // Store user to cache Data
     }
     return $result;
+  }*/
+  
+  // Return a list of project with specific access rights depending on profile (only read access taken into account) for a given class
+  public function getAccessRights($class,$right=null) {
+    if ($this->_allAccessRights and isset($this->_allAccessRights[$class])) {
+      if ($right) { // Retrieve only for specific right (NO, OWN, RES, PRO, ALL)
+        if (isset($this->_allAccessRights[$class][$right])) {
+          return $this->_allAccessRights[$class][$right];
+        } else {
+          return array();
+        }
+      } else {      // Retrive all rights (one sub-table per right)
+        return $this->_allAccessRights[$class];
+      }
+    }
+    // TODO take into account default for ALL (for admin)
+    $result=array();
+    $accessProfile=array();    
+    $listAffectedProfiles=$this->getSpecificAffectedProfiles();
+    $obj=new $class();
+    $menu=$obj->getMenuClass ();
+    foreach($listAffectedProfiles as $prj=>$prf) {
+      if (isset($accessProfile[$prf])) {
+        $access=$accessProfile[$prf];
+      } else {
+        $accessList=$this->getAccessControlRights($prj);
+        if (isset($accessList[$menu])) {
+          $access=$accessList[$menu]['read'];
+          $accessProfile[$prf]=$access;
+        } else {
+          $access="NO"; // Should not be reached because access list should always be set
+        }
+      }
+      if (! isset($result[$access])) $result[$access]=array();
+      $result[$access][$prj]=$prj;
+    }
+    if (! $this->_allAccessRights) $this->_allAccessRights=array();
+    $this->_allAccessRights[$class]=$result;
+    if ($this->id==getSessionUser()->id) {
+      setSessionUser($this); // Store user to cache Data
+    }
+    // Same code as beginning, but now _allAccessRights[$class] is set
+    if ($right) { // Retrieve only for specific right (NO, OWN, RES, PRO, ALL)
+      if (isset($this->_allAccessRights[$class][$right])) {
+        return $this->_allAccessRights[$class][$right];
+      } else {
+        return array();
+      }
+    } else {      // Retrive all rights (one sub-table per right)
+      return $this->_allAccessRights[$class];
+    }
   }
   /** =========================================================================
    * Reinitalise Visible Projects list to force recalculate
@@ -654,7 +705,7 @@ class User extends SqlElement {
     $this->_specificAffectedProfiles=null;
     $this->_specificAffectedProfilesIncludingClosed=null;
     $this->_allProfiles=null;
-    $this->_notReadableProjects=null;
+    $this->_allAccessRights=null;
   }
   
   public static function resetAllVisibleProjects($idProject=null, $idUser=null) {

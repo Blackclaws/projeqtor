@@ -263,6 +263,9 @@ public $_noCopy;
     } else {
       $this->idContact=null;
     }
+    if (!$this->idProfile) {
+      $this->idProfile=$affectable->idProfile;
+    }
     
     if (! $this->idResource) {
     	$result.='<br/>' . i18n('messageMandatory',array(i18n('colIdResource') 

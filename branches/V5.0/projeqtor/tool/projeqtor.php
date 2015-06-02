@@ -626,15 +626,95 @@ function getVisibleProjectsList($limitToActiveProjects = true, $idProject = null
 }
 
 function getAccesResctictionClause($objectClass, $alias = null, $showIdle = false) {
+  if (! property_exists($objectClass,'idProject')) return ''; // If not project depedant, no extra clause
+  
   $obj = new $objectClass ();
+  $user=getSessionUser();
   if ($alias) {
-    $table = $alias;
+    $tableAlias = $alias.'.';
+  } if ($alias === false) {
+    $tableAlias = ''; // No alias for table
   } else {
-    $table = $obj->getDatabaseTableName ();
+    $tableAlias = $obj->getDatabaseTableName () . '.';
   }
+  // Retrieve acces right for default profile
   $accessRightRead = securityGetAccessRight ( $obj->getMenuClass (), 'read' );
-  $accessRightUpdate = securityGetAccessRight ( $obj->getMenuClass (), 'update' );
-  $queryWhere = "";
+  $listNO=transformListIntoInClause($user->getAccessRights($objectClass,'NO'));
+  $listOWN=(property_exists($obj,"idUser"))?transformListIntoInClause($user->getAccessRights($objectClass,'OWN')):null;
+  $listRES=(property_exists($obj,"idResource"))?transformListIntoInClause($user->getAccessRights($objectClass,'RES')):null;
+  $listPRO=transformListIntoInClause($user->getAccessRights($objectClass,'PRO'));
+  $listALL=transformListIntoInClause($user->getAccessRights($objectClass,'ALL'));
+  $listALLPRO=transformListIntoInClause($user->getAccessRights($objectClass,'ALL')+$user->getAccessRights($objectClass,'PRO'));
+  
+  $clauseNO='(1=2)'; // Will dintinct the NO
+  
+  $clauseOWN='';
+  if (property_exists ( $obj, "idUser" )) {
+    $clauseOWN="(".$tableAlias."idUser='".Sql::fmtId(getSessionUser()->id)."')";
+  } else {
+    $clauseOWN="(1=3)"; // Will distinct the OWN
+  }
+  
+  $clauseRES='';
+  if (property_exists ( $obj, "idResource" )) {
+    $clauseRES="(".$tableAlias."idResource='".Sql::fmtId(getSessionUser()->id )."')";   
+  } else {
+    $clauseRES="(1=4)"; // Will distinct the RES
+  }
+    
+  //$clausePRO='';
+  $clauseAffPRO='';
+  $fieldProj='idProject';
+  if ($objectClass == 'Project') {
+    $fieldProj='id';
+  }
+  if ($objectClass == 'Document') {
+    $v = new Version ();
+    $vp = new VersionProject ();
+    //$clausePRO="(".$tableAlias."idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
+    //  ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
+    //  ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
+    //  ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle))
+    //  .")))";
+    $clauseALLPRO="(".$tableAlias."idProject in ".$listALLPRO
+    ." or (".$tableAlias."idProject is null and ".$tableAlias."idProduct in "
+        ."(select idProduct from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
+            ."where existV.id=existVP.idVersion and existVP.idProject in ".$listALLPRO
+            .")))";
+  } else {
+    //$clausePRO= "(".$tableAlias.$fieldProj." in ".transformListIntoInClause($user->getAffectedProjects(!$showIdle)).")";
+    $clauseALLPRO= "(".$tableAlias.$fieldProj." in ".$listALLPRO.")";
+  }
+  
+  $clauseALL='(1=1)'; // Will distinct the ALL
+  
+  // Build where clause depending 
+  if ($accessRightRead=='NO') { // Default profile is No Access
+    $queryWhere=$clauseNO;
+    if ($listOWN) $queryWhere.=" or (".$clauseOWN." and ".$tableAlias.$fieldProj." in ".$listOWN.")";
+    if ($listRES) $queryWhere.=" or (".$clauseRES." and ".$tableAlias.$fieldProj." in ".$listRES.")";
+    $queryWhere.=" or (".$clauseALLPRO.")";
+  } else if ($accessRightRead=='OWN') {
+    $queryWhere="(".$clauseOWN;
+    if ($listRES) $queryWhere.=" or (".$clauseRES." and ".$tableAlias.$fieldProj." in ".$listRES.")";
+    $queryWhere.=" or (".$clauseALLPRO.")";
+    $queryWhere.=") and (".$tableAlias.$fieldProj." not in ".$listNO.")";
+  } else if ($accessRightRead=='RES') {
+    $queryWhere="(".$clauseRES;
+    if ($listOWN) $queryWhere.=" or (".$clauseOWN." and ".$tableAlias.$fieldProj." in ".$listOWN.")";
+    $queryWhere.=" or (".$clauseALLPRO.")";
+    $queryWhere.=") and (".$tableAlias.$fieldProj." not in ".$listNO.")";
+  } else if ($accessRightRead=='PRO') {
+    $queryWhere="(".$clauseALLPRO;
+    if ($listRES) $queryWhere.=" or (".$clauseRES." and ".$tableAlias.$fieldProj." in ".$listRES.")";
+    if ($listOWN) $queryWhere.=" or (".$clauseOWN." and ".$tableAlias.$fieldProj." in ".$listOWN.")";
+    //$queryWhere.=" or (".$clauseALLPRO.")";
+    $queryWhere.=") and (".$tableAlias.$fieldProj." not in ".$listNO.")";
+  } else if ($accessRightRead=='ALL') {
+    $queryWhere=$tableAlias.$fieldProj." not in ".$listNO;
+  }
+  
+  /*
   if ($accessRightRead == 'NO') {
     // Not applied here any more : will be applied for each project where profile has access = NO
     //$queryWhere .= ($queryWhere == '') ? '' : ' and ';
@@ -688,7 +768,8 @@ function getAccesResctictionClause($objectClass, $alias = null, $showIdle = fals
     }
   } else if ($accessRightRead == 'ALL') {
     $queryWhere .= ' (1=1) ';
-  }
+  }*/
+  
   return " " . $queryWhere . " ";
 }
 
@@ -1317,7 +1398,7 @@ function logTracing($message, $level = 9, $increment = 0) {
  * Log tracing for debug
  *
  * @param $message message
- *          to store on log
+ *          to store on log 
  * @return void
  */
 function debugLog($message) {
@@ -2458,7 +2539,7 @@ function getSessionUser() {
   } else {
     return new User();
   }
- // TODO : use getSEssionValue;    	
+ // TODO : use getSessionValue;    	
 }
 function setSessionUser($user) {
   if ($user and is_object($user)) {

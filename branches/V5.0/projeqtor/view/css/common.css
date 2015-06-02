@@ -661,10 +661,6 @@ table.dojoDndAvatar {
 .dijitFocusedLabel {
   outline: 1px dotted #666666;
 }
-
-/* ========================== 
- * /form/Button.css  => TODO
- * ========================== */
  
 .dijitButtonNode {
   border: 1px solid #c0c0c0;

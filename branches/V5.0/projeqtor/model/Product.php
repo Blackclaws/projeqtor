@@ -179,7 +179,6 @@ class Product extends SqlElement {
   }
   
   public function getSubProducts($limitToActiveProducts=false) {
-  	// TODO : not tested !!!
     if ($this->id==null or $this->id=='') {
       return array();
     }
@@ -209,7 +208,6 @@ class Product extends SqlElement {
    * @return an array containing id, name, subproducts (recursive array)
    */
   public function getRecursiveSubProducts($limitToActiveProducts=false) {
-  	// TODO : not tested !!!
     $crit=array('idProduct'=>$this->id);
     if ($limitToActiveProducts) {
       $crit['idle']='0';
