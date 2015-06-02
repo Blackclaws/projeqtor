@@ -338,13 +338,11 @@ function getMonthName($month,$maxLength=0) {
 }
 
 function diffValues(&$old,&$new) {
-  debugLog("=============================================================================================");
   if ($old) {
     $array=Diff::compare(diffReplaceEOL($old), diffReplaceEOL($new));
     $arrayOld=array();
     $arrayNew=array();
     foreach ($array as $id=>$line) {
-      debugLog( (($line[1]==0)?'  ':(($line[1]==1)?'- ':'+ ')).$line[0] );
       if ($line[1]==Diff::DELETED) {
         $arrayOld[$id]=$line;
       } else if ($line[1]==Diff::INSERTED) {

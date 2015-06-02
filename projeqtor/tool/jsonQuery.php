@@ -69,11 +69,14 @@
     $queryWhere='';
     $queryOrderBy='';
     $idTab=0;
-
+    
     $res=array();
     $layout=$obj->getLayout();
     $array=explode('</th>',$layout);
 
+    // ====================== Build restriction clauses ================================================
+    
+    // --- Quick search criteria (textual search in any text field, including notes)
     if ($quickSearch) {
     	$queryWhere.= ($queryWhere=='')?'':' and ';
     	$queryWhere.="( 1=2 ";
@@ -94,8 +97,9 @@
     	$queryWhere.=" )";
     }
     
+    // --- Should idle projects be shown ?
     $showIdleProjects=(! $comboDetail and isset($_SESSION['projectSelectorShowIdle']) and $_SESSION['projectSelectorShowIdle']==1)?1:0;
-    
+    // --- "show idle checkbox is checked ?
     if (! isset($showIdle)) $showIdle=false;
     if (!$showIdle and ! array_key_exists('idle',$_REQUEST) and ! $quickSearch) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -103,6 +107,8 @@
     } else {
       $showIdle=true;
     }
+    
+    // --- Direct filter on id (only used for printing, as direct filter is done on client side)
     if (array_key_exists('listIdFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listIdFilter'];
       $param=strtr($param,"*?","%_");
@@ -110,6 +116,7 @@
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=$table.".".$obj->getDatabaseColumnName('id')." like '%".$param."%'";
     }
+    // --- Direct filter on name (only used for printing, as direct filter is done on client side)
     if (array_key_exists('listNameFilter',$_REQUEST)  and ! $quickSearch) {
       $param=$_REQUEST['listNameFilter'];
       $param=strtr($param,"*?","%_");
@@ -117,21 +124,25 @@
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.=$table.".".$obj->getDatabaseColumnName('name')." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$param."%'";
     }
+    // --- Direct filter on type (only used for printing, as direct filter is done on client side)
     if ( array_key_exists('objectType',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectType'])!='') {
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "=" . Sql::str($_REQUEST['objectType']);
       }
     }
+    
+    // --- Restrict to allowed projects : for Projects list
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
         $queryWhere.= ($queryWhere=='')?'':' and ';
         $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects(! $showIdle)) ;
-        if ($objectClass=='Project') {
-          $queryWhere.= " or codeType='TMP' ";
-        }
+        //if ($objectClass=='Project') {
+          $queryWhere.= " or codeType='TMP' "; // Templates projects are always visible in projects list
+        //}
         $queryWhere.= ')';
     }  
+    // --- Restrict to allowed project taking into account selected project : for all list that are project dependant
     if (property_exists($obj, 'idProject') and array_key_exists('project',$_SESSION)) {
         if ($_SESSION['project']!='*') {
           $queryWhere.= ($queryWhere=='')?'':' and ';
@@ -145,27 +156,43 @@
         }
     }
 
+    // --- Take into account restriction visibility clause depending on profile
     if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {
     	// No limit 
     } else if ( $objectClass=='Project' ) {
     	// Restriction already applied
     } else {
-      $queryWhere.= ($queryWhere=='')?'(':' and (';
-      $queryWhere.= getAccesResctictionClause($objectClass,$table, $showIdleProjects);
-      if ($objectClass=='Project') {
-        $queryWhere.= " or codeType='TMP' ";
+      $clause=getAccesResctictionClause($objectClass,$table, $showIdleProjects);
+      if (trim($clause)) {
+        $queryWhere.= ($queryWhere=='')?'(':' and (';
+        $queryWhere.= $clause;
+        if ($objectClass=='Project') {
+          $queryWhere.= " or codeType='TMP' "; // Templates projects are always visible in projects list
+        }
+        $queryWhere.= ')';
       }
+    }
+    
+    // --- Remove from list depending on possible profiles on each project
+    $notReadableProjectsList=getSessionUser()->getNotReadableProjectsList($objectClass);
+    if ( $objectClass=='Project' ) {
+      $queryWhere.= ($queryWhere=='')?'(':' and (';
+      $queryWhere.= $table.'.id not in '.transformListIntoInClause($notReadableProjectsList);
+      $queryWhere.= ')';
+    } else if ( property_exists($objectClass, 'idProject') ){
+      $queryWhere.= ($queryWhere=='')?'(':' and (';
+      $queryWhere.= $table.'.idProject not in '.transformListIntoInClause($notReadableProjectsList);
       $queryWhere.= ')';
     }
     
-    
-    
+    // --- Apply systematic restriction  criteria defined for the object class (for instance, for types, limit to corresponding type)
     $crit=$obj->getDatabaseCriteria();
     foreach ($crit as $col => $val) {
       $queryWhere.= ($queryWhere=='')?'':' and ';
       $queryWhere.= $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . "=" . Sql::str($val) . " ";
     }
 
+    // --- When browsing Docments throught directory view, limit list of Documents to currently selected Directory
     if ($objectClass=='Document') {
     	if (array_key_exists('Directory',$_SESSION) and ! $quickSearch) {
     		$queryWhere.= ($queryWhere=='')?'':' and ';
@@ -173,6 +200,8 @@
     	}
     }
     
+    // --- Apply sorting filers --------------------------------------------------------------
+    // --- 1) retrieve corresponding filter clauses depending on context
     $arrayFilter=array();
     if (! $quickSearch) {
       if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
@@ -185,8 +214,7 @@
         }
       }
     }
-    
-    // first sort from index (checked in List Header)
+    // --- 2) sort from index checked in List Header (only used for printing, as direct filter is done on client side)
     $sortIndex=null;   
     if ($print) {
       if (array_key_exists('sortIndex', $_REQUEST)) {
@@ -207,8 +235,7 @@
         }
       }
     }
-    
-    // Then sort from Filter Criteria
+    // 3) sort from Filter Criteria
     if (! $quickSearch) {
 	    foreach ($arrayFilter as $crit) {
 	      if ($crit['sql']['operator']=='SORT') {
@@ -255,9 +282,10 @@
 	      }
 	    }
     }
+    // --- Rest of filter selection will be done later, after building select clause
     
-    // Build select clause, and eventualy extended From clause and Where clause
-    // Also include default Sort criteria
+    // ====================== Build restriction clauses ================================================
+    // --- Build select clause, and eventualy extended From clause and Where clause
     $numField=0;
     $formatter=array();
     $arrayWidth=array();
@@ -392,7 +420,7 @@
 	      }
 	    }
     }
-    // build order by clause
+    // --- build order by clause
     if ($objectClass=='DocumentDirectory') {
     	$queryOrderBy .= ($queryOrderBy=='')?'':', ';
     	$queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('location');
@@ -407,9 +435,9 @@
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('id') . " desc";
     }
     
-    // Check for an advanced filter (stored in User)
+    // --- Check for an advanced filter (stored in User)
     foreach ($arrayFilter as $crit) {
-      if ($crit['sql']['operator']!='SORT') { 
+      if ($crit['sql']['operator']!='SORT') { // Sorting already applied above
       	$split=explode('_', $crit['sql']['attribute']);
       	$critSqlValue=$crit['sql']['value'];
       	if ($crit['sql']['operator']=='IN' and $crit['sql']['attribute']=='idProduct') {
@@ -465,13 +493,16 @@
       }
     }
     
-    // constitute query and execute
+    // ==================== Constitute query and execute ============================================================
+    // --- Buimd where from "Select", "From", "Where" and "Order by" clauses built above
     $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 
          . ' order by' . $queryOrderBy;   
+    // --- Execute query
     $result=Sql::query($query);
+debugLog($query);
     $nbRows=0;
     $dataType=array();
     if ($print) {

@@ -45,7 +45,7 @@ $updateRight=securityGetAccessRightYesNo('menu' . $objectClass, 'update', $obj);
 $canUpdateCreationInfo=false;
 if ($obj->id and $updateRight) {
   $user=getSessionUser();
-  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->idProfile,'scope' => 'canUpdateCreation'));
+  $habil=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile' => $user->getProfile($obj),'scope' => 'canUpdateCreation'));
   if ($habil) {
     $list=new ListYesNo($habil->rightAccess);
     if ($list->code == 'YES') {
