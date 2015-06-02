@@ -231,6 +231,10 @@ if (array_key_exists('refresh', $_REQUEST)) {
     echo htmlGetNoAccessMessage($objClass);
     echo "</div></form>";
     exit();
+  } else if ($objId and ! $obj->id) {
+    echo htmlGetDeletedMessage($objClass);
+    echo "</div></form>";
+    exit;
   } else {
     if (!$print or $comboDetail) {
       echo '<input type="hidden" id="className" name="className" value="' . $objClass . '" />' . $cr;

@@ -299,6 +299,10 @@ function htmlGetNoAccessMessage($className) {
 	return '<br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . i18n('messageNoAccess',array(i18n($className))) . '</i>';
 }
 
+function htmlGetDeletedMessage($className) {
+  return '<br/><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . i18n('messageDeleted',array(i18n($className))) . '</i>';
+}
+
 
 /** ===========================================================================
  * Draw an html Table as cross reference
